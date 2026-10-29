@@ -1,0 +1,602 @@
+[
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1552.7,
+   829.6775,
+   1576.4825,
+   849.5225
+  ],
+  "role": "case",
+  "sub": "glyph/6/0/3/6/4",
+  "noh": "too_small",
+  "score": 0.5319862961769104,
+  "type": "eighth",
+  "extent": [
+   1.524,
+   0.508
+  ],
+  "reader": "detector",
+  "tile": 1,
+  "crop_origin": [
+   1470,
+   760
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1294.36,
+   1006.4,
+   1319.96,
+   1024.0
+  ],
+  "role": "case",
+  "sub": "glyph/6/0/4/5/4",
+  "noh": "too_small",
+  "score": 0.2562011778354645,
+  "type": "quarter",
+  "extent": [
+   1.438,
+   0.562
+  ],
+  "reader": "detector",
+  "tile": 2,
+  "crop_origin": [
+   1212,
+   936
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2171.2,
+   716.9625,
+   2193.95,
+   735.4875
+  ],
+  "role": "case",
+  "sub": "glyph/4/0/2/12/5",
+  "noh": "too_wide",
+  "score": 0.6390396356582642,
+  "type": "quarter",
+  "extent": [
+   1.908,
+   0.123
+  ],
+  "reader": "detector",
+  "tile": 3,
+  "crop_origin": [
+   2088,
+   647
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2166.0475,
+   676.11,
+   2190.3025,
+   696.27
+  ],
+  "role": "case",
+  "sub": "glyph/6/0/2/10/8",
+  "noh": "too_small",
+  "score": 0.512647271156311,
+  "type": "eighth",
+  "extent": [
+   1.524,
+   0.571
+  ],
+  "reader": "detector",
+  "tile": 4,
+  "crop_origin": [
+   2083,
+   607
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   511.38250000000005,
+   2749.06,
+   537.37,
+   2772.5275
+  ],
+  "role": "case",
+  "sub": "glyph/4/1/4/0/2",
+  "noh": "too_tall",
+  "score": 0.6458544135093689,
+  "type": "quarter",
+  "extent": [
+   1.651,
+   1.524
+  ],
+  "reader": "detector",
+  "tile": 5,
+  "crop_origin": [
+   429,
+   2682
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2197.565,
+   320.46,
+   2219.265,
+   346.035
+  ],
+  "role": "case",
+  "sub": "glyph/6/0/0/10/4",
+  "noh": "too_tall",
+  "score": 0.8212277293205261,
+  "type": "quarter",
+  "extent": [
+   1.419,
+   1.677
+  ],
+  "reader": "detector",
+  "tile": 6,
+  "crop_origin": [
+   2113,
+   254
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2139.745,
+   859.6025,
+   2162.8975,
+   885.59
+  ],
+  "role": "case",
+  "sub": "glyph/6/0/3/10/10",
+  "noh": "too_tall",
+  "score": 0.5496821999549866,
+  "type": "eighth",
+  "extent": [
+   1.46,
+   2.032
+  ],
+  "reader": "detector",
+  "tile": 7,
+  "crop_origin": [
+   2056,
+   793
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   974.595,
+   2469.585,
+   996.1725,
+   2485.8075
+  ],
+  "role": "case",
+  "sub": "glyph/4/1/2/3/14",
+  "noh": "too_small",
+  "score": 0.3575352430343628,
+  "type": "eighth",
+  "extent": [
+   1.397,
+   0.444
+  ],
+  "reader": "detector",
+  "tile": 8,
+  "crop_origin": [
+   890,
+   2398
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1101.4725,
+   2472.735,
+   1124.7825,
+   2494.785
+  ],
+  "role": "case",
+  "sub": "glyph/4/1/2/4/8",
+  "noh": "too_small",
+  "score": 0.6657289266586304,
+  "type": "eighth",
+  "extent": [
+   1.397,
+   0.381
+  ],
+  "reader": "detector",
+  "tile": 9,
+  "crop_origin": [
+   1018,
+   2405
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   513.715,
+   2842.3425,
+   535.45,
+   2866.2825
+  ],
+  "role": "case",
+  "sub": "glyph/6/1/5/0/7",
+  "noh": "too_tall",
+  "score": 0.778033435344696,
+  "type": "quarter",
+  "extent": [
+   1.397,
+   1.524
+  ],
+  "reader": "detector",
+  "tile": 10,
+  "crop_origin": [
+   430,
+   2775
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2445.6425,
+   3090.9025,
+   2472.4175,
+   3111.22
+  ],
+  "role": "case",
+  "sub": "glyph/6/1/7/11/12",
+  "noh": "too_wide",
+  "score": 0.28072163462638855,
+  "type": "quarter",
+  "extent": [
+   1.905,
+   1.27
+  ],
+  "reader": "detector",
+  "tile": 11,
+  "crop_origin": [
+   2364,
+   3022
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2586.235,
+   2726.5375,
+   2608.4425,
+   2746.225
+  ],
+  "role": "case",
+  "sub": "glyph/4/1/4/14/7",
+  "noh": "too_small",
+  "score": 0.5144491791725159,
+  "type": "eighth",
+  "extent": [
+   1.397,
+   0.508
+  ],
+  "reader": "detector",
+  "tile": 12,
+  "crop_origin": [
+   2502,
+   2657
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1532.1025,
+   2313.8975,
+   1556.83,
+   2346.9725
+  ],
+  "role": "case",
+  "sub": "glyph/4/1/1/7/1",
+  "noh": "too_tall",
+  "score": 0.4096013605594635,
+  "type": "quarter",
+  "extent": [
+   1.524,
+   2.222
+  ],
+  "reader": "detector",
+  "tile": 13,
+  "crop_origin": [
+   1449,
+   2251
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2465.645,
+   3582.2625,
+   2485.805,
+   3597.855
+  ],
+  "role": "case",
+  "sub": "glyph/6/1/11/11/1",
+  "noh": "too_small",
+  "score": 0.31949520111083984,
+  "type": "quarter",
+  "extent": [
+   0.571,
+   0.063
+  ],
+  "reader": "detector",
+  "tile": 14,
+  "crop_origin": [
+   2381,
+   3511
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1933.145,
+   3336.9575,
+   1956.2975,
+   3356.1725
+  ],
+  "role": "case",
+  "sub": "glyph/6/1/9/8/12",
+  "noh": "too_small",
+  "score": 0.10814382880926132,
+  "type": "eighth",
+  "extent": [
+   1.46,
+   0.508
+  ],
+  "reader": "yolo_rescue_stem_head",
+  "tile": 15,
+  "crop_origin": [
+   1850,
+   3267
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1296.7975,
+   839.285,
+   1320.1075,
+   863.225
+  ],
+  "role": "case",
+  "sub": "glyph/6/0/3/5/1",
+  "noh": "too_tall",
+  "score": 0.7287748456001282,
+  "type": "quarter",
+  "extent": [
+   1.524,
+   1.587
+  ],
+  "reader": "detector",
+  "tile": 16,
+  "crop_origin": [
+   1213,
+   772
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   2544.075,
+   6699.275,
+   2586.975,
+   6771.05
+  ],
+  "role": "case",
+  "sub": "glyph/5/1/12/3/3",
+  "noh": "holds_another_marks_ink",
+  "score": 0.6479731202125549,
+  "type": "eighth",
+  "extent": [
+   1.491,
+   2.073
+  ],
+  "reader": "detector",
+  "tile": 17,
+  "crop_origin": [
+   2373,
+   6575
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   2024.725,
+   4705.9275,
+   2083.04,
+   4734.8125
+  ],
+  "role": "case",
+  "sub": "glyph/5/1/3/2/6",
+  "noh": "too_wide",
+  "score": 0.4452006220817566,
+  "type": "quarter",
+  "extent": [
+   2.422,
+   1.431
+  ],
+  "reader": "detector",
+  "tile": 18,
+  "crop_origin": [
+   1861,
+   4560
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   5250.5,
+   3911.025,
+   5290.375,
+   3945.125
+  ],
+  "role": "case",
+  "sub": "glyph/5/1/0/9/2",
+  "noh": "holds_another_marks_ink",
+  "score": 0.8049888014793396,
+  "type": "eighth",
+  "extent": [
+   1.455,
+   1.273
+  ],
+  "reader": "detector",
+  "tile": 19,
+  "crop_origin": [
+   5078,
+   3768
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   3956.6171875,
+   1713.9501953125,
+   3986.05615234375,
+   1736.84716796875
+  ],
+  "role": "case",
+  "sub": "glyph/5/0/5/5/18",
+  "noh": "too_small",
+  "score": 0.31339961290359497,
+  "type": "quarter",
+  "extent": [
+   1.091,
+   0.582
+  ],
+  "reader": "detector",
+  "tile": 20,
+  "crop_origin": [
+   3779,
+   1565
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   3547.2,
+   5328.125,
+   3587.35,
+   5361.4
+  ],
+  "role": "case",
+  "sub": "glyph/14/1/4/5/6",
+  "noh": "too_small",
+  "score": 0.47916102409362793,
+  "type": "half",
+  "extent": [
+   1.2,
+   0.545
+  ],
+  "reader": "detector",
+  "tile": 21,
+  "crop_origin": [
+   3375,
+   5184
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   2612.155,
+   3566.3775,
+   2654.9375,
+   3600.44
+  ],
+  "role": "case",
+  "sub": "glyph/5/0/13/3/8",
+  "noh": "too_wide",
+  "score": 0.7311928272247314,
+  "type": "eighth",
+  "extent": [
+   1.835,
+   1.394
+  ],
+  "reader": "detector",
+  "tile": 22,
+  "crop_origin": [
+   2441,
+   3423
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   2013.3,
+   5327.575,
+   2057.3,
+   5361.675
+  ],
+  "role": "case",
+  "sub": "glyph/14/1/4/2/3",
+  "noh": "too_small",
+  "score": 0.5149726867675781,
+  "type": "half",
+  "extent": [
+   0.836,
+   0.291
+  ],
+  "reader": "detector",
+  "tile": 23,
+  "crop_origin": [
+   1843,
+   5184
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1600.325,
+   6699.0,
+   1642.125,
+   6760.05
+  ],
+  "role": "case",
+  "sub": "glyph/5/1/12/1/7",
+  "noh": "holds_another_marks_ink",
+  "score": 0.42240822315216064,
+  "type": "eighth",
+  "extent": [
+   1.491,
+   1.745
+  ],
+  "reader": "detector",
+  "tile": 24,
+  "crop_origin": [
+   1429,
+   6569
+  ]
+ }
+]

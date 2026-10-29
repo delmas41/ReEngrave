@@ -1,38 +1,59 @@
-# 2.222 upper limit on a notehead box: measure (STAGED, saved records only, nothing re-run)
+# Notehead box cap / the one-head check (ROADMAP 2.222)
 
-Cause and lesson. Wide boxes are junk and tall boxes are not: of the written-as-note boxes over any size cap, those wider
-than ~2.4 staff spaces are blobs, ff letters and beams; those merely TALL are mostly real half notes whose box includes the
-stem. One cap on "size" would lose notes; the cap is a WIDTH cap. Lesson: split width and height before choosing a cut.
-Also: the two "oversized" boxes of Sean's 2.221 tiles 4 and 6 were 0b unions drawn by the census, not detector head boxes
-(their head boxes are 1.67x1.41 and 1.76x2.04 sp), so the cap cannot catch them.
+The cause lane's findings are in `cause/FINDINGS.md`. This file holds the build lane's results.
 
-## Populations (names = where they came from)
-Source: `census.py extract` pickle (branch lane-2.221-m0) of the 2.202f ON-arm saved gathers + exported MusicXML; sizes in own
-staff spaces. `python3 benchmarks/notehead-box-cap-2026-10/pops.py` (distributions), `cap.py numbers` (table, numbers.json).
-- A: head box with exactly ONE exported note (litolff 3580, brahms 4419; 0 notes unmatched).
-- B: head box with 2+ exported notes (159 / 11). B boxes are NORMAL size (w 1.2-2.0, h ~1.3): they are not blobs, no cap affects them.
-- C: detector clef / dynamic-letter boxes with centre on the staff (litolff 180 / 95, brahms 208 / 77).
-- D: head-class boxes overlapping a clef/dynamic box by >=25% (40 / 43; 12 / 1 of them written). Mostly normal or small boxes: a UPPER cap cannot rule them out.
-Own-space sizes of A: width p50 1.47 / 1.40, p99.5 2.09 / 1.73; height p99.5 2.59 / 1.37 (litolff boxes are taller: stems). There is NO empty gap in A; the tail is continuous. C_clef: height p5 1.9 / 3.2, width p50 2.95 / 2.66. C_dyn: width 0.8-5.0, many letters are head sized (p, m, s ~1x1.1).
+## 2.222 one-head check
 
-## Candidate caps (over = rule out). Keep = share of A kept
-| cap | litolff keep (lost) | brahms keep (lost) | clef over | dyn over |
-|---|---|---|---|---|
-| W 2.2 | 99.58% (15) | 99.98% (1) | 161/180, 206/208 | 53/95, 35/77 |
-| **W 2.4 (candidate)** | 99.69% (11) | 99.98% (1) | 160/180, 202/208 | 47/95, 26/77 |
-| W 2.6 | 99.83% (6) | 99.98% (1) | 157/180, 132/208 | 44/95, 11/77 |
-| W 2.6 or H 2.8 | 99.53% (17) | 99.93% (3) | 164, 207 | 60, 15 |
-| H 2.8 only | 99.66% (12) | 99.95% (2) | 163, 205 | 59, 6 |
-Candidate: width > 2.4 sp is over. Keeps >=99.69% / 99.98% of A; loses 11 + 1 written notes, which are the tiles' question. It rules out
-every wide blob / beam / ff seen (4.69, 5.85, 3.88, 3.44, 3.24 sp). It does NOT rule out most dynamic letters (they are head sized) or a tall
-narrow clef (F clef written as a note, 1.95 x 3.16, under the width cap). Height alone cannot separate that clef from a stemmed half (4.2 sp):
-no height cap is proposed until Sean's tiles 4, 11 say whether tall-narrow boxes are notes.
-Controls: blob 4.69x2.60, ff 3.88x1.03, beam 5.85x0.55 land OVER W2.4; the clef 1.95x3.16 lands over H2.8 only; Sean's 2.221 tiles 4/6 boxes land UNDER.
-The hand-looked sheet of the 20 largest A (preview.py) is my own eye, not Sean's: 5 wide ones junk, ~7 tall ones look like real halves.
+### m0 (2026-10-29): which written notes `not_one_head` touches. STOPPED here: most of them are real single heads.
 
-## Caveat (CLAUDE 4)
-A cut tuned on two plates (Litolff 1870, Brahms/Breitkopf) may only NARROW (blue / hand to the stacked-pair readers 2.129/2.132) until another
-publisher confirms. Never decide a refusal on it.
+**Cause.** 2.220's `not_one_head` comes from the head's TRIMMED ink, and the trim gets it wrong on the merging Litolff plate.
+`too_small` is 261 of the 365 Litolff hits. Taking out the bare staff-line pixels takes rows out of a black head that sits on a
+line or touches its neighbours, so the head trims to about 0.4-0.6 sp tall. `too_tall` and `too_wide` are the same heads fused
+with a neighbour, a stem or a beam. So the verdict measures the trim, not the box.
 
-## Tiles: out/print/2.222-cap/ (12; key.json lists over/under; 6 over W2.4, 4 just under by width, 2 tall-narrow probes)
-Sean's answers not yet recorded.
+**Process lesson.** The 2.220 tiles that justified "not_one_head finds junk" (m1, 7 of 12) were drawn from boxes that were
+mostly NOT in the exported file (DECISIONS 2026-10-28 correction). On the file, the same verdict is mostly real notes. A
+verdict that is going to DECIDE something is sampled from the population it will act on (the exported file) before a lane
+builds on it.
+
+**Count. FILE level, by box subject, ON arm of the 2.220 m2b replay.** Source: `agent-abe33f84eed18488d/out/lane-report/2.220-m2/report-b/work/*.on.symbols.json`
+plus that run's saved gather slices, which carry `Q.HEAD_INK`. This is the 2.220 m2 subset (Litolff p4, p6 and Brahms p5, p14),
+NOT the full frozen sample: no saved gather of the frozen sample carries `Q.HEAD_INK`, because it was only added on 10-28.
+Script: `one_head/m0_census.py`.
+
+| plate | written notes | not_one_head | too_small | too_tall | too_wide | foreign | no_head_ink |
+|---|---|---|---|---|---|---|---|
+| Litolff p4, p6 | 1205 | 365 (30%) | 261 | 50 | 48 | 2 | 4 |
+| Brahms p5, p14 | 1256 | 28 (2%) | 12 | 2 | 10 | 4 | 0 |
+
+Detector score, the proposed second witness: the median for `not_one_head` is 0.55 on Litolff, against 0.80 for the rest.
+But 126 of the 840 one-head Litolff notes are also under 0.5, and on my crops the low-score `not_one_head` boxes were real heads.
+Rescue readers account for 24 of the 365 Litolff hits and 1 of the 28 Brahms hits.
+
+**My crop look (not Sean's).** 24 crops, seed 2222, drawn at random from the `not_one_head` written notes (16 Litolff, 8 Brahms):
+`out/print/2.222-m0-look/sheet.png`, with the key in `key.json`.
+- Real single heads: 19 of 24.
+  - Litolff: 15 of 16.
+  - Brahms: tiles 19-23. Two of these, 21 and 23, are halves.
+- Not a head: 3.
+  - Litolff tile 14 (score 0.32) is a slash or flag piece.
+  - Brahms tiles 17 and 24 (scores 0.65 and 0.42) are an eighth flag boxed as a head.
+- Several heads in one box: 1, Brahms tile 18 (score 0.45, a cluster with a natural).
+- On these crops, low score does not separate the two groups. Real heads scored 0.11, 0.26, 0.28 and 0.36; the flags scored 0.65 and 0.42.
+
+**Rough scale (from my crops, not a measurement):** about 80% of the 393 hits are real notes. Split by plate, that is about 340
+of Litolff's 365 and about 20 of Brahms's 28. If those were marked or split, that would be hundreds of real notes on 4 pages, so
+I did not build. The m0 stop rule applies.
+
+**What would have to change before a build.** The check needs a head count that does not depend on the line-cut trim, for example:
+- counting oval cores, i.e. head-tall columns grouped into head-width runs, on the RAW raster;
+- 2.129's stacked-head fit on the box's own column (it already counts k heads in a blob).
+
+It also needs a second witness that is not the detector score, because the score does not separate here. Flags boxed as heads
+(Brahms 17, 24) have a different signature: tall, thin, attached to the stem end. That is closer to 2.214 and 2.210 territory
+than to a size test.
+
+**Running unattended (no one waits on it):** a GATHER of the full frozen sample on main's defaults, so `Q.HEAD_INK` is filed.
+It runs one plate at a time with the detector cache. Script: `out/lane-report/2.222-gather/run.sh`; output goes to
+`out/lane-report/2.222-gather/{litolff,brahms}.record.json`, with `done` written when it finishes. It exists so the next step
+can repeat this census on all 16 pages by replaying the saved gather, without gathering again.
