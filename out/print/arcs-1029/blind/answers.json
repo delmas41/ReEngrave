@@ -1,0 +1,78 @@
+{
+ "sean_2026_10_29": "1. Tie 2. Slur 3. Slur 4. Tie 5. Slur 6. Tie 7. Tie 8. Slur 9. Slur 10. Tie 11. Tie 12. Slur - this should be obvious since a tie only ever happens s between 2 adjacent notes of the same pitch. Different pitch or spanning multiple notes is always slur.  When there are multiple arcs the tie is always closer to the staff than the slur.",
+ "tally": "12/12 are real arcs; all 10 cases are arcs the file drops (real losses). Kind of our fate vs Sean: tie fates right on 1,4,6,10,11; slur fates right on 3,5,12; tiles 2 (tie_pair_no_stop_head) and 9 (tie_pair_no_head_near_the_arc) are SLURS our pipeline tried to pair as ties. Controls 7 tie, 8 slur right.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "tie",
+   "our_fate": "refused:tie_pair_not_adjacent",
+   "verdict": "real tie dropped; kind right"
+  },
+  {
+   "tile": 2,
+   "answer": "slur",
+   "our_fate": "refused:tie_pair_no_stop_head",
+   "verdict": "real slur dropped; we treated it as a tie"
+  },
+  {
+   "tile": 3,
+   "answer": "slur",
+   "our_fate": "refused:slur_binds_fewer_than_two_notes",
+   "verdict": "real slur dropped; kind right"
+  },
+  {
+   "tile": 4,
+   "answer": "tie",
+   "our_fate": "refused:tie_pair_no_pair_at_one_position",
+   "verdict": "real tie dropped; kind right"
+  },
+  {
+   "tile": 5,
+   "answer": "slur",
+   "our_fate": "refused:slur_binds_fewer_than_two_notes",
+   "verdict": "real slur dropped; kind right"
+  },
+  {
+   "tile": 6,
+   "answer": "tie",
+   "our_fate": "refused:tie_pair_narrowed",
+   "verdict": "real tie dropped; kind right"
+  },
+  {
+   "tile": 7,
+   "answer": "tie",
+   "our_fate": "tie_marked",
+   "verdict": "control right"
+  },
+  {
+   "tile": 8,
+   "answer": "slur",
+   "our_fate": "slur_marked",
+   "verdict": "control right"
+  },
+  {
+   "tile": 9,
+   "answer": "slur",
+   "our_fate": "refused:tie_pair_no_head_near_the_arc",
+   "verdict": "real slur dropped; we treated it as a tie"
+  },
+  {
+   "tile": 10,
+   "answer": "tie",
+   "our_fate": "refused:tie_pair_no_head_near_the_arc",
+   "verdict": "real tie dropped; kind right"
+  },
+  {
+   "tile": 11,
+   "answer": "tie",
+   "our_fate": "refused:tie_pair_decided_not_in_file",
+   "verdict": "real tie dropped; kind right"
+  },
+  {
+   "tile": 12,
+   "answer": "slur",
+   "our_fate": "refused:slur_binds_fewer_than_two_notes",
+   "verdict": "real slur dropped; kind right"
+  }
+ ]
+}

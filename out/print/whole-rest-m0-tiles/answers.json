@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "1-2. Whole rest 3. Is a whole rest bar but the orange box crosses over into the next bar that is also a whole rest bar. 4. Whole rest bar 5. Whole rest bar but the box bleeds into bars on either side 6-10. Whole rest bars  11. 2 with a Nat and an arc 12. Whole rest",
+ "tally": "11 of 12 bars are whole-rest bars the file marks unread (except control 12, written). Case 1 found-by-search 1,5,9,10: 4/4 whole rest. Case 2 touches-two-lines 2,4 and off-centre 3,6: 4/4 whole rest. Case 3 head refused as whole rest 7: whole rest. 8 (search missed): whole rest. 11 (no box, search found nothing): a real half with a natural and an arc -- a missed note, not empty. Tiles 3 and 5: the cell box spans neighbouring bars.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 2,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 3,
+   "answer": "whole rest (box crosses into the next bar, also a whole rest)"
+  },
+  {
+   "tile": 4,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 5,
+   "answer": "whole rest (box bleeds into the bars on either side)"
+  },
+  {
+   "tile": 6,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 7,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 8,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 9,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 10,
+   "answer": "whole rest"
+  },
+  {
+   "tile": 11,
+   "answer": "a half note with a natural and an arc"
+  },
+  {
+   "tile": 12,
+   "answer": "whole rest"
+  }
+ ]
+}

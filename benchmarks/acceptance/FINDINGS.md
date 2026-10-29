@@ -82,3 +82,12 @@ STAGED. Lane `lane-whole-rest-1029`, m0 (cause only; nothing built). Sample: the
 - *Not searched in depth:* LEGACY rest handling (frozen, never called from STAGED), benchmarks/_archive (one rest dir, omr-rest-sizing).
 
 **Proposal for m1 (after Sean):** (1) read `empty_bar_whole_rest` found verdicts into the exported bar as a whole rest, written GUESSED (blue) unless Sean's tiles 1, 5, 9, 10 say READ; (2) replace the 0.25 sp box-edge tolerance with a line-local ink test (ink run height), behind `OMR_WHOLE_REST_HANGS` default OFF; off-centre: widen or drop the 1/6 cut after tiles 3 and 6. No fallback turns "cannot tell" into a rest (rule 8); the 42/5 not-found bars stay unread.
+### 2026-10-29 addendum: the one Litolff right->wrong (tile `2.83-fix-review/tile_05`) is a box swap, not a lost note
+Cause (lane-rtw-1029, report text committed by the manager). Litolff p4 cell 4/0/7/7 holds one printed head. The detector gives two boxes on it, identical on 10-22 and today: `/2` (head-sized, score 0.672, F4) and `/10` (3.29 sp tall, score 0.364, read as A4).
+- **On 10-22** `Q.STACKED_HEAD_FIT` abstained (`ambiguous`), so neither box was refused and both were written as an F4+A4 chord.
+- **Today** the fit commits (k=1). `OMR_ERASER_FIX` (landed 10-27) changed the stem and ink rows. Box `/2` is kept (`notehead_precision.py:2166`) and `/10`, the judged box, is refused as `stacked_head_duplicate` (`:2213`). The printed quarter is still written, at its right pitch, and the invented A4 is gone.
+- The 1-page eraser OFF/ON run scores it "same music at its place (box swap)". Judged right->wrong is 0 by place.
+
+Class: on the 9 sample pages, 13 boxes written on 10-22 are now refused as `stacked_head_duplicate`, about 5% of the 248. 2 went from two heads to one, like this tile. 11 flipped keeper. Unverified by crop.
+
+Proposed: the keeper is picked by head-box shape and centring, not ink alone. That is 2.212's job (PARKED). Lesson: a refusal can hang on a GATHER row that is "ambiguous" in one run and committed in the next; score by place before calling it a loss.
