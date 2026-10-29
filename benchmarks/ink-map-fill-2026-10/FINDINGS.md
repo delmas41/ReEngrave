@@ -41,3 +41,8 @@ STAGED GATHER. `tools/omr/staged/head_ink.py` (pure) + `gather.gather_head_ink`.
 
 ## Milestone 1: Sean on the 14 "missed" halves (2026-10-28)
 "None" of the 14 is a half note. Every miss is a note the file WRONGLY writes as a half; the reader was right. On these 4 pages the reader reads the hole on 203 of 203 real halves (assuming the 203 hits are real; not yet tiled), and milestone 2 can remove 14 wrong halves. Sean: "Mostly not notes at all" -- these are invented notes, not just wrong values. The 95% bar is met once the denominator is real halves, not written halves (CLAUDE rule 7: who says it's right).
+
+## Milestone 1: Sean on 12 of the 363 written quarters read `not_one_head` (2026-10-28)
+5 real quarters (1 broken ink, 6, 7 box takes the whole stem, 8, 9 box on the head's bottom only), 7 not notes (5 BARLINES: 2, 4, 5, 11, 12; 3 an empty space between two quarters; 10 part of an eighth rest).
+- `not_one_head` is right 7 of 12: it may only NARROW (blue), never refuse a note on its own; refusing needs a second witness.
+- Barlines written as quarters: 5 of 12 here, while the 2.221 census counted 2 / 0 written notes on an interior barline column. The census geometry misses these; check why before 2.221 milestone 2 (barlines claimed by position).
