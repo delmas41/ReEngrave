@@ -1,0 +1,218 @@
+[
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   3280.0875,
+   1208.8,
+   3600.0875,
+   1357.2
+  ],
+  "role": "case",
+  "case": "1_no_box_search_found_a_rest",
+  "bar": "12/0/3/8",
+  "tile": 1,
+  "crop_origin": [
+   3248,
+   1123
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1743.47125,
+   2738.55,
+   1900.97125,
+   2820.45
+  ],
+  "role": "case",
+  "case": "2_restWhole_refused:rest_touches_two_staff_lines",
+  "bar": "6/1/5/7",
+  "tile": 2,
+  "crop_origin": [
+   1727,
+   2700
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   462.87249999999995,
+   1021.55,
+   620.3725,
+   1103.45
+  ],
+  "role": "case",
+  "case": "2_restWhole_refused:rest_off_center",
+  "bar": "8/0/4/0",
+  "tile": 3,
+  "crop_origin": [
+   447,
+   983
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   915.665,
+   2356.8,
+   1235.665,
+   2508.2
+  ],
+  "role": "case",
+  "case": "2_restWhole_refused:rest_touches_two_staff_lines",
+  "bar": "8/0/6/0",
+  "tile": 4,
+  "crop_origin": [
+   883,
+   2272
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   1168.27875,
+   2075.55,
+   1325.77875,
+   2157.45
+  ],
+  "role": "case",
+  "case": "1_no_box_search_found_a_rest",
+  "bar": "8/1/1/8",
+  "tile": 5,
+  "crop_origin": [
+   1152,
+   2037
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   932.11328125,
+   1668.8,
+   1252.11328125,
+   1817.2
+  ],
+  "role": "case",
+  "case": "2_restWhole_refused:rest_off_center",
+  "bar": "4/0/5/0",
+  "tile": 6,
+  "crop_origin": [
+   900,
+   1583
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1480.4,
+   2939.55,
+   1637.9,
+   3021.45
+  ],
+  "role": "case",
+  "case": "3_head_refused_ink_is_a_whole_rest",
+  "bar": "2/1/6/7",
+  "tile": 7,
+  "crop_origin": [
+   1464,
+   2901
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1827.25,
+   1228.55,
+   1984.75,
+   1310.45
+  ],
+  "role": "control",
+  "case": "control_bar_with_no_ink(ink_frac=0.0077)",
+  "bar": "16/0/6/11",
+  "tile": 8,
+  "crop_origin": [
+   1811,
+   1190
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   863.24875,
+   2939.55,
+   1020.74875,
+   3021.45
+  ],
+  "role": "case",
+  "case": "1_no_box_search_found_a_rest",
+  "bar": "2/1/6/3",
+  "tile": 9,
+  "crop_origin": [
+   847,
+   2901
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   915.03125,
+   3404.8,
+   1235.03125,
+   3549.2
+  ],
+  "role": "case",
+  "case": "1_no_box_search_found_a_rest",
+  "bar": "8/0/10/0",
+  "tile": 10,
+  "crop_origin": [
+   883,
+   3317
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   1217.75,
+   3019.55,
+   1375.25,
+   3101.45
+  ],
+  "role": "case",
+  "case": "1b_no_box_search_found_nothing",
+  "bar": "11/1/7/6",
+  "tile": 11,
+  "crop_origin": [
+   1202,
+   2981
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1530.9274999999998,
+   405.55,
+   1688.4274999999998,
+   487.45
+  ],
+  "role": "control",
+  "case": "control_written_whole_rest",
+  "bar": "10/0/0/7",
+  "tile": 12,
+  "crop_origin": [
+   1515,
+   367
+  ]
+ }
+]
