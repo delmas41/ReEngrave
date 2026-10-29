@@ -1,6 +1,74 @@
 # Acceptance — FINDINGS
 
-## 2026-10-29 product ranking (STAGED, exported file)
+## ties and slurs (2026-10-29)
+
+Lane `lane-arcs-1029` (STAGED, exported file; counts and tiles only, no code under `tools/` changed). Same saved records as the ranking (main 1b47854a4, through INFER), exported from SAVED verdicts with no re-adjudication, pages as the ranking (Litolff 1,2,4,6,8,9,10,11,16; Brahms 0,4,5,8,12,14,19,25). Scripts: `out/print/arcs-1029/` (`arcfates.py` per-arc fate list, `summ.py`, `p0score.py`, `under.py`, `sysarc.py`, `pick.py`). Raw lists were left in the session scratchpad `/private/tmp/claude-501/arcs/{litolff,brahms}.json` (rows per arc box and clusters per place).
+
+**Cause and process lesson.** The ranking's "ties and slurs not written" is a sum of unlike things. Counted once per printed curve it is 473 (Litolff, 52.6/page) and 798 (Brahms, 99.8/page), not 751 / 1,281. More important, the biggest group (a slur "binds fewer than two notes") is not mostly a reading shortfall: about a third of those boxes already have BOTH ends anchored to heads by `Q.SYSTEM_ARC` (2.166), a value only tie pairing reads. Lesson: before ranking a refusal, split it by what the record already holds for the same ink; the same "value computed and unread" shape as 2.166 left behind.
+
+**Method.** `arcfates.py` wraps (read-only, at run time) `staged/export.py::_arcs_by_kind` to capture the merge groups and `tools/omr/export.py::_paired_spans` to ask, per slur group, whether it alone binds two notes. Each `Q.ARC_BOX` gets one fate: refused (named rule), tie marked, slur marked, or twin naming an already-named pair. Twins and the two halves of a barline-cut arc are clustered (boxes on one page with IoU > 0.5, plus one merge group) into one "place".
+
+**Control.** The exporter's `arcs_not_written_total` minus `ink_is_a_staff_line` and `claimed_by:key_signature`: Litolff 1,056 - 301 - 4 = 751; Brahms 3,854 - 2,570 - 3 = 1,281. Both are exactly the ranking's figures. My per-box breakdown of the same ink totals 761 (Litolff) / 1,354 (Brahms), because it also lists the twin boxes (19 / 56) that the exporter counts as written information.
+
+**Per-page counts by fate** (arc boxes; Litolff p1,2,4,6,8,9,10,11,16 / Brahms p0,4,5,8,12,14,19,25 -- the full per-page rows are in `summ.py` output)
+
+| fate | Litolff total (/pg) | Brahms total (/pg) |
+|---|--:|--:|
+| `ink_is_a_staff_line` (not a cost) | 301 (33.4) | 2,570 (321.2) |
+| key-signature slot (not a cost) | 4 | 3 |
+| tie written (marked) | 211 (23.4) | 340 (42.5) |
+| slur written (marked) | 126 (14.0) | 363 (45.4) |
+| slur binds fewer than two notes | 345 (38.3) | 379 (47.4) |
+| tie: no head near the arc | 93 (10.3) | 195 (24.4) |
+| tie: no start head / no stop head | 61 / 42 | 68 / 36 |
+| tie: no pair at one position | 39 | 64 |
+| tie: not adjacent | 32 | 93 |
+| tie: narrowed (more than one pair, chords) | 13 | 143 |
+| tie: enters from previous system / runs off the system | 29 / 20 | 68 / 36 |
+| tie: pair decided, not in file (voices, end not in file) | 25 | 80 |
+| tie: spelling differs / pitch contradiction | 3 / 17 | 61 / 2 |
+| tie: `not_a_tie` (arc judged a slur) | 17 | 60 |
+| twin naming an already-named pair | 19 | 56 |
+| kind refused (same-pitch accidental unread, stacked slur) | 2 | 12 |
+
+Written arcs lose a few more at the end (`arc_ends_in_one_chord` 37 L / 85 B; file has 165 tie links and 81 slurs on Litolff).
+
+**True count with double-counting removed** (clusters = printed places, one row per curve):
+- Litolff: 1,018 places, of which 272 staff-line boxes and 4 key-slot; 269 written (180 tie + 89 slur); **473 not written, 52.6 per page** (ranking bound 83.4).
+- Brahms: 3,538 places, of which 2,226 staff-line and 2; 512 written (265 + 247); **798 not written, 99.8 per page** (ranking bound 160.1).
+- Still an upper bound: a place counts as unwritten if the detector drew an arc box there and the file wrote nothing, so a false arc box counts. Round 7 (below) found most detector arcs fake; the crop look and p0 below put this at "mostly real".
+
+**Brahms p0 at FILE level, against hand truth** (84 ties, 69 slurs, `data/hand-truth/pages/imslp317803/0.json`; written spans read from the exported MusicXML note pairs, matched 1:1 by place: x-overlap >= 0.6 of the shorter and the truth centre within the span's staff rows +-5 sp):
+- ties: truth 84, written 33, right 20 -> recall 0.24, precision 0.61. At box level (ranking) it was recall 0.62 / precision 0.66: **the file loses 38 points of tie recall after the detector.**
+- slurs: truth 69, written 74, right 43 -> recall 0.62, precision 0.58 (box level 0.89 / 0.72).
+- wrong kind at the right place: 15 truth ties written as slurs, 9 truth slurs written as ties (24 of 107 written arcs). Kind-blind: 87 of 107 written arcs sit on a truth arc (precision 0.81), 87 of 153 truth arcs are found (recall 0.57).
+- invented (written, no truth): 20 (16 slur, 4 tie). Missing: 66 (17 slur, 49 tie).
+- fate of the 66 missing truth arcs (nearest detector box, IoU >= 0.3): 25 have a box whose fate is "marked" (the matcher or a later loss; unresolved), 8 `no_pair_at_one_position`, 6 `ink_is_a_staff_line` (real ties dropped as false staff-line boxes: 6 of 84 truth ties), 6 no detector box at all (3 slur, 3 tie), 4 written as slur, 4 `no_stop_head`, 3 `no_head_near_the_arc`, 3 slur-binds-fewer, 2 `no_start_head`, rest singles.
+- **What this truth cannot see:** it is boxes, not pairs, so a right-place arc may still bind the wrong notes; it is one page of one plate (none for Litolff); the page state is still `labeling`, not `verified`; a cross-barline curve may be one truth box or two; my matcher is a tolerance rule, so the 25 "marked" misses are partly its own error (a control I could not make fail). It cannot say whether a written arc the truth lacks is a real arc nobody boxed.
+
+**Crop look (rule 7, 10 minutes, mine not Sean's).** 35 randomly drawn arcs the file drops, across all the groups: about 34 look like a real tie or slur on the print (my reading of the contact sheet, tiles not enlarged); one (a tiny speck, `no_start_head`) is not. So the groups are mostly real cost, not detector fakes. Sean's 12 blind tiles decide it.
+
+**Top causes** (STAGED path, with the rule's file:line)
+1. **Slur "binds fewer than two notes"** (Litolff 195 places, Brahms 224): the two-note minimum `len(covered) < 2` at `tools/omr/export.py:2795`, over `_noteheads_under` (`tools/omr/export.py:2592`, pad `_SLUR_ARC_PAD_NOTEHEADS` 0.25 at `:1877`, a number tuned in 2026-09), counted at `tools/omr/staged/export.py:2609`. It asks the BOX which heads it covers. What the record holds for the same ink: `Q.SYSTEM_ARC` rows of these boxes (Litolff / Brahms) are both-ends-anchored for 99 of 287 / 123 of 379, `end_unanchored` for 188 / 178. And heads under the box (within +-0.5 sp x, +-6 sp y): fewer than two DETECTED for 146 of 195 / 90 of 224 places; at least two detected but fewer than two written 27 / 76; at least two written, so the rule or the voice filter refused it, 22 / 58. Two causes, then: (a) a head never detected or never written under the curve (a reading shortfall owned by notes), (b) a curve whose ends the system trace found and the slur pairing never asked (`staged/export.py` calls `_paired_spans` with boxes only; only `adjudicate_tie_pair` reads `Q.SYSTEM_ARC`, commit 0e9311136).
+2. **Tie pair: no head near the arc / no start head / no stop head** (Litolff 73 + 42 + 36, Brahms 142 + 61 + 25 places): `_flank_search` and `adjudicate_tie_pair`, `tools/omr/staged/adjudicators/ownership.py:3036` / `:3241` (reasons at `:3085-3171`). In 57 of 93 Litolff and 106 of 195 Brahms "no head near" boxes the system trace itself has an unanchored end: the head is not in the record, so this is a notes shortfall again, not a pairing rule.
+3. **Tie narrowed / not adjacent / no pair at one position** (Brahms 81 + 52 + 37 places; Litolff 9 + 20 + 27): `ownership.py:3395-3416` (`more_than_one_pair` is the file's `tie_pair_narrowed`). 40 of the 143 narrowed Brahms boxes already read as two adjacent heads at one position: a chord tie that names more than one head pair. Prior work: the tie-chain FINDINGS (776 tie ends land in chords on Brahms p0-3) and `omr-chord-tie-2026-09`.
+4. **Tie read as slur / slur as tie** (p0: 24 of 107 written arcs): the detector class decides, `ownership.py:2808` `adjudicate_arc_kind`. Not a new axis; `OMR_ARC_RECLASS` was already REJECTED (page-facts s5).
+5. **`tie_spelling_differs`** (Brahms 61 boxes, 38 places): `staged/export.py:2452`. The pairing is right and only the far head's accidental is not restated; the file still refuses it. Prior work: tie-pairing FINDINGS found 11 of 20 "wrong pairs" were the same case.
+6. **Real ties dropped as `ink_is_a_staff_line`**: 6 of 84 truth ties on Brahms p0 (the ranking called this "not a cost"; it is for most boxes, not for these).
+
+**Prior work used (and how today's groups relate).**
+- `omr-arcs-system-2026-10` (2.166): built `Q.SYSTEM_ARC`, full-curve trace + head anchors, producer only; Sean's 13 tiles 7 right / 1 wrong / 1 swapped / 4 unanchored. Kept. Relation: group 1 and the unanchored ends in group 2. The erase half (`OMR_SYSTEM_ARCS_ERASE`) is OFF and not touched here.
+- `omr-staged-arc-export-2026-09` and `omr-arc-recovery-2026-09`: made `arcs_not_written` a four-way partition (this lane reuses it as the control) and found the file wrote a quarter to a third of the encoding's arcs on Litolff (32 of 111 slurs, 80 of 300 ties); no recall claimed (page truth is not an encoding truth). Today's rate stays an upper bound for the same reason.
+- `omr-staged-tie-chain-2026-09`: no `Q.TIE_LINK` built on purpose; the 76% "binds fewer than two" share is the detector's (arc boxes with no notes under them); a chain is not a link. Relation: group 1.
+- `omr-tie-pairing-2026-09` (and `omr-chord-tie-2026-09` by its title and header only): the "wrong pair" premise was largely the arc's CLASS plus a spelling probe; pairing repaired by geometry. Relation: groups 4 and 5.
+- `omr-arc-attribution-2026-09`: arc owner by the staff whose heads it hugs (2,644 / 14,814 fires, ink-rules); kept. Not a cause here.
+- Round 7 (`omr-queue-arcs-2026-09/ROUND7_FINDINGS.md`, as quoted in the 2.166 FINDINGS): production arc precision 0.232, 260 of 268 teacher arcs fake. Today's crop look (34 of 35 real) is on arcs that already passed ADJUDICATE and were drawn by the detector; rounds 8-9 "by CV + anchors" were SUPERSEDED by 2.166 and I did not reopen them.
+- page-facts s5: `OMR_ARC_RECLASS` REJECTED (+130 scan edits, all tie->slur). Not proposed. LEGACY `contextual.py` / `export.py` arc handling was read only through `_merge_arcs_across_barlines` / `_noteheads_under` / `_paired_spans`, which STAGED already imports; no LEGACY flag is read.
+- Not read in full (headings only): `omr-arc-grammar-2026-09`, `omr-queue-ties-2026-09`, `benchmarks/_archive` arc files, `docs/ink-rules.md` beyond its arc rows (lines 171-187).
+
+**Sean's 12 blind tiles.** `out/print/arcs-1029/blind/tiles/sheet.png` (single tiles `tile_01..12.png`, README in that folder), key at `out/print/arcs-1029/blind/key.json` (outside the tile folder). One neutral orange box on each, nothing of ours drawn. Plain question: "Is there a tie or slur here, and between which notes?" 10 arcs the file drops spread over six fate groups (two slur-binds-fewer on Litolff, one on Brahms; no-head-near on both plates; narrowed; no-stop-head; no-pair-at-one-position; not-adjacent; decided-not-in-file) and 2 controls (tile 7 a written tie, tile 8 a written slur). Not answered yet; judged right-to-wrong cannot be measured by this lane (no change was made: 0 by construction).
+
+
 
 Written by the manager from the ranking lane's report. The lane was a subagent whose write was refused ("subagents return findings as text"). Scripts, crops and judged scores are on branch `lane-ranking-1029b` (a10b7a336), `out/print/2.229-ranking/`. The `work/` outputs were left local in worktree `agent-abbe8b17c659e77cb`.
 

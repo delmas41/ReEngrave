@@ -1,0 +1,10 @@
+import json, collections
+d = json.load(open("data/hand-truth/pages/imslp317803/0.json"))
+print(list(d.keys()))
+bx = d.get("boxes") or d.get("labels")
+print(type(bx), len(bx))
+items = bx if isinstance(bx, list) else list(bx.values())
+print(items[0])
+c = collections.Counter((x.get("class") or x.get("cls") or x.get("label")) for x in items)
+print({k: v for k, v in c.items() if k and any(t in str(k).lower() for t in ("tie", "slur", "arc"))})
+print(d.get("state"), d.get("page_size") or d.get("size"))
