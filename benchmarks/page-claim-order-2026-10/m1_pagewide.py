@@ -121,8 +121,9 @@ def tiles(work):
     t = data["truth"].get("brahms p0", {})
     stray = [dict(c, plate="brahms") for c in t.get("stray_claims", [])]
     stray_ids = {c["id"] for c in stray}
-    picks = [("random_claim", c) for c in rng.sample([c for c in pool if c["id"] not in stray_ids], min(8, len(pool)))]
-    picks += [("claim_matching_no_truth_mark", c) for c in rng.sample(stray, min(2, len(stray)))]
+    n_stray = min(2, len(stray))                 # fewer strays than 2: the free tile goes to one more random claim
+    picks = [("random_claim", c) for c in rng.sample([c for c in pool if c["id"] not in stray_ids], min(10 - n_stray, len(pool)))]
+    picks += [("claim_matching_no_truth_mark", c) for c in rng.sample(stray, n_stray)]
     un = t.get("unclaimed_marks", [])
     picks += [("unclaimed_truth_mark", dict(plate="brahms", page=0, box=u["rect"], cls=u["cls"], id=u["id"]))
               for u in rng.sample(un, min(2, len(un)))]

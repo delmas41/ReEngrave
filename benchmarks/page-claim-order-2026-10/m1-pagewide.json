@@ -10,7 +10,8 @@
      "word:direction_word": 10,
      "word:bar_number": 1,
      "word:dynamic_letters": 1,
-     "bracket:edge_scan:rule": 2
+     "bracket:edge_scan:rule": 2,
+     "bracket:detector_box:brace": 4
     }
    },
    "census": {
@@ -21,6 +22,7 @@
      "word:dynamic_letters:twin_letters_disagree": 1
     },
     "4": {
+     "bracket:detector_box:claimed": 4,
      "bracket:edge_scan:claimed": 2,
      "word:bar_number:claimed": 1,
      "word:direction_word:claimed": 10,
@@ -350,6 +352,74 @@
       "glyph/4/1/3/0/7",
       "glyph/4/1/4/0/10"
      ]
+    },
+    {
+     "id": "obs:050683",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      426.1,
+      353.0,
+      538.0
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050684",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      505.0,
+      353.4,
+      687.9
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050685",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      644.0,
+      355.1,
+      834.9
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050686",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      780.0,
+      355.6,
+      997.0
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
     }
    ]
   },
