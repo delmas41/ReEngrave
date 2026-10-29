@@ -826,6 +826,72 @@ REST_LINE_SHAPE_CLASSES = frozenset(("restWhole", "restHalf"))
 REST_LINE_TOUCH_TOL_SPACES = ON_A_STAFF_LINE_TOL_SPACES
 
 
+#: ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`, default OFF). Sean 2026-09-29: a whole rest never touches TWO staff lines. The
+#: refusal measured that as "the detector BOX has an edge within 0.25 sp of two staff-wide lines"; a real hanging whole rest (ink
+#: 0.70-0.78 sp tall, hung from line 4) sits 0.03-0.5 sp above the next line on Litolff/Brahms, so box + tolerance reach it and it
+#: is refused (59 L / 18 B on the frozen sample; Sean's m0 tiles 2, 4: whole rest bars). What separates it from the notehead the
+#: convention is about is the INK's height, not its contact: a black head in a space is a solid blob >= 0.9 sp
+#: (`REST_HEAD_BLOB_MIN_SP`, 2.150b, the same measured cut) against a whole rest's blob 0.55-0.82 and box height 0.3-0.84. A cut-off
+#: measured on two plates may only NARROW (CLAUDE §4): the rest is written GUESSED (blue) with both readings. No ink row: the
+#: refusal stands as before (rule 8).
+WHOLE_REST_HANGS_ENV = "OMR_WHOLE_REST_HANGS"
+#: ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_OFF_CENTER`, default OFF): the 1/6-of-the-bar centre cut was "CONVENTION ASSUMED, no crop
+#: confirms this exact fraction" (its own docstring); Sean's m0 tiles 3 and 6 (offsets 0.2-0.3 of the bar): whole rest bars. Between 1/6
+#: and 1/2 (the bar edge, where a centre cannot go) a whole rest is NARROWED, not refused: written GUESSED, both readings carried.
+WHOLE_REST_OFF_CENTER_ENV = "OMR_WHOLE_REST_OFF_CENTER"
+WHOLE_REST_OFF_CENTER_NARROW_MAX = 0.5
+
+
+def _env_on(name: str) -> bool:
+    import os
+    return os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def whole_rest_hangs_enabled() -> bool:
+    return _env_on(WHOLE_REST_HANGS_ENV)
+
+
+def whole_rest_off_center_enabled() -> bool:
+    return _env_on(WHOLE_REST_OFF_CENTER_ENV)
+
+
+def _whole_rest_narrowing(reason: str, used, detail: Dict[str, Any], margin: Optional[float], axis: str, unit: str) -> Ruling:
+    from ..record import Candidate
+    cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=0.5))
+    r = Ruling.narrow(cands, reason, used=tuple(used), **detail)
+    return _margins.attach(r, margin=margin, axis=axis, unit=unit, band=None, would_choose=(False,))
+
+
+def _whole_rest_hangs_narrowing(ev: Evidence, this_row, two_lines: Ruling, used, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """The two-lines refusal of a restWhole whose own ink is rest-sized -> NARROWED {rest, not a rest}; None leaves the refusal."""
+    if not whole_rest_hangs_enabled() or str(detail.get("class")) != "restWhole":
+        return None
+    rows = [r for r in ev.rows(Q.REST_INK_CONTACT) if isinstance(r.detail, dict) and "blob_sp" in r.detail
+            and "box_height_sp" in r.detail]
+    if not rows:
+        return None
+    d = rows[-1].detail
+    tallest = max(float(d["blob_sp"]), float(d["box_height_sp"]))
+    detail["whole_rest_hangs"] = {"blob_sp": d["blob_sp"], "box_height_sp": d["box_height_sp"], "cut_sp": REST_HEAD_BLOB_MIN_SP,
+                                  "lines_touched": detail.get("lines_touched")}
+    if tallest >= REST_HEAD_BLOB_MIN_SP:
+        return None
+    return _whole_rest_narrowing("whole_rest_hangs", tuple(used) + (rows[-1].id,), detail,
+                                 round(REST_HEAD_BLOB_MIN_SP - tallest, 3), "ink_height_under_head_cut",
+                                 "staff spaces under the head cut")
+
+
+def _whole_rest_off_center_narrowing(off_center: Ruling, used, detail: Dict[str, Any]) -> Optional[Ruling]:
+    if not whole_rest_off_center_enabled():
+        return None
+    off = detail.get("bar_centre_offset_fraction")
+    if off is None or float(off) > WHOLE_REST_OFF_CENTER_NARROW_MAX:
+        return None
+    return _whole_rest_narrowing("whole_rest_off_center", used, detail,
+                                 round(float(off) - REST_WHOLE_CENTER_MAX_OFFSET_FRACTION, 3), "bar_centre_offset_over_cut",
+                                 "fraction of the bar width")
+
+
 def _stems_connected_to_a_head(ev: Evidence, cell, stems):
     """ROADMAP 2.87 (`OMR_STEM_FINDER=head_contact`): a rest is refused for a stem,
     and a stem is a stroke that touches a notehead (Sean 2026-10-11). Flag unset, or
@@ -1856,6 +1922,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_has_a_stem",
                                      "rest_touches_two_staff_lines",
                                      "rest_off_center",
+                                     "whole_rest_hangs", "whole_rest_off_center",
                                      "rest_outside_its_staff",
                                      "rest_overlaps_a_notehead",
                                      "rest_is_a_barline",
@@ -1982,11 +2049,13 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             return slashed
         two_lines = _rest_touches_two_staff_lines_refusal(ev, box_row, detail)
         if two_lines is not None:
-            return two_lines
+            hangs = _whole_rest_hangs_narrowing(ev, box_row, two_lines, used, detail)
+            return hangs if hangs is not None else two_lines
         if str(detail.get("class")) == "restWhole":
             off_center = _rest_off_center_refusal(ev, box_row, detail)
             if off_center is not None:
-                return off_center
+                off = _whole_rest_off_center_narrowing(off_center, used, detail)
+                return off if off is not None else off_center
         vertical = _rest_vertical_window_refusal(ev, box_row, detail)
         if vertical is not None:
             return vertical
