@@ -1,4 +1,4 @@
-"""Head-trim fix (2026-10-29, flag `OMR_HEAD_TRIM_LINE_ONLY`, default OFF; benchmarks/shared-ink-map-2026-10/FINDINGS.md): `head_ink.trim_head`'s
+"""Head-trim fix (2026-10-29, flag `OMR_HEAD_TRIM_LINE_ONLY`, default ON; benchmarks/shared-ink-map-2026-10/FINDINGS.md): `head_ink.trim_head`'s
 END trim stripped the DILATED line rows (+1 px each way, +1 px more on a ledger opening), shaving a quarter off a head in a space on a
 15.75 px/sp plate (Litolff: 245 of 342 in-space heads read `too_small`). With the flag it strips only the line's own rows, at most one
 measured line thickness per end. Synthetic page: two 2 px staff lines one space (16 px) apart, a filled head in the space between."""
@@ -27,15 +27,15 @@ class HeadTrimLineOnly(unittest.TestCase):
 
     def _trim(self, flag):
         page, box = _page()
-        if flag:
-            os.environ[HI.TRIM_ENV] = "1"
-        else:
-            os.environ.pop(HI.TRIM_ENV, None)
+        os.environ[HI.TRIM_ENV] = "1" if flag else "0"
         return HI.trim_head(page, box, SP)
 
-    def test_default_is_off(self):
+    def test_default_is_on(self):
         os.environ.pop(HI.TRIM_ENV, None)
-        self.assertFalse(HI.trim_line_only())
+        self.assertTrue(HI.trim_line_only())
+        for v in ("0", "false", "no", "off", ""):
+            os.environ[HI.TRIM_ENV] = v
+            self.assertFalse(HI.trim_line_only(), v)
 
     def test_head_in_a_space_loses_less_with_the_flag(self):
         off, on = self._trim(False), self._trim(True)

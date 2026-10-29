@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- ROADMAP 2.220b LANDED ON: the head trim strips only the line's own rows
+
+Sean "Land on". STAGED GATHER: `head_ink.trim_head` / `trim_line_only` and `head_oval._line_rows(dilate=...)`. `OMR_HEAD_TRIM_LINE_ONLY` default ON (explicit 0/false/no/off disables; deny-list per `test_flag_default_direction`): the end trim strips only a staff line's own undilated rows, at most one locally measured line thickness per end; the old 1 px dilations shaved in-space heads on Litolff to ~0.57 sp. In-space too_small on Litolff 245 -> 3 (46 become too_tall, recorded only); file near-neutral (Litolff unchanged, Brahms +1 blue), judged right->wrong 0. 2.220's tile 5 now reads too_tall; `test_head_ink_2_220.SeansTiles` pinned to the old trim. FINDINGS 5j in benchmarks/shared-ink-map-2026-10.
+
 ## 2026-10-29 -- ROADMAP 2.220 LANDED ON: the notehead's fill is read from its own trimmed ink
 
 Sean "2.220 land on". STAGED: `head_ink.py` (GATHER fact `Q.HEAD_INK`, the box trimmed to its own head on the page raster) with its consumer in `adjudicators/rhythm.py` and `export.py`. `OMR_FILL_FROM_STROKES` default ON (explicit 0/false/no/off disables; deny-list per `test_flag_default_direction`): `hollow_over_black` (the head's own ink shows a hole) writes the half GUESSED (blue); `not_one_head` is recorded only and draws nothing; `half_not_hollow` dropped. Trimmed m2b re-test: 4 Litolff values changed, all right per Sean, blue +3/+1, judged right->wrong 0. `test_head_ink_2_220.py`, `test_head_ink_consumer_2_220.py`; `docs/flags-2026-09.md` row updated.
