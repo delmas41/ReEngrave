@@ -25,6 +25,10 @@ Weights are gitignored under `omr-weights/`, mounted into the container:
 `deepscoresv2-yolov8l-hollow-ft-2026-09-03.pt` (prior). Never load
 `phase-j-mix`.
 
+### A lane agent works in the worktree it was started in (2026-10-29)
+
+A hook lets an agent Write/Edit only inside its own session's worktree, so a lane that makes its own with `git worktree add` gets every edit refused. Start lane agents with the Agent tool's `isolation: "worktree"`; inside it, `git fetch && git switch -c lane-X origin/main` and `git push origin HEAD:lane-X`. An edit that is refused is reported, never redone through a shell redirect or script.
+
 ### A git worktree has none of the four repo-root-relative assets
 
 Symlink all four or the scan side fails while the engraved side looks healthy:
