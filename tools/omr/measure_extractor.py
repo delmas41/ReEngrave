@@ -1079,7 +1079,7 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             pws.system_structure[sys_idx] = {
                 "columns": [{"x": x, **{k: v for k, v in e.items() if k in ("span", "staff_indices", "reinforced", "n_votes")}}
                             for x, e in sorted((_sys_cols[1] if _sys_cols is not None else {}).items())],
-                "left_edge": left_edge_rules(bin_img, staves)}
+                "left_edge": _left_edge_read(bin_img, staves)}
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
         # gaps. Remove the smaller member of any adjacent pair whose gap is
@@ -1126,6 +1126,16 @@ def _system_columns_enabled(pws=None) -> bool:
     return os.environ.get("OMR_BARLINE_SYSTEM_COLUMNS", "").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
+    """The system's left edge (systemic barline, brackets, braces), read ONCE by the existing stroke reader `bracket_reader.read_brackets`
+    (measured on five publishers, benchmarks/omr-bracket-reading-2026-09; it names strokes and levels, picks bracket vs brace by REACH,
+    not by a width cut-off). Chosen over the m2 draft `left_edge_rules`, which labelled kinds from three numbers tuned on two plates and
+    called a bracket+systemic-barline pair a `brace` (Litolff p6 s0) and a whole Brahms group a `brace` (p5 s0). Pass `.levels` /
+    `.blocks` to the 2.221 m1b claimant."""
+    from .bracket_reader import read_brackets
+    return read_brackets(bin_img, staves)
+
+
 def _gap_has_rule(bin_img: np.ndarray, upper: Staff, lower: Staff, x_up: float, x_low: float) -> bool:
     """Is there ink on the rule's own line (x interpolated from the upper staff's x to the lower's, +-2 px) on 90% of the rows between
     the two staves? A barline drawn through the gap leaves it; a stem ends at its note, a slur curves off the line."""
@@ -1151,88 +1161,6 @@ def _gap_has_rule(bin_img: np.ndarray, upper: Staff, lower: Staff, x_up: float, 
             start = b
     runs.append((start, good[-1]))
     return any((b - a + 1) <= 0.7 * sp for a, b in runs)
-
-
-def left_edge_rules(bin_img: np.ndarray, staves: list[Staff]) -> list[dict]:
-    """The system's LEFT-EDGE vertical rules, read once from the page raster the extractor already holds (no new raster pass: one slice
-    of `pws.page.binary` left of the staves). One dict per rule: `kind` (`systemic_barline` | `bracket` | `brace` | `left_rule`),
-    `x0`,`x1` (page px, the rule's ink columns), `staff_indices` (the staves it spans, joined through the gaps), `box` (page px
-    x0,y0,x1,y1 for the caller to cover strokes with: this reader names no stroke), and the measured `width_sp`, `drift_sp` (how far
-    the rule's centre wanders over its length) and `width_var_sp` (how much its thickness varies: a brace swells, a bracket does not).
-    `kind` is a LABELLED reading from those three numbers (CONVENTION ASSUMED: bracket = thick straight rule, brace = curved/swelling
-    rule joining a group, systemic barline = thin straight rule at the staff start; WHAT WOULD FALSIFY IT: a plate whose bracket is
-    thin; NOT CONFIRMED) -- the claimant adjudicates."""
-    ordered = sorted(staves, key=lambda s: s.top_y)
-    n = len(ordered)
-    if n == 0:
-        return []
-    sp = float(np.median([s.line_spacing_px for s in ordered]))
-    x_lo = int(round(float(np.median([s.x_start for s in ordered]))))
-    xa, xb = max(0, x_lo - int(round(10 * sp))), min(bin_img.shape[1], x_lo + int(round(1.0 * sp)))
-    if xb <= xa:
-        return []
-    ink = bin_img[:, xa:xb] < 128
-    # per row between the group's top and bottom: rows inside a staff body or a gap, for each spanned run of staves
-    cross = []
-    for g in range(n - 1):
-        top, bot = ordered[g].bottom_y + 1, ordered[g + 1].top_y
-        cross.append(ink[top:bot].mean(axis=0) >= 0.9 if bot - top >= 3 else np.zeros(xb - xa, bool))
-    out: list[dict] = []
-    # a rule = a run of columns inked on 90% of the gap rows of at least one gap; its staves = the runs of gaps it crosses
-    anyc = np.zeros(xb - xa, bool)
-    for c in cross:
-        anyc |= c
-    cols = np.where(anyc)[0]
-    runs: list[tuple[int, int]] = []
-    if cols.size:
-        s0 = cols[0]
-        for a, b in zip(cols[:-1], cols[1:]):
-            if b > a + 2:
-                runs.append((s0, a))
-                s0 = b
-        runs.append((s0, cols[-1]))
-    for a, b in runs:
-        gaps = [g for g in range(n - 1) if cross[g][a:b + 1].any()]
-        if not gaps:
-            continue
-        # contiguous gap runs -> one rule per run
-        groups, cur = [], [gaps[0]]
-        for g in gaps[1:]:
-            if g == cur[-1] + 1:
-                cur.append(g)
-            else:
-                groups.append(cur)
-                cur = [g]
-        groups.append(cur)
-        for grp in groups:
-            first, last = ordered[grp[0]], ordered[grp[-1] + 1]
-            y0, y1 = first.top_y, last.bottom_y
-            seg = ink[y0:y1 + 1, max(0, a - 3):b + 4]
-            widths, centres = [], []
-            for row in seg:
-                xs = np.where(row)[0]
-                if xs.size:
-                    widths.append(xs.size)
-                    centres.append(xs.mean())
-            if not widths:
-                continue
-            width_sp = float(np.median(widths)) / sp
-            drift_sp = float(np.std(centres)) / sp
-            var_sp = float(np.std(widths)) / sp
-            x_rule = xa + (a + b) / 2.0
-            if abs(x_rule - x_lo) <= 1.0 * sp and width_sp <= 0.35 and drift_sp <= 0.1:
-                kind = "systemic_barline"
-            elif width_sp >= 0.6 and drift_sp <= 0.15 and var_sp <= 0.15:
-                kind = "bracket"
-            elif drift_sp > 0.15 or var_sp > 0.15:
-                kind = "brace"
-            else:
-                kind = "left_rule"
-            out.append({"kind": kind, "x0": int(xa + a), "x1": int(xa + b), "x": round(x_rule, 1),
-                        "staff_indices": [ordered[i].staff_index for i in range(grp[0], grp[-1] + 2)],
-                        "box": [int(xa + max(0, a - 3)), int(y0), int(xa + b + 4), int(y1)],
-                        "width_sp": round(width_sp, 2), "drift_sp": round(drift_sp, 2), "width_var_sp": round(var_sp, 2)})
-    return out
 
 
 def _system_barline_columns(bin_img, staves, clusters, cluster_obs, x_by_staff_of, accepted_old, counts):

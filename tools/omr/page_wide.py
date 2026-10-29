@@ -5,12 +5,12 @@ module adds NO second scan) with `staged_page_wide` set, flag `OMR_BARLINE_SYSTE
 (columns, through-ink first) and the left-edge rules (systemic barline, bracket, brace).
 
 `system_rules(pws, system_index)` -> {"columns": [{x, span (through_system|through_group|per_staff), staff_indices, reinforced,
-n_votes}], "left_edge": [{kind (systemic_barline|bracket|brace|left_rule), x, x0, x1, staff_indices, box (page px, for the claimant to
-cover strokes with), width_sp, drift_sp, width_var_sp}]} or None when the pass did not run (flag OFF, LEGACY page).
+n_votes}], "left_edge": <the dict of `bracket_reader.read_brackets`: blocks, boundaries, interior, verdict, levels (x_centre, covers, ...),
+geom>} or None when the pass did not run (flag OFF, LEGACY page).
 
-OVERLAP, said plainly: `bracket_reader.read_brackets` (no consumer today) also reads the left edge, from strokes; `left_edge_rules` reads
-the same slice of the already-held binary directly. 2.221 m1b should pick one; `kind` is a labelled reading from three measured numbers
-(CONVENTION ASSUMED: bracket = thick straight rule, brace = swelling/curved rule; WHAT WOULD FALSIFY IT: a thin bracket; NOT CONFIRMED).
+ONE LEFT-EDGE READER: `bracket_reader.read_brackets` stays (five publishers measured, strokes and levels, bracket vs brace by reach).
+The m2 draft `left_edge_rules` is deleted: its kinds came from three numbers tuned on two plates and misnamed a bracket+systemic-barline
+pair as a brace (Litolff p6 s0) and a whole Brahms group as a brace (p5 s0). 2.221 m1b claims brackets and braces from this dict.
 """
 from __future__ import annotations
 
