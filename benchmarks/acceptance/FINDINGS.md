@@ -62,6 +62,22 @@ The movement comes from the gather side.
 
 **Not judged by Sean.** Rows 1 and 3 should go to him as blind tiles before either opens a lane. The arcs row needs a per-arc fate list first. The whole-rest share comes from a crop sample (32 bars), not a census.
 
+### arcs claimed in GATHER (2026-10-29)
+Lane `lane-arcs-claim-1029` (STAGED; `OMR_ARC_CLAIM` GATHER, `OMR_ARC_KIND_FROM_ENDS` ADJUDICATE, `OMR_SLUR_FROM_ANCHORS` EXPORT; all default OFF). Sean's rule (page-facts §1): a tie is exactly two adjacent notes of the same pitch, anything else a slur, the nearer of stacked arcs the tie; unread ends abstain (`arc_ends_unread`).
+
+**Cause of the earlier crash.** `_anchored_slur_spans` keyed its spans `(measure, None)`; LEGACY `_number_spans` compares the keys (`None < float`). Fixed in STAGED: the key is the end head's page-x centre, and an unknown x is a counted drop (`slur_anchor_head_x_unknown`), never a guessed key. Test added.
+
+**(a) Kind + slur flags, frozen sample, `--from adjudicate`, base records `arcs1029base`** (file level, by place):
+- Litolff: ties +14 -6, slurs +91 -51 ~1. Brahms: ties +4 -40, slurs +137 -119 ~4. By end-head pair: Litolff gained 48 slurs 7 ties, lost 28 slurs 3 ties; Brahms gained 62 slurs 2 ties, lost 56 slurs 19 ties; 4 Brahms arcs keep their ends and change tie -> slur.
+- Red bars and notes-not-written unchanged. Judged right->wrong 0 on both plates (Litolff wrong->right 1); unwritten->wrong 0; invented->removed 0.
+- `arc_ends_unread` abstentions (arc_kind verdicts, OFF decided 100%): Litolff 549 of about 1,400, Brahms 801 of about 4,600 (plus `same_pitch_accidental_unread` 15 / 234). THIS IS THE NAMED RISK: an arc the detector class gave a kind and the ends cannot read now abstains.
+- Brahms p0 against `data/hand-truth` (153 arcs: 84 ties, 69 slurs), file level, OFF -> ON: ties right 20 -> 20 (written 33 -> 31); slurs right 45 -> 35 (written 76 -> 59); wrong-kind matches 24 -> 20; invented 20 -> 15. 16 arcs right in OFF are not right in ON (all slurs among the 10 listed; identity by end heads, so a re-bound arc counts), 5 are right in ON only. So the flags trade 10 net right slurs for 5 fewer invented arcs on this page; the loss is the cost to weigh against the ends gate before turning it on.
+
+**(b) The claim alone** (`OMR_ARC_CLAIM`, 2-page GATHER Brahms p0,4 + Litolff p2,4, `--replay-gathered`; the OFF arm is the same record with the flag off in ADJUDICATE..EXPORT, so it isolates the claim's effect on stroke ownership, not the gather itself). Litolff: nothing changed in the exported file. Brahms: notes +2, dots +2, blue marks +2 (p4, `glyph/4/0/9/10/*`: ink the arc box used to hold is released). Judged right->wrong 0, unwritten->wrong 0. Ties and slurs unchanged: the claim does not name a kind.
+- Cell-level boxes into system arcs: Litolff 458 arc boxes -> 267 system arcs (325 boxes joined into them; 133 boxes in no system arc), Brahms 1,062 -> 271 (434 joined; 628 in none). 267 and 271 claim rows.
+
+**Not done:** only the 12 arc tiles (`out/lane-report/arcs-claim-1029/arctiles`, box = both end heads, key outside the folder) are waiting for Sean; no flag flips on this. `staged.check` is 202 (198 + the four new producer-only claim-row DETAIL keys, now on KNOWN_GAPS).
+
 ### 2026-10-29 addendum: the one Litolff right->wrong (tile `2.83-fix-review/tile_05`) is a box swap, not a lost note
 Cause (lane-rtw-1029, report text committed by the manager). Litolff p4 cell 4/0/7/7 holds one printed head. The detector gives two boxes on it, identical on 10-22 and today: `/2` (head-sized, score 0.672, F4) and `/10` (3.29 sp tall, score 0.364, read as A4).
 - **On 10-22** `Q.STACKED_HEAD_FIT` abstained (`ambiguous`), so neither box was refused and both were written as an F4+A4 chord.
