@@ -200,7 +200,11 @@ lane whose code reads that fact re-tests against it before its next measure.
 **Compare like with like** (Sean, 2026-10-28): reader to reader, or the
 whole pipeline's exported file to the whole pipeline's exported file, matched
 by place (never by box id alone: twins) -- never one arm's verdict against the
-other arm's file.
+other arm's file. **Every test result is measured against a baseline from a
+comparable process**: same stages run (a re-adjudicated record against a
+re-adjudicated record, never against an overnight gather or a cached run),
+same pages, same tree apart from the change; a baseline that no longer
+reproduces (the lane report's control line) is re-run, not trusted.
 
 **Where.** A worktree off `origin/main`, never the main checkout; symlink
 the four root assets first (`docs/running.md` §1). Never `git checkout` a
