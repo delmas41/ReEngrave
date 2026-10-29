@@ -1,0 +1,162 @@
+[
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   3956.6171875,
+   1714.24755859375,
+   3978.6220703125,
+   1733.87353515625
+  ],
+  "role": "case",
+  "subject": "glyph/5/0/5/5/6",
+  "reason": "too_narrow",
+  "src": "brahms",
+  "written": "quarter",
+  "tile": 1,
+  "crop_origin": [
+   3775,
+   1564
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   3956.6171875,
+   1714.24755859375,
+   3977.72998046875,
+   1744.8759765625
+  ],
+  "role": "case",
+  "subject": "glyph/5/0/5/5/13",
+  "reason": "too_narrow",
+  "src": "brahms",
+  "written": "quarter",
+  "tile": 2,
+  "crop_origin": [
+   3775,
+   1569
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4386.45,
+   7044.2,
+   4410.65,
+   7067.85
+  ],
+  "role": "case",
+  "subject": "glyph/5/1/13/7/3",
+  "reason": "too_narrow",
+  "src": "brahms",
+  "written": "quarter",
+  "tile": 3,
+  "crop_origin": [
+   4206,
+   6896
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   3300.6625,
+   1584.0,
+   3336.8225,
+   1600.6675
+  ],
+  "role": "case",
+  "subject": "glyph/14/0/5/5/16",
+  "reason": "clipped_fragment",
+  "src": "brahms",
+  "written": "quarter",
+  "tile": 4,
+  "crop_origin": [
+   3126,
+   1432
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1208.695,
+   2289.38,
+   1234.3675,
+   2303.87
+  ],
+  "role": "case",
+  "subject": "glyph/4/1/0/5/7",
+  "reason": "head_cut_piece",
+  "src": "litolff",
+  "written": "half",
+  "tile": 5,
+  "crop_origin": [
+   1127,
+   2217
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   775.9475,
+   3168.88,
+   800.8325,
+   3188.725
+  ],
+  "role": "case",
+  "subject": "glyph/11/1/8/2/0",
+  "reason": "head_cut_piece",
+  "src": "litolff",
+  "written": "half",
+  "tile": 6,
+  "crop_origin": [
+   693,
+   3100
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2456.195,
+   2877.2425,
+   2487.2225,
+   2909.0575
+  ],
+  "role": "case",
+  "subject": "glyph/6/1/6/11/8",
+  "reason": "tremolo_slash_crosses_stem",
+  "src": "lit-p6",
+  "written": "half",
+  "tile": 7,
+  "crop_origin": [
+   2377,
+   2814
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2442.16,
+   3252.64,
+   2474.49,
+   3270.33
+  ],
+  "role": "case",
+  "subject": "glyph/6/1/8/11/1",
+  "reason": "tremolo_slash_crosses_stem",
+  "src": "lit-p6",
+  "written": "half",
+  "tile": 8,
+  "crop_origin": [
+   2363,
+   3182
+  ]
+ }
+]
