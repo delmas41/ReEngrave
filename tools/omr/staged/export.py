@@ -2468,6 +2468,15 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
     return spans
 
 
+def _head_x_centre(det: Dict[str, Any]) -> Optional[float]:
+    """Page-x centre of a notehead detection from its `bbox_page`, or None when the box is missing or malformed."""
+    box = det.get("bbox_page")
+    try:
+        return float(box[0]) + float(box[2]) / 2.0
+    except (TypeError, ValueError, IndexError):
+        return None
+
+
 def _anchored_slur_spans(rec: Record, measures, pools, spacings, tops, breaks, voice_of, x_probes, spans: List[tuple],
                          dropped: Dict[str, int], counters: Dict[str, int]) -> List[tuple]:
     """lane-arcs-claim-1029 (`OMR_SLUR_FROM_ANCHORS`, default OFF): the slur spans `Q.SYSTEM_ARC`'s anchors name for the slur GROUPS (one printed
@@ -2522,8 +2531,14 @@ def _anchored_slur_spans(rec: Record, measures, pools, spacings, tops, breaks, v
             continue
         if (id(first), id(last)) in have or (a, z) in seen_pairs:
             continue
+        # The span keys are (measure, page-x) like the legacy pairing's; `_number_spans` compares them, so a None x would crash it. An unknown x is
+        # a counted drop with a reason, never a guessed key.
+        xa, xz = _head_x_centre(first), _head_x_centre(last)
+        if xa is None or xz is None:
+            dropped["slur_anchor_head_x_unknown"] += 1
+            continue
         seen_pairs.add((a, z))
-        out.append(((sm, None), (tm, None), first, last))
+        out.append(((sm, xa), (tm, xz), first, last))
         counters["slur_spans_from_anchors"] += 1
     return out
 

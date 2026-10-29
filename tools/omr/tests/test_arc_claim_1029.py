@@ -65,3 +65,38 @@ def test_the_claim_outranks_a_box_on_the_same_stroke():
     arc = SO.Claim("c", "arc_trace", "arc", (0,), (), "c", area=True)
     assert SO.own_strokes([s], [head, arc])[0].family == "arc_trace"
     assert SO.own_strokes([s], [head])[0].family != "arc_trace"          # the twin: without the claim the head's box stands
+
+
+def _anchored(monkeypatch, bbox_a, bbox_z):
+    """Run `_anchored_slur_spans` on one fabricated slur group anchored on heads a and z (bbox_page given, or None)."""
+    import collections
+    from tools.omr.staged import export as EX
+    from tools.omr.staged.record import Q
+    a = {"glyph": "a", "category": "notehead", "bbox_page": bbox_a}
+    z = {"glyph": "z", "category": "notehead", "bbox_page": bbox_z}
+    measures = [{"detections": [a, z]}]
+
+    class Rec:
+        def obs_of(self, q):
+            if q == Q.ARC_BOX:
+                return [{"subject": "arc1", "detail": {"bbox_page_px": [0, 0, 10, 10]}}]
+            return [{"detail": {"anchor_left": "a", "anchor_right": "z", "pieces": ["arc1"]}}]
+
+    monkeypatch.setattr(EX._legacy, "_merge_arcs_across_barlines", lambda *a_, **k: [[(0, (0.0, 0.0, 10.0, 10.0))]])
+    monkeypatch.setattr(EX._legacy, "_paired_spans", lambda *a_, **k: [])
+    dropped, counters = collections.Counter(), collections.Counter()
+    out = EX._anchored_slur_spans(Rec(), measures, {}, [], [], [], {}, {}, [], dropped, counters)
+    return out, dropped, counters
+
+
+def test_anchored_slur_span_keys_are_numbers_and_number_spans_accepts_them(monkeypatch):
+    from tools.omr.staged import export as EX
+    out, dropped, _ = _anchored(monkeypatch, [10, 0, 4, 4], [40, 0, 4, 4])
+    assert len(out) == 1 and not dropped
+    assert out[0][0] == (0, 12.0) and out[0][1] == (0, 42.0)
+    assert EX._legacy._number_spans(out + [((0, 50.0), (0, 80.0), None, None)], 6)   # the crash was None < float
+
+
+def test_anchored_slur_with_unknown_head_x_is_a_counted_drop_not_a_guessed_key(monkeypatch):
+    out, dropped, _ = _anchored(monkeypatch, None, [40, 0, 4, 4])
+    assert out == [] and dropped["slur_anchor_head_x_unknown"] == 1
