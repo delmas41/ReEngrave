@@ -46,3 +46,11 @@ STAGED GATHER. `tools/omr/staged/head_ink.py` (pure) + `gather.gather_head_ink`.
 5 real quarters (1 broken ink, 6, 7 box takes the whole stem, 8, 9 box on the head's bottom only), 7 not notes (5 BARLINES: 2, 4, 5, 11, 12; 3 an empty space between two quarters; 10 part of an eighth rest).
 - `not_one_head` is right 7 of 12: it may only NARROW (blue), never refuse a note on its own; refusing needs a second witness.
 - Barlines written as quarters: 5 of 12 here, while the 2.221 census counted 2 / 0 written notes on an interior barline column. The census geometry misses these; check why before 2.221 milestone 2 (barlines claimed by position).
+
+## Milestone 1 numbers CORRECTED: "written" = in the exported file (2026-10-28, barline lane lane-2.221-barlines e2d57788b)
+Cause: m1 called a box "written" when it had a duration verdict, and refused boxes keep one (Sean's not_one_head tiles: 10 of 12 refused `too_narrow`, not in the file). Process lesson: "written" is read off the exported file by place (CLAUDE §6 like with like), never off a verdict. Re-count: `m1_restat_file.py` (m1 reader rows vs the 2.202f ON `symbols.json` note hosts, by glyph key), same 4 pages.
+- Written halves: Litolff 157 in the file (not 213), Brahms 0 (not 4). Slit >= 0.18 on the trimmed head: 150/157 (95.5%). `not_one_head` on 26 of them (too_small 11, too_tall 7, too_wide 7, no_head_ink 1).
+- The 14 misses: 7 are in the file as halves (tiles 3, 5, 7, 10, 11, 13, 14); the other 7 were never written. Sean's "none is a half" still means 7 wrong halves in the file, not 14.
+- The 12 not_one_head tiles: only tiles 1 and 8 are in the file (both quarters, both real quarters by Sean); the 7 non-notes he saw (5 barlines, a space, a rest piece) are all refused already, so "barlines written as quarters" is NOT a file fault on this sample.
+- Written quarters: Litolff 407 (not 575), not_one_head 107 (too_small 81, too_tall 17, too_wide 7, foreign 2); Brahms 293 (not 523), not_one_head 8. Total 115 of 700 (not 363 of 1098). Hollow-read written quarters: 17 / 7.
+- Written eighths: Litolff 589, not_one_head 190 (too_small 158); Brahms 561, not_one_head 7.
