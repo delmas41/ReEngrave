@@ -1129,12 +1129,17 @@ def _system_columns_enabled(pws=None) -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
-def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
+def _left_edge_read(bin_img: np.ndarray, staves: list[Staff], edge_by_left: bool = False) -> dict:
     """The system's left edge (systemic barline, brackets, braces), read ONCE by the existing stroke reader `bracket_reader.read_brackets`
     (measured on five publishers, benchmarks/omr-bracket-reading-2026-09; it names strokes and levels, picks bracket vs brace by REACH,
     not by a width cut-off). Chosen over the m2 draft `left_edge_rules`, which labelled kinds from three numbers tuned on two plates and
     called a bracket+systemic-barline pair a `brace` (Litolff p6 s0) and a whole Brahms group a `brace` (p5 s0). Pass `.levels` /
-    `.blocks` to the 2.221 m1b claimant."""
+    `.blocks` to the 2.221 m1b claimant.
+
+    `edge_by_left` (ROADMAP 2.239, STAGED only, read under `OMR_SPLIT_JOINS`; the default keeps every master cell map as cut): a stroke stands
+    at the left edge when its LEFT side is within 0.5 sp of the staves' start, not its centre -- a bracket fused by the closing to the system's
+    opening line is one stroke whose centre lies right of the edge (Brahms p0 s0, staves 0-8: x 1220-1254, centre 0.55 sp right, the whole
+    woodwind/brass bracket missed)."""
     from .bracket_reader import read_brackets, strokes_at_left_edge, covered_staves, is_rule
     out = dict(read_brackets(bin_img, staves))
     # WHOLE MARKS with a KIND, by SHAPE measured along the mark (Sean 2026-10-29, tiles 3/6 braces, 7/11 pieces of a bracket): a BRACKET is a
@@ -1152,7 +1157,7 @@ def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
     line_rows = {int(y) + d for s_ in ordered for y in s_.line_ys for d in range(-3, 4)}
     marks: list[dict] = []
     for st in strokes:
-        if not is_rule(st) or (st.x_centre - anchor) / sp > 0.5:
+        if not is_rule(st) or ((st.x_left if edge_by_left else st.x_centre) - anchor) / sp > 0.5:
             continue
         cov = covered_staves(st, ordered)
         if len(cov) < 2:
