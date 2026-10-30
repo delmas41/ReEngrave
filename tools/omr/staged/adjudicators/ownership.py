@@ -22,6 +22,7 @@ from ... import transcribe as _legacy_articulation
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tally
 from .. import record as R
 from .. import one_ink as _one_ink
+from .. import arc_claim as _arc_claim
 from .. import accidental_shape as _acc_shape
 from .. import accidental_family as _acc_family
 from ... import natural_candidate as _natural_candidate
@@ -2800,7 +2801,7 @@ def _system_arc_row(ev: Evidence):
     # `detail["grammar"]["tie_slur_rule"]["rule"]`. Only the two ABSTENTIONS
     # carry a reason of their own, as literals at their Ruling sites, so
     # `brakes` can still resolve this decision's vocabulary.
-    reasons=("tie", "slur", "no_arc_box", "no_evidence",
+    reasons=("tie", "slur", "no_arc_box", "no_evidence", "arc_ends_unread",
              "same_pitch_accidental_unread",
              "stack_slur_over_two_same_pitch_notes"),
     mode=Mode.ADDITIVE,
@@ -2949,7 +2950,24 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
         fs = _flank_search(ev, arc)
         two_note = _two_note_reading(ev, arc, fs)
         stack = _stack_reading(ev, arc, fs, two_note)
-        final, rule, conflict = _kind_with_rules(kind, two_note, stack)
+        if _arc_claim.kind_enabled():
+            # lane-arcs-claim-1029 (OMR_ARC_KIND_FROM_ENDS): Sean's tie rule on the two end heads; the detector's class is a PRIOR, recorded, never an
+            # input. Each exit the class used to take is replaced: no opinion from the ends -> the system curve's anchored shape -> else ABSTAIN
+            # (`arc_ends_unread`: the arc is still an arc, it is written as neither kind). `kind` below is then never the detector's by default.
+            final, rule, conflict = _arc_claim.kind_from_ends(
+                two_note, stack, None if sysarc is None else str(sysarc.value)
+                if sysarc.detail.get("anchor_left") and sysarc.detail.get("anchor_right") else None)
+            if sysarc is not None and final is not None and sysarc.detail.get("anchor_left") and sysarc.detail.get("anchor_right"):
+                used_sys = (sysarc.id,)
+            else:
+                used_sys = ()
+            extra_used = extra_used + used_sys
+            if final is None and rule == _arc_claim.ENDS_UNREAD:
+                return Ruling(value=None, reason="arc_ends_unread", used=(arc.id,),
+                              detail={"grammar": grammar, "detector_class": str(arc.value), "prior_only": True,
+                                      "two_note": {k: v for k, v in two_note.items() if k != "_heads"}})
+        else:
+            final, rule, conflict = _kind_with_rules(kind, two_note, stack)
         if two_note.get("evaluated"):
             extra_used = tuple(
                 t[2].id for t in list(fs.lefts) + list(fs.rights)

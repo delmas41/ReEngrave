@@ -124,3 +124,34 @@ A claim needs the word reader to keep the metronome candidate and file its text.
 - CV-only hairpins have no box, so their ink is unowned (out of scope).
 
 **Tiles.** `out/print/2.221-m1-pagewide/` holds 12 blind tiles (`tiles/`, README with the question; `key.json` outside `tiles/`; seed 2221). They are 9 random claims, 1 claim matching no truth mark (only one exists, so the second slot went to a ninth random claim) and 2 unclaimed truth marks (a brace and a lone `f`). The orange box marks the claimed ink, or the truth mark for the unclaimed ones. Question: "Is this a word, dynamic, bracket or brace, or something else?" Not yet shown to Sean.
+=======
+## barlines system-wide (2026-10-29) -- 2.221 m2, LANDED ON (main 846efa623, OMR_BARLINE_SYSTEM_COLUMNS)
+Written by the manager from the lane reports (subagent FINDINGS writes are refused). Branch lane-barlines-1029 (c1b47cef2 build, 3b9dbe7ca finish).
+
+**Cause.** Barlines are read before GATHER: `pipeline.prepare_pages` -> `measure_extractor.detect_barlines` (:687), a per-staff scan plus a system vote. The vote used through-ink (a rule continuing through the gap between staves) only as a loose veto. So a per-staff majority kept stem alignments, and the blind `_drop_close_outliers` dropped the LEFT member of a close pair, which lost a real rule. Barlines claimed no ink, so their strokes were free for stem readers. Process lesson: the strongest witness, a rule running through the whole system ("especially since sometimes the barlines extend the length of the whole system", Sean), was being used as the weakest.
+
+**m0** (fresh raster, frozen sample):
+- Litolff 17 systems: 33 through-system / 251 through-group / 2 per-staff columns. Brahms 15 systems: 15 / 153 / 0.
+- Litolff: false cuts at p6/1 x2559, p16/1 x921 and p9/1 x1526; missed real rule at p9/1 x1470 (all crop-confirmed); p8/0 x1679 ambiguous (abstains).
+- Brahms: 0 faults.
+- 4 of 17 Litolff systems are affected, about 10 red bars per wrong column.
+
+**Fix** (the page-wide pass's structure reader, tools/omr/page_wide.py + measure_extractor `_system_barline_columns`, gated by `pws.staged_page_wide`; LEGACY callers unchanged: transcribe.py:4844, run_pipeline.py:73, visualize.py:140, staff_line_removal.py:317):
+- through-ink first; the staff majority only where rules stop at each staff;
+- tilt followed per staff: a Theil-Sen line through the voting staves, read at each gap's y. Litolff p6 x~2489 drifts 21 px top to bottom; fit vs rule centre <= 2.9 px; window +-8 px;
+- barline ink claimed (stroke_owner TIERS `barline`, `gather_barline_claim`);
+- one left-edge reader (`bracket_reader.read_brackets`; `left_edge_rules` deleted) telling brace from bracket by hook shape (braces 0.00-0.09 sp, brackets 0.70-1.27 sp), the whole mark top hook to bottom hook. The systemic barline is not yet emitted as a mark.
+
+**Measures** (2 pages per plate, Litolff p6/p9, Brahms p5/p14, final code):
+- cuts: exactly 3 removed, 1 added.
+- Litolff: notes +10 -4, rests +3 -2, blue +5 -1, red marks 174 -> 153.
+- Brahms: dynamics +1 -2, words +3 -1 (cause not run down).
+- Judged right->wrong 0, unwritten->wrong 0, invented->removed 0.
+
+**The lost notes:**
+- 3 junk: the added barline read as a note, and 2 at the removed false cut.
+- 1 re-read.
+- 1 REAL quarter (Litolff p9 1734,2385; Sean: "There is a quarter note there but it is right next to a fermata over another quarter"). It was only ever a 0.074 stem-end detector rescue (`yolo_rescue_stem_head`), which the corrected crop (1470-1800 instead of 1526-1800) no longer re-finds. Not the barline claim (57 px away). Accepted by Sean; lane-stem-end-head reads the head from ink.
+
+**Sean's tiles** (out/print/barlines-1029): 12/12. Tile 12 was a marker error on a tilted scan, not a reader error. Brace/bracket tiles (out/print/2.221-m1-pagewide): 3 and 6 are braces, 7 and 11 part of a bracket; the finisher re-reads these as brace and whole bracket.
+>>>>>>> origin/main

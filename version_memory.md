@@ -9,6 +9,16 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- duplicate-pass cleanup LANDED (lane-dedupe-passes, no flag)
+PURE REFACTOR (STAGED + shared): `yolo_detector` runs the detector once at the lowest rescue floor and filters it for the 0.10/0.03/0.05 rescues (LEGACY callers keep their old defaults); `header_cells_for_page` built once per page; a per-page gray/ink cache; `direction_text` page ink computed once (copied arrays). Gathered rows identical: 0 differences over 11.8M values (Litolff p4,10 vs merge-base), Brahms p0,5 identical, re-proved on main + merge. Test: `test_dedupe_passes_2026_10_29.py`. Plan `docs/plan-2026-10-28-page-claim-order.md` §10b.
+
+## 2026-10-29 -- page-wide barlines LANDED ON (OMR_BARLINE_SYSTEM_COLUMNS, lane-barlines-1029)
+
+STAGED only (`pws.staged_page_wide`; LEGACY unchanged). `page_wide.py` + `measure_extractor._system_barline_columns` read each system's barline columns once, through-ink first, tilt per staff (Theil-Sen); `barline` claim tier added to `stroke_owner.TIERS[0]` after `arc_trace`; `bracket_reader` tells brace from bracket by hook shape. Flag is a deny-list, default ON. Sean's tiles 12/12; Litolff 3 false cuts removed, 1 added, notes +10 -4, red marks 174->153; judged right->wrong 0. Known loss: one real quarter (Litolff p9 1734,2385) to a crop-sensitive 0.07 stem-end rescue; head lane follows.
+
+## 2026-10-29 -- arc claim LANDED ON (OMR_ARC_CLAIM, lane-arcs-claim-1029)
+STAGED GATHER `gather_arc_claim` + `arc_claim.py` + `stroke_owner` tier 0: each system arc (`Q.SYSTEM_ARC`) claims its strokes once as owner `arc`, no kind; later readers mark but never take that ink. Default ON (deny-list 0/false/no/off/empty). `OMR_ARC_KIND_FROM_ENDS` and `OMR_SLUR_FROM_ANCHORS` landed as code, default OFF, for ROADMAP 2.223. Evidence: Sean's tiles 10/10 arcs, Brahms p0 136/153 hand-truth arcs claimed, 2-page gather Litolff unchanged, Brahms +2 notes +2 dots. Merged clean into main; check 198.
+
 ## 2026-10-29 -- ROADMAP 2.220b fix 2 LANDED ON: head height cap 1.5 -> 1.6 sp
 STAGED GATHER (`head_ink.trim_head`, `trim_line_only_v2`), `OMR_HEAD_TRIM_LINE_ONLY_V2` default ON (deny-list; needs the line-only trim). Cause: the line-only trim measures a slanted hollow Litolff head at its true 1.52-1.59 sp; the 1.5 cap was set on shaved heads. 63 too_tall heads become one head; judged tile 5 (Litolff p10) is a half again; right->wrong 0. Cut-off from one plate's valley (Brahms never reaches 1.55): re-measure on the next publisher. benchmarks/shared-ink-map-2026-10/FINDINGS.md "head trim fix 2".
 
