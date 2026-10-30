@@ -1,0 +1,242 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "role": "blue_to_plain",
+  "rg": "glyph/11/0/0/16/1",
+  "page": 11,
+  "part": "P1",
+  "measure": "218",
+  "box": [
+   2393.6,
+   427.0175,
+   2414.8625,
+   446.39
+  ],
+  "written": "quarter",
+  "pitch": "G5",
+  "blue_now": false,
+  "was": "quarter",
+  "was_blue": null
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "role": "gained_note",
+  "rg": "glyph/0/0/9/3/1",
+  "page": 0,
+  "part": "P10",
+  "measure": "4",
+  "box": [
+   3143.57,
+   4998.025,
+   3184.5275,
+   5034.79
+  ],
+  "written": "quarter",
+  "pitch": "A-16",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "role": "control",
+  "rg": "glyph/16/1/1/11/0",
+  "page": 16,
+  "part": "P2",
+  "measure": "265",
+  "box": [
+   2233.7825,
+   2173.5375,
+   2258.3525,
+   2194.6425
+  ],
+  "written": "quarter",
+  "pitch": "C6",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "role": "gained_note",
+  "rg": "glyph/19/0/2/0/6",
+  "page": 19,
+  "part": "P3",
+  "measure": "114",
+  "box": [
+   943.71435546875,
+   1038.08154296875,
+   981.0263671875,
+   1071.00390625
+  ],
+  "written": "quarter",
+  "pitch": "D5",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "role": "blue_to_plain",
+  "rg": "glyph/19/0/6/2/1",
+  "page": 19,
+  "part": "P7",
+  "measure": "116",
+  "box": [
+   2191.75,
+   1961.825,
+   2229.7,
+   1995.1
+  ],
+  "written": "quarter",
+  "pitch": "D5",
+  "blue_now": false,
+  "was": "quarter",
+  "was_blue": null
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "role": "gained_note",
+  "rg": "glyph/19/1/5/2/13",
+  "page": 19,
+  "part": "P6",
+  "measure": "127",
+  "box": [
+   1810.275,
+   5327.55,
+   1850.975,
+   5357.525
+  ],
+  "written": "quarter",
+  "pitch": "E5",
+  "blue_now": true,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "role": "gained_note",
+  "rg": "glyph/12/1/3/9/3",
+  "page": 12,
+  "part": "P4",
+  "measure": "94",
+  "box": [
+   5052.85,
+   4628.925,
+   5092.175,
+   4662.75
+  ],
+  "written": "quarter",
+  "pitch": "D4",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "role": "gained_note",
+  "rg": "glyph/25/0/0/8/12",
+  "page": 25,
+  "part": "P1",
+  "measure": "142",
+  "box": [
+   4862.15,
+   426.1,
+   4903.125,
+   458.0
+  ],
+  "written": "quarter",
+  "pitch": "D-16",
+  "blue_now": true,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "role": "control",
+  "rg": "glyph/12/1/13/4/6",
+  "page": 12,
+  "part": "P14",
+  "measure": "89",
+  "box": [
+   2961.65,
+   6989.525,
+   2998.225,
+   7020.875
+  ],
+  "written": "quarter",
+  "pitch": "G-13",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "role": "blue_to_plain",
+  "rg": "glyph/25/1/7/6/1",
+  "page": 25,
+  "part": "P10",
+  "measure": "150",
+  "box": [
+   3738.6825,
+   6034.6875,
+   3774.7575,
+   6067.9875
+  ],
+  "written": "quarter",
+  "pitch": "C6",
+  "blue_now": false,
+  "was": "quarter",
+  "was_blue": null
+ },
+ {
+  "tile": 11,
+  "plate": "brahms",
+  "role": "gained_note",
+  "rg": "glyph/14/0/9/7/0",
+  "page": 14,
+  "part": "P10",
+  "measure": "102",
+  "box": [
+   4228.63,
+   2725.935,
+   4268.035,
+   2759.235
+  ],
+  "written": "quarter",
+  "pitch": "D5",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ },
+ {
+  "tile": 12,
+  "plate": "litolff",
+  "role": "gained_note",
+  "rg": "glyph/16/1/2/0/3",
+  "page": 16,
+  "part": "P3",
+  "measure": "254",
+  "box": [
+   609.57763671875,
+   2342.94921875,
+   632.22216796875,
+   2362.43017578125
+  ],
+  "written": "quarter",
+  "pitch": "F5",
+  "blue_now": false,
+  "was": null,
+  "was_blue": null
+ }
+]
