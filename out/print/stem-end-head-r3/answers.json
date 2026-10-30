@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "Head reader round 3 - 1. A large box around a F clef and a note and stem. 2. Part of an FF 3. 8 4.4 5. 2 6. S from an SF 7. 8 8.4 9. FF 10. 2 11. 8th flag 12. 8",
+ "tally": "WRITTEN 5/5 right (4 quarter, 5 half, 7 eighth, 8 the p9 quarter, 12 eighth). REFUSED 5/7 right (1 clef+note blob, 2 ff piece, 6 s of sf, 9 ff, 11 flag); 2 real notes refused as disagreements (3 an eighth, 10 a half) -- held as candidates, not written; old rescue lost 0. Nothing wrong is written.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "large box around an F clef and a note and stem"
+  },
+  {
+   "tile": 2,
+   "answer": "part of an ff"
+  },
+  {
+   "tile": 3,
+   "answer": "eighth"
+  },
+  {
+   "tile": 4,
+   "answer": "quarter"
+  },
+  {
+   "tile": 5,
+   "answer": "half"
+  },
+  {
+   "tile": 6,
+   "answer": "the s of an sf"
+  },
+  {
+   "tile": 7,
+   "answer": "eighth"
+  },
+  {
+   "tile": 8,
+   "answer": "quarter"
+  },
+  {
+   "tile": 9,
+   "answer": "ff"
+  },
+  {
+   "tile": 10,
+   "answer": "half"
+  },
+  {
+   "tile": 11,
+   "answer": "eighth flag"
+  },
+  {
+   "tile": 12,
+   "answer": "eighth"
+  }
+ ]
+}
