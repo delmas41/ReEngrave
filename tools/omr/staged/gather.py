@@ -1121,7 +1121,7 @@ def gather_detector_views(log: Log, cells: Sequence[Any],
 
 def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, stems: Sequence[Any], existing: Sequence[Any],
                        kept: List[Dict[str, Any]], grid: Tuple[float, float],
-                       page_heads: Sequence[Sequence[float]] = ()) -> List[Dict[str, Any]]:
+                       page_heads: Sequence[Sequence[float]] = (), home_of: Any = None) -> List[Dict[str, Any]]:
     """lane-stem-end-head (flag `OMR_STEM_END_HEAD_INK`, default OFF): every orphan stem end READ on the page raster GATHER holds
     (`pws.page.binary`; no new image pass) with `head_ink.read_head_ink`, and set beside the 0.05 re-run's `kept`: agree -> the re-run
     box is kept; ink alone -> a box on the trimmed ink; re-run alone / different ink / a head at both ends -> abstention with the
@@ -1179,14 +1179,27 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
                 out.append(kb)
             elif verdict == "ink_only":
                 tx0, ty0, tx1, ty1 = ink["trimmed"]
-                cx0, cy0, cx1, cy1 = (tx0 - bbox[0]) * up, (ty0 - bbox[1]) * up, (tx1 - bbox[0]) * up, (ty1 - bbox[1]) * up
-                name = SEH.ink_head_class(ink["value"], (cy0 + cy1) / 2.0, top_y, half_step)
+                # Round 2: the head belongs to the staff whose LINES it stands on (page-facts: the ledger lines name the owner). A cell's
+                # crop reaches into the next staff, so a stem read in staff k's cell can carry staff k+1's head (Brahms p5: Sean's three
+                # ink-only eighths, tiles 3/5/6, all stood inside the next staff and were filed -- and pitched -- on the wrong one). The
+                # box is filed in the cell of the staff that holds it; nowhere inside any staff's lines, it stays (the ledger test judges).
+                hc = home_of((tx0 + tx1) / 2.0, (ty0 + ty1) / 2.0, c) if home_of is not None else None
+                tc = hc if hc is not None else c
+                tg = _cell_grid(tc) if tc is not c else grid
+                if tg is None:
+                    tc, tg = c, grid
+                tb, tu = tc.bbox_page_px, float(tc.upscale_factor)
+                cx0, cy0, cx1, cy1 = (tx0 - tb[0]) * tu, (ty0 - tb[1]) * tu, (tx1 - tb[0]) * tu, (ty1 - tb[1]) * tu
+                name = SEH.ink_head_class(ink["value"], (cy0 + cy1) / 2.0, tg[0], tg[1])
                 # no detector score: the ink-only box carries the rescue floor; its row's `ink_verdict` says who read it
-                d = SymbolDetection(cell=c, smufl_name=name, category="notehead", x_canonical=int(round(cx0)),
+                d = SymbolDetection(cell=tc, smufl_name=name, category="notehead", x_canonical=int(round(cx0)),
                                     y_canonical=int(round(cy0)), width_canonical=int(round(cx1 - cx0)),
                                     height_canonical=int(round(cy1 - cy0)), confidence=SEH.FLOOR)
-                out.append({"det": d, "stem_index": si, "end": end, "read_from": "page_ink", "score": SEH.FLOOR,
-                            "from_record": False, "ink": ink, "ink_verdict": "ink_only"})
+                kb_new = {"det": d, "stem_index": si, "end": end, "read_from": "page_ink", "score": SEH.FLOOR,
+                          "from_record": False, "ink": ink, "ink_verdict": "ink_only"}
+                if tc is not c:
+                    kb_new.update(cell=tc, read_in_cell=cell_sub.to_key())
+                out.append(kb_new)
             elif verdict == "abstain":
                 cand = {"why": "ink:" + why, "end": end, "ink_trimmed": ink.get("trimmed"), "ink_why": ink.get("why"),
                         "ink_fill": ink.get("value"), "ink_extent_sp": ink.get("extent_sp"), "seed_page": ink.get("seed"),
@@ -1261,18 +1274,21 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
                         pb = _page_box(c2, d2)
                         if pb is not None:
                             page_heads.append(pb)
-            kept = _stem_end_head_ink(log, pws, c, cell_sub, frame, stems, existing, kept, grid, page_heads)
+            kept = _stem_end_head_ink(log, pws, c, cell_sub, frame, stems, existing, kept, grid, page_heads,
+                                      home_of=_staff_home_finder(pws, cells, local, p))
         if not kept:
             continue
-        lst = detections.get(cell_key)
-        if lst is None:
-            lst = []
-            detections[cell_key] = lst
-        n0 = len(lst)
         for k, kb in enumerate(kept):
             d = kb["det"]
             s = stems[kb["stem_index"]]
-            g = R.glyph(p, sys_idx, st_idx, c.measure_index, n0 + k)
+            tc = kb.get("cell") or c                              # round 2: an ink-only head filed on the staff that holds it
+            tkey = local.get(tc.staff_index)
+            tcell_key = R.cell(p, tkey[0], tkey[1], tc.measure_index).to_key()
+            lst = detections.get(tcell_key)
+            if lst is None:
+                lst = []
+                detections[tcell_key] = lst
+            g = R.glyph(p, tkey[0], tkey[1], tc.measure_index, len(lst))
             box_detail: Dict[str, Any] = {
                 "category": d.category, "source": "stem_end_head", "read_from": kb["read_from"], "end": kb["end"],
                 "from_record_box": bool(kb["from_record"]), "orphan_stems": n_orph,
@@ -1281,20 +1297,48 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
                 box_detail.update(ink_verdict=kb["ink_verdict"], ink_trimmed=kb["ink"].get("trimmed"),
                                   ink_fill=kb["ink"].get("value"), ink_extent_sp=kb["ink"].get("extent_sp"),
                                   ink_far_side_sp=kb["ink"].get("far_side_sp"))
-            page_box = _page_box(c, d)
+            if tc is not c:
+                box_detail.update(read_in_cell=kb.get("read_in_cell"), stem_frame="read_in_cell")
+            page_box = _page_box(tc, d)
             if page_box is not None:
                 px0, py0, px1, py1 = page_box
                 box_detail.update(bbox_page_px=[px0, py0, px1, py1],
                                   x_center_page=(px0 + px1) / 2.0, y_center_page=(py0 + py1) / 2.0)
+            tframe = frame_cell(tc.measure_index)
             log.observe(g, Q.GLYPH_BOX, (d.smufl_name, d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical),
-                        reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(d.confidence), **box_detail)
-            log.observe(g, Q.GLYPH_CONF, float(d.confidence), reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+                        reader=READERS.RESCUE_STEM_HEAD, frame=tframe, score=float(d.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(d.confidence), reader=READERS.RESCUE_STEM_HEAD, frame=tframe,
                         score=float(d.confidence))
-            log.observe(g, Q.NOTEHEAD_CLASS, d.smufl_name, reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+            log.observe(g, Q.NOTEHEAD_CLASS, d.smufl_name, reader=READERS.RESCUE_STEM_HEAD, frame=tframe,
                         score=float(d.confidence))
             lst.append(d)
         if progress:
             print(f"  gather stem-end heads {cell_key}: {len(kept)} box(es), {n_orph} orphan stem(s)")
+
+
+def _staff_home_finder(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], p: int) -> Any:
+    """Round 2 (lane-stem-end-head): `home_of(x, y, c)` -> the cell of page `p` whose STAFF LINES stand around the page point (its top
+    line to its bottom line, half a space of slack: a head in the top or bottom space) and whose x span holds it, when that is NOT the
+    staff of `c`; None where the point is inside `c`'s own staff or inside no staff (between staves the ledger test judges)."""
+    staves = {s.staff_index: s for s in getattr(pws, "staves", None) or ()}
+
+    def home_of(x: float, y: float, c: Any) -> Any:
+        own = staves.get(c.staff_index)
+        def inside(st: Any) -> bool:
+            half = 0.5 * float(st.line_spacing_px)
+            return float(st.top_y) - half <= y <= float(st.bottom_y) + half
+        if own is not None and inside(own):
+            return None
+        for c2 in cells:
+            st2 = staves.get(c2.staff_index)
+            b2 = getattr(c2, "bbox_page_px", None)
+            if (c2 is c or c2.page_index != p or st2 is None or c2.staff_index == c.staff_index or local.get(c2.staff_index) is None
+                    or not b2 or not getattr(c2, "upscale_factor", None)):
+                continue
+            if b2[0] <= x <= b2[2] and inside(st2):
+                return c2
+        return None
+    return home_of
 
 
 def gather_second_hollow(log: Log, cells: Sequence[Any],
