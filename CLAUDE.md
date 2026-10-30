@@ -109,6 +109,15 @@ RAISES rather than silently dropping a notehead. Until further notice every
 test is GATHER + ADJUDICATE only (Sean, 2026-09-30). The record, the
 adjudicators, the derived checks: `docs/staged-internals.md`.
 
+**Claim order** (Sean, 2026-10-28/29; `docs/plan-2026-10-28-page-claim-order.md`
+§9-10): GATHER reads a mark and CLAIMS its ink at the coarsest kind it is
+sure of; meaning is decided later. Page- and system-level marks (staff,
+barlines, brackets/braces, clef/key/meter, words, dynamics, arcs, repeats)
+are read once on the PAGE-WIDE PASS — never per bar, never a second scan —
+and claim first; a later reader may mark claimed ink but never take it.
+Binding a page-wide mark to its notes (start and stop) is a later page-wide
+step, after the heads are read (ROADMAP 2.223).
+
 ---
 
 ## 4. What the output may say (Sean, 2026-10-12/13)
@@ -207,14 +216,19 @@ same pages, same tree apart from the change; a baseline that no longer
 reproduces (the lane report's control line) is re-run, not trusted.
 
 **Where.** A worktree off `origin/main`, never the main checkout; symlink
-the four root assets first (`docs/running.md` §1). Never `git checkout` a
+the four root assets first (`docs/running.md` §1). A lane agent is started
+in the Agent tool's own isolated worktree (a hook refuses edits elsewhere);
+an edit that is refused is reported, never redone through a shell script.
+Never `git checkout` a
 dirty file; never bare `git stash`. Claim a ROADMAP number by pushing its
 row to main before building; fence lanes by FUNCTION NAME when two touch one
 file.
 
 **Lean lanes, one shared box** (Sean, DECISIONS 2026-10-12 "HOW LANES
-RUN", after two machine crashes; ROADMAP "How to work"): at most 2–3 lanes
-at once, every lane on Sonnet; one page gather at a time; the fast tier at
+RUN", after two machine crashes; ROADMAP "How to work"; widened 2026-10-29):
+up to 4 lanes at once, Sonnet by default and Opus where it helps; one large
+gather at a time plus small 2-page checks beside it; OCR servers are shut
+when a run ends (`OMR_SURYA_KEEP_ALIVE=0`); the fast tier at
 ≤ 4 workers or serial; every lane commits and pushes at each milestone;
 test output quiet (pass count + failures only); landings, answer-recording
 and crash recovery go to a fresh small agent with a short brief, never by
@@ -228,7 +242,12 @@ record + crops. Blind tiles go to Sean with nothing of ours drawn and his
 answers are recorded in `answers.json` and a DECISIONS line. Who says it's
 right: the print, Sean, or the reference encoding — never our own output.
 A change is proposed to Sean before dispatch; ask him one plain question,
-say what each crop colour means, no tables.
+say what each crop colour means, no tables. A tile shows one staff, drawn
+from the WRITTEN file, with a thin box sized to the mark at its own staff's
+position (no arrows, never wider than the tile). A GATHER claim is proved
+by what it CAPTURES (Sean's tiles, the hand-labelled pages), not by a full
+re-gather. Each lane brief names the old system's work on its symbol and
+what was tried and dropped (`docs/ink-rules.md`, page-facts §5, benchmarks).
 
 **Landing.** Every lane report is a ledger: check its claims against the
 tree with one command before believing it. Merge main first; an `A/B` on a
