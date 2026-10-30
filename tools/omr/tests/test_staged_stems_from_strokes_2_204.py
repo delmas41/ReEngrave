@@ -421,7 +421,8 @@ class TestTheRetiredScansAreUnreachable(unittest.TestCase):
         src = inspect.getsource(rhythm)
         # STEM_TIP_INK: only the two gated helpers and the unreached-when-OFF fallbacks inside them read the quantity
         reads = re.findall(r"ev\.(?:rows|refusals)\(Q\.STEM_TIP_INK", src)
-        self.assertEqual(len(reads), 2, reads)
+        # 2.235 adds the two reads of `_tips_honouring_claims`, which sit behind `tips_honour_claims_enabled()` (flag OFF: never reached)
+        self.assertEqual(len(reads), 4, reads)
         self.assertIn("def _tip_obs", src)
         # HEAD_STEM_REACH: both reads are the gated `() if stems_from_strokes_enabled() else ev.rows(...)` form
         self.assertEqual(len(re.findall(r"ev\.rows\(Q\.HEAD_STEM_REACH\)", src)), 2)
