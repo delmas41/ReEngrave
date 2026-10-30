@@ -161,6 +161,21 @@ on the frozen sample; the first run of a sample page reads it, every later one d
 smaller page list (a control; the report says it is not the frozen sample). Cache OFF unless a dir is given; each process prints
 `detector-cache: N hit, M miss, ... MB` on exit.
 
+**Read the same cells (ROADMAP 2.231, the master cell map).** Cells are cut fresh in every gather, so an upstream staff or
+barline change moves them and two arms can read different cells. A MASTER (`tools/omr/staged/cell_map.py`, machine-local
+under `library/_shared-records/cell-maps/<pdf-sha16>-dpi600/`, gitignored) freezes per page every staff, barline, the
+page-wide columns and every cell's box and line ys, plus a sha256 of every pixel array, with a version tag naming the cells
+(`cm-...`). `python3 -m tools.omr.staged PDF --pages ... --cell-map library/_shared-records/cell-maps` (or `lane_report
+--from gather --cell-map master`) LOADS the cells instead of re-cutting: no `detect_staves`, no barline pass; the cells are
+cut at the stored boxes and proved hash-equal to the master; a pdf/dpi/page the master lacks, a render that differs, or a
+cut that does not reproduce RAISES (`CellMapError`), never re-cuts. The record's provenance names the master
+(`provenance.cell_map`); lane tiles' `key.json` carry `cell_map` and `position` (page, system, staff, cell, page box).
+`cell_map build PDF --pages ...` writes a master (a page that cuts differently is refused without `--force`: rebuild only
+deliberately, after a staff/barline change lands); `cell_map moved PDF --pages ...` lists every staff, barline, column and
+cell (`p s st c`, old -> new) the CURRENT tree cuts differently -- a lane whose job is cells reports this; `cell_map verify`
+is the same with exit 1 on any difference; `cell_map against-record PDF REC` checks a master against a record's
+`cell_box`/`staff_lines` rows. Findings: `benchmarks/master-cell-map-2026-10/FINDINGS.md`.
+
 ## 3. The two re-gathers
 
 (Sean, 2026-09-30; `docs/measuring.md` §2 has the A/B rules.)
