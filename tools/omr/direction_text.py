@@ -902,6 +902,7 @@ def _staff_dicts(page_dict: dict[str, Any]) -> dict[int, dict[str, Any]]:
 def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
                     config: BandConfig = DEFAULT_BAND_CONFIG,
                     refine_boxes: bool = False,
+                    _ink_out: dict | None = None,
                     ) -> list[TextCandidate]:
     """Word-shaped ink in the bands, with everything detected subtracted.
 
@@ -921,6 +922,10 @@ def find_candidates(pws: PageWithStaves, page_dict: dict[str, Any], *,
     spacing_page = float(np.median([_spacing(s) for s in pws.staves]))
     raw = _page_ink(pws.page)
     mask = _blank_detections(raw, page_dict, spacing_page, config)
+    if _ink_out is not None:
+        # ROADMAP 2.220c: the STAGED gather hands this dict on to `read_directions(ink=...)`, which would
+        # otherwise rebuild the same two arrays (same page, same page_dict, same spacing, same config).
+        _ink_out["raw"], _ink_out["blanked"] = raw.copy(), mask.copy()   # copies: the candidate pass below may write into its own arrays
     erased_page = dynamic_page = hidden_page = None
     if refine_boxes:
         erased_page = ((raw > 0) & (mask == 0)).astype(np.uint8) * 255
@@ -1349,6 +1354,8 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
                     scan_order: bool = False,
                     config: BandConfig = DEFAULT_BAND_CONFIG,
                     lexicon_scope: Any = None,
+                    candidates: Sequence[TextCandidate] | None = None,
+                    ink: dict | None = None,
                     ) -> tuple[list[DirectionText], dict[str, Any]]:
     """Every direction on the page, plus a report of what happened.
 
@@ -1361,8 +1368,15 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
     the lexicon accepted — are the only way to tell a page with no text from a
     reader that could not run, and they look identical in the output otherwise.
     """
-    candidates = find_candidates(pws, page_dict, config=config,
-                                 refine_boxes=scan_order)
+    # ROADMAP 2.220c: `candidates` and `ink` (the `_ink_out` of `find_candidates`) are what the caller already
+    # computed from THIS page, page_dict and config; passing them skips a repeat of the same pure-CV pass.
+    # Both None (LEGACY, and any caller that does not pass them) = the pass runs here, as before.
+    if candidates is None or ink is None:
+        ink = {}
+        candidates = find_candidates(pws, page_dict, config=config,
+                                     refine_boxes=scan_order, _ink_out=ink)
+    else:
+        candidates = list(candidates)
     info: dict[str, Any] = {
         "n_candidates": len(candidates),
         "n_read": 0,
@@ -1383,8 +1397,10 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
         return [], info
 
     spacing = float(np.median([_spacing(s) for s in pws.staves]))
-    raw = _page_ink(pws.page)
-    blanked = _blank_detections(raw, page_dict, spacing, config)
+    raw, blanked = ink.get("raw"), ink.get("blanked")
+    if raw is None or blanked is None:
+        raw = _page_ink(pws.page)
+        blanked = _blank_detections(raw, page_dict, spacing, config)
     erase = ((raw > 0) & (blanked == 0)).astype(np.uint8) * 255
     if lexicon_scope is not None:
         info["lexicon_scope"] = lexicon_scope.to_json()

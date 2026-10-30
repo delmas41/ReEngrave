@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- duplicate-pass cleanup LANDED (lane-dedupe-passes, no flag)
+PURE REFACTOR (STAGED + shared): `yolo_detector` runs the detector once at the lowest rescue floor and filters it for the 0.10/0.03/0.05 rescues (LEGACY callers keep their old defaults); `header_cells_for_page` built once per page; a per-page gray/ink cache; `direction_text` page ink computed once (copied arrays). Gathered rows identical: 0 differences over 11.8M values (Litolff p4,10 vs merge-base), Brahms p0,5 identical, re-proved on main + merge. Test: `test_dedupe_passes_2026_10_29.py`. Plan `docs/plan-2026-10-28-page-claim-order.md` §10b.
+
+## 2026-10-29 -- page-wide barlines LANDED ON (OMR_BARLINE_SYSTEM_COLUMNS, lane-barlines-1029)
+
+STAGED only (`pws.staged_page_wide`; LEGACY unchanged). `page_wide.py` + `measure_extractor._system_barline_columns` read each system's barline columns once, through-ink first, tilt per staff (Theil-Sen); `barline` claim tier added to `stroke_owner.TIERS[0]` after `arc_trace`; `bracket_reader` tells brace from bracket by hook shape. Flag is a deny-list, default ON. Sean's tiles 12/12; Litolff 3 false cuts removed, 1 added, notes +10 -4, red marks 174->153; judged right->wrong 0. Known loss: one real quarter (Litolff p9 1734,2385) to a crop-sensitive 0.07 stem-end rescue; head lane follows.
+
 ## 2026-10-29 -- arc claim LANDED ON (OMR_ARC_CLAIM, lane-arcs-claim-1029)
 STAGED GATHER `gather_arc_claim` + `arc_claim.py` + `stroke_owner` tier 0: each system arc (`Q.SYSTEM_ARC`) claims its strokes once as owner `arc`, no kind; later readers mark but never take that ink. Default ON (deny-list 0/false/no/off/empty). `OMR_ARC_KIND_FROM_ENDS` and `OMR_SLUR_FROM_ANCHORS` landed as code, default OFF, for ROADMAP 2.223. Evidence: Sean's tiles 10/10 arcs, Brahms p0 136/153 hand-truth arcs claimed, 2-page gather Litolff unchanged, Brahms +2 notes +2 dots. Merged clean into main; check 198.
 
@@ -6436,3 +6443,6 @@ STAGED GATHER (`gather_key_signature_claim`, `gather_key_object`/`key_object.py`
 
 ## 2026-10-27 -- ROADMAP 2.211 landed: score by written place, not detector box id
 TOOLING (no flag, no pipeline change): `tools/omr/staged/lane_report.py` keys the lost-notes list and the judged right->wrong rescore on the written event (page, system, cell, staff, onset, pitch) in the exported file, so a twin detector box swapping keeper reports nothing. Replaces `benchmarks/staff-eraser-2026-10/lost_notes.py` (`lane_report lost-notes`, `lane_report rescore`). Control (`benchmarks/score-by-place-2026-10/FINDINGS.md`): 2.206d Litolff lost 21->11, planted 5 lost caught (16); judged `tile_05` right->wrong 1->0 (`same_music`). Test: `test_staged_lane_report_2_211.py`.
+
+## 2026-10-29 -- ROADMAP 2.230 landed ON: whole-rest bars
+STAGED ADJUDICATE + stroke owner + EXPORT, flags `OMR_FOUND_WHOLE_REST`, `OMR_WHOLE_REST_HANGS`, `OMR_WHOLE_REST_PLAIN` (all deny-lists, default ON). A bar the 2.52 search found a whole rest in is written; a restWhole is read by its ink shape (no centring test) and claims its ink in a `whole_rest` stroke-owner tier ahead of heads; plain when the bar holds no other head/rest box, blue otherwise. Litolff rests +129 / Brahms +65, 0 lost, judged right->wrong 0 (188 place-matched, 0 differ); Sean's tiles m1 9/9, plain 8/8, blue 3/4. FINDINGS: `benchmarks/acceptance/FINDINGS.md` whole-rest bars. Lane `lane-whole-rest-1029` (b7b5653ad).

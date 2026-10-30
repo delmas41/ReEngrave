@@ -76,13 +76,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "printed on a barline is written in the bar it announces, not the one "
         "that detected it), and for a hairpin a start and a stop in different "
         "measures. The entry LEAVES this list the day `export.py` reads it."),
-    Q.EMPTY_BAR_WHOLE_REST: (
-        "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.52 "
-        "is GATHER+ADJUDICATE only (Sean, 2026-09-30: 'I want all our tests "
-        "for now to just be the first 2 stages'). Wiring this verdict into "
-        "`size_measure_rest`/`export.py` so a found whole rest actually "
-        "sizes the bar is explicitly OUT of scope for this lane and is the "
-        "obvious next item if the search is confirmed against the print."),
     Q.HUMAN_VERDICT_STANCE: (
         "⚠️ PRODUCER ONLY BY DESIGN, NOT AN UNCLOSED GAP — roadmap 3.4. A "
         "human's `agree`/`disagree` is filed AGAINST a verdict and must never "

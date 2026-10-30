@@ -142,6 +142,7 @@ refused or would have — are KEPT; the 13 crops are pinned as fixtures in
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
@@ -824,6 +825,92 @@ REST_LINE_SHAPE_CLASSES = frozenset(("restWhole", "restHalf"))
 #: number transfers to an edge rather than a centre; not separately
 #: measured this pass.
 REST_LINE_TOUCH_TOL_SPACES = ON_A_STAFF_LINE_TOL_SPACES
+
+
+#: ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`, default ON since 2026-10-29). Sean 2026-09-29: a whole rest never touches TWO staff lines. The
+#: refusal measured that as "the detector BOX has an edge within 0.25 sp of two staff-wide lines"; a real hanging whole rest (ink
+#: 0.70-0.78 sp tall, hung from line 4) sits 0.03-0.5 sp above the next line on Litolff/Brahms, so box + tolerance reach it and it
+#: is refused (59 L / 18 B on the frozen sample; Sean's m0 tiles 2, 4: whole rest bars). What separates it from the notehead the
+#: convention is about is the INK's height, not its contact: a black head in a space is a solid blob >= 0.9 sp
+#: (`REST_HEAD_BLOB_MIN_SP`, 2.150b, the same measured cut) against a whole rest's blob 0.55-0.82 and box height 0.3-0.84. A cut-off
+#: measured on two plates may only NARROW (CLAUDE §4): the rest is written GUESSED (blue) with both readings. No ink row: the
+#: refusal stands as before (rule 8).
+WHOLE_REST_HANGS_ENV = "OMR_WHOLE_REST_HANGS"
+#: The same flag DROPS the off-centre test for a restWhole from the decision (Sean 2026-10-29, page-facts "A whole rest need not be
+#: centred"; the 1/6 cut was "CONVENTION ASSUMED, no crop confirms" and his m0 tiles 3 and 6 are whole rest bars at 0.2-0.3).
+
+
+def _env_on(name: str) -> bool:
+    import os
+    return os.environ.get(name, "1").strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def whole_rest_hangs_enabled() -> bool:
+    """`OMR_WHOLE_REST_HANGS`, default ON (Sean 2026-10-29); `0/false/no/off` or empty disables."""
+    return os.environ.get(WHOLE_REST_HANGS_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _whole_rest_narrowing(reason: str, used, detail: Dict[str, Any], margin: Optional[float], axis: str, unit: str) -> Ruling:
+    from ..record import Candidate
+    cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=0.5))
+    r = Ruling.narrow(cands, reason, used=tuple(used), **detail)
+    return _margins.attach(r, margin=margin, axis=axis, unit=unit, band=None, would_choose=(False,))
+
+
+def _whole_rest_hangs_narrowing(ev: Evidence, this_row, two_lines: Ruling, used, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """The two-lines refusal of a restWhole whose own ink is rest-sized -> NARROWED {rest, not a rest}; None leaves the refusal."""
+    if not whole_rest_hangs_enabled() or str(detail.get("class")) != "restWhole":
+        return None
+    rows = [r for r in ev.rows(Q.REST_INK_CONTACT) if isinstance(r.detail, dict) and "blob_sp" in r.detail
+            and "box_height_sp" in r.detail]
+    if not rows:
+        return None
+    d = rows[-1].detail
+    tallest = max(float(d["blob_sp"]), float(d["box_height_sp"]))
+    detail["whole_rest_hangs"] = {"blob_sp": d["blob_sp"], "box_height_sp": d["box_height_sp"], "cut_sp": REST_HEAD_BLOB_MIN_SP,
+                                  "lines_touched": detail.get("lines_touched")}
+    if tallest >= REST_HEAD_BLOB_MIN_SP:
+        return None
+    return _whole_rest_narrowing("whole_rest_hangs", tuple(used) + (rows[-1].id,), detail,
+                                 round(REST_HEAD_BLOB_MIN_SP - tallest, 3), "ink_height_under_head_cut",
+                                 "staff spaces under the head cut")
+
+
+def _whole_rest_ink_not_a_block_refusal(ev: Evidence, this_row, detail: Dict[str, Any]) -> Optional[Ruling]:
+    """`OMR_WHOLE_REST_HANGS`: a restWhole box that owns none of the strokes it covers, every one of which is a shape that can never be a block
+    (a vertical, a curve), is not a rest block -> refused with the lost strokes' shapes. Else None (no stroke-owner
+    verdict, no ink, contested: rule 8, cannot tell is not a refusal)."""
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    v = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    entry = ((getattr(v, "detail", None) or {}).get("boxes") or {}).get(ev.subject.to_key())
+    if not entry or entry[0] not in ("refused", "contested") or not entry[1]:
+        return None
+    strokes = (getattr(v, "detail", None) or {}).get("strokes") or {}
+    if entry[0] == "contested":
+        # the block shape FITS and an ARC box claims the same stroke just as well (a rest on / under a slur's line): the ink cannot tell,
+        # so it is NARROWED {rest, arc ink} and written GUESSED (blue); not refused (rule 8), not READ plain (a contest is no read).
+        arcs = [x for x in entry[1] if x[1] == "contested"
+                and any(c[1] == "arc" for c in (strokes.get(str(x[0])) or [None] * 5)[4] or ())]
+        if not arcs:
+            return None
+        from ..record import Candidate
+        cands = (Candidate(value=False, support=1.0), Candidate(value=True, support=1.0))
+        detail["whole_rest_ink"] = ["contested_with_arc"]
+        return Ruling.narrow(cands, "claim_narrowed:arc", used=(this_row.id,), **detail)
+    shapes = []
+    for x in entry[1]:
+        cand = next((c for c in (strokes.get(str(x[0])) or [None] * 5)[4] or () if c[0] == ev.subject.to_key()), None)
+        # only a SHAPE KIND that is no block (a vertical, a curve) refuses: a blob or horizontal piece a little over `BLOCK_MAX_H_SP` is a
+        # real rest fused with a line stub (4 of 6 such refusals were real whole rests on the print, 2026-10-29 m3 crops), so it stays.
+        if cand is None or not str(cand[4]).startswith("not_a_whole_rest_block") \
+                or ("kind=blob" in str(cand[4]) or "kind=horizontal" in str(cand[4])):
+            return None
+        shapes.append(cand[4])
+    detail["whole_rest_ink"] = shapes
+    return Ruling(value=True, reason="whole_rest_ink_not_a_block", used=(this_row.id,),
+                  detail=detail)
 
 
 def _stems_connected_to_a_head(ev: Evidence, cell, stems):
@@ -1834,13 +1921,13 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                    Q.STAFF_SPACING, Q.NOTEHEAD_CLASS,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_STAFF_SPACE,
                    Q.STEM, Q.STEM_SLASH, Q.LETTER_LOOK_COVER,
-                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
+                   Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.REST, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.CELL_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_STAFF_SPACE, Q.STEM, Q.STEM_SLASH, Q.STEM_HEAD_CONTACT,
-           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
+           Q.LETTER_LOOK_COVER, Q.REST_INK_CONTACT, Q.CLAIMED_AREA, Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER),
     subjects_from=Q.REST,
     reasons=HUMAN_REFUSAL_REASONS + (_OK[Q.REST_IS_NOT_A_REST],
                                      "rest_on_a_dynamic_letter",
@@ -1856,6 +1943,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_has_a_stem",
                                      "rest_touches_two_staff_lines",
                                      "rest_off_center",
+                                     "whole_rest_hangs", "whole_rest_ink_not_a_block", "claim_narrowed:arc",
                                      "rest_outside_its_staff",
                                      "rest_overlaps_a_notehead",
                                      "rest_is_a_barline",
@@ -1982,11 +2070,21 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             return slashed
         two_lines = _rest_touches_two_staff_lines_refusal(ev, box_row, detail)
         if two_lines is not None:
-            return two_lines
-        if str(detail.get("class")) == "restWhole":
+            hangs = _whole_rest_hangs_narrowing(ev, box_row, two_lines, used, detail)
+            return hangs if hangs is not None else two_lines
+        # ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`; Sean 2026-10-29, page-facts "A whole rest need not be centred"): the centre test is
+        # not part of the decision with the flag ON -- the shape against the local lines decides it, its x in the bar is no evidence.
+        if str(detail.get("class")) == "restWhole" and not whole_rest_hangs_enabled():
             off_center = _rest_off_center_refusal(ev, box_row, detail)
             if off_center is not None:
                 return off_center
+        # With the flag ON the box is read by its OWN INK instead (Sean 2026-10-29: a displaced rest in a multi-voice bar is real, so no
+        # staff-position band): the stroke owner tested every stroke the box covers against the whole-rest block shape (`stroke_owner`
+        # `whole_rest`: blob or horizontal, h <= BLOCK_MAX_H_SP, w <= REST_BLOCK_MAX_W_SP) and the box owns none -> not a rest block.
+        if str(detail.get("class")) == "restWhole" and whole_rest_hangs_enabled():
+            not_block = _whole_rest_ink_not_a_block_refusal(ev, box_row, detail)
+            if not_block is not None:
+                return not_block
         vertical = _rest_vertical_window_refusal(ev, box_row, detail)
         if vertical is not None:
             return vertical

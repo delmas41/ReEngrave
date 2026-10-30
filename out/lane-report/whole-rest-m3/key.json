@@ -1,0 +1,242 @@
+[
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 8,
+  "box": [
+   3965.8075,
+   613.9725,
+   4006.3225,
+   631.1775
+  ],
+  "rg": "glyph/8/0/0/8/2",
+  "value": "?",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   3794,
+   462
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 9,
+  "box": [
+   902.4,
+   2806.48,
+   924.16,
+   2814.48
+  ],
+  "rg": "glyph/9/1/4/2/1",
+  "value": "?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   818,
+   2731
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 8,
+  "box": [
+   956.3425,
+   1499.325,
+   978.3925,
+   1509.405
+  ],
+  "rg": "glyph/8/0/7/5/0",
+  "value": "?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   872,
+   1425
+  ]
+ },
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 10,
+  "box": [
+   2481.1925,
+   2819.4275,
+   2506.3925,
+   2830.925
+  ],
+  "rg": "glyph/10/1/5/13/0",
+  "value": "guessed",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   2399,
+   2746
+  ]
+ },
+ {
+  "kind": "rest",
+  "page": 12,
+  "box": [
+   2234.0,
+   2328.1,
+   2267.0,
+   2391.1
+  ],
+  "rg": "glyph/12/0/8/4/350001",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 5,
+  "crop_origin": [
+   2058,
+   2199
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 11,
+  "box": [
+   580.715,
+   2216.805,
+   603.2375,
+   2225.625
+  ],
+  "rg": "glyph/11/1/2/0/1",
+  "value": "?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   497,
+   2142
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 9,
+  "box": [
+   1584.0625,
+   1135.1675,
+   1606.7425,
+   1146.1925
+  ],
+  "rg": "glyph/9/0/5/8/1",
+  "value": "?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1500,
+   1061
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 11,
+  "box": [
+   598.15625,
+   906.15234375,
+   620.533203125,
+   914.6689453125
+  ],
+  "rg": "glyph/11/0/3/0/1",
+  "value": "?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   514,
+   831
+  ]
+ },
+ {
+  "kind": "rest",
+  "page": 6,
+  "box": [
+   762.4625,
+   3057.1975,
+   780.1025,
+   3101.455
+  ],
+  "rg": "glyph/6/1/7/1/2",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 9,
+  "crop_origin": [
+   676,
+   3000
+  ]
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 11,
+  "box": [
+   598.490234375,
+   1592.818359375,
+   621.7021484375,
+   1603.6728515625
+  ],
+  "rg": "glyph/11/0/8/0/0",
+  "value": "?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   515,
+   1519
+  ]
+ },
+ {
+  "kind": "rest",
+  "page": 2,
+  "box": [
+   1564.5975,
+   1142.325,
+   1587.2775,
+   1151.3025
+  ],
+  "rg": "glyph/2/0/5/9/0",
+  "value": "?",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 11,
+  "crop_origin": [
+   1481,
+   1068
+  ]
+ },
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 12,
+  "box": [
+   1153.216796875,
+   5597.9375,
+   1192.76708984375,
+   5619.00634765625
+  ],
+  "rg": "glyph/12/1/7/0/7",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 12,
+  "crop_origin": [
+   980,
+   5448
+  ]
+ }
+]
