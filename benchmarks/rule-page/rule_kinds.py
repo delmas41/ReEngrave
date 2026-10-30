@@ -265,7 +265,7 @@ RULES = [
     R(ARCS, "arc_kind", "no_arc_box,no_evidence", "D:honesty", "no arc box / evidence", "-", RULE8, "kept"),
     R(ARCS, "arc_owner", "hugs_noteheads,no_better_staff,no_rival_staff,ends_on_noteheads", "A", "an arc belongs to the staff whose heads it hugs", "an arc is over its notes, and the staff it hugs owns it", "page-facts s1; ROADMAP arc attribution", "kept"),
     R(ARCS, "arc_owner", "no_page_frame,no_evidence", "D:honesty", "-", "-", RULE8, "kept"),
-    R(ARCS, "tie_pair", "paired,paired_by_system_arc", "ok", "tie joins two heads", "found by the heads just outside its two ends", "Sean 2026-10-01 (\"next to each other regardless of barlines and the same pitch\", 2.54)", "-"),
+    R(ARCS, "tie_pair", "paired,paired_by_system_arc,paired_by_page_binding", "ok", "tie joins two heads", "found by the heads just outside its two ends", "Sean 2026-10-01 (\"next to each other regardless of barlines and the same pitch\", 2.54)", "-"),
     R(ARCS, "tie_pair", "not_adjacent,no_pair_at_one_position,more_than_one_pair,no_start_head,no_stop_head,no_head_near_the_arc,spans_a_whole_bar", "A", "a tie joins adjacent same-pitch heads", "nothing between the heads in time, same staff position", "Sean 2026-10-01 (page-facts s1)", "kept"),
     R(ARCS, "tie_pair", "enters_from_previous_system,runs_off_the_system", "A", "a tie may cross a system break", "the other end is on the next / previous system", "page-facts s1", "kept"),
     R(ARCS, "tie_pair", "not_a_tie,not_an_arc", "D:bookkeeping", "arc is a slur or not an arc", "the domain is every arc (`not_an_arc` includes staff-line boxes)", "-", "kept"),

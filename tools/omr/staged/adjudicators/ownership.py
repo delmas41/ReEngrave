@@ -2824,8 +2824,15 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     staff = R.Subject.from_key(home)
     rows: Dict[str, Any] = {}
     heads: List[Dict[str, Any]] = []
+    stems: List[Tuple[float, float, float, float]] = []
     for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
-        if (row.detail or {}).get("category") != "notehead":
+        cat = (row.detail or {}).get("category")
+        if cat == "stem":
+            sb = row.detail.get("bbox_page_px")
+            if sb and len(sb) == 4:
+                stems.append(tuple(float(v) for v in sb))
+            continue
+        if cat != "notehead":
             continue
         b = row.detail.get("bbox_page_px")
         if not b or len(b) != 4:
@@ -2848,8 +2855,33 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
             memo[key] = not (own is not None and _is_relocated_copy(row.subject, own.value)) and _head_usable(ev, key)
         return memo[key]
 
-    b = _arc_claim.bind_curve(d, heads, sp, usable)
+    # ⚠️ AN ARC IS DRAWN TO A STEM, NOT TO A NOTEHEAD (`benchmarks/omr-arc-recovery-2026-09/FINDINGS.md` s6): a slur over stemmed notes
+    # ends at the stem's free end, 2-3 spaces from the head, outside the head window. Each detector STEM box (a GATHER row) joined to
+    # heads adds its free end as a candidate position FOR THE HEAD AT THAT END (the extreme head on the tip's side -- the 2.75 rule).
+    # The CV stems (`Q.STEM`, GATHER, filed per CELL in its canonical frame -- the detector boxes few stems: 16 on Brahms p0) are put
+    # in page pixels with a head of the same cell as the ruler (its canonical and page boxes), `export._stem_probes`' method.
+    rulers: Dict[int, Tuple[Tuple[float, ...], Tuple[float, ...]]] = {}
+    for key, row in rows.items():
+        v = row.value
+        ci = row.subject.cell or 0
+        if ci in rulers or not isinstance(v, (list, tuple)) or len(v) < 5 or float(v[3]) <= 0:
+            continue
+        rulers[ci] = (tuple(float(x) for x in v[1:5]), tuple(float(x) for x in row.detail["bbox_page_px"]))
+    for srow in ev.rows(Q.STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        sv = srow.value
+        ru = rulers.get(srow.subject.cell or 0)
+        if ru is None or not isinstance(sv, (list, tuple)) or len(sv) < 4:
+            continue
+        (cx, cy, cw, _ch), (px0, py0, px1, _py1) = ru
+        k = (px1 - px0) / cw
+        sx, sy, sw, sh = (float(x) for x in sv[:4])
+        stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
+    tips = _arc_claim.stem_tips(heads, stems)
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
+    for side_ in ("left", "right"):
+        if b[side_].get("via_stem_tip"):
+            b.setdefault("stem_tip_ends", []).append(side_)
     pieces = list(d.get("pieces") or ())
     if len(pieces) > 1:
         # ⚠️ A JOINED CURVE IS ONLY AS GOOD AS ITS JOIN. 2.166 joins a box cut at a barline to its continuation -- and also, where two

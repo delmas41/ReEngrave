@@ -272,7 +272,8 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
     d0 = min(h["d"] for h in cols[0])
     if len(cols) > 1:
         d1 = min(h["d"] for h in cols[1])
-        if (d1 - d0) < BIND_COLUMN_MARGIN_SPACES * sp:
+        same_note = {h["key"] for h in cols[0]} & {h["key"] for h in cols[1]}     # a head and its own stem tip: one note
+        if (d1 - d0) < BIND_COLUMN_MARGIN_SPACES * sp and not same_note:
             return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
                     "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
     col = cols[0]
@@ -284,7 +285,32 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
         pick = max(col, key=lambda h: h["cy"])
     else:
         return {"unbound": "chord_end_side_unread", "candidates": [h["key"] for h in col], "margin_spaces": None}
-    return {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3)}
+    out = {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3)}
+    if pick.get("tip"):
+        out["via_stem_tip"] = True
+    return out
+
+
+def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]]) -> List[Dict[str, Any]]:
+    """The free END of each stem box (page `x0, y0, x1, y1`) as a candidate position for the head at that end: `{key, cx, cy, w, h,
+    tip: True}`. A stem joins the heads whose boxes touch it (x within a head width of the stem, y overlapping the stem's span +- half a
+    head); its free end is the end AWAY from them, and the head it stands for is the extreme head on that side (an up-stem's tip stands
+    for the TOP head, a down-stem's for the BOTTOM -- the 2.75 rule, Sean 2026-10-09). A stem touching no head names nothing."""
+    out: List[Dict[str, Any]] = []
+    for sx0, sy0, sx1, sy1 in stems:
+        scx = (sx0 + sx1) / 2.0
+        on = [h for h in heads if abs(h["cx"] - scx) <= h["w"] and sy0 - h["h"] / 2.0 <= h["cy"] <= sy1 + h["h"] / 2.0]
+        if not on:
+            continue
+        mean_y = sum(h["cy"] for h in on) / len(on)
+        if mean_y > (sy0 + sy1) / 2.0:          # heads at the bottom: an UP stem, free end at the top
+            h = min(on, key=lambda t: t["cy"])
+            ty = sy0
+        else:
+            h = max(on, key=lambda t: t["cy"])
+            ty = sy1
+        out.append({"key": h["key"], "cx": scx, "cy": ty, "w": h["w"], "h": h["h"], "cell": h.get("cell", 0), "tip": True})
+    return out
 
 
 def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None) -> Dict[str, Any]:
