@@ -10316,7 +10316,7 @@ STACKED_BLOB_WINDOW_SPACES = 2.5
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default OFF until Sean's tiles.
+# ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default ON (Sean 2026-10-30, tiles 12/12).
 # The fit scores a head TEMPLATE at every slot and, at k=1, names the one
 # best-scoring slot. Two touching HOLLOW heads a third apart (a chord) leave a
 # ring of ink at the slot BETWEEN them too, and `max(centre, ring)` there beats
@@ -10339,9 +10339,9 @@ STACKED_HEAD_BOX_STEP_POSITIONS = 1.0
 
 
 def stacked_head_step_apart_enabled() -> bool:
-    """`OMR_STACKED_HEAD_STEP_APART` -- ROADMAP 2.232. **Default OFF**."""
-    return os.environ.get("OMR_STACKED_HEAD_STEP_APART", "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    """`OMR_STACKED_HEAD_STEP_APART` -- ROADMAP 2.232. **Default ON** (Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get("OMR_STACKED_HEAD_STEP_APART", "").strip().lower() \
+        not in ("0", "false", "no", "off")
 
 
 def stacked_head_off_every_box(chosen: Sequence[float],

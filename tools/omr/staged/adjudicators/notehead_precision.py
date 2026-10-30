@@ -2059,7 +2059,7 @@ def _earlier_rules_heir(ev: Evidence, cell, rival_row, spacing: float):
     return _SURVIVES
 
 
-#: ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default OFF (GATHER's half is
+#: ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default ON (Sean 2026-10-30) (GATHER's half is
 #: `gather.stacked_head_step_apart_enabled`; read here directly, the reverse
 #: import being a cycle). Two parts of this decision: (1) boxes of one stem and
 #: SIDE whose centres stand `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES` (0.75 sp,
@@ -2079,8 +2079,8 @@ STACKED_KEEPER_NEAR_TIE = 0.05
 
 
 def stacked_head_step_apart_enabled() -> bool:
-    return os.environ.get(STACKED_HEAD_STEP_APART_ENV, "0").strip().lower() \
-        in ("1", "true", "yes", "on")
+    return os.environ.get(STACKED_HEAD_STEP_APART_ENV, "").strip().lower() \
+        not in ("0", "false", "no", "off")
 
 
 def _box_centres_a_step_apart(a, b, spacing: float) -> bool:
