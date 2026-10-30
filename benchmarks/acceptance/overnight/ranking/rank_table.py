@@ -40,7 +40,7 @@ def kinds(path):
         "red bars": r("red_bar"),
         "unread empty bars": r("unread_empty_bar"),
         "pitched heads not written": r("dropped_unknown_duration") + r("dropped_no_pitch"),
-        "dots decided, never placed": tot["dot_role_not_placed"].get("abstained_dot_role_ambiguous", 0),
+        "dots abstained (dot_role_ambiguous; mostly non-dot ink, 2.234)": tot["dot_role_not_placed"].get("abstained_dot_role_ambiguous", 0),
         "blue notes (check load)": r("blue_note"),
         "blue rests (check load)": r("blue_rest"),
     }
