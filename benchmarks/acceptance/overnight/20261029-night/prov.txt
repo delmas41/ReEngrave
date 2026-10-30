@@ -1,10 +1,10 @@
-== beethoven5-litolff
-beethoven5-litolff-mvt1-whole-20261022-night.record.json
-  1269 MB  commit a2eae688030feebf177a40e2b0f2404dafd61f28 dirty=False  weight routing routed/scanned
-  rows {'observations': 296663, 'abstentions': 68443, 'verdicts': 189929}
-  settings {"args": {"against": null, "conf": 0.25, "dpi": 600, "imgsz": null, "ink_rows": false, "movements": null, "no_roster": false, "no_weight_routing": false, "ocr": true, "pages": "1-16", "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf", "route_weights": false, "sheet": null, "surya": true, "through": "infer", "weights": "auto", "work_id": null}, "env_overrides": {"OMR_SURYA_KEEP_ALIVE": "0"}}
-beethoven5-litolff-mvt1-whole-20261029-night.record.json
-  2937 MB  commit 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c dirty=False  weight routing routed/scanned
-  rows {'observations': 451499, 'abstentions': 69544, 'verdicts': 196346}
-  settings {"args": {"against": null, "conf": 0.25, "dpi": 600, "imgsz": null, "ink_rows": false, "movements": null, "no_roster": false, "no_weight_routing": false, "ocr": true, "pages": "1-16", "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf", "route_weights": false, "sheet": null, "surya": true, "through": "infer", "weights": "auto", "work_id": null}, "env_overrides": {"OMR_SURYA_KEEP_ALIVE": "0"}}
+== brahms1-breitkopf
+brahms1-breitkopf-mvt1-whole-20261022-night.record.json
+  8833 MB  commit a2eae688030feebf177a40e2b0f2404dafd61f28 dirty=False  weight routing routed/scanned
+  rows {'observations': 745802, 'abstentions': 123413, 'verdicts': 455512}
+  settings {"args": {"against": null, "conf": 0.25, "dpi": 600, "imgsz": null, "ink_rows": false, "movements": null, "no_roster": false, "no_weight_routing": false, "ocr": true, "pages": "0-26", "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf", "route_weights": false, "sheet": null, "surya": true, "through": "infer", "weights": "auto", "work_id": null}, "env_overrides": {"OMR_SURYA_KEEP_ALIVE": "0"}}
+brahms1-breitkopf-mvt1-whole-20261029-night.record.json
+  19647 MB  commit 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c dirty=False  weight routing routed/scanned
+  rows {'observations': 1106988, 'abstentions': 127836, 'verdicts': 464229}
+  settings {"args": {"against": null, "conf": 0.25, "dpi": 600, "imgsz": null, "ink_rows": false, "movements": null, "no_roster": false, "no_weight_routing": false, "ocr": true, "pages": "0-26", "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf", "route_weights": false, "sheet": null, "surya": true, "through": "infer", "weights": "auto", "work_id": null}, "env_overrides": {"OMR_SURYA_KEEP_ALIVE": "0"}}
 SETTINGS/ENV difference first -> last record (IDENTICAL): 

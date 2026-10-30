@@ -1,0 +1,20 @@
+== beethoven5-litolff
+file size MB: BASE 1269  TAG 2937   (x2.31)
+  observations  rows   296663 ->   451499   ~MB    102 ->    181
+  abstentions   rows    68443 ->    69544   ~MB     22 ->     22
+  verdicts      rows   189929 ->   196346   ~MB   1205 ->   2924
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  verdicts      duration                           rows    16342 ->    16569   ~MB  184.9 ->  556.3
+  verdicts      voices                             rows     5377 ->     5343   ~MB  444.0 ->  722.6
+  verdicts      stem_value                         rows    11797 ->    11868   ~MB  123.6 ->  370.0
+  verdicts      arc_kind                           rows     2644 ->     2641   ~MB    9.8 ->  183.3
+  verdicts      tie_pair                           rows     2644 ->     2641   ~MB    5.3 ->  171.4
+  verdicts      notehead_is_not_a_notehead         rows    11797 ->    11868   ~MB   28.3 ->  176.4
+  verdicts      dynamic_anchor                     rows      331 ->      331   ~MB   10.1 ->   89.6
+  verdicts      rest_is_not_a_rest                 rows     2969 ->     2980   ~MB    4.1 ->   66.7
+  observations  stroke                             rows        0 ->    90418   ~MB    0.0 ->   53.1
+  verdicts      stroke_owner                       rows        0 ->     5343   ~MB    0.0 ->   40.0
+  verdicts      meter                              rows       31 ->       31   ~MB   66.0 ->   98.1
+  verdicts      dot_role                           rows      618 ->      619   ~MB    2.9 ->   31.7
+  verdicts      accidental_owner                   rows     1508 ->     2039   ~MB    4.1 ->   30.7
+  verdicts      unison_voices                      rows    11797 ->    11868   ~MB   11.3 ->   31.6

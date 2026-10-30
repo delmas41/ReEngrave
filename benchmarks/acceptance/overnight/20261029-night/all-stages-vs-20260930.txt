@@ -1,22 +1,21 @@
-all stages: NEW tree 08f3a831b31809c650e7d7c4b437ce2ef191eaa3 (2026-10-30T07:33:59Z)  vs  OLD tree 0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf (2026-09-30T21:19:50Z)
+all stages: NEW tree 05f0b9eb9c9556b0207ded6b4e23df4129f7038a (2026-10-30T14:50:22Z)  vs  OLD tree 0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf (2026-09-30T21:19:50Z)
 
 == beethoven5-litolff  (old -> new; only the numbers that moved)
-  notes_reaching_file.n                                                          4480 ->         8898
-  notes_reaching_file.of                                                        11644 ->        11868
-  notes_reaching_file.fraction                                           0.38474750944692543 -> 0.749747219413549
-  bars_held_out_sum.n                                                            1732 ->            0
-  bars_held_out_sum.of                                                           4465 ->         5412
-  bars_held_out_sum.fraction                                             0.38790593505039195 ->          0.0
-  bars_held_out_sum.noteheads_and_rests                                          4192 ->            0
-  bars_held_out_sum.bars_on_a_doubled_staff                                        85 ->            0
-  bars_held_out_sum.named_in_the_export_report                                   1647 ->            0
-  bars_add_up_control.exact                                                      5886 ->         5170
-  bars_add_up_control.n                                                          5886 ->         5170
-  bars_add_up_control.of                                                         5886 ->         5170
-  held_out.staff_not_identified                                                   213 ->            0
-  held_out.of_noteheads_in_log                                                  11644 ->        11868
-  held_out.fraction                                                      0.018292682926829267 ->          0.0
-  unread_bars.empty_bars_padded                                                   951 ->          280
-  unread_bars.tacet_bars_not_padded_without_meter                                  90 ->            0
 
 == brahms1-breitkopf  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          5225 ->        15155
+  notes_reaching_file.of                                                        24533 ->        24408
+  notes_reaching_file.fraction                                           0.21297843720702728 -> 0.6209029826286463
+  bars_held_out_sum.n                                                            4283 ->            0
+  bars_held_out_sum.of                                                           6061 ->         6508
+  bars_held_out_sum.fraction                                             0.7066490678105923 ->          0.0
+  bars_held_out_sum.noteheads_and_rests                                         12927 ->            0
+  bars_held_out_sum.named_in_the_export_report                                   4283 ->            0
+  bars_add_up_control.exact                                                      6882 ->         6051
+  bars_add_up_control.n                                                          6882 ->         6051
+  bars_add_up_control.of                                                         6882 ->         6051
+  held_out.staff_not_identified                                                    63 ->            0
+  held_out.of_noteheads_in_log                                                  24533 ->        24408
+  held_out.fraction                                                      0.0025679696735009987 ->          0.0
+  unread_bars.empty_bars_padded                                                   613 ->          177
+  unread_bars.tacet_bars_not_padded_without_meter                                 328 ->            0
