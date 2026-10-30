@@ -628,26 +628,53 @@ def score_truth(canvas: PageInk, truth: Dict[str, Any], source: str = "any") -> 
 
 # ───────────────────────────── 6. tiles ─────────────────────────────
 
-def problem_components(canvas: PageInk, limit: int = 40, join_px: int = 9) -> List[Dict[str, Any]]:
-    """The biggest connected pieces of unclaimed / contested ink on the page (near pieces joined), biggest first."""
+def staff_bands(cells: Sequence[Any]) -> List[Tuple[float, float]]:
+    """Each staff's (top line y, bottom line y) in page px, once per staff (from its cells)."""
+    seen: Dict[int, Tuple[float, float]] = {}
+    for c in cells:
+        ys = list(c.staff_line_ys_canonical or [])
+        if len(ys) >= 5 and c.staff_index not in seen:
+            y0 = c.bbox_page_px[1]
+            seen[c.staff_index] = (y0 + ys[0] / c.upscale_factor, y0 + ys[-1] / c.upscale_factor)
+    return sorted(seen.values())
+
+
+def problem_components(canvas: PageInk, bands: Sequence[Tuple[float, float]], limit: int = 40, join_px: int = 5) -> List[Dict[str, Any]]:
+    """The biggest connected pieces of unclaimed / contested ink, ONE STAFF AT A TIME (each page row goes to the staff whose middle line is
+    nearest, so a system barline or bracket is cut into one piece per staff, never a tile of the whole system), biggest first."""
     import cv2
     names = canvas.cat_names
     bad = [i for i, n in enumerate(names) if n.startswith(("unclaimed", "refused", "contested", "weak", "outside"))]
-    if not bad:
+    if not bad or not bands:
         return []
     m = np.isin(canvas.cat, bad) & canvas.ink
+    mids = np.array([(t + b) / 2.0 for t, b in bands])
+    rows = np.arange(canvas.shape[0])
+    owner = np.abs(rows[:, None] - mids[None, :]).argmin(axis=1)
     k = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (join_px, join_px))
-    joined = cv2.dilate(m.astype(np.uint8), k)
-    n, lab, stats, _c = cv2.connectedComponentsWithStats(joined, connectivity=8)
     out = []
-    for i in range(1, n):
-        x, y, w, h, _a = stats[i]
-        sl = (slice(y, y + h), slice(x, x + w))
-        px = int((m[sl] & (lab[sl] == i)).sum())
-        if px < 40:
+    for bi, (top, bot) in enumerate(bands):
+        u = (bot - top) / 4.0
+        ys = np.nonzero(owner == bi)[0]
+        ys = ys[(ys >= top - 5 * u) & (ys <= bot + 5 * u)]
+        if ys.size == 0:
             continue
-        cats = collections.Counter(names[c] for c in canvas.cat[sl][m[sl] & (lab[sl] == i)])
-        out.append({"box": [int(x), int(y), int(x + w), int(y + h)], "ink_px": px, "states": dict(cats.most_common(4))})
+        y0, y1 = int(ys[0]), int(ys[-1]) + 1
+        sub = m[y0:y1]
+        if not sub.any():
+            continue
+        joined = cv2.dilate(sub.astype(np.uint8), k)
+        n, lab, stats, _c = cv2.connectedComponentsWithStats(joined, connectivity=8)
+        for i in range(1, n):
+            x, y, w, h, _a = stats[i]
+            sl = (slice(y, y + h), slice(x, x + w))
+            sel = sub[sl] & (lab[sl] == i)
+            px = int(sel.sum())
+            if px < 40:
+                continue
+            cats = collections.Counter(names[c] for c in canvas.cat[y0:y1][sl][sel])
+            out.append({"box": [int(x), int(y + y0), int(x + w), int(y + y0 + h)], "ink_px": px, "states": dict(cats.most_common(4)),
+                        "unit": u, "staff_y": (top, bot)})
     out.sort(key=lambda d: -d["ink_px"])
     return out[:limit]
 
@@ -846,28 +873,11 @@ def run(rec: str, pages: Optional[Sequence[int]], *, truth: Optional[str], tiles
                 res.truth = {"any": score_truth(canvas, tr, "any"), "register": score_truth(canvas, tr, "register")}
         if tiles is not None:
             from PIL import Image
-            comps = problem_components(canvas)
+            comps = problem_components(canvas, staff_bands(cells))
             if comps:
                 images[pg] = Image.fromarray(pws.page.rgb).convert("RGB")
             for cmp_ in comps:
-                cx, cy = (cmp_["box"][0] + cmp_["box"][2]) / 2.0, (cmp_["box"][1] + cmp_["box"][3]) / 2.0
-                best = None
-                for c in cells:
-                    ys = list(c.staff_line_ys_canonical or [])
-                    if len(ys) < 5:
-                        continue
-                    x0, y0, x1, y1 = c.bbox_page_px
-                    top, bot = y0 + ys[0] / c.upscale_factor, y0 + ys[-1] / c.upscale_factor
-                    if x0 <= cx < x1:
-                        d = 0.0 if top <= cy <= bot else min(abs(cy - top), abs(cy - bot))
-                        if best is None or d < best[0]:
-                            best = (d, c, top, bot, (bot - top) / 4.0)
-                item = {"page": pg, "box": cmp_["box"], "ink_px": cmp_["ink_px"], "states": cmp_["states"]}
-                if best:
-                    c = best[1]
-                    item.update(unit=best[4], staff_y=(best[2], best[3]),
-                                position={"page": pg, "staff_index": c.staff_index, "cell": c.measure_index})
-                tile_pool.append(item)
+                tile_pool.append({"page": pg, **cmp_})
         results.append(res)
         log("  page %d: %d ink px, %d cells ok / %d mismatched (%.0fs)" % (pg, tally["ink_px"], verify.get("cells_ok", 0), verify.get("cells_mismatch", 0), time.time() - t0))
         del canvas, pws, cells

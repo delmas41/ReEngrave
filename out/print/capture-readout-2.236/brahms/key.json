@@ -1,0 +1,258 @@
+[
+ {
+  "page": 25,
+  "box": [
+   663,
+   5348,
+   1436,
+   5547
+  ],
+  "ink_px": 19450,
+  "states": {
+   "unclaimed:horizontal": 12149,
+   "contested_settled": 7272,
+   "unclaimed:vertical": 21,
+   "unclaimed:blob": 8
+  },
+  "unit": 27.7403564453125,
+  "tile": 1,
+  "crop_origin": [
+   883,
+   5275
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 12,
+  "box": [
+   657,
+   4869,
+   1402,
+   5076
+  ],
+  "ink_px": 15855,
+  "states": {
+   "unclaimed:horizontal": 9165,
+   "contested_settled": 6668,
+   "unclaimed:vertical": 16,
+   "unclaimed:blob": 6
+  },
+  "unit": 27.8145751953125,
+  "tile": 2,
+  "crop_origin": [
+   862,
+   4815
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 19,
+  "box": [
+   633,
+   5037,
+   1329,
+   5276
+  ],
+  "ink_px": 13355,
+  "states": {
+   "contested_settled": 8396,
+   "unclaimed:horizontal": 3037,
+   "weak_claim": 1922
+  },
+  "unit": 27.4818115234375,
+  "tile": 3,
+  "crop_origin": [
+   816,
+   5003
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 4,
+  "box": [
+   644,
+   4758,
+   1076,
+   4994
+  ],
+  "ink_px": 12601,
+  "states": {
+   "contested_settled": 9337,
+   "unclaimed:horizontal": 3264
+  },
+  "unit": 27.296630859375,
+  "tile": 4,
+  "crop_origin": [
+   696,
+   4726
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 5,
+  "box": [
+   644,
+   1196,
+   1439,
+   1435
+  ],
+  "ink_px": 11904,
+  "states": {
+   "contested_settled": 6471,
+   "unclaimed:horizontal": 5433
+  },
+  "unit": 27.2801513671875,
+  "tile": 5,
+  "crop_origin": [
+   877,
+   1163
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 12,
+  "box": [
+   664,
+   1380,
+   1224,
+   1560
+  ],
+  "ink_px": 11500,
+  "states": {
+   "contested_settled": 5514,
+   "unclaimed:horizontal": 4497,
+   "weak_claim": 1489
+  },
+  "unit": 27.77783203125,
+  "tile": 6,
+  "crop_origin": [
+   777,
+   1302
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 0,
+  "box": [
+   1221,
+   3797,
+   1257,
+   4196
+  ],
+  "ink_px": 10464,
+  "states": {
+   "contested_settled": 10464
+  },
+  "unit": 32.0126953125,
+  "tile": 7,
+  "crop_origin": [
+   1046,
+   3760
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 19,
+  "box": [
+   637,
+   5693,
+   1329,
+   5908
+  ],
+  "ink_px": 10279,
+  "states": {
+   "contested_settled": 10276,
+   "weak_claim": 3
+  },
+  "unit": 27.4818115234375,
+  "tile": 8,
+  "crop_origin": [
+   818,
+   5618
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 0,
+  "box": [
+   3621,
+   5840,
+   4618,
+   6103
+  ],
+  "ink_px": 10093,
+  "states": {
+   "contested_settled": 7350,
+   "unclaimed:vertical": 2743
+  },
+  "unit": 32.23046875,
+  "tile": 9,
+  "crop_origin": [
+   3926,
+   5803
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 0,
+  "box": [
+   1221,
+   6260,
+   1256,
+   6632
+  ],
+  "ink_px": 9741,
+  "states": {
+   "contested_settled": 9741
+  },
+  "unit": 32.0126953125,
+  "tile": 10,
+  "crop_origin": [
+   1046,
+   6223
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 0,
+  "box": [
+   1223,
+   4545,
+   1287,
+   4944
+  ],
+  "ink_px": 9348,
+  "states": {
+   "contested_settled": 9036,
+   "unclaimed:curve": 312
+  },
+  "unit": 32.0126953125,
+  "tile": 11,
+  "crop_origin": [
+   1062,
+   4508
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "page": 4,
+  "box": [
+   3098,
+   6293,
+   3290,
+   6443
+  ],
+  "ink_px": 9138,
+  "states": {
+   "unclaimed:vertical": 7752,
+   "contested_settled": 1386
+  },
+  "unit": 27.476806640625,
+  "tile": 12,
+  "crop_origin": [
+   3029,
+   6185
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ }
+]
