@@ -17,7 +17,50 @@ re-enter.
 
 ---
 
-## START HERE — after 2026-10-28 evening (main ≥ the commit naming this block)
+## START HERE — after 2026-10-29 (main ≥ the commit naming this block)
+
+Read FIRST. **Next: Sean runs the overnight full re-gather on this main; then ROADMAP 2.231 (a MASTER CELL MAP) is the first task of the next session.** That means freezing the overnight's cells so test gathers load them, rather than re-cutting, and both arms compare identical cells and tiles. Then re-run the 2026-10-29 product ranking (benchmarks/acceptance/FINDINGS.md; scripts on lane-ranking-1029b) on the overnight against 20261022-night, and pick lanes biggest-first.
+
+**Landed ON 2026-10-29** (all deny-list flags, default ON; full fast tier green on main):
+- 2.220 fill from the head's own ink (`OMR_FILL_FROM_STROKES`, 4a083f3d3).
+- Head trim: strips only the line's own rows (`OMR_HEAD_TRIM_LINE_ONLY`, f5405e8a9), plus the height cap 1.5 -> 1.6 sp (`_V2`, 53b27557c). This is a Litolff-measured cut; re-measure on the next publisher.
+- The judged scorer counts WRITTEN values, blue included, and reads key.json galleries (d51e3967c). Earlier "right->wrong 0" lines missed blue-to-blue changes.
+- Arc claim: each system arc claims its ink once, no kind (`OMR_ARC_CLAIM`, c4ba3b869). Tie/slur from ends and slur anchors are built but OFF, waiting on 2.223.
+- Whole-rest bars (`OMR_FOUND_WHOLE_REST`, `OMR_WHOLE_REST_HANGS`, `OMR_WHOLE_REST_PLAIN`; cd6151616): read by ink shape, no centring; plain in an otherwise empty bar, blue when shared. Litolff +129, Brahms +65 rests.
+- Page-wide barlines (`OMR_BARLINE_SYSTEM_COLUMNS`, 846efa623): through-ink first, tilt followed per staff, barline ink claimed, brace vs bracket by hook shape. Sean 12/12.
+- Duplicate-pass cleanup (no flag, a54c425a9 / 16165283f): one detector run for the rescue floors, header cells once, one page ink cache, direction_text ink once. Records identical.
+- Word coverage (`OMR_CLAIM_WORDS_FIRST`, `OMR_CLAIM_BRACKETS_FIRST`, d5f555e5e): words, dynamics, tempo marks incl. the metronome note, instrument names, titles, lone letters (blue), brackets and braces, claimed page-wide. Brahms p0 49/60 hand-truth marks.
+- Stem-end head reader from ink (`OMR_STEM_END_HEAD_INK`, fac9ccc79, ROADMAP 2.224): the head is read from ink at a stem end with no head box; ink-only heads are blue; disagreements abstain. Round 3: written 5/5.
+
+**Rules set today** (CLAUDE.md §3 Claim order and §6; DECISIONS 2026-10-29):
+- Simplify GATHER: claim ink at the coarsest kind; meaning later.
+- The page-wide pass reads page/system marks once; no duplicate passes.
+- Page-wide marks: claim early, anchor late (plan §9-10).
+- A claim is proved by Sean's tiles and the hand-labelled pages, not a re-gather.
+- Plain vs blue is set by measurement.
+- Tiles: one staff, from the written file, a box sized to the mark.
+- Lane briefs cite the old system's work and what was rejected.
+- Up to 4 lanes; one large gather plus small checks.
+- Lanes run in the Agent tool's isolated worktree.
+- OCR keep-alive off.
+
+**Parked on branches** (not landed, with their tiles and next steps):
+- 2.204 stems (lane-2.204-stems-from-strokes): re-measure after the claims.
+- 2.222 one-head check: the head count is now honest after the trim fix.
+- 2.217 ledgers.
+- 2.223 page-wide anchoring of arcs/words to notes.
+- Stem-end head reader misses: two-stem heads (tile 7), and 2 real notes held as candidates (r3 tiles 3, 10).
+- In-staff words (2.221 m4).
+- Thick braces (the rule scan misses some).
+- Marks read by nothing: 8va, pedal, segno/coda, rehearsal letters, trill lines (plan §10a).
+- Arcs the detector never boxed are never read.
+
+**Known gaps from the ranking** (benchmarks/acceptance/FINDINGS.md "red bars"):
+- A missed flag or dot becomes a plain READ quarter (no lane yet).
+- Extra ink counted in bars (neighbour staff heads).
+- Voice splits.
+
+## START HERE — after 2026-10-28 evening (superseded by the block above) (main ≥ the commit naming this block)
 
 Read FIRST. **2.202 BEAMS FROM THE STROKE MAP LANDED ON** (main 9dcd78a6e, Sean "merge lanes and land on"; `OMR_BEAMS_FROM_STROKES` default ON, explicit 0 disables). Evidence: judged right->wrong 0 both plates; Sean's 2.202f tiles right->wrong 0; round-3 right->gone fixed by four causes (head-end ink, accidental owner taking a beam, thickness trough 0.4375-0.5 abstains, a broken beam owns the stems under its width -- Sean 2026-10-28, only for a stroke that itself reaches a stem). FINDINGS shared-ink-map 5i. The overnight re-gather is the first whole-movement measure with it ON.
 

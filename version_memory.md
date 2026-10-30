@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- session close: handoff for the overnight re-gather (manager session)
+Docs only. ROADMAP "START HERE -- after 2026-10-29" lists the day's ten landings with flags and commits (2.220 fill; head trim + 1.6 sp cap; judged scorer; arc claim; whole-rest bars; page-wide barlines; duplicate-pass cleanup; word coverage; stem-end head reader), the rules set (claim order / page-wide pass, no duplicate passes, claims proved by tiles and hand truth, plain vs blue by measurement, tiles boxed to the mark, isolated lane worktrees, 4 lanes), what is parked, and the next session's first task (2.231 master cell map from the 20261029 overnight). CLAUDE.md §3 gains "Claim order"; §6 Where/Lean lanes/Evidence updated.
+
 ## 2026-10-29 -- stem-end head reader from ink LANDED ON (lane-stem-end-head, OMR_STEM_END_HEAD_INK default ON, ROADMAP 2.224)
 
 STAGED. GATHER files the detector re-run boxes plus an ink-only candidate box at a CV stem end with no head box; ADJUDICATE (after all claims) refuses claimed ink, a box whose HEAD_INK reads not one head, far-side and unladdered heads, never a whole rest, and writes ink-only heads GUESSED (blue). Cause: the 0.07 rescue flipped with the crop. Subset Litolff +3/-0, Brahms +2/-0; judged right->wrong 0; Sean's round-3 tiles written 5/5 right. Merged over word/bracket claims, whole rests, page-wide barlines, arc claim and the duplicate-pass cleanup.
