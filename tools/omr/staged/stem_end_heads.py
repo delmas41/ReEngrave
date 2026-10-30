@@ -209,3 +209,238 @@ def candidates_for_cell(stems: Sequence[Any], existing: Sequence[Any], rerun: Se
         cand["det"] = d
         kept.append(cand)
     return kept, refused, len(orphans)
+
+
+def orphan_indices(stems: Sequence[Any], existing: Sequence[Any], space: float) -> List[int]:
+    """The orphan stems `candidates_for_cell` looks at (no head at an end, not another mark's upright)."""
+    heads = [_box(d) for d in existing if is_head(d.smufl_name)]
+    owners = [_box(d) for d in existing if str(d.smufl_name).startswith(_OWNER_PREFIXES) and float(d.confidence) >= 0.25]
+    return [i for i, s in enumerate(stems) if is_orphan(s, heads, space) and not owned_by_a_mark(s, owners, space)]
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# lane-stem-end-head (Sean approved 2026-10-29): the head at an orphan stem's end READ from the page's own ink, beside the detector re-run.
+#
+# CAUSE (lane-barlines-1029, DECISIONS 2026-10-29): Litolff p9's real quarter at page px (1734, 2385) was found only by the 0.05 re-run;
+# OFF it gave a 0.074 box, and with the corrected barline the cell crop starts at 1470 instead of 1526 and the re-run finds nothing. A
+# 0.07 detector guess flips with any crop change: it is not reading. So the head is read where the convention puts it, on the PAGE
+# raster GATHER already holds (`pws.page.binary`, no new image pass), with the head reader landed for fill (`head_ink.read_head_ink`:
+# line-only trim, 1.6 sp cap), and the re-run kept only as a second witness.
+#
+# Flag `OMR_STEM_END_HEAD_INK`, default ON (Sean 2026-10-29; an explicit 0/false/no/off disables). Per orphan stem end:
+#   * a head-sized SEED box (`HEAD_WIDTH_SPACES` x `HEAD_HEIGHT_SPACES`, the convention's head, from the staff space) on the side the
+#     stem's direction gives (up-stem: head at the BOTTOM end, LEFT of the stem; down-stem: at the TOP end, RIGHT of it), centred on
+#     the tip; `head_ink.read_head_ink` trims it to the head's own ink;
+#   * it is a head only where the trimmed ink is ONE head (`not_one_head` None), OVAL (wider than tall, head-tall across at least a
+#     head's minimum, `head_ink.MIN_SPACES`), ATTACHED (its stem-side edge within `CROSS_SPACES` of the stem, its centre at the end by
+#     `at_stem_end`) and its fill read ('hollow' / 'filled');
+#   * ink and re-run AGREE (same ink) -> the re-run's box is kept (as before); ink alone -> a box built on the trimmed ink; re-run alone
+#     where the ink reads no head, or the two on different ink, or one head read at BOTH ends of one stem -> ABSTAIN with the
+#     candidates (nothing appended);
+#   * ink another mark of the cell already holds (an `_OTHER_FAMILY_PREFIXES` box at the production floor, or a head already seen) is
+#     never taken.
+# CONVENTION ASSUMED: a head stands at its stem's end on the side the stem's direction gives, an oval ~1.3 x 1.0 sp (page-facts "Stems";
+# benchmarks/omr-notehead-width-2026-09). WHAT WOULD FALSIFY IT: Sean's blind tiles on ink-only heads showing beam ends, clef bodies,
+# dynamics or tremolo slashes read as one head (2.210's list). NOT CONFIRMED beyond Litolff + Brahms.
+
+STEM_END_HEAD_INK_ENV = "OMR_STEM_END_HEAD_INK"
+#: the convention's head (benchmarks/omr-notehead-width-2026-09: 1.3-1.4 sp wide, one space tall); the seed only -- the ink trims it
+HEAD_WIDTH_SPACES = 1.3
+HEAD_HEIGHT_SPACES = 1.0
+#: the production floor: another mark's box below it is not a claim on the ink
+CLAIM_FLOOR = 0.25
+
+
+def ink_enabled() -> bool:
+    """`OMR_STEM_END_HEAD_INK`, default ON (Sean 2026-10-29); an explicit 0/false/no/off disables."""
+    return os.environ.get(STEM_END_HEAD_INK_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def seed_box(stem_x: float, tip_y: float, end: str, space: float) -> Tuple[float, float, float, float]:
+    """Page px seed for the head at `end` of a stem at x `stem_x`: bottom end -> LEFT of the stem, top end -> RIGHT of it."""
+    w, h = HEAD_WIDTH_SPACES * space, HEAD_HEIGHT_SPACES * space
+    if end == "bottom":
+        return (stem_x - w, tip_y - h / 2.0, stem_x, tip_y + h / 2.0)
+    return (stem_x, tip_y - h / 2.0, stem_x + w, tip_y + h / 2.0)
+
+
+class _PageStem:
+    """A stem in PAGE px, shaped like a detection, so `at_stem_end` reads it unchanged."""
+    def __init__(self, x: float, yt: float, yb: float):
+        self.x_canonical, self.y_canonical, self.width_canonical, self.height_canonical = x, yt, 0.0, yb - yt
+
+
+def ink_head_at_end(page_binary: Any, stem_page: Tuple[float, float, float], end: str, space_px: float,
+                    foreign_boxes: Sequence[Sequence[float]], slit_fn: Any, window_fn: Any = None) -> Dict[str, Any]:
+    """Pure: the head read from the page ink at `end` ('bottom' | 'top') of a stem `(x, y_top, y_bottom)` in page px.
+    Returns `{"head": bool, "why": None | reason, "trimmed", "value", "extent_sp", "oval_width_sp", "seed"}`."""
+    from . import head_ink
+    x, yt, yb = stem_page
+    sp = float(space_px)
+    seed = seed_box(x, yb if end == "bottom" else yt, end, sp)
+    out: Dict[str, Any] = {"head": False, "why": None, "trimmed": None, "value": None, "extent_sp": None,
+                           "oval_width_sp": None, "seed": [round(v, 1) for v in seed]}
+    got = head_ink.read_head_ink(page_binary, seed, sp, foreign_boxes, slit_fn, window_fn)
+    if got is None:
+        out["why"] = "no_raster"
+        return out
+    out.update(trimmed=got.get("trimmed"), value=got.get("value"), extent_sp=got.get("extent_sp"),
+               oval_width_sp=got.get("oval_width_sp"), rim_box=got.get("rim_trimmed") or got.get("trimmed"),
+               rim_extent_sp=got.get("rim_extent_sp"))
+    if got.get("trimmed") is None:
+        out["why"] = "no_head_ink"
+        return out
+    if got.get("not_one_head") == "too_small" and _rim_head_sized(got):
+        # Round 3 (Sean's r2 tile 7, "too rectangular to capture the full bite whose ink overlaps the staff lines"): the line-only trim
+        # takes a black head in a space down to ~0.6 sp (its rim lies on both lines); with that rim it is head-sized, so it is one head
+        out["rim_rescued"] = True
+        got = dict(got, not_one_head=None)
+        got["value"], got["margin"], _w = head_ink.fill_from_slit(got.get("slit"))
+        out["value"] = got["value"]
+    if got.get("not_one_head"):
+        out["why"] = "not_one_head:" + str(got["not_one_head"])
+        return out
+    w_sp, h_sp = got["extent_sp"]
+    if out.get("rim_rescued"):
+        h_sp = float(got["rim_extent_sp"][1])
+    if w_sp < h_sp or (got.get("oval_width_sp") or 0.0) < head_ink.MIN_SPACES:
+        out["why"] = "not_oval"
+        return out
+    tx0, _ty0, tx1, _ty1 = got["trimmed"]
+    cross = CROSS_SPACES * sp
+    attached = (tx1 >= x - cross) if end == "bottom" else (tx0 <= x + cross)
+    if not attached or at_stem_end(got["trimmed"], _PageStem(x, yt, yb), sp) != end:
+        out["why"] = "not_at_stem_end"
+        return out
+    # Round 2 (Sean's tiles 8 and 11: part of a flat, a flag): a head's stem stands at its EDGE on the convention side (up-stem: the head's
+    # right edge; down-stem: its left edge), so the head's ink never runs on past the stem by more than a stem drawn through its edge
+    # (`CROSS_SPACES`, the band `at_stem_end` already allows). A flat's bowl hangs on the far side of its own stem (stem LEFT, bowl right),
+    # and a flag leaves the stem tip on the far side -- the "stem" then stands INSIDE the ink. Measured, not tuned: Litolff p4 real quarter
+    # 0.16 sp past, the flat 0.50, the flag 0.28 (narrow margin; the far-side reach is filed on every read for the next look).
+    far = ((tx1 - x) if end == "bottom" else (x - tx0)) / sp
+    out["far_side_sp"] = round(far, 3)
+    if far > CROSS_SPACES:
+        out["why"] = "stem_inside_the_ink"
+        return out
+    if got.get("value") is None:
+        out["why"] = "fill_unread"
+        return out
+    out["head"] = True
+    return out
+
+
+def _rim_head_sized(got: Dict[str, Any]) -> bool:
+    """The trimmed head with its rim rows back (`head_ink.trim_head`'s `rim_extent_sp`) is at least a head's minimum both ways and no
+    taller than the cap: only the line-only trim made it 'too_small'."""
+    from . import head_ink
+    rim = got.get("rim_extent_sp")
+    if not rim:
+        return False
+    w, h = float(rim[0]), float(rim[1])
+    cap = head_ink.MAX_HEIGHT_SPACES_V2 if head_ink.trim_line_only_v2() else head_ink.MAX_HEIGHT_SPACES
+    return w >= head_ink.MIN_SPACES and head_ink.MIN_SPACES <= h <= cap
+
+
+def combine(det_box_page: Optional[Sequence[float]], ink: Optional[Dict[str, Any]]) -> Tuple[str, str]:
+    """Pure: `(verdict, why)` for one stem end -- `agree` (keep the re-run box), `ink_only` (a box on the ink), `abstain`, or `none`."""
+    ink_head = bool(ink and ink.get("head"))
+    if det_box_page is not None and ink_head:
+        if same_ink(det_box_page, ink["trimmed"]):
+            return "agree", "ink_and_rerun_same_ink"
+        return "abstain", "ink_and_rerun_on_different_ink"
+    if det_box_page is not None:
+        return "abstain", "rerun_only_ink_reads:" + str((ink or {}).get("why"))
+    if ink_head:
+        return "ink_only", "ink_only"
+    return "none", str((ink or {}).get("why"))
+
+
+def ink_head_class(value: str, cy: float, top_y: float, half_step: float) -> str:
+    """The head class for an ink-read head: its fill ('filled' black, 'hollow' half -- it has a stem) at its staff position."""
+    black = black_head_class(cy, top_y, half_step)
+    return black if value == "filled" else black.replace("noteheadBlack", "noteheadHalf")
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# lane-stem-end-head ROUND 2 (Sean 2026-10-29 tiles, out/print/stem-end-head/answers.json): ink-only heads were 4/7 real; the junk was a
+# bar number (Brahms p14 "263"), key-signature flats in a system's first bar (Litolff p4) and a flag.
+#
+# CAUSE: the ink read runs EARLY in GATHER (beside the 0.05 re-run, before every per-box reader, which must measure its box), while the
+# key/clef/meter claims, the arc claim and the whole-rest tier are filed or settled LATER (the register's claims at the end of GATHER, the
+# stroke owner in ADJUDICATE). The read cannot move after them without its box missing every per-box GATHER reader (positions, ink,
+# ownership: the gather order rule), so the DECISION moved instead: an ink-only head is a CANDIDATE in GATHER, and ADJUDICATE
+# (`notehead_precision`) refuses it where any `Q.CLAIMED_AREA` row (any owner -- so a word claim counts the day it lands) or a claiming
+# tier of the stroke owner holds its ink, and writes the rest GUESSED (blue) with candidates.
+
+#: the stroke owner's claiming families (its tier 0, and the whole rest that claims before heads, Sean 2026-10-29)
+CLAIM_FAMILIES = ("clef", "meter", "key_signature", "leading_column", "arc_trace", "barline", "whole_rest")
+#: share of the box held by a claim (`claims.INSIDE_SHARE_MIN`, the register's one cut, restated: this module imports nothing)
+CLAIM_SHARE_MIN = 0.5
+
+
+def is_ink_only(detail: Optional[Dict[str, Any]]) -> bool:
+    """A `Q.GLYPH_BOX` detail of a head the page ink alone read at a stem end (`OMR_STEM_END_HEAD_INK`, verdict `ink_only`)."""
+    d = detail or {}
+    return d.get("source") == "stem_end_head" and d.get("ink_verdict") == "ink_only"
+
+
+def _share_inside(box: Sequence[float], area: Sequence[float]) -> float:
+    w, h = float(box[2]) - float(box[0]), float(box[3]) - float(box[1])
+    if w <= 0 or h <= 0:
+        return 0.0
+    iw = min(float(box[2]), float(area[2])) - max(float(box[0]), float(area[0]))
+    ih = min(float(box[3]), float(area[3])) - max(float(box[1]), float(area[1]))
+    return max(0.0, iw) * max(0.0, ih) / (w * h)
+
+
+def claims_holding(rows: Sequence[Any], key: str, box_page: Optional[Sequence[float]], box_strokes: Optional[Sequence[int]],
+                   cell: Optional[int]) -> List[Tuple[Any, Dict[str, Any]]]:
+    """Pure: every `Q.CLAIMED_AREA` row, ANY owner, that holds the box `key` -- `unit: area`: the register measured at least
+    `CLAIM_SHARE_MIN` of the box's ink inside it (or named it); where it measured nothing for the box (a claim filed before the box
+    existed, e.g. the barline column), the share of the box's page area inside it. `unit: ink`: at least `CLAIM_SHARE_MIN` of the
+    box's strokes (`Q.GLYPH_STROKES`, ordinals of its own `cell`) are the claim's (values `[ord, ...]` of the row's cell, or the arc
+    claim's `[[cell, ord], ...]`). Decides nothing."""
+    out: List[Tuple[Any, Dict[str, Any]]] = []
+    mine = set(int(o) for o in (box_strokes or ()))
+    for r in rows or ():
+        d = getattr(r, "detail", None) or {}
+        v = getattr(r, "value", None)
+        if not isinstance(v, (list, tuple)) or (key and d.get("owner_glyph") == key):
+            continue
+        if d.get("unit") == "ink":
+            if not mine:
+                continue
+            got = set()
+            for it in v:
+                if isinstance(it, (list, tuple)) and len(it) == 2:
+                    if cell is not None and int(it[0]) == int(cell):
+                        got.add(int(it[1]))
+                elif isinstance(it, (int, float)) and d.get("cell") == cell:
+                    got.add(int(it))
+            share = len(got & mine) / float(len(mine))
+            if share >= CLAIM_SHARE_MIN:
+                out.append((r, {"unit": "ink", "owner": d.get("owner"), "share": round(share, 3)}))
+            continue
+        if d.get("unit") != "area":
+            continue
+        e = (d.get("boxes_inside") or {}).get(key)
+        if e:
+            share, how = (1.0 if e.get("named") else float(e.get("ink_share_inside", 0.0))), "ink_share"
+        elif box_page is not None and len(v) == 4:
+            share, how = _share_inside(box_page, v), "box_share"
+        else:
+            continue
+        if share >= CLAIM_SHARE_MIN:
+            out.append((r, {"unit": "area", "owner": d.get("owner"), "share": round(share, 3), "how": how}))
+    return out
+
+
+def stroke_claim(entry: Optional[Sequence[Any]]) -> Optional[str]:
+    """Pure: the stroke owner's box entry `(verdict, lost)` -> the claiming family that took the box's ink, or None: the box owns nothing
+    (`refused` / `contested`) and a stroke it covers was DECIDED to a claiming family (`CLAIM_FAMILIES`)."""
+    if not entry or len(entry) < 2 or entry[0] not in ("refused", "contested"):
+        return None
+    for x in entry[1] or ():
+        if len(x) >= 3 and x[1] == "decided" and x[2] in CLAIM_FAMILIES:
+            return str(x[2])
+    return None

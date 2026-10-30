@@ -468,6 +468,8 @@ def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
 #: ROADMAP 2.181: a head/rest box a claim holds but cannot refuse is NARROWED {itself, the owner's ink}; written, it is GUESSED.
 CLAIM_NARROWED_PREFIX = "claim_narrowed:"
 WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs",)
+#: lane-stem-end-head round 2: the ink-only stem-end head, NARROWED {a head, not one} by `notehead_precision`
+STEM_END_INK_ONLY_REASON = "stem_end_ink_only"
 
 
 def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
@@ -482,6 +484,13 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.REST_IS_NOT_A_REST,
                 "candidates": [{"value": "whole_rest", "support": 1.0}, {"value": "not_a_rest", "support": 0.5}],
                 "chosen": {"value": "whole_rest"}}
+    v = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
+    if v is not None and v.get("outcome") == "narrowed" and v.get("reason") == STEM_END_INK_ONLY_REASON:
+        # lane-stem-end-head round 2 (flag OMR_STEM_END_HEAD_INK): a head the page ink alone read at a stem end -- GUESSED (blue)
+        # until Sean's tiles earn it plain; none is filed with the flag OFF
+        return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+                "candidates": [{"value": "symbol", "support": 1.0}, {"value": "not_a_head", "support": 1.0}],
+                "chosen": {"value": "symbol"}}
     for q in (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST):
         v = rec.verdict(q, sub)
         if v is not None and v.get("outcome") == "narrowed" and str(v.get("reason") or "").startswith(CLAIM_NARROWED_PREFIX):
