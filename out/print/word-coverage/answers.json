@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "in word coverage, tile 5 is an arc. And tile 9 is part of a bracket. Everything else is a word.",
+ "tally": "10/12 right as words (names, div., cresc., tempo mark, lone f, unclaimed dynamic). Tile 5, a 'page_heading' title claim, is an ARC -- the heading claim takes arc ink (junk heading boxes are slur-shaped). Tile 9, an unclaimed hand-truth 'brace', is part of a bracket -- the hand-truth label is wrong there.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "word"
+  },
+  {
+   "tile": 2,
+   "answer": "word"
+  },
+  {
+   "tile": 3,
+   "answer": "word"
+  },
+  {
+   "tile": 4,
+   "answer": "word"
+  },
+  {
+   "tile": 5,
+   "answer": "arc"
+  },
+  {
+   "tile": 6,
+   "answer": "word"
+  },
+  {
+   "tile": 7,
+   "answer": "word"
+  },
+  {
+   "tile": 8,
+   "answer": "word"
+  },
+  {
+   "tile": 9,
+   "answer": "part of a bracket"
+  },
+  {
+   "tile": 10,
+   "answer": "word"
+  },
+  {
+   "tile": 11,
+   "answer": "word"
+  },
+  {
+   "tile": 12,
+   "answer": "word"
+  }
+ ]
+}
