@@ -10315,6 +10315,50 @@ STACKED_BLOB_MIN_SLOT_FILL = 0.75
 STACKED_BLOB_WINDOW_SPACES = 2.5
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default OFF until Sean's tiles.
+# The fit scores a head TEMPLATE at every slot and, at k=1, names the one
+# best-scoring slot. Two touching HOLLOW heads a third apart (a chord) leave a
+# ring of ink at the slot BETWEEN them too, and `max(centre, ring)` there beats
+# either real head (Litolff p3 `glyph/3/0/4/3/12`: slots 1 / 2 / 3 scored 0.68 /
+# 0.87 / 0.77 under the eraser raster; the detector's boxes stand at 0.88 and
+# 3.24). The fit then said "ONE head, at slot 2" -- a position NEITHER box
+# stands at -- and ADJUDICATE refused one of the two as that head's duplicate.
+# The fit's hypothesis model never asks whether its head lands on a box the
+# detector drew (`observed` only broke exact ties). A head a staff step or more
+# from every box was not seen by anything but the template: cannot tell.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A k=1 fit whose chosen slot is at least this many half-steps (positions; 1.0
+#: = a staff step = 0.5 sp) from EVERY box of its group is a head no box
+#: stands on. Measured on the Litolff 20261029-night sample pages (benchmarks/
+#: acceptance FINDINGS 2026-10-30, 2.232): of 141 hollow k=1 groups 22 sit at
+#: >= 1.0, of 48 filled groups none (filled groups have the blob test); a head
+#: boxed twice puts its slot within 0.5 of a box.
+STACKED_HEAD_BOX_STEP_POSITIONS = 1.0
+
+
+def stacked_head_step_apart_enabled() -> bool:
+    """`OMR_STACKED_HEAD_STEP_APART` -- ROADMAP 2.232. **Default OFF**."""
+    return os.environ.get("OMR_STACKED_HEAD_STEP_APART", "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def stacked_head_off_every_box(chosen: Sequence[float],
+                               observed: Sequence[float]) -> Optional[float]:
+    """PURE -- ROADMAP 2.232. At k=1: how far (positions) the chosen head's slot
+    stands from the NEAREST detector box of its group, when that is a staff
+    step or more AND the boxes themselves span a pair (no more than a chord of
+    thirds, `STACKED_HOLLOW_MAX_SPREAD_POSITIONS`, the domain of 2.132's pair
+    test); else `None`."""
+    if len(chosen) != 1 or len(observed) < 2:
+        return None
+    if max(observed) - min(observed) > STACKED_HOLLOW_MAX_SPREAD_POSITIONS:
+        return None
+    nearest = min(abs(float(chosen[0]) - float(o)) for o in observed)
+    return nearest if nearest >= STACKED_HEAD_BOX_STEP_POSITIONS else None
+
+
 def stacked_second_head_enabled() -> bool:
     """`OMR_STACKED_SECOND_HEAD` -- ROADMAP 2.129. **Default ON** (landed
     2026-10-14, Sean: "1 land"); an explicit `0/false/no/off` turns it off."""
@@ -10982,6 +11026,20 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
 
             candidates_detail = {"scores": {str(p): round(v, 4)
                                             for p, v in fit["scored"].items()}}
+            if (stacked_head_step_apart_enabled() and not filled_group
+                    and not fit["ambiguous"] and fit["k"] == 1):
+                # ⚠️ ROADMAP 2.232 -- the fit's one head stands on no box (see
+                # the section comment): ABSTAIN with how far, never refuse a
+                # box in favour of a head nothing drew (rule 8).
+                off = stacked_head_off_every_box(fit["positions"],
+                                                 positions_seen)
+                if off is not None:
+                    fit["ambiguous"] = True
+                    fit["margin"] = STACKED_HEAD_BOX_STEP_POSITIONS - off
+                    candidates_detail["head_on_no_box"] = {
+                        "slot": list(fit["positions"]),
+                        "boxes": [round(v, 2) for v in positions_seen],
+                        "nearest_positions": round(off, 3)}
             if fit.get("second_head_by"):
                 candidates_detail["second_head_by"] = fit["second_head_by"]
             if fit.get("near_miss"):

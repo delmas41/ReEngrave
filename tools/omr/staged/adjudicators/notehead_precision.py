@@ -2059,6 +2059,38 @@ def _earlier_rules_heir(ev: Evidence, cell, rival_row, spacing: float):
     return _SURVIVES
 
 
+#: ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default OFF (GATHER's half is
+#: `gather.stacked_head_step_apart_enabled`; read here directly, the reverse
+#: import being a cycle). Two parts of this decision: (1) boxes of one stem and
+#: SIDE whose centres stand `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES` (0.75 sp,
+#: the midpoint between a second, which sits on the OTHER side, and a third)
+#: or more apart are different heads even when they abut: a head boxed twice
+#: puts both centres within ~0.35 sp (`HEAD_CUT_PARTIAL_MAX_DY_SPACES`); (2) a
+#: keeper chosen on an ink lead smaller than `STACKED_KEEPER_NEAR_TIE` is a
+#: guess, not an answer (rule 8): neither box is refused, both go on to the
+#: later readers, the signed lead recorded.
+STACKED_HEAD_STEP_APART_ENV = "OMR_STACKED_HEAD_STEP_APART"
+#: The lead the keeper's ink must have over the refused box's. 0.05: the
+#: `gather.STACKED_HEAD_FIT_MARGIN` discipline, and measured: between the 10-22
+#: and 10-29 Litolff gathers the SAME box's ink moved by > 0.05 for 6% of boxes
+#: (0.0111 at the 90th percentile, 0.064 at the 95th) -- a smaller lead flips
+#: under a raster change (FINDINGS 2026-10-30, 2.232).
+STACKED_KEEPER_NEAR_TIE = 0.05
+
+
+def stacked_head_step_apart_enabled() -> bool:
+    return os.environ.get(STACKED_HEAD_STEP_APART_ENV, "0").strip().lower() \
+        in ("1", "true", "yes", "on")
+
+
+def _box_centres_a_step_apart(a, b, spacing: float) -> bool:
+    """`Q.GLYPH_BOX` values `(class, x, y, w, h)`: do the two centres stand at
+    least `NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES` apart vertically?"""
+    ca = float(a[2]) + float(a[4]) / 2.0
+    cb = float(b[2]) + float(b[4]) / 2.0
+    return abs(ca - cb) / spacing >= NOTEHEAD_SAME_SIDE_MAX_DY_STAFF_SPACES
+
+
 def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
                                     detail: Dict[str, Any]
                                     ) -> Optional[Ruling]:
@@ -2130,8 +2162,15 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
             or (r.subject in cell_boxes
                 and isinstance(cell_boxes[r.subject].value, (list, tuple))
                 and len(cell_boxes[r.subject].value) == 5
-                and (_boxes_on_one_head(mine, cell_boxes[r.subject].value,
-                                        spacing)
+                and ((_boxes_on_one_head(mine, cell_boxes[r.subject].value,
+                                         spacing)
+                      and not (stacked_head_step_apart_enabled()
+                               and _plausible_head_box(mine, spacing)
+                               and _plausible_head_box(
+                                   cell_boxes[r.subject].value, spacing)
+                               and _box_centres_a_step_apart(
+                                   mine, cell_boxes[r.subject].value,
+                                   spacing)))
                      or not (_plausible_head_box(mine, spacing)
                              and _plausible_head_box(
                                  cell_boxes[r.subject].value, spacing))))]
@@ -2197,6 +2236,19 @@ def _stacked_head_duplicate_refusal(ev: Evidence, this_row,
     best_ink, best_row = max(inks, key=lambda t: t[0])
     if best_row.subject == ev.subject:
         return None                 # this box IS the slot's own keeper
+    if stacked_head_step_apart_enabled():
+        # ⚠️ ROADMAP 2.232 -- a keeper chosen on a near-tie is a guess: the
+        # same ink moved by more than this under a raster change (see
+        # `STACKED_KEEPER_NEAR_TIE`). Neither box is refused here, the signed
+        # lead is recorded, the later readers see both (rule 8).
+        this_ink = (fdetail or {}).get("ink")
+        if this_ink is not None:
+            lead = best_ink - this_ink
+            if lead < STACKED_KEEPER_NEAR_TIE:
+                signal["near_tie"] = {
+                    "keeper": best_row.id, "lead": round(lead, 4),
+                    "margin": round(lead - STACKED_KEEPER_NEAR_TIE, 4)}
+                return None
     # ⚠️ ROADMAP 2.73 -- THE SLOT'S WINNER MAY HAVE BEEN REFUSED, a rule earlier,
     # IN FAVOUR OF THIS VERY BOX. Then this box is the mark's one keeper: 2.30
     # kept it and refused the winner, and refusing it here for that same winner
