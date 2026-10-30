@@ -1959,7 +1959,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_is_a_barline",
                                      "rest_narrower_than_its_class",
                                      "rest_stroke_into_a_head",
-                                     "rest_owner_refused"),
+                                     "rest_owner_refused", "rest_holds_a_stem"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
@@ -2061,6 +2061,14 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # the first of them stood: refused -> refused; owns -> the covered rules below (`rest_on_a_dynamic_letter`,
         # `rest_overlaps_a_notehead`, `rest_stroke_into_a_head`) do not decide; contested / silent -> they decide as before (rule 8).
         owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+        holds_stem = owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "rest_holds_a_stem"
+        if holds_stem:
+            # 2.238 round 3 (Sean's r2 tile 1, Brahms 5/0/13/2): the rest box's ink is a note's stem, but that note's stem is not read
+            # (GATHER deleted the strokes inside the rest box before `Q.STEM`), so refusing the box left the bar unable to sum and main's
+            # real eighth was held out red. The evidence may not cost a written note: the old rules decide; a box they keep is written
+            # NARROWED (blue), never plain.
+            detail["owner"] = {"lost": owner_lost, "verdict": owner_vid, "veto": "rest_holds_a_stem"}
+            owner_says = "silent"
         if owner_says == "refused":
             # the refusal keeps the NAME of the evidence that decided it; the owner is recorded as the decider
             owner_veto = _stroke_owner.veto_rule(ev, ev.subject.to_key())
@@ -2152,6 +2160,10 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             detail["one_ink"] = merged
             if not _one_ink.reads(merged.get("margin")):
                 return _one_ink_rest_narrowing(merged, used, detail)
+        if holds_stem:
+            from ..record import Candidate
+            return Ruling.narrow((Candidate(value=False, support=1.0), Candidate(value=True, support=1.0)), "rest_holds_a_stem",
+                                 used=tuple(list(used) + ([owner_vid] if owner_vid else [])), **detail)
     return Ruling(value=False, reason="rest", used=used, detail=detail)
 
 

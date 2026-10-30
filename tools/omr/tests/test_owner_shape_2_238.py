@@ -137,6 +137,23 @@ class TestSeansRound2Tiles(unittest.TestCase):
         self.assertIn("if whole_refusal is not None:\n        return whole_refusal", src)
 
 
+class TestSeansRound3Tile(unittest.TestCase):
+    """Sean's 2.238 round-2 tile 1 (Brahms 5/0/13/2/5, "8"): refusing a false quarter-rest box on an eighth's unread stem left the bar
+    unable to sum and main's real eighth was held out red. `rest_holds_a_stem` may not refuse: the old rules decide, a kept box is
+    NARROWED (written blue, never plain)."""
+
+    def test_the_veto_hands_the_box_to_the_old_rules_and_narrows_what_they_keep(self):
+        import inspect
+        from tools.omr.staged.adjudicators import family_precision as FP
+        src = inspect.getsource(FP.adjudicate_rest_is_not_a_rest)
+        self.assertIn('== "rest_holds_a_stem"', src)
+        self.assertIn('owner_says = "silent"', src)
+        self.assertIn('"rest_holds_a_stem",', src)                       # the narrowing's reason, declared and returned
+        from tools.omr.staged import adjudicate
+        from tools.omr.staged.record import Q
+        self.assertIn("rest_holds_a_stem", adjudicate.REGISTRY[Q.REST_IS_NOT_A_REST].reasons)
+
+
 class TestTheNoiseGateOnTheRestsInkContact(unittest.TestCase):
     """Tile 10 (Litolff 16/1/2/2): the 2.150b margin 0.01 is inside the 0.05 re-read noise -- no veto; tile 4's 0.69 vetoes."""
 
