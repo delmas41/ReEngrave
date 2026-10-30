@@ -154,6 +154,7 @@ from . import key_slots as _key_slots
 from . import inside_meter as _inside_meter
 from . import claimed_by as _claimed_by
 from . import letter_cover as _letter_cover
+from . import stroke_owner as _stroke_owner
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
                                  CELL_EDGE_TOLERANCE_PAGE_PX,
                                  _same_mark_centres,
@@ -1957,7 +1958,8 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_overlaps_a_notehead",
                                      "rest_is_a_barline",
                                      "rest_narrower_than_its_class",
-                                     "rest_stroke_into_a_head"),
+                                     "rest_stroke_into_a_head",
+                                     "rest_owner_refused"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
@@ -2055,11 +2057,22 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         dup = _duplicate_box_refusal(ev, box_row, detail)
         if dup is not None:
             return dup
+        # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default OFF): the reworked stroke owner decides the cross-family questions ONCE, here, where
+        # the first of them stood: refused -> refused; owns -> the covered rules below (`rest_on_a_dynamic_letter`,
+        # `rest_overlaps_a_notehead`, `rest_stroke_into_a_head`) do not decide; contested / silent -> they decide as before (rule 8).
+        owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+        if owner_says == "refused":
+            detail["owner"] = {"lost": owner_lost, "verdict": owner_vid}
+            return Ruling(value=True, reason="rest_owner_refused", used=tuple(list(used) + ([owner_vid] if owner_vid else [])),
+                          detail=detail)
+        owner_decides = owner_says == "owns"
+        if owner_decides:
+            detail["owner"] = {"owns": True, "verdict": owner_vid}
         # ROADMAP 2.107: a rest whose ink the second look read as a dynamic
         # letter (the `s` of an `sf` boxed `rest16th`).
         cover_row, cover_share = _letter_cover.cover_of(
             ev.rows(Q.LETTER_LOOK_COVER), detail)
-        if _letter_cover.refuses(cover_share):
+        if _letter_cover.refuses(cover_share) and not owner_decides:
             detail["read_by"] = "letter_look"
             return _letter_cover.with_margin(
                 Ruling(value=True, reason="rest_on_a_dynamic_letter",
@@ -2097,7 +2110,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         vertical = _rest_vertical_window_refusal(ev, box_row, detail)
         if vertical is not None:
             return vertical
-        overlap = _rest_overlaps_notehead_refusal(ev, box_row, detail)
+        overlap = None if owner_decides else _rest_overlaps_notehead_refusal(ev, box_row, detail)
         if overlap is not None:
             return overlap
         # ROADMAP 2.105(c): LAST, so every refusal already standing keeps its
@@ -2111,7 +2124,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             if narrow is not None:
                 return narrow
         # ROADMAP 2.150b, LAST of all (flag-gated; GATHER files its row only while the flag is ON).
-        if _rest_ink.enabled():
+        if _rest_ink.enabled() and not owner_decides:
             stroke_head = _rest_stroke_into_head_refusal(ev, box_row, detail)
             if stroke_head is not None:
                 return stroke_head

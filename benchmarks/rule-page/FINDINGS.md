@@ -1,4 +1,49 @@
 
+## 2026-10-30 ROADMAP 2.238 -- one owner decides, with shape (flag `OMR_OWNER_SHAPE`, default OFF; STAGED ADJUDICATE)
+
+Branch `lane-2.238-owner-shape`. Nothing deleted on principle.
+
+**Cause / lesson.** `adjudicate_stroke_owner` (2.205) asks one thing of a claim: does each STROKE the box covers have a piece-shape its
+family can leave (`shape_fit`: clear / could / no)? It never asks whether the BOX's ink, taken whole, has the class's shape. So a head box
+on the foot of a quarter rest, the hook of an f, or a rest-classed box on a stem owns ink with "could" pieces, and the claim ORDER (heads
+before rests) turns that into a decision: the rest beside it is refused `rest_ink_runs_into_a_head`. The box-level shape knowledge is in
+the old pair rules, each read off a GATHER row the owner never consulted. Process lesson: a parity number between two deciders says nothing
+about which is right; the 2.237 tiles did. Where a GATHER fact exists, the later stage reads it; it does not re-measure it or ignore it.
+
+**Design (a: the evidence; every quantity is an existing GATHER row and every cut the old rule's own).**
+
+| disputed old rule | shape evidence it uses | GATHER row | owner's veto (fit `no` on every stroke the box covers) | rival named for those strokes |
+|---|---|---|---|---|
+| head `on_a_dynamic_letter` (detector letter) | widest filled disc < 0.9 sp, or the head holds >= 0.4 of the letter's ink; head >= 0.4 inside the letter box; an f under 1.7 sp wide is not an f | `Q.NOTEHEAD_LETTER_INK` | `_on_a_dynamic_letter_refusal`'s test, verbatim | the letter box (often the next staff's cell) |
+| head / rest `on_a_dynamic_letter` (2.107 second look) | >= 0.5 of the box's ink inside read letters | `Q.LETTER_LOOK_COVER` | `letter_cover.refuses` | the read letters |
+| head `is_a_rest_shape` (2.145) | the ink cluster under a stemless head reads as an eighth / quarter rest | `Q.UNBOXED_REST_SHAPE` (+ `Q.STEM`, `Q.REST`, `Q.GLYPH_BOX`) | `head_rest_shape.read_head_ink` | the rest-shaped cluster |
+| head `on_a_rest` (2.173, whole classes) | box overlap with a rest box (no shape) | `Q.GLYPH_STROKES` + the owner's own fits | NEW STRUCTURE, no number: a head box none of whose strokes is a CLEAR head piece shares a stroke with a rest box that has a CLEAR rest piece (a rest never touches a note: the claim order gives the head the shared ink only when the head has a head's shape) | that rest box |
+| rest `rest_stroke_into_a_head` (2.150b) | a thin run >= 1.0 sp into >= 0.9 sp of solid blob or 0.4 sp^2 of standing head ink | `Q.REST_INK_CONTACT` | the old cuts, and only where the margin is at least the measured re-read noise 0.05 (2.232) | none: the stroke is a stem, the consumers read it |
+| accidental `on_a_rest` (2.192) | IoU >= 0.5 with a rest box AND 2.190's corner shape not the class's family | `Q.ACCIDENTAL_STAFF_POSITION` detail `shape` | `accidental_shape.on_rest_verdict` keep=False, where the rest box has a CLEAR rest piece | that rest box |
+
+HEAD_INK is not used as a veto: it reads tiles 1 and 9 as one filled head (it trims to the head-sized middle), so it does not separate them.
+The eight head-ink quantities are not consolidated here (only read where a moved rule already read them).
+
+**(b) How the owner uses it.** `own_strokes(..., vetoes=...)`: a vetoed claim's fit is `no` (why `veto:<rule>`) on every stroke it
+covers, and the rival, where one is named, is a candidate on those strokes with fit `clear` (how `named`). Then the ordinary table runs:
+the rival owns the stroke; with no rival the stroke is `refused_claims` (left to the consumers: tile 4's stem). A stroke two fitting families
+still claim stays CONTESTED. The head-before-rest order is read after the vetoes, so a vetoed head no longer makes its rest "run into a
+head". The precision rules, flag ON, read the box verdict ONCE: `refused` (its ink is another mark's, or not its shape, and not only an
+area claim's -- the register already speaks for those) -> refused `owner_refused` (accidental: abstains `owner_refused`); `owns` -> the
+covered rules below do not decide; `contested` / `no_ink` / no verdict -> the covered rules decide as before (the owner cannot tell:
+rule 8, the old rule is the stopgap, never a guess).
+
+**(c) Covered (stop deciding when the owner has a verdict):** head `on_a_dynamic_letter` (both readers), `is_a_rest_shape`, `on_a_rest`
+(whole classes); rest `rest_on_a_dynamic_letter`, `rest_stroke_into_a_head`, `rest_overlaps_a_notehead`; accidental `on_a_rest`. NOT
+covered (they answer another question): same-family duplicates (`notehead_is_a_duplicate_box`, `stacked_head_duplicate`, `head_cut_piece`,
+`rest_is_a_duplicate_box` -- 2.186's which-box question; tiles 3, 6, 8, 12), `belongs_to_a_nearer_staff` (a staff question; tile 11),
+the register (`claimed_by:*`), box-shape rules (`too_narrow`, `clipped_fragment`, `is_a_dot`), `rest_has_a_stem`, the slash rules.
+
+**(d) Tile 10.** The old rule's column scan found a thin run of 1.01 sp against its 1.0 cut: margin 0.01, inside the 0.05 re-read noise.
+The stroke map has the rest's three strokes (blob 1.35, vertical 1.62, blob 1.14) touching no head stroke, so the owner already gave them
+to the rest. With the flag ON the 2.150b evidence vetoes only at margin >= 0.05 (tile 4: 0.69, the stem), and the near-tie is left to the
+stroke map: the rest owns its ink and is kept.
+
 ## 2026-10-30 ROADMAP 2.237 -- rule-page refresh on fresh fires (measure only; nothing deleted)
 
 Branch `lane-2.237-rule-refresh`; written by the manager from the lane's report (the hook refused the lane's write). Method: current tree (2.232 ON) re-adjudicated on the saved GATHER rows of the 20261029-night frozen-sample slices (8 pages a plate, `replay_slice.py`, no re-gather); `build_rule_page.py --records 20261029-night` adds a "fresh L / B (sample)" column beside the 10-22 whole-movement column; `rule_parity.py` (parity + near-margin share, noise bar 0.05 on each verdict's own margin), `rule_lists.py`, `rule_tiles.py`. A 0 on an 8-page sample is a candidate, not proof.
