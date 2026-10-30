@@ -333,16 +333,141 @@ def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spaci
         out.append({"box": box, "text": text, "slots": len(run), "rows": rows, "read": why is None, "why": why})
     return out
 
+#: ROADMAP 2.221 word coverage -- the geometry of the extra word claims. All of it reads rows and rasters GATHER already holds.
+#: a metronome note stands this far right of its tempo word (staff spaces; Litolff p1: 1200 -> 1228 = 1.8) ...
+TEMPO_NOTE_GAP_SPACES = 3.0
+#: ... and its `= 108` ink continues until a gap this wide, at most this far from the note
+TEMPO_TAIL_GAP_SPACES = 2.0
+TEMPO_TAIL_MAX_SPACES = 10.0
+#: detector classes that can be the metronome's note glyph
+TEMPO_NOTE_PREFIXES = ("notehead", "metronome")
+#: an instrument name's ink is a component at most this tall (staff spaces): a brace, bracket or barline is taller
+LABEL_MAX_COMPONENT_SPACES = 4.0
+#: heading text (title, composer, plate number): ink above the first staff by `HEADING_CLEAR_SPACES`, or below the last by
+#: `FOOTER_CLEAR_SPACES` (notes on ledger lines reach about 5 spaces past the staff), components at most this tall
+HEADING_CLEAR_SPACES = 5.0
+FOOTER_CLEAR_SPACES = 8.0
+HEADING_MAX_COMPONENT_SPACES = 8.0
+HEADING_JOIN_SPACES = 2.5
 
-def bracket_areas(strokes: Iterable[Any], is_rule: Any) -> List[Dict[str, Any]]:
-    """The bracket / brace claims of ONE system from the left-edge vertical-rule scan's strokes (`bracket_reader.Stroke`); PURE, it reads
-    no raster. A thin straight stroke (`is_rule`) is a bracket's rule or the systemic barline (`kind` `rule`); a tall curved one is a
-    brace (`kind` `brace`). Both only at or left of the staff start and at least `BRACKET_MIN_HEIGHT_SPACES` tall."""
-    out: List[Dict[str, Any]] = []
-    for stk in strokes:
-        if float(stk.height_spacings) < BRACKET_MIN_HEIGHT_SPACES or float(stk.offset_spacings) > BRACKET_MAX_OFFSET_SPACES:
+
+def _ink_cols(binary: Any, y0: int, y1: int, x0: int, x1: int) -> Tuple[Any, int]:
+    import numpy as np
+    H, W = binary.shape
+    y0, y1, x0, x1 = max(0, y0), min(H, y1), max(0, x0), min(W, x1)
+    if y1 <= y0 or x1 <= x0:
+        return np.zeros(0, dtype=bool), x0
+    return (binary[y0:y1, x0:x1] == 0).any(axis=0), x0
+
+
+def metronome_mark(word_box: Sequence[float], notes: Iterable[Sequence[float]], binary: Any, spacing: float) -> Optional[Dict[str, Any]]:
+    """A tempo word's WHOLE mark when a metronome follows it: `{box, note_box, tail_x}` -- the word, the note glyph that stands right of
+    it on its line (a detector notehead within `TEMPO_NOTE_GAP_SPACES`, vertically within the word's line) and the ink that continues
+    right of the note (`= 108.`) until a gap of `TEMPO_TAIL_GAP_SPACES`. None when no note follows (a tempo word alone). PURE, one
+    column-ink test on the page raster the claim already holds: no new reading pass."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return None
+    wx0, wy0, wx1, wy1 = (float(v) for v in word_box)
+    best = None
+    for nb in notes:
+        nx0, ny0, nx1, ny1 = (float(v) for v in nb)
+        cy = (ny0 + ny1) / 2.0
+        if not (wx1 - 0.5 * spacing <= nx0 <= wx1 + TEMPO_NOTE_GAP_SPACES * spacing and wy0 - spacing <= cy <= wy1 + spacing):
             continue
-        out.append({"area": [float(stk.x_left), float(stk.y_top), float(stk.x_right + 1), float(stk.y_bot + 1)],
-                    "kind": "rule" if is_rule(stk) else "brace", "height_spaces": round(float(stk.height_spacings), 2),
-                    "thickness_spaces": round(float(stk.thickness_spacings), 3), "offset_spaces": round(float(stk.offset_spacings), 2)})
+        if best is None or nx0 < best[0]:
+            best = (nx0, ny0, nx1, ny1)
+    if best is None:
+        return None
+    nx0, ny0, nx1, ny1 = best
+    y0, y1 = int(min(wy0, ny0)), int(max(wy1, ny1))
+    reach = int(nx1 + TEMPO_TAIL_MAX_SPACES * spacing)
+    cols, xo = _ink_cols(binary, y0, y1, int(nx1) - 1, reach)
+    gap_max, last, gap = int(TEMPO_TAIL_GAP_SPACES * spacing), None, 0
+    for i, on in enumerate(cols):
+        if on:
+            last, gap = i, 0
+        else:
+            gap += 1
+            if gap > gap_max:
+                break
+    x1 = max(nx1, float(xo + last + 1) if last is not None else nx1)
+    return {"box": [min(wx0, nx0), min(wy0, ny0), x1, max(wy1, ny1)], "note_box": [nx0, ny0, nx1, ny1], "tail_x": x1}
+
+
+def _components(binary: Any, box: Sequence[float]) -> List[Tuple[int, int, int, int]]:
+    """Connected ink components `(x0, y0, x1, y1)` of `binary` inside `box` (page px), 8-connected; PURE."""
+    import cv2
+    import numpy as np
+    H, W = binary.shape
+    x0, y0, x1, y1 = max(0, int(box[0])), max(0, int(box[1])), min(W, int(box[2])), min(H, int(box[3]))
+    if x1 - x0 < 2 or y1 - y0 < 2:
+        return []
+    sub = (binary[y0:y1, x0:x1] == 0).astype(np.uint8)
+    _n, _lab, stats, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+    return [(x0 + int(st[0]), y0 + int(st[1]), x0 + int(st[0] + st[2]), y0 + int(st[1] + st[3]))
+            for st in stats[1:] if int(st[4]) >= 6]
+
+
+def margin_label_box(binary: Any, region: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = ()) -> Optional[List[float]]:
+    """The page box of ONE instrument name's ink inside `region` (the margin strip the label was read from, cut to its staff's band):
+    the union of the ink components in it that are text-sized (at most `LABEL_MAX_COMPONENT_SPACES` tall: a brace, bracket or barline is
+    taller) and not inside an `avoid` box (the brackets and braces the claimant already holds). None when no ink. PURE."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return None
+    avoid = [list(a) for a in avoid]
+    keep = [c for c in _components(binary, region)
+            if (c[3] - c[1]) <= LABEL_MAX_COMPONENT_SPACES * spacing and not any(_overlap_small(c, a) >= 0.5 for a in avoid)]
+    if not keep:
+        return None
+    return [float(min(c[0] for c in keep)), float(min(c[1] for c in keep)), float(max(c[2] for c in keep)), float(max(c[3] for c in keep))]
+
+
+def heading_blocks(binary: Any, zone: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = ()) -> List[List[float]]:
+    """Blocks of heading text (title, composer, plate number) in `zone`: text-sized ink components (`HEADING_MAX_COMPONENT_SPACES`) not
+    already inside an `avoid` claim, joined while the gap between them is at most `HEADING_JOIN_SPACES`. Each block is a box. PURE."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return []
+    avoid = [list(a) for a in avoid]
+    blocks = [[float(v) for v in c] for c in _components(binary, zone)
+              if (c[3] - c[1]) <= HEADING_MAX_COMPONENT_SPACES * spacing and not any(_overlap_small(c, a) >= 0.5 for a in avoid)]
+    gap = HEADING_JOIN_SPACES * spacing
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(blocks)):
+            for j in range(i + 1, len(blocks)):
+                a, b = blocks[i], blocks[j]
+                if a[0] <= b[2] + gap and b[0] <= a[2] + gap and a[1] <= b[3] + gap and b[1] <= a[3] + gap:
+                    blocks[i] = [min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])]
+                    del blocks[j]
+                    changed = True
+                    break
+            if changed:
+                break
+    return sorted(blocks)
+
+
+def left_edge_claims(marks: Iterable[Dict[str, Any]], detector_boxes: Iterable[Tuple[Sequence[float], str]]) -> List[Dict[str, Any]]:
+    """The bracket / brace claims of ONE system from `page_wide.system_rules(...)["left_edge"]["marks"]` (the barline lane's whole marks:
+    `kind` bracket | brace | systemic_barline | None, `box` top hook to bottom hook, `staff_indices`), with the detector's own `brace` /
+    `bracket` boxes (`(page box, class name)`, already filtered to the system's left edge) as the SECOND WITNESS; PURE.
+
+    Per mark: `area` is the mark's whole box; `kind` as the shape reader named it (a bracket by its hook and width, a brace by its bend);
+    `witness` is the class name of a detector box holding at least half of the smaller box, else None; `standing` READ for a bracket or the
+    systemic barline (the shape is the evidence: hooks 0.70-1.27 sp against 0.00-0.09), READ for a brace the detector also boxed, GUESSED
+    for a brace seen once and for a mark of no kind (`kind` None: the shape is filed, the ink is still claimed)."""
+    out: List[Dict[str, Any]] = []
+    boxes = [(list(b), str(n)) for b, n in detector_boxes]
+    for m in marks:
+        area = [float(v) for v in m["box"]]
+        wit = next((n for b, n in boxes if _overlap_small(area, b) >= 0.5), None)
+        kind = m.get("kind")
+        if kind in ("bracket", "systemic_barline"):
+            standing = "READ"
+        elif kind == "brace":
+            standing = "READ" if wit and wit.startswith("brace") else "GUESSED"
+        else:
+            standing = "GUESSED"
+        out.append({"area": area, "kind": kind, "standing": standing, "witness": wit, "staff_indices": list(m.get("staff_indices") or ()),
+                    "hook_spaces": m.get("hook_sp"), "bend_spaces": m.get("bend_sp"), "width_spaces": m.get("width_sp")})
     return out

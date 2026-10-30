@@ -197,7 +197,11 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
             # on is a note's reading too, so it is NARROWED (written blue, both readings carried), never written plain, never dropped.
             if standing != "READ":
                 continue
-            if stemmed:
+            word_stemmed = stemmed
+            if stemmed and head and owner == _claims.OWNER_WORD and d.get("metronome_note") and isinstance(r.value, (list, tuple)) and len(r.value) == 4:
+                # ROADMAP 2.221: a tempo mark's metronome note is the mark's own ink, its stem included (the stem finder is blind to claims)
+                word_stemmed = _stemmed(ev, box_row, inside=r.value)
+            if word_stemmed:
                 narrowing.append((owner, r, margin, owner + "_over_a_stemmed_head"))
             else:
                 refusing.append((owner, r, margin, owner + "_read"))

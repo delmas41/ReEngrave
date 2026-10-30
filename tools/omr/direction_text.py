@@ -290,6 +290,8 @@ class DirectionText:
     #: whether it was a whole word outside the work's languages.
     library: tuple[str, ...] = ()
     other_language: bool = False
+    #: ROADMAP 2.221 (STAGED only): the metronome tail read after a tempo word ("" = none); `text` is the word alone.
+    metronome: str = ""
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -305,6 +307,7 @@ class DirectionText:
             "dynamic_links": [list(l[:2]) + [list(l[2])] for l in self.dynamic_links],
             "library": list(self.library),
             "other_language": self.other_language,
+            **({"metronome": self.metronome} if self.metronome else {}),
         }
 
 
@@ -1456,7 +1459,7 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             reader=winner_name,
             dynamics=hit.dynamics,
             library=hit.library,
-            other_language=hit.other_language,
+            other_language=hit.other_language, metronome=hit.metronome,
         )
 
     _link_dynamics(page_dict, candidates, accepted_at, spacing)
@@ -1872,7 +1875,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                     x_page=c.x_page, text=hit.text, category=hit.category,
                     placement=c.placement, terms=hit.terms, reader=label,
                     dynamics=hit.dynamics, library=hit.library,
-                    other_language=hit.other_language)
+                    other_language=hit.other_language, metronome=hit.metronome)
                 info["by_reader"][label] = info["by_reader"].get(label, 0) + 1
 
     def read_indices(everyone):

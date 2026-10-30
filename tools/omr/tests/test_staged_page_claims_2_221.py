@@ -1,5 +1,5 @@
 """ROADMAP 2.221 m1 / m1b: words, dynamics, brackets and braces claim their ink FIRST and PAGE-WIDE -- `gather.gather_page_claims`
-(flags `OMR_CLAIM_WORDS_FIRST`, `OMR_CLAIM_BRACKETS_FIRST`, default OFF), `claims.spell_letter_runs` / `claims.bracket_areas`, and the
+(flags `OMR_CLAIM_WORDS_FIRST`, `OMR_CLAIM_BRACKETS_FIRST`, default OFF), `claims.spell_letter_runs` / `claims.left_edge_claims`, and the
 one consult `claimed_by`.
 
 CAUSE (Sean 2026-10-28): heads take ink first because nobody wrote down who owns a word's letters or a bracket's rule before the head
@@ -72,6 +72,8 @@ def _page():
     img[90:380, 94:98] = 0                             # a bracket rule: left of the staff start, crossing the gap
     for x in list(range(200, 300, 12)) + list(range(355, 470, 12)):   # two words' letters between the staves
         img[200:218, x:x + 7] = 0
+    img[202:216, 311:327] = 0                          # a metronome note's head, right of the word (tempo tests)
+    img[198:220, 327:329] = 0                          # and its stem
     return img
 
 
@@ -94,8 +96,8 @@ def _dets(boxes):
     return out
 
 
-def _word_row(log, text="dolce", bbox=WORD_BOX, gi=9000):
-    return log.observe(R.glyph(0, 0, 0, 0, gi), Q.DIRECTION_WORD, text, reader=READERS.SURYA, frame="page", category="expression",
+def _word_row(log, text="dolce", bbox=WORD_BOX, gi=9000, category="expression"):
+    return log.observe(R.glyph(0, 0, 0, 0, gi), Q.DIRECTION_WORD, text, reader=READERS.SURYA, frame="page", category=category,
                        bbox_page_px=list(bbox))
 
 
@@ -106,11 +108,11 @@ def _gather(log, env, boxes, **kw):
     return [r for r in log.rows(Q.CLAIMED_AREA, R.system(0, 0)) if r.detail.get("owner") in ("word", "bracket")]
 
 
-def _verdict(env, k, box, stem=None, word=WORD_BOX):
+def _verdict(env, k, box, stem=None, word=WORD_BOX, category="expression"):
     log = Log()
     _staff_space(log, SP)
     g = _box(log, k, 0, box)
-    _word_row(log, bbox=word)
+    _word_row(log, bbox=word, category=category)
     if stem is not None:
         log.observe(R.cell(0, 0, 0, k), Q.STEM, stem, reader=READERS.CV_INK, frame=f"cell:{k}", x0=stem[0], x1=stem[0] + stem[2],
                     y_center=0)
@@ -174,19 +176,68 @@ class TestSpellLetterRuns(unittest.TestCase):
         self.assertEqual([(r["read"], r["why"]) for r in runs], [(False, "not_a_dynamic")])
 
 
-class TestBracketAreas(unittest.TestCase):
-    def _s(self, **kw):
-        base = dict(x_left=94, x_right=97, x_centre=95.5, thickness_px=4, thickness_spacings=0.25, y_top=90, y_bot=379,
-                    height_spacings=18.0, straightness=0.99, offset_spacings=-0.3, n_columns=4)
+class TestLeftEdgeClaims(unittest.TestCase):
+    def _m(self, kind, **kw):
+        base = dict(kind=kind, box=[94, 90, 98, 380], staff_indices=[0, 1], hook_sp=0.9, bend_sp=0.0, width_sp=0.6)
         base.update(kw)
-        return SimpleNamespace(**base)
+        return base
 
-    def test_a_tall_rule_left_of_the_staff_start_is_claimed_as_a_rule_and_a_curved_one_as_a_brace(self):
-        got = CL.bracket_areas([self._s(), self._s(straightness=0.3, thickness_spacings=0.9)], lambda s: s.straightness > 0.9)
-        self.assertEqual([a["kind"] for a in got], ["rule", "brace"])
+    def test_a_bracket_is_READ_by_its_shape_and_a_brace_needs_the_detector_as_second_witness(self):
+        got = CL.left_edge_claims([self._m("bracket"), self._m("brace", box=[94, 400, 98, 700]), self._m("brace", box=[94, 800, 98, 900])],
+                                  [([90, 395, 100, 705], "brace")])
+        self.assertEqual([(a["kind"], a["standing"], a["witness"]) for a in got],
+                         [("bracket", "READ", None), ("brace", "READ", "brace"), ("brace", "GUESSED", None)])
 
-    def test_CONTROL_a_stroke_right_of_the_staff_start_or_short_is_not_claimed(self):
-        self.assertEqual(CL.bracket_areas([self._s(offset_spacings=2.0), self._s(height_spacings=2.5)], lambda s: True), [])
+    def test_CONTROL_a_mark_of_no_kind_is_still_claimed_but_never_READ(self):
+        got = CL.left_edge_claims([self._m(None)], [])
+        self.assertEqual((got[0]["kind"], got[0]["standing"], got[0]["area"]), (None, "GUESSED", [94.0, 90.0, 98.0, 380.0]))
+
+
+class TestMetronomeAndLabels(unittest.TestCase):
+    def test_a_metronome_note_and_its_tail_are_part_of_the_tempo_mark(self):
+        img = np.full((200, 700), 255, np.uint8)
+        img[100:110, 400:412] = 0                         # the note head
+        img[80:110, 411:413] = 0                          # its stem
+        img[100:102, 440:470] = 0                         # the `=`
+        img[98:112, 480:520] = 0                          # `108`
+        mm = CL.metronome_mark([100.0, 90.0, 380.0, 112.0], [[400.0, 98.0, 413.0, 112.0]], img, SP)
+        self.assertEqual(mm["note_box"], [400.0, 98.0, 413.0, 112.0])
+        self.assertGreaterEqual(mm["box"][2], 520.0)
+        self.assertEqual(mm["box"][0], 100.0)
+
+    def test_CONTROL_no_note_right_of_the_word_or_a_note_on_another_line_is_no_metronome(self):
+        img = np.full((200, 700), 255, np.uint8)
+        self.assertIsNone(CL.metronome_mark([100.0, 90.0, 380.0, 112.0], [], img, SP))
+        self.assertIsNone(CL.metronome_mark([100.0, 90.0, 380.0, 112.0], [[400.0, 160.0, 413.0, 174.0]], img, SP))
+        self.assertIsNone(CL.metronome_mark([100.0, 90.0, 380.0, 112.0], [[100.0, 95.0, 113.0, 109.0]], img, SP))   # LEFT of the word
+
+    def test_an_instrument_name_is_the_text_sized_ink_of_its_strip_and_a_brace_is_not(self):
+        img = np.full((300, 400), 255, np.uint8)
+        img[100:114, 20:30] = 0
+        img[100:114, 40:60] = 0
+        img[20:280, 90:96] = 0                            # a brace: taller than text
+        self.assertEqual(CL.margin_label_box(img, [0, 0, 100, 300], SP), [20.0, 100.0, 60.0, 114.0])
+        self.assertIsNone(CL.margin_label_box(img, [85, 0, 100, 300], SP))
+        self.assertEqual(CL.margin_label_box(img, [0, 0, 100, 300], SP, avoid=[[15, 95, 65, 120]]), None)
+
+    def test_heading_text_joins_into_blocks_and_skips_what_is_claimed(self):
+        img = np.full((300, 600), 255, np.uint8)
+        for x in range(100, 300, 24):
+            img[50:80, x:x + 14] = 0
+        img[200:220, 400:420] = 0
+        blocks = CL.heading_blocks(img, [0, 0, 600, 300], SP, avoid=[[390, 190, 430, 230]])
+        self.assertEqual(len(blocks), 1)
+        self.assertEqual(blocks[0][:2], [100.0, 50.0])
+
+    def test_the_lexicon_splits_a_metronome_tail_only_for_a_tempo_word_and_only_in_the_staged_scope(self):
+        from tools.omr import direction_lexicon as DL
+        on = DL.scope_for(None, (), tempo_marks=True)
+        h = DL.lookup("Allegro con brio. d = 108.", scope=on)
+        self.assertEqual((h.text, h.category, h.metronome), ("Allegro con brio.", "tempo", "d = 108."))
+        self.assertIsNone(DL.lookup("Allegro con brio. d = 108.", scope=DL.scope_for(None, ())))     # flag off: refused as before
+        self.assertIsNone(DL.lookup("Allegro con brio. d = 108."))                                    # LEGACY: unchanged
+        self.assertIsNone(DL.lookup("dolce = 108", scope=on))                                         # not a tempo word
+        self.assertIsNone(DL.lookup("Fl. 12", scope=on))
 
 
 class TestGather(unittest.TestCase):
@@ -232,15 +283,46 @@ class TestGather(unittest.TestCase):
         rows = _gather(log, WORDS, [(0, WORD_HEAD)])
         self.assertEqual([(r.detail["owner"], r.detail["source"], r.detail["text"]) for r in rows], [("word", "dynamic_letters", "ff")])
 
-    def test_brackets_come_from_the_page_wide_pass_strokes_given_and_nothing_is_scanned_again(self):
-        stk = SimpleNamespace(x_left=94, x_right=97, x_centre=95.5, thickness_px=4, thickness_spacings=0.25, y_top=90, y_bot=379,
-                              height_spacings=18.0, straightness=0.99, offset_spacings=-0.3, n_columns=4)
+    def test_brackets_come_from_the_page_wide_passs_whole_marks_and_nothing_is_scanned_again(self):
+        mark = dict(kind="bracket", box=[94, 90, 98, 380], staff_indices=[0, 1], hook_sp=0.9, bend_sp=0.0, width_sp=0.6, height_sp=18.0)
         log = Log()
         g = _box(log, 0, 0, BRACKET_HEAD)
-        with mock.patch("tools.omr.bracket_reader.strokes_at_left_edge", side_effect=AssertionError("scanned twice")):
-            rows = _gather(log, BRACKETS, [(0, BRACKET_HEAD)], edge_strokes={0: [stk]})
-        self.assertEqual([r.detail["owner"] for r in rows], ["bracket"])
+        _PWS.system_structure = {0: {"columns": [], "left_edge": {"marks": [mark]}}}
+        try:
+            with mock.patch("tools.omr.bracket_reader.strokes_at_left_edge", side_effect=AssertionError("scanned twice")):
+                rows = _gather(log, BRACKETS, [(0, BRACKET_HEAD)])
+        finally:
+            del _PWS.system_structure
+        self.assertEqual([(r.detail["owner"], r.detail["source"], r.detail["kind"], r.detail["standing"]) for r in rows],
+                         [("bracket", "left_edge_mark", "bracket", "READ")])
         self.assertGreaterEqual(rows[0].detail["boxes_inside"][g.to_key()]["ink_share_inside"], 0.5)
+
+    def test_a_tempo_word_claims_its_metronome_note_and_the_note_is_refused_even_with_a_stem(self):
+        log = Log()
+        g = _box(log, 0, 0, (310, 200, 14, 18))
+        log.observe(R.glyph(0, 0, 0, 0, 9000), Q.DIRECTION_WORD, "Allegro", reader=READERS.SURYA, frame="page", category="tempo",
+                    bbox_page_px=list(WORD_BOX))
+        dets = _dets([(0, (310, 200, 14, 18))])
+        pg = _page()
+        pg[196:218, 322:324] = 0                                 # the note's own stem
+        pg[205:208, 340:360] = 0                                 # `=`
+        _PWS.page.binary = pg
+        with mock.patch.dict(os.environ, WORDS):
+            G.gather_page_claims(log, _PWS(), CELLS, LOCAL, dets)
+        rows = [r for r in log.rows(Q.CLAIMED_AREA, R.system(0, 0)) if r.detail.get("owner") == "word"]
+        self.assertEqual(len(rows), 1)
+        self.assertGreaterEqual(rows[0].value[2], 360.0)
+        self.assertEqual(rows[0].detail["metronome_note"], [310.0, 200.0, 324.0, 218.0])
+        self.assertGreaterEqual(rows[0].detail["boxes_inside"][g.to_key()]["ink_share_inside"], 0.5)
+
+    def test_a_printed_instrument_name_claims_its_box_and_a_label_without_ink_claims_nothing(self):
+        log = Log()
+        log.observe(R.staff(0, 0, 0), Q.MARGIN_LABEL, "Fl.", reader=READERS.TEXT_LAYER, frame="margin", bbox_page_px=[20, 100, 60, 114])
+        log.observe(R.staff(0, 0, 1), Q.MARGIN_LABEL, "Ob.", reader=READERS.TEXT_LAYER, frame="margin")
+        rows = _gather(log, WORDS, [])
+        self.assertEqual([(r.detail["source"], r.value) for r in rows if r.detail["source"] == "margin_label"], [("margin_label", [20.0, 100.0, 60.0, 114.0])])
+        cen = [r for r in log.refusals(Q.CLAIMED_AREA, R.page(0)) if (r.detail or {}).get("why") == "page_claim_census"]
+        self.assertEqual(cen[0].detail["census"]["word:margin_label:no_ink_found"], 1)
 
     def test_a_detector_brace_box_at_the_left_edge_claims_once_and_one_right_of_the_staff_start_does_not(self):
         log = Log()
@@ -248,17 +330,9 @@ class TestGather(unittest.TestCase):
                 R.cell(0, 0, 1, 0).to_key(): [_Det("brace", 71 - 60, 92 - 250, 20, 288), _Det("brace", 300 - 60, 92 - 250, 20, 288)]}
         _PWS.page.binary = _page()
         with mock.patch.dict(os.environ, BRACKETS):
-            G.gather_page_claims(log, _PWS(), CELLS, LOCAL, dets, edge_strokes={})
+            G.gather_page_claims(log, _PWS(), CELLS, LOCAL, dets)
         rows = [r for r in log.rows(Q.CLAIMED_AREA, R.system(0, 0)) if r.detail.get("owner") == "bracket"]
         self.assertEqual([(r.detail["source"], r.detail["kind"]) for r in rows], [("detector_box", "brace")])
-
-    def test_a_bracket_rule_read_by_the_left_edge_scan_files_a_claim(self):
-        log = Log()
-        g = _box(log, 0, 0, BRACKET_HEAD)
-        rows = _gather(log, BRACKETS, [(0, BRACKET_HEAD)])
-        self.assertTrue(rows)
-        self.assertEqual(rows[0].detail["owner"], "bracket")
-        self.assertGreaterEqual(rows[0].detail["boxes_inside"][g.to_key()]["ink_share_inside"], 0.5)
 
     def test_CONTROL_a_head_in_the_staff_is_in_no_claim(self):
         log = Log()
@@ -304,9 +378,11 @@ class TestEndToEnd(unittest.TestCase):
         self.assertNotEqual(_verdict(OFF, 0, WORD_HEAD).reason, "claimed_by:word")
 
     def test_a_box_on_a_bracket_rule_is_refused_with_the_flag_on(self):
-        v = _verdict(BRACKETS, 0, BRACKET_HEAD)
-        self.assertEqual((v.value, v.reason), (True, "claimed_by:bracket"))
-        self.assertNotEqual(_verdict(OFF, 0, BRACKET_HEAD).reason, "claimed_by:bracket")
+        mark = dict(kind="bracket", box=[94, 90, 98, 380], staff_indices=[0, 1], hook_sp=0.9, bend_sp=0.0, width_sp=0.6, height_sp=18.0)
+        with mock.patch.object(_PWS, "system_structure", {0: {"columns": [], "left_edge": {"marks": [mark]}}}, create=True):
+            v = _verdict(BRACKETS, 0, BRACKET_HEAD)
+            self.assertEqual((v.value, v.reason), (True, "claimed_by:bracket"))
+            self.assertNotEqual(_verdict(OFF, 0, BRACKET_HEAD).reason, "claimed_by:bracket")
 
     def test_CONTROL_the_word_flag_does_not_touch_a_bracket_box_and_the_reverse(self):
         self.assertNotEqual(_verdict(WORDS, 0, BRACKET_HEAD).reason, "claimed_by:bracket")
@@ -315,6 +391,14 @@ class TestEndToEnd(unittest.TestCase):
     def test_a_head_a_stem_stands_on_under_a_word_is_narrowed_never_refused(self):
         v = _verdict(WORDS, 0, WORD_HEAD, stem=(222 - 60, 160 - 50, 4, 60))
         self.assertEqual((v.outcome, v.reason), ("narrowed", "claim_narrowed:word"))
+
+    def test_a_tempo_marks_metronome_note_is_refused_stem_and_all_but_an_expression_words_stemmed_head_is_narrowed(self):
+        note = (310, 200, 20, 18)
+        stem = (328 - 60, 198 - 50, 2, 22)
+        v = _verdict(WORDS, 0, note, stem=stem, category="tempo")
+        self.assertEqual((v.value, v.reason), (True, "claimed_by:word"))
+        v = _verdict(WORDS, 0, note, stem=stem, category="expression")
+        self.assertNotEqual(v.reason, "claimed_by:word")                     # CONTROL: no metronome claim, the rule does not fire
 
     def test_CONTROL_a_head_in_the_staff_is_never_touched(self):
         v = _verdict(dict(WORDS, OMR_CLAIM_BRACKETS_FIRST="1"), 0, FREE_HEAD)

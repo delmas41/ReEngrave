@@ -42,6 +42,7 @@ it read, so this one does not.
 from __future__ import annotations
 
 import re
+import dataclasses
 from dataclasses import dataclass
 
 #: Words that join direction terms into a phrase. They carry no meaning of
@@ -155,6 +156,9 @@ class DirectionHit:
     #: True when the match is a whole library word in a language outside the
     #: work's scope, accepted only because it is 5+ letters long.
     other_language: bool = False
+    #: ROADMAP 2.221 (STAGED, `LexiconScope.tempo_marks`): the metronome tail the text carried after a TEMPO word
+    #: (`(♩ = 108)`, `d = 108.`), exactly as read; "" when none. `text` is the tempo WORD alone.
+    metronome: str = ""
 
 
 def _normalise(token: str) -> str:
@@ -206,6 +210,15 @@ def lookup(text: str, *, scope: "LexiconScope | None" = None
         return None
     if _A_DUE.fullmatch(text.strip().lower()):
         return DirectionHit(text=text.strip(), category="part", terms=("a2",))
+    if scope is not None and scope.tempo_marks:
+        split = split_metronome(text)
+        if split is not None:
+            # A tempo word with its metronome mark (`Allegro con brio (♩ = 108)`): the head is looked up as always, and only a
+            # TEMPO word may carry the tail (a bar number or a rehearsal letter with a digit is still no direction).
+            head_hit = lookup(split[0], scope=scope)
+            if head_hit is not None and head_hit.category == "tempo":
+                return dataclasses.replace(head_hit, metronome=split[1])
+            return None
     prepared = _prepare(text)
     if prepared is None:
         return None
@@ -214,6 +227,19 @@ def lookup(text: str, *, scope: "LexiconScope | None" = None
     if hit is not None or scope is None:
         return hit
     return _library_lookup(text, shown, tokens, scope)
+
+
+#: ROADMAP 2.221: a metronome tail at the END of a read tempo mark: an optional bracket, the note glyph as an OCR reads it (up to two
+#: characters of any kind: `♩`, `d`, `J`, `o`, `)`), an equals sign or the dash a scan prints for it, then 2-3 digits (`ca.` allowed), and
+#: closing punctuation. The head must still pass the lexicon, so nothing here admits a digit anywhere else.
+_METRONOME_TAIL = re.compile(
+    r"^(?P<head>.*?[A-Za-zÀ-ÿ][.,]?)\s*[(\[]?\s*(?P<tail>(?:\S{1,2}\s*)?[=≈_–—\-]+\s*(?:c(?:a|irca)\.?\s*)?\d{2,3}[.,]?\s*[)\]]?\.?)\s*$")
+
+
+def split_metronome(text: str) -> "tuple[str, str] | None":
+    """`(head, tail)` of a text that ends in a metronome mark (`Allegro con brio. d = 108.` -> (`Allegro con brio.`, `d = 108.`)), else None. PURE."""
+    m = _METRONOME_TAIL.match((text or "").strip())
+    return (m.group("head").strip(), m.group("tail").strip()) if m else None
 
 
 def _prepare(text: str) -> "tuple[str, list[str]] | None":
@@ -330,6 +356,8 @@ class LexiconScope:
     work_id: "str | None" = None
     composer_languages: "tuple[str, ...] | None" = None
     edition_languages: tuple[str, ...] = ()
+    #: ROADMAP 2.221 (flag `OMR_CLAIM_WORDS_FIRST`, set by the STAGED reader only): a tempo word may carry its metronome tail.
+    tempo_marks: bool = False
 
     def admits(self, language: str, term_id: str = "") -> bool:
         return (self.languages is None or language in self.languages
@@ -343,20 +371,21 @@ class LexiconScope:
                                        if self.composer_languages is not None
                                        else None),
                 "edition_languages": list(self.edition_languages),
-                "unknown_work": self.languages is None}
+                "unknown_work": self.languages is None,
+                **({"tempo_marks": True} if self.tempo_marks else {})}
 
 
-def scope_for(work_id: "str | None", label_texts=()) -> LexiconScope:
+def scope_for(work_id: "str | None", label_texts=(), *, tempo_marks: bool = False) -> LexiconScope:
     """The scope for a work, from its composer and its edition's labels."""
     from . import musical_terms as MT
     composer = MT.composer_languages(work_id)
     edition = MT.edition_languages(label_texts)
     if composer is None:
         return LexiconScope(languages=None, work_id=work_id,
-                            composer_languages=None, edition_languages=edition)
+                            composer_languages=None, edition_languages=edition, tempo_marks=tempo_marks)
     return LexiconScope(
         languages=frozenset(MT.ALWAYS) | frozenset(composer) | frozenset(edition),
-        work_id=work_id, composer_languages=composer, edition_languages=edition)
+        work_id=work_id, composer_languages=composer, edition_languages=edition, tempo_marks=tempo_marks)
 
 
 def _eligible(matches):
