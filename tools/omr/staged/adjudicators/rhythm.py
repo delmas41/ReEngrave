@@ -1613,6 +1613,25 @@ def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
 #: ROADMAP 2.146 (Sean 2026-10-16: *"the connection to the end of stems is the most important factor - more important than
 #: width"*; "the stem tip decides beamed or not"). Default ON since 2026-10-16; an explicit off-word disables.
 STEM_TIP_DECIDES_BEAM_ENV = "OMR_STEM_TIP_DECIDES_BEAM"
+TIP_WINDOW_FROM_STROKES_ENV = "OMR_TIP_WINDOW_FROM_STROKES"
+
+
+def tip_window_from_strokes_enabled() -> bool:
+    """ROADMAP 2.233, default OFF (`1`/`true`/`yes`/`on` enables): ONLY the four stem-tip accessors (`_tip_obs`, `_tip_abs`, and through them
+    `_stem_tip_flag_ink`, `_stem_tip_disputed`, `_stem_tip_unread_why`, `_no_beam_at_the_stem_tip`) read the stroke map (`_tips_from_strokes`,
+    2.204's tip reader) instead of `Q.STEM_TIP_INK`. The STEMS stay the finder's (`OMR_STEMS_FROM_STROKES` stays off): this is the part of 2.204
+    that neither moves a stem nor adds a `stem_readers_disagree` abstention. A cell with no stroke map reads the GATHER rows as today."""
+    return os.environ.get(TIP_WINDOW_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+UNISON_BEAM_TIPS_ENV = "OMR_UNISON_BEAM_TIPS"
+
+
+def unison_beam_tips_enabled() -> bool:
+    """ROADMAP 2.233, default OFF (`1`/`true`/`yes`/`on` enables): a two-voice shared head whose box readers disagree between the voices is read from
+    each stem's own tip by the stroke map; both tips counting the same beams decides that level."""
+    return os.environ.get(UNISON_BEAM_TIPS_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
 
 
 def stem_tip_decides_beam_enabled() -> bool:
@@ -4446,7 +4465,7 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
 
 def _tip_obs(ev: Evidence, cell, own_stems):
     """The tip rows of the head's own stems: the stroke map's when the flag is on and the cell has a map, else `Q.STEM_TIP_INK` as today."""
-    if stems_from_strokes_enabled():
+    if stems_from_strokes_enabled() or tip_window_from_strokes_enabled():
         got = _tips_from_strokes(ev, cell, own_stems)
         if got is not None:
             return got[0]
@@ -4454,7 +4473,7 @@ def _tip_obs(ev: Evidence, cell, own_stems):
 
 
 def _tip_abs(ev: Evidence, cell, own_stems):
-    if stems_from_strokes_enabled():
+    if stems_from_strokes_enabled() or tip_window_from_strokes_enabled():
         got = _tips_from_strokes(ev, cell, own_stems)
         if got is not None:
             return got[1]
@@ -5087,6 +5106,47 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             sb_detail = {"settled": sb["settled"], "before": before, "after": [certain, possible], "tip_levels": sb["tip_levels"],
                          "flag_levels": sb["flag_levels"], "tip": sb["tip"],
                          "boxes": [{k: v for k, v in bx.items() if k != "stroke_rows"} for bx in sb["boxes"]]}
+    # ⚠️⚠️ ROADMAP 2.233 (flag `OMR_UNISON_BEAM_TIPS`, default OFF). ONE PRINTED HEAD SHARED BY TWO VOICES (2.75: a stem each way, each stem with
+    # its OWN beam -- Litolff's rectangle of two eighth voices) whose two voices the box readers read DIFFERENTLY (up [0,0] / down [1,1]: the
+    # beam over the up stem was dropped as a neighbour staff's, too thin, ...) is NARROWED between them. 23 of 126 Litolff narrowed heads on
+    # the 20261029-night sample; the print (`benchmarks/value-undecided-2026-10/FINDINGS.md`) shows both stems carry one beam each. The stroke
+    # map reads EACH stem's own tip (`_beams_from_strokes`, the 2.202 reader, once per voice): where BOTH stems' tips count the SAME n >= 1 beam
+    # strokes, the stem beamed, nothing doubtful, no hook, no stub, and n is inside the range the box readers gave, the head is n -- a beam read on
+    # each of its two stems, a value from the shape. Anything else (a tip that cannot be read, the two tips differ, n outside the range) leaves the
+    # narrowing exactly as it was (rule 8). It only ever turns a NARROWED reading into a decided one; it never moves a stem or a direction.
+    uni_detail = None
+    if (unison_beam_tips_enabled() and voice_levels is not None and not hollow and not certain_conflicts and head_box is not None
+            and own_stems and beams_from_strokes_enabled()):
+        _uv = _voice_stems(own_stems, head_box)
+        _uni = {}
+        for _vside in ("up", "down"):
+            if _uv[_vside]:
+                _near, _fr = _on_stem_side(kept, head_box, _vside)
+                _uni[_vside] = _beams_from_strokes(ev, cell, _near, _uv[_vside], head_box, _vside, detector_pre=_kept_beams(ev, cell)[0])
+            else:
+                _uni[_vside] = None
+        _lo = min(v[0] for v in voice_levels.values())
+        _hi = max(v[1] for v in voice_levels.values())
+        uni_detail = {"voices": {k: list(v) for k, v in voice_levels.items()}, "settled": None,
+                      **{k: (None if v is None else {"tip_levels": v["tip_levels"], "flag_levels": v["flag_levels"], "tip": v["tip"]})
+                         for k, v in _uni.items()}}
+        if _uni["up"] is not None and _uni["down"] is not None and _lo < _hi:
+            _ok = True
+            for _sb in _uni.values():
+                _t = _sb["tip"]
+                if (_sb["flag_levels"] or _t.get("hooks") or _t.get("stubs") or _t.get("doubt") or _t.get("own_head")
+                        or not _t.get("stem_beamed") or _t.get("stem") is None):
+                    _ok = False
+            _n_up, _n_dn = _uni["up"]["tip_levels"], _uni["down"]["tip_levels"]
+            if _ok and _n_up == _n_dn and _lo <= _n_up <= _hi and _n_up >= 1:
+                used.extend(_uni["up"]["rows"])
+                used.extend(_uni["down"]["rows"])
+                _voices_before = dict(voice_levels)
+                certain = possible = _n_up
+                voice_levels = {k: [_n_up, _n_up] for k in voice_levels}
+                uni_detail["settled"] = "decided_both_tips_agree"
+                uni_detail["before"] = [_lo, _hi]
+                uni_detail["voices_before"] = _voices_before
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
@@ -5206,6 +5266,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "beam_voices": voice_levels,
               "beams_double_thick": double_thick,
               **({"beams_from_strokes": sb_detail} if sb_detail else {}),
+              **({"unison_beam_tips": uni_detail} if uni_detail else {}),
               **({"stems_from_strokes": stem_info} if stem_info else {}),
               **({"beam_stem_levels": stem_levels} if stem_levels else {}),
               "beams_not_by_ink": len(ink_dropped),
