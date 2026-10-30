@@ -381,6 +381,21 @@ def _is_clef_class(name: Optional[str], category: Optional[str]) -> bool:
 
 
 
+def _rescue_detect(detector: Any, cell: Any, floor: float, imgsz: Any):
+    """ROADMAP 2.220c: the three rescue re-runs (RESCUE_CONF_FLOOR, WEDGE_RESCUE_FLOOR, stem_end_heads FLOOR) ask for the same cell image at
+    three floors. A detector whose `detect` takes `floor_memo` runs the cell ONCE at the lowest floor and serves each reader its own floor from
+    that run (same boxes: see `YoloDetector.detect`). Any other detector (a test double) is called exactly as before."""
+    try:
+        import inspect
+        ps = inspect.signature(detector.detect).parameters
+        ok = "floor_memo" in ps
+    except Exception:                                         # noqa: BLE001
+        ok = False
+    if ok:
+        return detector.detect(cell, conf_threshold=floor, imgsz=imgsz, floor_memo=True)
+    return detector.detect(cell, conf_threshold=floor, imgsz=imgsz)
+
+
 def _accepts_natural_candidates(detector) -> bool:
     """ROADMAP 2.193: does `detector.detect` take `natural_candidates` (or **kwargs)? A test double with a fixed signature does not."""
     import inspect
@@ -806,8 +821,7 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                         witnesses_found=0)
             continue
 
-        rerun = detector.detect(c, conf_threshold=RESCUE_CONF_FLOOR,
-                                imgsz=imgsz)
+        rerun = _rescue_detect(detector, c, RESCUE_CONF_FLOOR, imgsz)
         candidates_by_class = [
             d for d in rerun
             if str(d.smufl_name).lower().startswith(_NOTEHEAD_PREFIX)
@@ -963,7 +977,7 @@ def gather_wedge_rescue(log: Log, cells: Sequence[Any],
         frame = frame_cell(c.measure_index)
         prod_marks = [_canon_box(d) for d in existing if _is_mark_class(d.smufl_name)]
         from .adjudicators import rhythm as _rh
-        rerun = detector.detect(c, conf_threshold=WEDGE_RESCUE_FLOOR, imgsz=imgsz)
+        rerun = _rescue_detect(detector, c, WEDGE_RESCUE_FLOOR, imgsz)
         kept: List[Tuple[Any, Dict[str, Any]]] = []
         for d in sorted((x for x in rerun if _is_mark_class(x.smufl_name)),
                         key=lambda x: -float(x.confidence)):
@@ -1146,7 +1160,7 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
         heads = [SEH._box(d) for d in existing if SEH.is_head(d.smufl_name)]
         if not any(SEH.is_orphan(s, heads, 2.0 * grid[1]) for s in stems):
             continue
-        rerun = detector.detect(c, conf_threshold=SEH.FLOOR, imgsz=imgsz)
+        rerun = _rescue_detect(detector, c, SEH.FLOOR, imgsz)
         kept, refused, n_orph = SEH.candidates_for_cell(stems, existing, rerun, grid)
         for rf in refused:
             d = rf["det"]
@@ -4068,8 +4082,40 @@ def gather_dynamic_letters(log: Log, pws: Any, cells: Sequence[Any],
                         reason=ABSTAIN.NO_DETECTIONS)
 
 
+def _page_memo(pws: Any, key: str, build):
+    """ROADMAP 2.220c (duplicate passes): ONE build per page for a value several readers derive from the same raster.
+    Held on the `pws` object (it dies with the page). A build that RAISED is remembered and re-raised as the same exception, so a reader
+    that used to see the error still sees it. Callers treat the value as READ-ONLY (copy before writing)."""
+    memo = getattr(pws, "_gather_page_memo", None)
+    if memo is None:
+        memo = {}
+        try:
+            setattr(pws, "_gather_page_memo", memo)
+        except Exception:                                     # noqa: BLE001 -- a pws that cannot carry it just builds each time
+            return build()
+    if key not in memo:
+        try:
+            memo[key] = (True, build())
+        except Exception as exc:                              # noqa: BLE001
+            memo[key] = (False, exc)
+    ok, val = memo[key]
+    if not ok:
+        raise val
+    return val
+
+
+def _page_header_cells(pws: Any):
+    """`staff_header.header_cells_for_page(pws)`, built once per page for the clef, key and meter readers (they read it, none writes it)."""
+    from ..staff_header import header_cells_for_page
+    return _page_memo(pws, "header_cells", lambda: header_cells_for_page(pws))
+
+
 def _raw_page_ink(pws: Any):
-    """The page's ink (255) with NOTHING taken out, or None with no raster."""
+    """The page's ink (255) with NOTHING taken out, or None with no raster. Built once per page; READ-ONLY."""
+    return _page_memo(pws, "raw_ink", lambda: _raw_page_ink_build(pws))
+
+
+def _raw_page_ink_build(pws: Any):
     page = getattr(pws, "page", None)
     rgb = getattr(page, "rgb", None)
     if rgb is None:
@@ -4224,8 +4270,7 @@ def _ink_without_detections(pws: Any, detections: Dict[str, List[Any]],
     if not spacing:
         spacing = float(sorted(_DT._spacing(s) for s in pws.staves)[len(pws.staves) // 2]) \
             if getattr(pws, "staves", None) else 0.0
-    gray = _cv2.cvtColor(rgb, _cv2.COLOR_BGR2GRAY) if rgb.ndim == 3 else rgb
-    _, mask = _cv2.threshold(gray, 180, 255, _cv2.THRESH_BINARY_INV)
+    mask = _raw_page_ink(pws).copy()          # the same threshold-180 ink, converted once per page; this one is written to
     h, w = mask.shape
     for cell_key, dets in detections.items():
         sub = Subject.from_key(cell_key)
@@ -12421,7 +12466,7 @@ def gather_clef_locator(log: Log, pws: Any, cells: Sequence[Any],
     # the row says the reader could not run and names the exception.
     header_error: Optional[str] = None
     try:
-        header_cells = header_cells_for_page(pws)
+        header_cells = _page_header_cells(pws)
     except Exception as exc:                                  # noqa: BLE001
         header_cells = {}
         header_error = type(exc).__name__
@@ -12790,7 +12835,7 @@ def gather_key_signature(log: Log, pws: Any, cells: Sequence[Any],
     # `READER_UNAVAILABLE` with the exception class, not `NO_STAFF_GEOMETRY`.
     header_error: Optional[str] = None
     try:
-        header_cells = header_cells_for_page(pws)
+        header_cells = _page_header_cells(pws)
     except Exception as exc:                                  # noqa: BLE001
         header_cells = {}
         header_error = type(exc).__name__
@@ -13094,7 +13139,7 @@ def gather_meter(log: Log, pws: Any, cells: Sequence[Any],
     # `READER_UNAVAILABLE` with the exception class, not `NO_STAFF_GEOMETRY`.
     header_error: Optional[str] = None
     try:
-        header_cells = header_cells_for_page(pws)
+        header_cells = _page_header_cells(pws)
     except Exception as exc:                                  # noqa: BLE001
         header_cells = {}
         header_error = type(exc).__name__
@@ -13898,6 +13943,10 @@ def gather_printed_bar_numbers(log: Log, pws: Any, surya: bool = False) -> None:
 
 def _page_gray(pws: Any) -> Any:
     """The page's ORIGINAL raster as 2-D grey, or None."""
+    return _page_memo(pws, "gray", lambda: _page_gray_build(pws))
+
+
+def _page_gray_build(pws: Any) -> Any:
     image = getattr(pws.page, "rgb", None)
     if image is None:
         return None
@@ -15482,7 +15531,8 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
     key_of_page_staff = {v: k for k, v in page_staff_of.items()}
 
     try:
-        candidates = DT.find_candidates(pws, page_dict, refine_boxes=True)
+        dt_ink: Dict[str, Any] = {}      # ROADMAP 2.220c: handed to read_directions below, which would rebuild it
+        candidates = DT.find_candidates(pws, page_dict, refine_boxes=True, _ink_out=dt_ink)
         readers = DT.default_readers(pws.page)
     except Exception as exc:                                  # noqa: BLE001
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
@@ -15521,7 +15571,8 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
     try:
         found, info = DT.read_directions(pws, page_dict, readers=readers,
                                          scan_order=True,
-                                         lexicon_scope=scope)
+                                         lexicon_scope=scope,
+                                         candidates=candidates, ink=dt_ink)
     except Exception as exc:                                  # noqa: BLE001
         log.abstain(page_sub, Q.DIRECTION_WORD, reader=READERS.SURYA,
                     frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
