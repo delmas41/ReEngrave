@@ -1171,6 +1171,10 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
         for end in ("bottom", "top"):
             ink, kb = reads[end], by_end.get((si, end))
             det_page = to_page(SEH._box(kb["det"])) if kb is not None else None
+            if det_page is not None and ink.get("why") == "stem_inside_the_ink" and ink.get("value") is not None:
+                # the far-side reach is a cut measured on Sean's two junk tiles (flat 0.50, flag 0.28) against real heads up to 0.35 on the
+                # subset: it may only NARROW -- it refuses an ink-ONLY head (one witness), never a head the 0.05 re-run boxed on the same ink
+                ink = dict(ink, head=True, why=None, stem_inside_narrowed=True)
             verdict, why = SEH.combine(det_page, ink)
             if verdict == "ink_only" and both:
                 verdict, why = "abstain", "ink_reads_a_head_at_both_ends"
