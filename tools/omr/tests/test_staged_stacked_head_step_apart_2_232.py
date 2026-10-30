@@ -30,14 +30,14 @@ def test_k2_never_abstains_here():
     assert G.stacked_head_off_every_box([1.0, 3.0], [3.24, 0.88]) is None
 
 
-def test_flags_default_off_and_switch_on():
+def test_flags_default_on_and_switch_off():
     with mock.patch.dict(os.environ):
         os.environ.pop("OMR_STACKED_HEAD_STEP_APART", None)
-        assert not G.stacked_head_step_apart_enabled()
-        assert not NP.stacked_head_step_apart_enabled()
-        os.environ["OMR_STACKED_HEAD_STEP_APART"] = "1"
         assert G.stacked_head_step_apart_enabled()
         assert NP.stacked_head_step_apart_enabled()
+        os.environ["OMR_STACKED_HEAD_STEP_APART"] = "0"
+        assert not G.stacked_head_step_apart_enabled()
+        assert not NP.stacked_head_step_apart_enabled()
 
 
 def test_box_centres_a_step_apart_cut_is_three_quarters_of_a_space():
