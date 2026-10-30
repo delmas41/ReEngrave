@@ -15217,6 +15217,18 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if not sp:
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
+                if not run["read"] and run["why"] == "lone_letter":
+                    # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
+                    # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
+                    # stemmed head is never touched) -- unless it lies on ink a word already claimed (a letter of "espr.", "dolce").
+                    if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                        _count("word:dynamic_letters:lone_letter_inside_a_staff")
+                    elif any(CL._overlap_small(run["box"], f) >= CL.LETTER_TWIN_SHARE for f in filed):
+                        _count("word:dynamic_letters:lone_letter_inside_a_claim")
+                    else:
+                        _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]], standing="GUESSED",
+                              owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic", lone=True)
+                    continue
                 if not run["read"]:
                     _count(f"word:dynamic_letters:{run['why']}")
                     continue

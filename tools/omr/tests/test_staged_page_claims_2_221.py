@@ -400,6 +400,41 @@ class TestEndToEnd(unittest.TestCase):
         v = _verdict(WORDS, 0, note, stem=stem, category="expression")
         self.assertNotEqual(v.reason, "claimed_by:word")                     # CONTROL: no metronome claim, the rule does not fire
 
+    def test_a_lone_dynamic_letter_claims_its_own_box_GUESSED_and_refuses_no_stemmed_head(self):
+        box = (600, 200, 612, 218)
+        log = Log()
+        log.observe(R.glyph(0, 0, 0, 1, 5), Q.DYNAMIC_LETTER, "dynamicF", reader=READERS.DETECTOR, frame="page", letter="f", bbox_page_px=list(box))
+        rows = _gather(log, WORDS, [])
+        self.assertEqual([(r.detail["owner"], r.detail["source"], r.detail["text"], r.detail["standing"], r.value) for r in rows],
+                         [("word", "dynamic_letters", "f", "GUESSED", [600.0, 200.0, 612.0, 218.0])])
+        # a stemmed head standing on it is not refused (GUESSED refuses nothing)
+        log = Log()
+        _staff_space(log, SP)
+        g = _box(log, 1, 0, (597, 200, 20, 18))
+        log.observe(R.glyph(0, 0, 0, 1, 5), Q.DYNAMIC_LETTER, "dynamicF", reader=READERS.DETECTOR, frame="page", letter="f", bbox_page_px=list(box))
+        log.observe(R.cell(0, 0, 0, 1), Q.STEM, (610 - 400, 160 - 50, 4, 60), reader=READERS.CV_INK, frame="cell:1", x0=210, x1=214, y_center=0)
+        _gather(log, WORDS, [(1, (597, 200, 20, 18))])
+        with mock.patch.dict(os.environ, WORDS):
+            adjudicate.run(log)
+        v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
+        self.assertFalse(str(v.reason).startswith(("claimed_by:word", "claim_narrowed:word")))
+
+    def test_CONTROL_a_lone_letter_on_an_accepted_words_ink_or_inside_the_staff_claims_nothing(self):
+        log = Log()
+        _word_row(log)
+        log.observe(R.glyph(0, 0, 0, 0, 5), Q.DYNAMIC_LETTER, "dynamicP", reader=READERS.DETECTOR, frame="page", letter="p",
+                    bbox_page_px=[210, 200, 222, 218])                               # a letter of "dolce"
+        log.observe(R.glyph(0, 0, 0, 0, 6), Q.DYNAMIC_LETTER, "dynamicF", reader=READERS.DETECTOR, frame="page", letter="f",
+                    bbox_page_px=[500, 110, 512, 128])                               # on the staff lines
+        rows = _gather(log, WORDS, [])
+        self.assertEqual([r.detail["source"] for r in rows], ["direction_word"])
+
+    def test_CONTROL_a_lone_letter_is_not_filed_with_the_flag_off(self):
+        log = Log()
+        log.observe(R.glyph(0, 0, 0, 1, 5), Q.DYNAMIC_LETTER, "dynamicF", reader=READERS.DETECTOR, frame="page", letter="f",
+                    bbox_page_px=[600, 200, 612, 218])
+        self.assertEqual(_gather(log, OFF, []), [])
+
     def test_CONTROL_a_head_in_the_staff_is_never_touched(self):
         v = _verdict(dict(WORDS, OMR_CLAIM_BRACKETS_FIRST="1"), 0, FREE_HEAD)
         self.assertFalse(str(v.reason).startswith(("claimed_by:word", "claimed_by:bracket", "claim_narrowed:word", "claim_narrowed:bracket")))

@@ -1,0 +1,1018 @@
+{
+ "before": {
+  "truth_marks": 60,
+  "claimed": 40,
+  "unclaimed": 20,
+  "claimed_by_kind": {
+   "dynamic": 9,
+   "word": 7,
+   "title": 13,
+   "instrument_name": 10,
+   "brace": 1
+  },
+  "unclaimed_by_kind": {
+   "dynamic": 8,
+   "brace": 10,
+   "word": 2
+  },
+  "n_claims": 37,
+  "claims_by_source": {
+   "word:direction_word": 10,
+   "word:margin_label": 14,
+   "word:dynamic_letters": 1,
+   "word:page_heading": 10,
+   "bracket:left_edge_mark": 2
+  },
+  "false_claims": 16,
+  "false_list": [
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "in C 1 2",
+    "box": [
+     556,
+     3500,
+     1184,
+     3785
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Horner 4 | : |",
+    "box": [
+     548,
+     3785,
+     1111,
+     4048
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "2 Trompeten in C",
+    "box": [
+     430,
+     4336,
+     1159,
+     4429
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Pauken in C u. G",
+    "box": [
+     435,
+     4685,
+     1134,
+     4959
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "1. Violine",
+    "box": [
+     587,
+     5195,
+     975,
+     5265
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "2. Violine",
+    "box": [
+     588,
+     5582,
+     989,
+     5652
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Bratsche",
+    "box": [
+     602,
+     6028,
+     985,
+     6096
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Violoncell",
+    "box": [
+     555,
+     6422,
+     996,
+     6490
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Kontraba\u00df",
+    "box": [
+     556,
+     6762,
+     1009,
+     6894
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     1387,
+     507,
+     1389,
+     510
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     1627,
+     718,
+     1630,
+     721
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     3246,
+     1409,
+     3447,
+     1424
+    ],
+    "overlaps": [
+     [
+      "slur",
+      1.0
+     ]
+    ]
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     3767,
+     1410,
+     3996,
+     1424
+    ],
+    "overlaps": [
+     [
+      "slur",
+      0.93
+     ]
+    ]
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     5461,
+     267,
+     5497,
+     341
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     2893,
+     7289,
+     3067,
+     7341
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "left_edge_mark",
+    "owner": "bracket",
+    "kind": "systemic_barline",
+    "text": null,
+    "box": [
+     1222,
+     5149,
+     1239,
+     6902
+    ],
+    "overlaps": [
+     [
+      "brace",
+      0.36
+     ],
+     [
+      "brace",
+      0.45
+     ]
+    ]
+   }
+  ],
+  "unclaimed_list": [
+   {
+    "kind": "dynamic",
+    "rect": [
+     1621,
+     2940,
+     1684,
+     3013
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1221,
+     2948,
+     1259,
+     3393
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1620,
+     3312,
+     1688,
+     3394
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     5393,
+     3028,
+     5410,
+     3239
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     5391,
+     3313,
+     5398,
+     3756
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1841,
+     4098,
+     1909,
+     4175
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1605,
+     3793,
+     1697,
+     3886
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1220,
+     3787,
+     1261,
+     4236
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     5390,
+     3808,
+     5408,
+     4261
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1619,
+     4504,
+     1688,
+     4583
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1623,
+     4796,
+     1692,
+     4877
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1220,
+     4478,
+     1286,
+     4889
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1621,
+     5311,
+     1692,
+     5390
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1622,
+     5715,
+     1692,
+     5794
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "word",
+    "rect": [
+     1714,
+     5709,
+     2108,
+     5791
+    ],
+    "text": "espr. e legato",
+    "cls": "text"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1221,
+     5394,
+     1267,
+     5793
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1221,
+     5866,
+     1258,
+     6254
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "word",
+    "rect": [
+     1491,
+     6979,
+     2110,
+     7062
+    ],
+    "text": "un poco sostenuto",
+    "cls": "text"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1217,
+     1561,
+     1235,
+     1700
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1181,
+     3505,
+     1221,
+     4070
+    ],
+    "text": null,
+    "cls": "brace"
+   }
+  ],
+  "census": {
+   "bracket:left_edge_mark:claimed": 1,
+   "bracket:left_edge_mark:marked": 1,
+   "word:direction_word:claimed": 10,
+   "word:dynamic_letters:claimed": 1,
+   "word:dynamic_letters:lone_letter": 41,
+   "word:dynamic_letters:twin_letters_disagree": 1,
+   "word:margin_label:claimed": 14,
+   "word:page_heading:marked": 10
+  },
+  "lone_letters": {
+   "inside_a_claim": 42,
+   "lone:is_that_letter_(truth_dynamic_same_class)": 15,
+   "lone:inside_a_truth_word": 4,
+   "lone:matches_no_truth_mark": 1,
+   "by_score": {
+    "score 0.5-0.8": {
+     "lone:is_that_letter_(truth_dynamic_same_class)": 2,
+     "lone:inside_a_truth_word": 1,
+     "lone:matches_no_truth_mark": 1
+    },
+    "score<0.5": {
+     "lone:inside_a_truth_word": 2,
+     "lone:is_that_letter_(truth_dynamic_same_class)": 1
+    },
+    "score>=0.8": {
+     "lone:is_that_letter_(truth_dynamic_same_class)": 12,
+     "lone:inside_a_truth_word": 1
+    }
+   }
+  }
+ },
+ "after": {
+  "truth_marks": 60,
+  "claimed": 40,
+  "unclaimed": 20,
+  "claimed_by_kind": {
+   "dynamic": 9,
+   "word": 7,
+   "title": 13,
+   "instrument_name": 10,
+   "brace": 1
+  },
+  "unclaimed_by_kind": {
+   "dynamic": 8,
+   "brace": 10,
+   "word": 2
+  },
+  "n_claims": 37,
+  "claims_by_source": {
+   "word:direction_word": 10,
+   "word:margin_label": 14,
+   "word:dynamic_letters": 1,
+   "word:page_heading": 10,
+   "bracket:left_edge_mark": 2
+  },
+  "false_claims": 16,
+  "false_list": [
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "in C 1 2",
+    "box": [
+     556,
+     3500,
+     1184,
+     3785
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Horner 4 | : |",
+    "box": [
+     548,
+     3785,
+     1111,
+     4048
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "2 Trompeten in C",
+    "box": [
+     430,
+     4336,
+     1159,
+     4429
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Pauken in C u. G",
+    "box": [
+     435,
+     4685,
+     1134,
+     4959
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "1. Violine",
+    "box": [
+     587,
+     5195,
+     975,
+     5265
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "2. Violine",
+    "box": [
+     588,
+     5582,
+     989,
+     5652
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Bratsche",
+    "box": [
+     602,
+     6028,
+     985,
+     6096
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Violoncell",
+    "box": [
+     555,
+     6422,
+     996,
+     6490
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "margin_label",
+    "owner": "word",
+    "kind": null,
+    "text": "Kontraba\u00df",
+    "box": [
+     556,
+     6762,
+     1009,
+     6894
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     1387,
+     507,
+     1389,
+     510
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     1627,
+     718,
+     1630,
+     721
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     3246,
+     1409,
+     3447,
+     1424
+    ],
+    "overlaps": [
+     [
+      "slur",
+      1.0
+     ]
+    ]
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     3767,
+     1410,
+     3996,
+     1424
+    ],
+    "overlaps": [
+     [
+      "slur",
+      0.93
+     ]
+    ]
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     5461,
+     267,
+     5497,
+     341
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "page_heading",
+    "owner": "word",
+    "kind": null,
+    "text": null,
+    "box": [
+     2893,
+     7289,
+     3067,
+     7341
+    ],
+    "overlaps": []
+   },
+   {
+    "source": "left_edge_mark",
+    "owner": "bracket",
+    "kind": "systemic_barline",
+    "text": null,
+    "box": [
+     1222,
+     5149,
+     1239,
+     6902
+    ],
+    "overlaps": [
+     [
+      "brace",
+      0.36
+     ],
+     [
+      "brace",
+      0.45
+     ]
+    ]
+   }
+  ],
+  "unclaimed_list": [
+   {
+    "kind": "dynamic",
+    "rect": [
+     1621,
+     2940,
+     1684,
+     3013
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1221,
+     2948,
+     1259,
+     3393
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1620,
+     3312,
+     1688,
+     3394
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     5393,
+     3028,
+     5410,
+     3239
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     5391,
+     3313,
+     5398,
+     3756
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1841,
+     4098,
+     1909,
+     4175
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1605,
+     3793,
+     1697,
+     3886
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1220,
+     3787,
+     1261,
+     4236
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     5390,
+     3808,
+     5408,
+     4261
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1619,
+     4504,
+     1688,
+     4583
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1623,
+     4796,
+     1692,
+     4877
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1220,
+     4478,
+     1286,
+     4889
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1621,
+     5311,
+     1692,
+     5390
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "dynamic",
+    "rect": [
+     1622,
+     5715,
+     1692,
+     5794
+    ],
+    "text": null,
+    "cls": "dynamicF"
+   },
+   {
+    "kind": "word",
+    "rect": [
+     1714,
+     5709,
+     2108,
+     5791
+    ],
+    "text": "espr. e legato",
+    "cls": "text"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1221,
+     5394,
+     1267,
+     5793
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1221,
+     5866,
+     1258,
+     6254
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "word",
+    "rect": [
+     1491,
+     6979,
+     2110,
+     7062
+    ],
+    "text": "un poco sostenuto",
+    "cls": "text"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1217,
+     1561,
+     1235,
+     1700
+    ],
+    "text": null,
+    "cls": "brace"
+   },
+   {
+    "kind": "brace",
+    "rect": [
+     1181,
+     3505,
+     1221,
+     4070
+    ],
+    "text": null,
+    "cls": "brace"
+   }
+  ],
+  "census": {
+   "bracket:left_edge_mark:claimed": 1,
+   "bracket:left_edge_mark:marked": 1,
+   "word:direction_word:claimed": 10,
+   "word:dynamic_letters:claimed": 1,
+   "word:dynamic_letters:lone_letter": 41,
+   "word:dynamic_letters:twin_letters_disagree": 1,
+   "word:margin_label:claimed": 14,
+   "word:page_heading:marked": 10
+  },
+  "lone_letters": {
+   "inside_a_claim": 42,
+   "lone:is_that_letter_(truth_dynamic_same_class)": 15,
+   "lone:inside_a_truth_word": 4,
+   "lone:matches_no_truth_mark": 1,
+   "by_score": {
+    "score 0.5-0.8": {
+     "lone:is_that_letter_(truth_dynamic_same_class)": 2,
+     "lone:inside_a_truth_word": 1,
+     "lone:matches_no_truth_mark": 1
+    },
+    "score<0.5": {
+     "lone:inside_a_truth_word": 2,
+     "lone:is_that_letter_(truth_dynamic_same_class)": 1
+    },
+    "score>=0.8": {
+     "lone:is_that_letter_(truth_dynamic_same_class)": 12,
+     "lone:inside_a_truth_word": 1
+    }
+   }
+  }
+ }
+}
