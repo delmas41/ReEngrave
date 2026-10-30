@@ -4468,7 +4468,8 @@ TIP_CLAIMS_EXPLAIN = ("occupied", "crosses_both_sides", "runs_on", "ink_not_flag
 
 
 def tips_honour_claims_enabled() -> bool:
-    return os.environ.get(TIPS_HONOUR_CLAIMS_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_TIPS_HONOUR_CLAIMS`, default ON (Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get(TIPS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _owner_families(verdict) -> Dict[int, str]:

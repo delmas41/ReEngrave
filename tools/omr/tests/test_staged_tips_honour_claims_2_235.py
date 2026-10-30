@@ -1,4 +1,4 @@
-"""ROADMAP 2.235 (STAGED ADJUDICATE `rhythm._tips_honouring_claims`), flag `OMR_TIPS_HONOUR_CLAIMS`, default OFF.
+"""ROADMAP 2.235 (STAGED ADJUDICATE `rhythm._tips_honouring_claims`), flag `OMR_TIPS_HONOUR_CLAIMS`, default ON (Sean 2026-10-30).
 
 The stem-tip readers consult the claims: GATHER's tip window abstains `occupied` where a detection box (a dot, a slur, an accidental) covers
 ink attached to the tip; where the strokes `Q.STROKE_OWNER` DECIDED to another mark are the only ink there, the tip is clean. Every test that
