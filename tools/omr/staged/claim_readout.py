@@ -121,6 +121,44 @@ UK_NAMES = {i + 1: "unclaimed:" + k for i, k in enumerate(STROKE_KINDS)}
 UK_NAMES.update({i + 5: "refused:" + k for i, k in enumerate(STROKE_KINDS)})
 
 
+# -- ROADMAP 2.239: ONE MARK, ONE PIECE, OF A PLAUSIBLE SHAPE (Sean 2026-10-30: "I thought we had limits to box sizes") --
+#: a truth box is WHOLE when its largest single piece of the right kind holds at least this share of the box's ink (the coordinator's brief)
+WHOLE_SHARE = 0.85
+#: a piece claimed as one kind must have that kind's shape; the limits are the project's own, never tuned here:
+#: head -- `head_ink.MIN_SPACES` (0.6) both ways, `head_ink.MAX_WIDTH_SPACES` (1.75) wide, `head_ink.MAX_HEIGHT_SPACES_V2` (1.6, Sean) tall;
+#: ledger -- a line: `stroke_map.CURVE_MAX_THICK_SPACES` (0.5) thick at most and level within `stroke_map.LEDGER_MAX_SLOPE` (2.239);
+#: stem -- `stroke_map.STEM_TRUE_WIDTH_MAX_SPACES` (0.7, 2.206d) wide at most and STEM_MIN_TALL_SPACES tall, or touching another stroke.
+#: Beams and flags are not shape-tested yet (said in the report, not hidden).
+STEM_MIN_TALL_SPACES = 2.5          # the coordinator's brief ("a stem is thin and >= ~2.5 sp tall or attached"); a stem is ~3.5 sp by convention
+SHAPE_KINDS = ("head", "ledger", "stem")
+
+
+def misshapen_why(kind: str, piece: Dict[str, Any]) -> Optional[str]:
+    """Why a piece claimed as `kind` is not that kind's shape (None = it is, or the kind is not shape-tested)."""
+    import math
+    from . import head_ink as HI
+    from . import stroke_map as SM
+    w, h = piece["w_sp"], piece["h_sp"]
+    if kind == "head":
+        if w < HI.MIN_SPACES or h < HI.MIN_SPACES:
+            return "head_too_small"
+        if w > HI.MAX_WIDTH_SPACES:
+            return "head_too_wide"
+        if h > HI.MAX_HEIGHT_SPACES_V2:
+            return "head_too_tall"
+    elif kind == "ledger":
+        if piece["shape"] not in ("horizontal", "curve") or piece["thick_sp"] > SM.CURVE_MAX_THICK_SPACES:
+            return "ledger_not_a_line"
+        if abs(math.tan(math.radians(piece["angle"]))) > SM.LEDGER_MAX_SLOPE:
+            return "ledger_not_level"
+    elif kind == "stem":
+        if w > SM.STEM_TRUE_WIDTH_MAX_SPACES:
+            return "stem_too_wide"
+        if h < STEM_MIN_TALL_SPACES and not piece["touches"]:
+            return "stem_short_and_alone"
+    return None
+
+
 def kind_of(family: str) -> Optional[str]:
     return FAMILY_KIND.get(family)
 
@@ -179,11 +217,14 @@ class PageInk:
         self.afam = np.zeros((h, w), np.uint32)         # READ area claims (applied outside cells only)
         self.weak = np.zeros((h, w), np.uint32)         # GUESSED / NARROWED area claims
         self.nearline = np.zeros((h, w), bool)         # within LINE_NEAR_SPACES of a staff line at the cell's own lines
+        self.sid = np.zeros((h, w), np.int32)            # 2.239: which stroke (page-unique id) holds the pixel (the last cell written)
+        self.pieces: Dict[int, Dict[str, Any]] = {}      # 2.239: id -> shape, size in sp, page box, claimed kinds
         self.cells_added = 0
         self.naive_stroke_px = 0                        # stroke ink px summed per cell, NOT de-duplicated (the control's contrast)
 
     def add_cell(self, rect: Sequence[int], labels: np.ndarray, claims: Dict[int, StrokeClaims],
-                 erased_staff: Optional[np.ndarray] = None, lines_page: Sequence[float] = ()) -> None:
+                 erased_staff: Optional[np.ndarray] = None, lines_page: Sequence[float] = (),
+                 meta: Optional[Dict[int, Dict[str, Any]]] = None) -> None:
         """`rect` = the cell's page rectangle (x0, y0, x1, y1); `labels` = its stroke label image in ANY frame (0 none, i = stroke ordinal + 1)
         and `claims[i]` that stroke's claims; `erased_staff` = a bool image (any frame) of the raw ink the eraser took."""
         x0, y0, x1, y1 = (int(v) for v in rect)
@@ -217,6 +258,16 @@ class PageInk:
         self.uk[sl] = np.maximum(self.uk[sl], uk_t[lab])
         self.opn[sl] |= opn_t[lab]
         self.incell[sl] = True
+        if meta:
+            sid_t = np.zeros(n, np.int32)
+            for i, md in meta.items():
+                if 0 < i < n:
+                    pid = len(self.pieces) + 1
+                    c = claims.get(i)
+                    self.pieces[pid] = {**md, "kinds": sorted(c.kinds) if c else []}
+                    sid_t[i] = pid
+            got = sid_t[lab]
+            self.sid[sl] = np.where(got > 0, got, self.sid[sl])
         if len(lines_page) >= 2:
             u = (lines_page[-1] - lines_page[0]) / (len(lines_page) - 1)
             for ly in lines_page:
@@ -352,8 +403,42 @@ class PageInk:
             v = "wrong_kind"
         else:
             v = "split"
-        return {"verdict": v, "ink_px": n, "right": round(right, 3), "nothing": round(none, 3), "wrong": round(wrong, 3),
-                "contested": float(((self.pop[sl][sel]) >= 2).mean())}
+        out = {"verdict": v, "ink_px": n, "right": round(right, 3), "nothing": round(none, 3), "wrong": round(wrong, 3),
+               "contested": float(((self.pop[sl][sel]) >= 2).mean())}
+        # 2.239: ONE MARK, ONE PIECE -- the largest single piece of the right kind, its share of the box's ink, the piece count, its shape
+        ids = self.sid[sl][sel][(fam & want) != 0]
+        ids = ids[ids > 0]
+        if ids.size:
+            vals, cnt = np.unique(ids, return_counts=True)
+            k = int(np.argmax(cnt))
+            big = int(vals[k])
+            out["largest_share"] = round(float(cnt[k]) / n, 3)
+            out["n_pieces"] = int((cnt >= 4).sum())
+            kind = next((a for a in accept if a in SHAPE_KINDS), None)
+            pc = self.pieces.get(big, {})
+            out["misshapen"] = misshapen_why(kind, pc) if (kind and pc) else None
+            out["piece_box"] = pc.get("page_box")
+        else:
+            out["largest_share"], out["n_pieces"], out["misshapen"] = 0.0, 0, None
+        if v == "right":
+            out["strict"] = ("misshapen" if out["misshapen"] else
+                             "whole" if out["largest_share"] >= WHOLE_SHARE else "fragmented")
+        else:
+            out["strict"] = v
+        return out
+
+    def misshapen_pieces(self) -> Dict[str, List[Dict[str, Any]]]:
+        """2.239: every piece claimed as ONE shape-tested kind (head / ledger / stem) whose shape is not that kind's, with its page box."""
+        out: Dict[str, List[Dict[str, Any]]] = collections.defaultdict(list)
+        for pid, pc in self.pieces.items():
+            ks = [k for k in pc.get("kinds", ()) if k in SHAPE_KINDS]
+            if len(pc.get("kinds", ())) != 1 or not ks:
+                continue
+            why = misshapen_why(ks[0], pc)
+            if why:
+                out[ks[0]].append({"why": why, "page_box": pc.get("page_box"), "shape": pc.get("shape"),
+                                   "w_sp": pc["w_sp"], "h_sp": pc["h_sp"]})
+        return dict(out)
 
 
 # ───────────────────────────── 3. reading rows ─────────────────────────────
@@ -538,6 +623,32 @@ class PageResult:
     tiles: List[Dict[str, Any]] = field(default_factory=list)
 
 
+def _plant_cut_head(lab: np.ndarray, res: Any, claims: Dict[int, StrokeClaims], meta: Dict[int, Dict[str, Any]], limit: int = 40) -> None:
+    """CONTROL (2.239): cut up to `limit` head-claimed strokes of a cell in half across their middle row -- the lower half becomes a new label
+    with the same claims and half the height. The truth boxes on them must turn FRAGMENTED, the halves MISSHAPEN (too small)."""
+    nxt = int(lab.max()) + 1
+    done = 0
+    for i in sorted(claims):
+        c = claims[i]
+        if "head" not in c.kinds or done >= limit or i not in meta:
+            continue
+        ys, _xs = np.nonzero(lab == i)
+        if ys.size < 8:
+            continue
+        mid = int(np.median(ys))
+        low = (lab == i) & (np.arange(lab.shape[0])[:, None] > mid)
+        if not low.any():
+            continue
+        lab[low] = nxt
+        claims[nxt] = StrokeClaims(shape=c.shape, kinds=set(c.kinds), register=set(c.register), n_box=c.n_box)
+        half = dict(meta[i])
+        half["h_sp"] = round(meta[i]["h_sp"] / 2.0, 2)
+        meta[i] = dict(half)
+        meta[nxt] = dict(half)
+        nxt += 1
+        done += 1
+
+
 def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_root: pathlib.Path,
                env: Optional[Dict[str, str]] = None, plant: Optional[Tuple[str, str]] = None, want_rgb: bool = False
                ) -> Tuple[PageInk, Dict[str, int], Any, List[Any]]:
@@ -596,12 +707,23 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
                 sub = lab[y0:y1, x0:x1]
                 sub[m[:y1 - y0, :x1 - x0]] = i + 1
         claims = claims_for_cell(res.strokes, verdicts.get(ck), det.get(ck, {}), cv_read_strokes(res, reads.get(ck, ())))
-        if plant:
+        if plant and plant != ("cut", "head"):
             plant_double_claim(claims, plant[0], plant[1])
         raw = getattr(c, "binary", None)
         er = ((raw == 0) & (img != 0)) if raw is not None else None
         ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
-        canvas.add_cell(c.bbox_page_px, lab, claims, er, [c.bbox_page_px[1] + y / c.upscale_factor for y in ys])
+        up = float(c.upscale_factor)
+        spc = float(res.sp_canonical)
+        meta = {}
+        for i, st in enumerate(res.strokes):
+            x, y, w_, h_ = st.box
+            meta[i + 1] = {"shape": st.kind, "w_sp": round(w_ / spc, 2), "h_sp": round(h_ / spc, 2), "thick_sp": st.thickness_sp,
+                           "angle": st.angle_deg, "touches": bool(st.touches),
+                           "page_box": [round(c.bbox_page_px[0] + x / up), round(c.bbox_page_px[1] + y / up),
+                                        round(c.bbox_page_px[0] + (x + w_) / up), round(c.bbox_page_px[1] + (y + h_) / up)]}
+        if plant == ("cut", "head"):
+            _plant_cut_head(lab, res, claims, meta)
+        canvas.add_cell(c.bbox_page_px, lab, claims, er, [c.bbox_page_px[1] + y / c.upscale_factor for y in ys], meta)
     for a in area_claims(prows):
         canvas.add_area(a["rect"], a["kind"], a["weak"])
     canvas.finish()
@@ -629,6 +751,8 @@ def score_truth(canvas: PageInk, truth: Dict[str, Any], source: str = "any") -> 
     """Per label class: right / nothing / wrong_kind / split / no_ink / unmapped, plus the box lists of the misses."""
     al = truth["alignment"]
     per: Dict[str, Dict[str, int]] = collections.defaultdict(lambda: collections.Counter())
+    strict: Dict[str, Dict[str, int]] = collections.defaultdict(lambda: collections.Counter())
+    strict_misses: Dict[str, List[Dict[str, Any]]] = collections.defaultdict(list)
     misses: Dict[str, List[Dict[str, Any]]] = collections.defaultdict(list)
     for b in truth["page"]["boxes"]:
         cls = b["cls"]
@@ -638,10 +762,16 @@ def score_truth(canvas: PageInk, truth: Dict[str, Any], source: str = "any") -> 
             continue
         j = canvas.judge_box(b["rect"], accept, source)
         per[cls][j["verdict"]] += 1
+        strict[cls][j.get("strict", j["verdict"])] += 1
+        if j.get("strict") in ("fragmented", "misshapen") and len(strict_misses[cls]) < 60:
+            strict_misses[cls].append({"id": b["id"], "rect": [round(v, 1) for v in b["rect"]], "strict": j["strict"],
+                                       "largest_share": j.get("largest_share"), "n_pieces": j.get("n_pieces"), "why": j.get("misshapen"),
+                                       "piece_box": j.get("piece_box")})
         if j["verdict"] in ("nothing", "wrong_kind", "split") and len(misses[cls]) < 40:
             misses[cls].append({"id": b["id"], "rect": [round(v, 1) for v in b["rect"]], "cell": al.cell_of(b["id"]), **j})
     return {"by_class": {c: dict(v) for c, v in sorted(per.items())}, "misses": dict(misses), "master": al.version,
-            "n_boxes": len(truth["page"]["boxes"])}
+            "n_boxes": len(truth["page"]["boxes"]), "strict_by_class": {c: dict(v) for c, v in sorted(strict.items())},
+            "strict_misses": dict(strict_misses)}
 
 
 # ───────────────────────────── 6. tiles ─────────────────────────────
@@ -802,6 +932,8 @@ def merge_tallies(ts: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
             out[k].update(t[k])
         for k in ("naive_stroke_px", "stroke_px_deduped", "cells"):
             out[k] += t[k]
+        for k, v in (t.get("misshapen_pieces") or {}).items():     # 2.239
+            out.setdefault("misshapen_pieces", {}).setdefault(k, []).extend(v)
     return out
 
 
@@ -837,6 +969,11 @@ def render_tally(label: str, t: Dict[str, Any]) -> List[str]:
                                            if k.startswith(("unclaimed", "refused", "residue", "weak_claim", "debris", "outside_cells")) and v) or "-"))
     lines.append("  de-dup: stroke ink px summed per cell %d -> in page pixels %d (%.1f%% of the sum was the same ink seen twice)" % (
         t["naive_stroke_px"], t["stroke_px_deduped"], 100.0 * (1 - t["stroke_px_deduped"] / t["naive_stroke_px"]) if t["naive_stroke_px"] else 0.0))
+    mis = t.get("misshapen_pieces") or {}
+    if mis:                                       # 2.239: pieces claimed as one shape-tested kind but outside its limits (never right)
+        lines.append("  misshapen pieces (claimed by one kind, outside its size/shape limits): " + ", ".join(
+            "%s %d (%s)" % (k, len(v), ", ".join("%s %d" % kv for kv in collections.Counter(p_["why"] for p_ in v).most_common()))
+            for k, v in sorted(mis.items())))
     return lines
 
 
@@ -853,6 +990,14 @@ def render_truth(tr: Dict[str, Any], tr_reg: Optional[Dict[str, Any]] = None) ->
         tot["_reg"] += reg
     n = sum(v for k, v in tot.items() if k != "_reg")
     lines.append("  %-24s %5d %6d %7d %6d %6d %6d %6d   %d" % ("ALL", n, tot["right"], tot["nothing"], tot["wrong_kind"], tot["split"], tot["no_ink"], tot["unmapped"], tot["_reg"]))
+    if tr.get("strict_by_class"):
+        lines.append("  STRICT (2.239: right AND one piece >= %.2f of the box's ink AND that piece in its kind's size/shape limits)" % WHOLE_SHARE)
+        lines.append("  %-24s %5s %6s %10s %9s" % ("class", "boxes", "whole", "fragmented", "misshapen"))
+        st = collections.Counter()
+        for c, v in tr["strict_by_class"].items():
+            lines.append("  %-24s %5d %6d %10d %9d" % (c, sum(v.values()), v.get("whole", 0), v.get("fragmented", 0), v.get("misshapen", 0)))
+            st.update(v)
+        lines.append("  %-24s %5d %6d %10d %9d" % ("ALL", sum(st.values()), st["whole"], st["fragmented"], st["misshapen"]))
     return lines
 
 
@@ -884,6 +1029,7 @@ def run(rec: str, pages: Optional[Sequence[int]], *, truth: Optional[str], tiles
         t0 = time.time()
         canvas, verify, pws, cells = build_page(rows_all, pdf, pg, cm_root, env)
         tally = canvas.tally()
+        tally["misshapen_pieces"] = canvas.misshapen_pieces()          # 2.239: per shape-tested kind, every piece outside its limits
         res = PageResult(pg, tally, verify)
         if truth == "auto":
             tr = load_truth("imslp%s" % ed.get("imslp_id"), pg, man["version"])
@@ -1008,6 +1154,17 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=pr
         ok &= same
     finally:
         shutil.rmtree(tmp, ignore_errors=True)
+    # (f) 2.239: heads planted cut in half must read FRAGMENTED or MISSHAPEN, never whole
+    if truth is not None:
+        c_cut, *_ = build_page(rows, pdf, page, cm_root, plant=("cut", "head"))
+        s_on = score_truth(c_on, truth)["strict_by_class"]
+        s_cut = score_truth(c_cut, truth)["strict_by_class"]
+        hk = ("noteheadBlackInSpace", "noteheadBlackOnLine")
+        whole_on = sum(s_on.get(k, {}).get("whole", 0) for k in hk)
+        whole_cut = sum(s_cut.get(k, {}).get("whole", 0) for k in hk)
+        bad_cut = sum(s_cut.get(k, {}).get(x, 0) for k in hk for x in ("fragmented", "misshapen"))
+        log("(f) heads planted cut in half: black heads WHOLE %d -> %d, fragmented+misshapen -> %d (whole must drop)" % (whole_on, whole_cut, bad_cut))
+        ok &= whole_cut < whole_on
     par = verdict_parity(src, rows, page)
     if par is not None:
         log("(e) the stroke owner re-run on the GATHER rows vs the record's own saved verdicts: %s" % par)
