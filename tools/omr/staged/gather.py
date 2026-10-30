@@ -1076,7 +1076,8 @@ def gather_detector_views(log: Log, cells: Sequence[Any],
 
 
 def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, stems: Sequence[Any], existing: Sequence[Any],
-                       kept: List[Dict[str, Any]], grid: Tuple[float, float]) -> List[Dict[str, Any]]:
+                       kept: List[Dict[str, Any]], grid: Tuple[float, float],
+                       page_heads: Sequence[Sequence[float]] = ()) -> List[Dict[str, Any]]:
     """lane-stem-end-head (flag `OMR_STEM_END_HEAD_INK`, default OFF): every orphan stem end READ on the page raster GATHER holds
     (`pws.page.binary`; no new image pass) with `head_ink.read_head_ink`, and set beside the 0.05 re-run's `kept`: agree -> the re-run
     box is kept; ink alone -> a box on the trimmed ink; re-run alone / different ink / a head at both ends -> abstention with the
@@ -1097,8 +1098,11 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
     to_page = lambda b: (bbox[0] + b[0] / up, bbox[1] + b[1] / up, bbox[0] + b[2] / up, bbox[1] + b[3] / up)  # noqa: E731
     foreign = [pb for pb in (_page_box(c, d) for d in existing if head_ink.is_foreign_class(d.smufl_name)) if pb is not None]
     others = [(to_page(SEH._box(d)), str(d.smufl_name)) for d in existing
-              if str(d.smufl_name).startswith(SEH._OTHER_FAMILY_PREFIXES) and float(d.confidence) >= SEH.CLAIM_FLOOR]
-    seen = [to_page(SEH._box(d)) for d in existing if SEH.is_head(d.smufl_name)]
+              if str(d.smufl_name).startswith(SEH._OTHER_FAMILY_PREFIXES) and not str(d.smufl_name).startswith(SEH.BLOCK_RESTS)
+              and float(d.confidence) >= SEH.CLAIM_FLOOR]   # a block rest at a stem end is the black head boxed wrong (2.179)
+    # heads seen on the WHOLE page: a cell's crop reaches into the next staff, whose head (boxed in its own cell) is the same ink
+    # (Brahms p5 run 1: 56 of 68 ink-only heads were staff 5's heads read again from staff 4's cell, then refused as another staff's)
+    seen = [to_page(SEH._box(d)) for d in existing if SEH.is_head(d.smufl_name)] + list(page_heads or ())
     by_end = {(kb["stem_index"], kb["end"]): kb for kb in kept}
     out: List[Dict[str, Any]] = []
     for si in SEH.orphan_indices(stems, existing, 2.0 * half_step):
@@ -1202,7 +1206,17 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
                         why=rf["why"], candidate_class=d.smufl_name, score=float(rf["score"]), end=rf["end"],
                         box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical])
         if SEH.ink_enabled():
-            kept = _stem_end_head_ink(log, pws, c, cell_sub, frame, stems, existing, kept, grid)
+            page_heads = []
+            for c2 in cells:
+                k2 = local.get(c2.staff_index)
+                if c2.page_index != p or k2 is None or c2 is c:
+                    continue
+                for d2 in detections.get(R.cell(p, k2[0], k2[1], c2.measure_index).to_key()) or ():
+                    if SEH.is_head(d2.smufl_name):
+                        pb = _page_box(c2, d2)
+                        if pb is not None:
+                            page_heads.append(pb)
+            kept = _stem_end_head_ink(log, pws, c, cell_sub, frame, stems, existing, kept, grid, page_heads)
         if not kept:
             continue
         lst = detections.get(cell_key)
