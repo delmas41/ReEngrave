@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "1. 4 (I think - I'm I can't see the end of the stem 2. 4 3. Part of an FF 4.2 5-7.8 8. Part of a clef 9. 4 10. Part of a half note 11. Bar number 12. Part of a beam",
+ "tally": "written blue: 3/4 right (1 quarter incl. the p9 case, 4 half, 9 quarter); tile 3 WRITES part of an ff as a half. Refused: 4/5 right (8 clef, 10 half-note piece, 11 bar number, 12 beam); tile 5, a real eighth, refused (stem_inside_the_ink). Lost/unwritten real notes: 2 (quarter; old rescue box the ink read too small), 7 (eighth; ink-only, unwritten). 6 an eighth refused as a duplicate box (its twin presumably writes it). Not ready to land.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "quarter (probably; stem end not visible)"
+  },
+  {
+   "tile": 2,
+   "answer": "quarter"
+  },
+  {
+   "tile": 3,
+   "answer": "part of an ff"
+  },
+  {
+   "tile": 4,
+   "answer": "half"
+  },
+  {
+   "tile": 5,
+   "answer": "eighth"
+  },
+  {
+   "tile": 6,
+   "answer": "eighth"
+  },
+  {
+   "tile": 7,
+   "answer": "eighth"
+  },
+  {
+   "tile": 8,
+   "answer": "part of a clef"
+  },
+  {
+   "tile": 9,
+   "answer": "quarter"
+  },
+  {
+   "tile": 10,
+   "answer": "part of a half note"
+  },
+  {
+   "tile": 11,
+   "answer": "bar number"
+  },
+  {
+   "tile": 12,
+   "answer": "part of a beam"
+  }
+ ]
+}

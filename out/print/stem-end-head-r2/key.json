@@ -1,0 +1,335 @@
+[
+ {
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   1726.0,
+   2380.0,
+   1744.1,
+   2391.0
+  ],
+  "staff_lines": [
+   2376,
+   2392,
+   2408,
+   2424,
+   2439
+  ],
+  "space": 15.75,
+  "subject": "glyph/9/1/1/6/23",
+  "kind": "written_blue:quarter",
+  "ours": "noteheadBlackInSpace",
+  "refiled": null,
+  "tile": 1,
+  "crop_origin": [
+   1609,
+   2352
+  ],
+  "scale": 2.7273
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2482.4,
+   718.1,
+   2503.4,
+   733.7
+  ],
+  "staff_lines": [
+   709,
+   727,
+   740,
+   756,
+   774
+  ],
+  "space": 16.25,
+  "subject": "glyph/4/0/2/14/6",
+  "kind": "lost:old_rescue_box_ink_reads_too_small",
+  "ours": "noteheadBlackInSpace",
+  "tile": 2,
+  "crop_origin": [
+   2362,
+   684
+  ],
+  "scale": 2.6316
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1089.0,
+   2341.0,
+   1109.0,
+   2357.1
+  ],
+  "staff_lines": [
+   2315,
+   2330,
+   2346,
+   2362,
+   2378
+  ],
+  "space": 15.75,
+  "subject": "glyph/4/1/1/4/17",
+  "kind": "written_blue:half",
+  "ours": "noteheadHalfOnLine",
+  "refiled": null,
+  "tile": 3,
+  "crop_origin": [
+   973,
+   2291
+  ],
+  "scale": 2.7273
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   1200.0,
+   1055.0,
+   1226.0,
+   1073.0
+  ],
+  "staff_lines": [
+   1004,
+   1017,
+   1033,
+   1048,
+   1064
+  ],
+  "space": 15.0,
+  "subject": "glyph/9/0/4/5/4",
+  "kind": "written_blue:half",
+  "ours": "noteheadHalfOnLine",
+  "refiled": null,
+  "tile": 4,
+  "crop_origin": [
+   1093,
+   981
+  ],
+  "scale": 2.8571
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2496,
+   2708,
+   2517,
+   2723
+  ],
+  "staff_lines": [
+   2582,
+   2598,
+   2613,
+   2629,
+   2645
+  ],
+  "space": 15.75,
+  "subject": "cell/4/1/3/14",
+  "kind": "refused_in_gather:stem_inside_the_ink 0.38",
+  "ours": null,
+  "tile": 5,
+  "crop_origin": [
+   2380,
+   2558
+  ],
+  "scale": 1.7241
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2585.0,
+   2604.1,
+   2605.9,
+   2614.0
+  ],
+  "staff_lines": [
+   2582,
+   2598,
+   2613,
+   2629,
+   2645
+  ],
+  "space": 15.75,
+  "subject": "glyph/4/1/3/14/15",
+  "kind": "refused:notehead_is_a_duplicate_box",
+  "ours": "noteheadBlackInSpace",
+  "refiled": null,
+  "tile": 6,
+  "crop_origin": [
+   2469,
+   2558
+  ],
+  "scale": 2.7273
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1670.0,
+   3430.0,
+   1690.9,
+   3439.9
+  ],
+  "staff_lines": [
+   3395,
+   3411,
+   3427,
+   3442,
+   3458
+  ],
+  "space": 15.75,
+  "subject": "glyph/4/1/9/8/10",
+  "kind": "unwritten:stem_end_ink_only",
+  "ours": "noteheadBlackInSpace",
+  "refiled": null,
+  "tile": 7,
+  "crop_origin": [
+   1554,
+   3371
+  ],
+  "scale": 2.7273
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   754,
+   6535,
+   780,
+   6555
+  ],
+  "staff_lines": [
+   6500,
+   6527,
+   6554,
+   6582,
+   6610
+  ],
+  "space": 27.5,
+  "subject": "cell/14/1/9/0",
+  "kind": "refused_in_gather:stem_inside_the_ink 0.33",
+  "ours": null,
+  "tile": 8,
+  "crop_origin": [
+   547,
+   6458
+  ],
+  "scale": 1.5544
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   2325.0,
+   1696.0,
+   2347.0,
+   1711.0
+  ],
+  "staff_lines": [
+   1658,
+   1673,
+   1689,
+   1705,
+   1720
+  ],
+  "space": 15.5,
+  "subject": "glyph/9/0/9/13/3",
+  "kind": "written_blue:quarter",
+  "ours": "noteheadBlackInSpace",
+  "refiled": null,
+  "tile": 9,
+  "crop_origin": [
+   2212,
+   1634
+  ],
+  "scale": 2.7523
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2512.1,
+   3451.1,
+   2525.1,
+   3461.0
+  ],
+  "staff_lines": [
+   3395,
+   3411,
+   3427,
+   3442,
+   3458
+  ],
+  "space": 15.75,
+  "subject": "glyph/4/1/9/14/10",
+  "kind": "refused:too_narrow",
+  "ours": "noteheadBlackOnLine",
+  "refiled": null,
+  "tile": 10,
+  "crop_origin": [
+   2392,
+   3371
+  ],
+  "scale": 2.7273
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   745.0,
+   432.1,
+   775.2,
+   451.3
+  ],
+  "staff_lines": [
+   531,
+   558,
+   586,
+   612,
+   640
+  ],
+  "space": 27.25,
+  "subject": "glyph/5/0/0/0/36",
+  "kind": "refused:stem_end_ink_unladdered",
+  "ours": "noteheadHalfOnLine",
+  "refiled": null,
+  "tile": 11,
+  "crop_origin": [
+   542,
+   415
+  ],
+  "scale": 1.1321
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   5391.9,
+   1420.0,
+   5429.9,
+   1439.0
+  ],
+  "staff_lines": [
+   1487,
+   1516,
+   1541,
+   1568,
+   1597
+  ],
+  "space": 27.5,
+  "subject": "glyph/5/0/4/7/11",
+  "kind": "refused:stem_end_ink_unladdered",
+  "ours": "noteheadBlackOnLine",
+  "refiled": null,
+  "tile": 12,
+  "crop_origin": [
+   5190,
+   1403
+  ],
+  "scale": 1.2766
+ }
+]
