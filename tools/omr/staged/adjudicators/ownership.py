@@ -4485,7 +4485,8 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # refused -> not applied (`owner_refused`, counted); owns -> the 2.192 test below does not decide; contested / silent -> it decides as
     # before (the owner cannot tell; rule 8).
     from . import stroke_owner as _stroke_owner
-    owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+    owner_says, owner_lost, owner_vid = _stroke_owner.box_says(
+        ev, ev.subject.to_key(), ev.verdict(Q.STROKE_OWNER, subject=ev.subject.at(Kind.CELL)) if _stroke_owner.SO.owner_shape_enabled() else None)
     if owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "acc_on_a_rest":
         return Ruling.abstain("on_a_rest", alteration=alteration, detector_class=detail.get("detector_class"), lost=owner_lost,
                               owner=owner_vid, decided_by="stroke_owner")

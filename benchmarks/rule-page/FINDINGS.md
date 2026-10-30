@@ -28,10 +28,25 @@ The eight head-ink quantities are not consolidated here (only read where a moved
 covers, and the rival, where one is named, is a candidate on those strokes with fit `clear` (how `named`). Then the ordinary table runs:
 the rival owns the stroke; with no rival the stroke is `refused_claims` (left to the consumers: tile 4's stem). A stroke two fitting families
 still claim stays CONTESTED. The head-before-rest order is read after the vetoes, so a vetoed head no longer makes its rest "run into a
-head". The precision rules, flag ON, read the box verdict ONCE: `refused` (its ink is another mark's, or not its shape, and not only an
-area claim's -- the register already speaks for those) -> refused `owner_refused` (accidental: abstains `owner_refused`); `owns` -> the
-covered rules below do not decide; `contested` / `no_ink` / no verdict -> the covered rules decide as before (the owner cannot tell:
-rule 8, the old rule is the stopgap, never a guess).
+head". The precision rules, flag ON, read the box verdict ONCE: `refused` WITH A VETO ON THIS BOX (and not only an area claim's -- the
+register already speaks for those) -> refused under the name of the evidence that decided it (`on_a_dynamic_letter`, `on_a_rest`,
+`rest_on_a_dynamic_letter`, `rest_stroke_into_a_head`, accidental abstains `on_a_rest`; downstream readers key on those names, e.g.
+`rhythm.NOT_A_NOTE_REFUSALS`; `is_a_rest_shape` is left to its own rule so 2.145's rest is still written at the cluster); `owns` -> the
+covered rules below do not decide; `contested` / `no_ink` / a refusal with NO veto / no verdict -> the covered rules decide as before
+(the owner cannot tell: rule 8, the old rule is the stopgap, never a guess).
+**Revision after the first lane report (2026-10-30):** the first build let ANY owner refusal decide. 2.205's per-stroke fit alone then
+refused 31 Litolff / 39 Brahms heads main keeps, one of them a quarter Sean judged twice (Brahms `glyph/5/0/2/3/2`, "4": right->wrong 2).
+That is exactly the lesson of this lane -- the per-stroke fit is no box-level shape test -- so a refusal decides only where moved evidence
+vetoed the box.
+
+**The 50% cover share (Sean 2026-10-30: "sounds arbitrary").** In this build it is only the CANDIDATE FILTER: which strokes a box is a
+claimant for at all (`Q.GLYPH_STROKES`, cut `stroke_map.COVER_SHARE_MIN = 0.5`, filed in GATHER, which this lane may not edit). It never
+picks between claimants: between families the decider is `shape_fit` on the piece plus the vetoes above (box-level shape evidence), and
+within one family nothing is picked (merged, 2.186's question). Where it still costs: a head whose piece is head+stem fused covers only
+0.35-0.45 of it, so the head is no claimant of its own ink (it stays `partial`, joins only by the ATTACHED rule). The fix is not a lower
+number: once 2.239 (`OMR_SPLIT_JOINS`) cuts fused ink at the joins, every stroke a box touches (cover or partial) should be a candidate
+and the WHOLE piece's shape decides; 2.205 measured that widening as harmful on fused pieces (counting partial strokes refused 127 / 343
+heads main kept), so it waits for whole pieces. Next step for the owner after 2.239, not built here.
 
 **(c) Covered (stop deciding when the owner has a verdict):** head `on_a_dynamic_letter` (both readers), `is_a_rest_shape`, `on_a_rest`
 (whole classes); rest `rest_on_a_dynamic_letter`, `rest_stroke_into_a_head`, `rest_overlaps_a_notehead`; accidental `on_a_rest`. NOT
@@ -43,6 +58,31 @@ the register (`claimed_by:*`), box-shape rules (`too_narrow`, `clipped_fragment`
 The stroke map has the rest's three strokes (blob 1.35, vertical 1.62, blob 1.14) touching no head stroke, so the owner already gave them
 to the rest. With the flag ON the 2.150b evidence vetoes only at margin >= 0.05 (tile 4: 0.69, the stem), and the near-tie is left to the
 stroke map: the rest owns its ink and is kept.
+**Measured (merged tree incl. 2.232 + 2.235; frozen sample, 20261029-night slices, adjudicate replay).**
+- *Lane report* (`lane_report --flag OMR_OWNER_SHAPE --tag 20261029-night`, `out/print/2.238-tiles/lane-report.txt`): Litolff notes +1 -4,
+  rests +7 -1, accidentals +1 -1, beams +1 -3 ~2, blue +1 -5, words +4 -5; red bars 199 -> 201. Brahms notes +2, rests +1, blue +1,
+  words +2 -1; red bars 164 -> 165. Judged right->wrong 0 / 0, unwritten->wrong 0 / 0. Head moves: L 3 kept -> `on_a_rest` (the
+  structural veto), 2 refused by another rule now under `on_a_dynamic_letter`; B 2 `on_a_rest` -> kept (the owner owns them; Sean's
+  new tile 1 is one), 1 kept -> `on_a_rest`. Control line: neither arm reproduces the saved record (the tree moved since the night), so
+  the OFF arm of the same run is the baseline.
+- *Parity* (`owner_parity.py` + `rule_parity.py`: main's old refusals from 2.237's OFF dump against the ON owner; full table
+  `parity-owner-shape-2.238.txt`). Covered rules, owner agrees (refuses) on L / B, before -> after: head `on_a_dynamic_letter` 1 -> 35
+  of 38 / 0 -> 13 of 14 (the rest silent: no stroke); `is_a_rest_shape` 0 -> 11 of 11 / none; head `on_a_rest` 1 -> 1 of 1 / 0 -> 5 of 7
+  (2 kept: the owner keeps whole-class boxes whose ink holds a clear head piece -- tiles); `rest_on_a_dynamic_letter` 1 -> 2 of 2;
+  `rest_stroke_into_a_head` 16 -> 22 of 30 / 25 -> 34 of 41 (the 5 / 1 left are the near-ties under 0.05, kept by design: tile 10's
+  kind); accidental `on_a_rest` 0 -> 10 of 10 / 3 -> 52 of 52. `rest_overlaps_a_notehead` 1 L fire, still disagrees.
+- *Sean's 2.237 tiles, in the ON file:* all 12 as he answered -- 1 no head, the quarter rest written at the cluster; 2 the eighth rest
+  written, the double sharp not applied; 3 one eighth rest written (the twin `.../28`); 4 no rest on the stem; 5, 7 no head on the f /
+  ff; 6, 8 one half written at the place (`16/1/3/1/3`, `16/0/8/16/3`); 9 no head, the quarter rest written; 10 the eighth rest NOW
+  WRITTEN (OFF: not); 11 no head (nearer-staff rule, not covered); 12 one dotted half written (`0/0/4/3/2`).
+- *New tiles* `out/print/2.238-tiles/tiles` (key.json outside): 9 places where ON differs from main + 3 controls. Question: what is the
+  ink in the box?
+- **Candidates to retire** (after Sean's 2.238 tiles, each by a byte-identical file with the rule deleted): accidental `on_a_rest`
+  (52/52, 10/10), head `is_a_rest_shape` as a decider (11/11; its reader stays, the owner calls it), head `on_a_dynamic_letter` both
+  readers (35/38, 13/14), `rest_on_a_dynamic_letter`. NOT yet: `rest_stroke_into_a_head` (the owner differs by design on near-ties --
+  Sean's tile 10 says the owner is right there), head `on_a_rest` (2 Brahms disagreements to judge), `rest_overlaps_a_notehead` (1).
+- The 3 DEAD rows were NOT deleted: `is_a_clef` is the register-OFF fallback with its own tests, `same_side_second` has a pinned test
+  file; each needs its tests retired with it and a byte-identical whole-movement check -- a deletion lane's job.
 
 ## 2026-10-30 ROADMAP 2.237 -- rule-page refresh on fresh fires (measure only; nothing deleted)
 

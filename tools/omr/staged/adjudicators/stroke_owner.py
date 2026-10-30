@@ -371,15 +371,17 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
 REGISTER_FAMILIES = frozenset(SO.AREA_OWNERS) | {"whole_rest"}
 
 
-def box_says(ev: Evidence, box_key: str) -> Tuple[str, Any, str]:
+def box_says(ev: Evidence, box_key: str, verdict: Any = None) -> Tuple[str, Any, str]:
     """ROADMAP 2.238 (`OMR_OWNER_SHAPE`): what the reworked owner says of ONE head / rest / accidental box, for the precision rules:
     `("owns", None)`, `("refused", lost)` (its ink is another mark's, or not its class's shape, and not ONLY the register's), `("contested",
     lost)`, or `("silent", None)` (flag off, no verdict, no ink the owner can speak for, or refused by the register alone); third, the
     cell's `Q.STROKE_OWNER` verdict id (the decision's `used`)."""
     if not SO.owner_shape_enabled():
         return "silent", None, ""
-    cell = ev.subject.at(Kind.CELL)
-    v = ev.verdict(Q.STROKE_OWNER, subject=cell) if cell is not None else None
+    v = verdict
+    if v is None:
+        cell = ev.subject.at(Kind.CELL)
+        v = ev.verdict(Q.STROKE_OWNER, subject=cell) if cell is not None else None
     d = getattr(v, "detail", None) or {}
     if "box_owns" not in d:
         return "silent", None, ""

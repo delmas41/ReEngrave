@@ -7195,7 +7195,7 @@ _ACCIDENTAL_CENSUS_BY_REASON: Dict[str, str] = {
     "ambiguous_height": "abstained_ambiguous",
     **{r: r for r in ("no_candidate", "no_unit", "no_evidence", "refused_not_an_accidental", "is_a_key_signature_marker",
                       "head_belongs_to_a_nearer_staff", "owned_by_another_staff", "ownership_undecided",
-                      "one_ink_absorbed", "on_a_rest")},
+                      "one_ink_absorbed", "on_a_rest", "owner_refused")},
 }
 
 
@@ -7327,6 +7327,8 @@ def _accidental_census(rec: "Record", detected: Dict[str, int],
         "one_ink_absorbed": by_reason.get("one_ink_absorbed", 0),
         # ROADMAP 2.192: an abstained glyph refused as standing on a REST (the ink is the rest's, not an accidental): counted, not lost.
         "on_a_rest": by_reason.get("on_a_rest", 0),
+        # ROADMAP 2.238 (`OMR_OWNER_SHAPE`): the reworked stroke owner vetoed the glyph's ink (not applied, counted). Zero with the flag OFF.
+        "owner_refused": by_reason.get("owner_refused", 0),
         "heads_owned": heads_owned,
         "heads_contradicted": heads_contradicted,
         "owners_sharing_a_head": decided - heads_owned,

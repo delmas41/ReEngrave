@@ -1,0 +1,399 @@
+[
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 5,
+  "box": [
+   1841.4,
+   5640.025,
+   1876.325,
+   5667.525
+  ],
+  "rg": "glyph/5/1/7/2/6",
+  "value": "whole",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   1666,
+   5493
+  ],
+  "position": {
+   "page": 5,
+   "system": 1,
+   "staff": 7,
+   "cell": 2,
+   "page_box": [
+    1841.4,
+    5640.025,
+    1876.325,
+    5667.525
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 16,
+  "box": [
+   932.6925,
+   2370.695,
+   955.0575,
+   2386.6025
+  ],
+  "rg": "glyph/16/1/2/2/8",
+  "was": "end",
+  "value": "continue",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   849,
+   2299
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 2,
+   "cell": 2,
+   "page_box": [
+    932.6925,
+    2370.695,
+    955.0575,
+    2386.6025
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 10,
+  "box": [
+   2421.2,
+   3262.2,
+   2443.6,
+   3294.36
+  ],
+  "rg": "glyph/10/1/8/12/2",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   2337,
+   3199
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 8,
+   "cell": 12,
+   "page_box": [
+    2421.2,
+    3262.2,
+    2443.6,
+    3294.36
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   1482.645,
+   3562.4175,
+   1499.655,
+   3633.135
+  ],
+  "rg": "glyph/6/1/11/5/2",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   1396,
+   3519
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 11,
+   "cell": 5,
+   "page_box": [
+    1482.645,
+    3562.4175,
+    1499.655,
+    3633.135
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 10,
+  "box": [
+   2210.5225,
+   540.8875,
+   2231.785,
+   556.3225
+  ],
+  "rg": "glyph/10/0/1/11/5",
+  "value": "guessed",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   2126,
+   469
+  ],
+  "position": {
+   "page": 10,
+   "system": 0,
+   "staff": 1,
+   "cell": 11,
+   "page_box": [
+    2210.5225,
+    540.8875,
+    2231.785,
+    556.3225
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "rest",
+  "page": 16,
+  "box": [
+   835.9875,
+   3409.53,
+   857.7225,
+   3436.935
+  ],
+  "rg": "glyph/16/1/9/2/2",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 6,
+  "crop_origin": [
+   752,
+   3344
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 9,
+   "cell": 2,
+   "page_box": [
+    835.9875,
+    3409.53,
+    857.7225,
+    3436.935
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "accidental",
+  "page": 19,
+  "box": [
+   4265.4125,
+   929.81,
+   4304.1075,
+   963.3275
+  ],
+  "rg": "glyph/19/0/2/7/11",
+  "value": "flat",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 7,
+  "crop_origin": [
+   4092,
+   786
+  ],
+  "position": {
+   "page": 19,
+   "system": 0,
+   "staff": 2,
+   "cell": 7,
+   "page_box": [
+    4265.4125,
+    929.81,
+    4304.1075,
+    963.3275
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "accidental",
+  "side": "lost",
+  "page": 16,
+  "box": [
+   896.94,
+   2370.695,
+   918.99,
+   2385.815
+  ],
+  "rg": "glyph/16/1/2/2/12",
+  "value": "sharp",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   813,
+   2299
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 2,
+   "cell": 2,
+   "page_box": [
+    896.94,
+    2370.695,
+    918.99,
+    2385.815
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 10,
+  "box": [
+   2269.1125,
+   560.89,
+   2290.69,
+   610.66
+  ],
+  "rg": "glyph/10/0/1/11/3",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   2185,
+   507
+  ],
+  "position": {
+   "page": 10,
+   "system": 0,
+   "staff": 1,
+   "cell": 11,
+   "page_box": [
+    2269.1125,
+    560.89,
+    2290.69,
+    610.66
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 4,
+  "box": [
+   2138.875,
+   2125.1075,
+   2151.79,
+   2212.3625
+  ],
+  "rg": "glyph/4/1/0/12/16",
+  "value": "guessed",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   2050,
+   2089
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 0,
+   "cell": 12,
+   "page_box": [
+    2138.875,
+    2125.1075,
+    2151.79,
+    2212.3625
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "beam",
+  "side": "lost",
+  "page": 8,
+  "box": [
+   611.7998046875,
+   1883.0849609375,
+   634.080078125,
+   1904.044921875
+  ],
+  "rg": "glyph/8/1/0/0/6",
+  "value": "continue",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 11,
+  "crop_origin": [
+   528,
+   1814
+  ],
+  "position": {
+   "page": 8,
+   "system": 1,
+   "staff": 0,
+   "cell": 0,
+   "page_box": [
+    611.7998046875,
+    1883.0849609375,
+    634.080078125,
+    1904.044921875
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "beam",
+  "page": 6,
+  "box": [
+   1988.7425,
+   3014.83,
+   2011.58,
+   3038.14
+  ],
+  "rg": "glyph/6/1/7/8/0",
+  "value": "continue",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 12,
+  "crop_origin": [
+   1905,
+   2947
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 7,
+   "cell": 8,
+   "page_box": [
+    1988.7425,
+    3014.83,
+    2011.58,
+    3038.14
+   ]
+  },
+  "cell_map": null
+ }
+]

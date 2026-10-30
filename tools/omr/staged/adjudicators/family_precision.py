@@ -2069,7 +2069,10 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
             if owner_veto == "letter_look_cover":
                 return Ruling(value=True, reason="rest_on_a_dynamic_letter", used=owner_used, detail=detail)
             if owner_veto == "rest_stroke_into_a_head":
-                return Ruling(value=True, reason="rest_stroke_into_a_head", used=owner_used, detail=detail)
+                # the rule's own ruling (its reason and its 2.106 margin): the veto fired on the same row past the same cuts + noise
+                stroke_head = _rest_stroke_into_head_refusal(ev, box_row, detail)
+                if stroke_head is not None:
+                    return stroke_head
             return Ruling(value=True, reason="rest_owner_refused", used=owner_used, detail=detail)
         owner_decides = owner_says == "owns"
         if owner_decides:
