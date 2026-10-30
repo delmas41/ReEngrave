@@ -83,6 +83,38 @@ stroke map: the rest owns its ink and is kept.
   Sean's tile 10 says the owner is right there), head `on_a_rest` (2 Brahms disagreements to judge), `rest_overlaps_a_notehead` (1).
 - The 3 DEAD rows were NOT deleted: `is_a_clef` is the register-OFF fallback with its own tests, `same_side_second` has a pinned test
   file; each needs its tests retired with it and a byte-identical whole-movement check -- a deletion lane's job.
+### 2.238 round 2 -- Sean's 2.238 tiles: three new errors, three causes (2026-10-30)
+
+Sean (`out/print/2.238-tiles/answers.json`): right on 3, 8, 9, 10 (+ controls 6, 12); WRONG on 1, 4, 11, each written plain by ON.
+- **Tile 1** (Brahms `5/1/7/2/6`, whole note on part of a quarter rest). Cause: `owns` silenced the old whole-on-a-rest rule, but that
+  rule's evidence (a rest box under a whole-class box) was never moved into the owner; the box "owned" a CLEAR head blob that is the
+  rest's zigzag (area 0.43 sp^2) -- the 2.205 per-stroke fit again. Fix: `owns` silences only rules whose own evidence the owner reads
+  (letter, letter look, rest shape, rest ink contact, accidental shape); head `on_a_rest` and `rest_overlaps_a_notehead` decide as on main.
+- **Tile 4** (Litolff `6/1/11/5/2`, quarter rest on a half note + stem; no head box in the cell). Cause: the 2.150b margin was 0.02, a
+  near-tie, so no veto, and the rest box "owned" the hollow head's pieces while its covered ink also held a 4.5-sp straight stroke the
+  owner had already judged `longer_than_a_rest`. A box was kept although its ink holds a piece its class can never print. Fix: structural
+  veto `rest_holds_a_stem` -- a rest box covering a stroke no rest prints (`REST_NEVER`, shape_fit's existing answers) joined to a piece
+  it claims is refused (`rest_owner_refused`); tile 10's real eighth rest holds none and stays.
+- **Tile 11** (Litolff `8/1/0/0/6`, unison eighth lost its beam). Cause: the structural `head_piece_on_a_rest` veto named as rival a
+  false quarter-rest box that was ITSELF vetoed (`rest_stroke_into_a_head`); the named rival took the head's ink, the head was refused
+  and the beam reader lost the note. Fix: a vetoed box is never a rival (`structural_vetoes(already=)`, and `own_strokes` drops a named
+  rival that is vetoed).
+Process lesson: the per-stroke fit is no witness either way -- not to refuse (round 1) and not to keep (tile 1); the owner may silence
+or replace an old rule only where it reads that rule's own evidence.
+Tests from each tile: `TestSeansRound2Tiles` (`test_owner_shape_2_238.py`).
+- **To check (manager):** tile 2 (`16/1/2/2/8`) and tile 8 (`16/1/2/2/12`) are unchanged in the exported file in both rounds (the
+  eighth C15 with beam `continue`, and the C15 eighth with a sharp, both blue, OFF and ON alike); the "beam end->continue" / "sharp lost"
+  were the report's position pairing around the eighth rest ON gains there (2.237 tile 10). So Sean's "8 rest" at tile 8 is an error
+  main already writes (a sharp + note on an eighth rest), not this flag's. Tile 5 (`10/0/1/11/5`): the quarter G5 (and B-15) still
+  written as quarters, now plain: the bar now sums because ON gains the quarter rest Sean confirmed on tile 9.
+- **Lane report, round 2** (`out/print/2.238-tiles-r2/lane-report.txt`): Litolff notes +2 -3, rests +3 -2, accidentals +1 -1, beams
+  +2 -2 ~4, blue +4 -5, words +2 -5, red bars 199 -> 198; Brahms notes -2, rests +1 -1, flags -1, blue +2, words +1 -1, red bars
+  164 -> 163. Judged right->wrong 0 / 0, unwritten->wrong 0 / 0. All 12 of Sean's 2.237 places still as he answered, and 2.238 tiles 1,
+  4, 11 now write what main writes (no whole note; no rest; the unison eighths with beams). Brahms `5/0/13/2`: ON refuses a false
+  quarter-rest box on an eighth's stem (`rest_holds_a_stem`); the bar no longer sums (the eighth's head is unboxed in both arms), so
+  its notes are held out red, nothing invented.
+- **Tiles, round 2** `out/print/2.238-tiles-r2/tiles` (key.json outside; `owner_tiles_r2.py`): the 3 fixed places (as now written) +
+  7 new changed places -- only 7 distinct staves changed that no earlier tile showed (one tile per staff), not 9.
 
 ## 2026-10-30 ROADMAP 2.237 -- rule-page refresh on fresh fires (measure only; nothing deleted)
 
