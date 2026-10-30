@@ -1,0 +1,266 @@
+{
+ "flags": [
+  [
+   "OMR_TIPS_HONOUR_CLAIMS",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "note": {
+     "gained": 5,
+     "lost": 1,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 0,
+     "lost": 3,
+     "changed": 0
+    },
+    "slur": {
+     "gained": 10,
+     "lost": 0,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 0,
+     "lost": 4,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5531,
+    5535
+   ],
+   "paired": 5530,
+   "red_bars": [
+    201,
+    199
+   ],
+   "notes_not_written": [
+    2174,
+    2170
+   ],
+   "control": {
+    "reproduces": "neither",
+    "off": {
+     "stored": 9004,
+     "same": 8989,
+     "differ": 15,
+     "first_differ": [
+      "glyph/10/1/10/4/2",
+      "glyph/10/1/10/4/3",
+      "glyph/10/1/3/2/6",
+      "glyph/10/1/9/2/0",
+      "glyph/10/1/9/3/0",
+      "glyph/16/0/2/6/2",
+      "glyph/16/0/3/2/4",
+      "glyph/2/1/4/14/8",
+      "glyph/4/0/6/0/1",
+      "glyph/4/1/0/5/9"
+     ]
+    },
+    "on": {
+     "stored": 9004,
+     "same": 8979,
+     "differ": 25,
+     "first_differ": [
+      "glyph/10/1/10/4/2",
+      "glyph/10/1/10/4/3",
+      "glyph/10/1/3/2/6",
+      "glyph/10/1/9/2/0",
+      "glyph/10/1/9/3/0",
+      "glyph/11/0/0/11/0",
+      "glyph/11/0/0/16/1",
+      "glyph/11/0/0/8/1",
+      "glyph/11/0/0/9/3",
+      "glyph/16/0/2/6/2"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 286,
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    482.6,
+    479.7
+   ]
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 51,
+     "lost": 3,
+     "changed": 0
+    },
+    "dot": {
+     "gained": 35,
+     "lost": 1,
+     "changed": 0
+    },
+    "rest": {
+     "gained": 5,
+     "lost": 2,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 3,
+     "lost": 1,
+     "changed": 1
+    },
+    "tie": {
+     "gained": 11,
+     "lost": 1,
+     "changed": 1
+    },
+    "blue": {
+     "gained": 25,
+     "lost": 54,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 6,
+     "lost": 0,
+     "changed": 0
+    },
+    "slur": {
+     "gained": 13,
+     "lost": 9,
+     "changed": 0
+    },
+    "articulation": {
+     "gained": 3,
+     "lost": 0,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 2
+    },
+    "flag": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "words": {
+     "gained": 8,
+     "lost": 19,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6578,
+    6629
+   ],
+   "paired": 6573,
+   "red_bars": [
+    167,
+    164
+   ],
+   "notes_not_written": [
+    3155,
+    3104
+   ],
+   "control": {
+    "reproduces": "neither",
+    "off": {
+     "stored": 12336,
+     "same": 12303,
+     "differ": 33,
+     "first_differ": [
+      "glyph/0/0/0/4/10",
+      "glyph/12/0/0/4/11",
+      "glyph/12/0/0/8/14",
+      "glyph/12/0/10/9/8",
+      "glyph/12/0/11/4/2",
+      "glyph/12/0/13/0/17",
+      "glyph/12/0/2/3/7",
+      "glyph/12/0/2/4/5",
+      "glyph/12/0/2/6/9",
+      "glyph/12/0/2/7/10"
+     ]
+    },
+    "on": {
+     "stored": 12336,
+     "same": 12201,
+     "differ": 135,
+     "first_differ": [
+      "glyph/0/0/0/4/10",
+      "glyph/0/0/11/0/5",
+      "glyph/0/0/11/6/4",
+      "glyph/0/0/6/2/12",
+      "glyph/0/0/6/2/2",
+      "glyph/0/0/9/3/1",
+      "glyph/12/0/0/4/11",
+      "glyph/12/0/0/8/14",
+      "glyph/12/0/10/8/7",
+      "glyph/12/0/10/9/8"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 245,
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    846.7,
+    813.1
+   ]
+  }
+ },
+ "notes": [
+  "OMR_TIPS_HONOUR_CLAIMS: read in staged/adjudicators/rhythm.py -> ADJUDICATE..EXPORT",
+  "--cell-map applies to a re-gather only: --from adjudicate replays the saved record's own cells"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1375.8
+}

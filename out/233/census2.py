@@ -45,6 +45,9 @@ for sub, f in fates.items():
 unis = [dict(sub=s, outcome=q["duration"].get("outcome"), reason=q["duration"].get("reason"), value=q["duration"].get("value"),
              uni=(q["duration"].get("detail") or {}).get("unison_beam_tips"), fate=fates.get(s))
         for s, q in V.items() if "duration" in q and (q["duration"].get("detail") or {}).get("unison_beam_tips")]
+for _s in os.environ.get('DBGSUBS', '').split(','):
+    if _s:
+        print('FATE', _s, fates.get(_s), {q: (v.get('outcome'), v.get('reason')) for q, v in V.get(_s, {}).items()})
 tot = collections.Counter(fates.values())
 pages = {}
 for k, n in tot.items():
