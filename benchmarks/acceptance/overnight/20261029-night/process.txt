@@ -1,0 +1,124 @@
+== commits
+BASE a2eae688030feebf177a40e2b0f2404dafd61f28  TAG 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c
+git log --oneline a2eae6880..12325ce29: 395 commits (76 merges, 319 non-merge)
+changed under tools/omr: 88 files changed, 14863 insertions(+), 223 deletions(-)
+files changed by area: tests 45, staged 34, tools/omr/direction_lexicon.py 1, tools/omr/direction_text.py 1, tools/omr/key_signature_template.py 1, tools/omr/line_detection.py 1, tools/omr/measure_extractor.py 1, tools/omr/page_wide.py 1, tools/omr/staff_line_removal.py 1, tools/omr/time_signature_locator.py 1, tools/omr/yolo_detector.py 1
+
+== ROADMAP items named in commit subjects (oldest first; a subject names it, the tree decides whether it is ON)
+  0.25    7d8671bee whole-rest bars m0: cause (found rest never written; 0.25 sp touch test), counts, 12 blind tiles
+  2.143   5725bd738 2.219: measured zero at the exported file; close (stale duration is 2.143)
+  2.150   08e3cc023 2.204: FINDINGS names where the 2.150/2.150b control tiles live
+  2.150b  08e3cc023 2.204: FINDINGS names where the 2.150/2.150b control tiles live
+  2.179   ba14a78d2 lane-stem-end-head: block rests are not a claim (2.179); heads seen anywhere on the page are not read again; flag row default column
+  2.183   9c9834931 2.183: the key signature as an area claim in the register (Q.CLAIMED_AREA owner key_signature, cancelling naturals included); OMR_KEY_SIGNATURE_CLAIM 
+  2.187   4d2831e8a merge origin/main into 2.187
+  2.187b  b9559575c 2.187b: the key tail judged by what the staff may print (written key from system count + READ transposition, flat/sharp/natural type, fixed-order staf
+  2.188   9052a2d43 merge main (2.188)
+  2.189   c989bb17f merge main (2.189)
+  2.192   e040a950f Accidental census: count on_a_rest (2.192), derive the reason list pinned to the owner adjudicator's vocabulary; test fails on an unlisted reason
+  2.194   a3038fde0 2.194: shared ink map plan + measured cause (read-only; docs/plan-2026-10-22-shared-ink-map.md, benchmarks/shared-ink-map-2026-10)
+  2.195   242487eeb ROADMAP 2.195 step 1: Q.STROKE producer (stroke_map.py, gather_stroke_map, OMR_STROKE_MAP default OFF), nothing reads it
+  2.198   7c8ba5cf1 merge main into 2.198
+  2.201   41c3e8098 DECISIONS + ROADMAP 2.201: accidental type from its own strokes (Sean 2026-10-23)
+  2.201b  3b717b96b 2.201b: Sean's tile answers
+  2.202   924c510b3 ROADMAP: claim 2.202 ink map step 3, beams from strokes (Sean 2026-10-22)
+  2.202b  aea7bdae7 2.202b: beam faults of 5b -- thickness read off the unerased raster, fused double beam by local thickness, restricted join; FINDINGS 5c
+  2.202c  50b5ca768 merge 2.202b (beam code + cause fixes) into 2.202c
+  2.202d  49a83afa3 2.202d: a beam box on no beam ink with a clean stem tip is refuted (decided, not narrowed and dropped)
+  2.202e  494dc9122 2.202e: free-end hook, local double-beam cut 0.8; 2.202d answers, DECISIONS, FINDINGS 5f
+  2.202f  1a4d7c554 2.202f: the four causes of Sean's round-3 right->gone / right->narrowed (STAGED ADJUDICATE, behind OMR_BEAMS_FROM_STROKES)
+  2.204   379025a4f ROADMAP: claim 2.204 ink map step 4, stems from strokes (Sean 2026-10-25)
+  2.205   b4a6c573d Shared ink map reordered: ownership (2.205, Opus) before beams/stems; 2.202 not landed, cause found (Sean 2026-10-25)
+  2.206   077d53f2c ROADMAP: claim 2.206 staff-line eraser (Opus, Sean 2026-10-25)
+  2.206b  070b999e4 ROADMAP: claim 2.206b (re-measure meter + eighth-rest readers on the corrected eraser image)
+  2.206c  6d2b1c648 2.206c: lost-notes-by-reason script (fail-fast step 2), subset sample
+  2.206d  ab30ccff2 2.206d: 8 blind tiles for the top Litolff lost group (key outside the folder)
+  2.206e  7c2ca17f1 2.206e: pitch sheet (2 lost half notes whose pitch changes ON), key
+  2.206f  4780a8848 2.206f: tile 9 cause (shared-x band split in detect_beams), FINDINGS 12, probes, crops
+  2.207   10541b758 ROADMAP: claim 2.207 the rule page (Sean 2026-10-26)
+  2.208   149516c37 ROADMAP: claim 2.208 clef claims its own ink on every staff
+  2.209   39e98e07c ROADMAP: claim 2.209 (stem_value moved by a false head on a beam end)
+  2.210   04601315c ROADMAP: claim 2.210 (stem member must look like a head)
+  2.211   dd7ea4c4f ROADMAP: claim 2.211 (score by place) and 2.212 (merge twin head boxes in GATHER), Sean 2026-10-27 "Yes"
+  2.212   dd7ea4c4f ROADMAP: claim 2.211 (score by place) and 2.212 (merge twin head boxes in GATHER), Sean 2026-10-27 "Yes"
+  2.213   beb35de25 ROADMAP: claim 2.213 (beam bar x extent from own ink)
+  2.213b  2c0d68e52 2.213b: a bar's own-extent end reaches the stem it ends on across a bridged stretch (Brahms p19 12/0/5)
+  2.214   f35129fc5 Sean 2026-10-27: tremolo slash vs head is told by square-cut vs round ends (page-facts, DECISIONS); ROADMAP 2.214 queued
+  2.215   d116c619d 2.215 A: a changed dynamic is boxed on its own letters, bar-check words get no tile box; B: rest-as-note count (59 twins, 0 rest-box notes)
+  2.216   4421b7681 page-facts/CLAUDE: Sean's 2026-10-27 rulings (local lines, two owner witnesses, ledger-only far heads, meter majority), audited missing rulings, tried
+  2.217   86920f92c ROADMAP 2.217: claim - ledger rungs from the stroke map (step 7)
+  2.218   76674136b ROADMAP 2.218/2.219: claim -- 2.218 in flight (lane report counts unwritten->wrong), 2.219 queued
+  2.219   76674136b ROADMAP 2.218/2.219: claim -- 2.218 in flight (lane report counts unwritten->wrong), 2.219 queued
+  2.220   3de6e3c76 ROADMAP 2.220: claim -- ink map step 6 FILL, plan in flight
+  2.220b  53b27557c Land head height cap 1.6 sp (OMR_HEAD_TRIM_LINE_ONLY_V2 default ON); DECISIONS, ROADMAP 2.220b, flags, version_memory
+  2.220c  dbc102439 Remove duplicate GATHER passes: rescue detector floors, header cells, page ink/gray, direction_text ink+candidates (ROADMAP 2.220c)
+  2.221   b56ac53cf 2.221: page-wide claim order plan (docs only), ROADMAP row, DECISIONS line for Sean's direction
+  2.222   bf30392d8 ROADMAP 2.222: claim -- upper limit on a notehead box (Sean)
+  2.223   a21959d74 Plan §9 + ROADMAP 2.223 + DECISIONS: page-wide marks claim early (GATHER), anchor late (page-wide pass after heads) (Sean)
+  2.224   fac9ccc79 Land stem-end head reader from ink: OMR_STEM_END_HEAD_INK default ON (ROADMAP 2.224)
+  2.230   b7b5653ad ROADMAP 2.230 m3: whole rest judged by its own ink (contested with an arc -> blue; never a staff-position band); drop lane_report dumps; rule page + j
+  (52 items)
+
+== 'Land' commits (the ones that flip a default)
+  c19bf2e5b Land ROADMAP 2.183 + 2.187 ON (Sean 2026-10-23): OMR_KEY_SIGNATURE_CLAIM, OMR_KEY_PER_SYSTEM
+  b7b649b5b Land ROADMAP 2.201 + 2.195 + 2.198 ON (Sean 2026-10-26): OMR_ACCIDENTAL_FAMILY, OMR_STROKE_MAP
+  2db9c2f31 Land ROADMAP 2.205 ON (Sean 2026-10-26 "1. Yes"): OMR_STROKE_OWNER
+  2f7638d69 Land ROADMAP 2.208 ON (Sean 2026-10-26 "Yes"): OMR_CLEF_SLOT_CLAIM
+  1e839f905 Land ROADMAP 2.209 ON (Sean 2026-10-27 "Yes"): OMR_STEM_BEAM_END
+  85055e8cd Land ROADMAP 2.211 (Sean 2026-10-27 "Yes"): score by written place
+  e83bd6fc9 Land eraser path: OMR_ERASER_FIX, OMR_METER_SLOT, OMR_REST_OWN_STROKE, OMR_STEM_TIP_TRUE_EDGE, OMR_BEAM_OWN_EXTENT default ON (Sean 2026-10-27)
+  f5405e8a9 Land head trim fix: OMR_HEAD_TRIM_LINE_ONLY default ON
+  d51e3967c Land the judged scorer (lane-scorer-blue): key.json galleries scored, written_moves; DECISIONS + version_memory
+  53b27557c Land head height cap 1.6 sp (OMR_HEAD_TRIM_LINE_ONLY_V2 default ON); DECISIONS, ROADMAP 2.220b, flags, version_memory
+  c4ba3b869 Land the GATHER arc claim ON (OMR_ARC_CLAIM, lane-arcs-claim-1029); kind-from-ends and slur-from-anchors stay OFF
+  16165283f Land duplicate-pass cleanup: DECISIONS + version_memory
+  cd6151616 Land whole-rest bars ON (OMR_FOUND_WHOLE_REST, OMR_WHOLE_REST_HANGS, OMR_WHOLE_REST_PLAIN; lane-whole-rest-1029)
+  846efa623 Land page-wide barlines ON (OMR_BARLINE_SYSTEM_COLUMNS, lane-barlines-1029)
+  d5f555e5e Land 2.221 m1/m1b: page-wide word and bracket claims default ON (OMR_CLAIM_WORDS_FIRST, OMR_CLAIM_BRACKETS_FIRST)
+  fac9ccc79 Land stem-end head reader from ink: OMR_STEM_END_HEAD_INK default ON (ROADMAP 2.224)
+
+== flag DEFAULTS that differ (same AST scanner on both trees; ON = the default state)
+flag                               BASE     TAG      GATHER? read in (TAG tree)
+OMR_ACCIDENTAL_FAMILY              absent   ON       YES     accidental_family.py, adjudicators/ownership.py, export.py
+OMR_BEAMS_FROM_STROKES             absent   ON       no      adjudicators/rhythm.py, beam_strokes.py, stroke_owner.py
+OMR_BEAM_OWN_EXTENT                absent   ON       no      line_detection.py
+OMR_CLAIM_BRACKETS_FIRST           absent   ON       YES     adjudicators/claimed_by.py, claims.py, export.py
+OMR_CLAIM_WORDS_FIRST              absent   ON       YES     direction_lexicon.py, adjudicators/claimed_by.py, claims.py
+OMR_CLEF_SLOT_CLAIM                absent   ON       YES     claims.py, gather.py, record.py
+OMR_ERASER_FIX                     absent   ON       no      staff_line_removal.py
+OMR_FILL_FROM_STROKES              absent   ON       YES     adjudicators/rhythm.py, export.py, gather.py
+OMR_FOUND_WHOLE_REST               absent   ON       no      export.py
+OMR_HEAD_TRIM_LINE_ONLY            absent   ON       no      head_ink.py
+OMR_HEAD_TRIM_LINE_ONLY_V2         absent   ON       no      head_ink.py
+OMR_KEY_PER_SYSTEM                 absent   ON       YES     gather.py, key_object.py, record.py
+OMR_KEY_SIGNATURE_CLAIM            absent   ON       YES     adjudicators/claimed_by.py, adjudicators/family_precision.py, adjudicators/notehead_precision.py
+OMR_METER_SLOT                     absent   ON       YES     gather.py, time_signature_locator.py
+OMR_OWNER_LEDGER_WINS              absent   ON       no      adjudicators/ownership.py
+OMR_REST_OWN_STROKE                absent   ON       no      adjudicators/head_rest_shape.py
+OMR_STEMS_FROM_STROKES             absent   OFF      YES     adjudicators/ownership.py, adjudicators/rhythm.py, gather.py
+OMR_STEM_BEAM_END                  absent   ON       no      adjudicators/stem_value.py
+OMR_STEM_END_HEAD_INK              absent   ON       YES     adjudicators/notehead_precision.py, adjudicators/rhythm.py, export.py
+OMR_STEM_TIP_TRUE_EDGE             absent   ON       YES     gather.py, stroke_map.py
+OMR_STROKE_MAP                     absent   ON       YES     accidental_family.py, adjudicators/rhythm.py, adjudicators/stroke_owner.py
+OMR_WHOLE_REST_HANGS               absent   ON       no      adjudicators/family_precision.py, adjudicators/notehead_precision.py, adjudicators/stroke_owner.py
+OMR_WHOLE_REST_PLAIN               absent   ON       no      export.py
+(23 flags changed default; 89 flags seen by the scan at BASE, 112 at TAG)
+
+== every OMR_* NAME in non-test source: added since BASE (28) / gone (0)  [catches value flags the scan misses]
+  + OMR_ARC_CLAIM                      GATHER staged/adjudicators/stroke_owner.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **default ON, Sean 2026-10-29** ("Yes"; unset = ON, an explicit `0/false/no/off` disables; needs `OMR_SYSTEM_ARCS`, `OMR_STROKE_MAP`; tiles 10/10 arcs
+  + OMR_ARC_KIND_FROM_ENDS             staged/adjudicators/ownership.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **default OFF** (allow-list; waits for ROADMAP 2.223)
+  + OMR_BARLINE_SYSTEM_COLUMNS         GATHER measure_extractor.py
+      not seen by the default scan; read as: raw = os.environ.get("OMR_BARLINE_SYSTEM_COLUMNS")
+      docs/flags-2026-09.md default column: **default ON, Sean 2026-10-29** (roadmap 2.221 m2; unset = ON, an explicit `0/false/no/off` disables)
+  + OMR_SLUR_FROM_ANCHORS              staged/arc_claim.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **default OFF** (allow-list; waits for ROADMAP 2.223)
+  + OMR_STROKE_OWNER                   staged/adjudicate.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **`1` ON since 2026-10-26** (ROADMAP 2.205, step 5 of the shared ink map, Sean "1. Yes"; explicit `0`/`false`/`no`/`off` disables; meaningful only wit
+
+blind spot: a flag read through a path the scan cannot parse and already present at BASE is NOT listed even if its default moved.

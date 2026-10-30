@@ -1,0 +1,40 @@
+judged tiles, litolff, today's scorer on BOTH records (index 1869 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            164         42          6          2         22        155
+  TAG             167         34          6          2         27        155
+  right/wrong/narrowed  BASE 164/42/6  ->  TAG 167/34/6
+  moves: right->wrong 3 (must be 0) | right->gone 6 | wrong->right 12 | unwritten->wrong 2 | unwritten->right 0 | tiles scored on both 370
+  status transitions that are not 'same' (BASE -> TAG: n):
+    wrong      -> right      12
+    right      -> not_found  6
+    right      -> wrong      3
+    narrowed   -> wrong      1
+    wrong      -> narrowed   1
+    not_found  -> wrong      1
+  RIGHT -> WRONG (3):
+    2.162-review               tile 5    glyph/3/1/2/15/0 refused as not a note (stacked_head_duplicate)
+    2.73-review                tile 5    glyph/3/0/4/3/12 refused as not a note (stacked_head_duplicate)
+    2.83-fix-review            tile tile_05 glyph/4/0/7/7/10 refused as not a note (stacked_head_duplicate)
+  RIGHT -> GONE (6):
+    2.145-review               tile 17   glyph/16/1/9/7/4 not_found
+    2.154-review               tile 14   glyph/16/1/1/2/5 not_found
+    2.81-review                tile tile_29 glyph/13/1/2/9/1 not_found
+    2.82-review                tile tile_10 glyph/13/1/2/9/2 not_found
+    2.88-review                tile tile_04 glyph/13/1/8/13/5 not_found
+    2.88-review                tile tile_13 glyph/13/1/8/11/6 not_found
+  WRONG -> RIGHT (12):
+    2.114-round2               tile tile_05 glyph/1/0/2/0/8 
+    2.114-second-detector      tile tile_16 glyph/1/0/9/2/1 
+    2.145-review               tile 21   glyph/7/0/1/5/2 
+    2.154-review               tile 1    glyph/11/1/0/9/3 
+    2.220-m2                   tile 11   glyph/4/0/3/7/5 
+    2.220-m2                   tile 4    glyph/4/0/4/0/4 
+    2.220-m2                   tile 8    glyph/4/0/4/3/8 
+    2.220-plan                 tile 4    glyph/4/0/4/0/4 
+    2.220-plan                 tile 5    glyph/10/0/9/6/3 
+    2.220-plan                 tile 8    glyph/8/1/1/2/0 
+    2.88-review                tile tile_01 glyph/10/1/9/5/0 
+    2.88-review-2              tile tile_02 glyph/10/1/9/5/0 
+  UNWRITTEN -> WRONG (2):
+    2.154-review               tile 12   glyph/12/0/7/8/6 decided 1 beats (chord_mate_shares_the_stem)
+    2.181-review               tile 9    glyph/16/1/6/2/3 kept as a notehead
