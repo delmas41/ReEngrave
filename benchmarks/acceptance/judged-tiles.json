@@ -1,6 +1,6 @@
 {
- "n_items": 153,
- "n_tiles": 1895,
+ "n_items": 154,
+ "n_tiles": 1908,
  "tiles": [
   {
    "answer": "right",
@@ -22889,6 +22889,274 @@
    "subjects": null,
    "tile": "9",
    "value": 2.0
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    2393.6,
+    427.0175,
+    2414.8625,
+    446.39
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/11/0/0/16/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": 1.0
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    3738.6825,
+    6034.6875,
+    3774.7575,
+    6067.9875
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/25/1/7/6/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": 1.5
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    4228.63,
+    2725.935,
+    4268.035,
+    2759.235
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/14/0/9/7/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": 1.5
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    609.57763671875,
+    2342.94921875,
+    632.22216796875,
+    2362.43017578125
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/16/1/2/0/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": 1.0
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    3143.57,
+    4998.025,
+    3184.5275,
+    5034.79
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/0/0/9/3/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": 1.0
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    2233.7825,
+    2173.5375,
+    2258.3525,
+    2194.6425
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/16/1/1/11/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": 1.0
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    943.71435546875,
+    1038.08154296875,
+    981.0263671875,
+    1071.00390625
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/19/0/2/0/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": 1.5
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    2191.75,
+    1961.825,
+    2229.7,
+    1995.1
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/19/0/6/2/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": 1.5
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    1810.275,
+    5327.55,
+    1850.975,
+    5357.525
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/19/1/5/2/13",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": 1.0
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    5052.85,
+    4628.925,
+    5092.175,
+    4662.75
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/12/1/3/9/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": 1.5
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    4862.15,
+    426.1,
+    4903.125,
+    458.0
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/25/0/0/8/12",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": 1.5
+  },
+  {
+   "answer": "Dot 4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": [
+    2961.65,
+    6989.525,
+    2998.225,
+    7020.875
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/12/1/13/4/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": 1.5
+  },
+  {
+   "answer": "Sean labelled the message '2.239'; it answers the 2.235 sheet (12 tiles, the only sheet out).",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "2.235-key",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "_note",
+   "value": null
   },
   {
    "answer": "part of 4 rest",
