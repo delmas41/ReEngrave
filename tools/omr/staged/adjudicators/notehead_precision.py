@@ -3442,6 +3442,26 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
     return row, reason
 
 
+def _claimed_by_a_whole_rest(ev: Evidence):
+    """ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`): a head box all of whose ink the stroke owner gave to a WHOLE REST (claim order: a
+    whole rest claims its block before the heads, Sean 2026-10-29) is that rest's ink, not a note. Returns the stroke-owner verdict, or
+    None (flag off, no verdict, the box owns a stroke, or any lost stroke is another family's / contested)."""
+    from .. import stroke_owner as _SO
+    if not _SO.whole_rest_claims():
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    if cell is None:
+        return None
+    v = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    d = getattr(v, "detail", None) or {}
+    entry = (d.get("boxes") or {}).get(ev.subject.to_key())
+    if not entry or entry[0] != "refused" or not entry[1]:
+        return None
+    if any(x[2] != "whole_rest" for x in entry[1]):
+        return None
+    return v
+
+
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: `_belongs_to_a_nearer_staff`
@@ -3512,7 +3532,9 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                   # ROADMAP 2.177: the meter's claimed area -- `inside_meter.read`.
                   Q.CLAIMED_AREA,
                   # ROADMAP 2.187b: `claimed_by.consult` -> `header.key_tail_context` (the staff's written key for the key tail)
-                  Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
+                  Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL,
+                  # ROADMAP 2.230 m1: the stroke owner's box verdict -- `_claimed_by_a_whole_rest`.
+                  Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3525,7 +3547,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
           Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
           Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
-          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL),
+          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3546,6 +3568,7 @@ def _human_not_a_symbol(ev: Evidence, detail: Dict[str, Any], *,
                                      "claimed_by:word", "claimed_by:bracket", "claim_narrowed:word", "claim_narrowed:bracket",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
+                                     "claimed_by:whole_rest",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3729,6 +3752,10 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     claim = _claimed_by.consult(ev, box_row, head=True, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
     if claim is not None and claim.refuse:
         return _claim_refusal(claim, box_row)
+    wr_row = _claimed_by_a_whole_rest(ev)
+    if wr_row is not None:
+        return Ruling(value=True, reason="claimed_by:whole_rest", used=(box_row.id, wr_row.id),
+                      detail={"class": box_row.value[0], "claimed_by": "whole_rest"})
     clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
     if clef_row is not None:
         return Ruling(

@@ -467,11 +467,21 @@ def guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
 
 #: ROADMAP 2.181: a head/rest box a claim holds but cannot refuse is NARROWED {itself, the owner's ink}; written, it is GUESSED.
 CLAIM_NARROWED_PREFIX = "claim_narrowed:"
+WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs",)
 
 
 def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.181: the register's NARROWED head/rest precision verdict as a guess (the box is written, blue, both readings
     carried), or None. Only a verdict whose reason is `claim_narrowed:<owner>` counts -- none is filed with the flag OFF."""
+    v = rec.verdict(Q.REST_IS_NOT_A_REST, sub)
+    if v is not None and v.get("outcome") == "narrowed" and v.get("reason") in WHOLE_REST_NARROWED_REASONS:
+        # ROADMAP 2.230 m1: a whole rest the old refusal took, kept GUESSED (flag OMR_WHOLE_REST_HANGS) -- READ (plain) under m2's
+        # OMR_WHOLE_REST_PLAIN when no other head or rest box stands in its bar.
+        if whole_rest_plain_enabled() and not _bar_has_other_head_or_rest_box(rec, sub):
+            return None
+        return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.REST_IS_NOT_A_REST,
+                "candidates": [{"value": "whole_rest", "support": 1.0}, {"value": "not_a_rest", "support": 0.5}],
+                "chosen": {"value": "whole_rest"}}
     for q in (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST):
         v = rec.verdict(q, sub)
         if v is not None and v.get("outcome") == "narrowed" and str(v.get("reason") or "").startswith(CLAIM_NARROWED_PREFIX):
@@ -1143,6 +1153,92 @@ def _stem_facts_of(rec: Record, sub: str) -> Dict[str, Any]:
     return out
 
 
+#: ROADMAP 2.230 m1 (flag `OMR_FOUND_WHOLE_REST`, default ON since 2026-10-29; `0/false/no/off` or empty disables).
+FOUND_WHOLE_REST_ENV = "OMR_FOUND_WHOLE_REST"
+FOUND_WHOLE_REST_RULE = "empty_bar_whole_rest_found"
+
+
+#: ROADMAP 2.230 m2 (flag `OMR_WHOLE_REST_PLAIN`, default ON since 2026-10-29; effective only with `OMR_FOUND_WHOLE_REST` / `OMR_WHOLE_REST_HANGS`, each for
+#: its own rest): the found-by-search rest and the ink-rescued restWhole are written READ (plain), not GUESSED (Sean 2026-10-29 "close to
+#: landing without blue"), UNLESS the bar holds any other head or rest box (detected, kept or refused): that is the confusion case and
+#: stays blue.
+WHOLE_REST_PLAIN_ENV = "OMR_WHOLE_REST_PLAIN"
+
+
+def whole_rest_plain_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_PLAIN_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _bar_has_other_head_or_rest_box(rec: "Record", sub: str) -> bool:
+    """True when a detector box of a head or rest class other than `sub` stands in `sub`'s bar (page, system, staff, cell)."""
+    idx = rec.__dict__.get("_head_rest_boxes_by_bar")
+    if idx is None:
+        idx = {}
+        for o in rec.obs_of(Q.GLYPH_BOX):
+            val = o.get("value")
+            lc = str(val[0] if isinstance(val, (list, tuple)) and val else "").lower()
+            if lc.startswith("notehead") or lc.startswith("rest"):
+                s = _parse_subject(o["subject"])
+                idx.setdefault((s["page"], s["system"], s["staff"], s["cell"]), set()).add(o["subject"])
+        rec.__dict__["_head_rest_boxes_by_bar"] = idx
+    s = _parse_subject(sub)
+    return bool(idx.get((s["page"], s["system"], s["staff"], s["cell"]), set()) - {sub})
+
+
+def found_whole_rest_enabled() -> bool:
+    return os.environ.get(FOUND_WHOLE_REST_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _place_found_whole_rests(rec: "Record", runs: Dict[str, "StaffRun"], held_out: Optional[set],
+                             relocated: Optional[Dict[str, int]]) -> None:
+    """ROADMAP 2.230 m1 (flag `OMR_FOUND_WHOLE_REST`): a bar the 2.52 search FOUND a whole rest in and ADJUDICATE DECIDED
+    (`Q.EMPTY_BAR_WHOLE_REST` `whole_rest_found_by_search`; Sean 2026-10-01 "If it finds it then the bar is complete") is written
+    as that rest, GUESSED (blue, both readings carried). A CONNECTION to a decided verdict nothing read (rule 6), not a new guess.
+    Only a bar that holds NO other event once every box is placed (the search ran on boxless bars; a rescue that later found heads
+    leaves them to speak). It is a restWhole detection, so `_lone_whole_rest_is_the_bar` sizes it to the meter in force and
+    `_bar_holds_out` judges it as any lone rest; no meter -> written at the 4.0 default, as any detected restWhole is. A not-found
+    search stays unread (rule 8). Like 2.99's unboxed rests it joins the balance by name (`unboxed_rests_placed`)."""
+    if not found_whole_rest_enabled():
+        return
+    for o in rec.obs_of(Q.EMPTY_BAR_REST_SEARCH):
+        v = rec.verdict(Q.EMPTY_BAR_WHOLE_REST, o["subject"])
+        if v is None or v["outcome"] != "decided" or v.get("value") is not True \
+                or v.get("reason") != "whole_rest_found_by_search":
+            continue
+        s = _parse_subject(o["subject"])
+        home = _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0)
+        if held_out and home in held_out:
+            continue
+        run = runs.get(home)
+        ci = s["cell"] or 0
+        if run is None or ci >= run.n_measures:
+            continue
+        cell = run.cells.get(ci)
+        if cell is not None and cell.detections:
+            continue
+        d = o.get("detail") or {}
+        box = d.get("ink_bbox_canonical")
+        if not box or len(box) != 4:
+            continue
+        cell = run.cells.setdefault(ci, Cell(run.page, run.system, run.staff, ci))
+        guess = {"stage": "ADJUDICATE", "rule": FOUND_WHOLE_REST_RULE, "quantity": Q.EMPTY_BAR_WHOLE_REST,
+                 "candidates": [{"value": "whole_bar_rest", "support": 1.0}, {"value": "unread", "support": 0.0}],
+                 "chosen": {"value": "whole_bar_rest"}}
+        pb = d.get("bbox_page_px")
+        cell.detections.append({
+            "category": "rest", "class": "restWhole",
+            "bbox": [int(box[0]), int(box[1]), int(box[2] - box[0]), int(box[3] - box[1])],
+            "duration_beats": 4.0, "duration_type": "whole", "dots": 0,
+            "beam_levels": 0, "key_alteration": None, "printed_accidental": None, "tuplet": None,
+            "glyph": o["subject"], "bbox_page": _corners_to_wh(pb) if pb else None,
+            "unboxed_rest": True, "found_whole_rest": True,
+            "guess": None if (whole_rest_plain_enabled() and not _bar_has_other_head_or_rest_box(rec, o["subject"])) else guess,
+        })
+        if relocated is not None:
+            relocated["unboxed_rests"] = relocated.get("unboxed_rests", 0) + 1
+            relocated["found_whole_rests"] = relocated.get("found_whole_rests", 0) + 1
+
+
 def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                  by_system: Optional[Dict[Tuple[int, int], Any]] = None,
                  held_out: Optional[set] = None,
@@ -1767,6 +1863,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             fates[sub] = "written_relocated"
         if relocated is not None:
             relocated["heads"] = relocated.get("heads", 0) + 1
+    _place_found_whole_rests(rec, runs, held_out, relocated)
     # ⚠️ ROADMAP 2.90, AFTER relocation (a relocated head joins a chord too) and
     # BEFORE 2.89's refusal: which bars keep the heads' decided stem directions.
     _export_unison.expand(runs)           # ROADMAP 2.175: the second voice's note joins its bar

@@ -1,0 +1,195 @@
+{
+ "flags": [
+  [
+   "OMR_FOUND_WHOLE_REST",
+   "0",
+   "1"
+  ],
+  [
+   "OMR_WHOLE_REST_HANGS",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "rest": {
+     "gained": 129,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 54,
+     "lost": 1,
+     "changed": 0
+    },
+    "words": {
+     "gained": 2,
+     "lost": 138,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5416,
+    5489
+   ],
+   "paired": 5416,
+   "red_bars": [
+    246,
+    248
+   ],
+   "notes_not_written": [
+    2263,
+    2181
+   ],
+   "control": {
+    "reproduces": "off",
+    "off": {
+     "stored": 8964,
+     "same": 8964,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 8964,
+     "same": 8810,
+     "differ": 154,
+     "first_differ": [
+      "glyph/10/0/0/10/3",
+      "glyph/10/0/0/12/2",
+      "glyph/10/0/0/9/2",
+      "glyph/10/0/2/4/4",
+      "glyph/10/0/2/4/4",
+      "glyph/10/0/2/5/2",
+      "glyph/10/0/2/5/2",
+      "glyph/10/0/2/6/2",
+      "glyph/10/0/2/6/2",
+      "glyph/10/0/5/0/1"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 254,
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    445.3,
+    481.6
+   ]
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "rest": {
+     "gained": 65,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 18,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 0,
+     "lost": 65,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6539,
+    6566
+   ],
+   "paired": 6539,
+   "red_bars": [
+    164,
+    164
+   ],
+   "notes_not_written": [
+    3184,
+    3157
+   ],
+   "control": {
+    "reproduces": "off",
+    "off": {
+     "stored": 12326,
+     "same": 12326,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 12326,
+     "same": 12266,
+     "differ": 60,
+     "first_differ": [
+      "glyph/0/0/4/6/6",
+      "glyph/12/0/4/0/4",
+      "glyph/12/0/4/0/4",
+      "glyph/12/0/4/2/0",
+      "glyph/12/0/4/2/0",
+      "glyph/12/0/4/3/2",
+      "glyph/12/0/4/3/2",
+      "glyph/12/0/6/0/2",
+      "glyph/12/0/6/0/2",
+      "glyph/12/0/6/1/4"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 232,
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    927.7,
+    957.2
+   ]
+  }
+ },
+ "notes": [
+  "OMR_FOUND_WHOLE_REST: read in staged/export.py -> ADJUDICATE..EXPORT",
+  "OMR_WHOLE_REST_HANGS: read in staged/adjudicators/family_precision.py, staged/adjudicators/notehead_precision.py, staged/adjudicators/stroke_owner.py, staged/export.py ... -> ADJUDICATE..EXPORT",
+  "REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1468.9
+}

@@ -257,8 +257,11 @@ class TestTheOldPairRulesAsOwnership(unittest.TestCase):
 
     def test_TWIN_a_real_whole_rest_block_is_the_rests(self):
         block = ink(0, "blob", (500, 500, 140, 76), 1.4, 0.75)
-        own = SO.own_strokes([block], [claim("r", "restWhole", covers=(0,))])
+        with mock.patch.dict(os.environ, {"OMR_WHOLE_REST_HANGS": "0"}):       # the flag is default ON since 2026-10-29 (own family `whole_rest`)
+            own = SO.own_strokes([block], [claim("r", "restWhole", covers=(0,))])
         self.assertEqual(own[0].family, "rest")
+        own = SO.own_strokes([block], [claim("r", "restWhole", covers=(0,))])
+        self.assertEqual(own[0].family, "whole_rest")
 
     def test_rest_is_a_barline_a_rest_never_owns_a_stroke_longer_than_any_rest(self):
         bar = ink(0, "vertical", (0, 100, 20, 420), 4.2, 0.2)
