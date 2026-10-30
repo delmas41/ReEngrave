@@ -124,7 +124,7 @@ A claim needs the word reader to keep the metronome candidate and file its text.
 - CV-only hairpins have no box, so their ink is unowned (out of scope).
 
 **Tiles.** `out/print/2.221-m1-pagewide/` holds 12 blind tiles (`tiles/`, README with the question; `key.json` outside `tiles/`; seed 2221). They are 9 random claims, 1 claim matching no truth mark (only one exists, so the second slot went to a ninth random claim) and 2 unclaimed truth marks (a brace and a lone `f`). The orange box marks the claimed ink, or the truth mark for the unclaimed ones. Question: "Is this a word, dynamic, bracket or brace, or something else?" Not yet shown to Sean.
-=======
+
 ## barlines system-wide (2026-10-29) -- 2.221 m2, LANDED ON (main 846efa623, OMR_BARLINE_SYSTEM_COLUMNS)
 Written by the manager from the lane reports (subagent FINDINGS writes are refused). Branch lane-barlines-1029 (c1b47cef2 build, 3b9dbe7ca finish).
 
@@ -154,4 +154,3 @@ Written by the manager from the lane reports (subagent FINDINGS writes are refus
 - 1 REAL quarter (Litolff p9 1734,2385; Sean: "There is a quarter note there but it is right next to a fermata over another quarter"). It was only ever a 0.074 stem-end detector rescue (`yolo_rescue_stem_head`), which the corrected crop (1470-1800 instead of 1526-1800) no longer re-finds. Not the barline claim (57 px away). Accepted by Sean; lane-stem-end-head reads the head from ink.
 
 **Sean's tiles** (out/print/barlines-1029): 12/12. Tile 12 was a marker error on a tilted scan, not a reader error. Brace/bracket tiles (out/print/2.221-m1-pagewide): 3 and 6 are braces, 7 and 11 part of a bracket; the finisher re-reads these as brace and whole bracket.
->>>>>>> origin/main
