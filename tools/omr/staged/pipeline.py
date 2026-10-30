@@ -263,8 +263,12 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                input_domain_classification: Any = None,
                movements: Any = None,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
-               progress: bool = False, through: str = "infer") -> Dict[str, Any]:
+               progress: bool = False, through: str = "infer",
+               cell_map: Any = None) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
+
+    `cell_map` (ROADMAP 2.231): a master cell map directory; the pages are LOADED from it (`cell_map.load_prepared`,
+    which raises on any mismatch) instead of cut by `prepare_pages`. None = cut fresh, exactly as before.
 
     `through` (ROADMAP 2.34) stops the run after `"gather"`, `"adjudicate"`
     or `"evaluate"` — see `decide()`'s docstring. The default, `"infer"`,
@@ -289,7 +293,11 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
     `benchmarks/omr-part-join-phase2-2026-09/`): the cascade reads **50 labels
     over 75 staves**, twelve of twelve on the movement's opening system.
     """
-    prepared = prepare_pages(pdf_path, pages, dpi=dpi)
+    if cell_map:
+        from . import cell_map as _cell_map
+        prepared = _cell_map.load_prepared(pdf_path, pages, dpi=dpi, root=cell_map)
+    else:
+        prepared = prepare_pages(pdf_path, pages, dpi=dpi)
     return run_staged_on(prepared, detector=detector,
                          conf_threshold=conf_threshold, imgsz=imgsz,
                          dossier=dossier, roster=roster, pdf_path=pdf_path,

@@ -54,6 +54,8 @@ SAMPLE_PATH = pathlib.Path(os.environ.get("LANE_REPORT_SAMPLE") or ROOT / "bench
 LIB = pathlib.Path("/Users/seanjohnson/Desktop/ReEngrave/library")
 RECORDS = LIB / "_shared-records"
 DETECTOR_CACHE: Optional[pathlib.Path] = RECORDS / "detector-cache"      # ROADMAP 2.189: OFF and ON share it; None = no cache
+CELL_MAP: Optional[pathlib.Path] = None     # ROADMAP 2.231: --cell-map DIR = both gather arms LOAD the master's cells; None = cut fresh
+CELL_MAP_ROOT = RECORDS / "cell-maps"
 LOCK = RECORDS / ".record-load.lock"
 ORANGE = (255, 140, 0)
 
@@ -1110,6 +1112,33 @@ def pick_tiles(all_changes: Dict[str, List[dict]], all_same: Dict[str, List[dict
     return items
 
 
+def tile_position(it: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.231: where a tile's mark is, by PAGE POSITION -- (page, system, staff-in-system, cell) from its
+    glyph/cell key, plus the page box. A glyph index is one gather's detector order; the position and box are not."""
+    from .record import Subject
+    for raw in (it.get("rg"), it.get("subject")):
+        if isinstance(raw, str) and raw.split("/")[0] in ("glyph", "cell"):
+            try:
+                s = Subject.from_key(raw)
+            except (ValueError, TypeError):
+                continue
+            return dict(page=s.page, system=s.system, staff=s.staff, cell=s.cell, page_box=it.get("box"))
+    return None
+
+
+_CELL_MAP_VERSION: Dict[str, Optional[str]] = {}
+
+
+def cell_map_version(plate: str) -> Optional[str]:
+    """The master cell map a tile's cells came from (its version tag names the cells), or None = cut fresh."""
+    if CELL_MAP is None:
+        return None
+    if plate not in _CELL_MAP_VERSION:
+        from . import cell_map as CM
+        _CELL_MAP_VERSION[plate] = CM.info(LIB / PLATES[plate]["pdf"], root=CELL_MAP)["version"]
+    return _CELL_MAP_VERSION[plate]
+
+
 def cut_tiles(items: List[dict], out_dir: pathlib.Path, tile_dir_name: str = "tiles") -> Dict[str, Any]:
     """Cut each item from its page at 600 dpi with ONE neutral orange box; write single tiles + a sheet PNG +
     README (tile folder) and the key (OUTSIDE the tile folder)."""
@@ -1138,7 +1167,8 @@ def cut_tiles(items: List[dict], out_dir: pathlib.Path, tile_dir_name: str = "ti
         crop = crop.resize((W, int(W * crop.height / crop.width)))
         crop.save(tdir / ("tile_%02d.png" % n))
         tiles.append(crop)
-        key.append({k: v for k, v in it.items() if k not in ("cx", "cy")} | dict(tile=n, crop_origin=[x0, y0]))
+        key.append({k: v for k, v in it.items() if k not in ("cx", "cy")} | dict(tile=n, crop_origin=[x0, y0])
+                   | dict(position=tile_position(it), cell_map=cell_map_version(plate)))
     cols = 4
     rows = (len(tiles) + cols - 1) // cols
     h = max((t.height for t in tiles), default=0)
@@ -1200,6 +1230,8 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
                 env.pop("OMR_DETECTOR_CACHE", None)
             cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[p]["pdf"]), "--pages",
                    ",".join(map(str, pages[p])), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
+            if CELL_MAP is not None:            # ROADMAP 2.231: both arms read the master's cells, never a fresh cut
+                cmd += ["--cell-map", str(CELL_MAP)]
             print("  gather %s %s pages %s ..." % (p, a, pages[p]), flush=True)
             logp = work / ("%s.%s.gather.log" % (p, a))
             r = subprocess.run(cmd, cwd=str(ROOT), env=env, stdout=open(logp, "w"), stderr=subprocess.STDOUT)
@@ -1385,6 +1417,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--allow-unknown-flag", action="store_true")
     ap.add_argument("--detector-cache", default=None,
                     help="--from gather: the detector's raw-output cache dir (default library/_shared-records/detector-cache; 'off' = none)")
+    ap.add_argument("--cell-map", default=None, metavar="DIR|master",
+                    help="ROADMAP 2.231: with --from gather, both arms LOAD the pages' cells from the master cell map "
+                         "(DIR, or 'master' = library/_shared-records/cell-maps) instead of re-cutting them")
     ap.add_argument("--replay-gathered", action="store_true",
                     help="--tag names a record GATHERED with the GATHER-side flags on (2.190); replay ADJUDICATE..EXPORT for both arms")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
@@ -1454,6 +1489,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     global DETECTOR_CACHE
     if a.detector_cache:
         DETECTOR_CACHE = None if a.detector_cache == "off" else pathlib.Path(a.detector_cache)
+    global CELL_MAP
+    if a.cell_map:
+        CELL_MAP = CELL_MAP_ROOT if a.cell_map == "master" else pathlib.Path(a.cell_map)
+        if mode != "gather":
+            notes.append("--cell-map applies to a re-gather only: --from %s replays the saved record's own cells" % mode)
+            CELL_MAP = None
+        else:
+            for p in plates:
+                notes.append("cells LOADED from master %s (%s) for both arms" % (cell_map_version(p), p))
     rep = run_report(flags, plates, mode, out, tag, a.seed, min(4, max(1, a.workers)), sample, notes, reuse=a.reuse)
     print(render_text(rep))
     return 0

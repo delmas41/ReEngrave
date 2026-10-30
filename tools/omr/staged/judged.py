@@ -408,6 +408,11 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
                 t.get("control") or h.get("control")),
             "followup": key.endswith("_followup"),
         })
+        # ROADMAP 2.231: which master's cells the tile was cut from, and its page position -- carried only when the
+        # gallery recorded them, so every older gallery's row (and the committed index) is unchanged.
+        for k in ("cell_map", "position"):
+            if t.get(k) is not None:
+                rows[-1][k] = t[k]
     return rows
 
 

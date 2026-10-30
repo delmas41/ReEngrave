@@ -200,6 +200,11 @@ def main(argv=None) -> int:
                     help="ROADMAP 2.189: cache the detector's raw (pre-NMS) output in DIR so a re-gather that only changes "
                          "merging/judging does not read the page twice (same as OMR_DETECTOR_CACHE=DIR; "
                          "tools/omr/detector_cache.py). Unset = no cache.")
+    ap.add_argument("--cell-map", default=None, metavar="DIR",
+                    help="ROADMAP 2.231: LOAD the pages' staves, barlines and cells from the master cell map in DIR "
+                         "(the cell-maps root, or one master's directory; tools/omr/staged/cell_map.py) instead of "
+                         "re-cutting them, so two arms read identical cells. A pdf/dpi/page the master lacks, or a "
+                         "cut that does not reproduce its pixels, RAISES. Unset = cut fresh, as before.")
     ap.add_argument("--out", default=None)
     ap.add_argument("--against", default=None,
                     help="a legacy transcribe result JSON, for the divergence "
@@ -442,7 +447,8 @@ def main(argv=None) -> int:
         input_domain_classification=input_domain_classification,
         movements=movement_spans,
         legacy=legacy.load(args.against) if args.against else None,
-        progress=args.progress, through=args.through)
+        progress=args.progress, through=args.through,
+        cell_map=args.cell_map)
     result["weight_routing"] = weight_routing
 
     # ⚠️⚠️ WHICH TREE BUILT THIS RECORD. Without it, comparing two records is
@@ -463,6 +469,9 @@ def main(argv=None) -> int:
     # comparing two records needs them apart to tell a code change from a
     # flag arm. See `_settings`.
     prov["settings"] = _settings(args)
+    if args.cell_map:       # ROADMAP 2.231: which master's cells this record read (version tag names the cells)
+        from . import cell_map as _cell_map
+        prov["cell_map"] = _cell_map.loaded()
     result["provenance"] = prov
     # ⚠️⚠️ ROADMAP 1.1b, 2026-09-22: COMPACT, NOT `indent=2`. A staged
     # record's own `record_slim.py` measured this format change ALONE
