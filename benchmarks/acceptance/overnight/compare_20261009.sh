@@ -76,7 +76,7 @@ for d in m["documents"]:
                    "md5": None, "note": f"temporary: compare_20261009.sh, re-gather {tag}"}
 json.dump(m, open(out, "w"), indent=1)
 EOF
-python3 -m tools.omr.acceptance --manifest "$MAN" --out "$OUT/current.json" \
+python3 -m tools.omr.acceptance --manifest "$MAN" ${ACC_FORCE:+--force} --out "$OUT/current.json" \
     --step-timeout 3600 > "$OUT/acceptance.log" 2>&1 \
     || echo "acceptance exit $? (see $OUT/acceptance.log)" >> "$LOGF"
 cp "$OUT/current.json" "$SUM/current.json" 2>/dev/null

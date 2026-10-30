@@ -66,7 +66,7 @@ short() { case $1 in beethoven5-litolff) echo litolff ;; *) echo brahms ;; esac;
 ps eww -p "$(pgrep -f 'tools.omr.staged.*--through' | head -1)" 2>/dev/null | tr ' ' '\n' | grep -E '^(OMR_|OMRNED|PYTHONPATH)' | sort > "$SUM/env-snapshot.txt" 2>/dev/null
 
 # 1. the reused parts (readout diff, count page, exports, text counts, acceptance on TAG, regather_report)
-TAG=$TAG BASE=$BASE DOCS="$READY" WT=$WT SUM=$SUM OUT=$OUT LOGF=$SUM/run-log-1009.txt REPORT_OUT=${REPORT_OUT:-$OUT/regather-report} \
+ACC_FORCE=1 TAG=$TAG BASE=$BASE DOCS="$READY" WT=$WT SUM=$SUM OUT=$OUT LOGF=$SUM/run-log-1009.txt REPORT_OUT=${REPORT_OUT:-$OUT/regather-report} \
   bash "$HERE/compare_20261009.sh" > "$OUT/compare_20261009.out" 2>&1 || echo "compare_20261009.sh exit $?" >> "$LOGF"
 cat "$SUM/run-log-1009.txt" >> "$LOGF" 2>/dev/null; rm -f "$SUM/run-log-1009.txt"
 
@@ -119,6 +119,10 @@ sed -n '1,2p' "$SUM/logs-diff.txt" > "$SUM/logs-wall.txt"
 : > "$SUM/prov.txt"
 for doc in $READY; do
   { echo "== $doc"; python3 "$HERE/prov_peek.py" "$R/$doc-mvt1-whole-$BASE.record.json" "$R/$doc-mvt1-whole-$TAG.record.json"; } >> "$SUM/prov.txt" 2>&1
+done
+: > "$SUM/record-growth.txt"
+for doc in $READY; do
+  { echo "== $doc"; python3 "$HERE/record_growth.py" "$R/$doc-mvt1-whole-$BASE.record.json" "$R/$doc-mvt1-whole-$TAG.record.json"; } >> "$SUM/record-growth.txt" 2>&1
 done
 BC=$(sed -n 's/.*commit \([0-9a-f]\{40\}\).*/\1/p' "$R/overnight-$BASE/summary.txt" | head -1)
 TC=$(sed -n 's/.*commit \([0-9a-f]\{40\}\).*/\1/p' "$R/overnight-$TAG/summary.txt" | head -1)
