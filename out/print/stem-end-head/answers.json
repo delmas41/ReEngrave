@@ -1,0 +1,54 @@
+{
+ "sean_2026_10_29": "1.4 2.2 3.8 4. Not a note 5-7.8 8. Part of a flat.. 9. Part of a stem 10.  Beam 111. Flag 12. Part of a flat.",
+ "tally": "ink-only heads (1,3,4,5,6,8,11): 4/7 real (1 quarter; 3,5,6 eighths), 3 junk (4 the bar number 263, 8 part of a flat, 11 a flag). Disagreements, detector re-run only (2,7,9,10,12): the ink was right to refuse 3 (9 stem, 10 beam, 12 flat) and wrong on 2 real notes (2 a half read too_wide, 7 an eighth read too_small) -- so abstaining on a disagreement is right.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "quarter"
+  },
+  {
+   "tile": 2,
+   "answer": "half"
+  },
+  {
+   "tile": 3,
+   "answer": "eighth"
+  },
+  {
+   "tile": 4,
+   "answer": "not a note"
+  },
+  {
+   "tile": 5,
+   "answer": "eighth"
+  },
+  {
+   "tile": 6,
+   "answer": "eighth"
+  },
+  {
+   "tile": 7,
+   "answer": "eighth"
+  },
+  {
+   "tile": 8,
+   "answer": "part of a flat"
+  },
+  {
+   "tile": 9,
+   "answer": "part of a stem"
+  },
+  {
+   "tile": 10,
+   "answer": "beam"
+  },
+  {
+   "tile": 11,
+   "answer": "flag"
+  },
+  {
+   "tile": 12,
+   "answer": "part of a flat"
+  }
+ ]
+}
