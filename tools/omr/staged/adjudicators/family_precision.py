@@ -2062,9 +2062,15 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # `rest_overlaps_a_notehead`, `rest_stroke_into_a_head`) do not decide; contested / silent -> they decide as before (rule 8).
         owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
         if owner_says == "refused":
-            detail["owner"] = {"lost": owner_lost, "verdict": owner_vid}
-            return Ruling(value=True, reason="rest_owner_refused", used=tuple(list(used) + ([owner_vid] if owner_vid else [])),
-                          detail=detail)
+            # the refusal keeps the NAME of the evidence that decided it; the owner is recorded as the decider
+            owner_veto = _stroke_owner.veto_rule(ev, ev.subject.to_key())
+            detail["owner"] = {"lost": owner_lost, "verdict": owner_vid, "veto": owner_veto}
+            owner_used = tuple(list(used) + ([owner_vid] if owner_vid else []))
+            if owner_veto == "letter_look_cover":
+                return Ruling(value=True, reason="rest_on_a_dynamic_letter", used=owner_used, detail=detail)
+            if owner_veto == "rest_stroke_into_a_head":
+                return Ruling(value=True, reason="rest_stroke_into_a_head", used=owner_used, detail=detail)
+            return Ruling(value=True, reason="rest_owner_refused", used=owner_used, detail=detail)
         owner_decides = owner_says == "owns"
         if owner_decides:
             detail["owner"] = {"owns": True, "verdict": owner_vid}

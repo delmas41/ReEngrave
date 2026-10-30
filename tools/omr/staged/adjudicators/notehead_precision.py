@@ -3990,9 +3990,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # owns -> the covered rules below (`on_a_rest`, `is_a_rest_shape`, `on_a_dynamic_letter` by both readers) do not decide; contested /
     # silent -> they decide as before (the owner cannot tell; rule 8). Flag OFF: `box_says` is silent and nothing here changes.
     owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+    if owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "is_a_rest_shape":
+        # the same reading, refused by its own rule below with its own reason: 2.145's rest is written at the cluster from that reason
+        owner_says = "silent"
     if owner_says == "refused":
-        detail["owner"] = {"lost": owner_lost, "verdict": owner_vid}
-        return Ruling(value=True, reason="owner_refused", used=tuple(used + ([owner_vid] if owner_vid else [])), detail=detail)
+        # the refusal keeps the NAME of the evidence that decided it (readers downstream key on it: `rhythm.NOT_A_NOTE_REFUSALS`), the
+        # owner is recorded as the decider; a refusal no moved rule named is `owner_refused`
+        owner_veto = _stroke_owner.veto_rule(ev, ev.subject.to_key())
+        detail["owner"] = {"lost": owner_lost, "verdict": owner_vid, "veto": owner_veto}
+        owner_used = tuple(used + ([owner_vid] if owner_vid else []))
+        if owner_veto in ("on_a_dynamic_letter", "letter_look_cover"):
+            return Ruling(value=True, reason="on_a_dynamic_letter", used=owner_used, detail=detail)
+        if owner_veto == "head_piece_on_a_rest":
+            return Ruling(value=True, reason="on_a_rest", used=owner_used, detail=detail)
+        return Ruling(value=True, reason="owner_refused", used=owner_used, detail=detail)
     owner_decides = owner_says == "owns"
     if owner_decides:
         detail["owner"] = {"owns": True, "verdict": owner_vid}

@@ -398,6 +398,17 @@ def box_says(ev: Evidence, box_key: str) -> Tuple[str, Any, str]:
     return "contested", lost, vid
 
 
+def veto_rule(ev: Evidence, box_key: str) -> str:
+    """The 2.238 veto rule the owner applied to this box ("" none / flag off): a refusal the old rule's own consumer reads by its reason
+    (2.145's rest written at the cluster reads `is_a_rest_shape`) is given that reason by the old rule, not `owner_refused`."""
+    if not SO.owner_shape_enabled():
+        return ""
+    cell = ev.subject.at(Kind.CELL)
+    v = ev.verdict(Q.STROKE_OWNER, subject=cell) if cell is not None else None
+    e = ((getattr(v, "detail", None) or {}).get("vetoes") or {}).get(box_key)
+    return str(e[0]) if e else ""
+
+
 def masked(verdict) -> Dict[int, str]:
     """`{ordinal: "owned" | "contested"}` from a cell's `Q.STROKE_OWNER` verdict (None, abstained or flag off: `{}`). For the consumers."""
     if not enabled() or verdict is None or not isinstance(getattr(verdict, "value", None), dict):

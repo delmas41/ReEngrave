@@ -4486,6 +4486,9 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # before (the owner cannot tell; rule 8).
     from . import stroke_owner as _stroke_owner
     owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+    if owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "acc_on_a_rest":
+        return Ruling.abstain("on_a_rest", alteration=alteration, detector_class=detail.get("detector_class"), lost=owner_lost,
+                              owner=owner_vid, decided_by="stroke_owner")
     if owner_says == "refused":
         return Ruling.abstain("owner_refused", alteration=alteration, detector_class=detail.get("detector_class"), lost=owner_lost,
                               owner=owner_vid)
