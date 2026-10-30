@@ -680,3 +680,40 @@ Sean: 1 eighth, 2 dotted quarter, 3 eighth, 4 eighth, 5 eighth, 6 quarter, 7-12 
 **In-memory measure** (`out/linecut-trim/log.txt`): Litolff in-space heads too_small 245 -> 3, median height 0.57 -> 1.08 sp; cost: 46 heads become too_tall (refused), mostly on a line at 1.52-1.59 sp against the 1.5 cap. Brahms: 7 heads too_small -> one head.
 **Whole pipeline** (`LANE_REPORT_SAMPLE=out/linecut-trim/sample2.json`, 2 pages per plate, Litolff 4,6, Brahms 5,14, `lane_report --flag OMR_HEAD_TRIM_LINE_ONLY --from gather`, 1,419 s; `out/lane-report/head-trim/report.txt`): Litolff NOTHING changed in the exported file; Brahms blue marks +1 (p5, one tile). Judged right->wrong 0, right->narrowed/gone 0; unwritten->wrong 0; invented->removed 0. Note values moved: none. So the in-memory gain in head height does not reach the file on this sample (cause not yet looked at). Re-check on a larger sample before any default flip.
 **Tiles:** `out/lane-report/head-trim/tiles/sheet.png`, key `out/lane-report/head-trim/key.json` (1 tile only: the file changed in one place).
+
+## head trim fix 2 (2026-10-29)
+
+**Cause (STAGED GATHER, `head_ink.trim_head`).** Not line ink left at one end. Litolff p10 tile 5 (`glyph/10/0/9/6/3`): the trimmed box
+is rows 1707-1731 = 25 px = 1.587 sp at 15.75 px/sp; with the old trim, 1707-1729 = 1.46 sp. The extra 2 px are the head's own
+bottom rim: row 1730 is a head row (28% of the window inked, not a line row), 1731 is the line's first core row fused with the head
+tail. The old dilation shaved them off by accident. The landed trim now reads the head's true height, and a tilted hollow Litolff
+head is 1.52-1.59 sp tall, over `MAX_HEIGHT_SPACES` = 1.5, a cap set against heads the dilated trim had shaved. The 46 heads that
+went one_head -> too_tall (Litolff p4+p6, same 46 as the landing's in-memory count) are the same: landed heights 1.52-1.59 (41),
+the rest 1.6-2.6 (stems / stacks). Process lesson: a cut set against a measure that was biased by a shave moves when the shave is fixed;
+re-measure every cut that read the old trim's output.
+
+**Tried and refuted (in memory, Litolff p4+p6 + Brahms p5+p14, 2461 written notes, `linecut_v2.py`):**
+- cap = the line's thickness AT THAT END (contiguous core run, <= 2x median): heals 5 of 46, and tile 5 stays 1.524 (too_tall).
+- strip rows whose ink OUTSIDE the head's columns is >= 50% of the window (line + its antialiasing shoulder): heals 14 of 46 but
+  makes 79 one_head heads too_small (the shoulder rule eats head rims). Both dropped.
+
+**Fix: `OMR_HEAD_TRIM_LINE_ONLY_V2` (default OFF, needs `OMR_HEAD_TRIM_LINE_ONLY`)**: the height cap 1.6 sp instead of 1.5
+(`MAX_HEIGHT_SPACES_V2`). The Litolff landed height histogram has its valley at 1.6-1.7; Brahms never reaches 1.55 (cap changes nothing
+there). It is a cut-off measured on one plate (CLAUDE §4): it only moves heads from "abstain" to "read", so Sean decides.
+
+| in memory | too_small | too_tall | too_wide | one_head |
+|---|---|---|---|---|
+| old trim | 274 | 57 | 59 | 2067 |
+| landed | 14 | 103 | 63 | 2277 |
+| V2 | 14 | 40 | 63 | 2340 |
+
+landed -> V2: 63 too_tall -> one_head, 0 other changes (36 of the 46 newly-too_tall healed; 10 stay at 1.6-2.6); old -> V2: all 257
+recovered too_small heads kept. Per plate (small/tall/wide): litolff p4 3/16/32 (landed 3/51/32), p6 6/21/21 (6/48/21), brahms p5
+1/2/6 (same as landed), p14 4/1/4 (4/2/4).
+
+**Whole pipeline** (lane_report `--from gather`, OFF = landed, ON = V2, Litolff p4+p10, Brahms p5+p14, detector cache): the exported
+file differs in exactly one note: `glyph/10/0/9/6/3` quarter -> half (blue), Sean's answer "half". Brahms: nothing changed. The shared
+scorer: right->wrong 0, unwritten->wrong 0. Own place-matched check (`judged_diff_v2.py`, glyph key + box, blue included, 46 judged
+subject keys on those pages, 30 written in both arms): written value, pitch and blue flag differ on none; the only host that differs
+anywhere on the four pages is tile 5. Tile 5 (OFF -> ON): quarter -> half. Why only one on p4: most healed heads were already written
+the same value (their fill reader had read them before).

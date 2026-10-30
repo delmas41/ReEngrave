@@ -432,6 +432,9 @@ def imgsz_for_cell(
 # ---------------------------------------------------------------------------
 
 
+FLOOR_MEMO_FLOOR = 0.03        # ROADMAP 2.220c: the lowest floor any STAGED rescue reader asks for
+
+
 class YoloDetector:
     """Ultralytics YOLO wrapped to produce SymbolDetection objects.
 
@@ -486,6 +489,7 @@ class YoloDetector:
         iou_threshold: float = 0.7,
         agnostic_nms: bool = False,
         natural_candidates: bool = False,
+        floor_memo: bool = False,
     ) -> list[SymbolDetection]:
         """Run YOLO on `cell.image` and return SymbolDetection objects in
         canonical-image coordinates.
@@ -501,6 +505,10 @@ class YoloDetector:
                 `imgsz_for_cell` for why a fixed value is the wrong knob here.
             iou_threshold: NMS IoU threshold. Lower = more aggressive
                 suppression of overlapping boxes.
+            floor_memo: ROADMAP 2.220c (STAGED rescue readers only; LEGACY never passes it). The raw NMS output of the LOWEST floor
+                asked of this cell is kept on the cell and every higher floor is served from it -- one forward pass per cell, not one per
+                floor. Identical to a run at the higher floor because greedy NMS never lets a lower-scored box remove a higher-scored one
+                (kept: score > floor, the test ultralytics applies). Not used with `natural_candidates`.
             agnostic_nms: if True, NMS suppresses across classes (one box
                 per region regardless of class). Useful for music notation
                 where the same region can fire multiple semantically-similar
@@ -531,27 +539,51 @@ class YoloDetector:
             nat_id = next((k for k, v in (self._class_names or {}).items() if v.lower() == _nc.CLASS_NAME), None)
             if nat_id is not None:
                 extra["aux"] = (int(nat_id), float(_nc.STORE_FLOOR))
-        results = self._predict(
-            source=img_rgb,
-            conf=conf_threshold,
-            iou=iou_threshold,
-            agnostic_nms=agnostic_nms,
-            imgsz=imgsz,
-            device=self.device if self.device != "auto" else None,
-            verbose=False,
-            **extra,
-        )
-        if not results:
-            return []
-        result = results[0]
-        boxes = getattr(result, "boxes", None)
-        if boxes is None or len(boxes) == 0:
-            return []
+        memo_key = (int(imgsz), float(iou_threshold), bool(agnostic_nms))
+        memo = getattr(cell, "_floor_memo", None) if (floor_memo and not extra) else None
+        hit = None
+        if floor_memo and not extra:
+            if memo is None:
+                memo = {}
+                try:
+                    setattr(cell, "_floor_memo", memo)
+                except Exception:                                 # noqa: BLE001
+                    memo = None
+            ent = memo.get(memo_key) if memo is not None else None
+            if ent is not None and ent[0] is img and ent[1] <= conf_threshold:
+                hit = ent
+        if hit is not None:
+            xyxy, confs, clses = hit[2], hit[3], hit[4]
+        else:
+            run_floor = min(float(conf_threshold), FLOOR_MEMO_FLOOR) if (floor_memo and not extra) else conf_threshold
+            results = self._predict(
+                source=img_rgb,
+                conf=run_floor,
+                iou=iou_threshold,
+                agnostic_nms=agnostic_nms,
+                imgsz=imgsz,
+                device=self.device if self.device != "auto" else None,
+                verbose=False,
+                **extra,
+            )
+            if not results:
+                return []
+            result = results[0]
+            boxes = getattr(result, "boxes", None)
+            if boxes is None or len(boxes) == 0:
+                return []
 
-        # Each box: xyxy, conf, cls
-        xyxy = boxes.xyxy.cpu().numpy() if hasattr(boxes.xyxy, "cpu") else np.asarray(boxes.xyxy)
-        confs = boxes.conf.cpu().numpy() if hasattr(boxes.conf, "cpu") else np.asarray(boxes.conf)
-        clses = boxes.cls.cpu().numpy() if hasattr(boxes.cls, "cpu") else np.asarray(boxes.cls)
+            # Each box: xyxy, conf, cls
+            xyxy = boxes.xyxy.cpu().numpy() if hasattr(boxes.xyxy, "cpu") else np.asarray(boxes.xyxy)
+            confs = boxes.conf.cpu().numpy() if hasattr(boxes.conf, "cpu") else np.asarray(boxes.conf)
+            clses = boxes.cls.cpu().numpy() if hasattr(boxes.cls, "cpu") else np.asarray(boxes.cls)
+            if memo is not None:
+                memo[memo_key] = (img, run_floor, xyxy, confs, clses)
+        if floor_memo and not extra:
+            keep = confs > float(conf_threshold)              # ultralytics' own test (`> conf_thres`); order kept (NMS output is score-sorted)
+            xyxy, confs, clses = xyxy[keep], confs[keep], clses[keep]
+            if len(confs) == 0:
+                return []
 
         detections: list[SymbolDetection] = []
         for (x0, y0, x1, y1), conf, cls in zip(xyxy, confs, clses):
