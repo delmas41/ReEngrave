@@ -3454,6 +3454,36 @@ def _claimed_by_a_whole_rest(ev: Evidence):
     return v
 
 
+def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
+    """lane-stem-end-head round 2 (flag `OMR_STEM_END_HEAD_INK`; only boxes it filed): a head the page ink ALONE read at a stem end has one
+    witness, so any claim on its ink refuses it -- every `Q.CLAIMED_AREA` row of its staff, ANY owner (`stem_end_heads.claims_holding`:
+    barline, clef, key, meter, header column, arc, and a word claim the day one lands), or the stroke owner giving its strokes to a
+    claiming tier (`stem_end_heads.stroke_claim`). The claims are filed after the ink read in GATHER; this is where they meet it."""
+    from .. import stem_end_heads as _SEH
+    d = box_row.detail or {}
+    key = ev.subject.to_key()
+    cell = ev.subject.at(Kind.CELL)
+    gs = ev.rows(Q.GLYPH_STROKES)
+    strokes = gs[-1].value if gs and isinstance(gs[-1].value, (list, tuple)) else None
+    held = _SEH.claims_holding(ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), key, d.get("bbox_page_px"), strokes,
+                               cell.cell if cell is not None else None)
+    if held:
+        r0, e0 = held[0]
+        return _margins.attach(
+            Ruling(value=True, reason="stem_end_ink_claimed", used=(box_row.id,) + tuple(r.id for r, _e in held),
+                   detail={"class": box_row.value[0], "claimed_by": e0.get("owner"), "claims": [e for _r, e in held]}),
+            margin=float(e0.get("share", 0.0)) - _SEH.CLAIM_SHARE_MIN, axis="claim_share",
+            unit="share of the box's ink inside the claim", band=None, would_choose=(True,))
+    if cell is not None:
+        v = ev.verdict(Q.STROKE_OWNER, subject=cell)
+        entry = ((getattr(v, "detail", None) or {}).get("boxes") or {}).get(key)
+        fam = _SEH.stroke_claim(entry)
+        if fam is not None:
+            return Ruling(value=True, reason="stem_end_ink_claimed", used=(box_row.id, v.id),
+                          detail={"class": box_row.value[0], "claimed_by": fam, "stroke_owner": entry[0]})
+    return None
+
+
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: `_belongs_to_a_nearer_staff`
@@ -3526,7 +3556,9 @@ def _claimed_by_a_whole_rest(ev: Evidence):
                   # ROADMAP 2.187b: `claimed_by.consult` -> `header.key_tail_context` (the staff's written key for the key tail)
                   Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL,
                   # ROADMAP 2.230 m1: the stroke owner's box verdict -- `_claimed_by_a_whole_rest`.
-                  Q.STROKE_OWNER),
+                  Q.STROKE_OWNER,
+                  # lane-stem-end-head round 2: an ink-only stem-end head's strokes, against every ink claim -- `_stem_end_ink_claimed`.
+                  Q.GLYPH_STROKES),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3539,7 +3571,7 @@ def _claimed_by_a_whole_rest(ev: Evidence):
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
           Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
           Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
-          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER),
+          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER, Q.GLYPH_STROKES),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3560,6 +3592,7 @@ def _claimed_by_a_whole_rest(ev: Evidence):
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
                                      "claimed_by:whole_rest",
+                                     "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3747,6 +3780,13 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if wr_row is not None:
         return Ruling(value=True, reason="claimed_by:whole_rest", used=(box_row.id, wr_row.id),
                       detail={"class": box_row.value[0], "claimed_by": "whole_rest"})
+    # lane-stem-end-head round 2: a head the ink ALONE read at a stem end, its one witness; any claim on its ink refuses it.
+    from .. import stem_end_heads as _SEH
+    ink_only = _SEH.is_ink_only(box_row.detail)
+    if ink_only:
+        seh_claim = _stem_end_ink_claimed(ev, box_row)
+        if seh_claim is not None:
+            return seh_claim
     clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
     if clef_row is not None:
         return Ruling(
@@ -3986,11 +4026,20 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if UNLADDERED_SHIPS and would_unladder:
         return Ruling(value=True, reason="unladdered",
                       used=tuple(used), detail=detail)
+    if ink_only and would_unladder:
+        # page-facts (the ledger lines name the owner): there is no far note without a ledger line, and the ink is this head's one witness
+        return Ruling(value=True, reason="stem_end_ink_unladdered", used=tuple(used), detail=detail)
     # ROADMAP 2.181: a claim holds this box but is too weak to refuse it -- no other rule refused it either, so it is
     # NARROWED {notehead, the owner's ink}, the notehead first (written, blue), never refused on a guess.
     if claim is not None and not claim.refuse:
         detail.update(claim.detail)
         return _claim_narrowing(claim, used, detail)
+    if ink_only:
+        # Sean's plain/blue rule: the ink alone read it (no detector box at production or 0.05) -- GUESSED (blue) until tiles earn plain,
+        # NARROWED {a notehead, not one}, the notehead first so it is written
+        detail.update(read_by="stem_end_ink", ink_fill=(box_row.detail or {}).get("ink_fill"))
+        return Ruling.narrow((R.Candidate(value=False, support=1.0), R.Candidate(value=True, support=1.0)), "stem_end_ink_only",
+                             used=tuple(used), **detail)
     return Ruling(value=False, reason="notehead", used=tuple(used),
                   detail=detail)
 

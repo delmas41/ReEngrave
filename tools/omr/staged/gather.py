@@ -1189,7 +1189,8 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
                             "from_record": False, "ink": ink, "ink_verdict": "ink_only"})
             elif verdict == "abstain":
                 cand = {"why": "ink:" + why, "end": end, "ink_trimmed": ink.get("trimmed"), "ink_why": ink.get("why"),
-                        "ink_fill": ink.get("value"), "ink_extent_sp": ink.get("extent_sp"), "seed_page": ink.get("seed")}
+                        "ink_fill": ink.get("value"), "ink_extent_sp": ink.get("extent_sp"), "seed_page": ink.get("seed"),
+                        "ink_far_side_sp": ink.get("far_side_sp")}
                 if kb is not None:
                     d = kb["det"]
                     cand.update(candidate_class=d.smufl_name, score=float(kb["score"]),
@@ -1278,7 +1279,8 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
                 "stem_canonical": [s.x_canonical, s.y_canonical, s.width_canonical, s.height_canonical]}
             if kb.get("ink") is not None:                         # OMR_STEM_END_HEAD_INK: the ink read and the verdict it gave
                 box_detail.update(ink_verdict=kb["ink_verdict"], ink_trimmed=kb["ink"].get("trimmed"),
-                                  ink_fill=kb["ink"].get("value"), ink_extent_sp=kb["ink"].get("extent_sp"))
+                                  ink_fill=kb["ink"].get("value"), ink_extent_sp=kb["ink"].get("extent_sp"),
+                                  ink_far_side_sp=kb["ink"].get("far_side_sp"))
             page_box = _page_box(c, d)
             if page_box is not None:
                 px0, py0, px1, py1 = page_box

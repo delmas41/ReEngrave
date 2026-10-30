@@ -302,6 +302,16 @@ def ink_head_at_end(page_binary: Any, stem_page: Tuple[float, float, float], end
     if not attached or at_stem_end(got["trimmed"], _PageStem(x, yt, yb), sp) != end:
         out["why"] = "not_at_stem_end"
         return out
+    # Round 2 (Sean's tiles 8 and 11: part of a flat, a flag): a head's stem stands at its EDGE on the convention side (up-stem: the head's
+    # right edge; down-stem: its left edge), so the head's ink never runs on past the stem by more than a stem drawn through its edge
+    # (`CROSS_SPACES`, the band `at_stem_end` already allows). A flat's bowl hangs on the far side of its own stem (stem LEFT, bowl right),
+    # and a flag leaves the stem tip on the far side -- the "stem" then stands INSIDE the ink. Measured, not tuned: Litolff p4 real quarter
+    # 0.16 sp past, the flat 0.50, the flag 0.28 (narrow margin; the far-side reach is filed on every read for the next look).
+    far = ((tx1 - x) if end == "bottom" else (x - tx0)) / sp
+    out["far_side_sp"] = round(far, 3)
+    if far > CROSS_SPACES:
+        out["why"] = "stem_inside_the_ink"
+        return out
     if got.get("value") is None:
         out["why"] = "fill_unread"
         return out
@@ -327,3 +337,88 @@ def ink_head_class(value: str, cy: float, top_y: float, half_step: float) -> str
     """The head class for an ink-read head: its fill ('filled' black, 'hollow' half -- it has a stem) at its staff position."""
     black = black_head_class(cy, top_y, half_step)
     return black if value == "filled" else black.replace("noteheadBlack", "noteheadHalf")
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------
+# lane-stem-end-head ROUND 2 (Sean 2026-10-29 tiles, out/print/stem-end-head/answers.json): ink-only heads were 4/7 real; the junk was a
+# bar number (Brahms p14 "263"), key-signature flats in a system's first bar (Litolff p4) and a flag.
+#
+# CAUSE: the ink read runs EARLY in GATHER (beside the 0.05 re-run, before every per-box reader, which must measure its box), while the
+# key/clef/meter claims, the arc claim and the whole-rest tier are filed or settled LATER (the register's claims at the end of GATHER, the
+# stroke owner in ADJUDICATE). The read cannot move after them without its box missing every per-box GATHER reader (positions, ink,
+# ownership: the gather order rule), so the DECISION moved instead: an ink-only head is a CANDIDATE in GATHER, and ADJUDICATE
+# (`notehead_precision`) refuses it where any `Q.CLAIMED_AREA` row (any owner -- so a word claim counts the day it lands) or a claiming
+# tier of the stroke owner holds its ink, and writes the rest GUESSED (blue) with candidates.
+
+#: the stroke owner's claiming families (its tier 0, and the whole rest that claims before heads, Sean 2026-10-29)
+CLAIM_FAMILIES = ("clef", "meter", "key_signature", "leading_column", "arc_trace", "barline", "whole_rest")
+#: share of the box held by a claim (`claims.INSIDE_SHARE_MIN`, the register's one cut, restated: this module imports nothing)
+CLAIM_SHARE_MIN = 0.5
+
+
+def is_ink_only(detail: Optional[Dict[str, Any]]) -> bool:
+    """A `Q.GLYPH_BOX` detail of a head the page ink alone read at a stem end (`OMR_STEM_END_HEAD_INK`, verdict `ink_only`)."""
+    d = detail or {}
+    return d.get("source") == "stem_end_head" and d.get("ink_verdict") == "ink_only"
+
+
+def _share_inside(box: Sequence[float], area: Sequence[float]) -> float:
+    w, h = float(box[2]) - float(box[0]), float(box[3]) - float(box[1])
+    if w <= 0 or h <= 0:
+        return 0.0
+    iw = min(float(box[2]), float(area[2])) - max(float(box[0]), float(area[0]))
+    ih = min(float(box[3]), float(area[3])) - max(float(box[1]), float(area[1]))
+    return max(0.0, iw) * max(0.0, ih) / (w * h)
+
+
+def claims_holding(rows: Sequence[Any], key: str, box_page: Optional[Sequence[float]], box_strokes: Optional[Sequence[int]],
+                   cell: Optional[int]) -> List[Tuple[Any, Dict[str, Any]]]:
+    """Pure: every `Q.CLAIMED_AREA` row, ANY owner, that holds the box `key` -- `unit: area`: the register measured at least
+    `CLAIM_SHARE_MIN` of the box's ink inside it (or named it); where it measured nothing for the box (a claim filed before the box
+    existed, e.g. the barline column), the share of the box's page area inside it. `unit: ink`: at least `CLAIM_SHARE_MIN` of the
+    box's strokes (`Q.GLYPH_STROKES`, ordinals of its own `cell`) are the claim's (values `[ord, ...]` of the row's cell, or the arc
+    claim's `[[cell, ord], ...]`). Decides nothing."""
+    out: List[Tuple[Any, Dict[str, Any]]] = []
+    mine = set(int(o) for o in (box_strokes or ()))
+    for r in rows or ():
+        d = getattr(r, "detail", None) or {}
+        v = getattr(r, "value", None)
+        if not isinstance(v, (list, tuple)) or (key and d.get("owner_glyph") == key):
+            continue
+        if d.get("unit") == "ink":
+            if not mine:
+                continue
+            got = set()
+            for it in v:
+                if isinstance(it, (list, tuple)) and len(it) == 2:
+                    if cell is not None and int(it[0]) == int(cell):
+                        got.add(int(it[1]))
+                elif isinstance(it, (int, float)) and d.get("cell") == cell:
+                    got.add(int(it))
+            share = len(got & mine) / float(len(mine))
+            if share >= CLAIM_SHARE_MIN:
+                out.append((r, {"unit": "ink", "owner": d.get("owner"), "share": round(share, 3)}))
+            continue
+        if d.get("unit") != "area":
+            continue
+        e = (d.get("boxes_inside") or {}).get(key)
+        if e:
+            share, how = (1.0 if e.get("named") else float(e.get("ink_share_inside", 0.0))), "ink_share"
+        elif box_page is not None and len(v) == 4:
+            share, how = _share_inside(box_page, v), "box_share"
+        else:
+            continue
+        if share >= CLAIM_SHARE_MIN:
+            out.append((r, {"unit": "area", "owner": d.get("owner"), "share": round(share, 3), "how": how}))
+    return out
+
+
+def stroke_claim(entry: Optional[Sequence[Any]]) -> Optional[str]:
+    """Pure: the stroke owner's box entry `(verdict, lost)` -> the claiming family that took the box's ink, or None: the box owns nothing
+    (`refused` / `contested`) and a stroke it covers was DECIDED to a claiming family (`CLAIM_FAMILIES`)."""
+    if not entry or len(entry) < 2 or entry[0] not in ("refused", "contested"):
+        return None
+    for x in entry[1] or ():
+        if len(x) >= 3 and x[1] == "decided" and x[2] in CLAIM_FAMILIES:
+            return str(x[2])
+    return None

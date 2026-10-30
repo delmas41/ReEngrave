@@ -87,3 +87,54 @@ def test_combine():
 def test_ink_head_class():
     assert SEH.ink_head_class("filled", 100.0, 100.0, 50.0) == "noteheadBlackOnLine"
     assert SEH.ink_head_class("hollow", 150.0, 100.0, 50.0) == "noteheadHalfInSpace"
+
+
+# --- round 2 (Sean's tiles 2026-10-29: a bar number, key flats, a flag) ---------------------------------------------------------------
+
+def test_a_flat_bowl_on_the_far_side_of_its_stem_is_not_a_head():
+    """Tile 8: a flat's stem stands at the bowl's LEFT; read as an up-stem the 'head' runs on past the stem: the stem is inside the ink."""
+    img = page(lines=())
+    stem(img, 150, 80, 146)                                    # the flat's stem
+    cv2.ellipse(img, (147, 140), (10, 6), -20, 0, 360, 0, 2)   # its bowl, running on past the stem (Litolff p4 tile 8: 0.50 sp)
+    got = read(img, (151.0, 80.0, 146.0), "bottom")
+    assert not got["head"], got
+    assert got["why"] == "stem_inside_the_ink" and got["far_side_sp"] > SEH.CROSS_SPACES
+
+
+def test_far_side_reach_is_filed_on_a_real_head():
+    img = page()
+    black_head(img, 150, 140)
+    stem(img, 159, 80, 140)
+    got = read(img, (160.0, 80.0, 140.0), "bottom")
+    assert got["head"] and got["far_side_sp"] is not None and got["far_side_sp"] <= SEH.CROSS_SPACES
+
+
+class _Row:
+    def __init__(self, value, **detail):
+        self.value, self.detail, self.id = value, detail, "obs:x"
+
+
+def test_claims_holding_any_owner_area_and_ink():
+    box = [100.0, 100.0, 120.0, 112.0]
+    key = "glyph/4/0/6/0/12"
+    named = _Row([90, 90, 140, 130], owner="key_signature", unit="area", boxes_inside={key: {"named": True, "ink_share_inside": 1.0}})
+    assert SEH.claims_holding([named], key, box, None, 0)[0][1]["owner"] == "key_signature"
+    # an owner the register never measured the box for (a word claim, a barline column): the box's own area share
+    word = _Row([95, 95, 125, 115], owner="word", unit="area")
+    assert SEH.claims_holding([word], key, box, None, 0)[0][1]["how"] == "box_share"
+    beside = _Row([118, 95, 140, 115], owner="barline", unit="area")
+    assert SEH.claims_holding([beside], key, box, None, 0) == []
+    arc = _Row([[0, 3], [0, 4], [1, 9]], owner="arc", unit="ink")
+    assert SEH.claims_holding([arc], key, box, [3, 4, 7], 0)[0][1]["owner"] == "arc"
+    assert SEH.claims_holding([arc], key, box, [3, 4, 7], 1) == []
+    clef_ink = _Row([3, 4], owner="clef", unit="ink", cell=0)
+    assert SEH.claims_holding([clef_ink], key, box, [3, 4], 0)
+    assert SEH.claims_holding([clef_ink], key, box, [3, 4], 2) == []
+
+
+def test_stroke_claim_and_ink_only():
+    assert SEH.stroke_claim(("refused", [(3, "decided", "arc_trace", "")])) == "arc_trace"
+    assert SEH.stroke_claim(("refused", [(3, "decided", "accidental", "")])) is None   # in-bar accidentals come after heads: no claim
+    assert SEH.stroke_claim(("owns", [])) is None
+    assert SEH.is_ink_only({"source": "stem_end_head", "ink_verdict": "ink_only"})
+    assert not SEH.is_ink_only({"source": "stem_end_head", "ink_verdict": "agree"})
