@@ -43,3 +43,6 @@ De-dup: 19.0% of per-cell stroke ink on the 8 Brahms pages is the same ink seen 
 
 ## Tiles and caveats
 12 tiles per plate, biggest first, ONE connected piece per tile at its own extent (no joining across a staff; residue left out; pieces > 10 sp skipped), one staff, one thin box: `out/print/capture-readout-2.236/{litolff,brahms}/tiles`, keys beside the folders. Question: "what is this ink?". Caveats: truth is one page of one plate; CV hairpin reads are not claims (hairpins unclaimed); ~5 min for 16 Litolff pages, ~4 min for 8 Brahms pages.
+
+## Sean's answers on the Brahms tiles (2026-10-30)
+Every barline/bracket piece is "part of a bracket": the contested bracket+barline ink is the bracket's, so the page-wide barline claim over-reaches onto bracket ink. Every other tile is "a large orange box" around a whole group (beamed eighths, sixteenths on double beams, tied dotted-quarter thirds across a barline): one connected ink piece spans heads, stems, beams and ties, because the stroke map does not split fused ink at the joins -- the same cause as heads owning nothing. These two are GATHER's next items, biggest first: split fused ink at head/stem/beam/arc joins; keep bracket ink out of the barline claim.

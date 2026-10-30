@@ -1,6 +1,6 @@
 {
- "n_items": 152,
- "n_tiles": 1893,
+ "n_items": 153,
+ "n_tiles": 1895,
  "tiles": [
   {
    "answer": "right",
@@ -30946,6 +30946,38 @@
    "subject_kind": "none",
    "subjects": null,
    "tile": "9",
+   "value": null
+  },
+  {
+   "answer": "Sean's numbering does not follow the sheet one-to-one (spoken; sheet order: 1 beamed eighths, 2-4 and 6-7 and 9 bracket/barline pieces, 5 sixteenths, 8 and 10-12 tied dotted quarters a third apart). Read by content.",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "capture-readout-2.236/brahms",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "_note",
+   "value": null
+  },
+  {
+   "answer": "Tau 1 looks like a large orange box around 3/8 notes with stems connected to a beam. Stem 2 looks like a part of a bracket. Tau 3 again is a part of a bracket. Tau 4 is a large orange box around 3/16 notes connected to double beams. Tau 5 is again part of a bracket. Tau 6, part of a bracket. Tau 7, part of a bracket. Tau 8 is a large orange box that crosses over a bar line that includes two dotted quarter notes, a third apart, that are have arcs or stems, or sorry, not stems, arcs into the next bar. And then the last tile is the exact same thing.",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "capture-readout-2.236/brahms",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "_verbatim",
    "value": null
   },
   {
