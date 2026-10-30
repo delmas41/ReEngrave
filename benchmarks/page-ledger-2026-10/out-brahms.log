@@ -1,0 +1,195 @@
+page 0 done 11s: dbl strokes 327347 of 2283463 ({'dbl_two_staves': 327347, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 33, 'tilt_ge_0.45sp': 0})
+page 4 done 23s: dbl strokes 971278 of 4048319 ({'dbl_two_staves': 971278, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 122, 'tilt_ge_0.45sp': 0})
+page 5 done 22s: dbl strokes 1183496 of 4655838 ({'dbl_two_staves': 1183496, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 173, 'tilt_ge_0.45sp': 0})
+page 8 done 20s: dbl strokes 707848 of 2737244 ({'dbl_two_staves': 707848, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 119, 'tilt_ge_0.45sp': 0})
+page 12 done 23s: dbl strokes 1126242 of 4225648 ({'dbl_two_staves': 1126242, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 102, 'tilt_ge_0.45sp': 0})
+page 14 done 20s: dbl strokes 812297 of 3493047 ({'dbl_two_staves': 812297, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 151, 'tilt_ge_0.45sp': 0})
+page 19 done 22s: dbl strokes 947900 of 4168518 ({'dbl_two_staves': 947900, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 256, 'tilt_ge_0.45sp': 0})
+page 25 done 22s: dbl strokes 873979 of 4012379 ({'dbl_two_staves': 873979, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 201, 'tilt_ge_0.45sp': 0})
+{
+ "total": {
+  "ink_px": 55147430,
+  "ink_in_cells_px": 53951503,
+  "area_in_cells_px": 255405083,
+  "area_seen_twice_px": 87186337,
+  "ink_in_area_seen_twice_px": 10591820,
+  "stroke_px_sum_over_cells": 36574843,
+  "stroke_px_page": 29624456,
+  "stroke_px_seen_2plus": 6950387,
+  "stroke_px_extra_copies": 6950387,
+  "dbl_two_staves": 6950387,
+  "dbl_two_systems": 0,
+  "dbl_same_staff_two_bars": 0,
+  "area_same_staff_two_bars": 0,
+  "dbl_inside_a_staff_band": 1277076,
+  "dbl_in_gap": 5673311,
+  "staff_bar_pairs": 1835,
+  "rule_px": 1876835,
+  "rule_px_left_of_cut": 910797,
+  "staff_bar_rule_split_by_cut": 1515,
+  "rule_px_outside_claim": 2236,
+  "wrong_side_px": 31362,
+  "straddles_off_staff": 1157,
+  "straddles_in_staff": 128,
+  "staff_bar_rule_wholly_in_left_bar": 145,
+  "tilt_n": 1835,
+  "tilt_ge_0.25sp": 66,
+  "tilt_ge_0.45sp": 0,
+  "boxes": 30077,
+  "box_twins_two_staves": 3541,
+  "tilt_max_x1000": 360,
+  "staff_bar_wrong_side_ink": 43,
+  "staff_bar_rule_partly_outside_claim": 19,
+  "staff_bar_double_rule": 3
+ },
+ "twins_top": [
+  [
+   "beam",
+   687
+  ],
+  [
+   "noteheadBlackInSpace",
+   435
+  ],
+  [
+   "augmentationDot",
+   337
+  ],
+  [
+   "noteheadBlackOnLine",
+   306
+  ],
+  [
+   "ledgerLine",
+   297
+  ],
+  [
+   "articStaccatoAbove",
+   216
+  ],
+  [
+   "slur",
+   195
+  ],
+  [
+   "tie",
+   194
+  ],
+  [
+   "dynamicF",
+   181
+  ],
+  [
+   "accidentalFlat",
+   152
+  ],
+  [
+   "dynamicP",
+   145
+  ],
+  [
+   "articStaccatoBelow",
+   79
+  ]
+ ],
+ "edge_v_top": [
+  [
+   "beam",
+   529
+  ],
+  [
+   "tie",
+   418
+  ],
+  [
+   "noteheadBlackOnLine",
+   286
+  ],
+  [
+   "noteheadBlackInSpace",
+   274
+  ],
+  [
+   "accidentalFlat",
+   210
+  ],
+  [
+   "slur",
+   161
+  ],
+  [
+   "dynamicF",
+   128
+  ],
+  [
+   "restQuarter",
+   111
+  ],
+  [
+   "augmentationDot",
+   83
+  ],
+  [
+   "flag8thUp",
+   76
+  ],
+  [
+   "clefG",
+   74
+  ],
+  [
+   "dynamicP",
+   69
+  ]
+ ],
+ "edge_h_top": [
+  [
+   "tie",
+   2412
+  ],
+  [
+   "beam",
+   1505
+  ],
+  [
+   "staff",
+   936
+  ],
+  [
+   "noteheadBlackInSpace",
+   633
+  ],
+  [
+   "slur",
+   393
+  ],
+  [
+   "noteheadBlackOnLine",
+   120
+  ],
+  [
+   "ledgerLine",
+   93
+  ],
+  [
+   "timeSig4",
+   83
+  ],
+  [
+   "restQuarter",
+   66
+  ],
+  [
+   "dynamicF",
+   27
+  ],
+  [
+   "arpeggiato",
+   22
+  ],
+  [
+   "accidentalSharp",
+   21
+  ]
+ ]
+}
