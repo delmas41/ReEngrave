@@ -93,6 +93,8 @@ STACK_MAX_SPACES = 5.0
 WAIST_SHARE_MAX = 0.75
 #: ... or at a row where one edge steps in by at least this from both ovals' extremes (a notch; ~2 reduced px, above the +-1 px scan edge)
 STACK_NOTCH_SPACES = 0.12
+#: each band of a cut stack is at least this tall: a head (~1 sp), never a rung with the top of a head (2.239 tile 9, Sean "ledger line")
+STACK_BAND_MIN_SPACES = 0.8
 #: the oval edges of a stack are read on the cell's ink this far beside the part (the opening drops a notched column to the remainder)
 STACK_EDGE_PAD_SPACES = 0.3
 #: head|arc: a disk this wide survives in a head's body (a black head is ~1 sp tall) and not in a tie or slur (<= `CURVE_MAX_THICK_SPACES`)
@@ -101,6 +103,12 @@ HEAD_BODY_MIN_SP2 = 0.4
 #: head|ledger: a horizontal stroke's column run this much thicker than its own line is a head on the rung
 LEDGER_HEAD_EXCESS_SPACES = 0.35
 LEDGER_HEAD_MIN_WIDTH_SPACES = 0.6
+#: ... and the rung sticks out at least this far beyond the oval on BOTH sides (a head at a rung's end, or a beam, is left whole)
+LEDGER_STUB_MIN_SPACES = 0.15
+#: a column belongs to the oval while its run is this much thicker than the rung's (the oval's edge, 2.239 tiles 6 and 9)
+LEDGER_EDGE_EXCESS_SPACES = 0.2
+#: an oval tip the horizontal opening left to the remainder is smaller than this
+LEDGER_TIP_MAX_SP2 = 0.35
 #: a ledger rung is level: its thin columns' centres fit a line no steeper than this (rise over run; ~3 degrees)
 LEDGER_MAX_SLOPE = 0.05
 
@@ -418,7 +426,7 @@ def _cut_stack(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None) -> T
         return [m], None
     if w > HEAD_WIDTH_CAP_SPACES * sp:
         return [m], "stack_too_wide"
-    lo, hi = int(round(0.6 * sp)), h - int(round(0.6 * sp))
+    lo, hi = int(round(STACK_BAND_MIN_SPACES * sp)), h - int(round(STACK_BAND_MIN_SPACES * sp))
     if hi <= lo:
         return [m], "stack_no_waist"
     # two convex ovals meet at a NOTCH: a row where the left or right edge steps in from both ovals' extremes (a ledger rung or a scan
@@ -589,69 +597,63 @@ def _looks_like_heads(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = Non
 
 
 def _split_horizontal(m: np.ndarray, sp: float, refused: Dict[str, int]) -> Optional[List[Tuple[str, np.ndarray, str]]]:
-    """head|ledger: a horizontal piece (a rung) with a stretch of columns much thicker than its own line (a head sitting on it). The line is
-    the piece's thin columns; the head is the thick columns' ink off the line's rows. Longest column RUN, never the column count (a hairpin's
-    two lines stack in one column)."""
+    """ledger|head: a horizontal piece that is a LEVEL rung with ONE head on it. The head is ONE part -- every column of the oval, all its
+    rows, the rung's rows through the oval included (Sean 2026-10-30, 2.239 tile 6: "just the top of an eighth note on a ledger line"
+    was the fault); the rung is cut off only where it sticks out beyond the oval, left and right, and those stubs are LEDGER strokes
+    (`horizontal`), never a blob (tile 9). The rung's thickness is read on its own stubs, never on the oval's columns.
+    Longest column RUN, never the column count (a hairpin's two lines stack in one column)."""
     h, w = m.shape
     runs = np.zeros(w, int)
+    cent = np.zeros(w, float)
     for c in range(w):
         col = m[:, c]
         if col.any():
             d = np.diff(np.concatenate(([0], col.astype(np.int8), [0])))
-            runs[c] = int((np.nonzero(d == -1)[0] - np.nonzero(d == 1)[0]).max())
-    have = runs[runs > 0]
-    if have.size < 3:
+            st_, en_ = np.nonzero(d == 1)[0], np.nonzero(d == -1)[0]
+            k = int(np.argmax(en_ - st_))
+            runs[c] = int(en_[k] - st_[k])
+            cent[c] = (st_[k] + en_[k] - 1) / 2.0
+    cols = np.nonzero(runs > 0)[0]
+    if cols.size < 3:
         return None
-    line_t = float(np.percentile(have, 20))
+    # the rung's own thickness: the thinnest runs at its two ends (a stub sticks out at least `LEDGER_STUB_MIN_SPACES` each side)
+    stub = max(2, int(round(LEDGER_STUB_MIN_SPACES * sp)))
+    ends = np.concatenate((runs[cols[:stub]], runs[cols[-stub:]]))
+    line_t = float(np.median(ends))
     thick = runs > line_t + LEDGER_HEAD_EXCESS_SPACES * sp
     if not thick.any():
         return None
-    if int(thick.sum()) < LEDGER_HEAD_MIN_WIDTH_SPACES * sp:
-        refused["horizontal_thick_too_narrow"] = refused.get("horizontal_thick_too_narrow", 0) + 1
+    a = int(np.nonzero(thick)[0][0])
+    b = int(np.nonzero(thick)[0][-1]) + 1
+    if int((~thick[a:b]).sum()) > 1:                     # two heads, or a beam that thickens twice: not one head on a rung
+        refused["horizontal_two_thick_stretches"] = refused.get("horizontal_two_thick_stretches", 0) + 1
         return None
-    thin_cols = (runs > 0) & ~thick
-    # a head sits ON a rung: each thick stretch is no wider than one head and the rung goes on past it on both sides (a beam whose
-    # secondary beam fused to it at one end is a line that thickens once and stays thick to its end)
-    d = np.diff(np.concatenate(([0], thick.astype(np.int8), [0])))
-    for a, b in zip(np.nonzero(d == 1)[0], np.nonzero(d == -1)[0]):
-        if b - a > HEAD_WIDTH_CAP_SPACES * sp or not thin_cols[:a].any() or not thin_cols[b:].any():
-            refused["horizontal_thick_not_a_head"] = refused.get("horizontal_thick_not_a_head", 0) + 1
-            return None
-    if int(thin_cols.sum()) < 0.3 * sp:
-        refused["horizontal_no_line"] = refused.get("horizontal_no_line", 0) + 1
+    # the oval's EDGE: widen the stretch while a column is still clearly thicker than the rung (`LEDGER_EDGE_EXCESS_SPACES`; a scanned rung
+    # thickens a little toward the head, Brahms p5 tile 6), so the cut follows the oval's edge and never runs through the head
+    edge = line_t + LEDGER_EDGE_EXCESS_SPACES * sp
+    while a > 0 and runs[a - 1] > edge:
+        a -= 1
+    while b < w and runs[b] > edge:
+        b += 1
+    if b - a < LEDGER_HEAD_MIN_WIDTH_SPACES * sp or b - a > HEAD_WIDTH_CAP_SPACES * sp:
+        refused["horizontal_thick_not_a_head"] = refused.get("horizontal_thick_not_a_head", 0) + 1
         return None
-    # the LINE, followed column by column: the run centre of every column as thin as the line itself (a lens edge column is thinner than
-    # a head but thicker than the rung, and is left out), fitted by a straight line; a ledger rung is LEVEL, so a fit steeper than
-    # `LEDGER_MAX_SLOPE` (a hairpin's or a slur's line) is not a rung and the piece stays whole. The band is the fit +- half the line.
-    xs, cs = [], []
-    for c in np.nonzero(thin_cols & (runs <= line_t + 1))[0]:
-        ys = np.nonzero(m[:, c])[0]
-        xs.append(float(c))
-        cs.append(float(ys.mean()))
-    if len(xs) < 3:
-        refused["horizontal_no_line"] = refused.get("horizontal_no_line", 0) + 1
+    left, right = (runs[:a] > 0), (runs[b:] > 0)
+    if int(left.sum()) < stub or int(right.sum()) < stub:
+        refused["horizontal_no_stub_both_sides"] = refused.get("horizontal_no_stub_both_sides", 0) + 1
         return None
-    slope, icpt = np.polyfit(np.array(xs), np.array(cs), 1)
+    # a rung is LEVEL: its stub centres (both sides) fit a line no steeper than `LEDGER_MAX_SLOPE`
+    xs = np.concatenate((np.nonzero(left)[0], b + np.nonzero(right)[0])).astype(float)
+    slope = float(np.polyfit(xs, cent[xs.astype(int)], 1)[0])
     if abs(slope) > LEDGER_MAX_SLOPE:
         refused["horizontal_line_not_level"] = refused.get("horizontal_line_not_level", 0) + 1
         return None
-    yy = np.arange(h)[:, None].astype(float)
-    centre = slope * np.arange(w)[None, :] + icpt
-    head = m & (np.abs(yy - centre) > line_t / 2.0 + 1.0)
-    if int(head.sum()) < WIDE_PART_MIN_SP2 * sp * sp:
-        refused["horizontal_head_too_small"] = refused.get("horizontal_head_too_small", 0) + 1
-        return None
-    import cv2
-    line = m & ~head
-    out: List[Tuple[str, np.ndarray, str]] = [("horizontal", line, "ledger")]
-    n, lab = cv2.connectedComponents(head.astype(np.uint8), connectivity=8)
-    for i in range(1, n):
-        part = lab == i
-        if int(part.sum()) < 0.05 * sp * sp:
-            out[0] = (out[0][0], out[0][1] | part, "ledger")
-            continue
-        out.append(("blob", part, "ledger|head"))           # a head's ink off the rung (its tips are remainder blobs already)
-    return out if len(out) > 1 else None
+    head = np.zeros_like(m)
+    head[:, a:b] = m[:, a:b]
+    lstub, rstub = m.copy(), m.copy()
+    lstub[:, a:] = False
+    rstub[:, :b] = False
+    return [("blob", head, "head"), ("horizontal", lstub, "ledger|head"), ("horizontal", rstub, "ledger|head")]
 
 
 def _split_remainder(m: np.ndarray, sp: float, refused: Dict[str, int]) -> Optional[List[Tuple[str, np.ndarray, str]]]:
@@ -711,13 +713,34 @@ def _split_remainder(m: np.ndarray, sp: float, refused: Dict[str, int]) -> Optio
     return out if len(out) > 1 else None
 
 
-def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink: Optional[np.ndarray] = None
+def _inside_share(m: np.ndarray, x0: int, y0: int, rects: Sequence[Tuple[float, float, float, float]]) -> float:
+    """The largest share of a piece's ink inside one of `rects` (reduced frame)."""
+    tot = int(m.sum())
+    best = 0.0
+    if not tot:
+        return 0.0
+    h, w = m.shape
+    for (a, b, c, d) in rects:
+        lx0, ly0 = max(0, int(round(a)) - x0), max(0, int(round(b)) - y0)
+        lx1, ly1 = min(w, int(round(c)) - x0), min(h, int(round(d)) - y0)
+        if lx1 > lx0 and ly1 > ly0:
+            best = max(best, int(m[ly0:ly1, lx0:lx1].sum()) / float(tot))
+    return best
+
+
+def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink: Optional[np.ndarray] = None,
+                 keep_whole: Sequence[Tuple[float, float, float, float]] = ()
                  ) -> Tuple[List[Tuple[str, np.ndarray, int, int]], List[Tuple[int, int, str]], Dict[str, int]]:
     """ROADMAP 2.239: every piece cut at its joins (module constants above). Returns (pieces, joins [(part, first part of the same piece,
-    join name)], refused {reason: n}). A piece left whole is returned unchanged; the union of a piece's parts is exactly the piece."""
+    join name)], refused {reason: n}). A piece left whole is returned unchanged; the union of a piece's parts is exactly the piece.
+    `keep_whole` (reduced frame): the clef / key / meter boxes of the cell -- a piece mostly inside one is never cut (their ink is claimed
+    whole by its area; the page has no join there, Sean's 2.239 tiles 2 and 5). A head cut off a rung takes back the oval's tips the
+    horizontal opening left to the remainder, so a head on a ledger line is ONE stroke."""
     out: List[Tuple[str, np.ndarray, int, int]] = []
     joins: List[Tuple[int, int, str]] = []
     refused: Dict[str, int] = {}
+    rung_heads: List[int] = []
+    loose: List[int] = []
     lines_out = None
     if ink is not None:
         lines_out = ink.copy()
@@ -726,7 +749,10 @@ def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
                 h, w = m.shape
                 lines_out[y0:y0 + h, x0:x0 + w] &= ~m
     for kind, m, x0, y0 in pieces:
-        if kind == "vertical":
+        if keep_whole and _inside_share(m, x0, y0, keep_whole) >= 0.5:
+            refused["inside_clef_key_meter"] = refused.get("inside_clef_key_meter", 0) + 1
+            parts = None
+        elif kind == "vertical":
             parts = _split_vertical(m, sp, refused, (lines_out, x0, y0) if lines_out is not None else None)
         elif kind == "horizontal":
             parts = _split_horizontal(m, sp, refused)
@@ -736,19 +762,52 @@ def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
             refused["parts_do_not_add_up"] = refused.get("parts_do_not_add_up", 0) + 1   # never lose or double ink: leave it whole
             parts = None
         if not parts:
+            if kind == "blob" and int(m.sum()) < LEDGER_TIP_MAX_SP2 * sp * sp:
+                loose.append(len(out))
             out.append((kind, m, x0, y0))
             continue
         first = len(out)
         for k, part, join in parts:
+            if not part.any():
+                continue
             c, oy, ox = _crop(part)
+            if kind == "horizontal" and k == "blob":
+                rung_heads.append(len(out))
             out.append((k, c, x0 + ox, y0 + oy))
             if len(out) - 1 != first:
                 joins.append((len(out) - 1, first, join))
+    # the oval's tips: a small remainder blob within the head's columns, touching it above or below, joins the head
+    gone = set()
+    for hi in rung_heads:
+        k, hm, hx, hy = out[hi]
+        for li in loose:
+            if li in gone:
+                continue
+            _k2, lm, lx, ly = out[li]
+            lh, lw = lm.shape
+            if lx < hx - 1 or lx + lw > hx + hm.shape[1] + 1:
+                continue
+            if ly > hy + hm.shape[0] + 2 or ly + lh < hy - 2:
+                continue
+            X0, Y0 = min(hx, lx), min(hy, ly)
+            X1, Y1 = max(hx + hm.shape[1], lx + lw), max(hy + hm.shape[0], ly + lh)
+            u = np.zeros((Y1 - Y0, X1 - X0), bool)
+            u[hy - Y0:hy - Y0 + hm.shape[0], hx - X0:hx - X0 + hm.shape[1]] |= hm
+            u[ly - Y0:ly - Y0 + lh, lx - X0:lx - X0 + lw] |= lm
+            out[hi] = (k, u, X0, Y0)
+            hm, hx, hy = u, X0, Y0
+            gone.add(li)
+    if gone:
+        keep = [i for i in range(len(out)) if i not in gone]
+        new_of = {old: new for new, old in enumerate(keep)}
+        out = [out[i] for i in keep]
+        joins = [(new_of[a], new_of[b], j) for a, b, j in joins]
     return out, joins, refused
 
 
 def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical: Sequence[float],
-                raw: Optional[np.ndarray] = None, split_joins: Optional[bool] = None) -> Optional[CellStrokes]:
+                raw: Optional[np.ndarray] = None, split_joins: Optional[bool] = None,
+                keep_whole: Sequence[Sequence[float]] = ()) -> Optional[CellStrokes]:
     """Every stroke of one cell. `erased` = `cell.image_no_staff` (0 = ink); `raw` = `cell.binary` (0 = ink) for the local staff.
     None for a cell that cannot be reduced. Deterministic: strokes ordered by (x, y, kind). `split_joins` None = the flag
     `OMR_SPLIT_JOINS` (ROADMAP 2.239): fused pieces are cut at their joins (`split_pieces`) and each part carries `joined_to`."""
@@ -797,7 +856,8 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
     joins: List[Tuple[int, int, str]] = []
     refused: Dict[str, int] = {}
     if split_joins if split_joins is not None else split_joins_enabled():
-        pieces, joins, refused = split_pieces(pieces, sp, ink)
+        kw = [tuple(float(v) * scale for v in r) for r in keep_whole]      # canonical (x0, y0, x1, y1) -> reduced
+        pieces, joins, refused = split_pieces(pieces, sp, ink, kw)
 
     staff = LocalStaff(_reduce_float(raw, scale) if raw is not None else None,
                        [y * scale for y in nominal_lines_canonical], sp)

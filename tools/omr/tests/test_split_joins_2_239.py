@@ -96,10 +96,23 @@ class SplitOthers(unittest.TestCase):
         off = SM.map_strokes(img, SP, LINES, raw, split_joins=False)
         on = SM.map_strokes(img, SP, LINES, raw, split_joins=True)
         self.assertEqual(_total(on), _total(off))
-        rung = [s for s in on.strokes if s.kind == "horizontal"]
-        self.assertEqual(len(rung), 1, [(s.kind, s.box, s.area_sp2, s.joined_to) for s in on.strokes])
-        self.assertLess(rung[0].thickness_sp, 0.25)     # the rung is a line again, not a line with a head on it
-        self.assertTrue(any(how == "ledger|head" for s in on.strokes for _j, how in s.joined_to))
+        stubs = [s for s in on.strokes if s.kind == "horizontal"]
+        heads = [s for s in on.strokes if s.kind == "blob"]
+        # Sean 2026-10-30 (tiles 6, 9): the head on a rung is ONE part, all of the oval (its tips too); the rung is cut off only where it
+        # sticks out, and the stubs are ledger strokes, not blobs
+        self.assertEqual(len(heads), 1, [(s.kind, s.box, s.area_sp2, s.joined_to) for s in on.strokes])
+        self.assertGreater(heads[0].box[3], 0.9 * SP)                    # the whole oval's height, not a slice
+        self.assertEqual(len(stubs), 2)
+        for st in stubs:
+            self.assertLess(st.thickness_sp, 0.25)
+            self.assertTrue(any(how == "ledger|head" for _j, how in st.joined_to))
+
+    def test_a_clef_box_keeps_its_ink_whole(self):
+        img, raw = _chord()
+        on = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[(200, 150, 400, 750)])
+        off = SM.map_strokes(img, SP, LINES, raw, split_joins=False)
+        self.assertEqual([(s.kind, s.box) for s in on.strokes], [(s.kind, s.box) for s in off.strokes])
+        self.assertGreaterEqual(on.split_refused.get("inside_clef_key_meter", 0), 1)
 
     def test_head_with_a_tie_leaving_it(self):
         img, raw = _blank()

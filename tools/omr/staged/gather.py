@@ -7692,7 +7692,8 @@ def stems_from_strokes_retires_scans() -> bool:
     return (os.environ.get(STEMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on") and stroke_map_enabled())
 
 
-def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> Dict[Tuple[int, int, int, int], Any]:
+def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
+                      detections: Optional[Dict[str, List[Any]]] = None) -> Dict[Tuple[int, int, int, int], Any]:
     """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
@@ -7729,7 +7730,9 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
             continue
-        res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None))
+        keep = _split_keep_whole(detections, sub) if SM.split_joins_enabled() else []
+        res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None),
+                             keep_whole=keep)
         if res is None:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
@@ -7762,6 +7765,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                 optional["cell_n_below_floor"] = res.n_below_floor
                 if res.split_refused:                    # ROADMAP 2.239 (OMR_SPLIT_JOINS): pieces left whole, and why
                     optional["cell_split_refused"] = dict(sorted(res.split_refused.items()))
+                if keep:                                 # ... and the clef / key / meter boxes no split cuts inside (a re-run reads them here)
+                    optional["cell_keep_whole"] = keep
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
             if page_ok:
@@ -7780,6 +7785,18 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
         if progress:
             print(f"  gather strokes {sub.to_key()}: {len(res.strokes)}")
     return cache
+
+
+def _split_keep_whole(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[int]]:
+    """ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the cell's clef, key and meter detector boxes (canonical x0, y0, x1, y1, whole px): ink mostly
+    inside one is never cut at a join -- its area claim already holds it whole (Sean's tiles 2 and 5: "small part of an F / G clef")."""
+    out: List[List[int]] = []
+    for d in (detections or {}).get(sub.to_key(), ()):
+        name = str(getattr(d, "smufl_name", "") or "")
+        if _is_clef_class(name, getattr(d, "category", None)) or name.startswith(("key", "timeSig")):
+            x, y = float(d.x_canonical), float(d.y_canonical)
+            out.append([int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+    return sorted(out)
 
 
 def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
@@ -16810,7 +16827,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         arcs_summary = _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
-        stroke_cells = gather_stroke_map(log, cells, local, progress=progress)
+        stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections)
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
