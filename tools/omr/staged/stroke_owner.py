@@ -63,7 +63,7 @@ ATTACH_MIN_TOUCHES = 2
 
 #: the claimant tiers, in convention order (module doc). Consumers are not here.
 TIERS: Tuple[Tuple[str, ...], ...] = (
-    ("clef", "meter", "key_signature", "leading_column", "arc_trace"),
+    ("clef", "meter", "key_signature", "leading_column", "arc_trace", "barline"),
     # ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`, default ON; no box has this family with the flag OFF): a whole rest is READ by its block shape and
     # CLAIMS its ink BEFORE the heads (Sean 2026-10-29: "We just need to be able to read it and claim the ink"), so a head box standing on
     # it owns nothing and no later reader (beam, stem, flag) may take it. Not an area: the claimed stroke must fit the block shape.

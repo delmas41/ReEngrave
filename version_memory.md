@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- page-wide barlines LANDED ON (OMR_BARLINE_SYSTEM_COLUMNS, lane-barlines-1029)
+
+STAGED only (`pws.staged_page_wide`; LEGACY unchanged). `page_wide.py` + `measure_extractor._system_barline_columns` read each system's barline columns once, through-ink first, tilt per staff (Theil-Sen); `barline` claim tier added to `stroke_owner.TIERS[0]` after `arc_trace`; `bracket_reader` tells brace from bracket by hook shape. Flag is a deny-list, default ON. Sean's tiles 12/12; Litolff 3 false cuts removed, 1 added, notes +10 -4, red marks 174->153; judged right->wrong 0. Known loss: one real quarter (Litolff p9 1734,2385) to a crop-sensitive 0.07 stem-end rescue; head lane follows.
+
 ## 2026-10-29 -- arc claim LANDED ON (OMR_ARC_CLAIM, lane-arcs-claim-1029)
 STAGED GATHER `gather_arc_claim` + `arc_claim.py` + `stroke_owner` tier 0: each system arc (`Q.SYSTEM_ARC`) claims its strokes once as owner `arc`, no kind; later readers mark but never take that ink. Default ON (deny-list 0/false/no/off/empty). `OMR_ARC_KIND_FROM_ENDS` and `OMR_SLUR_FROM_ANCHORS` landed as code, default OFF, for ROADMAP 2.223. Evidence: Sean's tiles 10/10 arcs, Brahms p0 136/153 hand-truth arcs claimed, 2-page gather Litolff unchanged, Brahms +2 notes +2 dots. Merged clean into main; check 198.
 
