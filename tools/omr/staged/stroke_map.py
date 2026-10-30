@@ -101,6 +101,8 @@ HEAD_BODY_MIN_SP2 = 0.4
 #: head|ledger: a horizontal stroke's column run this much thicker than its own line is a head on the rung
 LEDGER_HEAD_EXCESS_SPACES = 0.35
 LEDGER_HEAD_MIN_WIDTH_SPACES = 0.6
+#: a ledger rung is level: its thin columns' centres fit a line no steeper than this (rise over run; ~3 degrees)
+LEDGER_MAX_SLOPE = 0.05
 
 
 def split_joins_enabled() -> bool:
@@ -618,9 +620,24 @@ def _split_horizontal(m: np.ndarray, sp: float, refused: Dict[str, int]) -> Opti
     if int(thin_cols.sum()) < 0.3 * sp:
         refused["horizontal_no_line"] = refused.get("horizontal_no_line", 0) + 1
         return None
-    # the line's rows: rows the thin columns mostly carry (a lens edge column is thin but is not the line)
-    line_rows = m[:, thin_cols].mean(axis=1) >= 0.5
-    head = m & ~line_rows[:, None]
+    # the LINE, followed column by column: the run centre of every column as thin as the line itself (a lens edge column is thinner than
+    # a head but thicker than the rung, and is left out), fitted by a straight line; a ledger rung is LEVEL, so a fit steeper than
+    # `LEDGER_MAX_SLOPE` (a hairpin's or a slur's line) is not a rung and the piece stays whole. The band is the fit +- half the line.
+    xs, cs = [], []
+    for c in np.nonzero(thin_cols & (runs <= line_t + 1))[0]:
+        ys = np.nonzero(m[:, c])[0]
+        xs.append(float(c))
+        cs.append(float(ys.mean()))
+    if len(xs) < 3:
+        refused["horizontal_no_line"] = refused.get("horizontal_no_line", 0) + 1
+        return None
+    slope, icpt = np.polyfit(np.array(xs), np.array(cs), 1)
+    if abs(slope) > LEDGER_MAX_SLOPE:
+        refused["horizontal_line_not_level"] = refused.get("horizontal_line_not_level", 0) + 1
+        return None
+    yy = np.arange(h)[:, None].astype(float)
+    centre = slope * np.arange(w)[None, :] + icpt
+    head = m & (np.abs(yy - centre) > line_t / 2.0 + 1.0)
     if int(head.sum()) < WIDE_PART_MIN_SP2 * sp * sp:
         refused["horizontal_head_too_small"] = refused.get("horizontal_head_too_small", 0) + 1
         return None
