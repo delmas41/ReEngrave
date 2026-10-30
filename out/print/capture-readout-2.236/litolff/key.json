@@ -1,268 +1,256 @@
 [
  {
-  "page": 10,
+  "page": 7,
   "box": [
-   1257,
-   1000,
-   1605,
-   1095
+   566,
+   529,
+   647,
+   619
   ],
-  "ink_px": 7122,
+  "ink_px": 3184,
   "states": {
-   "unclaimed:vertical": 4611,
-   "refused:vertical": 2004,
-   "unclaimed:horizontal": 414,
-   "unclaimed:blob": 93
+   "refused:vertical": 1431,
+   "unclaimed:vertical": 1319,
+   "unclaimed:horizontal": 434
   },
   "unit": 15.75,
   "tile": 1,
   "crop_origin": [
-   1336,
-   954
+   512,
+   503
   ],
   "cell_map": "cm-54ccb4729528"
  },
  {
-  "page": 7,
+  "page": 10,
   "box": [
-   403,
-   1546,
-   650,
-   1637
+   1442,
+   828,
+   1527,
+   912
   ],
-  "ink_px": 4969,
+  "ink_px": 3011,
   "states": {
-   "unclaimed:vertical": 2552,
-   "unclaimed:horizontal": 1310,
-   "contested_settled": 1107
+   "unclaimed:vertical": 1771,
+   "refused:vertical": 823,
+   "unclaimed:horizontal": 361,
+   "unclaimed:blob": 56
   },
   "unit": 15.75,
   "tile": 2,
   "crop_origin": [
-   432,
-   1507
+   1390,
+   798
   ],
   "cell_map": "cm-54ccb4729528"
  },
  {
-  "page": 15,
+  "page": 4,
   "box": [
-   1063,
-   2757,
-   1254,
-   2863
+   459,
+   2124,
+   543,
+   2237
   ],
-  "ink_px": 4904,
+  "ink_px": 2844,
   "states": {
-   "refused:vertical": 2046,
-   "unclaimed:vertical": 1765,
-   "unclaimed:horizontal": 969,
-   "unclaimed:blob": 91
+   "weak_claim": 2154,
+   "unclaimed:vertical": 322,
+   "contested_settled": 307,
+   "unclaimed:blob": 61
   },
-  "unit": 15.5,
+  "unit": 15.75,
   "tile": 3,
   "crop_origin": [
-   1065,
-   2712
+   406,
+   2104
   ],
   "cell_map": "cm-54ccb4729528"
  },
  {
   "page": 6,
   "box": [
-   1028,
-   3050,
-   1762,
-   3143
+   334,
+   1126,
+   356,
+   1279
   ],
-  "ink_px": 4704,
+  "ink_px": 2840,
   "states": {
-   "unclaimed:horizontal": 2907,
-   "unclaimed:vertical": 1783,
-   "unclaimed:blob": 14
+   "contested_settled": 2840
   },
-  "unit": 15.75,
+  "unit": 15.7587890625,
   "tile": 4,
   "crop_origin": [
-   1300,
-   2986
-  ],
-  "cell_map": "cm-54ccb4729528"
- },
- {
-  "page": 15,
-  "box": [
-   425,
-   2510,
-   625,
-   2586
-  ],
-  "ink_px": 4365,
-  "states": {
-   "weak_claim": 1843,
-   "refused:vertical": 862,
-   "unclaimed:vertical": 757,
-   "unclaimed:horizontal": 552
-  },
-  "unit": 15.75,
-  "tile": 5,
-  "crop_origin": [
-   430,
-   2451
-  ],
-  "cell_map": "cm-54ccb4729528"
- },
- {
-  "page": 13,
-  "box": [
-   992,
-   559,
-   1103,
-   658
-  ],
-  "ink_px": 3878,
-  "states": {
-   "unclaimed:vertical": 3655,
-   "unclaimed:blob": 143,
-   "unclaimed:horizontal": 80
-  },
-  "unit": 15.50390625,
-  "tile": 6,
-  "crop_origin": [
-   954,
-   509
-  ],
-  "cell_map": "cm-54ccb4729528"
- },
- {
-  "page": 12,
-  "box": [
-   344,
-   1751,
-   651,
-   1885
-  ],
-  "ink_px": 3646,
-  "states": {
-   "contested_settled": 2374,
-   "unclaimed:horizontal": 915,
-   "weak_claim": 357
-  },
-  "unit": 15.75,
-  "tile": 7,
-  "crop_origin": [
-   403,
-   1726
-  ],
-  "cell_map": "cm-54ccb4729528"
- },
- {
-  "page": 4,
-  "box": [
-   372,
-   409,
-   475,
-   523
-  ],
-  "ink_px": 3526,
-  "states": {
-   "contested_open": 2344,
-   "contested_settled": 1182
-  },
-  "unit": 15.5,
-  "tile": 8,
-  "crop_origin": [
-   330,
-   367
-  ],
-  "cell_map": "cm-54ccb4729528"
- },
- {
-  "page": 12,
-  "box": [
-   907,
-   1364,
-   1341,
-   1459
-  ],
-  "ink_px": 3514,
-  "states": {
-   "unclaimed:vertical": 2423,
-   "unclaimed:horizontal": 979,
-   "contested_settled": 88,
-   "unclaimed:blob": 24
-  },
-  "unit": 16.0,
-  "tile": 9,
-  "crop_origin": [
-   1028,
-   1328
-  ],
-  "cell_map": "cm-54ccb4729528"
- },
- {
-  "page": 4,
-  "box": [
-   432,
-   2122,
-   545,
-   2239
-  ],
-  "ink_px": 3484,
-  "states": {
-   "weak_claim": 2154,
-   "contested_settled": 675,
-   "unclaimed:vertical": 322,
-   "contested_open": 272
-  },
-  "unit": 15.75,
-  "tile": 10,
-  "crop_origin": [
-   394,
-   2102
+   250,
+   1106
   ],
   "cell_map": "cm-54ccb4729528"
  },
  {
   "page": 9,
   "box": [
-   1703,
-   1395,
-   2326,
-   1489
+   576,
+   332,
+   637,
+   461
   ],
-  "ink_px": 3332,
+  "ink_px": 2830,
   "states": {
-   "unclaimed:horizontal": 1847,
-   "unclaimed:vertical": 1484,
-   "unclaimed:blob": 1
+   "unclaimed:vertical": 1991,
+   "unclaimed:horizontal": 721,
+   "refused:horizontal": 101,
+   "unclaimed:blob": 17
   },
-  "unit": 15.50390625,
-  "tile": 11,
+  "unit": 15.7412109375,
+  "tile": 5,
   "crop_origin": [
-   1921,
-   1331
+   512,
+   312
   ],
   "cell_map": "cm-54ccb4729528"
  },
  {
-  "page": 13,
+  "page": 6,
   "box": [
-   1560,
-   2091,
-   1654,
-   2191
+   337,
+   2554,
+   358,
+   2710
   ],
-  "ink_px": 3292,
+  "ink_px": 2735,
   "states": {
-   "unclaimed:vertical": 2762,
-   "unclaimed:horizontal": 530
+   "contested_settled": 2735
   },
   "unit": 15.75,
+  "tile": 6,
+  "crop_origin": [
+   253,
+   2534
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 2,
+  "box": [
+   335,
+   2517,
+   357,
+   2663
+  ],
+  "ink_px": 2645,
+  "states": {
+   "contested_settled": 2645
+  },
+  "unit": 15.75,
+  "tile": 7,
+  "crop_origin": [
+   251,
+   2495
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 6,
+  "box": [
+   337,
+   3000,
+   358,
+   3143
+  ],
+  "ink_px": 2464,
+  "states": {
+   "contested_settled": 2464
+  },
+  "unit": 15.75,
+  "tile": 8,
+  "crop_origin": [
+   253,
+   2980
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 10,
+  "box": [
+   340,
+   972,
+   361,
+   1114
+  ],
+  "ink_px": 2461,
+  "states": {
+   "contested_settled": 2461
+  },
+  "unit": 15.75,
+  "tile": 9,
+  "crop_origin": [
+   256,
+   952
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 4,
+  "box": [
+   438,
+   2468,
+   537,
+   2542
+  ],
+  "ink_px": 2426,
+  "states": {
+   "weak_claim": 1979,
+   "contested_settled": 217,
+   "unclaimed:vertical": 199,
+   "unclaimed:blob": 31
+  },
+  "unit": 15.75,
+  "tile": 10,
+  "crop_origin": [
+   393,
+   2391
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 4,
+  "box": [
+   374,
+   411,
+   421,
+   521
+  ],
+  "ink_px": 2344,
+  "states": {
+   "contested_open": 2344
+  },
+  "unit": 15.5,
+  "tile": 11,
+  "crop_origin": [
+   304,
+   367
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 5,
+  "box": [
+   385,
+   1579,
+   429,
+   1680
+  ],
+  "ink_px": 2324,
+  "states": {
+   "contested_settled": 2318,
+   "unclaimed:blob": 6
+  },
+  "unit": 15.5,
   "tile": 12,
   "crop_origin": [
-   1512,
-   2071
+   314,
+   1528
   ],
   "cell_map": "cm-54ccb4729528"
  }

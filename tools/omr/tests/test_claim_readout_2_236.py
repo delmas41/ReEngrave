@@ -166,3 +166,12 @@ def test_nothing_in_it_names_a_pipeline_quantity_it_writes():
     import pathlib
     src = pathlib.Path(CR.__file__).read_text()
     assert "log.observe" not in src and "log.abstain" not in src
+
+
+def test_unclaimed_line_shaped_ink_on_a_staff_line_is_residue_but_a_stem_crossing_it_is_not():
+    c = _canvas([(5, 20, 60, 22), (30, 5, 32, 45)])
+    lab = _labels(H, W, {1: (5, 20, 60, 22), 2: (30, 5, 32, 45)})
+    c.add_cell((0, 0, W, H), lab, _claims(c1=((), 0, "horizontal"), c2=((), 0, "vertical")), None, [10.0, 15.0, 21.0, 26.0, 31.0])
+    c.finish()
+    sp = c.tally()["state_px"]
+    assert sp.get("residue:horizontal", 0) > 0 and "residue:vertical" not in sp and sp["unclaimed:vertical"] > 0
