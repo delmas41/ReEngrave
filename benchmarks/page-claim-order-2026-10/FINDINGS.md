@@ -103,3 +103,28 @@ Written by the manager from the lane reports (subagent FINDINGS writes are refus
 - 1 REAL quarter (Litolff p9 1734,2385; Sean: "There is a quarter note there but it is right next to a fermata over another quarter"). It was only ever a 0.074 stem-end detector rescue (`yolo_rescue_stem_head`), which the corrected crop (1470-1800 instead of 1526-1800) no longer re-finds. Not the barline claim (57 px away). Accepted by Sean; lane-stem-end-head reads the head from ink.
 
 **Sean's tiles** (out/print/barlines-1029): 12/12. Tile 12 was a marker error on a tilted scan, not a reader error. Brace/bracket tiles (out/print/2.221-m1-pagewide): 3 and 6 are braces, 7 and 11 part of a bracket; the finisher re-reads these as brace and whole bracket.
+
+## Stem-end head read from ink, round 2 (lane-stem-end-head, flag OMR_STEM_END_HEAD_INK OFF; 2026-10-29)
+
+STAGED. Subset Litolff 4,9 / Brahms 5,14, `lane_report --from gather --workers 1` (LANE_REPORT_SAMPLE subset).
+
+**Cause.** The read is early in GATHER; it cannot move after the claims, because every per-box GATHER reader (positions, ink, ownership)
+must measure its box. On the merged tree the claims already saw the box, though: the key-signature claim named the round-1 flat
+(tile 8: refused `claimed_by:key_signature`) and ADJUDICATE refused the flag (tile 11: `stacked_head_duplicate`). Tiles were drawn
+from the GATHER population, not the written file. Two causes the tiles hid: (a) Sean's three ink-only eighths (Brahms p5, tiles 3/5/6)
+stood inside the NEXT staff and were filed and pitched on the wrong staff (a cell crop reaches into its neighbour); (b) a black head
+welded into a line, trimmed to its ink, is block-shaped, so `notehead_is_a_whole_rest` took Litolff p9's quarter (1734, 2385).
+Lesson: tile the written result, and check the staff a box is filed on, not only its ink.
+
+**Changes.** The DECISION moved to ADJUDICATE (`notehead_precision`, after every claim): any `Q.CLAIMED_AREA` owner or a claiming
+stroke-owner tier on its ink refuses it (`stem_end_ink_claimed`); off the staff with no ledger line refuses it (`stem_end_ink_unladdered`);
+otherwise NARROWED (`stem_end_ink_only`, written blue). GATHER: an ink-only head is filed on the staff whose lines hold it; the ink must
+not run past its stem by more than `CROSS_SPACES` (`stem_inside_the_ink`: flat 0.50 sp, flag 0.28; real heads the re-run also boxed up
+to 0.35, so the cut refuses ink-only heads only); a stem-end ink head is never a whole rest (`read_at_a_stem_end`).
+
+**Measure.** Litolff notes +5 -8, blue +4; Brahms notes +3 -1, blue +3; red bars 0 -> 0; judged right->wrong 0, unwritten->wrong 0,
+invented->removed 0. Old rescue OFF: Litolff 39 boxes (25 written), Brahms 12 (3). ON: agree 22 (18 written) / 2 (2); ink-only 8 (4
+written blue) / 6 (3); disagree-abstain 17 / 10; far-side refused 3 / 1. Lost = 7+1 old-rescue boxes the ink disagrees with (5 too_small,
+the trim shaving a welded head) + 1 dropped later. p9 quarter: written blue from ink. Round-1 tiles now: 3/5/6 written blue eighths on
+the right staff; 4 refused unladdered; 8, 11 refused stem_inside_the_ink; 1 narrowed but unwritten (duration beams_ambiguous); 2, 7, 9,
+10, 12 still abstain. New tiles: out/print/stem-end-head-r2 (key.json outside tiles/).
