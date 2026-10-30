@@ -411,6 +411,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.231. The master cell map: freezes / loads / compares what `pipeline.prepare_pages` cut (before GATHER);
     # files no row, names no quantity, decides nothing.
     "cell_map.py",
+    # ROADMAP 2.236. The capture readout: re-runs `stroke_owner` over saved GATHER rows and counts page ink by claim state;
+    # files no row, names no quantity it writes, decides nothing.
+    "claim_readout.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a
