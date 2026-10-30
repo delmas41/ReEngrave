@@ -74,6 +74,57 @@ Small (about 0.5-0.8% of written heads) but not zero, with large tails (some hea
 
 Tiles: `out/print/2.221-barlines/` (10 tiles: every Litolff written note with direct share >=0.5 that the census did not count; Brahms has none). Expect most to be stems; they test whether the direct measure means anything. Not yet shown to Sean.
 
+## m1/m1b page-wide (2026-10-29)
+
+STAGED GATHER (claim) + ADJUDICATE (consult). Branch `lane-2.221-m1-pagewide`. Flags `OMR_CLAIM_WORDS_FIRST`, `OMR_CLAIM_BRACKETS_FIRST`, OFF.
+
+**Cause and process lesson.** Words and brackets claim nothing today, so a head box on their ink is refused only later by pair rules (`on_a_dynamic_letter`, `too_narrow`, `claimed_by:leading_column`), or not at all. The parked m1 build (lane-2.221-m1) filed one claim per CELL, so one "cresc." across a barline became pieces. Sean then ruled that words and dynamics are read system- or page-wide, and that no reading pass may be added per symbol. Lesson: a claim is bookkeeping on rows GATHER already files. Its scope is the mark, not the cell. So it is ONE row per mark on its SYSTEM, built from existing reader rows. The bracket claim takes the page-wide pass's rule strokes as input (`edge_strokes`), so nothing scans twice.
+
+**Prior work.** `docs/ink-rules.md` rows: "ink is a dynamic letter" (`on_a_dynamic_letter`, 2.107, C), "rest on a dynamic letter", "box is a dot / a barline" (`on_a_barline`), and "dot on a barline". Benchmarks: `omr-direction-text-2026-09`, `omr-staged-direction-2026-09`, `omr-lexicon-2026-09`, `omr-dynamics-{band,coupling,staged}-2026-09`, `omr-margin-labels-*`, `omr-bracket-{reading,stability}-2026-09`. Page facts: a word between braced staves names every staff in the brace; a brace alone names nothing; reading the brace is a named gap. Memory: the lexicon gate is load-bearing and is never loosened (the claim reads only ACCEPTED words); margin-label lexicon. m0 census above: about 0.3% of written notes are on word ink, and none on brackets.
+
+**What was kept and what was rewritten from the parked build** (07ac8ca73, its diff reviewed line by line). Kept: owners `word` / `bracket`, flags, the consult branch (READ refuses; a stemmed head NARROWS blue), the literal refusal and narrowing reasons, export not-a-gap reasons, and margins. Rewritten: the per-cell `gather_word_bracket_claims` is now `gather_page_claims`. It files one row per mark on `R.system`, with `scope: system` and `cell: None`, and merges `boxes_inside` across the cells the mark meets. It drops the per-cell stroke `ink` rows. Added:
+- dynamics from the detector's `Q.DYNAMIC_LETTER` rows, joined by `claims.spell_letter_runs` (READ only for 2+ letters spelling a dynamic);
+- printed bar numbers;
+- detector `brace`/`bracket` boxes at the system's left edge (a curved brace is no rule, so the edge scan misses it);
+- `stroke_owner._areas`: a page-wide claim owns only strokes WHOLLY inside it, so a stem through a word's box keeps its ink.
+
+Tests: 29 in `test_staged_page_claims_2_221.py`. Fast tier: 9302 passed, with 1 index test made current by `judged build`. Check: 198.
+
+**Capture** (`m1_pagewide.py count`; `m1-pagewide.json`). Subset `m1-pagewide-sample.json`: Litolff p1, p4 and Brahms p0, p5. Run with `--from gather --workers 1`. Claims per page:
+
+| page | words | dynamics (2+ letters) | bar numbers | bracket rules | detector braces | lone letters (not claimed) |
+|---|---|---|---|---|---|---|
+| Litolff p1 | 3 | 0 | 0 | 1 | 0 | 11 |
+| Litolff p4 | 10 | 1 | 1 | 2 | 4 | 24 |
+| Brahms p0 | 10 | 1 | 0 | 2 | 0 | 41 |
+| Brahms p5 | 7 | 2 | 0 | 10 | 0 | 18 |
+
+Head boxes holding >= 0.5 of their ink inside a claim: Litolff 11, Brahms 60 (most on Brahms p0 words). The consult fired `claimed_by:bracket` 8 times per plate (these replace 8 `claimed_by:leading_column` refusals) and `claim_narrowed:word` once (Brahms). It fired `claimed_by:word` 0 times, because earlier rules already refuse those boxes.
+
+Brahms p0 against hand truth (classes `text` / `dynamic*` / `brace`; a claim matches when it covers >= half of either box):
+- 60 truth marks; 17 claimed (dynamicF 8, text 7, dynamicP 1, brace 1); 43 unclaimed; 1 claim matches no truth mark (an edge rule overlapping two truth braces at 0.34/0.43).
+- Unclaimed text (25): the title block and composer line, which no system reader reads; instrument names (`Q.MARGIN_LABEL` rows carry no box); and "espr. e legato" and "un poco sostenuto" where the word reader filed no accepted row.
+- Unclaimed dynamicF (8): lone `f` letters. One detector letter is the detector's word alone, so it is not READ.
+- Unclaimed braces (10): the brackets at x 1220-1260 are thick, so the edge scan returns no rule for them, and the detector drew no brace box on this page.
+
+**File** (lane_report, subset, OFF vs ON): NOTHING CHANGED on either plate. Judged right->wrong 0, unwritten->wrong 0, invented->removed 0 (166 + 218 judged tiles on these pages). That is expected for a claim: the ink is now accounted once, by the claim instead of by the old pair rules.
+
+**The tempo mark (Litolff p1 "Allegro con brio" + metronome).** The tempo note is detector box `glyph/1/0/0/3/1` (`noteheadHalfInSpace`, page px 1228,1078-1253,1101). It is written plain as a half G6 in bar 4. NOT CLAIMABLE from existing rows:
+- the accepted word's box ends at x 1200;
+- no direction candidate (accepted or refused) is filed to its right;
+- the lexicon refuses digits (`direction_lexicon._prepare`);
+- refused OCR texts reach the record only as a page count (`page_n_rejected_by_lexicon`);
+- `_blank_detections` erases the head box before OCR.
+
+A claim needs the word reader to keep the metronome candidate and file its text. That is in `direction_text` / `gather_direction_words`, fenced to lane-dedupe-passes, so it was not built.
+
+**Not measured / open.**
+- Lone dynamic letters (the most common dynamic: 41 detector letters on Brahms p0) do not claim. Whether a single `f`/`p` box outside the staves is READ is Sean's question (m0: letters were at chance next to real notes).
+- Thick brackets need the page-wide pass's structure reader (barline lane).
+- CV-only hairpins have no box, so their ink is unowned (out of scope).
+
+**Tiles.** `out/print/2.221-m1-pagewide/` holds 12 blind tiles (`tiles/`, README with the question; `key.json` outside `tiles/`; seed 2221). They are 9 random claims, 1 claim matching no truth mark (only one exists, so the second slot went to a ninth random claim) and 2 unclaimed truth marks (a brace and a lone `f`). The orange box marks the claimed ink, or the truth mark for the unclaimed ones. Question: "Is this a word, dynamic, bracket or brace, or something else?" Not yet shown to Sean.
+
 ## barlines system-wide (2026-10-29) -- 2.221 m2, LANDED ON (main 846efa623, OMR_BARLINE_SYSTEM_COLUMNS)
 Written by the manager from the lane reports (subagent FINDINGS writes are refused). Branch lane-barlines-1029 (c1b47cef2 build, 3b9dbe7ca finish).
 
@@ -103,3 +154,10 @@ Written by the manager from the lane reports (subagent FINDINGS writes are refus
 - 1 REAL quarter (Litolff p9 1734,2385; Sean: "There is a quarter note there but it is right next to a fermata over another quarter"). It was only ever a 0.074 stem-end detector rescue (`yolo_rescue_stem_head`), which the corrected crop (1470-1800 instead of 1526-1800) no longer re-finds. Not the barline claim (57 px away). Accepted by Sean; lane-stem-end-head reads the head from ink.
 
 **Sean's tiles** (out/print/barlines-1029): 12/12. Tile 12 was a marker error on a tilted scan, not a reader error. Brace/bracket tiles (out/print/2.221-m1-pagewide): 3 and 6 are braces, 7 and 11 part of a bracket; the finisher re-reads these as brace and whole bracket.
+
+## word coverage finisher (2026-10-29) -- heading claim must be text; Litolff p1 bar 4
+
+**Cause (heading).** `claims.heading_blocks` joined every ink component at most 8 sp tall in the strip 5 sp above the first staff / 8 sp below the last, so it took what lies there that is not text: slur tops (Sean's tile 5, Brahms p5), a stem tip (Litolff p1, the tempo note's stem above its box), ledger-line notes with an accidental (Litolff p4). Process lesson: a claim built from a size test alone takes whatever fits; ownership (the register, the traced arcs, the detector's mark boxes) and shape (two letters on a line) are separate witnesses.
+**Fix (STAGED GATHER, `gather_page_claims` + `claims.heading_blocks`, flags unchanged).** A block needs at least two LETTERS: a component at most `HEADING_MAX_COMPONENT_SPACES` tall AND wide, at least half the page's own letter height (median height of the ink components inside its READ word / label / dynamic claims; the staff space when none was read), owned by nothing: not inside any other register area, not along a `Q.SYSTEM_ARC` trace (`on_traces`, the arc claim's own ink), not inside a detector mark box (any class but `structural`). Smaller ink (an i-dot, a period) joins a block, never starts one. NOT CONFIRMED: the 0.5 factor.
+**Cause (Litolff p1 bar 4, "whole" -> "?").** Not an unsettled rest. OFF the bar held the false half note, so `export._lone_whole_rest_is_the_bar` (export.py:5513, `len(events) != 1`) did not fire and the rest was written as a literal 4-beat `whole` (duration 16) in a bar of 8; ON the note is gone, the rest is the lone event and is written as a measure rest (`<rest measure="yes"/>`, duration 8) like bars 1-3 and 5-7. `lane_report.py:425` prints a typeless rest as "?". Removing the false note SETTLED the rest.
+**Measured** (2 pages per plate, `--from gather --workers 1`, OFF vs ON): Brahms p0 page_heading claims 10 -> 5, false headings 6 -> 1 (page-foot text, no truth class), truth marks claimed 49 of 60 before and after; Brahms p5 headings 7 -> 0; Litolff p1 3 -> 1, p4 4 -> 0 (the one left is the printed title). File: Litolff notes -1 (the tempo note), measure rest written; Brahms nothing changed. Judged right->wrong 0, unwritten->wrong 0, invented->removed 0. Tiles: `out/print/2.221-wc-fix/` (4, key.json outside tiles/).

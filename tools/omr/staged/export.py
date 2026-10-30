@@ -5758,6 +5758,8 @@ _NOT_A_GAP_REASONS = frozenset({
     "not_a_rest:claimed_by:clef", "not_a_rest:claimed_by:meter", "not_a_rest:claimed_by:leading_column",
     # ROADMAP 2.183: the key signature's own ink (the 2.100 gates' reasons, now one claim)
     "not_a_notehead:claimed_by:key_signature", "not_a_rest:claimed_by:key_signature",
+    # ROADMAP 2.221 m1/m1b: a READ word's / dynamic's / bracket's ink, claimed page-wide (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST)
+    "not_a_notehead:claimed_by:word", "not_a_rest:claimed_by:word", "not_a_notehead:claimed_by:bracket", "not_a_rest:claimed_by:bracket",
     "cell_past_the_last_bar", "bar_count_not_decided",
     "staff_not_identified", "owner_staff_has_no_measures",
     "relocation_collides",

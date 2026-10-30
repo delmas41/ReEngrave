@@ -66,7 +66,11 @@ OWNER_ARC = "arc"
 #: ROADMAP 2.183 (flag `OMR_KEY_SIGNATURE_CLAIM`): the key signature's run -- the cancelling naturals (Sean 2026-10-20: "Canceling
 #: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
 OWNER_KEY = "key_signature"
-OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY)
+#: ROADMAP 2.221 m1 / m1b (docs/plan-2026-10-28-page-claim-order.md §7, §9): a word or dynamic READ outside the staves, and a bracket or
+#: brace at a system's left edge, claim their ink PAGE-WIDE before any head (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, OFF)
+OWNER_WORD = "word"
+OWNER_BRACKET = "bracket"
+OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY, OWNER_WORD, OWNER_BRACKET)
 ENV_KEY = "OMR_KEY_SIGNATURE_CLAIM"
 #: classes that are owners' own ink, never measured as a box inside a claim
 OWNER_CLASS_PREFIXES = ("clef", "gClef", "fClef", "cClef", "timeSig", "key", "brace", "bracket")
@@ -223,4 +227,286 @@ def covering(rows: Iterable[Any], key: str, box_strokes: Optional[Sequence[int]]
         clef_cover = d.get("owner") == OWNER_CLEF and float(got.get("box_cover", 0.0)) >= CLEF_BOX_COVER_MIN
         if got.get("named") or at_edge or clef_cover or got.get("tail") is not None or float(got.get("ink_share_inside", 0.0)) >= INSIDE_SHARE_MIN:
             out.append((r, got))
+    return out
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# ROADMAP 2.221 m1 / m1b: the PAGE-WIDE claims (words, dynamics, brackets, braces). Sean 2026-10-29: "arcs as well as words and dynamic
+# markings need to be treated system or page wide not based on individual measures"; "Can 1 and 1b read on the same pass as barlines? I
+# don't want to add reading passes every time we add a symbol". So nothing here READS the page: the word claim is bookkeeping on rows the
+# text readers already filed (accepted `Q.DIRECTION_WORD`, `Q.DYNAMIC_LETTER`), the bracket claim takes the left-edge vertical-rule scan's
+# strokes as INPUT (`bracket_reader.Stroke`, the scan the barline lane shares). ONE row per mark per (page, system), filed on the SYSTEM.
+#
+# CONVENTION ASSUMED: a word read by the lexicon outside the staff lines, a dynamic spelled from two or more detector letters outside them,
+# and a thin rule or a brace standing at or left of the system's staff start hold no notehead's ink. WHAT WOULD FALSIFY IT: Sean's tiles
+# showing a real note under a claimed word / dynamic / bracket. NOT CONFIRMED beyond the two plates (out/print/2.221-m1-pagewide/).
+# ---------------------------------------------------------------------------------------------------------------------------------
+ENV_WORDS = "OMR_CLAIM_WORDS_FIRST"
+ENV_BRACKETS = "OMR_CLAIM_BRACKETS_FIRST"
+#: a word / dynamic is OUTSIDE the staves when at most this share of its box's height lies inside any staff's line band (top line to
+#: bottom line, +- `WORD_BAND_PAD_SPACES`); a word inside the staff is milestone 4 ("almost always short", Sean 2026-10-28), not claimed
+WORD_BAND_OVERLAP_MAX = 0.25
+WORD_BAND_PAD_SPACES = 0.5
+#: two detector dynamic letters belong to ONE printed dynamic when the gap between their boxes is at most this (staff spaces) and their
+#: boxes overlap vertically by at least `LETTER_ROW_OVERLAP_MIN` of the smaller height (the `ff` of Litolff p4 is two `dynamicF` boxes)
+LETTER_JOIN_GAP_SPACES = 0.6
+LETTER_ROW_OVERLAP_MIN = 0.5
+#: two letter boxes are the SAME ink (a twin) when they overlap by this share of the smaller box (gather `_same_ink_boxes`' cut)
+LETTER_TWIN_SHARE = 0.5
+#: a bracket / brace stroke claims only at or left of the system's staff start (`Stroke.offset_spacings`, the systemic barline stands AT
+#: it; a tall stem to its right is a note's) and only this tall (staff spaces; a bracket spans a block, a brace a pair of staves)
+BRACKET_MAX_OFFSET_SPACES = 0.5
+BRACKET_MIN_HEIGHT_SPACES = 4.0
+
+
+def words_first_enabled() -> bool:
+    """`OMR_CLAIM_WORDS_FIRST` (ROADMAP 2.221 m1), default OFF; needs the register. An explicit 1/true/yes/on enables."""
+    return enabled() and os.environ.get(ENV_WORDS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def brackets_first_enabled() -> bool:
+    """`OMR_CLAIM_BRACKETS_FIRST` (ROADMAP 2.221 m1b), default OFF; needs the register. An explicit 1/true/yes/on enables."""
+    return enabled() and os.environ.get(ENV_BRACKETS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def band_share(box: Sequence[float], bands: Iterable[Tuple[float, float]]) -> float:
+    """The largest share of `box`'s height that lies inside any one staff line band `(lo, hi)` (page px). Measured; decides nothing."""
+    h = max(1.0, float(box[3]) - float(box[1]))
+    best = 0.0
+    for lo, hi in bands:
+        best = max(best, max(0.0, min(float(box[3]), hi) - max(float(box[1]), lo)) / h)
+    return best
+
+
+def _overlap_small(a: Sequence[float], b: Sequence[float]) -> float:
+    ix = max(0.0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+    small = max(1.0, min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1])))
+    return ix * iy / small
+
+
+def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spacing: float,
+                      words: Iterable[str]) -> List[Dict[str, Any]]:
+    """Join one system's detector dynamic letters `(page box, letter, row id)` into printed runs, left to right; PURE.
+
+    Twins (one ink boxed twice, `LETTER_TWIN_SHARE`) fold into one slot; a slot whose twins name DIFFERENT letters leaves the run
+    unspelled (`text` None, `why` `twin_letters_disagree`). A run is READ only when it has at least two slots and its spelling is in
+    `words` (the dynamic vocabulary, a convention); a lone letter is the detector's word alone (`why` `lone_letter`), a spelling outside
+    the vocabulary is `not_a_dynamic`. Returns `{box, text, slots, rows, read, why}` per run; the caller claims only `read` runs."""
+    vocab = set(words)
+    slots: List[Dict[str, Any]] = []
+    for box, letter, rid in sorted(letters, key=lambda t: (float(t[0][0]), float(t[0][1]))):
+        b = [float(v) for v in box]
+        twin = next((s for s in slots if _overlap_small(s["box"], b) >= LETTER_TWIN_SHARE), None)
+        if twin is not None:
+            twin["letters"].add(str(letter))
+            twin["rows"].append(rid)
+            twin["box"] = [min(twin["box"][0], b[0]), min(twin["box"][1], b[1]), max(twin["box"][2], b[2]), max(twin["box"][3], b[3])]
+            continue
+        slots.append({"box": b, "letters": {str(letter)}, "rows": [rid]})
+    slots.sort(key=lambda s: s["box"][0])
+    runs: List[List[Dict[str, Any]]] = []
+    for s in slots:
+        if runs:
+            last = runs[-1][-1]
+            gap = s["box"][0] - last["box"][2]
+            hs = min(s["box"][3] - s["box"][1], last["box"][3] - last["box"][1])
+            ov = min(s["box"][3], last["box"][3]) - max(s["box"][1], last["box"][1])
+            if gap <= LETTER_JOIN_GAP_SPACES * spacing and hs > 0 and ov >= LETTER_ROW_OVERLAP_MIN * hs:
+                runs[-1].append(s)
+                continue
+        runs.append([s])
+    out: List[Dict[str, Any]] = []
+    for run in runs:
+        box = [min(s["box"][0] for s in run), min(s["box"][1] for s in run), max(s["box"][2] for s in run), max(s["box"][3] for s in run)]
+        rows = [r for s in run for r in s["rows"]]
+        if any(len(s["letters"]) > 1 for s in run):
+            out.append({"box": box, "text": None, "slots": len(run), "rows": rows, "read": False, "why": "twin_letters_disagree"})
+            continue
+        text = "".join(next(iter(s["letters"])) for s in run)
+        if len(run) < 2:
+            why = "lone_letter"
+        elif text not in vocab:
+            why = "not_a_dynamic"
+        else:
+            why = None
+        out.append({"box": box, "text": text, "slots": len(run), "rows": rows, "read": why is None, "why": why})
+    return out
+
+#: ROADMAP 2.221 word coverage -- the geometry of the extra word claims. All of it reads rows and rasters GATHER already holds.
+#: a metronome note stands this far right of its tempo word (staff spaces; Litolff p1: 1200 -> 1228 = 1.8) ...
+TEMPO_NOTE_GAP_SPACES = 3.0
+#: ... and its `= 108` ink continues until a gap this wide, at most this far from the note
+TEMPO_TAIL_GAP_SPACES = 2.0
+TEMPO_TAIL_MAX_SPACES = 10.0
+#: detector classes that can be the metronome's note glyph
+TEMPO_NOTE_PREFIXES = ("notehead", "metronome")
+#: an instrument name's ink is a component at most this tall (staff spaces): a brace, bracket or barline is taller
+LABEL_MAX_COMPONENT_SPACES = 4.0
+#: heading text (title, composer, plate number): ink above the first staff by `HEADING_CLEAR_SPACES`, or below the last by
+#: `FOOTER_CLEAR_SPACES` (notes on ledger lines reach about 5 spaces past the staff), components at most this tall
+HEADING_CLEAR_SPACES = 5.0
+FOOTER_CLEAR_SPACES = 8.0
+HEADING_MAX_COMPONENT_SPACES = 8.0
+HEADING_JOIN_SPACES = 2.5
+
+
+def _ink_cols(binary: Any, y0: int, y1: int, x0: int, x1: int) -> Tuple[Any, int]:
+    import numpy as np
+    H, W = binary.shape
+    y0, y1, x0, x1 = max(0, y0), min(H, y1), max(0, x0), min(W, x1)
+    if y1 <= y0 or x1 <= x0:
+        return np.zeros(0, dtype=bool), x0
+    return (binary[y0:y1, x0:x1] == 0).any(axis=0), x0
+
+
+def metronome_mark(word_box: Sequence[float], notes: Iterable[Sequence[float]], binary: Any, spacing: float) -> Optional[Dict[str, Any]]:
+    """A tempo word's WHOLE mark when a metronome follows it: `{box, note_box, tail_x}` -- the word, the note glyph that stands right of
+    it on its line (a detector notehead within `TEMPO_NOTE_GAP_SPACES`, vertically within the word's line) and the ink that continues
+    right of the note (`= 108.`) until a gap of `TEMPO_TAIL_GAP_SPACES`. None when no note follows (a tempo word alone). PURE, one
+    column-ink test on the page raster the claim already holds: no new reading pass."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return None
+    wx0, wy0, wx1, wy1 = (float(v) for v in word_box)
+    best = None
+    for nb in notes:
+        nx0, ny0, nx1, ny1 = (float(v) for v in nb)
+        cy = (ny0 + ny1) / 2.0
+        if not (wx1 - 0.5 * spacing <= nx0 <= wx1 + TEMPO_NOTE_GAP_SPACES * spacing and wy0 - spacing <= cy <= wy1 + spacing):
+            continue
+        if best is None or nx0 < best[0]:
+            best = (nx0, ny0, nx1, ny1)
+    if best is None:
+        return None
+    nx0, ny0, nx1, ny1 = best
+    y0, y1 = int(min(wy0, ny0)), int(max(wy1, ny1))
+    reach = int(nx1 + TEMPO_TAIL_MAX_SPACES * spacing)
+    cols, xo = _ink_cols(binary, y0, y1, int(nx1) - 1, reach)
+    gap_max, last, gap = int(TEMPO_TAIL_GAP_SPACES * spacing), None, 0
+    for i, on in enumerate(cols):
+        if on:
+            last, gap = i, 0
+        else:
+            gap += 1
+            if gap > gap_max:
+                break
+    x1 = max(nx1, float(xo + last + 1) if last is not None else nx1)
+    return {"box": [min(wx0, nx0), min(wy0, ny0), x1, max(wy1, ny1)], "note_box": [nx0, ny0, nx1, ny1], "tail_x": x1}
+
+
+def _components(binary: Any, box: Sequence[float]) -> List[Tuple[int, int, int, int]]:
+    """Connected ink components `(x0, y0, x1, y1)` of `binary` inside `box` (page px), 8-connected; PURE."""
+    import cv2
+    import numpy as np
+    H, W = binary.shape
+    x0, y0, x1, y1 = max(0, int(box[0])), max(0, int(box[1])), min(W, int(box[2])), min(H, int(box[3]))
+    if x1 - x0 < 2 or y1 - y0 < 2:
+        return []
+    sub = (binary[y0:y1, x0:x1] == 0).astype(np.uint8)
+    _n, _lab, stats, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+    return [(x0 + int(st[0]), y0 + int(st[1]), x0 + int(st[0] + st[2]), y0 + int(st[1] + st[3]))
+            for st in stats[1:] if int(st[4]) >= 6]
+
+
+def margin_label_box(binary: Any, region: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = ()) -> Optional[List[float]]:
+    """The page box of ONE instrument name's ink inside `region` (the margin strip the label was read from, cut to its staff's band):
+    the union of the ink components in it that are text-sized (at most `LABEL_MAX_COMPONENT_SPACES` tall: a brace, bracket or barline is
+    taller) and not inside an `avoid` box (the brackets and braces the claimant already holds). None when no ink. PURE."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return None
+    avoid = [list(a) for a in avoid]
+    keep = [c for c in _components(binary, region)
+            if (c[3] - c[1]) <= LABEL_MAX_COMPONENT_SPACES * spacing and not any(_overlap_small(c, a) >= 0.5 for a in avoid)]
+    if not keep:
+        return None
+    return [float(min(c[0] for c in keep)), float(min(c[1] for c in keep)), float(max(c[2] for c in keep)), float(max(c[3] for c in keep))]
+
+
+def on_traces(comp: Sequence[float], traces: Iterable[Dict[int, Tuple[float, float]]], share: float = 0.5) -> bool:
+    """True when at least `share` (the register's own cut, `stroke_map.COVER_SHARE_MIN`) of the component's columns have a traced arc's row
+    (`{x: (y_lo, y_hi)}`, page px, `Q.SYSTEM_ARC`'s `trace`) crossing the component's own vertical span: the arc's ink, not text. PURE."""
+    x0, x1 = int(comp[0]), max(int(comp[0]) + 1, int(comp[2]))
+    for tr in traces:
+        hit = sum(1 for x in range(x0, x1) if x in tr and tr[x][0] <= comp[3] and tr[x][1] >= comp[1])
+        if hit >= share * (x1 - x0):
+            return True
+    return False
+
+
+def heading_blocks(binary: Any, zone: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), *,
+                   letter_height: Optional[float] = None, arc_traces: Iterable[Dict[int, Tuple[float, float]]] = ()) -> List[List[float]]:
+    """Blocks of heading text (title, composer, plate number) in `zone`, joined while the gap between them is at most `HEADING_JOIN_SPACES`.
+    Each block is a box. PURE.
+
+    TEXT-SHAPED, not just text-sized (ROADMAP 2.221 finisher; Sean's tile 5: a slur above a staff was filed as a heading). A LETTER is a
+    connected component that is at most `HEADING_MAX_COMPONENT_SPACES` tall AND wide (a long curved stroke is wider; an arc is one), at least
+    half the height of `letter_height` (the page's own READ text: the median height of the ink components inside its word claims; the staff
+    space when no word was read) and not owned: not inside an `avoid` claim, not along a traced arc (`arc_traces`). A block must hold at least
+    TWO letters on a line; smaller ink (an i-dot, a period) joins a block it stands beside but never starts one. A single speck, a stem tip
+    or one stroke is therefore never a heading."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return []
+    avoid = [list(a) for a in avoid]
+    traces = [t for t in arc_traces if t]
+    lo, hi = 0.5 * float(letter_height or spacing), HEADING_MAX_COMPONENT_SPACES * spacing
+    letters, small = [], []
+    for c in _components(binary, zone):
+        c = [float(v) for v in c]
+        if any(_overlap_small(c, a) >= 0.5 for a in avoid) or (traces and on_traces(c, traces)):
+            continue
+        h, w = c[3] - c[1], c[2] - c[0]
+        if lo <= h <= hi and w <= hi:
+            letters.append(c)
+        elif h < lo and w <= hi:
+            small.append(c)
+    gap = HEADING_JOIN_SPACES * spacing
+    blocks = [[b, 1] for b in letters]
+
+    def _near(a, b):
+        return a[0] <= b[2] + gap and b[0] <= a[2] + gap and a[1] <= b[3] + gap and b[1] <= a[3] + gap
+    changed = True
+    while changed:
+        changed = False
+        for i in range(len(blocks)):
+            for j in range(i + 1, len(blocks)):
+                a, b = blocks[i][0], blocks[j][0]
+                if _near(a, b):
+                    blocks[i] = [[min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])], blocks[i][1] + blocks[j][1]]
+                    del blocks[j]
+                    changed = True
+                    break
+            if changed:
+                break
+    blocks = [b for b, n in blocks if n >= 2]
+    for c in small:
+        for k, b in enumerate(blocks):
+            if _near(b, c):
+                blocks[k] = [min(b[0], c[0]), min(b[1], c[1]), max(b[2], c[2]), max(b[3], c[3])]
+                break
+    return sorted(blocks)
+
+
+def left_edge_claims(marks: Iterable[Dict[str, Any]], detector_boxes: Iterable[Tuple[Sequence[float], str]]) -> List[Dict[str, Any]]:
+    """The bracket / brace claims of ONE system from `page_wide.system_rules(...)["left_edge"]["marks"]` (the barline lane's whole marks:
+    `kind` bracket | brace | systemic_barline | None, `box` top hook to bottom hook, `staff_indices`), with the detector's own `brace` /
+    `bracket` boxes (`(page box, class name)`, already filtered to the system's left edge) as the SECOND WITNESS; PURE.
+
+    Per mark: `area` is the mark's whole box; `kind` as the shape reader named it (a bracket by its hook and width, a brace by its bend);
+    `witness` is the class name of a detector box holding at least half of the smaller box, else None; `standing` READ for a bracket or the
+    systemic barline (the shape is the evidence: hooks 0.70-1.27 sp against 0.00-0.09), READ for a brace the detector also boxed, GUESSED
+    for a brace seen once and for a mark of no kind (`kind` None: the shape is filed, the ink is still claimed)."""
+    out: List[Dict[str, Any]] = []
+    boxes = [(list(b), str(n)) for b, n in detector_boxes]
+    for m in marks:
+        area = [float(v) for v in m["box"]]
+        wit = next((n for b, n in boxes if _overlap_small(area, b) >= 0.5), None)
+        kind = m.get("kind")
+        if kind in ("bracket", "systemic_barline"):
+            standing = "READ"
+        elif kind == "brace":
+            standing = "READ" if wit and wit.startswith("brace") else "GUESSED"
+        else:
+            standing = "GUESSED"
+        out.append({"area": area, "kind": kind, "standing": standing, "witness": wit, "staff_indices": list(m.get("staff_indices") or ()),
+                    "hook_spaces": m.get("hook_sp"), "bend_spaces": m.get("bend_sp"), "width_spaces": m.get("width_sp")})
     return out

@@ -1,0 +1,1652 @@
+{
+ "plates": {
+  "litolff": {
+   "claims_per_page": {
+    "1": {
+     "word:direction_word": 3,
+     "bracket:edge_scan:rule": 1
+    },
+    "4": {
+     "word:direction_word": 10,
+     "word:bar_number": 1,
+     "word:dynamic_letters": 1,
+     "bracket:edge_scan:rule": 2,
+     "bracket:detector_box:brace": 4
+    }
+   },
+   "census": {
+    "1": {
+     "bracket:edge_scan:claimed": 1,
+     "word:direction_word:claimed": 3,
+     "word:dynamic_letters:lone_letter": 11,
+     "word:dynamic_letters:twin_letters_disagree": 1
+    },
+    "4": {
+     "bracket:detector_box:claimed": 4,
+     "bracket:edge_scan:claimed": 2,
+     "word:bar_number:claimed": 1,
+     "word:direction_word:claimed": 10,
+     "word:dynamic_letters:claimed": 1,
+     "word:dynamic_letters:lone_letter": 24
+    }
+   },
+   "head_boxes_held_ink_ge_half": 11,
+   "claims": [
+    {
+     "id": "obs:010235",
+     "page": 1,
+     "subject": "system/1/0",
+     "box": [
+      822.0,
+      1066.0,
+      1200.0,
+      1111.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Allegro con brio",
+     "kind": null,
+     "category": "tempo",
+     "inside": []
+    },
+    {
+     "id": "obs:010236",
+     "page": 1,
+     "subject": "system/1/0",
+     "box": [
+      1105.0,
+      1774.0,
+      1209.0,
+      1804.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "brio.",
+     "kind": null,
+     "category": "expression",
+     "inside": []
+    },
+    {
+     "id": "obs:010237",
+     "page": 1,
+     "subject": "system/1/0",
+     "box": [
+      1094.0,
+      2320.0,
+      1201.0,
+      2351.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "brio.",
+     "kind": null,
+     "category": "expression",
+     "inside": []
+    },
+    {
+     "id": "obs:010238",
+     "page": 1,
+     "subject": "system/1/0",
+     "box": [
+      644.0,
+      1145.0,
+      662.0,
+      3158.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": [
+      "glyph/1/0/2/0/14",
+      "glyph/1/0/2/0/9"
+     ]
+    },
+    {
+     "id": "obs:050669",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      1618.0,
+      489.0,
+      1707.0,
+      517.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "cresc.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050670",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      607.0,
+      651.0,
+      749.0,
+      683.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "p cresc.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": [
+      "glyph/4/0/1/1/1",
+      "glyph/4/0/2/1/3"
+     ]
+    },
+    {
+     "id": "obs:050671",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      596.0,
+      1119.0,
+      716.0,
+      1148.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "cresc.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050672",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      626.0,
+      1404.0,
+      721.0,
+      1427.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Cr\u00e9sc.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050673",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      621.0,
+      1570.0,
+      719.0,
+      1594.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "CRESC.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050674",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      499.0,
+      1687.0,
+      546.0,
+      1718.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Vcl",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:050675",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      663.0,
+      1686.0,
+      758.0,
+      1711.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "cresc.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": [
+      "glyph/4/0/9/1/4"
+     ]
+    },
+    {
+     "id": "obs:050676",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      495.0,
+      1842.0,
+      600.0,
+      1881.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Basso",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:050677",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      623.0,
+      1829.0,
+      720.0,
+      1852.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "CRESC.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050678",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      663.0,
+      1977.0,
+      762.0,
+      2000.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Cresc.",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050679",
+     "page": 4,
+     "subject": "system/4/1",
+     "box": [
+      348.0,
+      2080.0,
+      474.0,
+      2165.0
+     ],
+     "owner": "word",
+     "source": "bar_number",
+     "text": "98",
+     "kind": null,
+     "category": "bar_number",
+     "inside": []
+    },
+    {
+     "id": "obs:050680",
+     "page": 4,
+     "subject": "system/4/1",
+     "box": [
+      1050.0,
+      3602.9,
+      1111.1,
+      3652.5
+     ],
+     "owner": "word",
+     "source": "dynamic_letters",
+     "text": "ff",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:050681",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      341.0,
+      432.0,
+      364.0,
+      1973.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050682",
+     "page": 4,
+     "subject": "system/4/1",
+     "box": [
+      348.0,
+      2184.0,
+      363.0,
+      3598.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": [
+      "glyph/4/1/1/0/12",
+      "glyph/4/1/1/0/3",
+      "glyph/4/1/1/0/7",
+      "glyph/4/1/1/0/8",
+      "glyph/4/1/3/0/7",
+      "glyph/4/1/4/0/10"
+     ]
+    },
+    {
+     "id": "obs:050683",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      426.1,
+      353.0,
+      538.0
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050684",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      505.0,
+      353.4,
+      687.9
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050685",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      644.0,
+      355.1,
+      834.9
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:050686",
+     "page": 4,
+     "subject": "system/4/0",
+     "box": [
+      348.0,
+      780.0,
+      355.6,
+      997.0
+     ],
+     "owner": "bracket",
+     "source": "detector_box",
+     "text": null,
+     "kind": "brace",
+     "category": null,
+     "inside": []
+    }
+   ]
+  },
+  "brahms": {
+   "claims_per_page": {
+    "0": {
+     "word:direction_word": 10,
+     "word:dynamic_letters": 1,
+     "bracket:edge_scan:rule": 2
+    },
+    "5": {
+     "word:direction_word": 7,
+     "word:dynamic_letters": 2,
+     "bracket:edge_scan:rule": 10
+    }
+   },
+   "census": {
+    "0": {
+     "bracket:edge_scan:claimed": 2,
+     "word:direction_word:claimed": 10,
+     "word:dynamic_letters:claimed": 1,
+     "word:dynamic_letters:lone_letter": 41,
+     "word:dynamic_letters:twin_letters_disagree": 1
+    },
+    "5": {
+     "bracket:edge_scan:claimed": 10,
+     "word:direction_word:claimed": 7,
+     "word:dynamic_letters:claimed": 2,
+     "word:dynamic_letters:lone_letter": 18,
+     "word:dynamic_letters:twin_letters_disagree": 3
+    }
+   },
+   "head_boxes_held_ink_ge_half": 60,
+   "claims": [
+    {
+     "id": "obs:021193",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1494.0,
+      1337.0,
+      2374.0,
+      1443.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Un poco sostenuto",
+     "kind": null,
+     "category": "tempo",
+     "inside": []
+    },
+    {
+     "id": "obs:021194",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1611.0,
+      1740.0,
+      1900.0,
+      1818.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "f legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/0/0/1",
+      "glyph/0/0/0/0/14",
+      "glyph/0/0/1/0/20",
+      "glyph/0/0/1/0/29"
+     ]
+    },
+    {
+     "id": "obs:021195",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1637.0,
+      2122.0,
+      1899.0,
+      2196.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "f legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/1/0/2",
+      "glyph/0/0/1/0/34",
+      "glyph/0/0/1/0/7",
+      "glyph/0/0/2/0/13"
+     ]
+    },
+    {
+     "id": "obs:021196",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1638.0,
+      2501.0,
+      1901.0,
+      2584.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "f legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/2/0/1",
+      "glyph/0/0/2/0/17",
+      "glyph/0/0/3/0/16"
+     ]
+    },
+    {
+     "id": "obs:021197",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1699.0,
+      2944.0,
+      1903.0,
+      3013.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "F legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/3/0/18",
+      "glyph/0/0/4/0/16",
+      "glyph/0/0/4/0/17",
+      "glyph/0/0/4/0/19"
+     ]
+    },
+    {
+     "id": "obs:021198",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1712.0,
+      5316.0,
+      2153.0,
+      5391.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "espr. e legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/10/0/14",
+      "glyph/0/0/10/0/24",
+      "glyph/0/0/9/0/14",
+      "glyph/0/0/9/0/22",
+      "glyph/0/0/9/0/25",
+      "glyph/0/0/9/0/5"
+     ]
+    },
+    {
+     "id": "obs:021199",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1577.0,
+      5852.0,
+      1685.0,
+      5904.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "div.",
+     "kind": null,
+     "category": "expression",
+     "inside": []
+    },
+    {
+     "id": "obs:021200",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1622.0,
+      6177.0,
+      2153.0,
+      6255.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "f espr. e legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/11/0/0",
+      "glyph/0/0/11/0/14",
+      "glyph/0/0/11/0/20",
+      "glyph/0/0/11/0/27",
+      "glyph/0/0/11/0/6",
+      "glyph/0/0/12/0/10",
+      "glyph/0/0/12/0/15",
+      "glyph/0/0/12/0/26",
+      "glyph/0/0/12/0/7",
+      "glyph/0/0/12/1/14"
+     ]
+    },
+    {
+     "id": "obs:021201",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1622.0,
+      6547.0,
+      2146.0,
+      6637.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "f espr. e legato",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/12/0/2",
+      "glyph/0/0/12/0/25",
+      "glyph/0/0/12/0/30",
+      "glyph/0/0/12/0/5",
+      "glyph/0/0/13/0/19",
+      "glyph/0/0/13/0/2",
+      "glyph/0/0/13/0/26",
+      "glyph/0/0/13/0/27",
+      "glyph/0/0/13/0/29",
+      "glyph/0/0/13/0/8",
+      "glyph/0/0/13/1/2"
+     ]
+    },
+    {
+     "id": "obs:021202",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1619.0,
+      6891.0,
+      1965.0,
+      6977.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "f pesante",
+     "kind": null,
+     "category": "expression",
+     "inside": [
+      "glyph/0/0/13/0/0",
+      "glyph/0/0/13/0/18",
+      "glyph/0/0/13/0/22",
+      "glyph/0/0/13/0/6"
+     ]
+    },
+    {
+     "id": "obs:021203",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      2001.8,
+      6198.3,
+      2084.1,
+      6252.7
+     ],
+     "owner": "word",
+     "source": "dynamic_letters",
+     "text": "fz",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:021204",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1201.0,
+      2791.0,
+      1205.0,
+      3175.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:021205",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1224.0,
+      5149.0,
+      1240.0,
+      6903.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": [
+      "glyph/0/0/12/0/27",
+      "glyph/0/0/12/0/29"
+     ]
+    },
+    {
+     "id": "obs:078790",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      4688.0,
+      661.0,
+      4776.0,
+      708.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "a 2",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:078791",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      4147.0,
+      1204.0,
+      4232.0,
+      1252.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "a 2",
+     "kind": null,
+     "category": "part",
+     "inside": [
+      "glyph/5/0/3/5/25"
+     ]
+    },
+    {
+     "id": "obs:078792",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      2574.0,
+      1831.0,
+      2775.0,
+      1875.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "Cresc",
+     "kind": null,
+     "category": "dynamic",
+     "inside": []
+    },
+    {
+     "id": "obs:078793",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      3935.0,
+      4202.0,
+      4026.0,
+      4248.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "a 2",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:078794",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      2997.0,
+      4430.0,
+      3083.0,
+      4475.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "a 2",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:078795",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      3000.0,
+      4661.0,
+      3085.0,
+      4706.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "a 2",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:078796",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      2066.0,
+      5525.0,
+      2158.0,
+      5579.0
+     ],
+     "owner": "word",
+     "source": "direction_word",
+     "text": "a2",
+     "kind": null,
+     "category": "part",
+     "inside": []
+    },
+    {
+     "id": "obs:078797",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      3686.7,
+      843.1,
+      3794.9,
+      992.4
+     ],
+     "owner": "word",
+     "source": "dynamic_letters",
+     "text": "ff",
+     "kind": null,
+     "category": "dynamic",
+     "inside": [
+      "glyph/5/0/2/5/14"
+     ]
+    },
+    {
+     "id": "obs:078798",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      3733.0,
+      1117.3,
+      3845.4,
+      1279.7
+     ],
+     "owner": "word",
+     "source": "dynamic_letters",
+     "text": "ff",
+     "kind": null,
+     "category": "dynamic",
+     "inside": [
+      "glyph/5/0/3/5/1",
+      "glyph/5/0/3/5/27",
+      "glyph/5/0/3/5/9"
+     ]
+    },
+    {
+     "id": "obs:078799",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      626.0,
+      1281.0,
+      634.0,
+      1579.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078800",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      626.0,
+      1704.0,
+      635.0,
+      1961.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078801",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      627.0,
+      2636.0,
+      634.0,
+      2927.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078802",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      640.0,
+      504.0,
+      662.0,
+      2435.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": [
+      "glyph/5/0/3/0/14",
+      "glyph/5/0/3/0/18",
+      "glyph/5/0/3/0/22",
+      "glyph/5/0/3/0/23",
+      "glyph/5/0/4/0/10",
+      "glyph/5/0/4/0/13"
+     ]
+    },
+    {
+     "id": "obs:078803",
+     "page": 5,
+     "subject": "system/5/0",
+     "box": [
+      644.0,
+      2598.0,
+      661.0,
+      3719.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078804",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      622.0,
+      6114.0,
+      628.0,
+      6416.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078805",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      625.0,
+      4743.0,
+      633.0,
+      4996.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078806",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      625.0,
+      5148.0,
+      630.0,
+      5433.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    },
+    {
+     "id": "obs:078807",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      640.0,
+      4024.0,
+      659.0,
+      5935.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": [
+      "glyph/5/1/2/0/25"
+     ]
+    },
+    {
+     "id": "obs:078808",
+     "page": 5,
+     "subject": "system/5/1",
+     "box": [
+      640.0,
+      6053.0,
+      657.0,
+      7179.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": []
+    }
+   ]
+  }
+ },
+ "truth": {
+  "brahms p0": {
+   "truth_marks": {
+    "dynamicF": 16,
+    "text": 32,
+    "brace": 11,
+    "dynamicP": 1
+   },
+   "claimed": 17,
+   "unclaimed": 43,
+   "claims_matching_no_truth_mark": 1,
+   "claimed_by_class": {
+    "dynamicF": 8,
+    "text": 7,
+    "dynamicP": 1,
+    "brace": 1
+   },
+   "unclaimed_by_class": {
+    "dynamicF": 8,
+    "brace": 10,
+    "text": 25
+   },
+   "unclaimed_marks": [
+    {
+     "id": "q526",
+     "cls": "dynamicF",
+     "rect": [
+      1621.138671875,
+      2940.0,
+      1684.29296875,
+      3012.782567049808
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4171",
+     "cls": "brace",
+     "rect": [
+      1220.87109375,
+      2948.280651340996,
+      1259.19921875,
+      3393.256704980843
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "q607",
+     "cls": "dynamicF",
+     "rect": [
+      1620.267578125,
+      3312.4297872340426,
+      1688.212890625,
+      3393.9140425531914
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4230",
+     "cls": "brace",
+     "rect": [
+      5392.5590778097985,
+      3028.075,
+      5409.818443804034,
+      3238.675
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4041",
+     "cls": "brace",
+     "rect": [
+      5390.881019830028,
+      3312.92,
+      5397.6033994334275,
+      3756.12
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "q718",
+     "cls": "dynamicF",
+     "rect": [
+      1840.654296875,
+      4098.216170212766,
+      1909.470703125,
+      4174.907234042553
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4009",
+     "cls": "dynamicF",
+     "rect": [
+      1604.587890625,
+      3793.194893617021,
+      1697.359375,
+      3886.008510638298
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4011",
+     "cls": "brace",
+     "rect": [
+      1220.0,
+      3787.094468085106,
+      1261.376953125,
+      4236.347234042553
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4023",
+     "cls": "brace",
+     "rect": [
+      5390.240793201133,
+      3808.16,
+      5407.847025495751,
+      4260.64
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "q857",
+     "cls": "dynamicF",
+     "rect": [
+      1619.396484375,
+      4503.524255319149,
+      1687.77734375,
+      4582.829787234043
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "q859",
+     "cls": "dynamicF",
+     "rect": [
+      1623.31640625,
+      4796.3446808510635,
+      1691.697265625,
+      4876.521702127659
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b3991",
+     "cls": "brace",
+     "rect": [
+      1220.0,
+      4478.251063829787,
+      1285.767578125,
+      4889.15829787234
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "q919",
+     "cls": "dynamicF",
+     "rect": [
+      1621.138671875,
+      5311.026226734349,
+      1692.1328125,
+      5389.888324873096
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "q1125",
+     "cls": "dynamicF",
+     "rect": [
+      1621.57421875,
+      5715.310638297872,
+      1691.697265625,
+      5794.180425531915
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b3978",
+     "cls": "text",
+     "rect": [
+      1714.345703125,
+      5709.210212765957,
+      2108.080078125,
+      5791.130212765957
+     ],
+     "text": "espr. e legato",
+     "claims": []
+    },
+    {
+     "id": "b3979",
+     "cls": "brace",
+     "rect": [
+      1220.87109375,
+      5394.1668085106385,
+      1267.474609375,
+      5793.308936170213
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b4309",
+     "cls": "brace",
+     "rect": [
+      1220.87109375,
+      5866.434010152284,
+      1258.328125,
+      6254.2089678511
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b3949",
+     "cls": "text",
+     "rect": [
+      1491.345703125,
+      6978.901276595745,
+      2109.822265625,
+      7061.692765957447
+     ],
+     "text": "un poco sostenuto",
+     "claims": []
+    },
+    {
+     "id": "b3862",
+     "cls": "text",
+     "rect": [
+      2626.870744373918,
+      500.67105263157896,
+      3277.478361223312,
+      721.8157894736842
+     ],
+     "text": "phonie from symphonie in title",
+     "claims": []
+    },
+    {
+     "id": "b3854",
+     "cls": "text",
+     "rect": [
+      3251.9291503504046,
+      554.5065789473684,
+      3326.0145734132666,
+      673.7828947368421
+     ],
+     "text": "e from symphonie in title",
+     "claims": []
+    },
+    {
+     "id": "b3800",
+     "cls": "text",
+     "rect": [
+      3420.3236870310825,
+      495.1916790490342,
+      3700.9989281886387,
+      670.2748885586924
+     ],
+     "text": "Nr.",
+     "claims": []
+    },
+    {
+     "id": "b3783",
+     "cls": "text",
+     "rect": [
+      3718.6865203761754,
+      500.99829351535834,
+      3800.6990595611287,
+      671.2918088737201
+     ],
+     "text": "1 (from title symphonie Nr. 1)",
+     "claims": []
+    },
+    {
+     "id": "b3752",
+     "cls": "text",
+     "rect": [
+      2189.2537207654145,
+      500.739837398374,
+      2621.0361445783133,
+      714.8753387533875
+     ],
+     "text": "Sym (symphonie title)",
+     "claims": []
+    },
+    {
+     "id": "b3727",
+     "cls": "text",
+     "rect": [
+      2761.6451612903224,
+      734.3012048192771,
+      2868.4193548387098,
+      844.7301204819277
+     ],
+     "text": "(C mol)",
+     "claims": []
+    },
+    {
+     "id": "b3642",
+     "cls": "text",
+     "rect": [
+      2915.6451612903224,
+      737.655421686747,
+      3192.741935483871,
+      850.0216867469879
+     ],
+     "text": "moll). from Cmoll title",
+     "claims": []
+    },
+    {
+     "id": "b3563",
+     "cls": "text",
+     "rect": [
+      3047.6451612903224,
+      936.648,
+      3577.0,
+      1038.6106666666667
+     ],
+     "text": "Orchester",
+     "claims": []
+    },
+    {
+     "id": "b3497",
+     "cls": "text",
+     "rect": [
+      2622.9991708126036,
+      942.2554112554112,
+      2994.903814262023,
+      1070.2922077922078
+     ],
+     "text": "Grobes",
+     "claims": []
+    },
+    {
+     "id": "b3477",
+     "cls": "text",
+     "rect": [
+      2422.608919382504,
+      939.3801652892562,
+      2590.9382504288164,
+      1037.0413223140495
+     ],
+     "text": "Fur",
+     "claims": []
+    },
+    {
+     "id": "b3266",
+     "cls": "text",
+     "rect": [
+      4612.870744373918,
+      1144.107088989442,
+      5262.188113098672,
+      1319.051282051282
+     ],
+     "text": "composer text",
+     "claims": []
+    },
+    {
+     "id": "b3205",
+     "cls": "text",
+     "rect": [
+      5243.73389113291,
+      1133.4555052790347,
+      5481.391229082516,
+      1237.3891402714933
+     ],
+     "text": "Op 68",
+     "claims": []
+    },
+    {
+     "id": "b3160",
+     "cls": "text",
+     "rect": [
+      4409.935628742515,
+      1136.4270833333333,
+      4826.418413173653,
+      1232.0104166666667
+     ],
+     "text": "Johannes",
+     "claims": []
+    },
+    {
+     "id": "b3027",
+     "cls": "brace",
+     "rect": [
+      1216.5714285714287,
+      1560.76821192053,
+      1235.0285714285715,
+      1699.6777041942605
+     ],
+     "text": null,
+     "claims": []
+    },
+    {
+     "id": "b2967",
+     "cls": "text",
+     "rect": [
+      691.5115546218487,
+      1610.6451612903227,
+      971.7457983193278,
+      1686.774193548387
+     ],
+     "text": "floten",
+     "claims": []
+    },
+    {
+     "id": "b2962",
+     "cls": "text",
+     "rect": [
+      607.4803493449782,
+      1620.457627118644,
+      654.9825327510916,
+      1686.1525423728813
+     ],
+     "text": "2",
+     "claims": []
+    },
+    {
+     "id": "b2893",
+     "cls": "text",
+     "rect": [
+      687.3539486203615,
+      1990.0696202531647,
+      971.8430066603235,
+      2070.76582278481
+     ],
+     "text": "Oboen",
+     "claims": []
+    },
+    {
+     "id": "b2889",
+     "cls": "text",
+     "rect": [
+      601.5414847161572,
+      2003.135593220339,
+      648.7205240174673,
+      2071.406779661017
+     ],
+     "text": "2",
+     "claims": []
+    },
+    {
+     "id": "b2879",
+     "cls": "text",
+     "rect": [
+      1108.8813559322034,
+      2379.6518987341774,
+      1179.7288135593221,
+      2457.1202531645567
+     ],
+     "text": "B",
+     "claims": []
+    },
+    {
+     "id": "b2794",
+     "cls": "text",
+     "rect": [
+      491.3225806451613,
+      2381.029315960912,
+      1077.1290322580644,
+      2458.100977198697
+     ],
+     "text": "Klarinetten in",
+     "claims": []
+    },
+    {
+     "id": "b2789",
+     "cls": "text",
+     "rect": [
+      413.9775784753363,
+      2384.279069767442,
+      464.3452914798206,
+      2455.8205980066446
+     ],
+     "text": "2",
+     "claims": []
+    },
+    {
+     "id": "b2686",
+     "cls": "text",
+     "rect": [
+      674.1653333333334,
+      2770.5873015873017,
+      1010.0613333333333,
+      2867.4126984126983
+     ],
+     "text": "fagotte",
+     "claims": []
+    },
+    {
+     "id": "b2683",
+     "cls": "text",
+     "rect": [
+      580.8206278026906,
+      2779.505154639175,
+      626.0224215246636,
+      2845.0790378006873
+     ],
+     "text": "2",
+     "claims": []
+    },
+    {
+     "id": "b2595",
+     "cls": "text",
+     "rect": [
+      495.7723880597015,
+      3096.6825396825398,
+      1084.9701492537313,
+      3195.121693121693
+     ],
+     "text": "Kontrafagott",
+     "claims": []
+    },
+    {
+     "id": "b2430",
+     "cls": "brace",
+     "rect": [
+      1180.5428296438884,
+      3505.2914466737066,
+      1220.8460057747834,
+      4069.8373812038017
+     ],
+     "text": null,
+     "claims": []
+    }
+   ],
+   "stray_claims": [
+    {
+     "id": "obs:021205",
+     "page": 0,
+     "subject": "system/0/0",
+     "box": [
+      1224.0,
+      5149.0,
+      1240.0,
+      6903.0
+     ],
+     "owner": "bracket",
+     "source": "edge_scan",
+     "text": null,
+     "kind": "rule",
+     "category": null,
+     "inside": [
+      "glyph/0/0/12/0/27",
+      "glyph/0/0/12/0/29"
+     ],
+     "truth_overlaps": [
+      [
+       "brace",
+       0.34
+      ],
+      [
+       "brace",
+       0.43
+      ]
+     ]
+    }
+   ]
+  }
+ }
+}

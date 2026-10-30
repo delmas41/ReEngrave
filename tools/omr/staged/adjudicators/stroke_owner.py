@@ -88,14 +88,22 @@ def _areas(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]]) -> List[SO.Cl
     idx = getattr(cell, "cell", None)
     for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
         d = r.detail or {}
-        if d.get("cell") != idx or d.get("unit") != "area" or d.get("standing", "READ") != "READ":
+        # ROADMAP 2.221: a page-wide claim (a word / dynamic / bracket, filed ONCE on its system, `scope` "system", `cell` None) holds in
+        # every cell its area meets
+        page_wide = d.get("scope") == "system" and d.get("cell") is None
+        if (d.get("cell") != idx and not page_wide) or d.get("unit") != "area" or d.get("standing", "READ") != "READ":
             continue
         owner = str(d.get("owner") or "")
         v = r.value
         if owner not in SO.AREA_OWNERS or not (isinstance(v, (list, tuple)) and len(v) == 4):
             continue
         x0, y0, x1, y1 = (float(t) for t in v)
-        inside = tuple(o for o, pb in sorted(page.items()) if x0 <= (pb[0] + pb[2]) / 2.0 <= x1 and y0 <= (pb[1] + pb[3]) / 2.0 <= y1)
+        if page_wide:
+            # a page-wide claim owns a stroke only WHOLLY inside it (+1 px): a stem crossing a word's box keeps its ink
+            inside = tuple(o for o, pb in sorted(page.items())
+                           if x0 - 1 <= pb[0] and pb[2] <= x1 + 1 and y0 - 1 <= pb[1] and pb[3] <= y1 + 1)
+        else:
+            inside = tuple(o for o, pb in sorted(page.items()) if x0 <= (pb[0] + pb[2]) / 2.0 <= x1 and y0 <= (pb[1] + pb[3]) / 2.0 <= y1)
         if inside:
             out.append(SO.Claim(r.id, owner, owner, inside, (), r.id, area=True))
     return out

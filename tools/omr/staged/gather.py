@@ -30,7 +30,7 @@ from __future__ import annotations
 
 import math
 import os
-from typing import (Any, Dict, Iterable, List, Optional, Sequence, Tuple)
+from typing import (Any, Callable, Dict, Iterable, List, Optional, Sequence, Tuple)
 
 from . import record as R
 from . import one_ink as _one_ink
@@ -15035,6 +15035,334 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
                 print(f"  gather claimed area (clef slot) {ssub.to_key()}")
 
 
+def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                       detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `word` and `bracket`, ONE PER MARK PER (page, system) -- ROADMAP 2.221 m1 (flag
+    `OMR_CLAIM_WORDS_FIRST`) and m1b (flag `OMR_CLAIM_BRACKETS_FIRST`), both default OFF, both needing the register.
+
+    PATH: STAGED GATHER, bookkeeping on rows already filed (no new image or OCR pass, Sean 2026-10-29). AFTER `gather_direction_words`
+    (reads its accepted rows). Sean 2026-10-28/29: words and dynamics "can't easily be mistaken for other things", brackets are "easy to see
+    and determine from the big picture", so they claim their ink FIRST; and they are read "system or page wide, not based on individual
+    measures" -- so a mark that crosses barlines is ONE claim, filed on its SYSTEM (`cell` None, `scope` "system"), never split per cell.
+    Anchoring a mark to notes or bars is ROADMAP 2.223, later; nothing here binds one.
+
+    * `word` (m1, flag WORDS): each ACCEPTED `Q.DIRECTION_WORD` (the lexicon gate passed it: that is the READ; tempo words included, and a
+      tempo word's metronome mark -- the note glyph and the `= 108` after it -- is part of its claim, `claims.metronome_mark`), each
+      printed bar number, each run of two or more detector `Q.DYNAMIC_LETTER` boxes that spells a dynamic (`claims.spell_letter_runs`), each
+      printed instrument name (`Q.MARGIN_LABEL` rows carry their page box, `_margin_label_boxes`), whose box lies OUTSIDE every staff's line
+      band of its system (`claims.WORD_BAND_OVERLAP_MAX`; an instrument name stands left of the staff, so it is not tested). A word inside the
+      staff is milestone 4 and is counted, not claimed. Then, GUESSED (blue, never refusing): the heading text above the first staff and
+      below the last (title, composer, plate number: no reader reads it, so it is marked, not READ), `claims.heading_blocks`.
+    * `bracket` (m1b, flag BRACKETS): each whole left-edge mark the barline lane's page-wide pass read (`page_wide.system_rules`: bracket,
+      brace, systemic barline, by shape), with the detector's brace / bracket box at the system's left edge as the second witness; a
+      detector box no mark holds (a thick brace the rule scan misses) is claimed on its own.
+
+    `boxes_inside` merges every cell of the system the claim's box meets (glyph keys are unique per cell), measured as for every owner, the
+    claim's own letter boxes left out. A page-level census row (`Q.CLAIMED_AREA` abstention on the PAGE, `why` `page_claim_census`) says
+    what was claimed and what was not, and why. ⚠️ Decides nothing about any box: the one consult (`adjudicators/claimed_by`) does."""
+    from . import claims as CL
+    words_on, brackets_on = CL.words_first_enabled(), CL.brackets_first_enabled()
+    if not (words_on or brackets_on):
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    page_sub = R.page(p)
+    if binary is None:
+        log.abstain(page_sub, Q.CLAIMED_AREA, reader=READERS.CV_PAGE_CLAIMS, frame=FRAME_PAGE, reason=ABSTAIN.READER_UNAVAILABLE,
+                    owner="page_claims", unit="area", why="no_page_raster")
+        return
+    staff_of = {st.staff_index: st for st in pws.staves}
+    cells_by_sys: Dict[int, List[Any]] = {}
+    bands_by_sys: Dict[int, List[Tuple[float, float]]] = {}
+    sp_by_sys: Dict[int, List[float]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        sp = _spacing(st)
+        lines = list(getattr(st, "line_ys", ()) or ())
+        if key is None or not sp or len(lines) < 5:
+            continue
+        pad = CL.WORD_BAND_PAD_SPACES * sp
+        bands_by_sys.setdefault(key[0], []).append((float(lines[0]) - pad, float(lines[-1]) + pad))
+        sp_by_sys.setdefault(key[0], []).append(float(sp))
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None and getattr(c, "bbox_page_px", None) and c.staff_index in staff_of:
+            cells_by_sys.setdefault(key[0], []).append(c)
+    cell_of = {(local[c.staff_index][0], local[c.staff_index][1], c.measure_index): c for c in cells
+               if local.get(c.staff_index) is not None}
+
+    def _sp(sys_idx: int) -> float:
+        sp = sp_by_sys.get(sys_idx) or [0.0]
+        return sorted(sp)[len(sp) // 2]
+
+    def _system_of(box: Sequence[float]) -> Optional[int]:
+        """The system whose staves' vertical span is nearest the box's centre (a word between two systems goes to the nearer)."""
+        cy = (float(box[1]) + float(box[3])) / 2.0
+        best = None
+        for s, bands in bands_by_sys.items():
+            lo, hi = min(b[0] for b in bands), max(b[1] for b in bands)
+            d = 0.0 if lo <= cy <= hi else min(abs(cy - lo), abs(cy - hi))
+            if best is None or d < best[0]:
+                best = (d, s)
+        return best[1] if best else None
+
+    def _inside(sys_idx: int, area: Sequence[float], own: Iterable[str] = ()) -> Dict[str, Any]:
+        own = set(own)
+        out: Dict[str, Any] = {}
+        for c in cells_by_sys.get(sys_idx, ()):
+            if not CL.overlaps(area, c.bbox_page_px):
+                continue
+            st = staff_of[c.staff_index]
+            li, k = local[c.staff_index][1], c.measure_index
+            dets = detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
+            sub_of = (lambda gi, li=li, k=k: R.glyph(p, sys_idx, li, k, gi).to_key())
+            skip = {gi for gi in range(len(dets)) if sub_of(gi) in own}
+            out.update(_claim_boxes_inside(binary, area, dets, c, sub_of, list(st.line_ys), _spacing(st), skip=skip))
+        return out
+
+    census: Dict[str, int] = {}
+    filed: List[List[float]] = []                         # every area filed so far on this page: what a later claim must not take
+    read_boxes: List[Tuple[List[float], bool]] = []       # READ word / label / dynamic boxes: their ink components give the page's letter height
+
+    def _count(what: str) -> None:
+        census[what] = census.get(what, 0) + 1
+
+    def _file(sys_idx: int, area: Sequence[float], owner: str, source: str, *, own: Iterable[str] = (), standing: str = "READ",
+              **extra: Any) -> None:
+        log.observe(R.system(p, sys_idx), Q.CLAIMED_AREA, [round(float(v), 1) for v in area], reader=READERS.CV_PAGE_CLAIMS,
+                    frame=FRAME_PAGE, cell=None, scope="system", owner=owner, owner_row=extra.pop("owner_row", None), owner_glyph=None,
+                    unit="area", standing=standing, source=source, boxes_inside=_inside(sys_idx, area, own),
+                    space_page_px=round(_sp(sys_idx), 3), **extra)
+        filed.append([float(v) for v in area])
+        if owner == CL.OWNER_WORD and standing == "READ" and source in ("direction_word", "margin_label", "dynamic_letters", "bar_number"):
+            read_boxes.append(([float(v) for v in area], True))        # text the page's readers READ: its glyph height is the page's letter size
+        _count(f"{owner}:{source}:{'claimed' if standing == 'READ' else 'marked'}")
+
+    def _page_boxes(sys_idx: int, names: Callable[[str], bool]) -> List[Tuple[List[float], str]]:
+        """The detector boxes of system `sys_idx` whose class passes `names`, in page px (a mark drawn above a staff is boxed on that
+        staff's cell, so every cell of the system is looked in)."""
+        got: List[Tuple[List[float], str]] = []
+        for ck, dets in detections.items():
+            sub = Subject.from_key(ck)
+            if sub.system != sys_idx:
+                continue
+            c = cell_of.get((sub.system, sub.staff, sub.cell))
+            if c is None:
+                continue
+            for d in dets:
+                if names(str(d.smufl_name)):
+                    pb = _page_box(c, d)
+                    if pb is not None:
+                        got.append(([float(v) for v in pb], str(d.smufl_name)))
+        return got
+
+    if words_on:
+        for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+            d = r.detail or {}
+            bb = d.get("bbox_page_px")
+            if not isinstance(r.value, str) or not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+                _count("word:direction_word:no_box")
+                continue
+            s = _system_of(bb)
+            if s is None:
+                _count("word:direction_word:no_system")
+                continue
+            if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                _count("word:direction_word:inside_a_staff")       # milestone 4's, not claimed here
+                continue
+            area, extra = [float(v) for v in bb], {}
+            if d.get("category") == "tempo":
+                # ROADMAP 2.221: a tempo word's metronome mark is its own ink -- the note glyph the detector boxed right of it and the
+                # `= 108` after that (Litolff p1: the note was written as a half note). Claimed whole; written as nothing.
+                mm = CL.metronome_mark(bb, [b for b, _n in _page_boxes(s, lambda n: n.startswith(CL.TEMPO_NOTE_PREFIXES))], binary, _sp(s))
+                if mm is not None:
+                    area, extra = mm["box"], {"metronome_note": mm["note_box"], "word_box": [float(v) for v in bb]}
+                    _count("word:direction_word:metronome_mark")
+                if d.get("metronome"):
+                    extra["metronome"] = d["metronome"]
+            _file(s, area, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+        # a printed bar number (Tesseract, digits only, filed on its system with its box) is text outside the staves as well
+        for r in log.rows(Q.PRINTED_BAR_NUMBER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+            bb = (r.detail or {}).get("bbox_page_px")
+            s = getattr(r.subject, "system", None)
+            if not (isinstance(bb, (list, tuple)) and len(bb) == 4) or s not in bands_by_sys:
+                _count("word:bar_number:no_box")
+                continue
+            if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                _count("word:bar_number:inside_a_staff")
+                continue
+            _file(s, [float(v) for v in bb], CL.OWNER_WORD, "bar_number", owner_row=r.id, text=str(r.value), category="bar_number")
+        # a printed instrument name: the label reader filed the string and (flag on) the box of the ink it was read from
+        for r in log.rows(Q.MARGIN_LABEL, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+            bb = (r.detail or {}).get("bbox_page_px")
+            s = getattr(r.subject, "system", None)
+            if not isinstance(r.value, str) or s not in bands_by_sys:
+                continue
+            if not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+                _count("word:margin_label:no_ink_found")
+                continue
+            _file(s, [float(v) for v in bb], CL.OWNER_WORD, "margin_label", owner_row=r.id, text=r.value, category="instrument_name")
+        from .adjudicators.text import DYNAMIC_WORDS
+        letters_by_sys: Dict[int, List[Tuple[Sequence[float], str, Any]]] = {}
+        key_of_row: Dict[Any, str] = {}
+        for r in log.rows(Q.DYNAMIC_LETTER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+            d = r.detail or {}
+            bb, letter = d.get("bbox_page_px"), d.get("letter")
+            if not (isinstance(bb, (list, tuple)) and len(bb) == 4 and letter):
+                continue
+            s = _system_of(bb)
+            if s is None:
+                continue
+            letters_by_sys.setdefault(s, []).append((bb, str(letter), r.id))
+            key_of_row[r.id] = r.subject.to_key()
+        for s, letters in sorted(letters_by_sys.items()):
+            sp = sp_by_sys.get(s)
+            if not sp:
+                continue
+            for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
+                if not run["read"] and run["why"] == "lone_letter":
+                    # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
+                    # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
+                    # stemmed head is never touched) -- unless it lies on ink a word already claimed (a letter of "espr.", "dolce").
+                    if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                        _count("word:dynamic_letters:lone_letter_inside_a_staff")
+                    elif any(CL._overlap_small(run["box"], f) >= CL.LETTER_TWIN_SHARE for f in filed):
+                        _count("word:dynamic_letters:lone_letter_inside_a_claim")
+                    else:
+                        _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]], standing="GUESSED",
+                              owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic", lone=True)
+                    continue
+                if not run["read"]:
+                    _count(f"word:dynamic_letters:{run['why']}")
+                    continue
+                if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                    _count("word:dynamic_letters:inside_a_staff")
+                    continue
+                _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]],
+                      owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic")
+        # HEADING TEXT (title, composer, plate number): no reader reads it, so what is claimed is a PRIOR, never a reading -- ink of
+        # text size above the first staff by `HEADING_CLEAR_SPACES` or below the last by `FOOTER_CLEAR_SPACES` (a note on ledger lines does
+        # not reach so far), not already inside a claim. GUESSED: it accounts the ink once and refuses nothing.
+        tops = [float(st.line_ys[0]) for st in pws.staves if len(getattr(st, "line_ys", ()) or ()) >= 5]
+        bots = [float(st.line_ys[-1]) for st in pws.staves if len(getattr(st, "line_ys", ()) or ()) >= 5]
+        sps = [v for v in (_spacing(st) for st in pws.staves) if v]
+        if tops and sps:
+            spv, (Hh, Ww) = sorted(sps)[len(sps) // 2], binary.shape
+            # OWNED INK a heading must not take (2.221 finisher): every area another page-wide owner already filed in the register
+            # (barline columns, clef / key slots, brackets) and every traced arc (`Q.SYSTEM_ARC` trace, the ink `OMR_ARC_CLAIM` claims).
+            other_claims = []
+            for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                v = r.value
+                if (r.detail or {}).get("unit") == "area" and isinstance(v, (list, tuple)) and len(v) == 4 \
+                        and all(isinstance(x, (int, float)) for x in v):
+                    other_claims.append([float(x) for x in v])
+            # ... and every detector box of a mark a reader owns (head, accidental, rest, flag, stem, clef, ornament, dynamic): a note on
+            # ledger lines above the staff reaches into the zone (Litolff p4). Only `structural` boxes (staff, system) are not a mark.
+            for r in log.rows(Q.GLYPH_BOX, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                gb = (r.detail or {}).get("bbox_page_px")
+                if (r.detail or {}).get("category") != "structural" and isinstance(gb, (list, tuple)) and len(gb) == 4:
+                    other_claims.append([float(x) for x in gb])
+            arc_traces = []
+            for r in log.rows(Q.SYSTEM_ARC, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                tr = (r.detail or {}).get("trace")
+                if tr:
+                    arc_traces.append({int(x): (float(a), float(b)) for x, a, b in tr})
+            # the page's own letter size: the median height of the ink components inside its READ word claims
+            heights = [c[3] - c[1] for f, _ok in read_boxes for c in CL._components(binary, f)
+                       if (c[3] - c[1]) <= CL.HEADING_MAX_COMPONENT_SPACES * spv and (c[2] - c[0]) <= CL.HEADING_MAX_COMPONENT_SPACES * spv]
+            letter_h = sorted(heights)[len(heights) // 2] if heights else None
+            for zone in ([0.0, 0.0, float(Ww), min(tops) - CL.HEADING_CLEAR_SPACES * spv],
+                         [0.0, max(bots) + CL.FOOTER_CLEAR_SPACES * spv, float(Ww), float(Hh)]):
+                if zone[3] - zone[1] < 2 * spv:
+                    continue
+                for blk in CL.heading_blocks(binary, zone, spv, list(filed) + other_claims, letter_height=letter_h, arc_traces=arc_traces):
+                    s = _system_of(blk)
+                    if s is not None:
+                        _file(s, blk, CL.OWNER_WORD, "page_heading", standing="GUESSED", category="heading")
+    if brackets_on:
+        det_by_sys: Dict[int, List[Tuple[List[float], str]]] = {}
+        start_of: Dict[int, List[float]] = {}
+        for st in pws.staves:
+            key = local.get(st.staff_index)
+            if key is not None and getattr(st, "x_start", None) is not None:
+                start_of.setdefault(key[0], []).append(float(st.x_start))
+        for s in sorted(bands_by_sys):
+            xs, spv = start_of.get(s), _sp(s)
+            if not xs or not spv:
+                continue
+            x_start = sorted(xs)[len(xs) // 2]
+            # the detector's own `brace` / `bracket` boxes standing at the system's left edge (right edge at or left of the staff start +
+            # BRACKET_MAX_OFFSET_SPACES, at least BRACKET_MIN_HEIGHT_SPACES tall): the second witness, and the only claimant of a thick
+            # brace the rule scan misses (Brahms p0: 1 of 11 hand-labelled braces came from the scan)
+            seen: List[List[float]] = []
+            for pb, nm in _page_boxes(s, lambda n: n.startswith(("brace", "bracket"))):
+                if (pb[3] - pb[1]) < CL.BRACKET_MIN_HEIGHT_SPACES * spv or pb[2] > x_start + CL.BRACKET_MAX_OFFSET_SPACES * spv:
+                    continue
+                if any(CL._overlap_small(pb, q) >= 0.5 for q in seen):
+                    continue                              # one brace boxed from two cells: one witness
+                seen.append(pb)
+                det_by_sys.setdefault(s, []).append((pb, nm))
+            marks = _left_edge_marks(pws, s)
+            if not marks and getattr(pws, "system_structure", None) is None:
+                _count("bracket:left_edge:page_wide_pass_off")
+            held = []
+            for a in CL.left_edge_claims(marks, det_by_sys.get(s, ())):
+                area, standing = a.pop("area"), a.pop("standing")
+                held.append(area)
+                _file(s, area, CL.OWNER_BRACKET, "left_edge_mark", standing=standing, **a)
+            for pb, nm in det_by_sys.get(s, ()):
+                if not any(CL._overlap_small(pb, h) >= 0.5 for h in held):
+                    _file(s, pb, CL.OWNER_BRACKET, "detector_box", kind=nm)
+    log.abstain(page_sub, Q.CLAIMED_AREA, reader=READERS.CV_PAGE_CLAIMS, frame=FRAME_PAGE, reason=ABSTAIN.OUT_OF_SCOPE,
+                owner="page_claims", unit="area", why="page_claim_census", census=dict(sorted(census.items())))
+    if progress:
+        print(f"  gather page claims p{p} {census}")
+
+
+def _left_edge_marks(pws: Any, sys_idx: int) -> List[Dict[str, Any]]:
+    """The barline lane's whole left-edge marks of one system (`page_wide.system_rules`), [] where the page-wide pass did not run."""
+    from ..page_wide import system_rules
+    rules = system_rules(pws, sys_idx)
+    return list(((rules or {}).get("left_edge") or {}).get("marks") or ())
+
+
+def _margin_label_boxes(pws: Any, local: Dict[int, Tuple[int, int]], staff_indices: Iterable[int]) -> Dict[int, List[float]]:
+    """ROADMAP 2.221 word coverage: `{page staff index: page box of its printed instrument name's ink}`. The margin strip every label
+    reader read (`staff_labels_vision.margin_strip`: from `MARGIN_SPACINGS` spaces left of the system's staff start to its staff start), cut
+    to the staff's own band (half way to its neighbours, two spaces past the system's ends), the text-sized ink components in it
+    (`claims.margin_label_box`: braces, brackets and barlines are taller, and the left-edge marks are avoided). Bookkeeping on the page
+    raster GATHER holds: no OCR, no scan. A staff with no ink in its band has no entry."""
+    from . import claims as CL
+    from ..staff_labels_vision import MARGIN_SPACINGS
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return {}
+    by_sys: Dict[int, List[Any]] = {}
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is not None:
+            by_sys.setdefault(key[0], []).append(st)
+    out: Dict[int, List[float]] = {}
+    want = set(staff_indices)
+    for sys_idx, sts in by_sys.items():
+        sts = sorted(sts, key=lambda s: s.top_y)
+        sps = [v for v in (_spacing(s) for s in sts) if v]
+        sp = sorted(sps)[len(sps) // 2] if sps else 0.0
+        if not sp:
+            continue
+        x_ref = sorted(s.x_start for s in sts)[len(sts) // 2]
+        avoid = [m["box"] for m in _left_edge_marks(pws, sys_idx)]
+        for i, st in enumerate(sts):
+            if st.staff_index not in want:
+                continue
+            lo = (sts[i - 1].bottom_y + st.top_y) / 2.0 if i else st.top_y - 2 * sp
+            hi = (st.bottom_y + sts[i + 1].top_y) / 2.0 if i + 1 < len(sts) else st.bottom_y + 2 * sp
+            box = CL.margin_label_box(binary, [x_ref - MARGIN_SPACINGS * sp, lo, st.x_start - 0.3 * sp, hi], sp, avoid)
+            if box is not None:
+                out[st.staff_index] = box
+    return out
+
+
 def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                          pdf_path: Any = None, surya_fallback: bool = False,
                          ocr_fallback: bool = False) -> None:
@@ -15173,6 +15501,10 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
         empty_reason = ABSTAIN.NO_INK
 
     by_staff = {lab.staff_index: lab for lab in labels}
+    # ROADMAP 2.221 (flag OMR_CLAIM_WORDS_FIRST): each label's page box, so the page-wide pass can claim the ink it was read from
+    from . import claims as _CL
+    label_boxes = (_margin_label_boxes(pws, local, [i for i, l in by_staff.items() if (l.text or "").strip()])
+                   if _CL.words_first_enabled() else {})
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -15202,7 +15534,9 @@ def gather_margin_labels(log: Log, pws: Any, cells, local, *,
                     # ROADMAP 2.95: present only where the text was completed
                     # with the word printed between two braced staves.
                     **({"shared_word": lab.shared_word}
-                       if getattr(lab, "shared_word", "") else {}))
+                       if getattr(lab, "shared_word", "") else {}),
+                    **({"bbox_page_px": [round(v, 1) for v in label_boxes[int(lab.staff_index)]]}
+                       if int(lab.staff_index) in label_boxes else {}))
 
 
 def _labels_abstain_per_staff(log: Log, cells: Sequence[Any],
@@ -15376,7 +15710,9 @@ def _direction_lexicon_scope(log: Log, roster: Any,
     labels = [str(r.value) for r in log.rows(
         Q.MARGIN_LABEL, R.DOCUMENT, scope=R.Scope.SELF_AND_DESCENDANTS)
         if r.value]
-    return DL.scope_for(work_id, labels)
+    from . import claims as CL
+    # ROADMAP 2.221 (flag OMR_CLAIM_WORDS_FIRST): a tempo word may carry its metronome tail (`Allegro con brio (♩ = 108)`)
+    return DL.scope_for(work_id, labels, tempo_marks=CL.words_first_enabled())
 
 
 def direction_text_enabled() -> bool:
@@ -15663,6 +15999,7 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                         library=list(getattr(d, "library", ()) or ()),
                         other_language=bool(getattr(d, "other_language",
                                                     False)),
+                        **({"metronome": d.metronome} if getattr(d, "metronome", "") else {}),
                         lexicon_scope=(scope.to_json() if scope is not None
                                        else None),
                         # ONE marking: the word and the dynamic it includes.
@@ -16388,6 +16725,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                              ocr_fallback=ocr_fallback)
         gather_direction_words(log, pws, cells, local, detections,  # hard edge: last
                                roster=roster, work_id=work_id)
+        # ROADMAP 2.221 m1 / m1b (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, default OFF): AFTER the word reader (reads its
+        # accepted rows and the dynamic letters); page-wide, one claim per mark per system, no new reading pass.
+        gather_page_claims(log, pws, cells, local, detections, progress=progress)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
         # ten position rows are PROMOTED off rows already on the record -- the
         # CV hairpins and the direction words, whose ink no detection carries

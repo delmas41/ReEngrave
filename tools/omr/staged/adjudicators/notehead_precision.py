@@ -629,6 +629,10 @@ def _claim_refusal(claim, box_row) -> Ruling:
         r = Ruling(value=True, reason="claimed_by:clef", used=claim.used, detail=detail)
     elif claim.by == "key_signature":
         r = Ruling(value=True, reason="claimed_by:key_signature", used=claim.used, detail=detail)
+    elif claim.by == "word":              # ROADMAP 2.221 m1: a READ word / dynamic outside the staves, page-wide
+        r = Ruling(value=True, reason="claimed_by:word", used=claim.used, detail=detail)
+    elif claim.by == "bracket":           # ROADMAP 2.221 m1b: a bracket / brace at the system's left edge
+        r = Ruling(value=True, reason="claimed_by:bracket", used=claim.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:leading_column", used=claim.used, detail=detail)
     if claim.by == "key_signature":       # 2.183: the 2.100 centre rule, so the margin is the depth of the centre inside the run
@@ -648,6 +652,10 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
         return Ruling.narrow(cands, "claim_narrowed:meter", used=u, **detail)
     if claim.by == "key_signature":
         return Ruling.narrow(cands, "claim_narrowed:key_signature", used=u, **detail)
+    if claim.by == "word":                # ROADMAP 2.221 m1
+        return Ruling.narrow(cands, "claim_narrowed:word", used=u, **detail)
+    if claim.by == "bracket":             # ROADMAP 2.221 m1b
+        return Ruling.narrow(cands, "claim_narrowed:bracket", used=u, **detail)
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 
@@ -3557,6 +3565,7 @@ def _claimed_by_a_whole_rest(ev: Evidence):
                                      REST_TWIN_REASON,
                                      "on_a_read_meter", "on_a_rest", "inside_the_meter",
                                      "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
+                                     "claimed_by:word", "claimed_by:bracket", "claim_narrowed:word", "claim_narrowed:bracket",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
                                      "claimed_by:whole_rest",
