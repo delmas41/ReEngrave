@@ -27,7 +27,8 @@ DOCS=${DOCS:-"beethoven5-litolff brahms1-breitkopf"}
 M=/Users/seanjohnson/Desktop/ReEngrave
 R=$M/library/_shared-records
 HERE=$(cd "$(dirname "$0")" && pwd)
-WT=${WT:-$M/.claude/worktrees/overnight-$TAG}     # the checkout the compare runs in (the tree under test)
+WT=${WT:-$(cd "$HERE/../../.." && pwd)}      # the checkout the compare runs in. NOT the overnight worktree: acceptance rewrites tracked files under
+                                                   # benchmarks/acceptance/out, and a night's checkout is left untouched (it must stay clean/dirty=false)
 OUT=${OUT:-$R/overnight-$TAG/compare}      # a test run sets OUT elsewhere so it cannot overwrite a night's compare dir
 export COMPARE_OUT=$OUT
 SUM=${SUM:-$HERE/$TAG}
@@ -49,6 +50,12 @@ done
 READY=${READY# }
 [ -n "$READY" ] || { echo "nothing to compare" | tee -a "$LOGF"; exit 3; }
 echo "comparing: $READY" >> "$LOGF"
+TCOMMIT=$(sed -n 's/.*commit \([0-9a-f]\{40\}\).*/\1/p' "$R/overnight-$TAG/summary.txt" | head -1)
+if [ -n "$(git -C "$WT" diff --stat "$TCOMMIT" HEAD -- tools 2>/dev/null)" ] || ! git -C "$WT" cat-file -e "$TCOMMIT" 2>/dev/null; then
+  echo "WARNING: tools/ in $WT differs from the TAG commit $TCOMMIT: exports/acceptance here are NOT the code the night ran" | tee -a "$LOGF"
+else
+  echo "tree under test: tools/ identical to the TAG commit $TCOMMIT" >> "$LOGF"
+fi
 cd "$WT" || exit 2
 # the checkout needs the machine-local assets (docs/running.md section 1)
 for l in library omr-weights .venv-surya .venv-omrned; do [ -e "$l" ] || ln -sfn "$M/$l" "$l"; done
