@@ -4371,7 +4371,7 @@ TIP_START_SPACES = 0.6
 TIP_LEVEL_GAP_SPACES = 1.1
 
 
-def _tips_from_strokes(ev: Evidence, cell, own_stems):
+def _tips_from_strokes(ev: Evidence, cell, own_stems, ignore_owned: bool = False):
     """`(observation-like rows, abstention-like rows)` standing in for `Q.STEM_TIP_INK` -- one per (own stem, end) -- read off the stroke
     map, or `None` where there is no stroke map in the cell (the caller then reads the GATHER rows as today). Row shapes follow
     `gather._observe_stem_tip_ink`: detail `end`, `stem_row_id`, `hooks`, `hooks_min`, `hooks_max`, `tip_disagree`; an abstention's
@@ -4387,6 +4387,10 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
     import types
     role = _BS.roles(views)
     obs, ab = [], []
+    # ROADMAP 2.235 (`ignore_owned`): a stroke `Q.STROKE_OWNER` DECIDED to another mark (kind `owned`: a dot, a slur/tie, an accidental, a
+    # word/dynamic, a head) is that mark's ink, not a flag and not a beam: it is left out of what stands at the tip, and its owner family
+    # is named in the row (`claims_ignored`). A CONTESTED stroke (kind `contested`) and an unclaimed one are not left out (rule 8).
+    fams = _owner_families(ev.verdict(Q.STROKE_OWNER, subject=cell)) if ignore_owned else {}
     for st in own_stems:
         b = _xywh(st)
         if b is None:
@@ -4407,6 +4411,7 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
             # (Brahms, the 4 dotted quarters it narrowed): 1.9-sp staff-line remnants touching the stem 2-5 spaces from its tip are inside the
             # 3.3-sp tip window and were read as flags/stubs. They are not at the tip, and say nothing about it.
             cand = []
+            ignored = []
             for v in views:
                 if v.ordinal in members or v.kind == "vertical":
                     continue
@@ -4414,6 +4419,9 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
                     continue
                 s_in = (v.box[1] - tip_y) / sp if side == "up" else (tip_y - (v.box[1] + v.box[3])) / sp
                 if -_BS.TIP_OUTWARD_SPACES <= s_in <= _BS.TIP_INWARD_SPACES:
+                    if ignore_owned and v.kind == "owned":
+                        ignored.append(fams.get(v.ordinal) or "owned")
+                        continue
                     cand.append((s_in, v))
             chain, last = [], None
             for s_in, v in sorted(cand, key=lambda t: t[0]):
@@ -4427,6 +4435,9 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
             stubs = [o for o in tr["stubs"] if o in at_tip]
             ids = [sv.row_id] + [v.row_id for v in near]
             base = {"end": end, "stem_row_id": st.id, "tip_y": tip_y, "stroke_rows": ids}
+            if ignore_owned:
+                base["claims_ignored"] = sorted(ignored)
+                base["claims_left"] = len(near)
             stub_roles = {str(role[o]["role"]) for o in stubs}
             if beams or (tr["stem_beamed"] and (stubs or hooks)) or "beam_stub" in stub_roles:
                 ab.append(types.SimpleNamespace(id=sv.row_id, value=None, detail={**base, "why": "runs_on"}))
@@ -4444,12 +4455,94 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems):
     return obs, ab
 
 
+#: ROADMAP 2.235 (Sean 2026-10-30: "I don't want to undo gather changes - I want to rework later stages to function better with the new
+#: info"). The stem-tip readers consult the CLAIMS. Default OFF (`1`/`true`/`yes`/`on` enables) until Sean's tiles.
+TIPS_HONOUR_CLAIMS_ENV = "OMR_TIPS_HONOUR_CLAIMS"
+#: the GATHER tip window's cannot-tell words a claim can explain. `occupied` = a detection box covers ink attached to the tip; the rest are
+#: the window's SHAPE words on raster ink (`crosses_both_sides` 55 of 104 Brahms narrowed tips, `runs_on` 21, `no_room` 10, ...): the window
+#: cannot say WHOSE ink it saw, and a dot or a slur end beside the stem is ink on both sides / running on. The stroke map can: the word is
+#: replaced only where, with the strokes decided to another mark left out, nothing stands at the tip (and at least one was left out).
+#: `head_at_this_end` (a head, not ink) is not explained.
+TIP_CLAIMS_EXPLAIN = ("occupied", "crosses_both_sides", "runs_on", "ink_not_flag_shaped", "ink_past_the_tip", "no_room",
+                      "lines_take_the_window")
+
+
+def tips_honour_claims_enabled() -> bool:
+    """`OMR_TIPS_HONOUR_CLAIMS`, default ON (Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get(TIPS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _owner_families(verdict) -> Dict[int, str]:
+    """`{ordinal: family}` for the strokes a cell's `Q.STROKE_OWNER` verdict DECIDED (state decided / merged); `{}` otherwise."""
+    from . import stroke_owner as _SOA
+    if not _SOA.enabled() or verdict is None or not isinstance(getattr(verdict, "value", None), dict):
+        return {}
+    owned = {int(o) for o in verdict.value.get("owned") or ()}
+    st = (getattr(verdict, "detail", None) or {}).get("strokes") or {}
+    out = {}
+    for o in owned:
+        row = st.get(str(o))
+        out[o] = str(row[1]) if isinstance(row, (list, tuple)) and len(row) > 1 else "owned"
+    return out
+
+
+_CLAIM_TIPS_MEMO: list = [None, None, None]
+
+
+def _tips_honouring_claims(ev: Evidence, cell, own_stems):
+    """ROADMAP 2.235. `(observations, abstentions, notes)`: the GATHER `Q.STEM_TIP_INK` rows, except that an `occupied` abstention
+    (`TIP_CLAIMS_EXPLAIN`) at an (own stem, end) whose tip stands CLEAN once the strokes `Q.STROKE_OWNER` decided to another mark are left
+    out (`_tips_from_strokes(ignore_owned=True)`: no hook, no beam, no stub, nothing else starting at the tip) is replaced by a clean
+    observation (value False, `witness = "claims"`). Everything else is the GATHER row as it was: a contested or unclaimed stroke at the tip, a
+    hook, a beam, an unreadable stem keep the abstention (rule 8). `notes` = `{(stem row id, end): {...}}` for every `occupied` abstention
+    looked at: what GATHER said, which owner families were left out, how many strokes remain, whether it was converted."""
+    key = (cell.to_key() if hasattr(cell, "to_key") else str(cell), tuple(sorted(s.id for s in own_stems)))
+    if _CLAIM_TIPS_MEMO[0] is ev.log and _CLAIM_TIPS_MEMO[1] == key:
+        return _CLAIM_TIPS_MEMO[2]
+    obs = list(ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    ab = list(ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    ids = {s.id for s in own_stems}
+    todo = [a for a in ab if (a.detail or {}).get("why") in TIP_CLAIMS_EXPLAIN and (a.detail or {}).get("stem_row_id") in ids]
+    notes: Dict[Any, Any] = {}
+    if todo:
+        got = _tips_from_strokes(ev, cell, own_stems, ignore_owned=True)
+        seen = {}
+        if got is not None:
+            for r in list(got[0]) + list(got[1]):
+                seen[((r.detail or {}).get("stem_row_id"), (r.detail or {}).get("end"))] = r
+        keep = []
+        for a in ab:
+            if a not in todo:
+                keep.append(a)
+                continue
+            k = ((a.detail or {}).get("stem_row_id"), (a.detail or {}).get("end"))
+            r = seen.get(k)
+            d = (r.detail if r is not None else {}) or {}
+            clean = r is not None and r.value is False
+            notes[k] = {"gather_why": a.detail.get("why"), "claims_ignored": d.get("claims_ignored"), "claims_left": d.get("claims_left"),
+                        "stroke_reading": ("clean" if clean else ("no_stroke_map" if r is None else
+                                                                  ("hook" if r.value else str(d.get("why"))))),
+                        "converted": bool(clean and d.get("claims_ignored"))}
+            if notes[k]["converted"]:
+                import types
+                obs.append(types.SimpleNamespace(id=r.id, value=False, detail={**d, "witness": "claims", "gather_abstention": a.id}))
+            else:
+                keep.append(a)
+        ab = keep
+    res = (obs, ab, notes)
+    _CLAIM_TIPS_MEMO[:] = [ev.log, key, res]
+    return res
+
+
 def _tip_obs(ev: Evidence, cell, own_stems):
-    """The tip rows of the head's own stems: the stroke map's when the flag is on and the cell has a map, else `Q.STEM_TIP_INK` as today."""
+    """The tip rows of the head's own stems: the stroke map's when the flag is on and the cell has a map, else `Q.STEM_TIP_INK` as today
+    (2.235, `OMR_TIPS_HONOUR_CLAIMS`: with the `occupied` abstentions the claims explain read as clean)."""
     if stems_from_strokes_enabled():
         got = _tips_from_strokes(ev, cell, own_stems)
         if got is not None:
             return got[0]
+    if tips_honour_claims_enabled():
+        return _tips_honouring_claims(ev, cell, own_stems)[0]
     return ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
 
@@ -4458,6 +4551,8 @@ def _tip_abs(ev: Evidence, cell, own_stems):
         got = _tips_from_strokes(ev, cell, own_stems)
         if got is not None:
             return got[1]
+    if tips_honour_claims_enabled():
+        return _tips_honouring_claims(ev, cell, own_stems)[1]
     return ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
 
@@ -5433,6 +5528,21 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     if (discount_removed_all_marks or ink_removed_all_marks or far_removed_all_marks) \
             and beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
         tip_first = bool(_stem_tip_flag_ink(ev, cell, own_stems, side)[0])
+        # ROADMAP 2.235: what the claims said about THIS head's own stem tip (diagnostic, decides nothing here: the accessors above did).
+        if tips_honour_claims_enabled() and own_stems and side in ("up", "down"):
+            _ctn = [dict(v, stem_row_id=k[0]) for k, v in _tips_honouring_claims(ev, cell, own_stems)[2].items()
+                    if k[1] == ("top" if side == "up" else "bottom")]
+            _fl = _stem_tip_flag_ink(ev, cell, own_stems, side)[0]
+            _bs = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
+            _end = "top" if side == "up" else "bottom"
+            _ids = {s.id for s in own_stems}
+            shared["tips_honour_claims"] = {
+                "claims": _ctn, "flag_window": _fl,
+                "beam_runs_at_tip": (None if _bs is None else int(_bs["count"])),
+                "gather_tip": sorted({("obs:%s" % bool(r.value)) for r in _tip_obs(ev, cell, own_stems)
+                                      if r.detail.get("end") == _end and r.detail.get("stem_row_id") in _ids}
+                                     | {("abs:%s" % a.detail.get("why")) for a in _tip_abs(ev, cell, own_stems)
+                                        if a.detail.get("end") == _end and a.detail.get("stem_row_id") in _ids})}
     # ⚠️ ROADMAP 2.146 (flag `OMR_STEM_TIP_DECIDES_BEAM`, default ON since 2026-10-16; Sean 2026-10-16 "the stem tip decides beamed or not"):
     # every stroke over this head was refused, so instead of narrowing between the head value and one beam level, ask the
     # head's OWN stem tip. Clean tip -> no beam (the head's value); n beam runs at the tip -> n levels. Cannot tell -> the

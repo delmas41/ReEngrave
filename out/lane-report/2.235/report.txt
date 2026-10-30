@@ -1,0 +1,22 @@
+LANE REPORT  OMR_TIPS_HONOUR_CLAIMS (OFF=0 ON=1)  --from adjudicate
+  OMR_TIPS_HONOUR_CLAIMS: read in staged/adjudicators/rhythm.py -> ADJUDICATE..EXPORT
+  --cell-map applies to a re-gather only: --from adjudicate replays the saved record's own cells
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5531 notes+rests OFF, 5535 ON, 5530 paired)
+  file:   notes +5 -1 | accidentals +1 | slurs +10 | blue marks -3 | words -4
+  red bars 201 -> 199 | notes not written 2174 -> 2170
+  control: NEITHER ARM REPRODUCES THE RECORD -- the tree moved, not only the flag; distrust every number: duration/rest verdicts differing from the record OFF 15 / ON 25 of 9004 (e.g. glyph/10/1/10/4/2, glyph/10/1/10/4/3, glyph/10/1/3/2/6)
+  Sean's judged answers (286 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6578 notes+rests OFF, 6629 ON, 6573 paired)
+  file:   notes +51 -3 | rests +5 -2 | accidentals +6 | dots +35 -1 | flags -2 | beams +3 -1 ~1 | ties +11 -1 ~1 | slurs +13 -9 | articulations +3 | note values ~2 | blue marks +25 -54 | words +8 -19
+  red bars 167 -> 164 | notes not written 3155 -> 3104
+  control: NEITHER ARM REPRODUCES THE RECORD -- the tree moved, not only the flag; distrust every number: duration/rest verdicts differing from the record OFF 33 / ON 135 of 12336 (e.g. glyph/0/0/0/4/10, glyph/12/0/0/4/11, glyph/12/0/0/8/14)
+  Sean's judged answers (245 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1376 s
