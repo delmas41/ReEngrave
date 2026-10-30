@@ -16795,6 +16795,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default OFF): one page-mark id per detector box -- boxes of one family from two padded
+        # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
+        from . import page_marks as _page_marks
+        _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)

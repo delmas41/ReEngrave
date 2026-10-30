@@ -940,6 +940,13 @@ class Q(_Vocab):
     #: nothing and NOTHING READS IT yet (`claims.covering`'s `ink` branch is its first reader, called by no stage).
     GLYPH_STROKES = "glyph_strokes"
 
+    #: ROADMAP 2.240 step 1 (flag `OMR_PAGE_MARKS`, default OFF; `page_marks.gather_page_marks`): ONE ROW PER DETECTOR BOX of every pass, on the
+    #: box's glyph subject: `value` = the PAGE-MARK ordinal (per page). Boxes of one family from two padded cells whose page boxes stand on the
+    #: same page ink (shared ink >= `detail.share_min` of the smaller box's, one-to-one per pair of cells, never two boxes of one cell in a mark)
+    #: share the ordinal: one mark seen by two views. `detail`: family, members, cells, ink_px, why, pairs (every same-family box of another cell
+    #: overlapping it: [key, share, iou, merged, reason]). Decides nothing and NOTHING READS IT yet (step 2, one owner per page mark, is its reader).
+    PAGE_MARK = "page_mark"
+
     #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
     #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
     #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
@@ -2337,6 +2344,8 @@ CLAIMS: "dict[str, str]" = {
     "STROKE": CLAIM.MEASUREMENT,
     #: ROADMAP 2.198: which strokes lie inside a box -- a measurement of ink under the detector's box, naming nothing.
     "GLYPH_STROKES": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.240: two boxes stand on the same page ink -- wrong only if they do not in fact share that ink; it never names the mark.
+    "PAGE_MARK": CLAIM.COVERAGE,
     #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
     #: one in the vocabulary. `gather_margin_labels` resolves the rung at
     #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs
@@ -2946,6 +2955,8 @@ class READERS(_Vocab):
     CV_STROKE = "cv_stroke"
     #: `gather.gather_glyph_strokes` -- ROADMAP 2.198. Reads the `CV_STROKE` masks and the detector's boxes; no raster of its own.
     CV_GLYPH_STROKES = "cv_glyph_strokes"
+    #: `page_marks.gather_page_marks` -- ROADMAP 2.240 step 1. The page render (`pws.page.binary`) under the `CV_STROKE` masks and the boxes.
+    CV_PAGE_MARKS = "cv_page_marks"
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
