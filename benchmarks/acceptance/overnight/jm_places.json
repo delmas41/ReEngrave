@@ -1,0 +1,17 @@
+[
+ {"place": 1, "item": "2.162-review tile 5", "subject": "glyph/3/1/2/15/0", "page": 3, "box": [2266.91, 2614.3, 2291.71, 2635.07],
+  "sean": "2 (half note)", "other_subject": "glyph/3/1/2/15/2", "other_box": [2267.685, 2636.31, 2292.95, 2652.895],
+  "base_wrote": "ONE half note, on /0 (the upper box); /2 refused stacked_head_duplicate (ink 0.6447 vs /0 0.7134)",
+  "tag_wrote": "ONE half note, on /2 (the LOWER box, 1.3 sp lower -> a different pitch); /0 refused stacked_head_duplicate (ink 0.7134 vs /2 0.7165, a 0.003 tie)",
+  "cause": "OMR_ERASER_FIX: the cell's staff-removed raster keeps more ink under the lower box (0.6447 -> 0.7165), the keeper flips; with OMR_ERASER_FIX=0 the 2-page gather reproduces BASE exactly"},
+ {"place": 2, "item": "2.73-review tile 5", "subject": "glyph/3/0/4/3/12", "page": 3, "box": [1028.64, 1039.6, 1052.32, 1056.24],
+  "sean": "Half", "other_subject": "glyph/3/0/4/3/13", "other_box": [1024.32, 1019.44, 1048.32, 1038.8],
+  "base_wrote": "TWO half notes (a chord: /12 and /13 with a flat); stacked_head_fit ABSTAINED 'ambiguous' margin -0.0006",
+  "tag_wrote": "ONE half note (/13 only); stacked_head_fit now decides k=1 (one head) and /12 is refused stacked_head_duplicate (ink 0.5809 vs 0.5985)",
+  "cause": "OMR_ERASER_FIX: head-count scores rise (slot 2 0.79->0.87, slot 1 0.43->0.68), the near-tie that abstained is now decided k=1; OMR_ERASER_FIX=0 gives ambiguous -0.0006 again. Whether the pair is one head or a real third is NOT settled by the print here: ask Sean"},
+ {"place": 3, "item": "2.83-fix-review tile_05", "subject": "glyph/4/0/7/7/10", "page": 4, "box": [1535.69, 1483.38, 1559.945, 1535.1975],
+  "sean": "4 (quarter)", "other_subject": "glyph/4/0/7/7/2", "other_box": [1535.8475, 1514.4075, 1559.945, 1535.04],
+  "base_wrote": "ONE quarter F4 (on /2); /10, the 3.3 sp tall box that holds head+stem, kept as a notehead but not exported as a second note; fit abstained 'ambiguous' margin 0.042",
+  "tag_wrote": "ONE quarter F4 (on /2) -- the same note; /10 now refused stacked_head_duplicate (ink 0.5365 vs /2 1.0)",
+  "cause": "OMR_ERASER_FIX (same mechanism: ink under the head slot 0.79 -> 1.0, ambiguous -> k=1). Exported file unchanged at this place; the judged 'right->wrong' is the tile's box key naming the duplicate box. Correct behaviour."}
+]
