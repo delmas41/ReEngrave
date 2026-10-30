@@ -107,6 +107,7 @@ machine-readable form.
   become tuplet notes, quarters or eighths alike. A tuplet is never inferred
   from the arithmetic, and a bar that would only add up under an unmarked
   tuplet gives no confirmation (Sean, 2026-10-13).
+- **Arcs and hairpins are READ PAGE-WIDE** (Sean, 2026-10-30: *"the actual symbols reach past cell and should be read page wide."*; scope: general): a slur, tie or hairpin runs past its bar and its staff's padded crop, so the page-wide pass reads and claims each one whole; a detector box in a cell is only a witness to it, never the mark (ROADMAP 2.240; plan-2026-10-28-page-claim-order §10).
 - An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two heads
   are at one staff position (empty interval 0.168 vs 0.435 spaces,
   `benchmarks/omr-arc-grammar-2026-09/FINDINGS.md`). Of two stacked arcs
