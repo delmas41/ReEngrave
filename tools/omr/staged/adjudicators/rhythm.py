@@ -9667,7 +9667,8 @@ def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
     # leaves block-shaped. Litolff p9 (1734, 2385), Sean's real quarter, read as a whole rest this way.
     if box_rows:
         d0 = box_rows[-1].detail or {}
-        if d0.get("source") == "stem_end_head" and d0.get("ink_verdict") == "ink_only":
+        # round 3: every box the flag filed at a stem end (agree / rerun_only / ink_only; OFF files no `ink_verdict`)
+        if d0.get("source") == "stem_end_head" and d0.get("ink_verdict") in ("ink_only", "agree", "rerun_only"):
             return Ruling(value=False, reason="read_at_a_stem_end", used=(box_rows[-1].id,),
                           detail={"end": d0.get("end"), "read_from": d0.get("read_from")})
     page_box = None

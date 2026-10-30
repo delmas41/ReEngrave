@@ -1123,9 +1123,11 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
                        kept: List[Dict[str, Any]], grid: Tuple[float, float],
                        page_heads: Sequence[Sequence[float]] = (), home_of: Any = None) -> List[Dict[str, Any]]:
     """lane-stem-end-head (flag `OMR_STEM_END_HEAD_INK`, default OFF): every orphan stem end READ on the page raster GATHER holds
-    (`pws.page.binary`; no new image pass) with `head_ink.read_head_ink`, and set beside the 0.05 re-run's `kept`: agree -> the re-run
-    box is kept; ink alone -> a box on the trimmed ink; re-run alone / different ink / a head at both ends -> abstention with the
-    candidates. Ink a mark of the cell already holds is never taken. Returns the new `kept`; `stem_end_heads` holds the rule."""
+    (`pws.page.binary`; no new image pass) with `head_ink.read_head_ink`, and set beside the 0.05 re-run's `kept`, paired BY INK (round
+    3): every re-run box is filed (`ink_verdict` agree where an ink head stands on it, else rerun_only); an ink head no re-run box holds
+    -> a CANDIDATE box on the trimmed head with its rim (ink_only); a head at both ends of one stem -> abstention with the candidates.
+    Ink a mark of the cell already holds is never taken. Decides nothing: ADJUDICATE weighs each box on its own per-box readers.
+    Returns the new `kept`; `stem_end_heads` holds the rule."""
     from . import head_ink
     from . import stem_end_heads as SEH
     from ..template_matcher import SymbolDetection
@@ -1147,8 +1149,8 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
     # heads seen on the WHOLE page: a cell's crop reaches into the next staff, whose head (boxed in its own cell) is the same ink
     # (Brahms p5 run 1: 56 of 68 ink-only heads were staff 5's heads read again from staff 4's cell, then refused as another staff's)
     seen = [to_page(SEH._box(d)) for d in existing if SEH.is_head(d.smufl_name)] + list(page_heads or ())
-    by_end = {(kb["stem_index"], kb["end"]): kb for kb in kept}
     out: List[Dict[str, Any]] = []
+    ink_reads: List[Tuple[int, str, Dict[str, Any], bool]] = []      # (stem, end, ink read, the stem reads a head at both ends)
     for si in SEH.orphan_indices(stems, existing, 2.0 * half_step):
         x, yt, yb = SEH.stem_ends(stems[si])
         stem_page = (bbox[0] + x / up, bbox[1] + yt / up, bbox[1] + yb / up)
@@ -1169,59 +1171,71 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
             reads[end] = ink
         both = reads["bottom"]["head"] and reads["top"]["head"]
         for end in ("bottom", "top"):
-            ink, kb = reads[end], by_end.get((si, end))
-            det_page = to_page(SEH._box(kb["det"])) if kb is not None else None
-            if det_page is not None and ink.get("why") == "stem_inside_the_ink" and ink.get("value") is not None:
-                # the far-side reach is a cut measured on Sean's two junk tiles (flat 0.50, flag 0.28) against real heads up to 0.35 on the
-                # subset: it may only NARROW -- it refuses an ink-ONLY head (one witness), never a head the 0.05 re-run boxed on the same ink
-                ink = dict(ink, head=True, why=None, stem_inside_narrowed=True)
-            verdict, why = SEH.combine(det_page, ink)
-            if verdict == "none" and ink.get("why") == "stem_inside_the_ink":
-                # a refusal says how close it came: the ink-only head the far-side cut refused (Sean's flat / flag tiles), with its reach
-                near = {"why": "ink:stem_inside_the_ink", "end": end, "ink_trimmed": ink.get("trimmed"), "ink_fill": ink.get("value"),
-                        "ink_far_side_sp": ink.get("far_side_sp"),
-                        "margin": round(float(ink.get("far_side_sp") or 0.0) - SEH.CROSS_SPACES, 3)}
-                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS, **near)
-            if verdict == "ink_only" and both:
-                verdict, why = "abstain", "ink_reads_a_head_at_both_ends"
-            if verdict == "agree":
-                kb.update(ink=ink, ink_verdict="agree")
-                out.append(kb)
-            elif verdict == "ink_only":
-                tx0, ty0, tx1, ty1 = ink["trimmed"]
-                # Round 2: the head belongs to the staff whose LINES it stands on (page-facts: the ledger lines name the owner). A cell's
-                # crop reaches into the next staff, so a stem read in staff k's cell can carry staff k+1's head (Brahms p5: Sean's three
-                # ink-only eighths, tiles 3/5/6, all stood inside the next staff and were filed -- and pitched -- on the wrong one). The
-                # box is filed in the cell of the staff that holds it; nowhere inside any staff's lines, it stays (the ledger test judges).
-                hc = home_of((tx0 + tx1) / 2.0, (ty0 + ty1) / 2.0, c) if home_of is not None else None
-                tc = hc if hc is not None else c
-                tg = _cell_grid(tc) if tc is not c else grid
-                if tg is None:
-                    tc, tg = c, grid
-                tb, tu = tc.bbox_page_px, float(tc.upscale_factor)
-                cx0, cy0, cx1, cy1 = (tx0 - tb[0]) * tu, (ty0 - tb[1]) * tu, (tx1 - tb[0]) * tu, (ty1 - tb[1]) * tu
-                name = SEH.ink_head_class(ink["value"], (cy0 + cy1) / 2.0, tg[0], tg[1])
-                # no detector score: the ink-only box carries the rescue floor; its row's `ink_verdict` says who read it
-                d = SymbolDetection(cell=tc, smufl_name=name, category="notehead", x_canonical=int(round(cx0)),
-                                    y_canonical=int(round(cy0)), width_canonical=int(round(cx1 - cx0)),
-                                    height_canonical=int(round(cy1 - cy0)), confidence=SEH.FLOOR)
-                kb_new = {"det": d, "stem_index": si, "end": end, "read_from": "page_ink", "score": SEH.FLOOR,
-                          "from_record": False, "ink": ink, "ink_verdict": "ink_only"}
-                if tc is not c:
-                    kb_new.update(cell=tc, read_in_cell=cell_sub.to_key())
-                out.append(kb_new)
-            elif verdict == "abstain":
-                cand = {"why": "ink:" + why, "end": end, "ink_trimmed": ink.get("trimmed"), "ink_why": ink.get("why"),
-                        "ink_fill": ink.get("value"), "ink_extent_sp": ink.get("extent_sp"), "seed_page": ink.get("seed"),
-                        "ink_far_side_sp": ink.get("far_side_sp")}
-                if kb is not None:
-                    d = kb["det"]
-                    cand.update(candidate_class=d.smufl_name, score=float(kb["score"]),
-                                box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical],
-                                rerun_box_page=[round(v, 1) for v in det_page])
-                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
-                            **{k: v for k, v in cand.items() if v is not None})
-    # a re-run box at an end the ink pass never looked at (not an orphan by the owners test) cannot occur: `kept` comes from the same orphans
+            ink_reads.append((si, end, reads[end], both))
+    # Round 3 (Sean 2026-10-29, r2 tiles 2/6/7): the ink is paired with the re-run BY INK, across every orphan end of the cell, not
+    # stem end by stem end -- a head with two stems (an up and a down voice on one head, tiles 6/7) was boxed by the re-run at one stem
+    # and read by the ink at the other: twice (tile 6, the duplicate refused) or abstained and flat (tile 7). And the re-run box is never
+    # dropped here: the ink seed sits on the convention's side of the stem, so the displaced head of a SECOND reads 'too small' there
+    # (tile 2, an old-rescue quarter lost). Every re-run box is filed as before the flag; ADJUDICATE weighs it on its own box's
+    # `Q.HEAD_INK` (`notehead_precision._stem_end_rerun_disagrees`). GATHER decides nothing.
+    taken: List[Sequence[float]] = []
+    for kb in kept:
+        det_page = to_page(SEH._box(kb["det"]))
+        match = next((ink for _si, _e, ink, _b in ink_reads if ink["head"] and SEH.same_ink(det_page, ink["trimmed"])), None)
+        own = next((ink for si_, e_, ink, _b in ink_reads if si_ == kb["stem_index"] and e_ == kb["end"]), None)
+        if match is not None:
+            kb.update(ink=match, ink_verdict="agree")
+            taken.append(match["trimmed"])
+        else:
+            kb.update(ink=own or {"head": False, "why": "not_read"}, ink_verdict="rerun_only")
+        taken.append(det_page)
+        out.append(kb)
+    for si, end, ink, both in ink_reads:
+        det_page = None                             # the re-run boxes are all filed above; this pass files the ink's own heads
+        if ink.get("trimmed") and any(SEH.same_ink(ink["trimmed"], t) for t in taken):
+            continue                                # the same ink, already boxed (a re-run box, or this head read from another stem)
+        verdict, why = SEH.combine(det_page, ink)
+        if verdict == "none" and ink.get("why") == "stem_inside_the_ink":
+            # a refusal says how close it came: the ink-only head the far-side cut refused (Sean's flat / flag tiles), with its reach
+            near = {"why": "ink:stem_inside_the_ink", "end": end, "ink_trimmed": ink.get("trimmed"), "ink_fill": ink.get("value"),
+                    "ink_far_side_sp": ink.get("far_side_sp"),
+                    "margin": round(float(ink.get("far_side_sp") or 0.0) - SEH.CROSS_SPACES, 3)}
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS, **near)
+        if verdict == "ink_only" and both:
+            verdict, why = "abstain", "ink_reads_a_head_at_both_ends"
+        if verdict == "ink_only":
+            # Round 3: the box is the trimmed head WITH its rim on the lines (`head_ink.trim_head`'s `rim_trimmed`), the head a detector
+            # box draws, so every per-box reader measures it as it measures one (r2 tile 7: the line-trimmed box was 0.63 sp tall and
+            # 2.148's fill read it `not_head_sized`)
+            taken.append(ink["trimmed"])
+            tx0, ty0, tx1, ty1 = ink.get("rim_box") or ink["trimmed"]
+            # Round 2: the head belongs to the staff whose LINES it stands on (page-facts: the ledger lines name the owner). A cell's
+            # crop reaches into the next staff, so a stem read in staff k's cell can carry staff k+1's head (Brahms p5: Sean's three
+            # ink-only eighths, tiles 3/5/6, all stood inside the next staff and were filed -- and pitched -- on the wrong one). The
+            # box is filed in the cell of the staff that holds it; nowhere inside any staff's lines, it stays (the ledger test judges).
+            hc = home_of((tx0 + tx1) / 2.0, (ty0 + ty1) / 2.0, c) if home_of is not None else None
+            tc = hc if hc is not None else c
+            tg = _cell_grid(tc) if tc is not c else grid
+            if tg is None:
+                tc, tg = c, grid
+            tb, tu = tc.bbox_page_px, float(tc.upscale_factor)
+            cx0, cy0, cx1, cy1 = (tx0 - tb[0]) * tu, (ty0 - tb[1]) * tu, (tx1 - tb[0]) * tu, (ty1 - tb[1]) * tu
+            name = SEH.ink_head_class(ink["value"], (cy0 + cy1) / 2.0, tg[0], tg[1])
+            # no detector score: the ink-only box carries the rescue floor; its row's `ink_verdict` says who read it
+            d = SymbolDetection(cell=tc, smufl_name=name, category="notehead", x_canonical=int(round(cx0)),
+                                y_canonical=int(round(cy0)), width_canonical=int(round(cx1 - cx0)),
+                                height_canonical=int(round(cy1 - cy0)), confidence=SEH.FLOOR)
+            kb_new = {"det": d, "stem_index": si, "end": end, "read_from": "page_ink", "score": SEH.FLOOR,
+                      "from_record": False, "ink": ink, "ink_verdict": "ink_only"}
+            if tc is not c:
+                kb_new.update(cell=tc, read_in_cell=cell_sub.to_key())
+            out.append(kb_new)
+        elif verdict == "abstain":
+            cand = {"why": "ink:" + why, "end": end, "ink_trimmed": ink.get("trimmed"), "ink_why": ink.get("why"),
+                    "ink_fill": ink.get("value"), "ink_extent_sp": ink.get("extent_sp"), "seed_page": ink.get("seed"),
+                    "ink_far_side_sp": ink.get("far_side_sp")}
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        **{k: v for k, v in cand.items() if v is not None})
     return out
 
 
@@ -1306,7 +1320,8 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
             if kb.get("ink") is not None:                         # OMR_STEM_END_HEAD_INK: the ink read and the verdict it gave
                 box_detail.update(ink_verdict=kb["ink_verdict"], ink_trimmed=kb["ink"].get("trimmed"),
                                   ink_fill=kb["ink"].get("value"), ink_extent_sp=kb["ink"].get("extent_sp"),
-                                  ink_far_side_sp=kb["ink"].get("far_side_sp"))
+                                  ink_far_side_sp=kb["ink"].get("far_side_sp"), ink_why=kb["ink"].get("why"),
+                                  ink_rim_box=kb["ink"].get("rim_box"), ink_rim_rescued=bool(kb["ink"].get("rim_rescued")))
             if tc is not c:
                 box_detail.update(read_in_cell=kb.get("read_in_cell"), stem_frame="read_in_cell")
             page_box = _page_box(tc, d)

@@ -3484,6 +3484,37 @@ def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
     return None
 
 
+#: lane-stem-end-head round 3: the `Q.HEAD_INK` refusals that say the box's ink is NOT one head. `too_small` is not one of them: the
+#: line-only trim takes a black head in a space to ~0.6 sp (Litolff p4: ten re-run heads the ink agreed with read 0.625-0.635 sp), and
+#: `readers_split` / `no_mask` are one head whose fill or raster went unread.
+STEM_END_NOT_A_HEAD = ("no_head_ink", "holds_another_marks_ink", "too_wide", "too_tall")
+
+
+def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
+    """lane-stem-end-head round 3 (flag `OMR_STEM_END_HEAD_INK`; only boxes it filed at a stem end, so OFF changes nothing): the box's
+    OWN per-box ink reader (`Q.HEAD_INK`, `gather.gather_head_ink`, the reader every detector head gets) is the ink's witness on it.
+    A 0.05 re-run box (`rerun_only`) or an ink-only candidate whose ink that reader says is not ONE head (`STEM_END_NOT_A_HEAD`) has
+    two witnesses that disagree (or its one witness against itself): REFUSED, with the candidates and why -- never written on a guess.
+    Agreement (one head) falls through to the plain path (re-run) or the blue one (ink only)."""
+    d = box_row.detail or {}
+    if d.get("source") != "stem_end_head" or d.get("ink_verdict") not in ("rerun_only", "ink_only"):
+        return None
+    if ev.rows(Q.HEAD_INK):
+        return None                                # read as one head with its fill: the ink agrees
+    ab = ev.refusals(Q.HEAD_INK)
+    if not ab:
+        return None
+    hd = ab[-1].detail or {}
+    hi = {"row": ab[-1].id, "not_one_head": hd.get("not_one_head"), "extent_sp": hd.get("extent_sp")}
+    if hi["not_one_head"] not in STEM_END_NOT_A_HEAD:
+        return None
+    return Ruling(value=True, reason="stem_end_ink_disagrees", used=(box_row.id, hi["row"]),
+                  detail={"class": box_row.value[0], "ink_verdict": d.get("ink_verdict"), "head_ink": hi.get("not_one_head"),
+                          "head_ink_extent_sp": hi.get("extent_sp"), "score": box_row.score, "read_from": d.get("read_from"),
+                          "candidates": [{"value": "notehead", "class": box_row.value[0], "witness": d.get("read_from")},
+                                         {"value": "not_a_notehead", "witness": "head_ink:" + str(hi.get("not_one_head"))}]})
+
+
 @decision(
     quantity=Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
     # ⚠️ ROADMAP 2.6d adds `Q.LEDGER_RUNG_INK`: `_belongs_to_a_nearer_staff`
@@ -3558,7 +3589,9 @@ def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
                   # ROADMAP 2.230 m1: the stroke owner's box verdict -- `_claimed_by_a_whole_rest`.
                   Q.STROKE_OWNER,
                   # lane-stem-end-head round 2: an ink-only stem-end head's strokes, against every ink claim -- `_stem_end_ink_claimed`.
-                  Q.GLYPH_STROKES),
+                  Q.GLYPH_STROKES,
+                  # lane-stem-end-head round 3: a stem-end box's own head-ink read -- `_stem_end_box_ink_disagrees`.
+                  Q.HEAD_INK),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
           Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
@@ -3571,7 +3604,7 @@ def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
           Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
           Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
           Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
-          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER, Q.GLYPH_STROKES),
+          Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER, Q.GLYPH_STROKES, Q.HEAD_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
@@ -3593,6 +3626,7 @@ def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
                                      "claim_narrowed:key_signature",
                                      "claimed_by:whole_rest",
                                      "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only",
+                                     "stem_end_ink_disagrees",
                                      "is_a_rest_shape",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
@@ -3787,6 +3821,9 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
         seh_claim = _stem_end_ink_claimed(ev, box_row)
         if seh_claim is not None:
             return seh_claim
+    seh_split = _stem_end_box_ink_disagrees(ev, box_row)
+    if seh_split is not None:
+        return seh_split
     clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
     if clef_row is not None:
         return Ruling(

@@ -285,14 +285,24 @@ def ink_head_at_end(page_binary: Any, stem_page: Tuple[float, float, float], end
         out["why"] = "no_raster"
         return out
     out.update(trimmed=got.get("trimmed"), value=got.get("value"), extent_sp=got.get("extent_sp"),
-               oval_width_sp=got.get("oval_width_sp"))
+               oval_width_sp=got.get("oval_width_sp"), rim_box=got.get("rim_trimmed") or got.get("trimmed"),
+               rim_extent_sp=got.get("rim_extent_sp"))
     if got.get("trimmed") is None:
         out["why"] = "no_head_ink"
         return out
+    if got.get("not_one_head") == "too_small" and _rim_head_sized(got):
+        # Round 3 (Sean's r2 tile 7, "too rectangular to capture the full bite whose ink overlaps the staff lines"): the line-only trim
+        # takes a black head in a space down to ~0.6 sp (its rim lies on both lines); with that rim it is head-sized, so it is one head
+        out["rim_rescued"] = True
+        got = dict(got, not_one_head=None)
+        got["value"], got["margin"], _w = head_ink.fill_from_slit(got.get("slit"))
+        out["value"] = got["value"]
     if got.get("not_one_head"):
         out["why"] = "not_one_head:" + str(got["not_one_head"])
         return out
     w_sp, h_sp = got["extent_sp"]
+    if out.get("rim_rescued"):
+        h_sp = float(got["rim_extent_sp"][1])
     if w_sp < h_sp or (got.get("oval_width_sp") or 0.0) < head_ink.MIN_SPACES:
         out["why"] = "not_oval"
         return out
@@ -317,6 +327,18 @@ def ink_head_at_end(page_binary: Any, stem_page: Tuple[float, float, float], end
         return out
     out["head"] = True
     return out
+
+
+def _rim_head_sized(got: Dict[str, Any]) -> bool:
+    """The trimmed head with its rim rows back (`head_ink.trim_head`'s `rim_extent_sp`) is at least a head's minimum both ways and no
+    taller than the cap: only the line-only trim made it 'too_small'."""
+    from . import head_ink
+    rim = got.get("rim_extent_sp")
+    if not rim:
+        return False
+    w, h = float(rim[0]), float(rim[1])
+    cap = head_ink.MAX_HEIGHT_SPACES_V2 if head_ink.trim_line_only_v2() else head_ink.MAX_HEIGHT_SPACES
+    return w >= head_ink.MIN_SPACES and head_ink.MIN_SPACES <= h <= cap
 
 
 def combine(det_box_page: Optional[Sequence[float]], ink: Optional[Dict[str, Any]]) -> Tuple[str, str]:

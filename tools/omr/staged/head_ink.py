@@ -232,6 +232,7 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         return out
     by0r, by1r = int(round(by0)) - y0, int(round(by1)) - y0
     ey0, ey1 = max(blocks, key=lambda bl: (min(bl[1], by1r) - max(bl[0], by0r), bl[1] - bl[0]))
+    rim_y0, rim_y1 = ey0, ey1                 # the head's rows WITH its rim on the lines (lane-stem-end-head r3: the head as a box draws it)
     # a staff/ledger line fused with the head's rim (lesson 10) is the line's, not the head's height: line rows at the block's ends go
     if line_core is None:
         while ey1 - ey0 > 1 and line_rows[ey0]:
@@ -284,6 +285,11 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         noh = "too_tall"
     elif w_sp < MIN_SPACES or h_sp < MIN_SPACES:
         noh = "too_small"
+    # lane-stem-end-head r3 (read by `stem_end_heads` only; no filed row carries it): the trimmed head with the rows the line-only trim
+    # took back at its ends -- a black head in a space trims to ~0.63 sp on Litolff (10 of 15.75 px), the rim on its two lines included
+    # it is the head a detector box would draw (Sean 2026-10-29, r2 tile 7: "too rectangular to capture the full bite")
+    ry0, ry1 = (ey0, ey1) if out["stack_clipped"] else (min(ey0, rim_y0), max(ey1, rim_y1))
+    out.update(rim_trimmed=[x0 + ex0, y0 + ry0, x0 + ex1, y0 + ry1], rim_extent_sp=[round(w_sp, 3), round((ry1 - ry0) / sp, 3)])
     out.update(clean=clean, trimmed=[x0 + ex0, y0 + ey0, x0 + ex1, y0 + ey1], extent_sp=[round(w_sp, 3), round(h_sp, 3)],
                not_one_head=noh, foreign_share=fs,
                size_margin_sp=round(min(MAX_WIDTH_SPACES - w_sp, max_h - h_sp, w_sp - MIN_SPACES, h_sp - MIN_SPACES), 3))
@@ -323,13 +329,17 @@ def read_head_ink(page_binary: Any, box: Sequence[float], space_px: float, forei
     if t["not_one_head"]:
         out["why"] = "not_one_head"
         return out
-    sl = out["slit"]
-    if sl is None:
-        out["why"] = "readers_split"
-    elif sl >= SLIT_HOLLOW_MIN:
-        out["value"], out["margin"] = "hollow", round(sl - SLIT_HOLLOW_MIN, 4)
-    elif sl <= SLIT_FILLED_MAX:
-        out["value"], out["margin"] = "filled", round(SLIT_FILLED_MAX - sl, 4)
-    else:
-        out["why"] = "readers_split"
+    out["value"], out["margin"], out["why"] = fill_from_slit(out["slit"])
     return out
+
+
+def fill_from_slit(sl: Optional[float]) -> Tuple[Optional[str], Optional[float], Optional[str]]:
+    """2.148's slit cut on one head: `(value, margin, why)` -- 'hollow' / 'filled' with the signed distance past the cut, else
+    `(None, None, 'readers_split')`."""
+    if sl is None:
+        return None, None, "readers_split"
+    if sl >= SLIT_HOLLOW_MIN:
+        return "hollow", round(sl - SLIT_HOLLOW_MIN, 4), None
+    if sl <= SLIT_FILLED_MAX:
+        return "filled", round(SLIT_FILLED_MAX - sl, 4), None
+    return None, None, "readers_split"

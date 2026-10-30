@@ -138,3 +138,40 @@ def test_stroke_claim_and_ink_only():
     assert SEH.stroke_claim(("owns", [])) is None
     assert SEH.is_ink_only({"source": "stem_end_head", "ink_verdict": "ink_only"})
     assert not SEH.is_ink_only({"source": "stem_end_head", "ink_verdict": "agree"})
+
+
+# --- round 3 (Sean 2026-10-29, r2 tile 7: "too rectangular to capture the full bite whose ink overlaps the staff lines") ---------------
+
+def test_trim_head_files_the_head_with_its_rim_on_the_lines():
+    """A black head in a space, its rim fused into both lines: the line-only trim strips the line rows; `rim_trimmed` keeps them."""
+    from tools.omr.staged import head_ink
+    img = np.full((320, 400), 255, np.uint8)
+    for y in (100, 116, 132, 148, 164):
+        img[y:y + 3, 20:380] = 0
+    cv2.ellipse(img, (150, 125), (10, 9), -20, 0, 360, 0, -1)    # spans the rows of the lines at 116 and 132
+    t = head_ink.trim_head(img, (138.0, 115.0, 162.0, 135.0), SP)
+    assert t["trimmed"] is not None and t["rim_trimmed"] is not None
+    assert t["rim_trimmed"][1] < t["trimmed"][1] and t["rim_trimmed"][3] > t["trimmed"][3]
+    assert t["rim_extent_sp"][1] > t["extent_sp"][1]
+
+
+def test_rim_head_sized():
+    assert SEH._rim_head_sized({"rim_extent_sp": [1.33, 1.0]})
+    assert not SEH._rim_head_sized({"rim_extent_sp": [1.33, 0.4]})
+    assert not SEH._rim_head_sized({"rim_extent_sp": [0.3, 1.0]})
+    assert not SEH._rim_head_sized({})
+
+
+def test_fill_from_slit_is_read_head_inks_cut():
+    from tools.omr.staged import head_ink
+    assert head_ink.fill_from_slit(None) == (None, None, "readers_split")
+    assert head_ink.fill_from_slit(0.0)[0] == "filled"
+    assert head_ink.fill_from_slit(0.5)[0] == "hollow"
+    assert head_ink.fill_from_slit(0.1)[0] is None
+
+
+def test_too_small_is_not_a_disagreement():
+    """A re-run box whose own head-ink read is 'too_small' is the line-only trim of a head in a space, not 'not a head'."""
+    from tools.omr.staged.adjudicators import notehead_precision as NP
+    assert "too_small" not in NP.STEM_END_NOT_A_HEAD
+    assert {"no_head_ink", "too_wide", "too_tall", "holds_another_marks_ink"} == set(NP.STEM_END_NOT_A_HEAD)
