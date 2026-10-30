@@ -71,6 +71,8 @@ ROOT = pathlib.Path(__file__).resolve().parents[3]
 LIB = pathlib.Path("/Users/seanjohnson/Desktop/ReEngrave/library")
 RECORDS = LIB / "_shared-records"
 BIG_RECORD_BYTES = 5 * 1024 ** 3
+#: ink of an unclaimed stroke this close (staff spaces) to one of its cell's own staff lines is STAFF-LINE RESIDUE, not a mark
+LINE_NEAR_SPACES = 0.2
 STROKE_BASE = 375_000                    # record.STROKE_GLYPH_BASE: glyph ordinals from here number a cell's strokes
 ORANGE = (255, 140, 0)
 
@@ -176,11 +178,12 @@ class PageInk:
         self.staff = np.zeros((h, w), bool)             # raw ink the staff-line eraser took
         self.afam = np.zeros((h, w), np.uint32)         # READ area claims (applied outside cells only)
         self.weak = np.zeros((h, w), np.uint32)         # GUESSED / NARROWED area claims
+        self.nearline = np.zeros((h, w), bool)         # within LINE_NEAR_SPACES of a staff line at the cell's own lines
         self.cells_added = 0
         self.naive_stroke_px = 0                        # stroke ink px summed per cell, NOT de-duplicated (the control's contrast)
 
     def add_cell(self, rect: Sequence[int], labels: np.ndarray, claims: Dict[int, StrokeClaims],
-                 erased_staff: Optional[np.ndarray] = None) -> None:
+                 erased_staff: Optional[np.ndarray] = None, lines_page: Sequence[float] = ()) -> None:
         """`rect` = the cell's page rectangle (x0, y0, x1, y1); `labels` = its stroke label image in ANY frame (0 none, i = stroke ordinal + 1)
         and `claims[i]` that stroke's claims; `erased_staff` = a bool image (any frame) of the raw ink the eraser took."""
         x0, y0, x1, y1 = (int(v) for v in rect)
@@ -214,6 +217,12 @@ class PageInk:
         self.uk[sl] = np.maximum(self.uk[sl], uk_t[lab])
         self.opn[sl] |= opn_t[lab]
         self.incell[sl] = True
+        if len(lines_page) >= 2:
+            u = (lines_page[-1] - lines_page[0]) / (len(lines_page) - 1)
+            for ly in lines_page:
+                a, b = max(y0, int(round(ly - LINE_NEAR_SPACES * u))), min(y1, int(round(ly + LINE_NEAR_SPACES * u)) + 1)
+                if b > a:
+                    self.nearline[a:b, x0:x1] = True
         if erased_staff is not None:
             self.staff[sl] |= sample_to_rect(erased_staff.astype(np.uint8), w, h).astype(bool)
         self.cells_added += 1
@@ -261,6 +270,10 @@ class PageInk:
         rest = ink & (pop == 0)
         wk = self.weak != 0
         put(rest & wk, "weak_claim")
+        for c, name in UK_NAMES.items():
+            # only line-shaped strokes (horizontal, curve) can be residue: a stem or a blob crosses a line without being one
+            if name.split(":")[1] in ("horizontal", "curve"):
+                put(rest & self.incell & self.seen & self.nearline & (self.uk == c), "residue:" + name.split(":")[1])
         for c, name in UK_NAMES.items():
             put(rest & self.incell & self.seen & (self.uk == c), name)
         put(rest & self.incell & self.seen, "unclaimed:blob")
@@ -583,7 +596,8 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
             plant_double_claim(claims, plant[0], plant[1])
         raw = getattr(c, "binary", None)
         er = ((raw == 0) & (img != 0)) if raw is not None else None
-        canvas.add_cell(c.bbox_page_px, lab, claims, er)
+        ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
+        canvas.add_cell(c.bbox_page_px, lab, claims, er, [c.bbox_page_px[1] + y / c.upscale_factor for y in ys])
     for a in area_claims(prows):
         canvas.add_area(a["rect"], a["kind"], a["weak"])
     canvas.finish()
@@ -639,12 +653,12 @@ def staff_bands(cells: Sequence[Any]) -> List[Tuple[float, float]]:
     return sorted(seen.values())
 
 
-def problem_components(canvas: PageInk, bands: Sequence[Tuple[float, float]], limit: int = 40, join_px: int = 5) -> List[Dict[str, Any]]:
+def problem_components(canvas: PageInk, bands: Sequence[Tuple[float, float]], limit: int = 40, join_px: int = 1) -> List[Dict[str, Any]]:
     """The biggest connected pieces of unclaimed / contested ink, ONE STAFF AT A TIME (each page row goes to the staff whose middle line is
     nearest, so a system barline or bracket is cut into one piece per staff, never a tile of the whole system), biggest first."""
     import cv2
     names = canvas.cat_names
-    bad = [i for i, n in enumerate(names) if n.startswith(("unclaimed", "refused", "contested", "weak", "outside"))]
+    bad = [i for i, n in enumerate(names) if n.startswith(("unclaimed", "refused", "contested", "weak", "outside"))]   # residue is not a tile: it is the staff's
     if not bad or not bands:
         return []
     m = np.isin(canvas.cat, bad) & canvas.ink
@@ -670,7 +684,7 @@ def problem_components(canvas: PageInk, bands: Sequence[Tuple[float, float]], li
             sl = (slice(y, y + h), slice(x, x + w))
             sel = sub[sl] & (lab[sl] == i)
             px = int(sel.sum())
-            if px < 40:
+            if px < 40 or w > 10 * u or h > 10 * u:   # a piece longer than ten spaces is a run along the staff or a system rule, not a mark
                 continue
             cats = collections.Counter(names[c] for c in canvas.cat[y0:y1][sl][sel])
             out.append({"box": [int(x), int(y + y0), int(x + w), int(y + y0 + h)], "ink_px": px, "states": dict(cats.most_common(4)),
@@ -791,7 +805,7 @@ def todo_list(t: Dict[str, Any], top: int = 10) -> List[Tuple[str, int]]:
     """GATHER's to-do list: the unclaimed / contested ink kinds, ranked by share of the page ink."""
     rows = []
     for name, px in t["state_px"].items():
-        if name.startswith(("unclaimed", "refused", "weak_claim", "debris", "outside_cells")):
+        if name.startswith(("unclaimed", "refused", "residue", "weak_claim", "debris", "outside_cells")):
             rows.append((name, px))
     for pair, px in t["contested_by_pair"].items():
         kinds, how = pair.split("|")
@@ -809,14 +823,14 @@ def render_tally(label: str, t: Dict[str, Any]) -> List[str]:
     lines = ["%s: %d ink px, %d cells" % (label, tot, t["cells"])]
     con = sum(v for k, v in sp.items() if k.startswith("contested"))
     twin = sp.get("twin", 0)
-    unc = sum(v for k, v in sp.items() if k.startswith(("unclaimed", "refused", "weak_claim", "debris", "outside_cells")))
+    unc = sum(v for k, v in sp.items() if k.startswith(("unclaimed", "refused", "residue", "weak_claim", "debris", "outside_cells")))
     staff = sp.get("staff_line", 0)
     lines.append("  one owner %s   twin %s   contested %s (open %s)   unclaimed %s   staff line (erased, the staff's) %s" % (
         pct(sp.get("one", 0), tot), pct(twin, tot), pct(con, tot), pct(sp.get("contested_open", 0), tot), pct(unc, tot), pct(staff, tot)))
     lines.append("  one owner by kind: " + ", ".join("%s %s" % (k, pct(v, tot)) for k, v in sorted(t["one_by_kind"].items(), key=lambda kv: -kv[1])))
     lines.append("  claimed by the register (area / trace), any state: " + (", ".join("%s %s" % (k, pct(v, tot)) for k, v in sorted(t["register_px_by_kind"].items(), key=lambda kv: -kv[1])) or "-"))
     lines.append("  unclaimed: " + (", ".join("%s %s" % (k, pct(v, tot)) for k, v in sorted(sp.items(), key=lambda kv: -kv[1])
-                                           if k.startswith(("unclaimed", "refused", "weak_claim", "debris", "outside_cells")) and v) or "-"))
+                                           if k.startswith(("unclaimed", "refused", "residue", "weak_claim", "debris", "outside_cells")) and v) or "-"))
     lines.append("  de-dup: stroke ink px summed per cell %d -> in page pixels %d (%.1f%% of the sum was the same ink seen twice)" % (
         t["naive_stroke_px"], t["stroke_px_deduped"], 100.0 * (1 - t["stroke_px_deduped"] / t["naive_stroke_px"]) if t["naive_stroke_px"] else 0.0))
     return lines
