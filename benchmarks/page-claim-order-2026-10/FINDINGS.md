@@ -161,3 +161,55 @@ Written by the manager from the lane reports (subagent FINDINGS writes are refus
 **Fix (STAGED GATHER, `gather_page_claims` + `claims.heading_blocks`, flags unchanged).** A block needs at least two LETTERS: a component at most `HEADING_MAX_COMPONENT_SPACES` tall AND wide, at least half the page's own letter height (median height of the ink components inside its READ word / label / dynamic claims; the staff space when none was read), owned by nothing: not inside any other register area, not along a `Q.SYSTEM_ARC` trace (`on_traces`, the arc claim's own ink), not inside a detector mark box (any class but `structural`). Smaller ink (an i-dot, a period) joins a block, never starts one. NOT CONFIRMED: the 0.5 factor.
 **Cause (Litolff p1 bar 4, "whole" -> "?").** Not an unsettled rest. OFF the bar held the false half note, so `export._lone_whole_rest_is_the_bar` (export.py:5513, `len(events) != 1`) did not fire and the rest was written as a literal 4-beat `whole` (duration 16) in a bar of 8; ON the note is gone, the rest is the lone event and is written as a measure rest (`<rest measure="yes"/>`, duration 8) like bars 1-3 and 5-7. `lane_report.py:425` prints a typeless rest as "?". Removing the false note SETTLED the rest.
 **Measured** (2 pages per plate, `--from gather --workers 1`, OFF vs ON): Brahms p0 page_heading claims 10 -> 5, false headings 6 -> 1 (page-foot text, no truth class), truth marks claimed 49 of 60 before and after; Brahms p5 headings 7 -> 0; Litolff p1 3 -> 1, p4 4 -> 0 (the one left is the printed title). File: Litolff notes -1 (the tempo note), measure rest written; Brahms nothing changed. Judged right->wrong 0, unwritten->wrong 0, invented->removed 0. Tiles: `out/print/2.221-wc-fix/` (4, key.json outside tiles/).
+
+## Stem-end head read from ink, round 2 (lane-stem-end-head, flag OMR_STEM_END_HEAD_INK OFF; 2026-10-29)
+
+STAGED. Subset Litolff 4,9 / Brahms 5,14, `lane_report --from gather --workers 1` (LANE_REPORT_SAMPLE subset).
+
+**Cause.** The read is early in GATHER; it cannot move after the claims, because every per-box GATHER reader (positions, ink, ownership)
+must measure its box. On the merged tree the claims already saw the box, though: the key-signature claim named the round-1 flat
+(tile 8: refused `claimed_by:key_signature`) and ADJUDICATE refused the flag (tile 11: `stacked_head_duplicate`). Tiles were drawn
+from the GATHER population, not the written file. Two causes the tiles hid: (a) Sean's three ink-only eighths (Brahms p5, tiles 3/5/6)
+stood inside the NEXT staff and were filed and pitched on the wrong staff (a cell crop reaches into its neighbour); (b) a black head
+welded into a line, trimmed to its ink, is block-shaped, so `notehead_is_a_whole_rest` took Litolff p9's quarter (1734, 2385).
+Lesson: tile the written result, and check the staff a box is filed on, not only its ink.
+
+**Changes.** The DECISION moved to ADJUDICATE (`notehead_precision`, after every claim): any `Q.CLAIMED_AREA` owner or a claiming
+stroke-owner tier on its ink refuses it (`stem_end_ink_claimed`); off the staff with no ledger line refuses it (`stem_end_ink_unladdered`);
+otherwise NARROWED (`stem_end_ink_only`, written blue). GATHER: an ink-only head is filed on the staff whose lines hold it; the ink must
+not run past its stem by more than `CROSS_SPACES` (`stem_inside_the_ink`: flat 0.50 sp, flag 0.28; real heads the re-run also boxed up
+to 0.35, so the cut refuses ink-only heads only); a stem-end ink head is never a whole rest (`read_at_a_stem_end`).
+
+**Measure.** Litolff notes +5 -8, blue +4; Brahms notes +3 -1, blue +3; red bars 0 -> 0; judged right->wrong 0, unwritten->wrong 0,
+invented->removed 0. Old rescue OFF: Litolff 39 boxes (25 written), Brahms 12 (3). ON: agree 22 (18 written) / 2 (2); ink-only 8 (4
+written blue) / 6 (3); disagree-abstain 17 / 10; far-side refused 3 / 1. Lost = 7+1 old-rescue boxes the ink disagrees with (5 too_small,
+the trim shaving a welded head) + 1 dropped later. p9 quarter: written blue from ink. Round-1 tiles now: 3/5/6 written blue eighths on
+the right staff; 4 refused unladdered; 8, 11 refused stem_inside_the_ink; 1 narrowed but unwritten (duration beams_ambiguous); 2, 7, 9,
+10, 12 still abstain. New tiles: out/print/stem-end-head-r2 (key.json outside tiles/).
+
+## Stem-end head read from ink, round 3 (lane-stem-end-head, flag OMR_STEM_END_HEAD_INK OFF; 2026-10-29)
+
+STAGED. Same subset (Litolff 4,9 / Brahms 5,14), `lane_report --from gather --workers 1`.
+
+**Cause (the manager's diagnosis did NOT hold as stated).** Round 2 already filed the ink head in GATHER before every per-box reader
+(gather.py: `gather_stem_end_heads` precedes positions, stacked fit, head_ink, ownership, far-head ledgers; tile 7's box carries all
+their rows). The three misses were the ink SEED read acting as a gate in GATHER: (a) the seed sits on the convention's side of the
+stem, so a second's displaced head (tile 2) read `too_small` and the old-rescue box (0.35) was dropped -- its own per-box `HEAD_INK`
+read one filled head; (b) the line-only trim takes a black head in a space to ~0.63 sp (10 of 15.75 px; ten agree boxes on p4 alike),
+so ink-only boxes were flat (tiles 6/7) and many were refused `too_small`; (c) ink and re-run were paired per stem END, so a head with an
+up and a down stem was boxed twice (tile 6, duplicate) or abstained + flat (tile 7). Tile 5 was never a stem-end subject: a production
+box writes it (eighth, both arms). Test issue: the r2 tiles drew the filed boxes (not the search window), but their `kind` came from the
+GATHER/ADJUDICATE row, not the written file. Lesson: a pre-filter in GATHER is a decision; let the box's own per-box reader be the witness.
+
+**Changes.** GATHER: every re-run box is filed (as OFF); the ink is paired with it BY INK across all orphan ends (`agree` / `rerun_only`);
+an ink head nothing boxes is a candidate `ink_only` box = the trimmed head WITH its rim rows (`head_ink.trim_head` `rim_trimmed`, filed
+nowhere else). ADJUDICATE (`notehead_precision._stem_end_box_ink_disagrees`): a stem-end box whose own `Q.HEAD_INK` says not one head
+(no_head_ink / another mark's ink / too wide / too tall; `too_small` excluded) is refused `stem_end_ink_disagrees` with candidates;
+agreement is plain (re-run) or blue (ink only); claims, unladdered and far-side refusals kept; a flagged stem-end box is never a whole rest.
+
+**Measure.** Litolff notes +3 -0, blue +3; Brahms notes +2 -0, blue +2; red bars 0 -> 0; judged right->wrong 0, unwritten->wrong 0,
+invented->removed 0. Old rescue written OFF 25 / 3, still written ON 25 / 3 (lost 0; r2 lost 8). Boxes ON: agree 22 / 2, rerun_only 17 / 10
+(6 / 1 written), ink_only 7 / 6 (3 / 2 written blue), refused `stem_end_ink_disagrees` 5 / 3, far-side abstentions 4 / 1.
+r2 tiles: 1 (p9 quarter) blue quarter; 2 plain quarter (second); 3 (ff) refused disagrees; 4 blue half; 5, 6 eighths written; 7 agree box,
+written NOT (one head, two stems: stem direction null, beam levels 0..1); 8 none; 9 blue quarter; 10 refused too_narrow; 11, 12 refused
+unladdered. New tiles: out/print/stem-end-head-r3 (5 written blue, 7 refused disagreements; key.json + sheet.png outside tiles/).

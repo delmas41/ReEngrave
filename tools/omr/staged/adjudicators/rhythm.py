@@ -9608,6 +9608,7 @@ def _rest_shaped(height_spaces: float, aspect: float) -> bool:
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("shape_and_position_agree", "not_rest_shaped",
              "not_where_a_whole_rest_can_hang", "no_page_frame",
+             "read_at_a_stem_end",
              ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
@@ -9661,6 +9662,15 @@ def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
     would have deleted.
     """
     box_rows = ev.rows(Q.GLYPH_BOX)
+    # lane-stem-end-head round 2: a head the page ink alone read AT A STEM'S END (`OMR_STEM_END_HEAD_INK`) has a stem, and a rest never
+    # has one (the 2.179 convention `rest_has_a_stem`); its box is the TRIMMED head (line rows out), which a black head welded into a line
+    # leaves block-shaped. Litolff p9 (1734, 2385), Sean's real quarter, read as a whole rest this way.
+    if box_rows:
+        d0 = box_rows[-1].detail or {}
+        # round 3: every box the flag filed at a stem end (agree / rerun_only / ink_only; OFF files no `ink_verdict`)
+        if d0.get("source") == "stem_end_head" and d0.get("ink_verdict") in ("ink_only", "agree", "rerun_only"):
+            return Ruling(value=False, reason="read_at_a_stem_end", used=(box_rows[-1].id,),
+                          detail={"end": d0.get("end"), "read_from": d0.get("read_from")})
     page_box = None
     for r in box_rows:
         page_box = (r.detail or {}).get("bbox_page_px") or page_box

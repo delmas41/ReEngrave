@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-29 -- stem-end head reader from ink LANDED ON (lane-stem-end-head, OMR_STEM_END_HEAD_INK default ON, ROADMAP 2.224)
+
+STAGED. GATHER files the detector re-run boxes plus an ink-only candidate box at a CV stem end with no head box; ADJUDICATE (after all claims) refuses claimed ink, a box whose HEAD_INK reads not one head, far-side and unladdered heads, never a whole rest, and writes ink-only heads GUESSED (blue). Cause: the 0.07 rescue flipped with the crop. Subset Litolff +3/-0, Brahms +2/-0; judged right->wrong 0; Sean's round-3 tiles written 5/5 right. Merged over word/bracket claims, whole rests, page-wide barlines, arc claim and the duplicate-pass cleanup.
+
 ## 2026-10-29 -- duplicate-pass cleanup LANDED (lane-dedupe-passes, no flag)
 PURE REFACTOR (STAGED + shared): `yolo_detector` runs the detector once at the lowest rescue floor and filters it for the 0.10/0.03/0.05 rescues (LEGACY callers keep their old defaults); `header_cells_for_page` built once per page; a per-page gray/ink cache; `direction_text` page ink computed once (copied arrays). Gathered rows identical: 0 differences over 11.8M values (Litolff p4,10 vs merge-base), Brahms p0,5 identical, re-proved on main + merge. Test: `test_dedupe_passes_2026_10_29.py`. Plan `docs/plan-2026-10-28-page-claim-order.md` §10b.
 
