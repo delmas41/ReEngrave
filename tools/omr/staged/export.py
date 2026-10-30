@@ -470,6 +470,8 @@ CLAIM_NARROWED_PREFIX = "claim_narrowed:"
 WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs",)
 #: lane-stem-end-head round 2: the ink-only stem-end head, NARROWED {a head, not one} by `notehead_precision`
 STEM_END_INK_ONLY_REASON = "stem_end_ink_only"
+#: ROADMAP 2.238: a rest box holding a note's stem that the old rules kept, NARROWED by `family_precision` (written blue)
+REST_HOLDS_A_STEM_REASON = "rest_holds_a_stem"
 
 
 def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
@@ -484,6 +486,11 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.REST_IS_NOT_A_REST,
                 "candidates": [{"value": "whole_rest", "support": 1.0}, {"value": "not_a_rest", "support": 0.5}],
                 "chosen": {"value": "whole_rest"}}
+    if v is not None and v.get("outcome") == "narrowed" and v.get("reason") == REST_HOLDS_A_STEM_REASON:
+        # ROADMAP 2.238 (`OMR_OWNER_SHAPE`): a rest box whose ink holds a stroke no rest prints, kept by the old rules -- GUESSED (blue)
+        return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.REST_IS_NOT_A_REST,
+                "candidates": [{"value": "symbol", "support": 1.0}, {"value": "stem_ink", "support": 1.0}],
+                "chosen": {"value": "symbol"}}
     v = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
     if v is not None and v.get("outcome") == "narrowed" and v.get("reason") == STEM_END_INK_ONLY_REASON:
         # lane-stem-end-head round 2 (flag OMR_STEM_END_HEAD_INK): a head the page ink alone read at a stem end -- GUESSED (blue)
