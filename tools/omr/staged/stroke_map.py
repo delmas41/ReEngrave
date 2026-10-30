@@ -109,6 +109,8 @@ LEDGER_STUB_MIN_SPACES = 0.15
 LEDGER_EDGE_EXCESS_SPACES = 0.2
 #: an oval tip the horizontal opening left to the remainder is smaller than this
 LEDGER_TIP_MAX_SP2 = 0.35
+#: ... and lies no further than this outside the head part's box (the oval's edge columns; a dot stands clear of the head)
+HEAD_EDGE_PAD_SPACES = 0.3
 #: a ledger rung is level: its thin columns' centres fit a line no steeper than this (rise over run; ~3 degrees)
 LEDGER_MAX_SLOPE = 0.05
 
@@ -771,31 +773,47 @@ def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
             if not part.any():
                 continue
             c, oy, ox = _crop(part)
-            if kind == "horizontal" and k == "blob":
+            if k == "blob" and (kind == "horizontal" or join in ("stem|head", "head|head")):
                 rung_heads.append(len(out))
             out.append((k, c, x0 + ox, y0 + oy))
             if len(out) - 1 != first:
                 joins.append((len(out) - 1, first, join))
-    # the oval's tips: a small remainder blob within the head's columns, touching it above or below, joins the head
+    # the oval's own edge: a small remainder blob TOUCHING a head part cut off a stem or a rung (within the 1 px gap the cut leaves), lying
+    # within the head's rows and no further out than `HEAD_EDGE_PAD_SPACES`, is the oval's tip or the edge column the vertical opening
+    # dropped (a notched column is not in the opening) -- it joins the head, so a head is ONE stroke (2.239 strict readout: heads were
+    # 2-4 pieces). Among several heads (a stack), the one whose rows it shares most.
+    import cv2
+    pad = max(1, int(round(HEAD_EDGE_PAD_SPACES * sp)))
     gone = set()
-    for hi in rung_heads:
+    for li in loose:
+        _k2, lm, lx, ly = out[li]
+        lh, lw = lm.shape
+        best = None
+        for hi in rung_heads:
+            _k, hm, hx, hy = out[hi]
+            hh, hw = hm.shape
+            if lx < hx - pad or lx + lw > hx + hw + pad or ly < hy - pad or ly + lh > hy + hh + pad:
+                continue
+            gx0, gy0 = min(hx, lx) - 3, min(hy, ly) - 3
+            A = np.zeros((max(hy + hh, ly + lh) - gy0 + 3, max(hx + hw, lx + lw) - gx0 + 3), np.uint8)
+            A[hy - gy0:hy - gy0 + hh, hx - gx0:hx - gx0 + hw] = hm
+            near = cv2.dilate(A, np.ones((5, 5), np.uint8)).astype(bool)[ly - gy0:ly - gy0 + lh, lx - gx0:lx - gx0 + lw]
+            if not (near & lm).any():
+                continue
+            share = min(hy + hh, ly + lh) - max(hy, ly)
+            if best is None or share > best[0]:
+                best = (share, hi)
+        if best is None:
+            continue
+        hi = best[1]
         k, hm, hx, hy = out[hi]
-        for li in loose:
-            if li in gone:
-                continue
-            _k2, lm, lx, ly = out[li]
-            lh, lw = lm.shape
-            if lx < hx - 1 or lx + lw > hx + hm.shape[1] + 1:
-                continue
-            if ly > hy + hm.shape[0] + 2 or ly + lh < hy - 2:
-                continue
+        if True:
             X0, Y0 = min(hx, lx), min(hy, ly)
             X1, Y1 = max(hx + hm.shape[1], lx + lw), max(hy + hm.shape[0], ly + lh)
             u = np.zeros((Y1 - Y0, X1 - X0), bool)
             u[hy - Y0:hy - Y0 + hm.shape[0], hx - X0:hx - X0 + hm.shape[1]] |= hm
             u[ly - Y0:ly - Y0 + lh, lx - X0:lx - X0 + lw] |= lm
             out[hi] = (k, u, X0, Y0)
-            hm, hx, hy = u, X0, Y0
             gone.add(li)
     if gone:
         keep = [i for i in range(len(out)) if i not in gone]

@@ -107,6 +107,18 @@ class SplitOthers(unittest.TestCase):
             self.assertLess(st.thickness_sp, 0.25)
             self.assertTrue(any(how == "ledger|head" for _j, how in st.joined_to))
 
+    def test_tile_9_a_rung_at_the_heads_top_is_not_a_second_head(self):
+        """Sean 2026-10-30, round-1 tile 9 ("gets a part of a head but mostly the ledger line next to it"): a head below the staff on a
+        stem, a rung crossing its top -- the stack cut must not take the rung + the head's top as a 'head'; the head stays one part."""
+        img, raw = _blank()
+        _oval(img, 300, 900, rx=55, ry=50, p=2.5)
+        img[300:880, 248:264] = 0                       # a stem at the head's left, up to the staff
+        img[843:855, 215:390] = 0                       # a rung through the head's top rows, sticking out both sides
+        on = SM.map_strokes(img, SP, LINES, raw, split_joins=True)
+        heads = [s for s in on.strokes if s.kind == "blob" and s.area_sp2 > 0.3]
+        self.assertEqual(len(heads), 1, [(s.kind, s.box, s.area_sp2, s.joined_to) for s in on.strokes])
+        self.assertGreaterEqual(heads[0].box[3], 0.8 * SP)          # the oval below the rung row, never a sliver
+
     def test_a_clef_box_keeps_its_ink_whole(self):
         img, raw = _chord()
         on = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[(200, 150, 400, 750)])
