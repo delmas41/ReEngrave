@@ -67,7 +67,7 @@ OWNER_ARC = "arc"
 #: accidentals should be considered key signature") and the new key's sharps / flats -- from the clef's right edge to the run's last slot
 OWNER_KEY = "key_signature"
 #: ROADMAP 2.221 m1 / m1b (docs/plan-2026-10-28-page-claim-order.md §7, §9): a word or dynamic READ outside the staves, and a bracket or
-#: brace at a system's left edge, claim their ink PAGE-WIDE before any head (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, OFF)
+#: brace at a system's left edge, claim their ink PAGE-WIDE before any head (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, default ON)
 OWNER_WORD = "word"
 OWNER_BRACKET = "bracket"
 OWNERS = (OWNER_CLEF, OWNER_COLUMN, OWNER_METER, OWNER_KEY, OWNER_WORD, OWNER_BRACKET)
@@ -260,13 +260,13 @@ BRACKET_MIN_HEIGHT_SPACES = 4.0
 
 
 def words_first_enabled() -> bool:
-    """`OMR_CLAIM_WORDS_FIRST` (ROADMAP 2.221 m1), default OFF; needs the register. An explicit 1/true/yes/on enables."""
-    return enabled() and os.environ.get(ENV_WORDS, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLAIM_WORDS_FIRST` (ROADMAP 2.221 m1), default ON (Sean 2026-10-29); needs the register. An explicit 0/false/no/off disables."""
+    return enabled() and os.environ.get(ENV_WORDS, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def brackets_first_enabled() -> bool:
-    """`OMR_CLAIM_BRACKETS_FIRST` (ROADMAP 2.221 m1b), default OFF; needs the register. An explicit 1/true/yes/on enables."""
-    return enabled() and os.environ.get(ENV_BRACKETS, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLAIM_BRACKETS_FIRST` (ROADMAP 2.221 m1b), default ON (Sean 2026-10-29); needs the register. An explicit 0/false/no/off disables."""
+    return enabled() and os.environ.get(ENV_BRACKETS, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def band_share(box: Sequence[float], bands: Iterable[Tuple[float, float]]) -> float:

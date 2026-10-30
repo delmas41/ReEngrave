@@ -15038,7 +15038,7 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
 def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
     """`Q.CLAIMED_AREA` rows of owner `word` and `bracket`, ONE PER MARK PER (page, system) -- ROADMAP 2.221 m1 (flag
-    `OMR_CLAIM_WORDS_FIRST`) and m1b (flag `OMR_CLAIM_BRACKETS_FIRST`), both default OFF, both needing the register.
+    `OMR_CLAIM_WORDS_FIRST`) and m1b (flag `OMR_CLAIM_BRACKETS_FIRST`), both default ON (Sean 2026-10-29), both needing the register.
 
     PATH: STAGED GATHER, bookkeeping on rows already filed (no new image or OCR pass, Sean 2026-10-29). AFTER `gather_direction_words`
     (reads its accepted rows). Sean 2026-10-28/29: words and dynamics "can't easily be mistaken for other things", brackets are "easy to see
@@ -16725,7 +16725,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                              ocr_fallback=ocr_fallback)
         gather_direction_words(log, pws, cells, local, detections,  # hard edge: last
                                roster=roster, work_id=work_id)
-        # ROADMAP 2.221 m1 / m1b (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, default OFF): AFTER the word reader (reads its
+        # ROADMAP 2.221 m1 / m1b (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, default ON): AFTER the word reader (reads its
         # accepted rows and the dynamic letters); page-wide, one claim per mark per system, no new reading pass.
         gather_page_claims(log, pws, cells, local, detections, progress=progress)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the

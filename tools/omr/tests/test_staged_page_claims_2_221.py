@@ -1,5 +1,5 @@
 """ROADMAP 2.221 m1 / m1b: words, dynamics, brackets and braces claim their ink FIRST and PAGE-WIDE -- `gather.gather_page_claims`
-(flags `OMR_CLAIM_WORDS_FIRST`, `OMR_CLAIM_BRACKETS_FIRST`, default OFF), `claims.spell_letter_runs` / `claims.left_edge_claims`, and the
+(flags `OMR_CLAIM_WORDS_FIRST`, `OMR_CLAIM_BRACKETS_FIRST`, default ON), `claims.spell_letter_runs` / `claims.left_edge_claims`, and the
 one consult `claimed_by`.
 
 CAUSE (Sean 2026-10-28): heads take ink first because nobody wrote down who owns a word's letters or a bracket's rule before the head
@@ -129,10 +129,14 @@ BRACKET_HEAD = (88, 128, 12, 16)        # a box on the bracket rule, left of the
 
 
 class TestFlags(unittest.TestCase):
-    def test_both_default_off_and_need_the_register(self):
+    def test_both_default_on_deny_list_and_need_the_register(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_CLAIM_WORDS_FIRST", None)
             os.environ.pop("OMR_CLAIM_BRACKETS_FIRST", None)
+            os.environ.pop("OMR_CLAIMED_REGISTER", None)
+            self.assertTrue(CL.words_first_enabled())
+            self.assertTrue(CL.brackets_first_enabled())
+        with mock.patch.dict(os.environ, {"OMR_CLAIM_WORDS_FIRST": "0", "OMR_CLAIM_BRACKETS_FIRST": "off"}):
             self.assertFalse(CL.words_first_enabled())
             self.assertFalse(CL.brackets_first_enabled())
         with mock.patch.dict(os.environ, WORDS):
