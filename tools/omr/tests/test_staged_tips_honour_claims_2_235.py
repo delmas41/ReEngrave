@@ -67,7 +67,7 @@ class TestClaimsExplainTheOccupiedTip(unittest.TestCase):
         self.assertIsNot(flag, False)
 
     def test_twin_other_cannot_tell_words_are_not_the_claims_to_explain(self):
-        flag, notes = tips(True, [V(0, UP), DOT], claimants=[(7, "augmentationDot", (640, 200, 40, 40), (1,))], why="ink_not_flag_shaped")
+        flag, notes = tips(True, [V(0, UP), DOT], claimants=[(7, "augmentationDot", (640, 200, 40, 40), (1,))], why="head_at_this_end")
         self.assertIsNone(flag)
         self.assertEqual(notes, {})
 

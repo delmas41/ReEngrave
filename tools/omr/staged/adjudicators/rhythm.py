@@ -4458,10 +4458,13 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems, ignore_owned: bool = False
 #: ROADMAP 2.235 (Sean 2026-10-30: "I don't want to undo gather changes - I want to rework later stages to function better with the new
 #: info"). The stem-tip readers consult the CLAIMS. Default OFF (`1`/`true`/`yes`/`on` enables) until Sean's tiles.
 TIPS_HONOUR_CLAIMS_ENV = "OMR_TIPS_HONOUR_CLAIMS"
-#: the GATHER tip window's cannot-tell words a claim can explain: `occupied` = a detection box (a dot, a slur/tie, an accidental, a word, a
-#: neighbour's head) covers ink attached to this stem's tip. The others (`runs_on`, `crosses_both_sides`, `ink_not_flag_shaped`, ...) say
-#: something about the ink's SHAPE, not whose it is, and are not touched.
-TIP_CLAIMS_EXPLAIN = ("occupied",)
+#: the GATHER tip window's cannot-tell words a claim can explain. `occupied` = a detection box covers ink attached to the tip; the rest are
+#: the window's SHAPE words on raster ink (`crosses_both_sides` 55 of 104 Brahms narrowed tips, `runs_on` 21, `no_room` 10, ...): the window
+#: cannot say WHOSE ink it saw, and a dot or a slur end beside the stem is ink on both sides / running on. The stroke map can: the word is
+#: replaced only where, with the strokes decided to another mark left out, nothing stands at the tip (and at least one was left out).
+#: `head_at_this_end` (a head, not ink) is not explained.
+TIP_CLAIMS_EXPLAIN = ("occupied", "crosses_both_sides", "runs_on", "ink_not_flag_shaped", "ink_past_the_tip", "no_room",
+                      "lines_take_the_window")
 
 
 def tips_honour_claims_enabled() -> bool:

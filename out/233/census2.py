@@ -1,7 +1,7 @@
 """2.233 census from lane_report slices, re-adjudicated (no regather): usage census2.py PLATE TAG OUT.json [FLAG=VAL ...]
 Counts every pitched head / rest the exporter refused for a value reason, with the Q.DURATION verdict's reason and detail."""
 import sys, json, collections, os, time
-sys.path.insert(0, '/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a85d4443ac64d554a')
+sys.path.insert(0, '/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a26d61ddc53de8906')
 plate, tag, outp = sys.argv[1], sys.argv[2], sys.argv[3]
 for a in sys.argv[4:]:
     k, _, v = a.partition('=')

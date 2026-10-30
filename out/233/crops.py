@@ -1,7 +1,7 @@
 """2.233 crops: usage crops.py SPEC.json OUTDIR. SPEC = [{plate, page, boxes:[[x0,y0,x1,y1]...], name}]. Thin orange box on each head.
 Crop = union of boxes padded 140 px each side (600 dpi page px)."""
 import json, os, sys
-sys.path.insert(0, "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a85d4443ac64d554a")
+sys.path.insert(0, "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a26d61ddc53de8906")
 from PIL import Image, ImageDraw
 from tools.omr.preprocessing import render_page
 from tools.omr.staged.lane_report import LIB, PLATES

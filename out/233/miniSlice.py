@@ -1,6 +1,6 @@
 """usage: miniSlice.py SRC_TAG_DIR_OR_TAG PLATE PAGES OUTDIR  -> OUTDIR/PLATE/{observations,abstentions,verdicts}.jsonl (pages + doc-level rows)"""
 import sys, json, os, re
-sys.path.insert(0, '/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a85d4443ac64d554a')
+sys.path.insert(0, '/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a26d61ddc53de8906')
 from tools.omr.staged import lane_report as L
 tag, plate, pages, out = sys.argv[1], sys.argv[2], {int(x) for x in sys.argv[3].split(',')}, sys.argv[4]
 src = L.slice_dir(plate, tag)
