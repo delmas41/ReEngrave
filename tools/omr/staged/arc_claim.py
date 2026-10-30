@@ -168,3 +168,150 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
     if pos == "slur":
         return "slur", rule, "stack_says_tie_notes_differ"
     return None, "stack_slur_over_two_same_pitch_notes", "stack_says_slur_two_same_pitch_notes"
+
+
+# ── ROADMAP 2.223: PAGE-WIDE ANCHORING -- bind each claimed curve's two ends to notes, after the heads are read ──────────────────────────────
+#
+# Sean 2026-10-29 (DECISIONS "CLAIM EARLY, ANCHOR LATE"): GATHER claims each arc page-wide and records its ends; heads are read bar by bar;
+# THEN a page-wide pass binds the ends to notes and the kind follows by the tie rule. The unit is the CURVE `gather_system_arcs` traced and
+# joined across barlines (`Q.SYSTEM_ARC`), never one cell's box: every box of one printed arc gets ONE binding and so ONE kind.
+#
+# `OMR_ARC_BIND_PAGEWIDE` (default OFF, allow-list). Its consumers: `ownership.adjudicate_arc_kind` (the kind from the bound ends),
+# `ownership.adjudicate_tie_pair` (a tie's pair is the bound pair) and `export._page_bound_slur_spans` (a slur written ONCE per curve on its
+# bound heads). Where the binding cannot decide, each consumer keeps its OFF behaviour and records the binding's abstention beside it.
+#
+# THE CANDIDATES ARE GATHER'S (rule 6, connect, never guess): the curve's two traced ends (`x_left_page` / `y_left_page`, ... -- GATHER's
+# measurement) and the GATHER notehead boxes inside the SAME windows `arcs_system.anchor_ends` used to record its anchors
+# (`ANCHOR_OUT_SPACES`, `ANCHOR_IN_SPACES`, `ANCHOR_DY_SPACES`, imported). What is NEW is only that ADJUDICATE's head verdicts are known: a
+# box refused as a notehead or relocated to another staff is no longer a candidate, and a chord at an end is resolved by Sean's 2.75 rule
+# (an arc ABOVE joins the TOP note of the column, BELOW the BOTTOM; Sean 2026-10-09). Two columns at one end that the windows cannot
+# separate by `BIND_COLUMN_MARGIN_SPACES` ABSTAIN with both candidates and the signed margin.
+#
+# AN END WITH NO HEAD is a SYSTEM EDGE only where no usable head of the staff lies beyond it anywhere in the system (a tie running off the
+# system -- also where a courtesy meter or key after the last barline made a cell of its own, which the per-cell test took for a next bar);
+# otherwise it is UNBOUND (a head the reader lost) and abstains with the nearest head's distance as its margin.
+#
+# CONVENTION ASSUMED: Sean's tie rule (page-facts s1, 2026-10-29) and 2.75's top/bottom rule; the windows are 2.166's (set on Litolff 984073
+# and Brahms 317803 only). WHAT WOULD FALSIFY IT: a written tie or slur Sean reads as joining other notes; a tie Sean reads as a slur.
+# NOT CONFIRMED: `BIND_COLUMN_MARGIN_SPACES` and `BIND_COLUMN_DX_WIDTHS` are set by hand, not swept.
+
+ENV_BIND = "OMR_ARC_BIND_PAGEWIDE"
+
+#: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)
+BIND_COLUMN_DX_WIDTHS = 0.6
+#: at one end, a second column whose distance is within this many staff spaces of the nearest one makes the end ambiguous
+BIND_COLUMN_MARGIN_SPACES = 0.5
+#: a curve whose middle third sits this far (spaces) above / below the line through its two ends is ABOVE / BELOW its notes
+BIND_SIDE_MIN_SPACES = 0.1
+
+
+def bind_enabled() -> bool:
+    """`OMR_ARC_BIND_PAGEWIDE`, default OFF: only an explicit 1/true/yes/on enables."""
+    return _on(ENV_BIND)
+
+
+def curve_side(trace: Optional[Sequence[Sequence[float]]], sp: float) -> Optional[str]:
+    """`above` (a cap, drawn over its notes), `below` (a cup, under them) or None (flat / no trace), from the traced rows
+    `[[x, y_top, y_bottom], ...]`: the middle third's mean centre against the chord through the two ends."""
+    if not trace or len(trace) < 6 or sp <= 0:
+        return None
+    pts = sorted((float(t[0]), (float(t[1]) + float(t[2])) / 2.0) for t in trace)
+    n = len(pts)
+    (x0, y0), (x1, y1) = pts[0], pts[-1]
+    mid = pts[n // 3: max(n // 3 + 1, 2 * n // 3)]
+    dev = []
+    for x, y in mid:
+        f = 0.0 if x1 == x0 else (x - x0) / (x1 - x0)
+        dev.append(y - (y0 + f * (y1 - y0)))
+    m = sum(dev) / len(dev)
+    if m <= -BIND_SIDE_MIN_SPACES * sp:
+        return "above"
+    if m >= BIND_SIDE_MIN_SPACES * sp:
+        return "below"
+    return None
+
+
+def _columns(cands: List[Dict[str, Any]]) -> List[List[Dict[str, Any]]]:
+    cols: List[List[Dict[str, Any]]] = []
+    for h in sorted(cands, key=lambda h: h["cx"]):
+        if cols and abs(h["cx"] - cols[-1][0]["cx"]) <= BIND_COLUMN_DX_WIDTHS * max(h["w"], cols[-1][0]["w"]):
+            cols[-1].append(h)
+        else:
+            cols.append([h])
+    return cols
+
+
+def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],
+             usable: Any = None) -> Dict[str, Any]:
+    """One end of a curve at page `(ex, ey)`; `sgn` -1 for the left end, +1 for the right. `heads`: `{key, cx, cy, w, h}` of the staff in the
+    system (GATHER boxes); `usable(key)` says whether ADJUDICATE left it a notehead of this staff (asked only of heads that could matter).
+
+    Returns `{"head": key, ...}` / `{"edge": True}` / `{"unbound": why, "candidates": [...], "margin_spaces": m}` (m < 0: how far inside the
+    cut the refusal came; for `no_head_at_end` how far past the window the nearest usable head lies)."""
+    from .arcs_system import ANCHOR_DY_SPACES, ANCHOR_IN_SPACES, ANCHOR_OUT_SPACES
+    ok = usable or (lambda _k: True)
+    cands = []
+    for h in heads:
+        out_by = (h["cx"] - ex) * sgn
+        if out_by > ANCHOR_OUT_SPACES * sp or out_by < -ANCHOR_IN_SPACES * sp:
+            continue
+        if abs(h["cy"] - ey) > ANCHOR_DY_SPACES * sp:
+            continue
+        if not ok(h["key"]):
+            continue
+        cands.append(dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)))
+    if not cands:
+        beyond = sorted((h for h in heads if (h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp),
+                        key=lambda h: abs(h["cx"] - ex))
+        for h in beyond:
+            if ok(h["key"]):
+                return {"unbound": "no_head_at_end", "candidates": [h["key"]],
+                        "margin_spaces": round((abs(h["cx"] - ex) - ANCHOR_OUT_SPACES * sp) / sp, 3)}
+        return {"edge": True}
+    cols = sorted(_columns(cands), key=lambda c: min(h["d"] for h in c))
+    d0 = min(h["d"] for h in cols[0])
+    if len(cols) > 1:
+        d1 = min(h["d"] for h in cols[1])
+        if (d1 - d0) < BIND_COLUMN_MARGIN_SPACES * sp:
+            return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
+                    "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    col = cols[0]
+    if len(col) == 1:
+        pick = col[0]
+    elif side == "above":
+        pick = min(col, key=lambda h: h["cy"])
+    elif side == "below":
+        pick = max(col, key=lambda h: h["cy"])
+    else:
+        return {"unbound": "chord_end_side_unread", "candidates": [h["key"] for h in col], "margin_spaces": None}
+    return {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3)}
+
+
+def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None) -> Dict[str, Any]:
+    """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
+    side = curve_side(detail.get("trace"), sp)
+    xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
+    xr, yr = detail.get("x_right_page"), detail.get("y_right_page")
+    if None in (xl, yl, xr, yr) or sp <= 0:
+        return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
+    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable)
+    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable)
+    if left.get("head") is not None and left.get("head") == right.get("head"):
+        left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
+    return {"left": left, "right": right, "side": side}
+
+
+def heads_between(a: Dict[str, Any], b: Dict[str, Any], heads: Sequence[Dict[str, Any]], usable: Any = None) -> List[str]:
+    """Usable heads of the staff strictly between the two bound heads in x, a head in either end's own column (its chord) excepted."""
+    ok = usable or (lambda _k: True)
+    lo, hi = (a, b) if a["cx"] <= b["cx"] else (b, a)
+    out = []
+    for h in heads:
+        if h["key"] in (a["key"], b["key"]) or not (lo["cx"] < h["cx"] < hi["cx"]):
+            continue
+        if abs(h["cx"] - lo["cx"]) <= BIND_COLUMN_DX_WIDTHS * max(h["w"], lo["w"]) \
+                or abs(h["cx"] - hi["cx"]) <= BIND_COLUMN_DX_WIDTHS * max(h["w"], hi["w"]):
+            continue
+        if ok(h["key"]):
+            out.append(h["key"])
+    return out

@@ -2764,6 +2764,149 @@ def _system_arc_row(ev: Evidence):
     return None
 
 
+#: ROADMAP 2.223: two heads of one staff this far apart in y (spaces) are at two positions -- the top of the empty interval page-facts s1
+#: records between one position (<= 0.168) and two (>= 0.435), `benchmarks/omr-arc-grammar-2026-09/FINDINGS.md`
+BIND_DIFFERENT_POSITION_SPACES = 0.435
+
+
+def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float) -> List[str]:
+    """ROADMAP 2.223: the junctions of a joined curve that are NOT a barline's cut. Pieces in x order; a junction is a barline's only
+    where the left piece ends at its cell's right edge AND the right piece begins at its (another) cell's left edge (2.166's
+    `CUT_EDGE_SPACES`). Anything else -- two whole arcs meeting end to start at a shared note, twin boxes of one arc -- is returned as
+    `"left>right"`. A piece with no box or cell box makes its junctions unprovable, so they are returned too."""
+    from ..arcs_system import CUT_EDGE_SPACES
+    tol = CUT_EDGE_SPACES * sp
+    info = []
+    for key in pieces:
+        sub = R.Subject.from_key(key)
+        rows = ev.rows(Q.ARC_BOX, subject=sub)
+        box = (rows[0].detail or {}).get("bbox_page_px") if rows else None
+        cb = None
+        for row in ev.rows(Q.CELL_BOX, subject=sub.at(Kind.CELL)):
+            if isinstance(row.value, (list, tuple)) and len(row.value) == 4:
+                cb = tuple(float(x) for x in row.value)
+                break
+        info.append((float(box[0]) if box else float("inf"), key, box, cb, sub.cell))
+    info.sort(key=lambda t: t[0])
+    bad = []
+    for (_xa, ka, ba, ca, ia), (_xb, kb, bb, cbb, ib) in zip(info, info[1:]):
+        ok = (ba and bb and ca and cbb and ia != ib and abs(ca[2] - float(ba[2])) <= tol
+              and abs(float(bb[0]) - cbb[0]) <= tol)
+        if not ok:
+            bad.append(ka + ">" + kb)
+    return bad
+
+
+def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the CURVE this arc box is a piece of, bound at both ends to notes AFTER the heads are read,
+    and the kind Sean's tie rule makes of the two bound heads. None where GATHER traced no curve through this box (the OFF path stands).
+
+    The binding itself is `arc_claim.bind_curve` (pure; its block says why each window is GATHER's). Here: the heads of the arc's OWNER
+    staff in the system (`Q.GLYPH_BOX` notehead rows), usable only where ADJUDICATE left them a notehead of that staff (not refused, not a
+    copy `glyph_owner` relocated), and Sean's rule on the bound pair:
+
+      different staff step (geometry AND step agree)       -> slur   (`page_binding_different_pitch`)
+      one step, nothing between, accidental unchanged      -> tie    (`page_binding_same_pitch_adjacent`)
+      one step with heads between, an accidental printed or unread, a step unread or the two witnesses disagreeing,
+      an end unbound or at the system's edge               -> no kind here (`kind` None, `why` says which); the consumer keeps its OFF path.
+
+    ⚠️ CONVENTION ASSUMED (not yet asked of Sean): ACROSS A BARLINE the far head of a tie never restates the accidental, so a printed
+    accidental on the START head and none on the STOP head is "unchanged" (the OFF reading, `_two_note_reading`, required none on both).
+    WHAT WOULD FALSIFY IT: a same-step arc across a barline Sean reads as a slur to the natural note."""
+    sysarc = _system_arc_row(ev)
+    if sysarc is None:
+        return None
+    d = sysarc.detail or {}
+    sp = float(d.get("space_page_px") or 0.0)
+    owner = ev.verdict(Q.ARC_OWNER)
+    home = (owner.value if owner is not None and isinstance(owner.value, str) and owner.value
+            else ev.subject.at(Kind.STAFF).to_key())
+    staff = R.Subject.from_key(home)
+    rows: Dict[str, Any] = {}
+    heads: List[Dict[str, Any]] = []
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        if (row.detail or {}).get("category") != "notehead":
+            continue
+        b = row.detail.get("bbox_page_px")
+        if not b or len(b) != 4:
+            continue
+        x0, y0, x1, y1 = (float(v) for v in b)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        key = row.subject.to_key()
+        if key in rows:
+            continue
+        rows[key] = row
+        heads.append({"key": key, "cx": (x0 + x1) / 2.0, "cy": (y0 + y1) / 2.0, "w": x1 - x0, "h": y1 - y0,
+                      "cell": row.subject.cell or 0})
+    memo: Dict[str, bool] = {}
+
+    def usable(key: str) -> bool:
+        if key not in memo:
+            row = rows[key]
+            own = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+            memo[key] = not (own is not None and _is_relocated_copy(row.subject, own.value)) and _head_usable(ev, key)
+        return memo[key]
+
+    b = _arc_claim.bind_curve(d, heads, sp, usable)
+    b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
+    pieces = list(d.get("pieces") or ())
+    if len(pieces) > 1:
+        # ⚠️ A JOINED CURVE IS ONLY AS GOOD AS ITS JOIN. 2.166 joins a box cut at a barline to its continuation -- and also, where two
+        # printed arcs meet end to start at one note (slur, tie, slur along Brahms p0 staff 12, bars 0-4: four ties bound as one slur
+        # in the first build), boxes that were each a WHOLE arc. A curve with a junction that is not a barline's cut is not trusted as
+        # ONE arc: no binding for any of its pieces (the OFF path decides each), recorded.
+        bad = _joins_not_at_a_barline(ev, pieces, sp)
+        if bad:
+            b["why"] = "joined_not_at_a_barline"
+            b["junctions"] = bad
+            return b
+    lk, rk = b["left"].get("head"), b["right"].get("head")
+    if lk is None or rk is None:
+        b["why"] = ("system_edge" if b["left"].get("edge") or b["right"].get("edge") else "end_unbound")
+        return b
+    by = {h["key"]: h for h in heads}
+    hl, hr = by[lk], by[rk]
+    between = _arc_claim.heads_between(hl, hr, heads, usable)
+    sa, src_a = _head_step(ev, rows[lk])
+    sb, src_b = _head_step(ev, rows[rk])
+    from ..arcs_system import SAME_POSITION_SPACES
+    dy = abs(hl["cy"] - hr["cy"]) / sp
+    near = dy <= SAME_POSITION_SPACES
+    if sa is None or sb is None:
+        # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
+        # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
+        # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
+        relation = ("same" if near else "different" if dy >= BIND_DIFFERENT_POSITION_SPACES else "unread")
+        b["relation_source"] = "boxes_only"
+    elif sa == sb:
+        relation = "same" if near else "conflict"
+    else:
+        relation = "different" if not near else "conflict"
+    b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
+             dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
+             crosses_barline=hl["cell"] != hr["cell"])
+    if relation == "different":
+        b.update(kind="slur", rule="page_binding_different_pitch")
+    elif relation != "same":
+        b["why"] = "step_" + relation
+    elif between:
+        b["why"] = "same_pitch_heads_between"
+    else:
+        def acc(h):
+            return _accidental_state(ev, (rows[h["key"]], h["cell"], h["cx"], h["cy"], h["w"], h["h"]))
+        # Only the STOP head is asked: in one bar a printed start accidental holds to the barline; across one the tie carries it
+        # (CONVENTION ASSUMED, docstring). A printed or unread accidental on the stop head stops the call.
+        acc_b = acc(hr)
+        state = "unchanged" if acc_b == "none" else acc_b
+        b["accidental"] = state
+        if state == "unchanged":
+            b.update(kind="tie", rule="page_binding_same_pitch_adjacent")
+        else:
+            b["why"] = "same_pitch_accidental_" + state
+    return b
+
+
 @decision(
     quantity=Q.ARC_KIND,
     checkable=Checkable.MIXED,
@@ -2947,6 +3090,18 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
             "two_note": {"evaluated": False, "why": "refused_not_an_arc"},
             "rule": None, "detector_class": detector}
     else:
+        if _arc_claim.bind_enabled():
+            # ROADMAP 2.223 (OMR_ARC_BIND_PAGEWIDE): the CURVE's two ends bound to notes after the heads are read; where that gives the
+            # kind (Sean's tie rule on the bound pair) every piece of the curve takes it. Otherwise the binding is RECORDED and the OFF
+            # path below decides, unchanged.
+            pb = _page_binding(ev, arc)
+            if pb is not None and pb.get("kind") in ("tie", "slur"):
+                grammar["page_binding"] = pb
+                return Ruling(value=pb["kind"], reason=pb["kind"],
+                              used=(arc.id, pb["sysarc_id"]) + tuple(pb.get("head_ids") or ()),
+                              detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
+            if pb is not None:
+                grammar["page_binding"] = pb
         fs = _flank_search(ev, arc)
         two_note = _two_note_reading(ev, arc, fs)
         stack = _stack_reading(ev, arc, fs, two_note)
@@ -3249,7 +3404,7 @@ def _head_usable(ev: Evidence, key: str) -> bool:
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_BOX, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
-    reasons=("paired", "paired_by_system_arc", "more_than_one_pair", "not_a_tie", "not_an_arc",
+    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "more_than_one_pair", "not_a_tie", "not_an_arc",
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
@@ -3333,6 +3488,14 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
             or kind.value != "tie":
         return Ruling.abstain("not_a_tie",
                               kind=None if kind is None else kind.value)
+    pb = (getattr(kind, "detail", None) or {}).get("page_binding") if _arc_claim.bind_enabled() else None
+    if pb and pb.get("kind") == "tie" and pb.get("start") and pb.get("stop"):
+        # ROADMAP 2.223 (OMR_ARC_BIND_PAGEWIDE): the kind was decided ON the curve's two bound heads, so the pair IS those heads -- every
+        # piece of the curve names the same pair and EXPORT writes it once.
+        return Ruling(value={"start": pb["start"], "stop": pb["stop"]}, reason="paired_by_page_binding",
+                      used=(arc.id, kind.id),
+                      detail={"curve": pb.get("curve"), "dy_spaces": pb.get("dy_spaces"),
+                              "crosses_barline": pb.get("crosses_barline"), "home_staff": pb.get("home")})
     fs = _flank_search(ev, arc)
     sysarc = _system_arc_row(ev)
     if fs.abstain is not None and fs.abstain[0] in ("no_start_head", "no_stop_head", "no_head_near_the_arc"):
