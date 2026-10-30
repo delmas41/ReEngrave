@@ -89,8 +89,10 @@ def is_fire(v, reason_rules):
         return None
     if v.get("outcome") == "decided" and v.get("value") is True:
         return key
-    if v.get("outcome") in ("narrowed",):
+    if v.get("outcome") == "narrowed":
         return key
+    if v["quantity"] == "accidental_owner" and v.get("outcome") == "abstained":
+        return key                  # the accidental owner REFUSES by abstaining with the reason
     return None
 
 
@@ -105,10 +107,16 @@ def run(dump, noise):
         sup = {s for v in vs for s in ([v["supersedes"]] if isinstance(v.get("supersedes"), str) else (v.get("supersedes") or []))}
         per = collections.defaultdict(lambda: collections.Counter())
         examples = collections.defaultdict(list)
-        old_refused = collections.defaultdict(set)      # box -> rules that refused it
+        old_refused = collections.defaultdict(set)      # box -> scoped rules that refused it
+        any_refusal = set()                             # box -> refused or narrowed by ANY rule of a box decision (what main drops)
+        kind_of = {}
         fires_all = collections.Counter()
         units = collections.defaultdict(set)
         for v in vs:
+            if v["quantity"] in BOX_DECISIONS and str(v.get("subject", "")).startswith("glyph/"):
+                kind_of.setdefault(v["subject"], v["quantity"])
+                if (v.get("outcome") == "decided" and v.get("value") is True and v["quantity"] != "notehead_is_an_eighth_rest") or v.get("outcome") == "narrowed":
+                    any_refusal.add(v["subject"])
             # every verdict of a scoped (quantity, reason), refused or not, is a "fire" of that exit (as count_fires counts)
             k = (v["quantity"], v.get("reason"))
             if k in rules:
@@ -150,13 +158,16 @@ def run(dump, noise):
                     c["near"] += 1
         # boxes ownership refuses/contests that NO scoped old rule refused (ownership-only)
         only = collections.Counter()
+        kept = collections.Counter()      # boxes ownership refuses / contests that main KEPT (no rule of any kind refused them), by kind
         for g, verdict in boxes.items():
             if g not in old_refused:
                 only[verdict] += 1
+            if g not in any_refusal:
+                kept["%s:%s" % (verdict, {"notehead_is_not_a_notehead": "head", "rest_is_not_a_rest": "rest"}.get(kind_of.get(g), "other"))] += 1
         res[plate] = dict(fires_all={"%s|%s" % k: n for k, n in fires_all.items()},
                           per={"%s|%s" % k: dict(c, margin_units=sorted(units[k])) for k, c in per.items()},
                           examples={"%s|%s" % k: e for k, e in examples.items()},
-                          ownership_only=dict(only), boxes_refused_by_ownership=dict(collections.Counter(boxes.values())),
+                          ownership_only=dict(only), kept_by_main=dict(kept), boxes_refused_by_ownership=dict(collections.Counter(boxes.values())),
                           cells_with_owner_verdict=len(cells))
     return res
 
