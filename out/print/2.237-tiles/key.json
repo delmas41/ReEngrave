@@ -1,0 +1,410 @@
+[
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   714.1575,
+   2685.1025,
+   731.7975,
+   2709.3575
+  ],
+  "rg": "glyph/11/1/5/1/2",
+  "kind": "noteheadBlackOnLine",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|is_a_rest_shape",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 1,
+  "crop_origin": [
+   628,
+   2618
+  ],
+  "position": {
+   "page": 11,
+   "system": 1,
+   "staff": 5,
+   "cell": 1,
+   "page_box": [
+    714.1575,
+    2685.1025,
+    731.7975,
+    2709.3575
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   2783.0125,
+   1302.16,
+   2817.8925,
+   1360.7475
+  ],
+  "rg": "glyph/5/0/3/3/10",
+  "kind": "accidentalDoubleSharp",
+  "role": "case",
+  "rule": "accidental_owner|on_a_rest",
+  "question": "what is this ink?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 2,
+  "crop_origin": [
+   2608,
+   1171
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "page_box": [
+    2783.0125,
+    1302.16,
+    2817.8925,
+    1360.7475
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   5091.9175,
+   4595.7975,
+   5127.16,
+   4648.245
+  ],
+  "rg": "glyph/4/1/2/8/31",
+  "kind": "rest8th",
+  "role": "case",
+  "rule": "rest_is_not_a_rest|rest_is_a_duplicate_box",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 3,
+  "crop_origin": [
+   4917,
+   4462
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 2,
+   "cell": 8,
+   "page_box": [
+    5091.9175,
+    4595.7975,
+    5127.16,
+    4648.245
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   2490.865,
+   6800.24,
+   2510.485,
+   6929.405
+  ],
+  "rg": "glyph/25/1/10/3/17",
+  "kind": "restQuarter",
+  "role": "case",
+  "rule": "rest_is_not_a_rest|rest_stroke_into_a_head",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 4,
+  "crop_origin": [
+   2308,
+   6704
+  ],
+  "position": {
+   "page": 25,
+   "system": 1,
+   "staff": 10,
+   "cell": 3,
+   "page_box": [
+    2490.865,
+    6800.24,
+    2510.485,
+    6929.405
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4034.5263671875,
+   2725.189453125,
+   4065.74951171875,
+   2752.84423828125
+  ],
+  "rg": "glyph/5/0/10/5/21",
+  "kind": "noteheadBlackInSpace",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|on_a_dynamic_letter",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 5,
+  "crop_origin": [
+   3858,
+   2579
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 10,
+   "cell": 5,
+   "page_box": [
+    4034.5263671875,
+    2725.189453125,
+    4065.74951171875,
+    2752.84423828125
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   707.27,
+   2480.59,
+   732.47,
+   2496.025
+  ],
+  "rg": "glyph/16/1/3/1/2",
+  "kind": "noteheadHalfOnLine",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|stacked_head_duplicate",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 6,
+  "crop_origin": [
+   625,
+   2409
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    707.27,
+    2480.59,
+    732.47,
+    2496.025
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   510.8,
+   3191.0,
+   532.56,
+   3209.4
+  ],
+  "rg": "glyph/10/1/8/0/7",
+  "kind": "noteheadBlackOnLine",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|on_a_dynamic_letter",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 7,
+  "crop_origin": [
+   427,
+   3121
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 8,
+   "cell": 0,
+   "page_box": [
+    510.8,
+    3191.0,
+    532.56,
+    3209.4
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   2496.79,
+   1553.195,
+   2520.8875,
+   1576.9775
+  ],
+  "rg": "glyph/16/0/8/16/5",
+  "kind": "noteheadHalfInSpace",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|notehead_is_a_duplicate_box",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 8,
+  "crop_origin": [
+   2414,
+   1486
+  ],
+  "position": {
+   "page": 16,
+   "system": 0,
+   "staff": 8,
+   "cell": 16,
+   "page_box": [
+    2496.79,
+    1553.195,
+    2520.8875,
+    1576.9775
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   4993.4,
+   6372.1,
+   5028.875,
+   6402.9
+  ],
+  "rg": "glyph/8/1/8/11/11",
+  "kind": "noteheadWholeInSpace",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|on_a_rest",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 9,
+  "crop_origin": [
+   4819,
+   6227
+  ],
+  "position": {
+   "page": 8,
+   "system": 1,
+   "staff": 8,
+   "cell": 11,
+   "page_box": [
+    4993.4,
+    6372.1,
+    5028.875,
+    6402.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   832.5225,
+   2388.65,
+   850.7925,
+   2417.945
+  ],
+  "rg": "glyph/16/1/2/2/11",
+  "kind": "rest8th",
+  "role": "case",
+  "rule": "rest_is_not_a_rest|rest_stroke_into_a_head",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 10,
+  "crop_origin": [
+   747,
+   2324
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 2,
+   "cell": 2,
+   "page_box": [
+    832.5225,
+    2388.65,
+    850.7925,
+    2417.945
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   1509.78,
+   6138.545,
+   1541.1175,
+   6175.3325
+  ],
+  "rg": "glyph/14/1/8/1/18",
+  "kind": "noteheadHalfInSpace",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|belongs_to_a_nearer_staff",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 11,
+  "crop_origin": [
+   1333,
+   5996
+  ],
+  "position": {
+   "page": 14,
+   "system": 1,
+   "staff": 8,
+   "cell": 1,
+   "page_box": [
+    1509.78,
+    6138.545,
+    1541.1175,
+    6175.3325
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   3142.275,
+   3247.125,
+   3182.575,
+   3272.15
+  ],
+  "rg": "glyph/0/0/4/3/7",
+  "kind": "noteheadHalfInSpace",
+  "role": "case",
+  "rule": "notehead_is_not_a_notehead|head_cut_piece",
+  "question": "which box is the note?",
+  "ownership": "the stroke owner keeps this box (it owns ink the old rule refused)",
+  "tile": 12,
+  "crop_origin": [
+   2970,
+   3099
+  ],
+  "position": {
+   "page": 0,
+   "system": 0,
+   "staff": 4,
+   "cell": 3,
+   "page_box": [
+    3142.275,
+    3247.125,
+    3182.575,
+    3272.15
+   ]
+  },
+  "cell_map": null
+ }
+]
