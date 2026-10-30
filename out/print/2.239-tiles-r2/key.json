@@ -1,0 +1,322 @@
+[
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1889,
+   1728,
+   1902,
+   1733
+  ],
+  "kind": "horizontal",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 16.0,
+  "cell": [
+   4,
+   0,
+   8,
+   10
+  ],
+  "tile": 1,
+  "crop_origin": [
+   1799,
+   1546
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   511,
+   2804,
+   537,
+   2831
+  ],
+  "kind": "blob (Sean's round-1 tile 9 place)",
+  "joins": [
+   "stem|head"
+  ],
+  "unit": 15.75,
+  "cell": [
+   4,
+   1,
+   4,
+   0
+  ],
+  "tile": 2,
+  "crop_origin": [
+   429,
+   2649
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4190,
+   6032,
+   4229,
+   6059
+  ],
+  "kind": "blob",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 27.25,
+  "cell": [
+   5,
+   1,
+   9,
+   7
+  ],
+  "tile": 3,
+  "crop_origin": [
+   4046,
+   5959
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   5046,
+   5974,
+   5087,
+   6003
+  ],
+  "kind": "blob",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 27.25,
+  "cell": [
+   5,
+   1,
+   9,
+   9
+  ],
+  "tile": 4,
+  "crop_origin": [
+   4903,
+   5942
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   5371,
+   409,
+   5414,
+   443
+  ],
+  "kind": "blob",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 27.2738037109375,
+  "cell": [
+   5,
+   0,
+   0,
+   7
+  ],
+  "tile": 5,
+  "crop_origin": [
+   5228,
+   377
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   396,
+   3253,
+   412,
+   3355
+  ],
+  "kind": "inside clef/key/meter box (left whole)",
+  "joins": [],
+  "unit": 16.0,
+  "cell": [
+   4,
+   1,
+   8,
+   0
+  ],
+  "tile": 6,
+  "crop_origin": [
+   308,
+   3195
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   702,
+   2747,
+   729,
+   2755
+  ],
+  "kind": "inside clef/key/meter box (left whole)",
+  "joins": [],
+  "unit": 27.2738037109375,
+  "cell": [
+   5,
+   0,
+   9,
+   0
+  ],
+  "tile": 7,
+  "crop_origin": [
+   551,
+   2506
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1487,
+   1805,
+   1525,
+   1833
+  ],
+  "kind": "blob",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 27.4931640625,
+  "cell": [
+   5,
+   0,
+   5,
+   1
+  ],
+  "tile": 8,
+  "crop_origin": [
+   1341,
+   1573
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   2875,
+   1999,
+   2921,
+   2041
+  ],
+  "kind": "blob",
+  "joins": [
+   "stem|head"
+  ],
+  "unit": 32.0,
+  "cell": [
+   0,
+   0,
+   1,
+   2
+  ],
+  "tile": 9,
+  "crop_origin": [
+   2706,
+   1841
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   2270,
+   1815,
+   2278,
+   1826
+  ],
+  "kind": "horizontal",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 27.4931640625,
+  "cell": [
+   5,
+   0,
+   5,
+   2
+  ],
+  "tile": 10,
+  "crop_origin": [
+   2109,
+   1573
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   2716,
+   5021,
+   2758,
+   5050
+  ],
+  "kind": "blob",
+  "joins": [
+   "ledger|head"
+  ],
+  "unit": 32.25,
+  "cell": [
+   0,
+   0,
+   9,
+   2
+  ],
+  "tile": 11,
+  "crop_origin": [
+   2543,
+   4984
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1297,
+   2475,
+   1306,
+   2488
+  ],
+  "kind": "blob",
+  "joins": [
+   "stem|head"
+  ],
+  "unit": 15.75,
+  "cell": [
+   4,
+   1,
+   2,
+   5
+  ],
+  "tile": 12,
+  "crop_origin": [
+   1207,
+   2390
+  ],
+  "cell_map": "master"
+ }
+]

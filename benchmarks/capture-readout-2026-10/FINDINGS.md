@@ -90,3 +90,73 @@ Litolff: NOTHING CHANGED. Brahms: notes +1, accidentals +1, beams ~1, slurs +2 -
 
 ## Risks
 Join names are geometry, not readings (clefs, rests and letters get cut too; their register/box claims still cover all parts). A head on a rung is now 3-5 strokes (tips, lens halves) all inside its box. Ledger rows inside stacked-head columns are owned as head (36 more ledger boxes wrong kind). Thresholds (0.5 sp thin, 0.12 sp notch, 0.05 slope) are measured on two plates: NARROW-level, not conventions.
+
+## 2.239 round 2 (after Sean's tiles: 6 "just the top of an eighth note on a ledger line", 9 "a part of a head but mostly the ledger line next to it", 2/5 clef pieces; and "I thought we had limits to box sizes")
+
+### Cause
+- Tile 6 (ledger|head): the rung's thickness was read as the 20th-percentile column run of the WHOLE horizontal piece. A head is wider than the rung's stubs, so that percentile fell on a head column, and the "line band" (fit ± half that thickness) took the oval's middle half. The cut then ran through the head and left its top and bottom as blobs.
+- Tile 9 (vertical path): a rung crossing a head's top raised the wide part past the 1.6 sp one-head cap, and the rung's end looked like a notch. The stack cut took "rung + top of head" as one head (band 0.7 sp tall).
+- Clefs: the stroke map is pure and knew nothing of the clef; the split cut thick clef bodies at their "stems".
+- The test was blind to all three. claim_readout called a box RIGHT on a 50% kind share, never asking whether the ink is ONE piece or a plausible size. Sean's size limits lived only on detector boxes.
+- Process lesson: a capture score must test the piece, not the pixel share. A test that cannot see a sliced head cannot fail on one.
+- Brahms p0 bracket (the coordinator's crop): the bracket reader DID see the woodwind/brass bracket (levels: x 1234, staves 0-8). It skipped it as a mark because the closing fused the 16 px bracket line to the thin opening line 6 px to its right. The fused stroke's CENTRE then stood 0.55 sp right of the staves' start, over the 0.5 sp left-edge cut. Not its length, not the braces, not the hook test.
+
+### Fix (same flag, `OMR_SPLIT_JOINS`)
+- **ledger|head:**
+  - The rung's thickness is read on its own end stubs (≥ 0.15 sp each side, else the piece stays whole).
+  - The head is EVERY column of the oval, all rows (the rung through it included). Its edge is where the column run stops exceeding the rung by 0.2 sp.
+  - The stubs beyond the oval on each side are `horizontal` ledger strokes. The rung must be level (stub fit ≤ 0.05).
+- **Stack cut:** each band must be ≥ 0.8 sp tall (one head), so a rung plus the top of a head is never a head.
+- **Clefs:** no piece mostly inside a clef/key/meter detector box is cut (`cell_keep_whole`, filed on the cell's first `Q.STROKE` row, so a re-run reproduces it).
+- **Head slivers:** a small remainder blob touching a head part cut off a stem or rung, within 0.3 sp of it, rejoins it (the oval edge columns the opening dropped, and the tips).
+- **Left edge:** `measure_extractor._left_edge_read(edge_by_left=True)` tests a stroke's LEFT side against the edge. It is called by `gather._left_edge_marks` only under the flag; the master's stored reading is untouched. Brahms p0 s0 now reads one left-edge mark over staves 0-13 (kind label `systemic_barline` -- the width is measured on the thin line -- but owner `bracket`). Other pages are unchanged.
+- **Tests:** 12 in `test_split_joins_2_239.py`, including Sean's tile 9 shape and the clef keep-whole.
+
+### claim_readout: ONE MARK, ONE PIECE (new columns; old outputs unchanged)
+- Per truth box: the largest single same-kind piece's share of the box ink and the piece count. STRICT = right AND that share ≥ 0.85 AND that piece inside its kind's limits.
+- The limits are the project's own:
+  - head: `head_ink.MIN_SPACES` 0.6, `MAX_WIDTH_SPACES` 1.75, `MAX_HEIGHT_SPACES_V2` 1.6.
+  - ledger: thick ≤ `stroke_map.CURVE_MAX_THICK_SPACES` 0.5, level ≤ `LEDGER_MAX_SLOPE`.
+  - stem: wide ≤ `STEM_TRUE_WIDTH_MAX_SPACES` 0.7, ≥ 2.5 sp tall or touching (2.5 from the brief).
+- A per-page MISSHAPEN list per kind, with page boxes. Beams and flags are not shape-tested yet.
+- Control (f): heads planted cut in half -> Brahms p0 black heads whole 81 -> 0 (fragmented/misshapen 156). Controls (a)-(e) still behave.
+
+### Re-measured (both arms re-gathered on main 81da8c84c + these commits; master cells; 0 cells mismatched)
+
+Brahms p0 against Sean's labels:
+
+| class | old 50% test OFF -> ON | STRICT whole OFF -> ON | fragmented OFF -> ON | misshapen OFF -> ON |
+|---|---|---|---|---|
+| black heads (378) | 156 -> **374** | 81 -> **221** | 21 -> 141 | 54 -> 12 |
+| stems (277) | 187 -> 227 | 157 -> 150 | 30 -> 77 | 0 -> 0 |
+| ledger lines (248) | 95 -> 98 (wrong kind 98 -> 133) | 61 -> 62 | 34 -> 34 | 0 -> 2 |
+| flag8thDown (38) | 27 -> 33 | 0 -> 0 (flags are 2+ strokes; not shape-tested) | | |
+
+Misshapen pieces (per-cell occurrences, padded duplicates included):
+- Brahms p0: heads 399 -> 139, ledgers 26 -> 63, stems 1 -> 1.
+- Litolff p4: heads 796 -> 768, ledgers 46 -> 66, stems 38 -> 10.
+
+Reading:
+- The heads' remaining fragmentation is mostly the neighbour head of a stack whose truth box overlaps (a third apart), and the stem's ink beside the oval.
+- On-line heads OFF were "misshapen" because the staff-line erase halves them -- a GATHER cause outside this lane, in both arms.
+- Stems fragment ON because the stem's truth box holds the oval beside it, now a head piece.
+- The ledger "wrong kind" stays: by Sean's rule (b) the rung inside the oval is head ink, and a ledger truth box is mostly that oval. The stubs are claimed ledger.
+- The ledger misshapen rise is the short stubs failing the level test (angle on a 0.2-0.4 sp piece is noise): a measurement limit, said here.
+
+Page ink:
+- Unclaimed vertical: Brahms 2.60% -> 1.04%, Litolff 3.20% -> 1.58%.
+- Contested bracket+barline: Brahms 1.27% -> **0.00%** (p0 2.09 -> 0.00, p5 0.84 -> 0.00), Litolff 1.04% -> 0.00%.
+
+### File veto (same 2-page sample)
+- Litolff: blue marks -4, nothing else.
+- Brahms: notes +1, accidentals +1, beams ~1, slurs +2 -2, values ~1, blue +1, words +1 -1; red bars 45 -> 45.
+- Judged right->wrong 0, right->gone 0, unwritten->wrong 0.
+
+### Tiles round 2
+`out/print/2.239-tiles-r2/tiles/` (12; key `out/print/2.239-tiles-r2/key.json`): 6 heads on ledger lines (tile 2 is Sean's round-1 tile-9 place), 2 rung stubs, 2 clef controls (left whole), 2 other heads.
+
+My look:
+- Heads on ledger lines: tiles 2, 3, 4, 5, 8 and 11 are each the whole head. Tile 9 (a chord head) is also whole.
+- Tiles 6 and 7 are clef pieces left whole.
+- Tiles 1 and 10 are short rung stubs beside a head.
+- Tile 12 is a small sliver of a head in a dense Litolff passage: a fragment the cut still leaves.
