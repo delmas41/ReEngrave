@@ -1,0 +1,574 @@
+{
+ "label": "A-1p",
+ "pages": "5",
+ "rc": 0,
+ "total_s": 291.778979375,
+ "timers": {
+  "gather.gather_external": 0.00019545800000031477,
+  "gather.gather_document_identity": 0.03291812500000013,
+  "gather.gather_movements": 5.7374999999026954e-05,
+  "gather.gather_input_domain": 7.645900000063932e-05,
+  "gather.gather_geometry": 0.0045462920000005624,
+  "gather.gather_systems": 4.237499999959482e-05,
+  "gather.gather_measures": 0.002141124999999633,
+  "gather.gather_printed_bar_numbers": 4.500877749999999,
+  "gather.gather_volta_brackets": 0.03936174999999942,
+  "gather.gather_volta_numerals": 0.003689375000000439,
+  "gather.gather_repeat_dots": 0.033876916000000534,
+  "gather.gather_detections": 3.8224688330000003,
+  "gather.gather_empty_bar_rest_search": 0.0012035409999988644,
+  "gather.gather_lowconf_rescue": 0.000947332999999162,
+  "gather.gather_wedge_rescue": 1.2978241250000018,
+  "gather.gather_detector_views": 10.04859575,
+  "gather.gather_stem_end_heads": 9.846305000000001,
+  "gather.gather_letter_look": 5.617433042000002,
+  "gather.gather_mark_groups": 0.09738149999999735,
+  "gather.gather_notehead_recentre": 0.36365624999999824,
+  "gather.gather_head_line_cut": 0.037587916999996196,
+  "gather.gather_notehead_positions": 0.05969499999999783,
+  "gather.gather_accidental_positions": 0.06186066700000481,
+  "gather.gather_ownership_evidence": 2.391639583,
+  "gather.gather_rhythm_marks": 0.0345433329999949,
+  "gather.gather_dot_positions": 1.6785747500000028,
+  "gather.gather_glyph_families": 0.07515062499999914,
+  "gather.gather_dynamic_letters": 0.2708764590000001,
+  "gather.gather_wedge_boxes": 0.6216300829999994,
+  "gather.gather_cv_lines": 17.120080583999993,
+  "gather.gather_ink": 2.8732022909999984,
+  "gather.gather_cell_ink_pieces": 0.013293541999999547,
+  "gather.gather_narrow_box_shape": 0.014876583000003052,
+  "gather.gather_unboxed_rest_ink": 0.10340249999998719,
+  "gather.gather_rest_ink_contact": 1.3993815829999932,
+  "gather.gather_ledger_ink": 0.06335641700000849,
+  "gather.gather_arc_ink": 0.9215983749999879,
+  "gather.gather_notehead_ink": 6.3579494999999895,
+  "gather.gather_stacked_head_fit": 0.21012491599999805,
+  "gather.gather_notehead_stem_cross_ink": 0.12245366700000204,
+  "gather.gather_head_oval": 0.0541941249999951,
+  "gather.gather_far_head_ledger_positions": 88.728071417,
+  "gather.gather_head_stem_reach": 2.1151744580000127,
+  "gather.gather_notehead_letter_ink": 0.07953029199998696,
+  "gather.gather_detector_beams": 0.016791584000003468,
+  "gather.gather_beam_stroke_ink": 4.323757707999988,
+  "gather.gather_beam_stem_levels": 2.26120766599999,
+  "gather.gather_clef": 0.0039651660000004085,
+  "gather.gather_clef_locator": 2.2278832920000013,
+  "gather.gather_clef_seed": 2.625000007583367e-06,
+  "gather.gather_key_signature": 14.433183208999992,
+  "gather.gather_meter": 1.6466846670000166,
+  "gather.gather_meter_at_bars": 0.6297439589999954,
+  "gather.gather_meter_ocr_at_bars": 2.3249999998142812e-05,
+  "gather.gather_meter_object": 0.9160054580000008,
+  "gather.gather_claimed_register": 1.6491272499999923,
+  "gather.gather_margin_labels": 10.107751000000007,
+  "gather.gather_direction_words": 0.1967369169999813,
+  "STAGE gather": 211.29800291700002,
+  "SUBJ movement_spans": 0.1642755410000234,
+  "ADJ movement_spans": 0.4824852499999963,
+  "SUBJ system_membership": 1.1499999999387e-05,
+  "ADJ system_membership": 8.63330000129281e-05,
+  "SUBJ staff_group": 0.18377966700001025,
+  "ADJ staff_group": 0.0009314980000283413,
+  "SUBJ measure_partition": 1.1917000023231594e-05,
+  "ADJ measure_partition": 0.17221649799998318,
+  "SUBJ staff_ordinal": 1.1207999989437667e-05,
+  "ADJ staff_ordinal": 0.0005442530000436818,
+  "SUBJ system_staff_count": 2.9580000102669146e-06,
+  "ADJ system_staff_count": 3.737500000511318e-05,
+  "SUBJ instrument": 1.9999999949504854e-06,
+  "ADJ instrument": 0.00670912300006421,
+  "SUBJ slot_index": 3.87500000442742e-06,
+  "ADJ slot_index": 0.004549455999978136,
+  "SUBJ part_partition": 5.375000000640284e-06,
+  "ADJ part_partition": 0.002356915999996545,
+  "SUBJ group_symbol": 4.834000009168449e-06,
+  "ADJ group_symbol": 0.002947000000006028,
+  "SUBJ clef": 6.9580000001678854e-06,
+  "ADJ clef": 0.0026104550001093685,
+  "SUBJ keysig_marker_is_not_a_marker": 0.00834129099999359,
+  "ADJ keysig_marker_is_not_a_marker": 0.001379082999989123,
+  "SUBJ system_key": 8.207999997011939e-06,
+  "ADJ system_key": 0.030765916999996534,
+  "SUBJ part_key": 9.417000001121778e-06,
+  "ADJ part_key": 0.041393542000008665,
+  "SUBJ key_signature": 1.2917000020706837e-05,
+  "ADJ key_signature": 0.056764207999975724,
+  "SUBJ stem_head_contact": 0.00838579200001277,
+  "ADJ stem_head_contact": 0.08070837899998651,
+  "SUBJ ledger_is_not_a_ledger": 0.009072500000002037,
+  "ADJ ledger_is_not_a_ledger": 0.07729806499980896,
+  "SUBJ notehead_is_not_a_notehead": 0.00889254099999448,
+  "ADJ notehead_is_not_a_notehead": 0.8943736909997426,
+  "SUBJ accidental_is_not_an_accidental": 0.0089948330000027,
+  "ADJ accidental_is_not_an_accidental": 0.0055390420001515395,
+  "SUBJ rest_is_not_a_rest": 0.008781166999995094,
+  "ADJ rest_is_not_a_rest": 0.1831377940000607,
+  "SUBJ arpeggiato_is_not_an_arpeggiato": 0.008484208999988141,
+  "ADJ arpeggiato_is_not_an_arpeggiato": 0.0016652929999736443,
+  "SUBJ arc_is_not_an_arc": 0.006151000000016893,
+  "ADJ arc_is_not_an_arc": 0.06131611100039436,
+  "SUBJ dynamic_is_not_a_dynamic": 0.007825582999998915,
+  "ADJ dynamic_is_not_a_dynamic": 0.0025783360000559696,
+  "SUBJ flag_is_not_a_flag": 0.007711458000017046,
+  "ADJ flag_is_not_a_flag": 0.02504453200020862,
+  "SUBJ tuplet_marker_is_not_a_marker": 0.007146250000005239,
+  "SUBJ glyph_owner": 0.010472166999988985,
+  "ADJ glyph_owner": 3.08190698300038,
+  "SUBJ articulation_is_not_an_articulation": 0.007400166999985913,
+  "ADJ articulation_is_not_an_articulation": 0.0048735740000438454,
+  "SUBJ arc_owner": 0.007793458999998393,
+  "ADJ arc_owner": 21.728776377000145,
+  "SUBJ accidental_owner": 0.00861858400003257,
+  "ADJ accidental_owner": 0.11922328899976264,
+  "SUBJ notehead_position": 0.00882833300005359,
+  "ADJ notehead_position": 0.013624613000217778,
+  "SUBJ arc_kind": 0.008753500000011627,
+  "ADJ arc_kind": 4.007641238999781,
+  "SUBJ tie_pair": 0.010249166999983572,
+  "ADJ tie_pair": 3.9728236699994,
+  "SUBJ dot_role": 0.00893495799999755,
+  "ADJ dot_role": 0.40928374999998596,
+  "SUBJ fermata_owner": 0.00825183299997434,
+  "SUBJ ornament_owner": 0.005314208000015697,
+  "SUBJ pedal_owner": 0.0077912079999578054,
+  "SUBJ ottava_owner": 0.007179000000007818,
+  "ADJ ottava_owner": 0.00021987499997067061,
+  "SUBJ stem_direction": 0.0077865000000088,
+  "ADJ stem_direction": 0.19346074499929955,
+  "SUBJ articulation_owner": 0.008760458000040217,
+  "ADJ articulation_owner": 0.16145721299983506,
+  "SUBJ notehead_is_a_whole_rest": 0.01200316599999951,
+  "ADJ notehead_is_a_whole_rest": 0.07162268899998026,
+  "SUBJ notehead_is_an_eighth_rest": 0.009581791000016437,
+  "ADJ notehead_is_an_eighth_rest": 0.008646700999861423,
+  "SUBJ unboxed_ink_is_a_rest": 0.009527708999996776,
+  "ADJ unboxed_ink_is_a_rest": 0.00985106499945232,
+  "SUBJ head_ink_is_a_rest": 0.010623750000036125,
+  "ADJ head_ink_is_a_rest": 0.03156920700007504,
+  "SUBJ tuplet_ratio": 0.008649375000004511,
+  "SUBJ duration": 0.012877916999968875,
+  "ADJ duration": 4.345490168998651,
+  "SUBJ head_stem": 0.01382862500003057,
+  "ADJ head_stem": 0.09554916399991953,
+  "SUBJ stem_value": 0.011909166999998888,
+  "ADJ stem_value": 5.65181163599982,
+  "SUBJ unison_voices": 0.012486416999990979,
+  "ADJ unison_voices": 0.13028762200082156,
+  "SUBJ event": 0.0156707500000266,
+  "ADJ event": 0.15270829500099126,
+  "SUBJ meter": 6.7909999756921025e-06,
+  "ADJ meter": 2.5612223340000355,
+  "SUBJ onset_column": 1.524999998991916e-05,
+  "ADJ onset_column": 0.04041124999997692,
+  "SUBJ voices": 0.2919679160000328,
+  "ADJ voices": 0.8029712460003111,
+  "SUBJ unread_mark": 0.010712667000007059,
+  "ADJ unread_mark": 0.015629265999677955,
+  "SUBJ empty_bar_whole_rest": 0.010558666999997968,
+  "SUBJ wedge_anchor": 0.010091249999959473,
+  "SUBJ dynamic": 0.010417500000016844,
+  "ADJ dynamic": 0.23799350099994854,
+  "SUBJ dynamic_anchor": 0.011014541999998073,
+  "ADJ dynamic_anchor": 0.6159454169999776,
+  "SUBJ direction": 0.012808624999991025,
+  "ADJ direction": 0.007571491000305741,
+  "SUBJ printed_bar_number": 1.3582999997652223e-05,
+  "ADJ printed_bar_number": 5.1582999958554865e-05,
+  "SUBJ repeat_barline": 2.6250000360050763e-06,
+  "ADJ repeat_barline": 4.258399997070228e-05,
+  "SUBJ endings": 2.0840000161115313e-06,
+  "ADJ endings": 4.187500002217348e-05,
+  "STAGE adjudicate": 51.95969095799998,
+  "STAGE groups": 0.08255383300001995,
+  "STAGE evaluate": 0.9667228749999595,
+  "STAGE infer": 1.1031496670000251,
+  "STAGE evaluate_bounded": 0.7456005829999981,
+  "to_json(log)": 1.1446482499999888,
+  "_adjudication_report": 0.007294957999988583,
+  "STAGE dumps_for_file": 3.214386124999976,
+  "STAGE write_text": 0.19663804200001778
+ },
+ "calls": {
+  "gather.gather_external": 1,
+  "gather.gather_document_identity": 1,
+  "gather.gather_movements": 1,
+  "gather.gather_input_domain": 1,
+  "gather.gather_geometry": 1,
+  "gather.gather_systems": 1,
+  "gather.gather_measures": 1,
+  "gather.gather_printed_bar_numbers": 1,
+  "gather.gather_volta_brackets": 1,
+  "gather.gather_volta_numerals": 1,
+  "gather.gather_repeat_dots": 1,
+  "gather.gather_detections": 1,
+  "gather.gather_empty_bar_rest_search": 1,
+  "gather.gather_lowconf_rescue": 1,
+  "gather.gather_wedge_rescue": 1,
+  "gather.gather_detector_views": 1,
+  "gather.gather_stem_end_heads": 1,
+  "gather.gather_letter_look": 1,
+  "gather.gather_mark_groups": 1,
+  "gather.gather_notehead_recentre": 1,
+  "gather.gather_head_line_cut": 1,
+  "gather.gather_notehead_positions": 1,
+  "gather.gather_accidental_positions": 1,
+  "gather.gather_ownership_evidence": 1,
+  "gather.gather_rhythm_marks": 1,
+  "gather.gather_dot_positions": 1,
+  "gather.gather_glyph_families": 1,
+  "gather.gather_dynamic_letters": 1,
+  "gather.gather_wedge_boxes": 1,
+  "gather.gather_cv_lines": 1,
+  "gather.gather_ink": 1,
+  "gather.gather_cell_ink_pieces": 1,
+  "gather.gather_narrow_box_shape": 1,
+  "gather.gather_unboxed_rest_ink": 1,
+  "gather.gather_rest_ink_contact": 1,
+  "gather.gather_ledger_ink": 1,
+  "gather.gather_arc_ink": 1,
+  "gather.gather_notehead_ink": 1,
+  "gather.gather_stacked_head_fit": 1,
+  "gather.gather_notehead_stem_cross_ink": 1,
+  "gather.gather_head_oval": 1,
+  "gather.gather_far_head_ledger_positions": 1,
+  "gather.gather_head_stem_reach": 1,
+  "gather.gather_notehead_letter_ink": 1,
+  "gather.gather_detector_beams": 1,
+  "gather.gather_beam_stroke_ink": 1,
+  "gather.gather_beam_stem_levels": 1,
+  "gather.gather_clef": 1,
+  "gather.gather_clef_locator": 1,
+  "gather.gather_clef_seed": 1,
+  "gather.gather_key_signature": 1,
+  "gather.gather_meter": 1,
+  "gather.gather_meter_at_bars": 1,
+  "gather.gather_meter_ocr_at_bars": 1,
+  "gather.gather_meter_object": 1,
+  "gather.gather_claimed_register": 1,
+  "gather.gather_margin_labels": 1,
+  "gather.gather_direction_words": 1,
+  "STAGE gather": 1,
+  "SUBJ movement_spans": 1,
+  "ADJ movement_spans": 1,
+  "SUBJ system_membership": 1,
+  "ADJ system_membership": 2,
+  "SUBJ staff_group": 1,
+  "ADJ staff_group": 28,
+  "SUBJ measure_partition": 1,
+  "ADJ measure_partition": 28,
+  "SUBJ staff_ordinal": 1,
+  "ADJ staff_ordinal": 28,
+  "SUBJ system_staff_count": 1,
+  "ADJ system_staff_count": 2,
+  "SUBJ instrument": 1,
+  "ADJ instrument": 28,
+  "SUBJ slot_index": 1,
+  "ADJ slot_index": 28,
+  "SUBJ part_partition": 1,
+  "ADJ part_partition": 1,
+  "SUBJ group_symbol": 1,
+  "ADJ group_symbol": 2,
+  "SUBJ clef": 1,
+  "ADJ clef": 28,
+  "SUBJ keysig_marker_is_not_a_marker": 1,
+  "ADJ keysig_marker_is_not_a_marker": 47,
+  "SUBJ system_key": 1,
+  "ADJ system_key": 2,
+  "SUBJ part_key": 1,
+  "ADJ part_key": 1,
+  "SUBJ key_signature": 1,
+  "ADJ key_signature": 28,
+  "SUBJ stem_head_contact": 1,
+  "ADJ stem_head_contact": 252,
+  "SUBJ ledger_is_not_a_ledger": 1,
+  "ADJ ledger_is_not_a_ledger": 377,
+  "SUBJ notehead_is_not_a_notehead": 1,
+  "ADJ notehead_is_not_a_notehead": 1243,
+  "SUBJ accidental_is_not_an_accidental": 1,
+  "ADJ accidental_is_not_an_accidental": 207,
+  "SUBJ rest_is_not_a_rest": 1,
+  "ADJ rest_is_not_a_rest": 519,
+  "SUBJ arpeggiato_is_not_an_arpeggiato": 1,
+  "ADJ arpeggiato_is_not_an_arpeggiato": 15,
+  "SUBJ arc_is_not_an_arc": 1,
+  "ADJ arc_is_not_an_arc": 737,
+  "SUBJ dynamic_is_not_a_dynamic": 1,
+  "ADJ dynamic_is_not_a_dynamic": 67,
+  "SUBJ flag_is_not_a_flag": 1,
+  "ADJ flag_is_not_a_flag": 317,
+  "SUBJ tuplet_marker_is_not_a_marker": 1,
+  "SUBJ glyph_owner": 1,
+  "ADJ glyph_owner": 1636,
+  "SUBJ articulation_is_not_an_articulation": 1,
+  "ADJ articulation_is_not_an_articulation": 115,
+  "SUBJ arc_owner": 1,
+  "ADJ arc_owner": 737,
+  "SUBJ accidental_owner": 1,
+  "ADJ accidental_owner": 207,
+  "SUBJ notehead_position": 1,
+  "ADJ notehead_position": 527,
+  "SUBJ arc_kind": 1,
+  "ADJ arc_kind": 737,
+  "SUBJ tie_pair": 1,
+  "ADJ tie_pair": 737,
+  "SUBJ dot_role": 1,
+  "ADJ dot_role": 386,
+  "SUBJ fermata_owner": 1,
+  "SUBJ ornament_owner": 1,
+  "SUBJ pedal_owner": 1,
+  "SUBJ ottava_owner": 1,
+  "ADJ ottava_owner": 4,
+  "SUBJ stem_direction": 1,
+  "ADJ stem_direction": 1243,
+  "SUBJ articulation_owner": 1,
+  "ADJ articulation_owner": 115,
+  "SUBJ notehead_is_a_whole_rest": 1,
+  "ADJ notehead_is_a_whole_rest": 1243,
+  "SUBJ notehead_is_an_eighth_rest": 1,
+  "ADJ notehead_is_an_eighth_rest": 236,
+  "SUBJ unboxed_ink_is_a_rest": 1,
+  "ADJ unboxed_ink_is_a_rest": 389,
+  "SUBJ head_ink_is_a_rest": 1,
+  "ADJ head_ink_is_a_rest": 389,
+  "SUBJ tuplet_ratio": 1,
+  "SUBJ duration": 1,
+  "ADJ duration": 1762,
+  "SUBJ head_stem": 1,
+  "ADJ head_stem": 1243,
+  "SUBJ stem_value": 1,
+  "ADJ stem_value": 1243,
+  "SUBJ unison_voices": 1,
+  "ADJ unison_voices": 1243,
+  "SUBJ event": 1,
+  "ADJ event": 252,
+  "SUBJ meter": 1,
+  "ADJ meter": 2,
+  "SUBJ onset_column": 1,
+  "ADJ onset_column": 2,
+  "SUBJ voices": 1,
+  "ADJ voices": 252,
+  "SUBJ unread_mark": 1,
+  "ADJ unread_mark": 252,
+  "SUBJ empty_bar_whole_rest": 1,
+  "SUBJ wedge_anchor": 1,
+  "SUBJ dynamic": 1,
+  "ADJ dynamic": 252,
+  "SUBJ dynamic_anchor": 1,
+  "ADJ dynamic_anchor": 28,
+  "SUBJ direction": 1,
+  "ADJ direction": 252,
+  "SUBJ printed_bar_number": 1,
+  "ADJ printed_bar_number": 2,
+  "SUBJ repeat_barline": 1,
+  "ADJ repeat_barline": 2,
+  "SUBJ endings": 1,
+  "ADJ endings": 2,
+  "STAGE adjudicate": 1,
+  "STAGE groups": 1,
+  "STAGE evaluate": 1,
+  "STAGE infer": 1,
+  "STAGE evaluate_bounded": 1,
+  "to_json(log)": 1,
+  "_adjudication_report": 1,
+  "STAGE dumps_for_file": 1
+ },
+ "per_call_s": {
+  "gather.gather_external": [
+   0.0
+  ],
+  "gather.gather_document_identity": [
+   0.03
+  ],
+  "gather.gather_movements": [
+   0.0
+  ],
+  "gather.gather_input_domain": [
+   0.0
+  ],
+  "gather.gather_geometry": [
+   0.0
+  ],
+  "gather.gather_systems": [
+   0.0
+  ],
+  "gather.gather_measures": [
+   0.0
+  ],
+  "gather.gather_printed_bar_numbers": [
+   4.5
+  ],
+  "gather.gather_volta_brackets": [
+   0.04
+  ],
+  "gather.gather_volta_numerals": [
+   0.0
+  ],
+  "gather.gather_repeat_dots": [
+   0.03
+  ],
+  "gather.gather_detections": [
+   3.82
+  ],
+  "gather.gather_empty_bar_rest_search": [
+   0.0
+  ],
+  "gather.gather_lowconf_rescue": [
+   0.0
+  ],
+  "gather.gather_wedge_rescue": [
+   1.3
+  ],
+  "gather.gather_detector_views": [
+   10.05
+  ],
+  "gather.gather_stem_end_heads": [
+   9.85
+  ],
+  "gather.gather_letter_look": [
+   5.62
+  ],
+  "gather.gather_mark_groups": [
+   0.1
+  ],
+  "gather.gather_notehead_recentre": [
+   0.36
+  ],
+  "gather.gather_head_line_cut": [
+   0.04
+  ],
+  "gather.gather_notehead_positions": [
+   0.06
+  ],
+  "gather.gather_accidental_positions": [
+   0.06
+  ],
+  "gather.gather_ownership_evidence": [
+   2.39
+  ],
+  "gather.gather_rhythm_marks": [
+   0.03
+  ],
+  "gather.gather_dot_positions": [
+   1.68
+  ],
+  "gather.gather_glyph_families": [
+   0.08
+  ],
+  "gather.gather_dynamic_letters": [
+   0.27
+  ],
+  "gather.gather_wedge_boxes": [
+   0.62
+  ],
+  "gather.gather_cv_lines": [
+   17.12
+  ],
+  "gather.gather_ink": [
+   2.87
+  ],
+  "gather.gather_cell_ink_pieces": [
+   0.01
+  ],
+  "gather.gather_narrow_box_shape": [
+   0.01
+  ],
+  "gather.gather_unboxed_rest_ink": [
+   0.1
+  ],
+  "gather.gather_rest_ink_contact": [
+   1.4
+  ],
+  "gather.gather_ledger_ink": [
+   0.06
+  ],
+  "gather.gather_arc_ink": [
+   0.92
+  ],
+  "gather.gather_notehead_ink": [
+   6.36
+  ],
+  "gather.gather_stacked_head_fit": [
+   0.21
+  ],
+  "gather.gather_notehead_stem_cross_ink": [
+   0.12
+  ],
+  "gather.gather_head_oval": [
+   0.05
+  ],
+  "gather.gather_far_head_ledger_positions": [
+   88.73
+  ],
+  "gather.gather_head_stem_reach": [
+   2.12
+  ],
+  "gather.gather_notehead_letter_ink": [
+   0.08
+  ],
+  "gather.gather_detector_beams": [
+   0.02
+  ],
+  "gather.gather_beam_stroke_ink": [
+   4.32
+  ],
+  "gather.gather_beam_stem_levels": [
+   2.26
+  ],
+  "gather.gather_clef": [
+   0.0
+  ],
+  "gather.gather_clef_locator": [
+   2.23
+  ],
+  "gather.gather_clef_seed": [
+   0.0
+  ],
+  "gather.gather_key_signature": [
+   14.43
+  ],
+  "gather.gather_meter": [
+   1.65
+  ],
+  "gather.gather_meter_at_bars": [
+   0.63
+  ],
+  "gather.gather_meter_ocr_at_bars": [
+   0.0
+  ],
+  "gather.gather_meter_object": [
+   0.92
+  ],
+  "gather.gather_claimed_register": [
+   1.65
+  ],
+  "gather.gather_margin_labels": [
+   10.11
+  ],
+  "gather.gather_direction_words": [
+   0.2
+  ],
+  "STAGE gather": [
+   211.3
+  ],
+  "STAGE adjudicate": [
+   51.96
+  ],
+  "STAGE groups": [
+   0.08
+  ],
+  "STAGE evaluate": [
+   0.97
+  ],
+  "STAGE infer": [
+   1.1
+  ],
+  "STAGE evaluate_bounded": [
+   0.75
+  ],
+  "STAGE dumps_for_file": [
+   3.21
+  ]
+ },
+ "out_bytes": 208352208,
+ "maxrss_mb": 7085.539328
+}

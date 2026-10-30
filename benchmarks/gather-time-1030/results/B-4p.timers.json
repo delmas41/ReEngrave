@@ -1,0 +1,598 @@
+{
+ "label": "B-4p",
+ "pages": "5,12,14,19",
+ "rc": 0,
+ "total_s": 1155.492595042,
+ "timers": {
+  "gather.gather_external": 0.0007392090000166718,
+  "gather.gather_document_identity": 0.03349799900013295,
+  "gather.gather_movements": 0.00010195899994869251,
+  "gather.gather_input_domain": 0.00010529199994380178,
+  "gather.gather_geometry": 0.019643458000018654,
+  "gather.gather_systems": 0.0003116249998811327,
+  "gather.gather_measures": 0.0091728749999902,
+  "gather.gather_barline_claim": 0.08994212499987952,
+  "gather.gather_printed_bar_numbers": 7.331748625000046,
+  "gather.gather_volta_brackets": 0.43918745799999215,
+  "gather.gather_volta_numerals": 0.00021745900005498697,
+  "gather.gather_repeat_dots": 0.11671445900003619,
+  "gather.gather_detections": 12.458896208000056,
+  "gather.gather_empty_bar_rest_search": 0.2052534160001187,
+  "gather.gather_lowconf_rescue": 0.11582520800004659,
+  "gather.gather_wedge_rescue": 5.188160582000023,
+  "gather.gather_detector_views": 41.11099804300011,
+  "gather.gather_stem_end_heads": 40.44174412699988,
+  "gather.gather_letter_look": 21.27813495800001,
+  "gather.gather_stroke_map": 37.730215790999864,
+  "gather.gather_glyph_strokes": 1.99881275000007,
+  "gather.gather_arc_claim": 2.908061542999917,
+  "gather.gather_accidental_family": 0.6509371660000625,
+  "gather.gather_mark_groups": 0.36411862599993583,
+  "gather.gather_notehead_recentre": 0.9479661260000967,
+  "gather.gather_head_line_cut": 0.09284445799994501,
+  "gather.gather_notehead_positions": 0.22676904100001138,
+  "gather.gather_accidental_positions": 0.4676411240000107,
+  "gather.gather_ownership_evidence": 8.760732707999978,
+  "gather.gather_rhythm_marks": 0.126003624999953,
+  "gather.gather_dot_positions": 8.480367750999903,
+  "gather.gather_glyph_families": 0.29418437500009986,
+  "gather.gather_dynamic_letters": 1.1589475000000675,
+  "gather.gather_wedge_boxes": 2.1365382909999653,
+  "gather.gather_cv_lines": 65.9603837919999,
+  "gather.gather_ink": 11.982946919000028,
+  "gather.gather_cell_ink_pieces": 0.06152325000005021,
+  "gather.gather_narrow_box_shape": 0.04415879100008624,
+  "gather.gather_unboxed_rest_ink": 0.3765240839999251,
+  "gather.gather_rest_ink_contact": 4.231423625000161,
+  "gather.gather_ledger_ink": 0.23935195800004294,
+  "gather.gather_arc_ink": 2.637593124000091,
+  "gather.gather_notehead_ink": 24.582033957999897,
+  "gather.gather_stacked_head_fit": 0.6916695419999996,
+  "gather.gather_notehead_stem_cross_ink": 0.5229630009999937,
+  "gather.gather_head_oval": 0.17994624999994357,
+  "gather.gather_head_ink": 25.562051916999962,
+  "gather.gather_far_head_ledger_positions": 265.4128774579999,
+  "gather.gather_head_stem_reach": 7.372133584000039,
+  "gather.gather_notehead_letter_ink": 0.46956858299995474,
+  "gather.gather_detector_beams": 0.08561233299997184,
+  "gather.gather_beam_stroke_ink": 18.215229791999946,
+  "gather.gather_beam_stem_levels": 7.492319126000098,
+  "gather.gather_clef": 0.016396499999927983,
+  "gather.gather_clef_locator": 9.86063579200004,
+  "gather.gather_clef_seed": 1.1167000138812e-05,
+  "gather.gather_key_signature": 56.05091566700003,
+  "gather.gather_meter": 10.976307959999986,
+  "gather.gather_meter_at_bars": 2.5222777909998513,
+  "gather.gather_meter_ocr_at_bars": 6.620899989684403e-05,
+  "gather.gather_meter_object": 3.65089416599983,
+  "gather.gather_claimed_register": 6.0345762070001,
+  "gather.gather_key_signature_claim": 1.4971038330000965,
+  "gather.gather_key_object": 6.778994207999972,
+  "gather.gather_clef_slot_claim": 0.011998417000086192,
+  "gather.gather_margin_labels": 40.04412466800011,
+  "gather.gather_direction_words": 0.8285263760001271,
+  "gather.gather_page_claims": 5.431377457999929,
+  "STAGE gather": 817.083663666,
+  "STAGE adjudicate": 236.25300475000006,
+  "STAGE groups": 1.330139041999928,
+  "STAGE evaluate": 3.9081851669998287,
+  "STAGE infer": 10.262693458000058,
+  "STAGE evaluate_bounded": 2.786208249999845,
+  "to_json(log)": 5.396499833000007,
+  "_adjudication_report": 0.02865091599983316,
+  "STAGE dumps_for_file": 21.423301875000107,
+  "STAGE write_text": 1.5587901250000868
+ },
+ "calls": {
+  "gather.gather_external": 4,
+  "gather.gather_document_identity": 4,
+  "gather.gather_movements": 4,
+  "gather.gather_input_domain": 4,
+  "gather.gather_geometry": 4,
+  "gather.gather_systems": 4,
+  "gather.gather_measures": 4,
+  "gather.gather_barline_claim": 4,
+  "gather.gather_printed_bar_numbers": 4,
+  "gather.gather_volta_brackets": 4,
+  "gather.gather_volta_numerals": 4,
+  "gather.gather_repeat_dots": 4,
+  "gather.gather_detections": 4,
+  "gather.gather_empty_bar_rest_search": 4,
+  "gather.gather_lowconf_rescue": 4,
+  "gather.gather_wedge_rescue": 4,
+  "gather.gather_detector_views": 4,
+  "gather.gather_stem_end_heads": 4,
+  "gather.gather_letter_look": 4,
+  "gather.gather_stroke_map": 4,
+  "gather.gather_glyph_strokes": 4,
+  "gather.gather_arc_claim": 4,
+  "gather.gather_accidental_family": 4,
+  "gather.gather_mark_groups": 4,
+  "gather.gather_notehead_recentre": 4,
+  "gather.gather_head_line_cut": 4,
+  "gather.gather_notehead_positions": 4,
+  "gather.gather_accidental_positions": 4,
+  "gather.gather_ownership_evidence": 4,
+  "gather.gather_rhythm_marks": 4,
+  "gather.gather_dot_positions": 4,
+  "gather.gather_glyph_families": 4,
+  "gather.gather_dynamic_letters": 4,
+  "gather.gather_wedge_boxes": 4,
+  "gather.gather_cv_lines": 4,
+  "gather.gather_ink": 4,
+  "gather.gather_cell_ink_pieces": 4,
+  "gather.gather_narrow_box_shape": 4,
+  "gather.gather_unboxed_rest_ink": 4,
+  "gather.gather_rest_ink_contact": 4,
+  "gather.gather_ledger_ink": 4,
+  "gather.gather_arc_ink": 4,
+  "gather.gather_notehead_ink": 4,
+  "gather.gather_stacked_head_fit": 4,
+  "gather.gather_notehead_stem_cross_ink": 4,
+  "gather.gather_head_oval": 4,
+  "gather.gather_head_ink": 4,
+  "gather.gather_far_head_ledger_positions": 4,
+  "gather.gather_head_stem_reach": 4,
+  "gather.gather_notehead_letter_ink": 4,
+  "gather.gather_detector_beams": 4,
+  "gather.gather_beam_stroke_ink": 4,
+  "gather.gather_beam_stem_levels": 4,
+  "gather.gather_clef": 4,
+  "gather.gather_clef_locator": 4,
+  "gather.gather_clef_seed": 4,
+  "gather.gather_key_signature": 4,
+  "gather.gather_meter": 4,
+  "gather.gather_meter_at_bars": 4,
+  "gather.gather_meter_ocr_at_bars": 4,
+  "gather.gather_meter_object": 4,
+  "gather.gather_claimed_register": 4,
+  "gather.gather_key_signature_claim": 4,
+  "gather.gather_key_object": 4,
+  "gather.gather_clef_slot_claim": 4,
+  "gather.gather_margin_labels": 4,
+  "gather.gather_direction_words": 4,
+  "gather.gather_page_claims": 4,
+  "STAGE gather": 1,
+  "STAGE adjudicate": 1,
+  "STAGE groups": 1,
+  "STAGE evaluate": 1,
+  "STAGE infer": 1,
+  "STAGE evaluate_bounded": 1,
+  "to_json(log)": 1,
+  "_adjudication_report": 1,
+  "STAGE dumps_for_file": 1
+ },
+ "per_call_s": {
+  "gather.gather_external": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_document_identity": [
+   0.03,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_movements": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_input_domain": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_geometry": [
+   0.0,
+   0.0,
+   0.0,
+   0.01
+  ],
+  "gather.gather_systems": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_measures": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_barline_claim": [
+   0.02,
+   0.03,
+   0.02,
+   0.02
+  ],
+  "gather.gather_printed_bar_numbers": [
+   4.64,
+   0.87,
+   0.91,
+   0.92
+  ],
+  "gather.gather_volta_brackets": [
+   0.19,
+   0.06,
+   0.11,
+   0.08
+  ],
+  "gather.gather_volta_numerals": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_repeat_dots": [
+   0.03,
+   0.03,
+   0.03,
+   0.03
+  ],
+  "gather.gather_detections": [
+   5.51,
+   2.11,
+   2.2,
+   2.64
+  ],
+  "gather.gather_empty_bar_rest_search": [
+   0.0,
+   0.09,
+   0.08,
+   0.03
+  ],
+  "gather.gather_lowconf_rescue": [
+   0.0,
+   0.11,
+   0.0,
+   0.0
+  ],
+  "gather.gather_wedge_rescue": [
+   1.37,
+   1.19,
+   1.2,
+   1.43
+  ],
+  "gather.gather_detector_views": [
+   9.99,
+   10.53,
+   10.12,
+   10.48
+  ],
+  "gather.gather_stem_end_heads": [
+   10.44,
+   10.24,
+   9.65,
+   10.11
+  ],
+  "gather.gather_letter_look": [
+   5.46,
+   4.6,
+   5.98,
+   5.23
+  ],
+  "gather.gather_stroke_map": [
+   9.11,
+   10.15,
+   8.6,
+   9.88
+  ],
+  "gather.gather_glyph_strokes": [
+   0.54,
+   0.34,
+   0.3,
+   0.83
+  ],
+  "gather.gather_arc_claim": [
+   0.98,
+   0.54,
+   0.58,
+   0.8
+  ],
+  "gather.gather_accidental_family": [
+   0.08,
+   0.4,
+   0.07,
+   0.1
+  ],
+  "gather.gather_mark_groups": [
+   0.1,
+   0.08,
+   0.08,
+   0.1
+  ],
+  "gather.gather_notehead_recentre": [
+   0.27,
+   0.17,
+   0.29,
+   0.21
+  ],
+  "gather.gather_head_line_cut": [
+   0.02,
+   0.02,
+   0.03,
+   0.02
+  ],
+  "gather.gather_notehead_positions": [
+   0.06,
+   0.05,
+   0.05,
+   0.07
+  ],
+  "gather.gather_accidental_positions": [
+   0.08,
+   0.13,
+   0.09,
+   0.17
+  ],
+  "gather.gather_ownership_evidence": [
+   2.37,
+   2.37,
+   1.37,
+   2.65
+  ],
+  "gather.gather_rhythm_marks": [
+   0.04,
+   0.03,
+   0.02,
+   0.04
+  ],
+  "gather.gather_dot_positions": [
+   1.65,
+   2.77,
+   1.6,
+   2.47
+  ],
+  "gather.gather_glyph_families": [
+   0.08,
+   0.06,
+   0.05,
+   0.1
+  ],
+  "gather.gather_dynamic_letters": [
+   0.24,
+   0.31,
+   0.33,
+   0.28
+  ],
+  "gather.gather_wedge_boxes": [
+   0.49,
+   0.61,
+   0.49,
+   0.55
+  ],
+  "gather.gather_cv_lines": [
+   17.19,
+   17.57,
+   14.83,
+   16.37
+  ],
+  "gather.gather_ink": [
+   2.83,
+   3.08,
+   3.11,
+   2.96
+  ],
+  "gather.gather_cell_ink_pieces": [
+   0.01,
+   0.02,
+   0.01,
+   0.02
+  ],
+  "gather.gather_narrow_box_shape": [
+   0.01,
+   0.01,
+   0.01,
+   0.01
+  ],
+  "gather.gather_unboxed_rest_ink": [
+   0.11,
+   0.08,
+   0.09,
+   0.1
+  ],
+  "gather.gather_rest_ink_contact": [
+   1.4,
+   0.79,
+   0.96,
+   1.08
+  ],
+  "gather.gather_ledger_ink": [
+   0.06,
+   0.08,
+   0.04,
+   0.06
+  ],
+  "gather.gather_arc_ink": [
+   0.82,
+   0.62,
+   0.44,
+   0.75
+  ],
+  "gather.gather_notehead_ink": [
+   6.08,
+   4.07,
+   6.99,
+   7.44
+  ],
+  "gather.gather_stacked_head_fit": [
+   0.21,
+   0.12,
+   0.13,
+   0.23
+  ],
+  "gather.gather_notehead_stem_cross_ink": [
+   0.12,
+   0.12,
+   0.11,
+   0.17
+  ],
+  "gather.gather_head_oval": [
+   0.05,
+   0.02,
+   0.07,
+   0.04
+  ],
+  "gather.gather_head_ink": [
+   7.36,
+   5.53,
+   5.4,
+   7.27
+  ],
+  "gather.gather_far_head_ledger_positions": [
+   81.23,
+   72.75,
+   35.45,
+   75.98
+  ],
+  "gather.gather_head_stem_reach": [
+   2.21,
+   1.65,
+   1.66,
+   1.84
+  ],
+  "gather.gather_notehead_letter_ink": [
+   0.07,
+   0.12,
+   0.18,
+   0.11
+  ],
+  "gather.gather_detector_beams": [
+   0.02,
+   0.03,
+   0.02,
+   0.02
+  ],
+  "gather.gather_beam_stroke_ink": [
+   4.18,
+   5.27,
+   4.68,
+   4.09
+  ],
+  "gather.gather_beam_stem_levels": [
+   2.0,
+   1.83,
+   1.56,
+   2.1
+  ],
+  "gather.gather_clef": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_clef_locator": [
+   2.26,
+   2.51,
+   2.69,
+   2.4
+  ],
+  "gather.gather_clef_seed": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_key_signature": [
+   13.33,
+   15.01,
+   13.1,
+   14.61
+  ],
+  "gather.gather_meter": [
+   1.66,
+   3.9,
+   1.67,
+   3.74
+  ],
+  "gather.gather_meter_at_bars": [
+   0.61,
+   0.62,
+   0.5,
+   0.79
+  ],
+  "gather.gather_meter_ocr_at_bars": [
+   0.0,
+   0.0,
+   0.0,
+   0.0
+  ],
+  "gather.gather_meter_object": [
+   0.91,
+   0.96,
+   0.88,
+   0.91
+  ],
+  "gather.gather_claimed_register": [
+   1.59,
+   1.88,
+   1.65,
+   0.92
+  ],
+  "gather.gather_key_signature_claim": [
+   0.37,
+   0.51,
+   0.25,
+   0.37
+  ],
+  "gather.gather_key_object": [
+   1.44,
+   2.59,
+   1.42,
+   1.33
+  ],
+  "gather.gather_clef_slot_claim": [
+   0.0,
+   0.0,
+   0.01,
+   0.0
+  ],
+  "gather.gather_margin_labels": [
+   9.73,
+   9.79,
+   10.98,
+   9.54
+  ],
+  "gather.gather_direction_words": [
+   0.2,
+   0.22,
+   0.2,
+   0.2
+  ],
+  "gather.gather_page_claims": [
+   1.25,
+   1.42,
+   1.52,
+   1.24
+  ],
+  "STAGE gather": [
+   817.08
+  ],
+  "STAGE adjudicate": [
+   236.25
+  ],
+  "STAGE groups": [
+   1.33
+  ],
+  "STAGE evaluate": [
+   3.91
+  ],
+  "STAGE infer": [
+   10.26
+  ],
+  "STAGE evaluate_bounded": [
+   2.79
+  ],
+  "STAGE dumps_for_file": [
+   21.42
+  ]
+ },
+ "out_bytes": 1262841476,
+ "maxrss_mb": 14660.304896
+}
