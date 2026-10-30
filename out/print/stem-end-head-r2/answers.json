@@ -50,5 +50,7 @@
    "tile": 12,
    "answer": "part of a beam"
   }
- ]
+ ],
+ "sean_followup_2026_10_29": "Tile 2 is a part of a second - 2 notes on either side of the stem. Tile 5 looks smaller than the others and the notes looks like it is on a staff below the main one in the tile. 7. The box looks too rectangular to capture the full bite whose ink overlaps the staff lines.",
+ "followup_meaning": "2: a SECOND (two heads a step apart, one each side of the stem) -- the ink read one half as too small; the reader must allow the displaced head of a second. 5: a small note that belongs to the staff BELOW (wrong staff, possibly cue/grace size) -- filing, not a head miss. 7: the box is too flat; a head whose ink fuses with staff lines needs the line-aware trim height, not a fixed-aspect box."
 }
