@@ -1176,6 +1176,11 @@ def _stem_end_head_ink(log: Log, pws: Any, c: Any, cell_sub: Any, frame: str, st
                 # subset: it may only NARROW -- it refuses an ink-ONLY head (one witness), never a head the 0.05 re-run boxed on the same ink
                 ink = dict(ink, head=True, why=None, stem_inside_narrowed=True)
             verdict, why = SEH.combine(det_page, ink)
+            if verdict == "none" and ink.get("why") == "stem_inside_the_ink":
+                # a refusal says how close it came: the ink-only head the far-side cut refused (Sean's flat / flag tiles), with its reach
+                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                            why="ink:stem_inside_the_ink", end=end, ink_trimmed=ink.get("trimmed"), ink_fill=ink.get("value"),
+                            ink_far_side_sp=ink.get("far_side_sp"), margin=round(float(ink.get("far_side_sp") or 0.0) - SEH.CROSS_SPACES, 3))
             if verdict == "ink_only" and both:
                 verdict, why = "abstain", "ink_reads_a_head_at_both_ends"
             if verdict == "agree":
