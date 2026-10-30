@@ -74,7 +74,7 @@ L("Ranking and 'what changed in the file': both arms exported by THIS tree's exp
 pk = read(SUM / "prov.txt")
 m = re.search(r"SETTINGS/ENV difference.*", pk)
 L("Settings/env: %s Provenance records only explicit env overrides (OMR_SURYA_KEEP_ALIVE) and CLI args, NOT the whole shell environment: an inherited OMR_* variable at BASE cannot be ruled out. "
-  "The TAG process's environment snapshot: %s" % (m.group(0)[:200] if m else "not read.", read(SUM / "env-snapshot.txt").strip() or "not captured (the gather had already exited)"))
+  "The TAG process's environment snapshot: %s" % (("the provenance " + m.group(0)[:120].replace("SETTINGS/ENV difference", "settings/env difference").rstrip()) if m else "not read.", read(SUM / "env-snapshot.txt").strip() or "not captured (the gather had already exited)"))
 wts = []
 for tag in (BASE, TAG):
     for doc in DOCS[:1]:

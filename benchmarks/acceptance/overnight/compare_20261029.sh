@@ -109,7 +109,7 @@ done
 # 5. the process: logs, records' provenance, the code between the commits
 python3 "$HERE/logs_diff.py" "$R" "$BASE" "$TAG" $READY > "$SUM/logs-diff.txt" 2>&1
 sed -n '1,2p' "$SUM/logs-diff.txt" > "$SUM/logs-wall.txt"
-RECS=""
+: > "$SUM/prov.txt"
 for doc in $READY; do
   { echo "== $doc"; python3 "$HERE/prov_peek.py" "$R/$doc-mvt1-whole-$BASE.record.json" "$R/$doc-mvt1-whole-$TAG.record.json"; } >> "$SUM/prov.txt" 2>&1
 done

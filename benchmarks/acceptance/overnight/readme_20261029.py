@@ -140,7 +140,7 @@ for doc in DOCS:
 
 P("Abstention reasons that moved (old -> new; logs_diff.txt has all; decided verdicts that moved are listed there too):")
 ld = read(SUM / "logs-diff.txt")
-for blk in re.split(r"\n(?==== )", ld):
+for blk in re.split(r"\n(?=== )", ld):
     if blk.startswith("== "):
         P("  " + blk.splitlines()[0][3:])
         rows = [l for l in blk.splitlines() if re.match(r"\s{4}\S+\s+\S+\s+\d+\s+\d+\s+[+-]\d+", l)]
@@ -181,10 +181,25 @@ for w in worse:
     P("  - " + w)
 P()
 P("== Process: how we got it")
-P(read(SUM / "process.txt").rstrip())
+proc = read(SUM / "process.txt")
+for blk in re.split(r"\n\n(?=== )", proc):
+    first = blk.splitlines()[0] if blk.strip() else ""
+    if first.startswith("== ROADMAP items"):
+        ids = re.findall(r"^  (\d\.\d+[a-z0-9]*)\s", blk, re.M)
+        P("== ROADMAP items named in commit subjects (%d; one line each, with the commit, in %s):" % (len(ids), SUM / "process.txt"))
+        P("  " + " ".join(ids))
+    else:
+        P(blk.rstrip())
+        P()
 P()
 P("-- the two runs, from their logs and records")
 P(read(SUM / "logs-wall.txt").rstrip())
+for blk in re.split(r"\n(?=== )", ld):
+    if blk.startswith("== "):
+        P(blk.splitlines()[0])
+        for l in blk.splitlines()[1:]:
+            if re.match(r"\s+(wall min|── |->|LOG warnings|TAG:)", l) or l.startswith("     ->"):
+                P("  " + l.strip()[:230])
 P(read(SUM / "prov.txt").rstrip())
 P()
 P("What the logs and records do NOT carry, so it is not estimated here: per-stage wall time (the run prints none), detector or OCR call counts, ")
