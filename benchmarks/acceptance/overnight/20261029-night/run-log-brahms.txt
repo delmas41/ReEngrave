@@ -1,0 +1,8 @@
+compare_20261029 20261029-night vs 20261022-night docs [brahms1-breitkopf] tree 05f0b9eb9c9556b0207ded6b4e23df4129f7038a start 2026-10-30T13:12:04Z
+comparing: brahms1-breitkopf
+tree under test: tools/ identical to the TAG commit 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c
+compare 20261029-night vs 20261022-night, tree 05f0b9eb9c9556b0207ded6b4e23df4129f7038a start 2026-10-30T13:12:04Z
+brahms1-breitkopf: readout diff exit 1 = the records differ (expected)
+done 2026-10-30T14:50:22Z
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a34f16b60d63e545a/benchmarks/acceptance/overnight/20261029-night/README.txt 126 lines; 13 candidate(s) under Surprising / worse
+done 2026-10-30T15:32:25Z

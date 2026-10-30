@@ -14,7 +14,7 @@ sys.path.insert(0, str(HERE.parents[3]))
 from tools.omr.staged.record_io import load_record   # noqa: E402
 
 root, base, arm = Path(sys.argv[1]), sys.argv[2], sys.argv[3]
-for doc in ("beethoven5-litolff", "brahms1-breitkopf"):
+for doc in (sys.argv[4:] or ("beethoven5-litolff", "brahms1-breitkopf")):   # 2026-10-29: optional doc list
     print(f"== {doc}")
     for tag in (base, arm):
         path = root / f"{doc}-mvt1-whole-{tag}.record.json"

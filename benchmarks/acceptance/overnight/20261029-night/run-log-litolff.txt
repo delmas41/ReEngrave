@@ -1,0 +1,8 @@
+compare_20261029 20261029-night vs 20261022-night docs [beethoven5-litolff] tree 08f3a831b31809c650e7d7c4b437ce2ef191eaa3 start 2026-10-30T07:29:22Z
+comparing: beethoven5-litolff
+tree under test: tools/ identical to the TAG commit 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c
+compare 20261029-night vs 20261022-night, tree 08f3a831b31809c650e7d7c4b437ce2ef191eaa3 start 2026-10-30T07:29:22Z
+beethoven5-litolff: readout diff exit 1 = the records differ (expected)
+done 2026-10-30T07:33:59Z
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a34f16b60d63e545a/benchmarks/acceptance/overnight/20261029-night/README.txt 130 lines; 16 candidate(s) under Surprising / worse
+done 2026-10-30T07:38:21Z

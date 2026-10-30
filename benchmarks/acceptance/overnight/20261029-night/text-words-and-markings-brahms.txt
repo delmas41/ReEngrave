@@ -1,0 +1,7 @@
+== brahms1-breitkopf
+  20261022-night: words read 369 (bars with words 345); word refusals {'no_ink': 5724, 'no_reading': 959}
+      commonest: [('dim', 68), ('a 2', 38), ('cresc', 36), ('arco', 27), ('pizz', 24), ('p espr', 12), ('a2', 10), ('p dolce', 9), ('espr', 8), ('piu', 8), ('div', 5), ('pp sempre', 5)]
+      markings: 98 {'read_together': 75, 'same_line_adjacent': 23}  e.g. ['f legato', 'f legato', 'f legato', 'F legato', 'f espr. e legato', 'f espr. e legato', 'f espr. e legato', 'f pesante']
+  20261029-night: words read 372 (bars with words 348); word refusals {'no_ink': 5732, 'no_reading': 962}
+      commonest: [('dim', 68), ('cresc', 39), ('a 2', 38), ('arco', 27), ('pizz', 24), ('p espr', 12), ('a2', 10), ('p dolce', 9), ('espr', 8), ('piu', 8), ('div', 5), ('pp sempre', 5)]
+      markings: 98 {'read_together': 75, 'same_line_adjacent': 23}  e.g. ['f legato', 'f legato', 'f legato', 'F legato', 'f espr. e legato', 'f espr. e legato', 'f espr. e legato', 'f pesante']

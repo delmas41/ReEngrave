@@ -1,0 +1,9 @@
+litolff ranking, fix-actions per page over 9 loaded pages, biggest first by TAG (BASE=base TAG=tag)
+kind                             BASE/pg    TAG/pg    delta   10-29 rank   (totals BASE -> TAG)
+ties and slurs not written          84.1      82.8     -1.3         83.0   757 -> 745
+pitched heads not written           34.0      34.4     +0.4         34.3   306 -> 310
+red bars                            29.4      22.4     -7.0         27.3   265 -> 202
+unread empty bars                   24.8      14.3    -10.4         31.0   223 -> 129
+dots decided, never placed           8.2       8.2     +0.0          8.1   74 -> 74
+blue notes (check load)            124.1     140.9    +16.8        138.4   1117 -> 1268
+blue rests (check load)              3.3       4.4     +1.1          3.8   30 -> 40

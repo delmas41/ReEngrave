@@ -1,0 +1,22 @@
+all stages: NEW tree 08f3a831b31809c650e7d7c4b437ce2ef191eaa3 (2026-10-30T07:33:59Z)  vs  OLD tree 0e9fe8c5d62008a8f0b0e6b4d3ac3b89336a3ddf (2026-09-30T21:19:50Z)
+
+== beethoven5-litolff  (old -> new; only the numbers that moved)
+  notes_reaching_file.n                                                          4480 ->         8898
+  notes_reaching_file.of                                                        11644 ->        11868
+  notes_reaching_file.fraction                                           0.38474750944692543 -> 0.749747219413549
+  bars_held_out_sum.n                                                            1732 ->            0
+  bars_held_out_sum.of                                                           4465 ->         5412
+  bars_held_out_sum.fraction                                             0.38790593505039195 ->          0.0
+  bars_held_out_sum.noteheads_and_rests                                          4192 ->            0
+  bars_held_out_sum.bars_on_a_doubled_staff                                        85 ->            0
+  bars_held_out_sum.named_in_the_export_report                                   1647 ->            0
+  bars_add_up_control.exact                                                      5886 ->         5170
+  bars_add_up_control.n                                                          5886 ->         5170
+  bars_add_up_control.of                                                         5886 ->         5170
+  held_out.staff_not_identified                                                   213 ->            0
+  held_out.of_noteheads_in_log                                                  11644 ->        11868
+  held_out.fraction                                                      0.018292682926829267 ->          0.0
+  unread_bars.empty_bars_padded                                                   951 ->          280
+  unread_bars.tacet_bars_not_padded_without_meter                                  90 ->            0
+
+== brahms1-breitkopf  (old -> new; only the numbers that moved)
