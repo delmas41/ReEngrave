@@ -128,3 +128,30 @@ written blue) / 6 (3); disagree-abstain 17 / 10; far-side refused 3 / 1. Lost = 
 the trim shaving a welded head) + 1 dropped later. p9 quarter: written blue from ink. Round-1 tiles now: 3/5/6 written blue eighths on
 the right staff; 4 refused unladdered; 8, 11 refused stem_inside_the_ink; 1 narrowed but unwritten (duration beams_ambiguous); 2, 7, 9,
 10, 12 still abstain. New tiles: out/print/stem-end-head-r2 (key.json outside tiles/).
+
+## Stem-end head read from ink, round 3 (lane-stem-end-head, flag OMR_STEM_END_HEAD_INK OFF; 2026-10-29)
+
+STAGED. Same subset (Litolff 4,9 / Brahms 5,14), `lane_report --from gather --workers 1`.
+
+**Cause (the manager's diagnosis did NOT hold as stated).** Round 2 already filed the ink head in GATHER before every per-box reader
+(gather.py: `gather_stem_end_heads` precedes positions, stacked fit, head_ink, ownership, far-head ledgers; tile 7's box carries all
+their rows). The three misses were the ink SEED read acting as a gate in GATHER: (a) the seed sits on the convention's side of the
+stem, so a second's displaced head (tile 2) read `too_small` and the old-rescue box (0.35) was dropped -- its own per-box `HEAD_INK`
+read one filled head; (b) the line-only trim takes a black head in a space to ~0.63 sp (10 of 15.75 px; ten agree boxes on p4 alike),
+so ink-only boxes were flat (tiles 6/7) and many were refused `too_small`; (c) ink and re-run were paired per stem END, so a head with an
+up and a down stem was boxed twice (tile 6, duplicate) or abstained + flat (tile 7). Tile 5 was never a stem-end subject: a production
+box writes it (eighth, both arms). Test issue: the r2 tiles drew the filed boxes (not the search window), but their `kind` came from the
+GATHER/ADJUDICATE row, not the written file. Lesson: a pre-filter in GATHER is a decision; let the box's own per-box reader be the witness.
+
+**Changes.** GATHER: every re-run box is filed (as OFF); the ink is paired with it BY INK across all orphan ends (`agree` / `rerun_only`);
+an ink head nothing boxes is a candidate `ink_only` box = the trimmed head WITH its rim rows (`head_ink.trim_head` `rim_trimmed`, filed
+nowhere else). ADJUDICATE (`notehead_precision._stem_end_box_ink_disagrees`): a stem-end box whose own `Q.HEAD_INK` says not one head
+(no_head_ink / another mark's ink / too wide / too tall; `too_small` excluded) is refused `stem_end_ink_disagrees` with candidates;
+agreement is plain (re-run) or blue (ink only); claims, unladdered and far-side refusals kept; a flagged stem-end box is never a whole rest.
+
+**Measure.** Litolff notes +3 -0, blue +3; Brahms notes +2 -0, blue +2; red bars 0 -> 0; judged right->wrong 0, unwritten->wrong 0,
+invented->removed 0. Old rescue written OFF 25 / 3, still written ON 25 / 3 (lost 0; r2 lost 8). Boxes ON: agree 22 / 2, rerun_only 17 / 10
+(6 / 1 written), ink_only 7 / 6 (3 / 2 written blue), refused `stem_end_ink_disagrees` 5 / 3, far-side abstentions 4 / 1.
+r2 tiles: 1 (p9 quarter) blue quarter; 2 plain quarter (second); 3 (ff) refused disagrees; 4 blue half; 5, 6 eighths written; 7 agree box,
+written NOT (one head, two stems: stem direction null, beam levels 0..1); 8 none; 9 blue quarter; 10 refused too_narrow; 11, 12 refused
+unladdered. New tiles: out/print/stem-end-head-r3 (5 written blue, 7 refused disagreements; key.json + sheet.png outside tiles/).
