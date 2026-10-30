@@ -277,9 +277,11 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
             boxes[b.subject.to_key()] = (str(v[0]), tuple(float(t) for t in v[1:5]))
     out: Dict[str, SO.Veto] = {}
     for part in (_letter_vetoes(ev, cell, heads, rests), _rest_shape_vetoes(ev, cell, heads), _rest_into_head_vetoes(ev, cell, rests),
-                 _acc_on_rest_vetoes(ev, cell, accs, rests, boxes), SO.structural_vetoes(inks, claims)):
+                 _acc_on_rest_vetoes(ev, cell, accs, rests, boxes)):
         for k, v in part.items():
             out.setdefault(k, v)
+    for k, v in SO.structural_vetoes(inks, claims, already=out).items():
+        out.setdefault(k, v)
     return out
 
 

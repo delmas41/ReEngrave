@@ -99,6 +99,44 @@ class TestANamedRivalAndAVetoWithoutOne(unittest.TestCase):
         self.assertEqual(without[0].family, "accidental")
 
 
+class TestSeansRound2Tiles(unittest.TestCase):
+    """Sean's 2.238 tiles (out/print/2.238-tiles/answers.json): three places the first build wrote wrong."""
+
+    def test_tile4_a_rest_box_on_a_half_note_and_its_stem_RED(self):
+        # Litolff 6/1/11/5/2: the box covers the hollow head's pieces (fit as rest pieces) and the 4.5-sp stem joined to them
+        piece = ink(8, "blob", (0, 380, 49, 110), 1.10, 0.50, area=0.44, touches=(10,))
+        stem = ink(10, "vertical", (40, 0, 38, 450), 4.50, 0.38, touches=(8,))
+        rest = claim("rest", "restQuarter", covers=(8, 10))
+        self.assertEqual(SO.structural_vetoes([piece, stem], [rest]), {"rest": SO.Veto("rest_holds_a_stem")})
+        own = SO.own_strokes([piece, stem], [rest])
+        self.assertEqual(SO.box_verdict(rest, own, {8: piece, 10: stem})["verdict"], "owns")      # control: 2.205 alone keeps it
+
+    def test_tile10_a_real_eighth_rest_holds_no_stroke_a_rest_never_prints_GREEN(self):
+        body = ink(5, "blob", (0, 0, 87, 130), 1.35, 0.81, area=0.80, touches=(9,))
+        tail = ink(9, "vertical", (60, 100, 19, 161), 1.62, 0.19, touches=(5,))
+        self.assertEqual(SO.structural_vetoes([body, tail], [claim("rest", "rest8th", covers=(5, 9))]), {})
+
+    def test_tile11_a_vetoed_rest_is_never_a_heads_rival_RED(self):
+        # Litolff 8/1/0/0: a false quarter-rest box on a unison head, itself refused as running into a head, took the head's ink
+        blob = ink(72, "blob", (0, 0, 144, 100), 1.44, 0.2, area=0.2)
+        head = claim("head", "noteheadBlackInSpace", covers=(72,))
+        rest = claim("rest", "restQuarter", covers=(72,))
+        clear_rest = ink(73, "blob", (0, 120, 50, 100), 1.0, 0.5, area=0.4)
+        rest2 = claim("rest", "restQuarter", covers=(72, 73))
+        self.assertIn("head", SO.structural_vetoes([blob, clear_rest], [head, rest2]))                # control: an unvetoed rival
+        self.assertNotIn("head", SO.structural_vetoes([blob, clear_rest], [head, rest2],
+                                                      already={"rest": SO.Veto("rest_stroke_into_a_head")}))
+        own = SO.own_strokes([blob], [head, rest], vetoes={"head": SO.Veto("head_piece_on_a_rest", "rest", "rest", "restQuarter"),
+                                                           "rest": SO.Veto("rest_stroke_into_a_head")})
+        self.assertNotIn("rest", own[72].owners)
+
+    def test_tile1_owns_does_not_silence_the_whole_on_a_rest_rule(self):
+        import inspect
+        from tools.omr.staged.adjudicators import notehead_precision as NP
+        src = inspect.getsource(NP.adjudicate_notehead_is_not_a_notehead)
+        self.assertIn("if whole_refusal is not None:\n        return whole_refusal", src)
+
+
 class TestTheNoiseGateOnTheRestsInkContact(unittest.TestCase):
     """Tile 10 (Litolff 16/1/2/2): the 2.150b margin 0.01 is inside the 0.05 re-read noise -- no veto; tile 4's 0.69 vetoes."""
 

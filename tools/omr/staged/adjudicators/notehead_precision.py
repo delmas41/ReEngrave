@@ -4009,7 +4009,9 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
         detail["owner"] = {"owns": True, "verdict": owner_vid}
     # ROADMAP 2.173 (flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`): a whole-class box on a rest's ink or on a READ meter's ink.
     whole_refusal = _whole_class_refusal(ev, box_row, spacing, detail)
-    if whole_refusal is not None and not (owner_decides and whole_refusal.reason == "on_a_rest"):
+    # 2.238 (Sean's tile 1, Brahms 5/1/7/2/6): `owns` does NOT silence this rule -- its evidence (a rest box under a whole) was not moved
+    # into the owner, and the 2.205 per-stroke fit "owned" a quarter rest's zigzag as a whole note's blob
+    if whole_refusal is not None:
         return whole_refusal
     # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF): a stemless head box whose INK reads as a
     # rest by 2.99's windows (no rest box beside it: the twin rule above cannot see it).

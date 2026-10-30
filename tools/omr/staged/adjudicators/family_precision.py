@@ -2119,7 +2119,8 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         vertical = _rest_vertical_window_refusal(ev, box_row, detail)
         if vertical is not None:
             return vertical
-        overlap = None if owner_decides else _rest_overlaps_notehead_refusal(ev, box_row, detail)
+        # 2.238: `owns` does not silence this rule (its evidence was not moved into the owner)
+        overlap = _rest_overlaps_notehead_refusal(ev, box_row, detail)
         if overlap is not None:
             return overlap
         # ROADMAP 2.105(c): LAST, so every refusal already standing keeps its

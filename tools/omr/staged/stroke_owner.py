@@ -405,15 +405,39 @@ def clear_keys(strokes: Sequence[Ink], claims: Sequence[Claim]) -> set:
     return out
 
 
-def structural_vetoes(strokes: Sequence[Ink], claims: Sequence[Claim]) -> Dict[str, Veto]:
-    """2.238 (old rule `on_a_rest`, 2.173): a head box with NO clear head piece that shares a covered stroke with a rest box that HAS a
-    clear rest piece is that rest's ink (a rest never touches a note; the claim order may give the head the shared ink only when the head has
-    a head's shape). Structure only: no number beyond `shape_fit`'s convention sizes. One rival: the first such rest in key order."""
-    clear = clear_keys(strokes, claims)
-    rests = sorted((c for c in claims if c.family == "rest" and not c.area and c.key in clear), key=lambda c: c.key)
+#: the shape answers a rest box can never print (`shape_fit`): a straight stroke longer than any rest, a vertical under a block rest, a beam
+REST_NEVER = ("longer_than_a_rest", "block_rest_has_no_vertical", "a_beam_not_a_rest_block")
+
+
+def structural_vetoes(strokes: Sequence[Ink], claims: Sequence[Claim], already: Optional[Dict[str, Veto]] = None) -> Dict[str, Veto]:
+    """2.238, structure only (no number beyond `shape_fit`'s convention sizes):
+
+    * `rest_holds_a_stem` -- a rest box whose covered ink holds a stroke a rest can never print (`REST_NEVER`: a 4.5-sp straight stroke)
+      JOINED to a piece it claims is on a note's stem, not a rest (Sean's 2.238 tile 4: a quarter-rest box on a half note and its stem,
+      the old 2.150b margin 0.02 a near-tie). No rival: the stem is the consumers'.
+    * `head_piece_on_a_rest` -- a head box with NO clear head piece that shares a covered stroke with a rest box that HAS a clear rest
+      piece and is not itself vetoed is that rest's ink (a rest never touches a note; the claim order may give the head the shared ink only
+      when the head has a head's shape). A vetoed rest is never a rival (Sean's 2.238 tile 11: a false quarter-rest box on a unison head,
+      itself refused `rest_stroke_into_a_head`, took the head's ink and the eighth lost its beam).
+
+    `already`: the vetoes the GATHER-row readers filed first (their boxes are not rivals here)."""
+    by_ord = {s.ordinal: s for s in strokes}
+    already = dict(already or {})
     out: Dict[str, Veto] = {}
+    for r in claims:
+        if r.family != "rest" or r.area or r.key in already:
+            continue
+        cov = set(r.covers)
+        fits = {o: shape_fit("rest", by_ord[o], r.cls)[1].split(":")[0] for o in cov if o in by_ord}
+        for o, why in fits.items():
+            if why in REST_NEVER and any(j in cov and fits.get(j) not in REST_NEVER for j, _c in by_ord[o].touches):
+                out[r.key] = Veto("rest_holds_a_stem")
+                break
+    vetoed = set(already) | set(out)
+    clear = clear_keys(strokes, claims)
+    rests = sorted((c for c in claims if c.family == "rest" and not c.area and c.key in clear and c.key not in vetoed), key=lambda c: c.key)
     for h in claims:
-        if h.family != "head" or h.area or h.key in clear or not h.covers:
+        if h.family != "head" or h.area or h.key in clear or not h.covers or h.key in already:
             continue
         mine = set(h.covers)
         for r in rests:
@@ -463,7 +487,7 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                     fit, why = "no", "veto:%s:%s" % (veto.rule, why)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
                                 "how": "area" if c.area else "cover", "row": c.row_id})
-                if veto is not None and veto.rival_key and veto.rival_family in tier_index \
+                if veto is not None and veto.rival_key and veto.rival_family in tier_index and veto.rival_key not in vetoes \
                         and not any(e["key"] == veto.rival_key and e["how"] == "named" for e in cand[o]):
                     cand[o].append({"key": veto.rival_key, "family": veto.rival_family, "cls": veto.rival_cls, "fit": "clear",
                                     "why": "named:%s" % veto.rule, "how": "named", "row": veto.row_id})
