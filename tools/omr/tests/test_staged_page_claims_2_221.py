@@ -229,6 +229,31 @@ class TestMetronomeAndLabels(unittest.TestCase):
         self.assertEqual(len(blocks), 1)
         self.assertEqual(blocks[0][:2], [100.0, 50.0])
 
+    def test_a_heading_needs_two_letters_a_speck_a_stem_tip_or_one_curved_stroke_is_not_text(self):
+        img = np.full((300, 600), 255, np.uint8)
+        img[50:68, 250:254] = 0                           # a stem tip: one thin speck
+        for x in range(100, 140):                         # a slur: one long, curved, wide stroke
+            img[200 + (x - 120) ** 2 // 60, x] = 0
+        img[200:204, 300:560] = 0                         # a long flat stroke
+        self.assertEqual(CL.heading_blocks(img, [0, 0, 600, 300], SP), [])
+        img[100:130, 20:34] = 0                           # two letters on a line: a heading
+        img[100:130, 44:58] = 0
+        img[96:99, 62:65] = 0                             # an i-dot beside them joins; it never starts a block
+        got = CL.heading_blocks(img, [0, 0, 600, 300], SP)
+        self.assertEqual(len(got), 1)
+        self.assertEqual(got[0][:2], [20.0, 96.0])
+
+    def test_a_heading_never_takes_ink_along_a_traced_arc_and_sizes_a_letter_by_the_pages_read_text(self):
+        img = np.full((300, 600), 255, np.uint8)
+        img[100:130, 20:34] = 0
+        img[100:130, 44:58] = 0
+        trace = {x: (95.0, 135.0) for x in range(10, 70)}
+        self.assertEqual(CL.heading_blocks(img, [0, 0, 600, 300], SP, arc_traces=[trace]), [])
+        self.assertTrue(CL.on_traces([20, 100, 34, 130], [trace]))
+        self.assertFalse(CL.on_traces([300, 100, 314, 130], [trace]))
+        self.assertEqual(len(CL.heading_blocks(img, [0, 0, 600, 300], SP, letter_height=30.0)), 1)
+        self.assertEqual(CL.heading_blocks(img, [0, 0, 600, 300], SP, letter_height=200.0), [])    # the page's text is far taller: these are specks
+
     def test_the_lexicon_splits_a_metronome_tail_only_for_a_tempo_word_and_only_in_the_staged_scope(self):
         from tools.omr import direction_lexicon as DL
         on = DL.scope_for(None, (), tempo_marks=True)

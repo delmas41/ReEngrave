@@ -422,27 +422,66 @@ def margin_label_box(binary: Any, region: Sequence[float], spacing: float, avoid
     return [float(min(c[0] for c in keep)), float(min(c[1] for c in keep)), float(max(c[2] for c in keep)), float(max(c[3] for c in keep))]
 
 
-def heading_blocks(binary: Any, zone: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = ()) -> List[List[float]]:
-    """Blocks of heading text (title, composer, plate number) in `zone`: text-sized ink components (`HEADING_MAX_COMPONENT_SPACES`) not
-    already inside an `avoid` claim, joined while the gap between them is at most `HEADING_JOIN_SPACES`. Each block is a box. PURE."""
+def on_traces(comp: Sequence[float], traces: Iterable[Dict[int, Tuple[float, float]]], share: float = 0.5) -> bool:
+    """True when at least `share` (the register's own cut, `stroke_map.COVER_SHARE_MIN`) of the component's columns have a traced arc's row
+    (`{x: (y_lo, y_hi)}`, page px, `Q.SYSTEM_ARC`'s `trace`) crossing the component's own vertical span: the arc's ink, not text. PURE."""
+    x0, x1 = int(comp[0]), max(int(comp[0]) + 1, int(comp[2]))
+    for tr in traces:
+        hit = sum(1 for x in range(x0, x1) if x in tr and tr[x][0] <= comp[3] and tr[x][1] >= comp[1])
+        if hit >= share * (x1 - x0):
+            return True
+    return False
+
+
+def heading_blocks(binary: Any, zone: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), *,
+                   letter_height: Optional[float] = None, arc_traces: Iterable[Dict[int, Tuple[float, float]]] = ()) -> List[List[float]]:
+    """Blocks of heading text (title, composer, plate number) in `zone`, joined while the gap between them is at most `HEADING_JOIN_SPACES`.
+    Each block is a box. PURE.
+
+    TEXT-SHAPED, not just text-sized (ROADMAP 2.221 finisher; Sean's tile 5: a slur above a staff was filed as a heading). A LETTER is a
+    connected component that is at most `HEADING_MAX_COMPONENT_SPACES` tall AND wide (a long curved stroke is wider; an arc is one), at least
+    half the height of `letter_height` (the page's own READ text: the median height of the ink components inside its word claims; the staff
+    space when no word was read) and not owned: not inside an `avoid` claim, not along a traced arc (`arc_traces`). A block must hold at least
+    TWO letters on a line; smaller ink (an i-dot, a period) joins a block it stands beside but never starts one. A single speck, a stem tip
+    or one stroke is therefore never a heading."""
     if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
         return []
     avoid = [list(a) for a in avoid]
-    blocks = [[float(v) for v in c] for c in _components(binary, zone)
-              if (c[3] - c[1]) <= HEADING_MAX_COMPONENT_SPACES * spacing and not any(_overlap_small(c, a) >= 0.5 for a in avoid)]
+    traces = [t for t in arc_traces if t]
+    lo, hi = 0.5 * float(letter_height or spacing), HEADING_MAX_COMPONENT_SPACES * spacing
+    letters, small = [], []
+    for c in _components(binary, zone):
+        c = [float(v) for v in c]
+        if any(_overlap_small(c, a) >= 0.5 for a in avoid) or (traces and on_traces(c, traces)):
+            continue
+        h, w = c[3] - c[1], c[2] - c[0]
+        if lo <= h <= hi and w <= hi:
+            letters.append(c)
+        elif h < lo and w <= hi:
+            small.append(c)
     gap = HEADING_JOIN_SPACES * spacing
+    blocks = [[b, 1] for b in letters]
+
+    def _near(a, b):
+        return a[0] <= b[2] + gap and b[0] <= a[2] + gap and a[1] <= b[3] + gap and b[1] <= a[3] + gap
     changed = True
     while changed:
         changed = False
         for i in range(len(blocks)):
             for j in range(i + 1, len(blocks)):
-                a, b = blocks[i], blocks[j]
-                if a[0] <= b[2] + gap and b[0] <= a[2] + gap and a[1] <= b[3] + gap and b[1] <= a[3] + gap:
-                    blocks[i] = [min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])]
+                a, b = blocks[i][0], blocks[j][0]
+                if _near(a, b):
+                    blocks[i] = [[min(a[0], b[0]), min(a[1], b[1]), max(a[2], b[2]), max(a[3], b[3])], blocks[i][1] + blocks[j][1]]
                     del blocks[j]
                     changed = True
                     break
             if changed:
+                break
+    blocks = [b for b, n in blocks if n >= 2]
+    for c in small:
+        for k, b in enumerate(blocks):
+            if _near(b, c):
+                blocks[k] = [min(b[0], c[0]), min(b[1], c[1]), max(b[2], c[2]), max(b[3], c[3])]
                 break
     return sorted(blocks)
 

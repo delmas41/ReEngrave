@@ -1,29 +1,28 @@
 {
  "before": {
   "truth_marks": 60,
-  "claimed": 40,
-  "unclaimed": 20,
+  "claimed": 49,
+  "unclaimed": 11,
   "claimed_by_kind": {
-   "dynamic": 9,
-   "word": 7,
+   "dynamic": 17,
+   "word": 8,
    "title": 13,
    "instrument_name": 10,
    "brace": 1
   },
   "unclaimed_by_kind": {
-   "dynamic": 8,
    "brace": 10,
-   "word": 2
+   "word": 1
   },
-  "n_claims": 37,
+  "n_claims": 50,
   "claims_by_source": {
    "word:direction_word": 10,
    "word:margin_label": 14,
-   "word:dynamic_letters": 1,
+   "word:dynamic_letters": 14,
    "word:page_heading": 10,
    "bracket:left_edge_mark": 2
   },
-  "false_claims": 16,
+  "false_claims": 17,
   "false_list": [
    {
     "source": "margin_label",
@@ -143,6 +142,19 @@
     "overlaps": []
    },
    {
+    "source": "dynamic_letters",
+    "owner": "word",
+    "kind": null,
+    "text": "p",
+    "box": [
+     2113,
+     5737,
+     2148,
+     5777
+    ],
+    "overlaps": []
+   },
+   {
     "source": "page_heading",
     "owner": "word",
     "kind": null,
@@ -255,17 +267,6 @@
   ],
   "unclaimed_list": [
    {
-    "kind": "dynamic",
-    "rect": [
-     1621,
-     2940,
-     1684,
-     3013
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
     "kind": "brace",
     "rect": [
      1221,
@@ -275,17 +276,6 @@
     ],
     "text": null,
     "cls": "brace"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1620,
-     3312,
-     1688,
-     3394
-    ],
-    "text": null,
-    "cls": "dynamicF"
    },
    {
     "kind": "brace",
@@ -310,28 +300,6 @@
     "cls": "brace"
    },
    {
-    "kind": "dynamic",
-    "rect": [
-     1841,
-     4098,
-     1909,
-     4175
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1605,
-     3793,
-     1697,
-     3886
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
     "kind": "brace",
     "rect": [
      1220,
@@ -354,28 +322,6 @@
     "cls": "brace"
    },
    {
-    "kind": "dynamic",
-    "rect": [
-     1619,
-     4504,
-     1688,
-     4583
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1623,
-     4796,
-     1692,
-     4877
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
     "kind": "brace",
     "rect": [
      1220,
@@ -385,39 +331,6 @@
     ],
     "text": null,
     "cls": "brace"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1621,
-     5311,
-     1692,
-     5390
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1622,
-     5715,
-     1692,
-     5794
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "word",
-    "rect": [
-     1714,
-     5709,
-     2108,
-     5791
-    ],
-    "text": "espr. e legato",
-    "cls": "text"
    },
    {
     "kind": "brace",
@@ -480,58 +393,47 @@
    "bracket:left_edge_mark:marked": 1,
    "word:direction_word:claimed": 10,
    "word:dynamic_letters:claimed": 1,
-   "word:dynamic_letters:lone_letter": 41,
+   "word:dynamic_letters:lone_letter_inside_a_claim": 27,
+   "word:dynamic_letters:lone_letter_inside_a_staff": 1,
+   "word:dynamic_letters:marked": 13,
    "word:dynamic_letters:twin_letters_disagree": 1,
    "word:margin_label:claimed": 14,
    "word:page_heading:marked": 10
   },
   "lone_letters": {
-   "inside_a_claim": 42,
-   "lone:is_that_letter_(truth_dynamic_same_class)": 15,
-   "lone:inside_a_truth_word": 4,
-   "lone:matches_no_truth_mark": 1,
+   "inside_a_claim": 60,
+   "lone:is_that_letter_(truth_dynamic_same_class)": 2,
    "by_score": {
     "score 0.5-0.8": {
-     "lone:is_that_letter_(truth_dynamic_same_class)": 2,
-     "lone:inside_a_truth_word": 1,
-     "lone:matches_no_truth_mark": 1
-    },
-    "score<0.5": {
-     "lone:inside_a_truth_word": 2,
-     "lone:is_that_letter_(truth_dynamic_same_class)": 1
-    },
-    "score>=0.8": {
-     "lone:is_that_letter_(truth_dynamic_same_class)": 12,
-     "lone:inside_a_truth_word": 1
+     "lone:is_that_letter_(truth_dynamic_same_class)": 2
     }
    }
   }
  },
  "after": {
   "truth_marks": 60,
-  "claimed": 40,
-  "unclaimed": 20,
+  "claimed": 49,
+  "unclaimed": 11,
   "claimed_by_kind": {
-   "dynamic": 9,
-   "word": 7,
+   "dynamic": 17,
+   "word": 8,
    "title": 13,
    "instrument_name": 10,
    "brace": 1
   },
   "unclaimed_by_kind": {
-   "dynamic": 8,
    "brace": 10,
-   "word": 2
+   "word": 1
   },
-  "n_claims": 37,
+  "n_claims": 45,
   "claims_by_source": {
    "word:direction_word": 10,
    "word:margin_label": 14,
-   "word:dynamic_letters": 1,
-   "word:page_heading": 10,
+   "word:dynamic_letters": 14,
+   "word:page_heading": 5,
    "bracket:left_edge_mark": 2
   },
-  "false_claims": 16,
+  "false_claims": 12,
   "false_list": [
    {
     "source": "margin_label",
@@ -651,77 +553,15 @@
     "overlaps": []
    },
    {
-    "source": "page_heading",
+    "source": "dynamic_letters",
     "owner": "word",
     "kind": null,
-    "text": null,
+    "text": "p",
     "box": [
-     1387,
-     507,
-     1389,
-     510
-    ],
-    "overlaps": []
-   },
-   {
-    "source": "page_heading",
-    "owner": "word",
-    "kind": null,
-    "text": null,
-    "box": [
-     1627,
-     718,
-     1630,
-     721
-    ],
-    "overlaps": []
-   },
-   {
-    "source": "page_heading",
-    "owner": "word",
-    "kind": null,
-    "text": null,
-    "box": [
-     3246,
-     1409,
-     3447,
-     1424
-    ],
-    "overlaps": [
-     [
-      "slur",
-      1.0
-     ]
-    ]
-   },
-   {
-    "source": "page_heading",
-    "owner": "word",
-    "kind": null,
-    "text": null,
-    "box": [
-     3767,
-     1410,
-     3996,
-     1424
-    ],
-    "overlaps": [
-     [
-      "slur",
-      0.93
-     ]
-    ]
-   },
-   {
-    "source": "page_heading",
-    "owner": "word",
-    "kind": null,
-    "text": null,
-    "box": [
-     5461,
-     267,
-     5497,
-     341
+     2113,
+     5737,
+     2148,
+     5777
     ],
     "overlaps": []
    },
@@ -763,17 +603,6 @@
   ],
   "unclaimed_list": [
    {
-    "kind": "dynamic",
-    "rect": [
-     1621,
-     2940,
-     1684,
-     3013
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
     "kind": "brace",
     "rect": [
      1221,
@@ -783,17 +612,6 @@
     ],
     "text": null,
     "cls": "brace"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1620,
-     3312,
-     1688,
-     3394
-    ],
-    "text": null,
-    "cls": "dynamicF"
    },
    {
     "kind": "brace",
@@ -818,28 +636,6 @@
     "cls": "brace"
    },
    {
-    "kind": "dynamic",
-    "rect": [
-     1841,
-     4098,
-     1909,
-     4175
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1605,
-     3793,
-     1697,
-     3886
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
     "kind": "brace",
     "rect": [
      1220,
@@ -862,28 +658,6 @@
     "cls": "brace"
    },
    {
-    "kind": "dynamic",
-    "rect": [
-     1619,
-     4504,
-     1688,
-     4583
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1623,
-     4796,
-     1692,
-     4877
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
     "kind": "brace",
     "rect": [
      1220,
@@ -893,39 +667,6 @@
     ],
     "text": null,
     "cls": "brace"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1621,
-     5311,
-     1692,
-     5390
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "dynamic",
-    "rect": [
-     1622,
-     5715,
-     1692,
-     5794
-    ],
-    "text": null,
-    "cls": "dynamicF"
-   },
-   {
-    "kind": "word",
-    "rect": [
-     1714,
-     5709,
-     2108,
-     5791
-    ],
-    "text": "espr. e legato",
-    "cls": "text"
    },
    {
     "kind": "brace",
@@ -988,29 +729,19 @@
    "bracket:left_edge_mark:marked": 1,
    "word:direction_word:claimed": 10,
    "word:dynamic_letters:claimed": 1,
-   "word:dynamic_letters:lone_letter": 41,
+   "word:dynamic_letters:lone_letter_inside_a_claim": 27,
+   "word:dynamic_letters:lone_letter_inside_a_staff": 1,
+   "word:dynamic_letters:marked": 13,
    "word:dynamic_letters:twin_letters_disagree": 1,
    "word:margin_label:claimed": 14,
-   "word:page_heading:marked": 10
+   "word:page_heading:marked": 5
   },
   "lone_letters": {
-   "inside_a_claim": 42,
-   "lone:is_that_letter_(truth_dynamic_same_class)": 15,
-   "lone:inside_a_truth_word": 4,
-   "lone:matches_no_truth_mark": 1,
+   "inside_a_claim": 60,
+   "lone:is_that_letter_(truth_dynamic_same_class)": 2,
    "by_score": {
     "score 0.5-0.8": {
-     "lone:is_that_letter_(truth_dynamic_same_class)": 2,
-     "lone:inside_a_truth_word": 1,
-     "lone:matches_no_truth_mark": 1
-    },
-    "score<0.5": {
-     "lone:inside_a_truth_word": 2,
-     "lone:is_that_letter_(truth_dynamic_same_class)": 1
-    },
-    "score>=0.8": {
-     "lone:is_that_letter_(truth_dynamic_same_class)": 12,
-     "lone:inside_a_truth_word": 1
+     "lone:is_that_letter_(truth_dynamic_same_class)": 2
     }
    }
   }

@@ -15122,6 +15122,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
 
     census: Dict[str, int] = {}
     filed: List[List[float]] = []                         # every area filed so far on this page: what a later claim must not take
+    read_boxes: List[Tuple[List[float], bool]] = []       # READ word / label / dynamic boxes: their ink components give the page's letter height
 
     def _count(what: str) -> None:
         census[what] = census.get(what, 0) + 1
@@ -15133,6 +15134,8 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     unit="area", standing=standing, source=source, boxes_inside=_inside(sys_idx, area, own),
                     space_page_px=round(_sp(sys_idx), 3), **extra)
         filed.append([float(v) for v in area])
+        if owner == CL.OWNER_WORD and standing == "READ" and source in ("direction_word", "margin_label", "dynamic_letters", "bar_number"):
+            read_boxes.append(([float(v) for v in area], True))        # text the page's readers READ: its glyph height is the page's letter size
         _count(f"{owner}:{source}:{'claimed' if standing == 'READ' else 'marked'}")
 
     def _page_boxes(sys_idx: int, names: Callable[[str], bool]) -> List[Tuple[List[float], str]]:
@@ -15245,11 +15248,34 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
         sps = [v for v in (_spacing(st) for st in pws.staves) if v]
         if tops and sps:
             spv, (Hh, Ww) = sorted(sps)[len(sps) // 2], binary.shape
+            # OWNED INK a heading must not take (2.221 finisher): every area another page-wide owner already filed in the register
+            # (barline columns, clef / key slots, brackets) and every traced arc (`Q.SYSTEM_ARC` trace, the ink `OMR_ARC_CLAIM` claims).
+            other_claims = []
+            for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                v = r.value
+                if (r.detail or {}).get("unit") == "area" and isinstance(v, (list, tuple)) and len(v) == 4 \
+                        and all(isinstance(x, (int, float)) for x in v):
+                    other_claims.append([float(x) for x in v])
+            # ... and every detector box of a mark a reader owns (head, accidental, rest, flag, stem, clef, ornament, dynamic): a note on
+            # ledger lines above the staff reaches into the zone (Litolff p4). Only `structural` boxes (staff, system) are not a mark.
+            for r in log.rows(Q.GLYPH_BOX, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                gb = (r.detail or {}).get("bbox_page_px")
+                if (r.detail or {}).get("category") != "structural" and isinstance(gb, (list, tuple)) and len(gb) == 4:
+                    other_claims.append([float(x) for x in gb])
+            arc_traces = []
+            for r in log.rows(Q.SYSTEM_ARC, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                tr = (r.detail or {}).get("trace")
+                if tr:
+                    arc_traces.append({int(x): (float(a), float(b)) for x, a, b in tr})
+            # the page's own letter size: the median height of the ink components inside its READ word claims
+            heights = [c[3] - c[1] for f, _ok in read_boxes for c in CL._components(binary, f)
+                       if (c[3] - c[1]) <= CL.HEADING_MAX_COMPONENT_SPACES * spv and (c[2] - c[0]) <= CL.HEADING_MAX_COMPONENT_SPACES * spv]
+            letter_h = sorted(heights)[len(heights) // 2] if heights else None
             for zone in ([0.0, 0.0, float(Ww), min(tops) - CL.HEADING_CLEAR_SPACES * spv],
                          [0.0, max(bots) + CL.FOOTER_CLEAR_SPACES * spv, float(Ww), float(Hh)]):
                 if zone[3] - zone[1] < 2 * spv:
                     continue
-                for blk in CL.heading_blocks(binary, zone, spv, filed):
+                for blk in CL.heading_blocks(binary, zone, spv, list(filed) + other_claims, letter_height=letter_h, arc_traces=arc_traces):
                     s = _system_of(blk)
                     if s is not None:
                         _file(s, blk, CL.OWNER_WORD, "page_heading", standing="GUESSED", category="heading")
