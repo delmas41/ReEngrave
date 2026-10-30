@@ -391,6 +391,11 @@ def box_says(ev: Evidence, box_key: str) -> Tuple[str, Any, str]:
         return "silent", None, vid
     verdict, lost = b[0], b[1]
     if verdict == "refused":
+        # Only a refusal the MOVED evidence made decides (the box carries a 2.238 veto). The 2.205 per-stroke fit alone refused 31 / 39
+        # heads main keeps on the frozen sample, one of them a quarter Sean judged (Brahms glyph/5/0/2/3/2, "4"): it is no box-level shape
+        # test, so it stays silent and the old rules decide (FINDINGS 2.238).
+        if box_key not in (d.get("vetoes") or {}):
+            return "silent", None, vid
         fams = {str(x[2]) for x in lost if x[1] in ("decided", "merged")}
         if fams and fams <= REGISTER_FAMILIES and not any(x[1] == "refused_claims" for x in lost):
             return "silent", None, vid
