@@ -39,6 +39,10 @@ import rule_kinds as K  # noqa: E402
 
 PAGE = ROOT / "docs" / "ink-rules.md"
 RECORDS = {"L": "beethoven5-litolff-mvt1-whole-20261022-night", "B": "brahms1-breitkopf-mvt1-whole-20261022-night"}
+#: ROADMAP 2.237: the fresh fire counts sit BESIDE the 10-22 whole-movement ones. They are the verdicts of the CURRENT tree re-adjudicated on the
+#: frozen 8-page sample slices of this night's record (`replay_slice.py`; never a re-gather, never the whole record), so they are a SAMPLE
+#: (8 of ~16 Litolff pages, 8 of ~26 Brahms) and are not the same population as the 10-22 whole-movement column. `--records TAG` picks another.
+FRESH_TAG = "20261029-night"
 KIND_WORD = {"A": "CONVENTION", "B": "ERASURE", "C": "DOUBLE-COUNT", "D": "OTHER", "U": "UNSURE"}
 
 
@@ -77,6 +81,36 @@ def load_fires():
     return out
 
 
+def load_fresh(tag):
+    """{plate: {(decider, reason): {'n': int}}} from `fires-<plate>-<tag>.json` (written by `replay_slice.py`), or None when absent."""
+    out = {}
+    for plate, name in (("L", "litolff"), ("B", "brahms")):
+        f = HERE / f"fires-{name}-{tag}.json"
+        if not f.exists():
+            return None
+        d = json.load(open(f))
+        agg = collections.defaultdict(lambda: collections.Counter())
+        for r in d["rows"]:
+            agg[(r["decider"], r["reason"])]["n"] += r["n"]
+        out[plate] = agg
+        out[plate + "_meta"] = {"verdicts_total": d["verdicts_total"], "pages": d.get("pages")}
+    return out
+
+
+def fresh_cell(fresh, decider, reasons):
+    """Fresh-sample fires `L / B`, or `-` when no fresh counts were loaded."""
+    if not fresh:
+        return "-"
+    return " / ".join(fmt_n(sum(fresh[p].get((decider, r), {}).get("n", 0) for r in reasons)) for p in ("L", "B"))
+
+
+def fresh_total(fresh, decider):
+    """Every fresh fire of one decider (EVALUATE / INFER / post-pass rows have no reason list on the page)."""
+    if not fresh:
+        return "-"
+    return " / ".join(fmt_n(sum(v["n"] for (dec, _r), v in fresh[p].items() if dec == decider)) for p in ("L", "B"))
+
+
 def explode(entries):
     """(quantity, reason) -> entry, checking no reason is claimed twice."""
     m = {}
@@ -109,6 +143,7 @@ def fires_sum(fires, decider, reasons, plate):
 def build():
     inv = code_inventory()
     fires = load_fires()
+    fires["fresh"] = load_fresh(FRESH_TAG)
     by_key = explode(K.RULES)
     rows = []                       # one dict per page row
     unclassified = []
@@ -244,12 +279,12 @@ def render():
         a("")
         rules = [r for r in frows if r["kind"] != "ok"]
         oks = [r for r in frows if r["kind"] == "ok"]
-        a("| rule | kind | plain meaning | code | fires L / B | evidence | fate |")
-        a("|---|---|---|---|---|---|---|")
+        a("| rule | kind | plain meaning | code | fires L / B (10-22 whole) | fresh L / B (sample) | evidence | fate |")
+        a("|---|---|---|---|---|---|---|---|")
         for r in rules:
             d = r["d"]
             code = f"`{d['name']}` ({d['module']}): " + ", ".join(f"`{x}`" for x in r["reasons"])
-            a(f"| {r['name']} | {r['kind']} | {cell(r['meaning'])} | {code} | {fires_cell(fires, d['name'], r['reasons'])} | {cell(r['evidence'])} | {cell(r['fate'])} |")
+            a(f"| {r['name']} | {r['kind']} | {cell(r['meaning'])} | {code} | {fires_cell(fires, d['name'], r['reasons'])} | {fresh_cell(fires['fresh'], d['name'], r['reasons'])} | {cell(r['evidence'])} | {cell(r['fate'])} |")
         if oks:
             a("")
             a("Positive exits (the rule answered; not counted as rules): " + "; ".join(
@@ -262,14 +297,14 @@ def render():
     a("What a settled fact FORCES (EVALUATE), what is merely MOST LIKELY and written blue (INFER), and the passes `adjudicate.run` runs after a decision. "
       "Fires are the verdicts each wrote.")
     a("")
-    a("| stage | rule | kind | plain meaning | code | fires L / B | evidence | fate |")
-    a("|---|---|---|---|---|---|---|---|")
+    a("| stage | rule | kind | plain meaning | code | fires L / B (10-22 whole) | fresh L / B (sample) | evidence | fate |")
+    a("|---|---|---|---|---|---|---|---|---|")
     for stage, name, code, t, note, l, b in extra:
         if t:
             fam, kind, meaning, evid, fate = t
         else:
             kind, meaning, evid, fate = "U", "NOT YET CLASSIFIED", "-", "open"
-        a(f"| {stage} | {name} | {kind} | {cell(meaning)} | `{code}`{' (' + note + ')' if note else ''} | {fmt_n(l)} / {fmt_n(b)} | {cell(evid)} | {cell(fate)} |")
+        a(f"| {stage} | {name} | {kind} | {cell(meaning)} | `{code}`{' (' + note + ')' if note else ''} | {fmt_n(l)} / {fmt_n(b)} | {fresh_total(fires['fresh'], 'infer:' + name if stage == 'INFER' else name)} | {cell(evid)} | {cell(fate)} |")
     a("")
     a("## Guard modules (readers and guards that are not a registered decision)")
     a("")
@@ -309,6 +344,12 @@ def render():
       "`rule_kinds.py` (or leave it and it prints as UNSURE), run `build_rule_page.py --write`. To refresh the fire counts after an overnight: run `count_fires.py` on each record "
       "and commit the two small JSON files. A lane that retires a rule says so by changing its fate here, in the same commit (CLAUDE rule 9: no restating anywhere else).")
     a("")
+    fr = fires["fresh"]
+    if fr:
+        a(f"Fresh counts (`fresh L / B` columns, ROADMAP 2.237): the CURRENT tree re-adjudicated on the saved GATHER rows of the {FRESH_TAG} frozen-sample slices "
+          f"(Litolff pages {fr['L_meta']['pages']}, Brahms pages {fr['B_meta']['pages']}), {fr['L_meta']['verdicts_total']:,} / {fr['B_meta']['verdicts_total']:,} verdicts. "
+          "A SAMPLE, not the movement: a rule that fires less than about once in 8 pages can read 0 there. Produced by `benchmarks/rule-page/replay_slice.py`.")
+        a("")
     a(f"Fire-count source: {fires['L_meta']['verdicts_total']:,} Litolff and {fires['B_meta']['verdicts_total']:,} Brahms verdicts "
       f"({fires['L_meta']['superseded']:,} / {fires['B_meta']['superseded']:,} later superseded by EVALUATE or INFER; they still count as a firing of the rule that wrote them).")
     return "\n".join(L) + "\n", stale
@@ -350,7 +391,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--write", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--records", default=None, metavar="TAG",
+                    help="the night whose frozen-sample slices replay_slice.py re-adjudicated (fires-<plate>-TAG.json); default " + FRESH_TAG)
     args = ap.parse_args()
+    if args.records:
+        globals()["FRESH_TAG"] = args.records
     text, stale = render()
     if stale:
         print("rule_kinds.py names rules the code no longer declares:", stale, file=sys.stderr)
