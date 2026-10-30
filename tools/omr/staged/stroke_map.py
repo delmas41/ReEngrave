@@ -33,6 +33,7 @@ Breitkopf cell shatters into would cost more bytes than all other quantities tog
 from __future__ import annotations
 
 import math
+import os
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Sequence, Tuple
 
@@ -64,6 +65,48 @@ THICKNESS_FROM_UNERASED = True
 
 KINDS = ("vertical", "horizontal", "curve", "blob")
 
+# ───────────────────────────── ROADMAP 2.239: split fused ink at its joins (flag `OMR_SPLIT_JOINS`, default OFF) ─────────────────────────────
+#: CAUSE (2.239, Brahms p0 against Sean's labels): the vertical opening is a column test -- a column run of ink at least `V_MIN_SPACES` tall is
+#: "vertical" whatever its WIDTH. Two heads a third apart on one stem make columns ~2 sp tall across the whole oval, so the pair AND the stem
+#: become one `vertical` stroke (197 of the 212 black heads that own no ink); a head on a ledger rung passes the horizontal opening with the
+#: rung (19); a tie or slur touching a head is one remainder piece with it. The detector's head box then covers under half of that stroke and
+#: no box owns it. The split below reads only the stroke's own geometry, in the reduced frame, and cuts only where the geometry shows a join;
+#: every part keeps a `joined_to` link, so nothing is lost and a later reader still sees the join. Where it cannot tell, the piece stays whole
+#: and the reason is counted (`CellStrokes.split_refused`).
+SPLIT_JOINS_ENV = "OMR_SPLIT_JOINS"
+#: a row run of a vertical stroke no wider than this is STEM (or barline) ink; wider is something fused to it (a head's oval, a beam).
+#: Litolff's widest plain stem 0.43 sp, Brahms 0.37 at p90 (`STEM_TRUE_WIDTH_MAX_SPACES` note); a black head is >= 1.0 sp wide.
+STEM_THIN_SPACES = 0.5
+#: a thin part shorter than this is an oval's tip or a stem's stub beside a head: it goes back to the wide part it touches
+STEM_PART_MIN_SPACES = 0.5
+#: a wide part smaller than this is a blip on a stem (an erase scar), not a mark fused to it: it goes back to the stem
+WIDE_PART_MIN_SP2 = 0.25
+#: the height cap of ONE head (`head_ink.MAX_HEIGHT_SPACES_V2`, 2.220 fix 2, Sean "1.6"; a test pins that they are equal) and its width cap
+#: (`head_ink.MAX_WIDTH_SPACES`): a wide part taller than this and no wider is a STACK of heads, cut at its waist
+HEAD_HEIGHT_CAP_SPACES = 1.6
+HEAD_WIDTH_CAP_SPACES = 1.75
+#: a stack is at least a head wide (a black head is >= 1.0 sp wide; a bracket's or thick barline's line <= 0.7) and at most four heads tall
+HEAD_MIN_WIDTH_SPACES = 0.8
+STACK_MAX_SPACES = 5.0
+#: a stack is cut only at a row this much narrower than the narrower of its two halves' widest rows (a real neck between two ovals);
+#: a stack with no such row stays whole (`stack_no_waist`)
+WAIST_SHARE_MAX = 0.75
+#: ... or at a row where one edge steps in by at least this from both ovals' extremes (a notch; ~2 reduced px, above the +-1 px scan edge)
+STACK_NOTCH_SPACES = 0.12
+#: the oval edges of a stack are read on the cell's ink this far beside the part (the opening drops a notched column to the remainder)
+STACK_EDGE_PAD_SPACES = 0.3
+#: head|arc: a disk this wide survives in a head's body (a black head is ~1 sp tall) and not in a tie or slur (<= `CURVE_MAX_THICK_SPACES`)
+HEAD_BODY_SPACES = 0.55
+HEAD_BODY_MIN_SP2 = 0.4
+#: head|ledger: a horizontal stroke's column run this much thicker than its own line is a head on the rung
+LEDGER_HEAD_EXCESS_SPACES = 0.35
+LEDGER_HEAD_MIN_WIDTH_SPACES = 0.6
+
+
+def split_joins_enabled() -> bool:
+    """`OMR_SPLIT_JOINS` (ROADMAP 2.239), default OFF; `1/true/yes/on` enables."""
+    return os.environ.get(SPLIT_JOINS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
 
 @dataclass
 class Stroke:
@@ -86,6 +129,8 @@ class Stroke:
     lines_right: Optional[List[int]] = None
     staff_space_local: Optional[float] = None  # canonical px per space at the stroke's centre
     end_steps: Optional[Tuple[float, float]] = None   # ends in steps from the TOP line (0) to the bottom (8), local lines
+    #: ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the strokes this one was cut from the same fused piece with, and the join -- (ordinal, "head|stem")
+    joined_to: List[Tuple[int, str]] = field(default_factory=list)
 
 
 class LocalStaff:
@@ -225,6 +270,8 @@ class CellStrokes:
     #: ROADMAP 2.198: each stroke's mask in the REDUCED frame, parallel to `strokes` -- (mask, x0, y0). Never filed; it is what lets
     #: `strokes_in_box` say how much of a stroke's ink lies inside a detector box.
     masks: List[Tuple[np.ndarray, int, int]] = field(default_factory=list, repr=False, compare=False)
+    #: ROADMAP 2.239: pieces a join split looked at and left whole, by reason (empty with the flag off)
+    split_refused: Dict[str, int] = field(default_factory=dict)
 
 
 #: A box COVERS a stroke when at least this share of the stroke's ink lies inside the box. Not tuned: it is the register's one cut
@@ -306,10 +353,388 @@ def _restored_thickness(m: np.ndarray, x0: int, y0: int, scale: float, erased: n
     return float(np.median(G.sum(axis=0)[cols])) * scale * factor
 
 
+def _classify(m: np.ndarray, sp: float, lines: bool = True) -> str:
+    """The kind of a part cut out of a fused piece, by the same rules `map_strokes` applies to whole pieces (no new cut). `lines` False: a
+    part of the remainder, which the openings already refused, can only be a curve or a blob."""
+    h, w = m.shape
+    a = int(m.sum())
+    longest = max(w, h)
+    if lines and h >= V_MIN_SPACES * sp and w <= STEM_THIN_SPACES * sp:
+        return "vertical"
+    if lines and w >= H_MIN_SPACES * sp and w > h and a > 0 and (longest * longest) / float(a) >= H_MIN_ASPECT:
+        return "horizontal"
+    thick_mean = a / float(longest) if longest else 0.0
+    if longest >= CURVE_MIN_SPACES * sp and thick_mean <= CURVE_MAX_THICK_SPACES * sp and longest / max(1.0, thick_mean) >= CURVE_MIN_ASPECT:
+        return "curve"
+    return "blob"
+
+
+def _parts(full: np.ndarray, x0: int, y0: int, labels: np.ndarray, ids: Sequence[int]) -> List[Tuple[np.ndarray, int, int]]:
+    """Each label id of `labels` (same frame as `full`) as a cropped (mask, x0, y0)."""
+    out = []
+    for i in ids:
+        ys, xs = np.nonzero(labels == i)
+        if ys.size == 0:
+            continue
+        a, b, c, d = int(ys.min()), int(ys.max()) + 1, int(xs.min()), int(xs.max()) + 1
+        out.append(((labels[a:b, c:d] == i) & full[a:b, c:d], x0 + c, y0 + a))
+    return out
+
+
+def _merge_small(lab: np.ndarray, keep: Dict[int, bool]) -> np.ndarray:
+    """Give every label NOT kept to the kept label it touches most (8-neighbourhood), repeatedly; a label touching no kept one stays (it is
+    then kept: no ink is ever dropped). Returns the relabelled image."""
+    import cv2
+    lab = lab.copy()
+    k3 = np.ones((3, 3), np.uint8)
+    for _ in range(50):
+        moved = False
+        for i in [i for i, ok in keep.items() if not ok]:
+            m = (lab == i)
+            if not m.any():
+                continue
+            ring = cv2.dilate(m.astype(np.uint8), k3).astype(bool) & ~m
+            nb = lab[ring]
+            nb = nb[(nb > 0) & np.isin(nb, [j for j, ok in keep.items() if ok])]
+            if nb.size:
+                tgt = int(np.bincount(nb).argmax())
+                lab[m] = tgt
+                keep[i] = True          # merged away
+                moved = True
+        if not moved:
+            break
+    return lab
+
+
+def _cut_stack(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None) -> Tuple[List[np.ndarray], Optional[str]]:
+    """A wide part taller than one head: cut at the waist between two ovals (head|head). Returns (row-bands as masks of `m`'s frame, why-not).
+    `prof` (same rows as `m`, any columns) is the ink the edges are read on: the part's own ink plus the oval edges the vertical opening left
+    to the remainder (a column broken by a notch is not in the opening), rungs left out; None = `m` itself."""
+    h, w = m.shape
+    prof = m if prof is None else prof
+    if h <= HEAD_HEIGHT_CAP_SPACES * sp:
+        return [m], None
+    if w > HEAD_WIDTH_CAP_SPACES * sp:
+        return [m], "stack_too_wide"
+    lo, hi = int(round(0.6 * sp)), h - int(round(0.6 * sp))
+    if hi <= lo:
+        return [m], "stack_no_waist"
+    # two convex ovals meet at a NOTCH: a row where the left or right edge steps in from both ovals' extremes (a ledger rung or a scan
+    # between the heads can fill the middle, so a row's width alone misses it -- Brahms p0 q6)
+    rows = np.nonzero(prof.any(axis=1))[0]
+    L = np.full(h, np.nan)
+    Rr = np.full(h, np.nan)
+    for r in rows:
+        xs = np.nonzero(prof[r])[0]
+        L[r], Rr[r] = xs[0], xs[-1]
+    widths = prof.sum(axis=1).astype(float)
+    best = (0.0, -1)
+    for r in range(lo, hi):
+        if np.isnan(L[r]):
+            continue
+        dR = min(np.nanmax(Rr[:r]), np.nanmax(Rr[r + 1:])) - Rr[r]
+        dL = L[r] - max(np.nanmin(L[:r]), np.nanmin(L[r + 1:]))
+        dW = (1.0 - WAIST_SHARE_MAX) * sp if widths[r] <= WAIST_SHARE_MAX * min(widths[:r].max(), widths[r + 1:].max()) else 0.0
+        depth = max(dR, dL, dW)
+        if depth > best[0]:
+            best = (float(depth), r)
+    if best[1] < 0 or best[0] < STACK_NOTCH_SPACES * sp:
+        return [m], "stack_no_waist"
+    r = best[1]
+    top, bot = m.copy(), m.copy()
+    top[r + 1:] = False
+    bot[:r + 1] = False
+    out: List[np.ndarray] = []
+    why = None
+    for part in (top, bot):
+        ys = np.nonzero(part.any(axis=1))[0]
+        if ys.size == 0:
+            continue
+        sub, w2 = _cut_stack(part[ys[0]:ys[-1] + 1], sp, prof[ys[0]:ys[-1] + 1])
+        for s_ in sub:
+            full = np.zeros_like(m)
+            full[ys[0]:ys[-1] + 1] = s_
+            out.append(full)
+        why = why or w2
+    return out, why
+
+
+def _split_vertical(m: np.ndarray, sp: float, refused: Dict[str, int], context: Optional[Tuple[np.ndarray, int, int]] = None
+                    ) -> Optional[List[Tuple[str, np.ndarray, str]]]:
+    """head|stem, stem|beam, stem|flag: a vertical piece whose rows are not all thin. The stem is its THIN rows (a row run no wider than
+    `STEM_THIN_SPACES`); the rows where the run is wide are what is fused to it, cut where the stem leaves them. Returns [(kind, mask in m's
+    frame, join)] with the stem first, or None (left whole)."""
+    import cv2
+    h, w = m.shape
+    thin_px = STEM_THIN_SPACES * sp
+    if w <= thin_px:
+        return None                                    # all thin: a stem or a barline alone
+    wide = np.zeros_like(m)
+    for r in range(h):
+        row = m[r]
+        if not row.any():
+            continue
+        d = np.diff(np.concatenate(([0], row.astype(np.int8), [0])))
+        starts, ends = np.nonzero(d == 1)[0], np.nonzero(d == -1)[0]
+        for a, b in zip(starts, ends):
+            if b - a > thin_px:
+                wide[r, a:b] = True
+    if not wide.any():
+        refused["vertical_all_thin_rows"] = refused.get("vertical_all_thin_rows", 0) + 1
+        return None
+    thin = m & ~wide
+    if not thin.any():
+        return _stack_or_whole(m, sp, refused, context)
+    return _split_thin_wide(m, thin, wide, sp, refused, context)
+
+
+def _stack_or_whole(m: np.ndarray, sp: float, refused: Dict[str, int], context) -> Optional[List[Tuple[str, np.ndarray, str]]]:
+    """A vertical piece with no stem in it. A stack of heads (the stem a pixel apart, Brahms p0 q49) is cut at its notch (head|head); any
+    other solid slab (a bracket, a thick barline, a beam bundle) stays whole."""
+    prof = _profile(m, 0, 0, context, sp)
+    if not _looks_like_heads(m, sp, prof):
+        refused["vertical_no_thin_core"] = refused.get("vertical_no_thin_core", 0) + 1
+        return None
+    bands, why = _cut_stack(m, sp, prof)
+    if len(bands) > 1:
+        return [("blob" if _classify(_crop(b)[0], sp) == "vertical" else _classify(_crop(b)[0], sp), b, "head|head") for b in bands]
+    refused[why or "stack_no_waist"] = refused.get(why or "stack_no_waist", 0) + 1
+    return None
+
+
+def _split_thin_wide(m: np.ndarray, thin: np.ndarray, wide: np.ndarray, sp: float, refused: Dict[str, int], context
+                     ) -> Optional[List[Tuple[str, np.ndarray, str]]]:
+    import cv2
+    # label: thin components 1..nt, wide components nt+1..
+    nt, tl = cv2.connectedComponents(thin.astype(np.uint8), connectivity=8)
+    nw, wl = cv2.connectedComponents(wide.astype(np.uint8), connectivity=8)
+    lab = np.where(thin, tl, 0) + np.where(wide, wl + (nt - 1), 0)
+    keep: Dict[int, bool] = {}
+    kind_of: Dict[int, str] = {}
+    for i in range(1, nt):
+        ys = np.nonzero((tl == i).any(axis=1))[0]
+        keep[i] = bool(ys.size) and (ys[-1] - ys[0] + 1) >= STEM_PART_MIN_SPACES * sp
+        kind_of[i] = "thin"
+    for j in range(1, nw):
+        i = j + nt - 1
+        keep[i] = int((wl == j).sum()) >= WIDE_PART_MIN_SP2 * sp * sp
+        kind_of[i] = "wide"
+    # small wide blips go to the stem first, then oval tips / stubs to the wide part
+    lab = _merge_small(lab, {i: (keep[i] or kind_of[i] == "thin") for i in keep})
+    lab = _merge_small(lab, {i: (keep[i] or kind_of[i] == "wide") for i in keep if (lab == i).any()})
+    ids = [i for i in sorted(keep) if (lab == i).any()]
+    if not any(kind_of[i] == "thin" for i in ids):
+        return _stack_or_whole(m, sp, refused, context)        # only an oval's tips were thin: no stem in it
+    if not any(kind_of[i] == "wide" for i in ids):
+        refused["vertical_nothing_fused"] = refused.get("vertical_nothing_fused", 0) + 1
+        return None
+    out: List[Tuple[str, np.ndarray, str]] = []
+    for i in sorted(ids, key=lambda i: (kind_of[i] != "thin", -int((lab == i).sum()))):
+        part = lab == i
+        if kind_of[i] == "thin":
+            out.append(("vertical" if _extent_h(part) >= V_MIN_SPACES * sp else _classify(_crop(part)[0], sp), part, "stem"))
+            continue
+        pc, oy, ox = _crop(part)
+        prof = _profile(pc, oy, ox, context, sp)
+        bands, why = (_cut_stack(pc, sp, prof) if _looks_like_heads(pc, sp, prof) else ([pc], None))
+        if why:
+            refused[why] = refused.get(why, 0) + 1
+        for b in bands:
+            full = np.zeros_like(m)
+            full[oy:oy + b.shape[0], ox:ox + b.shape[1]] = b
+            k = _classify(_crop(full)[0], sp)
+            out.append((k, full, "stem|" + {"blob": "head", "horizontal": "beam", "curve": "flag", "vertical": "stem"}[k]))
+    return out
+
+
+def _profile(pc: np.ndarray, oy: int, ox: int, context: Optional[Tuple[np.ndarray, int, int]], sp: float) -> Optional[np.ndarray]:
+    """The edge-reading ink of a head stack (`_cut_stack`): `context` = (cell ink minus rungs, piece x0, piece y0) in the reduced frame; the ink
+    within `STACK_EDGE_PAD_SPACES` of the part, in the part's rows, connected to it. None without a context."""
+    import cv2
+    if context is None:
+        return None
+    ink, px0, py0 = context
+    pad = max(1, int(round(STACK_EDGE_PAD_SPACES * sp)))
+    H, W = ink.shape
+    y0, x0 = py0 + oy, px0 + ox
+    y1, x1 = y0 + pc.shape[0], x0 + pc.shape[1]
+    xa, xb = max(0, x0 - pad), min(W, x1 + pad)
+    win = ink[y0:y1, xa:xb].copy()
+    win[:, x0 - xa:x0 - xa + pc.shape[1]] |= pc
+    n, lab = cv2.connectedComponents(win.astype(np.uint8), connectivity=8)
+    own = np.unique(lab[:, x0 - xa:x0 - xa + pc.shape[1]][pc])
+    return np.isin(lab, own[own > 0])
+
+
+def _crop(m: np.ndarray) -> Tuple[np.ndarray, int, int]:
+    ys, xs = np.nonzero(m)
+    a, b, c, d = int(ys.min()), int(ys.max()) + 1, int(xs.min()), int(xs.max()) + 1
+    return m[a:b, c:d], a, c
+
+
+def _extent_h(m: np.ndarray) -> int:
+    ys = np.nonzero(m.any(axis=1))[0]
+    return int(ys[-1] - ys[0] + 1) if ys.size else 0
+
+
+def _looks_like_heads(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None) -> bool:
+    """Taller than one head, no wider than one, at least a head's width (a bracket's or a thick barline's line is narrower), at most a few
+    heads tall. The width is read on `prof` (`_profile`) when given: the opening drops a notched oval's edge columns."""
+    c, _a, _b = _crop(m)
+    wd = _crop(prof)[0].shape[1] if prof is not None and prof.any() else c.shape[1]
+    return (HEAD_MIN_WIDTH_SPACES * sp <= wd <= HEAD_WIDTH_CAP_SPACES * sp
+            and HEAD_HEIGHT_CAP_SPACES * sp < c.shape[0] <= STACK_MAX_SPACES * sp)
+
+
+def _split_horizontal(m: np.ndarray, sp: float, refused: Dict[str, int]) -> Optional[List[Tuple[str, np.ndarray, str]]]:
+    """head|ledger: a horizontal piece (a rung) with a stretch of columns much thicker than its own line (a head sitting on it). The line is
+    the piece's thin columns; the head is the thick columns' ink off the line's rows. Longest column RUN, never the column count (a hairpin's
+    two lines stack in one column)."""
+    h, w = m.shape
+    runs = np.zeros(w, int)
+    for c in range(w):
+        col = m[:, c]
+        if col.any():
+            d = np.diff(np.concatenate(([0], col.astype(np.int8), [0])))
+            runs[c] = int((np.nonzero(d == -1)[0] - np.nonzero(d == 1)[0]).max())
+    have = runs[runs > 0]
+    if have.size < 3:
+        return None
+    line_t = float(np.percentile(have, 20))
+    thick = runs > line_t + LEDGER_HEAD_EXCESS_SPACES * sp
+    if not thick.any():
+        return None
+    if int(thick.sum()) < LEDGER_HEAD_MIN_WIDTH_SPACES * sp:
+        refused["horizontal_thick_too_narrow"] = refused.get("horizontal_thick_too_narrow", 0) + 1
+        return None
+    thin_cols = (runs > 0) & ~thick
+    # a head sits ON a rung: each thick stretch is no wider than one head and the rung goes on past it on both sides (a beam whose
+    # secondary beam fused to it at one end is a line that thickens once and stays thick to its end)
+    d = np.diff(np.concatenate(([0], thick.astype(np.int8), [0])))
+    for a, b in zip(np.nonzero(d == 1)[0], np.nonzero(d == -1)[0]):
+        if b - a > HEAD_WIDTH_CAP_SPACES * sp or not thin_cols[:a].any() or not thin_cols[b:].any():
+            refused["horizontal_thick_not_a_head"] = refused.get("horizontal_thick_not_a_head", 0) + 1
+            return None
+    if int(thin_cols.sum()) < 0.3 * sp:
+        refused["horizontal_no_line"] = refused.get("horizontal_no_line", 0) + 1
+        return None
+    # the line's rows: rows the thin columns mostly carry (a lens edge column is thin but is not the line)
+    line_rows = m[:, thin_cols].mean(axis=1) >= 0.5
+    head = m & ~line_rows[:, None]
+    if int(head.sum()) < WIDE_PART_MIN_SP2 * sp * sp:
+        refused["horizontal_head_too_small"] = refused.get("horizontal_head_too_small", 0) + 1
+        return None
+    import cv2
+    line = m & ~head
+    out: List[Tuple[str, np.ndarray, str]] = [("horizontal", line, "ledger")]
+    n, lab = cv2.connectedComponents(head.astype(np.uint8), connectivity=8)
+    for i in range(1, n):
+        part = lab == i
+        if int(part.sum()) < 0.05 * sp * sp:
+            out[0] = (out[0][0], out[0][1] | part, "ledger")
+            continue
+        out.append(("blob", part, "ledger|head"))           # a head's ink off the rung (its tips are remainder blobs already)
+    return out if len(out) > 1 else None
+
+
+def _split_remainder(m: np.ndarray, sp: float, refused: Dict[str, int]) -> Optional[List[Tuple[str, np.ndarray, str]]]:
+    """head|arc: a remainder piece holding a head's body (a disk `HEAD_BODY_SPACES` wide survives in it) and a long thin tail (a tie or slur
+    leaving the head). Each body no taller than one head is a head part; the thin ink at least `CURVE_MIN_SPACES` long is the arc."""
+    import cv2
+    h, w = m.shape
+    if max(h, w) < CURVE_MIN_SPACES * sp:
+        return None
+    d = max(3, int(round(HEAD_BODY_SPACES * sp)))
+    disk = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (d, d))
+    pad = d
+    mp = np.pad(m.astype(np.uint8), pad)
+    body0 = cv2.morphologyEx(mp, cv2.MORPH_OPEN, disk)[pad:-pad, pad:-pad].astype(bool)
+    if not body0.any():
+        return None
+    body = m & cv2.dilate(body0.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
+    nb, bl = cv2.connectedComponents(body.astype(np.uint8), connectivity=8)
+    heads = []
+    for i in range(1, nb):
+        part = bl == i
+        c, _a, _b = _crop(part)
+        if int(part.sum()) >= HEAD_BODY_MIN_SP2 * sp * sp and c.shape[0] <= HEAD_HEIGHT_CAP_SPACES * sp and c.shape[1] <= HEAD_WIDTH_CAP_SPACES * sp:
+            heads.append(part)
+    if not heads:
+        return None
+    rest = m.copy()
+    for hd in heads:
+        rest &= ~hd
+    nr, rl = cv2.connectedComponents(rest.astype(np.uint8), connectivity=8)
+    lab = np.zeros(m.shape, np.int32)
+    for k, hd in enumerate(heads, 1):
+        lab[hd] = k
+    keep: Dict[int, bool] = {k: True for k in range(1, len(heads) + 1)}
+    arcs = []
+    for i in range(1, nr):
+        part = rl == i
+        c, _a, _b = _crop(part)
+        lid = len(heads) + i
+        lab[part] = lid
+        ok = max(c.shape) >= CURVE_MIN_SPACES * sp
+        keep[lid] = ok
+        if ok:
+            arcs.append(lid)
+    if not arcs:
+        refused["remainder_no_long_tail"] = refused.get("remainder_no_long_tail", 0) + 1
+        return None
+    lab = _merge_small(lab, dict(keep))
+    out: List[Tuple[str, np.ndarray, str]] = []
+    for lid in arcs:
+        if (lab == lid).any():
+            part = lab == lid
+            out.append((_classify(_crop(part)[0], sp, lines=False), part, "arc"))
+    for k in range(1, len(heads) + 1):
+        if (lab == k).any():
+            out.append(("blob", lab == k, "arc|head"))
+    return out if len(out) > 1 else None
+
+
+def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink: Optional[np.ndarray] = None
+                 ) -> Tuple[List[Tuple[str, np.ndarray, int, int]], List[Tuple[int, int, str]], Dict[str, int]]:
+    """ROADMAP 2.239: every piece cut at its joins (module constants above). Returns (pieces, joins [(part, first part of the same piece,
+    join name)], refused {reason: n}). A piece left whole is returned unchanged; the union of a piece's parts is exactly the piece."""
+    out: List[Tuple[str, np.ndarray, int, int]] = []
+    joins: List[Tuple[int, int, str]] = []
+    refused: Dict[str, int] = {}
+    lines_out = None
+    if ink is not None:
+        lines_out = ink.copy()
+        for kind, m, x0, y0 in pieces:            # rungs and beams are left out of a stack's edges (a rung between two heads sticks out)
+            if kind == "horizontal":
+                h, w = m.shape
+                lines_out[y0:y0 + h, x0:x0 + w] &= ~m
+    for kind, m, x0, y0 in pieces:
+        if kind == "vertical":
+            parts = _split_vertical(m, sp, refused, (lines_out, x0, y0) if lines_out is not None else None)
+        elif kind == "horizontal":
+            parts = _split_horizontal(m, sp, refused)
+        else:
+            parts = _split_remainder(m, sp, refused)
+        if parts and int(sum(int(p_.sum()) for _k, p_, _j in parts)) != int(m.sum()):
+            refused["parts_do_not_add_up"] = refused.get("parts_do_not_add_up", 0) + 1   # never lose or double ink: leave it whole
+            parts = None
+        if not parts:
+            out.append((kind, m, x0, y0))
+            continue
+        first = len(out)
+        for k, part, join in parts:
+            c, oy, ox = _crop(part)
+            out.append((k, c, x0 + ox, y0 + oy))
+            if len(out) - 1 != first:
+                joins.append((len(out) - 1, first, join))
+    return out, joins, refused
+
+
 def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical: Sequence[float],
-                raw: Optional[np.ndarray] = None) -> Optional[CellStrokes]:
+                raw: Optional[np.ndarray] = None, split_joins: Optional[bool] = None) -> Optional[CellStrokes]:
     """Every stroke of one cell. `erased` = `cell.image_no_staff` (0 = ink); `raw` = `cell.binary` (0 = ink) for the local staff.
-    None for a cell that cannot be reduced. Deterministic: strokes ordered by (x, y, kind)."""
+    None for a cell that cannot be reduced. Deterministic: strokes ordered by (x, y, kind). `split_joins` None = the flag
+    `OMR_SPLIT_JOINS` (ROADMAP 2.239): fused pieces are cut at their joins (`split_pieces`) and each part carries `joined_to`."""
     import cv2
     if erased is None or erased.ndim != 2 or sp_canonical <= 0:
         return None
@@ -352,13 +777,17 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
         curve = (longest >= CURVE_MIN_SPACES * sp and thick_mean <= CURVE_MAX_THICK_SPACES * sp
                  and longest / max(1.0, thick_mean) >= CURVE_MIN_ASPECT)
         pieces.append(("curve" if curve else "blob", rlab[y:y + h, x:x + w] == i, x, y))
+    joins: List[Tuple[int, int, str]] = []
+    refused: Dict[str, int] = {}
+    if split_joins if split_joins is not None else split_joins_enabled():
+        pieces, joins, refused = split_pieces(pieces, sp, ink)
 
     staff = LocalStaff(_reduce_float(raw, scale) if raw is not None else None,
                        [y * scale for y in nominal_lines_canonical], sp)
     restore = THICKNESS_FROM_UNERASED and raw is not None and raw.ndim == 2 and raw.shape == erased.shape
 
-    built: List[Tuple[Tuple[int, int, int, int], Stroke, np.ndarray, int, int]] = []
-    for kind, m, x0, y0 in pieces:
+    built: List[Tuple[Tuple[int, int, int, int], Stroke, np.ndarray, int, int, int]] = []
+    for pidx, (kind, m, x0, y0) in enumerate(pieces):
         h, w = m.shape
         mm = _measure(m, x0, y0)
         if restore and kind in ("horizontal", "curve") and abs(math.cos(mm["theta"])) >= abs(math.sin(mm["theta"])):
@@ -387,16 +816,16 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             lines_left=[int(round(v * inv)) for v in staff.lines_at(x0)],
             lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w)],
             staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]))
-        built.append((box, st, m, x0, y0))
+        built.append((box, st, m, x0, y0, pidx))
 
     built.sort(key=lambda r: (r[0][0], r[0][1], KINDS.index(r[1].kind)))
     k3 = np.ones((3, 3), np.uint8)       # contact = within 2 px: the remainder was cut 1 px clear of the openings
     n = len(built)
     for i in range(n):
-        _b, si, mi, xi, yi = built[i]
+        _b, si, mi, xi, yi, _pi = built[i]
         hi_, wi_ = mi.shape
         for j in range(i + 1, n):
-            _b2, sj, mj, xj, yj = built[j]
+            _b2, sj, mj, xj, yj, _pj = built[j]
             hj, wj = mj.shape
             if xi + wi_ + 1 < xj or xj + wj + 1 < xi or yi + hi_ + 1 < yj or yj + hj + 1 < yi:
                 continue
@@ -414,12 +843,19 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             si.touches.append((j, contact))
             sj.touches.append((i, contact))
     out = [r[1] for r in built]
+    if joins:
+        ordinal = {r[5]: o for o, r in enumerate(built)}
+        for part, first, join in joins:
+            a, b = ordinal[part], ordinal[first]
+            out[a].joined_to.append((b, join))
+            out[b].joined_to.append((a, join))
     per: Dict[int, int] = {}
     for s in out:
         per[s.component] = per.get(s.component, 0) + 1
     for s in out:
         s.component_n_strokes = per[s.component]
-    return CellStrokes(out, below, scale, float(sp_canonical), staff.local, masks=[(r[2], r[3], r[4]) for r in built])
+    return CellStrokes(out, below, scale, float(sp_canonical), staff.local, masks=[(r[2], r[3], r[4]) for r in built],
+                       split_refused=refused)
 
 
 #: ROADMAP 2.206d (flag `OMR_STEM_TIP_TRUE_EDGE`, default ON since 2026-10-27). The stem finder's box can be a thin core of a thick stem (Brahms p14: 4 px

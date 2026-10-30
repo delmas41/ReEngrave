@@ -304,6 +304,14 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
         return
     p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
     staves = {s.staff_index: s for s in pws.staves}
+    # ROADMAP 2.239 (`OMR_SPLIT_JOINS`, default OFF): a column standing on a whole left-edge mark the bracket reader read (bracket, brace,
+    # systemic barline: `page_wide.system_rules`, claimed once as `bracket` by `gather_page_claims`) is that mark's ink, not a barline's --
+    # Sean 2026-10-30, every contested bracket+barline tile was "part of a bracket". The bracket claim keeps it; this claim leaves it.
+    from .stroke_map import split_joins_enabled
+    left_marks: Dict[int, List[Dict[str, Any]]] = {}
+    if split_joins_enabled():
+        for k in {v[0] for v in local.values()}:
+            left_marks[k] = _left_edge_marks(pws, k)
     for c in cells:
         key = local.get(c.staff_index)
         st = staves.get(c.staff_index)
@@ -313,6 +321,13 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
         x0, _y0, x1, _y1 = c.bbox_page_px
         for bl in pws.barlines:
             if bl.system_index != c.system_index or not (x0 - sp <= bl.x <= x1 + sp):
+                continue
+            mk = next((m for m in left_marks.get(key[0], ()) if m.get("box") and m["box"][0] - 6 <= bl.x <= m["box"][2] + 6
+                       and m["box"][1] < float(st.bottom_y) and m["box"][3] > float(st.top_y)), None)
+            if mk is not None:
+                log.abstain(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(c.measure_index),
+                            reason=ABSTAIN.OUT_OF_SCOPE, cell=c.measure_index, owner="barline", unit="area", why="bracket_ink",
+                            barline_x=int(bl.x), mark_kind=mk.get("kind"), mark_box=[round(float(v), 1) for v in mk["box"]])
                 continue
             log.observe(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA,
                         [round(bl.x - 0.45 * sp, 1), float(st.top_y), round(bl.x + 0.45 * sp, 1), float(st.bottom_y)],
@@ -7745,6 +7760,10 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                 optional["staff_local"] = False
             if i == 0:                                   # a CELL fact, said once
                 optional["cell_n_below_floor"] = res.n_below_floor
+                if res.split_refused:                    # ROADMAP 2.239 (OMR_SPLIT_JOINS): pieces left whole, and why
+                    optional["cell_split_refused"] = dict(sorted(res.split_refused.items()))
+            if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
+                optional["joined_to"] = [[j, how] for j, how in st.joined_to]
             if page_ok:
                 x, y, w, h = st.box
                 optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
