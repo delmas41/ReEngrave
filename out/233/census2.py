@@ -40,7 +40,7 @@ for sub, f in fates.items():
     if f in ("duration_narrowed", "duration_abstained", "chord_value_undecided", "rest_duration_abstained", "rest_duration_narrowed", "no_pitch"):
         d = V[sub].get("duration") or {}
         rows.append(dict(sub=sub, fate=f, box=boxes.get(sub), outcome=d.get("outcome"), reason=d.get("reason"),
-                         uni=(d.get("detail") or {}).get("unison_beam_tips"), bv=(d.get("detail") or {}).get("beam_voices"),
+                         thc=(d.get("detail") or {}).get("tips_honour_claims"), uni=(d.get("detail") or {}).get("unison_beam_tips"), bv=(d.get("detail") or {}).get("beam_voices"),
                          cands=[c.get("value") for c in (d.get("candidates") or []) if isinstance(c, dict)] if d else None))
 unis = [dict(sub=s, outcome=q["duration"].get("outcome"), reason=q["duration"].get("reason"), value=q["duration"].get("value"),
              uni=(q["duration"].get("detail") or {}).get("unison_beam_tips"), fate=fates.get(s))
@@ -49,7 +49,9 @@ tot = collections.Counter(fates.values())
 pages = {}
 for k, n in tot.items():
     pass
-json.dump(dict(unis=unis, rows=rows, fates=dict(tot), written=tot.get('written', 0), xml_len=len(xml)), open(outp, 'w'), default=str)
+thcs = [dict(sub=s, reason=q["duration"].get("reason"), outcome=q["duration"].get("outcome"), thc=q["duration"]["detail"]["tips_honour_claims"], fate=fates.get(s))
+        for s, q in V.items() if "duration" in q and (q["duration"].get("detail") or {}).get("tips_honour_claims")]
+json.dump(dict(thcs=thcs, unis=unis, rows=rows, fates=dict(tot), written=tot.get('written', 0), xml_len=len(xml)), open(outp, 'w'), default=str)
 c = collections.Counter((x['fate'], x['reason']) for x in rows)
 print(dict(tot))
 for k, n in c.most_common(40):

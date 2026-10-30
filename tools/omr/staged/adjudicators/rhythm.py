@@ -5528,8 +5528,17 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         if tips_honour_claims_enabled() and own_stems and side in ("up", "down"):
             _ctn = [dict(v, stem_row_id=k[0]) for k, v in _tips_honouring_claims(ev, cell, own_stems)[2].items()
                     if k[1] == ("top" if side == "up" else "bottom")]
-            if _ctn:
-                shared["tips_honour_claims"] = _ctn
+            _fl = _stem_tip_flag_ink(ev, cell, own_stems, side)[0]
+            _bs = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
+            _end = "top" if side == "up" else "bottom"
+            _ids = {s.id for s in own_stems}
+            shared["tips_honour_claims"] = {
+                "claims": _ctn, "flag_window": _fl,
+                "beam_runs_at_tip": (None if _bs is None else int(_bs["count"])),
+                "gather_tip": sorted({("obs:%s" % bool(r.value)) for r in _tip_obs(ev, cell, own_stems)
+                                      if r.detail.get("end") == _end and r.detail.get("stem_row_id") in _ids}
+                                     | {("abs:%s" % a.detail.get("why")) for a in _tip_abs(ev, cell, own_stems)
+                                        if a.detail.get("end") == _end and a.detail.get("stem_row_id") in _ids})}
     # ⚠️ ROADMAP 2.146 (flag `OMR_STEM_TIP_DECIDES_BEAM`, default ON since 2026-10-16; Sean 2026-10-16 "the stem tip decides beamed or not"):
     # every stroke over this head was refused, so instead of narrowing between the head value and one beam level, ask the
     # head's OWN stem tip. Clean tip -> no beam (the head's value); n beam runs at the tip -> n levels. Cannot tell -> the
