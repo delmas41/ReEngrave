@@ -27,8 +27,10 @@ raise `AttributeError` (`gather.head_cut_by_line`, `Q.HEAD_LINE_CUT`), C's
 from __future__ import annotations
 
 import math
+import os
 import types
 import unittest
+from unittest import mock
 
 import numpy as np
 
@@ -407,7 +409,21 @@ def _fit_row(log, g, *, k, slot, pos_float, ink, side="right",
         side=side, stem=stem, ink=ink, scores={})
 
 
-class TestTheStackedGroupKeepChoice(unittest.TestCase):
+class _StepApartOff(unittest.TestCase):
+    """These keep-choice cases were drawn before ROADMAP 2.232: their boxes are
+    140 px wide on a 40 px staff space, so the 'one head boxed twice' pairs
+    stand 1.0-1.5 sp apart and `OMR_STACKED_HEAD_STEP_APART` (default ON since
+    2026-10-30) correctly calls them two heads. They test the 2.73 keep choice
+    in isolation, so they pin that flag OFF."""
+
+    def setUp(self):
+        p = mock.patch.dict(os.environ, {"OMR_STACKED_HEAD_STEP_APART": "0"})
+        p.start()
+        self.addCleanup(p.stop)
+
+
+
+class TestTheStackedGroupKeepChoice(_StepApartOff):
 
     def test_two_heads_an_octave_apart_on_one_stem_are_both_kept(self):
         """Brahms 317803 pdf 0 (`glyph/0/0/5/1/2` and `/16`): one stem, one side,
@@ -482,7 +498,7 @@ def _fill_row(log, g, *, center, ring):
                        ink_raw=reading, ink_net=reading)
 
 
-class TestOneHeadTwoClassesTheInkNamesTheClass(unittest.TestCase):
+class TestOneHeadTwoClassesTheInkNamesTheClass(_StepApartOff):
     """Litolff: one head boxed twice, `noteheadBlack*` and `noteheadHalf*`;
     ink alone (`max(centre, ring)`) kept the filled box by construction."""
 
@@ -529,7 +545,7 @@ class TestOneHeadTwoClassesTheInkNamesTheClass(unittest.TestCase):
         self.assertIs(_verdict(log, half).value, True)
 
 
-class TestNoBoxIsRefusedByOneRuleAfterAnotherKeptIt(unittest.TestCase):
+class TestNoBoxIsRefusedByOneRuleAfterAnotherKeptIt(_StepApartOff):
     """The circularity Brahms 317803 pdf 0 showed on 4 of Sean's 14 on-line
     heads: the head's one box was kept by one rule and refused by the next, and
     the partner it lost to had itself been refused -- the head was LOST."""
