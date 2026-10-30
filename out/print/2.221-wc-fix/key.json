@@ -1,0 +1,50 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 1,
+  "box": [
+   1104,
+   503,
+   1815,
+   693
+  ],
+  "what": "heading claim now (title)"
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   914,
+   317,
+   1528,
+   394
+  ],
+  "what": "FIXED SPOT: pre-fix heading claim on a slur (now unclaimed)"
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   2193,
+   507,
+   3320,
+   845
+  ],
+  "what": "heading claim now (title)"
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 1,
+  "box": [
+   1219,
+   1161,
+   1243,
+   1171
+  ],
+  "what": "Litolff p1 bar 4 rest"
+ }
+]

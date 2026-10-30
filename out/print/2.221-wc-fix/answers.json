@@ -1,0 +1,22 @@
+{
+ "sean_2026_10_29": "Word coverage 1. Symphonies title 2. Slur 3. Symphonie title 4. Whole note rest",
+ "tally": "4/4 as intended: 1 and 3 title claims are titles; 2 (the old tile-5 spot) is a slur and is no longer claimed as a heading; 4 the Litolff p1 bar is a whole rest.",
+ "tiles": [
+  {
+   "tile": 1,
+   "answer": "title"
+  },
+  {
+   "tile": 2,
+   "answer": "slur"
+  },
+  {
+   "tile": 3,
+   "answer": "title"
+  },
+  {
+   "tile": 4,
+   "answer": "whole rest"
+  }
+ ]
+}
