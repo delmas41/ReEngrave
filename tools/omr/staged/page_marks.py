@@ -438,7 +438,8 @@ def _sum(dicts: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def run(rec: str, pages: Optional[Sequence[int]] = None, out: Optional[pathlib.Path] = None, tiles: Optional[pathlib.Path] = None,
-        cm_root: Optional[pathlib.Path] = None, log=print) -> Dict[str, Any]:
+        cm_root: Optional[pathlib.Path] = None, log=print, tile_pool: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
+    """The readout of one REC. `tiles` cuts its 12 tiles; `tile_pool` (a list) instead COLLECTS the candidates, for one sheet over plates."""
     from . import cell_map as CM
     from . import claim_readout as CR
     src = CR.resolve_source(rec)
@@ -448,7 +449,7 @@ def run(rec: str, pages: Optional[Sequence[int]] = None, out: Optional[pathlib.P
     cm_root = cm_root or CM.ROOT_DEFAULT
     man = CM.info(pdf, root=cm_root)
     per: Dict[str, Any] = {}
-    tile_pool: List[Dict[str, Any]] = []
+    pool: List[Dict[str, Any]] = []
     for pg in pages:
         t0 = time.time()
         prows = {k: [r for r in v if CR.page_of_subject(r.get("subject", "")) in (None, pg)] for k, v in rows_all.items()}
@@ -464,8 +465,8 @@ def run(rec: str, pages: Optional[Sequence[int]] = None, out: Optional[pathlib.P
             rep["record_rows"] = len(saved)
             rep["record_partition_equal"] = same_partition({k: v for k, v in mine.items() if k in saved}, saved) and set(saved) <= set(mine)
         per[str(pg)] = rep
-        if tiles is not None:
-            tile_pool += tile_candidates(boxes, marks, pg, cells)
+        if tiles is not None or tile_pool is not None:
+            pool += [dict(t, pdf=str(pdf), cm_root=str(cm_root), cell_map=man["version"]) for t in tile_candidates(boxes, marks, pg, cells)]
         log("  page %d: %d boxes -> %d marks, %d merged, twin ink %s (%.0fs)" % (
             pg, rep["boxes"], rep["marks"], rep["merged_pairs"],
             {f: "%d->%d" % (t["before"], t["after"]) for f, t in rep["twin_ink"].items() if t["before"]}, time.time() - t0))
@@ -484,8 +485,10 @@ def run(rec: str, pages: Optional[Sequence[int]] = None, out: Optional[pathlib.P
         total["iou05_same_class_two_staves"], total["iou05_of_them_merged"], total["merged_with_iou_below_0.5"]))
     log("  refused candidate pairs by reason %s" % total.get("refused_by_reason", {}))
     log("  twin ink (one family, two cells): %d px before -> %d px after" % (b, a))
-    if tiles is not None:
-        cut_mark_tiles(tile_pool, pdf, cm_root, tiles, man["version"])
+    if tile_pool is not None:
+        tile_pool += pool
+    elif tiles is not None:
+        cut_mark_tiles(pool, tiles)
     return report
 
 
@@ -516,12 +519,14 @@ def tile_candidates(boxes: Sequence[BoxInk], marks: Marks, page: int, cells: Seq
 
 
 def pick_tiles(pool: List[Dict[str, Any]], n: int = 12, seed: int = 2240) -> List[Dict[str, Any]]:
-    """6 merges + 6 refusals (or as many as exist), mostly in the gap between staves, families spread, seeded."""
+    """6 merges + 6 refusals (3 `cell_twice_in_mark`, 3 `share_below`, the nearest misses first), mostly in the gap between staves, families
+    spread, plates alternated, seeded."""
     import random
     rnd = random.Random(seed)
     out: List[Dict[str, Any]] = []
-    for want_merged, k in ((True, n // 2), (False, n - n // 2)):
-        grp = [t for t in pool if t["merged"] == want_merged]
+    n_ref = n - n // 2
+    for want_merged, reason, k in ((True, None, n // 2), (False, "cell_twice_in_mark", n_ref // 2), (False, "share_below", n_ref - n_ref // 2)):
+        grp = [t for t in pool if t["merged"] == want_merged and (reason is None or t["reason"] == reason)]
         gap = [t for t in grp if t["in_gap"]]
         rest = [t for t in grp if not t["in_gap"]]
         rnd.shuffle(gap)
@@ -530,22 +535,25 @@ def pick_tiles(pool: List[Dict[str, Any]], n: int = 12, seed: int = 2240) -> Lis
             gap.sort(key=lambda t: -t["share"])
         chosen: List[Dict[str, Any]] = []
         fams = collections.Counter()
+        plates = collections.Counter()
         for t in gap + rest:
             if len(chosen) >= k:
                 break
-            if fams[t["family"]] >= max(2, k // 2) and len([x for x in grp if x["family"] != t["family"]]) > 0:
+            if fams[t["family"]] >= max(1, k // 2) and len({x["family"] for x in grp}) > 1:
+                continue
+            if plates[t.get("pdf")] >= (k + 1) // 2 and len({x.get("pdf") for x in grp}) > 1:
                 continue
             if any(c["page"] == t["page"] and abs(c["box"][0] - t["box"][0]) < 60 and abs(c["box"][1] - t["box"][1]) < 60 for c in out + chosen):
                 continue
             chosen.append(t)
             fams[t["family"]] += 1
+            plates[t.get("pdf")] += 1
         out += chosen
     rnd.shuffle(out)
     return out
 
 
-def cut_mark_tiles(pool: List[Dict[str, Any]], pdf: pathlib.Path, cm_root: pathlib.Path, out_dir: pathlib.Path, cm_version: str,
-                   n: int = 12) -> None:
+def cut_mark_tiles(pool: List[Dict[str, Any]], out_dir: pathlib.Path, n: int = 12) -> None:
     """One tile each: the nearest staff and the pair, ONE thin orange box around both boxes, nothing else drawn; key.json BESIDE the
     tile folder (`out_dir/tiles/`, `out_dir/key.json`)."""
     from PIL import Image, ImageDraw
@@ -555,18 +563,20 @@ def cut_mark_tiles(pool: List[Dict[str, Any]], pdf: pathlib.Path, cm_root: pathl
     tdir.mkdir(parents=True, exist_ok=True)
     for f in tdir.glob("*"):
         f.unlink()
-    imgs: Dict[int, Any] = {}
+    imgs: Dict[Tuple[str, int], Any] = {}
     key = []
     for i, it in enumerate(chosen, 1):
-        if it["page"] not in imgs:
-            (pws, _cells), = CM.load_prepared(pdf, [it["page"]], root=cm_root)
-            imgs[it["page"]] = Image.fromarray(pws.page.rgb).convert("RGB")
-        im = imgs[it["page"]]
+        ik = (it["pdf"], it["page"])
+        if ik not in imgs:
+            (pws, _cells), = CM.load_prepared(pathlib.Path(it["pdf"]), [it["page"]], root=pathlib.Path(it["cm_root"]))
+            imgs[ik] = Image.fromarray(pws.page.rgb).convert("RGB")
+        im = imgs[ik]
         u = it["unit"] or 20.0
         bb = [it["box"][0] - 3, it["box"][1] - 3, it["box"][2] + 3, it["box"][3] + 3]
         top, bot = it["staff_y"]
         cx = (bb[0] + bb[2]) / 2.0
-        x0, x1 = max(0, int(cx - 6 * u)), int(cx + 6 * u)
+        # the box is never wider than the tile: the crop always holds the whole box and 1.5 spaces round it
+        x0, x1 = max(0, int(min(cx - 6 * u, bb[0] - 1.5 * u))), int(max(cx + 6 * u, bb[2] + 1.5 * u))
         y0, y1 = max(0, int(min(top - 1.5 * u, bb[1] - 1.5 * u))), int(max(bot + 1.5 * u, bb[3] + 1.5 * u))
         crop = im.crop((x0, y0, x1, y1)).copy()
         ImageDraw.Draw(crop).rectangle([round(bb[0] - x0), round(bb[1] - y0), round(bb[2] - x0), round(bb[3] - y0)],
@@ -574,7 +584,7 @@ def cut_mark_tiles(pool: List[Dict[str, Any]], pdf: pathlib.Path, cm_root: pathl
         W = 520
         crop = crop.resize((W, max(1, int(W * crop.height / crop.width))))
         crop.save(tdir / ("tile_%02d.png" % i))
-        key.append({**{k: v for k, v in it.items() if k != "staff_y"}, "tile": i, "crop_origin": [x0, y0], "cell_map": cm_version})
+        key.append({**{k: v for k, v in it.items() if k not in ("staff_y", "cm_root")}, "tile": i, "crop_origin": [x0, y0]})
     (tdir / "README.md").write_text(
         "# Is this one mark?\n\nEach picture is a piece of a score page with ONE orange box on it and nothing else drawn. The box only says "
         "where to look.\n\n**Question, for every tile:** is the ink in the box ONE mark (one note, one rest, one accidental ...) or TWO "
@@ -641,9 +651,12 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=pr
                 a, c = hs[i], hs[j]
                 if i == j:
                     continue
-                ha = a.page_box[3] - a.page_box[1]
+                ha, hc = a.page_box[3] - a.page_box[1], c.page_box[3] - c.page_box[1]
                 dy = (c.page_box[1] + c.page_box[3] - a.page_box[1] - a.page_box[3]) / 2.0
                 dx = abs((c.page_box[0] + c.page_box[2] - a.page_box[0] - a.page_box[2]) / 2.0)
+                # two whole heads of one size (a box clipped at the cell edge is a fragment of ONE head, not a third)
+                if min(ha, hc) < 0.8 * max(ha, hc):
+                    continue
                 if 0.7 * ha <= dy <= 1.3 * ha and dx < 0.5 * ha and _overlap(a.page_box, c.page_box):
                     na, nc = neighbour(a), neighbour(c)
                     if na is not None and nc is not None and na[0] == nc[0]:
@@ -654,16 +667,8 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=pr
         if third:
             break
     if third is None:
-        log("  (b) no overlapping stacked third in a cell overlap on page %d: built a synthetic one from (a)'s head" % page)
-        if one is not None:
-            b = one[0]
-            h = b.page_box[3] - b.page_box[1]
-            sh = (b.page_box[0], b.page_box[1] + 0.85 * h, b.page_box[2], b.page_box[3] + 0.85 * h)
-            nb = neighbour(b)
-            c = BoxInk(b.key[:b.key.rfind("/")] + "/900004", b.cell, 900004, "head", b.cls, sh,
-                       box_pixels(views[b.cell][0], views[b.cell][1], sh, ink))
-            third = (b, c, planted(b, nb, 900_002), BoxInk("glyph/%d/%d/%d/%d/900003" % nb[0], nb[0], 900003, "head", b.cls, sh,
-                                                         box_pixels(nb[1], nb[2], sh, ink)))
+        log("  (b) no real stacked third (two whole heads of one cell, one space apart, boxes overlapping) in a cell overlap on page %d: "
+            "NOT RUN here -- run another page" % page)
     if third is not None:
         a, c, a2, c2 = third
         sub = [a, c, a2, c2]
@@ -675,8 +680,6 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=pr
             a.key, c.key, len({m.mark_of[x.key] for x in sub}), "pass" if ok else "FAIL",
             "yes (the control can fail)" if broken_fuses else "NO -- the control cannot fail here"))
         fails += 0 if (ok and broken_fuses) else 1
-    else:
-        fails += 1
     # (c)
     r1 = page_report(boxes, link(boxes))
     rows2 = json.loads(json.dumps(rows))
@@ -686,7 +689,7 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=pr
     log("  (c) identical copy of the rows reads identically: %s" % ("pass" if same else "FAIL"))
     fails += 0 if same else 1
     log("  cells re-cut and matched stroke-for-stroke: %s; planted keys new: %s" % (dict(verify), "glyph/x/900001" not in keys))
-    log("controls: %s" % ("ALL PASS" if fails == 0 else "%d FAILED" % fails))
+    log("controls: %s%s" % ("ALL PASS" if fails == 0 else "%d FAILED" % fails, "" if third is not None else " ((b) NOT RUN on this page)"))
     return fails
 
 
@@ -694,8 +697,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(prog="page_marks")
     sub = ap.add_subparsers(dest="cmd", required=True)
     r = sub.add_parser("readout")
-    r.add_argument("rec")
-    r.add_argument("--pages", default=None)
+    r.add_argument("rec", nargs="+", help="one or more RECs; with --tiles, one sheet of 12 over all of them")
+    r.add_argument("--pages", default=None, help="only with one REC")
     r.add_argument("--out", default=None)
     r.add_argument("--tiles", default=None)
     r.add_argument("--cell-map", default=None)
@@ -707,7 +710,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     cm = pathlib.Path(a.cell_map) if a.cell_map else None
     if a.cmd == "readout":
         pages = [int(p) for p in a.pages.split(",")] if a.pages else None
-        run(a.rec, pages, pathlib.Path(a.out) if a.out else None, pathlib.Path(a.tiles) if a.tiles else None, cm)
+        if pages and len(a.rec) > 1:
+            raise SystemExit("--pages takes one REC")
+        pool: List[Dict[str, Any]] = []
+        for i, rec in enumerate(a.rec):
+            out = pathlib.Path(a.out) / ("rec%d" % i) if (a.out and len(a.rec) > 1) else (pathlib.Path(a.out) if a.out else None)
+            run(rec, pages, out, None, cm, tile_pool=pool if a.tiles else None)
+        if a.tiles:
+            cut_mark_tiles(pool, pathlib.Path(a.tiles))
+            print("tiles: %s/tiles (key.json beside the folder)" % a.tiles)
         return 0
     return 1 if controls(a.rec, a.page, cm) else 0
 

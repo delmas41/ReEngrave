@@ -502,7 +502,7 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         None),
 
     "PAGE_MARK": (
-        RAW_INK,
+        RELATION,
         "ROADMAP 2.240 step 1 (cells are views, the page is the ledger): which detector boxes of two padded cells stand on the same page ink, "
         "one ordinal per page mark. Scoreless: a count of shared ink, no confidence; nothing reads it yet.",
         None),
