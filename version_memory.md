@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-30 -- overnight 20261029-night, master cell map landed, compare (manager session)
+
+- Overnight full re-gather 20261029-night on main 12325ce29 (same script, pages, THROUGH=infer as 20261022-night): both exit 0. Litolff 68 min (67), record 2.9 GB (1.3); Brahms 352 min (224, +57%), record 19.6 GB (8.8) -- the growth is per-verdict payload + new stroke rows, not row count; per-stage time is not recorded.
+- Compare (lane-overnight-compare-1029, benchmarks/acceptance/overnight/20261029-night/README-{litolff,brahms}.txt; compare_20261029.sh): red bars L 507->412, B 628->588; bars add up L 4946->5170, B 5884->6051; unread bars L 418->280, B 251->177; notes reaching file flat. Judged (today's scorer on both): L 164/42/6 -> 167/34/6 with 3 right->wrong; B 149/22/5 -> 151/19/5, 0 right->wrong.
+- The 3 Litolff right->wrong: cause OMR_ERASER_FIX (2.206) moving ink so GATHER's stacked-head fit decides k=1 on near-ties (lane-judged-moves-1029); Sean confirmed p3 glyph/3/0/4/3/12 a real lost half note (a third). The 6 right->gone are cell-number shifts from page-wide barlines, notes still written. Fix lane ROADMAP 2.232 in flight.
+- ROADMAP 2.231 master cell map LANDED (648aba4c8; opt-in --cell-map; Litolff cm-54ccb4729528 and Brahms cm-2d494f8fc055 both AGREE with their overnight records, every page).
+- Unexplained, not checked against the print: accidental_owner is_a_key_signature_marker L 123->506, B 283->1480.
+
 ## 2026-10-29 -- session close: handoff for the overnight re-gather (manager session)
 Docs only. ROADMAP "START HERE -- after 2026-10-29" lists the day's ten landings with flags and commits (2.220 fill; head trim + 1.6 sp cap; judged scorer; arc claim; whole-rest bars; page-wide barlines; duplicate-pass cleanup; word coverage; stem-end head reader), the rules set (claim order / page-wide pass, no duplicate passes, claims proved by tiles and hand truth, plain vs blue by measurement, tiles boxed to the mark, isolated lane worktrees, 4 lanes), what is parked, and the next session's first task (2.231 master cell map from the 20261029 overnight). CLAUDE.md §3 gains "Claim order"; §6 Where/Lean lanes/Evidence updated.
 
