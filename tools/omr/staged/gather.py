@@ -327,7 +327,7 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             if mk is not None:
                 log.abstain(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(c.measure_index),
                             reason=ABSTAIN.OUT_OF_SCOPE, cell=c.measure_index, owner="barline", unit="area", why="bracket_ink",
-                            barline_x=int(bl.x), mark_kind=mk.get("kind"), mark_box=[round(float(v), 1) for v in mk["box"]])
+                            barline_x=int(bl.x))
                 continue
             log.observe(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA,
                         [round(bl.x - 0.45 * sp, 1), float(st.top_y), round(bl.x + 0.45 * sp, 1), float(st.bottom_y)],
