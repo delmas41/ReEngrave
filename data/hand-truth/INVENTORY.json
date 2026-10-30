@@ -161,16 +161,16 @@
  "hand_truth_pages": [
   {
    "box_origin": {
-    "drawn": 388,
-    "prefill-confirmed": 893,
-    "prefill-fixed": 71
+    "drawn": 474,
+    "prefill-confirmed": 1013,
+    "prefill-fixed": 79
    },
-   "boxes": 1352,
+   "boxes": 1566,
    "cells": 202,
    "edition": "imslp317803",
    "families_complete": [],
    "pdf_page_index": 0,
-   "queue": 2639,
+   "queue": 865,
    "state": "labeling",
    "whole_ink": {
     "cells_all_ink": false,
@@ -892,6 +892,39 @@
    "tier": "single-family:arcs",
    "tier_basis": "inspected_passes 'ties+slurs-reconcile' only",
    "version": "v23-2026-09-04-arcs-reconcile"
+  },
+  {
+   "box_origin": {
+    "human_drawn": 90,
+    "model_box_kept": 0,
+    "model_box_kept_means": "n/a",
+    "unreconciled": 1748
+   },
+   "boxes": 1838,
+   "cells": 100,
+   "cells_unmapped_to_a_page": 0,
+   "cells_with_recorded_passes": 99,
+   "in_catalog": false,
+   "inspected_passes": {
+    "hollow noteheads (every one)": 99
+   },
+   "labeler": "sean",
+   "pages": {
+    "imslp1010338:30": 13,
+    "imslp112218:30": 11,
+    "imslp17070:40": 6,
+    "imslp17070:80": 5,
+    "imslp317803:20": 11,
+    "imslp405834:24": 9,
+    "imslp405834:60": 2,
+    "imslp504184:60": 11,
+    "imslp56155:40": 11,
+    "imslp979455:30": 11,
+    "imslp984073:12": 10
+   },
+   "tier": "single-family:hollow",
+   "tier_basis": "2.4b hollow4 TRAIN batch (Sean, blind click-to-box, hollow heads only; other classes filled from production boxes); NOT ADMITTED -- the retraining was killed 2026-10-13",
+   "version": "v24-2026-10-13-hollow4-train"
   }
  ],
  "production_scan_weights": "deepscoresv2-yolov8l-hollow-graft-shift09-2026-09-04.pt",
@@ -1399,6 +1432,41 @@
    "detection_verdicts": {},
    "dir": "benchmarks/omr-labeling-hollow3-2026-09-universal-mahler1/verdicts",
    "human_added_boxes": 75,
+   "source_of_versions": []
+  },
+  {
+   "cells": 100,
+   "cells_also_in_a_version": 100,
+   "cells_no_human_action": 0,
+   "cells_with_human_action": 100,
+   "copy_by_name": false,
+   "detection_verdicts": {},
+   "dir": "benchmarks/omr-labeling-hollow4-2026-10/verdicts",
+   "human_added_boxes": 90,
+   "source_of_versions": []
+  },
+  {
+   "cells": 100,
+   "cells_also_in_a_version": 100,
+   "cells_no_human_action": 0,
+   "cells_with_human_action": 100,
+   "copy_by_name": false,
+   "detection_verdicts": {},
+   "dir": "benchmarks/omr-labeling-hollow4-2026-10/verdicts-recomputed",
+   "human_added_boxes": 90,
+   "source_of_versions": [
+    "v24-2026-10-13-hollow4-train"
+   ]
+  },
+  {
+   "cells": 104,
+   "cells_also_in_a_version": 0,
+   "cells_no_human_action": 0,
+   "cells_with_human_action": 104,
+   "copy_by_name": false,
+   "detection_verdicts": {},
+   "dir": "benchmarks/omr-labeling-hollow4-test-litolff-p1-2026-10/verdicts",
+   "human_added_boxes": 59,
    "source_of_versions": []
   },
   {

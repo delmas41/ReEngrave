@@ -6,6 +6,7 @@ Plan: [`docs/plan-2026-10-08-hand-labeled-truth.md`](../../docs/plan-2026-10-08-
 |---|---|---|
 | `pages/<edition>/<pdf_page_index>.json` | one printed page: every box in PAGE pixels, the cells it was labeled through, pre-fills still in the queue, the staff-line checks, the page's state (`labeling` → `checked` → `verified`) | the labeling tool (`store.PageTruth.save`) — none yet |
 | `INVENTORY.json` | every hand label in the tree, who judged it, how complete it is, and the weights lineage | GENERATED: `python3 -m tools.omr.hand_truth.inventory` (`--check` to verify) — never edit |
+| `aligned/<edition>/<page>.<master>.json` | each labelled box's cell in the MASTER cell map (ROADMAP 2.231), by page rect, and why the old `cell_id` disagrees; Sean's page files are not touched | GENERATED: `python3 -m tools.omr.hand_truth.align` (`--check`, `--report`, `--control`) — never edit |
 | `held-out.json` | pages that are test truth and never train weights tested on them | Sean's decision, 2026-10-08 |
 | `weights-lineage.json` | which corpus trained which detector weights, with evidence | DECLARED; `inventory --verify-checkpoints omr-weights/` checks it against the `.pt` files |
 
