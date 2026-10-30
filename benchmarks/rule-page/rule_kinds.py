@@ -418,7 +418,7 @@ MODULES = {
 
 # Files that are pipeline plumbing, derived checks, reports or the exporter -- they hold no ink rule.
 INFRA = {
-    "__init__.py", "__main__.py", "adjudicate.py", "brakes.py", "budget.py", "capture.py", "cell_map.py", "check.py", "check_helpers.py",
+    "__init__.py", "__main__.py", "adjudicate.py", "brakes.py", "budget.py", "capture.py", "cell_map.py", "check.py", "claim_readout.py", "check_helpers.py",
     "consequences.py", "evaluate.py", "export.py", "gather.py", "gather_coverage.py", "health.py", "infer.py", "inferences.py",
     "inventory.py", "judged.py", "lane_report.py", "legacy.py", "letter_look_report.py", "lilypond.py", "meaning.py",
     "pipeline.py", "positions.py", "producers.py", "reach.py", "readout.py", "record.py", "record_coverage.py", "record_io.py",
