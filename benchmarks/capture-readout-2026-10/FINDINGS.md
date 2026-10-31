@@ -277,3 +277,43 @@ My look:
 - The touch pieces are small: a flat's bowl edge or a natural's side, each now apart from the rung or head.
 - Tile 2 looks like an eighth rest the detector boxed as an accidental: Sean's answer decides.
 - The controls are whole heads.
+
+## 2.242 -- one accidental, one piece (STAGED GATHER stroke map + ADJUDICATE stroke owner; flag `OMR_ACCIDENTAL_WHOLE`, default OFF)
+Branch `lane-2.242-accidental-whole` (main af25466cd merged). Not landed: waits for Sean's tiles (`out/print/2.242-tiles/tiles`, key beside it).
+
+### Cause and process lesson
+- **Why accidentals were 0 of 41 whole.** The stroke map's openings (eraser, vertical / horizontal / remainder) cut every accidental into 4-6 strokes (stems, bars, bowl), with `OMR_SPLIT_JOINS` off as well. Same source as the clef pieces. Before: accidental boxes owning ink own 1 stroke in 7% (Brahms p0+p5), 2% (p25), 17% (Litolff p2+p4).
+- **Why the accidental took a flag's / a head's ink (2.241 tiles 3 and 10).** It is NOT the order and not only the box size. (1) Heads already stand before accidentals; flags are consumers by design. (2) The accidental's shape test was SIZE ONLY: any blob up to 1.4 x 2.2 sp, any vertical up to 3.7 sp, is `clear`. Tile 10: a head with a little ink under it (1.2 x 1.9 sp, 0.79 thick) is only `could` for its head box (height over the 1.6 cap), so a false `accidentalDoubleSharp` box (2.2 x 2.6 sp, its glyph is 1.0 x 1.0, so yes the box is too big) took it. Tile 3: a flag cut into scraps hanging from a 4.6 sp stem; a flat box over them `clear`ed on size and the flag box never claims. The accidental class cannot bound the ink: the Brahms boxes classed double sharp hold ink 1.8 x the glyph's height (the detector's class is noise, 2.201).
+- **Lesson.** My first version cut accidental ink bigger than the class's SMuFL glyph. It lost 15 of 21 naturals on Brahms p0 (a real Breitkopf natural is 1.1 x the SMuFL height, q95 1.26). The class-size cut was dropped and the shape was read from the ink instead. Also the readout's re-cut did not pass the 2.239 r3 touch boxes in `claim_order` (16 Brahms cells mismatched on the BASE tree): fixed (`claim_order.build_order_page`). A second lesson: an over-large twin box (4.8 sp, two stacked accidentals) made one merged "accidental" with 3 stems and lost two natural readings (control caught it); fixed by refusing to merge more than one accidental's size.
+
+### Prior work (the brief's list)
+- `docs/ink-rules.md` accidental rows: the accidental rules there read the box's class and the owner's neighbours (twin absorbed 2.186, on a rest 2.192, owner by position); none cut or merged ink. LEGACY (frozen) read an accidental by template at its box; nothing to port.
+- page-facts §5 rejected: nothing on accidental ink; `accidental family` is ONE family (Sean 2026-10-22), used here: key signature marks (`key*`) are never merged, each its own.
+- `omr-accidental-family-2026-10` (2.201): the type is read from the strokes (stem stagger) -- the CONTROL. `omr-accidental-shape-2026-10` / `omr-phantom-accidental-2026-10`: a merged accidental's shape and a phantom box on a rest; `omr-accidental-2026-09`, `omr-queue-accidentals-2026-09`: earlier box-level reads. None kept the ink as one piece.
+
+### Built
+- `stroke_map.merge_accidentals` (after the 2.239 r3 touch cut, in `map_strokes`, only with the flag and `OMR_SPLIT_JOINS`): seed = pieces mostly inside the accidental's detector box; touching pieces join (2 reduced px, the map's contact rule); every piece wholly inside the glyph-sized region around the box (`sized_region`, SMuFL `glyphBBoxes`, +0.125 sp, as clefs); a piece mostly inside a head / ledger / stem / clef / key / meter box is never joined and a false box on a head merges nothing; merged ink larger than one accidental (1.92 x 3.10 sp, the largest glyph, + 0.25 tol) stays cut (`accidental_more_than_one_glyph`). The merged stroke is kind `blob`; its pieces ride on `Stroke.parts` (not filed as strokes).
+- `gather_accidental_family` reads the 2.201 type from the PARTS (so the stem stagger is the one made before the merge). `_split_touch_boxes` adds the class name to an accidental's entry (only with the flag, so OFF records are unchanged).
+- `stroke_owner.accidental_yields` (flag-gated): an accidental claim yields (fit `no`, why `yields_to_a_head_body` / `yields_to_a_flag_on_a_stem`) (a) a BLOB whose median run is a head's body (>= 0.55 sp, the stroke map's `HEAD_BODY_SPACES`) that a head box covers and the head shape does not refuse; (b) ink in a chain the flag box covers that touches a vertical longer than any accidental's stem (3.7 sp, 2.201). Shape and connections, never a pixel share.
+- Flag: new `OMR_ACCIDENTAL_WHOLE`, default OFF (docs/flags-2026-09.md rows), not `OMR_SPLIT_JOINS`: the change is not small (it reorders every cell's strokes, 1,500+ strokes fewer per plate sample) and moves ADJUDICATE too. `claim_order` now passes the touch boxes to its re-cut.
+- Tests: `test_accidental_whole_2_242.py` (9). Fast tier 9,466 passed (before the final main merge).
+
+### 1. Capture (claim_readout strict, master cells, 0 cells mismatched; Brahms p0+p5, Litolff p2+p4; OFF = flag off on the same merged tree)
+- Sean's Brahms p0 labels, accidentals strict WHOLE: flat 0 -> 6 of 10, natural 0 -> 16 of 21, sharp 0 -> 8 of 10 (**0 -> 30 of 41**); right 41 -> 41. Every other class identical in the strict table (keyFlat 0 -> 1 of 26; ALL strict 660 -> 691). Fragmented 11 left: not yet looked at.
+- Strokes owned per accidental box, share owning exactly 1 stroke: Brahms p0+p5 7% -> 72%, Brahms p25 2% -> 79%, Litolff p2+p4 17% -> 61%.
+- Order check (`claim_readout order`, px of ink; Brahms p0+p5 / Brahms p25 / Litolff p2+p4): stem_beam_flag->accidental 6,949 -> 4,425 / 2,935 -> 2,290 / 2,228 -> 2,238; head->accidental 100 -> 111 / 400 -> 400 / 493 -> 116; arc->accidental 217 -> 125 (Brahms). Tile 10 (Litolff p4): the head now owns the blob, accidental candidate `no` `yields_to_a_head_body`. Tile 3 (Brahms p25): the flag scraps, now one 2.4 sp stroke, are refused to the accidental (`yields_to_a_flag_on_a_stem`) and left to the flag reader. Not fixed: stem_beam_flag->accidental on Litolff (unchanged) and 12 yields in all 4 pages.
+
+### 2. Control that can fail (2.201 accidental type reading per detector box, base vs ON, same cells)
+- Brahms: 298 boxes, types identical except ONE: an unclear (`more_than_two_stems`) read now reads natural, agreeing with the detector (agrees 211 -> 212); nothing lost. Litolff: 210 boxes, 0 changed (agrees 92 -> 92). The lane brief's 224 / 98 counts are not reproduced by this definition (agrees-with-detector, different pages); the per-box comparison is the stricter check. The first merge (box-sized region) failed it: 2 naturals -> unclear, 1 flat -> natural (stacked accidentals); the control caught it and the one-glyph bound fixed it. A control that cannot fail: the OFF arm equals the saved record by construction here; the can-fail run is the first version.
+
+### 3. File (lane_report, 2 pages a plate: Litolff 2, 4; Brahms 4, 5; `--from gather --cell-map master`, 188 + 174 judged tiles)
+- Litolff: NOTHING CHANGED in the exported file. Brahms: blue marks -2, nothing else. Judged right->wrong 0, right->gone 0, unwritten->wrong 0. (The run on the merged main af25466cd is in `out/lane-report/2.242b`, numbers below if it finished.)
+
+### Tiles
+`out/print/2.242-tiles/tiles` (12; key beside it): 8 whole accidentals (Brahms sharp, flat, 2 naturals; Litolff sharp, flat, 2 naturals) and 4 yielded ink (tile 6 and 9-ish: Sean's 2.241 tile 3 flag spot and tile 10 head spot, two more). Two plain questions: what is the ink, does the box hold the whole mark. My look: the whole accidentals' boxes hold one sign; where two accidentals stack (Brahms tile 4) the box holds one of them. Not judged by Sean.
+
+### Open
+- 11 of 41 Brahms p0 accidentals still fragmented (largest piece < 0.85 of the box ink): the box holds a neighbour's ink or the over-glyph guard refused a stacked pair.
+- Stacked accidentals in one over-large twin box stay cut (rule 6); a proper split needs the page-wide pass.
+- Yield rule is rare (12 strokes on 4 pages). Flag detail: Litolff stem_beam_flag->accidental (0.09%) is another family of cases not examined.
+- Default stays OFF until Sean judges the tiles; then a whole-movement re-gather is Sean's overnight.
