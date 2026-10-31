@@ -33,6 +33,63 @@ def enabled() -> bool:
     return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.247 -- ACCIDENTALS LABELLED BY THEIR SHAPE (flag `OMR_ACCIDENTAL_KIND`, default OFF, deny-list: only 1/true/yes/on enables)
+# ─────────────────────────────────────────────────────────────────────────────
+#: CONVENTION ASSUMED (Sean 2026-10-31, engraving): a natural is two offset uprights (left up, right down) joined by two slanted bars; a flat is
+#: one upright with a BOWL at its lower end. "Sometimes the line that goes off the bottom of the natural is hard to see": a natural whose right
+#: upright is lost below the lower bar leaves ONE stem + a closed SQUARE, which 2.201's flat test ("one stem + any piece to its right, low")
+#: called a flat. The square and the bowl differ at the piece's TOP RIGHT: the natural's upper bar rises to the right and meets the right upright
+#: in a CORNER (the piece's right quarter stands as high as its left part or higher); a flat's bowl has a rounded SHOULDER there (its right
+#: quarter falls away below its highest point). WHAT WOULD FALSIFY IT: a plate whose flats have a square-topped bowl, or whose naturals' bars
+#: are level. NOT CONFIRMED beyond Litolff and Breitkopf; the cut-off below is a measurement on those two plates, so it may only NARROW:
+#: a stem + square is never DECIDED a natural here, it stops being a flat (`unclear`, candidates natural AND flat, written GUESSED).
+KIND_ENV = "OMR_ACCIDENTAL_KIND"
+#: a flat's bowl: its right quarter's top lies at least this far (spaces) BELOW the top of its left-middle part (a rounded shoulder);
+#: synthetic flat 0.25, synthetic natural square -0.06 (median top of the right quarter vs the highest point of the left-middle).
+FLAT_SHOULDER_MIN_SP = 0.15
+#: a two-stem reading whose right stem's TOP is lower (natural-like) but whose BOTTOM ends this far above the left stem's bottom: the right
+#: upright's lower stroke is faint/lost -- natural or (a bowl's right side read as a stem) flat; never sharp.
+#: Not a new cut: it is 2.201's `STAGGER_REVERSE_MAX_SP` (the bound past which a reading stops being a natural), restated here.
+FAINT_LOWER_REVERSE_SP = 0.25
+
+
+def kind_enabled() -> bool:
+    """`OMR_ACCIDENTAL_KIND` (ROADMAP 2.247), default OFF; only an explicit 1/true/yes/on enables."""
+    return os.environ.get(KIND_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def bowl_shoulder_sp(masks: Optional[Sequence[Any]], scale: float, sp: float,
+                     ordinals: Sequence[int]) -> Optional[float]:
+    """ROADMAP 2.247: how far the TOP of the right quarter of the piece(s) to the right of a flat-candidate stem lies BELOW the top of their
+    left-middle part, in spaces (positive = a rounded shoulder = a bowl; <= 0 = a square corner = a natural's bars). The union of the pieces'
+    own masks (`CellStrokes.masks`, reduced frame), never the box. None when no mask (cannot tell)."""
+    import numpy as np
+    if not masks or not ordinals:
+        return None
+    rows = [masks[i] for i in ordinals if 0 <= i < len(masks) and masks[i] is not None]
+    if not rows:
+        return None
+    x0 = min(int(m[1]) for m in rows)
+    y0 = min(int(m[2]) for m in rows)
+    x1 = max(int(m[1]) + m[0].shape[1] for m in rows)
+    y1 = max(int(m[2]) + m[0].shape[0] for m in rows)
+    canvas = np.zeros((y1 - y0, x1 - x0), dtype=bool)
+    for m, mx, my in rows:
+        canvas[int(my) - y0:int(my) - y0 + m.shape[0], int(mx) - x0:int(mx) - x0 + m.shape[1]] |= m.astype(bool)
+    w = canvas.shape[1]
+    if w < 4:
+        return None
+    cols = canvas.any(axis=0)
+    tops = np.where(cols, canvas.argmax(axis=0), canvas.shape[0])
+    left = tops[int(0.15 * w):max(int(0.15 * w) + 1, int(0.5 * w))]
+    right = tops[int(0.75 * w):]
+    if left.size == 0 or right.size == 0 or not cols[int(0.75 * w):].any():
+        return None
+    sp_red = float(sp) * float(scale or 1.0)
+    return round(float(np.median(right[right < canvas.shape[0]]) - left.min()) / max(1e-9, sp_red), 3)
+
+
 #: A stroke is a stem of the mark at or above this length (staff spaces). A natural's hanging stem can be cropped to ~0.8 and still read.
 STEM_MIN_SP = 0.5
 #: ... and a stem the mark OWNS is at most this long: an accidental's longest stroke is a sharp's 3.5; the strokes the map found 4.1-7.4 long were an
@@ -178,7 +235,8 @@ def members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares: Seq
             "grown_sp": {"up": round(max(0.0, y0 - ext[1]) / sp, 2), "down": round(max(0.0, ext[3] - y1) / sp, 2)}}
 
 
-def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused_vertical: Sequence[int] = ()) -> Dict[str, Any]:
+def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused_vertical: Sequence[int] = (),
+              masks: Optional[Sequence[Any]] = None, scale: float = 1.0) -> Dict[str, Any]:
     """`flat | natural | sharp | unclear | unread` from the mark's own strokes, with the measured features and a signed margin.
 
     STEMS = member strokes that are vertical and at least `STEM_MIN_SP` long, not longer than `STEM_MAX_SP`, left to right by x centre.
@@ -189,6 +247,10 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
       one stem: a FLAT when it stands in the left `FLAT_STEM_X_FRACTION_MAX` of the mark and a non-vertical piece lies to its right with its centre in the
         stem's lower part (the bowl); else unclear
       none or more than two: unread / unclear (a double sign, a merged pair, a stroke that is not an accidental's)
+    ROADMAP 2.247 (flag `OMR_ACCIDENTAL_KIND`; `masks`/`scale` = the cell's `CellStrokes.masks`/`.scale`): the one-stem FLAT also needs a rounded
+      shoulder on the piece (`bowl_shoulder_sp`), else `unclear` (`stem_and_square`); two stems with the right one's top LOWER but its bottom well
+      ABOVE the left's (a natural's faint lower stroke) are `unclear` (`right_stem_lower_bottom_short`). Each such reading carries
+      `shape_candidates` (natural + flat), which `guess_of` writes beside the detector's.
     `margin`: natural = larger stagger - cut-off, sharp = cut-off - larger stagger (positive = inside the clear zone), flat = None (structural)."""
     st = [strokes[i] for i in members]
     stems = sorted([s for s in st if s.kind == "vertical" and STEM_MIN_SP <= s.length_sp <= STEM_MAX_SP],
@@ -212,6 +274,17 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
         bowl = [m for m in st if m is not s and m.kind != "vertical" and (_sbox(m)[0] + _sbox(m)[2]) / 2.0 > (sx0 + sx1) / 2.0
                 and ((_sbox(m)[1] + _sbox(m)[3]) / 2.0 - sy0) / h >= FLAT_BOWL_MIN_FRACTION]
         feat = {**base, "stem_x_fraction": round(xfrac, 3), "stem_len_sp": round(float(s.length_sp), 2), "bowl_pieces": len(bowl)}
+        if xfrac <= FLAT_STEM_X_FRACTION_MAX and bowl and kind_enabled():
+            # ROADMAP 2.247: a piece low and right of the stem is a bowl OR a natural's square (its right upright's lower stroke lost); only a
+            # rounded shoulder at its top right is a bowl. A square corner, or a piece whose shape cannot be measured, is NOT a flat (rule 8).
+            right_pieces = [members[k] for k, m in enumerate(st) if m is not s and m.kind != "vertical"
+                            and (_sbox(m)[0] + _sbox(m)[2]) / 2.0 > (sx0 + sx1) / 2.0]
+            shoulder = bowl_shoulder_sp(masks, scale, sp, right_pieces)
+            feat = {**feat, "shoulder_sp": shoulder}
+            if shoulder is None or shoulder < FLAT_SHOULDER_MIN_SP:
+                return {**feat, "type": "unclear", "why": "stem_and_square" if shoulder is not None else "bowl_unmeasured",
+                        "margin": None if shoulder is None else round(shoulder - FLAT_SHOULDER_MIN_SP, 3), "shape_candidates": ["natural", "flat"]}
+            return {**feat, "type": "flat", "why": "one_stem_with_a_bowl", "margin": None}
         if xfrac <= FLAT_STEM_X_FRACTION_MAX and bowl:
             return {**feat, "type": "flat", "why": "one_stem_with_a_bowl", "margin": None}
         return {**feat, "type": "unclear", "why": "one_stem_no_bowl", "margin": None}
@@ -230,6 +303,11 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
         return {**feat, "type": "unclear", "why": "stems_too_close", "margin": None}
     if hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "natural", "why": "right_stem_lower", "margin": round(hi - NATURAL_STAGGER_MIN_SP, 3)}
+    if kind_enabled() and top >= NATURAL_STAGGER_MIN_SP and bot < -FAINT_LOWER_REVERSE_SP:
+        # ROADMAP 2.247: the natural's offset at the TOP, but the right upright stops short at the bottom (its lower stroke faint) -- a natural, or
+        # a flat whose bowl side read as a stem; never a sharp. Not decided (the cut-offs are 2.201's, measured on two plates).
+        return {**feat, "type": "unclear", "why": "right_stem_lower_bottom_short", "margin": round(bot + FAINT_LOWER_REVERSE_SP, 3),
+                "shape_candidates": ["natural", "flat"]}
     if hi <= SHARP_STAGGER_MAX_SP and lo >= -SHARP_STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "sharp", "why": "stems_level", "margin": round(SHARP_STAGGER_MAX_SP - hi, 3)}
     if hi <= SHARP_STAGGER_MAX_SP:
@@ -239,11 +317,12 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
 
 
 def family_row(detector_class: str, box: Sequence[float], strokes: Sequence[Any], shares: Sequence[Tuple[int, float]], sp: float,
-               blocked: Sequence[int] = (), rivals: Sequence[str] = ()) -> Dict[str, Any]:
+               blocked: Sequence[int] = (), rivals: Sequence[str] = (), masks: Optional[Sequence[Any]] = None,
+               scale: float = 1.0) -> Dict[str, Any]:
     """The whole family measurement of ONE accidental-family box: extent + type + the detector's label KEPT as a recorded fact (never the filter) and
     its candidate types (the winner's and every merged rival's, in the family only). Plain JSON-able dict."""
     ext = members_and_extent(box, strokes, shares, sp, blocked)
-    t = read_type(strokes, ext["members"], sp, ext["refused_vertical"])
+    t = read_type(strokes, ext["members"], sp, ext["refused_vertical"], masks=masks, scale=scale)
     cands: List[str] = []
     for c in [detector_class] + [str(r) for r in rivals]:
         ty = type_of_class(c)
@@ -283,6 +362,11 @@ def guess_of(fam: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     order = [chosen] + [c for c in cands if c != chosen] if chosen else list(cands)
     if clear and t not in order:
         order = [t] + order
+    # ROADMAP 2.247 (flag `OMR_ACCIDENTAL_KIND`; only its readings carry `shape_candidates`): the kinds the SHAPE could not tell apart join the
+    # candidates, so a written guess shows both (never the class alone where the shape says "natural or flat").
+    for c in ((fam.get("features") or {}).get("shape_candidates") or ()):
+        if c not in order:
+            order.append(c)
     out = []
     for i, c in enumerate(order):
         if c is None:

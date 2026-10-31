@@ -54,7 +54,7 @@ def read_items(plate, items):
             res = smap[id(c)]
             up, cb = c.upscale_factor, c.bbox_page_px
             box = ((bx0 - cb[0]) * up, (by0 - cb[1]) * up, (bx1 - cb[0]) * up, (by1 - cb[1]) * up)
-            fam = AF.family_row(it["cls"], box, res.strokes, SM.strokes_in_box(res, box), sp)
+            fam = AF.family_row(it["cls"], box, res.strokes, SM.strokes_in_box(res, box), sp, masks=res.masks, scale=res.scale)
             ext = fam["box"]
             out.append(dict(it, type=fam["type"], why=fam["why"], feat=fam["features"], cell_frac=round(fr, 2), sp=sp,
                             ext_sp=[round((ext[2] - ext[0]) / sp, 2), round((ext[3] - ext[1]) / sp, 2)],
