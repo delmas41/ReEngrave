@@ -18,6 +18,9 @@ measurement; this file is the WHEN and WHAT of each commit.
 - one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
 - A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
 
+## 2026-10-31 -- 2.223 LANDED ON: arcs and hairpins bound to notes page-wide
+STAGED ADJUDICATE + EXPORT (`arc_claim.bind_enabled`, `hairpin_bind.py`, `ownership._wedge_page_binding`), flags `OMR_ARC_BIND_PAGEWIDE` + `OMR_HAIRPIN_BIND_PAGEWIDE` deny-list default ON (Sean "Fix then land"; tiles 11/12). Litolff ties +34 -6, slurs +92 -26, wedges -3; Brahms ties +70 -2, slurs +142 -58, wedges +9 -7; judged right->wrong 0. `test_staged_wedge_anchor` pinned to the OFF (2026-09-10) rule. Also today: Sean's 2.247 tiles 6/12 (boxes sit off the mark: read accidentals from their own ink -> 2.247 r2), the app's worktree cleanup freed 12.4 GB (disk 6 -> 21 GB free).
+
 ## 2026-10-31 -- 2.242 LANDED ON: one accidental, one piece (OMR_ACCIDENTAL_WHOLE)
 STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits`; `stroke_owner.accidental_yields`, `accidental_not_whole`), deny-list default ON (Sean "Land on"). Brahms p0 accidentals whole 0 -> 30/41; Sean's r2 tiles 11/12; judged right->wrong 0; Brahms file -1 accidental at an unjudged place. `test_stroke_owner_2_205` contest re-pinned to the flag OFF (the floor gives the eighth-rest bulb to the rest) plus a test of the ON case. Lane 2.247 (accidental kind by shape, Opus) started the same hour.
 
