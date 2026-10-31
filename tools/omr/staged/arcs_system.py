@@ -873,7 +873,8 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                     _len, _bow = _bk.trace_bow(_tr, sp_staff)
                     for m in members:
                         log.abstain(m["piece"]["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
-                                    reason=ABSTAIN.BELOW_THRESHOLD, why=_bk.REASON_STRAIGHT, length_spaces=round(_len, 2), bow_spaces=round(_bow, 3))
+                                    reason=ABSTAIN.BELOW_THRESHOLD, why=_bk.REASON_STRAIGHT, width_spaces=round(_len, 2),
+                                    note="bows %.3f sp over %.2f sp (an arc bows >= %.2f)" % (_bow, _len, _bk.ARC_MIN_BOW_SP))
                     summary["not_bowed"] = summary.get("not_bowed", 0) + 1
                     continue
             # which protected boxes the stroke runs through, and whether their own ink is all stroke (a tail the

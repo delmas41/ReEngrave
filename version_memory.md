@@ -68,6 +68,13 @@ STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits
 ## 2026-10-31 -- 2.242 one accidental, one piece (branch lane-2.242-accidental-whole, not landed)
 `stroke_map.merge_accidentals` (flag `OMR_ACCIDENTAL_WHOLE`, default OFF) puts an accidental the openings cut into 4-6 strokes back as one stroke (from its box outward, SMuFL size, never a head / ledger / stem; not more than one accidental); `stroke_owner.accidental_yields` makes an accidental yield a head-body blob a head box covers and flag ink hanging from a long stem (2.241 tiles 10 and 3). Brahms p0 accidentals whole 0 -> 30 of 41, 2.201 type control no loss, judged right->wrong 0. `claim_order` re-cut now passes the touch boxes. Cause and lessons: benchmarks/capture-readout-2026-10/FINDINGS.md 2.242.
 
+## 2026-10-31 -- ROADMAP 2.245 round 2 (Sean "Send back for a second round"; lane-2.245-wrong-kind, not merged, flag OFF)
+
+`OMR_BOX_KIND_SIZE` now acts in GATHER: `gather_detections` splits a 3+ sp head box into the head-shaped blobs inside it (appended boxes,
+indices unchanged; the box is the refused remainder, or abstains `wide_box_unread`); `arcs_system.gather_system_arcs` refuses a trace that
+does not bow; `gather_wedge_boxes` refuses a CV hairpin narrower than 1.6 sp; `narrow_rest` no longer lets an oversized accidental box block
+it. Tiles `out/print/2.245-r2-tiles/`.
+
 ## 2026-10-31 -- ROADMAP 2.245 wrong-kind boxes: cause found, `OMR_BOX_KIND_SIZE` built OFF (lane-2.245-wrong-kind, not merged)
 
 Cause of Sean's four wrong-kind tiles: the detector boxes one ink under several classes and every reader takes a box's class as its kind,
