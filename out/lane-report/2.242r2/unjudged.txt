@@ -1,0 +1,5 @@
+brahms p4 4/0/1/2  blue lost guessed
+brahms p4 4/0/3/8  accidental lost natural
+brahms p4 4/0/3/8  blue lost guessed
+brahms p4 4/0/3/8  pitch changed B-11 (was B1)
+brahms p4 4/0/9/3  blue lost guessed

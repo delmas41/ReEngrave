@@ -1,0 +1,29 @@
+LANE REPORT  OMR_ACCIDENTAL_WHOLE (OFF=0 ON=1)  --from gather
+  OMR_ACCIDENTAL_WHOLE: read in staged/gather.py, staged/stroke_map.py, staged/stroke_owner.py -> GATHER
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-overnight-manager-handoff-2df09f/4255687c-65fb-4094-b64a-941b192f6ee6/scratchpad/sample2.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+litolff  pages [2, 4]  (1497 notes+rests OFF, 1497 ON, 1497 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 655 -> 655
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (188 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 350 | position but no mark here 0
+  NOT JUDGED: 0 changed places no tile of Sean's covers (0 are covered; 0 have no page place): none -> unjudged.txt
+
+brahms  pages [4, 5]  (2143 notes+rests OFF, 2143 ON, 2143 paired)
+  file:   accidentals -1 | pitches ~1 | blue marks -3
+  red bars 0 -> 0 | notes not written 1106 -> 1106
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (174 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 349 | position but no mark here 0
+  NOT JUDGED: 5 changed places no tile of Sean's covers (0 are covered; 0 have no page place): accidental 1, blue 3, pitch 1 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 3 (3 from the changes, 0 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 3, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 1965 s
