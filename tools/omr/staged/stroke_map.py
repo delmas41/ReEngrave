@@ -126,8 +126,12 @@ TOUCH_OTHER_FAMILIES = ("head", "ledger", "stem")
 TOUCH_SIDE_MIN_SHARE = 0.15
 #: ... and at least this much ink (staff spaces^2, ~5 reduced px: under it the side is a scan edge, not a mark's ink)
 TOUCH_SIDE_MIN_SP2 = 0.02
-#: the accidental's side joins the accidental stroke it touches (one mark, fewer pieces); standing alone it must reach the stroke floor
+#: the accidental's side STANDS ALONE as its own stroke (at least `TOUCH_SIDE_MIN_SP2`). Joining it to the accidental stroke it touches
+#: (`TOUCH_JOIN_HOST`) was tried and DROPPED: it widened the natural's stem stroke and the 2.201 family reading lost 4 naturals and a flat
+#: (natural -> unclear, Brahms p5 / Litolff p4 -- the control that caught it). A side standing alone below `TOUCH_ALONE_MIN_SP2` is allowed
+#: (a split part is filed whatever its size); the constant is read only when joining is on.
 TOUCH_ALONE_MIN_SP2 = MIN_AREA_SP2
+TOUCH_JOIN_HOST = False
 #: ink in both boxes or in neither goes to the side it is nearer to, through the piece's own ink; more of it than this and the boxes do not
 #: tell where one mark stops: the piece stays whole (`touch_boxes_undecided`, rule 6)
 TOUCH_UNDECIDED_MAX_SHARE = 0.5
@@ -791,13 +795,15 @@ def clef_region(box: Sequence[float], family: Optional[str], sp: float) -> Tuple
 
 
 def _merge_clefs(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink: np.ndarray,
-                 clef_boxes: Sequence[Tuple[Tuple[float, float, float, float], Optional[str]]], refused: Dict[str, int]
-                 ) -> List[Tuple[str, np.ndarray, int, int]]:
+                 clef_boxes: Sequence[Tuple[Tuple[float, float, float, float], Optional[str]]], refused: Dict[str, int],
+                 others: Sequence[Tuple[float, float, float, float]] = ()) -> List[Tuple[str, np.ndarray, int, int]]:
     """2.239 r3 (Sean's round-2 tiles 6 "most of a G clef", 7 "tip cut of a G clef"; Sean: "make sure the box is big enough to claim all
     the ink and it should be based off of shape and size"): the pieces the openings cut a clef into, put back as ONE stroke that holds all
     the clef's ink. Read from the detector box OUTWARD: the seed is every piece mostly inside the box (the keep-whole cut, 0.5); a piece
     touching the clef (`CLEF_CONTACT_PX`) joins it; and no piece joins that does not lie wholly inside the clef's size around the box
-    (`clef_region`) -- a G clef's tail and curl and an F clef's dots are inside it, a barline or a stem running through is not."""
+    (`clef_region`) -- a G clef's tail and curl and an F clef's dots are inside it, a barline or a stem running through is not. A piece
+    mostly inside a key or meter box (`others`) is that mark's, never the clef's (the key's first flat beside a loose clef box: its type is
+    read from its own strokes, 2.201)."""
     import cv2
     joined_any: Dict[int, List[int]] = {}
     used: set = set()
@@ -805,7 +811,7 @@ def _merge_clefs(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
     for (box, fam) in clef_boxes:
         rx0, ry0, rx1, ry1 = clef_region(box, fam, sp)
         fits = [pi for pi, (_k, m, x0, y0) in enumerate(pieces)
-                if pi not in used and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5]
+                if pi not in used and not (others and _inside_share(m, x0, y0, others) >= 0.5) and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5]
         seed = [pi for pi in fits if _inside_share(pieces[pi][1], pieces[pi][2], pieces[pi][3], [box[:4]]) >= 0.5]
         if not seed:
             continue
@@ -942,8 +948,8 @@ def _cut_touching_all(out: List[Tuple[str, np.ndarray, int, int]], joins: List[T
                       touch_boxes: Sequence[Tuple[str, Tuple[float, float, float, float]]], refused: Dict[str, int]
                       ) -> Tuple[List[Tuple[str, np.ndarray, int, int]], List[Tuple[int, int, str]]]:
     """`_cut_touching` over every piece the split left (a ledger stub the ledger|head cut made included); joins re-numbered. The
-    accidental's side of a cut joins the accidental stroke it touches (a piece mostly inside an accidental box, which keeps its kind) --
-    the bowl's edge goes back to the bowl; with none to join it stands alone if it reaches the stroke floor, else the cut is undone."""
+    accidental's side of a cut stands alone (`TOUCH_JOIN_HOST` off: see its note); with joining on it would join the accidental stroke it
+    touches, and stand alone only above the stroke floor."""
     import cv2
     if not any(f == TOUCH_ACC_FAMILY for f, _r in touch_boxes) or not any(f in TOUCH_OTHER_FAMILIES for f, _r in touch_boxes):
         return out, joins
@@ -960,6 +966,7 @@ def _cut_touching_all(out: List[Tuple[str, np.ndarray, int, int]], joins: List[T
         return out, joins
     pieces = list(out)
     host: Dict[int, int] = {}                             # cut piece -> the accidental stroke its accidental side joins
+    undone: set = set()
     for i, parts in cuts.items():
         _k, m, x0, y0 = out[i]
         accm = parts[1][1]
@@ -976,10 +983,11 @@ def _cut_touching_all(out: List[Tuple[str, np.ndarray, int, int]], joins: List[T
             n = int((grown[oy0 - gy0:oy1 - gy0, ox0 - gx0:ox1 - gx0] & mj[oy0 - yj:oy1 - yj, ox0 - xj:ox1 - xj]).sum())
             if n > best[0]:
                 best = (n, j)
-        if best[1] >= 0:
+        if best[1] >= 0 and TOUCH_JOIN_HOST:
             host[i] = best[1]
-        elif int(accm.sum()) < TOUCH_ALONE_MIN_SP2 * sp * sp:
+        elif TOUCH_JOIN_HOST and int(accm.sum()) < TOUCH_ALONE_MIN_SP2 * sp * sp:
             refused["touch_part_too_small"] = refused.get("touch_part_too_small", 0) + 1
+            undone.add(i)
             continue
         refused["touch_cut"] = refused.get("touch_cut", 0) + 1
     for i, j in host.items():                             # the accidental side joins its stroke (keeps that stroke's kind)
@@ -999,7 +1007,7 @@ def _cut_touching_all(out: List[Tuple[str, np.ndarray, int, int]], joins: List[T
     pending: List[Tuple[int, int, str]] = []
     for i, pc in enumerate(pieces):
         kind, m, x0, y0 = pc
-        if i not in cuts or (i not in host and int(cuts[i][1][1].sum()) < TOUCH_ALONE_MIN_SP2 * sp * sp):
+        if i not in cuts or i in undone:
             where[i] = len(new)
             new.append(pc)
             continue
@@ -1034,7 +1042,8 @@ def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
     loose: List[int] = []
     lines_out = None
     if clef_boxes and ink is not None:             # 2.239 r3: a clef the openings chopped up is ONE stroke again (tile 7)
-        pieces = _merge_clefs(pieces, sp, ink, clef_boxes, refused)
+        others = [r for r in keep_whole if not any(all(abs(float(a) - float(b)) < 1e-6 for a, b in zip(r[:4], cb[:4])) for cb, _f in clef_boxes)]
+        pieces = _merge_clefs(pieces, sp, ink, clef_boxes, refused, others)
     if ink is not None:
         lines_out = ink.copy()
         for kind, m, x0, y0 in pieces:            # rungs and beams are left out of a stack's edges (a rung between two heads sticks out)
