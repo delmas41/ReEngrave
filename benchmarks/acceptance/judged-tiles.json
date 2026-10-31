@@ -1,6 +1,6 @@
 {
  "n_items": 162,
- "n_tiles": 1994,
+ "n_tiles": 1997,
  "tiles": [
   {
    "answer": "right",
@@ -24583,7 +24583,7 @@
    "value": null
   },
   {
-   "answer": "C clef",
+   "answer": "C clef, but the orange box is very big",
    "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-30",
@@ -24597,6 +24597,54 @@
    "subjects": null,
    "tile": "1",
    "value": "clef"
+  },
+  {
+   "answer": "4",
+   "answer_kind": "duration",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "2.241-tiles",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "10",
+   "value": 1.0
+  },
+  {
+   "answer": "Natural",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "2.241-tiles",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "11",
+   "value": "accidental"
+  },
+  {
+   "answer": "Natural",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "2.241-tiles",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "12",
+   "value": "accidental"
   },
   {
    "answer": "Bracket",
@@ -24615,7 +24663,7 @@
    "value": null
   },
   {
-   "answer": "Flag on an eighth note",
+   "answer": "8 note flag",
    "answer_kind": "other",
    "control": false,
    "date": "2026-10-30",
@@ -24631,8 +24679,8 @@
    "value": null
   },
   {
-   "answer": "Slur arc",
-   "answer_kind": "other",
+   "answer": "4 rest",
+   "answer_kind": "rest",
    "control": false,
    "date": "2026-10-30",
    "doc": null,
@@ -24644,11 +24692,11 @@
    "subject_kind": "none",
    "subjects": null,
    "tile": "4",
-   "value": null
+   "value": 1.0
   },
   {
-   "answer": "Hairpin",
-   "answer_kind": "other",
+   "answer": "Slur",
+   "answer_kind": "arc",
    "control": false,
    "date": "2026-10-30",
    "doc": null,
@@ -24660,10 +24708,10 @@
    "subject_kind": "none",
    "subjects": null,
    "tile": "5",
-   "value": null
+   "value": "slur"
   },
   {
-   "answer": "Part of the box on a letter B, rehearsal mark",
+   "answer": "Hairpin",
    "answer_kind": "other",
    "control": false,
    "date": "2026-10-30",
@@ -24679,7 +24727,7 @@
    "value": null
   },
   {
-   "answer": "Quarter note on a ledger line; the box is a little small, only about half the note",
+   "answer": "A line that is a part of a rehearsal mark box",
    "answer_kind": "other",
    "control": false,
    "date": "2026-10-30",
@@ -24695,23 +24743,7 @@
    "value": null
   },
   {
-   "answer": "Quarter note",
-   "answer_kind": "duration",
-   "control": false,
-   "date": "2026-10-30",
-   "doc": null,
-   "followup": false,
-   "item": "2.241-tiles",
-   "page_box": null,
-   "question_kind": "unknown",
-   "subject": null,
-   "subject_kind": "none",
-   "subjects": null,
-   "tile": "8",
-   "value": 1.0
-  },
-  {
-   "answer": "Natural sign",
+   "answer": "Natural",
    "answer_kind": "not_a_note",
    "control": false,
    "date": "2026-10-30",
@@ -24723,8 +24755,24 @@
    "subject": null,
    "subject_kind": "none",
    "subjects": null,
-   "tile": "9",
+   "tile": "8",
    "value": "accidental"
+  },
+  {
+   "answer": "Quarter note, but the box is small and only gets part of the note",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-30",
+   "doc": null,
+   "followup": false,
+   "item": "2.241-tiles",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "9",
+   "value": null
   },
   {
    "answer": "8th note on first ledger line",
