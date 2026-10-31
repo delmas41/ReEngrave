@@ -71,6 +71,11 @@ class Hairpin(unittest.TestCase):
         self.assertIsNone(PO.hairpin_reading(506.0, 150.0, (500, 145, 512, 155), FRAMES, "staff/0/0/", []))
         self.assertIsNone(PO.hairpin_reading(506.0, 180.0, (500, 175, 512, 185), FRAMES, "staff/0/0/", self.HP))   # level with it
 
+    def test_CONTROL_the_rule_is_local_a_head_outside_the_stretch_of_the_two_staves_says_nothing(self):
+        # a head far above staff A (y 40) is above the hairpin too, but it is not in the stretch between A and B: A's owner says nothing here
+        self.assertIsNone(PO.hairpin_reading(506.0, 40.0, (500, 35, 512, 45), FRAMES, "staff/0/0/", self.HP))
+        self.assertIsNone(PO.hairpin_reading(506.0, 300.0, (500, 295, 512, 305), FRAMES, "staff/0/0/", self.HP))
+
     def test_names_the_owner_where_ledger_and_stem_name_nobody(self):
         r = PO.mark_owner("head", [M_A], (500, 195, 512, 205), FRAMES, Rows(), self.HP)
         self.assertEqual((r["status"], r["owner"], r["reason"]), ("decided", B, "hairpin"))

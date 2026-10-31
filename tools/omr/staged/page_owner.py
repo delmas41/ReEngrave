@@ -285,6 +285,9 @@ def hairpin_reading(cx: float, cy: float, box: Sequence[float], frames: Dict[str
         br = bracketing(frames, system, cx, (float(hb[1]) + float(hb[3])) / 2.0)
         if len(br) != 2:
             continue
+        up, dn = lines_at(frames, br[0], cx), lines_at(frames, br[1], cx)
+        if up is None or dn is None or not (up.ys[0] <= (box[1] + box[3]) / 2.0 <= dn.ys[-1]):
+            continue            # the rule is LOCAL: the head stands in the stretch the two staves round the hairpin span, nowhere else
         if box[3] < hb[1]:
             named.add(br[0])
         elif box[1] > hb[3]:
