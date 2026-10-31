@@ -472,6 +472,8 @@ WHOLE_REST_NARROWED_REASONS = ("whole_rest_hangs",)
 STEM_END_INK_ONLY_REASON = "stem_end_ink_only"
 #: ROADMAP 2.238: a rest box holding a note's stem that the old rules kept, NARROWED by `family_precision` (written blue)
 REST_HOLDS_A_STEM_REASON = "rest_holds_a_stem"
+#: ROADMAP 2.240 step 3: a head whose page owner is GUESSED (written blue, both staves carried)
+PAGE_OWNER_GUESSED_REASON = "page_owner_guessed"
 
 
 def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
@@ -498,6 +500,13 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         return {"stage": "ADJUDICATE", "rule": v["reason"], "quantity": Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
                 "candidates": [{"value": "symbol", "support": 1.0}, {"value": "not_a_head", "support": 1.0}],
                 "chosen": {"value": "symbol"}}
+    v = rec.verdict(Q.GLYPH_OWNER, sub)
+    if v is not None and v.get("outcome") == "decided" and v.get("reason") == PAGE_OWNER_GUESSED_REASON:
+        # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ): the page owner GUESSED (two witnesses name two staves) -- written on the
+        # chosen staff, blue, with both staves carried (CLAUDE.md §4)
+        return {"stage": "ADJUDICATE", "rule": PAGE_OWNER_GUESSED_REASON, "quantity": Q.GLYPH_OWNER,
+                "candidates": [{"value": c.get("value"), "support": c.get("support")} for c in (v.get("candidates") or [])],
+                "chosen": {"value": v.get("value")}}
     for q in (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST):
         v = rec.verdict(q, sub)
         if v is not None and v.get("outcome") == "narrowed" and str(v.get("reason") or "").startswith(CLAIM_NARROWED_PREFIX):

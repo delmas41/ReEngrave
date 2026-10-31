@@ -16843,6 +16843,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
 
     log = log if log is not None else Log()
     far_head_state = FarHeadState()          # ROADMAP 2.56: the size pool
+    _deferred_owners: List[Any] = []         # ROADMAP 2.240 step 3: page owners waiting for their pages' far-head readings
 
     for pws, cells in pws_and_cells:
         # ⚠️ EXTERNAL FACTS FIRST. Not an ordering preference: anything
@@ -17078,8 +17079,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ lane-farhead-not-a-note: MOVED HERE from beside the ownership
         # evidence, because the gate reads `Q.NOTEHEAD_STEM_CROSS_INK` (2.49's
         # tremolo-slash rows) and `Q.STEM`-era evidence that did not exist yet.
-        gather_far_head_ledger_positions(log, pws, cells, local, detections,
-                                         far_head_state)
+        _far_census = gather_far_head_ledger_positions(log, pws, cells, local, detections,
+                                                       far_head_state)
         # ⚠️ ROADMAP 2.58d, AFTER `gather_ownership_evidence` (it files only
         # for a contested head, read off that evidence's own rows).
         if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the head's stem is the stroke its blob touches (ADJUDICATE)
@@ -17088,7 +17089,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # lines, stem -- never nearness) and arcs / hairpins read page-wide once. AFTER the ledger readings, the stem reach, the traced arcs
         # and the CV wedges (it reads them); files rows only, nothing reads them.
         from . import page_owner as _page_owner
-        _page_owner.gather_page_owners(log, pws, cells, local, page_marks_of_page, progress=progress)
+        if (_far_census or {}).get("held"):
+            # ROADMAP 2.240 step 3 (tile 8's first cause): this page's far heads wait for the document head-size pool, so their ledger
+            # readings do not exist yet -- an owner filed now would decide every far head on the stem alone, and a re-read of the finished
+            # record would decide it on the ledger (the record and the readout disagreed on tile 8). Its owner waits with them.
+            _deferred_owners.append(_page_owner.defer_page_owners(cells, local, page_marks_of_page))
+        else:
+            _page_owner.gather_page_owners(log, pws, cells, local, page_marks_of_page, progress=progress)
         # dynamic-not-a-head: AFTER the detections (it reads them) -- a head box
         # lying on a dynamic letter's box, measured against the raw raster.
         gather_notehead_letter_ink(log, pws, cells, local, detections)
@@ -17140,5 +17147,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         _positions.gather_family_positions(log, pws, cells, local, detections)
 
     finish_far_head_ledger_positions(log, far_head_state)
+    if _deferred_owners:
+        from . import page_owner as _page_owner
+        for _d in _deferred_owners:
+            _page_owner.file_deferred_page_owners(log, _d, progress=progress)
     log.freeze()
     return log

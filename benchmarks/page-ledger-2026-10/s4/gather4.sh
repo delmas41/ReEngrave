@@ -1,7 +1,9 @@
 #!/bin/sh
 # 2.240 step 3: Litolff pages 2,4,6,16 gathered (GATHER only, --no-surya), so p4's far heads read with a pooled head shape (page 16 releases
-# the held pages; FINDINGS s2 r2). ARG1 = tag. Records go to $W (not committed).
+# the held pages; FINDINGS s2 r2). ARG1 = tag, ARG2 (optional) = a tree to run from (a `git archive` of a commit, for the before arm:
+# editing tools/ while a gather runs mixes two trees -- lazily imported modules load mid-run). Records go to $W (not committed).
 cd "$(dirname "$0")/../../.."
+[ -n "$2" ] && cd "$2"
 W=${W:-/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-2.240-s4/work}
 mkdir -p "$W"
 LIB=/Users/seanjohnson/Desktop/ReEngrave/library
