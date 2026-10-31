@@ -126,8 +126,10 @@ def code_agrees(early: int, late: int) -> bool:
         tier[f] = len(SO.TIERS)
 
     def rank(layer: int) -> Optional[float]:
+        # the LATEST tier among the layer's families: a violation comes from a shape decision between BOX families (a dynamic box is tier 5,
+        # though the page-wide word claim is tier 0), so the weakest standing of the layer is the one the code ranks it by
         r = [tier[f] for f in LAYERS[layer][1] if f in tier]
-        return min(r) if r else None
+        return max(r) if r else None
 
     a, b = rank(early), rank(late)
     return a is None or b is None or a < b
@@ -553,7 +555,7 @@ def violation_components(oc: OrderCanvas, bands: Sequence[Tuple[float, float]], 
     return out[:limit]
 
 
-def choose_tiles(pool: List[Dict[str, Any]], n: int = 12, gap: int = 100) -> List[Dict[str, Any]]:
+def choose_tiles(pool: List[Dict[str, Any]], n: int = 12, gap: int = 100, max_split: int = 2) -> List[Dict[str, Any]]:
     """Up to `n` tiles from the biggest pairs: pairs ranked by total ink, then round-robin biggest piece first, no two within `gap` px."""
     by_pair: Dict[str, List[Dict[str, Any]]] = collections.defaultdict(list)
     for it in pool:
@@ -571,6 +573,8 @@ def choose_tiles(pool: List[Dict[str, Any]], n: int = 12, gap: int = 100) -> Lis
         for k in order:
             while by_pair[k]:
                 it = by_pair[k].pop(0)
+                if it.get("class") == "SPLIT-ACROSS-CLAIM" and sum(c.get("class") == "SPLIT-ACROSS-CLAIM" for c in chosen) >= max_split:
+                    continue                      # the tiles are for the violation pairs; a clef cut is shown twice, not five times
                 if not near(it):
                     chosen.append(it)
                     break
@@ -593,18 +597,23 @@ def merge(ts: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
     return out
 
 
+def pct2(x: int, tot: int) -> str:
+    """Two decimals: the violation pairs are small shares of a page's ink."""
+    return "%.2f%%" % (100.0 * x / tot) if tot else "-"
+
+
 def render(label: str, t: Dict[str, Any], top: int = 8) -> List[str]:
     tot = t["ink_px"]
     cp = t["class_px"]
     lines = ["%s: %d ink px (staff lines %d left out)" % (label, tot, t["staff_line_px"]),
-             "  " + "   ".join("%s %s" % (c, CR.pct(cp.get(c, 0), tot).strip()) for c in CLASSES)]
+             "  " + "   ".join("%s %s" % (c, pct2(cp.get(c, 0), tot)) for c in CLASSES)]
     for cl in ("ORDER-VIOLATION", "OPEN", "SPLIT-ACROSS-CLAIM", "EARLIER-UNREAD"):
         d = t["by_pair"].get(cl)
         if not d:
             continue
         items = sorted(d.items(), key=lambda kv: -kv[1])[:top]
         lines.append("  %s by %s: " % (cl, "pair" if cl in ("ORDER-VIOLATION", "OPEN") else "owner")
-                     + ", ".join("%s %s" % (k, CR.pct(v, tot).strip()) for k, v in items))
+                     + ", ".join("%s %s" % (k, pct2(v, tot)) for k, v in items))
     return lines
 
 
@@ -648,7 +657,7 @@ def run(rec: str, pages: Optional[Sequence[int]], *, tiles: Optional[pathlib.Pat
     lines += render("TOTAL", total)
     lines.append("  top ORDER-VIOLATION pairs (share of ink; code_agrees False = the code's own tier order also differs from the plan):")
     for k, v, ag in top_violations(total):
-        lines.append("    %-34s %9d px %s  code_agrees=%s" % (k, v, CR.pct(v, total["ink_px"]).strip(), ag))
+        lines.append("    %-34s %9d px %s  code_agrees=%s" % (k, v, pct2(v, total["ink_px"]), ag))
     for pg in pages:
         lines += render("page %d" % pg, merge([per_page[str(pg)]]))
     lines.append("  cells re-cut and matched stroke-for-stroke to the record: %s" % dict(verify))
@@ -662,11 +671,61 @@ def run(rec: str, pages: Optional[Sequence[int]], *, tiles: Optional[pathlib.Pat
         (out / "order.json").write_text(json.dumps(report, indent=1, sort_keys=True, default=str))
         (out / "order.txt").write_text(text + "\n")
     if tiles is not None and pool:
+        # the pool and the page rasters are kept beside the report so `merge-tiles` can pick 12 over several plates
+        pdir = (tiles.parent if tiles.name == "tiles" else tiles) / "pagecache"
+        pdir.mkdir(parents=True, exist_ok=True)
+        plate = src.name              # a lane-report slice directory is named for its plate
+        for it in pool:
+            png = pdir / ("%s-p%d.png" % (plate, it["page"]))
+            if not png.exists():
+                images[it["page"]].save(png)
+            it["png"], it["plate"], it["master"] = str(png), plate, man["version"]
+        (pdir.parent / "pool.json").write_text(json.dumps(pool, default=str))
         chosen = choose_tiles(pool, 12)
         CR.cut_tiles(chosen, images, tiles.parent if tiles.name == "tiles" else tiles, 32.0, man["version"])
         text += "\ntiles: %d -> %s (key.json beside the folder)" % (len(chosen), tiles)
     log(text)
     return report
+
+
+def merge_tiles(pool_files: Sequence[str], out_dir: pathlib.Path, n: int = 12, log=print) -> List[Dict[str, Any]]:
+    """12 tiles over several plates' pools (`pool.json` of each `run --tiles`): the biggest pairs first, round-robin, one staff, one thin
+    orange box, nothing else drawn; `key.json` goes OUTSIDE the tile folder (`out_dir`)."""
+    from PIL import Image, ImageDraw
+    pool: List[Dict[str, Any]] = []
+    for f in pool_files:
+        pool += json.loads(pathlib.Path(f).read_text())
+    for it in pool:
+        it["page"] = "%s:%s" % (it["plate"], it["page"])       # so two plates' page 0 are not "the same page" to the spacing test
+    chosen = choose_tiles(pool, n)
+    tdir = out_dir / "tiles"
+    tdir.mkdir(parents=True, exist_ok=True)
+    for f in tdir.glob("*"):
+        f.unlink()
+    key, cache = [], {}
+    W = 520
+    for k, it in enumerate(chosen, 1):
+        im = cache.setdefault(it["png"], Image.open(it["png"]).convert("RGB"))
+        bb = [it["box"][0] - 4, it["box"][1] - 4, it["box"][2] + 4, it["box"][3] + 4]
+        cx, cy = (bb[0] + bb[2]) / 2.0, (bb[1] + bb[3]) / 2.0
+        u = it["unit"]
+        top, bot = it["staff_y"]
+        x0, x1 = max(0, int(cx - 6 * u)), int(cx + 6 * u)
+        y0, y1 = max(0, int(min(top - 4 * u, bb[1] - u))), int(max(bot + 4 * u, bb[3] + u))
+        crop = im.crop((x0, y0, x1, y1)).copy()
+        ImageDraw.Draw(crop).rectangle([round(bb[0] - x0), round(bb[1] - y0), round(bb[2] - x0), round(bb[3] - y0)],
+                                       outline=CR.ORANGE, width=max(2, int(u / 10)))
+        crop = crop.resize((W, max(1, int(W * crop.height / crop.width))))
+        crop.save(tdir / ("tile_%02d.png" % k))
+        key.append({"tile": k, "plate": it["plate"], "page": int(str(it["page"]).split(":")[1]), "box": it["box"], "pair": it["pair"],
+                    "class": it["class"], "ink_px": it["ink_px"], "unit": u, "crop_origin": [x0, y0], "cell_map": it["master"]})
+    (tdir / "README.md").write_text(
+        "# Claim-order tiles\n\nEach picture is a piece of a scanned score page with ONE orange box on it and nothing else drawn. "
+        "The box only says where to look.\n\n**Question, for every tile:** what is this ink (a note, a stem, a beam, a rest, a flag, "
+        "an accidental, a dot, a tie or slur, a hairpin, a word or dynamic, a clef, a bracket, a barline, or something else)?\n\nAnswer by tile number.\n")
+    (out_dir / "key.json").write_text(json.dumps(key, indent=1, default=str))
+    log("merge-tiles: %d tiles -> %s (key.json beside the folder)" % (len(chosen), tdir))
+    return key
 
 
 # ───────────────────────────── 7. the controls ─────────────────────────────
@@ -730,27 +789,52 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, branch
     ok &= ok_e
     # (d)
     if branch:
-        brow = CR.read_rows(CR.resolve_source(branch["rec"]), [branch["page"]])
-        bed = CR.edition_info(brow)
-        bpdf = CR.LIB / bed["edition_path"]
-        _c5, oc_d, vd, *_ = build_order_page(brow, bpdf, branch["page"], cm_root)
-        keyj = json.loads(pathlib.Path(branch["key"]).read_text())
-        tile = next(t for t in keyj if t["tile"] == branch["tile"])
-        x0, y0, x1, y1 = tile["box"]
-        sp = oc_d.split[y0:y1, x0:x1] & oc_d.mask[y0:y1, x0:x1]
-        inkp = int((oc_d.mask[y0:y1, x0:x1]).sum())
-        log("(d) 2.239 split ON, tile %d box %s: %d of %d ink px are SPLIT-ACROSS-CLAIM (must be > 0); cells %s"
-            % (branch["tile"], tile["box"], int(sp.sum()), inkp, vd))
-        ok &= int(sp.sum()) > 0
+        ok &= control_tip(branch["rec"], branch["page"], branch["key"], branch["tile"], cm_root, log)
     else:
-        log("(d) not run: needs a gather of land-239-flip-wip (pass --branch-rows, --branch-page, --tip-key, --tip-tile)")
+        log("(d) not run here: it needs the code of land-239-flip-wip and a gather made with it (`claim_order tip`, run from that tree)")
     log("controls: %s" % ("ALL BEHAVE" if ok else "A CONTROL DID NOT DO WHAT IT MUST"))
     return 0 if ok else 1
+
+
+def control_tip(rec: str, page: int, key_path: str, tile_no: int, cm_root: Optional[pathlib.Path] = None, log=print) -> bool:
+    """CONTROL (d): the clef tip of Sean's 2.239 round-2 tile `tile_no` (`key_path`), read from a gather made with the 2.239 split ON, must show
+    as SPLIT-ACROSS-CLAIM. Run it from the tree that made the gather: the stroke map must cut the cells the way the record's strokes were cut
+    (a cell that does not match stroke for stroke is dropped, and the tip would then 'pass' as nothing)."""
+    from . import cell_map as CM
+    cm_root = cm_root or CM.ROOT_DEFAULT
+    brow = CR.read_rows(CR.resolve_source(rec), [page])
+    bpdf = CR.LIB / CR.edition_info(brow)["edition_path"]
+    _c, oc, v, *_ = build_order_page(brow, bpdf, page, cm_root)
+    tile = next(t for t in json.loads(pathlib.Path(key_path).read_text()) if t["tile"] == tile_no)
+    x0, y0, x1, y1 = tile["box"]
+    box = (slice(y0, y1), slice(x0, x1))
+    ink = int(oc.mask[box].sum())
+    sp = int((oc.split[box] & oc.mask[box]).sum())
+    cl = collections.Counter(CLASSES[int(c)] for c in oc.cls[box][oc.mask[box]])
+    log("(d) 2.239 split ON, tile %d (%s) box %s: %d of %d ink px are SPLIT-ACROSS-CLAIM (must be > 0); classes there %s; cells %s; split pieces on the page %d"
+        % (tile_no, tile.get("kind"), tile["box"], sp, ink, dict(cl), v, len(oc.split_pieces)))
+    return sp > 0 and not v.get("cells_mismatch")
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(prog="claim_order", description=__doc__.split("\n")[0])
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "tip":
+        ap.add_argument("cmd")
+        ap.add_argument("rec")
+        ap.add_argument("--page", type=int, required=True)
+        ap.add_argument("--tip-key", required=True)
+        ap.add_argument("--tip-tile", type=int, default=7)
+        ap.add_argument("--cell-map", default=None)
+        a = ap.parse_args(argv)
+        return 0 if control_tip(a.rec, a.page, a.tip_key, a.tip_tile, pathlib.Path(a.cell_map) if a.cell_map else None) else 1
+    if argv and argv[0] == "merge-tiles":
+        ap.add_argument("cmd")
+        ap.add_argument("out")
+        ap.add_argument("pools", nargs="+")
+        a = ap.parse_args(argv)
+        merge_tiles(a.pools, pathlib.Path(a.out))
+        return 0
     if argv and argv[0] == "controls":
         ap.add_argument("cmd")
         ap.add_argument("rec")
