@@ -545,6 +545,7 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
         os.environ[name] = on if arm == "on" else off
     t0 = time.time()
     stored: Dict[Tuple[str, str], dict] = {}
+    gather_prov: Dict[str, Any] = {}
     if mode == "adjudicate":
         from .review import rerun as RR
         rec = load_slices(slice_dir(plate, tag))
@@ -559,6 +560,7 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
     else:
         from .record_io import load_record
         result = load_record(str(gather_record))
+        gather_prov = result.get("provenance") or (result.get("record") or {}).get("provenance") or {}
         if "record" not in result:
             result = {"record": result, "summary": {}}
         obs = result["record"]["observations"]
@@ -590,6 +592,8 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
                notes_not_written=report.get("notes_not_written_total"), control=control,
                blue_marks=xml.count('color="%s"' % E.GUESS_COLOR), seconds=round(time.time() - t0, 1),
                seconds_export=round(time.time() - t1, 1))
+    from .one_test import arm_fingerprint     # ROADMAP 2.244: what this arm was built from (a combined run refuses a mix)
+    out["fingerprint"] = arm_fingerprint(plate, mode, tag, count_pages, gather_prov, [f[0] for f in flags])
     (work / (stem + ".symbols.json")).write_text(json.dumps(out, default=str))
     return out
 
@@ -1321,6 +1325,30 @@ def _spawn(args: List[str], env: Dict[str, str], logpath: pathlib.Path) -> subpr
                             stdout=open(logpath, "w"), stderr=subprocess.STDOUT)
 
 
+def gather_one(plate: str, arm: str, flag_env: Dict[str, str], pages: Sequence[int], work: pathlib.Path,
+               env0: Dict[str, str]) -> pathlib.Path:
+    """One page-gather of `plate` with `flag_env` set, written to `work/<plate>.<arm>.gathered.record.json`: the shared detector
+    cache and (if set) the master cell map, OCR server off after (the same call `run_report` and `one_test` make)."""
+    rp = work / ("%s.%s.gathered.record.json" % (plate, arm))
+    env = dict(env0)
+    env.update(flag_env)
+    env["OMR_SURYA_KEEP_ALIVE"] = "0"
+    if DETECTOR_CACHE is not None:      # ROADMAP 2.189: the raw detector output, read once, for both arms and every later run
+        env["OMR_DETECTOR_CACHE"] = str(DETECTOR_CACHE)
+    else:
+        env.pop("OMR_DETECTOR_CACHE", None)
+    cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[plate]["pdf"]), "--pages",
+           ",".join(map(str, pages)), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
+    if CELL_MAP is not None:            # ROADMAP 2.231: both arms read the master's cells, never a fresh cut
+        cmd += ["--cell-map", str(CELL_MAP)]
+    print("  gather %s %s pages %s ..." % (plate, arm, list(pages)), flush=True)
+    logp = work / ("%s.%s.gather.log" % (plate, arm))
+    r = subprocess.run(cmd, cwd=str(ROOT), env=env, stdout=open(logp, "w"), stderr=subprocess.STDOUT)
+    if r.returncode != 0 or not rp.exists():
+        raise SystemExit("gather failed for %s %s (see %s)" % (plate, arm, logp))
+    return rp
+
+
 def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mode: str, out: pathlib.Path,
                tag: str, seed: int, workers: int, sample: Dict[str, Any], note_lines: Sequence[str],
                reuse: bool = False, unjudged_tiles: int = 0) -> Dict[str, Any]:
@@ -1344,25 +1372,7 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
     gather_recs: Dict[Tuple[str, str], pathlib.Path] = {}
     if mode == "gather":
         for p, a in jobs:       # one page gather at a time (CLAUDE.md "lean lanes")
-            rp = work / ("%s.%s.gathered.record.json" % (p, a))
-            env = dict(env0)
-            for name, off, on in flags:
-                env[name] = on if a == "on" else off
-            env["OMR_SURYA_KEEP_ALIVE"] = "0"
-            if DETECTOR_CACHE is not None:      # ROADMAP 2.189: the raw detector output, read once, for both arms and every later run
-                env["OMR_DETECTOR_CACHE"] = str(DETECTOR_CACHE)
-            else:
-                env.pop("OMR_DETECTOR_CACHE", None)
-            cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[p]["pdf"]), "--pages",
-                   ",".join(map(str, pages[p])), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
-            if CELL_MAP is not None:            # ROADMAP 2.231: both arms read the master's cells, never a fresh cut
-                cmd += ["--cell-map", str(CELL_MAP)]
-            print("  gather %s %s pages %s ..." % (p, a, pages[p]), flush=True)
-            logp = work / ("%s.%s.gather.log" % (p, a))
-            r = subprocess.run(cmd, cwd=str(ROOT), env=env, stdout=open(logp, "w"), stderr=subprocess.STDOUT)
-            if r.returncode != 0 or not rp.exists():
-                raise SystemExit("gather failed for %s %s (see %s)" % (p, a, logp))
-            gather_recs[(p, a)] = rp
+            gather_recs[(p, a)] = gather_one(p, a, {n: (on if a == "on" else off) for n, off, on in flags}, pages[p], work, env0)
     running: List[Tuple[Tuple[str, str], subprocess.Popen]] = []
     queue = list(jobs)
     done: Dict[Tuple[str, str], Any] = dict(done0)

@@ -563,7 +563,7 @@ def standing_for(path: pathlib.Path, subjects: Iterable[str],
 #: lane_report change kinds -> the detector categories a glyph box of that kind can have. A kind not here leaves the
 #: category free (a place match then rests on the cell and the box alone).
 KIND_CATEGORIES = {
-    "note": ("notehead",), "rest": ("rest",), "accidental": ("accidental",), "flag": ("flag",),
+    "note": ("notehead",), "rest": ("rest", "unboxed_rest"), "accidental": ("accidental",), "flag": ("flag",),
     "dot": ("structural",), "beam": ("structural",), "tie": ("structural",), "slur": ("structural",),
     "articulation": ("ornament",), "fermata": ("ornament",), "ornament": ("ornament",),
     "dynamic": ("dynamic",), "clef": ("clef",),
@@ -613,7 +613,8 @@ def place_boxes(path: pathlib.Path, pages: Iterable[int]
     want = set(pages)
     out: Dict[Place, List[Tuple[str, List[float], Optional[str]]]] = defaultdict(list)
     for o in iter_array(path, "observations"):
-        if o.get("quantity") != "glyph_box":
+        q = o.get("quantity")
+        if q not in ("glyph_box", "unboxed_rest_shape"):    # an unboxed rest is a gathered ink cluster (id >= 350000), not a box
             continue
         pl = key_place(o.get("subject"))
         if pl is None or pl[0] not in want:
@@ -621,7 +622,7 @@ def place_boxes(path: pathlib.Path, pages: Iterable[int]
         d = o.get("detail") or {}
         b = d.get("bbox_page_px")
         if isinstance(b, list) and len(b) == 4:
-            out[pl].append((o["subject"], [float(x) for x in b], d.get("category")))
+            out[pl].append((o["subject"], [float(x) for x in b], d.get("category") if q == "glyph_box" else "unboxed_rest"))
     return out
 
 
@@ -647,15 +648,18 @@ def resolve_place(row: Dict[str, Any], boxes: Dict[Place, List[Tuple[str, List[f
     return best[0], "place"
 
 
-def with_derived_positions(index: Dict[str, Any]) -> Dict[str, Any]:
-    """ANALYSIS ONLY (the control of ROADMAP 2.244): a copy of the index in which every glyph row that has a page box but no
-    `position` is given the one its own key and box name. Shows what the place key does to the old answers."""
+def with_derived_positions(index: Dict[str, Any], max_side: float = 120.0) -> Dict[str, Any]:
+    """ANALYSIS ONLY (the control of ROADMAP 2.244): a copy of the index in which every glyph row that has a MARK-sized page
+    box (both sides <= `max_side` px at 600 dpi) but no `position` is given the one its own key and box name. Older galleries
+    kept the tile WINDOW (200-300 px) as `page_box`; a window overlaps neighbours and is not a mark's place, so those rows
+    stay on the key. Shows what the place key does to the old answers."""
     rows = []
     for r in index["tiles"]:
         pl, box = key_place(r.get("subject")), r.get("page_box")
-        if r.get("position") is None and pl and isinstance(box, list) and len(box) == 4 and r.get("subject_kind") == "glyph":
+        if r.get("position") is None and pl and isinstance(box, list) and len(box) == 4 and r.get("subject_kind") == "glyph" \
+                and max(box[2] - box[0], box[3] - box[1]) <= max_side:
             r = dict(r, position=dict(page=pl[0], system=pl[1], staff=pl[2], cell=pl[3], page_box=box))
-        rows.append(r)
+        rows.append(r)       # no mark_kind: an old tile's kind is not known, so only cell + box decide
     return dict(index, tiles=rows)
 
 
