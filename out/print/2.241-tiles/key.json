@@ -1,0 +1,242 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   683,
+   3186,
+   780,
+   3358
+  ],
+  "pair": "split:clef_key_meter",
+  "class": "SPLIT-ACROSS-CLAIM",
+  "ink_px": 7347,
+  "unit": 27.2490234375,
+  "crop_origin": [
+   568,
+   3082
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   654,
+   4411,
+   676,
+   4628
+  ],
+  "pair": "split:barline_bracket",
+  "class": "SPLIT-ACROSS-CLAIM",
+  "ink_px": 3953,
+  "unit": 27.191162109375,
+  "crop_origin": [
+   501,
+   4355
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   2958,
+   3340,
+   3008,
+   3415
+  ],
+  "pair": "stem_beam_flag->accidental",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 1034,
+  "unit": 27.5523681640625,
+  "crop_origin": [
+   2817,
+   3264
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4999,
+   7027,
+   5034,
+   7110
+  ],
+  "pair": "stem_beam_flag->rest",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 1286,
+  "unit": 27.7470703125,
+  "crop_origin": [
+   4850,
+   6891
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   1738,
+   6881,
+   2003,
+   6900
+  ],
+  "pair": "word_dynamic->arc_hairpin",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 1985,
+  "unit": 32.0126953125,
+  "crop_origin": [
+   1678,
+   6615
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   1434,
+   2199,
+   1543,
+   2228
+  ],
+  "pair": "word_dynamic->stem_beam_flag",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 1420,
+  "unit": 28.0,
+  "crop_origin": [
+   1320,
+   1957
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   792,
+   7131,
+   947,
+   7143
+  ],
+  "pair": "clef_key_meter->arc_hairpin",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 1226,
+  "unit": 27.7470703125,
+  "crop_origin": [
+   703,
+   6891
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   5093,
+   699,
+   5118,
+   759
+  ],
+  "pair": "word_dynamic->accidental",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 755,
+  "unit": 27.79931640625,
+  "crop_origin": [
+   4938,
+   642
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   4706,
+   1891,
+   4766,
+   1906
+  ],
+  "pair": "arc_hairpin->stem_beam_flag",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 643,
+  "unit": 32.0126953125,
+  "crop_origin": [
+   4543,
+   1841
+  ],
+  "cell_map": "cm-2d494f8fc055"
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2148,
+   723,
+   2168,
+   752
+  ],
+  "pair": "head->accidental",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 377,
+  "unit": 16.25,
+  "crop_origin": [
+   2060,
+   651
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "tile": 11,
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   1798,
+   1419,
+   1815,
+   1444
+  ],
+  "pair": "clef_key_meter->accidental",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 277,
+  "unit": 15.75,
+  "crop_origin": [
+   1712,
+   1275
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "tile": 12,
+  "plate": "litolff",
+  "page": 1,
+  "box": [
+   2455,
+   2892,
+   2458,
+   2936
+  ],
+  "pair": "barline_bracket->accidental",
+  "class": "ORDER-VIOLATION",
+  "ink_px": 102,
+  "unit": 15.7294921875,
+  "crop_origin": [
+   2362,
+   2853
+  ],
+  "cell_map": "cm-54ccb4729528"
+ }
+]

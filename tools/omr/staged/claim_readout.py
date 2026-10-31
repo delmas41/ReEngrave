@@ -1180,6 +1180,9 @@ def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=pr
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(prog="claim_readout", description=__doc__.split("\n")[0])
     argv = list(sys.argv[1:] if argv is None else argv)
+    if argv and argv[0] == "order":                  # ROADMAP 2.241: the claim-order check (claim_order.py), same command family
+        from . import claim_order as CO
+        return CO.main(argv[1:])
     if argv and argv[0] == "controls":
         ap.add_argument("cmd")
         ap.add_argument("rec")
