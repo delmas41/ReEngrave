@@ -1,0 +1,32 @@
+  gather litolff off pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather litolff on pages [2, 4, 6, 8, 9, 10, 11, 16] ...
+  gather brahms off pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+  gather brahms on pages [0, 4, 5, 8, 12, 14, 19, 25] ...
+LANE REPORT  OMR_BOX_KIND_SIZE (OFF=0 ON=1)  --from gather
+  OMR_BOX_KIND_SIZE: read in staged/adjudicators/notehead_precision.py, staged/arcs_system.py, staged/box_kind.py, staged/gather.py -> GATHER
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5147 notes+rests OFF, 5146 ON, 5144 paired)
+  file:   notes +2 -3 | flags +1 -1 | beams +1 ~1 | pitches ~1 | blue marks +2 -16 | wedges -2 | words +1
+  red bars 0 -> 0 | notes not written 2485 -> 2494
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (268 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 360 | position but no mark here 0
+  NOT JUDGED: 29 changed places no tile of Sean's covers (1 are covered; 1 have no page place): beam 2, blue 17, flag 2, note 5, pitch 1, wedge 2 -> unjudged.txt
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6642 notes+rests OFF, 6642 ON, 6642 paired)
+  file:   dynamics +2 -2 | wedges -3 | words +1 -5
+  red bars 164 -> 164 | notes not written 3090 -> 3090
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (254 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 369 | position but no mark here 0
+  NOT JUDGED: 13 changed places no tile of Sean's covers (0 are covered; 0 have no page place): dynamic 4, wedge 3, words 6 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 11, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 8135 s

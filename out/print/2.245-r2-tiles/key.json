@@ -1,0 +1,218 @@
+[
+ {
+  "tile": 1,
+  "page": 2,
+  "staff_index_on_page": 8,
+  "crop_origin": [
+   2067,
+   1553
+  ],
+  "plate": "litolff",
+  "g": "glyph/2/0/8/13/9",
+  "pb": [
+   2129.08,
+   1596.04,
+   2195.0,
+   1608.04
+  ],
+  "why": "wide head box: inside not read (abstains)"
+ },
+ {
+  "tile": 2,
+  "page": 6,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   1697,
+   795
+  ],
+  "plate": "litolff",
+  "g": "glyph/6/0/3/8/22",
+  "pb": [
+   1785.155,
+   819.9125,
+   1798.2275,
+   833.615
+  ],
+  "why": "head box GATHER split off a wide head box"
+ },
+ {
+  "tile": 3,
+  "page": 4,
+  "staff_index_on_page": 6,
+  "crop_origin": [
+   2268,
+   1277
+  ],
+  "plate": "litolff",
+  "g": "glyph/4/0/5/13/5",
+  "pb": [
+   2338.94,
+   1285.45,
+   2387.765,
+   1306.87
+  ],
+  "why": "wide head box: the refused remainder"
+ },
+ {
+  "tile": 4,
+  "page": 4,
+  "staff_index_on_page": 27,
+  "crop_origin": [
+   1758,
+   6960
+  ],
+  "plate": "brahms",
+  "g": "staff/4/1/13",
+  "pb": [
+   1910.0,
+   7151.0,
+   1936.0,
+   7187.0
+  ],
+  "why": "CV 'hairpin' narrower than a hairpin (refused)"
+ },
+ {
+  "tile": 5,
+  "page": 9,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   669,
+   806
+  ],
+  "plate": "litolff",
+  "g": "glyph/9/0/3/1/16",
+  "pb": [
+   753.01,
+   833.275,
+   775.2175,
+   855.64
+  ],
+  "why": "head box GATHER split off a wide head box"
+ },
+ {
+  "tile": 6,
+  "page": 2,
+  "staff_index_on_page": 7,
+  "crop_origin": [
+   1583,
+   1407
+  ],
+  "plate": "litolff",
+  "g": "glyph/2/0/7/10/3",
+  "pb": [
+   1654.04,
+   1476.44,
+   1702.52,
+   1521.4
+  ],
+  "why": "wide head box: the refused remainder"
+ },
+ {
+  "tile": 7,
+  "page": 19,
+  "staff_index_on_page": 0,
+  "crop_origin": [
+   1733,
+   495
+  ],
+  "plate": "brahms",
+  "g": "glyph/19/0/0/1/22",
+  "pb": [
+   1819.7625,
+   613.9925,
+   1977.54,
+   639.88
+  ],
+  "why": "arc trace that does not bow (refused)"
+ },
+ {
+  "tile": 8,
+  "page": 8,
+  "staff_index_on_page": 12,
+  "crop_origin": [
+   2449,
+   2355
+  ],
+  "plate": "litolff",
+  "g": "glyph/8/1/3/18/17",
+  "pb": [
+   2532.28,
+   2433.24,
+   2555.16,
+   2454.36
+  ],
+  "why": "head box GATHER split off a wide head box"
+ },
+ {
+  "tile": 9,
+  "page": 0,
+  "staff_index_on_page": 11,
+  "crop_origin": [
+   1796,
+   5934
+  ],
+  "plate": "brahms",
+  "g": "staff/0/0/11",
+  "pb": [
+   1975.0,
+   6198.0,
+   2001.0,
+   6235.0
+  ],
+  "why": "CV 'hairpin' narrower than a hairpin (refused)"
+ },
+ {
+  "tile": 10,
+  "page": 4,
+  "staff_index_on_page": 14,
+  "crop_origin": [
+   905,
+   2550
+  ],
+  "plate": "litolff",
+  "g": "glyph/4/1/3/3/13",
+  "pb": [
+   993.1800000000001,
+   2601.845,
+   1006.8824999999999,
+   2620.9025
+  ],
+  "why": "head box GATHER split off a wide head box"
+ },
+ {
+  "tile": 11,
+  "page": 19,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   2083,
+   1230
+  ],
+  "plate": "brahms",
+  "g": "glyph/19/0/3/2/15",
+  "pb": [
+   2193.9125,
+   1407.3525,
+   2303.185,
+   1421.795
+  ],
+  "why": "arc trace that does not bow (refused)"
+ },
+ {
+  "tile": 12,
+  "page": 8,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   805,
+   832
+  ],
+  "plate": "litolff",
+  "g": "glyph/8/0/3/4/4",
+  "pb": [
+   879.8325,
+   872.3475,
+   919.8375,
+   896.9175
+  ],
+  "why": "round-1 tile 9's place: a head box on a mid-system C clef (no clef box)"
+ }
+]

@@ -1,0 +1,250 @@
+{
+ "flags": [
+  [
+   "OMR_BOX_KIND_SIZE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "note": {
+     "gained": 2,
+     "lost": 3,
+     "changed": 0
+    },
+    "flag": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 2,
+     "lost": 16,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 1
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 1
+    },
+    "wedge": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5147,
+    5146
+   ],
+   "paired": 5144,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    2485,
+    2494
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 268,
+    "matched": {
+     "off": {
+      "key": 360
+     },
+     "on": {
+      "key": 360
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    20.9,
+    20.4
+   ],
+   "unjudged": {
+    "n": 29,
+    "judged": 1,
+    "no_place": 1,
+    "by_kind": {
+     "note": 5,
+     "flag": 2,
+     "blue": 17,
+     "beam": 2,
+     "pitch": 1,
+     "wedge": 2
+    },
+    "places": [
+     "litolff p2 2/0/7/10  blue lost guessed",
+     "litolff p2 2/0/7/10  note lost half",
+     "litolff p4 4/1/3/3  note lost quarter",
+     "litolff p6 6/1/0/1  blue lost guessed",
+     "litolff p6 6/1/0/1  blue lost guessed",
+     "litolff p6 6/1/0/2  blue lost guessed",
+     "litolff p6 6/1/0/3  blue lost guessed",
+     "litolff p6 6/1/0/3  blue lost guessed",
+     "litolff p6 6/1/0/4  blue lost guessed",
+     "litolff p6 6/1/0/5  blue lost guessed",
+     "litolff p6 6/1/0/7  blue lost guessed",
+     "litolff p6 6/1/0/7  blue lost guessed",
+     "litolff p6 6/1/0/7  blue lost guessed",
+     "litolff p6 6/1/0/9  blue lost guessed",
+     "litolff p6 6/1/0/9  blue lost guessed",
+     "litolff p6 6/1/0/10  blue lost guessed",
+     "litolff p6 6/1/0/12  blue lost guessed",
+     "litolff p6 6/1/1/9  blue gained guessed",
+     "litolff p6 6/1/1/12  blue gained guessed",
+     "litolff p8 8/1/8/0  wedge lost crescendo",
+     "litolff p9 9/0/3/1  beam changed continue (was end)",
+     "litolff p9 9/0/3/1  beam gained end",
+     "litolff p9 9/0/3/1  flag lost eighth",
+     "litolff p9 9/0/3/1  flag gained eighth",
+     "litolff p9 9/0/3/1  note lost eighth",
+     "litolff p9 9/0/3/1  note gained eighth",
+     "litolff p9 9/0/3/1  note gained eighth",
+     "litolff p9 9/0/3/1  pitch changed G3 (was F3)",
+     "litolff p16 16/1/9/2  wedge lost crescendo"
+    ]
+   }
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "dynamic": {
+     "gained": 2,
+     "lost": 2,
+     "changed": 0
+    },
+    "wedge": {
+     "gained": 0,
+     "lost": 3,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 5,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6642,
+    6642
+   ],
+   "paired": 6642,
+   "red_bars": [
+    164,
+    164
+   ],
+   "notes_not_written": [
+    3090,
+    3090
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 254,
+    "matched": {
+     "off": {
+      "key": 369
+     },
+     "on": {
+      "key": 369
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    36.7,
+    33.7
+   ],
+   "unjudged": {
+    "n": 13,
+    "judged": 0,
+    "no_place": 0,
+    "by_kind": {
+     "dynamic": 4,
+     "wedge": 3,
+     "words": 6
+    },
+    "places": [
+     "brahms p0 0/0/11/0  wedge lost crescendo",
+     "brahms p4 4/1/2/1  wedge lost crescendo",
+     "brahms p4 4/1/13/2  wedge lost crescendo",
+     "brahms p5 5/0/5/2  words lost Cresc",
+     "brahms p12 12/0/11/10  dynamic lost p",
+     "brahms p12 12/0/11/10  words lost marc.",
+     "brahms p14 14/1/0/0  words lost dol",
+     "brahms p14 14/1/0/0  words gained dolce",
+     "brahms p14 14/1/8/0  dynamic lost p",
+     "brahms p14 14/1/8/0  words lost dolce sempre",
+     "brahms p14 14/1/8/1  dynamic gained mp",
+     "brahms p14 14/1/9/0  words lost dolce sempre",
+     "brahms p14 14/1/9/1  dynamic gained mp"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_BOX_KIND_SIZE: read in staged/adjudicators/notehead_precision.py, staged/arcs_system.py, staged/box_kind.py, staged/gather.py -> GATHER",
+  "cells LOADED from master cm-54ccb4729528 (litolff) for both arms",
+  "cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "unjudged_tiles": {
+  "n": 11,
+  "cases": 11,
+  "controls": 0
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 8134.6
+}
