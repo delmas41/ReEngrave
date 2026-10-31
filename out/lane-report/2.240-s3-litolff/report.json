@@ -1,0 +1,200 @@
+{
+ "flags": [
+  [
+   "OMR_PAGE_OWNER_READ",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "note": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    },
+    "rest": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    },
+    "slur": {
+     "gained": 31,
+     "lost": 27,
+     "changed": 1
+    },
+    "tie": {
+     "gained": 20,
+     "lost": 0,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5461,
+    5459
+   ],
+   "paired": 5459,
+   "red_bars": [
+    195,
+    195
+   ],
+   "notes_not_written": [
+    2243,
+    2244
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 289,
+    "matched": {
+     "off": {
+      "key": 379
+     },
+     "on": {
+      "key": 379
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    488.4,
+    542.9
+   ],
+   "unjudged": {
+    "n": 82,
+    "judged": 0,
+    "no_place": 0,
+    "by_kind": {
+     "note": 1,
+     "rest": 1,
+     "slur": 59,
+     "tie": 20,
+     "words": 1
+    },
+    "places": [
+     "litolff p2 2/0/7/10  tie gained start",
+     "litolff p2 2/0/7/11  tie gained stop",
+     "litolff p2 2/0/8/9  slur lost start",
+     "litolff p2 2/0/8/9  slur lost stop",
+     "litolff p2 2/0/8/10  tie gained start",
+     "litolff p2 2/0/8/11  tie gained stop",
+     "litolff p2 2/0/8/13  slur lost start",
+     "litolff p2 2/0/8/13  slur lost stop",
+     "litolff p2 2/0/9/10  slur lost start",
+     "litolff p2 2/0/9/10  slur lost stop",
+     "litolff p2 2/0/10/11  slur lost start",
+     "litolff p2 2/0/10/11  slur lost stop",
+     "litolff p2 2/1/4/0  slur gained start",
+     "litolff p2 2/1/4/1  slur gained stop",
+     "litolff p4 4/0/0/8  slur lost start",
+     "litolff p4 4/0/0/8  slur lost stop",
+     "litolff p4 4/0/10/11  tie gained start",
+     "litolff p4 4/0/10/12  tie gained stop",
+     "litolff p4 4/1/4/5  tie gained start",
+     "litolff p4 4/1/4/6  tie gained stop",
+     "litolff p6 6/0/5/1  slur lost start",
+     "litolff p6 6/0/5/1  slur lost stop",
+     "litolff p6 6/0/5/3  slur lost start",
+     "litolff p6 6/0/5/3  slur lost stop",
+     "litolff p6 6/0/7/2  slur lost start",
+     "litolff p6 6/0/7/2  slur lost stop",
+     "litolff p6 6/0/7/4  slur lost start",
+     "litolff p6 6/0/7/4  slur lost stop",
+     "litolff p6 6/1/2/8  note lost quarter",
+     "litolff p6 6/1/2/8  rest lost quarter",
+     "litolff p6 6/1/2/8  words gained unread",
+     "litolff p6 6/1/4/4  slur lost start",
+     "litolff p6 6/1/4/4  slur lost stop",
+     "litolff p9 9/0/3/10  slur gained start",
+     "litolff p9 9/0/3/10  slur gained stop",
+     "litolff p9 9/0/9/4  tie gained start",
+     "litolff p9 9/0/9/5  tie gained stop",
+     "litolff p9 9/1/1/8  slur gained start",
+     "litolff p9 9/1/1/9  slur gained start",
+     "litolff p9 9/1/1/9  slur gained stop",
+     "litolff p9 9/1/1/10  slur gained stop",
+     "litolff p10 10/0/7/8  slur gained start",
+     "litolff p10 10/0/7/8  slur gained stop",
+     "litolff p10 10/0/9/6  tie gained start",
+     "litolff p10 10/0/9/7  tie gained stop",
+     "litolff p10 10/1/1/9  tie gained start",
+     "litolff p10 10/1/1/10  tie gained start",
+     "litolff p10 10/1/1/10  tie gained stop",
+     "litolff p10 10/1/1/11  tie gained stop",
+     "litolff p10 10/1/4/1  slur gained start",
+     "litolff p10 10/1/4/2  slur gained stop",
+     "litolff p10 10/1/4/6  slur gained start",
+     "litolff p10 10/1/4/7  slur gained stop",
+     "litolff p10 10/1/5/8  slur gained start",
+     "litolff p10 10/1/5/9  slur changed stop (was start)",
+     "litolff p10 10/1/5/10  slur lost stop",
+     "litolff p11 11/0/2/8  slur gained start",
+     "litolff p11 11/0/2/9  slur gained stop",
+     "litolff p11 11/0/3/3  tie gained start",
+     "litolff p11 11/0/3/4  tie gained stop",
+     "litolff p11 11/0/3/5  tie gained start",
+     "litolff p11 11/0/3/6  tie gained stop",
+     "litolff p11 11/0/3/11  slur gained start",
+     "litolff p11 11/0/3/12  slur gained stop",
+     "litolff p11 11/0/4/10  slur lost start",
+     "litolff p11 11/0/4/10  slur lost stop",
+     "litolff p11 11/0/5/15  slur gained start",
+     "litolff p11 11/0/5/15  slur gained stop",
+     "litolff p11 11/0/7/12  slur gained start",
+     "litolff p11 11/0/7/13  slur gained stop",
+     "litolff p11 11/0/8/6  slur lost start",
+     "litolff p11 11/0/8/6  slur lost stop",
+     "litolff p11 11/1/0/0  slur lost start",
+     "litolff p11 11/1/0/0  slur lost stop",
+     "litolff p11 11/1/6/15  slur gained start",
+     "litolff p11 11/1/6/16  slur gained stop",
+     "litolff p16 16/0/3/12  slur gained start",
+     "litolff p16 16/0/3/13  slur gained stop",
+     "litolff p16 16/0/3/15  slur gained start",
+     "litolff p16 16/0/3/16  slur gained stop",
+     "litolff p16 16/1/8/1  slur gained start",
+     "litolff p16 16/1/8/2  slur gained stop"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_PAGE_OWNER_READ: read in staged/adjudicators/ownership.py, staged/export.py, staged/page_owner.py, staged/reach.py -> GATHER",
+  "REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "unjudged_tiles": {
+  "n": 12,
+  "cases": 12,
+  "controls": 0
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 576.8
+}
