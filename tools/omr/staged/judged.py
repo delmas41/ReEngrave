@@ -27,10 +27,12 @@ asking what was already judged (`docs/plan-2026-10-12-inference-principles.md`
   ("6/8, two voices ...") stay `value=None`, `answer_kind="other"`.
 * **A subject key is a snapshot of one gather.** A glyph index is the
   detector's output order for that cell, so the same mark on a re-gather can
-  carry a different key. `not_found` therefore means *this record has no
-  verdict at that key*, not *the mark is gone*; the scorer never matches by
-  box overlap (that is `readout diff`'s job, and it needs the page box this
-  index keeps in `page_box` where the manifest gave one).
+  carry a different key. A tile that has a `position` (ROADMAP 2.231: page,
+  system, staff, cell, page box) is therefore matched BY PLACE (ROADMAP 2.244):
+  the glyph box of the same kind in that cell that overlaps the tile's box; the
+  id is only a tie-break. A tile without a position keeps the old key, and
+  `score()["matched"]` counts the two apart. `not_found` on a key-matched tile
+  means *this record has no verdict at that key*, not *the mark is gone*.
 * **The scorer compares verdicts, not exported files.** Until further notice
   every test is GATHER + ADJUDICATE (CLAUDE.md §6b), so it reads the standing
   verdict of `Q.DURATION`, `Q.NOTEHEAD_IS_NOT_A_NOTEHEAD`,
@@ -413,6 +415,8 @@ def item_rows(answers_path: pathlib.Path, root: pathlib.Path = PRINT_DIR
         for k in ("cell_map", "position"):
             if t.get(k) is not None:
                 rows[-1][k] = t[k]
+        if t.get("position") is not None and isinstance(t.get("kind"), str):
+            rows[-1]["mark_kind"] = t["kind"]       # ROADMAP 2.244: "the same kind" of a place match
     return rows
 
 
@@ -550,6 +554,113 @@ def standing_for(path: pathlib.Path, subjects: Iterable[str],
         live = [x for x in vs if x["id"] not in superseded] or vs
         out[key] = live[-1]
     return out
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3b. Matching a tile by PLACE (ROADMAP 2.244; CLAUDE section 6: "matched by place, never by box id alone")
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: lane_report change kinds -> the detector categories a glyph box of that kind can have. A kind not here leaves the
+#: category free (a place match then rests on the cell and the box alone).
+KIND_CATEGORIES = {
+    "note": ("notehead",), "rest": ("rest", "unboxed_rest"), "accidental": ("accidental",), "flag": ("flag",),
+    "dot": ("structural",), "beam": ("structural",), "tie": ("structural",), "slur": ("structural",),
+    "articulation": ("ornament",), "fermata": ("ornament",), "ornament": ("ornament",),
+    "dynamic": ("dynamic",), "clef": ("clef",),
+}
+_GLYPH_KEY = re.compile(r"^glyph/(\d+)/(-?\d+)/(-?\d+)/(-?\d+)/\d+$")
+Place = Tuple[int, int, int, int]
+
+
+def key_place(subject: Any) -> Optional[Place]:
+    """`(page, system, staff, cell)` from a glyph key; a cell index restarts per system, so this is the cell's whole name."""
+    m = _GLYPH_KEY.match(subject) if isinstance(subject, str) else None
+    return tuple(int(x) for x in m.groups()) if m else None      # type: ignore[return-value]
+
+
+def row_place(row: Dict[str, Any]) -> Optional[Place]:
+    """The place a judged tile names by its `position` (page, system, staff, cell), or None: then the old key is all it has."""
+    pos = row.get("position")
+    if isinstance(pos, dict) and all(isinstance(pos.get(k), int) for k in ("page", "system", "staff", "cell")):
+        return (pos["page"], pos["system"], pos["staff"], pos["cell"])
+    return None
+
+
+def row_box(row: Dict[str, Any]) -> Optional[List[float]]:
+    pos = row.get("position")
+    b = pos.get("page_box") if isinstance(pos, dict) else None
+    if isinstance(b, list) and len(b) == 4 and all(isinstance(x, (int, float)) for x in b):
+        return [float(x) for x in b]
+    return None
+
+
+def boxes_overlap(a: Sequence[float], b: Sequence[float], slack: float = 4.0) -> Tuple[bool, float]:
+    """`(overlap, iou)`: IoU >= 0.3, or the centre of either box inside the other (grown by `slack` px at 600 dpi)."""
+    iw, ih = min(a[2], b[2]) - max(a[0], b[0]), min(a[3], b[3]) - max(a[1], b[1])
+    union = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1])
+    iou = iw * ih / (union - iw * ih) if iw > 0 and ih > 0 and union - iw * ih > 0 else 0.0
+
+    def inside(p, q):
+        return (q[0] - slack <= (p[0] + p[2]) / 2 <= q[2] + slack
+                and q[1] - slack <= (p[1] + p[3]) / 2 <= q[3] + slack)
+    return (iou >= 0.3 or inside(a, b) or inside(b, a)), iou
+
+
+def place_boxes(path: pathlib.Path, pages: Iterable[int]
+                ) -> Dict[Place, List[Tuple[str, List[float], Optional[str]]]]:
+    """`{(page, system, staff, cell): [(glyph key, page box, detector category)]}` for the given pages, streamed from the
+    record's observations (never loaded whole)."""
+    want = set(pages)
+    out: Dict[Place, List[Tuple[str, List[float], Optional[str]]]] = defaultdict(list)
+    for o in iter_array(path, "observations"):
+        q = o.get("quantity")
+        if q not in ("glyph_box", "unboxed_rest_shape"):    # an unboxed rest is a gathered ink cluster (id >= 350000), not a box
+            continue
+        pl = key_place(o.get("subject"))
+        if pl is None or pl[0] not in want:
+            continue
+        d = o.get("detail") or {}
+        b = d.get("bbox_page_px")
+        if isinstance(b, list) and len(b) == 4:
+            out[pl].append((o["subject"], [float(x) for x in b], d.get("category") if q == "glyph_box" else "unboxed_rest"))
+    return out
+
+
+def resolve_place(row: Dict[str, Any], boxes: Dict[Place, List[Tuple[str, List[float], Optional[str]]]]
+                  ) -> Tuple[Optional[str], str]:
+    """`(glyph key in THIS record, how)` for a tile that has a `position`. A mark is in this record at the tile's place if a
+    glyph box in the same (page, system, staff, cell) of the same kind overlaps the tile's page box. Several: the tile's own
+    key if it is one of them (the id agrees with the place), else the best IoU, then the lower key. How: `place` (found),
+    `place_no_box` (the position carries no page box: nothing to overlap), `place_no_mark` (no such mark here)."""
+    pl, tb = row_place(row), row_box(row)
+    if pl is None or tb is None:
+        return None, "place_no_box"
+    cats = KIND_CATEGORIES.get(row.get("mark_kind") or "")
+    hits = []
+    for sub, bb, cat in boxes.get(pl, ()):
+        ok, iou = boxes_overlap(bb, tb)
+        if ok and (cats is None or cat in cats):
+            hits.append((sub, iou))
+    if not hits:
+        return None, "place_no_mark"
+    own = [h for h in hits if h[0] == row.get("subject")]
+    best = own[0] if own else sorted(hits, key=lambda h: (-h[1], h[0]))[0]
+    return best[0], "place"
+
+
+def with_derived_positions(index: Dict[str, Any], max_side: float = 120.0) -> Dict[str, Any]:
+    """ANALYSIS ONLY (the control of ROADMAP 2.244): a copy of the index in which every glyph row that has a MARK-sized page
+    box (both sides <= `max_side` px at 600 dpi) but no `position` is given the one its own key and box name. Older galleries
+    kept the tile WINDOW (200-300 px) as `page_box`; a window overlaps neighbours and is not a mark's place, so those rows
+    stay on the key. Shows what the place key does to the old answers."""
+    rows = []
+    for r in index["tiles"]:
+        pl, box = key_place(r.get("subject")), r.get("page_box")
+        if r.get("position") is None and pl and isinstance(box, list) and len(box) == 4 and r.get("subject_kind") == "glyph" \
+                and max(box[2] - box[0], box[3] - box[1]) <= max_side:
+            r = dict(r, position=dict(page=pl[0], system=pl[1], staff=pl[2], cell=pl[3], page_box=box))
+        rows.append(r)       # no mark_kind: an old tile's kind is not known, so only cell + box decide
+    return dict(index, tiles=rows)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -702,8 +813,12 @@ def score_row(row: Dict[str, Any], S: Dict) -> Tuple[str, str, Optional[float]]:
     return "unscored", "no comparator for %s answer (%s)" % (kind, row["question_kind"]), None
 
 
-def score(index: Dict[str, Any], record_path: pathlib.Path, doc: str
+def score(index: Dict[str, Any], record_path: pathlib.Path, doc: str, by: str = "place"
           ) -> Dict[str, Any]:
+    """Each judged tile against the record's standing verdicts. `by="place"` (default, ROADMAP 2.244): a tile that has a
+    `position` is found in THIS record by (page, system, staff, cell) + an overlapping box of the same kind and scored at
+    the glyph key found there; a tile without a position keeps the old key. `by="key"` is the old rule for every tile (the
+    control). `matched` counts place / key / unmatched, so no tile drops silently."""
     rows = index["tiles"]
     # tiles whose manifest names no document: kept for this record only where
     # the record's own box for the key sits inside the tile's page bracket
@@ -717,26 +832,54 @@ def score(index: Dict[str, Any], record_path: pathlib.Path, doc: str
                        for s in (r["subjects"] or [r["subject"]]))}
     mine = [r for r in rows if (r["doc"] == doc or id(r) in resolved)
             and r["subject_kind"] == "glyph" and not r["followup"]]
-    subjects = {s for r in mine for s in (r["subjects"] or [r["subject"]])}
+    placed = {id(r): r for r in mine
+              if by == "place" and row_place(r) is not None and not r["subjects"]}
+    where: Dict[int, Tuple[Optional[str], str]] = {}
+    if placed:
+        pb = place_boxes(record_path, {row_place(r)[0] for r in placed.values()})
+        where = {i: resolve_place(r, pb) for i, r in placed.items()}
+    subjects = {s for r in mine if id(r) not in placed for s in (r["subjects"] or [r["subject"]])}
+    subjects |= {w[0] for w in where.values() if w[0]}
     S = standing_for(record_path, subjects)
     per_item: Dict[str, Counter] = defaultdict(Counter)
     detail: List[Dict[str, Any]] = []
+    matched: Counter = Counter()
     for r in rows:
         if r["followup"]:
             continue
         if r["doc"] != doc and id(r) not in resolved:
             per_item[r["item"]]["other_doc" if r["doc"] else "doc_unresolved"] += 1
             continue
-        status, note, margin = score_row(r, S)
+        how, sub = None, None
+        if id(r) in placed:
+            sub, how = where[id(r)]
+            if sub is None:
+                status, note, margin = (
+                    "not_found", "no %s mark at page/system/staff/cell %s overlapping the tile's box (%s)"
+                    % (r.get("mark_kind") or "same-kind", "/".join(map(str, row_place(r))), how), None)
+                matched[how] += 1
+            else:
+                status, note, margin = score_row(dict(r, subject=sub, subjects=None), S)
+                matched["place"] += 1
+                if sub != r["subject"]:
+                    matched["place_moved_id"] += 1
+        else:
+            status, note, margin = score_row(r, S)
+            matched["key"] += 1
         per_item[r["item"]][status] += 1
-        detail.append({"item": r["item"], "tile": r["tile"], "subject":
-                       r["subject"] or r["subjects"], "answer": r["answer"],
-                       "status": status, "note": note, "margin": margin,
-                       "doc_by": "manifest" if r["doc"] == doc else "page_box"})
+        d = {"item": r["item"], "tile": r["tile"],
+             "subject": sub or r["subject"] or r["subjects"], "answer": r["answer"],
+             "status": status, "note": note, "margin": margin,
+             "doc_by": "manifest" if r["doc"] == doc else "page_box",
+             "matched_by": how or "key"}
+        if id(r) in placed:
+            d["subject_asked"] = r["subject"]
+        detail.append(d)
     total = Counter()
     for c in per_item.values():
         total.update(c)
     return {"record": str(record_path), "doc": doc, "totals": dict(total),
+            "matched": dict(matched),
             "per_item": {k: dict(v) for k, v in sorted(per_item.items())},
             "tiles": detail}
 
@@ -751,7 +894,23 @@ def render(rep: Dict[str, Any]) -> str:
         lines.append("%-34s" % item[:34] + "".join("%10d" % c.get(k, 0) for k in cols))
     t = rep["totals"]
     lines.append("%-34s" % "TOTAL" + "".join("%10d" % t.get(k, 0) for k in cols))
+    m = rep.get("matched") or {}
+    lines.append("matched: by place %d (%d at another id than the one asked) | by id key, no position %d | position but no mark here %d"
+                 % (m.get("place", 0), m.get("place_moved_id", 0), m.get("key", 0),
+                    m.get("place_no_mark", 0) + m.get("place_no_box", 0)))
     return "\n".join(lines)
+
+
+def compare_scores(a: Dict[str, Any], b: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """Per tile, where two scorings of one record disagree: `[{item, tile, a, b, ...}]`, keyed by (item, tile)."""
+    bb = {(t["item"], t["tile"]): t for t in b["tiles"]}
+    out = []
+    for t in a["tiles"]:
+        u = bb.get((t["item"], t["tile"]))
+        if u is not None and (t["status"], t["subject"]) != (u["status"], u["subject"]):
+            out.append({"item": t["item"], "tile": t["tile"], "a": t["status"], "b": u["status"],
+                        "a_subject": t["subject"], "b_subject": u["subject"], "b_note": u["note"]})
+    return out
 
 
 def main(argv: Optional[Sequence[str]] = None) -> int:
@@ -763,6 +922,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     s.add_argument("record")
     s.add_argument("--doc", required=True)
     s.add_argument("--json")
+    s.add_argument("--by", choices=("place", "key"), default="place")
+    s.add_argument("--derive-position", action="store_true",
+                   help="ANALYSIS: give every old glyph row with a page box the position its key and box name, then score "
+                        "by place and by key and list every tile the two disagree on (ROADMAP 2.244 control)")
     sub.add_parser("stats")
     a = ap.parse_args(argv)
     if a.cmd == "build":
@@ -787,7 +950,19 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         print("by answer_kind:", dict(Counter(r["answer_kind"] for r in rows)))
         print("by subject_kind:", dict(Counter(r["subject_kind"] for r in rows)))
         return 0
-    rep = score(idx, pathlib.Path(a.record), a.doc)
+    if a.derive_position:
+        didx = with_derived_positions(idx)
+        by_key = score(idx, pathlib.Path(a.record), a.doc, by="key")
+        rep = score(didx, pathlib.Path(a.record), a.doc, by="place")
+        print("BY KEY (old):\n" + render(by_key) + "\nBY PLACE (positions derived from each old row's key and box):\n" + render(rep))
+        diffs = compare_scores(by_key, rep)
+        print("%d tiles score differently by place than by key:" % len(diffs))
+        for d in diffs:
+            print("  %s tile %s: %s -> %s  asked %s, found %s  (%s)" % (d["item"], d["tile"], d["a"], d["b"], d["a_subject"], d["b_subject"], d["b_note"]))
+        if a.json:
+            pathlib.Path(a.json).write_text(json.dumps(dict(by_key=by_key, by_place=rep, differ=diffs), indent=1) + "\n")
+        return 0
+    rep = score(idx, pathlib.Path(a.record), a.doc, by=a.by)
     print(render(rep))
     if a.json:
         pathlib.Path(a.json).write_text(json.dumps(rep, indent=1) + "\n")

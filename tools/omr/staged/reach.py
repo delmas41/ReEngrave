@@ -422,6 +422,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",
+    # ROADMAP 2.244. The combined lane run: base / each flag alone / all through `lane_report`'s arm worker; files no row,
+    # names no quantity, decides nothing.
+    "one_test.py",
     # ROADMAP 2.231. The master cell map: freezes / loads / compares what `pipeline.prepare_pages` cut (before GATHER);
     # files no row, names no quantity, decides nothing.
     "cell_map.py",

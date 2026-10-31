@@ -1865,6 +1865,11 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
                 why[b.id] = "through_heads"
     # ⚠️ ROADMAP 2.141h fix 1 (flag, default ON): a stroke merged with a head that this head's OWN stem runs far past is the
     # ledger line the heads stand on, not a level (Litolff p5 tile 6: counted as a second down-voice level, 8,8,8 read 16,16,4).
+    # ROADMAP 2.243 (`OMR_BEAMS_HONOUR_CLAIMS`, default OFF): a beam row whose strokes the stroke owner DECIDED to a hairpin, an arc, a word,
+    # an accidental or a ledger line is that mark's ink, not a beam level (the CV rows and the detector boxes alike).
+    if beams_honour_claims_enabled():
+        for _bid, _why in _beams_on_owned_strokes(ev, cell, beams).items():
+            why.setdefault(_bid, _why)
     if own_stems and head_box is not None and head_boxes and beam_level_stroke_is_a_beam_enabled():
         _sp = tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0
         for b in beams:
@@ -2823,19 +2828,20 @@ def _wedge_reading(shape_row):
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
                    Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
-                   Q.MARK_SHAPE),
+                   Q.MARK_SHAPE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
            Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
-           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.MARK_SHAPE),
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.MARK_SHAPE,
+           Q.GLYPH_STROKES, Q.STROKE_OWNER),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
              "right_of_a_head_at_its_dot_step", "wedge_pointing_at_a_head",
              "no_glyph_box", "no_cell_staff_space",
              "no_notehead_or_rest_in_cell", "dot_role_ambiguous",
              "owned_by_another_staff", "on_a_barline", "on_a_stroke",
              "wedge_without_a_head", "wedge_points_away",
-             "beside_a_head_in_its_dot_space"),
+             "beside_a_head_in_its_dot_space", "ink_owned_by_another_mark"),
     mode=Mode.ADDITIVE,
     subjects_from=Q.AUG_DOT,
 )
@@ -3162,6 +3168,15 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                           reason="right_of_and_level_with_a_head",
                           used=used, detail={**detail, "head": best,
                                              "head_refused": True})
+    # ROADMAP 2.243 (`OMR_DOTS_HONOUR_CLAIMS`, default OFF): the role reader found no head for this box. If the ink it stands on was DECIDED
+    # to another mark (a slur's tip, a hairpin's end, a word's full stop, a clef's piece) it is not a dot: an abstention with its own reason,
+    # never `dot_role_ambiguous` (which 2.127 reads as "a dot was SEEN beside this note" and narrows the note to). Only this last abstention:
+    # a role already DECIDED above is never overturned by the owner (Litolff: 3 staccatos the arc trace claimed are real; rule 8).
+    if dots_honour_claims_enabled():
+        owned = _dot_ink_owned_elsewhere(ev, cell)
+        if owned is not None:
+            return Ruling(value=None, reason="ink_owned_by_another_mark", used=tuple(owned["rows"]),
+                          detail={**detail, "owner_families": owned["families"], "strokes": owned["strokes"]})
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
@@ -4554,6 +4569,83 @@ def _tip_abs(ev: Evidence, cell, own_stems):
     if tips_honour_claims_enabled():
         return _tips_honouring_claims(ev, cell, own_stems)[1]
     return ev.refusals(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+
+
+# ════════════════════════════════════════════════════════════════════════════
+# ROADMAP 2.243 (Sean 2026-10-30: "I don't want to undo gather changes - I want to rework later stages to function better with the new
+# info"; the precedent is 2.235 above). TWO MORE READERS CONSULT THE CLAIMS, each behind its own flag, default OFF until Sean's tiles
+# (docs/flags-2026-09.md): the augmentation-dot ROLE reader (`OMR_DOTS_HONOUR_CLAIMS`) and the beam reader (`OMR_BEAMS_HONOUR_CLAIMS`).
+# Both read the cell's `Q.STROKE_OWNER` verdict (strokes DECIDED / MERGED to a mark) and the strokes the box stands on; neither measures
+# anything new and neither has a cut-off. A stroke that is CONTESTED, unclaimed, or the reader's own kind's stays as it was (rule 8).
+# ════════════════════════════════════════════════════════════════════════════
+DOTS_HONOUR_CLAIMS_ENV = "OMR_DOTS_HONOUR_CLAIMS"
+BEAMS_HONOUR_CLAIMS_ENV = "OMR_BEAMS_HONOUR_CLAIMS"
+#: owner families whose ink a DOT box may legitimately stand on: a dot's own family and the other small-mark family (a staccato is `mark`).
+DOT_OWN_FAMILIES = ("dot", "mark")
+#: owner families whose ink a BEAM reader still counts: a beam fused to a head on a merging plate (Litolff) is the HEAD's blob stroke -- the
+#: head claims it, and that is no evidence the stroke holds no beam. Every other family (arc, arc_trace, hairpin, word, text, dynamic,
+#: accidental, ledger, mark, dot, clef, key, meter, barline, bracket, rests) is never a beam level.
+BEAM_MAYBE_FAMILIES = ("head",)
+
+
+def dots_honour_claims_enabled() -> bool:
+    """`OMR_DOTS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get(DOTS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def beams_honour_claims_enabled() -> bool:
+    """`OMR_BEAMS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get(BEAMS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _dot_ink_owned_elsewhere(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.243. `{"strokes": [...], "families": [...], "rows": [...]}` where EVERY stroke this dot box stands on (`Q.GLYPH_STROKES`,
+    at least the register's cover share inside the box) was DECIDED or MERGED by `Q.STROKE_OWNER` to a mark that is not a dot's own
+    family: the box is a slur's tip, a hairpin's end, a word's full stop, an accidental's piece -- not a dot and not a staccato. `None`
+    (the box stays a dot candidate, as before) where it stands on no filed stroke, on ink nobody claimed, on a CONTESTED stroke, or on
+    any stroke a dot / staccato owns (rule 8: "cannot tell" is not "not a dot")."""
+    rows = ev.rows(Q.GLYPH_STROKES)
+    if not rows or not isinstance(rows[-1].value, (list, tuple)) or not rows[-1].value:
+        return None
+    verdict = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    fam = _owner_families(verdict)
+    if not fam:
+        return None
+    ords = [int(o) for o in rows[-1].value]
+    got = [fam.get(o) for o in ords]
+    if any(g is None or g in DOT_OWN_FAMILIES for g in got):
+        return None
+    return {"strokes": ords, "families": sorted(set(got)), "rows": [rows[-1].id] + ([verdict.id] if verdict is not None else [])}
+
+
+def _beams_on_owned_strokes(ev: Evidence, cell, beams) -> Dict[str, str]:
+    """ROADMAP 2.243. `{beam row id: "owned_by_another_mark"}` for each beam row (CV stroke or detector box) whose box holds at least one
+    horizontal / curved / blob stroke of the stroke map and EVERY such stroke was DECIDED or MERGED by `Q.STROKE_OWNER` to a mark that
+    cannot be a beam level (not `BEAM_MAYBE_FAMILIES`): a hairpin's line, a slur's trace, a word, a sharp's crossbar, a ledger line. A box
+    with an unclaimed or contested stroke in it, a head-owned blob (a beam fused to a head), or no stroke at all keeps its place -- the
+    older tests judge it (rule 8)."""
+    verdict = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    fam = _owner_families(verdict)
+    if not fam:
+        return {}
+    from ..record import STROKE_GLYPH_BASE
+    shapes = []
+    for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        g = getattr(r.subject, "glyph", None)
+        d = r.detail or {}
+        box = d.get("stroke_box")
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4 or str(r.value) == "vertical":
+            continue
+        shapes.append((g - STROKE_GLYPH_BASE, [float(v) for v in box[:4]]))
+    out: Dict[str, str] = {}
+    for b in beams:
+        bx = _xywh(b)
+        if bx is None:
+            continue
+        inside = [o for o, sb in shapes if bx[0] <= sb[0] + sb[2] / 2.0 <= bx[0] + bx[2] and bx[1] <= sb[1] + sb[3] / 2.0 <= bx[1] + bx[3]]
+        if inside and all(fam.get(o) is not None and fam[o] not in BEAM_MAYBE_FAMILIES for o in inside):
+            out[b.id] = "owned_by_another_mark"
+    return out
 
 
 def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
