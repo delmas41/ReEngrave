@@ -115,6 +115,27 @@ Tests from each tile: `TestSeansRound2Tiles` (`test_owner_shape_2_238.py`).
   its notes are held out red, nothing invented.
 - **Tiles, round 2** `out/print/2.238-tiles-r2/tiles` (key.json outside; `owner_tiles_r2.py`): the 3 fixed places (as now written) +
   7 new changed places -- only 7 distinct staves changed that no earlier tile showed (one tile per staff), not 9.
+### 2.238 round 3 -- Sean's round-2 tiles (out/print/2.238-tiles-r2/answers.json)
+
+Right with the flag: 3, 7, 8, 10; 2, 6, 9 as main. **For the old-rule rework (not this lane), as listed by the manager:** r2 tile 2
+(Brahms `5/1/7/2/6`, a whole-note box on part of a quarter rest) and r2 tile 6 (Litolff `6/1/11/5/2`, a quarter-rest box on a half note
+and its stem; the half's head is unboxed in both arms).
+- **Wrong: r2 tile 1** (Brahms `5/0/13/2/5`, an eighth main writes, ON lost it). Cause: the bar is quarter, eighth (`/3`), quarter,
+  eighth in 6/8. The eighth `/3`'s stem and flag were boxed `restQuarter` (`/10`); GATHER's `refuse_owned` deleted the strokes inside
+  the rest box before `Q.STEM`, so `/3` has no stem and stays narrowed {eighth, quarter} in both arms. Main writes the false rest and the
+  bar is written; ON refused the rest (`rest_holds_a_stem`, right about the ink), the bar no longer summed and its notes were held out
+  red. A refusal cost real notes main writes. Fix: `rest_holds_a_stem` no longer refuses -- the old rules decide, and a box they keep is
+  written NARROWED (`rest_holds_a_stem`, GUESSED blue; `export.claim_guess_of`). Now: the bar as main, the false rest blue. The real
+  repair (read `/3`'s stem from the stroke map instead of deleting it) is GATHER's: `refuse_owned` (ink-map step 6). Test
+  `TestSeansRound3Tile`.
+- **r2 tile 4** (Brahms `5/1/5/2/4`): the gained blue mark is an eighth REST, the value Sean gives. Main refused it
+  `rest_stroke_into_a_head` at margin 0.03 (inside the 0.05 noise); the owner owns its ink. Blue because its whole bar is guessed in both
+  arms (`/1`, `/8`, `/7` blue OFF too).
+- **r2 tile 5** (Litolff `10/0/7/0/4`): eighth D4, beam begin, value eighth as Sean says. Round 2 refused the quarter-rest box `/9`
+  there and the bar turned blue; with round 3 the bar is as main and the rest box `/9` is written blue (narrowed `rest_holds_a_stem`).
+- **Lane report, round 3** (`--tag 20261029-night`): Litolff notes +1 -2, rests +3, accidentals +1 -1, beams +1 -1 ~2, blue +2 -4, words
+  +1 -3, red bars 199 -> 199; Brahms rests +1, blue +2, red bars 164 -> 164. Judged right->wrong 0 / 0, unwritten->wrong 0 / 0. All 12
+  of Sean's 2.237 places as he answered (only tile 10 differs from main: the eighth rest gained). Fast tier serial: 9421 passed, 0 failed.
 
 ## 2026-10-30 ROADMAP 2.237 -- rule-page refresh on fresh fires (measure only; nothing deleted)
 
