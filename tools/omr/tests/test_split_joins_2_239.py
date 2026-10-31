@@ -281,5 +281,18 @@ class BarlineClaimLeavesBracketInk(unittest.TestCase):
         self.assertEqual(self._run(""), [400])
 
 
+class LeftEdgeReadOnce(unittest.TestCase):
+    def test_the_one_page_wide_pass_takes_the_left_side_test_and_gather_scans_nothing(self):
+        from tools.omr import measure_extractor as ME
+        for word, want in (("0", False), ("1", True)):
+            with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: word}):
+                self.assertEqual(ME._left_edge_by_left(), want)
+        pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=np.zeros((10, 10), np.uint8)), staves=[],
+                                    system_structure={0: {"left_edge": {"marks": [{"kind": "bracket"}]}}})
+        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: "1"}), \
+                mock.patch.object(ME, "_left_edge_read", side_effect=AssertionError("scanned twice")):
+            self.assertEqual(G._left_edge_marks(pws, 0), [{"kind": "bracket"}])
+
+
 if __name__ == "__main__":
     unittest.main()
