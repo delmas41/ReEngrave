@@ -50,10 +50,26 @@ DERIVED_CHECK = False
 ENV = "OMR_PAGE_MARKS"
 #: the share of the smaller box's ink the two boxes must share (module doc: the register's one cut, not tuned)
 SHARE_MIN = 0.5
+#: a refused pair this close under the cut is a NEAR MISS, recorded as a margin only (step 2: never tuned on two plates)
+NEAR_MISS = 0.05
 
 
 def enabled() -> bool:
     return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: ROADMAP 2.240 step 2 (default OFF, allow-list): one owner per page mark, arcs/hairpins page-wide (`page_owner.py`), and the step-1 rule
+#: fix from Sean's tiles (`link(pieces=...)`). Needs `OMR_PAGE_MARKS`.
+OWNER_ENV = "OMR_PAGE_OWNER"
+
+
+#: The families one cell may box in two PIECES (step 2 (a)): long or lettered marks -- Sean's tiles 2 (a p) and 7 (a beam). A head, rest,
+#: accidental or dot is one compact glyph: two boxes of it in one cell are two marks (a box holding two heads is a chord, not one head).
+PIECE_FAMILIES = frozenset(("dynamic", "beam", "arc", "hairpin", "flag", "text"))
+
+
+def owner_enabled() -> bool:
+    return enabled() and os.environ.get(OWNER_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
 # ───────────────────────────── 1. the core (pure) ─────────────────────────────
@@ -134,9 +150,12 @@ class Marks:
     merged_pairs: List[Tuple[str, str, float]] = field(default_factory=list)
 
 
-def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = True) -> Marks:
+def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = True, pieces: Optional[bool] = None) -> Marks:
     """The page marks of one page's boxes (module doc). `guard=False` is the CONTROL's broken arm: every overlapping pair over the share
-    merges, and a mark may then hold two boxes of one cell that share no ink."""
+    merges, and a mark may then hold two boxes of one cell that share no ink. `pieces` (default: `OMR_PAGE_OWNER`) admits two ink-disjoint
+    boxes of one cell that both lie inside one box of the other cell (step 2 (a), Sean's step-1 tiles 2 and 7)."""
+    if pieces is None:
+        pieces = owner_enabled()
     by_fam: Dict[str, List[int]] = collections.defaultdict(list)
     for i, b in enumerate(boxes):
         if b.family is not None:
@@ -172,18 +191,37 @@ def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = Tr
             x = parent[x]
         return x
 
+    def inside(x: int, z: int) -> bool:
+        """Box x's ink lies (by `share_min` of it) inside box z's ink."""
+        n = boxes[x].pix.size
+        return bool(n) and np.intersect1d(boxes[x].pix, boxes[z].pix, assume_unique=True).size >= share_min * n
+
+    def pieces_of_one(x: int, y: int, members: Sequence[int]) -> bool:
+        """ROADMAP 2.240 step 2 (a), Sean's step-1 tiles 2 (one p) and 7 (one beam): ONE cell boxed one mark in two PIECES -- the two boxes
+        share no ink at all -- and both pieces lie inside ONE box of the other cell. A stacked third is not this: its two boxes overlap."""
+        if boxes[x].family not in PIECE_FAMILIES or shared(x, y) > 0.0:
+            return False
+        return any(boxes[z].cell != boxes[x].cell and inside(x, z) and inside(y, z) for z in members)
+
     def cell_twice(ri: int, rj: int) -> bool:
-        """Joining would put two boxes of ONE cell in one mark that do not themselves share the ink: two marks that cell saw apart."""
+        """Joining would put two boxes of ONE cell in one mark that do not themselves share the ink: two marks that cell saw apart --
+        unless they are two pieces of one mark the other cell boxed whole (`pieces_of_one`, flag `OMR_PAGE_OWNER`)."""
+        allm = comp[ri] + comp[rj]
         for x in comp[ri]:
             for y in comp[rj]:
                 if boxes[x].cell == boxes[y].cell and shared(x, y) < share_min:
+                    if pieces and pieces_of_one(x, y, allm):
+                        via_pieces[0] = True
+                        continue
                     return True
         return False
 
     merged_pairs: List[Tuple[str, str, float]] = []
+    via_pieces = [False]
     for share, i, j, iou in cands:
         bi, bj = boxes[i], boxes[j]
         ri, rj = find(i), find(j)
+        via_pieces[0] = False
         reason = None
         if not guard:
             reason = None if share >= share_min else "share_below"
@@ -201,8 +239,9 @@ def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = Tr
                 parent[rj] = ri
                 comp[ri] += comp.pop(rj)
             merged_pairs.append((bi.key, bj.key, share))
-        pairs[bi.key].append([bj.key, share, iou, merged, reason or "shared_ink"])
-        pairs[bj.key].append([bi.key, share, iou, merged, reason or "shared_ink"])
+        ok = "pieces_in_one_box" if via_pieces[0] else "shared_ink"
+        pairs[bi.key].append([bj.key, share, iou, merged, reason or ok])
+        pairs[bj.key].append([bi.key, share, iou, merged, reason or ok])
     comps: Dict[int, List[int]] = collections.defaultdict(list)
     for i in range(len(boxes)):
         comps[find(i)].append(i)
@@ -386,6 +425,8 @@ def page_report(boxes: Sequence[BoxInk], marks: Marks) -> Dict[str, Any]:
     iou_pairs = 0
     iou_merged = 0
     merged_low_iou = 0
+    near_miss = collections.Counter()
+    via_pieces = 0
     seen = set()
     for k, ps in marks.pairs.items():
         for other, share, iou, merged, reason in ps:
@@ -395,6 +436,10 @@ def page_report(boxes: Sequence[BoxInk], marks: Marks) -> Dict[str, Any]:
             seen.add(pk)
             if not merged:
                 refused[reason] += 1
+                if reason == "share_below" and share >= SHARE_MIN - NEAR_MISS:
+                    near_miss[box_of[k].family] += 1
+            elif reason == "pieces_in_one_box":
+                via_pieces += 1
             two_staves = box_of[k].cell[1:3] != box_of[other].cell[1:3]
             if cls[k] == cls[other] and two_staves and iou >= 0.5:
                 iou_pairs += 1
@@ -404,7 +449,8 @@ def page_report(boxes: Sequence[BoxInk], marks: Marks) -> Dict[str, Any]:
     return {"boxes": len(boxes), "marks": len(marks.members), "merged_pairs": len(marks.merged_pairs),
             "merged_by_family": dict(merged_by_fam), "candidate_pairs": len(seen), "refused_by_reason": dict(refused),
             "iou05_same_class_two_staves": iou_pairs, "iou05_of_them_merged": iou_merged, "merged_with_iou_below_0.5": merged_low_iou,
-            "twin_ink": twin_ink(boxes, marks.mark_of)}
+            "twin_ink": twin_ink(boxes, marks.mark_of),
+            "merged_as_pieces_in_one_box": via_pieces, "near_miss_share_below_by_family": dict(near_miss)}
 
 
 def record_marks(rows: Dict[str, List[dict]], page: int) -> Dict[str, int]:
@@ -483,7 +529,8 @@ def run(rec: str, pages: Optional[Sequence[int]] = None, out: Optional[pathlib.P
     log("  boxes %d -> marks %d; merged pairs %d %s" % (total["boxes"], total["marks"], total["merged_pairs"], total.get("merged_by_family", {})))
     log("  2.240 control: same-class two-staff pairs at IoU>=0.5 %d, of them merged %d; merges at IoU<0.5 %d" % (
         total["iou05_same_class_two_staves"], total["iou05_of_them_merged"], total["merged_with_iou_below_0.5"]))
-    log("  refused candidate pairs by reason %s" % total.get("refused_by_reason", {}))
+    log("  refused candidate pairs by reason %s; near misses (share within %.2f under the cut) %s; merged as two pieces in one box %d" % (
+        total.get("refused_by_reason", {}), NEAR_MISS, total.get("near_miss_share_below_by_family", {}), total.get("merged_as_pieces_in_one_box", 0)))
     log("  twin ink (one family, two cells): %d px before -> %d px after" % (b, a))
     if tile_pool is not None:
         tile_pool += pool
