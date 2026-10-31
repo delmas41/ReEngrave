@@ -225,6 +225,12 @@ def class_sign_stands(fam: Dict[str, Any], box: Sequence[float], sp: float) -> b
     return h <= 1.5 * g              # an UPPER bound only: a small box with unclear strokes keeps its class (the r2 control: a lower bound dropped 34 written flats)
 
 
+#: ROADMAP 2.247 r3 (Sean's r2 tiles): a flat's bowl side starts this far (spaces) below its stem's top, a natural's right upright less (it
+#: starts at the upper bar). Measured on Brahms at the right-stem-bowl-sized places: Sean's flats (r2 tiles 8-11) 1.19 / 1.31 / 1.31 / 1.31,
+#: his natural (r2 tile 12) 0.82. A cut-off measured on two plates: it only takes places BACK to 2.201's natural reading (narrows r2's rule).
+BOWL_SIDE_TOP_MIN_SP = 1.0
+
+
 #: SMuFL (Bravura) glyph heights, spaces (as `stroke_map.ACCIDENTAL_SIZE_SPACES`)
 _GLYPH_H_SP = {"accidentalsharp": 2.792, "accidentalflat": 2.456, "accidentalnatural": 2.704, "accidentaldoublesharp": 1.008,
                "accidentaldoubleflat": 2.448}
@@ -373,10 +379,12 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
     if gap < STEM_GAP_MIN_SP:
         return {**feat, "type": "unclear", "why": "stems_too_close", "margin": None}
     if (hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP and kind_enabled() and bot < NATURAL_STAGGER_MIN_SP
-            and float(right.length_sp) <= FLAT_BOWL_H_SP):
+            and float(right.length_sp) <= FLAT_BOWL_H_SP and top >= BOWL_SIDE_TOP_MIN_SP):
         # ROADMAP 2.247 r2 (Sean's r1 tile 8, Brahms p12: a flat read natural -- right "stem" 1.06 sp, its bottom level with the left's): a
         # natural's right upright HANGS below the left (its bottom lower) or, where that lower stroke is faint, still runs from the upper bar
         # past the lower one (~2 sp); a right stroke no taller than a flat's bowl (SMuFL ~1.2 sp) ending level with the stem is a bowl's side
+        # -- r3 (Sean's r2 tile 12, Brahms p4: a natural whose lower stroke is lost ALSO leaves a ~1 sp right upright ending level): only where
+        # that right stroke starts as low as a bowl does (`BOWL_SIDE_TOP_MIN_SP` below the stem's top); a natural's starts at its upper bar
         return {**feat, "type": "unclear", "why": "right_stem_bowl_sized", "margin": round(float(right.length_sp) - FLAT_BOWL_H_SP, 3),
                 "shape_candidates": ["natural", "flat"]}
     if hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP:

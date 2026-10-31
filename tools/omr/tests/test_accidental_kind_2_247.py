@@ -156,6 +156,23 @@ class RoundTwo(unittest.TestCase):
             self.assertEqual(AF.read_type([l1, r1], [0, 1], sp)["type"], "natural")
             self.assertEqual(_row(_natural)["type"], "natural")
 
+    def test_r3_tile12_natural_with_lost_lower_stroke_vs_tiles_8_to_11_flats(self):
+        # the measured strokes (r2 control, Brahms): (left len, right len, top stagger) -- bottoms level in all five
+        from types import SimpleNamespace as S
+        sp = 100.0
+
+        def read(left_len, right_len, top):
+            lh, rh = int(left_len * sp), int(right_len * sp)
+            left = S(kind="vertical", box=(0, 0, 20, lh), length_sp=left_len, touches=[])
+            right = S(kind="vertical", box=(56, lh - rh, 20, rh), length_sp=right_len, touches=[])
+            self.assertAlmostEqual((lh - rh) / sp, top, places=1)
+            return AF.read_type([left, right], [0, 1], sp)
+        with mock.patch.dict(os.environ, {AF.KIND_ENV: "1"}):
+            self.assertEqual(read(1.88, 1.06, 0.82)["type"], "natural")                      # r2 tile 12 (glyph/4/1/8/6/7): Sean "most of a natural"
+            for n, (l, r, t) in {8: (1.94, 0.75, 1.19), 9: (2.25, 0.94, 1.31), 10: (2.31, 1.0, 1.31), 11: (2.12, 0.81, 1.31)}.items():
+                got = read(l, r, t)
+                self.assertEqual((got["type"], got["why"]), ("unclear", "right_stem_bowl_sized"), n)   # Sean: flat
+
     def test_class_sign_never_written_where_the_shape_excludes_it(self):
         sp = 100.0
         unclear_nf = {"type": "unclear", "detector_type": "sharp", "detector_class": "accidentalSharp",
