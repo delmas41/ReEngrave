@@ -335,20 +335,32 @@ def arc_spans(system_arcs: Sequence[Dict[str, Any]], mark_of: Dict[str, int], un
     cols = [_trace_cols(a.get("trace")) for a in system_arcs]
     marks = [{mark_of[p] for p in a.get("pieces", ()) if p in mark_of} for a in system_arcs]
     why: Dict[Tuple[int, int], str] = {}
+    comp: Dict[int, List[int]] = {i: [i] for i in range(n)}
+    cands: List[Tuple[float, int, int, str]] = []
     order = sorted(range(n), key=lambda i: system_arcs[i]["x0"])
     for ai, i in enumerate(order):
         for j in order[ai + 1:]:
             if system_arcs[j]["x0"] > system_arcs[i]["x1"]:
                 break
-            if system_arcs[i]["system"] != system_arcs[j]["system"]:
-                continue
+            if system_arcs[i]["system"] != system_arcs[j]["system"] or system_arcs[i]["staff"] == system_arcs[j]["staff"]:
+                continue                     # one staff's views: the per-staff tracer already joined what is one curve there
             if marks[i] & marks[j]:
-                why[(i, j)] = "one_page_mark"
-            elif trace_share(cols[i], cols[j]) >= SAME_TRACE_SHARE:
-                why[(i, j)] = "same_trace"
+                cands.append((2.0, min(i, j), max(i, j), "one_page_mark"))
             else:
-                continue
-            parent[find(j)] = find(i)
+                sh = trace_share(cols[i], cols[j])
+                if sh >= SAME_TRACE_SHARE:
+                    cands.append((sh, min(i, j), max(i, j), "same_trace"))
+    # greedy, strongest first; a page arc never holds two views of ONE staff that the per-staff tracer kept apart: a long trace from the
+    # neighbour's crop that runs over two arcs of this staff joins one of them, never glues the two together
+    for _sh, i, j, how in sorted(cands, key=lambda t: (-t[0], t[1], t[2])):
+        ri, rj = find(i), find(j)
+        if ri == rj:
+            continue
+        if {system_arcs[x]["staff"] for x in comp[ri]} & {system_arcs[x]["staff"] for x in comp[rj]}:
+            continue
+        why[(i, j)] = how
+        parent[rj] = ri
+        comp[ri] += comp.pop(rj)
     groups: Dict[int, List[int]] = collections.defaultdict(list)
     for i in range(n):
         groups[find(i)].append(i)
@@ -558,17 +570,48 @@ def compare_old(own: Dict[int, Dict[str, Any]], old: Dict[str, List[Tuple[str, s
                 else:
                     label = "%s:%s" % (q, reason)
                 if r["status"] == "abstain":
-                    res[label]["owner_silent"] += 1
+                    res[label]["owner_silent:%s" % r.get("family")] += 1
                     continue
                 staff = _staff_of_glyph(m)
                 if kind == "keeps":
                     ok = value == r["owner"]
+                elif staff == r["owner"] and (sum(1 for x in r["members"] if _staff_of_glyph(x) == staff) > 1
+                                              or reason == "notehead_is_a_duplicate_box"):
+                    # a copy dropped beside another box of the SAME staff (in this mark, or a same-cell twin page marks leave to 2.186):
+                    # not a choice between staves, so neither agrees nor disagrees with the owner
+                    res[label]["same_staff_twin"] += 1
+                    continue
                 else:
                     ok = staff != r["owner"]
                 res[label]["agrees" if ok else "disagrees"] += 1
                 if r["status"] == "guessed":
                     res[label]["of_them_owner_guessed"] += 1
     return {k: dict(v) for k, v in sorted(res.items())}
+
+
+def compare_record(path: pathlib.Path, log=print) -> Dict[str, Any]:
+    """The WRITTEN record (a small gathered + adjudicated `.record.json`, OMR_PAGE_OWNER on): its own `Q.PAGE_MARK_OWNER` rows against its own
+    old cell-copy verdicts (`glyph_owner` incl. `distance`, `owned_by_another_staff`, ...), by place."""
+    from .judged import iter_array
+    own: Dict[Any, Dict[str, Any]] = {}
+    for kind in ("observations", "abstentions"):
+        for o in iter_array(path, kind):
+            if o.get("quantity") != "page_mark_owner":
+                continue
+            d = o.get("detail") or {}
+            mem = list(d.get("members") or [o["subject"]])
+            own[(o["subject"], d.get("page_mark"))] = {
+                "members": mem, "seen_from": sorted({_staff_of_glyph(m) for m in mem}), "family": d.get("family"),
+                "status": "abstain" if kind == "abstentions" else d.get("status"), "owner": o.get("value") if kind == "observations" else None,
+                "reason": o.get("reason") if kind == "abstentions" else d.get("reason")}
+    old: Dict[str, List[Tuple[str, str, Any, str]]] = collections.defaultdict(list)
+    for v in iter_array(path, "verdicts"):
+        q, r = v.get("quantity"), v.get("reason")
+        if ((q, None) in OLD_RULES or (q, r) in OLD_RULES) and str(v.get("subject", "")).startswith("glyph/"):
+            old[v["subject"]].append((q, v.get("outcome"), v.get("value"), r))
+    res = compare_old(own, old)
+    log("  %s: %d page-mark owners; old rules vs owner %s" % (path.name, len(own), res))
+    return {"record": str(path), "marks": len(own), "old_rules": res}
 
 
 def page_readout(own: Dict[int, Dict[str, Any]], sp: Dict[str, Any]) -> Dict[str, Any]:
@@ -849,12 +892,14 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     r.add_argument("--tiles", default=None, help="cut 12 blind tiles over all RECs into DIR/tiles (key.json beside)")
     r.add_argument("--cell-map", default=None)
     r.add_argument("--no-old", action="store_true", help="skip the old cell-copy rules' verdicts")
+    k = sub.add_parser("compare", help="a written .record.json (OMR_PAGE_OWNER on): its owners vs its own old cell-copy verdicts")
+    k.add_argument("record", nargs="+")
     c = sub.add_parser("controls")
     c.add_argument("rec")
     c.add_argument("--page", type=int, required=True)
     c.add_argument("--cell-map", default=None)
     a = ap.parse_args(argv)
-    cm = pathlib.Path(a.cell_map) if a.cell_map else None
+    cm = pathlib.Path(a.cell_map) if getattr(a, "cell_map", None) else None
     if a.cmd == "readout":
         pages = [int(p) for p in a.pages.split(",")] if a.pages else None
         if pages and len(a.rec) > 1:
@@ -866,6 +911,10 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         if a.tiles:
             cut_tiles(pool, pathlib.Path(a.tiles))
             print("tiles: %s/tiles (key.json beside the folder)" % a.tiles)
+        return 0
+    if a.cmd == "compare":
+        for r in a.record:
+            compare_record(pathlib.Path(r))
         return 0
     return 1 if controls(a.rec, a.page, cm) else 0
 

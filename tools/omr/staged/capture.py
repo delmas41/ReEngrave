@@ -502,7 +502,7 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         None),
 
     "PAGE_MARK_OWNER": (
-        RELATION,
+        DERIVED_FIT,
         "ROADMAP 2.240 step 2: which staff owns a page mark, from its ledger lines, stem or the staff's own lines. Scoreless: the witnesses "
         "are recorded, no confidence; nothing reads it yet.",
         None),
