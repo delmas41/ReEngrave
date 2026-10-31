@@ -1,0 +1,389 @@
+[
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1025.7,
+   2519.2,
+   1038.1,
+   2567.8
+  ],
+  "role": "2.242r2-tile1",
+  "subject": "glyph/2/1/3/4/5",
+  "cls": "accidentalFlat",
+  "strokes": "natural",
+  "tile": 1,
+  "crop_origin": [
+   937,
+   2464
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "cell": 4,
+   "page_box": [
+    1025.7,
+    2519.2,
+    1038.1,
+    2567.8
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1935.9,
+   3208.4,
+   1947.1,
+   3236.9
+  ],
+  "role": "class-vs-strokes",
+  "subject": "glyph/10/1/8/9/10",
+  "cls": "accidentalNatural",
+  "strokes": "flat",
+  "tile": 2,
+  "crop_origin": [
+   1847,
+   3143
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 8,
+   "cell": 9,
+   "page_box": [
+    1935.9,
+    3208.4,
+    1947.1,
+    3236.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   2944.6,
+   1203.9,
+   2967.5,
+   1247.0
+  ],
+  "role": "class-vs-strokes",
+  "subject": "glyph/19/0/2/4/10",
+  "cls": "accidentalNatural",
+  "strokes": "flat",
+  "tile": 3,
+  "crop_origin": [
+   2764,
+   1065
+  ],
+  "position": {
+   "page": 19,
+   "system": 0,
+   "staff": 2,
+   "cell": 4,
+   "page_box": [
+    2944.6,
+    1203.9,
+    2967.5,
+    1247.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   890.2,
+   1711.8,
+   906.1,
+   1738.0
+  ],
+  "role": "now-unclear",
+  "subject": "glyph/4/0/8/3/1",
+  "cls": "accidentalFlat",
+  "on_why": "flat_too_small",
+  "tile": 4,
+  "crop_origin": [
+   803,
+   1646
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 8,
+   "cell": 3,
+   "page_box": [
+    890.2,
+    1711.8,
+    906.1,
+    1738.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2231.6,
+   3228.5,
+   2249.2,
+   3241.9
+  ],
+  "role": "written-changed",
+  "subject": "glyph/2/1/7/12/5",
+  "cls": "accidentalSharp",
+  "off": "b",
+  "on": "#",
+  "tile": 5,
+  "crop_origin": [
+   2145,
+   3156
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 7,
+   "cell": 12,
+   "page_box": [
+    2231.6,
+    3228.5,
+    2249.2,
+    3241.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   683.8,
+   742.0,
+   702.4,
+   762.9
+  ],
+  "role": "written-changed",
+  "subject": "glyph/2/0/3/1/8",
+  "cls": "accidentalDoubleSharp",
+  "off": "b",
+  "on": "##",
+  "tile": 6,
+  "crop_origin": [
+   598,
+   673
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    683.8,
+    742.0,
+    702.4,
+    762.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   1783.6,
+   3558.3,
+   1809.5,
+   3612.2
+  ],
+  "role": "now-unclear",
+  "subject": "glyph/4/0/13/2/1",
+  "cls": "accidentalFlat",
+  "on_why": "flat_too_small",
+  "tile": 7,
+  "crop_origin": [
+   1604,
+   3425
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 13,
+   "cell": 2,
+   "page_box": [
+    1783.6,
+    3558.3,
+    1809.5,
+    3612.2
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   2786.8,
+   6206.4,
+   2816.3,
+   6272.0
+  ],
+  "role": "class-vs-strokes",
+  "subject": "glyph/12/1/9/4/0",
+  "cls": "accidentalFlat",
+  "strokes": "natural",
+  "tile": 8,
+  "crop_origin": [
+   2609,
+   6079
+  ],
+  "position": {
+   "page": 12,
+   "system": 1,
+   "staff": 9,
+   "cell": 4,
+   "page_box": [
+    2786.8,
+    6206.4,
+    2816.3,
+    6272.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   861.2,
+   4479.1,
+   890.9,
+   4555.1
+  ],
+  "role": "class-vs-strokes",
+  "subject": "glyph/14/1/1/0/20",
+  "cls": "keySharp",
+  "strokes": "flat",
+  "tile": 9,
+  "crop_origin": [
+   684,
+   4357
+  ],
+  "position": {
+   "page": 14,
+   "system": 1,
+   "staff": 1,
+   "cell": 0,
+   "page_box": [
+    861.2,
+    4479.1,
+    890.9,
+    4555.1
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   1979.0,
+   1225.4,
+   1992.1,
+   1285.2
+  ],
+  "role": "class-vs-strokes",
+  "subject": "glyph/8/0/5/16/1",
+  "cls": "accidentalFlat",
+  "strokes": "natural",
+  "tile": 10,
+  "crop_origin": [
+   1891,
+   1176
+  ],
+  "position": {
+   "page": 8,
+   "system": 0,
+   "staff": 5,
+   "cell": 16,
+   "page_box": [
+    1979.0,
+    1225.4,
+    1992.1,
+    1285.2
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4686.0,
+   4796.7,
+   4709.3,
+   4836.9
+  ],
+  "role": "written-changed",
+  "subject": "glyph/4/1/2/7/8",
+  "cls": "accidentalNatural",
+  "off": "b",
+  "on": "natural",
+  "tile": 11,
+  "crop_origin": [
+   4505,
+   4656
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 2,
+   "cell": 7,
+   "page_box": [
+    4686.0,
+    4796.7,
+    4709.3,
+    4836.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1879.1,
+   520.8,
+   1890.9,
+   538.0
+  ],
+  "role": "now-unclear",
+  "subject": "glyph/4/0/0/10/4",
+  "cls": "accidentalFlat",
+  "on_why": "flat_too_small",
+  "tile": 12,
+  "crop_origin": [
+   1790,
+   450
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 10,
+   "page_box": [
+    1879.1,
+    520.8,
+    1890.9,
+    538.0
+   ]
+  },
+  "cell_map": null
+ }
+]
