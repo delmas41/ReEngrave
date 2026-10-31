@@ -165,7 +165,7 @@ picks a mark two views agree on); (c) a two-view page arc: one view's trace move
 NOT byte-identical: Litolff +1 `cresc.` word, Brahms -1 `Cresc` word. A content diff of every GATHER row (row ids blanked, `s2/rowdiff.py`)
 shows the only differing rows are OCR -- `direction_word` (read by `surya` even under `--no-surya`: 59 / 164 rows), the word claims built on
 them (5 / 3) and `input_domain` (2 / 2). Every non-OCR row is identical. Step 1 called its `--no-surya` run byte-identical: that was luck;
-`--no-surya` does not hold the direction-word reader fixed. LANE_REPORT_PLACEHOLDER
+`--no-surya` does not hold the direction-word reader fixed. The shared lane report (`LANE_REPORT_SAMPLE=s2/sample2.json lane_report --flag OMR_PAGE_MARKS --flag OMR_PAGE_OWNER --from gather --cell-map master --tag 20261029-night`, Surya on, `s2/lane_report.log`): Litolff pp. 2,4 and Brahms pp. 4,5 -- NOTHING CHANGED in the exported file (1,497 / 2,145 notes+rests paired); Sean's judged answers right->wrong 0 (188 / 174 tiles), unwritten->wrong 0.
 
 **Tiles for Sean** `out/print/2.240-s2-tiles/tiles/` (12; key `out/print/2.240-s2-tiles/key.json`, outside the tile folder): 7 owner decisions
 (4 `ledger_over_stem`, 3 `stem`; no GUESSED case exists on the sample) on the staff the record names, 5 page-wide marks (one hairpin, four
