@@ -81,6 +81,12 @@ NOT_LEDGER_COLS = 3
 #: a head-class box this many staff spaces wide or wider is not ONE head (2.245 `box_kind.head_box_misfit`, `HEAD_BOX_MAX_W_SP`, unmerged branch
 #: lane-2.245-wrong-kind: the same number, restated here so this lane does not import an unmerged module; use its function once it lands)
 HEAD_BOX_MAX_W_SP = 3.0
+#: ROADMAP 2.240 step 3 (tile 8): a traced "arc" whose centre line strays less than this many staff spaces from its chord is FLAT -- a
+#: ledger line, a beam or a hairpin leg the detector boxed as a tie/slur, not curve ink -- and its rows are no reason to drop a ledger rung.
+#: The number is 2.245's `box_kind.ARC_MIN_BOW_SP` (an arc bows; Sean's 2.245 tiles 6, 7, 11 -- 3/3 straight 'ties' were hairpin legs),
+#: restated because that branch is unmerged; 2.245 gates it at >= 3 sp long, here there is no length gate: tile 8's 'tie' is a 1.78 sp
+#: ledger line (Litolff p4 glyph/4/1/1/3/10, bow 0.0).
+ARC_MIN_BOW_SP = 0.15
 FAMILY_HEAD = "head"
 SPAN_FAMILIES = ("arc", "hairpin")
 
@@ -88,6 +94,7 @@ SPAN_FAMILIES = ("arc", "hairpin")
 def enabled() -> bool:
     from .page_marks import owner_enabled
     return owner_enabled()
+
 
 
 # ───────────────────────────── 1. rows: one interface over the log (GATHER) and a slice (readout) ─────────────────────────────
@@ -251,7 +258,7 @@ def not_ledger_maker(sys_arc_obs: Iterable[Tuple[str, Any, Dict[str, Any]]], sta
     arcs = []
     for a in system_arcs_of(sys_arc_obs):
         cols = _trace_cols(a["trace"])
-        if cols:
+        if cols and trace_bows(a["trace"], a.get("sp")):
             arcs.append((min(cols), max(cols), cols))
 
     def make(cx: float, cand_key: str, th: float):
@@ -373,6 +380,52 @@ def _ledger_stem_owner(led, stem, wit, out, cands):
     return out("abstain", None, "owner_no_witness", cands)
 
 
+# ───────────────────────────── 3b. the consumer's reading of an owner row (ROADMAP 2.240 step 3) ─────────────────────────────
+
+#: `OMR_PAGE_OWNER_READ` (ROADMAP 2.240 step 3, default OFF): ADJUDICATE's `glyph_owner` / `arc_owner` read the page owner first.
+READ_ENV = "OMR_PAGE_OWNER_READ"
+#: a head refused for one of these reasons was refused because ANOTHER copy was chosen -- the copy-choosing rules the page owner
+#: replaces; such a refusal is no evidence that the box is not a head, so its witnesses still count
+COPY_CHOICE_REFUSALS = ("belongs_to_a_nearer_staff",)
+#: the reasons a mark's owner rests on its head members' own ledger / stem / hairpin witnesses (re-derived without refused members)
+WITNESS_REASONS = ("ledger", "ledger_and_stem", "ledger_over_stem", "stem", "ledger_views_disagree", "owner_no_rungs", "owner_no_witness",
+                   "hairpin", "hairpin_disagrees")
+
+
+def read_enabled() -> bool:
+    return enabled() and os.environ.get(READ_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def consumer_owner(status: str, owner: Optional[str], reason: str, detail: Dict[str, Any], refused: Sequence[str]) -> Dict[str, Any]:
+    """What ADJUDICATE may take from one `Q.PAGE_MARK_OWNER` row, given the member boxes ADJUDICATE itself REFUSED as not a head (2.245
+    hand-off case 1: page marks only from boxes ADJUDICATE did not refuse -- applied HERE, by place, because GATHER runs before ADJUDICATE).
+    Returns {status: decided|guessed|abstain, owner, reason, candidates}.
+      * no member refused -> the row as filed;
+      * every member refused -> abstain `page_owner_all_refused` (the mark is not a head; the old rules and EXPORT's refusal stand);
+      * some refused, owner from the members' own witnesses -> re-derived from the unrefused members' witnesses (`_ledger_stem_owner`);
+        an owner from the staff's lines (`inside_staff`) is the mark's place, which a refused twin of the same ink does not move."""
+    members = list(detail.get("members") or [])
+    cands = list(detail.get("candidates") or ([owner] if owner else []))
+    base = {"status": status, "owner": owner, "reason": reason, "candidates": cands}
+    gone = [m for m in members if m in set(refused)]
+    if not gone:
+        return base
+    keep = [m for m in members if m not in set(gone)]
+    if not keep:
+        return {"status": "abstain", "owner": None, "reason": "page_owner_all_refused", "candidates": []}
+    if reason.split("+")[0] not in WITNESS_REASONS:
+        return base
+    wit = dict(detail.get("witnesses") or {})
+    led = {m: (wit.get("ledger") or {}).get(m) for m in keep}
+    stem = {m: (wit.get("stem") or {}).get(m) for m in keep}
+
+    def out(st, ow, rs, cs=None):
+        return {"status": st, "owner": ow, "reason": rs, "candidates": cs or ([ow] if ow else [])}
+    r = _ledger_stem_owner(led, stem, {}, out, wit.get("candidates") or cands)
+    r["reason"] = r["reason"] + ":unrefused"
+    return r
+
+
 def union_box(boxes: Iterable[Sequence[float]]) -> List[float]:
     bs = list(boxes)
     return [min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs)]
@@ -399,6 +452,21 @@ def owners(marks: Any, boxes: Sequence[Any], frames: Dict[str, List[StaffBar]], 
 
 def _trace_cols(tr: Sequence[Sequence[float]]) -> Dict[int, Tuple[float, float]]:
     return {int(t[0]): (float(t[1]), float(t[2])) for t in tr or () if len(t) >= 3}
+
+
+def trace_bow_sp(tr: Sequence[Sequence[float]], sp: float) -> Optional[float]:
+    """The largest distance of a trace's centre line from its chord, in staff spaces (2.245's `trace_bow`), or None (too short / no sp)."""
+    pts = sorted((float(t[0]), (float(t[1]) + float(t[2])) / 2.0) for t in tr or () if len(t) >= 3)
+    if len(pts) < 3 or not sp or sp <= 0 or pts[-1][0] <= pts[0][0]:
+        return None
+    (x0, c0), (x1, c1) = pts[0], pts[-1]
+    return max(abs(c - (c0 + (c1 - c0) * (x - x0) / (x1 - x0))) for x, c in pts) / float(sp)
+
+
+def trace_bows(tr: Sequence[Sequence[float]], sp: Optional[float]) -> bool:
+    """A trace is curve ink when it bows at least `ARC_MIN_BOW_SP`; unmeasurable (no sp) counts as curve -- the step-2 behaviour."""
+    b = trace_bow_sp(tr, sp or 0.0)
+    return True if b is None and not sp else bool(b is not None and b >= ARC_MIN_BOW_SP)
 
 
 def trace_share(a: Dict[int, Tuple[float, float]], b: Dict[int, Tuple[float, float]]) -> float:
@@ -549,7 +617,8 @@ def system_arcs_of(obs: Iterable[Tuple[str, Any, Dict[str, Any]]]) -> List[Dict[
         out.append({"key": subj, "staff": "staff/%s/%s/%s" % (p[1], p[2], p[3]), "system": "%s/%s" % (p[1], p[2]),
                     "pieces": list(d.get("pieces") or [subj]), "trace": tr, "cells": list(d.get("cells") or []),
                     "anchors": [d.get("anchor_left"), d.get("anchor_right")], "x0": float(d.get("x_left_page", tr[0][0])),
-                    "x1": float(d.get("x_right_page", tr[-1][0])), "cut_at_barline": bool(d.get("cut_at_barline"))})
+                    "x1": float(d.get("x_right_page", tr[-1][0])), "cut_at_barline": bool(d.get("cut_at_barline")),
+                    "sp": d.get("space_page_px")})
     return out
 
 
@@ -675,10 +744,28 @@ def gather_page_owners(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
     hairpin (module doc). After the far-head ledger readings and the stem reach (it reads them) and the CV wedges; files rows only."""
     if not enabled() or marks is None or not getattr(marks, "boxes", None):
         return None
+    return _file_page_owners(log, staff_frames(cells, local), marks, progress=progress)
+
+
+def defer_page_owners(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], marks: Any) -> Optional[Tuple[Dict[str, List[StaffBar]], Any]]:
+    """ROADMAP 2.240 step 3: what `file_deferred_page_owners` needs once the page's far-head ledger readings exist (the staff frames --
+    small -- and the page marks); the page's cells and raster are not kept."""
+    if not enabled() or marks is None or not getattr(marks, "boxes", None):
+        return None
+    return staff_frames(cells, local), marks
+
+
+def file_deferred_page_owners(log: Any, deferred: Optional[Tuple[Dict[str, List[StaffBar]], Any]], *, progress: bool = False):
+    """The deferred page's owners, filed at the end of GATHER (after `finish_far_head_ledger_positions`)."""
+    if deferred is None:
+        return None
+    return _file_page_owners(log, deferred[0], deferred[1], progress=progress)
+
+
+def _file_page_owners(log: Any, frames: Dict[str, List[StaffBar]], marks: Any, *, progress: bool = False) -> Optional[Dict[str, Any]]:
     from . import record as R
     from .gather import FRAME_PAGE
     from .record import Q, READERS, Scope
-    frames = staff_frames(cells, local)
     rows = LogRows(log)
     page = marks.boxes[0].cell[0]
     pg = R.page(page)

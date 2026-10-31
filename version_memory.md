@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.240 step 3: the later stages read the page owner (lane-2.240-s3-export, `OMR_PAGE_OWNER_READ` OFF, not merged)
+- Hotfix (on main f7422b035): `ABSTAIN.OWNER_BOX_NOT_ONE_HEAD` -- main's gather with OMR_PAGE_OWNER ON raised on the first >= 3 sp head box.
+- Tile 8's three causes fixed in GATHER rows: the ledger gap / hidden-ledger looks honour the owner's `not_ledger` filter (the slur was re-counted);
+  a flat traced 'arc' (a ledger boxed as a tie) is not `arc_ink`; a page whose far heads are held files its owners after their ledger readings.
+- `glyph_owner` / `arc_owner` read the page owner / page span owner under `OMR_PAGE_OWNER_READ` (decided plain, GUESSED blue, abstain -> old tiers;
+  refused members' witnesses dropped). Lane report (frozen sample, replay): judged right->wrong 0 both plates; L notes -1 slurs/ties moved, B notes -6.
+- Tiles: out/print/2.240-s4-tiles (file changes + tile 8), out/print/2.240-s4-rules-tiles (distance / range_veto vs the owner). FINDINGS step 3.
+
 ## 2026-10-31 -- 2.223 fix after Sean's tiles (11/12): a hairpin inside an UNREAD word candidate abstains
 - Tile 11 (Litolff p16 'Bassi'): the words reader saw the candidate but OCR returned no reading, so no word claim existed; the binder now reads `direction_word` `no_reading` boxes as word ink (same width limit). one_test: Litolff wedges -2 -> -3, everything else as m3; judged right->wrong 0; fast tier 9,549. Flags still OFF.
 

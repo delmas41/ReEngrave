@@ -1,0 +1,21 @@
+  slice brahms observations: 370491 rows kept (4s)
+  slice brahms abstentions: 45418 rows kept (5s)
+  slice brahms verdicts: 0 rows kept (5s)
+LANE REPORT  OMR_PAGE_OWNER_READ (OFF=0 ON=1)  --from adjudicate
+  OMR_PAGE_OWNER_READ: read in staged/adjudicators/ownership.py, staged/export.py, staged/page_owner.py, staged/reach.py -> GATHER
+  REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6638 notes+rests OFF, 6634 ON, 6632 paired)
+  file:   notes -6 | rests +2 | dots -4 | flags -2 | ties +41 -2 | slurs +60 -29 | note values ~2 | words +2 -3
+  red bars 164 -> 162 | notes not written 3094 -> 3100
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (254 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 1 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 369 | position but no mark here 0
+  NOT JUDGED: 146 changed places no tile of Sean's covers (2 are covered; 5 have no page place): dot 4, flag 1, note 5, rest 2, slur 89, tie 43, value 2 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 12, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 1612 s

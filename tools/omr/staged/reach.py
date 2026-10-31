@@ -68,16 +68,7 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
-    Q.PAGE_MARK_OWNER: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 2, `OMR_PAGE_OWNER`, default OFF): one owner staff per page mark from "
-        "its ledger lines / stem / the staff's own lines, never nearness. Step 3 retires the cell-copy rules where it agrees, on tiles."),
-    Q.PAGE_SPAN: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 2, `OMR_PAGE_OWNER`, default OFF): each arc / hairpin read page-wide once. "
-        "Its readers are the claim (step 3, the stroke owner is another lane's fence) and the binding to notes (ROADMAP 2.223)."),
-    Q.PAGE_MARK: (
-        "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 1, `OMR_PAGE_MARKS`, default OFF): page-mark ids beside today's verdicts, "
-        "proved by byte identity. Its first reader is step 2 (one owner per page mark, benchmarks/page-ledger-2026-10/FINDINGS.md). This entry "
-        "LEAVES the day a decision reads it."),
+    # ROADMAP 2.240 step 3: Q.PAGE_MARK / Q.PAGE_MARK_OWNER / Q.PAGE_SPAN are read by `glyph_owner` / `arc_owner` (OMR_PAGE_OWNER_READ).
     Q.DYNAMIC_ANCHOR: (
         "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
         "(Sean 2026-10-09: a dynamic is anchored to ONE note) is GATHER+"

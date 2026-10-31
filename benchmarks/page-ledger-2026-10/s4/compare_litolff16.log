@@ -1,0 +1,53 @@
+pages before [2, 4, 6, 16] after [2, 4, 6, 16]
+head boxes with an owner: before 3486 after 3486; owner/status changed 146
+  changes by (before reason -> after reason): {'decided:stem -> decided:ledger_over_stem': 6, 'abstain:owner_no_witness -> decided:ledger': 140}
+    glyph/6/1/0/9/1 ('decided', 'staff/6/1/0', 'stem') -> ('decided', 'staff/6/1/1', 'ledger_over_stem')
+    glyph/6/1/1/9/1 ('decided', 'staff/6/1/0', 'stem') -> ('decided', 'staff/6/1/1', 'ledger_over_stem')
+    glyph/6/1/0/9/4 ('decided', 'staff/6/1/0', 'stem') -> ('decided', 'staff/6/1/1', 'ledger_over_stem')
+    glyph/6/1/1/9/2 ('decided', 'staff/6/1/0', 'stem') -> ('decided', 'staff/6/1/1', 'ledger_over_stem')
+    glyph/6/1/2/6/0 ('decided', 'staff/6/1/2', 'stem') -> ('decided', 'staff/6/1/3', 'ledger_over_stem')
+    glyph/6/1/3/6/2 ('decided', 'staff/6/1/2', 'stem') -> ('decided', 'staff/6/1/3', 'ledger_over_stem')
+    glyph/2/0/0/1/3 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/0/2/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/0/3/0 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/0/4/4 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/0/5/0 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/1', 'ledger')
+    glyph/2/0/1/5/0 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/1', 'ledger')
+    glyph/2/0/0/5/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/0/5/2 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/1', 'ledger')
+    glyph/2/0/1/5/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/1', 'ledger')
+    glyph/2/0/0/5/3 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/1', 'ledger')
+    glyph/2/0/1/5/4 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/1', 'ledger')
+    glyph/2/0/0/5/5 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/0/5/6 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/0', 'ledger')
+    glyph/2/0/2/0/7 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/3', 'ledger')
+    glyph/2/0/3/0/5 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/3', 'ledger')
+    glyph/2/0/3/0/7 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/3', 'ledger')
+    glyph/2/0/3/2/2 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/3', 'ledger')
+    glyph/2/0/8/12/0 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/8', 'ledger')
+    glyph/2/0/8/15/0 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/8', 'ledger')
+    glyph/2/0/9/0/6 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/10', 'ledger')
+    glyph/2/0/10/0/3 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/10', 'ledger')
+    glyph/2/0/10/0/4 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/10', 'ledger')
+    glyph/2/0/10/2/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/0/10', 'ledger')
+    glyph/2/1/0/5/2 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/0', 'ledger')
+    glyph/2/1/0/6/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/0', 'ledger')
+    glyph/2/1/0/7/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/0', 'ledger')
+    glyph/2/1/0/8/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/0', 'ledger')
+    glyph/2/1/0/9/7 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/0', 'ledger')
+    glyph/2/1/0/13/3 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/0', 'ledger')
+    glyph/2/1/5/10/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/5', 'ledger')
+    glyph/2/1/6/10/6 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/5', 'ledger')
+    glyph/2/1/6/7/0 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/7', 'ledger')
+    glyph/2/1/7/7/2 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/7', 'ledger')
+    glyph/2/1/8/12/1 ('abstain', None, 'owner_no_witness') -> ('decided', 'staff/2/1/8', 'ledger')
+rungs dropped as arc_ink: before 59, after 57; KEPT now (their only 'arc' is a flat trace) 2
+     ('glyph/4/1/1/3/5', 'staff/4/1/2', 2433.5)
+     ('glyph/4/1/2/3/3', 'staff/4/1/2', 2433.5)
+owner-ledger readings that changed fits/pos: 10
+before glyph/4/1/1/3/5 ('decided', 'staff/4/1/2', 'stem', 'head')
+      {'candidate': 'staff/4/1/1', 'fits': True, 'pos': 12, 'ledger_reason': 'on ledger 2 (through_the_box_middle; 1 between it and the staff, 2.40 sp out)', 'not_ledger_dropped': [[2452.5, 'other_staff_line']], 'rungs_between': [2395.0], 'line_y': 2416.0, 'line_how': 'through_the_box_middle'}
+      {'candidate': 'staff/4/1/2', 'fits': False, 'pos': None, 'ledger_reason': 'count_does_not_fit (gaps 2.33 sp: a gap holds room for a different count than found)', 'not_ledger_dropped': [[2433.5, 'arc_ink']], 'rungs_between': [], 'line_y': 2416.0, 'line_how': 'through_the_box_middle'}
+after glyph/4/1/1/3/5 ('decided', 'staff/4/1/2', 'ledger_and_stem', 'head')
+      {'candidate': 'staff/4/1/2', 'fits': True, 'pos': -4, 'ledger_reason': 'on ledger 2 (through_the_box_middle; 1 between it and the staff, 2.33 sp out)', 'not_ledger_dropped': [], 'rungs_between': [2433.5], 'line_y': 2416.0, 'line_how': 'through_the_box_middle'}
+      {'candidate': 'staff/4/1/1', 'fits': False, 'pos': None, 'ledger_reason': 'count_does_not_fit (gaps 2.40 sp: a gap holds room for a different count than found)', 'not_ledger_dropped': [[2452.5, 'other_staff_line']], 'rungs_between': [], 'line_y': 2416.0, 'line_how': 'through_the_box_middle'}
