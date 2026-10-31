@@ -864,6 +864,18 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             pts = merge_points(members)
             cells_in = sorted({m["piece"]["cell"].measure_index for m in members})
             xs = sorted(pts)
+            from . import box_kind as _bk
+            if _bk.enabled():
+                # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`): an arc BOWS; a straight trace 3+ sp long is a hairpin's leg or a
+                # beam (Sean's 2.245 tiles 6, 7, 11). Not filed as an arc, not erased, not claimed: refused with its own size.
+                _tr = [[x, pts[x][0], pts[x][1]] for x in xs]
+                if _bk.trace_is_not_an_arc(_tr, sp_staff):
+                    _len, _bow = _bk.trace_bow(_tr, sp_staff)
+                    for m in members:
+                        log.abstain(m["piece"]["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
+                                    reason=ABSTAIN.BELOW_THRESHOLD, why=_bk.REASON_STRAIGHT, length_spaces=round(_len, 2), bow_spaces=round(_bow, 3))
+                    summary["not_bowed"] = summary.get("not_bowed", 0) + 1
+                    continue
             # which protected boxes the stroke runs through, and whether their own ink is all stroke (a tail the
             # cut crop boxed as a head -- 2.164 -- or as a beam)
             through = []

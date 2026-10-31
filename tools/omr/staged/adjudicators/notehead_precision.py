@@ -3670,7 +3670,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
-                                     "wider_than_a_head",
+                                     "wider_than_a_head", "wide_box_unread",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -4165,6 +4165,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
         misfit = _box_kind.head_box_misfit(box_row.value[0], _w_c / spacing, _h_c / spacing)
         if misfit is not None:
             detail["box_spaces"] = [round(_w_c / spacing, 3), round(_h_c / spacing, 3)]
+            # Round 2 (Sean 2026-10-31: tiles 4 and 10 hold real notes): GATHER read the head ink INSIDE the box and gave each head it
+            # found its own box (`box_kind.split_wide_heads`). Only then is this box the REMAINDER and refused. Inside not read (fused
+            # head-thick ink, or a record gathered without the split): ABSTAIN and count it -- never kept as one head, never refused blind.
+            split = (box_row.detail or {}).get("box_kind")
+            if not isinstance(split, dict) or split.get("unread", True):
+                detail["box_kind"] = split
+                return Ruling.abstain(_box_kind.REASON_UNREAD, **detail)
+            detail["box_kind"] = split
             return _margins.attach(
                 Ruling(value=True, reason=misfit[0], used=tuple(used), detail=detail),
                 margin=misfit[1], axis="width_spaces", unit="staff spaces", band=None,

@@ -34,6 +34,7 @@ from typing import (Any, Callable, Dict, Iterable, List, Optional, Sequence, Tup
 
 from . import record as R
 from . import one_ink as _one_ink
+from . import box_kind as _box_kind
 from . import accidental_shape as _acc_shape
 from . import accidental_family as _acc_family
 from .. import natural_candidate as _natural_candidate
@@ -489,6 +490,12 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # merge them HERE, inside this cell, before any reader sees two boxes for one mark (`staged/one_ink.py` has the cause and the rules).
         if dets and _one_ink.enabled():
             dets = _one_ink.merge(dets)
+        # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`, default OFF): a head box wider than any one head is READ, not taken as one head:
+        # each head-shaped blob inside it that no other head box stands on gets its own box, APPENDED (every detector glyph index unchanged).
+        split_info: Dict[int, Dict[str, Any]] = {}
+        if dets and _box_kind.enabled():
+            _grid = _cell_grid(c)
+            dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
@@ -514,7 +521,7 @@ def gather_detections(log: Log, cells: Sequence[Any],
             # is unknown and one measured at page x 1841 are different facts,
             # and only the second may reach a cross-staff consumer.
             page_box = _page_box(c, d)
-            box_detail: Dict[str, Any] = {"category": d.category, **_one_ink.box_detail(d)}
+            box_detail: Dict[str, Any] = {"category": d.category, **_one_ink.box_detail(d), **split_info.get(gi, {})}
             if "one_ink_absorbed_by_index" in box_detail:
                 # ROADMAP 2.186: this box was absorbed by a stronger class on its ink; it keeps its glyph index and names its winner's key
                 box_detail["one_ink_absorbed_by"] = R.glyph(p, sys_idx, st_idx, c.measure_index,
@@ -4654,6 +4661,13 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
         if entry is None:
             continue
         (sys_idx, st_idx), (_top, bottom, spacing) = entry
+        if _box_kind.enabled() and spacing and float(h.width) / float(spacing) < _box_kind.HAIRPIN_MIN_W_SP:
+            # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`): a "hairpin" narrower than any hairpin is a letter (9 of 9 on the frozen
+            # sample: 'c' of cresc., 'e' of legato, 'B' of Basso). Not filed as a hairpin; the refusal is on the staff, with its size.
+            log.abstain(R.staff(p, sys_idx, st_idx), Q.WEDGE_BOX, reader=READERS.CV_HAIRPINS, frame=FRAME_PAGE,
+                        reason=ABSTAIN.BELOW_THRESHOLD, why=_box_kind.REASON_LETTER, bbox_page_px=[float(h.x), float(h.y), float(h.x + h.width), float(h.y + h.height)],
+                        width_spaces=round(float(h.width) / float(spacing), 3), kind=h.kind)
+            continue
         n = per_staff.get(h.staff_index, 0)
         per_staff[h.staff_index] = n + 1
         # ⚠️ Attributed to the staff whose BAND it was found in, which is right

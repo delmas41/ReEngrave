@@ -22,7 +22,7 @@ from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import box_kind as BK
 from tools.omr.staged import record as R
 from tools.omr.staged import stroke_owner as SO
-from tools.omr.staged.record import Log, Q, READERS, STROKE_GLYPH_BASE
+from tools.omr.staged.record import Log, Outcome, Q, READERS, STROKE_GLYPH_BASE
 
 ON = {BK.ENV: "1"}
 OFF = {BK.ENV: "0"}
@@ -66,13 +66,13 @@ def _log():
     return log
 
 
-def _box(log, gi, cls, box, *, head=True, pos=4.0, strokes=None):
+def _box(log, gi, cls, box, *, head=True, pos=4.0, strokes=None, split=None):
     g = R.glyph(5, 0, 4, 4, gi)
     if head:
         log.observe(g, Q.NOTEHEAD_CLASS, cls, reader=READERS.DETECTOR, frame="cell:4", score=0.29)
     x, y, w, h = box
     log.observe(g, Q.GLYPH_BOX, (cls,) + tuple(box), reader=READERS.DETECTOR, frame="cell:4", score=0.29,
-                bbox_page_px=[3500 + x, 1400 + y, 3500 + x + w, 1400 + y + h])
+                bbox_page_px=[3500 + x, 1400 + y, 3500 + x + w, 1400 + y + h], **({"box_kind": split} if split is not None else {}))
     if head:
         log.observe(g, Q.NOTEHEAD_STAFF_POSITION, float(pos), reader=READERS.GEOMETRY, frame="cell:4")
     if strokes is not None:
@@ -94,26 +94,117 @@ HEAD = (40, 290, int(1.36 * SP), int(1.12 * SP))
 
 class TestNoteheadIsNotANotehead(unittest.TestCase):
 
-    def _case3(self, env):
+    def _case3(self, env, split=None):
         log = _log()
-        wide = _box(log, 15, "noteheadBlackOnLine", WIDE)
+        wide = _box(log, 15, "noteheadBlackOnLine", WIDE, split=split)
         head = _box(log, 0, "noteheadBlackInSpace", HEAD, pos=5.0)
         _run(log, env)
         return log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, wide), log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, head)
 
-    def test_ON_the_slur_wide_head_box_is_refused_wider_than_a_head_RED(self):
-        wide, head = self._case3(ON)
+    def test_ON_inside_read_no_head_left_the_slur_box_is_the_remainder_and_refused_RED(self):
+        wide, head = self._case3(ON, split={"heads": 0, "added": [], "unread": False})
         self.assertEqual((wide.value, wide.reason), (True, "wider_than_a_head"))
         self.assertEqual(wide.detail["box_spaces"][0], round(int(5.19 * SP) / SP, 3))
 
+    def test_ON_inside_not_read_the_box_ABSTAINS_never_kept_as_one_head(self):
+        for split in (None, {"heads": 1, "added": [], "unread": True}):
+            wide, _head = self._case3(ON, split=split)
+            self.assertNotEqual(wide.outcome, Outcome.DECIDED, split)
+            self.assertEqual(wide.reason, "wide_box_unread")
+
     def test_OFF_the_rule_does_not_speak(self):
-        wide, _head = self._case3(OFF)
-        self.assertNotEqual(wide.reason, "wider_than_a_head")
+        wide, _head = self._case3(OFF, split={"heads": 0, "added": [], "unread": False})
+        self.assertNotIn(wide.reason, ("wider_than_a_head", "wide_box_unread"))
 
     def test_CONTROL_a_real_head_beside_it_is_kept_either_way(self):
         for env in (ON, OFF):
             _wide, head = self._case3(env)
-            self.assertNotEqual(head.reason, "wider_than_a_head")
+            self.assertEqual((head.value, head.reason), (False, "notehead"))
+
+
+def _ink(h, w, rects):
+    import numpy as np
+    img = np.full((h, w), 255, np.uint8)
+    for x, y, rw, rh in rects:
+        img[y:y + rh, x:x + rw] = 0
+    return img
+
+
+class TestReadTheHeadsInsideAWideBox(unittest.TestCase):
+    """Sean's tile 10 ("three eighth notes") and tile 4 ("an eighth and a natural"), drawn at 28 px a space."""
+
+    def three_eighths(self):
+        # three heads 1.3 x 1.0 sp on stems, joined by a beam 0.5 sp thick above them
+        heads = [(10 + 60 * i, 120, 36, 28) for i in range(3)]
+        stems = [(10 + 60 * i + 32, 40, 4, 90) for i in range(3)]
+        beam = [(42, 40, 124, 14)]
+        return _ink(170, 200, heads + stems + beam), heads
+
+    def test_three_heads_on_a_beam_are_three_blobs_and_the_beam_is_not_one(self):
+        img, heads = self.three_eighths()
+        blobs, unread = BK.head_blobs(img == 0, SP)
+        self.assertEqual(len(blobs), 3)
+        self.assertFalse(unread)
+
+    def test_an_arc_or_a_beam_alone_holds_no_head(self):
+        arc = _ink(60, 200, [(0, 20 + abs(x - 100) // 12, 1, 5) for x in range(200)])
+        self.assertEqual(BK.head_blobs(arc == 0, SP), ([], False))
+        beam = _ink(60, 200, [(0, 20, 200, 14)])
+        self.assertEqual(BK.head_blobs(beam == 0, SP), ([], False))
+
+    def test_a_natural_beside_an_eighth_leaves_the_eighths_head_only(self):
+        natural = [(10, 10, 4, 80), (30, 30, 4, 80), (10, 40, 24, 7), (10, 62, 24, 7)]
+        img = _ink(120, 140, natural + [(70, 60, 36, 28), (102, 0, 4, 70)])
+        blobs, unread = BK.head_blobs(img == 0, SP)
+        self.assertEqual(len(blobs), 1)
+        self.assertGreater(blobs[0][0], 60)
+
+    def test_fused_head_thick_ink_is_UNREAD(self):
+        blobs, unread = BK.head_blobs((_ink(60, 200, [(10, 10, 120, 30)]) == 0), SP)
+        self.assertEqual(blobs, [])
+        self.assertTrue(unread)
+
+    def test_split_appends_only_heads_no_other_box_stands_on_and_keeps_every_index(self):
+        from types import SimpleNamespace as N
+        import dataclasses
+
+        @dataclasses.dataclass
+        class D:
+            smufl_name: str
+            x_canonical: int
+            y_canonical: int
+            width_canonical: int
+            height_canonical: int
+            confidence: float = 0.3
+        img, heads = self.three_eighths()
+        own = D("noteheadBlackOnLine", *heads[0])                     # the first head already has its own box
+        wide = D("noteheadBlackOnLine", 0, 110, 190, 50)
+        out, info = BK.split_wide_heads([own, wide], img, SP)
+        self.assertEqual(out[:2], [own, wide])
+        self.assertEqual(len(out), 4)                                  # heads 2 and 3 added, head 1 not twice
+        self.assertEqual(info[1]["box_kind"], {"heads": 3, "added": [2, 3], "unread": False})
+        self.assertEqual(info[2]["box_kind"], {"split_from": 1})
+        self.assertEqual(BK.split_wide_heads([own], img, SP), ([own], {}))   # nothing wide: unchanged
+        _ = N
+
+
+class TestArcsBowAndHairpinsAreWiderThanLetters(unittest.TestCase):
+
+    def test_case_2_a_hairpin_leg_does_not_bow_RED(self):
+        # Brahms p19 glyph/19/0/9/1/17: x 1820 -> 1939, centre y 2751 -> 2757.5, 27.5 px a space
+        tr = [[1820 + i, 2750 + i * 6.5 / 119, 2752 + i * 6.5 / 119] for i in range(120)]
+        self.assertTrue(BK.trace_is_not_an_arc(tr, 27.5))
+
+    def test_TWIN_a_tie_bows(self):
+        import math
+        tr = [[x, 100 + 12 * math.sin(math.pi * x / 120), 104 + 12 * math.sin(math.pi * x / 120)] for x in range(121)]
+        self.assertFalse(BK.trace_is_not_an_arc(tr, 27.5))
+
+    def test_TWIN_a_short_straight_piece_is_left_alone(self):
+        self.assertFalse(BK.trace_is_not_an_arc([[x, 10, 12] for x in range(60)], 27.5))
+
+    def test_the_letter_cut_sits_in_the_measured_gap(self):
+        self.assertTrue(1.46 < BK.HAIRPIN_MIN_W_SP < 2.02)
 
 
 class TestTheStrokeOwnerNeedsNoSizeVeto(unittest.TestCase):
