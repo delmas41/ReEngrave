@@ -1,4 +1,4 @@
-"""ROADMAP 2.243 (STAGED ADJUDICATE; flags `OMR_DOTS_HONOUR_CLAIMS` and `OMR_BEAMS_HONOUR_CLAIMS`, default OFF until Sean's tiles).
+"""ROADMAP 2.243 (STAGED ADJUDICATE; flags `OMR_DOTS_HONOUR_CLAIMS` and `OMR_BEAMS_HONOUR_CLAIMS`, default ON since 2026-10-30, Sean's tiles 12/12).
 
 The augmentation-dot ROLE reader and the beam reader consult `Q.STROKE_OWNER`: ink the owner DECIDED to a slur / hairpin / word / accidental is
 not a dot, not a staccato and not a beam level. Every test that says RED has a twin that must NOT fire (unclaimed ink, contested ink, a dot's

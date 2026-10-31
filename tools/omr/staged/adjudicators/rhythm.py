@@ -4589,13 +4589,13 @@ BEAM_MAYBE_FAMILIES = ("head",)
 
 
 def dots_honour_claims_enabled() -> bool:
-    """`OMR_DOTS_HONOUR_CLAIMS`, default OFF (ROADMAP 2.243); `1`/`true`/`yes`/`on` enables."""
-    return os.environ.get(DOTS_HONOUR_CLAIMS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_DOTS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get(DOTS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def beams_honour_claims_enabled() -> bool:
-    """`OMR_BEAMS_HONOUR_CLAIMS`, default OFF (ROADMAP 2.243); `1`/`true`/`yes`/`on` enables."""
-    return os.environ.get(BEAMS_HONOUR_CLAIMS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_BEAMS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get(BEAMS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _dot_ink_owned_elsewhere(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
