@@ -15582,19 +15582,10 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
 
 
 def _left_edge_marks(pws: Any, sys_idx: int) -> List[Dict[str, Any]]:
-    """The barline lane's whole left-edge marks of one system (`page_wide.system_rules`), [] where the page-wide pass did not run."""
+    """The barline lane's whole left-edge marks of one system (`page_wide.system_rules`), [] where the page-wide pass did not run. Read
+    ONCE, by the page-wide pass (Sean 2026-10-29: no second scan); 2.239's left-side edge test lives in that one pass
+    (`measure_extractor._left_edge_read`)."""
     from ..page_wide import system_rules
-    from .stroke_map import split_joins_enabled
-    if split_joins_enabled() and getattr(getattr(pws, "page", None), "binary", None) is not None:
-        # ROADMAP 2.239: the left edge re-read with the stroke's LEFT side at the edge (`measure_extractor._left_edge_read(edge_by_left)`):
-        # a bracket fused to the system's opening line was skipped as standing right of the edge (Brahms p0 s0). Same raster, same reader;
-        # the master's stored reading is left as cut.
-        memo = pws.__dict__.setdefault("_left_edge_2239", {})
-        if sys_idx not in memo:
-            from ..measure_extractor import _left_edge_read
-            staves = [st for st in pws.staves if getattr(st, "system_index", None) == sys_idx]
-            memo[sys_idx] = list(_left_edge_read(pws.page.binary, staves, edge_by_left=True).get("marks") or ()) if len(staves) >= 2 else []
-        return memo[sys_idx]
     rules = system_rules(pws, sys_idx)
     return list(((rules or {}).get("left_edge") or {}).get("marks") or ())
 

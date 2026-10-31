@@ -186,5 +186,36 @@ class BarlineClaimLeavesBracketInk(unittest.TestCase):
         self.assertEqual(self._run(""), [400])
 
 
+class LeftEdgeReadOnce(unittest.TestCase):
+    """The 2.239 left-side edge test lives in the ONE page-wide pass (Sean 2026-10-29: no second scan), STAGED pages only."""
+
+    def test_the_left_side_test_is_staged_only_and_follows_the_flag(self):
+        from tools.omr import measure_extractor as ME
+        staged = types.SimpleNamespace(staged_page_wide=True)
+        legacy = types.SimpleNamespace()                       # a LEGACY caller never sets staged_page_wide
+        for word, want in (("0", False), ("1", True), ("", True)):
+            with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: word}):
+                self.assertEqual(ME._left_edge_by_left(staged), want)
+                self.assertFalse(ME._left_edge_by_left(legacy))
+                self.assertFalse(ME._left_edge_by_left(None))
+
+    def test_a_legacy_page_reads_the_old_left_edge_with_the_flag_on(self):
+        from tools.omr import measure_extractor as ME
+        seen = []
+        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: "1"}), \
+                mock.patch.object(ME, "_left_edge_read", side_effect=lambda *a, **k: seen.append(k.get("edge_by_left")) or {"marks": []}):
+            ME._left_edge_read(None, [], edge_by_left=ME._left_edge_by_left(types.SimpleNamespace()))
+            ME._left_edge_read(None, [], edge_by_left=ME._left_edge_by_left(types.SimpleNamespace(staged_page_wide=True)))
+        self.assertEqual(seen, [False, True])
+
+    def test_gather_scans_nothing_it_reads_the_pass(self):
+        from tools.omr import measure_extractor as ME
+        pws = types.SimpleNamespace(page=types.SimpleNamespace(binary=np.zeros((10, 10), np.uint8)), staves=[],
+                                    system_structure={0: {"left_edge": {"marks": [{"kind": "bracket"}]}}})
+        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: "1"}), \
+                mock.patch.object(ME, "_left_edge_read", side_effect=AssertionError("scanned twice")):
+            self.assertEqual(G._left_edge_marks(pws, 0), [{"kind": "bracket"}])
+
+
 if __name__ == "__main__":
     unittest.main()

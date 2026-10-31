@@ -1079,7 +1079,7 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             pws.system_structure[sys_idx] = {
                 "columns": [{"x": x, **{k: v for k, v in e.items() if k in ("span", "staff_indices", "reinforced", "n_votes")}}
                             for x, e in sorted((_sys_cols[1] if _sys_cols is not None else {}).items())],
-                "left_edge": _left_edge_read(bin_img, staves)}
+                "left_edge": _left_edge_read(bin_img, staves, edge_by_left=_left_edge_by_left(pws))}
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
         # gaps. Remove the smaller member of any adjacent pair whose gap is
@@ -1127,6 +1127,17 @@ def _system_columns_enabled(pws=None) -> bool:
     if raw is None:
         return True            # default ON (Sean 2026-10-29); an explicit 0/false/no/off/empty disables
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
+
+
+def _left_edge_by_left(pws=None) -> bool:
+    """ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the ONE left-edge pass tests a stroke's LEFT side against the staves' start (a bracket fused to the
+    opening line, Brahms p0 s0). Read here, in the one pass, never by a second scan (Sean 2026-10-29). STAGED only: the page must be read by
+    the STAGED page-wide pass (`pws.staged_page_wide`, set only by `staged/pipeline.prepare_pages`) -- a LEGACY caller sees the old reading
+    whatever the flag says. A master cell map stores the pass's reading: a master built before this change keeps the old one until rebuilt."""
+    if pws is None or not getattr(pws, "staged_page_wide", False):
+        return False
+    from .staged.stroke_map import split_joins_enabled
+    return split_joins_enabled()
 
 
 def _left_edge_read(bin_img: np.ndarray, staves: list[Staff], edge_by_left: bool = False) -> dict:
