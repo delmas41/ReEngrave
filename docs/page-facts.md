@@ -119,7 +119,10 @@ machine-readable form.
 - An articulation belongs to the note whose notehead side faces it, opposite
   the stem (ROADMAP 2.12f).
 - A hairpin sits UNDER its staff, so a note between a staff and the hairpin
-  beneath it belongs to that staff.
+  beneath it belongs to that staff; a note BELOW the hairpin belongs to the
+  staff below (Sean, 2026-10-31: *"hairpins are always below the staff any
+  notes next to a hairpin below it belong to the staff below any notes above
+  a hairpin belong to the staff above"*; scope: general; ROADMAP 2.240).
 - **Words and marks between staves** (Sean, 2026-10-08/09/11; scope: general;
   ROADMAP 2.66, 2.68, 2.12m): tempo and technique words are printed ABOVE
   the staff they govern, so one in the gap belongs to the LOWER staff
