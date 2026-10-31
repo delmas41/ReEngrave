@@ -364,14 +364,14 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
     return Ownership(o, "merged" if len(keys) > 1 else "decided", pick, keys, tuple(cs), how, rows)
 
 
-# ── ROADMAP 2.238: the BOX's shape, from the old rules' GATHER evidence (flag `OMR_OWNER_SHAPE`, default OFF) ─────────────────────────────
+# ── ROADMAP 2.238: the BOX's shape, from the old rules' GATHER evidence (flag `OMR_OWNER_SHAPE`, default ON) ─────────────────────────────
 ENV_SHAPE = "OMR_OWNER_SHAPE"
 
 
 def owner_shape_enabled() -> bool:
-    """`OMR_OWNER_SHAPE` (ROADMAP 2.238), default OFF; only an explicit `1/true/yes/on` enables."""
+    """`OMR_OWNER_SHAPE` (ROADMAP 2.238), default ON (Sean 2026-10-30 "Land"); an explicit 0/false/no/off disables."""
     import os
-    return os.environ.get(ENV_SHAPE, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV_SHAPE, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 @dataclass(frozen=True)

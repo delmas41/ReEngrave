@@ -4481,7 +4481,7 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # (IoU >= `ON_REST_IOU`) is refused -- it owns no head -- unless its own ink is accidental-shaped, of the shape its class names (2.190's reader).
     # Never deletes the rest (it is not touched); never refuses an accidental that merely touches a rest (the overlap must be one ink). Where the
     # shape cannot tell, the accidental is NOT applied and the refusal records why (counted: reason `on_a_rest`), never a silent drop.
-    # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default OFF): the reworked stroke owner (2.192's shape test moved into it as a veto) decides ONCE:
+    # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default ON): the reworked stroke owner (2.192's shape test moved into it as a veto) decides ONCE:
     # refused -> not applied (`owner_refused`, counted); owns -> the 2.192 test below does not decide; contested / silent -> it decides as
     # before (the owner cannot tell; rule 8).
     from . import stroke_owner as _stroke_owner

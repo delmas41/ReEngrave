@@ -3985,7 +3985,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
             Ruling(value=True, reason="inside_the_meter", used=in_meter.used, detail=detail),
             margin=in_meter.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
             would_choose=(True,))
-    # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default OFF): the reworked stroke owner (the old pair rules' shape evidence moved into it,
+    # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default ON): the reworked stroke owner (the old pair rules' shape evidence moved into it,
     # `stroke_owner.shape_vetoes`) decides the cross-family questions ONCE, here, where the first of them stood: refused -> refused;
     # owns -> the covered rules below (`on_a_rest`, `is_a_rest_shape`, `on_a_dynamic_letter` by both readers) do not decide; contested /
     # silent -> they decide as before (the owner cannot tell; rule 8). Flag OFF: `box_says` is silent and nothing here changes.

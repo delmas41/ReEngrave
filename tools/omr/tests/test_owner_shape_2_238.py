@@ -1,4 +1,4 @@
-"""ROADMAP 2.238 (STAGED ADJUDICATE, flag `OMR_OWNER_SHAPE`, default OFF): the stroke owner learns the old pair rules' SHAPE evidence as
+"""ROADMAP 2.238 (STAGED ADJUDICATE, flag `OMR_OWNER_SHAPE`, default ON since 2026-10-30): the stroke owner learns the old pair rules' SHAPE evidence as
 vetoes, and the precision rules read its box verdict. Constructed cells, shaped on Sean's 2.237 tiles (benchmarks/rule-page/FINDINGS.md).
 Every RED case has a twin that must NOT fire; `vetoes=None` is the 2.205 behaviour exactly (the control that can fail)."""
 from __future__ import annotations
@@ -25,11 +25,11 @@ def claim(key, cls, covers=()):
 
 class TestFlag(unittest.TestCase):
 
-    def test_default_off_and_only_an_explicit_yes_enables(self):
+    def test_default_on_and_only_an_explicit_no_disables(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(SO.ENV_SHAPE, None)
-            self.assertFalse(SO.owner_shape_enabled())
-        for v, want in (("1", True), ("on", True), ("0", False), ("", False)):
+            self.assertTrue(SO.owner_shape_enabled())
+        for v, want in (("1", True), ("on", True), ("0", False), ("off", False), ("", True)):
             with mock.patch.dict(os.environ, {SO.ENV_SHAPE: v}):
                 self.assertIs(SO.owner_shape_enabled(), want)
 
