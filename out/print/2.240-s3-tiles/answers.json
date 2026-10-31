@@ -1,0 +1,10 @@
+{
+ "date": "2026-10-31",
+ "by": "Sean",
+ "answers": {
+  "1": "Slur", "2": "Slur", "3": "Tie", "4": "Slur", "5": "Eighth note", "6": "Tie",
+  "7": "Black note head, eighth or quarter -- can't see the end of the stem", "8": "Black note head, belongs to the staff below",
+  "9": "Quarter", "10": "Tie", "11": "Tie", "12": "Eighth note"
+ },
+ "note": "Sean named another staff only for tile 8; every other mark is read as belonging to the pictured staff (the owner the step chose)."
+}
