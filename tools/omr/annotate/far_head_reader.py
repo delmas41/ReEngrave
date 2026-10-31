@@ -730,7 +730,7 @@ class FarHeadPage:
             numeral_boxes=self.numeral_boxes, ink_shape=isolated_ink_shape(self.gray, box, spacing))
 
     def read(self, subject: str, box: Sequence[float], cls: Optional[str],
-             global_lines: Sequence[float]) -> Dict[str, Any]:
+             global_lines: Sequence[float], not_ledger: Optional[Any] = None) -> Dict[str, Any]:
         """The far head's absolute position: `dict(pos, reason, box_source,
         fit)`. `pos` is `None` (with a reason word) where the reader cannot
         say -- never a default. A box the record's own evidence says is not a
@@ -767,7 +767,7 @@ class FarHeadPage:
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
             chord_split_rungs_y=rungs, detail_out=detail,
-            text_boxes=self.text_boxes, thickness_px=self.thickness, artic_boxes=self.artic_boxes)
+            text_boxes=self.text_boxes, thickness_px=self.thickness, artic_boxes=self.artic_boxes, not_ledger=not_ledger)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
                     box_used=tuple(use), lines_used=list(lines), detail=detail,
@@ -862,6 +862,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            text_boxes: Optional[Sequence[tuple]] = None,
                            thickness_px: Optional[float] = None,
                            artic_boxes: Optional[Sequence[tuple]] = None,
+                           not_ledger: Optional[Any] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
@@ -872,13 +873,13 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
                      page_accidental_boxes, chord_split_rungs_y, detail_out,
-                     text_boxes, thickness_px, artic_boxes)
+                     text_boxes, thickness_px, artic_boxes, not_ledger)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
           page_accidental_boxes, chord_split_rungs_y=None,
           detail_out=None, text_boxes=None,
-          thickness_px=None, artic_boxes=None) -> Tuple[Optional[int], str]:
+          thickness_px=None, artic_boxes=None, not_ledger=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -905,6 +906,16 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
         outline_margin_px=(0.5 * float(thickness_px)
                            if READER_KEYWORDS.get("rows_clear_of_box") and thickness_px else 0.0),
     ).get(side, [])
+    if not_ledger is not None:
+        # ROADMAP 2.240 step 2 (Sean 2026-10-31, "a staff's own line is never a ledger line"): a rung whose row is ANOTHER staff's line
+        # or an arc's traced ink at the head's x is not a ledger of THIS staff. `not_ledger(y) -> None | reason word`.
+        kept, dropped = [], []
+        for _y in items:
+            _w = not_ledger(float(_y))
+            (dropped if _w else kept).append((float(_y), _w) if _w else _y)
+        if detail_out is not None:
+            detail_out["not_ledger_dropped"] = dropped
+        items = kept
 
     # Round 6 (Sean, flute chords): two heads of one chord, outside the staff,
     # a THIRD apart, neither with a line through it, necessarily have a ledger

@@ -1,0 +1,1 @@
+brahms pages [4, 5]: heads 1625 | filter dropped rungs {'other_staff_line': 768, 'arc_ink': 111} in 554 owner-ledger rows (8 readings changed) | head owners changed by filter 1, by hairpin 0 (hairpin disagrees 0) | arcs 276 {'abstain:no_end_heads': 30, 'guessed:one_end': 75, 'decided:ends_agree': 170, 'abstain:end_head_unowned': 1}, owner on a staff the arc was not seen from 20

@@ -1,0 +1,20 @@
+{
+ "tile": 1,
+ "plate": "litolff",
+ "page": 16,
+ "mark": "glyph/16/1/9/2/100000",
+ "box": [
+  996.0,
+  3494.0,
+  1009.0,
+  3503.0
+ ],
+ "crop_origin": [
+  807,
+  3383
+ ],
+ "scale": 3,
+ "was": "2.223-tiles tile 11: bound as a crescendo on glyph/16/1/9/2/4 (Sean 2026-10-31: 'not an arc or hairpin')",
+ "now": "abstained inside_a_word (source unread_word_candidate, direction_word glyph/16/1/9/2/90009 bbox [942, 3481, 1015, 3525], no_reading); nothing written",
+ "question": "is the ink in the box a hairpin? if not, what is it?"
+}

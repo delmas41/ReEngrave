@@ -1,0 +1,1093 @@
+{
+ "master": "cm-54ccb4729528",
+ "pages": [
+  1,
+  2,
+  4,
+  6,
+  8,
+  9,
+  10,
+  11,
+  16
+ ],
+ "per_page": {
+  "1": {
+   "boxes": 763,
+   "candidate_pairs": 67,
+   "iou05_of_them_merged": 30,
+   "iou05_same_class_two_staves": 30,
+   "marks": 707,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 4,
+    "arc": 19,
+    "beam": 2,
+    "clef": 2,
+    "dynamic": 20,
+    "head": 8,
+    "mark": 4
+   },
+   "merged_pairs": 59,
+   "merged_with_iou_below_0.5": 28,
+   "near_miss_share_below_by_family": {
+    "dynamic": 1
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 4,
+    "share_below": 4
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 88,
+     "ink_px": 8534
+    },
+    "arc": {
+     "after": 0,
+     "before": 6481,
+     "ink_px": 15024
+    },
+    "beam": {
+     "after": 0,
+     "before": 1009,
+     "ink_px": 6608
+    },
+    "clef": {
+     "after": 0,
+     "before": 429,
+     "ink_px": 24660
+    },
+    "dot": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 107
+    },
+    "dynamic": {
+     "after": 943,
+     "before": 4859,
+     "ink_px": 8882
+    },
+    "flag": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 176
+    },
+    "head": {
+     "after": 51,
+     "before": 733,
+     "ink_px": 50635
+    },
+    "ledger": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 4512
+    },
+    "mark": {
+     "after": 0,
+     "before": 1240,
+     "ink_px": 22695
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 6152
+    },
+    "rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 12883
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 23695
+    }
+   },
+   "verify": {
+    "cells_ok": 192
+   }
+  },
+  "10": {
+   "boxes": 2431,
+   "candidate_pairs": 443,
+   "iou05_of_them_merged": 236,
+   "iou05_same_class_two_staves": 238,
+   "marks": 2038,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 27,
+    "arc": 50,
+    "beam": 30,
+    "clef": 1,
+    "dot": 1,
+    "dynamic": 163,
+    "head": 126,
+    "ledger": 15,
+    "mark": 5,
+    "rest": 2
+   },
+   "merged_pairs": 420,
+   "merged_with_iou_below_0.5": 162,
+   "near_miss_share_below_by_family": {
+    "dynamic": 2
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 5,
+    "share_below": 18
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 2825,
+     "ink_px": 29503
+    },
+    "arc": {
+     "after": 0,
+     "before": 17261,
+     "ink_px": 65088
+    },
+    "beam": {
+     "after": 40,
+     "before": 8403,
+     "ink_px": 55705
+    },
+    "clef": {
+     "after": 0,
+     "before": 466,
+     "ink_px": 42113
+    },
+    "dot": {
+     "after": 0,
+     "before": 50,
+     "ink_px": 804
+    },
+    "dynamic": {
+     "after": 280,
+     "before": 32860,
+     "ink_px": 63771
+    },
+    "flag": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 12199
+    },
+    "head": {
+     "after": 540,
+     "before": 34259,
+     "ink_px": 234852
+    },
+    "ledger": {
+     "after": 0,
+     "before": 1362,
+     "ink_px": 18767
+    },
+    "mark": {
+     "after": 0,
+     "before": 161,
+     "ink_px": 53036
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 1298
+    },
+    "rest": {
+     "after": 0,
+     "before": 97,
+     "ink_px": 41754
+    },
+    "text": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 579
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 18650
+    }
+   },
+   "verify": {
+    "cells_ok": 319
+   }
+  },
+  "11": {
+   "boxes": 1447,
+   "candidate_pairs": 130,
+   "iou05_of_them_merged": 85,
+   "iou05_same_class_two_staves": 85,
+   "marks": 1320,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 6,
+    "arc": 31,
+    "beam": 56,
+    "clef": 1,
+    "dynamic": 19,
+    "head": 14,
+    "mark": 1
+   },
+   "merged_pairs": 128,
+   "merged_with_iou_below_0.5": 35,
+   "near_miss_share_below_by_family": {},
+   "refused_by_reason": {
+    "share_below": 2
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 416,
+     "ink_px": 30723
+    },
+    "arc": {
+     "after": 0,
+     "before": 12109,
+     "ink_px": 36792
+    },
+    "beam": {
+     "after": 0,
+     "before": 16435,
+     "ink_px": 48139
+    },
+    "clef": {
+     "after": 0,
+     "before": 213,
+     "ink_px": 34344
+    },
+    "dot": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 341
+    },
+    "dynamic": {
+     "after": 11,
+     "before": 4095,
+     "ink_px": 9109
+    },
+    "flag": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 1313
+    },
+    "head": {
+     "after": 95,
+     "before": 3767,
+     "ink_px": 112794
+    },
+    "ledger": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 7716
+    },
+    "mark": {
+     "after": 0,
+     "before": 230,
+     "ink_px": 32681
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 626
+    },
+    "rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 10438
+    },
+    "text": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 226
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 41068
+    }
+   },
+   "verify": {
+    "cells_ok": 349
+   }
+  },
+  "16": {
+   "boxes": 2485,
+   "candidate_pairs": 342,
+   "iou05_of_them_merged": 224,
+   "iou05_same_class_two_staves": 225,
+   "marks": 2182,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 22,
+    "arc": 36,
+    "beam": 44,
+    "clef": 4,
+    "dot": 2,
+    "dynamic": 75,
+    "flag": 6,
+    "head": 104,
+    "ledger": 16,
+    "mark": 10,
+    "rest": 5
+   },
+   "merged_pairs": 324,
+   "merged_with_iou_below_0.5": 75,
+   "near_miss_share_below_by_family": {
+    "flag": 1,
+    "head": 1
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 2,
+    "no_ink": 1,
+    "no_shared_ink": 2,
+    "share_below": 13
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 2496,
+     "ink_px": 29836
+    },
+    "arc": {
+     "after": 0,
+     "before": 11731,
+     "ink_px": 30406
+    },
+    "beam": {
+     "after": 0,
+     "before": 12188,
+     "ink_px": 46606
+    },
+    "clef": {
+     "after": 0,
+     "before": 1650,
+     "ink_px": 42359
+    },
+    "dot": {
+     "after": 0,
+     "before": 125,
+     "ink_px": 463
+    },
+    "dynamic": {
+     "after": 678,
+     "before": 16829,
+     "ink_px": 28317
+    },
+    "flag": {
+     "after": 103,
+     "before": 501,
+     "ink_px": 5075
+    },
+    "head": {
+     "after": 172,
+     "before": 28909,
+     "ink_px": 279870
+    },
+    "ledger": {
+     "after": 0,
+     "before": 1579,
+     "ink_px": 34518
+    },
+    "mark": {
+     "after": 30,
+     "before": 3013,
+     "ink_px": 43729
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 1120
+    },
+    "rest": {
+     "after": 0,
+     "before": 455,
+     "ink_px": 51525
+    },
+    "stem": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 401
+    },
+    "text": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 2637
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 21449
+    }
+   },
+   "verify": {
+    "cells_ok": 341
+   }
+  },
+  "2": {
+   "boxes": 2716,
+   "candidate_pairs": 504,
+   "iou05_of_them_merged": 262,
+   "iou05_same_class_two_staves": 266,
+   "marks": 2295,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 9,
+    "arc": 43,
+    "beam": 26,
+    "clef": 12,
+    "dot": 1,
+    "dynamic": 235,
+    "flag": 1,
+    "head": 107,
+    "ledger": 19,
+    "mark": 19,
+    "rest": 4,
+    "whole_rest": 1
+   },
+   "merged_pairs": 477,
+   "merged_with_iou_below_0.5": 197,
+   "near_miss_share_below_by_family": {
+    "dynamic": 1,
+    "head": 1
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 4,
+    "no_shared_ink": 5,
+    "share_below": 18
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 979,
+     "ink_px": 21151
+    },
+    "arc": {
+     "after": 0,
+     "before": 12905,
+     "ink_px": 52072
+    },
+    "beam": {
+     "after": 386,
+     "before": 11417,
+     "ink_px": 69764
+    },
+    "clef": {
+     "after": 0,
+     "before": 3954,
+     "ink_px": 43445
+    },
+    "dot": {
+     "after": 0,
+     "before": 34,
+     "ink_px": 792
+    },
+    "dynamic": {
+     "after": 0,
+     "before": 42686,
+     "ink_px": 75126
+    },
+    "flag": {
+     "after": 0,
+     "before": 45,
+     "ink_px": 4874
+    },
+    "head": {
+     "after": 1194,
+     "before": 31837,
+     "ink_px": 224434
+    },
+    "ledger": {
+     "after": 0,
+     "before": 1962,
+     "ink_px": 39239
+    },
+    "mark": {
+     "after": 0,
+     "before": 5375,
+     "ink_px": 46885
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 822
+    },
+    "rest": {
+     "after": 0,
+     "before": 919,
+     "ink_px": 52316
+    },
+    "stem": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 1179
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 176,
+     "ink_px": 26696
+    }
+   },
+   "verify": {
+    "cells_ok": 352
+   }
+  },
+  "4": {
+   "boxes": 3066,
+   "candidate_pairs": 564,
+   "iou05_of_them_merged": 329,
+   "iou05_same_class_two_staves": 330,
+   "marks": 2566,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 36,
+    "arc": 76,
+    "beam": 74,
+    "clef": 4,
+    "dynamic": 79,
+    "flag": 10,
+    "head": 204,
+    "ledger": 19,
+    "mark": 26
+   },
+   "merged_pairs": 528,
+   "merged_with_iou_below_0.5": 163,
+   "near_miss_share_below_by_family": {
+    "dynamic": 1
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 6,
+    "no_ink": 2,
+    "no_shared_ink": 2,
+    "share_below": 26
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 5210,
+     "ink_px": 34743
+    },
+    "arc": {
+     "after": 127,
+     "before": 27990,
+     "ink_px": 79792
+    },
+    "beam": {
+     "after": 0,
+     "before": 29931,
+     "ink_px": 67371
+    },
+    "clef": {
+     "after": 0,
+     "before": 1646,
+     "ink_px": 43632
+    },
+    "dot": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 594
+    },
+    "dynamic": {
+     "after": 952,
+     "before": 13111,
+     "ink_px": 29983
+    },
+    "flag": {
+     "after": 11,
+     "before": 1360,
+     "ink_px": 6979
+    },
+    "head": {
+     "after": 316,
+     "before": 54774,
+     "ink_px": 314793
+    },
+    "ledger": {
+     "after": 34,
+     "before": 2551,
+     "ink_px": 49142
+    },
+    "mark": {
+     "after": 298,
+     "before": 1351,
+     "ink_px": 67010
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 791
+    },
+    "rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 49730
+    },
+    "stem": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 5213
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 7974
+    }
+   },
+   "verify": {
+    "cells_ok": 330
+   }
+  },
+  "6": {
+   "boxes": 2669,
+   "candidate_pairs": 357,
+   "iou05_of_them_merged": 208,
+   "iou05_same_class_two_staves": 210,
+   "marks": 2337,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 25,
+    "arc": 43,
+    "beam": 60,
+    "clef": 10,
+    "dynamic": 28,
+    "head": 146,
+    "ledger": 20,
+    "mark": 1,
+    "rest": 4
+   },
+   "merged_pairs": 337,
+   "merged_with_iou_below_0.5": 108,
+   "near_miss_share_below_by_family": {
+    "head": 5
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 4,
+    "no_ink": 1,
+    "no_shared_ink": 1,
+    "share_below": 14
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 3553,
+     "ink_px": 43421
+    },
+    "arc": {
+     "after": 0,
+     "before": 21221,
+     "ink_px": 59887
+    },
+    "beam": {
+     "after": 54,
+     "before": 32666,
+     "ink_px": 82468
+    },
+    "clef": {
+     "after": 0,
+     "before": 3224,
+     "ink_px": 45306
+    },
+    "dot": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 107
+    },
+    "dynamic": {
+     "after": 236,
+     "before": 12166,
+     "ink_px": 20025
+    },
+    "flag": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 2902
+    },
+    "head": {
+     "after": 854,
+     "before": 36467,
+     "ink_px": 282411
+    },
+    "ledger": {
+     "after": 0,
+     "before": 2427,
+     "ink_px": 41814
+    },
+    "mark": {
+     "after": 152,
+     "before": 367,
+     "ink_px": 57437
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 1288
+    },
+    "rest": {
+     "after": 0,
+     "before": 347,
+     "ink_px": 48330
+    },
+    "stem": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 826
+    },
+    "text": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 405
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 16052
+    }
+   },
+   "verify": {
+    "cells_ok": 286
+   }
+  },
+  "8": {
+   "boxes": 2457,
+   "candidate_pairs": 355,
+   "iou05_of_them_merged": 144,
+   "iou05_same_class_two_staves": 145,
+   "marks": 2171,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 51,
+    "arc": 16,
+    "beam": 13,
+    "clef": 5,
+    "dynamic": 110,
+    "flag": 5,
+    "head": 96,
+    "ledger": 6,
+    "mark": 1
+   },
+   "merged_pairs": 303,
+   "merged_with_iou_below_0.5": 128,
+   "near_miss_share_below_by_family": {
+    "dynamic": 3,
+    "flag": 1,
+    "head": 3
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 7,
+    "no_shared_ink": 5,
+    "share_below": 40
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 124,
+     "before": 6464,
+     "ink_px": 42896
+    },
+    "arc": {
+     "after": 0,
+     "before": 6782,
+     "ink_px": 28213
+    },
+    "beam": {
+     "after": 114,
+     "before": 5093,
+     "ink_px": 20134
+    },
+    "clef": {
+     "after": 0,
+     "before": 1247,
+     "ink_px": 40586
+    },
+    "dot": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 420
+    },
+    "dynamic": {
+     "after": 2183,
+     "before": 22751,
+     "ink_px": 58330
+    },
+    "flag": {
+     "after": 66,
+     "before": 555,
+     "ink_px": 20399
+    },
+    "head": {
+     "after": 561,
+     "before": 16841,
+     "ink_px": 203161
+    },
+    "ledger": {
+     "after": 0,
+     "before": 679,
+     "ink_px": 41924
+    },
+    "mark": {
+     "after": 0,
+     "before": 356,
+     "ink_px": 26745
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 704
+    },
+    "rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 9423
+    },
+    "stem": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 7443
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 36642
+    }
+   },
+   "verify": {
+    "cells_ok": 407
+   }
+  },
+  "9": {
+   "boxes": 1917,
+   "candidate_pairs": 216,
+   "iou05_of_them_merged": 125,
+   "iou05_same_class_two_staves": 125,
+   "marks": 1722,
+   "merged_as_pieces_in_one_box": 0,
+   "merged_by_family": {
+    "accidental": 3,
+    "arc": 31,
+    "beam": 15,
+    "clef": 8,
+    "dynamic": 48,
+    "flag": 4,
+    "head": 67,
+    "ledger": 4,
+    "mark": 24,
+    "rest": 1
+   },
+   "merged_pairs": 205,
+   "merged_with_iou_below_0.5": 70,
+   "near_miss_share_below_by_family": {
+    "flag": 1
+   },
+   "refused_by_reason": {
+    "cell_twice_in_mark": 1,
+    "no_shared_ink": 3,
+    "share_below": 7
+   },
+   "twin_ink": {
+    "accidental": {
+     "after": 0,
+     "before": 422,
+     "ink_px": 24631
+    },
+    "arc": {
+     "after": 141,
+     "before": 11469,
+     "ink_px": 40856
+    },
+    "beam": {
+     "after": 0,
+     "before": 5741,
+     "ink_px": 31329
+    },
+    "clef": {
+     "after": 0,
+     "before": 2427,
+     "ink_px": 47270
+    },
+    "dot": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 583
+    },
+    "dynamic": {
+     "after": 228,
+     "before": 9734,
+     "ink_px": 21664
+    },
+    "flag": {
+     "after": 93,
+     "before": 563,
+     "ink_px": 7907
+    },
+    "hairpin": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 488
+    },
+    "head": {
+     "after": 163,
+     "before": 14840,
+     "ink_px": 181798
+    },
+    "ledger": {
+     "after": 0,
+     "before": 302,
+     "ink_px": 24270
+    },
+    "mark": {
+     "after": 0,
+     "before": 9064,
+     "ink_px": 35578
+    },
+    "meter": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 799
+    },
+    "rest": {
+     "after": 0,
+     "before": 389,
+     "ink_px": 34871
+    },
+    "stem": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 517
+    },
+    "text": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 117
+    },
+    "whole_rest": {
+     "after": 0,
+     "before": 0,
+     "ink_px": 27289
+    }
+   },
+   "verify": {
+    "cells_ok": 300
+   }
+  }
+ },
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-report-slices-20261029-night/litolff",
+ "share_min": 0.5,
+ "total": {
+  "boxes": 19951,
+  "candidate_pairs": 2978,
+  "iou05_of_them_merged": 1643,
+  "iou05_same_class_two_staves": 1654,
+  "marks": 17338,
+  "merged_as_pieces_in_one_box": 0,
+  "merged_by_family": {
+   "accidental": 183,
+   "arc": 345,
+   "beam": 320,
+   "clef": 47,
+   "dot": 4,
+   "dynamic": 777,
+   "flag": 26,
+   "head": 872,
+   "ledger": 99,
+   "mark": 91,
+   "rest": 16,
+   "whole_rest": 1
+  },
+  "merged_pairs": 2781,
+  "merged_with_iou_below_0.5": 966,
+  "near_miss_share_below_by_family": {
+   "dynamic": 8,
+   "flag": 3,
+   "head": 10
+  },
+  "refused_by_reason": {
+   "cell_twice_in_mark": 33,
+   "no_ink": 4,
+   "no_shared_ink": 18,
+   "share_below": 142
+  },
+  "twin_ink": {
+   "accidental": {
+    "after": 124,
+    "before": 22453,
+    "ink_px": 265438
+   },
+   "arc": {
+    "after": 268,
+    "before": 127949,
+    "ink_px": 408130
+   },
+   "beam": {
+    "after": 594,
+    "before": 122883,
+    "ink_px": 428124
+   },
+   "clef": {
+    "after": 0,
+    "before": 15256,
+    "ink_px": 363715
+   },
+   "dot": {
+    "after": 0,
+    "before": 209,
+    "ink_px": 4211
+   },
+   "dynamic": {
+    "after": 5511,
+    "before": 159091,
+    "ink_px": 315207
+   },
+   "flag": {
+    "after": 273,
+    "before": 3024,
+    "ink_px": 61824
+   },
+   "hairpin": {
+    "after": 0,
+    "before": 0,
+    "ink_px": 488
+   },
+   "head": {
+    "after": 3946,
+    "before": 222427,
+    "ink_px": 1884748
+   },
+   "ledger": {
+    "after": 34,
+    "before": 10862,
+    "ink_px": 261902
+   },
+   "mark": {
+    "after": 480,
+    "before": 21157,
+    "ink_px": 385796
+   },
+   "meter": {
+    "after": 0,
+    "before": 0,
+    "ink_px": 13600
+   },
+   "rest": {
+    "after": 0,
+    "before": 2207,
+    "ink_px": 311270
+   },
+   "stem": {
+    "after": 0,
+    "before": 0,
+    "ink_px": 15579
+   },
+   "text": {
+    "after": 0,
+    "before": 0,
+    "ink_px": 3964
+   },
+   "whole_rest": {
+    "after": 0,
+    "before": 176,
+    "ink_px": 219515
+   }
+  },
+  "verify": {
+   "cells_ok": 2876
+  }
+ }
+}

@@ -1,0 +1,209 @@
+[
+ {
+  "plate": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 6,
+  "kind": "head_owner_moved",
+  "glyph": "glyph/6/1/2/9/7",
+  "box": [
+   2168.485,
+   2399.905,
+   2189.1175,
+   2404.0
+  ],
+  "staff": "staff/6/1/3",
+  "off_owner": "staff/6/1/2",
+  "off_reason": "distance",
+  "on_reason": "stem:unrefused"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "kind": "owner",
+  "glyph": "glyph/4/1/1/3/5",
+  "box": [
+   971.2875,
+   2404.145,
+   995.8575,
+   2425.7225
+  ],
+  "staff": "staff/4/1/2",
+  "why": "s3 tile 8's place: Sean 'belongs to the staff below'; step 3 now decides staff/4/1/2 (ledger_and_stem)",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 19,
+  "kind": "head_owner_moved",
+  "glyph": "glyph/19/0/4/10/7",
+  "box": [
+   5284.475,
+   1678.725,
+   5311.7,
+   1756.0
+  ],
+  "staff": "staff/19/0/5",
+  "off_owner": "staff/19/0/4",
+  "off_reason": "range_veto",
+  "on_reason": "inside_staff"
+ },
+ {
+  "plate": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 19,
+  "kind": "arc_staff_moved",
+  "glyph": "glyph/19/0/11/5/10",
+  "span": "glyph/19/0/11/5/10",
+  "box": [
+   3449.0,
+   2966.0,
+   3559.0,
+   2990.0
+  ],
+  "staff": "staff/19/0/10",
+  "off_owner": "staff/19/0/11",
+  "off_reason": "no_better_staff",
+  "span_owner_reason": "ends_agree"
+ },
+ {
+  "plate": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 10,
+  "kind": "arc_staff_moved",
+  "glyph": "glyph/10/1/0/9/0",
+  "span": "glyph/10/1/0/9/0",
+  "box": [
+   1924.0,
+   2194.0,
+   2054.0,
+   2219.0
+  ],
+  "staff": "staff/10/1/1",
+  "off_owner": "staff/10/1/0",
+  "off_reason": "no_better_staff",
+  "span_owner_reason": "ends_agree"
+ },
+ {
+  "plate": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 5,
+  "kind": "head_owner_moved",
+  "glyph": "glyph/5/1/10/5/8",
+  "box": [
+   3451.375,
+   6205.0,
+   3486.575,
+   6211.875
+  ],
+  "staff": "staff/5/1/9",
+  "off_owner": "staff/5/1/10",
+  "off_reason": "distance",
+  "on_reason": "inside_staff"
+ },
+ {
+  "plate": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 10,
+  "kind": "head_owner_moved",
+  "glyph": "glyph/10/1/7/9/12",
+  "box": [
+   1976.72,
+   3226.6725,
+   1995.935,
+   3231.87
+  ],
+  "staff": "staff/10/1/8",
+  "off_owner": "staff/10/1/7",
+  "off_reason": "distance",
+  "on_reason": "ledger_and_stem:unrefused"
+ },
+ {
+  "plate": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 8,
+  "kind": "arc_staff_moved",
+  "glyph": "glyph/8/0/2/6/18",
+  "span": "glyph/8/0/2/6/18",
+  "box": [
+   3436.0,
+   1464.0,
+   3584.0,
+   1493.0
+  ],
+  "staff": "staff/8/0/3",
+  "off_owner": "staff/8/0/2",
+  "off_reason": "no_rival_staff",
+  "span_owner_reason": "ends_agree"
+ },
+ {
+  "plate": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 16,
+  "kind": "head_owner_moved",
+  "glyph": "glyph/16/1/6/4/9",
+  "box": [
+   1240.3125,
+   3072.7275,
+   1261.89,
+   3078.87
+  ],
+  "staff": "staff/16/1/7",
+  "off_owner": "staff/16/1/6",
+  "off_reason": "distance",
+  "on_reason": "inside_staff"
+ },
+ {
+  "plate": "litolff",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf",
+  "page": 10,
+  "kind": "arc_staff_moved",
+  "glyph": "glyph/10/1/0/10/2",
+  "span": "glyph/10/1/0/10/2",
+  "box": [
+   2077.0,
+   2196.0,
+   2212.0,
+   2222.0
+  ],
+  "staff": "staff/10/1/1",
+  "off_owner": "staff/10/1/0",
+  "off_reason": "no_better_staff",
+  "span_owner_reason": "ends_agree"
+ },
+ {
+  "plate": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 19,
+  "kind": "head_owner_moved",
+  "glyph": "glyph/19/1/5/0/11",
+  "box": [
+   1119.6328125,
+   5281.32275390625,
+   1150.2626953125,
+   5358.91845703125
+  ],
+  "staff": "staff/19/1/5",
+  "off_owner": "staff/19/1/4",
+  "off_reason": "range_veto",
+  "on_reason": "inside_staff"
+ },
+ {
+  "plate": "brahms",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
+  "page": 19,
+  "kind": "arc_staff_moved",
+  "glyph": "glyph/19/1/3/0/17",
+  "span": "glyph/19/1/3/0/17",
+  "box": [
+   1207.0,
+   4987.0,
+   1413.0,
+   5023.0
+  ],
+  "staff": "staff/19/1/4",
+  "off_owner": "staff/19/1/3",
+  "off_reason": "no_better_staff",
+  "span_owner_reason": "ends_agree"
+ }
+]

@@ -9,6 +9,21 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.223 fix after Sean's tiles (11/12): a hairpin inside an UNREAD word candidate abstains
+- Tile 11 (Litolff p16 'Bassi'): the words reader saw the candidate but OCR returned no reading, so no word claim existed; the binder now reads `direction_word` `no_reading` boxes as word ink (same width limit). one_test: Litolff wedges -2 -> -3, everything else as m3; judged right->wrong 0; fast tier 9,549. Flags still OFF.
+
+## 2026-10-31 -- 2.223 m3: hairpins bound page-wide (lane-2.223-anchoring, OFF, not merged)
+- `OMR_HAIRPIN_BIND_PAGEWIDE` (default OFF; `staged/hairpin_bind.py`, `ownership._wedge_page_binding`): each hairpin's tips bound to the note at (or sounding at) each tip on the staff ABOVE it, among that staff's usable heads above the hairpin; a letter inside a claimed word, an unbound tip or a box between no two staves abstains; EXPORT names abstained hairpins (`wedges_unbound`).
+- Cause: the old anchor bound to refused heads / other staves' copies (22 of 102 ends on 5 Brahms pages) and to the nearest head of any bar; 8 of 8 narrow CV "hairpins" were letters.
+- one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
+- A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
+
+## 2026-10-31 -- 2.240 steps 1-2 LANDED ON: the page is the ledger (page-mark ids + one owner per page mark)
+STAGED GATHER (`page_marks.py`, `page_owner.py`, the ledger filter in `gather._file_owner_ledger_readings`), `OMR_PAGE_MARKS` + `OMR_PAGE_OWNER` deny-list default ON (Sean "Land now and fix in step 3"). File unchanged; judged right->wrong 0; fast tier 9,604. Rows added to the second flags table. Disk cleanup with Sean's approval on his phone: 6 -> 164 GB free (session scratch, finished sessions' scratch, 10 merged lane worktrees).
+
+## 2026-10-31 -- 2.223 LANDED ON: arcs and hairpins bound to notes page-wide
+STAGED ADJUDICATE + EXPORT (`arc_claim.bind_enabled`, `hairpin_bind.py`, `ownership._wedge_page_binding`), flags `OMR_ARC_BIND_PAGEWIDE` + `OMR_HAIRPIN_BIND_PAGEWIDE` deny-list default ON (Sean "Fix then land"; tiles 11/12). Litolff ties +34 -6, slurs +92 -26, wedges -3; Brahms ties +70 -2, slurs +142 -58, wedges +9 -7; judged right->wrong 0. `test_staged_wedge_anchor` pinned to the OFF (2026-09-10) rule. Also today: Sean's 2.247 tiles 6/12 (boxes sit off the mark: read accidentals from their own ink -> 2.247 r2), the app's worktree cleanup freed 12.4 GB (disk 6 -> 21 GB free).
+
 ## 2026-10-31 -- 2.242 LANDED ON: one accidental, one piece (OMR_ACCIDENTAL_WHOLE)
 STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits`; `stroke_owner.accidental_yields`, `accidental_not_whole`), deny-list default ON (Sean "Land on"). Brahms p0 accidentals whole 0 -> 30/41; Sean's r2 tiles 11/12; judged right->wrong 0; Brahms file -1 accidental at an unjudged place. `test_stroke_owner_2_205` contest re-pinned to the flag OFF (the floor gives the eighth-rest bulb to the rest) plus a test of the ON case. Lane 2.247 (accidental kind by shape, Opus) started the same hour.
 

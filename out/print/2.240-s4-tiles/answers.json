@@ -1,0 +1,10 @@
+{
+ "date": "2026-10-31",
+ "by": "Sean",
+ "answers": {
+  "1": "Top half of an eighth note (box small)", "2": "Eighth note", "3": "Flag on an eighth note", "4": "Middle part of a tie crossing a barline (box not quite big enough)",
+  "5": "Tie", "6": "Bottom part of an eighth note (box not big enough)", "7": "Eighth note (box not big enough)", "8": "Tie",
+  "9": "Eighth note (box not big enough)", "10": "Tie", "11": "Eighth note flag", "12": "Tie"
+ },
+ "note": "Spoken; Sean's numbering skipped 8 ('9 tie, 10 eighth, 10 tie'), mapped by the key's kinds (arcs at 4, 5, 8, 10, 12). No other staff named: every mark read as the pictured (new) owner's."
+}

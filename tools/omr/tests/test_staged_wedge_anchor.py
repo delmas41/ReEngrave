@@ -26,6 +26,24 @@ from tools.omr.staged import gather as G
 from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Q, READERS
 
+import os as _os
+
+# ROADMAP 2.223: OMR_HAIRPIN_BIND_PAGEWIDE is ON since 2026-10-31; these tests pin the 2026-09-10 rule it falls back to with the flag OFF.
+_PRIOR = None
+
+
+def setUpModule():
+    global _PRIOR
+    _PRIOR = _os.environ.get("OMR_HAIRPIN_BIND_PAGEWIDE")
+    _os.environ["OMR_HAIRPIN_BIND_PAGEWIDE"] = "0"
+
+
+def tearDownModule():
+    if _PRIOR is None:
+        _os.environ.pop("OMR_HAIRPIN_BIND_PAGEWIDE", None)
+    else:
+        _os.environ["OMR_HAIRPIN_BIND_PAGEWIDE"] = _PRIOR
+
 STAFF = R.staff(0, 0, 0)
 OTHER = R.staff(0, 0, 1)
 
