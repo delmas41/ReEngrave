@@ -1,4 +1,4 @@
-"""ROADMAP 2.242 -- ONE ACCIDENTAL, ONE PIECE (flag OMR_ACCIDENTAL_WHOLE, default OFF). STAGED GATHER (stroke map) + the owner's shape."""
+"""ROADMAP 2.242 -- ONE ACCIDENTAL, ONE PIECE (flag OMR_ACCIDENTAL_WHOLE, default ON since 2026-10-31; "0" turns it off). STAGED GATHER (stroke map) + the owner's shape."""
 import os
 import unittest
 
@@ -87,7 +87,7 @@ class TestOwnerYields(unittest.TestCase):
         s = self.ink(0, "blob", 1.22, 1.86, 0.79)
         head = SO.Claim("h", "head", "noteheadBlackOnLine", covers=(0,))
         acc = SO.Claim("a", "accidental", "accidentalDoubleSharp", covers=(0,))
-        with _Flag(None):
+        with _Flag("0"):
             self.assertEqual(SO.own_strokes([s], [head, acc])[0].family, "accidental")        # the fault, flag OFF
         with _Flag("1"):
             o = SO.own_strokes([s], [head, acc])[0]
@@ -109,7 +109,7 @@ class TestOwnerYields(unittest.TestCase):
         b = self.ink(2, "blob", 0.4, 1.0, 0.3, touches=[(1, 0.5)])
         flag = SO.Claim("f", "flag", "flag8thDown", covers=(1, 2))
         acc = SO.Claim("a", "accidental", "accidentalFlat", covers=(1, 2))
-        with _Flag(None):
+        with _Flag("0"):
             self.assertEqual(SO.own_strokes([stem, a, b], [flag, acc])[1].family, "accidental")
         with _Flag("1"):
             own = SO.own_strokes([stem, a, b], [flag, acc])
@@ -141,7 +141,7 @@ class TestShapeAndSize(unittest.TestCase):
                  ("stem tip 5x10, Litolff p4 tile 11", self.ink(5, 10, 16.25), "accidentalNatural"),
                  ("a flat's bowl alone 29x40, Brahms p25 tile 12", self.ink(29, 40, 27.55), "accidentalFlat")]
         for name, s, cls in cases:
-            with _Flag(None):
+            with _Flag("0"):
                 self.assertTrue(self.owned(s, cls).claimed, name + ": the fault, flag OFF")
             with _Flag("1"):
                 o = self.owned(s, cls)

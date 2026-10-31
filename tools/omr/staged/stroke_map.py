@@ -153,7 +153,7 @@ def split_joins_enabled() -> bool:
     return os.environ.get(SPLIT_JOINS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
-# -- ROADMAP 2.242: ONE ACCIDENTAL, ONE PIECE (flag `OMR_ACCIDENTAL_WHOLE`, default OFF) --
+# -- ROADMAP 2.242: ONE ACCIDENTAL, ONE PIECE (flag `OMR_ACCIDENTAL_WHOLE`, default ON) --
 #: CAUSE (2.239 r3 capture: 0 of 41 accidentals whole on Sean's Brahms p0 labels): the openings (eraser, vertical / horizontal / remainder)
 #: cut EVERY accidental into 4-6 strokes (stems, bars, bowl) with `OMR_SPLIT_JOINS` off as well -- the same source that cut clefs into ~25
 #: pieces. An accidental is read from its detector box OUTWARD like a clef (`_merge_clefs`): the seed is every piece mostly inside the box, a
@@ -197,8 +197,8 @@ def accidental_ink_fits(name: str, w_sp: float, h_sp: float) -> Tuple[bool, str]
 
 
 def accidental_whole_enabled() -> bool:
-    """`OMR_ACCIDENTAL_WHOLE` (ROADMAP 2.242), default OFF; read at GATHER (the stroke map) and at ADJUDICATE (`stroke_owner.shape_fit`)."""
-    return os.environ.get(ACCIDENTAL_WHOLE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_WHOLE` (ROADMAP 2.242), default ON (Sean 2026-10-31 "Land on", r2 tiles 11/12); an explicit 0/false/no/off disables. Read at GATHER (the stroke map) and at ADJUDICATE (`stroke_owner.shape_fit`)."""
+    return os.environ.get(ACCIDENTAL_WHOLE_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def accidental_size(name: str) -> Optional[Tuple[float, float]]:
