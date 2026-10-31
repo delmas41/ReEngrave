@@ -241,7 +241,7 @@ Branch `lane-2.239-r3b` (on main after "Land 2.239"; same flag `OMR_SPLIT_JOINS`
   - Litolff p4 10 -> 3, p2 2 -> 1, Brahms p0 3 -> 1, p5 11 -> 2.
   - Cuts made: 11 + 1 + 4 + 12.
   - Left whole as undecided: 2.
-- **Accidental-touching groups by what touches what.** Accidental + ledger stub 15 -> 5. Accidental + head 11 -> 2 (the head's box holding the stub's start). Accidental + stem 0. Accidental + rest 1 -> 1 (not a family the cut reads).
+- **Accidental-touching groups by what touches what.** Accidental + ledger stub 14 -> 4. Accidental + head 12 -> 3 (the head's box holding the stub's start). Accidental + stem 0. Accidental + rest 1 -> 1 (not a family the cut reads).
 - **Other multi-mark pieces counted (not cut here).** Head + ledger: Litolff p4 74, p2 62, Brahms p0 26, p5 41. These are where the ledger|head cut refused. Flag + head: Brahms p5 80, p0 17.
 - **Sean's Brahms p0 labels, strict whole (round 2 -> round 3):**
   - clefG 0 -> **8 of 8**
