@@ -85,3 +85,93 @@ disagreement GUESSED with both staves, no rungs abstain -- never nearness); reti
 the owner agrees with them on tiles. Open: whether `cell_twice` should admit two non-overlapping boxes of one cell that both lie inside one
 box of the other cell (tiles 2, 7 decide), and the long-mark residue (beams / arcs), which is really detector class noise (hairpins and
 accents boxed as beam) plus the barline cut (steps 4, 6).
+
+## Step 2 -- one owner per page mark; arcs and hairpins read page-wide (lane-2.240-s2-owner; STAGED GATHER, decides nothing yet)
+**Cause and process lesson.** "Whose mark is this?" was asked of each padded cell's COPY, after the copies existed, so every answer
+became a choice between copies (`glyph_owner`'s `distance` tie-break, `owned_by_another_staff`, `belongs_to_a_nearer_staff`, the twin
+rules) -- and nearness slipped in as the default because a copy carries no evidence the other copy lacks. Asked once of the PAGE mark,
+the question has only page evidence to answer it with: the staff's own lines, the ledger lines, the stem. Lesson: when a rule has to pick
+between two copies, the copies are the bug; ask the question of the thing they copy. The same holds for arcs: 2.166 traced one curve PER
+STAFF, so an arc in the gap was read twice and every later reader inherited two arcs.
+
+**Prior work.** docs/ink-rules.md: `owned_by_another_staff` (duration 710/948 fires, accidental, articulation, dot), `belongs_to_a_nearer_staff`,
+`notehead_is_a_duplicate_box`, `glyph_owner` `distance` (2,621/5,190, ~94% of contests), `reconcile_group_owners` /
+`reconcile_articulation_twins` -- all kind C (double-count workarounds). LEGACY `_dedupe_cross_staff_detections` (80f18eeee, nearest band;
+its own commit admits 19 Brahms notes misfiled). benchmarks: omr-staged-dedupe-2026-09 (the staged path did decide the contest; nearness
+did it), omr-local-staff-2026-09 (per-cell line grid, may fall back staff-wide -- this step reads `staff_line_ys_canonical`, so inherits
+it), owner-two-witnesses-2026-10 (2.216: ledger right 8/8 vs stem 0/8 -> Sean's option B), omr-arcs-system-2026-10 (per-staff trace),
+omr-arc-attribution-2026-09, omr-arc-binding-2026-10 (2.223: binding to notes is a later page-wide step; not done here),
+omr-hairpin-cv-2026-09 / _archive/omr-staged-wedge-2026-09 (CV wedges page-wide; detector almost never boxes a hairpin). page-facts §5
+rejected list: nothing on ownership or arcs.
+
+**Built** (flag `OMR_PAGE_OWNER`, default OFF, allow-list, needs `OMR_PAGE_MARKS`; module `tools/omr/staged/page_owner.py`, one GATHER
+call after `gather_head_stem_reach`; `page_marks.gather_page_marks` now returns its boxes on `Marks`):
+- (a) step-1 rule fix from Sean's tiles 2 and 7: two ink-disjoint boxes of ONE cell that both lie inside one box of the other cell are one
+  mark -- only for long/lettered families (dynamic, beam, arc, hairpin, flag, text); a head/rest/accidental/dot box holding two of them
+  stays two (a chord is not one head). The 0.5 share is NOT tuned; near misses within 0.05 are counted as a margin only.
+- (b) `Q.PAGE_MARK_OWNER`, one row per page mark: `inside_staff` (centre within 0.75 sp of a staff's own outer line, in the bar at its x)
+  -> that staff; else, heads only: the far-head ledger reading of each view (`Q.FAR_HEAD_OWNER_LEDGER`; two views count ONCE; views naming
+  two staves -> GUESSED with both), the stem (`Q.HEAD_STEM_REACH`) a second witness. **Deviation from the brief, on purpose:** a stem that
+  names the other staff does NOT make the head GUESSED -- DECISIONS 2026-10-28 (Sean, 2.216 option B, "plain, not blue") reverses the
+  10-27 rule for that case, and DECISIONS outrank a brief; it is recorded as `ledger_over_stem` with both staves as candidates, and four of
+  the 12 tiles ask Sean about exactly those. CLAUDE.md §5 still says "disagree -> GUESSED" and is stale on this point (manager: one line).
+  No witness -> ABSTAIN `owner_no_rungs` (ledger read, named nothing: counted, our failure) / `owner_no_witness`; any non-head family
+  outside every staff -> `owner_follows_its_note` (its owner is the note it binds to: 2.223 / step 3). Nearness decides nothing.
+- (c) `Q.PAGE_SPAN`, one row per arc / hairpin READ PAGE-WIDE (Sean 2026-10-30). Arcs: the 2.166 per-staff traces joined ACROSS staves
+  when their seed boxes are one page mark or their traces cover the same page pixels (>= 0.5 of the shorter's columns on overlapping rows);
+  a page arc never holds two views of one staff that the per-staff tracer kept apart (the first cut glued two slurs through a long
+  neighbour trace -- seen on a tile before it went to Sean, fixed, unit-tested). An arc box no trace followed is a witness only
+  (`span_untraced`). Hairpins: each CV wedge (`Q.WEDGE_BOX`, page-wide) is one hairpin, two wedge reads on one box are one; every page mark
+  whose box lies inside it is recorded `boxed_as` (the detector boxes hairpins as beams). Nothing consumes the claim yet: the consumer is
+  `stroke_owner`'s tiers, which this lane's fence forbids (2.242 owns `own_strokes`); step 3.
+- (d) retire nothing; `page_owner compare REC` lists every old cell-copy rule against the owner by place.
+
+**Capture readout** (`OMR_SPLIT_JOINS=0 python3 -m tools.omr.staged.page_owner readout litolff:20261029-night brahms:20261029-night`,
+master cells, all 17 frozen-sample pages; out `s2/rec0|rec1/page_owner.json`). ⚠️ The 10-29 slices were gathered before 2.239 landed:
+with 2.239's `OMR_SPLIT_JOINS` on, the re-cut stroke maps miss the record on 127 of 352 Litolff p2 cells (their boxes would silently drop
+out); with it off every cell matches box for box. A readout off a night record must re-cut with that record's own flags.
+| | Litolff (9 pp.) | Brahms (8 pp.) |
+|---|---|---|
+| head marks: inside_staff / ledger / ledger+stem agree / ledger_over_stem / stem alone | 3,886 / 283 / 730 / 6 / 106 | 4,484 / 257 / 1,049 / 2 / 74 |
+| head marks abstained `owner_no_rungs` | 122 | 165 |
+| GUESSED (two views' ledger readings name two staves) | 0 | 0 |
+| marks seen from TWO staves: decided / abstain (no_rungs, follows_its_note) | 928 / 5, 1,104 | 1,717 / 16, 2,292 |
+| arcs: per-staff views -> page arcs (joining two staves' views; crossing a barline) | 804 -> 535 (269; 453) | 1,363 -> 948 (415; 694) |
+| arc boxes no trace followed (witness only) | 409 | 2,570 |
+| hairpins read page-wide (detector boxes inside them) | 4 (1 hairpin, 1 mark) | 53 (82 beam, 1 arc) |
+Step 1 with the pieces rule (`page_marks readout`, same pages): Litolff unchanged (0 merges by the rule); Brahms 17 merges, `cell_twice`
+110 -> 92, twin ink 171,040 -> 163,174 px. Near misses (share 0.45-0.5): Litolff head 10, dynamic 8, flag 3; Brahms beam 15, arc 9, dynamic
+3, flag 2, head 1, whole rest 1 -- recorded, not tuned.
+
+**The old rules against the owner, by place** (`page_owner compare` on the WRITTEN ON records, Litolff pp. 2,4 / Brahms pp. 4,5, full
+ADJUDICATE; `s2/compare_written.log`): `duration:owned_by_another_staff` agrees 254 / 366, disagrees 1 / 0; `glyph_owner` ledger tiers
+(note_first, direction, density, ladder) agree 282 / 797, disagree 0; `stem_toward_staff` 222 / 13 agree, 0 disagree; `staff_band` 43 /
+277 agree; `glyph_owner:distance` agrees 153 / 425, DISAGREES 11 / 12, owner silent 836 / 1,231 (heads 87 / 32; the rest dynamics, arcs,
+beams, ledgers, marks -- the families whose owner is their note); `glyph_owner:range_veto` agrees 9 / 0, DISAGREES 0 / 45 (Brahms: the
+written-range veto overrides the staff's own lines or ledger); `belongs_to_a_nearer_staff` agrees 2 / 2, silent 8 / 6;
+`notehead_is_a_duplicate_box` fires are same-staff twins (27 / 7, no staff choice). On the frozen-sample slices (stored verdicts only):
+`owned_by_another_staff` agrees 710 / 934, silent 4 / 14, disagrees 0. So step 3 can retire `owned_by_another_staff` for heads and the
+ledger/stem/staff-band tiers where they agree; `distance` cannot simply go -- on heads it decides 87 / 32 marks the owner abstains on
+(no rungs, no stem) and disagrees on 23; `range_veto`'s 45 Brahms disagreements need tiles first.
+
+**Controls that can fail** (`page_owner controls REC --page N`; Litolff p2, p4, Brahms p4 -- all pass): (a) NEVER NEARNESS: with every ledger
+and stem row removed, 0 of the 113 / 236 / 194 heads outside every staff band get an owner, while the nearest-staff arm would decide all
+of them; (b) a two-staff head the ledger decided, with ONE view's reading turned to the other staff, becomes GUESSED with both staves (the
+first version of this control picked a mark whose other view had no reading and FAILED -- the flip then decided the other staff; it now
+picks a mark two views agree on); (c) a two-view page arc: one view's trace moved one space apart -> two arcs; unmoved -> one. Unit tests
+`tools/omr/tests/test_page_owner_2_240.py` (20), every CONTROL arm can fail.
+
+**File** (OFF vs ON, OCR held fixed with `--no-surya`, master cells, shared detector cache; `s2/byte_identity.sh`): the exported MusicXML is
+NOT byte-identical: Litolff +1 `cresc.` word, Brahms -1 `Cresc` word. A content diff of every GATHER row (row ids blanked, `s2/rowdiff.py`)
+shows the only differing rows are OCR -- `direction_word` (read by `surya` even under `--no-surya`: 59 / 164 rows), the word claims built on
+them (5 / 3) and `input_domain` (2 / 2). Every non-OCR row is identical. Step 1 called its `--no-surya` run byte-identical: that was luck;
+`--no-surya` does not hold the direction-word reader fixed. LANE_REPORT_PLACEHOLDER
+
+**Tiles for Sean** `out/print/2.240-s2-tiles/tiles/` (12; key `out/print/2.240-s2-tiles/key.json`, outside the tile folder): 7 owner decisions
+(4 `ledger_over_stem`, 3 `stem`; no GUESSED case exists on the sample) on the staff the record names, 5 page-wide marks (one hairpin, four
+arcs, two of them joined from two staves' views, three crossing a barline). Question: what is in the box, one mark or more; for a note,
+is it the full staff's in the picture or another's.
+
+**Open.** Sean's 12 tiles; a consumer for `Q.PAGE_SPAN` (stroke_owner tier 0 -- fenced this round); the 23 `distance` and 45 `range_veto`
+disagreements (tiles before step 3); 2,570 Brahms arc boxes no trace followed (the detector's arc class on staff lines, step 1's crops 4-5);
+GUESSED never fires on the sample, so the both-staves path is proved only by its control.
