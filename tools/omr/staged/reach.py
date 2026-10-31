@@ -68,6 +68,12 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
+    Q.PAGE_MARK_OWNER: (
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 2, `OMR_PAGE_OWNER`, default OFF): one owner staff per page mark from "
+        "its ledger lines / stem / the staff's own lines, never nearness. Step 3 retires the cell-copy rules where it agrees, on tiles."),
+    Q.PAGE_SPAN: (
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 2, `OMR_PAGE_OWNER`, default OFF): each arc / hairpin read page-wide once. "
+        "Its readers are the claim (step 3, the stroke owner is another lane's fence) and the binding to notes (ROADMAP 2.223)."),
     Q.PAGE_MARK: (
         "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 1, `OMR_PAGE_MARKS`, default OFF): page-mark ids beside today's verdicts, "
         "proved by byte identity. Its first reader is step 2 (one owner per page mark, benchmarks/page-ledger-2026-10/FINDINGS.md). This entry "
@@ -339,6 +345,8 @@ STAGE_OF_FILE = {
     "arcs_system.py": "GATHER",
     # ROADMAP 2.240 step 1: files `Q.PAGE_MARK` from its one hook line in `gather.gather()`.
     "page_marks.py": "GATHER",
+    # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
+    "page_owner.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
     "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
     "infer.py": "INFER", "inferences.py": "INFER",

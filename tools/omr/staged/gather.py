@@ -16904,7 +16904,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default OFF): one page-mark id per detector box -- boxes of one family from two padded
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
-        _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
+        page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
@@ -17024,6 +17024,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # for a contested head, read off that evidence's own rows).
         if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the head's stem is the stroke its blob touches (ADJUDICATE)
             gather_head_stem_reach(log, pws, cells, local, detections)
+        # ROADMAP 2.240 step 2 (flag OMR_PAGE_OWNER, default OFF; needs OMR_PAGE_MARKS): one owner staff per page mark (staff lines, ledger
+        # lines, stem -- never nearness) and arcs / hairpins read page-wide once. AFTER the ledger readings, the stem reach, the traced arcs
+        # and the CV wedges (it reads them); files rows only, nothing reads them.
+        from . import page_owner as _page_owner
+        _page_owner.gather_page_owners(log, pws, cells, local, page_marks_of_page, progress=progress)
         # dynamic-not-a-head: AFTER the detections (it reads them) -- a head box
         # lying on a dynamic letter's box, measured against the raw raster.
         gather_notehead_letter_ink(log, pws, cells, local, detections)

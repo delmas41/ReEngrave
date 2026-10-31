@@ -148,6 +148,7 @@ class Marks:
     pairs: Dict[str, List[list]]                              # box key -> [[other key, share, iou, merged, reason]]
     why: Dict[str, str]                                       # box key -> shared_ink | alone | refused | no_ink | not_a_mark
     merged_pairs: List[Tuple[str, str, float]] = field(default_factory=list)
+    boxes: List["BoxInk"] = field(default_factory=list)          # the page's boxes (step 2 reads them in GATHER)
 
 
 def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = True, pieces: Optional[bool] = None) -> Marks:
@@ -314,6 +315,7 @@ def gather_page_marks(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     if not boxes:
         return None
     marks = link(boxes)
+    marks.boxes = boxes
     for b in boxes:
         n = marks.mark_of[b.key]
         mem = marks.members[n]

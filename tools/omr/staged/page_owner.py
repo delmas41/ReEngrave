@@ -655,3 +655,220 @@ def tile_candidates(own, sp, page, pdf, cm_root, frames) -> List[Dict[str, Any]]
                     if k in ("views", "staves_seen_from", "pieces", "x0", "x1", "box", "joined_by", "boxed_as", "wedge", "crosses_barline")},
                     "staves": s["staves_seen_from"]})
     return out
+
+
+def pick_tiles(pool: List[Dict[str, Any]], n: int = 12, seed: int = 22402) -> List[Dict[str, Any]]:
+    """7 owner tiles (every GUESSED and `ledger_over_stem` first, then stem / ledger decisions) + 5 page-wide spans (a hairpin, two-staff
+    joins, barline crossings), plates alternated, seeded."""
+    import random
+    rnd = random.Random(seed)
+    own = [t for t in pool if t["kind"] == "owner"]
+    spans = [t for t in pool if t["kind"] != "owner"]
+    rnd.shuffle(own)
+    rnd.shuffle(spans)
+    rank = {"ledger_views_disagree": 0, "ledger_over_stem": 1, "stem": 2, "ledger": 3, "ledger_and_stem": 4}
+    own.sort(key=lambda t: rank.get(t["reason"], 9))
+    chosen: List[Dict[str, Any]] = []
+
+    def take(cands, k, key):
+        got, per = [], collections.Counter()
+        for t in cands:
+            if len(got) >= k:
+                break
+            if per[(t["pdf"], key(t))] >= max(1, (k + 3) // 4):
+                continue
+            if any(c["page"] == t["page"] and c["pdf"] == t["pdf"] and abs(_tbox(c)[0] - _tbox(t)[0]) < 80 for c in chosen + got):
+                continue
+            got.append(t)
+            per[(t["pdf"], key(t))] += 1
+        return got
+
+    chosen += take(own, 7, lambda t: t["reason"])
+    hp = [t for t in spans if t["kind"] == "hairpin"]
+    two = [t for t in spans if t["kind"] == "arc" and len(t["span"]["views"]) > 1]
+    one = [t for t in spans if t["kind"] == "arc" and len(t["span"]["views"]) == 1]
+    chosen += take(hp, 1, lambda t: "h")
+    chosen += take(two, 2, lambda t: "two")
+    chosen += take(one + two, n - len(chosen), lambda t: "bar")
+    rnd.shuffle(chosen)
+    return chosen[:n]
+
+
+def _tbox(t: Dict[str, Any]) -> List[float]:
+    return t["box"] if t["kind"] == "owner" else t["span"]["box"]
+
+
+def cut_tiles(pool: List[Dict[str, Any]], out_dir: pathlib.Path, n: int = 12) -> None:
+    """One staff a tile: the staff the record names (an owner tile: the owner staff; a span: the first staff it was seen from), ONE thin
+    orange box sized to the mark, nothing else drawn; key.json BESIDE the tile folder."""
+    from PIL import Image, ImageDraw
+    from . import cell_map as CM
+    from .gather import _system_local
+    chosen = pick_tiles(pool, n)
+    tdir = out_dir / "tiles"
+    tdir.mkdir(parents=True, exist_ok=True)
+    for f in tdir.glob("*"):
+        f.unlink()
+    imgs: Dict[Tuple[str, int], Any] = {}
+    key = []
+    for i, it in enumerate(chosen, 1):
+        ik = (it["pdf"], it["page"])
+        if ik not in imgs:
+            (pws, cells), = CM.load_prepared(pathlib.Path(it["pdf"]), [it["page"]], root=pathlib.Path(it["cm_root"]))
+            imgs[ik] = (Image.fromarray(pws.page.rgb).convert("RGB"), staff_frames(cells, _system_local(pws.staves)))
+        im, frames = imgs[ik]
+        bb = _tbox(it)
+        bb = [bb[0] - 2, bb[1] - 2, bb[2] + 2, bb[3] + 2]
+        staff = it["owner"] if it["kind"] == "owner" else it["staves"][0]
+        bar = lines_at(frames, staff, (bb[0] + bb[2]) / 2.0)
+        u = bar.sp if bar else 20.0
+        top, bot = (bar.ys[0], bar.ys[-1]) if bar else (bb[1], bb[3])
+        cx = (bb[0] + bb[2]) / 2.0
+        x0, x1 = max(0, int(min(cx - 6 * u, bb[0] - 1.5 * u))), int(max(cx + 6 * u, bb[2] + 1.5 * u))
+        y0, y1 = max(0, int(min(top - 1.5 * u, bb[1] - 1.0 * u))), int(max(bot + 1.5 * u, bb[3] + 1.0 * u))
+        crop = im.crop((x0, y0, x1, y1)).copy()
+        ImageDraw.Draw(crop).rectangle([round(bb[0] - x0), round(bb[1] - y0), round(bb[2] - x0), round(bb[3] - y0)],
+                                       outline=(255, 140, 0), width=max(2, int(u / 10)))
+        W = 560
+        crop = crop.resize((W, max(1, int(W * crop.height / crop.width))))
+        crop.save(tdir / ("tile_%02d.png" % i))
+        key.append({**{k: v for k, v in it.items() if k != "cm_root"}, "tile": i, "tile_staff": staff, "crop_origin": [x0, y0]})
+    (tdir / "README.md").write_text(
+        "# Two plain questions\n\nEach picture is a piece of a score page with ONE orange box on it and nothing else drawn. The box only "
+        "says where to look.\n\n**For every tile:** what is the ink in the box (a note, an arc, a hairpin ...), and is it ONE mark or more?"
+        "\n\n**If it is a note:** does it belong to the full five-line staff in the picture, or to another staff (the one above or below, "
+        "partly shown or not shown)?\n\nAnswer by tile number.\n")
+    (out_dir / "key.json").write_text(json.dumps(key, indent=1, default=str))
+
+
+# ───────────────────────────── 8. controls that can fail ─────────────────────────────
+
+class _NoRows:
+    def obs(self, q, key):
+        return []
+
+    def abs(self, q, key):
+        return []
+
+
+class _Flip:
+    """A row source with ONE view's ledger reading turned to another staff (control (b))."""
+
+    def __init__(self, base: Any, member: str, to: str):
+        self.base, self.member, self.to = base, member, to
+
+    def obs(self, q, key):
+        if q == "far_head_owner_ledger" and key == self.member:
+            return [(0, {"candidate": self.to})]
+        return self.base.obs(q, key)
+
+    def abs(self, q, key):
+        if q == "far_head_owner_ledger" and key == self.member:
+            return []
+        return self.base.abs(q, key)
+
+
+def controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=print) -> int:
+    """(a) NEVER NEARNESS: with every ledger and stem row removed, no head outside every staff's band may get an owner (a nearness rule
+    hiding anywhere would still decide them) -- and the broken arm (nearest staff by centre) does decide them, so the control can fail;
+    (b) a two-staff head mark the ledger decided, with ONE view's reading turned to the other staff, becomes GUESSED with both staves;
+    (c) a two-view arc span: one view's trace moved one staff space down no longer joins (two arcs); unmoved, with no shared page mark, joins."""
+    from . import cell_map as CM
+    from . import claim_readout as CR
+    from . import page_marks as PM
+    src = CR.resolve_source(rec)
+    rows = CR.read_rows(src, [page])
+    pdf = CR.LIB / CR.edition_info(rows)["edition_path"]
+    cm_root = cm_root or CM.ROOT_DEFAULT
+    pws, cells, local, views, verify = PM.page_views(rows, pdf, page, cm_root)
+    boxes = PM.boxes_from_rows(rows, page, cells, local, views, pws.page.binary == 0)
+    marks = PM.link(boxes, pieces=True)
+    frames = staff_frames(cells, local)
+    sr = SliceRows(rows)
+    fails = 0
+    full = owners(marks, boxes, frames, sr)
+    bare = owners(marks, boxes, frames, _NoRows())
+    gap = [n for n, r in full.items() if r["family"] == FAMILY_HEAD and not r["witnesses"]["inside"]]
+    leaked = [n for n in gap if bare[n]["status"] != "abstain"]
+    broken = 0
+    for n in gap:
+        r = full[n]
+        cx, cy = (r["box"][0] + r["box"][2]) / 2.0, (r["box"][1] + r["box"][3]) / 2.0
+        near = [k for k in r["witnesses"].get("candidates", []) if lines_at(frames, k, cx) is not None]
+        broken += int(bool(near))
+    ok = bool(gap) and not leaked and broken == len(gap)
+    log("  (a) never nearness: %d heads outside every band; with no ledger/stem rows %d get an owner (must be 0); the nearest-staff arm "
+        "would decide %d of them -- %s" % (len(gap), len(leaked), broken, "pass" if ok else ("NOT RUN (no gap head)" if not gap else "FAIL")))
+    fails += 0 if ok else 1
+    two = [(n, r) for n, r in full.items() if r["family"] == FAMILY_HEAD and len(r["seen_from"]) > 1 and r["reason"].startswith("ledger")
+           and sum(1 for v in r["witnesses"]["ledger"].values() if v == r["owner"]) >= 2]
+    if not two:
+        log("  (b) no two-staff head decided by its ledger lines on page %d: NOT RUN" % page)
+        fails += 1
+    else:
+        n, r = two[0]
+        other = [c for c in r["witnesses"]["candidates"] if c != r["owner"]]
+        m0 = r["members"][0]
+        flipped = mark_owner(r["family"], r["members"], r["box"], frames, _Flip(sr, m0, other[0])) if other else None
+        ok = bool(flipped) and flipped["status"] == "guessed" and set(flipped["candidates"]) == {r["owner"], other[0]}
+        log("  (b) %s (%s, %s) with view %s's ledger turned to %s: %s -- %s" % (
+            r["members"], r["owner"], r["reason"], m0, other[0] if other else None,
+            (flipped["status"], flipped["candidates"]) if flipped else None, "pass" if ok else "FAIL"))
+        fails += 0 if ok else 1
+    sa = system_arcs_of(_rows_of(rows, "system_arc"))
+    sp, _ = arc_spans(sa, marks.mark_of, [])
+    joined = [s for s in sp if len(s["views"]) == 2]
+    if not joined:
+        log("  (c) no two-view arc span on page %d: NOT RUN" % page)
+        fails += 1
+    else:
+        s = joined[0]
+        a, b = [dict(v) for v in sa if v["key"] in s["views"]][:2]
+        bar = lines_at(frames, a["staff"], a["x0"])
+        dy = bar.sp if bar else 20.0
+        b_far = dict(b, pieces=[b["key"] + "#moved"], trace=[[t[0], t[1] + dy, t[2] + dy] for t in b["trace"]])
+        b_same = dict(b, pieces=[b["key"] + "#copy"])
+        n_far = len(arc_spans([a, b_far], {}, [])[0])
+        n_same = len(arc_spans([a, b_same], {}, [])[0])
+        ok = n_far == 2 and n_same == 1
+        log("  (c) span %s (%s): view moved one space apart -> %d arcs (must be 2); unmoved, no shared page mark -> %d (must be 1) -- %s" % (
+            s["views"], s["joined_by"], n_far, n_same, "pass" if ok else "FAIL"))
+        fails += 0 if ok else 1
+    log("  cells re-cut and matched: %s" % dict(verify))
+    log("controls: %s" % ("ALL PASS" if fails == 0 else "%d FAILED" % fails))
+    return fails
+
+
+def main(argv: Optional[Sequence[str]] = None) -> int:
+    ap = argparse.ArgumentParser(prog="page_owner")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    r = sub.add_parser("readout")
+    r.add_argument("rec", nargs="+")
+    r.add_argument("--pages", default=None, help="only with one REC")
+    r.add_argument("--out", default=None)
+    r.add_argument("--tiles", default=None, help="cut 12 blind tiles over all RECs into DIR/tiles (key.json beside)")
+    r.add_argument("--cell-map", default=None)
+    r.add_argument("--no-old", action="store_true", help="skip the old cell-copy rules' verdicts")
+    c = sub.add_parser("controls")
+    c.add_argument("rec")
+    c.add_argument("--page", type=int, required=True)
+    c.add_argument("--cell-map", default=None)
+    a = ap.parse_args(argv)
+    cm = pathlib.Path(a.cell_map) if a.cell_map else None
+    if a.cmd == "readout":
+        pages = [int(p) for p in a.pages.split(",")] if a.pages else None
+        if pages and len(a.rec) > 1:
+            raise SystemExit("--pages takes one REC")
+        pool: List[Dict[str, Any]] = []
+        for i, rec in enumerate(a.rec):
+            out = pathlib.Path(a.out) / ("rec%d" % i) if (a.out and len(a.rec) > 1) else (pathlib.Path(a.out) if a.out else None)
+            run(rec, pages, out, cm, tile_pool=pool if a.tiles else None, with_old=not a.no_old)
+        if a.tiles:
+            cut_tiles(pool, pathlib.Path(a.tiles))
+            print("tiles: %s/tiles (key.json beside the folder)" % a.tiles)
+        return 0
+    return 1 if controls(a.rec, a.page, cm) else 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
