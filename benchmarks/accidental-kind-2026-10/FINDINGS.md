@@ -51,3 +51,6 @@ Sean's "a little bit high" is a box CUT short of its mark, not shifted: accident
 - Fast tier 9,531 passed before the last main merge; after it the accidental + flag-triage tests (64).
 ### Tiles
 out/print/2.247-r2-tiles: places of r1 tiles 7, 5, 3, 8, 2, 6 + 6 places where the written alteration changed (5 natural -> flat by the bowl rule, 1 flat -> sharp). The lane's own look: tile 12 (natural -> flat) may be a real natural.
+
+### Sean's r2 answers (2026-10-31)
+Right 10/12: 1, 4 flats; 2 slash (nothing written); 3, 5 half naturals (natural); 6 sharp (b -> #); 8-11 flats (bowl rule natural -> b, 4 of 5 right). Wrong 12 (most of a natural, bowl rule wrote b). Missed 7 (a sharp under an oversized double-sharp box: nothing written).
