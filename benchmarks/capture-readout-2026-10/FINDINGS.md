@@ -317,3 +317,5 @@ Branch `lane-2.242-accidental-whole` (main af25466cd merged). Not landed: waits 
 - Stacked accidentals in one over-large twin box stay cut (rule 6); a proper split needs the page-wide pass.
 - Yield rule is rare (12 strokes on 4 pages). Flag detail: Litolff stem_beam_flag->accidental (0.09%) is another family of cases not examined.
 - Default stays OFF until Sean judges the tiles; then a whole-movement re-gather is Sean's overnight.
+
+Merged-tree file veto (main af25466cd, `out/lane-report/2.242b`): identical -- Litolff NOTHING CHANGED; Brahms blue marks -2 (2 unjudged changed places, `unjudged.txt`); judged right->wrong 0, unwritten->wrong 0.
