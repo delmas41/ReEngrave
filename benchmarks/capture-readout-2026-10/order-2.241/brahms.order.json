@@ -1,0 +1,835 @@
+{
+ "env": {},
+ "layers": [
+  [
+   "staff_line",
+   [],
+   "plan \u00a710 pass order step 1; \u00a72 row 1"
+  ],
+  [
+   "barline_bracket",
+   [
+    "barline",
+    "bracket",
+    "leading_column"
+   ],
+   "plan \u00a710 step 1; \u00a79 brackets/braces claim page-wide"
+  ],
+  [
+   "clef_key_meter",
+   [
+    "clef",
+    "key_signature",
+    "meter"
+   ],
+   "plan \u00a710 step 2 system registers; \u00a72 row 1"
+  ],
+  [
+   "word_dynamic",
+   [
+    "word",
+    "dynamic",
+    "text"
+   ],
+   "plan \u00a710 steps 3-4; \u00a79 step 1 (page-wide, before heads)"
+  ],
+  [
+   "arc_hairpin",
+   [
+    "arc",
+    "arc_trace",
+    "hairpin"
+   ],
+   "plan \u00a79 / \u00a710 step 5 (page-wide, before heads)"
+  ],
+  [
+   "whole_rest",
+   [
+    "whole_rest"
+   ],
+   "DECISIONS 2026-10-29: a whole rest claims its ink before heads"
+  ],
+  [
+   "head",
+   [
+    "head",
+    "ledger"
+   ],
+   "plan \u00a72 row 3; \u00a73 head first among the per-cell marks"
+  ],
+  [
+   "stem_beam_flag",
+   [
+    "stem",
+    "beam",
+    "flag"
+   ],
+   "plan \u00a73 order head -> stem -> beam/flag; \u00a72 row 5"
+  ],
+  [
+   "accidental",
+   [
+    "accidental"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ],
+  [
+   "rest",
+   [
+    "rest"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ],
+  [
+   "dot_mark",
+   [
+    "dot",
+    "mark"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ]
+ ],
+ "master": "cm-2d494f8fc055",
+ "pages": [
+  0,
+  4,
+  5,
+  8,
+  12,
+  14,
+  19,
+  25
+ ],
+ "per_page": {
+  "0": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 56462,
+     "arc_hairpin": 189933,
+     "barline_bracket": 445130,
+     "clef_key_meter": 101412,
+     "dot_mark": 18776,
+     "head": 298894,
+     "rest": 10237,
+     "stem_beam_flag": 444826,
+     "whole_rest": 7301,
+     "word_dynamic": 217156
+    },
+    "OPEN": {
+     "arc_hairpin|accidental": 1197,
+     "arc_hairpin|head": 1441,
+     "clef_key_meter|-": 17,
+     "clef_key_meter|arc_hairpin": 624,
+     "clef_key_meter|head": 1751,
+     "head|-": 1427,
+     "head|accidental": 949,
+     "word_dynamic|-": 2408
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 103507,
+     "barline_bracket": 2808,
+     "clef_key_meter": 39937,
+     "head": 9549,
+     "stem_beam_flag": 1104,
+     "word_dynamic": 1098
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->head": 301,
+     "arc_hairpin->stem_beam_flag": 342,
+     "head->dot_mark": 160,
+     "stem_beam_flag->accidental": 4498,
+     "stem_beam_flag->dot_mark": 1200,
+     "word_dynamic->arc_hairpin": 2246
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 39,
+     "clef_key_meter": 71442,
+     "none": 497
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 1790127,
+    "NO-READER": 567151,
+    "OPEN": 9814,
+    "ORDER-OK": 158003,
+    "ORDER-VIOLATION": 8747,
+    "SPLIT-ACROSS-CLAIM": 71978
+   },
+   "ink_px": 2605820,
+   "split_pieces": 256,
+   "staff_line_px": 1747578
+  },
+  "12": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 173466,
+     "arc_hairpin": 270684,
+     "barline_bracket": 911524,
+     "clef_key_meter": 45559,
+     "dot_mark": 72048,
+     "head": 505954,
+     "rest": 156282,
+     "stem_beam_flag": 839008,
+     "whole_rest": 60188,
+     "word_dynamic": 208679
+    },
+    "OPEN": {
+     "accidental|dot_mark": 387,
+     "accidental|rest": 8983,
+     "arc_hairpin|accidental": 776,
+     "arc_hairpin|head": 825,
+     "barline_bracket|-": 5791,
+     "barline_bracket|clef_key_meter": 42,
+     "clef_key_meter|-": 2193,
+     "clef_key_meter|stem_beam_flag": 26,
+     "dot_mark|-": 324,
+     "head|-": 589,
+     "head|dot_mark": 864,
+     "head|rest": 427,
+     "rest|dot_mark": 1549,
+     "word_dynamic|-": 4844,
+     "word_dynamic|dot_mark": 501
+    },
+    "ORDER-OK": {
+     "accidental": 5946,
+     "arc_hairpin": 142441,
+     "barline_bracket": 19355,
+     "clef_key_meter": 67907,
+     "head": 13946,
+     "stem_beam_flag": 3641,
+     "whole_rest": 8778,
+     "word_dynamic": 13279
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->accidental": 641,
+     "arc_hairpin->head": 426,
+     "arc_hairpin->stem_beam_flag": 64,
+     "barline_bracket->arc_hairpin": 20,
+     "barline_bracket->clef_key_meter": 79,
+     "barline_bracket->stem_beam_flag": 146,
+     "clef_key_meter->accidental": 3,
+     "clef_key_meter->arc_hairpin": 14,
+     "clef_key_meter->dot_mark": 2,
+     "clef_key_meter->head": 40,
+     "clef_key_meter->stem_beam_flag": 2,
+     "clef_key_meter->word_dynamic": 25,
+     "head->dot_mark": 953,
+     "head->rest": 401,
+     "head->stem_beam_flag": 41,
+     "stem_beam_flag->accidental": 2258,
+     "stem_beam_flag->dot_mark": 2071,
+     "stem_beam_flag->rest": 582,
+     "word_dynamic->accidental": 560,
+     "word_dynamic->arc_hairpin": 441,
+     "word_dynamic->dot_mark": 51,
+     "word_dynamic->stem_beam_flag": 297
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 10864,
+     "clef_key_meter": 93387,
+     "none": 8377
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3243392,
+    "NO-READER": 726730,
+    "OPEN": 28121,
+    "ORDER-OK": 275293,
+    "ORDER-VIOLATION": 9117,
+    "SPLIT-ACROSS-CLAIM": 112628
+   },
+   "ink_px": 4395281,
+   "split_pieces": 549,
+   "staff_line_px": 3195737
+  },
+  "14": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 186329,
+     "arc_hairpin": 141546,
+     "barline_bracket": 713940,
+     "clef_key_meter": 51169,
+     "dot_mark": 41350,
+     "head": 419608,
+     "rest": 225128,
+     "stem_beam_flag": 710860,
+     "whole_rest": 34732,
+     "word_dynamic": 209079
+    },
+    "OPEN": {
+     "accidental|dot_mark": 756,
+     "accidental|rest": 7345,
+     "arc_hairpin|accidental": 2106,
+     "barline_bracket|-": 12840,
+     "barline_bracket|clef_key_meter": 54,
+     "clef_key_meter|-": 161,
+     "clef_key_meter|accidental": 915,
+     "head|-": 462,
+     "head|accidental": 1327,
+     "head|dot_mark": 868,
+     "head|rest": 2550,
+     "word_dynamic|-": 1176,
+     "word_dynamic|accidental": 96,
+     "word_dynamic|rest": 467
+    },
+    "ORDER-OK": {
+     "accidental": 7845,
+     "arc_hairpin": 134712,
+     "barline_bracket": 9462,
+     "clef_key_meter": 55188,
+     "head": 10120,
+     "stem_beam_flag": 2272,
+     "whole_rest": 2586,
+     "word_dynamic": 15849
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->arc_hairpin": 130,
+     "barline_bracket->clef_key_meter": 140,
+     "barline_bracket->stem_beam_flag": 33,
+     "clef_key_meter->stem_beam_flag": 152,
+     "head->accidental": 660,
+     "head->dot_mark": 1425,
+     "head->rest": 30,
+     "head->stem_beam_flag": 72,
+     "stem_beam_flag->accidental": 1477,
+     "stem_beam_flag->dot_mark": 1913,
+     "stem_beam_flag->rest": 1183,
+     "word_dynamic->accidental": 356,
+     "word_dynamic->arc_hairpin": 110,
+     "word_dynamic->dot_mark": 96
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "arc_hairpin": 14,
+     "barline_bracket": 16030,
+     "clef_key_meter": 94334,
+     "none": 1089
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 2733741,
+    "NO-READER": 531805,
+    "OPEN": 31123,
+    "ORDER-OK": 238034,
+    "ORDER-VIOLATION": 7777,
+    "SPLIT-ACROSS-CLAIM": 111467
+   },
+   "ink_px": 3653947,
+   "split_pieces": 440,
+   "staff_line_px": 3398163
+  },
+  "19": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 321586,
+     "arc_hairpin": 231302,
+     "barline_bracket": 723142,
+     "clef_key_meter": 36681,
+     "dot_mark": 65653,
+     "head": 629096,
+     "rest": 209071,
+     "stem_beam_flag": 785104,
+     "whole_rest": 25390,
+     "word_dynamic": 143964
+    },
+    "OPEN": {
+     "accidental|dot_mark": 6154,
+     "accidental|rest": 2066,
+     "arc_hairpin|accidental": 2146,
+     "arc_hairpin|head": 351,
+     "arc_hairpin|stem_beam_flag": 143,
+     "barline_bracket|-": 6555,
+     "clef_key_meter|-": 184,
+     "clef_key_meter|accidental": 9,
+     "dot_mark|-": 93,
+     "head|-": 1131,
+     "head|accidental": 1522,
+     "head|rest": 2260,
+     "whole_rest|head": 971,
+     "word_dynamic|-": 163,
+     "word_dynamic|accidental": 243,
+     "word_dynamic|dot_mark": 197
+    },
+    "ORDER-OK": {
+     "accidental": 8193,
+     "arc_hairpin": 170680,
+     "barline_bracket": 10572,
+     "clef_key_meter": 53656,
+     "head": 42381,
+     "rest": 149,
+     "stem_beam_flag": 7479,
+     "whole_rest": 780,
+     "word_dynamic": 8766
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->accidental": 252,
+     "barline_bracket->arc_hairpin": 12,
+     "clef_key_meter->accidental": 16,
+     "clef_key_meter->arc_hairpin": 514,
+     "clef_key_meter->stem_beam_flag": 2,
+     "head->accidental": 889,
+     "head->dot_mark": 650,
+     "head->rest": 395,
+     "stem_beam_flag->accidental": 3691,
+     "stem_beam_flag->dot_mark": 6092,
+     "stem_beam_flag->rest": 1987,
+     "whole_rest->head": 36,
+     "word_dynamic->accidental": 291,
+     "word_dynamic->arc_hairpin": 99,
+     "word_dynamic->dot_mark": 194
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 12965,
+     "clef_key_meter": 93158,
+     "none": 2143,
+     "stem_beam_flag": 271
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3170989,
+    "NO-READER": 694001,
+    "OPEN": 24188,
+    "ORDER-OK": 302656,
+    "ORDER-VIOLATION": 15120,
+    "SPLIT-ACROSS-CLAIM": 108537
+   },
+   "ink_px": 4315491,
+   "split_pieces": 468,
+   "staff_line_px": 3134630
+  },
+  "25": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 171836,
+     "arc_hairpin": 252490,
+     "barline_bracket": 745437,
+     "clef_key_meter": 41941,
+     "dot_mark": 56233,
+     "head": 472948,
+     "rest": 248240,
+     "stem_beam_flag": 877905,
+     "whole_rest": 37892,
+     "word_dynamic": 290835
+    },
+    "OPEN": {
+     "accidental|dot_mark": 82,
+     "accidental|rest": 7259,
+     "arc_hairpin|accidental": 929,
+     "arc_hairpin|head": 2552,
+     "barline_bracket|-": 2428,
+     "barline_bracket|clef_key_meter": 54,
+     "clef_key_meter|-": 198,
+     "clef_key_meter|accidental": 1408,
+     "clef_key_meter|head": 853,
+     "dot_mark|-": 97,
+     "head|-": 264,
+     "head|accidental": 2611,
+     "head|rest": 1250,
+     "rest|dot_mark": 496,
+     "stem_beam_flag|rest": 467,
+     "whole_rest|rest": 770,
+     "word_dynamic|-": 2558,
+     "word_dynamic|accidental": 20,
+     "word_dynamic|dot_mark": 131,
+     "word_dynamic|rest": 412
+    },
+    "ORDER-OK": {
+     "accidental": 5969,
+     "arc_hairpin": 113386,
+     "barline_bracket": 12305,
+     "clef_key_meter": 57525,
+     "head": 50804,
+     "stem_beam_flag": 3229,
+     "whole_rest": 3321,
+     "word_dynamic": 8596
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->head": 416,
+     "barline_bracket->clef_key_meter": 24,
+     "clef_key_meter->word_dynamic": 404,
+     "head->accidental": 309,
+     "head->dot_mark": 284,
+     "head->rest": 319,
+     "stem_beam_flag->accidental": 3286,
+     "stem_beam_flag->dot_mark": 2079,
+     "stem_beam_flag->rest": 2710,
+     "word_dynamic->accidental": 1888,
+     "word_dynamic->arc_hairpin": 174,
+     "word_dynamic->stem_beam_flag": 155
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 8348,
+     "clef_key_meter": 91821,
+     "none": 1528
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3195757,
+    "NO-READER": 581882,
+    "OPEN": 24839,
+    "ORDER-OK": 255135,
+    "ORDER-VIOLATION": 12048,
+    "SPLIT-ACROSS-CLAIM": 101697
+   },
+   "ink_px": 4171358,
+   "split_pieces": 464,
+   "staff_line_px": 3221699
+  },
+  "4": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 255981,
+     "arc_hairpin": 288768,
+     "barline_bracket": 722874,
+     "clef_key_meter": 49681,
+     "dot_mark": 52548,
+     "head": 570526,
+     "rest": 232289,
+     "stem_beam_flag": 645071,
+     "whole_rest": 38339,
+     "word_dynamic": 242537
+    },
+    "OPEN": {
+     "accidental|dot_mark": 1069,
+     "accidental|rest": 2696,
+     "arc_hairpin|accidental": 1201,
+     "arc_hairpin|head": 70,
+     "barline_bracket|-": 1499,
+     "barline_bracket|clef_key_meter": 22,
+     "clef_key_meter|-": 104,
+     "clef_key_meter|accidental": 1,
+     "clef_key_meter|word_dynamic": 1,
+     "head|-": 192,
+     "head|accidental": 793,
+     "head|rest": 1053,
+     "head|stem_beam_flag": 758,
+     "word_dynamic|-": 2410,
+     "word_dynamic|accidental": 667
+    },
+    "ORDER-OK": {
+     "accidental": 1306,
+     "arc_hairpin": 106410,
+     "barline_bracket": 14543,
+     "clef_key_meter": 53728,
+     "head": 58143,
+     "stem_beam_flag": 8515,
+     "whole_rest": 2034,
+     "word_dynamic": 6957
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->accidental": 174,
+     "arc_hairpin->head": 307,
+     "arc_hairpin->stem_beam_flag": 13,
+     "barline_bracket->clef_key_meter": 101,
+     "clef_key_meter->arc_hairpin": 1232,
+     "clef_key_meter->rest": 5,
+     "clef_key_meter->stem_beam_flag": 132,
+     "clef_key_meter->word_dynamic": 19,
+     "head->dot_mark": 429,
+     "stem_beam_flag->accidental": 3249,
+     "stem_beam_flag->dot_mark": 2199,
+     "stem_beam_flag->rest": 2557,
+     "word_dynamic->accidental": 1765,
+     "word_dynamic->arc_hairpin": 1313
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "arc_hairpin": 763,
+     "barline_bracket": 9765,
+     "clef_key_meter": 89448,
+     "none": 1960
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3098614,
+    "NO-READER": 714466,
+    "OPEN": 12536,
+    "ORDER-OK": 251636,
+    "ORDER-VIOLATION": 13495,
+    "SPLIT-ACROSS-CLAIM": 101936
+   },
+   "ink_px": 4192683,
+   "split_pieces": 528,
+   "staff_line_px": 2697231
+  },
+  "5": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 111259,
+     "arc_hairpin": 327800,
+     "barline_bracket": 775220,
+     "clef_key_meter": 50840,
+     "dot_mark": 59397,
+     "head": 685249,
+     "rest": 331443,
+     "stem_beam_flag": 1129832,
+     "whole_rest": 25442,
+     "word_dynamic": 151678
+    },
+    "OPEN": {
+     "accidental|dot_mark": 120,
+     "accidental|rest": 12268,
+     "arc_hairpin|accidental": 1171,
+     "arc_hairpin|stem_beam_flag": 256,
+     "barline_bracket|-": 4059,
+     "barline_bracket|clef_key_meter": 109,
+     "clef_key_meter|-": 626,
+     "clef_key_meter|accidental": 1,
+     "clef_key_meter|head": 1092,
+     "dot_mark|-": 249,
+     "head|-": 113,
+     "head|accidental": 707,
+     "head|dot_mark": 1320,
+     "head|rest": 6869,
+     "head|stem_beam_flag": 395,
+     "rest|dot_mark": 191,
+     "word_dynamic|-": 1232,
+     "word_dynamic|accidental": 349,
+     "word_dynamic|dot_mark": 796
+    },
+    "ORDER-OK": {
+     "accidental": 10172,
+     "arc_hairpin": 220439,
+     "barline_bracket": 12673,
+     "clef_key_meter": 60039,
+     "head": 89332,
+     "rest": 133,
+     "stem_beam_flag": 13741,
+     "whole_rest": 2132,
+     "word_dynamic": 10425
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->accidental": 217,
+     "arc_hairpin->head": 328,
+     "arc_hairpin->stem_beam_flag": 36,
+     "barline_bracket->arc_hairpin": 101,
+     "barline_bracket->clef_key_meter": 84,
+     "barline_bracket->head": 10,
+     "barline_bracket->stem_beam_flag": 36,
+     "clef_key_meter->head": 8,
+     "head->accidental": 100,
+     "head->dot_mark": 1216,
+     "head->rest": 1797,
+     "head->stem_beam_flag": 103,
+     "stem_beam_flag->accidental": 3298,
+     "stem_beam_flag->dot_mark": 6033,
+     "stem_beam_flag->rest": 2550,
+     "word_dynamic->accidental": 2569,
+     "word_dynamic->arc_hairpin": 296,
+     "word_dynamic->dot_mark": 450,
+     "word_dynamic->head": 212,
+     "word_dynamic->stem_beam_flag": 381
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "arc_hairpin": 283,
+     "barline_bracket": 17427,
+     "clef_key_meter": 100337,
+     "none": 2897,
+     "stem_beam_flag": 337
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3648160,
+    "NO-READER": 592840,
+    "OPEN": 31923,
+    "ORDER-OK": 419086,
+    "ORDER-VIOLATION": 19825,
+    "SPLIT-ACROSS-CLAIM": 121281
+   },
+   "ink_px": 4833115,
+   "split_pieces": 524,
+   "staff_line_px": 3371703
+  },
+  "8": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 61473,
+     "arc_hairpin": 72458,
+     "barline_bracket": 828409,
+     "clef_key_meter": 40155,
+     "dot_mark": 40841,
+     "head": 250855,
+     "rest": 145148,
+     "stem_beam_flag": 474542,
+     "whole_rest": 68643,
+     "word_dynamic": 213247
+    },
+    "OPEN": {
+     "accidental|dot_mark": 510,
+     "accidental|rest": 677,
+     "arc_hairpin|accidental": 123,
+     "arc_hairpin|head": 5,
+     "barline_bracket|-": 5741,
+     "barline_bracket|clef_key_meter": 14,
+     "clef_key_meter|-": 163,
+     "clef_key_meter|arc_hairpin": 6,
+     "head|-": 329,
+     "head|dot_mark": 1100,
+     "head|rest": 2597,
+     "head|stem_beam_flag": 571,
+     "rest|dot_mark": 1638,
+     "stem_beam_flag|accidental": 500,
+     "whole_rest|head": 864,
+     "word_dynamic|-": 3953,
+     "word_dynamic|accidental": 31
+    },
+    "ORDER-OK": {
+     "accidental": 377,
+     "arc_hairpin": 107358,
+     "barline_bracket": 7741,
+     "clef_key_meter": 58142,
+     "head": 8585,
+     "rest": 95,
+     "stem_beam_flag": 3544,
+     "whole_rest": 7441,
+     "word_dynamic": 17147
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->accidental": 2,
+     "arc_hairpin->head": 1135,
+     "arc_hairpin->stem_beam_flag": 30,
+     "barline_bracket->arc_hairpin": 180,
+     "barline_bracket->clef_key_meter": 132,
+     "clef_key_meter->arc_hairpin": 331,
+     "clef_key_meter->dot_mark": 4,
+     "clef_key_meter->head": 18,
+     "clef_key_meter->whole_rest": 18,
+     "clef_key_meter->word_dynamic": 359,
+     "head->dot_mark": 325,
+     "head->rest": 1294,
+     "stem_beam_flag->accidental": 2475,
+     "stem_beam_flag->dot_mark": 2531,
+     "stem_beam_flag->rest": 1418,
+     "word_dynamic->arc_hairpin": 6,
+     "word_dynamic->dot_mark": 359,
+     "word_dynamic->head": 212,
+     "word_dynamic->stem_beam_flag": 7864
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 16309,
+     "clef_key_meter": 94190,
+     "none": 678
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 2195771,
+    "NO-READER": 308300,
+    "OPEN": 18822,
+    "ORDER-OK": 210430,
+    "ORDER-VIOLATION": 18693,
+    "SPLIT-ACROSS-CLAIM": 111177
+   },
+   "ink_px": 2863193,
+   "split_pieces": 423,
+   "staff_line_px": 3349801
+  }
+ },
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-report-slices-20261029-night/brahms",
+ "total": {
+  "by_pair": {
+   "EARLIER-UNREAD": {
+    "accidental": 1338392,
+    "arc_hairpin": 1774981,
+    "barline_bracket": 5865676,
+    "clef_key_meter": 417438,
+    "dot_mark": 406846,
+    "head": 3833130,
+    "rest": 1557838,
+    "stem_beam_flag": 5907148,
+    "whole_rest": 297927,
+    "word_dynamic": 1677175
+   },
+   "OPEN": {
+    "accidental|dot_mark": 9078,
+    "accidental|rest": 41294,
+    "arc_hairpin|accidental": 9649,
+    "arc_hairpin|head": 5244,
+    "arc_hairpin|stem_beam_flag": 399,
+    "barline_bracket|-": 38913,
+    "barline_bracket|clef_key_meter": 295,
+    "clef_key_meter|-": 3646,
+    "clef_key_meter|accidental": 2334,
+    "clef_key_meter|arc_hairpin": 630,
+    "clef_key_meter|head": 3696,
+    "clef_key_meter|stem_beam_flag": 26,
+    "clef_key_meter|word_dynamic": 1,
+    "dot_mark|-": 763,
+    "head|-": 4507,
+    "head|accidental": 7909,
+    "head|dot_mark": 4152,
+    "head|rest": 17006,
+    "head|stem_beam_flag": 1724,
+    "rest|dot_mark": 3874,
+    "stem_beam_flag|accidental": 500,
+    "stem_beam_flag|rest": 467,
+    "whole_rest|head": 1835,
+    "whole_rest|rest": 770,
+    "word_dynamic|-": 18744,
+    "word_dynamic|accidental": 1406,
+    "word_dynamic|dot_mark": 1625,
+    "word_dynamic|rest": 879
+   },
+   "ORDER-OK": {
+    "accidental": 39808,
+    "arc_hairpin": 1098933,
+    "barline_bracket": 89459,
+    "clef_key_meter": 446122,
+    "head": 282860,
+    "rest": 377,
+    "stem_beam_flag": 43525,
+    "whole_rest": 27072,
+    "word_dynamic": 82117
+   },
+   "ORDER-VIOLATION": {
+    "arc_hairpin->accidental": 1286,
+    "arc_hairpin->head": 2913,
+    "arc_hairpin->stem_beam_flag": 485,
+    "barline_bracket->arc_hairpin": 443,
+    "barline_bracket->clef_key_meter": 560,
+    "barline_bracket->head": 10,
+    "barline_bracket->stem_beam_flag": 215,
+    "clef_key_meter->accidental": 19,
+    "clef_key_meter->arc_hairpin": 2091,
+    "clef_key_meter->dot_mark": 6,
+    "clef_key_meter->head": 66,
+    "clef_key_meter->rest": 5,
+    "clef_key_meter->stem_beam_flag": 288,
+    "clef_key_meter->whole_rest": 18,
+    "clef_key_meter->word_dynamic": 807,
+    "head->accidental": 1958,
+    "head->dot_mark": 5442,
+    "head->rest": 4236,
+    "head->stem_beam_flag": 216,
+    "stem_beam_flag->accidental": 24232,
+    "stem_beam_flag->dot_mark": 24118,
+    "stem_beam_flag->rest": 12987,
+    "whole_rest->head": 36,
+    "word_dynamic->accidental": 7429,
+    "word_dynamic->arc_hairpin": 4685,
+    "word_dynamic->dot_mark": 1150,
+    "word_dynamic->head": 424,
+    "word_dynamic->stem_beam_flag": 8697
+   },
+   "SPLIT-ACROSS-CLAIM": {
+    "arc_hairpin": 1060,
+    "barline_bracket": 91747,
+    "clef_key_meter": 728117,
+    "none": 19169,
+    "stem_beam_flag": 608
+   }
+  },
+  "class_px": {
+   "EARLIER-UNREAD": 23076551,
+   "NO-READER": 4717175,
+   "OPEN": 181366,
+   "ORDER-OK": 2110273,
+   "ORDER-VIOLATION": 104822,
+   "SPLIT-ACROSS-CLAIM": 840701
+  },
+  "ink_px": 31030888,
+  "split_pieces": 3652,
+  "staff_line_px": 24116542
+ },
+ "verify": {
+  "cells_ok": 2034,
+  "strokes_ok": 64940
+ }
+}
