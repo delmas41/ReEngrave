@@ -40,6 +40,13 @@ def _chord():
     return img, raw
 
 
+def _canvas(res):
+    out = np.zeros((200, 300), bool)   # the reduced frame of a 1400 x 1100 cell at SP 100
+    for m, x, y in res.masks:
+        out[y:y + m.shape[0], x:x + m.shape[1]] |= m
+    return out
+
+
 def _total(res):
     return sum(int(m.sum()) for m, _x, _y in res.masks)
 
@@ -153,6 +160,107 @@ class SplitOthers(unittest.TestCase):
         self.assertEqual(SM.HEAD_WIDTH_CAP_SPACES, HI.MAX_WIDTH_SPACES)
 
 
+class Round3TouchingMarksAndClefs(unittest.TestCase):
+    """2.239 round 3 (Sean's round-2 tiles 1 "part of a ledger line and a flat", 7 "tip cut of a G clef"). CAUSE: the cuts above read a
+    change of width inside ONE mark; two marks that touch have none. And the openings cut a clef into pieces (flag OFF too)."""
+
+    def _flat_on_rung(self):
+        img, raw = _blank()
+        img[894:906, 300:650] = 0                       # a rung below the staff, through a head and running left under the flat
+        _oval(img, 525, 900, rx=62, ry=50, p=2)
+        img[700:960, 200:212] = 0                       # the flat's stem
+        for y in range(880, 960):                       # its bowl, the bottom row resting on the rung, closing at x=300
+            half = int(50 * np.sqrt(max(0.0, 1 - ((y - 920) / 40.0) ** 2)))
+            img[y, 205 + 0:205 + 2 * half] = 0 if half else img[y, 205:206]
+        return img, raw
+
+    def test_a_flat_touching_a_ledger_stub_is_cut_at_the_boxes(self):
+        img, raw = self._flat_on_rung()
+        boxes = [["accidental", 190, 690, 302, 970], ["head", 460, 845, 590, 955], ["ledger", 300, 885, 650, 915]]
+        r2 = SM.map_strokes(img, SP, LINES, raw, split_joins=True)
+        r3 = SM.map_strokes(img, SP, LINES, raw, split_joins=True, touch_boxes=boxes)
+        self.assertTrue((_canvas(r3) == _canvas(r2)).all())             # the same ink, every pixel
+        cut = [s for s in r3.strokes if any(how.startswith("accidental|") for _j, how in s.joined_to)]
+        self.assertEqual(len(cut), 2, [(s.kind, s.box, s.joined_to) for s in r3.strokes])
+        acc_side = min(cut, key=lambda s: s.box[0])
+        led_side = max(cut, key=lambda s: s.box[0])
+        self.assertLessEqual(acc_side.box[0] + acc_side.box[2], 310)          # the flat's ink stops at the flat box's edge
+        self.assertGreaterEqual(led_side.box[0], 295)                         # the stub starts there
+        self.assertGreaterEqual(r3.split_refused.get("touch_cut", 0), 1)
+
+    def test_no_accidental_box_or_one_box_leaves_it_as_round_2(self):
+        img, raw = self._flat_on_rung()
+        r2 = SM.map_strokes(img, SP, LINES, raw, split_joins=True)
+        for boxes in ([["head", 460, 845, 590, 955], ["ledger", 300, 885, 650, 915]],       # the detector missed the flat
+                      [["accidental", 150, 650, 700, 990], ["head", 460, 845, 590, 955]]):  # one box over both marks: cannot tell
+            r3 = SM.map_strokes(img, SP, LINES, raw, split_joins=True, touch_boxes=boxes)
+            self.assertEqual([(s.kind, s.box) for s in r3.strokes], [(s.kind, s.box) for s in r2.strokes])
+
+    def test_boxes_that_overlap_on_the_ink_leave_it_whole_with_the_reason(self):
+        m = np.zeros((10, 100), bool)
+        m[3:7, :] = True                                # one piece of ink, 100 px long, in the reduced frame
+        refused = {}
+        parts = SM._cut_touching(m, 0, 0, 16.0, [("accidental", (0, 0, 60, 10)), ("ledger", (40, 0, 100, 10))], refused)
+        self.assertEqual([j for _k, _p, j in parts], ["accidental|ledger"] * 2)
+        other, acc = parts[0][1], parts[1][1]
+        self.assertEqual(int(other.sum()) + int(acc.sum()), int(m.sum()))
+        self.assertTrue(acc[3:7, :40].all())            # each box's own ink stays on its side
+        self.assertTrue(other[3:7, 60:].all())
+        refused = {}
+        self.assertIsNone(SM._cut_touching(m, 0, 0, 16.0, [("accidental", (0, 0, 80, 10)), ("ledger", (20, 0, 100, 10))], refused))
+        self.assertEqual(refused.get("touch_boxes_undecided"), 1)          # 60% of the ink in both boxes: the boxes cannot tell
+
+    def _g_clef(self):
+        """A clef-like shape the openings cut up: a tall spine, a bowl crossing it, a ball at the tail, the tail leaving the box."""
+        img, raw = _blank()
+        img[300:850, 300:318] = 0                       # the spine
+        yy, xx = np.ogrid[:img.shape[0], :img.shape[1]]
+        ring = np.abs(np.hypot(xx - 310, yy - 600) - 110) <= 9
+        img[ring] = 0                                   # the bowl around the spine
+        img[np.hypot(xx - 250, yy - 860) <= 32] = 0     # the ball
+        img[850:870, 250:318] = 0                       # the tail joining spine and ball
+        img[230:300, 318:330] = 0                       # the top curl's tip, above the detector's box (inside a G clef's 7.024 sp)
+        return img, raw
+
+    def test_a_clef_the_openings_cut_up_is_one_stroke(self):
+        img, raw = self._g_clef()
+        box = [180, 300, 440, 900]                      # the detector's box: 6 sp tall, the clef's tip outside it
+        old = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[box])
+        new = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[box + ["clef:G"]])
+        self.assertGreater(len(old.strokes), 2)          # the cause: the openings cut the clef up, keep-whole never joined it
+        self.assertEqual(len(new.strokes), 1, [(s.kind, s.box) for s in new.strokes])
+        self.assertEqual(int(_canvas(new).sum()), int(_canvas(old).sum()))   # the same ink (an opening's crossing is counted once)
+        self.assertLess(new.strokes[0].box[1], 300)     # its tip above the box came with it
+        self.assertGreaterEqual(new.split_refused.get("clef_pieces_joined", 0), 2)
+
+    def test_f_clef_dots_join_and_a_barline_touching_the_clef_does_not(self):
+        img, raw = self._g_clef()
+        img[400:412, 400:412] = 0                       # two dots inside the box, clear of the clef (an F clef's dots)
+        img[480:492, 400:412] = 0
+        img[0:1100, 180:192] = 0                        # a barline the bowl does not reach, and ...
+        img[598:604, 192:200] = 0                       # ... a hair joining it to the bowl: one ink component, mostly outside the box
+        box = [182, 300, 440, 900, "clef:G"]
+        new = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[box])
+        big = [s for s in new.strokes if s.box[3] > 9 * SP]
+        self.assertEqual(len(big), 1)                   # the barline stays its own stroke
+        clef = [s for s in new.strokes if s is not big[0] and s.area_sp2 > 0.3]
+        self.assertEqual(len(clef), 1, [(s.kind, s.box, s.area_sp2) for s in new.strokes])
+        self.assertGreaterEqual(clef[0].box[0] + clef[0].box[2], 412)          # the dots are in it
+
+    def test_ink_beyond_the_clefs_size_is_not_the_clef(self):
+        img, raw = self._g_clef()
+        img[0:562, 400:412] = 0                         # a line touching the bowl and running 5 sp above the box: a stem, not the clef
+        new = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[[180, 300, 440, 900, "clef:G"]])
+        line = [s for s in new.strokes if s.box[1] == 0]
+        self.assertEqual(len(line), 1, [(s.kind, s.box) for s in new.strokes])        # that line is its own stroke
+        clef = max(new.strokes, key=lambda s: s.area_sp2)
+        self.assertIsNot(clef, line[0])
+        self.assertGreater(clef.box[1], 150)            # the clef stroke stops within the clef's size
+        self.assertEqual(SM.clef_family("clefCAlto"), "C")
+        self.assertEqual(SM.clef_family("gClef"), "G")
+        self.assertIsNone(SM.clef_family("keyFlat"))
+
+
 class StrokeRowsCarryTheJoin(unittest.TestCase):
     def test_rows_file_joined_to_only_with_the_flag(self):
         img, raw = _chord()
@@ -184,6 +292,24 @@ class BarlineClaimLeavesBracketInk(unittest.TestCase):
     def test_off_claims_the_bracket_column_on_flag_leaves_it(self):
         self.assertEqual(self._run("0"), [105, 400])
         self.assertEqual(self._run(""), [400])
+
+
+class ClefAreaGrowsToItsInk(unittest.TestCase):
+    """Sean 2026-10-30: "make sure the box is big enough to claim all the ink and it should be based off of shape and size"."""
+
+    def test_the_clef_claim_grows_to_its_joined_stroke_within_the_clefs_size(self):
+        img, raw = Round3TouchingMarksAndClefs()._g_clef()
+        img[0:562, 400:412] = 0                         # a stem touching the bowl, far above: never the clef's
+        res = SM.map_strokes(img, SP, LINES, raw, split_joins=True, keep_whole=[[180, 300, 440, 900, "clef:G"]])
+        cell = types.SimpleNamespace(upscale_factor=1.0, bbox_page_px=(0, 0, 1400, 1100))
+        box = [180.0, 300.0, 440.0, 900.0]
+        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: "1"}):
+            area, grown = G._clef_area_by_ink(list(box), "G", cell, res, float(SP))
+            self.assertEqual(grown, box)
+            self.assertLess(area[1], 300)               # the curl's tip above the box is claimed now ...
+            self.assertGreater(area[1], 150)            # ... the stem above the clef's size is not
+        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: "0"}):
+            self.assertEqual(G._clef_area_by_ink(list(box), "G", cell, res, float(SP)), (box, None))
 
 
 class LeftEdgeReadOnce(unittest.TestCase):

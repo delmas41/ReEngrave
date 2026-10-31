@@ -7731,8 +7731,9 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
             continue
         keep = _split_keep_whole(detections, sub) if SM.split_joins_enabled() else []
+        touch = _split_touch_boxes(detections, sub) if SM.split_joins_enabled() else []
         res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None),
-                             keep_whole=keep)
+                             keep_whole=keep, touch_boxes=touch)
         if res is None:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
@@ -7767,6 +7768,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                     optional["cell_split_refused"] = dict(sorted(res.split_refused.items()))
                 if keep:                                 # ... and the clef / key / meter boxes no split cuts inside (a re-run reads them here)
                     optional["cell_keep_whole"] = keep
+                if touch:                                # ... and the boxes a touching accidental is cut against (2.239 r3)
+                    optional["cell_touch_boxes"] = touch
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
             if page_ok:
@@ -7787,15 +7790,76 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
     return cache
 
 
-def _split_keep_whole(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[int]]:
+def _split_keep_whole(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[Any]]:
     """ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the cell's clef, key and meter detector boxes (canonical x0, y0, x1, y1, whole px): ink mostly
-    inside one is never cut at a join -- its area claim already holds it whole (Sean's tiles 2 and 5: "small part of an F / G clef")."""
-    out: List[List[int]] = []
+    inside one is never cut at a join -- its area claim already holds it whole (Sean's tiles 2 and 5: "small part of an F / G clef").
+    A CLEF box carries a fifth item "clef:<G|F|C>" (2.239 r3, Sean's round-2 tile 7 "tip cut of a G clef"): the pieces the openings cut
+    the clef into are joined back into one stroke, read outward from the box and bounded by the family's size (`stroke_map.clef_region`)."""
+    from . import stroke_map as SM
+    out: List[List[Any]] = []
     for d in (detections or {}).get(sub.to_key(), ()):
         name = str(getattr(d, "smufl_name", "") or "")
-        if _is_clef_class(name, getattr(d, "category", None)) or name.startswith(("key", "timeSig")):
+        clef = _is_clef_class(name, getattr(d, "category", None))
+        if clef or name.startswith(("key", "timeSig")):
             x, y = float(d.x_canonical), float(d.y_canonical)
-            out.append([int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+            r: List[Any] = [int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))]
+            out.append(r + ["clef:%s" % (SM.clef_family(name) or "")] if clef else r)
+    return sorted(out, key=lambda r: (r[:4], len(r)))
+
+
+def SM_clef_family(name: Any) -> Optional[str]:
+    from .stroke_map import clef_family
+    return clef_family(str(name or ""))
+
+
+def _clef_area_by_ink(area: List[float], family: Optional[str], cell: Any, res: Any, sp: float) -> Tuple[List[float], Optional[List[float]]]:
+    """ROADMAP 2.239 r3 (`OMR_SPLIT_JOINS`; Sean 2026-10-30: "make sure the box is big enough to claim all the ink and it should be based
+    off of shape and size"): a clef's claimed AREA is grown from its box to every stroke of its cell standing mostly inside the box (the
+    stroke map joins a clef's pieces into one stroke, `stroke_map._merge_clefs`, its tail and curl and dots included), never beyond the
+    clef's own size around the box (`stroke_map.clef_region`, the SMuFL glyph boxes). Returns (area, the box it grew from or None)."""
+    from . import stroke_map as SM
+    if not SM.split_joins_enabled() or res is None or isinstance(res, str) or not sp:
+        return area, None
+    up, cb = getattr(cell, "upscale_factor", None), getattr(cell, "bbox_page_px", None)
+    if not up or not cb:
+        return area, None
+    canon = [(area[0] - cb[0]) * up, (area[1] - cb[1]) * up, (area[2] - cb[0]) * up, (area[3] - cb[1]) * up]
+    rx0, ry0, rx1, ry1 = SM.clef_region(area, family, sp)
+    grown = list(area)
+    for i, sh in SM.strokes_in_box(res, canon):
+        if sh < SM.COVER_SHARE_MIN:
+            continue
+        st = res.strokes[i] if i < len(getattr(res, "strokes", None) or ()) else None
+        if st is None or not getattr(st, "box", None):
+            continue
+        x, y, w, h = st.box
+        pb = [cb[0] + x / up, cb[1] + y / up, cb[0] + (x + w) / up, cb[1] + (y + h) / up]
+        if pb[0] < rx0 - 1 or pb[1] < ry0 - 1 or pb[2] > rx1 + 1 or pb[3] > ry1 + 1:
+            continue                                  # beyond the clef's size: not the clef's ink
+        grown = [min(grown[0], pb[0]), min(grown[1], pb[1]), max(grown[2], pb[2]), max(grown[3], pb[3])]
+    if [round(v, 1) for v in grown] == [round(v, 1) for v in area]:
+        return area, None
+    return [float(v) for v in grown], [round(float(v), 1) for v in area]
+
+
+def _split_touch_boxes(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[Any]]:
+    """ROADMAP 2.239 r3 (`OMR_SPLIT_JOINS`; Sean's round-2 tile 1 "part of a ledger line and a flat"): the cell's ACCIDENTAL boxes (the
+    `accidental*` classes; a key signature's are kept whole) and its head, ledger and stem boxes, `[family, x0, y0, x1, y1]` canonical --
+    only when the cell holds an accidental box (else nothing to cut, nothing filed). The stroke map cuts a piece across an accidental box
+    and one of the others at the boundary between the two boxes' own ink."""
+    from .stroke_owner import family_of
+    from . import stroke_map as SM
+    out: List[List[Any]] = []
+    for d in (detections or {}).get(sub.to_key(), ()):
+        name = str(getattr(d, "smufl_name", "") or "")
+        fam = family_of(name, getattr(d, "category", None))
+        if fam == SM.TOUCH_ACC_FAMILY and not name.lower().startswith("accidental"):
+            continue
+        if fam == SM.TOUCH_ACC_FAMILY or fam in SM.TOUCH_OTHER_FAMILIES:
+            x, y = float(d.x_canonical), float(d.y_canonical)
+            out.append([fam, int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+    if not any(r[0] == SM.TOUCH_ACC_FAMILY for r in out):
+        return []
     return sorted(out)
 
 
@@ -14895,11 +14959,13 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                         area = [min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)]
                 if area is None:
                     continue
+                area, grown = _clef_area_by_ink(area, d0.get("family"), c0, (stroke_cells or {}).get((p, sys_idx, li, 0)), sp)
                 inside = _claim_boxes_inside(binary, area, dets0, c0, lambda gi: R.glyph(p, sys_idx, li, 0, gi).to_key(),
                                              lines, sp, named=set(named))
                 log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0),
                             cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, unit="area", standing="READ",
-                            source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3))
+                            source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3),
+                            **({"grown_from_box": grown} if grown else {}))
                 if stroke_cells:               # ROADMAP 2.198 (OMR_STROKE_MAP): the same clef as a list of strokes
                     from . import stroke_map as SM
                     res0 = stroke_cells.get((p, sys_idx, li, 0))
@@ -14930,13 +14996,15 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                     standing = CL.clef_box_standing(pb, cb, sp, k)
                     gsub = R.glyph(p, sys_idx, li, k, gi)
                     g = log.rows(Q.GLYPH_BOX, gsub)
+                    pb, grown = _clef_area_by_ink(pb, SM_clef_family(d.smufl_name), c, (stroke_cells or {}).get((p, sys_idx, li, k)), sp)
                     inside = _claim_boxes_inside(binary, pb, dets, c, lambda j, k=k: R.glyph(p, sys_idx, li, k, j).to_key(),
                                                  lines, sp, skip=(gi,))
                     log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in pb], reader=READERS.CV_CLAIMED_REGISTER,
                                 frame=frame_cell(k), cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None,
                                 owner_glyph=gsub.to_key(), unit="area", standing=standing, source="detector",
                                 start_spaces=round((pb[0] - cb[0]) / sp, 3),
-                                cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3))
+                                cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3),
+                                **({"grown_from_box": grown} if grown else {}))
                     if stroke_cells:           # ROADMAP 2.198 (OMR_STROKE_MAP): the owner box's strokes, read off its `Q.GLYPH_STROKES` row
                         from . import stroke_map as SM
                         gs = log.rows(Q.GLYPH_STROKES, gsub)
