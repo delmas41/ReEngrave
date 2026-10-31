@@ -447,6 +447,48 @@ def structural_vetoes(strokes: Sequence[Ink], claims: Sequence[Claim], already: 
     return out
 
 
+# ── ROADMAP 2.242 (flag `OMR_ACCIDENTAL_WHOLE`): an accidental yields ink a head or a flag box holds when the ink has THAT mark's shape ─────────
+#: CAUSE (Sean's 2.241 order tiles 3 and 10): the accidental's shape test is SIZE ONLY (`shape_fit`: a blob up to 1.4 x 2.2 sp is `clear`; any
+#: vertical up to 3.7 sp, any scrap), so it `clear`s on ink that is not accidental-shaped while the head box beside it is only `could` (a head
+#: with a little ink under it: 1.86 sp tall against the 1.6 cap) -- and the flag, a consumer, never claims at all. It is not the ORDER (heads
+#: already stand before accidentals, flags after by design) and, on tile 10, not the detector box being wrong in KIND only: that
+#: `accidentalDoubleSharp` box is 2.2 x 2.6 sp, over twice its glyph. The class CANNOT be used to bound the ink (the detector's double-sharp
+#: boxes hold naturals and sharps: 2.201, "the type is read from the strokes"; measured here: the Brahms boxes classed double sharp hold ink
+#: 1.8x the glyph's height), so the two refusals below read the ink's own shape and its connections:
+#:  * a BLOB whose median run is a head's body (`HEAD_BODY_THICK_SP`, the stroke map's `HEAD_BODY_SPACES`: a disk a head holds and a tie or an
+#:    accidental's line does not) that a head box also covers and the head's shape does not refuse, is the head's;
+#:  * ink that HANGS FROM A NOTE'S STEM -- a chain of strokes a flag box covers, touching a vertical longer than any accidental's own stem
+#:    (`ACC_STEM_MAX_SP`, 2.201's measured 3.7) -- is the flag's.
+HEAD_BODY_THICK_SP = 0.55
+
+
+def accidental_yields(strokes: Sequence[Ink], claims: Sequence[Claim]) -> Dict[int, str]:
+    """`{stroke ordinal: why}` for the strokes an accidental claim must not take (module note above). Pure; flag-gated by the caller."""
+    by_ord = {s.ordinal: s for s in strokes}
+    out: Dict[int, str] = {}
+    head_cov = {o for c in claims if c.family == "head" and not c.area for o in c.covers}
+    for o in head_cov:
+        s = by_ord.get(o)
+        if s is not None and s.kind == "blob" and s.thickness >= HEAD_BODY_THICK_SP and shape_fit("head", s)[0] != "no":
+            out[o] = "yields_to_a_head_body"
+    long_vert = {o for o, s in by_ord.items() if s.kind == "vertical" and s.length > ACC_STEM_MAX_SP}
+    for c in claims:
+        if c.family != "flag" or c.area:
+            continue
+        cov = {o for o in c.covers if o in by_ord}
+        reach = {o for o in cov if any(j in long_vert for j, _ct in by_ord[o].touches)}
+        todo = list(reach)
+        while todo:
+            o = todo.pop()
+            for j, _ct in by_ord[o].touches:
+                if j in cov and j not in reach:
+                    reach.add(j)
+                    todo.append(j)
+        for o in reach:
+            out.setdefault(o, "yields_to_a_flag_on_a_stem")
+    return out
+
+
 def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
                 acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None) -> Dict[int, Ownership]:
     """`{ordinal: Ownership}` for every stroke of one cell. `claims` = the cell's detector boxes (any family: consumers and non-marks are
@@ -458,6 +500,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
     tier_index = {f: i for i, t in enumerate(tiers) for f in t}
     live = sorted((c for c in claims if c.family in tier_index), key=lambda c: (tier_index[c.family], c.key))
     crossing = {o for o in by_ord if _crosses_a_stem(by_ord[o], by_ord)}
+    from .stroke_map import accidental_whole_enabled            # 2.242: read at call time, as the 2.238 flag is
+    acc_yield = accidental_yields(strokes, claims) if accidental_whole_enabled() else {}
     if vetoes:
         clear = clear_keys(strokes, claims)
         vetoes = {k: v for k, v in vetoes.items() if not v.rival_must_be_clear or v.rival_key in clear}
@@ -483,6 +527,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                 fit, why = ("clear", "area") if c.area else shape_fit(c.family, s_, c.cls, crosses_a_stem=o in crossing,
                                                                         touches_a_head=touches_head, touches_a_note=touches_note,
                                                                         acc_bar_clear_of_note=acc_bar_clear_of_note)
+                if acc_yield and c.family == "accidental" and o in acc_yield:
+                    fit, why = "no", "%s:%s" % (acc_yield[o], why)
                 if veto is not None:
                     fit, why = "no", "veto:%s:%s" % (veto.rule, why)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
