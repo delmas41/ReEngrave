@@ -1,0 +1,436 @@
+[
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   1783.6,
+   3558.3,
+   1809.5,
+   3612.2
+  ],
+  "role": "r1-tile-7",
+  "subject": "glyph/4/0/13/2/1",
+  "cls": "accidentalFlat",
+  "on_type": "unclear",
+  "on_why": "flat_too_small",
+  "alt_on": "b",
+  "ink_offset": {
+   "top": -0.01,
+   "bottom": 0.03,
+   "left": 0.02,
+   "right": 0.08
+  },
+  "tile": 1,
+  "crop_origin": [
+   1604,
+   3425
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 13,
+   "cell": 2,
+   "page_box": [
+    1783.6,
+    3558.3,
+    1809.5,
+    3612.2
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2231.6,
+   3228.5,
+   2249.2,
+   3241.9
+  ],
+  "role": "r1-tile-5",
+  "subject": "glyph/2/1/7/12/5",
+  "cls": "accidentalSharp",
+  "on_type": null,
+  "on_why": null,
+  "alt_on": null,
+  "ink_offset": null,
+  "tile": 2,
+  "crop_origin": [
+   2145,
+   3156
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 7,
+   "cell": 12,
+   "page_box": [
+    2231.6,
+    3228.5,
+    2249.2,
+    3241.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   2944.6,
+   1203.9,
+   2967.5,
+   1247.0
+  ],
+  "role": "r1-tile-3",
+  "subject": "glyph/19/0/2/4/10",
+  "cls": "accidentalNatural",
+  "on_type": "unclear",
+  "on_why": "flat_too_small",
+  "alt_on": "natural",
+  "ink_offset": {
+   "top": 0.08,
+   "bottom": 0.0,
+   "left": 0.06,
+   "right": 0.03
+  },
+  "tile": 3,
+  "crop_origin": [
+   2764,
+   1065
+  ],
+  "position": {
+   "page": 19,
+   "system": 0,
+   "staff": 2,
+   "cell": 4,
+   "page_box": [
+    2944.6,
+    1203.9,
+    2967.5,
+    1247.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   2786.8,
+   6206.4,
+   2816.3,
+   6272.0
+  ],
+  "role": "r1-tile-8",
+  "subject": "glyph/12/1/9/4/0",
+  "cls": "accidentalFlat",
+  "on_type": "unclear",
+  "on_why": "right_stem_bowl_sized",
+  "alt_on": "b",
+  "ink_offset": {
+   "top": 0.05,
+   "bottom": 0.0,
+   "left": 0.02,
+   "right": 0.06
+  },
+  "tile": 4,
+  "crop_origin": [
+   2609,
+   6079
+  ],
+  "position": {
+   "page": 12,
+   "system": 1,
+   "staff": 9,
+   "cell": 4,
+   "page_box": [
+    2786.8,
+    6206.4,
+    2816.3,
+    6272.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1935.9,
+   3208.4,
+   1947.1,
+   3236.9
+  ],
+  "role": "r1-tile-2",
+  "subject": "glyph/10/1/8/9/10",
+  "cls": "accidentalNatural",
+  "on_type": "natural",
+  "on_why": "right_stem_lower",
+  "alt_on": "natural",
+  "ink_offset": {
+   "top": 0.1,
+   "bottom": 2.01,
+   "left": 0.0,
+   "right": 0.49
+  },
+  "tile": 5,
+  "crop_origin": [
+   1847,
+   3143
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 8,
+   "cell": 9,
+   "page_box": [
+    1935.9,
+    3208.4,
+    1947.1,
+    3236.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4182.6,
+   960.0,
+   4201.6,
+   1020.5
+  ],
+  "role": "written-changed",
+  "subject": "glyph/4/0/2/8/11",
+  "cls": "accidentalFlat",
+  "off": "b",
+  "on": "#",
+  "on_why": "stems_level",
+  "tile": 6,
+  "crop_origin": [
+   4000,
+   830
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 2,
+   "cell": 8,
+   "page_box": [
+    4182.6,
+    960.0,
+    4201.6,
+    1020.5
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   683.8,
+   742.0,
+   702.4,
+   762.9
+  ],
+  "role": "r1-tile-6",
+  "subject": "glyph/2/0/3/1/8",
+  "cls": "accidentalDoubleSharp",
+  "on_type": null,
+  "on_why": null,
+  "alt_on": null,
+  "ink_offset": null,
+  "tile": 7,
+  "crop_origin": [
+   598,
+   673
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    683.8,
+    742.0,
+    702.4,
+    762.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   2532.5,
+   1446.6,
+   2558.9,
+   1503.0
+  ],
+  "role": "written-changed",
+  "subject": "glyph/19/0/3/3/3",
+  "cls": "accidentalFlat",
+  "off": "natural",
+  "on": "b",
+  "on_why": "right_stem_bowl_sized",
+  "tile": 8,
+  "crop_origin": [
+   2353,
+   1314
+  ],
+  "position": {
+   "page": 19,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "page_box": [
+    2532.5,
+    1446.6,
+    2558.9,
+    1503.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   4518.4,
+   6899.6,
+   4546.8,
+   6962.0
+  ],
+  "role": "written-changed",
+  "subject": "glyph/12/1/12/8/0",
+  "cls": "accidentalFlat",
+  "off": "natural",
+  "on": "b",
+  "on_why": "right_stem_bowl_sized",
+  "tile": 9,
+  "crop_origin": [
+   4340,
+   6770
+  ],
+  "position": {
+   "page": 12,
+   "system": 1,
+   "staff": 12,
+   "cell": 8,
+   "page_box": [
+    4518.4,
+    6899.6,
+    4546.8,
+    6962.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   1621.1,
+   688.7,
+   1649.4,
+   753.9
+  ],
+  "role": "written-changed",
+  "subject": "glyph/4/0/0/2/0",
+  "cls": "accidentalFlat",
+  "off": "natural",
+  "on": "b",
+  "on_why": "right_stem_bowl_sized",
+  "tile": 10,
+  "crop_origin": [
+   1443,
+   561
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 0,
+   "cell": 2,
+   "page_box": [
+    1621.1,
+    688.7,
+    1649.4,
+    753.9
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   4237.9,
+   2506.1,
+   4264.9,
+   2566.0
+  ],
+  "role": "written-changed",
+  "subject": "glyph/19/0/8/7/1",
+  "cls": "accidentalFlat",
+  "off": "natural",
+  "on": "b",
+  "on_why": "right_stem_bowl_sized",
+  "tile": 11,
+  "crop_origin": [
+   4059,
+   2376
+  ],
+  "position": {
+   "page": 19,
+   "system": 0,
+   "staff": 8,
+   "cell": 7,
+   "page_box": [
+    4237.9,
+    2506.1,
+    4264.9,
+    2566.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   4305.8,
+   6018.0,
+   4329.9,
+   6072.0
+  ],
+  "role": "written-changed",
+  "subject": "glyph/4/1/8/6/7",
+  "cls": "accidentalFlat",
+  "off": "natural",
+  "on": "b",
+  "on_why": "right_stem_bowl_sized",
+  "tile": 12,
+  "crop_origin": [
+   4125,
+   5885
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 8,
+   "cell": 6,
+   "page_box": [
+    4305.8,
+    6018.0,
+    4329.9,
+    6072.0
+   ]
+  },
+  "cell_map": null
+ }
+]

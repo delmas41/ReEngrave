@@ -34,3 +34,20 @@ Litolff p4 `glyph/4/0/8/5/13`: strokes see a 1.75 sp stem and no bowl; an x has 
 
 ## Tiles
 out/print/2.247-tiles (key outside tiles/): 3 places where the written alteration changed, 3 boxes now unclear, 5 class-vs-strokes disagreements, tile 12 = the 2.242 r2 tile 1 place. Sean's answers 2026-10-31 (answers.json; DECISIONS): right 1, 4, 9, 10, 11, 12; wrong 2, 3 (half a natural -> flat), 5 (slash -> #), 6 (sharp -> ##), 7 (real flat -> unclear, box cuts its stem), 8 (flat -> natural). Sean: the boxes sit a little high; measure accidentals from their own ink as with notes.
+
+## Round 2 (2026-10-31, lane-2.247-accidental-kind 17a9a6861; written by the manager from the lane report)
+### Cause and process lesson
+Sean's "a little bit high" is a box CUT short of its mark, not shifted: accidental-class boxes stopping >= 0.5 sp short of the ink at top or bottom: Litolff 18 of 183, Brahms 84 of 1,057; a box shifted whole off its mark: L 0, B 2 (`offset_census.py`, r2 control pages). A one-stem test on the upper part reads a flat (r1 tiles 2, 3, 11). Lesson: give a reader the WHOLE mark before it reads; the box is only where to start looking (as with noteheads) -- 2.242 had built that for accidentals and the kind reader was not using it.
+### Built (accidental_family.py; gather_accidental_positions)
+1. Kind from the ink: `ink_members_and_extent` grows from every stroke the box touches along touching strokes within one accidental's SMuFL size (~1.3 x 3.9 sp); no head-owned strokes, none > 3.7 sp, no partial strokes touching a head; a 2.242 whole stroke read by its parts; staff-position anchor on the ink. key* boxes keep the 2.201 extent (growing them lost 4 Litolff keys in the first control).
+2. The class's sign is not written on unclear strokes when the shape excludes it or the box is > 1.5 x its glyph height (2.245's double sharp) -> abstain (r1 tiles 5, 6). A lower size bound was tried and dropped (lost 34 written flats).
+3. Tile 8 (flat read natural): the bowl's right side read as a second stem; a right "stem" no taller than a flat's bowl (1.2 sp) that ends level -> unclear, GUESSED with both kinds. The 2.242 r2 tile 1 natural (right stem 2.0 sp) still reads natural.
+### Sean's r1 places (ON arm)
+2 natural read (fixed); 3, 11 natural blue (fixed); 5 nothing written (fixed); 8 flat blue (fixed); 4 flat blue (fine); 7 flat blue, still flat_too_small -- the master-cell stroke map gives no ink above the box (re-cut cells read a full 1.94 sp flat); 6 nothing written (abstains, does not read the sharp); 12 flat blue with natural as candidate (still wrong kind).
+### Numbers
+- 2.201 type control (L 314, B 1,515 boxes): L flat_too_small 14, right_stem_bowl_sized 9, 5 now natural; B 36, 24, 8 others; one-arm-only rows L 28, B 68 (`data/type_control_r2.json`).
+- Three measures (L p2,4,10 / B p4,5,12,19; --from gather --cell-map master): L accidentals +1 -8, pitches ~55, blue -43, clefs +9, keys +10 -7; B accidentals +7 -18, pitches ~31, blue +9 -22; judged right->wrong 0, unwritten->wrong 0.
+- WARNING: the OFF arm did not reproduce on Litolff -- the same OFF code gave 41 clefs in one run and 32 in the next, with different key signatures at bars 1, 18, 33, 63, 77 (the second run's ON keys equal the first's OFF). The Litolff clef/key/pitch deltas are largely run-to-run noise. Not yet explained (the manager deleted the session scratchpad mid-run at ~13:45; whether that or something else made two gathers differ is NOT checked).
+- Fast tier 9,531 passed before the last main merge; after it the accidental + flag-triage tests (64).
+### Tiles
+out/print/2.247-r2-tiles: places of r1 tiles 7, 5, 3, 8, 2, 6 + 6 places where the written alteration changed (5 natural -> flat by the bowl rule, 1 flat -> sharp). The lane's own look: tile 12 (natural -> flat) may be a real natural.
