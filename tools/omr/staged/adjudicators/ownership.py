@@ -4939,7 +4939,7 @@ _WEDGE_WINDOW_CELLS = 1
     composed_from=(Q.WEDGE_BOX, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
     wants=(Q.WEDGE_BOX, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.VOICES,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.STAFF_LINES, Q.CLAIMED_AREA),
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.STAFF_LINES, Q.CLAIMED_AREA, Q.DIRECTION_WORD),
     subjects_from=Q.WEDGE_BOX,
     reasons=("nearest_either_side", "no_anchor", "no_page_frame",
              "no_evidence", "bound_page_wide", "tip_unbound",
@@ -5162,6 +5162,17 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
              if (r.detail or {}).get("owner") == "word" and (r.detail or {}).get("unit") == "area"
              and isinstance(r.value, (list, tuple)) and len(r.value) == 4]
     word = _hairpin_bind.inside_a_word(box, words)
+    if word is None:
+        # 2.223 fix (Sean's tile 11, Litolff p16 'Bassi'): the words reader FOUND a text candidate here but its OCR returned no
+        # reading, so no word claim was filed -- the candidate's box (a GATHER refusal row, `no_reading`) is still word ink seen.
+        unread = [list(r.detail["bbox_page_px"]) for r in
+                  ev.refusals(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS, subject=ev.subject.at(Kind.SYSTEM))
+                  if str(getattr(r, "reason", "")) == "no_reading" and len((r.detail or {}).get("bbox_page_px") or ()) == 4]
+        word = _hairpin_bind.inside_a_word(box, unread)
+        if word is not None:
+            word["source"] = "unread_word_candidate"
+    else:
+        word["source"] = "word_claim"
     if word is not None:
         return Ruling.abstain("inside_a_word", kind=str(wedge.value), box=box, **word)
     sp = ((own_lines[-1] - own_lines[0]) / (len(own_lines) - 1)) if own_lines else 0.0

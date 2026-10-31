@@ -1,5 +1,9 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2026-10-31 fix: Sean's tiles 11/12; tile 11 escaped the word guard because its word was never READ
+
+Sean (out/print/2.223-tiles/answers.json, main 7b51638d2): 11 of 12 bound right; tile 11 (Litolff p16, `glyph/16/1/9/2/100000`, crescendo box [996, 3494, 1009, 3503], 13 px = 0.8 sp wide) "is not an arc or hairpin" -- it is a letter of 'Bassi'. **Cause (numbers):** no word claim covers it: the words reader (STAGED GATHER, `direction_text` via surya) found a text candidate there, `glyph/16/1/9/2/90009` bbox [942, 3481, 1015, 3525] (line 44 px tall, it holds the whole 'hairpin'), but OCR returned no reading (`direction_word` abstained `no_reading`), so no `Q.CLAIMED_AREA` word row was filed. The width limit was not the cause (13 px <= 44 px). Litolff has 209 such unread candidates, Brahms 355. **Fix (binder only, no GATHER edit):** the guard also reads those `no_reading` candidate boxes as word ink, under the same width-<=-line-height limit (twin test: a real hairpin inside an unread candidate is kept). The root -- letters read as hairpins by `hairpin_detection`, and words that are seen but unread -- is GATHER's (2.245 / the words reader), reported, not touched.
+
 ## 2026-10-31: hairpins bound page-wide to the staff above (`OMR_HAIRPIN_BIND_PAGEWIDE`, default OFF)
 
 Sean 2026-10-31: "another joining arcs and hairpins to notes"; page-facts s1 (same day): a hairpin is always below its staff, notes above it belong to the staff above, notes below it to the staff below.

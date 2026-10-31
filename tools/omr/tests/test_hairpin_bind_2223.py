@@ -216,6 +216,31 @@ def test_twin_a_word_beside_the_hairpin_takes_nothing():
     assert _decide(log, _hairpin(log, 0, 0, 38.0, 148.0)).reason == "bound_page_wide"
 
 
+def _unread_word(log, box):
+    log.abstain(R.glyph(0, 0, 0, 0, 90001), Q.DIRECTION_WORD, reader="surya", frame="page", reason="no_reading",
+                bbox_page_px=box)
+
+
+def test_a_letter_inside_an_UNREAD_word_candidate_is_the_words():
+    """Sean's tile 11 (2026-10-31, "not an arc or hairpin"): Litolff p16 'Bassi' -- the words reader found the candidate
+    [942, 3481, 1015, 3525] but OCR gave no reading, so no word claim existed and a 13 px 'hairpin' inside it was bound."""
+    log = Log()
+    _page(log)
+    _head(log, 0, 0, 0, 40.0)
+    _unread_word(log, [30.0, 50.0, 90.0, 70.0])
+    v = _decide(log, _hairpin(log, 0, 0, 38.0, 48.0))
+    assert v.reason == "inside_a_word" and v.detail["source"] == "unread_word_candidate"
+
+
+def test_twin_a_real_hairpin_inside_an_unread_candidate_is_kept():
+    log = Log()
+    _page(log)
+    _head(log, 0, 0, 0, 40.0)
+    _head(log, 0, 0, 1, 150.0)
+    _unread_word(log, [30.0, 50.0, 190.0, 70.0])
+    assert _decide(log, _hairpin(log, 0, 0, 38.0, 148.0)).reason == "bound_page_wide"
+
+
 def test_a_real_hairpin_a_words_box_swallowed_is_still_a_hairpin():
     """Brahms p8 (crops): the words reader boxed 'a dim' over a real diminuendo; a hairpin wider than the word's line is tall is kept."""
     assert HB.inside_a_word([38.0, 55.0, 148.0, 63.0], [[30.0, 50.0, 190.0, 70.0]]) is None
