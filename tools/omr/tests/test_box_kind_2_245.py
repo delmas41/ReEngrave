@@ -185,6 +185,10 @@ class TestReadTheHeadsInsideAWideBox(unittest.TestCase):
         self.assertEqual(info[1]["box_kind"], {"heads": 3, "added": [2, 3], "unread": False})
         self.assertEqual(info[2]["box_kind"], {"split_from": 1})
         self.assertEqual(BK.split_wide_heads([own], img, SP), ([own], {}))   # nothing wide: unchanged
+        # two wide boxes over the same heads add each head ONCE (Litolff p6 6/0/3/8)
+        out2, info2 = BK.split_wide_heads([own, wide, D("noteheadBlackInSpace", 0, 105, 195, 55)], img, SP)
+        self.assertEqual(len(out2), 5)
+        self.assertEqual(info2[2]["box_kind"]["added"], [])
         _ = N
 
 
@@ -202,6 +206,12 @@ class TestArcsBowAndHairpinsAreWiderThanLetters(unittest.TestCase):
 
     def test_TWIN_a_short_straight_piece_is_left_alone(self):
         self.assertFalse(BK.trace_is_not_an_arc([[x, 10, 12] for x in range(60)], 27.5))
+
+    def test_case_4_the_double_sharp_box_is_far_bigger_than_a_double_sharp_RED(self):
+        self.assertTrue(BK.oversized_for_its_class("accidentalDoubleSharp", 1.45, 1.87))     # printed 0.99 x 1.01
+        self.assertFalse(BK.oversized_for_its_class("accidentalDoubleSharp", 1.1, 1.2))      # TWIN: its own size
+        self.assertFalse(BK.oversized_for_its_class("accidentalSharp", 1.03, 3.14))          # the sharp boxes' median: left alone
+        self.assertFalse(BK.oversized_for_its_class("noteheadBlackOnLine", 9.0, 9.0))        # not a sized class here
 
     def test_the_letter_cut_sits_in_the_measured_gap(self):
         self.assertTrue(1.46 < BK.HAIRPIN_MIN_W_SP < 2.02)

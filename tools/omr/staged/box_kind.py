@@ -129,9 +129,11 @@ def split_wide_heads(dets, img_no_staff, sp: float):
         for (bx, by, bw, bh) in blobs:
             cx, cy = x0 + bx + bw / 2.0, y0 + by + bh / 2.0
             if any(_inside(cx, cy, o) for o in narrow_heads):
-                continue
-            out.append(dataclasses.replace(d, x_canonical=int(x0 + bx), y_canonical=int(y0 + by), width_canonical=int(bw),
-                                           height_canonical=int(bh)))
+                continue                               # a head box already stands on it (the detector's, or one split off before)
+            nd = dataclasses.replace(d, x_canonical=int(x0 + bx), y_canonical=int(y0 + by), width_canonical=int(bw),
+                                     height_canonical=int(bh))
+            out.append(nd)
+            narrow_heads.append(nd)                    # two wide boxes over one head add it ONCE (Litolff p6 6/0/3/8)
             info[len(out) - 1] = {"box_kind": {"split_from": i}}
             added.append(len(out) - 1)
         info[i] = {"box_kind": {"heads": len(blobs), "added": added, "unread": bool(unread)}}
@@ -169,3 +171,35 @@ def trace_is_not_an_arc(trace, sp: float) -> bool:
 #    two plates, in that gap: it only REFUSES the reading (the row is not filed as a hairpin), never reads the ink as a word.
 HAIRPIN_MIN_W_SP = 1.6
 REASON_LETTER = "narrower_than_a_hairpin"
+
+
+# 5. A FIXED-SIZE GLYPH'S BOX IS NO BIGGER THAN THE GLYPH (2.247 hand-off; Sean's 2.242 tile 1 = this lane's case 4). An accidental is
+#    printed at its SMuFL size (`glyphBBoxes`; double sharp 0.99 x 1.01 sp); a box more than `GLYPH_BOX_MAX_K` x that in either axis
+#    holds more than the glyph (2.247: Litolff 42 of 51, Brahms 82 of 108 double-sharp boxes). Read where a box's CLASS blocks another
+#    reader: the narrow-box eighth-rest reader (`claimed_by_another_class`).
+#: 2.247's measured factor -- a tuned k: it only lets a box STOP BLOCKING; the eighth-rest reader still decides on the rest's own shape
+GLYPH_BOX_MAX_K = 1.5
+SIZED_PREFIXES = ("accidental",)
+SMUFL_PATH = "tools/omr/annotate/static/bravura/bravura_metadata.json"
+_SIZES: dict = {}
+
+
+def printed_size(cls: object):
+    """(w, h) staff spaces of the class's SMuFL glyph, or None (not a sized class / unknown)."""
+    c = str(cls or "")
+    if not c.lower().startswith(SIZED_PREFIXES):
+        return None
+    if not _SIZES:
+        import json
+        import pathlib
+        bb = json.loads((pathlib.Path(__file__).resolve().parents[3] / SMUFL_PATH).read_text())["glyphBBoxes"]
+        _SIZES.update({k: (v["bBoxNE"][0] - v["bBoxSW"][0], v["bBoxNE"][1] - v["bBoxSW"][1]) for k, v in bb.items()})
+    return _SIZES.get(c)
+
+
+def oversized_for_its_class(cls: object, w_sp: float, h_sp: float) -> bool:
+    """True when a sized class's box is more than `GLYPH_BOX_MAX_K` x its printed glyph in width or height."""
+    ps = printed_size(cls)
+    if not ps or not w_sp or not h_sp:
+        return False
+    return w_sp > GLYPH_BOX_MAX_K * ps[0] or h_sp > GLYPH_BOX_MAX_K * ps[1]
