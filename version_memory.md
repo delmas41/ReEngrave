@@ -13,7 +13,7 @@ measurement; this file is the WHEN and WHAT of each commit.
 - `OMR_HAIRPIN_BIND_PAGEWIDE` (default OFF; `staged/hairpin_bind.py`, `ownership._wedge_page_binding`): each hairpin's tips bound to the note at (or sounding at) each tip on the staff ABOVE it, among that staff's usable heads above the hairpin; a letter inside a claimed word, an unbound tip or a box between no two staves abstains; EXPORT names abstained hairpins (`wedges_unbound`).
 - Cause: the old anchor bound to refused heads / other staves' copies (22 of 102 ends on 5 Brahms pages) and to the nearest head of any bar; 8 of 8 narrow CV "hairpins" were letters.
 - one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
-- Left behind: a stale `.record-load.lock` (09:34) and a truncated Brahms slice verdicts file from a stopped run; removal refused to the lane.
+- A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
 
 ## 2026-10-31 -- tile answers, two rulings, four lanes (manager session; docs and answers only on main)
 - Recorded Sean's answers, with DECISIONS lines and `judged build`:
