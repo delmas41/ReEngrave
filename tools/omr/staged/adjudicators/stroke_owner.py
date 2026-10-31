@@ -265,6 +265,31 @@ def _acc_on_rest_vetoes(ev: Evidence, cell, accs: Dict[str, SO.Claim], rests: Di
     return out
 
 
+def _box_size_vetoes(ev: Evidence, cell, heads: Dict[str, SO.Claim]) -> Dict[str, SO.Veto]:
+    """ROADMAP 2.245 (`OMR_BOX_KIND_SIZE`, default OFF): a head box whose OWN size cannot hold one head (`box_kind.head_box_misfit`: at
+    least a head's widest ink across) claims no ink as a head. No rival: its strokes go to the other boxes on them (Brahms p5
+    `glyph/5/0/4/4/15`: the slur's) or to the consumers. GATHER rows only (the box, the cell's staff space)."""
+    from .. import box_kind as BK
+    if not BK.enabled() or not heads:
+        return {}
+    sp_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    try:
+        sp = float(sp_rows[-1].value) if sp_rows else 0.0
+    except (TypeError, ValueError):
+        sp = 0.0
+    if sp <= 0:
+        return {}
+    out: Dict[str, SO.Veto] = {}
+    for b in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        k = b.subject.to_key()
+        v = b.value
+        if k not in heads or not (isinstance(v, (list, tuple)) and len(v) == 5):
+            continue
+        if BK.head_box_misfit(v[0], float(v[3]) / sp, float(v[4]) / sp) is not None:
+            out[k] = SO.Veto("box_" + BK.REASON_WIDE, row_id=b.id)
+    return out
+
+
 def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim]) -> Dict[str, SO.Veto]:
     """Every 2.238 veto of this cell, first rule first (one per box)."""
     heads = {c.key: c for c in claims if c.family == "head" and not c.area}
@@ -276,8 +301,9 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
         if isinstance(v, (list, tuple)) and len(v) == 5:
             boxes[b.subject.to_key()] = (str(v[0]), tuple(float(t) for t in v[1:5]))
     out: Dict[str, SO.Veto] = {}
-    for part in (_letter_vetoes(ev, cell, heads, rests), _rest_shape_vetoes(ev, cell, heads), _rest_into_head_vetoes(ev, cell, rests),
-                 _acc_on_rest_vetoes(ev, cell, accs, rests, boxes)):
+    # 2.245: the box's own size first -- a box that cannot be one head is no head's claimant, whatever else its ink is
+    for part in (_box_size_vetoes(ev, cell, heads), _letter_vetoes(ev, cell, heads, rests), _rest_shape_vetoes(ev, cell, heads),
+                 _rest_into_head_vetoes(ev, cell, rests), _acc_on_rest_vetoes(ev, cell, accs, rests, boxes)):
         for k, v in part.items():
             out.setdefault(k, v)
     for k, v in SO.structural_vetoes(inks, claims, already=out).items():
@@ -294,13 +320,13 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
     # contact, the accidental's corner shape.
     wants=(Q.STROKE, Q.GLYPH_STROKES, Q.GLYPH_BOX, Q.CLAIMED_AREA, Q.EMPTY_BAR_REST_SEARCH,
            Q.NOTEHEAD_LETTER_INK, Q.LETTER_LOOK_COVER, Q.UNBOXED_REST_SHAPE, Q.STEM, Q.REST, Q.REST_INK_CONTACT,
-           Q.ACCIDENTAL_STAFF_POSITION),
+           Q.ACCIDENTAL_STAFF_POSITION, Q.CELL_STAFF_SPACE),
     subjects_from=Q.STROKE,
     reasons=("strokes_owned", "some_strokes_contested", "no_claimant", "no_strokes"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.STROKE, Q.GLYPH_STROKES, Q.GLYPH_BOX, Q.CLAIMED_AREA, Q.EMPTY_BAR_REST_SEARCH,
                    Q.NOTEHEAD_LETTER_INK, Q.LETTER_LOOK_COVER, Q.UNBOXED_REST_SHAPE, Q.STEM, Q.REST, Q.REST_INK_CONTACT,
-                   Q.ACCIDENTAL_STAFF_POSITION),
+                   Q.ACCIDENTAL_STAFF_POSITION, Q.CELL_STAFF_SPACE),
 )
 def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     """Which mark owns each stroke of this cell (module doc; the rule is `stroke_owner.own_strokes`)."""

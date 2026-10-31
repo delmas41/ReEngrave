@@ -91,6 +91,7 @@ from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
 from .. import margins as _margins
+from .. import box_kind as _box_kind
 from .. import record as R
 from ..record import ABSTAIN, Kind, Q, Scope
 # ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
@@ -3669,6 +3670,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
+                                     "wider_than_a_head",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -3946,6 +3948,17 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
             margin=TOO_NARROW_MIN_SPACES - detail["width_spaces"],
             axis="width_spaces", unit="staff spaces", band=None,
             would_choose=(True,))
+    # ROADMAP 2.245 (flag `OMR_BOX_KIND_SIZE`, default OFF): a head-class box wider than any one head is printed is not a head (Brahms p5
+    # `glyph/5/0/4/4/15`, a 5.2-space box on a slur four other boxes name). The box's own size against its own class; `box_kind`.
+    if _box_kind.enabled():
+        _w_c, _h_c = box_row.value[3], box_row.value[4]
+        misfit = _box_kind.head_box_misfit(box_row.value[0], _w_c / spacing, _h_c / spacing)
+        if misfit is not None:
+            detail["box_spaces"] = [round(_w_c / spacing, 3), round(_h_c / spacing, 3)]
+            return _margins.attach(
+                Ruling(value=True, reason=misfit[0], used=tuple(used), detail=detail),
+                margin=misfit[1], axis="width_spaces", unit="staff spaces", band=None,
+                would_choose=(True,))
     # ROADMAP 2.59: the hollow classes `too_narrow` does not reach. AFTER the
     # two shape rules above so every box they already refuse keeps its reason.
     if _ledger.dot_follows_note_enabled() \
