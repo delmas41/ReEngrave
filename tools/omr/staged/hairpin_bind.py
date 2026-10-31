@@ -76,12 +76,20 @@ def inside_a_word(box: Sequence[float], word_areas: Sequence[Sequence[float]]) -
     """The word claim (page area `[x0, y0, x1, y1]`) holding at least `claims.INSIDE_SHARE_MIN` of the hairpin box's AREA, or None.
     The page-wide pass claims words before dynamics (plan-2026-10-28 s10, Sean's order); a later reader may mark claimed ink, never
     take it. Measured 2026-10-31 on the sample: every CV 'hairpin' under 1.6 spaces wide was a letter ('c' of cresc., 'e' of
-    legato, 'B' of Basso: 8 of 8 on crops)."""
+    legato, 'B' of Basso: 8 of 8 on crops).
+
+    ⚠️ AND ONLY A HAIRPIN NO WIDER THAN THE WORD'S LINE IS TALL. The words reader's box over-reaches: on Brahms p8 it read a real
+    diminuendo beside 'dim' as part of the word ('a dim', the wedge OCR'd as 'a') and its claim held the whole hairpin -- 7 real
+    hairpins lost on the first build (crops). A letter is about as wide as its line is tall; every real hairpin measured is 3+ times
+    wider. NOT CONFIRMED (a shape cut on two plates, so it only NARROWS: the hairpin abstains, it is not re-kinded); the cause is the
+    words reader's box, a GATHER question for 2.245."""
     from .claims import INSIDE_SHARE_MIN
     x0, y0, x1, y1 = (float(v) for v in box)
     area = max(1e-9, (x1 - x0) * (y1 - y0))
     best = None
     for a in word_areas:
+        if (x1 - x0) > float(a[3]) - float(a[1]):
+            continue
         ix = max(0.0, min(x1, float(a[2])) - max(x0, float(a[0])))
         iy = max(0.0, min(y1, float(a[3])) - max(y0, float(a[1])))
         share = ix * iy / area

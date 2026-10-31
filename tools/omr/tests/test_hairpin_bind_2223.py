@@ -216,6 +216,12 @@ def test_twin_a_word_beside_the_hairpin_takes_nothing():
     assert _decide(log, _hairpin(log, 0, 0, 38.0, 148.0)).reason == "bound_page_wide"
 
 
+def test_a_real_hairpin_a_words_box_swallowed_is_still_a_hairpin():
+    """Brahms p8 (crops): the words reader boxed 'a dim' over a real diminuendo; a hairpin wider than the word's line is tall is kept."""
+    assert HB.inside_a_word([38.0, 55.0, 148.0, 63.0], [[30.0, 50.0, 190.0, 70.0]]) is None
+    assert HB.inside_a_word([38.0, 55.0, 48.0, 63.0], [[30.0, 50.0, 190.0, 70.0]])["share"] == 1.0
+
+
 def test_an_unusable_head_at_the_tip_blocks_the_under_guess():
     """Brahms p25 (2026-10-31 crop): the head at the start tip was not usable, so the first build bound the start UNDER the note
     before it -- a guess. A GATHER head box in reach of the tip now makes the tip abstain; without it the tip is under the earlier note."""
