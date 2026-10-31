@@ -23,6 +23,7 @@ from ..adjudicate import Checkable, Evidence, Mode, Ruling, Term, decision, tall
 from .. import record as R
 from .. import one_ink as _one_ink
 from .. import arc_claim as _arc_claim
+from .. import hairpin_bind as _hairpin_bind
 from .. import accidental_shape as _acc_shape
 from .. import accidental_family as _acc_family
 from ... import natural_candidate as _natural_candidate
@@ -4937,10 +4938,12 @@ _WEDGE_WINDOW_CELLS = 1
     quantity=Q.WEDGE_ANCHOR,
     composed_from=(Q.WEDGE_BOX, Q.GLYPH_BOX),
     scope=Kind.GLYPH,
-    wants=(Q.WEDGE_BOX, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.VOICES),
+    wants=(Q.WEDGE_BOX, Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.VOICES,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.STAFF_LINES, Q.CLAIMED_AREA),
     subjects_from=Q.WEDGE_BOX,
     reasons=("nearest_either_side", "no_anchor", "no_page_frame",
-             "no_evidence"),
+             "no_evidence", "bound_page_wide", "tip_unbound",
+             "not_between_staves", "inside_a_word"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
@@ -5024,6 +5027,9 @@ def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
     # the arc export's first battery. The pure core takes `left` and `right`
     # outright so neither caller has to spell a width.
     left, right = float(box[0]), float(box[2])
+
+    if _hairpin_bind.bind_enabled():
+        return _wedge_page_binding(ev, wedge, [float(v) for v in box])
 
     cell = ev.subject.at(Kind.CELL)
     here = cell.cell if cell is not None else None
@@ -5109,6 +5115,113 @@ def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
                 # know before trusting a cross-voice refusal that never fired.
                 "voices_read": voices_read,
                 "degenerate": (start_cell, start_x) == (stop_cell, stop_x)})
+
+
+def _voice_map(ev: Evidence, page: int, system: int, staff: int, cells: Iterable[int]) -> Tuple[Dict[str, int], int]:
+    """`{glyph key: voice number}` for the decided multi-voice bars among `cells` of one staff (a head no `Q.VOICES` verdict names is
+    voice 0, `_paired_spans`' default), and how many bars had voices read. Factored out of `adjudicate_wedge_anchor` (2.223)."""
+    voice_of: Dict[str, int] = {}
+    voices_read = 0
+    for c_index in sorted(set(cells)):
+        sub = R.cell(page, system, staff, c_index)
+        v = ev.verdict(Q.VOICES, subject=sub)
+        if not v or v.outcome != Outcome.DECIDED:
+            continue
+        value = v.value or {}
+        if int(value.get("n_voices") or 1) < 2:
+            continue
+        voices_read += 1
+        in_both = set(value.get("rests_in_every_voice") or ())
+        for number, glyphs in enumerate(value.get("voices") or (), start=1):
+            for gi in set(glyphs) - in_both:
+                voice_of[R.glyph(page, system, staff, c_index, gi).to_key()] = number
+    return voice_of, voices_read
+
+
+def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
+    """ROADMAP 2.223 (`OMR_HAIRPIN_BIND_PAGEWIDE`): the hairpin's two tips bound to places in the bars of the staff ABOVE it, page-wide,
+    after the heads are read. The rule and its convention are `hairpin_bind`'s docstring; here only the candidates, all GATHER's:
+    the staff's notehead boxes in the hairpin's system that ADJUDICATE left usable (not refused as a notehead, not a copy
+    `glyph_owner` relocated, owned by this staff), its cell boxes (the bars), its own bottom line and the next staff's top line.
+    An unbound tip ABSTAINS (`tip_unbound`) with its candidates and margin; the hairpin stays a read `Q.WEDGE_BOX`."""
+    page, system, staff = ev.subject.page, ev.subject.system, ev.subject.staff
+    own = R.staff(page, system, staff)
+    nxt = R.staff(page, system, staff + 1)
+
+    def lines(sub):
+        rows = ev.rows(Q.STAFF_LINES, subject=sub)
+        v = rows[0].value if rows else None
+        return [float(y) for y in v] if isinstance(v, (list, tuple)) and len(v) >= 2 else None
+
+    own_lines, next_lines = lines(own), lines(nxt)
+    why = _hairpin_bind.between_staves(box, own_lines[-1] if own_lines else None,
+                                       next_lines[0] if next_lines else None)
+    if why is not None:
+        return Ruling.abstain("not_between_staves", kind=str(wedge.value), why=why, box=box)
+    words = [r.value for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS)
+             if (r.detail or {}).get("owner") == "word" and (r.detail or {}).get("unit") == "area"
+             and isinstance(r.value, (list, tuple)) and len(r.value) == 4]
+    word = _hairpin_bind.inside_a_word(box, words)
+    if word is not None:
+        return Ruling.abstain("inside_a_word", kind=str(wedge.value), box=box, **word)
+    sp = ((own_lines[-1] - own_lines[0]) / (len(own_lines) - 1)) if own_lines else 0.0
+    bars: List[Tuple[int, float, float]] = []
+    heads: List[Dict[str, Any]] = []
+    sys_sub = ev.subject.at(Kind.SYSTEM)
+    for row in ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=own):
+        v = row.value
+        if isinstance(v, (list, tuple)) and len(v) == 4 and row.subject.cell is not None:
+            bars.append((int(row.subject.cell), float(v[0]), float(v[2])))
+    seen = set()
+    for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=sys_sub):
+        if (row.detail or {}).get("category") != "notehead":
+            continue
+        hb = row.detail.get("bbox_page_px")
+        if not hb or len(hb) != 4:
+            continue
+        key = row.subject.to_key()
+        if key in seen:
+            continue
+        seen.add(key)
+        owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+        staff_key = (owner.value if owner is not None and owner.value else row.subject.at(Kind.STAFF).to_key())
+        if str(staff_key) != own.to_key():
+            continue
+        if owner is not None and _is_relocated_copy(row.subject, owner.value):
+            continue
+        if not _head_usable(ev, key):
+            continue
+        x0, y0, x1, y1 = (float(t) for t in hb)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        # a head another staff's cell boxed but `glyph_owner` gave to THIS staff keeps its own cell index, which is a bar of the
+        # other staff: its bar on THIS staff is the one whose box holds its x
+        cell = _hairpin_bind.bar_of((x0 + x1) / 2.0, bars)
+        heads.append({"key": key, "cx": (x0 + x1) / 2.0, "cy": (y0 + y1) / 2.0, "w": x1 - x0, "h": y1 - y0,
+                      "cell": int(cell) if cell is not None else int(row.subject.cell or 0),
+                      "staff": row.subject.staff, "gcell": int(row.subject.cell or 0)})
+    if not bars or sp <= 0:
+        return Ruling.abstain("tip_unbound", kind=str(wedge.value), why="no_bars_or_staff_space")
+    voice_of: Dict[str, int] = {}
+    voices_read = 0
+    by_staff: Dict[int, List[int]] = {}
+    for h in heads:
+        by_staff.setdefault(int(h["staff"]), []).append(h["gcell"])
+    for st, cells in by_staff.items():
+        vm, n = _voice_map(ev, page, system, st, cells)
+        voice_of.update(vm)
+        voices_read += n
+    b = _hairpin_bind.bind_hairpin(box, heads, bars, sp, lambda k: voice_of.get(k, 0))
+    start, stop = b["start"], b["stop"]
+    detail = {"kind": str(wedge.value), "left_page": box[0], "right_page": box[2], "start": start, "stop": stop,
+              "n_candidates": len(heads), "heads_below_the_hairpin": len(b["below"]), "reader": wedge.reader,
+              "voices_read": voices_read, "rule": "page_wide_tips"}
+    if not (start.get("head") and stop.get("head")):
+        return Ruling.abstain("tip_unbound", **detail)
+    detail.update(start_cell=int(start["cell"]), stop_cell=int(stop["cell"]), start_x_page=float(start["x"]),
+                  stop_x_page=float(stop["x"]), start_how=start["how"], stop_how=stop["how"],
+                  degenerate=start["head"] == stop["head"])
+    return Ruling(value=[str(start["head"]), str(stop["head"])], reason="bound_page_wide", used=(wedge.id,), detail=detail)
 
 
 #: Detector categories a fermata can hang over. ⚠️ BOTH, AND THE REST IS THE

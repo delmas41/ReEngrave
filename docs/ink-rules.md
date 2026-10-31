@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **482 rule exits** are sorted (548 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 33 guard modules): **169 CONVENTION** (A), **10 ERASURE** (B), **79 DOUBLE-COUNT** (C), **167 OTHER** (D), **57 UNSURE** (U).
+1. **487 rule exits** are sorted (552 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 34 guard modules): **171 CONVENTION** (A), **10 ERASURE** (B), **79 DOUBLE-COUNT** (C), **169 OTHER** (D), **58 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **57 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **58 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -217,6 +217,9 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not
 | - | D:honesty | - | `adjudicate_fermata_owner` (ownership): `no_carrier`, `no_evidence`, `owned_by_another_staff` | 12 / 1 | 4 / 1 | CLAUDE rule 8 | kept |
 | a hairpin is between its notes | A | a slur is drawn over notes, a hairpin between them | `adjudicate_wedge_anchor` (ownership): `nearest_either_side` | 5 / 274 | 4 / 52 | page-facts s1 | kept |
 | - | D:honesty | - | `adjudicate_wedge_anchor` (ownership): `no_anchor`, `no_page_frame`, `no_evidence` | 0 / 4 | 1 / 2 | CLAUDE rule 8 | kept |
+| a hairpin's tips are its start and stop, under the staff above | A | each tip binds to the note at it (within a head width) or the note sounding there, on the staff ABOVE the hairpin; never a head below it | `adjudicate_wedge_anchor` (ownership): `bound_page_wide` | 0 / 0 | 0 / 0 | Sean 2026-10-31 (page-facts s1), 2026-09-05 (one anchor is enough); ROADMAP 2.223 | open (OMR_HAIRPIN_BIND_PAGEWIDE OFF) |
+| a word claimed first keeps its ink | A | a CV hairpin whose box lies inside a claimed word is the word's letter, not a hairpin | `adjudicate_wedge_anchor` (ownership): `inside_a_word` | 0 / 0 | 0 / 0 | plan-2026-10-28 s10 (claim order); ROADMAP 2.223 | open (OMR_HAIRPIN_BIND_PAGEWIDE OFF) |
+| - | D:honesty | - | `adjudicate_wedge_anchor` (ownership): `tip_unbound`, `not_between_staves` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | open (OMR_HAIRPIN_BIND_PAGEWIDE OFF) |
 | an ottava bracket belongs to the staff it hugs | A | - | `adjudicate_ottava_owner` (ownership): `above`, `below` | 0 / 10 | 0 / 6 | PLACEMENT-CONVENTIONS.md | kept |
 | - | D:honesty | - | `adjudicate_ottava_owner` (ownership): `no_staff_lines` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a pedal mark belongs to the lower staff of a grand staff | A | - | `adjudicate_pedal_owner` (ownership): `grand_staff_lower_staff` | 0 / 0 | 0 / 0 | PLACEMENT-CONVENTIONS.md | kept (inert on orchestral) |
@@ -315,6 +318,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `export_unison.py` | A | EXPORT of a unison head as two notes | Sean 2026-10-19 (2.175) | kept |
 | `geometry.py` | A | the standard notehead box: all regular heads are the same size | Sean 2026-09-29 (2.39) | kept |
 | `groups.py` | D:honesty | several witnesses to ONE fact and whether they agree (a second witness must be from a different source) | page-facts s2 | kept |
+| `hairpin_bind.py` | U | NOT YET CLASSIFIED | - | open |
 | `head_ink.py` | U | NOT YET CLASSIFIED | - | open |
 | `head_oval.py` | C | does a notehead box hold a head-shaped oval? (boxes at a bar's left edge were tie ends or barlines) | Sean 2026-10-17 (2.164) | retires with 2.205 |
 | `key_object.py` | C | the printed key signature measured as ONE system object | ROADMAP 2.187 | retires with 2.205 |
@@ -367,6 +371,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`arc_claim.py`**: not classified.
 - **`beam_strokes.py`**: not classified.
 - **`claim_order.py`**: not classified.
+- **`hairpin_bind.py`**: not classified.
 - **`head_ink.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
 - **`stem_strokes.py`**: not classified.

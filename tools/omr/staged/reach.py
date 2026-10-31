@@ -405,6 +405,8 @@ NOT_A_STAGE = frozenset({
     "stroke_owner.py",
     # lane-arcs-claim-1029. Pure helpers for `gather.gather_arc_claim`, `adjudicate_arc_kind` and the exporter's anchored slurs: files no row, names no quantity.
     "arc_claim.py",
+    # ROADMAP 2.223. Pure helpers for `adjudicate_wedge_anchor`'s page-wide hairpin binding (OMR_HAIRPIN_BIND_PAGEWIDE): files no row.
+    "hairpin_bind.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",
