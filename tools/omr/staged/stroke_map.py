@@ -139,6 +139,9 @@ TOUCH_UNDECIDED_MAX_SHARE = 0.5
 CLEF_SIZE_SPACES = {"G": (2.684, 7.024), "F": (2.756, 3.588), "C": (2.796, 4.048)}
 #: two pieces of a clef are one ink when within this many reduced px (the stroke map's own contact rule, `touches`: "within 2 px")
 CLEF_CONTACT_PX = 2
+#: the detector's box edge is read to within that same contact distance (2 reduced px = 0.125 sp): a clef whose box is its own size has
+#: pieces poking a pixel or two out of it (Brahms p0 G clefs: box 2.7 x 7.2 sp, the SMuFL size; 3 canonical px out on the right)
+CLEF_EDGE_TOL_SPACES = CLEF_CONTACT_PX / TARGET_SP_PX
 
 
 def split_joins_enabled() -> bool:
@@ -777,12 +780,14 @@ def clef_family(name: str) -> Optional[str]:
 
 def clef_region(box: Sequence[float], family: Optional[str], sp: float) -> Tuple[float, float, float, float]:
     """Every point of every clef-sized rectangle (`CLEF_SIZE_SPACES`) that still contains `box` (x0, y0, x1, y1, any frame in which `sp`
-    is the staff space); a box already larger than the clef, or no family, is its own region."""
+    is the staff space), widened by the box-edge tolerance `CLEF_EDGE_TOL_SPACES`; a box already larger than the clef, or no family, is
+    its own region (plus that tolerance)."""
     a, b, c, d = (float(v) for v in box[:4])
+    t = CLEF_EDGE_TOL_SPACES * sp
     if family not in CLEF_SIZE_SPACES:
-        return a, b, c, d
+        return a - t, b - t, c + t, d + t
     w, h = CLEF_SIZE_SPACES[family][0] * sp, CLEF_SIZE_SPACES[family][1] * sp
-    return min(a, c - w), min(b, d - h), max(c, a + w), max(d, b + h)
+    return min(a, c - w) - t, min(b, d - h) - t, max(c, a + w) + t, max(d, b + h) + t
 
 
 def _merge_clefs(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink: np.ndarray,
