@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.242 LANDED ON: one accidental, one piece (OMR_ACCIDENTAL_WHOLE)
+STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits`; `stroke_owner.accidental_yields`, `accidental_not_whole`), deny-list default ON (Sean "Land on"). Brahms p0 accidentals whole 0 -> 30/41; Sean's r2 tiles 11/12; judged right->wrong 0; Brahms file -1 accidental at an unjudged place. `test_stroke_owner_2_205` contest re-pinned to the flag OFF (the floor gives the eighth-rest bulb to the rest) plus a test of the ON case. Lane 2.247 (accidental kind by shape, Opus) started the same hour.
+
 ## 2026-10-31 -- tile answers, two rulings, four lanes (manager session; docs and answers only on main)
 - Recorded Sean's answers, with DECISIONS lines and `judged build`:
   - **2.240 step 2 kinds** (1b7033821): 9/12 are the ledger's kind; tiles 2, 9 and 12 are wrong-kind boxes from GATHER.
