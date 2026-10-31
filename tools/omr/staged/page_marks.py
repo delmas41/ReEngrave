@@ -55,10 +55,11 @@ NEAR_MISS = 0.05
 
 
 def enabled() -> bool:
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_PAGE_MARKS` (ROADMAP 2.240 step 1), default ON since 2026-10-31 (Sean "Land now and fix in step 3"); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
-#: ROADMAP 2.240 step 2 (default OFF, allow-list): one owner per page mark, arcs/hairpins page-wide (`page_owner.py`), and the step-1 rule
+#: ROADMAP 2.240 step 2 (default ON since 2026-10-31, deny-list): one owner per page mark, arcs/hairpins page-wide (`page_owner.py`), and the step-1 rule
 #: fix from Sean's tiles (`link(pieces=...)`). Needs `OMR_PAGE_MARKS`.
 OWNER_ENV = "OMR_PAGE_OWNER"
 
@@ -69,7 +70,8 @@ PIECE_FAMILIES = frozenset(("dynamic", "beam", "arc", "hairpin", "flag", "text")
 
 
 def owner_enabled() -> bool:
-    return enabled() and os.environ.get(OWNER_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_PAGE_OWNER` (ROADMAP 2.240 step 2), default ON since 2026-10-31 (Sean "Land now and fix in step 3"); needs `OMR_PAGE_MARKS`."""
+    return enabled() and os.environ.get(OWNER_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 # ───────────────────────────── 1. the core (pure) ─────────────────────────────
