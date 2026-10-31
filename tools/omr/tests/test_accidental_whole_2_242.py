@@ -95,7 +95,7 @@ class TestOwnerYields(unittest.TestCase):
             self.assertTrue(any(c["why"].startswith("yields_to_a_head_body") for c in o.candidates if c["family"] == "accidental"))
 
     def test_a_thin_accidental_blob_under_a_head_box_is_not_taken(self):
-        s = self.ink(0, "blob", 0.9, 1.3, 0.3)                              # line ink: a flat's bowl beside a head box's edge
+        s = self.ink(0, "blob", 0.9, 2.0, 0.3)                            # line ink: a flat's bowl beside a head box's edge
         head = SO.Claim("h", "head", "noteheadBlackOnLine", covers=(0,))
         acc = SO.Claim("a", "accidental", "accidentalFlat", covers=(0,))
         with _Flag("1"):
