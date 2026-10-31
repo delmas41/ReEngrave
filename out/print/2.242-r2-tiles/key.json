@@ -1,0 +1,314 @@
+[
+ {
+  "page": "litolff:2",
+  "box": [
+   1027,
+   2520,
+   1039,
+   2569
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalFlat",
+  "now": null,
+  "cell": [
+   2,
+   1,
+   3,
+   4
+  ],
+  "tile": 1,
+  "crop_origin": [
+   935,
+   2447
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:4",
+  "box": [
+   941,
+   3096,
+   948,
+   3102
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "refused",
+  "cls": "accidentalFlat",
+  "now": "refused_claims",
+  "cell": [
+   4,
+   1,
+   6,
+   3
+  ],
+  "tile": 2,
+  "crop_origin": [
+   847,
+   3001
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:2",
+  "box": [
+   1188,
+   2442,
+   1207,
+   2491
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalSharp",
+  "now": null,
+  "cell": [
+   2,
+   1,
+   2,
+   5
+  ],
+  "tile": 3,
+  "crop_origin": [
+   1100,
+   2369
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:25",
+  "box": [
+   1943,
+   4024,
+   1967,
+   4112
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalNatural",
+  "now": null,
+  "cell": [
+   25,
+   0,
+   13,
+   2
+  ],
+  "tile": 4,
+  "crop_origin": [
+   1789,
+   3902
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:25",
+  "box": [
+   2484,
+   1312,
+   2503,
+   1322
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "refused",
+  "cls": "accidentalFlat",
+  "now": "refused_claims",
+  "cell": [
+   25,
+   0,
+   2,
+   3
+  ],
+  "tile": 5,
+  "crop_origin": [
+   2328,
+   1151
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:0",
+  "box": [
+   5018,
+   2307,
+   5058,
+   2407
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalSharp",
+  "now": null,
+  "cell": [
+   0,
+   0,
+   2,
+   6
+  ],
+  "tile": 6,
+  "crop_origin": [
+   4872,
+   2191
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:4",
+  "box": [
+   1156,
+   528,
+   1159,
+   538
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "refused",
+  "cls": "accidentalFlat",
+  "now": "refused_claims",
+  "cell": [
+   4,
+   0,
+   0,
+   5
+  ],
+  "tile": 7,
+  "crop_origin": [
+   1060,
+   435
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:0",
+  "box": [
+   4758,
+   5848,
+   4764,
+   5870
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "refused",
+  "cls": "accidentalFlat",
+  "now": "refused_claims",
+  "cell": [
+   0,
+   0,
+   10,
+   6
+  ],
+  "tile": 8,
+  "crop_origin": [
+   4595,
+   5693
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:2",
+  "box": [
+   627,
+   821,
+   634,
+   825
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "refused",
+  "cls": "accidentalFlat",
+  "now": "refused_claims",
+  "cell": [
+   2,
+   0,
+   2,
+   1
+  ],
+  "tile": 9,
+  "crop_origin": [
+   533,
+   725
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:25",
+  "box": [
+   5079,
+   6106,
+   5096,
+   6140
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "refused",
+  "cls": "accidentalFlat",
+  "now": "refused_claims",
+  "cell": [
+   25,
+   1,
+   7,
+   9
+  ],
+  "tile": 10,
+  "crop_origin": [
+   4922,
+   5957
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:5",
+  "box": [
+   3330,
+   3307,
+   3360,
+   3382
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalFlat",
+  "now": null,
+  "cell": [
+   5,
+   0,
+   12,
+   4
+  ],
+  "tile": 11,
+  "crop_origin": [
+   3179,
+   3179
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:2",
+  "box": [
+   2215,
+   1670,
+   2227,
+   1702
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalNatural",
+  "now": null,
+  "cell": [
+   2,
+   0,
+   9,
+   14
+  ],
+  "tile": 12,
+  "crop_origin": [
+   2123,
+   1588
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ }
+]
