@@ -489,6 +489,27 @@ def accidental_yields(strokes: Sequence[Ink], claims: Sequence[Claim]) -> Dict[i
     return out
 
 
+def accidental_not_whole(strokes: Sequence[Ink], claims: Sequence[Claim]) -> Dict[Tuple[str, int], str]:
+    """2.242 r2 (Sean's tiles 2, 7, 11, 12: "Add shape and size"): `{(accidental box key, stroke ordinal): why}` for the ONE piece an accidental box
+    stands on when that piece is not the SIZE of the box class's glyph (`stroke_map.accidental_ink_fits`, measured in the stroke's own local staff
+    spaces). "One connected piece in the box" is the whole-mark claim; it must also look like the mark. Only a box whose covered non-vertical
+    ink is exactly ONE blob is judged (a box over several pieces is the old fragment case, unchanged); a lone piece that fails is refused to
+    that box (fit `no`), never relabelled. Pure; flag-gated by the caller."""
+    from .stroke_map import accidental_ink_fits
+    by_ord = {s.ordinal: s for s in strokes}
+    out: Dict[Tuple[str, int], str] = {}
+    for c in claims:
+        if c.family != "accidental" or c.area or not c.cls:
+            continue
+        pieces = [by_ord[o] for o in dict.fromkeys(c.covers) if o in by_ord and by_ord[o].kind != "vertical"]
+        if len(pieces) != 1 or pieces[0].kind != "blob":
+            continue
+        fits, why = accidental_ink_fits(c.cls, pieces[0].w_sp, pieces[0].h_sp)
+        if not fits:
+            out[(c.key, pieces[0].ordinal)] = why
+    return out
+
+
 def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
                 acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None) -> Dict[int, Ownership]:
     """`{ordinal: Ownership}` for every stroke of one cell. `claims` = the cell's detector boxes (any family: consumers and non-marks are
@@ -502,6 +523,7 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
     crossing = {o for o in by_ord if _crosses_a_stem(by_ord[o], by_ord)}
     from .stroke_map import accidental_whole_enabled            # 2.242: read at call time, as the 2.238 flag is
     acc_yield = accidental_yields(strokes, claims) if accidental_whole_enabled() else {}
+    acc_small = accidental_not_whole(strokes, claims) if accidental_whole_enabled() else {}
     if vetoes:
         clear = clear_keys(strokes, claims)
         vetoes = {k: v for k, v in vetoes.items() if not v.rival_must_be_clear or v.rival_key in clear}
@@ -529,6 +551,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                                                                         acc_bar_clear_of_note=acc_bar_clear_of_note)
                 if acc_yield and c.family == "accidental" and o in acc_yield:
                     fit, why = "no", "%s:%s" % (acc_yield[o], why)
+                if acc_small and c.family == "accidental" and (c.key, o) in acc_small:
+                    fit, why = "no", "not_glyph_sized:%s:%s" % (acc_small[(c.key, o)], why)
                 if veto is not None:
                     fit, why = "no", "veto:%s:%s" % (veto.rule, why)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,

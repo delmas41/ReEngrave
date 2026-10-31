@@ -118,11 +118,61 @@ class TestOwnerYields(unittest.TestCase):
 
     def test_a_flat_beside_its_own_short_stem_is_not_a_flag(self):
         stem = self.ink(0, "vertical", 0.3, 2.4, 0.25, touches=[(1, 0.6)])      # an accidental's own stem, under 3.7 sp
-        bowl = self.ink(1, "blob", 0.5, 0.9, 0.3, touches=[(0, 0.6)])
+        bowl = self.ink(1, "blob", 0.9, 1.9, 0.3, touches=[(0, 0.6)])
         flag = SO.Claim("f", "flag", "flag8thDown", covers=(0, 1))
         acc = SO.Claim("a", "accidental", "accidentalFlat", covers=(0, 1))
         with _Flag("1"):
             self.assertEqual(SO.own_strokes([stem, bowl], [flag, acc])[1].family, "accidental")
+
+
+class TestShapeAndSize(unittest.TestCase):
+    """2.242 round 2 (Sean's tiles 2, 7, 11, 12: 'Add shape and size'). Sizes are the pieces' measured px on Litolff (16.25 px/sp) and Brahms (27.55)."""
+
+    def ink(self, w_px, h_px, unit, kind="blob", ordinal=0):
+        return SO.Ink(ordinal, kind, (0, 0, float(w_px), float(h_px)), max(w_px, h_px) / unit, 0.4, w_px * h_px / unit ** 2 * 0.5, unit)
+
+    def owned(self, s, cls):
+        acc = SO.Claim("a", "accidental", cls, covers=(s.ordinal,))
+        return SO.own_strokes([s], [acc])[s.ordinal]
+
+    def test_the_three_speck_tiles_and_the_bowl_are_refused_with_the_flag(self):
+        cases = [("barline scrap 4x6, Litolff p4 tile 2", self.ink(4, 6, 16.25), "accidentalFlat"),
+                 ("tremolo slash 19x12, Litolff p2 tile 7", self.ink(19, 12, 16.25), "accidentalSharp"),
+                 ("stem tip 5x10, Litolff p4 tile 11", self.ink(5, 10, 16.25), "accidentalNatural"),
+                 ("a flat's bowl alone 29x40, Brahms p25 tile 12", self.ink(29, 40, 27.55), "accidentalFlat")]
+        for name, s, cls in cases:
+            with _Flag(None):
+                self.assertTrue(self.owned(s, cls).claimed, name + ": the fault, flag OFF")
+            with _Flag("1"):
+                o = self.owned(s, cls)
+                self.assertFalse(o.claimed, name)
+                self.assertTrue(any(str(c["why"]).startswith("not_glyph_sized") for c in o.candidates), name)
+
+    def test_the_four_real_ones_stay_whole(self):
+        real = [("Brahms sharp 33x88 tile 3", self.ink(33, 88, 27.55), "accidentalSharp"),
+                ("Brahms natural 27x90 tile 4", self.ink(27, 90, 27.55), "accidentalNatural"),
+                ("Brahms natural 29x89 tile 5", self.ink(29, 89, 27.55), "accidentalNatural"),
+                ("Litolff natural 10x50 tile 8", self.ink(10, 50, 16.25), "accidentalNatural"),
+                ("a Breitkopf natural 10% over the font", self.ink(30, 82, 27.55), "accidentalNatural")]
+        for name, s, cls in real:
+            with _Flag("1"):
+                self.assertEqual(self.owned(s, cls).family, "accidental", name)
+
+    def test_a_box_over_several_pieces_and_a_class_without_a_size_are_not_judged(self):
+        a, b = self.ink(4, 6, 16.25, ordinal=0), self.ink(5, 8, 16.25, ordinal=1)
+        acc = SO.Claim("a", "accidental", "accidentalFlat", covers=(0, 1))
+        key = SO.Claim("k", "accidental", "keyFlat", covers=(0,))
+        with _Flag("1"):
+            self.assertEqual(SO.accidental_not_whole([a, b], [acc]), {})            # the old fragment case, unchanged
+            self.assertEqual(SO.accidental_not_whole([a], [key]), {})               # no glyph size for a key mark
+
+    def test_merged_pieces_still_too_small_for_the_sign_stay_cut(self):
+        pcs = [piece("vertical", 100, 100, 2, 14), piece("blob", 102, 108, 12, 14)]       # a bowl and a short stem: 0.9 x 1.4 sp, a flat is 2.5 tall
+        refused = {}
+        out, _j, parts = SM.merge_accidentals(pcs, [], SP, [((99.0, 99.0, 116.0, 124.0), "accidentalFlat")], [], refused)
+        self.assertEqual(parts, {})
+        self.assertEqual(len(out), 2)
+        self.assertEqual(refused.get("accidental_not_glyph_sized"), 1)
 
 
 if __name__ == "__main__":

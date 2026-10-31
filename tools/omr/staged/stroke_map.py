@@ -173,6 +173,29 @@ ACC_SIZE_TOL_SPACES = 2 * CLEF_EDGE_TOL_SPACES
 ACC_ONE_MAX_SPACES = (max(w for w, _h in ACCIDENTAL_SIZE_SPACES.values()), max(h for _w, h in ACCIDENTAL_SIZE_SPACES.values()))
 
 
+#: 2.242 r2 (Sean's tiles 2/7/11/12, 2026-10-31: "Add shape and size"): ONE connected piece inside a detector accidental box is not evidence that
+#: the piece IS an accidental -- a barline's 4 x 6 px scrap, a tremolo slash (19 x 12 px), a stem's tip (5 x 10 px) and a flat's bowl alone were all
+#: "whole". CONVENTION (engraving, a prior): a sharp / natural is ~2.7-2.8 sp tall and a flat ~2.5 (SMuFL `ACCIDENTAL_SIZE_SPACES`), and the glyph's
+#: ink fills most of that. A cut-off tuned on two plates only NARROWS: a piece shorter than this share of its class's glyph height, or narrower than
+#: that share of its width, is NOT whole (left cut / refused, never relabelled). Breitkopf prints ~10% LARGER than the font (the first try, which
+#: trimmed ink to the font size, lost 15 of 21 naturals), so only a LOWER bound is used; the upper bound stays `ACC_ONE_MAX_SPACES`.
+ACC_WHOLE_MIN_H_FRAC = 0.7
+ACC_WHOLE_MIN_W_FRAC = 0.5
+
+
+def accidental_ink_fits(name: str, w_sp: float, h_sp: float) -> Tuple[bool, str]:
+    """(fits, why): does ONE piece of ink of `w_sp` x `h_sp` (local staff spaces) have the size of the `name` accidental glyph? No size known for
+    the class (a `key*` mark, a quarter-tone sign) = fits (nothing to measure it against). Lower bounds only (module note)."""
+    size = accidental_size(name)
+    if size is None:
+        return True, "no_size_for_class"
+    if h_sp < ACC_WHOLE_MIN_H_FRAC * size[1]:
+        return False, "too_short:%.2f_of_%.2f_sp" % (h_sp, size[1])
+    if w_sp < ACC_WHOLE_MIN_W_FRAC * size[0]:
+        return False, "too_narrow:%.2f_of_%.2f_sp" % (w_sp, size[0])
+    return True, "glyph_sized"
+
+
 def accidental_whole_enabled() -> bool:
     """`OMR_ACCIDENTAL_WHOLE` (ROADMAP 2.242), default OFF; read at GATHER (the stroke map) and at ADJUDICATE (`stroke_owner.shape_fit`)."""
     return os.environ.get(ACCIDENTAL_WHOLE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
@@ -893,6 +916,10 @@ def merge_accidentals(pieces: List[Tuple[str, np.ndarray, int, int]], joins: Lis
                 # an over-large box (the detector's twin boxes reach 4.8 sp round TWO stacked accidentals) holds more ink than ONE accidental:
                 # the pieces stay as the openings cut them (rule 6: where the box cannot say where one mark stops, nothing is joined)
                 refused["accidental_more_than_one_glyph"] = refused.get("accidental_more_than_one_glyph", 0) + 1
+                continue
+            if not accidental_ink_fits(name, gw, gh)[0]:
+                # 2.242 r2: the pieces together are still too small for this sign (a flat's bowl, a bar): not a whole accidental, they stay cut
+                refused["accidental_not_glyph_sized"] = refused.get("accidental_not_glyph_sized", 0) + 1
                 continue
             groups.append(sorted(mine))
         used.update(mine)
