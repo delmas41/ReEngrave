@@ -1,0 +1,322 @@
+[
+ {
+  "page": "litolff:4",
+  "box": [
+   1174,
+   1626,
+   1186,
+   1647
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "yield",
+  "cls": [
+   "noteheadBlackInSpace"
+  ],
+  "now": "head",
+  "cell": [
+   4,
+   0,
+   8,
+   5
+  ],
+  "tile": 1,
+  "crop_origin": [
+   1082,
+   1539
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:4",
+  "box": [
+   876,
+   3332,
+   880,
+   3338
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalFlat",
+  "now": null,
+  "cell": [
+   4,
+   1,
+   9,
+   3
+  ],
+  "tile": 2,
+  "crop_origin": [
+   780,
+   3237
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:25",
+  "box": [
+   954,
+   823,
+   987,
+   911
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalSharp",
+  "now": null,
+  "cell": [
+   25,
+   0,
+   1,
+   0
+  ],
+  "tile": 3,
+  "crop_origin": [
+   805,
+   701
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:5",
+  "box": [
+   3450,
+   1384,
+   3477,
+   1474
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalNatural",
+  "now": null,
+  "cell": [
+   5,
+   0,
+   4,
+   4
+  ],
+  "tile": 4,
+  "crop_origin": [
+   3298,
+   1263
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:5",
+  "box": [
+   3450,
+   1291,
+   3479,
+   1380
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalNatural",
+  "now": null,
+  "cell": [
+   5,
+   0,
+   3,
+   4
+  ],
+  "tile": 5,
+  "crop_origin": [
+   3299,
+   1170
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:25",
+  "box": [
+   2966,
+   3342,
+   2989,
+   3406
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "yield",
+  "cls": [
+   "accidentalFlat"
+  ],
+  "now": "refused_claims",
+  "cell": [
+   25,
+   0,
+   11,
+   4
+  ],
+  "tile": 6,
+  "crop_origin": [
+   2812,
+   3208
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:2",
+  "box": [
+   2118,
+   3230,
+   2137,
+   3242
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalSharp",
+  "now": null,
+  "cell": [
+   2,
+   1,
+   7,
+   11
+  ],
+  "tile": 7,
+  "crop_origin": [
+   2030,
+   3138
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:4",
+  "box": [
+   2325,
+   326,
+   2335,
+   376
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalNatural",
+  "now": null,
+  "cell": [
+   4,
+   0,
+   0,
+   13
+  ],
+  "tile": 8,
+  "crop_origin": [
+   2232,
+   253
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:4",
+  "box": [
+   2149,
+   723,
+   2168,
+   753
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "yield",
+  "cls": [
+   "noteheadBlackOnLine"
+  ],
+  "now": "head",
+  "cell": [
+   4,
+   0,
+   2,
+   12
+  ],
+  "tile": 9,
+  "crop_origin": [
+   2061,
+   640
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:0",
+  "box": [
+   2334,
+   6394,
+   2340,
+   6530
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "yield",
+  "cls": [
+   "accidentalFlat"
+  ],
+  "now": "refused_claims",
+  "cell": [
+   0,
+   0,
+   12,
+   1
+  ],
+  "tile": 10,
+  "crop_origin": [
+   2171,
+   6296
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "litolff:4",
+  "box": [
+   1794,
+   780,
+   1799,
+   790
+  ],
+  "unit": 16.25,
+  "plate": "litolff",
+  "kind": "whole",
+  "cls": "accidentalNatural",
+  "now": null,
+  "cell": [
+   4,
+   0,
+   3,
+   9
+  ],
+  "tile": 11,
+  "crop_origin": [
+   1699,
+   687
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ },
+ {
+  "page": "brahms:25",
+  "box": [
+   4368,
+   3269,
+   4397,
+   3309
+  ],
+  "unit": 27.55,
+  "plate": "brahms",
+  "kind": "whole",
+  "cls": "accidentalFlat",
+  "now": null,
+  "cell": [
+   25,
+   0,
+   10,
+   7
+  ],
+  "tile": 12,
+  "crop_origin": [
+   4217,
+   3123
+  ],
+  "cell_map": "cm-3ccd049d7c3c/cm-54ccb4729528"
+ }
+]
