@@ -1,0 +1,260 @@
+[
+ {
+  "tile": 1,
+  "page": 10,
+  "staff_index_on_page": 20,
+  "crop_origin": [
+   1482,
+   3376
+  ],
+  "plate": "litolff",
+  "g": "glyph/10/1/9/7/12",
+  "pb": [
+   1562.445,
+   3481.5525,
+   1591.5825,
+   3490.845
+  ],
+  "cls": "noteheadBlackOnLine",
+  "w_sp": 1.85,
+  "h_sp": 0.59,
+  "conf": 0.29188475012779236,
+  "why": "lane case (2.240-s2 tile 2)"
+ },
+ {
+  "tile": 2,
+  "page": 5,
+  "staff_index_on_page": 5,
+  "crop_origin": [
+   1138,
+   1621
+  ],
+  "plate": "brahms",
+  "g": "glyph/5/0/4/0/16",
+  "pb": [
+   1221.80322265625,
+   1635.52587890625,
+   1382.55078125,
+   1650.779296875
+  ],
+  "cls": "noteheadBlackInSpace",
+  "w_sp": 5.850533807829182,
+  "h_sp": 0.5551601423487544,
+  "conf": 0.16603343188762665,
+  "why": "head box >= 3.0 sp kept as a head (OMR_BOX_KIND_SIZE refuses)"
+ },
+ {
+  "tile": 3,
+  "page": 6,
+  "staff_index_on_page": 20,
+  "crop_origin": [
+   1105,
+   3400
+  ],
+  "plate": "litolff",
+  "g": "glyph/6/1/10/3/0",
+  "pb": [
+   1188.8,
+   3407.965,
+   1210.85,
+   3428.9125
+  ],
+  "cls": "noteheadBlackInSpace",
+  "w_sp": 1.4,
+  "h_sp": 1.33,
+  "conf": 0.8605932593345642,
+  "why": "CONTROL: ordinary head box"
+ },
+ {
+  "tile": 4,
+  "page": 6,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   1673,
+   795
+  ],
+  "plate": "litolff",
+  "g": "glyph/6/0/3/8/18",
+  "pb": [
+   1742.4725,
+   846.6875,
+   1793.5025,
+   875.51
+  ],
+  "cls": "noteheadBlackOnLine",
+  "w_sp": 3.24,
+  "h_sp": 1.83,
+  "conf": 0.326955646276474,
+  "why": "head box >= 3.0 sp kept as a head (OMR_BOX_KIND_SIZE refuses)"
+ },
+ {
+  "tile": 5,
+  "page": 4,
+  "staff_index_on_page": 8,
+  "crop_origin": [
+   1085,
+   1578
+  ],
+  "plate": "litolff",
+  "g": "glyph/4/0/8/5/8",
+  "pb": [
+   1172.6,
+   1631.6,
+   1187.32,
+   1645.52
+  ],
+  "cls": "noteheadBlackInSpace",
+  "w_sp": 0.92,
+  "h_sp": 0.87,
+  "conf": 0.5756093263626099,
+  "why": "lane case (2.242 tile 1)"
+ },
+ {
+  "tile": 6,
+  "page": 19,
+  "staff_index_on_page": 1,
+  "crop_origin": [
+   2081,
+   724
+  ],
+  "plate": "brahms",
+  "g": "glyph/19/0/1/2/18",
+  "pb": [
+   2191,
+   897,
+   2301,
+   911
+  ],
+  "cls": "tie",
+  "why": "tie box whose system-arc trace does not bow"
+ },
+ {
+  "tile": 7,
+  "page": 19,
+  "staff_index_on_page": 9,
+  "crop_origin": [
+   1735,
+   2575
+  ],
+  "plate": "brahms",
+  "g": "glyph/19/0/9/1/17",
+  "pb": [
+   1822.375,
+   2747.425,
+   1978.85,
+   2763.375
+  ],
+  "cls": "tie",
+  "w_sp": 5.69,
+  "h_sp": 0.58,
+  "conf": 0.25778016448020935,
+  "why": "lane case (2.240-s2 tile 9)"
+ },
+ {
+  "tile": 8,
+  "page": 5,
+  "staff_index_on_page": 4,
+  "crop_origin": [
+   3419,
+   1405
+  ],
+  "plate": "brahms",
+  "g": "glyph/5/0/4/4/15",
+  "pb": [
+   3511.80859375,
+   1418.89453125,
+   3654.77734375,
+   1461.08203125
+  ],
+  "cls": "noteheadBlackOnLine",
+  "w_sp": 5.191489361702128,
+  "h_sp": 1.5319148936170213,
+  "conf": 0.2869901657104492,
+  "why": "lane case (2.240-s2 tile 12)"
+ },
+ {
+  "tile": 9,
+  "page": 8,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   805,
+   832
+  ],
+  "plate": "litolff",
+  "g": "glyph/8/0/3/4/4",
+  "pb": [
+   879.8325,
+   872.3475,
+   919.8375,
+   896.9175
+  ],
+  "cls": "noteheadBlackOnLine",
+  "w_sp": 2.54,
+  "h_sp": 1.56,
+  "conf": 0.2981712222099304,
+  "why": "CONTROL: head box 2.5-3.0 sp, left alone"
+ },
+ {
+  "tile": 10,
+  "page": 9,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   660,
+   806
+  ],
+  "plate": "litolff",
+  "g": "glyph/9/0/3/1/15",
+  "pb": [
+   718.2025,
+   829.6525,
+   792.07,
+   870.6025
+  ],
+  "cls": "noteheadBlackOnLine",
+  "w_sp": 4.69,
+  "h_sp": 2.6,
+  "conf": 0.2622588872909546,
+  "why": "head box >= 3.0 sp kept as a head (OMR_BOX_KIND_SIZE refuses)"
+ },
+ {
+  "tile": 11,
+  "page": 14,
+  "staff_index_on_page": 22,
+  "crop_origin": [
+   4235,
+   6192
+  ],
+  "plate": "brahms",
+  "g": "glyph/14/1/8/6/5",
+  "pb": [
+   4263,
+   6392,
+   4564,
+   6411
+  ],
+  "cls": "tie",
+  "why": "tie box whose system-arc trace does not bow"
+ },
+ {
+  "tile": 12,
+  "page": 2,
+  "staff_index_on_page": 15,
+  "crop_origin": [
+   2197,
+   2674
+  ],
+  "plate": "litolff",
+  "g": "glyph/2/1/5/12/2",
+  "pb": [
+   2260.22,
+   2763.0,
+   2323.6925,
+   2772.765
+  ],
+  "cls": "noteheadBlackOnLine",
+  "w_sp": 4.03,
+  "h_sp": 0.62,
+  "conf": 0.326724112033844,
+  "why": "head box >= 3.0 sp kept as a head (OMR_BOX_KIND_SIZE refuses)"
+ }
+]
