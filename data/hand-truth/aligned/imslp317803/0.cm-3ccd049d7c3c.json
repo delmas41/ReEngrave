@@ -42,12 +42,12 @@
   "file": "data/hand-truth/pages/imslp317803/0.json"
  },
  "master": {
-  "built_commit": "c0ca30b1f8ba2b3552aec2f98e02fde46811575d",
+  "built_commit": "269d5177aae690f4a03cc63f9aea36ac60087404",
   "dir": "be40c09fbd9f55f0-dpi600",
   "dpi": 600,
-  "page_geometry_hash": "e0bf4584c81a175db3ecd0cc852569bfb063b038ef284ed462dcaa9b1f31ad0d",
+  "page_geometry_hash": "74249d00119fd8b532520761cb5c5f7cfe919ed07b31acb201ce253d7224a4bd",
   "pdf_sha256": "be40c09fbd9f55f0d0c923ee34e1583223fba2cd0065370c6bc879c9071f026b",
-  "version": "cm-2d494f8fc055"
+  "version": "cm-3ccd049d7c3c"
  },
  "pdf_name": "brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf",
  "pdf_page_index": 0,
