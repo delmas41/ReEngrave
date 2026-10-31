@@ -1,0 +1,10 @@
+{
+ "date": "2026-10-31",
+ "by": "Sean",
+ "answers": {
+  "1": "Natural", "2": "Half of a natural", "3": "Half of a natural", "4": "Most of a flat",
+  "5": "A little bit of a tremolo slash", "6": "Sharp", "7": "Flat (the box cuts off a little of its stem)", "8": "Flat",
+  "9": "Key accidental flat", "10": "Natural", "11": "Half of a natural", "12": "Just the tip of a natural"
+ },
+ "said": "tiles 2 through 4 are just a little bit high, which might make sense because it's above the staff. So if it's measuring, we might need to do the same thing with accidentals that we're doing with notes, because they will have been written in by hand."
+}
