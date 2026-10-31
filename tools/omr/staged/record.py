@@ -3140,6 +3140,9 @@ class ABSTAIN(_Vocab):
     OWNER_FOLLOWS_ITS_NOTE = "owner_follows_its_note"
     OWNER_INSIDE_TWO_STAVES = "owner_inside_two_staves"
     SPAN_UNTRACED = "span_untraced"
+    #: ROADMAP 2.240 step 3: a head box >= 3 sp wide is not ONE head (2.245); step 2 r2 filed it without declaring it, so a gather with
+    #: OMR_PAGE_OWNER ON RAISED on the first such box (Litolff pp. 2,4,6,16).
+    OWNER_BOX_NOT_ONE_HEAD = "owner_box_not_one_head"
     #: The page has too few clean on-line heads to MEASURE a head size, and no
     #: earlier page of the run supplied a pool: the reader will not borrow one.
     NO_PAGE_SHAPE = "no_page_shape"
