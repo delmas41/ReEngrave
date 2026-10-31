@@ -47,4 +47,4 @@ ink-rules `too_narrow`, `notehead_is_a_duplicate_box`; page-facts §5 rejected `
 The lane's 2-page subset run (`LANE_REPORT_SAMPLE`) overwrote the shared Brahms lane-report slices (the lock/truncation incident 2.223 reported); a later full run re-cut them (stamp back to [0, 4, 5, 8, 12, 14, 19, 25], checked by the manager). Slices should be keyed by their page list (tooling follow-up).
 
 ## Tiles
-out/print/2.245-tiles (key outside tiles/): the four places, four wide head boxes the rule refuses, two straight "ties" (hairpin legs), two controls. Sean's answers pending.
+out/print/2.245-tiles (key outside tiles/): the four places, four wide head boxes the rule refuses, two straight "ties" (hairpin legs), two controls. Sean's answers 2026-10-31 (answers.json): the four places as traced; wide head boxes 4/4 not one head (2 beam, 8 arc, 12 arc) but 4 holds an eighth + a natural and 10 three eighths -- refusing loses real notes; straight 'ties' 3/3 hairpin legs; control 3 an eighth; control 9 (2.54 sp, left alone) part of a C clef.
