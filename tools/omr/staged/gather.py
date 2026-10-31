@@ -7857,7 +7857,8 @@ def _split_touch_boxes(detections: Optional[Dict[str, List[Any]]], sub: Any) -> 
             continue
         if fam == SM.TOUCH_ACC_FAMILY or fam in SM.TOUCH_OTHER_FAMILIES:
             x, y = float(d.x_canonical), float(d.y_canonical)
-            out.append([fam, int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+            row = [fam, int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))]
+            out.append(row + [name] if fam == SM.TOUCH_ACC_FAMILY and SM.accidental_whole_enabled() else row)   # 2.242: the class names the glyph size
     if not any(r[0] == SM.TOUCH_ACC_FAMILY for r in out):
         return []
     return sorted(out)
@@ -7973,8 +7974,29 @@ def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, i
                 continue
             box = (float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical))
             shares = SM.strokes_in_box(res, box)
-            fam = _acc_family.family_row(d.smufl_name, box, res.strokes, shares, sp, blocked=sorted(blocked),
-                                         rivals=[r[0] for r in (getattr(d, "one_ink_rivals", None) or ())])
+            rivals = [r[0] for r in (getattr(d, "one_ink_rivals", None) or ())]
+            if any(getattr(st, "parts", None) for st in res.strokes):
+                # 2.242 (`OMR_ACCIDENTAL_WHOLE`): a whole accidental is ONE stroke; the type reading (stem stagger) reads its PARTS, the pieces
+                # the openings cut it into, so the reading is the one made before the merge. Each part answers for its parent's share and block.
+                fine, parent, first = [], [], {}
+                for i, st in enumerate(res.strokes):
+                    first[i] = len(fine)
+                    for p_ in (st.parts or [st]):
+                        fine.append(p_)
+                        parent.append(i)
+                share_of = {int(i): float(s_) for i, s_ in shares}
+                f_shares = [(fi, share_of[parent[fi]]) for fi in range(len(fine)) if parent[fi] in share_of]
+                f_blocked = sorted(fi for fi in range(len(fine)) if parent[fi] in blocked)
+                import copy as _copy
+                fine = [_copy.copy(p_) for p_ in fine]
+                for fi, p_ in enumerate(fine):             # a part touches what its parent touches (in the fine numbering)
+                    st = res.strokes[parent[fi]]
+                    p_.touches = [(first[j], ct) for j, ct in st.touches]
+                fam = _acc_family.family_row(d.smufl_name, box, fine, f_shares, sp, blocked=f_blocked, rivals=rivals)
+                for k_ in ("members", "grown_by"):
+                    fam[k_] = sorted({parent[i] for i in fam[k_]})
+            else:
+                fam = _acc_family.family_row(d.smufl_name, box, res.strokes, shares, sp, blocked=sorted(blocked), rivals=rivals)
             # the role evidence: the nearest head to the right of the (grown) mark at about its own height
             gb = fam["box"]
             frac = _acc_family.anchor_fraction(fam["type"]) or _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
