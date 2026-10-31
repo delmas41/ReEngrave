@@ -8,7 +8,7 @@ wide". Sean 2026-10-29 (plan-2026-10-28-page-claim-order s9): GATHER claims a pa
 ONE page-wide pass binds each end to a note or a place in a bar, choosing only among GATHER's candidates; an end that cannot be bound
 abstains and the mark stays claimed.
 
-`OMR_HAIRPIN_BIND_PAGEWIDE` (default OFF, allow-list). OFF, `adjudicate_wedge_anchor` keeps its 2026-09-10 rule (the legacy
+`OMR_HAIRPIN_BIND_PAGEWIDE` (default ON since 2026-10-31, deny-list). OFF, `adjudicate_wedge_anchor` keeps its 2026-09-10 rule (the legacy
 `_wedge_anchors_from_candidates`, heads of the hairpin's centre bar +- 1 only, the start the NEAREST head whatever its distance).
 
 THE RULE ON, per tip (left = start, right = stop), on the staff the CV reader found the hairpin under (it searches the band BELOW each staff,
@@ -49,8 +49,8 @@ ENV_BIND = "OMR_HAIRPIN_BIND_PAGEWIDE"
 
 
 def bind_enabled() -> bool:
-    """`OMR_HAIRPIN_BIND_PAGEWIDE`, default OFF: only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ENV_BIND, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_HAIRPIN_BIND_PAGEWIDE`, default ON (ROADMAP 2.223; Sean 2026-10-31 "Fix then land", tiles 11/12, tile 11 fixed); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV_BIND, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def reach_widths() -> float:

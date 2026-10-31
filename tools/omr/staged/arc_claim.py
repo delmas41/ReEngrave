@@ -176,7 +176,7 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
 # THEN a page-wide pass binds the ends to notes and the kind follows by the tie rule. The unit is the CURVE `gather_system_arcs` traced and
 # joined across barlines (`Q.SYSTEM_ARC`), never one cell's box: every box of one printed arc gets ONE binding and so ONE kind.
 #
-# `OMR_ARC_BIND_PAGEWIDE` (default OFF, allow-list). Its consumers: `ownership.adjudicate_arc_kind` (the kind from the bound ends),
+# `OMR_ARC_BIND_PAGEWIDE` (default ON since 2026-10-31, deny-list). Its consumers: `ownership.adjudicate_arc_kind` (the kind from the bound ends),
 # `ownership.adjudicate_tie_pair` (a tie's pair is the bound pair) and `export._page_bound_slur_spans` (a slur written ONCE per curve on its
 # bound heads). Where the binding cannot decide, each consumer keeps its OFF behaviour and records the binding's abstention beside it.
 #
@@ -206,8 +206,8 @@ BIND_SIDE_MIN_SPACES = 0.1
 
 
 def bind_enabled() -> bool:
-    """`OMR_ARC_BIND_PAGEWIDE`, default OFF: only an explicit 1/true/yes/on enables."""
-    return _on(ENV_BIND)
+    """`OMR_ARC_BIND_PAGEWIDE`, default ON (ROADMAP 2.223; Sean 2026-10-31 "Fix then land", tiles 11/12, tile 11 fixed); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV_BIND, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def curve_side(trace: Optional[Sequence[Sequence[float]]], sp: float) -> Optional[str]:

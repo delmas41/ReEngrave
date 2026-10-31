@@ -51,11 +51,11 @@ def _decide(log, w):
     return log.verdict(Q.WEDGE_ANCHOR, w)
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(HB.ENV_BIND, raising=False)
-    assert not HB.bind_enabled()
-    monkeypatch.setenv(HB.ENV_BIND, "yes")
     assert HB.bind_enabled()
+    monkeypatch.setenv(HB.ENV_BIND, "0")
+    assert not HB.bind_enabled()
 
 
 def test_off_keeps_the_old_rule(monkeypatch):

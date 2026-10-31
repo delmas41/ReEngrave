@@ -18,9 +18,9 @@ def _curve(xl, yl, xr, yr, sag=-15.0):
     return {"x_left_page": xl, "y_left_page": yl, "x_right_page": xr, "y_right_page": yr, "trace": tr}
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(AC.ENV_BIND, raising=False)
-    assert not AC.bind_enabled()
+    assert AC.bind_enabled()
     monkeypatch.setenv(AC.ENV_BIND, "1")
     assert AC.bind_enabled()
     monkeypatch.setenv(AC.ENV_BIND, "0")
