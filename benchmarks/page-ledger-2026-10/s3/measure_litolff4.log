@@ -1,0 +1,1 @@
+litolff4 pages [1, 2, 4, 6]: heads 2034 | filter dropped rungs {} in 0 owner-ledger rows (0 readings changed) | head owners changed by filter 1, by hairpin 0 (hairpin disagrees 0) | arcs 256 {'abstain:no_end_heads': 33, 'decided:ends_agree': 128, 'abstain:end_head_unowned': 23, 'guessed:one_end': 70, 'abstain:ends_disagree': 2}, owner on a staff the arc was not seen from 12

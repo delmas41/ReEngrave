@@ -501,6 +501,23 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "inside it. Scoreless: it is a count of ink under the detector's box and carries no confidence of its own; nothing reads it yet.",
         None),
 
+    "PAGE_MARK_OWNER": (
+        DERIVED_FIT,
+        "ROADMAP 2.240 step 2: which staff owns a page mark, from its ledger lines, stem or the staff's own lines. Scoreless: the witnesses "
+        "are recorded, no confidence; nothing reads it yet.",
+        None),
+
+    "PAGE_SPAN": (
+        RELATION,
+        "ROADMAP 2.240 step 2: one arc / hairpin read page-wide, joining the per-staff traces and wedge reads. Scoreless; nothing reads it yet.",
+        None),
+
+    "PAGE_MARK": (
+        RELATION,
+        "ROADMAP 2.240 step 1 (cells are views, the page is the ledger): which detector boxes of two padded cells stand on the same page ink, "
+        "one ordinal per page mark. Scoreless: a count of shared ink, no confidence; nothing reads it yet.",
+        None),
+
     "VERTICAL_RUN": (
         RAW_INK,
         "EVERY component the stem opening produced, accepted AND refused, "
@@ -914,6 +931,11 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_STROKE": ("staged/gather.py", "gather_stroke_map"),
     # ROADMAP 2.198: the stroke masks (no raster of its own) against the detector boxes.
     "CV_GLYPH_STROKES": None,
+    # ROADMAP 2.240 step 1: the PAGE render under the stroke masks of every cell (`pws.page.binary`).
+    "CV_PAGE_MARKS": ("staged/page_marks.py", "gather_page_marks"),
+    # ROADMAP 2.240 step 2: no raster of its own (the page marks, staff lines, ledger / stem rows, traces and wedges).
+    "CV_PAGE_OWNER": None,
+    "CV_PAGE_SPANS": None,
     "CV_NARROW_BOX_SHAPE": ("staged/gather.py", "gather_narrow_box_shape"),
     "CV_UNBOXED_REST_SHAPE": ("staged/gather.py", "gather_unboxed_rest_ink"),
     "CV_REST_INK_CONTACT": ("staged/gather.py", "gather_rest_ink_contact"),

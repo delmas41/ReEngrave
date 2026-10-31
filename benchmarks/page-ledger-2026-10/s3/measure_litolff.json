@@ -1,0 +1,7022 @@
+{
+ "plate": "litolff",
+ "pages": [
+  2,
+  4
+ ],
+ "filter": {
+  "owner_ledger_rows": 1289,
+  "rows_that_dropped_a_rung": 0,
+  "rungs_dropped_by_word": {},
+  "readings_changed": 0,
+  "rows": []
+ },
+ "owners_changed_by_filter": [
+  {
+   "key": "glyph/4/1/3/4/8",
+   "page": 4,
+   "before": [
+    "abstain",
+    null,
+    "owner_no_rungs"
+   ],
+   "after": [
+    "decided",
+    "staff/4/1/3",
+    "ledger"
+   ],
+   "box": [
+    1059.105,
+    2559.005,
+    1089.8175,
+    2580.74
+   ],
+   "seen_from": [
+    "staff/4/1/3"
+   ]
+  }
+ ],
+ "owners_changed_by_hairpin": [],
+ "heads": 1295,
+ "head_status_O": {
+  "decided:stem": 231,
+  "abstain:owner_no_rungs": 93,
+  "decided:inside_staff": 969,
+  "decided:ledger": 2
+ },
+ "head_status_H": {
+  "decided:stem": 231,
+  "abstain:owner_no_rungs": 92,
+  "decided:inside_staff": 969,
+  "decided:ledger": 3
+ },
+ "hairpin_disagreements": [],
+ "arcs": {
+  "n": 176,
+  "by_status_reason": {
+   "guessed:one_end": 48,
+   "abstain:no_end_heads": 19,
+   "decided:ends_agree": 94,
+   "abstain:end_head_unowned": 13,
+   "abstain:ends_disagree": 2
+  },
+  "owner_not_a_seen_from_staff": 8,
+  "rows": [
+   {
+    "page": 2,
+    "box": [
+     468.0,
+     1712.0,
+     514.0,
+     1725.0
+    ],
+    "seen_from": [
+     "staff/2/0/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/0/9",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/9/0/0"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/9/0/3"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     475.0,
+     1651.0,
+     511.0,
+     1666.0
+    ],
+    "seen_from": [
+     "staff/2/0/8"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/8/0/4"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     532.0,
+     1414.0,
+     658.0,
+     1439.0
+    ],
+    "seen_from": [
+     "staff/2/0/7"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/0/7",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/7/1/3",
+       "glyph/2/0/7/1/5"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/7/0/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     542.0,
+     2747.0,
+     622.0,
+     2762.0
+    ],
+    "seen_from": [
+     "staff/2/1/4"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/4/0/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     550.0,
+     2670.0,
+     643.0,
+     2689.0
+    ],
+    "seen_from": [
+     "staff/2/1/3",
+     "staff/2/1/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/4/1/0",
+       "glyph/2/1/4/1/3"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/0/2",
+     "glyph/2/1/4/0/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     550.0,
+     3313.0,
+     649.0,
+     3341.0
+    ],
+    "seen_from": [
+     "staff/2/1/8",
+     "staff/2/1/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/8",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/8/1/1"
+      ],
+      "staves": [
+       "staff/2/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/8/0/4",
+     "glyph/2/1/9/0/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     552.0,
+     3379.0,
+     656.0,
+     3401.0
+    ],
+    "seen_from": [
+     "staff/2/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/9/0/4"
+      ],
+      "staves": [
+       "staff/2/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/9/1/2"
+      ],
+      "staves": [
+       "staff/2/1/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/9/0/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     780.0,
+     2583.0,
+     877.0,
+     2598.0
+    ],
+    "seen_from": [
+     "staff/2/1/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/3/2/5"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/2/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     799.0,
+     2234.0,
+     903.0,
+     2267.0
+    ],
+    "seen_from": [
+     "staff/2/1/0",
+     "staff/2/1/1"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/2/3"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/3/2",
+       "glyph/2/1/1/3/2",
+       "glyph/2/1/1/3/3"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/2/0",
+     "glyph/2/1/1/2/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     799.0,
+     3375.0,
+     916.0,
+     3404.0
+    ],
+    "seen_from": [
+     "staff/2/1/8",
+     "staff/2/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/9/2/3"
+      ],
+      "staves": [
+       "staff/2/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/9/3/3"
+      ],
+      "staves": [
+       "staff/2/1/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/8/2/1",
+     "glyph/2/1/9/2/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     804.0,
+     3324.0,
+     906.0,
+     3341.0
+    ],
+    "seen_from": [
+     "staff/2/1/8",
+     "staff/2/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/8/2/6",
+       "glyph/2/1/8/2/7"
+      ],
+      "staves": [
+       "staff/2/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/8/3/2"
+      ],
+      "staves": [
+       "staff/2/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/8/2/0",
+     "glyph/2/1/9/2/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     806.0,
+     2319.0,
+     879.0,
+     2333.0
+    ],
+    "seen_from": [
+     "staff/2/1/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/1/2/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     806.0,
+     2501.0,
+     908.0,
+     2527.0
+    ],
+    "seen_from": [
+     "staff/2/1/2",
+     "staff/2/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/2/2/3",
+       "glyph/2/1/3/2/5"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/2/3/2",
+       "glyph/2/1/3/3/0"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/2/2/0",
+     "glyph/2/1/3/2/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1035.0,
+     1244.0,
+     1074.0,
+     1265.0
+    ],
+    "seen_from": [
+     "staff/2/0/5"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/5/4/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1037.0,
+     1559.0,
+     1077.0,
+     1579.0
+    ],
+    "seen_from": [
+     "staff/2/0/7"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/7/4/6"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1037.0,
+     1704.0,
+     1075.0,
+     1723.0
+    ],
+    "seen_from": [
+     "staff/2/0/8"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/8/4/14"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1059.0,
+     3099.0,
+     1098.0,
+     3117.0
+    ],
+    "seen_from": [
+     "staff/2/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/7/4/5"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/7/4/1",
+       "glyph/2/1/7/4/3"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/7/4/10"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1242.0,
+     3092.0,
+     1281.0,
+     3108.0
+    ],
+    "seen_from": [
+     "staff/2/1/6",
+     "staff/2/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/7/5/2"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/7/5/4",
+       "glyph/2/1/7/5/6"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/6/5/5",
+     "glyph/2/1/7/5/10"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1247.0,
+     385.0,
+     1319.0,
+     407.0
+    ],
+    "seen_from": [
+     "staff/2/0/0"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/0",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/0/6/4",
+       "glyph/2/0/0/6/7"
+      ],
+      "staves": [
+       "staff/2/0/0"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/0/7/4"
+      ],
+      "staves": [
+       "staff/2/0/0"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/0/6/8"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1247.0,
+     519.0,
+     1322.0,
+     547.0
+    ],
+    "seen_from": [
+     "staff/2/0/0",
+     "staff/2/0/1"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/1/6/1",
+       "glyph/2/0/1/6/3"
+      ],
+      "staves": [
+       "staff/2/0/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/1/7/4"
+      ],
+      "staves": [
+       "staff/2/0/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/0/7/1",
+     "glyph/2/0/1/6/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1252.0,
+     732.0,
+     1314.0,
+     753.0
+    ],
+    "seen_from": [
+     "staff/2/0/2",
+     "staff/2/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/2/6/8"
+      ],
+      "staves": [
+       "staff/2/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/2/7/2"
+      ],
+      "staves": [
+       "staff/2/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/2/6/0",
+     "glyph/2/0/3/6/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1253.0,
+     1801.0,
+     1326.0,
+     1833.0
+    ],
+    "seen_from": [
+     "staff/2/0/10",
+     "staff/2/0/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/9/6/1",
+       "glyph/2/0/9/6/2"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/9/7/1",
+       "glyph/2/0/9/7/6"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/9/6/0",
+     "glyph/2/0/10/6/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1253.0,
+     1955.0,
+     1327.0,
+     1986.0
+    ],
+    "seen_from": [
+     "staff/2/0/10"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/10",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/10/6/2"
+      ],
+      "staves": [
+       "staff/2/0/10"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/10/7/2"
+      ],
+      "staves": [
+       "staff/2/0/10"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/10/6/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1254.0,
+     442.0,
+     1305.0,
+     457.0
+    ],
+    "seen_from": [
+     "staff/2/0/0"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/0",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/0/6/4",
+       "glyph/2/0/0/6/7"
+      ],
+      "staves": [
+       "staff/2/0/0"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/0/7/4"
+      ],
+      "staves": [
+       "staff/2/0/0"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/0/6/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1254.0,
+     558.0,
+     1317.0,
+     580.0
+    ],
+    "seen_from": [
+     "staff/2/0/1"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/1/6/1",
+       "glyph/2/0/1/6/3"
+      ],
+      "staves": [
+       "staff/2/0/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/1/7/4"
+      ],
+      "staves": [
+       "staff/2/0/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/1/6/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1257.0,
+     915.0,
+     1320.0,
+     941.0
+    ],
+    "seen_from": [
+     "staff/2/0/3",
+     "staff/2/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/0/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/3/6/1"
+      ],
+      "staves": [
+       "staff/2/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/3/6/0",
+     "glyph/2/0/4/6/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1258.0,
+     1655.0,
+     1315.0,
+     1674.0
+    ],
+    "seen_from": [
+     "staff/2/0/8"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/8/6/6"
+      ],
+      "staves": [
+       "staff/2/0/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/8/7/11"
+      ],
+      "staves": [
+       "staff/2/0/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/8/6/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1266.0,
+     992.0,
+     1321.0,
+     1005.0
+    ],
+    "seen_from": [
+     "staff/2/0/4"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/4/6/6"
+      ],
+      "staves": [
+       "staff/2/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/4/7/5",
+       "glyph/2/0/4/7/6"
+      ],
+      "staves": [
+       "staff/2/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/4/7/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1388.0,
+     3086.0,
+     1427.0,
+     3102.0
+    ],
+    "seen_from": [
+     "staff/2/1/6",
+     "staff/2/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/7/6/3"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/7/6/1"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/6/6/2",
+     "glyph/2/1/7/6/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1536.0,
+     3079.0,
+     1567.0,
+     3094.0
+    ],
+    "seen_from": [
+     "staff/2/1/6",
+     "staff/2/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/6/7/2"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/6/7/6",
+       "glyph/2/1/6/7/7"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/6/7/3",
+     "glyph/2/1/7/7/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1542.0,
+     1496.0,
+     1827.0,
+     1533.0
+    ],
+    "seen_from": [
+     "staff/2/0/7",
+     "staff/2/0/8"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/7/9/1",
+       "glyph/2/0/7/9/2"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/7/11/2"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/7/9/0",
+     "glyph/2/0/8/9/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1672.0,
+     3065.0,
+     1708.0,
+     3083.0
+    ],
+    "seen_from": [
+     "staff/2/1/6",
+     "staff/2/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/6/8/1"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/6/8/4"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/6/8/5",
+     "glyph/2/1/7/8/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1686.0,
+     1672.0,
+     1836.0,
+     1710.0
+    ],
+    "seen_from": [
+     "staff/2/0/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/8",
+    "reason": "ends_agree",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/8/10/4"
+      ],
+      "staves": [
+       "staff/2/0/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/8/11/2"
+      ],
+      "staves": [
+       "staff/2/0/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/9/10/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1697.0,
+     1509.0,
+     1820.0,
+     1533.0
+    ],
+    "seen_from": [
+     "staff/2/0/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/7/10/3"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/7/11/2"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/7/10/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1827.0,
+     3059.0,
+     1864.0,
+     3075.0
+    ],
+    "seen_from": [
+     "staff/2/1/6",
+     "staff/2/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/6/9/2"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/6/9/1",
+       "glyph/2/1/6/9/3"
+      ],
+      "staves": [
+       "staff/2/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/6/9/6",
+     "glyph/2/1/7/9/7"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     1833.0,
+     1806.0,
+     1964.0,
+     1834.0
+    ],
+    "seen_from": [
+     "staff/2/0/10",
+     "staff/2/0/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/9/11/4"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/9/12/1"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/9/11/2",
+     "glyph/2/0/10/11/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1971.0,
+     2236.0,
+     2090.0,
+     2279.0
+    ],
+    "seen_from": [
+     "staff/2/1/0",
+     "staff/2/1/1"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/1/10/4"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/11/3"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/10/0",
+     "glyph/2/1/1/10/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1972.0,
+     2055.0,
+     2093.0,
+     2086.0
+    ],
+    "seen_from": [
+     "staff/2/1/0"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/0",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/11/2"
+      ],
+      "staves": [
+       "staff/2/1/0"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/10/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1988.0,
+     2465.0,
+     2109.0,
+     2503.0
+    ],
+    "seen_from": [
+     "staff/2/1/2",
+     "staff/2/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/2/10/3"
+      ],
+      "staves": [
+       "staff/2/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/2/11/1",
+       "glyph/2/1/2/11/2"
+      ],
+      "staves": [
+       "staff/2/1/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/2/10/0",
+     "glyph/2/1/3/10/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1989.0,
+     2682.0,
+     2090.0,
+     2712.0
+    ],
+    "seen_from": [
+     "staff/2/1/4"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/10/3",
+       "glyph/2/1/4/10/4"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/4/11/1",
+       "glyph/2/1/4/11/2"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/4/10/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     1993.0,
+     2539.0,
+     2213.0,
+     2568.0
+    ],
+    "seen_from": [
+     "staff/2/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/3/10/5",
+       "glyph/2/1/3/10/6",
+       "glyph/2/1/3/10/8"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/3/12/8",
+       "glyph/2/1/3/12/9"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/10/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2000.0,
+     2744.0,
+     2080.0,
+     2760.0
+    ],
+    "seen_from": [
+     "staff/2/1/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/10/3"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/4/10/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2010.0,
+     3599.0,
+     2097.0,
+     3621.0
+    ],
+    "seen_from": [
+     "staff/2/1/10"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/10",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/10/11/1"
+      ],
+      "staves": [
+       "staff/2/1/10"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/10/10/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2101.0,
+     1496.0,
+     2236.0,
+     1531.0
+    ],
+    "seen_from": [
+     "staff/2/0/7",
+     "staff/2/0/8"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/7/13/5"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/7/14/3"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/7/13/4",
+     "glyph/2/0/8/13/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2110.0,
+     2236.0,
+     2215.0,
+     2262.0
+    ],
+    "seen_from": [
+     "staff/2/1/0",
+     "staff/2/1/1"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/11/3"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/12/5"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/11/0",
+     "glyph/2/1/1/11/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2119.0,
+     2616.0,
+     2215.0,
+     2639.0
+    ],
+    "seen_from": [
+     "staff/2/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/3/11/5"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/3/12/0",
+       "glyph/2/1/3/12/6",
+       "glyph/2/1/3/12/9"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/11/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2123.0,
+     2058.0,
+     2219.0,
+     2078.0
+    ],
+    "seen_from": [
+     "staff/2/1/0"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/11/2"
+      ],
+      "staves": [
+       "staff/2/1/0"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/12/8",
+       "glyph/2/1/0/12/10"
+      ],
+      "staves": [
+       "staff/2/1/0"
+      ],
+      "unowned": [
+       "glyph/2/1/0/12/10"
+      ]
+     }
+    },
+    "views": [
+     "glyph/2/1/0/11/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2123.0,
+     2471.0,
+     2238.0,
+     2501.0
+    ],
+    "seen_from": [
+     "staff/2/1/2",
+     "staff/2/1/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/2",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/2/11/1",
+       "glyph/2/1/2/11/2"
+      ],
+      "staves": [
+       "staff/2/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/2/11/0",
+     "glyph/2/1/3/11/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2125.0,
+     2300.0,
+     2242.0,
+     2316.0
+    ],
+    "seen_from": [
+     "staff/2/1/1"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/1",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/12/5"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/1/11/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2125.0,
+     2680.0,
+     2211.0,
+     2701.0
+    ],
+    "seen_from": [
+     "staff/2/1/3",
+     "staff/2/1/4"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/11/1",
+       "glyph/2/1/4/11/2"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/4/12/1",
+       "glyph/2/1/4/12/5"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/11/4",
+     "glyph/2/1/4/11/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2128.0,
+     3601.0,
+     2217.0,
+     3623.0
+    ],
+    "seen_from": [
+     "staff/2/1/10"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/10",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/10/11/1"
+      ],
+      "staves": [
+       "staff/2/1/10"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/10/12/1"
+      ],
+      "staves": [
+       "staff/2/1/10"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/10/11/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2229.0,
+     2134.0,
+     2349.0,
+     2151.0
+    ],
+    "seen_from": [
+     "staff/2/1/0"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/13/3"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/2/1/0/13/3"
+      ]
+     }
+    },
+    "views": [
+     "glyph/2/1/0/12/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2234.0,
+     2231.0,
+     2342.0,
+     2262.0
+    ],
+    "seen_from": [
+     "staff/2/1/0",
+     "staff/2/1/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/12/5"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/13/0"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/2/1/0/13/0"
+      ]
+     }
+    },
+    "views": [
+     "glyph/2/1/0/12/0",
+     "glyph/2/1/1/12/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2238.0,
+     2676.0,
+     2341.0,
+     2710.0
+    ],
+    "seen_from": [
+     "staff/2/1/3",
+     "staff/2/1/4"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/12/1",
+       "glyph/2/1/4/12/5"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/4/13/0",
+       "glyph/2/1/4/13/3"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/12/2",
+     "glyph/2/1/4/12/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2241.0,
+     1676.0,
+     2376.0,
+     1708.0
+    ],
+    "seen_from": [
+     "staff/2/0/8",
+     "staff/2/0/9"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/8/14/3"
+      ],
+      "staves": [
+       "staff/2/0/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/8/15/0",
+       "glyph/2/0/9/15/4"
+      ],
+      "staves": [
+       "staff/2/0/8"
+      ],
+      "unowned": [
+       "glyph/2/0/8/15/0"
+      ]
+     }
+    },
+    "views": [
+     "glyph/2/0/8/14/0",
+     "glyph/2/0/9/14/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2243.0,
+     2465.0,
+     2365.0,
+     2501.0
+    ],
+    "seen_from": [
+     "staff/2/1/2",
+     "staff/2/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/2/12/2",
+       "glyph/2/1/2/12/3"
+      ],
+      "staves": [
+       "staff/2/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/2/13/0"
+      ],
+      "staves": [
+       "staff/2/1/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/2/12/0",
+     "glyph/2/1/3/12/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2244.0,
+     2047.0,
+     2342.0,
+     2072.0
+    ],
+    "seen_from": [
+     "staff/2/1/0"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/12/8",
+       "glyph/2/1/0/12/10"
+      ],
+      "staves": [
+       "staff/2/1/0"
+      ],
+      "unowned": [
+       "glyph/2/1/0/12/10"
+      ]
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/0/13/5"
+      ],
+      "staves": [
+       "staff/2/1/0"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/12/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2250.0,
+     2619.0,
+     2334.0,
+     2635.0
+    ],
+    "seen_from": [
+     "staff/2/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/3/12/6",
+       "glyph/2/1/3/12/9"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/3/13/2"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/12/10"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2251.0,
+     1510.0,
+     2373.0,
+     1535.0
+    ],
+    "seen_from": [
+     "staff/2/0/7",
+     "staff/2/0/8"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/7/14/3"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/7/15/0"
+      ],
+      "staves": [
+       "staff/2/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/7/14/0",
+     "glyph/2/0/8/14/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2255.0,
+     3602.0,
+     2341.0,
+     3623.0
+    ],
+    "seen_from": [
+     "staff/2/1/10"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/10",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/10/13/3"
+      ],
+      "staves": [
+       "staff/2/1/10"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/10/12/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2258.0,
+     2752.0,
+     2349.0,
+     2774.0
+    ],
+    "seen_from": [
+     "staff/2/1/4",
+     "staff/2/1/5"
+    ],
+    "status": "decided",
+    "owner": "staff/2/1/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/12/5"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/4/13/3"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/4/12/6",
+     "glyph/2/1/5/12/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2331.0,
+     2556.0,
+     2351.0,
+     2571.0
+    ],
+    "seen_from": [
+     "staff/2/1/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/1/3/13/0",
+       "glyph/2/1/3/13/2",
+       "glyph/2/1/3/13/5",
+       "glyph/2/1/3/13/8"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/13/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2376.0,
+     1804.0,
+     2500.0,
+     1831.0
+    ],
+    "seen_from": [
+     "staff/2/0/10",
+     "staff/2/0/9"
+    ],
+    "status": "decided",
+    "owner": "staff/2/0/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/0/9/15/3"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/2/0/9/16/4"
+      ],
+      "staves": [
+       "staff/2/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/0/9/15/0",
+     "glyph/2/0/10/15/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 2,
+    "box": [
+     2474.0,
+     2230.0,
+     2592.0,
+     2270.0
+    ],
+    "seen_from": [
+     "staff/2/1/0",
+     "staff/2/1/1"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/1",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/1/14/3"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/14/2",
+     "glyph/2/1/1/14/0"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2499.0,
+     3624.0,
+     2624.0,
+     3650.0
+    ],
+    "seen_from": [
+     "staff/2/1/10"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/10",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/10/14/2"
+      ],
+      "staves": [
+       "staff/2/1/10"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/10/14/1"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2500.0,
+     2689.0,
+     2596.0,
+     2713.0
+    ],
+    "seen_from": [
+     "staff/2/1/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/14/8",
+       "glyph/2/1/4/14/9"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/4/14/0"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2503.0,
+     2302.0,
+     2584.0,
+     2318.0
+    ],
+    "seen_from": [
+     "staff/2/1/1"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/1",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/14/4"
+      ],
+      "staves": [
+       "staff/2/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/1/14/4"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2505.0,
+     2047.0,
+     2610.0,
+     2080.0
+    ],
+    "seen_from": [
+     "staff/2/1/0"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/0",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/0/14/5"
+      ],
+      "staves": [
+       "staff/2/1/0"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/14/1"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2506.0,
+     2138.0,
+     2591.0,
+     2156.0
+    ],
+    "seen_from": [
+     "staff/2/1/0"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/0/14/6"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2511.0,
+     2624.0,
+     2617.0,
+     2649.0
+    ],
+    "seen_from": [
+     "staff/2/1/3",
+     "staff/2/1/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/3/14/6"
+      ],
+      "staves": [
+       "staff/2/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/3/14/0",
+     "glyph/2/1/4/14/2"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2512.0,
+     2486.0,
+     2609.0,
+     2507.0
+    ],
+    "seen_from": [
+     "staff/2/1/2",
+     "staff/2/1/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/2",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/2/14/3",
+       "glyph/2/1/2/14/13"
+      ],
+      "staves": [
+       "staff/2/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/2/14/2",
+     "glyph/2/1/3/14/2"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 2,
+    "box": [
+     2515.0,
+     2727.0,
+     2604.0,
+     2749.0
+    ],
+    "seen_from": [
+     "staff/2/1/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/2/1/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/2/1/4/14/8",
+       "glyph/2/1/4/14/9"
+      ],
+      "staves": [
+       "staff/2/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/2/1/4/14/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     519.0,
+     3111.0,
+     563.0,
+     3137.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/0/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     529.0,
+     3245.0,
+     569.0,
+     3267.0
+    ],
+    "seen_from": [
+     "staff/4/1/8"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/8/0/6"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     537.0,
+     1550.0,
+     639.0,
+     1565.0
+    ],
+    "seen_from": [
+     "staff/4/0/7"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/7",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/7/1/0"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/7/0/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     543.0,
+     1105.0,
+     631.0,
+     1133.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/1/5"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/0/6",
+     "glyph/4/0/5/0/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     545.0,
+     1003.0,
+     641.0,
+     1025.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/1/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     545.0,
+     1289.0,
+     809.0,
+     1310.0
+    ],
+    "seen_from": [
+     "staff/4/0/5",
+     "staff/4/0/6"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/6",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/6/2/4"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/1/2",
+     "glyph/4/0/6/1/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     596.0,
+     1716.0,
+     810.0,
+     1730.0
+    ],
+    "seen_from": [
+     "staff/4/0/8",
+     "staff/4/0/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/9",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/9/2/1"
+      ],
+      "staves": [
+       "staff/4/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/8/1/6",
+     "glyph/4/0/9/1/8"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     633.0,
+     906.0,
+     781.0,
+     942.0
+    ],
+    "seen_from": [
+     "staff/4/0/3",
+     "staff/4/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/3/1/2"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/3/1/4",
+     "glyph/4/0/4/1/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     646.0,
+     512.0,
+     791.0,
+     549.0
+    ],
+    "seen_from": [
+     "staff/4/0/0",
+     "staff/4/0/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/1/1/7"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/1/7"
+      ]
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/0/2/3"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/0/2/3"
+      ]
+     }
+    },
+    "views": [
+     "glyph/4/0/0/1/1",
+     "glyph/4/0/1/1/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     648.0,
+     1093.0,
+     792.0,
+     1127.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/1/5"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/2/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/1/1",
+     "glyph/4/0/5/1/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     654.0,
+     812.0,
+     782.0,
+     841.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/3/1/3"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/3/2/1"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/1/1",
+     "glyph/4/0/3/1/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     659.0,
+     678.0,
+     789.0,
+     709.0
+    ],
+    "seen_from": [
+     "staff/4/0/1",
+     "staff/4/0/2"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/2",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/2/0"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/1/1/3",
+     "glyph/4/0/2/1/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     671.0,
+     1003.0,
+     782.0,
+     1025.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/2/4"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/1/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     720.0,
+     1548.0,
+     840.0,
+     1566.0
+    ],
+    "seen_from": [
+     "staff/4/0/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/7/1/9"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/7/2/1"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/7/2/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     770.0,
+     3306.0,
+     809.0,
+     3322.0
+    ],
+    "seen_from": [
+     "staff/4/1/8"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/8/2/12"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/8/2/3",
+       "glyph/4/1/8/2/4"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/8/2/8"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     773.0,
+     3175.0,
+     816.0,
+     3189.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/2/5"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/2/2",
+       "glyph/4/1/7/2/3"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/2/9"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     829.0,
+     1100.0,
+     913.0,
+     1127.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/2/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/3/6"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/2/0",
+     "glyph/4/0/5/2/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     924.0,
+     803.0,
+     1075.0,
+     838.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/3/4"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/4/1"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/3/1",
+     "glyph/4/0/3/3/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     925.0,
+     725.0,
+     1056.0,
+     753.0
+    ],
+    "seen_from": [
+     "staff/4/0/2"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/3/2"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/4/4",
+       "glyph/4/0/2/4/5"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/3/9"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     930.0,
+     903.0,
+     1063.0,
+     941.0
+    ],
+    "seen_from": [
+     "staff/4/0/3",
+     "staff/4/0/4"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/3/3/5"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/3/4/2"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/3/3/1",
+     "glyph/4/0/4/3/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     930.0,
+     1286.0,
+     1086.0,
+     1306.0
+    ],
+    "seen_from": [
+     "staff/4/0/5",
+     "staff/4/0/6"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/6",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/6/3/2"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/3/1",
+     "glyph/4/0/6/3/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     931.0,
+     670.0,
+     1077.0,
+     710.0
+    ],
+    "seen_from": [
+     "staff/4/0/1",
+     "staff/4/0/2"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/3/2"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/4/4",
+       "glyph/4/0/2/4/5"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/1/3/2",
+     "glyph/4/0/2/3/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     933.0,
+     504.0,
+     1076.0,
+     542.0
+    ],
+    "seen_from": [
+     "staff/4/0/0",
+     "staff/4/0/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/1/3/5"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/3/5"
+      ]
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/1/4/1"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/4/1"
+      ]
+     }
+    },
+    "views": [
+     "glyph/4/0/0/3/0",
+     "glyph/4/0/1/3/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     935.0,
+     1712.0,
+     1101.0,
+     1737.0
+    ],
+    "seen_from": [
+     "staff/4/0/8",
+     "staff/4/0/9"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/8/3/4"
+      ],
+      "staves": [
+       "staff/4/0/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/9/4/0"
+      ],
+      "staves": [
+       "staff/4/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/8/3/0",
+     "glyph/4/0/9/3/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     939.0,
+     1100.0,
+     1068.0,
+     1125.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/3/6"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/4/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/3/2",
+     "glyph/4/0/5/3/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     949.0,
+     1000.0,
+     1063.0,
+     1022.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/3/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     968.0,
+     2388.0,
+     1046.0,
+     2403.0
+    ],
+    "seen_from": [
+     "staff/4/1/1",
+     "staff/4/1/2"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "ends_disagree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/1/3/8"
+      ],
+      "staves": [
+       "staff/4/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/1/4/4",
+       "glyph/4/1/1/4/17"
+      ],
+      "staves": [
+       "staff/4/1/1",
+       "staff/4/1/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/1/3/3",
+     "glyph/4/1/2/3/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     969.0,
+     2429.0,
+     997.0,
+     2438.0
+    ],
+    "seen_from": [
+     "staff/4/1/1"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/2",
+    "reason": "ends_agree",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/1/3/8"
+      ],
+      "staves": [
+       "staff/4/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/1/3/6"
+      ],
+      "staves": [
+       "staff/4/1/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/1/3/10"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     990.0,
+     3069.0,
+     1165.0,
+     3088.0
+    ],
+    "seen_from": [
+     "staff/4/1/6",
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/6/3/3"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/4/3"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/6/4/4",
+     "glyph/4/1/7/4/13"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     995.0,
+     2807.0,
+     1234.0,
+     2841.0
+    ],
+    "seen_from": [
+     "staff/4/1/4",
+     "staff/4/1/5"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "ends_disagree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/4/3/4"
+      ],
+      "staves": [
+       "staff/4/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/4/5/1",
+       "glyph/4/1/4/5/4",
+       "glyph/4/1/5/5/4"
+      ],
+      "staves": [
+       "staff/4/1/4",
+       "staff/4/1/5"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/4/4/7",
+     "glyph/4/1/5/3/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1060.0,
+     2388.0,
+     1175.0,
+     2408.0
+    ],
+    "seen_from": [
+     "staff/4/1/2"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/1/4/4"
+      ],
+      "staves": [
+       "staff/4/1/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/1/4/2"
+      ],
+      "staves": [
+       "staff/4/1/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/2/4/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1071.0,
+     2254.0,
+     1205.0,
+     2290.0
+    ],
+    "seen_from": [
+     "staff/4/1/0",
+     "staff/4/1/1"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/0/4/5",
+       "glyph/4/1/1/4/14"
+      ],
+      "staves": [
+       "staff/4/1/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/0/5/2"
+      ],
+      "staves": [
+       "staff/4/1/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/0/4/0",
+     "glyph/4/1/1/4/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1072.0,
+     1000.0,
+     1186.0,
+     1034.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/4/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1074.0,
+     2078.0,
+     1227.0,
+     2113.0
+    ],
+    "seen_from": [
+     "staff/4/1/0"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/0",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/0/4/1"
+      ],
+      "staves": [
+       "staff/4/1/0"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/0/5/1"
+      ],
+      "staves": [
+       "staff/4/1/0"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/0/4/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1078.0,
+     2863.0,
+     1099.0,
+     2876.0
+    ],
+    "seen_from": [
+     "staff/4/1/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/5",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/5/4/3",
+       "glyph/4/1/5/4/4"
+      ],
+      "staves": [
+       "staff/4/1/5"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/5/4/5"
+      ],
+      "staves": [
+       "staff/4/1/5"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/5/4/8"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1082.0,
+     1099.0,
+     1185.0,
+     1127.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/4/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/5/5"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/4/0",
+     "glyph/4/0/5/4/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1082.0,
+     2715.0,
+     1146.0,
+     2747.0
+    ],
+    "seen_from": [
+     "staff/4/1/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/1/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/4/4/9"
+      ],
+      "staves": [
+       "staff/4/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/4/4/8"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1086.0,
+     2526.0,
+     1210.0,
+     2556.0
+    ],
+    "seen_from": [
+     "staff/4/1/2",
+     "staff/4/1/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/3/4/8"
+      ],
+      "staves": [
+       "staff/4/1/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/2/5/5",
+       "glyph/4/1/2/5/6"
+      ],
+      "staves": [
+       "staff/4/1/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/2/4/5",
+     "glyph/4/1/3/4/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1201.0,
+     1705.0,
+     1368.0,
+     1722.0
+    ],
+    "seen_from": [
+     "staff/4/0/8",
+     "staff/4/0/9"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/8/5/2"
+      ],
+      "staves": [
+       "staff/4/0/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/9/6/4"
+      ],
+      "staves": [
+       "staff/4/0/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/8/5/1",
+     "glyph/4/0/9/5/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1204.0,
+     1092.0,
+     1359.0,
+     1128.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/5/5"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/6/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/5/3",
+     "glyph/4/0/5/5/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1205.0,
+     674.0,
+     1365.0,
+     706.0
+    ],
+    "seen_from": [
+     "staff/4/0/1",
+     "staff/4/0/2"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/5/4"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/6/3",
+       "glyph/4/0/2/6/7"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/1/5/0",
+     "glyph/4/0/2/5/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1207.0,
+     889.0,
+     1310.0,
+     906.0
+    ],
+    "seen_from": [
+     "staff/4/0/3"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/3/5/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1208.0,
+     1286.0,
+     1396.0,
+     1315.0
+    ],
+    "seen_from": [
+     "staff/4/0/5",
+     "staff/4/0/6"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/6",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/6/6/0"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/5/1",
+     "glyph/4/0/6/6/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1209.0,
+     522.0,
+     1291.0,
+     537.0
+    ],
+    "seen_from": [
+     "staff/4/0/0"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/0/5/1"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1210.0,
+     799.0,
+     1344.0,
+     817.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/5/6"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/6/5"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/5/1",
+     "glyph/4/0/3/5/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1222.0,
+     1000.0,
+     1335.0,
+     1021.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/6/6"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/5/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1230.0,
+     2808.0,
+     1356.0,
+     2840.0
+    ],
+    "seen_from": [
+     "staff/4/1/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/4",
+    "reason": "ends_agree",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/4/5/1",
+       "glyph/4/1/4/5/4",
+       "glyph/4/1/4/5/7"
+      ],
+      "staves": [
+       "staff/4/1/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/4/6/0"
+      ],
+      "staves": [
+       "staff/4/1/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/5/5/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1276.0,
+     1547.0,
+     1391.0,
+     1562.0
+    ],
+    "seen_from": [
+     "staff/4/0/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/7/5/5"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/7/6/6"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/7/6/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1362.0,
+     515.0,
+     1461.0,
+     549.0
+    ],
+    "seen_from": [
+     "staff/4/0/0",
+     "staff/4/0/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/1/6/3",
+       "glyph/4/0/1/6/6"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/6/3",
+       "glyph/4/0/1/6/6"
+      ]
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/1/7/4"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/7/4"
+      ]
+     }
+    },
+    "views": [
+     "glyph/4/0/0/6/0",
+     "glyph/4/0/1/6/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1365.0,
+     3084.0,
+     1406.0,
+     3104.0
+    ],
+    "seen_from": [
+     "staff/4/1/6",
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/6/1"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/6/3"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/6/6/2",
+     "glyph/4/1/7/6/7"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1366.0,
+     670.0,
+     1480.0,
+     700.0
+    ],
+    "seen_from": [
+     "staff/4/0/1",
+     "staff/4/0/2"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/6/3"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/7/7",
+       "glyph/4/0/2/7/11"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/1/6/0",
+     "glyph/4/0/2/6/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1366.0,
+     766.0,
+     1461.0,
+     788.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/2",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/6/7"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/6/4",
+     "glyph/4/0/3/6/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1372.0,
+     3218.0,
+     1419.0,
+     3239.0
+    ],
+    "seen_from": [
+     "staff/4/1/7",
+     "staff/4/1/8"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/6/0"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/8/6/5",
+       "glyph/4/1/8/6/7"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/6/5",
+     "glyph/4/1/8/6/3"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1374.0,
+     1096.0,
+     1470.0,
+     1129.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/6/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/7/3"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/6/3",
+     "glyph/4/0/5/6/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1377.0,
+     992.0,
+     1470.0,
+     1017.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/6/6"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/6/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1467.0,
+     671.0,
+     1617.0,
+     719.0
+    ],
+    "seen_from": [
+     "staff/4/0/1",
+     "staff/4/0/2"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/2",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/8/2"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/1/7/1",
+     "glyph/4/0/2/7/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1484.0,
+     1084.0,
+     1637.0,
+     1124.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/7/3"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/8/6"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/7/1",
+     "glyph/4/0/5/7/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1486.0,
+     515.0,
+     1635.0,
+     560.0
+    ],
+    "seen_from": [
+     "staff/4/0/0",
+     "staff/4/0/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/1/7/4"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/7/4"
+      ]
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/1/8/5",
+       "glyph/4/0/1/8/10"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/8/5",
+       "glyph/4/0/1/8/10"
+      ]
+     }
+    },
+    "views": [
+     "glyph/4/0/0/7/1",
+     "glyph/4/0/1/7/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1491.0,
+     3110.0,
+     1530.0,
+     3130.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/7/3"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/7/1",
+       "glyph/4/1/7/7/7"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/7/4"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1492.0,
+     889.0,
+     1615.0,
+     924.0
+    ],
+    "seen_from": [
+     "staff/4/0/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/3/8/3"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/3/7/3"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1492.0,
+     3245.0,
+     1531.0,
+     3265.0
+    ],
+    "seen_from": [
+     "staff/4/1/8"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/8/7/4"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/8/7/3",
+       "glyph/4/1/8/7/9"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/8/7/7"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1493.0,
+     1708.0,
+     1652.0,
+     1726.0
+    ],
+    "seen_from": [
+     "staff/4/0/8",
+     "staff/4/0/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/9",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/9/7/2"
+      ],
+      "staves": [
+       "staff/4/0/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/8/7/5",
+     "glyph/4/0/9/7/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1495.0,
+     796.0,
+     1625.0,
+     829.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/7/9"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/8/3"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/7/0",
+     "glyph/4/0/3/7/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1499.0,
+     762.0,
+     1599.0,
+     781.0
+    ],
+    "seen_from": [
+     "staff/4/0/2"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/7/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1507.0,
+     994.0,
+     1619.0,
+     1017.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/8/5"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/7/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1626.0,
+     3380.0,
+     1665.0,
+     3399.0
+    ],
+    "seen_from": [
+     "staff/4/1/8",
+     "staff/4/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/9/8/4"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/9/8/2"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/8/8/6",
+     "glyph/4/1/9/8/7"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1627.0,
+     3241.0,
+     1664.0,
+     3263.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/8",
+    "reason": "ends_agree",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/8/8/4",
+       "glyph/4/1/8/8/5"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/8/8/3",
+       "glyph/4/1/8/8/10"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/8/6"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1628.0,
+     3104.0,
+     1668.0,
+     3121.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/8/3"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/8/2"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/8/1"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1640.0,
+     661.0,
+     1746.0,
+     698.0
+    ],
+    "seen_from": [
+     "staff/4/0/1",
+     "staff/4/0/2"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/2",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/8/2",
+       "glyph/4/0/2/8/7"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/9/2"
+      ],
+      "staves": [
+       "staff/4/0/2"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/1/8/0",
+     "glyph/4/0/2/8/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1645.0,
+     781.0,
+     1744.0,
+     807.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/2/8/3"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/2/9/0"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/8/1",
+     "glyph/4/0/3/8/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1649.0,
+     1103.0,
+     1741.0,
+     1123.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/4",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/8/6"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/9/1"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/8/2",
+     "glyph/4/0/5/8/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1650.0,
+     520.0,
+     1734.0,
+     553.0
+    ],
+    "seen_from": [
+     "staff/4/0/0",
+     "staff/4/0/1"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/1/8/5",
+       "glyph/4/0/1/8/10"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/8/5",
+       "glyph/4/0/1/8/10"
+      ]
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/1/9/2"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/1/9/2"
+      ]
+     }
+    },
+    "views": [
+     "glyph/4/0/0/8/1",
+     "glyph/4/0/1/8/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1653.0,
+     902.0,
+     1744.0,
+     924.0
+    ],
+    "seen_from": [
+     "staff/4/0/3"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/3",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/3/8/3"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/3/9/5"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/3/8/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1668.0,
+     1541.0,
+     1920.0,
+     1558.0
+    ],
+    "seen_from": [
+     "staff/4/0/8"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/7",
+    "reason": "one_end",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/7/10/1"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/8/9/8"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1669.0,
+     1276.0,
+     1919.0,
+     1290.0
+    ],
+    "seen_from": [
+     "staff/4/0/5",
+     "staff/4/0/6"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/6",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/6/10/1"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/9/4",
+     "glyph/4/0/6/9/9"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1721.0,
+     1002.0,
+     1749.0,
+     1020.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/4",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/9/8"
+      ],
+      "staves": [
+       "staff/4/0/4"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/9/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     1751.0,
+     3437.0,
+     1792.0,
+     3452.0
+    ],
+    "seen_from": [
+     "staff/4/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/9/9/4"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/9/9/1",
+       "glyph/4/1/9/9/5"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/9/6"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     1884.0,
+     3168.0,
+     1925.0,
+     3184.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/10/6"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/10/3",
+       "glyph/4/1/7/10/4"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/10/13"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     2077.0,
+     782.0,
+     2168.0,
+     809.0
+    ],
+    "seen_from": [
+     "staff/4/0/2",
+     "staff/4/0/3"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/3",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/3/12/0"
+      ],
+      "staves": [
+       "staff/4/0/3"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/11/6",
+     "glyph/4/0/3/12/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2087.0,
+     1178.0,
+     2125.0,
+     1193.0
+    ],
+    "seen_from": [
+     "staff/4/0/5"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/5",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/5/11/7"
+      ],
+      "staves": [
+       "staff/4/0/5"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/11/12"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2095.0,
+     1048.0,
+     2143.0,
+     1070.0
+    ],
+    "seen_from": [
+     "staff/4/0/4"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/4/11/3"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/4/11/3"
+      ]
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/11/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2097.0,
+     516.0,
+     2171.0,
+     540.0
+    ],
+    "seen_from": [
+     "staff/4/0/0",
+     "staff/4/0/1"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/1",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/1/11/12"
+      ],
+      "staves": [
+       "staff/4/0/1"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/1/12/0",
+       "glyph/4/0/1/12/4"
+      ],
+      "staves": [
+       "staff/4/0/1"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/0/11/1",
+     "glyph/4/0/1/11/9"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2100.0,
+     689.0,
+     2158.0,
+     709.0
+    ],
+    "seen_from": [
+     "staff/4/0/2"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/2/11/10"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2102.0,
+     322.0,
+     2171.0,
+     343.0
+    ],
+    "seen_from": [
+     "staff/4/0/0"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/0",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/0/11/4"
+      ],
+      "staves": [
+       "staff/4/0/0"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/0/12/2"
+      ],
+      "staves": [
+       "staff/4/0/0"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/0/11/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2102.0,
+     1409.0,
+     2178.0,
+     1434.0
+    ],
+    "seen_from": [
+     "staff/4/0/6",
+     "staff/4/0/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/7/11/13"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/7/12/2",
+       "glyph/4/0/7/12/18"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/6/12/14",
+     "glyph/4/0/7/12/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2104.0,
+     1122.0,
+     2173.0,
+     1146.0
+    ],
+    "seen_from": [
+     "staff/4/0/4",
+     "staff/4/0/5"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/5",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/5/11/11"
+      ],
+      "staves": [
+       "staff/4/0/5"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/4/12/7"
+      ],
+      "staves": [
+       "staff/4/0/5"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/4/12/6",
+     "glyph/4/0/5/12/11"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2106.0,
+     421.0,
+     2168.0,
+     436.0
+    ],
+    "seen_from": [
+     "staff/4/0/0"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/0/11/10"
+      ],
+      "staves": [],
+      "unowned": [
+       "glyph/4/0/0/11/10"
+      ]
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/0/11/9"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2110.0,
+     1826.0,
+     2175.0,
+     1855.0
+    ],
+    "seen_from": [
+     "staff/4/0/10",
+     "staff/4/0/9"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "end_head_unowned",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/9/11/2"
+      ],
+      "staves": [
+       "staff/4/0/10"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/9/12/0",
+       "glyph/4/0/9/12/9"
+      ],
+      "staves": [
+       "staff/4/0/10"
+      ],
+      "unowned": [
+       "glyph/4/0/9/12/9"
+      ]
+     }
+    },
+    "views": [
+     "glyph/4/0/9/11/5",
+     "glyph/4/0/10/11/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2113.0,
+     1263.0,
+     2179.0,
+     1287.0
+    ],
+    "seen_from": [
+     "staff/4/0/5",
+     "staff/4/0/6"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/0/6",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/6/11/4"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/12/7",
+     "glyph/4/0/6/12/6"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2119.0,
+     1595.0,
+     2176.0,
+     1614.0
+    ],
+    "seen_from": [
+     "staff/4/0/8"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/8/11/6"
+      ],
+      "staves": [
+       "staff/4/0/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/8/12/5"
+      ],
+      "staves": [
+       "staff/4/0/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/8/11/12"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2121.0,
+     1367.0,
+     2132.0,
+     1379.0
+    ],
+    "seen_from": [
+     "staff/4/0/6"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/6/11/7"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2162.0,
+     3341.0,
+     2317.0,
+     3365.0
+    ],
+    "seen_from": [
+     "staff/4/1/8",
+     "staff/4/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/8",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/8/12/2",
+       "glyph/4/1/8/12/3",
+       "glyph/4/1/9/12/2"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/8/13/4"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/8/12/0",
+     "glyph/4/1/9/12/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2170.0,
+     3094.0,
+     2317.0,
+     3128.0
+    ],
+    "seen_from": [
+     "staff/4/1/6",
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/12/2"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/13/4"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/6/12/1",
+     "glyph/4/1/7/12/1"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2171.0,
+     3511.0,
+     2443.0,
+     3535.0
+    ],
+    "seen_from": [
+     "staff/4/1/10",
+     "staff/4/1/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/1/10",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/10/12/5"
+      ],
+      "staves": [
+       "staff/4/1/10"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/12/5",
+     "glyph/4/1/10/12/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2182.0,
+     3465.0,
+     2322.0,
+     3487.0
+    ],
+    "seen_from": [
+     "staff/4/1/9"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/9",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/9/12/7"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/9/13/3"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/12/4"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2342.0,
+     3464.0,
+     2497.0,
+     3491.0
+    ],
+    "seen_from": [
+     "staff/4/1/10"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/9",
+    "reason": "ends_agree",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/9/13/3"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/9/14/10"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/10/13/8"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2345.0,
+     3093.0,
+     2504.0,
+     3129.0
+    ],
+    "seen_from": [
+     "staff/4/1/6",
+     "staff/4/1/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/1/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/7/13/4"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/1/7/14/7"
+      ],
+      "staves": [
+       "staff/4/1/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/6/13/3",
+     "glyph/4/1/7/13/0"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2349.0,
+     1428.0,
+     2390.0,
+     1446.0
+    ],
+    "seen_from": [
+     "staff/4/0/6",
+     "staff/4/0/7"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/7",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/6/13/8"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/7/13/1",
+       "glyph/4/0/7/13/2"
+      ],
+      "staves": [
+       "staff/4/0/7"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/6/13/10",
+     "glyph/4/0/7/13/7"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     2351.0,
+     3517.0,
+     2443.0,
+     3534.0
+    ],
+    "seen_from": [
+     "staff/4/1/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/1/10",
+    "reason": "one_end",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/10/13/9",
+       "glyph/4/1/10/13/10"
+      ],
+      "staves": [
+       "staff/4/1/10"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/13/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2359.0,
+     1285.0,
+     2392.0,
+     1301.0
+    ],
+    "seen_from": [
+     "staff/4/0/5",
+     "staff/4/0/6"
+    ],
+    "status": "decided",
+    "owner": "staff/4/0/6",
+    "reason": "ends_agree",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/0/5/13/3"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [
+       "glyph/4/0/6/13/0",
+       "glyph/4/0/6/13/1"
+      ],
+      "staves": [
+       "staff/4/0/6"
+      ],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/0/5/13/4",
+     "glyph/4/0/6/13/5"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     2469.0,
+     3511.0,
+     2629.0,
+     3535.0
+    ],
+    "seen_from": [
+     "staff/4/1/10",
+     "staff/4/1/9"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/14/4",
+     "glyph/4/1/10/14/5"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2496.0,
+     3109.0,
+     2634.0,
+     3147.0
+    ],
+    "seen_from": [
+     "staff/4/1/7"
+    ],
+    "status": "abstain",
+    "owner": null,
+    "reason": "no_end_heads",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/7/14/2"
+    ],
+    "crosses_barline": true
+   },
+   {
+    "page": 4,
+    "box": [
+     2505.0,
+     3329.0,
+     2614.0,
+     3360.0
+    ],
+    "seen_from": [
+     "staff/4/1/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/1/8",
+    "reason": "one_end",
+    "differs": true,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/8/14/1"
+      ],
+      "staves": [
+       "staff/4/1/8"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/14/0"
+    ],
+    "crosses_barline": false
+   },
+   {
+    "page": 4,
+    "box": [
+     2525.0,
+     3462.0,
+     2625.0,
+     3488.0
+    ],
+    "seen_from": [
+     "staff/4/1/10",
+     "staff/4/1/9"
+    ],
+    "status": "guessed",
+    "owner": "staff/4/1/9",
+    "reason": "one_end",
+    "differs": false,
+    "ends": {
+     "left": {
+      "heads": [
+       "glyph/4/1/9/14/10"
+      ],
+      "staves": [
+       "staff/4/1/9"
+      ],
+      "unowned": []
+     },
+     "right": {
+      "heads": [],
+      "staves": [],
+      "unowned": []
+     }
+    },
+    "views": [
+     "glyph/4/1/9/14/1",
+     "glyph/4/1/10/14/2"
+    ],
+    "crosses_barline": false
+   }
+  ]
+ }
+}

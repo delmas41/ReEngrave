@@ -940,6 +940,24 @@ class Q(_Vocab):
     #: nothing and NOTHING READS IT yet (`claims.covering`'s `ink` branch is its first reader, called by no stage).
     GLYPH_STROKES = "glyph_strokes"
 
+    #: ROADMAP 2.240 step 1 (flag `OMR_PAGE_MARKS`, default OFF; `page_marks.gather_page_marks`): ONE ROW PER DETECTOR BOX of every pass, on the
+    #: box's glyph subject: `value` = the PAGE-MARK ordinal (per page). Boxes of one family from two padded cells whose page boxes stand on the
+    #: same page ink (shared ink >= `detail.share_min` of the smaller box's, one-to-one per pair of cells, never two boxes of one cell in a mark)
+    #: share the ordinal: one mark seen by two views. `detail`: family, members, cells, ink_px, why, pairs (every same-family box of another cell
+    #: overlapping it: [key, share, iou, merged, reason]). Decides nothing and NOTHING READS IT yet (step 2, one owner per page mark, is its reader).
+    PAGE_MARK = "page_mark"
+
+    #: ROADMAP 2.240 step 2 (flag `OMR_PAGE_OWNER`, default OFF; `page_owner.gather_page_owners`): ONE ROW PER PAGE MARK, on its first
+    #: member's glyph subject: `value` = the owner staff key, `detail.status` decided | guessed (both staves in `candidates`), `reason`
+    #: (inside_staff, ledger, ledger_and_stem, ledger_over_stem, stem, ledger_views_disagree), `witnesses`. An abstention names why no
+    #: witness spoke. Never nearness. NOTHING READS IT yet (step 3 retires the cell-copy rules where it agrees with them, on tiles).
+    PAGE_MARK_OWNER = "page_mark_owner"
+
+    #: ROADMAP 2.240 step 2 (same flag): ONE ROW PER ARC OR HAIRPIN READ PAGE-WIDE (Sean 2026-10-30), on its first view's subject: `value` =
+    #: arc | hairpin; `detail` = extent, staves and cells it was seen from, member boxes / page marks, the joined views, each view's end
+    #: candidates (not bound: ROADMAP 2.223). A detector arc/hairpin box no page-wide read holds abstains `span_untraced`. Nothing reads it yet.
+    PAGE_SPAN = "page_span"
+
     #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
     #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
     #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
@@ -2337,6 +2355,12 @@ CLAIMS: "dict[str, str]" = {
     "STROKE": CLAIM.MEASUREMENT,
     #: ROADMAP 2.198: which strokes lie inside a box -- a measurement of ink under the detector's box, naming nothing.
     "GLYPH_STROKES": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.240: two boxes stand on the same page ink -- wrong only if they do not in fact share that ink; it never names the mark.
+    "PAGE_MARK": CLAIM.COVERAGE,
+    #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
+    "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.240 step 2: the page-wide extent of one traced arc / CV wedge -- a measurement of ink, naming no notes.
+    "PAGE_SPAN": CLAIM.MEASUREMENT,
     #: ⚠️⚠️ THE ONE QUANTITY WHOSE CLAIM DEPENDS ON ITS READER, and the only
     #: one in the vocabulary. `gather_margin_labels` resolves the rung at
     #: RUNTIME (`_RUNG_READER.get(rung, READERS.TEXT_LAYER)`), and the rungs
@@ -2946,6 +2970,12 @@ class READERS(_Vocab):
     CV_STROKE = "cv_stroke"
     #: `gather.gather_glyph_strokes` -- ROADMAP 2.198. Reads the `CV_STROKE` masks and the detector's boxes; no raster of its own.
     CV_GLYPH_STROKES = "cv_glyph_strokes"
+    #: `page_marks.gather_page_marks` -- ROADMAP 2.240 step 1. The page render (`pws.page.binary`) under the `CV_STROKE` masks and the boxes.
+    CV_PAGE_MARKS = "cv_page_marks"
+    #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.
+    CV_PAGE_OWNER = "cv_page_owner"
+    #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the `Q.SYSTEM_ARC` traces and `Q.WEDGE_BOX` reads, joined page-wide.
+    CV_PAGE_SPANS = "cv_page_spans"
     #: `gather.gather_narrow_box_shape` -- ROADMAP 2.80b. The same erased raster
     #: (one crop, one signal) asked what the ink under a narrow notehead box is.
     CV_NARROW_BOX_SHAPE = "cv_narrow_box_shape"
@@ -3103,6 +3133,13 @@ class ABSTAIN(_Vocab):
     #: ⚠️ OUR failure, never a reading: a head outside the staff always has a
     #: ledger (Sean, 2026-09-29), so "no rungs" is a missed one.
     LEDGER_NOT_READ = "ledger_not_read"
+    #: ROADMAP 2.240 step 2 (`page_owner`): why a page mark has no owner -- ledger readings that named no staff (our failure, counted); no
+    #: witness at all; a mark whose owner is the note it binds to (later); a mark inside two staves' bands; a box no page-wide read holds.
+    OWNER_NO_RUNGS = "owner_no_rungs"
+    OWNER_NO_WITNESS = "owner_no_witness"
+    OWNER_FOLLOWS_ITS_NOTE = "owner_follows_its_note"
+    OWNER_INSIDE_TWO_STAVES = "owner_inside_two_staves"
+    SPAN_UNTRACED = "span_untraced"
     #: The page has too few clean on-line heads to MEASURE a head size, and no
     #: earlier page of the run supplied a pool: the reader will not borrow one.
     NO_PAGE_SHAPE = "no_page_shape"

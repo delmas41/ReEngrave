@@ -1,0 +1,1 @@
+brahms-slices pages [0, 4, 5, 8, 12, 14, 19, 25]: heads 6031 | filter dropped rungs {} in 0 owner-ledger rows (0 readings changed) | head owners changed by filter 0, by hairpin 0 (hairpin disagrees 0) | arcs 948 {'guessed:one_end': 275, 'decided:ends_agree': 624, 'abstain:no_end_heads': 37, 'abstain:end_head_unowned': 12}, owner on a staff the arc was not seen from 73
