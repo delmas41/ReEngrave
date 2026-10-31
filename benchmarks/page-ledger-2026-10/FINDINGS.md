@@ -271,7 +271,7 @@ OMR_PAGE_OWNER_READ --replay-gathered`; `s4/lane_report_*.log`):
 **Tiles** (commit): `out/print/2.240-s4-tiles/` -- 11 places the file changed (6 heads whose owner moved, 5 arcs whose staff moved; drawn on the staff
 ON writes them on) + tile 8's place (tile 2); `out/print/2.240-s4-rules-tiles/` -- 12 of the 171 places where `distance` (L 74, B 49) or `range_veto`
 (L 2, B 82) decided against the page owner (drawn on the OLD rule's staff). Question for both: what is the ink, and which staff does it belong to.
-Tests `test_page_owner_2_240_s4.py` (22: vocabulary, tile-8 gap look with a can-fail arm, flat trace, consumer, glyph_owner/arc_owner read the owner).
+Fast tier on the final tree (after merging main): 9,626 passed. Tests `test_page_owner_2_240_s4.py` (22: vocabulary, tile-8 gap look with a can-fail arm, flat trace, consumer, glyph_owner/arc_owner read the owner).
 **Not done.** "One mark per page span" for arcs: 2.223 already writes a BOUND slur once per curve; two views of an unbound arc both move to the owner's
 staff (not de-duplicated here). Retiring `distance` / `range_veto` waits for the rules tiles. The 6 new `ledger_over_stem` heads are tile 8's kind.
 The step-3 gathered records and replay dumps were deleted (disk); re-run `s4/snapshot.sh` + `s4/gather_sample.sh`.
