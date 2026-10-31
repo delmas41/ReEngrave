@@ -1,0 +1,12 @@
+{
+ "date": "2026-10-31",
+ "by": "Sean",
+ "answers": {
+  "1": "Ledger line, belongs to the staff above", "2": "Part of an ff dynamic", "3": "Half note (box a little small), belongs to the staff below",
+  "4": "Eighth notes (box too small), belong to the staff below", "5": "Flag, belongs to the staff below", "6": "Eighth note (box too small), belongs to the staff above",
+  "7": "Top of an eighth note, belongs to the staff below", "8": "Small part of a black note head, belongs to the staff above (can't see the stem)",
+  "9": "Staff line, belongs to the staff below", "10": "Staff line, belongs to the staff below", "11": "Very small box around a black note, belongs to the staff above",
+  "12": "Ledger line, belongs to the staff below"
+ },
+ "note": "Each tile was drawn on the OLD rule's staff; 'above'/'below' name the other staff -- in all 11 places with a staff named it is the page owner's."
+}
