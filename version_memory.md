@@ -9,6 +9,65 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.242 LANDED ON: one accidental, one piece (OMR_ACCIDENTAL_WHOLE)
+STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits`; `stroke_owner.accidental_yields`, `accidental_not_whole`), deny-list default ON (Sean "Land on"). Brahms p0 accidentals whole 0 -> 30/41; Sean's r2 tiles 11/12; judged right->wrong 0; Brahms file -1 accidental at an unjudged place. `test_stroke_owner_2_205` contest re-pinned to the flag OFF (the floor gives the eighth-rest bulb to the rest) plus a test of the ON case. Lane 2.247 (accidental kind by shape, Opus) started the same hour.
+
+## 2026-10-31 -- tile answers, two rulings, four lanes (manager session; docs and answers only on main)
+- Recorded Sean's answers, with DECISIONS lines and `judged build`:
+  - **2.240 step 2 kinds** (1b7033821): 9/12 are the ledger's kind; tiles 2, 9 and 12 are wrong-kind boxes from GATHER.
+  - **2.240 step 2 owners** (b34a68a5d): 5 above, 8 below, 11 below, 12 above. Tile 11's lower-staff top line was read as a ledger line.
+  - **2.242 r1** (7b7d57ade): 4/8 "whole" accidentals real; 2, 7 and 11 are specks, 12 only part of a flat. Yields 3/4 right; tile 1 is eighth-rest ink given to a head.
+- Rulings:
+  - **CLAUDE.md §5** (fa3ea6231): the ledger lines decide when the stem disagrees, written plain (Sean's 10-28 ruling, 2.216 B).
+  - **page-facts** (90a2a0ec6): a hairpin is below its staff; a note above it belongs to the staff above, a note below it to the staff below.
+- Lanes running, all OFF:
+  - 2.242 r2: shape and size against the staff space (Sonnet; 5a2d1c3a5 pushed).
+  - 2.240 step 2 r2: a staff's own line is never a ledger line; arcs take their notes' staff; the hairpin witness (Sonnet).
+  - 2.245: one cause for wrong-kind boxes (Opus; row claimed 276eb9fd0).
+  - 2.223: arcs AND hairpins bound to notes (Opus; continues lane-2.223-anchoring).
+
+## 2026-10-30 night -- 2.243 and 2.244 LANDED (af25466cd), 2.239 round 3 LANDED (5c1805bf3), 2.241 answers
+- **2.243 ON** (Sean "With both on"; tiles 12/12): `OMR_DOTS_HONOUR_CLAIMS` and `OMR_BEAMS_HONOUR_CLAIMS`. The dot-role and beam readers consult the stroke owner; the file moves one Brahms bar. Fast tier 9,505.
+- **2.244** (test tooling; the build entry is at the end of this file): default tag 20261029-night, judged by place, unjudged changed places tiled, `one_test` combined run. Fast tier 9,493.
+- **2.239 round 3 ON** (Sean "Land round 3"; same `OMR_SPLIT_JOINS`):
+  - a piece across an accidental box and a head/ledger/stem box is cut where the boxes' own ink meets;
+  - a clef is one stroke within its SMuFL size: Brahms p0 clefs G 8/8, F 5/5;
+  - Sean's r3 tiles: 5/5 clefs whole. Fast tier 9,457.
+- **2.241 tiles REDONE by Sean** (68763df76; the first set was offset from tile 4):
+  - 2 real order faults: an accidental took a flag's ink (3) and a head's (10);
+  - 5 had the right owner;
+  - 3 had no right claim: a hairpin with no page-wide claim (6), a rehearsal frame with no reader (7), a head box too small (9).
+- Brahms master cell map rebuilt cm-2d494f8fc055 -> cm-3ccd049d7c3c (efd252067) after 2.239. Only the left-edge reading changed; no cell moved.
+- Lanes started on Sean's "Start both" / "1 and 2" (cap of 4 lanes):
+  - 2.240 step 2 (`OMR_PAGE_OWNER`, OFF, bb215ec11);
+  - 2.242 (`OMR_ACCIDENTAL_WHOLE`, OFF, a8c7ef8b4: Brahms p0 accidentals whole 0 -> 30/41).
+
+## 2026-10-30 afternoon/evening -- 2.232, 2.235, 2.238, 2.239 LANDED ON; 2.233, 2.234, 2.236, 2.237, 2.241 done; 2.240 design + step 1
+- **2.232 ON** (Sean "Land it", tiles 12/12; `OMR_STACKED_HEAD_STEP_APART`, a488a4a80): the stack fit abstains where its one head stands on no box. Litolff 9 pages notes +33 -2, refusals 272 -> 96.
+- **2.235 ON** (Sean "Land", 12/12; `OMR_TIPS_HONOUR_CLAIMS`, 0d67ba801): the stem-tip readers leave out strokes the owner gave to another mark. Brahms notes +50 -2, dots +35.
+- **2.238 ON** (Sean "Land"; `OMR_OWNER_SHAPE`, 820158d16): the stroke owner reads the old pair rules' shape evidence as vetoes, replacing "half the piece inside the box". A rest holding a stem-length stroke is written blue. Fast tier 9,421.
+- **2.239 ON** (Sean "Land then fix"; `OMR_SPLIT_JOINS`, 0cbdbd452 + the one-pass left-edge fix 1a8f6e92e):
+  - fused ink is cut at head|stem, stem|beam/flag, head|head and head|arc, plus ledger stubs;
+  - the bracket is read inside the one page-wide pass;
+  - Brahms p0 black heads owning their ink 156 -> 374/378. Fast tier 9,436.
+- **Done, not landed:**
+  - **2.233** value undecided (18eb9d0db): causes are upstream; two flags OFF.
+  - **2.234** dots (e5152ab57): no wiring cause; the "dots" were arc tips and word periods.
+  - **2.236** capture readout (`claim_readout`).
+  - **2.237** rule refresh (ink-rules fires beside 10-22).
+  - **2.241** claim-order check (`claim_order.py`, `claim_readout order`).
+- **2.240** page ledger:
+  - design (lane-2.240-page-ledger 34cb3f3a3): vertical overlap only; the cell cut runs through ~80% of barlines;
+  - step 1 (`OMR_PAGE_MARKS`, OFF, lane-2.240-s1-page-marks 6eb072e75): Sean's tiles say arcs and hairpins are read page-wide.
+- **Diagnosis only:** Brahms overnight 224 -> 352 min (benchmarks/gather-time-1030, lane-gather-time-1030 63cc667da). Per-page CPU is +10-13% only; the rest is inferred to be memory pressure from the 2.2x record. Proposed: stamp per-stage seconds and peak RSS in the overnight (ROADMAP 2.246).
+- **Hand truth:**
+  - Brahms p0 aligned to the master cell map (`tools/omr/hand_truth/align.py`);
+  - arc b4057 relabelled slur -> tie (Sean);
+  - Sean: "A tie carries an accidental even across a bar line."
+- Process review (docs/plan-2026-10-30-later-stages-catch-up.md). Sean: never undo a GATHER change, rework the later stages; keep scope on sources and always say why. Up to 5 lanes ran for a while that afternoon.
+## 2026-10-31 -- 2.242 one accidental, one piece (branch lane-2.242-accidental-whole, not landed)
+`stroke_map.merge_accidentals` (flag `OMR_ACCIDENTAL_WHOLE`, default OFF) puts an accidental the openings cut into 4-6 strokes back as one stroke (from its box outward, SMuFL size, never a head / ledger / stem; not more than one accidental); `stroke_owner.accidental_yields` makes an accidental yield a head-body blob a head box covers and flag ink hanging from a long stem (2.241 tiles 10 and 3). Brahms p0 accidentals whole 0 -> 30 of 41, 2.201 type control no loss, judged right->wrong 0. `claim_order` re-cut now passes the touch boxes. Cause and lessons: benchmarks/capture-readout-2026-10/FINDINGS.md 2.242.
+
 ## 2026-10-31 -- ROADMAP 2.245 wrong-kind boxes: cause found, `OMR_BOX_KIND_SIZE` built OFF (lane-2.245-wrong-kind, not merged)
 
 Cause of Sean's four wrong-kind tiles: the detector boxes one ink under several classes and every reader takes a box's class as its kind,

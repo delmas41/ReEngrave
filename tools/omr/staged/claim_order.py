@@ -427,6 +427,7 @@ def build_order_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, 
     det, reads = CR.consumer_rows(prows)
     rec_boxes: Dict[Tuple, Dict[int, list]] = collections.defaultdict(dict)
     keep_whole: Dict[Tuple, list] = {}
+    touch: Dict[Tuple, list] = {}
     for o in prows["observations"]:
         if o.get("quantity") == "stroke":
             p = o["subject"].split("/")
@@ -435,7 +436,10 @@ def build_order_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, 
                 rec_boxes[CR.cell_key(o["subject"])][g - CR.STROKE_BASE] = (o.get("detail") or {}).get("stroke_box")
         if (o.get("detail") or {}).get("cell_keep_whole"):
             keep_whole[CR.cell_key(o["subject"])] = o["detail"]["cell_keep_whole"]
+        if (o.get("detail") or {}).get("cell_touch_boxes"):        # 2.242: the re-cut must cut as the gather cut (2.239 r3 touch cut, the accidental merge)
+            touch[CR.cell_key(o["subject"])] = o["detail"]["cell_touch_boxes"]
     takes_keep = "keep_whole" in inspect.signature(SM.map_strokes).parameters
+    takes_touch = "touch_boxes" in inspect.signature(SM.map_strokes).parameters
     (pws, cells), = CM.load_prepared(pdf, [page], root=cm_root)
     canvas = CR.PageInk(pws.page.binary == 0)
     oc = OrderCanvas(canvas)
@@ -455,6 +459,8 @@ def build_order_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, 
             verify["cell_no_grid"] += 1
             continue
         kw = {"keep_whole": keep_whole.get(ck, ())} if takes_keep else {}
+        if takes_touch:
+            kw["touch_boxes"] = touch.get(ck, ())
         res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None), **kw)
         mine = {i: list(s.box) for i, s in enumerate(res.strokes)} if res else {}
         theirs = rec_boxes.get(ck, {})

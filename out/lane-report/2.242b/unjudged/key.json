@@ -1,0 +1,80 @@
+[
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 4,
+  "box": [
+   1656.8775,
+   778.975,
+   1692.12,
+   808.39
+  ],
+  "rg": "glyph/4/0/1/2/7",
+  "value": "guessed",
+  "place": [
+   4,
+   0,
+   1,
+   2
+  ],
+  "plate": "brahms",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   1482,
+   633
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "cell": 2,
+   "page_box": [
+    1656.8775,
+    778.975,
+    1692.12,
+    808.39
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 4,
+  "box": [
+   2019.3,
+   2657.275,
+   2056.7,
+   2690.825
+  ],
+  "rg": "glyph/4/0/9/3/0",
+  "value": "guessed",
+  "place": [
+   4,
+   0,
+   9,
+   3
+  ],
+  "plate": "brahms",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1846,
+   2514
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 9,
+   "cell": 3,
+   "page_box": [
+    2019.3,
+    2657.275,
+    2056.7,
+    2690.825
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ }
+]

@@ -1,0 +1,143 @@
+{
+ "flags": [
+  [
+   "OMR_ACCIDENTAL_WHOLE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4
+   ],
+   "counts": {},
+   "hosts": [
+    1497,
+    1497
+   ],
+   "paired": 1497,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    655,
+    655
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 188,
+    "matched": {
+     "off": {
+      "key": 350
+     },
+     "on": {
+      "key": 350
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    4.8,
+    4.8
+   ],
+   "unjudged": {
+    "n": 0,
+    "judged": 0,
+    "no_place": 0,
+    "by_kind": {},
+    "places": []
+   }
+  },
+  "brahms": {
+   "pages": [
+    4,
+    5
+   ],
+   "counts": {
+    "blue": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    2143,
+    2143
+   ],
+   "paired": 2143,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    1106,
+    1106
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 174,
+    "matched": {
+     "off": {
+      "key": 349
+     },
+     "on": {
+      "key": 349
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    8.9,
+    8.8
+   ],
+   "unjudged": {
+    "n": 2,
+    "judged": 0,
+    "no_place": 0,
+    "by_kind": {
+     "blue": 2
+    },
+    "places": [
+     "brahms p4 4/0/1/2  blue lost guessed",
+     "brahms p4 4/0/9/3  blue lost guessed"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_ACCIDENTAL_WHOLE: read in staged/gather.py, staged/stroke_map.py, staged/stroke_owner.py -> GATHER",
+  "NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-overnight-manager-handoff-2df09f/4255687c-65fb-4094-b64a-941b192f6ee6/scratchpad/sample2.json (a development control)",
+  "cells LOADED from master cm-54ccb4729528 (litolff) for both arms",
+  "cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms"
+ ],
+ "tiles": {
+  "n": 2,
+  "cases": 2,
+  "controls": 0
+ },
+ "unjudged_tiles": {
+  "n": 2,
+  "cases": 2,
+  "controls": 0
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1740.8
+}

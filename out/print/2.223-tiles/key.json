@@ -1,0 +1,502 @@
+{
+ "seed": 2223,
+ "pool": {
+  "hairpins": 43,
+  "arcs": 408
+ },
+ "question": "which note does this mark start on and which does it end on?",
+ "tiles": [
+  {
+   "tile": 1,
+   "crop_origin": [
+    1230,
+    1982
+   ],
+   "page": 8,
+   "plate": "brahms",
+   "kind": "hairpin",
+   "what": "crescendo",
+   "mark": "glyph/8/0/5/1/100000",
+   "staff": "staff/8/0/5",
+   "start": "glyph/8/0/5/1/4",
+   "stop": "glyph/8/0/5/1/4",
+   "start_how": "at",
+   "stop_how": "under",
+   "ends": [
+    [
+     1434.0,
+     2213.0
+    ],
+    [
+     1543.0,
+     2213.0
+    ]
+   ],
+   "start_cell": 1,
+   "stop_cell": 1,
+   "start_head_box": [
+    1398.16,
+    2107.16,
+    1438.48,
+    2141.32
+   ],
+   "stop_head_box": [
+    1398.16,
+    2107.16,
+    1438.48,
+    2141.32
+   ]
+  },
+  {
+   "tile": 2,
+   "crop_origin": [
+    1542,
+    6509
+   ],
+   "page": 25,
+   "plate": "brahms",
+   "kind": "arc",
+   "what": "slur",
+   "mark": "glyph/25/1/9/1/1",
+   "staff": "staff/25/1/9",
+   "start": "glyph/25/1/9/1/7",
+   "stop": "glyph/25/1/9/2/0",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     1747,
+     6537.0
+    ],
+    [
+     1955,
+     6546.5
+    ]
+   ],
+   "start_cell": 1,
+   "stop_cell": 2,
+   "start_head_box": [
+    1707.95,
+    6538.825,
+    1745.9,
+    6573.475
+   ],
+   "stop_head_box": [
+    1943.625,
+    6554.775,
+    1980.75,
+    6586.125
+   ]
+  },
+  {
+   "tile": 3,
+   "crop_origin": [
+    1878,
+    5306
+   ],
+   "page": 8,
+   "plate": "brahms",
+   "kind": "hairpin",
+   "what": "diminuendo",
+   "mark": "glyph/8/1/5/3/100001",
+   "staff": "staff/8/1/5",
+   "start": "glyph/8/1/5/3/0",
+   "stop": "glyph/8/1/5/3/5",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     2044.0,
+     5533.0
+    ],
+    [
+     2226.0,
+     5533.0
+    ]
+   ],
+   "start_cell": 3,
+   "stop_cell": 3,
+   "start_head_box": [
+    2043.225,
+    5359.575,
+    2081.725,
+    5393.675
+   ],
+   "stop_head_box": [
+    2194.2,
+    5455.275,
+    2232.975,
+    5489.65
+   ]
+  },
+  {
+   "tile": 4,
+   "crop_origin": [
+    1460,
+    5039
+   ],
+   "page": 0,
+   "plate": "brahms",
+   "kind": "arc",
+   "what": "tie",
+   "mark": "glyph/0/0/9/0/3",
+   "staff": "staff/0/0/9",
+   "start": "glyph/0/0/9/0/7",
+   "stop": "glyph/0/0/9/0/9",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     1677,
+     5073.5
+    ],
+    [
+     1884,
+     5071.5
+    ]
+   ],
+   "start_cell": 0,
+   "stop_cell": 0,
+   "start_head_box": [
+    1653.8046875,
+    5080.064453125,
+    1695.181640625,
+    5118.392578125
+   ],
+   "stop_head_box": [
+    1860.25390625,
+    5081.37109375,
+    1902.06640625,
+    5117.95703125
+   ]
+  },
+  {
+   "tile": 5,
+   "crop_origin": [
+    3054,
+    1982
+   ],
+   "page": 8,
+   "plate": "brahms",
+   "kind": "hairpin",
+   "what": "diminuendo",
+   "mark": "glyph/8/0/5/6/100002",
+   "staff": "staff/8/0/5",
+   "start": "glyph/8/0/5/6/5",
+   "stop": "glyph/8/0/5/6/5",
+   "start_how": "at",
+   "stop_how": "under",
+   "ends": [
+    [
+     3229.0,
+     2216.0
+    ],
+    [
+     3368.0,
+     2216.0
+    ]
+   ],
+   "start_cell": 6,
+   "stop_cell": 6,
+   "start_head_box": [
+    3222.96,
+    2074.4,
+    3262.16,
+    2105.2
+   ],
+   "stop_head_box": [
+    3222.96,
+    2074.4,
+    3262.16,
+    2105.2
+   ]
+  },
+  {
+   "tile": 6,
+   "crop_origin": [
+    3548,
+    1430
+   ],
+   "page": 8,
+   "plate": "brahms",
+   "kind": "arc",
+   "what": "tie",
+   "mark": "glyph/8/0/3/7/17",
+   "staff": "staff/8/0/3",
+   "start": "glyph/8/0/3/7/13",
+   "stop": "glyph/8/0/3/8/7",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     3749,
+     1500.0
+    ],
+    [
+     3903,
+     1501.0
+    ]
+   ],
+   "start_cell": 7,
+   "stop_cell": 8,
+   "start_head_box": [
+    3715.04,
+    1510.8925,
+    3755.8325,
+    1543.915
+   ],
+   "stop_head_box": [
+    3879.505,
+    1508.95,
+    3919.7425,
+    1540.585
+   ]
+  },
+  {
+   "tile": 7,
+   "crop_origin": [
+    925,
+    5952
+   ],
+   "page": 8,
+   "plate": "brahms",
+   "kind": "arc",
+   "what": "tie",
+   "mark": "glyph/8/1/7/0/4",
+   "staff": "staff/8/1/7",
+   "start": "glyph/8/1/7/0/10",
+   "stop": "glyph/8/1/7/1/4",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     1108,
+     6212.0
+    ],
+    [
+     1317,
+     6217.0
+    ]
+   ],
+   "start_cell": 0,
+   "stop_cell": 1,
+   "start_head_box": [
+    1089.421875,
+    6170.9970703125,
+    1127.3525390625,
+    6206.419921875
+   ],
+   "stop_head_box": [
+    1307.4275,
+    6173.475,
+    1343.67,
+    6205.085
+   ]
+  },
+  {
+   "tile": 8,
+   "crop_origin": [
+    3782,
+    6931
+   ],
+   "page": 4,
+   "plate": "brahms",
+   "kind": "arc",
+   "what": "tie",
+   "mark": "glyph/4/1/13/6/4",
+   "staff": "staff/4/1/13",
+   "start": "glyph/4/1/13/6/0",
+   "stop": "glyph/4/1/13/6/1",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     4007,
+     7012.0
+    ],
+    [
+     4185,
+     7020.5
+    ]
+   ],
+   "start_cell": 6,
+   "stop_cell": 6,
+   "start_head_box": [
+    3948.6775,
+    7025.8225,
+    3987.5275,
+    7060.51
+   ],
+   "stop_head_box": [
+    4182.61,
+    7027.21,
+    4221.7375,
+    7060.2325
+   ]
+  },
+  {
+   "tile": 9,
+   "crop_origin": [
+    4244,
+    2013
+   ],
+   "page": 25,
+   "plate": "brahms",
+   "kind": "arc",
+   "what": "tie",
+   "mark": "glyph/25/0/6/7/13",
+   "staff": "staff/25/0/6",
+   "start": "glyph/25/0/6/7/0",
+   "stop": "glyph/25/0/6/8/4",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     4460,
+     2097.0
+    ],
+    [
+     4636,
+     2093.0
+    ]
+   ],
+   "start_cell": 7,
+   "stop_cell": 8,
+   "start_head_box": [
+    4410.5875,
+    2110.0425,
+    4449.4375,
+    2143.62
+   ],
+   "stop_head_box": [
+    4649.075,
+    2109.4875,
+    4687.37,
+    2143.3425
+   ]
+  },
+  {
+   "tile": 10,
+   "crop_origin": [
+    4067,
+    2864
+   ],
+   "page": 14,
+   "plate": "brahms",
+   "kind": "hairpin",
+   "what": "diminuendo",
+   "mark": "glyph/14/0/10/7/100000",
+   "staff": "staff/14/0/10",
+   "start": "glyph/14/0/10/7/6",
+   "stop": "glyph/14/0/10/7/2",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     4231.0,
+     3108.5
+    ],
+    [
+     4492.0,
+     3108.5
+    ]
+   ],
+   "start_cell": 7,
+   "stop_cell": 7,
+   "start_head_box": [
+    4231.24,
+    3020.3925,
+    4267.755,
+    3050.3675
+   ],
+   "stop_head_box": [
+    4451.42,
+    3034.0175,
+    4488.48,
+    3067.8075
+   ]
+  },
+  {
+   "tile": 11,
+   "crop_origin": [
+    873,
+    3342
+   ],
+   "page": 16,
+   "plate": "litolff",
+   "kind": "hairpin",
+   "what": "crescendo",
+   "mark": "glyph/16/1/9/2/100000",
+   "staff": "staff/16/1/9",
+   "start": "glyph/16/1/9/2/4",
+   "stop": "glyph/16/1/9/2/4",
+   "start_how": "at",
+   "stop_how": "under",
+   "ends": [
+    [
+     996.0,
+     3498.5
+    ],
+    [
+     1009.0,
+     3498.5
+    ]
+   ],
+   "start_cell": 2,
+   "stop_cell": 2,
+   "start_head_box": [
+    967.5,
+    3434.8875,
+    989.55,
+    3453.63
+   ],
+   "stop_head_box": [
+    967.5,
+    3434.8875,
+    989.55,
+    3453.63
+   ]
+  },
+  {
+   "tile": 12,
+   "crop_origin": [
+    4978,
+    6931
+   ],
+   "page": 4,
+   "plate": "brahms",
+   "kind": "hairpin",
+   "what": "crescendo",
+   "mark": "glyph/4/1/13/8/100001",
+   "staff": "staff/4/1/13",
+   "start": "glyph/4/1/13/8/1",
+   "stop": "glyph/4/1/13/8/5",
+   "start_how": "at",
+   "stop_how": "at",
+   "ends": [
+    [
+     5181.0,
+     7188.0
+    ],
+    [
+     5411.0,
+     7188.0
+    ]
+   ],
+   "start_cell": 8,
+   "stop_cell": 8,
+   "start_head_box": [
+    5145.475,
+    7121.56,
+    5184.6025,
+    7154.86
+   ],
+   "stop_head_box": [
+    5382.46,
+    7025.8225,
+    5420.2,
+    7061.62
+   ]
+  }
+ ]
+}
