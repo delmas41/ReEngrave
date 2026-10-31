@@ -153,6 +153,60 @@ def split_joins_enabled() -> bool:
     return os.environ.get(SPLIT_JOINS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+# -- ROADMAP 2.242: ONE ACCIDENTAL, ONE PIECE (flag `OMR_ACCIDENTAL_WHOLE`, default ON) --
+#: CAUSE (2.239 r3 capture: 0 of 41 accidentals whole on Sean's Brahms p0 labels): the openings (eraser, vertical / horizontal / remainder)
+#: cut EVERY accidental into 4-6 strokes (stems, bars, bowl) with `OMR_SPLIT_JOINS` off as well -- the same source that cut clefs into ~25
+#: pieces. An accidental is read from its detector box OUTWARD like a clef (`_merge_clefs`): the seed is every piece mostly inside the box, a
+#: piece touching it joins, and no piece joins that is not wholly inside the glyph's SIZE around the box. Sizes are the SMuFL reference glyph
+#: boxes (`glyphBBoxes`, tools/omr/annotate/static/bravura/bravura_metadata.json), width x height in staff spaces; nothing is tuned.
+ACCIDENTAL_WHOLE_ENV = "OMR_ACCIDENTAL_WHOLE"
+ACCIDENTAL_SIZE_SPACES = {
+    "accidentalsharp": (0.996, 2.792), "accidentalflat": (0.904, 2.456), "accidentalnatural": (0.672, 2.704),
+    "accidentaldoublesharp": (0.988, 1.008), "accidentaldoubleflat": (1.644, 2.448),
+    "accidentalnaturalflat": (1.836, 3.096), "accidentalnaturalsharp": (1.924, 2.792),
+}
+#: a piece the detector's box edge and the 1-px scan edge put outside the glyph's box: twice the contact distance on each side (the merge
+#: region itself is the glyph-sized rectangle that holds the box, widened by `CLEF_EDGE_TOL_SPACES` each way)
+ACC_SIZE_TOL_SPACES = 2 * CLEF_EDGE_TOL_SPACES
+#: ONE accidental's most (width, height): the largest of the sized glyphs, the natural-flat / natural-sharp ligature (1.924 x 3.096). Merged ink
+#: larger than this plus the tolerance holds more than one sign (two stacked accidentals in one over-large detector box).
+ACC_ONE_MAX_SPACES = (max(w for w, _h in ACCIDENTAL_SIZE_SPACES.values()), max(h for _w, h in ACCIDENTAL_SIZE_SPACES.values()))
+
+
+#: 2.242 r2 (Sean's tiles 2/7/11/12, 2026-10-31: "Add shape and size"): ONE connected piece inside a detector accidental box is not evidence that
+#: the piece IS an accidental -- a barline's 4 x 6 px scrap, a tremolo slash (19 x 12 px), a stem's tip (5 x 10 px) and a flat's bowl alone were all
+#: "whole". CONVENTION (engraving, a prior): a sharp / natural is ~2.7-2.8 sp tall and a flat ~2.5 (SMuFL `ACCIDENTAL_SIZE_SPACES`), and the glyph's
+#: ink fills most of that. A cut-off tuned on two plates only NARROWS: a piece shorter than this share of its class's glyph height, or narrower than
+#: that share of its width, is NOT whole (left cut / refused, never relabelled). Breitkopf prints ~10% LARGER than the font (the first try, which
+#: trimmed ink to the font size, lost 15 of 21 naturals), so only a LOWER bound is used; the upper bound stays `ACC_ONE_MAX_SPACES`.
+ACC_WHOLE_MIN_H_FRAC = 0.7
+ACC_WHOLE_MIN_W_FRAC = 0.5
+
+
+def accidental_ink_fits(name: str, w_sp: float, h_sp: float) -> Tuple[bool, str]:
+    """(fits, why): does ONE piece of ink of `w_sp` x `h_sp` (local staff spaces) have the size of the `name` accidental glyph? No size known for
+    the class (a `key*` mark, a quarter-tone sign) = fits (nothing to measure it against). Lower bounds only (module note)."""
+    size = accidental_size(name)
+    if size is None:
+        return True, "no_size_for_class"
+    if h_sp < ACC_WHOLE_MIN_H_FRAC * size[1]:
+        return False, "too_short:%.2f_of_%.2f_sp" % (h_sp, size[1])
+    if w_sp < ACC_WHOLE_MIN_W_FRAC * size[0]:
+        return False, "too_narrow:%.2f_of_%.2f_sp" % (w_sp, size[0])
+    return True, "glyph_sized"
+
+
+def accidental_whole_enabled() -> bool:
+    """`OMR_ACCIDENTAL_WHOLE` (ROADMAP 2.242), default ON (Sean 2026-10-31 "Land on", r2 tiles 11/12); an explicit 0/false/no/off disables. Read at GATHER (the stroke map) and at ADJUDICATE (`stroke_owner.shape_fit`)."""
+    return os.environ.get(ACCIDENTAL_WHOLE_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def accidental_size(name: str) -> Optional[Tuple[float, float]]:
+    """The glyph box (width, height) in staff spaces of an `accidental*` detector class; None = not one of the sized signs (a key signature's
+    `key*` mark, a quarter-tone sign): no merge, no size cut."""
+    return ACCIDENTAL_SIZE_SPACES.get(str(name or "").strip().lower())
+
+
 @dataclass
 class Stroke:
     kind: str
@@ -176,6 +230,9 @@ class Stroke:
     end_steps: Optional[Tuple[float, float]] = None   # ends in steps from the TOP line (0) to the bottom (8), local lines
     #: ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the strokes this one was cut from the same fused piece with, and the join -- (ordinal, "head|stem")
     joined_to: List[Tuple[int, str]] = field(default_factory=list)
+    #: ROADMAP 2.242 (`OMR_ACCIDENTAL_WHOLE`): a whole accidental is ONE stroke; the pieces the openings cut it into (stems, bars, bowl) are
+    #: kept here, measured the same way and NOT filed as strokes, because the 2.201 type reading (stem stagger) reads them
+    parts: List["Stroke"] = field(default_factory=list)
 
 
 class LocalStaff:
@@ -794,6 +851,107 @@ def clef_region(box: Sequence[float], family: Optional[str], sp: float) -> Tuple
     return min(a, c - w) - t, min(b, d - h) - t, max(c, a + w) + t, max(d, b + h) + t
 
 
+def sized_region(box: Sequence[float], size_sp: Optional[Tuple[float, float]], sp: float) -> Tuple[float, float, float, float]:
+    """`clef_region`'s rule for any sign of known size (width, height in spaces): every point of every glyph-sized rectangle that still holds
+    `box`, widened by the box-edge tolerance; no size = the box itself plus that tolerance."""
+    a, b, c, d = (float(v) for v in box[:4])
+    t = CLEF_EDGE_TOL_SPACES * sp
+    if not size_sp:
+        return a - t, b - t, c + t, d + t
+    w, h = size_sp[0] * sp, size_sp[1] * sp
+    return min(a, c - w) - t, min(b, d - h) - t, max(c, a + w) + t, max(d, b + h) + t
+
+
+def merge_accidentals(pieces: List[Tuple[str, np.ndarray, int, int]], joins: List[Tuple[int, int, str]], sp: float,
+                      acc_boxes: Sequence[Tuple[Tuple[float, float, float, float], str]],
+                      exclude: Sequence[Tuple[float, float, float, float]], refused: Dict[str, int]
+                      ) -> Tuple[List[Tuple[str, np.ndarray, int, int]], List[Tuple[int, int, str]], Dict[int, List[Tuple[str, np.ndarray, int, int]]]]:
+    """2.242: the pieces the openings cut an accidental into, put back as ONE stroke (kind `blob`: a glyph's ink, not a line) holding all of its
+    ink. Read from the detector box OUTWARD, as `_merge_clefs` reads a clef: the seed is every piece mostly inside the box; a piece touching
+    the growing mark (`CLEF_CONTACT_PX`) joins it; no piece joins that does not lie wholly inside the glyph's size around the box
+    (`sized_region`). A piece mostly inside a box in `exclude` (a head, ledger line or stem detector box, a clef / key / meter box) is never
+    the accidental's: a head, stem, ledger rung, beam or flag is never joined, and a box standing on a head's ink (a false accidental box)
+    merges nothing. Run AFTER the touch cut, which already separated accidental|head and accidental|ledger contacts from the accidental's
+    side. Returns (pieces, joins re-numbered, {new piece index: the pieces it was made of})."""
+    import cv2
+    k3 = np.ones((3, 3), np.uint8)
+    used: set = set()
+    groups: List[List[int]] = []
+    for box, name in acc_boxes:
+        size = accidental_size(name)
+        if size is None:
+            continue
+        rx0, ry0, rx1, ry1 = sized_region(box, size, sp)
+        fits = [pi for pi, (_k, m, x0, y0) in enumerate(pieces)
+                if pi not in used and not (exclude and _inside_share(m, x0, y0, exclude) >= 0.5)
+                and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5]
+        seed = [pi for pi in fits if _inside_share(pieces[pi][1], pieces[pi][2], pieces[pi][3], [box[:4]]) >= 0.5]
+        if not seed:
+            continue
+        X0, Y0 = int(np.floor(rx0)) - 1, int(np.floor(ry0)) - 1
+        X1, Y1 = int(np.ceil(rx1)) + 2, int(np.ceil(ry1)) + 2
+        canvas = np.zeros((max(1, Y1 - Y0), max(1, X1 - X0)), bool)
+
+        def paint(pi):
+            _k, m, x0, y0 = pieces[pi]
+            canvas[y0 - Y0:y0 - Y0 + m.shape[0], x0 - X0:x0 - X0 + m.shape[1]] |= m
+        for pi in seed:
+            paint(pi)
+        mine = list(seed)
+        rest = [pi for pi in fits if pi not in seed]
+        while rest:
+            near = cv2.dilate(canvas.astype(np.uint8), k3, iterations=CLEF_CONTACT_PX).astype(bool)
+            add = [pi for pi in rest if (near[pieces[pi][3] - Y0:pieces[pi][3] - Y0 + pieces[pi][1].shape[0],
+                                              pieces[pi][2] - X0:pieces[pi][2] - X0 + pieces[pi][1].shape[1]] & pieces[pi][1]).any()]
+            if not add:
+                break
+            for pi in add:
+                paint(pi)
+                mine.append(pi)
+            rest = [pi for pi in rest if pi not in add]
+        if len(mine) > 1:
+            ys, xs = np.nonzero(canvas)
+            gw, gh = (xs.max() - xs.min() + 1) / sp, (ys.max() - ys.min() + 1) / sp
+            if gw > ACC_ONE_MAX_SPACES[0] + ACC_SIZE_TOL_SPACES or gh > ACC_ONE_MAX_SPACES[1] + ACC_SIZE_TOL_SPACES:
+                # an over-large box (the detector's twin boxes reach 4.8 sp round TWO stacked accidentals) holds more ink than ONE accidental:
+                # the pieces stay as the openings cut them (rule 6: where the box cannot say where one mark stops, nothing is joined)
+                refused["accidental_more_than_one_glyph"] = refused.get("accidental_more_than_one_glyph", 0) + 1
+                continue
+            if not accidental_ink_fits(name, gw, gh)[0]:
+                # 2.242 r2: the pieces together are still too small for this sign (a flat's bowl, a bar): not a whole accidental, they stay cut
+                refused["accidental_not_glyph_sized"] = refused.get("accidental_not_glyph_sized", 0) + 1
+                continue
+            groups.append(sorted(mine))
+        used.update(mine)
+    if not groups:
+        return pieces, joins, {}
+    first = {g[0]: g for g in groups}
+    taken = {i for g in groups for i in g}
+    out: List[Tuple[str, np.ndarray, int, int]] = []
+    where: Dict[int, int] = {}
+    parts_of: Dict[int, List[Tuple[str, np.ndarray, int, int]]] = {}
+    for pi, pc in enumerate(pieces):
+        if pi in first:
+            parts = [pieces[i] for i in first[pi]]
+            X0 = min(p[2] for p in parts)
+            Y0 = min(p[3] for p in parts)
+            X1 = max(p[2] + p[1].shape[1] for p in parts)
+            Y1 = max(p[3] + p[1].shape[0] for p in parts)
+            u = np.zeros((Y1 - Y0, X1 - X0), bool)
+            for _k, m, x0, y0 in parts:
+                u[y0 - Y0:y0 - Y0 + m.shape[0], x0 - X0:x0 - X0 + m.shape[1]] |= m
+            for i in first[pi]:
+                where[i] = len(out)
+            parts_of[len(out)] = parts
+            out.append(("blob", u, X0, Y0))
+            refused["accidental_pieces_joined"] = refused.get("accidental_pieces_joined", 0) + len(parts) - 1
+        elif pi not in taken:
+            where[pi] = len(out)
+            out.append(pc)
+    new_joins = [(where[a], where[b], j) for a, b, j in joins if where[a] != where[b]]
+    return out, new_joins, parts_of
+
+
 def _merge_clefs(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink: np.ndarray,
                  clef_boxes: Sequence[Tuple[Tuple[float, float, float, float], Optional[str]]], refused: Dict[str, int],
                  others: Sequence[Tuple[float, float, float, float]] = ()) -> List[Tuple[str, np.ndarray, int, int]]:
@@ -1178,19 +1336,32 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
         pieces.append(("curve" if curve else "blob", rlab[y:y + h, x:x + w] == i, x, y))
     joins: List[Tuple[int, int, str]] = []
     refused: Dict[str, int] = {}
+    acc_parts: Dict[int, List[Tuple[str, np.ndarray, int, int]]] = {}
     if split_joins if split_joins is not None else split_joins_enabled():
         kw = [tuple(float(v) * scale for v in r[:4]) for r in keep_whole]      # canonical (x0, y0, x1, y1) -> reduced
         clefs = [(tuple(float(v) * scale for v in r[:4]), (str(r[4]).split(":") + [None])[1])          # 2.239 r3: [.., "clef:G"]
                  for r in keep_whole if len(r) > 4 and str(r[4]).startswith("clef")]
         tb = [(str(r[0]), tuple(float(v) * scale for v in r[1:5])) for r in touch_boxes]                    # 2.239 r3: [family, x0..y1]
         pieces, joins, refused = split_pieces(pieces, sp, ink, kw, clefs, tb)
+        if accidental_whole_enabled():                  # 2.242: an accidental the openings cut up is ONE stroke again (after the touch cut)
+            accs = [(tuple(float(v) * scale for v in r[1:5]), str(r[5])) for r in touch_boxes if r[0] == TOUCH_ACC_FAMILY and len(r) > 5]
+            excl = [tuple(float(v) * scale for v in r[1:5]) for r in touch_boxes if r[0] in TOUCH_OTHER_FAMILIES] + kw
+            pieces, joins, acc_parts = merge_accidentals(pieces, joins, sp, accs, excl, refused)
 
     staff = LocalStaff(_reduce_float(raw, scale) if raw is not None else None,
                        [y * scale for y in nominal_lines_canonical], sp)
     restore = THICKNESS_FROM_UNERASED and raw is not None and raw.ndim == 2 and raw.shape == erased.shape
 
     built: List[Tuple[Tuple[int, int, int, int], Stroke, np.ndarray, int, int, int]] = []
-    for pidx, (kind, m, x0, y0) in enumerate(pieces):
+    n_pieces = len(pieces)
+    part_of: List[int] = []                      # 2.242: the pieces a whole accidental was made of are measured like any piece, then kept as its `parts`
+    all_pieces = list(pieces)
+    for parent, plist in acc_parts.items():
+        for pc in plist:
+            all_pieces.append(pc)
+            part_of.append(parent)
+    parts_by_parent: Dict[int, List[Stroke]] = {}
+    for pidx, (kind, m, x0, y0) in enumerate(all_pieces):
         h, w = m.shape
         mm = _measure(m, x0, y0)
         if restore and kind in ("horizontal", "curve") and abs(math.cos(mm["theta"])) >= abs(math.sin(mm["theta"])):
@@ -1219,7 +1390,13 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             lines_left=[int(round(v * inv)) for v in staff.lines_at(x0)],
             lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w)],
             staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]))
-        built.append((box, st, m, x0, y0, pidx))
+        if pidx >= n_pieces:
+            parts_by_parent.setdefault(part_of[pidx - n_pieces], []).append(st)
+        else:
+            built.append((box, st, m, x0, y0, pidx))
+    for r in built:
+        if r[5] in parts_by_parent:
+            r[1].parts = parts_by_parent[r[5]]
 
     built.sort(key=lambda r: (r[0][0], r[0][1], KINDS.index(r[1].kind)))
     k3 = np.ones((3, 3), np.uint8)       # contact = within 2 px: the remainder was cut 1 px clear of the openings

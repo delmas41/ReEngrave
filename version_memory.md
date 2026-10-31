@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.242 LANDED ON: one accidental, one piece (OMR_ACCIDENTAL_WHOLE)
+STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits`; `stroke_owner.accidental_yields`, `accidental_not_whole`), deny-list default ON (Sean "Land on"). Brahms p0 accidentals whole 0 -> 30/41; Sean's r2 tiles 11/12; judged right->wrong 0; Brahms file -1 accidental at an unjudged place. `test_stroke_owner_2_205` contest re-pinned to the flag OFF (the floor gives the eighth-rest bulb to the rest) plus a test of the ON case. Lane 2.247 (accidental kind by shape, Opus) started the same hour.
+
 ## 2026-10-31 -- tile answers, two rulings, four lanes (manager session; docs and answers only on main)
 - Recorded Sean's answers, with DECISIONS lines and `judged build`:
   - **2.240 step 2 kinds** (1b7033821): 9/12 are the ledger's kind; tiles 2, 9 and 12 are wrong-kind boxes from GATHER.
@@ -62,6 +65,9 @@ measurement; this file is the WHEN and WHAT of each commit.
   - arc b4057 relabelled slur -> tie (Sean);
   - Sean: "A tie carries an accidental even across a bar line."
 - Process review (docs/plan-2026-10-30-later-stages-catch-up.md). Sean: never undo a GATHER change, rework the later stages; keep scope on sources and always say why. Up to 5 lanes ran for a while that afternoon.
+## 2026-10-31 -- 2.242 one accidental, one piece (branch lane-2.242-accidental-whole, not landed)
+`stroke_map.merge_accidentals` (flag `OMR_ACCIDENTAL_WHOLE`, default OFF) puts an accidental the openings cut into 4-6 strokes back as one stroke (from its box outward, SMuFL size, never a head / ledger / stem; not more than one accidental); `stroke_owner.accidental_yields` makes an accidental yield a head-body blob a head box covers and flag ink hanging from a long stem (2.241 tiles 10 and 3). Brahms p0 accidentals whole 0 -> 30 of 41, 2.201 type control no loss, judged right->wrong 0. `claim_order` re-cut now passes the touch boxes. Cause and lessons: benchmarks/capture-readout-2026-10/FINDINGS.md 2.242.
+
 
 ## 2026-10-30 -- hand truth aligned to the master cell map (branch hand-truth-master-align, not merged)
 `tools/omr/hand_truth/align.py` (`python3 -m tools.omr.hand_truth.align [--check|--report|--control]`) writes the DERIVED `data/hand-truth/aligned/<edition>/<page>.<master>.json`: for every labelled box, the master cell (page, system, staff-in-system, cell) that holds its page rect, and why the old `cell_id` disagrees (label-only margin/top/bottom cell; spans-cells; frame-changed). Sean's page files are untouched. Brahms p0 vs cm-2d494f8fc055: all 112 measure cells and 14 staves identical to the master; 44 of 1566 boxes were filed under another cell (28 margin/top, 16 spans). `score.py` keys the frame control and the notehead rows by the master cell when given the file (`--aligned auto`); `--check` fails on a stale label or master, `--control` moves one master barline and must fail. INVENTORY.json regenerated (it was stale on main).

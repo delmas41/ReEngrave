@@ -201,12 +201,20 @@ class TestAContestedStroke(unittest.TestCase):
     BULB = ink(0, "blob", (300, 400, 50, 60), 0.6, 0.3, area=0.25)
 
     def test_two_families_whose_shapes_both_fit_ABSTAIN_and_are_counted_RED(self):
-        own = SO.own_strokes([self.BULB], [claim("a", "accidentalDoubleSharp", covers=(0,)), claim("r", "rest8th", covers=(0,))])
+        # 2.242's size floor (OMR_ACCIDENTAL_WHOLE, ON since 2026-10-31) refuses a 0.6 x 0.3 sp blob as an accidental, so the
+        # contest is only reachable with it off; with it on the rest decides (next test).
+        with mock.patch.dict(os.environ, {"OMR_ACCIDENTAL_WHOLE": "0"}):
+            own = SO.own_strokes([self.BULB], [claim("a", "accidentalDoubleSharp", covers=(0,)), claim("r", "rest8th", covers=(0,))])
         self.assertEqual(own[0].state, "contested")
         self.assertIsNone(own[0].family)
         self.assertEqual([c["family"] for c in own[0].candidates], ["accidental", "rest"])     # claim order kept
         self.assertTrue(own[0].claimed)                    # no consumer may read it as a witness
         self.assertEqual(SO.census(own)["contested"], 1)
+
+    def test_with_the_size_floor_a_bulb_too_small_for_any_accidental_is_the_rests(self):
+        with mock.patch.dict(os.environ, {"OMR_ACCIDENTAL_WHOLE": "1"}):
+            own = SO.own_strokes([self.BULB], [claim("a", "accidentalDoubleSharp", covers=(0,)), claim("r", "rest8th", covers=(0,))])
+        self.assertEqual((own[0].state, own[0].family), ("decided", "rest"))
 
     def test_TWIN_one_claimant_decides(self):
         own = SO.own_strokes([self.BULB], [claim("r", "rest8th", covers=(0,))])
