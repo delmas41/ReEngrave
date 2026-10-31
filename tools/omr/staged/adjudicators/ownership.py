@@ -4278,7 +4278,9 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
                    Q.KEYSIG_MARKER,
                    # ROADMAP 2.187b: `header.marker_run_members` judges the run's markers against the fixed order for THIS staff's clef
-                   Q.CLEF),
+                   Q.CLEF,
+                   # ROADMAP 2.238 (`OMR_OWNER_SHAPE`): the reworked stroke owner's box verdict -- `stroke_owner.box_says`
+                   Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ THREE VERDICTS BESIDE THE FOUR GATHER ROWS, added when 2.7 was
     # MERGED onto the tree that had grown them overnight (2026-09-27). Each is
@@ -4289,13 +4291,13 @@ _ACC_AMBIGUOUS_MARGIN_POSITIONS = 0.5
            Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
            Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER,
-           Q.KEYSIG_MARKER, Q.REST_IS_NOT_A_REST, Q.CLEF),
+           Q.KEYSIG_MARKER, Q.REST_IS_NOT_A_REST, Q.CLEF, Q.STROKE_OWNER),
     subjects_from=Q.ACCIDENTAL_STAFF_POSITION,
     reasons=("immediately_right_same_position", "ambiguous_height",
              "no_candidate", "no_unit", "no_evidence",
              "refused_not_an_accidental", "is_a_key_signature_marker",
              "head_belongs_to_a_nearer_staff", "owned_by_another_staff",
-             "ownership_undecided", "one_ink_absorbed", "on_a_rest"),
+             "ownership_undecided", "one_ink_absorbed", "on_a_rest", "owner_refused"),
     checked_by=(
         "L32: an accidental stands BEFORE its note, at the same staff "
         "position -- SIDE and HEIGHT, two constraints and not one",
@@ -4479,7 +4481,20 @@ def adjudicate_accidental_owner(ev: Evidence) -> Ruling:
     # (IoU >= `ON_REST_IOU`) is refused -- it owns no head -- unless its own ink is accidental-shaped, of the shape its class names (2.190's reader).
     # Never deletes the rest (it is not touched); never refuses an accidental that merely touches a rest (the overlap must be one ink). Where the
     # shape cannot tell, the accidental is NOT applied and the refusal records why (counted: reason `on_a_rest`), never a silent drop.
-    if _acc_shape.on_rest_enabled() and str(detail.get("detector_class") or "").lower() in _acc_shape.ON_REST_CLASSES:
+    # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default ON): the reworked stroke owner (2.192's shape test moved into it as a veto) decides ONCE:
+    # refused -> not applied (`owner_refused`, counted); owns -> the 2.192 test below does not decide; contested / silent -> it decides as
+    # before (the owner cannot tell; rule 8).
+    from . import stroke_owner as _stroke_owner
+    owner_says, owner_lost, owner_vid = _stroke_owner.box_says(
+        ev, ev.subject.to_key(), ev.verdict(Q.STROKE_OWNER, subject=ev.subject.at(Kind.CELL)) if _stroke_owner.SO.owner_shape_enabled() else None)
+    if owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "acc_on_a_rest":
+        return Ruling.abstain("on_a_rest", alteration=alteration, detector_class=detail.get("detector_class"), lost=owner_lost,
+                              owner=owner_vid, decided_by="stroke_owner")
+    if owner_says == "refused":
+        return Ruling.abstain("owner_refused", alteration=alteration, detector_class=detail.get("detector_class"), lost=owner_lost,
+                              owner=owner_vid)
+    if _acc_shape.on_rest_enabled() and str(detail.get("detector_class") or "").lower() in _acc_shape.ON_REST_CLASSES \
+            and owner_says != "owns":
         mine = ev.rows(Q.GLYPH_BOX)
         if mine and isinstance(mine[-1].value, (list, tuple)) and len(mine[-1].value) >= 5:
             cellsub = ev.subject.at(Kind.CELL)
