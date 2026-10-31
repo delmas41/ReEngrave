@@ -58,6 +58,17 @@ class NotLedger(unittest.TestCase):
         self.assertTrue(all(w == "arc_ink" for _y, w in det1["not_ledger_dropped"]))
 
 
+class WideHeadBox(unittest.TestCase):
+    def test_a_head_box_three_spaces_wide_is_not_one_head_and_gets_no_owner(self):
+        wide = (480, 145, 480 + 52, 155)                     # 5.2 sp wide (staff spacing 10): a slur boxed as a head (s2 tile 12)
+        r = PO.mark_owner("head", [M_A], wide, FRAMES, Rows(_ledger(M_A, B)))
+        self.assertEqual((r["status"], r["owner"], r["reason"]), ("abstain", None, "owner_box_not_one_head"))
+
+    def test_CONTROL_a_normal_head_box_still_gets_its_owner(self):
+        r = PO.mark_owner("head", [M_A], (500, 175, 512, 185), FRAMES, Rows(_ledger(M_A, B)))
+        self.assertEqual((r["status"], r["owner"]), ("decided", B))
+
+
 class Hairpin(unittest.TestCase):
     HP = [[400.0, 168.0, 600.0, 192.0]]                      # a hairpin between the staves, x 400..600, rows 168..192
 

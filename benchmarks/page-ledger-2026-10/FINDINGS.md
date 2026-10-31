@@ -175,3 +175,54 @@ is it the full staff's in the picture or another's.
 **Open.** Sean's 12 tiles; a consumer for `Q.PAGE_SPAN` (stroke_owner tier 0 -- fenced this round); the 23 `distance` and 45 `range_veto`
 disagreements (tiles before step 3); 2,570 Brahms arc boxes no trace followed (the detector's arc class on staff lines, step 1's crops 4-5);
 GUESSED never fires on the sample, so the both-staves path is proved only by its control.
+
+## Step 2, round 2 -- Sean's tiles answered (lane-2.240-s2-owner; STAGED GATHER, flags OFF)
+**Cause and process lesson.** Tile 11 (Litolff p4, a head that belongs to the staff BELOW) was NOT "a staff's own line read as a ledger": the one rung
+the upper staff's reading counted (row 2392.5, one space under it) is a SLUR's ink -- the curve `gather_system_arcs` traced from the lower staff's
+crop (`Q.SYSTEM_ARC` trace rows 2389-2393 at x 1111) -- and the head's own line (the lower staff's ledger) completed the chain. The ledger reader
+asks "is there ink on a ledger row?", and an arc on that row is ink. The manager's hypothesis (a staff line) is real too, but elsewhere: of 1,757
+Brahms owner-ledger rows (pp. 4,5) 554 dropped a rung, 768 rungs that were ANOTHER staff's own line and 111 that were arc ink; of 2,434 Litolff
+rows (pp. 2,4,6,16) 428 dropped 467 other-staff-line and 59 arc-ink rungs. Lesson: a ledger reading is evidence only on ink nothing else owns;
+the arcs were traced (2.166) before the ledger reader ran and nothing consulted them. Second lesson (process): a Litolff re-gather of fewer than
+~16 pages reads NO far head (`no_page_shape`: the pool of 8 clean on-line heads is reached only by page 16's own 9), so the 2-page lane-report
+sample cannot see a Litolff ledger change at all; tile 11 was reachable only through a gather of pages 2,4,6,16 (page 16 releases the held pages).
+
+**Built** (OMR_PAGE_OWNER, OFF): (1) `far_head_reader.read_absolute_position / FarHeadPage.read / far_head_owner.read_toward` take an optional
+`not_ledger(y)`; `page_owner.not_ledger_maker` says `other_staff_line` (within the page line thickness of another staff's line, per-bar grid at the
+head's x) or `arc_ink` (inside a traced arc's rows at a column within 3 px of the head); `gather._file_owner_ledger_readings` re-reads each candidate
+with it ONLY when the flag is on and files the dropped rungs and the unfiltered reading on the same row (`not_ledger_dropped`, `unfiltered_pos`).
+The exported position reading (`Q.FAR_HEAD_LEDGER_POSITION`) is untouched. (2) `arc_owner`: an arc takes the staff its END HEADS are owned by
+(heads in `arcs_system`'s own end window, on the side the curve's notes lie; an arc is over its notes); ends naming two staves abstain
+(`ends_disagree`), no end heads abstain (`no_end_heads`), an unowned end head abstains, one end only is GUESSED (`one_end`). Binding arcs to notes
+is 2.223's (branch lane-2.223-anchoring, unmerged, `bind_curve`); only the owner's part was built here, its own staff never an input. (3) the
+hairpin witness (Sean 2026-10-31): a READ hairpin between two staves over the head's x, head wholly above/below its rows and inside the stretch of
+the two staves round it -> upper / lower staff; names a head ledger+stem named nobody (`hairpin`); agrees (`+hairpin`); disagrees -> GUESSED with both
+staves (`hairpin_disagrees`), the ledger/stem owner kept. (4) from the 2.245 hand-off: a head box >= 3.0 sp wide is not one head -> abstain
+`owner_box_not_one_head` (the constant of `box_kind.HEAD_BOX_MAX_W_SP`, restated: that branch is unmerged). NOT done: building page marks only
+from boxes ADJUDICATE has not refused -- GATHER runs before ADJUDICATE and decides nothing, so the filter belongs to the consumer (step 3: owner
+row + the refusal verdict by place), not to `gather_page_marks`.
+
+**Numbers** (`s3/measure.py`, `s3/measure_*.json`; O = OFF rows, F = ON rows, H = F + hairpin witness; master cells).
+- Tile answers: tile 11's head now decided `staff/4/1/2` (the lower staff), reason `stem` (its upper reading lost the slur rung; fresh gather: the
+  unfiltered upper reading did not fit either, so this is shown by the rung list, not by a flip); tile 5's arc -> `staff/6/1/3` (above) GUESSED
+  `one_end`; tile 8's arc -> `staff/5/1/12` (below) decided `ends_agree` -- all three as Sean answered; tile 12 (a 5.2 sp 'head' on a slur) -> abstain
+  `owner_box_not_one_head`. `s3/check_arcs.py`.
+- Owners changed by the ledger filter: Brahms pp. 4,5: 8 owner-ledger readings changed, 1 head owner (`glyph/4/0/10/5/5` abstain -> ledger; the other
+  two changes in the first count were tile 12's box and a non-head mark); Litolff pp. 2,4,6,16: 3 readings changed, 0 head owners. Hairpin witness:
+  0 head marks on all 17 sample pages -- every head in a hairpin's x span is inside a staff's band (rule 1 decides; `s3/hairpin_diag.py`). Its first
+  version (no locality) disagreed on 9 Brahms heads: all were far from the hairpin (a head of the top staff against a hairpin 12 staves down) -- the
+  rule must be local, and now is (test).
+- Arc owners (all 17 sample pages, slices): Litolff 535 arcs: 303 decided `ends_agree`, 148 GUESSED `one_end`, 84 abstain; owner on a staff the arc was
+  not traced from 25. Brahms 948: 624 / 275 / 49; 73 on another staff.
+- Old rules vs owner (`s3/compare_written.log`, full pipeline ON, Brahms pp. 4,5 / Litolff 2,4): `glyph_owner:distance` disagrees 13 / 11 (was 12 / 11),
+  `range_veto` disagrees 45 (was 45), `owned_by_another_staff` agrees 367 / 254. The filter and the hairpin move neither number: step 3 cannot yet
+  retire `distance` or `range_veto`.
+- Lane report (3 measures; `s3/lane_report.log`): exported file NOTHING CHANGED (Litolff 1,497, Brahms 2,143 paired); judged right->wrong 0 (188 / 174
+  tiles), unwritten->wrong 0.
+- Sean's 12 new tiles: `out/print/2.240-s3-tiles/` (key.json beside the folder): the places of s2 tiles 5, 8, 11, four more arcs on a staff they were
+  not traced from, three `ledger_over_stem`, the one filter-decided head, one control.
+- Shared box: the big-record lock `library/_shared-records/.record-load.lock` was stale from 09:34 to 10:43 and stalled three lanes; I removed
+  the empty directory.
+**Open.** Sean's 12 tiles; the `one_end` GUESSED arcs (a third of all) -- a window question for 2.223; `arc_ink` can drop a REAL ledger an arc
+passes over (Litolff p4 bar 3: the lower staff's own ledger at 2433.5 was dropped as arc ink; the head still has its stem) -- tile it before step 3;
+page marks from unrefused boxes (step 3).

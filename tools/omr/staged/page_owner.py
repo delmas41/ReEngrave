@@ -78,6 +78,9 @@ NOT_LEDGER_COLS = 3
 #: an arc's END looks for the heads it binds within the window `arcs_system.anchor_ends` already uses for an end's head (outward /
 #: inward along x, and the rows either side), measured in the head's staff spaces; a head on the wrong side of the curve is no candidate
 #: (an arc is OVER its notes, page-facts: a cap's notes lie below its ends, a cup's above)
+#: a head-class box this many staff spaces wide or wider is not ONE head (2.245 `box_kind.head_box_misfit`, `HEAD_BOX_MAX_W_SP`, unmerged branch
+#: lane-2.245-wrong-kind: the same number, restated here so this lane does not import an unmerged module; use its function once it lands)
+HEAD_BOX_MAX_W_SP = 3.0
 FAMILY_HEAD = "head"
 SPAN_FAMILIES = ("arc", "hairpin")
 
@@ -314,6 +317,11 @@ def mark_owner(family: Optional[str], members: Sequence[str], box: Sequence[floa
         return {"status": status, "owner": owner, "reason": reason, "candidates": cands or ([owner] if owner else []),
                 "witnesses": wit, "seen_from": seen_from}
 
+    if family == FAMILY_HEAD:
+        bar0 = lines_at(frames, seen_from[0], cx)
+        if bar0 is not None and bar0.sp > 0 and (float(box[2]) - float(box[0])) / bar0.sp >= HEAD_BOX_MAX_W_SP:
+            wit["width_sp"] = round((float(box[2]) - float(box[0])) / bar0.sp, 2)
+            return out("abstain", None, "owner_box_not_one_head", [])       # not one head: a slur / beam boxed as a notehead (2.245)
     if len(inside) == 1:
         return out("decided", inside[0], "inside_staff")
     if len(inside) > 1:

@@ -71,20 +71,19 @@ def main():
         b = s2[t]["span"]["box"]
         add(next((p for p in pool if p["kind"] == "arc" and p["page"] == s2[t]["page"] and overlap(p["span"]["box"], b) > 0.5), None), "place of s2 tile %d" % t)
     rnd = random.Random(2403)
-    hd = [p for p in pool if p["kind"] == "owner" and p["reason"] == "hairpin_disagrees"]
-    rnd.shuffle(hd)
-    for p in hd[:3]:
-        add(p, "hairpin disagrees with ledger/stem")
-    ch = [p for p in pool if p["kind"] == "owner" and p["changed"] and p["reason"] != "hairpin_disagrees"]
-    rnd.shuffle(ch)
-    for p in ch[:3]:
-        add(p, "head owner changed (filter / hairpin)")
+    add(next((p for p in pool if p["kind"] == "owner" and "glyph/4/0/10/5/5" in p["members"]), None), "owner newly decided by the filtered ledger evidence")
+    for p in [p for p in pool if p["kind"] == "owner" and p["reason"] in ("hairpin_disagrees", "hairpin")][:3]:
+        add(p, "hairpin witness")
     arcs = [p for p in pool if p["kind"] == "arc" and p["differs"]]
     rnd.shuffle(arcs)
     for p in arcs:
-        if len(chosen) >= 9:
+        if len(chosen) >= 8:
             break
         add(p, "arc owner not a staff it was traced from")
+    los = [p for p in pool if p["kind"] == "owner" and p["reason"] == "ledger_over_stem"]
+    rnd.shuffle(los)
+    for p in los[:3]:
+        add(p, "ledger over stem (decided plain, Sean 10-28)")
     rest = [p for p in pool if p["kind"] == "arc" and not p["differs"]] + [p for p in pool if p["kind"] == "owner" and not p["changed"]]
     rnd.shuffle(rest)
     for p in rest:

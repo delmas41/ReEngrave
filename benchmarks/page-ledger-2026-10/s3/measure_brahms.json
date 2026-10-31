@@ -9649,48 +9649,27 @@
     "staff/4/0/10",
     "staff/4/0/11"
    ]
-  },
-  {
-   "key": "glyph/5/0/4/4/15",
-   "page": 5,
-   "before": [
-    "decided",
-    "staff/5/0/4",
-    "ledger_over_stem"
-   ],
-   "after": [
-    "decided",
-    "staff/5/0/3",
-    "stem"
-   ],
-   "box": [
-    3511.80859375,
-    1418.89453125,
-    3654.77734375,
-    1461.08203125
-   ],
-   "seen_from": [
-    "staff/5/0/4"
-   ]
   }
  ],
  "owners_changed_by_hairpin": [],
  "heads": 1625,
  "head_status_O": {
-  "decided:inside_staff": 1224,
+  "decided:inside_staff": 1223,
   "decided:ledger_and_stem": 304,
   "decided:ledger": 49,
   "abstain:owner_no_rungs": 27,
   "decided:stem": 19,
-  "decided:ledger_over_stem": 2
+  "decided:ledger_over_stem": 1,
+  "abstain:owner_box_not_one_head": 2
  },
  "head_status_H": {
-  "decided:inside_staff": 1224,
+  "decided:inside_staff": 1223,
   "decided:ledger_and_stem": 306,
   "decided:ledger": 50,
   "abstain:owner_no_rungs": 26,
-  "decided:stem": 18,
-  "decided:ledger_over_stem": 1
+  "decided:stem": 17,
+  "decided:ledger_over_stem": 1,
+  "abstain:owner_box_not_one_head": 2
  },
  "hairpin_disagreements": [],
  "arcs": {
