@@ -408,9 +408,18 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",
+    # ROADMAP 2.244. The combined lane run: base / each flag alone / all through `lane_report`'s arm worker; files no row,
+    # names no quantity, decides nothing.
+    "one_test.py",
     # ROADMAP 2.231. The master cell map: freezes / loads / compares what `pipeline.prepare_pages` cut (before GATHER);
     # files no row, names no quantity, decides nothing.
     "cell_map.py",
+    # ROADMAP 2.236. The capture readout: re-runs `stroke_owner` over saved GATHER rows and counts page ink by claim state;
+    # files no row, names no quantity it writes, decides nothing.
+    "claim_readout.py",
+    # ROADMAP 2.241. The claim-order check beside the capture readout: reads the same claims and asks whether the earliest READ layer
+    # owns each piece of ink; files no row, names no quantity, decides nothing.
+    "claim_order.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a

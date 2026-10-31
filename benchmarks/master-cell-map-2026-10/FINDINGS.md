@@ -39,3 +39,6 @@ Lesson: "same pages, same tree apart from the change" was enforced for tree and 
 
 ## How to use it
 `docs/running.md` §2b. A lane not about cells: `lane_report ... --from gather --cell-map master`; a lane about cells: `cell_map moved|verify PDF --pages ...`; after a staff/barline change lands: `cell_map build PDF --pages ... --force` then `cell_map against-record PDF REC`.
+
+## 2026-10-30 rebuild: Brahms master cm-2d494f8fc055 -> cm-3ccd049d7c3c (deliberate, after 2.239 landed)
+2.239's landing fix reads the bracket inside the one page-wide pass, so the left-edge reading stored in a master's `system_structure` changed. `cell_map moved` before the rebuild: Litolff 1-16 NOTHING MOVED (master cm-54ccb4729528 kept); Brahms 0-26 22 differences, every one a system's stored left-edge reading -- every barline column x list and every cell box and staff line identical. Rebuilt on main 269d5177a: cm-3ccd049d7c3c, `verify` fresh cut == master. The previous maps are kept at library/_shared-records/cell-maps-backup-cm-54cc-2d49.

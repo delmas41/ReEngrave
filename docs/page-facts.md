@@ -107,6 +107,7 @@ machine-readable form.
   become tuplet notes, quarters or eighths alike. A tuplet is never inferred
   from the arithmetic, and a bar that would only add up under an unmarked
   tuplet gives no confirmation (Sean, 2026-10-13).
+- **Arcs and hairpins are READ PAGE-WIDE** (Sean, 2026-10-30: *"the actual symbols reach past cell and should be read page wide."*; scope: general): a slur, tie or hairpin runs past its bar and its staff's padded crop, so the page-wide pass reads and claims each one whole; a detector box in a cell is only a witness to it, never the mark (ROADMAP 2.240; plan-2026-10-28-page-claim-order §10).
 - An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two heads
   are at one staff position (empty interval 0.168 vs 0.435 spaces,
   `benchmarks/omr-arc-grammar-2026-09/FINDINGS.md`). Of two stacked arcs
@@ -114,10 +115,14 @@ machine-readable form.
   tie between 2 notes on the same beat"* (Sean, 2026-10-02; scope: general):
   a tie's heads are at different onsets.
 - **A tie joins exactly TWO ADJACENT notes of the SAME pitch; anything else is a slur** (Sean, 2026-10-29: *"a tie only ever happens between 2 adjacent notes of the same pitch. Different pitch or spanning multiple notes is always slur. When there are multiple arcs the tie is always closer to the staff than the slur."*; scope: general engraving). So the arc KIND follows from its two end heads once they are read: same pitch and adjacent -> tie; different pitch, or more than two notes under it -> slur. The detector's tie/slur class is a prior, never the decision.
+- **A tie carries its accidental across the barline** (Sean, 2026-10-30: *"A tie carries an accidental even across a bar line."*; scope: general): the tied-to note keeps the start note's pitch, printed accidental or not; an unprinted accidental at the stop of a tie is not a pitch change (ROADMAP 2.223; `tie_spelling_differs` must not refuse it).
 - An articulation belongs to the note whose notehead side faces it, opposite
   the stem (ROADMAP 2.12f).
 - A hairpin sits UNDER its staff, so a note between a staff and the hairpin
-  beneath it belongs to that staff.
+  beneath it belongs to that staff; a note BELOW the hairpin belongs to the
+  staff below (Sean, 2026-10-31: *"hairpins are always below the staff any
+  notes next to a hairpin below it belong to the staff below any notes above
+  a hairpin belong to the staff above"*; scope: general; ROADMAP 2.240).
 - **Words and marks between staves** (Sean, 2026-10-08/09/11; scope: general;
   ROADMAP 2.66, 2.68, 2.12m): tempo and technique words are printed ABOVE
   the staff they govern, so one in the gap belongs to the LOWER staff

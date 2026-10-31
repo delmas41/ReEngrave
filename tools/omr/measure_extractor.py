@@ -1079,7 +1079,7 @@ def detect_barlines(pws: PageWithStaves) -> PageWithStaves:
             pws.system_structure[sys_idx] = {
                 "columns": [{"x": x, **{k: v for k, v in e.items() if k in ("span", "staff_indices", "reinforced", "n_votes")}}
                             for x, e in sorted((_sys_cols[1] if _sys_cols is not None else {}).items())],
-                "left_edge": _left_edge_read(bin_img, staves)}
+                "left_edge": _left_edge_read(bin_img, staves, edge_by_left=_left_edge_by_left(pws))}
         # Second pass: outlier-small-gap rejection. Real measure widths
         # cluster tightly; false-positive columns produce abnormally small
         # gaps. Remove the smaller member of any adjacent pair whose gap is
@@ -1129,12 +1129,28 @@ def _system_columns_enabled(pws=None) -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
-def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
+def _left_edge_by_left(pws=None) -> bool:
+    """ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the ONE left-edge pass tests a stroke's LEFT side against the staves' start (a bracket fused to the
+    opening line, Brahms p0 s0). Read here, in the one pass, never by a second scan (Sean 2026-10-29). STAGED only: the page must be read by
+    the STAGED page-wide pass (`pws.staged_page_wide`, set only by `staged/pipeline.prepare_pages`) -- a LEGACY caller sees the old reading
+    whatever the flag says. A master cell map stores the pass's reading: a master built before this change keeps the old one until rebuilt."""
+    if pws is None or not getattr(pws, "staged_page_wide", False):
+        return False
+    from .staged.stroke_map import split_joins_enabled
+    return split_joins_enabled()
+
+
+def _left_edge_read(bin_img: np.ndarray, staves: list[Staff], edge_by_left: bool = False) -> dict:
     """The system's left edge (systemic barline, brackets, braces), read ONCE by the existing stroke reader `bracket_reader.read_brackets`
     (measured on five publishers, benchmarks/omr-bracket-reading-2026-09; it names strokes and levels, picks bracket vs brace by REACH,
     not by a width cut-off). Chosen over the m2 draft `left_edge_rules`, which labelled kinds from three numbers tuned on two plates and
     called a bracket+systemic-barline pair a `brace` (Litolff p6 s0) and a whole Brahms group a `brace` (p5 s0). Pass `.levels` /
-    `.blocks` to the 2.221 m1b claimant."""
+    `.blocks` to the 2.221 m1b claimant.
+
+    `edge_by_left` (ROADMAP 2.239, STAGED only, read under `OMR_SPLIT_JOINS`; the default keeps every master cell map as cut): a stroke stands
+    at the left edge when its LEFT side is within 0.5 sp of the staves' start, not its centre -- a bracket fused by the closing to the system's
+    opening line is one stroke whose centre lies right of the edge (Brahms p0 s0, staves 0-8: x 1220-1254, centre 0.55 sp right, the whole
+    woodwind/brass bracket missed)."""
     from .bracket_reader import read_brackets, strokes_at_left_edge, covered_staves, is_rule
     out = dict(read_brackets(bin_img, staves))
     # WHOLE MARKS with a KIND, by SHAPE measured along the mark (Sean 2026-10-29, tiles 3/6 braces, 7/11 pieces of a bracket): a BRACKET is a
@@ -1152,7 +1168,7 @@ def _left_edge_read(bin_img: np.ndarray, staves: list[Staff]) -> dict:
     line_rows = {int(y) + d for s_ in ordered for y in s_.line_ys for d in range(-3, 4)}
     marks: list[dict] = []
     for st in strokes:
-        if not is_rule(st) or (st.x_centre - anchor) / sp > 0.5:
+        if not is_rule(st) or ((st.x_left if edge_by_left else st.x_centre) - anchor) / sp > 0.5:
             continue
         cov = covered_staves(st, ordered)
         if len(cov) < 2:

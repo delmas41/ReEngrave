@@ -1,0 +1,18 @@
+{
+ "date": "2026-10-30",
+ "by": "Sean",
+ "answers": {
+  "1": "stem of an eighth note",
+  "2": "small portion of an F clef",
+  "3": "part of a bracket",
+  "4": "eighth note",
+  "5": "small part of a G clef",
+  "6": "a very small box that captures just the top of an eighth note on a ledger line",
+  "7": "stem",
+  "8": "part of a brace",
+  "9": "ledger line -- tricky: it gets a part of a head but mostly the ledger line next to it",
+  "10": "bar line",
+  "11": "quarter note",
+  "12": "quarter note"
+ }
+}

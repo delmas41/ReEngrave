@@ -1,0 +1,300 @@
+[
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1408,
+   3283,
+   1413,
+   3330
+  ],
+  "kind": "vertical",
+  "joins": [
+   "stem|head"
+  ],
+  "area_sp2": 0.738,
+  "unit": 16.0,
+  "cell": [
+   19,
+   6
+  ],
+  "tile": 1,
+  "crop_origin": [
+   1314,
+   3195
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   736,
+   3360,
+   753,
+   3378
+  ],
+  "kind": "blob",
+  "joins": [
+   "stem|head"
+  ],
+  "area_sp2": 0.426,
+  "unit": 27.20068359375,
+  "cell": [
+   12,
+   0
+  ],
+  "tile": 2,
+  "crop_origin": [
+   581,
+   3234
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   348,
+   2184,
+   380,
+   2251
+  ],
+  "kind": "left_edge:bracket",
+  "joins": [],
+  "unit": 15.75,
+  "tile": 3,
+  "crop_origin": [
+   269,
+   2115
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   3261,
+   5476,
+   3303,
+   5526
+  ],
+  "kind": "blob",
+  "joins": [
+   "arc|head"
+  ],
+  "area_sp2": 1.316,
+  "unit": 32.0,
+  "cell": [
+   10,
+   3
+  ],
+  "tile": 4,
+  "crop_origin": [
+   3090,
+   5422
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   369,
+   2441,
+   378,
+   2452
+  ],
+  "kind": "blob",
+  "joins": [
+   "stem|head"
+  ],
+  "area_sp2": 0.387,
+  "unit": 16.0,
+  "cell": [
+   13,
+   0
+  ],
+  "tile": 5,
+  "crop_origin": [
+   277,
+   2351
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   3271,
+   1805,
+   3308,
+   1814
+  ],
+  "kind": "blob",
+  "joins": [
+   "ledger|head"
+  ],
+  "area_sp2": 0.383,
+  "unit": 27.4931640625,
+  "cell": [
+   5,
+   4
+  ],
+  "tile": 6,
+  "crop_origin": [
+   3124,
+   1573
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   5058,
+   2037,
+   5066,
+   2125
+  ],
+  "kind": "vertical",
+  "joins": [
+   "stem|head"
+  ],
+  "area_sp2": 0.48,
+  "unit": 32.0,
+  "cell": [
+   1,
+   6
+  ],
+  "tile": 7,
+  "crop_origin": [
+   4870,
+   1841
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   613,
+   5148,
+   629,
+   5230
+  ],
+  "kind": "left_edge:brace",
+  "joins": [],
+  "unit": 27.25,
+  "tile": 8,
+  "crop_origin": [
+   457,
+   5002
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   515,
+   2804,
+   537,
+   2815
+  ],
+  "kind": "blob",
+  "joins": [
+   "stem|head"
+  ],
+  "area_sp2": 0.941,
+  "unit": 15.75,
+  "cell": [
+   15,
+   0
+  ],
+  "tile": 9,
+  "crop_origin": [
+   431,
+   2649
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   2626,
+   3048,
+   2633,
+   3102
+  ],
+  "kind": "vertical",
+  "joins": [
+   "stem"
+  ],
+  "area_sp2": 1.508,
+  "unit": 15.75,
+  "cell": [
+   17,
+   14
+  ],
+  "tile": 10,
+  "crop_origin": [
+   2535,
+   2915
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   2410,
+   5995,
+   2439,
+   6039
+  ],
+  "kind": "blob",
+  "joins": [
+   "head|head"
+  ],
+  "area_sp2": 1.184,
+  "unit": 32.25,
+  "cell": [
+   11,
+   1
+  ],
+  "tile": 11,
+  "crop_origin": [
+   2231,
+   5868
+  ],
+  "cell_map": "master"
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   4725,
+   2716,
+   4747,
+   2764
+  ],
+  "kind": "blob",
+  "joins": [
+   "head|head"
+  ],
+  "area_sp2": 0.996,
+  "unit": 32.25,
+  "cell": [
+   3,
+   6
+  ],
+  "tile": 12,
+  "crop_origin": [
+   4542,
+   2611
+  ],
+  "cell_map": "master"
+ }
+]

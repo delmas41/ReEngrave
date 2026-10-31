@@ -583,8 +583,8 @@ def never_produced(items: Sequence[TruthItem], glyphs: Sequence[ReadGlyph]) -> D
 
 
 def score_noteheads(page: PageTruth, items: Sequence[TruthItem], glyphs: Sequence[ReadGlyph],
-                    matches: Dict[str, Dict[str, FamilyMatch]], *, trained_cells: Sequence[str] = ()
-                    ) -> Dict[str, Any]:
+                    matches: Dict[str, Dict[str, FamilyMatch]], *, trained_cells: Sequence[str] = (),
+                    aligned: Any = None) -> Dict[str, Any]:
     if "notehead" not in matches:
         return {"status": "REFUSED: notehead family not scored"}
     fm = matches["notehead"]["adjudicate"]
@@ -600,6 +600,8 @@ def score_noteheads(page: PageTruth, items: Sequence[TruthItem], glyphs: Sequenc
     rows: List[Dict[str, Any]] = []
     for it in fm.truth:
         row: Dict[str, Any] = {"truth_id": it.id, "cell": it.cell_id, "split": split_of(it)}
+        if aligned is not None:                     # the master cell (page, system, staff, cell) the box lies in
+            row["master_cell"] = aligned.cell_of(it.id)
         if it.idx not in fm.pairs:
             row["match"] = "missed_at_adjudicate" if it.idx in fg.pairs else "missed"
             rows.append(row)
@@ -893,14 +895,17 @@ def record_cell_boxes(run: RO.Run, page_index: int) -> Dict[Tuple[int, int, int]
 
 def frame_control(page: PageTruth, run_dpi: Optional[int], cell_boxes: Dict[Tuple[int, int, int], Rect],
                   matches: Dict[str, Dict[str, FamilyMatch]], items: Sequence[TruthItem],
-                  glyphs: Sequence[ReadGlyph]) -> FrameVerdict:
+                  glyphs: Sequence[ReadGlyph], aligned: Any = None) -> FrameVerdict:
     """Are the record's page pixels and the truth's page pixels the same frame?
 
     Three independent looks, and it FAILS on any of them (run the control on a shifted record: it must).
     1. DPI: the record's gather dpi is the page's dpi.
     2. CELLS: every cell both sides cut (same ``s<sys>-st<staff>-m<n>`` id) has the same rectangle.
        Same cutter + same render => identical to the pixel; a deskew, a DPI or a staff-numbering
-       difference shows here and cannot hide behind the matcher's IoU slack.
+       difference shows here and cannot hide behind the matcher's IoU slack. With ``aligned`` (a
+       ``hand_truth.align.Alignment`` to the master cell map) a truth cell is looked up under the record key of the
+       MASTER cell it is -- (system, staff-in-system, cell) -- not under the label's own page-wide staff number,
+       and a label cell the master does not have is not compared.
     3. BOXES: the offset of the record's box centre from the truth's, over matched pairs, split by how the
        truth box got there. ``drawn`` boxes are Sean's own strokes on the image -- the only offsets that can
        differ from zero by a frame, since a ``prefill-confirmed`` box IS the detector's box.
@@ -915,11 +920,16 @@ def frame_control(page: PageTruth, run_dpi: Optional[int], cell_boxes: Dict[Tupl
     for c in page.cells:
         if c.kind != "measure" or c.system is None:
             continue
-        rb = cell_boxes.get((c.system, c.staff, c.measure or 0))
+        key = (c.system, c.staff, c.measure or 0)
+        if aligned is not None:
+            key = aligned.key_of_label_cell(c.id)
+        rb = cell_boxes.get(key) if key is not None else None
         if rb is None:
             continue
         compared += 1
         diffs.append(max(abs(a - b) for a, b in zip(rb, c.rect)))
+    if aligned is not None:
+        detail["master_cell_map"] = aligned.summary()
     detail["cells"] = {"compared": compared, "of": sum(1 for c in page.cells if c.kind == "measure"),
                        "max_abs_diff_px": round(max(diffs), 2) if diffs else None,
                        "median_abs_diff_px": round(statistics.median(diffs), 2) if diffs else None}
@@ -1000,8 +1010,11 @@ def record_weights(run: RO.Run) -> Optional[str]:
 def score(page: PageTruth, run: RO.Run, *, page_index: Optional[int] = None, derive: bool = False,
           inventory_path: Path = INVENTORY_PATH, trained_cells: Optional[Sequence[str]] = None,
           items: Optional[Sequence[TruthItem]] = None, ink: Any = None,
-          stem_cause_inputs: Optional[Dict[str, Any]] = None, cv_override: Any = None) -> Dict[str, Any]:
-    """``items`` lets a control hand in a TRANSFORMED truth (an owner shift); the real call leaves it None.
+          stem_cause_inputs: Optional[Dict[str, Any]] = None, cv_override: Any = None,
+          aligned: Any = None) -> Dict[str, Any]:
+    """``aligned`` (a ``hand_truth.align.Alignment``, None = the label's own cell ids): the truth tied to the master cell
+    map, so a cell is keyed by the master's (system, staff-in-system, cell).
+    ``items`` lets a control hand in a TRANSFORMED truth (an owner shift); the real call leaves it None.
     ``stem_cause_inputs`` / ``cv_override`` feed ``score_stems`` (the vertical runs and ink raster that tie a
     missed stem to a filter; a transformed ``CvRead`` for a control).
     ``ink`` is a ``completeness.InkReport`` for the page (needs the PDF): with it, the scorer also reports
@@ -1018,7 +1031,7 @@ def score(page: PageTruth, run: RO.Run, *, page_index: Optional[int] = None, der
     split_note = "explicit"
     if trained_cells is None:
         trained_cells, split_note = trained_cells_for(page, record_weights(run), inventory_path)
-    fv = frame_control(page, run.dpi, record_cell_boxes(run, pi), matches, items, glyphs)
+    fv = frame_control(page, run.dpi, record_cell_boxes(run, pi), matches, items, glyphs, aligned=aligned)
     full = fully_labeled(page)
     report: Dict[str, Any] = {
         "page": f"{page.edition}:{page.pdf_page_index}", "truth_state": page.state,
@@ -1049,7 +1062,8 @@ def score(page: PageTruth, run: RO.Run, *, page_index: Optional[int] = None, der
         "families": fam_scores,
         "classes": never_produced([it for it in items if Scope(full).holds(it.rect)],
                                   [g for g in glyphs if Scope(full).holds(g.rect)]),
-        "noteheads": score_noteheads(page, items, glyphs, matches, trained_cells=trained_cells),
+        "noteheads": score_noteheads(page, items, glyphs, matches, trained_cells=trained_cells,
+                                      aligned=aligned),
         "headers": score_headers(page, items, run, pi),
     }
     from tools.omr.hand_truth import score_stems as SS  # lazy: score_stems imports this module
@@ -1147,6 +1161,10 @@ def render(report: Dict[str, Any]) -> str:
     L.append("")
     L.append(f"FRAME CONTROL  {'OK' if fc['ok'] else 'FAILED'}  dpi {fc['dpi']}  cells {fc['cells']}  "
              f"staff space {fc.get('staff_space_px')}px")
+    if fc.get("master_cell_map"):
+        m = fc["master_cell_map"]
+        L.append(f"    cells keyed by master cell map {m['master']} (frame agrees: {m['frame_agrees']}; "
+                 f"{m['disagree']} of {m['boxes']} boxes were labelled through another cell: {m['disagree_by_reason']})")
     for o, d in fc.get("box_offsets", {}).items():
         L.append(f"    {o:<18} n {d['n']:>4}  median dx {d['median_dx_px']:>6}  dy {d['median_dy_px']:>6}  "
                  f"(p10..p90 dx {d['p10_dx']}..{d['p90_dx']}, dy {d['p10_dy']}..{d['p90_dy']})")
@@ -1244,6 +1262,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                          "missed stem (refused if its Q.STEM rows differ from --record's)")
     ap.add_argument("--stem-ink", action="store_true",
                     help="with --pdf: read the raster at each missed stem's column (longest unbroken ink run)")
+    ap.add_argument("--aligned", choices=("auto", "none"), default="auto",
+                    help="auto: use data/hand-truth/aligned/<edition>/<page>.<master>.json when there is one (cells keyed "
+                         "by the master cell map; a STALE file refuses); none: the label's own cell ids")
     ap.add_argument("--out", type=Path, help="write the report as JSON")
     ap.add_argument("--force", action="store_true", help="print the numbers even if the frame control failed")
     a = ap.parse_args(list(argv) if argv is not None else None)
@@ -1279,7 +1300,16 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         from tools.omr.hand_truth.session import _render
 
         cause["ink"] = SS.InkColumns(_render(a.pdf, page.pdf_page_index, page.dpi).binary < 128)
-    rep = score(page, run, page_index=a.page_index, derive=a.derive, ink=ink, stem_cause_inputs=cause or None)
+    aligned = None
+    if a.aligned == "auto":
+        from tools.omr.hand_truth import align as AL
+
+        aligned = AL.Alignment.load(page.edition, page.pdf_page_index)
+        stale = aligned.stale_against(a.page) if aligned is not None else None
+        if stale:
+            ap.error(f"data/hand-truth/aligned/ for {page.edition}:{page.pdf_page_index} is stale: {stale}")
+    rep = score(page, run, page_index=a.page_index, derive=a.derive, ink=ink, stem_cause_inputs=cause or None,
+                aligned=aligned)
     if not rep["frame_control"]["ok"] and not a.force:
         print(render({**rep, "families": {}, "noteheads": {"status": "withheld"}, "stems": None,
                       "headers": {"summary": {}, "staves": []}}))

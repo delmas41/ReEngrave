@@ -364,14 +364,103 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
     return Ownership(o, "merged" if len(keys) > 1 else "decided", pick, keys, tuple(cs), how, rows)
 
 
+# ── ROADMAP 2.238: the BOX's shape, from the old rules' GATHER evidence (flag `OMR_OWNER_SHAPE`, default ON) ─────────────────────────────
+ENV_SHAPE = "OMR_OWNER_SHAPE"
+
+
+def owner_shape_enabled() -> bool:
+    """`OMR_OWNER_SHAPE` (ROADMAP 2.238), default ON (Sean 2026-10-30 "Land"); an explicit 0/false/no/off disables."""
+    import os
+    return os.environ.get(ENV_SHAPE, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+@dataclass(frozen=True)
+class Veto:
+    """A claim whose BOX fails its class's shape on an old rule's GATHER evidence (2.238; benchmarks/rule-page/FINDINGS.md): it loses its
+    claim on every stroke it covers (fit `no`, why `veto:<rule>`). `rival_key` / `rival_family` (optional) is the mark the same evidence
+    names for that ink (the letter, the rest-shaped cluster, the rest box): it stands as a candidate with fit `clear` (how `named`).
+    `rival_must_be_clear`: the veto holds only if the rival claim (a box of this cell) covers at least one CLEAR piece of its own family."""
+    rule: str
+    rival_key: str = ""
+    rival_family: str = ""
+    rival_cls: str = ""
+    row_id: str = ""
+    rival_must_be_clear: bool = False
+
+
+def clear_keys(strokes: Sequence[Ink], claims: Sequence[Claim]) -> set:
+    """The keys of the box claims that cover at least one stroke whose shape is CLEARLY their family's printed piece (`shape_fit`, with
+    the stem-crossing test and no claim-order flags): the box has its class's shape somewhere in its ink."""
+    by_ord = {s.ordinal: s for s in strokes}
+    crossing = {o for o in by_ord if _crosses_a_stem(by_ord[o], by_ord)}
+    out = set()
+    for c in claims:
+        if c.area:
+            continue
+        for o in c.covers:
+            s = by_ord.get(o)
+            if s is not None and shape_fit(c.family, s, c.cls, crosses_a_stem=o in crossing)[0] == "clear":
+                out.add(c.key)
+                break
+    return out
+
+
+#: the shape answers a rest box can never print (`shape_fit`): a straight stroke longer than any rest, a vertical under a block rest, a beam
+REST_NEVER = ("longer_than_a_rest", "block_rest_has_no_vertical", "a_beam_not_a_rest_block")
+
+
+def structural_vetoes(strokes: Sequence[Ink], claims: Sequence[Claim], already: Optional[Dict[str, Veto]] = None) -> Dict[str, Veto]:
+    """2.238, structure only (no number beyond `shape_fit`'s convention sizes):
+
+    * `rest_holds_a_stem` -- a rest box whose covered ink holds a stroke a rest can never print (`REST_NEVER`: a 4.5-sp straight stroke)
+      JOINED to a piece it claims is on a note's stem, not a rest (Sean's 2.238 tile 4: a quarter-rest box on a half note and its stem,
+      the old 2.150b margin 0.02 a near-tie). No rival: the stem is the consumers'.
+    * `head_piece_on_a_rest` -- a head box with NO clear head piece that shares a covered stroke with a rest box that HAS a clear rest
+      piece and is not itself vetoed is that rest's ink (a rest never touches a note; the claim order may give the head the shared ink only
+      when the head has a head's shape). A vetoed rest is never a rival (Sean's 2.238 tile 11: a false quarter-rest box on a unison head,
+      itself refused `rest_stroke_into_a_head`, took the head's ink and the eighth lost its beam).
+
+    `already`: the vetoes the GATHER-row readers filed first (their boxes are not rivals here)."""
+    by_ord = {s.ordinal: s for s in strokes}
+    already = dict(already or {})
+    out: Dict[str, Veto] = {}
+    for r in claims:
+        if r.family != "rest" or r.area or r.key in already:
+            continue
+        cov = set(r.covers)
+        fits = {o: shape_fit("rest", by_ord[o], r.cls)[1].split(":")[0] for o in cov if o in by_ord}
+        for o, why in fits.items():
+            if why in REST_NEVER and any(j in cov and fits.get(j) not in REST_NEVER for j, _c in by_ord[o].touches):
+                out[r.key] = Veto("rest_holds_a_stem")
+                break
+    vetoed = set(already) | set(out)
+    clear = clear_keys(strokes, claims)
+    rests = sorted((c for c in claims if c.family == "rest" and not c.area and c.key in clear and c.key not in vetoed), key=lambda c: c.key)
+    for h in claims:
+        if h.family != "head" or h.area or h.key in clear or not h.covers or h.key in already:
+            continue
+        mine = set(h.covers)
+        for r in rests:
+            if mine & set(r.covers):
+                out[h.key] = Veto("head_piece_on_a_rest", r.key, "rest", r.cls, r.row_id)
+                break
+    return out
+
+
 def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
-                acc_bar_clear_of_note: bool = False) -> Dict[int, Ownership]:
+                acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None) -> Dict[int, Ownership]:
     """`{ordinal: Ownership}` for every stroke of one cell. `claims` = the cell's detector boxes (any family: consumers and non-marks are
-    dropped here) and its area claims. `tiers` is the claim order -- a parameter only so a control can break it. Deterministic."""
+    dropped here) and its area claims. `tiers` is the claim order -- a parameter only so a control can break it. Deterministic.
+
+    `vetoes` (2.238, `OMR_OWNER_SHAPE`; None = the 2.205 behaviour exactly): `{box key: Veto}` -- those claims lose every stroke they cover
+    to the named rival (or to the consumers), BEFORE the claim order is read (a vetoed head is no head a later tier "runs into")."""
     by_ord = {s.ordinal: s for s in strokes}
     tier_index = {f: i for i, t in enumerate(tiers) for f in t}
     live = sorted((c for c in claims if c.family in tier_index), key=lambda c: (tier_index[c.family], c.key))
     crossing = {o for o in by_ord if _crosses_a_stem(by_ord[o], by_ord)}
+    if vetoes:
+        clear = clear_keys(strokes, claims)
+        vetoes = {k: v for k, v in vetoes.items() if not v.rival_must_be_clear or v.rival_key in clear}
     # the claim order acts here: a later tier sees what the EARLIER tiers' boxes own (a head's strokes, for the rest rule)
     head_tier = tier_index.get("head")
     cand: Dict[int, List[Dict[str, object]]] = {o: [] for o in by_ord}
@@ -385,6 +474,7 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                 head_owned = {o for o in by_ord if _settle(o, cand, tier_index).family == "head"}
                 note_ink = head_owned | {o for o, v in by_ord.items() if v.kind == "vertical" and any(j in head_owned for j, _c in v.touches)}
             done_tier = ti
+        veto = vetoes.get(c.key) if (vetoes and not c.area) else None
         for o in c.covers:
             if o in by_ord:
                 s_ = by_ord[o]
@@ -393,8 +483,14 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                 fit, why = ("clear", "area") if c.area else shape_fit(c.family, s_, c.cls, crosses_a_stem=o in crossing,
                                                                         touches_a_head=touches_head, touches_a_note=touches_note,
                                                                         acc_bar_clear_of_note=acc_bar_clear_of_note)
+                if veto is not None:
+                    fit, why = "no", "veto:%s:%s" % (veto.rule, why)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
                                 "how": "area" if c.area else "cover", "row": c.row_id})
+                if veto is not None and veto.rival_key and veto.rival_family in tier_index and veto.rival_key not in vetoes \
+                        and not any(e["key"] == veto.rival_key and e["how"] == "named" for e in cand[o]):
+                    cand[o].append({"key": veto.rival_key, "family": veto.rival_family, "cls": veto.rival_cls, "fit": "clear",
+                                    "why": "named:%s" % veto.rule, "how": "named", "row": veto.row_id})
 
     out: Dict[int, Ownership] = {o: _settle(o, cand, tier_index) for o in by_ord}
 

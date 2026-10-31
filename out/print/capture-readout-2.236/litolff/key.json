@@ -1,0 +1,257 @@
+[
+ {
+  "page": 7,
+  "box": [
+   566,
+   529,
+   647,
+   619
+  ],
+  "ink_px": 3184,
+  "states": {
+   "refused:vertical": 1431,
+   "unclaimed:vertical": 1319,
+   "unclaimed:horizontal": 434
+  },
+  "unit": 15.75,
+  "tile": 1,
+  "crop_origin": [
+   512,
+   503
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 10,
+  "box": [
+   1442,
+   828,
+   1527,
+   912
+  ],
+  "ink_px": 3011,
+  "states": {
+   "unclaimed:vertical": 1771,
+   "refused:vertical": 823,
+   "unclaimed:horizontal": 361,
+   "unclaimed:blob": 56
+  },
+  "unit": 15.75,
+  "tile": 2,
+  "crop_origin": [
+   1390,
+   798
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 4,
+  "box": [
+   459,
+   2124,
+   543,
+   2237
+  ],
+  "ink_px": 2844,
+  "states": {
+   "weak_claim": 2154,
+   "unclaimed:vertical": 322,
+   "contested_settled": 307,
+   "unclaimed:blob": 61
+  },
+  "unit": 15.75,
+  "tile": 3,
+  "crop_origin": [
+   406,
+   2104
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 6,
+  "box": [
+   334,
+   1126,
+   356,
+   1279
+  ],
+  "ink_px": 2840,
+  "states": {
+   "contested_settled": 2840
+  },
+  "unit": 15.7587890625,
+  "tile": 4,
+  "crop_origin": [
+   250,
+   1106
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 9,
+  "box": [
+   576,
+   332,
+   637,
+   461
+  ],
+  "ink_px": 2830,
+  "states": {
+   "unclaimed:vertical": 1991,
+   "unclaimed:horizontal": 721,
+   "refused:horizontal": 101,
+   "unclaimed:blob": 17
+  },
+  "unit": 15.7412109375,
+  "tile": 5,
+  "crop_origin": [
+   512,
+   312
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 6,
+  "box": [
+   337,
+   2554,
+   358,
+   2710
+  ],
+  "ink_px": 2735,
+  "states": {
+   "contested_settled": 2735
+  },
+  "unit": 15.75,
+  "tile": 6,
+  "crop_origin": [
+   253,
+   2534
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 2,
+  "box": [
+   335,
+   2517,
+   357,
+   2663
+  ],
+  "ink_px": 2645,
+  "states": {
+   "contested_settled": 2645
+  },
+  "unit": 15.75,
+  "tile": 7,
+  "crop_origin": [
+   251,
+   2495
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 6,
+  "box": [
+   337,
+   3000,
+   358,
+   3143
+  ],
+  "ink_px": 2464,
+  "states": {
+   "contested_settled": 2464
+  },
+  "unit": 15.75,
+  "tile": 8,
+  "crop_origin": [
+   253,
+   2980
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 10,
+  "box": [
+   340,
+   972,
+   361,
+   1114
+  ],
+  "ink_px": 2461,
+  "states": {
+   "contested_settled": 2461
+  },
+  "unit": 15.75,
+  "tile": 9,
+  "crop_origin": [
+   256,
+   952
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 4,
+  "box": [
+   438,
+   2468,
+   537,
+   2542
+  ],
+  "ink_px": 2426,
+  "states": {
+   "weak_claim": 1979,
+   "contested_settled": 217,
+   "unclaimed:vertical": 199,
+   "unclaimed:blob": 31
+  },
+  "unit": 15.75,
+  "tile": 10,
+  "crop_origin": [
+   393,
+   2391
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 4,
+  "box": [
+   374,
+   411,
+   421,
+   521
+  ],
+  "ink_px": 2344,
+  "states": {
+   "contested_open": 2344
+  },
+  "unit": 15.5,
+  "tile": 11,
+  "crop_origin": [
+   304,
+   367
+  ],
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "page": 5,
+  "box": [
+   385,
+   1579,
+   429,
+   1680
+  ],
+  "ink_px": 2324,
+  "states": {
+   "contested_settled": 2318,
+   "unclaimed:blob": 6
+  },
+  "unit": 15.5,
+  "tile": 12,
+  "crop_origin": [
+   314,
+   1528
+  ],
+  "cell_map": "cm-54ccb4729528"
+ }
+]

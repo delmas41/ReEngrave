@@ -1,0 +1,138 @@
+[
+ {
+  "tile": "tile01.png",
+  "plate": "brahms",
+  "page": 4,
+  "kind": "straddle",
+  "x": 2808,
+  "y": 4269,
+  "box_page_px": [
+   2588,
+   4262,
+   2879,
+   4309
+  ],
+  "staff_index": 15,
+  "question": "is this one mark?"
+ },
+ {
+  "tile": "tile02.png",
+  "plate": "brahms",
+  "page": 4,
+  "kind": "twin",
+  "box": [
+   1816,
+   3334,
+   1855,
+   3368
+  ],
+  "glyphs": [
+   "glyph/4/0/11/2/4",
+   "glyph/4/0/12/2/5"
+  ],
+  "cls": "noteheadBlackInSpace",
+  "box_page_px": [
+   1816,
+   3334,
+   1855,
+   3368
+  ],
+  "staff_index": 12,
+  "question": "is this one mark?"
+ },
+ {
+  "tile": "tile03.png",
+  "plate": "brahms",
+  "page": 5,
+  "kind": "twin",
+  "box": [
+   1076,
+   6742,
+   1122,
+   6776
+  ],
+  "glyphs": [
+   "glyph/5/1/11/0/10",
+   "glyph/5/1/12/0/7"
+  ],
+  "cls": "noteheadBlackOnLine",
+  "box_page_px": [
+   1076,
+   6742,
+   1122,
+   6776
+  ],
+  "staff_index": 26,
+  "question": "is this one mark?"
+ },
+ {
+  "tile": "tile04.png",
+  "plate": "brahms",
+  "page": 5,
+  "kind": "other_line",
+  "box": [
+   4098,
+   1678,
+   4342,
+   1695
+  ],
+  "glyph": "glyph/5/0/4/5/7",
+  "cls": "tie",
+  "on_staff": [
+   5,
+   0,
+   5
+  ],
+  "box_page_px": [
+   4098,
+   1678,
+   4342,
+   1695
+  ],
+  "staff_index": 5,
+  "question": "is this one mark?"
+ },
+ {
+  "tile": "tile05.png",
+  "plate": "brahms",
+  "page": 19,
+  "kind": "other_line",
+  "box": [
+   3096,
+   1724,
+   3519,
+   1741
+  ],
+  "glyph": "glyph/19/0/4/5/6",
+  "cls": "beam",
+  "on_staff": [
+   19,
+   0,
+   5
+  ],
+  "box_page_px": [
+   3096,
+   1724,
+   3519,
+   1741
+  ],
+  "staff_index": 5,
+  "question": "is this one mark?"
+ },
+ {
+  "tile": "tile06.png",
+  "plate": "litolff",
+  "page": 16,
+  "kind": "straddle",
+  "x": 1732,
+  "y": 1736,
+  "box_page_px": [
+   1697,
+   1727,
+   1757,
+   1743
+  ],
+  "staff_index": 10,
+  "question": "is this one mark?"
+ }
+]

@@ -58,6 +58,10 @@ CELL_MAP: Optional[pathlib.Path] = None     # ROADMAP 2.231: --cell-map DIR = bo
 CELL_MAP_ROOT = RECORDS / "cell-maps"
 LOCK = RECORDS / ".record-load.lock"
 ORANGE = (255, 140, 0)
+#: The night record the frozen sample replays by default (ROADMAP 2.244: it was 20261020-night, and every lane had to
+#: remember `--tag 20261029-night`). Move it when Sean's overnight lands a newer one; `benchmarks/lane-report/sample.json`
+#: `record_tag` must say the same (a test holds them together).
+DEFAULT_TAG = "20261029-night"
 
 #: The acceptance scan plates (docs/measuring.md §1). `unit` = one staff space in px at 600 dpi (tile window and the
 #: pairing tolerance).
@@ -137,7 +141,7 @@ def candidate_pages(plate: str, tag: str) -> List[int]:
     return sorted(pages)
 
 
-def make_sample(seed: int = 2188, n: int = 8, tag: str = "20261020-night") -> Dict[str, Any]:
+def make_sample(seed: int = 2188, n: int = 8, tag: str = DEFAULT_TAG) -> Dict[str, Any]:
     cands = {p: candidate_pages(p, tag) for p in PLATES}
     pages = draw_sample(cands, seed, n)
     return {
@@ -160,6 +164,21 @@ def loaded_pages(sample: Dict[str, Any], plate: str) -> List[int]:
 
 def load_sample(path: pathlib.Path = SAMPLE_PATH) -> Dict[str, Any]:
     return json.loads(path.read_text())
+
+
+def check_tag(tag: str, plates: Sequence[str], sample: Dict[str, Any]) -> None:
+    """ROADMAP 2.244: a stale tag RAISES. `tag` must name, for every plate, the night record (or an already cut slice dir that
+    holds every page the sample loads); a lane that forgot `--tag` once replayed a month-old night against today's tree."""
+    if os.path.isdir(tag):
+        return
+    for p in plates:
+        if record_path(p, tag).exists():
+            continue
+        stamp = slice_dir(p, tag) / "stamp.json"
+        if stamp.exists() and set(loaded_pages(sample, p)) <= set(json.loads(stamp.read_text()).get("pages", ())):
+            continue
+        raise SystemExit("tag %r: no night record %s and no slice dir %s holding the sample's pages for %s -- a stale or mistyped "
+                         "--tag (default %s)" % (tag, record_path(p, tag).name, slice_dir(p, tag).name, p, DEFAULT_TAG))
 
 
 # ───────────────────────────── 2. per-page slices ─────────────────────────────
@@ -526,6 +545,7 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
         os.environ[name] = on if arm == "on" else off
     t0 = time.time()
     stored: Dict[Tuple[str, str], dict] = {}
+    gather_prov: Dict[str, Any] = {}
     if mode == "adjudicate":
         from .review import rerun as RR
         rec = load_slices(slice_dir(plate, tag))
@@ -540,6 +560,7 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
     else:
         from .record_io import load_record
         result = load_record(str(gather_record))
+        gather_prov = result.get("provenance") or (result.get("record") or {}).get("provenance") or {}
         if "record" not in result:
             result = {"record": result, "summary": {}}
         obs = result["record"]["observations"]
@@ -571,6 +592,8 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
                notes_not_written=report.get("notes_not_written_total"), control=control,
                blue_marks=xml.count('color="%s"' % E.GUESS_COLOR), seconds=round(time.time() - t0, 1),
                seconds_export=round(time.time() - t1, 1))
+    from .one_test import arm_fingerprint     # ROADMAP 2.244: what this arm was built from (a combined run refuses a mix)
+    out["fingerprint"] = arm_fingerprint(plate, mode, tag, count_pages, gather_prov, [f[0] for f in flags])
     (work / (stem + ".symbols.json")).write_text(json.dumps(out, default=str))
     return out
 
@@ -788,6 +811,7 @@ def judged_moves(off_rec: pathlib.Path, on_rec: pathlib.Path, doc: str,
     a = J.score(idx, off_rec, doc)
     b = J.score(idx, on_rec, doc)
     out = compare_judged(a["tiles"], b["tiles"])
+    out["matched"] = dict(off=a.get("matched"), on=b.get("matched"))
     if off_hosts is not None and on_hosts is not None:
         subs = {s for k in ("worse", "lost", "unwritten_wrong", "unwritten_right") for r in out.get(k, ()) for s in _subject_list(r["subject"])}
         boxes: Dict[str, Sequence[float]] = {}
@@ -842,7 +866,7 @@ def written_moves(rep: Dict[str, Any], idx: Dict[str, Any], doc: str, page_boxes
     have = {"worse": {(w["item"], w["tile"]): w for w in worse}, "better": {(w["item"], w["tile"]): w for w in better}}
     for r in rows:
         sub = r["subject"]
-        off_h = written_at(off_hosts, sub, boxes.get(sub))
+        off_h = host_for_row(off_hosts, r, sub, boxes.get(sub))
         if off_h is None or off_h["kind"] != "note" or place_of(off_h) is None:
             continue
         on_h = event_at(on_hosts, place_of(off_h), off_h.get("pitch"), "note")
@@ -894,6 +918,28 @@ def written_at(hosts: Sequence[dict], subject: str, box: Optional[Sequence[float
     return min(inside, key=lambda h: (h["cx"] - cx) ** 2 + (h["cy"] - cy) ** 2) if inside else None
 
 
+def written_at_place(hosts: Sequence[dict], row: dict) -> Optional[dict]:
+    """ROADMAP 2.244: the note / rest an arm wrote where a POSITIONED judged tile is: a host whose glyph key sits in the tile's
+    (page, system, staff, cell) and whose box overlaps the tile's page box, nearest the tile's centre. Never the key alone: a
+    glyph id is one gather's detector order."""
+    from . import judged as J
+    pl, tb = J.row_place(row), J.row_box(row)
+    if pl is None or tb is None:
+        return None
+    cx, cy = (tb[0] + tb[2]) / 2, (tb[1] + tb[3]) / 2
+    here = [h for h in hosts if J.key_place(h.get("rg")) == pl and h.get("box") and J.boxes_overlap(h["box"], tb)[0]]
+    return min(here, key=lambda h: ((h["box"][0] + h["box"][2]) / 2 - cx) ** 2 + ((h["box"][1] + h["box"][3]) / 2 - cy) ** 2,
+               default=None)
+
+
+def host_for_row(hosts: Sequence[dict], row: dict, subject: str, box: Optional[Sequence[float]]) -> Optional[dict]:
+    """The written host for a judged row: by PLACE when the row has a `position`, else by the old key / box (`written_at`)."""
+    from . import judged as J
+    if J.row_place(row) is not None:
+        return written_at_place(hosts, row)
+    return written_at(hosts, subject, box)
+
+
 def event_at(hosts: Sequence[dict], place: tuple, pitch: Optional[str], kind: str) -> Optional[dict]:
     """The event an arm wrote at a place: same pitch (or kind, for a rest) first, else any event at that slot."""
     here = [h for h in hosts if place_of(h) == place]
@@ -930,7 +976,7 @@ def invented_moves(rep: Dict[str, Any], idx: Dict[str, Any], doc: str, boxes: Di
             continue
         for sub in (r.get("subjects") or ([r["subject"]] if r.get("subject") else [])):
             box = boxes.get(sub)
-            on_h, off_h = written_at(on_hosts, sub, box), written_at(off_hosts, sub, box)
+            on_h, off_h = host_for_row(on_hosts, r, sub, box), host_for_row(off_hosts, r, sub, box)
             key = (r["item"], r["tile"])
             if on_h and on_h["kind"] == "note" and place_of(on_h) and not _same_note_at(off_hosts, on_h):
                 if key in seen:
@@ -1025,6 +1071,89 @@ def compare_judged(off_tiles: Sequence[dict], on_tiles: Sequence[dict]) -> Dict[
             elif u["status"] == "right":
                 up_right.append(dict(item=t["item"], tile=t["tile"], subject=t["subject"], answer=t["answer"], off=t["status"]))
     return dict(worse=worse, lost=lost, better=better, unwritten_wrong=up_wrong, unwritten_right=up_right, scored=n_scored)
+
+
+# ───────────────────────────── 7b. changed places nobody has judged (ROADMAP 2.244) ─────────────────────────────
+
+_VALUE_KINDS = frozenset({"note", "rest", "value", "flag", "beam", "dot", "blue", "tuplet"})
+#: the change kinds a judged tile speaks to, by what Sean was asked. A tile about a note's value says nothing about the
+#: accidental in front of it, so that accidental is still unjudged.
+_SPEAKS = {"duration": _VALUE_KINDS, "identity": frozenset({"note", "rest"}), "arc": frozenset({"tie", "slur"}),
+           "dynamic": frozenset({"dynamic"})}
+
+
+def row_speaks_to(row: dict) -> frozenset:
+    if row.get("question_kind") in _SPEAKS:
+        return _SPEAKS[row["question_kind"]]
+    if row.get("answer_kind") in ("duration", "duration_multi", "rest"):
+        return _VALUE_KINDS
+    if row.get("answer_kind") == "arc":
+        return _SPEAKS["arc"]
+    return frozenset()
+
+
+def judged_cover(idx: Dict[str, Any], doc: str, boxes: Dict[str, Sequence[float]]) -> List[Dict[str, Any]]:
+    """What Sean's answers cover on this plate: `[{page, box|None, subject, kinds}]`. A row's box is its position's page box,
+    else its own `page_box`, else the box of its glyph key in this record (`boxes`); a row with no box is covered by key only."""
+    from . import judged as J
+    out = []
+    for r in idx["tiles"]:
+        if r.get("followup") or r.get("doc") != doc or r.get("subject_kind") != "glyph":
+            continue
+        kinds = row_speaks_to(r)
+        if not kinds:
+            continue
+        for sub in (r.get("subjects") or ([r["subject"]] if r.get("subject") else [])):
+            pl = J.row_place(r) or J.key_place(sub)
+            box = J.row_box(r) or (r.get("page_box") if len(r.get("page_box") or ()) == 4 else None) or boxes.get(sub)
+            out.append(dict(page=pl[0] if pl else page_of(sub), cell=pl, box=list(box) if box else None, subject=sub, kinds=kinds,
+                            positioned=J.row_place(r) is not None))
+    return out
+
+
+def unjudged_changes(changes: Sequence[dict], cover: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """The changed places no judged tile covers: `{unjudged: [change + place], judged: n, no_place: n}`. A change is covered
+    when a judged tile of a kind that speaks to it sits on its page with an overlapping box (same cell, for a positioned tile),
+    or was cut from the very glyph key the change was written from. A change with no page box is counted as `no_place`."""
+    from . import judged as J
+    out, covered, no_place = [], 0, 0
+    for c in changes:
+        pl = J.key_place(c.get("rg"))
+        if c.get("page") is None or not c.get("box"):
+            no_place += 1
+            continue
+        hit = False
+        for v in cover:
+            if c["kind"] not in v["kinds"] or v["page"] != c["page"]:
+                continue
+            if v["positioned"] and v["cell"] != pl:
+                continue
+            if (c.get("rg") and c["rg"] == v["subject"]) or (v["box"] and J.boxes_overlap(c["box"], v["box"])[0]):
+                hit = True
+                break
+        if hit:
+            covered += 1
+        else:
+            out.append(dict(c, place=list(pl) if pl else None))
+    return dict(unjudged=out, judged=covered, no_place=no_place)
+
+
+def unjudged_for_plate(plate: str, changes: Sequence[dict], mini_rec: pathlib.Path,
+                       index_path: Optional[pathlib.Path] = None) -> Dict[str, Any]:
+    """`unjudged_changes` for one plate against the committed judged index (glyph keys boxed from the arm's mini-record)."""
+    from . import judged as J
+    idx = json.loads((index_path or J.INDEX_PATH).read_text())
+    subs = {s for r in idx["tiles"] if r.get("doc") == plate and not r.get("followup")
+            for s in (r.get("subjects") or ([r["subject"]] if r.get("subject") else []))}
+    return unjudged_changes(changes, judged_cover(idx, plate, J.page_boxes(mini_rec, subs)))
+
+
+def unjudged_lines(plate: str, un: Sequence[dict]) -> List[str]:
+    """One line per unjudged changed place: plate, page/system/staff/cell, kind, side, value."""
+    rows = sorted(un, key=lambda c: (c.get("page") or 0, c.get("place") or [], c["kind"], str(c.get("value"))))
+    return ["%s p%s %s  %s %s %s%s" % (plate, c.get("page"), "/".join(map(str, c["place"])) if c.get("place") else "-", c["kind"],
+                                       c["side"], c.get("value"), " (was %s)" % c["was"] if c.get("was") is not None else "")
+            for c in rows]
 
 
 # ───────────────────────────── 8. the blind sheet ─────────────────────────────
@@ -1139,7 +1268,7 @@ def cell_map_version(plate: str) -> Optional[str]:
     return _CELL_MAP_VERSION[plate]
 
 
-def cut_tiles(items: List[dict], out_dir: pathlib.Path, tile_dir_name: str = "tiles") -> Dict[str, Any]:
+def cut_tiles(items: List[dict], out_dir: pathlib.Path, tile_dir_name: str = "tiles", readme_extra: str = "") -> Dict[str, Any]:
     """Cut each item from its page at 600 dpi with ONE neutral orange box; write single tiles + a sheet PNG +
     README (tile folder) and the key (OUTSIDE the tile folder)."""
     from PIL import Image, ImageDraw
@@ -1184,7 +1313,7 @@ def cut_tiles(items: List[dict], out_dir: pathlib.Path, tile_dir_name: str = "ti
         "else drawn. The orange box only says where to look; it means nothing about what we read.\n\n"
         "**Question, for every tile:** what does the print show at the orange box (a note and its value, a rest and its "
         "value, an accidental, a dot, a flag or beam, a tie or slur, a mark, or nothing there)? Is anything about it "
-        "that we might have written wrongly?\n\nAnswer by tile number.\n")
+        "that we might have written wrongly?\n\nAnswer by tile number.\n" + readme_extra)
     (out_dir / "key.json").write_text(json.dumps(key, indent=1, default=str))
     return dict(n=len(key), cases=sum(k["role"] == "case" for k in key), controls=sum(k["role"] == "control" for k in key))
 
@@ -1196,9 +1325,33 @@ def _spawn(args: List[str], env: Dict[str, str], logpath: pathlib.Path) -> subpr
                             stdout=open(logpath, "w"), stderr=subprocess.STDOUT)
 
 
+def gather_one(plate: str, arm: str, flag_env: Dict[str, str], pages: Sequence[int], work: pathlib.Path,
+               env0: Dict[str, str]) -> pathlib.Path:
+    """One page-gather of `plate` with `flag_env` set, written to `work/<plate>.<arm>.gathered.record.json`: the shared detector
+    cache and (if set) the master cell map, OCR server off after (the same call `run_report` and `one_test` make)."""
+    rp = work / ("%s.%s.gathered.record.json" % (plate, arm))
+    env = dict(env0)
+    env.update(flag_env)
+    env["OMR_SURYA_KEEP_ALIVE"] = "0"
+    if DETECTOR_CACHE is not None:      # ROADMAP 2.189: the raw detector output, read once, for both arms and every later run
+        env["OMR_DETECTOR_CACHE"] = str(DETECTOR_CACHE)
+    else:
+        env.pop("OMR_DETECTOR_CACHE", None)
+    cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[plate]["pdf"]), "--pages",
+           ",".join(map(str, pages)), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
+    if CELL_MAP is not None:            # ROADMAP 2.231: both arms read the master's cells, never a fresh cut
+        cmd += ["--cell-map", str(CELL_MAP)]
+    print("  gather %s %s pages %s ..." % (plate, arm, list(pages)), flush=True)
+    logp = work / ("%s.%s.gather.log" % (plate, arm))
+    r = subprocess.run(cmd, cwd=str(ROOT), env=env, stdout=open(logp, "w"), stderr=subprocess.STDOUT)
+    if r.returncode != 0 or not rp.exists():
+        raise SystemExit("gather failed for %s %s (see %s)" % (plate, arm, logp))
+    return rp
+
+
 def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mode: str, out: pathlib.Path,
                tag: str, seed: int, workers: int, sample: Dict[str, Any], note_lines: Sequence[str],
-               reuse: bool = False) -> Dict[str, Any]:
+               reuse: bool = False, unjudged_tiles: int = 0) -> Dict[str, Any]:
     t0 = time.time()
     work = out / "work"
     work.mkdir(parents=True, exist_ok=True)
@@ -1219,25 +1372,7 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
     gather_recs: Dict[Tuple[str, str], pathlib.Path] = {}
     if mode == "gather":
         for p, a in jobs:       # one page gather at a time (CLAUDE.md "lean lanes")
-            rp = work / ("%s.%s.gathered.record.json" % (p, a))
-            env = dict(env0)
-            for name, off, on in flags:
-                env[name] = on if a == "on" else off
-            env["OMR_SURYA_KEEP_ALIVE"] = "0"
-            if DETECTOR_CACHE is not None:      # ROADMAP 2.189: the raw detector output, read once, for both arms and every later run
-                env["OMR_DETECTOR_CACHE"] = str(DETECTOR_CACHE)
-            else:
-                env.pop("OMR_DETECTOR_CACHE", None)
-            cmd = [sys.executable, "-u", "-m", "tools.omr.staged", str(LIB / PLATES[p]["pdf"]), "--pages",
-                   ",".join(map(str, pages[p])), "--dpi", "600", "--weights", "auto", "--route-weights", "--out", str(rp)]
-            if CELL_MAP is not None:            # ROADMAP 2.231: both arms read the master's cells, never a fresh cut
-                cmd += ["--cell-map", str(CELL_MAP)]
-            print("  gather %s %s pages %s ..." % (p, a, pages[p]), flush=True)
-            logp = work / ("%s.%s.gather.log" % (p, a))
-            r = subprocess.run(cmd, cwd=str(ROOT), env=env, stdout=open(logp, "w"), stderr=subprocess.STDOUT)
-            if r.returncode != 0 or not rp.exists():
-                raise SystemExit("gather failed for %s %s (see %s)" % (p, a, logp))
-            gather_recs[(p, a)] = rp
+            gather_recs[(p, a)] = gather_one(p, a, {n: (on if a == "on" else off) for n, off, on in flags}, pages[p], work, env0)
     running: List[Tuple[Tuple[str, str], subprocess.Popen]] = []
     queue = list(jobs)
     done: Dict[Tuple[str, str], Any] = dict(done0)
@@ -1257,19 +1392,30 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
                 done[(p, a)] = json.loads((work / ("%s.%s.symbols.json" % (p, a))).read_text())
         time.sleep(1)
     rep: Dict[str, Any] = dict(flags=[list(f) for f in flags], mode=mode, plates={}, notes=list(note_lines))
-    all_changes, all_same = {}, {}
+    all_changes, all_same, all_unjudged = {}, {}, {}
     for p in plates:
         off, on = done[(p, "off")], done[(p, "on")]
         d = diff_arms(off, on, tol=0.5 * PLATES[p]["unit"])
         jm = judged_moves(work / ("%s.off.mini-record.json" % p), work / ("%s.on.mini-record.json" % p), p,
                           off["hosts"], on["hosts"])
         all_changes[p], all_same[p] = d["changes"], d["same"]
+        un = unjudged_for_plate(p, d["changes"], work / ("%s.on.mini-record.json" % p))
+        all_unjudged[p] = un["unjudged"]
         rep["plates"][p] = dict(pages=pages[p], counts=d["counts"], hosts=d["hosts"], paired=d["paired"],
                                 red_bars=[off["red_bars"], on["red_bars"]],
                                 notes_not_written=[off["notes_not_written"], on["notes_not_written"]],
-                                control=control_of(off["control"], on["control"]), judged=jm, seconds=[off["seconds"], on["seconds"]])
+                                control=control_of(off["control"], on["control"]), judged=jm, seconds=[off["seconds"], on["seconds"]],
+                                unjudged=dict(n=len(un["unjudged"]), judged=un["judged"], no_place=un["no_place"],
+                                              by_kind=dict(collections.Counter(c["kind"] for c in un["unjudged"])),
+                                              places=unjudged_lines(p, un["unjudged"])))
     items = pick_tiles(all_changes, all_same, seed)
     rep["tiles"] = cut_tiles(items, out) if items else dict(n=0, cases=0, controls=0)
+    (out / "unjudged.txt").write_text("\n".join(l for p in plates for l in rep["plates"][p]["unjudged"]["places"]) + "\n")
+    if unjudged_tiles:
+        uitems = pick_tiles(all_unjudged, {}, seed, n_cases=unjudged_tiles, n_controls=0)[:unjudged_tiles]
+        rep["unjudged_tiles"] = cut_tiles(uitems, out / "unjudged", readme_extra=(
+            "\nThese tiles are places where our written mark CHANGED between the two runs and none of your earlier answers "
+            "covers them.\n")) if uitems else dict(n=0, cases=0, controls=0)
     rep["tile_seed"] = seed
     rep["wall_seconds"] = round(time.time() - t0, 1)
     (out / "report.json").write_text(json.dumps(rep, indent=1, default=str))
@@ -1324,6 +1470,14 @@ def render_text(rep: Dict[str, Any]) -> str:
                     len(j.get("unwritten_right", ())), len(j.get("invented_removed", ()))))
         for w in j.get("unwritten_wrong", ()):
             L.append("      UNWRITTEN->WRONG  %s tile %s %s  Sean: %s  OFF: %s  now: %s" % (w["item"], w["tile"], w["subject"], w["answer"], w["off"], w["now"]))
+        m = (j.get("matched") or {}).get("on") or {}
+        if m:
+            L.append("  judged tiles found by place %d (at another id than asked %d) | by id key, no position %d | position but no mark here %d"
+                     % (m.get("place", 0), m.get("place_moved_id", 0), m.get("key", 0), m.get("place_no_mark", 0) + m.get("place_no_box", 0)))
+        u = r.get("unjudged")
+        if u:
+            L.append("  NOT JUDGED: %d changed places no tile of Sean's covers (%d are covered; %d have no page place): %s -> unjudged.txt"
+                     % (u["n"], u["judged"], u["no_place"], ", ".join("%s %d" % kv for kv in sorted(u["by_kind"].items())) or "none"))
         for w in j["lost"][:10]:
             L.append("      right->%s  %s tile %s %s" % (w["now"], w["item"], w["tile"], w["subject"]))
         for w in j.get("same_music", ()):
@@ -1336,6 +1490,9 @@ def render_text(rep: Dict[str, Any]) -> str:
     L.append("")
     L.append("tiles: %d (%d from the changes, %d controls), seed %d -> tiles/ (sheet.png), key.json outside the folder"
              % (t["n"], t["cases"], t["controls"], rep["tile_seed"]))
+    if "unjudged_tiles" in rep:
+        ut = rep["unjudged_tiles"]
+        L.append("unjudged tiles: %d, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)" % ut["n"])
     L.append("wall time %.0f s" % rep["wall_seconds"])
     return "\n".join(L)
 
@@ -1411,7 +1568,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     ap.add_argument("--plates", default="litolff,brahms")
     ap.add_argument("--from", dest="mode", default="auto", choices=("auto", "adjudicate", "gather"))
     ap.add_argument("--out")
-    ap.add_argument("--tag", default=None, help="the night record to replay (default: the sample file's)")
+    ap.add_argument("--tag", default=None, help="the night record to replay (default DEFAULT_TAG = %s; a tag with no record raises)" % DEFAULT_TAG)
     ap.add_argument("--seed", type=int, default=2188, help="tile draw seed (the page sample's seed is in sample.json)")
     ap.add_argument("--workers", type=int, default=2, help="arm processes at once (<= 4)")
     ap.add_argument("--allow-unknown-flag", action="store_true")
@@ -1422,6 +1579,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                          "(DIR, or 'master' = library/_shared-records/cell-maps) instead of re-cutting them")
     ap.add_argument("--replay-gathered", action="store_true",
                     help="--tag names a record GATHERED with the GATHER-side flags on (2.190); replay ADJUDICATE..EXPORT for both arms")
+    ap.add_argument("--unjudged-tiles", type=int, default=0, metavar="N",
+                    help="ROADMAP 2.244: also cut up to N (<= 12) blind tiles from the changed places no judged tile covers, into DIR/unjudged/")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--work")
@@ -1437,7 +1596,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if cmd == "sample":
         if SAMPLE_PATH.exists() and not a.force:
             raise SystemExit("%s exists: the sample is frozen. Re-draw only by Sean's word (--force)." % SAMPLE_PATH)
-        s = make_sample(seed=2188, n=a.n, tag=a.tag or "20261020-night")
+        s = make_sample(seed=2188, n=a.n, tag=a.tag or DEFAULT_TAG)
         SAMPLE_PATH.parent.mkdir(parents=True, exist_ok=True)
         SAMPLE_PATH.write_text(json.dumps(s, indent=1) + "\n")
         print({p: v["pages"] for p, v in s["plates"].items()})
@@ -1469,7 +1628,9 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                 print("    NOT FOUND", w["item"], w["tile"], w["subject"])
         return 0
     sample = load_sample()
-    tag = a.tag or sample["record_tag"]
+    tag = a.tag or DEFAULT_TAG
+    if cmd in ("run", "arm"):
+        check_tag(tag, [p for p in (a.plates or "litolff,brahms").split(",") if p] if cmd == "run" else [a.plate], sample)
     if cmd == "arm":       # internal worker: --flag NAME=OFFV:ONV exactly as the parent wrote it
         flags = [(n, v.split(":")[0], v.split(":")[1]) for n, v in (f.split("=", 1) for f in a.flag)]
         run_arm(a.plate, a.arm, flags, a.mode, tag, pathlib.Path(a.work), [int(x) for x in a.pages.split(",") if x],
@@ -1498,7 +1659,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         else:
             for p in plates:
                 notes.append("cells LOADED from master %s (%s) for both arms" % (cell_map_version(p), p))
-    rep = run_report(flags, plates, mode, out, tag, a.seed, min(4, max(1, a.workers)), sample, notes, reuse=a.reuse)
+    rep = run_report(flags, plates, mode, out, tag, a.seed, min(4, max(1, a.workers)), sample, notes, reuse=a.reuse,
+                     unjudged_tiles=min(12, max(0, a.unjudged_tiles)))
     print(render_text(rep))
     return 0
 

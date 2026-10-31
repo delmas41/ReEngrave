@@ -304,6 +304,14 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
         return
     p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
     staves = {s.staff_index: s for s in pws.staves}
+    # ROADMAP 2.239 (`OMR_SPLIT_JOINS`, default ON): a column standing on a whole left-edge mark the bracket reader read (bracket, brace,
+    # systemic barline: `page_wide.system_rules`, claimed once as `bracket` by `gather_page_claims`) is that mark's ink, not a barline's --
+    # Sean 2026-10-30, every contested bracket+barline tile was "part of a bracket". The bracket claim keeps it; this claim leaves it.
+    from .stroke_map import split_joins_enabled
+    left_marks: Dict[int, List[Dict[str, Any]]] = {}
+    if split_joins_enabled():
+        for k in {v[0] for v in local.values()}:
+            left_marks[k] = _left_edge_marks(pws, k)
     for c in cells:
         key = local.get(c.staff_index)
         st = staves.get(c.staff_index)
@@ -313,6 +321,13 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
         x0, _y0, x1, _y1 = c.bbox_page_px
         for bl in pws.barlines:
             if bl.system_index != c.system_index or not (x0 - sp <= bl.x <= x1 + sp):
+                continue
+            mk = next((m for m in left_marks.get(key[0], ()) if m.get("box") and m["box"][0] - 6 <= bl.x <= m["box"][2] + 6
+                       and m["box"][1] < float(st.bottom_y) and m["box"][3] > float(st.top_y)), None)
+            if mk is not None:
+                log.abstain(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(c.measure_index),
+                            reason=ABSTAIN.OUT_OF_SCOPE, cell=c.measure_index, owner="barline", unit="area", why="bracket_ink",
+                            barline_x=int(bl.x))
                 continue
             log.observe(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA,
                         [round(bl.x - 0.45 * sp, 1), float(st.top_y), round(bl.x + 0.45 * sp, 1), float(st.bottom_y)],
@@ -7677,7 +7692,8 @@ def stems_from_strokes_retires_scans() -> bool:
     return (os.environ.get(STEMS_FROM_STROKES_ENV, "0").strip().lower() in ("1", "true", "yes", "on") and stroke_map_enabled())
 
 
-def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False) -> Dict[Tuple[int, int, int, int], Any]:
+def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
+                      detections: Optional[Dict[str, List[Any]]] = None) -> Dict[Tuple[int, int, int, int], Any]:
     """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
@@ -7714,7 +7730,10 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
             continue
-        res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None))
+        keep = _split_keep_whole(detections, sub) if SM.split_joins_enabled() else []
+        touch = _split_touch_boxes(detections, sub) if SM.split_joins_enabled() else []
+        res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None),
+                             keep_whole=keep, touch_boxes=touch)
         if res is None:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
@@ -7745,6 +7764,14 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                 optional["staff_local"] = False
             if i == 0:                                   # a CELL fact, said once
                 optional["cell_n_below_floor"] = res.n_below_floor
+                if res.split_refused:                    # ROADMAP 2.239 (OMR_SPLIT_JOINS): pieces left whole, and why
+                    optional["cell_split_refused"] = dict(sorted(res.split_refused.items()))
+                if keep:                                 # ... and the clef / key / meter boxes no split cuts inside (a re-run reads them here)
+                    optional["cell_keep_whole"] = keep
+                if touch:                                # ... and the boxes a touching accidental is cut against (2.239 r3)
+                    optional["cell_touch_boxes"] = touch
+            if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
+                optional["joined_to"] = [[j, how] for j, how in st.joined_to]
             if page_ok:
                 x, y, w, h = st.box
                 optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
@@ -7761,6 +7788,79 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
         if progress:
             print(f"  gather strokes {sub.to_key()}: {len(res.strokes)}")
     return cache
+
+
+def _split_keep_whole(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[Any]]:
+    """ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the cell's clef, key and meter detector boxes (canonical x0, y0, x1, y1, whole px): ink mostly
+    inside one is never cut at a join -- its area claim already holds it whole (Sean's tiles 2 and 5: "small part of an F / G clef").
+    A CLEF box carries a fifth item "clef:<G|F|C>" (2.239 r3, Sean's round-2 tile 7 "tip cut of a G clef"): the pieces the openings cut
+    the clef into are joined back into one stroke, read outward from the box and bounded by the family's size (`stroke_map.clef_region`)."""
+    from . import stroke_map as SM
+    out: List[List[Any]] = []
+    for d in (detections or {}).get(sub.to_key(), ()):
+        name = str(getattr(d, "smufl_name", "") or "")
+        clef = _is_clef_class(name, getattr(d, "category", None))
+        if clef or name.startswith(("key", "timeSig")):
+            x, y = float(d.x_canonical), float(d.y_canonical)
+            r: List[Any] = [int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))]
+            out.append(r + ["clef:%s" % (SM.clef_family(name) or "")] if clef else r)
+    return sorted(out, key=lambda r: (r[:4], len(r)))
+
+
+def SM_clef_family(name: Any) -> Optional[str]:
+    from .stroke_map import clef_family
+    return clef_family(str(name or ""))
+
+
+def _clef_area_by_ink(area: List[float], family: Optional[str], cell: Any, res: Any, sp: float) -> Tuple[List[float], Optional[List[float]]]:
+    """ROADMAP 2.239 r3 (`OMR_SPLIT_JOINS`; Sean 2026-10-30: "make sure the box is big enough to claim all the ink and it should be based
+    off of shape and size"): a clef's claimed AREA is grown from its box to every stroke of its cell standing mostly inside the box (the
+    stroke map joins a clef's pieces into one stroke, `stroke_map._merge_clefs`, its tail and curl and dots included), never beyond the
+    clef's own size around the box (`stroke_map.clef_region`, the SMuFL glyph boxes). Returns (area, the box it grew from or None)."""
+    from . import stroke_map as SM
+    if not SM.split_joins_enabled() or res is None or isinstance(res, str) or not sp:
+        return area, None
+    up, cb = getattr(cell, "upscale_factor", None), getattr(cell, "bbox_page_px", None)
+    if not up or not cb:
+        return area, None
+    canon = [(area[0] - cb[0]) * up, (area[1] - cb[1]) * up, (area[2] - cb[0]) * up, (area[3] - cb[1]) * up]
+    rx0, ry0, rx1, ry1 = SM.clef_region(area, family, sp)
+    grown = list(area)
+    for i, sh in SM.strokes_in_box(res, canon):
+        if sh < SM.COVER_SHARE_MIN:
+            continue
+        st = res.strokes[i] if i < len(getattr(res, "strokes", None) or ()) else None
+        if st is None or not getattr(st, "box", None):
+            continue
+        x, y, w, h = st.box
+        pb = [cb[0] + x / up, cb[1] + y / up, cb[0] + (x + w) / up, cb[1] + (y + h) / up]
+        if pb[0] < rx0 - 1 or pb[1] < ry0 - 1 or pb[2] > rx1 + 1 or pb[3] > ry1 + 1:
+            continue                                  # beyond the clef's size: not the clef's ink
+        grown = [min(grown[0], pb[0]), min(grown[1], pb[1]), max(grown[2], pb[2]), max(grown[3], pb[3])]
+    if [round(v, 1) for v in grown] == [round(v, 1) for v in area]:
+        return area, None
+    return [float(v) for v in grown], [round(float(v), 1) for v in area]
+
+
+def _split_touch_boxes(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[Any]]:
+    """ROADMAP 2.239 r3 (`OMR_SPLIT_JOINS`; Sean's round-2 tile 1 "part of a ledger line and a flat"): the cell's ACCIDENTAL boxes (the
+    `accidental*` classes; a key signature's are kept whole) and its head, ledger and stem boxes, `[family, x0, y0, x1, y1]` canonical --
+    only when the cell holds an accidental box (else nothing to cut, nothing filed). The stroke map cuts a piece across an accidental box
+    and one of the others at the boundary between the two boxes' own ink."""
+    from .stroke_owner import family_of
+    from . import stroke_map as SM
+    out: List[List[Any]] = []
+    for d in (detections or {}).get(sub.to_key(), ()):
+        name = str(getattr(d, "smufl_name", "") or "")
+        fam = family_of(name, getattr(d, "category", None))
+        if fam == SM.TOUCH_ACC_FAMILY and not name.lower().startswith("accidental"):
+            continue
+        if fam == SM.TOUCH_ACC_FAMILY or fam in SM.TOUCH_OTHER_FAMILIES:
+            x, y = float(d.x_canonical), float(d.y_canonical)
+            out.append([fam, int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+    if not any(r[0] == SM.TOUCH_ACC_FAMILY for r in out):
+        return []
+    return sorted(out)
 
 
 def gather_glyph_strokes(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
@@ -10315,6 +10415,50 @@ STACKED_BLOB_MIN_SLOT_FILL = 0.75
 STACKED_BLOB_WINDOW_SPACES = 2.5
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.232 -- `OMR_STACKED_HEAD_STEP_APART`, default ON (Sean 2026-10-30, tiles 12/12).
+# The fit scores a head TEMPLATE at every slot and, at k=1, names the one
+# best-scoring slot. Two touching HOLLOW heads a third apart (a chord) leave a
+# ring of ink at the slot BETWEEN them too, and `max(centre, ring)` there beats
+# either real head (Litolff p3 `glyph/3/0/4/3/12`: slots 1 / 2 / 3 scored 0.68 /
+# 0.87 / 0.77 under the eraser raster; the detector's boxes stand at 0.88 and
+# 3.24). The fit then said "ONE head, at slot 2" -- a position NEITHER box
+# stands at -- and ADJUDICATE refused one of the two as that head's duplicate.
+# The fit's hypothesis model never asks whether its head lands on a box the
+# detector drew (`observed` only broke exact ties). A head a staff step or more
+# from every box was not seen by anything but the template: cannot tell.
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: A k=1 fit whose chosen slot is at least this many half-steps (positions; 1.0
+#: = a staff step = 0.5 sp) from EVERY box of its group is a head no box
+#: stands on. Measured on the Litolff 20261029-night sample pages (benchmarks/
+#: acceptance FINDINGS 2026-10-30, 2.232): of 141 hollow k=1 groups 22 sit at
+#: >= 1.0, of 48 filled groups none (filled groups have the blob test); a head
+#: boxed twice puts its slot within 0.5 of a box.
+STACKED_HEAD_BOX_STEP_POSITIONS = 1.0
+
+
+def stacked_head_step_apart_enabled() -> bool:
+    """`OMR_STACKED_HEAD_STEP_APART` -- ROADMAP 2.232. **Default ON** (Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
+    return os.environ.get("OMR_STACKED_HEAD_STEP_APART", "").strip().lower() \
+        not in ("0", "false", "no", "off")
+
+
+def stacked_head_off_every_box(chosen: Sequence[float],
+                               observed: Sequence[float]) -> Optional[float]:
+    """PURE -- ROADMAP 2.232. At k=1: how far (positions) the chosen head's slot
+    stands from the NEAREST detector box of its group, when that is a staff
+    step or more AND the boxes themselves span a pair (no more than a chord of
+    thirds, `STACKED_HOLLOW_MAX_SPREAD_POSITIONS`, the domain of 2.132's pair
+    test); else `None`."""
+    if len(chosen) != 1 or len(observed) < 2:
+        return None
+    if max(observed) - min(observed) > STACKED_HOLLOW_MAX_SPREAD_POSITIONS:
+        return None
+    nearest = min(abs(float(chosen[0]) - float(o)) for o in observed)
+    return nearest if nearest >= STACKED_HEAD_BOX_STEP_POSITIONS else None
+
+
 def stacked_second_head_enabled() -> bool:
     """`OMR_STACKED_SECOND_HEAD` -- ROADMAP 2.129. **Default ON** (landed
     2026-10-14, Sean: "1 land"); an explicit `0/false/no/off` turns it off."""
@@ -10982,6 +11126,20 @@ def gather_stacked_head_fit(log: Log, cells: Sequence[Any],
 
             candidates_detail = {"scores": {str(p): round(v, 4)
                                             for p, v in fit["scored"].items()}}
+            if (stacked_head_step_apart_enabled() and not filled_group
+                    and not fit["ambiguous"] and fit["k"] == 1):
+                # ⚠️ ROADMAP 2.232 -- the fit's one head stands on no box (see
+                # the section comment): ABSTAIN with how far, never refuse a
+                # box in favour of a head nothing drew (rule 8).
+                off = stacked_head_off_every_box(fit["positions"],
+                                                 positions_seen)
+                if off is not None:
+                    fit["ambiguous"] = True
+                    fit["margin"] = STACKED_HEAD_BOX_STEP_POSITIONS - off
+                    candidates_detail["head_on_no_box"] = {
+                        "slot": list(fit["positions"]),
+                        "boxes": [round(v, 2) for v in positions_seen],
+                        "nearest_positions": round(off, 3)}
             if fit.get("second_head_by"):
                 candidates_detail["second_head_by"] = fit["second_head_by"]
             if fit.get("near_miss"):
@@ -14801,11 +14959,13 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                         area = [min(b[0] for b in boxes), min(b[1] for b in boxes), max(b[2] for b in boxes), max(b[3] for b in boxes)]
                 if area is None:
                     continue
+                area, grown = _clef_area_by_ink(area, d0.get("family"), c0, (stroke_cells or {}).get((p, sys_idx, li, 0)), sp)
                 inside = _claim_boxes_inside(binary, area, dets0, c0, lambda gi: R.glyph(p, sys_idx, li, 0, gi).to_key(),
                                              lines, sp, named=set(named))
                 log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(0),
                             cell=0, owner=CL.OWNER_CLEF, owner_row=r0.id, owner_glyph=None, unit="area", standing="READ",
-                            source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3))
+                            source="clef_locator", locator_frame=r0.frame, boxes_inside=inside, space_page_px=round(sp, 3),
+                            **({"grown_from_box": grown} if grown else {}))
                 if stroke_cells:               # ROADMAP 2.198 (OMR_STROKE_MAP): the same clef as a list of strokes
                     from . import stroke_map as SM
                     res0 = stroke_cells.get((p, sys_idx, li, 0))
@@ -14836,13 +14996,15 @@ def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dic
                     standing = CL.clef_box_standing(pb, cb, sp, k)
                     gsub = R.glyph(p, sys_idx, li, k, gi)
                     g = log.rows(Q.GLYPH_BOX, gsub)
+                    pb, grown = _clef_area_by_ink(pb, SM_clef_family(d.smufl_name), c, (stroke_cells or {}).get((p, sys_idx, li, k)), sp)
                     inside = _claim_boxes_inside(binary, pb, dets, c, lambda j, k=k: R.glyph(p, sys_idx, li, k, j).to_key(),
                                                  lines, sp, skip=(gi,))
                     log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in pb], reader=READERS.CV_CLAIMED_REGISTER,
                                 frame=frame_cell(k), cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None,
                                 owner_glyph=gsub.to_key(), unit="area", standing=standing, source="detector",
                                 start_spaces=round((pb[0] - cb[0]) / sp, 3),
-                                cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3))
+                                cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3),
+                                **({"grown_from_box": grown} if grown else {}))
                     if stroke_cells:           # ROADMAP 2.198 (OMR_STROKE_MAP): the owner box's strokes, read off its `Q.GLYPH_STROKES` row
                         from . import stroke_map as SM
                         gs = log.rows(Q.GLYPH_STROKES, gsub)
@@ -15488,7 +15650,9 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
 
 
 def _left_edge_marks(pws: Any, sys_idx: int) -> List[Dict[str, Any]]:
-    """The barline lane's whole left-edge marks of one system (`page_wide.system_rules`), [] where the page-wide pass did not run."""
+    """The barline lane's whole left-edge marks of one system (`page_wide.system_rules`), [] where the page-wide pass did not run. Read
+    ONCE, by the page-wide pass (Sean 2026-10-29: no second scan); 2.239's left-side edge test lives in that one pass
+    (`measure_extractor._left_edge_read`)."""
     from ..page_wide import system_rules
     rules = system_rules(pws, sys_idx)
     return list(((rules or {}).get("left_edge") or {}).get("marks") or ())
@@ -16733,7 +16897,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         arcs_summary = _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
-        stroke_cells = gather_stroke_map(log, cells, local, progress=progress)
+        stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections)
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)

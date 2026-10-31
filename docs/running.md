@@ -133,8 +133,9 @@ python3 -m tools.omr.staged.lane_report --out DIR                               
 ```
 
 Runs the tree OFF and ON through EXPORT on the **frozen page sample** (`benchmarks/lane-report/sample.json`, 8 pages per
-plate drawn once with seed 2188 from the 20261020-night records, plus each plate's opening page loaded for its meter/key,
-never counted), one fresh process per (plate, arm), `--workers N` (default 2, max 4). It prints, per plate, what changed in
+plate drawn once with seed 2188 from the 20261020-night records and replayed from the night named by `lane_report.DEFAULT_TAG`
+= `20261029-night` (ROADMAP 2.244: no `--tag` to remember; a `--tag` with no record raises), plus each plate's opening page
+loaded for its meter/key, never counted), one fresh process per (plate, arm), `--workers N` (default 2, max 4). It prints, per plate, what changed in
 the exported MusicXML by kind (`+` gained `-` lost `~` changed; notes, rests, accidentals, dots, flags, beams, ties, slurs,
 articulations, fermatas, ornaments, tuplets, note values, pitches, blue marks, dynamics, wedges, words, clef/key/meter), red bars,
 the OFF==record control, and Sean's judged answers going right->wrong / right->gone / wrong->right; and writes
@@ -146,6 +147,34 @@ refused unless `--allow-unknown-flag` (the can-it-fail control). The first run c
 record (streamed, one reader at a time under `.record-load.lock`) into `library/_shared-records/lane-report-slices-*`. Wall time:
 about 16 min for both plates at 2 workers (Brahms is ~13 min an arm). The sample is frozen: `lane_report sample` refuses to
 re-draw without `--force`, Sean's word.
+
+**Changed places nobody has judged (ROADMAP 2.244).** The report also prints, per plate, `NOT JUDGED: N changed places no tile of
+Sean's covers` (by kind; every place in `DIR/unjudged.txt` as plate, page, system/staff/cell, kind, side, value). A judged tile
+covers a change only if it is on the same page, its box overlaps the change's box (same cell, for a tile that has a `position`),
+and its question speaks to that kind (a value tile covers a note's value, not the accidental in front of it). `--unjudged-tiles N`
+(<= 12) cuts blind tiles for them into `DIR/unjudged/` (`tiles/`, `key.json` outside, one orange box, the plain question in the README).
+
+**Judged tiles are matched by PLACE (ROADMAP 2.244).** A tile with a `position` (page, system, staff, cell, page box; every
+lane tile since 2.231) is found in each record by that cell plus an overlapping glyph box of the same kind, then scored at the glyph
+key found there; the id is only a tie-break. A tile with no position keeps the old key. `judged score REC --doc litolff` prints
+`matched: by place N (K at another id than asked) | by id key, no position M | position but no mark here P`; `--by key` is the old
+rule; `--derive-position` gives the old mark-sized tiles the position their key and box name and lists every tile that scores
+differently by place than by key.
+
+**Several lanes, one test (ROADMAP 2.244).**
+
+```bash
+python3 -m tools.omr.staged.one_test --flag OMR_A --flag OMR_B=2 --flag OMR_C --out out/one-test/DATE \
+    [--plates litolff,brahms] [--from auto|adjudicate|gather] [--cell-map master] [--tiles 9] [--unjudged-tiles 12]
+```
+
+Merge the lanes' branches into ONE tree first, then run this on that tree. It runs the frozen sample once per arm -- `base` (every
+flag OFF), `only-<FLAG>` (each alone), `all` -- on the same stages, cells (`--cell-map master`), detector cache and OCR, and prints
+per arm the three measures against `base` (file change by kind, judged right->wrong and unwritten->wrong, changed places not
+judged), then INTERACTIONS: the places where `all` differs from the union of the singles, and the judged right->wrong only the
+combination causes. One blind sheet is drawn across the lanes and the interactions (each key names the tile's arm). The first
+output line is the CONTROL line (tree + uncommitted-change hash, stage, night, pages, cells, detector cache, OCR); the command
+RAISES `ArmMismatch` instead of comparing arms that differ in any of them (`--reuse` re-reads and checks the arms under `DIR/work`).
 
 **Read the page once (ROADMAP 2.189).** `YoloDetector._predict` is the one seam to ultralytics' `predict`
 (`tools/omr/detector_cache.py`). With `OMR_DETECTOR_CACHE=DIR` (or `python3 -m tools.omr.staged ... --detector-cache DIR`) it stores, per
@@ -175,6 +204,8 @@ deliberately, after a staff/barline change lands); `cell_map moved PDF --pages .
 cell (`p s st c`, old -> new) the CURRENT tree cuts differently -- a lane whose job is cells reports this; `cell_map verify`
 is the same with exit 1 on any difference; `cell_map against-record PDF REC` checks a master against a record's
 `cell_box`/`staff_lines` rows. Findings: `benchmarks/master-cell-map-2026-10/FINDINGS.md`.
+
+**Capture readout (ROADMAP 2.236).** `python3 -m tools.omr.staged.claim_readout REC [--pages 0,4] [--truth auto] [--tiles DIR] [--out DIR] [--env OMR_ARC_CLAIM=0]` says, per page, how much of the page's dark ink (px and share) is claimed once, twin-claimed (one kind, two boxes), contested (two kinds, `settled` or `open`) or unclaimed, by owner kind, with the strokes of the padded cells de-duplicated in page pixels (module doc: the master cells are re-cut, matched stroke for stroke to the record, and OR-ed into one canvas), and ranks GATHER's to-do list. REC is a lane-report slice (`brahms:20261029-night`, `litolff:20261029-night`), a slice directory, or a `.record.json` under 5 GB (cut once, GATHER rows only, into `library/_shared-records/claim-readout-slices-*`); the 19.6 GB Brahms record is refused. `--truth auto` scores each of Sean's labelled boxes (aligned hand truth, same master) as right / nothing / wrong kind / split; `--tiles DIR` writes 12 tiles of the biggest unclaimed or contested ink (one staff, one thin box, key.json beside the folder). `claim_readout controls REC --page N` runs the controls that can fail (the arc register drops with `OMR_ARC_CLAIM=0`, a planted double claim shows contested, an identical copy of the rows reads identically, and the re-run stroke owner equals the record's saved verdicts where it holds them). About 15 s a Brahms page, 60 s a Litolff page, one process, no OCR server. **Claim-order check (ROADMAP 2.241).** `python3 -m tools.omr.staged.claim_order REC [--pages ...] [--tiles DIR] [--env NAME=V]` (also `claim_readout order ...`) lays the page-claim order (staff, barlines/brackets, clef/key/meter, words/dynamics, arcs/hairpins, whole rests, heads, stems/beams/flags, accidentals, rests, dots) over the same canvas and classes every piece of ink as ORDER-OK, EARLIER-UNREAD, ORDER-VIOLATION (a later layer owns ink an earlier one read, by pair), OPEN, SPLIT-ACROSS-CLAIM (a clef or bracket the stroke map cut) or NO-READER; `claim_order controls REC --page N` runs its controls, `claim_order tip` (from a tree with the 2.239 split) its clef-tip control, `claim_order merge-tiles OUT pool.json...` cuts 12 tiles over plates.
 
 ## 3. The two re-gathers
 

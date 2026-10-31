@@ -1,0 +1,197 @@
+page 1 done 8s: dbl strokes 70883 of 449403 ({'dbl_two_staves': 70883, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 31, 'tilt_ge_0.45sp': 27})
+page 2 done 16s: dbl strokes 270405 of 1137536 ({'dbl_two_staves': 270405, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 35, 'tilt_ge_0.45sp': 1})
+page 4 done 16s: dbl strokes 287785 of 1184679 ({'dbl_two_staves': 287785, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 83, 'tilt_ge_0.45sp': 4})
+page 6 done 15s: dbl strokes 254326 of 1147304 ({'dbl_two_staves': 254326, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 35, 'tilt_ge_0.45sp': 23})
+page 8 done 15s: dbl strokes 171058 of 1025951 ({'dbl_two_staves': 171058, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 31, 'tilt_ge_0.45sp': 1})
+page 9 done 15s: dbl strokes 172551 of 884008 ({'dbl_two_staves': 172551, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 53, 'tilt_ge_0.45sp': 11})
+page 10 done 16s: dbl strokes 216492 of 1111142 ({'dbl_two_staves': 216492, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 43, 'tilt_ge_0.45sp': 1})
+page 11 done 14s: dbl strokes 136113 of 786767 ({'dbl_two_staves': 136113, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 113, 'tilt_ge_0.45sp': 4})
+page 16 done 15s: dbl strokes 218257 of 1111666 ({'dbl_two_staves': 218257, 'dbl_same_staff_two_bars': 0, 'straddles_off_staff': 77, 'tilt_ge_0.45sp': 2})
+{
+ "total": {
+  "ink_px": 15974618,
+  "ink_in_cells_px": 15808164,
+  "area_in_cells_px": 65490673,
+  "area_seen_twice_px": 19209455,
+  "ink_in_area_seen_twice_px": 2012211,
+  "stroke_px_sum_over_cells": 10636326,
+  "stroke_px_page": 8838456,
+  "stroke_px_seen_2plus": 1797870,
+  "stroke_px_extra_copies": 1797870,
+  "dbl_two_staves": 1797870,
+  "dbl_two_systems": 0,
+  "dbl_same_staff_two_bars": 0,
+  "area_same_staff_two_bars": 0,
+  "dbl_inside_a_staff_band": 127885,
+  "dbl_in_gap": 1669985,
+  "staff_bar_pairs": 2692,
+  "rule_px": 989691,
+  "rule_px_left_of_cut": 443645,
+  "staff_bar_rule_split_by_cut": 2072,
+  "rule_px_outside_claim": 29074,
+  "wrong_side_px": 27300,
+  "staff_bar_rule_wholly_in_left_bar": 230,
+  "straddles_in_staff": 63,
+  "straddles_off_staff": 501,
+  "staff_bar_rule_partly_outside_claim": 166,
+  "staff_bar_wrong_side_ink": 148,
+  "staff_bar_double_rule": 234,
+  "staff_bar_no_local_rule": 20,
+  "tilt_n": 2672,
+  "tilt_ge_0.25sp": 276,
+  "tilt_ge_0.45sp": 74,
+  "boxes": 19951,
+  "box_twins_two_staves": 1653,
+  "tilt_max_x1000": 1492
+ },
+ "twins_top": [
+  [
+   "beam",
+   257
+  ],
+  [
+   "dynamicF",
+   251
+  ],
+  [
+   "noteheadBlackInSpace",
+   248
+  ],
+  [
+   "noteheadBlackOnLine",
+   227
+  ],
+  [
+   "slur",
+   149
+  ],
+  [
+   "dynamicP",
+   93
+  ],
+  [
+   "ledgerLine",
+   91
+  ],
+  [
+   "tie",
+   58
+  ],
+  [
+   "noteheadHalfInSpace",
+   55
+  ],
+  [
+   "fermataAbove",
+   44
+  ],
+  [
+   "dynamicS",
+   42
+  ],
+  [
+   "accidentalNatural",
+   36
+  ]
+ ],
+ "edge_v_top": [
+  [
+   "dynamicF",
+   318
+  ],
+  [
+   "noteheadBlackOnLine",
+   310
+  ],
+  [
+   "beam",
+   283
+  ],
+  [
+   "noteheadBlackInSpace",
+   210
+  ],
+  [
+   "slur",
+   134
+  ],
+  [
+   "accidentalFlat",
+   133
+  ],
+  [
+   "dynamicP",
+   80
+  ],
+  [
+   "tie",
+   77
+  ],
+  [
+   "clefG",
+   75
+  ],
+  [
+   "noteheadHalfInSpace",
+   63
+  ],
+  [
+   "accidentalNatural",
+   57
+  ],
+  [
+   "noteheadHalfOnLine",
+   37
+  ]
+ ],
+ "edge_h_top": [
+  [
+   "staff",
+   1534
+  ],
+  [
+   "ledgerLine",
+   1059
+  ],
+  [
+   "beam",
+   477
+  ],
+  [
+   "tie",
+   307
+  ],
+  [
+   "slur",
+   235
+  ],
+  [
+   "arpeggiato",
+   146
+  ],
+  [
+   "restQuarter",
+   44
+  ],
+  [
+   "noteheadBlackInSpace",
+   34
+  ],
+  [
+   "dynamicF",
+   30
+  ],
+  [
+   "accidentalFlat",
+   29
+  ],
+  [
+   "noteheadBlackOnLine",
+   29
+  ],
+  [
+   "timeSig4",
+   24
+  ]
+ ]
+}
