@@ -1,4 +1,4 @@
-"""ROADMAP 2.239 (`OMR_SPLIT_JOINS`, default OFF): the stroke map cuts a fused piece at its joins (head|stem, head|head, head|ledger,
+"""ROADMAP 2.239 (`OMR_SPLIT_JOINS`, default ON since 2026-10-30): the stroke map cuts a fused piece at its joins (head|stem, head|head, head|ledger,
 head|arc), every part keeps a `joined_to` link and no ink is lost; the page-wide barline claim leaves a whole left-edge mark's ink to the bracket.
 Synthetic cells of KNOWN geometry; each control below can FAIL (a notch cut-off no scan can reach leaves the stack whole)."""
 import os
@@ -48,9 +48,9 @@ class SplitChord(unittest.TestCase):
     def setUp(self):
         self.img, self.raw = _chord()
 
-    def test_off_is_one_vertical_and_byte_identical_to_the_default(self):
+    def test_off_is_one_vertical_and_byte_identical_to_the_flag_off(self):
         off = SM.map_strokes(self.img, SP, LINES, self.raw, split_joins=False)
-        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: ""}):
+        with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: "0"}):
             dflt = SM.map_strokes(self.img, SP, LINES, self.raw)
         self.assertEqual([(s.kind, s.box) for s in off.strokes], [(s.kind, s.box) for s in dflt.strokes])
         big = max(off.strokes, key=lambda s: s.area_sp2)
@@ -158,7 +158,7 @@ class StrokeRowsCarryTheJoin(unittest.TestCase):
         img, raw = _chord()
         c = types.SimpleNamespace(page_index=0, staff_index=0, measure_index=0, image_no_staff=img, binary=raw,
                                   staff_line_ys_canonical=LINES, upscale_factor=1.0, bbox_page_px=(0, 0, 1400, 1100))
-        for word, want in (("", False), ("1", True)):
+        for word, want in (("0", False), ("", True)):
             log = G.Log()
             with mock.patch.dict(os.environ, {SM.SPLIT_JOINS_ENV: word, G.STROKE_MAP_ENV: "1"}), \
                     mock.patch.object(G, "_cell_grid", lambda _c: (LINES[0], SP / 2.0)):
@@ -182,8 +182,8 @@ class BarlineClaimLeavesBracketInk(unittest.TestCase):
                       and type(r).__name__ != "Abstention")
 
     def test_off_claims_the_bracket_column_on_flag_leaves_it(self):
-        self.assertEqual(self._run(""), [105, 400])
-        self.assertEqual(self._run("1"), [400])
+        self.assertEqual(self._run("0"), [105, 400])
+        self.assertEqual(self._run(""), [400])
 
 
 if __name__ == "__main__":
