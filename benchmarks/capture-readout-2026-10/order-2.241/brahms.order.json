@@ -167,15 +167,15 @@
      "barline_bracket": 911524,
      "clef_key_meter": 45559,
      "dot_mark": 72048,
-     "head": 505954,
-     "rest": 156282,
-     "stem_beam_flag": 839008,
+     "head": 503697,
+     "rest": 166395,
+     "stem_beam_flag": 838514,
      "whole_rest": 60188,
-     "word_dynamic": 208679
+     "word_dynamic": 210731
     },
     "OPEN": {
      "accidental|dot_mark": 387,
-     "accidental|rest": 8983,
+     "accidental|rest": 4115,
      "arc_hairpin|accidental": 776,
      "arc_hairpin|head": 825,
      "barline_bracket|-": 5791,
@@ -186,19 +186,19 @@
      "head|-": 589,
      "head|dot_mark": 864,
      "head|rest": 427,
-     "rest|dot_mark": 1549,
+     "rest|dot_mark": 2018,
      "word_dynamic|-": 4844,
      "word_dynamic|dot_mark": 501
     },
     "ORDER-OK": {
-     "accidental": 5946,
+     "accidental": 1982,
      "arc_hairpin": 142441,
      "barline_bracket": 19355,
      "clef_key_meter": 67907,
-     "head": 13946,
+     "head": 13893,
      "stem_beam_flag": 3641,
      "whole_rest": 8778,
-     "word_dynamic": 13279
+     "word_dynamic": 13408
     },
     "ORDER-VIOLATION": {
      "arc_hairpin->accidental": 641,
@@ -214,7 +214,6 @@
      "clef_key_meter->stem_beam_flag": 2,
      "clef_key_meter->word_dynamic": 25,
      "head->dot_mark": 953,
-     "head->rest": 401,
      "head->stem_beam_flag": 41,
      "stem_beam_flag->accidental": 2258,
      "stem_beam_flag->dot_mark": 2071,
@@ -231,11 +230,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 3243392,
-    "NO-READER": 726730,
-    "OPEN": 28121,
-    "ORDER-OK": 275293,
-    "ORDER-VIOLATION": 9117,
+    "EARLIER-UNREAD": 3252806,
+    "NO-READER": 726004,
+    "OPEN": 23722,
+    "ORDER-OK": 271405,
+    "ORDER-VIOLATION": 8716,
     "SPLIT-ACROSS-CLAIM": 112628
    },
    "ink_px": 4395281,
@@ -245,20 +244,20 @@
   "14": {
    "by_pair": {
     "EARLIER-UNREAD": {
-     "accidental": 186329,
+     "accidental": 185535,
      "arc_hairpin": 141546,
      "barline_bracket": 713940,
      "clef_key_meter": 51169,
      "dot_mark": 41350,
-     "head": 419608,
-     "rest": 225128,
-     "stem_beam_flag": 710860,
+     "head": 417697,
+     "rest": 234683,
+     "stem_beam_flag": 710306,
      "whole_rest": 34732,
-     "word_dynamic": 209079
+     "word_dynamic": 210066
     },
     "OPEN": {
      "accidental|dot_mark": 756,
-     "accidental|rest": 7345,
+     "accidental|rest": 2331,
      "arc_hairpin|accidental": 2106,
      "barline_bracket|-": 12840,
      "barline_bracket|clef_key_meter": 54,
@@ -267,20 +266,21 @@
      "head|-": 462,
      "head|accidental": 1327,
      "head|dot_mark": 868,
-     "head|rest": 2550,
+     "head|rest": 2366,
      "word_dynamic|-": 1176,
-     "word_dynamic|accidental": 96,
+     "word_dynamic|accidental": 165,
+     "word_dynamic|head": 990,
      "word_dynamic|rest": 467
     },
     "ORDER-OK": {
-     "accidental": 7845,
+     "accidental": 5698,
      "arc_hairpin": 134712,
      "barline_bracket": 9462,
      "clef_key_meter": 55188,
-     "head": 10120,
-     "stem_beam_flag": 2272,
+     "head": 10097,
+     "stem_beam_flag": 2299,
      "whole_rest": 2586,
-     "word_dynamic": 15849
+     "word_dynamic": 16150
     },
     "ORDER-VIOLATION": {
      "barline_bracket->arc_hairpin": 130,
@@ -294,7 +294,7 @@
      "stem_beam_flag->accidental": 1477,
      "stem_beam_flag->dot_mark": 1913,
      "stem_beam_flag->rest": 1183,
-     "word_dynamic->accidental": 356,
+     "word_dynamic->accidental": 937,
      "word_dynamic->arc_hairpin": 110,
      "word_dynamic->dot_mark": 96
     },
@@ -306,11 +306,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 2733741,
-    "NO-READER": 531805,
-    "OPEN": 31123,
-    "ORDER-OK": 238034,
-    "ORDER-VIOLATION": 7777,
+    "EARLIER-UNREAD": 2741024,
+    "NO-READER": 529922,
+    "OPEN": 26984,
+    "ORDER-OK": 236192,
+    "ORDER-VIOLATION": 8358,
     "SPLIT-ACROSS-CLAIM": 111467
    },
    "ink_px": 3653947,
@@ -325,15 +325,15 @@
      "barline_bracket": 723142,
      "clef_key_meter": 36681,
      "dot_mark": 65653,
-     "head": 629096,
-     "rest": 209071,
-     "stem_beam_flag": 785104,
+     "head": 627770,
+     "rest": 213923,
+     "stem_beam_flag": 785631,
      "whole_rest": 25390,
-     "word_dynamic": 143964
+     "word_dynamic": 145362
     },
     "OPEN": {
      "accidental|dot_mark": 6154,
-     "accidental|rest": 2066,
+     "accidental|rest": 297,
      "arc_hairpin|accidental": 2146,
      "arc_hairpin|head": 351,
      "arc_hairpin|stem_beam_flag": 143,
@@ -343,22 +343,23 @@
      "dot_mark|-": 93,
      "head|-": 1131,
      "head|accidental": 1522,
-     "head|rest": 2260,
+     "head|rest": 2025,
+     "rest|dot_mark": 347,
      "whole_rest|head": 971,
      "word_dynamic|-": 163,
      "word_dynamic|accidental": 243,
      "word_dynamic|dot_mark": 197
     },
     "ORDER-OK": {
-     "accidental": 8193,
+     "accidental": 6188,
      "arc_hairpin": 170680,
      "barline_bracket": 10572,
      "clef_key_meter": 53656,
      "head": 42381,
-     "rest": 149,
+     "rest": 536,
      "stem_beam_flag": 7479,
      "whole_rest": 780,
-     "word_dynamic": 8766
+     "word_dynamic": 7804
     },
     "ORDER-VIOLATION": {
      "arc_hairpin->accidental": 252,
@@ -368,10 +369,10 @@
      "clef_key_meter->stem_beam_flag": 2,
      "head->accidental": 889,
      "head->dot_mark": 650,
-     "head->rest": 395,
+     "head->rest": 343,
      "stem_beam_flag->accidental": 3691,
      "stem_beam_flag->dot_mark": 6092,
-     "stem_beam_flag->rest": 1987,
+     "stem_beam_flag->rest": 1460,
      "whole_rest->head": 36,
      "word_dynamic->accidental": 291,
      "word_dynamic->arc_hairpin": 99,
@@ -385,11 +386,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 3170989,
-    "NO-READER": 694001,
-    "OPEN": 24188,
-    "ORDER-OK": 302656,
-    "ORDER-VIOLATION": 15120,
+    "EARLIER-UNREAD": 3176440,
+    "NO-READER": 693366,
+    "OPEN": 22531,
+    "ORDER-OK": 300076,
+    "ORDER-VIOLATION": 14541,
     "SPLIT-ACROSS-CLAIM": 108537
    },
    "ink_px": 4315491,
@@ -404,17 +405,18 @@
      "barline_bracket": 745437,
      "clef_key_meter": 41941,
      "dot_mark": 56233,
-     "head": 472948,
-     "rest": 248240,
-     "stem_beam_flag": 877905,
+     "head": 471256,
+     "rest": 261110,
+     "stem_beam_flag": 880071,
      "whole_rest": 37892,
-     "word_dynamic": 290835
+     "word_dynamic": 294874
     },
     "OPEN": {
      "accidental|dot_mark": 82,
-     "accidental|rest": 7259,
-     "arc_hairpin|accidental": 929,
+     "accidental|rest": 77,
+     "arc_hairpin|accidental": 538,
      "arc_hairpin|head": 2552,
+     "arc_hairpin|rest": 391,
      "barline_bracket|-": 2428,
      "barline_bracket|clef_key_meter": 54,
      "clef_key_meter|-": 198,
@@ -422,25 +424,24 @@
      "clef_key_meter|head": 853,
      "dot_mark|-": 97,
      "head|-": 264,
-     "head|accidental": 2611,
+     "head|accidental": 2537,
      "head|rest": 1250,
-     "rest|dot_mark": 496,
-     "stem_beam_flag|rest": 467,
+     "rest|dot_mark": 1387,
      "whole_rest|rest": 770,
-     "word_dynamic|-": 2558,
+     "word_dynamic|-": 2556,
      "word_dynamic|accidental": 20,
      "word_dynamic|dot_mark": 131,
      "word_dynamic|rest": 412
     },
     "ORDER-OK": {
-     "accidental": 5969,
+     "accidental": 515,
      "arc_hairpin": 113386,
      "barline_bracket": 12305,
      "clef_key_meter": 57525,
      "head": 50804,
      "stem_beam_flag": 3229,
      "whole_rest": 3321,
-     "word_dynamic": 8596
+     "word_dynamic": 7591
     },
     "ORDER-VIOLATION": {
      "arc_hairpin->head": 416,
@@ -448,10 +449,10 @@
      "clef_key_meter->word_dynamic": 404,
      "head->accidental": 309,
      "head->dot_mark": 284,
-     "head->rest": 319,
+     "head->rest": 74,
      "stem_beam_flag->accidental": 3286,
-     "stem_beam_flag->dot_mark": 2079,
-     "stem_beam_flag->rest": 2710,
+     "stem_beam_flag->dot_mark": 2546,
+     "stem_beam_flag->rest": 544,
      "word_dynamic->accidental": 1888,
      "word_dynamic->arc_hairpin": 174,
      "word_dynamic->stem_beam_flag": 155
@@ -463,11 +464,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 3195757,
-    "NO-READER": 581882,
-    "OPEN": 24839,
-    "ORDER-OK": 255135,
-    "ORDER-VIOLATION": 12048,
+    "EARLIER-UNREAD": 3213140,
+    "NO-READER": 579736,
+    "OPEN": 18005,
+    "ORDER-OK": 248676,
+    "ORDER-VIOLATION": 10104,
     "SPLIT-ACROSS-CLAIM": 101697
    },
    "ink_px": 4171358,
@@ -482,15 +483,15 @@
      "barline_bracket": 722874,
      "clef_key_meter": 49681,
      "dot_mark": 52548,
-     "head": 570526,
-     "rest": 232289,
-     "stem_beam_flag": 645071,
+     "head": 569227,
+     "rest": 234655,
+     "stem_beam_flag": 644905,
      "whole_rest": 38339,
-     "word_dynamic": 242537
+     "word_dynamic": 243561
     },
     "OPEN": {
      "accidental|dot_mark": 1069,
-     "accidental|rest": 2696,
+     "accidental|rest": 602,
      "arc_hairpin|accidental": 1201,
      "arc_hairpin|head": 70,
      "barline_bracket|-": 1499,
@@ -503,17 +504,18 @@
      "head|rest": 1053,
      "head|stem_beam_flag": 758,
      "word_dynamic|-": 2410,
-     "word_dynamic|accidental": 667
+     "word_dynamic|accidental": 667,
+     "word_dynamic|head": 5
     },
     "ORDER-OK": {
-     "accidental": 1306,
+     "accidental": 1034,
      "arc_hairpin": 106410,
      "barline_bracket": 14543,
      "clef_key_meter": 53728,
-     "head": 58143,
+     "head": 58136,
      "stem_beam_flag": 8515,
      "whole_rest": 2034,
-     "word_dynamic": 6957
+     "word_dynamic": 7005
     },
     "ORDER-VIOLATION": {
      "arc_hairpin->accidental": 174,
@@ -529,7 +531,8 @@
      "stem_beam_flag->dot_mark": 2199,
      "stem_beam_flag->rest": 2557,
      "word_dynamic->accidental": 1765,
-     "word_dynamic->arc_hairpin": 1313
+     "word_dynamic->arc_hairpin": 1313,
+     "word_dynamic->head": 398
     },
     "SPLIT-ACROSS-CLAIM": {
      "arc_hairpin": 763,
@@ -539,11 +542,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 3098614,
-    "NO-READER": 714466,
-    "OPEN": 12536,
-    "ORDER-OK": 251636,
-    "ORDER-VIOLATION": 13495,
+    "EARLIER-UNREAD": 3100539,
+    "NO-READER": 714463,
+    "OPEN": 10447,
+    "ORDER-OK": 251405,
+    "ORDER-VIOLATION": 13893,
     "SPLIT-ACROSS-CLAIM": 101936
    },
    "ink_px": 4192683,
@@ -557,17 +560,18 @@
      "arc_hairpin": 327800,
      "barline_bracket": 775220,
      "clef_key_meter": 50840,
-     "dot_mark": 59397,
-     "head": 685249,
-     "rest": 331443,
-     "stem_beam_flag": 1129832,
+     "dot_mark": 59588,
+     "head": 684853,
+     "rest": 346300,
+     "stem_beam_flag": 1130767,
      "whole_rest": 25442,
-     "word_dynamic": 151678
+     "word_dynamic": 151681
     },
     "OPEN": {
      "accidental|dot_mark": 120,
-     "accidental|rest": 12268,
-     "arc_hairpin|accidental": 1171,
+     "accidental|rest": 5118,
+     "arc_hairpin|accidental": 984,
+     "arc_hairpin|rest": 187,
      "arc_hairpin|stem_beam_flag": 256,
      "barline_bracket|-": 4059,
      "barline_bracket|clef_key_meter": 109,
@@ -580,13 +584,12 @@
      "head|dot_mark": 1320,
      "head|rest": 6869,
      "head|stem_beam_flag": 395,
-     "rest|dot_mark": 191,
      "word_dynamic|-": 1232,
      "word_dynamic|accidental": 349,
      "word_dynamic|dot_mark": 796
     },
     "ORDER-OK": {
-     "accidental": 10172,
+     "accidental": 4283,
      "arc_hairpin": 220439,
      "barline_bracket": 12673,
      "clef_key_meter": 60039,
@@ -594,7 +597,7 @@
      "rest": 133,
      "stem_beam_flag": 13741,
      "whole_rest": 2132,
-     "word_dynamic": 10425
+     "word_dynamic": 10422
     },
     "ORDER-VIOLATION": {
      "arc_hairpin->accidental": 217,
@@ -607,11 +610,11 @@
      "clef_key_meter->head": 8,
      "head->accidental": 100,
      "head->dot_mark": 1216,
-     "head->rest": 1797,
+     "head->rest": 594,
      "head->stem_beam_flag": 103,
      "stem_beam_flag->accidental": 3298,
      "stem_beam_flag->dot_mark": 6033,
-     "stem_beam_flag->rest": 2550,
+     "stem_beam_flag->rest": 1615,
      "word_dynamic->accidental": 2569,
      "word_dynamic->arc_hairpin": 296,
      "word_dynamic->dot_mark": 450,
@@ -627,11 +630,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 3648160,
-    "NO-READER": 592840,
-    "OPEN": 31923,
-    "ORDER-OK": 419086,
-    "ORDER-VIOLATION": 19825,
+    "EARLIER-UNREAD": 3663750,
+    "NO-READER": 592621,
+    "OPEN": 24582,
+    "ORDER-OK": 413194,
+    "ORDER-VIOLATION": 17687,
     "SPLIT-ACROSS-CLAIM": 121281
    },
    "ink_px": 4833115,
@@ -646,9 +649,9 @@
      "barline_bracket": 828409,
      "clef_key_meter": 40155,
      "dot_mark": 40841,
-     "head": 250855,
-     "rest": 145148,
-     "stem_beam_flag": 474542,
+     "head": 249938,
+     "rest": 151320,
+     "stem_beam_flag": 473804,
      "whole_rest": 68643,
      "word_dynamic": 213247
     },
@@ -676,7 +679,7 @@
      "arc_hairpin": 107358,
      "barline_bracket": 7741,
      "clef_key_meter": 58142,
-     "head": 8585,
+     "head": 8491,
      "rest": 95,
      "stem_beam_flag": 3544,
      "whole_rest": 7441,
@@ -694,10 +697,10 @@
      "clef_key_meter->whole_rest": 18,
      "clef_key_meter->word_dynamic": 359,
      "head->dot_mark": 325,
-     "head->rest": 1294,
+     "head->rest": 412,
      "stem_beam_flag->accidental": 2475,
      "stem_beam_flag->dot_mark": 2531,
-     "stem_beam_flag->rest": 1418,
+     "stem_beam_flag->rest": 2250,
      "word_dynamic->arc_hairpin": 6,
      "word_dynamic->dot_mark": 359,
      "word_dynamic->head": 212,
@@ -710,11 +713,11 @@
     }
    },
    "class_px": {
-    "EARLIER-UNREAD": 2195771,
-    "NO-READER": 308300,
+    "EARLIER-UNREAD": 2200288,
+    "NO-READER": 303927,
     "OPEN": 18822,
-    "ORDER-OK": 210430,
-    "ORDER-VIOLATION": 18693,
+    "ORDER-OK": 210336,
+    "ORDER-VIOLATION": 18643,
     "SPLIT-ACROSS-CLAIM": 111177
    },
    "ink_px": 2863193,
@@ -726,22 +729,23 @@
  "total": {
   "by_pair": {
    "EARLIER-UNREAD": {
-    "accidental": 1338392,
+    "accidental": 1337598,
     "arc_hairpin": 1774981,
     "barline_bracket": 5865676,
     "clef_key_meter": 417438,
-    "dot_mark": 406846,
-    "head": 3833130,
-    "rest": 1557838,
-    "stem_beam_flag": 5907148,
+    "dot_mark": 407037,
+    "head": 3823332,
+    "rest": 1618623,
+    "stem_beam_flag": 5908824,
     "whole_rest": 297927,
-    "word_dynamic": 1677175
+    "word_dynamic": 1686678
    },
    "OPEN": {
     "accidental|dot_mark": 9078,
-    "accidental|rest": 41294,
-    "arc_hairpin|accidental": 9649,
+    "accidental|rest": 13217,
+    "arc_hairpin|accidental": 9071,
     "arc_hairpin|head": 5244,
+    "arc_hairpin|rest": 578,
     "arc_hairpin|stem_beam_flag": 399,
     "barline_bracket|-": 38913,
     "barline_bracket|clef_key_meter": 295,
@@ -753,30 +757,30 @@
     "clef_key_meter|word_dynamic": 1,
     "dot_mark|-": 763,
     "head|-": 4507,
-    "head|accidental": 7909,
+    "head|accidental": 7835,
     "head|dot_mark": 4152,
-    "head|rest": 17006,
+    "head|rest": 16587,
     "head|stem_beam_flag": 1724,
-    "rest|dot_mark": 3874,
+    "rest|dot_mark": 5390,
     "stem_beam_flag|accidental": 500,
-    "stem_beam_flag|rest": 467,
     "whole_rest|head": 1835,
     "whole_rest|rest": 770,
-    "word_dynamic|-": 18744,
-    "word_dynamic|accidental": 1406,
+    "word_dynamic|-": 18742,
+    "word_dynamic|accidental": 1475,
     "word_dynamic|dot_mark": 1625,
+    "word_dynamic|head": 995,
     "word_dynamic|rest": 879
    },
    "ORDER-OK": {
-    "accidental": 39808,
+    "accidental": 20077,
     "arc_hairpin": 1098933,
     "barline_bracket": 89459,
     "clef_key_meter": 446122,
-    "head": 282860,
-    "rest": 377,
-    "stem_beam_flag": 43525,
+    "head": 282683,
+    "rest": 764,
+    "stem_beam_flag": 43552,
     "whole_rest": 27072,
-    "word_dynamic": 82117
+    "word_dynamic": 80625
    },
    "ORDER-VIOLATION": {
     "arc_hairpin->accidental": 1286,
@@ -796,16 +800,16 @@
     "clef_key_meter->word_dynamic": 807,
     "head->accidental": 1958,
     "head->dot_mark": 5442,
-    "head->rest": 4236,
+    "head->rest": 1453,
     "head->stem_beam_flag": 216,
     "stem_beam_flag->accidental": 24232,
-    "stem_beam_flag->dot_mark": 24118,
-    "stem_beam_flag->rest": 12987,
+    "stem_beam_flag->dot_mark": 24585,
+    "stem_beam_flag->rest": 10191,
     "whole_rest->head": 36,
-    "word_dynamic->accidental": 7429,
+    "word_dynamic->accidental": 8010,
     "word_dynamic->arc_hairpin": 4685,
     "word_dynamic->dot_mark": 1150,
-    "word_dynamic->head": 424,
+    "word_dynamic->head": 822,
     "word_dynamic->stem_beam_flag": 8697
    },
    "SPLIT-ACROSS-CLAIM": {
@@ -817,11 +821,11 @@
    }
   },
   "class_px": {
-   "EARLIER-UNREAD": 23076551,
-   "NO-READER": 4717175,
-   "OPEN": 181366,
-   "ORDER-OK": 2110273,
-   "ORDER-VIOLATION": 104822,
+   "EARLIER-UNREAD": 23138114,
+   "NO-READER": 4707190,
+   "OPEN": 154907,
+   "ORDER-OK": 2089287,
+   "ORDER-VIOLATION": 100689,
    "SPLIT-ACROSS-CLAIM": 840701
   },
   "ink_px": 31030888,
