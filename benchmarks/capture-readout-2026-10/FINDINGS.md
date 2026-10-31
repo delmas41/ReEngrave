@@ -200,3 +200,80 @@ Top violation pairs (share of ink; Brahms / Litolff): stem->accidental 0.08 / 0.
 
 ### Caveats
 Reads are boxes and areas, with no confidence: a violation where the EARLIER read is wrong (tile 5) is the earlier reader's over-reach, not the owner's fault. Several cells see the same ink: the earliest owning layer is kept, which hides, never invents, a violation. The 50% share is the register's own cut, not tuned. SPLIT counts only clefs and READ brackets (one mark by convention); keys, meters and words are many marks. Only Brahms p0 has Sean's labels, and the tiles are not judged. The 8 Brahms and 9 Litolff pages are the 20261029-night lane-report slices; the 19.6 GB Brahms record was not opened.
+
+## 2.239 round 3 (after Sean's round-2 tiles: 1 "part of a ledger line and a flat", 7 "tip cut of a G clef", 12 "a bit of a note, a flat and stem"; and Sean on clefs: "make sure the box is big enough to claim all the ink and it should be based off of shape and size")
+
+Branch `lane-2.239-r3b` (on main after "Land 2.239"; same flag `OMR_SPLIT_JOINS`, no new flag). STAGED GATHER. Not landed: waits for Sean's tiles.
+
+### Cause and process lesson
+- **Touching marks (tile 1).** Every cut in rounds 1-2 reads a change of WIDTH inside one mark. Two different marks that merely touch have no such change. On Litolff p4 cell (4,0,8,10), the flat's bowl bottom rests on the rung left of the head. The ledger|head cut then made a left "stub" (x 106-187 canonical) that runs from inside the flat box (53-153) into the ledger box (155-372). Confirmed the same way on 26 pieces over the 4 pages (below). Almost all are ledger|head stubs running under an accidental.
+- **Clefs (tile 7).** The manager's hypothesis was false. The ball of tile 7's G clef lies INSIDE the detector box (every one of its strokes reads clef 1.0). The cause is the stroke map's openings themselves: they cut a G clef into about 25 pieces, with the flag OFF as well (vertical / horizontal / remainder). Keep-whole only stopped the split from cutting further. It never put the openings' pieces back together. 2.241's order canvas (above, (d)) found the same independently: the tip is cut by the original stroke map.
+- **Tile 12** is a flat the detector never boxed. It sits between two heads, and one horizontal piece joins the flat's bowl to both. With no accidental box there is no second witness for where the flat stops, so by rule 6 the piece stays whole.
+- **Process lesson:** a hypothesis about ink must be checked against the strokes before it is built on ("outside the box" was wrong). A fix to one stage needs the downstream reader as its control. The first touch version merged the accidental's crumb into the touching accidental stroke, and the 2.201 family reading lost 4 naturals and a flat. Only the control showed it.
+
+### Built (flag `OMR_SPLIT_JOINS`)
+- **Touch cut** (`stroke_map._cut_touching` / `_cut_touching_all`):
+  - It applies to a piece lying across an `accidental*` box AND a head / ledger / stem box, with each side holding at least 0.15 of its ink in its own box alone (and at least 0.02 sp²). Key signatures are never cut.
+  - Seeds: ink in one side's boxes only. Ink in both boxes or in neither goes to the nearer seed, through the piece's own ink.
+  - Where more than half the ink is in both boxes or in neither, the piece stays whole (`touch_boxes_undecided`).
+  - The two sides are two strokes, linked `accidental|<head|ledger|stem>`.
+  - The boxes are filed once per cell (`cell_touch_boxes`) so a re-run reproduces the cut.
+  - The 2.201 family reading reads this map's own strokes, so it cannot steer the cut. It is the control after the cut.
+- **Clef by shape and size** (`stroke_map._merge_clefs`, `clef_region`; gather `_split_keep_whole` tags `clef:G|F|C`):
+  - A clef is read from its detector box OUTWARD:
+    - the seed is every piece mostly inside the box;
+    - a piece touching the clef (2 reduced px, the map's own contact rule) joins it.
+  - No piece joins that does not lie wholly inside the clef's SIZE around the box. Any clef-sized rectangle that still holds the box counts, plus 0.125 sp of box-edge tolerance.
+  - Sizes are the SMuFL reference glyph boxes (`tools/omr/annotate/static/bravura/bravura_metadata.json` glyphBBoxes): G 2.684 x 7.024 sp, F 2.756 x 3.588 sp with its dots, C 2.796 x 4.048 sp. `docs/symbol-dossiers/clefs.md` cites the same heights. Nothing was tuned here. The Brahms p0 G-clef boxes measure 2.7 x 7.2 sp, the SMuFL size.
+  - A piece mostly inside a key or meter box is never the clef's: the key's first flat keeps its own strokes.
+  - The clef is ONE stroke.
+  - The clef's claimed AREA in the register grows from its box to that stroke (gather `_clef_area_by_ink`), bounded by the same size. The grown-from box is filed (`grown_from_box`).
+
+### Left edge read once (the landing blocker, landed with 2.239 as 1a8f6e92e)
+- The round-2 second scan of the left edge in gather is gone.
+- The left-side edge test runs inside the ONE page-wide pass (`measure_extractor._left_edge_by_left(pws)`), STAGED pages only (`pws.staged_page_wide`). LEGACY is unchanged.
+- The Brahms master was rebuilt after landing (cm-3ccd049d7c3c). `cell_map verify`: only system 0's stored left-edge reading differs; no cell box moved.
+- Brahms p0 hand truth was re-aligned to it: boxes and cells identical, only the master id changed.
+- Brahms p0 contested bracket+barline is still 0.
+
+### Capture, round 2 ON -> round 3 ON (claim_readout STRICT; both arms re-gathered; master cells; 0 cells mismatched)
+- **Touching pieces.** Pieces across an accidental box and a head / ledger / stem box, per-cell occurrences: 26 -> 7.
+  - Litolff p4 10 -> 3, p2 2 -> 1, Brahms p0 3 -> 1, p5 11 -> 2.
+  - Cuts made: 11 + 1 + 4 + 12.
+  - Left whole as undecided: 2.
+- **Accidental-touching groups by what touches what.** Accidental + ledger stub 14 -> 4. Accidental + head 12 -> 3 (the head's box holding the stub's start). Accidental + stem 0. Accidental + rest 1 -> 1 (not a family the cut reads).
+- **Other multi-mark pieces counted (not cut here).** Head + ledger: Litolff p4 74, p2 62, Brahms p0 26, p5 41. These are where the ledger|head cut refused. Flag + head: Brahms p5 80, p0 17.
+- **Sean's Brahms p0 labels, strict whole (round 2 -> round 3):**
+  - clefG 0 -> **8 of 8**
+  - clefF 0 -> **5 of 5**
+  - clefCTenor 0 -> 1 of 1
+  - clefCAlto 0 -> 0 of 1: still in pieces, largest 0.51 of the box
+  - ledger lines 62 -> 62 whole, fragmented 34 -> 33
+  - heads, stems unchanged
+  - ALL whole 645 -> 660
+- **Accidentals stay 0 of 41 whole.** The openings cut every accidental into 4-6 strokes (stem, bars, bowl), flag OFF as well. The 2.201 family reading is built on those strokes. Not changed here; the next item if Sean wants one piece per accidental.
+- **Misshapen lists.**
+  - Brahms p0+p5: head 370 -> 371, ledger 289 -> 294.
+  - Litolff p2+p4: head 1220 -> 1223, ledger 113 -> 114.
+  - The rise is the stubs freed from a flat. They are now one-kind ledger pieces and fail the level test on 0.2-0.4 sp (the measurement limit said in round 2). Before, they were contested and not listed.
+- **Control, the 2.201 accidental family type on every accidental box** (round-2 map vs round-3 map, same boxes):
+  - Brahms 224 -> 224 right, Litolff 98 -> 98.
+  - One change: a Brahms p5 `accidentalDoubleSharp` box on an F clef's dot goes unclear -> unread. The dot is now the clef's.
+  - The first version (accidental crumb joined to its stem) lost 4 naturals and a flat, plus 2 key flats to the clef. Both were fixed before this run.
+
+### File veto (`lane_report --flag OMR_SPLIT_JOINS --from gather --cell-map master --tag 20261029-night`, LANE_REPORT_SAMPLE 2 pages a plate)
+- Litolff: blue marks -1.
+- Brahms: notes +1, accidentals +1, beams ~1, slurs +2 -2, values ~1, blue +1, words +1 -1; red bars 45 -> 45. Same as round 2.
+- Judged right->wrong 0, right->gone 0, unwritten->wrong 0 (188 + 219 tiles).
+
+### Tiles round 3
+`out/print/2.239-tiles-r3/tiles/` (12; key `out/print/2.239-tiles-r3/key.json`), cut from the WRITTEN ON record:
+- 5 clef claims, with the box drawn round the WHOLE claimed clef: tile 4 is Sean's round-2 tile 7 G clef, tile 12 his round-2 tile 6 G clef, tiles 3 and 10 F clefs (Brahms, Litolff), tile 1 a C alto clef.
+- 5 accidental-touching pieces after the cut (2, 5, 6, 7, 11).
+- 2 head controls (8, 9).
+
+My look:
+- Every clef box holds the whole clef: ball, curl, dots.
+- The touch pieces are small: a flat's bowl edge or a natural's side, each now apart from the rung or head.
+- Tile 2 looks like an eighth rest the detector boxed as an accidental: Sean's answer decides.
+- The controls are whole heads.
