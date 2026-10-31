@@ -104,6 +104,7 @@ from . import head_on_mark as _head_on_mark
 from . import inside_meter as _inside_meter
 from . import claimed_by as _claimed_by
 from . import letter_cover as _letter_cover
+from . import stroke_owner as _stroke_owner
 from .. import head_oval as _head_oval
 _OWN_LINE_MAX_SPACES = _ledger.OWN_LINE_MAX_SPACES
 cell_rungs = _ledger.cell_rungs
@@ -3689,6 +3690,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
                                      "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only",
                                      "stem_end_ink_disagrees",
                                      "is_a_rest_shape",
+                                     "owner_refused",
                                      ARC_TAIL_REASON,
                                      "on_the_staffs_leading_barline",
                                      "on_another_symbols_box",
@@ -3983,13 +3985,37 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
             Ruling(value=True, reason="inside_the_meter", used=in_meter.used, detail=detail),
             margin=in_meter.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the area", band=None,
             would_choose=(True,))
+    # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default OFF): the reworked stroke owner (the old pair rules' shape evidence moved into it,
+    # `stroke_owner.shape_vetoes`) decides the cross-family questions ONCE, here, where the first of them stood: refused -> refused;
+    # owns -> the covered rules below (`on_a_rest`, `is_a_rest_shape`, `on_a_dynamic_letter` by both readers) do not decide; contested /
+    # silent -> they decide as before (the owner cannot tell; rule 8). Flag OFF: `box_says` is silent and nothing here changes.
+    owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+    if owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "is_a_rest_shape":
+        # the same reading, refused by its own rule below with its own reason: 2.145's rest is written at the cluster from that reason
+        owner_says = "silent"
+    if owner_says == "refused":
+        # the refusal keeps the NAME of the evidence that decided it (readers downstream key on it: `rhythm.NOT_A_NOTE_REFUSALS`), the
+        # owner is recorded as the decider; a refusal no moved rule named is `owner_refused`
+        owner_veto = _stroke_owner.veto_rule(ev, ev.subject.to_key())
+        detail["owner"] = {"lost": owner_lost, "verdict": owner_vid, "veto": owner_veto}
+        owner_used = tuple(used + ([owner_vid] if owner_vid else []))
+        if owner_veto in ("on_a_dynamic_letter", "letter_look_cover"):
+            return Ruling(value=True, reason="on_a_dynamic_letter", used=owner_used, detail=detail)
+        if owner_veto == "head_piece_on_a_rest":
+            return Ruling(value=True, reason="on_a_rest", used=owner_used, detail=detail)
+        return Ruling(value=True, reason="owner_refused", used=owner_used, detail=detail)
+    owner_decides = owner_says == "owns"
+    if owner_decides:
+        detail["owner"] = {"owns": True, "verdict": owner_vid}
     # ROADMAP 2.173 (flag `OMR_WHOLE_NEEDS_HOLLOW_NO_STEM`): a whole-class box on a rest's ink or on a READ meter's ink.
     whole_refusal = _whole_class_refusal(ev, box_row, spacing, detail)
+    # 2.238 (Sean's tile 1, Brahms 5/1/7/2/6): `owns` does NOT silence this rule -- its evidence (a rest box under a whole) was not moved
+    # into the owner, and the 2.205 per-stroke fit "owned" a quarter rest's zigzag as a whole note's blob
     if whole_refusal is not None:
         return whole_refusal
     # ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF): a stemless head box whose INK reads as a
     # rest by 2.99's windows (no rest box beside it: the twin rule above cannot see it).
-    if _head_rest_shape.enabled():
+    if _head_rest_shape.enabled() and not owner_decides:
         _cell = ev.subject.at(Kind.CELL)
         got = _head_rest_shape.read_head_ink(
             ev, _cell, box_row,
@@ -4079,7 +4105,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # ink (Sean 2026-10-09, `out/print/2.73-review` tile 10). Same-ink family,
     # so it sits with the other "is this ink already another mark" questions
     # and before the ones that ask what it MEANS.
-    on_letter = _on_a_dynamic_letter_refusal(ev, box_row, detail)
+    on_letter = None if owner_decides else _on_a_dynamic_letter_refusal(ev, box_row, detail)
     if on_letter is not None:
         return on_letter
     # ROADMAP 2.107: the same refusal for ink the detector never boxed as a
@@ -4087,7 +4113,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # filed `Q.LETTER_LOOK_COVER` on the head.
     cover_row, cover_share = _letter_cover.cover_of(
         ev.rows(Q.LETTER_LOOK_COVER), detail)
-    if _letter_cover.refuses(cover_share):
+    if _letter_cover.refuses(cover_share) and not owner_decides:
         detail["read_by"] = "letter_look"
         return _letter_cover.with_margin(
             Ruling(value=True, reason="on_a_dynamic_letter",
