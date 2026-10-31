@@ -1,0 +1,36 @@
+litolff p2 2/0/7/10  blue lost guessed
+litolff p2 2/0/7/10  note lost half
+litolff p4 4/0/0/11  blue lost guessed
+litolff p4 4/0/0/11  note lost half
+litolff p4 4/0/0/11  note lost half
+litolff p4 4/1/3/3  note lost quarter
+litolff p6 6/0/3/8  beam lost begin
+litolff p6 6/0/3/8  beam changed begin (was continue)
+litolff p6 6/0/3/8  blue gained guessed
+litolff p6 6/0/3/8  blue gained guessed
+litolff p6 6/0/3/8  note lost eighth
+litolff p6 6/0/3/8  words gained unread
+litolff p6 6/1/2/12  blue gained guessed
+litolff p6 6/1/2/12  note lost quarter
+litolff p6 6/1/9/10  beam gained begin
+litolff p6 6/1/9/10  beam gained continue
+litolff p6 6/1/9/10  beam gained end
+litolff p6 6/1/9/10  blue gained guessed
+litolff p6 6/1/9/10  blue gained guessed
+litolff p6 6/1/9/10  flag gained eighth
+litolff p6 6/1/9/10  flag lost eighth
+litolff p6 6/1/9/10  flag lost eighth
+litolff p6 6/1/9/10  note gained eighth
+litolff p6 6/1/9/10  note gained eighth
+litolff p6 6/1/9/10  words lost unread
+litolff p9 9/0/3/1  beam changed continue (was end)
+litolff p9 9/0/3/1  beam gained end
+litolff p9 9/0/3/1  flag lost eighth
+litolff p9 9/0/3/1  flag lost eighth
+litolff p9 9/0/3/1  note lost eighth
+litolff p9 9/0/3/1  note lost eighth
+litolff p9 9/0/3/1  note gained eighth
+brahms p5 5/0/4/0  note lost quarter
+brahms p5 5/0/4/0  value changed ? (was whole)
+brahms p5 5/0/4/4  note lost half
+brahms p5 5/0/4/4  value changed ? (was whole)

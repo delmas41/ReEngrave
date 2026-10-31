@@ -1,0 +1,26 @@
+LANE REPORT  OMR_BOX_KIND_SIZE (OFF=0 ON=1)  --from adjudicate
+  OMR_BOX_KIND_SIZE: read in staged/adjudicators/notehead_precision.py, staged/box_kind.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5537 notes+rests OFF, 5530 ON, 5527 paired)
+  file:   notes +3 -10 | flags +1 -4 | beams +4 -1 ~2 | blue marks +6 -4 | words +5 -3
+  red bars 199 -> 197 | notes not written 2168 -> 2175
+  control: NEITHER ARM REPRODUCES THE RECORD -- the tree moved, not only the flag; distrust every number: duration/rest verdicts differing from the record OFF 39 / ON 40 of 9004 (e.g. glyph/10/0/1/11/3, glyph/10/0/7/0/9, glyph/10/1/10/4/2)
+  Sean's judged answers (289 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 1
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 1 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 379 | position but no mark here 0
+  NOT JUDGED: 32 changed places no tile of Sean's covers (5 are covered; 6 have no page place): beam 7, blue 7, flag 5, note 11, words 2 -> unjudged.txt
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6631 notes+rests OFF, 6629 ON, 6629 paired)
+  file:   notes -2 | note values ~2 | words -2
+  red bars 164 -> 162 | notes not written 3102 -> 3104
+  control: NEITHER ARM REPRODUCES THE RECORD -- the tree moved, not only the flag; distrust every number: duration/rest verdicts differing from the record OFF 147 / ON 149 of 12336 (e.g. glyph/0/0/0/4/10, glyph/0/0/11/0/5, glyph/0/0/11/6/4)
+  Sean's judged answers (254 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 369 | position but no mark here 0
+  NOT JUDGED: 4 changed places no tile of Sean's covers (0 are covered; 2 have no page place): note 2, value 2 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 1)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 12, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 1728 s

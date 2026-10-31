@@ -1,0 +1,315 @@
+{
+ "flags": [
+  [
+   "OMR_BOX_KIND_SIZE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "note": {
+     "gained": 3,
+     "lost": 10,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 6,
+     "lost": 4,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 4,
+     "lost": 1,
+     "changed": 2
+    },
+    "flag": {
+     "gained": 1,
+     "lost": 4,
+     "changed": 0
+    },
+    "words": {
+     "gained": 5,
+     "lost": 3,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5537,
+    5530
+   ],
+   "paired": 5527,
+   "red_bars": [
+    199,
+    197
+   ],
+   "notes_not_written": [
+    2168,
+    2175
+   ],
+   "control": {
+    "reproduces": "neither",
+    "off": {
+     "stored": 9004,
+     "same": 8965,
+     "differ": 39,
+     "first_differ": [
+      "glyph/10/0/1/11/3",
+      "glyph/10/0/7/0/9",
+      "glyph/10/1/10/4/2",
+      "glyph/10/1/10/4/3",
+      "glyph/10/1/3/2/6",
+      "glyph/10/1/9/2/0",
+      "glyph/10/1/9/3/0",
+      "glyph/11/0/0/11/0",
+      "glyph/11/0/0/16/1",
+      "glyph/11/0/0/8/1"
+     ]
+    },
+    "on": {
+     "stored": 9004,
+     "same": 8964,
+     "differ": 40,
+     "first_differ": [
+      "glyph/10/0/1/11/3",
+      "glyph/10/0/7/0/9",
+      "glyph/10/1/10/4/2",
+      "glyph/10/1/10/4/3",
+      "glyph/10/1/3/2/6",
+      "glyph/10/1/9/2/0",
+      "glyph/10/1/9/3/0",
+      "glyph/11/0/0/11/0",
+      "glyph/11/0/0/16/1",
+      "glyph/11/0/0/8/1"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [
+     {
+      "item": "2.220-plan",
+      "tile": "2",
+      "subject": "glyph/4/0/0/11/15"
+     }
+    ],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 289,
+    "matched": {
+     "off": {
+      "key": 379
+     },
+     "on": {
+      "key": 379
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": [
+     {
+      "item": "2.220-plan",
+      "tile": "2",
+      "subject": "glyph/4/0/0/11/15",
+      "answer": "part of an ff (not a note)"
+     }
+    ]
+   },
+   "seconds": [
+    532.8,
+    537.6
+   ],
+   "unjudged": {
+    "n": 32,
+    "judged": 5,
+    "no_place": 6,
+    "by_kind": {
+     "note": 11,
+     "blue": 7,
+     "beam": 7,
+     "flag": 5,
+     "words": 2
+    },
+    "places": [
+     "litolff p2 2/0/7/10  blue lost guessed",
+     "litolff p2 2/0/7/10  note lost half",
+     "litolff p4 4/0/0/11  blue lost guessed",
+     "litolff p4 4/0/0/11  note lost half",
+     "litolff p4 4/0/0/11  note lost half",
+     "litolff p4 4/1/3/3  note lost quarter",
+     "litolff p6 6/0/3/8  beam lost begin",
+     "litolff p6 6/0/3/8  beam changed begin (was continue)",
+     "litolff p6 6/0/3/8  blue gained guessed",
+     "litolff p6 6/0/3/8  blue gained guessed",
+     "litolff p6 6/0/3/8  note lost eighth",
+     "litolff p6 6/0/3/8  words gained unread",
+     "litolff p6 6/1/2/12  blue gained guessed",
+     "litolff p6 6/1/2/12  note lost quarter",
+     "litolff p6 6/1/9/10  beam gained begin",
+     "litolff p6 6/1/9/10  beam gained continue",
+     "litolff p6 6/1/9/10  beam gained end",
+     "litolff p6 6/1/9/10  blue gained guessed",
+     "litolff p6 6/1/9/10  blue gained guessed",
+     "litolff p6 6/1/9/10  flag gained eighth",
+     "litolff p6 6/1/9/10  flag lost eighth",
+     "litolff p6 6/1/9/10  flag lost eighth",
+     "litolff p6 6/1/9/10  note gained eighth",
+     "litolff p6 6/1/9/10  note gained eighth",
+     "litolff p6 6/1/9/10  words lost unread",
+     "litolff p9 9/0/3/1  beam changed continue (was end)",
+     "litolff p9 9/0/3/1  beam gained end",
+     "litolff p9 9/0/3/1  flag lost eighth",
+     "litolff p9 9/0/3/1  flag lost eighth",
+     "litolff p9 9/0/3/1  note lost eighth",
+     "litolff p9 9/0/3/1  note lost eighth",
+     "litolff p9 9/0/3/1  note gained eighth"
+    ]
+   }
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 2
+    },
+    "words": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6631,
+    6629
+   ],
+   "paired": 6629,
+   "red_bars": [
+    164,
+    162
+   ],
+   "notes_not_written": [
+    3102,
+    3104
+   ],
+   "control": {
+    "reproduces": "neither",
+    "off": {
+     "stored": 12336,
+     "same": 12189,
+     "differ": 147,
+     "first_differ": [
+      "glyph/0/0/0/4/10",
+      "glyph/0/0/11/0/5",
+      "glyph/0/0/11/6/4",
+      "glyph/0/0/6/2/12",
+      "glyph/0/0/6/2/2",
+      "glyph/0/0/9/3/1",
+      "glyph/12/0/0/4/11",
+      "glyph/12/0/0/8/14",
+      "glyph/12/0/10/8/7",
+      "glyph/12/0/10/9/8"
+     ]
+    },
+    "on": {
+     "stored": 12336,
+     "same": 12187,
+     "differ": 149,
+     "first_differ": [
+      "glyph/0/0/0/4/10",
+      "glyph/0/0/11/0/5",
+      "glyph/0/0/11/6/4",
+      "glyph/0/0/6/2/12",
+      "glyph/0/0/6/2/2",
+      "glyph/0/0/9/3/1",
+      "glyph/12/0/0/4/11",
+      "glyph/12/0/0/8/14",
+      "glyph/12/0/10/8/7",
+      "glyph/12/0/10/9/8"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 254,
+    "matched": {
+     "off": {
+      "key": 369
+     },
+     "on": {
+      "key": 369
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    1110.3,
+    1110.6
+   ],
+   "unjudged": {
+    "n": 4,
+    "judged": 0,
+    "no_place": 2,
+    "by_kind": {
+     "note": 2,
+     "value": 2
+    },
+    "places": [
+     "brahms p5 5/0/4/0  note lost quarter",
+     "brahms p5 5/0/4/0  value changed ? (was whole)",
+     "brahms p5 5/0/4/4  note lost half",
+     "brahms p5 5/0/4/4  value changed ? (was whole)"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_BOX_KIND_SIZE: read in staged/adjudicators/notehead_precision.py, staged/box_kind.py -> ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "unjudged_tiles": {
+  "n": 12,
+  "cases": 12,
+  "controls": 0
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1728.3
+}

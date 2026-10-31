@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- ROADMAP 2.245 wrong-kind boxes: cause found, `OMR_BOX_KIND_SIZE` built OFF (lane-2.245-wrong-kind, not merged)
+
+Cause of Sean's four wrong-kind tiles: the detector boxes one ink under several classes and every reader takes a box's class as its kind,
+never testing the box's own size or its ink's shape against that kind (nor reading an earlier claim). New pure `staged/box_kind.py`; the
+head refusal `wider_than_a_head` (>= 3.0 sp, last of the refusals) behind `OMR_BOX_KIND_SIZE` (OFF). A stroke-owner veto on the same
+test was built and dropped (it lost real merged-head eighths on Litolff). 12 blind tiles `out/print/2.245-tiles/`. The FINDINGS write was
+refused by the hook; the content is in the lane report to the manager.
+
 ## 2026-10-30 -- hand truth aligned to the master cell map (branch hand-truth-master-align, not merged)
 `tools/omr/hand_truth/align.py` (`python3 -m tools.omr.hand_truth.align [--check|--report|--control]`) writes the DERIVED `data/hand-truth/aligned/<edition>/<page>.<master>.json`: for every labelled box, the master cell (page, system, staff-in-system, cell) that holds its page rect, and why the old `cell_id` disagrees (label-only margin/top/bottom cell; spans-cells; frame-changed). Sean's page files are untouched. Brahms p0 vs cm-2d494f8fc055: all 112 measure cells and 14 staves identical to the master; 44 of 1566 boxes were filed under another cell (28 margin/top, 16 spans). `score.py` keys the frame control and the notehead rows by the master cell when given the file (`--aligned auto`); `--check` fails on a stale label or master, `--control` moves one master barline and must fail. INVENTORY.json regenerated (it was stale on main).
 
