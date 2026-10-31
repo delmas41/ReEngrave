@@ -1,0 +1,21 @@
+  slice litolff observations: 269646 rows kept (3s)
+  slice litolff abstentions: 39780 rows kept (3s)
+  slice litolff verdicts: 0 rows kept (4s)
+LANE REPORT  OMR_PAGE_OWNER_READ (OFF=0 ON=1)  --from adjudicate
+  OMR_PAGE_OWNER_READ: read in staged/adjudicators/ownership.py, staged/export.py, staged/page_owner.py, staged/reach.py -> GATHER
+  REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5461 notes+rests OFF, 5459 ON, 5459 paired)
+  file:   notes -1 | rests -1 | ties +20 | slurs +31 -27 ~1 | words +1
+  red bars 195 -> 195 | notes not written 2243 -> 2244
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (289 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 379 | position but no mark here 0
+  NOT JUDGED: 82 changed places no tile of Sean's covers (0 are covered; 0 have no page place): note 1, rest 1, slur 59, tie 20, words 1 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 12, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 577 s
