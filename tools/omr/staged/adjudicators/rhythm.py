@@ -2908,15 +2908,6 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                                   "detector_class")})
 
     cell = ev.subject.at(Kind.CELL)
-    # ROADMAP 2.243 (`OMR_DOTS_HONOUR_CLAIMS`, default OFF): ink the stroke owner DECIDED to another mark (a slur's tip, a hairpin's end, a
-    # word's full stop, an accidental's piece) is not a dot and not a staccato, whatever the box geometry says. An abstention with its own
-    # reason -- never a role, never `dot_role_ambiguous` (which 2.127 reads as "a dot was SEEN beside this note").
-    if dots_honour_claims_enabled():
-        owned = _dot_ink_owned_elsewhere(ev, cell)
-        if owned is not None:
-            return Ruling(value=None, reason="ink_owned_by_another_mark", used=tuple(owned["rows"]),
-                          detail={"owner_families": owned["families"], "strokes": owned["strokes"],
-                                  "detector_class": (row.detail or {}).get("detector_class")})
     space_row = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
                         subject=cell)
     space = float(space_row[-1].value) if space_row else None
@@ -3177,6 +3168,15 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                           reason="right_of_and_level_with_a_head",
                           used=used, detail={**detail, "head": best,
                                              "head_refused": True})
+    # ROADMAP 2.243 (`OMR_DOTS_HONOUR_CLAIMS`, default OFF): the role reader found no head for this box. If the ink it stands on was DECIDED
+    # to another mark (a slur's tip, a hairpin's end, a word's full stop, a clef's piece) it is not a dot: an abstention with its own reason,
+    # never `dot_role_ambiguous` (which 2.127 reads as "a dot was SEEN beside this note" and narrows the note to). Only this last abstention:
+    # a role already DECIDED above is never overturned by the owner (Litolff: 3 staccatos the arc trace claimed are real; rule 8).
+    if dots_honour_claims_enabled():
+        owned = _dot_ink_owned_elsewhere(ev, cell)
+        if owned is not None:
+            return Ruling(value=None, reason="ink_owned_by_another_mark", used=tuple(owned["rows"]),
+                          detail={**detail, "owner_families": owned["families"], "strokes": owned["strokes"]})
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
