@@ -2249,6 +2249,10 @@ def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
         if kind not in ("slur", "tie"):
             dropped["kind_not_an_arc"] += 1
             continue
+        if kind == "slur" and _page_bound_slur(kind_v) is not None:
+            # ROADMAP 2.223: a slur whose CURVE was bound at both ends is written once per curve on those heads
+            # (`_page_bound_slur_spans`), never piece by piece by box coverage.
+            continue
 
         page_box = _corners_to_wh(_page_box_of(o))
         if page_box is None:
@@ -2656,6 +2660,68 @@ def _anchored_slur_spans(rec: Record, measures, pools, spacings, tops, breaks, v
     return out
 
 
+def _page_bound_slur(kind_v: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the `page_binding` of a DECIDED `slur` verdict whose curve was bound at both ends, or None."""
+    if not _arc_claim.bind_enabled() or not kind_v or kind_v.get("outcome") != "decided" or kind_v.get("value") != "slur":
+        return None
+    pb = (kind_v.get("detail") or {}).get("page_binding")
+    if not isinstance(pb, dict) or pb.get("kind") != "slur" or not pb.get("start") or not pb.get("stop"):
+        return None
+    return pb
+
+
+def _page_bound_slurs(rec: Record) -> Dict[str, Dict[str, Any]]:
+    """`{curve key: {start, stop, pieces}}` -- every slur CURVE bound at both ends (one entry per printed curve, however many boxes)."""
+    out: Dict[str, Dict[str, Any]] = {}
+    if not _arc_claim.bind_enabled():
+        return out
+    for o in rec.obs_of(Q.ARC_BOX):
+        sub = o["subject"]
+        anv = rec.verdict(Q.ARC_IS_NOT_AN_ARC, sub)
+        if anv is not None and anv["outcome"] == "decided" and anv["value"] is True:
+            continue
+        pb = _page_bound_slur(rec.verdict(Q.ARC_KIND, sub))
+        if pb is None:
+            continue
+        c = out.setdefault(str(pb.get("curve") or sub), {"start": str(pb["start"]), "stop": str(pb["stop"]), "pieces": 0})
+        c["pieces"] += 1
+    return out
+
+
+def _page_bound_slur_spans(measures, bound: Dict[str, Dict[str, Any]], voice_of: Dict[int, int], have: set, written: set,
+                           counters: Dict[str, int]) -> List[tuple]:
+    """This part's slur spans for the page-bound curves whose two heads are both in the part (`_paired_spans`' shape, keyed by page x like
+    `_anchored_slur_spans`). A curve is written ONCE (`written` holds its key across parts); two heads in two voices are counted, never
+    written (MusicXML pairs a slur within a voice)."""
+    index: Dict[str, Tuple[int, Dict[str, Any]]] = {}
+    for m_idx, m in enumerate(measures):
+        for det in m["detections"] or ():
+            key = det.get("glyph")
+            if key and det.get("category") == "notehead":
+                index.setdefault(str(key), (m_idx, det))
+    out: List[tuple] = []
+    for curve, c in sorted(bound.items()):
+        if curve in written or c["start"] not in index or c["stop"] not in index:
+            continue
+        written.add(curve)
+        (sm, first), (tm, last) = index[c["start"]], index[c["stop"]]
+        if voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
+            counters["slur_bound_ends_in_two_voices"] += 1
+            continue
+        xa, xz = _head_x_centre(first), _head_x_centre(last)
+        if xa is None or xz is None:
+            counters["slur_bound_head_x_unknown"] += 1
+            continue
+        if (id(first), id(last)) in have:
+            counters["slur_bound_same_as_box_span"] += 1
+            continue
+        if (sm, xa) > (tm, xz):
+            (sm, xa, first), (tm, xz, last) = (tm, xz, last), (sm, xa, first)
+        out.append(((sm, xa), (tm, xz), first, last))
+        counters["slur_spans_from_page_binding"] += 1
+    return out
+
+
 def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                counters: Dict[str, int],
                tie_report: Optional[Dict[str, Any]] = None
@@ -2686,10 +2752,12 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     dropped: Dict[str, int] = collections.Counter()
     stems = _stem_boxes_by_cell(rec)
     record_ties = _record_tie_pairs(rec)
+    bound_slurs = _page_bound_slurs(rec)          # ROADMAP 2.223; {} with the flag off
+    bound_written: set = set()
     for part in parts:
         measures, per_measure_arcs, kinds, spacings, tops, breaks = \
             _flatten_part(part)
-        if not measures or not any(per_measure_arcs):
+        if not measures or not (any(per_measure_arcs) or bound_slurs):
             continue
         voice_of = _voice_of_notehead(rec, part)
         # ⚠️ An arc is drawn to a note's STEM, not to its head. See
@@ -2726,6 +2794,8 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         by_kind, merged = _arcs_by_kind(measures, per_measure_arcs, kinds,
                                         spacings, tops, breaks,
                                         groups_by_kind=groups_by_kind)
+        if bound_slurs and "slur" not in by_kind:
+            by_kind["slur"] = [[] for _ in measures]      # ROADMAP 2.223: a part whose only slurs are page-bound curves
         n_spans = 0
         for kind, pools in by_kind.items():
             if kind == "tie" and record_ties is not None:
@@ -2745,6 +2815,10 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                     spans = list(spans) + _anchored_slur_spans(
                         rec, measures, pools, spacings, tops, breaks, voice_of, x_probes, list(spans), dropped, counters)
                 n_spans += len(spans)
+                if kind == "slur" and bound_slurs:
+                    # ROADMAP 2.223: the page-bound curves, AFTER `n_spans` (they are not groups of the box merge above)
+                    spans = list(spans) + _page_bound_slur_spans(
+                        measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters)
             if kind == "tie":
                 # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY
                 # PLACE THAT KNOWS IT. Since ROADMAP 3.2b the record names each
@@ -2799,6 +2873,10 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         # READING shortfall and belongs in the record, not in the silence.
         if merged > n_spans:
             dropped["arc_binds_fewer_than_two_notes"] += merged - n_spans
+    for curve, c in bound_slurs.items():
+        if curve not in bound_written:
+            # ROADMAP 2.223: a bound curve whose two heads no one part holds (a head refused on the way to the file), counted per box
+            dropped["slur_bound_end_not_in_file"] += c["pieces"]
     if record_ties is not None:
         for reason, n in record_ties["refused"].items():
             dropped[reason] += n
@@ -6946,6 +7024,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         wedges_dropped[_BAR_SUM_REFUSAL] += held_marks["wedges"]
     report["wedges_not_written"] = dict(wedges_dropped)
     report["wedges_not_written_total"] = sum(wedges_dropped.values())
+    # ROADMAP 2.223: a hairpin whose anchor ABSTAINED is still a read mark -- named here by its reason (`tip_unbound`,
+    # `inside_a_word`, `not_between_staves`, ...), so an unbound hairpin is counted, never silent.
+    report["wedges_unbound"] = dict(collections.Counter(
+        str(v.get("reason")) for v in rec.verdicts_of(Q.WEDGE_ANCHOR) if v["outcome"] != "decided"))
     report["wedge_balance"] = {
         "rows_in_log": wedge_rows,
         "decided": w_decided,
