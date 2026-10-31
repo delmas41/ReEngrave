@@ -226,3 +226,52 @@ row + the refusal verdict by place), not to `gather_page_marks`.
 **Open.** Sean's 12 tiles; the `one_end` GUESSED arcs (a third of all) -- a window question for 2.223; `arc_ink` can drop a REAL ledger an arc
 passes over (Litolff p4 bar 3: the lower staff's own ledger at 2433.5 was dropped as arc ink; the head still has its stem) -- tile it before step 3;
 page marks from unrefused boxes (step 3).
+
+## Step 3 -- the later stages read the page owner (lane-2.240-s3-export; STAGED GATHER fixes + ADJUDICATE consumer, flag `OMR_PAGE_OWNER_READ` OFF)
+**Cause and process lesson.** Tile 8 (Litolff p4 glyph/4/1/1/3/5, Sean: "belongs to the staff below") had THREE causes, all upstream of the owner
+rule, which was right: (1) **the gap look bypassed the filter** -- step 2's `not_ledger` dropped the slur's row (2395, `Q.SYSTEM_ARC` trace 2395-2398)
+from the WALK's rungs, then `count_ledgers_between` saw a gap with room for one ledger and `find_rung_in_gap` LOOKED at the raster there, found the
+same slur and counted it as ledger 1 (the row now carries `rungs_between`: [2395.0]); (2) **a ledger traced as an arc** -- the lower staff's real ledger
+(2433.5) was dropped as `arc_ink` because the detector boxed that ledger as a 'tie' (glyph/4/1/1/3/10, 1.78 sp, flat) and the curve tracer followed it;
+(3) **the owner was filed before its evidence** -- page 4's far heads wait for the document head-size pool (released by page 16), so GATHER filed the
+page's owners with NO ledger readings (`stem` -> the right staff by luck), while the tile tool re-derived the owner from the finished record
+(`ledger_over_stem` -> the wrong one): the record and the readout disagreed and the tile showed the readout. Lessons: a filter must guard every
+place that LOOKS, not only the list it was handed; a box's class is a weak witness for the filter too (2.245); and a GATHER step that reads another
+step's rows must run after those rows exist for ITS page, not merely after the call that usually files them -- a tile must be cut from the record's
+own row, never a re-derivation. Also found: main's GATHER with `OMR_PAGE_OWNER` ON raised on the first head box >= 3 sp (`owner_box_not_one_head`
+was never declared in ABSTAIN) -- hotfixed to main (f7422b035) with a vocabulary test; step 2's fast tier never filed a row.
+
+**Built.** GATHER (rows only; nothing exported changes with the read flag OFF): `ledger_grid.derive_note_first_step(not_ledger=)` -- the gap look and
+the hidden-ledger look honour the owner's filter (None = bit-identical; LEGACY passes nothing); `page_owner.not_ledger_maker` counts a traced arc as
+`arc_ink` only when it BOWS (>= 0.15 sp, 2.245's `ARC_MIN_BOW_SP`, no length gate); `gather()` defers a page's owners while its far heads are held and
+files them after `finish_far_head_ledger_positions` (`defer_page_owners` / `file_deferred_page_owners`); owner-ledger rows carry `rungs_between`,
+`line_y`, `line_how`. ADJUDICATE (flag `OMR_PAGE_OWNER_READ`, default OFF, allow-list; read in page_owner.py so `lane_report --from auto` re-gathers):
+`glyph_owner` reads the page mark's owner after the human owner, ahead of every per-copy tier -- decided -> `page_owner`; GUESSED ->
+`page_owner_guessed` (both staves as candidates, EXPORT writes it blue via `claim_guess_of`); abstain -> the old tiers as before. Members ADJUDICATE
+refused as not a head (`notehead_is_not_a_notehead`, except the copy-choosing `belongs_to_a_nearer_staff`) are taken out of the mark's witnesses first
+(`page_owner.consumer_owner`, 2.245 case 1; all refused -> no page owner). `arc_owner` takes a page-wide arc's DECIDED owner (`page_span_owner`);
+GUESSED (`one_end`) / abstain arcs keep the old rule. `distance` and `range_veto` are NOT retired.
+
+**Numbers.** Tile 8 (Litolff 2,4,6,16 gathered twice, before = a `git archive` of 649dd51ae, after = 17d550175; `s4/compare_arms.py`,
+`s4/compare_litolff16.log`): the upper reading now does not fit (no rung between), the lower fits on 2433.5 -> owner `staff/4/1/2`
+`ledger_and_stem`, as Sean answered. Same 4 pages: 146 head owners change -- 140 `owner_no_witness` -> `ledger` (the held pages 2 and 6 now see their
+ledger readings), 6 `stem` -> `ledger_over_stem` (p6; tile 8 was this kind -- among the tiles). `arc_ink` on a flat trace (the known risk): 2 of 59
+dropped rungs = ONE place (tile 8's, both views) on these 4 pages.
+Three measures (frozen sample gathered ONCE per plate with the step-3 tree, `--no-surya`, master cells, tag `s4g2240`; `lane_report --flag
+OMR_PAGE_OWNER_READ --replay-gathered`; `s4/lane_report_*.log`):
+- Litolff (8 pp.): notes -1 | rests -1 | ties +20 | slurs +31 -27 ~1 | words +1; red bars 195 -> 195; notes not written 2243 -> 2244.
+- Brahms (8 pp.): notes -6 | rests +2 | dots -4 | flags -2 | ties +41 -2 | slurs +60 -29 | values ~2 | words +2 -3; red bars 164 -> 162; not written 3094 -> 3100.
+- Judged right->wrong 0 both plates (289 / 254 tiles, scored by key), unwritten->wrong 0; Brahms invented->removed 1 (glyph/5/1/12/1/7, Sean "flag
+  (not a note)"). Lost notes (`s4/lost_hosts_*.log`): Litolff p6 glyph/6/1/2/8/2 was written on BOTH staves OFF (two copies, two owners) and once ON;
+  Brahms p12 four A5 quarters and p5 two eighths move from `distance` to the stem's staff -- tiles.
+- ADJUDICATE (`s4/owner_census_*.log`, full replays): `glyph_owner` page owner decides 2,269 of 5,043 (L) / 4,164 of 9,759 (B) contested verdicts and
+  MOVES 70 (distance 58, tied 9, range_veto 2) / 111 (range_veto 80 -- all non-head marks: arcs, flags, beams, dots the page owner puts inside the
+  other staff --, distance 31); the old tiers still decide where the owner abstains (`distance` 2,397 / 4,448, mostly `owner_follows_its_note`).
+  `arc_owner` page span decides 570 / 1,293 arcs and moves 184 / 290. GUESSED fired 0 times (the blue path is proved by its unit test only).
+**Tiles** (commit): `out/print/2.240-s4-tiles/` -- 11 places the file changed (6 heads whose owner moved, 5 arcs whose staff moved; drawn on the staff
+ON writes them on) + tile 8's place (tile 2); `out/print/2.240-s4-rules-tiles/` -- 12 of the 171 places where `distance` (L 74, B 49) or `range_veto`
+(L 2, B 82) decided against the page owner (drawn on the OLD rule's staff). Question for both: what is the ink, and which staff does it belong to.
+Tests `test_page_owner_2_240_s4.py` (22: vocabulary, tile-8 gap look with a can-fail arm, flat trace, consumer, glyph_owner/arc_owner read the owner).
+**Not done.** "One mark per page span" for arcs: 2.223 already writes a BOUND slur once per curve; two views of an unbound arc both move to the owner's
+staff (not de-duplicated here). Retiring `distance` / `range_veto` waits for the rules tiles. The 6 new `ledger_over_stem` heads are tile 8's kind.
+The step-3 gathered records and replay dumps were deleted (disk); re-run `s4/snapshot.sh` + `s4/gather_sample.sh`.

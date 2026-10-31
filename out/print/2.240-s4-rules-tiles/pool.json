@@ -1,0 +1,3422 @@
+[
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 1,
+  "glyph": "glyph/1/0/9/3/2",
+  "box": [
+   1218.7975,
+   2644.0,
+   1240.8475,
+   2649.5125
+  ],
+  "old_owner": "staff/1/0/9",
+  "page_owner": "staff/1/0/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/1/0/9",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 1,
+  "glyph": "glyph/1/0/11/2/3",
+  "box": [
+   1112.08,
+   2993.0,
+   1130.0,
+   2998.44
+  ],
+  "old_owner": "staff/1/0/11",
+  "page_owner": "staff/1/0/10",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/1/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 1,
+  "glyph": "glyph/1/0/11/2/5",
+  "box": [
+   1164.72,
+   2993.0,
+   1183.12,
+   2998.44
+  ],
+  "old_owner": "staff/1/0/11",
+  "page_owner": "staff/1/0/10",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/1/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 2,
+  "glyph": "glyph/2/0/9/15/4",
+  "box": [
+   2355.64,
+   1670.0,
+   2388.28,
+   1690.96
+  ],
+  "old_owner": "staff/2/0/9",
+  "page_owner": "staff/2/0/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/2/0/9",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 2,
+  "glyph": "glyph/2/0/10/2/12",
+  "box": [
+   785.1825,
+   1817.0,
+   817.155,
+   1847.7125
+  ],
+  "old_owner": "staff/2/0/10",
+  "page_owner": "staff/2/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/2/0/10",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 4,
+  "glyph": "glyph/4/0/0/2/3",
+  "box": [
+   796.705,
+   533.97,
+   816.39,
+   538.0
+  ],
+  "old_owner": "staff/4/0/0",
+  "page_owner": "staff/4/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/4/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 4,
+  "glyph": "glyph/4/0/8/1/8",
+  "box": [
+   624.0,
+   1732.56,
+   644.96,
+   1738.0
+  ],
+  "old_owner": "staff/4/0/8",
+  "page_owner": "staff/4/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/4/0/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 4,
+  "glyph": "glyph/4/0/8/8/4",
+  "box": [
+   1673.48,
+   1734.0,
+   1693.64,
+   1738.0
+  ],
+  "old_owner": "staff/4/0/8",
+  "page_owner": "staff/4/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/0/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 4,
+  "glyph": "glyph/4/0/8/9/12",
+  "box": [
+   1799.32,
+   1734.0,
+   1818.52,
+   1738.0
+  ],
+  "old_owner": "staff/4/0/8",
+  "page_owner": "staff/4/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/0/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 4,
+  "glyph": "glyph/4/0/10/11/2",
+  "box": [
+   2076.785,
+   1831.0,
+   2092.3775,
+   1836.355
+  ],
+  "old_owner": "staff/4/0/10",
+  "page_owner": "staff/4/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/4/0/10",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 4,
+  "glyph": "glyph/4/1/0/5/8",
+  "box": [
+   1208.695,
+   2296.31,
+   1237.36,
+   2303.87
+  ],
+  "old_owner": "staff/4/1/0",
+  "page_owner": "staff/4/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/4/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/0/0/10/12",
+  "box": [
+   2156.025,
+   483.985,
+   2169.975,
+   495.92
+  ],
+  "old_owner": "staff/6/0/0",
+  "page_owner": "staff/6/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/6/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/0/7/10/12",
+  "box": [
+   2144.6275,
+   1565.07,
+   2181.4825,
+   1572.0
+  ],
+  "old_owner": "staff/6/0/7",
+  "page_owner": "staff/6/0/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/6/0/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/1/0/9/15",
+  "box": [
+   2114.72,
+   2115.0,
+   2131.68,
+   2119.0
+  ],
+  "old_owner": "staff/6/1/0",
+  "page_owner": "staff/6/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/6/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/1/0/11/7",
+  "box": [
+   2449.28,
+   2104.92,
+   2471.52,
+   2118.84
+  ],
+  "old_owner": "staff/6/1/0",
+  "page_owner": "staff/6/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/6/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/1/2/9/7",
+  "box": [
+   2168.485,
+   2399.905,
+   2189.1175,
+   2404.0
+  ],
+  "old_owner": "staff/6/1/2",
+  "page_owner": "staff/6/1/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/6/1/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/1/2/10/4",
+  "box": [
+   2256.0025,
+   2215.0,
+   2274.5875,
+   2222.4025
+  ],
+  "old_owner": "staff/6/1/2",
+  "page_owner": "staff/6/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/6/1/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/1/6/8/6",
+  "box": [
+   2036.6225,
+   3009.5425,
+   2061.665,
+   3016.0
+  ],
+  "old_owner": "staff/6/1/6",
+  "page_owner": "staff/6/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/6/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 6,
+  "glyph": "glyph/6/1/6/9/3",
+  "box": [
+   2173.21,
+   3008.5975,
+   2195.4175,
+   3016.0
+  ],
+  "old_owner": "staff/6/1/6",
+  "page_owner": "staff/6/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/6/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/0/17/6",
+  "box": [
+   2105.2575,
+   544.9325,
+   2125.89,
+   548.87
+  ],
+  "old_owner": "staff/8/0/0",
+  "page_owner": "staff/8/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/0/19/4",
+  "box": [
+   2328.81,
+   543.6725,
+   2351.0175,
+   548.87
+  ],
+  "old_owner": "staff/8/0/0",
+  "page_owner": "staff/8/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/0/21/6",
+  "box": [
+   2553.9825,
+   544.6175000000001,
+   2577.6075,
+   548.87
+  ],
+  "old_owner": "staff/8/0/0",
+  "page_owner": "staff/8/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/1/12/6",
+  "box": [
+   1621.5475,
+   514.0,
+   1632.8875,
+   517.9375
+  ],
+  "old_owner": "staff/8/0/1",
+  "page_owner": "staff/8/0/0",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/8/0/1",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/6/14/8",
+  "box": [
+   1823.28,
+   1269.0,
+   1844.2275,
+   1277.82
+  ],
+  "old_owner": "staff/8/0/6",
+  "page_owner": "staff/8/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/8/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/5/4",
+  "box": [
+   991.09,
+   2053.4675,
+   1011.7225,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/7/4",
+  "box": [
+   1150.515,
+   2053.94,
+   1172.88,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/9/10",
+  "box": [
+   1318.295,
+   2053.7825,
+   1341.29,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/11/6",
+  "box": [
+   1480.105,
+   2053.7825,
+   1501.9975,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/13/10",
+  "box": [
+   1794.4925,
+   2054.57,
+   1814.495,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/13/17",
+  "box": [
+   1734.17,
+   2055.515,
+   1756.535,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/13/18",
+  "box": [
+   1765.04,
+   2055.515,
+   1783.625,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/15/22",
+  "box": [
+   2093.2025,
+   2054.255,
+   2118.875,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/15/23",
+  "box": [
+   2044.3775,
+   2055.3575,
+   2063.9075,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/0/18/13",
+  "box": [
+   2530.095,
+   2056.9325,
+   2550.57,
+   2060.87
+  ],
+  "old_owner": "staff/8/1/0",
+  "page_owner": "staff/8/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/7/8/3",
+  "box": [
+   1238.8,
+   2986.0,
+   1260.24,
+   2990.48
+  ],
+  "old_owner": "staff/8/1/7",
+  "page_owner": "staff/8/1/6",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/8/1/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/0/0/0/29",
+  "box": [
+   557.986328125,
+   495.978515625,
+   574.9140625,
+   505.9453125
+  ],
+  "old_owner": "staff/9/0/0",
+  "page_owner": "staff/9/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/9/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/0/2/10/2",
+  "box": [
+   1879.2625,
+   816.33,
+   1900.6825,
+   822.0
+  ],
+  "old_owner": "staff/9/0/2",
+  "page_owner": "staff/9/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/9/0/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/0/4/1/5",
+  "box": [
+   688.3,
+   914.0,
+   711.25,
+   919.1
+  ],
+  "old_owner": "staff/9/0/4",
+  "page_owner": "staff/9/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/9/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/0/4/3/8",
+  "box": [
+   1009.3,
+   914.0,
+   1028.95,
+   919.25
+  ],
+  "old_owner": "staff/9/0/4",
+  "page_owner": "staff/9/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/9/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/0/4/3/14",
+  "box": [
+   1052.95,
+   914.0,
+   1072.75,
+   919.1
+  ],
+  "old_owner": "staff/9/0/4",
+  "page_owner": "staff/9/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/9/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/0/4/3/17",
+  "box": [
+   965.8,
+   914.0,
+   986.5,
+   918.2
+  ],
+  "old_owner": "staff/9/0/4",
+  "page_owner": "staff/9/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/9/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/1/7/4/11",
+  "box": [
+   1241.5525,
+   3187.0,
+   1254.625,
+   3190.9375
+  ],
+  "old_owner": "staff/9/1/7",
+  "page_owner": "staff/9/1/6",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/9/1/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 9,
+  "glyph": "glyph/9/1/7/4/13",
+  "box": [
+   1292.74,
+   3187.0,
+   1304.395,
+   3190.9375
+  ],
+  "old_owner": "staff/9/1/7",
+  "page_owner": "staff/9/1/6",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/9/1/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/0/2/6/0",
+  "box": [
+   1502.5325,
+   829.7,
+   1523.6375,
+   836.0
+  ],
+  "old_owner": "staff/10/0/2",
+  "page_owner": "staff/10/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/0/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/0/9/10/9",
+  "box": [
+   2120.6625,
+   1638.0,
+   2140.1925,
+   1644.1425
+  ],
+  "old_owner": "staff/10/0/9",
+  "page_owner": "staff/10/0/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/0/9",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/0/2/9",
+  "box": [
+   790.25,
+   2227.125,
+   801.565,
+   2231.0
+  ],
+  "old_owner": "staff/10/1/0",
+  "page_owner": "staff/10/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/10/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/0/4/7",
+  "box": [
+   1061.48,
+   2226.66,
+   1079.15,
+   2231.0
+  ],
+  "old_owner": "staff/10/1/0",
+  "page_owner": "staff/10/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/10/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "dynamic",
+  "page": 10,
+  "glyph": "glyph/10/1/5/8/2",
+  "box": [
+   1721.9,
+   2898.02,
+   1754.975,
+   2927.0
+  ],
+  "old_owner": "staff/10/1/5",
+  "page_owner": "staff/10/1/6",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/10/1/5",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/6/1/2",
+  "box": [
+   682.855,
+   3085.57,
+   703.4875,
+   3091.87
+  ],
+  "old_owner": "staff/10/1/6",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/10/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/7/9/12",
+  "box": [
+   1976.72,
+   3226.6725,
+   1995.935,
+   3231.87
+  ],
+  "old_owner": "staff/10/1/7",
+  "page_owner": "staff/10/1/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/8/0/7",
+  "box": [
+   510.8,
+   3191.0,
+   532.56,
+   3209.4
+  ],
+  "old_owner": "staff/10/1/8",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/10/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/8/3/0",
+  "box": [
+   995.36,
+   3191.0,
+   1012.8,
+   3195.0
+  ],
+  "old_owner": "staff/10/1/8",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/8/3/2",
+  "box": [
+   935.04,
+   3191.0,
+   952.16,
+   3195.0
+  ],
+  "old_owner": "staff/10/1/8",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/8/3/6",
+  "box": [
+   963.36,
+   3191.0,
+   982.24,
+   3195.48
+  ],
+  "old_owner": "staff/10/1/8",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/8/7/7",
+  "box": [
+   1664.56,
+   3191.0,
+   1684.56,
+   3196.44
+  ],
+  "old_owner": "staff/10/1/8",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/8/7/11",
+  "box": [
+   1638.8,
+   3191.0,
+   1658.16,
+   3198.52
+  ],
+  "old_owner": "staff/10/1/8",
+  "page_owner": "staff/10/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 10,
+  "glyph": "glyph/10/1/9/7/11",
+  "box": [
+   1642.2975,
+   3345.0,
+   1657.26,
+   3348.9375
+  ],
+  "old_owner": "staff/10/1/9",
+  "page_owner": "staff/10/1/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/10/1/9",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 11,
+  "glyph": "glyph/11/0/4/0/3",
+  "box": [
+   403.109375,
+   1145.5126953125,
+   417.13671875,
+   1156.033203125
+  ],
+  "old_owner": "staff/11/0/4",
+  "page_owner": "staff/11/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/11/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 11,
+  "glyph": "glyph/11/0/8/4/1",
+  "box": [
+   956.3825,
+   1515.0,
+   968.51,
+   1523.3475
+  ],
+  "old_owner": "staff/11/0/8",
+  "page_owner": "staff/11/0/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/11/0/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 11,
+  "glyph": "glyph/11/1/7/11/2",
+  "box": [
+   1978.12,
+   2966.0,
+   1990.2475,
+   2970.41
+  ],
+  "old_owner": "staff/11/1/7",
+  "page_owner": "staff/11/1/6",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/11/1/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/0/0/6/4",
+  "box": [
+   1241.7275,
+   514.9325,
+   1257.32,
+   518.87
+  ],
+  "old_owner": "staff/16/0/0",
+  "page_owner": "staff/16/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/0/0/8/19",
+  "box": [
+   1554.8325,
+   514.9325,
+   1574.205,
+   518.87
+  ],
+  "old_owner": "staff/16/0/0",
+  "page_owner": "staff/16/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/0/0/8/22",
+  "box": [
+   1602.24,
+   514.9325,
+   1621.77,
+   518.87
+  ],
+  "old_owner": "staff/16/0/0",
+  "page_owner": "staff/16/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/0/1/4/7",
+  "box": [
+   1037.045,
+   654.0625,
+   1056.1025,
+   658.0
+  ],
+  "old_owner": "staff/16/0/1",
+  "page_owner": "staff/16/0/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/16/0/1",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/0/1/4/8",
+  "box": [
+   1094.375,
+   654.0625,
+   1111.2275,
+   658.0
+  ],
+  "old_owner": "staff/16/0/1",
+  "page_owner": "staff/16/0/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/16/0/1",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/0/1/3",
+  "box": [
+   751.2125,
+   2191.7825,
+   771.0575,
+   2198.87
+  ],
+  "old_owner": "staff/16/1/0",
+  "page_owner": "staff/16/1/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/16/1/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/6/4/9",
+  "box": [
+   1240.3125,
+   3072.7275,
+   1261.89,
+   3078.87
+  ],
+  "old_owner": "staff/16/1/6",
+  "page_owner": "staff/16/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/6/4/10",
+  "box": [
+   1206.45,
+   3072.57,
+   1226.61,
+   3078.87
+  ],
+  "old_owner": "staff/16/1/6",
+  "page_owner": "staff/16/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/6/4/13",
+  "box": [
+   1274.175,
+   3072.57,
+   1295.7525,
+   3078.87
+  ],
+  "old_owner": "staff/16/1/6",
+  "page_owner": "staff/16/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/6/6/8",
+  "box": [
+   1513.1275,
+   3073.515,
+   1534.705,
+   3078.87
+  ],
+  "old_owner": "staff/16/1/6",
+  "page_owner": "staff/16/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/6/6/9",
+  "box": [
+   1548.4075,
+   3073.515,
+   1569.04,
+   3078.87
+  ],
+  "old_owner": "staff/16/1/6",
+  "page_owner": "staff/16/1/7",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/16/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "litolff",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 16,
+  "glyph": "glyph/16/1/6/13/2",
+  "box": [
+   2520.61,
+   2859.0,
+   2539.3525,
+   2864.355
+  ],
+  "old_owner": "staff/16/1/6",
+  "page_owner": "staff/16/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/16/1/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 0,
+  "glyph": "glyph/0/0/6/6/3",
+  "box": [
+   4720.09375,
+   3764.0,
+   4758.59375,
+   3775.0
+  ],
+  "old_owner": "staff/0/0/6",
+  "page_owner": "staff/0/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/0/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 0,
+  "glyph": "glyph/0/0/11/3/19",
+  "box": [
+   3325.1375,
+   6310.68,
+   3363.1925,
+   6319.71
+  ],
+  "old_owner": "staff/0/0/11",
+  "page_owner": "staff/0/0/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/0/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 0,
+  "glyph": "glyph/0/0/11/3/21",
+  "box": [
+   3255.155,
+   6310.68,
+   3292.8875,
+   6319.71
+  ],
+  "old_owner": "staff/0/0/11",
+  "page_owner": "staff/0/0/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/0/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 4,
+  "glyph": "glyph/4/1/4/0/15",
+  "box": [
+   999.14453125,
+   5177.6875,
+   1022.20703125,
+   5248.6767578125
+  ],
+  "old_owner": "staff/4/1/4",
+  "page_owner": "staff/4/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "dot",
+  "page": 4,
+  "glyph": "glyph/4/1/4/0/23",
+  "box": [
+   1038.783203125,
+   5206.515625,
+   1058.6025390625,
+   5219.1279296875
+  ],
+  "old_owner": "staff/4/1/4",
+  "page_owner": "staff/4/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "dot",
+  "page": 4,
+  "glyph": "glyph/4/1/4/4/12",
+  "box": [
+   3150.805,
+   5206.5825,
+   3164.43,
+   5218.5725
+  ],
+  "old_owner": "staff/4/1/4",
+  "page_owner": "staff/4/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "mark",
+  "page": 4,
+  "glyph": "glyph/4/1/4/6/1",
+  "box": [
+   4353.3525,
+   5206.31,
+   4361.8,
+   5215.575
+  ],
+  "old_owner": "staff/4/1/4",
+  "page_owner": "staff/4/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "mark",
+  "page": 4,
+  "glyph": "glyph/4/1/4/7/5",
+  "box": [
+   4504.305,
+   5209.3075,
+   4513.57,
+   5218.0275
+  ],
+  "old_owner": "staff/4/1/4",
+  "page_owner": "staff/4/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/4/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/0/1/2/11",
+  "box": [
+   2080.15,
+   963.675,
+   2106.275,
+   970.0
+  ],
+  "old_owner": "staff/5/0/1",
+  "page_owner": "staff/5/0/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/5/0/1",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/0/2/7/10",
+  "box": [
+   5425.255859375,
+   1217.87890625,
+   5460.9384765625,
+   1228.9931640625
+  ],
+  "old_owner": "staff/5/0/2",
+  "page_owner": "staff/5/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/5/0/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/0/9",
+  "box": [
+   1129.50048828125,
+   1636.69921875,
+   1162.35400390625,
+   1706.70849609375
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/1/7",
+  "box": [
+   1525.97998046875,
+   1644.41748046875,
+   1548.623046875,
+   1706.6142578125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/1/10",
+  "box": [
+   1969.66943359375,
+   1641.837890625,
+   2000.62451171875,
+   1709.19384765625
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/2/0",
+  "box": [
+   2361.2,
+   1644.025,
+   2387.875,
+   1707.0
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/2/3",
+  "box": [
+   2517.675,
+   1645.125,
+   2547.65,
+   1707.0
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/3/2",
+  "box": [
+   3068.125,
+   1641.0,
+   3100.85,
+   1707.0
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/3/5",
+  "box": [
+   2911.65,
+   1640.45,
+   2939.975,
+   1707.0
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/4/9",
+  "box": [
+   3672.35546875,
+   1644.1875,
+   3702.82421875,
+   1706.8828125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/5/1",
+  "box": [
+   3829.04833984375,
+   1640.76123046875,
+   3857.892578125,
+   1706.77587890625
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/0/4/5/9",
+  "box": [
+   4096.67529296875,
+   1658.900390625,
+   4341.4052734375,
+   1688.63671875
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 5,
+  "glyph": "glyph/5/0/4/6/1",
+  "box": [
+   4418.806640625,
+   1651.26953125,
+   4914.0,
+   1695.3984375
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/6/6",
+  "box": [
+   4422.716796875,
+   1643.728515625,
+   4451.763671875,
+   1706.849609375
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/7/9",
+  "box": [
+   5400.1025390625,
+   1636.1376953125,
+   5433.4453125,
+   1709.2578125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/0/4/7/10",
+  "box": [
+   5166.41064453125,
+   1637.01513671875,
+   5203.84814453125,
+   1709.2578125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/0/4/7/11",
+  "box": [
+   5362.080078125,
+   1409.7578125,
+   5372.90185546875,
+   1426.42919921875
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/0/4/7/15",
+  "box": [
+   5391.9130859375,
+   1419.99462890625,
+   5429.935546875,
+   1439.005859375
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/0/5/1/8",
+  "box": [
+   1442.85986328125,
+   1662.9990234375,
+   2029.0,
+   1688.50830078125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/0/5/5/19",
+  "box": [
+   3733.29736328125,
+   1657.451171875,
+   4342.0,
+   1691.9453125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/0/5/6/13",
+  "box": [
+   4342.0,
+   1652.87890625,
+   4912.8828125,
+   1691.142578125
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/0/5/6/19",
+  "box": [
+   4651.740234375,
+   1659.302734375,
+   4914.0,
+   1689.74609375
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 5,
+  "glyph": "glyph/5/0/5/7/12",
+  "box": [
+   4914.5849609375,
+   1648.75244140625,
+   4983.6103515625,
+   1697.88916015625
+  ],
+  "old_owner": "staff/5/0/4",
+  "page_owner": "staff/5/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/0/7/6/8",
+  "box": [
+   4606.21484375,
+   2261.181640625,
+   4644.478515625,
+   2281.849609375
+  ],
+  "old_owner": "staff/5/0/7",
+  "page_owner": "staff/5/0/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/5/0/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/1/3/0/26",
+  "box": [
+   691.29736328125,
+   4619.0,
+   736.50927734375,
+   4646.32958984375
+  ],
+  "old_owner": "staff/5/1/3",
+  "page_owner": "staff/5/1/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/5/1/3",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/1/4/2/1",
+  "box": [
+   1887.93,
+   5078.3175,
+   1910.275,
+   5131.7275
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/1/4/4/10",
+  "box": [
+   2828.0325,
+   5071.7775,
+   2857.735,
+   5133.09
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 5,
+  "glyph": "glyph/5/1/4/5/0",
+  "box": [
+   3495.96,
+   5063.875,
+   3519.94,
+   5132.0
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/1/4/6/12",
+  "box": [
+   3670.545,
+   5086.4925,
+   4155.3225,
+   5127.095
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 5,
+  "glyph": "glyph/5/1/4/7/0",
+  "box": [
+   4373.455,
+   5075.5925,
+   4427.6825,
+   5100.1175
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/1/4/8/0",
+  "box": [
+   4576.27,
+   5092.76,
+   5013.905,
+   5118.6475
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 5,
+  "glyph": "glyph/5/1/5/4/14",
+  "box": [
+   2758.0,
+   5081.0275,
+   3229.425,
+   5123.81
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 5,
+  "glyph": "glyph/5/1/5/7/5",
+  "box": [
+   4158.4525,
+   5084.025,
+   4572.1075,
+   5119.7225
+  ],
+  "old_owner": "staff/5/1/4",
+  "page_owner": "staff/5/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/1/8/7/9",
+  "box": [
+   4374.545,
+   6013.37,
+   4408.0625,
+   6021.0
+  ],
+  "old_owner": "staff/5/1/8",
+  "page_owner": "staff/5/1/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/5/1/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/1/9/9/20",
+  "box": [
+   5251.075,
+   6282.0075,
+   5288.9525,
+   6291.0
+  ],
+  "old_owner": "staff/5/1/9",
+  "page_owner": "staff/5/1/10",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/9",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/1/10/5/8",
+  "box": [
+   3451.375,
+   6205.0,
+   3486.575,
+   6211.875
+  ],
+  "old_owner": "staff/5/1/10",
+  "page_owner": "staff/5/1/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/5/1/10",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/1/12/1/7",
+  "box": [
+   1600.325,
+   6699.0,
+   1642.125,
+   6760.05
+  ],
+  "old_owner": "staff/5/1/12",
+  "page_owner": "staff/5/1/11",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/5/1/12",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 5,
+  "glyph": "glyph/5/1/12/3/3",
+  "box": [
+   2544.075,
+   6699.275,
+   2586.975,
+   6771.05
+  ],
+  "old_owner": "staff/5/1/12",
+  "page_owner": "staff/5/1/11",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/5/1/12",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/0/1/14",
+  "box": [
+   1497.4275,
+   852.0675,
+   1532.3925,
+   862.89
+  ],
+  "old_owner": "staff/8/0/0",
+  "page_owner": "staff/8/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/0/4/8",
+  "box": [
+   2601.6175,
+   855.9525,
+   2631.31,
+   862.89
+  ],
+  "old_owner": "staff/8/0/0",
+  "page_owner": "staff/8/0/1",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/8/0/0",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/0/4/9/2",
+  "box": [
+   4399.8,
+   2015.0,
+   4419.12,
+   2036.0
+  ],
+  "old_owner": "staff/8/0/4",
+  "page_owner": "staff/8/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/8/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/3/0/2",
+  "box": [
+   721.0869140625,
+   5105.6328125,
+   735.8203125,
+   5112.8427734375
+  ],
+  "old_owner": "staff/8/1/3",
+  "page_owner": "staff/8/1/4",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/8/1/3",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/3/0/5",
+  "box": [
+   696.94921875,
+   4742.0,
+   740.5224609375,
+   4756.7333984375
+  ],
+  "old_owner": "staff/8/1/3",
+  "page_owner": "staff/8/1/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/8/1/3",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/3/5/3",
+  "box": [
+   2931.44,
+   4742.0,
+   2964.83,
+   4750.215
+  ],
+  "old_owner": "staff/8/1/3",
+  "page_owner": "staff/8/1/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/8/1/3",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 8,
+  "glyph": "glyph/8/1/3/7/3",
+  "box": [
+   3465.7,
+   4742.0,
+   3505.98,
+   4750.745
+  ],
+  "old_owner": "staff/8/1/3",
+  "page_owner": "staff/8/1/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/8/1/3",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 12,
+  "glyph": "glyph/12/0/5/9/10",
+  "box": [
+   3593.11,
+   1550.925,
+   3925.0,
+   1595.88
+  ],
+  "old_owner": "staff/12/0/4",
+  "page_owner": "staff/12/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/12/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/6/5/4",
+  "box": [
+   2448.5875,
+   1749.0,
+   2495.7625,
+   1756.4925
+  ],
+  "old_owner": "staff/12/0/6",
+  "page_owner": "staff/12/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/12/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/6/6/1",
+  "box": [
+   2904.485,
+   1806.72,
+   2941.67,
+   1839.7425
+  ],
+  "old_owner": "staff/12/0/6",
+  "page_owner": "staff/12/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/6/7/0",
+  "box": [
+   3168.96,
+   1803.1125,
+   3206.4225,
+   1836.4125
+  ],
+  "old_owner": "staff/12/0/6",
+  "page_owner": "staff/12/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/6/7/2",
+  "box": [
+   3050.4675,
+   1802.28,
+   3088.485,
+   1837.8
+  ],
+  "old_owner": "staff/12/0/6",
+  "page_owner": "staff/12/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/6/9/0",
+  "box": [
+   3638.3425,
+   1805.3325,
+   3676.36,
+   1836.9675
+  ],
+  "old_owner": "staff/12/0/6",
+  "page_owner": "staff/12/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/0/6",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/10/2/6",
+  "box": [
+   1548.0325,
+   2669.745,
+   1567.735,
+   2690.835
+  ],
+  "old_owner": "staff/12/0/10",
+  "page_owner": "staff/12/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/0/10",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/11/0/10",
+  "box": [
+   709.173828125,
+   2883.0,
+   753.388671875,
+   2908.83984375
+  ],
+  "old_owner": "staff/12/0/11",
+  "page_owner": "staff/12/0/10",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/11/3/3",
+  "box": [
+   1922.2375,
+   2883.0,
+   1963.03,
+   2892.435
+  ],
+  "old_owner": "staff/12/0/11",
+  "page_owner": "staff/12/0/10",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/12/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/0/13/7/5",
+  "box": [
+   3178.05,
+   3375.0,
+   3212.7,
+   3381.875
+  ],
+  "old_owner": "staff/12/0/13",
+  "page_owner": "staff/12/0/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/12/0/13",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/1/12/3/2",
+  "box": [
+   2526.8625,
+   6635.0,
+   2558.745,
+   6655.165
+  ],
+  "old_owner": "staff/12/1/12",
+  "page_owner": "staff/12/1/11",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/12/1/12",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 12,
+  "glyph": "glyph/12/1/12/4/7",
+  "box": [
+   2831.76,
+   6950.8275,
+   2864.7325,
+   6962.0
+  ],
+  "old_owner": "staff/12/1/12",
+  "page_owner": "staff/12/1/13",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/12/1/12",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 14,
+  "glyph": "glyph/14/0/2/4/30",
+  "box": [
+   2900.69,
+   1212.2825,
+   2935.57,
+   1224.0
+  ],
+  "old_owner": "staff/14/0/2",
+  "page_owner": "staff/14/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/14/0/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 14,
+  "glyph": "glyph/14/0/13/3/4",
+  "box": [
+   2333.8,
+   3559.925,
+   2391.275,
+   3591.0
+  ],
+  "old_owner": "staff/14/0/13",
+  "page_owner": "staff/14/0/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/14/0/13",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 14,
+  "glyph": "glyph/14/1/2/1/1",
+  "box": [
+   1694.725,
+   4893.025,
+   1703.525,
+   4901.0
+  ],
+  "old_owner": "staff/14/1/2",
+  "page_owner": "staff/14/1/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/14/1/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 14,
+  "glyph": "glyph/14/1/7/0/20",
+  "box": [
+   732.7060546875,
+   6211.0537109375,
+   758.8095703125,
+   6230.43359375
+  ],
+  "old_owner": "staff/14/1/7",
+  "page_owner": "staff/14/1/8",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/14/1/7",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 19,
+  "glyph": "glyph/19/0/4/6/10",
+  "box": [
+   3719.475,
+   1691.925,
+   3748.35,
+   1756.0
+  ],
+  "old_owner": "staff/19/0/4",
+  "page_owner": "staff/19/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 19,
+  "glyph": "glyph/19/0/4/10/7",
+  "box": [
+   5284.475,
+   1678.725,
+   5311.7,
+   1756.0
+  ],
+  "old_owner": "staff/19/0/4",
+  "page_owner": "staff/19/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 19,
+  "glyph": "glyph/19/0/4/10/11",
+  "box": [
+   5372.2,
+   1699.625,
+   5485.5,
+   1723.55
+  ],
+  "old_owner": "staff/19/0/4",
+  "page_owner": "staff/19/0/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 19,
+  "glyph": "glyph/19/1/4/0/10",
+  "box": [
+   915.43359375,
+   5308.27783203125,
+   987.583984375,
+   5328.69775390625
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 19,
+  "glyph": "glyph/19/1/4/0/20",
+  "box": [
+   1114.52783203125,
+   5279.00927734375,
+   1147.88037109375,
+   5332.78173828125
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 19,
+  "glyph": "glyph/19/1/4/1/9",
+  "box": [
+   1532.75,
+   5280.2,
+   1566.025,
+   5331.9
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 19,
+  "glyph": "glyph/19/1/4/2/5",
+  "box": [
+   2116.35,
+   5003.0,
+   2156.225,
+   5040.95
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "flag",
+  "page": 19,
+  "glyph": "glyph/19/1/4/2/14",
+  "box": [
+   1957.675,
+   5278.275,
+   1984.9,
+   5333.0
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "mark",
+  "page": 19,
+  "glyph": "glyph/19/1/4/4/16",
+  "box": [
+   2991.775,
+   5311.825,
+   3003.05,
+   5321.175
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "mark",
+  "page": 19,
+  "glyph": "glyph/19/1/4/5/15",
+  "box": [
+   3505.4,
+   5304.675,
+   3514.2,
+   5315.675
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 19,
+  "glyph": "glyph/19/1/4/6/10",
+  "box": [
+   3827.55,
+   5281.3,
+   4384.975,
+   5333.0
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 19,
+  "glyph": "glyph/19/1/4/7/3",
+  "box": [
+   4707.3,
+   5292.3,
+   4903.375,
+   5328.325
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 19,
+  "glyph": "glyph/19/1/4/7/5",
+  "box": [
+   4385.0,
+   5279.1,
+   4903.925,
+   5331.625
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 19,
+  "glyph": "glyph/19/1/4/8/7",
+  "box": [
+   4904.29296875,
+   5286.0078125,
+   4981.63671875,
+   5332.8828125
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 19,
+  "glyph": "glyph/19/1/5/8/13",
+  "box": [
+   4904.87890625,
+   5301.08203125,
+   5504.0,
+   5338.2890625
+  ],
+  "old_owner": "staff/19/1/4",
+  "page_owner": "staff/19/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/19/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 19,
+  "glyph": "glyph/19/1/11/2/21",
+  "box": [
+   1801.87,
+   6934.825,
+   1855.0075,
+   6943.0
+  ],
+  "old_owner": "staff/19/1/11",
+  "page_owner": "staff/19/1/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/19/1/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 19,
+  "glyph": "glyph/19/1/12/2/5",
+  "box": [
+   2116.5825,
+   6882.0,
+   2144.3325,
+   6910.305
+  ],
+  "old_owner": "staff/19/1/12",
+  "page_owner": "staff/19/1/11",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/19/1/12",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/2/5/5",
+  "box": [
+   3420.7,
+   1314.85,
+   3455.075,
+   1322.0
+  ],
+  "old_owner": "staff/25/0/2",
+  "page_owner": "staff/25/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger",
+  "staff": "staff/25/0/2",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/4/5/4",
+  "box": [
+   3657.235,
+   1512.0,
+   3665.8375,
+   1520.6025
+  ],
+  "old_owner": "staff/25/0/4",
+  "page_owner": "staff/25/0/3",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/25/0/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/8/2/8",
+  "box": [
+   1983.725,
+   2747.1775,
+   2019.245,
+   2758.0
+  ],
+  "old_owner": "staff/25/0/8",
+  "page_owner": "staff/25/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/25/0/8",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/10/6/16",
+  "box": [
+   3894.385,
+   2976.0,
+   3929.6275,
+   3004.0275
+  ],
+  "old_owner": "staff/25/0/10",
+  "page_owner": "staff/25/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/25/0/10",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/10/6/20",
+  "box": [
+   4039.24,
+   2976.0,
+   4062.55,
+   2987.655
+  ],
+  "old_owner": "staff/25/0/10",
+  "page_owner": "staff/25/0/9",
+  "page_owner_status": "decided",
+  "page_owner_reason": "stem",
+  "staff": "staff/25/0/10",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/11/2/14",
+  "box": [
+   2142.2,
+   3583.725,
+   2177.125,
+   3595.0
+  ],
+  "old_owner": "staff/25/0/11",
+  "page_owner": "staff/25/0/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/25/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/11/5/21",
+  "box": [
+   3410.25,
+   3586.2,
+   3443.8,
+   3595.0
+  ],
+  "old_owner": "staff/25/0/11",
+  "page_owner": "staff/25/0/12",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/25/0/11",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/0/12/3/21",
+  "box": [
+   2500.8175,
+   3863.12,
+   2533.5625,
+   3872.0
+  ],
+  "old_owner": "staff/25/0/12",
+  "page_owner": "staff/25/0/13",
+  "page_owner_status": "decided",
+  "page_owner_reason": "ledger_and_stem",
+  "staff": "staff/25/0/12",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "distance",
+  "family": "head",
+  "page": 25,
+  "glyph": "glyph/25/1/1/1/1",
+  "box": [
+   1495.375,
+   4913.275,
+   1527.55,
+   4924.0
+  ],
+  "old_owner": "staff/25/1/1",
+  "page_owner": "staff/25/1/2",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/25/1/1",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 25,
+  "glyph": "glyph/25/1/4/1/9",
+  "box": [
+   1439.2775,
+   5567.26,
+   1911.8600000000001,
+   5605.0
+  ],
+  "old_owner": "staff/25/1/4",
+  "page_owner": "staff/25/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/25/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 25,
+  "glyph": "glyph/25/1/4/7/4",
+  "box": [
+   4132.555,
+   5556.9925,
+   4204.9825,
+   5594.455
+  ],
+  "old_owner": "staff/25/1/4",
+  "page_owner": "staff/25/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/25/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "beam",
+  "page": 25,
+  "glyph": "glyph/25/1/4/8/10",
+  "box": [
+   4592.1625,
+   5567.26,
+   5047.8175,
+   5605.0
+  ],
+  "old_owner": "staff/25/1/4",
+  "page_owner": "staff/25/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/25/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ },
+ {
+  "plate": "brahms",
+  "kind": "rules",
+  "rule": "range_veto",
+  "family": "arc",
+  "page": 25,
+  "glyph": "glyph/25/1/5/5/16",
+  "box": [
+   3268.0,
+   5562.81,
+   3698.68,
+   5599.1625
+  ],
+  "old_owner": "staff/25/1/4",
+  "page_owner": "staff/25/1/5",
+  "page_owner_status": "decided",
+  "page_owner_reason": "inside_staff",
+  "staff": "staff/25/1/4",
+  "pdf": "/Users/seanjohnson/Desktop/ReEngrave/library/editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf"
+ }
+]

@@ -88,9 +88,9 @@ def rules_pool(path, plate):
             continue
         s = v["subject"]
         po = own.get(s)
-        if not po or po[3] != "head" or po[1] not in ("decided", "guessed") or po[0] == v.get("value") or s not in boxes:
+        if not po or po[1] not in ("decided", "guessed") or po[0] == v.get("value") or s not in boxes:
             continue
-        out.append(dict(plate=plate, kind="rules", rule=v["reason"], page=int(s.split("/")[1]), glyph=s, box=boxes[s],
+        out.append(dict(plate=plate, kind="rules", rule=v["reason"], family=po[3], page=int(s.split("/")[1]), glyph=s, box=boxes[s],
                         old_owner=v.get("value"), page_owner=po[0], page_owner_status=po[1], page_owner_reason=po[2],
                         staff=v.get("value")))
     return out
@@ -114,7 +114,7 @@ def main():
     # one per place (a mark's two copies are one place), stratified by rule and plate, seeded
     seen, uniq = set(), []
     for g in pool:
-        k = (g["plate"], g["page"], round(g["box"][0] / 8), round(g["box"][1] / 8))
+        k = (g["plate"], g["page"], round(g["box"][0] / 40), round(g["box"][1] / 40))
         if k not in seen:
             seen.add(k)
             uniq.append(g)
