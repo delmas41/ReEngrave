@@ -214,3 +214,15 @@ def test_twin_a_word_beside_the_hairpin_takes_nothing():
     log.observe(R.system(0, 0), Q.CLAIMED_AREA, [160.0, 50.0, 190.0, 70.0], reader="cv_page_claims", frame="page",
                 owner="word", unit="area", standing="READ")
     assert _decide(log, _hairpin(log, 0, 0, 38.0, 148.0)).reason == "bound_page_wide"
+
+
+def test_an_unusable_head_at_the_tip_blocks_the_under_guess():
+    """Brahms p25 (2026-10-31 crop): the head at the start tip was not usable, so the first build bound the start UNDER the note
+    before it -- a guess. A GATHER head box in reach of the tip now makes the tip abstain; without it the tip is under the earlier note."""
+    heads = [{"key": "early", "cx": 20.0, "cy": 15.0, "w": 12.0, "h": 10.0, "cell": 0},
+             {"key": "end", "cx": 150.0, "cy": 15.0, "w": 12.0, "h": 10.0, "cell": 0}]
+    bad = [{"key": "refused", "cx": 62.0, "cy": 15.0, "w": 12.0, "h": 10.0, "cell": 0}]
+    r = HB.bind_hairpin([60.0, 55.0, 148.0, 63.0], heads, [(0, 0.0, 200.0)], SP, unusable=bad)
+    assert r["start"]["unbound"] == "head_at_tip_not_usable" and r["start"]["candidates"] == ["refused"]
+    r = HB.bind_hairpin([60.0, 55.0, 148.0, 63.0], heads, [(0, 0.0, 200.0)], SP)
+    assert r["start"]["head"] == "early" and r["start"]["how"] == "under"

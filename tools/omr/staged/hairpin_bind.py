@@ -25,6 +25,8 @@ abstains):
   4. UNDER a note: no column in reach -- the tip is a place inside the bar while a note sounds. The note sounding there is the last
      column of the tip's bar left of the tip (a hairpin drawn under a held note starts or stops under it; "one anchor is enough", Sean
      2026-09-05). Recorded `under`, so a reader can tell "on a note" from "during one";
+  4a. a GATHER head box within reach of the tip that ADJUDICATE did not leave usable (refused, another staff's copy) blocks step 4:
+     the tip may be at that note, so the end ABSTAINS (`head_at_tip_not_usable`) -- found on crops, Brahms p25 (2026-10-31);
   5. no column at or left of the tip in its bar (a bar of rests, an unread head, a tip before the bar's first note and out of reach)
      -> UNBOUND (`no_note_at_tip`), with the nearest candidate and its distance in spaces past the reach as the margin. Never the
      nearest head of another bar (the OFF rule's guess).
@@ -118,7 +120,8 @@ def _lowest(col: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
 
 
 def bind_tip(x: float, end: str, cols: Sequence[Sequence[Dict[str, Any]]], bars: Sequence[Tuple[int, float, float]],
-             sp: float, voice: Optional[int] = None, voice_of: Optional[Callable[[str], int]] = None) -> Dict[str, Any]:
+             sp: float, voice: Optional[int] = None, voice_of: Optional[Callable[[str], int]] = None,
+             unusable: Sequence[Dict[str, Any]] = ()) -> Dict[str, Any]:
     """One tip at page `x`; `end` "start" or "stop". `cols` the staff's onset columns (all bars of the system). Returns
     `{"head": key, "how": "at"|"under", "cell": c, ...}` or `{"unbound": why, "candidates": [...], "margin_spaces": m}`."""
     cell = bar_of(x, bars)
@@ -156,6 +159,12 @@ def bind_tip(x: float, end: str, cols: Sequence[Sequence[Dict[str, Any]]], bars:
         pick = _lowest(col)
         return {"head": pick["key"], "how": "at", "cell": pick["cell"], "x": pick["cx"],
                 "distance_spaces": round(abs(_cx(inreach[0]) - x) / sp, 3)}
+    # A head box GATHER drew within reach of the tip that ADJUDICATE did not leave usable (refused, unread, another staff's copy):
+    # the tip may be AT that note, so "under the note before" would be a guess -- abstain and name it.
+    blocked = [h for h in unusable if h["cell"] == cell and abs(h["cx"] - x) <= reach]
+    if blocked:
+        return {"unbound": "head_at_tip_not_usable", "cell": cell, "candidates": [h["key"] for h in blocked],
+                "margin_spaces": None}
     left = [c for c in here if _cx(c) < x]
     if left:
         col = max(left, key=_cx)
@@ -168,16 +177,17 @@ def bind_tip(x: float, end: str, cols: Sequence[Sequence[Dict[str, Any]]], bars:
 
 
 def bind_hairpin(box: Sequence[float], heads: Sequence[Dict[str, Any]], bars: Sequence[Tuple[int, float, float]], sp: float,
-                 voice_of: Optional[Callable[[str], int]] = None) -> Dict[str, Any]:
+                 voice_of: Optional[Callable[[str], int]] = None, unusable: Sequence[Dict[str, Any]] = ()) -> Dict[str, Any]:
     """Both tips of one hairpin (page box `[x0, y0, x1, y1]`, CORNERS). `heads` the usable heads of its staff in its system.
     Returns `{"start": ..., "stop": ..., "below": [keys of heads standing below the hairpin, never candidates]}`."""
     vo = voice_of or (lambda _k: 0)
     above = [h for h in heads if h["cy"] < float(box[1])]
     below = [h["key"] for h in heads if h["cy"] >= float(box[1])]
     cols = columns(above)
-    start = bind_tip(float(box[0]), "start", cols, bars, sp)
+    un = [h for h in unusable if h["cy"] < float(box[1])]
+    start = bind_tip(float(box[0]), "start", cols, bars, sp, unusable=un)
     voice = vo(start["head"]) if start.get("head") else None
-    stop = bind_tip(float(box[2]), "stop", cols, bars, sp, voice, vo)
+    stop = bind_tip(float(box[2]), "stop", cols, bars, sp, voice, vo, unusable=un)
     if start.get("head") and stop.get("head"):
         ks = (start["cell"], start["x"])
         kz = (stop["cell"], stop["x"])

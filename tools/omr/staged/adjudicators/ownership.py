@@ -5173,6 +5173,7 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
         if isinstance(v, (list, tuple)) and len(v) == 4 and row.subject.cell is not None:
             bars.append((int(row.subject.cell), float(v[0]), float(v[2])))
     seen = set()
+    unusable: List[Dict[str, Any]] = []
     for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=sys_sub):
         if (row.detail or {}).get("category") != "notehead":
             continue
@@ -5185,14 +5186,18 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
         seen.add(key)
         owner = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
         staff_key = (owner.value if owner is not None and owner.value else row.subject.at(Kind.STAFF).to_key())
-        if str(staff_key) != own.to_key():
-            continue
-        if owner is not None and _is_relocated_copy(row.subject, owner.value):
-            continue
-        if not _head_usable(ev, key):
-            continue
         x0, y0, x1, y1 = (float(t) for t in hb)
         if x1 <= x0 or y1 <= y0:
+            continue
+        ok = (str(staff_key) == own.to_key() and not (owner is not None and _is_relocated_copy(row.subject, owner.value))
+              and _head_usable(ev, key))
+        if not ok:
+            # an unusable box filed on THIS staff still blocks an "under" guess at a tip it stands at (hairpin_bind step 4a)
+            if row.subject.staff == staff:
+                c_ = _hairpin_bind.bar_of((x0 + x1) / 2.0, bars)
+                if c_ is not None:
+                    unusable.append({"key": key, "cx": (x0 + x1) / 2.0, "cy": (y0 + y1) / 2.0, "w": x1 - x0, "h": y1 - y0,
+                                     "cell": int(c_)})
             continue
         # a head another staff's cell boxed but `glyph_owner` gave to THIS staff keeps its own cell index, which is a bar of the
         # other staff: its bar on THIS staff is the one whose box holds its x
@@ -5211,7 +5216,7 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
         vm, n = _voice_map(ev, page, system, st, cells)
         voice_of.update(vm)
         voices_read += n
-    b = _hairpin_bind.bind_hairpin(box, heads, bars, sp, lambda k: voice_of.get(k, 0))
+    b = _hairpin_bind.bind_hairpin(box, heads, bars, sp, lambda k: voice_of.get(k, 0), unusable)
     start, stop = b["start"], b["stop"]
     detail = {"kind": str(wedge.value), "left_page": box[0], "right_page": box[2], "start": start, "stop": stop,
               "n_candidates": len(heads), "heads_below_the_hairpin": len(b["below"]), "reader": wedge.reader,
