@@ -1,0 +1,1373 @@
+[
+{
+"note": "glyph/2/1/0/9/7",
+"page": 2,
+"pitch": "B5",
+"written": "natural",
+"blue": false,
+"acc": "glyph/2/1/0/9/4",
+"cls": "accidentalNatural",
+"page_box": [
+1777.41,
+2087.17,
+1790.1675,
+2146.2325
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 1.0,
+"stagger_bottom_sp": 0.87,
+"stem_gap_sp": 0.56,
+"stem_len_sp": [
+2.88,
+2.76
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/0/9/2",
+"page": 4,
+"pitch": "A-16",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/0/9/0",
+"cls": "accidentalFlat",
+"page_box": [
+1720.425,
+321.31,
+1735.305,
+356.495
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.084,
+"stem_len_sp": 2.38,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/0/10/3",
+"page": 4,
+"pitch": "A-16",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/0/10/2",
+"cls": "accidentalFlat",
+"page_box": [
+1876.34,
+321.62,
+1891.22,
+359.595
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 2.5,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/0/13/1",
+"page": 4,
+"pitch": "A6",
+"written": "natural",
+"blue": false,
+"acc": "glyph/4/0/0/13/0",
+"cls": "accidentalNatural",
+"page_box": [
+2324.145,
+324.565,
+2335.305,
+375.095
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 0.44,
+"stagger_bottom_sp": 1.0,
+"stem_gap_sp": 0.41,
+"stem_len_sp": [
+2.25,
+2.81
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/1/5/6",
+"page": 2,
+"pitch": "E5",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/1/1/5/5",
+"cls": "accidentalFlat",
+"page_box": [
+1186.52,
+2256.96,
+1200.92,
+2305.12
+],
+"family_type": null,
+"why": null,
+"detector_type": null,
+"features": null,
+"source": "class(no family)"
+},
+{
+"note": "glyph/4/0/1/5/5",
+"page": 4,
+"pitch": "A5",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/1/5/2",
+"cls": "accidentalFlat",
+"page_box": [
+1155.7575,
+527.995,
+1168.2,
+585.955
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 0.88,
+"stagger_bottom_sp": 0.88,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+2.75,
+2.75
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/1/9/1",
+"page": 4,
+"pitch": "A5",
+"written": "natural",
+"blue": false,
+"acc": "glyph/4/0/1/9/0",
+"cls": "accidentalNatural",
+"page_box": [
+1774.535,
+520.5925,
+1786.19,
+577.9225
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 0.82,
+"stagger_bottom_sp": 0.94,
+"stem_gap_sp": 0.44,
+"stem_len_sp": [
+2.69,
+2.81
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/1/10/1",
+"page": 4,
+"pitch": "A5",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/1/10/4",
+"cls": "accidentalNatural",
+"page_box": [
+1879.245,
+519.9625,
+1890.9,
+582.3325
+],
+"family_type": null,
+"why": null,
+"detector_type": null,
+"features": null,
+"source": "class(no family)"
+},
+{
+"note": "glyph/4/0/1/11/12",
+"page": 4,
+"pitch": "B-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/1/11/1",
+"cls": "accidentalFlat",
+"page_box": [
+2060.2475,
+516.34,
+2074.895,
+558.3925
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.138,
+"stem_len_sp": 2.69,
+"bowl_pieces": 2
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/0/2/4/1",
+"page": 2,
+"pitch": "C4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/0/2/4/5",
+"cls": "accidentalNatural",
+"page_box": [
+979.0,
+729.8975,
+995.8525,
+771.7925
+],
+"family_type": "unclear",
+"why": "more_than_two_stems",
+"detector_type": "natural",
+"features": {
+"n_stems": 3,
+"n_members": 7
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/2/0/2/5/7",
+"page": 2,
+"pitch": "B24",
+"written": "sharp",
+"blue": true,
+"acc": "glyph/2/0/2/5/5",
+"cls": "accidentalDoubleSharp",
+"page_box": [
+1095.9625,
+690.365,
+1118.6425,
+720.92
+],
+"family_type": "unclear",
+"why": "one_stem_no_bowl",
+"detector_type": "sharp",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.703,
+"stem_len_sp": 1.69,
+"bowl_pieces": 0
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/2/0/2/5/7",
+"page": 2,
+"pitch": "B24",
+"written": "sharp",
+"blue": true,
+"acc": "glyph/2/0/2/5/5",
+"cls": "accidentalDoubleSharp",
+"page_box": [
+1095.9625,
+690.365,
+1118.6425,
+720.92
+],
+"family_type": "unclear",
+"why": "one_stem_no_bowl",
+"detector_type": "sharp",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.703,
+"stem_len_sp": 1.69,
+"bowl_pieces": 0
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/2/1/2/5/6",
+"page": 2,
+"pitch": "F14",
+"written": "sharp",
+"blue": false,
+"acc": "glyph/2/1/2/5/10",
+"cls": "accidentalSharp",
+"page_box": [
+1188.44,
+2441.76,
+1207.16,
+2489.12
+],
+"family_type": "sharp",
+"why": "stems_level",
+"detector_type": "sharp",
+"features": {
+"n_stems": 2,
+"n_members": 5,
+"stagger_top_sp": 0.0,
+"stagger_bottom_sp": -0.25,
+"stem_gap_sp": 0.49,
+"stem_len_sp": [
+3.07,
+2.82
+],
+"n_bars": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/1/2/3/0",
+"page": 4,
+"pitch": "C6",
+"written": "natural",
+"blue": false,
+"acc": "glyph/4/1/2/3/2",
+"cls": "accidentalNatural",
+"page_box": [
+929.55,
+2395.0875,
+941.6775,
+2453.6775
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 0.94,
+"stagger_bottom_sp": 1.07,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+2.81,
+2.94
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/1/2/4/3",
+"page": 4,
+"pitch": "C6",
+"written": "natural",
+"blue": false,
+"acc": "glyph/4/1/2/4/6",
+"cls": "accidentalNatural",
+"page_box": [
+1083.045,
+2389.1025,
+1095.645,
+2448.48
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 1.38,
+"stagger_bottom_sp": 1.01,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+3.32,
+2.94
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/0/3/1/0",
+"page": 2,
+"pitch": "B3",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/0/3/1/11",
+"cls": "accidentalNatural",
+"page_box": [
+619.6775,
+807.0475,
+634.64,
+868.1575
+],
+"family_type": null,
+"why": null,
+"detector_type": null,
+"features": null,
+"source": "class(no family)"
+},
+{
+"note": "glyph/2/0/3/1/0",
+"page": 2,
+"pitch": "B3",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/0/3/1/11",
+"cls": "accidentalNatural",
+"page_box": [
+619.6775,
+807.0475,
+634.64,
+868.1575
+],
+"family_type": null,
+"why": null,
+"detector_type": null,
+"features": null,
+"source": "class(no family)"
+},
+{
+"note": "glyph/2/1/3/4/4",
+"page": 2,
+"pitch": "F4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/1/3/4/5",
+"cls": "accidentalFlat",
+"page_box": [
+1025.67,
+2519.1525,
+1038.1125,
+2567.82
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 1.12,
+"stagger_bottom_sp": 0.18,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+2.94,
+2.0
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/3/4/4",
+"page": 2,
+"pitch": "F4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/1/3/4/5",
+"cls": "accidentalFlat",
+"page_box": [
+1025.67,
+2519.1525,
+1038.1125,
+2567.82
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 1.12,
+"stagger_bottom_sp": 0.18,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+2.94,
+2.0
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/3/5/2",
+"page": 2,
+"pitch": "F-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/2/1/3/5/0",
+"cls": "accidentalFlat",
+"page_box": [
+1190.8125,
+2520.255,
+1207.035,
+2562.3075
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.084,
+"stem_len_sp": 2.69,
+"bowl_pieces": 2
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/3/5/3",
+"page": 4,
+"pitch": "D-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/3/5/0",
+"cls": "accidentalFlat",
+"page_box": [
+1151.525,
+799.22,
+1166.87,
+840.45
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 2.63,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/3/7/5",
+"page": 4,
+"pitch": "D4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/3/7/6",
+"cls": "accidentalFlat",
+"page_box": [
+1440.595,
+797.515,
+1453.77,
+859.36
+],
+"family_type": null,
+"why": null,
+"detector_type": null,
+"features": null,
+"source": "class(no family)"
+},
+{
+"note": "glyph/4/0/3/8/3",
+"page": 4,
+"pitch": "C-13",
+"written": "flat",
+"blue": true,
+"acc": "glyph/4/0/3/8/2",
+"cls": "accidentalFlat",
+"page_box": [
+1605.465,
+832.855,
+1616.005,
+908.495
+],
+"family_type": "unclear",
+"why": "no_stem",
+"detector_type": "flat",
+"features": {
+"n_stems": 0,
+"n_members": 3
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/4/0/6/1/2",
+"page": 4,
+"pitch": "G-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/6/1/3",
+"cls": "accidentalFlat",
+"page_box": [
+599.4025,
+1292.7875,
+615.625,
+1338.7775
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.085,
+"stem_len_sp": 2.81,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/3/2",
+"page": 4,
+"pitch": "G-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/6/3/1",
+"cls": "accidentalFlat",
+"page_box": [
+893.45,
+1293.575,
+908.57,
+1335.47
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 2.69,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/5/0",
+"page": 4,
+"pitch": "G-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/6/5/2",
+"cls": "accidentalFlat",
+"page_box": [
+1150.245,
+1292.4725,
+1165.2075,
+1332.635
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 2.62,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/7/1",
+"page": 4,
+"pitch": "G-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/6/7/2",
+"cls": "accidentalFlat",
+"page_box": [
+1441.505,
+1290.11,
+1458.2,
+1333.895
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 2.69,
+"bowl_pieces": 2
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/9/2",
+"page": 4,
+"pitch": "G5",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/6/9/0",
+"cls": "accidentalFlat",
+"page_box": [
+1721.7725,
+1284.755,
+1737.365,
+1327.4375
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 5,
+"stagger_top_sp": 1.26,
+"stagger_bottom_sp": 0.01,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+2.75,
+1.5
+],
+"n_bars": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/10/1",
+"page": 4,
+"pitch": "G-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/6/10/2",
+"cls": "accidentalFlat",
+"page_box": [
+1880.3475,
+1282.0775,
+1896.57,
+1325.2325
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.106,
+"stem_len_sp": 2.81,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/10/0",
+"page": 4,
+"pitch": "B5",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/6/10/3",
+"cls": "accidentalFlat",
+"page_box": [
+1937.6775,
+1278.6125,
+1951.5375,
+1319.8775
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 0.75,
+"stagger_bottom_sp": 1.0,
+"stem_gap_sp": 0.46,
+"stem_len_sp": [
+3.0,
+3.26
+],
+"n_bars": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/6/12/2",
+"page": 4,
+"pitch": "A-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/6/12/5",
+"cls": "accidentalFlat",
+"page_box": [
+2248.045,
+1272.9425,
+2263.48,
+1314.995
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.096,
+"stem_len_sp": 2.75,
+"bowl_pieces": 3
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/7/5/4",
+"page": 2,
+"pitch": "E5",
+"written": "natural",
+"blue": false,
+"acc": "glyph/2/1/7/5/8",
+"cls": "accidentalNatural",
+"page_box": [
+1244.205,
+3096.4975,
+1256.49,
+3153.67
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 1.0,
+"stagger_bottom_sp": 1.0,
+"stem_gap_sp": 0.5,
+"stem_len_sp": [
+2.88,
+2.88
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/7/9/5",
+"page": 2,
+"pitch": "B5",
+"written": "natural",
+"blue": false,
+"acc": "glyph/2/1/7/9/6",
+"cls": "accidentalNatural",
+"page_box": [
+1833.0075,
+3074.29,
+1845.135,
+3125.32
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 1.18,
+"stagger_bottom_sp": 1.06,
+"stem_gap_sp": 0.43,
+"stem_len_sp": [
+2.0,
+1.88
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/7/14/3",
+"page": 2,
+"pitch": "A3",
+"written": "natural",
+"blue": false,
+"acc": "glyph/2/1/7/14/2",
+"cls": "accidentalNatural",
+"page_box": [
+2456.3075,
+3181.075,
+2470.7975,
+3241.87
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 1.07,
+"stagger_bottom_sp": 0.82,
+"stem_gap_sp": 0.47,
+"stem_len_sp": [
+2.82,
+2.57
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/7/1/0",
+"page": 4,
+"pitch": "G-14",
+"written": "flat",
+"blue": true,
+"acc": "glyph/4/0/7/1/2",
+"cls": "accidentalFlat",
+"page_box": [
+593.575,
+1489.05,
+619.09,
+1542.6
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.138,
+"stem_len_sp": 3.38,
+"bowl_pieces": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/7/5/0",
+"page": 4,
+"pitch": "G-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/7/5/2",
+"cls": "accidentalFlat",
+"page_box": [
+1153.5525,
+1484.325,
+1170.72,
+1535.1975
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.146,
+"stem_len_sp": 3.32,
+"bowl_pieces": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/7/7/7",
+"page": 4,
+"pitch": "G-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/7/7/9",
+"cls": "accidentalFlat",
+"page_box": [
+1439.93,
+1479.4425,
+1460.405,
+1527.3225
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.137,
+"stem_len_sp": 2.82,
+"bowl_pieces": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/7/9/1",
+"page": 4,
+"pitch": "G-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/7/9/0",
+"cls": "accidentalFlat",
+"page_box": [
+1722.245,
+1481.175,
+1738.7825,
+1525.905
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.138,
+"stem_len_sp": 2.82,
+"bowl_pieces": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/7/10/1",
+"page": 4,
+"pitch": "G-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/7/10/3",
+"cls": "accidentalFlat",
+"page_box": [
+1878.615,
+1480.86,
+1895.625,
+1531.1025
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.138,
+"stem_len_sp": 3.32,
+"bowl_pieces": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/7/10/2",
+"page": 4,
+"pitch": "A4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/7/10/6",
+"cls": "accidentalSharp",
+"page_box": [
+1938.3075,
+1475.19,
+1956.42,
+1535.9850000000001
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "sharp",
+"features": {
+"n_stems": 2,
+"n_members": 5,
+"stagger_top_sp": 0.88,
+"stagger_bottom_sp": 1.13,
+"stem_gap_sp": 0.53,
+"stem_len_sp": [
+2.82,
+3.06
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/1/7/5/3",
+"page": 4,
+"pitch": "A-15",
+"written": "flat",
+"blue": true,
+"acc": "glyph/4/1/7/5/2",
+"cls": "accidentalFlat",
+"page_box": [
+1281.76,
+3077.4,
+1297.92,
+3119.96
+],
+"family_type": "unclear",
+"why": "no_stem",
+"detector_type": "flat",
+"features": {
+"n_stems": 0,
+"n_members": 3
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/2/0/8/14/3",
+"page": 2,
+"pitch": "B3",
+"written": "natural",
+"blue": false,
+"acc": "glyph/2/0/8/14/4",
+"cls": "accidentalNatural",
+"page_box": [
+2213.92,
+1643.72,
+2226.56,
+1701.0
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "natural",
+"features": {
+"n_stems": 2,
+"n_members": 4,
+"stagger_top_sp": 1.0,
+"stagger_bottom_sp": 0.88,
+"stem_gap_sp": 0.56,
+"stem_len_sp": [
+2.81,
+2.69
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/1/8/7/4",
+"page": 2,
+"pitch": "E4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/1/8/7/13",
+"cls": "accidentalNatural",
+"page_box": [
+1507.175,
+3289.2325,
+1519.46,
+3352.8625
+],
+"family_type": "unclear",
+"why": "no_stem",
+"detector_type": "natural",
+"features": {
+"n_stems": 0,
+"n_members": 3
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/4/0/8/6/0",
+"page": 4,
+"pitch": "B-14",
+"written": "flat",
+"blue": true,
+"acc": "glyph/4/0/8/6/3",
+"cls": "accidentalFlat",
+"page_box": [
+1323.56,
+1612.4,
+1346.76,
+1661.52
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.145,
+"stem_len_sp": 3.31,
+"bowl_pieces": 1
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/8/9/0",
+"page": 4,
+"pitch": "B24",
+"written": "sharp",
+"blue": true,
+"acc": "glyph/4/0/8/9/10",
+"cls": "accidentalDoubleSharp",
+"page_box": [
+1738.2,
+1630.0,
+1760.44,
+1658.0
+],
+"family_type": "unclear",
+"why": "one_stem_no_bowl",
+"detector_type": "sharp",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.734,
+"stem_len_sp": 1.75,
+"bowl_pieces": 0
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/4/1/8/5/0",
+"page": 4,
+"pitch": "A-15",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/1/8/5/1",
+"cls": "accidentalFlat",
+"page_box": [
+1284.32,
+3213.76,
+1300.48,
+3257.28
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.254,
+"stem_len_sp": 2.69,
+"bowl_pieces": 2
+},
+"source": "strokes"
+},
+{
+"note": "glyph/2/0/10/1/0",
+"page": 2,
+"pitch": "B3",
+"written": "natural",
+"blue": true,
+"acc": "glyph/2/0/10/1/2",
+"cls": "accidentalFlat",
+"page_box": [
+628.655,
+1845.8225,
+642.2,
+1903.7825
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 0.94,
+"stagger_bottom_sp": 0.94,
+"stem_gap_sp": 0.54,
+"stem_len_sp": [
+2.76,
+2.75
+],
+"n_bars": 0
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/10/1/2",
+"page": 4,
+"pitch": "A3",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/10/1/4",
+"cls": "accidentalFlat",
+"page_box": [
+648.2275,
+1869.745,
+662.7175,
+1932.745
+],
+"family_type": "unclear",
+"why": "no_stem",
+"detector_type": "flat",
+"features": {
+"n_stems": 0,
+"n_members": 3
+},
+"source": "class(strokes:unclear)"
+},
+{
+"note": "glyph/4/0/10/5/3",
+"page": 4,
+"pitch": "C-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/10/5/0",
+"cls": "accidentalFlat",
+"page_box": [
+1206.315,
+1846.2775,
+1221.2775,
+1887.5425
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.095,
+"stem_len_sp": 2.69,
+"bowl_pieces": 2
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/10/6/1",
+"page": 4,
+"pitch": "C-14",
+"written": "flat",
+"blue": false,
+"acc": "glyph/4/0/10/6/0",
+"cls": "accidentalFlat",
+"page_box": [
+1331.71,
+1844.545,
+1346.83,
+1887.2275
+],
+"family_type": "flat",
+"why": "one_stem_with_a_bowl",
+"detector_type": "flat",
+"features": {
+"n_stems": 1,
+"n_members": 5,
+"stem_x_fraction": 0.076,
+"stem_len_sp": 2.81,
+"bowl_pieces": 4
+},
+"source": "strokes"
+},
+{
+"note": "glyph/4/0/10/7/3",
+"page": 4,
+"pitch": "C4",
+"written": "natural",
+"blue": true,
+"acc": "glyph/4/0/10/7/5",
+"cls": "accidentalFlat",
+"page_box": [
+1489.385,
+1842.655,
+1501.67,
+1891.6375
+],
+"family_type": "natural",
+"why": "right_stem_lower",
+"detector_type": "flat",
+"features": {
+"n_stems": 2,
+"n_members": 2,
+"stagger_top_sp": 1.0,
+"stagger_bottom_sp": 0.81,
+"stem_gap_sp": 0.41,
+"stem_len_sp": [
+2.94,
+2.75
+],
+"n_bars": 0
+},
+"source": "strokes"
+}
+]

@@ -24,7 +24,7 @@ def row(fn, **kw):
     res = SM.map_strokes(img, SP, LINES, raw)
     ys, xs = np.nonzero(img == 0)
     box = (float(xs.min()), float(ys.min()), float(xs.max() + 1), float(ys.max() + 1))
-    return AF.family_row("accidentalFlat", box, res.strokes, SM.strokes_in_box(res, box), float(SP), masks=res.masks, scale=res.scale)
+    return AF.family_row("accidentalFlat", box, res.strokes, SM.strokes_in_box(res, box), float(SP))
 
 
 if __name__ == "__main__":

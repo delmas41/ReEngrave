@@ -7974,8 +7974,7 @@ def gather_accidental_family(cells: Sequence[Any], local: Dict[int, Tuple[int, i
             box = (float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical))
             shares = SM.strokes_in_box(res, box)
             fam = _acc_family.family_row(d.smufl_name, box, res.strokes, shares, sp, blocked=sorted(blocked),
-                                         rivals=[r[0] for r in (getattr(d, "one_ink_rivals", None) or ())],
-                                         masks=res.masks, scale=res.scale)     # ROADMAP 2.247 (OMR_ACCIDENTAL_KIND): the pieces' own shape
+                                         rivals=[r[0] for r in (getattr(d, "one_ink_rivals", None) or ())])
             # the role evidence: the nearest head to the right of the (grown) mark at about its own height
             gb = fam["box"]
             frac = _acc_family.anchor_fraction(fam["type"]) or _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
