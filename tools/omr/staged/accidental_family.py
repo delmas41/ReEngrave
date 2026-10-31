@@ -132,6 +132,100 @@ def _sbox(s: Any) -> Tuple[float, float, float, float]:
     return float(x), float(y), float(x + w), float(y + h)
 
 
+#: ROADMAP 2.247 r2 (Sean 2026-10-31 on the r1 tiles 2-4, "just a little bit high ... we might need to do the same thing with accidentals that
+#: we're doing with notes"): the detector's box can sit OFF its mark (half a natural inside it), so the kind is read from the mark's OWN INK --
+#: the strokes the box touches, grown along the strokes they touch, within ONE accidental's size -- never from the box. The size bounds are the
+#: font's (SMuFL: the widest single sign is the sharp, 0.996 sp; the tallest the sharp, 2.79 sp) with 2.242's tolerance; not tuned.
+INK_MAX_W_SP = 0.996 * 1.1 + 0.2
+INK_MAX_H_SP = MAX_MARK_H_SP
+
+
+def _expanded(strokes: Sequence[Any], members: Sequence[int]) -> Tuple[List[Any], List[int]]:
+    """2.247 r2: a whole-accidental stroke (2.242 `OMR_ACCIDENTAL_WHOLE` merges the pieces the openings cut into ONE blob, keeping them as
+    `parts`) is read by its PARTS (its stems and bars). Returns (stroke list with the parts appended, member ordinals into it)."""
+    out = list(strokes)
+    mem: List[int] = []
+    for i in members:
+        parts = getattr(strokes[i], "parts", None) or []
+        if parts:
+            for p in parts:
+                mem.append(len(out))
+                out.append(p)
+        else:
+            mem.append(i)
+    return out, mem
+
+
+def ink_members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares: Sequence[Tuple[int, float]], sp: float,
+                           blocked: Sequence[int] = ()) -> Dict[str, Any]:
+    """ROADMAP 2.247 r2 (flag `OMR_ACCIDENTAL_KIND`): the mark's members from its own INK, the box only the seed.
+
+    SEED: every stroke with any `GROW_SHARE_MIN` share of its ink in the box (a box sitting half off its mark still touches it), unless blocked
+    (a head's), longer than `STEM_MAX_SP` (a note stem, a beam), or touching a blocked stroke (a stem joined to a head).
+    GROW: every stroke TOUCHING a member (the stroke map's `touches`, contact <= 2 px) under the same three refusals, while the union stays
+    within one accidental's size (`INK_MAX_W_SP` x `INK_MAX_H_SP`). The box returned is the INK's union (the anchor then sits on the ink).
+    Same dict as `members_and_extent` plus `box_offset_sp` (ink top/bottom minus box top/bottom, spaces)."""
+    blocked_set = set(int(b) for b in blocked)
+    share_of = {int(i): float(s) for i, s in shares}
+
+    def ok(i: int) -> bool:
+        st = strokes[i]
+        return (i not in blocked_set and float(st.length_sp) <= STEM_MAX_SP
+                and not any(int(j) in blocked_set for j, _c in (getattr(st, "touches", None) or ())))
+    members = [i for i, s in sorted(share_of.items()) if s >= GROW_SHARE_MIN and ok(i)]
+    refused = sorted(i for i, s in share_of.items() if s >= GROW_SHARE_MIN and not ok(i) and strokes[i].kind == "vertical")
+    if not members:
+        return {"members": [], "refused_vertical": refused, "box": [round(float(v), 1) for v in box], "grown": False, "grown_by": [],
+                "grown_sp": {"up": 0.0, "down": 0.0}, "box_offset_sp": None}
+    ext = _union([_sbox(strokes[i]) for i in members])
+    grown_by: List[int] = []
+    frontier = list(members)
+    while frontier:
+        nxt = []
+        for m in frontier:
+            for j, _c in (getattr(strokes[m], "touches", None) or ()):
+                j = int(j)
+                if j in members or not ok(j):
+                    continue
+                trial = _union([ext, _sbox(strokes[j])])
+                if (trial[2] - trial[0]) / sp > INK_MAX_W_SP or (trial[3] - trial[1]) / sp > INK_MAX_H_SP:
+                    continue
+                ext = trial
+                members.append(j)
+                grown_by.append(j)
+                nxt.append(j)
+        frontier = nxt
+    x0, y0, x1, y1 = [float(v) for v in box]
+    return {"members": sorted(members), "refused_vertical": refused, "box": [round(v, 1) for v in ext], "grown": True, "grown_by": sorted(grown_by),
+            "grown_sp": {"up": round(max(0.0, y0 - ext[1]) / sp, 2), "down": round(max(0.0, ext[3] - y1) / sp, 2)},
+            "box_offset_sp": {"top": round((ext[1] - y0) / sp, 2), "bottom": round((ext[3] - y1) / sp, 2),
+                              "left": round((ext[0] - x0) / sp, 2), "right": round((ext[2] - x1) / sp, 2)}}
+
+
+def class_sign_stands(fam: Dict[str, Any], box: Sequence[float], sp: float) -> bool:
+    """ROADMAP 2.247 r2 (Sean's r1 tiles 5 and 6: a tremolo slash written '#', a sharp written '##' -- the CLASS's sign where the strokes were
+    unclear): with `OMR_ACCIDENTAL_KIND` on, where the strokes cannot name the kind the class's sign is written (GUESSED) only when (a) the shape
+    did not EXCLUDE it (its `shape_candidates`, if any, hold the class's type) and (b) the detector's box is the size of that class's glyph
+    (0.7 .. 1.5 x its SMuFL height; 2.245: an over-tall double-sharp box sits on a rest). Otherwise nothing is written from the class (rule 8).
+    Always True with the flag off."""
+    if not kind_enabled() or fam.get("type") in TYPES:
+        return True
+    ct = fam.get("detector_type")
+    sc = (fam.get("features") or {}).get("shape_candidates")
+    if sc and ct not in sc:
+        return False
+    g = _GLYPH_H_SP.get(str(fam.get("detector_class") or "").lower())
+    if g is None:
+        return True
+    h = (float(box[3]) - float(box[1])) / sp
+    return GLYPH_MIN_FRAC * g <= h <= 1.5 * g
+
+
+#: SMuFL (Bravura) glyph heights, spaces (as `stroke_map.ACCIDENTAL_SIZE_SPACES`)
+_GLYPH_H_SP = {"accidentalsharp": 2.792, "accidentalflat": 2.456, "accidentalnatural": 2.704, "accidentaldoublesharp": 1.008,
+               "accidentaldoubleflat": 2.448}
+
+
 def members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares: Sequence[Tuple[int, float]], sp: float,
                        blocked: Sequence[int] = ()) -> Dict[str, Any]:
     """The strokes that ARE this mark and the box that holds all of them.
@@ -274,6 +368,13 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
             "n_bars": sum(1 for m in st if m.kind == "horizontal")}
     if gap < STEM_GAP_MIN_SP:
         return {**feat, "type": "unclear", "why": "stems_too_close", "margin": None}
+    if (hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP and kind_enabled() and bot < NATURAL_STAGGER_MIN_SP
+            and float(right.length_sp) <= FLAT_BOWL_H_SP):
+        # ROADMAP 2.247 r2 (Sean's r1 tile 8, Brahms p12: a flat read natural -- right "stem" 1.06 sp, its bottom level with the left's): a
+        # natural's right upright HANGS below the left (its bottom lower) or, where that lower stroke is faint, still runs from the upper bar
+        # past the lower one (~2 sp); a right stroke no taller than a flat's bowl (SMuFL ~1.2 sp) ending level with the stem is a bowl's side
+        return {**feat, "type": "unclear", "why": "right_stem_bowl_sized", "margin": round(float(right.length_sp) - FLAT_BOWL_H_SP, 3),
+                "shape_candidates": ["natural", "flat"]}
     if hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "natural", "why": "right_stem_lower", "margin": round(hi - NATURAL_STAGGER_MIN_SP, 3)}
     if kind_enabled() and top >= NATURAL_STAGGER_MIN_SP and bot < -FAINT_LOWER_REVERSE_SP:
@@ -293,18 +394,27 @@ def family_row(detector_class: str, box: Sequence[float], strokes: Sequence[Any]
                blocked: Sequence[int] = (), rivals: Sequence[str] = ()) -> Dict[str, Any]:
     """The whole family measurement of ONE accidental-family box: extent + type + the detector's label KEPT as a recorded fact (never the filter) and
     its candidate types (the winner's and every merged rival's, in the family only). Plain JSON-able dict."""
-    ext = members_and_extent(box, strokes, shares, sp, blocked)
-    t = read_type(strokes, ext["members"], sp, ext["refused_vertical"])
+    if kind_enabled():
+        ext = ink_members_and_extent(box, strokes, shares, sp, blocked)            # 2.247 r2: the mark's own ink, the box only the seed
+        all_st, mem = _expanded(strokes, ext["members"])                            # a 2.242 whole stroke read by its parts
+        t = read_type(all_st, mem, sp, ext["refused_vertical"])
+        t["box_offset_sp"] = ext.get("box_offset_sp")
+    else:
+        ext = members_and_extent(box, strokes, shares, sp, blocked)
+        t = read_type(strokes, ext["members"], sp, ext["refused_vertical"])
     cands: List[str] = []
     for c in [detector_class] + [str(r) for r in rivals]:
         ty = type_of_class(c)
         if ty and ty not in cands:
             cands.append(ty)
-    return {"type": t["type"], "why": t.get("why"), "margin": t.get("margin"),
+    out = {"type": t["type"], "why": t.get("why"), "margin": t.get("margin"),
             "features": {k: v for k, v in t.items() if k not in ("type", "why", "margin")},
             "box": ext["box"], "grown": ext["grown"], "grown_by": ext["grown_by"], "grown_sp": ext["grown_sp"], "members": ext["members"],
             "detector_class": str(detector_class), "detector_type": type_of_class(detector_class), "candidates": cands,
             "agrees_with_detector": (t["type"] == type_of_class(detector_class)) if t["type"] in TYPES else None}
+    if kind_enabled():
+        out["features"]["class_sign_stands"] = class_sign_stands(out, box, sp)      # 2.247 r2: read by gather_accidental_positions
+    return out
 
 
 def anchor_fraction(t: str) -> Optional[float]:

@@ -2003,6 +2003,10 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
                     alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
                 elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
                     alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
+                if (fam.get("features") or {}).get("class_sign_stands") is False:
+                    # ROADMAP 2.247 r2 (flag OMR_ACCIDENTAL_KIND): the strokes cannot name the kind and the shape EXCLUDES the class's sign, or the box
+                    # is not that glyph's size -- the class writes nothing here (rule 8; Sean's r1 tiles 5 and 6)
+                    continue
                 bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
                 fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
                                                               "candidates", "agrees_with_detector", "head_right") if k in fam}}
