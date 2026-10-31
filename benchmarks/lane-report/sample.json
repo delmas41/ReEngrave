@@ -2,7 +2,8 @@
  "what": "ROADMAP 2.188 frozen page sample (docs/measuring.md \u00a70): pages drawn ONCE at random from every page of the record that holds staves; nothing excluded by hand. Re-draw only by Sean's word (`sample --force`).",
  "seed": 2188,
  "n_per_plate": 8,
- "record_tag": "20261020-night",
+ "record_tag": "20261029-night",
+ "retagged": "ROADMAP 2.244: the pages were drawn from 20261020-night (seed and pages unchanged, not re-drawn); record_tag now names the night they replay.",
  "method": "random.Random(seed); for plate in (litolff, brahms): sorted(rng.sample(sorted(candidates), n))",
  "plates": {
   "litolff": {
