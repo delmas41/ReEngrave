@@ -168,6 +168,7 @@ class RoundTwo(unittest.TestCase):
             dsh = {"type": "unclear", "detector_type": "sharp", "detector_class": "accidentalDoubleSharp", "features": {}}
             self.assertFalse(AF.class_sign_stands(dsh, (0, 0, 100, 187), sp))
             self.assertTrue(AF.class_sign_stands(dsh, (0, 0, 100, 100), sp))
+            self.assertTrue(AF.class_sign_stands(dict(nat, features={}), (0, 0, 70, 120), sp))   # a SMALL box keeps its class (upper bound only)
             self.assertTrue(AF.class_sign_stands({"type": "flat"}, (0, 0, 10, 10), sp))   # a clear stroke type always stands
         with mock.patch.dict(os.environ, {AF.KIND_ENV: "0"}):
             self.assertTrue(AF.class_sign_stands(unclear_nf, (0, 0, 100, 280), sp))
