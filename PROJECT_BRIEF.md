@@ -3,12 +3,26 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-10-11 (un-frozen 2026-10-07; kept current with every commit alongside
+**Updated:** 2026-10-31 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`; CLAUDE.md was cut to ~1,800 words on
 2026-10-13 and its detail moved to `docs/running.md`, `docs/staged-internals.md`,
 `docs/page-facts.md`, `docs/measuring.md`, `docs/data-sources.md`,
 `docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
+
+## Where things stand (2026-10-31)
+
+GATHER is being rebuilt so that every piece of ink is claimed once, by the mark it belongs to. This is Sean's north star, "all ink is accounted for one time".
+- **10-29:** page-wide claims for arcs, words, brackets and barlines.
+- **10-30:**
+  - fused ink is cut at its joins, and clefs are claimed whole (2.239);
+  - one owner decides by shape (2.238);
+  - the tip, dot and beam readers leave out ink another mark owns (2.235, 2.243);
+  - stacked heads are fixed (2.232).
+- **Measuring:** a master cell map freezes what the readers see (2.231). A capture readout and a claim-order check measure GATHER by ink captured (2.236, 2.241). One test command runs the combined test (2.244).
+- **In flight 10-31:** whole accidentals (2.242); the page ledger's owner step (2.240); one cause for wrong-kind boxes (2.245); arcs and hairpins bound to notes (2.223).
+
+Sean's rule for this transition: never undo a GATHER change, rework the later stages. ROADMAP START HERE has the order.
 
 ## Where things stand (2026-10-21)
 
