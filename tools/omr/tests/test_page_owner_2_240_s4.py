@@ -214,5 +214,34 @@ class GlyphOwnerReadsThePageOwner(unittest.TestCase):
         self.assertNotIn(v.reason, ("page_owner", "page_owner_guessed"))
 
 
+class ArcOwnerReadsThePageSpan(unittest.TestCase):
+    """`arc_owner` with `OMR_PAGE_OWNER_READ`: an arc box filed on staff 1 that is a piece of a page-wide arc whose end notes are staff 2's."""
+
+    def _run(self, status, flag="1"):
+        from tools.omr.staged import adjudicate
+        from tools.omr.staged import adjudicators  # noqa: F401
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Log, Q, READERS
+        log = Log()
+        g = R.glyph(0, 0, 1, 3, 9)
+        log.observe(g, Q.ARC_BOX, "slur", reader="detector", frame="page", bbox_page_px=[100.0, 150.0, 200.0, 160.0])
+        log.observe(g, Q.PAGE_SPAN, "arc", reader=READERS.CV_PAGE_SPANS, frame="page", pieces=[g.to_key()],
+                    owner={"status": status, "owner": B, "reason": "ends_agree" if status == "decided" else "one_end"})
+        log.freeze()
+        with mock.patch.dict(os.environ, {PO.READ_ENV: flag}):
+            return adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.ARC_OWNER], g)
+
+    def test_decided_span_owner_names_the_staff(self):
+        v = self._run("decided")
+        self.assertEqual((v.value, v.reason), (B, "page_span_owner"))
+        self.assertEqual(v.detail["moved_from"], A)
+
+    def test_CONTROL_guessed_span_leaves_the_old_rule(self):
+        self.assertNotEqual(self._run("guessed").reason, "page_span_owner")
+
+    def test_CONTROL_flag_off(self):
+        self.assertNotEqual(self._run("decided", flag="0").reason, "page_span_owner")
+
+
 if __name__ == "__main__":
     unittest.main()
