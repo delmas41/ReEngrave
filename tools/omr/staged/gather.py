@@ -1685,17 +1685,39 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
                             (own_res.get("detail") or {}).get("note_first")),
         geometry_position=job["geometry_position"])))
     nb = FO.neighbour_staff(job["box"], own, staves)
+    mk = job.get("not_ledger_maker")
+    cx = (job["box"][0] + job["box"][2]) / 2.0
+    extra: Dict[str, Dict[str, Any]] = {}
+    if mk is not None:
+        # ROADMAP 2.240 step 2 (flag OMR_PAGE_OWNER; Sean 2026-10-31): the OWNER's ledger evidence never counts another staff's
+        # line or an arc's traced ink as a ledger rung of the candidate. Each candidate is re-read with that filter; the unfiltered
+        # reading stays on the row (`unfiltered_pos`) so the change is countable.
+        th = float(getattr(page_ctx, "thickness", 4.0) or 4.0)
+        for i, (key, rd0) in enumerate(list(cands)):
+            lines = job["global_lines"] if key == own else FO.lines_at(next(s for s in staves if s["key"] == key), cx)
+            rd = FO.read_toward(page_ctx, g.to_key(), job["box"], job["cls"], lines, not_ledger=mk(cx, key, th))
+            rd["unfiltered_pos"] = rd0["pos"]
+            rd["unfiltered_fits"] = bool(rd0["fits"])
+            cands[i] = (key, rd)
     if nb is not None:
-        cands.append((nb["key"], FO.read_toward(
+        rdn = FO.read_toward(
             page_ctx, g.to_key(), job["box"], job["cls"],
-            FO.lines_at(nb, (job["box"][0] + job["box"][2]) / 2.0))))
+            FO.lines_at(nb, cx),
+            not_ledger=(mk(cx, nb["key"], float(getattr(page_ctx, "thickness", 4.0) or 4.0)) if mk is not None else None))
+        if mk is not None:
+            r0 = FO.read_toward(page_ctx, g.to_key(), job["box"], job["cls"], FO.lines_at(nb, cx))
+            rdn["unfiltered_pos"], rdn["unfiltered_fits"] = r0["pos"], bool(r0["fits"])
+        cands.append((nb["key"], rdn))
     for key, rd in cands:
+        if mk is not None:
+            extra = dict(not_ledger_dropped=[list(d) for d in (rd.get("not_ledger_dropped") or [])],
+                         unfiltered_pos=rd.get("unfiltered_pos"), unfiltered_fits=rd.get("unfiltered_fits"))
         if rd["fits"]:
             log.observe(g, Q.FAR_HEAD_OWNER_LEDGER, int(rd["pos"]),
                         reader=READERS.LEDGER_OWNER_NOTE_FIRST, frame=frame,
                         candidate=key,
                         ledger_reason=rd["reason"], how=rd["how"],
-                        geometry_position=rd.get("geometry_position"))
+                        geometry_position=rd.get("geometry_position"), **extra)
         else:
             # ⚠️ "could not look" (`unread`: no head size, no staff lines) is
             # kept apart from "looked, and no chain of ledgers reaches this
@@ -1708,7 +1730,7 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
                         candidate=key,
                         unread=bool(rd.get("unread")),
                         ledger_reason=rd["reason"],
-                        geometry_position=rd.get("geometry_position"))
+                        geometry_position=rd.get("geometry_position"), **extra)
 
 
 def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
@@ -1783,6 +1805,15 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
                 x0=float(st.x_start), x1=float(st.x_end),
                 grid=grid_by_staff.get(R.staff(p, key[0], key[1]).to_key())))
 
+    not_ledger_maker = None
+    if owner_on:
+        from . import page_owner as _po
+        if _po.enabled():       # ROADMAP 2.240 step 2: the owner's own ledger evidence skips lines that are not ledgers
+            not_ledger_maker = _po.not_ledger_maker(
+                [(o.subject.to_key(), o.value, dict(o.detail or {}))
+                 for o in log.rows(Q.SYSTEM_ARC, R.page(int(getattr(pws.page, "page_index", 0))), scope=R.Scope.SELF_AND_DESCENDANTS)],
+                owner_staves)
+
     heads: List[Dict[str, Any]] = []
     page_boxes: List[Tuple[str, str, tuple]] = []
     jobs: List[Dict[str, Any]] = []
@@ -1820,7 +1851,8 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
                                  box=box, cls=d.smufl_name,
                                  global_lines=head_lines, geometry_position=pos,
                                  frame=frame_cell(sub.cell), own_key=own,
-                                 staves=owner_staves if owner_on else None))
+                                 staves=owner_staves if owner_on else None,
+                                 not_ledger_maker=not_ledger_maker))
     if not jobs:
         return census
     census["far"] = len(jobs)

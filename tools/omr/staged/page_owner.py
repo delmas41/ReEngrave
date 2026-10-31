@@ -71,6 +71,13 @@ SAME_TRACE_SHARE = 0.5
 #: a page mark's box lies inside a wedge when this share of its box area is inside the wedge's box
 BOXED_AS_SHARE = 0.5
 
+#: a rung (a candidate ledger row at the head's x) lies ON an arc's traced ink when it is within this many px of the trace's rows at a column
+#: within `NOT_LEDGER_COLS` of the head's x (the trace row band is the ink's own; the slack is the thresholding's)
+NOT_LEDGER_ROW_SLACK_PX = 1.5
+NOT_LEDGER_COLS = 3
+#: an arc's END looks for the heads it binds within the window `arcs_system.anchor_ends` already uses for an end's head (outward /
+#: inward along x, and the rows either side), measured in the head's staff spaces; a head on the wrong side of the curve is no candidate
+#: (an arc is OVER its notes, page-facts: a cap's notes lie below its ends, a cup's above)
 FAMILY_HEAD = "head"
 SPAN_FAMILIES = ("arc", "hairpin")
 
@@ -230,8 +237,63 @@ def stem_reading(rows: Any, member: str, frames: Dict[str, List[StaffBar]], cand
     return pointed[0] if len(pointed) == 1 else None
 
 
+def not_ledger_maker(sys_arc_obs: Iterable[Tuple[str, Any, Dict[str, Any]]], staves: Sequence[Dict[str, Any]]):
+    """`make(cx, candidate_key, thickness) -> not_ledger(y) -> None | word`, for the OWNER's ledger reading (module doc, rule 2).
+
+    A candidate rung at row y, at the head's x, is NOT a ledger line of the candidate staff when it is (a) ANOTHER staff's own line there
+    (within `thickness` of one of its five lines, measured on that staff's per-bar grid at cx -- Sean 2026-10-31 "a staff's own line is never a
+    ledger line"), word `other_staff_line`; or (b) the ink of an arc the curve tracer followed (`Q.SYSTEM_ARC`, rows inside the trace band at a
+    column within `NOT_LEDGER_COLS` of cx), word `arc_ink` -- tile 11's cause, a slur whose start sits one space under the staff."""
+    from ..annotate import far_head_owner as FO
+    arcs = []
+    for a in system_arcs_of(sys_arc_obs):
+        cols = _trace_cols(a["trace"])
+        if cols:
+            arcs.append((min(cols), max(cols), cols))
+
+    def make(cx: float, cand_key: str, th: float):
+        near_arcs = [c for (x0, x1, c) in arcs if x0 - NOT_LEDGER_COLS <= cx <= x1 + NOT_LEDGER_COLS]
+        others = []
+        for st in staves:
+            if st["key"] != cand_key and st["x0"] - 2 * th <= cx <= st["x1"] + 2 * th:
+                others.append(list(FO.lines_at(st, cx)))
+
+        def f(y: float) -> Optional[str]:
+            for ln in others:
+                if any(abs(y - float(l)) <= th for l in ln):
+                    return "other_staff_line"
+            for cols in near_arcs:
+                for x in range(int(cx) - NOT_LEDGER_COLS, int(cx) + NOT_LEDGER_COLS + 1):
+                    if x in cols and cols[x][0] - NOT_LEDGER_ROW_SLACK_PX <= y <= cols[x][1] + NOT_LEDGER_ROW_SLACK_PX:
+                        return "arc_ink"
+            return None
+        return f
+    return make
+
+
+def hairpin_reading(cx: float, cy: float, box: Sequence[float], frames: Dict[str, List[StaffBar]], system: str,
+                    hairpins: Sequence[Sequence[float]]) -> Optional[str]:
+    """Sean 2026-10-31 (page-facts): "hairpins are always below the staff; any notes next to a hairpin below it belong to the staff below; any
+    notes above a hairpin belong to the staff above." A READ hairpin (`hairpins`: page boxes of `Q.PAGE_SPAN` hairpins) whose x span holds
+    the head's centre and which lies BETWEEN two staves of the head's system: a head wholly above its rows names the staff above the hairpin,
+    wholly below them the staff below. Measured locally: the staves are the ones bracketing the hairpin at the head's x. No hairpin over the
+    head, or the head level with it, or two hairpins naming two staves -> None (the rule says nothing)."""
+    named = set()
+    for hb in hairpins:
+        if not (hb[0] <= cx <= hb[2]):
+            continue
+        br = bracketing(frames, system, cx, (float(hb[1]) + float(hb[3])) / 2.0)
+        if len(br) != 2:
+            continue
+        if box[3] < hb[1]:
+            named.add(br[0])
+        elif box[1] > hb[3]:
+            named.add(br[1])
+    return next(iter(named)) if len(named) == 1 else None
+
+
 def mark_owner(family: Optional[str], members: Sequence[str], box: Sequence[float], frames: Dict[str, List[StaffBar]],
-               rows: Any) -> Dict[str, Any]:
+               rows: Any, hairpins: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
     """The owner of ONE page mark (module doc). Returns {status: decided|guessed|abstain, owner, candidates, reason, witnesses, seen_from}."""
     cx, cy = (float(box[0]) + float(box[2])) / 2.0, (float(box[1]) + float(box[3])) / 2.0
     seen_from = sorted({_staff_of_glyph(m) for m in members})
@@ -261,6 +323,29 @@ def mark_owner(family: Optional[str], members: Sequence[str], box: Sequence[floa
     stem = {m: stem_reading(rows, m, frames, cands) for m in members}
     wit["ledger"] = {m: v for m, v in led.items() if v is not None}
     wit["stem"] = {m: v for m, v in stem.items() if v is not None}
+    hp = hairpin_reading(cx, cy, box, frames, system, hairpins) if hairpins else None
+    if hp is not None:
+        wit["hairpin"] = hp
+    r = _ledger_stem_owner(led, stem, wit, out, cands)
+    if hp is None:
+        return r
+    # the hairpin is one more witness (Sean 2026-10-31), from a different source than the ledger / stem: where they named nobody it
+    # names the owner; where it agrees nothing changes; where it names the OTHER staff the head is GUESSED with both staves (never a
+    # silent overrule, never a silent keep)
+    if r["status"] == "abstain":
+        return out("decided", hp, "hairpin", [hp])
+    if r["owner"] == hp and r["status"] == "decided":
+        r["reason"] += "+hairpin"
+        return r
+    if r["status"] == "guessed" and hp in r["candidates"]:
+        return r
+    if r["owner"] != hp:
+        wit["hairpin_disagrees_with"] = r["reason"]
+        return out("guessed", r["owner"], "hairpin_disagrees", sorted({r["owner"], hp}))
+    return r
+
+
+def _ledger_stem_owner(led, stem, wit, out, cands):
     named = sorted({v for v in led.values() if v and v.startswith("staff/")})
     stems = sorted({v for v in stem.values() if v})
     if len(named) > 1:
@@ -282,7 +367,8 @@ def union_box(boxes: Iterable[Sequence[float]]) -> List[float]:
     return [min(b[0] for b in bs), min(b[1] for b in bs), max(b[2] for b in bs), max(b[3] for b in bs)]
 
 
-def owners(marks: Any, boxes: Sequence[Any], frames: Dict[str, List[StaffBar]], rows: Any) -> Dict[int, Dict[str, Any]]:
+def owners(marks: Any, boxes: Sequence[Any], frames: Dict[str, List[StaffBar]], rows: Any,
+           hairpins: Sequence[Sequence[float]] = ()) -> Dict[int, Dict[str, Any]]:
     """Every page mark's owner (`page_marks.Marks` + its `BoxInk`s). A mark of no family (not a mark) is skipped."""
     box_of = {b.key: b for b in boxes}
     out = {}
@@ -290,7 +376,7 @@ def owners(marks: Any, boxes: Sequence[Any], frames: Dict[str, List[StaffBar]], 
         bs = [box_of[k] for k in mem if k in box_of]
         if not bs or bs[0].family is None:
             continue
-        r = mark_owner(bs[0].family, mem, union_box(b.page_box for b in bs), frames, rows)
+        r = mark_owner(bs[0].family, mem, union_box(b.page_box for b in bs), frames, rows, hairpins)
         r["family"] = bs[0].family
         r["members"] = list(mem)
         r["box"] = union_box(b.page_box for b in bs)
@@ -379,10 +465,27 @@ def arc_spans(system_arcs: Sequence[Dict[str, Any]], mark_of: Dict[str, int], un
             "crosses_barline": any(v.get("cut_at_barline") for v in views) or len({c for v in views for c in v.get("cells", ())}) > 1,
             "joined_by": sorted({why[(a, b)] for (a, b) in why if a in g and b in g}),
             "end_candidates": [v.get("anchors") for v in views],
+            "ends": _trace_ends([cols[i] for i in g]),
         })
     traced_marks = {m for s in spans for m in s["page_marks"]}
     left = [{"kind": "arc", "page_mark": m, "members": mem, "box": box} for m, mem, box in untraced if m not in traced_marks]
     return spans, left
+
+
+def _trace_ends(views: Sequence[Dict[int, Tuple[float, float]]]) -> Dict[str, Any]:
+    """The curve's two ends and its belly, page px, off the UNION of its views' traced columns (`left`/`right` = [x, y centre] of the
+    first / last column; `belly_y` = the median row centre of the columns between; `cup_or_cap` is decided with the staff's spacing later)."""
+    cols: Dict[int, Tuple[float, float]] = {}
+    for v in views:
+        for x, r in v.items():
+            if x not in cols:
+                cols[x] = r
+    if len(cols) < 3:
+        return {}
+    xs = sorted(cols)
+    mid = lambda x: (cols[x][0] + cols[x][1]) / 2.0
+    inner = sorted(mid(x) for x in xs[len(xs) // 4: len(xs) - len(xs) // 4] or xs)
+    return {"left": [float(xs[0]), mid(xs[0])], "right": [float(xs[-1]), mid(xs[-1])], "belly_y": inner[len(inner) // 2]}
 
 
 def hairpin_spans(wedges: Sequence[Dict[str, Any]], mark_boxes: Sequence[Tuple[int, str, List[float], List[str]]]
@@ -467,6 +570,92 @@ def page_spans(marks: Any, boxes: Sequence[Any], sys_arc_obs, wedge_obs) -> Dict
     return {"spans": arcs + pins, "untraced": left_a + left_h}
 
 
+# ───────────────────────────── 4b. whose is an arc? the staff of the notes it binds ─────────────────────────────
+
+def arc_owner(span: Dict[str, Any], head_marks: Sequence[Dict[str, Any]], frames: Dict[str, List[StaffBar]]) -> Dict[str, Any]:
+    """An arc belongs to the staff of the NOTES it binds, not the staff it was traced from (Sean 2026-10-31, tiles 5, 8, 12).
+    ROADMAP 2.223 binds an arc's ends to notes (its own branch; unmerged); this is the part OWNER needs and nothing more: per end, the heads
+    in `arcs_system`'s own end window, on the side the curve's notes lie (a cap -- belly above its ends -- is OVER its notes, they lie below
+    the end; a cup, above), and the STAFF each head is owned by (`head_marks`: the page-mark owner rows of heads, `owner` set where decided or
+    guessed). An end names a staff only when every candidate head there is owned and they are owned by ONE staff; the arc takes the staff
+    both ends name. Ends naming two staves -> ABSTAIN `ends_disagree`; no head at either end, or an end with an unowned head -> ABSTAIN
+    (`no_end_heads` / `end_head_unowned`); one end naming a staff and the other with no head -> GUESSED `one_end`. Never nearness of the
+    arc to a staff: the arc's own seen-from staves are not an input."""
+    from . import arcs_system as AS
+    ends = span.get("ends") or {}
+    if not ends:
+        return {"status": "abstain", "owner": None, "reason": "arc_no_trace", "candidates": [], "ends": {}}
+    seen = span.get("staves_seen_from") or []
+    sys_prefix = "/".join(seen[0].split("/")[:3]) + "/" if seen else ""
+    bars = lines_at(frames, seen[0], ends["left"][0]) if seen else None
+    sp = bars.sp if bars is not None else 0.0
+    if sp <= 0:
+        return {"status": "abstain", "owner": None, "reason": "arc_no_spacing", "candidates": [], "ends": {}}
+    end_y = (ends["left"][1] + ends["right"][1]) / 2.0
+    cap = ends["belly_y"] < end_y - 0.25 * sp
+    cup = ends["belly_y"] > end_y + 0.25 * sp
+    side = "cap" if cap else ("cup" if cup else None)
+    per: Dict[str, Any] = {}
+    for name, sgn in (("left", -1), ("right", 1)):
+        ex, ey = ends[name]
+        got = []
+        for h in head_marks:
+            bx = h["box"]
+            hcx, hcy = (bx[0] + bx[2]) / 2.0, (bx[1] + bx[3]) / 2.0
+            out_by = (hcx - ex) * sgn
+            if out_by > AS.ANCHOR_OUT_SPACES * sp or out_by < -AS.ANCHOR_IN_SPACES * sp:
+                continue
+            if abs(hcy - ey) > AS.ANCHOR_DY_SPACES * sp:
+                continue
+            if side == "cap" and hcy < ey - 0.5 * sp:       # a head above a cap's end is not under it
+                continue
+            if side == "cup" and hcy > ey + 0.5 * sp:
+                continue
+            if h["staff_system"] != sys_prefix:
+                continue
+            got.append(h)
+        staves = sorted({h["owner"] for h in got if h.get("owner")})
+        unowned = [h["key"] for h in got if not h.get("owner")]
+        per[name] = {"heads": [h["key"] for h in got], "staves": staves, "unowned": unowned}
+    res = {"ends": per, "side": side, "candidates": sorted({v for e in per.values() for v in e["staves"]})}
+    l, r = per["left"], per["right"]
+    usable = lambda e: len(e["staves"]) == 1 and not e["unowned"]
+    if not l["heads"] and not r["heads"]:
+        return dict(res, status="abstain", owner=None, reason="no_end_heads")
+    if (l["staves"] and r["staves"] and set(l["staves"]) != set(r["staves"])) or any(len(e["staves"]) > 1 for e in (l, r)):
+        return dict(res, status="abstain", owner=None, reason="ends_disagree")
+    if usable(l) and usable(r):
+        return dict(res, status="decided", owner=l["staves"][0], reason="ends_agree")
+    ok = [e for e in (l, r) if usable(e)]
+    other = [e for e in (l, r) if not usable(e)][0]
+    if ok and not other["heads"]:
+        return dict(res, status="guessed", owner=ok[0]["staves"][0], reason="one_end")
+    return dict(res, status="abstain", owner=None, reason="end_head_unowned")
+
+
+def head_marks_of(own: Dict[int, Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """The heads (page marks) with their owner staff or None, for `arc_owner`."""
+    out = []
+    for n, r in own.items():
+        if r["family"] != FAMILY_HEAD:
+            continue
+        out.append({"key": r["members"][0], "box": r["box"], "owner": r["owner"] if r["status"] != "abstain" else None,
+                    "staff_system": "/".join(_staff_of_glyph(r["members"][0]).split("/")[:3]) + "/"})
+    return out
+
+
+def assign_arc_owners(spans: Sequence[Dict[str, Any]], own: Dict[int, Dict[str, Any]], frames: Dict[str, List[StaffBar]]) -> None:
+    """Add `owner` (an `arc_owner` dict) to every arc span, in place."""
+    heads = head_marks_of(own)
+    for sp in spans:
+        if sp["kind"] == "arc":
+            sp["owner"] = arc_owner(sp, heads, frames)
+
+
+def hairpin_boxes(spans: Sequence[Dict[str, Any]]) -> List[List[float]]:
+    return [list(s["box"]) for s in spans if s.get("kind") == "hairpin"]
+
+
 # ───────────────────────────── 5. the GATHER step ─────────────────────────────
 
 def gather_page_owners(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], marks: Any, *,
@@ -480,7 +669,13 @@ def gather_page_owners(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
     from .record import Q, READERS, Scope
     frames = staff_frames(cells, local)
     rows = LogRows(log)
-    own = owners(marks, marks.boxes, frames, rows)
+    page = marks.boxes[0].cell[0]
+    pg = R.page(page)
+    sa = [(o.subject.to_key(), o.value, dict(o.detail or {})) for o in log.rows(Q.SYSTEM_ARC, pg, scope=Scope.SELF_AND_DESCENDANTS)]
+    wd = [(o.subject.to_key(), o.value, dict(o.detail or {})) for o in log.rows(Q.WEDGE_BOX, pg, scope=Scope.SELF_AND_DESCENDANTS)]
+    sp = page_spans(marks, marks.boxes, sa, wd)
+    own = owners(marks, marks.boxes, frames, rows, hairpin_boxes(sp["spans"]))
+    assign_arc_owners(sp["spans"], own, frames)
     for n, r in own.items():
         subj = R.Subject.from_key(r["members"][0])
         common = dict(reader=READERS.CV_PAGE_OWNER, frame=FRAME_PAGE)
@@ -490,11 +685,6 @@ def gather_page_owners(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
         else:
             log.observe(subj, Q.PAGE_MARK_OWNER, r["owner"], status=r["status"], reason=r["reason"], page_mark=n, family=r["family"],
                         members=r["members"], candidates=r["candidates"], witnesses=r["witnesses"], **common)
-    page = marks.boxes[0].cell[0]
-    pg = R.page(page)
-    sa = [(o.subject.to_key(), o.value, dict(o.detail or {})) for o in log.rows(Q.SYSTEM_ARC, pg, scope=Scope.SELF_AND_DESCENDANTS)]
-    wd = [(o.subject.to_key(), o.value, dict(o.detail or {})) for o in log.rows(Q.WEDGE_BOX, pg, scope=Scope.SELF_AND_DESCENDANTS)]
-    sp = page_spans(marks, marks.boxes, sa, wd)
     for s in sp["spans"]:
         d = {k: v for k, v in s.items() if k not in ("kind", "subject")}
         d["cells"] = [list(c) for c in d.get("cells", [])]
@@ -629,6 +819,10 @@ def page_readout(own: Dict[int, Dict[str, Any]], sp: Dict[str, Any]) -> Dict[str
             "arc_views": sum(len(s["views"]) for s in arcs), "arc_spans_crossing_a_barline": sum(1 for s in arcs if s["crosses_barline"]),
             "hairpin_spans": sum(1 for s in spans if s["kind"] == "hairpin"),
             "hairpin_spans_boxed_as": dict(collections.Counter(f for s in spans if s["kind"] == "hairpin" for _m, f in s["boxed_as"])),
+            "arc_owner_by_status_reason": dict(sorted(collections.Counter(
+                "%s:%s" % ((s.get("owner") or {}).get("status"), (s.get("owner") or {}).get("reason")) for s in arcs).items())),
+            "arc_owner_differs_from_seen_from": sum(1 for s in arcs if (s.get("owner") or {}).get("owner")
+                                                    and (s["owner"]["owner"] not in s["staves_seen_from"])),
             "untraced": dict(collections.Counter(u["kind"] for u in sp["untraced"]))}
 
 
@@ -652,8 +846,9 @@ def run(rec: str, pages: Optional[Sequence[int]] = None, out: Optional[pathlib.P
         boxes = PM.boxes_from_rows(prows, pg, cells, local, views, ink)
         marks = PM.link(boxes, pieces=True)
         frames = staff_frames(cells, local)
-        own = owners(marks, boxes, frames, SliceRows(prows))
         sp = page_spans(marks, boxes, _rows_of(prows, "system_arc"), _rows_of(prows, "wedge_box"))
+        own = owners(marks, boxes, frames, SliceRows(prows), hairpin_boxes(sp["spans"]))
+        assign_arc_owners(sp["spans"], own, frames)
         rep = page_readout(own, sp)
         rep["verify"] = dict(verify)
         c = compare_old(own, old)
