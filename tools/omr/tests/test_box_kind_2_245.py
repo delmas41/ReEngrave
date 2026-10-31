@@ -116,8 +116,10 @@ class TestNoteheadIsNotANotehead(unittest.TestCase):
             self.assertNotEqual(head.reason, "wider_than_a_head")
 
 
-class TestTheStrokeOwnerVetoesTheWideHeadsClaim(unittest.TestCase):
-    """The slur's one curve stroke stands under a slur box and the wide head box; a real head's blob under a head box."""
+class TestTheStrokeOwnerNeedsNoSizeVeto(unittest.TestCase):
+    """Measured (FINDINGS): a size veto in the stroke owner lost real MERGED-head eighths on Litolff (the wide box is the only claimant
+    big enough to hold a fused head blob), so the owner has none. Where the wide box stands on a slur, the per-stroke shape already
+    refuses it: the slur's curve is the arc's with the flag ON or OFF."""
 
     def _cell(self, env):
         log = _log()
@@ -134,15 +136,12 @@ class TestTheStrokeOwnerVetoesTheWideHeadsClaim(unittest.TestCase):
         _run(log, env)
         return log.verdict(Q.STROKE_OWNER, CELL), wide.to_key()
 
-    def test_ON_the_wide_head_box_is_vetoed_and_the_slur_owns_its_stroke_RED(self):
-        v, wide = self._cell(ON)
-        self.assertEqual(v.detail["vetoes"][wide][0], "box_wider_than_a_head")
-        self.assertEqual(v.detail["strokes"]["0"][1], "arc")
-        self.assertEqual(v.detail["strokes"]["1"][1], "head")       # CONTROL: the real head keeps its blob
-
-    def test_OFF_no_size_veto(self):
-        v, wide = self._cell(OFF)
-        self.assertNotIn(wide, v.detail.get("vetoes") or {})
+    def test_the_slur_stroke_is_the_arcs_and_the_head_keeps_its_blob_either_way(self):
+        for env in (ON, OFF):
+            v, wide = self._cell(env)
+            self.assertEqual(v.detail["strokes"]["0"][1], "arc", env)
+            self.assertEqual(v.detail["strokes"]["1"][1], "head", env)
+            self.assertNotIn(wide, v.detail.get("vetoes") or {})
 
 
 if __name__ == "__main__":

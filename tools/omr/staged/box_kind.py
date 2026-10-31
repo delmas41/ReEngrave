@@ -15,9 +15,10 @@ blob"), not a cut tuned to a count: 1.8x the widest printed head. CONVENTION ASS
 WHAT WOULD FALSIFY IT: a real single head boxed 3 or more spaces wide (a double-whole breve with its side bars is 2.5) -- Sean's tiles
 in out/print/2.245-tiles. NOT CONFIRMED by Sean.
 
-Consumers (flag ON): `adjudicate_notehead_is_not_a_notehead` refuses the box `wider_than_a_head`; the stroke owner's claimants
-(`adjudicators/stroke_owner.shape_vetoes`) veto its claim, so its strokes go to the other boxes on the ink (the slur's) or to the
-consumers -- never invented as anything (rule 8). Other lanes read the same predicate where they take a box as a mark (the page owner,
+Consumer (flag ON): `adjudicate_notehead_is_not_a_notehead` refuses the box `wider_than_a_head`, LAST among its refusals (it speaks
+only where every other rule would keep the box). Nothing is invented (rule 8). NOT read by the stroke owner: measured, a size veto there
+lost real Litolff eighths -- a wide box over MERGED heads is the only claimant big enough to hold the fused head blob -- and where the
+wide box stands on non-head ink (a slur, a beam) the per-stroke `shape_fit` already refuses it. Other lanes read the same predicate where they take a box as a mark (the page owner,
 2.240; the accidental's whole-mark test, 2.242) -- see FINDINGS.
 """
 from __future__ import annotations

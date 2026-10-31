@@ -403,6 +403,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.205. Pure helpers for `adjudicators/stroke_owner.py` (the claim order, the family shapes, one owner per stroke): files no row,
     # names no quantity; the decision is `adjudicate_stroke_owner`'s.
     "stroke_owner.py",
+    # ROADMAP 2.245. Pure: a detector box against its own class's printed size (`head_box_misfit`), read by
+    # `adjudicate_notehead_is_not_a_notehead` and `adjudicators/stroke_owner`; files no row, names no quantity.
+    "box_kind.py",
     # lane-arcs-claim-1029. Pure helpers for `gather.gather_arc_claim`, `adjudicate_arc_kind` and the exporter's anchored slurs: files no row, names no quantity.
     "arc_claim.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
