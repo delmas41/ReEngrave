@@ -65,7 +65,7 @@ THICKNESS_FROM_UNERASED = True
 
 KINDS = ("vertical", "horizontal", "curve", "blob")
 
-# ───────────────────────────── ROADMAP 2.239: split fused ink at its joins (flag `OMR_SPLIT_JOINS`, default OFF) ─────────────────────────────
+# ───────────────────────────── ROADMAP 2.239: split fused ink at its joins (flag `OMR_SPLIT_JOINS`, default ON) ─────────────────────────────
 #: CAUSE (2.239, Brahms p0 against Sean's labels): the vertical opening is a column test -- a column run of ink at least `V_MIN_SPACES` tall is
 #: "vertical" whatever its WIDTH. Two heads a third apart on one stem make columns ~2 sp tall across the whole oval, so the pair AND the stem
 #: become one `vertical` stroke (197 of the 212 black heads that own no ink); a head on a ledger rung passes the horizontal opening with the
@@ -144,8 +144,8 @@ CLEF_REACH_SPACES = 1.0
 
 
 def split_joins_enabled() -> bool:
-    """`OMR_SPLIT_JOINS` (ROADMAP 2.239), default OFF; `1/true/yes/on` enables."""
-    return os.environ.get(SPLIT_JOINS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_SPLIT_JOINS` (ROADMAP 2.239), default ON (Sean 2026-10-30 "Land then fix"); an explicit 0/false/no/off disables."""
+    return os.environ.get(SPLIT_JOINS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 @dataclass

@@ -304,7 +304,7 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
         return
     p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
     staves = {s.staff_index: s for s in pws.staves}
-    # ROADMAP 2.239 (`OMR_SPLIT_JOINS`, default OFF): a column standing on a whole left-edge mark the bracket reader read (bracket, brace,
+    # ROADMAP 2.239 (`OMR_SPLIT_JOINS`, default ON): a column standing on a whole left-edge mark the bracket reader read (bracket, brace,
     # systemic barline: `page_wide.system_rules`, claimed once as `bracket` by `gather_page_claims`) is that mark's ink, not a barline's --
     # Sean 2026-10-30, every contested bracket+barline tile was "part of a bracket". The bracket claim keeps it; this claim leaves it.
     from .stroke_map import split_joins_enabled
