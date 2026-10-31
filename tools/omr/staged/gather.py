@@ -1712,6 +1712,12 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
         if mk is not None:
             extra = dict(not_ledger_dropped=[list(d) for d in (rd.get("not_ledger_dropped") or [])],
                          unfiltered_pos=rd.get("unfiltered_pos"), unfiltered_fits=rd.get("unfiltered_fits"))
+            # ROADMAP 2.240 step 3: WHICH ink the reading counted (the rungs between the staff and the note's line, the line, how it
+            # was found) -- so a tile's owner can be traced to its rungs from the record, not re-derived (tile 8)
+            _nf = rd.get("note_first") or {}
+            extra.update(rungs_between=[round(float(v), 1) for v in (_nf.get("between") or [])],
+                         line_y=(round(float(_nf["line_y"]), 1) if _nf.get("line_y") is not None else None),
+                         line_how=_nf.get("how"))
         if rd["fits"]:
             log.observe(g, Q.FAR_HEAD_OWNER_LEDGER, int(rd["pos"]),
                         reader=READERS.LEDGER_OWNER_NOTE_FIRST, frame=frame,
