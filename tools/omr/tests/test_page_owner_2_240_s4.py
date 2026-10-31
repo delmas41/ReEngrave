@@ -130,12 +130,12 @@ class ConsumerOwner(unittest.TestCase):
         r = PO.consumer_owner("decided", A, "inside_staff", self.DET, ["glyph/0/0/1/3/5"])
         self.assertEqual((r["status"], r["owner"], r["reason"]), ("decided", A, "inside_staff"))
 
-    def test_read_flag_default_off(self):
+    def test_read_flag_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(PO.READ_ENV, None)
-            self.assertFalse(PO.read_enabled())
-            os.environ[PO.READ_ENV] = "1"
             self.assertEqual(PO.read_enabled(), PO.enabled())
+            os.environ[PO.READ_ENV] = "0"
+            self.assertFalse(PO.read_enabled())
             os.environ.pop(PO.READ_ENV, None)
 
 

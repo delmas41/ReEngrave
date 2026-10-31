@@ -382,7 +382,7 @@ def _ledger_stem_owner(led, stem, wit, out, cands):
 
 # ───────────────────────────── 3b. the consumer's reading of an owner row (ROADMAP 2.240 step 3) ─────────────────────────────
 
-#: `OMR_PAGE_OWNER_READ` (ROADMAP 2.240 step 3, default OFF): ADJUDICATE's `glyph_owner` / `arc_owner` read the page owner first.
+#: `OMR_PAGE_OWNER_READ` (ROADMAP 2.240 step 3, default ON since 2026-10-31): ADJUDICATE's `glyph_owner` / `arc_owner` read the page owner first.
 READ_ENV = "OMR_PAGE_OWNER_READ"
 #: a head refused for one of these reasons was refused because ANOTHER copy was chosen -- the copy-choosing rules the page owner
 #: replaces; such a refusal is no evidence that the box is not a head, so its witnesses still count
@@ -393,7 +393,8 @@ WITNESS_REASONS = ("ledger", "ledger_and_stem", "ledger_over_stem", "stem", "led
 
 
 def read_enabled() -> bool:
-    return enabled() and os.environ.get(READ_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_PAGE_OWNER_READ` (ROADMAP 2.240 step 3), default ON since 2026-10-31 (Sean "we can land"; tiles: moved marks all right, old rules wrong 11/11); needs `OMR_PAGE_OWNER`."""
+    return enabled() and os.environ.get(READ_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def consumer_owner(status: str, owner: Optional[str], reason: str, detail: Dict[str, Any], refused: Sequence[str]) -> Dict[str, Any]:
