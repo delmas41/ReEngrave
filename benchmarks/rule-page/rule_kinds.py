@@ -404,6 +404,7 @@ MODULES = {
     "export_unison.py": (STEMS, "A", "EXPORT of a unison head as two notes", "Sean 2026-10-19 (2.175)", "kept"),
     "one_note.py": (BEAMS, "D:infer", "the one-note correction: a bar holding one event takes the value that fills it (blue)", "Sean 2026-10-17/18 (CLAUDE s4 exceptions)", "kept"),
     "arcs_system.py": (ARCS, "C", "arcs read ONCE per staff across the system, then their own stroke erased (a cell cuts an arc in two)", "Sean 2026-10-18 (2.166, default ON)", "retires with 2.205 (arcs own their strokes)"),
+    "page_marks.py": (HEADS, "C", "cells are views, the page is the ledger: boxes of one family from two padded cells on the same page ink are ONE page mark (records ids, decides nothing yet)", "Sean 2026-10-30 (2.240 crops 2, 3)", "open: step 2 (one owner per page mark) reads it"),
     "rest_ink.py": (RESTS, "C", "does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule)", "Sean 2026-10-16 (2.150b)", "retires with 2.205"),
     "head_oval.py": (HEADS, "C", "does a notehead box hold a head-shaped oval? (boxes at a bar's left edge were tie ends or barlines)", "Sean 2026-10-17 (2.164)", "retires with 2.205"),
     "second_hollow.py": (HEADS, "U", "a SECOND detector at GATHER for hollow heads only", "ROADMAP 2.114", "open: a second reading of the same ink"),

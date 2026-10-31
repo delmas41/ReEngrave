@@ -68,6 +68,10 @@ from .record import Q
 #: gap must LEAVE the list or the list stops describing the pipeline and starts
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
+    Q.PAGE_MARK: (
+        "PRODUCER ONLY and deliberately unread (ROADMAP 2.240 step 1, `OMR_PAGE_MARKS`, default OFF): page-mark ids beside today's verdicts, "
+        "proved by byte identity. Its first reader is step 2 (one owner per page mark, benchmarks/page-ledger-2026-10/FINDINGS.md). This entry "
+        "LEAVES the day a decision reads it."),
     Q.DYNAMIC_ANCHOR: (
         "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
         "(Sean 2026-10-09: a dynamic is anchored to ONE note) is GATHER+"
@@ -333,6 +337,8 @@ STAGE_OF_FILE = {
     # ROADMAP 2.166: files `Q.SYSTEM_ARC` (and erases the traced stroke from `cell.image_no_staff`) from its one hook
     # line in `gather.gather()`.
     "arcs_system.py": "GATHER",
+    # ROADMAP 2.240 step 1: files `Q.PAGE_MARK` from its one hook line in `gather.gather()`.
+    "page_marks.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
     "evaluate.py": "EVALUATE", "consequences.py": "EVALUATE",
     "infer.py": "INFER", "inferences.py": "INFER",

@@ -72,7 +72,7 @@ STORED_QUANTITIES = ("duration", "rest_is_not_a_rest", "notehead_is_not_a_notehe
                      "notehead_is_an_eighth_rest", "arc_kind")
 #: Modules whose code runs in GATHER: a flag named in one of them cannot show in an ADJUDICATE-only replay.
 GATHER_MODULES = ("gather.py", "positions.py", "arcs_system.py", "detector_views.py", "second_hollow.py",
-                  "stem_end_heads.py", "legacy.py")
+                  "stem_end_heads.py", "legacy.py", "page_marks.py")
 SHORT = ("eighth", "16th", "32nd", "64th", "128th")
 #: kinds, in print order. Hosts are the written notes/rests; the rest hang off a note or a bar.
 KIND_ORDER = ("note", "rest", "accidental", "dot", "flag", "beam", "tie", "slur", "articulation", "fermata",

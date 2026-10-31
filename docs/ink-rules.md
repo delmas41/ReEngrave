@@ -6,7 +6,7 @@
 
 ## Summary
 
-1. **481 rule exits** are sorted (546 declared reasons on 62 decisions, less 64 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 33 guard modules): **169 CONVENTION** (A), **10 ERASURE** (B), **79 DOUBLE-COUNT** (C), **167 OTHER** (D), **56 UNSURE** (U).
+1. **482 rule exits** are sorted (546 declared reasons on 62 decisions, less 64 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 34 guard modules): **169 CONVENTION** (A), **10 ERASURE** (B), **80 DOUBLE-COUNT** (C), **167 OTHER** (D), **56 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
@@ -323,6 +323,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `movements.py` | A | a meter or key carry never crosses a movement boundary | ROADMAP 4.2 | kept |
 | `one_ink.py` | C | ONE INK, ONE MARK: two classes of one family on one ink merge, the stronger stays, the weaker is a candidate | Sean 2026-10-22, 2.186 tiles 6/9 vs 1/9 | landed 2.186 |
 | `one_note.py` | D:infer | the one-note correction: a bar holding one event takes the value that fills it (blue) | Sean 2026-10-17/18 (CLAUDE s4 exceptions) | kept |
+| `page_marks.py` | C | cells are views, the page is the ledger: boxes of one family from two padded cells on the same page ink are ONE page mark (records ids, decides nothing yet) | Sean 2026-10-30 (2.240 crops 2, 3) | open: step 2 (one owner per page mark) reads it |
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
 | `second_hollow.py` | U | a SECOND detector at GATHER for hollow heads only | ROADMAP 2.114 | open: a second reading of the same ink |
 | `stem_end_heads.py` | A | a stem with no head is a note we have not seen: look at its end | Sean 2026-10-01 (2.179 "if there are stems then there are notes") | kept |
