@@ -7024,6 +7024,10 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         wedges_dropped[_BAR_SUM_REFUSAL] += held_marks["wedges"]
     report["wedges_not_written"] = dict(wedges_dropped)
     report["wedges_not_written_total"] = sum(wedges_dropped.values())
+    # ROADMAP 2.223: a hairpin whose anchor ABSTAINED is still a read mark -- named here by its reason (`tip_unbound`,
+    # `inside_a_word`, `not_between_staves`, ...), so an unbound hairpin is counted, never silent.
+    report["wedges_unbound"] = dict(collections.Counter(
+        str(v.get("reason")) for v in rec.verdicts_of(Q.WEDGE_ANCHOR) if v["outcome"] != "decided"))
     report["wedge_balance"] = {
         "rows_in_log": wedge_rows,
         "decided": w_decided,
