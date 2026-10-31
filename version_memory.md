@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.223 fix after Sean's tiles (11/12): a hairpin inside an UNREAD word candidate abstains
+- Tile 11 (Litolff p16 'Bassi'): the words reader saw the candidate but OCR returned no reading, so no word claim existed; the binder now reads `direction_word` `no_reading` boxes as word ink (same width limit). one_test: Litolff wedges -2 -> -3, everything else as m3; judged right->wrong 0; fast tier 9,549. Flags still OFF.
+
 ## 2026-10-31 -- 2.223 m3: hairpins bound page-wide (lane-2.223-anchoring, OFF, not merged)
 - `OMR_HAIRPIN_BIND_PAGEWIDE` (default OFF; `staged/hairpin_bind.py`, `ownership._wedge_page_binding`): each hairpin's tips bound to the note at (or sounding at) each tip on the staff ABOVE it, among that staff's usable heads above the hairpin; a letter inside a claimed word, an unbound tip or a box between no two staves abstains; EXPORT names abstained hairpins (`wedges_unbound`).
 - Cause: the old anchor bound to refused heads / other staves' copies (22 of 102 ends on 5 Brahms pages) and to the nearest head of any bar; 8 of 8 narrow CV "hairpins" were letters.
