@@ -7731,8 +7731,9 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
             continue
         keep = _split_keep_whole(detections, sub) if SM.split_joins_enabled() else []
+        touch = _split_touch_boxes(detections, sub) if SM.split_joins_enabled() else []
         res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None),
-                             keep_whole=keep)
+                             keep_whole=keep, touch_boxes=touch)
         if res is None:
             log.abstain(sub, Q.STROKE, reader=READERS.CV_STROKE, frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
             cache[ck] = ABSTAIN.NO_STAFF_GEOMETRY
@@ -7767,6 +7768,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                     optional["cell_split_refused"] = dict(sorted(res.split_refused.items()))
                 if keep:                                 # ... and the clef / key / meter boxes no split cuts inside (a re-run reads them here)
                     optional["cell_keep_whole"] = keep
+                if touch:                                # ... and the boxes a touching accidental is cut against (2.239 r3)
+                    optional["cell_touch_boxes"] = touch
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
             if page_ok:
@@ -7787,15 +7790,40 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
     return cache
 
 
-def _split_keep_whole(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[int]]:
+def _split_keep_whole(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[Any]]:
     """ROADMAP 2.239 (`OMR_SPLIT_JOINS`): the cell's clef, key and meter detector boxes (canonical x0, y0, x1, y1, whole px): ink mostly
-    inside one is never cut at a join -- its area claim already holds it whole (Sean's tiles 2 and 5: "small part of an F / G clef")."""
-    out: List[List[int]] = []
+    inside one is never cut at a join -- its area claim already holds it whole (Sean's tiles 2 and 5: "small part of an F / G clef").
+    A CLEF box carries a fifth item "clef" (2.239 r3, Sean's round-2 tile 7 "tip cut of a G clef"): the pieces the openings cut the clef
+    into are joined back into one stroke."""
+    out: List[List[Any]] = []
     for d in (detections or {}).get(sub.to_key(), ()):
         name = str(getattr(d, "smufl_name", "") or "")
-        if _is_clef_class(name, getattr(d, "category", None)) or name.startswith(("key", "timeSig")):
+        clef = _is_clef_class(name, getattr(d, "category", None))
+        if clef or name.startswith(("key", "timeSig")):
             x, y = float(d.x_canonical), float(d.y_canonical)
-            out.append([int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+            r: List[Any] = [int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))]
+            out.append(r + ["clef"] if clef else r)
+    return sorted(out, key=lambda r: (r[:4], len(r)))
+
+
+def _split_touch_boxes(detections: Optional[Dict[str, List[Any]]], sub: Any) -> List[List[Any]]:
+    """ROADMAP 2.239 r3 (`OMR_SPLIT_JOINS`; Sean's round-2 tile 1 "part of a ledger line and a flat"): the cell's ACCIDENTAL boxes (the
+    `accidental*` classes; a key signature's are kept whole) and its head, ledger and stem boxes, `[family, x0, y0, x1, y1]` canonical --
+    only when the cell holds an accidental box (else nothing to cut, nothing filed). The stroke map cuts a piece across an accidental box
+    and one of the others at the boundary between the two boxes' own ink."""
+    from .stroke_owner import family_of
+    from . import stroke_map as SM
+    out: List[List[Any]] = []
+    for d in (detections or {}).get(sub.to_key(), ()):
+        name = str(getattr(d, "smufl_name", "") or "")
+        fam = family_of(name, getattr(d, "category", None))
+        if fam == SM.TOUCH_ACC_FAMILY and not name.lower().startswith("accidental"):
+            continue
+        if fam == SM.TOUCH_ACC_FAMILY or fam in SM.TOUCH_OTHER_FAMILIES:
+            x, y = float(d.x_canonical), float(d.y_canonical)
+            out.append([fam, int(round(x)), int(round(y)), int(round(x + d.width_canonical)), int(round(y + d.height_canonical))])
+    if not any(r[0] == SM.TOUCH_ACC_FAMILY for r in out):
+        return []
     return sorted(out)
 
 
