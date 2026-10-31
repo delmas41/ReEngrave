@@ -1,0 +1,693 @@
+{
+ "master": "cm-54ccb4729528",
+ "pages": [
+  1,
+  2,
+  4,
+  6,
+  8,
+  9,
+  10,
+  11,
+  16
+ ],
+ "per_page": {
+  "1": {
+   "arc_spans": 30,
+   "arc_spans_crossing_a_barline": 26,
+   "arc_spans_joining_two_staves_views": 17,
+   "arc_views": 47,
+   "hairpin_spans": 0,
+   "hairpin_spans_boxed_as": {},
+   "marks": 655,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 35,
+    "abstain:owner_no_rungs": 1,
+    "decided:inside_staff": 7,
+    "decided:ledger_and_stem": 2
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 3,
+     "owner_silent": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "disagrees": 2,
+     "owner_silent": 1
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 7,
+    "accidental:decided:inside_staff": 27,
+    "arc:abstain:owner_follows_its_note": 29,
+    "arc:decided:inside_staff": 18,
+    "beam:abstain:owner_follows_its_note": 16,
+    "beam:decided:inside_staff": 45,
+    "clef:abstain:owner_follows_its_note": 3,
+    "clef:decided:inside_staff": 14,
+    "dot:abstain:owner_follows_its_note": 2,
+    "dot:decided:inside_staff": 1,
+    "dynamic:abstain:owner_follows_its_note": 16,
+    "flag:abstain:owner_follows_its_note": 2,
+    "head:abstain:owner_no_rungs": 9,
+    "head:decided:inside_staff": 126,
+    "head:decided:ledger": 7,
+    "head:decided:ledger_and_stem": 10,
+    "head:decided:stem": 1,
+    "ledger:abstain:owner_follows_its_note": 5,
+    "ledger:decided:inside_staff": 98,
+    "mark:abstain:owner_follows_its_note": 24,
+    "mark:decided:inside_staff": 39,
+    "meter:abstain:owner_follows_its_note": 2,
+    "meter:decided:inside_staff": 10,
+    "rest:decided:inside_staff": 30,
+    "whole_rest:decided:inside_staff": 114
+   },
+   "untraced": {
+    "arc": 10
+   },
+   "verify": {
+    "cells_ok": 192
+   }
+  },
+  "10": {
+   "arc_spans": 79,
+   "arc_spans_crossing_a_barline": 72,
+   "arc_spans_joining_two_staves_views": 38,
+   "arc_views": 117,
+   "hairpin_spans": 0,
+   "hairpin_spans_boxed_as": {},
+   "marks": 1812,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 154,
+    "decided:inside_staff": 26,
+    "decided:ledger": 5,
+    "decided:ledger_and_stem": 95,
+    "decided:stem": 6
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 110
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "agrees": 3,
+     "disagrees": 8,
+     "same_staff_twin": 3
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 27,
+    "accidental:decided:inside_staff": 67,
+    "arc:abstain:owner_follows_its_note": 53,
+    "arc:decided:inside_staff": 103,
+    "beam:abstain:owner_follows_its_note": 76,
+    "beam:decided:inside_staff": 109,
+    "clef:abstain:owner_follows_its_note": 5,
+    "clef:decided:inside_staff": 22,
+    "dot:abstain:owner_follows_its_note": 9,
+    "dot:decided:inside_staff": 13,
+    "dynamic:abstain:owner_follows_its_note": 91,
+    "dynamic:decided:inside_staff": 16,
+    "flag:abstain:owner_follows_its_note": 1,
+    "flag:decided:inside_staff": 24,
+    "head:abstain:owner_no_rungs": 13,
+    "head:decided:inside_staff": 472,
+    "head:decided:ledger": 21,
+    "head:decided:ledger_and_stem": 131,
+    "head:decided:stem": 19,
+    "ledger:abstain:owner_follows_its_note": 73,
+    "ledger:decided:inside_staff": 149,
+    "mark:abstain:owner_follows_its_note": 20,
+    "mark:decided:inside_staff": 121,
+    "meter:decided:inside_staff": 3,
+    "rest:abstain:owner_follows_its_note": 6,
+    "rest:decided:inside_staff": 79,
+    "text:abstain:owner_follows_its_note": 2,
+    "text:decided:inside_staff": 4,
+    "whole_rest:abstain:owner_follows_its_note": 2,
+    "whole_rest:decided:inside_staff": 81
+   },
+   "untraced": {
+    "arc": 50
+   },
+   "verify": {
+    "cells_ok": 319
+   }
+  },
+  "11": {
+   "arc_spans": 61,
+   "arc_spans_crossing_a_barline": 54,
+   "arc_spans_joining_two_staves_views": 28,
+   "arc_views": 89,
+   "hairpin_spans": 0,
+   "hairpin_spans_boxed_as": {},
+   "marks": 1210,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 87,
+    "decided:inside_staff": 7,
+    "decided:ledger_and_stem": 14
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 14
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "disagrees": 8
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 20,
+    "accidental:decided:inside_staff": 76,
+    "arc:abstain:owner_follows_its_note": 55,
+    "arc:decided:inside_staff": 47,
+    "beam:abstain:owner_follows_its_note": 87,
+    "beam:decided:inside_staff": 84,
+    "clef:abstain:owner_follows_its_note": 1,
+    "clef:decided:inside_staff": 22,
+    "dot:abstain:owner_follows_its_note": 2,
+    "dot:decided:inside_staff": 8,
+    "dynamic:abstain:owner_follows_its_note": 16,
+    "dynamic:decided:inside_staff": 1,
+    "flag:abstain:owner_follows_its_note": 1,
+    "flag:decided:inside_staff": 3,
+    "head:abstain:owner_no_rungs": 8,
+    "head:decided:inside_staff": 276,
+    "head:decided:ledger": 25,
+    "head:decided:ledger_and_stem": 27,
+    "head:decided:stem": 4,
+    "ledger:abstain:owner_follows_its_note": 19,
+    "ledger:decided:inside_staff": 91,
+    "mark:abstain:owner_follows_its_note": 7,
+    "mark:decided:inside_staff": 97,
+    "meter:decided:inside_staff": 6,
+    "rest:decided:inside_staff": 28,
+    "text:decided:inside_staff": 2,
+    "whole_rest:decided:inside_staff": 197
+   },
+   "untraced": {
+    "arc": 31
+   },
+   "verify": {
+    "cells_ok": 349
+   }
+  },
+  "16": {
+   "arc_spans": 65,
+   "arc_spans_crossing_a_barline": 47,
+   "arc_spans_joining_two_staves_views": 30,
+   "arc_views": 95,
+   "hairpin_spans": 1,
+   "hairpin_spans_boxed_as": {},
+   "marks": 2009,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 127,
+    "abstain:owner_no_rungs": 1,
+    "decided:inside_staff": 33,
+    "decided:ledger": 3,
+    "decided:ledger_and_stem": 72,
+    "decided:ledger_over_stem": 2,
+    "decided:stem": 4
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 83,
+     "owner_silent": 1
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "disagrees": 19,
+     "owner_silent": 4
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 25,
+    "accidental:decided:inside_staff": 77,
+    "arc:abstain:owner_follows_its_note": 49,
+    "arc:decided:inside_staff": 41,
+    "beam:abstain:owner_follows_its_note": 68,
+    "beam:decided:inside_staff": 76,
+    "clef:abstain:owner_follows_its_note": 5,
+    "clef:decided:inside_staff": 30,
+    "dot:abstain:owner_follows_its_note": 4,
+    "dot:decided:inside_staff": 6,
+    "dynamic:abstain:owner_follows_its_note": 33,
+    "dynamic:decided:inside_staff": 3,
+    "flag:abstain:owner_follows_its_note": 6,
+    "flag:decided:inside_staff": 9,
+    "head:abstain:owner_no_rungs": 21,
+    "head:decided:inside_staff": 618,
+    "head:decided:ledger": 37,
+    "head:decided:ledger_and_stem": 127,
+    "head:decided:ledger_over_stem": 2,
+    "head:decided:stem": 15,
+    "ledger:abstain:owner_follows_its_note": 181,
+    "ledger:decided:inside_staff": 208,
+    "mark:abstain:owner_follows_its_note": 13,
+    "mark:decided:inside_staff": 114,
+    "meter:decided:inside_staff": 3,
+    "rest:abstain:owner_follows_its_note": 4,
+    "rest:decided:inside_staff": 128,
+    "stem:decided:inside_staff": 1,
+    "text:abstain:owner_follows_its_note": 2,
+    "text:decided:inside_staff": 2,
+    "whole_rest:decided:inside_staff": 101
+   },
+   "untraced": {
+    "arc": 16
+   },
+   "verify": {
+    "cells_ok": 341
+   }
+  },
+  "2": {
+   "arc_spans": 72,
+   "arc_spans_crossing_a_barline": 53,
+   "arc_spans_joining_two_staves_views": 33,
+   "arc_views": 105,
+   "hairpin_spans": 0,
+   "hairpin_spans_boxed_as": {},
+   "marks": 2070,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 153,
+    "abstain:owner_no_rungs": 1,
+    "decided:inside_staff": 70,
+    "decided:ledger": 7,
+    "decided:ledger_and_stem": 58,
+    "decided:stem": 5
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 95,
+     "owner_silent": 1
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 1,
+     "owner_silent": 2
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "disagrees": 10,
+     "same_staff_twin": 1
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 17,
+    "accidental:decided:inside_staff": 59,
+    "arc:abstain:owner_follows_its_note": 51,
+    "arc:decided:inside_staff": 99,
+    "beam:abstain:owner_follows_its_note": 35,
+    "beam:decided:inside_staff": 104,
+    "clef:abstain:owner_follows_its_note": 5,
+    "clef:decided:inside_staff": 21,
+    "dot:abstain:owner_follows_its_note": 8,
+    "dot:decided:inside_staff": 6,
+    "dynamic:abstain:owner_follows_its_note": 94,
+    "dynamic:decided:inside_staff": 15,
+    "flag:abstain:owner_follows_its_note": 2,
+    "flag:decided:inside_staff": 8,
+    "head:abstain:owner_no_rungs": 9,
+    "head:decided:inside_staff": 479,
+    "head:decided:ledger": 25,
+    "head:decided:ledger_and_stem": 70,
+    "head:decided:stem": 9,
+    "ledger:abstain:owner_follows_its_note": 77,
+    "ledger:decided:inside_staff": 517,
+    "mark:abstain:owner_follows_its_note": 31,
+    "mark:decided:inside_staff": 93,
+    "meter:decided:inside_staff": 2,
+    "rest:abstain:owner_follows_its_note": 7,
+    "rest:decided:inside_staff": 101,
+    "stem:abstain:owner_follows_its_note": 2,
+    "stem:decided:inside_staff": 3,
+    "whole_rest:decided:inside_staff": 121
+   },
+   "untraced": {
+    "arc": 68
+   },
+   "verify": {
+    "cells_ok": 352
+   }
+  },
+  "4": {
+   "arc_spans": 104,
+   "arc_spans_crossing_a_barline": 84,
+   "arc_spans_joining_two_staves_views": 58,
+   "arc_views": 162,
+   "hairpin_spans": 1,
+   "hairpin_spans_boxed_as": {},
+   "marks": 2328,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 199,
+    "decided:inside_staff": 76,
+    "decided:ledger": 12,
+    "decided:ledger_and_stem": 113,
+    "decided:ledger_over_stem": 1,
+    "decided:stem": 9
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 177
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 5,
+     "owner_silent": 2
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "agrees": 1,
+     "disagrees": 14,
+     "same_staff_twin": 3
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 46,
+    "accidental:decided:inside_staff": 57,
+    "arc:abstain:owner_follows_its_note": 81,
+    "arc:decided:inside_staff": 109,
+    "beam:abstain:owner_follows_its_note": 95,
+    "beam:decided:inside_staff": 40,
+    "clef:abstain:owner_follows_its_note": 3,
+    "clef:decided:inside_staff": 20,
+    "dot:abstain:owner_follows_its_note": 8,
+    "dot:decided:inside_staff": 10,
+    "dynamic:abstain:owner_follows_its_note": 24,
+    "dynamic:decided:inside_staff": 8,
+    "flag:abstain:owner_follows_its_note": 11,
+    "flag:decided:inside_staff": 7,
+    "head:abstain:owner_no_rungs": 26,
+    "head:decided:inside_staff": 566,
+    "head:decided:ledger": 47,
+    "head:decided:ledger_and_stem": 137,
+    "head:decided:ledger_over_stem": 1,
+    "head:decided:stem": 25,
+    "ledger:abstain:owner_follows_its_note": 116,
+    "ledger:decided:inside_staff": 529,
+    "mark:abstain:owner_follows_its_note": 46,
+    "mark:decided:inside_staff": 172,
+    "meter:decided:inside_staff": 3,
+    "rest:decided:inside_staff": 93,
+    "stem:abstain:owner_follows_its_note": 1,
+    "stem:decided:inside_staff": 13,
+    "whole_rest:decided:inside_staff": 34
+   },
+   "untraced": {
+    "arc": 63
+   },
+   "verify": {
+    "cells_ok": 330
+   }
+  },
+  "6": {
+   "arc_spans": 50,
+   "arc_spans_crossing_a_barline": 47,
+   "arc_spans_joining_two_staves_views": 30,
+   "arc_views": 80,
+   "hairpin_spans": 0,
+   "hairpin_spans_boxed_as": {},
+   "marks": 2096,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 133,
+    "abstain:owner_no_rungs": 2,
+    "decided:inside_staff": 62,
+    "decided:ledger": 5,
+    "decided:ledger_and_stem": 68,
+    "decided:ledger_over_stem": 3,
+    "decided:stem": 5
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 109,
+     "owner_silent": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "agrees": 3,
+     "disagrees": 8,
+     "same_staff_twin": 1
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 27,
+    "accidental:decided:inside_staff": 90,
+    "arc:abstain:owner_follows_its_note": 56,
+    "arc:decided:inside_staff": 72,
+    "beam:abstain:owner_follows_its_note": 84,
+    "beam:decided:inside_staff": 62,
+    "clef:abstain:owner_follows_its_note": 7,
+    "clef:decided:inside_staff": 22,
+    "dot:abstain:owner_follows_its_note": 4,
+    "dot:decided:inside_staff": 2,
+    "dynamic:abstain:owner_follows_its_note": 32,
+    "dynamic:decided:inside_staff": 3,
+    "flag:abstain:owner_follows_its_note": 1,
+    "flag:decided:inside_staff": 4,
+    "head:abstain:owner_no_rungs": 13,
+    "head:decided:inside_staff": 566,
+    "head:decided:ledger": 39,
+    "head:decided:ledger_and_stem": 85,
+    "head:decided:ledger_over_stem": 3,
+    "head:decided:stem": 13,
+    "ledger:abstain:owner_follows_its_note": 77,
+    "ledger:decided:inside_staff": 504,
+    "mark:abstain:owner_follows_its_note": 10,
+    "mark:decided:inside_staff": 138,
+    "meter:decided:inside_staff": 9,
+    "rest:abstain:owner_follows_its_note": 24,
+    "rest:decided:inside_staff": 82,
+    "stem:decided:inside_staff": 4,
+    "text:decided:inside_staff": 1,
+    "whole_rest:abstain:owner_follows_its_note": 4,
+    "whole_rest:decided:inside_staff": 58
+   },
+   "untraced": {
+    "arc": 66
+   },
+   "verify": {
+    "cells_ok": 286
+   }
+  },
+  "8": {
+   "arc_spans": 30,
+   "arc_spans_crossing_a_barline": 29,
+   "arc_spans_joining_two_staves_views": 12,
+   "arc_views": 42,
+   "hairpin_spans": 1,
+   "hairpin_spans_boxed_as": {},
+   "marks": 2064,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 129,
+    "decided:inside_staff": 20,
+    "decided:ledger": 12,
+    "decided:ledger_and_stem": 49,
+    "decided:stem": 2
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 62
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 4,
+     "owner_silent": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "agrees": 1,
+     "disagrees": 11,
+     "owner_silent": 1,
+     "same_staff_twin": 1
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 53,
+    "accidental:decided:inside_staff": 75,
+    "arc:abstain:owner_follows_its_note": 22,
+    "arc:decided:inside_staff": 43,
+    "beam:abstain:owner_follows_its_note": 48,
+    "beam:decided:inside_staff": 18,
+    "clef:abstain:owner_follows_its_note": 8,
+    "clef:decided:inside_staff": 19,
+    "dot:abstain:owner_follows_its_note": 3,
+    "dot:decided:inside_staff": 5,
+    "dynamic:abstain:owner_follows_its_note": 125,
+    "dynamic:decided:inside_staff": 7,
+    "flag:abstain:owner_follows_its_note": 9,
+    "flag:decided:inside_staff": 34,
+    "head:abstain:owner_no_rungs": 16,
+    "head:decided:inside_staff": 375,
+    "head:decided:ledger": 64,
+    "head:decided:ledger_and_stem": 93,
+    "head:decided:stem": 11,
+    "ledger:abstain:owner_follows_its_note": 98,
+    "ledger:decided:inside_staff": 652,
+    "mark:abstain:owner_follows_its_note": 8,
+    "mark:decided:inside_staff": 67,
+    "meter:decided:inside_staff": 2,
+    "rest:abstain:owner_follows_its_note": 4,
+    "rest:decided:inside_staff": 19,
+    "stem:abstain:owner_follows_its_note": 2,
+    "stem:decided:inside_staff": 18,
+    "whole_rest:abstain:owner_follows_its_note": 1,
+    "whole_rest:decided:inside_staff": 165
+   },
+   "untraced": {
+    "arc": 34
+   },
+   "verify": {
+    "cells_ok": 407
+   }
+  },
+  "9": {
+   "arc_spans": 44,
+   "arc_spans_crossing_a_barline": 41,
+   "arc_spans_joining_two_staves_views": 23,
+   "arc_views": 67,
+   "hairpin_spans": 1,
+   "hairpin_spans_boxed_as": {
+    "hairpin": 1,
+    "mark": 1
+   },
+   "marks": 1531,
+   "marks_seen_from_two_staves_by_status_reason": {
+    "abstain:owner_follows_its_note": 87,
+    "decided:inside_staff": 47,
+    "decided:ledger": 3,
+    "decided:ledger_and_stem": 23,
+    "decided:stem": 2
+   },
+   "old_rules": {
+    "duration:owned_by_another_staff": {
+     "agrees": 57
+    },
+    "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+     "agrees": 1
+    },
+    "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+     "agrees": 2,
+     "disagrees": 7,
+     "owner_silent": 1,
+     "same_staff_twin": 2
+    }
+   },
+   "owner_by_family_status_reason": {
+    "accidental:abstain:owner_follows_its_note": 8,
+    "accidental:decided:inside_staff": 65,
+    "arc:abstain:owner_follows_its_note": 41,
+    "arc:decided:inside_staff": 86,
+    "beam:abstain:owner_follows_its_note": 35,
+    "beam:decided:inside_staff": 43,
+    "clef:abstain:owner_follows_its_note": 2,
+    "clef:decided:inside_staff": 26,
+    "dot:abstain:owner_follows_its_note": 4,
+    "dot:decided:inside_staff": 7,
+    "dynamic:abstain:owner_follows_its_note": 38,
+    "dynamic:decided:inside_staff": 5,
+    "flag:abstain:owner_follows_its_note": 2,
+    "flag:decided:inside_staff": 15,
+    "hairpin:abstain:owner_follows_its_note": 1,
+    "head:abstain:owner_no_rungs": 7,
+    "head:decided:inside_staff": 408,
+    "head:decided:ledger": 18,
+    "head:decided:ledger_and_stem": 50,
+    "head:decided:stem": 9,
+    "ledger:abstain:owner_follows_its_note": 59,
+    "ledger:decided:inside_staff": 285,
+    "mark:abstain:owner_follows_its_note": 35,
+    "mark:decided:inside_staff": 62,
+    "meter:decided:inside_staff": 11,
+    "rest:abstain:owner_follows_its_note": 2,
+    "rest:decided:inside_staff": 78,
+    "stem:decided:inside_staff": 1,
+    "text:decided:inside_staff": 1,
+    "whole_rest:decided:inside_staff": 127
+   },
+   "untraced": {
+    "arc": 71
+   },
+   "verify": {
+    "cells_ok": 300
+   }
+  }
+ },
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-report-slices-20261029-night/litolff",
+ "total": {
+  "arc_spans": 535,
+  "arc_spans_crossing_a_barline": 453,
+  "arc_spans_joining_two_staves_views": 269,
+  "arc_views": 804,
+  "hairpin_spans": 4,
+  "hairpin_spans_boxed_as": {
+   "hairpin": 1,
+   "mark": 1
+  },
+  "marks": 15775,
+  "marks_seen_from_two_staves_by_status_reason": {
+   "abstain:owner_follows_its_note": 1104,
+   "abstain:owner_no_rungs": 5,
+   "decided:inside_staff": 348,
+   "decided:ledger": 47,
+   "decided:ledger_and_stem": 494,
+   "decided:ledger_over_stem": 6,
+   "decided:stem": 33
+  },
+  "old_rules": {
+   "duration:owned_by_another_staff": {
+    "agrees": 710,
+    "owner_silent": 4
+   },
+   "notehead_is_not_a_notehead:belongs_to_a_nearer_staff": {
+    "agrees": 14,
+    "owner_silent": 5
+   },
+   "notehead_is_not_a_notehead:notehead_is_a_duplicate_box": {
+    "agrees": 10,
+    "disagrees": 87,
+    "owner_silent": 7,
+    "same_staff_twin": 11
+   }
+  },
+  "owner_by_family_status_reason": {
+   "accidental:abstain:owner_follows_its_note": 230,
+   "accidental:decided:inside_staff": 593,
+   "arc:abstain:owner_follows_its_note": 437,
+   "arc:decided:inside_staff": 618,
+   "beam:abstain:owner_follows_its_note": 544,
+   "beam:decided:inside_staff": 581,
+   "clef:abstain:owner_follows_its_note": 39,
+   "clef:decided:inside_staff": 196,
+   "dot:abstain:owner_follows_its_note": 44,
+   "dot:decided:inside_staff": 58,
+   "dynamic:abstain:owner_follows_its_note": 469,
+   "dynamic:decided:inside_staff": 58,
+   "flag:abstain:owner_follows_its_note": 35,
+   "flag:decided:inside_staff": 104,
+   "hairpin:abstain:owner_follows_its_note": 1,
+   "head:abstain:owner_no_rungs": 122,
+   "head:decided:inside_staff": 3886,
+   "head:decided:ledger": 283,
+   "head:decided:ledger_and_stem": 730,
+   "head:decided:ledger_over_stem": 6,
+   "head:decided:stem": 106,
+   "ledger:abstain:owner_follows_its_note": 705,
+   "ledger:decided:inside_staff": 3033,
+   "mark:abstain:owner_follows_its_note": 194,
+   "mark:decided:inside_staff": 903,
+   "meter:abstain:owner_follows_its_note": 2,
+   "meter:decided:inside_staff": 49,
+   "rest:abstain:owner_follows_its_note": 47,
+   "rest:decided:inside_staff": 638,
+   "stem:abstain:owner_follows_its_note": 5,
+   "stem:decided:inside_staff": 40,
+   "text:abstain:owner_follows_its_note": 4,
+   "text:decided:inside_staff": 10,
+   "whole_rest:abstain:owner_follows_its_note": 7,
+   "whole_rest:decided:inside_staff": 998
+  },
+  "untraced": {
+   "arc": 409
+  }
+ }
+}

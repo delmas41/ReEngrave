@@ -33,4 +33,4 @@ Litolff p4 `glyph/4/0/8/5/13`: strokes see a 1.75 sp stem and no bowl; an x has 
 2.196 (natural offered 52% vs flat 79%); 2.197 (Brahms naturals boxed as another class 12 of 27); 2.201 (its tile 2 is this case, left open); 2.190 corner densities (superseded); ink-rules and page-facts: no kind rule; LEGACY: class only.
 
 ## Tiles
-out/print/2.247-tiles (key outside tiles/): 3 places where the written alteration changed, 3 boxes now unclear, 5 class-vs-strokes disagreements, tile 12 = the 2.242 r2 tile 1 place. Sean's answers pending.
+out/print/2.247-tiles (key outside tiles/): 3 places where the written alteration changed, 3 boxes now unclear, 5 class-vs-strokes disagreements, tile 12 = the 2.242 r2 tile 1 place. Sean's answers 2026-10-31 (answers.json; DECISIONS): right 1, 4, 9, 10, 11, 12; wrong 2, 3 (half a natural -> flat), 5 (slash -> #), 6 (sharp -> ##), 7 (real flat -> unclear, box cuts its stem), 8 (flat -> natural). Sean: the boxes sit a little high; measure accidentals from their own ink as with notes.

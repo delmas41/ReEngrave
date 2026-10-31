@@ -95,7 +95,8 @@ def lines_at(staff: Dict[str, Any], cx: float) -> Sequence[float]:
 
 
 def read_toward(ctx: "FH.FarHeadPage", subject: str, box: Sequence[float],
-                cls: Optional[str], cand_lines: Sequence[float]) -> Dict[str, Any]:
+                cls: Optional[str], cand_lines: Sequence[float],
+                not_ledger: Optional[Any] = None) -> Dict[str, Any]:
     """The head read toward ONE candidate staff: `dict(fits, pos, reason,
     how)`. `fits` is True only where a position is read or none is needed."""
     box = tuple(float(v) for v in box)
@@ -110,13 +111,15 @@ def read_toward(ctx: "FH.FarHeadPage", subject: str, box: Sequence[float],
     if not lg.far_head_needs_ledger_read(geo):
         return dict(fits=True, pos=geo, reason=NO_LEDGER_NEEDED, unread=False,
                     how="geometry", geometry_position=geo)
-    r = ctx.read(subject, box, cls, cand_lines)
+    r = (ctx.read(subject, box, cls, cand_lines) if not_ledger is None
+         else ctx.read(subject, box, cls, cand_lines, not_ledger=not_ledger))
     return dict(fits=r["pos"] is not None, pos=r["pos"], reason=r["reason"],
                 unread=is_unread(r["reason"], (r.get("detail") or {}).get("note_first")),
                 how="note_first", geometry_position=geo,
                 note_first=(r.get("detail") or {}).get("note_first"),
                 edge_y=(r.get("detail") or {}).get("edge_y"),
-                box_used=r.get("box_used"))
+                box_used=r.get("box_used"),
+                not_ledger_dropped=(r.get("detail") or {}).get("not_ledger_dropped"))
 
 
 def decide(per_candidate: Dict[str, Dict[str, Any]]
