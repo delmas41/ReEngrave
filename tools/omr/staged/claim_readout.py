@@ -661,6 +661,7 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
     det, reads = consumer_rows(prows)
     rec_boxes: Dict[Tuple, Dict[int, list]] = collections.defaultdict(dict)
     keep_whole: Dict[Tuple, list] = {}
+    touch: Dict[Tuple, list] = {}
     for o in prows["observations"]:
         if o.get("quantity") == "stroke":
             p = o["subject"].split("/")
@@ -669,6 +670,8 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
                 rec_boxes[cell_key(o["subject"])][g - STROKE_BASE] = (o.get("detail") or {}).get("stroke_box")
                 if (o.get("detail") or {}).get("cell_keep_whole"):     # ROADMAP 2.239: the boxes the split left whole, as the gather saw them
                     keep_whole[cell_key(o["subject"])] = o["detail"]["cell_keep_whole"]
+                if (o.get("detail") or {}).get("cell_touch_boxes"):    # 2.239 r3: the boxes a touching accidental was cut against
+                    touch[cell_key(o["subject"])] = o["detail"]["cell_touch_boxes"]
     (pws, cells), = CM.load_prepared(pdf, [page], root=cm_root)
     canvas = PageInk(pws.page.binary == 0)
     local = G._system_local(pws.staves)
@@ -684,7 +687,7 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
             verify["cell_no_grid"] += 1
             continue
         res = SM.map_strokes(img, grid[1] * 2.0, list(getattr(c, "staff_line_ys_canonical", None) or []), getattr(c, "binary", None),
-                             keep_whole=keep_whole.get(ck, ()))
+                             keep_whole=keep_whole.get(ck, ()), touch_boxes=touch.get(ck, ()))
         mine = {i: list(s.box) for i, s in enumerate(res.strokes)} if res else {}
         theirs = rec_boxes.get(ck, {})
         if mine != {i: list(b) for i, b in theirs.items()}:
