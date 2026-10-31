@@ -74,3 +74,6 @@ out/print/2.245-tiles (key outside tiles/): the four places, four wide head boxe
 - 2.223: `arc_kind` (ownership.py) still decides tie from the detector box when its system arc is refused -- must read `trace_does_not_bow`.
 ### Tiles
 out/print/2.245-r2-tiles: 4 split-off heads (incl. r1 tiles 4 and 10's places), 2 refused remainders, 1 unread wide box (a beam), 2 non-bowing traces (Brahms hairpin legs), 2 letters no longer hairpins, r1 tile 9's place.
+
+### Sean's r2 answers (2026-10-31)
+Bow test 2/2 (7, 11 hairpin parts), letter test 2/2 (4 c of cresc., 9 e of legato), unread wide box 1 a beam, 12 a C clef. Head split right 2/4 (5, 8 eighths), wrong 2/4 (2 stem + flag, 10 a C-clef piece). Refused remainders hold real notes: 3 a head + slur, 6 a half note + arc tip (the opening erases a hollow head's ring).
