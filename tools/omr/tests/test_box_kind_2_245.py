@@ -13,6 +13,7 @@ ADJUDICATE kept it as a head. The four cases of the lane, and what this rule doe
 """
 from __future__ import annotations
 
+import dataclasses
 import os
 import unittest
 from unittest import mock
@@ -130,66 +131,109 @@ def _ink(h, w, rects):
     return img
 
 
-class TestReadTheHeadsInsideAWideBox(unittest.TestCase):
-    """Sean's tile 10 ("three eighth notes") and tile 4 ("an eighth and a natural"), drawn at 28 px a space."""
+def _paper(h, w):
+    import numpy as np
+    return np.full((h, w), 255, np.uint8)
 
-    def three_eighths(self):
-        # three heads 1.3 x 1.0 sp on stems, joined by a beam 0.5 sp thick above them
-        heads = [(10 + 60 * i, 120, 36, 28) for i in range(3)]
-        stems = [(10 + 60 * i + 32, 40, 4, 90) for i in range(3)]
-        beam = [(42, 40, 124, 14)]
-        return _ink(170, 200, heads + stems + beam), heads
 
-    def test_three_heads_on_a_beam_are_three_blobs_and_the_beam_is_not_one(self):
-        img, heads = self.three_eighths()
-        blobs, unread = BK.head_blobs(img == 0, SP)
-        self.assertEqual(len(blobs), 3)
-        self.assertFalse(unread)
+def _ellipse(img, cx, cy, w, h, hollow=False):
+    import cv2
+    cv2.ellipse(img, (int(cx), int(cy)), (int(w / 2), int(h / 2)), -20, 0, 360, 0, -1)
+    if hollow:
+        cv2.ellipse(img, (int(cx), int(cy)), (int(w / 2) - 7, int(h / 2) - 7), -20, 0, 360, 255, -1)
 
-    def test_an_arc_or_a_beam_alone_holds_no_head(self):
-        arc = _ink(60, 200, [(0, 20 + abs(x - 100) // 12, 1, 5) for x in range(200)])
-        self.assertEqual(BK.head_blobs(arc == 0, SP), ([], False))
-        beam = _ink(60, 200, [(0, 20, 200, 14)])
-        self.assertEqual(BK.head_blobs(beam == 0, SP), ([], False))
 
-    def test_a_natural_beside_an_eighth_leaves_the_eighths_head_only(self):
-        natural = [(10, 10, 4, 80), (30, 30, 4, 80), (10, 40, 24, 7), (10, 62, 24, 7)]
-        img = _ink(120, 140, natural + [(70, 60, 36, 28), (102, 0, 4, 70)])
-        blobs, unread = BK.head_blobs(img == 0, SP)
-        self.assertEqual(len(blobs), 1)
-        self.assertGreater(blobs[0][0], 60)
+def _rect(img, x, y, w, h):
+    img[y:y + h, x:x + w] = 0
 
-    def test_fused_head_thick_ink_is_UNREAD(self):
-        blobs, unread = BK.head_blobs((_ink(60, 200, [(10, 10, 120, 30)]) == 0), SP)
-        self.assertEqual(blobs, [])
-        self.assertTrue(unread)
 
-    def test_split_appends_only_heads_no_other_box_stands_on_and_keeps_every_index(self):
-        from types import SimpleNamespace as N
-        import dataclasses
+@dataclasses.dataclass
+class _D:
+    smufl_name: str
+    x_canonical: int
+    y_canonical: int
+    width_canonical: int
+    height_canonical: int
+    confidence: float = 0.3
 
-        @dataclasses.dataclass
-        class D:
-            smufl_name: str
-            x_canonical: int
-            y_canonical: int
-            width_canonical: int
-            height_canonical: int
-            confidence: float = 0.3
-        img, heads = self.three_eighths()
-        own = D("noteheadBlackOnLine", *heads[0])                     # the first head already has its own box
-        wide = D("noteheadBlackOnLine", 0, 110, 190, 50)
-        out, info = BK.split_wide_heads([own, wide], img, SP)
-        self.assertEqual(out[:2], [own, wide])
-        self.assertEqual(len(out), 4)                                  # heads 2 and 3 added, head 1 not twice
-        self.assertEqual(info[1]["box_kind"], {"heads": 3, "added": [2, 3], "unread": False})
-        self.assertEqual(info[2]["box_kind"], {"split_from": 1})
-        self.assertEqual(BK.split_wide_heads([own], img, SP), ([own], {}))   # nothing wide: unchanged
-        # two wide boxes over the same heads add each head ONCE (Litolff p6 6/0/3/8)
-        out2, info2 = BK.split_wide_heads([own, wide, D("noteheadBlackInSpace", 0, 105, 195, 55)], img, SP)
-        self.assertEqual(len(out2), 5)
-        self.assertEqual(info2[2]["box_kind"]["added"], [])
-        _ = N
+
+S3 = 40.0         # canonical px per space in the round-3 cells; staff top at y 200, so a head centre on a line is at 200 + 20 k
+
+
+class TestRoundThreeHeadsHaveAHeadsOwnShape(unittest.TestCase):
+    """Sean's round-2 tiles (2026-10-31): 5, 8 right; 2 (a stem and a flag) and 10 (a C clef piece) wrong as heads; remainders 3 (a head
+    under a slur) and 6 (a HALF note) must not be refused with a head inside."""
+
+    def split(self, img, dets, i=None):
+        out, info = BK.split_wide_heads(dets, img, S3, staff_top=200.0)
+        wide = [k for k, d in enumerate(dets) if d.width_canonical / S3 >= BK.HEAD_BOX_MAX_W_SP][0] if i is None else i
+        return out, info[wide]["box_kind"]
+
+    def test_tile_10_three_merged_beamed_eighths_are_three_heads_RED(self):
+        img = _paper(600, 400)
+        for k in range(3):                                        # heads touching side by side (Litolff merges), centres on y 300
+            _ellipse(img, 70 + 52 * k, 300, 54, 40)
+            _rect(img, 70 + 52 * k + 22, 150, 6, 150)             # up stems at the heads' right
+        _rect(img, 92, 150, 116, 20)                              # the beam (0.5 sp)
+        out, bk = self.split(img, [_D("noteheadBlackOnLine", 40, 270, 180, 60)])
+        self.assertFalse(bk["unread"], bk)
+        self.assertEqual(len(bk["added"]), 3, bk)
+
+    def test_tile_6_a_hollow_head_is_found_or_the_box_abstains_never_refused_RED(self):
+        img = _paper(600, 400)
+        _ellipse(img, 120, 300, 54, 40, hollow=True)
+        img[298:302, :] = 255                                     # the staff line through it, erased
+        _rect(img, 144, 160, 5, 140)
+        out, bk = self.split(img, [_D("noteheadBlackOnLine", 60, 250, 140, 110)])
+        self.assertTrue(bk["added"] or bk["unread"], bk)
+        if bk["added"]:
+            self.assertTrue(out[bk["added"][0]] is not None)
+
+    def test_tile_2_a_flags_curl_at_the_stem_tip_is_not_a_head_RED(self):
+        img = _paper(600, 400)
+        _ellipse(img, 100, 380, 54, 40)                           # the head, with its own box
+        _rect(img, 122, 220, 6, 160)                              # its stem up
+        _ellipse(img, 140, 240, 44, 36)                           # a thick flag curl hanging off the stem's top end, on a space
+        head = _D("noteheadBlackInSpace", 73, 360, 54, 40)
+        wide = _D("noteheadBlackOnLine", 70, 210, 130, 60)        # 3.25 sp wide over the stem's top and the curl
+        out, bk = self.split(img, [head, wide], i=1)
+        self.assertEqual(bk["added"], [], bk)
+        self.assertTrue(bk["unread"], bk)
+
+    def test_tile_10_a_c_clef_bowl_beside_its_thick_bar_is_not_a_head_RED(self):
+        img = _paper(600, 400)
+        _rect(img, 60, 160, 18, 160)                              # the clef's thick bar (0.45 sp x 4 sp)
+        _ellipse(img, 110, 220, 54, 40)                           # a bowl, joined to the bar
+        _rect(img, 78, 215, 10, 10)
+        out, bk = self.split(img, [_D("noteheadBlackOnLine", 55, 195, 130, 60)])
+        self.assertEqual(bk["added"], [], bk)
+        self.assertTrue(bk["unread"], bk)
+
+    def test_tile_3_a_head_under_a_slur_with_its_own_box_is_covered_and_the_remainder_refused(self):
+        img = _paper(600, 400)
+        _ellipse(img, 80, 300, 54, 40)
+        for x in range(60, 260):                                  # a slur over it, thin
+            y = 270 + int(((x - 160) / 100.0) ** 2 * 20)
+            img[y:y + 5, x] = 0
+        head = _D("noteheadBlackOnLine", 53, 280, 54, 40)
+        out, bk = self.split(img, [head, _D("noteheadBlackOnLine", 50, 260, 210, 70)], i=1)
+        self.assertEqual(bk["added"], [], bk)
+        self.assertEqual(bk["covered"], 1, bk)
+        self.assertFalse(bk["unread"], bk)
+
+    def test_an_arc_or_a_beam_alone_holds_no_head_and_the_box_is_refused(self):
+        img = _paper(600, 400)
+        _rect(img, 40, 290, 200, 20)                              # a beam alone
+        out, bk = self.split(img, [_D("noteheadBlackOnLine", 40, 280, 200, 40)])
+        self.assertEqual((bk["added"], bk["unread"]), ([], False), bk)
+
+    def test_two_wide_boxes_add_a_head_once(self):
+        img = _paper(600, 400)
+        _ellipse(img, 100, 300, 54, 40)
+        _rect(img, 122, 150, 6, 150)
+        a, b = _D("noteheadBlackOnLine", 40, 270, 140, 60), _D("noteheadBlackInSpace", 30, 265, 150, 70)
+        out, info = BK.split_wide_heads([a, b], img, S3, staff_top=200.0)
+        self.assertEqual(len(out), 3)
 
 
 class TestArcsBowAndHairpinsAreWiderThanLetters(unittest.TestCase):

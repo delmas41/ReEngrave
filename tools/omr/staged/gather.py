@@ -495,7 +495,8 @@ def gather_detections(log: Log, cells: Sequence[Any],
         split_info: Dict[int, Dict[str, Any]] = {}
         if dets and _box_kind.enabled():
             _grid = _cell_grid(c)
-            dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0)
+            dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0,
+                                                          staff_top=_grid[0] if _grid else 0.0)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
