@@ -199,7 +199,7 @@ RULES = [
     R(BEAMS, "duration", "owned_by_another_staff", "C", "the neighbour staff's padded crop boxed this note",
       "a cell is padded 4-6 spaces, so it boxes the next staff's note; the copy is dropped, never a witness. The biggest rule by firing",
       "Sean 2026-10-21 (2.186, \"each cell claims its own\"); page-facts s3", "partly landed 2.186 (owner-first for accidentals); heads and durations retire with 2.205"),
-    R(BEAMS, "duration", "not_a_note_mark,refused_as_a_notehead", "D:passthrough", "box refused as a notehead", "passes on the notehead refusal", "-", "follows the notehead refusals"),
+    R(BEAMS, "duration", "not_a_note_mark,refused_as_a_notehead,wide_box_unread", "D:passthrough", "box refused as a notehead", "passes on the notehead refusal", "-", "follows the notehead refusals"),
     R(BEAMS, "duration", "no_notehead", "D:bookkeeping", "no notehead", "-", "-", "kept"),
 
     R(BEAMS, "tuplet_ratio", "digit,bracket", "A", "a tuplet exists only where its marking is seen", "a printed 3 (or bracket) over a group makes it a tuplet; never from arithmetic", "Sean 2026-10-13 (page-facts s1)", "kept"),
