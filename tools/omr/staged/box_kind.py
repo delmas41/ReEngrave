@@ -27,9 +27,9 @@ import os
 from typing import Optional, Tuple
 
 ENV = "OMR_BOX_KIND_SIZE"
-#: default OFF. Deny-list form: once the default flips to "1", only an explicit off-word disables it.
-DEFAULT = "0"
-OFF_WORDS = ("0", "false", "no", "off", "")
+#: default ON since 2026-10-31 (Sean "Fix them land - we are close"). Deny-list: only an explicit off-word disables it.
+DEFAULT = "1"
+OFF_WORDS = ("0", "false", "no", "off")
 
 #: a head's ink is at most this wide (staff spaces): `stroke_owner.HEAD_MAX_W_SP`, the convention the owner already reads a head's
 #: blob by. Read from there so the two never disagree.
@@ -39,7 +39,7 @@ REASON_WIDE = "wider_than_a_head"
 
 
 def enabled() -> bool:
-    """`OMR_BOX_KIND_SIZE` (ROADMAP 2.245), default OFF."""
+    """`OMR_BOX_KIND_SIZE` (ROADMAP 2.245), default ON since 2026-10-31."""
     return os.environ.get(ENV, DEFAULT).strip().lower() not in OFF_WORDS
 
 

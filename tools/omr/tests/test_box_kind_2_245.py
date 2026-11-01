@@ -51,12 +51,12 @@ class TestThePredicate(unittest.TestCase):
     def test_the_bound_is_the_stroke_owners_own_head_size(self):
         self.assertEqual(BK.HEAD_BOX_MAX_W_SP, SO.HEAD_MAX_W_SP)
 
-    def test_default_off_and_deny_list_words(self):
+    def test_default_on_and_deny_list_words(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(BK.ENV, None)
-            self.assertFalse(BK.enabled())
+            self.assertTrue(BK.enabled())
         for val, want in (("1", True), ("on", True), ("yes", True), ("0", False), ("off", False), ("no", False), ("false", False),
-                          ("", False)):
+                          ("", True)):
             with mock.patch.dict(os.environ, {BK.ENV: val}):
                 self.assertEqual(BK.enabled(), want, val)
 
