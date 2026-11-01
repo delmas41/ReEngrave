@@ -18,6 +18,8 @@ ap.add_argument("wt"); ap.add_argument("outdir"); ap.add_argument("label")
 ap.add_argument("pdf"); ap.add_argument("pages")
 ap.add_argument("--holders", action="store_true")
 ap.add_argument("--cache", default=None)
+ap.add_argument("--through", default="infer")
+ap.add_argument("--teardown", action="store_true", help="after the run: RSS freed by dropping each log cache, then each row store")
 a = ap.parse_args()
 os.chdir(a.wt); sys.path.insert(0, a.wt)
 os.environ["OMR_SURYA_KEEP_ALIVE"] = "0"
@@ -78,13 +80,60 @@ def ge(log, pws, *x, **k):
     if not _seen_pws or _seen_pws[-1] is not pws:
         _seen_pws.append(pws)
         n = len(_seen_pws)
-        PAGES.append({"page_n": n, "t": round(time.time() - T0, 1), "rss_gb": round(rss() / 1e9, 3),
+        PAGES.append({"page_n": n, "t": round(time.time() - T0, 1), "rss_gb": round(rss() / 1e9, 3), "live": live_mem(),
                       "rows": [len(log._obs), len(log._abs), len(log._vrd)]})
         mark(f"gather.page{n}")
     return _ge(log, pws, *x, **k)
 
 
 gather.gather_external = ge
+
+# per-page seconds of every gather_* reader (the page is the one `ge` last marked)
+RT = {}
+
+
+def _rt_wrap(name):
+    f = getattr(gather, name)
+
+    @functools.wraps(f)
+    def w(*x, **k):
+        t = time.perf_counter()
+        try:
+            return f(*x, **k)
+        finally:
+            key = (len(_seen_pws), name)
+            RT[key] = RT.get(key, 0.0) + time.perf_counter() - t
+    setattr(gather, name, w)
+
+
+for _n in [n for n in dir(gather) if n.startswith("gather_") and n != "gather_external" and callable(getattr(gather, n))]:
+    _rt_wrap(_n)
+
+
+def live_mem():
+    """what is LIVE, as against RSS: libmalloc zone bytes in use, and pymalloc's own count (sys._debugmallocstats)."""
+    import ctypes, io, contextlib, re, tempfile
+    class MS(ctypes.Structure):
+        _fields_ = [("blocks_in_use", ctypes.c_uint), ("size_in_use", ctypes.c_size_t),
+                    ("max_size_in_use", ctypes.c_size_t), ("size_allocated", ctypes.c_size_t)]
+    libc = ctypes.CDLL("/usr/lib/libSystem.B.dylib")
+    st = MS(); libc.malloc_zone_statistics(None, ctypes.byref(st))
+    out = {"malloc_in_use_gb": round(st.size_in_use / 1e9, 3), "malloc_allocated_gb": round(st.size_allocated / 1e9, 3)}
+    with tempfile.TemporaryFile("w+") as tf:
+        fd = os.dup(2); os.dup2(tf.fileno(), 2)
+        try:
+            sys._debugmallocstats()
+        finally:
+            os.dup2(fd, 2); os.close(fd)
+        tf.seek(0); txt = tf.read()
+    m = re.search(r"# bytes in allocated blocks\s*=\s*([\d,]+)", txt)
+    m2 = re.search(r"# arenas allocated current\s*=\s*([\d,]+)", txt)
+    if m:
+        out["pymalloc_live_gb"] = round(int(m.group(1).replace(",", "")) / 1e9, 3)
+    if m2:
+        out["pymalloc_arenas_gb"] = round(int(m2.group(1).replace(",", "")) * 256 * 1024 / 1e9, 3)
+    out["rss_gb"] = round(rss() / 1e9, 3)
+    return out
 
 
 def nd_bytes_from(roots, maxdepth=6):
@@ -117,12 +166,45 @@ def nd_bytes_from(roots, maxdepth=6):
     return sum(bufs.values())
 
 
+def deep(o, seen, d=0):
+    if id(o) in seen or d > 8:
+        return 0
+    seen.add(id(o))
+    n = sys.getsizeof(o)
+    if isinstance(o, dict):
+        n += sum(deep(k, seen, d + 1) + deep(v, seen, d + 1) for k, v in o.items())
+    elif isinstance(o, (list, tuple, set, frozenset)):
+        n += sum(deep(v, seen, d + 1) for v in o)
+    elif hasattr(o, "__dataclass_fields__"):
+        n += sum(deep(getattr(o, f), seen, d + 1) for f in o.__dataclass_fields__)
+    elif hasattr(o, "__dict__") and not isinstance(o, type):
+        n += deep(vars(o), seen, d + 1)
+    return n
+
+
+def row_sizes(log, per_q=200):
+    """deep bytes per (store, quantity), from a sample of up to `per_q` rows each, scaled to the count (strings counted per row,
+    so an id shared by many rows is over-counted: an upper bound)."""
+    import random
+    out = {}
+    for store in ("_obs", "_abs", "_vrd"):
+        by_q = {}
+        for r in getattr(log, store).values():
+            by_q.setdefault(r.quantity, []).append(r)
+        for q, rows in by_q.items():
+            smp = rows if len(rows) <= per_q else random.Random(0).sample(rows, per_q)
+            b = sum(deep(r, set()) for r in smp) / len(smp) * len(rows)
+            out[f"{store[1:]}|{q}"] = (len(rows), round(b / 1e9, 3))
+    return dict(sorted(out.items(), key=lambda kv: -kv[1][1])[:40])
+
+
 def holders(prepared, log):
     import numpy as np
     out = {}
-    out["prepared_nd_gb"] = round(nd_bytes_from([prepared]) / 1e9, 3)
+    lazy = hasattr(prepared, "page_indices")
+    out["prepared_nd_gb"] = None if lazy else round(nd_bytes_from([prepared]) / 1e9, 3)
     per_page = []
-    for pws, cells in prepared:
+    for pws, cells in ([] if lazy else prepared):
         per_page.append({"pws_gb": round(nd_bytes_from([vars(pws)], 3) / 1e9, 3),
                          "cells_gb": round(nd_bytes_from([cells], 4) / 1e9, 3),
                          "n_cells": len(cells),
@@ -140,9 +222,40 @@ def holders(prepared, log):
                     continue
                 seen.add(id(b))
                 t = type(o).__name__
+                if b.nbytes < (2 << 20):
+                    pass
+                elif isinstance(o, dict):        # name the dict's owner: an instance's __dict__, a module's globals, or a container
+                    owners = [type(x).__name__ + ("" if not hasattr(x, "__name__") else ":" + str(getattr(x, "__name__", ""))[:40])
+                              for x in gc.get_referrers(o) if x is not by_type and x is not seen][:2]
+                    t = "dict<-" + "|".join(owners)
+                elif isinstance(o, (list, tuple)):
+                    owners = [type(x).__name__ for x in gc.get_referrers(o)][:3]
+                    t = type(o).__name__ + "<-" + "|".join(owners)
                 by_type[t] = by_type.get(t, 0) + b.nbytes
     out["nd_by_holder_type_gb"] = {k: round(v / 1e9, 3) for k, v in sorted(by_type.items(), key=lambda kv: -kv[1])[:25]}
     out["nd_total_gb"] = round(sum(by_type.values()) / 1e9, 3)
+    # who keeps a MeasureCell / PageImage alive after GATHER: three referrer levels, by type and module name
+    chains = []
+    for o in gc.get_objects():
+        tn = type(o).__name__
+        if tn in ("MeasureCell", "PageImage") and len(chains) < 6:
+            lvl = [o]; desc = [tn]
+            for _ in range(4):
+                refs = [r for r in gc.get_referrers(lvl[-1]) if r is not lvl and r is not chains and type(r).__name__ != "frame"]
+                if not refs:
+                    break
+                r = refs[0]
+                d = type(r).__name__
+                if isinstance(r, dict) and "__name__" in r:
+                    d = "module-globals:" + str(r["__name__"])
+                elif hasattr(r, "__qualname__"):
+                    d += ":" + r.__qualname__
+                elif isinstance(r, dict):
+                    d += "{" + ",".join(list(map(str, r.keys()))[:4]) + "}"
+                desc.append(d); lvl.append(r)
+            chains.append(" <- ".join(desc))
+    out["cell_holders"] = chains
+    out["row_gb_by_quantity"] = row_sizes(log)
     out["log_rows"] = [len(log._obs), len(log._abs), len(log._vrd)]
     out["log_caches"] = {s: len(getattr(log, s)) for s in ("_closure_cache", "_qic_cache", "_desc_result_cache", "_desc_index_cache", "_desc_prefix_cache", "_subjects_cache")}
     out["rss_gb"] = round(rss() / 1e9, 3)
@@ -163,6 +276,7 @@ def rso(prepared, *x, **k):
         log = _g(*gx, **gk)
         mark("gather:done")
         EXTRA["after_gather_rss_gb"] = round(rss() / 1e9, 3)
+        EXTRA["after_gather_live"] = live_mem()
         if a.holders:
             EXTRA["holders_after_gather"] = holders(prepared, log)
         return log
@@ -176,9 +290,17 @@ seg_wrap(adjudicate, "run", "adjudicate")
 _adj = adjudicate.run
 
 
+LOGREF = []
+
+
 def adj(log, *x, **k):
     r = _adj(log, *x, **k)
+    if a.teardown:
+        LOGREF.append(log)
+    if a.holders:
+        EXTRA["row_gb_after_adjudicate"] = row_sizes(log)
     EXTRA["after_adjudicate_rss_gb"] = round(rss() / 1e9, 3)
+    EXTRA["after_adjudicate_live"] = live_mem()
     cc = getattr(log, "_closure_cache", {}) or {}
     EXTRA["after_adjudicate_log"] = {
         "rows": [len(log._obs), len(log._abs), len(log._vrd)],
@@ -216,15 +338,37 @@ pathlib.Path.write_text = wtxt
 from tools.omr.staged import __main__ as m
 os.makedirs(a.outdir, exist_ok=True)
 out = f"{a.outdir}/{a.label}.record.json"
-argv = [a.pdf, "--pages", a.pages, "--weights", "auto", "--through", "infer", "--out", out,
-        "--musicxml", f"{a.outdir}/{a.label}.musicxml"]
+argv = [a.pdf, "--pages", a.pages, "--weights", "auto", "--through", a.through, "--out", out]
+if a.through == "infer":
+    argv += ["--musicxml", f"{a.outdir}/{a.label}.musicxml"]
 if a.cache:
     argv += ["--detector-cache", a.cache]
 t0 = time.time()
 rc = m.main(argv)
 mark("end")
+TEARDOWN = []
+if a.teardown and LOGREF:
+    lg = LOGREF[0]; LOGREF.clear()
+    import gc as _gc
+    _gc.collect(); r0 = rss()
+    steps = [("closure_cache", lambda: lg._closure_cache.clear()), ("qic_cache", lambda: lg._qic_cache.clear()),
+             ("desc_caches", lambda: (lg._desc_result_cache.clear(), lg._desc_index_cache.clear(), lg._desc_prefix_cache.clear(),
+                                      lg._subjects_cache.clear())),
+             ("verdict_basis", lambda: [object.__setattr__(v, "basis", ()) for v in lg._vrd.values()]),
+             ("verdict_considered_used", lambda: [(object.__setattr__(v, "considered", ()), object.__setattr__(v, "used", ()),
+                                                   object.__setattr__(v, "correlated", ())) for v in lg._vrd.values()]),
+             ("verdicts", lambda: lg._vrd.clear()), ("by_subject", lambda: lg._by_subject.clear()),
+             ("abstentions", lambda: lg._abs.clear()), ("observations", lambda: lg._obs.clear())]
+    for name, f in steps:
+        f(); _gc.collect(); r1 = rss()
+        TEARDOWN.append({"dropped": name, "freed_gb": round((r0 - r1) / 1e9, 3), "rss_gb": round(r1 / 1e9, 3)}); r0 = r1
+    del lg; _gc.collect()
+    TEARDOWN.append({"dropped": "log", "rss_gb": round(rss() / 1e9, 3)})
 import resource
-res = {"label": a.label, "pages": a.pages, "rc": rc, "wall_s": round(time.time() - t0, 1),
+RTP = {}
+for (pg, name), v in RT.items():
+    RTP.setdefault(name, {})[pg] = round(v, 1)
+res = {"teardown": TEARDOWN, "reader_s_by_page": dict(sorted(RTP.items(), key=lambda kv: -sum(kv[1].values()))), "label": a.label, "pages": a.pages, "rc": rc, "wall_s": round(time.time() - t0, 1),
        "out_bytes": os.path.getsize(out) if os.path.exists(out) else None,
        "maxrss_gb": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e9, 3),
        "segments": [{"seg": s, "peak_gb": round(PEAK.get(s, 0) / 1e9, 3), "end_gb": round(END.get(s, 0) / 1e9, 3)} for s in ORDER],
