@@ -1,0 +1,107 @@
+{
+ "flags": [
+  [
+   "OMR_BOX_KIND_SIZE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    8
+   ],
+   "counts": {
+    "note": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 0,
+     "lost": 4,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    },
+    "words": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    1396,
+    1395
+   ],
+   "paired": 1395,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    479,
+    482
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 173,
+    "matched": {
+     "off": {
+      "key": 350
+     },
+     "on": {
+      "key": 350
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    5.2,
+    5.2
+   ],
+   "unjudged": {
+    "n": 6,
+    "judged": 0,
+    "no_place": 1,
+    "by_kind": {
+     "note": 1,
+     "tie": 4,
+     "blue": 1
+    },
+    "places": [
+     "litolff p2 2/0/7/9  tie lost start",
+     "litolff p2 2/0/7/10  blue lost guessed",
+     "litolff p2 2/0/7/10  note lost half",
+     "litolff p2 2/0/7/10  tie lost start",
+     "litolff p2 2/0/7/10  tie lost stop",
+     "litolff p2 2/0/7/11  tie lost stop"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_BOX_KIND_SIZE: read in staged/adjudicators/notehead_precision.py, staged/adjudicators/rhythm.py, staged/arcs_system.py, staged/box_kind.py ... -> GATHER",
+  "NOT THE FROZEN SAMPLE: out/l245-sample-p2p8.json (a development control)",
+  "cells LOADED from master cm-54ccb4729528 (litolff) for both arms"
+ ],
+ "tiles": {
+  "n": 6,
+  "cases": 3,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 511.6
+}
