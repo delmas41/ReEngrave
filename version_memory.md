@@ -26,6 +26,9 @@ measurement; this file is the WHEN and WHAT of each commit.
 - one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
 - A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
 
+## 2026-10-31 night -- 2.245 LANDED ON: wrong-kind boxes (OMR_BOX_KIND_SIZE)
+STAGED GATHER/ADJUDICATE/EXPORT (`box_kind.read_heads`, `split_wide_heads` in `gather_detections`, the bow test in `arcs_system.gather_system_arcs`, the letter test in `gather_wedge_boxes`, `narrow_rest`, EXPORT `_place_notes` unread marking), deny-list default ON (Sean "Fix them land - we are close"; r3 tiles 10/12, both fixed in r4). Judged right->wrong 0. Last landing before the 20261031-night overnight.
+
 ## 2026-10-31 night -- 2.248 PARKED (lane-2.248-ink-extent 868ee790b, OMR_HEAD_INK_EXTENT OFF)
 Built `head_extent.py` (head extent grown from the box seed by re-feeding 2.220's trim; ink-centre position). Sean: grown boxes are a good size; his "box too small" tiles were cell-edge twins (a tile-drawing fault). r1 moved FAR heads by ink centre (5/7 right) against the 10-27 ledger-only ruling -> CLAUDE.md §6 "Name the rule that owns the value". r2 moves only in-staff heads and strips ledger stubs; not measured (stopped for the overnight). Found: the far-head ledger count abstains on all 7 tiles and the pitch falls back plain to the box centre -- next item: write it blue with both candidates. Full write-up + resume steps: benchmarks/ink-extent-2026-10/FINDINGS.md.
 
