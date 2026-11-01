@@ -48,3 +48,32 @@ The lane's 2-page subset run (`LANE_REPORT_SAMPLE`) overwrote the shared Brahms 
 
 ## Tiles
 out/print/2.245-tiles (key outside tiles/): the four places, four wide head boxes the rule refuses, two straight "ties" (hairpin legs), two controls. Sean's answers 2026-10-31 (answers.json): the four places as traced; wide head boxes 4/4 not one head (2 beam, 8 arc, 12 arc) but 4 holds an eighth + a natural and 10 three eighths -- refusing loses real notes; straight 'ties' 3/3 hairpin legs; control 3 an eighth; control 9 (2.54 sp, left alone) part of a C clef.
+
+## Round 2 (2026-10-31, lane-2.245-wrong-kind e4e1646f2, flag OMR_BOX_KIND_SIZE OFF; written by the manager from the lane report)
+### Causes and process lesson
+- Round 1's cause holds and reaches further: a box's class is taken as its kind; nothing tests the box's own size or its ink's shape against that kind.
+- Round-1 tile 9 (Litolff p8 glyph/8/0/3/4/4) is a mid-system C-clef CHANGE (cell 4) the detector boxed as three heads and a whole rest, no clef box. The 2.239 r3 clef claim grows only from a clef box and the claimed register covers only the system-start clef (cell 0): no claim holds that ink -- the claim never existed; not the notehead reader ignoring the order. Fix (not built): a mid-system clef-change reader.
+- Letters as hairpins: `gather_wedge_boxes` names ink a hairpin with no size test, and runs BEFORE `gather_direction_words` / `gather_page_claims`, so it cannot see the word claim (contradicts plan §9-10 "words claim first").
+- Lesson: "the claim order was not honoured" and "the right claim never existed" look the same on a tile -- check the record for a claim row on that ink before changing the order.
+### Built (all behind OMR_BOX_KIND_SIZE, OFF)
+1. A wide head box (>= 3 sp) is READ, not refused flat: `box_kind.split_wide_heads` opens the staff-erased ink with a 0.7 sp kernel (removes stems, natural strokes, arcs, ~0.5 sp beams); each head-sized blob left (0.8-2.0 x 0.65-1.6 sp) no other head box stands on becomes its own appended box (detector indices unchanged; added once under two wide boxes); ADJUDICATE refuses the wide box as the remainder (`wider_than_a_head`), or abstains `wide_box_unread` -- never kept as one head.
+2. Bow test in the arc READER: `arcs_system.gather_system_arcs` refuses a joined trace >= 3 sp that bows < 0.15 sp (`trace_does_not_bow`); not filed, erased or claimed as an arc.
+3. `gather_wedge_boxes` refuses a CV hairpin narrower than 1.6 sp (`narrower_than_a_hairpin`): on sample crops 9 of 9 rows under 1.5 sp are letters (L 0.83-1.46, B 0.81-0.97 sp); the next row is 2.02 sp (an accent). The word-claim test is NOT built (5 of Brahms' 11 inside-a-word rows are not narrow; word boxes over-reach onto real hairpins); source fix named: run the hairpin reader after the word claims.
+4. `narrow_rest`: an accidental box > 1.5 x its SMuFL glyph no longer blocks the eighth-rest reader. Case 4 still not read: two ledgerLine boxes on staff lines (Litolff p4 cell 4/0/8/5, glyphs 14, 16) also block it -> next: "a ledger line inside the staff is not a ledger".
+- Tests: test_box_kind_2_245.py, 21.
+### Measures (lane_report --from gather --cell-map master, frozen sample; out/lane-report/2.245-r2/)
+- Litolff: notes +2 -3, flags +1 -1, beams +1 ~1, pitches ~1, blue +2 -16, wedges -2, words +1; red bars unchanged.
+- Brahms: no note change; wedges -3, words +1 -5, dynamics +2 -2; red bars 164 -> 164.
+- Judged right->wrong 0, unwritten->wrong 0. p9 9/0/3/1 now written as three eighths; p4 4/0/0/11 ('ff') no longer a red bar.
+- Why EXPORT redded that bar in round 1 (named, not fixed): refusing the false ff quarter left voice 1 with only the other false quarter at onset 1; the bar no longer adds up, EXPORT holds out the whole bar (`_marked_empty_measure`) and drops voice 2's real halves; `wider_than_a_head` is not in `_NOT_A_GAP_REASONS`.
+- Unexplained losses: p2 2/0/7/10 (a half), p4 4/1/3/3 (a quarter; the split may sit on a natural's body).
+- Probably OCR noise (abandoned Surya crops in the OFF gathers only), not proven: Litolff p6 staff-0 blue -13, Brahms words/dynamics.
+- Litolff ON counts: 39 wide boxes; 8 heads split off; 22 unread (mostly thick beams); 1 trace refused; 3 letters refused.
+- Fast tier 9,537 passed, 1 failed (`staged.wiring`: an unread detail key) -> fixed (bow moved into `note`), affected files 67 passed; staged.check 200 on the branch (not compared to main).
+### Hand-offs
+- 2.223: `arc_kind` (ownership.py) still decides tie from the detector box when its system arc is refused -- must read `trace_does_not_bow`.
+### Tiles
+out/print/2.245-r2-tiles: 4 split-off heads (incl. r1 tiles 4 and 10's places), 2 refused remainders, 1 unread wide box (a beam), 2 non-bowing traces (Brahms hairpin legs), 2 letters no longer hairpins, r1 tile 9's place.
+
+### Sean's r2 answers (2026-10-31)
+Bow test 2/2 (7, 11 hairpin parts), letter test 2/2 (4 c of cresc., 9 e of legato), unread wide box 1 a beam, 12 a C clef. Head split right 2/4 (5, 8 eighths), wrong 2/4 (2 stem + flag, 10 a C-clef piece). Refused remainders hold real notes: 3 a head + slur, 6 a half note + arc tip (the opening erases a hollow head's ring).

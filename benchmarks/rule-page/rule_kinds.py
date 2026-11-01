@@ -102,6 +102,7 @@ RULES = [
     R(HEADS, "glyph_owner", "hairpin_separates", "A", "a hairpin sits under its staff", "a note between a staff and the hairpin beneath it belongs to that staff", "page-facts s1", "kept"),
     R(HEADS, "glyph_owner", "ladder,range_veto", "A", "ledger completeness, then the instrument's range", "of two staves contesting a note, the one with the complete ledger ladder, then the one whose written range holds it", "page-facts s3", "kept"),
     R(HEADS, "glyph_owner", "distance", "D:cutoff", "nearest staff", "the last resort: the nearer staff wins (about 94% of contests resolve here)", "page-facts s3 (nearness is only a hint)", "open: the contest exists because cells are padded; ownership by strokes (2.205) should shrink it"),
+    R(HEADS, "glyph_owner", "page_owner,page_owner_guessed", "A", "the page owner names the staff", "the one owner GATHER settled for the page mark both padded cells' copies are views of (staff lines, ledger lines, stem; never nearness); GUESSED is written blue with both staves (flag OMR_PAGE_OWNER_READ, default OFF)", "page-facts s3 (ledger lines name the owner); ROADMAP 2.240 step 3", "research"),
     R(HEADS, "glyph_owner", "tied,no_evidence", "D:honesty", "staves tie / no evidence", "two staves tie on every witness: abstain", RULE8, "kept"),
 
     R(HEADS, "notehead_position", "ledger_position", "ok", "far head placed by its ledgers", "the head's step is counted off its printed ledger rungs", S_LEDGER, "-"),
@@ -263,6 +264,7 @@ RULES = [
     R(ARCS, "arc_kind", "tie,slur", "ok", "tie or slur", "of two stacked arcs the nearer the heads is the tie; a tie's heads are at one position", "page-facts s1 (2.75)", "-"),
     R(ARCS, "arc_kind", "same_pitch_accidental_unread,stack_slur_over_two_same_pitch_notes", "A", "same pitch needs the same accidental", "a tie needs two same-pitch heads, so an unread accidental stops the call", "Sean 2026-10-01 (tie convention)", "kept"),
     R(ARCS, "arc_kind", "no_arc_box,no_evidence", "D:honesty", "no arc box / evidence", "-", RULE8, "kept"),
+    R(ARCS, "arc_owner", "page_span_owner", "A", "an arc takes its notes' staff", "an arc read page-wide whose end notes' owner is decided belongs to that staff (flag OMR_PAGE_OWNER_READ, default OFF)", "page-facts s1 (an arc is over its notes); ROADMAP 2.240 step 3", "research"),
     R(ARCS, "arc_owner", "hugs_noteheads,no_better_staff,no_rival_staff,ends_on_noteheads", "A", "an arc belongs to the staff whose heads it hugs", "an arc is over its notes, and the staff it hugs owns it", "page-facts s1; ROADMAP arc attribution", "kept"),
     R(ARCS, "arc_owner", "no_page_frame,no_evidence", "D:honesty", "-", "-", RULE8, "kept"),
     R(ARCS, "tie_pair", "paired,paired_by_system_arc,paired_by_page_binding", "ok", "tie joins two heads", "found by the heads just outside its two ends", "Sean 2026-10-01 (\"next to each other regardless of barlines and the same pitch\", 2.54)", "-"),

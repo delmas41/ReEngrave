@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-10-31 -- 2.240 step 3: the later stages read the page owner (lane-2.240-s3-export, `OMR_PAGE_OWNER_READ` OFF, not merged)
+- Hotfix (on main f7422b035): `ABSTAIN.OWNER_BOX_NOT_ONE_HEAD` -- main's gather with OMR_PAGE_OWNER ON raised on the first >= 3 sp head box.
+- Tile 8's three causes fixed in GATHER rows: the ledger gap / hidden-ledger looks honour the owner's `not_ledger` filter (the slur was re-counted);
+  a flat traced 'arc' (a ledger boxed as a tie) is not `arc_ink`; a page whose far heads are held files its owners after their ledger readings.
+- `glyph_owner` / `arc_owner` read the page owner / page span owner under `OMR_PAGE_OWNER_READ` (decided plain, GUESSED blue, abstain -> old tiers;
+  refused members' witnesses dropped). Lane report (frozen sample, replay): judged right->wrong 0 both plates; L notes -1 slurs/ties moved, B notes -6.
+- Tiles: out/print/2.240-s4-tiles (file changes + tile 8), out/print/2.240-s4-rules-tiles (distance / range_veto vs the owner). FINDINGS step 3.
+
 ## 2026-10-31 -- 2.223 fix after Sean's tiles (11/12): a hairpin inside an UNREAD word candidate abstains
 - Tile 11 (Litolff p16 'Bassi'): the words reader saw the candidate but OCR returned no reading, so no word claim existed; the binder now reads `direction_word` `no_reading` boxes as word ink (same width limit). one_test: Litolff wedges -2 -> -3, everything else as m3; judged right->wrong 0; fast tier 9,549. Flags still OFF.
 
@@ -17,6 +25,9 @@ measurement; this file is the WHEN and WHAT of each commit.
 - Cause: the old anchor bound to refused heads / other staves' copies (22 of 102 ends on 5 Brahms pages) and to the nearest head of any bar; 8 of 8 narrow CV "hairpins" were letters.
 - one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
 - A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
+
+## 2026-10-31 -- 2.240 step 3 LANDED ON: the later stages read the page owner (OMR_PAGE_OWNER_READ)
+STAGED GATHER (gap look honours the ledger filter; arc ink must bow; owners filed after their page's ledger readings) + ADJUDICATE (`glyph_owner`, `arc_owner` read `Q.PAGE_MARK_OWNER` first) + EXPORT (GUESSED owner written blue). Deny-list default ON (Sean "we can land"). Fast tier 9,626; real 2-page gathers on Litolff p4,6 and Brahms p5,12 exit 0. Also today: hotfix f7422b035 (ABSTAIN owner_box_not_one_head -- main's gather raised with OMR_PAGE_OWNER ON; caught by the step-3 lane), and a landing now includes one real 2-page gather besides the fast tier.
 
 ## 2026-10-31 -- 2.240 steps 1-2 LANDED ON: the page is the ledger (page-mark ids + one owner per page mark)
 STAGED GATHER (`page_marks.py`, `page_owner.py`, the ledger filter in `gather._file_owner_ledger_readings`), `OMR_PAGE_MARKS` + `OMR_PAGE_OWNER` deny-list default ON (Sean "Land now and fix in step 3"). File unchanged; judged right->wrong 0; fast tier 9,604. Rows added to the second flags table. Disk cleanup with Sean's approval on his phone: 6 -> 164 GB free (session scratch, finished sessions' scratch, 10 merged lane worktrees).

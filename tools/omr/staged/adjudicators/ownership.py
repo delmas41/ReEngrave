@@ -550,6 +550,44 @@ def _holds(ev: Evidence, staff: R.Subject, box, cy: float, own: bool, band):
     return None, "page_wide_edge", used, {}
 
 
+def _page_owner_ruling(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.240 step 3: this glyph's page mark's owner (`Q.PAGE_MARK` -> its first member's `Q.PAGE_MARK_OWNER`), with every member
+    box ADJUDICATE refused as not a head taken out of its witnesses (`page_owner.consumer_owner`), or None (flag off, no page mark, no
+    owner row)."""
+    from .. import page_owner as _po
+    if not _po.read_enabled():
+        return None
+    pm = ev.rows(Q.PAGE_MARK)
+    if not pm:
+        return None
+    pdet = dict(pm[-1].detail or {})
+    members = list(pdet.get("members") or [])
+    if not members:
+        return None
+    first = R.Subject.from_key(members[0])
+    rows = ev.rows(Q.PAGE_MARK_OWNER, subject=first)
+    if rows:
+        row = rows[-1]
+        det = dict(row.detail or {})
+        status, owner, reason, used = det.get("status") or "decided", row.value, det.get("reason") or "", (pm[-1].id, row.id)
+    else:
+        refs = ev.refusals(Q.PAGE_MARK_OWNER, subject=first)
+        if not refs:
+            return None
+        det = dict(refs[-1].detail or {})
+        status, owner, reason, used = "abstain", None, refs[-1].reason, (pm[-1].id,)
+    det.setdefault("members", members)
+    refused = []
+    if det.get("family") == "head":
+        for m in members:
+            v = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=R.Subject.from_key(m))
+            if v is not None and v.outcome is Outcome.DECIDED and v.value is True and v.reason not in _po.COPY_CHOICE_REFUSALS:
+                refused.append(m)
+    r = _po.consumer_owner(status, owner, reason, det, refused)
+    r["used"], r["page_mark"], r["refused_members"] = used, pdet.get("page_mark", pm[-1].value), refused
+    return r
+
+
 def _owner_from_staves(ev: Evidence):
     """Ruling for a head lying in a known staff's band, or `None` where it
     does not (the gap, an edge the page-wide lines cannot settle, two staves
@@ -631,7 +669,8 @@ def _owner_from_staves(ev: Evidence):
                    Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.LEDGER_RUNG_INK, Q.LEDGER_OWNER_DENSITY,
                    Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT, Q.STAFF_SKEW,
-                   Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
+                   Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER,
+                   Q.PAGE_MARK, Q.PAGE_MARK_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.GLYPH,
     # ⚠️ ROADMAP 2.56b adds `Q.FAR_HEAD_OWNER_LEDGER`: the note-first ledger
     # look toward each candidate staff, read AHEAD of distance and of the older
@@ -641,13 +680,14 @@ def _owner_from_staves(ev: Evidence):
            Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER, Q.GLYPH_BOX,
            Q.WEDGE_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.LEDGER_RUNG_INK,
            Q.LEDGER_OWNER_DENSITY, Q.FAR_HEAD_OWNER_LEDGER, Q.STAFF_EXTENT,
-           Q.STAFF_SKEW, Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER),
+           Q.STAFF_SKEW, Q.HEAD_STEM_REACH, Q.STROKE, Q.STROKE_OWNER,
+           Q.PAGE_MARK, Q.PAGE_MARK_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("human_owner", "staff_band", "staff_band_no_box",
              "ledger_note_first", "ledger_owner_density", "ledger_witnesses_disagree",
              "stem_toward_staff", "stem_disagrees", "ledger_over_stem",
              "ledger_direction", "ledger_refuted", "hairpin_separates",
              "far_no_rungs", "ledger_all_refuted", "ladder", "range_veto",
-             "distance", "no_contest", "no_evidence", "tied"),
+             "distance", "no_contest", "no_evidence", "tied", "page_owner", "page_owner_guessed"),
     mode=Mode.ADDITIVE,
     # ⚠️ The domain is the CONTESTED population. A glyph nobody disputes has
     # nothing to arbitrate, and a verdict per detection would bury 4,521 real
@@ -701,6 +741,19 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # from, and there is nothing to arbitrate.
         own = ev.subject.at(Kind.STAFF)
         return Ruling(value=own.to_key(), reason="no_contest")
+
+    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the page owner, AHEAD of every per-copy tier. GATHER settled
+    # "whose mark is this?" ONCE, of the page mark both padded cells' copies are views of (staff lines, ledger lines, stem -- never
+    # nearness); this CONNECTS that answer (rule 6). Decided -> it; GUESSED -> it, written blue with both staves; abstain -> the old
+    # tiers below decide as before (counted by `page_owner compare`).
+    po = _page_owner_ruling(ev)
+    if po is not None and po["status"] in ("decided", "guessed"):
+        det = {"page_owner": po["reason"], "page_mark": po.get("page_mark"), "page_owner_candidates": po["candidates"]}
+        if po["status"] == "decided":
+            return Ruling(value=po["owner"], reason="page_owner", used=po["used"], detail=det)
+        return Ruling(value=po["owner"], reason="page_owner_guessed", used=po["used"], detail=det,
+                      candidates=tuple(R.Candidate(value=k, support=(1.0 if k == po["owner"] else 0.5))
+                                       for k in po["candidates"]))
 
     # ⚠️⚠️ lane-owner-from-staves (Sean, 2026-10-06), AHEAD OF EVERY LEDGER
     # TIER. A head ON or BETWEEN a known staff's five lines belongs to that
@@ -1776,7 +1829,7 @@ def _range_veto(ev: Evidence, cand_key: str, band_row):
                 (instrument.id, clef.id, band_row.id))
 @decision(
     quantity=Q.ARC_OWNER,
-    composed_from=(Q.ARC_BOX, Q.GLYPH_BOX, Q.STAFF_SPACING),
+    composed_from=(Q.ARC_BOX, Q.GLYPH_BOX, Q.STAFF_SPACING, Q.PAGE_SPAN),
     scope=Kind.GLYPH,
     # ⚠️ `Q.NOTEHEAD_STAFF_POSITION` is NOT declared: this decision needs each
     # head's page BOX, not its step, and a declaration nothing reads is inert
@@ -1784,7 +1837,7 @@ def _range_veto(ev: Evidence, cand_key: str, band_row):
     # queried, so it would record nothing and could not be told from one that
     # is read and always present. Ten decisions in this pipeline carry such a
     # declaration; this one does not add an eleventh.
-    wants=(Q.ARC_BOX, Q.GLYPH_OWNER, Q.GLYPH_BOX, Q.STAFF_SPACING),
+    wants=(Q.ARC_BOX, Q.GLYPH_OWNER, Q.GLYPH_BOX, Q.STAFF_SPACING, Q.PAGE_SPAN),
     # ⚠️ THE DOMAIN IS THE ARCS, NOT EVERY GLYPH ON THE PAGE. Until the arc
     # rows existed there was nothing to name here, so this stub abstained once
     # per DETECTION -- 2,728 rows on one page, burying its own 199 real
@@ -1792,7 +1845,7 @@ def _range_veto(ev: Evidence, cand_key: str, band_row):
     # mean "I could not read THIS arc".
     subjects_from=Q.ARC_BOX,
     reasons=("hugs_noteheads", "no_better_staff", "no_page_frame",
-             "no_rival_staff", "no_evidence", "ends_on_noteheads"),
+             "no_rival_staff", "no_evidence", "ends_on_noteheads", "page_span_owner"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_owner(ev: Evidence) -> Ruling:
@@ -1841,6 +1894,15 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
     if not arcs:
         return Ruling.abstain("no_evidence")
     arc = arcs[0]
+    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
+    # its END notes are owned by (GATHER, `page_owner.arc_owner`; Sean's s3 tiles 7/7 arcs right). Decided -> that staff, the same for
+    # every box the span holds; GUESSED (one end) or abstain -> the rule below decides, as before.
+    span = _page_span_owner(ev)
+    if span is not None:
+        return Ruling(value=span["owner"], reason="page_span_owner", used=(arc.id, span["row"]),
+                      detail={"page_span": span["subject"], "page_span_reason": span["reason"],
+                              **({"moved_from": ev.subject.at(Kind.STAFF).to_key()}
+                                 if span["owner"] != ev.subject.at(Kind.STAFF).to_key() else {})})
     arc_box = arc.detail.get("bbox_page_px")
     own = ev.subject.at(Kind.STAFF).to_key()
     if not arc_box or len(arc_box) != 4:
@@ -1938,6 +2000,24 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
                                               "reason": ruling.reason},
                               **({"moved_from": own} if ends != own else {})})
     return ruling
+
+
+def _page_span_owner(ev: Evidence) -> Optional[Dict[str, Any]]:
+    """The DECIDED owner of the page-wide arc this arc box is a piece of, or None (flag off, no span, owner not decided)."""
+    from .. import page_owner as _po
+    if not _po.read_enabled():
+        return None
+    me = ev.subject.to_key()
+    page = R.page(ev.subject.page)
+    for row in ev.rows(Q.PAGE_SPAN, scope=Scope.SELF_AND_DESCENDANTS, subject=page):
+        d = row.detail or {}
+        if row.value != "arc" or me not in (d.get("pieces") or ()):
+            continue
+        ow = d.get("owner") or {}
+        if ow.get("status") == "decided" and ow.get("owner"):
+            return {"owner": ow["owner"], "reason": ow.get("reason"), "row": row.id, "subject": row.subject.to_key()}
+        return None
+    return None
 
 
 def _comparative_arc_ruling(arc, own, own_gap, rivals, detail, margin, near):

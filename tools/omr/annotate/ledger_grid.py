@@ -3798,6 +3798,15 @@ def ledger_candidates_not_text(
     return kept, rejected
 
 
+def _rung_ok_with(rung_ok, not_ledger):
+    """`rung_ok` AND not a row the owner's test says is no ledger (ROADMAP 2.240 step 3); a None leaves the other as it was."""
+    if not_ledger is None:
+        return rung_ok
+    if rung_ok is None:
+        return lambda y: not not_ledger(float(y))
+    return lambda y: rung_ok(y) and not not_ledger(float(y))
+
+
 def derive_note_first_step(
     img_gray: "np.ndarray", head_box: "tuple[float, float, float, float]",
     edge_y: float, sign: float, spacing: float, rungs_y: "list[float]",
@@ -3808,8 +3817,14 @@ def derive_note_first_step(
     flank_refine_bounded: bool = False,
     look_where_it_must_be: bool = False,
     artic_boxes: "list | None" = None,
+    not_ledger: "Callable[[float], object] | None" = None,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment).
+
+    `not_ledger` (ROADMAP 2.240 step 3; None = bit-identical): `not_ledger(y) -> None | word`, the owner's test that a row is NOT a
+    ledger of this staff (another staff's line, an arc's traced ink). The caller already filters the walk's rungs with it; here it
+    also guards the two places that LOOK at the raster for a rung the walk did not find (the gap look in `count_ledgers_between`
+    and the hidden-ledger look) -- tile 8: the gap look found the slur the filter had dropped and counted it as ledger 1.
 
     `look_where_it_must_be` (lane-farhead-2-9, Sean 2026-10-07; False = bit-identical): (1) where no note line was
     found and the staff edge and the first found rung beyond the head leave a gap with room for exactly one ledger the
@@ -3833,6 +3848,8 @@ def derive_note_first_step(
         if hid is not None:
             looked = ledger_jut_on_row(img_gray, head_box, hid["y"], spacing)
             looked["expected"] = hid
+            if looked["ok"] and not_ledger is not None and not_ledger(float(looked["y"])):
+                looked = dict(looked, ok=False, not_ledger=not_ledger(float(looked["y"])))
             if looked["ok"]:
                 ln = dict(ok=True, kind="space", y=float(looked["y"]), how="hidden_ledger_jut_looked_for")
     if not ln["ok"]:
@@ -3860,8 +3877,9 @@ def derive_note_first_step(
         (head_box[0], head_box[2]),
         is_text=((lambda y: not ledger_candidates_not_text(
             img_gray, [y], cx, spacing, text_boxes)[0]) if ledger_not_text else None),
-        rung_ok=((lambda y: not rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box))
-                 if (look_where_it_must_be and artic_boxes) else None))
+        rung_ok=_rung_ok_with(
+            ((lambda y: not rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box))
+             if (look_where_it_must_be and artic_boxes) else None), not_ledger))
     base = dict(hidden_ledger_look=looked, refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 edge_vs_through=ln.get("edge_vs_through"),
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])

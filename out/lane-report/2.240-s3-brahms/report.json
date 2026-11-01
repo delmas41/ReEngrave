@@ -1,0 +1,288 @@
+{
+ "flags": [
+  [
+   "OMR_PAGE_OWNER_READ",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 0,
+     "lost": 6,
+     "changed": 0
+    },
+    "flag": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "dot": {
+     "gained": 0,
+     "lost": 4,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 41,
+     "lost": 2,
+     "changed": 0
+    },
+    "rest": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "slur": {
+     "gained": 60,
+     "lost": 29,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 2
+    },
+    "words": {
+     "gained": 2,
+     "lost": 3,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6638,
+    6634
+   ],
+   "paired": 6632,
+   "red_bars": [
+    164,
+    162
+   ],
+   "notes_not_written": [
+    3094,
+    3100
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 254,
+    "matched": {
+     "off": {
+      "key": 369
+     },
+     "on": {
+      "key": 369
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": [
+     {
+      "item": "2.220-plan",
+      "tile": "3",
+      "subject": "glyph/5/1/12/1/7",
+      "answer": "flag (not a note)"
+     }
+    ]
+   },
+   "seconds": [
+    982.3,
+    1509.1
+   ],
+   "unjudged": {
+    "n": 146,
+    "judged": 2,
+    "no_place": 5,
+    "by_kind": {
+     "note": 5,
+     "flag": 1,
+     "dot": 4,
+     "tie": 43,
+     "rest": 2,
+     "slur": 89,
+     "value": 2
+    },
+    "places": [
+     "brahms p0 0/0/2/5  slur lost start",
+     "brahms p0 0/0/2/5  slur lost stop",
+     "brahms p0 0/0/2/6  slur gained start",
+     "brahms p0 0/0/2/6  slur gained stop",
+     "brahms p0 0/0/3/5  slur gained start",
+     "brahms p0 0/0/3/5  slur gained stop",
+     "brahms p0 0/0/5/5  tie gained start",
+     "brahms p0 0/0/5/6  tie gained stop",
+     "brahms p0 0/0/9/0  slur lost start",
+     "brahms p0 0/0/9/1  slur gained start",
+     "brahms p0 0/0/10/0  slur lost start",
+     "brahms p0 0/0/10/0  slur lost stop",
+     "brahms p0 0/0/11/1  slur lost start",
+     "brahms p0 0/0/11/1  slur lost stop",
+     "brahms p0 0/0/11/4  slur lost start",
+     "brahms p0 0/0/11/4  slur lost stop",
+     "brahms p0 0/0/12/1  slur gained start",
+     "brahms p0 0/0/12/1  slur gained stop",
+     "brahms p0 0/0/12/4  slur gained start",
+     "brahms p0 0/0/12/5  slur gained stop",
+     "brahms p4 4/1/3/0  slur gained start",
+     "brahms p4 4/1/3/1  slur lost start",
+     "brahms p4 4/1/3/1  slur gained stop",
+     "brahms p4 4/1/3/2  slur lost stop",
+     "brahms p5 5/0/2/7  slur lost start",
+     "brahms p5 5/0/2/7  slur lost stop",
+     "brahms p5 5/0/3/7  slur gained start",
+     "brahms p5 5/0/3/7  slur gained stop",
+     "brahms p5 5/0/5/6  tie gained start",
+     "brahms p5 5/0/5/7  tie gained stop",
+     "brahms p5 5/0/8/1  slur lost start",
+     "brahms p5 5/0/8/1  slur lost stop",
+     "brahms p5 5/0/10/1  tie gained start",
+     "brahms p5 5/0/10/2  tie gained stop",
+     "brahms p5 5/0/11/4  slur gained start",
+     "brahms p5 5/0/11/4  slur gained stop",
+     "brahms p5 5/0/11/5  slur gained start",
+     "brahms p5 5/0/11/6  slur gained stop",
+     "brahms p5 5/0/12/4  slur lost start",
+     "brahms p5 5/0/12/4  slur lost stop",
+     "brahms p5 5/0/13/4  slur gained start",
+     "brahms p5 5/0/13/4  slur gained stop",
+     "brahms p5 5/1/1/3  tie gained start",
+     "brahms p5 5/1/1/4  tie gained stop",
+     "brahms p5 5/1/9/8  tie gained start",
+     "brahms p5 5/1/9/9  tie gained stop",
+     "brahms p5 5/1/12/3  flag lost eighth",
+     "brahms p5 5/1/12/3  note lost eighth",
+     "brahms p5 5/1/12/3  rest gained eighth",
+     "brahms p5 5/1/12/3  rest gained eighth",
+     "brahms p8 8/0/1/1  slur gained stop",
+     "brahms p8 8/0/1/4  slur gained start",
+     "brahms p8 8/0/1/4  slur gained stop",
+     "brahms p8 8/1/2/0  slur gained start",
+     "brahms p8 8/1/2/0  slur gained stop",
+     "brahms p8 8/1/2/2  slur gained start",
+     "brahms p8 8/1/2/2  slur gained stop",
+     "brahms p8 8/1/5/2  slur gained start",
+     "brahms p8 8/1/5/2  slur gained stop",
+     "brahms p8 8/1/8/4  tie gained start",
+     "brahms p8 8/1/8/5  tie gained stop",
+     "brahms p12 12/0/1/8  tie gained start",
+     "brahms p12 12/0/1/9  tie gained stop",
+     "brahms p12 12/0/5/4  tie gained start",
+     "brahms p12 12/0/5/5  tie gained stop",
+     "brahms p12 12/0/6/6  dot lost .",
+     "brahms p12 12/0/6/6  note lost quarter",
+     "brahms p12 12/0/6/6  tie lost start",
+     "brahms p12 12/0/6/6  value changed ? (was whole)",
+     "brahms p12 12/0/6/7  dot lost .",
+     "brahms p12 12/0/6/7  dot lost .",
+     "brahms p12 12/0/6/7  note lost quarter",
+     "brahms p12 12/0/6/7  note lost quarter",
+     "brahms p12 12/0/6/7  tie lost stop",
+     "brahms p12 12/0/6/9  dot lost .",
+     "brahms p12 12/0/6/9  note lost quarter",
+     "brahms p12 12/0/6/9  value changed ? (was whole)",
+     "brahms p12 12/1/6/2  tie gained start",
+     "brahms p12 12/1/6/3  tie gained stop",
+     "brahms p12 12/1/6/8  tie gained start",
+     "brahms p12 12/1/6/9  tie gained stop",
+     "brahms p12 12/1/9/7  slur gained start",
+     "brahms p12 12/1/9/7  slur gained stop",
+     "brahms p12 12/1/12/4  slur gained start",
+     "brahms p12 12/1/12/4  slur gained stop",
+     "brahms p12 12/1/13/4  slur gained start",
+     "brahms p12 12/1/13/4  slur gained stop",
+     "brahms p14 14/0/11/8  slur lost start",
+     "brahms p14 14/0/11/8  slur lost stop",
+     "brahms p14 14/1/4/4  tie gained start",
+     "brahms p14 14/1/4/5  tie gained stop",
+     "brahms p14 14/1/5/4  slur lost start",
+     "brahms p14 14/1/5/5  slur lost stop",
+     "brahms p14 14/1/6/4  slur lost start",
+     "brahms p14 14/1/6/4  slur lost stop",
+     "brahms p14 14/1/8/2  tie gained start",
+     "brahms p14 14/1/8/3  tie gained stop",
+     "brahms p19 19/0/1/4  slur gained start",
+     "brahms p19 19/0/1/5  slur gained stop",
+     "brahms p19 19/0/1/8  slur gained start",
+     "brahms p19 19/0/1/9  slur gained stop",
+     "brahms p19 19/0/2/3  slur gained start",
+     "brahms p19 19/0/2/4  slur gained stop",
+     "brahms p19 19/0/2/5  tie gained start",
+     "brahms p19 19/0/2/6  tie gained stop",
+     "brahms p19 19/0/2/8  slur gained start",
+     "brahms p19 19/0/2/9  slur gained stop",
+     "brahms p19 19/0/3/7  slur gained start",
+     "brahms p19 19/0/3/7  slur gained start",
+     "brahms p19 19/0/3/8  slur gained stop",
+     "brahms p19 19/0/3/8  slur gained stop",
+     "brahms p19 19/0/5/10  slur lost start",
+     "brahms p19 19/0/5/10  slur lost stop",
+     "brahms p19 19/0/6/3  slur gained start",
+     "brahms p19 19/0/6/4  slur gained stop",
+     "brahms p19 19/0/6/4  tie gained start",
+     "brahms p19 19/0/6/5  tie gained stop",
+     "brahms p19 19/0/9/7  slur gained start",
+     "brahms p19 19/0/9/8  slur gained start",
+     "brahms p19 19/0/9/8  slur gained stop",
+     "brahms p19 19/0/9/9  slur gained stop",
+     "brahms p19 19/0/10/6  tie gained stop",
+     "brahms p19 19/0/12/1  slur gained start",
+     "brahms p19 19/0/12/1  slur gained start",
+     "brahms p19 19/0/12/2  slur gained stop",
+     "brahms p19 19/0/12/2  slur gained stop",
+     "brahms p19 19/0/12/7  slur gained start",
+     "brahms p19 19/0/12/8  slur gained stop",
+     "brahms p19 19/0/13/9  tie gained start",
+     "brahms p19 19/0/13/10  tie gained stop",
+     "brahms p19 19/1/4/1  slur lost start",
+     "brahms p19 19/1/4/1  slur lost stop",
+     "brahms p19 19/1/5/7  tie gained start",
+     "brahms p19 19/1/5/8  tie gained stop",
+     "brahms p19 19/1/9/6  slur lost start",
+     "brahms p19 19/1/9/6  slur lost stop",
+     "brahms p25 25/0/2/7  tie gained start",
+     "brahms p25 25/0/2/8  tie gained stop",
+     "brahms p25 25/0/6/5  tie gained start",
+     "brahms p25 25/0/6/6  tie gained stop",
+     "brahms p25 25/0/6/8  tie gained start",
+     "brahms p25 25/0/6/9  tie gained stop",
+     "brahms p25 25/1/3/6  slur gained start",
+     "brahms p25 25/1/3/7  slur gained stop",
+     "brahms p25 25/1/5/6  tie gained start",
+     "brahms p25 25/1/5/7  tie gained stop"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_PAGE_OWNER_READ: read in staged/adjudicators/ownership.py, staged/export.py, staged/page_owner.py, staged/reach.py -> GATHER",
+  "REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "unjudged_tiles": {
+  "n": 12,
+  "cases": 12,
+  "controls": 0
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1611.5
+}
