@@ -1,0 +1,325 @@
+litolff p2 2/0/7/9  tie lost start
+litolff p2 2/0/7/10  blue lost guessed
+litolff p2 2/0/7/10  note lost half
+litolff p2 2/0/7/10  tie lost stop
+litolff p2 2/1/5/0  rest gained whole
+litolff p2 2/1/5/1  rest gained whole
+litolff p2 2/1/5/2  rest gained whole
+litolff p2 2/1/5/3  rest gained whole
+litolff p2 2/1/5/4  rest gained whole
+litolff p2 2/1/5/5  rest gained whole
+litolff p2 2/1/5/6  rest gained whole
+litolff p2 2/1/5/8  rest gained whole
+litolff p2 2/1/5/9  dynamic gained ff
+litolff p2 2/1/5/9  note gained quarter
+litolff p2 2/1/5/9  rest gained quarter
+litolff p2 2/1/5/10  dynamic gained f
+litolff p2 2/1/5/10  note gained quarter
+litolff p2 2/1/5/10  note gained quarter
+litolff p2 2/1/5/10  rest gained quarter
+litolff p2 2/1/5/11  rest gained whole
+litolff p2 2/1/5/13  note gained quarter
+litolff p2 2/1/5/13  rest gained quarter
+litolff p2 2/1/5/14  note gained quarter
+litolff p2 2/1/5/14  note gained quarter
+litolff p2 2/1/5/14  rest gained quarter
+litolff p2 2/1/6/0  rest gained whole
+litolff p2 2/1/6/1  rest gained whole
+litolff p2 2/1/6/2  rest gained whole
+litolff p2 2/1/6/4  rest gained whole
+litolff p2 2/1/6/5  rest gained whole
+litolff p2 2/1/6/6  rest gained whole
+litolff p2 2/1/6/8  rest gained whole
+litolff p2 2/1/6/9  dynamic gained f
+litolff p2 2/1/6/9  rest gained quarter
+litolff p2 2/1/6/9  rest gained quarter
+litolff p2 2/1/6/10  dynamic gained f
+litolff p2 2/1/6/10  note gained quarter
+litolff p2 2/1/6/10  rest gained quarter
+litolff p2 2/1/6/13  beam gained begin
+litolff p2 2/1/6/13  beam gained end
+litolff p2 2/1/6/13  note gained eighth
+litolff p2 2/1/6/13  note gained eighth
+litolff p2 2/1/6/13  rest gained quarter
+litolff p2 2/1/6/14  note gained quarter
+litolff p2 2/1/6/14  rest gained quarter
+litolff p2 2/1/7/1  blue gained guessed
+litolff p2 2/1/7/1  blue gained guessed
+litolff p2 2/1/7/1  blue gained guessed
+litolff p2 2/1/7/2  blue gained guessed
+litolff p2 2/1/7/3  blue gained guessed
+litolff p2 2/1/7/4  blue gained guessed
+litolff p2 2/1/7/4  dynamic gained sf
+litolff p2 2/1/7/5  dynamic gained sf
+litolff p2 2/1/7/6  dynamic gained sf
+litolff p2 2/1/7/6  pitch changed A5 (was A-15)
+litolff p2 2/1/7/7  dynamic gained sf
+litolff p2 2/1/7/7  pitch changed A5 (was A-15)
+litolff p2 2/1/7/8  blue gained guessed
+litolff p2 2/1/7/8  pitch changed A5 (was A-15)
+litolff p2 2/1/7/8  pitch changed A5 (was A-15)
+litolff p2 2/1/7/8  words gained dyn.
+litolff p2 2/1/7/9  blue gained guessed
+litolff p2 2/1/7/9  dynamic gained sf
+litolff p2 2/1/7/10  blue gained guessed
+litolff p2 2/1/7/10  blue gained guessed
+litolff p2 2/1/7/10  dynamic gained f
+litolff p2 2/1/7/12  blue gained guessed
+litolff p2 2/1/8/5  dynamic lost sf
+litolff p2 2/1/8/8  words lost dyn.
+litolff p2 2/1/9/0  pitch changed D4 (was E-13)
+litolff p2 2/1/9/0  words gained cresc.
+litolff p2 2/1/9/0  words lost cresc.
+litolff p2 2/1/9/1  pitch changed D4 (was E-13)
+litolff p2 2/1/9/1  pitch changed D4 (was E-13)
+litolff p2 2/1/9/1  pitch changed F4 (was G3)
+litolff p2 2/1/9/1  pitch changed F4 (was G3)
+litolff p2 2/1/9/2  pitch changed E-14 (was F3)
+litolff p2 2/1/9/3  pitch changed C4 (was D3)
+litolff p2 2/1/9/3  pitch changed E-14 (was F3)
+litolff p2 2/1/9/3  pitch changed E-14 (was F3)
+litolff p2 2/1/9/3  pitch changed E-14 (was F3)
+litolff p2 2/1/9/4  dynamic lost sf
+litolff p2 2/1/9/4  pitch changed F4 (was G3)
+litolff p2 2/1/9/4  pitch changed F4 (was G3)
+litolff p2 2/1/9/4  pitch changed F4 (was G3)
+litolff p2 2/1/9/5  pitch changed B-13 (was C3)
+litolff p2 2/1/9/5  pitch changed G4 (was A-13)
+litolff p2 2/1/9/5  pitch changed G4 (was A-13)
+litolff p2 2/1/9/5  pitch changed G4 (was A-13)
+litolff p2 2/1/9/5  words gained dyn.
+litolff p2 2/1/9/5  words lost dyn.
+litolff p2 2/1/9/6  dynamic lost sf
+litolff p2 2/1/9/6  pitch changed A-13 (was B-12)
+litolff p2 2/1/9/6  pitch changed A-13 (was B-12)
+litolff p2 2/1/9/6  pitch changed A-14 (was B-13)
+litolff p2 2/1/9/6  pitch changed F3 (was G2)
+litolff p2 2/1/9/7  dynamic lost sf
+litolff p2 2/1/9/7  pitch changed B-13 (was C3)
+litolff p2 2/1/9/7  pitch changed B-13 (was C3)
+litolff p2 2/1/9/7  pitch changed B-13 (was C3)
+litolff p2 2/1/9/8  dynamic gained sf
+litolff p2 2/1/9/8  dynamic lost sf
+litolff p2 2/1/9/8  pitch changed A-13 (was B-12)
+litolff p2 2/1/9/8  pitch changed C4 (was D3)
+litolff p2 2/1/9/8  pitch changed C4 (was D3)
+litolff p2 2/1/9/8  pitch changed C4 (was D3)
+litolff p2 2/1/9/9  dynamic lost sf
+litolff p2 2/1/9/9  pitch changed D4 (was E-13)
+litolff p2 2/1/9/9  pitch changed F4 (was G3)
+litolff p2 2/1/9/9  pitch changed F4 (was G3)
+litolff p2 2/1/9/9  pitch changed F4 (was G3)
+litolff p2 2/1/9/10  dynamic lost f
+litolff p2 2/1/9/10  pitch changed C3 (was D2)
+litolff p2 2/1/9/10  pitch changed C3 (was D2)
+litolff p2 2/1/9/10  pitch changed C3 (was D2)
+litolff p2 2/1/9/10  pitch changed E-13 (was F2)
+litolff p2 2/1/9/10  pitch changed E-13 (was F2)
+litolff p2 2/1/9/10  pitch changed E-14 (was F3)
+litolff p2 2/1/9/11  pitch changed D3 (was E-12)
+litolff p2 2/1/9/12  pitch changed C3 (was D2)
+litolff p2 2/1/9/13  pitch changed C3 (was D2)
+litolff p2 2/1/9/14  pitch changed E-13 (was F2)
+litolff p2 2/1/9/14  pitch changed G3 (was A-12)
+litolff p2 2/1/10/0  beam lost begin
+litolff p2 2/1/10/0  beam lost continue
+litolff p2 2/1/10/0  beam lost end
+litolff p2 2/1/10/0  note lost eighth
+litolff p2 2/1/10/0  note lost eighth
+litolff p2 2/1/10/0  note lost eighth
+litolff p2 2/1/10/0  rest lost eighth
+litolff p2 2/1/10/0  tie lost start
+litolff p2 2/1/10/0  tie lost stop
+litolff p2 2/1/10/1  note lost quarter
+litolff p2 2/1/10/1  rest lost quarter
+litolff p2 2/1/10/2  beam lost begin
+litolff p2 2/1/10/2  beam lost continue
+litolff p2 2/1/10/2  beam lost end
+litolff p2 2/1/10/2  note lost eighth
+litolff p2 2/1/10/2  note lost eighth
+litolff p2 2/1/10/2  note lost eighth
+litolff p2 2/1/10/3  note lost quarter
+litolff p2 2/1/10/3  rest lost quarter
+litolff p2 2/1/10/4  dynamic lost sf
+litolff p2 2/1/10/4  note lost quarter
+litolff p2 2/1/10/4  rest lost quarter
+litolff p2 2/1/10/5  dynamic lost sf
+litolff p2 2/1/10/5  note lost quarter
+litolff p2 2/1/10/5  rest lost quarter
+litolff p2 2/1/10/6  dynamic lost sf
+litolff p2 2/1/10/6  note lost quarter
+litolff p2 2/1/10/6  rest lost quarter
+litolff p2 2/1/10/7  dynamic lost sf
+litolff p2 2/1/10/7  note lost quarter
+litolff p2 2/1/10/7  rest lost quarter
+litolff p2 2/1/10/8  dynamic lost sf
+litolff p2 2/1/10/8  note lost quarter
+litolff p2 2/1/10/8  rest lost quarter
+litolff p2 2/1/10/9  dynamic lost sf
+litolff p2 2/1/10/9  note lost quarter
+litolff p2 2/1/10/9  rest lost quarter
+litolff p2 2/1/10/10  dynamic lost f
+litolff p2 2/1/10/10  note lost half
+litolff p2 2/1/10/10  tie lost start
+litolff p2 2/1/10/11  note lost half
+litolff p2 2/1/10/11  tie lost start
+litolff p2 2/1/10/11  tie lost stop
+litolff p2 2/1/10/12  note lost half
+litolff p2 2/1/10/12  tie lost start
+litolff p2 2/1/10/12  tie lost stop
+litolff p2 2/1/10/13  beam lost begin
+litolff p2 2/1/10/13  beam lost continue
+litolff p2 2/1/10/13  beam lost continue
+litolff p2 2/1/10/13  beam lost end
+litolff p2 2/1/10/13  note lost eighth
+litolff p2 2/1/10/13  note lost eighth
+litolff p2 2/1/10/13  note lost eighth
+litolff p2 2/1/10/13  note lost eighth
+litolff p2 2/1/10/13  tie lost stop
+litolff p2 2/1/10/14  note lost half
+litolff p4 4/0/0/11  blue lost guessed
+litolff p4 4/0/0/11  note lost half
+litolff p4 4/0/0/11  note lost half
+litolff p4 4/0/7/0  blue gained guessed
+litolff p4 4/0/7/0  pitch changed E-14 (was E4)
+litolff p4 4/0/7/2  blue gained guessed
+litolff p4 4/0/7/2  pitch changed E-14 (was E4)
+litolff p4 4/0/7/4  blue gained guessed
+litolff p4 4/0/7/4  pitch changed E-14 (was E4)
+litolff p4 4/0/7/6  blue gained guessed
+litolff p4 4/0/7/6  pitch changed E-14 (was E4)
+litolff p4 4/0/7/8  pitch changed E-14 (was E4)
+litolff p4 4/0/7/11  blue gained guessed
+litolff p4 4/0/7/11  pitch changed B-14 (was B4)
+litolff p4 4/0/7/12  blue gained guessed
+litolff p4 4/0/7/12  blue gained guessed
+litolff p4 4/0/7/12  blue gained guessed
+litolff p4 4/0/7/12  pitch changed B-14 (was B4)
+litolff p4 4/0/7/12  pitch changed B-15 (was B5)
+litolff p4 4/0/7/12  pitch changed B-15 (was B5)
+litolff p4 4/0/7/13  blue gained guessed
+litolff p4 4/0/7/13  pitch changed E-15 (was E5)
+litolff p4 4/0/7/14  blue gained guessed
+litolff p4 4/0/7/14  pitch changed E-15 (was E5)
+litolff p4 4/0/10/2  pitch changed A-13 (was A3)
+litolff p4 4/0/10/3  blue gained guessed
+litolff p4 4/0/10/3  blue gained guessed
+litolff p4 4/0/10/3  blue gained guessed
+litolff p4 4/0/10/4  blue gained guessed
+litolff p4 4/0/10/13  blue gained guessed
+litolff p4 4/1/3/3  note lost quarter
+litolff p6 6/0/6/1  blue gained guessed
+litolff p6 6/0/6/1  blue gained guessed
+litolff p6 6/0/6/3  blue gained guessed
+litolff p6 6/0/6/3  blue gained guessed
+litolff p6 6/0/6/6  blue gained guessed
+litolff p6 6/0/6/6  pitch changed A4 (was A-14)
+litolff p6 6/0/6/11  blue gained guessed
+litolff p6 6/1/0/1  blue lost guessed
+litolff p6 6/1/0/1  blue lost guessed
+litolff p6 6/1/0/2  blue lost guessed
+litolff p6 6/1/0/3  blue lost guessed
+litolff p6 6/1/0/3  blue lost guessed
+litolff p6 6/1/0/4  blue lost guessed
+litolff p6 6/1/0/5  blue lost guessed
+litolff p6 6/1/0/7  blue lost guessed
+litolff p6 6/1/0/7  blue lost guessed
+litolff p6 6/1/0/7  blue lost guessed
+litolff p6 6/1/0/9  blue lost guessed
+litolff p6 6/1/0/9  blue lost guessed
+litolff p6 6/1/0/10  blue lost guessed
+litolff p6 6/1/0/12  blue lost guessed
+litolff p6 6/1/1/9  blue gained guessed
+litolff p6 6/1/1/12  blue gained guessed
+litolff p6 6/1/2/12  note lost quarter
+litolff p6 6/1/9/10  beam changed continue (was end)
+litolff p6 6/1/9/10  beam gained end
+litolff p6 6/1/9/10  blue gained guessed
+litolff p6 6/1/9/10  blue gained guessed
+litolff p6 6/1/9/10  flag gained eighth
+litolff p6 6/1/9/10  note gained eighth
+litolff p6 6/1/9/10  note gained eighth
+litolff p6 6/1/11/2  blue gained guessed
+litolff p6 6/1/11/2  pitch changed A-12 (was A2)
+litolff p6 6/1/11/3  blue gained guessed
+litolff p6 6/1/11/3  pitch changed A-12 (was A2)
+litolff p6 6/1/11/4  pitch changed A-12 (was A2)
+litolff p6 6/1/11/6  blue gained guessed
+litolff p6 6/1/11/6  pitch changed B-12 (was B2)
+litolff p6 6/1/11/7  blue gained guessed
+litolff p6 6/1/11/7  pitch changed B-12 (was B2)
+litolff p6 6/1/11/8  blue gained guessed
+litolff p6 6/1/11/8  pitch changed B-12 (was B2)
+litolff p6 6/1/11/9  blue gained guessed
+litolff p6 6/1/11/9  pitch changed B-12 (was B2)
+litolff p8 8/1/7/4  pitch changed A3 (was A-13)
+litolff p8 8/1/7/6  pitch changed A3 (was A-13)
+litolff p8 8/1/7/8  pitch changed A3 (was A-13)
+litolff p8 8/1/7/10  pitch changed A3 (was A-13)
+litolff p8 8/1/7/12  pitch changed A3 (was A-13)
+litolff p8 8/1/7/13  pitch changed A4 (was A-14)
+litolff p8 8/1/7/13  pitch changed A4 (was A-14)
+litolff p8 8/1/7/13  pitch changed A4 (was A-14)
+litolff p8 8/1/7/15  pitch changed A4 (was A-14)
+litolff p8 8/1/7/15  pitch changed A4 (was A-14)
+litolff p8 8/1/7/15  pitch changed A4 (was A-14)
+litolff p8 8/1/7/17  pitch changed A4 (was A-14)
+litolff p8 8/1/7/17  pitch changed A4 (was A-14)
+litolff p8 8/1/7/17  pitch changed A4 (was A-14)
+litolff p8 8/1/7/18  pitch changed A4 (was A-14)
+litolff p8 8/1/7/18  pitch changed A4 (was A-14)
+litolff p8 8/1/7/18  pitch changed A4 (was A-14)
+litolff p9 9/0/3/1  beam changed continue (was end)
+litolff p9 9/0/3/1  beam gained end
+litolff p9 9/0/3/1  flag lost eighth
+litolff p9 9/0/3/1  flag gained eighth
+litolff p9 9/0/3/1  note lost eighth
+litolff p9 9/0/3/1  note gained eighth
+litolff p9 9/0/3/1  note gained eighth
+litolff p9 9/0/3/1  pitch changed G3 (was F3)
+litolff p9 9/1/6/0  blue gained guessed
+litolff p9 9/1/6/2  blue gained guessed
+litolff p9 9/1/6/4  blue gained guessed
+litolff p9 9/1/6/5  pitch changed A3 (was A-13)
+litolff p9 9/1/6/6  blue gained guessed
+litolff p9 9/1/6/7  pitch changed A4 (was A-14)
+litolff p9 9/1/6/7  pitch changed A4 (was A-14)
+litolff p9 9/1/6/7  pitch changed A4 (was A-14)
+litolff p9 9/1/6/11  blue gained guessed
+litolff p9 9/1/6/11  pitch changed A4 (was A-14)
+litolff p9 9/1/6/11  pitch changed A4 (was A-14)
+litolff p9 9/1/6/11  pitch changed A4 (was A-14)
+litolff p11 11/0/5/5  blue gained guessed
+litolff p11 11/0/5/13  blue gained guessed
+litolff p11 11/0/5/14  pitch changed A4 (was A-14)
+litolff p11 11/0/5/15  pitch changed A4 (was A-14)
+litolff p11 11/1/10/11  blue gained guessed
+litolff p11 11/1/10/11  pitch changed A-13 (was A3)
+litolff p11 11/1/10/11  pitch changed A-13 (was A3)
+litolff p11 11/1/10/11  pitch changed A-13 (was A3)
+litolff p11 11/1/10/12  pitch changed A-13 (was A3)
+litolff p16 16/1/7/0  blue gained guessed
+litolff p16 16/1/7/0  blue gained guessed
+litolff p16 16/1/7/0  blue gained guessed
+litolff p16 16/1/7/4  blue gained guessed
+litolff p16 16/1/7/4  blue gained guessed
+litolff p16 16/1/7/4  blue gained guessed
+litolff p16 16/1/7/6  blue gained guessed
+litolff p16 16/1/7/6  blue gained guessed
+litolff p16 16/1/7/6  blue gained guessed
+litolff p16 16/1/7/8  blue gained guessed
+litolff p16 16/1/7/8  blue gained guessed
+litolff p16 16/1/7/9  blue gained guessed
+litolff p16 16/1/7/10  blue gained guessed
+litolff p16 16/1/7/13  blue gained guessed
+brahms p5 5/0/4/0  note lost quarter
+brahms p5 5/0/4/0  value changed ? (was whole)
+brahms p5 5/0/4/4  note lost half
+brahms p5 5/0/4/4  value changed ? (was whole)
+brahms p5 5/0/5/2  words gained Cresc
+brahms p12 12/0/2/12  words lost Cresc.
+brahms p12 12/0/11/12  words gained cres
+brahms p19 19/0/3/2  slur lost start
+brahms p19 19/0/3/3  slur lost stop
+brahms p19 19/0/3/8  slur lost start
+brahms p19 19/0/3/9  slur lost stop

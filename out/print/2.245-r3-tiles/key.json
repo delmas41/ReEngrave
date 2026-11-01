@@ -1,0 +1,218 @@
+[
+ {
+  "tile": 1,
+  "page": 2,
+  "staff_index_on_page": 7,
+  "crop_origin": [
+   1583,
+   1407
+  ],
+  "plate": "litolff",
+  "g": "glyph/2/0/7/10/3",
+  "pb": [
+   1654.04,
+   1476.44,
+   1702.52,
+   1521.4
+  ],
+  "why": "wide head box, inside unread (abstains) -- round-2 tile place"
+ },
+ {
+  "tile": 2,
+  "page": 4,
+  "staff_index_on_page": 12,
+  "crop_origin": [
+   2500,
+   2283
+  ],
+  "plate": "litolff",
+  "g": "glyph/4/1/1/14/7",
+  "pb": [
+   2583.4,
+   2313.11,
+   2605.6075,
+   2335.3175
+  ],
+  "why": "head GATHER split off a wide head box (filled)"
+ },
+ {
+  "tile": 3,
+  "page": 9,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   660,
+   806
+  ],
+  "plate": "litolff",
+  "g": "glyph/9/0/3/1/15",
+  "pb": [
+   718.2025,
+   829.6525,
+   792.07,
+   870.6025
+  ],
+  "why": "wide head box, refused remainder"
+ },
+ {
+  "tile": 4,
+  "page": 8,
+  "staff_index_on_page": 12,
+  "crop_origin": [
+   2449,
+   2355
+  ],
+  "plate": "litolff",
+  "g": "glyph/8/1/3/18/17",
+  "pb": [
+   2532.44,
+   2433.08,
+   2555.16,
+   2455.32
+  ],
+  "why": "head GATHER split off a wide head box (filled)"
+ },
+ {
+  "tile": 5,
+  "page": 6,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   1680,
+   795
+  ],
+  "plate": "litolff",
+  "g": "glyph/6/0/3/8/14",
+  "pb": [
+   1750.9775,
+   811.88,
+   1798.2275,
+   875.3525
+  ],
+  "why": "wide head box, inside unread (abstains) -- round-2 tile place"
+ },
+ {
+  "tile": 6,
+  "page": 8,
+  "staff_index_on_page": 9,
+  "crop_origin": [
+   2300,
+   1903
+  ],
+  "plate": "litolff",
+  "g": "glyph/8/1/0/17/20",
+  "pb": [
+   2386.6575,
+   1962.275,
+   2402.565,
+   1974.245
+  ],
+  "why": "head GATHER split off a wide head box (filled)"
+ },
+ {
+  "tile": 7,
+  "page": 4,
+  "staff_index_on_page": 6,
+  "crop_origin": [
+   2268,
+   1277
+  ],
+  "plate": "litolff",
+  "g": "glyph/4/0/5/13/5",
+  "pb": [
+   2338.94,
+   1285.45,
+   2387.765,
+   1306.87
+  ],
+  "why": "wide head box, refused remainder -- round-2 tile place"
+ },
+ {
+  "tile": 8,
+  "page": 4,
+  "staff_index_on_page": 14,
+  "crop_origin": [
+   908,
+   2550
+  ],
+  "plate": "litolff",
+  "g": "glyph/4/1/3/3/8",
+  "pb": [
+   976.0125,
+   2601.845,
+   1030.1925,
+   2620.9025
+  ],
+  "why": "wide head box, inside unread (abstains) -- round-2 tile place"
+ },
+ {
+  "tile": 9,
+  "page": 8,
+  "staff_index_on_page": 11,
+  "crop_origin": [
+   1676,
+   2203
+  ],
+  "plate": "litolff",
+  "g": "glyph/8/1/2/13/10",
+  "pb": [
+   1740.68,
+   2301.4,
+   1801.48,
+   2312.6
+  ],
+  "why": "wide head box, refused remainder"
+ },
+ {
+  "tile": 10,
+  "page": 9,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   645,
+   806
+  ],
+  "plate": "litolff",
+  "g": "glyph/9/0/3/1/17",
+  "pb": [
+   728.9125,
+   833.905,
+   751.2775,
+   856.27
+  ],
+  "why": "head GATHER split off a wide head box (filled)"
+ },
+ {
+  "tile": 11,
+  "page": 9,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   669,
+   806
+  ],
+  "plate": "litolff",
+  "g": "glyph/9/0/3/1/16",
+  "pb": [
+   752.8525,
+   833.275,
+   775.2175,
+   855.7975
+  ],
+  "why": "head GATHER split off a wide head box (filled)"
+ },
+ {
+  "tile": 12,
+  "page": 6,
+  "staff_index_on_page": 3,
+  "crop_origin": [
+   1686,
+   795
+  ],
+  "plate": "litolff",
+  "g": "glyph/6/0/3/8/22",
+  "pb": [
+   1769.09,
+   851.4125,
+   1793.1875,
+   874.4075
+  ],
+  "why": "head GATHER split off a wide head box (filled)"
+ }
+]

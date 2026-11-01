@@ -1,0 +1,474 @@
+[
+ {
+  "kind": "dynamic",
+  "side": "lost",
+  "page": 2,
+  "box": [
+   1524.2,
+   3438.12,
+   1546.92,
+   3457.16
+  ],
+  "rg": "glyph/2/1/9/7/7",
+  "value": "sf",
+  "place": [
+   2,
+   1,
+   9,
+   7
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   1441,
+   3368
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 7,
+   "page_box": [
+    1524.2,
+    3438.12,
+    1546.92,
+    3457.16
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "rest",
+  "side": "gained",
+  "page": 2,
+  "box": [
+   2548.76,
+   2964.2775,
+   2568.4475,
+   3015.9375
+  ],
+  "rg": "glyph/2/1/6/14/7",
+  "value": "quarter",
+  "place": [
+   2,
+   1,
+   6,
+   14
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   2464,
+   2911
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 6,
+   "cell": 14,
+   "page_box": [
+    2548.76,
+    2964.2775,
+    2568.4475,
+    3015.9375
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 4,
+  "box": [
+   1629.255,
+   1521.0225,
+   1652.88,
+   1542.6
+  ],
+  "rg": "glyph/4/0/7/8/0",
+  "was": "E4",
+  "value": "E-14",
+  "place": [
+   4,
+   0,
+   7,
+   8
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1546,
+   1453
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "cell": 8,
+   "page_box": [
+    1629.255,
+    1521.0225,
+    1652.88,
+    1542.6
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 2,
+  "box": [
+   780.365,
+   3114.295,
+   805.4075,
+   3138.3925
+  ],
+  "rg": "glyph/2/1/7/2/0",
+  "value": "guessed",
+  "place": [
+   2,
+   1,
+   7,
+   2
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   698,
+   3047
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 7,
+   "cell": 2,
+   "page_box": [
+    780.365,
+    3114.295,
+    805.4075,
+    3138.3925
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 4,
+  "box": [
+   2482.735,
+   1463.535,
+   2507.1475,
+   1483.38
+  ],
+  "rg": "glyph/4/0/7/14/4",
+  "was": "E5",
+  "value": "E-15",
+  "place": [
+   4,
+   0,
+   7,
+   14
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   2400,
+   1394
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "cell": 14,
+   "page_box": [
+    2482.735,
+    1463.535,
+    2507.1475,
+    1483.38
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   2388.565,
+   1332.215,
+   2406.835,
+   1351.5875
+  ],
+  "rg": "glyph/6/0/6/11/13",
+  "value": "guessed",
+  "place": [
+   6,
+   0,
+   6,
+   11
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   2303,
+   1263
+  ],
+  "position": {
+   "page": 6,
+   "system": 0,
+   "staff": 6,
+   "cell": 11,
+   "page_box": [
+    2388.565,
+    1332.215,
+    2406.835,
+    1351.5875
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 4,
+  "box": [
+   2172.9175,
+   1425.42,
+   2195.2825,
+   1446.6825
+  ],
+  "rg": "glyph/4/0/7/12/2",
+  "was": "B5",
+  "value": "B-15",
+  "place": [
+   4,
+   0,
+   7,
+   12
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   2089,
+   1357
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 7,
+   "cell": 12,
+   "page_box": [
+    2172.9175,
+    1425.42,
+    2195.2825,
+    1446.6825
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "beam",
+  "side": "lost",
+  "page": 2,
+  "box": [
+   2416.5125,
+   3574.325,
+   2439.5875,
+   3594.3125
+  ],
+  "rg": "glyph/2/1/10/13/0",
+  "value": "end",
+  "place": [
+   2,
+   1,
+   10,
+   13
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   2333,
+   3505
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 10,
+   "cell": 13,
+   "page_box": [
+    2416.5125,
+    3574.325,
+    2439.5875,
+    3594.3125
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 11,
+  "box": [
+   1998.0425,
+   1190.105,
+   2019.7775,
+   1210.7375
+  ],
+  "rg": "glyph/11/0/5/13/0",
+  "value": "guessed",
+  "place": [
+   11,
+   0,
+   5,
+   13
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   1914,
+   1121
+  ],
+  "position": {
+   "page": 11,
+   "system": 0,
+   "staff": 5,
+   "cell": 13,
+   "page_box": [
+    1998.0425,
+    1190.105,
+    2019.7775,
+    1210.7375
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   2383.2625,
+   3391.295,
+   2406.8875,
+   3416.495
+  ],
+  "rg": "glyph/6/1/9/10/2",
+  "value": "eighth",
+  "place": [
+   6,
+   1,
+   9,
+   10
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   2300,
+   3325
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 9,
+   "cell": 10,
+   "page_box": [
+    2383.2625,
+    3391.295,
+    2406.8875,
+    3416.495
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 11,
+  "box": [
+   2054.64,
+   3524.79,
+   2079.3675,
+   3545.4225
+  ],
+  "rg": "glyph/11/1/10/12/0",
+  "was": "A3",
+  "value": "A-13",
+  "place": [
+   11,
+   1,
+   10,
+   12
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 11,
+  "crop_origin": [
+   1972,
+   3456
+  ],
+  "position": {
+   "page": 11,
+   "system": 1,
+   "staff": 10,
+   "cell": 12,
+   "page_box": [
+    2054.64,
+    3524.79,
+    2079.3675,
+    3545.4225
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 9,
+  "box": [
+   752.695,
+   889.345,
+   775.2175,
+   910.135
+  ],
+  "rg": "glyph/9/0/3/1/0",
+  "value": "eighth",
+  "place": [
+   9,
+   0,
+   3,
+   1
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 12,
+  "crop_origin": [
+   669,
+   820
+  ],
+  "position": {
+   "page": 9,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    752.695,
+    889.345,
+    775.2175,
+    910.135
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ }
+]

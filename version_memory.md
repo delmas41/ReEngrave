@@ -83,6 +83,12 @@ STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits
 ## 2026-10-31 -- 2.242 one accidental, one piece (branch lane-2.242-accidental-whole, not landed)
 `stroke_map.merge_accidentals` (flag `OMR_ACCIDENTAL_WHOLE`, default OFF) puts an accidental the openings cut into 4-6 strokes back as one stroke (from its box outward, SMuFL size, never a head / ledger / stem; not more than one accidental); `stroke_owner.accidental_yields` makes an accidental yield a head-body blob a head box covers and flag ink hanging from a long stem (2.241 tiles 10 and 3). Brahms p0 accidentals whole 0 -> 30 of 41, 2.201 type control no loss, judged right->wrong 0. `claim_order` re-cut now passes the touch boxes. Cause and lessons: benchmarks/capture-readout-2026-10/FINDINGS.md 2.242.
 
+## 2026-10-31 -- ROADMAP 2.245 round 3 (Sean "Rework it all together - get it solid then land"; lane-2.245-wrong-kind, flag OFF)
+
+`box_kind.read_heads`: a head split off a wide head box needs a head's own shape (per-core erosion, small holes filled so a hollow ring
+counts, staff grid, not a flag's stem end, no thick clef bar beside it); a head with its own box is accounted; the remainder is refused only
+with no head ink left, else `wide_box_unread`, and `adjudicate_duration` then writes no note. Tiles `out/print/2.245-r3-tiles/`.
+
 ## 2026-10-31 -- ROADMAP 2.245 round 2 (Sean "Send back for a second round"; lane-2.245-wrong-kind, not merged, flag OFF)
 
 `OMR_BOX_KIND_SIZE` now acts in GATHER: `gather_detections` splits a 3+ sp head box into the head-shaped blobs inside it (appended boxes,
