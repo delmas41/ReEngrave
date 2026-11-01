@@ -51,11 +51,11 @@ def _cands(fam):
 
 
 class KindFlag(unittest.TestCase):
-    def test_default_off_deny_list(self):
+    def test_default_on_deny_list(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(AF.KIND_ENV, None)
-            self.assertFalse(AF.kind_enabled())
-        for v, on in (("1", True), ("true", True), ("on", True), ("0", False), ("off", False), ("", False)):
+            self.assertTrue(AF.kind_enabled())
+        for v, on in (("1", True), ("true", True), ("on", True), ("0", False), ("off", False), ("", True)):
             with mock.patch.dict(os.environ, {AF.KIND_ENV: v}):
                 self.assertEqual(AF.kind_enabled(), on, v)
 

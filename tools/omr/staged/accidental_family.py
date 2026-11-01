@@ -34,7 +34,7 @@ def enabled() -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.247 -- ACCIDENTALS LABELLED BY THEIR SHAPE (flag `OMR_ACCIDENTAL_KIND`, default OFF, deny-list: only 1/true/yes/on enables)
+# ROADMAP 2.247 -- ACCIDENTALS LABELLED BY THEIR SHAPE (flag `OMR_ACCIDENTAL_KIND`, default ON since 2026-10-31, deny-list; was: only 1/true/yes/on enables)
 # ─────────────────────────────────────────────────────────────────────────────
 #: CONVENTION ASSUMED (Sean 2026-10-31, engraving): a natural is two offset uprights (left up, right down) joined by two slanted bars; a flat is
 #: one upright with a BOWL at its lower end. "Sometimes the line that goes off the bottom of the natural is hard to see": a natural whose right
@@ -61,8 +61,8 @@ FAINT_LOWER_REVERSE_SP = 0.25
 
 
 def kind_enabled() -> bool:
-    """`OMR_ACCIDENTAL_KIND` (ROADMAP 2.247), default OFF; only an explicit 1/true/yes/on enables."""
-    return os.environ.get(KIND_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_KIND` (ROADMAP 2.247), default ON since 2026-10-31 (Sean "Fix that one then land"); an explicit 0/false/no/off disables."""
+    return os.environ.get(KIND_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 
