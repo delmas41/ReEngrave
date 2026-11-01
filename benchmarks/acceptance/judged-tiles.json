@@ -1,6 +1,6 @@
 {
- "n_items": 174,
- "n_tiles": 2141,
+ "n_items": 176,
+ "n_tiles": 2145,
  "tiles": [
   {
    "answer": "right",
@@ -25159,6 +25159,38 @@
    "value": 1.0
   },
   {
+   "answer": "The flag of an eighth note, in the second staff from the top (the staff the page owner gave it, staff/5/1/11)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-31",
+   "doc": null,
+   "followup": false,
+   "item": "2.240-s4-brahms-lost",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "place 1 (Brahms p5 glyph/5/1/12/3/3)",
+   "value": null
+  },
+  {
+   "answer": "All four are dotted quarter notes, in the second staff from the top (the page owner's staff/12/0/5)",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-10-31",
+   "doc": null,
+   "followup": false,
+   "item": "2.240-s4-brahms-lost",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "place 2 (Brahms p12 glyph/12/0/6/6/1, 6/7/0, 6/7/2, 6/9/0)",
+   "value": null
+  },
+  {
    "answer": "Ledger line, belongs to the staff above",
    "answer_kind": "not_a_note",
    "control": false,
@@ -26884,6 +26916,38 @@
    "subject_kind": "none",
    "subjects": null,
    "tile": "9",
+   "value": "accidental"
+  },
+  {
+   "answer": "Natural",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-31",
+   "doc": null,
+   "followup": false,
+   "item": "2.247-r3-tiles",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "1",
+   "value": "accidental"
+  },
+  {
+   "answer": "Natural",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-10-31",
+   "doc": null,
+   "followup": false,
+   "item": "2.247-r3-tiles",
+   "page_box": null,
+   "question_kind": "unknown",
+   "subject": null,
+   "subject_kind": "none",
+   "subjects": null,
+   "tile": "2",
    "value": "accidental"
   },
   {
