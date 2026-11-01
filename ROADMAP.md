@@ -21,15 +21,7 @@ re-enter.
 
 Read FIRST.
 
-**The next session starts the overnight full re-gather on main.** Sean asked for it, so this time the session runs it.
-- **Command:** `TAG=20261031-night THROUGH=infer bash benchmarks/acceptance/overnight/regather_20260930.sh`, run from the main checkout. It makes its own worktree.
-- **Same pages as 20261029-night:** Litolff 1-16, Brahms 0-26.
-- **No lane may run while it runs:** Surya OCR times out under load and silently drops staff names, which moves clefs and keys.
-- **Afterwards,** compare against 20261029-night with `compare_20261029.sh` (TAG/BASE adjusted), then write the README and version_memory entry.
-- **Watch:**
-  - Brahms took 352 min and 19.6 GB last time, inferred to be memory pressure (2.246). Today's landings add GATHER rows.
-  - The disk has ~164 GB free (cleaned 10-31).
-  - Never load the Brahms whole record in a lane.
+**Overnight 20261031-night RAN (2026-11-01):** Litolff done; Brahms was KILLED after 12 h 49 min (memory; no record). Litolff compare: benchmarks/acceptance/overnight/20261031-night/README.txt -- judged wrong->right 14, RIGHT->WRONG 2 (two ties now read as slurs, 2.75-review litolff_03/06), red bars 412 -> 406, ties and slurs not written -23% per page. **First next:** the memory fix (2.246: smaller record + per-page progress line), then re-run Brahms; trace the two tie->slur regressions.
 
 **Landed ON 2026-10-31.** All are deny-list flags, default ON. Each carries Sean's tiles, judged right->wrong 0, and the fast tier; from 2.240 step 3 on, also a real 2-page gather.
 - **2.242** `OMR_ACCIDENTAL_WHOLE`: one accidental, one piece; glyph-sized to count whole.

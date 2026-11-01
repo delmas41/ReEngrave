@@ -1,0 +1,76 @@
+wall (summary.txt)   BASE ref origin/main commit 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c through infer start 2026-10-30T06:10:24Z  | done 2026-10-30T13:11:26Z
+                     TAG  ref origin/main commit 17d5f02591e9baadac4d7688266b97de94935eb1 through infer start 2026-11-01T05:25:37Z  | done 2026-11-01T19:36:06Z
+
+== beethoven5-litolff
+  wall min  BASE 68  TAG 81   (exit codes 0 / 0)
+  ── EVALUATE: 18735 fired, 224378 skipped
+     -> ── EVALUATE: 18625 fired, 224008 skipped
+  ── INFER: 271 inferred, 64 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+     -> ── INFER: 262 inferred, 64 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+  DECIDED verdicts that moved (quantity: base -> tag): accidental_owner 578 -> 540; arc_kind 2634 -> 2636; dot_role 475 -> 474; duration 12217 -> 12224; glyph_owner 9432 -> 9447; head_stem 8915 -> 8918; key_signature 135 -> 129; notehead_is_a_whole_rest 11868 -> 11874; notehead_is_not_a_notehead 11806 -> 11799; rest_is_not_a_rest 2870 -> 2869; stem_direction 9259 -> 9262; stem_value 3181 -> 3588; tie_pair 493 -> 736; unison_voices 445 -> 454; wedge_anchor 6 -> 0
+  ABSTENTIONS 44655 -> 43937; 60 reasons moved, 59 unchanged
+    quantity                         reason                                     base      tag    delta
+    stem_value                       not_a_member                               1288     1038     -250
+    stem_value                       lone_head                                  4301     4152     -149
+    tie_pair                         not_a_tie                                  1021      894     -127
+    tie_pair                         no_head_near_the_arc                        165       86      -79
+    accidental_owner                 no_candidate                                503      446      -57
+    duration                         beam_discounted_uncertain                   382      344      -38
+    tie_pair                         no_pair_at_one_position                      91       65      -26
+    duration                         beams_ambiguous                             175      194      +19
+    accidental_owner                 is_a_key_signature_marker                   506      489      -17
+    unison_voices                    head_refused                                 32       17      -15
+    tie_pair                         no_start_head                                93       79      -14
+    accidental_owner                 on_a_rest                                    14        1      -13
+    dot_role                         ink_owned_by_another_mark                     0       12      +12
+    notehead_is_not_a_notehead       wide_box_unread                               0       11      +11
+    duration                         wide_box_unread                               0       11      +11
+    dot_role                         dot_role_ambiguous                          119      108      -11
+    glyph_owner                      tied                                        104       94      -10
+    duration                         not_a_note_mark                             161      170       +9
+    unison_voices                    not_a_unison                              11321    11329       +8
+    tie_pair                         more_than_one_pair                           47       54       +7
+    duration                         head_fill_from_ink                           89       82       -7
+    duration                         owned_by_another_staff                     1544     1550       +6
+    unison_voices                    head_fill_disagrees                          18       23       +5
+    stem_value                       stem_levels_unread                          143      138       -5
+    tie_pair                         no_stop_head                                 58       54       -4
+    head_stem                        two_stems                                   147      151       +4
+    glyph_owner                      far_no_rungs                                  6        2       -4
+    accidental_owner                 ambiguous_height                             18       22       +4
+    key_signature                    natural_markers                               3        6       +3
+    tie_pair                         not_adjacent                                 62       64       +2
+    stem_value                       stem_values_open                              2        0       -2
+    stem_value                       hollow_head_on_a_beamed_stem                  0        2       +2
+    stem_value                       ambiguous_stem                              694      696       +2
+    stem_direction                   stems_disagree                              807      809       +2
+    key_signature                    disagrees_with_system                        31       33       +2
+    key_signature                    disagrees_with_document                      95       97       +2
+    head_stem                        unison_two_voices                           547      545       -2
+    accidental_owner                 ownership_undecided                           2        0       -2
+    accidental_owner                 owned_by_another_staff                      198      200       +2
+    wedge_anchor                     tip_unbound                                   0        1       +1
+    unison_voices                    voice_beams_range                             1        0       -1
+    unison_voices                    shared_flag                                  12       13       +1
+    unison_voices                    one_voice_unmarked                           35       34       -1
+    tie_pair                         spans_a_whole_bar                            11       10       -1
+    tie_pair                         enters_from_previous_system                  56       55       -1
+    system_key                       one_staff_only                                2        1       -1
+    system_key                       no_staff_read_a_key                           0        1       +1
+    stem_value                       no_stem                                    2259     2260       +1
+    stem_direction                   no_stem                                    1802     1803       +1
+    rest_is_not_a_rest               rest_holds_a_stem                             0        1       +1
+    notehead_position                ledger_not_read                            2209     2210       +1
+    notehead_is_not_a_notehead       stem_end_ink_only                            46       47       +1
+    notehead_is_not_a_notehead       claim_narrowed:clef                           6        7       +1
+    notehead_is_an_eighth_rest       not_refused_as_too_narrow                    78       79       +1
+    notehead_is_an_eighth_rest       no_ink_under_box                            197      196       -1
+    key_signature                    mixed_marker_kinds                           14       13       -1
+    head_stem                        no_stem                                    2259     2260       +1
+    duration                         beam_certain_not_joined                      18       17       -1
+    arc_kind                         stack_slur_over_two_same_pitch_notes          2        1       -1
+    arc_kind                         same_pitch_accidental_unread                  5        4       -1
+  LOG warnings/errors (lines matching warn|error|traceback|exception|failed|warning sign): BASE 3, TAG 3
+    TAG: ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['instrument_across_systems', 'key_signature_across_systems', 'measure_count_across_staves']
+    TAG: ⚠️ DISAGREEMENTS: 3 (each implicates its WHOLE group, not its dissenter)
+    TAG: ── INFER: 262 inferred, 64 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing

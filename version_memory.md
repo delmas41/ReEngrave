@@ -26,6 +26,11 @@ measurement; this file is the WHEN and WHAT of each commit.
 - one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
 - A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
 
+## 2026-11-01 -- overnight 20261031-night (main 17d5f0259): Litolff done, Brahms KILLED (memory)
+- Litolff 1-16 exit 0, 81 min (70), record 4.2 GB (2.9). Brahms 0-26 exit 3 after 769 min: empty log, no record, no crash report -- killed from outside, almost certainly by memory pressure (swap reached 26.6 GB; 2.246's cause, worse with 10-31's per-page rows). Not re-run.
+- Compare (Litolff only, vs 20261029-night re-exported by this tree; benchmarks/acceptance/overnight/20261031-night/README.txt): judged right/wrong 169/34 -> 184/21, wrong->right 14, unwritten->right 3, RIGHT->WRONG 2 (2.75-review litolff_03 and litolff_06: Sean "Tie", now read as slur -- an arc-kind regression to trace, likely 2.223's kind from the bound ends); red bars 412 -> 406; unread bars 280 -> 282; ties and slurs not written 82.8 -> 64.1 per page; pitched heads not written 34.4 -> 35.6 per page; file: ties +93 -41, slurs +290 -82, notes +82 -66, accidentals +18 -52.
+- Next: the memory fix (smaller record, per-page progress line) before re-running Brahms; trace the two tie->slur regressions.
+
 ## 2026-10-31 night -- 2.245 LANDED ON: wrong-kind boxes (OMR_BOX_KIND_SIZE)
 STAGED GATHER/ADJUDICATE/EXPORT (`box_kind.read_heads`, `split_wide_heads` in `gather_detections`, the bow test in `arcs_system.gather_system_arcs`, the letter test in `gather_wedge_boxes`, `narrow_rest`, EXPORT `_place_notes` unread marking), deny-list default ON (Sean "Fix them land - we are close"; r3 tiles 10/12, both fixed in r4). Judged right->wrong 0. Landing check on main: fast tier 9,665 passed, real 2-page gathers L p2,8 and B p5,19 exit 0. Last landing before the 20261031-night overnight.
 

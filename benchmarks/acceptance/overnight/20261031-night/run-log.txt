@@ -1,0 +1,8 @@
+compare_20261029 20261031-night vs 20261029-night docs [beethoven5-litolff] tree 17d5f02591e9baadac4d7688266b97de94935eb1 start 2026-11-01T20:11:10Z
+comparing: beethoven5-litolff
+tree under test: tools/ identical to the TAG commit 17d5f02591e9baadac4d7688266b97de94935eb1
+compare 20261031-night vs 20261029-night, tree 17d5f02591e9baadac4d7688266b97de94935eb1 start 2026-11-01T20:11:10Z
+beethoven5-litolff: readout diff exit 1 = the records differ (expected)
+done 2026-11-01T20:16:35Z
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/overnight-manager-handoff-2df09f/benchmarks/acceptance/overnight/20261031-night/README.txt 115 lines; 4 candidate(s) under Surprising / worse
+done 2026-11-01T20:22:02Z
