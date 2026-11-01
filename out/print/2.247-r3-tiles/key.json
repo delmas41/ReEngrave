@@ -1,0 +1,114 @@
+[
+ {
+  "plate": "brahms",
+  "page": 12,
+  "box": [
+   1441.5,
+   6653.2,
+   1465.4,
+   6706.0
+  ],
+  "role": "r3-moved",
+  "subject": "glyph/12/1/11/1/1",
+  "cls": "accidentalFlat",
+  "r2_written": "b",
+  "r3_written": "natural",
+  "features_r2": {
+   "n_stems": 2,
+   "n_members": 4,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.0,
+   "stem_gap_sp": 0.62,
+   "stem_len_sp": [
+    1.81,
+    1.06
+   ],
+   "n_bars": 0,
+   "shape_candidates": [
+    "natural",
+    "flat"
+   ],
+   "box_offset_sp": {
+    "top": 0.11,
+    "bottom": 0.0,
+    "left": 0.01,
+    "right": 0.14
+   },
+   "class_sign_stands": true
+  },
+  "tile": 1,
+  "crop_origin": [
+   1261,
+   6519
+  ],
+  "position": {
+   "page": 12,
+   "system": 1,
+   "staff": 11,
+   "cell": 1,
+   "page_box": [
+    1441.5,
+    6653.2,
+    1465.4,
+    6706.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1937.5,
+   1278.8,
+   1952.0,
+   1306.9
+  ],
+  "role": "r3-moved",
+  "subject": "glyph/4/0/5/10/3",
+  "cls": "accidentalFlat",
+  "r2_written": "b",
+  "r3_written": "natural",
+  "features_r2": {
+   "n_stems": 2,
+   "n_members": 3,
+   "stagger_top_sp": 0.75,
+   "stagger_bottom_sp": 0.0,
+   "stem_gap_sp": 0.46,
+   "stem_len_sp": [
+    1.69,
+    0.95
+   ],
+   "n_bars": 1,
+   "shape_candidates": [
+    "natural",
+    "flat"
+   ],
+   "box_offset_sp": {
+    "top": 0.07,
+    "bottom": -0.02,
+    "left": 0.03,
+    "right": 0.17
+   },
+   "class_sign_stands": true
+  },
+  "tile": 2,
+  "crop_origin": [
+   1850,
+   1214
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 5,
+   "cell": 10,
+   "page_box": [
+    1937.5,
+    1278.8,
+    1952.0,
+    1306.9
+   ]
+  },
+  "cell_map": null
+ }
+]
