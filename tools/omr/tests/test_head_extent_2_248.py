@@ -134,6 +134,38 @@ class TestNotGrownIntoNeighbours(unittest.TestCase):
         self.assertIsNotNone(got["why"])
 
 
+class TestRound2SeansTiles(unittest.TestCase):
+    """r2: Sean's tile 2 (a ledger stub touching the head's bottom was taken as head ink) and tile 7 (a far head on the
+    boundary); far heads are left to their ledger count (page-facts, DECIDIONS 2026-10-27)."""
+
+    def test_a_ledger_stub_under_the_head_is_not_the_head(self):
+        img = _paper()
+        _head(img, 200.0, 300.0)                          # below the staff, in the space above a ledger at 321
+        img[314:321, 168:232] = 0                          # a short ledger (1.6 sp) merged with the head's bottom, out both sides
+        got = head_extent.ink_extent(img, (174.0, 280.0, 226.0, 305.0), S)
+        self.assertGreater(got["line_rows_stripped"], 0)
+        self.assertLessEqual(got["extent"][3], 321.0)
+        self.assertGreater(got["extent"][0], 168.0)
+
+    def test_control_a_head_without_a_ledger_keeps_its_rows(self):
+        img = _paper()
+        _head(img, 200.0, 300.0)
+        got = head_extent.ink_extent(img, (174.0, 280.0, 226.0, 305.0), S)
+        self.assertEqual(got.get("line_rows_stripped"), 0)
+
+    def test_a_far_head_is_never_moved_by_its_ink(self):
+        # positions above -1 or below 9 are placed by their ledger lines only
+        self.assertIsNone(head_extent.ink_position(10.3, (0, 290, 10, 300), (0, 290, 10, 320), 20.0))
+        self.assertIsNone(head_extent.ink_position(-2.3, (0, 50, 10, 60), (0, 40, 10, 60), 20.0))
+        # control: the same move inside the staff happens
+        self.assertIsNotNone(head_extent.ink_position(4.3, (0, 180, 10, 190), (0, 180, 10, 210), 20.0))
+
+    def test_a_boundary_ink_centre_decides_nothing(self):
+        # box 4.2 (rounds 4), ink 4.49 / 4.51: on the half-way point -> no move
+        self.assertIsNone(head_extent.ink_position(4.2, (0, 180, 10, 190), (0, 180, 10, 202.2), 20.0))
+        self.assertIsNotNone(head_extent.ink_position(4.2, (0, 180, 10, 190), (0, 180, 10, 212), 20.0))
+
+
 class TestInkPosition(unittest.TestCase):
 
     def test_moves_only_when_the_rounding_changes(self):
