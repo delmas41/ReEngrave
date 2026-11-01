@@ -54,3 +54,6 @@ out/print/2.247-r2-tiles: places of r1 tiles 7, 5, 3, 8, 2, 6 + 6 places where t
 
 ### Sean's r2 answers (2026-10-31)
 Right 10/12: 1, 4 flats; 2 slash (nothing written); 3, 5 half naturals (natural); 6 sharp (b -> #); 8-11 flats (bowl rule natural -> b, 4 of 5 right). Wrong 12 (most of a natural, bowl rule wrote b). Missed 7 (a sharp under an oversized double-sharp box: nothing written).
+
+## Round 3 (2026-10-31, be772cfbf; manager from the lane report)
+Tile 12 (Brahms p4 glyph/4/1/8/6/7) is a natural with its lower stroke lost: right upright 1.06 sp, ends level, so the r2 bowl-side rule caught it. What separates it from flats 8-11 is where the right stroke STARTS below the left stem's top: 0.82 sp (natural) vs 1.19-1.31 sp (flats). Rule narrowed: the bowl-side reading applies only where the right stroke starts >= `BOWL_SIDE_TOP_MIN_SP` = 1.0 sp below (a two-plate cut-off; it only narrows). Moves vs r2: 7 rows back to 2.201's natural, written sign flat -> natural at 3 (tile 12, Brahms glyph/12/1/11/1/1, Litolff glyph/4/0/5/10/3) -- Sean: both naturals. Type control r3: L 289 same, flat_too_small 14, bowl-side 6, 5 natural; B 1,452 same, 36, 20, 6 others. Three measures: L accidentals +1 -8, pitches ~15, blue -26 (no clef/key changes this run); B +8 -18, ~32, blue +10 -22; judged right->wrong 0. LANDED ON 2026-10-31.

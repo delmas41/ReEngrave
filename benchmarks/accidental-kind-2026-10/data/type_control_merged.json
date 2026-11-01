@@ -1,0 +1,653 @@
+[
+{
+"plate": "litolff",
+"subject": "glyph/2/0/0/6/1",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.105,
+"stem_len_sp": 2.0,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.62,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.22,
+"page": 2,
+"page_box": [
+1252.24,
+506.4,
+1280.4,
+540.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/2/0/2/1/2",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.191,
+"stem_len_sp": 0.94,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.25,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.781,
+"page": 2,
+"page_box": [
+617.7875,
+808.175,
+635.1125,
+824.87
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/2/0/3/1/8",
+"cls": "accidentalDoubleSharp",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "##",
+"features_on": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.348,
+"stem_len_sp": 1.63,
+"bowl_pieces": 2,
+"bowl_h_sp": 0.82,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.093,
+"page": 2,
+"page_box": [
+683.78,
+742.0,
+702.365,
+762.9475
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/2/0/4/6/2",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.142,
+"stem_len_sp": 3.07,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.81,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.03,
+"page": 2,
+"page_box": [
+1256.5875,
+970.59,
+1267.455,
+1027.7625
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/2/1/7/12/5",
+"cls": "accidentalSharp",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "#",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 0.75,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.25,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.969,
+"page": 2,
+"page_box": [
+2231.555,
+3228.4825,
+2249.195,
+3241.87
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/0/10/4",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.127,
+"stem_len_sp": 1.06,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.19,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.656,
+"page": 4,
+"page_box": [
+1879.13,
+520.7950000000001,
+1890.91,
+538.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/0/9/4",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.154,
+"stem_len_sp": 1.06,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.25,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.657,
+"page": 4,
+"page_box": [
+1774.675,
+520.33,
+1786.61,
+538.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/5/10/6",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.134,
+"stem_len_sp": 1.5,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.25,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.59,
+"page": 4,
+"page_box": [
+1879.56,
+1281.355,
+1896.4125,
+1306.87
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/5/9/2",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.109,
+"stem_len_sp": 1.31,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.12,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.72,
+"page": 4,
+"page_box": [
+1721.4575,
+1284.9775,
+1736.735,
+1306.87
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/8/1/1",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 3,
+"stem_x_fraction": 0.118,
+"stem_len_sp": 1.5,
+"bowl_pieces": 2,
+"bowl_h_sp": 0.31,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.53,
+"page": 4,
+"page_box": [
+602.56,
+1712.72,
+618.88,
+1738.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/8/3/1",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.101,
+"stem_len_sp": 1.69,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.5,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.34,
+"page": 4,
+"page_box": [
+890.24,
+1711.76,
+906.08,
+1738.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/8/5/0",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.118,
+"stem_len_sp": 1.94,
+"bowl_pieces": 3,
+"bowl_h_sp": 0.75,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.09,
+"page": 4,
+"page_box": [
+1153.88,
+1705.84,
+1170.2,
+1738.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/0/9/5/1",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.101,
+"stem_len_sp": 2.0,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.5,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.34,
+"page": 4,
+"page_box": [
+1206.0,
+1846.185,
+1221.435,
+1878.0
+]
+},
+{
+"plate": "litolff",
+"subject": "glyph/4/1/6/3/0",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.14,
+"stem_len_sp": 1.31,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.38,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.46,
+"page": 4,
+"page_box": [
+936.48,
+3079.95,
+947.9775,
+3102.0
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/4/0/12/6/1",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.074,
+"stem_len_sp": 1.38,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.75,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.344,
+"page": 4,
+"page_box": [
+3435.8075,
+3599.67,
+3458.1525,
+3640.0
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/4/0/13/2/1",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.12,
+"stem_len_sp": 1.38,
+"bowl_pieces": 1,
+"bowl_h_sp": 1.31,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.344,
+"page": 4,
+"page_box": [
+1783.6,
+3558.275,
+1809.45,
+3612.175
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/4/1/2/7/13",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.144,
+"stem_len_sp": 1.44,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.75,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.281,
+"page": 4,
+"page_box": [
+4458.42,
+4796.1525,
+4480.3425,
+4836.945
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/4/1/2/7/8",
+"cls": "accidentalNatural",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "natural",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.116,
+"stem_len_sp": 1.38,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.69,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.344,
+"page": 4,
+"page_box": [
+4685.97,
+4796.7075,
+4709.28,
+4836.945
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/4/1/9/0/11",
+"cls": "keyFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.122,
+"stem_len_sp": 1.81,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.25,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.593,
+"page": 4,
+"page_box": [
+825.455078125,
+6254.07421875,
+854.6435546875,
+6305.96484375
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/5/0/13/3/10",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 4,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 1.88,
+"bowl_pieces": 2,
+"bowl_h_sp": 0.8,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.04,
+"page": 5,
+"page_box": [
+2742.6825,
+3474.0,
+2773.2025,
+3522.505
+]
+},
+{
+"plate": "brahms",
+"subject": "glyph/5/1/9/9/0",
+"cls": "accidentalFlat",
+"off": "flat",
+"off_why": "one_stem_with_a_bowl",
+"on": "unclear",
+"on_why": "flat_too_small",
+"alt_off": "b",
+"alt_on": "b",
+"features_on": {
+"n_stems": 1,
+"n_members": 2,
+"stem_x_fraction": 0.112,
+"stem_len_sp": 1.63,
+"bowl_pieces": 1,
+"bowl_h_sp": 0.25,
+"shape_candidates": [
+"natural",
+"flat"
+]
+},
+"margin_on": -0.59,
+"page": 5,
+"page_box": [
+5214.8325,
+6244.9475,
+5243.445,
+6291.0
+]
+}
+]

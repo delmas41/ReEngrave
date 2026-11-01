@@ -1,0 +1,4 @@
+litolff p4 4/0/1/7  blue gained guessed
+litolff p4 4/0/1/8  blue gained guessed
+litolff p4 4/0/1/10  blue gained guessed
+litolff p4 4/0/1/12  blue gained guessed

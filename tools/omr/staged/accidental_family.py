@@ -33,6 +33,39 @@ def enabled() -> bool:
     return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.247 -- ACCIDENTALS LABELLED BY THEIR SHAPE (flag `OMR_ACCIDENTAL_KIND`, default ON since 2026-10-31, deny-list; was: only 1/true/yes/on enables)
+# ─────────────────────────────────────────────────────────────────────────────
+#: CONVENTION ASSUMED (Sean 2026-10-31, engraving): a natural is two offset uprights (left up, right down) joined by two slanted bars; a flat is
+#: one upright with a BOWL at its lower end. "Sometimes the line that goes off the bottom of the natural is hard to see": a natural whose right
+#: upright is lost below the lower bar leaves ONE stem + a closed SQUARE, which 2.201's flat test ("one stem + any piece to its right, low")
+#: called a flat; so did any FRAGMENT of a natural (a box cut by the cell edge or the detector: a 1.2-1.5 sp stub of the left upright and a
+#: half-space piece of a bar) -- benchmarks/accidental-kind-2026-10: 9 of 11 detector-'natural' boxes the strokes called flat were such stubs.
+#: A FLAT, by the font, is a GLYPH-SIZED stem with a GLYPH-SIZED bowl (SMuFL `accidentalFlat`: 2.46 sp tall, its bowl ~1.2 sp); a one-stem
+#: reading smaller than 0.7 of either (2.242's share of the glyph, `ACC_WHOLE_MIN_H_FRAC`) is not a flat's evidence -- `unclear`, written
+#: GUESSED with natural AND flat. (A shape test on the bowl's top-right "shoulder" was tried first and FAILED on Sean's 71 hand-box flats:
+#: 53 lost; the printed flat's bowl rises to its right, so that cue does not separate it from a natural's square.)
+#: WHAT WOULD FALSIFY IT: a plate whose flats print under 0.7 of the font's height. NOT CONFIRMED beyond Litolff and Breitkopf; it only NARROWS
+#: (a small one-stem reading stops being a flat; nothing is ever DECIDED a natural here).
+KIND_ENV = "OMR_ACCIDENTAL_KIND"
+#: SMuFL (Bravura) `accidentalFlat` glyph: bBox height 2.456 sp; its bowl ~1.2 sp. The floor is 0.7 of each (2.242's share).
+FLAT_GLYPH_H_SP = 2.456
+FLAT_BOWL_H_SP = 1.2
+GLYPH_MIN_FRAC = 0.7
+FLAT_STEM_MIN_SP = round(GLYPH_MIN_FRAC * FLAT_GLYPH_H_SP, 3)     # 1.719; Sean's 71 hand-box flats: shortest 1.88
+FLAT_BOWL_MIN_SP = round(GLYPH_MIN_FRAC * FLAT_BOWL_H_SP, 3)      # 0.84; Sean's 71 hand-box flats: 1 below
+#: a two-stem reading whose right stem's TOP is lower (natural-like) but whose BOTTOM ends this far above the left stem's bottom: the right
+#: upright's lower stroke is faint/lost -- natural or (a bowl's right side read as a stem) flat; never sharp.
+#: Not a new cut: it is 2.201's `STAGGER_REVERSE_MAX_SP` (the bound past which a reading stops being a natural), restated here.
+FAINT_LOWER_REVERSE_SP = 0.25
+
+
+def kind_enabled() -> bool:
+    """`OMR_ACCIDENTAL_KIND` (ROADMAP 2.247), default ON since 2026-10-31 (Sean "Fix that one then land"); an explicit 0/false/no/off disables."""
+    return os.environ.get(KIND_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+
 #: A stroke is a stem of the mark at or above this length (staff spaces). A natural's hanging stem can be cropped to ~0.8 and still read.
 STEM_MIN_SP = 0.5
 #: ... and a stem the mark OWNS is at most this long: an accidental's longest stroke is a sharp's 3.5; the strokes the map found 4.1-7.4 long were an
@@ -97,6 +130,110 @@ def _union(boxes: Sequence[Sequence[float]]) -> List[float]:
 def _sbox(s: Any) -> Tuple[float, float, float, float]:
     x, y, w, h = s.box
     return float(x), float(y), float(x + w), float(y + h)
+
+
+#: ROADMAP 2.247 r2 (Sean 2026-10-31 on the r1 tiles 2-4, "just a little bit high ... we might need to do the same thing with accidentals that
+#: we're doing with notes"): the detector's box can sit OFF its mark (half a natural inside it), so the kind is read from the mark's OWN INK --
+#: the strokes the box touches, grown along the strokes they touch, within ONE accidental's size -- never from the box. The size bounds are the
+#: font's (SMuFL: the widest single sign is the sharp, 0.996 sp; the tallest the sharp, 2.79 sp) with 2.242's tolerance; not tuned.
+INK_MAX_W_SP = 0.996 * 1.1 + 0.2
+INK_MAX_H_SP = MAX_MARK_H_SP
+
+
+def _expanded(strokes: Sequence[Any], members: Sequence[int]) -> Tuple[List[Any], List[int]]:
+    """2.247 r2: a whole-accidental stroke (2.242 `OMR_ACCIDENTAL_WHOLE` merges the pieces the openings cut into ONE blob, keeping them as
+    `parts`) is read by its PARTS (its stems and bars). Returns (stroke list with the parts appended, member ordinals into it)."""
+    out = list(strokes)
+    mem: List[int] = []
+    for i in members:
+        parts = getattr(strokes[i], "parts", None) or []
+        if parts:
+            for p in parts:
+                mem.append(len(out))
+                out.append(p)
+        else:
+            mem.append(i)
+    return out, mem
+
+
+def ink_members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares: Sequence[Tuple[int, float]], sp: float,
+                           blocked: Sequence[int] = ()) -> Dict[str, Any]:
+    """ROADMAP 2.247 r2 (flag `OMR_ACCIDENTAL_KIND`): the mark's members from its own INK, the box only the seed.
+
+    SEED: every stroke with any `GROW_SHARE_MIN` share of its ink in the box (a box sitting half off its mark still touches it), unless blocked
+    (a head's), longer than `STEM_MAX_SP` (a note stem, a beam), or touching a blocked stroke (a stem joined to a head).
+    GROW: every stroke TOUCHING a member (the stroke map's `touches`, contact <= 2 px) under the same three refusals, while the union stays
+    within one accidental's size (`INK_MAX_W_SP` x `INK_MAX_H_SP`). The box returned is the INK's union (the anchor then sits on the ink).
+    Same dict as `members_and_extent` plus `box_offset_sp` (ink top/bottom minus box top/bottom, spaces)."""
+    blocked_set = set(int(b) for b in blocked)
+    share_of = {int(i): float(s) for i, s in shares}
+
+    def ok(i: int) -> bool:
+        st = strokes[i]
+        return (i not in blocked_set and float(st.length_sp) <= STEM_MAX_SP
+                and not any(int(j) in blocked_set for j, _c in (getattr(st, "touches", None) or ())))
+    # a stroke mostly inside the box is the mark's as in 2.201 (a head contact the touch cut left does not take it away); a stroke only partly
+    # inside (the box sits off it) must also pass the guards
+    members = [i for i, s in sorted(share_of.items())
+               if (s >= COVER_SHARE_MIN and i not in blocked_set) or (s >= GROW_SHARE_MIN and ok(i))]
+    refused = sorted(i for i, s in share_of.items() if strokes[i].kind == "vertical" and s >= GROW_SHARE_MIN
+                     and (i not in members or float(strokes[i].length_sp) > STEM_MAX_SP))      # as 2.201: a stem fused to a note stem = unclear
+    if not members:
+        return {"members": [], "refused_vertical": refused, "box": [round(float(v), 1) for v in box], "grown": False, "grown_by": [],
+                "grown_sp": {"up": 0.0, "down": 0.0}, "box_offset_sp": None}
+    ext = _union([_sbox(strokes[i]) for i in members])
+    grown_by: List[int] = []
+    frontier = [m for m in members if ok(m)]
+    while frontier:
+        nxt = []
+        for m in frontier:
+            for j, _c in (getattr(strokes[m], "touches", None) or ()):
+                j = int(j)
+                if j in members or not ok(j):
+                    continue
+                trial = _union([ext, _sbox(strokes[j])])
+                if (trial[2] - trial[0]) / sp > INK_MAX_W_SP or (trial[3] - trial[1]) / sp > INK_MAX_H_SP:
+                    continue
+                ext = trial
+                members.append(j)
+                grown_by.append(j)
+                nxt.append(j)
+        frontier = nxt
+    x0, y0, x1, y1 = [float(v) for v in box]
+    return {"members": sorted(members), "refused_vertical": refused, "box": [round(v, 1) for v in ext], "grown": bool(grown_by), "grown_by": sorted(grown_by),
+            "grown_sp": {"up": round(max(0.0, y0 - ext[1]) / sp, 2), "down": round(max(0.0, ext[3] - y1) / sp, 2)},
+            "box_offset_sp": {"top": round((ext[1] - y0) / sp, 2), "bottom": round((ext[3] - y1) / sp, 2),
+                              "left": round((ext[0] - x0) / sp, 2), "right": round((ext[2] - x1) / sp, 2)}}
+
+
+def class_sign_stands(fam: Dict[str, Any], box: Sequence[float], sp: float) -> bool:
+    """ROADMAP 2.247 r2 (Sean's r1 tiles 5 and 6: a tremolo slash written '#', a sharp written '##' -- the CLASS's sign where the strokes were
+    unclear): with `OMR_ACCIDENTAL_KIND` on, where the strokes cannot name the kind the class's sign is written (GUESSED) only when (a) the shape
+    did not EXCLUDE it (its `shape_candidates`, if any, hold the class's type) and (b) the detector's box is the size of that class's glyph
+    (at most 1.5 x its SMuFL height; 2.245: an over-tall double-sharp box sits on a rest). Otherwise nothing is written from the class (rule 8).
+    Always True with the flag off."""
+    if not kind_enabled() or fam.get("type") in TYPES:
+        return True
+    ct = fam.get("detector_type")
+    sc = (fam.get("features") or {}).get("shape_candidates")
+    if sc and ct not in sc:
+        return False
+    g = _GLYPH_H_SP.get(str(fam.get("detector_class") or "").lower())
+    if g is None:
+        return True
+    h = (float(box[3]) - float(box[1])) / sp
+    return h <= 1.5 * g              # an UPPER bound only: a small box with unclear strokes keeps its class (the r2 control: a lower bound dropped 34 written flats)
+
+
+#: ROADMAP 2.247 r3 (Sean's r2 tiles): a flat's bowl side starts this far (spaces) below its stem's top, a natural's right upright less (it
+#: starts at the upper bar). Measured on Brahms at the right-stem-bowl-sized places: Sean's flats (r2 tiles 8-11) 1.19 / 1.31 / 1.31 / 1.31,
+#: his natural (r2 tile 12) 0.82. A cut-off measured on two plates: it only takes places BACK to 2.201's natural reading (narrows r2's rule).
+BOWL_SIDE_TOP_MIN_SP = 1.0
+
+
+#: SMuFL (Bravura) glyph heights, spaces (as `stroke_map.ACCIDENTAL_SIZE_SPACES`)
+_GLYPH_H_SP = {"accidentalsharp": 2.792, "accidentalflat": 2.456, "accidentalnatural": 2.704, "accidentaldoublesharp": 1.008,
+               "accidentaldoubleflat": 2.448}
 
 
 def members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares: Sequence[Tuple[int, float]], sp: float,
@@ -189,6 +326,10 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
       one stem: a FLAT when it stands in the left `FLAT_STEM_X_FRACTION_MAX` of the mark and a non-vertical piece lies to its right with its centre in the
         stem's lower part (the bowl); else unclear
       none or more than two: unread / unclear (a double sign, a merged pair, a stroke that is not an accidental's)
+    ROADMAP 2.247 (flag `OMR_ACCIDENTAL_KIND`): the one-stem FLAT also needs a flat's size -- stem >= `FLAT_STEM_MIN_SP`, bowl pieces spanning
+      >= `FLAT_BOWL_MIN_SP` -- else `unclear` (`flat_too_small`); two stems with the right one's top LOWER but its bottom well
+      ABOVE the left's (a natural's faint lower stroke) are `unclear` (`right_stem_lower_bottom_short`). Each such reading carries
+      `shape_candidates` (natural + flat), which `guess_of` writes beside the detector's.
     `margin`: natural = larger stagger - cut-off, sharp = cut-off - larger stagger (positive = inside the clear zone), flat = None (structural)."""
     st = [strokes[i] for i in members]
     stems = sorted([s for s in st if s.kind == "vertical" and STEM_MIN_SP <= s.length_sp <= STEM_MAX_SP],
@@ -212,6 +353,15 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
         bowl = [m for m in st if m is not s and m.kind != "vertical" and (_sbox(m)[0] + _sbox(m)[2]) / 2.0 > (sx0 + sx1) / 2.0
                 and ((_sbox(m)[1] + _sbox(m)[3]) / 2.0 - sy0) / h >= FLAT_BOWL_MIN_FRACTION]
         feat = {**base, "stem_x_fraction": round(xfrac, 3), "stem_len_sp": round(float(s.length_sp), 2), "bowl_pieces": len(bowl)}
+        if xfrac <= FLAT_STEM_X_FRACTION_MAX and bowl and kind_enabled():
+            # ROADMAP 2.247: "one stem + a piece low to its right" is a flat only at a flat's SIZE (a glyph-sized stem and bowl); a stub of a
+            # natural (its lower-left corner, its right upright faint or cut away) is not evidence of a flat (rule 8: cannot tell is not "flat").
+            bowl_h = (max(_sbox(m)[3] for m in bowl) - min(_sbox(m)[1] for m in bowl)) / sp
+            feat = {**feat, "bowl_h_sp": round(bowl_h, 2)}
+            short = round(min(float(s.length_sp) - FLAT_STEM_MIN_SP, bowl_h - FLAT_BOWL_MIN_SP), 3)
+            if short < 0:
+                return {**feat, "type": "unclear", "why": "flat_too_small", "margin": short, "shape_candidates": ["natural", "flat"]}
+            return {**feat, "type": "flat", "why": "one_stem_with_a_bowl", "margin": None}
         if xfrac <= FLAT_STEM_X_FRACTION_MAX and bowl:
             return {**feat, "type": "flat", "why": "one_stem_with_a_bowl", "margin": None}
         return {**feat, "type": "unclear", "why": "one_stem_no_bowl", "margin": None}
@@ -228,8 +378,22 @@ def read_type(strokes: Sequence[Any], members: Sequence[int], sp: float, refused
             "n_bars": sum(1 for m in st if m.kind == "horizontal")}
     if gap < STEM_GAP_MIN_SP:
         return {**feat, "type": "unclear", "why": "stems_too_close", "margin": None}
+    if (hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP and kind_enabled() and bot < NATURAL_STAGGER_MIN_SP
+            and float(right.length_sp) <= FLAT_BOWL_H_SP and top >= BOWL_SIDE_TOP_MIN_SP):
+        # ROADMAP 2.247 r2 (Sean's r1 tile 8, Brahms p12: a flat read natural -- right "stem" 1.06 sp, its bottom level with the left's): a
+        # natural's right upright HANGS below the left (its bottom lower) or, where that lower stroke is faint, still runs from the upper bar
+        # past the lower one (~2 sp); a right stroke no taller than a flat's bowl (SMuFL ~1.2 sp) ending level with the stem is a bowl's side
+        # -- r3 (Sean's r2 tile 12, Brahms p4: a natural whose lower stroke is lost ALSO leaves a ~1 sp right upright ending level): only where
+        # that right stroke starts as low as a bowl does (`BOWL_SIDE_TOP_MIN_SP` below the stem's top); a natural's starts at its upper bar
+        return {**feat, "type": "unclear", "why": "right_stem_bowl_sized", "margin": round(float(right.length_sp) - FLAT_BOWL_H_SP, 3),
+                "shape_candidates": ["natural", "flat"]}
     if hi >= NATURAL_STAGGER_MIN_SP and lo >= -STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "natural", "why": "right_stem_lower", "margin": round(hi - NATURAL_STAGGER_MIN_SP, 3)}
+    if kind_enabled() and top >= NATURAL_STAGGER_MIN_SP and bot < -FAINT_LOWER_REVERSE_SP:
+        # ROADMAP 2.247: the natural's offset at the TOP, but the right upright stops short at the bottom (its lower stroke faint) -- a natural, or
+        # a flat whose bowl side read as a stem; never a sharp. Not decided (the cut-offs are 2.201's, measured on two plates).
+        return {**feat, "type": "unclear", "why": "right_stem_lower_bottom_short", "margin": round(bot + FAINT_LOWER_REVERSE_SP, 3),
+                "shape_candidates": ["natural", "flat"]}
     if hi <= SHARP_STAGGER_MAX_SP and lo >= -SHARP_STAGGER_REVERSE_MAX_SP:
         return {**feat, "type": "sharp", "why": "stems_level", "margin": round(SHARP_STAGGER_MAX_SP - hi, 3)}
     if hi <= SHARP_STAGGER_MAX_SP:
@@ -242,18 +406,29 @@ def family_row(detector_class: str, box: Sequence[float], strokes: Sequence[Any]
                blocked: Sequence[int] = (), rivals: Sequence[str] = ()) -> Dict[str, Any]:
     """The whole family measurement of ONE accidental-family box: extent + type + the detector's label KEPT as a recorded fact (never the filter) and
     its candidate types (the winner's and every merged rival's, in the family only). Plain JSON-able dict."""
-    ext = members_and_extent(box, strokes, shares, sp, blocked)
-    t = read_type(strokes, ext["members"], sp, ext["refused_vertical"])
+    if kind_enabled() and str(detector_class).lower().startswith("accidental"):
+        # 2.247 r2: the mark's own ink, the box only the seed (accidental* boxes; a key signature's key* boxes stand in a fixed run and keep the
+        # 2.201 extent -- the r2 control lost 4 printed keys on Litolff when they were grown)
+        ext = ink_members_and_extent(box, strokes, shares, sp, blocked)
+        all_st, mem = _expanded(strokes, ext["members"])                            # a 2.242 whole stroke read by its parts
+        t = read_type(all_st, mem, sp, ext["refused_vertical"])
+        t["box_offset_sp"] = ext.get("box_offset_sp")
+    else:
+        ext = members_and_extent(box, strokes, shares, sp, blocked)
+        t = read_type(strokes, ext["members"], sp, ext["refused_vertical"])
     cands: List[str] = []
     for c in [detector_class] + [str(r) for r in rivals]:
         ty = type_of_class(c)
         if ty and ty not in cands:
             cands.append(ty)
-    return {"type": t["type"], "why": t.get("why"), "margin": t.get("margin"),
+    out = {"type": t["type"], "why": t.get("why"), "margin": t.get("margin"),
             "features": {k: v for k, v in t.items() if k not in ("type", "why", "margin")},
             "box": ext["box"], "grown": ext["grown"], "grown_by": ext["grown_by"], "grown_sp": ext["grown_sp"], "members": ext["members"],
             "detector_class": str(detector_class), "detector_type": type_of_class(detector_class), "candidates": cands,
             "agrees_with_detector": (t["type"] == type_of_class(detector_class)) if t["type"] in TYPES else None}
+    if kind_enabled():
+        out["features"]["class_sign_stands"] = class_sign_stands(out, box, sp)      # 2.247 r2: read by gather_accidental_positions
+    return out
 
 
 def anchor_fraction(t: str) -> Optional[float]:
@@ -283,6 +458,11 @@ def guess_of(fam: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     order = [chosen] + [c for c in cands if c != chosen] if chosen else list(cands)
     if clear and t not in order:
         order = [t] + order
+    # ROADMAP 2.247 (flag `OMR_ACCIDENTAL_KIND`; only its readings carry `shape_candidates`): the kinds the SHAPE could not tell apart join the
+    # candidates, so a written guess shows both (never the class alone where the shape says "natural or flat").
+    for c in ((fam.get("features") or {}).get("shape_candidates") or ()):
+        if c not in order:
+            order.append(c)
     out = []
     for i, c in enumerate(order):
         if c is None:
