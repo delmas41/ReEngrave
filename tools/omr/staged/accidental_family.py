@@ -200,7 +200,7 @@ def ink_members_and_extent(box: Sequence[float], strokes: Sequence[Any], shares:
                 nxt.append(j)
         frontier = nxt
     x0, y0, x1, y1 = [float(v) for v in box]
-    return {"members": sorted(members), "refused_vertical": refused, "box": [round(v, 1) for v in ext], "grown": True, "grown_by": sorted(grown_by),
+    return {"members": sorted(members), "refused_vertical": refused, "box": [round(v, 1) for v in ext], "grown": bool(grown_by), "grown_by": sorted(grown_by),
             "grown_sp": {"up": round(max(0.0, y0 - ext[1]) / sp, 2), "down": round(max(0.0, ext[3] - y1) / sp, 2)},
             "box_offset_sp": {"top": round((ext[1] - y0) / sp, 2), "bottom": round((ext[3] - y1) / sp, 2),
                               "left": round((ext[0] - x0) / sp, 2), "right": round((ext[2] - x1) / sp, 2)}}
