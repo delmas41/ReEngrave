@@ -236,9 +236,11 @@ def pool_id_lists(record: dict) -> dict:
         return record
 
     # ── the control: expand our own output and compare ─────────────────────
-    check = [dict(v) for v in out_verdicts]
-    _expand_verdicts(check, pools)
-    for orig, back in zip(verdicts, check):
+    # ROADMAP 2.249: ONE verdict at a time (the same comparison), so the
+    # check never holds a second expanded copy of every pooled list at once.
+    for orig, pooled in zip(verdicts, out_verdicts):
+        back = dict(pooled)
+        _expand_verdicts([back], pools)
         for fld in FLAT_FIELDS + (GROUPED_FIELD,):
             if orig.get(fld) != back.get(fld):
                 raise PoolMismatch(
@@ -298,3 +300,52 @@ def load_record(path: Union[str, Path]) -> dict:
 def dumps_for_file(result: dict, **kw: Any) -> str:
     """`json.dumps` of `pooled_result(result)`; `kw` as for `json.dumps`."""
     return json.dumps(pooled_result(result), **kw)
+
+
+#: ROADMAP 2.249: the levels `dump_to_file` walks itself; everything below
+#: them is one `json.dumps` call per element.
+_STREAM_DEPTH = 3
+
+
+def _stream(obj: Any, write, enc, depth: int) -> None:
+    if depth > 0 and isinstance(obj, dict) and all(isinstance(k, str) for k in obj):
+        write("{")
+        first = True
+        for k, v in obj.items():
+            if not first:
+                write(",")
+            first = False
+            write(enc(k))
+            write(":")
+            _stream(v, write, enc, depth - 1)
+        write("}")
+    elif depth > 0 and isinstance(obj, list):
+        write("[")
+        for i, v in enumerate(obj):
+            if i:
+                write(",")
+            write(enc(v))
+        write("]")
+    else:
+        write(enc(obj))
+
+
+def dump_to_file(result: dict, path: Union[str, Path]) -> int:
+    """⚠️ ROADMAP 2.249: the record FILE, written as it is encoded.
+
+    BYTE-IDENTICAL to `dumps_for_file(result, separators=(",", ":"),
+    default=str)` (`test_record_stream.py` holds the two up against each
+    other), but the whole-record string -- ~20 GB on the Brahms movement,
+    held two or three times over by `json.dumps` + `write_text`'s encode --
+    never exists: the envelope and the `record` dict are walked here and each
+    row is one `json.dumps` call written straight to the file. Returns the
+    bytes written."""
+    enc = json.JSONEncoder(separators=(",", ":"), default=str).encode
+    n = 0
+    with open(path, "w", encoding="utf-8", buffering=1 << 20) as fh:
+        def write(s: str) -> None:
+            nonlocal n
+            n += len(s)
+            fh.write(s)
+        _stream(pooled_result(result), write, enc, _STREAM_DEPTH)
+    return n

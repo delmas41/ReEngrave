@@ -35,6 +35,7 @@ import argparse
 import json
 import os
 import sys
+import time
 from pathlib import Path
 from typing import Any, Optional
 
@@ -472,6 +473,10 @@ def main(argv=None) -> int:
     if args.cell_map:       # ROADMAP 2.231: which master's cells this record read (version tag names the cells)
         from . import cell_map as _cell_map
         prov["cell_map"] = _cell_map.loaded()
+    # ROADMAP 2.249 (2.246's proposal): per-stage and per-page seconds and peak RSS -- a fact about the RUN, like the settings.
+    from . import run_meter as _run_meter
+    if _run_meter.last():
+        prov["run"] = _run_meter.last()
     result["provenance"] = prov
     # ⚠️⚠️ ROADMAP 1.1b, 2026-09-22: COMPACT, NOT `indent=2`. A staged
     # record's own `record_slim.py` measured this format change ALONE
@@ -493,11 +498,16 @@ def main(argv=None) -> int:
     # them on Breitkopf. `result` itself is NOT pooled -- `--musicxml` below
     # and every in-memory consumer see the plain dict -- and a reader of the
     # file goes through `record_io.load_record`, never bare `json.loads`.
-    from .record_io import dumps_for_file
-    file_text = dumps_for_file(result, separators=(",", ":"), default=str)
+    from .record_io import dumps_for_file, dump_to_file
     if args.out:
-        Path(args.out).write_text(file_text)
-        print(f"wrote {args.out}")
+        # ROADMAP 2.249: streamed, byte-identical to `dumps_for_file(...,
+        # separators=(",", ":"), default=str)`; the whole-record string is
+        # never built (it was ~20 GB, held 2-3x, on the Brahms movement).
+        _t = time.time()
+        _n = dump_to_file(result, args.out)
+        print(f"[run] wrote {args.out}: {_n / 1e9:.2f} GB in {time.time() - _t:.0f}s, "
+              f"peak rss {_run_meter.peak_rss_bytes() / 1e9:.1f} GB", file=sys.stderr, flush=True)
+        print(f"wrote {args.out}", flush=True)
     else:
         print(dumps_for_file(result, indent=2, default=str))
 

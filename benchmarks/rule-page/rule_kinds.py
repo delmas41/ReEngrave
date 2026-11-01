@@ -437,5 +437,5 @@ INFRA = {
     "consequences.py", "evaluate.py", "export.py", "gather.py", "gather_coverage.py", "health.py", "infer.py", "inferences.py",
     "inventory.py", "judged.py", "lane_report.py", "one_test.py", "legacy.py", "letter_look_report.py", "lilypond.py", "meaning.py",
     "pipeline.py", "positions.py", "producers.py", "reach.py", "readout.py", "record.py", "record_coverage.py", "record_io.py",
-    "record_slim.py", "regather_report.py", "trace.py", "weight_routing.py", "wiring.py",
+    "record_slim.py", "regather_report.py", "run_meter.py", "trace.py", "weight_routing.py", "wiring.py",
 }
