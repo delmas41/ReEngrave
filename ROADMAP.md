@@ -17,7 +17,62 @@ re-enter.
 
 ---
 
-## START HERE — after 2026-10-31 (main ≥ the commit naming this block)
+## START HERE — after 2026-10-31 evening (main ≥ the commit naming this block)
+
+Read FIRST.
+
+**The next session starts the overnight full re-gather on main.** Sean asked for it, so this time the session runs it.
+- **Command:** `TAG=20261031-night THROUGH=infer bash benchmarks/acceptance/overnight/regather_20260930.sh`, run from the main checkout. It makes its own worktree.
+- **Same pages as 20261029-night:** Litolff 1-16, Brahms 0-26.
+- **No lane may run while it runs:** Surya OCR times out under load and silently drops staff names, which moves clefs and keys.
+- **Afterwards,** compare against 20261029-night with `compare_20261029.sh` (TAG/BASE adjusted), then write the README and version_memory entry.
+- **Watch:**
+  - Brahms took 352 min and 19.6 GB last time, inferred to be memory pressure (2.246). Today's landings add GATHER rows.
+  - The disk has ~164 GB free (cleaned 10-31).
+  - Never load the Brahms whole record in a lane.
+
+**Landed ON 2026-10-31.** All are deny-list flags, default ON. Each carries Sean's tiles, judged right->wrong 0, and the fast tier; from 2.240 step 3 on, also a real 2-page gather.
+- **2.242** `OMR_ACCIDENTAL_WHOLE`: one accidental, one piece; glyph-sized to count whole.
+- **2.223** `OMR_ARC_BIND_PAGEWIDE` + `OMR_HAIRPIN_BIND_PAGEWIDE`: arcs and hairpins bound page-wide to their start and stop notes. Letters, including those in unread words, are not hairpins.
+- **2.240 steps 1-3** `OMR_PAGE_MARKS` + `OMR_PAGE_OWNER` + `OMR_PAGE_OWNER_READ`:
+  - one page-mark id across padded cells;
+  - one owning staff per mark, from staff lines, ledgers (never another staff's line, never arc ink), stem, the hairpin witness, and arcs by their end notes;
+  - ADJUDICATE reads the owner first; the old `distance` / `range_veto` decide only where it abstains (Sean: they were wrong 11/11 where they overrode it).
+- **2.247** `OMR_ACCIDENTAL_KIND`: the accidental's kind is read from its own ink (boxes are cut short), with a flat-size rule and a bowl-side rule.
+- **Hotfix f7422b035:** ABSTAIN `owner_box_not_one_head`. Main's gather raised with OMR_PAGE_OWNER ON; a vocabulary test now guards it.
+- **2.245 round 3** (if landed; see its ROADMAP row): wide head boxes are read for the heads inside, arcs must bow, narrow 'hairpins' are letters.
+
+**Rulings 2026-10-31** (DECISIONS):
+- The ledger lines decide when the stem disagrees, written plain (CLAUDE.md §5).
+- A hairpin is below its staff and divides the notes above it from those below (page-facts).
+- No lanes on test-only artifacts or on one bad-scan bar.
+- **Landing rule:** fast tier + one real 2-page gather. The fast tier never reads a real page, which is how the hotfix's crash got through.
+
+**Big items next, in Sean's order of worth** (biggest source first; none started):
+1. **Every glyph's extent from its own ink.** Head boxes are too small on most of today's tiles ("box not big enough"); accidentals already do this (2.242/2.247). The same move for heads, then flags and rests, removes a whole class of tile complaints and owner/pitch errors.
+2. **A mid-system clef-change reader** (2.245 r2). A clef change inside a system has no clef box and no claim, so its ink is read as heads and rests.
+3. **Page-wide order fixes** (plan §9-10):
+   - the hairpin reader runs before the word claim, so letters become hairpins;
+   - rehearsal-mark frames have no reader;
+   - marks read by nothing: 8va, pedal, segno/coda, trill lines.
+4. **Retire `distance` / `range_veto`** where the page owner decides (Sean 11/11). Arcs not bound by 2.223 and seen from two staves are still written twice.
+5. **EXPORT holds out a whole bar** when one false note leaves a voice short (2.245 r1 p4 'ff', `_marked_empty_measure`; `wider_than_a_head` is not in `_NOT_A_GAP_REASONS`). This is a later-stage rule to rework.
+6. **Record size and time** (2.246): stamp per-stage seconds and peak RSS in the overnight; slim the per-verdict payloads (duration 4 GB, voices 7 GB on Brahms).
+7. **2.240 steps 4-5:** tilted barline columns, a page stroke map.
+8. **Parked branches:**
+   - 2.233 value undecided;
+   - 2.204 stems;
+   - 2.217 ledgers;
+   - 2.222 one head;
+   - 2.212 twin heads.
+   Re-measure each after the overnight before reviving it.
+
+**Machine-local:**
+- Masters are Litolff cm-54ccb4729528 and Brahms cm-3ccd049d7c3c.
+- Lane-report slices are shared and keyed by tag only. A page-subset run overwrites them (2.244 follow-up), so use `--tag` for private slices.
+- Lane agents must keep work dirs under their own worktree, never the session scratchpad (wiped 10-31).
+
+## START HERE — after 2026-10-31 morning (superseded by the block above) (main ≥ the commit naming this block)
 
 Read FIRST.
 
