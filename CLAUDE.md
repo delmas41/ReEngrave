@@ -248,6 +248,11 @@ position (no arrows, never wider than the tile). A GATHER claim is proved
 by what it CAPTURES (Sean's tiles, the hand-labelled pages), not by a full
 re-gather. Each lane brief names the old system's work on its symbol and
 what was tried and dropped (`docs/ink-rules.md`, page-facts §5, benchmarks).
+**Name the rule that owns the value** (Sean, 2026-10-31): every lane brief
+names the existing rule (page-facts, DECISIONS) that owns each value the lane
+may change -- pitch, owner, value, kind -- and the lane checks its change
+against that rule before measuring it (2.248 moved far heads' positions by an
+ink centre; page-facts: a far head is placed by its ledger lines only).
 
 **Landing.** Every lane report is a ledger: check its claims against the
 tree with one command before believing it. Merge main first; an `A/B` on a

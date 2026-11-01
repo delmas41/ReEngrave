@@ -77,3 +77,28 @@ out/print/2.245-r2-tiles: 4 split-off heads (incl. r1 tiles 4 and 10's places), 
 
 ### Sean's r2 answers (2026-10-31)
 Bow test 2/2 (7, 11 hairpin parts), letter test 2/2 (4 c of cresc., 9 e of legato), unread wide box 1 a beam, 12 a C clef. Head split right 2/4 (5, 8 eighths), wrong 2/4 (2 stem + flag, 10 a C-clef piece). Refused remainders hold real notes: 3 a head + slur, 6 a half note + arc tip (the opening erases a hollow head's ring).
+
+## Round 3 (2026-10-31, lane-2.245-wrong-kind 2912197d4, OMR_BOX_KIND_SIZE OFF; written by the manager from the lane report)
+### Cause and process lesson
+- Round 2 took a blob as a head because it was head-SIZED; size is not shape: a flag's curl (r2 tile 2) and a C clef's bowl (r2 tile 10) are thick enough to survive a 0.7 sp opening; a half note's ring is thinner than that disc, so the opening erased it (tile 6) and its remainder box was refused with the head inside. Tile 3's head under a slur has its own box (harmless, but not counted as accounted for).
+- Found on real cells with an offline probe (`split_probe.py`): filling every hole fused Litolff's beamed eighths into one block (the paper between beam, stems and heads is a "hole"); a whole-component thick-bar test caught a beamed group's far stems.
+- Lesson: check a reader's veto on the real cells it fired on (the probe draws each found/vetoed blob) before a 2-hour re-gather.
+### Built (`box_kind.read_heads`)
+A head split off a wide box must pass all of: read on the staff-erased ink after a 0.3 sp vertical close (bridges a line erased through a hollow head); only head-sized holes filled (<= 0.6 sp², <= 1.1 sp a side); per-core erosion with a 0.7 sp disc, each core grown back alone (a one-head-tall band with stems a head apart is cut between the stems); size 0.9-1.9 x 0.7-1.5 sp, fill >= 0.6, w/h 0.9-2.2; on the staff grid within 0.3 of a half-step; not in a detector clef box, no thick vertical bar (0.35 x 2.5 sp) within 0.6 sp; not at a stem end whose other end holds a head. The wide box: a blob under its own head box counts as covered; refused as the remainder only when every head blob is added or covered AND a harder look (0.45 sp close, small holes filled) finds no head-sized core with >= 0.3 ink share left; anything unsure -> `wide_box_unread`, and adjudicate_duration abstains so EXPORT writes no note for it. Bow and letter tests unchanged.
+### Round-2 asks
+- Tile 9 (C clef): a mid-system clef change never boxed as a clef -- no claim to honour; the thick-bar veto now stops a clef bowl becoming a head; tile 9's own 2.54 sp box is under the 3 sp rule (unchanged).
+- p4 4/1/3/3: the split sat on a C-clef piece -> now unread, no note (right).
+- p2 2/0/7/10 half: caught by the remainder look -> the box abstains and the half is NOT written (rule 8: never a guessed note -- but a real half is lost).
+- p4 4/0/0/11 'ff': the refused remainder; the bar then fails its sum and EXPORT holds out the whole bar (`_marked_empty_measure`), dropping voice 2's real halves -- EXPORT's hold-out, named, not fixed.
+### Measures (frozen sample, both arms re-gathered; out/lane-report/2.245-r3/)
+- Judged right->wrong 0, unwritten->wrong 0 (L wrong->right 1).
+- Litolff raw: notes +14 -30, rests +27 -9, pitches ~98, clefs -16, keys -16; notes not written 2488 -> 2496. 296 of 314 changed places are at no box-kind cell: the OFF gather lost 4 Surya crops (ON 0) -- OCR noise in the baseline, not the flag (not re-run, ~3 h).
+- Brahms raw: notes -2, slurs -4, values ~2, words +2 -3; red bars 164 -> 162; not written 3090 -> 3092.
+- At box-kind cells: L p9 9/0/3/1 three eighths written (right); p4 4/1/3/3 clef quarter gone (right); p2 2/0/7/10 half gone (abstain); p4 4/0/0/11 halves gone (EXPORT); p2 2/1/10/1 and p6 6/1/2/12 a quarter each gone (not checked on crops). B p5 5/0/4/4 the slur 'half' gone (right); 4 slurs at p19 gone (bow test).
+- ON sample: L 30 wide boxes (6 split heads, 19 unread, 5 refused remainders); B 3, all unread. No hollow head split off anywhere (hollow path proved only by tests and tile 6's abstain).
+- Real 2-page gather ON (L p6,9) exit 0; fast tier 9,660 passed, 0 failed; tests 22.
+### Tiles
+out/print/2.245-r3-tiles: 6 split-off heads (all filled), 3 refused remainders (incl. r2 tile 3's place), 3 unread boxes at r2 tiles 2, 6, 10's places.
+
+### Sean's r3 answers (2026-10-31)
+Split-off heads 5/6 eighths (6 is a very small part of a beam). Refused remainders right (3 three eighths split off as 10/11; 7 slur over a head with its own box; 9 a beam). Unread: 5 right (its eighth split off as 12), 8 right (C clef + quarter rest), 1 a real half note (+ arc) not written -- must be marked unread (red).
