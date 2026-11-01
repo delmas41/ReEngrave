@@ -1471,7 +1471,7 @@ def gather_second_hollow(log: Log, cells: Sequence[Any],
 
 def gather_notehead_positions(log: Log, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
-                              detections: Dict[str, List[Any]]) -> None:
+                              detections: Dict[str, List[Any]], pws: Any = None) -> None:
     """The notehead's fractional STAFF POSITION -- clef-free, and kept.
 
     ⚠️ THIS IS THE THESIS OF THE WHOLE ARCHITECTURE IN ONE FUNCTION.
@@ -1487,6 +1487,13 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     between two positions", which on a warped scan is the population
     `OMR_CELL_LINE_TRACE` exists for.
     """
+    from . import head_extent, head_ink
+    ink_pos_on = head_extent.enabled()
+    page_binary = getattr(getattr(pws, "page", None), "binary", None) if ink_pos_on else None
+
+    def foreign_by_cell(c: Any, dets: Sequence[Any]) -> List[Any]:
+        return [pb for pb in (_page_box(c, od) for od in dets if head_ink.is_foreign_class(od.smufl_name)) if pb is not None]
+
     by_key = {}
     for c in cells:
         key = local.get(c.staff_index)
@@ -1550,6 +1557,23 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
+            # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default OFF): the box is only the seed. Where the head's OWN ink
+            # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre
+            # is the position; the detector's stays on the row. Never over 2.73's line-cut position.
+            elif ink_pos_on and page_binary is not None:
+                pb = _page_box(c, d)
+                up = getattr(c, "upscale_factor", None)
+                if pb is not None and up:
+                    hs_page = float(half_step) / float(up)
+                    others = [ob for ob in (_page_box(c, od) for oj, od in enumerate(dets)
+                                            if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)) if ob is not None]
+                    got = head_extent.ink_extent(page_binary, pb, 2.0 * hs_page, foreign_by_cell(c, dets), others)
+                    if got["why"] is None:
+                        moved = head_extent.ink_position(pos_float, pb, got["extent"], hs_page)
+                        if moved is not None:
+                            extra = {"from_head_ink": [round(v, 1) for v in got["extent"]],
+                                     "detector_position_float": round(pos_float, 3)}
+                            pos_float = moved
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
@@ -16994,7 +17018,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # by index) and BEFORE `gather_notehead_positions` and
         # `gather_notehead_ink`, which both read its row.
         gather_head_line_cut(log, cells, local, detections)
-        gather_notehead_positions(log, cells, local, detections)
+        gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
         # and its consumer's whole rule is a comparison between the two. Filed
