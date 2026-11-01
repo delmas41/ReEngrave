@@ -87,6 +87,11 @@ HEAD_BLOB_W_SP = (0.9, 1.9)
 HEAD_BLOB_H_SP = (0.7, 1.5)
 HEAD_FILL_MIN = 0.6
 HEAD_ASPECT = (0.9, 2.2)
+#: a band cut into merged heads must be at least this tall (a filled head ~1.0+ sp; a beam, even merged with a line remnant, ~0.8)
+BAND_MIN_H_SP = 0.9
+#: the run test: the ink beside a blob (this far each side) over its own rows; a beam piece measured 0.82 / 0.91
+RUN_SIDE_SP = 0.6
+RUN_SHARE_MIN = 0.6
 GRID_TOL_STEPS = 0.3
 STEM_MIN_SP = 2.5
 CLEF_BAR_SP = 0.35
@@ -181,7 +186,10 @@ def read_heads(ink, sp: float, staff_top: float, origin=(0, 0), head_boxes=(), c
         x0, x1 = max(0, cxs.min() - r), min(ink.shape[1], cxs.max() + 1 + r)
         y0, y1 = max(0, cys.min() - r), min(ink.shape[0], cys.max() + 1 + r)
         ws, hs = (x1 - x0) / sp, (y1 - y0) / sp
-        if ws > HEAD_BLOB_W_SP[1] and HEAD_BLOB_H_SP[0] <= hs <= HEAD_BLOB_H_SP[1]:
+        # round 4 (Sean's r3 tile 6, Litolff p8 8/1/0/17/20): a Litolff beam merged with a line remnant is ~0.8 sp thick, survives the
+        # core erosion as one band, and its stems stand a head apart -- it was cut into "heads". A row of merged heads is a HEAD tall
+        # (>= BAND_MIN_H_SP); a beam never is.
+        if ws > HEAD_BLOB_W_SP[1] and BAND_MIN_H_SP <= hs <= HEAD_BLOB_H_SP[1]:
             # MERGED heads in a row (Litolff): a band one head tall whose stems stand at a head's spacing is that many heads, cut at
             # the middles between its stems; otherwise it stays one blob (and is unread below)
             sx = sorted(s[0] for s in stems if x0 - 0.3 * sp <= s[0] <= x1 + 0.3 * sp
@@ -216,6 +224,19 @@ def read_heads(ink, sp: float, staff_top: float, origin=(0, 0), head_boxes=(), c
             unread = True
             vetoed.append(rec + ("not_head_shaped",))
             continue
+        if not cut:
+            # round 4 (Sean's r3 tile 6, Litolff p8 8/1/0/17/20: 1.01 x 0.76 sp, fill 0.93, on the grid -- a piece of a 0.8-sp beam cut
+            # between two stems): a head stands on its own across its rows; ink that runs on through its rows on BOTH sides is a run (a
+            # beam, a line), not a head. (A row of merged heads is read by the band cut above, not here.)
+            side = max(2, int(round(RUN_SIDE_SP * sp)))
+            lft = ink[y0:y1, max(0, x0 - side):x0]
+            rgt = ink[y0:y1, x1:min(ink.shape[1], x1 + side)]
+            # ... and it is only a BEAM's thickness (< BAND_MIN_H_SP): merged heads side by side also have ink on both sides, but are a
+            # head tall
+            if hs < BAND_MIN_H_SP and lft.size and rgt.size and lft.mean() >= RUN_SHARE_MIN and rgt.mean() >= RUN_SHARE_MIN:
+                unread = True
+                vetoed.append(rec + ("piece_of_a_run",))
+                continue
         pos = (cy - staff_top) / half
         if abs(pos - round(pos)) > GRID_TOL_STEPS:
             unread = True
@@ -303,9 +324,9 @@ def split_wide_heads(dets, img_no_staff, sp: float, staff_top: float = 0.0):
             continue
         bx0, by0 = int(d.x_canonical), int(d.y_canonical)
         bx1, by1 = int(d.x_canonical + d.width_canonical), int(d.y_canonical + d.height_canonical)
-        # the region: the box, widened by half a space and heightened by 4 spaces (stems and clef bars reach past it)
-        rx0, ry0 = max(0, int(bx0 - 0.5 * sp)), max(0, int(by0 - 4 * sp))
-        rx1, ry1 = min(img.shape[1], int(bx1 + 0.5 * sp)), min(img.shape[0], int(by1 + 4 * sp))
+        # the region: the box, widened by 1.5 spaces (the run test looks beside a blob) and heightened by 4 (stems, clef bars)
+        rx0, ry0 = max(0, int(bx0 - 1.5 * sp)), max(0, int(by0 - 4 * sp))
+        rx1, ry1 = min(img.shape[1], int(bx1 + 1.5 * sp)), min(img.shape[0], int(by1 + 4 * sp))
         if rx1 <= rx0 or ry1 <= ry0:
             continue
         hboxes = [(o.x_canonical, o.y_canonical, o.x_canonical + o.width_canonical, o.y_canonical + o.height_canonical) for o in narrow_heads]

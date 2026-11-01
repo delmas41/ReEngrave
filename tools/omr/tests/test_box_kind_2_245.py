@@ -221,6 +221,26 @@ class TestRoundThreeHeadsHaveAHeadsOwnShape(unittest.TestCase):
         self.assertEqual(bk["covered"], 1, bk)
         self.assertFalse(bk["unread"], bk)
 
+    def test_r3_tile_6_a_piece_of_a_thick_beam_between_two_stems_is_not_a_head_RED(self):
+        # Litolff p8 8/1/0/17/20: a beam ~0.8 sp thick (merged with a line remnant) cut between two stems read 1.01 x 0.76 sp, fill 0.93,
+        # on the grid; its ink runs on through its rows on both sides (0.82 / 0.91)
+        img = _paper(600, 500)
+        _rect(img, 40, 302, 300, 34)                              # the beam, 0.85 sp thick, centred on a line (y 320)
+        for x in (145, 245):
+            img[302:312, x:x + 10] = 255                          # where the scan thins it, the core erosion breaks it into pieces
+        for x in (60, 160, 260):
+            _rect(img, x, 120, 6, 190)                            # three stems down onto it
+        out, bk = self.split(img, [_D("noteheadBlackOnLine", 100, 300, 130, 40)])
+        self.assertEqual(bk["added"], [], bk)                     # round 3 added the piece between the two thin places
+        self.assertTrue(bk["unread"], bk)
+
+    def test_TWIN_a_lone_head_beside_the_same_stems_is_still_a_head(self):
+        img = _paper(600, 500)
+        _ellipse(img, 120, 320, 54, 40)
+        _rect(img, 143, 170, 6, 150)
+        out, bk = self.split(img, [_D("noteheadBlackOnLine", 60, 290, 130, 60)])
+        self.assertEqual(len(bk["added"]), 1, bk)
+
     def test_an_arc_or_a_beam_alone_holds_no_head_and_the_box_is_refused(self):
         img = _paper(600, 400)
         _rect(img, 40, 290, 200, 20)                              # a beam alone
@@ -291,3 +311,24 @@ class TestTheStrokeOwnerNeedsNoSizeVeto(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestAnUnreadWideBoxIsMarkedUnreadInTheFile(unittest.TestCase):
+    """Sean's r3 tile 1 (Litolff p2 2/0/7/10/3, a real half in a box whose inside is not read): never written as a note and never a silent
+    gap -- EXPORT drops it under `unread:wide_box_unread`, which `_attach_unplaced` files as an unread glyph of its bar."""
+
+    def _rec(self, env, split):
+        from tools.omr.staged import export as SX
+        log = _log()
+        wide = _box(log, 15, "noteheadBlackOnLine", WIDE, split=split)
+        _run(log, env)
+        return SX._place_notes(SX.Record({"record": log.to_json()}), {}), SX
+
+    def test_ON_unread_the_box_is_dropped_as_UNREAD_and_is_a_gap_RED(self):
+        dropped, SX = self._rec(ON, {"heads": 0, "added": [], "unread": True})
+        self.assertEqual(dropped.get("unread:wide_box_unread"), 1, dict(dropped))
+        self.assertNotIn("unread:wide_box_unread", SX._NOT_A_GAP_REASONS)
+
+    def test_TWIN_OFF_nothing_is_dropped_under_that_name(self):
+        dropped, _SX = self._rec(OFF, {"heads": 0, "added": [], "unread": True})
+        self.assertNotIn("unread:wide_box_unread", dropped)
