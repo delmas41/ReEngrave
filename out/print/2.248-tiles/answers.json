@@ -16,5 +16,15 @@
   "12": "8"
  },
  "note": "Values only; tile 10 unanswered; line/space for the moved notes (1, 2, 6, 7, 9, 11, 12) asked as a follow-up.",
- "box_size": "Every box was a good size for the notehead"
+ "box_size": "Every box was a good size for the notehead",
+ "line_or_space": {
+  "1": "line",
+  "2": "space",
+  "6": "space",
+  "7": "line",
+  "9": "space",
+  "11": "line",
+  "12": "line"
+ },
+ "scored": "new (ink-centre) position right on 1, 6, 9, 11, 12; old (box-centre) right on 2, 7"
 }
