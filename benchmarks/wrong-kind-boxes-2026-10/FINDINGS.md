@@ -99,3 +99,6 @@ A head split off a wide box must pass all of: read on the staff-erased ink after
 - Real 2-page gather ON (L p6,9) exit 0; fast tier 9,660 passed, 0 failed; tests 22.
 ### Tiles
 out/print/2.245-r3-tiles: 6 split-off heads (all filled), 3 refused remainders (incl. r2 tile 3's place), 3 unread boxes at r2 tiles 2, 6, 10's places.
+
+### Sean's r3 answers (2026-10-31)
+Split-off heads 5/6 eighths (6 is a very small part of a beam). Refused remainders right (3 three eighths split off as 10/11; 7 slur over a head with its own box; 9 a beam). Unread: 5 right (its eighth split off as 12), 8 right (C clef + quarter rest), 1 a real half note (+ arc) not written -- must be marked unread (red).
