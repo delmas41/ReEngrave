@@ -2410,11 +2410,11 @@ def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     return None, "no_position"
 
 
-def _half_step_page_px(ev: Evidence, row: Any, h: float) -> Optional[float]:
-    """Page pixels per half-step IN THIS HEAD'S OWN BAR (the cell's staff space is canonical; the head's box is on the record in both frames,
-    so page px per canonical unit is this bar's). Factored out of `_head_extent` (ROADMAP 2.250) so the tall-end reader uses the same unit."""
-    cell_rows = ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL))
-    box_rows = ev.rows(Q.GLYPH_BOX, subject=row.subject)
+def _half_step_from_rows(cell_rows: Any, box_rows: Any, h: float) -> Optional[float]:
+    """Page pixels per half-step IN THIS HEAD'S OWN BAR from the rows the CALLER read (`Q.CELL_STAFF_SPACE` of its cell, `Q.GLYPH_BOX` of
+    the head): the cell's staff space is canonical, the head's box is on the record in both frames, so page px per canonical unit is this
+    bar's. Factored out of `_head_extent` (ROADMAP 2.250) so the tall-end reader uses the same unit; the READS stay in the callers (the
+    inventory's `wants` check follows helpers only to depth 3)."""
     half_canon = ((cell_rows[0].detail or {}).get("half_step") if cell_rows else None)
     canon_h = None
     if box_rows and isinstance(box_rows[0].value, (list, tuple)) and len(box_rows[0].value) >= 5:
@@ -2432,7 +2432,8 @@ def _tall_end_step(ev: Evidence, row: Any, cy: float, h: float, end_y: float) ->
     if src != "geometry":
         return step, src
     pr = next((p for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=row.subject) if (p.detail or {}).get("rounded") is not None), None)
-    half_page = _half_step_page_px(ev, row, h)
+    half_page = _half_step_from_rows(ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL)),
+                                     ev.rows(Q.GLYPH_BOX, subject=row.subject), h)
     if pr is None or half_page is None or (pr.detail or {}).get("from_head_cut") is not None:
         return None, "tall_box_end"
     return int(round(float(pr.value) + (end_y - cy) / half_page)), "geometry_tall_end"
@@ -2469,7 +2470,8 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
         return None
     # the bar's own unit: the cell's staff space is canonical, the head's box is
     # on the record in both frames, so page px per canonical unit is THIS bar's.
-    half_page = _half_step_page_px(ev, row, h)
+    half_page = _half_step_from_rows(ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL)),
+                                     ev.rows(Q.GLYPH_BOX, subject=row.subject), h)
     if half_page is None:
         return None
     piece_max = HEAD_CUT_MAX_BOX_HEIGHT_SPACES * 2.0 * half_page
