@@ -26,6 +26,8 @@ negative above, >8 below) -- `Q.NOTEHEAD_STAFF_POSITION`'s unit.
 """
 from __future__ import annotations
 
+import os
+
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import cv2
@@ -81,6 +83,15 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # flat end jutting out of the head, however short) and counted only if found; a rung counted between the staff and the
     # note's line is refused where it is the stroke of an accent/marcato/tenuto the detector boxed. False = the old reader.
     look_where_it_must_be=True)
+#: ROADMAP 2.255 (Sean 2026-11-02, "we have to get better at reading ledger lines"): the ledger READ's own fixes,
+#: own flag, default OFF (allow-list: 1, true, yes, on). Read at call time so a lane arm can switch it.
+LEDGER_READ_ENV = "OMR_LEDGER_READ"
+
+
+def ledger_read_enabled() -> bool:
+    return os.environ.get(LEDGER_READ_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 #: band centres sit on a half-pixel grid, so two gaps compared by the walk window are each known to half a pixel
 WALK_CENTRE_TOL_PX = 0.5
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
@@ -905,6 +916,7 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
         walk_tol_px=(WALK_CENTRE_TOL_PX if READER_KEYWORDS.get("walk_tol") else 0.0),
         outline_margin_px=(0.5 * float(thickness_px)
                            if READER_KEYWORDS.get("rows_clear_of_box") and thickness_px else 0.0),
+        outline_free_walk=ledger_read_enabled(),
     ).get(side, [])
     if not_ledger is not None:
         # ROADMAP 2.240 step 2 (Sean 2026-10-31, "a staff's own line is never a ledger line"): a rung whose row is ANOTHER staff's line
@@ -971,7 +983,7 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False),
             flank_refine_bounded=READER_KEYWORDS.get("flank_refine_bounded", False),
             look_where_it_must_be=READER_KEYWORDS.get("look_where_it_must_be", False),
-            artic_boxes=artic_boxes, not_ledger=not_ledger)
+            artic_boxes=artic_boxes, not_ledger=not_ledger, ledger_read=ledger_read_enabled())
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge
