@@ -272,10 +272,15 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
                 members[t["key"]] = t
     if not members:
         return {}
+    def is_fused(t: Dict[str, Any]) -> bool:
+        # only where the arc end stands BEYOND the box (a tie under / over the outer head of a fused dyad); an end beside the box's middle
+        # is read as it always was, by the box centre -- a tall box is not always two heads (a head with its accidental or a line's ink)
+        return bool(t.get("tall")) and not (t["cy"] - t["h"] / 2.0 <= ey <= t["cy"] + t["h"] / 2.0)
+
     def where(t: Dict[str, Any]) -> float:
         # ⚠️ A TALL box is two heads fused (the two-note rule's `half` ends): its centre is neither head's, so a tall member stands at
         # whichever head-sized END of its box is nearer the arc end (`hh` = the staff's mean head height).
-        if t.get("tall"):
+        if is_fused(t):
             hh = float(t.get("hh") or t["h"])
             return min((t["cy"] - t["h"] / 2.0 + hh / 2.0, t["cy"] + t["h"] / 2.0 - hh / 2.0), key=lambda y: abs(y - ey))
         return t["cy"]
@@ -289,7 +294,7 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
     pick = ranked[0]
     out = {"head": pick["key"], "column": len(ranked), "by_height": True,
            "distance_spaces": round((abs(pick["cx"] - ex) + abs(where(pick) - ey)) / sp, 3)}
-    if pick.get("tall"):
+    if is_fused(pick):
         out["tall"] = True            # the member is a fused box: its step is unread (`ownership._page_binding`), never its centre's
         out["end_y"] = where(pick)    # ... and its position is the head-sized end the arc stands at, never the box centre
     return out
