@@ -79,6 +79,10 @@ for k in ENVELOPE:
     with open(args.a, "rb") as fa, open(args.b, "rb") as fb:
         ka[k] = next(ijson.items(fa, k, use_float=True), "<absent>")
         kb[k] = next(ijson.items(fb, k, use_float=True), "<absent>")
+for d in (ka, kb):     # the weights file is named by its absolute path in each worktree: compare the file name
+    wr = d.get("weight_routing")
+    if isinstance(wr, dict) and isinstance(wr.get("weights"), str):
+        wr["weights"] = wr["weights"].rsplit("/", 1)[-1]
 for k in sorted(set(ka) | set(kb)):
     if strip(ka.get(k)) != strip(kb.get(k)):
         p, u, v = first_path(strip(ka.get(k)), strip(kb.get(k)))
