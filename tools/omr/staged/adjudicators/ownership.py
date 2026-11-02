@@ -3088,7 +3088,14 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])
-    if relation == "different":
+    if relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+        # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
+        # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
+        # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he
+        # reads a tie). No kind: the evidence for "different" is an end a tie does not use. (Same-pitch bindings through a tip stand:
+        # tile 5's lower tie binds its stop head that way and is right.)
+        b["why"] = "tie_box_end_only_at_a_stem_tip"
+    elif relation == "different":
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":
         b["why"] = "step_" + relation
@@ -3304,6 +3311,11 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                               detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
             if pb is not None:
                 grammar["page_binding"] = pb
+            if pb is not None and pb.get("why") == "tie_box_end_only_at_a_stem_tip":
+                # ROADMAP 2.252 r2: the end's own head is unread, so the two-note reading below would pair the same wrong head (it takes
+                # the column's extreme head); the arc is still an arc and is written as neither kind -- counted, never a guessed slur
+                return Ruling(value=None, reason="arc_ends_unread", used=(arc.id,),
+                              detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
         fs = _flank_search(ev, arc)
         two_note = _two_note_reading(ev, arc, fs)
         stack = _stack_reading(ev, arc, fs, two_note)
