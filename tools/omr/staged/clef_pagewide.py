@@ -426,6 +426,210 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
 
 
 # --------------------------------------------------------------------------------------------------------------------------------------
+# 2.251 carry: an F clef with NO detector box (Litolff bars 38 / 111 / 115, Brahms bass clefs whose box failed its dots)
+# --------------------------------------------------------------------------------------------------------------------------------------
+#: the dot-pair scan runs in windows this wide (staff spaces), overlapping by `F_SCAN_OVERLAP_SPACES`, each with its own local lines
+F_SCAN_WINDOW_SPACES = 8.0
+F_SCAN_OVERLAP_SPACES = 3.0
+
+
+#: a no-box dot may be this wide (staff spaces; the header locator allows 0.75): the body's tip touches the upper dot (Litolff bar 38,
+#: 0.76 sp fused) -- the body template is the second witness that keeps a looser dot honest
+NOBOX_DOT_MAX_WIDTH_SPACES = 0.9
+#: a horizontal ink run this long (staff spaces) is a staff line or a beam, never part of a dot
+DOT_LINE_RUN_SPACES = 1.2
+
+
+def _dot_mask_runs(ink: np.ndarray, y0: int, y1: int, x0: int, x1: int, sp: float) -> np.ndarray:
+    """The window's ink as the no-box dot reader sees it: every HORIZONTAL run of `DOT_LINE_RUN_SPACES` or more cleared (a staff line,
+    however it tilts, or a beam) and every column holding an unbroken vertical run of `DOT_STROKE_CLEAR_SPACES` or more cleared (a
+    stem, a barline). Unlike `_dot_mask` it does not depend on where the window starts (the row-share line test did: Litolff bar 38's
+    dots were seen from 5 of 22 window starts)."""
+    import cv2
+    sub = ink[y0:y1, x0:x1].astype(np.uint8)
+    if sub.size == 0:
+        return sub
+    k = max(3, int(round(DOT_LINE_RUN_SPACES * sp)))
+    lines_only = cv2.morphologyEx(sub, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (k, 1)))
+    out = sub & (1 - lines_only)
+    kv = max(3, int(round(DOT_STROKE_CLEAR_SPACES * sp)))
+    strokes = cv2.morphologyEx(ink[y0:y1, x0:x1].astype(np.uint8), cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, kv)))
+    cols = strokes.any(axis=0)
+    out[:, cols] = 0
+    return out
+
+
+def f_dot_pairs(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x1: float) -> List[Dict[str, Any]]:
+    """Every dot PAIR on one staff between page columns x0..x1 that straddles the F line (line 4 from the bottom: the second line from
+    the top) -- the F clef's dots by the header locator's own sizes and spacing (`clef_locator.DEFAULT_LOCATOR_CONFIG`), read on the ink
+    with the staff lines and long strokes cleared (`_dot_mask`), the lines measured locally per window. Measures; decides nothing.
+    Each: {x_left, x_right, y_mid, residual, dots}."""
+    import cv2
+    from ..clef_geometry import DEFAULT_CONFIG, _snap_to_staff_line
+    from ..clef_locator import DEFAULT_LOCATOR_CONFIG as C
+    H, W = ink.shape
+    out: List[Dict[str, Any]] = []
+    step = max(1, int(round((F_SCAN_WINDOW_SPACES - F_SCAN_OVERLAP_SPACES) * sp)))
+    xa = int(x0)
+    while xa < int(x1):
+        xb = min(W, int(xa + F_SCAN_WINDOW_SPACES * sp))
+        ll = local_lines(ink, lines, sp, (xa + xb) / 2.0)
+        y0, y1 = max(0, int(ll[1] - 1.4 * sp)), min(H, int(ll[1] + 1.4 * sp))
+        sub = _dot_mask_runs(ink, y0, y1, xa, xb, sp)
+        n, _lab, st, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+        dots = []
+        for i in range(1, n):
+            bw, bh = st[i, cv2.CC_STAT_WIDTH] / sp, st[i, cv2.CC_STAT_HEIGHT] / sp
+            if not (C.dot_min_size_spaces <= bw <= NOBOX_DOT_MAX_WIDTH_SPACES and C.dot_min_size_spaces <= bh <= C.dot_clear_max_height_spaces):
+                continue
+            cx = xa + st[i, cv2.CC_STAT_LEFT] + bw * sp / 2.0
+            if _longest_run(ink[y0:y1, int(cx)])[0] >= DOT_NOT_A_STROKE_SPACES * sp:
+                continue
+            dots.append((cx, y0 + st[i, cv2.CC_STAT_TOP] + bh * sp / 2.0, xa + st[i, cv2.CC_STAT_LEFT],
+                         xa + st[i, cv2.CC_STAT_LEFT] + st[i, cv2.CC_STAT_WIDTH]))
+        for a in range(len(dots)):
+            for b in range(a + 1, len(dots)):
+                up, lo = (dots[a], dots[b]) if dots[a][1] < dots[b][1] else (dots[b], dots[a])
+                dx, dy = abs(up[0] - lo[0]) / sp, (lo[1] - up[1]) / sp
+                if not (dx <= C.dot_max_dx_spaces and C.dot_min_dy_spaces <= dy <= C.dot_max_dy_spaces):
+                    continue
+                if not (up[1] < ll[1] < lo[1]):
+                    continue                                   # the pair straddles the line, one dot either side
+                mid = (up[1] + lo[1]) / 2.0
+                snapped = _snap_to_staff_line(mid, ll)
+                if snapped is None or snapped[0] != 4 or snapped[1] > DEFAULT_CONFIG.max_residual:
+                    continue
+                xl, xr = min(up[2], lo[2]), max(up[3], lo[3])
+                if any(abs(p["x_left"] - xl) < 0.3 * sp and abs(p["y_mid"] - mid) < 0.3 * sp for p in out):
+                    continue                                   # the same pair seen from two overlapping windows
+                out.append({"x_left": float(xl), "x_right": float(xr), "y_mid": float(mid), "residual": float(snapped[1]),
+                            "dots": [[round(float(v), 1) for v in up], [round(float(v), 1) for v in lo]], "lines_local": ll})
+        if xb >= int(x1):
+            break
+        xa += step
+    out.sort(key=lambda p: p["x_left"])
+    return out
+
+
+def f_template(ink: np.ndarray, lines: Sequence[float], sp: float, body: Sequence[float], dots_left: float) -> Optional[Dict[str, Any]]:
+    """The F body of a READ F clef (`f_body`, page px) as a template: its ink with the staff lines cleared, cut to the body, and where it
+    stands against its own dots (the body's right edge to the dots' left edge) and its own F line, in staff spaces."""
+    ll = local_lines(ink, lines, sp, body[0])
+    x0, y0, x1, y1 = int(body[0]), int(body[1]), int(round(body[2])), int(round(body[3]))
+    if x1 - x0 < 3 or y1 - y0 < 3:
+        return None
+    half = max(1, int(round(BOWL_LINE_HALF_SPACES * sp)))
+    m = _without_lines(ink[y0:y1, x0:x1], [int(round(l)) - y0 for l in ll], half)
+    return {"mask": m, "sp": float(sp), "dx_to_dots": (float(dots_left) - float(body[2])) / sp, "dy_line": (float(body[1]) - ll[1]) / sp}
+
+
+#: the template is tried at these sizes (a change is often printed smaller than the header's clef) ...
+F_TEMPLATE_SCALES = (0.8, 0.9, 1.0)
+#: ... and shifted this far (staff spaces) each way from where its own dots put it
+F_TEMPLATE_SHIFT_SPACES = 0.35
+
+
+def f_body_match(ink: np.ndarray, sp: float, pair: Dict[str, Any], templates: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """The second witness for a dot pair with no box: the plate's OWN F body (a read F clef of the same page, `f_template`) laid left of
+    the pair where its own dots put it, at the best size and shift. `cover`: the share of the template's ink the page has there; `extra`:
+    the share of the page's ink in the template's box that the template does not explain (a stem or head through it). Measures."""
+    import cv2
+    ll = pair["lines_local"]
+    half = max(1, int(round(BOWL_LINE_HALF_SPACES * sp)))
+    best = {"cover": 0.0, "extra": 1.0, "score": 0.0}
+    H, W = ink.shape
+    shift = int(round(F_TEMPLATE_SHIFT_SPACES * sp))
+    for t in templates:
+        for s in F_TEMPLATE_SCALES:
+            k = s * sp / t["sp"]
+            th, tw = max(3, int(round(t["mask"].shape[0] * k))), max(3, int(round(t["mask"].shape[1] * k)))
+            tm = cv2.resize(t["mask"].astype(np.uint8), (tw, th), interpolation=cv2.INTER_NEAREST).astype(bool)
+            if tm.sum() == 0:
+                continue
+            bx1 = pair["x_left"] - t["dx_to_dots"] * s * sp
+            by0 = ll[1] + t["dy_line"] * s * sp
+            for dy in range(-shift, shift + 1, max(1, shift // 3)):
+                for dx in range(-shift, shift + 1, max(1, shift // 3)):
+                    x0, y0 = int(round(bx1 - tw + dx)), int(round(by0 + dy))
+                    if x0 < 0 or y0 < 0 or x0 + tw > W or y0 + th > H:
+                        continue
+                    im = _without_lines(ink[y0:y0 + th, x0:x0 + tw], [int(round(l)) - y0 for l in ll], half)
+                    inter = float((tm & im).sum())
+                    cover = inter / float(tm.sum())
+                    extra = float((im & ~tm).sum()) / max(1.0, float(im.sum()))
+                    score = cover - extra
+                    if score > best["score"]:
+                        best = {"cover": round(cover, 3), "extra": round(extra, 3), "score": round(score, 3), "scale": s,
+                                "box": [x0, y0, x0 + tw, y0 + th]}
+    return best
+
+
+def f_body_shape(ink: np.ndarray, lines: Sequence[float], sp: float, pair: Dict[str, Any],
+                 templates: Sequence[Dict[str, Any]] = ()) -> Dict[str, Any]:
+    """Exploration wrapper: `f_body_match` against `templates`."""
+    return f_body_match(ink, sp, pair, templates)
+
+
+#: the no-box F clef is READ (kind bass, claimed) at this body score (cover - extra) and above. MEASURED on Litolff pp. 1-16 (1472 dot
+#: pairs; every non-clef pair <= 0.61, the 2.251 count's no-box bass clefs 0.83 (bar 38), 0.75 (Vc bar 411)); Brahms pp. 1,3,4,5 every
+#: non-clef pair <= 0.42. A CUT-OFF on two plates (CLAUDE §4: a measurement, not a convention) -- Sean's tiles judge it.
+F_TEMPLATE_READ_SCORE = 0.70
+#: ... and at this score and above (but below READ) it is a CLEF-SHAPED CANDIDATE: claimed nothing, but a carried clef stops there
+#: (Litolff bars 115 0.66 and 111 0.55: real bass clefs with a head / stem through the body)
+F_TEMPLATE_CANDIDATE_SCORE = 0.50
+#: a `clef*` box too small for a clef-sized claim, at this detector score and above, is still a clef-shaped CANDIDATE (b)
+SMALL_CLEF_BOX_MIN_SCORE = 0.5
+#: an F clef's body and dots span at most this far (staff spaces) left of its dots' left edge
+F_BODY_MAX_REACH_SPACES = 2.6
+#: a dot's width (staff spaces): the template's dots start this far left of the dot pair's right edge `f_line` reports
+F_DOT_WIDTH_SPACES = 0.45
+
+
+def f_templates(ink: np.ndarray, staves: Sequence[Tuple[Sequence[float], float, Sequence[Sequence[float]]]]) -> List[Dict[str, Any]]:
+    """The page's own F bodies: every clef-sized `clefF` box (per staff: lines, staff space, the boxes) whose dots read an F line
+    (`read_box` passes), its body cut at its dots -- the template the no-box reader lays over a dot pair."""
+    out: List[Dict[str, Any]] = []
+    for lines, sp, boxes in staves:
+        for pb in boxes:
+            ll = local_lines(ink, lines, sp, pb[0])
+            got = read_box("clefF", pb, ink, ll, sp)
+            if not got.get("passed") or not got.get("body") or not got.get("dots_right"):
+                continue
+            dl = float(got["dots_right"]) - F_DOT_WIDTH_SPACES * sp
+            body = list(got["body"])
+            body[2] = min(float(body[2]), dl - 1.0)
+            if body[2] - body[0] < sp:
+                continue
+            t = f_template(ink, lines, sp, body, dl)
+            if t is not None:
+                out.append(t)
+    return out
+
+
+def f_nobox(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x1: float,
+            templates: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """Every F clef with no detector box between page columns x0..x1 on one staff: a dot pair straddling the F line (`f_dot_pairs`,
+    witness 1) AND the page's own F body where those dots put it (`f_body_match`, witness 2). Each: {pair, match, read (score >=
+    `F_TEMPLATE_READ_SCORE`), candidate (score >= `F_TEMPLATE_CANDIDATE_SCORE`), area}. Two witnesses, never one; nothing without a
+    template (a page with no read F clef reads none)."""
+    if not templates:
+        return []
+    out = []
+    for p in f_dot_pairs(ink, lines, sp, x0, x1):
+        m = f_body_match(ink, sp, p, templates)
+        if m.get("score", 0.0) < F_TEMPLATE_CANDIDATE_SCORE or "box" not in m:
+            continue
+        b = m["box"]
+        # the clef's left edge: the matched body's, but never further left of its dots than a body is wide (a template laid over a C
+        # clef standing just before it -- Litolff bar 110/111 -- must not put this clef before that one)
+        left = max(float(b[0]), float(p["x_left"]) - F_BODY_MAX_REACH_SPACES * sp)
+        area = [left - 0.05 * sp, float(min(b[1], p["dots"][0][1] - 0.4 * sp)), float(p["x_right"]) + 0.05 * sp,
+                float(max(b[3], p["dots"][1][1] + 0.4 * sp))]
+        out.append({"pair": p, "match": m, "read": m["score"] >= F_TEMPLATE_READ_SCORE, "area": area})
+    return out
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------
 # Step 2: the clef in force at a head
 # --------------------------------------------------------------------------------------------------------------------------------------
 def changes_of(rows: Sequence[Any]) -> List[Tuple[float, Optional[str], Any]]:
@@ -444,13 +648,37 @@ def changes_of(rows: Sequence[Any]) -> List[Tuple[float, Optional[str], Any]]:
     return out
 
 
-def clef_in_force(head_x: float, changes: Sequence[Tuple[float, Optional[str], Any]]) -> Optional[Tuple[Optional[str], Any]]:
+def candidates_of(refusals: Sequence[Any]) -> List[Tuple[float, None, Any]]:
+    """The CLEF-SHAPED CANDIDATES inside a staff that were not claimed with a read kind (step 1's abstentions, source `clef_pagewide`,
+    `candidate: True`): (left x page px, None, row), left to right. ROADMAP 2.251 carry (b): a carried clef stops at one."""
+    out = []
+    for r in refusals:
+        d = getattr(r, "detail", None) or {}
+        if d.get("source") != SOURCE or not d.get("candidate") or d.get("x_page") is None:
+            continue
+        out.append((float(d["x_page"]), None, r))
+    out.sort(key=lambda t: t[0])
+    return out
+
+
+def clef_in_force(head_x: float, changes: Sequence[Tuple[float, Optional[str], Any]],
+                  candidates: Sequence[Tuple[float, None, Any]] = (), header: Optional[str] = None
+                  ) -> Optional[Tuple[Optional[str], Any]]:
     """The clef printed LAST before `head_x` on the staff: (kind or None for unread, row) of the last change whose left edge is left of
-    the head, or None where no change stands before it (the header clef governs)."""
+    the head, or None where no change stands before it (the header clef governs).
+
+    ROADMAP 2.251 carry (b) (CLAUDE rule 8, §4): a clef-shaped CANDIDATE (`candidates_of`: ink that may be a clef, not read) standing
+    after a change whose kind differs from the header clef `header` and before the head STOPS the carry -- the head is unread (None,
+    the candidate's row), never carried past ink that might be the return. A candidate where the header's own kind is in force (no
+    change yet, or a return to it) changes nothing: the clef the head is pitched from is then the one the no-carry reading uses too."""
     got = None
-    for x, kind, r in changes:
-        if x < head_x:
-            got = (kind, r)
-        else:
+    events = sorted([(x, 0, k, r) for x, k, r in changes] + [(x, 1, None, r) for x, _k, r in candidates], key=lambda t: (t[0], t[1]))
+    for x, is_cand, kind, r in events:
+        if x >= head_x:
             break
+        if is_cand:
+            if got is not None and got[0] is not None and got[0] != header:
+                got = (None, r)
+            continue
+        got = (kind, r)
     return got

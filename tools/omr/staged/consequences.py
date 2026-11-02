@@ -91,6 +91,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     # ROADMAP 2.251 step 2 (flag OMR_CLEF_CARRY, default OFF): the clefs printed INSIDE this staff (step 1's page-wide claims), so each
     # head is pitched from the clef printed LAST before it (Sean 2026-11-01 "Build both"); none before it -> the header clef, as before.
     changes = _clef_changes(log, subject)
+    candidates = _clef_candidates(log, subject) if changes else []
     for row in rows:
         if log.verdict(Q.PITCH, row.subject) is not None:
             # ⚠️⚠️ IT NEVER OVERTURNS A PITCH THAT ALREADY STANDS, and the
@@ -123,7 +124,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
                 and far.value is not None:
             pos = int(far.value)
             pos_basis = far.id
-        in_force = _clef_change_at(log, row.subject, changes)
+        in_force = _clef_change_at(log, row.subject, changes, candidates, str(clef.value) if clef.value is not None else None)
         if in_force is not None:
             kind, crow = in_force
             if kind is None:
@@ -162,16 +163,27 @@ def _clef_changes(log: Log, staff: Subject) -> list:
     return _CP.changes_of(log.rows(Q.CLAIMED_AREA, st))
 
 
-def _clef_change_at(log: Log, glyph: Subject, changes: list):
+def _clef_candidates(log: Log, staff: Subject) -> list:
+    """ROADMAP 2.251 carry (b): the clef-shaped candidates step 1 saw inside `staff` and did not read (its abstentions marked
+    `candidate`), left to right -- a carried clef stops at one (`clef_pagewide.clef_in_force`)."""
+    from . import clef_pagewide as _CP
+    st = staff.at(Kind.STAFF) if hasattr(staff, "at") else None
+    if st is None:
+        return []
+    return _CP.candidates_of(log.refusals(Q.CLAIMED_AREA, st))
+
+
+def _clef_change_at(log: Log, glyph: Subject, changes: list, candidates: list = (), header: Any = None):
     """(kind or None, change row) of the clef printed last before the head `glyph` (its own box's centre x, page px), or None where no
-    change stands before it / the head has no page box (the header clef governs)."""
+    change stands before it / the head has no page box (the header clef governs). A clef-shaped candidate after a change of another
+    kind than the header's stops the carry: (None, candidate row)."""
     if not changes:
         return None
     from . import clef_pagewide as _CP
     for b in log.rows(Q.GLYPH_BOX, glyph):
         bp = (b.detail or {}).get("bbox_page_px")
         if isinstance(bp, (list, tuple)) and len(bp) == 4:
-            return _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes)
+            return _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes, candidates, header)
     return None
 
 
