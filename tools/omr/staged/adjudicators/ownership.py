@@ -5112,7 +5112,7 @@ _WEDGE_WINDOW_CELLS = 1
     subjects_from=Q.WEDGE_BOX,
     reasons=("nearest_either_side", "no_anchor", "no_page_frame",
              "no_evidence", "bound_page_wide", "tip_unbound",
-             "not_between_staves", "inside_a_word"),
+             "not_between_staves", "inside_a_word", "one_note_wedge"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
@@ -5406,6 +5406,11 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
     detail.update(start_cell=int(start["cell"]), stop_cell=int(stop["cell"]), start_x_page=float(start["x"]),
                   stop_x_page=float(stop["x"]), start_how=start["how"], stop_how=stop["how"],
                   degenerate=start["head"] == stop["head"])
+    from .. import hairpin_reach as _hairpin_reach
+    if _hairpin_reach.enabled() and start["head"] == stop["head"]:
+        # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): both tips on ONE note -- an accent or a hairpin (Sean 2026-11-02, page-facts "Accent
+        # or hairpin by length": only a hairpin is longer than a note). Position does not decide it, so neither is written (CLAUDE s4).
+        return Ruling.abstain("one_note_wedge", candidates=["hairpin", "accent"], **detail)
     return Ruling(value=[str(start["head"]), str(stop["head"])], reason="bound_page_wide", used=(wedge.id,), detail=detail)
 
 

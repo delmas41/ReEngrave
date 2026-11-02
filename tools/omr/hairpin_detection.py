@@ -97,6 +97,23 @@ _INK_FRACTION_CEILING = 0.5
 MIN_WIDTH_SPACES = 0.8
 MAX_WIDTH_SPACES = 30.0
 
+#: ROADMAP 2.254 (STAGED only, `reach=True`; flag `OMR_HAIRPIN_REACH` in `staged/hairpin_reach.py`). WHY THE READER MISSED MOST BRAHMS
+#: HAIRPINS: its three tests treat a hairpin as a connected component of its own, but on an orchestral page a BARLINE runs through the
+#: gap between the staves of a bracket group, and a stem or a ledger-line note of the staff below reaches into the band -- a hairpin
+#: crossing either is one component with it, so its outline is not straight and it is not isolated (Brahms p19: the ~40 long
+#: hairpins of bars 352-358 are refused 'outline' or 'isolated', every one crossed by a barline or touching a stem; crops,
+#: benchmarks/hairpin-reach-2026-11). REACH removes every VERTICAL stroke at least this many spaces long (a barline, a stem: a
+#: hairpin arm, near-horizontal, has no such run) from the search ink and from the isolation ink, then closes a horizontal gap of
+#: `REACH_REJOIN_SPACES` so the two halves of a hairpin a barline crossed are one again.
+REACH_VERTICAL_SPACES = 1.2
+REACH_REJOIN_SPACES = 0.5
+#: ...and, because a beam whose stems were removed is as isolated as a hairpin, a hairpin must CONVERGE: its two arms meet, so the
+#: narrowest columns are one arm thick and the mouth opens to several times that. A beam (pair) runs parallel: p10 extent is its full
+#: height (Brahms p19: parallel pairs 0.55-0.66 sp closed vs 0.66-0.70 open; real hairpins 0.22-0.37 closed vs 0.55-1.03 open).
+#: NOT CONFIRMED: set on Brahms p19, so it only narrows the candidates the other three tests keep.
+REACH_MAX_CLOSED_SPACES = 0.45
+REACH_MIN_OPEN_OVER_CLOSED = 2.2
+
 #: Detections whose BOX is mostly paper. Blanking them erases whatever stands
 #: under them — in this band, the hairpins themselves. Same rule and the same
 #: trap as `direction_text.BandConfig.max_blank_width_spaces`.
@@ -166,6 +183,8 @@ def detect_hairpins(
     page_ink: np.ndarray,
     staves: list[dict],
     blanked_ink: np.ndarray | None = None,
+    *,
+    reach: bool = False,
 ) -> list[Hairpin]:
     """Find the hairpins on one page.
 
@@ -178,7 +197,13 @@ def detect_hairpins(
     if not staves:
         return []
     search = page_ink if blanked_ink is None else blanked_ink
-    _n, full_lab, full_stats, _c = cv2.connectedComponentsWithStats(page_ink, 8)
+    iso_ink = page_ink
+    if reach:
+        search, iso_ink = reach_inks(page_ink, search, staves)
+        sps = sorted(float(s["spacing"]) for s in staves if s.get("spacing"))
+        search = straight_runs(search, sps[len(sps) // 2])
+        iso_ink = straight_runs(iso_ink, sps[len(sps) // 2])
+    _n, full_lab, full_stats, _c = cv2.connectedComponentsWithStats(iso_ink, 8)
 
     out: list[Hairpin] = []
     order = sorted(range(len(staves)), key=lambda i: staves[i]["bottom"])
@@ -200,6 +225,14 @@ def detect_hairpins(
             if m["open_spaces"] < MIN_OPEN_SPACES:
                 continue
             if m["outline_rms_spaces"] > MAX_OUTLINE_RMS_SPACES:
+                if not reach:
+                    continue
+                r = robust_outline_rms(((lab[y:y + h, x:x + w] == k).astype(np.uint8)) * 255, sp)
+                if r is None or r > MAX_OUTLINE_RMS_SPACES:
+                    continue
+            if reach and not converges(m):
+                continue
+            if reach and extent_trend(((lab[y:y + h, x:x + w] == k).astype(np.uint8)) * 255) < REACH_MIN_EXTENT_TREND:
                 continue
             if not _is_isolated(full_lab, full_stats, x, top + y, w, h):
                 continue
@@ -210,6 +243,93 @@ def detect_hairpins(
                 outline_rms_spaces=float(m["outline_rms_spaces"]),
             ))
     return out
+
+
+#: ROADMAP 2.254: a long hairpin on a scan is straight but not ruler-straight, and the rejoin can glue a dot or a letter's serif to
+#: one end -- the plain rms over every column refuses it (Brahms p25: 12 long hairpins at rms 0.108-0.156 sp, crops). The robust
+#: outline drops the worst `REACH_OUTLINE_TRIM` of each outline's columns and refits; a slur's curvature is in EVERY column, so it
+#: stays far above the cut (p25 slurs 0.27-0.88 sp).
+REACH_OUTLINE_TRIM = 0.15
+#: ...and the rejoin can glue a word's letters into one straight-edged band ('cresc.', 'pizz.', 'arco': Brahms p25, trend 0.05-0.38),
+#: while a hairpin opens steadily (p25 long hairpins 0.74-1.0). NOT CONFIRMED: set on Brahms p25.
+REACH_MIN_EXTENT_TREND = 0.7
+
+
+def robust_outline_rms(mask: np.ndarray, spacing: float) -> float | None:
+    """The worse outline's rms after one trimmed refit (ROADMAP 2.254), in spaces."""
+    xs, tops, bots = _outlines(mask)
+    if xs.size < 6:
+        return None
+    worst = 0.0
+    for ys in (tops, bots):
+        a, b = np.polyfit(xs, ys, 1)
+        res = np.abs(ys - (a * xs + b))
+        keep = res <= np.quantile(res, 1.0 - REACH_OUTLINE_TRIM)
+        if keep.sum() < 6:
+            keep = np.ones_like(res, bool)
+        a, b = np.polyfit(xs[keep], ys[keep], 1)
+        worst = max(worst, float(np.sqrt(((ys[keep] - (a * xs[keep] + b)) ** 2).mean())))
+    return worst / spacing
+
+
+def extent_trend(mask: np.ndarray) -> float:
+    """|Pearson r| of the per-column open extent against x (ROADMAP 2.254): a hairpin opens steadily from apex to mouth; a word
+    the rejoin glued into one component has a flat, ragged extent."""
+    xs, tops, bots = _outlines(mask)
+    if xs.size < 6:
+        return 0.0
+    ext = bots - tops + 1
+    if float(ext.std()) == 0.0:
+        return 0.0
+    return abs(float(np.corrcoef(xs, ext)[0, 1]))
+
+
+def reach_inks(page_ink: np.ndarray, search: np.ndarray, staves: list[dict]) -> tuple[np.ndarray, np.ndarray]:
+    """(search ink, isolation ink) with every vertical stroke of at least `REACH_VERTICAL_SPACES` removed and horizontal gaps of
+    `REACH_REJOIN_SPACES` closed (ROADMAP 2.254). The spacing is the page's median staff spacing."""
+    sps = sorted(float(s["spacing"]) for s in staves if s.get("spacing"))
+    sp = sps[len(sps) // 2]
+    vk = cv2.getStructuringElement(cv2.MORPH_RECT, (1, max(3, int(round(REACH_VERTICAL_SPACES * sp)))))
+    hk = cv2.getStructuringElement(cv2.MORPH_RECT, (max(3, int(round(REACH_REJOIN_SPACES * sp))), 1))
+    vert = cv2.morphologyEx(page_ink, cv2.MORPH_OPEN, vk)
+    return (cv2.morphologyEx(cv2.subtract(search, vert), cv2.MORPH_CLOSE, hk),
+            cv2.morphologyEx(cv2.subtract(page_ink, vert), cv2.MORPH_CLOSE, hk))
+
+
+#: ROADMAP 2.254, the second cause: a SLUR (or a ledger-lined head) that touches a hairpin arm makes one component of both. Keeping
+#: only ink that lies along a straight, near-horizontal run of at least `REACH_LINE_SPACES` (an opening by a line kernel at each angle
+#: up to `REACH_LINE_MAX_DEG`) keeps a hairpin's arms whole and cuts a slur's steep ends and every head away from them.
+REACH_LINE_SPACES = 1.5
+REACH_LINE_MAX_DEG = 15.0
+REACH_LINE_STEP_DEG = 3.0
+
+
+def _line_kernel(length: int, deg: float) -> np.ndarray:
+    """A one-pixel line `length` long at `deg` from horizontal, as a structuring element (every cell on the line set)."""
+    import math
+    t = math.radians(deg)
+    hx = int(round(math.cos(t) * (length - 1) / 2.0))
+    hy = int(round(math.sin(t) * (length - 1) / 2.0))
+    k = np.zeros((2 * abs(hy) + 1, 2 * abs(hx) + 1), np.uint8)
+    cv2.line(k, (0, abs(hy) - hy), (2 * abs(hx), abs(hy) + hy), 1, 1)
+    return k
+
+
+def straight_runs(ink: np.ndarray, spacing: float) -> np.ndarray:
+    """The ink lying along a straight run of at least `REACH_LINE_SPACES` within `REACH_LINE_MAX_DEG` of horizontal (ROADMAP 2.254)."""
+    n = max(3, int(round(REACH_LINE_SPACES * spacing)))
+    out = np.zeros_like(ink)
+    deg = -REACH_LINE_MAX_DEG
+    while deg <= REACH_LINE_MAX_DEG + 1e-9:
+        out = cv2.bitwise_or(out, cv2.morphologyEx(ink, cv2.MORPH_OPEN, _line_kernel(n, deg)))
+        deg += REACH_LINE_STEP_DEG
+    return out
+
+
+def converges(m: dict[str, float]) -> bool:
+    """A hairpin's arms meet: narrowest columns about one arm thick, the mouth several times wider (ROADMAP 2.254)."""
+    return (m["closed_spaces"] <= REACH_MAX_CLOSED_SPACES
+            and m["open_spaces"] >= REACH_MIN_OPEN_OVER_CLOSED * max(m["closed_spaces"], 0.05))
 
 
 def _is_isolated(full_lab, full_stats, x: int, y: int, w: int, h: int) -> bool:

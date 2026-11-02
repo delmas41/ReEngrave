@@ -4689,7 +4689,11 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
                 boxes.append((x0, y0, x1 - x0, y1 - y0, d.smufl_name))
         blanked = blank_point_detections(
             page_ink, boxes, spacings[len(spacings) // 2])
-        found = detect_hairpins(page_ink, staff_rows, blanked)
+        # ROADMAP 2.254 (flag `OMR_HAIRPIN_REACH`, default OFF): the reader sees past barlines, stems and slurs crossing a hairpin
+        # (`staged/hairpin_reach.py` names the cause). OFF the call is unchanged.
+        from . import hairpin_reach as _hairpin_reach
+        reach_on = _hairpin_reach.enabled()
+        found = detect_hairpins(page_ink, staff_rows, blanked, reach=reach_on)
     except Exception as exc:                                  # noqa: BLE001
         for st_key in sorted(bands):
             log.abstain(Subject.from_key(st_key), Q.WEDGE_BOX,
@@ -4731,7 +4735,8 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
                         float(h.y + h.height / 2.0), bottom, spacing),
                     open_spaces=float(h.open_spaces),
                     outline_rms_spaces=float(h.outline_rms_spaces),
-                    page_staff_index=int(h.staff_index))
+                    page_staff_index=int(h.staff_index),
+                    **({"reach": True} if reach_on else {}))
 
     for page_st, (key, _band) in sorted(by_page_index.items()):
         if per_staff.get(page_st):
@@ -15730,6 +15735,15 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     _count("word:direction_word:metronome_mark")
                 if d.get("metronome"):
                     extra["metronome"] = d["metronome"]
+            from . import hairpin_reach as _hairpin_reach
+            if _hairpin_reach.enabled():
+                # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the OCR box can hold a hairpin beside the word ('dim.', 'espr.' on Brahms p8);
+                # the word claims its own ink, the wedge-shaped ink is left for the hairpin reader.
+                area, wedges_out = _hairpin_reach.word_area_without_wedges(binary, area, _sp(s))
+                if wedges_out:
+                    extra["wedges_left_out"] = wedges_out
+                    extra.setdefault("word_box", [float(v) for v in bb])
+                    _count("word:direction_word:wedge_left_out")
             _file(s, area, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
         # a printed bar number (Tesseract, digits only, filed on its system with its box) is text outside the staves as well
         for r in log.rows(Q.PRINTED_BAR_NUMBER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
