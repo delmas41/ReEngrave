@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- 2.251 step 1 landed: OMR_CLEF_PAGEWIDE default ON (carry stays OFF)
+
+Sean "Land": the STAGED GATHER page-wide clef reader (`clef_pagewide.py`) now claims clef-shaped ink inside a system by default; `OMR_CLEF_CARRY` is untouched (default OFF). Gate before the flip, round-2 code, 2-page subset (Litolff 2,4; Brahms 4,5), flag 0 vs 1: ORDER-VIOLATION Litolff 0.46 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM Litolff 0.77 -> 0.99, Brahms 0.59 -> 0.70 (both under +0.3). Flag row in docs/flags-2026-09.md and the default test updated. Details: benchmarks/clef-change-2026-11/FINDINGS.md.
+
 ## 2026-11-01 -- day manager: 2.251 built (OFF), 2.248 r3 built (OFF), Sean's tiles on 2.250 r2 / 2.251 / 2.248 recorded
 - 2.251 clef change inside a system: step 1 `OMR_CLEF_PAGEWIDE` (C clef by thick bar + bowls, no detector box; F clef by box + dots) and step 2 `OMR_CLEF_CARRY` (pitch from the last clef before the head), both OFF, lane-2.251-clef-change 3254ce233. Sean's tiles: 8/9 claims right; round 2 in flight. The carry does not land: missed bass returns move the error, and notes after an unread clef are dropped, not marked red.
 - 2.248 r3 `OMR_FARHEAD_UNREAD_GUESSED` (OFF, lane-2.248-ink-extent ee87ef423): a far head whose ledger count abstains is written blue with candidates instead of plain. Sean: 6/6 blue are real notes, 2 on the wrong staff, 2 unresolved; r2's in-staff moves 4/6 were not heads (r2 does not land).

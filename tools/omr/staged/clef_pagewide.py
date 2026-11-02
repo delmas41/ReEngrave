@@ -1,6 +1,6 @@
 """ROADMAP 2.251 -- every clef on the page, read page-wide by its SHAPE, and the clef in force at each head (Sean 2026-11-01 "Build both").
 
-PATH: STAGED. Step 1 (flag `OMR_CLEF_PAGEWIDE`, default OFF) is a GATHER reader on the page-wide pass: it looks over every staff of
+PATH: STAGED. Step 1 (flag `OMR_CLEF_PAGEWIDE`, default ON) is a GATHER reader on the page-wide pass: it looks over every staff of
 the page for clef-shaped, clef-sized ink -- header clefs and clefs inside a system alike -- and CLAIMS that ink at kind `clef` in the
 claimed-area register (`claims.py`, owner `clef`, standing READ, source `clef_pagewide`), so the head / rest consult refuses a box on it
 (later readers may mark claimed ink, never take it; CLAUDE §3). Step 2 (flag `OMR_CLEF_CARRY`, default OFF) is EVALUATE: `restate_pitch`
@@ -85,8 +85,8 @@ HEADER_WINDOW_SPACES = 6.0
 
 
 def enabled() -> bool:
-    """`OMR_CLEF_PAGEWIDE` (ROADMAP 2.251 step 1), default OFF: only 1/true/yes/on enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLEF_PAGEWIDE` (ROADMAP 2.251 step 1), default ON (Sean 2026-11-02 "Land"); an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def carry_enabled() -> bool:

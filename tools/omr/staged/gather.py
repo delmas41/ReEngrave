@@ -15446,7 +15446,7 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
 
 def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                          detections: Dict[str, List[Any]]) -> None:
-    """`Q.CLAIMED_AREA` rows of owner `clef`, source `clef_pagewide` -- ROADMAP 2.251 step 1, flag `OMR_CLEF_PAGEWIDE` (default OFF).
+    """`Q.CLAIMED_AREA` rows of owner `clef`, source `clef_pagewide` -- ROADMAP 2.251 step 1, flag `OMR_CLEF_PAGEWIDE` (default ON).
 
     PATH: STAGED GATHER, PAGE raster (`pws.page.binary`), one pass over every staff of the page (Sean 2026-11-01: "a simple early gather
     read that looks over the whole page for the shape of clefs and claims the ink"). AFTER the register, the key claims and the clef
@@ -17288,7 +17288,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_key_object(log, pws, cells, local, detections)
         # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default OFF): AFTER the key claim (reads its left edge); page raster.
         gather_clef_slot_claim(log, pws, cells, local, detections, stroke_cells=stroke_cells)
-        # ROADMAP 2.251 step 1 (flag OMR_CLEF_PAGEWIDE, default OFF): AFTER every clef / key / meter claim (reads their READ areas, never
+        # ROADMAP 2.251 step 1 (flag OMR_CLEF_PAGEWIDE, default ON): AFTER every clef / key / meter claim (reads their READ areas, never
         # takes their ink); page raster; every staff of the page in one pass, header and inside a system alike.
         gather_clef_pagewide(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
