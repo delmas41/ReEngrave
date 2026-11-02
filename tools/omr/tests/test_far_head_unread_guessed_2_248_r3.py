@@ -172,5 +172,43 @@ class TestRestatePitchMarksTheUnreadFarHead(unittest.TestCase):
             self.assertFalse(head_extent.far_guess_enabled())
 
 
+class TestMoveGlyphReowned(unittest.TestCase):
+    """`move_glyph`'s `reowned` branch writes the band-distance geometry step on the NEW staff: the same plain fallback when that step is far."""
+
+    def _moved(self, pos, ledger, env):
+        log = Log()
+        g = R.glyph(0, 0, 0, 0, 0)
+        other = R.staff(0, 0, 1)
+        log.observe(g, Q.GLYPH_BAND_DISTANCE, 1.0, reader="geometry", frame="cell:0", candidate=other.to_key(), position_in_candidate=pos)
+        if ledger is not None:
+            log.observe(g, Q.FAR_HEAD_OWNER_LEDGER, ledger, reader=R.READERS.LEDGER_OWNER_NOTE_FIRST, frame="cell:0", candidate=other.to_key())
+        cv = consequences._verdict(log, other, Q.CLEF, "treble", decider="t", reason="t", basis=())
+        ov = consequences._verdict(log, g, Q.GLYPH_OWNER, other.to_key(), decider="t", reason="t", basis=())
+        log.freeze()
+        with mock.patch.dict(os.environ, env):
+            out = consequences.move_glyph(log, g, ov)
+        return log, g, out
+
+    def test_far_on_the_new_staff_with_no_ledger_reading_is_blue(self):
+        log, g, out = self._moved(-4, None, ON)
+        self.assertEqual(out[0].reason, head_extent.FAR_GUESS_PITCH_REASON)
+        self.assertIsNotNone(export.far_unread_guess_of(_rec(log), g.to_key()))
+
+    def test_a_ledger_reading_that_agrees_stays_plain(self):
+        log, g, out = self._moved(-4, -4, ON)
+        self.assertEqual(out[0].reason, "reowned")
+        self.assertIsNone(export.far_unread_guess_of(_rec(log), g.to_key()))
+
+    def test_a_ledger_reading_that_disagrees_is_blue_with_both(self):
+        log, g, out = self._moved(-4, -5, ON)
+        gs = export.far_unread_guess_of(_rec(log), g.to_key())
+        self.assertEqual([c["source"] for c in gs["candidates"]], ["box_centre", "ledger_toward_owner"])
+        self.assertEqual(len({c["value"] for c in gs["candidates"]}), 2)
+
+    def test_in_staff_on_the_new_staff_and_flag_off_are_plain(self):
+        self.assertEqual(self._moved(4, None, ON)[2][0].reason, "reowned")
+        self.assertEqual(self._moved(-4, None, OFF)[2][0].reason, "reowned")
+
+
 if __name__ == "__main__":
     unittest.main()

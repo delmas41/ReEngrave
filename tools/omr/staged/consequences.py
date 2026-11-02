@@ -1622,12 +1622,34 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
         return []
 
     prior = log.verdict(Q.PITCH, subject)
+    cands: tuple = ()
+    detail: dict = {}
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default OFF): the `reowned` branch writes the geometry step on the NEW staff. Where
+    # that step is FAR (outside the first space) page-facts says its ledger lines place it, and no ledger count toward the new owner was
+    # used here -- the same plain fallback as `restate_pitch`'s. Where a ledger count toward the owner AGREES the step has a second
+    # witness and stays plain; where none was read (or it disagrees) the head is written GUESSED, both steps carried. The value is unchanged.
+    if reason == "reowned" and _head_extent.far_guess_enabled() and (int(round(float(pos))) < -1 or int(round(float(pos))) > 9):
+        lp = [r.value for r in log.rows(Q.FAR_HEAD_OWNER_LEDGER, subject)
+              if r.detail.get("candidate") == owner.value and isinstance(r.value, (int, float))]
+        geo = int(round(float(pos)))
+        if not lp or int(lp[0]) != geo:
+            cs = [Candidate(name, 1.0)]
+            srcs = [_head_extent.FAR_GUESS_SOURCES[0]]
+            if lp:
+                alt = _pitch_from_position(int(lp[0]), str(clef.value))
+                if alt is not None:
+                    cs.append(Candidate(alt, 1.0))
+                    srcs.append("ledger_toward_owner")
+            reason = _head_extent.FAR_GUESS_PITCH_REASON
+            cands = tuple(cs)
+            detail = dict(far_unread=True, ledger_abstention="reowned_geometry_on_new_staff", candidate_sources=srcs,
+                          box_position=geo, ink_position=None)
     out = Verdict(
         id=log._next_id("vrd"), subject=subject, quantity=Q.PITCH,
         outcome=Outcome.DECIDED, value=name, decider="move_glyph",
         reason=reason, considered=(owner.id, clef.id, source.id),
         basis=(owner.id, clef.id, source.id),
-        supersedes=prior.id if prior is not None else None)
+        supersedes=prior.id if prior is not None else None, candidates=cands, detail=detail)
     return [log.record(out)]
 
 
