@@ -601,6 +601,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.220. `head_ink.py` is PURE (a page raster and a box in, a trimmed head and its slit out: no log, no cell, no quantity
     # named) -- `gather.gather_head_ink` is its stage; nothing reads it yet (milestone 1).
     "head_ink.py",
+    # ROADMAP 2.248. `head_extent.py` is PURE (a page raster and a box in, the head's grown ink extent and an ink-centred position
+    # out; no log, no cell, no quantity named) -- `gather.gather_notehead_positions` is its stage, behind OMR_HEAD_INK_EXTENT.
+    "head_extent.py",
     # ROADMAP 2.177. `meter_object.py` is PURE (a page raster, five line rows and a staff space in, an area out: no log, no cell, no
     # quantity named) -- `gather.gather_meter_object` is its stage; the refusals read its flag.
     "meter_object.py",
