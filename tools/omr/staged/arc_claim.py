@@ -196,6 +196,11 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
 # NOT CONFIRMED: `BIND_COLUMN_MARGIN_SPACES` and `BIND_COLUMN_DX_WIDTHS` are set by hand, not swept.
 
 ENV_BIND = "OMR_ARC_BIND_PAGEWIDE"
+#: ROADMAP 2.250 (default OFF, allow-list): the binder reads the END NOTE's pitch the way the older two-note rule does (the head EXTENT's
+#: step, never the box centre) and binds a chord end to the member at the arc END's height (never the outer one by curve side, never a
+#: stem-tip proxy's member). CONVENTION ASSUMED (not confirmed by Sean): a tie joins two noteheads of one pitch, a chord has one tie per
+#: tied note, each at its own note's staff position. WHAT WOULD FALSIFY IT: a chord tie whose end stands beside one note but ties another.
+ENV_END_PITCH = "OMR_BIND_END_PITCH"
 
 #: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)
 BIND_COLUMN_DX_WIDTHS = 0.6
@@ -208,6 +213,11 @@ BIND_SIDE_MIN_SPACES = 0.1
 def bind_enabled() -> bool:
     """`OMR_ARC_BIND_PAGEWIDE`, default ON (ROADMAP 2.223; Sean 2026-10-31 "Fix then land", tiles 11/12, tile 11 fixed); an explicit 0/false/no/off disables."""
     return os.environ.get(ENV_BIND, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def end_pitch_enabled() -> bool:
+    """`OMR_BIND_END_PITCH` (ROADMAP 2.250), default OFF; only an explicit `1/true/yes/on` enables."""
+    return _on(ENV_END_PITCH)
 
 
 def curve_side(trace: Optional[Sequence[Sequence[float]]], sp: float) -> Optional[str]:
@@ -241,8 +251,40 @@ def _columns(cands: List[Dict[str, Any]]) -> List[List[Dict[str, Any]]]:
     return cols
 
 
+def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, heads: Sequence[Dict[str, Any]], ex: float,
+                            ok: Any) -> Dict[str, Any]:
+    """ROADMAP 2.250: the member of the chord column `col` standing nearest the arc END's height. A stem-tip candidate may name the
+    COLUMN (the note) but never the member: the members are the column's real heads (every usable head of the staff at that x, inside the
+    window or not). Two members whose distances to `ey` differ by less than `BIND_COLUMN_MARGIN_SPACES` (the m2 hand-set margin, reused,
+    no new constant) abstain `chord_end_equidistant`, with both candidates and the signed margin."""
+    refs = []
+    for h in col:
+        if h.get("tip"):
+            refs.extend(t for t in heads if not t.get("tip") and t["key"] == h["key"])
+        else:
+            refs.append(h)
+    members: Dict[str, Dict[str, Any]] = {}
+    for r in refs:
+        for t in heads:
+            if t.get("tip") or t["key"] in members or not ok(t["key"]):
+                continue
+            if abs(t["cx"] - r["cx"]) <= BIND_COLUMN_DX_WIDTHS * max(t["w"], r["w"]):
+                members[t["key"]] = t
+    if not members:
+        return {}
+    ranked = sorted(members.values(), key=lambda t: abs(t["cy"] - ey))
+    if len(ranked) > 1:
+        gap = abs(ranked[1]["cy"] - ey) - abs(ranked[0]["cy"] - ey)
+        if gap < BIND_COLUMN_MARGIN_SPACES * sp:
+            return {"unbound": "chord_end_equidistant", "candidates": [t["key"] for t in ranked[:2]],
+                    "margin_spaces": round(gap / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    pick = ranked[0]
+    return {"head": pick["key"], "column": len(ranked), "by_height": True,
+            "distance_spaces": round((abs(pick["cx"] - ex) + abs(pick["cy"] - ey)) / sp, 3)}
+
+
 def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],
-             usable: Any = None) -> Dict[str, Any]:
+             usable: Any = None, by_height: bool = False) -> Dict[str, Any]:
     """One end of a curve at page `(ex, ey)`; `sgn` -1 for the left end, +1 for the right. `heads`: `{key, cx, cy, w, h}` of the staff in the
     system (GATHER boxes); `usable(key)` says whether ADJUDICATE left it a notehead of this staff (asked only of heads that could matter).
 
@@ -277,6 +319,12 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
             return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
                     "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
     col = cols[0]
+    if by_height:
+        got = _chord_member_at_height(col, ey, sp, heads, ex, ok)
+        if got:
+            if got.get("head") is not None and all(h.get("tip") for h in col):
+                got["via_stem_tip"] = True
+            return got
     if len(col) == 1:
         pick = col[0]
     elif side == "above":
@@ -313,15 +361,16 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]])
     return out
 
 
-def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None) -> Dict[str, Any]:
+def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None,
+               by_height: bool = False) -> Dict[str, Any]:
     """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
     side = curve_side(detail.get("trace"), sp)
     xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
     xr, yr = detail.get("x_right_page"), detail.get("y_right_page")
     if None in (xl, yl, xr, yr) or sp <= 0:
         return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
-    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable)
-    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable)
+    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height)
+    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height)
     if left.get("head") is not None and left.get("head") == right.get("head"):
         left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
     return {"left": left, "right": right, "side": side}

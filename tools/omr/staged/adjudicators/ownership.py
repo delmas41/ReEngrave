@@ -2477,6 +2477,15 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
             "pos": round(pos, 3), "step": int(round(pos))}
 
 
+def _step_with_extent(ev: Evidence, row: Any, extent: Optional[Dict[str, Any]]) -> Tuple[Optional[int], str]:
+    """The one place a tie/slur reader takes a head's step (ROADMAP 2.250, factored out of `_two_note_reading._step_of`): the head's
+    EXTENT step (`_head_extent`, source `geometry_extent`) where the detector drew the head in pieces, else `_head_step` -- a far head
+    stays its ledger reading or unread, never an ink centre (page-facts: a far head is placed by its ledger lines only)."""
+    if extent is not None:
+        return extent["step"], "geometry_extent"
+    return _head_step(ev, row)
+
+
 def _accidental_state(ev: Evidence, head: Tuple) -> str:
     """`printed` / `unknown` / `none` -- is a printed accidental on this head?
 
@@ -2637,10 +2646,7 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
     def _step_of(c):
         if c[1] == "half":
             return None, "tall_box_end"
-        e = ext.get(c[0][0].id)
-        if e is not None:
-            return e["step"], "geometry_extent"
-        return _head_step(ev, c[0][0])
+        return _step_with_extent(ev, c[0][0], ext.get(c[0][0].id))
 
     def _ext_note(c):
         e = ext.get(c[0][0].id)
@@ -2958,7 +2964,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sx, sy, sw, sh = (float(x) for x in sv[:4])
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
     tips = _arc_claim.stem_tips(heads, stems)
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable)
+    end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default OFF)
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
@@ -2981,10 +2988,29 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     by = {h["key"]: h for h in heads}
     hl, hr = by[lk], by[rk]
     between = _arc_claim.heads_between(hl, hr, heads, usable)
-    sa, src_a = _head_step(ev, rows[lk])
-    sb, src_b = _head_step(ev, rows[rk])
+    cya, cyb = hl["cy"], hr["cy"]
+    if end_pitch:
+        # ROADMAP 2.250: read the end note's step the way the two-note rule does (the head EXTENT where the box is a piece or a tall
+        # union), not the box centre -- the value existed (`_head_extent`) and this binder never read it. The same extent centre
+        # stands in for the box centre in the "one position" test, as `_two_note_reading._with_extent` does.
+        tuples = [(rows[h["key"]], h["cell"], h["cx"], h["cy"], h["w"], h["h"]) for h in heads]
+        avg_h = sum(t[5] for t in tuples) / len(tuples)
+        used = lambda row: usable(row.subject.to_key())         # noqa: E731
+        ea = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == lk))
+        eb = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == rk))
+        sa, src_a = _step_with_extent(ev, rows[lk], ea)
+        sb, src_b = _step_with_extent(ev, rows[rk], eb)
+        if ea is not None:
+            cya = ea["yc"]
+            b["start_extent"] = {k: v for k, v in ea.items() if k != "yc"}
+        if eb is not None:
+            cyb = eb["yc"]
+            b["stop_extent"] = {k: v for k, v in eb.items() if k != "yc"}
+    else:
+        sa, src_a = _head_step(ev, rows[lk])
+        sb, src_b = _head_step(ev, rows[rk])
     from ..arcs_system import SAME_POSITION_SPACES
-    dy = abs(hl["cy"] - hr["cy"]) / sp
+    dy = abs(cya - cyb) / sp
     near = dy <= SAME_POSITION_SPACES
     if sa is None or sb is None:
         # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
