@@ -184,7 +184,7 @@ def ink_position(pos_box: float, box: Sequence[float], extent: Sequence[float], 
 # r3: a far head whose ledger count ABSTAINED is written GUESSED (blue), the box centre and the ink centre both carried
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: Flag `OMR_FARHEAD_UNREAD_GUESSED` (default OFF; allow-list "1"/"true"/"yes"/"on"). Its own flag, not `OMR_HEAD_INK_EXTENT`'s, because it
+#: Flag `OMR_FARHEAD_UNREAD_GUESSED` (default ON since 2026-11-02, Sean "land"; an explicit 0/false/no/off disables). Its own flag, not `OMR_HEAD_INK_EXTENT`'s, because it
 #: is a different change with a different measure (r2 moves in-staff heads; this moves no head, it only MARKS far ones) and can land alone.
 #: CLAUDE.md section 5 / page-facts (Sean 2026-10-28, ROADMAP 2.216 option B): a head outside the staff is placed by its ledger lines only,
 #: and "no rungs either way is OUR failure: abstain and count it". Today the abstention falls back PLAIN to the box centre
@@ -198,7 +198,7 @@ FAR_GUESS_SOURCES = ("box_centre", "ink_centre")
 
 
 def far_guess_enabled() -> bool:
-    return os.environ.get(FAR_GUESS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(FAR_GUESS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def ink_centre_position(pos_box: float, box: Sequence[float], extent: Sequence[float], half_step_page: float) -> Optional[float]:

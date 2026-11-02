@@ -1,5 +1,5 @@
 """ROADMAP 2.248 r3 -- a far head whose ledger count ABSTAINED is written GUESSED (blue), STAGED (GATHER row, EVALUATE `restate_pitch`,
-EXPORT `far_unread_guess_of`), flag `OMR_FARHEAD_UNREAD_GUESSED`, default OFF.
+EXPORT `far_unread_guess_of`), flag `OMR_FARHEAD_UNREAD_GUESSED`, default ON (since 2026-11-02).
 
 Page-facts (Sean 2026-10-28): a far head is placed by its ledger lines only; "no rungs either way is OUR failure: abstain and count it".
 Before this, the abstention fell back PLAIN to the box centre (CLAUDE.md section 4 and rule 8: an uncertain pitch written unmarked).
@@ -183,10 +183,13 @@ class TestRestatePitchMarksTheUnreadFarHead(unittest.TestCase):
         self.assertEqual(out[0].reason, "position_and_clef")
         self.assertIsNone(export.far_unread_guess_of(_rec(log), g.to_key()))
 
-    def test_default_is_off(self):
+    def test_default_is_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(head_extent.FAR_GUESS_ENV, None)
-            self.assertFalse(head_extent.far_guess_enabled())
+            self.assertTrue(head_extent.far_guess_enabled())
+            for v in ("0", "false", "no", "off"):
+                os.environ[head_extent.FAR_GUESS_ENV] = v
+                self.assertFalse(head_extent.far_guess_enabled())
 
 
 class TestMoveGlyphReowned(unittest.TestCase):

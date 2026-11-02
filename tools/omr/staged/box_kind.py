@@ -412,7 +412,7 @@ def oversized_for_its_class(cls: object, w_sp: float, h_sp: float) -> bool:
     return w_sp > GLYPH_BOX_MAX_K * ps[0] or h_sp > GLYPH_BOX_MAX_K * ps[1]
 
 
-# ── ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default OFF): a FAR filled-head box that has no head's shape ─────────────────────
+# ── ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default ON): a FAR filled-head box that has no head's shape ─────────────────────
 # Sean's 2.248 r4 tiles 3, 4 (Brahms p5 glyph/5/1/12/1/7, 12/3/3) and DECISIONS 2026-10-31 (Brahms p5: "an eighth's FLAG, not a note"): the
 # detector boxed the FLAG of a down-stem eighth on the staff above as `noteheadBlackOnLine`, 1.5 x 2.2-2.6 spaces, below its own staff, and
 # ADJUDICATE kept it (`notehead`): 2.245 tests a head box's WIDTH only. Its own ink (`Q.NOTEHEAD_INK`) fills 0.42-0.50 of a filled head's

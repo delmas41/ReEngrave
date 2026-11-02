@@ -144,7 +144,7 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
             # clef vocabulary here is wider than `_CLEF_ANCHORS` knows.
             continue
-        # ⚠️ ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default OFF). A FAR head (outside the first space) whose ledger count
+        # ⚠️ ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON). A FAR head (outside the first space) whose ledger count
         # ABSTAINED has no pitch the page supports: page-facts says it is placed by its ledger lines only, and "no rungs either way is OUR
         # failure -- abstain and count it". The branch above leaves it on the geometry row's box centre, WRITTEN PLAIN -- an uncertain
         # pitch unmarked (CLAUDE.md section 4, rule 8). With the flag the value is unchanged and the verdict says why it is a guess: its
@@ -1672,7 +1672,7 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
     prior = log.verdict(Q.PITCH, subject)
     cands: tuple = ()
     detail: dict = {}
-    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default OFF): the `reowned` branch writes the geometry step on the NEW staff. Where
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON): the `reowned` branch writes the geometry step on the NEW staff. Where
     # that step is FAR (outside the first space) page-facts says its ledger lines place it, and no ledger count toward the new owner was
     # used here -- the same plain fallback as `restate_pitch`'s. Where a ledger count toward the owner AGREES the step has a second
     # witness and stays plain; where none was read (or it disagrees) the head is written GUESSED, both steps carried. The value is unchanged.
