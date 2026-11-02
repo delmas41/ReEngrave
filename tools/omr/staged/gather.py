@@ -15586,7 +15586,9 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                         continue
                     if any(n.get("why") == "f_body_below_read" and abs(float(n["x0"]) - mb[0]) <= 2.5 * sp for n in near):
                         continue                               # the same clef, seen with its dots
-                    near.append({"x0": float(mb[0]), "family": "F", "why": "f_body_no_dots", "box": None,
+                    # the candidate stands a space LEFT of the matched body (the template matched the body's right part at bar 111; a
+                    # head box on the clef's own blob stood left of it): stopping early only makes heads unread, never wrong
+                    near.append({"x0": float(mb[0]) - 1.0 * sp, "family": "F", "why": "f_body_no_dots", "box": None,
                                  "body_score": bs["match"]["score"]})
             # (b): a `clef*` box too small to be a clef-sized claim is still ink that may be a clef (Litolff Vc bar 411: a 0.7 sp
             # `clefF` box on a real bass clef)

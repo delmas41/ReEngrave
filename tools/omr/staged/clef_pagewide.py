@@ -614,7 +614,9 @@ F_BODY_SCAN_CANDIDATE_SCORE = 0.60
 SMALL_CLEF_BOX_MIN_SCORE = 0.5
 #: the no-box F claim reaches this far (staff spaces) left of the matched body: the template is cut from the header clef's ink, and the
 #: clef's filled head on line 4 can stand a little further left (Litolff bar 38: a 0.42 head box on that blob was pitched as a note)
-F_NOBOX_LEFT_PAD_SPACES = 0.5
+F_NOBOX_LEFT_PAD_SPACES = 1.0
+#: ... and from 0.3 sp above the top line to this far (staff spaces) below it (the header F clefs' boxes on Litolff: 3.4-3.6 sp)
+F_NOBOX_HEIGHT_SPACES = 3.6
 #: an F clef's body and dots span at most this far (staff spaces) left of its dots' left edge
 F_BODY_MAX_REACH_SPACES = 2.6
 #: a dot's width (staff spaces): the template's dots start this far left of the dot pair's right edge `f_line` reports
@@ -659,8 +661,11 @@ def f_nobox(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x1: f
         # the clef's left edge: the matched body's, but never further left of its dots than a body is wide (a template laid over a C
         # clef standing just before it -- Litolff bar 110/111 -- must not put this clef before that one)
         left = max(float(b[0]), float(p["x_left"]) - F_BODY_MAX_REACH_SPACES * sp)
-        area = [left - F_NOBOX_LEFT_PAD_SPACES * sp, float(min(b[1], p["dots"][0][1] - 0.4 * sp)), float(p["x_right"]) + 0.05 * sp,
-                float(max(b[3], p["dots"][1][1] + 0.4 * sp))]
+        # the clef's height: an F clef stands from the top line to below line 2 (`F_NOBOX_HEIGHT_SPACES`), whatever the template kept --
+        # so a "stem" the line finder drew on the body's curve stands inside the claim (bar 38's head box on the clef's blob carried one)
+        top = float(p["lines_local"][0])
+        area = [left - F_NOBOX_LEFT_PAD_SPACES * sp, float(min(b[1], p["dots"][0][1] - 0.4 * sp, top - 0.3 * sp)),
+                float(p["x_right"]) + 0.05 * sp, float(max(b[3], p["dots"][1][1] + 0.4 * sp, top + F_NOBOX_HEIGHT_SPACES * sp))]
         out.append({"pair": p, "match": m, "read": m["score"] >= F_TEMPLATE_READ_SCORE, "area": area})
     return out
 
