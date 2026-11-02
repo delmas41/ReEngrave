@@ -291,6 +291,7 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
            "distance_spaces": round((abs(pick["cx"] - ex) + abs(where(pick) - ey)) / sp, 3)}
     if pick.get("tall"):
         out["tall"] = True            # the member is a fused box: its step is unread (`ownership._page_binding`), never its centre's
+        out["end_y"] = where(pick)    # ... and its position is the head-sized end the arc stands at, never the box centre
     return out
 
 

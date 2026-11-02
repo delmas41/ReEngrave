@@ -165,11 +165,13 @@ def test_a_tall_member_stands_at_its_nearer_head_sized_end_and_is_flagged():
     assert centre_only["head"] == "fused" and "tall" not in centre_only          # the twin: without the mark the box is read by its centre
 
 
-def test_a_tall_end_has_no_step_and_the_binder_gives_no_kind(on):
-    # the stop head of a record scene made tall: the binder cannot call a position of a fused box -> no kind from it (the OFF path decides)
+def test_a_tall_end_has_no_step_and_its_position_is_the_head_sized_end(on):
+    # the start of a record scene is a fused box (3 head heights): no step of its own, its POSITION is the head-sized end the arc stands
+    # at (140), read off the boxes like any end whose step is unread -- never the box centre (132). Against a stop head centred 129.4
+    # the end is 1.06 sp away (two positions); the centre would have said 0.26 (one position, a tie).
     log = Log()
     _cells(log, 2)
-    _box(log, 0, 0, 40.0, 117.0, 147.0)              # 3 head heights tall: two heads fused
+    _box(log, 0, 0, 40.0, 117.0, 147.0)
     _box(log, 0, 3, 120.0, 122.1, 136.7)
     for i in range(4):                               # the staff's ordinary heads: the mean head height is a head's, not the fused box's
         _box(log, 1, i, 250.0 + 20 * i, 120.0, 130.0)
@@ -179,4 +181,5 @@ def test_a_tall_end_has_no_step_and_the_binder_gives_no_kind(on):
                 trace=[])
     v = _decide(log, arc, ())
     pb = _binding(v)
-    assert pb is not None and pb["kind"] is None and pb["start_step_source"] == "tall_box_end" and pb["relation"] == "unread"
+    assert pb is not None and pb["start_step"] is None and pb["start_step_source"] == "tall_box_end"
+    assert pb["relation_source"] == "boxes_only" and pb["dy_spaces"] > 0.9

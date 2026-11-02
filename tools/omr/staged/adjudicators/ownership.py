@@ -3008,9 +3008,9 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sa, src_a = _step_with_extent(ev, rows[lk], ea)
         sb, src_b = _step_with_extent(ev, rows[rk], eb)
         if b["left"].get("tall"):
-            sa, src_a = None, "tall_box_end"          # the two-note rule's `half`: a fused box has no step of its own
+            sa, src_a, cya = None, "tall_box_end", b["left"]["end_y"]       # the two-note rule's `half`: no step of its own; the head-sized end
         if b["right"].get("tall"):
-            sb, src_b = None, "tall_box_end"
+            sb, src_b, cyb = None, "tall_box_end", b["right"]["end_y"]
         if ea is not None:
             cya = ea["yc"]
             b["start_extent"] = {k: v for k, v in ea.items() if k != "yc"}
@@ -3029,8 +3029,6 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
         relation = ("same" if near else "different" if dy >= BIND_DIFFERENT_POSITION_SPACES else "unread")
         b["relation_source"] = "boxes_only"
-        if end_pitch and "tall_box_end" in (src_a, src_b):
-            relation, b["relation_source"] = "unread", "tall_box_end"      # a fused box's centre says nothing about a position
     elif sa == sb:
         relation = "same" if near else "conflict"
     else:
