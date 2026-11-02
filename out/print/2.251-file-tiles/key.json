@@ -1,0 +1,413 @@
+[
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 4,
+  "box": [
+   991.605,
+   2580.11,
+   1024.365,
+   2602.9475
+  ],
+  "rg": "glyph/4/1/3/3/6",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "case",
+  "arm": "only-OMR_CLEF_PAGEWIDE",
+  "tile": 1,
+  "crop_origin": [
+   913,
+   2512
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cell": 3,
+   "page_box": [
+    991.605,
+    2580.11,
+    1024.365,
+    2602.9475
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "page": 4,
+  "box": [
+   961.66796875,
+   4334.7451171875,
+   996.6220703125,
+   4363.93359375
+  ],
+  "rg": "glyph/4/1/1/0/13",
+  "value": "eighth",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "arm": "control",
+  "tile": 2,
+  "crop_origin": [
+   787,
+   4189
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 1,
+   "cell": 0,
+   "page_box": [
+    961.66796875,
+    4334.7451171875,
+    996.6220703125,
+    4363.93359375
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "rest",
+  "side": "lost",
+  "page": 5,
+  "box": [
+   2021.1825,
+   4706.745,
+   2083.3125,
+   4724.4575
+  ],
+  "rg": "glyph/5/1/3/2/13",
+  "value": "whole",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "only-OMR_CLEF_PAGEWIDE",
+  "tile": 3,
+  "crop_origin": [
+   1860,
+   4555
+  ],
+  "position": {
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cell": 2,
+   "page_box": [
+    2021.1825,
+    4706.745,
+    2083.3125,
+    4724.4575
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 5,
+  "box": [
+   2036.4425,
+   4743.26,
+   2085.22,
+   4806.2075
+  ],
+  "rg": "glyph/5/1/3/2/14",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "only-OMR_CLEF_PAGEWIDE",
+  "tile": 4,
+  "crop_origin": [
+   1868,
+   4614
+  ],
+  "position": {
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cell": 2,
+   "page_box": [
+    2036.4425,
+    4743.26,
+    2085.22,
+    4806.2075
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 5,
+  "box": [
+   5217.5947265625,
+   1262.05615234375,
+   5257.3720703125,
+   1295.39892578125
+  ],
+  "rg": "glyph/5/0/3/7/0",
+  "was": "A-13",
+  "value": "E-14",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "interaction",
+  "tile": 5,
+  "crop_origin": [
+   5045,
+   1118
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 3,
+   "cell": 7,
+   "page_box": [
+    5217.5947265625,
+    1262.05615234375,
+    5257.3720703125,
+    1295.39892578125
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "note",
+  "page": 4,
+  "box": [
+   2485.0975,
+   1041.605,
+   2509.51,
+   1063.025
+  ],
+  "rg": "glyph/4/0/4/14/2",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "arm": "control",
+  "tile": 6,
+  "crop_origin": [
+   2402,
+   973
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "cell": 14,
+   "page_box": [
+    2485.0975,
+    1041.605,
+    2509.51,
+    1063.025
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "rest",
+  "page": 2,
+  "box": [
+   1574.585,
+   2559.0,
+   1595.2175,
+   2608.14
+  ],
+  "rg": "glyph/2/1/3/7/0",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "arm": "control",
+  "tile": 7,
+  "crop_origin": [
+   1490,
+   2504
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "cell": 7,
+   "page_box": [
+    1574.585,
+    2559.0,
+    1595.2175,
+    2608.14
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 4,
+  "box": [
+   3559.65,
+   4822.2525,
+   3597.8,
+   4853.59
+  ],
+  "rg": "glyph/4/1/3/5/1",
+  "was": "B-13",
+  "value": "F4",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "interaction",
+  "tile": 8,
+  "crop_origin": [
+   3386,
+   4677
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "page_box": [
+    3559.65,
+    4822.2525,
+    3597.8,
+    4853.59
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "dot",
+  "side": "gained",
+  "page": 5,
+  "box": [
+   1793.3974609375,
+   1311.45703125,
+   1834.6708984375,
+   1346.13818359375
+  ],
+  "rg": "glyph/5/0/3/1/5",
+  "value": ".",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "only-OMR_CLEF_PAGEWIDE",
+  "tile": 9,
+  "crop_origin": [
+   1622,
+   1168
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    1793.3974609375,
+    1311.45703125,
+    1834.6708984375,
+    1346.13818359375
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 5,
+  "box": [
+   1696.51953125,
+   1278.49560546875,
+   1734.06689453125,
+   1304.86474609375
+  ],
+  "rg": "glyph/5/0/3/1/17",
+  "value": "quarter",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "only-OMR_CLEF_PAGEWIDE",
+  "tile": 10,
+  "crop_origin": [
+   1523,
+   1131
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    1696.51953125,
+    1278.49560546875,
+    1734.06689453125,
+    1304.86474609375
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "pitch",
+  "side": "changed",
+  "page": 5,
+  "box": [
+   2874.3,
+   1410.07,
+   2913.8125,
+   1439.7725
+  ],
+  "rg": "glyph/5/0/3/3/3",
+  "was": "D2",
+  "value": "A2",
+  "plate": "brahms",
+  "role": "case",
+  "arm": "interaction",
+  "tile": 11,
+  "crop_origin": [
+   2702,
+   1264
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "page_box": [
+    2874.3,
+    1410.07,
+    2913.8125,
+    1439.7725
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 4,
+  "box": [
+   1534.78,
+   2593.8125,
+   1560.925,
+   2614.9175
+  ],
+  "rg": "glyph/4/1/3/7/2",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "case",
+  "arm": "interaction",
+  "tile": 12,
+  "crop_origin": [
+   1453,
+   2525
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cell": 7,
+   "page_box": [
+    1534.78,
+    2593.8125,
+    1560.925,
+    2614.9175
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ }
+]

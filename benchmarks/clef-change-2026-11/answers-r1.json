@@ -1,0 +1,42 @@
+{
+ "source": "Sean, 2026-11-01, verbatim per tile; tiles out/print/2.251-tiles on lane-2.251-clef-change 3254ce233 (seed 2251)",
+ "answers": {
+  "1": "C clef",
+  "2": "C clef",
+  "3": "C clef",
+  "4": "C clef",
+  "5": "G clef, but the orange box is a little bit off (Sean confirmed 'Sorry - 5 is a G clef' after a brief 'C clef' correction)",
+  "6": "C clef",
+  "7": "C clef",
+  "8": "G clef. Again, the box is a little off",
+  "9": "bar line",
+  "10": "F clef (corrected from 'C clef'); also has a quarter note rest in the orange box",
+  "11": "F clef",
+  "12": "F clef"
+ },
+ "scored": {
+  "claims_right": [
+   1,
+   2,
+   3,
+   4,
+   6,
+   7,
+   10,
+   12
+  ],
+  "claims_wrong": {
+   "5": "header G clef (Litolff p6 s0 staff 5) claimed as a C clef, kind unread"
+  },
+  "rejections_right": {
+   "8": "G clef rejected (g_clef_shape)",
+   "9": "barline rejected (no_bowls)"
+  },
+  "rejections_wrong": {
+   "11": "real F clef refused (f_no_dots; Brahms p5 s1 staff 3)"
+  },
+  "note": {
+   "10": "claim area also holds a quarter rest -- a claim must not take the rest's ink"
+  }
+ }
+}

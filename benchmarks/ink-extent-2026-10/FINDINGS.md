@@ -1,5 +1,24 @@
 # ROADMAP 2.248 -- every mark's size from its own ink (STAGED)
 
+**STATUS (2026-11-01): r3 BUILT, NOT LANDED; r2 DOES NOT LAND.** Branch `lane-2.248-ink-extent` ee87ef423 (r3 flag `OMR_FARHEAD_UNREAD_GUESSED`, default OFF; r2 flag `OMR_HEAD_INK_EXTENT`, default OFF). The lane's full r3 entry is in this file ON THE LANE BRANCH; the summary and Sean's answers are here.
+
+## 2026-11-01: round 3 -- a far head whose ledger count abstains is written blue, and Sean's tiles
+
+**Cause (r3).** EVALUATE `consequences.restate_pitch` read the geometry row (the box centre) when ADJUDICATE `adjudicate_notehead_position` abstained on a far head's ledger count, and wrote a DECIDED, unmarked pitch -- "cannot tell" turned into an answer (rule 8, CLAUDE §4). A second copy sat in `move_glyph` (branch `reowned`). Process lesson: when a decision abstains, read what its consumers do with the abstention.
+
+**Built (r3).** The head keeps its pitch but is written GUESSED (blue `#1F6FEB`) with two candidates (box-centre step, ink-centre step); the ink centre never places a far head (page-facts: ledger lines only). On the 2-page subset: Litolff +235 blue, Brahms +1, nothing else changed, judged right->wrong 0. Frozen sample not run.
+
+**How often a far head's ledger count abstains** (20261029-night slices): Litolff 1,097 of 2,114, Brahms 1,280 of 2,636. Mostly refutations, not reading failures: 616 (L) / 963 (B) have a ledger reading toward ANOTHER staff (the head belongs to the neighbour), 253 / 400 are not notes (twins, barlines, text). The real reading failure is `count_does_not_fit` (L 365, B 489) -- where a ledger-reader lane should look.
+
+**Sean's tiles** (`out/print/2.248-r3-tiles/` on the lane branch; answers verbatim and scored in `answers-r3.json`):
+- r2 in-staff moves (1, 2, 4, 5, 10, 12): only 4 and 12 are noteheads. **1 and 5 are tremolo slashes, 2 part of an F clef, 10 an eighth rest.** Their ink centre differed from their box centre because they are not round heads. On the two real heads the ink centre was right (4: second space from the top; 12: second space from the bottom). r2 does not land: a non-head must be refused upstream, never re-pitched.
+- r3 far heads written blue (3, 6, 7, 8, 9, 11): all six are real notes (3 and 6 boxed on only half the head).
+  - 7 and 9: the written (box) candidate is right.
+  - **3 and 6: the wrong staff.** 3 was keyed far above staff 8; Sean reads it on the ledger line BELOW staff 7. 6 was keyed far below staff 6; Sean reads the second ledger line ABOVE staff 7. Both candidates wrong on each. Page-facts already say the ledger lines name the owner; that rule did not take over here.
+  - 8 and 11: Sean reads "the 4th space above the staff" (top head of a stacked chord). Counted up from the top line that is neither candidate; the tile is cropped above the staff so the ledger lines cannot be counted on it. UNRESOLVED until a taller crop shows the staff.
+
+**Next (not started).** (a) Why do far heads that the ledger lines give to the neighbour stay on the wrong staff (tiles 3, 6)? (b) Refuse tremolo slashes, clef pieces and rests as heads before any move (tiles 1, 2, 5, 10). (c) A taller crop for tiles 8, 11. r3 alone could land as "mark, not move", but 2 of its 6 blue notes sit on the wrong staff, so it waits for (a).
+
 **STATUS (2026-10-31 night): PARKED, NOT LANDED.** Branch `lane-2.248-ink-extent` at 868ee790b (r1 code fdd54c6c4, r2 code f04eb8630), flag `OMR_HEAD_INK_EXTENT` default OFF (allow-list). Sean: out of tonight's overnight, picked up next session. Resume steps at the end of this file.
 
 2026-10-31, branch `lane-2.248-ink-extent` 654d54ffc (Opus), flag `OMR_HEAD_INK_EXTENT` default OFF. Written by the manager from the lane's report (the hook refused the lane's write). Scripts in this directory are on the branch.

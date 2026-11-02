@@ -682,6 +682,68 @@ class Cell:
     unplaced: List[Dict[str, Any]] = field(default_factory=list)
 
 
+def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
+    """ROADMAP 2.251 step 2 (flag `OMR_CLEF_CARRY`, default OFF): the clefs printed INSIDE this staff whose kind was READ (step 1's
+    `Q.CLAIMED_AREA` rows, source `clef_pagewide`, `change`), keyed by the bar from which the file writes them. A change governs from
+    its OWN bar where a head of that bar was pitched from it (a `Q.PITCH` verdict citing the change row: `restate_pitch`), else from the
+    next bar (it stands at the bar's end, before the barline). A change whose kind is unread writes no clef (its notes carry no pitch).
+    ⚠️ A change inside a bar is written at that bar's start: MusicXML's mid-bar `<clef>` is not built (display only -- the pitches
+    are the restated ones either way)."""
+    from . import clef_pagewide as _CP
+    if not _CP.carry_enabled():
+        return {}
+    rows = [o for o in rec.obs(Q.CLAIMED_AREA, staff_key)
+            if (o.get("detail") or {}).get("source") == _CP.SOURCE and (o.get("detail") or {}).get("change")]
+    if not rows:
+        return {}
+    cited = rec.__dict__.get("_clef_change_cells")
+    if cited is None:
+        cited = {}
+        for v in rec.verdicts_of(Q.PITCH):
+            if v.get("reason") != "position_and_clef_change" and (v.get("detail") or {}).get("reason") != "position_and_clef_change":
+                continue
+            s = _parse_subject(v["subject"])
+            for b in v.get("basis") or ():
+                cited.setdefault(b, set()).add(s.get("cell"))
+        rec.__dict__["_clef_change_cells"] = cited
+    out: Dict[int, str] = {}
+    for o in sorted(rows, key=lambda o: float((o.get("value") or [0])[0])):
+        d = o.get("detail") or {}
+        kind = d.get("kind")
+        if not kind:
+            continue
+        k = int(d.get("cell") or 0)
+        out[k if k in cited.get(o.get("id"), set()) else k + 1] = str(kind)
+    return out
+
+
+def _after_unread_clef(rec: Any, s: Dict[str, Any], box_obs: Dict[str, Any]) -> bool:
+    """ROADMAP 2.251 (flag `OMR_CLEF_CARRY`): whether the head (`box_obs`, its `Q.GLYPH_BOX` row) stands after a clef printed inside
+    its staff whose kind was NOT read -- the clef printed last before its x (`clef_pagewide.clef_in_force`) has `kind: None`."""
+    from . import clef_pagewide as _CP
+    if not _CP.carry_enabled():
+        return False
+    bp = (box_obs.get("detail") or {}).get("bbox_page_px")
+    if not (isinstance(bp, (list, tuple)) and len(bp) == 4):
+        return False
+    rows = rec.obs(Q.CLAIMED_AREA, "staff/%s/%s/%s" % (s["page"], s["system"], s["staff"]))
+
+    class _Row:
+        def __init__(self, o: Dict[str, Any]) -> None:
+            self.value, self.detail = o.get("value"), o.get("detail") or {}
+    got = _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, _CP.changes_of([_Row(o) for o in rows]))
+    return got is not None and got[0] is None
+
+
+def _clef_at_bar(run: Any, i: int) -> Optional[str]:
+    """The clef the file writes for bar `i` of `run`: the last READ change at or before it (`clef_from_bar`), else the header clef."""
+    got = run.clef
+    for b in sorted(run.clef_from_bar or {}):
+        if b <= i:
+            got = run.clef_from_bar[b]
+    return got
+
+
 @dataclass
 class StaffRun:
     """One staff of one system: its header facts and its measures."""
@@ -702,6 +764,12 @@ class StaffRun:
     n_measures_decided: bool = False
     name: Optional[str] = None
     cells: Dict[int, Cell] = field(default_factory=dict)
+    #: ROADMAP 2.251 step 2 (flag `OMR_CLEF_CARRY`): bar index -> the clef READ inside this staff that is in force from that bar on
+    #: (the clef change written where it is printed; empty with the flag off or no change on the staff).
+    clef_from_bar: Dict[int, str] = field(default_factory=dict)
+    #: ROADMAP 2.251 (CLAUDE §4): bars holding a head that stands after a clef printed inside this staff whose KIND was not read --
+    #: the head has no pitch and is not written; the bar carries a red "clef?" mark so it is never silently short.
+    unread_clef_bars: set = field(default_factory=set)
     #: This staff's own page geometry, read for the arc merge. ⚠️ BOTH ARE
     #: PER STAFF AND NOT PER PAGE: a part spans systems, and the staff it is
     #: printed on in system 0 is not the same object as the one in system 1.
@@ -874,6 +942,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
 
     for key, run in runs.items():
         run.clef = rec.value(Q.CLEF, key)
+        run.clef_from_bar = _clef_changes_by_bar(rec, key)
         ks = rec.value(Q.KEY_SIGNATURE, key)
         run.fifths = int(ks) if isinstance(ks, int) else None
         run.meter = rec.value(Q.METER, f"system/{run.page}/{run.system}")
@@ -1579,6 +1648,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # ⚠️ NO POSITIONAL DEFAULT. A staff whose clef abstained produces
             # no pitches at all (`consequences.restate_pitch`), deliberately,
             # and the exporter must not undo that by writing treble.
+            # ROADMAP 2.251: a head after a clef change whose kind is unread is one of these; its bar is MARKED (CLAUDE §4).
+            if _after_unread_clef(rec, s, o):
+                _ru = runs.get("staff/%s/%s/%s" % (s["page"], s["system"], s["staff"]))
+                if _ru is not None and s.get("cell") is not None:
+                    _ru.unread_clef_bars.add(int(s["cell"]))
             _drop("no_pitch", s)
             continue
         if not isinstance(dur, dict):
@@ -4571,17 +4645,18 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # from its very first measure regardless of whether clef/key/
             # time happen to match whatever `prev` already held.
             condensed = bool(run.condensed_from)
-            changed = (run.clef != prev["clef"] or key != prev["key"]
+            clef_here = _clef_at_bar(run, i)
+            changed = (clef_here != prev["clef"] or key != prev["key"]
                        or meter != prev["time"]
                        or condensed != prev.get("condensed", False))
             if first or changed:
                 attrs = _legacy._mxl_attributes_block(
-                    run.clef, key, meter, divisions, "      ",
+                    clef_here, key, meter, divisions, "      ",
                     include_divisions=first)
                 if condensed:
                     attrs = _insert_transpose(attrs, "      ")
                 lines.append(attrs)
-                prev = {"clef": run.clef, "key": key, "time": meter,
+                prev = {"clef": clef_here, "key": key, "time": meter,
                        "condensed": condensed}
                 first = False
                 # ⚠️ ROADMAP 2.8, and it is INSIDE the branch that actually
@@ -4595,6 +4670,15 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # head (after `<attributes>`); its right-hand twin closes the bar.
             _bl_left, _bl_right = plan.barlines(_here, i)
             lines.extend(_bl_left)
+            if i in (run.unread_clef_bars or ()):
+                # ROADMAP 2.251 (CLAUDE §4): heads in this bar stand after a printed clef whose kind was not read; they carry no pitch
+                # and are not written -- the bar says so, in red, above the staff
+                lines.append('      <direction placement="above">\n'
+                             '        <direction-type>\n'
+                             f'          <words color="{UNREAD_BAR_MARK_COLOR}">clef?</words>\n'
+                             '        </direction-type>\n'
+                             '      </direction>')
+                counters["bars_marked_clef_unread"] += 1
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)

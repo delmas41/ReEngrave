@@ -89,6 +89,9 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     out: List[Verdict] = []
     rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, subject,
                     scope=Scope.SELF_AND_DESCENDANTS)
+    # ROADMAP 2.251 step 2 (flag OMR_CLEF_CARRY, default OFF): the clefs printed INSIDE this staff (step 1's page-wide claims), so each
+    # head is pitched from the clef printed LAST before it (Sean 2026-11-01 "Build both"); none before it -> the header clef, as before.
+    changes = _clef_changes(log, subject)
     for row in rows:
         if log.verdict(Q.PITCH, row.subject) is not None:
             # ⚠️⚠️ IT NEVER OVERTURNS A PITCH THAT ALREADY STANDS, and the
@@ -121,6 +124,21 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
                 and far.value is not None:
             pos = int(far.value)
             pos_basis = far.id
+        in_force = _clef_change_at(log, row.subject, changes)
+        if in_force is not None:
+            kind, crow = in_force
+            if kind is None:
+                # ⚠️ 2.251: a clef printed before this head whose kind could not be read: the head gets NO pitch (unread, red),
+                # never the header clef's (rule 8)
+                continue
+            name = _pitch_from_position(pos, str(kind))
+            if name is None:
+                continue
+            out.append(_verdict(
+                log, row.subject, Q.PITCH, name,
+                decider="restate_pitch", reason="position_and_clef_change",
+                basis=(pos_basis, crow.id)))
+            continue
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
@@ -153,6 +171,31 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
             decider="restate_pitch", reason="position_and_clef",
             basis=(pos_basis, clef.id)))
     return out
+
+
+def _clef_changes(log: Log, staff: Subject) -> list:
+    """ROADMAP 2.251 step 2: the clefs printed inside `staff` (step 1's `Q.CLAIMED_AREA` rows, source `clef_pagewide`, `change`), left
+    to right; [] with `OMR_CLEF_CARRY` off or no change on the staff."""
+    from . import clef_pagewide as _CP
+    if not _CP.carry_enabled():
+        return []
+    st = staff.at(Kind.STAFF) if hasattr(staff, "at") else None
+    if st is None:
+        return []
+    return _CP.changes_of(log.rows(Q.CLAIMED_AREA, st))
+
+
+def _clef_change_at(log: Log, glyph: Subject, changes: list):
+    """(kind or None, change row) of the clef printed last before the head `glyph` (its own box's centre x, page px), or None where no
+    change stands before it / the head has no page box (the header clef governs)."""
+    if not changes:
+        return None
+    from . import clef_pagewide as _CP
+    for b in log.rows(Q.GLYPH_BOX, glyph):
+        bp = (b.detail or {}).get("bbox_page_px")
+        if isinstance(bp, (list, tuple)) and len(bp) == 4:
+            return _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes)
+    return None
 
 
 # ─────────────────────────────────────────────────────────────────────────────

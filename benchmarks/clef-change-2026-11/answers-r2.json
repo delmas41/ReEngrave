@@ -1,0 +1,55 @@
+{
+ "source": "Sean 2026-11-02 verbatim: '1. Treble clef 2. Treble clef but box is off a bit 3. C clef 4-7. F clef 8. Part of a barline 9. C clef 10. F clef 11-12. C clef'. Tiles out/print/2.251-r2-tiles (lane 32c3f12c1, seed 22512).",
+ "answers": {
+  "1": "treble clef",
+  "2": "treble clef, but box is off a bit",
+  "3": "C clef",
+  "4": "F clef",
+  "5": "F clef",
+  "6": "F clef",
+  "7": "F clef",
+  "8": "part of a barline",
+  "9": "C clef",
+  "10": "F clef",
+  "11": "C clef",
+  "12": "C clef"
+ },
+ "scored": {
+  "right": [
+   1,
+   2,
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11,
+   12
+  ],
+  "wrong": [],
+  "r1_places": {
+   "1": "r1 tile 5 G clef -- now not claimed (right)",
+   "4": "r1 tile 11 Brahms F -- now claimed bass (right)",
+   "5": "r1 tile 10 F -- claim trimmed; Sean names no rest in the box (right)"
+  },
+  "claims": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   9,
+   10,
+   11,
+   12
+  ],
+  "refusals": {
+   "1": "G clef",
+   "2": "G clef (near-miss area drawn a bit off -- not claimed)",
+   "8": "barline (false clefF box)"
+  }
+ }
+}

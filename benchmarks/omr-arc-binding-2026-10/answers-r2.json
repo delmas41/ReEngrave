@@ -1,0 +1,54 @@
+{
+ "source": "Sean 2026-11-01 verbatim: '1-11 are all ties and 12 is a slur. 4, 8 and 11 the orange box has two half notes in it a third apart. Both notes have ties attached.' Tiles out/print/2.250-r2-tiles-wide (lane-2.250-binder-pitch 19cd442e4); the narrow r2 tiles were not answerable (too little context).",
+ "answers": {
+  "1": "tie",
+  "2": "tie",
+  "3": "tie",
+  "4": "tie",
+  "5": "tie",
+  "6": "tie",
+  "7": "tie",
+  "8": "tie",
+  "9": "tie",
+  "10": "tie",
+  "11": "tie",
+  "12": "slur"
+ },
+ "notes": {
+  "4": "two half notes a third apart, both tied",
+  "8": "same",
+  "11": "same"
+ },
+ "scored": {
+  "cases_right": [
+   3,
+   4,
+   5,
+   6,
+   7,
+   8,
+   9,
+   10,
+   11
+  ],
+  "cases_wrong": [],
+  "held_round1_places": {
+   "3": "tie (r1 wrongly gained a slur; r2 unchanged)",
+   "5": "same",
+   "9": "same"
+  },
+  "r2_changes": {
+   "4": "slur no longer written -- right; the two ties are not written either",
+   "6": "tie gained -- right",
+   "7": "slur lost -- right",
+   "8": "slur lost -- right; two ties not written",
+   "10": "slur lost -- right",
+   "11": "slur lost -- right; two ties not written"
+  },
+  "controls": {
+   "12": "slur, right in both arms",
+   "1": "slur written in BOTH arms, Sean: tie (existing miss, not a regression)",
+   "2": "same as 1"
+  }
+ }
+}
