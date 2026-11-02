@@ -15571,7 +15571,23 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 else:
                     # the candidate stands at its DOTS (its body may be laid over a clef just before it: Litolff bars 110/111)
                     near.append({"x0": nb["pair"]["x_left"] - 0.3 * sp, "family": "F", "why": "f_body_below_read", "box": None,
-                                 "body_score": nb["match"]["score"]})
+                                 "body_score": nb["match"]["score"],
+                                 "strong": nb["match"]["score"] >= CP.F_TEMPLATE_STRONG_SCORE})
+            # round 2 (Litolff bar 111: the dots fused with the heads beside them, so no pair is seen): on a staff where a change is
+            # claimed, the page's own F body slid along the staff right of it with NO dot witness -- one witness, so a CANDIDATE that
+            # stops a carry, never a read clef; never on a claimed clef's own ink
+            chg_x = [f["area"][0] for f in found if f["area"][0] > x_head0]
+            if chg_x:
+                for bs in CP.f_body_scan(ink, lines, sp, min(chg_x), x_hi, templates):
+                    if bs["match"]["score"] < CP.F_BODY_SCAN_CANDIDATE_SCORE:
+                        continue
+                    mb = bs["match"]["box"]
+                    if any(_overlap_share(mb, f["area"]) >= 0.3 or _overlap_share(f["area"], mb) >= 0.3 for f in found):
+                        continue
+                    if any(n.get("why") == "f_body_below_read" and abs(float(n["x0"]) - mb[0]) <= 2.5 * sp for n in near):
+                        continue                               # the same clef, seen with its dots
+                    near.append({"x0": float(mb[0]), "family": "F", "why": "f_body_no_dots", "box": None,
+                                 "body_score": bs["match"]["score"]})
             # (b): a `clef*` box too small to be a clef-sized claim is still ink that may be a clef (Litolff Vc bar 411: a 0.7 sp
             # `clefF` box on a real bass clef)
             for k in order:
@@ -15626,7 +15642,8 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
                         reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
                         x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
-                        **({"candidate": bool(cand), "body_score": n.get("body_score")} if CP.carry_enabled() else {}),
+                        **({"candidate": bool(cand), "body_score": n.get("body_score"), "strong": bool(n.get("strong"))}
+                           if CP.carry_enabled() else {}),
                         shape={k: n.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
                                                      "bowl_asymmetry", "g_shape") if k in n} or None)
 

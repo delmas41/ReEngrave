@@ -564,6 +564,32 @@ def f_body_match(ink: np.ndarray, sp: float, pair: Dict[str, Any], templates: Se
     return best
 
 
+def f_body_scan(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x1: float,
+                templates: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """The page's own F body slid along one staff between page columns x0..x1 with NO dot witness (ROADMAP 2.251 carry round 2,
+    Litolff bar 111: the dots are fused with the heads beside them, so no pair is seen). At each step (twice the template's own shift,
+    so the shifts tile the staff) the best `f_body_match`; local maxima only. ONE witness: it may make a clef-shaped CANDIDATE that stops
+    a carry (the heads after it go unread, never wrong), never a READ clef. Each: {x (the body's left edge, page px), match}."""
+    if not templates:
+        return []
+    step = max(2, int(round(2 * F_TEMPLATE_SHIFT_SPACES * sp)))
+    raw = []
+    x = float(x0)
+    while x < float(x1):
+        ll = local_lines(ink, lines, sp, x)
+        m = f_body_match(ink, sp, {"x_left": x, "lines_local": ll}, templates)
+        if "box" in m:
+            raw.append({"x": float(m["box"][0]), "match": m})
+        x += step
+    out = []
+    for i, r in enumerate(raw):
+        lo = raw[i - 1]["match"]["score"] if i > 0 else -1.0
+        hi = raw[i + 1]["match"]["score"] if i + 1 < len(raw) else -1.0
+        if r["match"]["score"] >= lo and r["match"]["score"] >= hi:
+            out.append(r)
+    return out
+
+
 def f_body_shape(ink: np.ndarray, lines: Sequence[float], sp: float, pair: Dict[str, Any],
                  templates: Sequence[Dict[str, Any]] = ()) -> Dict[str, Any]:
     """Exploration wrapper: `f_body_match` against `templates`."""
@@ -577,8 +603,18 @@ F_TEMPLATE_READ_SCORE = 0.70
 #: ... and at this score and above (but below READ) it is a CLEF-SHAPED CANDIDATE: claimed nothing, but a carried clef stops there
 #: (Litolff bars 115 0.66 and 111 0.55: real bass clefs with a head / stem through the body)
 F_TEMPLATE_CANDIDATE_SCORE = 0.50
+#: ... and at this score (dot pair AND body, below READ) a STRONG candidate: it stops the header's clef too, unless that is an F clef.
+#: Round 2: Sean's carry tile 11 (Vc bar 346, 0.69) is a real F clef; every non-clef dot pair on Litolff pp. 1-16 scored <= 0.61
+F_TEMPLATE_STRONG_SCORE = 0.65
+#: the F body slid with NO dot witness (`f_body_scan`) makes a candidate at this score (one witness: a candidate, never READ).
+#: MEASURED on Litolff pp. 1-16, the staves holding a claimed change, right of it: every place with no clef <= 0.55; the real F clefs
+#: 0.68 (bar 115) - 1.0, bar 111 (dots fused with the heads beside them) 0.73
+F_BODY_SCAN_CANDIDATE_SCORE = 0.60
 #: a `clef*` box too small for a clef-sized claim, at this detector score and above, is still a clef-shaped CANDIDATE (b)
 SMALL_CLEF_BOX_MIN_SCORE = 0.5
+#: the no-box F claim reaches this far (staff spaces) left of the matched body: the template is cut from the header clef's ink, and the
+#: clef's filled head on line 4 can stand a little further left (Litolff bar 38: a 0.42 head box on that blob was pitched as a note)
+F_NOBOX_LEFT_PAD_SPACES = 0.5
 #: an F clef's body and dots span at most this far (staff spaces) left of its dots' left edge
 F_BODY_MAX_REACH_SPACES = 2.6
 #: a dot's width (staff spaces): the template's dots start this far left of the dot pair's right edge `f_line` reports
@@ -623,7 +659,7 @@ def f_nobox(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x1: f
         # the clef's left edge: the matched body's, but never further left of its dots than a body is wide (a template laid over a C
         # clef standing just before it -- Litolff bar 110/111 -- must not put this clef before that one)
         left = max(float(b[0]), float(p["x_left"]) - F_BODY_MAX_REACH_SPACES * sp)
-        area = [left - 0.05 * sp, float(min(b[1], p["dots"][0][1] - 0.4 * sp)), float(p["x_right"]) + 0.05 * sp,
+        area = [left - F_NOBOX_LEFT_PAD_SPACES * sp, float(min(b[1], p["dots"][0][1] - 0.4 * sp)), float(p["x_right"]) + 0.05 * sp,
                 float(max(b[3], p["dots"][1][1] + 0.4 * sp))]
         out.append({"pair": p, "match": m, "read": m["score"] >= F_TEMPLATE_READ_SCORE, "area": area})
     return out
@@ -682,6 +718,27 @@ def clef_in_force(head_x: float, changes: Sequence[Tuple[float, Optional[str], A
         if is_cand:
             if got is not None and got[0] is not None and got[0] != header:
                 got = (None, r)
+            elif _strong_f(r):
+                # round 2 (Sean's carry tile 11, Vc bar 346: a real F clef at body 0.69, below READ): an F clef seen by BOTH witnesses
+                # but below the read score stops whatever clef is in force -- the header's too -- unless that clef is itself an F clef
+                # (then the candidate changes nothing). It NARROWS (the heads go unread, red), it never decides bass.
+                in_force = got[0] if got is not None else header
+                if in_force is None or in_force not in F_KINDS:
+                    got = (None, r)
             continue
         got = (kind, r)
     return got
+
+
+#: the F-family clef names (`clef_geometry.CLEF_BY_FAMILY_LINE["F"]`)
+F_KINDS = ("bass", "varbaritone", "subbass")
+
+
+def _strong_f(row: Any) -> bool:
+    d = getattr(row, "detail", None) or {}
+    return bool(d.get("strong")) and d.get("family") == "F"
+
+
+def any_strong(candidates: Sequence[Tuple[float, None, Any]]) -> bool:
+    """Whether a staff's candidates include a two-witness F clef below READ (`_strong_f`): it may stop the header's clef too."""
+    return any(_strong_f(r) for _x, _k, r in candidates)

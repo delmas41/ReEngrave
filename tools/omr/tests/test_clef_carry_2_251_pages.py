@@ -78,6 +78,22 @@ class NoBoxBassClef(unittest.TestCase):
         for pg, s, li, x in ((13, 1, 3, 2214), (13, 1, 1, 988), (4, 1, 9, 1658)):
             self.assertFalse(any(g["read"] for g in _read(pg, s, li, x - 60, x + 60)), (pg, s, li, x))
 
+    def _scan(self, pg, s, li, x0, x1):
+        from tools.omr.staged import clef_pagewide as CP
+        ink, st = _page(pg), _staves(pg)
+        tps = CP.f_templates(ink, [(st[(bs, bl)][0], st[(bs, bl)][1], [b]) for bs, bl, b in F_BOXES[pg]])
+        ly, sp, _t = st[(s, li)]
+        return [r for r in CP.f_body_scan(ink, ly, sp, x0, x1, tps) if r["match"]["score"] >= CP.F_BODY_SCAN_CANDIDATE_SCORE]
+
+    def test_bar111_dots_fused_body_alone_is_a_candidate(self):
+        # round 2: the bar-111 bass clef's dots are fused with the heads beside them (no pair); its body alone stops the carry
+        got = self._scan(4, 1, 3, 2200, 2700)
+        self.assertTrue(any(2300 <= r["x"] <= 2370 for r in got), got)
+
+    def test_body_scan_finds_nothing_where_no_clef_stands(self):
+        # the bassoon after the bar-390 bass clef on p13 s1 (heads, a flat, rests): the highest no-clef body scores on Litolff (<= 0.55)
+        self.assertEqual(self._scan(13, 1, 3, 1540, 1720), [])
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -44,6 +44,16 @@ class ClefInForce(unittest.TestCase):
         cands = CP.candidates_of([_Row(250, candidate=True)])
         self.assertIsNone(CP.clef_in_force(300, ch, cands, "bass")[0])
 
+    def test_a_strong_f_candidate_stops_the_header_clef_unless_it_is_an_f_clef(self):
+        strong = _Row(250, candidate=True)
+        strong.detail.update(strong=True, family="F")
+        cands = CP.candidates_of([strong])
+        self.assertIsNone(CP.clef_in_force(300, [], cands, "tenor")[0])      # Vc bar 346: header tenor, a real F below READ: unread
+        self.assertIsNone(CP.clef_in_force(300, [], cands, "bass"))          # the header is an F clef already: nothing changes
+        self.assertIsNone(CP.clef_in_force(200, [], cands, "tenor"))         # before it: the header governs
+        weak = CP.candidates_of([_Row(250, candidate=True)])
+        self.assertIsNone(CP.clef_in_force(300, [], weak, "tenor"))          # a weak candidate never stops the header's clef
+
     def test_a_refusal_not_marked_candidate_is_no_candidate(self):
         r = _Row(250, candidate=True)
         r.detail["candidate"] = False

@@ -91,7 +91,8 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     # ROADMAP 2.251 step 2 (flag OMR_CLEF_CARRY, default OFF): the clefs printed INSIDE this staff (step 1's page-wide claims), so each
     # head is pitched from the clef printed LAST before it (Sean 2026-11-01 "Build both"); none before it -> the header clef, as before.
     changes = _clef_changes(log, subject)
-    candidates = _clef_candidates(log, subject) if changes else []
+    from . import clef_pagewide as _CPc
+    candidates = _clef_candidates(log, subject) if _CPc.carry_enabled() else []
     for row in rows:
         if log.verdict(Q.PITCH, row.subject) is not None:
             # ⚠️⚠️ IT NEVER OVERTURNS A PITCH THAT ALREADY STANDS, and the
@@ -163,7 +164,7 @@ def _clef_changes(log: Log, staff: Subject) -> list:
     return _CP.changes_of(log.rows(Q.CLAIMED_AREA, st))
 
 
-def _clef_candidates(log: Log, staff: Subject) -> list:
+def _clef_candidates(log: Log, staff: Subject) -> list:  # noqa: D401
     """ROADMAP 2.251 carry (b): the clef-shaped candidates step 1 saw inside `staff` and did not read (its abstentions marked
     `candidate`), left to right -- a carried clef stops at one (`clef_pagewide.clef_in_force`)."""
     from . import clef_pagewide as _CP
@@ -177,9 +178,9 @@ def _clef_change_at(log: Log, glyph: Subject, changes: list, candidates: list = 
     """(kind or None, change row) of the clef printed last before the head `glyph` (its own box's centre x, page px), or None where no
     change stands before it / the head has no page box (the header clef governs). A clef-shaped candidate after a change of another
     kind than the header's stops the carry: (None, candidate row)."""
-    if not changes:
-        return None
     from . import clef_pagewide as _CP
+    if not changes and not _CP.any_strong(candidates):
+        return None
     for b in log.rows(Q.GLYPH_BOX, glyph):
         bp = (b.detail or {}).get("bbox_page_px")
         if isinstance(bp, (list, tuple)) and len(bp) == 4:
@@ -1653,8 +1654,10 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
     # ROADMAP 2.251 carry (flag OMR_CLEF_CARRY): a glyph moved onto a staff is pitched from the clef in force THERE at its x, as
     # `restate_pitch` pitches the staff's own heads; after an unread clef (or a carry stopped by a clef-shaped candidate) no pitch.
     changes = _clef_changes(log, winner)
-    if changes:
-        in_force = _clef_change_at(log, subject, changes, _clef_candidates(log, winner), kind)
+    from . import clef_pagewide as _CPm
+    cands = _clef_candidates(log, winner) if _CPm.carry_enabled() else []
+    if changes or _CPm.any_strong(cands):
+        in_force = _clef_change_at(log, subject, changes, cands, kind)
         if in_force is not None:
             if in_force[0] is None:
                 return []

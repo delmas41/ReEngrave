@@ -715,8 +715,6 @@ def _after_unread_clef(rec: Any, s: Dict[str, Any], box_obs: Dict[str, Any]) -> 
         def __init__(self, o: Dict[str, Any]) -> None:
             self.value, self.detail = o.get("value"), o.get("detail") or {}
     changes = _CP.changes_of([_Row(o) for o in rows])
-    if not changes:
-        return False
     # 2.251 carry (b): the clef-shaped candidates step 1 did not read (its abstentions), indexed once per record
     cand_idx = rec.__dict__.get("_clef_candidates")
     if cand_idx is None:
@@ -725,8 +723,10 @@ def _after_unread_clef(rec: Any, s: Dict[str, Any], box_obs: Dict[str, Any]) -> 
             if a.get("quantity") == Q.CLAIMED_AREA and (a.get("detail") or {}).get("candidate"):
                 cand_idx.setdefault(a.get("subject"), []).append(_Row(a))
         rec.__dict__["_clef_candidates"] = cand_idx
-    got = _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes, _CP.candidates_of(cand_idx.get(skey, [])),
-                            rec.value(Q.CLEF, skey))
+    cands = _CP.candidates_of(cand_idx.get(skey, []))
+    if not changes and not _CP.any_strong(cands):
+        return False
+    got = _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes, cands, rec.value(Q.CLEF, skey))
     return got is not None and got[0] is None
 
 
