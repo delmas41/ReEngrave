@@ -68,8 +68,8 @@
     "9": "first ledger above = step -2 = box candidate A5 (written) RIGHT",
     "3": "WRONG OWNER: keyed to staff 8 at step -8 (above), Sean reads a ledger line BELOW the staff -- the note belongs to staff 7; both candidates G6/A6 wrong",
     "6": "WRONG OWNER: keyed to staff 6 at step 15 (below), Sean reads the second ledger line ABOVE the staff -- the note belongs to staff 7; both candidates G1/F1 wrong",
-    "8": "UNRESOLVED: 'fourth space above' counted from the top line is step -7, neither candidate (-8 G6 / -9 A6); asked Sean to count ledger lines",
-    "11": "UNRESOLVED: same as 8"
+    "8": "UNRESOLVED -- the tile is cropped above the staff, so the ledger lines cannot be counted on it; Sean reads the 4th space above the staff (the top head of a stacked chord). Counting from the top line that is step -7 (F6 in treble), neither candidate (-8 G6, -9 A6); needs a taller crop that shows the staff before it is scored",
+    "11": "UNRESOLVED -- the tile is cropped above the staff, so the ledger lines cannot be counted on it; Sean reads the 4th space above the staff (the top head of a stacked chord). Counting from the top line that is step -7 (F6 in treble), neither candidate (-8 G6, -9 A6); needs a taller crop that shows the staff before it is scored"
    }
   }
  },
@@ -86,6 +86,7 @@
   "9": "the first ledger line above the staff",
   "10": "the eighth rest",
   "11": "the fourth space above the staff",
-  "12": "the second space from the bottom in the staff"
+  "12": "the second space from the bottom in the staff",
+  "8_11_followup": "Sean, asked to count ledger lines: 'Tile 8 and 11 are both on the 4th space above the staff'"
  }
 }
