@@ -61,3 +61,30 @@ Our measures cannot see it: judged tiles carry no pitch, and the fault shifts a 
 - ink-rules clef rows (`is_a_clef`, `claimed_by:clef`, `fill_clef_gap`) are header-only. page-facts §5, page-facts and DECISIONS have no ruling on clef changes.
 
 **Open design question (to Sean).** Carrying a change to the following notes means `restate_pitch` (EVALUATE) reads the clef in force at each head's x. That needs a new gathered quantity (change, x, kind) and an adjudicator that reuses the clef readers. A change that is seen but whose kind cannot be read marks the heads after it red until the next printed clef. Every test is GATHER + ADJUDICATE only (Sean 2026-09-30), so: does 2.251 include the EVALUATE carry, or stop at "claimed, kind read, heads after it marked unread"?
+
+## 2026-11-01: build round 1 (lane-2.251-clef-change 3254ce233; both flags default OFF)
+
+Recorded by the manager from the lane's report (a hook refuses the lane's own write here). Scripts `pitchwit.py`, `tiles.py`, `scan.py`, `ftest.py`, `inspect_rec.py` and logs in `results/` are on the lane branch.
+
+**Step 1, `OMR_CLEF_PAGEWIDE` (STAGED GATHER `gather_clef_pagewide`, `clef_pagewide.py`).**
+- C clef: two witnesses with no detector box -- a thick bar (0.45-1.3 sp wide, unbroken >= 3 sp, stops near the staff) and two mirrored bowls; kind from the header locator's symmetry axis snapped to the line at the clef's own x. Kind read only as alto or tenor; otherwise claimed with kind unread.
+- F clef: a clef-sized `clefF` box plus a dot pair straddling line 4. The looser dot test passed a false `clefF` box over a half note on Brahms p25.
+- A G clef inside a system is never claimed (no second witness built).
+- Off-line over all 16 Litolff pages: 18 C clefs inside a system, no false positives once the bowl fill floor was 0.3 (before: a meter digit p1, a bar fragment p5).
+
+Subset (Litolff 2,4; Brahms 4,5), not the frozen sample:
+- Litolff p4: claimed bar 36 tenor, 102 C kind unread, 110 tenor, 107 bass. Missed: 38 and 111 bass (no box), 94 cello F (dots name no line).
+- Brahms: 3 C changes claimed; 3 bass clefs missed (thick staff lines break the dots).
+- Litolff `claim_readout` clef/key/meter ink 2.2% -> 2.3%; ORDER-VIOLATION 0.46% -> 0.45%; SPLIT-ACROSS-CLAIM 0.77% -> 1.00% (wrong direction: new claims over C clefs the stroke map had already cut; open). Brahms readouts not run.
+- File: Litolff notes -2, words +1; Brahms notes -4, rests -1, dots +-1. Judged right->wrong 0, unwritten->wrong 0 (188 and 174 tiles).
+
+**Step 2, `OMR_CLEF_CARRY` (EVALUATE `restate_pitch`, EXPORT).**
+- A head is pitched from the last clef printed before its x on its staff (`position_and_clef_change`); a system header resets it; after a change whose kind is unread the head gets no pitch.
+- Litolff: notes -14 (p4 bars 103-106, after the bar-102 unread C clef), dropped and counted but NOT marked red (red bars 0 -> 0) -- breaks CLAUDE §4. Brahms: pitches ~71, clefs +5. Judged right->wrong 0 on both.
+- Pitch witness (written pitch among the encoded bassoon pitches of that bar), re-pitched heads: Litolff ON 14 / OFF 16 of 53; Brahms ON 33 / OFF 21 of 92 (Brahms bar map drifts).
+
+**Cause of the Litolff loss.** Missed return clefs (bass clefs the detector never boxed, bars 38 and 111): the carry moves the error from "after a missed change" to "after a missed return".
+
+**Process lesson.** A carry needs return-clef recall at least as high as change recall -- measure the returns before carrying.
+
+**Before step 2 can land:** export marks the notes after an unread clef red; bass-clef recall rises (an F-clef shape reader with no box, Brahms dots) or the carry stops at any clef-shaped candidate; the frozen sample is run.
