@@ -9111,8 +9111,23 @@ ARC_INK_LINE_MAX_HALF_STROKE_SPACES = 0.4
 ARC_INK_MIN_COLUMN_PX = 2
 
 
+#: ROADMAP 2.252 r2 (flag `OMR_ARC_LINE_THICKNESS`, default OFF): a staff line's stroke inside an arc box is as thick as the STAFF'S OWN
+#: measured line (`Staff.line_thickness_px`, GATHER), never grown by how full the box's rows are. A tie lying ON a line (Litolff: thick
+#: ties along a line, Sean's 2.252 tiles 3, 5, 6, 7) fills the rows beside the line too, and the fill-grown stroke (up to 0.4 sp either
+#: side) erased the tie with the line, so a real tie read "no curve" and was refused `ink_is_a_staff_line` -- 6 of the 19 tie ends
+#: missing on those tiles. This many pixels beyond the measured thickness are still taken as line (anti-aliasing, a scan's wander).
+ARC_INK_LINE_THICKNESS_SLACK_PX = 1
+ARC_LINE_THICKNESS_ENV = "OMR_ARC_LINE_THICKNESS"
+
+
+def arc_line_thickness_enabled() -> bool:
+    """`OMR_ARC_LINE_THICKNESS` (ROADMAP 2.252 r2), default OFF; an explicit on-word enables."""
+    return os.environ.get(ARC_LINE_THICKNESS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
-                  space: float, line_ys: Sequence[float]
+                  space: float, line_ys: Sequence[float],
+                  line_thickness: Optional[Sequence[Optional[float]]] = None
                   ) -> Optional[Dict[str, Any]]:
     """What is inside one arc box once EVERY staff line is taken out of it.
     ROADMAP 2.60.
@@ -9152,9 +9167,44 @@ def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
     stroke = max(1, int(round(ARC_INK_LINE_STROKE_SPACES * space)))
     n_lines = 0
     removed = np.zeros(h, dtype=bool)
-    for ly in line_ys:
+    for li, ly in enumerate(line_ys):
         ly = float(ly)
         if not (y0 - pad <= ly <= y1 + pad):
+            continue
+        th = None
+        if line_thickness is not None and li < len(line_thickness) and line_thickness[li]:
+            th = float(line_thickness[li])
+        if th is not None:
+            # ROADMAP 2.252 r2: the line is found and measured on the page rows AROUND it (a box cut at the line's edge holds only part
+            # of it, and snapping inside the box lands on the tie beside it), its stroke never thicker than the staff's measured line
+            n_lines += 1
+            m = snap + int(math.ceil(th)) + 2
+            ey0 = max(0, iy0 - m)
+            band = (binary[ey0:min(H, iy1 + m), ix0:ix1] == 0)
+            re0 = int(round(ly)) - ey0
+            best, best_fill = None, -1.0
+            for r in range(max(0, re0 - snap), min(band.shape[0], re0 + snap + 1)):
+                fill = float(band[r].mean())
+                if best is None or fill > best_fill + 1e-9 or (abs(fill - best_fill) < 1e-9 and abs(r - re0) < abs(best - re0)):
+                    best, best_fill = r, fill
+            if best is None:
+                continue
+            if best_fill >= ARC_INK_LINE_SNAP_MIN_FILL:
+                top = bot = best
+                limit = int(round(th)) + ARC_INK_LINE_THICKNESS_SLACK_PX
+                while bot - top + 1 < limit:
+                    up = band[top - 1].mean() if top - 1 >= 0 else -1.0
+                    dn = band[bot + 1].mean() if bot + 1 < band.shape[0] else -1.0
+                    if max(up, dn) < ARC_INK_LINE_SNAP_MIN_FILL:
+                        break
+                    if up >= dn:
+                        top -= 1
+                    else:
+                        bot += 1
+                a_, b_ = top - 1 + ey0 - iy0, bot + 2 + ey0 - iy0
+            else:
+                a_, b_ = re0 - stroke + ey0 - iy0, re0 + stroke + 1 + ey0 - iy0
+            removed[max(0, a_):max(0, min(h, b_))] = True
             continue
         n_lines += 1
         r0 = int(round(ly)) - iy0
@@ -9216,8 +9266,13 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
     """
     binary = getattr(getattr(pws, "page", None), "binary", None)
     all_lines: List[float] = []
+    all_thick: List[Optional[float]] = []
     for st in getattr(pws, "staves", ()) or ():
         all_lines.extend(float(y) for y in st.line_ys)
+        th = getattr(st, "line_thickness_px", None)
+        th = list(th) if isinstance(th, (list, tuple)) else []
+        all_thick.extend((float(th[i]) if i < len(th) and th[i] else None) for i in range(len(st.line_ys)))
+    by_thickness = arc_line_thickness_enabled()
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -9244,7 +9299,8 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
                 continue
-            m = arc_ink_shape(binary, page_box, space, all_lines)
+            m = arc_ink_shape(binary, page_box, space, all_lines,
+                              line_thickness=all_thick if by_thickness else None)
             if m is None:
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
