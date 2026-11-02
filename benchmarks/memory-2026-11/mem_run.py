@@ -20,6 +20,7 @@ ap.add_argument("--holders", action="store_true")
 ap.add_argument("--cache", default=None)
 ap.add_argument("--through", default="infer")
 ap.add_argument("--trace", default="", help="tracemalloc: snapshot at the start of these pages (1-based, comma list) and at gather end; diff by line")
+ap.add_argument("--who", type=int, default=0, help="at the start of this page: who still refers to the EARLIER pages' PageImage objects (frames included)")
 ap.add_argument("--mid", type=int, default=0, help="snapshot ndarray holders + live memory at the start of this page (1-based)")
 ap.add_argument("--teardown", action="store_true", help="after the run: RSS freed by dropping each log cache, then each row store")
 a = ap.parse_args()
@@ -74,22 +75,67 @@ def seg_wrap(mod, name, seg, after=None):
     setattr(mod, name, w)
 
 
-_seen_pws = []
+_seen_pws = []      # ids only: holding the page objects here would keep every page alive (the probe's own leak, found 11-01)
 _ge = gather.gather_external
 
 
 def ge(log, pws, *x, **k):
-    if not _seen_pws or _seen_pws[-1] is not pws:
-        _seen_pws.append(pws)
+    if not _seen_pws or _seen_pws[-1] != id(pws):
+        _seen_pws.append(id(pws))
         n = len(_seen_pws)
         PAGES.append({"page_n": n, "t": round(time.time() - T0, 1), "rss_gb": round(rss() / 1e9, 3), "live": live_mem(),
                       "rows": [len(log._obs), len(log._abs), len(log._vrd)]})
         mark(f"gather.page{n}")
         if a.mid and n == a.mid:
             EXTRA["holders_mid"] = mid_holders()
+        if a.who and n == a.who:
+            EXTRA["who"] = who_holds(pws)
         if a.trace and str(n) in a.trace.split(","):
             trace_snap(f"page{n}")
     return _ge(log, pws, *x, **k)
+
+
+def _desc(o):
+    import types
+    if isinstance(o, types.FrameType):
+        return f"frame:{o.f_code.co_name}@{o.f_code.co_filename.split('/tools/')[-1]}:{o.f_lineno}"
+    if isinstance(o, dict):
+        if "__name__" in o and "__builtins__" in o:
+            return "module:" + str(o["__name__"])
+        return "dict{" + ",".join(sorted(map(str, o.keys()))[:6]) + "}"
+    if isinstance(o, (list, tuple)):
+        return f"{type(o).__name__}[{len(o)}]"
+    return type(o).__name__ + (":" + o.__qualname__ if hasattr(o, "__qualname__") else "")
+
+
+def who_holds(cur_pws, depth=6):
+    """Breadth-first referrer paths from each earlier page's PageImage up to a frame or a module (or `depth`)."""
+    import types
+    gc.collect()
+    cur_page = getattr(cur_pws, "page", None)
+    olds = [o for o in gc.get_objects() if type(o).__name__ == "PageImage" and o is not cur_page]
+    out = []
+    skip = {id(olds)}
+    for o in olds[:3]:
+        paths = []
+        frontier = [(o, [type(o).__name__])]
+        for _ in range(depth):
+            nxt = []
+            for obj, path in frontier:
+                refs = [r for r in gc.get_referrers(obj) if id(r) not in skip and r is not frontier and r is not nxt
+                        and not (isinstance(r, list) and r is olds)]
+                for r in refs[:4]:
+                    d = _desc(r)
+                    if d.startswith("frame:") or d.startswith("module:"):
+                        paths.append(" <- ".join(path + [d]))
+                    else:
+                        nxt.append((r, path + [d]))
+            frontier = nxt[:12]
+            if not frontier:
+                break
+        paths += [" <- ".join(pth) + " <- ..." for _o, pth in frontier[:6]]
+        out.append(paths[:16])
+    return {"old_page_images": len(olds), "paths": out}
 
 
 SNAPS = {}
