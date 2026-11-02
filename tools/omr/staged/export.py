@@ -1430,6 +1430,13 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # note" -- survives to the report rather than reading as a
             # generic `no_pitch` or `duration_narrowed` shortfall.
             npv = rec.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, sub)
+            if (npv is not None and npv["outcome"] != "decided"
+                    and npv.get("reason") == "wide_box_unread"):
+                # ROADMAP 2.245 round 4 (flag `OMR_BOX_KIND_SIZE`, Sean's r3 tile 1: a real half inside an unread wide box): never written
+                # as a note, never a silent gap -- dropped under its own name, which is NOT in `_NOT_A_GAP_REASONS`, so
+                # `_attach_unplaced` files it as an UNREAD glyph of its bar and the bar's red marking (2.117 / 2.173) covers it
+                _drop("unread:wide_box_unread", s)
+                continue
             if (npv is not None and npv["outcome"] == "decided"
                     and npv["value"] is True):
                 # ⚠️ ROADMAP 2.58. `belongs_to_a_nearer_staff` is itself an

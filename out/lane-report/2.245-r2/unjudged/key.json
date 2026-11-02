@@ -1,0 +1,432 @@
+[
+ {
+  "kind": "blue",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   2492.875,
+   2124.925,
+   2515.04,
+   2155.46
+  ],
+  "rg": "glyph/6/1/1/12/4",
+  "value": "guessed",
+  "place": [
+   6,
+   1,
+   1,
+   12
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   2409,
+   2061
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 1,
+   "cell": 12,
+   "page_box": [
+    2492.875,
+    2124.925,
+    2515.04,
+    2155.46
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   856.32,
+   1945.08,
+   879.84,
+   1965.56
+  ],
+  "rg": "glyph/6/1/0/2/2",
+  "value": "guessed",
+  "place": [
+   6,
+   1,
+   0,
+   2
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   773,
+   1876
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 0,
+   "cell": 2,
+   "page_box": [
+    856.32,
+    1945.08,
+    879.84,
+    1965.56
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "dynamic",
+  "side": "gained",
+  "page": 14,
+  "box": [
+   1541.0,
+   6541.525,
+   1578.675,
+   6574.525
+  ],
+  "rg": "glyph/14/1/9/1/0",
+  "value": "mp",
+  "place": [
+   14,
+   1,
+   9,
+   1
+  ],
+  "plate": "brahms",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1367,
+   6398
+  ],
+  "position": {
+   "page": 14,
+   "system": 1,
+   "staff": 9,
+   "cell": 1,
+   "page_box": [
+    1541.0,
+    6541.525,
+    1578.675,
+    6574.525
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   1859.56,
+   1939.48,
+   1885.48,
+   1963.48
+  ],
+  "rg": "glyph/6/1/0/7/3",
+  "value": "guessed",
+  "place": [
+   6,
+   1,
+   0,
+   7
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   1778,
+   1872
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 0,
+   "cell": 7,
+   "page_box": [
+    1859.56,
+    1939.48,
+    1885.48,
+    1963.48
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "words",
+  "side": "lost",
+  "page": 12,
+  "box": [
+   3996.04,
+   3015.9225,
+   4034.335,
+   3048.6675
+  ],
+  "rg": "glyph/12/0/11/10/7",
+  "value": "marc.",
+  "place": [
+   12,
+   0,
+   11,
+   10
+  ],
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   3823,
+   2872
+  ],
+  "position": {
+   "page": 12,
+   "system": 0,
+   "staff": 11,
+   "cell": 10,
+   "page_box": [
+    3996.04,
+    3015.9225,
+    4034.335,
+    3048.6675
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 9,
+  "box": [
+   780.2575,
+   833.59,
+   802.3075,
+   853.9075
+  ],
+  "rg": "glyph/9/0/3/1/13",
+  "value": "eighth",
+  "place": [
+   9,
+   0,
+   3,
+   1
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   696,
+   764
+  ],
+  "position": {
+   "page": 9,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    780.2575,
+    833.59,
+    802.3075,
+    853.9075
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   709.8,
+   1973.56,
+   730.28,
+   1993.08
+  ],
+  "rg": "glyph/6/1/0/1/3",
+  "value": "guessed",
+  "place": [
+   6,
+   1,
+   0,
+   1
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   625,
+   1904
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 0,
+   "cell": 1,
+   "page_box": [
+    709.8,
+    1973.56,
+    730.28,
+    1993.08
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "wedge",
+  "side": "lost",
+  "page": 8,
+  "box": [
+   523.173828125,
+   3274.5361328125,
+   545.4541015625,
+   3295.3310546875
+  ],
+  "rg": "glyph/8/1/8/0/6",
+  "value": "crescendo",
+  "place": [
+   8,
+   1,
+   8,
+   0
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   439,
+   3206
+  ],
+  "position": {
+   "page": 8,
+   "system": 1,
+   "staff": 8,
+   "cell": 0,
+   "page_box": [
+    523.173828125,
+    3274.5361328125,
+    545.4541015625,
+    3295.3310546875
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "words",
+  "side": "lost",
+  "page": 14,
+  "box": [
+   965.2646484375,
+   6618.603515625,
+   1007.9794921875,
+   6654.19921875
+  ],
+  "rg": "glyph/14/1/9/0/1",
+  "value": "dolce sempre",
+  "place": [
+   14,
+   1,
+   9,
+   0
+  ],
+  "plate": "brahms",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   794,
+   6476
+  ],
+  "position": {
+   "page": 14,
+   "system": 1,
+   "staff": 9,
+   "cell": 0,
+   "page_box": [
+    965.2646484375,
+    6618.603515625,
+    1007.9794921875,
+    6654.19921875
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   1829.64,
+   1948.44,
+   1852.04,
+   1971.16
+  ],
+  "rg": "glyph/6/1/0/7/4",
+  "value": "guessed",
+  "place": [
+   6,
+   1,
+   0,
+   7
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   1746,
+   1881
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 0,
+   "cell": 7,
+   "page_box": [
+    1829.64,
+    1948.44,
+    1852.04,
+    1971.16
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 9,
+  "box": [
+   752.695,
+   889.345,
+   775.2175,
+   910.135
+  ],
+  "rg": "glyph/9/0/3/1/0",
+  "was": "end",
+  "value": "continue",
+  "place": [
+   9,
+   0,
+   3,
+   1
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 11,
+  "crop_origin": [
+   669,
+   820
+  ],
+  "position": {
+   "page": 9,
+   "system": 0,
+   "staff": 3,
+   "cell": 1,
+   "page_box": [
+    752.695,
+    889.345,
+    775.2175,
+    910.135
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ }
+]

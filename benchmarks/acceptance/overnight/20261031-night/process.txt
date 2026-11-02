@@ -1,0 +1,92 @@
+== commits
+BASE 12325ce2991f7bc1f930fb4b569a754e0cf1ca0c  TAG 17d5f02591e9baadac4d7688266b97de94935eb1
+git log --oneline 12325ce29..17d5f0259: 311 commits (53 merges, 258 non-merge)
+changed under tools/omr: 60 files changed, 13754 insertions(+), 140 deletions(-)
+files changed by area: staged 29, tests 25, tools/omr/annotate 3, tools/omr/hand_truth 2, tools/omr/measure_extractor.py 1
+
+== ROADMAP items named in commit subjects (oldest first; a subject names it, the tree decides whether it is ON)
+  0.82    5ef5d9600 2.247 r3: the bowl-side rule only where the right stroke starts a bowl's depth below the stem top (Sean r2 tile 12 natural 0.82 vs flats 8-11 1.19-1.3
+  1.19    5ef5d9600 2.247 r3: the bowl-side rule only where the right stroke starts a bowl's depth below the stem top (Sean r2 tile 12 natural 0.82 vs flats 8-11 1.19-1.3
+  1.31    5ef5d9600 2.247 r3: the bowl-side rule only where the right stroke starts a bowl's depth below the stem top (Sean r2 tile 12 natural 0.82 vs flats 8-11 1.19-1.3
+  2.145   45f7acf6b 2.238: an owner refusal keeps the name of the evidence that decided it (readers key on it); is_a_rest_shape left to its rule so 2.145's rest is writte
+  2.201   e700dc9c2 FINDINGS: the key-signature-marker refusal jump is 2.201 widening the subject set, not a reading change
+  2.205   c9c57dc17 2.238: an owner refusal decides only where the moved evidence vetoed the box (2.205's per-stroke fit alone refused a judged quarter)
+  2.216   fa3ea6231 CLAUDE.md §5: ledger lines decide when the stem disagrees (Sean 10-28 ruling, 2.216 B)
+  2.223   219312a64 ROADMAP: 2.223 in flight; claim 2.233 (value undecided) and 2.234 (dots never placed) for the 2026-10-30 combined test (Sean approved three parallel b
+  2.231   90627b5bc ROADMAP 2.231: in flight (lane-2.231-master-cell-map); overnight 20261029-night started on 12325ce29
+  2.232   b56d1c193 DECISIONS: Sean on Litolff p3 stacked head (one half, a third below another); ROADMAP 2.232 claimed; merge judged-moves diagnosis
+  2.233   219312a64 ROADMAP: 2.223 in flight; claim 2.233 (value undecided) and 2.234 (dots never placed) for the 2026-10-30 combined test (Sean approved three parallel b
+  2.234   219312a64 ROADMAP: 2.223 in flight; claim 2.233 (value undecided) and 2.234 (dots never placed) for the 2026-10-30 combined test (Sean approved three parallel b
+  2.235   aaeb29ce9 ROADMAP: claim 2.235 (tip readers honour claims), 2.236 (capture readout), 2.237 (rule-page refresh) -- Sean 'start the 3 later stages jobs'
+  2.236   aaeb29ce9 ROADMAP: claim 2.235 (tip readers honour claims), 2.236 (capture readout), 2.237 (rule-page refresh) -- Sean 'start the 3 later stages jobs'
+  2.237   aaeb29ce9 ROADMAP: claim 2.235 (tip readers honour claims), 2.236 (capture readout), 2.237 (rule-page refresh) -- Sean 'start the 3 later stages jobs'
+  2.238   b2559db1d ROADMAP: claim 2.238 one owner decides, with shape (Sean 'Yes')
+  2.239   bc490d545 ROADMAP: claim 2.239 split fused ink at the joins + bracket ink out of the barline claim (Sean 'Yes')
+  2.240   b1ebca4ad ROADMAP: claim 2.240 cells are views, the page is the ledger (Sean, Opus)
+  2.241   268b8e06a ROADMAP: claim 2.241 claim-order check in the capture readout (Sean 'Do it now')
+  2.242   97f2adaee ROADMAP: 2.240 step 2 and 2.242 (one accidental, one piece) start (Sean 'Start both')
+  2.243   2fa7c5e21 ROADMAP: 2.243 (dot/beam readers honour claims), 2.244 (one test command) start (Sean '1 and 2')
+  2.244   2fa7c5e21 ROADMAP: 2.243 (dot/beam readers honour claims), 2.244 (one test command) start (Sean '1 and 2')
+  2.245   276eb9fd0 ROADMAP: claim 2.245 (one cause for wrong-kind boxes); 2.223 continues with hairpins (Sean 2026-10-31)
+  2.246   11aa30f4a Docs catch-up 10-30/31: version_memory entries, ROADMAP START HERE after 10-31, 2.236/2.240/2.241/2.242 status, 2.246 row (gather time), three missing
+  2.247   adaa53b89 ROADMAP: claim 2.247 accidentals labelled by their shape (Sean 2026-10-31)
+  2.248   3fad76e23 ROADMAP: claim 2.248 every mark's size from its own ink (Sean 2026-10-31)
+  (26 items)
+
+== 'Land' commits (the ones that flip a default)
+  648aba4c8 Land ROADMAP 2.231 master cell map (lane-2.231-master-cell-map c0ca30b1f): FINDINGS + ROADMAP done
+  d1b7d186f Land 2.232: OMR_STACKED_HEAD_STEP_APART default ON (Sean 'Land it', tiles 12/12)
+  1e5280e76 Land 2.237 rule-page refresh (measure only): fresh fires, three lists, 12 tiles; FINDINGS
+  abbba3bea Land 2.236 capture readout (claim_readout; staff-line residue split out, one-piece tiles); FINDINGS; judged index rebuilt for the 2.237 answers
+  c951ff1f0 Land 2.235: OMR_TIPS_HONOUR_CLAIMS default ON (Sean 'Land', tiles 12/12)
+  820158d16 Land 2.238: OMR_OWNER_SHAPE default ON (Sean 'Land'); fast tier 9421 passed
+  0cbdbd452 Land 2.239: OMR_SPLIT_JOINS default ON (Sean 'Land then fix'); blockers fixed at cause (left edge read once)
+  ad6ffee10 Land 2.241 claim-order check (test tooling); FINDINGS conflict kept both sides
+  05ed60465 Land 2.239 round 3: touching-mark cut, clefs by shape and size (Sean 'Land round 3')
+  5c1805bf3 Land 2.239 round 3: touching-mark cut, clefs by shape and size (Sean 'Land round 3')
+  af25466cd Land 2.243 (dot and beam readers honour claims, both ON; Sean 'With both on') and 2.244 (one test command)
+  5e3d4f0d9 Land 2.242 (one accidental, one piece; OMR_ACCIDENTAL_WHOLE ON; Sean 'Land on')
+  6e181acc9 Land 2.223 (arcs + hairpins bound page-wide, both ON; Sean 'Fix then land')
+  6c96f6e5c Land 2.240 steps 1-2 (page marks + page owner ON; Sean 'Land now and fix in step 3'); fast tier 9,604
+  3280cf8a7 Land 2.240 step 3 (OMR_PAGE_OWNER_READ ON; Sean 'we can land'); fast tier 9,626 + real 2-page gathers
+  a27cd93e0 Land 2.247 docs (OMR_ACCIDENTAL_KIND ON; Sean 'both tiles are naturals')
+  b7b6d9f2a Land 2.245 docs (OMR_BOX_KIND_SIZE ON); handoff names 2.245 landed, 2.248 parked
+
+== flag DEFAULTS that differ (same AST scanner on both trees; ON = the default state)
+flag                               BASE     TAG      GATHER? read in (TAG tree)
+OMR_ACCIDENTAL_KIND                absent   ON       YES     accidental_family.py, gather.py
+OMR_ACCIDENTAL_WHOLE               absent   ON       YES     accidental_family.py, gather.py, stroke_map.py
+OMR_ARC_BIND_PAGEWIDE              absent   ON       no      adjudicators/ownership.py, arc_claim.py, export.py
+OMR_BEAMS_HONOUR_CLAIMS            absent   ON       no      adjudicators/rhythm.py
+OMR_DOTS_HONOUR_CLAIMS             absent   ON       no      adjudicators/rhythm.py
+OMR_HAIRPIN_BIND_PAGEWIDE          absent   ON       no      adjudicators/ownership.py, hairpin_bind.py, reach.py
+OMR_OWNER_SHAPE                    absent   ON       no      adjudicators/family_precision.py, adjudicators/notehead_precision.py, adjudicators/ownership.py
+OMR_PAGE_MARKS                     absent   ON       YES     gather.py, page_marks.py, page_owner.py
+OMR_PAGE_OWNER                     absent   ON       YES     adjudicators/ownership.py, export.py, gather.py
+OMR_PAGE_OWNER_READ                absent   ON       YES     adjudicators/ownership.py, export.py, page_owner.py
+OMR_SPLIT_JOINS                    absent   ON       YES     measure_extractor.py, gather.py, stroke_map.py
+OMR_STACKED_HEAD_STEP_APART        absent   ON       YES     adjudicators/notehead_precision.py, gather.py
+OMR_TIPS_HONOUR_CLAIMS             absent   ON       no      adjudicators/rhythm.py
+(13 flags changed default; 112 flags seen by the scan at BASE, 125 at TAG)
+
+== every OMR_* NAME in non-test source: added since BASE (19) / gone (0)  [catches value flags the scan misses]
+  + OMR_A                              GATHER staged/one_test.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: no row in docs/flags-2026-09.md
+  + OMR_B                              GATHER staged/one_test.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: no row in docs/flags-2026-09.md
+  + OMR_BOX_KIND_SIZE                  GATHER staged/adjudicators/notehead_precision.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **ON** (ROADMAP 2.245; deny-list since 2026-10-31, Sean "Fix them land - we are close")
+  + OMR_C                              GATHER staged/one_test.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: no row in docs/flags-2026-09.md
+  + OMR_OCR                            staged/one_test.py
+      not seen by the default scan; read as: ocr = sorted((k, v) for k, v in os.environ.items() if k.startswith(("OMR_SURYA", "OMR_OCR")) and k not in set(
+      docs/flags-2026-09.md default column: no row in docs/flags-2026-09.md
+  + OMR_SURYA                          staged/one_test.py
+      not seen by the default scan; read as: ocr = sorted((k, v) for k, v in os.environ.items() if k.startswith(("OMR_SURYA", "OMR_OCR")) and k not in set(
+      docs/flags-2026-09.md default column: no row in docs/flags-2026-09.md
+
+blind spot: a flag read through a path the scan cannot parse and already present at BASE is NOT listed even if its default moved.

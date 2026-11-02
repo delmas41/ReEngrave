@@ -1,0 +1,6 @@
+litolff p2 2/0/7/9  tie lost start
+litolff p2 2/0/7/10  blue lost guessed
+litolff p2 2/0/7/10  note lost half
+litolff p2 2/0/7/10  tie lost start
+litolff p2 2/0/7/10  tie lost stop
+litolff p2 2/0/7/11  tie lost stop

@@ -91,6 +91,7 @@ from ... import transcribe as _legacy
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import geometry as _geom
 from .. import margins as _margins
+from .. import box_kind as _box_kind
 from .. import record as R
 from ..record import ABSTAIN, Kind, Q, Scope
 # ⚠️ ROADMAP 2.6c: the ONE ledger helper. Imported as a bare module name, not
@@ -3669,6 +3670,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
+                                     "wider_than_a_head", "wide_box_unread",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -4153,6 +4155,28 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if ink_only and would_unladder:
         # page-facts (the ledger lines name the owner): there is no far note without a ledger line, and the ink is this head's one witness
         return Ruling(value=True, reason="stem_end_ink_unladdered", used=tuple(used), detail=detail)
+    # ROADMAP 2.245 (flag `OMR_BOX_KIND_SIZE`, default OFF): a head-class box wider than any one head is printed is not a head (Brahms p5
+    # `glyph/5/0/4/4/15`, a 5.2-space box on a slur four other boxes name). The box's own size against its own class; `box_kind`.
+    # LAST of the refusals: it speaks only where every other rule would KEEP the box. First in the chain it re-labelled boxes already
+    # refused as duplicates, and the stem/beam pairing that reads a duplicate as "the same head drawn twice" (ownership) lost a real
+    # eighth (Litolff p4 4/1/1/14, the 2-page subset run).
+    if _box_kind.enabled():
+        _w_c, _h_c = box_row.value[3], box_row.value[4]
+        misfit = _box_kind.head_box_misfit(box_row.value[0], _w_c / spacing, _h_c / spacing)
+        if misfit is not None:
+            detail["box_spaces"] = [round(_w_c / spacing, 3), round(_h_c / spacing, 3)]
+            # Round 2 (Sean 2026-10-31: tiles 4 and 10 hold real notes): GATHER read the head ink INSIDE the box and gave each head it
+            # found its own box (`box_kind.split_wide_heads`). Only then is this box the REMAINDER and refused. Inside not read (fused
+            # head-thick ink, or a record gathered without the split): ABSTAIN and count it -- never kept as one head, never refused blind.
+            split = (box_row.detail or {}).get("box_kind")
+            if not isinstance(split, dict) or split.get("unread", True):
+                detail["box_kind"] = split
+                return Ruling.abstain(_box_kind.REASON_UNREAD, **detail)
+            detail["box_kind"] = split
+            return _margins.attach(
+                Ruling(value=True, reason=misfit[0], used=tuple(used), detail=detail),
+                margin=misfit[1], axis="width_spaces", unit="staff spaces", band=None,
+                would_choose=(True,))
     # ROADMAP 2.181: a claim holds this box but is too weak to refuse it -- no other rule refused it either, so it is
     # NARROWED {notehead, the owner's ink}, the notehead first (written, blue), never refused on a guess.
     if claim is not None and not claim.refuse:

@@ -4789,7 +4789,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
-             "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead",
+             "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead", "wide_box_unread",
              "stem_tip_reads_no_beam", "stem_readers_disagree"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
@@ -4870,6 +4870,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # the file never held the half, but the verdict on the record did. It is
     # filed `not_a_note_mark` and decides nothing (rule 8).
     refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD)
+    if refusal is not None and refusal.outcome is not Outcome.DECIDED and refusal.reason == "wide_box_unread":
+        # ROADMAP 2.245 round 3 (flag `OMR_BOX_KIND_SIZE`): a head box wider than any head whose inside could not be read is NEVER a note
+        # (Sean: "never keep the wide box as one head"); no duration, so EXPORT writes nothing for it (rule 8: unread, counted)
+        return Ruling.abstain("wide_box_unread", head=str(head))
     refused = (refusal is not None and refusal.outcome is Outcome.DECIDED
                and refusal.value is True)
     if refused:

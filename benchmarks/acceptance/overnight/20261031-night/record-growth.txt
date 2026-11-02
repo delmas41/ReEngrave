@@ -1,0 +1,20 @@
+== beethoven5-litolff
+file size MB: BASE 2937  TAG 4232   (x1.44)
+  observations  rows   451499 ->   511941   ~MB    181 ->    204
+  abstentions   rows    69544 ->    75870   ~MB     22 ->     26
+  verdicts      rows   196346 ->   196248   ~MB   2924 ->   4290
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  verdicts      arc_owner                          rows     2641 ->     2641   ~MB   14.2 ->  374.6
+  verdicts      duration                           rows    16569 ->    16581   ~MB  556.3 ->  851.2
+  verdicts      stem_value                         rows    11868 ->    11874   ~MB  370.0 ->  612.7
+  verdicts      tie_pair                           rows     2641 ->     2641   ~MB  171.4 ->  376.0
+  verdicts      arc_kind                           rows     2641 ->     2641   ~MB  183.3 ->  387.8
+  verdicts      voices                             rows     5343 ->     5343   ~MB  722.6 ->  753.6
+  verdicts      unison_voices                      rows    11868 ->    11874   ~MB   31.6 ->   47.2
+  observations  page_mark                          rows        0 ->    37739   ~MB    0.0 ->   12.3
+  verdicts      event                              rows     5203 ->     5203   ~MB   19.5 ->   30.3
+  observations  page_mark_owner                    rows        0 ->    24940   ~MB    0.0 ->   10.7
+  verdicts      dynamic_anchor                     rows      331 ->      331   ~MB   89.6 ->   95.1
+  verdicts      onset_column                       rows       31 ->       31   ~MB   10.9 ->   15.0
+  abstentions   page_mark_owner                    rows        0 ->     5288   ~MB    0.0 ->    2.2
+  observations  page_span                          rows        0 ->     1058   ~MB    0.0 ->    1.0

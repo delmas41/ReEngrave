@@ -26,6 +26,17 @@ measurement; this file is the WHEN and WHAT of each commit.
 - one_test (both flags): judged right->wrong 0 both plates; Brahms wedges +9 -7, Litolff -2 (letters); arcs (m1/m2 flag) Litolff ties +34 -6 slurs +92 -26, Brahms ties +70 -2 slurs +142 -58; Brahms p0 hand truth unchanged for ties/slurs bound right, 7 fewer slurs matching no truth. Tiles `out/print/2.223-tiles/`. Fast tier 9,532.
 - A stopped run left a stale `.record-load.lock` (09:34, removal refused to the lane, gone by 10:55) and a truncated Brahms slice verdicts file (the next full run re-cuts it: stamp mismatch).
 
+## 2026-11-01 -- overnight 20261031-night (main 17d5f0259): Litolff done, Brahms KILLED (memory)
+- Litolff 1-16 exit 0, 81 min (70), record 4.2 GB (2.9). Brahms 0-26 exit 3 after 769 min: empty log, no record, no crash report -- killed from outside, almost certainly by memory pressure (swap reached 26.6 GB; 2.246's cause, worse with 10-31's per-page rows). Not re-run.
+- Compare (Litolff only, vs 20261029-night re-exported by this tree; benchmarks/acceptance/overnight/20261031-night/README.txt): judged right/wrong 169/34 -> 184/21, wrong->right 14, unwritten->right 3, RIGHT->WRONG 2 (2.75-review litolff_03 and litolff_06: Sean "Tie", now read as slur -- an arc-kind regression to trace, likely 2.223's kind from the bound ends); red bars 412 -> 406; unread bars 280 -> 282; ties and slurs not written 82.8 -> 64.1 per page; pitched heads not written 34.4 -> 35.6 per page; file: ties +93 -41, slurs +290 -82, notes +82 -66, accidentals +18 -52.
+- Next: the memory fix (smaller record, per-page progress line) before re-running Brahms; trace the two tie->slur regressions.
+
+## 2026-10-31 night -- 2.245 LANDED ON: wrong-kind boxes (OMR_BOX_KIND_SIZE)
+STAGED GATHER/ADJUDICATE/EXPORT (`box_kind.read_heads`, `split_wide_heads` in `gather_detections`, the bow test in `arcs_system.gather_system_arcs`, the letter test in `gather_wedge_boxes`, `narrow_rest`, EXPORT `_place_notes` unread marking), deny-list default ON (Sean "Fix them land - we are close"; r3 tiles 10/12, both fixed in r4). Judged right->wrong 0. Landing check on main: fast tier 9,665 passed, real 2-page gathers L p2,8 and B p5,19 exit 0. Last landing before the 20261031-night overnight.
+
+## 2026-10-31 night -- 2.248 PARKED (lane-2.248-ink-extent 868ee790b, OMR_HEAD_INK_EXTENT OFF)
+Built `head_extent.py` (head extent grown from the box seed by re-feeding 2.220's trim; ink-centre position). Sean: grown boxes are a good size; his "box too small" tiles were cell-edge twins (a tile-drawing fault). r1 moved FAR heads by ink centre (5/7 right) against the 10-27 ledger-only ruling -> CLAUDE.md §6 "Name the rule that owns the value". r2 moves only in-staff heads and strips ledger stubs; not measured (stopped for the overnight). Found: the far-head ledger count abstains on all 7 tiles and the pitch falls back plain to the box centre -- next item: write it blue with both candidates. Full write-up + resume steps: benchmarks/ink-extent-2026-10/FINDINGS.md.
+
 ## 2026-10-31 -- 2.247 LANDED ON: accidentals labelled by their own ink (OMR_ACCIDENTAL_KIND)
 STAGED GATHER/ADJUDICATE (`accidental_family.ink_members_and_extent`, `read_type` size + bowl-side rules, `guess_of`; `gather_accidental_positions`), deny-list default ON (Sean "Fix that one then land"; r3 tiles both naturals). Judged right->wrong 0. Also: Sean confirmed 2.240 step 3's moved Brahms notes are on the page owner's staff (the 'lost' notes were duplicate copies and a flag read as a head).
 
@@ -97,6 +108,26 @@ STAGED GATHER + ADJUDICATE (`stroke_map.merge_accidentals`, `accidental_ink_fits
 ## 2026-10-31 -- 2.242 one accidental, one piece (branch lane-2.242-accidental-whole, not landed)
 `stroke_map.merge_accidentals` (flag `OMR_ACCIDENTAL_WHOLE`, default OFF) puts an accidental the openings cut into 4-6 strokes back as one stroke (from its box outward, SMuFL size, never a head / ledger / stem; not more than one accidental); `stroke_owner.accidental_yields` makes an accidental yield a head-body blob a head box covers and flag ink hanging from a long stem (2.241 tiles 10 and 3). Brahms p0 accidentals whole 0 -> 30 of 41, 2.201 type control no loss, judged right->wrong 0. `claim_order` re-cut now passes the touch boxes. Cause and lessons: benchmarks/capture-readout-2026-10/FINDINGS.md 2.242.
 
+## 2026-10-31 -- ROADMAP 2.245 round 3 (Sean "Rework it all together - get it solid then land"; lane-2.245-wrong-kind, flag OFF)
+
+`box_kind.read_heads`: a head split off a wide head box needs a head's own shape (per-core erosion, small holes filled so a hollow ring
+counts, staff grid, not a flag's stem end, no thick clef bar beside it); a head with its own box is accounted; the remainder is refused only
+with no head ink left, else `wide_box_unread`, and `adjudicate_duration` then writes no note. Tiles `out/print/2.245-r3-tiles/`.
+
+## 2026-10-31 -- ROADMAP 2.245 round 2 (Sean "Send back for a second round"; lane-2.245-wrong-kind, not merged, flag OFF)
+
+`OMR_BOX_KIND_SIZE` now acts in GATHER: `gather_detections` splits a 3+ sp head box into the head-shaped blobs inside it (appended boxes,
+indices unchanged; the box is the refused remainder, or abstains `wide_box_unread`); `arcs_system.gather_system_arcs` refuses a trace that
+does not bow; `gather_wedge_boxes` refuses a CV hairpin narrower than 1.6 sp; `narrow_rest` no longer lets an oversized accidental box block
+it. Tiles `out/print/2.245-r2-tiles/`.
+
+## 2026-10-31 -- ROADMAP 2.245 wrong-kind boxes: cause found, `OMR_BOX_KIND_SIZE` built OFF (lane-2.245-wrong-kind, not merged)
+
+Cause of Sean's four wrong-kind tiles: the detector boxes one ink under several classes and every reader takes a box's class as its kind,
+never testing the box's own size or its ink's shape against that kind (nor reading an earlier claim). New pure `staged/box_kind.py`; the
+head refusal `wider_than_a_head` (>= 3.0 sp, last of the refusals) behind `OMR_BOX_KIND_SIZE` (OFF). A stroke-owner veto on the same
+test was built and dropped (it lost real merged-head eighths on Litolff). 12 blind tiles `out/print/2.245-tiles/`. The FINDINGS write was
+refused by the hook; the content is in the lane report to the manager.
 
 ## 2026-10-30 -- hand truth aligned to the master cell map (branch hand-truth-master-align, not merged)
 `tools/omr/hand_truth/align.py` (`python3 -m tools.omr.hand_truth.align [--check|--report|--control]`) writes the DERIVED `data/hand-truth/aligned/<edition>/<page>.<master>.json`: for every labelled box, the master cell (page, system, staff-in-system, cell) that holds its page rect, and why the old `cell_id` disagrees (label-only margin/top/bottom cell; spans-cells; frame-changed). Sean's page files are untouched. Brahms p0 vs cm-2d494f8fc055: all 112 measure cells and 14 staves identical to the master; 44 of 1566 boxes were filed under another cell (28 margin/top, 16 spans). `score.py` keys the frame control and the notehead rows by the master cell when given the file (`--aligned auto`); `--check` fails on a stale label or master, `--control` moves one master barline and must fail. INVENTORY.json regenerated (it was stale on main).

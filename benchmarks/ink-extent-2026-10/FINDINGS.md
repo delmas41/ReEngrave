@@ -1,5 +1,7 @@
 # ROADMAP 2.248 -- every mark's size from its own ink (STAGED)
 
+**STATUS (2026-10-31 night): PARKED, NOT LANDED.** Branch `lane-2.248-ink-extent` at 868ee790b (r1 code fdd54c6c4, r2 code f04eb8630), flag `OMR_HEAD_INK_EXTENT` default OFF (allow-list). Sean: out of tonight's overnight, picked up next session. Resume steps at the end of this file.
+
 2026-10-31, branch `lane-2.248-ink-extent` 654d54ffc (Opus), flag `OMR_HEAD_INK_EXTENT` default OFF. Written by the manager from the lane's report (the hook refused the lane's write). Scripts in this directory are on the branch.
 
 ## Cause and process lesson
@@ -30,3 +32,39 @@
 
 ## Tiles
 out/print/2.248-tiles (boxes drawn from the NEW extent): 3, 4, 5, 8, 10 are Sean's places grown from the same short box; 1, 2, 6, 7, 9, 11, 12 are written heads whose position moved.
+
+## Sean's answers on the r1 tiles (2026-10-31; out/print/2.248-tiles/answers.json)
+- Values: 1 eighth, 2 dotted quarter, 3-9 eighths, 11-12 eighths; tile 10 unanswered.
+- "Every box was a good size for the notehead" -- the grown extent fits the head.
+- Line or space on the seven moved notes: 1 line, 2 space, 6 space, 7 line, 9 space, 11 line, 12 line -> the INK centre was right on 1, 6, 9, 11, 12 (5/7), the BOX centre on 2, 7 (2/7).
+
+## The rule r1 broke (Sean's question "how did we miss this rule?")
+All seven moved notes are OUTSIDE the staff (positions -2..-7 above, 13..16 below). page-facts (§3, ~lines 236-256) and DECISIONS 2026-10-27: a head outside the staff is placed ONLY by counting its own printed ledger lines -- never by a centre measured against a grid extended past the outer line (hand-drawn ledgers: Litolff rungs sit ~0.27 sp further out). r1 moved far heads by an ink centre on that extended grid. Missed three times: the manager's brief framed the lane as SIZE and never named the rule that owns PITCH; the lane did not check whether moved heads were inside or outside the staff; the manager sent Sean line/space tiles without grepping page-facts first. Lesson -> CLAUDE.md §6 "Name the rule that owns the value" (Sean, 2026-10-31).
+
+## Why tiles 2 and 7 failed (the two the ink got wrong)
+- Tile 2 (Brahms p5 glyph/5/0/1/5/20, head in the space above a short ledger): the grown extent took a 54 px ledger stub (rows 981-987, 2-7 px past both sides of the head) as head ink, pulling the centre onto the line. With the stub stripped the ink centre still reads ~15.6-15.8 (a line) -- the extended grid itself is off there, which is exactly why far heads are ledger-only.
+- Tile 7 (Litolff p6 glyph/6/1/0/5/4): box -2.50, ink -2.51 -- both centres on the half-way boundary; ink rows 1969-1973 run past the head's left side, possibly a ledger through it (Sean: line). Neither centre can decide a boundary.
+
+## The ledger count on those seven (the finding that matters most)
+The far-head ledger count ABSTAINS on all seven: Brahms tiles 1, 2, 9 `ledger_not_read` (tile 2 `count_does_not_fit`, gaps 3.37 sp); Litolff tiles 6, 7, 11, 12 `no_page_shape` (a 2-page gather never fills the head-shape pool of 8; a whole-movement gather does, from about page 16 on Litolff). Where it abstains, the WRITTEN pitch falls back PLAIN to the box centre on the extended grid (or `move_glyph` for re-owned heads) -- right on 2 of 7 here. That breaks CLAUDE §5 ("no rungs either way is OUR failure -- abstain and count it") and §4 (nothing uncertain written unmarked).
+
+## Round 2 (f04eb8630; built, NOT measured on the frozen sample)
+- The ink centre moves a head only when BOTH the box and the ink position are in -1..9 (inside the staff or its first space outside); far heads are never moved.
+- No move when the ink centre is within 0.15 step of the half-way point.
+- Ledger stub out of the grown extent: a row in the outer 30% of the extent whose ink run through the head's centre column reaches past both sides of the head's widest middle rows and is >= 0.15 sp wider is a line row and is stripped (>= 0.6 sp of head must stay); the columns are cut back to the head's. A ledger through the middle is never stripped.
+- Tests: test_head_extent_2_248.py 14 pass (+ positions, 2.73, ink-rules: 99). Full fast tier NOT re-run after r2 (last full run before r2: 9,646).
+- 2-page gathers, r2 ON (Litolff p6,10 / Brahms p0,5): all exit 0. Litolff 9 positions moved (r1 97, 75 of them far), all inside the staff, all 0.3-1 step; written pitch differs from OFF in 6 of 1,071. Brahms 4 moved, all inside; 1 written pitch differs.
+- The three measures for r2 do NOT exist: the frozen-sample lane_report was stopped part-way (Brahms ON arm) so the machine is idle for the overnight; Litolff's ON arm had been gathered with r1 code.
+
+## Open items
+1. Far heads whose ledger count abstains are written plain from the box centre -> write them GUESSED (blue) with box- and ink-centre positions as candidates (a separate fix, outside head_extent; the bigger win).
+2. Twins read as heads: cell-edge pieces of a neighbouring staff's head written as notes (Litolff 38 of 96, Brahms 16 of 49 on 2 pages) -- the page-mark identity does not join a piece to its whole twin (mark_group size 1). Breaks "all ink accounted for once".
+3. Flags and rests not examined (rests already read their ink, 2.150b rest_ink).
+4. Other tile tools (benchmarks/*/tiles.py) still draw the detector box -- the source of today's false "box too small" tiles.
+
+## Resume steps (next session)
+1. `git merge origin/main` into lane-2.248-ink-extent (never rebase).
+2. Build open item 1 (behind its own flag or inside 2.248's, by Sean's say), with tests.
+3. Full fast tier (no -n) + one real 2-page gather per plate ON (exit 0).
+4. Three measures: `OMR_SURYA_KEEP_ALIVE=0 python3 -m tools.omr.staged.lane_report --flag OMR_HEAD_INK_EXTENT --from gather --cell-map master --workers 2 --unjudged-tiles 12 --tag <private> --out out/2.248/lane` (both plates, both arms with the final code; no other lane running -- Surya timeouts under load move clefs/keys).
+5. 12 tiles on the in-staff moves (line or space?) for Sean; land on his answers (judged right->wrong 0).

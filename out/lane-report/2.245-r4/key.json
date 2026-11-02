@@ -1,0 +1,200 @@
+[
+ {
+  "kind": "tie",
+  "side": "lost",
+  "page": 2,
+  "box": [
+   1815.4,
+   1482.36,
+   1841.0,
+   1506.3600000000001
+  ],
+  "rg": "glyph/2/0/7/11/2",
+  "value": "stop",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   1733,
+   1415
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 11,
+   "page_box": [
+    1815.4,
+    1482.36,
+    1841.0,
+    1506.3600000000001
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "page": 2,
+  "box": [
+   995.48,
+   338.56,
+   1021.24,
+   359.36
+  ],
+  "rg": "glyph/2/0/0/4/1",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 2,
+  "crop_origin": [
+   913,
+   270
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "cell": 4,
+   "page_box": [
+    995.48,
+    338.56,
+    1021.24,
+    359.36
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 2,
+  "box": [
+   1654.04,
+   1476.44,
+   1702.52,
+   1521.4
+  ],
+  "rg": "glyph/2/0/7/10/3",
+  "value": "half",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1583,
+   1420
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 10,
+   "page_box": [
+    1654.04,
+    1476.44,
+    1702.52,
+    1521.4
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "tie",
+  "page": 8,
+  "box": [
+   2164.8775,
+   2575.0125,
+   2187.085,
+   2596.59
+  ],
+  "rg": "glyph/8/1/4/16/7",
+  "value": "stop",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 4,
+  "crop_origin": [
+   2081,
+   2507
+  ],
+  "position": {
+   "page": 8,
+   "system": 1,
+   "staff": 4,
+   "cell": 16,
+   "page_box": [
+    2164.8775,
+    2575.0125,
+    2187.085,
+    2596.59
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "tie",
+  "page": 2,
+  "box": [
+   2097.68,
+   2456.64,
+   2123.92,
+   2478.88
+  ],
+  "rg": "glyph/2/1/2/11/2",
+  "value": "stop",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 5,
+  "crop_origin": [
+   2016,
+   2389
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 2,
+   "cell": 11,
+   "page_box": [
+    2097.68,
+    2456.64,
+    2123.92,
+    2478.88
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "tie",
+  "side": "lost",
+  "page": 2,
+  "box": [
+   1531.72,
+   1488.76,
+   1557.0,
+   1505.56
+  ],
+  "rg": "glyph/2/0/7/9/1",
+  "value": "start",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   1449,
+   1418
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 9,
+   "page_box": [
+    1531.72,
+    1488.76,
+    1557.0,
+    1505.56
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ }
+]

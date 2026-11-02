@@ -45,7 +45,8 @@ from typing import Any, Dict
 from .. import margins as M
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from .. import record as R
-from ..record import Kind, Outcome, Q
+from ..record import Kind, Outcome, Q, Scope
+from .. import box_kind as _box_kind
 
 #: An eighth rest's ink, in staff spaces, MEASURED off the 107 + 17 kept
 #: `rest8th` boxes of Brahms p0-1 and Litolff p1-3 (`FINDINGS` 2.80b): 1.2-1.4
@@ -86,7 +87,7 @@ def _shaped_slacks(w, h, step, pieces):
     quantity=Q.NOTEHEAD_IS_AN_EIGHTH_REST,
     composed_from=(Q.NARROW_BOX_SHAPE,),
     scope=Kind.GLYPH,
-    wants=(Q.NARROW_BOX_SHAPE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
+    wants=(Q.NARROW_BOX_SHAPE, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_BOX, Q.CELL_STAFF_SPACE,
            Q.REST_IS_NOT_A_REST),
     subjects_from=Q.NARROW_BOX_SHAPE,
     reasons=("rest8th_shape", "not_rest_shaped", "ink_already_read_as_a_glyph",
@@ -142,6 +143,16 @@ def adjudicate_narrow_box_is_an_eighth_rest(ev: Evidence) -> Ruling:
                 return Ruling(value=False, reason="ink_already_read_as_a_glyph",
                               used=used, detail={**detail, "by": cls})
         else:
+            if _box_kind.enabled() and _box_kind.printed_size(cls):
+                # ROADMAP 2.245 round 2 (2.247 hand-off): a fixed-size glyph's box far bigger than its printed glyph is not that glyph
+                # (Litolff p4 4/0/8/5: a 1.45 x 1.87 sp "double sharp" on an eighth rest; printed 0.99 x 1.01): it does not block
+                ob = ev.rows(Q.GLYPH_BOX, subject=other)
+                sp = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS)
+                if ob and sp and isinstance(ob[-1].value, (list, tuple)) and len(ob[-1].value) == 5 and float(sp[-1].value) > 0:
+                    u = float(sp[-1].value)
+                    if _box_kind.oversized_for_its_class(cls, float(ob[-1].value[3]) / u, float(ob[-1].value[4]) / u):
+                        detail.setdefault("not_blocking_oversized", []).append(cls)
+                        continue
             return Ruling.abstain("claimed_by_another_class",
                                   **{**detail, "by": cls})
 

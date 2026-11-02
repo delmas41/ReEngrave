@@ -149,6 +149,8 @@ COVERED: Dict[str, Dict[str, str]] = {
 PARTIAL: Dict[str, Dict[str, str]] = {
     "adjudicate_notehead_is_not_a_notehead": {
         "too_narrow": THRESHOLD, "is_a_dot": THRESHOLD,
+        # ROADMAP 2.245: how far past the widest head box (staff spaces)
+        "wider_than_a_head": THRESHOLD,
         "is_a_beam_piece": THRESHOLD,
         # ROADMAP 2.142: share of the smaller box a rest box covers
         "is_a_rest_twin": THRESHOLD,
