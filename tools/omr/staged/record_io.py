@@ -64,7 +64,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Sequence, Tuple, Union
 
-from .record import Kind, Subject
+from .record import Kind, LazyBasis, Subject
 
 #: Where the pooled lists live inside `record`.
 POOL_KEY = "pools"
@@ -155,18 +155,22 @@ def _expand_verdicts(verdicts: List[dict], pools: Dict[str, list]) -> None:
                 for g in groups]
 
 
-def pool_id_lists(record: dict) -> dict:
-    """The record with its repeated verdict id lists pooled.
+def json_default(o: Any) -> Any:
+    """`default=` for encoding a record: a `LazyBasis` is the list it stands for (ROADMAP 2.249); anything else
+    `str`, as the record has always been written."""
+    if isinstance(o, LazyBasis):
+        return list(o)
+    return str(o)
 
-    Returns a NEW dict (the input's verdict dicts are copied, never
-    mutated); returns the input itself when nothing qualifies, so a small
-    record is unchanged in identity as well as content. Self-checks by
-    expanding its own output and comparing every pooled field to the input;
-    raises `PoolMismatch` on any difference.
-    """
-    verdicts: List[dict] = list(record.get("verdicts") or ())
-    if not verdicts:
-        return record
+
+def _is_ids(lst: Any) -> bool:
+    return isinstance(lst, (list, LazyBasis))
+
+
+def _pool_plan(verdicts: List[dict]):
+    """ROADMAP 2.249: which (verdict, field) lists `pool_id_lists` pools, against which pool -- decided exactly as it
+    always was (same groups, same cores, same pool numbering), but the encodings are not kept: `_pooled_one` makes
+    each again as its verdict is written, so no second copy of every list is held."""
     pools: Dict[str, list] = {}
     by_content: Dict[tuple, str] = {}
 
@@ -179,19 +183,17 @@ def pool_id_lists(record: dict) -> dict:
             by_content[key] = pid
         return pid
 
-    out_verdicts = [dict(v) for v in verdicts]
-
-    # ── flat fields: one shared core per group, private ids inserted ───────
+    flat: Dict[Tuple[int, str], str] = {}
     for fld in FLAT_FIELDS:
         groups: Dict[tuple, List[int]] = defaultdict(list)
         for idx, v in enumerate(verdicts):
             lst = v.get(fld)
-            if isinstance(lst, list) and len(lst) >= MIN_POOL_IDS:
+            if _is_ids(lst) and len(lst) >= MIN_POOL_IDS:
                 groups[_group_key(v)].append(idx)
         for members in groups.values():
             if len(members) < 2:
                 continue
-            first = verdicts[members[0]][fld]
+            first = list(verdicts[members[0]][fld])
             common = set(first)
             for idx in members[1:]:
                 common &= set(verdicts[idx][fld])
@@ -202,7 +204,7 @@ def pool_id_lists(record: dict) -> dict:
             core = [x for x in first if x in common]
             pid: Optional[str] = None
             for idx in members:
-                lst = verdicts[idx][fld]
+                lst = list(verdicts[idx][fld])
                 ins = _encode(lst, core)
                 # Not an in-order subsequence, or more private than shared:
                 # inline, exactly as before.
@@ -210,7 +212,7 @@ def pool_id_lists(record: dict) -> dict:
                     continue
                 if pid is None:
                     pid = intern(core)
-                out_verdicts[idx][fld] = {REF_KEY: pid, INS_KEY: ins}
+                flat[(idx, fld)] = pid
 
     # ── correlated: inner lists interned by content where repeated ─────────
     seen: Counter = Counter()
@@ -218,6 +220,7 @@ def pool_id_lists(record: dict) -> dict:
         for g in v.get(GROUPED_FIELD) or ():
             if isinstance(g, list) and len(g) >= MIN_POOL_IDS:
                 seen[tuple(g)] += 1
+    grouped: Dict[int, List[Any]] = {}
     for idx, v in enumerate(verdicts):
         groups_ = v.get(GROUPED_FIELD)
         if not groups_:
@@ -232,26 +235,85 @@ def pool_id_lists(record: dict) -> dict:
             else:
                 enc.append(g)
         if changed:
-            out_verdicts[idx][GROUPED_FIELD] = enc
+            grouped[idx] = enc
+    return pools, flat, grouped
 
-    if not pools:
-        return record
 
-    # ── the control: expand our own output and compare ─────────────────────
-    # ROADMAP 2.249: ONE verdict at a time (the same comparison), so the
-    # check never holds a second expanded copy of every pooled list at once.
-    for orig, pooled in zip(verdicts, out_verdicts):
-        back = dict(pooled)
+def _pooled_one(v: dict, idx: int, pools: Dict[str, list], flat, grouped) -> dict:
+    """Verdict `idx` as the pooled record spells it, checked: its pooled fields expand back to its own (raises
+    `PoolMismatch` otherwise -- the control `pool_id_lists` always ran, now one verdict at a time)."""
+    out = dict(v)
+    for fld in FLAT_FIELDS:
+        pid = flat.get((idx, fld))
+        if pid is not None:
+            lst = list(v[fld])
+            out[fld] = {REF_KEY: pid, INS_KEY: _encode(lst, pools[pid])}
+    if idx in grouped:
+        out[GROUPED_FIELD] = grouped[idx]
+    if out is not v:
+        back = dict(out)
         _expand_verdicts([back], pools)
         for fld in FLAT_FIELDS + (GROUPED_FIELD,):
-            if orig.get(fld) != back.get(fld):
+            if v.get(fld) != back.get(fld):
                 raise PoolMismatch(
-                    f"{orig.get('id')}.{fld}: pooled spelling does not "
+                    f"{v.get('id')}.{fld}: pooled spelling does not "
                     f"expand back to the input (refusing to write)")
+    return out
 
+
+def pool_id_lists(record: dict) -> dict:
+    """The record with its repeated verdict id lists pooled.
+
+    Returns a NEW dict (the input's verdict dicts are copied, never
+    mutated); returns the input itself when nothing qualifies, so a small
+    record is unchanged in identity as well as content. Self-checks by
+    expanding its own output and comparing every pooled field to the input;
+    raises `PoolMismatch` on any difference.
+    """
+    verdicts: List[dict] = list(record.get("verdicts") or ())
+    if not verdicts:
+        return record
+    pools, flat, grouped = _pool_plan(verdicts)
+    if not pools:
+        return record
     out = dict(record)
-    out["verdicts"] = out_verdicts
+    out["verdicts"] = [_pooled_one(v, i, pools, flat, grouped) for i, v in enumerate(verdicts)]
     out[POOL_KEY] = pools
+    return out
+
+
+class _PooledVerdicts(list):
+    """ROADMAP 2.249: the pooled verdicts, made one at a time as `_stream` writes them (never all held at once)."""
+
+    def __init__(self, verdicts, plan):
+        super().__init__()
+        self._verdicts, self._plan = verdicts, plan
+
+    def __len__(self):
+        return len(self._verdicts)
+
+    def __iter__(self):
+        pools, flat, grouped = self._plan
+        for i, v in enumerate(self._verdicts):
+            yield _pooled_one(v, i, pools, flat, grouped)
+
+
+def _streamed_pooled_result(result: dict) -> dict:
+    """`pooled_result(result)`, byte for byte once written, with the verdicts pooled as they are written."""
+    rec = result.get("record")
+    if not isinstance(rec, dict):
+        return result
+    verdicts: List[dict] = list(rec.get("verdicts") or ())
+    if not verdicts:
+        return result
+    plan = _pool_plan(verdicts)
+    if not plan[0]:
+        return result
+    out_rec = dict(rec)
+    out_rec["verdicts"] = _PooledVerdicts(verdicts, plan)
+    out_rec[POOL_KEY] = plan[0]
+    out = dict(result)
+    out["record"] = out_rec
     return out
 
 
@@ -360,7 +422,7 @@ def dump_to_file(result: dict, path: Union[str, Path]) -> int:
     never exists: the envelope and the `record` dict are walked here and each
     row is one `json.dumps` call written straight to the file. Returns the
     bytes written."""
-    enc = json.JSONEncoder(separators=(",", ":"), default=str).encode
+    enc = json.JSONEncoder(separators=(",", ":"), default=json_default).encode
     n = 0
     with open(path, "w", encoding="utf-8", buffering=1 << 20) as fh:
         def write(s: str) -> None:
@@ -368,5 +430,5 @@ def dump_to_file(result: dict, path: Union[str, Path]) -> int:
             n += len(s)
             fh.write(s)
         with gc_paused():
-            _stream(pooled_result(result), write, enc, _STREAM_DEPTH)
+            _stream(_streamed_pooled_result(result), write, enc, _STREAM_DEPTH)
     return n

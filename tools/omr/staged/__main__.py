@@ -449,7 +449,7 @@ def main(argv=None) -> int:
         movements=movement_spans,
         legacy=legacy.load(args.against) if args.against else None,
         progress=args.progress, through=args.through,
-        cell_map=args.cell_map)
+        cell_map=args.cell_map, lazy_basis=True)
     result["weight_routing"] = weight_routing
 
     # ⚠️⚠️ WHICH TREE BUILT THIS RECORD. Without it, comparing two records is
@@ -509,7 +509,8 @@ def main(argv=None) -> int:
               f"peak rss {_run_meter.peak_rss_bytes() / 1e9:.1f} GB", file=sys.stderr, flush=True)
         print(f"wrote {args.out}", flush=True)
     else:
-        print(dumps_for_file(result, indent=2, default=str))
+        from .record_io import json_default
+        print(dumps_for_file(result, indent=2, default=json_default))
 
     # ⚠️ ROADMAP 4.2. `movement_spans` (above) is what `--movements` asked
     # for BEFORE the gather; `result` is what the record actually HOLDS

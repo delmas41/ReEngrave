@@ -73,7 +73,10 @@ del rec; gc.collect()
 M["loaded"] = {"s": round(time.time() - t0, 1), **live()}
 RR.run_stages(log)
 t = time.time()
-result = {"record": log.to_json(), "summary": log.summary()}
+try:      # the CLI's form (ROADMAP 2.249 m5): ADJUDICATE bases unspelled; an older tree spells them
+    result = {"record": log.to_json(lazy_basis=True), "summary": log.summary()}
+except TypeError:
+    result = {"record": log.to_json(), "summary": log.summary()}
 M["to_json"] = {"s": round(time.time() - t, 1), **live()}
 del log; gc.collect()
 t = time.time()

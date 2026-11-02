@@ -124,3 +124,32 @@ def test_lazy_basis_is_the_spelled_out_basis():
     log.release_closure_memo(quantities=True)
     assert log.quantities_in_closure(v4.id) == qic == frozenset(
         {Q.GLYPH_BOX, Q.GLYPH_CONF, Q.DURATION, Q.VOICES, Q.METER, Q.CLEF})
+
+
+def test_lazy_record_writes_the_same_file(tmp_path: Path):
+    """ROADMAP 2.249 m5: the CLI's record (ADJUDICATE bases as `LazyBasis`, pooled while written) is byte-identical
+    to the spelled-out record pooled whole -- pooled and inline bases, both."""
+    from tools.omr.staged import record as R
+    from tools.omr.staged.record import LazyBasis, Log, Outcome, Q, Verdict
+
+    log = Log()
+    obs = [log.observe(R.glyph(0, 0, 0, 0, i), Q.GLYPH_BOX, i, reader=R.READERS.GEOMETRY, frame="page")
+           for i in range(90)]
+    log.freeze()
+    for n in range(6):   # one group (quantity, decider, system): a shared core of 80 ids, one private each
+        considered = [o.id for o in obs[:80]] + [obs[80 + n].id]
+        log.record(Verdict(id=log._next_id("vrd"), subject=R.glyph(0, 0, 0, 1, n), quantity=Q.DURATION,
+                           outcome=Outcome.DECIDED, value=n, decider="d", reason="r",
+                           considered=tuple(considered), basis=LazyBasis(log, considered)))
+    log.record(Verdict(id=log._next_id("vrd"), subject=R.glyph(0, 1, 0, 1, 0), quantity=Q.VOICES,
+                       outcome=Outcome.DECIDED, value=1, decider="e", reason="r", considered=(obs[0].id,),
+                       basis=LazyBasis(log, (obs[0].id,))))
+    eager = {"record": log.to_json(), "summary": {}}
+    lazy = {"record": log.to_json(lazy_basis=True), "summary": {}}
+    assert isinstance(lazy["record"]["verdicts"][0]["basis"], LazyBasis)
+    want = dumps_for_file(eager, separators=(",", ":"), default=str)
+    assert '"$pool"' in want                      # the fixture really pools the basis
+    p = tmp_path / "lazy.json"
+    n = dump_to_file(lazy, p)
+    assert p.read_text(encoding="utf-8") == want and n == len(want)
+    assert load_record(p)["record"]["verdicts"][0]["basis"] == eager["record"]["verdicts"][0]["basis"]

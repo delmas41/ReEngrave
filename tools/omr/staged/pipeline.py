@@ -311,7 +311,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                movements: Any = None,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False, through: str = "infer",
-               cell_map: Any = None) -> Dict[str, Any]:
+               cell_map: Any = None, lazy_basis: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
 
     `cell_map` (ROADMAP 2.231): a master cell map directory; the pages are LOADED from it (`cell_map.load_prepared`,
@@ -357,7 +357,8 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                          ink_component_rows=ink_component_rows,
                          input_domain_classification=input_domain_classification,
                          movements=movements,
-                         legacy=legacy, progress=progress, through=through)
+                         legacy=legacy, progress=progress, through=through,
+                         lazy_basis=lazy_basis)
 
 
 def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
@@ -371,8 +372,11 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   movements: Any = None,
                   through: str = "infer",
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
-                  progress: bool = False) -> Dict[str, Any]:
+                  progress: bool = False, lazy_basis: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
+
+    `lazy_basis` (ROADMAP 2.249): `result["record"]`'s ADJUDICATE verdicts carry their `record.LazyBasis` rather than
+    the spelled-out list (`Log.to_json`) -- for the CLI, whose writer and exporter read it as the list.
 
     Split out so a test can drive the whole pipeline on a synthesized page
     with no PDF, no weights and no venv -- which is what makes the coherence
@@ -438,7 +442,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     if through == "gather":
         run_meter.finish()
         return {
-            "record": log.to_json(),
+            "record": log.to_json(lazy_basis=lazy_basis),
             "summary": log.summary(),
             "adjudication": _adjudication_report(log, ()),
             "stubs": {"decisions": [], "consequences": []},
@@ -462,7 +466,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     log.release_closure_memo(quantities=True)
 
     return {
-        "record": log.to_json(),
+        "record": log.to_json(lazy_basis=lazy_basis),
         "summary": log.summary(),
         "adjudication": _adjudication_report(log, verdicts),
         # ⚠️ Redundant groups: several witnesses to ONE fact, and whether they

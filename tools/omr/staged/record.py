@@ -3396,6 +3396,11 @@ class Abstention:
                 "detail": dict(self.detail)}
 
 
+#: ROADMAP 2.249: how many spelled-out `LazyBasis` tuples are kept (most recent first out last) -- speed only.
+SPELLED_KEEP = 64
+_SPELLED: "collections.OrderedDict" = __import__("collections").OrderedDict()
+
+
 class LazyBasis(Sequence):
     """⚠️ ROADMAP 2.249: an ADJUDICATE verdict's `basis` -- `considered` plus the closure of every considered row --
     held as the `considered` ids alone and spelled out (sorted, exactly as the tuple it replaces) only when read.
@@ -3425,7 +3430,18 @@ class LazyBasis(Sequence):
         return out
 
     def _t(self) -> tuple:
-        return tuple(sorted(self.ids()))
+        # SPEED ONLY: the writer reads one basis several times in a row (pool plan, encode, its own check, the
+        # encoder); the last few spelled-out bases are kept (`SPELLED_KEEP`), never all of them.
+        lru = _SPELLED
+        t = lru.get(id(self))
+        if t is not None and t[0] is self:
+            lru.move_to_end(id(self))
+            return t[1]
+        t = tuple(sorted(self.ids()))
+        lru[id(self)] = (self, t)
+        if len(lru) > SPELLED_KEEP:
+            lru.popitem(last=False)
+        return t
 
     def __iter__(self):
         return iter(self._t())
@@ -3577,7 +3593,9 @@ class Verdict:
                     "a NARROWED verdict needs at least two candidates; with "
                     "one it has DECIDED and with none it has ABSTAINED")
 
-    def to_json(self) -> dict:
+    def to_json(self, lazy_basis: bool = False) -> dict:
+        # ROADMAP 2.249: `lazy_basis` hands an ADJUDICATE verdict's `LazyBasis` through unspelled (the CLI's streamed
+        # writer and the exporter read it as the list); every other caller gets the list, as before.
         return {"id": self.id, "subject": self.subject.to_key(),
                 "quantity": self.quantity, "outcome": self.outcome.value,
                 "value": self.value, "decider": self.decider,
@@ -3587,7 +3605,8 @@ class Verdict:
                 "excluded": [list(e) for e in self.excluded],
                 "correlated": [sorted(g) for g in self.correlated],
                 "candidates": [c.to_json() for c in self.candidates],
-                "basis": list(self.basis), "margin": self.margin,
+                "basis": (self.basis if lazy_basis and isinstance(self.basis, LazyBasis) else list(self.basis)),
+                "margin": self.margin,
                 "supersedes": self.supersedes, "detail": dict(self.detail)}
 
 
@@ -4140,11 +4159,14 @@ class Log:
 
     # ── serialisation ───────────────────────────────────────────────────────
 
-    def to_json(self) -> dict:
+    def to_json(self, lazy_basis: bool = False) -> dict:
+        """`lazy_basis` (ROADMAP 2.249): ADJUDICATE verdicts keep their `LazyBasis` -- spelled out, all at once, the
+        whole movement's bases were the run's 56 GB peak -- for a consumer that reads it as the list it stands for
+        (`record_io.dump_to_file`, the exporter). Off, every basis is a list, exactly as before."""
         return {
             "observations": [o.to_json() for o in self._obs.values()],
             "abstentions": [a.to_json() for a in self._abs.values()],
-            "verdicts": [v.to_json() for v in self._vrd.values()],
+            "verdicts": [v.to_json(lazy_basis) for v in self._vrd.values()],
             "counts": {"observations": len(self._obs),
                        "abstentions": len(self._abs),
                        "verdicts": len(self._vrd)},
