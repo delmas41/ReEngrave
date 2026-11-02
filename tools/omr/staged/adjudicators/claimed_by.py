@@ -168,8 +168,11 @@ def consult(ev: Any, box_row: Any, *, head: bool, family: str = "note", rows: An
                 refusing.append((owner, r, 1.0, "named_by_the_located_clef"))
                 continue
             clef_stemmed = stemmed
-            if stemmed and head and d.get("source") == "clef_slot" and isinstance(r.value, (list, tuple)) and len(r.value) == 4:
-                clef_stemmed = _stemmed(ev, box_row, inside=r.value)   # 2.208: a stem standing in the clef's slot is the clef's ink
+            if stemmed and head and d.get("source") in ("clef_slot", "clef_pagewide") and isinstance(r.value, (list, tuple)) \
+                    and len(r.value) == 4:
+                # 2.208: a stem standing in the clef's slot is the clef's ink; 2.251: so is a "stem" the line finder drew on a page-wide
+                # clef's thick bar (both witnesses read that ink as a clef)
+                clef_stemmed = _stemmed(ev, box_row, inside=r.value)
             if clef_stemmed:
                 continue                                   # 2.176 / 2.144: a stem stands on it: a note
             voted_under = False

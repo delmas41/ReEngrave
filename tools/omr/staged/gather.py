@@ -15444,6 +15444,137 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
                 print(f"  gather claimed area (clef slot) {ssub.to_key()}")
 
 
+def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `clef`, source `clef_pagewide` -- ROADMAP 2.251 step 1, flag `OMR_CLEF_PAGEWIDE` (default OFF).
+
+    PATH: STAGED GATHER, PAGE raster (`pws.page.binary`), one pass over every staff of the page (Sean 2026-11-01: "a simple early gather
+    read that looks over the whole page for the shape of clefs and claims the ink"). AFTER the register, the key claims and the clef
+    slot (reads their READ areas: ink one of them already owns is skipped -- a later reader may mark claimed ink, never take it).
+
+    Two witnesses per clef (`clef_pagewide` module doc): a C clef by its thick bar AND its mirrored bowls (no box needed: Litolff's C
+    clefs inside a system are never boxed as clefs); an F clef by a clef-sized `clefF` box AND its dots. Each READ row carries `kind`
+    (the clef's name, or None where its line is not one `KINDS_READ` allows -- claimed, kind UNREAD), `change` (False for a clef in its
+    system's header window), the witnesses, and `boxes_inside` (every head / rest box of the cells it meets, as the register measures
+    them) -- so the one consult (`claimed_by`) refuses a head or rest box on its ink. A candidate that failed its second witness files
+    an abstention with the test it failed (a refusal says how close it came).
+
+    ⚠️ DECLINED, NOT DEFAULTED: no raster / no staff geometry is no row."""
+    from . import claims as CL
+    from . import clef_pagewide as CP
+    if not (CP.enabled() and CL.enabled()):
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    ink = CP._ink(binary)
+    if ink is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    cells_of: Dict[int, Dict[int, Any]] = {}
+    for c in cells:
+        cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
+    owned = (CL.OWNER_CLEF, CL.OWNER_KEY, CL.OWNER_METER, CL.OWNER_COLUMN, CL.OWNER_BRACKET)
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is None:
+            continue
+        sys_idx, li = key
+        sp = _spacing(st)
+        lines = [float(v) for v in st.line_ys]
+        mycells = {k: c for k, c in cells_of.get(st.staff_index, {}).items() if getattr(c, "bbox_page_px", None)}
+        if not sp or len(lines) < 5 or not mycells:
+            continue
+        ssub = R.staff(p, sys_idx, li)
+        held = [list(r.value) for r in log.rows(Q.CLAIMED_AREA, ssub)
+                if (r.detail or {}).get("unit") == "area" and (r.detail or {}).get("standing") == "READ"
+                and (r.detail or {}).get("owner") in owned and isinstance(r.value, (list, tuple)) and len(r.value) == 4]
+        order = sorted(mycells)
+        x_lo, x_hi = mycells[order[0]].bbox_page_px[0], mycells[order[-1]].bbox_page_px[2]
+
+        def cell_at(x: float) -> int:
+            got = order[0]
+            for k in order:
+                if mycells[k].bbox_page_px[0] <= x:
+                    got = k
+            return got
+
+        found: List[Dict[str, Any]] = []
+        near: List[Dict[str, Any]] = []
+        # -- C clefs by shape (no box needed)
+        for cand in CP.c_bars(ink, lines, sp, x_lo, x_hi):
+            if cand["why"] == "bar_too_thin":
+                continue                                   # every stem and barline: not a near-miss
+            if not cand["passed"]:
+                near.append(dict(cand, family="C"))
+                continue
+            nm, ln, res = CP.name_c(cand["middle_y"], cand.get("lines_local") or lines)
+            area = [cand["x0"] - 0.15 * sp, min(cand["y0"], cand["middle_y"] - 2.0 * sp) - 0.3 * sp,
+                    cand.get("x_right", cand["x1"] + 2.0 * sp) + 0.1 * sp, max(cand["y1"], cand["middle_y"] + 2.0 * sp) + 0.3 * sp]
+            found.append({"area": area, "family": "C", "kind": nm, "line": ln, "residual": res, "witnesses": ["c_bar", "c_bowls"],
+                          "shape": {k: cand.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
+                                                              "bowl_asymmetry", "symmetry")}, "box": None})
+        # -- clef-sized detector boxes, each with its second witness
+        for k in order:
+            c = mycells[k]
+            for gi, d in enumerate(detections.get(R.cell(p, sys_idx, li, k).to_key(), ())):
+                pb = _page_box(c, d)
+                if not CL.is_clef_box(d.smufl_name, pb, sp):
+                    continue
+                ll = CP.local_lines(ink, lines, sp, pb[0])
+                got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp)
+                gkey = R.glyph(p, sys_idx, li, k, gi).to_key()
+                if not got["passed"]:
+                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name)})
+                    continue
+                if got["family"] == "C" and any(CL.overlaps(f["area"], pb) for f in found):
+                    for f in found:
+                        if CL.overlaps(f["area"], pb):
+                            f["witnesses"].append("detector_box")
+                            f["box"] = gkey
+                    continue
+                area = [pb[0], pb[1], pb[2] + (0.8 * sp if got["family"] == "F" else 0.0), pb[3]]
+                if any(CL.overlaps(f["area"], area) and f["family"] == got["family"] for f in found):
+                    continue                                   # one clef, two boxes (padded copies): claimed once
+                found.append({"area": area, "family": got["family"], "kind": got["kind"], "line": got["line"],
+                              "residual": got["residual"], "witnesses": ["detector_box", "f_dots" if got["family"] == "F" else "geometry"],
+                              "shape": None, "box": gkey})
+        for f in found:
+            area = [round(float(v), 1) for v in f["area"]]
+            if any(CL.overlaps(area, h) and _overlap_share(area, h) >= 0.5 for h in held):
+                continue                                       # already owned (the header's clef, a key, a meter): never taken
+            k = cell_at(area[0])
+            change = not (k == order[0] and (area[0] - mycells[k].bbox_page_px[0]) / sp <= CP.HEADER_WINDOW_SPACES)
+            inside: Dict[str, Any] = {}
+            for kk in order:
+                cc = mycells[kk]
+                cb = cc.bbox_page_px
+                if cb[2] < area[0] or cb[0] > area[2]:
+                    continue
+                inside.update(_claim_boxes_inside(binary, area, detections.get(R.cell(p, sys_idx, li, kk).to_key(), ()), cc,
+                                                  lambda j, kk=kk: R.glyph(p, sys_idx, li, kk, j).to_key(), lines, sp))
+            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(k), cell=k,
+                        owner=CL.OWNER_CLEF, owner_row=None, owner_glyph=None, unit="area", standing="READ", source=CP.SOURCE,
+                        change=bool(change), kind=f["kind"], family=f["family"], line=f["line"], residual=f["residual"],
+                        witnesses=list(f["witnesses"]), detector_box=f["box"], shape=f["shape"], boxes_inside=inside,
+                        space_page_px=round(sp, 3))
+        x_head = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
+        for n in near:
+            if float(n["x0"]) <= x_head:
+                continue                               # the header's own clef: read and claimed by the header readers, not a near-miss
+            reason = {"f_no_dots": ABSTAIN.F_CLEF_DOTS, "bowls_not_mirrored": ABSTAIN.ASYMMETRIC}.get(n.get("why"), ABSTAIN.NO_CLUSTERS)
+            log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
+                        reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
+                        x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
+                        shape={k: n.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
+                                                     "bowl_asymmetry", "g_shape") if k in n} or None)
+
+
+def _overlap_share(a: Sequence[float], b: Sequence[float]) -> float:
+    """The share of box `a`'s area inside box `b`."""
+    iw, ih = min(a[2], b[2]) - max(a[0], b[0]), min(a[3], b[3]) - max(a[1], b[1])
+    aw, ah = a[2] - a[0], a[3] - a[1]
+    return iw * ih / (aw * ah) if iw > 0 and ih > 0 and aw > 0 and ah > 0 else 0.0
+
+
 def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
     """`Q.CLAIMED_AREA` rows of owner `word` and `bracket`, ONE PER MARK PER (page, system) -- ROADMAP 2.221 m1 (flag
@@ -17147,6 +17278,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_key_object(log, pws, cells, local, detections)
         # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default OFF): AFTER the key claim (reads its left edge); page raster.
         gather_clef_slot_claim(log, pws, cells, local, detections, stroke_cells=stroke_cells)
+        # ROADMAP 2.251 step 1 (flag OMR_CLEF_PAGEWIDE, default OFF): AFTER every clef / key / meter claim (reads their READ areas, never
+        # takes their ink); page raster; every staff of the page in one pass, header and inside a system alike.
+        gather_clef_pagewide(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)
