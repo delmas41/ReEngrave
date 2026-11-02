@@ -1,0 +1,62 @@
+{
+ "source": "Sean 2026-11-01, verbatim per tile; tiles out/print/2.248-r3-tiles on lane-2.248-ink-extent ee87ef423",
+ "answers": {
+  "1": "a single tremolo slash",
+  "2": "part of an F clef",
+  "3": "the bottom half of an eighth note",
+  "4": "a quarter note",
+  "5": "a tremolo slash",
+  "6": "the top part of an eighth note",
+  "7": "a quarter note",
+  "8": "a half note",
+  "9": "an eighth note",
+  "10": "most of an eighth rest",
+  "11": "a half note",
+  "12": "a half note"
+ },
+ "scored": {
+  "r2_in_staff_moves": {
+   "tiles": [
+    1,
+    2,
+    4,
+    5,
+    10,
+    12
+   ],
+   "real_heads": [
+    4,
+    12
+   ],
+   "not_heads": {
+    "1": "tremolo slash",
+    "2": "part of an F clef",
+    "5": "tremolo slash",
+    "10": "eighth rest"
+   }
+  },
+  "r3_far_blue": {
+   "tiles": [
+    3,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "real_notes": [
+    3,
+    6,
+    7,
+    8,
+    9,
+    11
+   ],
+   "partial_box": {
+    "3": "bottom half of the head",
+    "6": "top part of the head"
+   }
+  },
+  "not_asked": "line vs space was not answered, so neither candidate is confirmed"
+ }
+}
