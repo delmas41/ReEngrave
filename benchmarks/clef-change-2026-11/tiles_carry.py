@@ -13,6 +13,16 @@ import crops  # noqa: E402
 from tools.omr.staged import judged as J  # noqa: E402
 
 
+FIXED = [
+    dict(kind="clef", plate="litolff", page=14, system=0, staff=10, cell=12, box=[2246, 1800, 2300, 1844], read="bass",
+         note="no-box F READ (body 0.77), Vc bar 411"),
+    dict(kind="clef", plate="litolff", page=5, system=0, staff=3, cell=2, box=[861, 998, 896, 1041], read=None,
+         note="no-box F CANDIDATE (body 0.68, a head through it), Fag bar 115: stops the carry"),
+    dict(kind="clef", plate="litolff", page=12, system=0, staff=10, cell=7, box=[1447, 1785, 1493, 1835], read=None,
+         note="F CANDIDATE (box refused for dots; body 0.69), Vc bar 346"),
+]
+
+
 def load(path):
     pitch, box, claims = {}, {}, {}
     for v in J.iter_array(path, "verdicts"):
@@ -52,9 +62,9 @@ def main():
     rng = random.Random(seed)
     os.makedirs(os.path.join(out, "tiles"), exist_ok=True)
     pool, clefs = [], []
-    for plate in ("litolff", "brahms"):
-        on = os.path.join(work, "%s.on.gathered.record.json" % plate)
-        off = os.path.join(work, "%s.off.gathered.record.json" % plate)
+    for wd, plate in [(w, pl) for w in work.split(",") for pl in ("litolff", "brahms")]:
+        on = os.path.join(wd, "%s.on.gathered.record.json" % plate)
+        off = os.path.join(wd, "%s.off.gathered.record.json" % plate)
         if not os.path.exists(on):
             continue
         p_on, b_on, c_on = load(on)
@@ -79,8 +89,13 @@ def main():
                 _, pg, s, st = o["subject"].split("/")
                 clefs.append(dict(kind="clef", plate=plate, page=int(pg), system=int(s), staff=int(st), cell=d.get("cell"),
                                   box=[round(float(x), 1) for x in o["value"]], read=d.get("kind"), shape=d.get("shape")))
+    # the no-box F reads and candidates off the sample pages (offline scan, the gather's own functions; Litolff pp. 5, 12, 14)
+    for t in FIXED:
+        if not any((c["plate"], c["page"], c["system"], c["staff"]) == (t["plate"], t["page"], t["system"], t["staff"])
+                   and abs(c["box"][0] - t["box"][0]) < 30 for c in clefs):
+            clefs.append(dict(t))
     print("pool: heads", len(pool), "no-box clefs", len(clefs))
-    pick_c = rng.sample(clefs, min(n_clef, len(clefs)))
+    pick_c = clefs[:n_clef] if len(clefs) <= n_clef else rng.sample(clefs, n_clef)
     # heads: one per (plate, page, system, staff, cell) at most, spread over places
     by = {}
     for t in pool:
