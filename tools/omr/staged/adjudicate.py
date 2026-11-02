@@ -870,7 +870,9 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         supersedes=prior.id if prior is not None else None,
         detail=dict(ruling.detail),
     )
-    return log.record(verdict)
+    recorded = log.record(verdict)
+    log.note_closed_basis(verdict.id)      # ROADMAP 2.249: `basis` above is `considered` + each one's closure -- closed
+    return recorded
 
 
 #: The order decisions run in.
@@ -1352,6 +1354,9 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # `OMR_AUG_DOT_JOIN` is switched off (default ON, Sean 2026-10-14).
             from .adjudicators import aug_dot_join as _aug
             _aug.reconcile_unjoined_dots(log)
+        # ROADMAP 2.249: the closure memos are pure (`Log.release_closure_memo`); kept to the end of the run they grew with
+        # every page. Dropped per quantity; no answer changes.
+        log.release_closure_memo()
         if progress:
             print(f"  adjudicate {quantity}: {len(out)} verdicts so far")
     return out

@@ -83,3 +83,39 @@ def test_stage_without_a_run_is_a_no_op():
     assert run_meter.current() is None
     with run_meter.stage("x"):
         pass
+
+
+def test_closed_basis_closure_and_memo_release():
+    """ROADMAP 2.249: a harness verdict's closure is `{id} | basis` without a walk, and dropping the memo changes no answer."""
+    from tools.omr.staged import record as R
+    from tools.omr.staged.record import Log, Outcome, Q, Verdict
+
+    log = Log()
+    s = R.page(0)
+    o1 = log.observe(s, Q.GLYPH_BOX, 1, reader=R.READERS.GEOMETRY, frame="page")
+    o2 = log.observe(s, Q.GLYPH_CONF, 2, reader=R.READERS.GEOMETRY, frame="page", derived_from=[o1.id])
+    log.freeze()
+
+    def verdict(q, considered, closed):
+        basis = set(considered)
+        for rid in considered:
+            basis |= log.closure(rid)
+        v = log.record(Verdict(id=log._next_id("vrd"), subject=s, quantity=q, outcome=Outcome.DECIDED, value=1,
+                               decider="d", reason="r", considered=tuple(considered), basis=tuple(sorted(basis))))
+        if closed:
+            log.note_closed_basis(v.id)
+        return v
+
+    v1 = verdict(Q.DURATION, [o2.id], True)
+    v2 = verdict(Q.VOICES, [v1.id], True)
+    v3 = verdict(Q.METER, [v2.id, o1.id], False)
+    want = {v1.id: {v1.id, o2.id, o1.id}, v2.id: {v2.id, v1.id, o2.id, o1.id},
+            v3.id: {v3.id, v2.id, v1.id, o2.id, o1.id}}
+    for vid, ids in want.items():
+        assert log.closure(vid) == frozenset(ids)
+    qic = log.quantities_in_closure(v3.id)
+    assert log.release_closure_memo() >= 3
+    for vid, ids in want.items():
+        assert log.closure(vid) == frozenset(ids)
+    log.release_closure_memo(quantities=True)
+    assert log.quantities_in_closure(v3.id) == qic == frozenset({Q.GLYPH_BOX, Q.GLYPH_CONF, Q.DURATION, Q.VOICES, Q.METER})

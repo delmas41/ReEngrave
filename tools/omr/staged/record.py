@@ -3593,7 +3593,7 @@ class Log:
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
                  "_closure_cache", "_qic_cache", "_subjects_cache", "_desc_prefix_cache",
-                 "_subject_keys")
+                 "_subject_keys", "_closed_basis")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -3651,6 +3651,9 @@ class Log:
         # `Evidence.correlated_groups()`'s pairwise walk, and was being
         # recomputed by a fresh BFS on every single call to either.
         self._closure_cache: dict[str, "frozenset[str]"] = {}
+        #: ROADMAP 2.249: verdict ids whose `basis` is already closed under `closure` (the ADJUDICATE harness builds it as
+        #: `considered` plus every considered row's closure), so their closure is `{id} | basis` with no walk below them.
+        self._closed_basis: set = set()
         self._qic_cache: dict[str, "frozenset[str]"] = {}
         #: ⚠️ `subjects()` WALKS EVERY INDEX KEY AND PARSES EACH ONE, so a
         #: decision calling it once per subject is quadratic in the record.
@@ -3803,13 +3806,6 @@ class Log:
     @property
     def frozen(self) -> bool:
         return self._frozen
-
-    def drop_memos(self) -> None:
-        """ROADMAP 2.249: forget the `closure` / `quantities_in_closure` memos (pure functions of append-only rows, so a
-        later call recomputes the same answer). Called once the last stage has run, before `to_json`, so the record's
-        lists can reuse that memory: on Brahms the closure memo held more than the verdicts' own basis lists."""
-        self._closure_cache.clear()
-        self._qic_cache.clear()
 
     # ── reading ─────────────────────────────────────────────────────────────
 
@@ -3998,6 +3994,7 @@ class Log:
             return cached
         out: set[str] = set()
         stack = [row_id]
+        closed = self._closed_basis
         while stack:
             rid = stack.pop()
             if rid in out:
@@ -4005,10 +4002,36 @@ class Log:
             out.add(rid)
             row = self.row(rid)
             if row is not None:
-                stack.extend(row.basis)
+                if rid in closed:
+                    # ROADMAP 2.249, SPEED ONLY: a closed basis IS everything below this row -- every member's own
+                    # closure is inside it (`note_closed_basis`) -- so it is added whole and not walked again.
+                    out.update(row.basis)
+                else:
+                    stack.extend(row.basis)
         result = frozenset(out)
         self._closure_cache[row_id] = result
         return result
+
+    def note_closed_basis(self, verdict_id: str) -> None:
+        """ROADMAP 2.249: `verdict_id`'s basis already holds the closure of every row in it (the ADJUDICATE harness
+        builds it so: `considered` plus each considered row's `closure`), so `closure` takes it whole. Only the harness
+        may say so -- a basis written any other way (INFER's `p.basis + (prior.id,)`) is walked as before."""
+        self._closed_basis.add(verdict_id)
+
+    def release_closure_memo(self, *, quantities: bool = False) -> int:
+        """⚠️ ROADMAP 2.249 (memory, reads nothing): drop the `closure` memo.
+
+        A pure function of the append-only `basis` graph, so dropping it changes no answer -- the next call builds the
+        same set again. It was the largest thing ADJUDICATE built besides the verdicts (a verdict's closure is its whole
+        ~10^4-id basis again, as a frozenset) and it was kept for every row of every page to the end of the run, so
+        `adjudicate.run` lets go of it after each quantity. `_qic_cache` (a few quantity names a row) is kept: it is
+        small and it is what `Evidence._admit` asks on every row -- unless `quantities`, which the pipeline passes once
+        the last stage has run. Returns the number of closures dropped."""
+        n = len(self._closure_cache)
+        self._closure_cache.clear()
+        if quantities:
+            self._qic_cache.clear()
+        return n
 
     def quantities_in_closure(self, row_id: str) -> frozenset[str]:
         # SPEED ONLY (lane-brahms-1007-worse-and-slow): memoised like `closure`
