@@ -643,9 +643,10 @@ def changes_of(rows: Sequence[Any]) -> List[Tuple[float, Optional[str], Any]]:
         v = r.value
         if not (isinstance(v, (list, tuple)) and len(v) == 4):
             continue
-        # 2.251 carry: a change governs from its RIGHT edge -- a "head" box whose centre lies inside the clef's own area is the clef's
-        # ink (Litolff bar 38: a 0.42 head box on the bass clef's body was pitched from it, and pulled the written <clef> one bar early)
-        out.append((float(v[2]), d.get("kind"), r))
+        # a change governs from its LEFT edge. (Tried 2026-11-02: from its right edge, so a false head box on the clef's own ink -- Litolff
+        # bar 38 -- is not pitched from it; but a C claim's area runs on into the heads it touches, and 12 heads right after a C clef
+        # went right -> wrong on the frozen sample. Reverted; the false head is an ink-claim question, not the carry's.)
+        out.append((float(v[0]), d.get("kind"), r))
     out.sort(key=lambda t: t[0])
     return out
 
