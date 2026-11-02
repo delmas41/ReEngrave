@@ -57,6 +57,8 @@ record is byte-for-byte what it always was.
 """
 from __future__ import annotations
 
+import contextlib
+import gc
 import json
 from collections import Counter, defaultdict
 from pathlib import Path
@@ -330,6 +332,24 @@ def _stream(obj: Any, write, enc, depth: int) -> None:
         write(enc(obj))
 
 
+@contextlib.contextmanager
+def gc_paused():
+    """⚠️ ROADMAP 2.249, SPEED ONLY: the cyclic collector off for a block that builds millions of small acyclic objects.
+
+    Python runs a collection every few hundred allocations, and a generation-2 pass walks EVERY tracked object: with
+    a staged record in memory (tens of millions of objects) pooling one 4-page Brahms record spent 62 of its 69 s
+    in the collector, not in the pooling (measured: 69 s collector on, 7 s off). Nothing in such a block makes a
+    reference cycle, so nothing waits on the collector there; it is switched back on (if it was on) as the block
+    ends, and a collection may then run as usual. Changes no value."""
+    was = gc.isenabled()
+    gc.disable()
+    try:
+        yield
+    finally:
+        if was:
+            gc.enable()
+
+
 def dump_to_file(result: dict, path: Union[str, Path]) -> int:
     """⚠️ ROADMAP 2.249: the record FILE, written as it is encoded.
 
@@ -347,5 +367,6 @@ def dump_to_file(result: dict, path: Union[str, Path]) -> int:
             nonlocal n
             n += len(s)
             fh.write(s)
-        _stream(pooled_result(result), write, enc, _STREAM_DEPTH)
+        with gc_paused():
+            _stream(pooled_result(result), write, enc, _STREAM_DEPTH)
     return n

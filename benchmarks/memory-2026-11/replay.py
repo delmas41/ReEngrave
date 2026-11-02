@@ -37,17 +37,33 @@ def meter(mod, name, label):
 
     @functools.wraps(f)
     def w(*x, **k):
-        t = time.time()
+        t = time.time(); g0 = GCT["s"]
         try:
             return f(*x, **k)
         finally:
-            M["stages"].append({"stage": label, "s": round(time.time() - t, 1), **live()})
+            M["stages"].append({"stage": label, "s": round(time.time() - t, 1), "gc_s": round(GCT["s"] - g0, 1), **live()})
     setattr(mod, name, w)
 
 
 for mod, name, label in ((adjudicate, "run", "adjudicate"), (groups, "run", "groups"), (evaluate, "run", "evaluate"),
                          (infer, "run", "infer"), (evaluate, "run_over", "evaluate_bounded")):
     meter(mod, name, label)
+GCT = {"s": 0.0, "n": [0, 0, 0], "gen2_s": 0.0}
+_gcs = [0.0]
+
+
+def _gc_cb(phase, info):     # seconds the cyclic collector runs, per generation (a measurement; changes nothing)
+    if phase == "start":
+        _gcs[0] = time.perf_counter()
+    else:
+        d = time.perf_counter() - _gcs[0]
+        GCT["s"] += d; GCT["n"][info["generation"]] += 1
+        if info["generation"] == 2:
+            GCT["gen2_s"] += d
+
+
+gc.callbacks.append(_gc_cb)
+M["gc"] = GCT
 t0 = time.time()
 rec = record_io.load_record(rec_path)
 rec = rec.get("record", rec)
