@@ -166,3 +166,14 @@ Gate (no ORDER-VIOLATION rise; SPLIT-ACROSS-CLAIM under +0.3 points) passed; ste
 - Mid-bar `<clef>`.
 - A false head on clef ink is still pitched (an ink-claim question).
 - Brahms frozen sample not run.
+
+## 2026-11-02 -- Sean's carry tile answers (2.251 step 2, `answers-r3-carry.json`)
+
+The carry round itself (OMR_CLEF_CARRY, seed 22513) is on branch `lane-2.251-carry` head 101e92cf7; its FINDINGS round lives on that branch until it lands. Sean's 12 blind tiles (heads the carry re-pitched, one per bar, plus no-box F clef reads), scored against the key:
+
+- **10 right.** Tiles 1 and 10 (no-box F clef READ as bass). Tiles 2-9: the carry-ON pitch matches Sean's note and clef (G4 tenor, G3 bass, C3 bass, B3 tenor, D4 tenor, D3 bass, D4 bass, A2 bass); OFF was wrong on each.
+- **1 miss (unread).** Tile 11: Sean says F clef; we only made it a CANDIDATE (body 0.69 < 0.70 read cut-off), so its notes go red. Not wrong -- but it is evidence 0.69 is a real clef and the cut-off, measured on one plate, is a measurement not a convention.
+- **1 wrong.** Tile 12: Sean reads tenor clef, second space above the staff, Ab4. ON wrote B4, OFF E4. The clef kind is right; the head's staff POSITION is one step high (far head above the staff, where ledger lines own the position per page-facts) -- a position-reading fault, not the carry. wrong->wrong.
+- **Carry-caused right->wrong on these tiles: 0.**
+
+Open: (1) bar 111, 9 of 10 Litolff heads right->wrong in the lane's pitch witness, not yet explained; (2) tile 11 cut-off (0.69 vs 0.70); (3) tile 12 far-head position.
