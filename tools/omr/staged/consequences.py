@@ -17,6 +17,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, List, Optional, Sequence, Tuple
 
+from . import head_extent as _head_extent
 from . import record as R
 from .evaluate import Consequence, rule
 from .record import Candidate, Kind, Log, Outcome, Q, Scope, Subject, Verdict
@@ -124,6 +125,28 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
             # clef vocabulary here is wider than `_CLEF_ANCHORS` knows.
+            continue
+        # ⚠️ ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default OFF). A FAR head (outside the first space) whose ledger count
+        # ABSTAINED has no pitch the page supports: page-facts says it is placed by its ledger lines only, and "no rungs either way is OUR
+        # failure -- abstain and count it". The branch above leaves it on the geometry row's box centre, WRITTEN PLAIN -- an uncertain
+        # pitch unmarked (CLAUDE.md section 4, rule 8). With the flag the value is unchanged and the verdict says why it is a guess: its
+        # candidates are the box-centre step and the ink-centre step, `export.far_unread_guess_of` writes it blue. Nothing moves.
+        if far is not None and far.outcome == Outcome.ABSTAINED and _head_extent.far_guess_enabled() and (pos < -1 or pos > 9):
+            ink = (row.detail or {}).get("ink_centre_position_float")
+            ink_name = _pitch_from_position(int(round(float(ink))), str(clef.value)) if ink is not None else None
+            cands = [Candidate(name, 1.0)]
+            sources = [_head_extent.FAR_GUESS_SOURCES[0]]
+            if ink_name is not None:
+                cands.append(Candidate(ink_name, 1.0))
+                sources.append(_head_extent.FAR_GUESS_SOURCES[1])
+            basis = (pos_basis, clef.id)
+            out.append(log.record(Verdict(
+                id=log._next_id("vrd"), subject=row.subject, quantity=Q.PITCH, outcome=Outcome.DECIDED, value=name,
+                decider="restate_pitch", reason=_head_extent.FAR_GUESS_PITCH_REASON, considered=basis, basis=basis,
+                candidates=tuple(cands),
+                detail=dict(far_unread=True, ledger_abstention=far.reason, candidate_sources=sources,
+                            box_position=pos, ink_position=(int(round(float(ink))) if ink is not None else None),
+                            ink_centre_why=(row.detail or {}).get("ink_centre_why")))))
             continue
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,

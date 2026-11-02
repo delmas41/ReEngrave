@@ -1497,7 +1497,11 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     """
     from . import head_extent, head_ink
     ink_pos_on = head_extent.enabled()
-    page_binary = getattr(getattr(pws, "page", None), "binary", None) if ink_pos_on else None
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default OFF): a FAR head's ink centre is filed beside its box-centre position as
+    # a CANDIDATE (`ink_centre_position_float`) for `restate_pitch`, which writes the head GUESSED where its ledger count abstained.
+    # It never moves the position row (a far head is placed by its ledger lines only).
+    far_guess_on = head_extent.far_guess_enabled()
+    page_binary = getattr(getattr(pws, "page", None), "binary", None) if (ink_pos_on or far_guess_on) else None
 
     def foreign_by_cell(c: Any, dets: Sequence[Any]) -> List[Any]:
         return [pb for pb in (_page_box(c, od) for od in dets if head_ink.is_foreign_class(od.smufl_name)) if pb is not None]
@@ -1582,6 +1586,22 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                             extra = {"from_head_ink": [round(v, 1) for v in got["extent"]],
                                      "detector_position_float": round(pos_float, 3)}
                             pos_float = moved
+            if far_guess_on and page_binary is not None and not cut_rows and (int(round(pos_float)) < -1 or int(round(pos_float)) > 9):
+                # r3: the ink centre of a FAR head, as a candidate only (the row's value stays the box centre's)
+                pbf = _page_box(c, d)
+                upf = getattr(c, "upscale_factor", None)
+                if pbf is not None and upf:
+                    hsf = float(half_step) / float(upf)
+                    othf = [ob for ob in (_page_box(c, od) for oj, od in enumerate(dets)
+                                          if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)) if ob is not None]
+                    gotf = head_extent.ink_extent(page_binary, pbf, 2.0 * hsf, foreign_by_cell(c, dets), othf)
+                    if gotf["why"] is None:
+                        icp = head_extent.ink_centre_position(pos_float, pbf, gotf["extent"], hsf)
+                        if icp is not None:
+                            extra = dict(extra, ink_centre_position_float=round(icp, 3),
+                                         ink_centre_extent=[round(v, 1) for v in gotf["extent"]])
+                    else:
+                        extra = dict(extra, ink_centre_why=gotf["why"])
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),

@@ -178,3 +178,33 @@ def ink_position(pos_box: float, box: Sequence[float], extent: Sequence[float], 
     if abs(abs(p - int(p)) - 0.5) < BOUNDARY_STEPS:
         return None                         # on the boundary: the ink does not decide
     return p if int(round(p)) != int(round(float(pos_box))) else None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# r3: a far head whose ledger count ABSTAINED is written GUESSED (blue), the box centre and the ink centre both carried
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: Flag `OMR_FARHEAD_UNREAD_GUESSED` (default OFF; allow-list "1"/"true"/"yes"/"on"). Its own flag, not `OMR_HEAD_INK_EXTENT`'s, because it
+#: is a different change with a different measure (r2 moves in-staff heads; this moves no head, it only MARKS far ones) and can land alone.
+#: CLAUDE.md section 5 / page-facts (Sean 2026-10-28, ROADMAP 2.216 option B): a head outside the staff is placed by its ledger lines only,
+#: and "no rungs either way is OUR failure: abstain and count it". Today the abstention falls back PLAIN to the box centre
+#: (`consequences.restate_pitch`) -- an uncertain pitch written unmarked (section 4, rule 8). With the flag the pitch is still the box
+#: centre's (nothing moves; r1's mistake was moving far heads by an ink centre) but is written GUESSED, carrying both steps.
+FAR_GUESS_ENV = "OMR_FARHEAD_UNREAD_GUESSED"
+FAR_GUESS_REASON = "far_head_ledger_unread"
+FAR_GUESS_PITCH_REASON = "position_and_clef_ledger_unread"
+#: the order of a far-unread verdict's `candidates` (and of `detail.candidate_sources`)
+FAR_GUESS_SOURCES = ("box_centre", "ink_centre")
+
+
+def far_guess_enabled() -> bool:
+    return os.environ.get(FAR_GUESS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def ink_centre_position(pos_box: float, box: Sequence[float], extent: Sequence[float], half_step_page: float) -> Optional[float]:
+    """The staff position of the ink's centre, UNRESTRICTED (a far head too) -- a CANDIDATE only, never a placement: a far head is placed by
+    its ledger lines (see `FAR_GUESS_ENV`). None where there is no unit."""
+    if not half_step_page or half_step_page <= 0:
+        return None
+    d = ((float(extent[1]) + float(extent[3])) / 2.0 - (float(box[1]) + float(box[3])) / 2.0) / float(half_step_page)
+    return float(pos_box) + d
