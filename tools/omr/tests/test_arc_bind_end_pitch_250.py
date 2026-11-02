@@ -1,4 +1,4 @@
-"""ROADMAP 2.250 (`OMR_BIND_END_PITCH`, default OFF): the page-wide arc binder reads the END NOTE's pitch the way the older two-note rule does,
+"""ROADMAP 2.250 (`OMR_BIND_END_PITCH`, default ON): the page-wide arc binder reads the END NOTE's pitch the way the older two-note rule does,
 instead of re-deriving it. Every guard has a twin that fails without it (litolff_03 / litolff_06 of the 2.75 review, the overnight
 20261031-night right->wrong ties).
 
@@ -26,13 +26,13 @@ def on(monkeypatch):
 
 @pytest.fixture
 def off(monkeypatch):
-    monkeypatch.delenv(AC.ENV_END_PITCH, raising=False)
+    monkeypatch.setenv(AC.ENV_END_PITCH, "0")
     monkeypatch.delenv(AC.ENV_BIND, raising=False)
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(AC.ENV_END_PITCH, raising=False)
-    assert not AC.end_pitch_enabled()
+    assert AC.end_pitch_enabled()
     monkeypatch.setenv(AC.ENV_END_PITCH, "1")
     assert AC.end_pitch_enabled()
     monkeypatch.setenv(AC.ENV_END_PITCH, "0")

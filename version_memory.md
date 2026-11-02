@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-01 -- 2.250 LANDED: the STAGED arc binder reads the end note's pitch (`OMR_BIND_END_PITCH` default ON)
+Sean "Land it" after round-2 wide tiles 9/9 right, judged right->wrong 0. `arc_claim.end_pitch_enabled()` now defaults ON (explicit 0/false/no/off disables); the end note's step comes from the head extent, a chord end binds to the member at the arc end's height, a lone tall box is read both ways and only a plain tie where they agree. Flag rows and the default-OFF test updated. (ROADMAP 2.250; benchmarks/omr-arc-binding-2026-10/FINDINGS.md)
+
 ## 2026-10-31 -- 2.240 step 3: the later stages read the page owner (lane-2.240-s3-export, `OMR_PAGE_OWNER_READ` OFF, not merged)
 - Hotfix (on main f7422b035): `ABSTAIN.OWNER_BOX_NOT_ONE_HEAD` -- main's gather with OMR_PAGE_OWNER ON raised on the first >= 3 sp head box.
 - Tile 8's three causes fixed in GATHER rows: the ledger gap / hidden-ledger looks honour the owner's `not_ledger` filter (the slur was re-counted);

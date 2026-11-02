@@ -196,7 +196,7 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
 # NOT CONFIRMED: `BIND_COLUMN_MARGIN_SPACES` and `BIND_COLUMN_DX_WIDTHS` are set by hand, not swept.
 
 ENV_BIND = "OMR_ARC_BIND_PAGEWIDE"
-#: ROADMAP 2.250 (default OFF, allow-list): the binder reads the END NOTE's pitch the way the older two-note rule does (the head EXTENT's
+#: ROADMAP 2.250 (default ON since 2026-11-01; an explicit 0/false/no/off disables): the binder reads the END NOTE's pitch the way the older two-note rule does (the head EXTENT's
 #: step, never the box centre) and binds a chord end to the member at the arc END's height (never the outer one by curve side, never a
 #: stem-tip proxy's member). CONVENTION ASSUMED (not confirmed by Sean): a tie joins two noteheads of one pitch, a chord has one tie per
 #: tied note, each at its own note's staff position. WHAT WOULD FALSIFY IT: a chord tie whose end stands beside one note but ties another.
@@ -220,8 +220,8 @@ def bind_enabled() -> bool:
 
 
 def end_pitch_enabled() -> bool:
-    """`OMR_BIND_END_PITCH` (ROADMAP 2.250), default OFF; only an explicit `1/true/yes/on` enables."""
-    return _on(ENV_END_PITCH)
+    """`OMR_BIND_END_PITCH` (ROADMAP 2.250; Sean 2026-11-01 "Land it"), default ON; an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV_END_PITCH, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def curve_side(trace: Optional[Sequence[Sequence[float]]], sp: float) -> Optional[str]:

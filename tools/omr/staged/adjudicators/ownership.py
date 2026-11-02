@@ -2986,7 +2986,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sx, sy, sw, sh = (float(x) for x in sv[:4])
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
     tips = _arc_claim.stem_tips(heads, stems)
-    end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default OFF)
+    end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default ON)
     if end_pitch and heads:
         # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
         # and the step below stays unread -- the SAME bound the extent reader uses (`TALL_BOX_HEAD_HEIGHTS`), no new number
