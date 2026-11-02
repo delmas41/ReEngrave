@@ -601,3 +601,25 @@ def oversized_for_its_class(cls: object, w_sp: float, h_sp: float) -> bool:
     if not ps or not w_sp or not h_sp:
         return False
     return w_sp > GLYPH_BOX_MAX_K * ps[0] or h_sp > GLYPH_BOX_MAX_K * ps[1]
+
+
+# ── ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default ON): a FAR filled-head box that has no head's shape ─────────────────────
+# Sean's 2.248 r4 tiles 3, 4 (Brahms p5 glyph/5/1/12/1/7, 12/3/3) and DECISIONS 2026-10-31 (Brahms p5: "an eighth's FLAG, not a note"): the
+# detector boxed the FLAG of a down-stem eighth on the staff above as `noteheadBlackOnLine`, 1.5 x 2.2-2.6 spaces, below its own staff, and
+# ADJUDICATE kept it (`notehead`): 2.245 tests a head box's WIDTH only. Its own ink (`Q.NOTEHEAD_INK`) fills 0.42-0.50 of a filled head's
+# window. The test is this module's own head shape (round 3): a head is at most `HEAD_BLOB_H_SP[1]` tall and a FILLED head fills at least
+# `HEAD_FILL_MIN` of itself; a filled-class box taller than any head whose ink fills less is no filled head. Read only for a FAR box (outside
+# the staff's first space): crop look on the 20261029-night slices, every tall under-filled filled-class box -- 4 kept non-heads
+# (3 flags, 1 slur) and, inside the staff, one real half note boxed with its stem (glyph/10/1/2/0/10), which this leaves alone.
+# CONVENTION ASSUMED: a head is printed at most 1.5 spaces tall and a black head is solid. WHAT WOULD FALSIFY IT: a real far black head whose
+# box is that tall and whose ink is that thin. NOT CONFIRMED by Sean.
+REASON_TALL_UNFILLED = "taller_than_a_filled_head"
+
+
+def far_box_not_a_filled_head(cls: object, h_sp: float, ink_fill: Optional[float]) -> Optional[Tuple[str, float]]:
+    """`(reason, margin)` when a FILLED-head-class box is taller than any head and its ink fills less than a filled head, else None."""
+    if not str(cls or "").startswith("noteheadBlack") or not h_sp or ink_fill is None:
+        return None
+    if h_sp >= HEAD_BLOB_H_SP[1] and float(ink_fill) < HEAD_FILL_MIN:
+        return REASON_TALL_UNFILLED, float(h_sp) - HEAD_BLOB_H_SP[1]
+    return None

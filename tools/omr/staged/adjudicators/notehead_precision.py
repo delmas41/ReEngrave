@@ -3671,6 +3671,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
                                      "wider_than_a_head", "wide_box_unread", "taller_than_a_head",
+                                     "taller_than_a_filled_head",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -4167,6 +4168,22 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # LAST of the refusals: it speaks only where every other rule would KEEP the box. First in the chain it re-labelled boxes already
     # refused as duplicates, and the stem/beam pairing that reads a duplicate as "the same head drawn twice" (ownership) lost a real
     # eighth (Litolff p4 4/1/1/14, the 2-page subset run).
+    # ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default ON): a FAR filled-head box taller than any head whose ink does not fill
+    # it is not a head (an eighth's flag hanging below the staff above, Brahms p5) -- refused here, before any far-unread guess is written
+    # on it. 2.245's own head shape (`box_kind.far_box_not_a_filled_head`); read only outside the staff's first space.
+    from .. import head_extent as _head_extent
+    if _head_extent.far_guess_enabled():
+        _pos_rows = ev.rows(Q.NOTEHEAD_STAFF_POSITION)
+        _ink_rows = ev.rows(Q.NOTEHEAD_INK)
+        _pos = float(_pos_rows[-1].value) if _pos_rows and isinstance(_pos_rows[-1].value, (int, float)) else None
+        if _pos is not None and (round(_pos) < -1 or round(_pos) > 9) and _ink_rows:
+            _tall = _box_kind.far_box_not_a_filled_head(box_row.value[0], box_row.value[4] / spacing, _ink_rows[-1].value)
+            if _tall is not None:
+                detail["box_spaces"] = [round(box_row.value[3] / spacing, 3), round(box_row.value[4] / spacing, 3)]
+                detail["ink_fill"] = _ink_rows[-1].value
+                return _margins.attach(
+                    Ruling(value=True, reason=_tall[0], used=tuple(used) + (_ink_rows[-1].id,), detail=detail),
+                    margin=_tall[1], axis="height_spaces", unit="staff spaces", band=None, would_choose=(True,))
     if _box_kind.enabled():
         _w_c, _h_c = box_row.value[3], box_row.value[4]
         misfit = _box_kind.head_box_misfit(box_row.value[0], _w_c / spacing, _h_c / spacing)

@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **498 rule exits** are sorted (559 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 38 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **84 DOUBLE-COUNT** (C), **170 OTHER** (D), **59 UNSURE** (U).
+1. **500 rule exits** are sorted (560 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 39 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **85 DOUBLE-COUNT** (C), **170 OTHER** (D), **60 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **59 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **60 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -26,6 +26,7 @@ Counts are of declared exits, not of distinct ink mistakes: one B rule and one C
 | black head narrower than 1.0 space | U | a filled-head box under 1.0 staff space wide is not a head (a head is ~1.3 sp); costs 0 of 103 confirmed heads | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `too_narrow` | 238 / 3,143 | 104 / 914 | page-facts s3 (omr-notehead-width-2026-09) | open: D:cutoff on two publishers, or B if Brahms' narrow boxes are eraser-shaved (2.206) |
 | head box wider than any head | C | a head-class box 3+ spaces wide cannot be ONE head (SMuFL widest head 1.69 sp): GATHER reads the heads inside it into their own boxes and the box is the refused remainder; inside not read -> abstain; flag OMR_BOX_KIND_SIZE OFF | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `wider_than_a_head`, `wide_box_unread` | 0 / 0 | 0 / 0 | ROADMAP 2.245 (Sean's round-1 tiles: tiles 4 and 10 hold real notes) | open: round-2 tiles out/print/2.245-r2-tiles |
 | head box taller than one head | C | a hollow head box 1.8+ spaces tall holding two or more slit holes on the grid, a third or more apart, is a chord of heads: GATHER gives each hole its own head box and the tall box is the refused remainder; flag OMR_TALL_HEAD_SPLIT OFF | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `taller_than_a_head` | 0 / 0 | 0 / 0 | ROADMAP 2.252 (Sean's 2.250 r2 wide tiles 2/4/8/11: two half notes a third apart, both tied) | open: tiles out/print/2.252-tiles |
+| far box with no filled head's shape | C | a FAR filled-head-class box taller than any head (1.5 sp) whose ink fills under 0.6 of it is not a head (an eighth's flag below the staff above); 2.245's head shape; flag OMR_FARHEAD_UNREAD_GUESSED OFF | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `taller_than_a_filled_head` | 0 / 0 | 0 / 0 | ROADMAP 2.248 r4 (DECISIONS 2026-10-31: Brahms p5 a flag is not a note) | open: r4 tiles |
 | box is a dot / a barline | D:cutoff | a head-shaped box that is really a dot, a barline or the staff's leading barline | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `is_a_dot`, `on_a_barline`, `on_the_staffs_leading_barline` | 0 / 10 | 0 / 6 | no Sean ruling found; code docstring only | open |
 | a tremolo slash is not a head | A | a thick diagonal line crossing one stem is a slash, never an oval head, and it joins no other note (also C: a slash boxed as a head) | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `tremolo_slash_crosses_stem` | 100 / 172 | 40 / 47 | Sean 2026-10-15 (page-facts s1, 2.137) | convention kept; the pair rule retires with 2.205 (2.205 FINDINGS (parity with the old pair rules 47% / 27%; old rules kept until parity)) |
 | same head boxed twice | C | two boxes of one class on one mark (or one head of a stacked group) are one head read twice; the stronger box stays | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `notehead_is_a_duplicate_box`, `stacked_head_duplicate` | 732 / 270 | 194 / 42 | 2.30 / 2.42 measured; Sean 2026-09-30 "a second is always on opposite sides of the stem" | retires with 2.205 (one owner per stroke) |
@@ -325,6 +326,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `geometry.py` | A | the standard notehead box: all regular heads are the same size | Sean 2026-09-29 (2.39) | kept |
 | `groups.py` | D:honesty | several witnesses to ONE fact and whether they agree (a second witness must be from a different source) | page-facts s2 | kept |
 | `hairpin_bind.py` | U | NOT YET CLASSIFIED | - | open |
+| `head_extent.py` | U | NOT YET CLASSIFIED | - | open |
 | `head_ink.py` | U | NOT YET CLASSIFIED | - | open |
 | `head_oval.py` | C | does a notehead box hold a head-shaped oval? (boxes at a bar's left edge were tie ends or barlines) | Sean 2026-10-17 (2.164) | retires with 2.205 |
 | `key_object.py` | C | the printed key signature measured as ONE system object | ROADMAP 2.187 | retires with 2.205 |
@@ -381,6 +383,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`claim_order.py`**: not classified.
 - **`clef_pagewide.py`**: not classified.
 - **`hairpin_bind.py`**: not classified.
+- **`head_extent.py`**: not classified.
 - **`head_ink.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
 - **`stem_strokes.py`**: not classified.

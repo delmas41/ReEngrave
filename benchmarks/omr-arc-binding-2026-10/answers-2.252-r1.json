@@ -1,0 +1,147 @@
+{
+ "date": "2026-11-02",
+ "tiles": "out/print/2.252-tiles (lane-2.252-ties 347f625a2)",
+ "answers": [
+  {
+   "tile": 1,
+   "rg": "glyph/11/0/5/7/1",
+   "role": "control",
+   "sean": "a quarter note with a slur to the note after it",
+   "notes_off": 1,
+   "notes_on": 1,
+   "tie_ends_off": 0,
+   "tie_ends_on": 0,
+   "slur_ends_on": 1
+  },
+  {
+   "tile": 2,
+   "rg": "glyph/2/1/1/12/3",
+   "role": "case",
+   "sean": "two half notes with ties on either side",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 1,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 4
+  },
+  {
+   "tile": 3,
+   "rg": "glyph/2/1/3/12/9",
+   "role": "case",
+   "sean": "two half notes with ties ... on both sides",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 1,
+   "tie_ends_on": 1,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 4
+  },
+  {
+   "tile": 4,
+   "rg": "glyph/3/1/2/11/3",
+   "role": "case",
+   "sean": "two half notes with slurs from the notes before it",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 0,
+   "slur_ends_on": 3
+  },
+  {
+   "tile": 5,
+   "rg": "glyph/2/1/4/12/5",
+   "role": "case",
+   "sean": "half notes, two of them with ties on either side",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 1,
+   "tie_ends_on": 2,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 4
+  },
+  {
+   "tile": 6,
+   "rg": "glyph/10/1/4/2/7",
+   "role": "case",
+   "sean": "same thing, half notes with ties on either side",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 1,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 4
+  },
+  {
+   "tile": 7,
+   "rg": "glyph/10/1/4/1/2",
+   "role": "case",
+   "sean": "half notes with ties on both sides",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 2,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 4
+  },
+  {
+   "tile": 8,
+   "rg": "glyph/3/0/4/6/7",
+   "role": "case",
+   "sean": "again half notes, this time with ties just on the front side",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 1,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 2
+  },
+  {
+   "tile": 9,
+   "rg": "glyph/3/0/5/5/4",
+   "role": "control",
+   "sean": "a single half note with ties on both sides",
+   "notes_off": 1,
+   "notes_on": 1,
+   "tie_ends_off": 2,
+   "tie_ends_on": 2,
+   "slur_ends_on": 0
+  },
+  {
+   "tile": 10,
+   "rg": "glyph/2/1/3/10/5",
+   "role": "case",
+   "sean": "two half notes with ties to the notes after it",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 0,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 2
+  },
+  {
+   "tile": 11,
+   "rg": "glyph/3/1/2/8/8",
+   "role": "control",
+   "sean": "a half note slurred to the note after it",
+   "notes_off": 1,
+   "notes_on": 1,
+   "tie_ends_off": 0,
+   "tie_ends_on": 0,
+   "slur_ends_on": 1
+  },
+  {
+   "tile": 12,
+   "rg": "glyph/3/0/4/4/11",
+   "role": "case",
+   "sean": "two half notes with ties on both sides",
+   "notes_off": 1,
+   "notes_on": 2,
+   "tie_ends_off": 0,
+   "tie_ends_on": 1,
+   "slur_ends_on": 0,
+   "tie_ends_sean": 4
+  }
+ ],
+ "summary": "note count right on all 12 (9 dyads now two notes, OFF one); no wrong kind ON (OFF slurs at 6, 7 where Sean reads ties; ON writes ties); tie ends written 9 of 28 Sean reads on the 8 tied dyads -- the rest unwritten, none wrong"
+}
