@@ -18,10 +18,11 @@ Two witnesses, never the detector's word alone (2.144 / 2.181: false `clef*` box
   names the line (`clef_geometry.resolve_clef`, the header readers' own snap). Litolff's C clefs inside a system are never boxed as clefs,
   so this test needs no box; a `clefC*` box is one more witness.
 * an F clef: a clef-sized `clefF` box (the detector) AND its two dots straddling the line it names (`clef_locator._has_f_clef_dots`, the
-  header locator's own veto), the box's top near the top line. The line comes from the dots.
+  header locator's own veto), the box's top near the top line. The line comes from the dot pair; a pair that names no allowed line
+  (`KINDS_READ`) is no witness, so an F clef is either claimed with its kind READ or not claimed (the detector's NARROWED claim stands).
 * a G clef: a clef-sized `clefG` box reaching past the staff both above and below (a G clef's curl and tail).
-A clef whose kind cannot be read (no line within the snap) is still CLAIMED, and filed with `kind: None` -- step 2 marks the notes after
-it unread, never pitched from the header clef (rule 8).
+A C clef whose kind cannot be read (no allowed line within the snap) is still CLAIMED -- its bar and bowls are the shape -- and filed
+with `kind: None`; step 2 marks the notes after it unread, never pitched from the header clef (rule 8).
 """
 from __future__ import annotations
 
@@ -306,6 +307,10 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
         if not f_dots(ink, box, lines, sp):
             return dict(out, passed=False, why="f_no_dots")
         nm, ln, res = f_line(ink, box, lines, sp)
+        if nm is None:
+            # the dot PAIR must straddle the F line: dots that name no allowed line are no second witness (a false `clefF` box over
+            # a half note and a barline passed the looser dot test on Brahms p25) -- the box alone never claims
+            return dict(out, passed=False, why="f_dots_name_no_line", residual=res)
         return dict(out, passed=True, why=None, kind=nm, line=ln, residual=res)
     elif fam == "G":
         # no second witness for a G clef inside a system is built (none is printed on the two plates; 2.144's false `clefG` boxes over

@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **496 rule exits** are sorted (558 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 37 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **83 DOUBLE-COUNT** (C), **170 OTHER** (D), **58 UNSURE** (U).
+1. **497 rule exits** are sorted (558 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 38 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **83 DOUBLE-COUNT** (C), **170 OTHER** (D), **59 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **58 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **59 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -318,6 +318,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `box_kind.py` | C | a detector box is tested against its own class's printed size before it stands as that kind (a head box 3+ sp wide is no head) | ROADMAP 2.245 (flag OMR_BOX_KIND_SIZE, OFF) | open: tiles |
 | `claim_order.py` | U | NOT YET CLASSIFIED | - | open |
 | `claims.py` | C | the claimed-area register: who owns which ink (clef, leading column, key, meter) | 2.181 | retires with 2.205 |
+| `clef_pagewide.py` | U | NOT YET CLASSIFIED | - | open |
 | `detector_views.py` | D:gather | the detector looks at each symbol family at its own size | Sean 2026-10-19 (2.172) | kept |
 | `export_unison.py` | A | EXPORT of a unison head as two notes | Sean 2026-10-19 (2.175) | kept |
 | `geometry.py` | A | the standard notehead box: all regular heads are the same size | Sean 2026-09-29 (2.39) | kept |
@@ -377,6 +378,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`arc_claim.py`**: not classified.
 - **`beam_strokes.py`**: not classified.
 - **`claim_order.py`**: not classified.
+- **`clef_pagewide.py`**: not classified.
 - **`hairpin_bind.py`**: not classified.
 - **`head_ink.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.

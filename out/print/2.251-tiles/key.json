@@ -1,0 +1,215 @@
+{
+ "seed": 2251,
+ "what": "2.251 step 1 tiles, stratified: found inside a system (Litolff 2 C + 2 F, Brahms 2 C + 1 F), 2 header controls, 3 near-misses (shuffled)",
+ "pool": {
+  "change": 30,
+  "header": 70,
+  "near": 35
+ },
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "brahms",
+   "page": 4,
+   "system": 0,
+   "staff": 11,
+   "cls": "header",
+   "family": "C",
+   "read": "alto",
+   "why": null,
+   "area": [
+    707.8,
+    3135.6,
+    789.8,
+    3264.4
+   ]
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cls": "change",
+   "family": "C",
+   "read": "tenor",
+   "why": null,
+   "area": [
+    2018.9,
+    4692.3,
+    2109.7,
+    4817.7
+   ]
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 16,
+   "system": 0,
+   "staff": 3,
+   "cls": "change",
+   "family": "C",
+   "read": "tenor",
+   "why": null,
+   "area": [
+    1865.6,
+    796.8,
+    1914.6,
+    869.2
+   ]
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cls": "change",
+   "family": "C",
+   "read": "tenor",
+   "why": null,
+   "area": [
+    3029.9,
+    4816.3,
+    3111.7,
+    4941.7
+   ]
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 6,
+   "system": 0,
+   "staff": 5,
+   "cls": "header",
+   "family": "C",
+   "read": null,
+   "why": null,
+   "area": [
+    383.6,
+    1166.8,
+    431.6,
+    1239.2
+   ]
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cls": "change",
+   "family": "C",
+   "read": null,
+   "why": null,
+   "area": [
+    991.6,
+    2553.8,
+    1041.6,
+    2626.2
+   ]
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cls": "change",
+   "family": "C",
+   "read": "tenor",
+   "why": null,
+   "area": [
+    2166.6,
+    2558.8,
+    2217.6,
+    2631.2
+   ]
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "page": 12,
+   "system": 0,
+   "staff": 5,
+   "cls": "near",
+   "family": "C",
+   "read": null,
+   "why": "g_clef_shape",
+   "area": [
+    390.6,
+    1096.3,
+    434.1,
+    1168.7
+   ]
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "page": 5,
+   "system": 1,
+   "staff": 2,
+   "cls": "near",
+   "family": "C",
+   "read": null,
+   "why": "no_bowls",
+   "area": [
+    660.7,
+    2713.9,
+    702.0,
+    2784.1
+   ]
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "page": 16,
+   "system": 0,
+   "staff": 3,
+   "cls": "change",
+   "family": "F",
+   "read": "bass",
+   "why": null,
+   "area": [
+    926.2,
+    826.0,
+    993.4,
+    874.2
+   ]
+  },
+  {
+   "tile": 11,
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cls": "near",
+   "family": "F",
+   "read": null,
+   "why": "f_no_dots",
+   "area": [
+    1004.7,
+    4726.6,
+    1100.8,
+    4813.7
+   ]
+  },
+  {
+   "tile": 12,
+   "plate": "litolff",
+   "page": 6,
+   "system": 1,
+   "staff": 3,
+   "cls": "change",
+   "family": "F",
+   "read": "bass",
+   "why": null,
+   "area": [
+    593.5,
+    2432.1,
+    655.2,
+    2484.1
+   ]
+  }
+ ]
+}
