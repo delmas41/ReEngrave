@@ -272,15 +272,26 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
                 members[t["key"]] = t
     if not members:
         return {}
-    ranked = sorted(members.values(), key=lambda t: abs(t["cy"] - ey))
+    def where(t: Dict[str, Any]) -> float:
+        # ⚠️ A TALL box is two heads fused (the two-note rule's `half` ends): its centre is neither head's, so a tall member stands at
+        # whichever head-sized END of its box is nearer the arc end (`hh` = the staff's mean head height).
+        if t.get("tall"):
+            hh = float(t.get("hh") or t["h"])
+            return min((t["cy"] - t["h"] / 2.0 + hh / 2.0, t["cy"] + t["h"] / 2.0 - hh / 2.0), key=lambda y: abs(y - ey))
+        return t["cy"]
+
+    ranked = sorted(members.values(), key=lambda t: abs(where(t) - ey))
     if len(ranked) > 1:
-        gap = abs(ranked[1]["cy"] - ey) - abs(ranked[0]["cy"] - ey)
+        gap = abs(where(ranked[1]) - ey) - abs(where(ranked[0]) - ey)
         if gap < BIND_COLUMN_MARGIN_SPACES * sp:
             return {"unbound": "chord_end_equidistant", "candidates": [t["key"] for t in ranked[:2]],
                     "margin_spaces": round(gap / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
     pick = ranked[0]
-    return {"head": pick["key"], "column": len(ranked), "by_height": True,
-            "distance_spaces": round((abs(pick["cx"] - ex) + abs(pick["cy"] - ey)) / sp, 3)}
+    out = {"head": pick["key"], "column": len(ranked), "by_height": True,
+           "distance_spaces": round((abs(pick["cx"] - ex) + abs(where(pick) - ey)) / sp, 3)}
+    if pick.get("tall"):
+        out["tall"] = True            # the member is a fused box: its step is unread (`ownership._page_binding`), never its centre's
+    return out
 
 
 def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],

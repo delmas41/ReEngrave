@@ -149,3 +149,34 @@ def test_on_without_refused_pieces_the_kept_box_stands(on):
     log, arc, _dups = _litolff_06_scene(122.1, 136.7)
     v = _decide(log, arc, ())                                  # nothing refused: three heads, no extent
     assert "start_extent" not in _binding(v)
+
+
+# ── a fused (tall) box: two heads in one box, its centre is neither head's ───────────────────────────────────────────────────────────────
+
+def test_a_tall_member_stands_at_its_nearer_head_sized_end_and_is_flagged():
+    # litolff_03's left end: a dyad fused into ONE tall box (h 30 = three head heights, mean head 10) and a piece above it
+    tall = dict(_h("fused", -5, 125, h=30.0), tall=True, hh=10.0)
+    piece = dict(_h("piece", -5, 118), tall=False, hh=10.0)
+    right = _h("r", 105, 135)
+    cu = _curve(0, 148, 100, 148, +15)
+    off = AC.bind_curve(cu, [tall, piece, right], SP, by_height=True)["left"]
+    assert off["head"] == "fused" and off["tall"] is True               # the lower head-sized end (135) is 1.3 sp from the end, the piece 3.0
+    centre_only = AC.bind_curve(cu, [dict(tall, tall=False), piece, right], SP, by_height=True)["left"]
+    assert centre_only["head"] == "fused" and "tall" not in centre_only          # the twin: without the mark the box is read by its centre
+
+
+def test_a_tall_end_has_no_step_and_the_binder_gives_no_kind(on):
+    # the stop head of a record scene made tall: the binder cannot call a position of a fused box -> no kind from it (the OFF path decides)
+    log = Log()
+    _cells(log, 2)
+    _box(log, 0, 0, 40.0, 117.0, 147.0)              # 3 head heights tall: two heads fused
+    _box(log, 0, 3, 120.0, 122.1, 136.7)
+    for i in range(4):                               # the staff's ordinary heads: the mean head height is a head's, not the fused box's
+        _box(log, 1, i, 250.0 + 20 * i, 120.0, 130.0)
+    arc = _arc(log, 0, 5, 55.0, 115.0, 150.0, 156.0, cls="tie")
+    log.observe(arc, Q.SYSTEM_ARC, "two_heads_one_position_adjacent", reader=READERS.CV_SYSTEM_ARC, frame="page", score=None,
+                pieces=[arc.to_key()], space_page_px=10.0, x_left_page=55.0, y_left_page=150.0, x_right_page=115.0, y_right_page=140.0,
+                trace=[])
+    v = _decide(log, arc, ())
+    pb = _binding(v)
+    assert pb is not None and pb["kind"] is None and pb["start_step_source"] == "tall_box_end" and pb["relation"] == "unread"

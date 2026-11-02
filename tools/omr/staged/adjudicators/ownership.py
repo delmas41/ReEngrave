@@ -2965,6 +2965,13 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
     tips = _arc_claim.stem_tips(heads, stems)
     end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default OFF)
+    if end_pitch and heads:
+        # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
+        # and the step below stays unread -- the SAME bound the extent reader uses (`TALL_BOX_HEAD_HEIGHTS`), no new number
+        mean_h = sum(h["h"] for h in heads) / len(heads)
+        for h in heads:
+            h["hh"] = mean_h
+            h["tall"] = h["h"] > TALL_BOX_HEAD_HEIGHTS * mean_h
     b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
@@ -3000,6 +3007,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         eb = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == rk))
         sa, src_a = _step_with_extent(ev, rows[lk], ea)
         sb, src_b = _step_with_extent(ev, rows[rk], eb)
+        if b["left"].get("tall"):
+            sa, src_a = None, "tall_box_end"          # the two-note rule's `half`: a fused box has no step of its own
+        if b["right"].get("tall"):
+            sb, src_b = None, "tall_box_end"
         if ea is not None:
             cya = ea["yc"]
             b["start_extent"] = {k: v for k, v in ea.items() if k != "yc"}
@@ -3018,6 +3029,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
         relation = ("same" if near else "different" if dy >= BIND_DIFFERENT_POSITION_SPACES else "unread")
         b["relation_source"] = "boxes_only"
+        if end_pitch and "tall_box_end" in (src_a, src_b):
+            relation, b["relation_source"] = "unread", "tall_box_end"      # a fused box's centre says nothing about a position
     elif sa == sb:
         relation = "same" if near else "conflict"
     else:
