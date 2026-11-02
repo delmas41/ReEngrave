@@ -244,7 +244,9 @@ right: the print, Sean, or the reference encoding — never our own output.
 A change is proposed to Sean before dispatch; ask him one plain question,
 say what each crop colour means, no tables. A tile shows one staff, drawn
 from the WRITTEN file, with a thin box sized to the mark at its own staff's
-position (no arrows, never wider than the tile). A GATHER claim is proved
+position (no arrows, never wider than the tile), and showing everything the
+answer needs -- both ends of an arc, the staff a far head is counted from
+(2026-11-01: two tile sets could not be answered). A GATHER claim is proved
 by what it CAPTURES (Sean's tiles, the hand-labelled pages), not by a full
 re-gather. Each lane brief names the old system's work on its symbol and
 what was tried and dropped (`docs/ink-rules.md`, page-facts §5, benchmarks).

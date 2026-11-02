@@ -97,3 +97,25 @@ Subset (Litolff 2,4; Brahms 4,5), not the frozen sample:
 - Round 2: no C claim on a G clef (and none at a header where a READ G clef stands); trim the claim area to the clef's own ink; Brahms F-clef dots.
 - Correction (Sean, same day): tile 5 is a C clef. Claims are right 9 of 9; round 2 is only the Brahms F-clef dots (tile 11) and the rest inside tile 10's claim area.
 - Correction withdrawn (Sean, same day: "Sorry - 5 is a G clef"): claims right 8 of 9; round 2 also covers the G clef claimed as a C clef (tile 5).
+
+## 2026-11-01: round 2 sent (Sean "Send clef lane back")
+
+Same lane, same branch. Scope: (1) tile 5 -- no C claim on a G clef, and none where a READ header clef of another kind stands; (2) tile 10 -- trim each claim area to the clef's own ink (a rest inside it must stay unclaimed); (3) tile 11 -- a Brahms F-clef dot reader that survives thick staff lines, with the Brahms p25 false `clefF` over a half note kept as a failing twin; (4) why the box sat "a little off" on tiles 5 and 8; (5) if small, notes after an unread-kind clef MARKED red, not silently dropped. The carry (step 2) stays OFF. 12 new tiles in `out/print/2.251-r2-tiles/`.
+
+## 2026-11-02: round 2 built (lane-2.251-clef-change 32c3f12c1; both flags still OFF)
+
+Recorded by the manager from the lane's report.
+
+**Cause of all three faults.** Each witness was set from one plate's numbers and one glyph's usual shape, never tested against the confusable neighbour: a G clef's spine and loops, a rest inside a detector box, Breitkopf's thick lines touching the dots. **Lesson:** a shape witness ships only with its twin test. Each fault is now a real-page twin test (slow tier, `tests/test_clef_pagewide_r2_pages.py`, 4 pass).
+
+1. **Tile 5 (G claimed as C).** A small G clef's spine passes the thick-bar test and its loops fill the bowls. Fix: a G-tail witness (ink 0.6-1.6 sp below the bottom line beside the spine, fill >= 0.3, lines measured at the clef; Litolff header G 0.42-0.56, every C <= 0.15), and no C claim may overlap a clef-sized `clefG`/`clefF` box or a READ claim by >= 0.2. All 18 C clefs inside a system still pass; tile 5 is not claimed.
+2. **Tile 10 (rest inside the F claim).** The `clefF` box already held the rest's right half, and the claim added 0.8 sp to the right. The F claim is now its body plus its dot pair; a C claim ends at the first gap > 0.35 sp. Claim and tiles use one area function.
+3. **Tile 11 (Brahms F refused).** Thick lines and a stem fuse the dots. The dot window clears columns holding a raw run >= 1.8 sp; the witness is the dot pair straddling line 4 nearest the box's right edge (the old rightmost pair was a key flat's bowl on Brahms headers). Brahms bass readings 45 -> 61, Litolff 22 -> 40 (every Litolff in-system one at a print-confirmed bar). Both Brahms p25 false `clefF` boxes still refused.
+4. **"Box a little off" (tiles 5, 8).** The claim's geometry (a C-shaped area on a G clef), not the drawing.
+
+Bars after an unread-kind clef now carry a red "clef?" (`unread_clef_bars`; Litolff p4: 5 bars after bar 102).
+
+Subset (Litolff 2,4; Brahms 4,5): PAGEWIDE only -- Litolff notes -2, words +1; Brahms notes -4, rests -1, dots +-1. Both flags -- Litolff notes -14, pitches ~16, words +9 (5 red "clef?"), clefs +2; Brahms pitches ~69, clefs +6. Judged right->wrong 0 and unwritten->wrong 0 on every arm. Fast tier 9674 passed. Not run: claim_readout / claim_order, the frozen sample. The carry is unchanged (pitch witness Litolff 14 vs 16 of 53; Brahms 33 vs 21 of 92): bass clefs with no detector box (Litolff bars 38, 111) need a reader before it can land.
+
+Tiles: `out/print/2.251-r2-tiles/` (seed 22512) -- round-1 places 5, 10, 11 as handled now, plus 9 fresh (4 C inside a system, 2 Litolff F, Brahms F bar 97, 2 near-misses, 1 header control).
+- Sean's round-2 tiles (2026-11-02, `answers-r2.json`): **12 of 12 right** -- 9 claims (C 3, 9, 11, 12; F 4-7, 10) and 3 refusals (G clefs 1, 2; barline 8). The round-1 faults hold fixed at their places (tile 1 = r1 5, tile 4 = r1 11, tile 5 = r1 10).

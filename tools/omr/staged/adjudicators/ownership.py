@@ -2410,6 +2410,35 @@ def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     return None, "no_position"
 
 
+def _half_step_from_rows(cell_rows: Any, box_rows: Any, h: float) -> Optional[float]:
+    """Page pixels per half-step IN THIS HEAD'S OWN BAR from the rows the CALLER read (`Q.CELL_STAFF_SPACE` of its cell, `Q.GLYPH_BOX` of
+    the head): the cell's staff space is canonical, the head's box is on the record in both frames, so page px per canonical unit is this
+    bar's. Factored out of `_head_extent` (ROADMAP 2.250) so the tall-end reader uses the same unit; the READS stay in the callers (the
+    inventory's `wants` check follows helpers only to depth 3)."""
+    half_canon = ((cell_rows[0].detail or {}).get("half_step") if cell_rows else None)
+    canon_h = None
+    if box_rows and isinstance(box_rows[0].value, (list, tuple)) and len(box_rows[0].value) >= 5:
+        canon_h = float(box_rows[0].value[4])
+    if not half_canon or not canon_h or h <= 0:
+        return None
+    return float(half_canon) * (h / canon_h)
+
+
+def _tall_end_step(ev: Evidence, row: Any, cy: float, h: float, end_y: float) -> Tuple[Optional[int], str]:
+    """ROADMAP 2.250: the step of the head standing at the head-sized END of a fused (tall) box, `end_y` in page px: the kept row's position
+    shifted by the offset in this bar's half-steps, the way `_head_extent` places a union. A far head is its ledger reading or unread
+    (`_head_step`), never an ink position (page-facts: a far head is placed by its ledger lines only)."""
+    step, src = _head_step(ev, row)
+    if src != "geometry":
+        return step, src
+    pr = next((p for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=row.subject) if (p.detail or {}).get("rounded") is not None), None)
+    half_page = _half_step_from_rows(ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL)),
+                                     ev.rows(Q.GLYPH_BOX, subject=row.subject), h)
+    if pr is None or half_page is None or (pr.detail or {}).get("from_head_cut") is not None:
+        return None, "tall_box_end"
+    return int(round(float(pr.value) + (end_y - cy) / half_page)), "geometry_tall_end"
+
+
 def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
                  t: Tuple) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.75b -- where ONE HEAD is, when the detector drew it in pieces.
@@ -2441,17 +2470,10 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
         return None
     # the bar's own unit: the cell's staff space is canonical, the head's box is
     # on the record in both frames, so page px per canonical unit is THIS bar's.
-    cell_rows = ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL))
-    box_rows = ev.rows(Q.GLYPH_BOX, subject=row.subject)
-    half_canon = ((cell_rows[0].detail or {}).get("half_step")
-                  if cell_rows else None)
-    canon_h = None
-    if box_rows and isinstance(box_rows[0].value, (list, tuple)) \
-            and len(box_rows[0].value) >= 5:
-        canon_h = float(box_rows[0].value[4])
-    if not half_canon or not canon_h or h <= 0:
+    half_page = _half_step_from_rows(ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL)),
+                                     ev.rows(Q.GLYPH_BOX, subject=row.subject), h)
+    if half_page is None:
         return None
-    half_page = float(half_canon) * (h / canon_h)
     piece_max = HEAD_CUT_MAX_BOX_HEIGHT_SPACES * 2.0 * half_page
     tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS * 0.5
     members = [t]
@@ -2475,6 +2497,15 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
     return {"members": len(members), "kept_step": step, "yc": yc_ext,
             "union_spaces": round((y1 - y0) / (2.0 * half_page), 3),
             "pos": round(pos, 3), "step": int(round(pos))}
+
+
+def _step_with_extent(ev: Evidence, row: Any, extent: Optional[Dict[str, Any]]) -> Tuple[Optional[int], str]:
+    """The one place a tie/slur reader takes a head's step (ROADMAP 2.250, factored out of `_two_note_reading._step_of`): the head's
+    EXTENT step (`_head_extent`, source `geometry_extent`) where the detector drew the head in pieces, else `_head_step` -- a far head
+    stays its ledger reading or unread, never an ink centre (page-facts: a far head is placed by its ledger lines only)."""
+    if extent is not None:
+        return extent["step"], "geometry_extent"
+    return _head_step(ev, row)
 
 
 def _accidental_state(ev: Evidence, head: Tuple) -> str:
@@ -2637,10 +2668,7 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
     def _step_of(c):
         if c[1] == "half":
             return None, "tall_box_end"
-        e = ext.get(c[0][0].id)
-        if e is not None:
-            return e["step"], "geometry_extent"
-        return _head_step(ev, c[0][0])
+        return _step_with_extent(ev, c[0][0], ext.get(c[0][0].id))
 
     def _ext_note(c):
         e = ext.get(c[0][0].id)
@@ -2958,7 +2986,15 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sx, sy, sw, sh = (float(x) for x in sv[:4])
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
     tips = _arc_claim.stem_tips(heads, stems)
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable)
+    end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default ON)
+    if end_pitch and heads:
+        # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
+        # and the step below stays unread -- the SAME bound the extent reader uses (`TALL_BOX_HEAD_HEIGHTS`), no new number
+        mean_h = sum(h["h"] for h in heads) / len(heads)
+        for h in heads:
+            h["hh"] = mean_h
+            h["tall"] = h["h"] > TALL_BOX_HEAD_HEIGHTS * mean_h
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
@@ -2981,21 +3017,74 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     by = {h["key"]: h for h in heads}
     hl, hr = by[lk], by[rk]
     between = _arc_claim.heads_between(hl, hr, heads, usable)
-    sa, src_a = _head_step(ev, rows[lk])
-    sb, src_b = _head_step(ev, rows[rk])
-    from ..arcs_system import SAME_POSITION_SPACES
-    dy = abs(hl["cy"] - hr["cy"]) / sp
-    near = dy <= SAME_POSITION_SPACES
-    if sa is None or sb is None:
-        # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
-        # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
-        # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
-        relation = ("same" if near else "different" if dy >= BIND_DIFFERENT_POSITION_SPACES else "unread")
-        b["relation_source"] = "boxes_only"
-    elif sa == sb:
-        relation = "same" if near else "conflict"
+    cya, cyb = hl["cy"], hr["cy"]
+    if end_pitch:
+        # ROADMAP 2.250: read the end note's step the way the two-note rule does (the head EXTENT where the box is a piece or a tall
+        # union), not the box centre -- the value existed (`_head_extent`) and this binder never read it. The same extent centre
+        # stands in for the box centre in the "one position" test, as `_two_note_reading._with_extent` does.
+        tuples = [(rows[h["key"]], h["cell"], h["cx"], h["cy"], h["w"], h["h"]) for h in heads]
+        avg_h = sum(t[5] for t in tuples) / len(tuples)
+        used = lambda row: usable(row.subject.to_key())         # noqa: E731
+        ea = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == lk))
+        eb = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == rk))
+        sa, src_a = _step_with_extent(ev, rows[lk], ea)
+        sb, src_b = _step_with_extent(ev, rows[rk], eb)
+        # a FUSED box (an arc end beyond a box taller than a head) has no step at its centre -- the two-note rule leaves it unread (`half`); here
+        # the head is read at the head-sized END the arc stands at, in the bar's own half-steps (`_tall_end_step`), or stays unread
+        if b["left"].get("tall"):
+            sa, src_a = _tall_end_step(ev, rows[lk], hl["cy"], hl["h"], b["left"]["end_y"])
+            cya = b["left"]["end_y"]
+        if b["right"].get("tall"):
+            sb, src_b = _tall_end_step(ev, rows[rk], hr["cy"], hr["h"], b["right"]["end_y"])
+            cyb = b["right"]["end_y"]
+        if ea is not None:
+            cya = ea["yc"]
+            b["start_extent"] = {k: v for k, v in ea.items() if k != "yc"}
+        if eb is not None:
+            cyb = eb["yc"]
+            b["stop_extent"] = {k: v for k, v in eb.items() if k != "yc"}
     else:
-        relation = "different" if not near else "conflict"
+        sa, src_a = _head_step(ev, rows[lk])
+        sb, src_b = _head_step(ev, rows[rk])
+    from ..arcs_system import SAME_POSITION_SPACES
+
+    def _relation(sa_, sb_, ya, yb, sra, srb):
+        dy_ = abs(ya - yb) / sp
+        near_ = dy_ <= SAME_POSITION_SPACES
+        if end_pitch and sa_ is not None and sb_ is not None and "geometry_tall_end" in (sra, srb):
+            # a fused box's head-sized END is a box edge, not the head's centre: its `dy` is good to a few pixels, not to 0.25 sp, so the
+            # two STEPS are the witness here (the box-grain position cannot contradict a half-step it was used to compute)
+            near_ = sa_ == sb_
+        if sa_ is None or sb_ is None:
+            # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
+            # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
+            # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
+            return ("same" if near_ else "different" if dy_ >= BIND_DIFFERENT_POSITION_SPACES else "unread"), "boxes_only", dy_
+        if sa_ == sb_:
+            return ("same" if near_ else "conflict"), None, dy_
+        return ("different" if not near_ else "conflict"), None, dy_
+
+    relation, rsrc, dy = _relation(sa, sb, cya, cyb, src_a, src_b)
+    if rsrc:
+        b["relation_source"] = rsrc
+    lone = [s_ for s_ in ("left", "right") if b[s_].get("tall_lone")]
+    if end_pitch and lone:
+        # ROADMAP 2.250 round 2: a LONE tall box (no second box in its column) may be one head (its centre is the head: the plain reading
+        # above) or a fused chord (the head at the end the arc stands at). Where the two readings give the SAME relation it stands. Where
+        # they disagree the end cannot tell which member (rule 8): the plain reading's TIE stays (a tie claim rests on the box reading,
+        # as before 2.250), anything else is no kind. Sean's round-1 tiles: 3 such ties (p9-10) read right on the plain reading and
+        # wrong on the end reading; 3 slurs the plain reading wrote were ties (p2) -- both are this case.
+        sa2, sb2, src2a, src2b, ya2, yb2 = sa, sb, src_a, src_b, cya, cyb
+        if "left" in lone:
+            sa2, src2a = _tall_end_step(ev, rows[lk], hl["cy"], hl["h"], b["left"]["end_y"])
+            ya2 = b["left"]["end_y"]
+        if "right" in lone:
+            sb2, src2b = _tall_end_step(ev, rows[rk], hr["cy"], hr["h"], b["right"]["end_y"])
+            yb2 = b["right"]["end_y"]
+        alt, _asrc, _ady = _relation(sa2, sb2, ya2, yb2, src2a, src2b)
+        b["tall_lone_readings"] = {"plain": relation, "at_the_end": alt, "end_steps": [sa2, sb2]}
+        if alt != relation and relation != "same":
+            relation, b["relation_source"] = "unread", "tall_lone_readings_disagree"
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])

@@ -196,11 +196,20 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
 # NOT CONFIRMED: `BIND_COLUMN_MARGIN_SPACES` and `BIND_COLUMN_DX_WIDTHS` are set by hand, not swept.
 
 ENV_BIND = "OMR_ARC_BIND_PAGEWIDE"
+#: ROADMAP 2.250 (default ON since 2026-11-01; an explicit 0/false/no/off disables): the binder reads the END NOTE's pitch the way the older two-note rule does (the head EXTENT's
+#: step, never the box centre) and binds a chord end to the member at the arc END's height (never the outer one by curve side, never a
+#: stem-tip proxy's member). CONVENTION ASSUMED (not confirmed by Sean): a tie joins two noteheads of one pitch, a chord has one tie per
+#: tied note, each at its own note's staff position. WHAT WOULD FALSIFY IT: a chord tie whose end stands beside one note but ties another.
+ENV_END_PITCH = "OMR_BIND_END_PITCH"
 
 #: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)
 BIND_COLUMN_DX_WIDTHS = 0.6
 #: at one end, a second column whose distance is within this many staff spaces of the nearest one makes the end ambiguous
 BIND_COLUMN_MARGIN_SPACES = 0.5
+#: two heads of one chord COLUMN stand at least this many staff spaces apart (a third, 2 staff steps): a smaller step is a second, which an
+#: engraver sets in two columns (a CONVENTION, not a fit). Two boxes of one column closer than this are ONE head drawn twice, so there is no
+#: chord to choose a member of and the end binds as it did before 2.250 (`bind_end`'s side rule).
+BIND_CHORD_MIN_SPACES = 1.0
 #: a curve whose middle third sits this far (spaces) above / below the line through its two ends is ABOVE / BELOW its notes
 BIND_SIDE_MIN_SPACES = 0.1
 
@@ -208,6 +217,11 @@ BIND_SIDE_MIN_SPACES = 0.1
 def bind_enabled() -> bool:
     """`OMR_ARC_BIND_PAGEWIDE`, default ON (ROADMAP 2.223; Sean 2026-10-31 "Fix then land", tiles 11/12, tile 11 fixed); an explicit 0/false/no/off disables."""
     return os.environ.get(ENV_BIND, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def end_pitch_enabled() -> bool:
+    """`OMR_BIND_END_PITCH` (ROADMAP 2.250; Sean 2026-11-01 "Land it"), default ON; an explicit 0/false/no/off disables."""
+    return os.environ.get(ENV_END_PITCH, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def curve_side(trace: Optional[Sequence[Sequence[float]]], sp: float) -> Optional[str]:
@@ -241,8 +255,70 @@ def _columns(cands: List[Dict[str, Any]]) -> List[List[Dict[str, Any]]]:
     return cols
 
 
+def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, heads: Sequence[Dict[str, Any]], ex: float,
+                            ok: Any) -> Dict[str, Any]:
+    """ROADMAP 2.250: the member of the chord column `col` standing nearest the arc END's height. A stem-tip candidate may name the
+    COLUMN (the note) but never the member: the members are the column's real heads (every usable head of the staff at that x, inside the
+    window or not). Two members whose distances to `ey` differ by less than `BIND_COLUMN_MARGIN_SPACES` (the m2 hand-set margin, reused,
+    no new constant) abstain `chord_end_equidistant`, with both candidates and the signed margin."""
+    refs = []
+    for h in col:
+        if h.get("tip"):
+            refs.extend(t for t in heads if not t.get("tip") and t["key"] == h["key"])
+        else:
+            refs.append(h)
+    members: Dict[str, Dict[str, Any]] = {}
+    for r in refs:
+        for t in heads:
+            if t.get("tip") or t["key"] in members or not ok(t["key"]):
+                continue
+            if abs(t["cx"] - r["cx"]) <= BIND_COLUMN_DX_WIDTHS * max(t["w"], r["w"]):
+                members[t["key"]] = t
+    if not members:
+        return {}
+    def is_fused(t: Dict[str, Any]) -> bool:
+        # only where the arc end stands BEYOND the box (a tie under / over the outer head of a fused dyad); an end beside the box's middle
+        # is read as it always was, by the box centre -- a tall box is not always two heads (a head with its accidental or a line's ink)
+        # ... and only where the column holds a SECOND box beside it (a piece or a chord-mate: the corroboration that the tall box is a
+        # fused chord). A LONE tall box (a head with a ledger or stem's ink, 3 of Sean's round-1 ties) is not known to be two heads: rule 8,
+        # it keeps the reading it had (box centre).
+        return (bool(t.get("tall")) and len(members) > 1
+                and not (t["cy"] - t["h"] / 2.0 <= ey <= t["cy"] + t["h"] / 2.0))
+
+    def where(t: Dict[str, Any]) -> float:
+        # ⚠️ A TALL box is two heads fused (the two-note rule's `half` ends): its centre is neither head's, so a tall member stands at
+        # whichever head-sized END of its box is nearer the arc end (`hh` = the staff's mean head height).
+        if is_fused(t):
+            hh = float(t.get("hh") or t["h"])
+            return min((t["cy"] - t["h"] / 2.0 + hh / 2.0, t["cy"] + t["h"] / 2.0 - hh / 2.0), key=lambda y: abs(y - ey))
+        return t["cy"]
+
+    ranked = sorted(members.values(), key=lambda t: abs(where(t) - ey))
+    if len(ranked) > 1:
+        gap = abs(where(ranked[1]) - ey) - abs(where(ranked[0]) - ey)
+        if gap < BIND_COLUMN_MARGIN_SPACES * sp:
+            if abs(where(ranked[0]) - where(ranked[1])) < BIND_CHORD_MIN_SPACES * sp:
+                return {}          # one head drawn twice (members of one chord column are >= a third apart): today's rule decides
+            return {"unbound": "chord_end_equidistant", "candidates": [t["key"] for t in ranked[:2]],
+                    "margin_spaces": round(gap / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    pick = ranked[0]
+    out = {"head": pick["key"], "column": len(ranked), "by_height": True,
+           "distance_spaces": round((abs(pick["cx"] - ex) + abs(where(pick) - ey)) / sp, 3)}
+    if (bool(pick.get("tall")) and len(members) == 1 and not is_fused(pick)
+            and not (pick["cy"] - pick["h"] / 2.0 <= ey <= pick["cy"] + pick["h"] / 2.0)):
+        # a LONE tall box with the arc end beyond it: one head, or a fused chord -- `ownership._page_binding` reads both and abstains
+        # where they disagree (rule 8)
+        hh = float(pick.get("hh") or pick["h"])
+        out["tall_lone"] = True
+        out["end_y"] = min((pick["cy"] - pick["h"] / 2.0 + hh / 2.0, pick["cy"] + pick["h"] / 2.0 - hh / 2.0), key=lambda y: abs(y - ey))
+    if is_fused(pick):
+        out["tall"] = True            # the member is a fused box: its step is unread (`ownership._page_binding`), never its centre's
+        out["end_y"] = where(pick)    # ... and its position is the head-sized end the arc stands at, never the box centre
+    return out
+
+
 def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],
-             usable: Any = None) -> Dict[str, Any]:
+             usable: Any = None, by_height: bool = False) -> Dict[str, Any]:
     """One end of a curve at page `(ex, ey)`; `sgn` -1 for the left end, +1 for the right. `heads`: `{key, cx, cy, w, h}` of the staff in the
     system (GATHER boxes); `usable(key)` says whether ADJUDICATE left it a notehead of this staff (asked only of heads that could matter).
 
@@ -277,6 +353,12 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
             return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
                     "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
     col = cols[0]
+    if by_height:
+        got = _chord_member_at_height(col, ey, sp, heads, ex, ok)
+        if got:
+            if got.get("head") is not None and all(h.get("tip") for h in col):
+                got["via_stem_tip"] = True
+            return got
     if len(col) == 1:
         pick = col[0]
     elif side == "above":
@@ -313,15 +395,16 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]])
     return out
 
 
-def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None) -> Dict[str, Any]:
+def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None,
+               by_height: bool = False) -> Dict[str, Any]:
     """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
     side = curve_side(detail.get("trace"), sp)
     xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
     xr, yr = detail.get("x_right_page"), detail.get("y_right_page")
     if None in (xl, yl, xr, yr) or sp <= 0:
         return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
-    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable)
-    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable)
+    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height)
+    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height)
     if left.get("head") is not None and left.get("head") == right.get("head"):
         left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
     return {"left": left, "right": right, "side": side}
