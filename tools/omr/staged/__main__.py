@@ -506,6 +506,7 @@ def main(argv=None) -> int:
         _t = time.time()
         _n = dump_to_file(result, args.out)
         print(f"[run] wrote {args.out}: {_n / 1e9:.2f} GB in {time.time() - _t:.0f}s, "
+              f"peak footprint {(_run_meter.footprint_bytes()[1] or 0) / 1e9:.1f} GB, "
               f"peak rss {_run_meter.peak_rss_bytes() / 1e9:.1f} GB", file=sys.stderr, flush=True)
         print(f"wrote {args.out}", flush=True)
     else:

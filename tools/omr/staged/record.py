@@ -3804,6 +3804,13 @@ class Log:
     def frozen(self) -> bool:
         return self._frozen
 
+    def drop_memos(self) -> None:
+        """ROADMAP 2.249: forget the `closure` / `quantities_in_closure` memos (pure functions of append-only rows, so a
+        later call recomputes the same answer). Called once the last stage has run, before `to_json`, so the record's
+        lists can reuse that memory: on Brahms the closure memo held more than the verdicts' own basis lists."""
+        self._closure_cache.clear()
+        self._qic_cache.clear()
+
     # ── reading ─────────────────────────────────────────────────────────────
 
     def _ids(self, quantity: str, subject: Subject,

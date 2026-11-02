@@ -457,6 +457,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     divergence_report = decided["divergence"]
     stopped_after = decided["stopped_after"]
     run_meter.finish()
+    log.drop_memos()         # ROADMAP 2.249: pure memos, recomputed on demand; frees memory for `to_json` below
 
     return {
         "record": log.to_json(),
