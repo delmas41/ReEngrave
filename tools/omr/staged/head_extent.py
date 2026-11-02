@@ -208,3 +208,11 @@ def ink_centre_position(pos_box: float, box: Sequence[float], extent: Sequence[f
         return None
     d = ((float(extent[1]) + float(extent[3])) / 2.0 - (float(box[1]) + float(box[3])) / 2.0) / float(half_step_page)
     return float(pos_box) + d
+
+
+def refused_as_head(log: Any, subject: Any) -> bool:
+    """r4: True where ADJUDICATE DECIDED this box is not a head (`notehead_is_not_a_notehead` = True: a cell-edge piece of a neighbour's
+    head, a tremolo slash, a rest, ...). Nothing is written for such a box, so no far-unread guess is filed on it."""
+    from .record import Q, Outcome
+    v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject)
+    return v is not None and v.outcome == Outcome.DECIDED and v.value is True

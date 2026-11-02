@@ -166,6 +166,23 @@ class TestRestatePitchMarksTheUnreadFarHead(unittest.TestCase):
         self.assertEqual(out[0].reason, "position_and_clef")
         self.assertIsNone(export.far_unread_guess_of(_rec(log), g.to_key()))
 
+    def test_r4_a_box_refused_as_a_head_gets_no_far_unread_guess(self):
+        # r3 tiles 3 and 6: cell-edge pieces of the NEIGHBOUR's head, refused `clipped_fragment`; nothing is written for them
+        log = Log()
+        g = R.glyph(0, 0, 0, 0, 0)
+        log.observe(g, Q.NOTEHEAD_STAFF_POSITION, -8.0, reader="geometry", frame="cell:0")
+        log.abstain(g, Q.FAR_HEAD_LEDGER_POSITION, reader="ledger_farhead", frame="cell:0", reason="ledger_not_read",
+                    ledger_reason="not_a_note:clipped_fragment")
+        staff = R.staff(0, 0, 0)
+        cv = consequences._verdict(log, staff, Q.CLEF, "treble", decider="t", reason="t", basis=())
+        consequences._verdict(log, g, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, True, decider="t", reason="clipped_fragment", basis=())
+        log.freeze()
+        adjudicate.adjudicate_one(log, adjudicate.REGISTRY[Q.NOTEHEAD_POSITION], g)
+        with mock.patch.dict(os.environ, ON):
+            out = consequences.restate_pitch(log, staff, cv)
+        self.assertEqual(out[0].reason, "position_and_clef")
+        self.assertIsNone(export.far_unread_guess_of(_rec(log), g.to_key()))
+
     def test_default_is_off(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(head_extent.FAR_GUESS_ENV, None)
@@ -199,11 +216,14 @@ class TestMoveGlyphReowned(unittest.TestCase):
         self.assertEqual(out[0].reason, "reowned")
         self.assertIsNone(export.far_unread_guess_of(_rec(log), g.to_key()))
 
-    def test_a_ledger_reading_that_disagrees_is_blue_with_both(self):
+    def test_r4_a_ledger_reading_that_disagrees_places_the_head_plain(self):
+        # r4 (Sean's r3 tiles; page-facts: a far head is placed by its ledger lines ONLY): the reading that named the owner is the position,
+        # written plain -- never the geometry step on a grid extended past the new staff's outer line
         log, g, out = self._moved(-4, -5, ON)
-        gs = export.far_unread_guess_of(_rec(log), g.to_key())
-        self.assertEqual([c["source"] for c in gs["candidates"]], ["box_centre", "ledger_toward_owner"])
-        self.assertEqual(len({c["value"] for c in gs["candidates"]}), 2)
+        self.assertEqual(out[0].reason, "reowned_by_ledger_reading")
+        self.assertEqual(out[0].value, "D6")                                          # position -5 on a treble staff (geometry -4 = C6)
+        self.assertIsNone(export.far_unread_guess_of(_rec(log), g.to_key()))
+        self.assertEqual(self._moved(-4, -5, OFF)[2][0].value, "C6")                  # control: flag off writes the geometry step, as before
 
     def test_in_staff_on_the_new_staff_and_flag_off_are_plain(self):
         self.assertEqual(self._moved(4, None, ON)[2][0].reason, "reowned")
