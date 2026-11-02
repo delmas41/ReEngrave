@@ -3047,6 +3047,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     from ..arcs_system import SAME_POSITION_SPACES
     dy = abs(cya - cyb) / sp
     near = dy <= SAME_POSITION_SPACES
+    if end_pitch and sa is not None and sb is not None and "geometry_tall_end" in (src_a, src_b):
+        # a fused box's head-sized END is a box edge, not the head's centre: its `dy` is good to a few pixels, not to 0.25 sp, so the
+        # two STEPS are the witness here (the box-grain position cannot contradict a half-step it was used to compute)
+        near = sa == sb
     if sa is None or sb is None:
         # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
         # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
