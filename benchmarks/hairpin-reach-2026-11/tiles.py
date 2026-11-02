@@ -7,7 +7,7 @@ Items, from a lane_report work dir (OFF/ON arms of OMR_HAIRPIN_REACH) and, optio
   * WORD: on p8, a read beside a READ word whose word claim was shrunk off it (`wedges_left_out`);
   * CONTROL: a wedge both arms write.
 
-    python3 benchmarks/hairpin-reach-2026-11/tiles.py WORKDIR OUTDIR [P8_RECORD]
+    python3 benchmarks/hairpin-reach-2026-11/tiles.py WORKDIR out/print/2.254-tiles [P8_RECORD]   # key: out/print/2.254-tiles-key.json
 """
 import json
 import pathlib
@@ -82,7 +82,7 @@ def staff_box(plate, page, system, staff, cache):
 def main(work, out, p8rec=None):
     from PIL import Image, ImageDraw
     work, out = pathlib.Path(work), pathlib.Path(out)
-    tdir = out / "tiles"
+    tdir = out                                      # the tiles; the key goes BESIDE the folder: <out>-key.json
     tdir.mkdir(parents=True, exist_ok=True)
     for f in tdir.glob("*"):
         f.unlink()
@@ -95,7 +95,7 @@ def main(work, out, p8rec=None):
     gained = [w for w in w_on if w["rg"] not in off_rg]
     both = [w for w in w_on if w["rg"] in off_rg]
     items = []
-    for w in rng.sample(gained, min(6, len(gained))):
+    for w in rng.sample(gained, min(8, len(gained))):
         r = match(w, on_rows)
         if r:
             items.append(dict(role="GAINED", read=r, note=w, wrote="ON writes a %s from this note (OFF: no wedge)" % w["value"]))
@@ -111,6 +111,17 @@ def main(work, out, p8rec=None):
         items.append(dict(role="SHORT", read=r, wrote="ON reads a %.1f-space wedge here and writes nothing (one note: hairpin or accent?)%s"
                           % ((r["box"][2] - r["box"][0]) / r["sp"], "" if tuple(round(v) for v in r["box"]) not in off_boxes else
                              " (OFF read it too)")))
+    if p8rec and len([i for i in items if i["role"] == "SHORT"]) < 3:
+        # more one-note wedges from p8: the ON record's own wedge_anchor verdicts say what was done with each
+        verdict = {}
+        for it in iter_array(pathlib.Path(p8rec), "verdicts"):
+            if it.get("quantity") == "wedge_anchor":
+                verdict[it["subject"]] = (it.get("outcome"), it.get("reason"))
+        pool = [r for r in wedge_rows(pathlib.Path(p8rec), {8}) if 1.6 <= (r["box"][2] - r["box"][0]) / r["sp"] < 3.0
+                and verdict.get(r["subject"], ("", ""))[1] == "one_note_wedge"]
+        for r in rng.sample(pool, min(3 - len([i for i in items if i["role"] == "SHORT"]), len(pool))):
+            items.append(dict(role="SHORT", read=r, wrote="ON reads a %.1f-space wedge whose two tips bind to one note and abstains "
+                              "one_note_wedge: nothing written (hairpin or accent?)" % ((r["box"][2] - r["box"][0]) / r["sp"])))
     if p8rec:
         p8w = word_rows(pathlib.Path(p8rec), 8)
         p8r = wedge_rows(pathlib.Path(p8rec), {8})
@@ -162,7 +173,7 @@ def main(work, out, p8rec=None):
         "The box only says where to look.\n\n**Question, for every tile:** is the mark in the box a hairpin (crescendo or "
         "diminuendo), an accent, or something else? If a hairpin: which staff does it belong to, and on which notes does it start "
         "and stop?\n\nAnswer by tile number.\n")
-    (out / "key.json").write_text(json.dumps(key, indent=1, default=str))
+    (out.parent / (out.name + "-key.json")).write_text(json.dumps(key, indent=1, default=str))
     print("tiles", len(key), {k: sum(x["role"] == k for x in key) for k in ("GAINED", "SHORT", "WORD", "CONTROL")})
 
 

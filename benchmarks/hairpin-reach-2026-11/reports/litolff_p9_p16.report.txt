@@ -1,0 +1,18 @@
+LANE REPORT  OMR_HAIRPIN_REACH (OFF=0 ON=1)  --from gather
+  OMR_HAIRPIN_REACH: read in hairpin_detection.py, staged/adjudicators/ownership.py, staged/gather.py, staged/hairpin_reach.py ... -> GATHER
+  NOT THE FROZEN SAMPLE: benchmarks/hairpin-reach-2026-11/sample-subset.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+
+litolff  pages [9, 16]  (1408 notes+rests OFF, 1408 ON, 1408 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 585 -> 585
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (140 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 335 | position but no mark here 8
+  NOT JUDGED: 0 changed places no tile of Sean's covers (0 are covered; 0 have no page place): none -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 1 (0 from the changes, 1 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 540 s
