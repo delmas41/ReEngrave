@@ -106,6 +106,7 @@ class TestSplit(unittest.TestCase):
         out, info = BK.split_tall_heads([upper, tall], img, SP, TOP, LINES)
         t = info[1]["tall_split"]
         self.assertEqual((len(t["added"]), t["covered"]), (1, 1))
+        self.assertEqual(info[0]["tall_split"], {"covers_hole_of": 1, "step": 3})     # the hole names the detector's box a head
         self.assertEqual(round((out[t["added"][0]].y_canonical + out[t["added"][0]].height_canonical / 2.0 - TOP) / (SP / 2)), 5)
 
     def test_CONTROL_black_boxes_and_short_boxes_are_not_read(self):

@@ -4089,7 +4089,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # SUPERSEDES 2.40's pair-wise `same_side_second` (no longer called here --
     # see `_stacked_head_duplicate_refusal`'s own module-section comment for
     # why one group rule replaces it rather than the two competing).
-    stacked = (None if keeps_a_cut_head
+    # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`): a head GATHER read off its own HOLE inside a tall box (`box_kind.split_tall_heads`, the
+    # box it added or the one-head box standing on that hole) is not refused as a duplicate by the stacked-head fit, whose one-head-per-
+    # group reading puts a hollow third's single head on the slot BETWEEN the two (benchmarks/omr-stacked-heads-2026-10, 2.232 cause).
+    _tall = (box_row.detail or {}).get("tall_split") if _box_kind.tall_split_enabled() else None
+    hole_head = isinstance(_tall, dict) and ("split_from" in _tall or "covers_hole_of" in _tall)
+    if hole_head:
+        detail["tall_split"] = _tall
+    stacked = (None if keeps_a_cut_head or hole_head
                else _stacked_head_duplicate_refusal(ev, box_row, detail))
     if stacked is not None:
         return stacked

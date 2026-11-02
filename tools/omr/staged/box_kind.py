@@ -488,9 +488,9 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(),
     if image is None or not sp or sp <= 0:
         return out, info
     ink = cell_ink(image)
-    one = [d for d in dets if is_head_class(d.smufl_name) and d.height_canonical / sp < TALL_MIN_H_SP
+    one = [(j, d) for j, d in enumerate(dets) if is_head_class(d.smufl_name) and d.height_canonical / sp < TALL_MIN_H_SP
            and d.width_canonical / sp < HEAD_BOX_MAX_W_SP]
-    hs = sorted(d.height_canonical for d in one)
+    hs = sorted(d.height_canonical for _j, d in one)
     head_h = hs[len(hs) // 2] if hs else HEAD_BOX_H_SP * sp
     for i, d in enumerate(dets):
         if only is not None and i not in only:
@@ -506,8 +506,13 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(),
             continue
         added, covered = [], 0
         for hole, s in zip(holes, steps):
-            if any(_inside(hole["cx"], hole["cy"], o) for o in one):
+            on = next((j for j, o in one if _inside(hole["cx"], hole["cy"], o)), None)
+            if on is not None:
                 covered += 1                            # a one-head box already stands on this head (the detector's, or one added before)
+                if on not in info:
+                    # the hole names that box a head of its own: the stacked-head fit's one-head-per-group reading (a known fault on
+                    # hollow thirds, benchmarks/omr-stacked-heads-2026-10) may not refuse it as a duplicate of this tall box's slot
+                    info[on] = {"tall_split": {"covers_hole_of": i, "step": s}}
                 continue
             base = str(d.smufl_name)
             for suf in ("OnLine", "InSpace"):
@@ -516,7 +521,7 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(),
             cls = base + ("OnLine" if s % 2 == 0 else "InSpace")
             nd = dataclasses.replace(d, smufl_name=cls, y_canonical=int(round(hole["cy"] - head_h / 2.0)), height_canonical=int(head_h))
             out.append(nd)
-            one.append(nd)
+            one.append((len(out) - 1, nd))
             info[len(out) - 1] = {"tall_split": {"split_from": i, "step": s}}
             added.append(len(out) - 1)
         info[i] = {"tall_split": {"read": True, "steps": steps, "added": added, "covered": covered, "holes": len(holes)}}
