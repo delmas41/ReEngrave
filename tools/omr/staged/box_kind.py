@@ -347,6 +347,179 @@ def split_wide_heads(dets, img_no_staff, sp: float, staff_top: float = 0.0):
     return out, info
 
 
+# 2b. ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): A TALL HEAD BOX IS READ FOR THE HOLLOW HEADS INSIDE IT.
+#    THE CAUSE (benchmarks/omr-arc-binding-2026-10/FINDINGS.md 2026-11-02): the detector boxed a DYAD of half notes a third apart (two
+#    heads in one column, each tied -- Sean's 2.250 r2 wide tiles 2, 4, 8, 11) as ONE head box 2-2.6 spaces tall. No stage reads a TALL
+#    head box for the heads inside (2.245 reads WIDE ones only), so the dyad is ONE note at the box centre's step -- between its two
+#    printed notes -- the binder has one member to bind two ties to, and EXPORT refuses the one tie it binds (the box's step is not the
+#    partner's). CONVENTION (engraving): a hollow head's interior is a white hole at the head's centre; two heads of one chord column stand
+#    at least a third apart (a second is set in two columns -- `arc_claim.BIND_CHORD_MIN_SPACES`). So a head box holding TWO head-sized
+#    holes, one above the other at least `HOLE_MIN_STEPS` apart and each on the staff grid, holds two hollow heads, one at each hole.
+#    The holes are read on the cell raster WITH its lines (the staff-erased raster opens a ring where a line crossed it). A head ON a
+#    line has its slit cut in two by the line: two pieces either side of one line are one hole, at that line.
+#    WHAT WOULD FALSIFY IT: a single half note read as two (two holes on the grid two steps apart in one head), or a hole that is the
+#    paper between two heads (it must sit on the grid, and every hole must be read: a third, off-grid hole leaves the box unchanged).
+#    NOT CONFIRMED by Sean (tiles out/print/2.252-tiles). Black (filled) boxes are not read here (unchanged).
+TALL_ENV = "OMR_TALL_HEAD_SPLIT"
+#: a head box at least this tall (staff spaces) may hold two heads: one head ~1.0-1.1 sp printed, a detector box over one head measured
+#: 1.23-1.65 sp on Litolff (2.250 census); two heads a third apart are one head + 1 sp, boxed 1.95-2.5 sp (probe_holes, 2.252)
+TALL_MIN_H_SP = 1.8
+#: a piece of a hollow head's hole (a slit or oval, smaller than the head; staff spaces): measured on Litolff halves (probe_holes, 2.252)
+HOLE_W_MAX_SP = 1.3
+HOLE_H_MAX_SP = 0.9
+HOLE_AREA_SP2 = (0.04, 0.6)
+#: two pieces either side of one staff line, each within this of it (sp), are one slit the line cut (measured: a head on a line leaves
+#: its pieces 0.26-0.36 sp from the line; a dyad's two space heads stand 0.5 sp from the line between them)
+HOLE_LINE_CUT_SP = 0.42
+#: two pieces whose centres are this close in height (sp) are one slit
+HOLE_SAME_SP = 0.25
+#: a hole's centre within this many half-steps of a line or space position
+HOLE_GRID_TOL_STEPS = 0.35
+#: two heads of one column are at least a third apart (2 half-steps); a second is set in two columns
+HOLE_MIN_STEPS = 1.6
+REASON_TALL = "taller_than_a_head"
+
+
+def tall_split_enabled() -> bool:
+    """`OMR_TALL_HEAD_SPLIT` (ROADMAP 2.252), default OFF; an explicit on-word enables."""
+    return os.environ.get(TALL_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def cell_ink(image):
+    """A cell's raster (grayscale or BGR uint8, staff lines IN) as a boolean ink mask: the staff-erased raster opens a hollow head's ring
+    where a line crossed it (its slit is no longer a hole), so the holes are read with the lines in."""
+    import numpy as np
+    import cv2
+    a = np.asarray(image)
+    if a.ndim == 3:
+        a = cv2.cvtColor(a, cv2.COLOR_BGR2GRAY)
+    return a < 128
+
+
+def head_holes(ink, box, sp: float, staff_top: float, line_ys=()):
+    """The white holes inside head box `box` (x0, y0, x1, y1, canonical px of the cell) on the cell's ink mask (`cell_ink`, lines in):
+    `[{"cx", "cy", "step", "pieces"}]`, top to bottom. Two pieces either side of one staff line (`line_ys`, canonical), each within
+    `HOLE_LINE_CUT_SP` of it, are ONE slit the line cut: one hole, at that line."""
+    import numpy as np
+    from scipy import ndimage as ndi
+    ink = np.asarray(ink, dtype=bool)
+    if ink.ndim != 2 or sp <= 0:
+        return []
+    x0, y0, x1, y1 = (float(v) for v in box)
+    m = 0.3 * sp
+    rx0, ry0 = max(0, int(x0 - m)), max(0, int(y0 - m))
+    rx1, ry1 = min(ink.shape[1], int(x1 + m)), min(ink.shape[0], int(y1 + m))
+    if rx1 <= rx0 or ry1 <= ry0:
+        return []
+    reg = ink[ry0:ry1, rx0:rx1]
+    holes = ndi.binary_fill_holes(reg) & ~reg
+    lab, _n = ndi.label(holes)
+    found = []
+    for i, sl in enumerate(ndi.find_objects(lab), 1):
+        if sl is None:
+            continue
+        hh, ww = (sl[0].stop - sl[0].start) / sp, (sl[1].stop - sl[1].start) / sp
+        area = float((lab[sl] == i).sum()) / (sp * sp)
+        if ww > HOLE_W_MAX_SP or hh > HOLE_H_MAX_SP or not (HOLE_AREA_SP2[0] <= area <= HOLE_AREA_SP2[1]):
+            continue
+        ys, xs = np.nonzero(lab[sl] == i)
+        cx = rx0 + sl[1].start + float(xs.mean()) + 0.5
+        cy = ry0 + sl[0].start + float(ys.mean()) + 0.5
+        if not (x0 <= cx <= x1 and y0 <= cy <= y1):
+            continue
+        found.append({"cx": cx, "cy": cy, "pieces": 1})
+    found.sort(key=lambda t: t["cy"])
+    one = []
+    for f in found:
+        # two pieces at one height are one slit (a hair of ink across it)
+        if one and f["cy"] - one[-1]["cy"] < HOLE_SAME_SP * sp:
+            a = one[-1]
+            one[-1] = {"cx": (a["cx"] + f["cx"]) / 2.0, "cy": (a["cy"] + f["cy"]) / 2.0, "pieces": a["pieces"] + f["pieces"]}
+            continue
+        one.append(dict(f))
+    out = []
+    for f in one:
+        if out:
+            a = out[-1]
+            cut = [ly for ly in line_ys if a["cy"] < ly < f["cy"] and ly - a["cy"] <= HOLE_LINE_CUT_SP * sp
+                   and f["cy"] - ly <= HOLE_LINE_CUT_SP * sp]
+            if cut and not a.get("cut"):
+                out[-1] = {"cx": (a["cx"] + f["cx"]) / 2.0, "cy": float(cut[0]), "pieces": a["pieces"] + f["pieces"], "cut": True}
+                continue
+        out.append(dict(f))
+    half = sp / 2.0
+    return [{"cx": round(h["cx"], 1), "cy": round(h["cy"], 1), "step": round((h["cy"] - staff_top) / half, 2), "pieces": h["pieces"]}
+            for h in out]
+
+
+def heads_from_holes(holes):
+    """The steps of the hollow heads a tall box holds, read off its holes, or None (not read: fewer than two, a hole off the grid, or two
+    closer than a third)."""
+    if len(holes) < 2:
+        return None
+    steps = [h["step"] for h in holes]
+    if any(abs(s - round(s)) > HOLE_GRID_TOL_STEPS for s in steps):
+        return None
+    if any(b - a < HOLE_MIN_STEPS for a, b in zip(steps, steps[1:])):
+        return None
+    return [int(round(s)) for s in steps]
+
+
+def is_hollow_head_class(cls: object) -> bool:
+    c = str(cls or "")
+    return c.startswith("noteheadHalf") or c.startswith("noteheadWhole")
+
+
+#: a head box made for a head read off its hole is this tall (staff spaces) unless the cell's one-head boxes say otherwise
+HEAD_BOX_H_SP = 1.3
+
+
+def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=()):
+    """GATHER, flag ON (ROADMAP 2.252): `(dets_out, info)`. `dets_out` = `dets` unchanged and in order, plus one new detection per hollow
+    head read off its hole (`head_holes` / `heads_from_holes`) inside a TALL hollow-class head box that no other one-head box of the cell
+    stands on: centred on the hole, the tall box's x and width, the cell's median one-head box height, the tall box's class with the
+    line/space suffix the hole's step gives, its confidence. `info` = {index: {"tall_split": ...}}: on a tall box
+    `{"read": bool, "steps": [...], "added": [...], "covered": n, "holes": n}`, on an added box `{"split_from": index, "step": s}`.
+    No raster or no unit: nothing changes."""
+    import dataclasses
+    out = list(dets)
+    info = {}
+    if image is None or not sp or sp <= 0:
+        return out, info
+    ink = cell_ink(image)
+    one = [d for d in dets if is_head_class(d.smufl_name) and d.height_canonical / sp < TALL_MIN_H_SP
+           and d.width_canonical / sp < HEAD_BOX_MAX_W_SP]
+    hs = sorted(d.height_canonical for d in one)
+    head_h = hs[len(hs) // 2] if hs else HEAD_BOX_H_SP * sp
+    for i, d in enumerate(dets):
+        if not (is_hollow_head_class(d.smufl_name) and d.height_canonical / sp >= TALL_MIN_H_SP
+                and d.width_canonical / sp < HEAD_BOX_MAX_W_SP):
+            continue
+        box = (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical)
+        holes = head_holes(ink, box, sp, staff_top, line_ys)
+        steps = heads_from_holes(holes)
+        if steps is None:
+            info[i] = {"tall_split": {"read": False, "holes": len(holes)}}
+            continue
+        added, covered = [], 0
+        for hole, s in zip(holes, steps):
+            if any(_inside(hole["cx"], hole["cy"], o) for o in one):
+                covered += 1                            # a one-head box already stands on this head (the detector's, or one added before)
+                continue
+            base = str(d.smufl_name)
+            for suf in ("OnLine", "InSpace"):
+                if base.endswith(suf):
+                    base = base[: -len(suf)]
+            cls = base + ("OnLine" if s % 2 == 0 else "InSpace")
+            nd = dataclasses.replace(d, smufl_name=cls, y_canonical=int(round(hole["cy"] - head_h / 2.0)), height_canonical=int(head_h))
+            out.append(nd)
+            one.append(nd)
+            info[len(out) - 1] = {"tall_split": {"split_from": i, "step": s}}
+            added.append(len(out) - 1)
+        info[i] = {"tall_split": {"read": True, "steps": steps, "added": added, "covered": covered, "holes": len(holes)}}
+    return out, info
+
+
 # 3. AN ARC BOWS. A tie or slur is a curve; a straight trace 3+ spaces long is a hairpin's leg or a beam (Sean's 2.245 tiles 6, 7, 11:
 #    3/3 "part of a hairpin"). Read by the system-arc reader (`arcs_system.gather_system_arcs`) before it files an arc.
 ARC_MIN_LEN_SP = 3.0

@@ -497,6 +497,15 @@ def gather_detections(log: Log, cells: Sequence[Any],
             _grid = _cell_grid(c)
             dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0,
                                                           staff_top=_grid[0] if _grid else 0.0)
+        # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): a TALL hollow head box is read for the heads inside it by their holes (a
+        # dyad of halves boxed as one head); each head no one-head box stands on gets its own box, APPENDED (every glyph index unchanged).
+        if dets and _box_kind.tall_split_enabled():
+            _grid = _cell_grid(c)
+            dets, _tall_info = _box_kind.split_tall_heads(dets, getattr(c, "image", None), 2.0 * _grid[1] if _grid else 0.0,
+                                                          staff_top=_grid[0] if _grid else 0.0,
+                                                          line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()))
+            for _k, _v in _tall_info.items():
+                split_info.setdefault(_k, {}).update(_v)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
