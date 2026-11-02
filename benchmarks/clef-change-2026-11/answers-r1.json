@@ -5,7 +5,7 @@
   "2": "C clef",
   "3": "C clef",
   "4": "C clef",
-  "5": "C clef (Sean's correction, 2026-11-01; first answer was 'G clef, but the orange box is a little bit off')",
+  "5": "G clef, but the orange box is a little bit off (Sean confirmed 'Sorry - 5 is a G clef' after a brief 'C clef' correction)",
   "6": "C clef",
   "7": "C clef",
   "8": "G clef. Again, the box is a little off",
@@ -20,13 +20,14 @@
    2,
    3,
    4,
-   5,
    6,
    7,
    10,
    12
   ],
-  "claims_wrong": {},
+  "claims_wrong": {
+   "5": "header G clef (Litolff p6 s0 staff 5) claimed as a C clef, kind unread"
+  },
   "rejections_right": {
    "8": "G clef rejected (g_clef_shape)",
    "9": "barline rejected (no_bowls)"

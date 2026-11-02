@@ -96,3 +96,4 @@ Subset (Litolff 2,4; Brahms 4,5), not the frozen sample:
 - Tile 10: the F-clef claim area also holds a quarter rest -- the claim must not take the rest's ink.
 - Round 2: no C claim on a G clef (and none at a header where a READ G clef stands); trim the claim area to the clef's own ink; Brahms F-clef dots.
 - Correction (Sean, same day): tile 5 is a C clef. Claims are right 9 of 9; round 2 is only the Brahms F-clef dots (tile 11) and the rest inside tile 10's claim area.
+- Correction withdrawn (Sean, same day: "Sorry - 5 is a G clef"): claims right 8 of 9; round 2 also covers the G clef claimed as a C clef (tile 5).
