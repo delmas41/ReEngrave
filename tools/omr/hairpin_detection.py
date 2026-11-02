@@ -197,12 +197,31 @@ def detect_hairpins(
     if not staves:
         return []
     search = page_ink if blanked_ink is None else blanked_ink
-    iso_ink = page_ink
-    if reach:
-        search, iso_ink = reach_inks(page_ink, search, staves)
-        sps = sorted(float(s["spacing"]) for s in staves if s.get("spacing"))
-        search = straight_runs(search, sps[len(sps) // 2])
-        iso_ink = straight_runs(iso_ink, sps[len(sps) // 2])
+    if not reach:
+        return _search_bands(page_ink, search, staves, reach=False)
+    # ROADMAP 2.254: pass 1 on the ink with vertical strokes removed; pass 2 on its straight runs only (a slur or head touching an arm
+    # falls away), for hairpins at least `REACH_LINE_MIN_W_SP` long -- the straight-run filter also makes a straight-edged shape out of
+    # a fermata or an 'ff' (Litolff p16, 3.2-3.4 sp), so a short find there is not trusted. A pass-2 find overlapping a pass-1 find
+    # on the same staff is the same hairpin.
+    # Pass 0 is the reader as it stands: the reach only ADDS reads (a hairpin the plain reader keeps -- Litolff p10 -- the rejoin can
+    # glue to a neighbour).
+    out = _search_bands(page_ink, search, staves, reach=False)
+    search, iso_ink = reach_inks(page_ink, search, staves)
+    sps = sorted(float(s["spacing"]) for s in staves if s.get("spacing"))
+    sp = sps[len(sps) // 2]
+    for found in (_search_bands(iso_ink, search, staves, reach=True, min_width_spaces=REACH_MIN_W_SP),
+                  _search_bands(straight_runs(iso_ink, sp), straight_runs(search, sp), staves, reach=True,
+                                min_width_spaces=REACH_LINE_MIN_W_SP)):
+        kept = list(out)
+        for h in found:
+            if not any(o.staff_index == h.staff_index and min(o.x + o.width, h.x + h.width) > max(o.x, h.x) for o in kept):
+                out.append(h)
+    return out
+
+
+def _search_bands(iso_ink: np.ndarray, search: np.ndarray, staves: list[dict], *, reach: bool,
+                  min_width_spaces: float = MIN_WIDTH_SPACES) -> list[Hairpin]:
+    """One search of every staff's band (the reader's three tests, and with `reach` the 2.254 ones)."""
     _n, full_lab, full_stats, _c = cv2.connectedComponentsWithStats(iso_ink, 8)
 
     out: list[Hairpin] = []
@@ -217,9 +236,10 @@ def detect_hairpins(
         n, lab, stats, _c2 = cv2.connectedComponentsWithStats(band, 8)
         for k in range(1, n):
             x, y, w, h, _area = stats[k]
-            if not (MIN_WIDTH_SPACES * sp <= w <= MAX_WIDTH_SPACES * sp):
+            if not (min_width_spaces * sp <= w <= MAX_WIDTH_SPACES * sp):
                 continue
-            m = measure_component(((lab[y:y + h, x:x + w] == k).astype(np.uint8)) * 255, sp)
+            mask = ((lab[y:y + h, x:x + w] == k).astype(np.uint8)) * 255
+            m = measure_component(mask, sp)
             if m is None:
                 continue
             if m["open_spaces"] < MIN_OPEN_SPACES:
@@ -227,12 +247,12 @@ def detect_hairpins(
             if m["outline_rms_spaces"] > MAX_OUTLINE_RMS_SPACES:
                 if not reach:
                     continue
-                r = robust_outline_rms(((lab[y:y + h, x:x + w] == k).astype(np.uint8)) * 255, sp)
+                r = robust_outline_rms(mask, sp)
                 if r is None or r > MAX_OUTLINE_RMS_SPACES:
                     continue
             if reach and not converges(m):
                 continue
-            if reach and extent_trend(((lab[y:y + h, x:x + w] == k).astype(np.uint8)) * 255) < REACH_MIN_EXTENT_TREND:
+            if reach and extent_trend(mask) < REACH_MIN_EXTENT_TREND:
                 continue
             if not _is_isolated(full_lab, full_stats, x, top + y, w, h):
                 continue
@@ -302,6 +322,11 @@ def reach_inks(page_ink: np.ndarray, search: np.ndarray, staves: list[dict]) -> 
 REACH_LINE_SPACES = 1.5
 REACH_LINE_MAX_DEG = 15.0
 REACH_LINE_STEP_DEG = 3.0
+#: ...trusted only for a find at least this long (Litolff p16: a fermata and an 'ff' made straight-edged at 3.2-3.4 sp; the Brahms
+#: hairpins only the straight-run pass finds are 5-8 sp).
+REACH_LINE_MIN_W_SP = 4.0
+#: The reach passes add nothing narrower than a letter (2.245's `box_kind.HAIRPIN_MIN_W_SP`: 9 of 9 narrower CV 'hairpins' were letters).
+REACH_MIN_W_SP = 1.6
 
 
 def _line_kernel(length: int, deg: float) -> np.ndarray:
