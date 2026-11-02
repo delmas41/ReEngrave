@@ -119,3 +119,14 @@ Subset (Litolff 2,4; Brahms 4,5): PAGEWIDE only -- Litolff notes -2, words +1; B
 
 Tiles: `out/print/2.251-r2-tiles/` (seed 22512) -- round-1 places 5, 10, 11 as handled now, plus 9 fresh (4 C inside a system, 2 Litolff F, Brahms F bar 97, 2 near-misses, 1 header control).
 - Sean's round-2 tiles (2026-11-02, `answers-r2.json`): **12 of 12 right** -- 9 claims (C 3, 9, 11, 12; F 4-7, 10) and 3 refusals (G clefs 1, 2; barline 8). The round-1 faults hold fixed at their places (tile 1 = r1 5, tile 4 = r1 11, tile 5 = r1 10).
+
+## 2026-11-02 -- landing gate: claim readouts on the round-2 code, flag OFF vs ON (2-page subset, saved-nothing: fresh `--through gather`)
+
+Litolff pages 2,4 and Brahms pages 4,5, `claim_order` / `claim_readout` on a fresh GATHER with `OMR_CLEF_PAGEWIDE` 0 vs 1 (the Litolff OFF arm reproduces round 1's base exactly: ORDER-VIOLATION 0.46, SPLIT 0.77).
+
+| plate | clef/key/meter single-owner ink | ORDER-VIOLATION | SPLIT-ACROSS-CLAIM |
+|---|---|---|---|
+| Litolff OFF -> ON | 2.2% -> 2.3% (register-claimed 3.1 -> 3.4) | 0.46% -> 0.45% | 0.77% -> 0.99% |
+| Brahms OFF -> ON | 1.7% -> 1.7% (register-claimed 2.6 -> 2.7) | 0.41% -> 0.41% | 0.59% -> 0.70% |
+
+Gate (no ORDER-VIOLATION rise; SPLIT-ACROSS-CLAIM under +0.3 points) passed; step 1 landed ON, carry stays OFF. The SPLIT rise is the new claims over C clefs the stroke map had already cut (SPLIT by owner clef_key_meter: Litolff 0.47 -> 0.65, Brahms 0.16 -> 0.25).
