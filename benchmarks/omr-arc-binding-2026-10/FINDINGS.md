@@ -1,5 +1,24 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2026-11-01 (2.250 LANDED): Sean's wide tiles 9 of 9 right; `OMR_BIND_END_PITCH` default ON (main 825506c04)
+
+**Tiles.** The first round-2 tiles (`out/print/2.250-r2-tiles/`) could not be answered: Sean "would be guessing on ties or slurs because I would need more context than the tile shows". Redrawn wide at the same 12 places (`out/print/2.250-r2-tiles-wide/`, key `out/print/2.250-r2-tiles-wide-key.json`): each shows the whole arc and both notes it joins. Sean: "1-11 are all ties and 12 is a slur. 4, 8 and 11 the orange box has two half notes in it a third apart. Both notes have ties attached." Scored in `answers-r2.json`.
+- Round-1 wrong places held (now no change): 3, 5, 9 are ties.
+- Round-2 changes right, 6 of 6: tile 6 tie gained (Brahms); 4, 7, 8, 10, 11 slur no longer written.
+- Controls: 12 a slur in both arms (right). **1 and 2 are ties written as slurs in BOTH arms** -- an existing miss on main, not a regression of this lane.
+- Judged right->wrong 0 and unwritten->wrong 0 on both plates (lane_report, round 2).
+
+**Landed** by a fresh landing agent, Sean "Land it": fast tier 9682 passed, 0 failed; checked on the tree (`merge-base --is-ancestor 825506c04 origin/main`; `arc_claim.end_pitch_enabled()` defaults ON; round-2 commit 75de4a004 is on main).
+
+**Still open (not fixed by this landing):**
+1. Fused dyads (tiles 4, 8, 11: two half notes a third apart, each tied): the false slur is gone but the TWO ties are not written -- the binder writes at most one relation per arc end and the fused box's members are not split into heads with their own pitch.
+2. Tiles 1 and 2: ties still written as slurs in both arms -- cause not yet looked at.
+3. litolff_06 (round-1 tile 6): a duplicate box kept by the 2.232 near-tie keeper; a separate fix, outside the binder.
+4. The tie the binder decides at litolff_03 is not written because the fused box's pitch is wrong (big item 1, the fused box).
+5. The "plain tie stays when the readings disagree" asymmetry rests on Sean's 6 round-1 answers only; the wide tiles agree (no disagreement case came back a slur), still CONVENTION ASSUMED.
+
+**Process lesson.** A blind tile must show everything a reader needs to answer: a tie or slur needs both ends of the arc and both notes. Our narrow tiles cost Sean a pass and us a redraw.
+
 ## 2026-11-01 (2.250 round 2): Sean's 12 tiles -- 6 of 9 changes right, 3 wrong; the wrong three were LONE tall boxes read as fused
 
 **Sean's verdict (key `out/print/2.250-tiles-key.json`):** changed places right 6/9 (the lost slurs at tiles 1, 5, 8, 9, 12 and the gained tie at tile 3 were all ties); wrong 3/9: the slurs gained at tiles 4, 6, 7 (`glyph/10/0/8/7/3`, `10/0/8/6/3`, `9/0/7/4/0`) are ties. Controls 2, 10, 11 match.

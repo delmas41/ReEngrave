@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-01 -- day manager: 2.251 built (OFF), 2.248 r3 built (OFF), Sean's tiles on 2.250 r2 / 2.251 / 2.248 recorded
+- 2.251 clef change inside a system: step 1 `OMR_CLEF_PAGEWIDE` (C clef by thick bar + bowls, no detector box; F clef by box + dots) and step 2 `OMR_CLEF_CARRY` (pitch from the last clef before the head), both OFF, lane-2.251-clef-change 3254ce233. Sean's tiles: 8/9 claims right; round 2 in flight. The carry does not land: missed bass returns move the error, and notes after an unread clef are dropped, not marked red.
+- 2.248 r3 `OMR_FARHEAD_UNREAD_GUESSED` (OFF, lane-2.248-ink-extent ee87ef423): a far head whose ledger count abstains is written blue with candidates instead of plain. Sean: 6/6 blue are real notes, 2 on the wrong staff, 2 unresolved; r2's in-staff moves 4/6 were not heads (r2 does not land).
+- 2.250 r2: narrow tiles unanswerable; wide tiles 9/9 right; landed (entry below).
+- An answer-recording commit on a live lane branch (1a59c0a91) reverted 2.250 r2 code; restored (9117d8110). Memory rule: record answers on main or after the lane stops, staging named files only.
+- Tiles must show what the answer needs (CLAUDE §6 tile rule widened): both ends of an arc; the staff a far head is counted from.
+
 ## 2026-11-01 -- 2.250 LANDED: the STAGED arc binder reads the end note's pitch (`OMR_BIND_END_PITCH` default ON)
 Sean "Land it" after round-2 wide tiles 9/9 right, judged right->wrong 0. `arc_claim.end_pitch_enabled()` now defaults ON (explicit 0/false/no/off disables); the end note's step comes from the head extent, a chord end binds to the member at the arc end's height, a lone tall box is read both ways and only a plain tie where they agree. Flag rows and the default-OFF test updated. (ROADMAP 2.250; benchmarks/omr-arc-binding-2026-10/FINDINGS.md)
 

@@ -97,3 +97,7 @@ Subset (Litolff 2,4; Brahms 4,5), not the frozen sample:
 - Round 2: no C claim on a G clef (and none at a header where a READ G clef stands); trim the claim area to the clef's own ink; Brahms F-clef dots.
 - Correction (Sean, same day): tile 5 is a C clef. Claims are right 9 of 9; round 2 is only the Brahms F-clef dots (tile 11) and the rest inside tile 10's claim area.
 - Correction withdrawn (Sean, same day: "Sorry - 5 is a G clef"): claims right 8 of 9; round 2 also covers the G clef claimed as a C clef (tile 5).
+
+## 2026-11-01: round 2 sent (Sean "Send clef lane back")
+
+Same lane, same branch. Scope: (1) tile 5 -- no C claim on a G clef, and none where a READ header clef of another kind stands; (2) tile 10 -- trim each claim area to the clef's own ink (a rest inside it must stay unclaimed); (3) tile 11 -- a Brahms F-clef dot reader that survives thick staff lines, with the Brahms p25 false `clefF` over a half note kept as a failing twin; (4) why the box sat "a little off" on tiles 5 and 8; (5) if small, notes after an unread-kind clef MARKED red, not silently dropped. The carry (step 2) stays OFF. 12 new tiles in `out/print/2.251-r2-tiles/`.
