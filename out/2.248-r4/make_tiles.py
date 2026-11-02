@@ -40,7 +40,7 @@ for plate in ("litolff", "brahms"):
         if o.get("pitch") != h.get("pitch"):
             group = "pitch_changed"
         elif h.get("blue") and not o.get("blue"):
-            group = "far_unread_blue"
+            group = "far_unread_blue" if (pos_of.get(h["rg"]) is None or round(pos_of[h["rg"]]) < -1 or round(pos_of[h["rg"]]) > 9) else "blue_in_staff_bar_changed"
         else:
             continue
         pos = pos_of.get(h["rg"])
