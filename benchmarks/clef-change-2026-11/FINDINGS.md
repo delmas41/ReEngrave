@@ -88,3 +88,10 @@ Subset (Litolff 2,4; Brahms 4,5), not the frozen sample:
 **Process lesson.** A carry needs return-clef recall at least as high as change recall -- measure the returns before carrying.
 
 **Before step 2 can land:** export marks the notes after an unread clef red; bass-clef recall rises (an F-clef shape reader with no box, Brahms dots) or the carry stops at any clef-shaped candidate; the frozen sample is run.
+
+## 2026-11-01: Sean's step-1 tiles (answers-r1.json)
+
+- Claims: 8 of 9 right (C clefs 1-4, 6, 7 -- including tile 6, the bar-102 C clef whose kind we left unread; F clefs 10, 12). Wrong: tile 5, a header G clef (Litolff p6 s0 staff 5) claimed as a C clef, kind unread -- the G clef's loops passed as bowls despite the spine filter. Sean: the box is "a little off" there and on tile 8.
+- Refusals: 8 (G clef) and 9 (barline) right; 11 is a real F clef refused for broken dots (Brahms).
+- Tile 10: the F-clef claim area also holds a quarter rest -- the claim must not take the rest's ink.
+- Round 2: no C claim on a G clef (and none at a header where a READ G clef stands); trim the claim area to the clef's own ink; Brahms F-clef dots.
