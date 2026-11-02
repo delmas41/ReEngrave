@@ -3,14 +3,27 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-10-31 (un-frozen 2026-10-07; kept current with every commit alongside
+**Updated:** 2026-11-02 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`; CLAUDE.md was cut to ~1,800 words on
 2026-10-13 and its detail moved to `docs/running.md`, `docs/staged-internals.md`,
 `docs/page-facts.md`, `docs/measuring.md`, `docs/data-sources.md`,
 `docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
-## Where things stand (2026-10-31 evening)
+## Since then (2026-11-01/02)
+
+- **Arc binder reads the end note's pitch** (2.250): ON.
+- **Clef changes inside a system are claimed page-wide** (2.251 step 1): ON.
+  - C clefs are read by shape.
+  - F clefs are read by box and dots.
+  - Notes after an unread clef are marked red.
+- **The clef carry** (2.251 step 2): built and OFF.
+  - Its pitches are right on Sean's tiles.
+  - It waits on bar 111, where it still turns right notes wrong.
+- **Far heads written blue when the ledger count abstains** (2.248 r3): OFF.
+  - It waits on why 2 of them land on the wrong staff.
+
+## Where things stood (2026-10-31 evening)
 
 GATHER is being rebuilt so that every piece of ink is claimed once, by the mark it belongs to. This is Sean's north star, "all ink is accounted for one time".
 - **10-29:** page-wide claims.

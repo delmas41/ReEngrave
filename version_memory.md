@@ -9,6 +9,18 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- day manager: 2.251 step 1 landed, carry r1 built and tiled, carry r2 in flight
+
+- Sean's 2.251 r2 tiles: 12/12 right (4c3350889). Sean "Land and get the pitch work right": step 1 landed ON (9db2c7495, entry below); a separate Opus lane took the carry.
+- Carry r1 (lane-2.251-carry 101e92cf7, `OMR_CLEF_CARRY` OFF). The cause is return-clef recall: bass-clef returns were read only through a detector box. The lane added:
+  - a no-box F-clef reader;
+  - a carry that stops red at any unreadable clef candidate;
+  - export of `<clef>` only for a READ claim.
+- Pitch witness: Litolff wrong 266 -> 22 but right->wrong 10 (9 in bar 111); Brahms pp.4-5 wrong 82 -> 5, right->wrong 0.
+- Sean's carry tiles: 10/12 right, carry-caused right->wrong 0 (d741be415, answers-r3-carry.json). Tile 11 is a real F clef we held at 0.69. Tile 12 is a far head one step high (position reading, not the carry).
+- Carry round 2 sent back (Sean: "fix bar 111 so the carry is never worse, then come back for landing"). It also covers the false head on bar-38 clef ink, a re-check of the 0.70 cut-off, and the Brahms frozen sample.
+- Still open from earlier: 2.248 r3 wrong-staff cause; 2.250 fused-dyad ties and the ties written as slurs.
+
 ## 2026-11-02 -- 2.251 step 1 landed: OMR_CLEF_PAGEWIDE default ON (carry stays OFF)
 
 Sean "Land": the STAGED GATHER page-wide clef reader (`clef_pagewide.py`) now claims clef-shaped ink inside a system by default; `OMR_CLEF_CARRY` is untouched (default OFF). Gate before the flip, round-2 code, 2-page subset (Litolff 2,4; Brahms 4,5), flag 0 vs 1: ORDER-VIOLATION Litolff 0.46 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM Litolff 0.77 -> 0.99, Brahms 0.59 -> 0.70 (both under +0.3). Flag row in docs/flags-2026-09.md and the default test updated. Details: benchmarks/clef-change-2026-11/FINDINGS.md.
