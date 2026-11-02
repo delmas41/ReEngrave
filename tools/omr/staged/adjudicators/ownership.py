@@ -3047,22 +3047,44 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sa, src_a = _head_step(ev, rows[lk])
         sb, src_b = _head_step(ev, rows[rk])
     from ..arcs_system import SAME_POSITION_SPACES
-    dy = abs(cya - cyb) / sp
-    near = dy <= SAME_POSITION_SPACES
-    if end_pitch and sa is not None and sb is not None and "geometry_tall_end" in (src_a, src_b):
-        # a fused box's head-sized END is a box edge, not the head's centre: its `dy` is good to a few pixels, not to 0.25 sp, so the
-        # two STEPS are the witness here (the box-grain position cannot contradict a half-step it was used to compute)
-        near = sa == sb
-    if sa is None or sb is None:
-        # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
-        # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
-        # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
-        relation = ("same" if near else "different" if dy >= BIND_DIFFERENT_POSITION_SPACES else "unread")
-        b["relation_source"] = "boxes_only"
-    elif sa == sb:
-        relation = "same" if near else "conflict"
-    else:
-        relation = "different" if not near else "conflict"
+
+    def _relation(sa_, sb_, ya, yb, sra, srb):
+        dy_ = abs(ya - yb) / sp
+        near_ = dy_ <= SAME_POSITION_SPACES
+        if end_pitch and sa_ is not None and sb_ is not None and "geometry_tall_end" in (sra, srb):
+            # a fused box's head-sized END is a box edge, not the head's centre: its `dy` is good to a few pixels, not to 0.25 sp, so the
+            # two STEPS are the witness here (the box-grain position cannot contradict a half-step it was used to compute)
+            near_ = sa_ == sb_
+        if sa_ is None or sb_ is None:
+            # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
+            # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
+            # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
+            return ("same" if near_ else "different" if dy_ >= BIND_DIFFERENT_POSITION_SPACES else "unread"), "boxes_only", dy_
+        if sa_ == sb_:
+            return ("same" if near_ else "conflict"), None, dy_
+        return ("different" if not near_ else "conflict"), None, dy_
+
+    relation, rsrc, dy = _relation(sa, sb, cya, cyb, src_a, src_b)
+    if rsrc:
+        b["relation_source"] = rsrc
+    lone = [s_ for s_ in ("left", "right") if b[s_].get("tall_lone")]
+    if end_pitch and lone:
+        # ROADMAP 2.250 round 2: a LONE tall box (no second box in its column) may be one head (its centre is the head: the plain reading
+        # above) or a fused chord (the head at the end the arc stands at). Where the two readings give the SAME relation it stands. Where
+        # they disagree the end cannot tell which member (rule 8): the plain reading's TIE stays (a tie claim rests on the box reading,
+        # as before 2.250), anything else is no kind. Sean's round-1 tiles: 3 such ties (p9-10) read right on the plain reading and
+        # wrong on the end reading; 3 slurs the plain reading wrote were ties (p2) -- both are this case.
+        sa2, sb2, src2a, src2b, ya2, yb2 = sa, sb, src_a, src_b, cya, cyb
+        if "left" in lone:
+            sa2, src2a = _tall_end_step(ev, rows[lk], hl["cy"], hl["h"], b["left"]["end_y"])
+            ya2 = b["left"]["end_y"]
+        if "right" in lone:
+            sb2, src2b = _tall_end_step(ev, rows[rk], hr["cy"], hr["h"], b["right"]["end_y"])
+            yb2 = b["right"]["end_y"]
+        alt, _asrc, _ady = _relation(sa2, sb2, ya2, yb2, src2a, src2b)
+        b["tall_lone_readings"] = {"plain": relation, "at_the_end": alt, "end_steps": [sa2, sb2]}
+        if alt != relation and relation != "same":
+            relation, b["relation_source"] = "unread", "tall_lone_readings_disagree"
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])

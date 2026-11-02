@@ -165,13 +165,13 @@ def test_a_tall_member_stands_at_its_nearer_head_sized_end_and_is_flagged():
     assert centre_only["head"] == "fused" and "tall" not in centre_only          # the twin: without the mark the box is read by its centre
 
 
-def _tall_scene(end_y, mate=True):
+def _tall_scene(end_y, mate=True, stop=(122.1, 136.7)):
     log = Log()
     _cells(log, 2)
     _box(log, 0, 0, 40.0, 117.0, 147.0)              # a fused box, 3 head heights tall, centre 132 (step 6.4)
     if mate:
         _box(log, 0, 4, 40.0, 117.0, 127.0)          # a second box in its column: the corroboration that it is a fused chord
-    _box(log, 0, 3, 120.0, 122.1, 136.7)             # the stop head, centre 129.4 (step 5.9 -> 6)
+    _box(log, 0, 3, 120.0, stop[0], stop[1])         # the stop head, centre 129.4 (step 5.9 -> 6) unless moved
     for i in range(4):                               # the staff's ordinary heads: the mean head height is a head's, not the fused box's
         _box(log, 1, i, 250.0 + 20 * i, 120.0, 130.0)
     arc = _arc(log, 0, 5, 55.0, 115.0, 150.0, 156.0, cls="tie")
@@ -188,10 +188,26 @@ def test_a_tall_end_beyond_the_box_is_read_at_the_head_sized_end_not_the_centre(
     assert pb["stop_step"] == 6 and pb["relation"] == "different" and pb["kind"] == "slur"
 
 
-def test_a_lone_tall_box_is_not_known_to_be_two_heads_and_keeps_its_centre_step(on):
-    # Sean's round-1 ties (litolff p9-10): a tall box alone in its column (a head with ledger / stem ink) is read as it always was
-    pb = _binding(_tall_scene(150.0, mate=False))
+def test_a_lone_tall_box_whose_two_readings_disagree_keeps_a_tie_never_a_slur(on):
+    # Sean's round-1 ties (litolff p9-10): a tall box ALONE in its column may be one head or a fused chord. Plain (centre step 6 vs 6):
+    # same; at the end (8 vs 6): different. They disagree and the plain reading is a tie -> the tie stays; never a slur.
+    pb = _binding(_tall_scene(150.0, mate=False, stop=(125.0, 139.0)))      # stop centre 132: one position with the box centre
     assert "tall" not in pb["left"] and pb["start_step_source"] == "geometry" and pb["start_step"] == 6
+    assert pb["tall_lone_readings"] == {"plain": "same", "at_the_end": "different", "end_steps": [8, 6]}
+    assert pb["relation"] == "same" and pb["kind"] == "tie"
+
+
+def test_a_lone_tall_box_whose_plain_reading_is_a_slur_and_end_reading_a_tie_gives_no_kind(on):
+    # Sean's round-1 p2 ties: plain (6 vs 8) different; at the end (8 vs 8) same -> disagree, the plain reading is no tie -> no kind
+    pb = _binding(_tall_scene(150.0, mate=False, stop=(135.0, 145.0)))
+    assert pb["tall_lone_readings"]["plain"] == "different" and pb["tall_lone_readings"]["at_the_end"] == "same"
+    assert pb["kind"] is None and pb["relation"] == "unread"
+
+
+def test_a_lone_tall_box_whose_two_readings_agree_is_decided(on):
+    # twin: stop at step 8 and the end reading also 8 vs 8 would be "same" for end; make plain agree by a different stop: both different
+    pb = _binding(_tall_scene(150.0, mate=False, stop=(112.0, 122.0)))      # stop centre 117 (step 3.4 -> 3): plain 6 v 3, end 8 v 3
+    assert pb["tall_lone_readings"]["plain"] == pb["tall_lone_readings"]["at_the_end"] == "different" and pb["kind"] == "slur"
 
 
 def test_a_tall_end_inside_the_box_is_read_as_before_by_its_centre(on):

@@ -304,6 +304,13 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
     pick = ranked[0]
     out = {"head": pick["key"], "column": len(ranked), "by_height": True,
            "distance_spaces": round((abs(pick["cx"] - ex) + abs(where(pick) - ey)) / sp, 3)}
+    if (bool(pick.get("tall")) and len(members) == 1 and not is_fused(pick)
+            and not (pick["cy"] - pick["h"] / 2.0 <= ey <= pick["cy"] + pick["h"] / 2.0)):
+        # a LONE tall box with the arc end beyond it: one head, or a fused chord -- `ownership._page_binding` reads both and abstains
+        # where they disagree (rule 8)
+        hh = float(pick.get("hh") or pick["h"])
+        out["tall_lone"] = True
+        out["end_y"] = min((pick["cy"] - pick["h"] / 2.0 + hh / 2.0, pick["cy"] + pick["h"] / 2.0 - hh / 2.0), key=lambda y: abs(y - ey))
     if is_fused(pick):
         out["tall"] = True            # the member is a fused box: its step is unread (`ownership._page_binding`), never its centre's
         out["end_y"] = where(pick)    # ... and its position is the head-sized end the arc stands at, never the box centre
