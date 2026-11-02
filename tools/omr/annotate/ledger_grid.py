@@ -3692,8 +3692,12 @@ def count_ledgers_between(
     is_text: "Callable[[float], bool] | None" = None,
     rung_ok: "Callable[[float], bool] | None" = None,
     ledger_read: bool = False,
+    gap_max: "float | None" = None,
 ) -> dict:
     """Step 3: the ledgers strictly between the staff edge and `line_y`.
+    `gap_max` (ROADMAP 2.255 r2, flag `OMR_LEDGER_READ`; None = bit-identical): the largest gap that FITS one ledger pitch,
+    where the page's own ledgers are drawn wider than `NOTE_GAP_MAX_SPACES` (`local_gap_max`).  It is applied only AFTER the
+    look for a hidden ledger has found nothing -- a gap the look fills is counted exactly as before.
     `ledger_read` (ROADMAP 2.255, flag `OMR_LEDGER_READ`; False = bit-identical): a gap the relaxed look leaves wide
     gets one more LOOK, never a line assumed: the stacked window slid across the gap for a ledger's thin flat end
     jutting past the head's column (`snap_rung_in_gap`: a ledger hidden behind a chord-mate head shows only its ends).
@@ -3749,11 +3753,14 @@ def count_ledgers_between(
         between.sort(key=lambda v: sign * v)
     chain, gaps = chain_gaps()
     fits = all(NOTE_GAP_MIN_SPACES <= g <= NOTE_GAP_MAX_SPACES for g in gaps)
-    why = "ok" if fits else (
+    relaxed = False
+    if not fits and gap_max is not None and gap_max > NOTE_GAP_MAX_SPACES:
+        relaxed = fits = all(NOTE_GAP_MIN_SPACES <= g <= gap_max for g in gaps)
+    why = ("ok (gap read against the system's own pitch: limit %.2f sp)" % gap_max if relaxed else "ok") if fits else (
         "count_does_not_fit (gaps " + ", ".join(f"{g:.2f}" for g in gaps)
         + " sp: a gap holds room for a different count than found)")
     return dict(k=len(between) + 1, between=between, fits=fits, why=why, d=d,
-                gaps=gaps)
+                gaps=gaps, relaxed=relaxed)
 
 
 # ROADMAP 2.255 (Sean 2026-11-02: "the ledger lines are hand drawn at varying measurements so if we cant read the ledger
@@ -3769,6 +3776,28 @@ def count_ledgers_between(
 #    white gap up to ~1.75 sp read 7 more Litolff heads -- and also turned Brahms heads that belong to the NEIGHBOUR staff
 #    (`glyph/0/0/5/2/16`, Sean: the staff below) into readings toward their own staff: a cut-off measured on one plate
 #    may only narrow (CLAUDE §4), so it stays out.
+#: ROADMAP 2.255 r2 (Sean 2026-11-02: "the ledger lines are hand drawn at varying measurements").  `NOTE_GAP_MAX_SPACES` (1.5) is
+#: "room for another ledger": two gaps each no shorter than the smallest pitch the page draws.  Litolff's smallest pitch is ~0.75
+#: of its median on both pages measured (p10 0.76/1.04, p6 0.91/1.23), so a gap holds room for another ledger only from
+#: 2 x 0.75 = 1.5 x the system's own median pitch -- the same 1.5 on a page drawn at 1.0 sp (Brahms), 1.8 where the system's
+#: ledgers run 1.2 sp apart (first ledgers at 1.52 and 1.54 sp, `glyph/6/1/1/11/1`, `glyph/6/1/10/3/1`, Sean: ledger 1).
+#: The factor 0.75 is a measurement on our two plates (CLAUDE 4: it may only NARROW what is decided -- the tiles say), the
+#: median is the system's own; fewer than `LOCAL_PITCH_MIN_GAPS` measured gaps = no local pitch = the fixed limit.
+LOCAL_PITCH_MIN_GAPS = 8
+LOCAL_PITCH_HOLDS_ROOM_FACTOR = 1.5
+LOCAL_PITCH_GAP_CAP_SPACES = 1.9
+
+
+def local_gap_max(gaps_sp: "list[float]") -> "float | None":
+    """The fit limit for a system whose read ledger chains had these gaps (in staff spacings), or None (= the fixed limit)."""
+    g = sorted(float(v) for v in gaps_sp if NOTE_GAP_MIN_SPACES <= v <= NOTE_GAP_MAX_SPACES)
+    if len(g) < LOCAL_PITCH_MIN_GAPS:
+        return None
+    med = g[len(g) // 2] if len(g) % 2 else 0.5 * (g[len(g) // 2 - 1] + g[len(g) // 2])
+    lim = min(LOCAL_PITCH_HOLDS_ROOM_FACTOR * med, LOCAL_PITCH_GAP_CAP_SPACES)
+    return lim if lim > NOTE_GAP_MAX_SPACES else None
+
+
 #: a flat stroke on a row (`flat_stroke_on_row`): a horizontal run at least a head's width through the head's columns ...
 FLAT_STROKE_MIN_SPACES = 1.0
 #: ... thin (<= this many spaces tall) at its quarter, middle and three-quarter columns, the three centres level
@@ -3947,6 +3976,7 @@ def derive_note_first_step(
     artic_boxes: "list | None" = None,
     not_ledger: "Callable[[float], object] | None" = None,
     ledger_read: bool = False,
+    gap_max: "float | None" = None,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment).
 
@@ -4011,7 +4041,7 @@ def derive_note_first_step(
         rung_ok=_rung_ok_with(
             ((lambda y: not rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box))
              if (look_where_it_must_be and artic_boxes) else None), not_ledger),
-        ledger_read=ledger_read)
+        ledger_read=ledger_read, gap_max=gap_max)
     base = dict(hidden_ledger_look=looked, refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 edge_vs_through=ln.get("edge_vs_through"),
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])
