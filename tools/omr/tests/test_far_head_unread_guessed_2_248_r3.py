@@ -232,3 +232,18 @@ class TestMoveGlyphReowned(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TestR4FarFlagIsNotAHead(unittest.TestCase):
+    """r4: Brahms p5 tiles 3, 4 -- an eighth's FLAG boxed `noteheadBlackOnLine` below the staff, 1.5 x 2.2+ sp, ink fill 0.42-0.50."""
+
+    def test_far_tall_underfilled_filled_box_is_refused(self):
+        self.assertEqual(head_extent and __import__("tools.omr.staged.box_kind", fromlist=["x"]).far_box_not_a_filled_head(
+            "noteheadBlackOnLine", 2.22, 0.50)[0], "taller_than_a_filled_head")
+
+    def test_a_head_sized_or_filled_or_hollow_box_is_not(self):
+        from tools.omr.staged import box_kind
+        self.assertIsNone(box_kind.far_box_not_a_filled_head("noteheadBlackOnLine", 1.2, 0.30))   # head-sized
+        self.assertIsNone(box_kind.far_box_not_a_filled_head("noteheadBlackOnLine", 2.2, 0.95))   # a solid stacked pair
+        self.assertIsNone(box_kind.far_box_not_a_filled_head("noteheadHalfOnLine", 2.2, 0.30))    # a hollow head is not filled
+        self.assertIsNone(box_kind.far_box_not_a_filled_head("noteheadBlackOnLine", 2.2, None))   # no ink reading: says nothing
