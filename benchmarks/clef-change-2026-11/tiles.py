@@ -40,8 +40,7 @@ def pool():
                     for c in CP.c_bars(ink, ly, sp, st["x_start"], st["x_end"]):
                         if c["why"] == "bar_too_thin":
                             continue
-                        area = [c["x0"] - 0.15 * sp, c.get("middle_y", (c["y0"] + c["y1"]) / 2) - 2.3 * sp,
-                                c.get("x_right", c["x1"] + 2 * sp) + 0.1 * sp, c.get("middle_y", (c["y0"] + c["y1"]) / 2) + 2.3 * sp]
+                        area = CP.c_area(c, sp)
                         kind = "near" if not c["passed"] else ("header" if c["x0"] <= head else "change")
                         nm = CP.name_c(c["middle_y"], c["lines_local"])[0] if c["passed"] else None
                         out.append(dict(plate=plate, page=pg, system=s, staff=li, area=area, cls=kind, family="C",
@@ -53,7 +52,7 @@ def pool():
                         seen.append(bb[0])
                         ll = CP.local_lines(ink, ly, sp, bb[0])
                         got = CP.read_box("clefF", bb, ink, ll, sp)
-                        out.append(dict(plate=plate, page=pg, system=s, staff=li, area=[bb[0], bb[1], bb[2] + 0.8 * sp, bb[3]],
+                        out.append(dict(plate=plate, page=pg, system=s, staff=li, area=CP.f_claim_area(got, bb, sp),
                                         cls="change" if got["passed"] else "near", family="F", read=got["kind"], why=got["why"]))
     return out
 
@@ -100,4 +99,5 @@ def main():
                "pool": {k: len(v) for k, v in by.items()}, "tiles": key}, open(os.path.join(out, "key.json"), "w"), indent=1)
 
 
-main()
+if __name__ == "__main__":
+    main()
