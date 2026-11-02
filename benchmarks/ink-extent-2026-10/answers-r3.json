@@ -57,6 +57,35 @@
     "6": "top part of the head"
    }
   },
-  "not_asked": "line vs space was not answered, so neither candidate is confirmed"
+  "not_asked": "line vs space was not answered, so neither candidate is confirmed",
+  "line_space": {
+   "r2_real_heads": {
+    "4": "second space from top = step 3; ink centre 2.89 right, box centre 2.5 wrong",
+    "12": "second space from bottom = step 5; ink centre 4.95 right, box centre 4.5 wrong"
+   },
+   "r3_far_blue": {
+    "7": "third space below = step 13 = box candidate G3 (written) RIGHT",
+    "9": "first ledger above = step -2 = box candidate A5 (written) RIGHT",
+    "3": "WRONG OWNER: keyed to staff 8 at step -8 (above), Sean reads a ledger line BELOW the staff -- the note belongs to staff 7; both candidates G6/A6 wrong",
+    "6": "WRONG OWNER: keyed to staff 6 at step 15 (below), Sean reads the second ledger line ABOVE the staff -- the note belongs to staff 7; both candidates G1/F1 wrong",
+    "8": "UNRESOLVED: 'fourth space above' counted from the top line is step -7, neither candidate (-8 G6 / -9 A6); asked Sean to count ledger lines",
+    "11": "UNRESOLVED: same as 8"
+   }
+  }
+ },
+ "line_space": {
+  "source": "Sean 2026-11-01, second pass, verbatim",
+  "1": "a tremolo slash",
+  "2": "part of an F clef",
+  "3": "part of an eighth note, but that eighth note is on the ledger line below the staff",
+  "4": "a quarter note in the second space from the top",
+  "5": "a tremolo slash",
+  "6": "an eighth note. The box isn't fully around the whole note, but it's on the second ledger line above the staff",
+  "7": "a quarter note on the third space below the staff",
+  "8": "fourth space above the staff",
+  "9": "the first ledger line above the staff",
+  "10": "the eighth rest",
+  "11": "the fourth space above the staff",
+  "12": "the second space from the bottom in the staff"
  }
 }
