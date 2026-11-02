@@ -17,7 +17,8 @@ TRUTH = {
     "litolff": {
         (2, 1, 3): ("bass", [(707, "tenor"), (973, "bass")]),
         (4, 0, 9): ("tenor", [(1982, "bass")]),
-        (4, 1, 3): ("bass", [(992, "tenor"), (1678, "bass"), (2167, "tenor"), (2300, "bass")]),
+        # bar 111's bass clef: the eighth whose head (2314-2338) overlaps its body is printed BEFORE it (Sean, carry r2 tile 2)
+        (4, 1, 3): ("bass", [(992, "tenor"), (1678, "bass"), (2167, "tenor"), (2340, "bass")]),
         (6, 0, 3): ("bass", [(606, "tenor")]),
         (6, 0, 8): ("tenor", [(1890, "bass")]),
         (6, 1, 3): ("tenor", [(599, "bass")]),

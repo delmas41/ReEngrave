@@ -15586,9 +15586,10 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                         continue
                     if any(n.get("why") == "f_body_below_read" and abs(float(n["x0"]) - mb[0]) <= 2.5 * sp for n in near):
                         continue                               # the same clef, seen with its dots
-                    # the candidate stands a space LEFT of the matched body (the template matched the body's right part at bar 111; a
-                    # head box on the clef's own blob stood left of it): stopping early only makes heads unread, never wrong
-                    near.append({"x0": float(mb[0]) - 1.0 * sp, "family": "F", "why": "f_body_no_dots", "box": None,
+                    # the candidate stands at the matched BODY's left edge (round 2 tried a space further left: at bar 111 the head under
+                    # it is a real eighth printed BEFORE the clef -- Sean's r2 tile 2 -- and it went unread). A candidate files no claim:
+                    # it takes no ink; `area` is the body, for a tile only
+                    near.append({"x0": float(mb[0]), "family": "F", "why": "f_body_no_dots", "box": None, "area": list(mb),
                                  "body_score": bs["match"]["score"]})
             # (b): a `clef*` box too small to be a clef-sized claim is still ink that may be a clef (Litolff Vc bar 411: a 0.7 sp
             # `clefF` box on a real bass clef)
@@ -15644,7 +15645,8 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
                         reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
                         x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
-                        **({"candidate": bool(cand), "body_score": n.get("body_score"), "strong": bool(n.get("strong"))}
+                        **({"candidate": bool(cand), "body_score": n.get("body_score"), "strong": bool(n.get("strong")),
+                            "area": [round(float(v), 1) for v in n["area"]] if n.get("area") else None}
                            if CP.carry_enabled() else {}),
                         shape={k: n.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
                                                      "bowl_asymmetry", "g_shape") if k in n} or None)

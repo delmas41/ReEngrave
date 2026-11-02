@@ -90,6 +90,24 @@ class NoBoxBassClef(unittest.TestCase):
         got = self._scan(4, 1, 3, 2200, 2700)
         self.assertTrue(any(2300 <= r["x"] <= 2370 for r in got), got)
 
+    def test_bar111_candidate_stands_after_the_eighth_printed_before_the_clef(self):
+        # Sean's carry r2 tile 2: an eighth note (head box 2314-2338, centre 2326) is printed BEFORE the bar-111 bass clef and its head
+        # overlaps the clef's body. The candidate (filed at the body's left edge, `gather_clef_pagewide`) must stand right of that head, so
+        # the eighth keeps the clef in force before it, and left of the first head after the clef (2380)
+        got = [r for r in self._scan(4, 1, 3, 2200, 2700) if 2300 <= r["x"] <= 2380]
+        self.assertTrue(got)
+        x = max(got, key=lambda r: r["match"]["score"])["x"]
+        self.assertTrue(2326 < x < 2380, x)
+        from tools.omr.staged import clef_pagewide as CP
+
+        class Row:
+            def __init__(self, x, **d):
+                self.value, self.detail = [x, 0, x + 40, 50], d
+        ch = CP.changes_of([Row(2167, source=CP.SOURCE, change=True, kind="tenor")])
+        cands = CP.candidates_of([Row(0, source=CP.SOURCE, candidate=True, x_page=x, family="F")])
+        self.assertEqual(CP.clef_in_force(2326, ch, cands, "bass")[0], "tenor")   # the eighth: tenor, carried
+        self.assertIsNone(CP.clef_in_force(2390, ch, cands, "bass")[0])          # after the clef: unread, never tenor
+
     def test_body_scan_finds_nothing_where_no_clef_stands(self):
         # the bassoon after the bar-390 bass clef on p13 s1 (heads, a flat, rests): the highest no-clef body scores on Litolff (<= 0.55)
         self.assertEqual(self._scan(13, 1, 3, 1540, 1720), [])
