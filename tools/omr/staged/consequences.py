@@ -1649,7 +1649,17 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
         reason = "reowned_by_ledger_reading"
 
     from ..pitch_resolver import _pitch_from_position
-    name = _pitch_from_position(int(round(float(pos))), str(clef.value))
+    kind = str(clef.value)
+    # ROADMAP 2.251 carry (flag OMR_CLEF_CARRY): a glyph moved onto a staff is pitched from the clef in force THERE at its x, as
+    # `restate_pitch` pitches the staff's own heads; after an unread clef (or a carry stopped by a clef-shaped candidate) no pitch.
+    changes = _clef_changes(log, winner)
+    if changes:
+        in_force = _clef_change_at(log, subject, changes, _clef_candidates(log, winner), kind)
+        if in_force is not None:
+            if in_force[0] is None:
+                return []
+            kind = str(in_force[0])
+    name = _pitch_from_position(int(round(float(pos))), kind)
     if name is None:
         return []
 
