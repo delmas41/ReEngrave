@@ -879,12 +879,26 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                             reason=ABSTAIN.WITNESS_UNMET,
                             witness_kind=w["kind"])
 
+        tall_info: Dict[int, Dict[str, Any]] = {}
+        if kept and _box_kind.tall_split_enabled() and grid:
+            # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): a rescued TALL hollow head box is read for the heads inside it by
+            # their holes, as the production pass does (Sean's 2.250 r2 tiles 8 and 11 were rescued dyads); each head no one-head box
+            # stands on is filed after the rescued boxes, at the next glyph index, under the rescue's own reader and its tall box's witness.
+            allb = list(existing) + [d for d, _w in kept]
+            outb, tall_info = _box_kind.split_tall_heads(
+                allb, getattr(c, "image", None), 2.0 * grid[1], staff_top=grid[0],
+                line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
+                only=set(range(n_existing, n_existing + len(kept))))
+            # the glyph index of a box in `allb` / `outb` is its rescue index n_existing + k, so `tall_info` is keyed by glyph index
+            for j, nd in enumerate(outb[len(allb):]):
+                src = tall_info[len(allb) + j]["tall_split"]["split_from"]
+                kept.append((nd, kept[src - n_existing][1]))
         for k, (d, w) in enumerate(kept):
             gi = n_existing + k
             g = R.glyph(p, sys_idx, st_idx, c.measure_index, gi)
             page_box = _page_box(c, d)
             box_detail: Dict[str, Any] = {"category": d.category,
-                                          "witness": w["kind"]}
+                                          "witness": w["kind"], **tall_info.get(gi, {})}
             if page_box is None:
                 box_detail["frame_note"] = (
                     "no page box: cell has no bbox_page_px/upscale_factor")
@@ -2319,6 +2333,10 @@ def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
                 bj = items[j]["box"]
                 if bj[0] >= bi[2]:
                     break
+                if items[i].get("tall_read") or items[j].get("tall_read"):
+                    # ROADMAP 2.252: a tall head box GATHER read for the heads inside it (`box_kind.split_tall_heads`) is their
+                    # remainder, never one mark with either -- through it the dyad's two heads would group as ONE note
+                    continue
                 if _iou(bi, bj) > MARK_GROUP_IOU:
                     parent[find(i)] = find(j)
     groups: Dict[int, List[int]] = {}
@@ -2389,7 +2407,8 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                           "category": d.category,
                           "scope": (sub.page, sub.system),
                           "conf": float(d.confidence),
-                          "frame": frame_cell(sub.cell)})
+                          "frame": frame_cell(sub.cell),
+                          "tall_read": bool(getattr(d, _box_kind.TALL_READ_ATTR, False))})
     return _file_mark_groups(log, items)
 
 
@@ -2413,7 +2432,8 @@ def mark_groups_from_log(log: Log) -> int:
                                  sub.glyph),
                       "key": sub.to_key(), "box": tuple(box),
                       "category": cat, "scope": (sub.page, sub.system),
-                      "conf": row.score, "frame": row.frame})
+                      "conf": row.score, "frame": row.frame,
+                      "tall_read": bool((row.detail.get("tall_split") or {}).get("read"))})
     return _file_mark_groups(log, items)
 
 

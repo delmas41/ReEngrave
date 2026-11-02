@@ -474,12 +474,13 @@ def is_hollow_head_class(cls: object) -> bool:
 HEAD_BOX_H_SP = 1.3
 
 
-def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=()):
+def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(), only=None):
     """GATHER, flag ON (ROADMAP 2.252): `(dets_out, info)`. `dets_out` = `dets` unchanged and in order, plus one new detection per hollow
     head read off its hole (`head_holes` / `heads_from_holes`) inside a TALL hollow-class head box that no other one-head box of the cell
     stands on: centred on the hole, the tall box's x and width, the cell's median one-head box height, the tall box's class with the
     line/space suffix the hole's step gives, its confidence. `info` = {index: {"tall_split": ...}}: on a tall box
     `{"read": bool, "steps": [...], "added": [...], "covered": n, "holes": n}`, on an added box `{"split_from": index, "step": s}`.
+    `only` (indices): read only these boxes as tall candidates (the low-confidence rescue's own boxes; every head box still covers).
     No raster or no unit: nothing changes."""
     import dataclasses
     out = list(dets)
@@ -492,6 +493,8 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=())
     hs = sorted(d.height_canonical for d in one)
     head_h = hs[len(hs) // 2] if hs else HEAD_BOX_H_SP * sp
     for i, d in enumerate(dets):
+        if only is not None and i not in only:
+            continue
         if not (is_hollow_head_class(d.smufl_name) and d.height_canonical / sp >= TALL_MIN_H_SP
                 and d.width_canonical / sp < HEAD_BOX_MAX_W_SP):
             continue
@@ -517,7 +520,17 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=())
             info[len(out) - 1] = {"tall_split": {"split_from": i, "step": s}}
             added.append(len(out) - 1)
         info[i] = {"tall_split": {"read": True, "steps": steps, "added": added, "covered": covered, "holes": len(holes)}}
+        # the mark-group reader (`gather.cluster_marks`) must not make the heads of this box ONE mark through it: the read box is
+        # the remainder of its heads, never the same mark as one of them
+        try:
+            setattr(d, TALL_READ_ATTR, True)
+        except (AttributeError, TypeError):
+            pass
     return out, info
+
+
+#: set on a detection `split_tall_heads` read for its heads (the gather-time twin of the row detail `tall_split.read`)
+TALL_READ_ATTR = "tall_split_read"
 
 
 # 3. AN ARC BOWS. A tie or slur is a curve; a straight trace 3+ spaces long is a hairpin's leg or a beam (Sean's 2.245 tiles 6, 7, 11:
