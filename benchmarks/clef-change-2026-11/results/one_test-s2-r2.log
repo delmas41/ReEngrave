@@ -1,0 +1,86 @@
+  gather litolff base pages [2, 4] ...
+  gather brahms base pages [4, 5] ...
+  gather litolff only-OMR_CLEF_PAGEWIDE pages [2, 4] ...
+  gather brahms only-OMR_CLEF_PAGEWIDE pages [4, 5] ...
+  gather litolff only-OMR_CLEF_CARRY pages [2, 4] ...
+  gather brahms only-OMR_CLEF_CARRY pages [4, 5] ...
+  gather litolff all pages [2, 4] ...
+  gather brahms all pages [4, 5] ...
+ONE TEST  flags OMR_CLEF_PAGEWIDE (OFF=0 ON=1), OMR_CLEF_CARRY (OFF=0 ON=1)  --from gather
+  OMR_CLEF_PAGEWIDE: read in staged/clef_pagewide.py, staged/gather.py -> GATHER
+  OMR_CLEF_CARRY: read in staged/clef_pagewide.py, staged/consequences.py, staged/export.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: benchmarks/clef-change-2026-11/s2/sample2.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for every arm
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for every arm
+CONTROL (every arm, every plate identical): tree e9b7915a0482:e3b0c44298fc | stages gather | tag 20261029-night | pages [4, 5] | cells [{"built_commit": "269d5177aae690f4a03cc63f9aea36ac60087404" | detector cache /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/detector-cache | OCR OMR_SURYA_KEEP_ALIVE=0
+
+litolff  pages [2, 4]
+  base: 1491 notes+rests
+  arm only-OMR_CLEF_PAGEWIDE
+    file:   notes -2 | words +1 | red bars 0 -> 0 | notes not written 662 -> 664
+    judged: right->wrong 0 | unwritten->wrong 0 | wrong->right 0 | right->gone 0  (188 tiles on these pages)
+    NOT JUDGED: 2 changed places no tile of Sean's covers (0 covered, 1 without a page place): note 2
+  arm only-OMR_CLEF_CARRY
+    file:   NOTHING CHANGED in the exported file | red bars 0 -> 0 | notes not written 662 -> 662
+    judged: right->wrong 0 | unwritten->wrong 0 | wrong->right 0 | right->gone 0  (188 tiles on these pages)
+    NOT JUDGED: 0 changed places no tile of Sean's covers (0 covered, 0 without a page place): none
+  arm all
+    file:   notes -14 | pitches ~16 | words +9 | clefs +2 | keys +2 | red bars 0 -> 0 | notes not written 662 -> 676
+    judged: right->wrong 0 | unwritten->wrong 0 | wrong->right 0 | right->gone 0  (188 tiles on these pages)
+    NOT JUDGED: 32 changed places no tile of Sean's covers (0 covered, 11 without a page place): note 14, pitch 16, words 2
+  INTERACTIONS (all vs the union of the singles): 40 only together | 0 a single made that the combination loses | judged right->wrong only together: 0
+      only together  p4 4/1/3/4 note lost quarter
+      only together  p4 4/1/3/4 note lost half
+      only together  p4 4/1/3/5 note lost quarter
+      only together  p4 4/1/3/5 note lost quarter
+      only together  p4 4/1/3/6 note lost quarter
+      only together  p4 4/1/3/6 note lost quarter
+      only together  p4 4/1/3/6 note lost quarter
+      only together  p4 4/1/3/6 note lost quarter
+      only together  p4 4/1/3/7 note lost quarter
+      only together  p4 4/1/3/7 note lost quarter
+      only together  p4 4/1/3/8 note lost quarter
+      only together  p4 4/1/3/8 note lost quarter
+      only together  p4 4/1/3/12 pitch changed A4
+      only together  p4 4/1/3/12 pitch changed G4
+      only together  p4 4/1/3/12 pitch changed G4
+
+brahms  pages [4, 5]
+  base: 2141 notes+rests
+  arm only-OMR_CLEF_PAGEWIDE
+    file:   notes -4 | rests -1 | dots +1 -1 | red bars 0 -> 0 | notes not written 1110 -> 1115
+    judged: right->wrong 0 | unwritten->wrong 0 | wrong->right 0 | right->gone 0  (174 tiles on these pages)
+    NOT JUDGED: 7 changed places no tile of Sean's covers (0 covered, 0 without a page place): dot 2, note 4, rest 1
+  arm only-OMR_CLEF_CARRY
+    file:   NOTHING CHANGED in the exported file | red bars 0 -> 0 | notes not written 1110 -> 1110
+    judged: right->wrong 0 | unwritten->wrong 0 | wrong->right 0 | right->gone 0  (174 tiles on these pages)
+    NOT JUDGED: 0 changed places no tile of Sean's covers (0 covered, 0 without a page place): none
+  arm all
+    file:   notes -4 | rests -1 | pitches ~69 | blue marks +4 -2 | clefs +6 | keys +6 | red bars 0 -> 0 | notes not written 1110 -> 1115
+    judged: right->wrong 0 | unwritten->wrong 0 | wrong->right 0 | right->gone 0  (174 tiles on these pages)
+    NOT JUDGED: 80 changed places no tile of Sean's covers (0 covered, 12 without a page place): blue 6, note 4, pitch 69, rest 1
+  INTERACTIONS (all vs the union of the singles): 87 only together | 2 a single made that the combination loses | judged right->wrong only together: 0
+      only together  p4 4/1/3/4 pitch changed F4
+      only together  p4 4/1/3/4 pitch changed A-14
+      only together  p4 4/1/3/5 pitch changed F4
+      only together  p4 4/1/3/5 pitch changed A-14
+      only together  p4 4/1/3/5 pitch changed F4
+      only together  p4 4/1/3/5 pitch changed D4
+      only together  p4 4/1/3/5 pitch changed B3
+      only together  p4 4/1/3/6 pitch changed A-13
+      only together  p4 4/1/3/6 pitch changed C4
+      only together  p4 4/1/3/6 pitch changed C5
+      only together  p4 4/1/3/6 pitch changed A-13
+      only together  p4 4/1/3/6 pitch changed A-14
+      only together  p4 4/1/3/6 pitch changed G3
+      only together  p4 4/1/3/6 pitch changed G4
+      only together  p4 4/1/3/7 pitch changed D3
+      lost in combination (only-OMR_CLEF_PAGEWIDE)  p5 5/0/3/1 dot lost .
+      lost in combination (only-OMR_CLEF_PAGEWIDE)  p5 5/0/3/1 dot gained .
+
+only-OMR_CLEF_PAGEWIDE LANDING CHECK: judged right->wrong 0, unwritten->wrong 0
+only-OMR_CLEF_CARRY LANDING CHECK: judged right->wrong 0, unwritten->wrong 0
+all            LANDING CHECK: judged right->wrong 0, unwritten->wrong 0
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder, each tile's arm in the key
+wall time 4566 s
