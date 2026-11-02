@@ -1497,7 +1497,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     """
     from . import head_extent, head_ink
     ink_pos_on = head_extent.enabled()
-    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default OFF): a FAR head's ink centre is filed beside its box-centre position as
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON): a FAR head's ink centre is filed beside its box-centre position as
     # a CANDIDATE (`ink_centre_position_float`) for `restate_pitch`, which writes the head GUESSED where its ledger count abstained.
     # It never moves the position row (a far head is placed by its ledger lines only).
     far_guess_on = head_extent.far_guess_enabled()

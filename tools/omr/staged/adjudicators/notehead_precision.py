@@ -4160,7 +4160,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # LAST of the refusals: it speaks only where every other rule would KEEP the box. First in the chain it re-labelled boxes already
     # refused as duplicates, and the stem/beam pairing that reads a duplicate as "the same head drawn twice" (ownership) lost a real
     # eighth (Litolff p4 4/1/1/14, the 2-page subset run).
-    # ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default OFF): a FAR filled-head box taller than any head whose ink does not fill
+    # ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default ON): a FAR filled-head box taller than any head whose ink does not fill
     # it is not a head (an eighth's flag hanging below the staff above, Brahms p5) -- refused here, before any far-unread guess is written
     # on it. 2.245's own head shape (`box_kind.far_box_not_a_filled_head`); read only outside the staff's first space.
     from .. import head_extent as _head_extent
