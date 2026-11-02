@@ -183,3 +183,16 @@ def test_a_tall_end_has_no_step_and_its_position_is_the_head_sized_end(on):
     pb = _binding(v)
     assert pb is not None and pb["start_step"] is None and pb["start_step_source"] == "tall_box_end"
     assert pb["relation_source"] == "boxes_only" and pb["dy_spaces"] > 0.9
+
+
+def test_two_boxes_of_one_head_are_not_a_chord_to_choose_from():
+    # members of one chord column are >= a third (1 sp) apart; two boxes 0.3 sp apart are one head drawn twice (2.232's near-tie keep):
+    # the end binds as before (the side rule), it does not abstain
+    heads = [_h("a", -5, 120), _h("b", -5, 123), _h("r", 105, 120)]
+    cu = _curve(0, 100, 100, 100, -15)                      # a cap: the outer note of the column is the top one
+    on = AC.bind_curve(cu, heads, SP, by_height=True)["left"]
+    assert on["head"] == "a" and not on.get("by_height")
+    assert AC.bind_curve(cu, heads, SP)["left"]["head"] == "a"
+    # the twin: the same two boxes a third apart ARE a chord, and an end midway between them abstains
+    far = [_h("a", -5, 120), _h("b", -5, 140), _h("r", 105, 130)]
+    assert AC.bind_curve(_curve(0, 130, 100, 130, 0), far, SP, by_height=True)["left"].get("unbound") == "chord_end_equidistant"

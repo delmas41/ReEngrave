@@ -206,6 +206,10 @@ ENV_END_PITCH = "OMR_BIND_END_PITCH"
 BIND_COLUMN_DX_WIDTHS = 0.6
 #: at one end, a second column whose distance is within this many staff spaces of the nearest one makes the end ambiguous
 BIND_COLUMN_MARGIN_SPACES = 0.5
+#: two heads of one chord COLUMN stand at least this many staff spaces apart (a third, 2 staff steps): a smaller step is a second, which an
+#: engraver sets in two columns (a CONVENTION, not a fit). Two boxes of one column closer than this are ONE head drawn twice, so there is no
+#: chord to choose a member of and the end binds as it did before 2.250 (`bind_end`'s side rule).
+BIND_CHORD_MIN_SPACES = 1.0
 #: a curve whose middle third sits this far (spaces) above / below the line through its two ends is ABOVE / BELOW its notes
 BIND_SIDE_MIN_SPACES = 0.1
 
@@ -289,6 +293,8 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
     if len(ranked) > 1:
         gap = abs(where(ranked[1]) - ey) - abs(where(ranked[0]) - ey)
         if gap < BIND_COLUMN_MARGIN_SPACES * sp:
+            if abs(where(ranked[0]) - where(ranked[1])) < BIND_CHORD_MIN_SPACES * sp:
+                return {}          # one head drawn twice (members of one chord column are >= a third apart): today's rule decides
             return {"unbound": "chord_end_equidistant", "candidates": [t["key"] for t in ranked[:2]],
                     "margin_spaces": round(gap / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
     pick = ranked[0]
