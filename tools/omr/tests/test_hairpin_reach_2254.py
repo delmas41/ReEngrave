@@ -139,3 +139,33 @@ def test_a_word_box_gives_up_the_hairpin_inside_it():
     assert len(dropped) == 1 and area[2] <= 80
     area2, dropped2 = hairpin_reach.word_area_without_wedges(binary, [10, 100, 90, 140], SP)
     assert dropped2 == [] and area2 == [10.0, 100.0, 90.0, 140.0]
+
+
+def _owner_case(hairpin_box, monkeypatch, on):
+    """test_staged_owner_conventions' hairpin case: a head at y 150 under UPPER (bottom line 140), a hairpin filed under UPPER at y 200."""
+    from tools.omr.tests import test_staged_owner_conventions as T
+    from tools.omr.staged import record as R
+    from tools.omr.staged.record import Q, READERS
+    if on:
+        monkeypatch.setenv(hairpin_reach.ENV, "1")
+    else:
+        monkeypatch.delenv(hairpin_reach.ENV, raising=False)
+    case = T.TestHairpinSeparates()
+    log = case._log_with_head_and_lines(head_y=150.0)
+    log.observe(R.glyph(T.UPPER.page, T.UPPER.system, T.UPPER.staff, 3, 0), Q.WEDGE_BOX, "diminuendo",
+                reader=READERS.CV_HAIRPINS, frame="page", bbox_page_px=hairpin_box,
+                x_center_page=(hairpin_box[0] + hairpin_box[2]) / 2, y_center_page=200.0)
+    return T._decide(log), T
+
+
+def test_hairpin_separates_is_local_with_the_flag(monkeypatch):
+    """Brahms p25: a Vc hairpin (bars 473-474) gave the K.-B.'s flats two bars to its RIGHT to the Vc, because the old term reads y
+    only. ON, a hairpin whose x span does not hold the glyph says nothing (page-facts: notes NEXT TO a hairpin)."""
+    far = [900.0, 195.0, 970.0, 205.0]                       # the head is at x 505
+    v_off, T = _owner_case(far, monkeypatch, on=False)
+    assert v_off.reason == "hairpin_separates"               # OFF: unchanged (the old y-only rule)
+    v_on, T = _owner_case(far, monkeypatch, on=True)
+    assert v_on.reason == "range_veto" and v_on.value == T.LOWER.to_key()
+    near = [490.0, 195.0, 560.0, 205.0]
+    v_near, T = _owner_case(near, monkeypatch, on=True)
+    assert v_near.reason == "hairpin_separates" and v_near.value == T.UPPER.to_key()

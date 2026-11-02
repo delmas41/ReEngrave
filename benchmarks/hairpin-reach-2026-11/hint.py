@@ -1,6 +1,6 @@
 """ROADMAP 2.254: how often does Sean's repeated-hairpin hint hold on our pages? (DECISIONS 2026-11-02: a HINT, not a rule.)
 
-For every hairpin the reach reader keeps (probe JSON, w >= 1.6 sp), is there a hairpin on ANOTHER staff of the SAME system whose x-span
+For every hairpin the reach reader keeps (reach_count.py JSON, ON arm, w >= MIN_W sp), is there a hairpin on ANOTHER staff of the SAME system whose x-span
 overlaps it by at least MIN_IOU? Reports hairpins with a mate / without, per page, and the kind agreement of mates.
 
     python3 benchmarks/hairpin-reach-2026-11/hint.py PROBE_DIR brahms 19 25 ...
@@ -10,6 +10,7 @@ import pathlib
 import sys
 
 MIN_IOU = 0.5
+MIN_W = 4.0      # longer than any accent: the hint is about hairpins spanning bars
 
 
 def iou(a, b):
@@ -21,8 +22,8 @@ def iou(a, b):
 def main(d, plate, pages):
     tot = [0, 0]
     for p in pages:
-        rows = [r for r in json.load(open(pathlib.Path(d) / ("%s_p%02d_line.json" % (plate, int(p)))))["rows"]
-                if r["why"] == "KEPT" and r["w_sp"] >= 1.6]
+        rows = [r for r in json.load(open(pathlib.Path(d) / ("%s_p%02d_reach.json" % (plate, int(p)))))["on"]
+                if r["w_sp"] >= MIN_W]
         mate = 0
         for r in rows:
             if any(o is not r and o["system"] == r["system"] and o["staff"] != r["staff"] and iou(o["bbox"], r["bbox"]) >= MIN_IOU

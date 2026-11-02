@@ -866,7 +866,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # lone range veto and any distance, and the one mix that outvotes it
         # -- a veto on its side PLUS a rival's genuinely complete ladder --
         # pits it against ledger evidence no crop has adjudicated.
-        hairpin = _hairpin_separates(ev, cand_key, head_y)
+        hairpin = _hairpin_separates(ev, cand_key, head_y, head_box.get("x_center_page") if head_box else None)
         if hairpin is not None:
             terms.append(hairpin)
             hairpins += 1
@@ -1690,11 +1690,12 @@ def _own_glyph_box(ev: Evidence) -> Optional[Dict[str, float]]:
     y = (rows[0].detail or {}).get("y_center_page")
     if y is None:
         return None
-    return {"y_center_page": float(y)}
+    x = (rows[0].detail or {}).get("x_center_page")
+    return {"y_center_page": float(y), "x_center_page": None if x is None else float(x)}
 
 
 def _hairpin_separates(ev: Evidence, cand_key: str,
-                       head_y: Optional[float]) -> Optional[Term]:
+                       head_y: Optional[float], head_x: Optional[float] = None) -> Optional[Term]:
     """Sean's second convention (DECISIONS 2026-09-28): a hairpin always
     sits UNDER its staff, so a note between a staff and the hairpin beneath
     it belongs to that staff — *"if the note is above the hairpin ... it
@@ -1731,10 +1732,19 @@ def _hairpin_separates(ev: Evidence, cand_key: str,
     bottom = max(float(y) for y in lines[0].value)
     if head_y <= bottom:
         return None                         # the head is not below cand
+    from .. import hairpin_reach as _hairpin_reach
+    local = _hairpin_reach.enabled()
     for w in ev.rows(Q.WEDGE_BOX, subject=cand, scope=Scope.SELF_AND_DESCENDANTS):
         wy = (w.detail or {}).get("y_center_page")
         if wy is None:
             continue                        # DECLINED: no page frame here
+        if local:
+            # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the rule is LOCAL (page-facts, Sean 2026-10-31: "any notes NEXT TO a hairpin");
+            # a hairpin elsewhere under the staff says nothing about this glyph. Found when the reach read a Vc hairpin at Brahms p25
+            # bars 473-474 and this term gave the K.-B.'s flats two bars to its right (y only) to the Vc.
+            wb = (w.detail or {}).get("bbox_page_px")
+            if head_x is None or not wb or not (float(wb[0]) <= head_x <= float(wb[2])):
+                continue
         if bottom < head_y < float(wy):
             return Term("hairpin_separates", W_HAIRPIN_SEPARATES, (w.id,))
     return None
