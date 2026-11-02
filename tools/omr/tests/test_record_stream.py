@@ -85,10 +85,11 @@ def test_stage_without_a_run_is_a_no_op():
         pass
 
 
-def test_closed_basis_closure_and_memo_release():
-    """ROADMAP 2.249: a harness verdict's closure is `{id} | basis` without a walk, and dropping the memo changes no answer."""
+def test_lazy_basis_is_the_spelled_out_basis():
+    """ROADMAP 2.249: an ADJUDICATE verdict's `LazyBasis` reads exactly as the sorted tuple it replaced, `closure` walks
+    the `considered` graph to the same set, and dropping the memo changes no answer."""
     from tools.omr.staged import record as R
-    from tools.omr.staged.record import Log, Outcome, Q, Verdict
+    from tools.omr.staged.record import LazyBasis, Log, Outcome, Q, Verdict
 
     log = Log()
     s = R.page(0)
@@ -96,26 +97,30 @@ def test_closed_basis_closure_and_memo_release():
     o2 = log.observe(s, Q.GLYPH_CONF, 2, reader=R.READERS.GEOMETRY, frame="page", derived_from=[o1.id])
     log.freeze()
 
-    def verdict(q, considered, closed):
-        basis = set(considered)
+    def verdict(q, considered, lazy):
+        spelled = set(considered)
         for rid in considered:
-            basis |= log.closure(rid)
+            spelled |= log.closure(rid)
+        basis = LazyBasis(log, considered) if lazy else tuple(sorted(spelled))
         v = log.record(Verdict(id=log._next_id("vrd"), subject=s, quantity=q, outcome=Outcome.DECIDED, value=1,
-                               decider="d", reason="r", considered=tuple(considered), basis=tuple(sorted(basis))))
-        if closed:
-            log.note_closed_basis(v.id)
+                               decider="d", reason="r", considered=tuple(considered), basis=basis))
+        assert tuple(v.basis) == tuple(sorted(spelled)) and v.basis == tuple(sorted(spelled))
+        assert len(v.basis) == len(spelled) and list(v.basis) == v.to_json()["basis"]
         return v
 
     v1 = verdict(Q.DURATION, [o2.id], True)
     v2 = verdict(Q.VOICES, [v1.id], True)
     v3 = verdict(Q.METER, [v2.id, o1.id], False)
+    v4 = verdict(Q.CLEF, [v3.id, v1.id], True)
     want = {v1.id: {v1.id, o2.id, o1.id}, v2.id: {v2.id, v1.id, o2.id, o1.id},
-            v3.id: {v3.id, v2.id, v1.id, o2.id, o1.id}}
+            v3.id: {v3.id, v2.id, v1.id, o2.id, o1.id}, v4.id: {v4.id, v3.id, v2.id, v1.id, o2.id, o1.id}}
     for vid, ids in want.items():
         assert log.closure(vid) == frozenset(ids)
-    qic = log.quantities_in_closure(v3.id)
-    assert log.release_closure_memo() >= 3
+    assert o1.id in v4.basis and v4.basis[0] == sorted(want[v4.id] - {v4.id})[0]
+    qic = log.quantities_in_closure(v4.id)
+    assert log.release_closure_memo() >= 4
     for vid, ids in want.items():
         assert log.closure(vid) == frozenset(ids)
     log.release_closure_memo(quantities=True)
-    assert log.quantities_in_closure(v3.id) == qic == frozenset({Q.GLYPH_BOX, Q.GLYPH_CONF, Q.DURATION, Q.VOICES, Q.METER})
+    assert log.quantities_in_closure(v4.id) == qic == frozenset(
+        {Q.GLYPH_BOX, Q.GLYPH_CONF, Q.DURATION, Q.VOICES, Q.METER, Q.CLEF})

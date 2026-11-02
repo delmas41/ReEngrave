@@ -3396,6 +3396,68 @@ class Abstention:
                 "detail": dict(self.detail)}
 
 
+class LazyBasis(Sequence):
+    """⚠️ ROADMAP 2.249: an ADJUDICATE verdict's `basis` -- `considered` plus the closure of every considered row --
+    held as the `considered` ids alone and spelled out (sorted, exactly as the tuple it replaces) only when read.
+
+    WHY. A verdict that consults a document-wide verdict (key, clef, staff identity, meter) inherits every page's
+    rows in its closure, so the spelled-out basis grows with the PAGE COUNT and the sum over all verdicts with its
+    square: 11,390 ids per `arc_owner` verdict on 4 Brahms pages, 37% of them on other pages
+    (benchmarks/memory-2026-11/FINDINGS.md); the 27-page movement's ADJUDICATE peaked at 46 GB. The set itself is a
+    function of the `considered` graph (`Log.closure` walks it), so nothing is lost by not storing it.
+
+    It behaves as the sorted tuple: iteration, `len`, indexing, `in`, `==` with a tuple or list, `hash`, `bool`.
+    The spelled-out tuple is not kept (that is the point); `len` is remembered once known."""
+
+    __slots__ = ("_log", "considered", "_n")
+
+    def __init__(self, log: "Log", considered: Sequence[str]) -> None:
+        self._log = log
+        self.considered = tuple(considered)
+        self._n: int | None = None
+
+    def ids(self) -> set:
+        out: set = set()
+        for rid in self.considered:
+            out |= self._log.closure(rid)
+        if self._n is None:
+            self._n = len(out)
+        return out
+
+    def _t(self) -> tuple:
+        return tuple(sorted(self.ids()))
+
+    def __iter__(self):
+        return iter(self._t())
+
+    def __len__(self) -> int:
+        if self._n is None:
+            self.ids()
+        return self._n
+
+    def __bool__(self) -> bool:
+        return bool(self.considered)
+
+    def __getitem__(self, i):
+        return self._t()[i]
+
+    def __contains__(self, x) -> bool:
+        return x in self.ids()
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, LazyBasis):
+            return other is self or self._t() == other._t()
+        if isinstance(other, (tuple, list)):
+            return self._t() == tuple(other)
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(self._t())
+
+    def __repr__(self) -> str:
+        return "LazyBasis(considered=%d ids)" % len(self.considered)
+
+
 @dataclass(frozen=True)
 class Verdict:
     """An adjudicated fact. Produced only in ADJUDICATE. Reads no raster.
@@ -3537,6 +3599,10 @@ Row = Union[Observation, Abstention, Verdict]
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+#: ROADMAP 2.249: the closure memo starts again past this many ids in all (~1-2 GB of frozensets). Speed only.
+CLOSURE_MEMO_MAX_IDS = 30_000_000
+
+
 class AlreadyAdjudicated(RuntimeError):
     """A second verdict on one (subject, quantity) without `revises=`.
 
@@ -3593,7 +3659,7 @@ class Log:
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
                  "_closure_cache", "_qic_cache", "_subjects_cache", "_desc_prefix_cache",
-                 "_subject_keys", "_closed_basis")
+                 "_subject_keys", "_closure_memo_ids")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -3651,9 +3717,7 @@ class Log:
         # `Evidence.correlated_groups()`'s pairwise walk, and was being
         # recomputed by a fresh BFS on every single call to either.
         self._closure_cache: dict[str, "frozenset[str]"] = {}
-        #: ROADMAP 2.249: verdict ids whose `basis` is already closed under `closure` (the ADJUDICATE harness builds it as
-        #: `considered` plus every considered row's closure), so their closure is `{id} | basis` with no walk below them.
-        self._closed_basis: set = set()
+        self._closure_memo_ids = 0          # ROADMAP 2.249: ids held by the closure memo (capped)
         self._qic_cache: dict[str, "frozenset[str]"] = {}
         #: ⚠️ `subjects()` WALKS EVERY INDEX KEY AND PARSES EACH ONE, so a
         #: decision calling it once per subject is quadratic in the record.
@@ -3989,34 +4053,39 @@ class Log:
         (row, row) pair they examine, so the SAME id's closure was being
         walked from scratch dozens of times over on a single decision.
         """
-        cached = self._closure_cache.get(row_id)
+        memo = self._closure_cache
+        cached = memo.get(row_id)
         if cached is not None:
             return cached
         out: set[str] = set()
         stack = [row_id]
-        closed = self._closed_basis
         while stack:
             rid = stack.pop()
             if rid in out:
                 continue
+            sub = memo.get(rid)
+            if sub is not None:          # ROADMAP 2.249, SPEED ONLY: a memoised closure below this row is added whole
+                out |= sub
+                continue
             out.add(rid)
             row = self.row(rid)
             if row is not None:
-                if rid in closed:
-                    # ROADMAP 2.249, SPEED ONLY: a closed basis IS everything below this row -- every member's own
-                    # closure is inside it (`note_closed_basis`) -- so it is added whole and not walked again.
-                    out.update(row.basis)
-                else:
-                    stack.extend(row.basis)
+                stack.extend(self._edges(row))
         result = frozenset(out)
-        self._closure_cache[row_id] = result
+        # ROADMAP 2.249: a pure memo, capped -- past `CLOSURE_MEMO_MAX_IDS` ids in all it starts again (no answer changes)
+        self._closure_memo_ids += len(result)
+        if self._closure_memo_ids > CLOSURE_MEMO_MAX_IDS:
+            memo.clear()
+            self._closure_memo_ids = len(result)
+        memo[row_id] = result
         return result
 
-    def note_closed_basis(self, verdict_id: str) -> None:
-        """ROADMAP 2.249: `verdict_id`'s basis already holds the closure of every row in it (the ADJUDICATE harness
-        builds it so: `considered` plus each considered row's `closure`), so `closure` takes it whole. Only the harness
-        may say so -- a basis written any other way (INFER's `p.basis + (prior.id,)`) is walked as before."""
-        self._closed_basis.add(verdict_id)
+    @staticmethod
+    def _edges(row) -> Sequence[str]:
+        """The rows `row` rests on DIRECTLY: an ADJUDICATE verdict's `considered` (its `LazyBasis` is their closure),
+        any other row's `basis`. `closure` walks these; the set it reaches is the one the spelled-out basis held."""
+        b = row.basis
+        return b.considered if isinstance(b, LazyBasis) else b
 
     def release_closure_memo(self, *, quantities: bool = False) -> int:
         """⚠️ ROADMAP 2.249 (memory, reads nothing): drop the `closure` memo.
@@ -4029,6 +4098,7 @@ class Log:
         the last stage has run. Returns the number of closures dropped."""
         n = len(self._closure_cache)
         self._closure_cache.clear()
+        self._closure_memo_ids = 0
         if quantities:
             self._qic_cache.clear()
         return n
@@ -4036,14 +4106,37 @@ class Log:
     def quantities_in_closure(self, row_id: str) -> frozenset[str]:
         # SPEED ONLY (lane-brahms-1007-worse-and-slow): memoised like `closure`
         # (a row's basis never changes), 3.6M calls on three Brahms pages.
-        cached = self._qic_cache.get(row_id)
+        # ROADMAP 2.249: the quantities of a closure are the row's own plus those of each row it rests on directly --
+        # the same set, found without spelling out the closure (which is document-sized for a verdict that consulted
+        # a document-wide one). Iterative, post-order, memoised per row as before.
+        memo = self._qic_cache
+        cached = memo.get(row_id)
         if cached is not None:
             return cached
-        out = frozenset(
-            r.quantity for r in (self.row(i) for i in self.closure(row_id))
-            if r is not None)
-        self._qic_cache[row_id] = out
-        return out
+        stack = [(row_id, False)]
+        on_path: set = set()
+        while stack:
+            rid, done = stack.pop()
+            if rid in memo:
+                continue
+            row = self.row(rid)
+            if row is None:
+                memo[rid] = frozenset()
+                continue
+            edges = self._edges(row)
+            if not done:
+                if rid in on_path:
+                    raise RuntimeError(f"basis cycle through {rid}")
+                on_path.add(rid)
+                stack.append((rid, True))
+                stack.extend((e, False) for e in edges if e not in memo)
+                continue
+            on_path.discard(rid)
+            acc = {row.quantity}
+            for e in edges:
+                acc |= memo[e]
+            memo[rid] = frozenset(acc)
+        return memo[row_id]
 
     # ── serialisation ───────────────────────────────────────────────────────
 

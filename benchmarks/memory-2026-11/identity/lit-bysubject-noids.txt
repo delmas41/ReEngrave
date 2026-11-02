@@ -1,1 +1,0 @@
-verdicts A 41289  B 41289  differing (quantity, subject): 0

@@ -26,7 +26,7 @@ from enum import Enum
 from typing import (Any, Callable, Dict, FrozenSet, List, Optional,
                     Sequence, Set, Tuple, Union)
 
-from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,
+from .record import (ABSTAIN, Abstention, Candidate, Kind, LazyBasis, Log, Observation,
                      Outcome, Q, READERS, Scope, State, Subject, Verdict)
 
 
@@ -849,9 +849,9 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         candidates = ()          # a single survivor is not a narrowing
 
     considered = tuple(dict.fromkeys(ev._seen))
-    basis: Set[str] = set(considered)
-    for rid in considered:
-        basis |= log.closure(rid)
+    # ROADMAP 2.249: the basis is `considered` plus each considered row's closure -- held as `considered` alone
+    # (`record.LazyBasis`) and spelled out, sorted, only when read; it grew with pages x pages when stored.
+    basis = LazyBasis(log, considered)
 
     prior = log.verdict(spec.quantity, subject) if spec.revises else None
 
@@ -865,14 +865,12 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         declined=tuple(sorted(ev._declined)),
         excluded=tuple(ev._excluded),
         correlated=ev.correlated_groups(),
-        basis=tuple(sorted(basis)),
+        basis=basis,
         margin=margin,
         supersedes=prior.id if prior is not None else None,
         detail=dict(ruling.detail),
     )
-    recorded = log.record(verdict)
-    log.note_closed_basis(verdict.id)      # ROADMAP 2.249: `basis` above is `considered` + each one's closure -- closed
-    return recorded
+    return log.record(verdict)
 
 
 #: The order decisions run in.
