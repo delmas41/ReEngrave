@@ -122,4 +122,5 @@ def main():
                  "The orange box is the only thing drawn; everything else is the print.\n")
 
 
-main()
+if __name__ == "__main__":
+    main()
