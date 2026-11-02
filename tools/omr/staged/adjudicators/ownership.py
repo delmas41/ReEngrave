@@ -3606,7 +3606,8 @@ def _head_usable(ev: Evidence, key: str) -> bool:
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_BOX, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
-    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "more_than_one_pair", "not_a_tie", "not_an_arc",
+    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "paired_by_arc_side", "more_than_one_pair",
+             "not_a_tie", "not_an_arc",
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
@@ -3793,6 +3794,17 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     def value_of(p) -> Dict[str, Any]:
         return {"start": p[2].subject.to_key(), "stop": p[3].subject.to_key()}
 
+    if len(pairs) > 1 and tie_arc_side_enabled():
+        side = _pair_on_the_arcs_side(pairs, arc_yc)
+        if side is not None:
+            dx, dy, rl, rr, il, ir, _yl, _yr = side
+            return Ruling(
+                value=value_of(side), reason="paired_by_arc_side",
+                used=(arc.id, rl.id, rr.id),
+                detail={**counts, "dy_spaces": round(dy, 3), "dx_spaces": round(dx, 3),
+                        "pairs_at_one_position": len(pairs), "arc_yc": round(arc_yc, 1),
+                        "candidates": [value_of(p) for p in pairs],
+                        "crosses_barline": il != ir, "home_staff": home})
     if len(pairs) > 1:
         return Ruling.narrow(
             [R.Candidate(value_of(p), -round(p[0], 3)) for p in pairs],
@@ -3819,6 +3831,36 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
                     / avg_h, 3),
                 "crosses_barline": il != ir,
                 "home_staff": home})
+
+
+#: ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`, default OFF): a tie over a DYAD whose flank search admits one same-position pair
+#: per chord member (Sean's 2.252 tiles 3, 7, 10, 12: the narrowing `more_than_one_pair`, nothing written) is the pair on the ARC'S OWN
+#: SIDE -- Sean 2.75 (page-facts): an arc ABOVE its notes joins the top note at each end, an arc BELOW joins the bottom note; each
+#: member's tie is its own arc (2.252: two printed arcs, two ties). Decided only where the arc's centre lies outside the pairs'
+#: positions (above the highest pair or below the lowest) and that extreme position holds exactly one pair; anything else still narrows.
+TIE_ARC_SIDE_ENV = "OMR_TIE_PAIR_ARC_SIDE"
+
+
+def tie_arc_side_enabled() -> bool:
+    """`OMR_TIE_PAIR_ARC_SIDE` (ROADMAP 2.252 r2), default OFF; an explicit on-word enables."""
+    return os.environ.get(TIE_ARC_SIDE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _pair_on_the_arcs_side(pairs: Sequence[tuple], arc_yc: float) -> Optional[tuple]:
+    """Of `adjudicate_tie_pair`'s same-position pairs `(dx, dy, rl, rr, il, ir, yl, yr)`, the one at the extreme position on the
+    arc's side (page y grows downward), or None where the arc is not wholly to one side or two pairs share that position."""
+    ys = [((p[6] + p[7]) / 2.0, p) for p in pairs]
+    top, bottom = min(y for y, _ in ys), max(y for y, _ in ys)
+    if bottom - top <= 0:
+        return None
+    tol = 0.25 * (bottom - top)
+    if arc_yc < top:
+        pick = [p for y, p in ys if y - top <= tol]
+    elif arc_yc > bottom:
+        pick = [p for y, p in ys if bottom - y <= tol]
+    else:
+        return None
+    return pick[0] if len(pick) == 1 else None
 
 
 def _head_yc(heads, row) -> float:
