@@ -165,24 +165,31 @@ def test_a_tall_member_stands_at_its_nearer_head_sized_end_and_is_flagged():
     assert centre_only["head"] == "fused" and "tall" not in centre_only          # the twin: without the mark the box is read by its centre
 
 
-def test_a_tall_end_has_no_step_and_its_position_is_the_head_sized_end(on):
-    # the start of a record scene is a fused box (3 head heights): no step of its own, its POSITION is the head-sized end the arc stands
-    # at (140), read off the boxes like any end whose step is unread -- never the box centre (132). Against a stop head centred 129.4
-    # the end is 1.06 sp away (two positions); the centre would have said 0.26 (one position, a tie).
+def _tall_scene(end_y):
     log = Log()
     _cells(log, 2)
-    _box(log, 0, 0, 40.0, 117.0, 147.0)
-    _box(log, 0, 3, 120.0, 122.1, 136.7)
+    _box(log, 0, 0, 40.0, 117.0, 147.0)              # a fused box, 3 head heights tall, centre 132 (step 6.4)
+    _box(log, 0, 3, 120.0, 122.1, 136.7)             # the stop head, centre 129.4 (step 5.9 -> 6)
     for i in range(4):                               # the staff's ordinary heads: the mean head height is a head's, not the fused box's
         _box(log, 1, i, 250.0 + 20 * i, 120.0, 130.0)
     arc = _arc(log, 0, 5, 55.0, 115.0, 150.0, 156.0, cls="tie")
     log.observe(arc, Q.SYSTEM_ARC, "two_heads_one_position_adjacent", reader=READERS.CV_SYSTEM_ARC, frame="page", score=None,
-                pieces=[arc.to_key()], space_page_px=10.0, x_left_page=55.0, y_left_page=150.0, x_right_page=115.0, y_right_page=140.0,
+                pieces=[arc.to_key()], space_page_px=10.0, x_left_page=55.0, y_left_page=end_y, x_right_page=115.0, y_right_page=130.0,
                 trace=[])
-    v = _decide(log, arc, ())
-    pb = _binding(v)
-    assert pb is not None and pb["start_step"] is None and pb["start_step_source"] == "tall_box_end"
-    assert pb["relation_source"] == "boxes_only" and pb["dy_spaces"] > 0.9
+    return _decide(log, arc, ())
+
+
+def test_a_tall_end_beyond_the_box_is_read_at_the_head_sized_end_not_the_centre(on):
+    # the arc stands below the fused box (end 150): the head it joins is the box's LOWER head, centred 140 -> step 8, not the box centre's 6
+    pb = _binding(_tall_scene(150.0))
+    assert pb["left"]["tall"] is True and pb["start_step_source"] == "geometry_tall_end" and pb["start_step"] == 8
+    assert pb["stop_step"] == 6 and pb["relation"] == "different" and pb["kind"] == "slur"
+
+
+def test_a_tall_end_inside_the_box_is_read_as_before_by_its_centre(on):
+    # the twin: an end beside the middle of the same box is no fused-dyad end; the box centre (step 6) reads as it always did
+    pb = _binding(_tall_scene(132.0))
+    assert "tall" not in pb["left"] and pb["start_step_source"] == "geometry" and pb["start_step"] == 6
 
 
 def test_two_boxes_of_one_head_are_not_a_chord_to_choose_from():

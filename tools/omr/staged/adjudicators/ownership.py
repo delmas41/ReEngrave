@@ -2410,6 +2410,34 @@ def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     return None, "no_position"
 
 
+def _half_step_page_px(ev: Evidence, row: Any, h: float) -> Optional[float]:
+    """Page pixels per half-step IN THIS HEAD'S OWN BAR (the cell's staff space is canonical; the head's box is on the record in both frames,
+    so page px per canonical unit is this bar's). Factored out of `_head_extent` (ROADMAP 2.250) so the tall-end reader uses the same unit."""
+    cell_rows = ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL))
+    box_rows = ev.rows(Q.GLYPH_BOX, subject=row.subject)
+    half_canon = ((cell_rows[0].detail or {}).get("half_step") if cell_rows else None)
+    canon_h = None
+    if box_rows and isinstance(box_rows[0].value, (list, tuple)) and len(box_rows[0].value) >= 5:
+        canon_h = float(box_rows[0].value[4])
+    if not half_canon or not canon_h or h <= 0:
+        return None
+    return float(half_canon) * (h / canon_h)
+
+
+def _tall_end_step(ev: Evidence, row: Any, cy: float, h: float, end_y: float) -> Tuple[Optional[int], str]:
+    """ROADMAP 2.250: the step of the head standing at the head-sized END of a fused (tall) box, `end_y` in page px: the kept row's position
+    shifted by the offset in this bar's half-steps, the way `_head_extent` places a union. A far head is its ledger reading or unread
+    (`_head_step`), never an ink position (page-facts: a far head is placed by its ledger lines only)."""
+    step, src = _head_step(ev, row)
+    if src != "geometry":
+        return step, src
+    pr = next((p for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=row.subject) if (p.detail or {}).get("rounded") is not None), None)
+    half_page = _half_step_page_px(ev, row, h)
+    if pr is None or half_page is None or (pr.detail or {}).get("from_head_cut") is not None:
+        return None, "tall_box_end"
+    return int(round(float(pr.value) + (end_y - cy) / half_page)), "geometry_tall_end"
+
+
 def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
                  t: Tuple) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.75b -- where ONE HEAD is, when the detector drew it in pieces.
@@ -2441,17 +2469,9 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
         return None
     # the bar's own unit: the cell's staff space is canonical, the head's box is
     # on the record in both frames, so page px per canonical unit is THIS bar's.
-    cell_rows = ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL))
-    box_rows = ev.rows(Q.GLYPH_BOX, subject=row.subject)
-    half_canon = ((cell_rows[0].detail or {}).get("half_step")
-                  if cell_rows else None)
-    canon_h = None
-    if box_rows and isinstance(box_rows[0].value, (list, tuple)) \
-            and len(box_rows[0].value) >= 5:
-        canon_h = float(box_rows[0].value[4])
-    if not half_canon or not canon_h or h <= 0:
+    half_page = _half_step_page_px(ev, row, h)
+    if half_page is None:
         return None
-    half_page = float(half_canon) * (h / canon_h)
     piece_max = HEAD_CUT_MAX_BOX_HEIGHT_SPACES * 2.0 * half_page
     tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS * 0.5
     members = [t]
@@ -3007,10 +3027,14 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         eb = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == rk))
         sa, src_a = _step_with_extent(ev, rows[lk], ea)
         sb, src_b = _step_with_extent(ev, rows[rk], eb)
+        # a FUSED box (an arc end beyond a box taller than a head) has no step at its centre -- the two-note rule leaves it unread (`half`); here
+        # the head is read at the head-sized END the arc stands at, in the bar's own half-steps (`_tall_end_step`), or stays unread
         if b["left"].get("tall"):
-            sa, src_a, cya = None, "tall_box_end", b["left"]["end_y"]       # the two-note rule's `half`: no step of its own; the head-sized end
+            sa, src_a = _tall_end_step(ev, rows[lk], hl["cy"], hl["h"], b["left"]["end_y"])
+            cya = b["left"]["end_y"]
         if b["right"].get("tall"):
-            sb, src_b, cyb = None, "tall_box_end", b["right"]["end_y"]
+            sb, src_b = _tall_end_step(ev, rows[rk], hr["cy"], hr["h"], b["right"]["end_y"])
+            cyb = b["right"]["end_y"]
         if ea is not None:
             cya = ea["yc"]
             b["start_extent"] = {k: v for k, v in ea.items() if k != "yc"}
