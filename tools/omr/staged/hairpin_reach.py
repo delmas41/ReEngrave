@@ -52,8 +52,9 @@ def word_area_without_wedges(binary, box, spacing):
     word takes ITS OWN ink; 2.253: on Brahms p8 the OCR box of 'dim.'/'espr.' held a real hairpin, read as a letter 'a').
 
     A component inside the box is a wedge when it is at least `WEDGE_IN_WORD_MIN_W_SP` wide and passes the reach reader's own shape
-    tests (opens, straight outline, converges, opens steadily). Returns `(area, dropped_boxes)`: the area shrunk to the remaining ink's
-    extent, or the box unchanged when no wedge is inside it or nothing else would be left. Page px corners in and out."""
+    tests (opens, straight outline, converges, opens steadily). Returns `(areas, dropped_boxes)`: one area round the ink left of the
+    wedge(s) and one round the ink right of them (ink overlapping the wedges' x span is not the word's), or `[box]` unchanged when no
+    wedge is inside it or no ink would be left. Page px corners in and out."""
     import cv2
     import numpy as np
     from .. import hairpin_detection as H
@@ -78,6 +79,13 @@ def word_area_without_wedges(binary, box, spacing):
                 continue
         keep.append((x, y, x + w, y + h))
     if not dropped or not keep:
-        return [float(v) for v in box], []
-    return [float(x0 + min(k[0] for k in keep)), float(y0 + min(k[1] for k in keep)),
-            float(x0 + max(k[2] for k in keep)), float(y0 + max(k[3] for k in keep))], dropped
+        return [[float(v) for v in box]], []
+    # The word's ink left and right of the wedge(s): a rectangle round all of it would hold the wedge again ('p espr', 'a dim' on p8).
+    wx0 = min(d[0] for d in dropped) - x0
+    wx1 = max(d[2] for d in dropped) - x0
+    sides = [[k for k in keep if k[2] <= wx0], [k for k in keep if k[0] >= wx1]]
+    areas = [[float(x0 + min(k[0] for k in g)), float(y0 + min(k[1] for k in g)),
+              float(x0 + max(k[2] for k in g)), float(y0 + max(k[3] for k in g))] for g in sides if g]
+    if not areas:
+        return [[float(v) for v in box]], []
+    return areas, dropped

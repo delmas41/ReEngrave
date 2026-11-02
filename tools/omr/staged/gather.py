@@ -15739,11 +15739,14 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if _hairpin_reach.enabled():
                 # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the OCR box can hold a hairpin beside the word ('dim.', 'espr.' on Brahms p8);
                 # the word claims its own ink, the wedge-shaped ink is left for the hairpin reader.
-                area, wedges_out = _hairpin_reach.word_area_without_wedges(binary, area, _sp(s))
+                areas, wedges_out = _hairpin_reach.word_area_without_wedges(binary, area, _sp(s))
                 if wedges_out:
                     extra["wedges_left_out"] = wedges_out
                     extra.setdefault("word_box", [float(v) for v in bb])
                     _count("word:direction_word:wedge_left_out")
+                    for a in areas:
+                        _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                    continue
             _file(s, area, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
         # a printed bar number (Tesseract, digits only, filed on its system with its box) is text outside the staves as well
         for r in log.rows(Q.PRINTED_BAR_NUMBER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):

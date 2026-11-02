@@ -136,10 +136,13 @@ def test_a_word_box_gives_up_the_hairpin_inside_it():
         binary[110:130, x0:x0 + 12] = 0
     w = _wedge()
     binary[105:105 + w.shape[0], 120:320][w > 0] = 0       # a hairpin right of them, inside the same box
-    area, dropped = hairpin_reach.word_area_without_wedges(binary, [10, 100, 330, 140], SP)
-    assert len(dropped) == 1 and area[2] <= 80
-    area2, dropped2 = hairpin_reach.word_area_without_wedges(binary, [10, 100, 90, 140], SP)
-    assert dropped2 == [] and area2 == [10.0, 100.0, 90.0, 140.0]
+    areas, dropped = hairpin_reach.word_area_without_wedges(binary, [10, 100, 330, 140], SP)
+    assert len(dropped) == 1 and len(areas) == 1 and areas[0][2] <= 80
+    areas2, dropped2 = hairpin_reach.word_area_without_wedges(binary, [10, 100, 90, 140], SP)
+    assert dropped2 == [] and areas2 == [[10.0, 100.0, 90.0, 140.0]]
+    binary[110:130, 340:352] = 0                            # a letter right of the wedge too ('p espr')
+    areas3, _ = hairpin_reach.word_area_without_wedges(binary, [10, 100, 360, 140], SP)
+    assert len(areas3) == 2 and areas3[0][2] <= 80 and areas3[1][0] >= 320
 
 
 def _owner_case(hairpin_box, monkeypatch, on):
