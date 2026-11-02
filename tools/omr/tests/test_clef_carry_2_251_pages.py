@@ -90,6 +90,24 @@ class NoBoxBassClef(unittest.TestCase):
         got = self._scan(4, 1, 3, 2200, 2700)
         self.assertTrue(any(2300 <= r["x"] <= 2370 for r in got), got)
 
+    def test_a_read_no_box_f_claim_takes_no_head_printed_before_it(self):
+        # round 3: a READ claim takes ink, so it is the body and its dots only. (1) bar 38 (read): the two heads printed before the clef
+        # (boxes 903-929) stand outside it. (2) bar 111: were its F clef read where its body matches, the claim would hold under 20% of the
+        # eighth printed before it (head box 2314-2338, Sean's r2 tile 2) -- too little for the consult to refuse it, so it keeps its pitch
+        from tools.omr.staged import clef_pagewide as CP
+        got = [g for g in _read(2, 1, 3, 940, 1040) if g["read"]]
+        self.assertTrue(got)
+        self.assertGreater(got[0]["area"][0], 929.0)
+        ink, st = _page(4), _staves(4)
+        ly, sp, _t = st[(1, 3)]
+        mb = [r for r in self._scan(4, 1, 3, 2200, 2700) if 2300 <= r["x"] <= 2380][0]["match"]["box"]
+        pair = {"x_right": mb[2] + 0.6 * sp, "dots": [[0, ly[1] - 0.5 * sp], [0, ly[1] + 0.5 * sp]]}
+        area = CP.nobox_area(mb, pair, mb[0], sp)
+        head = [2314.0, 2573.0, 2338.0, 2595.0]
+        iw = max(0.0, min(area[2], head[2]) - max(area[0], head[0]))
+        ih = max(0.0, min(area[3], head[3]) - max(area[1], head[1]))
+        self.assertLess(iw * ih / ((head[2] - head[0]) * (head[3] - head[1])), 0.2)
+
     def test_bar111_candidate_stands_after_the_eighth_printed_before_the_clef(self):
         # Sean's carry r2 tile 2: an eighth note (head box 2314-2338, centre 2326) is printed BEFORE the bar-111 bass clef and its head
         # overlaps the clef's body. The candidate (filed at the body's left edge, `gather_clef_pagewide`) must stand right of that head, so
