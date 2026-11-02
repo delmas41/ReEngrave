@@ -643,7 +643,9 @@ def changes_of(rows: Sequence[Any]) -> List[Tuple[float, Optional[str], Any]]:
         v = r.value
         if not (isinstance(v, (list, tuple)) and len(v) == 4):
             continue
-        out.append((float(v[0]), d.get("kind"), r))
+        # 2.251 carry: a change governs from its RIGHT edge -- a "head" box whose centre lies inside the clef's own area is the clef's
+        # ink (Litolff bar 38: a 0.42 head box on the bass clef's body was pitched from it, and pulled the written <clef> one bar early)
+        out.append((float(v[2]), d.get("kind"), r))
     out.sort(key=lambda t: t[0])
     return out
 
