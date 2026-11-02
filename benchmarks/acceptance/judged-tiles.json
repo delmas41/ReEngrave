@@ -1,6 +1,6 @@
 {
- "n_items": 178,
- "n_tiles": 2169,
+ "n_items": 179,
+ "n_tiles": 2181,
  "tiles": [
   {
    "answer": "right",
@@ -27525,6 +27525,354 @@
    "subjects": null,
    "tile": "9",
    "value": 0.5
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 11,
+    "page": 2,
+    "page_box": [
+     2097.84,
+     2253.12,
+     2122.48,
+     2272.48
+    ],
+    "staff": 1,
+    "system": 1
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/2/1/1/11/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": "tie"
+  },
+  {
+   "answer": "slur",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 4,
+    "page": 5,
+    "page_box": [
+     3193.9375,
+     2544.40625,
+     3234.07421875,
+     2579.85546875
+    ],
+    "staff": 9,
+    "system": 0
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/5/0/9/4/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": "slur"
+  },
+  {
+   "answer": "slur",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 5,
+    "page": 0,
+    "page_box": [
+     4588.6,
+     6321.28,
+     4629.88,
+     6357.76
+    ],
+    "staff": 12,
+    "system": 0
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/12/5/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": "slur"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 12,
+    "page": 2,
+    "page_box": [
+     2218.44,
+     2259.2,
+     2247.4,
+     2292.96
+    ],
+    "staff": 1,
+    "system": 1
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/2/1/1/12/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "tie",
+   "page_box": null,
+   "position": {
+    "cell": 5,
+    "page": 0,
+    "page_box": [
+     4145.4,
+     5532.08,
+     4187.96,
+     5569.2
+    ],
+    "staff": 10,
+    "system": 0
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/0/0/10/5/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "tie",
+   "page_box": null,
+   "position": {
+    "cell": 3,
+    "page": 5,
+    "page_box": [
+     2309.775,
+     6612.95,
+     2347.725,
+     6644.575
+    ],
+    "staff": 11,
+    "system": 1
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/5/1/11/3/9",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 7,
+    "page": 10,
+    "page_box": [
+     1559.435,
+     1594.3275,
+     1582.745,
+     1615.905
+    ],
+    "staff": 8,
+    "system": 0
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/10/0/8/7/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 12,
+    "page": 2,
+    "page_box": [
+     2201.0,
+     2436.8,
+     2247.88,
+     2475.04
+    ],
+    "staff": 2,
+    "system": 1
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/2/1/2/12/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 6,
+    "page": 10,
+    "page_box": [
+     1418.585,
+     1585.1925,
+     1445.36,
+     1623.78
+    ],
+    "staff": 8,
+    "system": 0
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/10/0/8/6/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 4,
+    "page": 9,
+    "page_box": [
+     1120.435,
+     1395.915,
+     1145.855,
+     1422.11
+    ],
+    "staff": 7,
+    "system": 0
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/9/0/7/4/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 13,
+    "page": 2,
+    "page_box": [
+     2347.6,
+     2456.64,
+     2373.68,
+     2480.32
+    ],
+    "staff": 2,
+    "system": 1
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/2/1/2/13/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": "tie"
+  },
+  {
+   "answer": "tie",
+   "answer_kind": "arc",
+   "control": false,
+   "date": "2026-11-01",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.250-tiles",
+   "mark_kind": "slur",
+   "page_box": null,
+   "position": {
+    "cell": 13,
+    "page": 2,
+    "page_box": [
+     2344.56,
+     2252.32,
+     2371.28,
+     2273.12
+    ],
+    "staff": 1,
+    "system": 1
+   },
+   "question_kind": "unknown",
+   "subject": "glyph/2/1/1/13/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": "tie"
   },
   {
    "answer": "8th note on first ledger line",

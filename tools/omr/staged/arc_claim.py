@@ -279,11 +279,7 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
     def is_fused(t: Dict[str, Any]) -> bool:
         # only where the arc end stands BEYOND the box (a tie under / over the outer head of a fused dyad); an end beside the box's middle
         # is read as it always was, by the box centre -- a tall box is not always two heads (a head with its accidental or a line's ink)
-        # ... and only where the column holds a SECOND box beside it (a piece or a chord-mate: the corroboration that the tall box is a
-        # fused chord). A LONE tall box (a head with a ledger or stem's ink, 3 of Sean's round-1 ties) is not known to be two heads: rule 8,
-        # it keeps the reading it had (box centre).
-        return (bool(t.get("tall")) and len(members) > 1
-                and not (t["cy"] - t["h"] / 2.0 <= ey <= t["cy"] + t["h"] / 2.0))
+        return bool(t.get("tall")) and not (t["cy"] - t["h"] / 2.0 <= ey <= t["cy"] + t["h"] / 2.0)
 
     def where(t: Dict[str, Any]) -> float:
         # ⚠️ A TALL box is two heads fused (the two-note rule's `half` ends): its centre is neither head's, so a tall member stands at
