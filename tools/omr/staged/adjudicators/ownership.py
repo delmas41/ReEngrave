@@ -5417,10 +5417,12 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
                   stop_x_page=float(stop["x"]), start_how=start["how"], stop_how=stop["how"],
                   degenerate=start["head"] == stop["head"])
     from .. import hairpin_reach as _hairpin_reach
-    if _hairpin_reach.enabled() and start["head"] == stop["head"]:
-        # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): both tips on ONE note -- an accent or a hairpin (Sean 2026-11-02, page-facts "Accent
-        # or hairpin by length": only a hairpin is longer than a note). Position does not decide it, so neither is written (CLAUDE s4).
-        return Ruling.abstain("one_note_wedge", candidates=["hairpin", "accent"], **detail)
+    if _hairpin_reach.enabled() and start["head"] == stop["head"] and sp \
+            and (float(box[2]) - float(box[0])) / float(sp) < _hairpin_reach.ACCENT_MAX_W_SP:
+        # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): both tips on ONE note and no longer than an accent glyph -- an accent or a hairpin
+        # (Sean 2026-11-02, page-facts "Accent or hairpin by length"). Position does not decide it, so neither is written (CLAUDE s4).
+        return Ruling.abstain("one_note_wedge", candidates=["hairpin", "accent"],
+                              width_spaces=round((float(box[2]) - float(box[0])) / float(sp), 2), **detail)
     return Ruling(value=[str(start["head"]), str(stop["head"])], reason="bound_page_wide", used=(wedge.id,), detail=detail)
 
 

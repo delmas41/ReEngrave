@@ -16,8 +16,8 @@ ON, the reader (`detect_hairpins(..., reach=True)`):
   4. and, because a beam stripped of its stems is now as isolated as a hairpin and the rejoin can glue a word's letters, requires
      the arms to CONVERGE (`converges`) and the opening to grow steadily (`extent_trend`).
 
-And in ADJUDICATE (`ownership._wedge_page_binding`): a wedge whose two tips bind to the SAME note is a one-note wedge, which may be an
-accent or a hairpin (Sean 2026-11-02, page-facts: "Hairpins can be one note in length also but only hairpins can be longer than a
+And in ADJUDICATE (`ownership._wedge_page_binding`): a wedge whose two tips bind to the SAME note and no wider than an accent glyph
+(`ACCENT_MAX_W_SP`) is a one-note wedge, which may be an accent or a hairpin (Sean 2026-11-02, page-facts: "Hairpins can be one note in length also but only hairpins can be longer than a
 note") -- it abstains `one_note_wedge`, counted, never written as either (CLAUDE s4).
 
 CONVENTION ASSUMED: a hairpin's arms are straight lines that meet at the apex (page-facts: arcs bow, hairpins are straight).
@@ -35,6 +35,13 @@ def enabled() -> bool:
     """`OMR_HAIRPIN_REACH`, default OFF (ROADMAP 2.254); 1/true/yes/on enables."""
     return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
+
+#: ADJUDICATE abstains a one-note wedge only when it is no longer than this: an accent is a printed glyph of one size (Brahms p5: the
+#: accents the reach reads are 1.6-2.1 sp), while a hairpin held under one long note is as long as the note's room (Brahms p8: 17
+#: one-note wedges, 3.9-6.7 sp; Sean 2026-11-02 read the ~5.5 sp one-note wedges of Brahms p19 bars 358-361 as hairpins).
+#: CONVENTION ASSUMED: an accent is never wider than 3 spaces. WHAT WOULD FALSIFY IT: a one-note wedge 3+ sp that Sean reads as an
+#: accent. NOT CONFIRMED beyond the p19 crop.
+ACCENT_MAX_W_SP = 3.0
 
 #: A component this many spaces wide is past any letter (2.245's `HAIRPIN_MIN_W_SP`, the same cut the wedge reader refuses letters by).
 WEDGE_IN_WORD_MIN_W_SP = 1.6

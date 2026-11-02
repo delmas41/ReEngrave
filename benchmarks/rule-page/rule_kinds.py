@@ -313,7 +313,7 @@ RULES = [
       "open (OMR_HAIRPIN_BIND_PAGEWIDE OFF)"),
     R(TEXT, "wedge_anchor", "tip_unbound,not_between_staves", "D:honesty", "-", "-", RULE8, "open (OMR_HAIRPIN_BIND_PAGEWIDE OFF)"),
     R(TEXT, "wedge_anchor", "one_note_wedge", "A", "only a hairpin is longer than one note",
-      "a wedge whose two tips bind to one note may be an accent or a hairpin; neither is written", "Sean 2026-11-02 (page-facts s1); ROADMAP 2.254",
+      "a wedge whose two tips bind to one note, no wider than an accent (3 sp), may be an accent or a hairpin; neither is written", "Sean 2026-11-02 (page-facts s1); ROADMAP 2.254",
       "open (OMR_HAIRPIN_REACH OFF)"),
     R(TEXT, "ottava_owner", "above,below", "A", "an ottava bracket belongs to the staff it hugs", "-", "PLACEMENT-CONVENTIONS.md", "kept"),
     R(TEXT, "ottava_owner", "no_staff_lines", "D:honesty", "-", "-", RULE8, "kept"),

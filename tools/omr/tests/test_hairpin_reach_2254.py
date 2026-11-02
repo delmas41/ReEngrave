@@ -124,7 +124,8 @@ def test_one_note_wedge_abstains_only_with_the_flag():
     import inspect
     from tools.omr.staged.adjudicators import ownership
     src = inspect.getsource(ownership._wedge_page_binding)
-    assert '"one_note_wedge"' in src and "_hairpin_reach.enabled()" in src
+    assert '"one_note_wedge"' in src and "_hairpin_reach.enabled()" in src and "ACCENT_MAX_W_SP" in src
+    assert hairpin_reach.ACCENT_MAX_W_SP == 3.0
     assert "one_note_wedge" in inspect.getsource(ownership)
 
 
