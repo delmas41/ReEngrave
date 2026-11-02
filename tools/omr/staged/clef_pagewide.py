@@ -44,6 +44,8 @@ C_BAR_MAX_WIDTH_SPACES = 1.3
 C_BAR_MIN_RUN_SPACES = 3.0
 #: ... that starts and ends within this of the staff's top / bottom line (a barline or a bracket runs on to the next staff)
 C_BAR_REACH_SPACES = 1.3
+#: the glyph ends at the first gap this wide (staff spaces) right of the bar (between the thick and thin bars stands at most ~0.3)
+C_GLYPH_GAP_SPACES = 0.35
 #: the bowls: ink right of the bar within this reach (staff spaces from the bar's right edge) ...
 C_BOWL_REACH_SPACES = 2.2
 #: ... in BOTH halves (above and below the bar's middle) at least this share of the half's area (a repeat sign's dots are far below it)
@@ -55,6 +57,10 @@ G_REACH_SPACES = 0.6
 #: a bar candidate is a G clef's spine where ink stands in BOTH bands this far past the staff (staff spaces, from .. to) beside it
 G_PAST_SPACES = (1.4, 2.2)
 G_PAST_MIN_FILL = 0.05
+#: ... or the G clef's tail: ink in the band this far below the bottom line (from .. to, staff spaces), beside the spine, at least
+#: this share (measured on Litolff pp. 2-16: header G clefs 0.42-0.56; every C clef, header or inside a system, at most 0.15)
+G_TAIL_SPACES = (0.6, 1.6)
+G_TAIL_MIN_FILL = 0.3
 #: an F clef box's top stands this close to the top line
 F_TOP_REACH_SPACES = 1.0
 #: staff-line rows are cleared within this of each line (staff spaces) where a row's ink runs across this share of the window
@@ -68,6 +74,10 @@ LOCAL_LINE_WINDOW_SPACES = 4.0
 #: the lines a clef may name and be READ (a convention prior on these plates: the bass F clef, the alto and tenor C clefs); a clef
 #: whose line comes out anywhere else is claimed but its kind UNREAD -- never a rare clef from a measurement near a cut
 KINDS_READ = {"F": (4,), "C": (3, 4)}
+#: a column of the dot window holding an unbroken raw ink run this long (staff spaces) is a stem / barline: cleared before the dots
+DOT_STROKE_CLEAR_SPACES = 1.8
+#: the F body: pieces starting at most this far (staff spaces) left of its largest piece
+F_BODY_LEFT_REACH_SPACES = 0.6
 #: a dot candidate whose centre column holds an unbroken ink run this long (staff spaces, lines included) is a stroke's piece
 DOT_NOT_A_STROKE_SPACES = 1.5
 #: a clef starting within this many staff spaces of the staff's first cell's left edge is the system's header clef
@@ -172,6 +182,12 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
             g_up = ink[max(0, int(top - G_PAST_SPACES[1] * sp)):max(0, int(top - G_PAST_SPACES[0] * sp)), gx0:gx1]
             g_lo = ink[min(H, int(bot + G_PAST_SPACES[0] * sp)):min(H, int(bot + G_PAST_SPACES[1] * sp)), gx0:gx1]
             g_shape = bool(g_up.size and g_up.mean() >= G_PAST_MIN_FILL) and bool(g_lo.size and g_lo.mean() >= G_PAST_MIN_FILL)
+            # round 2 (Sean's tile 5: a header G clef claimed as a C clef): the spine of a small G clef stays inside the staff and its
+            # curl and tail miss the far bands above; its TAIL below the bottom line beside the spine does not
+            tx0, tx1 = max(0, x0 + j - int(round(1.0 * sp))), min(W, x0 + k + int(round(1.2 * sp)))
+            tail = ink[min(H, int(ll[4] + G_TAIL_SPACES[0] * sp)):min(H, int(ll[4] + G_TAIL_SPACES[1] * sp)), tx0:tx1]
+            cand["g_tail_fill"] = round(float(tail.mean()), 3) if tail.size else 0.0
+            g_shape = g_shape or cand["g_tail_fill"] >= G_TAIL_MIN_FILL
             rows_ink = np.flatnonzero(region.any(axis=1))
             # the named line is the axis the WHOLE glyph (bar and bowls, lines cleared) balances about -- the header C-clef
             # locator's own measure (`clef_locator._refine_symmetry_axis`), searched within `C_AXIS_SHIFT_SPACES` of the bar's middle
@@ -192,14 +208,31 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
             elif rows_ink.size == 0:
                 why = "no_bowls"
             else:
-                # the glyph's right edge: the last bowl column holding ink
-                cols = np.flatnonzero(region.any(axis=0))
-                cand["x_right"] = int(bx0 + (cols.max() + 1 if cols.size else 0))
+                # the glyph's right edge: walk right from the bar through the columns holding bowl ink, stopping at the first gap
+                # wider than `C_GLYPH_GAP_SPACES` (round 2: a claim takes the clef's own ink, never a rest or note beside it)
+                has = region.any(axis=0)
+                gap, last, lim = 0, -1, int(round(C_GLYPH_GAP_SPACES * sp))
+                for c in range(region.shape[1]):
+                    if has[c]:
+                        last, gap = c, 0
+                    else:
+                        gap += 1
+                        if gap > lim:
+                            break
+                cand["x_right"] = int(bx0 + last + 1)
         cand["passed"] = why is None
         cand["why"] = why
         out.append(cand)
         j = k
     return out
+
+
+def c_area(cand: Dict[str, Any], sp: float) -> List[float]:
+    """The page-px area a passing C bar candidate claims: from just left of its thick bar to the glyph's own right edge (`x_right`,
+    the contiguous bowl ink), and the clef's height about its named line. ONE formula for the claim and for any tile drawn of it."""
+    mid = float(cand.get("middle_y", (cand["y0"] + cand["y1"]) / 2.0))
+    return [float(cand["x0"]) - 0.15 * sp, min(float(cand["y0"]), mid - 2.0 * sp) - 0.3 * sp,
+            float(cand.get("x_right", cand["x1"] + 2.0 * sp)) + 0.1 * sp, max(float(cand["y1"]), mid + 2.0 * sp) + 0.3 * sp]
 
 
 def local_lines(ink: np.ndarray, lines: Sequence[float], sp: float, x: float) -> List[float]:
@@ -233,6 +266,19 @@ def name_c(mid_y: float, lines: Sequence[float]) -> Tuple[Optional[str], Optiona
     return r.name, r.line, (round(float(r.residual), 3) if r.residual is not None else None)
 
 
+def _dot_mask(ink: np.ndarray, y0: int, y1: int, x0: int, x1: int, lines: Sequence[float], sp: float) -> np.ndarray:
+    """The window's ink as the dot readers see it: the staff lines cleared (rows a line runs across, as thick as the print made it),
+    and every column holding an unbroken RAW ink run of `DOT_STROKE_CLEAR_SPACES` or more cleared too -- a stem or barline that the
+    dots touch (Brahms p5 s1 staff 3: thick lines and a stem fuse the lower dot) is no part of a dot, and an F clef's own body never
+    runs that far down one column."""
+    half = max(1, int(round(LINE_HALF_SPACES * sp)))
+    sub = _without_lines(ink[y0:y1, x0:x1], [int(round(l)) - y0 for l in lines], half, full_rows_only=True)
+    for j in range(sub.shape[1]):
+        if _longest_run(ink[y0:y1, x0 + j])[0] >= DOT_STROKE_CLEAR_SPACES * sp:
+            sub[:, j] = False
+    return sub.astype(np.uint8)
+
+
 def f_dots(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> bool:
     """The F clef's two dots right of its body (`clef_locator._has_f_clef_dots`, the header locator's own veto) on the page ink with
     the staff lines cleared."""
@@ -242,13 +288,16 @@ def f_dots(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: fl
     x1, y1 = min(W, int(box[2] + 2 * sp)), min(H, int(box[3] + sp))
     if x1 - x0 < 3 or y1 - y0 < 3:
         return False
-    half = max(1, int(round(LINE_HALF_SPACES * sp)))
-    sub = _without_lines(ink[y0:y1, x0:x1], [int(round(l)) - y0 for l in lines], half, full_rows_only=True).astype(np.uint8)
+    sub = _dot_mask(ink, y0, y1, x0, x1, lines, sp)
     bb = (int(box[0]) - x0, int(box[1]) - y0, int(box[2] - box[0]), int(box[3] - box[1]))
     try:
         return bool(_has_f_clef_dots(sub, bb, float(sp), DEFAULT_LOCATOR_CONFIG))
     except Exception:                                   # noqa: BLE001 -- a reader that cannot run is no witness
         return False
+
+
+#: the right edge (page px) of the dot pair the last `f_line` call read -- the F claim's own right edge
+F_LAST_DOTS: Dict[str, float] = {}
 
 
 def f_line(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> Tuple[Optional[str], Optional[int], Optional[float]]:
@@ -263,8 +312,7 @@ def f_line(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: fl
     x1, y1 = min(W, int(box[2] + C.dot_search_right_spaces * sp)), min(H, int(box[3] + sp))
     if x1 - x0 < 3 or y1 - y0 < 3:
         return None, None, None
-    half = max(1, int(round(LINE_HALF_SPACES * sp)))
-    sub = _without_lines(ink[y0:y1, x0:x1], [int(round(l)) - y0 for l in lines], half, full_rows_only=True).astype(np.uint8)
+    sub = _dot_mask(ink, y0, y1, x0, x1, lines, sp)
     n, _lab, st, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
     dots = []
     for i in range(1, n):
@@ -274,17 +322,22 @@ def f_line(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: fl
             # a piece of a stem or barline the line clearing cut is no dot: its column runs on through the lines in the raw ink
             if _longest_run(ink[y0:y1, int(cx)])[0] >= DOT_NOT_A_STROKE_SPACES * sp:
                 continue
-            dots.append((cx, y0 + st[i, cv2.CC_STAT_TOP] + bh * sp / 2.0))
+            dots.append((cx, y0 + st[i, cv2.CC_STAT_TOP] + bh * sp / 2.0, x0 + st[i, cv2.CC_STAT_LEFT] + st[i, cv2.CC_STAT_WIDTH]))
     best = None
     for a in range(len(dots)):
         for b in range(a + 1, len(dots)):
             dx, dy = abs(dots[a][0] - dots[b][0]) / sp, abs(dots[a][1] - dots[b][1]) / sp
             if dx <= C.dot_max_dx_spaces and C.dot_min_dy_spaces <= dy <= C.dot_max_dy_spaces:
-                cand = (-min(dots[a][0], dots[b][0]), abs(dy - 1.0), (dots[a][1] + dots[b][1]) / 2.0)   # the dots stand right of the body
+                # the dots stand at the body's right edge: the pair nearest the box's right edge (a key flat's or a note's pieces stand
+                # further right; round 2: on Brahms headers the rightmost pair was a key flat's bowl)
+                cand = (round(abs((dots[a][0] + dots[b][0]) / 2.0 - float(box[2])) / sp, 1), abs(dy - 1.0),
+                        (dots[a][1] + dots[b][1]) / 2.0,
+                        max(dots[a][2], dots[b][2]))
                 if best is None or cand < best:
                     best = cand
     if best is None:
         return None, None, None
+    F_LAST_DOTS["right"] = float(best[3])
     snapped = _snap_to_staff_line(best[2], [float(v) for v in lines])
     if snapped is None:
         return None, None, None
@@ -293,6 +346,38 @@ def f_line(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: fl
     if name is None or residual > DEFAULT_CONFIG.max_residual:
         return None, None, round(float(residual), 3)
     return name, line, round(float(residual), 3)
+
+
+def f_body(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> Optional[List[float]]:
+    """The F clef's BODY inside its detector box (page px [x0, y0, x1, y1]): the largest piece of the box's ink with the staff lines
+    and the long strokes cleared (`_dot_mask`). Round 2 (Sean's r1 tile 10, Litolff p16): the detector's `clefF` box also held the
+    quarter rest standing just left of the clef, so the claim is cut to the clef's own ink, never the box."""
+    import cv2
+    H, W = ink.shape
+    x0, y0, x1, y1 = max(0, int(box[0])), max(0, int(box[1])), min(W, int(round(box[2]))), min(H, int(round(box[3])))
+    if x1 - x0 < 3 or y1 - y0 < 3:
+        return None
+    sub = _dot_mask(ink, y0, y1, x0, x1, lines, sp)
+    n, _lab, st, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+    if n <= 1:
+        return None
+    i = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
+    # the line clearing cuts the body into pieces: the body is the largest piece and every sizeable piece starting no further left
+    # than `F_BODY_LEFT_REACH_SPACES` before it (a rest or note standing left of the clef starts further left)
+    lo = st[i, cv2.CC_STAT_LEFT] - F_BODY_LEFT_REACH_SPACES * sp
+    keep = [j for j in range(1, n) if st[j, cv2.CC_STAT_AREA] >= 0.15 * st[i, cv2.CC_STAT_AREA] and st[j, cv2.CC_STAT_LEFT] >= lo]
+    return [float(x0 + min(st[j, cv2.CC_STAT_LEFT] for j in keep)), float(y0 + min(st[j, cv2.CC_STAT_TOP] for j in keep)),
+            float(x0 + max(st[j, cv2.CC_STAT_LEFT] + st[j, cv2.CC_STAT_WIDTH] for j in keep)),
+            float(y0 + max(st[j, cv2.CC_STAT_TOP] + st[j, cv2.CC_STAT_HEIGHT] for j in keep))]
+
+
+def f_claim_area(got: Dict[str, Any], box: Sequence[float], sp: float) -> List[float]:
+    """The page-px area a passing F clef claims: its body's left edge (else the box's) to its dots' right edge, the box's height.
+    ONE formula for the claim and for any tile drawn of it."""
+    body = got.get("body")
+    left = float(body[0]) - 0.1 * sp if body else float(box[0])
+    right = max(float(body[2]) if body else float(box[2]), float(got.get("dots_right") or 0.0)) + 0.05 * sp
+    return [max(float(box[0]), left), float(box[1]), right, float(box[3])]
 
 
 def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float) -> Dict[str, Any]:
@@ -304,9 +389,17 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
     if fam == "F":
         if abs(float(box[1]) - top) > F_TOP_REACH_SPACES * sp:
             return dict(out, passed=False, why="f_top_off_the_top_line")
-        if not f_dots(ink, box, lines, sp):
-            return dict(out, passed=False, why="f_no_dots")
+        # round 2: the witness is the DOT PAIR that straddles the F line (`f_line`, the header locator's dot sizes and spacing), read on
+        # the window with lines AND the strokes the dots touch cleared; the locator's own whole-glyph test (`_has_f_clef_dots`) is
+        # kept as the first chance but no longer required -- on Breitkopf's thick lines it fails real clefs (Sean r1 tile 11)
+        dots_ok = f_dots(ink, box, lines, sp)
+        F_LAST_DOTS.clear()
         nm, ln, res = f_line(ink, box, lines, sp)
+        out["dots_right"] = F_LAST_DOTS.get("right")
+        out["body"] = f_body(ink, box, lines, sp)
+        out["locator_dots"] = bool(dots_ok)
+        if nm is None and not dots_ok and "right" not in F_LAST_DOTS:
+            return dict(out, passed=False, why="f_no_dots")
         if nm is None:
             # the dot PAIR must straddle the F line: dots that name no allowed line are no second witness (a false `clefF` box over
             # a half note and a barline passed the looser dot test on Brahms p25) -- the box alone never claims

@@ -15507,8 +15507,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 near.append(dict(cand, family="C"))
                 continue
             nm, ln, res = CP.name_c(cand["middle_y"], cand.get("lines_local") or lines)
-            area = [cand["x0"] - 0.15 * sp, min(cand["y0"], cand["middle_y"] - 2.0 * sp) - 0.3 * sp,
-                    cand.get("x_right", cand["x1"] + 2.0 * sp) + 0.1 * sp, max(cand["y1"], cand["middle_y"] + 2.0 * sp) + 0.3 * sp]
+            area = CP.c_area(cand, sp)
             found.append({"area": area, "family": "C", "kind": nm, "line": ln, "residual": res, "witnesses": ["c_bar", "c_bowls"],
                           "shape": {k: cand.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
                                                               "bowl_asymmetry", "symmetry")}, "box": None})
@@ -15531,16 +15530,27 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                             f["witnesses"].append("detector_box")
                             f["box"] = gkey
                     continue
-                area = [pb[0], pb[1], pb[2] + (0.8 * sp if got["family"] == "F" else 0.0), pb[3]]
+                # an F clef: its own body and dots, never the box (round 2: the box held a quarter rest too)
+                area = CP.f_claim_area(got, pb, sp) if got["family"] == "F" else list(pb)
                 if any(CL.overlaps(f["area"], area) and f["family"] == got["family"] for f in found):
                     continue                                   # one clef, two boxes (padded copies): claimed once
                 found.append({"area": area, "family": got["family"], "kind": got["kind"], "line": got["line"],
                               "residual": got["residual"], "witnesses": ["detector_box", "f_dots" if got["family"] == "F" else "geometry"],
                               "shape": None, "box": gkey})
+        other_clefs = []                                       # clef-sized G / F boxes: a C candidate on one is that clef's ink
+        for k in order:
+            for d in detections.get(R.cell(p, sys_idx, li, k).to_key(), ()):
+                pb = _page_box(mycells[k], d)
+                fam = str(d.smufl_name)
+                if CL.is_clef_box(fam, pb, sp) and fam.startswith(("clefG", "clefF")):
+                    other_clefs.append(pb)
         for f in found:
             area = [round(float(v), 1) for v in f["area"]]
             if any(CL.overlaps(area, h) and _overlap_share(area, h) >= 0.5 for h in held):
                 continue                                       # already owned (the header's clef, a key, a meter): never taken
+            if f["family"] == "C" and (any(_overlap_share(area, b) >= 0.2 for b in other_clefs)
+                                       or any(_overlap_share(area, h) >= 0.2 for h in held)):
+                continue                                       # round 2: never a C claim on a G / F clef, nor on a READ claim
             k = cell_at(area[0])
             change = not (k == order[0] and (area[0] - mycells[k].bbox_page_px[0]) / sp <= CP.HEADER_WINDOW_SPACES)
             inside: Dict[str, Any] = {}
