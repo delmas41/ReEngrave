@@ -8,6 +8,7 @@ from typing import Dict, List, Optional
 
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from .. import movements as _movements
+from .. import key_header_ink as _key_header_ink
 from ..record import DOCUMENT, Kind, Outcome, Q, Scope, State
 from .clef import UNKNOWN_FIT_KEY, _unknown_fit_candidates
 
@@ -439,6 +440,19 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
                  if not _keysig_marker_glyph_refused(ev, subject, m))
     fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject), clef.value)
 
+    # ⚠️ ROADMAP 2.256 (flag `OMR_KEY_HEADER_INK`, default OFF): the detector boxed 1-2 of three crushed flats; GATHER's key object had
+    # already read the header ink (raster pieces + boxes) and filed its own slot count for this staff. It only RAISES a clean one-kind run
+    # (the kind stays the detector's); the system and part checks below judge the raised value like any other.
+    key_ink = None
+    if fifths is not None and reason == "markers" and _key_header_ink.enabled():
+        key_ink = _key_header_ink.raise_count(
+            _key_header_ink.key_object_of(ev.rows(Q.CLAIMED_AREA, subject=subject)), abs(int(fifths)))
+        if key_ink["slots"] is not None:
+            detail = dict(detail, header_ink_slots=key_ink["slots"], marker_slots=abs(int(fifths)))
+            fifths = (-1 if int(fifths) < 0 else 1) * int(key_ink["slots"])
+        else:
+            detail = dict(detail, header_ink_refused=key_ink["why"])
+
     fits = ev.rows(Q.KEYSIG_CLEF_FIT, subject=subject)
     tpls = ev.rows(Q.KEYSIG_TEMPLATE_FIT, subject=subject)
     fit_row, fit_fifths = _fit_for_clef(fits, clef)
@@ -591,7 +605,9 @@ def _transposition_of_labels(labels):
 _KEY_WANTS = (Q.KEYSIG_RUN_POSITION, Q.KEYSIG_MARKER, Q.KEYSIG_CLEF_FIT,
               Q.KEYSIG_TEMPLATE_FIT, Q.CLEF, Q.INPUT_DOMAIN,
               Q.CELL_STAFF_SPACE, Q.MARGIN_LABEL, Q.GLYPH_BOX,
-              Q.KEYSIG_MARKER_IS_NOT_A_MARKER)
+              Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
+              # ROADMAP 2.256 (flag OMR_KEY_HEADER_INK): the key object's own slot count, read from the claim rows
+              Q.CLAIMED_AREA)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
