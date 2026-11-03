@@ -70,5 +70,52 @@ class TestContestedPosition(unittest.TestCase):
             self.assertTrue(HP.r6_enabled())
 
 
+class TestOneEndContested(unittest.TestCase):
+    """Sean's r5 tile 3: the start's box reads the top line, its hole 0.59; the stop's hole reads the top space -- the start is named."""
+
+    def test_the_contested_end_is_named(self):
+        from tools.omr.staged.adjudicators.ownership import one_end_contested
+        a = ({"rounded": 0, "hole_refused": "off_grid", "hole_steps": [0.59]}, 0.1)
+        b = ({"rounded": 1, "from_head_hole": [1.05]}, 1.05)
+        c = one_end_contested("A", "B", 0, 1, a, b)
+        self.assertEqual((c["end"], c["alternative"]), ("A", 1))
+
+    def test_both_or_neither_contested_names_none(self):
+        from tools.omr.staged.adjudicators.ownership import one_end_contested
+        plain = ({"rounded": 1}, 1.1)
+        self.assertIsNone(one_end_contested("A", "B", 0, 1, ({"rounded": 0}, 0.1), plain))
+        a = ({"rounded": 0, "hole_refused": "off_grid", "hole_steps": [0.59]}, 0.1)
+        b = ({"rounded": 1, "hole_refused": "ink_disagrees", "hole_steps": [0.1]}, 1.2)
+        self.assertIsNone(one_end_contested("A", "B", 0, 1, a, b))
+
+    def test_an_alternative_away_from_the_partner_names_none(self):
+        from tools.omr.staged.adjudicators.ownership import one_end_contested
+        a = ({"rounded": 0, "hole_refused": "off_grid", "hole_steps": [-0.6]}, 0.1)
+        self.assertIsNone(one_end_contested("A", "B", 0, 1, a, ({"rounded": 1}, 1.0)))
+
+
+class TestTieEndUnsure(unittest.TestCase):
+    def _rec(self, verdicts, obs):
+        from tools.omr.staged.export import Record
+        return Record({"record": {"observations": obs, "verdicts": verdicts, "abstentions": []}})
+
+    def test_far_head_ledger_unread_and_contested_hole_are_named(self):
+        from tools.omr.staged.export import _tie_end_unsure
+        rec = self._rec(
+            [{"id": "v1", "quantity": "notehead_position", "subject": "A", "outcome": "abstained", "value": None}],
+            [{"quantity": "notehead_staff_position", "subject": "B", "value": 1.34,
+              "detail": {"rounded": 1, "hole_refused": "ink_disagrees", "hole_steps": [2.02]}}])
+        got = _tie_end_unsure(rec, "A", "B")
+        self.assertEqual([g["end"] for g in got], ["A", "B"])
+        self.assertEqual(got[0]["why"], "far_head_ledger_unread")
+        self.assertEqual(got[1]["alternative"], 2)
+
+    def test_settled_ends_are_not_named(self):
+        from tools.omr.staged.export import _tie_end_unsure
+        rec = self._rec([{"id": "v1", "quantity": "notehead_position", "subject": "A", "outcome": "decided", "value": -2}],
+                        [{"quantity": "notehead_staff_position", "subject": "B", "value": 1.0, "detail": {"rounded": 1}}])
+        self.assertEqual(_tie_end_unsure(rec, "A", "B"), [])
+
+
 if __name__ == "__main__":
     unittest.main()

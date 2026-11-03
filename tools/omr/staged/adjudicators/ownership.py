@@ -2420,6 +2420,25 @@ def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     return None, "no_position"
 
 
+def one_end_contested(lk: str, rk: str, sa: int, sb: int, pa: Tuple[Any, Any], pb: Tuple[Any, Any]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.252 r6: of two tie ends reading adjacent steps `sa`/`sb` at one height, the ONE end whose own readings disagree and
+    whose other reading is the other end's step (`{..., end}`), or None (neither, both, or an alternative elsewhere)."""
+    from .. import head_hole_position as _hhp
+    ca, cb = _hhp.contested_position(*pa), _hhp.contested_position(*pb)
+    if (ca is None) == (cb is None):
+        return None
+    c_, other, end = (ca, sb, lk) if ca is not None else (cb, sa, rk)
+    return dict(c_, end=end) if c_["alternative"] == other else None
+
+
+def _position_detail(ev: Evidence, head_row: Any) -> Tuple[Optional[Dict[str, Any]], Any]:
+    """ROADMAP 2.252 r6: the head's `Q.NOTEHEAD_STAFF_POSITION` (detail, value) -- its own readings, for
+    `head_hole_position.contested_position`; `(None, None)` where there is none."""
+    for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=head_row.subject):
+        return dict(p.detail or {}), p.value
+    return None, None
+
+
 def _half_step_from_rows(cell_rows: Any, box_rows: Any, h: float) -> Optional[float]:
     """Page pixels per half-step IN THIS HEAD'S OWN BAR from the rows the CALLER read (`Q.CELL_STAFF_SPACE` of its cell, `Q.GLYPH_BOX` of
     the head): the cell's staff space is canonical, the head's box is on the record in both frames, so page px per canonical unit is this
@@ -3095,10 +3114,22 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         b["tall_lone_readings"] = {"plain": relation, "at_the_end": alt, "end_steps": [sa2, sb2]}
         if alt != relation and relation != "same":
             relation, b["relation_source"] = "unread", "tall_lone_readings_disagree"
+    contested = None
+    if relation == "conflict" and sa is not None and sb is not None and abs(sa - sb) == 1:
+        from .. import head_hole_position as _hhp
+        if _hhp.r6_enabled():
+            # ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`, default OFF): the two ends stand at ONE height but read two adjacent
+            # steps, and exactly one end's OWN readings disagree (its single hole stands at the other end's step; Sean's r5 tile 3:
+            # `11/1/1/0/8` box on the top line, hole 0.59, tied to a head whose hole reads the top space). Which head is wrong is not
+            # read here and the tie is not a witness (never move a head to match its partner): the arc is written as NEITHER kind and
+            # the contested end is named -- no slur by the detector's class where our own reading says one position.
+            contested = one_end_contested(lk, rk, sa, sb, _position_detail(ev, rows[lk]), _position_detail(ev, rows[rk]))
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])
-    if relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+    if contested is not None:
+        b.update(why="step_conflict_one_end_contested", contested_end=contested)
+    elif relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
         # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
         # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
         # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he
@@ -3321,7 +3352,7 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                               detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
             if pb is not None:
                 grammar["page_binding"] = pb
-            if pb is not None and pb.get("why") == "tie_box_end_only_at_a_stem_tip":
+            if pb is not None and pb.get("why") in ("tie_box_end_only_at_a_stem_tip", "step_conflict_one_end_contested"):
                 # ROADMAP 2.252 r2: the end's own head is unread, so the two-note reading below would pair the same wrong head (it takes
                 # the column's extreme head); the arc is still an arc and is written as neither kind -- counted, never a guessed slur
                 return Ruling(value=None, reason="arc_ends_unread", used=(arc.id,),
