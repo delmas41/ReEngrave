@@ -1,0 +1,694 @@
+[
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2217,
+   2577,
+   2243,
+   2608
+  ],
+  "role": "sean_r1_tile_3",
+  "sean_r1": "two half notes with ties ... on both sides",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/2/1/3/12/6",
+     "pitch": "G3",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/3/12/8",
+     "pitch": "B-13",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/2/1/3/12/6",
+     "pitch": "G3",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/3/12/8",
+     "pitch": "B-13",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 1,
+  "crop_box": [
+   2059,
+   2498,
+   2400,
+   2686
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "box": [
+   1540,
+   878,
+   1563,
+   898
+  ],
+  "role": "fresh_change",
+  "rg": "glyph/3/0/3/6/4",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/3/0/3/6/4",
+     "pitch": "E3",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/3/0/3/6/4",
+     "pitch": "E3",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 2,
+  "crop_box": [
+   1382,
+   799,
+   1720,
+   976
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "box": [
+   1192,
+   1023,
+   1219,
+   1055
+  ],
+  "role": "sean_r1_tile_12",
+  "sean_r1": "two half notes with ties on both sides",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/3/0/4/4/12",
+     "pitch": "C5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/3/0/4/4/10",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/3/0/4/4/12",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/3/0/4/4/10",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 3,
+  "crop_box": [
+   1034,
+   944,
+   1376,
+   1133
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   672,
+   1018,
+   698,
+   1037
+  ],
+  "role": "fresh_change",
+  "rg": "glyph/10/0/4/1/6",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/10/0/4/1/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/0/4/1/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/10/0/4/1/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/0/4/1/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 4,
+  "crop_box": [
+   514,
+   939,
+   855,
+   1115
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1961,
+   2577,
+   1990,
+   2607
+  ],
+  "role": "sean_r1_tile_10",
+  "sean_r1": "two half notes with ties to the notes after it",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/2/1/3/10/11",
+     "pitch": "G3",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/3/10/6",
+     "pitch": "B-13",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/2/1/3/10/11",
+     "pitch": "G3",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/3/10/6",
+     "pitch": "B-13",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 5,
+  "crop_box": [
+   1803,
+   2498,
+   2147,
+   2685
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "box": [
+   1538,
+   597,
+   1563,
+   615
+  ],
+  "role": "fresh_change",
+  "rg": "glyph/3/0/1/6/3",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/3/0/1/6/3",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/3/0/1/6/3",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 6,
+  "crop_box": [
+   1380,
+   518,
+   1720,
+   693
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2218,
+   2259,
+   2247,
+   2293
+  ],
+  "role": "sean_r1_tile_2",
+  "sean_r1": "two half notes with ties on either side",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/2/1/1/12/5",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/1/12/4",
+     "pitch": "G5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/2/1/1/12/5",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/1/12/4",
+     "pitch": "G5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 7,
+  "crop_box": [
+   2060,
+   2180,
+   2404,
+   2371
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   904,
+   2548,
+   929,
+   2570
+  ],
+  "role": "fresh_change",
+  "rg": "glyph/2/1/3/3/0",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/2/1/3/3/0",
+     "pitch": "E-14",
+     "type": "quarter",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/2/1/3/3/0",
+     "pitch": "E-14",
+     "type": "quarter",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 8,
+  "crop_box": [
+   746,
+   2469,
+   1086,
+   2648
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   657,
+   2668,
+   684,
+   2699
+  ],
+  "role": "sean_r1_tile_7",
+  "sean_r1": "half notes with ties on both sides",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/10/1/4/1/5",
+     "pitch": "C5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/1/4/1/4",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/10/1/4/1/5",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/1/4/1/4",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 9,
+  "crop_box": [
+   499,
+   2589,
+   841,
+   2777
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   788,
+   2661,
+   815,
+   2700
+  ],
+  "role": "sean_r1_tile_6",
+  "sean_r1": "same thing, half notes with ties on either side",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/10/1/4/2/9",
+     "pitch": "C5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/1/4/2/2",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/10/1/4/2/9",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/1/4/2/2",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 10,
+  "crop_box": [
+   630,
+   2582,
+   972,
+   2778
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "box": [
+   1539,
+   1017,
+   1564,
+   1051
+  ],
+  "role": "sean_r1_tile_8",
+  "sean_r1": "again half notes, this time with ties just on the front side",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/3/0/4/6/4",
+     "pitch": "C5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/3/0/4/6/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/3/0/4/6/4",
+     "pitch": "C5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/3/0/4/6/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 11,
+  "crop_box": [
+   1381,
+   938,
+   1721,
+   1129
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2218,
+   2711,
+   2248,
+   2742
+  ],
+  "role": "sean_r1_tile_5",
+  "sean_r1": "half notes, two of them with ties on either side",
+  "written": {
+   "off": [
+    {
+     "rg": "glyph/2/1/4/12/7",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/4/12/1",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ],
+   "on": [
+    {
+     "rg": "glyph/2/1/4/12/7",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/4/12/1",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  "tile": 12,
+  "crop_box": [
+   2060,
+   2632,
+   2405,
+   2820
+  ]
+ }
+]

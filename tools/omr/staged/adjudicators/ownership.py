@@ -742,7 +742,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         own = ev.subject.at(Kind.STAFF)
         return Ruling(value=own.to_key(), reason="no_contest")
 
-    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the page owner, AHEAD of every per-copy tier. GATHER settled
+    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default ON since 2026-11-02): the page owner, AHEAD of every per-copy tier. GATHER settled
     # "whose mark is this?" ONCE, of the page mark both padded cells' copies are views of (staff lines, ledger lines, stem -- never
     # nearness); this CONNECTS that answer (rule 6). Decided -> it; GUESSED -> it, written blue with both staves; abstain -> the old
     # tiers below decide as before (counted by `page_owner compare`).
@@ -1894,7 +1894,7 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
     if not arcs:
         return Ruling.abstain("no_evidence")
     arc = arcs[0]
-    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
+    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default ON since 2026-11-02): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
     # its END notes are owned by (GATHER, `page_owner.arc_owner`; Sean's s3 tiles 7/7 arcs right). Decided -> that staff, the same for
     # every box the span holds; GUESSED (one end) or abstain -> the rule below decides, as before.
     span = _page_span_owner(ev)
@@ -3088,7 +3088,14 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])
-    if relation == "different":
+    if relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+        # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
+        # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
+        # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he
+        # reads a tie). No kind: the evidence for "different" is an end a tie does not use. (Same-pitch bindings through a tip stand:
+        # tile 5's lower tie binds its stop head that way and is right.)
+        b["why"] = "tie_box_end_only_at_a_stem_tip"
+    elif relation == "different":
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":
         b["why"] = "step_" + relation
@@ -3304,6 +3311,11 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                               detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
             if pb is not None:
                 grammar["page_binding"] = pb
+            if pb is not None and pb.get("why") == "tie_box_end_only_at_a_stem_tip":
+                # ROADMAP 2.252 r2: the end's own head is unread, so the two-note reading below would pair the same wrong head (it takes
+                # the column's extreme head); the arc is still an arc and is written as neither kind -- counted, never a guessed slur
+                return Ruling(value=None, reason="arc_ends_unread", used=(arc.id,),
+                              detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
         fs = _flank_search(ev, arc)
         two_note = _two_note_reading(ev, arc, fs)
         stack = _stack_reading(ev, arc, fs, two_note)
@@ -3606,7 +3618,8 @@ def _head_usable(ev: Evidence, key: str) -> bool:
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_BOX, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
-    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "more_than_one_pair", "not_a_tie", "not_an_arc",
+    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "paired_by_arc_side", "more_than_one_pair",
+             "not_a_tie", "not_an_arc",
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
@@ -3793,6 +3806,17 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     def value_of(p) -> Dict[str, Any]:
         return {"start": p[2].subject.to_key(), "stop": p[3].subject.to_key()}
 
+    if len(pairs) > 1 and tie_arc_side_enabled():
+        side = _pair_on_the_arcs_side(pairs, arc_yc)
+        if side is not None:
+            dx, dy, rl, rr, il, ir, _yl, _yr = side
+            return Ruling(
+                value=value_of(side), reason="paired_by_arc_side",
+                used=(arc.id, rl.id, rr.id),
+                detail={**counts, "dy_spaces": round(dy, 3), "dx_spaces": round(dx, 3),
+                        "pairs_at_one_position": len(pairs), "arc_yc": round(arc_yc, 1),
+                        "candidates": [value_of(p) for p in pairs],
+                        "crosses_barline": il != ir, "home_staff": home})
     if len(pairs) > 1:
         return Ruling.narrow(
             [R.Candidate(value_of(p), -round(p[0], 3)) for p in pairs],
@@ -3819,6 +3843,36 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
                     / avg_h, 3),
                 "crosses_barline": il != ir,
                 "home_staff": home})
+
+
+#: ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`, default ON since 2026-11-02): a tie over a DYAD whose flank search admits one same-position pair
+#: per chord member (Sean's 2.252 tiles 3, 7, 10, 12: the narrowing `more_than_one_pair`, nothing written) is the pair on the ARC'S OWN
+#: SIDE -- Sean 2.75 (page-facts): an arc ABOVE its notes joins the top note at each end, an arc BELOW joins the bottom note; each
+#: member's tie is its own arc (2.252: two printed arcs, two ties). Decided only where the arc's centre lies outside the pairs'
+#: positions (above the highest pair or below the lowest) and that extreme position holds exactly one pair; anything else still narrows.
+TIE_ARC_SIDE_ENV = "OMR_TIE_PAIR_ARC_SIDE"
+
+
+def tie_arc_side_enabled() -> bool:
+    """`OMR_TIE_PAIR_ARC_SIDE` (ROADMAP 2.252 r2), default ON since 2026-11-02; an explicit 0/false/no/off disables."""
+    return os.environ.get(TIE_ARC_SIDE_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _pair_on_the_arcs_side(pairs: Sequence[tuple], arc_yc: float) -> Optional[tuple]:
+    """Of `adjudicate_tie_pair`'s same-position pairs `(dx, dy, rl, rr, il, ir, yl, yr)`, the one at the extreme position on the
+    arc's side (page y grows downward), or None where the arc is not wholly to one side or two pairs share that position."""
+    ys = [((p[6] + p[7]) / 2.0, p) for p in pairs]
+    top, bottom = min(y for y, _ in ys), max(y for y, _ in ys)
+    if bottom - top <= 0:
+        return None
+    tol = 0.25 * (bottom - top)
+    if arc_yc < top:
+        pick = [p for y, p in ys if y - top <= tol]
+    elif arc_yc > bottom:
+        pick = [p for y, p in ys if bottom - y <= tol]
+    else:
+        return None
+    return pick[0] if len(pick) == 1 else None
 
 
 def _head_yc(heads, row) -> float:
@@ -6030,7 +6084,7 @@ def _decided_str(v) -> Optional[str]:
 
 
 def reconcile_dot_owners(log: R.Log) -> Dict[str, int]:
-    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default OFF).
+    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default ON since 2026-11-02).
 
     Run after `Q.DOT_ROLE`, whose augmentation verdict names the note the dot
     trails (`detail.head`). CONNECTS, NEVER GUESSES (rule 6): it only reads

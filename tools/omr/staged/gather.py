@@ -486,11 +486,11 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # ⚠️ ROADMAP 2.193 (flag `OMR_NATURAL_CANDIDATE`, default ON): also keep the detector's sub-floor NATURAL score on each accidental box
         # (`natural_score`), a candidate only; the kwarg is passed ONLY with the flag on AND to a detector whose `detect` takes it, so a detector double without it is unaffected.
         dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz, **({"natural_candidates": True} if _natural_candidate.enabled() and _accepts_natural_candidates(detector) else {}))
-        # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default OFF): the class-wise NMS above keeps two classes of one family on one ink;
+        # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default ON since 2026-11-02): the class-wise NMS above keeps two classes of one family on one ink;
         # merge them HERE, inside this cell, before any reader sees two boxes for one mark (`staged/one_ink.py` has the cause and the rules).
         if dets and _one_ink.enabled():
             dets = _one_ink.merge(dets)
-        # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`, default OFF): a head box wider than any one head is READ, not taken as one head:
+        # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`, default ON since 2026-11-02): a head box wider than any one head is READ, not taken as one head:
         # each head-shaped blob inside it that no other head box stands on gets its own box, APPENDED (every detector glyph index unchanged).
         split_info: Dict[int, Dict[str, Any]] = {}
         if dets and _box_kind.enabled():
@@ -1592,7 +1592,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
-            # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default OFF): the box is only the seed. Where the head's OWN ink
+            # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default ON since 2026-11-02): the box is only the seed. Where the head's OWN ink
             # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre
             # is the position; the detector's stays on the row. Never over 2.73's line-cut position.
             elif ink_pos_on and page_binary is not None:
@@ -2159,7 +2159,7 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
 
 
 def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:
-    """ROADMAP 2.190 (flag `OMR_ACCIDENTAL_SHAPE`, default OFF): the shape of THIS accidental's own ink, measured on the cell's staff-erased
+    """ROADMAP 2.190 (flag `OMR_ACCIDENTAL_SHAPE`, default ON since 2026-11-02): the shape of THIS accidental's own ink, measured on the cell's staff-erased
     raster (`staged/accidental_shape.py` has the rule, the cut-offs and why this is a second reader of the detector's raster, not a witness),
     plus the staff position the glyph would have under EACH class the detector offered for this ink (the winner and its merged rivals), so
     ADJUDICATE can pick among them without a re-gather. Measurement only: nothing here chooses. An absorbed box carries none (it is refused)."""
@@ -2419,7 +2419,7 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                        local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]]) -> int:
     """ROADMAP 2.58b: file the physical-mark identity of every notehead, rest
-    and accidental box of a page (`OMR_MARK_GROUPS`, default OFF).
+    and accidental box of a page (`OMR_MARK_GROUPS`, default ON since 2026-11-02).
 
     AFTER `gather_detections` and the low-confidence rescue (the box set is
     final), BEFORE every reader that could use the identity. It reads the
@@ -5066,7 +5066,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # `detect_stems` tests `candidates_out is not None`.
         runs: Optional[list] = [] if vertical_runs_enabled() else None
         # ⚠️ THE NOTEHEAD GATE ON THE PAIR RULE (`OMR_STEM_NOTEHEAD_GATE`,
-        # default OFF). The boxes are handed over unconditionally when the
+        # default ON since 2026-11-02). The boxes are handed over unconditionally when the
         # caller supplied a detection map — the FLAG is read inside
         # `detect_stems`, which is the single decision point, and with it off
         # the boxes change nothing at all. ⚠️ `detections is None` (a run with
@@ -9111,8 +9111,23 @@ ARC_INK_LINE_MAX_HALF_STROKE_SPACES = 0.4
 ARC_INK_MIN_COLUMN_PX = 2
 
 
+#: ROADMAP 2.252 r2 (flag `OMR_ARC_LINE_THICKNESS`, default ON since 2026-11-02): a staff line's stroke inside an arc box is as thick as the STAFF'S OWN
+#: measured line (`Staff.line_thickness_px`, GATHER), never grown by how full the box's rows are. A tie lying ON a line (Litolff: thick
+#: ties along a line, Sean's 2.252 tiles 3, 5, 6, 7) fills the rows beside the line too, and the fill-grown stroke (up to 0.4 sp either
+#: side) erased the tie with the line, so a real tie read "no curve" and was refused `ink_is_a_staff_line` -- 6 of the 19 tie ends
+#: missing on those tiles. This many pixels beyond the measured thickness are still taken as line (anti-aliasing, a scan's wander).
+ARC_INK_LINE_THICKNESS_SLACK_PX = 1
+ARC_LINE_THICKNESS_ENV = "OMR_ARC_LINE_THICKNESS"
+
+
+def arc_line_thickness_enabled() -> bool:
+    """`OMR_ARC_LINE_THICKNESS` (ROADMAP 2.252 r2), default ON since 2026-11-02; an explicit 0/false/no/off disables."""
+    return os.environ.get(ARC_LINE_THICKNESS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
 def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
-                  space: float, line_ys: Sequence[float]
+                  space: float, line_ys: Sequence[float],
+                  line_thickness: Optional[Sequence[Optional[float]]] = None
                   ) -> Optional[Dict[str, Any]]:
     """What is inside one arc box once EVERY staff line is taken out of it.
     ROADMAP 2.60.
@@ -9152,9 +9167,44 @@ def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
     stroke = max(1, int(round(ARC_INK_LINE_STROKE_SPACES * space)))
     n_lines = 0
     removed = np.zeros(h, dtype=bool)
-    for ly in line_ys:
+    for li, ly in enumerate(line_ys):
         ly = float(ly)
         if not (y0 - pad <= ly <= y1 + pad):
+            continue
+        th = None
+        if line_thickness is not None and li < len(line_thickness) and line_thickness[li]:
+            th = float(line_thickness[li])
+        if th is not None:
+            # ROADMAP 2.252 r2: the line is found and measured on the page rows AROUND it (a box cut at the line's edge holds only part
+            # of it, and snapping inside the box lands on the tie beside it), its stroke never thicker than the staff's measured line
+            n_lines += 1
+            m = snap + int(math.ceil(th)) + 2
+            ey0 = max(0, iy0 - m)
+            band = (binary[ey0:min(H, iy1 + m), ix0:ix1] == 0)
+            re0 = int(round(ly)) - ey0
+            best, best_fill = None, -1.0
+            for r in range(max(0, re0 - snap), min(band.shape[0], re0 + snap + 1)):
+                fill = float(band[r].mean())
+                if best is None or fill > best_fill + 1e-9 or (abs(fill - best_fill) < 1e-9 and abs(r - re0) < abs(best - re0)):
+                    best, best_fill = r, fill
+            if best is None:
+                continue
+            if best_fill >= ARC_INK_LINE_SNAP_MIN_FILL:
+                top = bot = best
+                limit = int(round(th)) + ARC_INK_LINE_THICKNESS_SLACK_PX
+                while bot - top + 1 < limit:
+                    up = band[top - 1].mean() if top - 1 >= 0 else -1.0
+                    dn = band[bot + 1].mean() if bot + 1 < band.shape[0] else -1.0
+                    if max(up, dn) < ARC_INK_LINE_SNAP_MIN_FILL:
+                        break
+                    if up >= dn:
+                        top -= 1
+                    else:
+                        bot += 1
+                a_, b_ = top - 1 + ey0 - iy0, bot + 2 + ey0 - iy0
+            else:
+                a_, b_ = re0 - stroke + ey0 - iy0, re0 + stroke + 1 + ey0 - iy0
+            removed[max(0, a_):max(0, min(h, b_))] = True
             continue
         n_lines += 1
         r0 = int(round(ly)) - iy0
@@ -9216,8 +9266,13 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
     """
     binary = getattr(getattr(pws, "page", None), "binary", None)
     all_lines: List[float] = []
+    all_thick: List[Optional[float]] = []
     for st in getattr(pws, "staves", ()) or ():
         all_lines.extend(float(y) for y in st.line_ys)
+        th = getattr(st, "line_thickness_px", None)
+        th = list(th) if isinstance(th, (list, tuple)) else []
+        all_thick.extend((float(th[i]) if i < len(th) and th[i] else None) for i in range(len(st.line_ys)))
+    by_thickness = arc_line_thickness_enabled()
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -9244,7 +9299,8 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
                 continue
-            m = arc_ink_shape(binary, page_box, space, all_lines)
+            m = arc_ink_shape(binary, page_box, space, all_lines,
+                              line_thickness=all_thick if by_thickness else None)
             if m is None:
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
@@ -15051,7 +15107,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                             detections: Dict[str, List[Any]], *, progress: bool = False,
                             stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
-    """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default OFF).
+    """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default ON since 2026-11-02).
 
     PATH: STAGED GATHER, PAGE raster (`pws.page.binary`). AFTER `gather_clef_locator` (reads its rows) and beside
     `gather_meter_object` (whose `meter` rows the same consult reads). Per staff:
@@ -17152,7 +17208,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             gather_wedge_rescue(log, cells, local, detections,
                                 detector=detector, imgsz=imgsz, progress=progress)
 
-        # ⚠️ ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default OFF): other-size, phase-median views of the same cell; AFTER both rescues, BEFORE every
+        # ⚠️ ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default ON since 2026-11-02): other-size, phase-median views of the same cell; AFTER both rescues, BEFORE every
         # `detections` walker, for the rescue's reason: a kept view box is appended in place so the dot-role / flag / head readers see it.
         from . import detector_views as _DV
         if detector is not None and _DV.enabled():
@@ -17164,7 +17220,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         if detector is not None and _SEH.enabled():
             gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
-        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
+        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON since 2026-11-02). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
         # reach it one way.
         from . import second_hollow as _SH
@@ -17184,7 +17240,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_letter_look(log, pws, cells, local, detections,
                            detector=detector, progress=progress)
 
-        # ROADMAP 2.166 (flag OMR_SYSTEM_ARCS, default ON; erase OMR_SYSTEM_ARCS_ERASE, default OFF): ties/slurs read once per staff across the system on page
+        # ROADMAP 2.166 (flag OMR_SYSTEM_ARCS, default ON; erase OMR_SYSTEM_ARCS_ERASE, default ON since 2026-11-02): ties/slurs read once per staff across the system on page
         # pixels, then their own stroke erased from `cell.image_no_staff`. AFTER every detector call (the box set is
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
@@ -17195,7 +17251,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
-        # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default OFF): one page-mark id per detector box -- boxes of one family from two padded
+        # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default ON since 2026-11-02): one page-mark id per detector box -- boxes of one family from two padded
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
         page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
@@ -17336,7 +17392,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.74, AFTER BOTH beam readers (it measures the strokes each
         # filed): thickness, straightness and end stems per `Q.BEAM_STROKE`.
         gather_beam_stroke_ink(log, cells, local)
-        # ⚠️ ROADMAP 2.140 (flag, default OFF): beam strokes AT each stem's tip, read beside the stem.
+        # ⚠️ ROADMAP 2.140 (flag, default ON since 2026-11-02): beam strokes AT each stem's tip, read beside the stem.
         gather_beam_stem_levels(log, cells, local)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
@@ -17351,7 +17407,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # `_bar_head_window` is shared: a second reader of the SAME mid-bar
         # region, off by default (`METER_OCR_AT_BAR_ENV`) until priced.
         gather_meter_ocr_at_bars(log, cells, local, detections)
-        # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
+        # ROADMAP 2.177 (flag OMR_METER_OBJECT, default ON since 2026-11-02): AFTER every meter reader (reads their rows); page raster.
         gather_meter_object(log, pws, cells, local, detections)
         # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
         gather_claimed_register(log, pws, cells, local, detections, stroke_cells=stroke_cells)
@@ -17359,7 +17415,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_key_signature_claim(log, pws, cells, local, detections)
         # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default ON): AFTER the key claim and the meter object; page raster.
         gather_key_object(log, pws, cells, local, detections)
-        # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default OFF): AFTER the key claim (reads its left edge); page raster.
+        # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default ON since 2026-11-02): AFTER the key claim (reads its left edge); page raster.
         gather_clef_slot_claim(log, pws, cells, local, detections, stroke_cells=stroke_cells)
         # ROADMAP 2.251 step 1 (flag OMR_CLEF_PAGEWIDE, default ON): AFTER every clef / key / meter claim (reads their READ areas, never
         # takes their ink); page raster; every staff of the page in one pass, header and inside a system alike.
