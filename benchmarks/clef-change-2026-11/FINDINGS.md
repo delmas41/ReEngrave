@@ -141,3 +141,15 @@ The carry round itself (OMR_CLEF_CARRY, seed 22513) is on branch `lane-2.251-car
 - **Carry-caused right->wrong on these tiles: 0.**
 
 Open: (1) bar 111, 9 of 10 Litolff heads right->wrong in the lane's pitch witness, not yet explained; (2) tile 11 cut-off (0.69 vs 0.70); (3) tile 12 far-head position.
+
+## 2026-11-02 -- Sean's carry round-2 tile answers (2.251 step 2, `answers-r4-carry.json`)
+
+Tiles `out/print/2.251-carry-tiles-r2/` (lane branch `lane-2.251-carry` head 8c2180033, seed 22514): the heads the carry newly STOPPED (written red "clef?", no pitch) after Litolff bar 111 (Fag) and Vc bar 346, plus the bar-111 mark. Scored against the key:
+
+- **0 wrong written.** Nothing was written wrong; carry-caused right->wrong 0.
+- **5 heads safely red but missed.** Tiles 3-5 (bar 111, Fag) and tiles 1 and 6 (Vc bar 346) are real notes read in F clef (tile 1 C4, the rest B). Stopping the carry was safe (a tenor carry would have been wrong), but each is a MISS: the clef was real and the note readable, so the ideal is READ.
+- **1 clef confirmed, box too wide.** Tile 2: the bar-111 mark is a real F clef, so the candidate was right that a clef stands there, but its box includes the eighth note before the clef (the area was placed one space left of the body match).
+
+What it says: the body-only witness (bar 111, 0.73) and dots plus body at 0.69 (bar 346) were both real F clefs on Sean's reading. That is evidence for promoting them, on one plate only (Litolff) -- a cut-off measured on one plate is a measurement, not a convention.
+
+Open: (1) tile 2 box width -- the candidate's area must not take the preceding eighth note's ink; (2) the candidates are real clefs -- promotion to READ is not yet decided and needs another publisher before it lands as a rule.
