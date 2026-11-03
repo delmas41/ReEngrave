@@ -124,12 +124,12 @@ class TestFlag(unittest.TestCase):
         with mock.patch.dict(os.environ, {HP.ENV: "1"}):
             self.assertTrue(HP.enabled())
 
-    def test_hollow_class_only(self):
-        self.assertTrue(HP.is_hollow("noteheadHalf"))
-        self.assertTrue(HP.is_hollow("noteheadHalfInSpace"))
-        self.assertFalse(HP.is_hollow("noteheadBlack"))
-        self.assertFalse(HP.is_hollow("noteheadWhole"))
-        self.assertFalse(HP.is_hollow("noteheadHalfSmall"))
+    def test_regular_classes_only(self):
+        self.assertTrue(HP.is_candidate("noteheadHalf"))
+        self.assertTrue(HP.is_candidate("noteheadHalfInSpace"))
+        self.assertTrue(HP.is_candidate("noteheadBlackInSpace"))     # the detector calls hollow heads black; the hole decides
+        self.assertFalse(HP.is_candidate("noteheadWhole"))
+        self.assertFalse(HP.is_candidate("noteheadHalfSmall"))
 
 
 if __name__ == "__main__":

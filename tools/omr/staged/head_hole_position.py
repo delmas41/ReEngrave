@@ -10,7 +10,8 @@ any box at least 0.7 of a head in width and height (`box_already_head_sized`), a
 (their ink with the lines through it measures 1.4-1.5 sp, `too_tall`) and every TALL box (`box_centre_outside`). The tie's two heads
 then read two positions, and the tie is written as a slur (`page_binding_different_pitch`) or refused (`tie_pitch_contradiction`).
 
-What this does (with the flag), only for a REGULAR HOLLOW head box (`noteheadHalf*`): the white HOLES inside the box are read the way
+What this does (with the flag), only for a REGULAR head box (half or black class -- the detector calls hollow heads black; a black
+head has no hole, so the hole is the evidence): the white HOLES inside the box are read the way
 2.252's tall-box split reads them (`box_kind.head_holes`, cell raster WITH its staff lines; two slit pieces either side of one line are
 one hole at that line). Where there is exactly ONE hole on the position grid, and the head's own ink (2.220's `head_ink.trim_head`, page
 raster) has its centre at the same rounded position (a second reading of the same ink: it can only NARROW), and that position differs
@@ -34,10 +35,11 @@ def enabled() -> bool:
     return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
-def is_hollow(cls: Any) -> bool:
+def is_candidate(cls: Any) -> bool:
+    """A REGULAR head class, half or black: the detector calls hollow heads black (Litolff p11 `11/1/3/12/1`), and a black head has
+    no hole, so the hole itself is the evidence; never a grace/cue or whole class."""
     from .geometry import is_regular_notehead
-    c = str(cls or "")
-    return c.startswith("noteheadHalf") and is_regular_notehead(c)
+    return is_regular_notehead(str(cls or ""))
 
 
 def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, staff_top_c: float,

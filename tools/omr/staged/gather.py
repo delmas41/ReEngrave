@@ -1598,7 +1598,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     pos_float = float(cut_pos)
             # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a HOLLOW head whose one hole (cell raster, lines in) and own
             # ink centre (page raster) stand at another position than its box centre is at its hole's position; never over 2.73's.
-            if hole_on and not cut_rows and _hole_pos.is_hollow(d.smufl_name):
+            if hole_on and not cut_rows and _hole_pos.is_candidate(d.smufl_name):
                 pbh = _page_box(c, d)
                 uph = getattr(c, "upscale_factor", None)
                 hp = _hole_pos.hole_position(
