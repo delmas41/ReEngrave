@@ -1352,9 +1352,8 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # `OMR_AUG_DOT_JOIN` is switched off (default ON, Sean 2026-10-14).
             from .adjudicators import aug_dot_join as _aug
             _aug.reconcile_unjoined_dots(log)
-        # ROADMAP 2.249: the closure memos are pure (`Log.release_closure_memo`); kept to the end of the run they grew with
-        # every page. Dropped per quantity; no answer changes.
-        log.release_closure_memo()
+        # ROADMAP 2.249: the closure memo is bounded (`record.CLOSURE_MEMO_MAX_IDS`, least recently used out) and is
+        # NOT dropped per quantity any more: the next quantity, GROUPS and INFER re-walk the same document-wide rows.
         if progress:
             print(f"  adjudicate {quantity}: {len(out)} verdicts so far")
     return out

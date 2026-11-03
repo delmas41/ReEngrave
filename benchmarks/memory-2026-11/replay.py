@@ -37,17 +37,45 @@ def meter(mod, name, label):
 
     @functools.wraps(f)
     def w(*x, **k):
-        t = time.time(); g0 = GCT["s"]
+        t = time.time(); g0 = GCT["s"]; c0 = dict(CL)
+        prof = None
+        if label in os.environ.get("REPLAY_PROFILE", "").split(","):     # cProfile one stage (a measurement)
+            import cProfile
+            prof = cProfile.Profile(); prof.enable()
         try:
             return f(*x, **k)
         finally:
-            M["stages"].append({"stage": label, "s": round(time.time() - t, 1), "gc_s": round(GCT["s"] - g0, 1), **live()})
+            if prof is not None:
+                import pstats, io
+                prof.disable()
+                sio = io.StringIO()
+                pstats.Stats(prof, stream=sio).sort_stats("cumulative").print_stats(45)
+                open(out + f".{label}.prof.txt", "w").write(sio.getvalue())
+            M["stages"].append({"stage": label, "s": round(time.time() - t, 1), "gc_s": round(GCT["s"] - g0, 1),
+                                "closure_calls": CL["calls"] - c0["calls"], "closure_s": round(CL["s"] - c0["s"], 1),
+                                "closure_ids_m": round((CL["ids"] - c0["ids"]) / 1e6, 1), **live()})
     setattr(mod, name, w)
 
 
 for mod, name, label in ((adjudicate, "run", "adjudicate"), (groups, "run", "groups"), (evaluate, "run", "evaluate"),
                          (infer, "run", "infer"), (evaluate, "run_over", "evaluate_bounded")):
     meter(mod, name, label)
+if os.environ.get("REPLAY_CLOSURE_CAP") and hasattr(record, "CLOSURE_MEMO_MAX_IDS"):
+    # a smaller closure-memo bound on a few pages stands in for the whole movement's pressure (a measurement knob)
+    record.CLOSURE_MEMO_MAX_IDS = int(os.environ["REPLAY_CLOSURE_CAP"])
+CL = {"calls": 0, "s": 0.0, "ids": 0}
+_closure = record.Log.closure
+
+
+def _closure_metered(self, row_id):      # calls / seconds / ids returned by Log.closure (a measurement; same answer)
+    t = time.perf_counter()
+    r = _closure(self, row_id)
+    CL["calls"] += 1; CL["s"] += time.perf_counter() - t; CL["ids"] += len(r)
+    return r
+
+
+record.Log.closure = _closure_metered
+M["closure"] = CL
 GCT = {"s": 0.0, "n": [0, 0, 0], "gen2_s": 0.0}
 _gcs = [0.0]
 

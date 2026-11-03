@@ -3618,8 +3618,9 @@ Row = Union[Observation, Abstention, Verdict]
 # ─────────────────────────────────────────────────────────────────────────────
 
 
-#: ROADMAP 2.249: the closure memo starts again past this many ids in all (~1-2 GB of frozensets). Speed only.
-CLOSURE_MEMO_MAX_IDS = 30_000_000
+#: ROADMAP 2.249: the closure memo holds at most this many ids in all (~2-3 GB of frozensets), least recently used
+#: out first. Speed only.
+CLOSURE_MEMO_MAX_IDS = 60_000_000
 
 
 class AlreadyAdjudicated(RuntimeError):
@@ -3735,7 +3736,7 @@ class Log:
         # It is read from BOTH `Evidence._admit`'s circularity filter and
         # `Evidence.correlated_groups()`'s pairwise walk, and was being
         # recomputed by a fresh BFS on every single call to either.
-        self._closure_cache: dict[str, "frozenset[str]"] = {}
+        self._closure_cache: "collections.OrderedDict[str, frozenset[str]]" = __import__("collections").OrderedDict()
         self._closure_memo_ids = 0          # ROADMAP 2.249: ids held by the closure memo (capped)
         self._qic_cache: dict[str, "frozenset[str]"] = {}
         #: ⚠️ `subjects()` WALKS EVERY INDEX KEY AND PARSES EACH ONE, so a
@@ -4075,6 +4076,7 @@ class Log:
         memo = self._closure_cache
         cached = memo.get(row_id)
         if cached is not None:
+            memo.move_to_end(row_id)
             return cached
         out: set[str] = set()
         stack = [row_id]
@@ -4084,6 +4086,7 @@ class Log:
                 continue
             sub = memo.get(rid)
             if sub is not None:          # ROADMAP 2.249, SPEED ONLY: a memoised closure below this row is added whole
+                memo.move_to_end(rid)
                 out |= sub
                 continue
             out.add(rid)
@@ -4091,12 +4094,15 @@ class Log:
             if row is not None:
                 stack.extend(self._edges(row))
         result = frozenset(out)
-        # ROADMAP 2.249: a pure memo, capped -- past `CLOSURE_MEMO_MAX_IDS` ids in all it starts again (no answer changes)
-        self._closure_memo_ids += len(result)
-        if self._closure_memo_ids > CLOSURE_MEMO_MAX_IDS:
-            memo.clear()
-            self._closure_memo_ids = len(result)
+        # ROADMAP 2.249: a pure memo, bounded by ids held, LEAST RECENTLY USED out first. The rows every closure passes
+        # through (a document-wide key / clef / staff identity verdict) are used on every walk, so they stay and each
+        # new closure is its own few rows plus theirs. (Clearing the whole memo at the cap instead -- m4 -- threw them
+        # out every time: the 27-page INFER took 11,689 s.) No answer changes.
         memo[row_id] = result
+        self._closure_memo_ids += len(result)
+        while self._closure_memo_ids > CLOSURE_MEMO_MAX_IDS and len(memo) > 1:
+            _k, old_set = memo.popitem(last=False)
+            self._closure_memo_ids -= len(old_set)
         return result
 
     @staticmethod
