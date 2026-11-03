@@ -1524,7 +1524,11 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     # a CANDIDATE (`ink_centre_position_float`) for `restate_pitch`, which writes the head GUESSED where its ledger count abstained.
     # It never moves the position row (a far head is placed by its ledger lines only).
     far_guess_on = head_extent.far_guess_enabled()
-    page_binary = getattr(getattr(pws, "page", None), "binary", None) if (ink_pos_on or far_guess_on) else None
+    # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a hollow head's position from its one hole where the box centre is
+    # elsewhere (`head_hole_position`).
+    from . import head_hole_position as _hole_pos
+    hole_on = _hole_pos.enabled()
+    page_binary = getattr(getattr(pws, "page", None), "binary", None) if (ink_pos_on or far_guess_on or hole_on) else None
 
     def foreign_by_cell(c: Any, dets: Sequence[Any]) -> List[Any]:
         return [pb for pb in (_page_box(c, od) for od in dets if head_ink.is_foreign_class(od.smufl_name)) if pb is not None]
@@ -1592,10 +1596,26 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
+            # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a HOLLOW head whose one hole (cell raster, lines in) and own
+            # ink centre (page raster) stand at another position than its box centre is at its hole's position; never over 2.73's.
+            if hole_on and not cut_rows and _hole_pos.is_hollow(d.smufl_name):
+                pbh = _page_box(c, d)
+                uph = getattr(c, "upscale_factor", None)
+                hp = _hole_pos.hole_position(
+                    getattr(c, "image", None),
+                    (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical),
+                    float(half_step), float(top_y), list(getattr(c, "staff_line_ys_canonical", None) or ()), pos_float,
+                    page_binary, pbh, (float(half_step) / float(uph)) if uph else None)
+                if hp["position"] is not None:
+                    extra = {"from_head_hole": hp["holes"], "detector_position_float": round(pos_float, 3),
+                             "hole_ink_position": hp.get("ink_position")}
+                    pos_float = float(hp["position"])
+                elif hp["why"] in ("ink_disagrees", "off_grid"):
+                    extra = {"hole_refused": hp["why"], "hole_steps": hp.get("holes"), "hole_ink_position": hp.get("ink_position")}
             # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default ON since 2026-11-02): the box is only the seed. Where the head's OWN ink
             # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre
             # is the position; the detector's stays on the row. Never over 2.73's line-cut position.
-            elif ink_pos_on and page_binary is not None:
+            if ink_pos_on and not cut_rows and "from_head_hole" not in extra and page_binary is not None:
                 pb = _page_box(c, d)
                 up = getattr(c, "upscale_factor", None)
                 if pb is not None and up:
