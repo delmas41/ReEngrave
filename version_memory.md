@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- 2.251 step 3 (F clef dot finder) PARKED, docs only (Sean 'Park it')
+
+No code. Sean: "I don't think we should land the work that it has done, but I'm not ready to give up on it", then "Park it. Document well." Branch lane-2.251-dots 6d1708b40 (flag OMR_CLEF_DOT_FUSED, dots_scan.py, dots_table.py) and test-2.251-f-cutoff stay unlanded. Cause: the stem clear tests one pixel column's black run only, and at bar 111 the dots fuse with the staff lines, so line+dot+line reads as a stem. Resumes under ROADMAP 2.223. FINDINGS.md has the full entry, an untested body-scale hypothesis and the process lesson.
+
 ## 2026-11-02 -- 2.251 step 2 landed: OMR_CLEF_CARRY default ON (Sean 'Land now')
 
 - `clef_pagewide.carry_enabled()` flips to default ON (explicit 0/false/no/off disables); test renamed `test_default_on_carry_on`. No mechanism changed; lane-2.251-carry merged with main.
