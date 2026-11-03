@@ -1,0 +1,20 @@
+{
+  "lane": "2.252 round 4 (OMR_HEAD_HOLE_POSITION, OMR_TIE_CARRIES_ACCIDENTAL; branch lane-2.252-unison dd1ab2320)",
+  "date": "2026-11-02",
+  "note": "Sean answered ties only, not pitches. Tie ends: Sean 19; ON writes 10, OFF 8 (tiles chosen at changed places).",
+  "answers": {
+    "1":  {"sean": "half note, tied front and back", "on": "stop+start", "off": "none", "on_right": true},
+    "2":  {"sean": "half note, tied front", "on": "stop", "off": "none", "on_right": true},
+    "3":  {"sean": "quarter note, tied front", "on": "C#5 stop (carry)", "off": "C5 none", "on_right": true},
+    "4":  {"sean": "half note, tied front", "on": "Bb3 none (head moved)", "off": "C4 stop", "on_right": false, "off_right": true},
+    "5":  {"sean": "unison half notes, both tied to the next note", "on": "none", "off": "none", "on_right": false, "off_right": false},
+    "6":  {"sean": "unison half notes, tied front", "on": "D4 none (head moved)", "off": "C4 stop", "on_right": false, "off_right": "one of two ends"},
+    "7":  {"sean": "half note, tied front", "on": "Eb5 none (head moved)", "off": "F5 stop", "on_right": false, "off_right": true},
+    "8":  {"sean": "half note, tied back (control)", "on": "start", "off": "start", "on_right": true},
+    "9":  {"sean": "half note, tied front and back", "on": "A4 start (head moved, front tie lost)", "off": "Bb4 stop+start", "on_right": "one of two ends", "off_right": true},
+    "10": {"sean": "half note, tied front and back", "on": "stop+start", "off": "start", "on_right": true},
+    "11": {"sean": "unison half notes, tied front", "on": "one G4 stop, one none", "off": "same", "on_right": "one of two ends"},
+    "12": {"sean": "unison quarter notes, tied front", "on": "Bb4 stop + Bb4 none (carry)", "off": "none", "on_right": "one of two ends"}
+  },
+  "reading": "The accidental carry is right on both its tiles (3, 12). The head-hole position gains ties on tiles 1, 2, 10 but loses a tie Sean confirms on all four tie-lost tiles (4, 6, 7, 9): there the moved head no longer matches a partner Sean says it is tied to."
+}

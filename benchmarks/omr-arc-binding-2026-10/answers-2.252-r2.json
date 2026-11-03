@@ -1,0 +1,332 @@
+{
+ "date": "2026-11-02",
+ "tiles": "out/print/2.252-r2-tiles (lane-2.252-ties 73afacb9e); Sean labelled the message '2.255', content is these tiles",
+ "summary": "Tie ends Sean reads: 35. Written ON 20, OFF 10. Every written end is on a side Sean reads (wrong ends 0, slurs where he reads a tie 0). Tile 4 is a UNISON (two E5 heads, ties above and below) -- ON writes 1 of 4 ends.",
+ "answers": [
+  {
+   "tile": 1,
+   "role": "sean_r1_tile_3",
+   "sean": "two half notes, ties in front and behind",
+   "ends_sean": 4,
+   "ends_on": 2,
+   "ends_off": 1,
+   "written_on": [
+    {
+     "rg": "glyph/2/1/3/12/6",
+     "pitch": "G3",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/3/12/8",
+     "pitch": "B-13",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 2,
+   "role": "fresh_change",
+   "sean": "half note, tie in front",
+   "ends_sean": 1,
+   "ends_on": 1,
+   "ends_off": 0,
+   "written_on": [
+    {
+     "rg": "glyph/3/0/3/6/4",
+     "pitch": "E3",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 3,
+   "role": "sean_r1_tile_12",
+   "sean": "two half notes, ties on both sides",
+   "ends_sean": 4,
+   "ends_on": 2,
+   "ends_off": 1,
+   "written_on": [
+    {
+     "rg": "glyph/3/0/4/4/12",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/3/0/4/4/10",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 4,
+   "role": "fresh_change",
+   "sean": "unison half note, ties above and below on both sides",
+   "ends_sean": 4,
+   "ends_on": 1,
+   "ends_off": 1,
+   "written_on": [
+    {
+     "rg": "glyph/10/0/4/1/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/0/4/1/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 5,
+   "role": "sean_r1_tile_10",
+   "sean": "two half notes, ties after",
+   "ends_sean": 2,
+   "ends_on": 1,
+   "ends_off": 0,
+   "written_on": [
+    {
+     "rg": "glyph/2/1/3/10/11",
+     "pitch": "G3",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/3/10/6",
+     "pitch": "B-13",
+     "type": "half",
+     "tie": [
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 6,
+   "role": "fresh_change",
+   "sean": "half note, tie before",
+   "ends_sean": 1,
+   "ends_on": 1,
+   "ends_off": 0,
+   "written_on": [
+    {
+     "rg": "glyph/3/0/1/6/3",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 7,
+   "role": "sean_r1_tile_2",
+   "sean": "two half notes, ties on both sides",
+   "ends_sean": 4,
+   "ends_on": 1,
+   "ends_off": 1,
+   "written_on": [
+    {
+     "rg": "glyph/2/1/1/12/5",
+     "pitch": "E5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/1/12/4",
+     "pitch": "G5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 8,
+   "role": "fresh_change",
+   "sean": "quarter note, tie in front",
+   "ends_sean": 1,
+   "ends_on": 1,
+   "ends_off": 0,
+   "written_on": [
+    {
+     "rg": "glyph/2/1/3/3/0",
+     "pitch": "E-14",
+     "type": "quarter",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 9,
+   "role": "sean_r1_tile_7",
+   "sean": "two half notes, ties on both sides",
+   "ends_sean": 4,
+   "ends_on": 4,
+   "ends_off": 2,
+   "written_on": [
+    {
+     "rg": "glyph/10/1/4/1/5",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/1/4/1/4",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 10,
+   "role": "sean_r1_tile_6",
+   "sean": "two half notes, ties on both sides",
+   "ends_sean": 4,
+   "ends_on": 2,
+   "ends_off": 1,
+   "written_on": [
+    {
+     "rg": "glyph/10/1/4/2/9",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/10/1/4/2/2",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 11,
+   "role": "sean_r1_tile_8",
+   "sean": "two half notes, ties on the front",
+   "ends_sean": 2,
+   "ends_on": 1,
+   "ends_off": 1,
+   "written_on": [
+    {
+     "rg": "glyph/3/0/4/6/4",
+     "pitch": "C5",
+     "type": "half",
+     "tie": null,
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/3/0/4/6/6",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  },
+  {
+   "tile": 12,
+   "role": "sean_r1_tile_5",
+   "sean": "two half notes, ties on both sides",
+   "ends_sean": 4,
+   "ends_on": 3,
+   "ends_off": 2,
+   "written_on": [
+    {
+     "rg": "glyph/2/1/4/12/7",
+     "pitch": "C5",
+     "type": "half",
+     "tie": [
+      "stop",
+      "start"
+     ],
+     "slur": null,
+     "blue": false
+    },
+    {
+     "rg": "glyph/2/1/4/12/1",
+     "pitch": "E5",
+     "type": "half",
+     "tie": [
+      "stop"
+     ],
+     "slur": null,
+     "blue": false
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "date": "2026-11-01",
+ "by": "Sean",
+ "answers": {
+  "1": "tie",
+  "2": "tie",
+  "3": "tie",
+  "4": "tie",
+  "5": "tie",
+  "6": "tie",
+  "7": "tie",
+  "8": "tie",
+  "9": "tie",
+  "10": "slur",
+  "11": "slur",
+  "12": "tie"
+ },
+ "said": {
+  "1": "it looks like a tie. It could be something else because I can't see the other note that it's connected to. But the arc that's is connected to the note head in the right way",
+  "2": "a tie. It looks good",
+  "3": "also looks like a tie and is good",
+  "4": "looks like a tie",
+  "5": "has two half note note heads in it. Looks like they both have ties to them on either side",
+  "6": "looks like a half note with a, which is probably a tie. I can't see the note that it's connected to, but it looks like a tie",
+  "7": "is a half note with a tie",
+  "8": "half note with a tie",
+  "9": "half note with a tie",
+  "10": "quarter note with a slur",
+  "11": "has a slur going to it and a tie going away from it",
+  "12": "similar to the previous one where it's got two half note white heads and ties on either side"
+ },
+ "note": "tile 11: the arc arriving at the box is a slur; a tie leaves it"
+}

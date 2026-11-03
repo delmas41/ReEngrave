@@ -578,8 +578,26 @@ def head_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+def far_unread_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.248 r3 (flag `OMR_FARHEAD_UNREAD_GUESSED`): a far head whose ledger count ABSTAINED -- its pitch is the box centre's step,
+    carried by `consequences.restate_pitch` with the box- and ink-centre steps as candidates -- written GUESSED (blue). Only a PITCH verdict
+    whose reason is `position_and_clef_ledger_unread` counts (none is filed with the flag OFF). Guessing is labelled here (CLAUDE.md
+    section 4); a later INFER / `move_glyph` pitch supersedes it and is its own matter."""
+    from . import head_extent as _he
+    v = rec.verdict(Q.PITCH, sub)
+    if v is None or v.get("outcome") != "decided" or v.get("reason") != _he.FAR_GUESS_PITCH_REASON:
+        return None
+    src = list((v.get("detail") or {}).get("candidate_sources") or ())
+    cands = []
+    for i, c in enumerate(v.get("candidates") or ()):
+        cands.append({"value": c.get("value"), "support": c.get("support"), "source": src[i] if i < len(src) else None})
+    return {"stage": "ADJUDICATE", "rule": _he.FAR_GUESS_REASON, "quantity": Q.PITCH, "candidates": cands,
+            "chosen": {"value": v.get("value")}}
+
+
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub) or head_ink_guess_of(rec, sub)
+    g = (guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub) or head_ink_guess_of(rec, sub)
+         or far_unread_guess_of(rec, sub))
     return {"guess": g} if g else {}
 
 
@@ -664,6 +682,81 @@ class Cell:
     unplaced: List[Dict[str, Any]] = field(default_factory=list)
 
 
+def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
+    """ROADMAP 2.251 step 2 (flag `OMR_CLEF_CARRY`, default OFF): the clefs printed INSIDE this staff whose kind was READ (step 1's
+    `Q.CLAIMED_AREA` rows, source `clef_pagewide`, `change`), keyed by the bar from which the file writes them. A change governs from
+    its OWN bar where a head of that bar was pitched from it (a `Q.PITCH` verdict citing the change row: `restate_pitch`), else from the
+    next bar (it stands at the bar's end, before the barline). A change whose kind is unread writes no clef (its notes carry no pitch).
+    ⚠️ A change inside a bar is written at that bar's start: MusicXML's mid-bar `<clef>` is not built (display only -- the pitches
+    are the restated ones either way)."""
+    from . import clef_pagewide as _CP
+    if not _CP.carry_enabled():
+        return {}
+    rows = [o for o in rec.obs(Q.CLAIMED_AREA, staff_key)
+            if (o.get("detail") or {}).get("source") == _CP.SOURCE and (o.get("detail") or {}).get("change")]
+    if not rows:
+        return {}
+    cited = rec.__dict__.get("_clef_change_cells")
+    if cited is None:
+        cited = {}
+        for v in rec.verdicts_of(Q.PITCH):
+            if v.get("reason") != "position_and_clef_change" and (v.get("detail") or {}).get("reason") != "position_and_clef_change":
+                continue
+            s = _parse_subject(v["subject"])
+            for b in v.get("basis") or ():
+                cited.setdefault(b, set()).add(s.get("cell"))
+        rec.__dict__["_clef_change_cells"] = cited
+    out: Dict[int, str] = {}
+    for o in sorted(rows, key=lambda o: float((o.get("value") or [0])[0])):
+        d = o.get("detail") or {}
+        kind = d.get("kind")
+        if not kind:
+            continue
+        k = int(d.get("cell") or 0)
+        out[k if k in cited.get(o.get("id"), set()) else k + 1] = str(kind)
+    return out
+
+
+def _after_unread_clef(rec: Any, s: Dict[str, Any], box_obs: Dict[str, Any]) -> bool:
+    """ROADMAP 2.251 (flag `OMR_CLEF_CARRY`): whether the head (`box_obs`, its `Q.GLYPH_BOX` row) stands after a clef printed inside
+    its staff whose kind was NOT read -- the clef printed last before its x (`clef_pagewide.clef_in_force`) has `kind: None`."""
+    from . import clef_pagewide as _CP
+    if not _CP.carry_enabled():
+        return False
+    bp = (box_obs.get("detail") or {}).get("bbox_page_px")
+    if not (isinstance(bp, (list, tuple)) and len(bp) == 4):
+        return False
+    skey = "staff/%s/%s/%s" % (s["page"], s["system"], s["staff"])
+    rows = rec.obs(Q.CLAIMED_AREA, skey)
+
+    class _Row:
+        def __init__(self, o: Dict[str, Any]) -> None:
+            self.value, self.detail = o.get("value"), o.get("detail") or {}
+    changes = _CP.changes_of([_Row(o) for o in rows])
+    # 2.251 carry (b): the clef-shaped candidates step 1 did not read (its abstentions), indexed once per record
+    cand_idx = rec.__dict__.get("_clef_candidates")
+    if cand_idx is None:
+        cand_idx = {}
+        for a in rec.abstentions or ():
+            if a.get("quantity") == Q.CLAIMED_AREA and (a.get("detail") or {}).get("candidate"):
+                cand_idx.setdefault(a.get("subject"), []).append(_Row(a))
+        rec.__dict__["_clef_candidates"] = cand_idx
+    cands = _CP.candidates_of(cand_idx.get(skey, []))
+    if not changes and not _CP.any_strong(cands):
+        return False
+    got = _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes, cands, rec.value(Q.CLEF, skey))
+    return got is not None and got[0] is None
+
+
+def _clef_at_bar(run: Any, i: int) -> Optional[str]:
+    """The clef the file writes for bar `i` of `run`: the last READ change at or before it (`clef_from_bar`), else the header clef."""
+    got = run.clef
+    for b in sorted(run.clef_from_bar or {}):
+        if b <= i:
+            got = run.clef_from_bar[b]
+    return got
+
+
 @dataclass
 class StaffRun:
     """One staff of one system: its header facts and its measures."""
@@ -684,6 +777,12 @@ class StaffRun:
     n_measures_decided: bool = False
     name: Optional[str] = None
     cells: Dict[int, Cell] = field(default_factory=dict)
+    #: ROADMAP 2.251 step 2 (flag `OMR_CLEF_CARRY`): bar index -> the clef READ inside this staff that is in force from that bar on
+    #: (the clef change written where it is printed; empty with the flag off or no change on the staff).
+    clef_from_bar: Dict[int, str] = field(default_factory=dict)
+    #: ROADMAP 2.251 (CLAUDE §4): bars holding a head that stands after a clef printed inside this staff whose KIND was not read --
+    #: the head has no pitch and is not written; the bar carries a red "clef?" mark so it is never silently short.
+    unread_clef_bars: set = field(default_factory=set)
     #: This staff's own page geometry, read for the arc merge. ⚠️ BOTH ARE
     #: PER STAFF AND NOT PER PAGE: a part spans systems, and the staff it is
     #: printed on in system 0 is not the same object as the one in system 1.
@@ -856,6 +955,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
 
     for key, run in runs.items():
         run.clef = rec.value(Q.CLEF, key)
+        run.clef_from_bar = _clef_changes_by_bar(rec, key)
         ks = rec.value(Q.KEY_SIGNATURE, key)
         run.fifths = int(ks) if isinstance(ks, int) else None
         run.meter = rec.value(Q.METER, f"system/{run.page}/{run.system}")
@@ -1561,6 +1661,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # ⚠️ NO POSITIONAL DEFAULT. A staff whose clef abstained produces
             # no pitches at all (`consequences.restate_pitch`), deliberately,
             # and the exporter must not undo that by writing treble.
+            # ROADMAP 2.251: a head after a clef change whose kind is unread is one of these; its bar is MARKED (CLAUDE §4).
+            if _after_unread_clef(rec, s, o):
+                _ru = runs.get("staff/%s/%s/%s" % (s["page"], s["system"], s["staff"]))
+                if _ru is not None and s.get("cell") is not None:
+                    _ru.unread_clef_bars.add(int(s["cell"]))
             _drop("no_pitch", s)
             continue
         if not isinstance(dur, dict):
@@ -2549,10 +2654,31 @@ def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
             "contradictions": [], "linked": []}
 
 
+#: ROADMAP 2.252 r4 (default ON since 2026-11-03; an explicit 0/false/no/off disables): a tie carries its accidental across the barline (page-facts).
+TIE_CARRY_ENV = "OMR_TIE_CARRIES_ACCIDENTAL"
+
+
+def tie_carry_enabled() -> bool:
+    return os.environ.get(TIE_CARRY_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _has_printed_accidental(rec: Record, head: str) -> bool:
+    """True where a standing DECIDED `Q.ACCIDENTAL_OWNER` names `head`: an accidental printed on it (its pitch is its own)."""
+    for v in rec.verdicts_of(Q.ACCIDENTAL_OWNER):
+        if (v.get("outcome") == "decided" and str(v.get("value")) == str(head)
+                and rec.verdict(Q.ACCIDENTAL_OWNER, v["subject"]) is v):
+            return True
+    return False
+
+
 def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                       ties: Dict[str, Any], voice_of: Dict[int, int],
-                      dropped: Dict[str, int]) -> List[tuple]:
+                      dropped: Dict[str, int], rec: Optional[Record] = None,
+                      counters: Optional[Dict[str, int]] = None) -> List[tuple]:
     """This part's tie spans, in `_paired_spans`' shape, from the record.
+
+    ROADMAP 2.252 r3 (`OMR_UNISON_TIE_VOICE`, default OFF; needs `rec`): a pair whose ends are unisons written as
+    two voices is written on the voice on each arc's side (`export_unison.tie_ends`).
 
     ⚠️ A TIE'S TWO HEADS SOUND ONE PITCH, and this is the one place a pitch
     reading can be CHECKED with no truth file (`record.Checkable`: *"C vs C#
@@ -2566,21 +2692,54 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
     fault.
     """
     index: Dict[str, Tuple[int, Dict[str, Any]]] = {}
+    twins: Dict[str, Dict[str, Any]] = {}
     for m_idx, m in enumerate(measures):
         for det in m["detections"] or ():
             key = det.get("glyph")
             if key and det.get("category") == "notehead":
+                if det.get("unison_twin"):
+                    twins.setdefault(str(key), det)     # 2.175's down-voice note of a unison head
+                    continue
                 index.setdefault(str(key), (m_idx, det))
+    voice_on = rec is not None and _export_unison.tie_voice_enabled()
+    alias = _export_unison.written_member(rec, index) if voice_on else {}
+    seen_spans: set = set()
     spans = []
     for (start, stop), arcs in ties["pairs"].items():
+        orig = (start, stop)
+        if voice_on:
+            # ROADMAP 2.252 r3: an end bound to a box the one-mark-one-note rule (2.58b) did not write is the mark
+            # its group DID write (the same ink); counted.
+            for end in (start, stop):
+                if end not in index and end in alias:
+                    counters_ = counters if counters is not None else {}
+                    counters_["tie_end_moved_to_its_marks_written_box"] = counters_.get(
+                        "tie_end_moved_to_its_marks_written_box", 0) + 1
+            start, stop = alias.get(start, start), alias.get(stop, stop)
         if start not in index or stop not in index:
             continue
-        ties["consumed"].add((start, stop))
+        ties["consumed"].add(orig)
         (sm, first), (tm, last) = index[start], index[stop]
         if first is last:
             dropped["tie_pair_names_one_note"] += 1
             continue
         p0, p1 = first.get("pitch"), last.get("pitch")
+        if (p0 != p1 and rec is not None and tie_carry_enabled() and sm != tm and p0 and p1
+                and _legacy._pitch_step(p0) == _legacy._pitch_step(p1)
+                and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)):
+            # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default ON; page-facts, Sean 2026-10-30, general: "A tie carries an
+            # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
+            # start's pitch; counted, and the stop's own reading kept on the note.
+            # The head's unison twin (2.175: one head, two voices) is the same head: it carries too. Undone below where no link
+            # of this pair is written (the carry exists only through a written tie).
+            carried = [d for d in (last, twins.get(stop)) if d is not None and d.get("pitch") == p1]
+            for d in carried:
+                d["pitch_before_tie_carry"] = p1
+                d["pitch"] = p0
+            p1 = p0
+        else:
+            carried = []
+        n_spans_before = len(spans)
         if p0 != p1:
             same_step = (_legacy._pitch_step(p0) == _legacy._pitch_step(p1))
             reason = ("tie_spelling_differs" if same_step
@@ -2590,12 +2749,31 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                 {"start": start, "stop": stop, "pitches": [p0, p1],
                  "kind": reason, "arcs": list(arcs)})
             continue
-        # ⚠️ The one-voice rule `_paired_spans` states for every span: the two
-        # ends of a tie split across `<voice>` streams are each unpaired.
-        if voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
-            dropped["tie_ends_in_two_voices"] += 1
-            continue
-        spans.append(((sm, None), (tm, None), first, last))
+        ends = [(first, last)]
+        if rec is not None and _export_unison.tie_voice_enabled():
+            # ROADMAP 2.252 r3 (`OMR_UNISON_TIE_VOICE`): at a unison each voice carries its own tie, by the arc's side
+            ends = _export_unison.tie_ends(rec, arcs, first, last, twins.get(start), twins.get(stop),
+                                           dropped, counters if counters is not None else {})
+        for f_det, l_det in ends:
+            # ⚠️ The one-voice rule `_paired_spans` states for every span: the two
+            # ends of a tie split across `<voice>` streams are each unpaired.
+            if voice_of.get(id(f_det), 0) != voice_of.get(id(l_det), 0):
+                dropped["tie_ends_in_two_voices"] += 1
+                continue
+            if voice_on:
+                if (id(f_det), id(l_det)) in seen_spans:
+                    continue                    # two pairs (a mark's two boxes) name one written link: written once
+                seen_spans.add((id(f_det), id(l_det)))
+            spans.append(((sm, None), (tm, None), f_det, l_det))
+        if carried:
+            if len(spans) == n_spans_before:            # 2.252 r4: no link written -- the stop keeps its own reading
+                for d in carried:
+                    d["pitch"] = d.pop("pitch_before_tie_carry")
+                key_ = "tie_carry_undone_not_written"
+            else:
+                key_ = "tie_carries_the_accidental"
+            if counters is not None:
+                counters[key_] = counters.get(key_, 0) + 1
         ties["linked"].append({"start": start, "stop": stop,
                                "pitch": p0, "arcs": list(arcs)})
     return spans
@@ -2821,7 +2999,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 # `arc_binds_fewer_than_two_notes`, so the tie groups leave
                 # the merge's arithmetic here.
                 spans = _record_tie_spans(measures, record_ties, voice_of,
-                                          dropped)
+                                          dropped, rec=rec, counters=counters)
                 merged -= groups_by_kind.get("tie", 0)
             else:
                 spans = _legacy._paired_spans(measures, pools, spacings,
@@ -4553,17 +4731,18 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # from its very first measure regardless of whether clef/key/
             # time happen to match whatever `prev` already held.
             condensed = bool(run.condensed_from)
-            changed = (run.clef != prev["clef"] or key != prev["key"]
+            clef_here = _clef_at_bar(run, i)
+            changed = (clef_here != prev["clef"] or key != prev["key"]
                        or meter != prev["time"]
                        or condensed != prev.get("condensed", False))
             if first or changed:
                 attrs = _legacy._mxl_attributes_block(
-                    run.clef, key, meter, divisions, "      ",
+                    clef_here, key, meter, divisions, "      ",
                     include_divisions=first)
                 if condensed:
                     attrs = _insert_transpose(attrs, "      ")
                 lines.append(attrs)
-                prev = {"clef": run.clef, "key": key, "time": meter,
+                prev = {"clef": clef_here, "key": key, "time": meter,
                        "condensed": condensed}
                 first = False
                 # ⚠️ ROADMAP 2.8, and it is INSIDE the branch that actually
@@ -4577,6 +4756,15 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # head (after `<attributes>`); its right-hand twin closes the bar.
             _bl_left, _bl_right = plan.barlines(_here, i)
             lines.extend(_bl_left)
+            if i in (run.unread_clef_bars or ()):
+                # ROADMAP 2.251 (CLAUDE §4): heads in this bar stand after a printed clef whose kind was not read; they carry no pitch
+                # and are not written -- the bar says so, in red, above the staff
+                lines.append('      <direction placement="above">\n'
+                             '        <direction-type>\n'
+                             f'          <words color="{UNREAD_BAR_MARK_COLOR}">clef?</words>\n'
+                             '        </direction-type>\n'
+                             '      </direction>')
+                counters["bars_marked_clef_unread"] += 1
             cell_here = run.cells.get(i)
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
@@ -4606,7 +4794,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             split = ((_voice_split(rec, run, i, events, _why), _why)
                      if events else None)
             if (events and split[0] is None and cell_here is not None
-                    and _export_unison.unfuse(cell_here)):
+                    and _export_unison.unfuse(cell_here, counters)):
                 # ROADMAP 2.175: the bar could not be written as two voices after all, so a unison head's second
                 # note must not sit in the one stream (it would overfill the bar): one note per head, as flag OFF.
                 events = _events(cell_here)

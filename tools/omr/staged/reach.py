@@ -415,6 +415,8 @@ NOT_A_STAGE = frozenset({
     "arc_claim.py",
     # ROADMAP 2.223. Pure helpers for `adjudicate_wedge_anchor`'s page-wide hairpin binding (OMR_HAIRPIN_BIND_PAGEWIDE): files no row.
     "hairpin_bind.py",
+    # ROADMAP 2.254. The OMR_HAIRPIN_REACH flag (read by `gather.gather_wedge_boxes` and `ownership._wedge_page_binding`): files no row.
+    "hairpin_reach.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",
@@ -602,12 +604,22 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.220. `head_ink.py` is PURE (a page raster and a box in, a trimmed head and its slit out: no log, no cell, no quantity
     # named) -- `gather.gather_head_ink` is its stage; nothing reads it yet (milestone 1).
     "head_ink.py",
+    # ROADMAP 2.248. `head_extent.py` is PURE (a page raster and a box in, the head's grown ink extent and an ink-centred position
+    # out; no log, no cell, no quantity named) -- `gather.gather_notehead_positions` is its stage, behind OMR_HEAD_INK_EXTENT.
+    "head_extent.py",
+    # ROADMAP 2.252 r4. `head_hole_position.py` is PURE (a cell raster, a box and the grid in, a hole-read position out; no log, no
+    # quantity named) -- `gather.gather_notehead_positions` is its stage, behind OMR_HEAD_HOLE_POSITION.
+    "head_hole_position.py",
     # ROADMAP 2.177. `meter_object.py` is PURE (a page raster, five line rows and a staff space in, an area out: no log, no cell, no
     # quantity named) -- `gather.gather_meter_object` is its stage; the refusals read its flag.
     "meter_object.py",
     # ROADMAP 2.181. `claims.py` is PURE (a raster and boxes in, numbers out; no log, no cell, no quantity named) --
     # `gather.gather_claimed_register` is its stage; `adjudicators/claimed_by.py` is the consult.
     "claims.py",
+    # ROADMAP 2.251. `clef_pagewide.py` is PURE (a page raster, a staff's five lines and a staff space in; candidates, names and the clef
+    # in force out; no log, no quantity named) -- `gather.gather_clef_pagewide` is its stage, `consequences.restate_pitch` and the
+    # exporter read its step-2 helpers.
+    "clef_pagewide.py",
     # ROADMAP 2.186. `one_ink.py` is PURE (boxes in, a merge plan out; the flag, the READ bar, the guess candidates): it files no row and names
     # no quantity -- `gather.py` calls `merge` and files `detail.one_ink` on the rows it already files.
     "one_ink.py",

@@ -3670,7 +3670,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
-                                     "wider_than_a_head", "wide_box_unread",
+                                     "wider_than_a_head", "wide_box_unread", "taller_than_a_filled_head", "taller_than_a_head",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -4089,7 +4089,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # SUPERSEDES 2.40's pair-wise `same_side_second` (no longer called here --
     # see `_stacked_head_duplicate_refusal`'s own module-section comment for
     # why one group rule replaces it rather than the two competing).
-    stacked = (None if keeps_a_cut_head
+    # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`): a head GATHER read off its own HOLE inside a tall box (`box_kind.split_tall_heads`, the
+    # box it added or the one-head box standing on that hole) is not refused as a duplicate by the stacked-head fit, whose one-head-per-
+    # group reading puts a hollow third's single head on the slot BETWEEN the two (benchmarks/omr-stacked-heads-2026-10, 2.232 cause).
+    _tall = (box_row.detail or {}).get("tall_split") if _box_kind.tall_split_enabled() else None
+    hole_head = isinstance(_tall, dict) and ("split_from" in _tall or "covers_hole_of" in _tall)
+    if hole_head:
+        detail["tall_split"] = _tall
+    stacked = (None if keeps_a_cut_head or hole_head
                else _stacked_head_duplicate_refusal(ev, box_row, detail))
     if stacked is not None:
         return stacked
@@ -4160,6 +4167,22 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # LAST of the refusals: it speaks only where every other rule would KEEP the box. First in the chain it re-labelled boxes already
     # refused as duplicates, and the stem/beam pairing that reads a duplicate as "the same head drawn twice" (ownership) lost a real
     # eighth (Litolff p4 4/1/1/14, the 2-page subset run).
+    # ROADMAP 2.248 r4 (flag `OMR_FARHEAD_UNREAD_GUESSED`, default ON): a FAR filled-head box taller than any head whose ink does not fill
+    # it is not a head (an eighth's flag hanging below the staff above, Brahms p5) -- refused here, before any far-unread guess is written
+    # on it. 2.245's own head shape (`box_kind.far_box_not_a_filled_head`); read only outside the staff's first space.
+    from .. import head_extent as _head_extent
+    if _head_extent.far_guess_enabled():
+        _pos_rows = ev.rows(Q.NOTEHEAD_STAFF_POSITION)
+        _ink_rows = ev.rows(Q.NOTEHEAD_INK)
+        _pos = float(_pos_rows[-1].value) if _pos_rows and isinstance(_pos_rows[-1].value, (int, float)) else None
+        if _pos is not None and (round(_pos) < -1 or round(_pos) > 9) and _ink_rows:
+            _tall = _box_kind.far_box_not_a_filled_head(box_row.value[0], box_row.value[4] / spacing, _ink_rows[-1].value)
+            if _tall is not None:
+                detail["box_spaces"] = [round(box_row.value[3] / spacing, 3), round(box_row.value[4] / spacing, 3)]
+                detail["ink_fill"] = _ink_rows[-1].value
+                return _margins.attach(
+                    Ruling(value=True, reason=_tall[0], used=tuple(used) + (_ink_rows[-1].id,), detail=detail),
+                    margin=_tall[1], axis="height_spaces", unit="staff spaces", band=None, would_choose=(True,))
     if _box_kind.enabled():
         _w_c, _h_c = box_row.value[3], box_row.value[4]
         misfit = _box_kind.head_box_misfit(box_row.value[0], _w_c / spacing, _h_c / spacing)
@@ -4177,6 +4200,15 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 Ruling(value=True, reason=misfit[0], used=tuple(used), detail=detail),
                 margin=misfit[1], axis="width_spaces", unit="staff spaces", band=None,
                 would_choose=(True,))
+    # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a TALL hollow head box GATHER read for the heads inside it by their holes
+    # (`box_kind.split_tall_heads`: a dyad of halves boxed as one head) is the REMAINDER once every head it holds stands on its own one-head
+    # box (added, or the detector's): refused, so the dyad is its two heads and never also the box's centre. Not read: unchanged.
+    if _box_kind.tall_split_enabled():
+        tall = (box_row.detail or {}).get("tall_split")
+        if (isinstance(tall, dict) and tall.get("read") and tall.get("steps")
+                and len(tall.get("added") or ()) + int(tall.get("covered") or 0) == len(tall["steps"])):
+            detail["tall_split"] = tall
+            return Ruling(value=True, reason=_box_kind.REASON_TALL, used=tuple(used), detail=detail)
     # ROADMAP 2.181: a claim holds this box but is too weak to refuse it -- no other rule refused it either, so it is
     # NARROWED {notehead, the owner's ink}, the notehead first (written, blue), never refused on a guess.
     if claim is not None and not claim.refuse:

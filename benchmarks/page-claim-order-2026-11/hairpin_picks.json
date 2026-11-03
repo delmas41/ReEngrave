@@ -1,0 +1,770 @@
+[
+ {
+  "plate": "litolff",
+  "page": 9,
+  "pb": [
+   1525.0,
+   2459.0,
+   1588.0,
+   2477.0
+  ],
+  "w_sp": 4.0,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/9/1/1/6/100000",
+  "caption": "lit p9 dim w4.0 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "pb": [
+   618.0,
+   3878.0,
+   724.0,
+   3943.0
+  ],
+  "w_sp": 3.85,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/4/0/13/0/100000",
+  "caption": "bra p4 cre w3.9 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "pb": [
+   2592.0,
+   4235.0,
+   2771.0,
+   4261.0
+  ],
+  "w_sp": 6.51,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/4/1/0/3/100000",
+  "caption": "bra p4 cre w6.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "pb": [
+   2545.0,
+   4987.0,
+   2757.0,
+   5018.0
+  ],
+  "w_sp": 7.71,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/4/1/3/3/100000",
+  "caption": "bra p4 cre w7.7 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "pb": [
+   5185.0,
+   6927.0,
+   5411.0,
+   6962.0
+  ],
+  "w_sp": 8.22,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/4/1/12/8/100000",
+  "caption": "bra p4 cre w8.2 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "pb": [
+   5181.0,
+   7168.0,
+   5411.0,
+   7208.0
+  ],
+  "w_sp": 8.36,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/4/1/13/8/100001",
+  "caption": "bra p4 cre w8.4 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2993.0,
+   1052.0,
+   3128.0,
+   1079.0
+  ],
+  "w_sp": 4.86,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/1/5/100000",
+  "caption": "bra p8 cre w4.9 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1409.0,
+   1062.0,
+   1543.0,
+   1093.0
+  ],
+  "w_sp": 4.83,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/1/1/100001",
+  "caption": "bra p8 cre w4.8 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2194.0,
+   1062.0,
+   2337.0,
+   1091.0
+  ],
+  "w_sp": 5.15,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/1/3/100002",
+  "caption": "bra p8 cre w5.2 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   3229.0,
+   1061.0,
+   3361.0,
+   1090.0
+  ],
+  "w_sp": 4.76,
+  "in_word": 1.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/1/6/100003",
+  "caption": "bra p8 dim w4.8 wd1.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2444.0,
+   1066.0,
+   2616.0,
+   1096.0
+  ],
+  "w_sp": 6.2,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/1/4/100004",
+  "caption": "bra p8 dim w6.2 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1645.0,
+   1070.0,
+   1817.0,
+   1100.0
+  ],
+  "w_sp": 6.2,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/1/2/100005",
+  "caption": "bra p8 dim w6.2 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   5328.0,
+   1326.0,
+   5431.0,
+   1353.0
+  ],
+  "w_sp": 3.71,
+  "in_word": 0.81,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/2/12/100000",
+  "caption": "bra p8 cre w3.7 wd0.8 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2603.0,
+   1365.0,
+   2742.0,
+   1394.0
+  ],
+  "w_sp": 5.01,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/2/4/100001",
+  "caption": "bra p8 cre w5.0 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2831.0,
+   1365.0,
+   3015.0,
+   1396.0
+  ],
+  "w_sp": 6.63,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/2/5/100002",
+  "caption": "bra p8 dim w6.6 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1804.0,
+   1384.0,
+   1952.0,
+   1414.0
+  ],
+  "w_sp": 5.33,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/2/2/100003",
+  "caption": "bra p8 cre w5.3 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2988.0,
+   1389.0,
+   3136.0,
+   1416.0
+  ],
+  "w_sp": 5.33,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/2/5/100004",
+  "caption": "bra p8 cre w5.3 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   3232.0,
+   1388.0,
+   3392.0,
+   1415.0
+  ],
+  "w_sp": 5.77,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/2/6/100005",
+  "caption": "bra p8 dim w5.8 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1400.0,
+   1390.0,
+   1553.0,
+   1418.0
+  ],
+  "w_sp": 5.51,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/2/1/100006",
+  "caption": "bra p8 cre w5.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1642.0,
+   1390.0,
+   1805.0,
+   1422.0
+  ],
+  "w_sp": 5.87,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/2/2/100007",
+  "caption": "bra p8 dim w5.9 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1434.0,
+   2198.0,
+   1543.0,
+   2228.0
+  ],
+  "w_sp": 3.93,
+  "in_word": 0.57,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/5/1/100000",
+  "caption": "bra p8 cre w3.9 wd0.6 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1638.0,
+   2199.0,
+   1813.0,
+   2228.0
+  ],
+  "w_sp": 6.31,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/5/2/100001",
+  "caption": "bra p8 dim w6.3 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   3229.0,
+   2200.0,
+   3368.0,
+   2232.0
+  ],
+  "w_sp": 5.01,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/5/6/100002",
+  "caption": "bra p8 dim w5.0 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1407.0,
+   3015.0,
+   1543.0,
+   3047.0
+  ],
+  "w_sp": 4.9,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/8/1/100000",
+  "caption": "bra p8 cre w4.9 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1637.0,
+   3027.0,
+   1806.0,
+   3057.0
+  ],
+  "w_sp": 6.09,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/8/2/100001",
+  "caption": "bra p8 dim w6.1 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2182.0,
+   3027.0,
+   2338.0,
+   3063.0
+  ],
+  "w_sp": 5.62,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/8/3/100002",
+  "caption": "bra p8 cre w5.6 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   3223.0,
+   3026.0,
+   3338.0,
+   3054.0
+  ],
+  "w_sp": 4.14,
+  "in_word": 1.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/8/6/100003",
+  "caption": "bra p8 dim w4.1 wd1.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2438.0,
+   3028.0,
+   2617.0,
+   3060.0
+  ],
+  "w_sp": 6.45,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/8/4/100004",
+  "caption": "bra p8 dim w6.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2977.0,
+   3293.0,
+   3131.0,
+   3324.0
+  ],
+  "w_sp": 5.55,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/9/5/100000",
+  "caption": "bra p8 cre w5.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   3221.0,
+   3293.0,
+   3331.0,
+   3323.0
+  ],
+  "w_sp": 3.96,
+  "in_word": 1.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/9/6/100001",
+  "caption": "bra p8 dim w4.0 wd1.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1640.0,
+   3299.0,
+   1811.0,
+   3328.0
+  ],
+  "w_sp": 6.16,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/9/2/100002",
+  "caption": "bra p8 dim w6.2 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2182.0,
+   3298.0,
+   2336.0,
+   3331.0
+  ],
+  "w_sp": 5.55,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/0/9/3/100003",
+  "caption": "bra p8 cre w5.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2437.0,
+   3300.0,
+   2605.0,
+   3331.0
+  ],
+  "w_sp": 6.05,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/0/9/4/100004",
+  "caption": "bra p8 dim w6.1 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   948.0,
+   4730.0,
+   1118.0,
+   4762.0
+  ],
+  "w_sp": 6.13,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/1/2/0/100000",
+  "caption": "bra p8 dim w6.1 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1827.0,
+   5518.0,
+   1946.0,
+   5552.0
+  ],
+  "w_sp": 4.29,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/1/5/2/100000",
+  "caption": "bra p8 cre w4.3 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   2044.0,
+   5517.0,
+   2226.0,
+   5549.0
+  ],
+  "w_sp": 6.56,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/1/5/3/100001",
+  "caption": "bra p8 dim w6.6 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1315.0,
+   5522.0,
+   1494.0,
+   5552.0
+  ],
+  "w_sp": 6.45,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/8/1/5/1/100002",
+  "caption": "bra p8 dim w6.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "pb": [
+   1119.0,
+   5524.0,
+   1221.0,
+   5554.0
+  ],
+  "w_sp": 3.68,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/8/1/5/0/100003",
+  "caption": "bra p8 cre w3.7 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "pb": [
+   4229.0,
+   2844.0,
+   4483.0,
+   2877.0
+  ],
+  "w_sp": 9.24,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/14/0/9/7/100000",
+  "caption": "bra p14 dim w9.2 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "pb": [
+   4231.0,
+   3093.0,
+   4492.0,
+   3124.0
+  ],
+  "w_sp": 9.49,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/14/0/10/7/100000",
+  "caption": "bra p14 dim w9.5 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "pb": [
+   4234.0,
+   3316.0,
+   4599.0,
+   3350.0
+  ],
+  "w_sp": 13.27,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/14/0/11/7/100000",
+  "caption": "bra p14 dim w13.3 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 14,
+  "pb": [
+   4033.0,
+   3865.0,
+   4476.0,
+   3899.0
+  ],
+  "w_sp": 16.11,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/14/0/13/7/100000",
+  "caption": "bra p14 dim w16.1 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "pb": [
+   3604.0,
+   6399.0,
+   3659.0,
+   6429.0
+  ],
+  "w_sp": 2.0,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/19/1/9/5/100000",
+  "caption": "bra p19 dim w2.0 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "pb": [
+   4206.0,
+   2951.0,
+   4539.0,
+   2995.0
+  ],
+  "w_sp": 12.0,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/25/0/9/7/100000",
+  "caption": "bra p25 cre w12.0 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "pb": [
+   1285.0,
+   4117.0,
+   1917.0,
+   4160.0
+  ],
+  "w_sp": 22.77,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/25/0/13/1/100000",
+  "caption": "bra p25 cre w22.8 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "pb": [
+   3303.0,
+   5784.0,
+   3550.0,
+   5823.0
+  ],
+  "w_sp": 8.9,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "diminuendo",
+  "subject": "glyph/25/1/5/5/100000",
+  "caption": "bra p25 dim w8.9 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "pb": [
+   3754.0,
+   5785.0,
+   4111.0,
+   5823.0
+  ],
+  "w_sp": 12.86,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/25/1/5/6/100001",
+  "caption": "bra p25 cre w12.9 wd0.0 dy0.0"
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "pb": [
+   1491.0,
+   6237.0,
+   1834.0,
+   6276.0
+  ],
+  "w_sp": 12.36,
+  "in_word": 0.0,
+  "in_dyn": 0.0,
+  "kind": "crescendo",
+  "subject": "glyph/25/1/7/1/100000",
+  "caption": "bra p25 cre w12.4 wd0.0 dy0.0"
+ }
+]

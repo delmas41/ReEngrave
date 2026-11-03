@@ -1,0 +1,436 @@
+[
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/1/3/14/1",
+  "box": [
+   2300.7275,
+   2341.375,
+   2325.455,
+   2362.3225
+  ],
+  "role": "r4_tile4_reasked_partner_hole_unread",
+  "written": {
+   "off": [
+    {
+     "pitch": "C4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Bb3",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 1,
+  "crop_box": [
+   2139,
+   2257,
+   2486,
+   2446
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/0/3/2/1",
+  "box": [
+   827.38,
+   865.285,
+   848.6425,
+   879.3025
+  ],
+  "role": "r4_tile6_reasked_restored_too_wide_witness",
+  "written": {
+   "off": [
+    {
+     "pitch": "C4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "D4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 2,
+  "crop_box": [
+   664,
+   777,
+   1011,
+   966
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/1/1/1/1",
+  "box": [
+   675.16,
+   2032.52,
+   698.04,
+   2045.16
+  ],
+  "role": "r4_tile7_reasked_head_drawn_low",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Eb5",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 3,
+  "crop_box": [
+   513,
+   1944,
+   859,
+   2133
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/1/2/1/3",
+  "box": [
+   657.025,
+   2402.9875,
+   683.0125,
+   2419.9975
+  ],
+  "role": "r4_tile9_reasked_partner_split_tie_unbound",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb4",
+     "tie": [
+      "stop",
+      "start"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "A4",
+     "tie": [
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 4,
+  "crop_box": [
+   496,
+   2316,
+   843,
+   2505
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/0/4/0/9",
+  "box": [
+   525.6925,
+   988.9975,
+   550.735,
+   1044.7525
+  ],
+  "role": "r4_tile5_unison",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "D5",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 5,
+  "crop_box": [
+   364,
+   922,
+   711,
+   1111
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/0/2/7/2",
+  "box": [
+   1304.065,
+   705.0125,
+   1331.785,
+   730.2125
+  ],
+  "role": "r4_tile11_unison_upper_tie_never_boxed",
+  "written": {
+   "off": [
+    {
+     "pitch": "G4",
+     "tie": []
+    },
+    {
+     "pitch": "G4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "G4",
+     "tie": []
+    },
+    {
+     "pitch": "G4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 6,
+  "crop_box": [
+   1144,
+   623,
+   1491,
+   812
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "rg": "glyph/5/1/5/5/1",
+  "box": [
+   3266.515,
+   5150.2425,
+   3304.3925,
+   5184.5775
+  ],
+  "role": "r4_tile12_unison_lower_tie_trace",
+  "written": {
+   "off": [
+    {
+     "pitch": "B4",
+     "tie": []
+    },
+    {
+     "pitch": "B4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Bb4",
+     "tie": [
+      "stop"
+     ]
+    },
+    {
+     "pitch": "Bb4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 7,
+  "crop_box": [
+   2933,
+   4975,
+   3637,
+   5359
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "rg": "glyph/3/1/2/7/0",
+  "box": [
+   1368.785,
+   2625.15,
+   1393.895,
+   2642.82
+  ],
+  "role": "neighbour_piece_tie_restored",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb3",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Bb3",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 8,
+  "crop_box": [
+   1208,
+   2539,
+   1554,
+   2728
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/1/4/0/8",
+  "box": [
+   515.1800000000001,
+   2691.195,
+   539.5925,
+   2708.205
+  ],
+  "role": "neighbour_piece_tie_gain_removed",
+  "written": {
+   "off": [
+    {
+     "pitch": "G5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "G5",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 9,
+  "crop_box": [
+   354,
+   2605,
+   700,
+   2794
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "rg": "glyph/3/1/5/5/4",
+  "box": [
+   1148.91,
+   3199.2775,
+   1173.92,
+   3217.12
+  ],
+  "role": "neighbour_piece_tie_gain_removed",
+  "written": {
+   "off": [
+    {
+     "pitch": "Ab4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Ab4",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 10,
+  "crop_box": [
+   988,
+   3113,
+   1334,
+   3302
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "rg": "glyph/5/1/1/6/1",
+  "box": [
+   3702.4275,
+   4307.6975,
+   3740.0325,
+   4344.7575
+  ],
+  "role": "trace_tie_along_line_gained",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Bb4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 11,
+  "crop_box": [
+   3369,
+   4134,
+   4073,
+   4518
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/0/2/12/4",
+  "box": [
+   1878.9325,
+   727.165,
+   1900.9825,
+   747.64
+  ],
+  "role": "black_tall_box_split_dyad",
+  "written": {
+   "off": [],
+   "on": [
+    {
+     "pitch": "G3",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 12,
+  "crop_box": [
+   1716,
+   642,
+   2063,
+   831
+  ]
+ }
+]

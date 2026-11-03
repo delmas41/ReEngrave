@@ -9,6 +9,54 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- ROADMAP 2.252 r5 landed ON: a tie carries its accidental; a tie traced along a staff line is kept
+STAGED ADJUDICATE..EXPORT, flags `OMR_TIE_CARRIES_ACCIDENTAL` (export.py) and `OMR_ARC_TRACE_NOT_A_LINE` (family_precision.py) now default ON (deny-list; explicit 0/false/no/off disables). Sean's tiles (answers-2.252-r5.json): tie trace 2/2 right; hole pitch 5/5 right but `OMR_HEAD_HOLE_POSITION` (with its neighbour-piece refusal, right 1 of 3) and `OMR_UNISON_TIE_VOICE` stay OFF for round 6. The box split rides `OMR_TALL_HEAD_SPLIT` (box_kind.py), ON since 2026-11-02. Landing check (saved r4/r5 gathers, hole position OFF in both arms, two landing flags 0 vs 1): judged right->wrong 0 and unwritten->wrong 0 on Litolff p10-11, Litolff p2-3, Brahms p0,5 (ties +0/+6/+34; the r5 `11/0/2/12/2` unwritten->wrong was hole-position-arm only and did not reappear). Tests that asserted the OFF default updated.
+
+## 2026-11-02 -- 2.251 step 3 (F clef dot finder) PARKED, docs only (Sean 'Park it')
+
+No code. Sean: "I don't think we should land the work that it has done, but I'm not ready to give up on it", then "Park it. Document well." Branch lane-2.251-dots 6d1708b40 (flag OMR_CLEF_DOT_FUSED, dots_scan.py, dots_table.py) and test-2.251-f-cutoff stay unlanded. Cause: the stem clear tests one pixel column's black run only, and at bar 111 the dots fuse with the staff lines, so line+dot+line reads as a stem. Resumes under ROADMAP 2.223. FINDINGS.md has the full entry, an untested body-scale hypothesis and the process lesson.
+
+## 2026-11-02 -- 2.251: F dots+body READ cut-off 0.70 -> 0.65 (Sean 'Do it')
+
+- `clef_pagewide.F_TEMPLATE_READ_SCORE` 0.70 -> 0.65 (STAGED no-box F reader `f_nobox`, needs dots AND body). Body-only `f_body_scan` stays a candidate (0.60). The STRONG tier (`F_TEMPLATE_STRONG_SCORE` 0.65, read by `_strong_f`/`any_strong` in `consequences`/`export`, set in `gather`) is now empty: STRONG == READ, so nothing lands between. Constant kept, comment says so; no test asserted the old 0.70.
+- Gate (fresh `--through gather`, PAGEWIDE+CARRY ON, KEEP_ALIVE=0; Litolff 2,4,12 / Brahms 4,5; main 0.70 vs 0.65): ORDER-VIOLATION Litolff 0.43 -> 0.43, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM 0.87 -> 0.87 / 0.70 -> 0.70; clef/key/meter single-owner 2.4 -> 2.4 / 1.7 -> 1.7. The Litolff records differ as intended (Vc bar 346: STRONG candidate -> READ).
+- Three measures (lane_report, scratch-only env override, Litolff 4,12 / Brahms 4,5, not the frozen sample): Litolff `words -6 | clefs +1`; Brahms `accidentals +1 | pitches ~1 | blue +1` (cut-off cannot reach Brahms: load noise). Judged right->wrong 0, unwritten->wrong 0.
+- Tests: fast tier 9759 passed, 12 skipped, 2 xfailed; test_clef*2_251* 16 passed, 8 skipped (library-dependent).
+- Open: dot-finder lane in flight (dots touching a head/stem shredded by the stroke-clearing step, bar 111).
+
+## 2026-11-02 -- 2.251 step 2 landed: OMR_CLEF_CARRY default ON (Sean 'Land now')
+
+- `clef_pagewide.carry_enabled()` flips to default ON (explicit 0/false/no/off disables); test renamed `test_default_on_carry_on`. No mechanism changed; lane-2.251-carry merged with main.
+- Gate (fresh `--through gather`, PAGEWIDE=1 both arms, CARRY 0 vs 1; Litolff 2,4 / Brahms 4,5): ORDER-VIOLATION Litolff 0.45 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM 0.99 -> 1.03 / 0.70 -> 0.70; clef/key/meter single-owner 2.3 -> 2.4 / 1.7 -> 1.7.
+- Evidence: Litolff print witness right 148->365, wrong 267->13, carry-caused right->wrong 0 on real notes; Brahms pp.4-5 right->wrong 0; judged right->wrong 0.
+- Open: see ROADMAP 2.251.
+
+## 2026-11-02 -- day manager: 2.251 step 1 landed, carry r1 built and tiled, carry r2 in flight
+
+- Sean's 2.251 r2 tiles: 12/12 right (4c3350889). Sean "Land and get the pitch work right": step 1 landed ON (9db2c7495, entry below); a separate Opus lane took the carry.
+- Carry r1 (lane-2.251-carry 101e92cf7, `OMR_CLEF_CARRY` OFF). The cause is return-clef recall: bass-clef returns were read only through a detector box. The lane added:
+  - a no-box F-clef reader;
+  - a carry that stops red at any unreadable clef candidate;
+  - export of `<clef>` only for a READ claim.
+- Pitch witness: Litolff wrong 266 -> 22 but right->wrong 10 (9 in bar 111); Brahms pp.4-5 wrong 82 -> 5, right->wrong 0.
+- Sean's carry tiles: 10/12 right, carry-caused right->wrong 0 (d741be415, answers-r3-carry.json). Tile 11 is a real F clef we held at 0.69. Tile 12 is a far head one step high (position reading, not the carry).
+- Carry round 2 sent back (Sean: "fix bar 111 so the carry is never worse, then come back for landing"). It also covers the false head on bar-38 clef ink, a re-check of the 0.70 cut-off, and the Brahms frozen sample.
+- Still open from earlier: 2.248 r3 wrong-staff cause; 2.250 fused-dyad ties and the ties written as slurs.
+
+## 2026-11-02 -- 2.251 step 1 landed: OMR_CLEF_PAGEWIDE default ON (carry stays OFF)
+
+Sean "Land": the STAGED GATHER page-wide clef reader (`clef_pagewide.py`) now claims clef-shaped ink inside a system by default; `OMR_CLEF_CARRY` is untouched (default OFF). Gate before the flip, round-2 code, 2-page subset (Litolff 2,4; Brahms 4,5), flag 0 vs 1: ORDER-VIOLATION Litolff 0.46 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM Litolff 0.77 -> 0.99, Brahms 0.59 -> 0.70 (both under +0.3). Flag row in docs/flags-2026-09.md and the default test updated. Details: benchmarks/clef-change-2026-11/FINDINGS.md.
+
+## 2026-11-01 -- day manager: 2.251 built (OFF), 2.248 r3 built (OFF), Sean's tiles on 2.250 r2 / 2.251 / 2.248 recorded
+- 2.251 clef change inside a system: step 1 `OMR_CLEF_PAGEWIDE` (C clef by thick bar + bowls, no detector box; F clef by box + dots) and step 2 `OMR_CLEF_CARRY` (pitch from the last clef before the head), both OFF, lane-2.251-clef-change 3254ce233. Sean's tiles: 8/9 claims right; round 2 in flight. The carry does not land: missed bass returns move the error, and notes after an unread clef are dropped, not marked red.
+- 2.248 r3 `OMR_FARHEAD_UNREAD_GUESSED` (OFF, lane-2.248-ink-extent ee87ef423): a far head whose ledger count abstains is written blue with candidates instead of plain. Sean: 6/6 blue are real notes, 2 on the wrong staff, 2 unresolved; r2's in-staff moves 4/6 were not heads (r2 does not land).
+- 2.250 r2: narrow tiles unanswerable; wide tiles 9/9 right; landed (entry below).
+- An answer-recording commit on a live lane branch (1a59c0a91) reverted 2.250 r2 code; restored (9117d8110). Memory rule: record answers on main or after the lane stops, staging named files only.
+- Tiles must show what the answer needs (CLAUDE §6 tile rule widened): both ends of an arc; the staff a far head is counted from.
+
+## 2026-11-01 -- 2.250 LANDED: the STAGED arc binder reads the end note's pitch (`OMR_BIND_END_PITCH` default ON)
+Sean "Land it" after round-2 wide tiles 9/9 right, judged right->wrong 0. `arc_claim.end_pitch_enabled()` now defaults ON (explicit 0/false/no/off disables); the end note's step comes from the head extent, a chord end binds to the member at the arc end's height, a lone tall box is read both ways and only a plain tie where they agree. Flag rows and the default-OFF test updated. (ROADMAP 2.250; benchmarks/omr-arc-binding-2026-10/FINDINGS.md)
+
 ## 2026-10-31 -- 2.240 step 3: the later stages read the page owner (lane-2.240-s3-export, `OMR_PAGE_OWNER_READ` OFF, not merged)
 - Hotfix (on main f7422b035): `ABSTAIN.OWNER_BOX_NOT_ONE_HEAD` -- main's gather with OMR_PAGE_OWNER ON raised on the first >= 3 sp head box.
 - Tile 8's three causes fixed in GATHER rows: the ledger gap / hidden-ledger looks honour the owner's `not_ledger` filter (the slur was re-counted);
@@ -6590,3 +6638,18 @@ STAGED GATHER (`gather_page_claims`) + ADJUDICATE `claimed_by` / stroke owner, f
 
 ## 2026-10-30 -- ROADMAP 2.244 built (branch lane-2.244-one-test-command, not landed): one test command
 TOOLING (no flag, no reader, no output change): `lane_report.DEFAULT_TAG = 20261029-night` (a tag with no record or slice dir raises); `judged.score(..., by="place")` finds a tile that has a `position` by (page, system, staff, cell) + an overlapping glyph box of the same kind in the record being scored (the id only breaks a tie; tiles without a position keep the key and are counted apart in `matched`); `lane_report` lists every changed place no judged tile covers (`NOT JUDGED`, `unjudged.txt`, `--unjudged-tiles N`); `tools/omr/staged/one_test.py` runs base / each flag alone / all on one tree, stages and cells and RAISES `ArmMismatch` on any difference (control line), with INTERACTIONS and one blind sheet across the lanes. Control: on the 1,997-tile index with positions derived from each mark-sized old tile, place vs key on the Litolff 20261029 record differ on 3 of 394 tiles, each explained by place (id drift x2, one tile whose cell moved); right->wrong 0. Brahms not run. The 2.244 lane report holds the table.
+
+## 2026-11-02 -- ROADMAP 2.248 r4 landed ON: far heads whose ledger count abstained are written blue
+STAGED GATHER/EVALUATE/EXPORT, flag `OMR_FARHEAD_UNREAD_GUESSED` (deny-list, default ON). Marks, never moves: pitch stays the box centre's step, written GUESSED with box- and ink-centre candidates; r4b refuses under-filled tall far boxes as non-heads. Sean's r4 tiles: 7 right, 4 too far out, 1 wrong owner. Gate: fast tier 9722 passed; lane_report (Litolff + Brahms, 8 pages each, re-gathered) no raise, judged right->wrong 0, unwritten->wrong 0. Real fixes for the 4 'too far' heads and the wrong owner are still open.
+
+## 2026-11-02 -- ROADMAP 2.252 split landed ON: a tall hollow head box is read for its heads by their holes
+STAGED GATHER/ADJUDICATE, flag `OMR_TALL_HEAD_SPLIT` (deny-list, default ON; explicit 0/false/no/off disables). Dyads of half notes boxed as ONE tall head are read into their heads. Sean's tiles: split right 9/9. Gate (2 pages per plate, re-gather OFF vs ON, `out/lane-report/2.252-land` removed): Litolff notes +5, ties +6, pitches ~2, blue +2; Brahms accidentals +1, pitches ~1, blue +1; judged right->wrong 0, unwritten->wrong 0. Fast tier 9,731 passed (the surya margin-crop OCR test fails under load, passes alone). Round 2 (missing ties, 9 of 28 tie ends written) still open.
+
+## 2026-11-02 -- ROADMAP 2.255 r2 landed ON: the far-head ledger READ (outline rows before the walk, stacked window, first ledger against the system's own pitch)
+STAGED GATHER, flag `OMR_LEDGER_READ` (deny-list, default ON; explicit 0/false/no/off disables). `ledger_grid.local_gap_max` / `count_ledgers_between(gap_max=)` / `FarHeadPage.read`. Sean's r2 tiles: ON 11/12 right vs OFF 6/12, right->wrong 0. Landing re-measure (2 pages per plate, record slices re-read OFF vs ON): exported file 8 Litolff hosts differ (7 corrected pitch or lose blue, 1 lost `10/1/2/9/7` read by the neighbour staff), 0 Brahms; Brahms refutations 219 -> 219. Fast tier 9741 passed.
+
+## 2026-11-02 -- ROADMAP 2.252 r2 landed ON: ties on a staff line kept, a dyad's tie joins the member on the arc's side
+STAGED GATHER `OMR_ARC_LINE_THICKNESS` (`gather.arc_ink_shape`: a line inside an arc box is erased to the staff's measured thickness +1 px, so a tie lying on a line is no longer erased with it) and STAGED ADJUDICATE `OMR_TIE_PAIR_ARC_SIDE` (`ownership._pair_on_the_arcs_side`: arc above joins the top pair, below the bottom; reason `paired_by_arc_side`), both deny-list default ON (explicit 0/false/no/off disables). Sean's r2 tiles: tie ends 20 of 35 written, 0 wrong. Gate (2 pages per plate, lane_report --from gather --cell-map master, OFF vs ON): Litolff p2-3 ties +26 slurs -4, Brahms p0,p5 ties +10 words +1 (OCR noise); red bars 0->0 / 42->42; notes not written 387->387 / 757->757; judged right->wrong 0, unwritten->wrong 0. Fast tier 9743 passed, 0 failed. Next: round 3 on the unison (lane-2.252-ties).
+
+## 2026-11-02 -- ROADMAP 2.254 landed ON: hairpin reach (wedge reader sees past barlines/stems/slurs; word claim leaves a hairpin; one-note wedge abstains)
+STAGED GATHER/ADJUDICATE, flag `OMR_HAIRPIN_REACH` (deny-list, default ON; 0/false/no/off disables), `staged/hairpin_reach.py`. Sean ruled "Land on as is" knowing Brahms p19 ORDER-VIOLATION 0.39->0.41 and that r3's judged right->wrong check matched 0 of his tiles by place (so 0 is unproven). r3 tiles: spans 7/7, words 5/5. See `benchmarks/hairpin-reach-2026-11/FINDINGS.md`.

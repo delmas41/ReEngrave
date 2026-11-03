@@ -2256,6 +2256,10 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
 #: refused this way), `ink:through_heads`, `neighbour_staff`, `far_side`, `beyond_stem` -- each says the stroke may belong to
 #: something else or to a stem nobody read, which is "cannot tell", not "a slur".
 ARC_INK_NOT_BEAM_POSITIVE = ("arc", "ink:too_thin", "ink:bowed")
+#: ROADMAP 2.254 r2 (flag `OMR_HAIRPIN_REACH` only): a beam box whose every stroke the stroke owner DECIDED to a mark that cannot be a beam
+#: (2.243 `_beams_on_owned_strokes`; with the flag, a claimed hairpin arm the stroke map once left `ink:too_thin`) is as positively not a
+#: beam as the thin-ink refusal it replaces. Without it the hairpin claim turned 1 GUESSED dotted quarter (Brahms p19 1/2/7) unwritten.
+HAIRPIN_CLAIM_NOT_BEAM = "ink:owned_by_another_mark"
 
 
 def arc_ink_not_beam_decline(v: Any) -> Optional[str]:
@@ -2275,9 +2279,11 @@ def arc_ink_not_beam_decline(v: Any) -> Optional[str]:
     strokes = d.get("refused_strokes")
     if not isinstance(strokes, (list, tuple)) or not strokes:
         return "no_refused_stroke_facts"
+    from . import hairpin_reach as _hairpin_reach
+    positive = ARC_INK_NOT_BEAM_POSITIVE + ((HAIRPIN_CLAIM_NOT_BEAM,) if _hairpin_reach.enabled() else ())
     for st in strokes:
         why = st.get("why")
-        if why not in ARC_INK_NOT_BEAM_POSITIVE:
+        if why not in positive:
             return "a_refusal_that_is_not_a_slur_reading:%s" % why
         # a stroke AT the tip is where a refused real beam would stand (2.81); only a decided slur/tie glyph may stand there
         # (a slur starts at the stem end), never a bare ink-shape refusal.

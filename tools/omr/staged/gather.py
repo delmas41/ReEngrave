@@ -486,17 +486,28 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # ⚠️ ROADMAP 2.193 (flag `OMR_NATURAL_CANDIDATE`, default ON): also keep the detector's sub-floor NATURAL score on each accidental box
         # (`natural_score`), a candidate only; the kwarg is passed ONLY with the flag on AND to a detector whose `detect` takes it, so a detector double without it is unaffected.
         dets = detector.detect(c, conf_threshold=conf_threshold, imgsz=imgsz, **({"natural_candidates": True} if _natural_candidate.enabled() and _accepts_natural_candidates(detector) else {}))
-        # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default OFF): the class-wise NMS above keeps two classes of one family on one ink;
+        # ⚠️ ROADMAP 2.186 (flag `OMR_ONE_INK_ONE_MARK`, default ON since 2026-11-02): the class-wise NMS above keeps two classes of one family on one ink;
         # merge them HERE, inside this cell, before any reader sees two boxes for one mark (`staged/one_ink.py` has the cause and the rules).
         if dets and _one_ink.enabled():
             dets = _one_ink.merge(dets)
-        # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`, default OFF): a head box wider than any one head is READ, not taken as one head:
+        # ROADMAP 2.245 round 2 (flag `OMR_BOX_KIND_SIZE`, default ON since 2026-11-02): a head box wider than any one head is READ, not taken as one head:
         # each head-shaped blob inside it that no other head box stands on gets its own box, APPENDED (every detector glyph index unchanged).
         split_info: Dict[int, Dict[str, Any]] = {}
         if dets and _box_kind.enabled():
             _grid = _cell_grid(c)
             dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0,
                                                           staff_top=_grid[0] if _grid else 0.0)
+        # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a TALL hollow head box is read for the heads inside it by their holes (a
+        # dyad of halves boxed as one head); each head no one-head box stands on gets its own box, APPENDED (every glyph index unchanged).
+        if dets and _box_kind.tall_split_enabled():
+            _grid = _cell_grid(c)
+            from . import head_hole_position as _hhp
+            dets, _tall_info = _box_kind.split_tall_heads(dets, getattr(c, "image", None), 2.0 * _grid[1] if _grid else 0.0,
+                                                          staff_top=_grid[0] if _grid else 0.0,
+                                                          line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
+                                                          black_too=_hhp.r5_enabled())
+            for _k, _v in _tall_info.items():
+                split_info.setdefault(_k, {}).update(_v)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
@@ -870,12 +881,27 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                             reason=ABSTAIN.WITNESS_UNMET,
                             witness_kind=w["kind"])
 
+        tall_info: Dict[int, Dict[str, Any]] = {}
+        if kept and _box_kind.tall_split_enabled() and grid:
+            # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a rescued TALL hollow head box is read for the heads inside it by
+            # their holes, as the production pass does (Sean's 2.250 r2 tiles 8 and 11 were rescued dyads); each head no one-head box
+            # stands on is filed after the rescued boxes, at the next glyph index, under the rescue's own reader and its tall box's witness.
+            allb = list(existing) + [d for d, _w in kept]
+            from . import head_hole_position as _hhp
+            outb, tall_info = _box_kind.split_tall_heads(
+                allb, getattr(c, "image", None), 2.0 * grid[1], staff_top=grid[0],
+                line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
+                only=set(range(n_existing, n_existing + len(kept))), black_too=_hhp.r5_enabled())
+            # the glyph index of a box in `allb` / `outb` is its rescue index n_existing + k, so `tall_info` is keyed by glyph index
+            for j, nd in enumerate(outb[len(allb):]):
+                src = tall_info[len(allb) + j]["tall_split"]["split_from"]
+                kept.append((nd, kept[src - n_existing][1]))
         for k, (d, w) in enumerate(kept):
             gi = n_existing + k
             g = R.glyph(p, sys_idx, st_idx, c.measure_index, gi)
             page_box = _page_box(c, d)
             box_detail: Dict[str, Any] = {"category": d.category,
-                                          "witness": w["kind"]}
+                                          "witness": w["kind"], **tall_info.get(gi, {})}
             if page_box is None:
                 box_detail["frame_note"] = (
                     "no page box: cell has no bbox_page_px/upscale_factor")
@@ -1479,7 +1505,7 @@ def gather_second_hollow(log: Log, cells: Sequence[Any],
 
 def gather_notehead_positions(log: Log, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
-                              detections: Dict[str, List[Any]]) -> None:
+                              detections: Dict[str, List[Any]], pws: Any = None) -> None:
     """The notehead's fractional STAFF POSITION -- clef-free, and kept.
 
     ⚠️ THIS IS THE THESIS OF THE WHOLE ARCHITECTURE IN ONE FUNCTION.
@@ -1495,6 +1521,21 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     between two positions", which on a warped scan is the population
     `OMR_CELL_LINE_TRACE` exists for.
     """
+    from . import head_extent, head_ink
+    ink_pos_on = head_extent.enabled()
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON): a FAR head's ink centre is filed beside its box-centre position as
+    # a CANDIDATE (`ink_centre_position_float`) for `restate_pitch`, which writes the head GUESSED where its ledger count abstained.
+    # It never moves the position row (a far head is placed by its ledger lines only).
+    far_guess_on = head_extent.far_guess_enabled()
+    # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a hollow head's position from its one hole where the box centre is
+    # elsewhere (`head_hole_position`).
+    from . import head_hole_position as _hole_pos
+    hole_on = _hole_pos.enabled()
+    page_binary = getattr(getattr(pws, "page", None), "binary", None) if (ink_pos_on or far_guess_on or hole_on) else None
+
+    def foreign_by_cell(c: Any, dets: Sequence[Any]) -> List[Any]:
+        return [pb for pb in (_page_box(c, od) for od in dets if head_ink.is_foreign_class(od.smufl_name)) if pb is not None]
+
     by_key = {}
     for c in cells:
         key = local.get(c.staff_index)
@@ -1558,6 +1599,58 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
+            # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a HOLLOW head whose one hole (cell raster, lines in) and own
+            # ink centre (page raster) stand at another position than its box centre is at its hole's position; never over 2.73's.
+            if hole_on and not cut_rows and _hole_pos.is_candidate(d.smufl_name):
+                pbh = _page_box(c, d)
+                uph = getattr(c, "upscale_factor", None)
+                hp = _hole_pos.hole_position(
+                    getattr(c, "image", None),
+                    (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical),
+                    float(half_step), float(top_y), list(getattr(c, "staff_line_ys_canonical", None) or ()), pos_float,
+                    page_binary, pbh, (float(half_step) / float(uph)) if uph else None,
+                    # r5: the cell's other head boxes (a cut slit's piece inside one of them is that head's hole)
+                    [(od.x_canonical, od.y_canonical, od.x_canonical + od.width_canonical, od.y_canonical + od.height_canonical)
+                     for oj, od in enumerate(dets) if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)])
+                if hp["position"] is not None:
+                    extra = {"from_head_hole": hp["holes"], "detector_position_float": round(pos_float, 3),
+                             "hole_ink_position": hp.get("ink_position")}
+                    pos_float = float(hp["position"])
+                elif hp["why"] in ("ink_disagrees", "off_grid", "ink_not_one_head", "ink_too_narrow", "cut_piece_in_another_head"):
+                    extra = {"hole_refused": hp["why"], "hole_steps": hp.get("holes"), "hole_ink_position": hp.get("ink_position")}
+            # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default ON since 2026-11-02): the box is only the seed. Where the head's OWN ink
+            # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre
+            # is the position; the detector's stays on the row. Never over 2.73's line-cut position.
+            if ink_pos_on and not cut_rows and "from_head_hole" not in extra and page_binary is not None:
+                pb = _page_box(c, d)
+                up = getattr(c, "upscale_factor", None)
+                if pb is not None and up:
+                    hs_page = float(half_step) / float(up)
+                    others = [ob for ob in (_page_box(c, od) for oj, od in enumerate(dets)
+                                            if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)) if ob is not None]
+                    got = head_extent.ink_extent(page_binary, pb, 2.0 * hs_page, foreign_by_cell(c, dets), others)
+                    if got["why"] is None:
+                        moved = head_extent.ink_position(pos_float, pb, got["extent"], hs_page)
+                        if moved is not None:
+                            extra = {"from_head_ink": [round(v, 1) for v in got["extent"]],
+                                     "detector_position_float": round(pos_float, 3)}
+                            pos_float = moved
+            if far_guess_on and page_binary is not None and not cut_rows and (int(round(pos_float)) < -1 or int(round(pos_float)) > 9):
+                # r3: the ink centre of a FAR head, as a candidate only (the row's value stays the box centre's)
+                pbf = _page_box(c, d)
+                upf = getattr(c, "upscale_factor", None)
+                if pbf is not None and upf:
+                    hsf = float(half_step) / float(upf)
+                    othf = [ob for ob in (_page_box(c, od) for oj, od in enumerate(dets)
+                                          if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)) if ob is not None]
+                    gotf = head_extent.ink_extent(page_binary, pbf, 2.0 * hsf, foreign_by_cell(c, dets), othf)
+                    if gotf["why"] is None:
+                        icp = head_extent.ink_centre_position(pos_float, pbf, gotf["extent"], hsf)
+                        if icp is not None:
+                            extra = dict(extra, ink_centre_position_float=round(icp, 3),
+                                         ink_centre_extent=[round(v, 1) for v in gotf["extent"]])
+                    else:
+                        extra = dict(extra, ink_centre_why=gotf["why"])
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
@@ -2092,7 +2185,7 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
 
 
 def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:
-    """ROADMAP 2.190 (flag `OMR_ACCIDENTAL_SHAPE`, default OFF): the shape of THIS accidental's own ink, measured on the cell's staff-erased
+    """ROADMAP 2.190 (flag `OMR_ACCIDENTAL_SHAPE`, default ON since 2026-11-02): the shape of THIS accidental's own ink, measured on the cell's staff-erased
     raster (`staged/accidental_shape.py` has the rule, the cut-offs and why this is a second reader of the detector's raster, not a witness),
     plus the staff position the glyph would have under EACH class the detector offered for this ink (the winner and its merged rivals), so
     ADJUDICATE can pick among them without a re-gather. Measurement only: nothing here chooses. An absorbed box carries none (it is refused)."""
@@ -2310,6 +2403,10 @@ def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
                 bj = items[j]["box"]
                 if bj[0] >= bi[2]:
                     break
+                if items[i].get("tall_read") or items[j].get("tall_read"):
+                    # ROADMAP 2.252: a tall head box GATHER read for the heads inside it (`box_kind.split_tall_heads`) is their
+                    # remainder, never one mark with either -- through it the dyad's two heads would group as ONE note
+                    continue
                 if _iou(bi, bj) > MARK_GROUP_IOU:
                     parent[find(i)] = find(j)
     groups: Dict[int, List[int]] = {}
@@ -2348,7 +2445,7 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                        local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]]) -> int:
     """ROADMAP 2.58b: file the physical-mark identity of every notehead, rest
-    and accidental box of a page (`OMR_MARK_GROUPS`, default OFF).
+    and accidental box of a page (`OMR_MARK_GROUPS`, default ON since 2026-11-02).
 
     AFTER `gather_detections` and the low-confidence rescue (the box set is
     final), BEFORE every reader that could use the identity. It reads the
@@ -2380,7 +2477,8 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                           "category": d.category,
                           "scope": (sub.page, sub.system),
                           "conf": float(d.confidence),
-                          "frame": frame_cell(sub.cell)})
+                          "frame": frame_cell(sub.cell),
+                          "tall_read": bool(getattr(d, _box_kind.TALL_READ_ATTR, False))})
     return _file_mark_groups(log, items)
 
 
@@ -2404,7 +2502,8 @@ def mark_groups_from_log(log: Log) -> int:
                                  sub.glyph),
                       "key": sub.to_key(), "box": tuple(box),
                       "category": cat, "scope": (sub.page, sub.system),
-                      "conf": row.score, "frame": row.frame})
+                      "conf": row.score, "frame": row.frame,
+                      "tall_read": bool((row.detail.get("tall_split") or {}).get("read"))})
     return _file_mark_groups(log, items)
 
 
@@ -4689,7 +4788,11 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
                 boxes.append((x0, y0, x1 - x0, y1 - y0, d.smufl_name))
         blanked = blank_point_detections(
             page_ink, boxes, spacings[len(spacings) // 2])
-        found = detect_hairpins(page_ink, staff_rows, blanked)
+        # ROADMAP 2.254 (flag `OMR_HAIRPIN_REACH`, default OFF): the reader sees past barlines, stems and slurs crossing a hairpin
+        # (`staged/hairpin_reach.py` names the cause). OFF the call is unchanged.
+        from . import hairpin_reach as _hairpin_reach
+        reach_on = _hairpin_reach.enabled()
+        found = detect_hairpins(page_ink, staff_rows, blanked, reach=reach_on)
     except Exception as exc:                                  # noqa: BLE001
         for st_key in sorted(bands):
             log.abstain(Subject.from_key(st_key), Q.WEDGE_BOX,
@@ -4731,7 +4834,8 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
                         float(h.y + h.height / 2.0), bottom, spacing),
                     open_spaces=float(h.open_spaces),
                     outline_rms_spaces=float(h.outline_rms_spaces),
-                    page_staff_index=int(h.staff_index))
+                    page_staff_index=int(h.staff_index),
+                    **({"reach": True} if reach_on else {}))
 
     for page_st, (key, _band) in sorted(by_page_index.items()):
         if per_staff.get(page_st):
@@ -4993,7 +5097,7 @@ def gather_cv_lines(log: Log, cells: Sequence[Any],
         # `detect_stems` tests `candidates_out is not None`.
         runs: Optional[list] = [] if vertical_runs_enabled() else None
         # ⚠️ THE NOTEHEAD GATE ON THE PAIR RULE (`OMR_STEM_NOTEHEAD_GATE`,
-        # default OFF). The boxes are handed over unconditionally when the
+        # default ON since 2026-11-02). The boxes are handed over unconditionally when the
         # caller supplied a detection map — the FLAG is read inside
         # `detect_stems`, which is the single decision point, and with it off
         # the boxes change nothing at all. ⚠️ `detections is None` (a run with
@@ -9038,8 +9142,23 @@ ARC_INK_LINE_MAX_HALF_STROKE_SPACES = 0.4
 ARC_INK_MIN_COLUMN_PX = 2
 
 
+#: ROADMAP 2.252 r2 (flag `OMR_ARC_LINE_THICKNESS`, default ON since 2026-11-02): a staff line's stroke inside an arc box is as thick as the STAFF'S OWN
+#: measured line (`Staff.line_thickness_px`, GATHER), never grown by how full the box's rows are. A tie lying ON a line (Litolff: thick
+#: ties along a line, Sean's 2.252 tiles 3, 5, 6, 7) fills the rows beside the line too, and the fill-grown stroke (up to 0.4 sp either
+#: side) erased the tie with the line, so a real tie read "no curve" and was refused `ink_is_a_staff_line` -- 6 of the 19 tie ends
+#: missing on those tiles. This many pixels beyond the measured thickness are still taken as line (anti-aliasing, a scan's wander).
+ARC_INK_LINE_THICKNESS_SLACK_PX = 1
+ARC_LINE_THICKNESS_ENV = "OMR_ARC_LINE_THICKNESS"
+
+
+def arc_line_thickness_enabled() -> bool:
+    """`OMR_ARC_LINE_THICKNESS` (ROADMAP 2.252 r2), default ON since 2026-11-02; an explicit 0/false/no/off disables."""
+    return os.environ.get(ARC_LINE_THICKNESS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
 def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
-                  space: float, line_ys: Sequence[float]
+                  space: float, line_ys: Sequence[float],
+                  line_thickness: Optional[Sequence[Optional[float]]] = None
                   ) -> Optional[Dict[str, Any]]:
     """What is inside one arc box once EVERY staff line is taken out of it.
     ROADMAP 2.60.
@@ -9079,9 +9198,44 @@ def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
     stroke = max(1, int(round(ARC_INK_LINE_STROKE_SPACES * space)))
     n_lines = 0
     removed = np.zeros(h, dtype=bool)
-    for ly in line_ys:
+    for li, ly in enumerate(line_ys):
         ly = float(ly)
         if not (y0 - pad <= ly <= y1 + pad):
+            continue
+        th = None
+        if line_thickness is not None and li < len(line_thickness) and line_thickness[li]:
+            th = float(line_thickness[li])
+        if th is not None:
+            # ROADMAP 2.252 r2: the line is found and measured on the page rows AROUND it (a box cut at the line's edge holds only part
+            # of it, and snapping inside the box lands on the tie beside it), its stroke never thicker than the staff's measured line
+            n_lines += 1
+            m = snap + int(math.ceil(th)) + 2
+            ey0 = max(0, iy0 - m)
+            band = (binary[ey0:min(H, iy1 + m), ix0:ix1] == 0)
+            re0 = int(round(ly)) - ey0
+            best, best_fill = None, -1.0
+            for r in range(max(0, re0 - snap), min(band.shape[0], re0 + snap + 1)):
+                fill = float(band[r].mean())
+                if best is None or fill > best_fill + 1e-9 or (abs(fill - best_fill) < 1e-9 and abs(r - re0) < abs(best - re0)):
+                    best, best_fill = r, fill
+            if best is None:
+                continue
+            if best_fill >= ARC_INK_LINE_SNAP_MIN_FILL:
+                top = bot = best
+                limit = int(round(th)) + ARC_INK_LINE_THICKNESS_SLACK_PX
+                while bot - top + 1 < limit:
+                    up = band[top - 1].mean() if top - 1 >= 0 else -1.0
+                    dn = band[bot + 1].mean() if bot + 1 < band.shape[0] else -1.0
+                    if max(up, dn) < ARC_INK_LINE_SNAP_MIN_FILL:
+                        break
+                    if up >= dn:
+                        top -= 1
+                    else:
+                        bot += 1
+                a_, b_ = top - 1 + ey0 - iy0, bot + 2 + ey0 - iy0
+            else:
+                a_, b_ = re0 - stroke + ey0 - iy0, re0 + stroke + 1 + ey0 - iy0
+            removed[max(0, a_):max(0, min(h, b_))] = True
             continue
         n_lines += 1
         r0 = int(round(ly)) - iy0
@@ -9143,8 +9297,13 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
     """
     binary = getattr(getattr(pws, "page", None), "binary", None)
     all_lines: List[float] = []
+    all_thick: List[Optional[float]] = []
     for st in getattr(pws, "staves", ()) or ():
         all_lines.extend(float(y) for y in st.line_ys)
+        th = getattr(st, "line_thickness_px", None)
+        th = list(th) if isinstance(th, (list, tuple)) else []
+        all_thick.extend((float(th[i]) if i < len(th) and th[i] else None) for i in range(len(st.line_ys)))
+    by_thickness = arc_line_thickness_enabled()
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -9171,7 +9330,8 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
                 continue
-            m = arc_ink_shape(binary, page_box, space, all_lines)
+            m = arc_ink_shape(binary, page_box, space, all_lines,
+                              line_thickness=all_thick if by_thickness else None)
             if m is None:
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
@@ -14975,10 +15135,76 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
     return counts
 
 
+def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]]) -> Dict[str, int]:
+    """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default OFF), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
+    coarsest kind the reader is sure of (a hairpin; its owner staff and its start/stop notes are decided later, ADJUDICATE / 2.223).
+
+    CAUSE (`hairpin_reach` round-2 note): the detector and cv_lines read a hairpin's thin straight arms as beams; a CV hairpin read that claims
+    nothing lets the beam take them. Per CV reach read (`Q.WEDGE_BOX`, `reach` True): every cell of ANY staff whose box meets the hairpin's
+    (the hairpin sits between two staves, and both staves' padded cells cut its arms into strokes) -- one `Q.CLAIMED_AREA` row, owner
+    `hairpin`, unit `ink`, filed on that STAFF, value `[[cell, stroke ordinal], ...]` for each stroke at least `ON_ARMS_SHARE_MIN` along the
+    arms (`hairpin_reach.claim_strokes`). A stem or barline crossing an arm keeps its ink. A read whose arms run along no filed stroke is an
+    abstention, counted. Files rows only; `adjudicators/stroke_owner._hairpin_claims` is the one consumer."""
+    from . import hairpin_reach as HR
+    counts = {"hairpins": 0, "rows": 0, "strokes": 0, "no_stroke": 0, "no_map_cells": 0}
+    if not HR.enabled() or not stroke_cells:
+        return counts
+    by_cell: Dict[Tuple[int, int, int, int], Any] = {}
+    pages = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
+            pages.add(c.page_index)
+    for p in sorted(pages):
+        for r in log.rows(Q.WEDGE_BOX, R.page(p), scope=R.Scope.SELF_AND_DESCENDANTS):
+            d = r.detail or {}
+            bb = d.get("bbox_page_px")
+            if r.reader != READERS.CV_HAIRPINS or not d.get("reach") or not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+                continue
+            counts["hairpins"] += 1
+            segs = HR.arms(r.value, bb)
+            band = HR.band_px(d.get("staff_spacing_px") or 0.0)
+            per_staff: Dict[Tuple[int, int, int], List[List[int]]] = {}
+            shares: Dict[Tuple[int, int, int], List[float]] = {}
+            for ck, c in sorted(by_cell.items()):
+                if ck[0] != p:
+                    continue
+                cb = getattr(c, "bbox_page_px", None)
+                up = getattr(c, "upscale_factor", None)
+                if not cb or not up or len(cb) != 4:
+                    continue
+                if cb[2] < bb[0] or cb[0] > bb[2] or cb[3] < bb[1] or cb[1] > bb[3]:
+                    continue
+                res = stroke_cells.get(ck)
+                if res is None or isinstance(res, str):
+                    counts["no_map_cells"] += 1
+                    continue
+                for i, sh in HR.claim_strokes(res, cb, float(up), segs, bb, band):
+                    per_staff.setdefault(ck[:3], []).append([ck[3], i])
+                    shares.setdefault(ck[:3], []).append(sh)
+            if not per_staff:
+                counts["no_stroke"] += 1
+                ws = r.subject
+                log.abstain(R.staff(ws.page, ws.system, ws.staff), Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page",
+                            reason=ABSTAIN.NO_INK, owner=HR.OWNER, unit="ink", why="arms_run_along_no_filed_stroke", source="wedge_box",
+                            owner_row=r.id, owner_glyph=ws.to_key())
+                continue
+            for home, got in sorted(per_staff.items()):
+                counts["rows"] += 1
+                counts["strokes"] += len(got)
+                log.observe(R.staff(*home), Q.CLAIMED_AREA, got, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=HR.OWNER,
+                            owner_row=r.id, owner_glyph=r.subject.to_key(), unit="ink", scope="page_hairpin", standing="READ",
+                            source="wedge_box", kind=r.value, bbox_page_px=[float(v) for v in bb], shares=shares[home],
+                            cover_min=HR.ON_ARMS_SHARE_MIN)
+    return counts
+
+
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                             detections: Dict[str, List[Any]], *, progress: bool = False,
                             stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
-    """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default OFF).
+    """`Q.CLAIMED_AREA` rows of owner `clef` and `leading_column` -- ROADMAP 2.181, flag `OMR_CLAIMED_REGISTER` (default ON since 2026-11-02).
 
     PATH: STAGED GATHER, PAGE raster (`pws.page.binary`). AFTER `gather_clef_locator` (reads its rows) and beside
     `gather_meter_object` (whose `meter` rows the same consult reads). Per staff:
@@ -15444,6 +15670,221 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
                 print(f"  gather claimed area (clef slot) {ssub.to_key()}")
 
 
+def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                         detections: Dict[str, List[Any]]) -> None:
+    """`Q.CLAIMED_AREA` rows of owner `clef`, source `clef_pagewide` -- ROADMAP 2.251 step 1, flag `OMR_CLEF_PAGEWIDE` (default ON).
+
+    PATH: STAGED GATHER, PAGE raster (`pws.page.binary`), one pass over every staff of the page (Sean 2026-11-01: "a simple early gather
+    read that looks over the whole page for the shape of clefs and claims the ink"). AFTER the register, the key claims and the clef
+    slot (reads their READ areas: ink one of them already owns is skipped -- a later reader may mark claimed ink, never take it).
+
+    Two witnesses per clef (`clef_pagewide` module doc): a C clef by its thick bar AND its mirrored bowls (no box needed: Litolff's C
+    clefs inside a system are never boxed as clefs); an F clef by a clef-sized `clefF` box AND its dots. Each READ row carries `kind`
+    (the clef's name, or None where its line is not one `KINDS_READ` allows -- claimed, kind UNREAD), `change` (False for a clef in its
+    system's header window), the witnesses, and `boxes_inside` (every head / rest box of the cells it meets, as the register measures
+    them) -- so the one consult (`claimed_by`) refuses a head or rest box on its ink. A candidate that failed its second witness files
+    an abstention with the test it failed (a refusal says how close it came).
+
+    ⚠️ DECLINED, NOT DEFAULTED: no raster / no staff geometry is no row."""
+    from . import claims as CL
+    from . import clef_pagewide as CP
+    if not (CP.enabled() and CL.enabled()):
+        return
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    ink = CP._ink(binary)
+    if ink is None:
+        return
+    p = pws.page.page_index if hasattr(pws.page, "page_index") else 0
+    cells_of: Dict[int, Dict[int, Any]] = {}
+    for c in cells:
+        cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
+    owned = (CL.OWNER_CLEF, CL.OWNER_KEY, CL.OWNER_METER, CL.OWNER_COLUMN, CL.OWNER_BRACKET)
+    # 2.251 carry (only with OMR_CLEF_CARRY, so step 1 alone is unchanged): the page's own F bodies (every clef-sized `clefF` box whose
+    # dots read the F line) -- the template the no-box F reader lays over a dot pair (`clef_pagewide.f_nobox`)
+    templates: List[Dict[str, Any]] = []
+    if CP.carry_enabled():
+        per_staff = []
+        for st in pws.staves:
+            key = local.get(st.staff_index)
+            if key is None or len(st.line_ys) < 5 or not _spacing(st):
+                continue
+            fb = []
+            for k, c in ((c.measure_index, c) for c in cells_of.get(st.staff_index, {}).values()
+                         if getattr(c, "bbox_page_px", None)):
+                for d in detections.get(R.cell(p, key[0], key[1], k).to_key(), ()):
+                    pb = _page_box(c, d)
+                    if str(d.smufl_name) == "clefF" and CL.is_clef_box(d.smufl_name, pb, _spacing(st)):
+                        fb.append(pb)
+            per_staff.append(([float(v) for v in st.line_ys], _spacing(st), fb))
+        templates = CP.f_templates(ink, per_staff)
+    for st in pws.staves:
+        key = local.get(st.staff_index)
+        if key is None:
+            continue
+        sys_idx, li = key
+        sp = _spacing(st)
+        lines = [float(v) for v in st.line_ys]
+        mycells = {k: c for k, c in cells_of.get(st.staff_index, {}).items() if getattr(c, "bbox_page_px", None)}
+        if not sp or len(lines) < 5 or not mycells:
+            continue
+        ssub = R.staff(p, sys_idx, li)
+        held = [list(r.value) for r in log.rows(Q.CLAIMED_AREA, ssub)
+                if (r.detail or {}).get("unit") == "area" and (r.detail or {}).get("standing") == "READ"
+                and (r.detail or {}).get("owner") in owned and isinstance(r.value, (list, tuple)) and len(r.value) == 4]
+        order = sorted(mycells)
+        x_lo, x_hi = mycells[order[0]].bbox_page_px[0], mycells[order[-1]].bbox_page_px[2]
+
+        def cell_at(x: float) -> int:
+            got = order[0]
+            for k in order:
+                if mycells[k].bbox_page_px[0] <= x:
+                    got = k
+            return got
+
+        found: List[Dict[str, Any]] = []
+        near: List[Dict[str, Any]] = []
+        # -- C clefs by shape (no box needed)
+        for cand in CP.c_bars(ink, lines, sp, x_lo, x_hi):
+            if cand["why"] == "bar_too_thin":
+                continue                                   # every stem and barline: not a near-miss
+            if not cand["passed"]:
+                near.append(dict(cand, family="C"))
+                continue
+            nm, ln, res = CP.name_c(cand["middle_y"], cand.get("lines_local") or lines)
+            area = CP.c_area(cand, sp)
+            found.append({"area": area, "family": "C", "kind": nm, "line": ln, "residual": res, "witnesses": ["c_bar", "c_bowls"],
+                          "shape": {k: cand.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
+                                                              "bowl_asymmetry", "symmetry")}, "box": None})
+        # -- clef-sized detector boxes, each with its second witness
+        for k in order:
+            c = mycells[k]
+            for gi, d in enumerate(detections.get(R.cell(p, sys_idx, li, k).to_key(), ())):
+                pb = _page_box(c, d)
+                if not CL.is_clef_box(d.smufl_name, pb, sp):
+                    continue
+                ll = CP.local_lines(ink, lines, sp, pb[0])
+                got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp)
+                gkey = R.glyph(p, sys_idx, li, k, gi).to_key()
+                if not got["passed"]:
+                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name)})
+                    continue
+                if got["family"] == "C" and any(CL.overlaps(f["area"], pb) for f in found):
+                    for f in found:
+                        if CL.overlaps(f["area"], pb):
+                            f["witnesses"].append("detector_box")
+                            f["box"] = gkey
+                    continue
+                # an F clef: its own body and dots, never the box (round 2: the box held a quarter rest too)
+                area = CP.f_claim_area(got, pb, sp) if got["family"] == "F" else list(pb)
+                if any(CL.overlaps(f["area"], area) and f["family"] == got["family"] for f in found):
+                    continue                                   # one clef, two boxes (padded copies): claimed once
+                found.append({"area": area, "family": got["family"], "kind": got["kind"], "line": got["line"],
+                              "residual": got["residual"], "witnesses": ["detector_box", "f_dots" if got["family"] == "F" else "geometry"],
+                              "shape": None, "box": gkey})
+        if CP.carry_enabled():
+            x_head0 = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
+            # 2.251 carry (a): an F clef with NO detector box -- its dot pair AND the page's own F body (two witnesses); READ at the
+            # template's read score, else a clef-shaped CANDIDATE (b). Never in the header window (the header readers own it).
+            for nb in CP.f_nobox(ink, lines, sp, x_head0, x_hi, templates):
+                if any((f["family"] == "F" and CL.overlaps(f["area"], nb["area"]))
+                       or f["area"][0] <= nb["pair"]["x_left"] <= f["area"][2] for f in found):
+                    continue                                   # a boxed reading of the same clef stands, or the "dots" are a read clef's ink
+                if nb["read"]:
+                    found.append({"area": nb["area"], "family": "F", "kind": "bass", "line": 4,
+                                  "residual": round(nb["pair"]["residual"], 3), "witnesses": ["f_dots", "f_body_template"],
+                                  "shape": {"body_score": nb["match"]["score"], "cover": nb["match"]["cover"],
+                                            "extra": nb["match"]["extra"], "scale": nb["match"].get("scale")}, "box": None})
+                else:
+                    # the candidate stands at its DOTS (its body may be laid over a clef just before it: Litolff bars 110/111)
+                    near.append({"x0": nb["pair"]["x_left"] - 0.3 * sp, "family": "F", "why": "f_body_below_read", "box": None,
+                                 "body_score": nb["match"]["score"],
+                                 "strong": nb["match"]["score"] >= CP.F_TEMPLATE_STRONG_SCORE})
+            # round 2 (Litolff bar 111: the dots fused with the heads beside them, so no pair is seen): on a staff where a change is
+            # claimed, the page's own F body slid along the staff right of it with NO dot witness -- one witness, so a CANDIDATE that
+            # stops a carry, never a read clef; never on a claimed clef's own ink
+            chg_x = [f["area"][0] for f in found if f["area"][0] > x_head0]
+            if chg_x:
+                for bs in CP.f_body_scan(ink, lines, sp, min(chg_x), x_hi, templates):
+                    if bs["match"]["score"] < CP.F_BODY_SCAN_CANDIDATE_SCORE:
+                        continue
+                    mb = bs["match"]["box"]
+                    if any(_overlap_share(mb, f["area"]) >= 0.3 or _overlap_share(f["area"], mb) >= 0.3 for f in found):
+                        continue
+                    if any(n.get("why") == "f_body_below_read" and abs(float(n["x0"]) - mb[0]) <= 2.5 * sp for n in near):
+                        continue                               # the same clef, seen with its dots
+                    # the candidate stands at the matched BODY's left edge (round 2 tried a space further left: at bar 111 the head under
+                    # it is a real eighth printed BEFORE the clef -- Sean's r2 tile 2 -- and it went unread). A candidate files no claim:
+                    # it takes no ink; `area` is the body, for a tile only
+                    near.append({"x0": float(mb[0]), "family": "F", "why": "f_body_no_dots", "box": None, "area": list(mb),
+                                 "body_score": bs["match"]["score"]})
+            # (b): a `clef*` box too small to be a clef-sized claim is still ink that may be a clef (Litolff Vc bar 411: a 0.7 sp
+            # `clefF` box on a real bass clef)
+            for k in order:
+                for d in detections.get(R.cell(p, sys_idx, li, k).to_key(), ()):
+                    pb = _page_box(mycells[k], d)
+                    if str(d.smufl_name).startswith("clef") and not CL.is_clef_box(d.smufl_name, pb, sp) \
+                            and float(getattr(d, "confidence", 0.0) or 0.0) >= CP.SMALL_CLEF_BOX_MIN_SCORE:
+                        from ..clef_geometry import clef_family as _cf
+                        near.append({"x0": pb[0], "family": _cf(str(d.smufl_name)), "why": "clef_box_not_clef_sized",
+                                     "box": None, "cls": str(d.smufl_name)})
+        other_clefs = []                                       # clef-sized G / F boxes: a C candidate on one is that clef's ink
+        for k in order:
+            for d in detections.get(R.cell(p, sys_idx, li, k).to_key(), ()):
+                pb = _page_box(mycells[k], d)
+                fam = str(d.smufl_name)
+                if CL.is_clef_box(fam, pb, sp) and fam.startswith(("clefG", "clefF")):
+                    other_clefs.append(pb)
+        for f in found:
+            area = [round(float(v), 1) for v in f["area"]]
+            if any(CL.overlaps(area, h) and _overlap_share(area, h) >= 0.5 for h in held):
+                continue                                       # already owned (the header's clef, a key, a meter): never taken
+            if f["family"] == "C" and (any(_overlap_share(area, b) >= 0.2 for b in other_clefs)
+                                       or any(_overlap_share(area, h) >= 0.2 for h in held)):
+                continue                                       # round 2: never a C claim on a G / F clef, nor on a READ claim
+            k = cell_at(area[0])
+            change = not (k == order[0] and (area[0] - mycells[k].bbox_page_px[0]) / sp <= CP.HEADER_WINDOW_SPACES)
+            inside: Dict[str, Any] = {}
+            for kk in order:
+                cc = mycells[kk]
+                cb = cc.bbox_page_px
+                if cb[2] < area[0] or cb[0] > area[2]:
+                    continue
+                inside.update(_claim_boxes_inside(binary, area, detections.get(R.cell(p, sys_idx, li, kk).to_key(), ()), cc,
+                                                  lambda j, kk=kk: R.glyph(p, sys_idx, li, kk, j).to_key(), lines, sp))
+            log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(k), cell=k,
+                        owner=CL.OWNER_CLEF, owner_row=None, owner_glyph=None, unit="area", standing="READ", source=CP.SOURCE,
+                        change=bool(change), kind=f["kind"], family=f["family"], line=f["line"], residual=f["residual"],
+                        witnesses=list(f["witnesses"]), detector_box=f["box"], shape=f["shape"], boxes_inside=inside,
+                        space_page_px=round(sp, 3))
+        x_head = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
+        for n in near:
+            if float(n["x0"]) <= x_head:
+                continue                               # the header's own clef: read and claimed by the header readers, not a near-miss
+            reason = {"f_no_dots": ABSTAIN.F_CLEF_DOTS, "bowls_not_mirrored": ABSTAIN.ASYMMETRIC}.get(n.get("why"), ABSTAIN.NO_CLUSTERS)
+            # 2.251 carry (b): every near-miss is ink that MAY be a clef -- a carried clef stops there (`clef_pagewide.clef_in_force`),
+            # unless it stands on a clef this reader did claim (a padded copy of the same box, the dots of a read F clef)
+            # (a padded copy within half a space of a claim of its own family; any candidate standing INSIDE a claimed clef -- a C clef's
+            # bowls, cut by the lines, pass as an F clef's dot pair: Litolff bars 110 and 114)
+            cand = CP.carry_enabled() and not any(
+                (f["family"] == n.get("family") and f["area"][0] - 0.5 * sp <= float(n["x0"]) <= f["area"][2] + 0.5 * sp)
+                or f["area"][0] <= float(n["x0"]) <= f["area"][2] for f in found)
+            log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
+                        reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
+                        x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
+                        **({"candidate": bool(cand), "body_score": n.get("body_score"), "strong": bool(n.get("strong")),
+                            "area": [round(float(v), 1) for v in n["area"]] if n.get("area") else None}
+                           if CP.carry_enabled() else {}),
+                        shape={k: n.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
+                                                     "bowl_asymmetry", "g_shape") if k in n} or None)
+
+
+def _overlap_share(a: Sequence[float], b: Sequence[float]) -> float:
+    """The share of box `a`'s area inside box `b`."""
+    iw, ih = min(a[2], b[2]) - max(a[0], b[0]), min(a[3], b[3]) - max(a[1], b[1])
+    aw, ah = a[2] - a[0], a[3] - a[1]
+    return iw * ih / (aw * ah) if iw > 0 and ih > 0 and aw > 0 and ah > 0 else 0.0
+
+
 def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
     """`Q.CLAIMED_AREA` rows of owner `word` and `bracket`, ONE PER MARK PER (page, system) -- ROADMAP 2.221 m1 (flag
@@ -15589,6 +16030,27 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     _count("word:direction_word:metronome_mark")
                 if d.get("metronome"):
                     extra["metronome"] = d["metronome"]
+            from . import hairpin_reach as _hairpin_reach
+            ib = d.get("ink_boxes")
+            if _hairpin_reach.enabled() and isinstance(ib, list) and area == [float(v) for v in bb]:
+                # ROADMAP 2.254 r3: the reader cut the word's box to its own ink round a hairpin it holds (`hairpin_reach.word_ink_boxes`);
+                # the word claims those rectangles, and the hairpin's arms are left to the hairpin's own ink claim.
+                extra.setdefault("word_box", [float(v) for v in bb])
+                _count("word:direction_word:ink_boxes")
+                for a in ib:
+                    _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                continue
+            if _hairpin_reach.enabled():
+                # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the OCR box can hold a hairpin beside the word ('dim.', 'espr.' on Brahms p8);
+                # the word claims its own ink, the wedge-shaped ink is left for the hairpin reader.
+                areas, wedges_out = _hairpin_reach.word_area_without_wedges(binary, area, _sp(s))
+                if wedges_out:
+                    extra["wedges_left_out"] = wedges_out
+                    extra.setdefault("word_box", [float(v) for v in bb])
+                    _count("word:direction_word:wedge_left_out")
+                    for a in areas:
+                        _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                    continue
             _file(s, area, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
         # a printed bar number (Tesseract, digits only, filed on its system with its box) is text outside the staves as well
         for r in log.rows(Q.PRINTED_BAR_NUMBER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
@@ -16274,6 +16736,16 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
             return
 
     page_dict = _direction_page_dict(pws, cells, local, detections)
+    from . import hairpin_reach as _hairpin_reach
+    if _hairpin_reach.enabled():
+        # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH): a hairpin the CV reach reader read (and claimed, `gather_hairpin_claim`) is page-wide ink
+        # claimed BEFORE the words are read; its arms are erased from the word reader's mask as every detection is, so the OCR neither reads
+        # them as a letter ('a dim', Brahms p8) nor grows its box over them.
+        page_dict["erase_ink"] = _hairpin_reach.erase_entries(log, p)
+        # ROADMAP 2.254 r3: a barline / staff line running THROUGH a word's box is page-wide ink claimed before the words; it is whited
+        # out of the OCR crop (`direction_text.through_line_mask`). Cause: Brahms p8 `dim.` beside a barline read `dim!` (lexicon refused),
+        # and a staff line over its tight crop emptied Tesseract's letter gate, so Surya was never asked -- two READ words lost.
+        page_dict["erase_through_lines"] = True
     page_staff_of = {v: k for k, v in local.items()}
     key_of_page_staff = {v: k for k, v in page_staff_of.items()}
 
@@ -16397,6 +16869,16 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                             info.get("rejected") or ()),
                         split_is_page_level=True, **shared)
             continue
+        if hits and page_dict.get("erase_ink"):
+            # ROADMAP 2.254 r3 (flag OMR_HAIRPIN_REACH; `erase_ink` is only filled under it): where a hairpin read runs through the OCR box,
+            # the word READ its own ink only -- `ink_boxes`, the box cut round the hairpin's arms (`hairpin_reach.word_ink_boxes`).
+            # `bbox_page_px` stays the OCR box (where the word stands, for binding and export).
+            pb = getattr(pws.page, "binary", None)
+            sps = sorted(v for v in (_spacing(st) for st in pws.staves) if v)
+            ib = (_hairpin_reach.word_ink_boxes(pb, cand.bbox_page, page_dict["erase_ink"], sps[len(sps) // 2])
+                  if pb is not None and sps else None)
+            if ib is not None:
+                shared = {**shared, "ink_boxes": ib}
         for d in hits:
             reader = (READERS.TESSERACT if d.reader == "tesseract"
                       else READERS.SURYA)
@@ -16941,7 +17423,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             gather_wedge_rescue(log, cells, local, detections,
                                 detector=detector, imgsz=imgsz, progress=progress)
 
-        # ⚠️ ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default OFF): other-size, phase-median views of the same cell; AFTER both rescues, BEFORE every
+        # ⚠️ ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default ON since 2026-11-02): other-size, phase-median views of the same cell; AFTER both rescues, BEFORE every
         # `detections` walker, for the rescue's reason: a kept view box is appended in place so the dot-role / flag / head readers see it.
         from . import detector_views as _DV
         if detector is not None and _DV.enabled():
@@ -16953,7 +17435,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         if detector is not None and _SEH.enabled():
             gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
-        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF). After the rescue, BEFORE every reader that walks `detections`.
+        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON since 2026-11-02). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
         # reach it one way.
         from . import second_hollow as _SH
@@ -16973,7 +17455,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_letter_look(log, pws, cells, local, detections,
                            detector=detector, progress=progress)
 
-        # ROADMAP 2.166 (flag OMR_SYSTEM_ARCS, default ON; erase OMR_SYSTEM_ARCS_ERASE, default OFF): ties/slurs read once per staff across the system on page
+        # ROADMAP 2.166 (flag OMR_SYSTEM_ARCS, default ON; erase OMR_SYSTEM_ARCS_ERASE, default ON since 2026-11-02): ties/slurs read once per staff across the system on page
         # pixels, then their own stroke erased from `cell.image_no_staff`. AFTER every detector call (the box set is
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
@@ -16984,7 +17466,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
-        # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default OFF): one page-mark id per detector box -- boxes of one family from two padded
+        # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default ON since 2026-11-02): one page-mark id per detector box -- boxes of one family from two padded
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
         page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
@@ -17012,7 +17494,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # by index) and BEFORE `gather_notehead_positions` and
         # `gather_notehead_ink`, which both read its row.
         gather_head_line_cut(log, cells, local, detections)
-        gather_notehead_positions(log, cells, local, detections)
+        gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
         # and its consumer's whole rule is a comparison between the two. Filed
@@ -17033,6 +17515,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # two read the SAME band and the ordering between them is real.
         gather_dynamic_letters(log, pws, cells, local, detections)
         gather_wedge_boxes(log, pws, cells, local, detections)
+        # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH, default OFF): each CV hairpin read claims the strokes along its two arms (`unit: ink`, owner
+        # `hairpin`) in every cell it crosses, so no beam / stem / flag reader takes them. AFTER the wedge read and the stroke map.
+        gather_hairpin_claim(log, cells, local, stroke_cells)
         # ⚠️ AFTER detection, and now WITH it: the notehead gate on the pair
         # rule needs this cell's heads, and `gather_detections` above already
         # holds them. The order was always right; what was missing is that
@@ -17125,7 +17610,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.74, AFTER BOTH beam readers (it measures the strokes each
         # filed): thickness, straightness and end stems per `Q.BEAM_STROKE`.
         gather_beam_stroke_ink(log, cells, local)
-        # ⚠️ ROADMAP 2.140 (flag, default OFF): beam strokes AT each stem's tip, read beside the stem.
+        # ⚠️ ROADMAP 2.140 (flag, default ON since 2026-11-02): beam strokes AT each stem's tip, read beside the stem.
         gather_beam_stem_levels(log, cells, local)
         gather_clef(log, cells, local, detections)
         gather_clef_locator(log, pws, cells, local, detections)
@@ -17140,7 +17625,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # `_bar_head_window` is shared: a second reader of the SAME mid-bar
         # region, off by default (`METER_OCR_AT_BAR_ENV`) until priced.
         gather_meter_ocr_at_bars(log, cells, local, detections)
-        # ROADMAP 2.177 (flag OMR_METER_OBJECT, default OFF): AFTER every meter reader (reads their rows); page raster.
+        # ROADMAP 2.177 (flag OMR_METER_OBJECT, default ON since 2026-11-02): AFTER every meter reader (reads their rows); page raster.
         gather_meter_object(log, pws, cells, local, detections)
         # ROADMAP 2.181 (flag OMR_CLAIMED_REGISTER, default ON): AFTER the clef locator (reads its rows); page raster.
         gather_claimed_register(log, pws, cells, local, detections, stroke_cells=stroke_cells)
@@ -17148,8 +17633,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_key_signature_claim(log, pws, cells, local, detections)
         # ROADMAP 2.187 (flag OMR_KEY_PER_SYSTEM, default ON): AFTER the key claim and the meter object; page raster.
         gather_key_object(log, pws, cells, local, detections)
-        # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default OFF): AFTER the key claim (reads its left edge); page raster.
+        # ROADMAP 2.208 (flag OMR_CLEF_SLOT_CLAIM, default ON since 2026-11-02): AFTER the key claim (reads its left edge); page raster.
         gather_clef_slot_claim(log, pws, cells, local, detections, stroke_cells=stroke_cells)
+        # ROADMAP 2.251 step 1 (flag OMR_CLEF_PAGEWIDE, default ON): AFTER every clef / key / meter claim (reads their READ areas, never
+        # takes their ink); page raster; every staff of the page in one pass, header and inside a system alike.
+        gather_clef_pagewide(log, pws, cells, local, detections)
         gather_margin_labels(log, pws, cells, local, pdf_path=pdf_path,
                              surya_fallback=surya_fallback,
                              ocr_fallback=ocr_fallback)

@@ -1,0 +1,5 @@
+2.251 round-2 tiles (12, in tiles/). Each tile shows one staff of the print. The thin orange box marks one place; nothing else is drawn.
+
+Question: what is in each box? If it is a clef, which one (treble, alto, tenor, bass)? Does the box hold anything besides that one mark?
+
+(The key is key.json, beside this file. Do not open it before answering.)

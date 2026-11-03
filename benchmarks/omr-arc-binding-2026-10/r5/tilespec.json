@@ -1,0 +1,98 @@
+[
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p10-11.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l1011/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l1011/work/litolff.on.musicxml",
+  "rg": "glyph/11/1/3/14/1",
+  "role": "r4_tile4_reasked_partner_hole_unread"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p10-11.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l1011/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l1011/work/litolff.on.musicxml",
+  "rg": "glyph/10/0/3/2/1",
+  "role": "r4_tile6_reasked_restored_too_wide_witness"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p10-11.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l1011/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l1011/work/litolff.on.musicxml",
+  "rg": "glyph/11/1/1/1/1",
+  "role": "r4_tile7_reasked_head_drawn_low"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p10-11.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l1011/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l1011/work/litolff.on.musicxml",
+  "rg": "glyph/10/1/2/1/3",
+  "role": "r4_tile9_reasked_partner_split_tie_unbound"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p10-11.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l1011/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l1011/work/litolff.on.musicxml",
+  "rg": "glyph/10/0/4/0/9",
+  "role": "r4_tile5_unison"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p2-3.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l23/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l23/work/litolff.on.musicxml",
+  "rg": "glyph/2/0/2/7/2",
+  "role": "r4_tile11_unison_upper_tie_never_boxed"
+ },
+ {
+  "plate": "brahms",
+  "record": "out/2.252r5/brahms-p0-5.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-b05/work/brahms.off.musicxml",
+  "on_xml": "out/2.252r5/rep-b05/work/brahms.on.musicxml",
+  "rg": "glyph/5/1/5/5/1",
+  "role": "r4_tile12_unison_lower_tie_trace"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p2-3.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l23/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l23/work/litolff.on.musicxml",
+  "rg": "glyph/3/1/2/7/0",
+  "role": "neighbour_piece_tie_restored"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p2-3.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l23/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l23/work/litolff.on.musicxml",
+  "rg": "glyph/2/1/4/0/8",
+  "role": "neighbour_piece_tie_gain_removed"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p2-3.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l23/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l23/work/litolff.on.musicxml",
+  "rg": "glyph/3/1/5/5/4",
+  "role": "neighbour_piece_tie_gain_removed"
+ },
+ {
+  "plate": "brahms",
+  "record": "out/2.252r5/brahms-p0-5.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-b05/work/brahms.off.musicxml",
+  "on_xml": "out/2.252r5/rep-b05/work/brahms.on.musicxml",
+  "rg": "glyph/5/1/1/6/1",
+  "role": "trace_tie_along_line_gained"
+ },
+ {
+  "plate": "litolff",
+  "record": "out/2.252r5/litolff-p10-11.on.readj.record.json",
+  "off_xml": "out/2.252r5/rep-l1011/work/litolff.off.musicxml",
+  "on_xml": "out/2.252r5/rep-l1011/work/litolff.on.musicxml",
+  "rg": "glyph/11/0/2/12/4",
+  "role": "black_tall_box_split_dyad"
+ }
+]

@@ -1,0 +1,115 @@
+{
+ "date": "2026-11-02",
+ "tiles": "out/print/2.255-r2-tiles (lane-2.255-ledger-read 5871f715e), sent as one 4x3 sheet",
+ "summary": "Positions answered 2026-11-02 (Sean labelled the message '2.252'; content is these tiles). ON right 11/12, OFF right 6/12. Every changed head moved toward Sean or stayed; right->wrong 0. Only miss: tile 3 glyph/6/1/3/9/1 (bass clef) written C4 blue, Sean says second space above = D4 (OFF Eb4 was also wrong). Values (first message) recorded as sean_value.",
+ "answers": [
+  {
+   "tile": 1,
+   "rg": "glyph/10/1/7/9/2",
+   "written_pitch": "A5",
+   "changed": false,
+   "sean_value": "eighth",
+   "sean_position": "first ledger line above",
+   "verdict": "ctrl ok"
+  },
+  {
+   "tile": 2,
+   "rg": "glyph/10/1/8/12/1",
+   "written_pitch": "A3",
+   "changed": false,
+   "sean_value": "quarter",
+   "sean_position": "second ledger line below",
+   "verdict": "ctrl ok"
+  },
+  {
+   "tile": 3,
+   "rg": "glyph/6/1/3/9/1",
+   "written_pitch": "C4",
+   "changed": true,
+   "sean_value": "eighth",
+   "sean_position": "second space above",
+   "verdict": "ON wrong (C4 blue; Sean D4), OFF wrong (Eb4)"
+  },
+  {
+   "tile": 4,
+   "rg": "glyph/0/0/0/4/10",
+   "written_pitch": "B-15",
+   "changed": false,
+   "sean_value": "dotted quarter",
+   "sean_position": "second space above",
+   "verdict": "ctrl ok"
+  },
+  {
+   "tile": 5,
+   "rg": "glyph/5/0/2/3/2",
+   "written_pitch": "B3",
+   "changed": false,
+   "sean_value": "quarter",
+   "sean_position": "second space below",
+   "verdict": "ctrl ok"
+  },
+  {
+   "tile": 6,
+   "rg": "glyph/6/1/7/11/0",
+   "written_pitch": "E-16",
+   "changed": true,
+   "sean_value": "half",
+   "sean_position": "third ledger line above",
+   "verdict": "ON right, OFF wrong"
+  },
+  {
+   "tile": 7,
+   "rg": "glyph/5/0/2/5/4",
+   "written_pitch": "D6",
+   "changed": false,
+   "sean_value": "16th",
+   "sean_position": "third space above",
+   "verdict": "ctrl ok"
+  },
+  {
+   "tile": 8,
+   "rg": "glyph/6/1/0/7/3",
+   "written_pitch": "C6",
+   "changed": true,
+   "sean_value": "eighth",
+   "sean_position": "second ledger line above",
+   "verdict": "ON right, OFF wrong"
+  },
+  {
+   "tile": 9,
+   "rg": "glyph/6/1/0/6/1",
+   "written_pitch": "D6",
+   "changed": true,
+   "sean_value": "quarter",
+   "sean_position": "third space above",
+   "verdict": "ON right, OFF wrong"
+  },
+  {
+   "tile": 10,
+   "rg": "glyph/6/1/10/3/1",
+   "written_pitch": "C4",
+   "changed": true,
+   "sean_value": "eighth",
+   "sean_position": "first ledger line above",
+   "verdict": "ON right, OFF wrong"
+  },
+  {
+   "tile": 11,
+   "rg": "glyph/6/1/1/11/1",
+   "written_pitch": "A-15",
+   "changed": true,
+   "sean_value": "half",
+   "sean_position": "first ledger line above",
+   "verdict": "ON right (blue), OFF wrong by 2"
+  },
+  {
+   "tile": 12,
+   "rg": "glyph/10/1/7/4/0",
+   "written_pitch": "D6",
+   "changed": true,
+   "sean_value": "eighth",
+   "sean_position": "third space above",
+   "verdict": "ON right, OFF right (blue removed)"
+  }
+ ]
+}

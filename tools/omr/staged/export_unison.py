@@ -119,14 +119,19 @@ def settle(runs, stats: Dict[str, int]) -> None:
             cell.detections[:] = keep
 
 
-def unfuse(cell) -> bool:
+def unfuse(cell, counters: Dict[str, int] = None) -> bool:
     """A bar that could not be written as two voices: drop its twins, restore its heads to their OFF reading. True if
-    anything changed."""
+    anything changed. A dropped twin's tie end (2.252 r3, `OMR_UNISON_TIE_VOICE`) is counted, never lost silently."""
     if not any(d.get("unison_twin") for d in cell.detections):
         return False
     keep = []
     for d in cell.detections:
         if d.get("unison_twin"):
+            if counters is not None:
+                for flag in ("tied_to_next", "tied_from_prev"):
+                    if d.get(flag):
+                        counters["unison_tie_end_lost_bar_unfused"] = counters.get(
+                            "unison_tie_end_lost_bar_unfused", 0) + 1
             continue
         off = d.pop("_unison_off", None)
         if off is not None and d.get("unison_head"):
@@ -138,3 +143,107 @@ def unfuse(cell) -> bool:
         keep.append(d)
     cell.detections[:] = keep
     return True
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.252 r3 (flag `OMR_UNISON_TIE_VOICE`, default OFF): EACH VOICE OF A UNISON CARRIES ITS OWN TIE.
+#
+# CONVENTION (Sean 2026-11-02, r2 tile 4: "a unison half note with ties above and below on both sides"; page-facts: an
+# arc is OVER its notes; 2.75: the tie belongs to the head on the arc's side): at a head with a stem each way, the arc
+# ABOVE the head is the UP-stem voice's tie and the arc BELOW is the DOWN-stem voice's. `Q.TIE_PAIR` names GLYPHS, and a
+# unison is ONE glyph written as two notes (the head = up voice, its twin = down voice), so before this every arc of
+# the pair landed on the up voice: the down voice's tie was never written, and a lone arc BELOW was written on the up
+# voice. This only CONNECTS the arc's measured side to the voice that owns it; it decides no pairing and no kind.
+# WHAT WOULD FALSIFY IT: an arc below a unison that ties the up voice (or above, the down voice); a unison whose voices
+# hold one tie between them. NOT CONFIRMED beyond Sean's tile 4 -- the r3 tiles ask it.
+# ─────────────────────────────────────────────────────────────────────────────
+
+TIE_VOICE_ENV = "OMR_UNISON_TIE_VOICE"
+
+
+def tie_voice_enabled() -> bool:
+    """`OMR_UNISON_TIE_VOICE` (ROADMAP 2.252 r3), default OFF; an explicit on-word enables."""
+    import os
+    return os.environ.get(TIE_VOICE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _head_yc(det: Dict[str, Any]):
+    box = det.get("bbox_page")
+    try:
+        return float(box[1]) + float(box[3]) / 2.0
+    except (TypeError, ValueError, IndexError):
+        return None
+
+
+def arc_side(rec, arc: str, head_yc: float):
+    """'above' / 'below' when the arc's page box lies wholly on one side of the heads' centre line, else None (an arc
+    box that crosses the line is not read for a side -- nothing is guessed)."""
+    for o in rec.obs(Q.GLYPH_BOX, arc):
+        box = (o.get("detail") or {}).get("bbox_page_px")
+        if not box or len(box) != 4:
+            continue
+        y0, y1 = float(box[1]), float(box[3])
+        if y1 <= head_yc:
+            return "above"
+        if y0 >= head_yc:
+            return "below"
+        return None
+    return None
+
+
+def written_member(rec, index) -> Dict[str, str]:
+    """glyph -> the member of its `Q.MARK_GROUP` (one mark read by several boxes, 2.58b) that reached the file, for
+    every member that did NOT. At a unison two boxes often cover the one head, and the binder ties the upper arc to one
+    box and the lower arc to the other; the one-mark-one-note rule writes one, so the other arc's end had no note.
+    A group with no written member, or more than one, maps nothing."""
+    members: Dict[str, list] = {}
+    for o in rec.obs_of(Q.MARK_GROUP):
+        members.setdefault(str(o["value"]), []).append(str(o["subject"]))
+    out: Dict[str, str] = {}
+    for subs in members.values():
+        written = [s for s in subs if s in index]
+        if len(written) != 1:
+            continue
+        for s in subs:
+            if s not in index:
+                out[s] = written[0]
+    return out
+
+
+def _count(counters: Dict[str, int], key: str) -> None:
+    counters[key] = counters.get(key, 0) + 1
+
+
+def tie_ends(rec, arcs, first: Dict[str, Any], last: Dict[str, Any], twin_first, twin_last,
+             dropped: Dict[str, int], counters: Dict[str, int]):
+    """The (start, stop) note pairs one record tie pair is written on. With no twin at either end it is
+    `[(first, last)]`, as with the flag OFF. Both ends written as two voices: the arcs above -> the heads (up voice),
+    the arcs below -> the twins (down voice); no arc read for a side -> the heads, counted. One end two voices and the
+    other one note: unchanged (the heads), counted where an arc below has no down voice to go to. What does not reach a
+    voice is counted in `dropped` (arcs_not_written); what is written in `counters`."""
+    ys = [y for y in (_head_yc(first), _head_yc(last)) if y is not None]
+    known = set()
+    if ys:
+        yc = sum(ys) / len(ys)
+        known = {arc_side(rec, a, yc) for a in arcs} - {None}
+    if twin_first is None and twin_last is None:
+        if known == {"above", "below"}:
+            # two curves, one each side, name one pair whose ends are each ONE note: the second voice has no note
+            _count(dropped, "unison_tie_second_voice_has_no_note")
+        return [(first, last)]
+    if twin_first is None or twin_last is None:
+        if "below" in known:
+            _count(dropped, "unison_tie_one_end_one_voice")
+        return [(first, last)]
+    if not known:
+        _count(counters, "unison_tie_side_unread")
+        return [(first, last)]
+    out = []
+    if "above" in known:
+        out.append((first, last))
+    if "below" in known:
+        out.append((twin_first, twin_last))
+        _count(counters, "unison_tie_down_voice_written")
+        if "above" not in known:
+            _count(counters, "unison_tie_moved_to_down_voice")
+    return out

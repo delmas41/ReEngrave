@@ -921,8 +921,17 @@ def measure_ledger_rungs(
     split_welded_bands: bool = False,
     walk_tol_px: float = 0.0,
     outline_margin_px: float = 0.0,
+    outline_free_walk: bool = False,
 ) -> dict[str, list[float]]:
     """Measured ledger rung ys above and below the staff at column x.
+
+    `outline_free_walk` (ROADMAP 2.255, flag `OMR_LEDGER_READ`; False = bit-identical): the head's OWN outline rows are
+    taken out of the candidate bands BEFORE the walk, by the very test that drops them after it
+    (`_rung_row_clears_box`). Without it the walk, which takes the candidate nearest one pitch out, can step onto the
+    head's bottom (top) outline -- Litolff's hand-drawn ledgers sit 1.0-1.3 sp apart, so the outline is often nearer the
+    expected pitch than the real ledger a few px beyond it -- and the post-walk test then drops that outline AND every
+    ledger the walk would have found past it (Litolff `glyph/6/1/7/11/0`: ledgers at 3041, 3025, 3006; the walk took
+    the box's bottom row 3016 over 3025, and the reader saw one ledger of three).
 
     lane-edge-merge-unseen-ledgers (2026-10-06; all three default off =
     bit-identical, switched on by the STAGED far-head reader only):
@@ -1057,6 +1066,14 @@ def measure_ledger_rungs(
             head_y if head_y is not None and sign * (head_y - edge_y) > 0
             else None
         )
+        if outline_free_walk and head_box_x is not None:
+            _lat = [b for b in (exclude_boxes or [])
+                    if b[2] <= head_box_x[0] or b[0] >= head_box_x[1]]
+            _rows = ((collapse_edges_box[1], collapse_edges_box[3])
+                     if collapse_edges_box is not None and outline_margin_px > 0 else None)
+            bands = [b for b in bands
+                     if _rung_row_clears_box(img_gray, b, x, head_box_x, spacing, _lat,
+                                             _rows, outline_margin_px, sign)]
         rungs = _walk_ladder(edge_y, sign, bands, spacing, side_target,
                              walk_tol_px)
 
@@ -3614,6 +3631,10 @@ def find_note_line(
     visible line at the head's staff-side edge (`edge_vs_through_evidence`)."""
     x0, y0, x1, y1 = head_box
     jf = _jut_from_head_ink(img_gray, tuple(head_box), spacing, exclude_boxes)
+    # ROADMAP 2.255: a one-sided jut was NOT given to a ledger at the staff-side edge (tried and dropped: on Brahms it
+    # moved 14 heads read "on ledger n" whose other stub the head's own width hides -- `glyph/5/0/9/0/7`, a clear stub on
+    # the left -- one step toward the staff; requiring both stubs everywhere also turned a neighbour-staff refutation,
+    # `glyph/0/0/5/2/16`, into a reading toward the head's own staff). On-line vs in-space from a one-sided jut stays open.
     if jf["ok"] and jf.get("line_y") is not None:
         return dict(ok=True, kind="on", y=float(jf["line_y"]), how="through_the_middle")
     mid_y = (y0 + y1) / 2.0
@@ -3670,8 +3691,16 @@ def count_ledgers_between(
     head_box_x: "tuple[float, float] | None" = None,
     is_text: "Callable[[float], bool] | None" = None,
     rung_ok: "Callable[[float], bool] | None" = None,
+    ledger_read: bool = False,
+    gap_max: "float | None" = None,
 ) -> dict:
     """Step 3: the ledgers strictly between the staff edge and `line_y`.
+    `gap_max` (ROADMAP 2.255 r2, flag `OMR_LEDGER_READ`; None = bit-identical): the largest gap that FITS one ledger pitch,
+    where the page's own ledgers are drawn wider than `NOTE_GAP_MAX_SPACES` (`local_gap_max`).  It is applied only AFTER the
+    look for a hidden ledger has found nothing -- a gap the look fills is counted exactly as before.
+    `ledger_read` (ROADMAP 2.255, flag `OMR_LEDGER_READ`; False = bit-identical): a gap the relaxed look leaves wide
+    gets one more LOOK, never a line assumed: the stacked window slid across the gap for a ledger's thin flat end
+    jutting past the head's column (`snap_rung_in_gap`: a ledger hidden behind a chord-mate head shows only its ends).
     `rung_ok` (lane-farhead-2-9; None = bit-identical): a rung counts as a ledger only where this says it is one
     (`rung_is_articulation`: an accent's arm is not a ledger).
     `rungs_y` is the local ink read (the walk's rungs). The chain
@@ -3708,6 +3737,14 @@ def count_ledgers_between(
         got = find_rung_in_gap(img_gray, min(a, b) + 0.45 * spacing,
                                max(a, b) - 0.45 * spacing, x_center, spacing,
                                head_box_x)
+        if got is not None and ledger_read and (
+                (is_text is not None and is_text(float(got))) or (rung_ok is not None and not rung_ok(float(got)))):
+            got = None
+        if got is None and ledger_read and head_box_x is not None:
+            got = snap_rung_in_gap(img_gray, a, b, sign, head_box_x, spacing)
+            if got is not None and ((is_text is not None and is_text(float(got)))
+                                    or (rung_ok is not None and not rung_ok(float(got)))):
+                got = None
         if got is None or (is_text is not None and is_text(float(got))):
             break
         if rung_ok is not None and not rung_ok(float(got)):
@@ -3716,11 +3753,131 @@ def count_ledgers_between(
         between.sort(key=lambda v: sign * v)
     chain, gaps = chain_gaps()
     fits = all(NOTE_GAP_MIN_SPACES <= g <= NOTE_GAP_MAX_SPACES for g in gaps)
-    why = "ok" if fits else (
+    relaxed = False
+    if not fits and gap_max is not None and gap_max > NOTE_GAP_MAX_SPACES:
+        relaxed = fits = all(NOTE_GAP_MIN_SPACES <= g <= gap_max for g in gaps)
+    why = ("ok (gap read against the system's own pitch: limit %.2f sp)" % gap_max if relaxed else "ok") if fits else (
         "count_does_not_fit (gaps " + ", ".join(f"{g:.2f}" for g in gaps)
         + " sp: a gap holds room for a different count than found)")
     return dict(k=len(between) + 1, between=between, fits=fits, why=why, d=d,
-                gaps=gaps)
+                gaps=gaps, relaxed=relaxed)
+
+
+# ROADMAP 2.255 (Sean 2026-11-02: "the ledger lines are hand drawn at varying measurements so if we cant read the ledger
+# lines then the geometry fails"; his idea: "if we stack boxes for spaces and ledger lines then we should be able to
+# slightly adjust them to find what they should be boxing"). One LOOK into a gap the walk left wide -- a place to look,
+# never a line assumed (page-facts §3):
+#  * `snap_rung_in_gap`: one window per missing rung, slid across the gap, snapping onto the row where a ledger's thin
+#    flat END juts past the head's column (`ledger_jut_on_row`, the test the hidden-ledger look already uses). A ledger
+#    behind a chord-mate head shows only its two ends (Litolff `glyph/10/1/0/0/10`, Sean: on ledger 3; the walk saw
+#    ledgers 1 and 3, the middle head hid 2). Each part of the split gap must hold one pitch.
+#  * NOT BUILT, a question for Sean: Litolff's first ledger can sit 1.52-1.54 sp out with nothing printed between it and
+#    the staff (`glyph/6/1/1/11/1`, `glyph/6/1/10/3/1`, Sean: both on ledger 1), past the 1.5 pitch limit. Accepting a
+#    white gap up to ~1.75 sp read 7 more Litolff heads -- and also turned Brahms heads that belong to the NEIGHBOUR staff
+#    (`glyph/0/0/5/2/16`, Sean: the staff below) into readings toward their own staff: a cut-off measured on one plate
+#    may only narrow (CLAUDE §4), so it stays out.
+#: ROADMAP 2.255 r2 (Sean 2026-11-02: "the ledger lines are hand drawn at varying measurements").  `NOTE_GAP_MAX_SPACES` (1.5) is
+#: "room for another ledger": two gaps each no shorter than the smallest pitch the page draws.  Litolff's smallest pitch is ~0.75
+#: of its median on both pages measured (p10 0.76/1.04, p6 0.91/1.23), so a gap holds room for another ledger only from
+#: 2 x 0.75 = 1.5 x the system's own median pitch -- the same 1.5 on a page drawn at 1.0 sp (Brahms), 1.8 where the system's
+#: ledgers run 1.2 sp apart (first ledgers at 1.52 and 1.54 sp, `glyph/6/1/1/11/1`, `glyph/6/1/10/3/1`, Sean: ledger 1).
+#: The factor 0.75 is a measurement on our two plates (CLAUDE 4: it may only NARROW what is decided -- the tiles say), the
+#: median is the system's own; fewer than `LOCAL_PITCH_MIN_GAPS` measured gaps = no local pitch = the fixed limit.
+LOCAL_PITCH_MIN_GAPS = 8
+LOCAL_PITCH_HOLDS_ROOM_FACTOR = 1.5
+LOCAL_PITCH_GAP_CAP_SPACES = 1.9
+
+
+def local_gap_max(gaps_sp: "list[float]") -> "float | None":
+    """The fit limit for a system whose read ledger chains had these gaps (in staff spacings), or None (= the fixed limit)."""
+    g = sorted(float(v) for v in gaps_sp if NOTE_GAP_MIN_SPACES <= v <= NOTE_GAP_MAX_SPACES)
+    if len(g) < LOCAL_PITCH_MIN_GAPS:
+        return None
+    med = g[len(g) // 2] if len(g) % 2 else 0.5 * (g[len(g) // 2 - 1] + g[len(g) // 2])
+    lim = min(LOCAL_PITCH_HOLDS_ROOM_FACTOR * med, LOCAL_PITCH_GAP_CAP_SPACES)
+    return lim if lim > NOTE_GAP_MAX_SPACES else None
+
+
+#: a flat stroke on a row (`flat_stroke_on_row`): a horizontal run at least a head's width through the head's columns ...
+FLAT_STROKE_MIN_SPACES = 1.0
+#: ... thin (<= this many spaces tall) at its quarter, middle and three-quarter columns, the three centres level
+#: within `FLAT_STROKE_DRIFT_PX` px (a slanted tie, flag or slash drifts with its run; a ledger does not)
+FLAT_STROKE_THIN_SPACES = 0.40
+FLAT_STROKE_DRIFT_PX = 2.0
+
+
+def flat_stroke_on_row(img_gray: "np.ndarray", y: float, head_box_x: "tuple[float, float]", spacing: float) -> bool:
+    """Is there one thin, level stroke on row `y` (+-1 px) across the head's columns (widened half a space each side)?"""
+    h, w = img_gray.shape
+    yi = int(round(y))
+    c0, c1 = max(0, int(head_box_x[0] - 0.5 * spacing)), min(w, int(head_box_x[1] + 0.5 * spacing) + 1)
+    ya, yb = max(0, int(y - spacing)), min(h, int(y + spacing) + 1)
+    if c1 - c0 < 2 or not (ya < yi < yb - 1):
+        return False
+    ink = img_gray[ya:yb, c0:c1] <= _otsu_threshold(img_gray[ya:yb, c0:c1])
+    min_run = FLAT_STROKE_MIN_SPACES * spacing
+    for r in (yi - 1, yi, yi + 1):
+        row = ink[r - ya]
+        c = 0
+        while c < row.size:
+            if not row[c]:
+                c += 1
+                continue
+            e = c
+            while e + 1 < row.size and row[e + 1]:
+                e += 1
+            if e - c + 1 >= min_run:
+                cents = []
+                for f in (0.25, 0.5, 0.75):
+                    cc = int(round(c + f * (e - c)))
+                    t = b = r - ya
+                    while t > 0 and ink[t - 1, cc]:
+                        t -= 1
+                    while b + 1 < ink.shape[0] and ink[b + 1, cc]:
+                        b += 1
+                    if b - t + 1 > FLAT_STROKE_THIN_SPACES * spacing:
+                        break
+                    cents.append((t + b) / 2.0)
+                if len(cents) == 3 and max(cents) - min(cents) <= FLAT_STROKE_DRIFT_PX:
+                    return True
+            c = e + 1
+    return False
+
+
+def snap_rung_in_gap(img_gray: "np.ndarray", y_a: float, y_b: float, sign: float,
+                     head_box_x: "tuple[float, float]", spacing: float) -> "float | None":
+    """The row of ONE ledger hidden in the gap (y_a, y_b), found by its thin flat end jutting past the head's column
+    (`ledger_jut_on_row`), the window slid row by row from the gap's middle outward; both parts of the split gap must
+    lie within the pitch limits. None where no such end is printed."""
+    lo, hi = sorted((y_a, y_b))
+    mid = (lo + hi) / 2.0
+    ok_lo, ok_hi = lo + NOTE_GAP_MIN_SPACES * spacing, hi - NOTE_GAP_MIN_SPACES * spacing
+    if ok_hi < ok_lo:
+        return None
+    rows = sorted(range(int(np.ceil(ok_lo)), int(np.floor(ok_hi)) + 1), key=lambda r: abs(r - mid))
+    tried: "set[int]" = set()
+    for r in rows:
+        if r in tried:
+            continue
+        box = (float(head_box_x[0]), r - 0.5 * spacing, float(head_box_x[1]), r + 0.5 * spacing)
+        j = ledger_jut_on_row(img_gray, box, float(r), spacing)
+        tried.update(range(r - 1, r + 2))
+        if not j["ok"] or j.get("y") is None:
+            continue
+        y = float(j["y"])
+        # the end must be a LINE's: juts on both sides of the column (a ledger behind a chord-mate head), or one flat
+        # thin stroke across it (an open ledger); a slanted stroke touching the column on one side is neither (Brahms
+        # `glyph/5/0/6/6/0`: a tie's end below the head jutted on its left)
+        if j.get("sides", 0) < 2 and not flat_stroke_on_row(img_gray, y, head_box_x, spacing):
+            continue
+        if (y - lo) / spacing < NOTE_GAP_MIN_SPACES or (hi - y) / spacing < NOTE_GAP_MIN_SPACES:
+            continue
+        # each part one pitch by the walk's own window (`WALK_WINDOW`), not the chain's looser limit: a ledger found
+        # half-way across a 3-pitch gap is not the one missing ledger (Brahms `glyph/5/0/9/5/5`, 2.94 sp)
+        if (y - lo) / spacing > WALK_WINDOW[1] or (hi - y) / spacing > WALK_WINDOW[1]:
+            continue
+        return y
+    return None
 
 
 # lane-ledger-not-text (Sean 2026-10-05, Brahms `glyph/5/0/6/3/2`): text ink is not a ledger. A rung
@@ -3818,8 +3975,12 @@ def derive_note_first_step(
     look_where_it_must_be: bool = False,
     artic_boxes: "list | None" = None,
     not_ledger: "Callable[[float], object] | None" = None,
+    ledger_read: bool = False,
+    gap_max: "float | None" = None,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment).
+
+    `ledger_read` (ROADMAP 2.255, flag `OMR_LEDGER_READ`; False = bit-identical): passed to `count_ledgers_between`.
 
     `not_ledger` (ROADMAP 2.240 step 3; None = bit-identical): `not_ledger(y) -> None | word`, the owner's test that a row is NOT a
     ledger of this staff (another staff's line, an arc's traced ink). The caller already filters the walk's rungs with it; here it
@@ -3879,7 +4040,8 @@ def derive_note_first_step(
             img_gray, [y], cx, spacing, text_boxes)[0]) if ledger_not_text else None),
         rung_ok=_rung_ok_with(
             ((lambda y: not rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box))
-             if (look_where_it_must_be and artic_boxes) else None), not_ledger))
+             if (look_where_it_must_be and artic_boxes) else None), not_ledger),
+        ledger_read=ledger_read, gap_max=gap_max)
     base = dict(hidden_ledger_look=looked, refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 edge_vs_through=ln.get("edge_vs_through"),
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])

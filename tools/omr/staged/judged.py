@@ -641,6 +641,16 @@ def resolve_place(row: Dict[str, Any], boxes: Dict[Place, List[Tuple[str, List[f
         ok, iou = boxes_overlap(bb, tb)
         if ok and (cats is None or cat in cats):
             hits.append((sub, iou))
+    if not hits and cats is not None:
+        # ROADMAP 2.252 r5: a tile may ask about an ARC through the NOTE it boxes (2.250's tiles: kind `slur`, the box and the key
+        # a notehead's), so no arc-kind box overlaps it -- 8 of 8 positioned Litolff tiles went `place_no_mark` that way. The kind
+        # then comes from the tile's own key in this record at this place, and the box is found by overlap of that kind.
+        own_cat = next((cat for sub, _bb, cat in boxes.get(pl, ()) if sub == row.get("subject")), None)
+        if own_cat is not None and own_cat not in cats:
+            for sub, bb, cat in boxes.get(pl, ()):
+                ok, iou = boxes_overlap(bb, tb)
+                if ok and cat == own_cat:
+                    hits.append((sub, iou))
     if not hits:
         return None, "place_no_mark"
     own = [h for h in hits if h[0] == row.get("subject")]

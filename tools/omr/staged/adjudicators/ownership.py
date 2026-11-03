@@ -742,7 +742,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         own = ev.subject.at(Kind.STAFF)
         return Ruling(value=own.to_key(), reason="no_contest")
 
-    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the page owner, AHEAD of every per-copy tier. GATHER settled
+    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default ON since 2026-11-02): the page owner, AHEAD of every per-copy tier. GATHER settled
     # "whose mark is this?" ONCE, of the page mark both padded cells' copies are views of (staff lines, ledger lines, stem -- never
     # nearness); this CONNECTS that answer (rule 6). Decided -> it; GUESSED -> it, written blue with both staves; abstain -> the old
     # tiers below decide as before (counted by `page_owner compare`).
@@ -866,7 +866,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         # lone range veto and any distance, and the one mix that outvotes it
         # -- a veto on its side PLUS a rival's genuinely complete ladder --
         # pits it against ledger evidence no crop has adjudicated.
-        hairpin = _hairpin_separates(ev, cand_key, head_y)
+        hairpin = _hairpin_separates(ev, cand_key, head_y, head_box.get("x_center_page") if head_box else None)
         if hairpin is not None:
             terms.append(hairpin)
             hairpins += 1
@@ -1690,11 +1690,12 @@ def _own_glyph_box(ev: Evidence) -> Optional[Dict[str, float]]:
     y = (rows[0].detail or {}).get("y_center_page")
     if y is None:
         return None
-    return {"y_center_page": float(y)}
+    x = (rows[0].detail or {}).get("x_center_page")
+    return {"y_center_page": float(y), "x_center_page": None if x is None else float(x)}
 
 
 def _hairpin_separates(ev: Evidence, cand_key: str,
-                       head_y: Optional[float]) -> Optional[Term]:
+                       head_y: Optional[float], head_x: Optional[float] = None) -> Optional[Term]:
     """Sean's second convention (DECISIONS 2026-09-28): a hairpin always
     sits UNDER its staff, so a note between a staff and the hairpin beneath
     it belongs to that staff — *"if the note is above the hairpin ... it
@@ -1731,10 +1732,19 @@ def _hairpin_separates(ev: Evidence, cand_key: str,
     bottom = max(float(y) for y in lines[0].value)
     if head_y <= bottom:
         return None                         # the head is not below cand
+    from .. import hairpin_reach as _hairpin_reach
+    local = _hairpin_reach.enabled()
     for w in ev.rows(Q.WEDGE_BOX, subject=cand, scope=Scope.SELF_AND_DESCENDANTS):
         wy = (w.detail or {}).get("y_center_page")
         if wy is None:
             continue                        # DECLINED: no page frame here
+        if local:
+            # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the rule is LOCAL (page-facts, Sean 2026-10-31: "any notes NEXT TO a hairpin");
+            # a hairpin elsewhere under the staff says nothing about this glyph. Found when the reach read a Vc hairpin at Brahms p25
+            # bars 473-474 and this term gave the K.-B.'s flats two bars to its right (y only) to the Vc.
+            wb = (w.detail or {}).get("bbox_page_px")
+            if head_x is None or not wb or not (float(wb[0]) <= head_x <= float(wb[2])):
+                continue
         if bottom < head_y < float(wy):
             return Term("hairpin_separates", W_HAIRPIN_SEPARATES, (w.id,))
     return None
@@ -1894,7 +1904,7 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
     if not arcs:
         return Ruling.abstain("no_evidence")
     arc = arcs[0]
-    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
+    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default ON since 2026-11-02): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
     # its END notes are owned by (GATHER, `page_owner.arc_owner`; Sean's s3 tiles 7/7 arcs right). Decided -> that staff, the same for
     # every box the span holds; GUESSED (one end) or abstain -> the rule below decides, as before.
     span = _page_span_owner(ev)
@@ -2410,6 +2420,35 @@ def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     return None, "no_position"
 
 
+def _half_step_from_rows(cell_rows: Any, box_rows: Any, h: float) -> Optional[float]:
+    """Page pixels per half-step IN THIS HEAD'S OWN BAR from the rows the CALLER read (`Q.CELL_STAFF_SPACE` of its cell, `Q.GLYPH_BOX` of
+    the head): the cell's staff space is canonical, the head's box is on the record in both frames, so page px per canonical unit is this
+    bar's. Factored out of `_head_extent` (ROADMAP 2.250) so the tall-end reader uses the same unit; the READS stay in the callers (the
+    inventory's `wants` check follows helpers only to depth 3)."""
+    half_canon = ((cell_rows[0].detail or {}).get("half_step") if cell_rows else None)
+    canon_h = None
+    if box_rows and isinstance(box_rows[0].value, (list, tuple)) and len(box_rows[0].value) >= 5:
+        canon_h = float(box_rows[0].value[4])
+    if not half_canon or not canon_h or h <= 0:
+        return None
+    return float(half_canon) * (h / canon_h)
+
+
+def _tall_end_step(ev: Evidence, row: Any, cy: float, h: float, end_y: float) -> Tuple[Optional[int], str]:
+    """ROADMAP 2.250: the step of the head standing at the head-sized END of a fused (tall) box, `end_y` in page px: the kept row's position
+    shifted by the offset in this bar's half-steps, the way `_head_extent` places a union. A far head is its ledger reading or unread
+    (`_head_step`), never an ink position (page-facts: a far head is placed by its ledger lines only)."""
+    step, src = _head_step(ev, row)
+    if src != "geometry":
+        return step, src
+    pr = next((p for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=row.subject) if (p.detail or {}).get("rounded") is not None), None)
+    half_page = _half_step_from_rows(ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL)),
+                                     ev.rows(Q.GLYPH_BOX, subject=row.subject), h)
+    if pr is None or half_page is None or (pr.detail or {}).get("from_head_cut") is not None:
+        return None, "tall_box_end"
+    return int(round(float(pr.value) + (end_y - cy) / half_page)), "geometry_tall_end"
+
+
 def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
                  t: Tuple) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.75b -- where ONE HEAD is, when the detector drew it in pieces.
@@ -2441,17 +2480,10 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
         return None
     # the bar's own unit: the cell's staff space is canonical, the head's box is
     # on the record in both frames, so page px per canonical unit is THIS bar's.
-    cell_rows = ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL))
-    box_rows = ev.rows(Q.GLYPH_BOX, subject=row.subject)
-    half_canon = ((cell_rows[0].detail or {}).get("half_step")
-                  if cell_rows else None)
-    canon_h = None
-    if box_rows and isinstance(box_rows[0].value, (list, tuple)) \
-            and len(box_rows[0].value) >= 5:
-        canon_h = float(box_rows[0].value[4])
-    if not half_canon or not canon_h or h <= 0:
+    half_page = _half_step_from_rows(ev.rows(Q.CELL_STAFF_SPACE, subject=row.subject.at(Kind.CELL)),
+                                     ev.rows(Q.GLYPH_BOX, subject=row.subject), h)
+    if half_page is None:
         return None
-    half_page = float(half_canon) * (h / canon_h)
     piece_max = HEAD_CUT_MAX_BOX_HEIGHT_SPACES * 2.0 * half_page
     tol = w * TIE_FLANK_MAX_OVERLAP_HEAD_WIDTHS * 0.5
     members = [t]
@@ -2475,6 +2507,15 @@ def _head_extent(ev: Evidence, heads: Any, usable: Any, avg_h: float,
     return {"members": len(members), "kept_step": step, "yc": yc_ext,
             "union_spaces": round((y1 - y0) / (2.0 * half_page), 3),
             "pos": round(pos, 3), "step": int(round(pos))}
+
+
+def _step_with_extent(ev: Evidence, row: Any, extent: Optional[Dict[str, Any]]) -> Tuple[Optional[int], str]:
+    """The one place a tie/slur reader takes a head's step (ROADMAP 2.250, factored out of `_two_note_reading._step_of`): the head's
+    EXTENT step (`_head_extent`, source `geometry_extent`) where the detector drew the head in pieces, else `_head_step` -- a far head
+    stays its ledger reading or unread, never an ink centre (page-facts: a far head is placed by its ledger lines only)."""
+    if extent is not None:
+        return extent["step"], "geometry_extent"
+    return _head_step(ev, row)
 
 
 def _accidental_state(ev: Evidence, head: Tuple) -> str:
@@ -2637,10 +2678,7 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
     def _step_of(c):
         if c[1] == "half":
             return None, "tall_box_end"
-        e = ext.get(c[0][0].id)
-        if e is not None:
-            return e["step"], "geometry_extent"
-        return _head_step(ev, c[0][0])
+        return _step_with_extent(ev, c[0][0], ext.get(c[0][0].id))
 
     def _ext_note(c):
         e = ext.get(c[0][0].id)
@@ -2958,7 +2996,15 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sx, sy, sw, sh = (float(x) for x in sv[:4])
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
     tips = _arc_claim.stem_tips(heads, stems)
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable)
+    end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default ON)
+    if end_pitch and heads:
+        # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
+        # and the step below stays unread -- the SAME bound the extent reader uses (`TALL_BOX_HEAD_HEIGHTS`), no new number
+        mean_h = sum(h["h"] for h in heads) / len(heads)
+        for h in heads:
+            h["hh"] = mean_h
+            h["tall"] = h["h"] > TALL_BOX_HEAD_HEIGHTS * mean_h
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
@@ -2981,25 +3027,85 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     by = {h["key"]: h for h in heads}
     hl, hr = by[lk], by[rk]
     between = _arc_claim.heads_between(hl, hr, heads, usable)
-    sa, src_a = _head_step(ev, rows[lk])
-    sb, src_b = _head_step(ev, rows[rk])
-    from ..arcs_system import SAME_POSITION_SPACES
-    dy = abs(hl["cy"] - hr["cy"]) / sp
-    near = dy <= SAME_POSITION_SPACES
-    if sa is None or sb is None:
-        # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
-        # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
-        # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
-        relation = ("same" if near else "different" if dy >= BIND_DIFFERENT_POSITION_SPACES else "unread")
-        b["relation_source"] = "boxes_only"
-    elif sa == sb:
-        relation = "same" if near else "conflict"
+    cya, cyb = hl["cy"], hr["cy"]
+    if end_pitch:
+        # ROADMAP 2.250: read the end note's step the way the two-note rule does (the head EXTENT where the box is a piece or a tall
+        # union), not the box centre -- the value existed (`_head_extent`) and this binder never read it. The same extent centre
+        # stands in for the box centre in the "one position" test, as `_two_note_reading._with_extent` does.
+        tuples = [(rows[h["key"]], h["cell"], h["cx"], h["cy"], h["w"], h["h"]) for h in heads]
+        avg_h = sum(t[5] for t in tuples) / len(tuples)
+        used = lambda row: usable(row.subject.to_key())         # noqa: E731
+        ea = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == lk))
+        eb = _head_extent(ev, tuples, used, avg_h, next(t for t in tuples if t[0].subject.to_key() == rk))
+        sa, src_a = _step_with_extent(ev, rows[lk], ea)
+        sb, src_b = _step_with_extent(ev, rows[rk], eb)
+        # a FUSED box (an arc end beyond a box taller than a head) has no step at its centre -- the two-note rule leaves it unread (`half`); here
+        # the head is read at the head-sized END the arc stands at, in the bar's own half-steps (`_tall_end_step`), or stays unread
+        if b["left"].get("tall"):
+            sa, src_a = _tall_end_step(ev, rows[lk], hl["cy"], hl["h"], b["left"]["end_y"])
+            cya = b["left"]["end_y"]
+        if b["right"].get("tall"):
+            sb, src_b = _tall_end_step(ev, rows[rk], hr["cy"], hr["h"], b["right"]["end_y"])
+            cyb = b["right"]["end_y"]
+        if ea is not None:
+            cya = ea["yc"]
+            b["start_extent"] = {k: v for k, v in ea.items() if k != "yc"}
+        if eb is not None:
+            cyb = eb["yc"]
+            b["stop_extent"] = {k: v for k, v in eb.items() if k != "yc"}
     else:
-        relation = "different" if not near else "conflict"
+        sa, src_a = _head_step(ev, rows[lk])
+        sb, src_b = _head_step(ev, rows[rk])
+    from ..arcs_system import SAME_POSITION_SPACES
+
+    def _relation(sa_, sb_, ya, yb, sra, srb):
+        dy_ = abs(ya - yb) / sp
+        near_ = dy_ <= SAME_POSITION_SPACES
+        if end_pitch and sa_ is not None and sb_ is not None and "geometry_tall_end" in (sra, srb):
+            # a fused box's head-sized END is a box edge, not the head's centre: its `dy` is good to a few pixels, not to 0.25 sp, so the
+            # two STEPS are the witness here (the box-grain position cannot contradict a half-step it was used to compute)
+            near_ = sa_ == sb_
+        if sa_ is None or sb_ is None:
+            # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
+            # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
+            # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
+            return ("same" if near_ else "different" if dy_ >= BIND_DIFFERENT_POSITION_SPACES else "unread"), "boxes_only", dy_
+        if sa_ == sb_:
+            return ("same" if near_ else "conflict"), None, dy_
+        return ("different" if not near_ else "conflict"), None, dy_
+
+    relation, rsrc, dy = _relation(sa, sb, cya, cyb, src_a, src_b)
+    if rsrc:
+        b["relation_source"] = rsrc
+    lone = [s_ for s_ in ("left", "right") if b[s_].get("tall_lone")]
+    if end_pitch and lone:
+        # ROADMAP 2.250 round 2: a LONE tall box (no second box in its column) may be one head (its centre is the head: the plain reading
+        # above) or a fused chord (the head at the end the arc stands at). Where the two readings give the SAME relation it stands. Where
+        # they disagree the end cannot tell which member (rule 8): the plain reading's TIE stays (a tie claim rests on the box reading,
+        # as before 2.250), anything else is no kind. Sean's round-1 tiles: 3 such ties (p9-10) read right on the plain reading and
+        # wrong on the end reading; 3 slurs the plain reading wrote were ties (p2) -- both are this case.
+        sa2, sb2, src2a, src2b, ya2, yb2 = sa, sb, src_a, src_b, cya, cyb
+        if "left" in lone:
+            sa2, src2a = _tall_end_step(ev, rows[lk], hl["cy"], hl["h"], b["left"]["end_y"])
+            ya2 = b["left"]["end_y"]
+        if "right" in lone:
+            sb2, src2b = _tall_end_step(ev, rows[rk], hr["cy"], hr["h"], b["right"]["end_y"])
+            yb2 = b["right"]["end_y"]
+        alt, _asrc, _ady = _relation(sa2, sb2, ya2, yb2, src2a, src2b)
+        b["tall_lone_readings"] = {"plain": relation, "at_the_end": alt, "end_steps": [sa2, sb2]}
+        if alt != relation and relation != "same":
+            relation, b["relation_source"] = "unread", "tall_lone_readings_disagree"
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])
-    if relation == "different":
+    if relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+        # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
+        # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
+        # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he
+        # reads a tie). No kind: the evidence for "different" is an end a tie does not use. (Same-pitch bindings through a tip stand:
+        # tile 5's lower tie binds its stop head that way and is right.)
+        b["why"] = "tie_box_end_only_at_a_stem_tip"
+    elif relation == "different":
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":
         b["why"] = "step_" + relation
@@ -3215,6 +3321,11 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                               detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
             if pb is not None:
                 grammar["page_binding"] = pb
+            if pb is not None and pb.get("why") == "tie_box_end_only_at_a_stem_tip":
+                # ROADMAP 2.252 r2: the end's own head is unread, so the two-note reading below would pair the same wrong head (it takes
+                # the column's extreme head); the arc is still an arc and is written as neither kind -- counted, never a guessed slur
+                return Ruling(value=None, reason="arc_ends_unread", used=(arc.id,),
+                              detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
         fs = _flank_search(ev, arc)
         two_note = _two_note_reading(ev, arc, fs)
         stack = _stack_reading(ev, arc, fs, two_note)
@@ -3517,7 +3628,8 @@ def _head_usable(ev: Evidence, key: str) -> bool:
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
            Q.CELL_BOX, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
-    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "more_than_one_pair", "not_a_tie", "not_an_arc",
+    reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "paired_by_arc_side", "more_than_one_pair",
+             "not_a_tie", "not_an_arc",
              "no_page_frame", "no_start_head", "no_stop_head",
              "no_head_near_the_arc", "spans_a_whole_bar",
              "enters_from_previous_system", "runs_off_the_system",
@@ -3704,6 +3816,17 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     def value_of(p) -> Dict[str, Any]:
         return {"start": p[2].subject.to_key(), "stop": p[3].subject.to_key()}
 
+    if len(pairs) > 1 and tie_arc_side_enabled():
+        side = _pair_on_the_arcs_side(pairs, arc_yc)
+        if side is not None:
+            dx, dy, rl, rr, il, ir, _yl, _yr = side
+            return Ruling(
+                value=value_of(side), reason="paired_by_arc_side",
+                used=(arc.id, rl.id, rr.id),
+                detail={**counts, "dy_spaces": round(dy, 3), "dx_spaces": round(dx, 3),
+                        "pairs_at_one_position": len(pairs), "arc_yc": round(arc_yc, 1),
+                        "candidates": [value_of(p) for p in pairs],
+                        "crosses_barline": il != ir, "home_staff": home})
     if len(pairs) > 1:
         return Ruling.narrow(
             [R.Candidate(value_of(p), -round(p[0], 3)) for p in pairs],
@@ -3730,6 +3853,36 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
                     / avg_h, 3),
                 "crosses_barline": il != ir,
                 "home_staff": home})
+
+
+#: ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`, default ON since 2026-11-02): a tie over a DYAD whose flank search admits one same-position pair
+#: per chord member (Sean's 2.252 tiles 3, 7, 10, 12: the narrowing `more_than_one_pair`, nothing written) is the pair on the ARC'S OWN
+#: SIDE -- Sean 2.75 (page-facts): an arc ABOVE its notes joins the top note at each end, an arc BELOW joins the bottom note; each
+#: member's tie is its own arc (2.252: two printed arcs, two ties). Decided only where the arc's centre lies outside the pairs'
+#: positions (above the highest pair or below the lowest) and that extreme position holds exactly one pair; anything else still narrows.
+TIE_ARC_SIDE_ENV = "OMR_TIE_PAIR_ARC_SIDE"
+
+
+def tie_arc_side_enabled() -> bool:
+    """`OMR_TIE_PAIR_ARC_SIDE` (ROADMAP 2.252 r2), default ON since 2026-11-02; an explicit 0/false/no/off disables."""
+    return os.environ.get(TIE_ARC_SIDE_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def _pair_on_the_arcs_side(pairs: Sequence[tuple], arc_yc: float) -> Optional[tuple]:
+    """Of `adjudicate_tie_pair`'s same-position pairs `(dx, dy, rl, rr, il, ir, yl, yr)`, the one at the extreme position on the
+    arc's side (page y grows downward), or None where the arc is not wholly to one side or two pairs share that position."""
+    ys = [((p[6] + p[7]) / 2.0, p) for p in pairs]
+    top, bottom = min(y for y, _ in ys), max(y for y, _ in ys)
+    if bottom - top <= 0:
+        return None
+    tol = 0.25 * (bottom - top)
+    if arc_yc < top:
+        pick = [p for y, p in ys if y - top <= tol]
+    elif arc_yc > bottom:
+        pick = [p for y, p in ys if bottom - y <= tol]
+    else:
+        return None
+    return pick[0] if len(pick) == 1 else None
 
 
 def _head_yc(heads, row) -> float:
@@ -5023,7 +5176,7 @@ _WEDGE_WINDOW_CELLS = 1
     subjects_from=Q.WEDGE_BOX,
     reasons=("nearest_either_side", "no_anchor", "no_page_frame",
              "no_evidence", "bound_page_wide", "tip_unbound",
-             "not_between_staves", "inside_a_word"),
+             "not_between_staves", "inside_a_word", "one_note_wedge"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_wedge_anchor(ev: Evidence) -> Ruling:
@@ -5317,6 +5470,13 @@ def _wedge_page_binding(ev: Evidence, wedge: Any, box: List[float]) -> Ruling:
     detail.update(start_cell=int(start["cell"]), stop_cell=int(stop["cell"]), start_x_page=float(start["x"]),
                   stop_x_page=float(stop["x"]), start_how=start["how"], stop_how=stop["how"],
                   degenerate=start["head"] == stop["head"])
+    from .. import hairpin_reach as _hairpin_reach
+    if _hairpin_reach.enabled() and start["head"] == stop["head"] and sp \
+            and (float(box[2]) - float(box[0])) / float(sp) < _hairpin_reach.ACCENT_MAX_W_SP:
+        # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): both tips on ONE note and no longer than an accent glyph -- an accent or a hairpin
+        # (Sean 2026-11-02, page-facts "Accent or hairpin by length"). Position does not decide it, so neither is written (CLAUDE s4).
+        return Ruling.abstain("one_note_wedge", candidates=["hairpin", "accent"],
+                              width_spaces=round((float(box[2]) - float(box[0])) / float(sp), 2), **detail)
     return Ruling(value=[str(start["head"]), str(stop["head"])], reason="bound_page_wide", used=(wedge.id,), detail=detail)
 
 
@@ -5941,7 +6101,7 @@ def _decided_str(v) -> Optional[str]:
 
 
 def reconcile_dot_owners(log: R.Log) -> Dict[str, int]:
-    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default OFF).
+    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default ON since 2026-11-02).
 
     Run after `Q.DOT_ROLE`, whose augmentation verdict names the note the dot
     trails (`detail.head`). CONNECTS, NEVER GUESSES (rule 6): it only reads

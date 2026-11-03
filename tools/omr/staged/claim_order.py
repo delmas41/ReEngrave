@@ -86,7 +86,7 @@ LAYERS: Tuple[Tuple[str, Tuple[str, ...], str], ...] = (
     ("barline_bracket", ("barline", "bracket", "leading_column"), "plan §10 step 1; §9 brackets/braces claim page-wide"),
     ("clef_key_meter", ("clef", "key_signature", "meter"), "plan §10 step 2 system registers; §2 row 1"),
     ("word_dynamic", ("word", "dynamic", "text"), "plan §10 steps 3-4; §9 step 1 (page-wide, before heads)"),
-    ("arc_hairpin", ("arc", "arc_trace", "hairpin"), "plan §9 / §10 step 5 (page-wide, before heads)"),
+    ("arc_hairpin", ("arc", "arc_trace", "hairpin", "hairpin_trace"), "plan §9 / §10 step 5 (page-wide, before heads)"),
     ("whole_rest", ("whole_rest",), "DECISIONS 2026-10-29: a whole rest claims its ink before heads"),
     ("head", ("head", "ledger"), "plan §2 row 3; §3 head first among the per-cell marks"),
     ("stem_beam_flag", ("stem", "beam", "flag"), "plan §3 order head -> stem -> beam/flag; §2 row 5"),
@@ -393,7 +393,11 @@ def reader_boxes(rows: Dict[str, List[dict]]) -> List[List[float]]:
     for o in rows["observations"]:
         if o.get("quantity") in TEXT_READER_QUANTITIES:
             bb = (o.get("detail") or {}).get("bbox_page_px")
-            if isinstance(bb, (list, tuple)) and len(bb) == 4:
+            ib = (o.get("detail") or {}).get("ink_boxes")
+            if isinstance(ib, list) and all(isinstance(b, (list, tuple)) and len(b) == 4 for b in ib):
+                # ROADMAP 2.254 r3: the reader cut its box to the word's own ink round a hairpin it held; it read those rectangles
+                out.extend([float(v) for v in b] for b in ib)
+            elif isinstance(bb, (list, tuple)) and len(bb) == 4:
                 out.append([float(v) for v in bb])
     return out
 

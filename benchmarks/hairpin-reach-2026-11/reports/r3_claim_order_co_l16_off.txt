@@ -1,0 +1,27 @@
+claim_order: /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/claim-readout-slices-litolff.off.gathered  pages [16]  master cm-54ccb4729528  env {}
+  page 16: 1131172 ink px, 341 cells ok / 0 mismatched (19s)
+claim_order claim-readout-slices-litolff.off.gathered pages [16] master cm-54ccb4729528
+TOTAL: 1131172 ink px (staff lines 761791 left out)
+  ORDER-OK 3.35%   EARLIER-UNREAD 81.46%   ORDER-VIOLATION 0.06%   OPEN 1.00%   SPLIT-ACROSS-CLAIM 0.60%   NO-READER 13.53%
+  ORDER-VIOLATION by pair: stem_beam_flag->rest 0.03%, head->rest 0.01%, stem_beam_flag->dot_mark 0.00%, clef_key_meter->arc_hairpin 0.00%, barline_bracket->stem_beam_flag 0.00%, head->dot_mark 0.00%, word_dynamic->dot_mark 0.00%, clef_key_meter->dot_mark 0.00%
+  OPEN by pair: barline_bracket|- 0.46%, rest|dot_mark 0.17%, clef_key_meter|rest 0.16%, clef_key_meter|accidental 0.04%, accidental|rest 0.04%, accidental|dot_mark 0.03%, whole_rest|head 0.02%, head|rest 0.02%
+  SPLIT-ACROSS-CLAIM by owner: clef_key_meter 0.46%, barline_bracket 0.11%, none 0.02%, head 0.00%, stem_beam_flag 0.00%
+  EARLIER-UNREAD by owner: barline_bracket 25.08%, stem_beam_flag 21.48%, head 19.42%, rest 4.05%, clef_key_meter 3.76%, word_dynamic 2.71%, whole_rest 1.55%, arc_hairpin 1.45%
+  top ORDER-VIOLATION pairs (share of ink; code_agrees False = the code's own tier order also differs from the plan):
+    stem_beam_flag->rest                     307 px 0.03%  code_agrees=False
+    head->rest                               155 px 0.01%  code_agrees=True
+    stem_beam_flag->dot_mark                  46 px 0.00%  code_agrees=False
+    clef_key_meter->arc_hairpin               40 px 0.00%  code_agrees=True
+    barline_bracket->stem_beam_flag           39 px 0.00%  code_agrees=True
+    head->dot_mark                            28 px 0.00%  code_agrees=True
+    word_dynamic->dot_mark                    25 px 0.00%  code_agrees=False
+    clef_key_meter->dot_mark                   9 px 0.00%  code_agrees=True
+    stem_beam_flag->accidental                 5 px 0.00%  code_agrees=False
+    word_dynamic->arc_hairpin                  3 px 0.00%  code_agrees=False
+page 16: 1131172 ink px (staff lines 761791 left out)
+  ORDER-OK 3.35%   EARLIER-UNREAD 81.46%   ORDER-VIOLATION 0.06%   OPEN 1.00%   SPLIT-ACROSS-CLAIM 0.60%   NO-READER 13.53%
+  ORDER-VIOLATION by pair: stem_beam_flag->rest 0.03%, head->rest 0.01%, stem_beam_flag->dot_mark 0.00%, clef_key_meter->arc_hairpin 0.00%, barline_bracket->stem_beam_flag 0.00%, head->dot_mark 0.00%, word_dynamic->dot_mark 0.00%, clef_key_meter->dot_mark 0.00%
+  OPEN by pair: barline_bracket|- 0.46%, rest|dot_mark 0.17%, clef_key_meter|rest 0.16%, clef_key_meter|accidental 0.04%, accidental|rest 0.04%, accidental|dot_mark 0.03%, whole_rest|head 0.02%, head|rest 0.02%
+  SPLIT-ACROSS-CLAIM by owner: clef_key_meter 0.46%, barline_bracket 0.11%, none 0.02%, head 0.00%, stem_beam_flag 0.00%
+  EARLIER-UNREAD by owner: barline_bracket 25.08%, stem_beam_flag 21.48%, head 19.42%, rest 4.05%, clef_key_meter 3.76%, word_dynamic 2.71%, whole_rest 1.55%, arc_hairpin 1.45%
+  cells re-cut and matched stroke-for-stroke to the record: {'cells_ok': 341, 'strokes_ok': 5950}

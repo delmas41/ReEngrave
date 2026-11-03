@@ -17,6 +17,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any, List, Optional, Sequence, Tuple
 
+from . import head_extent as _head_extent
 from . import record as R
 from .evaluate import Consequence, rule
 from .record import Candidate, Kind, Log, Outcome, Q, Scope, Subject, Verdict
@@ -88,6 +89,11 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     out: List[Verdict] = []
     rows = log.rows(Q.NOTEHEAD_STAFF_POSITION, subject,
                     scope=Scope.SELF_AND_DESCENDANTS)
+    # ROADMAP 2.251 step 2 (flag OMR_CLEF_CARRY, default OFF): the clefs printed INSIDE this staff (step 1's page-wide claims), so each
+    # head is pitched from the clef printed LAST before it (Sean 2026-11-01 "Build both"); none before it -> the header clef, as before.
+    changes = _clef_changes(log, subject)
+    from . import clef_pagewide as _CPc
+    candidates = _clef_candidates(log, subject) if _CPc.carry_enabled() else []
     for row in rows:
         if log.verdict(Q.PITCH, row.subject) is not None:
             # ⚠️⚠️ IT NEVER OVERTURNS A PITCH THAT ALREADY STANDS, and the
@@ -120,16 +126,94 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
                 and far.value is not None:
             pos = int(far.value)
             pos_basis = far.id
+        in_force = _clef_change_at(log, row.subject, changes, candidates, str(clef.value) if clef.value is not None else None)
+        if in_force is not None:
+            kind, crow = in_force
+            if kind is None:
+                # ⚠️ 2.251: a clef printed before this head whose kind could not be read: the head gets NO pitch (unread, red),
+                # never the header clef's (rule 8)
+                continue
+            name = _pitch_from_position(pos, str(kind))
+            if name is None:
+                continue
+            out.append(_verdict(
+                log, row.subject, Q.PITCH, name,
+                decider="restate_pitch", reason="position_and_clef_change",
+                basis=(pos_basis, crow.id)))
+            continue
         name = _pitch_from_position(pos, str(clef.value))
         if name is None:
             # ⚠️ An unknown clef anchor is an ABSTENTION, not a default. The
             # clef vocabulary here is wider than `_CLEF_ANCHORS` knows.
+            continue
+        # ⚠️ ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON). A FAR head (outside the first space) whose ledger count
+        # ABSTAINED has no pitch the page supports: page-facts says it is placed by its ledger lines only, and "no rungs either way is OUR
+        # failure -- abstain and count it". The branch above leaves it on the geometry row's box centre, WRITTEN PLAIN -- an uncertain
+        # pitch unmarked (CLAUDE.md section 4, rule 8). With the flag the value is unchanged and the verdict says why it is a guess: its
+        # candidates are the box-centre step and the ink-centre step, `export.far_unread_guess_of` writes it blue. Nothing moves.
+        # r4 (2026-11-02): never on a box ADJUDICATE REFUSED as a head (`notehead_is_not_a_notehead` decided True -- a cell-edge piece of
+        # a neighbour's head, a tremolo slash, a rest). Nothing is written for it, so a far-unread guess there marks no written note: it
+        # only made the record show refused boxes as blue far heads, and r3's tile tool drew two of them as "notes on the wrong staff"
+        # (r3 tiles 3, 6: `clipped_fragment`, owner already decided to the right staff by the page owner, the whole twin written there).
+        if far is not None and far.outcome == Outcome.ABSTAINED and _head_extent.far_guess_enabled() and (pos < -1 or pos > 9) \
+                and not _head_extent.refused_as_head(log, row.subject):
+            ink = (row.detail or {}).get("ink_centre_position_float")
+            ink_name = _pitch_from_position(int(round(float(ink))), str(clef.value)) if ink is not None else None
+            cands = [Candidate(name, 1.0)]
+            sources = [_head_extent.FAR_GUESS_SOURCES[0]]
+            if ink_name is not None:
+                cands.append(Candidate(ink_name, 1.0))
+                sources.append(_head_extent.FAR_GUESS_SOURCES[1])
+            basis = (pos_basis, clef.id)
+            out.append(log.record(Verdict(
+                id=log._next_id("vrd"), subject=row.subject, quantity=Q.PITCH, outcome=Outcome.DECIDED, value=name,
+                decider="restate_pitch", reason=_head_extent.FAR_GUESS_PITCH_REASON, considered=basis, basis=basis,
+                candidates=tuple(cands),
+                detail=dict(far_unread=True, ledger_abstention=far.reason, candidate_sources=sources,
+                            box_position=pos, ink_position=(int(round(float(ink))) if ink is not None else None),
+                            ink_centre_why=(row.detail or {}).get("ink_centre_why")))))
             continue
         out.append(_verdict(
             log, row.subject, Q.PITCH, name,
             decider="restate_pitch", reason="position_and_clef",
             basis=(pos_basis, clef.id)))
     return out
+
+
+def _clef_changes(log: Log, staff: Subject) -> list:
+    """ROADMAP 2.251 step 2: the clefs printed inside `staff` (step 1's `Q.CLAIMED_AREA` rows, source `clef_pagewide`, `change`), left
+    to right; [] with `OMR_CLEF_CARRY` off or no change on the staff."""
+    from . import clef_pagewide as _CP
+    if not _CP.carry_enabled():
+        return []
+    st = staff.at(Kind.STAFF) if hasattr(staff, "at") else None
+    if st is None:
+        return []
+    return _CP.changes_of(log.rows(Q.CLAIMED_AREA, st))
+
+
+def _clef_candidates(log: Log, staff: Subject) -> list:  # noqa: D401
+    """ROADMAP 2.251 carry (b): the clef-shaped candidates step 1 saw inside `staff` and did not read (its abstentions marked
+    `candidate`), left to right -- a carried clef stops at one (`clef_pagewide.clef_in_force`)."""
+    from . import clef_pagewide as _CP
+    st = staff.at(Kind.STAFF) if hasattr(staff, "at") else None
+    if st is None:
+        return []
+    return _CP.candidates_of(log.refusals(Q.CLAIMED_AREA, st))
+
+
+def _clef_change_at(log: Log, glyph: Subject, changes: list, candidates: list = (), header: Any = None):
+    """(kind or None, change row) of the clef printed last before the head `glyph` (its own box's centre x, page px), or None where no
+    change stands before it / the head has no page box (the header clef governs). A clef-shaped candidate after a change of another
+    kind than the header's stops the carry: (None, candidate row)."""
+    from . import clef_pagewide as _CP
+    if not changes and not _CP.any_strong(candidates):
+        return None
+    for b in log.rows(Q.GLYPH_BOX, glyph):
+        bp = (b.detail or {}).get("bbox_page_px")
+        if isinstance(bp, (list, tuple)) and len(bp) == 4:
+            return _CP.clef_in_force((float(bp[0]) + float(bp[2])) / 2.0, changes, candidates, header)
+    return None
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1594,17 +1678,55 @@ def move_glyph(log: Log, subject: Subject, owner: Verdict) -> List[Verdict]:
         reason = "reowned_by_ledger_reading"
 
     from ..pitch_resolver import _pitch_from_position
-    name = _pitch_from_position(int(round(float(pos))), str(clef.value))
+    kind = str(clef.value)
+    # ROADMAP 2.251 carry (flag OMR_CLEF_CARRY): a glyph moved onto a staff is pitched from the clef in force THERE at its x, as
+    # `restate_pitch` pitches the staff's own heads; after an unread clef (or a carry stopped by a clef-shaped candidate) no pitch.
+    changes = _clef_changes(log, winner)
+    from . import clef_pagewide as _CPm
+    cands = _clef_candidates(log, winner) if _CPm.carry_enabled() else []
+    if changes or _CPm.any_strong(cands):
+        in_force = _clef_change_at(log, subject, changes, cands, kind)
+        if in_force is not None:
+            if in_force[0] is None:
+                return []
+            kind = str(in_force[0])
+    name = _pitch_from_position(int(round(float(pos))), kind)
     if name is None:
         return []
 
     prior = log.verdict(Q.PITCH, subject)
+    cands: tuple = ()
+    detail: dict = {}
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON): the `reowned` branch writes the geometry step on the NEW staff. Where
+    # that step is FAR (outside the first space) page-facts says its ledger lines place it, and no ledger count toward the new owner was
+    # used here -- the same plain fallback as `restate_pitch`'s. Where a ledger count toward the owner AGREES the step has a second
+    # witness and stays plain; where none was read (or it disagrees) the head is written GUESSED, both steps carried. The value is unchanged.
+    #
+    # r4 (2026-11-02, Sean's r3 tiles: "the ledger lines name the owner" and place the head): r3 had this backwards where the ledger count
+    # toward the new owner DISAGREES with the geometry step -- it wrote the geometry step blue and carried the ledger reading as a mere
+    # candidate. page-facts: a far head's position is its ledger lines ONLY (never a grid extended past the outer line), and the same
+    # reading is what NAMED the owner (2.56b). So where that reading exists it IS the position, written plain (`reowned_by_ledger_reading`,
+    # the branch 2.58 already uses when no band row exists); only where none was read is the geometry step written GUESSED.
+    if reason == "reowned" and _head_extent.far_guess_enabled() and (int(round(float(pos))) < -1 or int(round(float(pos))) > 9):
+        lrows = [r for r in log.rows(Q.FAR_HEAD_OWNER_LEDGER, subject)
+                 if r.detail.get("candidate") == owner.value and isinstance(r.value, (int, float))]
+        geo = int(round(float(pos)))
+        if lrows and int(lrows[0].value) != geo:
+            led_name = _pitch_from_position(int(lrows[0].value), str(clef.value))
+            if led_name is not None:
+                name, source, reason = led_name, lrows[0], "reowned_by_ledger_reading"
+                detail = dict(geometry_position=geo, ledger_position=int(lrows[0].value))
+        elif not lrows:
+            reason = _head_extent.FAR_GUESS_PITCH_REASON
+            cands = (Candidate(name, 1.0),)
+            detail = dict(far_unread=True, ledger_abstention="reowned_geometry_on_new_staff",
+                          candidate_sources=[_head_extent.FAR_GUESS_SOURCES[0]], box_position=geo, ink_position=None)
     out = Verdict(
         id=log._next_id("vrd"), subject=subject, quantity=Q.PITCH,
         outcome=Outcome.DECIDED, value=name, decider="move_glyph",
         reason=reason, considered=(owner.id, clef.id, source.id),
         basis=(owner.id, clef.id, source.id),
-        supersedes=prior.id if prior is not None else None)
+        supersedes=prior.id if prior is not None else None, candidates=cands, detail=detail)
     return [log.record(out)]
 
 
