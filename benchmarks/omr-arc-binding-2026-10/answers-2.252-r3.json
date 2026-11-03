@@ -1,0 +1,103 @@
+{
+ "date": "2026-11-02",
+ "tiles": "out/print/2.252-r3-tiles (lane-2.252-unison 0db9dc966)",
+ "summary": "Tie ends Sean reads: 20. ON writes 17, OFF 10; 0 written on a wrong side; tile 5 (unison, no ties) right in both. Short: tiles 1 and 12 (unisons: ON moves the one written end to the other voice, second tie still missing), tile 2 (tie before missing).",
+ "answers": [
+  {
+   "tile": 1,
+   "role": "unison_changed",
+   "sean": "unison half, two ties to the unison before",
+   "ends_sean": 2,
+   "ends_on": 1,
+   "ends_off": 1
+  },
+  {
+   "tile": 2,
+   "role": "changed_not_unison",
+   "sean": "single half, tie before and tie after",
+   "ends_sean": 2,
+   "ends_on": 1,
+   "ends_off": 0
+  },
+  {
+   "tile": 3,
+   "role": "unison_changed",
+   "sean": "unison half, two ties to the note after",
+   "ends_sean": 2,
+   "ends_on": 2,
+   "ends_off": 1
+  },
+  {
+   "tile": 4,
+   "role": "changed_not_unison",
+   "sean": "half, ties before and after",
+   "ends_sean": 2,
+   "ends_on": 2,
+   "ends_off": 1
+  },
+  {
+   "tile": 5,
+   "role": "unison_unchanged",
+   "sean": "unison quarter, no arcs, no ties",
+   "ends_sean": 0,
+   "ends_on": 0,
+   "ends_off": 0
+  },
+  {
+   "tile": 6,
+   "role": "control",
+   "sean": "half, tie after",
+   "ends_sean": 1,
+   "ends_on": 1,
+   "ends_off": 1
+  },
+  {
+   "tile": 7,
+   "role": "unison_changed",
+   "sean": "unison half, two ties to the note after",
+   "ends_sean": 2,
+   "ends_on": 2,
+   "ends_off": 1
+  },
+  {
+   "tile": 8,
+   "role": "control",
+   "sean": "half, tie to the note after",
+   "ends_sean": 1,
+   "ends_on": 1,
+   "ends_off": 1
+  },
+  {
+   "tile": 9,
+   "role": "unison_changed",
+   "sean": "unison half, two ties to the note before",
+   "ends_sean": 2,
+   "ends_on": 2,
+   "ends_off": 1
+  },
+  {
+   "tile": 10,
+   "role": "changed_not_unison",
+   "sean": "half, ties before and after",
+   "ends_sean": 2,
+   "ends_on": 2,
+   "ends_off": 1
+  },
+  {
+   "tile": 11,
+   "role": "unison_changed",
+   "sean": "unison half, two ties to the note before",
+   "ends_sean": 2,
+   "ends_on": 2,
+   "ends_off": 1
+  },
+  {
+   "tile": 12,
+   "role": "unison_changed",
+   "sean": "unison half, two ties to the note after",
+   "ends_sean": 2,
+   "ends_on": 1,
+   "ends_off": 1
+  }
+ ]
+}
