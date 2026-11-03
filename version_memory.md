@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- 2.251 step 2 landed: OMR_CLEF_CARRY default ON (Sean 'Land now')
+
+- `clef_pagewide.carry_enabled()` flips to default ON (explicit 0/false/no/off disables); test renamed `test_default_on_carry_on`. No mechanism changed; lane-2.251-carry merged with main.
+- Gate (fresh `--through gather`, PAGEWIDE=1 both arms, CARRY 0 vs 1; Litolff 2,4 / Brahms 4,5): ORDER-VIOLATION Litolff 0.45 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM 0.99 -> 1.03 / 0.70 -> 0.70; clef/key/meter single-owner 2.3 -> 2.4 / 1.7 -> 1.7.
+- Evidence: Litolff print witness right 148->365, wrong 267->13, carry-caused right->wrong 0 on real notes; Brahms pp.4-5 right->wrong 0; judged right->wrong 0.
+- Open: see ROADMAP 2.251.
+
 ## 2026-11-02 -- day manager: 2.251 step 1 landed, carry r1 built and tiled, carry r2 in flight
 
 - Sean's 2.251 r2 tiles: 12/12 right (4c3350889). Sean "Land and get the pitch work right": step 1 landed ON (9db2c7495, entry below); a separate Opus lane took the carry.

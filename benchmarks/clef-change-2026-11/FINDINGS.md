@@ -226,3 +226,20 @@ Tile `out/print/2.251-carry-bar38/` (lane branch `lane-2.251-carry`, Litolff pri
 - **There is no note in the box.** It is F-clef ink fused with a quarter rest, so the witness's 1 right->wrong is not a real note. Real carry-caused right->wrong on Litolff: **0**.
 - **New open item, not the carry's:** the quarter rest fused with the clef is read as a head in both arms -- the rest is lost and a false head stands in its place. An ink-claim question (Litolff MERGES).
 >>>>>>> origin/main
+
+## 2026-11-02 -- 2.251 step 2 LANDED: OMR_CLEF_CARRY default ON (Sean "Land now")
+
+Landing gate (the carry also GATHERS -- the no-box F claim -- so a fresh `--through gather`, `OMR_CLEF_PAGEWIDE=1` in both arms, `OMR_CLEF_CARRY` 0 vs 1, master cell map, `OMR_SURYA_KEEP_ALIVE=0`; Litolff pages 2,4, Brahms pages 4,5; `claim_order` / `claim_readout` on each arm's gathered record; tree = lane-2.251-carry dab238375 + main):
+
+| plate | clef/key/meter single-owner ink | ORDER-VIOLATION | SPLIT-ACROSS-CLAIM |
+|---|---|---|---|
+| Litolff OFF -> ON | 2.3% -> 2.4% | 0.45% -> 0.45% | 0.99% -> 1.03% |
+| Brahms OFF -> ON | 1.7% -> 1.7% | 0.41% -> 0.41% | 0.70% -> 0.70% |
+
+Gate (no ORDER-VIOLATION rise; SPLIT rise under 0.3 points) passed. The Litolff OFF arm reproduces step 1's ON line (0.45 / 0.99). Brahms ON equals OFF to the printed digits: the carry's no-box F reader finds nothing at >= 0.50 on Brahms (thick lines), so it adds no claims there.
+
+Evidence: Litolff print witness right 148 -> 365, wrong 267 -> 13; carry-caused right->wrong 0 on real notes (the one box was F-clef ink plus a quarter rest -- Sean, 4f14003c4). Brahms pp. 4-5 right->wrong 0. Judged right->wrong 0, unwritten->wrong 0.
+
+Clean ON-arm file line (Litolff frozen sample, lane tree dab238375, `out/lane-report/2.251-carry-r5-litolff`; OFF byte-identical to r4/r2, 0 OCR timeouts in the ON arm): notes -26, accidentals -1, flags -2, beams -8, slurs -4, pitches ~176, blue +10/-33, words +15 (the red "clef?" marks), clefs +19/-3, keys +19/-3; notes not written 2505 -> 2528. Judged right->wrong 0, right->gone 0, unwritten->wrong 0 (270 tiles). It equals round 2's line exactly, so the r3/r4 differences were OCR load.
+
+Open: refused heads are still pitched; Brahms bass clefs are only ever candidates; no mid-bar `<clef>`; the Brahms frozen sample was not run; the bar-38 quarter rest fused with the clef is read as a head in both arms (an ink-claim question); the bar-111 and bar-346 candidates are real F clefs (Sean) and are not promoted.

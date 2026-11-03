@@ -90,8 +90,8 @@ def enabled() -> bool:
 
 
 def carry_enabled() -> bool:
-    """`OMR_CLEF_CARRY` (ROADMAP 2.251 step 2), default OFF: only 1/true/yes/on enables. Reads step 1's rows."""
-    return os.environ.get(ENV_CARRY, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLEF_CARRY` (ROADMAP 2.251 step 2; Sean 2026-11-02 "Land now"), default ON; an explicit 0/false/no/off disables. Reads step 1's rows."""
+    return os.environ.get(ENV_CARRY, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _ink(binary: Any) -> Optional[np.ndarray]:
