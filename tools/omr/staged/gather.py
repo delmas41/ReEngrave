@@ -497,7 +497,7 @@ def gather_detections(log: Log, cells: Sequence[Any],
             _grid = _cell_grid(c)
             dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0,
                                                           staff_top=_grid[0] if _grid else 0.0)
-        # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): a TALL hollow head box is read for the heads inside it by their holes (a
+        # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a TALL hollow head box is read for the heads inside it by their holes (a
         # dyad of halves boxed as one head); each head no one-head box stands on gets its own box, APPENDED (every glyph index unchanged).
         if dets and _box_kind.tall_split_enabled():
             _grid = _cell_grid(c)
@@ -881,7 +881,7 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
 
         tall_info: Dict[int, Dict[str, Any]] = {}
         if kept and _box_kind.tall_split_enabled() and grid:
-            # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): a rescued TALL hollow head box is read for the heads inside it by
+            # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a rescued TALL hollow head box is read for the heads inside it by
             # their holes, as the production pass does (Sean's 2.250 r2 tiles 8 and 11 were rescued dyads); each head no one-head box
             # stands on is filed after the rescued boxes, at the next glyph index, under the rescue's own reader and its tall box's witness.
             allb = list(existing) + [d for d, _w in kept]

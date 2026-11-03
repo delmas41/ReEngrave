@@ -3670,8 +3670,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
-                                     "wider_than_a_head", "wide_box_unread", "taller_than_a_head",
-                                     "taller_than_a_filled_head",
+                                     "wider_than_a_head", "wide_box_unread", "taller_than_a_filled_head", "taller_than_a_head",
                                      TREMOLO_SLASH_REASON,
                                      "notehead_is_a_duplicate_box",
                                      NOTEHEAD_SAME_SIDE_REASON,
@@ -4201,7 +4200,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                 Ruling(value=True, reason=misfit[0], used=tuple(used), detail=detail),
                 margin=misfit[1], axis="width_spaces", unit="staff spaces", band=None,
                 would_choose=(True,))
-    # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): a TALL hollow head box GATHER read for the heads inside it by their holes
+    # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a TALL hollow head box GATHER read for the heads inside it by their holes
     # (`box_kind.split_tall_heads`: a dyad of halves boxed as one head) is the REMAINDER once every head it holds stands on its own one-head
     # box (added, or the detector's): refused, so the dyad is its two heads and never also the box's centre. Not read: unchanged.
     if _box_kind.tall_split_enabled():

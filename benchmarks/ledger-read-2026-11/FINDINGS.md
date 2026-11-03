@@ -32,3 +32,19 @@ Tried and dropped (each turned Brahms neighbour-staff refutations into own-staff
 ## Not verified
 
 Frozen 8-page sample; carry tile 12 (page 11 not in the slices); r4 tiles 5, 6, 8, 9 unchanged; `10/1/7/0/2` now reads -6 on a one-sided jut (not written on these pages).
+
+## 2.255 r2 -- first ledgers against the system's own pitch (lane-2.255-ledger-read 5871f715e; flag still OFF)
+
+Written by the manager from the lane report.
+
+**Cause.** `NOTE_GAP_MAX_SPACES` = 1.5 is a cut-off, not a convention: "this gap has room for one more ledger", which needs two gaps each no shorter than the page's smallest ledger pitch. Litolff draws ledgers at its own pitch (per-system first-gap median 1.04 sp on p10, 1.2 on p6; smallest ≈ 0.75 of median), so the true test is 2 × 0.75 = 1.5 × the system's own median. A fixed 1.5 fits only a page drawn at 1.0 sp (Brahms). **Lesson:** a limit on hand-drawn plates is measured against the page's own pitch; r1's dropped global 1.75 was the same fix with the wrong ruler.
+
+**Built.** `annotate/ledger_grid.local_gap_max` (1.5 × median read ledger-chain gap per (page, system), cap 1.9 sp, needs ≥ 8 gaps, None unless > 1.5 so Brahms is untouched); `count_ledgers_between(gap_max=)` uses it only after the hidden-ledger look finds nothing; `FarHeadPage.read` retries a `count_does_not_fit` once with it. NOT CONFIRMED beyond Litolff: the 0.75 factor and 1.9 cap are Litolff measurements (CLAUDE §4: may only narrow) — reads are currently written plain; whether to write them blue is open until Sean's tiles.
+
+**Measures (2-page dev subset, Litolff p6/p10, Brahms p0/p5).** Control: OFF re-read reproduces the record 629/639 (same 10 as r1) and 714/714. Litolff 11 abstained->read (7 new, all p6); Brahms none. Exported file: 8 Litolff hosts differ, 0 Brahms — 7 corrected pitch or lose blue; 1 note LOST: `10/1/2/9/7` (blue A3, P3) now read by the neighbour staff, overlapping P4's head `10/1/3/9/6` (possible twin drop; untileable, absent from ON file). Judged right->wrong 0, unwritten->wrong 0; Sean's far-head answers 2 new wrong->right (r4 tiles 8, 9). Fast tier 9,731 passed.
+
+**Refutations.** Brahms 219 -> 219. Litolff 179 -> 191: none became an own read, but 12 new rows where the neighbour now reads (8 of them a 1.5-1.7 sp gap the widened limit fits) — these move ownership and need tiles; only `10/1/2/9/7` is written on the dev pages.
+
+**Not fixed, measured.** `10/0/8/10/13`, `10/0/3/6/2`: the ledger is wholly inside the slur/head blob, no separable stroke — stay abstained (counted, blue). `10/1/0/0/10`: hidden behind a chord head; only a one-sided jut shows (the dropped r1 try).
+
+**Tiles** `out/print/2.255-r2-tiles/` (lane branch; 7 changed + 5 controls; key `out/print/2.255-r2-tiles-key.json`). Not run: frozen 8-page sample, whole movement.

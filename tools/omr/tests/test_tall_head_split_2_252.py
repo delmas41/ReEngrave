@@ -1,5 +1,5 @@
 """ROADMAP 2.252 -- a TALL hollow head box is read for the heads inside it by their holes (STAGED GATHER + ADJUDICATE, flag
-`OMR_TALL_HEAD_SPLIT`, default OFF; `tools/omr/staged/box_kind.py` 2b).
+`OMR_TALL_HEAD_SPLIT`, default ON; `tools/omr/staged/box_kind.py` 2b).
 
 The cause (Sean's 2.250 r2 wide tiles 2, 4, 8, 11, 2026-11-01: "two half notes in it a third apart. Both notes have ties attached"):
 the detector boxed a dyad of halves as ONE head box 2-2.6 spaces tall (Litolff p2 `glyph/2/1/1/12/3`, `2/1/2/12/2`, p3 `3/0/4/4/11`,
@@ -117,11 +117,11 @@ class TestSplit(unittest.TestCase):
             out, info = BK.split_tall_heads([d], img, SP, TOP, LINES)
             self.assertEqual((len(out), info), (1, {}), d)
 
-    def test_flag_default_off(self):
+    def test_default_is_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(BK.TALL_ENV, None)
-            self.assertFalse(BK.tall_split_enabled())
-        for val, want in (("1", True), ("on", True), ("0", False), ("", False)):
+            self.assertTrue(BK.tall_split_enabled())
+        for val, want in (("1", True), ("on", True), ("", True), ("0", False), ("false", False), ("no", False), ("off", False)):
             with mock.patch.dict(os.environ, {BK.TALL_ENV: val}):
                 self.assertEqual(BK.tall_split_enabled(), want, val)
 

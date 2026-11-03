@@ -347,7 +347,7 @@ def split_wide_heads(dets, img_no_staff, sp: float, staff_top: float = 0.0):
     return out, info
 
 
-# 2b. ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default OFF): A TALL HEAD BOX IS READ FOR THE HOLLOW HEADS INSIDE IT.
+# 2b. ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): A TALL HEAD BOX IS READ FOR THE HOLLOW HEADS INSIDE IT.
 #    THE CAUSE (benchmarks/omr-arc-binding-2026-10/FINDINGS.md 2026-11-02): the detector boxed a DYAD of half notes a third apart (two
 #    heads in one column, each tied -- Sean's 2.250 r2 wide tiles 2, 4, 8, 11) as ONE head box 2-2.6 spaces tall. No stage reads a TALL
 #    head box for the heads inside (2.245 reads WIDE ones only), so the dyad is ONE note at the box centre's step -- between its two
@@ -381,8 +381,8 @@ REASON_TALL = "taller_than_a_head"
 
 
 def tall_split_enabled() -> bool:
-    """`OMR_TALL_HEAD_SPLIT` (ROADMAP 2.252), default OFF; an explicit on-word enables."""
-    return os.environ.get(TALL_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_TALL_HEAD_SPLIT` (ROADMAP 2.252), default ON since 2026-11-02; an explicit 0/false/no/off disables."""
+    return os.environ.get(TALL_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def cell_ink(image):
