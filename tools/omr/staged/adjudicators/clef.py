@@ -520,7 +520,7 @@ MID_SYSTEM_CLEF_X_PX = 1000.0     # 45 staff spaces in the cell frame (22.4 px a
 
 
 def _c_clef_read_on() -> bool:
-    return os.environ.get("OMR_C_CLEF_READ", "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get("OMR_C_CLEF_READ", "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _detector_terms(ev: Evidence
@@ -554,7 +554,7 @@ def _detector_terms(ev: Evidence
         pos_row = placed.get(float(row.detail.get("y_center", -1e9)))
         on_staff = _stands_on_this_staff(pos_row)
 
-        # ROADMAP 2.257 (flag OMR_C_CLEF_READ, default OFF): this verdict is the staff's HEADER clef. A detector clef box far
+        # ROADMAP 2.257 (flag OMR_C_CLEF_READ, default ON since 2026-11-03, deny-list): this verdict is the staff's HEADER clef. A detector clef box far
         # to the right of the header (cell frame, staff span constant: 22.4 px a space; header clef at 15-18 sp, key and
         # meter end before ~40 sp) is a clef CHANGE inside the system -- 2.251 claims and carries it -- and must not vote
         # on the header: Litolff p6 staff 3 read tenor at the header (locator 2 x 0.95, detector clefCTenor) and was tied

@@ -291,3 +291,17 @@ class TestTheIncumbentSetAdmittedASpellingThatNeverFires(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+def test_c_clef_read_flags_default_on(monkeypatch):
+    """ROADMAP 2.257 (2026-11-03): OMR_C_CLEF_READ is default ON, deny-list; OMR_WHOLE_REST_OWN_STAFF stays OFF."""
+    from tools.omr import clef_locator
+    from tools.omr.staged.adjudicators import clef as clef_adj, rhythm
+    monkeypatch.delenv("OMR_C_CLEF_READ", raising=False)
+    assert clef_locator._c_clef_read_on() and clef_adj._c_clef_read_on()
+    for v in ("0", "false", "no", "off"):
+        monkeypatch.setenv("OMR_C_CLEF_READ", v)
+        assert not clef_locator._c_clef_read_on() and not clef_adj._c_clef_read_on()
+    assert rhythm.WHOLE_REST_OWN_STAFF_ENV == "OMR_WHOLE_REST_OWN_STAFF"
+    monkeypatch.delenv("OMR_WHOLE_REST_OWN_STAFF", raising=False)
+    assert not rhythm._whole_rest_own_staff_on()

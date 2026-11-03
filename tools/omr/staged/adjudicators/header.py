@@ -440,7 +440,7 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
                  if not _keysig_marker_glyph_refused(ev, subject, m))
     fifths, reason, detail = _marker_run(marks, _cell0_space(ev, subject), clef.value)
 
-    # ⚠️ ROADMAP 2.256 (flag `OMR_KEY_HEADER_INK`, default OFF): the detector boxed 1-2 of three crushed flats; GATHER's key object had
+    # ⚠️ ROADMAP 2.256 (flag `OMR_KEY_HEADER_INK`, default ON since 2026-11-03): the detector boxed 1-2 of three crushed flats; GATHER's key object had
     # already read the header ink (raster pieces + boxes) and filed its own slot count for this staff. It only RAISES a clean one-kind run
     # (the kind stays the detector's); the system and part checks below judge the raised value like any other.
     key_ink = None

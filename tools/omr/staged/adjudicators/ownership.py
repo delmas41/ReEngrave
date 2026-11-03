@@ -3118,7 +3118,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     if relation == "conflict" and sa is not None and sb is not None and abs(sa - sb) == 1:
         from .. import head_hole_position as _hhp
         if _hhp.r6_enabled():
-            # ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`, default OFF): the two ends stand at ONE height but read two adjacent
+            # ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`, default ON): the two ends stand at ONE height but read two adjacent
             # steps, and exactly one end's OWN readings disagree (its single hole stands at the other end's step; Sean's r5 tile 3:
             # `11/1/1/0/8` box on the top line, hole 0.59, tied to a head whose hole reads the top space). Which head is wrong is not
             # read here and the tie is not a witness (never move a head to match its partner): the arc is written as NEITHER kind and

@@ -7,7 +7,7 @@ an arc opening the slit (tile 4, not fixed: nothing to read). In two more (Litol
 joined a dyad's two slits round a line, one of them inside the neighbour's box. Brahms tile 12's lower tie lies along a staff line and
 was refused as one while the page-wide trace read it as a bowed tie.
 
-Flags: `OMR_HEAD_HOLE_POSITION` (r4 flag, r5 revisions ride on it) and `OMR_ARC_TRACE_NOT_A_LINE`, both default OFF.
+Flags: `OMR_HEAD_HOLE_POSITION` (r4 flag, r5 revisions ride on it) and `OMR_ARC_TRACE_NOT_A_LINE`, both default ON.
 """
 from __future__ import annotations
 

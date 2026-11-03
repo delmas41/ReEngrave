@@ -1,4 +1,4 @@
-"""ROADMAP 2.252 r6 (STAGED; rides `OMR_HEAD_HOLE_POSITION`, default OFF): a staff line found LOCALLY through an arc box on a tilted
+"""ROADMAP 2.252 r6 (STAGED; rides `OMR_HEAD_HOLE_POSITION`, default ON): a staff line found LOCALLY through an arc box on a tilted
 staff (Sean's r5 tile 10: a 'tie' box on the fourth line kept as an arc), and a head whose own two readings name two positions."""
 import os
 import unittest

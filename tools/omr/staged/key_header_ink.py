@@ -1,6 +1,6 @@
 """The key signature's slot count READ from the header ink the page already measured -- ROADMAP 2.256 (STAGED ADJUDICATE; GATHER rows only read).
 
-Flag `OMR_KEY_HEADER_INK` (default OFF; "1"/"true"/"yes"/"on" turns it on).
+Flag `OMR_KEY_HEADER_INK` (default ON since 2026-11-03; "0"/"false"/"no"/"off" turns it off).
 
 CAUSE (benchmarks/key-header-2026-11/FINDINGS.md): on Litolff the three key flats are printed crushed together and the detector boxes only one or
 two of them (the third, lowest, flat has no box). `adjudicate_key_signature` counts the detector's `Q.KEYSIG_MARKER` slots (`_marker_run`), reads
@@ -29,7 +29,8 @@ SOURCE = "system_key_object"
 
 
 def enabled() -> bool:
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    # ROADMAP 2.256 (Sean, 2026-11-03, "Land whatever is ready"): default ON, deny-list ("0"/"false"/"no"/"off" turns it off)
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def key_object_of(rows: Sequence[Any]) -> Optional[Dict[str, Any]]:

@@ -503,7 +503,7 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(),
     for i, d in enumerate(dets):
         if only is not None and i not in only:
             continue
-        # ROADMAP 2.252 r5 (`black_too`, rides on `OMR_HEAD_HOLE_POSITION`, default OFF): the detector calls Litolff's hollow heads BLACK
+        # ROADMAP 2.252 r5 (`black_too`, rides on `OMR_HEAD_HOLE_POSITION`, default ON): the detector calls Litolff's hollow heads BLACK
         # (r4), so a tall BLACK box is read too -- its holes are the evidence it is hollow (a filled head has none, and nothing is read);
         # Sean's r4 tile 9: a black box round a dyad of halves and their stem (Litolff p10 `10/1/2/0/10`) read as ONE head between them
         if not ((is_hollow_head_class(d.smufl_name) or (black_too and str(d.smufl_name).startswith("noteheadBlack")))

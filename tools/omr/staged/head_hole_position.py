@@ -1,6 +1,6 @@
 """A hollow head's staff position from its own HOLE where its detector box does not centre on it -- ROADMAP 2.252 r4 (STAGED GATHER).
 
-Flag `OMR_HEAD_HOLE_POSITION` (default OFF; "1"/"true"/"yes"/"on" turns it on).
+Flag `OMR_HEAD_HOLE_POSITION` (default ON since 2.252 r6, 2026-11-03; "0"/"false"/"no"/"off" turns it off).
 
 CAUSE (benchmarks/omr-arc-binding-2026-10/FINDINGS.md, 2.252 r4 census): of the printed ties we still write as slurs or refuse, the
 largest share have a head whose STAFF POSITION was read at its detector BOX's centre while the box does not centre on the head: a box

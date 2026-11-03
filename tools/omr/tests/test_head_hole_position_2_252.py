@@ -1,5 +1,5 @@
 """ROADMAP 2.252 r4 -- a hollow head's staff position from its own HOLE where the detector box does not centre on it (STAGED GATHER,
-flag `OMR_HEAD_HOLE_POSITION`, default OFF; `tools/omr/staged/head_hole_position.py`).
+flag `OMR_HEAD_HOLE_POSITION`, default ON; `tools/omr/staged/head_hole_position.py`).
 
 The cause (2.252 r4 census, Litolff p10-11): a tie's head box CLIPPED (the box holds the lower part of the oval) or TALL (head + stem)
 reads its position at the box centre, a step off the head, and the tie is written as a slur or refused. The hole is at the head's

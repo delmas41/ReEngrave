@@ -10,13 +10,13 @@ def _row(own, system=3, more=False, pieces=None, reader="cv_key_object", source=
     return SimpleNamespace(reader=reader, detail={"source": source, "key_object": ko})
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(K.ENV, raising=False)
-    assert not K.enabled()
-    for v in ("1", "true", "YES", "on"):
+    assert K.enabled()
+    for v in ("1", "true", "YES", "on", ""):
         monkeypatch.setenv(K.ENV, v)
         assert K.enabled()
-    for v in ("", "0", "off", "no"):
+    for v in ("0", "false", "off", "No"):
         monkeypatch.setenv(K.ENV, v)
         assert not K.enabled()
 

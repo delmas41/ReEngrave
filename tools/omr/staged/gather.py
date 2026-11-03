@@ -1527,7 +1527,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     # a CANDIDATE (`ink_centre_position_float`) for `restate_pitch`, which writes the head GUESSED where its ledger count abstained.
     # It never moves the position row (a far head is placed by its ledger lines only).
     far_guess_on = head_extent.far_guess_enabled()
-    # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a hollow head's position from its one hole where the box centre is
+    # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default ON): a hollow head's position from its one hole where the box centre is
     # elsewhere (`head_hole_position`).
     from . import head_hole_position as _hole_pos
     hole_on = _hole_pos.enabled()
@@ -1599,7 +1599,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
-            # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default OFF): a HOLLOW head whose one hole (cell raster, lines in) and own
+            # ROADMAP 2.252 r4 (flag OMR_HEAD_HOLE_POSITION, default ON): a HOLLOW head whose one hole (cell raster, lines in) and own
             # ink centre (page raster) stand at another position than its box centre is at its hole's position; never over 2.73's.
             if hole_on and not cut_rows and _hole_pos.is_candidate(d.smufl_name):
                 pbh = _page_box(c, d)
@@ -9140,7 +9140,7 @@ ARC_INK_LINE_SNAP_MIN_FILL = 0.5
 ARC_INK_LINE_MAX_HALF_STROKE_SPACES = 0.4
 #: A column holds ink only with at least this many ink pixels in it.
 ARC_INK_MIN_COLUMN_PX = 2
-#: ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`, default OFF): a staff line whose STAFF-WIDE y falls just outside the box can still
+#: ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`, default ON): a staff line whose STAFF-WIDE y falls just outside the box can still
 #: run through it where the staff tilts (Litolff p3 staff `3/1/5`: skew 6 px; at x 1150 its lines stand 6-8 px below the staff's
 #: values, and a 5 px "tie" box lying on the fourth line read `lines_in_box` 0 and coverage 1.0 -- kept as an arc and paired as a tie,
 #: Sean's r5 tile 10). Such a line is looked for this far past the pad, and taken only where a box row is ink across this share of
