@@ -33,6 +33,7 @@ import numpy as np
 
 ENV = "OMR_CLEF_PAGEWIDE"
 ENV_CARRY = "OMR_CLEF_CARRY"
+ENV_DOT_FUSED = "OMR_CLEF_DOT_FUSED"
 SOURCE = "clef_pagewide"
 
 #: the named line is searched this close to the bar's middle (under half a space: never a neighbouring line)
@@ -76,6 +77,13 @@ LOCAL_LINE_WINDOW_SPACES = 4.0
 KINDS_READ = {"F": (4,), "C": (3, 4)}
 #: a column of the dot window holding an unbroken raw ink run this long (staff spaces) is a stem / barline: cleared before the dots
 DOT_STROKE_CLEAR_SPACES = 1.8
+#: ROADMAP 2.251 step 3: a STROKE (stem, barline) runs on past the staff; the F clef's dots stand between two lines and, in a fat print,
+#: fuse with the lines above and below (Litolff bar 111: a column of 2.4 sp of raw ink that is two dots and two lines). A column is a stroke
+#: only where its ink also stands in the band this far (from .. to, staff spaces) above the top line or below the bottom line of the
+#: window the dots are read in (F line +/- 1.0 sp are the lines either side of the F line)
+DOT_STROKE_BEYOND_SPACES = (1.3, 1.7)
+#: a dot is a blob: its ink fills at least this share of its box (a disc 0.79; a crescent a dot fused to a line leaves 0.45+)
+DOT_MIN_FILL = 0.40
 #: the F body: pieces starting at most this far (staff spaces) left of its largest piece
 F_BODY_LEFT_REACH_SPACES = 0.6
 #: a dot candidate whose centre column holds an unbroken ink run this long (staff spaces, lines included) is a stroke's piece
@@ -87,6 +95,26 @@ HEADER_WINDOW_SPACES = 6.0
 def enabled() -> bool:
     """`OMR_CLEF_PAGEWIDE` (ROADMAP 2.251 step 1), default ON (Sean 2026-11-02 "Land"); an explicit 0/false/no/off disables."""
     return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def dot_fused_enabled() -> bool:
+    """`OMR_CLEF_DOT_FUSED` (ROADMAP 2.251 step 3), default OFF while it is measured: the dot finder cuts a dot free of a stroke only where
+    the stroke runs on past the staff (`_stroke_columns`), so dots that fuse with the lines either side are seen."""
+    return os.environ.get(ENV_DOT_FUSED, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _stroke_columns(ink: np.ndarray, yc: float, x0: int, x1: int, sp: float) -> np.ndarray:
+    """Which page columns x0..x1 are a stroke at the F line yc (page px): ink in the band `DOT_STROKE_BEYOND_SPACES` above the top line or
+    below the bottom line of the window (the lines one space either side of the F line). The dots stand between those two lines and never
+    reach the bands; a stem or a barline through the dots does."""
+    H = ink.shape[0]
+    lo, hi = DOT_STROKE_BEYOND_SPACES
+    out = np.zeros(max(0, x1 - x0), dtype=bool)
+    for a, b in ((yc - hi * sp, yc - lo * sp), (yc + lo * sp, yc + hi * sp)):
+        ya, yb = max(0, int(round(a))), min(H, int(round(b)))
+        if yb > ya:
+            out |= ink[ya:yb, x0:x1].any(axis=0)
+    return out
 
 
 def carry_enabled() -> bool:
@@ -273,8 +301,9 @@ def _dot_mask(ink: np.ndarray, y0: int, y1: int, x0: int, x1: int, lines: Sequen
     runs that far down one column."""
     half = max(1, int(round(LINE_HALF_SPACES * sp)))
     sub = _without_lines(ink[y0:y1, x0:x1], [int(round(l)) - y0 for l in lines], half, full_rows_only=True)
+    beyond = _stroke_columns(ink, float(lines[1]), x0, x1, sp) if dot_fused_enabled() else None
     for j in range(sub.shape[1]):
-        if _longest_run(ink[y0:y1, x0 + j])[0] >= DOT_STROKE_CLEAR_SPACES * sp:
+        if _longest_run(ink[y0:y1, x0 + j])[0] >= DOT_STROKE_CLEAR_SPACES * sp and (beyond is None or beyond[j]):
             sub[:, j] = False
     return sub.astype(np.uint8)
 
@@ -320,7 +349,8 @@ def f_line(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: fl
         if C.dot_min_size_spaces <= bw <= C.dot_max_size_spaces and C.dot_min_size_spaces <= bh <= C.dot_clear_max_height_spaces:
             cx = x0 + st[i, cv2.CC_STAT_LEFT] + bw * sp / 2.0
             # a piece of a stem or barline the line clearing cut is no dot: its column runs on through the lines in the raw ink
-            if _longest_run(ink[y0:y1, int(cx)])[0] >= DOT_NOT_A_STROKE_SPACES * sp:
+            if _longest_run(ink[y0:y1, int(cx)])[0] >= DOT_NOT_A_STROKE_SPACES * sp and (
+                    not dot_fused_enabled() or bool(_stroke_columns(ink, float(lines[1]), int(cx), int(cx) + 1, sp)[0])):
                 continue
             dots.append((cx, y0 + st[i, cv2.CC_STAT_TOP] + bh * sp / 2.0, x0 + st[i, cv2.CC_STAT_LEFT] + st[i, cv2.CC_STAT_WIDTH]))
     best = None
@@ -440,7 +470,7 @@ NOBOX_DOT_MAX_WIDTH_SPACES = 0.9
 DOT_LINE_RUN_SPACES = 1.2
 
 
-def _dot_mask_runs(ink: np.ndarray, y0: int, y1: int, x0: int, x1: int, sp: float) -> np.ndarray:
+def _dot_mask_runs(ink: np.ndarray, y0: int, y1: int, x0: int, x1: int, sp: float, yc: Optional[float] = None) -> np.ndarray:
     """The window's ink as the no-box dot reader sees it: every HORIZONTAL run of `DOT_LINE_RUN_SPACES` or more cleared (a staff line,
     however it tilts, or a beam) and every column holding an unbroken vertical run of `DOT_STROKE_CLEAR_SPACES` or more cleared (a
     stem, a barline). Unlike `_dot_mask` it does not depend on where the window starts (the row-share line test did: Litolff bar 38's
@@ -455,6 +485,8 @@ def _dot_mask_runs(ink: np.ndarray, y0: int, y1: int, x0: int, x1: int, sp: floa
     kv = max(3, int(round(DOT_STROKE_CLEAR_SPACES * sp)))
     strokes = cv2.morphologyEx(ink[y0:y1, x0:x1].astype(np.uint8), cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, kv)))
     cols = strokes.any(axis=0)
+    if yc is not None and dot_fused_enabled():
+        cols = cols & _stroke_columns(ink, float(yc), x0, x1, sp)[:cols.shape[0]]
     out[:, cols] = 0
     return out
 
@@ -475,18 +507,23 @@ def f_dot_pairs(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x
         xb = min(W, int(xa + F_SCAN_WINDOW_SPACES * sp))
         ll = local_lines(ink, lines, sp, (xa + xb) / 2.0)
         y0, y1 = max(0, int(ll[1] - 1.4 * sp)), min(H, int(ll[1] + 1.4 * sp))
-        sub = _dot_mask_runs(ink, y0, y1, xa, xb, sp)
+        sub = _dot_mask_runs(ink, y0, y1, xa, xb, sp, ll[1])
         n, _lab, st, _c = cv2.connectedComponentsWithStats(sub, connectivity=8)
+        dtm = cv2.distanceTransform(sub, cv2.DIST_L2, 3)
         dots = []
         for i in range(1, n):
             bw, bh = st[i, cv2.CC_STAT_WIDTH] / sp, st[i, cv2.CC_STAT_HEIGHT] / sp
             if not (C.dot_min_size_spaces <= bw <= NOBOX_DOT_MAX_WIDTH_SPACES and C.dot_min_size_spaces <= bh <= C.dot_clear_max_height_spaces):
                 continue
             cx = xa + st[i, cv2.CC_STAT_LEFT] + bw * sp / 2.0
-            if _longest_run(ink[y0:y1, int(cx)])[0] >= DOT_NOT_A_STROKE_SPACES * sp:
+            if _longest_run(ink[y0:y1, int(cx)])[0] >= DOT_NOT_A_STROKE_SPACES * sp and (
+                    not dot_fused_enabled() or bool(_stroke_columns(ink, float(ll[1]), int(cx), int(cx) + 1, sp)[0])):
                 continue
+            if dot_fused_enabled() and st[i, cv2.CC_STAT_AREA] < DOT_MIN_FILL * st[i, cv2.CC_STAT_WIDTH] * st[i, cv2.CC_STAT_HEIGHT]:
+                continue                                       # a sliver of a line or a curve, not a blob
+            rad = float(dtm[_lab == i].max()) / sp
             dots.append((cx, y0 + st[i, cv2.CC_STAT_TOP] + bh * sp / 2.0, xa + st[i, cv2.CC_STAT_LEFT],
-                         xa + st[i, cv2.CC_STAT_LEFT] + st[i, cv2.CC_STAT_WIDTH]))
+                         xa + st[i, cv2.CC_STAT_LEFT] + st[i, cv2.CC_STAT_WIDTH], rad))
         for a in range(len(dots)):
             for b in range(a + 1, len(dots)):
                 up, lo = (dots[a], dots[b]) if dots[a][1] < dots[b][1] else (dots[b], dots[a])
@@ -500,10 +537,18 @@ def f_dot_pairs(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x
                 if snapped is None or snapped[0] != 4 or snapped[1] > DEFAULT_CONFIG.max_residual:
                     continue
                 xl, xr = min(up[2], lo[2]), max(up[3], lo[3])
-                if any(abs(p["x_left"] - xl) < 0.3 * sp and abs(p["y_mid"] - mid) < 0.3 * sp for p in out):
-                    continue                                   # the same pair seen from two overlapping windows
+                rad = min(up[4], lo[4])
+                dup = [p for p in out if abs(p["x_left"] - xl) < 0.3 * sp and abs(p["y_mid"] - mid) < 0.3 * sp]
+                if dup:
+                    # the same pair seen from two overlapping windows: with OMR_CLEF_DOT_FUSED the whole one (the larger radius) stands
+                    # -- a window edge clips a dot, and the clipped copy was the one kept
+                    if dot_fused_enabled() and rad > dup[0].get("radius", 0.0) + 0.02:
+                        out.remove(dup[0])
+                    else:
+                        continue
                 out.append({"x_left": float(xl), "x_right": float(xr), "y_mid": float(mid), "residual": float(snapped[1]),
-                            "dots": [[round(float(v), 1) for v in up], [round(float(v), 1) for v in lo]], "lines_local": ll})
+                            "dots": [[round(float(v), 1) for v in up[:4]], [round(float(v), 1) for v in lo[:4]]],
+                            "radius": round(min(up[4], lo[4]), 3), "lines_local": ll})
         if xb >= int(x1):
             break
         xa += step
