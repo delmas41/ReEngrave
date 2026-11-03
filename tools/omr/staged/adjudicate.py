@@ -26,7 +26,7 @@ from enum import Enum
 from typing import (Any, Callable, Dict, FrozenSet, List, Optional,
                     Sequence, Set, Tuple, Union)
 
-from .record import (ABSTAIN, Abstention, Candidate, Kind, Log, Observation,
+from .record import (ABSTAIN, Abstention, Candidate, Kind, LazyBasis, Log, Observation,
                      Outcome, Q, READERS, Scope, State, Subject, Verdict)
 
 
@@ -849,9 +849,9 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         candidates = ()          # a single survivor is not a narrowing
 
     considered = tuple(dict.fromkeys(ev._seen))
-    basis: Set[str] = set(considered)
-    for rid in considered:
-        basis |= log.closure(rid)
+    # ROADMAP 2.249: the basis is `considered` plus each considered row's closure -- held as `considered` alone
+    # (`record.LazyBasis`) and spelled out, sorted, only when read; it grew with pages x pages when stored.
+    basis = LazyBasis(log, considered)
 
     prior = log.verdict(spec.quantity, subject) if spec.revises else None
 
@@ -865,7 +865,7 @@ def adjudicate_one(log: Log, spec: DecisionSpec, subject: Subject) -> Verdict:
         declined=tuple(sorted(ev._declined)),
         excluded=tuple(ev._excluded),
         correlated=ev.correlated_groups(),
-        basis=tuple(sorted(basis)),
+        basis=basis,
         margin=margin,
         supersedes=prior.id if prior is not None else None,
         detail=dict(ruling.detail),
@@ -1352,6 +1352,8 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # `OMR_AUG_DOT_JOIN` is switched off (default ON, Sean 2026-10-14).
             from .adjudicators import aug_dot_join as _aug
             _aug.reconcile_unjoined_dots(log)
+        # ROADMAP 2.249: the closure memo is bounded (`record.CLOSURE_MEMO_MAX_IDS`, least recently used out) and is
+        # NOT dropped per quantity any more: the next quantity, GROUPS and INFER re-walk the same document-wide rows.
         if progress:
             print(f"  adjudicate {quantity}: {len(out)} verdicts so far")
     return out

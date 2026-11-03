@@ -26,6 +26,7 @@ from . import adjudicate, evaluate, gather, groups
 # `_ensure_rules`, so importing it here is cheap regardless of which of its
 # rules (each gated by its own flag) end up firing.
 from . import infer
+from . import run_meter
 from .record import Kind, Log, Outcome, Q, Subject, Verdict
 
 
@@ -70,6 +71,47 @@ def prepare_pages(pdf_path: str, pages: Sequence[int], *,
         remove_staff_lines(cells)
         out.append((pws, cells))
     return out
+
+
+class PreparedPages:
+    """⚠️ ROADMAP 2.249: the pages of a run, PREPARED ONE AT A TIME as GATHER reaches them and let go when it moves on.
+
+    `prepare_pages` renders and cuts EVERY page before the first is gathered and the list lives until the run ends;
+    measured on Brahms (benchmarks/memory-2026-11/FINDINGS.md) that held ~4 GB per page -- the whole movement could not
+    fit in 64 GB before a single verdict was made. A page's preparation reads nothing but the PDF and that page
+    (`render_page` -> `detect_staves` -> `extract_measures` -> `remove_staff_lines`), so preparing it just before its
+    GATHER instead of all at the start gives GATHER the same pages in the same order; the record is the same.
+
+    `make(p)` returns `prepare_pages`' list for page `p` alone (or `[]`); `page_indices()` answers
+    `gather._run_page_indices` without preparing anything. Each page's prepare/gather seconds go to `run_meter`.
+    """
+
+    def __init__(self, pages: Sequence[int], make) -> None:
+        self._pages = list(pages)
+        self._make = make
+
+    def __len__(self) -> int:
+        return len(self._pages)
+
+    def page_indices(self):
+        return sorted(set(self._pages)) or None
+
+    def __iter__(self):
+        import time
+        total = len(self._pages)
+        for n, p in enumerate(self._pages, 1):
+            t = time.time()
+            items = self._make(p)
+            prep = time.time() - t
+            while items:
+                item = items.pop(0)     # the list keeps no reference once GATHER holds the page
+                t = time.time()
+                yield item
+                item = None
+                m = run_meter.current()
+                if m is not None:
+                    m.page_done(p, n, total, prep, time.time() - t)
+                prep = 0.0
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -168,7 +210,8 @@ def decide(log, *, progress: bool = False, after_adjudicate=None,
             f"caller, before decide() is ever invoked.")
     if progress:
         print("ADJUDICATE")
-    verdicts = adjudicate.run(log, progress=progress)
+    with run_meter.stage("adjudicate"):
+        verdicts = adjudicate.run(log, progress=progress)
 
     # On THIS log, before any consequence can restate a value. See the
     # docstring -- the position is load-bearing, not incidental. The caller
@@ -188,11 +231,13 @@ def decide(log, *, progress: bool = False, after_adjudicate=None,
     # than what a consequence later restated.
     if progress:
         print("GROUPS")
-    agreement = groups.run(log, progress=progress)
+    with run_meter.stage("groups"):
+        agreement = groups.run(log, progress=progress)
 
     if progress:
         print("EVALUATE")
-    report = evaluate.run(log, progress=progress)
+    with run_meter.stage("evaluate"):
+        report = evaluate.run(log, progress=progress)
 
     if not _stage_allowed(through, "infer"):
         return {"verdicts": verdicts, "agreement": agreement,
@@ -221,7 +266,8 @@ def decide(log, *, progress: bool = False, after_adjudicate=None,
     if infer.stage_should_run():
         if progress:
             print("INFER")
-        inference_report = infer.run(log, report, progress=progress)
+        with run_meter.stage("infer"):
+            inference_report = infer.run(log, report, progress=progress)
 
         # ⚠️⚠️ THE SECOND EVALUATE PASS, BOUNDED TO WHAT INFER JUST WROTE
         # (roadmap 2.10). INFER runs AFTER EVALUATE, and a notehead's PITCH is
@@ -244,8 +290,9 @@ def decide(log, *, progress: bool = False, after_adjudicate=None,
         # answering it is a second thing to keep in step.
         if progress:
             print("EVALUATE (bounded, over the inferred values)")
-        reevaluation_report = evaluate.run_over(
-            log, infer.inferred_verdicts(log), progress=progress)
+        with run_meter.stage("evaluate_bounded"):
+            reevaluation_report = evaluate.run_over(
+                log, infer.inferred_verdicts(log), progress=progress)
 
     return {"verdicts": verdicts, "agreement": agreement,
             "evaluation": report, "inference": inference_report,
@@ -264,7 +311,7 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                movements: Any = None,
                legacy: Optional[Dict[str, Dict[str, Any]]] = None,
                progress: bool = False, through: str = "infer",
-               cell_map: Any = None) -> Dict[str, Any]:
+               cell_map: Any = None, lazy_basis: bool = False) -> Dict[str, Any]:
     """GATHER -> ADJUDICATE -> EVALUATE, once, in that order.
 
     `cell_map` (ROADMAP 2.231): a master cell map directory; the pages are LOADED from it (`cell_map.load_prepared`,
@@ -296,8 +343,11 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
     if cell_map:
         from . import cell_map as _cell_map
         prepared = _cell_map.load_prepared(pdf_path, pages, dpi=dpi, root=cell_map)
+        _loaded = iter(prepared)       # eager (the master is loaded and checked whole); metered page by page
+        prepared = PreparedPages(pages, lambda _p: [next(_loaded)])
     else:
-        prepared = prepare_pages(pdf_path, pages, dpi=dpi)
+        # ROADMAP 2.249: one page at a time (`PreparedPages`), never all of them at once.
+        prepared = PreparedPages(pages, lambda p: list(prepare_pages(pdf_path, [p], dpi=dpi)))
     return run_staged_on(prepared, detector=detector,
                          conf_threshold=conf_threshold, imgsz=imgsz,
                          dossier=dossier, roster=roster, pdf_path=pdf_path,
@@ -307,7 +357,8 @@ def run_staged(pdf_path: str, pages: Sequence[int], *,
                          ink_component_rows=ink_component_rows,
                          input_domain_classification=input_domain_classification,
                          movements=movements,
-                         legacy=legacy, progress=progress, through=through)
+                         legacy=legacy, progress=progress, through=through,
+                         lazy_basis=lazy_basis)
 
 
 def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
@@ -321,8 +372,11 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
                   movements: Any = None,
                   through: str = "infer",
                   legacy: Optional[Dict[str, Dict[str, Any]]] = None,
-                  progress: bool = False) -> Dict[str, Any]:
+                  progress: bool = False, lazy_basis: bool = False) -> Dict[str, Any]:
     """The stages, over pages someone else prepared.
+
+    `lazy_basis` (ROADMAP 2.249): `result["record"]`'s ADJUDICATE verdicts carry their `record.LazyBasis` rather than
+    the spelled-out list (`Log.to_json`) -- for the CLI, whose writer and exporter read it as the list.
 
     Split out so a test can drive the whole pipeline on a synthesized page
     with no PDF, no weights and no venv -- which is what makes the coherence
@@ -349,6 +403,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     measurement, and a defensible one, but it is not the one the old code
     took and it must not change silently.
     """
+    run_meter.start()        # ROADMAP 2.249: per-page / per-stage seconds + RSS, flushed to stderr; never read by a stage
     if progress:
         print("GATHER")
         print(_rung_header(surya_fallback, ocr_fallback))
@@ -366,7 +421,7 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     # consumer asks for it, or when the worker will not start -- in which
     # case every call spawns one-shot exactly as before.
     from ..staff_labels_surya import worker_session
-    with worker_session():
+    with worker_session(), run_meter.stage("gather"):
         log = gather.gather(prepared, detector=detector,
                             conf_threshold=conf_threshold, imgsz=imgsz,
                             dossier=dossier, roster=roster, pdf_path=pdf_path,
@@ -385,8 +440,9 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     # its docstring). `log` is already frozen by `gather.gather()` above,
     # exactly as it is on every other path.
     if through == "gather":
+        run_meter.finish()
         return {
-            "record": log.to_json(),
+            "record": log.to_json(lazy_basis=lazy_basis),
             "summary": log.summary(),
             "adjudication": _adjudication_report(log, ()),
             "stubs": {"decisions": [], "consequences": []},
@@ -404,9 +460,13 @@ def run_staged_on(prepared: Sequence[Tuple[Any, Sequence[Any]]], *,
     reevaluation_report = decided["reevaluation"]
     divergence_report = decided["divergence"]
     stopped_after = decided["stopped_after"]
+    run_meter.finish()
+    # ROADMAP 2.249: every stage has run; the closure memos are pure and nothing below asks for them, so they are let go
+    # before `to_json` builds the record beside the log (the run's high-water mark).
+    log.release_closure_memo(quantities=True)
 
     return {
-        "record": log.to_json(),
+        "record": log.to_json(lazy_basis=lazy_basis),
         "summary": log.summary(),
         "adjudication": _adjudication_report(log, verdicts),
         # ⚠️ Redundant groups: several witnesses to ONE fact, and whether they

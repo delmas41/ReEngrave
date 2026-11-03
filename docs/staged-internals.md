@@ -73,6 +73,21 @@ never overturns a DECIDED one. EXPORT refuses to argmax a narrowing.
   error, so a reader runs after every producer it reads and the forced edges
   are DERIVED from those reads (`gather.gather`'s docstring), never counted
   (A-GATHER-1 said three; the tree held eleven, one backwards -- ROADMAP 2.58).
+- **The basis is DERIVED for ADJUDICATE verdicts** (ROADMAP 2.249 m8, Sean
+  2026-11-02; record `format: 2`). An ADJUDICATE verdict's basis is its
+  `considered` rows plus everything those rest on. The file stores only
+  `considered` and marks the verdict `basis_from: "considered"`. In memory
+  the basis is a `record.LazyBasis`; a loaded record gets a
+  `record_io.RecordBasis`. Both are spelled out (sorted, as format 1 stored
+  them) only when read. Any other row's `basis` (readings' `derived_from`,
+  EVALUATE/INFER verdicts) is stored as before. A record with no `format`
+  key is format 1: every basis is spelled out and read as stored. Why: a
+  verdict that consults a document-wide verdict carries every page in its
+  closure, so stored bases grew with the square of the page count (Brahms
+  record 1.5 GB on 4 pages, 35.5 GB on 27). Pooling (`record_io`) stays for
+  `considered` and `correlated`, which repeat per system. Compare two
+  records across formats with `benchmarks/memory-2026-11/same_record.py`,
+  not by bytes.
 - **Provenance**: every record is stamped with the commit and `dirty`. A
   record from a dirty tree, or with `dirty is None`, is not a baseline.
 - **`Evidence.correlated_groups`**: rows from one reader on one crop are ONE

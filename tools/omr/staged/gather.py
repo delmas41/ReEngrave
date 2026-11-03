@@ -17295,6 +17295,9 @@ def _run_page_indices(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]]):
     returns `unknown` -- a clean, believable abstention that would mean *this
     document has no domain* when it means *we could not name its pages*.
     """
+    page_indices = getattr(pws_and_cells, "page_indices", None)
+    if callable(page_indices):       # ROADMAP 2.249: `pipeline.PreparedPages` names its pages without preparing them
+        return page_indices()
     idx = []
     for pws, _cells in pws_and_cells:
         page = getattr(pws, "page", None)

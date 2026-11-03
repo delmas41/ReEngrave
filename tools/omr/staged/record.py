@@ -3396,6 +3396,85 @@ class Abstention:
                 "detail": dict(self.detail)}
 
 
+#: ROADMAP 2.249: spelled-out `LazyBasis` tuples kept, by ids held, least recently used out first -- speed only.
+SPELLED_KEEP_IDS = 20_000_000
+_SPELLED: "collections.OrderedDict" = __import__("collections").OrderedDict()
+_SPELLED_IDS = [0]
+
+
+class LazyBasis(Sequence):
+    """⚠️ ROADMAP 2.249: an ADJUDICATE verdict's `basis` -- `considered` plus the closure of every considered row --
+    held as the `considered` ids alone and spelled out (sorted, exactly as the tuple it replaces) only when read.
+
+    WHY. A verdict that consults a document-wide verdict (key, clef, staff identity, meter) inherits every page's
+    rows in its closure, so the spelled-out basis grows with the PAGE COUNT and the sum over all verdicts with its
+    square: 11,390 ids per `arc_owner` verdict on 4 Brahms pages, 37% of them on other pages
+    (benchmarks/memory-2026-11/FINDINGS.md); the 27-page movement's ADJUDICATE peaked at 46 GB. The set itself is a
+    function of the `considered` graph (`Log.closure` walks it), so nothing is lost by not storing it.
+
+    It behaves as the sorted tuple: iteration, `len`, indexing, `in`, `==` with a tuple or list, `hash`, `bool`.
+    The spelled-out tuple is not kept (that is the point); `len` is remembered once known."""
+
+    __slots__ = ("_log", "considered", "_n")
+
+    def __init__(self, log: "Log", considered: Sequence[str]) -> None:
+        self._log = log
+        self.considered = tuple(considered)
+        self._n: int | None = None
+
+    def ids(self) -> set:
+        out = self._log.closure_of_many(self.considered)
+        if self._n is None:
+            self._n = len(out)
+        return out
+
+    def _t(self) -> tuple:
+        # SPEED ONLY: the writer reads one basis several times (its group's pool plan, the encoding, its own check,
+        # the encoder); recently spelled bases are kept up to `SPELLED_KEEP_IDS` ids, never all of them.
+        lru = _SPELLED
+        t = lru.get(id(self))
+        if t is not None and t[0] is self:
+            lru.move_to_end(id(self))
+            return t[1]
+        t = tuple(sorted(self.ids()))
+        lru[id(self)] = (self, t)
+        _SPELLED_IDS[0] += len(t)
+        while _SPELLED_IDS[0] > SPELLED_KEEP_IDS and len(lru) > 1:
+            _k, (_o, old) = lru.popitem(last=False)
+            _SPELLED_IDS[0] -= len(old)
+        return t
+
+    def __iter__(self):
+        return iter(self._t())
+
+    def __len__(self) -> int:
+        if self._n is None:
+            self._n = len(self._t())
+        return self._n
+
+    def __bool__(self) -> bool:
+        return bool(self.considered)
+
+    def __getitem__(self, i):
+        return self._t()[i]
+
+    def __contains__(self, x) -> bool:
+        return x in self.ids()
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, LazyBasis):
+            return other is self or self._t() == other._t()
+        if isinstance(other, (tuple, list)):
+            return self._t() == tuple(other)
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(self._t())
+
+    def __repr__(self) -> str:
+        return "LazyBasis(considered=%d ids)" % len(self.considered)
+
+
 @dataclass(frozen=True)
 class Verdict:
     """An adjudicated fact. Produced only in ADJUDICATE. Reads no raster.
@@ -3515,7 +3594,9 @@ class Verdict:
                     "a NARROWED verdict needs at least two candidates; with "
                     "one it has DECIDED and with none it has ABSTAINED")
 
-    def to_json(self) -> dict:
+    def to_json(self, lazy_basis: bool = False) -> dict:
+        # ROADMAP 2.249: `lazy_basis` hands an ADJUDICATE verdict's `LazyBasis` through unspelled (the CLI's streamed
+        # writer and the exporter read it as the list); every other caller gets the list, as before.
         return {"id": self.id, "subject": self.subject.to_key(),
                 "quantity": self.quantity, "outcome": self.outcome.value,
                 "value": self.value, "decider": self.decider,
@@ -3525,8 +3606,15 @@ class Verdict:
                 "excluded": [list(e) for e in self.excluded],
                 "correlated": [sorted(g) for g in self.correlated],
                 "candidates": [c.to_json() for c in self.candidates],
-                "basis": list(self.basis), "margin": self.margin,
-                "supersedes": self.supersedes, "detail": dict(self.detail)}
+                "basis": (self.basis if lazy_basis and isinstance(self.basis, LazyBasis) else list(self.basis)),
+                "margin": self.margin,
+                "supersedes": self.supersedes, "detail": dict(self.detail),
+                # ROADMAP 2.249 m8 (format 2): the basis is derived from `considered`; the file writer leaves `basis` out
+                **({"basis_from": "considered"} if self._basis_is_derived() else {})}
+
+    def _basis_is_derived(self) -> bool:
+        b = self.basis
+        return isinstance(b, LazyBasis) and b.considered == tuple(self.considered)
 
 
 Row = Union[Observation, Abstention, Verdict]
@@ -3535,6 +3623,18 @@ Row = Union[Observation, Abstention, Verdict]
 # ─────────────────────────────────────────────────────────────────────────────
 # The log
 # ─────────────────────────────────────────────────────────────────────────────
+
+
+#: ⚠️ ROADMAP 2.249 m8 (Sean 2026-11-02, "change the record format"): the record FILE format. 1 (no `format` key):
+#: every verdict's `basis` is spelled out. 2: an ADJUDICATE verdict carries `basis_from: "considered"` and NO `basis` --
+#: its basis is `considered` plus each considered row's closure, derived when read (`record_io.load_record` attaches it;
+#: in memory, `LazyBasis`). Every other row's `basis` is stored as before.
+RECORD_FORMAT = 2
+
+
+#: ROADMAP 2.249: the closure memo holds at most this many ids in all (~2-3 GB of frozensets), least recently used
+#: out first. Speed only.
+CLOSURE_MEMO_MAX_IDS = 60_000_000
 
 
 class AlreadyAdjudicated(RuntimeError):
@@ -3593,7 +3693,7 @@ class Log:
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
                  "_closure_cache", "_qic_cache", "_subjects_cache", "_desc_prefix_cache",
-                 "_subject_keys")
+                 "_subject_keys", "_closure_memo_ids")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -3650,7 +3750,8 @@ class Log:
         # It is read from BOTH `Evidence._admit`'s circularity filter and
         # `Evidence.correlated_groups()`'s pairwise walk, and was being
         # recomputed by a fresh BFS on every single call to either.
-        self._closure_cache: dict[str, "frozenset[str]"] = {}
+        self._closure_cache: "collections.OrderedDict[str, frozenset[str]]" = __import__("collections").OrderedDict()
+        self._closure_memo_ids = 0          # ROADMAP 2.249: ids held by the closure memo (capped)
         self._qic_cache: dict[str, "frozenset[str]"] = {}
         #: ⚠️ `subjects()` WALKS EVERY INDEX KEY AND PARSES EACH ONE, so a
         #: decision calling it once per subject is quadratic in the record.
@@ -3986,8 +4087,10 @@ class Log:
         (row, row) pair they examine, so the SAME id's closure was being
         walked from scratch dozens of times over on a single decision.
         """
-        cached = self._closure_cache.get(row_id)
+        memo = self._closure_cache
+        cached = memo.get(row_id)
         if cached is not None:
+            memo.move_to_end(row_id)
             return cached
         out: set[str] = set()
         stack = [row_id]
@@ -3995,33 +4098,126 @@ class Log:
             rid = stack.pop()
             if rid in out:
                 continue
+            sub = memo.get(rid)
+            if sub is not None:          # ROADMAP 2.249, SPEED ONLY: a memoised closure below this row is added whole
+                memo.move_to_end(rid)
+                out |= sub
+                continue
             out.add(rid)
             row = self.row(rid)
             if row is not None:
-                stack.extend(row.basis)
+                stack.extend(self._edges(row))
         result = frozenset(out)
-        self._closure_cache[row_id] = result
+        # ROADMAP 2.249: a pure memo, bounded by ids held, LEAST RECENTLY USED out first. The rows every closure passes
+        # through (a document-wide key / clef / staff identity verdict) are used on every walk, so they stay and each
+        # new closure is its own few rows plus theirs. (Clearing the whole memo at the cap instead -- m4 -- threw them
+        # out every time: the 27-page INFER took 11,689 s.) No answer changes.
+        memo[row_id] = result
+        self._closure_memo_ids += len(result)
+        while self._closure_memo_ids > CLOSURE_MEMO_MAX_IDS and len(memo) > 1:
+            _k, old_set = memo.popitem(last=False)
+            self._closure_memo_ids -= len(old_set)
         return result
+
+    def closure_of_many(self, row_ids: Sequence[str]) -> set:
+        """ROADMAP 2.249: the union of `closure(r)` for every `r` in `row_ids`, as a new set -- one walk that takes each
+        memoised closure it meets whole, rather than one memo lookup and one set union per id (a `LazyBasis` is spelled
+        this way; its `considered` runs to hundreds of ids). Memoises nothing of its own. Same set."""
+        memo = self._closure_cache
+        out: set = set()
+        stack = []
+        for rid in row_ids:      # a verdict's closure is worth keeping (others rest on it too); a reading's is itself
+            if rid in out:
+                continue
+            row = self.row(rid)
+            if isinstance(row, Verdict):
+                out |= self.closure(rid)
+            else:
+                stack.append(rid)
+        while stack:
+            rid = stack.pop()
+            if rid in out:
+                continue
+            sub = memo.get(rid)
+            if sub is not None:
+                memo.move_to_end(rid)
+                out |= sub
+                continue
+            out.add(rid)
+            row = self.row(rid)
+            if row is not None:
+                stack.extend(self._edges(row))
+        return out
+
+    @staticmethod
+    def _edges(row) -> Sequence[str]:
+        """The rows `row` rests on DIRECTLY: an ADJUDICATE verdict's `considered` (its `LazyBasis` is their closure),
+        any other row's `basis`. `closure` walks these; the set it reaches is the one the spelled-out basis held."""
+        b = row.basis
+        return b.considered if isinstance(b, LazyBasis) else b
+
+    def release_closure_memo(self, *, quantities: bool = False) -> int:
+        """⚠️ ROADMAP 2.249 (memory, reads nothing): drop the `closure` memo.
+
+        A pure function of the append-only `basis` graph, so dropping it changes no answer -- the next call builds the
+        same set again. It was the largest thing ADJUDICATE built besides the verdicts (a verdict's closure is its whole
+        ~10^4-id basis again, as a frozenset) and it was kept for every row of every page to the end of the run, so
+        `adjudicate.run` lets go of it after each quantity. `_qic_cache` (a few quantity names a row) is kept: it is
+        small and it is what `Evidence._admit` asks on every row -- unless `quantities`, which the pipeline passes once
+        the last stage has run. Returns the number of closures dropped."""
+        n = len(self._closure_cache)
+        self._closure_cache.clear()
+        self._closure_memo_ids = 0
+        if quantities:
+            self._qic_cache.clear()
+        return n
 
     def quantities_in_closure(self, row_id: str) -> frozenset[str]:
         # SPEED ONLY (lane-brahms-1007-worse-and-slow): memoised like `closure`
         # (a row's basis never changes), 3.6M calls on three Brahms pages.
-        cached = self._qic_cache.get(row_id)
+        # ROADMAP 2.249: the quantities of a closure are the row's own plus those of each row it rests on directly --
+        # the same set, found without spelling out the closure (which is document-sized for a verdict that consulted
+        # a document-wide one). Iterative, post-order, memoised per row as before.
+        memo = self._qic_cache
+        cached = memo.get(row_id)
         if cached is not None:
             return cached
-        out = frozenset(
-            r.quantity for r in (self.row(i) for i in self.closure(row_id))
-            if r is not None)
-        self._qic_cache[row_id] = out
-        return out
+        stack = [(row_id, False)]
+        on_path: set = set()
+        while stack:
+            rid, done = stack.pop()
+            if rid in memo:
+                continue
+            row = self.row(rid)
+            if row is None:
+                memo[rid] = frozenset()
+                continue
+            edges = self._edges(row)
+            if not done:
+                if rid in on_path:
+                    raise RuntimeError(f"basis cycle through {rid}")
+                on_path.add(rid)
+                stack.append((rid, True))
+                stack.extend((e, False) for e in edges if e not in memo)
+                continue
+            on_path.discard(rid)
+            acc = {row.quantity}
+            for e in edges:
+                acc |= memo[e]
+            memo[rid] = frozenset(acc)
+        return memo[row_id]
 
     # ── serialisation ───────────────────────────────────────────────────────
 
-    def to_json(self) -> dict:
+    def to_json(self, lazy_basis: bool = False) -> dict:
+        """`lazy_basis` (ROADMAP 2.249): ADJUDICATE verdicts keep their `LazyBasis` -- spelled out, all at once, the
+        whole movement's bases were the run's 56 GB peak -- for a consumer that reads it as the list it stands for
+        (`record_io.dump_to_file`, the exporter). Off, every basis is a list, exactly as before."""
         return {
+            "format": RECORD_FORMAT,       # ROADMAP 2.249 m8: see RECORD_FORMAT
             "observations": [o.to_json() for o in self._obs.values()],
             "abstentions": [a.to_json() for a in self._abs.values()],
-            "verdicts": [v.to_json() for v in self._vrd.values()],
+            "verdicts": [v.to_json(lazy_basis) for v in self._vrd.values()],
             "counts": {"observations": len(self._obs),
                        "abstentions": len(self._abs),
                        "verdicts": len(self._vrd)},
