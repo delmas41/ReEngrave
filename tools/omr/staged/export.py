@@ -2643,8 +2643,12 @@ def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
 
 def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                       ties: Dict[str, Any], voice_of: Dict[int, int],
-                      dropped: Dict[str, int]) -> List[tuple]:
+                      dropped: Dict[str, int], rec: Optional[Record] = None,
+                      counters: Optional[Dict[str, int]] = None) -> List[tuple]:
     """This part's tie spans, in `_paired_spans`' shape, from the record.
+
+    ROADMAP 2.252 r3 (`OMR_UNISON_TIE_VOICE`, default OFF; needs `rec`): a pair whose ends are unisons written as
+    two voices is written on the voice on each arc's side (`export_unison.tie_ends`).
 
     ⚠️ A TIE'S TWO HEADS SOUND ONE PITCH, and this is the one place a pitch
     reading can be CHECKED with no truth file (`record.Checkable`: *"C vs C#
@@ -2658,16 +2662,33 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
     fault.
     """
     index: Dict[str, Tuple[int, Dict[str, Any]]] = {}
+    twins: Dict[str, Dict[str, Any]] = {}
     for m_idx, m in enumerate(measures):
         for det in m["detections"] or ():
             key = det.get("glyph")
             if key and det.get("category") == "notehead":
+                if det.get("unison_twin"):
+                    twins.setdefault(str(key), det)     # 2.175's down-voice note of a unison head
+                    continue
                 index.setdefault(str(key), (m_idx, det))
+    voice_on = rec is not None and _export_unison.tie_voice_enabled()
+    alias = _export_unison.written_member(rec, index) if voice_on else {}
+    seen_spans: set = set()
     spans = []
     for (start, stop), arcs in ties["pairs"].items():
+        orig = (start, stop)
+        if voice_on:
+            # ROADMAP 2.252 r3: an end bound to a box the one-mark-one-note rule (2.58b) did not write is the mark
+            # its group DID write (the same ink); counted.
+            for end in (start, stop):
+                if end not in index and end in alias:
+                    counters_ = counters if counters is not None else {}
+                    counters_["tie_end_moved_to_its_marks_written_box"] = counters_.get(
+                        "tie_end_moved_to_its_marks_written_box", 0) + 1
+            start, stop = alias.get(start, start), alias.get(stop, stop)
         if start not in index or stop not in index:
             continue
-        ties["consumed"].add((start, stop))
+        ties["consumed"].add(orig)
         (sm, first), (tm, last) = index[start], index[stop]
         if first is last:
             dropped["tie_pair_names_one_note"] += 1
@@ -2682,12 +2703,22 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                 {"start": start, "stop": stop, "pitches": [p0, p1],
                  "kind": reason, "arcs": list(arcs)})
             continue
-        # ⚠️ The one-voice rule `_paired_spans` states for every span: the two
-        # ends of a tie split across `<voice>` streams are each unpaired.
-        if voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
-            dropped["tie_ends_in_two_voices"] += 1
-            continue
-        spans.append(((sm, None), (tm, None), first, last))
+        ends = [(first, last)]
+        if rec is not None and _export_unison.tie_voice_enabled():
+            # ROADMAP 2.252 r3 (`OMR_UNISON_TIE_VOICE`): at a unison each voice carries its own tie, by the arc's side
+            ends = _export_unison.tie_ends(rec, arcs, first, last, twins.get(start), twins.get(stop),
+                                           dropped, counters if counters is not None else {})
+        for f_det, l_det in ends:
+            # ⚠️ The one-voice rule `_paired_spans` states for every span: the two
+            # ends of a tie split across `<voice>` streams are each unpaired.
+            if voice_of.get(id(f_det), 0) != voice_of.get(id(l_det), 0):
+                dropped["tie_ends_in_two_voices"] += 1
+                continue
+            if voice_on:
+                if (id(f_det), id(l_det)) in seen_spans:
+                    continue                    # two pairs (a mark's two boxes) name one written link: written once
+                seen_spans.add((id(f_det), id(l_det)))
+            spans.append(((sm, None), (tm, None), f_det, l_det))
         ties["linked"].append({"start": start, "stop": stop,
                                "pitch": p0, "arcs": list(arcs)})
     return spans
@@ -2913,7 +2944,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 # `arc_binds_fewer_than_two_notes`, so the tie groups leave
                 # the merge's arithmetic here.
                 spans = _record_tie_spans(measures, record_ties, voice_of,
-                                          dropped)
+                                          dropped, rec=rec, counters=counters)
                 merged -= groups_by_kind.get("tie", 0)
             else:
                 spans = _legacy._paired_spans(measures, pools, spacings,
@@ -4708,7 +4739,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             split = ((_voice_split(rec, run, i, events, _why), _why)
                      if events else None)
             if (events and split[0] is None and cell_here is not None
-                    and _export_unison.unfuse(cell_here)):
+                    and _export_unison.unfuse(cell_here, counters)):
                 # ROADMAP 2.175: the bar could not be written as two voices after all, so a unison head's second
                 # note must not sit in the one stream (it would overfill the bar): one note per head, as flag OFF.
                 events = _events(cell_here)
