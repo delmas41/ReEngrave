@@ -15715,6 +15715,13 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                         continue
                     if any(n.get("why") == "f_body_below_read" and abs(float(n["x0"]) - mb[0]) <= 2.5 * sp for n in near):
                         continue                               # the same clef, seen with its dots
+                    if bs["match"]["score"] >= float(os.environ.get("OMR_TEST_F_BODYREAD", "9")):
+                        # TEST-ONLY arm (test-2.251-f-cutoff): a body-only READ -- ONE witness, against CLAUDE §4; never lands
+                        found.append({"area": [float(mb[0]), float(mb[1]), float(mb[2]), float(mb[3])], "family": "F", "kind": "bass", "line": 4,
+                                      "residual": 0.0, "witnesses": ["f_body_template"],
+                                      "shape": {"body_score": bs["match"]["score"], "cover": bs["match"]["cover"],
+                                                "extra": bs["match"]["extra"], "scale": bs["match"].get("scale")}, "box": None})
+                        continue
                     # the candidate stands at the matched BODY's left edge (round 2 tried a space further left: at bar 111 the head under
                     # it is a real eighth printed BEFORE the clef -- Sean's r2 tile 2 -- and it went unread). A candidate files no claim:
                     # it takes no ink; `area` is the body, for a tile only

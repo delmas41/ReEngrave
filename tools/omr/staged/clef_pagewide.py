@@ -599,7 +599,7 @@ def f_body_shape(ink: np.ndarray, lines: Sequence[float], sp: float, pair: Dict[
 #: the no-box F clef is READ (kind bass, claimed) at this body score (cover - extra) and above. MEASURED on Litolff pp. 1-16 (1472 dot
 #: pairs; every non-clef pair <= 0.61, the 2.251 count's no-box bass clefs 0.83 (bar 38), 0.75 (Vc bar 411)); Brahms pp. 1,3,4,5 every
 #: non-clef pair <= 0.42. A CUT-OFF on two plates (CLAUDE §4: a measurement, not a convention) -- Sean's tiles judge it.
-F_TEMPLATE_READ_SCORE = 0.70
+F_TEMPLATE_READ_SCORE = float(os.environ.get("OMR_TEST_F_READ", "0.70"))  # TEST-ONLY env (test-2.251-f-cutoff): never lands
 #: ... and at this score and above (but below READ) it is a CLEF-SHAPED CANDIDATE: claimed nothing, but a carried clef stops there
 #: (Litolff bars 115 0.66 and 111 0.55: real bass clefs with a head / stem through the body)
 F_TEMPLATE_CANDIDATE_SCORE = 0.50
