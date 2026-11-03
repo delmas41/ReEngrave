@@ -81,13 +81,15 @@ class TestCutPieceOfANeighbour(unittest.TestCase):
         self.assertEqual(int(round(pos_box)), 1)
         self.assertEqual(res["position"], 2.0, res)
 
-    def test_RED_a_piece_inside_another_head_box_is_not_this_heads_hole(self):
+    def test_r6_a_piece_inside_a_duplicate_box_is_still_this_heads_hole(self):
+        # ROADMAP 2.252 r6: r5 refused this (`cut_piece_in_another_head`); Sean's r5 tiles 8, 9, 10 put all three such heads ON the
+        # line the slit was cut by -- the second box was a duplicate cut over the same head, not a neighbour
         img, box = self._on_line()
-        neighbour = (172, 243, 228, 275)           # a box below the line holding the lower piece only
+        duplicate = (172, 243, 228, 275)           # a box below the line holding the lower piece only
         with mock.patch.dict(os.environ, HOLE_ON):
-            res, _ = _read(img, box, [neighbour])
-        self.assertIsNone(res["position"])
-        self.assertEqual(res["why"], "cut_piece_in_another_head")
+            res, _ = _read(img, box, [duplicate])
+        self.assertEqual(res["position"], 2.0, res)
+        self.assertNotEqual(res["why"], "cut_piece_in_another_head")
 
     def test_a_box_over_both_pieces_is_a_twin_of_the_head_not_a_neighbour(self):
         img, box = self._on_line()

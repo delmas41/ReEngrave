@@ -42,6 +42,34 @@ def r5_enabled() -> bool:
     return enabled()
 
 
+#: ROADMAP 2.252 r6: the round-6 revisions ride on the same flag (still OFF): the neighbour-piece refusal removed; an arc box's staff
+#: line found locally (`gather.arc_ink_shape(local_lines=)`); a tie whose one end's position is unsure (`export`, `ownership`)
+def r6_enabled() -> bool:
+    return enabled()
+
+
+def contested_position(detail: Optional[Dict[str, Any]], value: Any = None) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.252 r6: a head whose OWN two readings name two adjacent positions -- its box (or ink) centre wrote one, its single
+    hole (refused as a move: off the grid, or the ink witness disagreeing) stands at the other. `{"why", "own", "alternative", "hole"}`,
+    or None where the head's position is not contested by its own ink (no hole read, a hole on the written position, a head placed BY
+    its hole or by 2.73's line cut). Reads `Q.NOTEHEAD_STAFF_POSITION`'s detail only; decides nothing (the tie is not a witness here)."""
+    d = detail or {}
+    if "from_head_hole" in d or "from_head_cut" in d or not d.get("hole_refused"):
+        return None
+    hs = d.get("hole_steps") or ()
+    if len(hs) != 1:
+        return None
+    try:
+        own = int(d["rounded"]) if d.get("rounded") is not None else int(round(float(value)))
+        alt = int(round(float(hs[0])))
+    except (TypeError, ValueError):
+        return None
+    if abs(alt - own) != 1:
+        return None
+    return {"why": "hole_disagrees_with_box:" + str(d.get("hole_refused")), "own": own, "alternative": alt,
+            "hole": round(float(hs[0]), 3)}
+
+
 #: r5: a head's own ink at most this tall (staff spaces) is ONE head even where an arc's end makes it too wide (2.248's own cut-off)
 ONE_HEAD_TALL_SPACES = 1.35
 
@@ -59,7 +87,7 @@ def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, s
     """`{"position": float or None, "why": None or the refusal, ...the numbers}`. `box_c` (x0, y0, x1, y1) and the grid are the cell's
     canonical frame; `page_box` / `half_step_page` the same box on the page raster (for the ink witness). `position` is None where nothing
     moves: 'no_raster', 'holes:<n>' (not exactly one), 'off_grid', 'same_position', 'off_staff', 'ink_unread', 'ink_disagrees',
-    'cut_piece_in_another_head' (r5). `other_heads_c`: the cell's OTHER head boxes, canonical (x0, y0, x1, y1)."""
+    ('cut_piece_in_another_head', r5, removed in r6). `other_heads_c`: the cell's OTHER head boxes, canonical (x0, y0, x1, y1)."""
     from . import box_kind as K
     from .head_extent import STAFF_POSITIONS
     out: Dict[str, Any] = {"position": None, "why": None}
@@ -76,21 +104,11 @@ def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, s
         out["why"] = "holes:%d" % len(holes)
         return out
     step = float(holes[0]["step"])
-    if r5_enabled() and holes[0].get("cut") and holes[0].get("cut_off_sp"):
-        # ROADMAP 2.252 r5: a slit the line cut is TWO pieces either side of a line; where another head box of the cell stands on
-        # exactly one of them, that piece is the NEIGHBOUR's hole (a dyad a third apart round the line: Litolff p3 `3/1/2/7/0`, whose
-        # lower piece is `3/1/2/7/1`'s), and the two pieces are not one hole: nothing is read
-        sp_c = 2.0 * float(half_step_c)
-        cy = float(holes[0]["cy"])
-        cx = float(holes[0]["cx"])
-        up, dn = cy - float(holes[0]["cut_off_sp"][0]) * sp_c, cy + float(holes[0]["cut_off_sp"][1]) * sp_c
-
-        def _in(y, b):
-            return float(b[0]) <= cx <= float(b[2]) and float(b[1]) <= y <= float(b[3])
-        held = [any(_in(y, b) for b in (other_heads_c or ())) for y in (up, dn)]
-        if held[0] != held[1]:
-            out["why"] = "cut_piece_in_another_head"
-            return out
+    # ROADMAP 2.252 r6: r5's refusal of a cut slit one of whose two pieces another head box of the cell holds
+    # (`cut_piece_in_another_head`) is GONE. Its premise -- that second box is a neighbour head a third away -- was wrong on every
+    # firing Sean judged: Litolff p3 `3/1/2/7/0` (r5 tile 8) is ON the top line, p2 `2/1/4/0/8` (tile 9) on the top line, p3
+    # `3/1/5/5/4` (tile 10) on the second line from the bottom: each second box is a DUPLICATE cut over the same head (the detector
+    # boxed its upper or lower half), and the hole the line cut was the head's. `other_heads_c` is kept on the signature (callers).
     if abs(step - round(step)) > K.HOLE_GRID_TOL_STEPS:
         out["why"] = "off_grid"
         return out

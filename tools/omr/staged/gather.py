@@ -1616,7 +1616,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_hole": hp["holes"], "detector_position_float": round(pos_float, 3),
                              "hole_ink_position": hp.get("ink_position")}
                     pos_float = float(hp["position"])
-                elif hp["why"] in ("ink_disagrees", "off_grid", "ink_not_one_head", "ink_too_narrow", "cut_piece_in_another_head"):
+                elif hp["why"] in ("ink_disagrees", "off_grid", "ink_not_one_head", "ink_too_narrow"):
                     extra = {"hole_refused": hp["why"], "hole_steps": hp.get("holes"), "hole_ink_position": hp.get("ink_position")}
             # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default ON since 2026-11-02): the box is only the seed. Where the head's OWN ink
             # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre
@@ -9140,6 +9140,13 @@ ARC_INK_LINE_SNAP_MIN_FILL = 0.5
 ARC_INK_LINE_MAX_HALF_STROKE_SPACES = 0.4
 #: A column holds ink only with at least this many ink pixels in it.
 ARC_INK_MIN_COLUMN_PX = 2
+#: ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`, default OFF): a staff line whose STAFF-WIDE y falls just outside the box can still
+#: run through it where the staff tilts (Litolff p3 staff `3/1/5`: skew 6 px; at x 1150 its lines stand 6-8 px below the staff's
+#: values, and a 5 px "tie" box lying on the fourth line read `lines_in_box` 0 and coverage 1.0 -- kept as an arc and paired as a tie,
+#: Sean's r5 tile 10). Such a line is looked for this far past the pad, and taken only where a box row is ink across this share of
+#: the box's columns (a staff line crosses the whole box; a tie's one row seldom does).
+ARC_INK_LINE_LOCAL_REACH_SPACES = 0.6
+ARC_INK_LINE_LOCAL_MIN_FILL = 0.85
 
 
 #: ROADMAP 2.252 r2 (flag `OMR_ARC_LINE_THICKNESS`, default ON since 2026-11-02): a staff line's stroke inside an arc box is as thick as the STAFF'S OWN
@@ -9158,7 +9165,8 @@ def arc_line_thickness_enabled() -> bool:
 
 def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
                   space: float, line_ys: Sequence[float],
-                  line_thickness: Optional[Sequence[Optional[float]]] = None
+                  line_thickness: Optional[Sequence[Optional[float]]] = None,
+                  local_lines: bool = False
                   ) -> Optional[Dict[str, Any]]:
     """What is inside one arc box once EVERY staff line is taken out of it.
     ROADMAP 2.60.
@@ -9198,9 +9206,25 @@ def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
     stroke = max(1, int(round(ARC_INK_LINE_STROKE_SPACES * space)))
     n_lines = 0
     removed = np.zeros(h, dtype=bool)
+    n_local = 0
     for li, ly in enumerate(line_ys):
         ly = float(ly)
         if not (y0 - pad <= ly <= y1 + pad):
+            if local_lines and (y0 - pad - ARC_INK_LINE_LOCAL_REACH_SPACES * space <= ly
+                                <= y1 + pad + ARC_INK_LINE_LOCAL_REACH_SPACES * space):
+                # ROADMAP 2.252 r6: the line measured LOCALLY -- the box row nearest the staff-wide y that is ink across the box
+                rows_full = [r for r in range(h) if float(ink[r].mean()) >= ARC_INK_LINE_LOCAL_MIN_FILL]
+                if rows_full:
+                    r0 = min(rows_full, key=lambda r: abs(iy0 + r - ly))
+                    top = bot = r0
+                    while top - 1 >= 0 and float(ink[top - 1].mean()) >= ARC_INK_LINE_SNAP_MIN_FILL:
+                        top -= 1
+                    while bot + 1 < h and float(ink[bot + 1].mean()) >= ARC_INK_LINE_SNAP_MIN_FILL:
+                        bot += 1
+                    if not removed[r0]:                 # two staff-wide lines either side snap to one run: counted once
+                        n_lines += 1
+                        n_local += 1
+                    removed[max(0, top - 1):min(h, bot + 2)] = True
             continue
         th = None
         if line_thickness is not None and li < len(line_thickness) and line_thickness[li]:
@@ -9275,10 +9299,13 @@ def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
             curve += 1
         if longest >= ARC_INK_TALL_RUN_SHARE * h:
             tall += 1
-    return {"coverage": round(curve / w, 4), "tall_cols": round(tall / w, 4),
-            "lines_in_box": n_lines,
-            "width_spaces": round((x1 - x0) / space, 3),
-            "height_spaces": round((y1 - y0) / space, 3)}
+    out = {"coverage": round(curve / w, 4), "tall_cols": round(tall / w, 4),
+           "lines_in_box": n_lines,
+           "width_spaces": round((x1 - x0) / space, 3),
+           "height_spaces": round((y1 - y0) / space, 3)}
+    if n_local:
+        out["lines_found_locally"] = n_local
+    return out
 
 
 def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
@@ -9304,6 +9331,8 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
         th = list(th) if isinstance(th, (list, tuple)) else []
         all_thick.extend((float(th[i]) if i < len(th) and th[i] else None) for i in range(len(st.line_ys)))
     by_thickness = arc_line_thickness_enabled()
+    from . import head_hole_position as _hhp
+    local_lines = _hhp.r6_enabled()     # ROADMAP 2.252 r6: a line through the box found locally (a tilted staff)
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -9331,7 +9360,8 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY)
                 continue
             m = arc_ink_shape(binary, page_box, space, all_lines,
-                              line_thickness=all_thick if by_thickness else None)
+                              line_thickness=all_thick if by_thickness else None,
+                              local_lines=local_lines)
             if m is None:
                 log.abstain(g, Q.ARC_INK_SHAPE, reader=READERS.CV_ARC_INK,
                             frame=frame, reason=ABSTAIN.NO_STAFF_GEOMETRY,
@@ -9341,6 +9371,7 @@ def gather_arc_ink(log: Log, pws: Any, cells: Sequence[Any],
                         reader=READERS.CV_ARC_INK, frame=frame,
                         tall_cols=m["tall_cols"],
                         lines_in_box=m["lines_in_box"],
+                        **({"lines_found_locally": m["lines_found_locally"]} if m.get("lines_found_locally") else {}),
                         width_spaces=m["width_spaces"],
                         height_spaces=m["height_spaces"])
 
