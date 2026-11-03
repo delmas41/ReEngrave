@@ -10278,6 +10278,75 @@ def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
                        "b_range": [round(rb[0], 3), round(rb[1], 3)]}
 
 
+#: ROADMAP 2.257 round 2 (flag OMR_WHOLE_REST_OWN_STAFF, default OFF). Sean 2026-11-03, 2.257 tiles 1/2/6/9/10: a whole rest
+#: hanging off the middle in a bar where the other voice has notes is "whole rest in second voice" (5/5); 2026-09-29: a rest
+#: above the middle belongs to the upper voice, one below to the lower (`REST_VOICE_DISPLACEMENT_MIN_STEPS`).
+#: CAUSE of the red bars: the stream split below needs an up-stem AND a down-stem note, so a bar whose notes all stand one
+#: way is `one_voice` and the displaced rest is ADDED into it ("should hold 2, counted 6": 1 + 1 + a 4-quarter rest).
+def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int) -> bool:
+    """A DECIDED refusal that EXPORT honours takes this box out of its bar: not a rest, not a notehead, or ink the glyph-owner
+    contest gave to another staff (the same three tests `consequences._left_the_bar` applies). The record's `Q.EVENT` still
+    groups such a box (it reads `Q.REST` / `Q.NOTEHEAD_CLASS`, never the refusals), so a sum over events must ask."""
+    sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system, staff=cell.staff, cell=cell.cell, glyph=g)
+    for q in (Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD):
+        v = ev.verdict(q, subject=sub)
+        if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
+            return True
+    owner = ev.verdict(Q.GLYPH_OWNER, subject=sub)
+    if owner is not None and owner.outcome is Outcome.DECIDED:
+        from ..adjudicate import is_relocated_copy
+        if is_relocated_copy(sub, owner.value):
+            return True
+    return False
+
+
+def _rest_own_voice_split(ev: Evidence, events, up_events, down_events):
+    """`(streams, reason, detail)` when a DECISIVELY displaced, dotless whole rest is the only thing in its voice and the
+    bar's OTHER live events fill the meter by themselves; else None (the bar stays one voice, exactly as before).
+
+    Evidence, all of it: (1) the rest is a whole rest that is still IN the bar (`_glyph_left_the_bar`), its decided duration
+    a dotless `restWhole`, and its ink stands at least `REST_VOICE_DISPLACEMENT_MIN_STEPS` off the middle line
+    (`_rest_voice_side`, the reader the 2.27c placement uses); it is the ONLY such rest; (2) every other event still in the
+    bar, summed alone, equals the meter in force; (3) no note's stem points the way the rest does (an upper rest wants the
+    notes' stems down, a lower rest up). Nothing here chooses between two fits: where any of the three fails the answer
+    is None."""
+    cell = ev.subject
+    cands = []
+    for e in events:
+        if e["kind"] != "rest" or not e["_glyphs"]:
+            continue
+        glyphs = sorted(e["_glyphs"])
+        if any(_glyph_left_the_bar(ev, cell, g) for g in glyphs):
+            continue
+        d = ev.verdict(Q.DURATION, subject=Subject(
+            Kind.GLYPH, page=cell.page, system=cell.system, staff=cell.staff, cell=cell.cell, glyph=glyphs[0]))
+        if (d is None or d.outcome is not Outcome.DECIDED or not isinstance(d.value, dict)
+                or str((d.detail or {}).get("rest")) != "restWhole" or d.value.get("dots")):
+            continue
+        side = _rest_voice_side(ev, glyphs)
+        if side:
+            cands.append((e, side, glyphs))
+    if len(cands) != 1:
+        return None
+    rest, side, glyphs = cands[0]
+    others = [e for e in events if e is not rest]
+    live = [e for e in others if not all(_glyph_left_the_bar(ev, cell, g) for g in e["_glyphs"])]
+    if not any(e["kind"] == "chord" for e in live):
+        return None
+    clash = "up" if side == "upper" else "down"
+    if any(e["stem_direction"] == clash for e in live if e["kind"] == "chord"):
+        return None
+    meter_segment = _meter_in_force(ev)
+    target = _meter_quarters(meter_segment)
+    live_sum = _sum_beats(ev, cell, live)
+    if not _sums_to(live_sum, target):
+        return None
+    streams = [[rest], others] if side == "upper" else [others, [rest]]
+    return streams, "one_voice_plus_displaced_whole_rest", {
+        "rest_own_voice": {"glyphs": glyphs, "side": side, "meter": meter_segment, "target_quarters": target,
+                           "others_quarters": live_sum}}
+
+
 @decision(
     quantity=Q.VOICES,
     # ⚠️ 2.27c (displaced rests: `Q.STAFF_LINES` via `_rest_slot`) merged
@@ -10289,10 +10358,10 @@ def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION),
+           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
-             "nothing_to_split"),
+             "nothing_to_split", "one_voice_plus_displaced_whole_rest"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_voices(ev: Evidence) -> Ruling:
@@ -10433,6 +10502,10 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
         # `[events]` here too (its own guard, restated nowhere) -- this is
         # the ordinary one-voice bar, not the convention question at all.
         streams, reason, rule_detail = [events], "one_voice", {}
+        if _whole_rest_own_staff_on():
+            own = _rest_own_voice_split(ev, events, up_events, down_events)
+            if own is not None:
+                streams, reason, rule_detail = own
     else:
         cell = ev.subject
         overlap, overlap_detail = _voices_overlap_in_time(ev, up_events,
@@ -10490,7 +10563,12 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
     # centred rest, or one whose geometry could not be read, is left exactly
     # as the legacy rule already had it.
     displaced: Dict[int, str] = {}
-    if len(streams) > 1:
+    if reason == "one_voice_plus_displaced_whole_rest":
+        # the carve-out already placed the ONE rest in its own stream; 2.27c's pull would take a displaced eighth rest out of
+        # the notes' stream
+        for g in rule_detail["rest_own_voice"]["glyphs"]:
+            displaced[g] = rule_detail["rest_own_voice"]["side"]
+    elif len(streams) > 1:
         for e in events:
             if e["kind"] != "rest":
                 continue
@@ -10518,7 +10596,9 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                # otherwise report a loss. Empty in the one-voice case, where
                # there is no duplication to declare.
                "rests_in_every_voice": covering if n > 1 else [],
-               "rests_displaced_by_position": displaced},
+               "rests_displaced_by_position": displaced,
+               **({"rest_own_voice": rule_detail["rest_own_voice"]["glyphs"]}
+                  if "rest_own_voice" in rule_detail else {})},
         reason=reason,
         used=(grouping.id,),
         detail={"n_events": len(events), "n_rests": len(rests),

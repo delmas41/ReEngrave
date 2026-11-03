@@ -4837,6 +4837,10 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # and what sizes a held-out bar's rest; this is only what the bar
             # is JUDGED against.
             judged = meter if meter is not None else in_force
+            if split is not None and split[0] is not None:
+                events, _own_streams = _size_rest_alone_in_its_voice(
+                    rec, run, i, events, split[0], judged, counters)
+                split = (_own_streams, split[1])
             held = (_bar_holds_out(events, split[0], divisions, judged)
                     if events else None)
             # ⚠️⚠️ ROADMAP 2.4c, AND IT IS TESTED ONLY WHERE `held` IS NONE.
@@ -5855,6 +5859,37 @@ def _lone_whole_rest_is_the_bar(events: List[Dict[str, Any]],
     new["rest"] = {**det, "measure_rest": True, "duration_beats": want_q,
                    "sized_by": "file_meter_in_force_2_98"}
     return [new]
+
+
+def _size_rest_alone_in_its_voice(rec: Record, run: StaffRun, cell_index: int,
+                                  events: List[Dict[str, Any]],
+                                  streams: List[List[Dict[str, Any]]],
+                                  judged: Optional[Dict[str, Any]],
+                                  counters) -> Tuple[List[Dict[str, Any]], List[List[Dict[str, Any]]]]:
+    """ROADMAP 2.257 r2 (OMR_WHOLE_REST_OWN_STAFF): a whole rest `Q.VOICES` put ALONE in its own stream
+    (`rest_own_voice`, written by `rhythm._rest_own_voice_split` from a decisive displacement and the other voice filling
+    the meter) is lone in ITS voice, and a whole rest means the bar -- sized to the meter the file has in force, exactly as
+    `_lone_whole_rest_is_the_bar` does for a bar of one event. EXPORT and not EVALUATE because `Q.VOICES` reads `Q.DURATION`:
+    a duration sized FROM the voices verdict is an uphill consequence (the record refuses it). Where the verdict does not
+    name the rest, the stream is not one rest, or no meter is in force, nothing changes."""
+    v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
+    named = {int(g) for g in (((v or {}).get("value") or {}).get("rest_own_voice") or ())}
+    if not named or (v or {}).get("outcome") != "decided":
+        return events, streams
+    for st in streams:
+        if len(st) != 1:
+            continue
+        glyph = (st[0].get("rest") or {}).get("glyph")
+        if not glyph or _glyph_index(glyph) not in named:
+            continue
+        sized = _lone_whole_rest_is_the_bar(st, judged)
+        if sized is None:
+            return events, streams
+        old, new = st[0], sized[0]
+        counters["measure_rests_sized_alone_in_their_voice"] += 1
+        return ([new if e is old else e for e in events],
+                [[new if e is old else e for e in s2] for s2 in streams])
+    return events, streams
 
 
 def _bar_holds_out(events: List[Dict[str, Any]],
