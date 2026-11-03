@@ -1,0 +1,447 @@
+[
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/1/3/11/4",
+  "box": [
+   1928.8225,
+   2405.7925,
+   1952.605,
+   2424.85
+  ],
+  "role": "moved_tie_gained",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb2",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Ab2",
+     "tie": [
+      "stop",
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 1,
+  "crop_box": [
+   1767,
+   2320,
+   2113,
+   2509
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/1/4/3/3",
+  "box": [
+   907.5925,
+   2660.8575,
+   929.9575,
+   2676.9225
+  ],
+  "role": "moved_tie_gained",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "E5",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 2,
+  "crop_box": [
+   745,
+   2574,
+   1092,
+   2763
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "rg": "glyph/0/0/10/1/5",
+  "box": [
+   2230.08,
+   5580.08,
+   2270.72,
+   5616.88
+  ],
+  "role": "tie_carry",
+  "written": {
+   "off": [
+    {
+     "pitch": "C5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "C#5",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 3,
+  "crop_box": [
+   1898,
+   5406,
+   2602,
+   5790
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/1/3/14/1",
+  "box": [
+   2300.7275,
+   2341.375,
+   2325.455,
+   2362.3225
+  ],
+  "role": "moved_tie_lost",
+  "written": {
+   "off": [
+    {
+     "pitch": "C4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Bb3",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 4,
+  "crop_box": [
+   2139,
+   2257,
+   2486,
+   2446
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/0/4/0/9",
+  "box": [
+   525.6925,
+   988.9975,
+   550.735,
+   1044.7525
+  ],
+  "role": "r2_tile4_previous_head_moved",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "D5",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 5,
+  "crop_box": [
+   364,
+   922,
+   711,
+   1111
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/0/3/2/1",
+  "box": [
+   827.38,
+   865.285,
+   848.6425,
+   879.3025
+  ],
+  "role": "moved_tie_lost",
+  "written": {
+   "off": [
+    {
+     "pitch": "C4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "D4",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 6,
+  "crop_box": [
+   664,
+   777,
+   1011,
+   966
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/1/1/1/1",
+  "box": [
+   675.16,
+   2032.52,
+   698.04,
+   2045.16
+  ],
+  "role": "moved_tie_lost",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Eb5",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 7,
+  "crop_box": [
+   513,
+   1944,
+   859,
+   2133
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/1/4/10/3",
+  "box": [
+   1964.295,
+   2722.8525,
+   1989.0225,
+   2740.965
+  ],
+  "role": "control",
+  "written": {
+   "off": [
+    {
+     "pitch": "C5",
+     "tie": [
+      "start"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "C5",
+     "tie": [
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 8,
+  "crop_box": [
+   1803,
+   2637,
+   2149,
+   2826
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/1/2/1/3",
+  "box": [
+   657.025,
+   2402.9875,
+   683.0125,
+   2419.9975
+  ],
+  "role": "moved_tie_lost",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb4",
+     "tie": [
+      "stop",
+      "start"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "A4",
+     "tie": [
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 9,
+  "crop_box": [
+   496,
+   2316,
+   843,
+   2505
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/0/3/8/5",
+  "box": [
+   1403.9325,
+   941.8725,
+   1428.03,
+   964.5525
+  ],
+  "role": "r3_tile2",
+  "written": {
+   "off": [
+    {
+     "pitch": "E4",
+     "tie": [
+      "start"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "E4",
+     "tie": [
+      "stop",
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 10,
+  "crop_box": [
+   1242,
+   858,
+   1589,
+   1047
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/0/2/7/2",
+  "box": [
+   1304.065,
+   705.0125,
+   1331.785,
+   730.2125
+  ],
+  "role": "r3_tile1_12_unchanged",
+  "written": {
+   "off": [
+    {
+     "pitch": "G4",
+     "tie": []
+    },
+    {
+     "pitch": "G4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "G4",
+     "tie": []
+    },
+    {
+     "pitch": "G4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 11,
+  "crop_box": [
+   1144,
+   623,
+   1491,
+   812
+  ]
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "rg": "glyph/5/1/5/5/1",
+  "box": [
+   3266.515,
+   5150.2425,
+   3304.3925,
+   5184.5775
+  ],
+  "role": "tie_carry_unison",
+  "written": {
+   "off": [
+    {
+     "pitch": "B4",
+     "tie": []
+    },
+    {
+     "pitch": "B4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Bb4",
+     "tie": [
+      "stop"
+     ]
+    },
+    {
+     "pitch": "Bb4",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 12,
+  "crop_box": [
+   2933,
+   4975,
+   3637,
+   5359
+  ]
+ }
+]
