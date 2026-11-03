@@ -965,6 +965,13 @@ class Q(_Vocab):
     #: it decides nothing, NOTHING READS IT (M2's carve is its first reader), no exported byte changes.
     BARLINE_COLUMN = "barline_column"
 
+    #: ROADMAP 2.260a M2 (flag `OMR_PAGE_STROKES`, default OFF; `page_strokes.gather_page_strokes`): ONE ROW PER STROKE of the PAGE stroke map, on the
+    #: page's subject: `value` = the kind (vertical / horizontal / curve / blob / barline). The map is assembled from each staff's own erased band
+    #: and the page raster outside the bands, the tilted barline columns carved out first. `detail` mirrors `Q.STROKE` in PAGE px (`bbox_page_px`,
+    #: length / thickness / angle in staff spaces, `staff` = [system, staff] whose lines it is read against, `cut` = never, a page stroke is cut by
+    #: nothing but the page). Decides nothing and NOTHING READS IT.
+    PAGE_STROKE = "page_stroke"
+
     #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
     #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
     #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
@@ -2288,6 +2295,8 @@ CLAIMS: "dict[str, str]" = {
     "STAFF_EXTENT": CLAIM.MEASUREMENT,
     "STAFF_SKEW": CLAIM.MEASUREMENT,
     "BARLINE_COLUMN": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.260a M2: a stroke of the page map -- a measurement of ink, like `STROKE`; names nothing.
+    "PAGE_STROKE": CLAIM.MEASUREMENT,
     #: ⚠️ A JUDGEMENT CALL, NAMED — a narrow scan at a system's shared left
     #: edge, filed MEASUREMENT because its value is *how much ink stands
     #: there*. `OMR_LEFT_EDGE_SPLIT` then reads it as evidence of a system
@@ -2983,6 +2992,8 @@ class READERS(_Vocab):
     CV_PAGE_MARKS = "cv_page_marks"
     #: `barline_columns.gather_barline_columns` -- ROADMAP 2.260a M1. The page render (`pws.page.binary`) and the page-wide barlines.
     CV_BARLINE_COLUMN = "cv_barline_column"
+    #: `page_strokes.gather_page_strokes` -- ROADMAP 2.260a M2. The staves' erased bands, the page render outside them, the columns of M1.
+    CV_PAGE_STROKES = "cv_page_strokes"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.
     CV_PAGE_OWNER = "cv_page_owner"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the `Q.SYSTEM_ARC` traces and `Q.WEDGE_BOX` reads, joined page-wide.

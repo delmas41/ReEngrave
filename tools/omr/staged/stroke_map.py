@@ -328,7 +328,8 @@ class LocalStaff:
             prev = rows
         self.local = bool(self._xs)
 
-    def lines_at(self, x: float) -> List[float]:
+    def lines_at(self, x: float, y: Optional[float] = None) -> List[float]:
+        """The five lines at `x` (reduced frame). `y` is accepted and ignored: one cell holds ONE staff (a page's `PageStaff` reads it)."""
         if not self._xs:
             return list(self.nominal)
         xs = self._xs
@@ -1334,13 +1335,16 @@ def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
 
 def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical: Sequence[float],
                 raw: Optional[np.ndarray] = None, split_joins: Optional[bool] = None,
-                keep_whole: Sequence[Sequence[Any]] = (), touch_boxes: Sequence[Sequence[Any]] = ()) -> Optional[CellStrokes]:
+                keep_whole: Sequence[Sequence[Any]] = (), touch_boxes: Sequence[Sequence[Any]] = (),
+                staff_override: Any = None) -> Optional[CellStrokes]:
     """Every stroke of one cell. `erased` = `cell.image_no_staff` (0 = ink); `raw` = `cell.binary` (0 = ink) for the local staff.
     None for a cell that cannot be reduced. Deterministic: strokes ordered by (x, y, kind). `split_joins` None = the flag
     `OMR_SPLIT_JOINS` (ROADMAP 2.239): fused pieces are cut at their joins (`split_pieces`) and each part carries `joined_to`.
     `keep_whole` (canonical [x0, y0, x1, y1] or [x0, y0, x1, y1, "clef:G|F|C"]): clef / key / meter boxes no split cuts inside; a clef box
     also joins the pieces the openings cut its clef into, read outward from the box and bounded by the clef's size (2.239 r3). `touch_boxes` (canonical [family, x0, y0, x1, y1]): the cell's accidental,
-    head, ledger and stem detector boxes; a piece across an accidental box and one of the others is cut at their boundary (2.239 r3)."""
+    head, ledger and stem detector boxes; a piece across an accidental box and one of the others is cut at their boundary (2.239 r3).
+    `staff_override` (ROADMAP 2.260a M2, the PAGE map): an object with `lines_at(x, y)` (reduced frame) and `.local`, standing for every staff of the
+    raster; None = this cell's own `LocalStaff` (the product path, unchanged)."""
     import cv2
     if erased is None or erased.ndim != 2 or sp_canonical <= 0:
         return None
@@ -1397,8 +1401,8 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             excl = [tuple(float(v) * scale for v in r[1:5]) for r in touch_boxes if r[0] in TOUCH_OTHER_FAMILIES] + kw
             pieces, joins, acc_parts = merge_accidentals(pieces, joins, sp, accs, excl, refused)
 
-    staff = LocalStaff(_reduce_float(raw, scale) if raw is not None else None,
-                       [y * scale for y in nominal_lines_canonical], sp)
+    staff = staff_override if staff_override is not None else LocalStaff(
+        _reduce_float(raw, scale) if raw is not None else None, [y * scale for y in nominal_lines_canonical], sp)
     restore = THICKNESS_FROM_UNERASED and raw is not None and raw.ndim == 2 and raw.shape == erased.shape
 
     built: List[Tuple[Tuple[int, int, int, int], Stroke, np.ndarray, int, int, int]] = []
@@ -1419,10 +1423,10 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
                 mm["thick"] = max(mm["thick"], rt)
         ang = -math.degrees(mm["theta"])
         ang = ang + 180.0 if ang <= -90.0 else (ang - 180.0 if ang > 90.0 else ang)
-        mid = staff.lines_at(x0 + w / 2.0)
+        mid = staff.lines_at(x0 + w / 2.0, y0 + h / 2.0)
         steps = []
         for (ex, ey) in (mm["end0"], mm["end1"]):
-            ln = staff.lines_at(ex)
+            ln = staff.lines_at(ex, ey)
             half = (ln[4] - ln[0]) / 8.0
             steps.append(round((ey - ln[0]) / half, 2) if half > 0 else 0.0)
         ys_, xs_ = np.nonzero(m)
@@ -1436,8 +1440,8 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             hole_share=round(_hole_share(m), 3) if kind == "blob" else None,
             ends=((int(round(e0[0] * inv)), int(round(e0[1] * inv))), (int(round(e1[0] * inv)), int(round(e1[1] * inv)))),
             profile=mm["profile"], component=int(ink_lab[y0 + int(ys_[0]), x0 + int(xs_[0])]),
-            lines_left=[int(round(v * inv)) for v in staff.lines_at(x0)],
-            lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w)],
+            lines_left=[int(round(v * inv)) for v in staff.lines_at(x0, y0 + h / 2.0)],
+            lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w, y0 + h / 2.0)],
             staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]),
             cut=box_cut_edges(x0, y0, x0 + w, y0 + h, ink.shape[0], ink.shape[1]))
         if pidx >= n_pieces:
@@ -1457,7 +1461,9 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
         for j in range(i + 1, n):
             _b2, sj, mj, xj, yj, _pj = built[j]
             hj, wj = mj.shape
-            if xi + wi_ + 1 < xj or xj + wj + 1 < xi or yi + hi_ + 1 < yj or yj + hj + 1 < yi:
+            if xi + wi_ + 1 < xj:
+                break               # `built` is sorted by x: no later stroke touches this one either (ROADMAP 2.260a: a page holds ~10^4 strokes)
+            if xj + wj + 1 < xi or yi + hi_ + 1 < yj or yj + hj + 1 < yi:
                 continue
             gx0, gy0 = min(xi, xj) - 1, min(yi, yj) - 1
             gx1, gy1 = max(xi + wi_, xj + wj) + 1, max(yi + hi_, yj + hj) + 1

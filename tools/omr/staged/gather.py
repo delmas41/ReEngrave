@@ -17526,6 +17526,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
         page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default OFF): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
+        # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
+        from . import page_strokes as _page_strokes
+        _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
