@@ -1986,7 +1986,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                     other_language=hit.other_language, metronome=hit.metronome)
                 info["by_reader"][label] = info["by_reader"].get(label, 0) + 1
 
-    def read_indices(everyone):
+    def read_indices(everyone, line_retry=False):
         run(cheap, everyone, wide_crop, "")
         run(cheap, everyone, tight_crop, "-tight")
         lettered = [i for i in everyone if i not in accepted_at and
@@ -2005,9 +2005,11 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             run(slow, strong, wide_crop, "")
         else:
             info["slow_wide_skipped"] = info.get("slow_wide_skipped", 0) + len(strong)
-        if lines:
+        if lines and line_retry:
             # ROADMAP 2.254 r3: the line-cleaned look, only where nothing was accepted and a line comes into the box (Brahms p8 `dim.`
-            # beside a barline: Surya read `dim!`, or Tesseract's letter gate saw nothing and Surya was never asked)
+            # beside a barline: Surya read `dim!`, or Tesseract's letter gate saw nothing and Surya was never asked). The word's OWN
+            # candidates only, never a sibling window (a box copied from another staff's word, often cut mid-word: Brahms p8 one read
+            # `PP cresc. mod.` for `molto` from the cleaned crop and displaced the real `cresc. molto` beside it).
             again = [i for i in everyone if i not in accepted_at and line_in(i)]
             info["n_line_retry"] = info.get("n_line_retry", 0) + len(again)
             run(cheap, again, tight_line_crop, "-lines-tight")
@@ -2079,7 +2081,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             info.get("n_front_of_a_longer_reading_dropped", 0) + fronts)
 
     t_start = t0 = time.perf_counter()
-    read_indices(list(range(n)))
+    read_indices(list(range(n)), line_retry=True)
     info["first_looks_s"] = round(time.perf_counter() - t0, 2)
     # Readings that may be CUT or only the FRONT of the print are settled BEFORE
     # the siblings are proposed: a wrong reading seeds windows on every other
