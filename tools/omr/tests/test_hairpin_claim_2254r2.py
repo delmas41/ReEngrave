@@ -96,3 +96,14 @@ def test_the_stroke_owner_reads_the_claim_only_with_the_flag(monkeypatch):
     monkeypatch.setenv(HR.ENV, "1")
     got = ASO._hairpin_claims(_Ev([row]), cell)
     assert len(got) == 1 and got[0].family == HR.FAMILY and tuple(got[0].covers) == (0, 2)
+
+
+def test_a_beam_refused_on_a_claimed_hairpin_arm_counts_as_not_a_beam_only_with_the_flag(monkeypatch):
+    from tools.omr.staged import inferences as I
+    v = types.SimpleNamespace(reason=I.BARE_STEM_REASON, detail={
+        "beam_evidence": "none_over_this_note", "stems_attached": 1, "bare_stem_tip_window_clean": True,
+        "refused_strokes": [{"id": "a", "why": "ink:owned_by_another_mark", "at_tip": False}, {"id": "b", "why": "arc", "at_tip": False}]})
+    monkeypatch.delenv(HR.ENV, raising=False)
+    assert I.arc_ink_not_beam_decline(v) == "a_refusal_that_is_not_a_slur_reading:ink:owned_by_another_mark"
+    monkeypatch.setenv(HR.ENV, "1")
+    assert I.arc_ink_not_beam_decline(v) is None
