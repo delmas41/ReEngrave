@@ -2671,6 +2671,25 @@ def _has_printed_accidental(rec: Record, head: str) -> bool:
     return False
 
 
+def _tie_end_unsure(rec: Record, start: str, stop: str) -> List[Dict[str, Any]]:
+    """ROADMAP 2.252 r6: which end of a refused tie has an unsure position -- `[{end, why, ...}]`. A far head whose ledger count was not
+    DECIDED (`Q.NOTEHEAD_POSITION` filed and not decided: the written pitch is the box's extrapolation), or a head whose own single hole
+    stands one step from its written position (`head_hole_position.contested_position`). Reads the record only; moves nothing."""
+    from . import head_hole_position as _hhp
+    out: List[Dict[str, Any]] = []
+    for end in (start, stop):
+        v = rec.verdict(Q.NOTEHEAD_POSITION, end)
+        if v is not None and (v.get("outcome") != "decided" or v.get("value") is None):
+            out.append({"end": end, "why": "far_head_ledger_unread"})
+            continue
+        rows = rec.obs(Q.NOTEHEAD_STAFF_POSITION, end)
+        if rows:
+            c = _hhp.contested_position(rows[-1].get("detail"), rows[-1].get("value"))
+            if c is not None:
+                out.append(dict(c, end=end))
+    return out
+
+
 def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                       ties: Dict[str, Any], voice_of: Dict[int, int],
                       dropped: Dict[str, int], rec: Optional[Record] = None,
@@ -2745,9 +2764,21 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
             reason = ("tie_spelling_differs" if same_step
                       else "tie_pitch_contradiction")
             dropped[reason] += 1
-            ties["contradictions"].append(
-                {"start": start, "stop": stop, "pitches": [p0, p1],
-                 "kind": reason, "arcs": list(arcs)})
+            entry = {"start": start, "stop": stop, "pitches": [p0, p1],
+                     "kind": reason, "arcs": list(arcs)}
+            if rec is not None and reason == "tie_pitch_contradiction":
+                from . import head_hole_position as _hhp
+                if _hhp.r6_enabled():
+                    # ROADMAP 2.252 r6 (rides `OMR_HEAD_HOLE_POSITION`): a tie never forces its two heads to one position -- the
+                    # refusal NAMES the end whose own position is unsure (its own readings disagree, or a far head whose ledgers were
+                    # not read: page-facts, a far head's position is its ledger lines only), so the fix is looked for at that head
+                    unsure = _tie_end_unsure(rec, start, stop)
+                    if unsure:
+                        entry["unsure_ends"] = unsure
+                        key_ = "tie_pitch_contradiction_one_end_unsure" if len(unsure) == 1 else "tie_pitch_contradiction_both_ends_unsure"
+                        if counters is not None:
+                            counters[key_] = counters.get(key_, 0) + 1
+            ties["contradictions"].append(entry)
             continue
         ends = [(first, last)]
         if rec is not None and _export_unison.tie_voice_enabled():

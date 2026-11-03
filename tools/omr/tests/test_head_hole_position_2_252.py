@@ -127,12 +127,14 @@ class TestHolePosition(unittest.TestCase):
 
 
 class TestFlag(unittest.TestCase):
-    def test_default_off(self):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(HP.ENV, None)
-            self.assertFalse(HP.enabled())
-        with mock.patch.dict(os.environ, {HP.ENV: "1"}):
             self.assertTrue(HP.enabled())
+            self.assertTrue(HP.r5_enabled())
+            self.assertTrue(HP.r6_enabled())
+        with mock.patch.dict(os.environ, {HP.ENV: "0"}):
+            self.assertFalse(HP.enabled())
 
     def test_regular_classes_only(self):
         self.assertTrue(HP.is_candidate("noteheadHalf"))

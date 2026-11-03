@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- ROADMAP 2.252 r6 landed ON: OMR_HEAD_HOLE_POSITION default ON (hole position, black-box split, local line check, contested/unsure tie ends)
+STAGED GATHER/ADJUDICATE/EXPORT. `head_hole_position.enabled()` / `r5_enabled()` / `r6_enabled()` now deny-list (0/false/no/off disables); gather.py `black_too=r5_enabled()`, `arc_ink_shape(local_lines=r6_enabled())`, ownership `one_end_contested`, export `unsure_ends` all ride it. Sean ruled "Land OMR_HEAD_HOLE_POSITION on" after r6 tiles (positions 11/11, ties 10/12, 0 wrong). OMR_UNISON_TIE_VOICE stays OFF. Landing check on the r6 saved gathers (re-adjudicate only, flag 0 vs 1): see FINDINGS "Landed ON". Tree: tools/omr/staged/head_hole_position.py; tests test_head_hole_position_2_252.py default-on case.
+
 ## 2026-11-03 -- ROADMAP 2.252 r5 landed ON: a tie carries its accidental; a tie traced along a staff line is kept
 STAGED ADJUDICATE..EXPORT, flags `OMR_TIE_CARRIES_ACCIDENTAL` (export.py) and `OMR_ARC_TRACE_NOT_A_LINE` (family_precision.py) now default ON (deny-list; explicit 0/false/no/off disables). Sean's tiles (answers-2.252-r5.json): tie trace 2/2 right; hole pitch 5/5 right but `OMR_HEAD_HOLE_POSITION` (with its neighbour-piece refusal, right 1 of 3) and `OMR_UNISON_TIE_VOICE` stay OFF for round 6. The box split rides `OMR_TALL_HEAD_SPLIT` (box_kind.py), ON since 2026-11-02. Landing check (saved r4/r5 gathers, hole position OFF in both arms, two landing flags 0 vs 1): judged right->wrong 0 and unwritten->wrong 0 on Litolff p10-11, Litolff p2-3, Brahms p0,5 (ties +0/+6/+34; the r5 `11/0/2/12/2` unwritten->wrong was hole-position-arm only and did not reappear). Tests that asserted the OFF default updated.
 
