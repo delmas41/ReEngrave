@@ -1,5 +1,37 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2026-11-02 (2.252 round 3): ties at UNISONS -- flag `OMR_UNISON_TIE_VOICE` (default OFF), branch `lane-2.252-unison`
+
+**Cause (STAGED, traced per tie end; r2 flags + split ON in both arms; saved 2-page gathers, master cells).** Sean's r2 tile 4 (Litolff p10 `10/0/4/1/6`, two E5 voices on one head, a tie above and below on both sides; we write 1 of 4) loses its three ends UPSTREAM of anything unison-specific:
+- upper tie IN: the previous head `10/0/4/0/9` is a detector box 3.2 heads tall (head + stem), `Q.NOTEHEAD_RECENTRE` trusts its centre (`box_already_head_sized` passes on width alone), step 0 against 1 -> binder `page_binding_different_pitch` -> slur. Head from its box again (big item 1).
+- lower tie IN: same head, box-based `no_pair_at_one_position` (dy 0.29) and anchor dy 0.685.
+- lower tie OUT: its detector box also holds the tail of the previous lower arc, so `Q.SYSTEM_ARC`'s trace covers 0.46 of the box (needs 0.50) -> never joined, never page-bound -> grammar kind `slur`.
+
+Across the six dev pages the cause that IS the unison's own is in EXPORT: `Q.TIE_PAIR` names GLYPHS, and 2.175 writes a unison as ONE glyph twice (head = up voice, twin = down voice). `_record_tie_spans` indexes the glyph to its first note, so both arcs of a pair (above and below) land on the up voice as one tie: the down voice's tie is never written, and a lone arc BELOW is written on the UP voice. Second, at a unison two detector boxes often cover the one head; the binder ties the upper arc to one box and the lower to the other, and the one-mark-one-note rule (2.58b mark groups) writes only one -> `tie_end_not_in_file`.
+
+**Process lesson.** A note split into two voices downstream of the decision that names it (EXPORT twins a glyph that ADJUDICATE paired) inherits every per-glyph decision once, silently: a per-voice fact (which voice an arc ties) had no carrier. When a stage multiplies a subject, every quantity keyed on that subject needs a rule for which copy it lands on -- and a test that the second copy can receive one. Second: the r2 tile that opened this round was not the population's cause (3 of its 4 ends die upstream); the census, not the tile, chose the fix.
+
+**Census (my geometric reading of where an arc end meets a unison head; not Sean's).** Unison heads (`Q.HEAD_STEM` `unison_two_voices`): Litolff p2-3 47, p10-11 15, Brahms p0+p5 17 = 79; tie links in the OFF file 67 / 37 / 108. Unison heads with an arc end beside them 13 / 7 / 9; slots (head x side x before/after) 18 / 16 / 18. So unison ties are uncommon: on the four Litolff pages 20 unison heads have an arc end beside them (34 slots) against 104 tie links written; on Brahms about 2 real ones. Slots by cause, OFF -> ON:
+| cause (stage) | L p2-3 | L p10-11 | Brahms p0,p5 |
+|---|---|---|---|
+| written | 4 -> 10 | 3 -> 3 | 0 -> 0 |
+| EXPORT: written on the other voice (pair merged onto the up voice) | 6 -> 0 | 0 | 0 |
+| EXPORT: unison written as one note (2.175 refused it, e.g. `head_fill_disagrees`), second voice's tie has no note | 0 | 4 | 1 |
+| EXPORT: decided, not written (cross-voice end; Brahms: `tie_spelling_differs` Bb4 -> B4 across a barline, r2's open item) | 1 | 1 | 4 |
+| ADJUDICATE kind slur: head step from its box (`page_binding_different_pitch`) | 1 | 2 | 0 |
+| ADJUDICATE kind slur: arc never joined / not bound | 2 | 4 | 0 |
+| ADJUDICATE tie pair refused (no_pair_at_one_position, no_start/stop_head, not_adjacent) | 4 | 2 | 1 |
+| arc box refused `not_an_arc` | 0 | 0 | 12 (my crop look: mostly slurs beside a head my census called a unison -- the census over-counts Brahms) |
+Brahms p0/p5 has ~2 real unison ties on my look (p5 `5/1/5/4/9`, both arcs, lost to the spelling refusal).
+
+**Built (EXPORT only, `OMR_UNISON_TIE_VOICE`, default OFF; fenced to `export._record_tie_spans`, `export_unison.tie_ends/written_member/arc_side`, `export_unison.unfuse`).** CONVENTION ASSUMED (Sean r2 tile 4; page-facts: an arc is OVER its notes; 2.75 the tie belongs to the head on the arc's side): at a unison the arc above is the up-stem voice's tie, the arc below the down-stem voice's. (1) A pair whose two ends are both written as two voices: arcs wholly above the heads' centre line -> the heads, wholly below -> the twins; an arc box across the line is not read for a side (`unison_tie_side_unread`, written as OFF). One end one voice: unchanged, counted (`unison_tie_one_end_one_voice`). Two arcs one each side naming a pair of single notes: counted `unison_tie_second_voice_has_no_note` (was silent under `tie_arcs_naming_an_already_named_pair`). (2) A tie end bound to a box its mark group did not write goes to the box the group wrote (`tie_end_moved_to_its_marks_written_box`); a link two pairs name is written once. (3) A twin dropped at render (`unfuse`) counts its tie ends (`unison_tie_end_lost_bar_unfused`; 0 on these pages). Rule that owns the value: tie = page-facts s1 (same pitch, adjacent), voice of a unison = 2.175; no pairing, kind or pitch is changed. WHAT WOULD FALSIFY IT: an arc below a unison that ties the up voice; a mark-group member that is a different note. Tests: `test_unison_tie_voice_2_252.py` (10, incl. the across-the-line control and OFF==old). Fast tier 9753 passed, 0 failed (the merge of main had dropped r2's two flag-table rows and its rule-page row; restored). Probes: `unison_census.py`, `report_saved_gather.py` (lane_report with ONE saved gather for both arms -- the flag is EXPORT-only), `tiles_2252_r3.py`.
+
+**The three measures** (`lane_report --from gather` on one saved gather per plate for both arms, r2 flags ON in both, 2-page subsets; `out/2.252u/report-*`):
+- Litolff p2-3: `ties +8 -2` (the -2: a lone lower arc moved from the up voice to the down voice); red bars 0 -> 0; notes not written 387 -> 387. Litolff p10-11: `ties +4` (two links via the mark-group move, p11); 420 -> 420. Brahms p0, p5: NOTHING CHANGED; 757 -> 757.
+- Judged: right->wrong 0, unwritten->wrong 0 on all three (210 / 168 / 220 tiles on these pages). Sean's r2 tiles (`answers-2.252-r2.json`): OFF reproduces r2's ON exactly, 20 of 35 ends; ON 20 of 35 -- the flag moves none of them (tile 4's three missing ends are the upstream causes above).
+- 12 blind tiles `out/print/2.252-r3-tiles/` (key `out/print/2.252-r3-tiles-key.json`): 6 changed unisons (all of them), 3 changed non-unison ties (the mark-group move), 1 unchanged unison, 2 controls (ties written the same in both). Question: notes in the box (a head with a stem each way = two), and is each tied before / after, which tie is whose.
+- Next causes, not built: head step from a tall box (big item 1), an arc box holding two arcs' pieces (system-arc coverage), 2.175 refusing a unison so its second voice has no note, the Bb -> B spelling refusal across a barline.
+
 ## 2026-11-02 (2.252 round 2): the missing ties on split dyads -- flags `OMR_ARC_LINE_THICKNESS` + `OMR_TIE_PAIR_ARC_SIDE` (both default OFF), branch `lane-2.252-ties`
 
 **Cause, per missing tie end (STAGED; the 19 of 28 ends Sean reads on his 8 tied dyads that r1 did not write; traced on the r1 ON records, Litolff p2-3, p10-11).** Every printed tie was there; most were lost before a kind was ever asked:

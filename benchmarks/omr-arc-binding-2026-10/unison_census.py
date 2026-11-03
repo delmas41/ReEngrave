@@ -209,7 +209,12 @@ def main() -> None:
     for s in slots:
         print("%-22s %-5s %-6s n=%d %-9s | %s" % (s["head"], s["side"], s["dirn"], s["notes"], s["unison"], s["cause"]))
     c = collections.Counter(s["cause"] for s in slots)
-    heads = {s["head"] for s in slots}
+    heads = {s["mark"] for s in slots}
+    rec = E.Record(result)
+    n_uni = sum(1 for v in rec.verdicts_of("head_stem")
+                if rec.verdict("head_stem", v["subject"]) is v and str(v.get("reason")) == "unison_two_voices")
+    n_ties = xml.count('<tie type="start"/>')
+    print("unison heads (head_stem unison_two_voices): %d; tie links in the file: %d" % (n_uni, n_ties))
     print("unison heads with an arc end beside them: %d; slots: %d" % (len(heads), len(slots)))
     for k, n in c.most_common():
         print("  %3d  %s" % (n, k))
