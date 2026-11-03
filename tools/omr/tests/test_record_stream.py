@@ -148,8 +148,80 @@ def test_lazy_record_writes_the_same_file(tmp_path: Path):
     lazy = {"record": log.to_json(lazy_basis=True), "summary": {}}
     assert isinstance(lazy["record"]["verdicts"][0]["basis"], LazyBasis)
     want = dumps_for_file(eager, separators=(",", ":"), default=str)
-    assert '"$pool"' in want                      # the fixture really pools the basis
+    assert '"$pool"' in want                      # the fixture really pools (`considered`)
     p = tmp_path / "lazy.json"
     n = dump_to_file(lazy, p)
     assert p.read_text(encoding="utf-8") == want and n == len(want)
     assert load_record(p)["record"]["verdicts"][0]["basis"] == eager["record"]["verdicts"][0]["basis"]
+
+
+def _format2_log():
+    """Readings, a derived verdict on a derived verdict, and a verdict with a STORED basis (INFER's kind) between."""
+    from tools.omr.staged import record as R
+    from tools.omr.staged.record import LazyBasis, Log, Outcome, Q, Verdict
+
+    log = Log()
+    o = [log.observe(R.glyph(0, 0, 0, 0, i), Q.GLYPH_BOX, i, reader=R.READERS.GEOMETRY, frame="page")
+         for i in range(5)]
+    o5 = log.observe(R.glyph(0, 0, 0, 0, 5), Q.GLYPH_CONF, 5, reader=R.READERS.GEOMETRY, frame="page",
+                     derived_from=[o[0].id, o[1].id])
+    log.freeze()
+
+    def derived(q, considered, n):
+        return log.record(Verdict(id=log._next_id("vrd"), subject=R.glyph(0, 0, 0, 1, n), quantity=q,
+                                  outcome=Outcome.DECIDED, value=n, decider="d", reason="r",
+                                  considered=tuple(considered), basis=LazyBasis(log, considered)))
+
+    v1 = derived(Q.DURATION, [o5.id, o[2].id], 1)
+    stored = log.record(Verdict(id=log._next_id("vrd"), subject=R.glyph(0, 0, 0, 1, 2), quantity=Q.VOICES,
+                                outcome=Outcome.DECIDED, value=2, decider="infer:x", reason="r",
+                                considered=(v1.id,), basis=tuple(sorted(log.closure(v1.id)))))
+    v3 = derived(Q.METER, [stored.id, o[3].id], 3)
+    return log, (v1, stored, v3)
+
+
+def test_format2_file_stores_considered_not_basis(tmp_path: Path):
+    """ROADMAP 2.249 m8 (Sean 2026-11-02): an ADJUDICATE verdict's basis is not in the file -- `basis_from` says it
+    is derived from `considered`; a stored basis (any other verdict) and the readings' `basis` are kept."""
+    log, (v1, stored, v3) = _format2_log()
+    p = tmp_path / "r.json"
+    dump_to_file({"record": log.to_json(lazy_basis=True), "summary": {}}, p)
+    raw = json.loads(p.read_text())["record"]
+    assert raw["format"] == 2
+    by_id = {v["id"]: v for v in raw["verdicts"]}
+    for v in (v1, v3):
+        assert "basis" not in by_id[v.id] and by_id[v.id]["basis_from"] == "considered"
+        assert by_id[v.id]["considered"] == list(v.considered)
+    assert by_id[stored.id]["basis"] == list(stored.basis) and "basis_from" not in by_id[stored.id]
+    obs5 = [o for o in raw["observations"] if o["basis"]]
+    assert len(obs5) == 1 and len(obs5[0]["basis"]) == 2
+
+
+def test_format2_loads_the_same_basis_and_writes_the_same_file(tmp_path: Path):
+    """Loading gives every derived verdict the basis the log spells (`RecordBasis`); a loaded record written again is
+    the same file."""
+    log, rows = _format2_log()
+    p = tmp_path / "r.json"
+    dump_to_file({"record": log.to_json(lazy_basis=True), "summary": {}}, p)
+    rec = load_record(p)["record"]
+    by_id = {v["id"]: v for v in rec["verdicts"]}
+    for v in rows:
+        got = by_id[v.id]["basis"]
+        assert list(got) == list(v.basis) and got == list(v.basis) and len(got) == len(v.basis)
+        assert all(x in got for x in v.basis)
+    q = tmp_path / "again.json"
+    dump_to_file(load_record(p), q)
+    assert q.read_text() == p.read_text()
+
+
+def test_format1_record_loads_as_stored(tmp_path: Path):
+    """An old record (no `format`, every basis spelled) is read exactly as stored."""
+    old = {"record": {"observations": [{"id": "obs:000001", "basis": []}],
+                      "abstentions": [],
+                      "verdicts": [{"id": "vrd:000002", "subject": "glyph/0/0/0/1/0", "quantity": "duration",
+                                    "decider": "d", "considered": ["obs:000001"], "basis": ["obs:000001", "obs:zz"]}],
+                      "counts": {}}}
+    p = tmp_path / "old.json"
+    p.write_text(json.dumps(old))
+    v = load_record(p)["record"]["verdicts"][0]
+    assert v["basis"] == ["obs:000001", "obs:zz"] and isinstance(v["basis"], list)

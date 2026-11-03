@@ -156,11 +156,154 @@ def _expand_verdicts(verdicts: List[dict], pools: Dict[str, list]) -> None:
 
 
 def json_default(o: Any) -> Any:
-    """`default=` for encoding a record: a `LazyBasis` is the list it stands for (ROADMAP 2.249); anything else
-    `str`, as the record has always been written."""
-    if isinstance(o, LazyBasis):
+    """`default=` for encoding a record: a `LazyBasis` / `RecordBasis` is the list it stands for (ROADMAP 2.249);
+    anything else `str`, as the record has always been written."""
+    if isinstance(o, (LazyBasis, RecordBasis)):
         return list(o)
     return str(o)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Format 2 (ROADMAP 2.249 m8): an ADJUDICATE verdict's basis is derived, not stored
+# ─────────────────────────────────────────────────────────────────────────────
+
+DERIVED_KEY = "basis_from"
+
+
+def _file_form(v: dict) -> dict:
+    """The verdict as the FILE holds it: a derived basis (`basis_from: "considered"`) is left out."""
+    if v.get(DERIVED_KEY) == "considered" and "basis" in v:
+        v = dict(v)
+        del v["basis"]
+    return v
+
+
+class _RowGraph:
+    """What each row of a LOADED record rests on directly -- a derived verdict's `considered`, any other row's
+    `basis` -- and the closures walked over it (memoised, bounded, least recently used out first)."""
+
+    MAX_IDS = 30_000_000
+
+    def __init__(self, record: dict) -> None:
+        self.edges: Dict[str, Sequence[str]] = {}
+        for kind in ("observations", "abstentions", "verdicts"):
+            for r in record.get(kind) or ():
+                rid = r.get("id")
+                if rid is None:
+                    continue
+                if r.get(DERIVED_KEY) == "considered":
+                    self.edges[rid] = r.get("considered") or ()
+                else:
+                    b = r.get("basis")
+                    self.edges[rid] = () if isinstance(b, RecordBasis) else (b or ())
+        self.derived = {r.get("id") for r in record.get("verdicts") or () if r.get(DERIVED_KEY) == "considered"}
+        from collections import OrderedDict
+        self.memo: "OrderedDict[str, frozenset]" = OrderedDict()
+        self.held = 0
+
+    def closure(self, rid: str) -> frozenset:
+        """`rid` and every row it rests on, transitively (memoised)."""
+        hit = self.memo.get(rid)
+        if hit is not None:
+            self.memo.move_to_end(rid)
+            return hit
+        res = frozenset(self._walk([rid]))
+        self.memo[rid] = res
+        self.held += len(res)
+        while self.held > self.MAX_IDS and len(self.memo) > 1:
+            _k, old = self.memo.popitem(last=False)
+            self.held -= len(old)
+        return res
+
+    def closure_of_many(self, ids: Sequence[str]) -> set:
+        """The union of `closure(r)` for every `r` in `ids`: a verdict's closure is memoised (others rest on it too),
+        a reading's is walked inline."""
+        out: set = set()
+        stack = []
+        for rid in ids:
+            if rid in out:
+                continue
+            if rid in self.derived:
+                out |= self.closure(rid)
+            else:
+                stack.append(rid)
+        out |= self._walk(stack, out)
+        return out
+
+    def _walk(self, stack, seen=None) -> set:
+        out: set = set() if seen is None else seen
+        memo = self.memo
+        while stack:
+            rid = stack.pop()
+            if rid in out:
+                continue
+            hit = memo.get(rid)
+            if hit is not None:
+                memo.move_to_end(rid)
+                out |= hit
+                continue
+            out.add(rid)
+            stack.extend(self.edges.get(rid, ()))
+        return out
+
+
+class RecordBasis(Sequence):
+    """A loaded format-2 verdict's `basis`: `considered` plus each considered row's closure, spelled out (sorted, as
+    format 1 stored it) when read. Behaves as that sorted list: iteration, `len`, indexing, `in`, `==`, `bool`."""
+
+    __slots__ = ("_graph", "considered", "_t")
+
+    def __init__(self, graph: _RowGraph, considered: Sequence[str]) -> None:
+        self._graph = graph
+        self.considered = tuple(considered)
+        self._t: Optional[tuple] = None
+
+    def _spell(self) -> tuple:
+        t = self._t
+        if t is None:
+            t = tuple(sorted(self._graph.closure_of_many(self.considered)))
+        return t
+
+    def __iter__(self):
+        return iter(self._spell())
+
+    def __len__(self) -> int:
+        return len(self._spell())
+
+    def __bool__(self) -> bool:
+        return bool(self.considered)
+
+    def __getitem__(self, i):
+        return self._spell()[i]
+
+    def __contains__(self, x) -> bool:
+        return x in self._graph.closure_of_many(self.considered)
+
+    def __eq__(self, other) -> bool:
+        if isinstance(other, (RecordBasis, LazyBasis)):
+            return tuple(self) == tuple(other)
+        if isinstance(other, (list, tuple)):
+            return self._spell() == tuple(other)
+        return NotImplemented
+
+    def __hash__(self) -> int:
+        return hash(self._spell())
+
+    def __repr__(self) -> str:
+        return "RecordBasis(considered=%d ids)" % len(self.considered)
+
+
+def attach_derived_bases(record: dict) -> dict:
+    """ROADMAP 2.249 m8: give every format-2 derived verdict of a LOADED record its `basis` back (a `RecordBasis`,
+    spelled when read). A format-1 record (no `format` key) stores every basis and is returned untouched. In place."""
+    verdicts = record.get("verdicts") or ()
+    if not any(isinstance(v, dict) and v.get(DERIVED_KEY) == "considered" for v in verdicts):
+        return record
+    graph = _RowGraph(record)
+    for v in verdicts:
+        if isinstance(v, dict) and v.get(DERIVED_KEY) == "considered" and not isinstance(v.get("basis"), (list, tuple, LazyBasis)):
+            v["basis"] = RecordBasis(graph, v.get("considered") or ())
+    return record
 
 
 def _is_ids(lst: Any) -> bool:
@@ -270,11 +413,15 @@ def pool_id_lists(record: dict) -> dict:
     expanding its own output and comparing every pooled field to the input;
     raises `PoolMismatch` on any difference.
     """
-    verdicts: List[dict] = list(record.get("verdicts") or ())
+    verdicts: List[dict] = [_file_form(v) for v in record.get("verdicts") or ()]
     if not verdicts:
         return record
     pools, flat, grouped = _pool_plan(verdicts)
     if not pools:
+        if any(v.get(DERIVED_KEY) == "considered" for v in verdicts):     # format 2: the file form still drops bases
+            out = dict(record)
+            out["verdicts"] = verdicts
+            return out
         return record
     out = dict(record)
     out["verdicts"] = [_pooled_one(v, i, pools, flat, grouped) for i, v in enumerate(verdicts)]
@@ -303,12 +450,16 @@ def _streamed_pooled_result(result: dict) -> dict:
     rec = result.get("record")
     if not isinstance(rec, dict):
         return result
-    verdicts: List[dict] = list(rec.get("verdicts") or ())
+    verdicts: List[dict] = [_file_form(v) for v in rec.get("verdicts") or ()]
     if not verdicts:
         return result
     plan = _pool_plan(verdicts)
     if not plan[0]:
-        return result
+        out_rec = dict(rec)
+        out_rec["verdicts"] = verdicts
+        out = dict(result)
+        out["record"] = out_rec
+        return out
     out_rec = dict(rec)
     out_rec["verdicts"] = _PooledVerdicts(verdicts, plan)
     out_rec[POOL_KEY] = plan[0]
@@ -343,7 +494,7 @@ def expand_id_lists(record: dict) -> dict:
     if pools:
         _expand_verdicts(list(record.get("verdicts") or ()), pools)
     record.pop(POOL_KEY, None)
-    return record
+    return attach_derived_bases(record)
 
 
 def expand_result(data: dict) -> dict:

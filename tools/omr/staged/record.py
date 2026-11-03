@@ -3608,7 +3608,13 @@ class Verdict:
                 "candidates": [c.to_json() for c in self.candidates],
                 "basis": (self.basis if lazy_basis and isinstance(self.basis, LazyBasis) else list(self.basis)),
                 "margin": self.margin,
-                "supersedes": self.supersedes, "detail": dict(self.detail)}
+                "supersedes": self.supersedes, "detail": dict(self.detail),
+                # ROADMAP 2.249 m8 (format 2): the basis is derived from `considered`; the file writer leaves `basis` out
+                **({"basis_from": "considered"} if self._basis_is_derived() else {})}
+
+    def _basis_is_derived(self) -> bool:
+        b = self.basis
+        return isinstance(b, LazyBasis) and b.considered == tuple(self.considered)
 
 
 Row = Union[Observation, Abstention, Verdict]
@@ -3617,6 +3623,13 @@ Row = Union[Observation, Abstention, Verdict]
 # ─────────────────────────────────────────────────────────────────────────────
 # The log
 # ─────────────────────────────────────────────────────────────────────────────
+
+
+#: ⚠️ ROADMAP 2.249 m8 (Sean 2026-11-02, "change the record format"): the record FILE format. 1 (no `format` key):
+#: every verdict's `basis` is spelled out. 2: an ADJUDICATE verdict carries `basis_from: "considered"` and NO `basis` --
+#: its basis is `considered` plus each considered row's closure, derived when read (`record_io.load_record` attaches it;
+#: in memory, `LazyBasis`). Every other row's `basis` is stored as before.
+RECORD_FORMAT = 2
 
 
 #: ROADMAP 2.249: the closure memo holds at most this many ids in all (~2-3 GB of frozensets), least recently used
@@ -4201,6 +4214,7 @@ class Log:
         whole movement's bases were the run's 56 GB peak -- for a consumer that reads it as the list it stands for
         (`record_io.dump_to_file`, the exporter). Off, every basis is a list, exactly as before."""
         return {
+            "format": RECORD_FORMAT,       # ROADMAP 2.249 m8: see RECORD_FORMAT
             "observations": [o.to_json() for o in self._obs.values()],
             "abstentions": [a.to_json() for a in self._abs.values()],
             "verdicts": [v.to_json(lazy_basis) for v in self._vrd.values()],
