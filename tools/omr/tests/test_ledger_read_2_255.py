@@ -101,3 +101,26 @@ def test_outline_free_walk_never_loses_a_rung_the_plain_walk_keeps():
     assert all(any(abs(r - o) <= 1.0 for o in on) for r in off)
     assert any(abs(r - 265) <= 2 for r in on)       # ledger 2 is found
     assert not any(abs(r - 265) <= 2 for r in off)  # the plain walk stepped onto the outline and lost it
+
+
+def test_local_gap_max_scales_with_the_systems_own_pitch():
+    # r2: a system whose read ledgers sit ~1.2 sp apart holds room for another ledger from 1.8 sp, not 1.5
+    assert lg.local_gap_max([1.2] * 8) == 1.5 * 1.2
+    # drawn at 1.0 sp (Brahms) the limit is the fixed 1.5 -> None; too few gaps -> None; cap respected
+    assert lg.local_gap_max([1.0] * 20) is None
+    assert lg.local_gap_max([1.2] * 7) is None
+    assert lg.local_gap_max([1.4] * 20) == lg.LOCAL_PITCH_GAP_CAP_SPACES
+
+
+def test_count_ledgers_between_gap_max_relaxes_only_the_final_fit():
+    img = blank()
+    ys = staff(img, top=300)
+    edge = ys[0]
+    line_y = edge - 1.54 * SP                      # a first ledger 1.54 sp out, nothing printed between it and the staff
+    hline(img, int(round(line_y)), 100, 140)
+    kw = dict(img_gray=img, edge_y=edge, sign=-1.0, spacing=float(SP), line_y=float(line_y), rungs_y=[float(line_y)],
+              x_center=120.0, head_box_x=(110.0, 130.0))
+    assert not lg.count_ledgers_between(**kw)["fits"]                       # the fixed limit: unchanged
+    got = lg.count_ledgers_between(**kw, gap_max=1.8)
+    assert got["fits"] and got["relaxed"] and got["k"] == 1
+    assert not lg.count_ledgers_between(**kw, gap_max=1.5)["fits"]          # no relaxation without a wider limit
