@@ -37,6 +37,15 @@ def enabled() -> bool:
     return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: ROADMAP 2.252 r5: the round-5 revisions ride on the same flag (it is OFF; Sean's r4 tiles 4, 6, 7, 9 and the r4 loss census)
+def r5_enabled() -> bool:
+    return enabled()
+
+
+#: r5: a head's own ink at most this tall (staff spaces) is ONE head even where an arc's end makes it too wide (2.248's own cut-off)
+ONE_HEAD_TALL_SPACES = 1.35
+
+
 def is_candidate(cls: Any) -> bool:
     """A REGULAR head class, half or black: the detector calls hollow heads black (Litolff p11 `11/1/3/12/1`), and a black head has
     no hole, so the hole itself is the evidence; never a grace/cue or whole class."""
@@ -46,10 +55,11 @@ def is_candidate(cls: Any) -> bool:
 
 def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, staff_top_c: float,
                   line_ys_c: Sequence[float], pos_box: float, page_binary: Any, page_box: Optional[Sequence[float]],
-                  half_step_page: Optional[float]) -> Dict[str, Any]:
+                  half_step_page: Optional[float], other_heads_c: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
     """`{"position": float or None, "why": None or the refusal, ...the numbers}`. `box_c` (x0, y0, x1, y1) and the grid are the cell's
     canonical frame; `page_box` / `half_step_page` the same box on the page raster (for the ink witness). `position` is None where nothing
-    moves: 'no_raster', 'holes:<n>' (not exactly one), 'off_grid', 'same_position', 'off_staff', 'ink_unread', 'ink_disagrees'."""
+    moves: 'no_raster', 'holes:<n>' (not exactly one), 'off_grid', 'same_position', 'off_staff', 'ink_unread', 'ink_disagrees',
+    'cut_piece_in_another_head' (r5). `other_heads_c`: the cell's OTHER head boxes, canonical (x0, y0, x1, y1)."""
     from . import box_kind as K
     from .head_extent import STAFF_POSITIONS
     out: Dict[str, Any] = {"position": None, "why": None}
@@ -66,6 +76,21 @@ def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, s
         out["why"] = "holes:%d" % len(holes)
         return out
     step = float(holes[0]["step"])
+    if r5_enabled() and holes[0].get("cut") and holes[0].get("cut_off_sp"):
+        # ROADMAP 2.252 r5: a slit the line cut is TWO pieces either side of a line; where another head box of the cell stands on
+        # exactly one of them, that piece is the NEIGHBOUR's hole (a dyad a third apart round the line: Litolff p3 `3/1/2/7/0`, whose
+        # lower piece is `3/1/2/7/1`'s), and the two pieces are not one hole: nothing is read
+        sp_c = 2.0 * float(half_step_c)
+        cy = float(holes[0]["cy"])
+        cx = float(holes[0]["cx"])
+        up, dn = cy - float(holes[0]["cut_off_sp"][0]) * sp_c, cy + float(holes[0]["cut_off_sp"][1]) * sp_c
+
+        def _in(y, b):
+            return float(b[0]) <= cx <= float(b[2]) and float(b[1]) <= y <= float(b[3])
+        held = [any(_in(y, b) for b in (other_heads_c or ())) for y in (up, dn)]
+        if held[0] != held[1]:
+            out["why"] = "cut_piece_in_another_head"
+            return out
     if abs(step - round(step)) > K.HOLE_GRID_TOL_STEPS:
         out["why"] = "off_grid"
         return out
@@ -87,7 +112,10 @@ def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, s
     # each held one "hole"; 2.220's own `not_one_head` and the width refuse both)
     ext = t.get("extent_sp") or [0.0, 0.0]
     out["ink_extent_sp"] = ext
-    if t.get("not_one_head"):
+    if t.get("not_one_head") and not (r5_enabled() and t.get("not_one_head") == "too_wide"
+                                      and float(ext[1] or 99.0) <= ONE_HEAD_TALL_SPACES):
+        # r5: ink one head TALL but too WIDE is a head with an arc's end or a neighbour run into its side (Litolff p10 `10/0/3/1/7`,
+        # a tie's end on the head: 1.84 sp wide, 1.14 tall) -- its height still says one head, and its centre is still read
         out["why"] = "ink_not_one_head"
         return out
     if float(ext[0]) < MIN_INK_WIDTH_SPACES:

@@ -427,14 +427,15 @@ def head_holes(ink, box, sp: float, staff_top: float, line_ys=()):
         cy = ry0 + sl[0].start + float(ys.mean()) + 0.5
         if not (x0 <= cx <= x1 and y0 <= cy <= y1):
             continue
-        found.append({"cx": cx, "cy": cy, "pieces": 1})
+        found.append({"cx": cx, "cy": cy, "pieces": 1, "y0": float(ry0 + sl[0].start), "y1": float(ry0 + sl[0].stop)})
     found.sort(key=lambda t: t["cy"])
     one = []
     for f in found:
         # two pieces at one height are one slit (a hair of ink across it)
         if one and f["cy"] - one[-1]["cy"] < HOLE_SAME_SP * sp:
             a = one[-1]
-            one[-1] = {"cx": (a["cx"] + f["cx"]) / 2.0, "cy": (a["cy"] + f["cy"]) / 2.0, "pieces": a["pieces"] + f["pieces"]}
+            one[-1] = {"cx": (a["cx"] + f["cx"]) / 2.0, "cy": (a["cy"] + f["cy"]) / 2.0, "pieces": a["pieces"] + f["pieces"],
+                       "y0": min(a["y0"], f["y0"]), "y1": max(a["y1"], f["y1"])}
             continue
         one.append(dict(f))
     out = []
@@ -444,11 +445,18 @@ def head_holes(ink, box, sp: float, staff_top: float, line_ys=()):
             cut = [ly for ly in line_ys if a["cy"] < ly < f["cy"] and ly - a["cy"] <= HOLE_LINE_CUT_SP * sp
                    and f["cy"] - ly <= HOLE_LINE_CUT_SP * sp]
             if cut and not a.get("cut"):
-                out[-1] = {"cx": (a["cx"] + f["cx"]) / 2.0, "cy": float(cut[0]), "pieces": a["pieces"] + f["pieces"], "cut": True}
+                out[-1] = {"cx": (a["cx"] + f["cx"]) / 2.0, "cy": float(cut[0]), "pieces": a["pieces"] + f["pieces"], "cut": True,
+                           "y0": min(a["y0"], f["y0"]), "y1": max(a["y1"], f["y1"]), "cut_dx": a["cx"] - f["cx"], "cut_off": [float(cut[0]) - a["cy"], f["cy"] - float(cut[0])]}
                 continue
         out.append(dict(f))
     half = sp / 2.0
-    return [{"cx": round(h["cx"], 1), "cy": round(h["cy"], 1), "step": round((h["cy"] - staff_top) / half, 2), "pieces": h["pieces"]}
+    # `cut` / `span_sp` (ROADMAP 2.252 r5): a slit a line cut, and the hole's own height top to bottom, both pieces of a cut slit
+    # included (staff spaces)
+    return [{"cx": round(h["cx"], 1), "cy": round(h["cy"], 1), "step": round((h["cy"] - staff_top) / half, 2), "pieces": h["pieces"],
+             "cut": bool(h.get("cut")), "span_sp": round((h["y1"] - h["y0"]) / sp, 3),
+             # the upper piece's centre minus the lower piece's, across (staff spaces): a slanted slit the line cut is offset
+             "cut_dx_sp": round(h["cut_dx"] / sp, 3) if "cut_dx" in h else None,
+             "cut_off_sp": [round(v / sp, 3) for v in h["cut_off"]] if "cut_off" in h else None}
             for h in out]
 
 
@@ -474,7 +482,7 @@ def is_hollow_head_class(cls: object) -> bool:
 HEAD_BOX_H_SP = 1.3
 
 
-def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(), only=None):
+def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(), only=None, black_too: bool = False):
     """GATHER, flag ON (ROADMAP 2.252): `(dets_out, info)`. `dets_out` = `dets` unchanged and in order, plus one new detection per hollow
     head read off its hole (`head_holes` / `heads_from_holes`) inside a TALL hollow-class head box that no other one-head box of the cell
     stands on: centred on the hole, the tall box's x and width, the cell's median one-head box height, the tall box's class with the
@@ -495,8 +503,11 @@ def split_tall_heads(dets, image, sp: float, staff_top: float = 0.0, line_ys=(),
     for i, d in enumerate(dets):
         if only is not None and i not in only:
             continue
-        if not (is_hollow_head_class(d.smufl_name) and d.height_canonical / sp >= TALL_MIN_H_SP
-                and d.width_canonical / sp < HEAD_BOX_MAX_W_SP):
+        # ROADMAP 2.252 r5 (`black_too`, rides on `OMR_HEAD_HOLE_POSITION`, default OFF): the detector calls Litolff's hollow heads BLACK
+        # (r4), so a tall BLACK box is read too -- its holes are the evidence it is hollow (a filled head has none, and nothing is read);
+        # Sean's r4 tile 9: a black box round a dyad of halves and their stem (Litolff p10 `10/1/2/0/10`) read as ONE head between them
+        if not ((is_hollow_head_class(d.smufl_name) or (black_too and str(d.smufl_name).startswith("noteheadBlack")))
+                and d.height_canonical / sp >= TALL_MIN_H_SP and d.width_canonical / sp < HEAD_BOX_MAX_W_SP):
             continue
         box = (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical)
         holes = head_holes(ink, box, sp, staff_top, line_ys)

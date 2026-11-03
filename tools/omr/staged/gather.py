@@ -501,9 +501,11 @@ def gather_detections(log: Log, cells: Sequence[Any],
         # dyad of halves boxed as one head); each head no one-head box stands on gets its own box, APPENDED (every glyph index unchanged).
         if dets and _box_kind.tall_split_enabled():
             _grid = _cell_grid(c)
+            from . import head_hole_position as _hhp
             dets, _tall_info = _box_kind.split_tall_heads(dets, getattr(c, "image", None), 2.0 * _grid[1] if _grid else 0.0,
                                                           staff_top=_grid[0] if _grid else 0.0,
-                                                          line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()))
+                                                          line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
+                                                          black_too=_hhp.r5_enabled())
             for _k, _v in _tall_info.items():
                 split_info.setdefault(_k, {}).update(_v)
         if not dets:
@@ -885,10 +887,11 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
             # their holes, as the production pass does (Sean's 2.250 r2 tiles 8 and 11 were rescued dyads); each head no one-head box
             # stands on is filed after the rescued boxes, at the next glyph index, under the rescue's own reader and its tall box's witness.
             allb = list(existing) + [d for d, _w in kept]
+            from . import head_hole_position as _hhp
             outb, tall_info = _box_kind.split_tall_heads(
                 allb, getattr(c, "image", None), 2.0 * grid[1], staff_top=grid[0],
                 line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
-                only=set(range(n_existing, n_existing + len(kept))))
+                only=set(range(n_existing, n_existing + len(kept))), black_too=_hhp.r5_enabled())
             # the glyph index of a box in `allb` / `outb` is its rescue index n_existing + k, so `tall_info` is keyed by glyph index
             for j, nd in enumerate(outb[len(allb):]):
                 src = tall_info[len(allb) + j]["tall_split"]["split_from"]
@@ -1605,12 +1608,15 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     getattr(c, "image", None),
                     (d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical),
                     float(half_step), float(top_y), list(getattr(c, "staff_line_ys_canonical", None) or ()), pos_float,
-                    page_binary, pbh, (float(half_step) / float(uph)) if uph else None)
+                    page_binary, pbh, (float(half_step) / float(uph)) if uph else None,
+                    # r5: the cell's other head boxes (a cut slit's piece inside one of them is that head's hole)
+                    [(od.x_canonical, od.y_canonical, od.x_canonical + od.width_canonical, od.y_canonical + od.height_canonical)
+                     for oj, od in enumerate(dets) if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)])
                 if hp["position"] is not None:
                     extra = {"from_head_hole": hp["holes"], "detector_position_float": round(pos_float, 3),
                              "hole_ink_position": hp.get("ink_position")}
                     pos_float = float(hp["position"])
-                elif hp["why"] in ("ink_disagrees", "off_grid", "ink_not_one_head", "ink_too_narrow"):
+                elif hp["why"] in ("ink_disagrees", "off_grid", "ink_not_one_head", "ink_too_narrow", "cut_piece_in_another_head"):
                     extra = {"hole_refused": hp["why"], "hole_steps": hp.get("holes"), "hole_ink_position": hp.get("ink_position")}
             # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default ON since 2026-11-02): the box is only the seed. Where the head's OWN ink
             # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre

@@ -2211,6 +2211,32 @@ ARC_BARLINE_MIN_HEIGHT_SPACES = 2.0
 ARC_BARLINE_MIN_TALL_COLS = 0.6
 
 
+#: ROADMAP 2.252 r5 (flag `OMR_ARC_TRACE_NOT_A_LINE`, default OFF). CAUSE (benchmarks/omr-arc-binding-2026-10/FINDINGS.md, r5; Sean's
+#: r3/r4 tile 12, Brahms p5 `5/1/5/4/8`): a tie that runs ALONG a staff line for most of its length (Breitkopf's dotted-quarter ties
+#: across a barline) loses its middle with the line when `Q.ARC_INK_SHAPE` erases the line, so the box reads "no curve" (coverage 0.16)
+#: and is refused `ink_is_a_staff_line` -- while GATHER's page-wide trace (`arcs_system`, ROADMAP 2.166) followed it as a curve that
+#: BOWS (a flat trace on a line is abstained there, 2.60's fakes; a straight one is refused, 2.245) from one head to another at one
+#: position (`two_heads_one_position_adjacent`). Brahms p0/p5: 12 such boxes, all 12 real ties on my crop look; Litolff p2-3/p10-11: 1.
+#: The trace is filed on the curve's LEFTMOST piece; only that piece is read here (a later piece keeps its refusal, counted).
+#: CONVENTION: a staff line is straight and does not bow (2.60); a tie joins two adjacent heads at one position (page-facts s1).
+#: WHAT WOULD FALSIFY IT: a box kept here that Sean reads as a staff line, or as no arc.
+ARC_TRACE_NOT_A_LINE_ENV = "OMR_ARC_TRACE_NOT_A_LINE"
+ARC_TRACE_TIE_SHAPE = "two_heads_one_position_adjacent"
+
+
+def arc_trace_not_a_line_enabled() -> bool:
+    """`OMR_ARC_TRACE_NOT_A_LINE` (ROADMAP 2.252 r5), default OFF; an explicit on-word enables."""
+    return os.environ.get(ARC_TRACE_NOT_A_LINE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _traced_tie(ev: Evidence) -> Optional[str]:
+    """The id of this box's own `Q.SYSTEM_ARC` row where the page-wide trace read a tie's shape through it, else None."""
+    for r in ev.rows(Q.SYSTEM_ARC):
+        if r.value == ARC_TRACE_TIE_SHAPE:
+            return r.id
+    return None
+
+
 def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
                      ) -> Optional[Ruling]:
     """The box's own ink says it is a straight line, not a curve.
@@ -2237,6 +2263,12 @@ def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
                   height_spaces=height)
     if (n_lines >= 1 and width >= ARC_LINE_MIN_WIDTH_SPACES
             and cov < ARC_LINE_MAX_COVERAGE):
+        traced = _traced_tie(ev) if arc_trace_not_a_line_enabled() else None
+        if traced is not None:
+            # ROADMAP 2.252 r5: the page-wide trace followed a BOWED curve through this box from one head to another at one position
+            # (a tie's shape): a staff line does not bow, so the box is not a staff line (counted on the detail, the box stands)
+            detail.update(staff_line_refusal_overruled_by=traced)
+            return None
         return Ruling(value=True, reason="ink_is_a_staff_line",
                       used=(row.id,), detail=detail)
     if (width <= ARC_BARLINE_MAX_WIDTH_SPACES
@@ -2251,10 +2283,10 @@ def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
     quantity=Q.ARC_IS_NOT_AN_ARC,
     composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE,
-                   Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
+                   Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.SYSTEM_ARC),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
+           Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
     reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC)
     + ("ink_is_a_staff_line", "ink_is_a_barline",
