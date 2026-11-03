@@ -29,6 +29,8 @@ from typing import Any, Dict, Optional, Sequence
 ENV = "OMR_HEAD_HOLE_POSITION"
 #: how far past the box's top and bottom (staff spaces) a hole's centre may stand (a clipped box can stop at the hole)
 REACH_SPACES = 0.25
+#: the head's own ink at least this wide (staff spaces; a Litolff/Brahms head is 1.3-1.7 wide): a narrower mark is not a head
+MIN_INK_WIDTH_SPACES = 1.0
 
 
 def enabled() -> bool:
@@ -80,6 +82,16 @@ def hole_position(cell_image: Any, box_c: Sequence[float], half_step_c: float, s
         if (page_binary is not None and page_box is not None and half_step_page) else None
     if not t or t.get("trimmed") is None:
         out["why"] = "ink_unread"
+        return out
+    # ... and that ink is ONE head, about a head wide (r4 move sheet: a gap between two black heads of a second, and a narrow mark,
+    # each held one "hole"; 2.220's own `not_one_head` and the width refuse both)
+    ext = t.get("extent_sp") or [0.0, 0.0]
+    out["ink_extent_sp"] = ext
+    if t.get("not_one_head"):
+        out["why"] = "ink_not_one_head"
+        return out
+    if float(ext[0]) < MIN_INK_WIDTH_SPACES:
+        out["why"] = "ink_too_narrow"
         return out
     tr = t["trimmed"]
     ink_pos = float(pos_box) + ((float(tr[1]) + float(tr[3])) / 2.0 - (float(page_box[1]) + float(page_box[3])) / 2.0) / float(half_step_page)

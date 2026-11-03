@@ -1610,7 +1610,7 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_hole": hp["holes"], "detector_position_float": round(pos_float, 3),
                              "hole_ink_position": hp.get("ink_position")}
                     pos_float = float(hp["position"])
-                elif hp["why"] in ("ink_disagrees", "off_grid"):
+                elif hp["why"] in ("ink_disagrees", "off_grid", "ink_not_one_head", "ink_too_narrow"):
                     extra = {"hole_refused": hp["why"], "hole_steps": hp.get("holes"), "hole_ink_position": hp.get("ink_position")}
             # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default ON since 2026-11-02): the box is only the seed. Where the head's OWN ink
             # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre

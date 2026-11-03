@@ -102,6 +102,16 @@ class TestHolePosition(unittest.TestCase):
         self.assertIsNone(res["position"])
         self.assertEqual(res["why"], "off_staff")
 
+    def test_a_narrow_ring_is_not_a_head(self):
+        """r4 move sheet: a narrow mark holding a hole (a 'p'-like curl, 0.76 sp wide) is refused by its ink width."""
+        import cv2
+        img = _staff()
+        cv2.ellipse(img, (200, 260), (10, 20), 0, 0, 360, 0, -1)
+        cv2.ellipse(img, (200, 260), (5, 10), 0, 0, 360, 255, -1)
+        res, pos_box = _read(img, (188, 262, 212, 290))
+        self.assertIsNone(res["position"])
+        self.assertIn(res["why"], ("ink_too_narrow", "ink_not_one_head", "holes:0"), res)
+
     def test_no_raster(self):
         res = HP.hole_position(None, (0, 0, 10, 10), HALF, TOP, LINES, 3.0, None, None, None)
         self.assertEqual(res["why"], "no_raster")
