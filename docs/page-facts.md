@@ -123,6 +123,16 @@ machine-readable form.
   staff below (Sean, 2026-10-31: *"hairpins are always below the staff any
   notes next to a hairpin below it belong to the staff below any notes above
   a hairpin belong to the staff above"*; scope: general; ROADMAP 2.240).
+  A hairpin is owned by the staff ABOVE it, not by the notes it is closest
+  to (Sean, 2026-11-02, Brahms p19 bars 358-361, short wedges sitting near
+  the next staff's notes: *"all hairpins are below and those from the crop
+  belong to the staff above, not the notes they are closest to"*; scope:
+  general). **Accent or hairpin by length** (same day; scope: general):
+  *"Accents can be above or below but are always only for one note. Hairpins
+  can be one note in length also but only hairpins can be longer than a
+  note"* -- a wedge longer than one note is a hairpin; a one-note wedge may be
+  either, and position alone does not decide it (an accent may be above or
+  below; a hairpin is below its own staff).
 - **Words and marks between staves** (Sean, 2026-10-08/09/11; scope: general;
   ROADMAP 2.66, 2.68, 2.12m): tempo and technique words are printed ABOVE
   the staff they govern, so one in the gap belongs to the LOWER staff

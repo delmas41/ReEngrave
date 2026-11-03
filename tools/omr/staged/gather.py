@@ -497,6 +497,15 @@ def gather_detections(log: Log, cells: Sequence[Any],
             _grid = _cell_grid(c)
             dets, split_info = _box_kind.split_wide_heads(dets, getattr(c, "image_no_staff", None), 2.0 * _grid[1] if _grid else 0.0,
                                                           staff_top=_grid[0] if _grid else 0.0)
+        # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a TALL hollow head box is read for the heads inside it by their holes (a
+        # dyad of halves boxed as one head); each head no one-head box stands on gets its own box, APPENDED (every glyph index unchanged).
+        if dets and _box_kind.tall_split_enabled():
+            _grid = _cell_grid(c)
+            dets, _tall_info = _box_kind.split_tall_heads(dets, getattr(c, "image", None), 2.0 * _grid[1] if _grid else 0.0,
+                                                          staff_top=_grid[0] if _grid else 0.0,
+                                                          line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()))
+            for _k, _v in _tall_info.items():
+                split_info.setdefault(_k, {}).update(_v)
         if not dets:
             log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.DETECTOR,
                         frame=frame, reason=ABSTAIN.NO_DETECTIONS)
@@ -870,12 +879,26 @@ def gather_lowconf_rescue(log: Log, cells: Sequence[Any],
                             reason=ABSTAIN.WITNESS_UNMET,
                             witness_kind=w["kind"])
 
+        tall_info: Dict[int, Dict[str, Any]] = {}
+        if kept and _box_kind.tall_split_enabled() and grid:
+            # ROADMAP 2.252 (flag `OMR_TALL_HEAD_SPLIT`, default ON): a rescued TALL hollow head box is read for the heads inside it by
+            # their holes, as the production pass does (Sean's 2.250 r2 tiles 8 and 11 were rescued dyads); each head no one-head box
+            # stands on is filed after the rescued boxes, at the next glyph index, under the rescue's own reader and its tall box's witness.
+            allb = list(existing) + [d for d, _w in kept]
+            outb, tall_info = _box_kind.split_tall_heads(
+                allb, getattr(c, "image", None), 2.0 * grid[1], staff_top=grid[0],
+                line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
+                only=set(range(n_existing, n_existing + len(kept))))
+            # the glyph index of a box in `allb` / `outb` is its rescue index n_existing + k, so `tall_info` is keyed by glyph index
+            for j, nd in enumerate(outb[len(allb):]):
+                src = tall_info[len(allb) + j]["tall_split"]["split_from"]
+                kept.append((nd, kept[src - n_existing][1]))
         for k, (d, w) in enumerate(kept):
             gi = n_existing + k
             g = R.glyph(p, sys_idx, st_idx, c.measure_index, gi)
             page_box = _page_box(c, d)
             box_detail: Dict[str, Any] = {"category": d.category,
-                                          "witness": w["kind"]}
+                                          "witness": w["kind"], **tall_info.get(gi, {})}
             if page_box is None:
                 box_detail["frame_note"] = (
                     "no page box: cell has no bbox_page_px/upscale_factor")
@@ -1479,7 +1502,7 @@ def gather_second_hollow(log: Log, cells: Sequence[Any],
 
 def gather_notehead_positions(log: Log, cells: Sequence[Any],
                               local: Dict[int, Tuple[int, int]],
-                              detections: Dict[str, List[Any]]) -> None:
+                              detections: Dict[str, List[Any]], pws: Any = None) -> None:
     """The notehead's fractional STAFF POSITION -- clef-free, and kept.
 
     ⚠️ THIS IS THE THESIS OF THE WHOLE ARCHITECTURE IN ONE FUNCTION.
@@ -1495,6 +1518,17 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
     between two positions", which on a warped scan is the population
     `OMR_CELL_LINE_TRACE` exists for.
     """
+    from . import head_extent, head_ink
+    ink_pos_on = head_extent.enabled()
+    # ROADMAP 2.248 r3 (flag OMR_FARHEAD_UNREAD_GUESSED, default ON): a FAR head's ink centre is filed beside its box-centre position as
+    # a CANDIDATE (`ink_centre_position_float`) for `restate_pitch`, which writes the head GUESSED where its ledger count abstained.
+    # It never moves the position row (a far head is placed by its ledger lines only).
+    far_guess_on = head_extent.far_guess_enabled()
+    page_binary = getattr(getattr(pws, "page", None), "binary", None) if (ink_pos_on or far_guess_on) else None
+
+    def foreign_by_cell(c: Any, dets: Sequence[Any]) -> List[Any]:
+        return [pb for pb in (_page_box(c, od) for od in dets if head_ink.is_foreign_class(od.smufl_name)) if pb is not None]
+
     by_key = {}
     for c in cells:
         key = local.get(c.staff_index)
@@ -1558,6 +1592,39 @@ def gather_notehead_positions(log: Log, cells: Sequence[Any],
                     extra = {"from_head_cut": cut_rows[-1].id,
                              "detector_position_float": round(pos_float, 3)}
                     pos_float = float(cut_pos)
+            # ⚠️ ROADMAP 2.248 (flag OMR_HEAD_INK_EXTENT, default OFF): the box is only the seed. Where the head's OWN ink
+            # (2.220's trim, page raster) is one head whose centre rounds to another position than the box's, the ink's centre
+            # is the position; the detector's stays on the row. Never over 2.73's line-cut position.
+            elif ink_pos_on and page_binary is not None:
+                pb = _page_box(c, d)
+                up = getattr(c, "upscale_factor", None)
+                if pb is not None and up:
+                    hs_page = float(half_step) / float(up)
+                    others = [ob for ob in (_page_box(c, od) for oj, od in enumerate(dets)
+                                            if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)) if ob is not None]
+                    got = head_extent.ink_extent(page_binary, pb, 2.0 * hs_page, foreign_by_cell(c, dets), others)
+                    if got["why"] is None:
+                        moved = head_extent.ink_position(pos_float, pb, got["extent"], hs_page)
+                        if moved is not None:
+                            extra = {"from_head_ink": [round(v, 1) for v in got["extent"]],
+                                     "detector_position_float": round(pos_float, 3)}
+                            pos_float = moved
+            if far_guess_on and page_binary is not None and not cut_rows and (int(round(pos_float)) < -1 or int(round(pos_float)) > 9):
+                # r3: the ink centre of a FAR head, as a candidate only (the row's value stays the box centre's)
+                pbf = _page_box(c, d)
+                upf = getattr(c, "upscale_factor", None)
+                if pbf is not None and upf:
+                    hsf = float(half_step) / float(upf)
+                    othf = [ob for ob in (_page_box(c, od) for oj, od in enumerate(dets)
+                                          if oj != gi and od.smufl_name.startswith(_NOTEHEAD_PREFIX)) if ob is not None]
+                    gotf = head_extent.ink_extent(page_binary, pbf, 2.0 * hsf, foreign_by_cell(c, dets), othf)
+                    if gotf["why"] is None:
+                        icp = head_extent.ink_centre_position(pos_float, pbf, gotf["extent"], hsf)
+                        if icp is not None:
+                            extra = dict(extra, ink_centre_position_float=round(icp, 3),
+                                         ink_centre_extent=[round(v, 1) for v in gotf["extent"]])
+                    else:
+                        extra = dict(extra, ink_centre_why=gotf["why"])
             log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos_float,
                         reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
                         residual=abs(pos_float - round(pos_float)),
@@ -2310,6 +2377,10 @@ def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
                 bj = items[j]["box"]
                 if bj[0] >= bi[2]:
                     break
+                if items[i].get("tall_read") or items[j].get("tall_read"):
+                    # ROADMAP 2.252: a tall head box GATHER read for the heads inside it (`box_kind.split_tall_heads`) is their
+                    # remainder, never one mark with either -- through it the dyad's two heads would group as ONE note
+                    continue
                 if _iou(bi, bj) > MARK_GROUP_IOU:
                     parent[find(i)] = find(j)
     groups: Dict[int, List[int]] = {}
@@ -2380,7 +2451,8 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                           "category": d.category,
                           "scope": (sub.page, sub.system),
                           "conf": float(d.confidence),
-                          "frame": frame_cell(sub.cell)})
+                          "frame": frame_cell(sub.cell),
+                          "tall_read": bool(getattr(d, _box_kind.TALL_READ_ATTR, False))})
     return _file_mark_groups(log, items)
 
 
@@ -2404,7 +2476,8 @@ def mark_groups_from_log(log: Log) -> int:
                                  sub.glyph),
                       "key": sub.to_key(), "box": tuple(box),
                       "category": cat, "scope": (sub.page, sub.system),
-                      "conf": row.score, "frame": row.frame})
+                      "conf": row.score, "frame": row.frame,
+                      "tall_read": bool((row.detail.get("tall_split") or {}).get("read"))})
     return _file_mark_groups(log, items)
 
 
@@ -17224,7 +17297,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # by index) and BEFORE `gather_notehead_positions` and
         # `gather_notehead_ink`, which both read its row.
         gather_head_line_cut(log, cells, local, detections)
-        gather_notehead_positions(log, cells, local, detections)
+        gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
         # and its consumer's whole rule is a comparison between the two. Filed

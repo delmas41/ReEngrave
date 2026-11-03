@@ -1,0 +1,33 @@
+{
+ "source": "Sean 2026-11-02 verbatim: \"2.251. Tile 1 is a middle C with a couple measures before it having an F clef. Tile 2 has an F clef, but the box is large around it and includes an eighth note before it. Tile 3 is an eighth note B after an F clef. Tile 4 is the same thing, a B after the F clef. Tile 5, same thing, B after the F clef. Tile 6 is also a B after an F clef.\" Tiles out/print/2.251-carry-tiles-r2 (lane branch lane-2.251-carry head 8c2180033, seed 22514); key fields copied below from the lane's key.json.",
+ "answers": {
+  "1": "Middle C, with an F clef a couple of measures before it.",
+  "2": "F clef, but the box is large around it and includes an eighth note before it.",
+  "3": "Eighth note B after an F clef.",
+  "4": "Same thing, a B after the F clef.",
+  "5": "Same thing, B after the F clef.",
+  "6": "Also a B after an F clef."
+ },
+ "sean_reads": {
+  "1": "C4 bass", "3": "B bass", "4": "B bass", "5": "B bass", "6": "B bass"
+ },
+ "key": {
+  "1": {"kind": "head", "plate": "litolff", "page": 12, "system": 0, "staff": 10, "cell": 10, "subject": "glyph/12/0/10/10/2", "place": "Vc bar 346", "written": "nothing (red clef?)", "why": "dots + body 0.69 (below READ 0.70) -> strong candidate"},
+  "2": {"kind": "clef", "plate": "litolff", "page": 4, "system": 1, "staff": 3, "box": [2300, 2575, 2386, 2640], "note": "bar 111: the mark the F body matched (no dots read)"},
+  "3": {"kind": "head", "plate": "litolff", "page": 4, "system": 1, "staff": 3, "cell": 13, "subject": "glyph/4/1/3/13/1", "place": "bar 111", "written": "nothing (red clef?)", "why": "F body alone 0.73 -> candidate"},
+  "4": {"kind": "head", "plate": "litolff", "page": 4, "system": 1, "staff": 3, "cell": 13, "subject": "glyph/4/1/3/13/6", "place": "bar 111", "written": "nothing (red clef?)", "why": "F body alone 0.73 -> candidate"},
+  "5": {"kind": "head", "plate": "litolff", "page": 4, "system": 1, "staff": 3, "cell": 13, "subject": "glyph/4/1/3/13/5", "place": "bar 111", "written": "nothing (red clef?)", "why": "F body alone 0.73 -> candidate"},
+  "6": {"kind": "head", "plate": "litolff", "page": 12, "system": 0, "staff": 10, "cell": 9, "subject": "glyph/12/0/10/9/2", "place": "Vc bar 346", "written": "nothing (red clef?)", "why": "dots + body 0.69 (below READ 0.70) -> strong candidate"}
+ },
+ "scored": {
+  "wrong_written": [],
+  "safe_miss": [1, 3, 4, 5, 6],
+  "clef_confirmed_box_too_wide": [2],
+  "carry_right_to_wrong": 0,
+  "notes": {
+   "1,3-6": "Each is a real note read in F clef (tile 1 C4, the rest B). The carry stopped at a candidate clef, so the heads are written red 'clef?' with no pitch: SAFE (nothing wrong written; a tenor carry would have been wrong) but a MISS -- the clef was real and the note readable, so the ideal is READ.",
+   "2": "The bar-111 mark is a real F clef, so a clef does stand there; the candidate's box is too wide and includes the eighth note before the clef (placed one space left of the body match). Open: the candidate's area must not take that note's ink."
+  }
+ },
+ "totals": {"wrong_written": 0, "safe_miss": 5, "clef_confirmed_box_too_wide": 1}
+}

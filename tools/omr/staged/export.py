@@ -578,8 +578,26 @@ def head_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
     return None
 
 
+def far_unread_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.248 r3 (flag `OMR_FARHEAD_UNREAD_GUESSED`): a far head whose ledger count ABSTAINED -- its pitch is the box centre's step,
+    carried by `consequences.restate_pitch` with the box- and ink-centre steps as candidates -- written GUESSED (blue). Only a PITCH verdict
+    whose reason is `position_and_clef_ledger_unread` counts (none is filed with the flag OFF). Guessing is labelled here (CLAUDE.md
+    section 4); a later INFER / `move_glyph` pitch supersedes it and is its own matter."""
+    from . import head_extent as _he
+    v = rec.verdict(Q.PITCH, sub)
+    if v is None or v.get("outcome") != "decided" or v.get("reason") != _he.FAR_GUESS_PITCH_REASON:
+        return None
+    src = list((v.get("detail") or {}).get("candidate_sources") or ())
+    cands = []
+    for i, c in enumerate(v.get("candidates") or ()):
+        cands.append({"value": c.get("value"), "support": c.get("support"), "source": src[i] if i < len(src) else None})
+    return {"stage": "ADJUDICATE", "rule": _he.FAR_GUESS_REASON, "quantity": Q.PITCH, "candidates": cands,
+            "chosen": {"value": v.get("value")}}
+
+
 def _guess_fields(rec: "Record", sub: str) -> Dict[str, Any]:
-    g = guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub) or head_ink_guess_of(rec, sub)
+    g = (guess_of(rec, sub) or claim_guess_of(rec, sub) or one_ink_guess_of(rec, sub) or head_ink_guess_of(rec, sub)
+         or far_unread_guess_of(rec, sub))
     return {"guess": g} if g else {}
 
 

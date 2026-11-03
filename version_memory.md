@@ -9,6 +9,18 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- day manager: 2.251 step 1 landed, carry r1 built and tiled, carry r2 in flight
+
+- Sean's 2.251 r2 tiles: 12/12 right (4c3350889). Sean "Land and get the pitch work right": step 1 landed ON (9db2c7495, entry below); a separate Opus lane took the carry.
+- Carry r1 (lane-2.251-carry 101e92cf7, `OMR_CLEF_CARRY` OFF). The cause is return-clef recall: bass-clef returns were read only through a detector box. The lane added:
+  - a no-box F-clef reader;
+  - a carry that stops red at any unreadable clef candidate;
+  - export of `<clef>` only for a READ claim.
+- Pitch witness: Litolff wrong 266 -> 22 but right->wrong 10 (9 in bar 111); Brahms pp.4-5 wrong 82 -> 5, right->wrong 0.
+- Sean's carry tiles: 10/12 right, carry-caused right->wrong 0 (d741be415, answers-r3-carry.json). Tile 11 is a real F clef we held at 0.69. Tile 12 is a far head one step high (position reading, not the carry).
+- Carry round 2 sent back (Sean: "fix bar 111 so the carry is never worse, then come back for landing"). It also covers the false head on bar-38 clef ink, a re-check of the 0.70 cut-off, and the Brahms frozen sample.
+- Still open from earlier: 2.248 r3 wrong-staff cause; 2.250 fused-dyad ties and the ties written as slurs.
+
 ## 2026-11-02 -- 2.251 step 1 landed: OMR_CLEF_PAGEWIDE default ON (carry stays OFF)
 
 Sean "Land": the STAGED GATHER page-wide clef reader (`clef_pagewide.py`) now claims clef-shaped ink inside a system by default; `OMR_CLEF_CARRY` is untouched (default OFF). Gate before the flip, round-2 code, 2-page subset (Litolff 2,4; Brahms 4,5), flag 0 vs 1: ORDER-VIOLATION Litolff 0.46 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM Litolff 0.77 -> 0.99, Brahms 0.59 -> 0.70 (both under +0.3). Flag row in docs/flags-2026-09.md and the default test updated. Details: benchmarks/clef-change-2026-11/FINDINGS.md.
@@ -6604,3 +6616,9 @@ STAGED GATHER (`gather_page_claims`) + ADJUDICATE `claimed_by` / stroke owner, f
 
 ## 2026-10-30 -- ROADMAP 2.244 built (branch lane-2.244-one-test-command, not landed): one test command
 TOOLING (no flag, no reader, no output change): `lane_report.DEFAULT_TAG = 20261029-night` (a tag with no record or slice dir raises); `judged.score(..., by="place")` finds a tile that has a `position` by (page, system, staff, cell) + an overlapping glyph box of the same kind in the record being scored (the id only breaks a tie; tiles without a position keep the key and are counted apart in `matched`); `lane_report` lists every changed place no judged tile covers (`NOT JUDGED`, `unjudged.txt`, `--unjudged-tiles N`); `tools/omr/staged/one_test.py` runs base / each flag alone / all on one tree, stages and cells and RAISES `ArmMismatch` on any difference (control line), with INTERACTIONS and one blind sheet across the lanes. Control: on the 1,997-tile index with positions derived from each mark-sized old tile, place vs key on the Litolff 20261029 record differ on 3 of 394 tiles, each explained by place (id drift x2, one tile whose cell moved); right->wrong 0. Brahms not run. The 2.244 lane report holds the table.
+
+## 2026-11-02 -- ROADMAP 2.248 r4 landed ON: far heads whose ledger count abstained are written blue
+STAGED GATHER/EVALUATE/EXPORT, flag `OMR_FARHEAD_UNREAD_GUESSED` (deny-list, default ON). Marks, never moves: pitch stays the box centre's step, written GUESSED with box- and ink-centre candidates; r4b refuses under-filled tall far boxes as non-heads. Sean's r4 tiles: 7 right, 4 too far out, 1 wrong owner. Gate: fast tier 9722 passed; lane_report (Litolff + Brahms, 8 pages each, re-gathered) no raise, judged right->wrong 0, unwritten->wrong 0. Real fixes for the 4 'too far' heads and the wrong owner are still open.
+
+## 2026-11-02 -- ROADMAP 2.252 split landed ON: a tall hollow head box is read for its heads by their holes
+STAGED GATHER/ADJUDICATE, flag `OMR_TALL_HEAD_SPLIT` (deny-list, default ON; explicit 0/false/no/off disables). Dyads of half notes boxed as ONE tall head are read into their heads. Sean's tiles: split right 9/9. Gate (2 pages per plate, re-gather OFF vs ON, `out/lane-report/2.252-land` removed): Litolff notes +5, ties +6, pitches ~2, blue +2; Brahms accidentals +1, pitches ~1, blue +1; judged right->wrong 0, unwritten->wrong 0. Fast tier 9,731 passed (the surya margin-crop OCR test fails under load, passes alone). Round 2 (missing ties, 9 of 28 tie ends written) still open.

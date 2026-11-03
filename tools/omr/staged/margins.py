@@ -151,6 +151,8 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         "too_narrow": THRESHOLD, "is_a_dot": THRESHOLD,
         # ROADMAP 2.245: how far past the widest head box (staff spaces)
         "wider_than_a_head": THRESHOLD,
+        # ROADMAP 2.248 r4: how far past the tallest head (staff spaces)
+        "taller_than_a_filled_head": THRESHOLD,
         "is_a_beam_piece": THRESHOLD,
         # ROADMAP 2.142: share of the smaller box a rest box covers
         "is_a_rest_twin": THRESHOLD,

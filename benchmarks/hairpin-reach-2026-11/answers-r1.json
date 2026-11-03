@@ -1,0 +1,127 @@
+{
+ "date": "2026-11-02",
+ "tiles": "out/print/2.254-tiles (lane-2.254-hairpin-reach ea379fc9e)",
+ "summary": "kind right 12/12: 11 hairpins (8 gained, 2 p8 word places now read as hairpins, 1 control) and tile 9 a 2.0 sp wedge correctly not written (Sean: an accent of the staff below). Start/stop notes NOT scored against his spans; tile 5 not named and tile 8 ambiguous in his answer.",
+ "answers": [
+  {
+   "tile": 1,
+   "subject": "glyph/8/0/2/12/100000",
+   "role": "WORD",
+   "read_kind": "crescendo",
+   "width_spaces": 3.75,
+   "lane_wrote": "word claim 'p espr' shrunk from [5256.0, 1331.0, 5455.0, 1415.0] to [5256.0, 1331.0, 5315.0, 1384.0]; the wedge is left for the hairpin reader",
+   "sean": "Hairpin underneath the staff belongs to the quarter note and the eighth note after that",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 2,
+   "subject": "glyph/8/0/1/6/100003",
+   "role": "WORD",
+   "read_kind": "diminuendo",
+   "width_spaces": 4.63,
+   "lane_wrote": "word claim 'dim' shrunk from [3229.0, 1061.0, 3513.0, 1119.0] to [3392.0, 1061.0, 3513.0, 1119.0]; the wedge is left for the hairpin reader",
+   "sean": "a hairpin, belongs to the dotted quarter notes",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 3,
+   "subject": "glyph/25/1/3/6/100000",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 20.51,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "a hairpin that begins with the dotted half note in the first measure and goes to the next measure all the way through a dotted quarter notes",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 4,
+   "subject": "glyph/19/0/3/2/100001",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 6.35,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "a hairpin that belongs to a quarter note and goes into the quarter note in the next measure. It belongs to the staff above it, obviously",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 5,
+   "subject": "glyph/19/0/3/1/100000",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 8.48,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "(not named; Sean said 'Same with tile 6. Same with tile 7. Same with tile 8' after tile 4 -- recorded as the tile-4 kind, NOT CONFIRMED)",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 6,
+   "subject": "glyph/19/0/11/7/100000",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 7.93,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "Same [as 4]",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 7,
+   "subject": "glyph/19/0/0/8/100001",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 6.24,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "Same [as 4]",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 8,
+   "subject": "glyph/25/1/2/6/100000",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 19.24,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "Same [as 4] / 'again the dotted half going into the next measure through the dotted quarters' (said as 'tile 9'; matches tile 8's image) -- ambiguous",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 9,
+   "subject": "glyph/19/1/9/5/100000",
+   "role": "SHORT",
+   "read_kind": "diminuendo",
+   "width_spaces": 2.02,
+   "lane_wrote": "ON reads a 2.0-space wedge here and writes nothing (one note: hairpin or accent?) (OFF read it too)",
+   "sean": "looks like an accent that belongs to a note in the staff below it",
+   "verdict_kind": "right (abstained: accent of the staff below, nothing written)"
+  },
+  {
+   "tile": 10,
+   "subject": "glyph/19/0/0/2/100000",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 6.53,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "a hairpin, quarter note at the end of one measure going to the quarter note of the next",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 11,
+   "subject": "glyph/25/1/5/5/100000",
+   "role": "CONTROL",
+   "read_kind": "diminuendo",
+   "width_spaces": 8.9,
+   "lane_wrote": "both arms write a diminuendo",
+   "sean": "a hairpin that's going through two dotted quarter notes",
+   "verdict_kind": "right (hairpin)"
+  },
+  {
+   "tile": 12,
+   "subject": "glyph/25/1/7/6/100002",
+   "role": "GAINED",
+   "read_kind": "diminuendo",
+   "width_spaces": 21.51,
+   "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+   "sean": "a hairpin that lasts for two bars. Dotted quarter until the next dotted quarter, until the fourth dotted quarter",
+   "verdict_kind": "right (hairpin)"
+  }
+ ]
+}

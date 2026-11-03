@@ -1,0 +1,428 @@
+[
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   2071.485,
+   2924.4475,
+   2098.7325,
+   2938.78
+  ],
+  "subject": "glyph/10/1/6/10/4",
+  "role": "case",
+  "group": "r2_in_staff",
+  "box_centre_position": -0.56,
+  "ink_centre_position": 0.19,
+  "tile": 1,
+  "crop_origin": [
+   1990,
+   2852
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 6,
+   "cell": 10,
+   "page_box": [
+    2071.485,
+    2924.4475,
+    2098.7325,
+    2938.78
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1888.9475,
+   1592.055,
+   1913.2025,
+   1614.105
+  ],
+  "subject": "glyph/6/0/8/8/9",
+  "role": "case",
+  "group": "r2_in_staff",
+  "box_centre_position": 1.4,
+  "ink_centre_position": 1.71,
+  "tile": 2,
+  "crop_origin": [
+   1806,
+   1524
+  ],
+  "position": {
+   "page": 6,
+   "system": 0,
+   "staff": 8,
+   "cell": 8,
+   "page_box": [
+    1888.9475,
+    1592.055,
+    1913.2025,
+    1614.105
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1638.8,
+   3191.0,
+   1658.16,
+   3198.52
+  ],
+  "subject": "glyph/10/1/8/7/11",
+  "role": "case",
+  "group": "r3_far_unread_blue",
+  "box_centre_position": -8,
+  "ink_centre_position": -9,
+  "written_pitch": "G6",
+  "candidates": [
+   "G6",
+   "A6"
+  ],
+  "tile": 3,
+  "crop_origin": [
+   1553,
+   3116
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 8,
+   "cell": 7,
+   "page_box": [
+    1638.8,
+    3191.0,
+    1658.16,
+    3198.52
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   5256.0,
+   6824.95,
+   5291.75,
+   6848.325
+  ],
+  "subject": "glyph/5/1/12/9/12",
+  "role": "case",
+  "group": "r2_in_staff",
+  "box_centre_position": 2.5,
+  "ink_centre_position": 2.89,
+  "tile": 4,
+  "crop_origin": [
+   5081,
+   6676
+  ],
+  "position": {
+   "page": 5,
+   "system": 1,
+   "staff": 12,
+   "cell": 9,
+   "page_box": [
+    5256.0,
+    6824.95,
+    5291.75,
+    6848.325
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   2725.925,
+   3142.475,
+   2767.85,
+   3176.6
+  ],
+  "subject": "glyph/0/0/4/2/4",
+  "role": "case",
+  "group": "r2_in_staff",
+  "box_centre_position": 5.5,
+  "ink_centre_position": 5.1,
+  "tile": 5,
+  "crop_origin": [
+   2554,
+   2999
+  ],
+  "position": {
+   "page": 0,
+   "system": 0,
+   "staff": 4,
+   "cell": 2,
+   "page_box": [
+    2725.925,
+    3142.475,
+    2767.85,
+    3176.6
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2036.6225,
+   3009.5425,
+   2061.665,
+   3016.0
+  ],
+  "subject": "glyph/6/1/6/8/6",
+  "role": "case",
+  "group": "r3_far_unread_blue",
+  "box_centre_position": 15,
+  "ink_centre_position": 16,
+  "written_pitch": "G1",
+  "candidates": [
+   "G1",
+   "F1"
+  ],
+  "tile": 6,
+  "crop_origin": [
+   1954,
+   2934
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 6,
+   "cell": 8,
+   "page_box": [
+    2036.6225,
+    3009.5425,
+    2061.665,
+    3016.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   2555.9325,
+   2901.9575,
+   2578.6125,
+   2922.59
+  ],
+  "subject": "glyph/10/1/5/14/0",
+  "role": "case",
+  "group": "r3_far_unread_blue",
+  "box_centre_position": 13,
+  "ink_centre_position": 14,
+  "written_pitch": "G3",
+  "candidates": [
+   "G3",
+   "F3"
+  ],
+  "tile": 7,
+  "crop_origin": [
+   2472,
+   2833
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 5,
+   "cell": 14,
+   "page_box": [
+    2555.9325,
+    2901.9575,
+    2578.6125,
+    2922.59
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1741.44,
+   2030.12,
+   1765.775,
+   2053.525
+  ],
+  "subject": "glyph/10/1/0/8/7",
+  "role": "case",
+  "group": "r3_far_unread_blue",
+  "box_centre_position": -8,
+  "ink_centre_position": -9,
+  "written_pitch": "G6",
+  "candidates": [
+   "G6",
+   "A6"
+  ],
+  "tile": 8,
+  "crop_origin": [
+   1659,
+   1963
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 0,
+   "cell": 8,
+   "page_box": [
+    1741.44,
+    2030.12,
+    1765.775,
+    2053.525
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   1498.92,
+   1960.76,
+   1523.4,
+   1981.4
+  ],
+  "subject": "glyph/6/1/0/5/4",
+  "role": "case",
+  "group": "r3_far_unread_blue",
+  "box_centre_position": -2,
+  "ink_centre_position": -3,
+  "written_pitch": "A5",
+  "candidates": [
+   "A5",
+   "B5"
+  ],
+  "tile": 9,
+  "crop_origin": [
+   1416,
+   1892
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 0,
+   "cell": 5,
+   "page_box": [
+    1498.92,
+    1960.76,
+    1523.4,
+    1981.4
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1735.35,
+   4083.175,
+   1759.275,
+   4122.225
+  ],
+  "subject": "glyph/5/1/0/1/7",
+  "role": "case",
+  "group": "r2_in_staff",
+  "box_centre_position": 3.76,
+  "ink_centre_position": 3.24,
+  "tile": 10,
+  "crop_origin": [
+   1555,
+   3942
+  ],
+  "position": {
+   "page": 5,
+   "system": 1,
+   "staff": 0,
+   "cell": 1,
+   "page_box": [
+    1735.35,
+    4083.175,
+    1759.275,
+    4122.225
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1220.365,
+   2029.81,
+   1246.25,
+   2051.045
+  ],
+  "subject": "glyph/10/1/0/5/6",
+  "role": "case",
+  "group": "r3_far_unread_blue",
+  "box_centre_position": -8,
+  "ink_centre_position": -9,
+  "written_pitch": "G6",
+  "candidates": [
+   "G6",
+   "A6"
+  ],
+  "tile": 11,
+  "crop_origin": [
+   1138,
+   1961
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 0,
+   "cell": 5,
+   "page_box": [
+    1220.365,
+    2029.81,
+    1246.25,
+    2051.045
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   657.025,
+   2402.9875,
+   683.0125,
+   2419.9975
+  ],
+  "subject": "glyph/10/1/2/1/3",
+  "role": "case",
+  "group": "r2_in_staff",
+  "box_centre_position": 4.5,
+  "ink_centre_position": 4.95,
+  "tile": 12,
+  "crop_origin": [
+   575,
+   2332
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 2,
+   "cell": 1,
+   "page_box": [
+    657.025,
+    2402.9875,
+    683.0125,
+    2419.9975
+   ]
+  },
+  "cell_map": null
+ }
+]
