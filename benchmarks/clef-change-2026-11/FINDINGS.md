@@ -265,3 +265,14 @@ Open: refused heads are still pitched; Brahms bass clefs are only ever candidate
 - Tiles for Sean: `out/print/2.251-f-cutoff/tiles-bodyread-111/` (11 tiles, key `out/print/2.251-f-cutoff/key.json`, not shown), the new bar-111 heads and controls. The 0.65 arm's only new READ is Vc 346, already confirmed by Sean (tile 11); bar 115 stands on the encoding; no further tiles.
 
 **What it says (not decided).** 0.65 for dots+body is supported on Litolff (gap 0.61 / 0.68) and untestable on Brahms (no real Brahms change reaches a pair): a narrowing, per CLAUDE §4. A body-only READ is not supported: Litolff gap 0.03, Brahms none.
+
+## 2026-11-02 -- F dots+body READ 0.70 -> 0.65 LANDED (Sean "Do it")
+
+Gate on main (0.70) vs this branch (0.65), fresh `--through gather`, PAGEWIDE and CARRY default ON, `OMR_SURYA_KEEP_ALIVE=0`, master cell map; Litolff pp. 2,4,12, Brahms pp. 4,5; `claim_order` / `claim_readout` per arm:
+
+| plate | clef/key/meter single-owner ink | ORDER-VIOLATION | SPLIT-ACROSS-CLAIM |
+|---|---|---|---|
+| Litolff 0.70 -> 0.65 | 2.4% -> 2.4% | 0.43% -> 0.43% | 0.87% -> 0.87% |
+| Brahms 0.70 -> 0.65 | 1.7% -> 1.7% | 0.41% -> 0.41% | 0.70% -> 0.70% |
+
+Passed. The Litolff records do differ: main holds Vc bar 346 as a STRONG candidate, the new arm READS it (one more `f_body_template` claim, one fewer `f_body_below_read`); the claim is too small to move the readout digits. File line (`lane_report`, scratch tree with the test env override, not landed; Litolff pp. 4,12, Brahms pp. 4,5, not the frozen sample): Litolff `words -6 | clefs +1`; Brahms `accidentals +1 | pitches ~1 | blue +1` (not reachable by the cut-off: load noise). Judged right->wrong 0, unwritten->wrong 0. STRONG tier: empty at these cut-offs, constant kept. Scan scripts `fcut_scan.py` / `fcut_dots.py` NOT copied (they need the uncommitted `work-2.251` directory).
