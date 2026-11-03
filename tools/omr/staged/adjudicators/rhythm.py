@@ -10300,7 +10300,7 @@ def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int) -> bool:
     return False
 
 
-def _rest_own_voice_split(ev: Evidence, events, up_events, down_events):
+def _rest_own_voice_split(ev: Evidence, events):
     """`(streams, reason, detail)` when a DECISIVELY displaced, dotless whole rest is the only thing in its voice and the
     bar's OTHER live events fill the meter by themselves; else None (the bar stays one voice, exactly as before).
 
@@ -10324,6 +10324,15 @@ def _rest_own_voice_split(ev: Evidence, events, up_events, down_events):
                 or str((d.detail or {}).get("rest")) != "restWhole" or d.value.get("dots")):
             continue
         side = _rest_voice_side(ev, glyphs)
+        if not side and d.reason == "rest_hangs_from_own_line":
+            # the default slot test REFUSED this rest (it lies below the whole-rest band, `_rest_slot_verdict`) and only the
+            # hang test reads it: it is displaced BELOW its default position, whether or not it is 1.5 steps off the middle
+            # line -- the lower voice's rest, which hangs from the middle line or below
+            sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system, staff=cell.staff, cell=cell.cell, glyph=glyphs[0])
+            rows = ev.rows(Q.GLYPH_BOX, subject=sub)
+            step = _rest_slot(ev, rows)[0] if rows else None
+            if step is not None and step < WHOLE_REST_STEP - REST_SLOT_TOLERANCE_WHOLE:
+                side = "lower"
         if side:
             cands.append((e, side, glyphs))
     if len(cands) != 1:
@@ -10333,8 +10342,10 @@ def _rest_own_voice_split(ev: Evidence, events, up_events, down_events):
     live = [e for e in others if not all(_glyph_left_the_bar(ev, cell, g) for g in e["_glyphs"])]
     if not any(e["kind"] == "chord" for e in live):
         return None
-    clash = "up" if side == "upper" else "down"
-    if any(e["stem_direction"] == clash for e in live if e["kind"] == "chord"):
+    dirs = {e["stem_direction"] for e in live if e["kind"] == "chord"}
+    if "up" in dirs and "down" in dirs:
+        return None         # the notes are two voices themselves: a third stream is not this rule's to add
+    if ("up" if side == "upper" else "down") in dirs:
         return None
     meter_segment = _meter_in_force(ev)
     target = _meter_quarters(meter_segment)
@@ -10497,15 +10508,14 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
     down_events = [e for e in events if e["kind"] == "chord"
                   and e["stem_direction"] == "down"]
 
-    if not up_events or not down_events:
+    own = _rest_own_voice_split(ev, events) if _whole_rest_own_staff_on() else None
+    if own is not None:
+        streams, reason, rule_detail = own
+    elif not up_events or not down_events:
         # ⚠️ NO CANDIDATE TO GATE. `split_events_into_voices` would return
         # `[events]` here too (its own guard, restated nowhere) -- this is
         # the ordinary one-voice bar, not the convention question at all.
         streams, reason, rule_detail = [events], "one_voice", {}
-        if _whole_rest_own_staff_on():
-            own = _rest_own_voice_split(ev, events, up_events, down_events)
-            if own is not None:
-                streams, reason, rule_detail = own
     else:
         cell = ev.subject
         overlap, overlap_detail = _voices_overlap_in_time(ev, up_events,
