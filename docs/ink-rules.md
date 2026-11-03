@@ -6,7 +6,7 @@
 
 ## Summary
 
-1. **500 rule exits** are sorted (560 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 39 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **85 DOUBLE-COUNT** (C), **170 OTHER** (D), **60 UNSURE** (U).
+1. **501 rule exits** are sorted (561 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 39 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **86 DOUBLE-COUNT** (C), **170 OTHER** (D), **60 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
@@ -177,6 +177,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_clef`: `sc
 
 | rule | kind | plain meaning | code | fires L / B (10-22 whole) | fresh L / B (sample) | evidence | fate |
 |---|---|---|---|---|---|---|---|
+| a tie over a dyad joins the members on the arc's side | C | of one same-position pair per chord member, the arc above joins the top pair, below the bottom (Sean 2.75); the arc wholly to one side and one pair at that extreme, else narrowed; flag OMR_TIE_PAIR_ARC_SIDE ON | `adjudicate_tie_pair` (ownership): `paired_by_arc_side` | 0 / 0 | 0 / 0 | ROADMAP 2.252 r2 (Sean's 2.252 tiles 3, 7, 10, 12: both notes tied on both sides) | landed ON 2026-11-02; r2 tiles out/print/2.252-r2-tiles |
 | a human's box verdict | A | - | `adjudicate_arc_is_not_an_arc` (family_precision): `human_not_a_symbol`, `human_other_staff` | 0 / 0 | 0 / 0 | Sean's stage-review verdict (3.4) | kept |
 | an arc box that is a staff line or a barline | U | a box with no curved ink and a staff line through it is a staff line; a narrow tall one is a barline. C if 2.205 makes lines and barlines owners of their strokes; otherwise a plain detector false positive (D) | `adjudicate_arc_is_not_an_arc` (family_precision): `ink_is_a_staff_line`, `ink_is_a_barline` | 502 / 7,944 | 287 / 2,570 | ROADMAP 2.60 | open |
 | an arc box in the key slots is a key accidental | A | - | `adjudicate_arc_is_not_an_arc` (family_precision): `in_a_key_signature_slot`, `claimed_by:key_signature` | 1 / 6 | 4 / 3 | Sean 2026-10-12 (page-facts s2) | kept |
