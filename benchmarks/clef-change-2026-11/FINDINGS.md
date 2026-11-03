@@ -153,3 +153,10 @@ Tiles `out/print/2.251-carry-tiles-r2/` (lane branch `lane-2.251-carry` head 8c2
 What it says: the body-only witness (bar 111, 0.73) and dots plus body at 0.69 (bar 346) were both real F clefs on Sean's reading. That is evidence for promoting them, on one plate only (Litolff) -- a cut-off measured on one plate is a measurement, not a convention.
 
 Open: (1) tile 2 box width -- the candidate's area must not take the preceding eighth note's ink; (2) the candidates are real clefs -- promotion to READ is not yet decided and needs another publisher before it lands as a rule.
+
+## 2026-11-02 -- Sean's bar-38 tile answer (2.251 step 2, `answers-r5-bar38.json`)
+
+Tile `out/print/2.251-carry-bar38/` (lane branch `lane-2.251-carry`, Litolff print witness on tree 0c6273724): the one right->wrong left in the witness, glyph/2/1/3/3/3, Litolff p2 s1 staff 3, bar 38, a 0.42 head box that carry ON pitches F3 under the read no-box bass clef (OFF: C4). Sean: "The orange box is a part of an G clef and a quarter rest that run into each other."; asked whether he meant an F clef, as on carry tile 10: "I meant F clef".
+
+- **There is no note in the box.** It is F-clef ink fused with a quarter rest, so the witness's 1 right->wrong is not a real note. Real carry-caused right->wrong on Litolff: **0**.
+- **New open item, not the carry's:** the quarter rest fused with the clef is read as a head in both arms -- the rest is lost and a false head stands in its place. An ink-claim question (Litolff MERGES).
