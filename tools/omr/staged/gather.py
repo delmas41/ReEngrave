@@ -15024,6 +15024,72 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
     return counts
 
 
+def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]]) -> Dict[str, int]:
+    """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default OFF), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
+    coarsest kind the reader is sure of (a hairpin; its owner staff and its start/stop notes are decided later, ADJUDICATE / 2.223).
+
+    CAUSE (`hairpin_reach` round-2 note): the detector and cv_lines read a hairpin's thin straight arms as beams; a CV hairpin read that claims
+    nothing lets the beam take them. Per CV reach read (`Q.WEDGE_BOX`, `reach` True): every cell of ANY staff whose box meets the hairpin's
+    (the hairpin sits between two staves, and both staves' padded cells cut its arms into strokes) -- one `Q.CLAIMED_AREA` row, owner
+    `hairpin`, unit `ink`, filed on that STAFF, value `[[cell, stroke ordinal], ...]` for each stroke at least `ON_ARMS_SHARE_MIN` along the
+    arms (`hairpin_reach.claim_strokes`). A stem or barline crossing an arm keeps its ink. A read whose arms run along no filed stroke is an
+    abstention, counted. Files rows only; `adjudicators/stroke_owner._hairpin_claims` is the one consumer."""
+    from . import hairpin_reach as HR
+    counts = {"hairpins": 0, "rows": 0, "strokes": 0, "no_stroke": 0, "no_map_cells": 0}
+    if not HR.enabled() or not stroke_cells:
+        return counts
+    by_cell: Dict[Tuple[int, int, int, int], Any] = {}
+    pages = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
+            pages.add(c.page_index)
+    for p in sorted(pages):
+        for r in log.rows(Q.WEDGE_BOX, R.page(p), scope=R.Scope.SELF_AND_DESCENDANTS):
+            d = r.detail or {}
+            bb = d.get("bbox_page_px")
+            if r.reader != READERS.CV_HAIRPINS or not d.get("reach") or not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+                continue
+            counts["hairpins"] += 1
+            segs = HR.arms(r.value, bb)
+            band = HR.band_px(d.get("staff_spacing_px") or 0.0)
+            per_staff: Dict[Tuple[int, int, int], List[List[int]]] = {}
+            shares: Dict[Tuple[int, int, int], List[float]] = {}
+            for ck, c in sorted(by_cell.items()):
+                if ck[0] != p:
+                    continue
+                cb = getattr(c, "bbox_page_px", None)
+                up = getattr(c, "upscale_factor", None)
+                if not cb or not up or len(cb) != 4:
+                    continue
+                if cb[2] < bb[0] or cb[0] > bb[2] or cb[3] < bb[1] or cb[1] > bb[3]:
+                    continue
+                res = stroke_cells.get(ck)
+                if res is None or isinstance(res, str):
+                    counts["no_map_cells"] += 1
+                    continue
+                for i, sh in HR.claim_strokes(res, cb, float(up), segs, bb, band):
+                    per_staff.setdefault(ck[:3], []).append([ck[3], i])
+                    shares.setdefault(ck[:3], []).append(sh)
+            if not per_staff:
+                counts["no_stroke"] += 1
+                ws = r.subject
+                log.abstain(R.staff(ws.page, ws.system, ws.staff), Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page",
+                            reason=ABSTAIN.NO_INK, owner=HR.OWNER, unit="ink", why="arms_run_along_no_filed_stroke", source="wedge_box",
+                            owner_row=r.id, owner_glyph=ws.to_key())
+                continue
+            for home, got in sorted(per_staff.items()):
+                counts["rows"] += 1
+                counts["strokes"] += len(got)
+                log.observe(R.staff(*home), Q.CLAIMED_AREA, got, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=HR.OWNER,
+                            owner_row=r.id, owner_glyph=r.subject.to_key(), unit="ink", scope="page_hairpin", standing="READ",
+                            source="wedge_box", kind=r.value, bbox_page_px=[float(v) for v in bb], shares=shares[home],
+                            cover_min=HR.ON_ARMS_SHARE_MIN)
+    return counts
+
+
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                             detections: Dict[str, List[Any]], *, progress: bool = False,
                             stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
@@ -16476,6 +16542,12 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
             return
 
     page_dict = _direction_page_dict(pws, cells, local, detections)
+    from . import hairpin_reach as _hairpin_reach
+    if _hairpin_reach.enabled():
+        # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH): a hairpin the CV reach reader read (and claimed, `gather_hairpin_claim`) is page-wide ink
+        # claimed BEFORE the words are read; its arms are erased from the word reader's mask as every detection is, so the OCR neither reads
+        # them as a letter ('a dim', Brahms p8) nor grows its box over them.
+        page_dict["erase_ink"] = _hairpin_reach.erase_entries(log, p)
     page_staff_of = {v: k for k, v in local.items()}
     key_of_page_staff = {v: k for k, v in page_staff_of.items()}
 
@@ -17232,6 +17304,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # two read the SAME band and the ordering between them is real.
         gather_dynamic_letters(log, pws, cells, local, detections)
         gather_wedge_boxes(log, pws, cells, local, detections)
+        # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH, default OFF): each CV hairpin read claims the strokes along its two arms (`unit: ink`, owner
+        # `hairpin`) in every cell it crosses, so no beam / stem / flag reader takes them. AFTER the wedge read and the stroke map.
+        gather_hairpin_claim(log, cells, local, stroke_cells)
         # ⚠️ AFTER detection, and now WITH it: the notehead gate on the pair
         # rule needs this cell's heads, and `gather_detections` above already
         # holds them. The order was always right; what was missing is that

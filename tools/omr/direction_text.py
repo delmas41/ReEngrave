@@ -421,6 +421,28 @@ def _blank_detections(mask: np.ndarray, page_dict: dict[str, Any],
                         continue
                     out[max(0, y - pad):min(height, y + h + pad),
                         max(0, x - pad):min(width, x + w + pad)] = 0
+    # ROADMAP 2.254 r2: ink another page-wide reader has already read along straight segments (a hairpin's two arms: the STAGED gather
+    # fills `erase_ink` only under its flag; no key, nothing changes). Only the pixels within `band_px` of a segment go -- never the
+    # rectangle, so a letter beside or inside the opening stays.
+    for e in page_dict.get("erase_ink") or ():
+        bb, segs, band = e.get("bbox_page_px"), e.get("segments") or (), float(e.get("band_px") or 0.0)
+        if not bb or len(bb) != 4 or not segs or band <= 0:
+            continue
+        x0 = max(0, int(np.floor(bb[0] - band)))
+        y0 = max(0, int(np.floor(bb[1] - band)))
+        x1 = min(width, int(np.ceil(bb[2] + band)) + 1)
+        y1 = min(height, int(np.ceil(bb[3] + band)) + 1)
+        if x1 <= x0 or y1 <= y0:
+            continue
+        yy, xx = np.mgrid[y0:y1, x0:x1]
+        best = np.full(yy.shape, np.inf)
+        for xa, ya, xb, yb in segs:
+            dx, dy = xb - xa, yb - ya
+            L2 = dx * dx + dy * dy
+            t = np.clip(((xx + 0.5 - xa) * dx + (yy + 0.5 - ya) * dy) / L2, 0.0, 1.0) if L2 > 0 else 0.0
+            best = np.minimum(best, np.hypot(xx + 0.5 - (xa + t * dx), yy + 0.5 - (ya + t * dy)))
+        sub = out[y0:y1, x0:x1]
+        sub[best <= band] = 0
     return out
 
 

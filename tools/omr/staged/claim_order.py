@@ -86,7 +86,7 @@ LAYERS: Tuple[Tuple[str, Tuple[str, ...], str], ...] = (
     ("barline_bracket", ("barline", "bracket", "leading_column"), "plan §10 step 1; §9 brackets/braces claim page-wide"),
     ("clef_key_meter", ("clef", "key_signature", "meter"), "plan §10 step 2 system registers; §2 row 1"),
     ("word_dynamic", ("word", "dynamic", "text"), "plan §10 steps 3-4; §9 step 1 (page-wide, before heads)"),
-    ("arc_hairpin", ("arc", "arc_trace", "hairpin"), "plan §9 / §10 step 5 (page-wide, before heads)"),
+    ("arc_hairpin", ("arc", "arc_trace", "hairpin", "hairpin_trace"), "plan §9 / §10 step 5 (page-wide, before heads)"),
     ("whole_rest", ("whole_rest",), "DECISIONS 2026-10-29: a whole rest claims its ink before heads"),
     ("head", ("head", "ledger"), "plan §2 row 3; §3 head first among the per-cell marks"),
     ("stem_beam_flag", ("stem", "beam", "flag"), "plan §3 order head -> stem -> beam/flag; §2 row 5"),

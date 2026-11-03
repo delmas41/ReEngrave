@@ -89,3 +89,96 @@ def word_area_without_wedges(binary, box, spacing):
     if not areas:
         return [[float(v) for v in box]], []
     return areas, dropped
+
+
+# ── round 2: the hairpin read CLAIMS its own strokes, and the word reader does not read them ────────────────────────────────────────────────
+# CAUSE (round 2, measured on Brahms p8 from the round-1 slices): of the 13,790 px the round-1 claim readout put in `word_dynamic ->
+# stem_beam_flag`, 13,677 px stand under BOTH a detector `beam` box (scores 0.27-0.93, two to five boxes on each arm) and a cv_lines
+# `beam_stroke` read: the detector and the line reader take a hairpin's thin straight arm for a beam. The CV hairpin read filed a
+# `Q.WEDGE_BOX` row and claimed no ink, so once round 1 shrank the word's claim the stroke owner found no claimant before the consumers and
+# the beam took the arm; and the OCR box that had read the wedge as a letter ('a dim') still counted as a word read of it.
+
+#: the register's owner name for a hairpin read's ink claim (`unit: ink`, one row per (hairpin, staff whose cells it crosses))
+OWNER = "hairpin"
+#: `stroke_owner` family of the claim (tier 0, beside `arc_trace`: a page-wide mark claims its ink before the heads, plan 2026-10-28 s9)
+FAMILY = "hairpin_trace"
+#: a pixel lies ON an arm when it is within this many spaces of the arm's centre line (an arm is ~0.1-0.15 sp thick; a scan wanders ~1 px).
+#: CONVENTION ASSUMED: a hairpin's arms are straight lines from the apex (mid-height of the narrow end) to the open end's corners of the
+#: read box. WHAT WOULD FALSIFY IT: a head, stem or beam Sean values losing its stroke to the claim. NOT CONFIRMED: set on Brahms p8.
+ARM_BAND_SPACES = 0.2
+ARM_BAND_MIN_PX = 2.0
+#: a stroke is the hairpin's when at least this share of its ink lies on the arms (the register's one cut, `arc_claim.ON_TRACE_SHARE_MIN`):
+#: a stem or barline crossing an arm has a few pixels there and keeps its ink
+ON_ARMS_SHARE_MIN = 0.5
+
+
+def arms(kind: str, bbox) -> list:
+    """The two arms of a hairpin as page-px segments `[[xa, ya, xb, yb], [...]]`, from its read box and kind: a crescendo's apex is the
+    middle of the LEFT edge and it opens to the right corners; a diminuendo the mirror. The reader fits the box to the arms' ink."""
+    x0, y0, x1, y1 = (float(v) for v in bbox)
+    ym = (y0 + y1) / 2.0
+    if str(kind) == "crescendo":
+        return [[x0, ym, x1, y0], [x0, ym, x1, y1]]
+    return [[x1, ym, x0, y0], [x1, ym, x0, y1]]
+
+
+def dist_to_segments(px, py, segs):
+    """Distance (page px) of each point to the nearest of `segs`."""
+    import numpy as np
+    best = np.full(np.shape(px), np.inf)
+    for xa, ya, xb, yb in segs:
+        dx, dy = xb - xa, yb - ya
+        L2 = dx * dx + dy * dy
+        t = np.clip(((px - xa) * dx + (py - ya) * dy) / L2, 0.0, 1.0) if L2 > 0 else np.zeros(np.shape(px))
+        best = np.minimum(best, np.hypot(px - (xa + t * dx), py - (ya + t * dy)))
+    return best
+
+
+def band_px(spacing: float) -> float:
+    return max(ARM_BAND_MIN_PX, ARM_BAND_SPACES * float(spacing or 0.0))
+
+
+def on_arms_share(mask, x0: int, y0: int, scale: float, cell_box, up: float, segs, bbox, band: float) -> float:
+    """The share of one stroke's ink (`stroke_map` mask, REDUCED px, origin `x0, y0` in the cell's reduced frame) that lies on the arms --
+    inside the hairpin's box (+ `band`) and within `band` page px of an arm (the frame conversion is `arc_claim.on_trace_share`'s)."""
+    import numpy as np
+    ys, xs = np.nonzero(mask)
+    if ys.size == 0 or scale <= 0 or up <= 0:
+        return 0.0
+    px = float(cell_box[0]) + ((x0 + xs + 0.5) / scale) / up
+    py = float(cell_box[1]) + ((y0 + ys + 0.5) / scale) / up
+    bx0, by0, bx1, by1 = (float(v) for v in bbox)
+    inside = (px >= bx0 - band) & (px <= bx1 + band) & (py >= by0 - band) & (py <= by1 + band)
+    if not inside.any():
+        return 0.0
+    on = np.zeros(px.shape, bool)
+    on[inside] = dist_to_segments(px[inside], py[inside], segs) <= band
+    return float(on.sum()) / float(ys.size)
+
+
+def claim_strokes(res, cell_box, up: float, segs, bbox, band: float) -> list:
+    """`[(stroke ordinal, share)]` for every stroke of a cell (`stroke_map.CellStrokes`) that lies `ON_ARMS_SHARE_MIN` on the arms."""
+    out = []
+    for i, (m, x0, y0) in enumerate(getattr(res, "masks", None) or []):
+        if getattr(m, "size", 0) == 0:
+            continue
+        sh = on_arms_share(m, x0, y0, res.scale, cell_box, up, segs, bbox, band)
+        if sh >= ON_ARMS_SHARE_MIN:
+            out.append((i, round(sh, 3)))
+    return out
+
+
+def erase_entries(log, page: int) -> list:
+    """The hairpins the CV reach reader read on `page`, as `direction_text` erase entries (`{"bbox_page_px", "segments", "band_px"}`): the
+    word reader must not read a hairpin's arms as letters ('a dim', 'p espr' on Brahms p8). The flag is the caller's to read."""
+    from .record import Q
+    from . import record as R
+    out = []
+    for r in log.rows(Q.WEDGE_BOX, R.page(page), scope=R.Scope.SELF_AND_DESCENDANTS):
+        d = r.detail or {}
+        bb = d.get("bbox_page_px")
+        if not d.get("reach") or not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+            continue
+        out.append({"bbox_page_px": [float(v) for v in bb], "segments": arms(r.value, bb),
+                    "band_px": band_px(d.get("staff_spacing_px") or 0.0)})
+    return out
