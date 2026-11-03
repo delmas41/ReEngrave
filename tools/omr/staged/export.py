@@ -2730,10 +2730,16 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
             # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default OFF; page-facts, Sean 2026-10-30, general: "A tie carries an
             # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
             # start's pitch; counted, and the stop's own reading kept on the note.
-            last["pitch_before_tie_carry"] = p1
-            last["pitch"] = p1 = p0
-            if counters is not None:
-                counters["tie_carries_the_accidental"] = counters.get("tie_carries_the_accidental", 0) + 1
+            # The head's unison twin (2.175: one head, two voices) is the same head: it carries too. Undone below where no link
+            # of this pair is written (the carry exists only through a written tie).
+            carried = [d for d in (last, twins.get(stop)) if d is not None and d.get("pitch") == p1]
+            for d in carried:
+                d["pitch_before_tie_carry"] = p1
+                d["pitch"] = p0
+            p1 = p0
+        else:
+            carried = []
+        n_spans_before = len(spans)
         if p0 != p1:
             same_step = (_legacy._pitch_step(p0) == _legacy._pitch_step(p1))
             reason = ("tie_spelling_differs" if same_step
@@ -2759,6 +2765,15 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                     continue                    # two pairs (a mark's two boxes) name one written link: written once
                 seen_spans.add((id(f_det), id(l_det)))
             spans.append(((sm, None), (tm, None), f_det, l_det))
+        if carried:
+            if len(spans) == n_spans_before:            # 2.252 r4: no link written -- the stop keeps its own reading
+                for d in carried:
+                    d["pitch"] = d.pop("pitch_before_tie_carry")
+                key_ = "tie_carry_undone_not_written"
+            else:
+                key_ = "tie_carries_the_accidental"
+            if counters is not None:
+                counters[key_] = counters.get(key_, 0) + 1
         ties["linked"].append({"start": start, "stop": stop,
                                "pitch": p0, "arcs": list(arcs)})
     return spans
