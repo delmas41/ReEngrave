@@ -117,5 +117,32 @@ class TestTieEndUnsure(unittest.TestCase):
         self.assertEqual(_tie_end_unsure(rec, "A", "B"), [])
 
 
+class TestJudgedFollowsTallSplit(unittest.TestCase):
+    """r5's landing-check UNWRITTEN->WRONG (Litolff `11/0/2/12/2`, Sean "2"): the tall box is refused as the duplicate of the two
+    halves split from it; the answer is scored on the halves (same ink), not as a refused note."""
+
+    def _S(self, child_beats):
+        refused = {"outcome": "decided", "value": True, "reason": "stacked_head_duplicate"}
+        S = {("T", "notehead_is_not_a_notehead"): refused, ("__tall_split__", "T"): ["C1", "C2"]}
+        for k, b in zip(("C1", "C2"), child_beats):
+            S[(k, "duration")] = {"outcome": "decided", "value": {"beats": b}, "reason": "head_and_marks"}
+        return S
+
+    def test_split_child_with_seans_value_is_right(self):
+        from tools.omr.staged import judged as J
+        st, note = J._duration("T", 2.0, self._S([2.0, 2.0]))
+        self.assertEqual(st, "right", note)
+
+    def test_split_child_with_another_value_is_wrong(self):
+        from tools.omr.staged import judged as J
+        st, _ = J._duration("T", 2.0, self._S([1.0, 1.0]))
+        self.assertEqual(st, "wrong")
+
+    def test_an_unsplit_refused_box_is_still_wrong(self):
+        from tools.omr.staged import judged as J
+        S = {("T", "notehead_is_not_a_notehead"): {"outcome": "decided", "value": True, "reason": "x"}}
+        self.assertEqual(J._duration("T", 2.0, S)[0], "wrong")
+
+
 if __name__ == "__main__":
     unittest.main()

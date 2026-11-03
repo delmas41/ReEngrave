@@ -523,6 +523,23 @@ def page_boxes(path: pathlib.Path, subjects: Iterable[str]
     return out
 
 
+def split_children(path: pathlib.Path, subjects: Iterable[str]) -> Dict[str, List[str]]:
+    """ROADMAP 2.252 r6: `{subject: [child keys]}` for each asked head box GATHER split into the heads inside it (2.252's tall-box split,
+    `glyph_box` detail `tall_split.added`: the glyph indexes of the boxes appended in the same cell). The children are the same ink:
+    a judged answer on the tall box is the answer on the head written from it (CLAUDE.md s6, matched by place, never by box id alone)."""
+    want = set(subjects)
+    out: Dict[str, List[str]] = {}
+    for o in iter_array(path, "observations"):
+        sub = o.get("subject")
+        if sub in want and o.get("quantity") == "glyph_box" and sub not in out:
+            ts = (o.get("detail") or {}).get("tall_split") or {}
+            added = ts.get("added") if isinstance(ts, dict) else None
+            if added:
+                cell = str(sub).rsplit("/", 1)[0]
+                out[sub] = ["%s/%d" % (cell, int(i)) for i in added]
+    return out
+
+
 def box_matches(rec_box: Sequence[float], tile_box: Sequence[float],
                 slack: float = 40.0) -> bool:
     """Centre of the record's box inside the tile's bracket (+/- `slack` px at
@@ -707,6 +724,16 @@ def _duration(sub: str, want: float, S: Dict) -> Tuple[str, str]:
     # not-a-notehead is not a note even if the record still carries a stale
     # DECIDED duration -- show the refusal, never the value. Index only.
     n = S.get((sub, "notehead_is_not_a_notehead"))
+    kids = S.get(("__tall_split__", sub)) or ()
+    if kids and n and n["outcome"] == "decided" and n["value"] is True:
+        # ROADMAP 2.252 r6: the tall box was split into the heads inside it and refused as their duplicate -- the note at this ink is
+        # written from a child box: scored there (a child matching Sean's value is right; otherwise the first child's own result)
+        res = [(k, _duration(k, want, S)) for k in kids]
+        for k, (st, note) in res:
+            if st == "right":
+                return st, "tall box split; child %s: %s" % (k, note)
+        k, (st, note) = res[0]
+        return st, "tall box split; child %s: %s" % (k, note)
     if n and n["outcome"] == "decided" and n["value"] is True:
         return "wrong", "refused as not a note (%s)" % n["reason"]
     if v is None:
@@ -850,7 +877,10 @@ def score(index: Dict[str, Any], record_path: pathlib.Path, doc: str, by: str = 
         where = {i: resolve_place(r, pb) for i, r in placed.items()}
     subjects = {s for r in mine if id(r) not in placed for s in (r["subjects"] or [r["subject"]])}
     subjects |= {w[0] for w in where.values() if w[0]}
-    S = standing_for(record_path, subjects)
+    splits = split_children(record_path, subjects)          # ROADMAP 2.252 r6: a split tall box's answer is its children's
+    S = standing_for(record_path, subjects | {k for ks in splits.values() for k in ks})
+    for sub_, ks in splits.items():
+        S[("__tall_split__", sub_)] = ks
     per_item: Dict[str, Counter] = defaultdict(Counter)
     detail: List[Dict[str, Any]] = []
     matched: Counter = Counter()
