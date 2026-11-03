@@ -1,0 +1,20 @@
+  reused gather brahms off <- out/2.254r3/lr/work/brahms.off.gathered.record.json
+  reused gather brahms on <- out/2.254r3/on2/brahms.on.gathered.record.json
+LANE REPORT  OMR_HAIRPIN_REACH (OFF=0 ON=1)  --from gather
+  OMR_HAIRPIN_REACH: read in direction_text.py, hairpin_detection.py, staged/adjudicators/ownership.py, staged/adjudicators/stroke_owner.py ... -> GATHER
+  NOT THE FROZEN SAMPLE: benchmarks/hairpin-reach-2026-11/sample-r3.json (a development control)
+
+brahms  pages [8, 19, 25]  (2398 notes+rests OFF, 2173 ON, 2167 paired)
+  file:   notes +6 -127 | rests -114 | accidentals +5 -42 | dots +2 -83 | flags -10 | ties +6 -18 | slurs +12 -30 | articulations -4 | ornaments -1 | pitches ~16 | blue marks +1 -38 | dynamics +1 -17 | wedges +36 -6 | words +9 -17 | clefs +6 -3 | keys +8 -5
+  red bars 0 -> 0 | notes not written 1065 -> 1289
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (175 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 348 | position but no mark here 4
+  NOT JUDGED: 573 changed places no tile of Sean's covers (12 are covered; 38 have no page place): accidental 47, articulation 4, blue 37, dot 83, dynamic 17, flag 8, note 129, ornament 1, pitch 16, rest 102, slur 42, tie 24, wedge 42, words 21 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 64 s
+done
