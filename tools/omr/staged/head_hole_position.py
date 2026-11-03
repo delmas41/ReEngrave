@@ -34,15 +34,16 @@ MIN_INK_WIDTH_SPACES = 1.0
 
 
 def enabled() -> bool:
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    # ROADMAP 2.252 r6 (Sean, 2026-11-03): default ON, deny-list ("0"/"false"/"no"/"off" turns it off)
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
-#: ROADMAP 2.252 r5: the round-5 revisions ride on the same flag (it is OFF; Sean's r4 tiles 4, 6, 7, 9 and the r4 loss census)
+#: ROADMAP 2.252 r5: the round-5 revisions ride on the same flag (default ON since r6; Sean's r4 tiles 4, 6, 7, 9 and the r4 loss census)
 def r5_enabled() -> bool:
     return enabled()
 
 
-#: ROADMAP 2.252 r6: the round-6 revisions ride on the same flag (still OFF): the neighbour-piece refusal removed; an arc box's staff
+#: ROADMAP 2.252 r6: the round-6 revisions ride on the same flag (default ON): the neighbour-piece refusal removed; an arc box's staff
 #: line found locally (`gather.arc_ink_shape(local_lines=)`); a tie whose one end's position is unsure (`export`, `ownership`)
 def r6_enabled() -> bool:
     return enabled()

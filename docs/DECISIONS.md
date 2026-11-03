@@ -8,6 +8,7 @@ here is ever edited in place — a reversal is a new line.
 Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
+- 2026-11-03 Sean: land 2.252 r6 OMR_HEAD_HOLE_POSITION ON (with it the black-box split, the r6 local line check in arc_ink_shape, one_end_contested, unsure_ends). r6 tiles: positions 11/11, ties 10/12, 0 wrong. OMR_UNISON_TIE_VOICE stays OFF.
 - 2026-11-03 Sean, 2.252 r6 tiles: with OMR_HEAD_HOLE_POSITION ON every named position is right (11/11), ties right on 10/12 (tiles 9, 11 miss one end each), nothing written wrong; OFF is a step off on all 11. Answers: benchmarks/omr-arc-binding-2026-10/answers-2.252-r6.json.
 - 2026-11-03 CORRECTION to the 2.252 r5 landing line: the split of a BLACK box round two half notes is gated by `head_hole_position.r5_enabled()` (gather.py `black_too=`), i.e. OMR_HEAD_HOLE_POSITION, so it is OFF on main, not ON under OMR_TALL_HEAD_SPLIT (hollow tall boxes only). Found by the r6 lane, checked on origin/main.
 - 2026-11-03 Sean: land 2.252 r5 OMR_TIE_CARRIES_ACCIDENTAL and OMR_ARC_TRACE_NOT_A_LINE ON (box split rides OMR_TALL_HEAD_SPLIT, ON); OMR_HEAD_HOLE_POSITION stays OFF for round 6.
