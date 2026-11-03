@@ -1054,7 +1054,9 @@ MAX_CROP_UPSCALE = 4.0
 #: crop it is read as a letter: Brahms p8, a barline beside `dim.` came back from Surya as `dim!` (refused by the lexicon), and a staff
 #: line over the tight crop left Tesseract's letter gate empty, so Surya was never asked. A vertical run must be one unbroken stroke this
 #: long and reach outside the box above or below; a horizontal one this long and reach outside it on BOTH sides. A letter stroke ends
-#: inside its own box. Scan breaks are NOT bridged: bridging glued the `i` of `perdendosi` (Brahms p8) to the barline it leans on.
+#: inside its own box. Scan breaks are NOT bridged: bridging glued the `i` of `perdendosi` (Brahms p8) to the barline it leans on. And a
+#: letter can lie ON the line (Litolff p9: the `p` of `pizz.` stands on a barline and went with it, `pizz.` -> '222'), so the cleaned crop
+#: is only ever a RETRY for a candidate the plain crops gave nothing accepted (`_read_scan_flow`), never a replacement.
 #: CONVENTION ASSUMED: no letter of a direction word is one straight stroke continuing out of its own box. WHAT WOULD FALSIFY IT: a
 #: READ word lost when the flag is on.
 THROUGH_LINE_V_SPACES = 2.0
@@ -1489,8 +1491,7 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             and any(n == "tesseract" for n, _fn in readers)):
         return _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                                blanked, config, info, lexicon_scope=lexicon_scope)
-    lines = bool(page_dict.get("erase_through_lines"))     # ROADMAP 2.254 r3 (STAGED, flag): `THROUGH_LINE_V_SPACES`
-    crops = [crop_for(pws.page, c, spacing, erase=erase, lines=lines) for c in candidates]
+    crops = [crop_for(pws.page, c, spacing, erase=erase) for c in candidates]
 
     # Every rung reads every crop. Running the later ones only where the first
     # came back empty would be cheaper and would measure something else: a rung
@@ -1907,20 +1908,47 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     """
     cheap = [(n, f) for n, f in readers if n == "tesseract"]
     slow = [(n, f) for n, f in readers if n != "tesseract"]
-    lines = bool(page_dict.get("erase_through_lines"))     # ROADMAP 2.254 r3 (STAGED, flag): `THROUGH_LINE_V_SPACES`
+    # ROADMAP 2.254 r3 (STAGED, flag): a LATER look, never a replacement -- a candidate nothing was accepted from, with a line coming into
+    # its box (`through_line_mask`), is read once more from the crops with that line whited out. The plain crops are read first and as
+    # before: a letter that lies ON the barline (Litolff p9: the `p` of `pizz.` stands on it) loses its stroke with the line.
+    lines = bool(page_dict.get("erase_through_lines"))
     n = len(candidates)
     wide: dict[int, np.ndarray] = {}
     tight: dict[int, np.ndarray] = {}
+    line_crops: dict[tuple[int, bool], np.ndarray] = {}
+    has_line: dict[int, bool] = {}
 
     def wide_crop(i):
         if i not in wide:
-            wide[i] = crop_for(pws.page, candidates[i], spacing, erase=erase, lines=lines)
+            wide[i] = crop_for(pws.page, candidates[i], spacing, erase=erase)
         return wide[i]
 
     def tight_crop(i):
         if i not in tight:
-            tight[i] = tight_crop_for(pws.page, candidates[i], spacing, lines=lines)
+            tight[i] = tight_crop_for(pws.page, candidates[i], spacing)
         return tight[i]
+
+    def line_in(i):
+        if i not in has_line:
+            b = candidates[i].bbox_page
+            h, w = pws.page.binary.shape[:2]
+            px, py = int(round(CROP_PAD_X_SPACES * spacing)), int(round(CROP_PAD_Y_SPACES * spacing))
+            region = (max(0, b[0] - px), max(0, b[1] - py), min(w, b[2] + px), min(h, b[3] + py))
+            has_line[i] = bool(through_line_mask(pws.page.binary, b, spacing, region).any())
+        return has_line[i]
+
+    def wide_line_crop(i):
+        if (i, False) not in line_crops:
+            line_crops[(i, False)] = crop_for(pws.page, candidates[i], spacing, erase=erase, lines=True)
+        return line_crops[(i, False)]
+
+    def tight_line_crop(i):
+        if (i, True) not in line_crops:
+            line_crops[(i, True)] = tight_crop_for(pws.page, candidates[i], spacing, lines=True)
+        return line_crops[(i, True)]
+
+    def lines_for(d) -> bool:
+        return lines and "-lines" in str(getattr(d, "reader", ""))
 
     accepted_at: dict[int, DirectionText] = {}
     seen: dict[int, list[str]] = {i: [] for i in range(n)}
@@ -1977,6 +2005,18 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             run(slow, strong, wide_crop, "")
         else:
             info["slow_wide_skipped"] = info.get("slow_wide_skipped", 0) + len(strong)
+        if lines:
+            # ROADMAP 2.254 r3: the line-cleaned look, only where nothing was accepted and a line comes into the box (Brahms p8 `dim.`
+            # beside a barline: Surya read `dim!`, or Tesseract's letter gate saw nothing and Surya was never asked)
+            again = [i for i in everyone if i not in accepted_at and line_in(i)]
+            info["n_line_retry"] = info.get("n_line_retry", 0) + len(again)
+            run(cheap, again, tight_line_crop, "-lines-tight")
+            run(cheap, again, wide_line_crop, "-lines")
+            lettered2 = [i for i in again if i not in accepted_at and
+                         sum(ch.isalpha() for t in seen[i] for ch in t) >= RETRY_MIN_LETTERS]
+            run(slow, lettered2, tight_line_crop, "-lines-tight")
+            run(slow, [i for i in lettered2 if i not in accepted_at], wide_line_crop, "-lines")
+            info["n_line_read"] = sum(1 for d in accepted_at.values() if "-lines" in d.reader)
 
     def confirm_readings():
         # A READING THAT MAY BE CUT: it ends in a dynamic letter and another dynamic
@@ -1994,7 +2034,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             better = None
             if union is not None:
                 c2 = dataclasses.replace(candidates[i], bbox_page=union)
-                crop = tight_crop_for(pws.page, c2, spacing, lines=lines)
+                crop = tight_crop_for(pws.page, c2, spacing, lines=lines_for(d))
                 for name, fn in cheap + slow:
                     try:
                         text = list(getattr(fn, "tight", fn)([crop]))[0]
@@ -2025,7 +2065,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             x0, _y0, x1, _y1 = candidates[i].bbox_page
             if letters < 3 or (x1 - x0) / spacing / letters <= WIDE_BOX_SPACES_PER_LETTER:
                 continue
-            crop = tight_crop_for(pws.page, candidates[i], spacing, lines=lines)
+            crop = tight_crop_for(pws.page, candidates[i], spacing, lines=lines_for(d))
             for name, fn in cheap + slow:
                 try:
                     text = list(getattr(fn, "tight", fn)([crop]))[0]
@@ -2091,7 +2131,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
         if union is None:
             continue
         c2 = dataclasses.replace(candidates[i], bbox_page=union)
-        crop = tight_crop_for(pws.page, c2, spacing, lines=lines)
+        crop = tight_crop_for(pws.page, c2, spacing, lines=lines_for(d))
         for name, fn in cheap + slow:
             try:
                 text = list(getattr(fn, "tight", fn)([crop]))[0]
