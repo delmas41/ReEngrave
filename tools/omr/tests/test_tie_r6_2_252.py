@@ -37,6 +37,19 @@ class TestArcBoxOnATiltedLine(unittest.TestCase):
         self.assertEqual(m.get("lines_found_locally"), 1)
         self.assertLess(m["coverage"], 0.35)            # nothing curved is left: the decision refuses it as a staff line
 
+    def test_RED_a_tie_along_a_line_already_taken_out_is_not_erased(self):
+        # first build: a staff-wide y just outside the pad snapped to the line the in-window y had already taken out, and grew
+        # into the tie's half-full rows beside it (Litolff p3 `3/0/3/4/2`: coverage 0.76 -> 0.32, refused as a staff line)
+        img = _page_with_line(60)
+        for x in range(40, 100):                         # a flat tie lying along the line, just under it
+            yc = int(round(63 + 3 * ((x - 70) / 30.0) ** 2))
+            img[yc:yc + 2, x] = 0
+        box, lines = (40.0, 56.0, 100.0, 70.0), [60.0, 72.5]
+        off = G.arc_ink_shape(img, box, SP, lines)
+        on = G.arc_ink_shape(img, box, SP, lines, local_lines=True)
+        self.assertEqual(off["coverage"], on["coverage"])
+        self.assertEqual(off["lines_in_box"], on["lines_in_box"])
+
     def test_a_curved_tie_near_a_line_is_not_a_line(self):
         img = np.full((120, 200), 255, dtype=np.uint8)
         for x in range(40, 100):                         # a bowed stroke: no row is ink across the box

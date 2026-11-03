@@ -9214,16 +9214,18 @@ def arc_ink_shape(binary: Any, box: Tuple[float, float, float, float],
                                 <= y1 + pad + ARC_INK_LINE_LOCAL_REACH_SPACES * space):
                 # ROADMAP 2.252 r6: the line measured LOCALLY -- the box row nearest the staff-wide y that is ink across the box
                 rows_full = [r for r in range(h) if float(ink[r].mean()) >= ARC_INK_LINE_LOCAL_MIN_FILL]
+                rows_full = [r for r in rows_full if not removed[r]]     # a line already taken out is not found twice
                 if rows_full:
                     r0 = min(rows_full, key=lambda r: abs(iy0 + r - ly))
+                    # the line's own rows only (ink across the box): a tie lying along it fills the rows beside the line half way,
+                    # and growing into them erases the tie with the line (2.252 r2's lesson)
                     top = bot = r0
-                    while top - 1 >= 0 and float(ink[top - 1].mean()) >= ARC_INK_LINE_SNAP_MIN_FILL:
+                    while top - 1 >= 0 and float(ink[top - 1].mean()) >= ARC_INK_LINE_LOCAL_MIN_FILL:
                         top -= 1
-                    while bot + 1 < h and float(ink[bot + 1].mean()) >= ARC_INK_LINE_SNAP_MIN_FILL:
+                    while bot + 1 < h and float(ink[bot + 1].mean()) >= ARC_INK_LINE_LOCAL_MIN_FILL:
                         bot += 1
-                    if not removed[r0]:                 # two staff-wide lines either side snap to one run: counted once
-                        n_lines += 1
-                        n_local += 1
+                    n_lines += 1
+                    n_local += 1
                     removed[max(0, top - 1):min(h, bot + 2)] = True
             continue
         th = None
