@@ -3396,9 +3396,10 @@ class Abstention:
                 "detail": dict(self.detail)}
 
 
-#: ROADMAP 2.249: how many spelled-out `LazyBasis` tuples are kept (most recent first out last) -- speed only.
-SPELLED_KEEP = 64
+#: ROADMAP 2.249: spelled-out `LazyBasis` tuples kept, by ids held, least recently used out first -- speed only.
+SPELLED_KEEP_IDS = 20_000_000
 _SPELLED: "collections.OrderedDict" = __import__("collections").OrderedDict()
+_SPELLED_IDS = [0]
 
 
 class LazyBasis(Sequence):
@@ -3422,16 +3423,14 @@ class LazyBasis(Sequence):
         self._n: int | None = None
 
     def ids(self) -> set:
-        out: set = set()
-        for rid in self.considered:
-            out |= self._log.closure(rid)
+        out = self._log.closure_of_many(self.considered)
         if self._n is None:
             self._n = len(out)
         return out
 
     def _t(self) -> tuple:
-        # SPEED ONLY: the writer reads one basis several times in a row (pool plan, encode, its own check, the
-        # encoder); the last few spelled-out bases are kept (`SPELLED_KEEP`), never all of them.
+        # SPEED ONLY: the writer reads one basis several times (its group's pool plan, the encoding, its own check,
+        # the encoder); recently spelled bases are kept up to `SPELLED_KEEP_IDS` ids, never all of them.
         lru = _SPELLED
         t = lru.get(id(self))
         if t is not None and t[0] is self:
@@ -3439,8 +3438,10 @@ class LazyBasis(Sequence):
             return t[1]
         t = tuple(sorted(self.ids()))
         lru[id(self)] = (self, t)
-        if len(lru) > SPELLED_KEEP:
-            lru.popitem(last=False)
+        _SPELLED_IDS[0] += len(t)
+        while _SPELLED_IDS[0] > SPELLED_KEEP_IDS and len(lru) > 1:
+            _k, (_o, old) = lru.popitem(last=False)
+            _SPELLED_IDS[0] -= len(old)
         return t
 
     def __iter__(self):
@@ -3448,7 +3449,7 @@ class LazyBasis(Sequence):
 
     def __len__(self) -> int:
         if self._n is None:
-            self.ids()
+            self._n = len(self._t())
         return self._n
 
     def __bool__(self) -> bool:
@@ -4104,6 +4105,36 @@ class Log:
             _k, old_set = memo.popitem(last=False)
             self._closure_memo_ids -= len(old_set)
         return result
+
+    def closure_of_many(self, row_ids: Sequence[str]) -> set:
+        """ROADMAP 2.249: the union of `closure(r)` for every `r` in `row_ids`, as a new set -- one walk that takes each
+        memoised closure it meets whole, rather than one memo lookup and one set union per id (a `LazyBasis` is spelled
+        this way; its `considered` runs to hundreds of ids). Memoises nothing of its own. Same set."""
+        memo = self._closure_cache
+        out: set = set()
+        stack = []
+        for rid in row_ids:      # a verdict's closure is worth keeping (others rest on it too); a reading's is itself
+            if rid in out:
+                continue
+            row = self.row(rid)
+            if isinstance(row, Verdict):
+                out |= self.closure(rid)
+            else:
+                stack.append(rid)
+        while stack:
+            rid = stack.pop()
+            if rid in out:
+                continue
+            sub = memo.get(rid)
+            if sub is not None:
+                memo.move_to_end(rid)
+                out |= sub
+                continue
+            out.add(rid)
+            row = self.row(rid)
+            if row is not None:
+                stack.extend(self._edges(row))
+        return out
 
     @staticmethod
     def _edges(row) -> Sequence[str]:

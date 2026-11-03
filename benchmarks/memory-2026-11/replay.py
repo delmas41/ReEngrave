@@ -108,7 +108,16 @@ except TypeError:
 M["to_json"] = {"s": round(time.time() - t, 1), **live()}
 del log; gc.collect()
 t = time.time()
+_dprof = None
+if "dump" in os.environ.get("REPLAY_PROFILE", "").split(","):
+    import cProfile
+    _dprof = cProfile.Profile(); _dprof.enable()
 n = record_io.dump_to_file(result, out + ".record.json")
+if _dprof is not None:
+    import pstats, io
+    _dprof.disable(); _sio = io.StringIO()
+    pstats.Stats(_dprof, stream=_sio).sort_stats("tottime").print_stats(30)
+    open(out + ".dump.prof.txt", "w").write(_sio.getvalue())
 M["dump"] = {"s": round(time.time() - t, 1), "bytes": n, **live()}
 t = time.time()
 xml, _report = export.to_musicxml(result)
