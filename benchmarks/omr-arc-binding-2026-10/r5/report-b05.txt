@@ -1,0 +1,21 @@
+LANE REPORT  OMR_HEAD_HOLE_POSITION (OFF=0 ON=1), OMR_TIE_CARRIES_ACCIDENTAL (OFF=0 ON=1), OMR_ARC_TRACE_NOT_A_LINE (OFF=0 ON=1), OMR_UNISON_TIE_VOICE (OFF=1 ON=1)  --from gather
+  OMR_HEAD_HOLE_POSITION: read in staged/box_kind.py, staged/gather.py, staged/head_hole_position.py, staged/reach.py -> GATHER
+  OMR_TIE_CARRIES_ACCIDENTAL: read in staged/export.py -> ADJUDICATE..EXPORT
+  OMR_ARC_TRACE_NOT_A_LINE: read in staged/adjudicators/family_precision.py -> ADJUDICATE..EXPORT
+  OMR_UNISON_TIE_VOICE: read in staged/export.py, staged/export_unison.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: out/2.252r4/sample-b05.json (a development control)
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+brahms  pages [0, 5]  (1536 notes+rests OFF, 1536 ON, 1536 paired)
+  file:   ties +44 | pitches ~19
+  red bars 42 -> 42 | notes not written 757 -> 757
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (220 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 4 (at another id than asked 4) | by id key, no position 365 | position but no mark here 0
+  NOT JUDGED: 63 changed places no tile of Sean's covers (0 are covered; 0 have no page place): pitch 19, tie 44 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 34 s

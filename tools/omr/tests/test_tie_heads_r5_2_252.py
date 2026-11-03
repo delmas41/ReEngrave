@@ -213,5 +213,23 @@ class TestTieAlongALine(unittest.TestCase):
             self.assertFalse(FP.arc_trace_not_a_line_enabled())
 
 
+class TestJudgedPlaceForAnArcTileOnItsNote(unittest.TestCase):
+    """The lane report's judged matcher: a tile that asks about an arc through the NOTE it boxes (2.250's tiles) is found by place."""
+
+    ROW = {"subject": "glyph/2/1/1/11/3", "mark_kind": "slur",
+           "position": {"page": 2, "system": 1, "staff": 1, "cell": 11, "page_box": [100.0, 100.0, 125.0, 120.0]}}
+
+    def test_RED_an_arc_kind_tile_boxing_a_head_is_found_at_the_head(self):
+        from tools.omr.staged import judged as J
+        boxes = {(2, 1, 1, 11): [("glyph/2/1/1/11/3", [101.0, 101.0, 124.0, 121.0], "notehead"),
+                                 ("glyph/2/1/1/11/5", [130.0, 80.0, 300.0, 100.0], "structural")]}
+        self.assertEqual(J.resolve_place(self.ROW, boxes), ("glyph/2/1/1/11/3", "place"))
+
+    def test_CONTROL_no_box_of_the_tiles_own_kind_there_is_still_no_mark(self):
+        from tools.omr.staged import judged as J
+        boxes = {(2, 1, 1, 11): [("glyph/2/1/1/11/9", [400.0, 100.0, 425.0, 120.0], "notehead")]}
+        self.assertEqual(J.resolve_place(self.ROW, boxes), (None, "place_no_mark"))
+
+
 if __name__ == "__main__":
     unittest.main()
