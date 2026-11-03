@@ -17,7 +17,24 @@ re-enter.
 
 ---
 
-## START HERE — after 2026-10-31 evening (main ≥ the commit naming this block)
+## START HERE — after 2026-11-03 (day manager, ties / hairpins / ledger lanes; main ≥ the commit naming this block)
+
+Read FIRST. Other lanes of 11-02/03 (2.251 clefs, 2.256/2.257) keep their own rows; this block covers 2.252, 2.254, 2.255 only.
+
+**Landed ON (deny-list, default ON):**
+- **2.255** `OMR_LEDGER_READ` (40ee3caa2): a limit on hand-drawn plates is measured against the page's own ledger pitch.
+- **2.252** split `OMR_TALL_HEAD_SPLIT` (b0de45310); r2 `OMR_ARC_LINE_THICKNESS` + `OMR_TIE_PAIR_ARC_SIDE` (ba85eaf0f); r5 `OMR_TIE_CARRIES_ACCIDENTAL` + `OMR_ARC_TRACE_NOT_A_LINE` (f988b3fff); r6 `OMR_HEAD_HOLE_POSITION` (fb3a51921; carries the black-box split -- the r5 landing note saying otherwise is corrected in DECISIONS 43ce8f426). Sean's r6 tiles: positions 11/11, ties 10/12, 0 wrong.
+- **2.254** `OMR_HAIRPIN_REACH` (7a4484c35, Sean "as is"): known Brahms p19 ORDER-VIOLATION 0.39->0.41 (a gained 'pesante' box reaching accidentals, inferred), and r3's judged check found 0 tiles by place (fresh gathers re-number marks), so its right->wrong 0 is unproven. Full fast tier on main after landing: 9778 passed.
+
+**Open, not started (Sean: "Stop here"):**
+- 2.252 unisons: `OMR_UNISON_TIE_VOICE` (r3) still OFF; the second voice's tie (r5 tile 2/6, r6 tile 2) and r6 tiles 9 and 11 (one tie end each) are missing; some ties are never boxed by the detector (r5 tile 6 upper tie, r6 r5-tile-4 case).
+- 2.252: on 2-page Litolff gathers the far-head ledger reader gives up (`no_page_shape`, 388/388) -- small tests round far heads instead of reading ledgers; 8 of 19 disagreeing tie pairs.
+- 2.254: LilyPond `_lily_wedge_plan` ends an "under" hairpin on the stop note, not the barline (needs a ruling); word ink boxes leave a leading 'p' out (pesante, pizz.) -- the word is written whole, the p's ink is not claimed by the word.
+- 2.255: one lost blue A3 at `10/1/2/9/7`; 12 Litolff neighbour-staff reads untiled.
+- The judged scorer matches mostly by key (336-365 of the tiles carry no position); after a fresh gather, "found by place" is the honest count.
+- 27 stale worktrees remain (removal needs Sean's permission).
+
+## START HERE — after 2026-10-31 evening (superseded by the block above) (main ≥ the commit naming this block)
 
 Read FIRST.
 
