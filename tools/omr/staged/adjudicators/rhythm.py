@@ -4788,7 +4788,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "beam_certain_not_joined",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
-             "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs",
+             "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs", "rest_hangs_from_own_line",
              "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead", "wide_box_unread",
              "stem_tip_reads_no_beam", "stem_readers_disagree"),
     mode=Mode.ADDITIVE,
@@ -6126,6 +6126,49 @@ def _rest_slot(ev: Evidence, box_rows) -> Tuple[Optional[float], Dict[str, Any],
     return step, detail, used
 
 
+WHOLE_REST_OWN_STAFF_ENV = "OMR_WHOLE_REST_OWN_STAFF"
+#: edge-to-line tolerance in staff spaces (measured on Litolff hanging rests 0.0-0.25) and the rest's own size window.
+WHOLE_REST_HANG_TOL_SP = 0.25
+WHOLE_REST_HANG_W_SP = (0.9, 2.0)
+WHOLE_REST_HANG_H_SP = (0.35, 1.0)
+
+
+def _whole_rest_own_staff_on() -> bool:
+    return os.environ.get(WHOLE_REST_OWN_STAFF_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _rest_hangs_from_own_line(ev: Evidence, box_rows) -> Tuple[bool, Dict[str, Any], List[str]]:
+    """Does this rect hang from one of ITS OWN staff's five lines (top edge on the line, bottom edge off every line)?"""
+    page_box = None
+    for r in box_rows:
+        page_box = (r.detail or {}).get("bbox_page_px") or page_box
+    if not page_box:
+        return False, {"hang": "no_page_frame"}, []
+    staff = ev.subject.at(Kind.STAFF)
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    space = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    if not lines or not space:
+        return False, {"hang": ABSTAIN.NO_STAFF_GEOMETRY}, []
+    try:
+        ys = [float(y) for y in lines[-1].value]
+        sp = float(space[-1].value)
+        top, bot = float(page_box[1]), float(page_box[3])
+        w = (float(page_box[2]) - float(page_box[0])) / sp
+    except (TypeError, ValueError, ZeroDivisionError):
+        return False, {"hang": ABSTAIN.NO_STAFF_GEOMETRY}, []
+    if len(ys) != 5 or sp <= 0:
+        return False, {"hang": "not_five_lines"}, []
+    h = (bot - top) / sp
+    dt = min(abs(top - y) for y in ys) / sp
+    db = min(abs(bot - y) for y in ys) / sp
+    ok = (WHOLE_REST_HANG_W_SP[0] <= w <= WHOLE_REST_HANG_W_SP[1]
+          and WHOLE_REST_HANG_H_SP[0] <= h <= WHOLE_REST_HANG_H_SP[1]
+          and dt <= WHOLE_REST_HANG_TOL_SP and db > WHOLE_REST_HANG_TOL_SP)
+    return ok, {"hang": "hangs" if ok else "not_hanging", "hang_top_edge_sp": round(dt, 3),
+                "hang_bottom_edge_sp": round(db, 3), "hang_w_sp": round(w, 2), "hang_h_sp": round(h, 2)}, \
+        [lines[-1].id, space[-1].id]
+
+
 #: The three answers the slot can give, spelled as
 #: `benchmarks/omr-shape-role-2026-09/probe/role_disagreement.py` spells them,
 #: so the rule's census and the audit's table use ONE vocabulary.
@@ -6332,6 +6375,20 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
             "half_band_to": round(
                 HALF_REST_STEP + REST_SLOT_TOLERANCE_HALF, 3),
             "frame": "bottom line 0, one step per half space, up positive"}
+
+    # ROADMAP 2.257 (flag OMR_WHOLE_REST_OWN_STAFF, default OFF): a whole rest HANGS from a staff line -- any of its own staff's
+    # five lines, not only the fourth -- and a half rest STANDS on one. The centre-step slot above tests ONE absolute height
+    # (the 4th line), so a Litolff whole rest that hangs from another line (alternate bars of one staff, a displaced voice)
+    # lands on 'neither' and is held out. The ink's own edge against its own staff's lines decides, never the class alone:
+    # hung = top edge on a line and the bottom edge off every line; anything else keeps the slot's answer.
+    if slot in (SLOT_NEITHER, SLOT_OTHER) and str(row.value).lower() == "restwhole" and _whole_rest_own_staff_on():
+        hang, hang_detail, hang_used = _rest_hangs_from_own_line(ev, box)
+        detail.update(hang_detail)
+        if hang:
+            return Ruling(
+                value={"beats": total, "written": total, "dots": len(dots),
+                       "beam_levels": 0, "is_rest": True},
+                reason="rest_hangs_from_own_line", used=tuple(used + hang_used), detail=detail)
 
     if slot == SLOT_NEITHER:
         # ⚠️ ABSTAIN, AND THE REST IS HELD OUT RATHER THAN VALUED. This is a
