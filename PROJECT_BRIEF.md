@@ -3,25 +3,28 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-11-02 (un-frozen 2026-10-07; kept current with every commit alongside
+**Updated:** 2026-11-03 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`; CLAUDE.md was cut to ~1,800 words on
 2026-10-13 and its detail moved to `docs/running.md`, `docs/staged-internals.md`,
 `docs/page-facts.md`, `docs/measuring.md`, `docs/data-sources.md`,
 `docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
 
-## Since then (2026-11-01/02)
+## Since then (2026-11-01/03)
 
 - **Arc binder reads the end note's pitch** (2.250): ON.
 - **Clef changes inside a system are claimed page-wide** (2.251 step 1): ON.
   - C clefs are read by shape.
   - F clefs are read by box and dots.
   - Notes after an unread clef are marked red.
-- **The clef carry** (2.251 step 2): built and OFF.
-  - Its pitches are right on Sean's tiles.
-  - It waits on bar 111, where it still turns right notes wrong.
-- **Far heads written blue when the ledger count abstains** (2.248 r3): OFF.
-  - It waits on why 2 of them land on the wrong staff.
+- **The clef carry** (2.251 step 2): ON (Sean "Land now"). A clef change now holds until the next clef. Where the reader only half-sees a clef, the notes go red "clef?" and are never pitched by guess.
+- **F clef read cut-off** (dots and body together): 0.70 -> 0.65, ON (Sean "Do it"). It reads Litolff Vc bar 346 and bar 115.
+- **F clef dots fused with heavy staff lines** (2.251 step 3, bar 111): PARKED on branch lane-2.251-dots, to resume under 2.223 (Sean). Bar 111 stays red.
+- **Far heads whose ledger count abstained are written blue** (2.248 r4): ON.
+- **Ties on a staff line kept; a dyad's tie joins the member on the arc's side** (2.252 r2): ON.
+- **A tall hollow head box is read for its heads by their holes** (2.252 split): ON.
+- **Hairpin reach** (2.254): ON.
+- **The far-head ledger read** (2.255 r2): ON.
 
 ## Where things stood (2026-10-31 evening)
 

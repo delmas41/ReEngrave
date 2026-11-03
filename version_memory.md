@@ -9,6 +9,18 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- 2.251 step 3 (F clef dot finder) PARKED, docs only (Sean 'Park it')
+
+No code. Sean: "I don't think we should land the work that it has done, but I'm not ready to give up on it", then "Park it. Document well." Branch lane-2.251-dots 6d1708b40 (flag OMR_CLEF_DOT_FUSED, dots_scan.py, dots_table.py) and test-2.251-f-cutoff stay unlanded. Cause: the stem clear tests one pixel column's black run only, and at bar 111 the dots fuse with the staff lines, so line+dot+line reads as a stem. Resumes under ROADMAP 2.223. FINDINGS.md has the full entry, an untested body-scale hypothesis and the process lesson.
+
+## 2026-11-02 -- 2.251: F dots+body READ cut-off 0.70 -> 0.65 (Sean 'Do it')
+
+- `clef_pagewide.F_TEMPLATE_READ_SCORE` 0.70 -> 0.65 (STAGED no-box F reader `f_nobox`, needs dots AND body). Body-only `f_body_scan` stays a candidate (0.60). The STRONG tier (`F_TEMPLATE_STRONG_SCORE` 0.65, read by `_strong_f`/`any_strong` in `consequences`/`export`, set in `gather`) is now empty: STRONG == READ, so nothing lands between. Constant kept, comment says so; no test asserted the old 0.70.
+- Gate (fresh `--through gather`, PAGEWIDE+CARRY ON, KEEP_ALIVE=0; Litolff 2,4,12 / Brahms 4,5; main 0.70 vs 0.65): ORDER-VIOLATION Litolff 0.43 -> 0.43, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM 0.87 -> 0.87 / 0.70 -> 0.70; clef/key/meter single-owner 2.4 -> 2.4 / 1.7 -> 1.7. The Litolff records differ as intended (Vc bar 346: STRONG candidate -> READ).
+- Three measures (lane_report, scratch-only env override, Litolff 4,12 / Brahms 4,5, not the frozen sample): Litolff `words -6 | clefs +1`; Brahms `accidentals +1 | pitches ~1 | blue +1` (cut-off cannot reach Brahms: load noise). Judged right->wrong 0, unwritten->wrong 0.
+- Tests: fast tier 9759 passed, 12 skipped, 2 xfailed; test_clef*2_251* 16 passed, 8 skipped (library-dependent).
+- Open: dot-finder lane in flight (dots touching a head/stem shredded by the stroke-clearing step, bar 111).
+
 ## 2026-11-02 -- 2.251 step 2 landed: OMR_CLEF_CARRY default ON (Sean 'Land now')
 
 - `clef_pagewide.carry_enabled()` flips to default ON (explicit 0/false/no/off disables); test renamed `test_default_on_carry_on`. No mechanism changed; lane-2.251-carry merged with main.
