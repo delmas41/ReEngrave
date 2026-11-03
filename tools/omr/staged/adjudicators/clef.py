@@ -22,6 +22,7 @@ rewritten. This is a change to how their opinions are combined.
 
 from __future__ import annotations
 
+import os
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..adjudicate import (Candidate, Checkable, Evidence, Mode, Ruling, Term, decision,
@@ -515,6 +516,13 @@ def _off_staff_discount_applies(row: Any, on_staff: Optional[bool]) -> bool:
     return on_staff is False and not _is_human_clef_reader(row.reader)
 
 
+MID_SYSTEM_CLEF_X_PX = 1000.0     # 45 staff spaces in the cell frame (22.4 px a space)
+
+
+def _c_clef_read_on() -> bool:
+    return os.environ.get("OMR_C_CLEF_READ", "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _detector_terms(ev: Evidence
                      ) -> Tuple[Dict[str, List[Term]], List[Dict[str, Any]]]:
     """Returns `(terms_by_name, discounted)`.
@@ -545,6 +553,17 @@ def _detector_terms(ev: Evidence
             continue
         pos_row = placed.get(float(row.detail.get("y_center", -1e9)))
         on_staff = _stands_on_this_staff(pos_row)
+
+        # ROADMAP 2.257 (flag OMR_C_CLEF_READ, default OFF): this verdict is the staff's HEADER clef. A detector clef box far
+        # to the right of the header (cell frame, staff span constant: 22.4 px a space; header clef at 15-18 sp, key and
+        # meter end before ~40 sp) is a clef CHANGE inside the system -- 2.251 claims and carries it -- and must not vote
+        # on the header: Litolff p6 staff 3 read tenor at the header (locator 2 x 0.95, detector clefCTenor) and was tied
+        # 5.5 : 5.5 with the bassoon's later bass clef, then filled bass from the other systems.
+        if _c_clef_read_on() and float(row.detail.get("x_center", 0.0) or 0.0) > MID_SYSTEM_CLEF_X_PX:
+            discounted.append({
+                "glyph_row": row.id, "family": name, "x_center": row.detail.get("x_center"),
+                "reason": "clef_box_beyond_the_header_window"})
+            continue
 
         # ⚠️ DISCOUNTED ONLY WHERE WE CAN TELL. `on_staff is False` means a
         # GRID measured this box's position and it falls outside
