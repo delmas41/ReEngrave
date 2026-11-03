@@ -746,6 +746,27 @@ def _is_arc_tail_box(hg: str, hb: Sequence[float], binary: Any, cell_of: Dict[Tu
     return got is not None and float(got["oval_width_sp"]) < ARC_TAIL_OVAL_MAX_SPACES
 
 
+def _arc_claim_one_curve() -> bool:
+    from . import arc_claim as _ac
+    return _ac.one_curve_enabled()
+
+
+def _pair_joins(members: Sequence[Dict[str, Any]], sp: float) -> List[Dict[str, Any]]:
+    """ROADMAP 2.258: how each pair of one curve's boxes meets, measured on their traces (what `join_traces` decided, kept). Per pair of boxes
+    (x order): the columns both traces ink (`shared_cols`), those where they agree in y (`agree_cols`: one stroke seen twice), and where each trace
+    ends / begins. The binder asks THIS of a junction, not where the detector's boxes happen to stand."""
+    tol = max(2.0, SAME_Y_SPACES * sp)
+    out: List[Dict[str, Any]] = []
+    for i, a in enumerate(members):
+        for b in members[i + 1:]:
+            pa, pb = a["points"], b["points"]
+            shared = [x for x in pa if x in pb]
+            agree = sum(1 for x in shared if abs(sum(pa[x]) / 2.0 - sum(pb[x]) / 2.0) <= tol)
+            out.append(dict(a=a["piece"]["glyph"].to_key(), b=b["piece"]["glyph"].to_key(), shared_cols=len(shared), agree_cols=agree,
+                            a_x0=a["x0"], a_x1=a["x1"], b_x0=b["x0"], b_x1=b["x1"]))
+    return out
+
+
 def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> Dict[str, Any]:
     """`Q.SYSTEM_ARC` per joined arc, then the traced strokes erased from every cell's `image_no_staff`.
@@ -827,8 +848,11 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             bx0, _, bx1, _ = p["box"]
             cut_left = (bx0 - float(cb[0])) <= CUT_EDGE_SPACES * sp
             cut_right = (float(cb[2]) - bx1) <= CUT_EDGE_SPACES * sp
-            x_min = max(sx0, bx0 - (CUT_EXTEND_SPACES if cut_left else FREE_EXTEND_SPACES) * sp)
-            x_max = min(sx1, bx1 + (CUT_EXTEND_SPACES if cut_right else FREE_EXTEND_SPACES) * sp)
+            # ROADMAP 2.258 (OMR_ARC_ONE_CURVE): the detector often boxes only PART of an arc; the trace is the arc, so it follows the stroke
+            # as far as it runs (`_follow` stops at a gap or a steep tail) -- the extent the cut already had, for every end
+            one_ = _arc_claim_one_curve()
+            x_min = max(sx0, bx0 - (CUT_EXTEND_SPACES if (cut_left or one_) else FREE_EXTEND_SPACES) * sp)
+            x_max = min(sx1, bx1 + (CUT_EXTEND_SPACES if (cut_right or one_) else FREE_EXTEND_SPACES) * sp)
             t = trace_arc(ink, p["box"], sp, x_min=x_min, x_max=x_max, raw=raw)
             if t is not None and t["points"] and on_a_staff_line(
                     {x: r for x, r in t["points"].items() if bx0 <= x <= bx1}, line_ys, sp):
@@ -901,6 +925,7 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                     stroke_only.add(hg)
             anchor_heads = [(hg, hb) for hg, hb in heads if hg not in stroke_only]
             anc = anchor_ends(pts, anchor_heads, sp_staff)
+            joins = _pair_joins(members, sp_staff) if _arc_claim_one_curve() and len(members) > 1 else None
             first = members[0]["piece"]
             boxed_x0 = min(m["piece"]["box"][0] for m in members)
             boxed_x1 = max(m["piece"]["box"][2] for m in members)
@@ -920,6 +945,8 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 anchor_dy_spaces=anc["dy_spaces"], heads_between=anc["heads_between"],
                 space_page_px=round(sp_staff, 3),
             )
+            if joins is not None:
+                detail["joins"] = joins
             from . import arc_claim as _arc_claim
             if _arc_claim.claim_enabled():
                 # `OMR_ARC_CLAIM` (default ON): the traced rows themselves -- what `gather_arc_claim` claims the strokes ALONG
