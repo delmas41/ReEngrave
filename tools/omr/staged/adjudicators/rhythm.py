@@ -10284,18 +10284,12 @@ def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
 #: CAUSE of the red bars: the stream split below needs an up-stem AND a down-stem note, so a bar whose notes all stand one
 #: way is `one_voice` and the displaced rest is ADDED into it ("should hold 2, counted 6": 1 + 1 + a 4-quarter rest).
 def _glyph_left_the_bar(ev: Evidence, cell: Subject, g: int) -> bool:
-    """A DECIDED refusal that EXPORT honours takes this box out of its bar: not a rest, not a notehead, or ink the glyph-owner
-    contest gave to another staff (the same three tests `consequences._left_the_bar` applies). The record's `Q.EVENT` still
+    """A DECIDED refusal that EXPORT honours takes this box out of its bar: not a rest or not a notehead (two of the tests `consequences._left_the_bar` applies; the glyph-owner test is NOT read here: a displaced rest never reads the neighbour staff). The record's `Q.EVENT` still
     groups such a box (it reads `Q.REST` / `Q.NOTEHEAD_CLASS`, never the refusals), so a sum over events must ask."""
     sub = Subject(Kind.GLYPH, page=cell.page, system=cell.system, staff=cell.staff, cell=cell.cell, glyph=g)
     for q in (Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD):
         v = ev.verdict(q, subject=sub)
         if v is not None and v.outcome is Outcome.DECIDED and v.value is True:
-            return True
-    owner = ev.verdict(Q.GLYPH_OWNER, subject=sub)
-    if owner is not None and owner.outcome is Outcome.DECIDED:
-        from ..adjudicate import is_relocated_copy
-        if is_relocated_copy(sub, owner.value):
             return True
     return False
 
@@ -10369,7 +10363,7 @@ def _rest_own_voice_split(ev: Evidence, events):
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
+           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
              "nothing_to_split", "one_voice_plus_displaced_whole_rest"),
