@@ -1,0 +1,21 @@
+{
+  "lane": "2.252 round 6 (OMR_HEAD_HOLE_POSITION revised; branch lane-2.252-r6 8ece3409c)",
+  "date": "2026-11-03",
+  "tiles_key": "benchmarks/omr-arc-binding-2026-10/r6/tiles-key-r6.json (on the lane branch)",
+  "pitch_note": "Sean gave staff positions; read through the clef the manager saw on the tile (treble/bass), not confirmed against the record. Tile 2 has no position given.",
+  "answers": {
+    "1":  {"sean": "half note, top line, tied to the note after", "on": "F5 tie start", "off": "G5 none", "on_right": true},
+    "2":  {"sean": "unison half notes, no ties", "on": "C4 no tie", "off": "D4 no tie", "on_right": "tie right; pitch not asked"},
+    "3":  {"sean": "half note, top space, tied before", "on": "E5 stop", "off": "F5 none", "on_right": true},
+    "4":  {"sean": "half note, second line from bottom, tied after", "on": "G4 start", "off": "F4 none", "on_right": true},
+    "5":  {"sean": "half note, bottom line, SLUR to a half note on the bottom space", "on": "Eb4 no tie", "off": "F4 no tie", "on_right": true},
+    "6":  {"sean": "half note, top space, tied before", "on": "E5 stop", "off": "F5 none", "on_right": true},
+    "7":  {"sean": "half note, top line, SLUR from a note in the space above", "on": "Ab3 no tie", "off": "Bb3 tie", "on_right": true},
+    "8":  {"sean": "half note, bottom space, tied both sides", "on": "Ab2 stop+start", "off": "Bb2 none", "on_right": true},
+    "9":  {"sean": "half note, second line from bottom, tied both sides", "on": "G4 stop only", "off": "F4 stop", "on_right": "pitch right, one tie end missing"},
+    "10": {"sean": "half note, top line, SLUR from a note in the space above", "on": "Ab3 no tie", "off": "Bb3 tie", "on_right": true},
+    "11": {"sean": "half note, bottom line, tied both sides", "on": "E4 start only", "off": "F4 none", "on_right": "pitch right, one tie end missing"},
+    "12": {"sean": "half note, second line from bottom, SLUR from a note in the second space", "on": "G4 no tie", "off": "Ab4 none", "on_right": true}
+  },
+  "reading": "ON: every named position right (11/11); ties fully right on 10/12, tiles 9 and 11 each miss one end; no tie or slur written wrong. OFF: pitch a step off on 11/11 and three slurs written as ties (7, 10) or ties missed. The three unasked r6 'losses' (9, 10, 11) are right ON."
+}
