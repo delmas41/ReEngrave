@@ -39,11 +39,12 @@ def _page(mask, at=(200, 300)):
     return page
 
 
-def test_flag_is_off_by_default(monkeypatch):
+def test_flag_is_on_by_default(monkeypatch):
     monkeypatch.delenv(hairpin_reach.ENV, raising=False)
-    assert hairpin_reach.enabled() is False
-    monkeypatch.setenv(hairpin_reach.ENV, "1")
     assert hairpin_reach.enabled() is True
+    for off in ("0", "false", "no", "off"):
+        monkeypatch.setenv(hairpin_reach.ENV, off)
+        assert hairpin_reach.enabled() is False
 
 
 def test_a_barline_through_the_hairpin_hides_it_off_and_not_on():
@@ -153,7 +154,7 @@ def _owner_case(hairpin_box, monkeypatch, on):
     if on:
         monkeypatch.setenv(hairpin_reach.ENV, "1")
     else:
-        monkeypatch.delenv(hairpin_reach.ENV, raising=False)
+        monkeypatch.setenv(hairpin_reach.ENV, "0")
     case = T.TestHairpinSeparates()
     log = case._log_with_head_and_lines(head_y=150.0)
     log.observe(R.glyph(T.UPPER.page, T.UPPER.system, T.UPPER.staff, 3, 0), Q.WEDGE_BOX, "diminuendo",

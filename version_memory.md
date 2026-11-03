@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-02 -- 2.251 step 2 landed: OMR_CLEF_CARRY default ON (Sean 'Land now')
+
+- `clef_pagewide.carry_enabled()` flips to default ON (explicit 0/false/no/off disables); test renamed `test_default_on_carry_on`. No mechanism changed; lane-2.251-carry merged with main.
+- Gate (fresh `--through gather`, PAGEWIDE=1 both arms, CARRY 0 vs 1; Litolff 2,4 / Brahms 4,5): ORDER-VIOLATION Litolff 0.45 -> 0.45, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM 0.99 -> 1.03 / 0.70 -> 0.70; clef/key/meter single-owner 2.3 -> 2.4 / 1.7 -> 1.7.
+- Evidence: Litolff print witness right 148->365, wrong 267->13, carry-caused right->wrong 0 on real notes; Brahms pp.4-5 right->wrong 0; judged right->wrong 0.
+- Open: see ROADMAP 2.251.
+
 ## 2026-11-02 -- day manager: 2.251 step 1 landed, carry r1 built and tiled, carry r2 in flight
 
 - Sean's 2.251 r2 tiles: 12/12 right (4c3350889). Sean "Land and get the pitch work right": step 1 landed ON (9db2c7495, entry below); a separate Opus lane took the carry.
@@ -6622,3 +6629,12 @@ STAGED GATHER/EVALUATE/EXPORT, flag `OMR_FARHEAD_UNREAD_GUESSED` (deny-list, def
 
 ## 2026-11-02 -- ROADMAP 2.252 split landed ON: a tall hollow head box is read for its heads by their holes
 STAGED GATHER/ADJUDICATE, flag `OMR_TALL_HEAD_SPLIT` (deny-list, default ON; explicit 0/false/no/off disables). Dyads of half notes boxed as ONE tall head are read into their heads. Sean's tiles: split right 9/9. Gate (2 pages per plate, re-gather OFF vs ON, `out/lane-report/2.252-land` removed): Litolff notes +5, ties +6, pitches ~2, blue +2; Brahms accidentals +1, pitches ~1, blue +1; judged right->wrong 0, unwritten->wrong 0. Fast tier 9,731 passed (the surya margin-crop OCR test fails under load, passes alone). Round 2 (missing ties, 9 of 28 tie ends written) still open.
+
+## 2026-11-02 -- ROADMAP 2.255 r2 landed ON: the far-head ledger READ (outline rows before the walk, stacked window, first ledger against the system's own pitch)
+STAGED GATHER, flag `OMR_LEDGER_READ` (deny-list, default ON; explicit 0/false/no/off disables). `ledger_grid.local_gap_max` / `count_ledgers_between(gap_max=)` / `FarHeadPage.read`. Sean's r2 tiles: ON 11/12 right vs OFF 6/12, right->wrong 0. Landing re-measure (2 pages per plate, record slices re-read OFF vs ON): exported file 8 Litolff hosts differ (7 corrected pitch or lose blue, 1 lost `10/1/2/9/7` read by the neighbour staff), 0 Brahms; Brahms refutations 219 -> 219. Fast tier 9741 passed.
+
+## 2026-11-02 -- ROADMAP 2.252 r2 landed ON: ties on a staff line kept, a dyad's tie joins the member on the arc's side
+STAGED GATHER `OMR_ARC_LINE_THICKNESS` (`gather.arc_ink_shape`: a line inside an arc box is erased to the staff's measured thickness +1 px, so a tie lying on a line is no longer erased with it) and STAGED ADJUDICATE `OMR_TIE_PAIR_ARC_SIDE` (`ownership._pair_on_the_arcs_side`: arc above joins the top pair, below the bottom; reason `paired_by_arc_side`), both deny-list default ON (explicit 0/false/no/off disables). Sean's r2 tiles: tie ends 20 of 35 written, 0 wrong. Gate (2 pages per plate, lane_report --from gather --cell-map master, OFF vs ON): Litolff p2-3 ties +26 slurs -4, Brahms p0,p5 ties +10 words +1 (OCR noise); red bars 0->0 / 42->42; notes not written 387->387 / 757->757; judged right->wrong 0, unwritten->wrong 0. Fast tier 9743 passed, 0 failed. Next: round 3 on the unison (lane-2.252-ties).
+
+## 2026-11-02 -- ROADMAP 2.254 landed ON: hairpin reach (wedge reader sees past barlines/stems/slurs; word claim leaves a hairpin; one-note wedge abstains)
+STAGED GATHER/ADJUDICATE, flag `OMR_HAIRPIN_REACH` (deny-list, default ON; 0/false/no/off disables), `staged/hairpin_reach.py`. Sean ruled "Land on as is" knowing Brahms p19 ORDER-VIOLATION 0.39->0.41 and that r3's judged right->wrong check matched 0 of his tiles by place (so 0 is unproven). r3 tiles: spans 7/7, words 5/5. See `benchmarks/hairpin-reach-2026-11/FINDINGS.md`.

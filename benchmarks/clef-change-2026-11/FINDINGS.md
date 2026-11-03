@@ -131,6 +131,42 @@ Litolff pages 2,4 and Brahms pages 4,5, `claim_order` / `claim_readout` on a fre
 
 Gate (no ORDER-VIOLATION rise; SPLIT-ACROSS-CLAIM under +0.3 points) passed; step 1 landed ON, carry stays OFF. The SPLIT rise is the new claims over C clefs the stroke map had already cut (SPLIT by owner clef_key_meter: Litolff 0.47 -> 0.65, Brahms 0.16 -> 0.25).
 
+## 2026-11-02: the carry, built (lane-2.251-carry; OMR_CLEF_CARRY still default OFF)
+
+**Cause.** The carry is only as good as recall of the RETURN clef. Step 1 claims C clefs by shape, but bass clefs only by a detector box plus dots. A missed return turns every head from it to the system's end wrong. **Process lesson:** before a carry, measure change recall AND return recall, and count the returns separately -- a carry multiplies whichever one is lower.
+
+**Count** (step 1's own functions re-run off-line on whole pages: cell-map staves, the gather's binary, the 20261031 / 20261029 night records' detector boxes; `scan_claims.py`, `recall.py`):
+- Litolff, 32 encoded changes: 28 claimed. All 13 C changes were claimed (bars 102 and 319 with kind unread). 5 of 19 F changes were missed: 38, 111, 115 (no box), Vc 346 (box refused, dots), Vc 411 (0.7 sp box). Of the 8 C changes whose return falls inside the system, 3 returns were missed (38, 111, 115). Two print changes the encoding lacks (p5 s0 bars 126 C, 129 F) were both claimed. No false claims; two cautionary clefs at a system's end (p5 s0 Vc, p9 s1 Fag).
+- Brahms, 6 bassoon systems on pp. 1, 3-5 (print-checked): 12 changes. C clefs: 5 of 6 claimed. F clefs: 1 of 6 claimed (box refused for dots: p1 s1 c4, p3 s1 c1, p4 s1 c6, p5 s1 c0; no box: p3 s0 c6). 3 of 4 in-system returns missed.
+
+**Built.**
+- (a) An F clef with no box (`clef_pagewide.f_dot_pairs` / `f_templates` / `f_nobox`; gather under OMR_CLEF_CARRY, so step 1 alone is unchanged). Two witnesses: a dot pair straddling line 4, read window-independently (long horizontal runs and long vertical strokes cleared), AND the page's own F body (a read F clef of the same page) laid where the dots put it. Score = cover - extra. READ at >= 0.70; a clef-shaped candidate at >= 0.50.
+  - Measured on Litolff pp. 1-16: every non-clef pair scores <= 0.61. Real ones: bar 38 0.73, Vc 411 0.77 (both read); Vc 346 0.69 and bar 115 0.68 (candidates). Bar 111 is not found (its dots are fused with heads).
+  - Brahms: nothing reaches 0.50 (thick lines; the changes are smaller than the header clef). A cut-off on one plate: Sean's tiles judge it.
+  - C-clef bowls cut by the lines pass as a dot pair, so no read or candidate may stand inside a claimed clef.
+- (b) The carry stops (rule 8). Every step-1 near-miss is filed `candidate` (C bar near-miss, refused clef-sized box, below-read F body, a `clef*` box >= 0.5 that is too small for a claim). A candidate after a change whose kind differs from the header's makes the heads after it unread (no pitch, red "clef?"). Where the header's kind is in force it changes nothing. `move_glyph` pitches a moved head from the clef in force too.
+- (c) The written `<clef>` stands at the change's bar, or the next bar when no head of that bar cites it. Every written clef is a READ claim, never a carried per-measure value. Mid-bar `<clef>` is NOT built.
+- Tried and reverted: governing from the clef's right edge. 12 heads right after a C clef went right->wrong, because a C claim's area runs into the heads it touches.
+
+**Print witness** (`clefwit.py`): the pitch the PRINT's clef gives each head's decided position, on the staves checked by hand. Heads after a clef inside the system, OFF -> ON:
+- Litolff frozen sample: right 149 -> 364, wrong 266 -> 22, unread 7 -> 36. Transitions: wrong->right 225, right->wrong 10, wrong->unread 29.
+  - 9 of the 10 right->wrong are bar 111: a missed return with no witness, F body and dots fused with heads.
+  - The 10th is a 0.42 head box on the bar-38 clef's own ink.
+- Brahms pp. 4-5: right 25 -> 88, wrong 82 -> 5, unread 0 -> 14. Transitions: wrong->right 77, right->wrong 0, right->unread 14 (bar 76's refused F box stops the carry: (b) working).
+
+**Three measures** (lane_report, `--flag OMR_CLEF_CARRY`, PAGEWIDE on in both arms):
+- Litolff frozen sample: notes -16, pitches ~186, words +12, clefs +19 -3. Judged right->wrong 0, unwritten->wrong 0 (270 tiles).
+- Brahms 4, 5 (a subset; a Brahms page gather takes ~30 min per arm): notes -14, pitches ~55, clefs +6, flags -10, articulations -9 (carried on the unread notes). Judged right->wrong 0, unwritten->wrong 0 (175 tiles).
+
+**Tiles:** `out/print/2.251-carry-tiles/` (seed 22513). 9 re-pitched heads and 3 clef tiles (Vc 411 and bar 38 read; Vc 346 candidate).
+
+**Not done:**
+- Bar 111.
+- Brahms bass clefs (no read; candidates only).
+- Mid-bar `<clef>`.
+- A false head on clef ink is still pitched (an ink-claim question).
+- Brahms frozen sample not run.
+
 ## 2026-11-02 -- Sean's carry tile answers (2.251 step 2, `answers-r3-carry.json`)
 
 The carry round itself (OMR_CLEF_CARRY, seed 22513) is on branch `lane-2.251-carry` head 101e92cf7; its FINDINGS round lives on that branch until it lands. Sean's 12 blind tiles (heads the carry re-pitched, one per bar, plus no-box F clef reads), scored against the key:
@@ -141,6 +177,34 @@ The carry round itself (OMR_CLEF_CARRY, seed 22513) is on branch `lane-2.251-car
 - **Carry-caused right->wrong on these tiles: 0.**
 
 Open: (1) bar 111, 9 of 10 Litolff heads right->wrong in the lane's pitch witness, not yet explained; (2) tile 11 cut-off (0.69 vs 0.70); (3) tile 12 far-head position.
+
+## 2026-11-02: carry round 2 (Sean: "fix bar 111 so the carry is never worse"; lane-2.251-carry, OMR_CLEF_CARRY still OFF)
+
+**Cause, bar 111.** The return bass clef's dots touch the heads beside them, so no dot pair is seen. The detector drew only heads, flags and a 5-sp-wide 0.07 "head" on it, so nothing stopped the tenor carry.
+
+**Decision: a candidate, not READ.** The page's own F body still matches it, slid along the staff with no dots (`f_body_scan`), at 0.73. A body alone is one witness. So it becomes a candidate that stops the carry: the heads go red "clef?", and the clef is not read.
+- Measured on Litolff pp. 1-16, on staves holding a claimed change, right of it: every place with no clef scores <= 0.55. The real F clefs score 0.68-1.0.
+- Candidate cut 0.60. The candidate stands a space left of the matched body, because a head box on the clef's own blob stood left of the match.
+
+**Vc bar 346** (Sean's carry tile 11: a real F clef, body 0.69).
+- READ stays at 0.70. Every non-clef dot pair on Litolff scored <= 0.61, measured on one plate, so it narrows and does not decide.
+- New: a STRONG candidate (dot pair AND body >= 0.65, below READ) stops the clef in force, the header's included, unless that clef is an F clef. The Vc heads after bar 346 go red instead of being pitched tenor. Not on the frozen sample (p12).
+
+**The bar-38 false head.** A 0.42 head box sat on the clef's own blob, and a "stem" was drawn on the clef's curve. The no-box F claim now spans the clef's height (top line - 0.3 sp to + 3.6 sp) and a space left of the body. The consult now refuses that head (`notehead_is_not_a_notehead`, `claimed_by:clef`), so it is not written. Its pitch verdict still stands: `restate_pitch` pitches refused heads too. That rule predates this lane and is not changed here.
+
+**Sean's tile 12** (p11 s1 Vc cell 11). A far head one step high (A4 written B4): a position reading, owned by page-facts (a far head is placed by its ledger lines only). Not the carry; not fixed here.
+
+**Print witness** (heads after a clef inside the system, OFF -> ON):
+- Litolff frozen sample: right 149 -> 364, wrong 266 -> 13, unread 7 -> 45. Transitions: wrong->right 225, right->unread 9 (bar 111, now red), right->wrong 1. The 1 is the bar-38 clef-ink head: refused as a note, so not written, but it still carries a pitch.
+- Brahms pp. 4-5: right->wrong 0, wrong->right 77, right->unread 14 (bar 76).
+
+**Three measures** (`lane_report --flag OMR_CLEF_CARRY`, PAGEWIDE on by default):
+- Litolff frozen sample, round-2 tree (before the bar-38 claim height and the candidate shift): notes -26, beams -8, pitches ~176, words +15, clefs +19 -3. Judged right->wrong 0, unwritten->wrong 0 (270 tiles).
+- The final-tree run (`2.251-carry-r3-litolff`) also reports judged right->wrong 0 and unwritten->wrong 0. Its file line is NOT a measure of the carry: OCR crops timed out under machine load (3 in OFF, 1 in ON). Staff names moved between arms, and its OFF export differs from the round-2 OFF on 9 parts with identical carry-off code. Re-run it when the box is quiet.
+- Brahms pp. 4-5: notes -14, pitches ~57, clefs +6, flags -10, articulations -9. Judged right->wrong 0, unwritten->wrong 0 (175 tiles).
+- Brahms frozen sample: NOT run. At ~7 min a page an arm, it would take about 2 h.
+
+**Tiles:** `out/print/2.251-carry-tiles-r2/` (seed 22514). The bar-111 mark, 3 heads after it, 2 Vc heads after bar 346; all written red.
 
 ## 2026-11-02 -- Sean's carry round-2 tile answers (2.251 step 2, `answers-r4-carry.json`)
 
@@ -160,3 +224,20 @@ Tile `out/print/2.251-carry-bar38/` (lane branch `lane-2.251-carry`, Litolff pri
 
 - **There is no note in the box.** It is F-clef ink fused with a quarter rest, so the witness's 1 right->wrong is not a real note. Real carry-caused right->wrong on Litolff: **0**.
 - **New open item, not the carry's:** the quarter rest fused with the clef is read as a head in both arms -- the rest is lost and a false head stands in its place. An ink-claim question (Litolff MERGES).
+
+## 2026-11-02 -- 2.251 step 2 LANDED: OMR_CLEF_CARRY default ON (Sean "Land now")
+
+Landing gate (the carry also GATHERS -- the no-box F claim -- so a fresh `--through gather`, `OMR_CLEF_PAGEWIDE=1` in both arms, `OMR_CLEF_CARRY` 0 vs 1, master cell map, `OMR_SURYA_KEEP_ALIVE=0`; Litolff pages 2,4, Brahms pages 4,5; `claim_order` / `claim_readout` on each arm's gathered record; tree = lane-2.251-carry dab238375 + main):
+
+| plate | clef/key/meter single-owner ink | ORDER-VIOLATION | SPLIT-ACROSS-CLAIM |
+|---|---|---|---|
+| Litolff OFF -> ON | 2.3% -> 2.4% | 0.45% -> 0.45% | 0.99% -> 1.03% |
+| Brahms OFF -> ON | 1.7% -> 1.7% | 0.41% -> 0.41% | 0.70% -> 0.70% |
+
+Gate (no ORDER-VIOLATION rise; SPLIT rise under 0.3 points) passed. The Litolff OFF arm reproduces step 1's ON line (0.45 / 0.99). Brahms ON equals OFF to the printed digits: the carry's no-box F reader finds nothing at >= 0.50 on Brahms (thick lines), so it adds no claims there.
+
+Evidence: Litolff print witness right 148 -> 365, wrong 267 -> 13; carry-caused right->wrong 0 on real notes (the one box was F-clef ink plus a quarter rest -- Sean, 4f14003c4). Brahms pp. 4-5 right->wrong 0. Judged right->wrong 0, unwritten->wrong 0.
+
+Clean ON-arm file line (Litolff frozen sample, lane tree dab238375, `out/lane-report/2.251-carry-r5-litolff`; OFF byte-identical to r4/r2, 0 OCR timeouts in the ON arm): notes -26, accidentals -1, flags -2, beams -8, slurs -4, pitches ~176, blue +10/-33, words +15 (the red "clef?" marks), clefs +19/-3, keys +19/-3; notes not written 2505 -> 2528. Judged right->wrong 0, right->gone 0, unwritten->wrong 0 (270 tiles). It equals round 2's line exactly, so the r3/r4 differences were OCR load.
+
+Open: refused heads are still pitched; Brahms bass clefs are only ever candidates; no mid-bar `<clef>`; the Brahms frozen sample was not run; the bar-38 quarter rest fused with the clef is read as a head in both arms (an ink-claim question); the bar-111 and bar-346 candidates are real F clefs (Sean) and are not promoted.

@@ -1,5 +1,29 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2026-11-02 (2.252 round 2): the missing ties on split dyads -- flags `OMR_ARC_LINE_THICKNESS` + `OMR_TIE_PAIR_ARC_SIDE` (both default OFF), branch `lane-2.252-ties`
+
+**Cause, per missing tie end (STAGED; the 19 of 28 ends Sean reads on his 8 tied dyads that r1 did not write; traced on the r1 ON records, Litolff p2-3, p10-11).** Every printed tie was there; most were lost before a kind was ever asked:
+| cause (stage) | ends | tiles |
+|---|---|---|
+| GATHER `arc_ink_shape` erased a thick tie lying ON a staff line with the line, so the box read "no curve" and was refused `ink_is_a_staff_line` | 6 | 2, 3 (x2), 5, 6/7 (x2: one arc, both dyads) |
+| ADJUDICATE `adjudicate_tie_pair` narrowed `more_than_one_pair`: the binder declines a curve 2.166 joined at a note (two consecutive ties), and the OFF flank search admits one same-position pair per dyad member | 4 | 3, 7, 10, 12 |
+| GATHER: the PARTNER head (the other dyad's lower note) was never boxed, so the arc binds to the upper note (different pitch) or to nothing | 4 | 2, 6, 8, 12 |
+| head STEP misread from its box (stop head box cut short): binder `step_conflict` or EXPORT `tie_pitch_contradiction` | 3 | 2, 5, 6 |
+| EXPORT `tie_spelling_differs` (Eb5 -> E5 across a barline; page-facts says it must not refuse) | 1 | 12 |
+| arc never boxed by the detector | 1 | 10 (and 2, with its head) |
+
+The fill-grown erase: a line's stroke grew up to 0.4 sp while a row of the box was >= 50% ink; a flat Litolff tie beside the line fills those rows, so it went with the line (`2/1/3/12/3`: rows 2553-2557 53-68% ink, all erased). Of the 96 `ink_is_a_staff_line` refusals on p2-3, 11 flip with the fix and all 11 are ties on my crop look; a seeded look at 11 of the rest: 8 staff lines, 3 ties whose detector box stops at the line above the curve (the measure reads only inside the box) -- the next cause, not built.
+
+**Process lesson.** The refusal rule was right; its MEASUREMENT erased the evidence. A control that can fail had been run (a box that is only a line reads 0) but none where it should pass on THIS plate's ties: a thick tie on a line. A shape measurement after an erasure needs a positive control on the plate's own heaviest marks. Second: a narrowing (`more_than_one_pair`) was exported as a silent gap for weeks; the convention that decides it (Sean 2.75, arc above = top note) already existed.
+
+**Built.** (1) `gather.arc_ink_shape` (GATHER, `OMR_ARC_LINE_THICKNESS`): each line's stroke is found on the page rows around the box and erased only to the staff's measured line thickness (+1 px), never grown by the box's fill. (2) `ownership.adjudicate_tie_pair` (ADJUDICATE, `OMR_TIE_PAIR_ARC_SIDE`): of one same-position pair per chord member, the pair on the arc's side (above -> top, below -> bottom; arc wholly to one side, one pair at that extreme) -- reason `paired_by_arc_side`; and in `_page_binding`, a detector-`tie` box made a slur only through a stem-tip end gets no kind (`tie_box_end_only_at_a_stem_tip` -> `arc_ends_unread`): its own head is unread (tile 2's lower tie became a slur G5->E5 in the first build -- caught on Sean's r1 answers, fixed). Name the rule: kind = page-facts s1 (tie: two adjacent notes, same pitch) and 2.75 (arc side); end pitch untouched (2.250 binder). Tests: `test_arc_line_thickness_2_252.py` (5, the OFF fault reproduced), `test_tie_pair_arc_side_2_252.py` (6). Fast tier 9743 passed, 0 failed.
+
+**The three measures** (`lane_report --from gather --cell-map master`, split ON in both arms, 2-page subsets):
+- Litolff p2-3: `ties +26 | slurs -4`; red bars 0 -> 0; notes not written 387 -> 387. Litolff p10-11: `ties +8`; 420 -> 420. Brahms p0, p5: `ties +10` (all p5), red bars 42 -> 42, notes not written 757 -> 757; no Brahms place in the tiles (not looked at).
+- Judged (index): right->wrong 0, unwritten->wrong 0 on all three. Against `answers-2.252-r1.json`: tie ends written 9 -> 16 of 28 (tiles 3 +1, 5 +1, 6 +1, 7 +2, 10 +1, 12 +1); no slur written where he reads a tie; tile 4 still slurs, no tie; controls 1, 9, 11 unchanged. The 4 slurs lost: 2 are a lower-dyad tie written as a slur (p2 `2/1/0/12` -> `13`), 2 a duplicate slur stop on tile 4's note (one slur still written there).
+- 12 blind tiles `out/print/2.252-r2-tiles/` (key `out/print/2.252-r2-tiles-key.json`): Sean's 8 tied dyads re-shown with what is now written + 4 fresh changed places (seeded). Question: notes in the box, and is each tied to the note before, after, both, or neither?
+- Still missing (12 ends): head steps read from a cut-short box (4: tiles 2, 3, 5, 6 upper-next; big item 1 -- the r1 tile-3 upper tie now binds but EXPORT refuses Bb3->C4), partner heads never boxed (4), arcs never boxed (2), a staff-line refusal of a box that stops above the curve (1, tile 3), the spelling carry (1, tile 12).
+
 ## 2026-11-02 (2.252): ties written as slurs -- two causes, both a HEAD read from its detector box; flag `OMR_TALL_HEAD_SPLIT` (default OFF), branch `lane-2.252-ties`
 
 **Cause, traced per stage (re-adjudicated 20261031-night, Litolff p1-3,10,11, `out/2.252/c_main.json`).** No stage after GATHER turned a tie into a slur on its own; the kind rule (page-facts s1) applied to WRONG end pitches each time.

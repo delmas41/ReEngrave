@@ -1,0 +1,22 @@
+{
+  "lane": "2.254 round 3 (OMR_HAIRPIN_REACH, branch lane-2.254-hairpin-reach 31ec86c34)",
+  "date": "2026-11-02",
+  "tiles": "out/print/2.254-r3-tiles/ (key out/print/2.254-r3-tiles-key.json, on the lane branch)",
+  "answers": {
+    "1":  {"sean": "hairpin from a dotted quarter to the next quarter", "ours": "dotted quarter -> quarter, bar 14", "match": true},
+    "2":  {"sean": "hairpin from a quarter to an eighth", "ours": "quarter -> eighth, bar 15", "match": true},
+    "3":  {"sean": "hairpin the length of a dotted quarter", "ours": "under one dotted-quarter chord", "match": true},
+    "4":  {"sean": "the word pesante; the box misses the p", "ours": "pesante (whole word written)", "match": true, "tile_fault": "box from the word's ink box leaves out the p"},
+    "5":  {"sean": "hairpin from an eighth through the next measure", "ours": "eighth bar 46 -> last eighth bar 47", "match": true},
+    "6":  {"sean": "dim", "ours": "dim", "match": true},
+    "7":  {"sean": "hairpin from a dotted quarter across the barline to a quarter", "ours": "quarter bar 34 -> quarter bar 35", "match": "span yes; start note written as a quarter, Sean reads a dotted quarter (the same in OFF: an old dot miss, not this flag)"},
+    "8":  {"sean": "dim", "ours": "dim.", "match": true},
+    "9":  {"sean": "pizzicato; the box misses the p", "ours": "pizz. (whole word written)", "match": true, "tile_fault": "box leaves out the p"},
+    "10": {"sean": "hairpin from a dotted quarter to a quarter", "ours": "dotted quarter bar 28 -> quarter bar 29", "match": true},
+    "11": {"sean": "dim; the box is slightly off", "ours": "dim.", "match": true, "tile_fault": "box slightly off"},
+    "12": {"sean": "hairpin from a dotted quarter to a quarter", "ours": "dotted quarter bar 28 -> quarter bar 29", "match": true}
+  },
+  "score": "hairpin spans 7/7 match (1 control + 6); words 5/5 read right; 0 wrong",
+  "sean_note": "where a word begins with a p, the box drops it, as if the p were taken for a dynamic letter -- is that the pipeline or only the test?",
+  "manager_check": "the exported file writes the whole word (pesante, pizz.) and no separate dynamic p at 19/1/11/3 or 8/1/6/8; only the word's ink box leaves the p out. OFF had written the p of pesante at 19/0/10/9-10 as a dynamic (mp/dyn.), which ON removes."
+}

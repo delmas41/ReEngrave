@@ -70,11 +70,15 @@ class CBarTwins(unittest.TestCase):
 
 
 class Flags(unittest.TestCase):
-    def test_default_on_carry_off(self):
+    def test_default_on_carry_on(self):
         old = os.environ.pop(CP.ENV, None), os.environ.pop(CP.ENV_CARRY, None)
         try:
             self.assertTrue(CP.enabled())
-            self.assertFalse(CP.carry_enabled())
+            self.assertTrue(CP.carry_enabled())
+            for v in ("0", "false", "no", "off"):
+                os.environ[CP.ENV_CARRY] = v
+                self.assertFalse(CP.carry_enabled())
+            os.environ.pop(CP.ENV_CARRY)
             for v in ("0", "false", "no", "off"):
                 os.environ[CP.ENV] = v
                 self.assertFalse(CP.enabled())

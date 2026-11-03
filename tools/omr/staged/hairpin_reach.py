@@ -32,8 +32,8 @@ ENV = "OMR_HAIRPIN_REACH"
 
 
 def enabled() -> bool:
-    """`OMR_HAIRPIN_REACH`, default OFF (ROADMAP 2.254); 1/true/yes/on enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_HAIRPIN_REACH`, default ON (ROADMAP 2.254, Sean 2026-11-02 "Land on as is"); 0/false/no/off disables."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: ADJUDICATE abstains a one-note wedge only when it is no longer than this: an accent is a printed glyph of one size (Brahms p5: the

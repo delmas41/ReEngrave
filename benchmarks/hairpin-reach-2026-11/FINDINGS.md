@@ -60,3 +60,7 @@ Raw reader counts without detector blanking: Brahms p19 0->27, p25 8->25, p5 0->
 - READ words OFF -> ON, matched by place: Brahms p8 26 -> 26 (final tree; lost 0; both dim. read; 'pp cresc. molto' read with ink_boxes), p19 7 -> 12 (lost 0; gained pesante x3, più f, 'piu a'; the line retry read 2 of them), p25 38 -> 38 (lost 0); Litolff p9 15 -> 15 (lost 0), p16 0 -> 0. Text changes between arms are OCR draws ('PP' -> 'pp', 'dim.' -> 'dim').
 
 **Tiles:** `out/print/2.254-r3-tiles/` (12 + sheet.png; key `out/print/2.254-r3-tiles-key.json`; spec `tiles-r3-spec.json`; `tiles_r3.py`): 5 hairpin spans whose start or stop note is new ON, tile 9's hairpin re-cut with the whole start region, 1 control hairpin, the 2 p8 dim. places, 2 words gained by the line retry (pizz. p8, pesante p19), 1 control word. The span crops hold the hairpin box plus the start and stop notes' head boxes, with 2.5 sp to each side and 4 sp above the staff.
+
+## Landed ON (2026-11-02)
+
+Sean: "Land on as is." `OMR_HAIRPIN_REACH` is now a deny-list flag, default ON. Landed knowing (1) Brahms p19 ORDER-VIOLATION 0.39 -> 0.41 (a gained 'pesante' box reaching the accidentals, inferred) and (2) round 3's judged check found 0 of Sean's tiles by place (fresh gathers re-number the marks), so its right->wrong 0 is unproven. r3 tiles: spans 7/7, words 5/5 (`answers-r3.json`).
