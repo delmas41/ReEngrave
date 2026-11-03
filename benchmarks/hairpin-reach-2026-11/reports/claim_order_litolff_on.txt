@@ -1,0 +1,34 @@
+claim_order: out/2.254/slices/litolff.on  pages [9, 16]  master cm-54ccb4729528  env {}
+  page 9: 901443 ink px, 300 cells ok / 0 mismatched (18s)
+  page 16: 1131172 ink px, 341 cells ok / 0 mismatched (18s)
+claim_order litolff.on pages [9, 16] master cm-54ccb4729528
+TOTAL: 2032615 ink px (staff lines 1582363 left out)
+  ORDER-OK 3.46%   EARLIER-UNREAD 82.54%   ORDER-VIOLATION 0.10%   OPEN 1.04%   SPLIT-ACROSS-CLAIM 0.55%   NO-READER 12.32%
+  ORDER-VIOLATION by pair: stem_beam_flag->accidental 0.04%, stem_beam_flag->rest 0.02%, head->rest 0.02%, clef_key_meter->arc_hairpin 0.01%, word_dynamic->rest 0.00%, clef_key_meter->accidental 0.00%, stem_beam_flag->dot_mark 0.00%, barline_bracket->stem_beam_flag 0.00%
+  OPEN by pair: barline_bracket|- 0.59%, rest|dot_mark 0.15%, clef_key_meter|rest 0.11%, clef_key_meter|accidental 0.04%, whole_rest|head 0.03%, head|rest 0.03%, accidental|rest 0.02%, accidental|dot_mark 0.02%
+  SPLIT-ACROSS-CLAIM by owner: clef_key_meter 0.37%, barline_bracket 0.16%, none 0.02%, head 0.00%, stem_beam_flag 0.00%
+  EARLIER-UNREAD by owner: barline_bracket 26.35%, stem_beam_flag 21.19%, head 16.87%, clef_key_meter 4.40%, rest 3.84%, word_dynamic 3.46%, whole_rest 2.35%, arc_hairpin 1.87%
+  top ORDER-VIOLATION pairs (share of ink; code_agrees False = the code's own tier order also differs from the plan):
+    stem_beam_flag->accidental               713 px 0.04%  code_agrees=False
+    stem_beam_flag->rest                     492 px 0.02%  code_agrees=False
+    head->rest                               370 px 0.02%  code_agrees=True
+    clef_key_meter->arc_hairpin              147 px 0.01%  code_agrees=True
+    word_dynamic->rest                        92 px 0.00%  code_agrees=True
+    clef_key_meter->accidental                57 px 0.00%  code_agrees=True
+    stem_beam_flag->dot_mark                  46 px 0.00%  code_agrees=False
+    barline_bracket->stem_beam_flag           40 px 0.00%  code_agrees=True
+    head->dot_mark                            28 px 0.00%  code_agrees=True
+    word_dynamic->dot_mark                    25 px 0.00%  code_agrees=False
+page 9: 901443 ink px (staff lines 820572 left out)
+  ORDER-OK 3.60%   EARLIER-UNREAD 83.89%   ORDER-VIOLATION 0.15%   OPEN 1.08%   SPLIT-ACROSS-CLAIM 0.49%   NO-READER 10.79%
+  ORDER-VIOLATION by pair: stem_beam_flag->accidental 0.08%, head->rest 0.02%, stem_beam_flag->rest 0.02%, clef_key_meter->arc_hairpin 0.01%, word_dynamic->rest 0.01%, clef_key_meter->accidental 0.01%, barline_bracket->clef_key_meter 0.00%, barline_bracket->arc_hairpin 0.00%
+  OPEN by pair: barline_bracket|- 0.75%, rest|dot_mark 0.13%, clef_key_meter|rest 0.05%, clef_key_meter|accidental 0.04%, head|rest 0.03%, whole_rest|head 0.03%, word_dynamic|- 0.02%, arc_hairpin|head 0.02%
+  SPLIT-ACROSS-CLAIM by owner: clef_key_meter 0.26%, barline_bracket 0.22%, none 0.01%
+  EARLIER-UNREAD by owner: barline_bracket 27.93%, stem_beam_flag 20.83%, head 13.66%, clef_key_meter 5.21%, word_dynamic 4.41%, rest 3.58%, whole_rest 3.35%, arc_hairpin 2.39%
+page 16: 1131172 ink px (staff lines 761791 left out)
+  ORDER-OK 3.35%   EARLIER-UNREAD 81.46%   ORDER-VIOLATION 0.06%   OPEN 1.00%   SPLIT-ACROSS-CLAIM 0.60%   NO-READER 13.53%
+  ORDER-VIOLATION by pair: stem_beam_flag->rest 0.03%, head->rest 0.01%, stem_beam_flag->dot_mark 0.00%, clef_key_meter->arc_hairpin 0.00%, barline_bracket->stem_beam_flag 0.00%, head->dot_mark 0.00%, word_dynamic->dot_mark 0.00%, clef_key_meter->dot_mark 0.00%
+  OPEN by pair: barline_bracket|- 0.46%, rest|dot_mark 0.17%, clef_key_meter|rest 0.16%, clef_key_meter|accidental 0.04%, accidental|rest 0.04%, accidental|dot_mark 0.03%, whole_rest|head 0.02%, head|rest 0.02%
+  SPLIT-ACROSS-CLAIM by owner: clef_key_meter 0.46%, barline_bracket 0.11%, none 0.02%, head 0.00%, stem_beam_flag 0.00%
+  EARLIER-UNREAD by owner: barline_bracket 25.08%, stem_beam_flag 21.48%, head 19.42%, rest 4.05%, clef_key_meter 3.76%, word_dynamic 2.71%, whole_rest 1.55%, arc_hairpin 1.45%
+  cells re-cut and matched stroke-for-stroke to the record: {'cells_ok': 641, 'strokes_ok': 10662}

@@ -599,12 +599,16 @@ def f_body_shape(ink: np.ndarray, lines: Sequence[float], sp: float, pair: Dict[
 #: the no-box F clef is READ (kind bass, claimed) at this body score (cover - extra) and above. MEASURED on Litolff pp. 1-16 (1472 dot
 #: pairs; every non-clef pair <= 0.61, the 2.251 count's no-box bass clefs 0.83 (bar 38), 0.75 (Vc bar 411)); Brahms pp. 1,3,4,5 every
 #: non-clef pair <= 0.42. A CUT-OFF on two plates (CLAUDE §4: a measurement, not a convention) -- Sean's tiles judge it.
-F_TEMPLATE_READ_SCORE = 0.70
+#: 2026-11-02 (Sean "Do it"): lowered 0.70 -> 0.65. Litolff non-clef dots+body max 0.61, real-clef min 0.68; the only new reads are Vc bar
+#: 346 (0.69, Sean confirmed) and bar 115 (0.68); Brahms nothing reaches 0.50. Body-only (`f_body_scan`) stays a candidate.
+F_TEMPLATE_READ_SCORE = 0.65
 #: ... and at this score and above (but below READ) it is a CLEF-SHAPED CANDIDATE: claimed nothing, but a carried clef stops there
 #: (Litolff bars 115 0.66 and 111 0.55: real bass clefs with a head / stem through the body)
 F_TEMPLATE_CANDIDATE_SCORE = 0.50
 #: ... and at this score (dot pair AND body, below READ) a STRONG candidate: it stops the header's clef too, unless that is an F clef.
-#: Round 2: Sean's carry tile 11 (Vc bar 346, 0.69) is a real F clef; every non-clef dot pair on Litolff pp. 1-16 scored <= 0.61
+#: Round 2: Sean's carry tile 11 (Vc bar 346, 0.69) is a real F clef; every non-clef dot pair on Litolff pp. 1-16 scored <= 0.61.
+#: Since READ was lowered to 0.65 (2026-11-02) this tier is EMPTY at these cut-offs (STRONG == READ, so a pair at >= STRONG is already
+#: READ and `strong` is never set); kept so a later change to READ revives it without a rewrite
 F_TEMPLATE_STRONG_SCORE = 0.65
 #: the F body slid with NO dot witness (`f_body_scan`) makes a candidate at this score (one witness: a candidate, never READ).
 #: MEASURED on Litolff pp. 1-16, the staves holding a claimed change, right of it: every place with no clef <= 0.55; the real F clefs

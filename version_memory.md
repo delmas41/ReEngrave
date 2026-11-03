@@ -13,6 +13,14 @@ measurement; this file is the WHEN and WHAT of each commit.
 
 No code. Sean: "I don't think we should land the work that it has done, but I'm not ready to give up on it", then "Park it. Document well." Branch lane-2.251-dots 6d1708b40 (flag OMR_CLEF_DOT_FUSED, dots_scan.py, dots_table.py) and test-2.251-f-cutoff stay unlanded. Cause: the stem clear tests one pixel column's black run only, and at bar 111 the dots fuse with the staff lines, so line+dot+line reads as a stem. Resumes under ROADMAP 2.223. FINDINGS.md has the full entry, an untested body-scale hypothesis and the process lesson.
 
+## 2026-11-02 -- 2.251: F dots+body READ cut-off 0.70 -> 0.65 (Sean 'Do it')
+
+- `clef_pagewide.F_TEMPLATE_READ_SCORE` 0.70 -> 0.65 (STAGED no-box F reader `f_nobox`, needs dots AND body). Body-only `f_body_scan` stays a candidate (0.60). The STRONG tier (`F_TEMPLATE_STRONG_SCORE` 0.65, read by `_strong_f`/`any_strong` in `consequences`/`export`, set in `gather`) is now empty: STRONG == READ, so nothing lands between. Constant kept, comment says so; no test asserted the old 0.70.
+- Gate (fresh `--through gather`, PAGEWIDE+CARRY ON, KEEP_ALIVE=0; Litolff 2,4,12 / Brahms 4,5; main 0.70 vs 0.65): ORDER-VIOLATION Litolff 0.43 -> 0.43, Brahms 0.41 -> 0.41; SPLIT-ACROSS-CLAIM 0.87 -> 0.87 / 0.70 -> 0.70; clef/key/meter single-owner 2.4 -> 2.4 / 1.7 -> 1.7. The Litolff records differ as intended (Vc bar 346: STRONG candidate -> READ).
+- Three measures (lane_report, scratch-only env override, Litolff 4,12 / Brahms 4,5, not the frozen sample): Litolff `words -6 | clefs +1`; Brahms `accidentals +1 | pitches ~1 | blue +1` (cut-off cannot reach Brahms: load noise). Judged right->wrong 0, unwritten->wrong 0.
+- Tests: fast tier 9759 passed, 12 skipped, 2 xfailed; test_clef*2_251* 16 passed, 8 skipped (library-dependent).
+- Open: dot-finder lane in flight (dots touching a head/stem shredded by the stroke-clearing step, bar 111).
+
 ## 2026-11-02 -- 2.251 step 2 landed: OMR_CLEF_CARRY default ON (Sean 'Land now')
 
 - `clef_pagewide.carry_enabled()` flips to default ON (explicit 0/false/no/off disables); test renamed `test_default_on_carry_on`. No mechanism changed; lane-2.251-carry merged with main.
@@ -6639,3 +6647,6 @@ STAGED GATHER, flag `OMR_LEDGER_READ` (deny-list, default ON; explicit 0/false/n
 
 ## 2026-11-02 -- ROADMAP 2.252 r2 landed ON: ties on a staff line kept, a dyad's tie joins the member on the arc's side
 STAGED GATHER `OMR_ARC_LINE_THICKNESS` (`gather.arc_ink_shape`: a line inside an arc box is erased to the staff's measured thickness +1 px, so a tie lying on a line is no longer erased with it) and STAGED ADJUDICATE `OMR_TIE_PAIR_ARC_SIDE` (`ownership._pair_on_the_arcs_side`: arc above joins the top pair, below the bottom; reason `paired_by_arc_side`), both deny-list default ON (explicit 0/false/no/off disables). Sean's r2 tiles: tie ends 20 of 35 written, 0 wrong. Gate (2 pages per plate, lane_report --from gather --cell-map master, OFF vs ON): Litolff p2-3 ties +26 slurs -4, Brahms p0,p5 ties +10 words +1 (OCR noise); red bars 0->0 / 42->42; notes not written 387->387 / 757->757; judged right->wrong 0, unwritten->wrong 0. Fast tier 9743 passed, 0 failed. Next: round 3 on the unison (lane-2.252-ties).
+
+## 2026-11-02 -- ROADMAP 2.254 landed ON: hairpin reach (wedge reader sees past barlines/stems/slurs; word claim leaves a hairpin; one-note wedge abstains)
+STAGED GATHER/ADJUDICATE, flag `OMR_HAIRPIN_REACH` (deny-list, default ON; 0/false/no/off disables), `staged/hairpin_reach.py`. Sean ruled "Land on as is" knowing Brahms p19 ORDER-VIOLATION 0.39->0.41 and that r3's judged right->wrong check matched 0 of his tiles by place (so 0 is unproven). r3 tiles: spans 7/7, words 5/5. See `benchmarks/hairpin-reach-2026-11/FINDINGS.md`.

@@ -1,0 +1,17 @@
+LANE REPORT  OMR_HAIRPIN_REACH (OFF=0 ON=1)  --from gather
+  OMR_HAIRPIN_REACH: read in hairpin_detection.py, staged/adjudicators/ownership.py, staged/adjudicators/stroke_owner.py, staged/gather.py ... -> GATHER
+  NOT THE FROZEN SAMPLE: benchmarks/hairpin-reach-2026-11/sample-p8.json (a development control)
+
+brahms  pages [8]  (519 notes+rests OFF, 522 ON, 519 paired)
+  file:   notes +3 | dots +2 | slurs +2 | pitches ~5 | blue marks +6 | wedges +9 | words +4 -4 | keys +1 -1
+  red bars 0 -> 0 | notes not written 253 -> 250
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (158 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 344 | position but no mark here 4
+  NOT JUDGED: 35 changed places no tile of Sean's covers (0 are covered; 2 have no page place): blue 6, dot 2, note 3, pitch 5, slur 2, wedge 9, words 8 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 17 s
