@@ -1,0 +1,103 @@
+{
+ "date": "2026-11-02",
+ "tiles": "out/print/2.254-r2-tiles (lane-2.254-hairpin-reach 3166e2241)",
+ "summary": "Kind: 12/12 hairpins. Span by note values: 10 match (8 exact incl. the 3 p8 word places 4, 6, 8 now written), tile 5 start value differs (Sean quarter, we dotted quarter), tile 9 (control, both arms) stop not settled (Sean: over the full next bar).",
+ "answers": [
+  {
+   "tile": 1,
+   "role": "SPAN",
+   "subject": "glyph/19/0/11/1/100002",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 2 to the quarter in bar 3 (onsets: quarter. quarter)",
+   "sean": "hairpin, dotted quarter across the barline to a quarter",
+   "verdict": "match"
+  },
+  {
+   "tile": 2,
+   "role": "SPAN",
+   "subject": "glyph/25/0/9/7/100000",
+   "lane_wrote": "ON (OFF wrote the same): crescendo written from the quarter. in bar 28 to the quarter. in bar 28 (onsets: quarter. quarter.)",
+   "sean": "hairpin, dotted quarter through another dotted quarter",
+   "verdict": "match"
+  },
+  {
+   "tile": 3,
+   "role": "SPAN",
+   "subject": "glyph/19/0/10/2/100000",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
+   "sean": "hairpin, dotted quarter to a quarter in the next measure",
+   "verdict": "match"
+  },
+  {
+   "tile": 4,
+   "role": "WORD",
+   "subject": "glyph/8/0/2/12/100000",
+   "lane_wrote": "OFF: the word reader's box 'p espr' [5256, 1331, 5455, 1415] held this hairpin. ON: crescendo written from the quarter in bar 13 to the eighth in bar 13 (onsets: quarter eighth)",
+   "sean": "hairpin, quarter to an eighth",
+   "verdict": "match"
+  },
+  {
+   "tile": 5,
+   "role": "SPAN",
+   "subject": "glyph/19/0/0/2/100000",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
+   "sean": "hairpin, quarter to a quarter in the next bar",
+   "verdict": "span shape matches but start: Sean 'quarter', we write a dotted quarter -- value or start note open"
+  },
+  {
+   "tile": 6,
+   "role": "WORD",
+   "subject": "glyph/8/0/8/6/100003",
+   "lane_wrote": "OFF: the word reader's box 'a dim' [3220, 3022, 3534, 3110] held this hairpin. ON: diminuendo written from the half. in bar 7 to the half. in bar 7 (onsets: half.)",
+   "sean": "hairpin, extends for a dotted half",
+   "verdict": "match"
+  },
+  {
+   "tile": 7,
+   "role": "SPAN",
+   "subject": "glyph/25/1/8/5/100001",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 35 to the quarter in bar 36 (onsets: quarter. quarter. quarter)",
+   "sean": "hairpin, dotted quarter through another dotted quarter and a quarter in the next bar",
+   "verdict": "match"
+  },
+  {
+   "tile": 8,
+   "role": "WORD",
+   "subject": "glyph/8/0/1/6/100003",
+   "lane_wrote": "OFF: the word reader's box 'dim' [3229, 1061, 3513, 1119] held this hairpin. ON: diminuendo written from the quarter. in bar 7 to the quarter. in bar 7 (onsets: quarter.)",
+   "sean": "hairpin, starts on a dotted quarter (end not named)",
+   "verdict": "start matches (end not named)"
+  },
+  {
+   "tile": 9,
+   "role": "CONTROL",
+   "subject": "glyph/25/0/13/1/100000",
+   "lane_wrote": "both arms: crescendo written from the eighth in bar 21 to the eighth in bar 22 (onsets: eighth rest eighth eighth eighth rest eighth eighth eighth rest eighth eighth)",
+   "sean": "hairpin, starts on an eighth and extends over the full next bar",
+   "verdict": "not settled: we stop at the 4th event of bar 22; Sean 'over the full next bar'"
+  },
+  {
+   "tile": 10,
+   "role": "SPAN",
+   "subject": "glyph/19/0/1/2/100001",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
+   "sean": "hairpin, dotted quarter to the next quarter in the next measure",
+   "verdict": "match"
+  },
+  {
+   "tile": 11,
+   "role": "SPAN",
+   "subject": "glyph/19/0/10/1/100001",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 2 to the quarter in bar 3 (onsets: quarter. quarter)",
+   "sean": "hairpin, dotted quarter to a quarter",
+   "verdict": "match"
+  },
+  {
+   "tile": 12,
+   "role": "SPAN",
+   "subject": "glyph/25/1/9/6/100000",
+   "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 37 to the quarter. in bar 38 (onsets: quarter. quarter. quarter. quarter.)",
+   "sean": "hairpin, dotted quarter through three other dotted quarters",
+   "verdict": "match"
+  }
+ ]
+}
