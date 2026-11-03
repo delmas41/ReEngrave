@@ -84,12 +84,12 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # note's line is refused where it is the stroke of an accent/marcato/tenuto the detector boxed. False = the old reader.
     look_where_it_must_be=True)
 #: ROADMAP 2.255 (Sean 2026-11-02, "we have to get better at reading ledger lines"): the ledger READ's own fixes,
-#: own flag, default OFF (allow-list: 1, true, yes, on). Read at call time so a lane arm can switch it.
+#: own flag, default ON since 2026-11-02 (deny-list: 0, false, no, off disable). Read at call time so a lane arm can switch it.
 LEDGER_READ_ENV = "OMR_LEDGER_READ"
 
 
 def ledger_read_enabled() -> bool:
-    return os.environ.get(LEDGER_READ_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(LEDGER_READ_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: band centres sit on a half-pixel grid, so two gaps compared by the walk window are each known to half a pixel

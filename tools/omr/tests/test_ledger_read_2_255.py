@@ -1,10 +1,10 @@
-"""ROADMAP 2.255 (STAGED GATHER, flag OMR_LEDGER_READ, default OFF): the ledger READ.
+"""ROADMAP 2.255 (STAGED GATHER, flag OMR_LEDGER_READ, default ON, deny-list): the ledger READ.
 
 1. `measure_ledger_rungs(outline_free_walk=True)`: the head's own outline row is taken out of the walk's candidates
    before the walk, so a ledger a few px past it is not lost (Litolff `glyph/6/1/7/11/0`).
 2. `snap_rung_in_gap`: a ledger hidden in a wide gap is found by its thin flat ends (both sides of the column) or as
    one level stroke; a slanted stroke touching one side is not one (Brahms `glyph/5/0/6/6/0`).
-3. The flag is read at call time, allow-list only.
+3. The flag is read at call time; default ON, only 0/false/no/off disable.
 """
 import numpy as np
 
@@ -28,13 +28,13 @@ def staff(img, top=300, x0=0, x1=300):
     return [float(top + i * SP) for i in range(5)]
 
 
-def test_flag_allow_list(monkeypatch):
+def test_flag_default_is_on_deny_list(monkeypatch):
     monkeypatch.delenv(FH.LEDGER_READ_ENV, raising=False)
-    assert not FH.ledger_read_enabled()
-    for v in ("0", "false", "off", "", "2"):
+    assert FH.ledger_read_enabled()
+    for v in ("0", "false", "no", "off", "OFF"):
         monkeypatch.setenv(FH.LEDGER_READ_ENV, v)
         assert not FH.ledger_read_enabled()
-    for v in ("1", "true", "yes", "on", "ON"):
+    for v in ("", "1", "true", "yes", "on", "ON"):
         monkeypatch.setenv(FH.LEDGER_READ_ENV, v)
         assert FH.ledger_read_enabled()
 
