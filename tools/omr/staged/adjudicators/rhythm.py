@@ -1887,11 +1887,12 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
         d = row.detail or {}
         ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
         pad = (tol / STEM_JOIN_TOLERANCE_SPACES) if tol > 0 else 0.0
-        if stroke_thin_by_ink(d, head_boxes, pad):
+        cut = stroke_cut_by_cell(d)       # ROADMAP 2.260a M0: the cell cut this ink, so its thickness is a lower bound -- CANNOT TELL, not "too thin"
+        if not cut and stroke_thin_by_ink(d, head_boxes, pad):
             why[b.id] = "too_thin"
         elif sag is not None and sag > BEAM_SAGITTA_MAX_SPACES:
             why[b.id] = "not_straight"
-        elif ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN:
+        elif ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN and not cut:
             # ⚠️ ROADMAP 2.82: a thin MEDIAN kept by its CORE -- the beam-thick ink of
             # this box stands on a stem at each of its two ends (each leading to a head
             # the detector boxed), read off the ink. That IS "a beam must also connect
@@ -4593,6 +4594,26 @@ def dots_honour_claims_enabled() -> bool:
     return os.environ.get(DOTS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+# ════════════════════════════════════════════════════════════════════════════
+# ROADMAP 2.260a M0 (flag `OMR_STROKE_CUT_FACT`, default OFF; GATHER files the fact, `stroke_map.stroke_cut_fact_enabled`) -- A STROKE THE CELL CUT IS
+# NOT A THIN STROKE. The honest form of the parked 2.259 patch: the fact is on the stroke (`cut`: the cell-crop edges its ink reaches, page border
+# ignored), not re-derived from a band. A reader that would refuse the stroke on its THICKNESS or on a level it did not see says CANNOT TELL (rule 8)
+# and counts it (`beam_cut_kept` in the verdict); the stroke is then judged only by the tests that do not read its thickness (stems at its ends,
+# straightness, through-heads). It never supplies a value (CLAUDE §4: an eighth only on a flag or beam read on its stem).
+# ════════════════════════════════════════════════════════════════════════════
+STROKE_CUT_FACT_ENV = "OMR_STROKE_CUT_FACT"
+
+
+def stroke_cut_by_cell(detail: Optional[Dict[str, Any]]) -> bool:
+    """The stroke's ink reaches the cell crop's TOP or BOTTOM edge (`cut` contains "t" or "b"): a beam's thickness and the levels beyond it are
+    unreadable there. No `cut` in the row (flag off at GATHER, or no cut) says nothing: not cut, as before. Reads the flag too, so the OFF arm of
+    a replay of rows gathered ON ignores the fact."""
+    if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("1", "true", "yes", "on"):
+        return False
+    cut = (detail or {}).get("cut")
+    return isinstance(cut, str) and ("t" in cut or "b" in cut)
+
+
 def beams_honour_claims_enabled() -> bool:
     """`OMR_BEAMS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
     return os.environ.get(BEAMS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
@@ -5270,6 +5291,12 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     # 2.202f (Sean's round-3 tile 8): the missing level is a stroke in the thickness trough at this tip -- the map cannot
                     # tell a beam from a thin span there, so it says nothing against the readers (rule 8: "cannot tell" refutes nothing).
                     settled.append("trough_abstains")
+                elif (sb["tip_levels"] < certain
+                      and certain - sb["tip_levels"] <= sum(1 for b in kept if b.id in _beam_ink_rows(ev, cell)
+                                                            and stroke_cut_by_cell(_beam_ink_rows(ev, cell)[b.id].detail))):
+                    # ROADMAP 2.260a M0: the level the map did not see is a beam the CELL cut (it reads the same cut raster). A reader that cannot
+                    # see past the cut says nothing against the readers that did (rule 8) -- the same abstention as the thickness trough above.
+                    settled.append("cut_abstains")
                 elif sb["tip_levels"] < certain:
                     possible = max(possible, certain)
                     certain = sb["tip_levels"]
@@ -5379,7 +5406,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             scaled = total * den / num
             used.append(ratio.id)
 
-    shared = {"head": str(head), "head_is_open": hollow, **({"head_fill_first": head_first} if head_first else {}),
+    _cut_ink = _beam_ink_rows(ev, cell)
+    cut_kept = [b.id for b in kept if b.id in _cut_ink and stroke_cut_by_cell(_cut_ink[b.id].detail)]
+    shared = {"head": str(head), "head_is_open": hollow, **({"beam_cut_kept": cut_kept} if cut_kept else {}), **({"head_fill_first": head_first} if head_first else {}),
               **({"head_ink": head_ink_read} if head_ink_read else {}),
               "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),

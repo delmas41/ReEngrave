@@ -7854,7 +7854,8 @@ def stems_from_strokes_retires_scans() -> bool:
 
 
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
-                      detections: Optional[Dict[str, List[Any]]] = None) -> Dict[Tuple[int, int, int, int], Any]:
+                      detections: Optional[Dict[str, List[Any]]] = None,
+                      page_shape: Optional[Sequence[int]] = None) -> Dict[Tuple[int, int, int, int], Any]:
     """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
@@ -7923,6 +7924,10 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                 optional["profile_sixteenths"] = st.profile
             if not res.staff_local:                      # absent = the staff was measured at the stroke's own x
                 optional["staff_local"] = False
+            if SM.stroke_cut_fact_enabled():             # ROADMAP 2.260a M0 (OMR_STROKE_CUT_FACT): the cell-crop edges this stroke's ink reaches
+                _cut = SM.drop_page_border(st.cut, cell_box, page_shape)
+                if _cut:
+                    optional["cut"] = _cut
             if i == 0:                                   # a CELL fact, said once
                 optional["cell_n_below_floor"] = res.n_below_floor
                 if res.split_refused:                    # ROADMAP 2.239 (OMR_SPLIT_JOINS): pieces left whole, and why
@@ -12683,8 +12688,13 @@ def beam_stroke_ink(gray: Any, box: Tuple[float, float, float, float],
             "core": _beam_core(ink, xs_a, th_a, tops, bots, line, space)}
 
 
+def _SM_cut_enabled() -> bool:
+    from . import stroke_map as _SMe
+    return _SMe.stroke_cut_fact_enabled()
+
+
 def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
-                           local: Dict[int, Tuple[int, int]]) -> None:
+                           local: Dict[int, Tuple[int, int]], page_shape: Optional[Sequence[int]] = None) -> None:
     """`Q.BEAM_STROKE_INK` -- one row per `Q.BEAM_STROKE` row in each cell, CV
     and detector alike, keyed by `beam_row_id`. ROADMAP 2.74.
 
@@ -12737,6 +12747,16 @@ def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
                             beam_row_id=r.id,
                             note="too little ink under the stroke's own box")
                 continue
+            if _SM_cut_enabled():     # ROADMAP 2.260a M0 (OMR_STROKE_CUT_FACT): the ink band reaches the cell's top / bottom edge, or the box its sides
+                from . import stroke_map as _SMc
+                _bh, _bw = gray.shape[:2]
+                _bx = tuple(float(t) for t in v[:4])
+                _band = m.get("band") or (None, None)
+                _cut = _SMc.box_cut_edges(_bx[0], _band[0] if _band[0] is not None else _bx[1], _bx[0] + _bx[2],
+                                          _band[1] if _band[1] is not None else _bx[1] + _bx[3], _bh, _bw)
+                _cut = _SMc.drop_page_border(_cut, getattr(c, "bbox_page_px", None), page_shape)
+                if _cut:
+                    m = dict(m, cut=_cut)
             log.observe(sub, Q.BEAM_STROKE_INK, m["thickness_spaces"],
                         reader=READERS.CV_BEAM_SHAPE, frame=frame,
                         beam_row_id=r.id, **m)
@@ -17495,7 +17515,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         arcs_summary = _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
-        stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections)
+        stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections,
+                                         page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None))
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
@@ -17642,7 +17663,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_detector_beams(log, detections)
         # ⚠️ ROADMAP 2.74, AFTER BOTH beam readers (it measures the strokes each
         # filed): thickness, straightness and end stems per `Q.BEAM_STROKE`.
-        gather_beam_stroke_ink(log, cells, local)
+        gather_beam_stroke_ink(log, cells, local, page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None))
         # ⚠️ ROADMAP 2.140 (flag, default ON since 2026-11-02): beam strokes AT each stem's tip, read beside the stem.
         gather_beam_stem_levels(log, cells, local)
         gather_clef(log, cells, local, detections)

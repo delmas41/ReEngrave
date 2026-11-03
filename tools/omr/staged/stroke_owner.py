@@ -142,6 +142,7 @@ class Ink:
     touches: Tuple[Tuple[int, float], ...] = ()
     row_id: str = ""
     angle: float = 0.0                            # principal axis, degrees (0 horizontal, 90 vertical)
+    cut: str = ""                                 # ROADMAP 2.260a M0 (OMR_STROKE_CUT_FACT): cell-crop edges the ink reaches, letters "tblr"; "" = none / not filed
 
     @property
     def w_sp(self) -> float:

@@ -65,6 +65,53 @@ THICKNESS_FROM_UNERASED = True
 
 KINDS = ("vertical", "horizontal", "curve", "blob")
 
+# ───────────────────────────── ROADMAP 2.260a M0: the CUT fact (flag `OMR_STROKE_CUT_FACT`, default OFF) ─────────────────────────────
+#: CAUSE (2.259, measured): GATHER cuts a cell at its staff plus a pad; a tall up-stem group's beam stands further out, so the cell holds a sliver
+#: of it and two later readers (`rhythm._not_a_beam_by_ink` too_thin, the tip readers' missing level) re-judge the SLIVER as if it were the mark.
+#: A stroke carries no "the cell cut me" fact (`stroke_owner.Ink`), so no reader can tell a thin mark from a cut one. This is that fact: the
+#: edges of the cell crop the stroke's ink touches ("t" top, "b" bottom, "l" left, "r" right), ignoring an edge that is the PAGE border (nothing
+#: was cut there). A reader that would refuse a cut stroke on its thickness or its missing level says CANNOT TELL and counts it (CLAUDE rule 8);
+#: it never supplies a value (CLAUDE §4). Filed only with the flag on (the Q.STROKE rows are byte-identical with it off).
+STROKE_CUT_FACT_ENV = "OMR_STROKE_CUT_FACT"
+CUT_EDGES = "tblr"
+
+
+def stroke_cut_fact_enabled() -> bool:
+    """`OMR_STROKE_CUT_FACT`, default OFF (ROADMAP 2.260a M0)."""
+    return os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def box_cut_edges(x0: float, y0: float, x1: float, y1: float, height: float, width: float, tol: float = 0.5) -> str:
+    """The edges of a `width` x `height` crop that the half-open box [x0, x1) x [y0, y1) reaches, as letters of `CUT_EDGES` (top, bottom, left, right)."""
+    out = ""
+    if y0 <= tol:
+        out += "t"
+    if y1 >= height - tol:
+        out += "b"
+    if x0 <= tol:
+        out += "l"
+    if x1 >= width - tol:
+        out += "r"
+    return out
+
+
+def drop_page_border(cut: str, cell_box: Optional[Sequence[float]], page_shape: Optional[Sequence[int]]) -> str:
+    """`cut` without the edges where the cell crop's own edge is the page's edge (nothing was cut there). `cell_box` = bbox_page_px
+    (x0, y0, x1, y1); `page_shape` = (height, width). Unknown page shape keeps every edge (a cut is said, never assumed away)."""
+    if not cut or not cell_box or len(cell_box) != 4:
+        return cut
+    gone = set()
+    if cell_box[1] <= 0:
+        gone.add("t")
+    if cell_box[0] <= 0:
+        gone.add("l")
+    if page_shape and len(page_shape) >= 2:
+        if cell_box[3] >= page_shape[0]:
+            gone.add("b")
+        if cell_box[2] >= page_shape[1]:
+            gone.add("r")
+    return "".join(e for e in cut if e not in gone)
+
 # ───────────────────────────── ROADMAP 2.239: split fused ink at its joins (flag `OMR_SPLIT_JOINS`, default ON) ─────────────────────────────
 #: CAUSE (2.239, Brahms p0 against Sean's labels): the vertical opening is a column test -- a column run of ink at least `V_MIN_SPACES` tall is
 #: "vertical" whatever its WIDTH. Two heads a third apart on one stem make columns ~2 sp tall across the whole oval, so the pair AND the stem
@@ -233,6 +280,8 @@ class Stroke:
     #: ROADMAP 2.242 (`OMR_ACCIDENTAL_WHOLE`): a whole accidental is ONE stroke; the pieces the openings cut it into (stems, bars, bowl) are
     #: kept here, measured the same way and NOT filed as strokes, because the 2.201 type reading (stem stagger) reads them
     parts: List["Stroke"] = field(default_factory=list)
+    #: ROADMAP 2.260a M0: the cell crop's edges this stroke's ink reaches (letters of `CUT_EDGES`, page border NOT yet dropped); "" = none
+    cut: str = ""
 
 
 class LocalStaff:
@@ -1389,7 +1438,8 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             profile=mm["profile"], component=int(ink_lab[y0 + int(ys_[0]), x0 + int(xs_[0])]),
             lines_left=[int(round(v * inv)) for v in staff.lines_at(x0)],
             lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w)],
-            staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]))
+            staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]),
+            cut=box_cut_edges(x0, y0, x0 + w, y0 + h, ink.shape[0], ink.shape[1]))
         if pidx >= n_pieces:
             parts_by_parent.setdefault(part_of[pidx - n_pieces], []).append(st)
         else:
