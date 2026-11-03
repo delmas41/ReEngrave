@@ -104,6 +104,16 @@ bounded EVALUATE 20, record **1.87 GB written in 27 s** (35.5 GB, 642 s),
 **peak footprint 12.3 GB** (55.9). MusicXML 7.5 MB, complete. Not compared
 against an earlier whole-movement record (the slices are the identity proof).
 
+**Landing gate, 2026-11-03** (merged tree 646c330ad vs origin/main fb3a51921, Litolff
+pages 9,16 through EXPORT, `OMR_SURYA_KEEP_ALIVE=0`): MusicXML byte-identical
+(0 diff lines); `judged score --doc litolff` identical; `staged.check` TOTAL
+open=205 on both trees; record file 185.4 MB -> 65.2 MB, `"format": 2`, loads
+through `record_io.load_record` (19,934 of 20,983 basis-bearing verdicts get a
+derived basis; the rest carry none), the review viewer's `ReviewData` and
+`resolve_rows` read it, `dumps_for_file` round-trips it; backend
+`modules.staged_omr` imports. Fast tier on the first merge: 9,838 passed, 12
+skipped, 2 xfailed, 0 failed.
+
 ## Remaining wins (estimates, ranked)
 
 1. DONE (m8): record file linear, 1.87 GB.
