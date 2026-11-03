@@ -207,10 +207,15 @@ class TestTheVetoSurvives(unittest.TestCase):
     def test_a_box_that_is_ITSELF_clef_sized_still_vetoes(self):
         """"Too small" is the claim, so a box big enough to BE the clef is
         not obviously the error and keeps its veto."""
-        cell = _cell(tall=True)
-        found0, _ = _read(cell)
-        found, trace = _read(cell, occupied_boxes=[found0.bbox],
-                             occupied_classes=["noteheadBlackOnLine"])
+        # ROADMAP 2.257 (OMR_C_CLEF_READ, default ON since 2026-11-03) deliberately lets a clef-sized notehead box in
+        # the clef slot stop vetoing; this test is the 2.11 behaviour with that flag off.
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"OMR_C_CLEF_READ": "0"}):
+            cell = _cell(tall=True)
+            found0, _ = _read(cell)
+            found, trace = _read(cell, occupied_boxes=[found0.bbox],
+                                 occupied_classes=["noteheadBlackOnLine"])
         self.assertIsNone(found)
         self.assertEqual(trace.get("override_refused"),
                          "an_occupying_box_is_itself_clef_sized")

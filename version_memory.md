@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- ROADMAP 2.256 and 2.257 landed ON: OMR_KEY_HEADER_INK and OMR_C_CLEF_READ default ON (deny-list); OMR_WHOLE_REST_OWN_STAFF stays OFF
+
+Sean "Land whatever is ready". 2.256: a crushed three-flat key header is raised to the key object's own slot count (Litolff frozen sample blue -156, tiles 11/12 right, 0 wrong). 2.257: a clef-sized notehead box in the clef slot no longer vetoes the clef locator, and a clef box beyond 45 sp no longer votes on the header (Litolff p4/6 fill_clef_gap blue 79 -> 26); whole-rest code lands OFF (red bars +27 until the voices stage takes a displaced second-voice whole rest as its own voice). Also fixed stale "default OFF" text for OMR_HEAD_HOLE_POSITION; test_clef_over_notehead_box pins OMR_C_CLEF_READ=0 for the 2.11 veto; flag table rows added. Open finding: a false clef at Litolff staff/4/0/3 (2.251). Findings: benchmarks/key-header-2026-11, benchmarks/cclef-rest-2026-11.
+
 ## 2026-11-03 -- ROADMAP 2.252 r6 landed ON: OMR_HEAD_HOLE_POSITION default ON (hole position, black-box split, local line check, contested/unsure tie ends)
 STAGED GATHER/ADJUDICATE/EXPORT. `head_hole_position.enabled()` / `r5_enabled()` / `r6_enabled()` now deny-list (0/false/no/off disables); gather.py `black_too=r5_enabled()`, `arc_ink_shape(local_lines=r6_enabled())`, ownership `one_end_contested`, export `unsure_ends` all ride it. Sean ruled "Land OMR_HEAD_HOLE_POSITION on" after r6 tiles (positions 11/11, ties 10/12, 0 wrong). OMR_UNISON_TIE_VOICE stays OFF. Landing check on the r6 saved gathers (re-adjudicate only, flag 0 vs 1): see FINDINGS "Landed ON". Tree: tools/omr/staged/head_hole_position.py; tests test_head_hole_position_2_252.py default-on case.
 
