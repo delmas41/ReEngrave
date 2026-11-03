@@ -202,6 +202,20 @@ ENV_BIND = "OMR_ARC_BIND_PAGEWIDE"
 #: tied note, each at its own note's staff position. WHAT WOULD FALSIFY IT: a chord tie whose end stands beside one note but ties another.
 ENV_END_PITCH = "OMR_BIND_END_PITCH"
 
+#: ROADMAP 2.258 (`OMR_ARC_ONE_CURVE`, default OFF). ONE CURVE, ONE EXTENT: the tracer follows the stroke to where the STROKE ends (not where the
+#: detector's box ends + 0.5 sp), records how each pair of its boxes joined (`joins`), and the binder takes a junction of two boxes the trace
+#: proved ONE STROKE (shared columns agreeing in y) or a barline's cut (the cell edge lies at the junction) as no junction at all. The Brahms p0
+#: guard stands: two whole arcs meeting end to start at one note share no columns, and a note is not a cell edge.
+ENV_ONE_CURVE = "OMR_ARC_ONE_CURVE"
+#: two boxes whose traces AGREE (one y, `SAME_Y_SPACES`) over at least this many spaces are one stroke seen twice (a head's width is ~1.3 sp;
+#: two arcs that MEET at a note agree over the touching columns only). NOT CONFIRMED beyond the measurements in benchmarks/omr-arc-binding-2026-10.
+ONE_STROKE_MIN_SPACES = 1.0
+
+
+def one_curve_enabled() -> bool:
+    """`OMR_ARC_ONE_CURVE` (ROADMAP 2.258), default OFF; an explicit on-word turns it on."""
+    return _on(ENV_ONE_CURVE)
+
 #: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)
 BIND_COLUMN_DX_WIDTHS = 0.6
 #: at one end, a second column whose distance is within this many staff spaces of the nearest one makes the end ambiguous
