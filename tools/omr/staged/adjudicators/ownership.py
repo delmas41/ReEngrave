@@ -742,7 +742,7 @@ def adjudicate_glyph_owner(ev: Evidence) -> Ruling:
         own = ev.subject.at(Kind.STAFF)
         return Ruling(value=own.to_key(), reason="no_contest")
 
-    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the page owner, AHEAD of every per-copy tier. GATHER settled
+    # ⚠️⚠️ ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default ON since 2026-11-02): the page owner, AHEAD of every per-copy tier. GATHER settled
     # "whose mark is this?" ONCE, of the page mark both padded cells' copies are views of (staff lines, ledger lines, stem -- never
     # nearness); this CONNECTS that answer (rule 6). Decided -> it; GUESSED -> it, written blue with both staves; abstain -> the old
     # tiers below decide as before (counted by `page_owner compare`).
@@ -1894,7 +1894,7 @@ def adjudicate_arc_owner(ev: Evidence) -> Ruling:
     if not arcs:
         return Ruling.abstain("no_evidence")
     arc = arcs[0]
-    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default OFF): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
+    # ROADMAP 2.240 step 3 (flag OMR_PAGE_OWNER_READ, default ON since 2026-11-02): the arc READ PAGE-WIDE (`Q.PAGE_SPAN`, Sean 2026-10-30) takes the staff
     # its END notes are owned by (GATHER, `page_owner.arc_owner`; Sean's s3 tiles 7/7 arcs right). Decided -> that staff, the same for
     # every box the span holds; GUESSED (one end) or abstain -> the rule below decides, as before.
     span = _page_span_owner(ev)
@@ -3845,7 +3845,7 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
                 "home_staff": home})
 
 
-#: ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`, default OFF): a tie over a DYAD whose flank search admits one same-position pair
+#: ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`, default ON since 2026-11-02): a tie over a DYAD whose flank search admits one same-position pair
 #: per chord member (Sean's 2.252 tiles 3, 7, 10, 12: the narrowing `more_than_one_pair`, nothing written) is the pair on the ARC'S OWN
 #: SIDE -- Sean 2.75 (page-facts): an arc ABOVE its notes joins the top note at each end, an arc BELOW joins the bottom note; each
 #: member's tie is its own arc (2.252: two printed arcs, two ties). Decided only where the arc's centre lies outside the pairs'
@@ -3854,8 +3854,8 @@ TIE_ARC_SIDE_ENV = "OMR_TIE_PAIR_ARC_SIDE"
 
 
 def tie_arc_side_enabled() -> bool:
-    """`OMR_TIE_PAIR_ARC_SIDE` (ROADMAP 2.252 r2), default OFF; an explicit on-word enables."""
-    return os.environ.get(TIE_ARC_SIDE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_TIE_PAIR_ARC_SIDE` (ROADMAP 2.252 r2), default ON since 2026-11-02; an explicit 0/false/no/off disables."""
+    return os.environ.get(TIE_ARC_SIDE_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _pair_on_the_arcs_side(pairs: Sequence[tuple], arc_yc: float) -> Optional[tuple]:
@@ -6084,7 +6084,7 @@ def _decided_str(v) -> Optional[str]:
 
 
 def reconcile_dot_owners(log: R.Log) -> Dict[str, int]:
-    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default OFF).
+    """A dot's owner is its NOTE's owner (`OMR_DOT_FOLLOWS_NOTE`, default ON since 2026-11-02).
 
     Run after `Q.DOT_ROLE`, whose augmentation verdict names the note the dot
     trails (`detail.head`). CONNECTS, NEVER GUESSES (rule 6): it only reads

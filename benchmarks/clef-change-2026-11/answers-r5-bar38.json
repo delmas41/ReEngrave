@@ -1,0 +1,20 @@
+{
+ "source": "Sean 2026-11-02 verbatim: \"The orange box is a part of an G clef and a quarter rest that run into each other.\" Asked whether the clef is an F clef, as on carry tile 10, he said: \"I meant F clef\". Tile out/print/2.251-carry-bar38 (lane branch lane-2.251-carry, Litolff print witness on tree 0c6273724); key fields copied below from the lane's key.json.",
+ "answers": {
+  "1": "The orange box is a part of a clef (he said G, then corrected: F clef) and a quarter rest that run into each other."
+ },
+ "sean_reads": {
+  "1": "no note (F clef fused with a quarter rest)"
+ },
+ "key": {
+  "1": {"kind": "head", "plate": "litolff", "page": 2, "system": 1, "staff": 3, "cell": 3, "subject": "glyph/2/1/3/3/3", "box": [959, 2563, 986, 2582], "place": "bar 38", "written": "ON (carry) F3 under the no-box READ bass clef; OFF C4 (header bass); 0.42 head box", "why": "the 1 right->wrong left in the lane's Litolff print witness"}
+ },
+ "scored": {
+  "note_in_box": false,
+  "carry_right_to_wrong": 0,
+  "notes": {
+   "1": "No note in the box: it is F-clef ink fused with a quarter rest. The witness's one right->wrong is not a real note, so the real carry-caused right->wrong on Litolff is 0. Not the carry's fault: a quarter rest fused with the clef is read as a head in both arms (the rest is lost, a false head stands in its place) -- an ink-claim question (Litolff merges)."
+  }
+ },
+ "totals": {"carry_right_to_wrong": 0, "false_head_from_fused_rest": 1}
+}

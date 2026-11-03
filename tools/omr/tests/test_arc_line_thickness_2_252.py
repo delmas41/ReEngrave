@@ -1,4 +1,4 @@
-"""ROADMAP 2.252 r2 -- a thick tie lying ON a staff line is not erased with the line (`OMR_ARC_LINE_THICKNESS`, default OFF).
+"""ROADMAP 2.252 r2 -- a thick tie lying ON a staff line is not erased with the line (`OMR_ARC_LINE_THICKNESS`, default ON since 2026-11-02).
 
 Sean's 2.252 tiles 3, 5, 6, 7 (Litolff): ties along a line were refused `ink_is_a_staff_line` because the line's stroke was grown
 by how full the box's rows were, and a flat tie beside the line fills those rows too. With the flag the stroke is the staff's own
@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import os
 import unittest
+from unittest import mock
 
 import numpy as np
 
@@ -66,16 +67,13 @@ class TestThickTieOnALine(unittest.TestCase):
         self.assertLess(G.arc_ink_shape(img, box, SP, LINES)["coverage"], 0.35)       # OFF: snapped onto the tie (2/1/4/11/4)
         self.assertGreater(G.arc_ink_shape(img, box, SP, LINES, line_thickness=[5.0] * 5)["coverage"], 0.6)
 
-    def test_flag_default_off(self):
-        old = os.environ.pop(G.ARC_LINE_THICKNESS_ENV, None)
-        try:
-            self.assertFalse(G.arc_line_thickness_enabled())
-            os.environ[G.ARC_LINE_THICKNESS_ENV] = "1"
-            self.assertTrue(G.arc_line_thickness_enabled())
-        finally:
+    def test_default_is_on(self):
+        with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(G.ARC_LINE_THICKNESS_ENV, None)
-            if old is not None:
-                os.environ[G.ARC_LINE_THICKNESS_ENV] = old
+            self.assertTrue(G.arc_line_thickness_enabled())
+        for val, want in (("1", True), ("on", True), ("", True), ("0", False), ("false", False), ("no", False), ("off", False)):
+            with mock.patch.dict(os.environ, {G.ARC_LINE_THICKNESS_ENV: val}):
+                self.assertEqual(G.arc_line_thickness_enabled(), want, val)
 
 
 if __name__ == "__main__":

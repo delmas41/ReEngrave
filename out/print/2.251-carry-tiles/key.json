@@ -1,0 +1,242 @@
+{
+ "seed": 22513,
+ "what": "2.251 carry tiles: heads the carry re-pitched (ON differs from OFF), one per bar, plus no-box F clef reads; drawn from the ON arm's record; crop from the clef in force to the head",
+ "tiles": [
+  {
+   "tile": 1,
+   "kind": "clef",
+   "plate": "litolff",
+   "page": 14,
+   "system": 0,
+   "staff": 10,
+   "cell": 12,
+   "box": [
+    2246,
+    1800,
+    2300,
+    1844
+   ],
+   "read": "bass",
+   "note": "no-box F READ (body 0.77), Vc bar 411"
+  },
+  {
+   "tile": 2,
+   "kind": "head",
+   "plate": "brahms",
+   "page": 5,
+   "system": 1,
+   "staff": 3,
+   "cell": 3,
+   "subject": "glyph/5/1/3/3/4",
+   "box": [
+    2546.0,
+    4686.3,
+    2586.6,
+    4719.8
+   ],
+   "clef_x": 2019.9,
+   "clef_kind": "tenor",
+   "on": "G4",
+   "off": "C4"
+  },
+  {
+   "tile": 3,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 16,
+   "system": 1,
+   "staff": 3,
+   "cell": 12,
+   "subject": "glyph/16/1/3/12/2",
+   "box": [
+    2384.0,
+    2485.2,
+    2406.2,
+    2501.7
+   ],
+   "clef_x": 2313.4,
+   "clef_kind": "bass",
+   "on": "G3",
+   "off": "D4"
+  },
+  {
+   "tile": 4,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "cell": 8,
+   "subject": "glyph/2/1/3/8/5",
+   "box": [
+    1656.3,
+    2587.3,
+    1680.4,
+    2607.8
+   ],
+   "clef_x": 972.2,
+   "clef_kind": "bass",
+   "on": "C3",
+   "off": "G3"
+  },
+  {
+   "tile": 5,
+   "kind": "head",
+   "plate": "brahms",
+   "page": 5,
+   "system": 0,
+   "staff": 3,
+   "cell": 5,
+   "subject": "glyph/5/0/3/5/17",
+   "box": [
+    4166.9,
+    1300.2,
+    4207.9,
+    1334.7
+   ],
+   "clef_x": 1692.9,
+   "clef_kind": "tenor",
+   "on": "B3",
+   "off": "E3"
+  },
+  {
+   "tile": 6,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 11,
+   "system": 0,
+   "staff": 2,
+   "cell": 2,
+   "subject": "glyph/11/0/2/2/2",
+   "box": [
+    781.5,
+    724.6,
+    806.8,
+    746.1
+   ],
+   "clef_x": 548.6,
+   "clef_kind": "tenor",
+   "on": "D4",
+   "off": "G3"
+  },
+  {
+   "tile": 7,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 16,
+   "system": 0,
+   "staff": 3,
+   "cell": 9,
+   "subject": "glyph/16/0/3/9/2",
+   "box": [
+    1669.8,
+    847.2,
+    1695.3,
+    863.6
+   ],
+   "clef_x": 942.4,
+   "clef_kind": "bass",
+   "on": "D3",
+   "off": "A3"
+  },
+  {
+   "tile": 8,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 11,
+   "system": 1,
+   "staff": 3,
+   "cell": 16,
+   "subject": "glyph/11/1/3/16/2",
+   "box": [
+    2545.6,
+    2324.2,
+    2569.9,
+    2342.8
+   ],
+   "clef_x": 704.4,
+   "clef_kind": "bass",
+   "on": "D4",
+   "off": "A4"
+  },
+  {
+   "tile": 9,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 11,
+   "system": 1,
+   "staff": 3,
+   "cell": 12,
+   "subject": "glyph/11/1/3/12/1",
+   "box": [
+    2059.4,
+    2410.4,
+    2076.8,
+    2427.5
+   ],
+   "clef_x": 704.4,
+   "clef_kind": "bass",
+   "on": "A2",
+   "off": "E3"
+  },
+  {
+   "tile": 10,
+   "kind": "clef",
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "cell": 3,
+   "box": [
+    972.2,
+    2558.7,
+    1017.8,
+    2601.0
+   ],
+   "read": "bass",
+   "shape": {
+    "body_score": 0.726,
+    "cover": 0.904,
+    "extra": 0.179,
+    "scale": 0.9
+   }
+  },
+  {
+   "tile": 11,
+   "kind": "clef",
+   "plate": "litolff",
+   "page": 12,
+   "system": 0,
+   "staff": 10,
+   "cell": 7,
+   "box": [
+    1447,
+    1785,
+    1493,
+    1835
+   ],
+   "read": null,
+   "note": "F CANDIDATE (box refused for dots; body 0.69), Vc bar 346"
+  },
+  {
+   "tile": 12,
+   "kind": "head",
+   "plate": "litolff",
+   "page": 11,
+   "system": 1,
+   "staff": 9,
+   "cell": 11,
+   "subject": "glyph/11/1/9/11/0",
+   "box": [
+    1929.0,
+    3319.8,
+    1949.8,
+    3342.2
+   ],
+   "clef_x": 1740.6,
+   "clef_kind": "tenor",
+   "on": "B4",
+   "off": "E4"
+  }
+ ]
+}
