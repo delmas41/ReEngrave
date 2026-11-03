@@ -699,6 +699,11 @@ def _overlapping(
     return out
 
 
+def _c_clef_read_on() -> bool:
+    import os
+    return os.environ.get("OMR_C_CLEF_READ", "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def _overridable_occupancy(
     bbox: tuple[int, int, int, int],
     spacing: float,
@@ -791,6 +796,14 @@ def _overridable_occupancy(
             return False, detail
         if spacing and (occupied_boxes[i][3] / spacing
                         >= config.clef_family_min_height_spaces):
+            # ROADMAP 2.257 (flag OMR_C_CLEF_READ, default OFF): the first glyph-sized ink of the header window, left of the
+            # key accidentals, is the clef (CLAUDE §4: only a clef stands before the key). A notehead-class box as tall as
+            # a clef on it is the clef ink boxed as a head (Litolff viola/cello alto and tenor clefs: 4.3-4.5 sp tall
+            # 'noteheadBlackOnLine'), not a head -- no head is 4 spaces tall. The symmetry gate, the F-clef dots and the
+            # snap still have to pass before it is READ.
+            if _c_clef_read_on():
+                detail["override_note"] = "clef_sized_notehead_box_in_the_clef_slot"
+                continue
             detail["override_refused"] = "an_occupying_box_is_itself_clef_sized"
             return False, detail
     return True, detail

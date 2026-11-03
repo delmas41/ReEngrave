@@ -205,6 +205,7 @@ RULES = [
       "the second look for hollow heads (2.114) and how it is weighed against the first: two readings of one ink", "ROADMAP 2.114", "open: C-flavoured (a second reading of the same ink)"),
     R(BEAMS, "duration", "rest_class,unknown_head", "ok", "rest read from its class", "a rest's value comes straight from its class", "Sean 2026-10-12 (2.98)", "-"),
     R(BEAMS, "duration", "unreadable_rest,rest_slot_contradicts_class", "U", "rest class and slot disagree", "a rest whose class (8th, quarter) and the slot it hangs in disagree", S_NONE, "open"),
+    R(BEAMS, "duration", "rest_hangs_from_own_line", "C", "whole rest hangs from a line of its own staff", "a whole rest hangs from a staff line, any of its five (displaced in two-voice writing); a half rest stands on one", "ROADMAP 2.257 (flag OMR_WHOLE_REST_OWN_STAFF, OFF)", "-"),
     R(BEAMS, "duration", "rest_stands_where_no_rest_hangs", "U", "rest where no rest hangs", "a box called a rest in a position no rest is printed", S_NONE, "open"),
     R(BEAMS, "duration", "owned_by_another_staff", "C", "the neighbour staff's padded crop boxed this note",
       "a cell is padded 4-6 spaces, so it boxes the next staff's note; the copy is dropped, never a witness. The biggest rule by firing",
