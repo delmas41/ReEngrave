@@ -1,0 +1,18 @@
+{
+ "tile": 1,
+ "plate": "litolff",
+ "page": 2,
+ "system": 1,
+ "staff": 3,
+ "cell": 3,
+ "subject": "glyph/2/1/3/3/3",
+ "box": [
+  959,
+  2563,
+  986,
+  2582
+ ],
+ "question": "Is there a note in the box? If so, what note, and in which clef?",
+ "ours": "ON (carry) pitches it F3 under the no-box READ bass clef (bar 38); OFF pitched it C4 (header bass); the lane reads it as the clef blob, unconfirmed",
+ "crop": "one staff, x 880-1030 minus 1 sp / plus 3 sp, staff +-4 sp; only the orange box drawn"
+}

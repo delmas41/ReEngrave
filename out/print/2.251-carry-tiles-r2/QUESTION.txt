@@ -1,0 +1,3 @@
+Tiles with a box on a NOTE: What note is in the box (name and octave if you can), and which clef is it read in?
+Tile with a box on a clef-sized mark: Is this a clef? Which one?
+The orange box is the only thing drawn; everything else is the print.

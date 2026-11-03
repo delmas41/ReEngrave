@@ -15602,6 +15602,24 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
     for c in cells:
         cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
     owned = (CL.OWNER_CLEF, CL.OWNER_KEY, CL.OWNER_METER, CL.OWNER_COLUMN, CL.OWNER_BRACKET)
+    # 2.251 carry (only with OMR_CLEF_CARRY, so step 1 alone is unchanged): the page's own F bodies (every clef-sized `clefF` box whose
+    # dots read the F line) -- the template the no-box F reader lays over a dot pair (`clef_pagewide.f_nobox`)
+    templates: List[Dict[str, Any]] = []
+    if CP.carry_enabled():
+        per_staff = []
+        for st in pws.staves:
+            key = local.get(st.staff_index)
+            if key is None or len(st.line_ys) < 5 or not _spacing(st):
+                continue
+            fb = []
+            for k, c in ((c.measure_index, c) for c in cells_of.get(st.staff_index, {}).values()
+                         if getattr(c, "bbox_page_px", None)):
+                for d in detections.get(R.cell(p, key[0], key[1], k).to_key(), ()):
+                    pb = _page_box(c, d)
+                    if str(d.smufl_name) == "clefF" and CL.is_clef_box(d.smufl_name, pb, _spacing(st)):
+                        fb.append(pb)
+            per_staff.append(([float(v) for v in st.line_ys], _spacing(st), fb))
+        templates = CP.f_templates(ink, per_staff)
     for st in pws.staves:
         key = local.get(st.staff_index)
         if key is None:
@@ -15666,6 +15684,52 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 found.append({"area": area, "family": got["family"], "kind": got["kind"], "line": got["line"],
                               "residual": got["residual"], "witnesses": ["detector_box", "f_dots" if got["family"] == "F" else "geometry"],
                               "shape": None, "box": gkey})
+        if CP.carry_enabled():
+            x_head0 = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
+            # 2.251 carry (a): an F clef with NO detector box -- its dot pair AND the page's own F body (two witnesses); READ at the
+            # template's read score, else a clef-shaped CANDIDATE (b). Never in the header window (the header readers own it).
+            for nb in CP.f_nobox(ink, lines, sp, x_head0, x_hi, templates):
+                if any((f["family"] == "F" and CL.overlaps(f["area"], nb["area"]))
+                       or f["area"][0] <= nb["pair"]["x_left"] <= f["area"][2] for f in found):
+                    continue                                   # a boxed reading of the same clef stands, or the "dots" are a read clef's ink
+                if nb["read"]:
+                    found.append({"area": nb["area"], "family": "F", "kind": "bass", "line": 4,
+                                  "residual": round(nb["pair"]["residual"], 3), "witnesses": ["f_dots", "f_body_template"],
+                                  "shape": {"body_score": nb["match"]["score"], "cover": nb["match"]["cover"],
+                                            "extra": nb["match"]["extra"], "scale": nb["match"].get("scale")}, "box": None})
+                else:
+                    # the candidate stands at its DOTS (its body may be laid over a clef just before it: Litolff bars 110/111)
+                    near.append({"x0": nb["pair"]["x_left"] - 0.3 * sp, "family": "F", "why": "f_body_below_read", "box": None,
+                                 "body_score": nb["match"]["score"],
+                                 "strong": nb["match"]["score"] >= CP.F_TEMPLATE_STRONG_SCORE})
+            # round 2 (Litolff bar 111: the dots fused with the heads beside them, so no pair is seen): on a staff where a change is
+            # claimed, the page's own F body slid along the staff right of it with NO dot witness -- one witness, so a CANDIDATE that
+            # stops a carry, never a read clef; never on a claimed clef's own ink
+            chg_x = [f["area"][0] for f in found if f["area"][0] > x_head0]
+            if chg_x:
+                for bs in CP.f_body_scan(ink, lines, sp, min(chg_x), x_hi, templates):
+                    if bs["match"]["score"] < CP.F_BODY_SCAN_CANDIDATE_SCORE:
+                        continue
+                    mb = bs["match"]["box"]
+                    if any(_overlap_share(mb, f["area"]) >= 0.3 or _overlap_share(f["area"], mb) >= 0.3 for f in found):
+                        continue
+                    if any(n.get("why") == "f_body_below_read" and abs(float(n["x0"]) - mb[0]) <= 2.5 * sp for n in near):
+                        continue                               # the same clef, seen with its dots
+                    # the candidate stands at the matched BODY's left edge (round 2 tried a space further left: at bar 111 the head under
+                    # it is a real eighth printed BEFORE the clef -- Sean's r2 tile 2 -- and it went unread). A candidate files no claim:
+                    # it takes no ink; `area` is the body, for a tile only
+                    near.append({"x0": float(mb[0]), "family": "F", "why": "f_body_no_dots", "box": None, "area": list(mb),
+                                 "body_score": bs["match"]["score"]})
+            # (b): a `clef*` box too small to be a clef-sized claim is still ink that may be a clef (Litolff Vc bar 411: a 0.7 sp
+            # `clefF` box on a real bass clef)
+            for k in order:
+                for d in detections.get(R.cell(p, sys_idx, li, k).to_key(), ()):
+                    pb = _page_box(mycells[k], d)
+                    if str(d.smufl_name).startswith("clef") and not CL.is_clef_box(d.smufl_name, pb, sp) \
+                            and float(getattr(d, "confidence", 0.0) or 0.0) >= CP.SMALL_CLEF_BOX_MIN_SCORE:
+                        from ..clef_geometry import clef_family as _cf
+                        near.append({"x0": pb[0], "family": _cf(str(d.smufl_name)), "why": "clef_box_not_clef_sized",
+                                     "box": None, "cls": str(d.smufl_name)})
         other_clefs = []                                       # clef-sized G / F boxes: a C candidate on one is that clef's ink
         for k in order:
             for d in detections.get(R.cell(p, sys_idx, li, k).to_key(), ()):
@@ -15700,9 +15764,19 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             if float(n["x0"]) <= x_head:
                 continue                               # the header's own clef: read and claimed by the header readers, not a near-miss
             reason = {"f_no_dots": ABSTAIN.F_CLEF_DOTS, "bowls_not_mirrored": ABSTAIN.ASYMMETRIC}.get(n.get("why"), ABSTAIN.NO_CLUSTERS)
+            # 2.251 carry (b): every near-miss is ink that MAY be a clef -- a carried clef stops there (`clef_pagewide.clef_in_force`),
+            # unless it stands on a clef this reader did claim (a padded copy of the same box, the dots of a read F clef)
+            # (a padded copy within half a space of a claim of its own family; any candidate standing INSIDE a claimed clef -- a C clef's
+            # bowls, cut by the lines, pass as an F clef's dot pair: Litolff bars 110 and 114)
+            cand = CP.carry_enabled() and not any(
+                (f["family"] == n.get("family") and f["area"][0] - 0.5 * sp <= float(n["x0"]) <= f["area"][2] + 0.5 * sp)
+                or f["area"][0] <= float(n["x0"]) <= f["area"][2] for f in found)
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
                         reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
                         x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
+                        **({"candidate": bool(cand), "body_score": n.get("body_score"), "strong": bool(n.get("strong")),
+                            "area": [round(float(v), 1) for v in n["area"]] if n.get("area") else None}
+                           if CP.carry_enabled() else {}),
                         shape={k: n.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
                                                      "bowl_asymmetry", "g_shape") if k in n} or None)
 
