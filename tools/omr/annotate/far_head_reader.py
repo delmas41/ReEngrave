@@ -26,6 +26,8 @@ negative above, >8 below) -- `Q.NOTEHEAD_STAFF_POSITION`'s unit.
 """
 from __future__ import annotations
 
+import os
+
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 import cv2
@@ -81,6 +83,15 @@ READER_KEYWORDS: Dict[str, bool] = dict(
     # flat end jutting out of the head, however short) and counted only if found; a rung counted between the staff and the
     # note's line is refused where it is the stroke of an accent/marcato/tenuto the detector boxed. False = the old reader.
     look_where_it_must_be=True)
+#: ROADMAP 2.255 (Sean 2026-11-02, "we have to get better at reading ledger lines"): the ledger READ's own fixes,
+#: own flag, default OFF (allow-list: 1, true, yes, on). Read at call time so a lane arm can switch it.
+LEDGER_READ_ENV = "OMR_LEDGER_READ"
+
+
+def ledger_read_enabled() -> bool:
+    return os.environ.get(LEDGER_READ_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 #: band centres sit on a half-pixel grid, so two gaps compared by the walk window are each known to half a pixel
 WALK_CENTRE_TOL_PX = 0.5
 #: lane-chord-blob-split (E4): ONE blob laid over by exactly two same-staff
@@ -634,6 +645,8 @@ class FarHeadPage:
         self.not_a_note: Dict[str, Dict[str, Any]] = dict(not_a_note or {})
         self.page_boxes = list(page_boxes)
         self.nh = [(h["subject"], tuple(h["box"])) for h in heads]
+        # ROADMAP 2.255 r2: the page's far heads, the sample a system's own ledger pitch is measured from
+        self.far_pool = [h for h in heads if lg.far_head_needs_ledger_read(h["pos"])]
         self.acc = [(s, b) for (s, c, b) in self.page_boxes if c in ACCIDENTAL_CLASSES]
         # lane-ledger-not-text: the record's own text / dynamic boxes
         self.text_boxes = [tuple(b) for (_s, c, b) in self.page_boxes if lg.is_text_class(c)]
@@ -731,6 +744,39 @@ class FarHeadPage:
 
     def read(self, subject: str, box: Sequence[float], cls: Optional[str],
              global_lines: Sequence[float], not_ledger: Optional[Any] = None) -> Dict[str, Any]:
+        """`_read_once`, and (ROADMAP 2.255 r2, `OMR_LEDGER_READ`) where its ledger count did not fit only because a gap
+        was past the fixed 1.5 sp limit, once more against the limit this SYSTEM's own read ledgers give (`system_gap_max`)."""
+        r = self._read_once(subject, box, cls, global_lines, not_ledger)
+        if r.get("pos") is None and ledger_read_enabled() and str(r.get("reason") or "").startswith("count_does_not_fit"):
+            gm = self.system_gap_max(subject)
+            if gm is not None:
+                r2 = self._read_once(subject, box, cls, global_lines, not_ledger, gap_max=gm)
+                if r2.get("pos") is not None:
+                    r2["gap_max"] = gm
+                    return r2
+        return r
+
+    def system_gap_max(self, subject: str) -> Optional[float]:
+        """The fit limit of the subject's system (page, system): the gaps of the far-head ledger chains that READ at the fixed
+        limit on that system, measured once per system, `lg.local_gap_max`."""
+        p = subject.split("/")
+        key = (p[1], p[2]) if len(p) > 3 else subject
+        cache = self.__dict__.setdefault("_sys_gap_max", {})
+        if key not in cache:
+            gaps: List[float] = []
+            for h in self.far_pool:
+                q = h["subject"].split("/")
+                if len(q) > 3 and (q[1], q[2]) == key:
+                    r = self._read_once(h["subject"], h["box"], h.get("cls"), h["global_lines"], None)
+                    nf = ((r.get("detail") or {}).get("note_first") or {})
+                    if r.get("pos") is not None and nf.get("gaps"):
+                        gaps.extend(float(v) for v in nf["gaps"])
+            cache[key] = lg.local_gap_max(gaps)
+        return cache[key]
+
+    def _read_once(self, subject: str, box: Sequence[float], cls: Optional[str],
+                   global_lines: Sequence[float], not_ledger: Optional[Any] = None,
+                   gap_max: Optional[float] = None) -> Dict[str, Any]:
         """The far head's absolute position: `dict(pos, reason, box_source,
         fit)`. `pos` is `None` (with a reason word) where the reader cannot
         say -- never a default. A box the record's own evidence says is not a
@@ -767,7 +813,8 @@ class FarHeadPage:
         pos, reason = read_absolute_position(
             self.gray, lines, use, subject, nh, self.acc,
             chord_split_rungs_y=rungs, detail_out=detail,
-            text_boxes=self.text_boxes, thickness_px=self.thickness, artic_boxes=self.artic_boxes, not_ledger=not_ledger)
+            text_boxes=self.text_boxes, thickness_px=self.thickness, artic_boxes=self.artic_boxes, not_ledger=not_ledger,
+            gap_max=gap_max)
         return dict(pos=pos, reason=reason, box_source=box_source,
                     fit=st["fit"], shape_source=self.shape_source,
                     box_used=tuple(use), lines_used=list(lines), detail=detail,
@@ -863,6 +910,7 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                            thickness_px: Optional[float] = None,
                            artic_boxes: Optional[Sequence[tuple]] = None,
                            not_ledger: Optional[Any] = None,
+                           gap_max: Optional[float] = None,
                            ) -> Tuple[Optional[int], str]:
     """(absolute position, reason) of a head outside its staff, read from the
     printed ledgers. `lines` are the staff lines AT the head's x. `detail_out`,
@@ -873,13 +921,13 @@ def read_absolute_position(gray, lines: Sequence[float], box: Sequence[float],
                             jut_from_ink=EXCLUSION_RULES["jut_from_ink"]):
         return _read(gray, lines, box, subject, page_notehead_boxes,
                      page_accidental_boxes, chord_split_rungs_y, detail_out,
-                     text_boxes, thickness_px, artic_boxes, not_ledger)
+                     text_boxes, thickness_px, artic_boxes, not_ledger, gap_max)
 
 
 def _read(gray, global_lines, box, subject, page_notehead_boxes,
           page_accidental_boxes, chord_split_rungs_y=None,
           detail_out=None, text_boxes=None,
-          thickness_px=None, artic_boxes=None, not_ledger=None) -> Tuple[Optional[int], str]:
+          thickness_px=None, artic_boxes=None, not_ledger=None, gap_max=None) -> Tuple[Optional[int], str]:
     ys = sorted(float(v) for v in global_lines)
     if len(ys) < 2:
         return None, "no_staff_lines"
@@ -905,6 +953,7 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
         walk_tol_px=(WALK_CENTRE_TOL_PX if READER_KEYWORDS.get("walk_tol") else 0.0),
         outline_margin_px=(0.5 * float(thickness_px)
                            if READER_KEYWORDS.get("rows_clear_of_box") and thickness_px else 0.0),
+        outline_free_walk=ledger_read_enabled(),
     ).get(side, [])
     if not_ledger is not None:
         # ROADMAP 2.240 step 2 (Sean 2026-10-31, "a staff's own line is never a ledger line"): a rung whose row is ANOTHER staff's line
@@ -971,7 +1020,7 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False),
             flank_refine_bounded=READER_KEYWORDS.get("flank_refine_bounded", False),
             look_where_it_must_be=READER_KEYWORDS.get("look_where_it_must_be", False),
-            artic_boxes=artic_boxes, not_ledger=not_ledger)
+            artic_boxes=artic_boxes, not_ledger=not_ledger, ledger_read=ledger_read_enabled(), gap_max=gap_max)
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge

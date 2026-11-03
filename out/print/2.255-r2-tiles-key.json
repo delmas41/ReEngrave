@@ -1,0 +1,247 @@
+{
+ "question": "Which line or space is the boxed note on, counted from its own staff (the staff drawn whole)?",
+ "what_the_colour_means": "the orange box is the note asked about; nothing else is drawn",
+ "source": "cut from the exported ON file only (out/2.255/cross/*.on.symbols.json), lane-2.255-ledger-read",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "rg": "glyph/10/1/7/9/2",
+   "page": 10,
+   "part": "P8",
+   "measure": "66",
+   "staff": "staff/10/1/7",
+   "written": "A5",
+   "blue": false,
+   "off_written": "A5",
+   "off_blue": false,
+   "changed": false,
+   "box": [
+    2002.4,
+    3075.5,
+    2025.7,
+    3098.2
+   ]
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "rg": "glyph/10/1/8/12/1",
+   "page": 10,
+   "part": "P9",
+   "measure": "69",
+   "staff": "staff/10/1/8",
+   "written": "A3",
+   "blue": false,
+   "off_written": "A3",
+   "off_blue": false,
+   "changed": false,
+   "box": [
+    2384.7,
+    3341.7,
+    2411.4,
+    3363.5
+   ]
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "rg": "glyph/6/1/3/9/1",
+   "page": 6,
+   "part": "P4",
+   "measure": "39",
+   "staff": "staff/6/1/3",
+   "written": "C4",
+   "blue": true,
+   "off_written": "E-14",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    2195.4,
+    2394.5,
+    2217.9,
+    2416.4
+   ]
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "rg": "glyph/0/0/0/4/10",
+   "page": 0,
+   "part": "P1",
+   "measure": "5",
+   "staff": "staff/0/0/0",
+   "written": "B-15",
+   "blue": false,
+   "off_written": "B-15",
+   "off_blue": false,
+   "changed": false,
+   "box": [
+    3610.1,
+    1535.8,
+    3654.6,
+    1561.3
+   ]
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "rg": "glyph/5/0/2/3/2",
+   "page": 5,
+   "part": "P3",
+   "measure": "11",
+   "staff": "staff/5/0/2",
+   "written": "B3",
+   "blue": false,
+   "off_written": "B3",
+   "off_blue": false,
+   "changed": false,
+   "box": [
+    2874.3,
+    1146.2,
+    2912.7,
+    1178.9
+   ]
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "rg": "glyph/6/1/7/11/0",
+   "page": 6,
+   "part": "P8",
+   "measure": "41",
+   "staff": "staff/6/1/7",
+   "written": "E-16",
+   "blue": false,
+   "off_written": "F6",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    2450.1,
+    2994.8,
+    2480.4,
+    3015.5
+   ]
+  },
+  {
+   "tile": 7,
+   "plate": "brahms",
+   "rg": "glyph/5/0/2/5/4",
+   "page": 5,
+   "part": "P3",
+   "measure": "13",
+   "staff": "staff/5/0/2",
+   "written": "D6",
+   "blue": false,
+   "off_written": "D6",
+   "off_blue": false,
+   "changed": false,
+   "box": [
+    4224.8,
+    924.0,
+    4264.4,
+    958.5
+   ]
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "rg": "glyph/6/1/0/7/3",
+   "page": 6,
+   "part": "P1",
+   "measure": "37",
+   "staff": "staff/6/1/0",
+   "written": "C6",
+   "blue": false,
+   "off_written": "D6",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    1859.6,
+    1939.5,
+    1885.5,
+    1963.5
+   ]
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "rg": "glyph/6/1/0/6/1",
+   "page": 6,
+   "part": "P1",
+   "measure": "36",
+   "staff": "staff/6/1/0",
+   "written": "D6",
+   "blue": false,
+   "off_written": "E-16",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    1626.5,
+    1931.5,
+    1649.0,
+    1952.1
+   ]
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "rg": "glyph/6/1/10/3/1",
+   "page": 6,
+   "part": "P11",
+   "measure": "33",
+   "staff": "staff/6/1/10",
+   "written": "C4",
+   "blue": false,
+   "off_written": "D4",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    1103.4,
+    3393.2,
+    1130.4,
+    3414.9
+   ]
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "rg": "glyph/6/1/1/11/1",
+   "page": 6,
+   "part": "P2",
+   "measure": "41",
+   "staff": "staff/6/1/1",
+   "written": "A-15",
+   "blue": true,
+   "off_written": "C6",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    2439.6,
+    2099.5,
+    2462.4,
+    2116.9
+   ]
+  },
+  {
+   "tile": 12,
+   "plate": "litolff",
+   "rg": "glyph/10/1/7/4/0",
+   "page": 10,
+   "part": "P8",
+   "measure": "61",
+   "staff": "staff/10/1/7",
+   "written": "D6",
+   "blue": false,
+   "off_written": "D6",
+   "off_blue": true,
+   "changed": true,
+   "box": [
+    1156.8,
+    3051.8,
+    1178.7,
+    3072.8
+   ]
+  }
+ ]
+}
