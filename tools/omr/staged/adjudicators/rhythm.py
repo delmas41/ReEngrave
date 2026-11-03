@@ -5295,6 +5295,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     # 2.202f (Sean's round-3 tile 8): the missing level is a stroke in the thickness trough at this tip -- the map cannot
                     # tell a beam from a thin span there, so it says nothing against the readers (rule 8: "cannot tell" refutes nothing).
                     settled.append("trough_abstains")
+                elif (sb["tip_levels"] < certain and beam_last_head_enabled()
+                      and certain - sb["tip_levels"] <= len([b for b in kept if _stroke_clipped_at_cell_top(
+                          (_beam_ink_rows(ev, cell).get(b.id).detail if b.id in _beam_ink_rows(ev, cell) else None))])):
+                    # ROADMAP 2.259: the level the map did not see is a beam the CELL cut at its top edge (the map reads the same cut raster:
+                    # the stem and the beam both run past the cell). A reader that cannot see past the cut says nothing against the
+                    # readers that did (rule 8) -- the same abstention as the thickness trough above.
+                    settled.append("clipped_abstains")
                 elif sb["tip_levels"] < certain:
                     possible = max(possible, certain)
                     certain = sb["tip_levels"]
