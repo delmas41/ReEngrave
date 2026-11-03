@@ -1,0 +1,419 @@
+[
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/1/4/0/8",
+  "box": [
+   515.1800000000001,
+   2691.195,
+   539.5925,
+   2708.205
+  ],
+  "role": "r5_tile9_reasked_neighbour_refusal_removed_tie",
+  "written": {
+   "off": [
+    {
+     "pitch": "G5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "F5",
+     "tie": [
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 1,
+  "crop_box": [
+   354,
+   2605,
+   700,
+   2794
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/0/2/1/2",
+  "box": [
+   707.9,
+   730.945,
+   732.9425,
+   748.585
+  ],
+  "role": "hole_move_sample_pitch_only",
+  "written": {
+   "off": [
+    {
+     "pitch": "D4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "C4",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 2,
+  "crop_box": [
+   547,
+   645,
+   893,
+   834
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "rg": "glyph/10/1/4/3/3",
+  "box": [
+   907.5925,
+   2660.8575,
+   929.9575,
+   2676.9225
+  ],
+  "role": "hole_move_sample_tie_gain",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "E5",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 3,
+  "crop_box": [
+   745,
+   2574,
+   1092,
+   2763
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/1/8/2/6",
+  "box": [
+   779.735,
+   3297.1075,
+   804.305,
+   3316.0075
+  ],
+  "role": "hole_move_sample_tie_gain",
+  "written": {
+   "off": [
+    {
+     "pitch": "F4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "G4",
+     "tie": [
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 4,
+  "crop_box": [
+   618,
+   3212,
+   965,
+   3401
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/0/6/12/4",
+  "box": [
+   1876.0975,
+   1352.0375,
+   1901.14,
+   1372.04
+  ],
+  "role": "r6_new_pitch_move",
+  "written": {
+   "off": [
+    {
+     "pitch": "F4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Eb4",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 5,
+  "crop_box": [
+   1715,
+   1267,
+   2061,
+   1456
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "rg": "glyph/2/1/4/13/0",
+  "box": [
+   2342.695,
+   2704.425,
+   2366.95,
+   2723.325
+  ],
+  "role": "hole_move_sample_tie_gain",
+  "written": {
+   "off": [
+    {
+     "pitch": "F5",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "E5",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 6,
+  "crop_box": [
+   2181,
+   2619,
+   2528,
+   2808
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "rg": "glyph/3/1/2/7/0",
+  "box": [
+   1368.785,
+   2625.15,
+   1393.895,
+   2642.82
+  ],
+  "role": "r5_tile8_reasked_neighbour_refusal_removed_slur",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb3",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Ab3",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 7,
+  "crop_box": [
+   1208,
+   2539,
+   1554,
+   2728
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/1/3/11/4",
+  "box": [
+   1928.8225,
+   2405.7925,
+   1952.605,
+   2424.85
+  ],
+  "role": "hole_move_sample_tie_gain",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb2",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Ab2",
+     "tie": [
+      "stop",
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 8,
+  "crop_box": [
+   1767,
+   2320,
+   2113,
+   2509
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "rg": "glyph/3/1/3/6/4",
+  "box": [
+   1258.8925,
+   2859.6075,
+   1283.62,
+   2883.5475
+  ],
+  "role": "hole_move_slur_lost_unasked",
+  "written": {
+   "off": [
+    {
+     "pitch": "F4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "G4",
+     "tie": [
+      "stop"
+     ]
+    }
+   ]
+  },
+  "tile": 9,
+  "crop_box": [
+   1098,
+   2777,
+   1444,
+   2966
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "rg": "glyph/3/1/2/3/0",
+  "box": [
+   889.615,
+   2628.715,
+   915.345,
+   2645.3
+  ],
+  "role": "hole_move_tie_lost_unasked",
+  "written": {
+   "off": [
+    {
+     "pitch": "Bb3",
+     "tie": [
+      "stop"
+     ]
+    }
+   ],
+   "on": [
+    {
+     "pitch": "Ab3",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 10,
+  "crop_box": [
+   729,
+   2542,
+   1075,
+   2731
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "rg": "glyph/11/0/3/12/3",
+  "box": [
+   1874.8375,
+   938.7225,
+   1897.36,
+   959.8275
+  ],
+  "role": "hole_move_slurs_to_tie_unasked",
+  "written": {
+   "off": [
+    {
+     "pitch": "F4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "E4",
+     "tie": [
+      "start"
+     ]
+    }
+   ]
+  },
+  "tile": 11,
+  "crop_box": [
+   1712,
+   854,
+   2059,
+   1043
+  ]
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "rg": "glyph/3/1/5/5/4",
+  "box": [
+   1148.91,
+   3199.2775,
+   1173.92,
+   3217.12
+  ],
+  "role": "r5_tile10_reasked_staff_line_tie_refused_locally",
+  "written": {
+   "off": [
+    {
+     "pitch": "Ab4",
+     "tie": []
+    }
+   ],
+   "on": [
+    {
+     "pitch": "G4",
+     "tie": []
+    }
+   ]
+  },
+  "tile": 12,
+  "crop_box": [
+   988,
+   3113,
+   1334,
+   3302
+  ]
+ }
+]
