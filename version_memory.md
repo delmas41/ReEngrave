@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- day manager session end (2.252 r3-r6, 2.254 r3, answers recorded)
+Docs only. Sean's tile answers recorded on main: 2.254 r3 (52de741ad), 2.252 r4 (5d265d71e), r5 (6faaf1ae8), r6 (9957f0a38); DECISIONS correction (43ce8f426): the black-box split rides OMR_HEAD_HOLE_POSITION, not OMR_TALL_HEAD_SPLIT. ROADMAP START HERE block "after 2026-11-03" added for 2.252/2.254/2.255.
+
 ## 2026-11-03 -- ROADMAP 2.252 r6 landed ON: OMR_HEAD_HOLE_POSITION default ON (hole position, black-box split, local line check, contested/unsure tie ends)
 STAGED GATHER/ADJUDICATE/EXPORT. `head_hole_position.enabled()` / `r5_enabled()` / `r6_enabled()` now deny-list (0/false/no/off disables); gather.py `black_too=r5_enabled()`, `arc_ink_shape(local_lines=r6_enabled())`, ownership `one_end_contested`, export `unsure_ends` all ride it. Sean ruled "Land OMR_HEAD_HOLE_POSITION on" after r6 tiles (positions 11/11, ties 10/12, 0 wrong). OMR_UNISON_TIE_VOICE stays OFF. Landing check on the r6 saved gathers (re-adjudicate only, flag 0 vs 1): see FINDINGS "Landed ON". Tree: tools/omr/staged/head_hole_position.py; tests test_head_hole_position_2_252.py default-on case.
 
