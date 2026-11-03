@@ -1,0 +1,21 @@
+{
+  "lane": "2.252 round 5 (OMR_HEAD_HOLE_POSITION, OMR_TIE_CARRIES_ACCIDENTAL, OMR_ARC_TRACE_NOT_A_LINE; branch lane-2.252-r5 25cdc96f1)",
+  "date": "2026-11-03",
+  "tiles_key": "benchmarks/omr-arc-binding-2026-10/r5/tiles-key-r5.json (on the lane branch)",
+  "pitch_note": "Sean gave staff positions; the pitch check below reads them through the staff's clef as the manager read it from the tile (bass / tenor / treble), not confirmed against the record.",
+  "answers": {
+    "1":  {"sean": "half note, space above the staff, tied to the note before", "on": "Bb3 no tie", "off": "C4 tied", "pitch_on": "right", "tie_on": "missing (partner unread)"},
+    "2":  {"sean": "unison half notes, top space, tied to the notes before", "on": "D4 tied (one written)", "off": "C4 tied", "pitch_on": "right", "tie_on": "one of two"},
+    "3":  {"sean": "half note, top space, tied to the note before", "on": "Eb5 no tie", "off": "F5 tied", "pitch_on": "right", "tie_on": "missing"},
+    "4":  {"sean": "half note, second space from the bottom, tied before and after", "on": "A4 tied after only", "off": "Bb4 tied both", "pitch_on": "right", "tie_on": "front missing"},
+    "5":  {"sean": "unison half notes, second line from the top, tied to the notes after", "on": "D5 no tie", "off": "F5 no tie", "pitch_on": "right", "tie_on": "missing (both arms)"},
+    "6":  {"sean": "unison half notes, second line from the bottom, tied to the notes before", "on": "G4, one of two tied", "off": "same", "tie_on": "one of two (upper tie never boxed)"},
+    "7":  {"sean": "unison quarter notes, middle line, tied to the notes before", "on": "Bb4 both tied", "off": "B4 none", "tie_on": "right (trace-not-a-line + carry)"},
+    "8":  {"sean": "half note, top line, SLUR from a half note in the space above", "on": "Bb3 tied", "off": "Bb3 tied", "tie_on": "WRONG: a slur written as a tie in both arms; the neighbour-piece restore keeps it"},
+    "9":  {"sean": "half note, top line, tied to the note after", "on": "G5 no tie", "off": "G5 no tie", "tie_on": "missing: the neighbour-piece refusal removed r4's correct gain; pitch G5 vs top line of a treble staff (F5) looks a step high in both arms"},
+    "10": {"sean": "half note, second line from the bottom, SLUR from a note in the second space", "on": "no tie", "off": "no tie", "tie_on": "right (the removed r4 gain was a slur)"},
+    "11": {"sean": "quarter note, middle line, tied to the note before", "on": "Bb4 tied", "off": "Bb4 no tie", "tie_on": "right (trace-not-a-line)"},
+    "12": {"sean": "half note, top space, SLUR to the note after on the second line from the top", "on": "G3 no tie (split box)", "off": "not written", "tie_on": "right"}
+  },
+  "reading": "Hole position: the moved head's pitch is right on all 5 re-asked tiles (1-5); the ties there are lost because the PARTNER is unread or unbound. Tie along a staff line: 2/2 right (7, 11). Neighbour-piece refusal: 1 of 3 right (10 right; 8 keeps a slur as a tie; 9 lost a real tie). Split black box: right (12). Carry: right on 7 and 11."
+}
