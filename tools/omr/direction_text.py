@@ -1048,8 +1048,54 @@ MIN_CROP_SPACING_PX = 80.0
 MAX_CROP_UPSCALE = 4.0
 
 
+#: ROADMAP 2.254 r3 (STAGED only: the gather sets `page_dict["erase_through_lines"]` under `OMR_HAIRPIN_REACH`; LEGACY never does).
+#: A straight line that comes INTO a word's box from outside it is a page-wide mark read and claimed before the words (a barline, from
+#: above or below; a staff line, left to right through it -- plan 2026-10-28 s9: a later reader may never take claimed ink). Left in the
+#: crop it is read as a letter: Brahms p8, a barline beside `dim.` came back from Surya as `dim!` (refused by the lexicon), and a staff
+#: line over the tight crop left Tesseract's letter gate empty, so Surya was never asked. A vertical run must be one unbroken stroke this
+#: long and reach outside the box above or below; a horizontal one this long and reach outside it on BOTH sides. A letter stroke ends
+#: inside its own box. Scan breaks are NOT bridged: bridging glued the `i` of `perdendosi` (Brahms p8) to the barline it leans on.
+#: CONVENTION ASSUMED: no letter of a direction word is one straight stroke continuing out of its own box. WHAT WOULD FALSIFY IT: a
+#: READ word lost when the flag is on.
+THROUGH_LINE_V_SPACES = 2.0
+THROUGH_LINE_H_SPACES = 3.0
+
+
+def through_line_mask(binary: np.ndarray, box: Sequence[int], spacing: float,
+                      region: Sequence[int]) -> np.ndarray:
+    """A mask over `region` (x0, y0, x1, y1, page px) of the ink of the straight lines that come into `box` from outside it (see
+    `THROUGH_LINE_V_SPACES`). `binary` is the page's Sauvola image (0 = ink)."""
+    bx0, by0, bx1, by1 = (int(v) for v in box)
+    rx0, ry0, rx1, ry1 = (int(v) for v in region)
+    h, w = binary.shape[:2]
+    m = int(round(3.0 * spacing))
+    X0, Y0 = max(0, min(bx0, rx0) - m), max(0, min(by0, ry0) - m)
+    X1, Y1 = min(w, max(bx1, rx1) + m), min(h, max(by1, ry1) + m)
+    sub = ((binary[Y0:Y1, X0:X1] == 0) * 255).astype(np.uint8)
+    hit = np.zeros(sub.shape, dtype=bool)
+    if sub.size:
+        lv = max(3, int(round(THROUGH_LINE_V_SPACES * spacing)))
+        lh = max(3, int(round(THROUGH_LINE_H_SPACES * spacing)))
+        for kern, grow, vertical in (((1, lv), (3, 1), True), ((lh, 1), (1, 3), False)):
+            op = cv2.morphologyEx(sub, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, kern))
+            n, lab, st, _c = cv2.connectedComponentsWithStats(op, 8)
+            keep = np.zeros(sub.shape, dtype=np.uint8)
+            for k in range(1, n):
+                gx0, gy0 = X0 + st[k][0], Y0 + st[k][1]
+                gx1, gy1 = gx0 + st[k][2], gy0 + st[k][3]
+                if vertical and (gy0 < by0 or gy1 > by1) and gx1 > rx0 and gx0 < rx1 and gy1 > ry0 and gy0 < ry1:
+                    keep[lab == k] = 255
+                elif not vertical and gx0 < bx0 and gx1 > bx1 and gy1 > ry0 and gy0 < ry1:
+                    keep[lab == k] = 255
+            if keep.any():
+                # the line's soft edge, across it only (a letter touching a barline keeps its ink along the line)
+                hit |= cv2.dilate(keep, cv2.getStructuringElement(cv2.MORPH_RECT, grow)) > 0
+    return hit[ry0 - Y0:ry1 - Y0, rx0 - X0:rx1 - X0]
+
+
 def crop_for(page: PageImage, candidate: TextCandidate,
-             spacing: float, erase: np.ndarray | None = None) -> np.ndarray:
+             spacing: float, erase: np.ndarray | None = None,
+             lines: bool = False) -> np.ndarray:
     """The candidate's own pixels, padded and enlarged, from the ORIGINAL render.
 
     Not from the subtracted mask: the mask has holes where the detections were
@@ -1073,6 +1119,11 @@ def crop_for(page: PageImage, candidate: TextCandidate,
         if drop.any():
             crop = crop.copy()
             crop[drop] = 255
+    if lines and crop.size:
+        through = through_line_mask(page.binary, candidate.bbox_page, spacing, (cx0, cy0, cx1, cy1))
+        if through.any():
+            crop = crop.copy()
+            crop[through] = 255
     scale = min(MAX_CROP_UPSCALE, MIN_CROP_SPACING_PX / max(1.0, spacing))
     if scale <= 1.0 or crop.size == 0:
         return crop
@@ -1093,13 +1144,18 @@ TIGHT_MARGIN_SPACES = 1.0
 
 
 def tight_crop_for(page: PageImage, candidate: TextCandidate,
-                   spacing: float) -> np.ndarray:
+                   spacing: float, lines: bool = False) -> np.ndarray:
     px = int(round(TIGHT_PAD_X_SPACES * spacing))
     py = int(round(TIGHT_PAD_Y_SPACES * spacing))
     x0, y0, x1, y1 = candidate.bbox_page
     h, w = page.rgb.shape[:2]
-    crop = page.rgb[max(0, y0 - py):min(h, y1 + py),
-                    max(0, x0 - px):min(w, x1 + px)]
+    region = (max(0, x0 - px), max(0, y0 - py), min(w, x1 + px), min(h, y1 + py))
+    crop = page.rgb[region[1]:region[3], region[0]:region[2]]
+    if lines and crop.size:
+        through = through_line_mask(page.binary, candidate.bbox_page, spacing, region)
+        if through.any():
+            crop = crop.copy()
+            crop[through] = 255
     m = int(round(TIGHT_MARGIN_SPACES * spacing))
     white = (255,) * (crop.shape[2] if crop.ndim == 3 else 1)
     crop = cv2.copyMakeBorder(crop, m, m, m, m, cv2.BORDER_CONSTANT,
@@ -1433,7 +1489,8 @@ def read_directions(pws: PageWithStaves, page_dict: dict[str, Any], *,
             and any(n == "tesseract" for n, _fn in readers)):
         return _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
                                blanked, config, info, lexicon_scope=lexicon_scope)
-    crops = [crop_for(pws.page, c, spacing, erase=erase) for c in candidates]
+    lines = bool(page_dict.get("erase_through_lines"))     # ROADMAP 2.254 r3 (STAGED, flag): `THROUGH_LINE_V_SPACES`
+    crops = [crop_for(pws.page, c, spacing, erase=erase, lines=lines) for c in candidates]
 
     # Every rung reads every crop. Running the later ones only where the first
     # came back empty would be cheaper and would measure something else: a rung
@@ -1850,18 +1907,19 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     """
     cheap = [(n, f) for n, f in readers if n == "tesseract"]
     slow = [(n, f) for n, f in readers if n != "tesseract"]
+    lines = bool(page_dict.get("erase_through_lines"))     # ROADMAP 2.254 r3 (STAGED, flag): `THROUGH_LINE_V_SPACES`
     n = len(candidates)
     wide: dict[int, np.ndarray] = {}
     tight: dict[int, np.ndarray] = {}
 
     def wide_crop(i):
         if i not in wide:
-            wide[i] = crop_for(pws.page, candidates[i], spacing, erase=erase)
+            wide[i] = crop_for(pws.page, candidates[i], spacing, erase=erase, lines=lines)
         return wide[i]
 
     def tight_crop(i):
         if i not in tight:
-            tight[i] = tight_crop_for(pws.page, candidates[i], spacing)
+            tight[i] = tight_crop_for(pws.page, candidates[i], spacing, lines=lines)
         return tight[i]
 
     accepted_at: dict[int, DirectionText] = {}
@@ -1936,7 +1994,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             better = None
             if union is not None:
                 c2 = dataclasses.replace(candidates[i], bbox_page=union)
-                crop = tight_crop_for(pws.page, c2, spacing)
+                crop = tight_crop_for(pws.page, c2, spacing, lines=lines)
                 for name, fn in cheap + slow:
                     try:
                         text = list(getattr(fn, "tight", fn)([crop]))[0]
@@ -1967,7 +2025,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             x0, _y0, x1, _y1 = candidates[i].bbox_page
             if letters < 3 or (x1 - x0) / spacing / letters <= WIDE_BOX_SPACES_PER_LETTER:
                 continue
-            crop = tight_crop_for(pws.page, candidates[i], spacing)
+            crop = tight_crop_for(pws.page, candidates[i], spacing, lines=lines)
             for name, fn in cheap + slow:
                 try:
                     text = list(getattr(fn, "tight", fn)([crop]))[0]
@@ -2033,7 +2091,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
         if union is None:
             continue
         c2 = dataclasses.replace(candidates[i], bbox_page=union)
-        crop = tight_crop_for(pws.page, c2, spacing)
+        crop = tight_crop_for(pws.page, c2, spacing, lines=lines)
         for name, fn in cheap + slow:
             try:
                 text = list(getattr(fn, "tight", fn)([crop]))[0]

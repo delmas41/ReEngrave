@@ -16577,6 +16577,10 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
         # claimed BEFORE the words are read; its arms are erased from the word reader's mask as every detection is, so the OCR neither reads
         # them as a letter ('a dim', Brahms p8) nor grows its box over them.
         page_dict["erase_ink"] = _hairpin_reach.erase_entries(log, p)
+        # ROADMAP 2.254 r3: a barline / staff line running THROUGH a word's box is page-wide ink claimed before the words; it is whited
+        # out of the OCR crop (`direction_text.through_line_mask`). Cause: Brahms p8 `dim.` beside a barline read `dim!` (lexicon refused),
+        # and a staff line over its tight crop emptied Tesseract's letter gate, so Surya was never asked -- two READ words lost.
+        page_dict["erase_through_lines"] = True
     page_staff_of = {v: k for k, v in local.items()}
     key_of_page_staff = {v: k for k, v in page_staff_of.items()}
 
