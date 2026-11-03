@@ -178,7 +178,6 @@ The carry round itself (OMR_CLEF_CARRY, seed 22513) is on branch `lane-2.251-car
 
 Open: (1) bar 111, 9 of 10 Litolff heads right->wrong in the lane's pitch witness, not yet explained; (2) tile 11 cut-off (0.69 vs 0.70); (3) tile 12 far-head position.
 
-<<<<<<< HEAD
 ## 2026-11-02: carry round 2 (Sean: "fix bar 111 so the carry is never worse"; lane-2.251-carry, OMR_CLEF_CARRY still OFF)
 
 **Cause, bar 111.** The return bass clef's dots touch the heads beside them, so no dot pair is seen. The detector drew only heads, flags and a 5-sp-wide 0.07 "head" on it, so nothing stopped the tenor carry.
@@ -206,7 +205,7 @@ Open: (1) bar 111, 9 of 10 Litolff heads right->wrong in the lane's pitch witnes
 - Brahms frozen sample: NOT run. At ~7 min a page an arm, it would take about 2 h.
 
 **Tiles:** `out/print/2.251-carry-tiles-r2/` (seed 22514). The bar-111 mark, 3 heads after it, 2 Vc heads after bar 346; all written red.
-=======
+
 ## 2026-11-02 -- Sean's carry round-2 tile answers (2.251 step 2, `answers-r4-carry.json`)
 
 Tiles `out/print/2.251-carry-tiles-r2/` (lane branch `lane-2.251-carry` head 8c2180033, seed 22514): the heads the carry newly STOPPED (written red "clef?", no pitch) after Litolff bar 111 (Fag) and Vc bar 346, plus the bar-111 mark. Scored against the key:
@@ -225,7 +224,6 @@ Tile `out/print/2.251-carry-bar38/` (lane branch `lane-2.251-carry`, Litolff pri
 
 - **There is no note in the box.** It is F-clef ink fused with a quarter rest, so the witness's 1 right->wrong is not a real note. Real carry-caused right->wrong on Litolff: **0**.
 - **New open item, not the carry's:** the quarter rest fused with the clef is read as a head in both arms -- the rest is lost and a false head stands in its place. An ink-claim question (Litolff MERGES).
->>>>>>> origin/main
 
 ## 2026-11-02 -- 2.251 step 2 LANDED: OMR_CLEF_CARRY default ON (Sean "Land now")
 
