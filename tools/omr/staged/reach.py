@@ -415,6 +415,8 @@ NOT_A_STAGE = frozenset({
     "arc_claim.py",
     # ROADMAP 2.223. Pure helpers for `adjudicate_wedge_anchor`'s page-wide hairpin binding (OMR_HAIRPIN_BIND_PAGEWIDE): files no row.
     "hairpin_bind.py",
+    # ROADMAP 2.254. The OMR_HAIRPIN_REACH flag (read by `gather.gather_wedge_boxes` and `ownership._wedge_page_binding`): files no row.
+    "hairpin_reach.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of
     # its own, files no row, decides nothing.
     "lane_report.py",

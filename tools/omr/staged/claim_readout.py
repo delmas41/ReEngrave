@@ -85,7 +85,7 @@ KIND_BIT = {k: 1 << i for i, k in enumerate(KINDS)}
 #: stroke_owner family (and the register's owner names) -> coarse kind
 FAMILY_KIND = {
     "head": "head", "ledger": "ledger", "accidental": "accidental", "dot": "dot", "rest": "rest", "whole_rest": "rest",
-    "arc": "arc", "arc_trace": "arc", "hairpin": "hairpin", "stem": "stem", "beam": "beam", "flag": "flag",
+    "arc": "arc", "arc_trace": "arc", "hairpin": "hairpin", "hairpin_trace": "hairpin", "stem": "stem", "beam": "beam", "flag": "flag",
     "dynamic": "word_dynamic", "word": "word_dynamic", "mark": "mark", "text": "mark",
     "bracket": "bracket", "leading_column": "bracket", "barline": "barline",
     "clef": "clef_key_meter", "meter": "clef_key_meter", "key_signature": "clef_key_meter",

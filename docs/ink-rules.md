@@ -6,7 +6,7 @@
 
 ## Summary
 
-1. **501 rule exits** are sorted (561 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 39 guard modules): **175 CONVENTION** (A), **10 ERASURE** (B), **86 DOUBLE-COUNT** (C), **170 OTHER** (D), **60 UNSURE** (U).
+1. **503 rule exits** are sorted (562 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 40 guard modules): **177 CONVENTION** (A), **10 ERASURE** (B), **86 DOUBLE-COUNT** (C), **170 OTHER** (D), **60 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
@@ -226,6 +226,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not
 | a hairpin's tips are its start and stop, under the staff above | A | each tip binds to the note at it (within a head width) or the note sounding there, on the staff ABOVE the hairpin; never a head below it | `adjudicate_wedge_anchor` (ownership): `bound_page_wide` | 0 / 0 | 0 / 0 | Sean 2026-10-31 (page-facts s1), 2026-09-05 (one anchor is enough); ROADMAP 2.223 | open (OMR_HAIRPIN_BIND_PAGEWIDE OFF) |
 | a word claimed first keeps its ink | A | a CV hairpin whose box lies inside a claimed word is the word's letter, not a hairpin | `adjudicate_wedge_anchor` (ownership): `inside_a_word` | 0 / 0 | 0 / 0 | plan-2026-10-28 s10 (claim order); ROADMAP 2.223 | open (OMR_HAIRPIN_BIND_PAGEWIDE OFF) |
 | - | D:honesty | - | `adjudicate_wedge_anchor` (ownership): `tip_unbound`, `not_between_staves` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | open (OMR_HAIRPIN_BIND_PAGEWIDE OFF) |
+| only a hairpin is longer than one note | A | a wedge whose two tips bind to one note, no wider than an accent (3 sp), may be an accent or a hairpin; neither is written | `adjudicate_wedge_anchor` (ownership): `one_note_wedge` | 0 / 0 | 0 / 0 | Sean 2026-11-02 (page-facts s1); ROADMAP 2.254 | open (OMR_HAIRPIN_REACH OFF) |
 | an ottava bracket belongs to the staff it hugs | A | - | `adjudicate_ottava_owner` (ownership): `above`, `below` | 0 / 10 | 0 / 6 | PLACEMENT-CONVENTIONS.md | kept |
 | - | D:honesty | - | `adjudicate_ottava_owner` (ownership): `no_staff_lines` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a pedal mark belongs to the lower staff of a grand staff | A | - | `adjudicate_pedal_owner` (ownership): `grand_staff_lower_staff` | 0 / 0 | 0 / 0 | PLACEMENT-CONVENTIONS.md | kept (inert on orchestral) |
@@ -327,6 +328,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `geometry.py` | A | the standard notehead box: all regular heads are the same size | Sean 2026-09-29 (2.39) | kept |
 | `groups.py` | D:honesty | several witnesses to ONE fact and whether they agree (a second witness must be from a different source) | page-facts s2 | kept |
 | `hairpin_bind.py` | U | NOT YET CLASSIFIED | - | open |
+| `hairpin_reach.py` | A | a hairpin's arms are straight lines that meet; the reader sees past a barline, stem or slur crossing them, and a word claim leaves a hairpin inside its box | ROADMAP 2.254 (flag OMR_HAIRPIN_REACH, OFF); page-facts s1 (arcs bow, hairpins are straight) | open: tiles |
 | `head_extent.py` | U | NOT YET CLASSIFIED | - | open |
 | `head_ink.py` | U | NOT YET CLASSIFIED | - | open |
 | `head_oval.py` | C | does a notehead box hold a head-shaped oval? (boxes at a bar's left edge were tie ends or barlines) | Sean 2026-10-17 (2.164) | retires with 2.205 |
