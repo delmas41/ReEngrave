@@ -2654,6 +2654,23 @@ def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
             "contradictions": [], "linked": []}
 
 
+#: ROADMAP 2.252 r4 (default OFF; "1"/"true"/"yes"/"on" enables): a tie carries its accidental across the barline (page-facts).
+TIE_CARRY_ENV = "OMR_TIE_CARRIES_ACCIDENTAL"
+
+
+def tie_carry_enabled() -> bool:
+    return os.environ.get(TIE_CARRY_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _has_printed_accidental(rec: Record, head: str) -> bool:
+    """True where a standing DECIDED `Q.ACCIDENTAL_OWNER` names `head`: an accidental printed on it (its pitch is its own)."""
+    for v in rec.verdicts_of(Q.ACCIDENTAL_OWNER):
+        if (v.get("outcome") == "decided" and str(v.get("value")) == str(head)
+                and rec.verdict(Q.ACCIDENTAL_OWNER, v["subject"]) is v):
+            return True
+    return False
+
+
 def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                       ties: Dict[str, Any], voice_of: Dict[int, int],
                       dropped: Dict[str, int], rec: Optional[Record] = None,
@@ -2707,6 +2724,16 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
             dropped["tie_pair_names_one_note"] += 1
             continue
         p0, p1 = first.get("pitch"), last.get("pitch")
+        if (p0 != p1 and rec is not None and tie_carry_enabled() and sm != tm and p0 and p1
+                and _legacy._pitch_step(p0) == _legacy._pitch_step(p1)
+                and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)):
+            # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default OFF; page-facts, Sean 2026-10-30, general: "A tie carries an
+            # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
+            # start's pitch; counted, and the stop's own reading kept on the note.
+            last["pitch_before_tie_carry"] = p1
+            last["pitch"] = p1 = p0
+            if counters is not None:
+                counters["tie_carries_the_accidental"] = counters.get("tie_carries_the_accidental", 0) + 1
         if p0 != p1:
             same_step = (_legacy._pitch_step(p0) == _legacy._pitch_step(p1))
             reason = ("tie_spelling_differs" if same_step
