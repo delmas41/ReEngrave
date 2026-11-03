@@ -207,10 +207,10 @@ class TestTieAlongALine(unittest.TestCase):
                 v = _decide(log, g)
             self.assertEqual(v.reason, "ink_is_a_staff_line", trace)
 
-    def test_default_off(self):
+    def test_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FP.ARC_TRACE_NOT_A_LINE_ENV, None)
-            self.assertFalse(FP.arc_trace_not_a_line_enabled())
+            self.assertTrue(FP.arc_trace_not_a_line_enabled())
 
 
 class TestJudgedPlaceForAnArcTileOnItsNote(unittest.TestCase):

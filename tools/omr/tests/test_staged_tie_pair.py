@@ -18,7 +18,9 @@ here fails there (no `Q.TIE_PAIR`; the exporter paired ties by slur COVERAGE).
 
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
@@ -426,7 +428,9 @@ class TestAContradictionIsRefusedAndNamed(unittest.TestCase):
         its accidental: a pitch fix, not a pairing fault."""
         page = _tie_page(stop_pitch="F4")
         page["record"]["verdicts"].append(_vrd(5200, START, Q.PITCH, "F#4"))
-        xml, rep = SX.to_musicxml(page)
+        # OMR_TIE_CARRIES_ACCIDENTAL is default ON since 2026-11-03 (the stop carries the accidental); the refusal is the OFF path.
+        with mock.patch.dict(os.environ, {SX.TIE_CARRY_ENV: "0"}):
+            xml, rep = SX.to_musicxml(page)
         self.assertNotIn("<tie ", xml)
         self.assertEqual(rep["arcs_not_written"]["tie_spelling_differs"], 1)
 

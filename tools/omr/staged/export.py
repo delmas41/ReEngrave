@@ -2654,12 +2654,12 @@ def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
             "contradictions": [], "linked": []}
 
 
-#: ROADMAP 2.252 r4 (default OFF; "1"/"true"/"yes"/"on" enables): a tie carries its accidental across the barline (page-facts).
+#: ROADMAP 2.252 r4 (default ON since 2026-11-03; an explicit 0/false/no/off disables): a tie carries its accidental across the barline (page-facts).
 TIE_CARRY_ENV = "OMR_TIE_CARRIES_ACCIDENTAL"
 
 
 def tie_carry_enabled() -> bool:
-    return os.environ.get(TIE_CARRY_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(TIE_CARRY_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _has_printed_accidental(rec: Record, head: str) -> bool:
@@ -2727,7 +2727,7 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
         if (p0 != p1 and rec is not None and tie_carry_enabled() and sm != tm and p0 and p1
                 and _legacy._pitch_step(p0) == _legacy._pitch_step(p1)
                 and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)):
-            # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default OFF; page-facts, Sean 2026-10-30, general: "A tie carries an
+            # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default ON; page-facts, Sean 2026-10-30, general: "A tie carries an
             # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
             # start's pitch; counted, and the stop's own reading kept on the note.
             # The head's unison twin (2.175: one head, two voices) is the same head: it carries too. Undone below where no link

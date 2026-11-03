@@ -1,4 +1,4 @@
-"""ROADMAP 2.252 r4 -- a tie carries its accidental across the barline (STAGED EXPORT, flag `OMR_TIE_CARRIES_ACCIDENTAL`, default OFF).
+"""ROADMAP 2.252 r4 -- a tie carries its accidental across the barline (STAGED EXPORT, flag `OMR_TIE_CARRIES_ACCIDENTAL`, default ON since 2026-11-03).
 
 page-facts (Sean 2026-10-30, general): "A tie carries an accidental even across a bar line" -- the tied-to note keeps the start note's
 pitch, printed accidental or not; `tie_spelling_differs` must not refuse it. Cause (2.252 r3/r4 census, Brahms p5 `5/1/5/4/9`): the stop

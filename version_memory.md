@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- ROADMAP 2.252 r5 landed ON: a tie carries its accidental; a tie traced along a staff line is kept
+STAGED ADJUDICATE..EXPORT, flags `OMR_TIE_CARRIES_ACCIDENTAL` (export.py) and `OMR_ARC_TRACE_NOT_A_LINE` (family_precision.py) now default ON (deny-list; explicit 0/false/no/off disables). Sean's tiles (answers-2.252-r5.json): tie trace 2/2 right; hole pitch 5/5 right but `OMR_HEAD_HOLE_POSITION` (with its neighbour-piece refusal, right 1 of 3) and `OMR_UNISON_TIE_VOICE` stay OFF for round 6. The box split rides `OMR_TALL_HEAD_SPLIT` (box_kind.py), ON since 2026-11-02. Landing check (saved r4/r5 gathers, hole position OFF in both arms, two landing flags 0 vs 1): judged right->wrong 0 and unwritten->wrong 0 on Litolff p10-11, Litolff p2-3, Brahms p0,5 (ties +0/+6/+34; the r5 `11/0/2/12/2` unwritten->wrong was hole-position-arm only and did not reappear). Tests that asserted the OFF default updated.
+
 ## 2026-11-02 -- 2.251 step 3 (F clef dot finder) PARKED, docs only (Sean 'Park it')
 
 No code. Sean: "I don't think we should land the work that it has done, but I'm not ready to give up on it", then "Park it. Document well." Branch lane-2.251-dots 6d1708b40 (flag OMR_CLEF_DOT_FUSED, dots_scan.py, dots_table.py) and test-2.251-f-cutoff stay unlanded. Cause: the stem clear tests one pixel column's black run only, and at bar 111 the dots fuse with the staff lines, so line+dot+line reads as a stem. Resumes under ROADMAP 2.223. FINDINGS.md has the full entry, an untested body-scale hypothesis and the process lesson.

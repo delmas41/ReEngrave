@@ -2211,7 +2211,7 @@ ARC_BARLINE_MIN_HEIGHT_SPACES = 2.0
 ARC_BARLINE_MIN_TALL_COLS = 0.6
 
 
-#: ROADMAP 2.252 r5 (flag `OMR_ARC_TRACE_NOT_A_LINE`, default OFF). CAUSE (benchmarks/omr-arc-binding-2026-10/FINDINGS.md, r5; Sean's
+#: ROADMAP 2.252 r5 (flag `OMR_ARC_TRACE_NOT_A_LINE`, default ON since 2026-11-03). CAUSE (benchmarks/omr-arc-binding-2026-10/FINDINGS.md, r5; Sean's
 #: r3/r4 tile 12, Brahms p5 `5/1/5/4/8`): a tie that runs ALONG a staff line for most of its length (Breitkopf's dotted-quarter ties
 #: across a barline) loses its middle with the line when `Q.ARC_INK_SHAPE` erases the line, so the box reads "no curve" (coverage 0.16)
 #: and is refused `ink_is_a_staff_line` -- while GATHER's page-wide trace (`arcs_system`, ROADMAP 2.166) followed it as a curve that
@@ -2225,8 +2225,8 @@ ARC_TRACE_TIE_SHAPE = "two_heads_one_position_adjacent"
 
 
 def arc_trace_not_a_line_enabled() -> bool:
-    """`OMR_ARC_TRACE_NOT_A_LINE` (ROADMAP 2.252 r5), default OFF; an explicit on-word enables."""
-    return os.environ.get(ARC_TRACE_NOT_A_LINE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ARC_TRACE_NOT_A_LINE` (ROADMAP 2.252 r5), default ON; an explicit 0/false/no/off disables."""
+    return os.environ.get(ARC_TRACE_NOT_A_LINE_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _traced_tie(ev: Evidence) -> Optional[str]:

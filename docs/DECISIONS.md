@@ -8,6 +8,7 @@ here is ever edited in place — a reversal is a new line.
 Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
+- 2026-11-03 Sean: land 2.252 r5 OMR_TIE_CARRIES_ACCIDENTAL and OMR_ARC_TRACE_NOT_A_LINE ON (box split rides OMR_TALL_HEAD_SPLIT, ON); OMR_HEAD_HOLE_POSITION stays OFF for round 6.
 - 2026-11-03 Sean, 2.252 r5 tiles: hole position puts the moved head on Sean's line/space on all 5 re-asked tiles (ties lost there are the partner's); tie-along-a-line 2/2 right; the neighbour-piece refusal 1/3 right (tile 8 is a slur written as a tie, tile 9 a real tie removed); split box right. Answers: benchmarks/omr-arc-binding-2026-10/answers-2.252-r5.json.
 - 2026-11-03 Sean: the parked 2.251 step 3 dot finder resumes under 2.223 ('Yes').
 - 2026-11-02 Sean, 2.251 step 3 (F clef dot finder, OMR_CLEF_DOT_FUSED, lane-2.251-dots 6d1708b40): "I don't think we should land the work that it has done, but I'm not ready to give up on it." Then: "Actually, I just saw that there's work done for it later. Park it. Document well." Parked, not dropped: nothing lands, bar 111 stays red, it resumes under ROADMAP 2.223 as a joint body+dots fit after the heads are claimed; lesson: a stroke test on raw ink counts the staff lines, so read a column's profile before blaming a neighbour. (benchmarks/clef-change-2026-11/FINDINGS.md)
