@@ -1,0 +1,335 @@
+[
+ {
+  "tile": 1,
+  "role": "CONTROL-SPAN",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "1/2",
+  "box": [
+   948.0,
+   4730.0,
+   1118.0,
+   4762.0
+  ],
+  "width_spaces": 6.07,
+  "lane_wrote": "both arms: diminuendo from the quarter. in bar 14 to the quarter in bar 14; written onsets: quarter. (bar 14), quarter (bar 14)",
+  "subject": "glyph/8/1/2/0/100000",
+  "notes_in_crop": [
+   "glyph/8/1/2/0/4",
+   "glyph/8/1/2/0/8"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   874,
+   4484
+  ],
+  "crop_size": [
+   336,
+   320
+  ]
+ },
+ {
+  "tile": 2,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "1/2",
+  "box": [
+   1468.0,
+   4733.0,
+   1574.0,
+   4763.0
+  ],
+  "width_spaces": 3.79,
+  "lane_wrote": "ON; OFF none: crescendo from the quarter in bar 15 to the eighth in bar 15; written onsets: quarter (bar 15), eighth (bar 15)",
+  "subject": "glyph/8/1/2/1/100002",
+  "notes_in_crop": [
+   "glyph/8/1/2/1/3",
+   "glyph/8/1/2/1/4"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   1359,
+   4484
+  ],
+  "crop_size": [
+   336,
+   321
+  ]
+ },
+ {
+  "tile": 3,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "0/5",
+  "box": [
+   2982.0,
+   2201.0,
+   3143.0,
+   2232.0
+  ],
+  "width_spaces": 5.75,
+  "lane_wrote": "ON; OFF none: a hairpin written under ONE chord (start and stop on glyph/8/0/5/5/3, the chord with /0): the dotted-quarter chord gained ON (OFF did not write it: duration narrowed, a beam box on the hairpin arm)",
+  "subject": "glyph/8/0/5/5/100005",
+  "notes_in_crop": [
+   "glyph/8/0/5/5/3",
+   "glyph/8/0/5/5/0"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   2891,
+   1954
+  ],
+  "crop_size": [
+   336,
+   320
+  ]
+ },
+ {
+  "tile": 4,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 19,
+  "staff": "1/11",
+  "box": [
+   2365.0,
+   6840.0,
+   2570.0,
+   6887.0
+  ],
+  "width_spaces": 7.52,
+  "lane_wrote": "ON: pesante (gained; surya on the line-cleaned crop). OFF: no reading",
+  "subject": "glyph/19/1/11/3/90022",
+  "notes_in_crop": [],
+  "notes_missing_box": [],
+  "crop_origin": [
+   2296,
+   6616
+  ],
+  "crop_size": [
+   342,
+   311
+  ]
+ },
+ {
+  "tile": 5,
+  "role": "CONTROL-SPAN",
+  "plate": "brahms",
+  "page": 25,
+  "staff": "0/13",
+  "box": [
+   1285.0,
+   4117.0,
+   1917.0,
+   4160.0
+  ],
+  "width_spaces": 23.19,
+  "lane_wrote": "ON; OFF the same: crescendo from the eighth in bar 46 to the eighth in bar 47; written onsets: eighth (bar 46), rest (bar 46), eighth (bar 46), eighth (bar 47), rest (bar 47), eighth (bar 47), eighth (bar 47), rest (bar 47), eighth (bar 47)",
+  "subject": "glyph/25/0/13/1/100000",
+  "notes_in_crop": [
+   "glyph/25/0/13/0/0",
+   "glyph/25/0/13/1/3"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   1109,
+   3816
+  ],
+  "crop_size": [
+   876,
+   384
+  ]
+ },
+ {
+  "tile": 6,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "0/1",
+  "box": [
+   3392.0,
+   1067.0,
+   3513.0,
+   1119.0
+  ],
+  "width_spaces": 4.25,
+  "lane_wrote": "ON: dim (read from the crop with the barline whited out, tesseract-lines-tight). OFF: dim, read only from a box that held the hairpin [3229,1061,3513,1119]; round-2 ON: no reading",
+  "subject": "glyph/8/0/1/6/90003",
+  "notes_in_crop": [],
+  "notes_missing_box": [],
+  "crop_origin": [
+   3281,
+   799
+  ],
+  "crop_size": [
+   342,
+   362
+  ]
+ },
+ {
+  "tile": 7,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "staff": "0/11",
+  "box": [
+   4626.0,
+   3198.0,
+   4800.0,
+   3227.0
+  ],
+  "width_spaces": 6.39,
+  "lane_wrote": "ON; OFF none: diminuendo from the quarter in bar 34 to the quarter in bar 35; written onsets: quarter (bar 34), quarter (bar 35)",
+  "subject": "glyph/19/0/11/8/100001",
+  "notes_in_crop": [
+   "glyph/19/0/11/8/3",
+   "glyph/19/0/11/9/11"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   4555,
+   2969
+  ],
+  "crop_size": [
+   330,
+   298
+  ]
+ },
+ {
+  "tile": 8,
+  "role": "CONTROL-WORD",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "0/5",
+  "box": [
+   3395.0,
+   2195.0,
+   3540.0,
+   2246.0
+  ],
+  "width_spaces": 5.18,
+  "lane_wrote": "both arms: dim.",
+  "subject": "glyph/8/0/5/6/90008",
+  "notes_in_crop": [],
+  "notes_missing_box": [],
+  "crop_origin": [
+   3299,
+   1954
+  ],
+  "crop_size": [
+   336,
+   334
+  ]
+ },
+ {
+  "tile": 9,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "1/6",
+  "box": [
+   3664.0,
+   5683.0,
+   3902.0,
+   5735.0
+  ],
+  "width_spaces": 8.65,
+  "lane_wrote": "ON: pizz. (gained; surya on the line-cleaned crop). OFF: no reading",
+  "subject": "glyph/8/1/6/8/90056",
+  "notes_in_crop": [],
+  "notes_missing_box": [],
+  "crop_origin": [
+   3595,
+   5632
+  ],
+  "crop_size": [
+   375,
+   261
+  ]
+ },
+ {
+  "tile": 10,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "staff": "0/11",
+  "box": [
+   2197.0,
+   3203.0,
+   2385.0,
+   3234.0
+  ],
+  "width_spaces": 6.9,
+  "lane_wrote": "ON; OFF none: diminuendo from the quarter. in bar 28 to the quarter in bar 29; written onsets: quarter. (bar 28), quarter (bar 29)",
+  "subject": "glyph/19/0/11/2/100003",
+  "notes_in_crop": [
+   "glyph/19/0/11/2/3",
+   "glyph/19/0/11/3/0"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   2126,
+   2969
+  ],
+  "crop_size": [
+   338,
+   305
+  ]
+ },
+ {
+  "tile": 11,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "staff": "0/9",
+  "box": [
+   3412.0,
+   3286.0,
+   3536.0,
+   3333.0
+  ],
+  "width_spaces": 4.47,
+  "lane_wrote": "ON: dim. (surya on the crop with the barline whited out). OFF: dim, from a box that held the hairpin; round-2 ON: no reading (Surya read dim!)",
+  "subject": "glyph/8/0/9/6/90013",
+  "notes_in_crop": [],
+  "notes_missing_box": [],
+  "crop_origin": [
+   3307,
+   3062
+  ],
+  "crop_size": [
+   333,
+   312
+  ]
+ },
+ {
+  "tile": 12,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "staff": "0/2",
+  "box": [
+   2193.0,
+   1151.0,
+   2363.0,
+   1179.0
+  ],
+  "width_spaces": 6.24,
+  "lane_wrote": "ON; OFF none: diminuendo from the quarter. in bar 28 to the quarter in bar 29; written onsets: quarter. (bar 28), quarter (bar 29)",
+  "subject": "glyph/19/0/2/2/100000",
+  "notes_in_crop": [
+   "glyph/19/0/2/2/1",
+   "glyph/19/0/2/3/4"
+  ],
+  "notes_missing_box": [],
+  "crop_origin": [
+   2122,
+   920
+  ],
+  "crop_size": [
+   335,
+   299
+  ]
+ }
+]

@@ -1,0 +1,254 @@
+[
+ {
+  "tile": 1,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "subject": "glyph/8/0/2/12/100000",
+  "box": [
+   5328.0,
+   1326.0,
+   5431.0,
+   1353.0
+  ],
+  "width_spaces": 3.75,
+  "read_kind": "crescendo",
+  "lane_wrote": "word claim 'p espr' shrunk from [5256.0, 1331.0, 5455.0, 1415.0] to [5256.0, 1331.0, 5315.0, 1384.0]; the wedge is left for the hairpin reader",
+  "start_note": null,
+  "crop_origin": [
+   5159,
+   1139
+  ]
+ },
+ {
+  "tile": 2,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "subject": "glyph/8/0/1/6/100003",
+  "box": [
+   3229.0,
+   1061.0,
+   3361.0,
+   1090.0
+  ],
+  "width_spaces": 4.63,
+  "read_kind": "diminuendo",
+  "lane_wrote": "word claim 'dim' shrunk from [3229.0, 1061.0, 3513.0, 1119.0] to [3392.0, 1061.0, 3513.0, 1119.0]; the wedge is left for the hairpin reader",
+  "start_note": null,
+  "crop_origin": [
+   3067,
+   841
+  ]
+ },
+ {
+  "tile": 3,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/1/3/6/100000",
+  "box": [
+   3800.0,
+   5323.0,
+   4364.0,
+   5369.0
+  ],
+  "width_spaces": 20.51,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/25/1/3/6/3",
+  "crop_origin": [
+   3690,
+   5128
+  ]
+ },
+ {
+  "tile": 4,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/3/2/100001",
+  "box": [
+   2193.0,
+   1407.0,
+   2366.0,
+   1434.0
+  ],
+  "width_spaces": 6.35,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/19/0/3/2/2",
+  "crop_origin": [
+   2061,
+   1216
+  ]
+ },
+ {
+  "tile": 5,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/3/1/100000",
+  "box": [
+   1818.0,
+   1407.0,
+   2049.0,
+   1435.0
+  ],
+  "width_spaces": 8.48,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/19/0/3/1/2",
+  "crop_origin": [
+   1709,
+   1216
+  ]
+ },
+ {
+  "tile": 6,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/11/7/100000",
+  "box": [
+   4274.0,
+   3196.0,
+   4490.0,
+   3226.0
+  ],
+  "width_spaces": 7.93,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/19/0/11/7/4",
+  "crop_origin": [
+   4164,
+   3009
+  ]
+ },
+ {
+  "tile": 7,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/0/8/100001",
+  "box": [
+   4621.0,
+   667.0,
+   4791.0,
+   690.0
+  ],
+  "width_spaces": 6.24,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/19/0/0/8/2",
+  "crop_origin": [
+   4488,
+   481
+  ]
+ },
+ {
+  "tile": 8,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/1/2/6/100000",
+  "box": [
+   3821.0,
+   5069.0,
+   4355.0,
+   5109.0
+  ],
+  "width_spaces": 19.24,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/25/1/2/6/6",
+  "crop_origin": [
+   3710,
+   4877
+  ]
+ },
+ {
+  "tile": 9,
+  "role": "SHORT",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/1/9/5/100000",
+  "box": [
+   3604.0,
+   6399.0,
+   3659.0,
+   6429.0
+  ],
+  "width_spaces": 2.02,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON reads a 2.0-space wedge here and writes nothing (one note: hairpin or accent?) (OFF read it too)",
+  "start_note": null,
+  "crop_origin": [
+   3413,
+   6118
+  ]
+ },
+ {
+  "tile": 10,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/0/2/100000",
+  "box": [
+   2194.0,
+   667.0,
+   2372.0,
+   694.0
+  ],
+  "width_spaces": 6.53,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/19/0/0/2/3",
+  "crop_origin": [
+   2065,
+   481
+  ]
+ },
+ {
+  "tile": 11,
+  "role": "CONTROL",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/1/5/5/100000",
+  "box": [
+   3303.0,
+   5784.0,
+   3550.0,
+   5823.0
+  ],
+  "width_spaces": 8.9,
+  "read_kind": "diminuendo",
+  "lane_wrote": "both arms write a diminuendo",
+  "start_note": "glyph/25/1/5/5/2",
+  "crop_origin": [
+   3192,
+   5525
+  ]
+ },
+ {
+  "tile": 12,
+  "role": "GAINED",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/1/7/6/100002",
+  "box": [
+   3785.0,
+   6235.0,
+   4382.0,
+   6279.0
+  ],
+  "width_spaces": 21.51,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON writes a diminuendo from this note (OFF: no wedge)",
+  "start_note": "glyph/25/1/7/6/1",
+  "crop_origin": [
+   3674,
+   6041
+  ]
+ }
+]

@@ -4782,7 +4782,11 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
                 boxes.append((x0, y0, x1 - x0, y1 - y0, d.smufl_name))
         blanked = blank_point_detections(
             page_ink, boxes, spacings[len(spacings) // 2])
-        found = detect_hairpins(page_ink, staff_rows, blanked)
+        # ROADMAP 2.254 (flag `OMR_HAIRPIN_REACH`, default OFF): the reader sees past barlines, stems and slurs crossing a hairpin
+        # (`staged/hairpin_reach.py` names the cause). OFF the call is unchanged.
+        from . import hairpin_reach as _hairpin_reach
+        reach_on = _hairpin_reach.enabled()
+        found = detect_hairpins(page_ink, staff_rows, blanked, reach=reach_on)
     except Exception as exc:                                  # noqa: BLE001
         for st_key in sorted(bands):
             log.abstain(Subject.from_key(st_key), Q.WEDGE_BOX,
@@ -4824,7 +4828,8 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
                         float(h.y + h.height / 2.0), bottom, spacing),
                     open_spaces=float(h.open_spaces),
                     outline_rms_spaces=float(h.outline_rms_spaces),
-                    page_staff_index=int(h.staff_index))
+                    page_staff_index=int(h.staff_index),
+                    **({"reach": True} if reach_on else {}))
 
     for page_st, (key, _band) in sorted(by_page_index.items()):
         if per_staff.get(page_st):
@@ -15124,6 +15129,72 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
     return counts
 
 
+def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]]) -> Dict[str, int]:
+    """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default OFF), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
+    coarsest kind the reader is sure of (a hairpin; its owner staff and its start/stop notes are decided later, ADJUDICATE / 2.223).
+
+    CAUSE (`hairpin_reach` round-2 note): the detector and cv_lines read a hairpin's thin straight arms as beams; a CV hairpin read that claims
+    nothing lets the beam take them. Per CV reach read (`Q.WEDGE_BOX`, `reach` True): every cell of ANY staff whose box meets the hairpin's
+    (the hairpin sits between two staves, and both staves' padded cells cut its arms into strokes) -- one `Q.CLAIMED_AREA` row, owner
+    `hairpin`, unit `ink`, filed on that STAFF, value `[[cell, stroke ordinal], ...]` for each stroke at least `ON_ARMS_SHARE_MIN` along the
+    arms (`hairpin_reach.claim_strokes`). A stem or barline crossing an arm keeps its ink. A read whose arms run along no filed stroke is an
+    abstention, counted. Files rows only; `adjudicators/stroke_owner._hairpin_claims` is the one consumer."""
+    from . import hairpin_reach as HR
+    counts = {"hairpins": 0, "rows": 0, "strokes": 0, "no_stroke": 0, "no_map_cells": 0}
+    if not HR.enabled() or not stroke_cells:
+        return counts
+    by_cell: Dict[Tuple[int, int, int, int], Any] = {}
+    pages = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
+            pages.add(c.page_index)
+    for p in sorted(pages):
+        for r in log.rows(Q.WEDGE_BOX, R.page(p), scope=R.Scope.SELF_AND_DESCENDANTS):
+            d = r.detail or {}
+            bb = d.get("bbox_page_px")
+            if r.reader != READERS.CV_HAIRPINS or not d.get("reach") or not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+                continue
+            counts["hairpins"] += 1
+            segs = HR.arms(r.value, bb)
+            band = HR.band_px(d.get("staff_spacing_px") or 0.0)
+            per_staff: Dict[Tuple[int, int, int], List[List[int]]] = {}
+            shares: Dict[Tuple[int, int, int], List[float]] = {}
+            for ck, c in sorted(by_cell.items()):
+                if ck[0] != p:
+                    continue
+                cb = getattr(c, "bbox_page_px", None)
+                up = getattr(c, "upscale_factor", None)
+                if not cb or not up or len(cb) != 4:
+                    continue
+                if cb[2] < bb[0] or cb[0] > bb[2] or cb[3] < bb[1] or cb[1] > bb[3]:
+                    continue
+                res = stroke_cells.get(ck)
+                if res is None or isinstance(res, str):
+                    counts["no_map_cells"] += 1
+                    continue
+                for i, sh in HR.claim_strokes(res, cb, float(up), segs, bb, band):
+                    per_staff.setdefault(ck[:3], []).append([ck[3], i])
+                    shares.setdefault(ck[:3], []).append(sh)
+            if not per_staff:
+                counts["no_stroke"] += 1
+                ws = r.subject
+                log.abstain(R.staff(ws.page, ws.system, ws.staff), Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page",
+                            reason=ABSTAIN.NO_INK, owner=HR.OWNER, unit="ink", why="arms_run_along_no_filed_stroke", source="wedge_box",
+                            owner_row=r.id, owner_glyph=ws.to_key())
+                continue
+            for home, got in sorted(per_staff.items()):
+                counts["rows"] += 1
+                counts["strokes"] += len(got)
+                log.observe(R.staff(*home), Q.CLAIMED_AREA, got, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=HR.OWNER,
+                            owner_row=r.id, owner_glyph=r.subject.to_key(), unit="ink", scope="page_hairpin", standing="READ",
+                            source="wedge_box", kind=r.value, bbox_page_px=[float(v) for v in bb], shares=shares[home],
+                            cover_min=HR.ON_ARMS_SHARE_MIN)
+    return counts
+
+
 def gather_claimed_register(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                             detections: Dict[str, List[Any]], *, progress: bool = False,
                             stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]] = None) -> None:
@@ -15953,6 +16024,27 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     _count("word:direction_word:metronome_mark")
                 if d.get("metronome"):
                     extra["metronome"] = d["metronome"]
+            from . import hairpin_reach as _hairpin_reach
+            ib = d.get("ink_boxes")
+            if _hairpin_reach.enabled() and isinstance(ib, list) and area == [float(v) for v in bb]:
+                # ROADMAP 2.254 r3: the reader cut the word's box to its own ink round a hairpin it holds (`hairpin_reach.word_ink_boxes`);
+                # the word claims those rectangles, and the hairpin's arms are left to the hairpin's own ink claim.
+                extra.setdefault("word_box", [float(v) for v in bb])
+                _count("word:direction_word:ink_boxes")
+                for a in ib:
+                    _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                continue
+            if _hairpin_reach.enabled():
+                # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the OCR box can hold a hairpin beside the word ('dim.', 'espr.' on Brahms p8);
+                # the word claims its own ink, the wedge-shaped ink is left for the hairpin reader.
+                areas, wedges_out = _hairpin_reach.word_area_without_wedges(binary, area, _sp(s))
+                if wedges_out:
+                    extra["wedges_left_out"] = wedges_out
+                    extra.setdefault("word_box", [float(v) for v in bb])
+                    _count("word:direction_word:wedge_left_out")
+                    for a in areas:
+                        _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                    continue
             _file(s, area, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
         # a printed bar number (Tesseract, digits only, filed on its system with its box) is text outside the staves as well
         for r in log.rows(Q.PRINTED_BAR_NUMBER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
@@ -16638,6 +16730,16 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
             return
 
     page_dict = _direction_page_dict(pws, cells, local, detections)
+    from . import hairpin_reach as _hairpin_reach
+    if _hairpin_reach.enabled():
+        # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH): a hairpin the CV reach reader read (and claimed, `gather_hairpin_claim`) is page-wide ink
+        # claimed BEFORE the words are read; its arms are erased from the word reader's mask as every detection is, so the OCR neither reads
+        # them as a letter ('a dim', Brahms p8) nor grows its box over them.
+        page_dict["erase_ink"] = _hairpin_reach.erase_entries(log, p)
+        # ROADMAP 2.254 r3: a barline / staff line running THROUGH a word's box is page-wide ink claimed before the words; it is whited
+        # out of the OCR crop (`direction_text.through_line_mask`). Cause: Brahms p8 `dim.` beside a barline read `dim!` (lexicon refused),
+        # and a staff line over its tight crop emptied Tesseract's letter gate, so Surya was never asked -- two READ words lost.
+        page_dict["erase_through_lines"] = True
     page_staff_of = {v: k for k, v in local.items()}
     key_of_page_staff = {v: k for k, v in page_staff_of.items()}
 
@@ -16761,6 +16863,16 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                             info.get("rejected") or ()),
                         split_is_page_level=True, **shared)
             continue
+        if hits and page_dict.get("erase_ink"):
+            # ROADMAP 2.254 r3 (flag OMR_HAIRPIN_REACH; `erase_ink` is only filled under it): where a hairpin read runs through the OCR box,
+            # the word READ its own ink only -- `ink_boxes`, the box cut round the hairpin's arms (`hairpin_reach.word_ink_boxes`).
+            # `bbox_page_px` stays the OCR box (where the word stands, for binding and export).
+            pb = getattr(pws.page, "binary", None)
+            sps = sorted(v for v in (_spacing(st) for st in pws.staves) if v)
+            ib = (_hairpin_reach.word_ink_boxes(pb, cand.bbox_page, page_dict["erase_ink"], sps[len(sps) // 2])
+                  if pb is not None and sps else None)
+            if ib is not None:
+                shared = {**shared, "ink_boxes": ib}
         for d in hits:
             reader = (READERS.TESSERACT if d.reader == "tesseract"
                       else READERS.SURYA)
@@ -17394,6 +17506,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # two read the SAME band and the ordering between them is real.
         gather_dynamic_letters(log, pws, cells, local, detections)
         gather_wedge_boxes(log, pws, cells, local, detections)
+        # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH, default OFF): each CV hairpin read claims the strokes along its two arms (`unit: ink`, owner
+        # `hairpin`) in every cell it crosses, so no beam / stem / flag reader takes them. AFTER the wedge read and the stroke map.
+        gather_hairpin_claim(log, cells, local, stroke_cells)
         # ⚠️ AFTER detection, and now WITH it: the notehead gate on the pair
         # rule needs this cell's heads, and `gather_detections` above already
         # holds them. The order was always right; what was missing is that

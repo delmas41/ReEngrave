@@ -127,6 +127,25 @@ def _arc_claims(ev: Evidence, cell) -> List[SO.Claim]:
     return out
 
 
+def _hairpin_claims(ev: Evidence, cell) -> List[SO.Claim]:
+    """ROADMAP 2.254 r2 (`OMR_HAIRPIN_REACH`): the strokes of THIS cell a CV hairpin read's ink claim names (`gather.gather_hairpin_claim`: one row
+    per (hairpin, staff), value `[[cell, ordinal], ...]`, filed on the staff). Tier 0 beside the arcs: a stroke along the hairpin's arms is the
+    hairpin's, whatever beam box also stands on it. Reads the flag so the OFF arm of an A/B replay ignores the rows."""
+    out: List[SO.Claim] = []
+    from .. import hairpin_reach as _HR
+    if not _HR.enabled():
+        return out
+    idx = getattr(cell, "cell", None)
+    for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        d = r.detail or {}
+        if d.get("owner") != _HR.OWNER or d.get("unit") != "ink" or not isinstance(r.value, (list, tuple)):
+            continue
+        mine = tuple(int(q[1]) for q in r.value if isinstance(q, (list, tuple)) and len(q) == 2 and q[0] == idx)
+        if mine:
+            out.append(SO.Claim(r.id, _HR.FAMILY, _HR.OWNER, mine, (), r.id, area=True))
+    return out
+
+
 def _found_whole_rests(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]], claims: List[SO.Claim]) -> List[SO.Claim]:
     """ROADMAP 2.230 m1 (flag `OMR_WHOLE_REST_HANGS`): the bar the 2.52 search FOUND a whole rest in (`Q.EMPTY_BAR_REST_SEARCH` found=True --
     the unboxed blob) claims the strokes inside its ink box as a `whole_rest`, exactly as a detector `restWhole` box does, so the stroke
@@ -312,6 +331,8 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     claims += _areas(ev, cell, page)
     arc_claims = _arc_claims(ev, cell)
     claims += arc_claims
+    hairpin_claims = _hairpin_claims(ev, cell)        # 2.254 r2 (flag OMR_HAIRPIN_REACH; [] with it OFF)
+    claims += hairpin_claims
     claims += _found_whole_rests(ev, cell, page, claims)
     from .rhythm import beams_from_strokes_enabled
     shaped = SO.owner_shape_enabled()
@@ -360,6 +381,15 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
                 cen["arc_claim:no_other_claimant"] = cen.get("arc_claim:no_other_claimant", 0) + 1
             for f in rivals:
                 cen["arc_claim:from:" + str(f)] = cen.get("arc_claim:from:" + str(f), 0) + 1
+    if hairpin_claims:
+        # 2.254 r2: what the hairpin claim took from whom (a beam box on an arm is the cause it answers)
+        cen = detail["census"]
+        for o, w in owned.items():
+            if w.family != "hairpin_trace":
+                continue
+            cen["hairpin_claim:strokes"] = cen.get("hairpin_claim:strokes", 0) + 1
+            for f in {c["family"] for c in w.candidates if c["family"] != "hairpin_trace"}:
+                cen["hairpin_claim:from:" + str(f)] = cen.get("hairpin_claim:from:" + str(f), 0) + 1
     used_t = tuple(dict.fromkeys(u for u in used if u))
     if not strokes:
         return Ruling(value=value, reason="no_claimant", used=used_t, detail=detail)

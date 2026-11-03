@@ -1,0 +1,266 @@
+[
+ {
+  "tile": 1,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/11/1/100002",
+  "box": [
+   1825.0,
+   3199.0,
+   2052.0,
+   3227.0
+  ],
+  "width_spaces": 8.33,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 2 to the quarter in bar 3 (onsets: quarter. quarter)",
+  "start_note": "glyph/19/0/11/1/5",
+  "stop_note": "glyph/19/0/11/2/1",
+  "crop_origin": [
+   1716,
+   3009
+  ]
+ },
+ {
+  "tile": 2,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/0/9/7/100000",
+  "box": [
+   4206.0,
+   2951.0,
+   4539.0,
+   2995.0
+  ],
+  "width_spaces": 12.22,
+  "read_kind": "crescendo",
+  "lane_wrote": "ON (OFF wrote the same): crescendo written from the quarter. in bar 28 to the quarter. in bar 28 (onsets: quarter. quarter.)",
+  "start_note": "glyph/25/0/9/7/1",
+  "stop_note": "glyph/25/0/9/7/2",
+  "crop_origin": [
+   4097,
+   2753
+  ]
+ },
+ {
+  "tile": 3,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/10/2/100000",
+  "box": [
+   2198.0,
+   2981.0,
+   2388.0,
+   3010.0
+  ],
+  "width_spaces": 6.97,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
+  "start_note": "glyph/19/0/10/2/1",
+  "stop_note": "glyph/19/0/10/3/7",
+  "crop_origin": [
+   2075,
+   2789
+  ]
+ },
+ {
+  "tile": 4,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "subject": "glyph/8/0/2/12/100000",
+  "box": [
+   5328.0,
+   1326.0,
+   5431.0,
+   1353.0
+  ],
+  "width_spaces": 3.75,
+  "read_kind": "crescendo",
+  "lane_wrote": "OFF: the word reader's box 'p espr' [5256, 1331, 5455, 1415] held this hairpin. ON: crescendo written from the quarter in bar 13 to the eighth in bar 13 (onsets: quarter eighth)",
+  "start_note": "glyph/8/0/2/12/9",
+  "stop_note": "glyph/8/0/2/12/3",
+  "crop_origin": [
+   5159,
+   1139
+  ]
+ },
+ {
+  "tile": 5,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/0/2/100000",
+  "box": [
+   2194.0,
+   667.0,
+   2372.0,
+   694.0
+  ],
+  "width_spaces": 6.53,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
+  "start_note": "glyph/19/0/0/2/3",
+  "stop_note": "glyph/19/0/0/3/1",
+  "crop_origin": [
+   2065,
+   481
+  ]
+ },
+ {
+  "tile": 6,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "subject": "glyph/8/0/8/6/100003",
+  "box": [
+   3223.0,
+   3026.0,
+   3338.0,
+   3054.0
+  ],
+  "width_spaces": 4.3,
+  "read_kind": "diminuendo",
+  "lane_wrote": "OFF: the word reader's box 'a dim' [3220, 3022, 3534, 3110] held this hairpin. ON: diminuendo written from the half. in bar 7 to the half. in bar 7 (onsets: half.)",
+  "start_note": "glyph/8/0/8/6/14",
+  "stop_note": "glyph/8/0/8/6/14",
+  "crop_origin": [
+   3066,
+   2814
+  ]
+ },
+ {
+  "tile": 7,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/1/8/5/100001",
+  "box": [
+   3126.0,
+   6473.0,
+   3512.0,
+   6520.0
+  ],
+  "width_spaces": 13.91,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 35 to the quarter in bar 36 (onsets: quarter. quarter. quarter)",
+  "start_note": "glyph/25/1/8/4/4",
+  "stop_note": "glyph/25/1/8/5/11",
+  "crop_origin": [
+   3015,
+   6259
+  ]
+ },
+ {
+  "tile": 8,
+  "role": "WORD",
+  "plate": "brahms",
+  "page": 8,
+  "subject": "glyph/8/0/1/6/100003",
+  "box": [
+   3229.0,
+   1061.0,
+   3361.0,
+   1090.0
+  ],
+  "width_spaces": 4.63,
+  "read_kind": "diminuendo",
+  "lane_wrote": "OFF: the word reader's box 'dim' [3229, 1061, 3513, 1119] held this hairpin. ON: diminuendo written from the quarter. in bar 7 to the quarter. in bar 7 (onsets: quarter.)",
+  "start_note": "glyph/8/0/1/6/2",
+  "stop_note": "glyph/8/0/1/6/1",
+  "crop_origin": [
+   3067,
+   841
+  ]
+ },
+ {
+  "tile": 9,
+  "role": "CONTROL",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/0/13/1/100000",
+  "box": [
+   1285.0,
+   4117.0,
+   1917.0,
+   4160.0
+  ],
+  "width_spaces": 23.19,
+  "read_kind": "crescendo",
+  "lane_wrote": "both arms: crescendo written from the eighth in bar 21 to the eighth in bar 22 (onsets: eighth rest eighth eighth eighth rest eighth eighth eighth rest eighth eighth)",
+  "start_note": "glyph/25/0/13/0/0",
+  "stop_note": "glyph/25/0/13/1/3",
+  "crop_origin": [
+   1176,
+   3856
+  ]
+ },
+ {
+  "tile": 10,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/1/2/100001",
+  "box": [
+   2192.0,
+   897.0,
+   2383.0,
+   925.0
+  ],
+  "width_spaces": 6.95,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
+  "start_note": "glyph/19/0/1/2/1",
+  "stop_note": "glyph/19/0/1/3/0",
+  "crop_origin": [
+   2067,
+   710
+  ]
+ },
+ {
+  "tile": 11,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 19,
+  "subject": "glyph/19/0/10/1/100001",
+  "box": [
+   1821.0,
+   2981.0,
+   2050.0,
+   3013.0
+  ],
+  "width_spaces": 8.4,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 2 to the quarter in bar 3 (onsets: quarter. quarter)",
+  "start_note": "glyph/19/0/10/1/2",
+  "stop_note": "glyph/19/0/10/2/0",
+  "crop_origin": [
+   1712,
+   2789
+  ]
+ },
+ {
+  "tile": 12,
+  "role": "SPAN",
+  "plate": "brahms",
+  "page": 25,
+  "subject": "glyph/25/1/9/6/100000",
+  "box": [
+   3806.0,
+   6740.0,
+   4386.0,
+   6784.0
+  ],
+  "width_spaces": 21.09,
+  "read_kind": "diminuendo",
+  "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 37 to the quarter. in bar 38 (onsets: quarter. quarter. quarter. quarter.)",
+  "start_note": "glyph/25/1/9/6/1",
+  "stop_note": "glyph/25/1/9/7/5",
+  "crop_origin": [
+   3696,
+   6546
+  ]
+ }
+]
