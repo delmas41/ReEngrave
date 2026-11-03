@@ -1887,11 +1887,12 @@ def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
         d = row.detail or {}
         ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
         pad = (tol / STEM_JOIN_TOLERANCE_SPACES) if tol > 0 else 0.0
-        if stroke_thin_by_ink(d, head_boxes, pad):
+        clipped = beam_last_head_enabled() and _stroke_clipped_at_cell_top(d)     # ROADMAP 2.259: thickness unreadable, not thin
+        if not clipped and stroke_thin_by_ink(d, head_boxes, pad):
             why[b.id] = "too_thin"
         elif sag is not None and sag > BEAM_SAGITTA_MAX_SPACES:
             why[b.id] = "not_straight"
-        elif ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN:
+        elif ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN and not clipped:
             # ⚠️ ROADMAP 2.82: a thin MEDIAN kept by its CORE -- the beam-thick ink of
             # this box stands on a stem at each of its two ends (each leading to a head
             # the detector boxed), read off the ink. That IS "a beam must also connect
@@ -4593,6 +4594,30 @@ def dots_honour_claims_enabled() -> bool:
     return os.environ.get(DOTS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+# ════════════════════════════════════════════════════════════════════════════
+# ROADMAP 2.259 (flag `OMR_BEAM_LAST_HEAD`, default OFF) -- A BEAM THE CELL CUT IN HALF IS NOT A THIN BEAM.
+# CAUSE (benchmarks/value-undecided-2026-10/FINDINGS.md 2.259 is not written here; measured in the lane report): GATHER cuts a cell at the
+# staff plus a pad, and an up-stem group's beam stands further out than the pad on a tall stem. The beam's ink is then a SLIVER of its
+# true thickness (Litolff p4 sys1 staff1 cell 13: `band` [0, 26] = 0.26 sp, ratio 0.90, against 2.5-2.9 for the beams that fit), and the
+# ink reader's `too_thin` refused it -- for EVERY head of the group, not only the last. Thickness is a lower bound where the ink touches
+# the cut: "cannot tell" is not "too thin" (rule 8). A clipped stroke is judged by the tests that do not read its thickness (stems at its
+# ends, straightness, through-heads), exactly like a stroke whose thickness was never read.
+# ════════════════════════════════════════════════════════════════════════════
+BEAM_LAST_HEAD_ENV = "OMR_BEAM_LAST_HEAD"
+
+
+def beam_last_head_enabled() -> bool:
+    """`OMR_BEAM_LAST_HEAD`, default OFF (ROADMAP 2.259): a beam stroke whose ink touches the cell's top edge is not refused as `too_thin`."""
+    return os.environ.get(BEAM_LAST_HEAD_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _stroke_clipped_at_cell_top(detail: Optional[Dict[str, Any]]) -> bool:
+    """The stroke's ink band starts at the cell's first row, so the cell cut it and its thickness is only a lower bound. A record
+    with no `band` says nothing (not clipped, as before)."""
+    band = (detail or {}).get("band")
+    return isinstance(band, (list, tuple)) and len(band) == 2 and band[0] is not None and float(band[0]) <= 0.5
+
+
 def beams_honour_claims_enabled() -> bool:
     """`OMR_BEAMS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
     return os.environ.get(BEAMS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
@@ -5379,7 +5404,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             scaled = total * den / num
             used.append(ratio.id)
 
+    _clip_ink = _beam_ink_rows(ev, cell) if beam_last_head_enabled() else {}
+    clipped_kept = [b.id for b in kept if b.id in _clip_ink and _stroke_clipped_at_cell_top(_clip_ink[b.id].detail)]
     shared = {"head": str(head), "head_is_open": hollow, **({"head_fill_first": head_first} if head_first else {}),
+              **({"beam_clipped_kept": clipped_kept} if clipped_kept else {}),
               **({"head_ink": head_ink_read} if head_ink_read else {}),
               "beam_evidence": beam_evidence,
               "cv_beams": len(cv), "yolo_beams": len(yolo),
