@@ -15875,6 +15875,15 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                 if d.get("metronome"):
                     extra["metronome"] = d["metronome"]
             from . import hairpin_reach as _hairpin_reach
+            ib = d.get("ink_boxes")
+            if _hairpin_reach.enabled() and isinstance(ib, list) and area == [float(v) for v in bb]:
+                # ROADMAP 2.254 r3: the reader cut the word's box to its own ink round a hairpin it holds (`hairpin_reach.word_ink_boxes`);
+                # the word claims those rectangles, and the hairpin's arms are left to the hairpin's own ink claim.
+                extra.setdefault("word_box", [float(v) for v in bb])
+                _count("word:direction_word:ink_boxes")
+                for a in ib:
+                    _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                continue
             if _hairpin_reach.enabled():
                 # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the OCR box can hold a hairpin beside the word ('dim.', 'espr.' on Brahms p8);
                 # the word claims its own ink, the wedge-shaped ink is left for the hairpin reader.
@@ -16704,6 +16713,16 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
                             info.get("rejected") or ()),
                         split_is_page_level=True, **shared)
             continue
+        if hits and page_dict.get("erase_ink"):
+            # ROADMAP 2.254 r3 (flag OMR_HAIRPIN_REACH; `erase_ink` is only filled under it): where a hairpin read runs through the OCR box,
+            # the word READ its own ink only -- `ink_boxes`, the box cut round the hairpin's arms (`hairpin_reach.word_ink_boxes`).
+            # `bbox_page_px` stays the OCR box (where the word stands, for binding and export).
+            pb = getattr(pws.page, "binary", None)
+            sps = sorted(v for v in (_spacing(st) for st in pws.staves) if v)
+            ib = (_hairpin_reach.word_ink_boxes(pb, cand.bbox_page, page_dict["erase_ink"], sps[len(sps) // 2])
+                  if pb is not None and sps else None)
+            if ib is not None:
+                shared = {**shared, "ink_boxes": ib}
         for d in hits:
             reader = (READERS.TESSERACT if d.reader == "tesseract"
                       else READERS.SURYA)

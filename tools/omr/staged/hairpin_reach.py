@@ -182,3 +182,80 @@ def erase_entries(log, page: int) -> list:
         out.append({"bbox_page_px": [float(v) for v in bb], "segments": arms(r.value, bb),
                     "band_px": band_px(d.get("staff_spacing_px") or 0.0)})
     return out
+
+
+# ── round 3: a READ word's box is cut to its OWN ink where a hairpin runs through it ──────────────────────────────────────────────────────
+# CAUSE (round 3, Brahms p8 'p espr', 'P dolce', 'pp cresc. molto'): the hairpin is engraved just ABOVE the word, over its x-height, and the
+# OCR box is one rectangle from the tallest letter ('p', 'd', 'l') to the lowest, so it holds the hairpin's arms; the reach read claims those
+# arms first, and the word's box still READ them (claim readout `word_dynamic -> arc_hairpin`). Round 2's cut only removed an ink component
+# that passed the wedge shape tests by itself, which a hairpin cut by the box edge or touching a letter does not; and where it did fire it
+# dropped every letter under the hairpin's x span ('espr' of 'p espr'). The word's own ink is its box's ink less the arm pixels.
+
+#: a word pixel within this many spaces of a hairpin arm is the hairpin's (wider than `ARM_BAND_SPACES`: the arms' soft edge and the
+#: scan's wander must not be left as a sliver of 'word' ink between them)
+WORD_ARM_BAND_SPACES = 0.35
+#: an ink piece left after the arms are cut this small (in sp^2) and this near an arm is the arm's debris, not a letter (a period is ~0.09)
+ARM_DEBRIS_MAX_SP2 = 0.04
+ARM_DEBRIS_NEAR_SPACES = 0.6
+
+
+def word_ink_boxes(binary, box, entries, spacing):
+    """The READ word's own ink as rectangles (page px), none holding a hairpin's arm, or None when no hairpin read (`erase_entries`) meets
+    `box` (the word is left as it was). Letters are grouped left to right while their joint rectangle holds no arm pixel."""
+    import cv2
+    import numpy as np
+    if not entries or not spacing:
+        return None
+    x0, y0, x1, y1 = (int(round(float(v))) for v in box)
+    x0, y0 = max(0, x0), max(0, y0)
+    pad = WORD_ARM_BAND_SPACES * float(spacing)
+    segs = []
+    for e in entries:
+        bb = e.get("bbox_page_px")
+        if bb and bb[0] - pad < x1 and bb[2] + pad > x0 and bb[1] - pad < y1 and bb[3] + pad > y0:
+            segs.extend(e.get("segments") or ())
+    if not segs:
+        return None
+    crop = binary[y0:y1, x0:x1]
+    if crop.size == 0:
+        return None
+    ink = crop == 0
+    yy, xx = np.mgrid[y0:y0 + crop.shape[0], x0:x0 + crop.shape[1]]
+    dist = dist_to_segments(xx + 0.5, yy + 0.5, segs)
+    arm = ink & (dist <= pad)
+    if not arm.any():
+        return None
+    rest = (ink & ~arm).astype(np.uint8) * 255
+    n, lab, st, _c = cv2.connectedComponentsWithStats(rest, 8)
+    sp2 = float(spacing) ** 2
+    comps = []
+    for k in range(1, n):
+        x, y, w, h, a = (int(v) for v in st[k])
+        if a < ARM_DEBRIS_MAX_SP2 * sp2 and float(dist[lab == k].min()) <= ARM_DEBRIS_NEAR_SPACES * float(spacing):
+            continue
+        comps.append((x, y, x + w, y + h))
+    if not comps:
+        return []
+    arm_i = arm.astype(np.int32).cumsum(0).cumsum(1)
+
+    def holds_arm(r):
+        a, b, c, d = r
+        tot = arm_i[d - 1, c - 1]
+        if a > 0:
+            tot -= arm_i[d - 1, a - 1]
+        if b > 0:
+            tot -= arm_i[b - 1, c - 1]
+        if a > 0 and b > 0:
+            tot += arm_i[b - 1, a - 1]
+        return tot > 0
+
+    groups = []
+    for c in sorted(comps):
+        if groups:
+            g = groups[-1]
+            m = (min(g[0], c[0]), min(g[1], c[1]), max(g[2], c[2]), max(g[3], c[3]))
+            if not holds_arm(m):
+                groups[-1] = m
+                continue
+        groups.append(c)
+    return [[float(x0 + g[0]), float(y0 + g[1]), float(x0 + g[2]), float(y0 + g[3])] for g in groups]

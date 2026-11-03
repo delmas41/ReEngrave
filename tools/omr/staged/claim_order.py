@@ -393,7 +393,11 @@ def reader_boxes(rows: Dict[str, List[dict]]) -> List[List[float]]:
     for o in rows["observations"]:
         if o.get("quantity") in TEXT_READER_QUANTITIES:
             bb = (o.get("detail") or {}).get("bbox_page_px")
-            if isinstance(bb, (list, tuple)) and len(bb) == 4:
+            ib = (o.get("detail") or {}).get("ink_boxes")
+            if isinstance(ib, list) and all(isinstance(b, (list, tuple)) and len(b) == 4 for b in ib):
+                # ROADMAP 2.254 r3: the reader cut its box to the word's own ink round a hairpin it held; it read those rectangles
+                out.extend([float(v) for v in b] for b in ib)
+            elif isinstance(bb, (list, tuple)) and len(bb) == 4:
                 out.append([float(v) for v in bb])
     return out
 
