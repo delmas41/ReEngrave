@@ -19,6 +19,12 @@ lane hook refuses subagent FINDINGS writes. Branch `lane-2.249-memory`.
 - **Lesson:** a few pages cannot predict a whole movement when a stored value
   holds a closure — ask how each stored field scales with document size, and
   use a memory measure that can fail.
+- **m6 cause (INFER 555 -> 11,689 s on the whole movement, m5):** m4 cleared
+  the closure memo whole at its cap (and m2 after every quantity), throwing out
+  the document-wide closures every walk passes through. 6-12 pages never hit
+  the cap. **Lesson:** a cache cleared at a bound behaves differently only
+  under the whole document's working set -- test a cache by shrinking its
+  bound on a slice (Brahms 0-11 at a 6M cap reproduced it: INFER 57 -> 620 s).
 - **Measuring errors found:** macOS RSS overstates (freed large blocks stay
   resident as `MALLOC_LARGE_REUSABLE`; 10.4 GB RSS vs 3.7 GB footprint on
   Brahms 0-1) — the run meter and `sample_pid.py` report `phys_footprint`.
@@ -42,6 +48,13 @@ lane hook refuses subagent FINDINGS writes. Branch `lane-2.249-memory`.
   when read; closure walks the considered graph; memo capped at 30M ids.
 - m5 (cb034cb3e): bases stay lazy through `to_json` (CLI); pooling planned
   once and applied per verdict as written.
+- m6 (75d34b66e): closure memo evicts least-recently-used (60M ids), never
+  cleared per quantity.
+- m7 (fbab71f89): a LazyBasis is spelled by one walk (`closure_of_many`).
+- m8 (ed8770f37): **record format 2** (Sean 2026-11-02, DECISIONS): an
+  ADJUDICATE verdict stores `considered` + `basis_from: "considered"` and no
+  `basis`; the basis is derived on read (`record_io.RecordBasis`). Format-1
+  records load as stored. Compare across formats with `same_record.py`.
 
 ## Identity
 
@@ -54,6 +67,11 @@ lane hook refuses subagent FINDINGS writes. Branch `lane-2.249-memory`.
 - m2-m5: replay of saved GATHER rows through EXPORT (`replay.py`,
   `PYTHONHASHSEED=0`, arm A = tree before m2): record and MusicXML
   byte-identical on Litolff 1-4, Brahms 0-3 and Brahms 0-5.
+- m6/m7: record md5 + MusicXML identical to A on Brahms 0-5, 0-11, Litolff 1-4.
+- m8 (6b9fcf458, `identity/{l14,b05,b011}.txt`): SAME RECORD by
+  `same_record.py` (every row, derived bases spelled) and MusicXML
+  byte-identical to A on Litolff 1-4 (42,063 verdicts), Brahms 0-5 (104,513)
+  and Brahms 0-11 (198,285).
 
 ## Measures
 
@@ -72,21 +90,30 @@ completed, exit 0, 15,529 s. GATHER 8,936 s (footprint 2-8.5 GB throughout),
 ADJUDICATE 3,096 s (footprint to 46 GB), GROUPS 27 s, EVALUATE 2,005 s,
 INFER 555 s, record write 642 s (35.5 GB record), peak footprint 55.9 GB in
 `to_json`. The 20261031-night run on main was killed after 12 h 49 min.
-m4+m5 on the whole movement is NOT measured (estimate 10-15 GB peak);
-Sean decides the run.
+m5 on the whole movement (30,262 s to INFER end): footprint 13.8 GB but INFER
+11,689 s (cause m6); the write died on a full disk.
+
+**m8 replays vs A (pre-m2), seconds:** Brahms 0-11 record 4.63 -> 0.65 GB,
+ADJUDICATE 1,256 -> 286, INFER 99 -> 36, write 144 -> 11, footprint 18.9 ->
+8.6 GB; Brahms 0-5 record 1.81 -> 0.36 GB; Litolff 1-4 0.46 -> 0.12 GB.
+
+**Whole Brahms, m8 tree** (6b9fcf458, pages 0-26, idle machine, Sean "Run it"
+2026-11-03): exit 0, **10,780 s** (was 15,529). GATHER 7,125 (idle machine),
+ADJUDICATE 1,055 (3,096), GROUPS 27, EVALUATE 1,964 (2,005), INFER 487 (555),
+bounded EVALUATE 20, record **1.87 GB written in 27 s** (35.5 GB, 642 s),
+**peak footprint 12.3 GB** (55.9). MusicXML 7.5 MB, complete. Not compared
+against an earlier whole-movement record (the slices are the identity proof).
 
 ## Remaining wins (estimates, ranked)
 
-1. Record file quadratic in pages (35.5 GB at 27): store `considered`, drop
-   the derivable basis — linear (~3-5 GB), write ~10x faster. CHANGES THE
-   RECORD FORMAT — Sean's item.
-2. EVALUATE superlinear (2,005 s whole vs 45 s on 4 pages): profile a 6-page
-   replay; m4 may already help.
+1. DONE (m8): record file linear, 1.87 GB.
+2. EVALUATE is now the largest stage after GATHER (1,964 s whole vs ~40 s on
+   4 pages): it does not read closures; needs its own profile.
 3. GATHER `far_head_ledger_positions` ~40% of GATHER (~82 s/page Brahms):
    89% is `cv2.resize(INTER_AREA)` in `head_template._window`; a per-head
    window cache could be byte-identical. Not measured on Litolff.
-4. Lazy write re-spells bases (Brahms 0-5 write 212 → 429 s): spell once per
-   pass.
+4. DONE (m7/m8): the writer spells no basis. Tools that read many bases
+   (review viewer, rerun diffs) now pay a walk per basis on read.
 5. Surya readers: direction words ~21 s, margin labels ~8 s per Brahms page.
 6. Sort `stroke_owner` rivals so records compare without a fixed seed —
    changes census key order in the file — Sean's item.
