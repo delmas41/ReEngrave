@@ -146,6 +146,12 @@ KNOWN_GAPS: Dict[str, str] = {
         "range test needs `Q.INSTRUMENT`, which abstains on 22 of 22 and 27 "
         "of 27 staves of the two scanned pages. What this row adds is that "
         "wiring it also needs `subject=` — the positions are on the GLYPHS."),
+    "SCOPE-LATENT adjudicate_voices declares Q.REST_IS_NOT_A_REST": (
+        "ROADMAP 2.257 r2 (OMR_WHOLE_REST_OWN_STAFF): read per glyph with `subject=` in `_glyph_left_the_bar` (a refused box "
+        "is not in the bar); declared at the cell it runs at, filed on the glyphs -- the read is correct, the frame check "
+        "cannot see `subject=`."),
+    "SCOPE-LATENT adjudicate_voices declares Q.NOTEHEAD_IS_NOT_A_NOTEHEAD": (
+        "same as `Q.REST_IS_NOT_A_REST` above: read per glyph with `subject=`."),
     "SCOPE-LATENT adjudicate_meter declares Q.DOSSIER_FACT": (
         "the meter's dossier tier, inert for the same reason as the key "
         "signature's and with the same frame trap waiting under it."),
