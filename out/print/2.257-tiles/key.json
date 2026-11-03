@@ -1,0 +1,200 @@
+[
+ {
+  "tile": 1,
+  "kind": "rest",
+  "page": 4,
+  "staff": "staff/4/0/1",
+  "glyph": "glyph/4/0/1/9/6",
+  "box": [
+   1769.6525,
+   612.8875,
+   1792.3325,
+   624.2275
+  ],
+  "off": "refused / not written",
+  "on": "whole rest",
+  "role": "case",
+  "q": "Is the boxed rest a whole rest (a rest for the whole bar) or a half rest?"
+ },
+ {
+  "tile": 2,
+  "kind": "rest",
+  "page": 4,
+  "staff": "staff/4/0/0",
+  "glyph": "glyph/4/0/0/8/14",
+  "box": [
+   1645.92,
+   460.5,
+   1668.86,
+   470.57500000000005
+  ],
+  "off": "refused / not written",
+  "on": "whole rest",
+  "role": "case",
+  "q": "Is the boxed rest a whole rest (a rest for the whole bar) or a half rest?"
+ },
+ {
+  "tile": 3,
+  "kind": "clef",
+  "page": 4,
+  "staff": "staff/4/1/10",
+  "box": [
+   379,
+   3517.8,
+   444,
+   3604.2
+  ],
+  "off": "bass (filled blue)",
+  "on": "unchanged",
+  "role": "control",
+  "q": "Which clef does this staff start with? (treble / alto / tenor / bass)"
+ },
+ {
+  "tile": 4,
+  "kind": "rest",
+  "page": 8,
+  "staff": "staff/8/1/1",
+  "glyph": "glyph/8/1/1/6/0",
+  "box": [
+   1070.8225,
+   2097.915,
+   1093.5025,
+   2109.4125
+  ],
+  "off": "whole rest (already read)",
+  "on": "unchanged",
+  "role": "control",
+  "q": "Is the boxed rest a whole rest (a rest for the whole bar) or a half rest?"
+ },
+ {
+  "tile": 5,
+  "kind": "clef",
+  "page": 6,
+  "staff": "staff/6/1/9",
+  "box": [
+   365,
+   3287.975,
+   430,
+   3373.025
+  ],
+  "off": "alto (filled blue)",
+  "on": "alto read",
+  "role": "case",
+  "q": "Which clef does this staff start with? (treble / alto / tenor / bass)"
+ },
+ {
+  "tile": 6,
+  "kind": "rest",
+  "page": 8,
+  "staff": "staff/8/1/1",
+  "glyph": "glyph/8/1/1/5/3",
+  "box": [
+   990.6175,
+   2146.8975,
+   1012.3525,
+   2156.505
+  ],
+  "off": "refused / not written",
+  "on": "whole rest",
+  "role": "case",
+  "q": "Is the boxed rest a whole rest (a rest for the whole bar) or a half rest?"
+ },
+ {
+  "tile": 7,
+  "kind": "clef",
+  "page": 4,
+  "staff": "staff/4/0/3",
+  "box": [
+   1133,
+   831.15,
+   1198,
+   914.85
+  ],
+  "off": "alto read",
+  "on": "unchanged",
+  "role": "control",
+  "q": "Which clef does this staff start with? (treble / alto / tenor / bass)"
+ },
+ {
+  "tile": 8,
+  "kind": "clef",
+  "page": 4,
+  "staff": "staff/4/0/8",
+  "box": [
+   379,
+   1598.8,
+   444,
+   1685.2
+  ],
+  "off": "alto (filled blue)",
+  "on": "unchanged",
+  "role": "control",
+  "q": "Which clef does this staff start with? (treble / alto / tenor / bass)"
+ },
+ {
+  "tile": 9,
+  "kind": "rest",
+  "page": 6,
+  "staff": "staff/6/1/0",
+  "glyph": "glyph/6/1/0/0/2",
+  "box": [
+   550.6,
+   2037.56,
+   572.36,
+   2048.6
+  ],
+  "off": "refused / not written",
+  "on": "whole rest",
+  "role": "case",
+  "q": "Is the boxed rest a whole rest (a rest for the whole bar) or a half rest?"
+ },
+ {
+  "tile": 10,
+  "kind": "rest",
+  "page": 6,
+  "staff": "staff/6/0/0",
+  "glyph": "glyph/6/0/0/12/6",
+  "box": [
+   2501.55,
+   424.62,
+   2525.42,
+   435.15999999999997
+  ],
+  "off": "refused / not written",
+  "on": "whole rest",
+  "role": "case",
+  "q": "Is the boxed rest a whole rest (a rest for the whole bar) or a half rest?"
+ },
+ {
+  "tile": 11,
+  "kind": "clef",
+  "page": 6,
+  "staff": "staff/6/1/3",
+  "box": [
+   367,
+   2424.15,
+   432,
+   2507.85
+  ],
+  "off": "bass (filled blue, tied tenor:bass)",
+  "on": "tenor",
+  "role": "case",
+  "q": "Which clef does this staff start with? (treble / alto / tenor / bass)"
+ },
+ {
+  "tile": 12,
+  "kind": "clef",
+  "page": 4,
+  "staff": "staff/4/0/9",
+  "box": [
+   380,
+   1740.975,
+   445,
+   1826.025
+  ],
+  "off": "unwritten blue (filled) / narrowed",
+  "on": "tenor",
+  "role": "case",
+  "q": "Which clef does this staff start with? (treble / alto / tenor / bass)"
+ }
+]

@@ -1,0 +1,28 @@
+{
+  "lane": "2.256 OMR_KEY_HEADER_INK (branch lane-2.256-key-header 2927c0734)",
+  "date": "2026-11-03",
+  "tiles": "out/print/2.256-tiles (12)",
+  "tiles_key": "out/print/2.256-tiles-key/key.json",
+  "sean_verbatim": "2. Is one flat all the other tiles are 3 flats. All easily visible.",
+  "answers": {
+    "1":  {"staff": "staff/16/1/9", "role": "control_unchanged_3", "sean": "3 flats", "on": "-3", "off": "-3", "on_right": true},
+    "2":  {"staff": "staff/6/0/2",  "role": "control_unchanged_1", "sean": "one flat", "on": "-1", "off": "-1", "on_right": true},
+    "3":  {"staff": "staff/2/1/0",  "role": "changed", "sean": "3 flats", "on": "-3", "off": "abstained:disagrees_with_document", "on_right": true},
+    "4":  {"staff": "staff/10/0/7", "role": "changed", "sean": "3 flats", "on": "-3", "off": "abstained:disagrees_with_document", "on_right": true},
+    "5":  {"staff": "staff/2/1/7",  "role": "changed", "sean": "3 flats", "on": "-3", "off": "abstained:disagrees_with_document", "on_right": true},
+    "6":  {"staff": "staff/6/1/1",  "role": "changed", "sean": "3 flats", "on": "-3", "off": "abstained:disagrees_with_system", "on_right": true},
+    "7":  {"staff": "staff/16/0/8", "role": "changed", "sean": "3 flats", "on": "-3", "off": "abstained:disagrees_with_document", "on_right": true},
+    "8":  {"staff": "staff/4/1/9",  "role": "changed", "sean": "3 flats", "on": "-3", "on_right": true},
+    "9":  {"staff": "staff/8/0/7",  "role": "changed", "sean": "3 flats", "on": "-3", "on_right": true},
+    "10": {"staff": "staff/11/1/0", "role": "changed", "sean": "3 flats", "on": "-3", "on_right": true},
+    "11": {"staff": "staff/4/0/3",  "role": "changed", "sean": "3 flats", "on": "-3", "on_right": true},
+    "12": {"staff": "staff/4/1/3",  "role": "control_still_abstained", "sean": "3 flats, clear", "on": "abstained (filled blue by INFER)", "on_right": "miss, not wrong: three clear flats we still abstain on; written blue"}
+  },
+  "scoring": {
+    "changed_tiles_3_to_11_right": "9/9",
+    "controls_1_and_2_right": "2/2",
+    "tile_12_control_still_abstained": "a miss, written blue (GUESSED), not wrong",
+    "overall": "11/12 right, 0 wrong"
+  },
+  "note": "Tile keys: ON_outcome/OFF_outcome per tile are in out/print/2.256-tiles-key/key.json. Tiles 8-11 off-outcome not copied here; see the key."
+}

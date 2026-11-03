@@ -1,0 +1,122 @@
+{
+ "tile_01": {
+  "staff": "staff/16/1/9",
+  "kind": "control_unchanged_3",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "decided:markers",
+  "OFF_key_fifths": -3,
+  "plate": "litolff",
+  "page": 16
+ },
+ "tile_02": {
+  "staff": "staff/6/0/2",
+  "kind": "control_unchanged_1",
+  "written_ON_key_fifths": -1,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "decided:markers",
+  "OFF_key_fifths": -1,
+  "plate": "litolff",
+  "page": 6
+ },
+ "tile_03": {
+  "staff": "staff/2/1/0",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 2
+ },
+ "tile_04": {
+  "staff": "staff/10/0/7",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 10
+ },
+ "tile_05": {
+  "staff": "staff/2/1/7",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 2
+ },
+ "tile_06": {
+  "staff": "staff/6/1/1",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_system",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 6
+ },
+ "tile_07": {
+  "staff": "staff/16/0/8",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 16
+ },
+ "tile_08": {
+  "staff": "staff/4/1/9",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 4
+ },
+ "tile_09": {
+  "staff": "staff/8/0/7",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 8
+ },
+ "tile_10": {
+  "staff": "staff/11/1/0",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:markers",
+  "OFF_outcome": "abstained:disagrees_with_system",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 11
+ },
+ "tile_11": {
+  "staff": "staff/4/0/3",
+  "kind": "changed",
+  "written_ON_key_fifths": -3,
+  "ON_outcome": "decided:fitted_no_markers",
+  "OFF_outcome": "abstained:disagrees_with_system",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 4
+ },
+ "tile_12": {
+  "staff": "staff/4/1/3",
+  "kind": "control_still_abstained",
+  "written_ON_key_fifths": null,
+  "ON_outcome": "abstained:disagrees_with_document",
+  "OFF_outcome": "abstained:disagrees_with_document",
+  "OFF_key_fifths": null,
+  "plate": "litolff",
+  "page": 4
+ }
+}

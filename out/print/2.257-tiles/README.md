@@ -1,0 +1,1 @@
+2.257 blind tiles. Orange box = the mark asked about (nothing else is ours). Clef tiles: which clef does the staff start with? Rest tiles: whole rest or half rest? Key is key.json (do not open before answering).
