@@ -1,7 +1,7 @@
 {
  "date": "2026-11-02",
  "tiles": "out/print/2.254-r2-tiles (lane-2.254-hairpin-reach 3166e2241)",
- "summary": "Kind: 12/12 hairpins. Span by note values: 10 match (8 exact incl. the 3 p8 word places 4, 6, 8 now written), tile 5 start value differs (Sean quarter, we dotted quarter), tile 9 (control, both arms) stop not settled (Sean: over the full next bar).",
+ "summary": "Kind: 12/12 hairpins. Spans: 10 match + tile 5 likely match (the tile cut off the start note's head; Sean: 'could be a dotted quarter'); tile 9 (control, both arms) stop not settled (Sean: over the full next bar). Tile lesson: a span tile shows the whole start and stop notes, heads and dots, not only the hairpin.",
  "answers": [
   {
    "tile": 1,
@@ -41,7 +41,8 @@
    "subject": "glyph/19/0/0/2/100000",
    "lane_wrote": "ON (OFF: none): diminuendo written from the quarter. in bar 3 to the quarter in bar 4 (onsets: quarter. quarter)",
    "sean": "hairpin, quarter to a quarter in the next bar",
-   "verdict": "span shape matches but start: Sean 'quarter', we write a dotted quarter -- value or start note open"
+   "verdict": "likely match (Sean: could be a dotted quarter; the tile cut off the start note's head) -- tile fault, not a reading fault",
+   "sean_followup": "Tile 5 could be a dotted quarter - the tile cut off the notehead"
   },
   {
    "tile": 6,
