@@ -17425,6 +17425,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)
         gather_barline_claim(log, pws, cells, local)       # ROADMAP 2.221 m2 (flag ON; "0" files nothing)
+        from . import barline_columns as _barline_columns            # ROADMAP 2.260a M1 (flag OMR_BARLINE_COLUMN_FACT, default OFF): the columns' tilted lines, a fact
+        barline_cols = _barline_columns.gather_barline_columns(log, pws, progress=progress)
         # ⚠️ ROADMAP 2.13. Pure geometry + OCR, no detections needed --
         # placed here rather than beside `gather_margin_labels` because it
         # needs nothing detection produces and there is no reason to make it

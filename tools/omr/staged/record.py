@@ -958,6 +958,13 @@ class Q(_Vocab):
     #: candidates (not bound: ROADMAP 2.223). A detector arc/hairpin box no page-wide read holds abstains `span_untraced`. Nothing reads it yet.
     PAGE_SPAN = "page_span"
 
+    #: ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default OFF; `barline_columns.gather_barline_columns`): ONE ROW PER BARLINE COLUMN of a system,
+    #: on the system's subject: `value` = [slope, intercept] of the column's TILTED line x = slope * y + intercept (page px; Theil-Sen over the staves
+    #: that show the rule, the extractor's own estimator). `detail`: x (the extractor's mean column x), y0 / y1 (the system's span), staves (the
+    #: staff indices the rule was seen on), tilt_px (the drift over the span), resid_px (the worst staff's departure from the line). A fact:
+    #: it decides nothing, NOTHING READS IT (M2's carve is its first reader), no exported byte changes.
+    BARLINE_COLUMN = "barline_column"
+
     #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
     #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
     #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
@@ -2357,6 +2364,8 @@ CLAIMS: "dict[str, str]" = {
     "GLYPH_STROKES": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240: two boxes stand on the same page ink -- wrong only if they do not in fact share that ink; it never names the mark.
     "PAGE_MARK": CLAIM.COVERAGE,
+    #: ROADMAP 2.260a M1: the tilted line of a barline column -- a measurement of the page raster, naming no bar.
+    "BARLINE_COLUMN": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
     #: ROADMAP 2.240 step 2: the page-wide extent of one traced arc / CV wedge -- a measurement of ink, naming no notes.
@@ -2972,6 +2981,8 @@ class READERS(_Vocab):
     CV_GLYPH_STROKES = "cv_glyph_strokes"
     #: `page_marks.gather_page_marks` -- ROADMAP 2.240 step 1. The page render (`pws.page.binary`) under the `CV_STROKE` masks and the boxes.
     CV_PAGE_MARKS = "cv_page_marks"
+    #: `barline_columns.gather_barline_columns` -- ROADMAP 2.260a M1. The page render (`pws.page.binary`) and the page-wide barlines.
+    CV_BARLINE_COLUMN = "cv_barline_column"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.
     CV_PAGE_OWNER = "cv_page_owner"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the `Q.SYSTEM_ARC` traces and `Q.WEDGE_BOX` reads, joined page-wide.

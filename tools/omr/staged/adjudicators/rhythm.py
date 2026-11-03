@@ -4608,10 +4608,10 @@ def stroke_cut_by_cell(detail: Optional[Dict[str, Any]]) -> bool:
     """The stroke's ink reaches the cell crop's TOP or BOTTOM edge (`cut` contains "t" or "b"): a beam's thickness and the levels beyond it are
     unreadable there. No `cut` in the row (flag off at GATHER, or no cut) says nothing: not cut, as before. Reads the flag too, so the OFF arm of
     a replay of rows gathered ON ignores the fact."""
-    if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("1", "true", "yes", "on"):
-        return False
-    cut = (detail or {}).get("cut")
-    return isinstance(cut, str) and ("t" in cut or "b" in cut)
+    if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() in ("1", "true", "yes", "on"):
+        cut = (detail or {}).get("cut")
+        return isinstance(cut, str) and ("t" in cut or "b" in cut)
+    return False
 
 
 def beams_honour_claims_enabled() -> bool:

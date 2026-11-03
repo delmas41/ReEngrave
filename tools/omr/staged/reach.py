@@ -336,6 +336,8 @@ STAGE_OF_FILE = {
     "arcs_system.py": "GATHER",
     # ROADMAP 2.240 step 1: files `Q.PAGE_MARK` from its one hook line in `gather.gather()`.
     "page_marks.py": "GATHER",
+    # ROADMAP 2.260a M1: files `Q.BARLINE_COLUMN` from its hook line in `gather.gather()`.
+    "barline_columns.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
     "page_owner.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",

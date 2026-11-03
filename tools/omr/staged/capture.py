@@ -933,6 +933,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_GLYPH_STROKES": None,
     # ROADMAP 2.240 step 1: the PAGE render under the stroke masks of every cell (`pws.page.binary`).
     "CV_PAGE_MARKS": ("staged/page_marks.py", "gather_page_marks"),
+    # ROADMAP 2.260a M1: the PAGE render (`pws.page.binary`) read for each staff's barline rule.
+    "CV_BARLINE_COLUMN": ("staged/barline_columns.py", "gather_barline_columns"),
     # ROADMAP 2.240 step 2: no raster of its own (the page marks, staff lines, ledger / stem rows, traces and wedges).
     "CV_PAGE_OWNER": None,
     "CV_PAGE_SPANS": None,
