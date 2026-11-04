@@ -52,6 +52,7 @@ def test_a_barline_crossing_whose_second_box_starts_inside_its_cell():
 
 
 def test_flag_default_off(monkeypatch):
+    monkeypatch.setenv(AC.ENV_PAGE_CLAIMS, "0")            # 2.260b: the page claims (default ON) switch the one-curve reader on too
     monkeypatch.delenv(AC.ENV_ONE_CURVE, raising=False)
     assert not AC.one_curve_enabled()
     monkeypatch.setenv(AC.ENV_ONE_CURVE, "1")

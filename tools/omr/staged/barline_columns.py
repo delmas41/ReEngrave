@@ -1,4 +1,4 @@
-"""ROADMAP 2.260a M1 -- THE TILTED BARLINE COLUMN AS A FACT (STAGED GATHER; decides nothing; flag `OMR_BARLINE_COLUMN_FACT`, default OFF).
+"""ROADMAP 2.260a M1 -- THE TILTED BARLINE COLUMN AS A FACT (STAGED GATHER; decides nothing; flag `OMR_BARLINE_COLUMN_FACT`, default ON).
 
 WHY. The shared extractor reads a barline column ONCE per system and, for a tilted scan, fits it as a line through the staves that show the
 rule (`measure_extractor._system_barline_columns`, Theil-Sen, 2.221 m2) -- then keeps only the mean x (`Barline.x`). Every later reader cuts at that
@@ -33,9 +33,9 @@ WINDOW_SPACES = 1.5
 
 
 def enabled() -> bool:
-    """`OMR_BARLINE_COLUMN_FACT` (ROADMAP 2.260a M1) or `OMR_PAGE_CLAIMS` (2.260b M3), default OFF."""
+    """`OMR_BARLINE_COLUMN_FACT` (ROADMAP 2.260a M1), default ON (deny-list, 2.260b landing 2026-11-04: M3 reads it); `OMR_PAGE_CLAIMS` forces it on."""
     from .arc_claim import page_claims_enabled
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on") or page_claims_enabled()
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off") or page_claims_enabled()
 
 
 def rule_x_on_staff(ink: np.ndarray, top: int, bottom: int, x_mean: float, sp: float) -> Optional[float]:
@@ -123,7 +123,7 @@ def x_at(col: Dict[str, Any], y: float) -> float:
 
 
 def gather_barline_columns(log: Any, pws: Any, *, progress: bool = False) -> List[Dict[str, Any]]:
-    """ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default OFF), STAGED GATHER: `Q.BARLINE_COLUMN_FIT`, one row per accepted column, on the
+    """ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default ON), STAGED GATHER: `Q.BARLINE_COLUMN_FIT`, one row per accepted column, on the
     system's subject. Reads the page raster and the page-wide barlines; files rows only and decides nothing. Returns the fits."""
     if not enabled():
         return []

@@ -34,9 +34,22 @@ def test_stroke_end_binds_only_an_end_that_bound_nothing():
     assert on["right"] == off["right"]                                         # the end that bound a head is never moved
 
 
-def test_flag_off(monkeypatch):
+def test_flag_default_on_deny_list(monkeypatch):
+    # ROADMAP 2.260b landing (2026-11-04): ON unless the env says 0/false/no/off; it forces M1, M2 and the one-curve reader
+    from tools.omr.staged import barline_columns as BC, page_strokes as PS
     monkeypatch.delenv(AC.ENV_PAGE_CLAIMS, raising=False)
-    assert not AC.page_claims_enabled()
+    assert AC.page_claims_enabled() and AC.one_curve_enabled() and BC.enabled() and PS.enabled()
+    for off in ("0", "false", "no", "off"):
+        monkeypatch.setenv(AC.ENV_PAGE_CLAIMS, off)
+        assert not AC.page_claims_enabled()
+        monkeypatch.setenv(BC.ENV, off)
+        monkeypatch.setenv(PS.ENV, off)
+        monkeypatch.setenv(AC.ENV_ONE_CURVE, off)
+        assert not (AC.one_curve_enabled() or BC.enabled() or PS.enabled())          # the OFF arm: all of it off
+    monkeypatch.setenv(AC.ENV_PAGE_CLAIMS, "0")
+    monkeypatch.delenv(BC.ENV, raising=False)
+    monkeypatch.delenv(PS.ENV, raising=False)
+    assert BC.enabled() and PS.enabled()                                               # M1 / M2 default ON on their own
 
 
 def test_far_stem_tip_is_marked_never_dropped():

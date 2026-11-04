@@ -1,4 +1,4 @@
-"""ROADMAP 2.260a M2 -- THE PAGE STROKE MAP, filed beside the cell strokes and read by NOTHING (STAGED GATHER; flag `OMR_PAGE_STROKES`, default OFF).
+"""ROADMAP 2.260a M2 -- THE PAGE STROKE MAP, filed beside the cell strokes and read by NOTHING (STAGED GATHER; flag `OMR_PAGE_STROKES`, default ON).
 
     docs/plan-2026-11-03-page-ledger.md §B.1, §C M2.
 
@@ -60,9 +60,9 @@ STAFF_REACH_SPACES = 3.0
 
 
 def enabled() -> bool:
-    """`OMR_PAGE_STROKES` (ROADMAP 2.260a M2) or `OMR_PAGE_CLAIMS` (2.260b M3), default OFF."""
+    """`OMR_PAGE_STROKES` (ROADMAP 2.260a M2), default ON (deny-list, 2.260b landing 2026-11-04: M3 reads it); `OMR_PAGE_CLAIMS` forces it on."""
     from .arc_claim import page_claims_enabled
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on") or page_claims_enabled()
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off") or page_claims_enabled()
 
 
 def claims_on() -> bool:
@@ -373,7 +373,7 @@ def map_page(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], 
 
 def gather_page_strokes(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
                         columns: Optional[Sequence[Dict[str, Any]]] = None, *, progress: bool = False) -> Optional[PageMap]:
-    """ROADMAP 2.260a M2 (flag `OMR_PAGE_STROKES`, default OFF), STAGED GATHER: `Q.PAGE_STROKE`, one row per page stroke (module doc), on the page's
+    """ROADMAP 2.260a M2 (flag `OMR_PAGE_STROKES`, default ON), STAGED GATHER: `Q.PAGE_STROKE`, one row per page stroke (module doc), on the page's
     subject. Reads the cells' erased bands, the page raster and the barline columns; files rows only and decides nothing."""
     if not enabled():
         return None

@@ -77,7 +77,7 @@ class Gather(unittest.TestCase):
 
     def test_default_off_files_nothing(self):
         log = RC.Log()
-        with mock.patch.dict(os.environ, {BC.ENV: ""}):
+        with mock.patch.dict(os.environ, {BC.ENV: "0", "OMR_PAGE_CLAIMS": "0"}):
             self.assertEqual(BC.gather_barline_columns(log, _pws(_page())), [])
         self.assertEqual(self._rows(log), [])
 

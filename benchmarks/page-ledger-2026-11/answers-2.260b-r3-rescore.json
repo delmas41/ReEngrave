@@ -1,0 +1,21 @@
+{
+  "lane": "2.260b round 3 re-score (land-2.260b; r3 = lane-2.260b-m3-r3 36d564fa3, OMR_PAGE_CLAIMS ON)",
+  "date": "2026-11-04",
+  "source": "Sean's r2 tile answers (answers-2.260b-r2.json, 2026-11-03) re-scored against the r3 written file; r3 tiles out/print/2.260b-r3-tiles, key out/print/2.260b-r3-key.json",
+  "question": "tie or slur, and which two notes does it connect?",
+  "result": "11 right, tile 9 unwritten (not wrong), 0 wrong",
+  "scoring_r3": {
+    "1": {"sean": "slur", "r3": "slur", "right": true},
+    "2": {"sean": "tie", "r3": "tie", "right": true, "note": "Litolff p10: a stem tip over 4.5 sp from its head (TIP_MAX_SPACES) no longer supports 'different'; OFF's correct lower-head tie kept"},
+    "3": {"sean": "tie", "r3": "tie", "right": true, "note": "Brahms p0 5/1/16->5/2/16: tie over the dyad's upper heads, read from local staff position 10.09 vs 10.10 (Sean 2026-11-03: a tie is read from position, not pitch)"},
+    "4": {"sean": "tie", "r3": "tie", "right": true},
+    "5": {"sean": "tie", "r3": "tie", "right": true},
+    "6": {"sean": "slur", "r3": "slur", "right": true},
+    "7": {"sean": "tie", "r3": "tie", "right": true},
+    "8": {"sean": "tie", "r3": "tie", "right": true},
+    "9": {"sean": "tie", "r3": "unwritten", "right": null, "note": "Litolff p10 real tie (lower heads) still unread: positions 9.38 vs 10.12, hole read 10.51 -- a head-position measurement outside arcs; follow-up lane"},
+    "10": {"sean": "slur", "r3": "slur", "right": true},
+    "11": {"sean": "slur", "r3": "slur", "right": true},
+    "12": {"sean": "tie", "r3": "tie", "right": true}
+  }
+}

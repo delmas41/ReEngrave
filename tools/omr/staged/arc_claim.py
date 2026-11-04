@@ -257,18 +257,19 @@ ENV_ONE_CURVE = "OMR_ARC_ONE_CURVE"
 ONE_STROKE_MIN_SPACES = 1.0
 
 
-#: ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`, default OFF): the page ledger's claims. It turns on M1 (`OMR_BARLINE_COLUMN_FACT`) and M2 (`OMR_PAGE_STROKES`),
+#: ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`, default ON, deny-list: "0"/"false"/"no"/"off" turns it off; Sean 2026-11-04 "Yes"): the page ledger's claims. It turns on M1 (`OMR_BARLINE_COLUMN_FACT`) and M2 (`OMR_PAGE_STROKES`),
 #: builds the page stroke map BEFORE the arcs are traced and erased (so the arc is on the map whole), names the `Q.PAGE_STROKE` ids each traced curve runs
 #: along (`page_strokes`, and per piece `piece_strokes`) and reads the curve as ONE curve (the 2.258 extent and junction test).
 ENV_PAGE_CLAIMS = "OMR_PAGE_CLAIMS"
 
 
 def page_claims_enabled() -> bool:
-    return _on(ENV_PAGE_CLAIMS)
+    # default ON, deny-list (copies key_header_ink.enabled)
+    return os.environ.get(ENV_PAGE_CLAIMS, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def one_curve_enabled() -> bool:
-    """`OMR_ARC_ONE_CURVE` (ROADMAP 2.258) or `OMR_PAGE_CLAIMS` (2.260b), default OFF; an explicit on-word turns it on."""
+    """`OMR_ARC_ONE_CURVE` (ROADMAP 2.258, default OFF) or `OMR_PAGE_CLAIMS` (2.260b, default ON): on whenever the page claims are on."""
     return _on(ENV_ONE_CURVE) or page_claims_enabled()
 
 #: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)

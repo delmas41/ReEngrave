@@ -162,10 +162,10 @@ class Gather(unittest.TestCase):
     def _rows(self, log):
         return [o for o in log._obs.values() if o.quantity == Q.PAGE_STROKE]
 
-    def test_default_off_files_nothing(self):
+    def test_off_files_nothing(self):
         pws, cells, local = _build()
         log = RC.Log()
-        with mock.patch.dict(os.environ, {PS.ENV: ""}):
+        with mock.patch.dict(os.environ, {PS.ENV: "0", "OMR_PAGE_CLAIMS": "0"}):
             self.assertIsNone(PS.gather_page_strokes(log, pws, cells, local, {}))
         self.assertEqual(self._rows(log), [])
 

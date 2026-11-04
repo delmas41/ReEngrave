@@ -17428,7 +17428,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_systems(log, pws, getattr(pws, "used_bridging", True))
         gather_measures(log, pws, cells, local)
         gather_barline_claim(log, pws, cells, local)       # ROADMAP 2.221 m2 (flag ON; "0" files nothing)
-        from . import barline_columns as _barline_columns            # ROADMAP 2.260a M1 (flag OMR_BARLINE_COLUMN_FACT, default OFF): the columns' tilted lines, a fact
+        from . import barline_columns as _barline_columns            # ROADMAP 2.260a M1 (flag OMR_BARLINE_COLUMN_FACT, default ON): the columns' tilted lines, a fact
         barline_cols = _barline_columns.gather_barline_columns(log, pws, progress=progress)
         # ⚠️ ROADMAP 2.13. Pure geometry + OCR, no detections needed --
         # placed here rather than beside `gather_margin_labels` because it
@@ -17535,7 +17535,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
         page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
-        # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default OFF): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
+        # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default ON): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
         # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
         if not _page_strokes.claims_on():
             _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)

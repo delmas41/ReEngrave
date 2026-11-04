@@ -958,14 +958,14 @@ class Q(_Vocab):
     #: candidates (not bound: ROADMAP 2.223). A detector arc/hairpin box no page-wide read holds abstains `span_untraced`. Nothing reads it yet.
     PAGE_SPAN = "page_span"
 
-    #: ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default OFF; `barline_columns.gather_barline_columns`): ONE ROW PER BARLINE COLUMN of a system,
+    #: ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default ON; `barline_columns.gather_barline_columns`): ONE ROW PER BARLINE COLUMN of a system,
     #: on the system's subject: `value` = [slope, intercept] of the column's TILTED line x = slope * y + intercept (page px; Theil-Sen over the staves
     #: that show the rule, the extractor's own estimator). `detail`: x (the extractor's mean column x), y0 / y1 (the system's span), staves (the
     #: staff indices the rule was seen on), tilt_px (the drift over the span), resid_px (the worst staff's departure from the line). A fact:
     #: it decides nothing, NOTHING READS IT (M2's carve is its first reader), no exported byte changes.
     BARLINE_COLUMN_FIT = "barline_column_fit"
 
-    #: ROADMAP 2.260a M2 (flag `OMR_PAGE_STROKES`, default OFF; `page_strokes.gather_page_strokes`): ONE ROW PER STROKE of the PAGE stroke map, on the
+    #: ROADMAP 2.260a M2 (flag `OMR_PAGE_STROKES`, default ON; `page_strokes.gather_page_strokes`): ONE ROW PER STROKE of the PAGE stroke map, on the
     #: page's subject: `value` = the kind (vertical / horizontal / curve / blob / barline). The map is assembled from each staff's own erased band
     #: and the page raster outside the bands, the tilted barline columns carved out first. `detail` mirrors `Q.STROKE` in PAGE px (`bbox_page_px`,
     #: length / thickness / angle in staff spaces, `staff` = [system, staff] whose lines it is read against, `cut` = never, a page stroke is cut by
