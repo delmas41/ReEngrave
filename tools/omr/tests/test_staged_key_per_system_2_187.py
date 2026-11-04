@@ -20,7 +20,8 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import ABSTAIN, Log, Q, READERS
 
 SP = 20.0
-ON = {"OMR_KEY_SIGNATURE_CLAIM": "1", "OMR_CLAIMED_REGISTER": "1", "OMR_KEY_PER_SYSTEM": "1"}
+ON = {"OMR_KEY_SIGNATURE_CLAIM": "1", "OMR_CLAIMED_REGISTER": "1", "OMR_KEY_PER_SYSTEM": "1",
+      "OMR_KEY_OBJECT_COUNT": "0"}   # 2.256b (default ON) counts the stems of these painted flats; this file tests the 2.187 consult on a staff the pieces read none of
 OFF = dict(ON, OMR_KEY_PER_SYSTEM="0")
 CLEF_X0, CLEF_X1 = 30, 90                       # the clef block
 FLAT0, PITCH = 100, 24                         # first flat's left edge, slot pitch
