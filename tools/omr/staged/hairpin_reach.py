@@ -36,6 +36,21 @@ def enabled() -> bool:
     return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+NOT_A_BEAM_ENV = "OMR_HAIRPIN_NOT_A_BEAM"
+#: the abstention's `why` for a reach find with a stem at both ends (ROADMAP 2.261 fix 1).
+REASON_BEAM_BETWEEN_STEMS = "beam_between_two_stems"
+
+
+def not_a_beam_enabled() -> bool:
+    """`OMR_HAIRPIN_NOT_A_BEAM`, default OFF (ROADMAP 2.261 fix 1): a reach find standing on a stem at each end is a beam, not a hairpin.
+    CAUSE: the reach strips every vertical stroke of 1.2+ spaces before it looks, which leaves a beam between two stems as an isolated
+    straight bar; `converges` / `extent_trend` cannot tell 29 columns of a beam from a short hairpin (Litolff p3 sys0 staff5 bar2: the
+    beam of two eighths was filed a crescendo, claimed, and the beam stroke refused `owned_by_another_mark` -> a quarter).
+    CONVENTION ASSUMED: a hairpin has no stem at both of its ends. WHAT WOULD FALSIFY IT: a real hairpin the flag drops on Sean's
+    tiles (Brahms p8/p19 gained hairpins). NOT CONFIRMED."""
+    return os.environ.get(NOT_A_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 #: ADJUDICATE abstains a one-note wedge only when it is no longer than this: an accent is a printed glyph of one size (Brahms p5: the
 #: accents the reach reads are 1.6-2.1 sp), while a hairpin held under one long note is as long as the note's room (Brahms p8: 17
 #: one-note wedges, 3.9-6.7 sp; Sean 2026-11-02 read the ~5.5 sp one-note wedges of Brahms p19 bars 358-361 as hairpins).
@@ -259,3 +274,73 @@ def word_ink_boxes(binary, box, entries, spacing):
                 continue
         groups.append(c)
     return [[float(x0 + g[0]), float(y0 + g[1]), float(x0 + g[2]), float(y0 + g[3])] for g in groups]
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------
+# ROADMAP 2.261 fix 2 -- a word read ONLY on the 2.254 r3 through-line retry may not claim ink inside detector notehead boxes.
+# Flag `OMR_WORD_RETRY_SPARES_HEADS`, default OFF. STAGED GATHER (`gather_page_claims`, the direction_word claim).
+# CAUSE: the retry cleans the crop and reads it again with a candidate the plain crops gave nothing for; where the candidate's box holds
+# an `f` and four beamed heads (Litolff p6 sys1 staff9 bar10) Tesseract on the tight cleaned crop read 'faster' (library term), and the
+# word claimed its whole OCR box -- the head the page-wide pass had boxed was refused `claimed_by:word` (Sean: an eighth). The word was
+# the `f` (a dynamic) beside heads; the retry had no plain-crop witness. LESSON: a second look that REPLACES a refusal is a weaker witness
+# than the first look; where its box holds ink another reader has boxed as something else it claims none of that ink.
+# CONVENTION ASSUMED: a direction word is never printed over a notehead. WHAT WOULD FALSIFY IT: a retry-read word (Brahms p8/p19
+# 'dim.', 'pesante', Litolff p9 'pizz.') that loses claimed letters on Sean's tiles. NOT CONFIRMED.
+# ---------------------------------------------------------------------------------------------------------------------------------
+HEADS_ENV = "OMR_WORD_RETRY_SPARES_HEADS"
+RETRY_SOURCE_SUFFIX = "-lines-tight"
+HEAD_BOX_GROW_SPACES = 0.15
+
+
+def word_retry_spares_heads_enabled() -> bool:
+    """`OMR_WORD_RETRY_SPARES_HEADS`, default OFF (ROADMAP 2.261 fix 2)."""
+    return os.environ.get(HEADS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def is_retry_only_reading(winning_reader) -> bool:
+    """True for a word whose accepted reading came from the through-line retry crop (`direction_text` run(..., '-lines-tight'))."""
+    return str(winning_reader or "").endswith(RETRY_SOURCE_SUFFIX)
+
+
+def word_area_sparing_heads(binary, box, head_boxes, spacing):
+    """A retry-read word's claim area less detector notehead boxes: `(areas, spared)`. `areas` are rectangles (page px) round the word's
+    ink components that neither lie inside nor touch a head box (a stem or beam stub left on a head goes with it); `spared` is the list of
+    head boxes met inside `box`. `[box], []` unchanged when no head box meets `box`. `areas` is [] when nothing is left."""
+    import cv2
+    import numpy as np
+    x0, y0, x1, y1 = (int(round(float(v))) for v in box)
+    x0, y0 = max(0, x0), max(0, y0)
+    pad = int(round(HEAD_BOX_GROW_SPACES * float(spacing or 0)))
+    hit = [[float(v) for v in hb] for hb in head_boxes
+           if hb[0] < x1 and hb[2] > x0 and hb[1] < y1 and hb[3] > y0]
+    if not hit:
+        return [[float(v) for v in box]], []
+    crop = binary[y0:y1, x0:x1]
+    if crop.size == 0:
+        return [[float(v) for v in box]], []
+    ink = (crop == 0).astype(np.uint8)
+    cover = np.zeros(ink.shape, np.uint8)
+    for hb in hit:
+        a, b = max(0, int(hb[0]) - pad - x0), max(0, int(hb[1]) - pad - y0)
+        c, d = min(ink.shape[1], int(hb[2]) + pad - x0), min(ink.shape[0], int(hb[3]) + pad - y0)
+        if c > a and d > b:
+            cover[b:d, a:c] = 1
+    near = cv2.dilate(cover, np.ones((3, 3), np.uint8)) > 0
+    n, lab, st, _c = cv2.connectedComponentsWithStats((ink > 0).astype(np.uint8) * 255, 8)
+    keep = []
+    for k in range(1, n):
+        if near[lab == k].any():
+            continue
+        x, y, w, h, _a = (int(v) for v in st[k])
+        keep.append([x0 + x, y0 + y, x0 + x + w, y0 + y + h])
+    keep.sort()
+    out = []
+    for r in keep:
+        if out:
+            m = [min(out[-1][0], r[0]), min(out[-1][1], r[1]), max(out[-1][2], r[2]), max(out[-1][3], r[3])]
+            if not any(hb[0] < m[2] and hb[2] > m[0] and hb[1] < m[3] and hb[3] > m[1] for hb in hit) \
+                    and r[0] - out[-1][2] <= 0.6 * float(spacing or 0):
+                out[-1] = m
+                continue
+        out.append(r)
+    return [[float(v) for v in r] for r in out], hit

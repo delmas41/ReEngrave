@@ -4792,7 +4792,9 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
         # (`staged/hairpin_reach.py` names the cause). OFF the call is unchanged.
         from . import hairpin_reach as _hairpin_reach
         reach_on = _hairpin_reach.enabled()
-        found = detect_hairpins(page_ink, staff_rows, blanked, reach=reach_on)
+        _beam_refused: list = []
+        found = detect_hairpins(page_ink, staff_rows, blanked, reach=reach_on,
+                                no_beams=reach_on and _hairpin_reach.not_a_beam_enabled(), refused=_beam_refused)
     except Exception as exc:                                  # noqa: BLE001
         for st_key in sorted(bands):
             log.abstain(Subject.from_key(st_key), Q.WEDGE_BOX,
@@ -4802,6 +4804,16 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
         return
 
     per_staff: Dict[int, int] = {}
+    # ROADMAP 2.261 fix 1 (flag OMR_HAIRPIN_NOT_A_BEAM): a find with a stem at both ends is refused, counted with its stem lengths.
+    for h, jl, jr in _beam_refused:
+        _e = by_page_index.get(h.staff_index)
+        if _e is None:
+            continue
+        (_si, _sti), (_t, _b, _sp) = _e
+        log.abstain(R.staff(p, _si, _sti), Q.WEDGE_BOX, reader=READERS.CV_HAIRPINS, frame=FRAME_PAGE,
+                    reason=ABSTAIN.BELOW_THRESHOLD, why=_hairpin_reach.REASON_BEAM_BETWEEN_STEMS,
+                    bbox_page_px=[float(h.x), float(h.y), float(h.x + h.width), float(h.y + h.height)],
+                    width_spaces=round(float(h.width) / float(_sp), 3), stem_left_spaces=round(jl, 2), stem_right_spaces=round(jr, 2))
     for h in found:
         entry = by_page_index.get(h.staff_index)
         if entry is None:
@@ -16093,6 +16105,19 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                 for a in ib:
                     _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
                 continue
+            if _hairpin_reach.word_retry_spares_heads_enabled() and _hairpin_reach.is_retry_only_reading(d.get("winning_reader")) \
+                    and area == [float(v) for v in bb]:
+                # ROADMAP 2.261 fix 2 (flag OMR_WORD_RETRY_SPARES_HEADS): a word read ONLY on the through-line retry claims none of the ink
+                # inside a detector notehead box (Litolff p6: 'faster' over an f + four beamed heads refused a head `claimed_by:word`).
+                areas, spared = _hairpin_reach.word_area_sparing_heads(
+                    binary, area, [b for b, _n in _page_boxes(s, lambda n: n.startswith("notehead"))], _sp(s))
+                if spared:
+                    extra["heads_left_out"] = spared
+                    extra.setdefault("word_box", [float(v) for v in bb])
+                    _count("word:direction_word:retry_heads_left_out")
+                    for a in areas:
+                        _file(s, a, CL.OWNER_WORD, "direction_word", owner_row=r.id, text=r.value, category=d.get("category"), **extra)
+                    continue
             if _hairpin_reach.enabled():
                 # ROADMAP 2.254 (flag OMR_HAIRPIN_REACH): the OCR box can hold a hairpin beside the word ('dim.', 'espr.' on Brahms p8);
                 # the word claims its own ink, the wedge-shaped ink is left for the hairpin reader.
