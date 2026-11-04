@@ -113,6 +113,28 @@ def claim_strokes(res: Any, cell_box: Sequence[float], up: float, trace: Dict[in
     return out
 
 
+def page_strokes_along(page_map: Any, trace: Dict[int, Tuple[float, float]], sp_page: float) -> List[Tuple[int, float]]:
+    """ROADMAP 2.260b M3: `[(Q.PAGE_STROKE ordinal, share)]` for every stroke of the PAGE map (`page_strokes.PageMap`: masks in the reduced frame,
+    boxes in page px) whose ink lies at least `ON_TRACE_SHARE_MIN` along the traced curve -- the claim's translation from a cell's `[cell, ordinal]`
+    to the page's own ids. A page-frame call of `on_trace_share` (cell origin 0, upscale 1)."""
+    out: List[Tuple[int, float]] = []
+    if page_map is None or not trace:
+        return out
+    xs = sorted(trace)
+    x_lo, x_hi = xs[0], xs[-1]
+    y_lo, y_hi = min(a for a, _b in trace.values()), max(b for _a, b in trace.values())
+    for i, (m, x0, y0) in enumerate(page_map.masks):
+        if m.size == 0:
+            continue
+        bx, by, bw, bh = page_map.strokes[i].box
+        if bx > x_hi or bx + bw < x_lo or by > y_hi or by + bh < y_lo:
+            continue
+        sh = on_trace_share(m, x0, y0, page_map.scale, (0, 0, 0, 0), 1.0, trace, sp_page)
+        if sh >= ON_TRACE_SHARE_MIN:
+            out.append((i, round(sh, 3)))
+    return out
+
+
 # ── the kind: from the two end heads, by Sean's rule ───────────────────────────────────────────────────────────────────────────────────────
 #: what a `Q.SYSTEM_ARC` row's value (the ends' shape) says about the kind, when the ends were anchored on two different heads
 SHAPE_KIND = {
@@ -212,9 +234,19 @@ ENV_ONE_CURVE = "OMR_ARC_ONE_CURVE"
 ONE_STROKE_MIN_SPACES = 1.0
 
 
+#: ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`, default OFF): the page ledger's claims. It turns on M1 (`OMR_BARLINE_COLUMN_FACT`) and M2 (`OMR_PAGE_STROKES`),
+#: builds the page stroke map BEFORE the arcs are traced and erased (so the arc is on the map whole), names the `Q.PAGE_STROKE` ids each traced curve runs
+#: along (`page_strokes`, and per piece `piece_strokes`) and reads the curve as ONE curve (the 2.258 extent and junction test).
+ENV_PAGE_CLAIMS = "OMR_PAGE_CLAIMS"
+
+
+def page_claims_enabled() -> bool:
+    return _on(ENV_PAGE_CLAIMS)
+
+
 def one_curve_enabled() -> bool:
-    """`OMR_ARC_ONE_CURVE` (ROADMAP 2.258), default OFF; an explicit on-word turns it on."""
-    return _on(ENV_ONE_CURVE)
+    """`OMR_ARC_ONE_CURVE` (ROADMAP 2.258) or `OMR_PAGE_CLAIMS` (2.260b), default OFF; an explicit on-word turns it on."""
+    return _on(ENV_ONE_CURVE) or page_claims_enabled()
 
 #: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)
 BIND_COLUMN_DX_WIDTHS = 0.6

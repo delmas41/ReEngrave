@@ -2908,7 +2908,8 @@ BIND_DIFFERENT_POSITION_SPACES = 0.435
 
 
 def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float,
-                            joins: Optional[Sequence[Dict[str, Any]]] = None) -> List[str]:
+                            joins: Optional[Sequence[Dict[str, Any]]] = None,
+                            piece_strokes: Optional[Dict[str, Sequence[int]]] = None) -> List[str]:
     """ROADMAP 2.223: the junctions of a joined curve that are NOT a barline's cut. Pieces in x order; a junction is a barline's only
     where the left piece ends at its cell's right edge AND the right piece begins at its (another) cell's left edge (2.166's
     `CUT_EDGE_SPACES`). Anything else -- two whole arcs meeting end to start at a shared note, twin boxes of one arc -- is returned as
@@ -2937,6 +2938,11 @@ def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float,
     for (_xa, ka, ba, ca, ia), (_xb, kb, bb, cbb, ib) in zip(info, info[1:]):
         ok = (ba and bb and ca and cbb and ia != ib and abs(ca[2] - float(ba[2])) <= tol
               and abs(float(bb[0]) - cbb[0]) <= tol)
+        if not ok and piece_strokes:
+            # ROADMAP 2.260b M3: the PAGE map says both pieces' traces run along one and the same page stroke -- one stroke boxed twice, or one
+            # stroke the cell edge cut. Two arcs that MEET at a note are two page strokes (a gap between them), so the guard stands for them.
+            if set(piece_strokes.get(ka) or ()) & set(piece_strokes.get(kb) or ()):
+                ok = True
         if not ok and joins:
             jr = next((j for j in joins if j.get("a") in (ka, kb) and j.get("b") in (ka, kb) and j.get("a") != j.get("b")), None)
             if jr is not None:
@@ -3046,7 +3052,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         # printed arcs meet end to start at one note (slur, tie, slur along Brahms p0 staff 12, bars 0-4: four ties bound as one slur
         # in the first build), boxes that were each a WHOLE arc. A curve with a junction that is not a barline's cut is not trusted as
         # ONE arc: no binding for any of its pieces (the OFF path decides each), recorded.
-        bad = _joins_not_at_a_barline(ev, pieces, sp, d.get("joins") if _arc_claim.one_curve_enabled() else None)
+        bad = _joins_not_at_a_barline(ev, pieces, sp, d.get("joins") if _arc_claim.one_curve_enabled() else None,
+                                       d.get("piece_strokes") if _arc_claim.page_claims_enabled() else None)
         if bad:
             b["why"] = "joined_not_at_a_barline"
             b["junctions"] = bad

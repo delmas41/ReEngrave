@@ -33,8 +33,9 @@ WINDOW_SPACES = 1.5
 
 
 def enabled() -> bool:
-    """`OMR_BARLINE_COLUMN_FACT` (ROADMAP 2.260a M1), default OFF."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_BARLINE_COLUMN_FACT` (ROADMAP 2.260a M1) or `OMR_PAGE_CLAIMS` (2.260b M3), default OFF."""
+    from .arc_claim import page_claims_enabled
+    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on") or page_claims_enabled()
 
 
 def rule_x_on_staff(ink: np.ndarray, top: int, bottom: int, x_mean: float, sp: float) -> Optional[float]:

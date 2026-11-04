@@ -15182,7 +15182,10 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         counts["strokes"] += len(got_all)
         log.observe(ssub, Q.CLAIMED_AREA, got_all, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=AC.OWNER, owner_row=None,
                     owner_glyph=d.get("subject"), unit="ink", scope="system_arc", standing="READ", source="system_arc", shares=shares,
-                    pieces=pieces, cells=cells_hit, cover_min=AC.ON_TRACE_SHARE_MIN)
+                    pieces=pieces, cells=cells_hit, cover_min=AC.ON_TRACE_SHARE_MIN,
+                    # ROADMAP 2.260b M3 (OMR_PAGE_CLAIMS): the same claim in the page's own ids (`Q.PAGE_STROKE` ordinals on the page), the
+                    # translation from `[cell, ordinal]`; empty where the flag is off
+                    page_strokes=[i for i, _sh in (d.get("page_strokes") or ())])
         if progress:
             print(f"  gather arc claim {d.get('subject')} {d.get('shape')} boxes={len(pieces)}")
     return counts
@@ -17514,7 +17517,13 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # pixels, then their own stroke erased from `cell.image_no_staff`. AFTER every detector call (the box set is
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.
         from . import arcs_system as _arcs_system
-        arcs_summary = _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress)
+        from . import page_strokes as _page_strokes
+        page_map_pre = None
+        if _page_strokes.claims_on():
+            # ROADMAP 2.260b M3 (flag OMR_PAGE_CLAIMS): the PAGE stroke map is built HERE, before the arcs are traced and erased from the cells,
+            # so a tie or slur is on the map whole and the arc's claim can name its page strokes
+            page_map_pre = _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
+        arcs_summary = _arcs_system.gather_system_arcs(log, pws, cells, local, detections, progress=progress, page_map=page_map_pre)
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
         stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections,
@@ -17528,8 +17537,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
         # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default OFF): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
         # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
-        from . import page_strokes as _page_strokes
-        _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
+        if not _page_strokes.claims_on():
+            _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)

@@ -768,7 +768,7 @@ def _pair_joins(members: Sequence[Dict[str, Any]], sp: float) -> List[Dict[str, 
 
 
 def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
-                       detections: Dict[str, List[Any]], *, progress: bool = False) -> Dict[str, Any]:
+                       detections: Dict[str, List[Any]], *, progress: bool = False, page_map: Any = None) -> Dict[str, Any]:
     """`Q.SYSTEM_ARC` per joined arc, then the traced strokes erased from every cell's `image_no_staff`.
 
     No-op (returns {}) unless `OMR_SYSTEM_ARCS` is on. Returns a small summary (for probes)."""
@@ -947,6 +947,14 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             )
             if joins is not None:
                 detail["joins"] = joins
+            if page_map is not None:
+                # ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`): the curve names the PAGE strokes it runs along (built before this erase, so the arc is on
+                # the map whole), and each piece the strokes ITS OWN trace runs along: two pieces on one page stroke are one stroke seen twice
+                from . import arc_claim as _ac2
+                tr_all = {int(x): (float(a), float(b)) for x, (a, b) in pts.items()}
+                detail["page_strokes"] = [[i, sh] for i, sh in _ac2.page_strokes_along(page_map, tr_all, sp_staff)]
+                detail["piece_strokes"] = {m["piece"]["glyph"].to_key(): [i for i, _sh in _ac2.page_strokes_along(
+                    page_map, {int(x): (float(a), float(b)) for x, (a, b) in m["points"].items()}, sp_staff)] for m in members}
             from . import arc_claim as _arc_claim
             if _arc_claim.claim_enabled():
                 # `OMR_ARC_CLAIM` (default ON): the traced rows themselves -- what `gather_arc_claim` claims the strokes ALONG
