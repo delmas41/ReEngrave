@@ -4595,7 +4595,7 @@ def dots_honour_claims_enabled() -> bool:
 
 
 # ════════════════════════════════════════════════════════════════════════════
-# ROADMAP 2.260a M0 (flag `OMR_STROKE_CUT_FACT`, default OFF; GATHER files the fact, `stroke_map.stroke_cut_fact_enabled`) -- A STROKE THE CELL CUT IS
+# ROADMAP 2.260a M0 (flag `OMR_STROKE_CUT_FACT`, default ON, deny-list; GATHER files the fact, `stroke_map.stroke_cut_fact_enabled`) -- A STROKE THE CELL CUT IS
 # NOT A THIN STROKE. The honest form of the parked 2.259 patch: the fact is on the stroke (`cut`: the cell-crop edges its ink reaches, page border
 # ignored), not re-derived from a band. A reader that would refuse the stroke on its THICKNESS or on a level it did not see says CANNOT TELL (rule 8)
 # and counts it (`beam_cut_kept` in the verdict); the stroke is then judged only by the tests that do not read its thickness (stems at its ends,
@@ -4608,7 +4608,7 @@ def stroke_cut_by_cell(detail: Optional[Dict[str, Any]]) -> bool:
     """The stroke's ink reaches the cell crop's TOP or BOTTOM edge (`cut` contains "t" or "b"): a beam's thickness and the levels beyond it are
     unreadable there. No `cut` in the row (flag off at GATHER, or no cut) says nothing: not cut, as before. Reads the flag too, so the OFF arm of
     a replay of rows gathered ON ignores the fact."""
-    if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() in ("1", "true", "yes", "on"):
+    if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("0", "false", "no", "off"):
         cut = (detail or {}).get("cut")
         return isinstance(cut, str) and ("t" in cut or "b" in cut)
     return False

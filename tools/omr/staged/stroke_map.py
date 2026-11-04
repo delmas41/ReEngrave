@@ -65,20 +65,20 @@ THICKNESS_FROM_UNERASED = True
 
 KINDS = ("vertical", "horizontal", "curve", "blob")
 
-# ───────────────────────────── ROADMAP 2.260a M0: the CUT fact (flag `OMR_STROKE_CUT_FACT`, default OFF) ─────────────────────────────
+# ───────────────────────────── ROADMAP 2.260a M0: the CUT fact (flag `OMR_STROKE_CUT_FACT`, default ON) ─────────────────────────────
 #: CAUSE (2.259, measured): GATHER cuts a cell at its staff plus a pad; a tall up-stem group's beam stands further out, so the cell holds a sliver
 #: of it and two later readers (`rhythm._not_a_beam_by_ink` too_thin, the tip readers' missing level) re-judge the SLIVER as if it were the mark.
 #: A stroke carries no "the cell cut me" fact (`stroke_owner.Ink`), so no reader can tell a thin mark from a cut one. This is that fact: the
 #: edges of the cell crop the stroke's ink touches ("t" top, "b" bottom, "l" left, "r" right), ignoring an edge that is the PAGE border (nothing
 #: was cut there). A reader that would refuse a cut stroke on its thickness or its missing level says CANNOT TELL and counts it (CLAUDE rule 8);
-#: it never supplies a value (CLAUDE §4). Filed only with the flag on (the Q.STROKE rows are byte-identical with it off).
+#: it never supplies a value (CLAUDE §4). Default ON, deny-list (Sean 2026-11-03, tiles 7/7, "Yes"): an explicit 0/false/no/off turns it off, and then the Q.STROKE rows are byte-identical to before.
 STROKE_CUT_FACT_ENV = "OMR_STROKE_CUT_FACT"
 CUT_EDGES = "tblr"
 
 
 def stroke_cut_fact_enabled() -> bool:
-    """`OMR_STROKE_CUT_FACT`, default OFF (ROADMAP 2.260a M0)."""
-    return os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_STROKE_CUT_FACT`, default ON (ROADMAP 2.260a M0; Sean 2026-11-03); an explicit 0/false/no/off disables."""
+    return os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def box_cut_edges(x0: float, y0: float, x1: float, y1: float, height: float, width: float, tol: float = 0.5) -> str:
