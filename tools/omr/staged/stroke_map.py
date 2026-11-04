@@ -65,6 +65,53 @@ THICKNESS_FROM_UNERASED = True
 
 KINDS = ("vertical", "horizontal", "curve", "blob")
 
+# ───────────────────────────── ROADMAP 2.260a M0: the CUT fact (flag `OMR_STROKE_CUT_FACT`, default ON) ─────────────────────────────
+#: CAUSE (2.259, measured): GATHER cuts a cell at its staff plus a pad; a tall up-stem group's beam stands further out, so the cell holds a sliver
+#: of it and two later readers (`rhythm._not_a_beam_by_ink` too_thin, the tip readers' missing level) re-judge the SLIVER as if it were the mark.
+#: A stroke carries no "the cell cut me" fact (`stroke_owner.Ink`), so no reader can tell a thin mark from a cut one. This is that fact: the
+#: edges of the cell crop the stroke's ink touches ("t" top, "b" bottom, "l" left, "r" right), ignoring an edge that is the PAGE border (nothing
+#: was cut there). A reader that would refuse a cut stroke on its thickness or its missing level says CANNOT TELL and counts it (CLAUDE rule 8);
+#: it never supplies a value (CLAUDE §4). Default ON, deny-list (Sean 2026-11-03, tiles 7/7, "Yes"): an explicit 0/false/no/off turns it off, and then the Q.STROKE rows are byte-identical to before.
+STROKE_CUT_FACT_ENV = "OMR_STROKE_CUT_FACT"
+CUT_EDGES = "tblr"
+
+
+def stroke_cut_fact_enabled() -> bool:
+    """`OMR_STROKE_CUT_FACT`, default ON (ROADMAP 2.260a M0; Sean 2026-11-03); an explicit 0/false/no/off disables."""
+    return os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def box_cut_edges(x0: float, y0: float, x1: float, y1: float, height: float, width: float, tol: float = 0.5) -> str:
+    """The edges of a `width` x `height` crop that the half-open box [x0, x1) x [y0, y1) reaches, as letters of `CUT_EDGES` (top, bottom, left, right)."""
+    out = ""
+    if y0 <= tol:
+        out += "t"
+    if y1 >= height - tol:
+        out += "b"
+    if x0 <= tol:
+        out += "l"
+    if x1 >= width - tol:
+        out += "r"
+    return out
+
+
+def drop_page_border(cut: str, cell_box: Optional[Sequence[float]], page_shape: Optional[Sequence[int]]) -> str:
+    """`cut` without the edges where the cell crop's own edge is the page's edge (nothing was cut there). `cell_box` = bbox_page_px
+    (x0, y0, x1, y1); `page_shape` = (height, width). Unknown page shape keeps every edge (a cut is said, never assumed away)."""
+    if not cut or not cell_box or len(cell_box) != 4:
+        return cut
+    gone = set()
+    if cell_box[1] <= 0:
+        gone.add("t")
+    if cell_box[0] <= 0:
+        gone.add("l")
+    if page_shape and len(page_shape) >= 2:
+        if cell_box[3] >= page_shape[0]:
+            gone.add("b")
+        if cell_box[2] >= page_shape[1]:
+            gone.add("r")
+    return "".join(e for e in cut if e not in gone)
+
 # ───────────────────────────── ROADMAP 2.239: split fused ink at its joins (flag `OMR_SPLIT_JOINS`, default ON) ─────────────────────────────
 #: CAUSE (2.239, Brahms p0 against Sean's labels): the vertical opening is a column test -- a column run of ink at least `V_MIN_SPACES` tall is
 #: "vertical" whatever its WIDTH. Two heads a third apart on one stem make columns ~2 sp tall across the whole oval, so the pair AND the stem
@@ -233,6 +280,8 @@ class Stroke:
     #: ROADMAP 2.242 (`OMR_ACCIDENTAL_WHOLE`): a whole accidental is ONE stroke; the pieces the openings cut it into (stems, bars, bowl) are
     #: kept here, measured the same way and NOT filed as strokes, because the 2.201 type reading (stem stagger) reads them
     parts: List["Stroke"] = field(default_factory=list)
+    #: ROADMAP 2.260a M0: the cell crop's edges this stroke's ink reaches (letters of `CUT_EDGES`, page border NOT yet dropped); "" = none
+    cut: str = ""
 
 
 class LocalStaff:
@@ -279,7 +328,8 @@ class LocalStaff:
             prev = rows
         self.local = bool(self._xs)
 
-    def lines_at(self, x: float) -> List[float]:
+    def lines_at(self, x: float, y: Optional[float] = None) -> List[float]:
+        """The five lines at `x` (reduced frame). `y` is accepted and ignored: one cell holds ONE staff (a page's `PageStaff` reads it)."""
         if not self._xs:
             return list(self.nominal)
         xs = self._xs
@@ -1285,13 +1335,16 @@ def split_pieces(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
 
 def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical: Sequence[float],
                 raw: Optional[np.ndarray] = None, split_joins: Optional[bool] = None,
-                keep_whole: Sequence[Sequence[Any]] = (), touch_boxes: Sequence[Sequence[Any]] = ()) -> Optional[CellStrokes]:
+                keep_whole: Sequence[Sequence[Any]] = (), touch_boxes: Sequence[Sequence[Any]] = (),
+                staff_override: Any = None) -> Optional[CellStrokes]:
     """Every stroke of one cell. `erased` = `cell.image_no_staff` (0 = ink); `raw` = `cell.binary` (0 = ink) for the local staff.
     None for a cell that cannot be reduced. Deterministic: strokes ordered by (x, y, kind). `split_joins` None = the flag
     `OMR_SPLIT_JOINS` (ROADMAP 2.239): fused pieces are cut at their joins (`split_pieces`) and each part carries `joined_to`.
     `keep_whole` (canonical [x0, y0, x1, y1] or [x0, y0, x1, y1, "clef:G|F|C"]): clef / key / meter boxes no split cuts inside; a clef box
     also joins the pieces the openings cut its clef into, read outward from the box and bounded by the clef's size (2.239 r3). `touch_boxes` (canonical [family, x0, y0, x1, y1]): the cell's accidental,
-    head, ledger and stem detector boxes; a piece across an accidental box and one of the others is cut at their boundary (2.239 r3)."""
+    head, ledger and stem detector boxes; a piece across an accidental box and one of the others is cut at their boundary (2.239 r3).
+    `staff_override` (ROADMAP 2.260a M2, the PAGE map): an object with `lines_at(x, y)` (reduced frame) and `.local`, standing for every staff of the
+    raster; None = this cell's own `LocalStaff` (the product path, unchanged)."""
     import cv2
     if erased is None or erased.ndim != 2 or sp_canonical <= 0:
         return None
@@ -1348,8 +1401,8 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             excl = [tuple(float(v) * scale for v in r[1:5]) for r in touch_boxes if r[0] in TOUCH_OTHER_FAMILIES] + kw
             pieces, joins, acc_parts = merge_accidentals(pieces, joins, sp, accs, excl, refused)
 
-    staff = LocalStaff(_reduce_float(raw, scale) if raw is not None else None,
-                       [y * scale for y in nominal_lines_canonical], sp)
+    staff = staff_override if staff_override is not None else LocalStaff(
+        _reduce_float(raw, scale) if raw is not None else None, [y * scale for y in nominal_lines_canonical], sp)
     restore = THICKNESS_FROM_UNERASED and raw is not None and raw.ndim == 2 and raw.shape == erased.shape
 
     built: List[Tuple[Tuple[int, int, int, int], Stroke, np.ndarray, int, int, int]] = []
@@ -1370,10 +1423,10 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
                 mm["thick"] = max(mm["thick"], rt)
         ang = -math.degrees(mm["theta"])
         ang = ang + 180.0 if ang <= -90.0 else (ang - 180.0 if ang > 90.0 else ang)
-        mid = staff.lines_at(x0 + w / 2.0)
+        mid = staff.lines_at(x0 + w / 2.0, y0 + h / 2.0)
         steps = []
         for (ex, ey) in (mm["end0"], mm["end1"]):
-            ln = staff.lines_at(ex)
+            ln = staff.lines_at(ex, ey)
             half = (ln[4] - ln[0]) / 8.0
             steps.append(round((ey - ln[0]) / half, 2) if half > 0 else 0.0)
         ys_, xs_ = np.nonzero(m)
@@ -1387,9 +1440,10 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
             hole_share=round(_hole_share(m), 3) if kind == "blob" else None,
             ends=((int(round(e0[0] * inv)), int(round(e0[1] * inv))), (int(round(e1[0] * inv)), int(round(e1[1] * inv)))),
             profile=mm["profile"], component=int(ink_lab[y0 + int(ys_[0]), x0 + int(xs_[0])]),
-            lines_left=[int(round(v * inv)) for v in staff.lines_at(x0)],
-            lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w)],
-            staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]))
+            lines_left=[int(round(v * inv)) for v in staff.lines_at(x0, y0 + h / 2.0)],
+            lines_right=[int(round(v * inv)) for v in staff.lines_at(x0 + w, y0 + h / 2.0)],
+            staff_space_local=round((mid[4] - mid[0]) / 4.0 * inv, 2), end_steps=(steps[0], steps[1]),
+            cut=box_cut_edges(x0, y0, x0 + w, y0 + h, ink.shape[0], ink.shape[1]))
         if pidx >= n_pieces:
             parts_by_parent.setdefault(part_of[pidx - n_pieces], []).append(st)
         else:
@@ -1407,7 +1461,9 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
         for j in range(i + 1, n):
             _b2, sj, mj, xj, yj, _pj = built[j]
             hj, wj = mj.shape
-            if xi + wi_ + 1 < xj or xj + wj + 1 < xi or yi + hi_ + 1 < yj or yj + hj + 1 < yi:
+            if xi + wi_ + 1 < xj:
+                break               # `built` is sorted by x: no later stroke touches this one either (ROADMAP 2.260a: a page holds ~10^4 strokes)
+            if xj + wj + 1 < xi or yi + hi_ + 1 < yj or yj + hj + 1 < yi:
                 continue
             gx0, gy0 = min(xi, xj) - 1, min(yi, yj) - 1
             gx1, gy1 = max(xi + wi_, xj + wj) + 1, max(yi + hi_, yj + hj) + 1

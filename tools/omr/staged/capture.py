@@ -495,6 +495,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "(`LocalStaff`), so it is a staff-grid measurement as well; nothing reads it yet.",
         None),
 
+    "BARLINE_COLUMN_FIT": (
+        PAGE_GEOMETRY,
+        "ROADMAP 2.260a M1: the TILTED line (slope, intercept) of each barline column, refit from the page raster; scoreless, a measurement of the page that names no bar. Nothing reads it yet.",
+        None),
+
+    "PAGE_STROKE": (
+        RAW_INK,
+        "ROADMAP 2.260a M2: every stroke of the PAGE map (`Q.STROKE`'s measurements in page px, the barline rules carved out as `barline`), scoreless for the same reason as `STROKE`; nothing reads it yet.",
+        None),
+
     "GLYPH_STROKES": (
         RAW_INK,
         "ROADMAP 2.198, step 2 of the shared ink map: the strokes (`Q.STROKE`) that lie inside a detector box, with the share of each stroke's ink "
@@ -933,6 +943,10 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_GLYPH_STROKES": None,
     # ROADMAP 2.240 step 1: the PAGE render under the stroke masks of every cell (`pws.page.binary`).
     "CV_PAGE_MARKS": ("staged/page_marks.py", "gather_page_marks"),
+    # ROADMAP 2.260a M1: the PAGE render (`pws.page.binary`) read for each staff's barline rule.
+    "CV_BARLINE_COLUMN": ("staged/barline_columns.py", "gather_barline_columns"),
+    # ROADMAP 2.260a M2: the staves' erased bands and the PAGE render outside them.
+    "CV_PAGE_STROKES": ("staged/page_strokes.py", "gather_page_strokes"),
     # ROADMAP 2.240 step 2: no raster of its own (the page marks, staff lines, ledger / stem rows, traces and wedges).
     "CV_PAGE_OWNER": None,
     "CV_PAGE_SPANS": None,

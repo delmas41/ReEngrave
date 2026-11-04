@@ -1,0 +1,159 @@
+[
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   2160.845,
+   2100.9,
+   2184.715,
+   2123.065
+  ],
+  "rg": "glyph/6/1/1/9/2",
+  "value": "eighth",
+  "place": [
+   6,
+   1,
+   1,
+   9
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   2078,
+   2033
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 1,
+   "cell": 9,
+   "page_box": [
+    2160.845,
+    2100.9,
+    2184.715,
+    2123.065
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   2113.105,
+   2116.09,
+   2134.34,
+   2136.55
+  ],
+  "rg": "glyph/6/1/1/9/4",
+  "value": "eighth",
+  "place": [
+   6,
+   1,
+   1,
+   9
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   2029,
+   2047
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 1,
+   "cell": 9,
+   "page_box": [
+    2113.105,
+    2116.09,
+    2134.34,
+    2136.55
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "value",
+  "side": "changed",
+  "page": 6,
+  "box": [
+   1852.825,
+   326.505,
+   1874.68,
+   348.67
+  ],
+  "rg": "glyph/6/0/0/8/5",
+  "was": "quarter",
+  "value": "eighth",
+  "place": [
+   6,
+   0,
+   0,
+   8
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1769,
+   258
+  ],
+  "position": {
+   "page": 6,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "page_box": [
+    1852.825,
+    326.505,
+    1874.68,
+    348.67
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   1893.745,
+   335.495,
+   1920.405,
+   356.42
+  ],
+  "rg": "glyph/6/0/0/8/2",
+  "value": "eighth",
+  "place": [
+   6,
+   0,
+   0,
+   8
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   1812,
+   267
+  ],
+  "position": {
+   "page": 6,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "page_box": [
+    1893.745,
+    335.495,
+    1920.405,
+    356.42
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ }
+]

@@ -210,9 +210,14 @@ machine-readable form.
 
 - **The measure cell is padded 4 spaces (6 where the neighbour is far)** and
   on a conductor's page that reaches the next staff's ink; cross-staff
-  ownership is a CONTEST resolved by `glyph_owner` (ladder completeness,
-  then range, then distance), and a resolved contest DROPS the loser -- it
-  never relocates it. Do not grow the pad.
+  ownership is decided by the PAGE OWNER first (2.240 step 3,
+  `OMR_PAGE_OWNER_READ`, Sean 2026-10-31: one owning staff per page mark from
+  staff lines, ledgers, stem, the hairpin witness, arcs by their end notes);
+  the old `glyph_owner` ladder (ladder completeness, then range, then
+  distance) decides ONLY where the page owner abstains -- where it overrode
+  the page owner it was wrong 11/11. A resolved contest DROPS the loser -- it
+  never relocates it. Do not grow the pad. SCOPE: general. (Updated
+  2026-11-03, Sean "Update the distance".)
 - **The ledger lines name the owner, and they are authoritative** (Sean,
   2026-09-28): a note far from its staff has ledger lines TOWARD its own
   staff and none toward the other. Nearness is only a hint and never

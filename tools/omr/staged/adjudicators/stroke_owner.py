@@ -53,7 +53,8 @@ def _inks(rows) -> Tuple[List[SO.Ink], Dict[int, Tuple[float, ...]]]:
         area = float(d.get("fill") or 0.0) * w * h / (sp * sp) if sp > 0 else 0.0
         inks.append(SO.Ink(o, str(r.value), tuple(float(v) for v in box[:4]), float(d.get("length_spaces") or 0.0),
                            float(d.get("thickness_spaces") or 0.0), area, sp,
-                           tuple((int(a), float(b)) for a, b in (d.get("touches") or ())), r.id, float(d.get("angle_deg") or 0.0)))
+                           tuple((int(a), float(b)) for a, b in (d.get("touches") or ())), r.id, float(d.get("angle_deg") or 0.0),
+                           str(d.get("cut") or "")))
         pb = d.get("bbox_page_px")
         if isinstance(pb, (list, tuple)) and len(pb) == 4:
             page[o] = tuple(float(v) for v in pb)

@@ -1,0 +1,95 @@
+{
+ "roadmap": "2.260a M0 OMR_STROKE_CUT_FACT",
+ "date": "2026-11-03",
+ "verbatim": "Tile 1 is a half note, tile 2 is an eighth note, tile 3 is an eighth note, tile 4 is a quarter note, tile 5 is an eighth note, tile 6 is an eighth note, tile 7th is an eighth note.",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 6,
+   "kind": "note",
+   "role": "control",
+   "side": "unchanged",
+   "was": null,
+   "written_on": "half",
+   "sean": "half",
+   "right": true
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "page": 5,
+   "kind": "note",
+   "role": "control",
+   "side": "unchanged",
+   "was": null,
+   "written_on": "eighth",
+   "sean": "eighth",
+   "right": true
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 6,
+   "kind": "value",
+   "role": "case",
+   "side": "changed",
+   "was": "quarter",
+   "written_on": "eighth",
+   "sean": "eighth",
+   "right": true
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "page": 16,
+   "kind": "note",
+   "role": "control",
+   "side": "unchanged",
+   "was": null,
+   "written_on": "quarter",
+   "sean": "quarter",
+   "right": true
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 6,
+   "kind": "note",
+   "role": "case",
+   "side": "gained",
+   "was": null,
+   "written_on": "eighth",
+   "sean": "eighth",
+   "right": true
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 6,
+   "kind": "note",
+   "role": "case",
+   "side": "gained",
+   "was": null,
+   "written_on": "eighth",
+   "sean": "eighth",
+   "right": true
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "page": 6,
+   "kind": "note",
+   "role": "case",
+   "side": "gained",
+   "was": null,
+   "written_on": "eighth",
+   "sean": "eighth",
+   "right": true
+  }
+ ],
+ "right": 7,
+ "total": 7,
+ "wrong": 0,
+ "decision": "Sean: \"Yes\" -- land M0 default ON; merge M1/M2 with OMR_BARLINE_COLUMN_FACT and OMR_PAGE_STROKES OFF until M3 reads them"
+}

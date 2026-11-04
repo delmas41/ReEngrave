@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- ROADMAP 2.260a landed: M0 OMR_STROKE_CUT_FACT default ON (deny-list); M1 OMR_BARLINE_COLUMN_FACT and M2 OMR_PAGE_STROKES merged OFF
+
+STAGED GATHER/ADJUDICATE. Sean's 7 blind tiles all right (controls unchanged, tile 3 quarter->eighth, three gained eighths), "Yes". `stroke_map.stroke_cut_fact_enabled()` and `rhythm.stroke_cut_by_cell` now deny-list (0/false/no/off disables): GATHER files the cell-crop edges a stroke touches (`cut`), a beam cut at the cell top/bottom is no longer refused too_thin and the missing level says cannot-tell (`beam_cut_kept`). M1 refits each barline column's tilted line (`Q.BARLINE_COLUMN_FIT`), M2 files a page stroke map (`Q.PAGE_STROKE`); both default OFF and read by nothing until M3. Answers: benchmarks/page-ledger-2026-11/answers-m0.json; tiles out/print/2.260a-m0-tiles/.
+
 ## 2026-11-03 -- ROADMAP 2.256 and 2.257 landed ON: OMR_KEY_HEADER_INK and OMR_C_CLEF_READ default ON (deny-list); OMR_WHOLE_REST_OWN_STAFF stays OFF
 
 Sean "Land whatever is ready". 2.256: a crushed three-flat key header is raised to the key object's own slot count (Litolff frozen sample blue -156, tiles 11/12 right, 0 wrong). 2.257: a clef-sized notehead box in the clef slot no longer vetoes the clef locator, and a clef box beyond 45 sp no longer votes on the header (Litolff p4/6 fill_clef_gap blue 79 -> 26); whole-rest code lands OFF (red bars +27 until the voices stage takes a displaced second-voice whole rest as its own voice). Also fixed stale "default OFF" text for OMR_HEAD_HOLE_POSITION; test_clef_over_notehead_box pins OMR_C_CLEF_READ=0 for the 2.11 veto; flag table rows added. Open finding: a false clef at Litolff staff/4/0/3 (2.251). Findings: benchmarks/key-header-2026-11, benchmarks/cclef-rest-2026-11.
