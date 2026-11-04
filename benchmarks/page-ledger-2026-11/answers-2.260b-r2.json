@@ -1,0 +1,23 @@
+{
+  "lane": "2.260b round 2 (lane-2.260b-m3-claims f95ef29ea, OMR_PAGE_CLAIMS OFF)",
+  "date": "2026-11-03",
+  "tiles_dir": "out/print/2.260b-r2-tiles (lane worktree agent-af2dc4c19b5b03c80); key out/print/2.260b-r2-key.json",
+  "question": "tie or slur, and which two notes does it connect?",
+  "sean_verbatim": "1. Slur covering 4 notes in the bar. 2. Tie between 2 half notes on a ledger below the staff. 3. Tie connecting dotted half's 1 ledger line under the staff. 4. Tie between half notes 2nd ledger above staff 5. Tie between dotted half's 5th space below the staff 6. Slur over 4 notes across 2 bars 7. Tie between notes on 2nd ledger line above staff 8. Tie between an 8th note and a quarter note 1 ledger line above the staff. 9. Tie between half notes 1st ledger line below staff 10. Slur between a quarter and an eighth note second space from the top of the staff to the second space from the bottom of the staff. 11. Slur over 4 notes across 2 bars 12. Tie between an &th and a 16th second space from top of staff",
+  "sean_followup_verbatim": "Tiles 2,3 and 9 are clearly ties going from the same note to the same note. No way that can be confused as a slur",
+  "scoring": {
+    "1": {"on": "slur", "sean": "slur", "right": true},
+    "2": {"on": "slur", "sean": "tie", "right": false, "off": "tie 9/4->10/8 (RIGHT->WRONG under ON)"},
+    "3": {"on": "slur", "sean": "tie", "right": false, "off": "nothing (slur source not the binder; untraced)"},
+    "4": {"on": "tie", "sean": "tie", "right": true},
+    "5": {"on": "tie", "sean": "tie", "right": true, "role": "brahms_p0_tie"},
+    "6": {"on": "slur", "sean": "slur", "right": true},
+    "7": {"on": "tie", "sean": "tie", "right": true, "role": "control"},
+    "8": {"on": "tie", "sean": "tie", "right": true, "role": "brahms_p0_tie"},
+    "9": {"on": "slur", "sean": "tie", "right": false, "off": "nothing"},
+    "10": {"on": "slur", "sean": "slur", "right": true},
+    "11": {"on": "slur", "sean": "slur", "right": true},
+    "12": {"on": "tie", "sean": "tie", "right": true, "role": "control"}
+  },
+  "summary": "9/12 right; 2, 3, 9 are same-position ties written as slurs; tile 2 is RIGHT->WRONG vs OFF -- M3 does not land."
+}

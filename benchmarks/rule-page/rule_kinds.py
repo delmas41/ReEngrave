@@ -180,7 +180,7 @@ RULES = [
     R(STEMS, "unison_voices", "not_a_unison", "D:bookkeeping", "not a unison head", "the domain is every head", "-", "kept"),
     R(STEMS, "unison_voices", "head_refused,duration_missing,dotted_head,in_a_tuplet,head_fill_disagrees,one_voice_unmarked,shared_flag,stems_not_read,voice_beams_range,flag_off", "D:honesty", "unison not fully read", "one voice unread, dotted, in a tuplet or sharing a flag: abstain with each voice's reading", RULE8, "kept"),
 
-    R(STEMS, "voices", "one_voice,one_voice_sums,two_voices_same_beat,two_voices_separated_and_full", "A", "voices follow the bar", "the voice split is chosen so the bar math adds up; one voice when it sums", "Sean 2026-09-29 (\"obviously 1 voice because the measure math adds up\")", "kept"),
+    R(STEMS, "voices", "one_voice,one_voice_sums,one_voice_plus_displaced_whole_rest,two_voices_same_beat,two_voices_separated_and_full", "A", "voices follow the bar", "the voice split is chosen so the bar math adds up; one voice when it sums", "Sean 2026-09-29 (\"obviously 1 voice because the measure math adds up\")", "kept"),
     R(STEMS, "voices", "no_voice_convention_fits,nothing_to_split", "D:honesty", "no voice rule fits", "-", RULE8, "kept"),
     R(STEMS, "event", "x_clustered", "A", "a chord is one onset", "glyphs of a bar that sound together are grouped by x", "ROADMAP Q.EVENT 2026-09-09", "kept"),
     R(STEMS, "event", "nothing_to_group", "D:bookkeeping", "nothing to group", "-", "-", "kept"),

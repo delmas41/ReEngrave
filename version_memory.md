@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- evening manager session end: 2.256/2.257/2.257 r2/2.260a landed; 2.260 page-ledger plan; 2.260b M3 r2 not landed; overnight 20261103-night started
+
+Blue-note census (74% unread headers) -> 2.256 key + 2.257 C clef landed ON; 2.257 r2 whole rest own voice landed ON; 2.259 beams parked into 2.260; 2.260 audit + docs/plan-2026-11-03-page-ledger.md; 2.260a M0 ON, M1/M2 merged OFF; 2.258 folded into 2.260b (M3) -- r2 tiles 9/12, not landed; Sean's ruling: a tie is read from position, not pitch (page-facts §1); page-facts cross-staff ownership updated (page owner first). ROADMAP START HERE 2026-11-03 evening has the next steps.
+
 ## 2026-11-03 -- ROADMAP 2.260a landed: M0 OMR_STROKE_CUT_FACT default ON (deny-list); M1 OMR_BARLINE_COLUMN_FACT and M2 OMR_PAGE_STROKES merged OFF
 
 STAGED GATHER/ADJUDICATE. Sean's 7 blind tiles all right (controls unchanged, tile 3 quarter->eighth, three gained eighths), "Yes". `stroke_map.stroke_cut_fact_enabled()` and `rhythm.stroke_cut_by_cell` now deny-list (0/false/no/off disables): GATHER files the cell-crop edges a stroke touches (`cut`), a beam cut at the cell top/bottom is no longer refused too_thin and the missing level says cannot-tell (`beam_cut_kept`). M1 refits each barline column's tilted line (`Q.BARLINE_COLUMN_FIT`), M2 files a page stroke map (`Q.PAGE_STROKE`); both default OFF and read by nothing until M3. Answers: benchmarks/page-ledger-2026-11/answers-m0.json; tiles out/print/2.260a-m0-tiles/.
@@ -6670,3 +6674,6 @@ STAGED GATHER/ADJUDICATE, flag `OMR_HAIRPIN_REACH` (deny-list, default ON; 0/fal
 
 ## 2026-11-03 -- ROADMAP 2.249 landed: Brahms fits in memory (record format 2, streamed write, pages prepared one at a time, LRU closure memo)
 STAGED, no new flag, no reading changed (`lane-2.249-memory` m1-m8; merged 646c330ad). Record format 2: an ADJUDICATE verdict stores its `considered` ids plus `basis_from: "considered"` and `record_io.load_record` derives the basis on read; format-1 records still load. Whole Brahms 15,529 -> 10,780 s, peak footprint 55.9 -> 12.3 GB, record 35.5 -> 1.87 GB written in 27 s. Landing gate Litolff 9,16: MusicXML byte-identical to origin/main, judged score identical, record 185 -> 65 MB. Tools that read many bases (review viewer, rerun diffs) pay a walk per basis. Numbers: `benchmarks/memory-2026-11/FINDINGS.md`.
+
+## 2026-11-03 -- ROADMAP 2.257 round 2 landed ON: a displaced whole rest beside a one-way voice is its own voice, sized as the bar
+STAGED ADJUDICATE + EXPORT, flag `OMR_WHOLE_REST_OWN_STAFF` (deny-list, default ON; 0/false/no/off disables). Cause: `adjudicate_voices` split only on an up-stem AND a down-stem note, so a one-direction bar was `one_voice` and the displaced rest was added into it. `rhythm._rest_own_voice_split` (rest alone in its stream when the other live events fill the meter and no stem clashes) + EXPORT `_size_rest_alone_in_its_voice` / `_own_voice_from_written_events`. Sean's 12 tiles 12/12 right. Litolff p4/6/8 (same tree, saved gathers): rests +31, red 97 -> 98, notes not written 1039 -> 1008, judged right->wrong 0; real 2-page gather p6/8: rests +27, right->wrong 0. The +1 red bar (6/1/1/1) is an unrelated refused eighth rest shorting the other voice to 1.5 of 2 (OFF it was marked unread). Tests: `test_staged_rest_own_voice_2_257.py`. Numbers: `benchmarks/cclef-rest-2026-11/`.

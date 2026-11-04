@@ -4837,6 +4837,11 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # and what sizes a held-out bar's rest; this is only what the bar
             # is JUDGED against.
             judged = meter if meter is not None else in_force
+            if split is not None:
+                events, _own_streams = _size_rest_alone_in_its_voice(
+                    rec, run, i, events, split[0], judged, counters, divisions)
+                if _own_streams is not split[0]:
+                    split = (_own_streams, [] if split[0] is None else split[1])
             held = (_bar_holds_out(events, split[0], divisions, judged)
                     if events else None)
             # ⚠️⚠️ ROADMAP 2.4c, AND IT IS TESTED ONLY WHERE `held` IS NONE.
@@ -5855,6 +5860,87 @@ def _lone_whole_rest_is_the_bar(events: List[Dict[str, Any]],
     new["rest"] = {**det, "measure_rest": True, "duration_beats": want_q,
                    "sized_by": "file_meter_in_force_2_98"}
     return [new]
+
+
+def _size_rest_alone_in_its_voice(rec: Record, run: StaffRun, cell_index: int,
+                                  events: List[Dict[str, Any]],
+                                  streams: Optional[List[List[Dict[str, Any]]]],
+                                  judged: Optional[Dict[str, Any]],
+                                  counters, divisions: int) -> Tuple[List[Dict[str, Any]], List[List[Dict[str, Any]]]]:
+    """ROADMAP 2.257 r2 (OMR_WHOLE_REST_OWN_STAFF): a whole rest `Q.VOICES` put ALONE in its own stream
+    (`rest_own_voice`, written by `rhythm._rest_own_voice_split` from a decisive displacement and the other voice filling
+    the meter) is lone in ITS voice, and a whole rest means the bar -- sized to the meter the file has in force, exactly as
+    `_lone_whole_rest_is_the_bar` does for a bar of one event. EXPORT and not EVALUATE because `Q.VOICES` reads `Q.DURATION`:
+    a duration sized FROM the voices verdict is an uphill consequence (the record refuses it). Where the verdict does not
+    name the rest, the stream is not one rest, or no meter is in force, nothing changes."""
+    if not _whole_rest_own_staff_on():
+        return events, streams
+    if streams is None:
+        return _own_voice_from_written_events(rec, events, judged, counters, divisions)
+    v = rec.verdict(Q.VOICES, R_cell_key(run, cell_index))
+    named = {int(g) for g in (((v or {}).get("value") or {}).get("rest_own_voice") or ())}
+    if not named or (v or {}).get("outcome") != "decided":
+        return events, streams
+    for st in streams:
+        if len(st) != 1:
+            continue
+        glyph = (st[0].get("rest") or {}).get("glyph")
+        if not glyph or _glyph_index(glyph) not in named:
+            continue
+        sized = _lone_whole_rest_is_the_bar(st, judged)
+        if sized is None:
+            return events, streams
+        old, new = st[0], sized[0]
+        counters["measure_rests_sized_alone_in_their_voice"] += 1
+        return ([new if e is old else e for e in events],
+                [[new if e is old else e for e in s2] for s2 in streams])
+    return events, streams
+
+
+def _own_voice_from_written_events(rec: Record, events: List[Dict[str, Any]],
+                                   judged: Optional[Dict[str, Any]], counters, divisions: int):
+    """ROADMAP 2.257 r2, the bars `Q.VOICES` could not carve out because EVALUATE adds events after it is decided (a reinstated
+    or unboxed rest is in the file and not in `Q.EVENT`): the same evidence on the events EXPORT really writes. ONE whole
+    rest whose duration was read only by the hang test (`rest_hangs_from_own_line`: below the default whole-rest band, i.e.
+    displaced) is the lower voice when every OTHER written event, summed alone, fills the meter in force, at least one is a
+    chord, and no chord's stem points down. Else nothing changes (`(events, None)`)."""
+    want_q = _bar_quarters(judged)
+    if want_q is None or len(events) < 2:
+        return events, None
+    cands = []
+    for e in events:
+        det = e.get("rest") or {}
+        if (e.get("kind") != "rest" or det.get("class") != "restWhole" or det.get("measure_rest")
+                or int(e.get("dots") or 0) or int(det.get("dots") or 0) or not det.get("glyph")):
+            continue
+        d = rec.verdict(Q.DURATION, det["glyph"])
+        if d and d.get("outcome") == "decided" and d.get("reason") == "rest_hangs_from_own_line":
+            cands.append(e)
+    if len(cands) != 1:
+        return events, None
+    rest = cands[0]
+    others = [e for e in events if e is not rest]
+    if not any(e.get("kind") == "chord" for e in others):
+        return events, None
+    if any(e.get("stem_direction") == "down" for e in others if e.get("kind") == "chord"):
+        return events, None
+    want = int(round(want_q * divisions))
+    if sum(_event_units(e, divisions) for e in others) != want:
+        return events, None
+    sized = _lone_whole_rest_is_the_bar([rest], judged)
+    if sized is None:
+        return events, None
+    counters["measure_rests_sized_alone_in_their_voice"] += 1
+    counters["own_voice_rest_bars_from_exporter_sum"] += 1
+    return [sized[0] if e is rest else e for e in events], [others, [sized[0]]]
+
+
+WHOLE_REST_OWN_STAFF_ENV = "OMR_WHOLE_REST_OWN_STAFF"      # == rhythm.WHOLE_REST_OWN_STAFF_ENV
+
+
+def _whole_rest_own_staff_on() -> bool:
+    # ROADMAP 2.257 r2 (Sean 2026-11-03, 12/12 tiles, "Trace then land"): default ON, deny-list ("0"/"false"/"no"/"off" turns it off)
+    return os.environ.get(WHOLE_REST_OWN_STAFF_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _bar_holds_out(events: List[Dict[str, Any]],

@@ -63,3 +63,12 @@ as its own voice, so the bar adds up instead of going red).
 ## Not established
 The 27 lost / 25 gained notes under C_CLEF not inspected one by one; page-4
 `no_pitch` heads not re-counted by cause; the hang tolerance is not skew-corrected.
+
+## Round 2 — a displaced whole rest is its own voice (LANDED ON 2026-11-03, main b1c8f84a5)
+- **Cause:** `adjudicate_voices` splits a bar only when an up-stem and a down-stem note both exist, so a one-direction bar was `one_voice` and the displaced whole rest was added into it as a 4-beat glyph ("should hold 2, counted 6").
+- **Fix (`OMR_WHOLE_REST_OWN_STAFF`, now default ON):** ADJUDICATE `rhythm._rest_own_voice_split` puts a displaced dotless whole rest in its own stream when the other live events fill the meter and no stem clashes; EXPORT `_size_rest_alone_in_its_voice` sizes it as the bar ("a whole rest means the BAR"); `_own_voice_from_written_events` fallback. Tests: `tools/omr/tests/test_staged_rest_own_voice_2_257.py`.
+- **Process lesson:** `Q.EVENT` groups boxes later stages drop and misses rests EVALUATE adds afterwards -- any sum at the voices stage must filter refused boxes and tolerate stale sums.
+- **Measures:** saved gathers Litolff p4/6/8 rests +31, red bars 97 -> 98, notes not written 1039 -> 1008; Brahms p5/8 red 69 -> 66; real gather Litolff p6+p8 rests +27, notes not written 688 -> 661; judged right->wrong 0, unwritten->wrong 0. Fast tier 9893 passed after two flip-caused fixes.
+- **Sean's tiles (answers-r2.json): 12/12** (10 second-voice whole rests, 2 lone-rest controls).
+- **The +1 red bar (Litolff 6/1/1/1) is honest:** an eighth note, a quarter rest and a displaced whole rest; the eighth rest beside the note is refused `rest_stroke_into_a_head` in both arms, so the other voice holds 1.5 of 2; OFF the bar was already 'unread', ON the split correctly declines and the bar counts 5.5.
+- **Open:** the `rest_stroke_into_a_head` refusal (a separate upstream read); where the split declines, the whole rest is still added at 4 beats into the one voice, giving a misleading count.
