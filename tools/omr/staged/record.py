@@ -963,7 +963,7 @@ class Q(_Vocab):
     #: that show the rule, the extractor's own estimator). `detail`: x (the extractor's mean column x), y0 / y1 (the system's span), staves (the
     #: staff indices the rule was seen on), tilt_px (the drift over the span), resid_px (the worst staff's departure from the line). A fact:
     #: it decides nothing, NOTHING READS IT (M2's carve is its first reader), no exported byte changes.
-    BARLINE_COLUMN = "barline_column"
+    BARLINE_COLUMN_FIT = "barline_column_fit"
 
     #: ROADMAP 2.260a M2 (flag `OMR_PAGE_STROKES`, default OFF; `page_strokes.gather_page_strokes`): ONE ROW PER STROKE of the PAGE stroke map, on the
     #: page's subject: `value` = the kind (vertical / horizontal / curve / blob / barline). The map is assembled from each staff's own erased band
@@ -2295,8 +2295,6 @@ CLAIMS: "dict[str, str]" = {
     "STAFF_EXTENT": CLAIM.MEASUREMENT,
     "STAFF_SKEW": CLAIM.MEASUREMENT,
     "BARLINE_COLUMN": CLAIM.MEASUREMENT,
-    #: ROADMAP 2.260a M2: a stroke of the page map -- a measurement of ink, like `STROKE`; names nothing.
-    "PAGE_STROKE": CLAIM.MEASUREMENT,
     #: ⚠️ A JUDGEMENT CALL, NAMED — a narrow scan at a system's shared left
     #: edge, filed MEASUREMENT because its value is *how much ink stands
     #: there*. `OMR_LEFT_EDGE_SPLIT` then reads it as evidence of a system
@@ -2374,7 +2372,9 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 2.240: two boxes stand on the same page ink -- wrong only if they do not in fact share that ink; it never names the mark.
     "PAGE_MARK": CLAIM.COVERAGE,
     #: ROADMAP 2.260a M1: the tilted line of a barline column -- a measurement of the page raster, naming no bar.
-    "BARLINE_COLUMN": CLAIM.MEASUREMENT,
+    "BARLINE_COLUMN_FIT": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.260a M2: a stroke of the page map -- a measurement of ink, like `STROKE`; names nothing.
+    "PAGE_STROKE": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
     #: ROADMAP 2.240 step 2: the page-wide extent of one traced arc / CV wedge -- a measurement of ink, naming no notes.

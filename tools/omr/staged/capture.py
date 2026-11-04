@@ -495,6 +495,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "(`LocalStaff`), so it is a staff-grid measurement as well; nothing reads it yet.",
         None),
 
+    "BARLINE_COLUMN_FIT": (
+        PAGE_GEOMETRY,
+        "ROADMAP 2.260a M1: the TILTED line (slope, intercept) of each barline column, refit from the page raster; scoreless, a measurement of the page that names no bar. Nothing reads it yet.",
+        None),
+
+    "PAGE_STROKE": (
+        RAW_INK,
+        "ROADMAP 2.260a M2: every stroke of the PAGE map (`Q.STROKE`'s measurements in page px, the barline rules carved out as `barline`), scoreless for the same reason as `STROKE`; nothing reads it yet.",
+        None),
+
     "GLYPH_STROKES": (
         RAW_INK,
         "ROADMAP 2.198, step 2 of the shared ink map: the strokes (`Q.STROKE`) that lie inside a detector box, with the share of each stroke's ink "

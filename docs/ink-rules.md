@@ -6,7 +6,7 @@
 
 ## Summary
 
-1. **506 rule exits** are sorted (563 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 42 guard modules): **177 CONVENTION** (A), **10 ERASURE** (B), **87 DOUBLE-COUNT** (C), **170 OTHER** (D), **62 UNSURE** (U).
+1. **508 rule exits** are sorted (563 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 44 guard modules): **177 CONVENTION** (A), **10 ERASURE** (B), **89 DOUBLE-COUNT** (C), **170 OTHER** (D), **62 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
@@ -319,6 +319,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `arc_claim.py` | U | NOT YET CLASSIFIED | - | open |
 | `arcs_system.py` | C | arcs read ONCE per staff across the system, then their own stroke erased (a cell cuts an arc in two) | Sean 2026-10-18 (2.166, default ON) | retires with 2.205 (arcs own their strokes) |
 | `bar_length.py` | A | a bar's length from the durations standing in it | Sean 2026-10-17 (2.162/2.165) | kept |
+| `barline_columns.py` | C | the tilted line of each barline column kept as a fact (slope + intercept per column), refit in staged from the page raster; records, decides nothing | Sean 2026-11-03 (2.260a M1) | open: M2's carve reads it |
 | `beam_strokes.py` | U | NOT YET CLASSIFIED | - | open |
 | `box_kind.py` | C | a detector box is tested against its own class's printed size before it stands as that kind (a head box 3+ sp wide is no head) | ROADMAP 2.245 (flag OMR_BOX_KIND_SIZE, OFF) | open: tiles |
 | `claim_order.py` | U | NOT YET CLASSIFIED | - | open |
@@ -344,6 +345,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `one_note.py` | D:infer | the one-note correction: a bar holding one event takes the value that fills it (blue) | Sean 2026-10-17/18 (CLAUDE s4 exceptions) | kept |
 | `page_marks.py` | C | cells are views, the page is the ledger: boxes of one family from two padded cells on the same page ink are ONE page mark (records ids, decides nothing yet) | Sean 2026-10-30 (2.240 crops 2, 3) | open: step 2 (one owner per page mark) reads it |
 | `page_owner.py` | A | one owner staff per page mark: the staff's own lines, then the ledger lines, the stem a second witness, never nearness; arcs and hairpins read page-wide once (records, decides nothing yet) | Sean 2026-10-28/30 (2.216 option B; 2.240 step-1 tiles) | open: step 3 retires the cell-copy rules where it agrees, on tiles |
+| `page_strokes.py` | C | the PAGE stroke map: the cell finders on one raster assembled from each staff's erased band + the page, barline columns carved out first; records, decides nothing | Sean 2026-11-03 (2.260a M2) | open: M3 / M4 read it |
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
 | `second_hollow.py` | U | a SECOND detector at GATHER for hollow heads only | ROADMAP 2.114 | open: a second reading of the same ink |
 | `stem_end_heads.py` | A | a stem with no head is a note we have not seen: look at its end | Sean 2026-10-01 (2.179 "if there are stems then there are notes") | kept |

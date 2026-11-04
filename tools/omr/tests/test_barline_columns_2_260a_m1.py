@@ -1,4 +1,4 @@
-"""ROADMAP 2.260a M1: `Q.BARLINE_COLUMN` -- the tilted line of each barline column, refit in staged from the page raster and the page-wide
+"""ROADMAP 2.260a M1: `Q.BARLINE_COLUMN_FIT` -- the tilted line of each barline column, refit in staged from the page raster and the page-wide
 barlines. Controls that can fail: a known tilt is recovered; the same raster with ONE staff's rule moved changes the fit (so the fit reads the
 raster); a column seen on one staff says slope 0 and says which staves it saw; staff lines alone are not a rule."""
 import os
@@ -73,7 +73,7 @@ class Fit(unittest.TestCase):
 
 class Gather(unittest.TestCase):
     def _rows(self, log):
-        return [o for o in log._obs.values() if o.quantity == Q.BARLINE_COLUMN]
+        return [o for o in log._obs.values() if o.quantity == Q.BARLINE_COLUMN_FIT]
 
     def test_default_off_files_nothing(self):
         log = RC.Log()

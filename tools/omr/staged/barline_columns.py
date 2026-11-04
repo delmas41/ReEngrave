@@ -122,7 +122,7 @@ def x_at(col: Dict[str, Any], y: float) -> float:
 
 
 def gather_barline_columns(log: Any, pws: Any, *, progress: bool = False) -> List[Dict[str, Any]]:
-    """ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default OFF), STAGED GATHER: `Q.BARLINE_COLUMN`, one row per accepted column, on the
+    """ROADMAP 2.260a M1 (flag `OMR_BARLINE_COLUMN_FACT`, default OFF), STAGED GATHER: `Q.BARLINE_COLUMN_FIT`, one row per accepted column, on the
     system's subject. Reads the page raster and the page-wide barlines; files rows only and decides nothing. Returns the fits."""
     if not enabled():
         return []
@@ -132,7 +132,7 @@ def gather_barline_columns(log: Any, pws: Any, *, progress: bool = False) -> Lis
     p = int(getattr(pws.page, "page_index", 0))
     cols = fit_columns(pws)
     for c in cols:
-        log.observe(R.system(p, c["system"]), Q.BARLINE_COLUMN, [c["slope"], c["intercept"]], reader=READERS.CV_BARLINE_COLUMN, frame=FRAME_PAGE,
+        log.observe(R.system(p, c["system"]), Q.BARLINE_COLUMN_FIT, [c["slope"], c["intercept"]], reader=READERS.CV_BARLINE_COLUMN, frame=FRAME_PAGE,
                     x=c["x"], y0=c["y0"], y1=c["y1"], staves=c["staves"], n_staves=c["n_staves"], tilt_px=c["tilt_px"], resid_px=c["resid_px"],
                     rule_fill_min=RULE_FILL_MIN)
     if progress:

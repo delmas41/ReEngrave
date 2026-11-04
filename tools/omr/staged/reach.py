@@ -69,6 +69,10 @@ from .record import Q
 #: describing its history.
 KNOWN_GAPS: Dict[str, str] = {
     # ROADMAP 2.260a M2: the page stroke map is a FACT filed beside the cell strokes; its first reader is M3 (claim translation) / M4 (one beam reader).
+    Q.BARLINE_COLUMN_FIT: (
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M1: the tilted barline column (slope, intercept) is a fact; its first reader is M2's carve "
+        "(`page_strokes.carve_columns`, which refits the same columns itself until a later step reads the row) and M5. Byte-identical export is the proof. "
+        "A reader that appears removes this entry."),
     Q.PAGE_STROKE: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M2 (docs/plan-2026-11-03-page-ledger.md): the page stroke map is filed and read by NOTHING until M3 "
         "(`[[cell, ordinal]]` claims -> page stroke ids) and M4 (one beam reader on page strokes) land; the exported file is byte-identical with "
@@ -341,7 +345,7 @@ STAGE_OF_FILE = {
     "arcs_system.py": "GATHER",
     # ROADMAP 2.240 step 1: files `Q.PAGE_MARK` from its one hook line in `gather.gather()`.
     "page_marks.py": "GATHER",
-    # ROADMAP 2.260a M1 / M2: files `Q.BARLINE_COLUMN` / `Q.PAGE_STROKE` from their hook lines in `gather.gather()`.
+    # ROADMAP 2.260a M1 / M2: files `Q.BARLINE_COLUMN_FIT` / `Q.PAGE_STROKE` from their hook lines in `gather.gather()`.
     "barline_columns.py": "GATHER",
     "page_strokes.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.

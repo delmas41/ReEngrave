@@ -623,6 +623,20 @@ KNOWN_GAPS: Dict[str, str] = {
         "producer-only (`OMR_STROKE_MAP`, default ON): on a `unit: ink` claim, the share of each claimed stroke's ink inside the owner. Leaves the day the ink branch of the consult reads it (plan step 5)."),
     "DETAIL Q.STROKE.n_below_floor": (
         "producer-only quantity (`OMR_STROKE_MAP`, default ON); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
+    "DETAIL Q.BARLINE_COLUMN_FIT.resid_px": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.BARLINE_COLUMN_FIT.rule_fill_min": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.BARLINE_COLUMN_FIT.tilt_px": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_STROKE.intercept": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_STROKE.slope": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_STROKE.thickness_spread_spaces": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_STROKE.width_px": (
+        "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.thickness_spread_spaces": (
         "producer-only quantity (`OMR_STROKE_MAP`, default ON); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
 }
