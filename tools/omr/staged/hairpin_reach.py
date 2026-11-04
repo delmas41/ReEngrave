@@ -1,5 +1,5 @@
 """ROADMAP 2.254 -- HAIRPIN REACH. PATH: STAGED (GATHER reads, ADJUDICATE refuses a one-note wedge's kind). Flag `OMR_HAIRPIN_REACH`,
-default OFF. Registered in `reach.NOT_A_STAGE` (a flag module, like `hairpin_bind`).
+default ON (deny-list; 2.261). Registered in `reach.NOT_A_STAGE` (a flag module, like `hairpin_bind`).
 
 CAUSE (benchmarks/hairpin-reach-2026-11): the CV wedge reader (`hairpin_detection.detect_hairpins`) tests a hairpin as a connected
 component of its own -- straight outlines, isolated on the page. On an orchestral page a BARLINE runs through the gap between the
@@ -42,13 +42,13 @@ REASON_BEAM_BETWEEN_STEMS = "beam_between_two_stems"
 
 
 def not_a_beam_enabled() -> bool:
-    """`OMR_HAIRPIN_NOT_A_BEAM`, default OFF (ROADMAP 2.261 fix 1): a reach find standing on a stem at each end is a beam, not a hairpin.
+    """`OMR_HAIRPIN_NOT_A_BEAM`, default ON, deny-list (ROADMAP 2.261 fix 1): a reach find standing on a stem at each end is a beam, not a hairpin.
     CAUSE: the reach strips every vertical stroke of 1.2+ spaces before it looks, which leaves a beam between two stems as an isolated
     straight bar; `converges` / `extent_trend` cannot tell 29 columns of a beam from a short hairpin (Litolff p3 sys0 staff5 bar2: the
     beam of two eighths was filed a crescendo, claimed, and the beam stroke refused `owned_by_another_mark` -> a quarter).
     CONVENTION ASSUMED: a hairpin has no stem at both of its ends. WHAT WOULD FALSIFY IT: a real hairpin the flag drops on Sean's
     tiles (Brahms p8/p19 gained hairpins). NOT CONFIRMED."""
-    return os.environ.get(NOT_A_BEAM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(NOT_A_BEAM_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: ADJUDICATE abstains a one-note wedge only when it is no longer than this: an accent is a printed glyph of one size (Brahms p5: the
@@ -278,7 +278,7 @@ def word_ink_boxes(binary, box, entries, spacing):
 
 # ---------------------------------------------------------------------------------------------------------------------------------
 # ROADMAP 2.261 fix 2 -- a word read ONLY on the 2.254 r3 through-line retry may not claim ink inside detector notehead boxes.
-# Flag `OMR_WORD_RETRY_SPARES_HEADS`, default OFF. STAGED GATHER (`gather_page_claims`, the direction_word claim).
+# Flag `OMR_WORD_RETRY_SPARES_HEADS`, default ON (deny-list; 2.261 landed 2026-11-04). STAGED GATHER (`gather_page_claims`, the direction_word claim).
 # CAUSE: the retry cleans the crop and reads it again with a candidate the plain crops gave nothing for; where the candidate's box holds
 # an `f` and four beamed heads (Litolff p6 sys1 staff9 bar10) Tesseract on the tight cleaned crop read 'faster' (library term); as a TEMPO word
 # it then claimed the first head as its METRONOME note plus the ink right of it (`claims.metronome_mark`), i.e. the whole row -- the head the page-wide pass had boxed was refused `claimed_by:word` (Sean: an eighth). The word was
@@ -293,8 +293,8 @@ HEAD_BOX_GROW_SPACES = 0.15
 
 
 def word_retry_spares_heads_enabled() -> bool:
-    """`OMR_WORD_RETRY_SPARES_HEADS`, default OFF (ROADMAP 2.261 fix 2)."""
-    return os.environ.get(HEADS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_WORD_RETRY_SPARES_HEADS`, default ON, deny-list (ROADMAP 2.261 fix 2)."""
+    return os.environ.get(HEADS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def is_retry_only_reading(winning_reader) -> bool:

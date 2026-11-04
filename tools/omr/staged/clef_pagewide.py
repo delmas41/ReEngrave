@@ -101,7 +101,7 @@ WEAK_CANDIDATE_WHY = "clef_box_not_clef_sized"
 
 
 def strong_stop_enabled() -> bool:
-    """`OMR_CLEF_CARRY_STRONG_STOP`, default OFF (ROADMAP 2.261 fix 3): only a candidate with a SHAPE witness stops a carried clef; a small
+    """`OMR_CLEF_CARRY_STRONG_STOP`, default ON, deny-list (ROADMAP 2.261 fix 3): only a candidate with a SHAPE witness stops a carried clef; a small
     detector `clef*` box with no shape witness is counted (its abstention row stays) and never a stop.
 
     CAUSE (Litolff p6 sys1 staff3, p14 sys0 staff10; 27 notes unpitched, `clef_in_force`): `clef_in_force` stopped the carry at ANY candidate
@@ -112,7 +112,7 @@ def strong_stop_enabled() -> bool:
     about one bar becomes silence for a staff (CLAUDE rule 8).
     CONVENTION ASSUMED: a detector clef box under clef size with no body score is not a clef printed there. WHAT WOULD FALSIFY IT: a real
     return clef boxed small and read by nothing else, whose notes the flag then pitches from the clef before it. NOT CONFIRMED."""
-    return os.environ.get(ENV_STRONG_STOP, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV_STRONG_STOP, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def is_weak_candidate(row: Any) -> bool:

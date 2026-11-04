@@ -1,0 +1,28 @@
+{
+ "lane": "2.261",
+ "date": "2026-11-04",
+ "answered_by": "Sean",
+ "key": "out/print/2.261-tiles-key.json",
+ "answers_verbatim": "Tile 1 is a beam. Tile 2 is an eighth note. Tile 3 is a hairpin. Tile 4 is an eighth note. Tile 5 is an eighth note. Tile 6 is a half note. Tile 7 is an eighth note. Tile 8 is a half note. Tile 9 is an eighth note. Tile 10 is a quarter note rest. Tile 11 is an eighth note. Tile 12 is a quarter note.",
+ "addendum_verbatim": "There is a natural on the 8th note in tile 9",
+ "landing_verbatim": "Land it",
+ "scoring": {
+  "1": "beam; wedge refused ON: right",
+  "2": "quarter->eighth: right",
+  "3": "Brahms hairpin kept: right",
+  "4": "eighth written again: right",
+  "5": "eighth written again: right",
+  "6": "OFF wrote a quarter where Sean reads a half note; ON writes nothing (bar red): wrong->unwritten, not wrong",
+  "7": "eighth (2.78-phase2 tile 7) gained: right",
+  "8": "half (2.154-review tile 8) gained: right",
+  "9": "natural gained on an eighth, printed: right",
+  "10": "'clef?' mark removed, quarter rest: right",
+  "11": "control: right",
+  "12": "control: right"
+ },
+ "totals": {
+  "right": 12,
+  "written_wrong": 0,
+  "judged_right_to_wrong": 0
+ }
+}

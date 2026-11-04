@@ -34,14 +34,16 @@ def _page(mask, at=(200, 300)):
     return page
 
 
-def test_flags_are_off_by_default(monkeypatch):
-    for env in (hairpin_reach.NOT_A_BEAM_ENV, hairpin_reach.HEADS_ENV, CP.ENV_STRONG_STOP):
+def test_flags_are_on_by_default_deny_list(monkeypatch):
+    envs = (hairpin_reach.NOT_A_BEAM_ENV, hairpin_reach.HEADS_ENV, CP.ENV_STRONG_STOP)
+    fns = (hairpin_reach.not_a_beam_enabled, hairpin_reach.word_retry_spares_heads_enabled, CP.strong_stop_enabled)
+    for env in envs:
         monkeypatch.delenv(env, raising=False)
-    assert hairpin_reach.not_a_beam_enabled() is False
-    assert hairpin_reach.word_retry_spares_heads_enabled() is False
-    assert CP.strong_stop_enabled() is False
-    monkeypatch.setenv(hairpin_reach.NOT_A_BEAM_ENV, "1")
-    assert hairpin_reach.not_a_beam_enabled() is True
+    assert all(fn() is True for fn in fns)
+    for off in ("0", "false", "no", "off"):
+        for env, fn in zip(envs, fns):
+            monkeypatch.setenv(env, off)
+            assert fn() is False
 
 
 def test_stem_joins_sees_a_stem_at_each_end_and_not_a_barline_in_the_middle():
@@ -95,8 +97,8 @@ def test_weak_candidate_is_a_stop_off_and_not_on(monkeypatch):
     changes = [(600.0, "bass", _Row())]
     weak = [(691.0, None, _Row(why=CP.WEAK_CANDIDATE_WHY, family="G", body_score=None, strong=False, candidate=True))]
     witnessed = [(691.0, None, _Row(why="f_body_below_read", family="F", body_score=0.73, strong=False, candidate=True))]
-    monkeypatch.delenv(CP.ENV_STRONG_STOP, raising=False)
+    monkeypatch.setenv(CP.ENV_STRONG_STOP, "0")
     assert CP.clef_in_force(800.0, changes, weak, "tenor")[0] is None          # OFF: the staff is blanked
-    monkeypatch.setenv(CP.ENV_STRONG_STOP, "1")
+    monkeypatch.delenv(CP.ENV_STRONG_STOP, raising=False)
     assert CP.clef_in_force(800.0, changes, weak, "tenor")[0] == "bass"        # ON: counted, carried
     assert CP.clef_in_force(800.0, changes, witnessed, "tenor")[0] is None     # a shape witness still stops (Sean 2026-11-02)
