@@ -212,6 +212,14 @@ class TestARestsValueComesFromTheLineItHangsOn(unittest.TestCase):
         self.assertIsNone(v.value)
 
     def test_a_restWhole_BELOW_its_measured_band_is_narrowed(self):
+        # ROADMAP 2.257 (OMR_WHOLE_REST_OWN_STAFF, default ON since 2026-11-03): a restWhole whose rect HANGS from one of
+        # its own staff's lines is read whole by the hang test (`rest_hangs_from_own_line`, Sean 12/12 tiles); this fixture
+        # pins the SLOT test alone, so the hang test is held off here.
+        import os
+        old_env = os.environ.get("OMR_WHOLE_REST_OWN_STAFF")
+        os.environ["OMR_WHOLE_REST_OWN_STAFF"] = "0"
+        self.addCleanup(lambda: os.environ.pop("OMR_WHOLE_REST_OWN_STAFF", None) if old_env is None
+                        else os.environ.__setitem__("OMR_WHOLE_REST_OWN_STAFF", old_env))
         """The mirror, so the rule cannot be passing by always preferring the
         whole rest — which is the value a plate prints far more of.
 
