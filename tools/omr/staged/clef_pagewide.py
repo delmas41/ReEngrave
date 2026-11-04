@@ -94,6 +94,33 @@ def carry_enabled() -> bool:
     return os.environ.get(ENV_CARRY, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+ENV_STRONG_STOP = "OMR_CLEF_CARRY_STRONG_STOP"
+#: the `why` of a candidate that is a detector `clef*` box too small to be a clef-sized claim and NOTHING else (no body template score, no
+#: clef-sized box failing a later shape test): `gather` files it for a clef the detector boxed small (Litolff Vc bar 411).
+WEAK_CANDIDATE_WHY = "clef_box_not_clef_sized"
+
+
+def strong_stop_enabled() -> bool:
+    """`OMR_CLEF_CARRY_STRONG_STOP`, default OFF (ROADMAP 2.261 fix 3): only a candidate with a SHAPE witness stops a carried clef; a small
+    detector `clef*` box with no shape witness is counted (its abstention row stays) and never a stop.
+
+    CAUSE (Litolff p6 sys1 staff3, p14 sys0 staff10; 27 notes unpitched, `clef_in_force`): `clef_in_force` stopped the carry at ANY candidate
+    after a change of another kind than the header's. 33 of the 80 Litolff candidates are `clef_box_not_clef_sized` -- a 1.2-1.5 sp
+    `clefG`/`clefF` box (an eighth rest, a head) at confidence 0.5-0.8 and no witness of shape -- and where one stood after a read bass clef
+    the whole staff to its right was blanked. Sean's 11-02 stop rulings (bar 111, Vc bar 346) were F clefs seen by the body template
+    (`body_score` 0.69-0.73): they keep stopping. LESSON: a stop is a refusal to pitch; it needs the evidence a read would need, or a doubt
+    about one bar becomes silence for a staff (CLAUDE rule 8).
+    CONVENTION ASSUMED: a detector clef box under clef size with no body score is not a clef printed there. WHAT WOULD FALSIFY IT: a real
+    return clef boxed small and read by nothing else, whose notes the flag then pitches from the clef before it. NOT CONFIRMED."""
+    return os.environ.get(ENV_STRONG_STOP, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def is_weak_candidate(row: Any) -> bool:
+    """A candidate with no shape witness: only the detector's small `clef*` box (`WEAK_CANDIDATE_WHY`), no body score, not strong."""
+    d = getattr(row, "detail", None) or {}
+    return d.get("why") == WEAK_CANDIDATE_WHY and d.get("body_score") is None and not d.get("strong")
+
+
 def _ink(binary: Any) -> Optional[np.ndarray]:
     if binary is None or getattr(binary, "ndim", 0) != 2:
         return None
@@ -720,11 +747,14 @@ def clef_in_force(head_x: float, changes: Sequence[Tuple[float, Optional[str], A
     the candidate's row), never carried past ink that might be the return. A candidate where the header's own kind is in force (no
     change yet, or a return to it) changes nothing: the clef the head is pitched from is then the one the no-carry reading uses too."""
     got = None
+    weak_off = strong_stop_enabled()
     events = sorted([(x, 0, k, r) for x, k, r in changes] + [(x, 1, None, r) for x, _k, r in candidates], key=lambda t: (t[0], t[1]))
     for x, is_cand, kind, r in events:
         if x >= head_x:
             break
         if is_cand:
+            if weak_off and is_weak_candidate(r):
+                continue                                   # ROADMAP 2.261 fix 3: counted (its abstention row), never a stop
             if got is not None and got[0] is not None and got[0] != header:
                 got = (None, r)
             elif _strong_f(r):

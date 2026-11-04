@@ -1,0 +1,20 @@
+  reused gather brahms off <- out/2.261-fix3-same-brahms/off.record.json
+  reused gather brahms on <- out/2.261-fix3-same-brahms/on.record.json
+LANE REPORT  OMR_CLEF_CARRY_STRONG_STOP (OFF=0 ON=1)  --from gather
+  OMR_CLEF_CARRY_STRONG_STOP: read in staged/clef_pagewide.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: benchmarks/hairpin-reach-2026-11/sample-261-fix3.json (a development control)
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+brahms  pages [4, 5]  (2129 notes+rests OFF, 2129 ON, 2129 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 1122 -> 1122
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (175 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 2 (at another id than asked 2) | by id key, no position 349 | position but no mark here 2
+  NOT JUDGED: 0 changed places no tile of Sean's covers (0 are covered; 0 have no page place): none -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 1 (0 from the changes, 1 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 27 s

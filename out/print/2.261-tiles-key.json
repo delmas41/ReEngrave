@@ -1,0 +1,414 @@
+[
+ {
+  "plate": "litolff",
+  "page": 3,
+  "box": [
+   939.0,
+   1124.0,
+   968.0,
+   1136.0
+  ],
+  "role": "case",
+  "fix": 1,
+  "what": "beam where a crescendo was read, refused ON",
+  "rg": "glyph/3/0/4/2/100000",
+  "tile": 1,
+  "crop_origin": [
+   859,
+   1051
+  ],
+  "position": {
+   "page": 3,
+   "system": 0,
+   "staff": 4,
+   "cell": 2,
+   "page_box": [
+    939.0,
+    1124.0,
+    968.0,
+    1136.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "value",
+  "side": "changed",
+  "page": 3,
+  "box": [
+   919.9825,
+   1224.56,
+   943.135,
+   1245.665
+  ],
+  "rg": "glyph/3/0/5/2/2",
+  "was": "quarter",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   837,
+   1156
+  ],
+  "position": {
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "cell": 2,
+   "page_box": [
+    919.9825,
+    1224.56,
+    943.135,
+    1245.665
+   ]
+  },
+  "cell_map": null,
+  "fix": 1,
+  "what": "eighth again ON (2.78 tile 7)"
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   2178.0,
+   2193.0,
+   2329.0,
+   2226.0
+  ],
+  "role": "control",
+  "fix": 1,
+  "what": "hairpin kept ON (Brahms p8, on a beam box)",
+  "rg": "glyph/8/0/5/3/100003",
+  "tile": 3,
+  "crop_origin": [
+   2061,
+   2049
+  ],
+  "position": {
+   "page": 8,
+   "system": 0,
+   "staff": 5,
+   "cell": 3,
+   "page_box": [
+    2178.0,
+    2193.0,
+    2329.0,
+    2226.0
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2279.785,
+   3390.035,
+   2302.6225,
+   3415.7075
+  ],
+  "role": "case",
+  "fix": 2,
+  "what": "head refused claimed_by:word OFF (2.154 tile 8)",
+  "rg": "glyph/6/1/9/10/4",
+  "tile": 4,
+  "crop_origin": [
+   2196,
+   3324
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 9,
+   "cell": 10,
+   "page_box": [
+    2279.785,
+    3390.035,
+    2302.6225,
+    3415.7075
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   2383.2625,
+   3391.295,
+   2406.8875,
+   3416.495
+  ],
+  "rg": "glyph/6/1/9/10/2",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   2300,
+   3325
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 9,
+   "cell": 10,
+   "page_box": [
+    2383.2625,
+    3391.295,
+    2406.8875,
+    3416.495
+   ]
+  },
+  "cell_map": null,
+  "fix": 2,
+  "what": "note gained"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   2457.2975,
+   3331.445,
+   2486.5925,
+   3350.03
+  ],
+  "rg": "glyph/6/1/9/11/14",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   2377,
+   3261
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 9,
+   "cell": 11,
+   "page_box": [
+    2457.2975,
+    3331.445,
+    2486.5925,
+    3350.03
+   ]
+  },
+  "cell_map": null,
+  "fix": 2,
+  "what": "bar 25: written quarter chord OFF, unread bar ON (third head released)"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   1565.585,
+   2401.52,
+   1593.33,
+   2422.91
+  ],
+  "rg": "glyph/6/1/3/5/3",
+  "value": "eighth",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1484,
+   2333
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "page_box": [
+    1565.585,
+    2401.52,
+    1593.33,
+    2422.91
+   ]
+  },
+  "cell_map": null,
+  "fix": 3,
+  "what": "note gained (pitched in the bass clef)"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   1458.325,
+   2477.78,
+   1484.52,
+   2497.93
+  ],
+  "rg": "glyph/6/1/3/5/10",
+  "value": "half",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   1376,
+   2409
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 3,
+   "cell": 5,
+   "page_box": [
+    1458.325,
+    2477.78,
+    1484.52,
+    2497.93
+   ]
+  },
+  "cell_map": null,
+  "fix": 3,
+  "what": "note gained, half"
+ },
+ {
+  "kind": "accidental",
+  "side": "gained",
+  "page": 6,
+  "box": [
+   1155.355,
+   2424.77,
+   1177.055,
+   2445.23
+  ],
+  "rg": "glyph/6/1/3/3/3",
+  "value": "natural",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   1071,
+   2356
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 3,
+   "cell": 3,
+   "page_box": [
+    1155.355,
+    2424.77,
+    1177.055,
+    2445.23
+   ]
+  },
+  "cell_map": null,
+  "fix": 3,
+  "what": "accidental gained"
+ },
+ {
+  "kind": "words",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   1357.6100000000001,
+   2388.81,
+   1375.9,
+   2437.015
+  ],
+  "rg": "glyph/6/1/3/4/0",
+  "value": "clef?",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   1272,
+   2334
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 3,
+   "cell": 4,
+   "page_box": [
+    1357.6100000000001,
+    2388.81,
+    1375.9,
+    2437.015
+   ]
+  },
+  "cell_map": null,
+  "fix": 3,
+  "what": "'clef?' mark lost"
+ },
+ {
+  "kind": "beam",
+  "page": 6,
+  "box": [
+   539.341796875,
+   1436.6435546875,
+   562.900390625,
+   1456.859375
+  ],
+  "rg": "glyph/6/0/7/0/0",
+  "value": "begin",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 11,
+  "crop_origin": [
+   456,
+   1368
+  ],
+  "position": {
+   "page": 6,
+   "system": 0,
+   "staff": 7,
+   "cell": 0,
+   "page_box": [
+    539.341796875,
+    1436.6435546875,
+    562.900390625,
+    1456.859375
+   ]
+  },
+  "cell_map": null,
+  "fix": 2,
+  "what": "control beam unchanged"
+ },
+ {
+  "kind": "note",
+  "page": 14,
+  "box": [
+   2381.13,
+   354.685,
+   2402.6325,
+   374.0525
+  ],
+  "rg": "glyph/14/0/0/13/3",
+  "value": "quarter",
+  "plate": "litolff",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 12,
+  "crop_origin": [
+   2297,
+   285
+  ],
+  "position": {
+   "page": 14,
+   "system": 0,
+   "staff": 0,
+   "cell": 13,
+   "page_box": [
+    2381.13,
+    354.685,
+    2402.6325,
+    374.0525
+   ]
+  },
+  "cell_map": null,
+  "fix": 3,
+  "what": "control note unchanged"
+ }
+]

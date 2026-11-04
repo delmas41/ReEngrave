@@ -185,6 +185,8 @@ def detect_hairpins(
     blanked_ink: np.ndarray | None = None,
     *,
     reach: bool = False,
+    no_beams: bool = False,
+    refused: list | None = None,
 ) -> list[Hairpin]:
     """Find the hairpins on one page.
 
@@ -209,11 +211,19 @@ def detect_hairpins(
     search, iso_ink = reach_inks(page_ink, search, staves)
     sps = sorted(float(s["spacing"]) for s in staves if s.get("spacing"))
     sp = sps[len(sps) // 2]
+    spacing_of = {int(s["index"]): float(s["spacing"]) for s in staves}
     for found in (_search_bands(iso_ink, search, staves, reach=True, min_width_spaces=REACH_MIN_W_SP),
                   _search_bands(straight_runs(iso_ink, sp), straight_runs(search, sp), staves, reach=True,
                                 min_width_spaces=REACH_LINE_MIN_W_SP)):
         kept = list(out)
         for h in found:
+            if no_beams:
+                # ROADMAP 2.261 fix 1 (flag OMR_HAIRPIN_NOT_A_BEAM): a find with a stem standing at BOTH ends is a beam between two stems.
+                jl, jr = stem_joins(page_ink, h.x, h.y, h.width, h.height, spacing_of[h.staff_index])
+                if jl >= STEM_JOIN_MIN_SPACES and jr >= STEM_JOIN_MIN_SPACES:
+                    if refused is not None:
+                        refused.append((h, jl, jr))
+                    continue
             if not any(o.staff_index == h.staff_index and min(o.x + o.width, h.x + h.width) > max(o.x, h.x) for o in kept):
                 out.append(h)
     return out
@@ -327,6 +337,43 @@ REACH_LINE_STEP_DEG = 3.0
 REACH_LINE_MIN_W_SP = 4.0
 #: The reach passes add nothing narrower than a letter (2.245's `box_kind.HAIRPIN_MIN_W_SP`: 9 of 9 narrower CV 'hairpins' were letters).
 REACH_MIN_W_SP = 1.6
+
+
+#: ROADMAP 2.261 fix 1 (flag `OMR_HAIRPIN_NOT_A_BEAM`, STAGED, `no_beams=True`): a stem leaves a beam at each end, a hairpin has none
+#: there. `stem_joins` measures, on the RAW page ink, how far a vertical stroke attached at each end column of a find runs beyond the
+#: find's own rows (in spaces); a find with a stem at BOTH ends is a beam between two stems (the reach removes every vertical stroke of
+#: 1.2+ spaces before the look, which leaves a stem-to-stem beam as an isolated straight bar -- 4 of the 11 Litolff finds, Litolff p3
+#: sys0 staff5 bar2 read eighth -> quarter, ROADMAP 2.261). A barline crossing or a stem touching one arm is joined in the MIDDLE or at one
+#: end, never at both ends, so the Brahms hairpins the reach was built for stay.
+STEM_JOIN_MIN_SPACES = 1.2
+STEM_JOIN_END_SPACES = 0.4
+
+
+def stem_joins(page_ink: np.ndarray, x: int, y: int, w: int, h: int, spacing: float) -> tuple[float, float]:
+    """(left, right): the longest vertical run, in spaces, that stands on the find's end columns and runs beyond its rows [y, y+h)."""
+    H_, W_ = page_ink.shape[:2]
+    win = max(2, int(round(STEM_JOIN_END_SPACES * spacing)))
+    far = int(round(4.0 * spacing))
+    out = []
+    for xs in (range(max(0, x - 1), min(W_, x + win)), range(max(0, x + w - win), min(W_, x + w + 1))):
+        best = 0
+        for cx in xs:
+            col = page_ink[:, cx] > 0
+            if not col[max(0, y):min(H_, y + h)].any():
+                continue
+            up = 0
+            yy = max(0, y) - 1
+            while yy >= 0 and col[yy] and up < far:
+                up += 1
+                yy -= 1
+            dn = 0
+            yy = min(H_, y + h)
+            while yy < H_ and col[yy] and dn < far:
+                dn += 1
+                yy += 1
+            best = max(best, up + dn)
+        out.append(best / float(spacing))
+    return out[0], out[1]
 
 
 def _line_kernel(length: int, deg: float) -> np.ndarray:
