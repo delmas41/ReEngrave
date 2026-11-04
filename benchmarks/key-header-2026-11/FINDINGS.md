@@ -45,3 +45,24 @@ wrong. 11/12 right, 0 wrong. Sean: "Land whatever is ready".
 ## Not established
 - 28 staves whose key object counts 2 slots and 8 that count 1 stay blue (tile 12 is one).
 - The Brahms control line does not reproduce the saved record (tree moved; same in both arms).
+
+## 2.256b — key round 2: count the stems that survive (NOT landed; lane-2.256b-key-r2 11a2740ac)
+Flag `OMR_KEY_OBJECT_COUNT` OFF. Filed by the manager from the lane report.
+- **Cause:** the key object's whole-flat piece test (0.45-1.9 sp wide, 1.6-4.4 tall) fails on damaged
+  ink -- Litolff breaks a flat's stem from its bowl or fuses 2-3 flats; Brahms shows 3 clean stems the
+  object counts as 1-2. The stem survives (thin vertical run 2.0-3.9 sp). **Lesson:** a whole-glyph
+  shape test is brittle on scans; count the stroke that survives at its fixed slot position.
+- **Fix:** `key_object.flat_stems` counts stems in the fixed flat order for the clef, stem top in a
+  measured window (-5.8..-1.2 steps) against the local staff; never lowers a count; nothing without a
+  measured clef; kind stays the detector's. Raster-only: 55/75 Litolff, 24/56 Brahms `fill_part_key`
+  staves rise to 3; ~20 per plate unreachable (no clef measured, kind misread natural, transposing staves).
+- **Measures (2 pages per plate, OFF vs ON; NOT the frozen sample):** Litolff p2+p4 12 staves changed,
+  pitches ~107 (natural -> flat), blue +34 -17, notes not written 645 -> 646 (one quarter lost at
+  4/0/3/0); Brahms p14+p19 11 staves changed, notes +47 rests +38 ties +24, blue +10 -31, notes not
+  written 1006 -> 921 (growth at 14/1/5, 14/1/7, 14/1/8 unexplained, unjudged). Judged right->wrong 0
+  both plates. Fast tier 9903 passed, 0 failed.
+- **Sean's tiles (answers-2.256b.json):** "tiles 6 and 10 have no accidentals, all the others have 3
+  flats." ON 12/12 right (9 cases incl. 0->3 and 1->3, three-flat control, two none-read controls);
+  OFF 3/12.
+- **Not established:** blue by rule (is `fill_part_key` down?); frozen 8-page sample; sharps and
+  > 3 flats; the Brahms churn's cause.
