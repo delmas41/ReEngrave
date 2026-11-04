@@ -643,6 +643,8 @@ KNOWN_GAPS: Dict[str, str] = {
         "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
     "DETAIL Q.PAGE_STROKE.width_px": (
         "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default OFF): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.CLAIMED_AREA.page_strokes": (
+        "producer-only (ROADMAP 2.260b M3, flag `OMR_PAGE_CLAIMS`, default OFF): the arc claim in the page's own `Q.PAGE_STROKE` ids, the translation from `[cell, ordinal]`. The binder reads the same ids from the curve's `Q.SYSTEM_ARC` row (`piece_strokes`); `stroke_owner` moves to these ids when the cell ordinals retire. Leaves the day a decision reads it."),
     "DETAIL Q.STROKE.thickness_spread_spaces": (
         "producer-only quantity (`OMR_STROKE_MAP`, default ON); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
 }

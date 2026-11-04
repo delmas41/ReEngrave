@@ -2397,6 +2397,16 @@ _ACC_NOT_AN_ACCIDENTAL = ("refused_not_an_accidental",
                           "head_belongs_to_a_nearer_staff")
 
 
+def _local_position(ev: Evidence, head_row: Any) -> Optional[float]:
+    """ROADMAP 2.260b r3: a head's staff position in half-steps from its own bar's top line, as the geometry reader measured it against the lines
+    of THAT bar (`Q.NOTEHEAD_STAFF_POSITION.value`, float; the line-cut or ink-centre placement where one was made). Used to ask whether two
+    heads stand at ONE position -- never to name a pitch (a far head's pitch stays its ledger reading, page-facts s1)."""
+    for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=head_row.subject):
+        if (p.detail or {}).get("rounded") is not None and isinstance(p.value, (int, float)):
+            return float(p.value)
+    return None
+
+
 def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     """`(half-step from the top line, how it was read)` or `(None, why not)`.
 
@@ -2907,11 +2917,19 @@ def _system_arc_row(ev: Evidence):
 BIND_DIFFERENT_POSITION_SPACES = 0.435
 
 
-def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float) -> List[str]:
+def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float,
+                            joins: Optional[Sequence[Dict[str, Any]]] = None,
+                            piece_strokes: Optional[Dict[str, Sequence[int]]] = None) -> List[str]:
     """ROADMAP 2.223: the junctions of a joined curve that are NOT a barline's cut. Pieces in x order; a junction is a barline's only
     where the left piece ends at its cell's right edge AND the right piece begins at its (another) cell's left edge (2.166's
     `CUT_EDGE_SPACES`). Anything else -- two whole arcs meeting end to start at a shared note, twin boxes of one arc -- is returned as
-    `"left>right"`. A piece with no box or cell box makes its junctions unprovable, so they are returned too."""
+    `"left>right"`. A piece with no box or cell box makes its junctions unprovable, so they are returned too.
+
+    ROADMAP 2.258 (`OMR_ARC_ONE_CURVE`, `joins` = the curve row's measured pair joins, GATHER): a junction the TRACE proved is no junction -- the
+    two boxes' traces AGREE in y over at least `ONE_STROKE_MIN_SPACES`, i.e. ONE STROKE boxed twice (a twin, a partial box inside another, a box
+    that begins 3 sp inside the next cell after a barline's cut): 109 of the 129 flagged junctions on Litolff p1-16 were twin boxes in one
+    cell, 18 a cut whose second box began inside its cell. Two arcs that MEET at a note share no columns and are returned as before. (A junction
+    by the traces' END-to-start meeting alone is never accepted: that is the tie-then-slur at one note.)"""
     from ..arcs_system import CUT_EDGE_SPACES
     tol = CUT_EDGE_SPACES * sp
     info = []
@@ -2930,6 +2948,16 @@ def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float) -> L
     for (_xa, ka, ba, ca, ia), (_xb, kb, bb, cbb, ib) in zip(info, info[1:]):
         ok = (ba and bb and ca and cbb and ia != ib and abs(ca[2] - float(ba[2])) <= tol
               and abs(float(bb[0]) - cbb[0]) <= tol)
+        if not ok and piece_strokes:
+            # ROADMAP 2.260b M3: the PAGE map says both pieces' traces run along one and the same page stroke -- one stroke boxed twice, or one
+            # stroke the cell edge cut. Two arcs that MEET at a note are two page strokes (a gap between them), so the guard stands for them.
+            if set(piece_strokes.get(ka) or ()) & set(piece_strokes.get(kb) or ()):
+                ok = True
+        if not ok and joins:
+            jr = next((j for j in joins if j.get("a") in (ka, kb) and j.get("b") in (ka, kb) and j.get("a") != j.get("b")), None)
+            if jr is not None:
+                if int(jr.get("agree_cols") or 0) >= _arc_claim.ONE_STROKE_MIN_SPACES * sp:
+                    ok = True
         if not ok:
             bad.append(ka + ">" + kb)
     return bad
@@ -3014,7 +3042,9 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         k = (px1 - px0) / cw
         sx, sy, sw, sh = (float(x) for x in sv[:4])
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
-    tips = _arc_claim.stem_tips(heads, stems)
+    # ROADMAP 2.260b r3 (OMR_PAGE_CLAIMS): a tip more than a stem length from its head names no head (`arc_claim.TIP_MAX_SPACES`)
+    tips = _arc_claim.stem_tips(heads, stems, sp if _arc_claim.page_claims_enabled() else 0.0)
+    far_tip_heads = {t["key"] for t in tips if t.get("far")}
     end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default ON)
     if end_pitch and heads:
         # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
@@ -3023,7 +3053,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         for h in heads:
             h["hh"] = mean_h
             h["tall"] = h["h"] > TALL_BOX_HEAD_HEIGHTS * mean_h
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch)
+    alt = None
+    if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
+        alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
@@ -3034,7 +3067,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         # printed arcs meet end to start at one note (slur, tie, slur along Brahms p0 staff 12, bars 0-4: four ties bound as one slur
         # in the first build), boxes that were each a WHOLE arc. A curve with a junction that is not a barline's cut is not trusted as
         # ONE arc: no binding for any of its pieces (the OFF path decides each), recorded.
-        bad = _joins_not_at_a_barline(ev, pieces, sp)
+        bad = _joins_not_at_a_barline(ev, pieces, sp, d.get("joins") if _arc_claim.one_curve_enabled() else None,
+                                       d.get("piece_strokes") if _arc_claim.page_claims_enabled() else None)
         if bad:
             b["why"] = "joined_not_at_a_barline"
             b["junctions"] = bad
@@ -3047,6 +3081,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     hl, hr = by[lk], by[rk]
     between = _arc_claim.heads_between(hl, hr, heads, usable)
     cya, cyb = hl["cy"], hr["cy"]
+    ea = eb = None
     if end_pitch:
         # ROADMAP 2.250: read the end note's step the way the two-note rule does (the head EXTENT where the box is a piece or a tall
         # union), not the box centre -- the value existed (`_head_extent`) and this binder never read it. The same extent centre
@@ -3076,6 +3111,16 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sa, src_a = _head_step(ev, rows[lk])
         sb, src_b = _head_step(ev, rows[rk])
     from ..arcs_system import SAME_POSITION_SPACES
+    # ROADMAP 2.260b r3 (OMR_PAGE_CLAIMS; Sean 2026-11-03, page-facts s1: *same pitch is read from POSITION*): where a step is unread, the two
+    # heads' positions are compared as each was MEASURED AGAINST ITS OWN BAR'S STAFF (`Q.NOTEHEAD_STAFF_POSITION`, the cell's frame: local
+    # to the head's x, tilt and all), never as two box centres in page pixels -- a box drawn tall or short moves its centre by half a space
+    # (Brahms p0 staff 5, bars 1-2: boxes 0.57 sp apart, positions 10.09 and 10.10, a tie written as a slur). Fused ends and extents keep their own measure.
+    local_dy = None
+    if _arc_claim.page_claims_enabled() and ea is None and eb is None and not b["left"].get("tall") and not b["right"].get("tall"):
+        pa_, pb_ = _local_position(ev, rows[lk]), _local_position(ev, rows[rk])
+        if pa_ is not None and pb_ is not None:
+            local_dy = abs(pa_ - pb_) / 2.0          # half-steps -> spaces
+            b["local_dy_spaces"] = round(local_dy, 3)
 
     def _relation(sa_, sb_, ya, yb, sra, srb):
         dy_ = abs(ya - yb) / sp
@@ -3088,6 +3133,9 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
             # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
             # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
             # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
+            if local_dy is not None:
+                return (("same" if local_dy <= SAME_POSITION_SPACES else "different" if local_dy >= BIND_DIFFERENT_POSITION_SPACES
+                         else "unread"), "positions_local", local_dy)
             return ("same" if near_ else "different" if dy_ >= BIND_DIFFERENT_POSITION_SPACES else "unread"), "boxes_only", dy_
         if sa_ == sb_:
             return ("same" if near_ else "conflict"), None, dy_
@@ -3136,6 +3184,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         # reads a tie). No kind: the evidence for "different" is an end a tie does not use. (Same-pitch bindings through a tip stand:
         # tile 5's lower tie binds its stop head that way and is right.)
         b["why"] = "tie_box_end_only_at_a_stem_tip"
+    elif relation == "different" and any(b[s_].get("via_stem_tip") and b[s_].get("head") in far_tip_heads for s_ in ("left", "right")):
+        # ROADMAP 2.260b r3: an end bound through a stem tip a stem length and more from its head stands over a head the detector never boxed
+        # (tiles 2, 9): the other chord member's position says nothing about THIS arc's end. No kind; the OFF path decides.
+        b["why"] = "far_stem_tip_end"
     elif relation == "different":
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":

@@ -1,0 +1,122 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 0,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/0/0/11/6/4",
+  "stop": "glyph/0/0/11/6/13",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 10,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/10/1/4/9/4",
+  "stop": "glyph/10/1/4/10/8",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 0,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/0/0/5/1/2",
+  "stop": "glyph/0/0/5/2/5",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 10,
+  "role": "changed",
+  "written_kind": "tie",
+  "start": "glyph/10/1/0/0/10",
+  "stop": "glyph/10/1/0/1/4",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 0,
+  "role": "brahms_p0_tie",
+  "written_kind": "tie",
+  "start": "glyph/0/0/5/0/9",
+  "stop": "glyph/0/0/5/1/2",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 11,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/11/1/9/15/10",
+  "stop": "glyph/11/1/9/16/2",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 0,
+  "role": "control",
+  "written_kind": "tie",
+  "start": "glyph/0/0/9/6/9",
+  "stop": "glyph/0/0/9/6/4",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 0,
+  "role": "brahms_p0_tie",
+  "written_kind": "tie",
+  "start": "glyph/0/0/10/2/5",
+  "stop": "glyph/0/0/10/3/3",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "page": 10,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/10/1/5/8/9",
+  "stop": "glyph/10/1/5/9/3",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 5,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/5/0/10/4/7",
+  "stop": "glyph/5/0/10/4/4",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 11,
+  "plate": "litolff",
+  "page": 11,
+  "role": "changed",
+  "written_kind": "slur",
+  "start": "glyph/11/1/9/13/0",
+  "stop": "glyph/11/1/9/14/2",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 12,
+  "plate": "brahms",
+  "page": 0,
+  "role": "control",
+  "written_kind": "tie",
+  "start": "glyph/0/0/10/6/12",
+  "stop": "glyph/0/0/10/6/15",
+  "changed_vs_off": false
+ }
+]

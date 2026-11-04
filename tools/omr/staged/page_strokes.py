@@ -60,8 +60,15 @@ STAFF_REACH_SPACES = 3.0
 
 
 def enabled() -> bool:
-    """`OMR_PAGE_STROKES` (ROADMAP 2.260a M2), default OFF."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_PAGE_STROKES` (ROADMAP 2.260a M2) or `OMR_PAGE_CLAIMS` (2.260b M3), default OFF."""
+    from .arc_claim import page_claims_enabled
+    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on") or page_claims_enabled()
+
+
+def claims_on() -> bool:
+    """`OMR_PAGE_CLAIMS` (ROADMAP 2.260b M3): the page map is built before the arcs (and claims name its strokes)."""
+    from .arc_claim import page_claims_enabled
+    return page_claims_enabled()
 
 
 def _centre_index(a: int, b: int, n_dst: int, n_src: int) -> np.ndarray:

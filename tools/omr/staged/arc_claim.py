@@ -113,6 +113,51 @@ def claim_strokes(res: Any, cell_box: Sequence[float], up: float, trace: Dict[in
     return out
 
 
+def page_strokes_along(page_map: Any, trace: Dict[int, Tuple[float, float]], sp_page: float) -> List[Tuple[int, float]]:
+    """ROADMAP 2.260b M3: `[(Q.PAGE_STROKE ordinal, share)]` for every stroke of the PAGE map (`page_strokes.PageMap`: masks in the reduced frame,
+    boxes in page px) whose ink lies at least `ON_TRACE_SHARE_MIN` along the traced curve -- the claim's translation from a cell's `[cell, ordinal]`
+    to the page's own ids. A page-frame call of `on_trace_share` (cell origin 0, upscale 1)."""
+    out: List[Tuple[int, float]] = []
+    if page_map is None or not trace:
+        return out
+    xs = sorted(trace)
+    x_lo, x_hi = xs[0], xs[-1]
+    y_lo, y_hi = min(a for a, _b in trace.values()), max(b for _a, b in trace.values())
+    for i, (m, x0, y0) in enumerate(page_map.masks):
+        if m.size == 0:
+            continue
+        bx, by, bw, bh = page_map.strokes[i].box
+        if bx > x_hi or bx + bw < x_lo or by > y_hi or by + bh < y_lo:
+            continue
+        sh = on_trace_share(m, x0, y0, page_map.scale, (0, 0, 0, 0), 1.0, trace, sp_page)
+        if sh >= ON_TRACE_SHARE_MIN:
+            out.append((i, round(sh, 3)))
+    return out
+
+
+def page_stroke_extent(page_map: Any, ordinals: Sequence[int]) -> Optional[List[List[float]]]:
+    """ROADMAP 2.260b r2: where the arc's own page stroke(s) END -- `[[x_left, y_left], [x_right, y_right]]` in page px: the leftmost / rightmost
+    ink column of the union of the named strokes' masks, y = the mean row of that column's ink. No fixed distance: the stroke ends where its ink does."""
+    import numpy as np
+    if page_map is None or not ordinals:
+        return None
+    s = float(page_map.scale)
+    best_l = best_r = None
+    for i in ordinals:
+        m, x0, y0 = page_map.masks[i]
+        ys, xs = np.nonzero(m)
+        if xs.size == 0:
+            continue
+        for sel, side in ((xs == xs.min(), "l"), (xs == xs.max(), "r")):
+            x = (x0 + float(xs[sel][0]) + 0.5) / s
+            y = (y0 + float(ys[sel].mean()) + 0.5) / s
+            if side == "l" and (best_l is None or x < best_l[0]):
+                best_l = [round(x, 1), round(y, 1)]
+            if side == "r" and (best_r is None or x > best_r[0]):
+                best_r = [round(x, 1), round(y, 1)]
+    return None if best_l is None or best_r is None else [best_l, best_r]
+
+
 # ── the kind: from the two end heads, by Sean's rule ───────────────────────────────────────────────────────────────────────────────────────
 #: what a `Q.SYSTEM_ARC` row's value (the ends' shape) says about the kind, when the ends were anchored on two different heads
 SHAPE_KIND = {
@@ -201,6 +246,30 @@ ENV_BIND = "OMR_ARC_BIND_PAGEWIDE"
 #: stem-tip proxy's member). CONVENTION ASSUMED (not confirmed by Sean): a tie joins two noteheads of one pitch, a chord has one tie per
 #: tied note, each at its own note's staff position. WHAT WOULD FALSIFY IT: a chord tie whose end stands beside one note but ties another.
 ENV_END_PITCH = "OMR_BIND_END_PITCH"
+
+#: ROADMAP 2.258 (`OMR_ARC_ONE_CURVE`, default OFF). ONE CURVE, ONE EXTENT: the tracer follows the stroke to where the STROKE ends (not where the
+#: detector's box ends + 0.5 sp), records how each pair of its boxes joined (`joins`), and the binder takes a junction of two boxes the trace
+#: proved ONE STROKE (shared columns agreeing in y) or a barline's cut (the cell edge lies at the junction) as no junction at all. The Brahms p0
+#: guard stands: two whole arcs meeting end to start at one note share no columns, and a note is not a cell edge.
+ENV_ONE_CURVE = "OMR_ARC_ONE_CURVE"
+#: two boxes whose traces AGREE (one y, `SAME_Y_SPACES`) over at least this many spaces are one stroke seen twice (a head's width is ~1.3 sp;
+#: two arcs that MEET at a note agree over the touching columns only). NOT CONFIRMED beyond the measurements in benchmarks/omr-arc-binding-2026-10.
+ONE_STROKE_MIN_SPACES = 1.0
+
+
+#: ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`, default OFF): the page ledger's claims. It turns on M1 (`OMR_BARLINE_COLUMN_FACT`) and M2 (`OMR_PAGE_STROKES`),
+#: builds the page stroke map BEFORE the arcs are traced and erased (so the arc is on the map whole), names the `Q.PAGE_STROKE` ids each traced curve runs
+#: along (`page_strokes`, and per piece `piece_strokes`) and reads the curve as ONE curve (the 2.258 extent and junction test).
+ENV_PAGE_CLAIMS = "OMR_PAGE_CLAIMS"
+
+
+def page_claims_enabled() -> bool:
+    return _on(ENV_PAGE_CLAIMS)
+
+
+def one_curve_enabled() -> bool:
+    """`OMR_ARC_ONE_CURVE` (ROADMAP 2.258) or `OMR_PAGE_CLAIMS` (2.260b), default OFF; an explicit on-word turns it on."""
+    return _on(ENV_ONE_CURVE) or page_claims_enabled()
 
 #: heads whose centres lie within this many of their own widths in x are one COLUMN (a chord, or two voices at one onset)
 BIND_COLUMN_DX_WIDTHS = 0.6
@@ -373,7 +442,15 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
     return out
 
 
-def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]]) -> List[Dict[str, Any]]:
+#: ROADMAP 2.260b r3 (rides `OMR_PAGE_CLAIMS`): a stem's free end stands for the extreme head only within one stem length of it (the engraved
+#: stem is 3.5 spaces from the head, Gould; measured on Litolff p10-11 + Brahms p0/p5, 2408 tips: the modal tip stands 3-3.5 sp from its head's
+#: centre, 172 at 4-4.5, 72 at 5-5.5, 89 at 6-7.5). A tip farther than this belongs to a head the detector never boxed (a ledger dyad's upper head:
+#: Litolff p10 staff 4 cell 9, tip 6.9 sp from the one head boxed, tile 2; staff 5 cell 8, 5.6 sp, tile 9): the tip then names no head and the
+#: end is unbound, never bound to the wrong member of the chord. NOT CONFIRMED beyond those pages; it only ever DECLINES a binding.
+TIP_MAX_SPACES = 4.5
+
+
+def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]], sp: float = 0.0) -> List[Dict[str, Any]]:
     """The free END of each stem box (page `x0, y0, x1, y1`) as a candidate position for the head at that end: `{key, cx, cy, w, h,
     tip: True}`. A stem joins the heads whose boxes touch it (x within a head width of the stem, y overlapping the stem's span +- half a
     head); its free end is the end AWAY from them, and the head it stands for is the extreme head on that side (an up-stem's tip stands
@@ -391,12 +468,15 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]])
         else:
             h = max(on, key=lambda t: t["cy"])
             ty = sy1
-        out.append({"key": h["key"], "cx": scx, "cy": ty, "w": h["w"], "h": h["h"], "cell": h.get("cell", 0), "tip": True})
+        far = sp > 0 and abs(ty - h["cy"]) > TIP_MAX_SPACES * sp
+        # a tip a stem length and more from its head may stand for a head nobody boxed (`TIP_MAX_SPACES`): kept as a candidate (a TIE through it
+        # is the OFF reading, 2.260b r3 measured one such tie right) but marked, and a far tip never supports "different" (see `_page_binding`)
+        out.append({"key": h["key"], "cx": scx, "cy": ty, "w": h["w"], "h": h["h"], "cell": h.get("cell", 0), "tip": True, "far": far})
     return out
 
 
 def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None,
-               by_height: bool = False) -> Dict[str, Any]:
+               by_height: bool = False, alt_ends: Optional[Dict[str, Sequence[float]]] = None) -> Dict[str, Any]:
     """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
     side = curve_side(detail.get("trace"), sp)
     xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
@@ -405,6 +485,20 @@ def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: floa
         return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
     left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height)
     right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height)
+    if alt_ends:
+        # ROADMAP 2.260b r2 (OMR_PAGE_CLAIMS): an end that bound NO head at the traced end is tried once more at the end of the curve's own page
+        # stroke; an end that bound a head (the OFF reading) is never moved
+        for side_, sgn_ in (("left", -1), ("right", +1)):
+            cur = left if side_ == "left" else right
+            alt = alt_ends.get(side_)
+            if alt is not None and cur.get("unbound") == "no_head_at_end":
+                got = bind_end(float(alt[0]), float(alt[1]), sgn_, heads, sp, side, usable, by_height)
+                if got.get("head") is not None:
+                    got["via_stroke_end"] = True
+                    if side_ == "left":
+                        left = got
+                    else:
+                        right = got
     if left.get("head") is not None and left.get("head") == right.get("head"):
         left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
     return {"left": left, "right": right, "side": side}
