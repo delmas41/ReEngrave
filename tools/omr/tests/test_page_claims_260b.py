@@ -37,3 +37,13 @@ def test_stroke_end_binds_only_an_end_that_bound_nothing():
 def test_flag_off(monkeypatch):
     monkeypatch.delenv(AC.ENV_PAGE_CLAIMS, raising=False)
     assert not AC.page_claims_enabled()
+
+
+def test_far_stem_tip_is_marked_never_dropped():
+    # ROADMAP 2.260b r3: a tip a stem length and more from its head stays a candidate but is marked `far`
+    sp = 15.0
+    heads = [_head("H", 100, 300)]
+    near = AC.stem_tips(heads, [[98, 250, 102, 305]], sp)
+    far = AC.stem_tips(heads, [[98, 200, 102, 305]], sp)
+    assert near and not near[0]["far"] and far and far[0]["far"]
+    assert not AC.stem_tips(heads, [[98, 200, 102, 305]])[0]["far"]          # OFF (sp 0): never marked

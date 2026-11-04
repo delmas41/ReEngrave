@@ -1,0 +1,122 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 0,
+  "role": "unchanged_filler",
+  "written_kind": "slur",
+  "start": "glyph/0/0/1/4/10",
+  "stop": "glyph/0/0/1/4/11",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 0,
+  "role": "changed_seen_in_r2",
+  "written_kind": "slur",
+  "start": "glyph/0/0/11/6/4",
+  "stop": "glyph/0/0/11/6/13",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 10,
+  "role": "changed_seen_in_r2",
+  "written_kind": "tie",
+  "start": "glyph/10/1/0/0/10",
+  "stop": "glyph/10/1/0/1/4",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 11,
+  "role": "changed_seen_in_r2",
+  "written_kind": "slur",
+  "start": "glyph/11/1/9/15/10",
+  "stop": "glyph/11/1/9/16/2",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 11,
+  "role": "changed_seen_in_r2",
+  "written_kind": "slur",
+  "start": "glyph/11/1/9/13/0",
+  "stop": "glyph/11/1/9/14/2",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 0,
+  "role": "unchanged_filler",
+  "written_kind": "slur",
+  "start": "glyph/0/0/11/6/12",
+  "stop": "glyph/0/0/11/6/11",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 5,
+  "role": "unchanged_filler",
+  "written_kind": "tie",
+  "start": "glyph/5/1/2/3/12",
+  "stop": "glyph/5/1/2/4/5",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 0,
+  "role": "unchanged_filler",
+  "written_kind": "tie",
+  "start": "glyph/0/0/12/3/6",
+  "stop": "glyph/0/0/12/3/2",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 5,
+  "role": "changed_seen_in_r2",
+  "written_kind": "slur",
+  "start": "glyph/5/0/10/4/7",
+  "stop": "glyph/5/0/10/4/4",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 0,
+  "role": "changed",
+  "written_kind": "tie",
+  "start": "glyph/0/0/5/1/16",
+  "stop": "glyph/0/0/5/2/16",
+  "changed_vs_off": true
+ },
+ {
+  "tile": 11,
+  "plate": "brahms",
+  "page": 5,
+  "role": "control",
+  "written_kind": "tie",
+  "start": "glyph/5/1/9/8/0",
+  "stop": "glyph/5/1/9/9/1",
+  "changed_vs_off": false
+ },
+ {
+  "tile": 12,
+  "plate": "brahms",
+  "page": 5,
+  "role": "control",
+  "written_kind": "tie",
+  "start": "glyph/5/1/11/2/4",
+  "stop": "glyph/5/1/11/3/1",
+  "changed_vs_off": false
+ }
+]
