@@ -4813,7 +4813,8 @@ def gather_wedge_boxes(log: Log, pws: Any, cells: Sequence[Any],
         log.abstain(R.staff(p, _si, _sti), Q.WEDGE_BOX, reader=READERS.CV_HAIRPINS, frame=FRAME_PAGE,
                     reason=ABSTAIN.BELOW_THRESHOLD, why=_hairpin_reach.REASON_BEAM_BETWEEN_STEMS,
                     bbox_page_px=[float(h.x), float(h.y), float(h.x + h.width), float(h.y + h.height)],
-                    width_spaces=round(float(h.width) / float(_sp), 3), stem_left_spaces=round(jl, 2), stem_right_spaces=round(jr, 2))
+                    width_spaces=round(float(h.width) / float(_sp), 3),
+                    **{"stem_left_spaces": round(jl, 2), "stem_right_spaces": round(jr, 2)})   # evidence for a reader of the record; splatted: no decision reads it
     for h in found:
         entry = by_page_index.get(h.staff_index)
         if entry is None:

@@ -280,8 +280,8 @@ def word_ink_boxes(binary, box, entries, spacing):
 # ROADMAP 2.261 fix 2 -- a word read ONLY on the 2.254 r3 through-line retry may not claim ink inside detector notehead boxes.
 # Flag `OMR_WORD_RETRY_SPARES_HEADS`, default OFF. STAGED GATHER (`gather_page_claims`, the direction_word claim).
 # CAUSE: the retry cleans the crop and reads it again with a candidate the plain crops gave nothing for; where the candidate's box holds
-# an `f` and four beamed heads (Litolff p6 sys1 staff9 bar10) Tesseract on the tight cleaned crop read 'faster' (library term), and the
-# word claimed its whole OCR box -- the head the page-wide pass had boxed was refused `claimed_by:word` (Sean: an eighth). The word was
+# an `f` and four beamed heads (Litolff p6 sys1 staff9 bar10) Tesseract on the tight cleaned crop read 'faster' (library term); as a TEMPO word
+# it then claimed the first head as its METRONOME note plus the ink right of it (`claims.metronome_mark`), i.e. the whole row -- the head the page-wide pass had boxed was refused `claimed_by:word` (Sean: an eighth). The word was
 # the `f` (a dynamic) beside heads; the retry had no plain-crop witness. LESSON: a second look that REPLACES a refusal is a weaker witness
 # than the first look; where its box holds ink another reader has boxed as something else it claims none of that ink.
 # CONVENTION ASSUMED: a direction word is never printed over a notehead. WHAT WOULD FALSIFY IT: a retry-read word (Brahms p8/p19
