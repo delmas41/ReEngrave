@@ -3041,7 +3041,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         for h in heads:
             h["hh"] = mean_h
             h["tall"] = h["h"] > TALL_BOX_HEAD_HEIGHTS * mean_h
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch)
+    alt = None
+    if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
+        alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt)
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):

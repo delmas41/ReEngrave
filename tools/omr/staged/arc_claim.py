@@ -135,6 +135,29 @@ def page_strokes_along(page_map: Any, trace: Dict[int, Tuple[float, float]], sp_
     return out
 
 
+def page_stroke_extent(page_map: Any, ordinals: Sequence[int]) -> Optional[List[List[float]]]:
+    """ROADMAP 2.260b r2: where the arc's own page stroke(s) END -- `[[x_left, y_left], [x_right, y_right]]` in page px: the leftmost / rightmost
+    ink column of the union of the named strokes' masks, y = the mean row of that column's ink. No fixed distance: the stroke ends where its ink does."""
+    import numpy as np
+    if page_map is None or not ordinals:
+        return None
+    s = float(page_map.scale)
+    best_l = best_r = None
+    for i in ordinals:
+        m, x0, y0 = page_map.masks[i]
+        ys, xs = np.nonzero(m)
+        if xs.size == 0:
+            continue
+        for sel, side in ((xs == xs.min(), "l"), (xs == xs.max(), "r")):
+            x = (x0 + float(xs[sel][0]) + 0.5) / s
+            y = (y0 + float(ys[sel].mean()) + 0.5) / s
+            if side == "l" and (best_l is None or x < best_l[0]):
+                best_l = [round(x, 1), round(y, 1)]
+            if side == "r" and (best_r is None or x > best_r[0]):
+                best_r = [round(x, 1), round(y, 1)]
+    return None if best_l is None or best_r is None else [best_l, best_r]
+
+
 # ── the kind: from the two end heads, by Sean's rule ───────────────────────────────────────────────────────────────────────────────────────
 #: what a `Q.SYSTEM_ARC` row's value (the ends' shape) says about the kind, when the ends were anchored on two different heads
 SHAPE_KIND = {
@@ -442,7 +465,7 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]])
 
 
 def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None,
-               by_height: bool = False) -> Dict[str, Any]:
+               by_height: bool = False, alt_ends: Optional[Dict[str, Sequence[float]]] = None) -> Dict[str, Any]:
     """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
     side = curve_side(detail.get("trace"), sp)
     xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
@@ -451,6 +474,20 @@ def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: floa
         return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
     left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height)
     right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height)
+    if alt_ends:
+        # ROADMAP 2.260b r2 (OMR_PAGE_CLAIMS): an end that bound NO head at the traced end is tried once more at the end of the curve's own page
+        # stroke; an end that bound a head (the OFF reading) is never moved
+        for side_, sgn_ in (("left", -1), ("right", +1)):
+            cur = left if side_ == "left" else right
+            alt = alt_ends.get(side_)
+            if alt is not None and cur.get("unbound") == "no_head_at_end":
+                got = bind_end(float(alt[0]), float(alt[1]), sgn_, heads, sp, side, usable, by_height)
+                if got.get("head") is not None:
+                    got["via_stroke_end"] = True
+                    if side_ == "left":
+                        left = got
+                    else:
+                        right = got
     if left.get("head") is not None and left.get("head") == right.get("head"):
         left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
     return {"left": left, "right": right, "side": side}

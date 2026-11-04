@@ -850,9 +850,9 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             cut_right = (float(cb[2]) - bx1) <= CUT_EDGE_SPACES * sp
             # ROADMAP 2.258 (OMR_ARC_ONE_CURVE): the detector often boxes only PART of an arc; the trace is the arc, so it follows the stroke
             # as far as it runs (`_follow` stops at a gap or a steep tail) -- the extent the cut already had, for every end
-            one_ = _arc_claim_one_curve()
-            x_min = max(sx0, bx0 - (CUT_EXTEND_SPACES if (cut_left or one_) else FREE_EXTEND_SPACES) * sp)
-            x_max = min(sx1, bx1 + (CUT_EXTEND_SPACES if (cut_right or one_) else FREE_EXTEND_SPACES) * sp)
+            # (ROADMAP 2.260b r2: the trace keeps the box rule; the STROKE's own extent is read from the page map below, `stroke_*_page`)
+            x_min = max(sx0, bx0 - (CUT_EXTEND_SPACES if cut_left else FREE_EXTEND_SPACES) * sp)
+            x_max = min(sx1, bx1 + (CUT_EXTEND_SPACES if cut_right else FREE_EXTEND_SPACES) * sp)
             t = trace_arc(ink, p["box"], sp, x_min=x_min, x_max=x_max, raw=raw)
             if t is not None and t["points"] and on_a_staff_line(
                     {x: r for x, r in t["points"].items() if bx0 <= x <= bx1}, line_ys, sp):
@@ -953,6 +953,9 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
                 from . import arc_claim as _ac2
                 tr_all = {int(x): (float(a), float(b)) for x, (a, b) in pts.items()}
                 detail["page_strokes"] = [[i, sh] for i, sh in _ac2.page_strokes_along(page_map, tr_all, sp_staff)]
+                ext = _ac2.page_stroke_extent(page_map, [i for i, _sh in detail["page_strokes"]])
+                if ext is not None:
+                    detail["stroke_left_page"], detail["stroke_right_page"] = ext
                 detail["piece_strokes"] = {m["piece"]["glyph"].to_key(): [i for i, _sh in _ac2.page_strokes_along(
                     page_map, {int(x): (float(a), float(b)) for x, (a, b) in m["points"].items()}, sp_staff)] for m in members}
             from . import arc_claim as _arc_claim
