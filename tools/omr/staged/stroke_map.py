@@ -1023,7 +1023,8 @@ def _merge_clefs(pieces: List[Tuple[str, np.ndarray, int, int]], sp: float, ink:
     for (box, fam) in clef_boxes:
         rx0, ry0, rx1, ry1 = clef_region(box, fam, sp)
         fits = [pi for pi, (_k, m, x0, y0) in enumerate(pieces)
-                if pi not in used and not (others and _inside_share(m, x0, y0, others) >= 0.5) and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5]
+                if pi not in used and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5
+                and not (others and _inside_share(m, x0, y0, others) >= 0.5)]      # ROADMAP 2.262 r2: the cheap region test first (pure predicates, same set)
         seed = [pi for pi in fits if _inside_share(pieces[pi][1], pieces[pi][2], pieces[pi][3], [box[:4]]) >= 0.5]
         if not seed:
             continue
@@ -1185,12 +1186,14 @@ def _cut_touching_all(out: List[Tuple[str, np.ndarray, int, int]], joins: List[T
         grown = cv2.dilate(np.pad(accm, 1).astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)   # frame (y0-1, x0-1)
         best = (0, -1)
         for j, (_kj, mj, xj, yj) in enumerate(out):
-            if j == i or j in cuts or _inside_share(mj, xj, yj, acc_rects) < 0.5:
+            if j == i or j in cuts:
                 continue
             gx0, gy0 = x0 - 1, y0 - 1
             ox0, oy0 = max(gx0, xj), max(gy0, yj)
             ox1, oy1 = min(gx0 + grown.shape[1], xj + mj.shape[1]), min(gy0 + grown.shape[0], yj + mj.shape[0])
             if ox1 <= ox0 or oy1 <= oy0:
+                continue
+            if _inside_share(mj, xj, yj, acc_rects) < 0.5:      # ROADMAP 2.262 r2: after the bounding-box overlap (pure predicates, same `continue` set)
                 continue
             n = int((grown[oy0 - gy0:oy1 - gy0, ox0 - gx0:ox1 - gx0] & mj[oy0 - yj:oy1 - yj, ox0 - xj:ox1 - xj]).sum())
             if n > best[0]:

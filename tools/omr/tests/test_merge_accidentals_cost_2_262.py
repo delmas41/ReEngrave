@@ -31,3 +31,18 @@ def test_result_unchanged_by_the_order():
     accs = [((120.0, 80.0, 124.0, 84.0), "accidentalflat")]
     out, joins, parts = SM.merge_accidentals(pieces, [], 8.0, accs, exclude, {})
     assert len(out) == len(pieces) and not parts
+
+
+def test_merge_clefs_far_pieces_never_reach_the_others_scan(monkeypatch):
+    calls = []
+    real = SM._inside_share
+
+    def counting(m, x0, y0, rects):
+        calls.append(len(rects))
+        return real(m, x0, y0, rects)
+    monkeypatch.setattr(SM, "_inside_share", counting)
+    pieces = _pieces(2000)
+    others = [(5000.0 + 10 * i, 5000.0, 5004.0 + 10 * i, 5004.0) for i in range(500)]
+    clefs = [((120.0, 120.0, 124.0, 124.0), "G")] * 5
+    SM._merge_clefs(pieces, 8.0, np.zeros((1, 1), bool), clefs, {}, others)
+    assert len(calls) < 200, len(calls)
