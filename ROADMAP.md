@@ -17,7 +17,35 @@ re-enter.
 
 ---
 
-## START HERE — after 2026-11-03 evening (single day manager; main ≥ the commit naming this block)
+## START HERE — after 2026-11-04 (single day manager; main ≥ the commit naming this block)
+
+Read FIRST. The 11-03 evening block below holds the direction (page ledger, "read once, claimed once") and how the days run; the 11-03 earlier block holds the open 2.252/2.254/2.255 items.
+
+**Overnight 20261103-night measured everything landed 11-03** (READMEs: `benchmarks/acceptance/overnight/20261103-night/` and `.../20261103-night-brahms-vs-20261029-night/` on branch `overnight-20261103`):
+- Litolff blue notes per page 140.6 -> 116.9.
+- Brahms ties/slurs not written per page 154.5 -> 100.6.
+- Brahms judged right 155 -> 165, right->wrong 0. Litolff judged right->wrong 3, traced: 2 to 2.254 hairpin reach (fixed by 2.261); 1, litolff_02, to `_two_note_reading` + tall-head split (still open, item 3 below).
+
+**Landed ON 2026-11-04** (Sean's tiles, judged right->wrong 0, fast tier + a real 2-page gather):
+- **2.260b M3** `OMR_PAGE_CLAIMS` (forces `OMR_BARLINE_COLUMN_FACT` + `OMR_PAGE_STROKES`, M1/M2 now ON): arcs bind to the one traced page curve; a tie is read from each head's local staff POSITION (Sean's ruling). Sean's r2 tiles re-scored 11 right, 1 unwritten, 0 wrong. Main 95f4d78ab.
+- **2.261** the overnight regressions: `OMR_HAIRPIN_NOT_A_BEAM`, `OMR_WORD_RETRY_SPARES_HEADS`, `OMR_CLEF_CARRY_STRONG_STOP`. Tiles 12/12. Main a15a52cf9.
+- **2.256b** `OMR_KEY_OBJECT_COUNT`: the key object counts flat STEMS at the fixed slot positions (scan damage breaks or fuses whole flats). Tiles 12/12 ("tiles 6 and 10 have no accidentals, all the others have 3 flats"). See the 2.256b row for the landing commit.
+
+**NEXT, in order** (from the census by deciding rule of both plates' 11-03 records; re-census on the next overnight before opening a lane):
+1. **FIRST, before any whole-movement overnight: the page-map cost.** `page_strokes.gather_page_strokes` (M2, ON since M3) added ~873 s to Brahms p5's gather (419-501 s -> 1311/1418 s), +87 s on p0, peak RSS +0.2 GB. The isolated measure was 4-7 s per page, so something on p5 is pathological. Untraced. Until it is fixed, a whole-movement run sets `OMR_PAGE_CLAIMS=0` (FINDINGS page-ledger-2026-11, "COST").
+2. **M4: one beam reader on the page map.** Stem-tip duration narrowing drives about 210 Brahms / 137 Litolff unwritten heads plus blue onsets; parked 2.259 is evidence. Then M5 barline membership by column, M6 heads/ledgers (plan-2026-11-03-page-ledger).
+3. **Position everywhere.** The tie test reads position only in the binder. `_two_note_reading` + `OMR_TALL_HEAD_SPLIT` still compare pitch (litolff_02 right->wrong; the 11 overnight tie->slur arcs). Sean's r2 tile 9 is unwritten: head positions 9.38 vs 10.12, a head-position measurement problem.
+4. **Brahms accidental_family: 422 blue.** The reader is never promoted (READ_MARGIN None). Measure the margin on Sean's judged accidental tiles before setting one.
+5. **Re-census `fill_part_key`** (was 529 Litolff / 139 Brahms) now that 2.256b is ON. About 20 staves per plate stay unreachable: no clef measured (about 10 Litolff), kind misread natural, transposing staves. Sharps and keys of more than 3 flats are untested. The Brahms p14 growth with 2.256b ON (notes +47, rests +38, ties +24 at 14/1/5, 14/1/7, 14/1/8) is unjudged and unexplained; give it a crop look.
+6. **Ranking hygiene** (each made a census row look bigger than it is): dot specks counted as dots-abstained; Brahms junk tie boxes; the Litolff p1 context page is counted in the ranking although `sample.json` says it never is.
+7. **Far heads:** 84 Litolff blue far heads (ledgers); the detector never boxes a ledger dyad's upper head (r2 tiles 2/9).
+8. **Small items:** the header C-clef locator needs the c-bar + bowls witness; C clef kind unread (26 Litolff notes); `rest_stroke_into_a_head`; "counted 5.5" where the rest split declines; Litolff p2/p4 beam-box wedges untested; the 2.252/2.254/2.255 items in the 11-03 earlier block.
+
+**Process lessons from 11-04:**
+- A `while pgrep -f "pytest -m not slow"` wait matches its own command and never ends. A lane sat "waiting" after its tests had passed. Wait on the log's summary line, or on the harness notification.
+- A lane's 2-page measure is not the frozen sample. 2.256b was landed on 2 pages per plate plus Sean's tiles; its frozen-sample measure comes from the next overnight.
+
+## START HERE — after 2026-11-03 evening (superseded by the block above for NEXT; its direction and how-the-day-runs stand) (single day manager; main ≥ the commit naming this block)
 
 Read FIRST. The block below it (same day, earlier manager) still holds the open 2.252/2.254/2.255 items.
 
