@@ -442,7 +442,15 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
     return out
 
 
-def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]]) -> List[Dict[str, Any]]:
+#: ROADMAP 2.260b r3 (rides `OMR_PAGE_CLAIMS`): a stem's free end stands for the extreme head only within one stem length of it (the engraved
+#: stem is 3.5 spaces from the head, Gould; measured on Litolff p10-11 + Brahms p0/p5, 2408 tips: the modal tip stands 3-3.5 sp from its head's
+#: centre, 172 at 4-4.5, 72 at 5-5.5, 89 at 6-7.5). A tip farther than this belongs to a head the detector never boxed (a ledger dyad's upper head:
+#: Litolff p10 staff 4 cell 9, tip 6.9 sp from the one head boxed, tile 2; staff 5 cell 8, 5.6 sp, tile 9): the tip then names no head and the
+#: end is unbound, never bound to the wrong member of the chord. NOT CONFIRMED beyond those pages; it only ever DECLINES a binding.
+TIP_MAX_SPACES = 4.5
+
+
+def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]], sp: float = 0.0) -> List[Dict[str, Any]]:
     """The free END of each stem box (page `x0, y0, x1, y1`) as a candidate position for the head at that end: `{key, cx, cy, w, h,
     tip: True}`. A stem joins the heads whose boxes touch it (x within a head width of the stem, y overlapping the stem's span +- half a
     head); its free end is the end AWAY from them, and the head it stands for is the extreme head on that side (an up-stem's tip stands
@@ -460,6 +468,8 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]])
         else:
             h = max(on, key=lambda t: t["cy"])
             ty = sy1
+        if sp > 0 and abs(ty - h["cy"]) > TIP_MAX_SPACES * sp:
+            continue            # a tip a stem length and more from its head stands for a head nobody boxed (`TIP_MAX_SPACES`)
         out.append({"key": h["key"], "cx": scx, "cy": ty, "w": h["w"], "h": h["h"], "cell": h.get("cell", 0), "tip": True})
     return out
 

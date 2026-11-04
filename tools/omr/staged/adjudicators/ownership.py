@@ -2397,6 +2397,16 @@ _ACC_NOT_AN_ACCIDENTAL = ("refused_not_an_accidental",
                           "head_belongs_to_a_nearer_staff")
 
 
+def _local_position(ev: Evidence, head_row: Any) -> Optional[float]:
+    """ROADMAP 2.260b r3: a head's staff position in half-steps from its own bar's top line, as the geometry reader measured it against the lines
+    of THAT bar (`Q.NOTEHEAD_STAFF_POSITION.value`, float; the line-cut or ink-centre placement where one was made). Used to ask whether two
+    heads stand at ONE position -- never to name a pitch (a far head's pitch stays its ledger reading, page-facts s1)."""
+    for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=head_row.subject):
+        if (p.detail or {}).get("rounded") is not None and isinstance(p.value, (int, float)):
+            return float(p.value)
+    return None
+
+
 def _head_step(ev: Evidence, head_row: Any) -> Tuple[Optional[int], str]:
     """`(half-step from the top line, how it was read)` or `(None, why not)`.
 
@@ -3032,7 +3042,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         k = (px1 - px0) / cw
         sx, sy, sw, sh = (float(x) for x in sv[:4])
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
-    tips = _arc_claim.stem_tips(heads, stems)
+    # ROADMAP 2.260b r3 (OMR_PAGE_CLAIMS): a tip more than a stem length from its head names no head (`arc_claim.TIP_MAX_SPACES`)
+    tips = _arc_claim.stem_tips(heads, stems, sp if _arc_claim.page_claims_enabled() else 0.0)
     end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default ON)
     if end_pitch and heads:
         # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
@@ -3069,6 +3080,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     hl, hr = by[lk], by[rk]
     between = _arc_claim.heads_between(hl, hr, heads, usable)
     cya, cyb = hl["cy"], hr["cy"]
+    ea = eb = None
     if end_pitch:
         # ROADMAP 2.250: read the end note's step the way the two-note rule does (the head EXTENT where the box is a piece or a tall
         # union), not the box centre -- the value existed (`_head_extent`) and this binder never read it. The same extent centre
@@ -3098,6 +3110,16 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         sa, src_a = _head_step(ev, rows[lk])
         sb, src_b = _head_step(ev, rows[rk])
     from ..arcs_system import SAME_POSITION_SPACES
+    # ROADMAP 2.260b r3 (OMR_PAGE_CLAIMS; Sean 2026-11-03, page-facts s1: *same pitch is read from POSITION*): where a step is unread, the two
+    # heads' positions are compared as each was MEASURED AGAINST ITS OWN BAR'S STAFF (`Q.NOTEHEAD_STAFF_POSITION`, the cell's frame: local
+    # to the head's x, tilt and all), never as two box centres in page pixels -- a box drawn tall or short moves its centre by half a space
+    # (Brahms p0 staff 5, bars 1-2: boxes 0.57 sp apart, positions 10.09 and 10.10, a tie written as a slur). Fused ends and extents keep their own measure.
+    local_dy = None
+    if _arc_claim.page_claims_enabled() and ea is None and eb is None and not b["left"].get("tall") and not b["right"].get("tall"):
+        pa_, pb_ = _local_position(ev, rows[lk]), _local_position(ev, rows[rk])
+        if pa_ is not None and pb_ is not None:
+            local_dy = abs(pa_ - pb_) / 2.0          # half-steps -> spaces
+            b["local_dy_spaces"] = round(local_dy, 3)
 
     def _relation(sa_, sb_, ya, yb, sra, srb):
         dy_ = abs(ya - yb) / sp
@@ -3110,6 +3132,9 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
             # ⚠️ A STEP UNREAD (a far head whose ledgers the reader could not count) is not a POSITION unread: whether two heads of ONE
             # staff sit at one position is read off their boxes, which is what `adjudicate_tie_pair` has always paired on (page-facts s1:
             # the empty interval between one position and two is 0.168 vs 0.435 spaces). Inside the interval it stays unread.
+            if local_dy is not None:
+                return (("same" if local_dy <= SAME_POSITION_SPACES else "different" if local_dy >= BIND_DIFFERENT_POSITION_SPACES
+                         else "unread"), "positions_local", local_dy)
             return ("same" if near_ else "different" if dy_ >= BIND_DIFFERENT_POSITION_SPACES else "unread"), "boxes_only", dy_
         if sa_ == sb_:
             return ("same" if near_ else "conflict"), None, dy_
