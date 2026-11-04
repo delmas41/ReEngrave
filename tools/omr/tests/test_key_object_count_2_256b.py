@@ -1,4 +1,4 @@
-"""ROADMAP 2.256b: the key object counts the flat STEMS the print kept -- flag `OMR_KEY_OBJECT_COUNT` (default OFF).
+"""ROADMAP 2.256b: the key object counts the flat STEMS the print kept -- flag `OMR_KEY_OBJECT_COUNT` (default ON, deny-list).
 
 CAUSE (benchmarks/key-header-2026-11/FINDINGS.md 2.256b): a crushed scan breaks a flat into a stem and a bowl (or fuses two or three), so the
 whole-flat piece test of `key_object.staff_run` counts 1-2 of the three printed flats. Each control can fail: the broken flats are counted 2 slots
@@ -87,11 +87,13 @@ class FlatStems(unittest.TestCase):
         self.assertEqual(len(run(img)["pieces"]), len(run(img, on=False)["pieces"]))       # the stem reader adds nothing to what the pieces read
         self.assertNotIn("from_stems", run(img))
 
-    def test_the_flag_defaults_off(self):
+    def test_the_flag_defaults_on_and_denies(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(KO.ENV_COUNT, None)
-            self.assertFalse(KO.count_enabled())
-            self.assertLess(len(KO.staff_run(raster(), LINES, SP, X_START, X_START + 11 * SP, (), clef="treble")["pieces"]), 3)
+            self.assertTrue(KO.count_enabled())
+        for v in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {KO.ENV_COUNT: v}):
+                self.assertFalse(KO.count_enabled())
 
     def test_the_stem_pieces_never_lower_a_count(self):
         img = raster(slots=(1, 2, 3), broken=())             # whole flats: the piece chain already counts 3

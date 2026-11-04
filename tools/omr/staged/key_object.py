@@ -55,12 +55,12 @@ COUNT_MIN_STAVES = 2
 PITCH_SPACES = (0.8, 1.7)
 
 
-#: ROADMAP 2.256b: the flat STEMS of the header counted off the ink, behind `OMR_KEY_OBJECT_COUNT` (default OFF)
+#: ROADMAP 2.256b: the flat STEMS of the header counted off the ink, behind `OMR_KEY_OBJECT_COUNT` (default ON, deny-list: 0/false/no/off turns it off; Sean 2026-11-04 "land on")
 ENV_COUNT = "OMR_KEY_OBJECT_COUNT"
 
 
 def count_enabled() -> bool:
-    return os.environ.get(ENV_COUNT, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV_COUNT, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: a flat's stem is a thin vertical stroke: its longest vertical ink run (spaces) and its width (spaces). Measured on Litolff p2-p16
