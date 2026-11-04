@@ -468,9 +468,10 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]],
         else:
             h = max(on, key=lambda t: t["cy"])
             ty = sy1
-        if sp > 0 and abs(ty - h["cy"]) > TIP_MAX_SPACES * sp:
-            continue            # a tip a stem length and more from its head stands for a head nobody boxed (`TIP_MAX_SPACES`)
-        out.append({"key": h["key"], "cx": scx, "cy": ty, "w": h["w"], "h": h["h"], "cell": h.get("cell", 0), "tip": True})
+        far = sp > 0 and abs(ty - h["cy"]) > TIP_MAX_SPACES * sp
+        # a tip a stem length and more from its head may stand for a head nobody boxed (`TIP_MAX_SPACES`): kept as a candidate (a TIE through it
+        # is the OFF reading, 2.260b r3 measured one such tie right) but marked, and a far tip never supports "different" (see `_page_binding`)
+        out.append({"key": h["key"], "cx": scx, "cy": ty, "w": h["w"], "h": h["h"], "cell": h.get("cell", 0), "tip": True, "far": far})
     return out
 
 

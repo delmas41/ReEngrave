@@ -3044,6 +3044,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         stems.append((px0 + (sx - cx) * k, py0 + (sy - cy) * k, px0 + (sx + sw - cx) * k, py0 + (sy + sh - cy) * k))
     # ROADMAP 2.260b r3 (OMR_PAGE_CLAIMS): a tip more than a stem length from its head names no head (`arc_claim.TIP_MAX_SPACES`)
     tips = _arc_claim.stem_tips(heads, stems, sp if _arc_claim.page_claims_enabled() else 0.0)
+    far_tip_heads = {t["key"] for t in tips if t.get("far")}
     end_pitch = _arc_claim.end_pitch_enabled()          # ROADMAP 2.250 (OMR_BIND_END_PITCH, default ON)
     if end_pitch and heads:
         # a box taller than a head is two heads fused (the two-note rule's `half`): marked so the end binder stands it at a head-sized end
@@ -3183,6 +3184,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         # reads a tie). No kind: the evidence for "different" is an end a tie does not use. (Same-pitch bindings through a tip stand:
         # tile 5's lower tie binds its stop head that way and is right.)
         b["why"] = "tie_box_end_only_at_a_stem_tip"
+    elif relation == "different" and any(b[s_].get("via_stem_tip") and b[s_].get("head") in far_tip_heads for s_ in ("left", "right")):
+        # ROADMAP 2.260b r3: an end bound through a stem tip a stem length and more from its head stands over a head the detector never boxed
+        # (tiles 2, 9): the other chord member's position says nothing about THIS arc's end. No kind; the OFF path decides.
+        b["why"] = "far_stem_tip_end"
     elif relation == "different":
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":
