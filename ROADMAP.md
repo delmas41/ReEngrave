@@ -29,10 +29,10 @@ Read FIRST. The 11-03 evening block below holds the direction (page ledger, "rea
 **Landed ON 2026-11-04** (Sean's tiles, judged right->wrong 0, fast tier + a real 2-page gather):
 - **2.260b M3** `OMR_PAGE_CLAIMS` (forces `OMR_BARLINE_COLUMN_FACT` + `OMR_PAGE_STROKES`, M1/M2 now ON): arcs bind to the one traced page curve; a tie is read from each head's local staff POSITION (Sean's ruling). Sean's r2 tiles re-scored 11 right, 1 unwritten, 0 wrong. Main 95f4d78ab.
 - **2.261** the overnight regressions: `OMR_HAIRPIN_NOT_A_BEAM`, `OMR_WORD_RETRY_SPARES_HEADS`, `OMR_CLEF_CARRY_STRONG_STOP`. Tiles 12/12. Main a15a52cf9.
-- **2.256b** `OMR_KEY_OBJECT_COUNT`: the key object counts flat STEMS at the fixed slot positions (scan damage breaks or fuses whole flats). Tiles 12/12 ("tiles 6 and 10 have no accidentals, all the others have 3 flats"). See the 2.256b row for the landing commit.
+- **2.256b** `OMR_KEY_OBJECT_COUNT`: the key object counts flat STEMS at the fixed slot positions (scan damage breaks or fuses whole flats). Tiles 12/12 ("tiles 6 and 10 have no accidentals, all the others have 3 flats"). Main 57560c9fd (gate: fast tier 9915 passed on the merged tree + the lane's pre-merge 2-page gathers; post-merge re-gather skipped on the manager's call).
 
 **NEXT, in order** (from the census by deciding rule of both plates' 11-03 records; re-census on the next overnight before opening a lane):
-1. **FIRST, before any whole-movement overnight: the page-map cost.** `page_strokes.gather_page_strokes` (M2, ON since M3) added ~873 s to Brahms p5's gather (419-501 s -> 1311/1418 s), +87 s on p0, peak RSS +0.2 GB. The isolated measure was 4-7 s per page, so something on p5 is pathological. Untraced. Until it is fixed, a whole-movement run sets `OMR_PAGE_CLAIMS=0` (FINDINGS page-ledger-2026-11, "COST").
+1. **FIRST, before any whole-movement overnight: the page-map cost** (claimed as **2.262** by another session, profiling in the `claude-md-review` worktree; read its row/branch before starting). `page_strokes.gather_page_strokes` (M2, ON since M3) added ~873 s to Brahms p5's gather (419-501 s -> 1311/1418 s), +87 s on p0, peak RSS +0.2 GB. The isolated measure was 4-7 s per page, so something on p5 is pathological. Untraced. Until it is fixed, a whole-movement run sets `OMR_PAGE_CLAIMS=0` (FINDINGS page-ledger-2026-11, "COST").
 2. **M4: one beam reader on the page map.** Stem-tip duration narrowing drives about 210 Brahms / 137 Litolff unwritten heads plus blue onsets; parked 2.259 is evidence. Then M5 barline membership by column, M6 heads/ledgers (plan-2026-11-03-page-ledger).
 3. **Position everywhere.** The tie test reads position only in the binder. `_two_note_reading` + `OMR_TALL_HEAD_SPLIT` still compare pitch (litolff_02 right->wrong; the 11 overnight tie->slur arcs). Sean's r2 tile 9 is unwritten: head positions 9.38 vs 10.12, a head-position measurement problem.
 4. **Brahms accidental_family: 422 blue.** The reader is never promoted (READ_MARGIN None). Measure the margin on Sean's judged accidental tiles before setting one.
@@ -43,6 +43,8 @@ Read FIRST. The 11-03 evening block below holds the direction (page ledger, "rea
 
 **Process lessons from 11-04:**
 - A `while pgrep -f "pytest -m not slow"` wait matches its own command and never ends. A lane sat "waiting" after its tests had passed. Wait on the log's summary line, or on the harness notification.
+- Stopping an agent does not stop its processes: a killed `lane_report` left `library/_shared-records/.record-load.lock`, and every later run waited on it forever. After stopping an agent, check `ps` for its processes and remove a lock only after confirming its owner is dead.
+- Don't re-gate a clean merge (Sean: "token and time waste"): fast tier on the merged tree + the lane's own gathers + tiles is the gate; re-gather only if the merge touched the lane's code; a landing past 1 h = stop and decide.
 - A lane's 2-page measure is not the frozen sample. 2.256b was landed on 2 pages per plate plus Sean's tiles; its frozen-sample measure comes from the next overnight.
 
 ## START HERE — after 2026-11-03 evening (superseded by the block above for NEXT; its direction and how-the-day-runs stand) (single day manager; main ≥ the commit naming this block)
