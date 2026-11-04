@@ -6163,7 +6163,8 @@ WHOLE_REST_HANG_H_SP = (0.35, 1.0)
 
 
 def _whole_rest_own_staff_on() -> bool:
-    return os.environ.get(WHOLE_REST_OWN_STAFF_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    # ROADMAP 2.257 r2 (Sean 2026-11-03, 12/12 tiles, "Trace then land"): default ON, deny-list ("0"/"false"/"no"/"off" turns it off)
+    return os.environ.get(WHOLE_REST_OWN_STAFF_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _rest_hangs_from_own_line(ev: Evidence, box_rows) -> Tuple[bool, Dict[str, Any], List[str]]:
@@ -6405,7 +6406,7 @@ def _rest_ruling(ev: Evidence, rest_rows) -> Ruling:
                 HALF_REST_STEP + REST_SLOT_TOLERANCE_HALF, 3),
             "frame": "bottom line 0, one step per half space, up positive"}
 
-    # ROADMAP 2.257 (flag OMR_WHOLE_REST_OWN_STAFF, default OFF): a whole rest HANGS from a staff line -- any of its own staff's
+    # ROADMAP 2.257 (flag OMR_WHOLE_REST_OWN_STAFF, default ON since 2026-11-03): a whole rest HANGS from a staff line -- any of its own staff's
     # five lines, not only the fourth -- and a half rest STANDS on one. The centre-step slot above tests ONE absolute height
     # (the 4th line), so a Litolff whole rest that hangs from another line (alternate bars of one staff, a displaced voice)
     # lands on 'neither' and is held out. The ink's own edge against its own staff's lines decides, never the class alone:
@@ -10307,7 +10308,7 @@ def _vertically_separated(ev: Evidence, cell: Subject, stream_a, stream_b
                        "b_range": [round(rb[0], 3), round(rb[1], 3)]}
 
 
-#: ROADMAP 2.257 round 2 (flag OMR_WHOLE_REST_OWN_STAFF, default OFF). Sean 2026-11-03, 2.257 tiles 1/2/6/9/10: a whole rest
+#: ROADMAP 2.257 round 2 (flag OMR_WHOLE_REST_OWN_STAFF, default ON since 2026-11-03). Sean 2026-11-03, 2.257 tiles 1/2/6/9/10: a whole rest
 #: hanging off the middle in a bar where the other voice has notes is "whole rest in second voice" (5/5); 2026-09-29: a rest
 #: above the middle belongs to the upper voice, one below to the lower (`REST_VOICE_DISPLACEMENT_MIN_STEPS`).
 #: CAUSE of the red bars: the stream split below needs an up-stem AND a down-stem note, so a bar whose notes all stand one

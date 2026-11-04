@@ -5939,7 +5939,8 @@ WHOLE_REST_OWN_STAFF_ENV = "OMR_WHOLE_REST_OWN_STAFF"      # == rhythm.WHOLE_RES
 
 
 def _whole_rest_own_staff_on() -> bool:
-    return os.environ.get(WHOLE_REST_OWN_STAFF_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    # ROADMAP 2.257 r2 (Sean 2026-11-03, 12/12 tiles, "Trace then land"): default ON, deny-list ("0"/"false"/"no"/"off" turns it off)
+    return os.environ.get(WHOLE_REST_OWN_STAFF_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _bar_holds_out(events: List[Dict[str, Any]],
