@@ -932,9 +932,13 @@ def merge_accidentals(pieces: List[Tuple[str, np.ndarray, int, int]], joins: Lis
         if size is None:
             continue
         rx0, ry0, rx1, ry1 = sized_region(box, size, sp)
+        # ROADMAP 2.262: the cheap tests (unused, wholly inside the glyph-sized region) run BEFORE the exclude-box test, which scans every exclude rect.
+        # All three are pure predicates joined by `and`, so the set is unchanged; on the PAGE map (thousands of pieces x hundreds of boxes x thousands of
+        # exclude rects) the old order was 1.8 M `_inside_share` calls, ~1,380 s on Brahms p5.
         fits = [pi for pi, (_k, m, x0, y0) in enumerate(pieces)
-                if pi not in used and not (exclude and _inside_share(m, x0, y0, exclude) >= 0.5)
-                and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5]
+                if pi not in used
+                and x0 >= rx0 - 0.5 and y0 >= ry0 - 0.5 and x0 + m.shape[1] <= rx1 + 0.5 and y0 + m.shape[0] <= ry1 + 0.5
+                and not (exclude and _inside_share(m, x0, y0, exclude) >= 0.5)]
         seed = [pi for pi in fits if _inside_share(pieces[pi][1], pieces[pi][2], pieces[pi][3], [box[:4]]) >= 0.5]
         if not seed:
             continue
