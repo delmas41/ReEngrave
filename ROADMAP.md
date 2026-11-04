@@ -17,7 +17,33 @@ re-enter.
 
 ---
 
-## START HERE — after 2026-11-03 (day manager, ties / hairpins / ledger lanes; main ≥ the commit naming this block)
+## START HERE — after 2026-11-03 evening (single day manager; main ≥ the commit naming this block)
+
+Read FIRST. The block below it (same day, earlier manager) still holds the open 2.252/2.254/2.255 items.
+
+**How today ran (Sean):** ONE manager session, Sonnet lanes only, <= 3 agents (one extra slot granted for 2.260), no big runs by day. Lane reports come back as text: a hook refuses FINDINGS/report files from subagents, so the MANAGER files FINDINGS. A user interrupt likely stopped two running agents (2.258, 2.257 r2 landing) with no notice -- after any interrupt, status-check every agent; lanes push at every milestone (memory: interrupt-stops-agents).
+
+**Overnight 20261103-night STARTED** by an agent at Sean's request (branch `overnight-20261103`, chain script there): both movements on main at the time, compared with 20261031-night (Litolff) and 20261029-night (Brahms -- the last whole Brahms record). FIRST NEXT: read its README; this is the first whole-movement measure of everything below and the first Brahms since 10-29.
+
+**Landed ON today** (all with Sean's tiles, judged right->wrong 0, fast tier + a real 2-page gather):
+- **2.249** memory (record format 2; whole Brahms 12.3 GB peak, was 55.9).
+- **2.252 r6** `OMR_HEAD_HOLE_POSITION` (ties; see the block below).
+- **2.256** `OMR_KEY_HEADER_INK`: the key read from GATHER's own header-ink count (crushed Litolff flats). Tiles 11/12.
+- **2.257** `OMR_C_CLEF_READ`: C clef no longer vetoed by a clef-sized head box; a far clef box no longer votes on the header (a tenor clef had been filled bass). Clefs all right.
+- **2.257 r2** `OMR_WHOLE_REST_OWN_STAFF`: a displaced whole rest is its own voice, sized to the bar (meter in force). Tiles 12/12.
+- **2.260a M0** `OMR_STROKE_CUT_FACT`: a stroke cut by the cell edge is cannot-tell, never refused. Tiles 7/7. **M1** `OMR_BARLINE_COLUMN_FACT` and **M2** `OMR_PAGE_STROKES` merged OFF (nothing reads them until M3).
+
+**How the day's work was chosen (keep doing this):** census a flat count BY ITS DECIDING RULE before building. 74% of Litolff blue notes (932/1,265) were unread HEADERS (key/clef) filled by INFER, not note doubts -- that census picked 2.256/2.257. The same census of 'ties and slurs not written' (577) found the ranking row counts refusal reasons, not arcs missing (it overstates) and that 190 slurs fall to the box path because the binder abstains.
+
+**The direction Sean set (2.260, docs/plan-2026-11-03-page-ledger.md):** "Read once. Claimed once." The PAGE record is the one ledger; a cell is a view (detector zoom) + a bar index; go into a cell only for fine detail and write back. Audit: no stage after GATHER reads pixels -- GATHER files cell-framed records and later stages re-judge cut pieces. Migration M0..M6, each its own flag.
+
+**NEXT, in order:**
+1. **2.260b M3 round 3** (lane-2.260b-m3-claims f95ef29ea, `OMR_PAGE_CLAIMS` OFF; FINDINGS 2.260b): Sean's r2 tiles 9/12 -- tiles 2, 3, 9 are same-note ties written as slurs (tile 2 right->wrong vs OFF). Sean's ruling (page-facts §1): a tie is read from POSITION, not pitch. Round 3: the tie test compares the two end heads' staff positions measured locally; bind the ledger dyad's upper head; trace tile 3's slur (not from the binder). Gates: Brahms p0 hand truth unchanged, judged 0, r2 tiles 2/3/9 read as ties. Then land M3 (turns on M1+M2).
+2. **M4** one beam reader on the page map (replaces five cell reads; parked 2.259 is its evidence), then M5 barline membership by column, M6 heads/ledgers.
+3. From the overnight README: re-run the blue-note / unwritten census on BOTH plates' fresh records and pick by size.
+4. Small open items: the header C-clef locator accepts any symmetric 3.3-4.7 sp ink (needs the c-bar + bowls witness; ~1 case, 2.251 FINDINGS correction); 36 Litolff staves whose key object counts 1-2 flats stay blue (2.256 r2); `rest_stroke_into_a_head` refuses an eighth rest beside a head (2.257 r2 FINDINGS); where the rest split declines, the whole rest counts 4 beats ("counted 5.5"); 2.259 beam patch parked (folded into M4).
+
+## START HERE — after 2026-11-03 (earlier manager, superseded by the block above for direction; its open items stand) (day manager, ties / hairpins / ledger lanes; main ≥ the commit naming this block)
 
 Read FIRST. Other lanes of 11-02/03 (2.251 clefs, 2.256/2.257) keep their own rows; this block covers 2.252, 2.254, 2.255 only.
 

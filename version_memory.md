@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-03 -- evening manager session end: 2.256/2.257/2.257 r2/2.260a landed; 2.260 page-ledger plan; 2.260b M3 r2 not landed; overnight 20261103-night started
+
+Blue-note census (74% unread headers) -> 2.256 key + 2.257 C clef landed ON; 2.257 r2 whole rest own voice landed ON; 2.259 beams parked into 2.260; 2.260 audit + docs/plan-2026-11-03-page-ledger.md; 2.260a M0 ON, M1/M2 merged OFF; 2.258 folded into 2.260b (M3) -- r2 tiles 9/12, not landed; Sean's ruling: a tie is read from position, not pitch (page-facts §1); page-facts cross-staff ownership updated (page owner first). ROADMAP START HERE 2026-11-03 evening has the next steps.
+
 ## 2026-11-03 -- ROADMAP 2.260a landed: M0 OMR_STROKE_CUT_FACT default ON (deny-list); M1 OMR_BARLINE_COLUMN_FACT and M2 OMR_PAGE_STROKES merged OFF
 
 STAGED GATHER/ADJUDICATE. Sean's 7 blind tiles all right (controls unchanged, tile 3 quarter->eighth, three gained eighths), "Yes". `stroke_map.stroke_cut_fact_enabled()` and `rhythm.stroke_cut_by_cell` now deny-list (0/false/no/off disables): GATHER files the cell-crop edges a stroke touches (`cut`), a beam cut at the cell top/bottom is no longer refused too_thin and the missing level says cannot-tell (`beam_cut_kept`). M1 refits each barline column's tilted line (`Q.BARLINE_COLUMN_FIT`), M2 files a page stroke map (`Q.PAGE_STROKE`); both default OFF and read by nothing until M3. Answers: benchmarks/page-ledger-2026-11/answers-m0.json; tiles out/print/2.260a-m0-tiles/.
