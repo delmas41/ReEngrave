@@ -1,0 +1,32 @@
+  gather litolff off pages [6, 14] ...
+  gather litolff on pages [6, 14] ...
+  gather brahms off pages [4, 5] ...
+  gather brahms on pages [4, 5] ...
+LANE REPORT  OMR_CLEF_CARRY_STRONG_STOP (OFF=0 ON=1)  --from gather
+  OMR_CLEF_CARRY_STRONG_STOP: read in staged/clef_pagewide.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: benchmarks/hairpin-reach-2026-11/sample-261-fix3.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+litolff  pages [6, 14]  (1406 notes+rests OFF, 1434 ON, 1406 paired)
+  file:   notes +28 | accidentals +5 | flags +1 | beams +14 | blue marks +12 | words -18
+  red bars 0 -> 0 | notes not written 763 -> 735
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (165 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 0 (at another id than asked 0) | by id key, no position 344 | position but no mark here 8
+  NOT JUDGED: 66 changed places no tile of Sean's covers (4 are covered; 8 have no page place): accidental 5, beam 13, blue 11, flag 1, note 26, words 10 -> unjudged.txt
+
+brahms  pages [4, 5]  (2129 notes+rests OFF, 2129 ON, 2129 paired)
+  file:   accidentals -3 | pitches ~3 | blue marks -1
+  red bars 0 -> 0 | notes not written 1122 -> 1122
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (175 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 2 (at another id than asked 2) | by id key, no position 349 | position but no mark here 2
+  NOT JUDGED: 7 changed places no tile of Sean's covers (0 are covered; 0 have no page place): accidental 3, blue 1, pitch 3 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 2546 s

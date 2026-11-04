@@ -16085,17 +16085,23 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
                 _count("word:direction_word:inside_a_staff")       # milestone 4's, not claimed here
                 continue
+            from . import hairpin_reach as _hairpin_reach
             area, extra = [float(v) for v in bb], {}
             if d.get("category") == "tempo":
                 # ROADMAP 2.221: a tempo word's metronome mark is its own ink -- the note glyph the detector boxed right of it and the
                 # `= 108` after that (Litolff p1: the note was written as a half note). Claimed whole; written as nothing.
-                mm = CL.metronome_mark(bb, [b for b, _n in _page_boxes(s, lambda n: n.startswith(CL.TEMPO_NOTE_PREFIXES))], binary, _sp(s))
+                # ROADMAP 2.261 fix 2 (flag OMR_WORD_RETRY_SPARES_HEADS): a tempo word read ONLY on the through-line retry, with no `= n` read,
+                # takes no note glyph as its metronome mark -- Litolff p6 'faster' (an f + four beamed heads) claimed the first head AND the
+                # ink to its right as `= 108`, which refused the head `claimed_by:word`.
+                _no_mm = (_hairpin_reach.word_retry_spares_heads_enabled() and _hairpin_reach.is_retry_only_reading(d.get("winning_reader"))
+                          and not d.get("metronome"))
+                mm = None if _no_mm else CL.metronome_mark(
+                    bb, [b for b, _n in _page_boxes(s, lambda n: n.startswith(CL.TEMPO_NOTE_PREFIXES))], binary, _sp(s))
                 if mm is not None:
                     area, extra = mm["box"], {"metronome_note": mm["note_box"], "word_box": [float(v) for v in bb]}
                     _count("word:direction_word:metronome_mark")
                 if d.get("metronome"):
                     extra["metronome"] = d["metronome"]
-            from . import hairpin_reach as _hairpin_reach
             ib = d.get("ink_boxes")
             if _hairpin_reach.enabled() and isinstance(ib, list) and area == [float(v) for v in bb]:
                 # ROADMAP 2.254 r3: the reader cut the word's box to its own ink round a hairpin it holds (`hairpin_reach.word_ink_boxes`);
