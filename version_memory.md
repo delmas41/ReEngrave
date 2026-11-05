@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-04 -- ROADMAP 2.266b landed ON: OMR_ACCIDENTAL_READ_ONCE default ON (deny-list)
+STAGED EXPORT `export.one_ink_guess_of`: an accidental whose family reading names a kind is read once; the 2.186 one-ink guess is never consulted for that ink and no longer re-flags it. Sean answered the 12 tiles "1-3 natural 4 sharp 5-9 natural 10 flat 11-12natural", 12/12 matching what is written (`out/print/2.266b-read-once/answers.json`, judged index rebuilt: 2229 tiles). Frozen sample: blue -264 Brahms / -49 Litolff, nothing else changed, judged right->wrong 0. Env deny-list "0"/"false"/"no"/"off"; pin test updated (default ON, explicit 0 OFF). FINDINGS omr-one-ink-one-mark-2026-10 "2.266b".
+
 ## 2026-11-04 -- ROADMAP 2.263b landed ON: OMR_NATURAL_READ default ON (deny-list)
 STAGED EXPORT `accidental_family.reads`: a natural read from its two staggered stems at stagger margin >= 0.25 is written READ (plain), not GUESSED (blue); flats, sharps and `unclear` unchanged; the 2.186 one-ink guess keeps its own GUESSED. Sean answered the 12 tiles "All 12 are naturals" (`out/print/2.263b-natural-read/answers.json`, judged index rebuilt: 2205 tiles). Frozen sample: blue -62 Brahms / -21 Litolff, nothing else changed, judged right->wrong 0. Env deny-list "0"/"false"/"no"/"off"; pin test updated (default ON, explicit 0 OFF). Gate: fast tier 9922 passed + 2 fixture/doc-cell fixes re-run green (full run: 2 failed, both fixed; 12 skipped, 2 xfailed).
 

@@ -1,6 +1,6 @@
 {
- "n_items": 182,
- "n_tiles": 2217,
+ "n_items": 183,
+ "n_tiles": 2229,
  "tiles": [
   {
    "answer": "right",
@@ -29093,6 +29093,414 @@
    },
    "question_kind": "duration",
    "subject": "glyph/18/0/3/0/22",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    4415.7225,
+    3224.2425,
+    4440.7925,
+    3312.805
+   ],
+   "position": {
+    "cell": 7,
+    "page": 14,
+    "page_box": [
+     4415.7225,
+     3224.2425,
+     4440.7925,
+     3312.805
+    ],
+    "staff": 11,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/14/0/11/7/9",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": "accidental"
+  },
+  {
+   "answer": "flat sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    2329.9275,
+    740.9575,
+    2361.5625,
+    813.94
+   ],
+   "position": {
+    "cell": 4,
+    "page": 4,
+    "page_box": [
+     2329.9275,
+     740.9575,
+     2361.5625,
+     813.94
+    ],
+    "staff": 1,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/4/0/1/4/7",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1155.7575,
+    527.995,
+    1168.2,
+    585.955
+   ],
+   "position": {
+    "cell": 5,
+    "page": 4,
+    "page_box": [
+     1155.7575,
+     527.995,
+     1168.2,
+     585.955
+    ],
+    "staff": 1,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/4/0/1/5/2",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1997.985,
+    1225.3225,
+    2023.055,
+    1315.2475
+   ],
+   "position": {
+    "cell": 2,
+    "page": 19,
+    "page_box": [
+     1997.985,
+     1225.3225,
+     2023.055,
+     1315.2475
+    ],
+    "staff": 3,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/19/0/3/2/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    4412.5225,
+    4045.845,
+    4436.775,
+    4130.32
+   ],
+   "position": {
+    "cell": 7,
+    "page": 19,
+    "page_box": [
+     4412.5225,
+     4045.845,
+     4436.775,
+     4130.32
+    ],
+    "staff": 0,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/19/1/0/7/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1694.6225,
+    3090.61,
+    1708.325,
+    3153.1375
+   ],
+   "position": {
+    "cell": 7,
+    "page": 16,
+    "page_box": [
+     1694.6225,
+     3090.61,
+     1708.325,
+     3153.1375
+    ],
+    "staff": 7,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/16/1/7/7/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": "accidental"
+  },
+  {
+   "answer": "sharp sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1713.075,
+    2022.68,
+    1732.76,
+    2067.785
+   ],
+   "position": {
+    "cell": 8,
+    "page": 10,
+    "page_box": [
+     1713.075,
+     2022.68,
+     1732.76,
+     2067.785
+    ],
+    "staff": 0,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/10/1/0/8/11",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    2378.8,
+    1262.4425,
+    2391.715,
+    1310.795
+   ],
+   "position": {
+    "cell": 11,
+    "page": 6,
+    "page_box": [
+     2378.8,
+     1262.4425,
+     2391.715,
+     1310.795
+    ],
+    "staff": 6,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/6/0/6/11/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    4017.8740234375,
+    2760.57568359375,
+    4044.0419921875,
+    2849.4873046875
+   ],
+   "position": {
+    "cell": 5,
+    "page": 5,
+    "page_box": [
+     4017.8740234375,
+     2760.57568359375,
+     4044.0419921875,
+     2849.4873046875
+    ],
+    "staff": 10,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/5/0/10/5/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1119.5025,
+    3421.4825,
+    1131.315,
+    3478.97
+   ],
+   "position": {
+    "cell": 3,
+    "page": 9,
+    "page_box": [
+     1119.5025,
+     3421.4825,
+     1131.315,
+     3478.97
+    ],
+    "staff": 8,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/9/1/8/3/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1107.2919921875,
+    6788.4462890625,
+    1133.169921875,
+    6873.921875
+   ],
+   "position": {
+    "cell": 0,
+    "page": 25,
+    "page_box": [
+     1107.2919921875,
+     6788.4462890625,
+     1133.169921875,
+     6873.921875
+    ],
+    "staff": 10,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/25/1/10/0/0",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.266b-read-once",
+   "mark_kind": "accidental",
+   "page_box": [
+    1748.5125,
+    398.6675,
+    1760.64,
+    445.445
+   ],
+   "position": {
+    "cell": 11,
+    "page": 11,
+    "page_box": [
+     1748.5125,
+     398.6675,
+     1760.64,
+     445.445
+    ],
+    "staff": 0,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/11/0/0/11/4",
    "subject_kind": "glyph",
    "subjects": null,
    "tile": "9",

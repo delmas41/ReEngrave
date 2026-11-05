@@ -1,4 +1,4 @@
-"""ROADMAP 2.266b (flag OMR_ACCIDENTAL_READ_ONCE, default OFF): an accidental whose family reading names a kind is read once -- the family
+"""ROADMAP 2.266b (flag OMR_ACCIDENTAL_READ_ONCE, default ON, deny-list): an accidental whose family reading names a kind is read once -- the family
 reading alone decides READ / GUESSED and the 2.186 one-ink guess is never consulted for that ink. Absent / unclear family: unchanged."""
 import os
 import unittest
@@ -37,10 +37,13 @@ def _guess(fam, flag):
 
 
 class ReadOnce(unittest.TestCase):
-    def test_flag_default_is_off(self):
+    def test_flag_default_is_on_and_deny_list_turns_it_off(self):
         with mock.patch.dict(os.environ, {}):
             os.environ.pop(ENV, None)
-            self.assertFalse(AF.accidental_read_once_enabled())
+            self.assertTrue(AF.accidental_read_once_enabled())
+        for v in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {ENV: v}):
+                self.assertFalse(AF.accidental_read_once_enabled(), v)
 
     def test_family_read_natural_off_falls_through_to_one_ink_on_does_not(self):
         fam = _fam("natural", 0.6, ("flat", "natural"), "accidentalFlat")
