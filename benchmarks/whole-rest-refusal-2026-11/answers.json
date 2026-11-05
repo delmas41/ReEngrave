@@ -1,0 +1,265 @@
+{
+ "lane": "2.270 ink_is_a_whole_rest refusal at export (STAGED export.py:_place_notes)",
+ "date": "2026-11-05",
+ "tiles": "benchmarks/whole-rest-refusal-2026-11/tiles (12 + 5 extra)",
+ "sean_verbatim": "1-6 whole note rests 7-8 whole note rests as a second voice 9. Quarter 10-12. Eighth",
+ "sean_verbatim_extra": "For the 5 extra 1-2. Dot half 3. Whole rest 4. Part of an F clef 5. Trem slash",
+ "note": "The red box marks the refused mark. The trace agent called tiles 9, 10, 12 copies off their own staff and extra01 a repeat of tile 6; Sean says notes (9-12), and extra01 is a dotted half. The agent look was a control, not evidence.",
+ "answers": {
+  "tile01_litolff_p15": {
+   "tile": "tile01_litolff_p15.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/15/1/10/0/4",
+   "bar": [
+    15,
+    1,
+    10,
+    0
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "tile02_litolff_p15": {
+   "tile": "tile02_litolff_p15.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/15/0/7/19/0",
+   "bar": [
+    15,
+    0,
+    7,
+    19
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "tile03_litolff_p6": {
+   "tile": "tile03_litolff_p6.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/6/1/6/5/5",
+   "bar": [
+    6,
+    1,
+    6,
+    5
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "tile04_litolff_p13": {
+   "tile": "tile04_litolff_p13.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/13/0/5/2/1",
+   "bar": [
+    13,
+    0,
+    5,
+    2
+   ],
+   "box_class": "noteheadWholeOnLine",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "tile05_litolff_p15": {
+   "tile": "tile05_litolff_p15.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/15/0/2/12/0",
+   "bar": [
+    15,
+    0,
+    2,
+    12
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "tile06_brahms_p21": {
+   "tile": "tile06_brahms_p21.png",
+   "set": "tile",
+   "plate": "brahms",
+   "subject": "glyph/21/1/7/9/5",
+   "bar": [
+    21,
+    1,
+    7,
+    9
+   ],
+   "box_class": "noteheadBlackOnLine",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "tile07_litolff_p3": {
+   "tile": "tile07_litolff_p3.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/3/1/0/8/4",
+   "bar": [
+    3,
+    1,
+    0,
+    8
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "whole_rest_second_voice",
+   "date": "2026-11-05"
+  },
+  "tile08_litolff_p12": {
+   "tile": "tile08_litolff_p12.png",
+   "set": "tile",
+   "plate": "litolff",
+   "subject": "glyph/12/0/0/2/10",
+   "bar": [
+    12,
+    0,
+    0,
+    2
+   ],
+   "box_class": "noteheadWholeOnLine",
+   "sean_kind": "whole_rest_second_voice",
+   "date": "2026-11-05"
+  },
+  "tile09_brahms_p17": {
+   "tile": "tile09_brahms_p17.png",
+   "set": "tile",
+   "plate": "brahms",
+   "subject": "glyph/17/0/12/3/5",
+   "bar": [
+    17,
+    0,
+    12,
+    3
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "quarter_note",
+   "date": "2026-11-05"
+  },
+  "tile10_brahms_p19": {
+   "tile": "tile10_brahms_p19.png",
+   "set": "tile",
+   "plate": "brahms",
+   "subject": "glyph/19/1/10/7/1",
+   "bar": [
+    19,
+    1,
+    10,
+    7
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "eighth_note",
+   "date": "2026-11-05"
+  },
+  "tile11_brahms_p20": {
+   "tile": "tile11_brahms_p20.png",
+   "set": "tile",
+   "plate": "brahms",
+   "subject": "glyph/20/0/3/0/12",
+   "bar": [
+    20,
+    0,
+    3,
+    0
+   ],
+   "box_class": "noteheadBlackOnLine",
+   "sean_kind": "eighth_note",
+   "date": "2026-11-05"
+  },
+  "tile12_brahms_p4": {
+   "tile": "tile12_brahms_p4.png",
+   "set": "tile",
+   "plate": "brahms",
+   "subject": "glyph/4/0/11/9/3",
+   "bar": [
+    4,
+    0,
+    11,
+    9
+   ],
+   "box_class": "noteheadBlackInSpace",
+   "sean_kind": "eighth_note",
+   "date": "2026-11-05"
+  },
+  "extra01_brahms_p22": {
+   "tile": "extra01_brahms_p22.png",
+   "set": "extra",
+   "plate": "brahms",
+   "subject": "glyph/22/1/2/12/13",
+   "bar": [
+    22,
+    1,
+    2,
+    12
+   ],
+   "box_class": "noteheadHalfOnLine",
+   "sean_kind": "dotted_half_note",
+   "date": "2026-11-05"
+  },
+  "extra02_brahms_p7": {
+   "tile": "extra02_brahms_p7.png",
+   "set": "extra",
+   "plate": "brahms",
+   "subject": "glyph/7/1/2/7/10",
+   "bar": [
+    7,
+    1,
+    2,
+    7
+   ],
+   "box_class": "noteheadHalfOnLine",
+   "sean_kind": "dotted_half_note",
+   "date": "2026-11-05"
+  },
+  "extra03_brahms_p21": {
+   "tile": "extra03_brahms_p21.png",
+   "set": "extra",
+   "plate": "brahms",
+   "subject": "glyph/21/1/7/9/5",
+   "bar": [
+    21,
+    1,
+    7,
+    9
+   ],
+   "box_class": "noteheadBlackOnLine",
+   "sean_kind": "whole_rest",
+   "date": "2026-11-05"
+  },
+  "extra04_brahms_p25": {
+   "tile": "extra04_brahms_p25.png",
+   "set": "extra",
+   "plate": "brahms",
+   "subject": "glyph/25/1/3/7/11",
+   "bar": [
+    25,
+    1,
+    3,
+    7
+   ],
+   "box_class": "noteheadBlackOnLine",
+   "sean_kind": "f_clef_fragment",
+   "date": "2026-11-05"
+  },
+  "extra05_brahms_p12": {
+   "tile": "extra05_brahms_p12.png",
+   "set": "extra",
+   "plate": "brahms",
+   "subject": "glyph/12/0/10/8/7",
+   "bar": [
+    12,
+    0,
+    10,
+    8
+   ],
+   "box_class": "noteheadBlackOnLine",
+   "sean_kind": "tremolo_slash",
+   "date": "2026-11-05"
+  }
+ }
+}
