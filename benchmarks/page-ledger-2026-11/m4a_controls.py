@@ -113,6 +113,10 @@ def main():
     n_crops = int(sys.argv[5]) if len(sys.argv) > 5 else 12
     rec = load_record(rec_path)
     Q = rows_by_quantity(rec)
+    only = os.environ.get("M4A_PAGES")             # e.g. "0,5": count only these pages (a multi-page sample record)
+    if only:
+        keep = {int(t) for t in only.split(",")}
+        Q = defaultdict(list, {k: [o for o in v if str(o.get("subject", "")).split("/")[1:2] == [] or int(str(o["subject"]).split("/")[1]) in keep] for k, v in Q.items()})
     geo = cell_geometry(Q)
     allp = [dict(box=bb(o["detail"]), role=o["value"], ord=o["detail"]["ordinal"], page=page_of(o["subject"]), detail=o["detail"]) for o in Q["page_beam"] if o["value"] not in ("census", "views")]
     beams = [b for b in allp if b["role"] == "beam"]
