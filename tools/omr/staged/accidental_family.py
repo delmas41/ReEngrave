@@ -92,8 +92,19 @@ STAGGER_REVERSE_MAX_SP = 0.25
 #: FLAT: the one stem stands in the left part of the mark and its bowl (a piece to its right) lies in its lower part.
 FLAT_STEM_X_FRACTION_MAX = 0.45
 FLAT_BOWL_MIN_FRACTION = 0.40
-#: Never READ (Sean's to set on blind tiles).
+#: The general READ bar for ANY type: None -- nothing the strokes say is READ by margin alone (a flat, a sharp, an `unclear` row never is).
 READ_MARGIN: Optional[float] = None
+#: ROADMAP 2.263b (flag `OMR_NATURAL_READ`, default OFF; Sean DECISIONS 2026-11-04 "Those all seem pretty clearly readable to me."): a NATURAL read
+#: from its two staggered stems is READ at or above this stagger margin. A NATURAL-ONLY bar: flats and sharps are not covered by the ruling.
+#: CONVENTION: the natural sign's two staggered stems (page-facts section 1). The 0.25 CUT-OFF is a measurement on two plates (Brahms,
+#: Litolff; 2.263: 969/998 Brahms and 166/166 Litolff naturals clear it; 12/12 judged right on both sides) and may only NARROW elsewhere (CLAUDE 4).
+NATURAL_READ_MARGIN = 0.25
+NATURAL_READ_ENV = "OMR_NATURAL_READ"
+
+
+def natural_read_enabled() -> bool:
+    """`OMR_NATURAL_READ` (ROADMAP 2.263b), default OFF: only 1/true/yes/on enables."""
+    return os.environ.get(NATURAL_READ_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 TYPES = ("flat", "natural", "sharp")
 #: the detector class names the family files under (SMuFL spelling, lower-case compare); a double sign is the detector's candidate only
@@ -119,8 +130,14 @@ def class_of_type(t: str) -> Optional[str]:
     return _CLASS_OF_TYPE.get(t)
 
 
-def reads(margin: Optional[float]) -> bool:
-    return READ_MARGIN is not None and margin is not None and margin >= READ_MARGIN
+def reads(margin: Optional[float], type_: Optional[str] = None) -> bool:
+    """Is a family reading of this TYPE at this margin READ? Only a read TYPE can pass (`unclear`, None never do -- 2.263 side finding).
+    `READ_MARGIN` (unset) is the general bar; with `OMR_NATURAL_READ` on a natural clears `NATURAL_READ_MARGIN` (flats and sharps never)."""
+    if margin is None or type_ not in TYPES:
+        return False
+    if READ_MARGIN is not None and margin >= READ_MARGIN:
+        return True
+    return type_ == "natural" and natural_read_enabled() and margin >= NATURAL_READ_MARGIN
 
 
 def _union(boxes: Sequence[Sequence[float]]) -> List[float]:
