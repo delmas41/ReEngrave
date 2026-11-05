@@ -1,0 +1,278 @@
+[
+ {
+  "tile": 1,
+  "file": "tile01_litolff_p15.png",
+  "plate": "litolff",
+  "stratum": "L-unread",
+  "sub": "glyph/15/1/10/0/4",
+  "bar": [
+   15,
+   1,
+   10,
+   0
+  ],
+  "step": 5.72,
+  "witness": "slot",
+  "bar_kind": "alone",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   565.885,
+   3574.4425,
+   589.51,
+   3585.4675
+  ]
+ },
+ {
+  "tile": 2,
+  "file": "tile02_litolff_p15.png",
+  "plate": "litolff",
+  "stratum": "L-unread",
+  "sub": "glyph/15/0/7/19/0",
+  "bar": [
+   15,
+   0,
+   7,
+   19
+  ],
+  "step": 5.68,
+  "witness": "slot",
+  "bar_kind": "alone",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   2362.165,
+   1521.245,
+   2384.175,
+   1532.715
+  ]
+ },
+ {
+  "tile": 3,
+  "file": "tile03_litolff_p6.png",
+  "plate": "litolff",
+  "stratum": "L-unread",
+  "sub": "glyph/6/1/6/5/5",
+  "bar": [
+   6,
+   1,
+   6,
+   5
+  ],
+  "step": 5.4,
+  "witness": "slot",
+  "bar_kind": "others_refused",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   1506.1125,
+   2904.9625,
+   1530.3675,
+   2915.9875
+  ]
+ },
+ {
+  "tile": 4,
+  "file": "tile04_litolff_p13.png",
+  "plate": "litolff",
+  "stratum": "L-unread",
+  "sub": "glyph/13/0/5/2/1",
+  "bar": [
+   13,
+   0,
+   5,
+   2
+  ],
+  "step": 4.67,
+  "witness": "slot",
+  "bar_kind": "others_refused",
+  "box_class": "noteheadWholeOnLine",
+  "bbox": [
+   878.48,
+   1206.3175,
+   903.365,
+   1218.13
+  ]
+ },
+ {
+  "tile": 5,
+  "file": "tile05_litolff_p15.png",
+  "plate": "litolff",
+  "stratum": "L-unread",
+  "sub": "glyph/15/0/2/12/0",
+  "bar": [
+   15,
+   0,
+   2,
+   12
+  ],
+  "step": 5.62,
+  "witness": "slot",
+  "bar_kind": "alone",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   1716.16,
+   718.23,
+   1740.2575,
+   729.255
+  ]
+ },
+ {
+  "tile": 6,
+  "file": "tile06_brahms_p21.png",
+  "plate": "brahms",
+  "stratum": "B-unread",
+  "sub": "glyph/21/1/7/9/5",
+  "bar": [
+   21,
+   1,
+   7,
+   9
+  ],
+  "step": 5.37,
+  "witness": "slot",
+  "bar_kind": "alone",
+  "box_class": "noteheadBlackOnLine",
+  "bbox": [
+   4973.395,
+   6171.1375,
+   5007.5275,
+   6185.845
+  ]
+ },
+ {
+  "tile": 7,
+  "file": "tile07_litolff_p3.png",
+  "plate": "litolff",
+  "stratum": "L-bar-has-heads",
+  "sub": "glyph/3/1/0/8/4",
+  "bar": [
+   3,
+   1,
+   0,
+   8
+  ],
+  "step": -0.843,
+  "witness": "neighbouring_bar",
+  "bar_kind": "written_nonrest",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   1517.0775,
+   2381.13,
+   1537.71,
+   2392.155
+  ]
+ },
+ {
+  "tile": 8,
+  "file": "tile08_litolff_p12.png",
+  "plate": "litolff",
+  "stratum": "L-bar-has-heads",
+  "sub": "glyph/12/0/0/2/10",
+  "bar": [
+   12,
+   0,
+   0,
+   2
+  ],
+  "step": 3.727,
+  "witness": "neighbouring_bar",
+  "bar_kind": "written_nonrest",
+  "box_class": "noteheadWholeOnLine",
+  "bbox": [
+   816.7075,
+   467.275,
+   840.9625,
+   480.0325
+  ]
+ },
+ {
+  "tile": 9,
+  "file": "tile09_brahms_p17.png",
+  "plate": "brahms",
+  "stratum": "B-bar-has-heads",
+  "sub": "glyph/17/0/12/3/5",
+  "bar": [
+   17,
+   0,
+   12,
+   3
+  ],
+  "step": -7.202,
+  "witness": "neighbouring_bar",
+  "bar_kind": "written_nonrest",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   3059.2021484375,
+   3435.1650390625,
+   3096.71484375,
+   3456.9013671875
+  ]
+ },
+ {
+  "tile": 10,
+  "file": "tile10_brahms_p19.png",
+  "plate": "brahms",
+  "stratum": "B-bar-has-heads",
+  "sub": "glyph/19/1/10/7/1",
+  "bar": [
+   19,
+   1,
+   10,
+   7
+  ],
+  "step": 15.22,
+  "witness": "neighbouring_bar",
+  "bar_kind": "written_nonrest",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   4806.025,
+   6335.0,
+   4842.6,
+   6356.45
+  ]
+ },
+ {
+  "tile": 11,
+  "file": "tile11_brahms_p20.png",
+  "plate": "brahms",
+  "stratum": "B-bar-has-heads",
+  "sub": "glyph/20/0/3/0/12",
+  "bar": [
+   20,
+   0,
+   3,
+   0
+  ],
+  "step": 5.631,
+  "witness": "slot",
+  "bar_kind": "written_nonrest",
+  "box_class": "noteheadBlackOnLine",
+  "bbox": [
+   1378.21337890625,
+   1363.3857421875,
+   1415.2041015625,
+   1384.35986328125
+  ]
+ },
+ {
+  "tile": 12,
+  "file": "tile12_brahms_p4.png",
+  "plate": "brahms",
+  "stratum": "B-bar-has-heads",
+  "sub": "glyph/4/0/11/9/3",
+  "bar": [
+   4,
+   0,
+   11,
+   9
+  ],
+  "step": 15.32,
+  "witness": "neighbouring_bar",
+  "bar_kind": "written_nonrest",
+  "box_class": "noteheadBlackInSpace",
+  "bbox": [
+   4921.28,
+   3035.0,
+   4956.56,
+   3054.04
+  ]
+ }
+]
