@@ -397,7 +397,7 @@ def gather_page_beam_views(log: Any, cells: Sequence[Any], local: Dict[int, Tupl
             x, y, w, h = b["box"]
             cx, cy, cw, ch = (x - rect[0]) * up, (y - rect[1]) * up, w * up, h * up
             row = log.observe(csub, Q.BEAM_STROKE, (cx, cy, cw, ch), reader=READERS.CV_PAGE_BEAMS, frame=frame, x0=cx, x1=cx + cw, y_center=cy + ch / 2.0,
-                              image="page_strokes", staff_lines_erased=False, page_stroke=b["ordinal"], page_group=b["group"])
+                              image="page_strokes", staff_lines_erased=False, page_stroke=b["ordinal"])
             views.append((SimpleNamespace(x_canonical=cx, y_canonical=cy, width_canonical=cw, height_canonical=ch), row.id))
             census["views"] += 1
         stems = []
