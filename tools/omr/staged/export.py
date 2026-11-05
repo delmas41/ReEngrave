@@ -546,6 +546,10 @@ def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
             if fg is not None and not _af.reads(fg.get("margin"), (fam or {}).get("type")):
                 return {"stage": "ADJUDICATE", "rule": _af.REASON, "quantity": Q.ACCIDENTAL, "candidates": fg["candidates"],
                         "chosen": fg["chosen"], "margin": fg.get("margin")}
+            if fam and (fam or {}).get("type") in _af.TYPES and _af.accidental_read_once_enabled():
+                # ROADMAP 2.266b (flag `OMR_ACCIDENTAL_READ_ONCE`): the family reader named a kind and its own doubt (READ, or the guess above) has
+                # decided; that ink is claimed once, so the 2.186 one-ink guess is never asked about it (CLAUDE section 4)
+                continue
             oi = (b.get("detail") or {}).get("one_ink")
             if oi and not _oi.reads(oi.get("margin")):
                 return {"stage": "ADJUDICATE", "rule": ONE_INK_RULE, "quantity": Q.ACCIDENTAL,
