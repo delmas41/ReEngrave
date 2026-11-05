@@ -32,14 +32,14 @@ Read FIRST. The 11-03 evening block holds the direction (page ledger, "read once
 - Measured, no code: 2.263 (no READ bar can be placed by data), 2.266 (one-ink 0/19 where it disagrees), 2.267 (the detector SEES a chord's missing second head but scores it 0.04-0.24, under the 0.25 cut; none unseen, none NMS-removed), the Brahms p14 2.256b growth (three staves named, not new ink).
 
 **In flight at session end** (their rows are the truth; this line is updated when they land):
-- **2.268** dyad head rescue `OMR_DYAD_HEAD_RESCUE` (Sean 12/12 tiles on the 4-page trial): round 2 = tile 9 traced (a NARROWED false-clef claim shut it out; the rescue now ignores a narrowed claim, claims.py "may narrow a box, never refuse it") + frozen-sample measure + pitch check; lands ON if clean.
+- **2.268** dyad head rescue `OMR_DYAD_HEAD_RESCUE`: landing ON (Sean 12/12 tiles; "Yes. Do that - go": the overnight is its frozen-sample measure). Round 2 fixed tile 9 (a NARROWED false-clef claim no longer blocks the rescue). Not measured beyond 4 pages.
 - **2.269** steps 0+1 **merged OFF** (with M4a): page-wide claims name their page strokes; export identical; M4a false beams Brahms 31 -> 17, Litolff 74 -> 67; left: dynamic-letter crossbars (GUESSED claims are not named), hollow-head ink, title text -> step 3 / M6.
 
 **Merged OFF:** 2.260c M4a `OMR_PAGE_BEAMS` + 2.269 `OMR_PAGE_CLAIM_NAMES` (export identical); M4b waits on step 3. **Parked:** 2.264 (premise wrong; causes are missing heads -> 2.268 / M6).
 
 **Plans filed:** docs/plan-2026-11-04-page-beams-m4.md (M4), docs/plan-2026-11-04-page-heads-m6.md (M6), docs/plan-2026-11-04-page-claims.md (2.269).
 
-**The overnight (Sean runs it in a new session):** first whole-movement measure of 2.262, 2.263b, 2.266b and 2.256b on the frozen sample (2.256b, 2.263b and 2.266b were landed on 2-page or sample measures). `OMR_PAGE_CLAIMS` stays ON.
+**The overnight (Sean runs it in a new session):** first whole-movement measure of 2.262, 2.263b, 2.266b, 2.256b and **2.268** (2.256b, 2.263b, 2.266b were landed on 2-page or sample measures; 2.268 on 4 pages + tiles). `OMR_PAGE_CLAIMS` stays ON; `OMR_PAGE_BEAMS` / `OMR_PAGE_CLAIM_NAMES` stay OFF. **The README must check 2.268:** every rescued chord head (stem-end rescue reader, `stem_end_ink_only`, dyad detail) -- its written pitch against its local staff position (far heads by ledger lines), and judged right->wrong; a wrong octave or a judged loss turns the flag off (`OMR_DYAD_HEAD_RESCUE=0`) until traced.
 
 **NEXT, in order (re-census on the overnight before opening any lane):**
 1. Read the overnight README; census blue / unwritten by deciding rule on both plates.
@@ -55,7 +55,7 @@ Read FIRST. The 11-03 evening block holds the direction (page ledger, "read once
 - "Unboxed" meant "no box in the record", and a record box already means detector OR rescue; measure the detector's raw candidates before calling a head unseen (2.267).
 - Look at every tile sheet before it goes to Sean: M4a's random disagreement crops showed no beam on most tiles and were not sent.
 - Answers files need `judged build` in the same commit (a stale judged index failed a landing's fast tier).
-- Two wait loops deadlocked for ~2 h (2.268): each waited on `pgrep -f "tools.omr.staged "`, which matched the OTHER waiter's shell command line. Wait on a background command's exit, or match python processes only (`pgrep -f "python.* -m tools.omr.staged"`); a lane quiet for an hour gets a `ps` check.
+- Two wait loops deadlocked for ~2 h (2.268): each waited on `pgrep -f "tools.omr.staged "`, which matched the OTHER waiter's shell command line. Wait on a background command's exit, or on a known pid with `kill -0 <pid>`; never a `pgrep -f` pattern (and the framework binary is `Python`, capital P, so `[p]ython` never matches it). A lane quiet for an hour gets a `ps` check.
 
 ## START HERE — after 2026-11-04 (earlier manager; superseded by the block above for NEXT; its open items stand) (main ≥ the commit naming this block)
 
