@@ -68,6 +68,14 @@ def claim_enabled() -> bool:
 ENV_ACROSS_SYSTEMS = "OMR_ARC_ACROSS_SYSTEMS"
 
 
+#: ROADMAP 2.271 (page-facts, Sean 2026-11-05 "Often arcs stop short. Closest note works"), default OFF: an arc end with no head in the window binds to the closest one beyond it.
+ENV_CLOSEST_HEAD = "OMR_ARC_CLOSEST_HEAD"
+
+
+def closest_head_enabled() -> bool:
+    return _on(ENV_CLOSEST_HEAD)
+
+
 def across_systems_enabled() -> bool:
     return _on(ENV_ACROSS_SYSTEMS)
 
@@ -415,6 +423,19 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
         if not ok(h["key"]):
             continue
         cands.append(dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)))
+    closest = False
+    if not cands and closest_head_enabled():
+        # ROADMAP 2.271 (`OMR_ARC_CLOSEST_HEAD`; page-facts, Sean 2026-11-05 "Often arcs stop short. Closest note works"): no head inside the window
+        # -> the heads BEYOND the end on the curve's own side (the staff's own usable heads), the closest one binds; two about equally near
+        # (the binder's own column margin, no new number) stay the `two_columns_at_end` refusal below, never a pick. No fixed distance.
+        near = sorted((dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)) for h in heads if (h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp),
+                      key=lambda h: h["d"])
+        picked: List[Dict[str, Any]] = []
+        for h in near[:8]:
+            if ok(h["key"]):
+                picked.append(h)
+        if picked:
+            cands, closest = picked, True
     if not cands:
         beyond = sorted((h for h in heads if (h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp),
                         key=lambda h: abs(h["cx"] - ex))
@@ -437,6 +458,8 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
         if got:
             if got.get("head") is not None and all(h.get("tip") for h in col):
                 got["via_stem_tip"] = True
+            if closest:
+                got["via_closest"] = True
             return got
     if len(col) == 1:
         pick = col[0]
@@ -449,6 +472,8 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
     out = {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3)}
     if pick.get("tip"):
         out["via_stem_tip"] = True
+    if closest:
+        out["via_closest"] = True
     return out
 
 
