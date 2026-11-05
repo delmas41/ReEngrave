@@ -9,9 +9,11 @@ from the 10-29 gather, so they differ by what changed between the records, not b
   3 unread empty bars          = the bars written as unread. FINDINGS' "bar printing a whole rest" is ~70% Litolff / ~65% Brahms
                                  of these by the lane's crops; that share is NOT recomputed here (needs a crop look)
   4 pitched heads not written  = dropped_unknown_duration + dropped_no_pitch (exporter accounting)
-  5 dots decided, never placed = dot_role abstained_dot_role_ambiguous
+  5 dots decided, never placed = dot_role abstained_dot_role_ambiguous, LESS the dot-class boxes whose own ink is under the stroke map's
+                                 floor (`counted_view`, ROADMAP 2.265: a speck is not a dot); the specks are printed under the table
+  pages                        = the COUNTED sample pages only (2.265); the context page is loaded, never counted
   check load                   = blue notes / rests in the file
-usage: rank_table.py WORKDIR PLATE BASE_ARM TAG_ARM NPAGES   (reads WORKDIR/PLATE.ARM.rank.json from rank_counts.py)
+usage: rank_table.py WORKDIR PLATE BASE_ARM TAG_ARM NPAGES   (reads WORKDIR/PLATE.ARM.rank.json from rank_counts.py; NPAGES = counted pages)
 """
 import json
 import sys
@@ -28,6 +30,14 @@ QUOTED = {
 }
 
 
+DOTS_KIND = "dots abstained (dot_role_ambiguous, specks out; mostly non-dot ink, 2.234)"
+
+
+def specks_of(path):
+    d = json.load(open(path))["totals_over_loaded_pages"]
+    return d.get("dot_specks_in_the_dots_row", 0), d["dot_role_not_placed"].get("abstained_dot_role_ambiguous", 0)
+
+
 def kinds(path):
     d = json.load(open(path))
     rows, tot = d["rows"], d["totals_over_loaded_pages"]
@@ -40,7 +50,7 @@ def kinds(path):
         "red bars": r("red_bar"),
         "unread empty bars": r("unread_empty_bar"),
         "pitched heads not written": r("dropped_unknown_duration") + r("dropped_no_pitch"),
-        "dots abstained (dot_role_ambiguous; mostly non-dot ink, 2.234)": tot["dot_role_not_placed"].get("abstained_dot_role_ambiguous", 0),
+        DOTS_KIND: tot["dot_role_not_placed"].get("abstained_dot_role_ambiguous", 0) - tot.get("dot_specks_in_the_dots_row", 0),
         "blue notes (check load)": r("blue_note"),
         "blue rests (check load)": r("blue_rest"),
     }
@@ -57,6 +67,9 @@ def main():
         q = QUOTED.get(k, {}).get(plate)
         print("%-30s %9.1f %9.1f %+8.1f %12s   %d -> %d" % (k, a[k] / n, b[k] / n, (b[k] - a[k]) / n,
                                                            "-" if q is None else "%.1f" % q, a[k], b[k]))
+    for arm, nm in ((base, "BASE"), (tag, "TAG")):
+        sp, raw = specks_of("%s/%s.%s.rank.json" % (work, plate, arm))
+        print("%s dots row: %d abstained dot_role_ambiguous, %d of them dot-class boxes under the stroke floor (specks) -> %d counted" % (nm, raw, sp, raw - sp))
 
 
 if __name__ == "__main__":

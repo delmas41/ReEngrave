@@ -99,17 +99,19 @@ for doc in $READY; do
   s=$(short $doc)
   ALL=$(python3 -c "import json;print(','.join(map(str,json.load(open('benchmarks/lane-report/sample.json'))['plates']['$s']['candidates'])))")
   LOADED=$(python3 -c "import json;p=json.load(open('benchmarks/lane-report/sample.json'))['plates']['$s'];print(','.join(map(str,sorted(set(p['pages'])|set(p['context_pages'])))))")
-  NLOADED=$(echo "$LOADED" | tr ',' '\n' | wc -l | tr -d ' ')
+  # ROADMAP 2.265: the context page is LOADED (the header it carries) and never COUNTED -- the ranking counts the sample pages only
+  COUNTED=$(python3 -c "import json;print(','.join(map(str,sorted(json.load(open('benchmarks/lane-report/sample.json'))['plates']['$s']['pages']))))")
+  NCOUNTED=$(echo "$COUNTED" | tr ',' '\n' | wc -l | tr -d ' ')
   K=$HERE/ranking
   for arm in base tag; do
     if [ $arm = base ]; then REC=$R/$doc-mvt1-whole-$BASE.record.json; else REC=$R/$doc-mvt1-whole-$TAG.record.json; fi
     python3 "$K/export_saved.py" "$REC" "$OUT/rank" "$s" "$ALL" "$arm-all" >> "$OUT/rank/export.log" 2>&1 || echo "$doc: export_saved all/$arm failed" >> "$LOGF"
-    python3 "$K/export_saved.py" "$REC" "$OUT/rank" "$s" "$LOADED" "$arm" >> "$OUT/rank/export.log" 2>&1 || echo "$doc: export_saved sample/$arm failed" >> "$LOGF"
-    python3 "$K/rank_counts.py" "$OUT/rank" "$s" "$arm" "$LOADED" > "$OUT/rank/$s.$arm.rank.json" 2>> "$OUT/rank/export.log" || echo "$doc: rank_counts $arm failed" >> "$LOGF"
+    python3 "$K/export_saved.py" "$REC" "$OUT/rank" "$s" "$LOADED" "$arm" "$COUNTED" >> "$OUT/rank/export.log" 2>&1 || echo "$doc: export_saved sample/$arm failed" >> "$LOGF"
+    python3 "$K/rank_counts.py" "$OUT/rank" "$s" "$arm" "$COUNTED" > "$OUT/rank/$s.$arm.rank.json" 2>> "$OUT/rank/export.log" || echo "$doc: rank_counts $arm failed" >> "$LOGF"
   done
   python3 "$K/compare.py" "$s" "$OUT/rank/$s.base-all.symbols.json" "$OUT/rank/$s.tag-all.symbols.json" > "$OUT/rank/compare-all-$s.txt" 2>&1
   python3 "$K/compare.py" "$s" "$OUT/rank/$s.base.symbols.json" "$OUT/rank/$s.tag.symbols.json" > "$OUT/rank/compare-sample-$s.txt" 2>&1
-  python3 "$K/rank_table.py" "$OUT/rank" "$s" base tag "$NLOADED" > "$OUT/rank/rank-table-$s.txt" 2>&1
+  python3 "$K/rank_table.py" "$OUT/rank" "$s" base tag "$NCOUNTED" > "$OUT/rank/rank-table-$s.txt" 2>&1
   cp "$OUT/rank/rank-table-$s.txt" "$SUM/ranking-$s.txt"
 done
 
