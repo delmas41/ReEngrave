@@ -982,6 +982,12 @@ class Q(_Vocab):
     #: `hooks`, `stubs`, `doubt`, `stem_beamed`, `tip_clean`. Decides nothing and NOTHING READS IT.
     PAGE_BEAM_TIP = "page_beam_tip"
 
+    #: ROADMAP 2.260e M6a (flag `OMR_PAGE_HEADS`, default OFF; `page_heads.file_page_heads`): ONE ROW PER HEAD of the PAGE, notehead boxes of every cell folded to one
+    #: (IoU), its ink the page strokes the box stands on: `value` = `box` | `ink_only` (head-shaped ink no detector box stands on, census only: no Glyph, no note)
+    #: | `census` (one per page). `detail`: `members` (the folded glyph keys), `strokes`, `stroke_extent` / `trim_extent` (page px), `box_position_float` /
+    #: `ink_position_float` (half steps against the head's OWN bar's grid), `far_trigger`, `rung_strokes`, `member_row_positions`. Decides nothing; NOTHING READS IT in M6a.
+    PAGE_HEAD = "page_head"
+
     #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
     #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
     #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
@@ -2388,6 +2394,7 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 2.260c M4a: a stroke's beam role / a stem tip's beam levels read off the page map -- measurements of ink, naming no note.
     "PAGE_BEAM": CLAIM.MEASUREMENT,
     "PAGE_BEAM_TIP": CLAIM.MEASUREMENT,
+    "PAGE_HEAD": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
     #: ROADMAP 2.240 step 2: the page-wide extent of one traced arc / CV wedge -- a measurement of ink, naming no notes.
@@ -3009,6 +3016,8 @@ class READERS(_Vocab):
     CV_PAGE_STROKES = "cv_page_strokes"
     #: `page_beams.gather_page_beams` -- ROADMAP 2.260c M4a. No raster: the page map's strokes and the cell `Q.STEM` rows.
     CV_PAGE_BEAMS = "cv_page_beams"
+    #: `page_heads.gather_page_heads` -- ROADMAP 2.260e M6a. The page map's strokes, the detector's notehead boxes and the page render (`head_extent.ink_extent`).
+    CV_PAGE_HEADS = "cv_page_heads"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.
     CV_PAGE_OWNER = "cv_page_owner"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the `Q.SYSTEM_ARC` traces and `Q.WEDGE_BOX` reads, joined page-wide.
