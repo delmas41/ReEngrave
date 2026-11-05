@@ -84,12 +84,14 @@ class TheCarvedRule(unittest.TestCase):
         self.assertEqual(PN.area_names(idx, claim, page_wide=False, owner="clef"), [2])    # only a barline claim reaches the rule; and not the column at x 2300
 
     def test_the_census_counts_the_rule_strokes_named(self):
-        pm = pagemap([box(2102, 1584, 2122, 6872), box(2300, 1590, 2320, 6872)])
-        pm.strokes[0].kind = pm.strokes[1].kind = "barline"
+        # the carved rules are NOT in `page_map.strokes`: `gather_page_strokes` files them after the strokes, ordinals len(strokes) + k
+        pm = pagemap([box(10, 10, 30, 60)])
+        pm.barlines = [dict(box=(2102.0, 1584.0, 2122.0, 6872.0)), dict(box=(2300.0, 1590.0, 2320.0, 6872.0))]
         log = Log()
         area(log, "barline", [2097.5, 1584.0, 2126.5, 1713.0])
         res = run(log, pm)
         self.assertEqual((res["rule_strokes"], res["rule_strokes_named"]), (2, 1))
+        self.assertEqual([r.value[0] for r in named(log)], [1])                    # the first rule: ordinal 1 = len(strokes) + 0
 
 
 class Order(unittest.TestCase):

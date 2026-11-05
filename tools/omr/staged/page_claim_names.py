@@ -165,13 +165,18 @@ def settle(claims: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
 
 # ───────────────────────────── the page, as rows ─────────────────────────────
 
-def _boxes_of(page_map: Any) -> List[Tuple[float, float, float, float]]:
-    """Page-stroke boxes as `(x0, y0, x1, y1)` (the page map keeps `(x, y, w, h)`)."""
-    out = []
+def _boxes_of(page_map: Any) -> Tuple[List[Tuple[float, float, float, float]], List[str]]:
+    """Page-stroke boxes as `(x0, y0, x1, y1)` and their kinds, in the ordinals `Q.PAGE_STROKE` files: the map's strokes (it keeps `(x, y, w, h)`), then the
+    carved barline rules (`page_map.barlines`, `box` already `(x0, y0, x1, y1)`), which `gather_page_strokes` numbers after the strokes."""
+    out, kinds = [], []
     for st in page_map.strokes:
         x, y, w, h = (float(v) for v in st.box)
         out.append((x, y, x + w, y + h))
-    return out
+        kinds.append(str(getattr(st, "kind", "")))
+    for b in getattr(page_map, "barlines", None) or ():
+        out.append(tuple(float(v) for v in b["box"][:4]))
+        kinds.append(BARLINE_KIND)
+    return out, kinds
 
 
 def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], page_map: Any, *,
@@ -192,9 +197,9 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                     unit=UNIT_CENSUS, why="no_page_stroke_map", source=SOURCE)
         return None
     t0 = time.time()
-    index = StrokeIndex(_boxes_of(page_map), [str(getattr(st, "kind", "")) for st in page_map.strokes])
+    index = StrokeIndex(*_boxes_of(page_map))
     claims: List[Dict[str, Any]] = []
-    census: Dict[str, Any] = dict(strokes=len(index.boxes), area_claims=0, hairpin_reads=0, arc_claims=0, named_nothing={}, by_owner={})
+    census: Dict[str, Any] = dict(strokes=len(page_map.strokes), barline_rules=len(index.boxes) - len(page_map.strokes), area_claims=0, hairpin_reads=0, arc_claims=0, named_nothing={}, by_owner={})
 
     def _layer(owner: str) -> int:
         lay = CO.layer_of(owner)
@@ -227,6 +232,8 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             band = HR.band_px(d.get("staff_spacing_px") or 0.0)
             ids = []
             for i in index.meeting([float(v) for v in bb], band):
+                if i >= len(page_map.masks):          # a carved barline rule has no mask here
+                    continue
                 m, x0, y0 = page_map.masks[i]
                 if getattr(m, "size", 0) == 0:
                     continue
