@@ -12,6 +12,8 @@ owns --
   * an AREA claim (barline, bracket / brace / leading column, clef, key signature, meter, word / dynamic): the SAME predicate `adjudicators/stroke_owner.
     _areas` applies to a cell's strokes, applied to the page strokes' boxes -- a page-wide claim (`scope` "system", no cell: a word, a bracket) owns a
     stroke only WHOLLY inside it (+1 px); a cell claim owns a stroke whose CENTRE is inside it. No pixel is read.
+    A barline claim also names the carved `barline` stroke through its column (`StrokeIndex.rule_through`): M1 carves ONE stroke per column, the
+    height of the whole system, so the centre rule -- right for every other mark, whose stroke the claim's area holds -- can never name it.
   * a CV HAIRPIN read (`Q.WEDGE_BOX`, `reach`): the page strokes at least `hairpin_reach.ON_ARMS_SHARE_MIN` along its two arms -- the page-frame call of the
     cell claim's own share (`arc_claim.page_strokes_along` does the same for arcs). The 2.261 beam guard is upstream: a find standing on a stem at each end
     never becomes a reach read, so it names nothing here.
@@ -52,6 +54,8 @@ UNIT = "page_ink"
 UNIT_CENSUS = "page_ink_census"
 #: a page-wide claim owns a stroke only wholly inside it, this many px of slack (`adjudicators/stroke_owner._areas`: "+1 px")
 WHOLLY_INSIDE_SLACK_PX = 1.0
+#: the page map's kind for a carved barline column (`page_strokes.carve_columns`)
+BARLINE_KIND = "barline"
 
 
 def enabled() -> bool:
@@ -65,8 +69,9 @@ class StrokeIndex:
     """Page-stroke boxes `(x0, y0, x1, y1)` sorted twice: by left edge (wholly-inside claims) and by centre x (centre-rule claims). A claim's
     candidates come by bisect on one of them; the other edges are the cheap box test. No stroke is visited that cannot qualify on x."""
 
-    def __init__(self, boxes: Sequence[Sequence[float]]):
+    def __init__(self, boxes: Sequence[Sequence[float]], kinds: Optional[Sequence[str]] = None):
         self.boxes = [tuple(float(v) for v in b[:4]) for b in boxes]
+        self.kinds = list(kinds) if kinds is not None else [""] * len(self.boxes)
         self.by_left = sorted(range(len(self.boxes)), key=lambda i: self.boxes[i][0])
         self.left_keys = [self.boxes[i][0] for i in self.by_left]
         self.by_centre = sorted(range(len(self.boxes)), key=lambda i: self.boxes[i][0] + self.boxes[i][2])
@@ -98,6 +103,21 @@ class StrokeIndex:
                 out.append(i)
         return sorted(out)
 
+    def rule_through(self, area: Sequence[float], slack: float = WHOLLY_INSIDE_SLACK_PX) -> List[int]:
+        """The carved `barline` strokes (M1: ONE stroke per barline column, the height of the whole system) that run through a barline claim's column:
+        the stroke lies within the claim's x band (+ slack) and crosses its y range. The centre rule cannot name them -- a stroke that spans every
+        staff of the system has its centre in at most one staff's area -- and the claim IS the column the stroke was carved from."""
+        x0, y0, x1, y1 = (float(v) for v in area)
+        lo = bisect.bisect_left(self.left_keys, x0 - slack)
+        hi = bisect.bisect_right(self.left_keys, x1 + slack)
+        out = []
+        for k in range(lo, hi):
+            i = self.by_left[k]
+            b = self.boxes[i]
+            if self.kinds[i] == BARLINE_KIND and b[2] <= x1 + slack and b[1] <= y1 and b[3] >= y0:
+                out.append(i)
+        return sorted(out)
+
     def meeting(self, box: Sequence[float], grow: float = 0.0) -> List[int]:
         """Strokes whose box meets `box` grown by `grow` (the cheap test before a mask test)."""
         x0, y0, x1, y1 = box[0] - grow, box[1] - grow, box[2] + grow, box[3] + grow
@@ -111,9 +131,13 @@ class StrokeIndex:
         return sorted(out)
 
 
-def area_names(index: StrokeIndex, rect: Sequence[float], page_wide: bool) -> List[int]:
-    """The page strokes an AREA claim owns: the register's own predicate (module doc)."""
-    return index.wholly_inside(rect) if page_wide else index.centre_in(rect)
+def area_names(index: StrokeIndex, rect: Sequence[float], page_wide: bool, owner: str = "") -> List[int]:
+    """The page strokes an AREA claim owns: the register's own predicate (module doc); a barline claim also names the carved rule through its column
+    (`StrokeIndex.rule_through`: the one place the page map's unit, a system-tall stroke, is not the claim's, a staff-high area)."""
+    got = index.wholly_inside(rect) if page_wide else index.centre_in(rect)
+    if owner == "barline":
+        got = sorted(set(got) | set(index.rule_through(rect)))
+    return got
 
 
 def settle(claims: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
@@ -168,7 +192,7 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                     unit=UNIT_CENSUS, why="no_page_stroke_map", source=SOURCE)
         return None
     t0 = time.time()
-    index = StrokeIndex(_boxes_of(page_map))
+    index = StrokeIndex(_boxes_of(page_map), [str(getattr(st, "kind", "")) for st in page_map.strokes])
     claims: List[Dict[str, Any]] = []
     census: Dict[str, Any] = dict(strokes=len(index.boxes), area_claims=0, hairpin_reads=0, arc_claims=0, named_nothing={}, by_owner={})
 
@@ -186,7 +210,7 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                 continue
             page_wide = d.get("scope") == "system" and d.get("cell") is None
             census["area_claims"] += 1
-            claims.append(dict(owner=owner, layer=_layer(owner), ids=area_names(index, v, page_wide), existing=False, row=r.id, subject=r.subject,
+            claims.append(dict(owner=owner, layer=_layer(owner), ids=area_names(index, v, page_wide, owner), existing=False, row=r.id, subject=r.subject,
                                how="wholly_inside" if page_wide else "centre", page_wide=page_wide))
         elif unit == "ink" and d.get("page_strokes"):
             census["arc_claims"] += 1
@@ -228,7 +252,9 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
         log.observe(c["subject"], Q.CLAIMED_AREA, list(c["won"]), reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=c["owner"],
                     owner_row=c["row"], owner_glyph=None, unit=UNIT, standing="READ", source=SOURCE, how=c["how"], page_strokes=list(c["won"]),
                     contested=c["contested"])
-    census.update(rows=filed, named=len(res["named"]), double_named=res["double"], seconds=round(time.time() - t0, 3))
+    rules = [i for i, k in enumerate(index.kinds) if k == BARLINE_KIND]
+    census.update(rows=filed, named=len(res["named"]), double_named=res["double"], rule_strokes=len(rules),
+                  rule_strokes_named=sum(1 for i in rules if i in res["named"]), seconds=round(time.time() - t0, 3))
     log.observe(page_sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner="page_names", unit=UNIT_CENSUS,
                 standing="READ", source=SOURCE, **census)
     if progress:

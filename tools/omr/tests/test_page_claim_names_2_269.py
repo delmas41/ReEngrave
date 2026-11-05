@@ -72,6 +72,26 @@ class Predicates(unittest.TestCase):
             self.assertEqual(idx.centre_in(a), ci)
 
 
+class TheCarvedRule(unittest.TestCase):
+    """M1 carves ONE `barline` stroke per column, the height of the whole system; the staff-high barline claim's centre rule cannot name it."""
+
+    def test_a_barline_claim_names_the_system_tall_rule_through_its_column_and_the_centre_rule_cannot(self):
+        boxes = [box(2102, 1584, 2122, 6872), box(2300, 1590, 2320, 6872), box(2105, 1600, 2118, 1700)]
+        idx = PN.StrokeIndex(boxes, ["barline", "barline", "vertical"])
+        claim = [2097.5, 1584.0, 2126.5, 1713.0]
+        self.assertEqual(idx.centre_in(claim), [2])                                   # the rule's centre is far below this staff
+        self.assertEqual(PN.area_names(idx, claim, page_wide=False, owner="barline"), [0, 2])
+        self.assertEqual(PN.area_names(idx, claim, page_wide=False, owner="clef"), [2])    # only a barline claim reaches the rule; and not the column at x 2300
+
+    def test_the_census_counts_the_rule_strokes_named(self):
+        pm = pagemap([box(2102, 1584, 2122, 6872), box(2300, 1590, 2320, 6872)])
+        pm.strokes[0].kind = pm.strokes[1].kind = "barline"
+        log = Log()
+        area(log, "barline", [2097.5, 1584.0, 2126.5, 1713.0])
+        res = run(log, pm)
+        self.assertEqual((res["rule_strokes"], res["rule_strokes_named"]), (2, 1))
+
+
 class Order(unittest.TestCase):
     def test_first_claim_wins_and_the_later_one_is_contested_not_taken(self):
         res = PN.settle([dict(owner="word", layer=3, ids=[5, 6]), dict(owner="clef", layer=2, ids=[6, 7])])
