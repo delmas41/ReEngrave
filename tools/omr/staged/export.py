@@ -1323,6 +1323,32 @@ def whole_rest_from_ink_enabled() -> bool:
     return os.environ.get(WHOLE_REST_FROM_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _rest_twin_in_bar(rec: "Record", sub: str, o: Dict[str, Any]) -> bool:
+    """ROADMAP 2.270: True when the detector ALSO boxed this ink as a rest (a `rest*` GLYPH_BOX in the same bar whose page box overlaps
+    this one): the same mark twice, which the rest box already writes -- converting the head box too would put two rests in the bar
+    (Litolff: 40 of 108 refused boxes are such twins; first run, +44 bars that no longer added up)."""
+    idx = rec.__dict__.get("_rest_boxes_by_bar")
+    if idx is None:
+        idx = {}
+        for r in rec.obs_of(Q.GLYPH_BOX):
+            val = r.get("value")
+            lc = str(val[0] if isinstance(val, (list, tuple)) and val else "").lower()
+            if lc.startswith("rest"):
+                p = _parse_subject(r["subject"])
+                pb = _page_box_of(r)
+                if pb:
+                    idx.setdefault((p["page"], p["system"], p["staff"], p["cell"]), []).append(pb)
+        rec.__dict__["_rest_boxes_by_bar"] = idx
+    s = _parse_subject(sub)
+    mine = _page_box_of(o)
+    if not mine:
+        return False
+    for b in idx.get((s["page"], s["system"], s["staff"], s["cell"]), ()):
+        if b[0] < mine[2] and mine[0] < b[2] and b[1] < mine[3] and mine[1] < b[3]:
+            return True
+    return False
+
+
 def _whole_rest_ink_was_read(rec: "Record", sub: str) -> bool:
     """ROADMAP 2.270: the DECIDED whole-rest verdict says its ink was measured and passed (`detail.ink.ink_read`)."""
     v = rec.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) or {}
@@ -1623,7 +1649,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default OFF): the verdict now rests on the head's own INK (height, fill, stem;
             # `rhythm._whole_rest_ink_read`), and a box whose ink was MEASURED and passed is WRITTEN AS THE REST it is (Sean 2026-11-05,
             # "Fix the reader"; his 10-29 "Improve the reader first"). A box whose ink was not measured stays refused, not converted.
-            if whole_rest_from_ink_enabled() and _whole_rest_ink_was_read(rec, sub):
+            if (whole_rest_from_ink_enabled() and _whole_rest_ink_was_read(rec, sub)
+                    and not _rest_twin_in_bar(rec, sub, o)):
                 is_rest = True
                 whole_rest_conv = True
             else:
