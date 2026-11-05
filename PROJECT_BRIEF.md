@@ -3,12 +3,23 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-11-03 (un-frozen 2026-10-07; kept current with every commit alongside
+**Updated:** 2026-11-04 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`; CLAUDE.md was cut to ~1,800 words on
 2026-10-13 and its detail moved to `docs/running.md`, `docs/staged-internals.md`,
 `docs/page-facts.md`, `docs/measuring.md`, `docs/data-sources.md`,
 `docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
+
+## Since then (2026-11-04)
+
+- **Ties and slurs bind to the one traced page curve; a tie is read from position** (2.260b M3): ON.
+- **Three overnight regressions fixed** (2.261: hairpin not a beam, word retry spares heads, clef carry stops): ON.
+- **The key is counted by its flat stems** (2.256b): ON. On Brahms p14 it also names three staves (Horn, Violin, Cello).
+- **The page map is fast again** (2.262): Brahms p5 gather ~32 min -> ~9 min, nothing written changed.
+- **A natural read from its two staggered stems is written plain** (2.263b, Sean's ruling): ON.
+- **An accidental's ink is read once** (2.266b): the one-ink guess no longer re-flags a sign the accidental reader has read. ON.
+- **Counts used to rank work are honest** (2.265): specks and the context page no longer counted.
+- Found, not built: the detector sees a chord's missing second head but scores it under the cut (2.267); plans filed for page beams (M4), page heads (M6) and page-wide claims (2.269).
 
 ## Since then (2026-11-01/03)
 
