@@ -1,0 +1,398 @@
+[
+ {
+  "plate": "litolff",
+  "rg": "glyph/3/0/4/5/11",
+  "page": 3,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.0752672553062439,
+  "fill": "hollow",
+  "box": [
+   1365.96,
+   1030.96,
+   1391.88,
+   1051.92
+  ],
+  "partner": "glyph/3/0/4/5/6",
+  "read_from": "noteheadHalfOnLine",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "C5",
+  "tile": 1,
+  "partner_box": [
+   1366.76,
+   1015.6,
+   1392.68,
+   1038.16
+  ],
+  "crop_origin": [
+   1282,
+   974
+  ],
+  "staff_top": 1022,
+  "staff_bottom": 1086
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/3/0/5/5/6",
+  "page": 3,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.21893398463726044,
+  "fill": "hollow",
+  "box": [
+   1365.98,
+   1165.025,
+   1392.9125,
+   1188.02
+  ],
+  "partner": "glyph/3/0/5/5/4",
+  "read_from": "noteheadHalfOnLine",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "C5",
+  "tile": 2,
+  "partner_box": [
+   1365.98,
+   1223.4575,
+   1391.9675,
+   1245.8225
+  ],
+  "crop_origin": [
+   1284,
+   1106
+  ],
+  "staff_top": 1154,
+  "staff_bottom": 1217
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/1/9/10",
+  "page": 10,
+  "cls": "noteheadHalfOnLine",
+  "score": 0.11043452471494675,
+  "fill": "hollow",
+  "box": [
+   1903.01,
+   2235.9275,
+   1926.95,
+   2259.8675
+  ],
+  "partner": "glyph/10/1/1/9/5",
+  "read_from": "noteheadHalfInSpace",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "F5",
+  "tile": 3,
+  "partner_box": [
+   1903.1675,
+   2215.61,
+   1930.1,
+   2233.0925
+  ],
+  "crop_origin": [
+   1820,
+   2191
+  ],
+  "staff_top": 2249,
+  "staff_bottom": 2312
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/4/14/6",
+  "page": 10,
+  "cls": "noteheadBlackInSpace",
+  "score": 0.19043390452861786,
+  "fill": "filled",
+  "box": [
+   2554.9875,
+   2669.0475,
+   2577.0375,
+   2691.0975
+  ],
+  "partner": "glyph/10/1/4/14/0",
+  "read_from": "noteheadBlackOnLine",
+  "written": true,
+  "blue": true,
+  "type": "quarter",
+  "pitch": "E5",
+  "tile": 4,
+  "partner_box": [
+   2553.885,
+   2724.015,
+   2577.0375,
+   2746.38
+  ],
+  "crop_origin": [
+   2471,
+   2619
+  ],
+  "staff_top": 2667,
+  "staff_bottom": 2730
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/0/10/8",
+  "page": 10,
+  "cls": "noteheadHalfOnLine",
+  "score": 0.18512018024921417,
+  "fill": "hollow",
+  "box": [
+   2060.97,
+   2060.965,
+   2087.01,
+   2084.99
+  ],
+  "partner": "glyph/10/1/0/10/1",
+  "read_from": "noteheadHalfOnLine",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "C6",
+  "tile": 5,
+  "partner_box": [
+   2059.575,
+   2027.33,
+   2086.08,
+   2050.115
+  ],
+  "crop_origin": [
+   1980,
+   2004
+  ],
+  "staff_top": 2107,
+  "staff_bottom": 2169
+ },
+ {
+  "plate": "brahms",
+  "rg": "glyph/12/0/2/8/13",
+  "page": 12,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.06954121589660645,
+  "fill": "hollow",
+  "box": [
+   3329.87,
+   1001.98,
+   3374.96,
+   1043.02
+  ],
+  "partner": "glyph/12/0/2/8/5",
+  "read_from": "noteheadHalfInSpace",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "A4",
+  "tile": 6,
+  "partner_box": [
+   3329.87,
+   1035.73,
+   3372.53,
+   1065.16
+  ],
+  "crop_origin": [
+   3190,
+   874
+  ],
+  "staff_top": 955,
+  "staff_bottom": 1063
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/5/11/6",
+  "page": 10,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.15741991996765137,
+  "fill": "hollow",
+  "box": [
+   2191.9225,
+   2812.97,
+   2217.91,
+   2836.91
+  ],
+  "partner": "glyph/10/1/5/11/5",
+  "read_from": "noteheadHalfOnLine",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "C5",
+  "tile": 7,
+  "partner_box": [
+   2191.9225,
+   2867.15,
+   2220.2725,
+   2891.72
+  ],
+  "crop_origin": [
+   2110,
+   2753
+  ],
+  "staff_top": 2801,
+  "staff_bottom": 2864
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/8/0/17",
+  "page": 10,
+  "cls": "noteheadBlackInSpace",
+  "score": 0.22629009187221527,
+  "fill": "filled",
+  "box": [
+   597.04,
+   3267.0,
+   617.04,
+   3287.96
+  ],
+  "partner": "glyph/10/1/8/0/6",
+  "read_from": "noteheadBlackInSpace",
+  "written": true,
+  "blue": true,
+  "type": "eighth",
+  "pitch": "C5",
+  "tile": 8,
+  "partner_box": [
+   593.2,
+   3307.32,
+   614.64,
+   3328.12
+  ],
+  "crop_origin": [
+   511,
+   3207
+  ],
+  "staff_top": 3255,
+  "staff_bottom": 3319
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/4/3/5",
+  "page": 10,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.10926306247711182,
+  "fill": "hollow",
+  "box": [
+   906.0175,
+   2678.97,
+   932.95,
+   2699.9175
+  ],
+  "partner": "glyph/10/1/4/3/3",
+  "read_from": "noteheadHalfInSpace",
+  "written": false,
+  "blue": false,
+  "type": null,
+  "pitch": null,
+  "tile": 9,
+  "partner_box": [
+   907.5925,
+   2660.8575,
+   929.9575,
+   2676.9225
+  ],
+  "crop_origin": [
+   824,
+   2619
+  ],
+  "staff_top": 2667,
+  "staff_bottom": 2730
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/5/3/9",
+  "page": 10,
+  "cls": "noteheadBlackInSpace",
+  "score": 0.22944940626621246,
+  "fill": "filled",
+  "box": [
+   961.9300000000001,
+   2812.97,
+   984.925,
+   2835.02
+  ],
+  "partner": "glyph/10/1/5/3/1",
+  "read_from": "noteheadBlackOnLine",
+  "written": true,
+  "blue": true,
+  "type": "eighth",
+  "pitch": "C5",
+  "tile": 10,
+  "partner_box": [
+   961.615,
+   2866.9925,
+   983.665,
+   2888.0975
+  ],
+  "crop_origin": [
+   878,
+   2753
+  ],
+  "staff_top": 2801,
+  "staff_bottom": 2864
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/10/1/1/3/3",
+  "page": 10,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.18232400715351105,
+  "fill": "hollow",
+  "box": [
+   908.065,
+   2240.0225,
+   933.1075,
+   2263.9625
+  ],
+  "partner": "glyph/10/1/1/3/1",
+  "read_from": "noteheadHalfInSpace",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "F5",
+  "tile": 11,
+  "partner_box": [
+   908.8525,
+   2227.1075,
+   929.3275,
+   2243.33
+  ],
+  "crop_origin": [
+   826,
+   2201
+  ],
+  "staff_top": 2249,
+  "staff_bottom": 2312
+ },
+ {
+  "plate": "litolff",
+  "rg": "glyph/3/0/9/4/1",
+  "page": 3,
+  "cls": "noteheadHalfInSpace",
+  "score": 0.14761240780353546,
+  "fill": "hollow",
+  "box": [
+   1195.035,
+   1845.99,
+   1221.9675,
+   1868.9850000000001
+  ],
+  "partner": "glyph/3/0/9/4/0",
+  "read_from": "noteheadHalfInSpace",
+  "written": true,
+  "blue": true,
+  "type": "half",
+  "pitch": "G3",
+  "tile": 12,
+  "partner_box": [
+   1196.295,
+   1867.8825,
+   1219.7625,
+   1885.365
+  ],
+  "crop_origin": [
+   1114,
+   1752
+  ],
+  "staff_top": 1800,
+  "staff_bottom": 1863
+ }
+]
