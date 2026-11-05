@@ -1,6 +1,6 @@
 {
- "n_items": 182,
- "n_tiles": 2217,
+ "n_items": 183,
+ "n_tiles": 2229,
  "tiles": [
   {
    "answer": "right",
@@ -29097,6 +29097,258 @@
    "subjects": null,
    "tile": "9",
    "value": "accidental"
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    1365.96,
+    1030.96,
+    1391.88,
+    1051.92
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/3/0/4/5/11",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    961.9300000000001,
+    2812.97,
+    984.925,
+    2835.02
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/5/3/9",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    908.065,
+    2240.0225,
+    933.1075,
+    2263.9625
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/1/3/3",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    1195.035,
+    1845.99,
+    1221.9675,
+    1868.9850000000001
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/3/0/9/4/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    1365.98,
+    1165.025,
+    1392.9125,
+    1188.02
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/3/0/5/5/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    1903.01,
+    2235.9275,
+    1926.95,
+    2259.8675
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/1/9/10",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    2554.9875,
+    2669.0475,
+    2577.0375,
+    2691.0975
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/4/14/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    2060.97,
+    2060.965,
+    2087.01,
+    2084.99
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/0/10/8",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    3329.87,
+    1001.98,
+    3374.96,
+    1043.02
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/12/0/2/8/13",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    2191.9225,
+    2812.97,
+    2217.91,
+    2836.91
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/5/11/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    597.04,
+    3267.0,
+    617.04,
+    3287.96
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/8/0/17",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": null
+  },
+  {
+   "answer": "note head",
+   "answer_kind": "other",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "litolff",
+   "followup": false,
+   "item": "2.268-dyad-rescue",
+   "page_box": [
+    906.0175,
+    2678.97,
+    932.95,
+    2699.9175
+   ],
+   "question_kind": "duration",
+   "subject": "glyph/10/1/4/3/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": null
   },
   {
    "answer": "8th note on first ledger line",
