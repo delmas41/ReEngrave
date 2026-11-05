@@ -425,8 +425,9 @@ class TestTheRetiredScansAreUnreachable(unittest.TestCase):
         self.assertEqual(len(reads), 4, reads)
         self.assertIn("def _tip_obs", src)
         # HEAD_STEM_REACH: both reads are the gated `() if stems_from_strokes_enabled() else ev.rows(...)` form
-        self.assertEqual(len(re.findall(r"ev\.rows\(Q\.HEAD_STEM_REACH\)", src)), 2)
-        self.assertEqual(len(re.findall(r"\(\) if stems_from_strokes_enabled\(\) else ev\.rows\(Q\.HEAD_STEM_REACH\)", src)), 2)
+        # (ROADMAP 2.270 adds a third, the whole-rest stem test, in the same gated form)
+        self.assertEqual(len(re.findall(r"ev\.rows\(Q\.HEAD_STEM_REACH\)", src)), 3)
+        self.assertEqual(len(re.findall(r"\(\) if stems_from_strokes_enabled\(\) else ev\.rows\(Q\.HEAD_STEM_REACH\)", src)), 3)
         import tools.omr.staged.adjudicators.ownership as own
         osrc = inspect.getsource(own._stem_owner)
         self.assertLess(osrc.index("stems_from_strokes_enabled"), osrc.index("ev.rows(Q.HEAD_STEM_REACH)"))

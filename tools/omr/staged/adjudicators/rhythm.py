@@ -9936,7 +9936,7 @@ def _whole_rest_ink_read(ev: Evidence) -> Tuple[Optional[str], Dict[str, Any]]:
             # slash drawn across the stem (his tremolo slash: 0.41/0.59) -- not a rest, not a head
             info["stem"] = stem
             return "straddles_a_stem", info
-    for r in ev.rows(Q.HEAD_STEM_REACH):
+    for r in (() if stems_from_strokes_enabled() else ev.rows(Q.HEAD_STEM_REACH)):
         if str(r.value).lower() in ("up", "down", "both"):
             stem = {"by": "head_stem_reach", "value": r.value}
     if stem is not None:
