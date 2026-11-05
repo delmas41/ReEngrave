@@ -108,6 +108,7 @@ machine-readable form.
   from the arithmetic, and a bar that would only add up under an unmarked
   tuplet gives no confirmation (Sean, 2026-10-13).
 - **Arcs and hairpins are READ PAGE-WIDE** (Sean, 2026-10-30: *"the actual symbols reach past cell and should be read page wide."*; scope: general): a slur, tie or hairpin runs past its bar and its staff's padded crop, so the page-wide pass reads and claims each one whole; a detector box in a cell is only a witness to it, never the mark (ROADMAP 2.240; plan-2026-10-28-page-claim-order §10).
+- **An arc often stops short of its note; it binds to the CLOSEST note** (Sean, 2026-11-05: *"Often arcs stop short. Closest note works"*; scope: general, both plates): an arc end with no head inside the binder's window binds to the nearest head beyond it when that head is the closest one; two heads about equally near is not a choice (abstain, counted). An arc running off one system joins the piece that picks up on the next (Sean, 2026-11-05: *"Anything that needs to be done to connect arc separated by systems is fine"*; ROADMAP 2.271).
 - An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two heads
   are at one staff position (empty interval 0.168 vs 0.435 spaces,
   `benchmarks/omr-arc-grammar-2026-09/FINDINGS.md`). Of two stacked arcs
