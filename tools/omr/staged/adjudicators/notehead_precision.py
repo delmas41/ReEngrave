@@ -3636,7 +3636,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
                   Q.NOTEHEAD_STEM_CROSS_INK,
                   # ⚠️ ROADMAP 2.77b: the beam strokes the CV reader read and
                   # their ink rows -- see `_beam_piece_refusal`.
-                  Q.BEAM_STROKE, Q.BEAM_STROKE_INK,
+                  Q.BEAM_STROKE, Q.PAGE_BEAM, Q.BEAM_STROKE_INK,
                   # ⚠️ ROADMAP 2.49 REDESIGN -- RE-ADDED. 2.42's own comment
                   # above notes `Q.STEM` was dropped when 2.40's pair-wise
                   # rule was superseded; the POSITION test
@@ -3669,7 +3669,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
           Q.NOTEHEAD_RECENTRE, Q.STACKED_HEAD_FIT,
           Q.HEAD_LINE_CUT, Q.NOTEHEAD_INK,
           Q.NOTEHEAD_STEM_CROSS_INK, Q.STEM, Q.NOTEHEAD_LETTER_INK, Q.STEM_SLASH,
-          Q.BEAM_STROKE, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
+          Q.BEAM_STROKE, Q.PAGE_BEAM, Q.BEAM_STROKE_INK, Q.LETTER_LOOK_COVER, Q.REST,
           Q.UNBOXED_REST_SHAPE, Q.HEAD_OVAL, Q.ARC_BOX, Q.CLAIMED_AREA,
           Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
           Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER, Q.GLYPH_STROKES, Q.HEAD_INK),

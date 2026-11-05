@@ -65,10 +65,9 @@ def retire_a_enabled() -> bool:
 def views_filed(ev: Any, cell: Any) -> bool:
     """True when this cell's page filed the page beam views (`gather_page_beam_views` leaves a marker `Q.PAGE_BEAM` census row with `views_filed`)."""
     from .record import Q, Scope
-    try:
-        rows = ev.rows(Q.PAGE_BEAM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-    except Exception:                                                  # noqa: BLE001
-        return False
+    # no try/except: an adjudicator that reads this must DECLARE `Q.PAGE_BEAM` (Evidence raises on an undeclared quantity), and a swallowed raise here once made the
+    # retirement a silent no-op (the first replay read zero verdict differences)
+    rows = ev.rows(Q.PAGE_BEAM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
     return any((r.detail or {}).get("views_filed") for r in rows)
 
 
@@ -83,6 +82,8 @@ def live_rows(ev: Any, cell: Any, rows: Sequence[Any]) -> List[Any]:
     and the page views' stay); with it off, the page views are dropped (a record gathered with the views reads exactly as before)."""
     from .record import READERS
     if retired_for(ev, cell):
+        # (Tried and reverted, ROADMAP 2.260c M4b: not offering the views of page beams fused to a head box. It lost MORE notes, 128 against 63 on the Litolff
+        # sample -- the fused beams are real beams the page reader reads and the cell reader A also read; the page map does not split them from heads, M6's job.)
         return [r for r in rows if r.reader != READERS.CV_LINES]
     return [r for r in rows if r.reader != READERS.CV_PAGE_BEAMS]
 
