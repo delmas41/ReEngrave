@@ -2744,12 +2744,32 @@ def _two_note_reading(ev: Evidence, arc: Any, fs: "_Flank") -> Dict[str, Any]:
         relation = "same" if near else "conflict"
     else:
         relation = "different" if not near else "conflict"
+    local_dy = None
+    if (tie_position_everywhere_enabled() and ca[1] == "head" and cb[1] == "head"
+            and a[0].id not in ext and b[0].id not in ext
+            and "ledger" not in (_step_of(ca)[1], _step_of(cb)[1])):
+        # ROADMAP 2.264 (OMR_TIE_POSITION_EVERYWHERE; page-facts s1, Sean 2026-11-03: *a tie is read from POSITION, not pitch*): the two
+        # heads' positions as each was MEASURED AGAINST ITS OWN BAR'S STAFF (`Q.NOTEHEAD_STAFF_POSITION`, local to the head's x, tilt and
+        # all) -- never a rounded step (two positions 0.49 and 0.51 round apart) nor two box centres (a box drawn tall moves its centre
+        # half a space), exactly what the 2.260b binder asks where a step is unread. A far head whose step is a LEDGER reading keeps it
+        # (a far head is placed by its ledger lines only); a head read by its extent or a tall box's end keeps its own measure. Positions
+        # inside the empty interval (SAME_POSITION_SPACES, BIND_DIFFERENT_POSITION_SPACES) say nothing: the relation stands as it was.
+        pa_, pb_ = _local_position(ev, a[0]), _local_position(ev, b[0])
+        if pa_ is not None and pb_ is not None:
+            from ..arcs_system import SAME_POSITION_SPACES as _SAME
+            local_dy = abs(pa_ - pb_) / 2.0
+            if local_dy <= _SAME and relation in ("unread", "conflict", "different"):
+                relation = "same"
+            elif local_dy >= BIND_DIFFERENT_POSITION_SPACES and relation in ("unread", "conflict"):
+                relation = "different"
     out.update(start=a[0].subject.to_key(), stop=b[0].subject.to_key(),
                start_step=sa, stop_step=sb,
                start_step_source=_step_of(ca)[1],
                stop_step_source=_step_of(cb)[1],
                start_candidate=ca[1], stop_candidate=cb[1], arc_side=side,
                dy_spaces=round(dy, 3), relation=relation)
+    if local_dy is not None:
+        out["local_dy_spaces"] = round(local_dy, 3)
     for name, c in (("start_extent", ca), ("stop_extent", cb)):
         note = _ext_note(c)
         if note is not None:
@@ -3705,11 +3725,11 @@ def _head_usable(ev: Evidence, key: str) -> bool:
         "pitches and refuses (and counts) a pair that differs",
     ),
     implicates=(Q.TIE_PAIR, Q.PITCH, Q.ACCIDENTAL, Q.ARC_KIND),
-    composed_from=(Q.ARC_BOX, Q.GLYPH_BOX),
+    composed_from=(Q.ARC_BOX, Q.GLYPH_BOX, Q.NOTEHEAD_STAFF_POSITION),
     scope=Kind.GLYPH,
     wants=(Q.ARC_BOX, Q.ARC_KIND, Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC,
            Q.GLYPH_BOX, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,
-           Q.CELL_BOX, Q.SYSTEM_ARC),
+           Q.CELL_BOX, Q.SYSTEM_ARC, Q.NOTEHEAD_STAFF_POSITION),
     subjects_from=Q.ARC_BOX,
     reasons=("paired", "paired_by_system_arc", "paired_by_page_binding", "paired_by_arc_side", "more_than_one_pair",
              "not_a_tie", "not_an_arc",
@@ -3848,7 +3868,25 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
 
     limit = _legacy_articulation.TIE_SAME_POSITION_MAX_SPACES
 
-    def one_position(ya: float, yb: float) -> bool:
+    pos_everywhere = tie_position_everywhere_enabled()
+    local_pos: Dict[Any, Optional[float]] = {}
+
+    def one_position(ya: float, yb: float, ra: Any = None, rb: Any = None) -> bool:
+        if pos_everywhere and ra is not None and rb is not None:
+            # ROADMAP 2.264 (OMR_TIE_POSITION_EVERYWHERE; page-facts s1, Sean 2026-11-03: *a tie is read from POSITION, not pitch*): where
+            # both heads carry a LOCAL staff position (`Q.NOTEHEAD_STAFF_POSITION`, measured against each head's own bar) they are one
+            # position or not by THAT -- not by two box centres, which a box drawn tall or short moves by half a space -- as the 2.260b
+            # binder asks it. Inside the empty interval between one position and two the box test stands, as before.
+            for r_ in (ra, rb):
+                if r_.id not in local_pos:
+                    local_pos[r_.id] = _local_position(ev, r_)
+            pa_, pb_ = local_pos[ra.id], local_pos[rb.id]
+            if pa_ is not None and pb_ is not None:
+                ldy_ = abs(pa_ - pb_) / 2.0
+                if ldy_ <= limit:
+                    return True
+                if ldy_ >= BIND_DIFFERENT_POSITION_SPACES:
+                    return False
         return abs(ya - yb) / avg_h <= limit
 
     # ⚠️ A TIE JOINS CONSECUTIVE NOTES. Of two heads at the partner's position
@@ -3862,13 +3900,13 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
     blocked_by_intervening = 0
     for dxl, yl, rl, il in lefts:
         for dxr, yr, rr, ir in rights:
-            if rl.subject == rr.subject or not one_position(yl, yr):
+            if rl.subject == rr.subject or not one_position(yl, yr, rl, rr):
                 continue
             if any(d < dxl for d, y, r, _i in lefts
-                   if r is not rl and one_position(y, yr)):
+                   if r is not rl and one_position(y, yr, r, rr)):
                 continue
             if any(d < dxr for d, y, r, _i in rights
-                   if r is not rr and one_position(y, yl)):
+                   if r is not rr and one_position(y, yl, r, rl)):
                 continue
             xl_c, xr_c = ax0 - dxl, ax1 + dxr
             if head_between(il, xl_c, ir, xr_c, (rl.id, rr.id)):
@@ -3944,6 +3982,16 @@ def adjudicate_tie_pair(ev: Evidence) -> Ruling:
 #: member's tie is its own arc (2.252: two printed arcs, two ties). Decided only where the arc's centre lies outside the pairs'
 #: positions (above the highest pair or below the lowest) and that extreme position holds exactly one pair; anything else still narrows.
 TIE_ARC_SIDE_ENV = "OMR_TIE_PAIR_ARC_SIDE"
+
+
+TIE_POSITION_ENV = "OMR_TIE_POSITION_EVERYWHERE"
+
+
+def tie_position_everywhere_enabled() -> bool:
+    """`OMR_TIE_POSITION_EVERYWHERE` (ROADMAP 2.264), default OFF. page-facts s1 (Sean 2026-11-03, general: *a tie is read from POSITION, not
+    pitch*): `_two_note_reading` and `adjudicate_tie_pair` compare the two end heads' LOCAL staff positions (`Q.NOTEHEAD_STAFF_POSITION`, the
+    way the 2.260b binder does) rather than a rounded step or two box centres in page pixels. Explicit 1/true/yes/on enables."""
+    return os.environ.get(TIE_POSITION_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 def tie_arc_side_enabled() -> bool:
