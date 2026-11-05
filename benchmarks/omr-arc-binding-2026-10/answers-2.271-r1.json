@@ -1,0 +1,177 @@
+{
+ "lane": "2.271 OMR_ARC_ACROSS_SYSTEMS (branch lane-2.271-arcs-page-once 54da0db40)",
+ "date": "2026-11-05",
+ "tiles": "out/print/2.271 (12, in the lane worktree)",
+ "sean_verbatim": "Why is 2.271 even a question. If there are more than 2 notes or one pitch involved it is a slur. 2 notes and same pitch it is a tie. This should be easy. 1. Tie 2. Slur 3. Slur 4-8 tie 9. Slur 10-11 tie 12 slur",
+ "summary": "real joins: 9/10 kind right; tile 6 written slur (D3 -> G2), Sean tie: one end pitch misread. The two mismatch controls (3, 7) were answered as arcs: a mismatch control on a kind question cannot fail.",
+ "answers": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "top": "glyph/1/0/9/15/2",
+   "bottom": "glyph/2/0/9/0/0",
+   "pitches": [
+    "G4",
+    "G4"
+   ],
+   "written": "tie",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "right"
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "top": "glyph/18/0/1/6/0",
+   "bottom": "glyph/18/1/1/0/12",
+   "pitches": [
+    "G5",
+    "C5"
+   ],
+   "written": "slur",
+   "real_join": true,
+   "sean": "slur",
+   "verdict": "right"
+  },
+  {
+   "tile": 3,
+   "plate": "brahms",
+   "top": "glyph/22/0/6/11/6",
+   "bottom": "glyph/15/1/10/0/1",
+   "pitches": [
+    "Ab4",
+    "F3"
+   ],
+   "written": null,
+   "real_join": false,
+   "sean": "slur",
+   "verdict": "control_not_detected (Sean judged it one arc; the mismatch control could not fail on a kind question)"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "top": "glyph/16/0/3/16/2",
+   "bottom": "glyph/16/1/3/0/12",
+   "pitches": [
+    "Eb4",
+    "Eb4"
+   ],
+   "written": "tie",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "right"
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "top": "glyph/8/0/8/12/3",
+   "bottom": "glyph/8/1/8/0/2",
+   "pitches": [
+    "Eb3",
+    "Eb3"
+   ],
+   "written": "tie",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "right"
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "top": "glyph/8/0/9/12/3",
+   "bottom": "glyph/8/1/9/0/1",
+   "pitches": [
+    "D3",
+    "G2"
+   ],
+   "written": "slur",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "wrong_kind"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "top": "glyph/16/0/3/16/2",
+   "bottom": "glyph/2/0/9/0/0",
+   "pitches": [
+    "Eb4",
+    "G4"
+   ],
+   "written": null,
+   "real_join": false,
+   "sean": "tie",
+   "verdict": "control_not_detected (Sean judged it one arc; the mismatch control could not fail on a kind question)"
+  },
+  {
+   "tile": 8,
+   "plate": "brahms",
+   "top": "glyph/22/0/6/11/6",
+   "bottom": "glyph/22/1/6/0/13",
+   "pitches": [
+    "Ab4",
+    "Ab4"
+   ],
+   "written": "tie",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "right"
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "top": "glyph/15/0/9/8/2",
+   "bottom": "glyph/15/1/10/0/1",
+   "pitches": [
+    "Ab3",
+    "F3"
+   ],
+   "written": "slur",
+   "real_join": true,
+   "sean": "slur",
+   "verdict": "right"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "top": "glyph/12/1/1/12/10",
+   "bottom": "glyph/13/0/1/0/1",
+   "pitches": [
+    "G4",
+    "G4"
+   ],
+   "written": "tie",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "right"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "top": "glyph/15/1/7/19/2",
+   "bottom": "glyph/16/0/7/0/5",
+   "pitches": [
+    "G5",
+    "G5"
+   ],
+   "written": "tie",
+   "real_join": true,
+   "sean": "tie",
+   "verdict": "right"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "top": "glyph/3/1/12/10/5",
+   "bottom": "glyph/4/0/12/0/5",
+   "pitches": [
+    "Bb3",
+    "Db3"
+   ],
+   "written": "slur",
+   "real_join": true,
+   "sean": "slur",
+   "verdict": "right"
+  }
+ ]
+}
