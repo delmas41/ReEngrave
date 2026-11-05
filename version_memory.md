@@ -9,6 +9,13 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-04 -- manager session end: 2.260b M3, 2.261, 2.256b landed ON; START HERE after 2026-11-04 written
+
+Overnight 20261103-night compared (Litolff blue/page 140.6 -> 116.9; Brahms ties/slurs not written/page 154.5 -> 100.6; Brahms judged right->wrong 0, Litolff 3 traced -> 2.261 fixed 2, litolff_02 open). Census of both plates' records by deciding rule set the next list (ROADMAP START HERE after 2026-11-04): page-map cost (2.262) first, then M4 beams, position everywhere, Brahms accidental_family, fill_part_key re-census, ranking hygiene. Lessons: pgrep wait loops match themselves; a stopped agent leaves processes and a stale `.record-load.lock`; don't re-gate a clean merge.
+
+## 2026-11-04 -- ROADMAP 2.256b landed ON: OMR_KEY_OBJECT_COUNT default ON (deny-list)
+STAGED GATHER, `key_object.flat_stems` counts flat stems at the fixed slot positions for the measured clef, never lowers a count (scan damage breaks or fuses whole flats). Sean's 12 tiles 12/12 ("tiles 6 and 10 have no accidentals, all the others have 3 flats"), "land on". Gate: fast tier 9915 passed, 0 failed; lane's pre-merge 2-page gathers judged right->wrong 0; post-merge re-measure skipped (manager), overnight stands in. One fixture pinned to 0 (2.187 consult). Tests: `test_key_object_count_2_256b.py`.
+
 ## 2026-11-04 -- ROADMAP 2.260b M3 (page ledger, arcs) landed ON: OMR_PAGE_CLAIMS, OMR_BARLINE_COLUMN_FACT, OMR_PAGE_STROKES default ON (deny-list)
 
 STAGED GATHER/ADJUDICATE. Sean "Yes". `arc_claim.page_claims_enabled()` now deny-list; `barline_columns.enabled()` / `page_strokes.enabled()` default ON (the claims force them on regardless). Round 3: a tie is compared by each head's own local staff position when a step is unread (`ownership.py`); a stem tip over 4.5 sp (`TIP_MAX_SPACES`, not confirmed) from its head is marked and never supports "different". Sean's r2 tiles re-scored: 11 right, tile 9 unwritten, 0 wrong. Gate: fast tier 9902 passed; Brahms p0+p5 through export vs all-three-OFF: ties +2, slurs +5 -16, judged right->wrong 0, named hand arcs identical. Not fixed: litolff_02 (`_two_note_reading`), Litolff p10 tile 9 (head position) -> position-not-pitch follow-up. Record: benchmarks/page-ledger-2026-11/answers-2.260b-r3-rescore.json, DECISIONS 2026-11-04.
