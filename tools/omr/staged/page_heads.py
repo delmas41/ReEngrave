@@ -427,7 +427,7 @@ def file_page_heads(log: Any, pws: Any, ph: Optional[PageHeads], pm: Any, *, pro
         sb = [[round(float(pm.strokes[i].box[0]), 1), round(float(pm.strokes[i].box[1]), 1), round(float(pm.strokes[i].box[0] + pm.strokes[i].box[2]), 1),
                round(float(pm.strokes[i].box[1] + pm.strokes[i].box[3]), 1)] for i in c["won"]]
         log.observe(sub, Q.CLAIMED_AREA, list(c["won"]), reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, owner=c["owner"], unit=UNIT, standing="READ", source=SOURCE,
-                    how="page_head", page_strokes=list(c["won"]), contested=c["contested"], twins=c["twins"], head=c["head"], members=c["members"], stroke_boxes=sb)
+                    how="page_head", page_strokes=list(c["won"]), contested=c["contested"], head=c["head"], members=c["members"], stroke_boxes=sb)
         filed += 1
     cen = dict(ph.census, rows=n, claims=filed, claims_contested=sum(1 for c in claims if c["contested"]), seconds=ph.seconds)
     log.observe(sub, Q.PAGE_HEAD, "census", reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, **cen)
