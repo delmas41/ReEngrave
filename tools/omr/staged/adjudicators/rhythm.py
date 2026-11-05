@@ -4736,7 +4736,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     # discounting a cross-staff stroke, so the OUTCOME can depend on a fact
     # about the SYSTEM and the neighbour's own STAFF_GROUP, not only on this
     # glyph's own cell.
-    composed_from=(Q.BEAM_STROKE, Q.PAGE_BEAM, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
+    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
@@ -4806,7 +4806,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     # ink-continuity reading -- so the OUTCOME, not only the value, depends
     # on it, same reason `Q.STEM_TIP_INK` is declared above rather than left
     # a bare `wants`.
-    wants=(Q.BEAM_STROKE, Q.PAGE_BEAM, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
+    wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
@@ -9653,13 +9653,13 @@ def _stems_on(head_box, stems):
 
 @decision(
     quantity=Q.STEM_DIRECTION,
-    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.PAGE_BEAM, Q.STROKE, Q.STROKE_OWNER),
+    composed_from=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     # ⚠️ `Q.NOTEHEAD_CLASS` is the DOMAIN, not a `wants`. A declaration the
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.PAGE_BEAM, Q.STROKE, Q.STROKE_OWNER),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
              "no_evidence", "stem_readers_disagree"),

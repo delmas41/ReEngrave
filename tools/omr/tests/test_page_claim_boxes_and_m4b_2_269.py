@@ -105,11 +105,11 @@ class Retire(unittest.TestCase):
         log = Log()
         cell = R.cell(0, 0, 0, 0)
         a = log.observe(cell, Q.BEAM_STROKE, (0, 0, 10, 2), reader=READERS.CV_LINES, frame="cell:0", x0=0, x1=10, y_center=1)
-        v = log.observe(cell, Q.BEAM_STROKE, (0, 0, 12, 2), reader=READERS.CV_PAGE_BEAMS, frame="cell:0", x0=0, x1=12, y_center=1)
+        v = log.observe(cell, Q.BEAM_STROKE, (0, 0, 12, 2), reader=READERS.CV_PAGE_BEAMS, frame="cell:0", x0=0, x1=12, y_center=1) if with_views else None
         d = log.observe(cell, Q.BEAM_STROKE, (0, 0, 14, 8), reader=READERS.DETECTOR, frame="cell:0", x0=0, x1=14, y_center=4)
-        if with_views:
-            log.observe(R.page(0), Q.PAGE_BEAM, "views", reader=READERS.CV_PAGE_BEAMS, frame="page", views_filed=True)
-        return SimpleNamespace(rows=lambda q, scope=None, subject=None: log.rows(q, subject, scope=scope)), cell, (a, v, d)
+        ev = SimpleNamespace(rows=lambda q, scope=None, subject=None: log.rows(q, subject, scope=scope),
+                             refusals=lambda q, scope=None, subject=None: [])
+        return ev, cell, (a, v, d)
 
     def test_flag_on_with_views_drops_a_and_keeps_views_and_detector(self):
         ev, cell, (a, v, d) = self._ev(True)

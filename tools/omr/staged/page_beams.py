@@ -63,12 +63,13 @@ def retire_a_enabled() -> bool:
 
 
 def views_filed(ev: Any, cell: Any) -> bool:
-    """True when this cell's page filed the page beam views (`gather_page_beam_views` leaves a marker `Q.PAGE_BEAM` census row with `views_filed`)."""
-    from .record import Q, Scope
-    # no try/except: an adjudicator that reads this must DECLARE `Q.PAGE_BEAM` (Evidence raises on an undeclared quantity), and a swallowed raise here once made the
-    # retirement a silent no-op (the first replay read zero verdict differences)
-    rows = ev.rows(Q.PAGE_BEAM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-    return any((r.detail or {}).get("views_filed") for r in rows)
+    """True when the page filed its beam views for this cell: a `Q.BEAM_STROKE` row, or a refusal ("no page beam holds a stem of this cell"), of reader CV_PAGE_BEAMS
+    (`gather_page_beam_views` files one or the other for every cell it covers). Read from the cell's own `Q.BEAM_STROKE` evidence, which every beam consumer already declares."""
+    from .record import Q, READERS, Scope
+    for r in ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        if r.reader == READERS.CV_PAGE_BEAMS:
+            return True
+    return any(r.reader == READERS.CV_PAGE_BEAMS for r in ev.refusals(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
 
 
 def retired_for(ev: Any, cell: Any) -> bool:
