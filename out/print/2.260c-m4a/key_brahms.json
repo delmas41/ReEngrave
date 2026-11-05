@@ -1,0 +1,131 @@
+[
+ {
+  "tile": "m4a_brahms_01.png",
+  "plate": "brahms",
+  "page": 0,
+  "why": "A reads a beam slab, the page does not",
+  "crop_page_px": [
+   2029,
+   6057,
+   2537,
+   6240
+  ],
+  "box_page_px": [
+   2112.0,
+   6140.1,
+   343.5,
+   17.7
+  ],
+  "role": null,
+  "c_thickness": 0.29,
+  "cut": "l"
+ },
+ {
+  "tile": "m4a_brahms_02.png",
+  "plate": "brahms",
+  "page": 5,
+  "why": "the page reads a beam, A has no slab there",
+  "crop_page_px": [
+   5137,
+   629,
+   5515,
+   935
+  ],
+  "box_page_px": [
+   5222.0,
+   789.0,
+   211.0,
+   61.0
+  ],
+  "role": "beam",
+  "c_thickness": null,
+  "cut": null
+ },
+ {
+  "tile": "m4a_brahms_03.png",
+  "plate": "brahms",
+  "page": 5,
+  "why": "A's slab is cut by a cell edge",
+  "crop_page_px": [
+   3050,
+   2004,
+   3815,
+   2176
+  ],
+  "box_page_px": [
+   3133.0,
+   2087.2,
+   600.0,
+   7.0
+  ],
+  "role": null,
+  "c_thickness": 0.269,
+  "cut": "lr"
+ },
+ {
+  "tile": "m4a_brahms_04.png",
+  "plate": "brahms",
+  "page": 0,
+  "why": "the page and D count different beam levels at a stem",
+  "crop_page_px": [
+   3625,
+   5557,
+   3908,
+   5834
+  ],
+  "box_page_px": [
+   3708.0,
+   5706.0,
+   118.0,
+   20.0
+  ],
+  "stem": 2410,
+  "end": "bottom",
+  "page_levels": 2,
+  "D_levels": 1
+ },
+ {
+  "tile": "m4a_brahms_05.png",
+  "plate": "brahms",
+  "page": 5,
+  "why": "the page and D count different beam levels at a stem",
+  "crop_page_px": [
+   2035,
+   6975,
+   2223,
+   7262
+  ],
+  "box_page_px": [
+   2117.8,
+   7164.0,
+   23.5,
+   16.5
+  ],
+  "stem": 2402,
+  "end": "bottom",
+  "page_levels": 0,
+  "D_levels": 1
+ },
+ {
+  "tile": "m4a_brahms_06.png",
+  "plate": "brahms",
+  "page": 5,
+  "why": "the page and D count different beam levels at a stem",
+  "crop_page_px": [
+   3540,
+   3281,
+   3730,
+   3568
+  ],
+  "box_page_px": [
+   3622.8,
+   3470.0,
+   25.5,
+   16.5
+  ],
+  "stem": 4432,
+  "end": "bottom",
+  "page_levels": 0,
+  "D_levels": 1
+ }
+]
