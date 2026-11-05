@@ -55,6 +55,7 @@ Read FIRST. The 11-03 evening block holds the direction (page ledger, "read once
 - "Unboxed" meant "no box in the record", and a record box already means detector OR rescue; measure the detector's raw candidates before calling a head unseen (2.267).
 - Look at every tile sheet before it goes to Sean: M4a's random disagreement crops showed no beam on most tiles and were not sent.
 - Answers files need `judged build` in the same commit (a stale judged index failed a landing's fast tier).
+- Two wait loops deadlocked for ~2 h (2.268): each waited on `pgrep -f "tools.omr.staged "`, which matched the OTHER waiter's shell command line. Wait on a background command's exit, or match python processes only (`pgrep -f "python.* -m tools.omr.staged"`); a lane quiet for an hour gets a `ps` check.
 
 ## START HERE — after 2026-11-04 (earlier manager; superseded by the block above for NEXT; its open items stand) (main ≥ the commit naming this block)
 
