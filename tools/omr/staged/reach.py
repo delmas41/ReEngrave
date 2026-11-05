@@ -411,6 +411,8 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.179. Pure helpers for `gather.gather_stem_end_heads` (the flag, orphan stems, the stem-end window, the candidate pick):
     # files no row, names no quantity; the rows are `gather_stem_end_heads`'s own.
     "stem_end_heads.py",
+    # ROADMAP 2.268 (trial). Pure helpers for `gather.gather_dyad_head_rescue`; files no row, names no quantity.
+    "dyad_head_rescue.py",
     # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
     "stroke_map.py",
     # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes
