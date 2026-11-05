@@ -77,10 +77,10 @@ KNOWN_GAPS: Dict[str, str] = {
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M2 (docs/plan-2026-11-03-page-ledger.md): the page stroke map is filed and read by NOTHING until M3 "
         "(`[[cell, ordinal]]` claims -> page stroke ids) and M4 (one beam reader on page strokes) land; the exported file is byte-identical with "
         "`OMR_PAGE_STROKES` on, which is the proof. A reader that appears removes this entry."),
-    Q.PAGE_BEAM: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a (docs/plan-2026-11-04-page-beams-m4.md): the page beam reader files the roles and joined stems of the page map's "
-        "strokes and the beam levels at each stem tip, and NOTHING reads them until M4b (the cell views replace the cell beam reads); the exported file is "
-        "byte-identical with `OMR_PAGE_BEAMS` on, which is the proof. A reader that appears removes this entry."),
+    Q.PAGE_HEAD: (
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
+        "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
+        "the proof. A reader that appears removes this entry."),
     Q.PAGE_BEAM_TIP: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
         "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),
@@ -357,6 +357,8 @@ STAGE_OF_FILE = {
     "page_strokes.py": "GATHER",
     # ROADMAP 2.260c M4a: files `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP` from its hook line in `gather.gather()`.
     "page_beams.py": "GATHER",
+    # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
+    "page_heads.py": "GATHER",
     # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
     "page_claim_names.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.

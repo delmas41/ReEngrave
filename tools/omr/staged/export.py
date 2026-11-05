@@ -2560,9 +2560,23 @@ def _beam_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
     for the same reason. The conversion is `_beam_detections_page`'s job.
     """
     out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
+    # ROADMAP 2.260c M4b (`OMR_PAGE_BEAMS_RETIRE_A`): on a page whose record holds the page beam views, the flag decides which reader's rows are the beams
+    # (A's cell strokes OFF, the page views ON); a record without views reads A's, as ever.
+    from . import page_beams as _PB
+    retire = _PB.retire_a_enabled()
+    pages_with_views = set()
+    if retire:
+        for o in rec.obs_of(Q.PAGE_BEAM):
+            if (o.get("detail") or {}).get("views_filed"):
+                pages_with_views.add(str(o["subject"]).split("/")[1] if "/" in str(o["subject"]) else str(o["subject"]))
     for o in rec.obs_of(Q.BEAM_STROKE):
         v = o["value"]
         if isinstance(v, (list, tuple)) and len(v) >= 4:
+            on_view_page = retire and str(o["subject"]).split("/")[1] in pages_with_views
+            if o.get("reader") == "cv_page_beams" and not on_view_page:
+                continue
+            if o.get("reader") == "cv_lines" and on_view_page:
+                continue
             out[o["subject"]].append(tuple(float(x) for x in v[:4]))
     return dict(out)
 

@@ -128,6 +128,62 @@ def _arc_claims(ev: Evidence, cell) -> List[SO.Claim]:
     return out
 
 
+def _head_claims(ev: Evidence, cell, claims: List[SO.Claim], page: Dict[int, Tuple[float, ...]]) -> Tuple[List[SO.Claim], Dict[str, int]]:
+    """ROADMAP 2.260e M6c (flag `OMR_PAGE_HEAD_CLAIM`, needs `OMR_PAGE_HEADS`): a head owns the ink OF ITS OWN PAGE HEAD, not "a box holds half of a cell stroke"
+    (Sean 2026-10-30: "arbitrary"). GATHER read every head once on the page (`page_heads`), folded twin boxes to one head and claimed its blob strokes (owner `head`)
+    and the level stubs touching it (owner `ledger`) as `unit: page_ink` rows filed on the page. For each such head:
+
+      * every detector box folded into it keeps its claim (its key, its class, its shape tests, its verdicts) but COVERS the strokes of THIS cell whose centre lies in
+        the page head's ink boxes -- a box drawn off its ink still owns the ink it stands for, and twins cover the same ink (MERGED, one family);
+      * a ledger claim covers this cell's strokes inside its stub boxes (a non-area claim, so the shape test applies).
+    A box that is not a member of any page head with ink (a flag-off record, a box on no stroke) keeps its box-overlap claim untouched. Returns the claims and the
+    counts (`replaced`, `ledger_claims`, `gained_strokes`, `lost_strokes`) for the verdict's census."""
+    from .. import page_heads as _PH
+    cen = {"replaced": 0, "ledger_claims": 0, "gained_strokes": 0, "lost_strokes": 0}
+    if not _PH.claim_enabled():
+        return claims, cen
+    by_member: Dict[str, List[List[float]]] = {}
+    ledgers: List[Tuple[str, List[List[float]]]] = []
+    for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        d = r.detail or {}
+        if d.get("source") != _PH.SOURCE or d.get("unit") != _PH.UNIT or not d.get("stroke_boxes"):
+            continue
+        boxes = [[float(t) for t in b] for b in d["stroke_boxes"]]
+        if d.get("owner") == "head":
+            for k in d.get("members") or ():
+                by_member.setdefault(str(k), []).extend(boxes)
+        elif d.get("owner") == "ledger":
+            ledgers.append((r.id, boxes))
+
+    def inside(boxes: List[List[float]]) -> Tuple[int, ...]:
+        res = []
+        for o, pb in sorted(page.items()):
+            cx, cy = (pb[0] + pb[2]) / 2.0, (pb[1] + pb[3]) / 2.0
+            if any(b[0] - 1 <= cx <= b[2] + 1 and b[1] - 1 <= cy <= b[3] + 1 for b in boxes):
+                res.append(o)
+        return tuple(res)
+    out: List[SO.Claim] = []
+    for c in claims:
+        boxes = by_member.get(c.key) if (c.family == "head" and not c.area) else None
+        if not boxes:
+            out.append(c)
+            continue
+        mine = inside(boxes)
+        if not mine:
+            out.append(c)
+            continue
+        cen["replaced"] += 1
+        cen["gained_strokes"] += len(set(mine) - set(c.covers))
+        cen["lost_strokes"] += len(set(c.covers) - set(mine))
+        out.append(SO.Claim(c.key, c.family, c.cls, mine, c.partial, c.row_id))
+    for rid, boxes in ledgers:
+        mine = inside(boxes)
+        if mine:
+            cen["ledger_claims"] += 1
+            out.append(SO.Claim("page_head_ledger/" + rid, "ledger", "ledger", mine, (), rid))
+    return out, cen
+
+
 def _hairpin_claims(ev: Evidence, cell) -> List[SO.Claim]:
     """ROADMAP 2.254 r2 (`OMR_HAIRPIN_REACH`): the strokes of THIS cell a CV hairpin read's ink claim names (`gather.gather_hairpin_claim`: one row
     per (hairpin, staff), value `[[cell, ordinal], ...]`, filed on the staff). Tier 0 beside the arcs: a stroke along the hairpin's arms is the
@@ -335,6 +391,7 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     hairpin_claims = _hairpin_claims(ev, cell)        # 2.254 r2 (flag OMR_HAIRPIN_REACH; [] with it OFF)
     claims += hairpin_claims
     claims += _found_whole_rests(ev, cell, page, claims)
+    claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
     from .rhythm import beams_from_strokes_enabled
     shaped = SO.owner_shape_enabled()
     vetoes = shape_vetoes(ev, cell, inks, claims) if shaped else None
@@ -363,6 +420,8 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     value = {"owned": sorted(o for o, w in owned.items() if w.state in ("decided", "merged")),
              "contested": sorted(o for o, w in owned.items() if w.state == "contested")}
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
+    if head_census["replaced"] or head_census["ledger_claims"]:
+        detail["page_head_claim"] = head_census
     if shaped:
         # 2.238: which boxes own their ink (the precision rules' `owns`; flag OFF keeps the 2.205 detail byte-identical) and every veto
         detail["box_owns"] = sorted(box_owns)

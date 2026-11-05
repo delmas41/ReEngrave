@@ -515,6 +515,11 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "ROADMAP 2.260c M4a: the beam levels the page map's strokes count at each end of a stem stroke (`beam_strokes.tip_reading`); scoreless, a measurement of ink; nothing reads it yet.",
         None),
 
+    "PAGE_HEAD": (
+        RAW_INK,
+        "ROADMAP 2.260e M6a: one row per HEAD of the page (twin notehead boxes folded, ink = the page strokes the box stands on, position from the ink against the head's own bar); scoreless, a measurement of ink; nothing reads it in M6a.",
+        None),
+
     "GLYPH_STROKES": (
         RAW_INK,
         "ROADMAP 2.198, step 2 of the shared ink map: the strokes (`Q.STROKE`) that lie inside a detector box, with the share of each stroke's ink "
@@ -959,6 +964,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_PAGE_STROKES": ("staged/page_strokes.py", "gather_page_strokes"),
     # ROADMAP 2.260c M4a: no raster of its own (the page map's strokes and the cell stem rows).
     "CV_PAGE_BEAMS": None,
+    # ROADMAP 2.260e M6a: the page map's strokes and the PAGE render read once for every head.
+    "CV_PAGE_HEADS": ("staged/page_heads.py", "gather_page_heads"),
     # ROADMAP 2.240 step 2: no raster of its own (the page marks, staff lines, ledger / stem rows, traces and wedges).
     "CV_PAGE_OWNER": None,
     "CV_PAGE_SPANS": None,

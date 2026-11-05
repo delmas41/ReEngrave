@@ -108,6 +108,7 @@ machine-readable form.
   from the arithmetic, and a bar that would only add up under an unmarked
   tuplet gives no confirmation (Sean, 2026-10-13).
 - **Arcs and hairpins are READ PAGE-WIDE** (Sean, 2026-10-30: *"the actual symbols reach past cell and should be read page wide."*; scope: general): a slur, tie or hairpin runs past its bar and its staff's padded crop, so the page-wide pass reads and claims each one whole; a detector box in a cell is only a witness to it, never the mark (ROADMAP 2.240; plan-2026-10-28-page-claim-order §10).
+- **An arc often stops short of its note; it binds to the CLOSEST note** (Sean, 2026-11-05: *"Often arcs stop short. Closest note works"*; scope: general, both plates): an arc end with no head inside the binder's window binds to the nearest head beyond it when that head is the closest one; two heads about equally near is not a choice (abstain, counted). An arc running off one system joins the piece that picks up on the next (Sean, 2026-11-05: *"Anything that needs to be done to connect arc separated by systems is fine"*; ROADMAP 2.271).
 - An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two heads
   are at one staff position (empty interval 0.168 vs 0.435 spaces,
   `benchmarks/omr-arc-grammar-2026-09/FINDINGS.md`). Of two stacked arcs
@@ -280,11 +281,11 @@ machine-readable form.
   head's staff-side edge beats a "rung" hidden inside the head (2026-10-06,
   24 of 24); nothing lies above a tenuto, so a dash with a head on it or
   beyond it is a ledger (2026-10-10; ROADMAP 2.84).
-- **A hollow head's position is its detector box centre, not its hole**
-  (Sean, 2026-10-01, on the 2.50 sheet: *"The red is almost always right and
-  better"*; scope: Litolff + Brahms): the white-interior centre was tried and
-  dropped; a reader that re-centres a hollow head on its hole needs Sean's
-  tiles first (2.212 did, unasked).
+- **A hollow head's position is its detector box centre, except where its one hole says another** (Sean, 2026-10-01, on the 2.50 sheet: *"The red is almost
+  always right and better"*; scope: Litolff + Brahms; **superseded in part 2026-11-03**: `OMR_HEAD_HOLE_POSITION` landed ON, 11 of 11 tiles right, ROADMAP 2.252 r4 --
+  a hollow head whose one hole and own ink centre stand at another position than its box centre is placed at the hole, scope: in-staff heads, hollow classes,
+  Litolff + Brahms; the 2026-10-01 line stands for every head the hole read refuses, and outside the staff the ledger lines alone place a head). Stale until the
+  2.260e M6a commit: this line said the hole was never used. A reader that re-centres a head on any other ink needs Sean's tiles first (2.212 did, unasked).
 - **A cell index restarts per system**; key a bar on (page, system, cell).
 - **A canonical cell frame cannot answer a cross-staff question**; page
   pixels are carried beside it, DECLINED rather than defaulted.

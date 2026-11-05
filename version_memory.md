@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-05 -- ROADMAP 2.269 step 3 + 2.260c M4b + 2.260e M6a-c merged OFF (OMR_PAGE_CLAIM_BOXES, OMR_PAGE_BEAMS_RETIRE_A, OMR_PAGE_HEADS, OMR_PAGE_HEAD_VIEWS, OMR_PAGE_HEAD_CLAIM)
+STAGED GATHER/ADJUDICATE, all five flags default OFF: step 3 names boxed dynamics' letters, whole rests, repeat dots by ink share; M4b retires cell beam reader A for page beam views (Litolff notes +22 -63, Brahms near neutral: waits on M6); M6a-c read every head once on the page (`page_heads.py`), drive the far-head ledger read from it, and claim head ink (M6c cost one judged right->narrowed, stays OFF). Export identical with flags off. `staged.check` 227. Merge conflicts: gather.py call sites (both kept), reach.py KNOWN_GAPS (PAGE_HEAD kept, PAGE_BEAM stays retired). FINDINGS page-ledger-2026-11.
+
 ## 2026-11-04 -- ROADMAP 2.268 landed ON: OMR_DYAD_HEAD_RESCUE default ON (deny-list)
 STAGED GATHER `dyad_head_rescue` / `gather_dyad_head_rescue`: a chord's other head the detector scored below the 0.25 cut is rescued from the detector's own candidate when it sits on a stem a boxed head shares and its ink is one head; written GUESSED (blue). Round 2: `notehead_precision._stem_end_ink_claimed(skip_narrowed=...)` ignores a NARROWED claim (tile 9, a false clefG box). Sean 12/12 tiles ("All orange boxes contain notes"). Flag "0"/"false"/"no"/"off" turns it off; pin tests flipped to default ON; docs/flags-2026-09.md rows updated. Frozen-sample measure: the 20261104 overnight (rescued heads' pitch vs local staff position; judged right->wrong). Main d1e9551ce.
 

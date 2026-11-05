@@ -352,6 +352,25 @@ def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
 _BEAM_READER_RAN_EMPTY = (ABSTAIN.NO_LINE_ACCEPTED, ABSTAIN.NO_STEMS_TO_JOIN)
 
 
+def _live_beam_rows(ev: Evidence, cell, rows):
+    """ROADMAP 2.260c M4b (`OMR_PAGE_BEAMS_RETIRE_A`): the `Q.BEAM_STROKE` rows (or refusals) the beam consumers read. With the flag off and a record gathered
+    without page views this returns `rows` unchanged (the page views are dropped, cell reader A's stay); with it on, A's are dropped and the page views read."""
+    from .. import page_beams as _PB
+    return _PB.live_rows(ev, cell, list(rows))
+
+
+def _beam_state(ev: Evidence, cell):
+    """`ev.state(Q.BEAM_STROKE, ...)` over the rows `_live_beam_rows` keeps. Unchanged when no page view is filed on the record."""
+    from .. import page_beams as _PB
+    if not (_PB.retired_for(ev, cell) or any(r.reader == READERS.CV_PAGE_BEAMS for r in ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))):
+        return ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    if _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)):
+        return State.READ
+    if _live_beam_rows(ev, cell, ev.refusals(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)):
+        return State.DECLINED
+    return ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+
+
 def _beam_reader_looked(ev: Evidence, cell) -> Optional[str]:
     """Did the CV beam reader look at this cell? ROADMAP 2.70.
 
@@ -363,14 +382,13 @@ def _beam_reader_looked(ev: Evidence, cell) -> Optional[str]:
     conflation); `None` -- it never ran, or ran and failed, which is "cannot
     tell" (rule 8) and never "nothing".
     """
-    state = ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
-                     subject=cell)
+    state = _beam_state(ev, cell)
     if state is State.READ:
         return "read"
     if state is not State.DECLINED:
         return None
-    reasons = [r.reason for r in ev.refusals(
-        Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)]
+    reasons = [r.reason for r in _live_beam_rows(ev, cell, ev.refusals(
+        Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))]
     if reasons and all(r in _BEAM_READER_RAN_EMPTY for r in reasons):
         return "ran_empty:" + sorted(set(reasons))[0]
     return None
@@ -389,8 +407,8 @@ def _kept_beams(ev: Evidence, cell):
     edits is less than one measure's amplification is worth; the beams are the
     thing.
     """
-    rows = ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-    cv = [r for r in rows if r.reader == READERS.CV_LINES]
+    rows = _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    cv = [r for r in rows if r.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
     yolo = [r for r in rows if r.reader == READERS.DETECTOR]
 
     def _overlaps(a, b) -> bool:
@@ -1688,7 +1706,7 @@ def _strokes_on_a_system_arc(ev: Evidence, cell) -> Dict[str, str]:
         if k in arc_glyphs and isinstance(v, (list, tuple)) and len(v) >= 5:
             arc_boxes.append((tuple(round(float(t), 1) for t in v[1:5]), arc_glyphs[k]))
     out: Dict[str, str] = {}
-    for b in ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+    for b in _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)):
         bb = _xywh(b)
         if bb is None:
             continue
@@ -1696,7 +1714,7 @@ def _strokes_on_a_system_arc(ev: Evidence, cell) -> Dict[str, str]:
         for ab, arc_id in arc_boxes:
             if b.reader == READERS.DETECTOR and key == ab:
                 out[b.id] = arc_id
-            elif (b.reader == READERS.CV_LINES and bb[0] >= ab[0] and bb[1] >= ab[1]
+            elif (b.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS) and bb[0] >= ab[0] and bb[1] >= ab[1]
                   and bb[0] + bb[2] <= ab[0] + ab[2] and bb[1] + bb[3] <= ab[1] + ab[3]):
                 out[b.id] = arc_id
     return out
@@ -1748,7 +1766,7 @@ def _no_beam_at_the_stem_tip(ev: Evidence, cell, own_stems, head_box, side) -> O
         return None
     # No stroke of either reader at EITHER end of the stem: the side reading is a reading too (a chord head mid-stem was read
     # 'up' while its beam stood at the bottom, Litolff p6), so neither end may hold a stroke.
-    strokes = list(ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    strokes = _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
     # Addition 2's second witness: a stroke whose ink IS a traced system slur/tie is that arc, not a beam at the tip.
     on_arc = _strokes_on_a_system_arc(ev, cell) if beam_not_on_system_arc_enabled() else {}
     at_ends = [b for b in strokes if b.id not in on_arc]
@@ -5214,7 +5232,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # written plain). The box alone does nothing (measured: it fires on ~950 single-beam eighths of Brahms).
     stem_levels = None
     if beam_stem_levels_enabled() and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None:
-        _cv_kept = [b for b in kept if b.reader == READERS.CV_LINES]
+        _cv_kept = [b for b in kept if b.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
         tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, _cv_kept)
         if tip is not None and tip["count"] > certain:
             used.append(tip["row"])
@@ -5337,8 +5355,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # HAPPENED TO BE UNBEAMED are different facts, and the second must not be
     # promoted to the first when the CV rung lands. `beam_evidence` says
     # which, and `declined` carries the reader's own abstention beside it.
-    if ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
-                subject=cell) is not State.READ:
+    if _beam_state(ev, cell) is not State.READ:
         beam_evidence = "reader_declined"
     elif levels:
         beam_evidence = "read"
@@ -9585,8 +9602,8 @@ def _direction_from_a_beam_mate(ev, cell, head_box, stems):
 
     Returns `(direction, cited row ids, detail)` or None.
     """
-    beams = [b for b in ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
-                                subject=cell) if _xywh(b) is not None]
+    beams = [b for b in _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                                                          subject=cell)) if _xywh(b) is not None]
     on = [b for b in beams if _on_beam(head_box, _xywh(b))]
     if not on:
         return None

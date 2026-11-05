@@ -765,8 +765,9 @@ def _beam_piece_refusal(ev: Evidence, box_row, spacing_canonical: float,
         return None
     from . import rhythm as _rh
     cell = ev.subject.at(Kind.CELL)
-    strokes = ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
-                      subject=cell)
+    from .. import page_beams as _PB
+    strokes = _PB.live_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS,
+                                              subject=cell))
     if not strokes:
         return None
     ink = {}
