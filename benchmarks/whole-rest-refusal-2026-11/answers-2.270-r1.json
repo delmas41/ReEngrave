@@ -1,0 +1,93 @@
+{
+ "lane": "2.270 OMR_WHOLE_REST_FROM_INK + OMR_WHOLE_REST_STEM_RULE (branch lane-2.270-whole-rest-reader e2f032633)",
+ "date": "2026-11-05",
+ "tiles": "out/print/2.270 (12, lane worktree); key out/print/2.270-key.json",
+ "sean_verbatim": "Tile 1 is is a whole note rest. Tile 2 is a whole note rest. Tile 3 is a whole note rest. Tile 4 is a whole note rest. Tile 5 is a whole note rest. Tile 6 is an eighth note. Tile 7 is a whole note rest on the second voice. Tile 8 is a whole note rest, it looks like, on the second voice. Tile 9 is an eighth rest. Tile 10 is a quarter note. Tile 11 is a dotted quarter. Tile 12 is half of a sharp sign.",
+ "summary": "1-5 gained whole rests right; 6-8 consistent; 9-10 blue changes to trace; 11 written quarter, print dotted quarter (dot missing); 12 a NEW note written from half a sharp sign (wrong, ON arm).",
+ "answers": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "subject": "glyph/15/0/9/18/0",
+   "change": "rest gained ?",
+   "sean": "whole rest"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "subject": "glyph/11/0/0/17/5",
+   "change": "rest gained ?",
+   "sean": "whole rest"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "subject": "glyph/15/1/5/9/0",
+   "change": "rest gained ?",
+   "sean": "whole rest"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "subject": "glyph/4/0/5/10/5",
+   "change": "rest gained ?",
+   "sean": "whole rest"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "subject": "glyph/16/0/10/1/2",
+   "change": "rest gained ?",
+   "sean": "whole rest"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "subject": "glyph/6/1/2/7/2",
+   "change": "beam gained end",
+   "sean": "eighth note"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "subject": "glyph/6/1/0/3/8",
+   "change": "blue gained guessed",
+   "sean": "whole rest, second voice"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "subject": "glyph/4/0/1/1/9",
+   "change": "blue gained guessed",
+   "sean": "whole rest, second voice (looks like)"
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "subject": "glyph/17/0/12/3/8",
+   "change": "blue gained guessed",
+   "sean": "eighth rest"
+  },
+  {
+   "tile": 10,
+   "plate": "brahms",
+   "subject": "glyph/19/0/10/5/8",
+   "change": "blue lost guessed",
+   "sean": "quarter note"
+  },
+  {
+   "tile": 11,
+   "plate": "brahms",
+   "subject": "glyph/19/0/10/5/3",
+   "change": "note gained quarter",
+   "sean": "dotted quarter"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "subject": "glyph/14/0/3/5/14",
+   "change": "note gained quarter",
+   "sean": "half of a sharp sign"
+  }
+ ]
+}
