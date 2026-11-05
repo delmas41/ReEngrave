@@ -66,3 +66,7 @@ Flag `OMR_KEY_OBJECT_COUNT` OFF. Filed by the manager from the lane report.
   OFF 3/12.
 - **Not established:** blue by rule (is `fill_part_key` down?); frozen 8-page sample; sharps and
   > 3 flats; the Brahms churn's cause.
+
+## 2.256b Brahms p14 growth -- explained (manager crop/file look, 2026-11-04)
+- **Cause:** not new ink. With `OMR_KEY_OBJECT_COUNT` OFF, three p14 staves had no instrument: the exported file names them `Staff p14-s0-6`, `-9`, `-12` (64, 89, 133 notes), and bars of theirs were held out (notes not written 1006 -> 921). With it ON, their keys are read and the staves are named Horn (2nd horn staff), Violin (I) and Cello, giving the roster order Fl Ob Cl Bn CBn Hn Hn Tpt Timp Vn Vn Va Vc Cb, which is the printed order. The whole bars at 14/1/5, 14/1/7 and 14/1/8 are those staves' music now written. Part totals OFF 1770 -> ON 1855 notes. The per-part shifts (Violin parts 89+167 -> 112+190) are the routing that follows from the names. **Lesson:** a key read is also an identity witness; a "notes gained" row can be a staff named, not ink read.
+- **Not established:** the newly written notes themselves are unjudged (46 notes, 38 rests, 24 ties in the unjudged list); none are in Sean's judged set. The roster order is a corroboration, not a tile.
