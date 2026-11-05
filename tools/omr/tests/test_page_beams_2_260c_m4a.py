@@ -46,7 +46,6 @@ class TwoStemBeam(unittest.TestCase):
         self.assertEqual([len(t["beams"]) for t in tops], [1, 1])
         self.assertTrue(all(t["stem_beamed"] for t in tops))
         self.assertEqual(res["census"]["groups"], 1)
-        self.assertEqual(res["census"]["two_bar_reading_errors"], 0)
 
     def test_the_bottom_end_of_an_up_stem_is_not_a_beam_tip(self):
         vs = two_stem_beam()
@@ -77,55 +76,30 @@ class TwoStemBeam(unittest.TestCase):
         self.assertEqual(res["tips"], [])
 
 
-class CutByTheBarline(unittest.TestCase):
-    """A beam crossing a rule loses the rule's width of ink to the carve: two strokes whose ends meet at the column, on one line."""
+class ReadOnceHandedToEveryCell(unittest.TestCase):
+    """Sean 2026-11-04: read each beam ONCE on the page, claim it ONCE, pass the one result to every cell view that holds its stems."""
 
-    def _two_halves(self, right_dy):
-        left = two_stem_beam(0.0, 0.0, 0)                                  # stems at x=100, 200; beam 98.5..201.5
-        right = two_stem_beam(150.0, right_dy, 3)                          # stems at 250, 350
-        # the beams run to the column from both sides: the left beam's end and the right beam's start sit at x=224/226 around a column at 225
-        left[2] = horiz(2, 98.5, 224.0, 106.0, touches=[(0, 1.0), (1, 1.0)])
-        right[2] = horiz(5, 226.0, 351.5, 106.0 + right_dy, touches=[(3, 1.0), (4, 1.0)])
-        return left + right
+    def test_a_beam_two_cells_hold_is_one_row_naming_both(self):
+        vs = two_stem_beam()
+        stems = [dict(box=vs[0].box, row="a1", cell="c1"), dict(box=vs[0].box, row="a2", cell="c2"),
+                 dict(box=vs[1].box, row="b1", cell="c1"), dict(box=vs[1].box, row="b3", cell="c3")]
+        res = PB.read_page(vs, stems, SP)
+        beams = [b for b in res["beams"] if b["role"] == "beam"]
+        self.assertEqual(len(beams), 1)
+        self.assertEqual(beams[0]["cells"], ["c1", "c2", "c3"])
+        tops = {t["stem"]: t for t in res["tips"] if t["end"] == "top"}
+        self.assertEqual(sorted(tops), [0, 1])
+        self.assertEqual(tops[0]["cells"], ["c1", "c2"])
+        self.assertEqual(tops[0]["stem_rows"], ["a1", "a2"])
+        self.assertEqual(tops[0]["beams"], tops[1]["beams"])
 
-    def _columns(self):
-        return [dict(system=0, slope=0.0, intercept=225.0, y0=0.0, y1=400.0, width_px=3.0)]
-
-    def test_the_cut_beam_is_a_reading_error_never_one_group(self):
-        vs = self._two_halves(0.0)
-        stems = [stem_row(v, "s%d" % v.ordinal) for v in vs if v.kind == "vertical"]
-        res = PB.read_page(vs, stems, SP, columns=self._columns(), system_of={v.ordinal: 0 for v in vs})
-        self.assertEqual(res["census"]["column_cut_pairs"], 1)
-        self.assertEqual(res["census"]["groups"], 2)                       # Sean 2026-11-04: every beam is within a bar: one group per bar, never one across
-        self.assertEqual(res["census"]["two_bar_reading_errors"], 2)       # ... and the cut pair is counted (the two groups it touches)
-        self.assertTrue(all(b["cut_by_column"] for b in res["beams"] if b["role"] == "beam"))
-        self.assertEqual(len({b["group"] for b in res["beams"] if b["role"] == "beam"}), 2)
-
-    def test_control_two_beams_out_of_line_are_two_groups(self):
-        """The control that can fail: the same two halves, the right one 12 px lower (0.6 sp), do not continue each other: two groups, no error."""
-        vs = self._two_halves(12.0)
-        stems = [stem_row(v, "s%d" % v.ordinal) for v in vs if v.kind == "vertical"]
-        res = PB.read_page(vs, stems, SP, columns=self._columns(), system_of={v.ordinal: 0 for v in vs})
-        self.assertEqual(res["census"]["column_cut_pairs"], 0)
-        self.assertEqual(res["census"]["groups"], 2)
-        self.assertEqual(res["census"]["two_bar_reading_errors"], 0)
-
-    def test_one_whole_beam_over_a_rule_is_the_same_error(self):
-        a = vert(0, 100, 100, 160, touches=[(2, 1.0)])
-        b = vert(1, 350, 100, 160, touches=[(2, 1.0)])
-        beam = horiz(2, 98.5, 351.5, 106.0, touches=[(0, 1.0), (1, 1.0)])
-        cols = [dict(system=0, slope=0.0, intercept=225.0, y0=0.0, y1=400.0, width_px=3.0)]
-        res = PB.read_page([a, b, beam], [stem_row(a, "a"), stem_row(b, "b")], SP, columns=cols, system_of={0: 0, 1: 0, 2: 0})
-        self.assertEqual(res["census"]["groups"], 0)
-        self.assertEqual(res["census"]["two_bar_reading_errors"], 1)
-        self.assertTrue(res["beams"][0]["two_bars"] and res["beams"][0]["group"] is None)
-
-    def test_a_beam_with_a_rule_far_from_its_ends_does_not_pair(self):
-        vs = self._two_halves(0.0)
-        stems = [stem_row(v, "s%d" % v.ordinal) for v in vs if v.kind == "vertical"]
-        far = [dict(system=0, slope=0.0, intercept=290.0, y0=0.0, y1=400.0, width_px=3.0)]      # a rule 64 px from either end
-        res = PB.read_page(vs, stems, SP, columns=far, system_of={v.ordinal: 0 for v in vs})
-        self.assertEqual(res["census"]["column_cut_pairs"], 0)
+    def test_a_beam_cut_by_a_cell_edge_is_whole_here(self):
+        a = vert(0, 100, -40, 20, touches=[(2, 1.0)])
+        b = vert(1, 200, -40, 20, touches=[(2, 1.0)])
+        beam = horiz(2, 98.5, 201.5, -34.0, touches=[(0, 1.0), (1, 1.0)])
+        res = PB.read_page([a, b, beam], [stem_row(a, "a"), stem_row(b, "b")], SP)
+        self.assertEqual(res["beams"][0]["role"], "beam")
+        self.assertEqual(res["census"]["groups"], 1)
 
 
 class TheGrid(unittest.TestCase):

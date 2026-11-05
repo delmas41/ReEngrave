@@ -17630,7 +17630,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF): the page map's strokes read for beams (roles, joined stems, tip levels), filed as
         # `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows) and the page map; reads no raster; NOTHING READS THE ROWS.
         from . import page_beams as _page_beams
-        _page_beams.gather_page_beams(log, pws, cells, local, page_map_pre, barline_cols or None, detections, progress=progress)
+        _page_beams.gather_page_beams(log, pws, cells, local, page_map_pre, detections, progress=progress)
         # ⚠️ AFTER detection, because a component's row records how much of it
         # the detections account for -- the same edge `gather_direction_words`
         # has and for the same reason. BESIDE `gather_cv_lines` because the
