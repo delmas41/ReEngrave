@@ -505,6 +505,16 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "ROADMAP 2.260a M2: every stroke of the PAGE map (`Q.STROKE`'s measurements in page px, the barline rules carved out as `barline`), scoreless for the same reason as `STROKE`; nothing reads it yet.",
         None),
 
+    "PAGE_BEAM": (
+        RAW_INK,
+        "ROADMAP 2.260c M4a: a horizontal / curve PAGE stroke's beam role (`beam_strokes.role_of` on the page map) with the stems it joins; scoreless, a measurement of ink; nothing reads it yet.",
+        None),
+
+    "PAGE_BEAM_TIP": (
+        RAW_INK,
+        "ROADMAP 2.260c M4a: the beam levels the page map's strokes count at each end of a stem stroke (`beam_strokes.tip_reading`); scoreless, a measurement of ink; nothing reads it yet.",
+        None),
+
     "GLYPH_STROKES": (
         RAW_INK,
         "ROADMAP 2.198, step 2 of the shared ink map: the strokes (`Q.STROKE`) that lie inside a detector box, with the share of each stroke's ink "
@@ -947,6 +957,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_BARLINE_COLUMN": ("staged/barline_columns.py", "gather_barline_columns"),
     # ROADMAP 2.260a M2: the staves' erased bands and the PAGE render outside them.
     "CV_PAGE_STROKES": ("staged/page_strokes.py", "gather_page_strokes"),
+    # ROADMAP 2.260c M4a: no raster of its own (the page map's strokes and the cell stem rows).
+    "CV_PAGE_BEAMS": None,
     # ROADMAP 2.240 step 2: no raster of its own (the page marks, staff lines, ledger / stem rows, traces and wedges).
     "CV_PAGE_OWNER": None,
     "CV_PAGE_SPANS": None,

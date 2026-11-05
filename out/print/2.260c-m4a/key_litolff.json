@@ -1,0 +1,131 @@
+[
+ {
+  "tile": "m4a_litolff_01.png",
+  "plate": "litolff",
+  "page": 16,
+  "why": "A reads a beam slab, the page does not",
+  "crop_page_px": [
+   1245,
+   1126,
+   1392,
+   1227
+  ],
+  "box_page_px": [
+   1293.2,
+   1174.1,
+   52.0,
+   5.9
+  ],
+  "role": null,
+  "c_thickness": 0.27,
+  "cut": ""
+ },
+ {
+  "tile": "m4a_litolff_02.png",
+  "plate": "litolff",
+  "page": 6,
+  "why": "the page reads a beam, A has no slab there",
+  "crop_page_px": [
+   1256,
+   1260,
+   1372,
+   1420
+  ],
+  "box_page_px": [
+   1304.0,
+   1344.0,
+   21.0,
+   9.0
+  ],
+  "role": "beam",
+  "c_thickness": null,
+  "cut": null
+ },
+ {
+  "tile": "m4a_litolff_03.png",
+  "plate": "litolff",
+  "page": 6,
+  "why": "A's slab is cut by a cell edge",
+  "crop_page_px": [
+   1795,
+   252,
+   1966,
+   354
+  ],
+  "box_page_px": [
+   1843.1,
+   300.0,
+   75.9,
+   7.1
+  ],
+  "role": null,
+  "c_thickness": 0.41,
+  "cut": "t"
+ },
+ {
+  "tile": "m4a_litolff_04.png",
+  "plate": "litolff",
+  "page": 16,
+  "why": "the page and D count different beam levels at a stem",
+  "crop_page_px": [
+   1347,
+   1217,
+   1463,
+   1354
+  ],
+  "box_page_px": [
+   1395.0,
+   1283.0,
+   21.0,
+   9.0
+  ],
+  "stem": 2123,
+  "end": "bottom",
+  "page_levels": 1,
+  "D_levels": 0
+ },
+ {
+  "tile": "m4a_litolff_05.png",
+  "plate": "litolff",
+  "page": 6,
+  "why": "the page and D count different beam levels at a stem",
+  "crop_page_px": [
+   1789,
+   2201,
+   1934,
+   2361
+  ],
+  "box_page_px": [
+   1837.0,
+   2286.0,
+   50.0,
+   27.0
+  ],
+  "stem": 2396,
+  "end": "bottom",
+  "page_levels": 1,
+  "D_levels": 0
+ },
+ {
+  "tile": "m4a_litolff_06.png",
+  "plate": "litolff",
+  "page": 16,
+  "why": "the page and D count different beam levels at a stem",
+  "crop_page_px": [
+   1515,
+   3502,
+   1624,
+   3655
+  ],
+  "box_page_px": [
+   1563.3,
+   3599.0,
+   13.5,
+   9.5
+  ],
+  "stem": 2400,
+  "end": "bottom",
+  "page_levels": 0,
+  "D_levels": 1
+ }
+]

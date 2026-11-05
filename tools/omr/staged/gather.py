@@ -15365,7 +15365,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
 
 def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                          stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]]) -> Dict[str, int]:
-    """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default OFF), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
+    """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default ON), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
     coarsest kind the reader is sure of (a hairpin; its owner staff and its start/stop notes are decided later, ADJUDICATE / 2.223).
 
     CAUSE (`hairpin_reach` round-2 note): the detector and cv_lines read a hairpin's thin straight arms as beams; a CV hairpin read that claims
@@ -17735,7 +17735,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default ON): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
         # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
         if not _page_strokes.claims_on():
-            _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
+            _pm_late = _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
+            from . import page_beams as _pb_keep
+            from . import page_claim_names as _pcn_keep
+            if _pb_keep.enabled() or _pcn_keep.enabled():   # ROADMAP 2.260c M4a / 2.269: the map is kept for the page beam reader and the claim names; otherwise it is dropped as before
+                page_map_pre = _pm_late
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
@@ -17912,6 +17916,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.221 m1 / m1b (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST, default ON): AFTER the word reader (reads its
         # accepted rows and the dynamic letters); page-wide, one claim per mark per system, no new reading pass.
         gather_page_claims(log, pws, cells, local, detections, progress=progress)
+        # ROADMAP 2.269 step 1 (flag OMR_PAGE_CLAIM_NAMES, default OFF): every page-wide claim now on the log (barline, bracket, clef / key / meter, word /
+        # dynamic, hairpin) expressed as the PAGE strokes it owns, once, in claim order. AFTER `gather_page_claims`; reads rows + the in-memory page map.
+        from . import page_claim_names as _page_claim_names
+        _page_claim_names.gather_page_claim_names(log, pws, cells, local, page_map_pre, progress=progress)
+        # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),
+        # filed as `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows), the page map and the claim names (a stroke another claim
+        # owns is no beam); reads no raster; NOTHING READS THE ROWS.
+        from . import page_beams as _page_beams
+        _page_beams.gather_page_beams(log, pws, cells, local, page_map_pre, detections, progress=progress)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
         # ten position rows are PROMOTED off rows already on the record -- the
         # CV hairpins and the direction words, whose ink no detection carries
