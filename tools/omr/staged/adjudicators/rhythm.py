@@ -9907,6 +9907,8 @@ WHOLE_REST_STEM_RULE_ENV = "OMR_WHOLE_REST_STEM_RULE"
 #: Measured on Sean's 16 marks: the ink-trimmed height of his 8 whole rests is 0.44-0.83 sp; of the filled non-rests 1.02-1.59 sp (hollow
 #: ones are vetoed by their fill). A cut-off is a measurement: two plates, 16 marks, a gap 0.83-1.02 is the whole of the evidence.
 WHOLE_REST_INK_MAX_TRIMMED_HEIGHT_SP = 0.92
+#: the least ink share on BOTH sides of a stem for the mark to be a slash across it, not a head beside it (gap 0.03-0.41 on 5 marks).
+WHOLE_REST_STRADDLE_MIN_SHARE = 0.25
 
 
 def whole_rest_from_ink_enabled() -> bool:
@@ -9924,6 +9926,16 @@ def _whole_rest_ink_read(ev: Evidence) -> Tuple[Optional[str], Dict[str, Any]]:
     stem = None
     for r in ev.rows(Q.NOTEHEAD_STEM_CROSS_INK):
         stem = {"by": "stem_cross_ink", "value": r.value}
+        d = r.detail or {}
+        try:
+            both = min(float(d.get("left_share")), float(d.get("right_share")))
+        except (TypeError, ValueError):
+            both = 0.0
+        if both >= WHOLE_REST_STRADDLE_MIN_SHARE:
+            # a head sits on ONE side of its stem (Sean's 5 stemmed marks: 0.00-0.03 on the other side); ink with 0.25+ on both is a
+            # slash drawn across the stem (his tremolo slash: 0.41/0.59) -- not a rest, not a head
+            info["stem"] = stem
+            return "straddles_a_stem", info
     for r in ev.rows(Q.HEAD_STEM_REACH):
         if str(r.value).lower() in ("up", "down", "both"):
             stem = {"by": "head_stem_reach", "value": r.value}
@@ -9962,7 +9974,7 @@ def _whole_rest_ink_read(ev: Evidence) -> Tuple[Optional[str], Dict[str, Any]]:
     reasons=("shape_and_position_agree", "not_rest_shaped",
              "not_where_a_whole_rest_can_hang", "no_page_frame",
              "read_at_a_stem_end",
-             "has_a_stem", "ink_is_hollow", "ink_is_head_tall",
+             "has_a_stem", "straddles_a_stem", "ink_is_hollow", "ink_is_head_tall",
              ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
