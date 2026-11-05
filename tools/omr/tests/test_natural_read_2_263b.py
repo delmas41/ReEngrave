@@ -1,4 +1,4 @@
-"""ROADMAP 2.263b (flag OMR_NATURAL_READ, default OFF; Sean DECISIONS 2026-11-04): a natural read from its two staggered stems at stagger margin
+"""ROADMAP 2.263b (flag OMR_NATURAL_READ, default ON, deny-list; Sean 2026-11-04): a natural read from its two staggered stems at stagger margin
 >= 0.25 is READ; flats, sharps and `unclear` never are; flag off changes nothing. Every control below can fail."""
 import os
 import unittest
@@ -12,6 +12,10 @@ def _on():
 
 
 def _off():
+    return mock.patch.dict(os.environ, {AF.NATURAL_READ_ENV: "0"})
+
+
+def _unset():
     env = dict(os.environ)
     env.pop(AF.NATURAL_READ_ENV, None)
     return mock.patch.dict(os.environ, env, clear=True)
@@ -31,7 +35,15 @@ class NaturalRead(unittest.TestCase):
                 for m in (0.0, 0.25, 0.9, 5.0):
                     self.assertFalse(AF.reads(m, t), (t, m))
 
-    def test_flag_off_unchanged(self):
+    def test_default_is_on_and_deny_list_turns_it_off(self):
+        with _unset():
+            self.assertTrue(AF.natural_read_enabled())
+            self.assertTrue(AF.reads(0.9, "natural"))
+        for v in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {AF.NATURAL_READ_ENV: v}):
+                self.assertFalse(AF.natural_read_enabled(), v)
+
+    def test_explicit_zero_is_off_unchanged(self):
         with _off():
             self.assertFalse(AF.natural_read_enabled())
             for t in ("natural", "flat", "sharp", "unclear", None):

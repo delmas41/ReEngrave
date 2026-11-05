@@ -94,7 +94,7 @@ FLAT_STEM_X_FRACTION_MAX = 0.45
 FLAT_BOWL_MIN_FRACTION = 0.40
 #: The general READ bar for ANY type: None -- nothing the strokes say is READ by margin alone (a flat, a sharp, an `unclear` row never is).
 READ_MARGIN: Optional[float] = None
-#: ROADMAP 2.263b (flag `OMR_NATURAL_READ`, default OFF; Sean DECISIONS 2026-11-04 "Those all seem pretty clearly readable to me."): a NATURAL read
+#: ROADMAP 2.263b (flag `OMR_NATURAL_READ`, default ON, deny-list: "0"/"false"/"no"/"off" turns it off; Sean 2026-11-04 12/12 tiles "All 12 are naturals"): a NATURAL read
 #: from its two staggered stems is READ at or above this stagger margin. A NATURAL-ONLY bar: flats and sharps are not covered by the ruling.
 #: CONVENTION: the natural sign's two staggered stems (page-facts section 1). The 0.25 CUT-OFF is a measurement on two plates (Brahms,
 #: Litolff; 2.263: 969/998 Brahms and 166/166 Litolff naturals clear it; 12/12 judged right on both sides) and may only NARROW elsewhere (CLAUDE 4).
@@ -103,8 +103,8 @@ NATURAL_READ_ENV = "OMR_NATURAL_READ"
 
 
 def natural_read_enabled() -> bool:
-    """`OMR_NATURAL_READ` (ROADMAP 2.263b), default OFF: only 1/true/yes/on enables."""
-    return os.environ.get(NATURAL_READ_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_NATURAL_READ` (ROADMAP 2.263b), default ON (deny-list): "0"/"false"/"no"/"off" turns it off."""
+    return os.environ.get(NATURAL_READ_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 TYPES = ("flat", "natural", "sharp")
 #: the detector class names the family files under (SMuFL spelling, lower-case compare); a double sign is the detector's candidate only
