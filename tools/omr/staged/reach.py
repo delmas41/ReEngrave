@@ -357,6 +357,8 @@ STAGE_OF_FILE = {
     "page_strokes.py": "GATHER",
     # ROADMAP 2.260c M4a: files `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP` from its hook line in `gather.gather()`.
     "page_beams.py": "GATHER",
+    # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
+    "page_claim_names.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
     "page_owner.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
