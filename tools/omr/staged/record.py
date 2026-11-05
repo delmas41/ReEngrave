@@ -972,6 +972,16 @@ class Q(_Vocab):
     #: nothing but the page). Decides nothing and NOTHING READS IT.
     PAGE_STROKE = "page_stroke"
 
+    #: ROADMAP 2.260c M4a (flag `OMR_PAGE_BEAMS`, default OFF; `page_beams.gather_page_beams`): ONE ROW PER horizontal / curve PAGE stroke with a role (a sibling
+    #: of `Q.PAGE_STROKE`, filed after the stems exist): `value` = the role (`beam_strokes.role_of`: beam / beam_doubt / beam_stub / span_thin / hook /
+    #: hook_or_stub) or `"census"` (one per page, the counts). `detail`: `ordinal` (the `Q.PAGE_STROKE` ordinal), `stems` (vertical stroke ordinals it
+    #: joins), `group`, `thickness_spaces`, `head_fused`, `claimed_by`, `spans_columns`, `cut_by_column`. Decides nothing and NOTHING READS IT.
+    PAGE_BEAM = "page_beam"
+    #: ROADMAP 2.260c M4a: ONE ROW PER END of each stem stroke a `Q.STEM` row lands on: `value` = the number of beam levels at the tip
+    #: (`beam_strokes.tip_reading`); `detail`: `stem` (page stroke ordinal), `stem_rows`, `end` ("top" / "bottom"), `beams`, `fused`, `joined`, `joined_gap`,
+    #: `hooks`, `stubs`, `doubt`, `stem_beamed`, `tip_clean`. Decides nothing and NOTHING READS IT.
+    PAGE_BEAM_TIP = "page_beam_tip"
+
     #: ROADMAP 2.205 (flag `OMR_STROKE_OWNER`, needs `OMR_STROKE_MAP`; `adjudicators/stroke_owner.py`, plan §2.3 / §5 step 5): ONE VERDICT PER
     #: CELL deciding the owner of EVERY stroke of the cell once (a stroke is a measurement, not a subject -- 2.198). `value` = `{"owned":
     #: [ordinals a mark owns], "contested": [ordinals two families claim and the shape cannot settle]}`; the consumers (2.202 beams, 2.204
@@ -2375,6 +2385,9 @@ CLAIMS: "dict[str, str]" = {
     "BARLINE_COLUMN_FIT": CLAIM.MEASUREMENT,
     #: ROADMAP 2.260a M2: a stroke of the page map -- a measurement of ink, like `STROKE`; names nothing.
     "PAGE_STROKE": CLAIM.MEASUREMENT,
+    #: ROADMAP 2.260c M4a: a stroke's beam role / a stem tip's beam levels read off the page map -- measurements of ink, naming no note.
+    "PAGE_BEAM": CLAIM.MEASUREMENT,
+    "PAGE_BEAM_TIP": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
     #: ROADMAP 2.240 step 2: the page-wide extent of one traced arc / CV wedge -- a measurement of ink, naming no notes.
@@ -2994,6 +3007,8 @@ class READERS(_Vocab):
     CV_BARLINE_COLUMN = "cv_barline_column"
     #: `page_strokes.gather_page_strokes` -- ROADMAP 2.260a M2. The staves' erased bands, the page render outside them, the columns of M1.
     CV_PAGE_STROKES = "cv_page_strokes"
+    #: `page_beams.gather_page_beams` -- ROADMAP 2.260c M4a. No raster: the page map's strokes and the cell `Q.STEM` rows.
+    CV_PAGE_BEAMS = "cv_page_beams"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.
     CV_PAGE_OWNER = "cv_page_owner"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the `Q.SYSTEM_ARC` traces and `Q.WEDGE_BOX` reads, joined page-wide.

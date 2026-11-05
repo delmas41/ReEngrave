@@ -635,6 +635,12 @@ KNOWN_GAPS: Dict[str, str] = {
         "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default ON): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
     "DETAIL Q.BARLINE_COLUMN_FIT.tilt_px": (
         "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default ON): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_BEAM.head_fused": (
+        "producer-only (ROADMAP 2.260c M4a, flag `OMR_PAGE_BEAMS`, default OFF): a measurement of the page map's beam reading, filed beside the page strokes; its first reader is M4b-d of `docs/plan-2026-11-04-page-beams-m4.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_BEAM.stroke_kind": (
+        "producer-only (ROADMAP 2.260c M4a, flag `OMR_PAGE_BEAMS`, default OFF): a measurement of the page map's beam reading, filed beside the page strokes; its first reader is M4b-d of `docs/plan-2026-11-04-page-beams-m4.md`. Leaves the day a decision reads it."),
+    "DETAIL Q.PAGE_BEAM_TIP.joined_gap": (
+        "producer-only (ROADMAP 2.260c M4a, flag `OMR_PAGE_BEAMS`, default OFF): a measurement of the page map's beam reading, filed beside the page strokes; its first reader is M4b-d of `docs/plan-2026-11-04-page-beams-m4.md`. Leaves the day a decision reads it."),
     "DETAIL Q.PAGE_STROKE.intercept": (
         "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default ON): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
     "DETAIL Q.PAGE_STROKE.slope": (

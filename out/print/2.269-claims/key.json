@@ -1,0 +1,307 @@
+[
+ {
+  "tile": "c269_brahms_01.png",
+  "plate": "brahms",
+  "page": 5,
+  "crop_page_px": [
+   2585,
+   3145,
+   3022,
+   3573
+  ],
+  "beam_box_page_px": [
+   2790.0,
+   3415.0,
+   37.0,
+   15.0
+  ],
+  "stems": [
+   3175,
+   3221
+  ],
+  "thickness_spaces": 0.562,
+  "length_spaces": 1.376,
+  "group": 3175,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_brahms_02.png",
+  "plate": "brahms",
+  "page": 5,
+  "crop_page_px": [
+   3847,
+   2801,
+   4284,
+   3171
+  ],
+  "beam_box_page_px": [
+   4026.0,
+   2998.0,
+   80.0,
+   20.0
+  ],
+  "stems": [
+   5091,
+   5102,
+   5185
+  ],
+  "thickness_spaces": 0.562,
+  "length_spaces": 2.957,
+  "group": 5091,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_brahms_03.png",
+  "plate": "brahms",
+  "page": 5,
+  "crop_page_px": [
+   3837,
+   2377,
+   4275,
+   2868
+  ],
+  "beam_box_page_px": [
+   4018.0,
+   2693.0,
+   77.0,
+   20.0
+  ],
+  "stems": [
+   5069,
+   5144,
+   5170
+  ],
+  "thickness_spaces": 0.562,
+  "length_spaces": 2.831,
+  "group": 5069,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_brahms_04.png",
+  "plate": "brahms",
+  "page": 5,
+  "crop_page_px": [
+   3589,
+   1305,
+   4026,
+   1603
+  ],
+  "beam_box_page_px": [
+   3767.0,
+   1420.0,
+   82.0,
+   20.0
+  ],
+  "stems": [
+   4608,
+   4693
+  ],
+  "thickness_spaces": 0.654,
+  "length_spaces": 3.03,
+  "group": 4608,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_brahms_05.png",
+  "plate": "brahms",
+  "page": 0,
+  "crop_page_px": [
+   4258,
+   1461,
+   4771,
+   1826
+  ],
+  "beam_box_page_px": [
+   4442.0,
+   1666.0,
+   148.0,
+   28.0
+  ],
+  "stems": [
+   2681,
+   2721,
+   2752
+  ],
+  "thickness_spaces": 0.623,
+  "length_spaces": 4.667,
+  "group": 2681,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_brahms_06.png",
+  "plate": "brahms",
+  "page": 0,
+  "crop_page_px": [
+   1993,
+   389,
+   2506,
+   790
+  ],
+  "beam_box_page_px": [
+   2202.0,
+   564.0,
+   96.0,
+   44.0
+  ],
+  "stems": [
+   1242,
+   1329
+  ],
+  "thickness_spaces": 0.752,
+  "length_spaces": 3.278,
+  "group": 1242,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_litolff_07.png",
+  "plate": "litolff",
+  "page": 16,
+  "crop_page_px": [
+   1559,
+   582,
+   1812,
+   814
+  ],
+  "beam_box_page_px": [
+   1675.0,
+   722.0,
+   22.0,
+   10.0
+  ],
+  "stems": [
+   2581,
+   2602
+  ],
+  "thickness_spaces": 0.626,
+  "length_spaces": 1.475,
+  "group": 2581,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_litolff_08.png",
+  "plate": "litolff",
+  "page": 6,
+  "crop_page_px": [
+   2169,
+   2814,
+   2421,
+   3051
+  ],
+  "beam_box_page_px": [
+   2285.0,
+   2957.0,
+   22.0,
+   8.0
+  ],
+  "stems": [
+   3282,
+   3347
+  ],
+  "thickness_spaces": 0.571,
+  "length_spaces": 1.401,
+  "group": 3282,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_litolff_09.png",
+  "plate": "litolff",
+  "page": 6,
+  "crop_page_px": [
+   2343,
+   3111,
+   2596,
+   3341
+  ],
+  "beam_box_page_px": [
+   2455.0,
+   3215.0,
+   30.0,
+   8.0
+  ],
+  "stems": [
+   3603,
+   3663,
+   3680
+  ],
+  "thickness_spaces": 0.508,
+  "length_spaces": 1.909,
+  "group": 3532,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_litolff_10.png",
+  "plate": "litolff",
+  "page": 6,
+  "crop_page_px": [
+   1990,
+   3503,
+   2243,
+   3696
+  ],
+  "beam_box_page_px": [
+   2105.0,
+   3603.0,
+   24.0,
+   11.0
+  ],
+  "stems": [
+   2809,
+   2833
+  ],
+  "thickness_spaces": 0.695,
+  "length_spaces": 1.576,
+  "group": 2809,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_litolff_11.png",
+  "plate": "litolff",
+  "page": 6,
+  "crop_page_px": [
+   2345,
+   3229,
+   2598,
+   3478
+  ],
+  "beam_box_page_px": [
+   2459.0,
+   3351.0,
+   25.0,
+   12.0
+  ],
+  "stems": [
+   3632,
+   3672,
+   3681
+  ],
+  "thickness_spaces": 0.608,
+  "length_spaces": 1.724,
+  "group": 3632,
+  "head_fused": false
+ },
+ {
+  "tile": "c269_litolff_12.png",
+  "plate": "litolff",
+  "page": 16,
+  "crop_page_px": [
+   1564,
+   1179,
+   1816,
+   1375
+  ],
+  "beam_box_page_px": [
+   1681.0,
+   1283.0,
+   19.0,
+   8.0
+  ],
+  "stems": [
+   2594,
+   2614
+  ],
+  "thickness_spaces": 0.507,
+  "length_spaces": 1.227,
+  "group": 2594,
+  "head_fused": false
+ }
+]
