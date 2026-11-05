@@ -102,6 +102,17 @@ NATURAL_READ_MARGIN = 0.25
 NATURAL_READ_ENV = "OMR_NATURAL_READ"
 
 
+#: ROADMAP 2.266b (flag `OMR_ACCIDENTAL_READ_ONCE`, default OFF, allow-list "1"): an accidental whose family reading names a kind (flat / natural /
+#: sharp) is read ONCE -- the family reading alone decides READ / GUESSED; the 2.186 one-ink guess is never consulted for its ink (Sean 2026-11-04:
+#: "once they're read, the ink is claimed once and ... not read again"). CONVENTION: CLAUDE section 4, two readings of one ink count once.
+ACCIDENTAL_READ_ONCE_ENV = "OMR_ACCIDENTAL_READ_ONCE"
+
+
+def accidental_read_once_enabled() -> bool:
+    """`OMR_ACCIDENTAL_READ_ONCE` (ROADMAP 2.266b), default OFF: only "1"/"true"/"yes"/"on" turns it on."""
+    return os.environ.get(ACCIDENTAL_READ_ONCE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def natural_read_enabled() -> bool:
     """`OMR_NATURAL_READ` (ROADMAP 2.263b), default ON (deny-list): "0"/"false"/"no"/"off" turns it off."""
     return os.environ.get(NATURAL_READ_ENV, "").strip().lower() not in ("0", "false", "no", "off")
