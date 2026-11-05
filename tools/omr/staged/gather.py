@@ -1955,7 +1955,9 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
         # reading stays on the row (`unfiltered_pos`) so the change is countable.
         th = float(getattr(page_ctx, "thickness", 4.0) or 4.0)
         for i, (key, rd0) in enumerate(list(cands)):
-            lines = job["global_lines"] if key == own else FO.lines_at(next(s for s in staves if s["key"] == key), cx)
+            if key == own and job.get("page_head") is not None and job.get("page_triggered"):
+                continue        # 2.260e M6b: the head was asked because its INK stands outside the first space while its box does not; the re-read from the box centre would answer "no ledger needed" against the ledger count just made
+            lines =job["global_lines"] if key == own else FO.lines_at(next(s for s in staves if s["key"] == key), cx)
             rd = FO.read_toward(page_ctx, g.to_key(), job["box"], job["cls"], lines, not_ledger=mk(cx, key, th))
             rd["unfiltered_pos"] = rd0["pos"]
             rd["unfiltered_fits"] = bool(rd0["fits"])
@@ -2153,6 +2155,7 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
                 jobs.append(dict(page=sub.page, system=sub.system,
                                  staff=sub.staff, cell=sub.cell, glyph=gi,
                                  page_head=ph_ord,
+                                 page_triggered=bool(ph_ord is not None and not FH.lg.far_head_needs_ledger_read(pos)),
                                  box=box, cls=d.smufl_name,
                                  global_lines=head_lines, geometry_position=pos,
                                  frame=frame_cell(sub.cell), own_key=own,

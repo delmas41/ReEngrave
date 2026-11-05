@@ -51,8 +51,9 @@ class Trigger(unittest.TestCase):
         self.assertIsNone(PH.far_trigger([9], 9.1, False))
         self.assertIsNone(PH.far_trigger([-1], -1.2, False))
 
-    def test_first_space_with_a_ledger_stub_touching_asks(self):
-        self.assertEqual(PH.far_trigger([9], 9.1, True), "rung_first_space")
+    def test_first_space_with_a_ledger_stub_touching_does_not_ask_alone(self):
+        # measured: asking on the stub alone read one end of a tie and not the other (Litolff p2), so the stub is recorded, not a trigger
+        self.assertIsNone(PH.far_trigger([9], 9.1, True))
 
     def test_a_stub_touching_a_middle_head_asks_nothing(self):
         self.assertIsNone(PH.far_trigger([4], 4.0, True))         # a tie's end, a beam: not a ledger

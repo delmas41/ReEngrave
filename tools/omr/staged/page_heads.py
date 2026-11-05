@@ -64,6 +64,8 @@ LEDGER_MAX_THICK_SP = 0.35
 LEDGER_MAX_LEN_SP = 3.5
 #: first space either side of the staff; farther out is a far head
 FAR_LOW, FAR_HIGH = -1, 9
+#: a ledger stub's centre is at least this many half steps beyond the outer staff line (the first ledger is 2 half steps out; residue of the line itself is 0)
+RUNG_OUTSIDE_STEPS = 1.5
 #: a stem stroke: vertical, at least this long (sp)
 STEM_MIN_LEN_SP = 1.5
 
@@ -137,8 +139,8 @@ def far_trigger(box_rounded: Sequence[int], ink_pos: Optional[float], rung_touch
     r = int(round(float(ink_pos)))
     if r < FAR_LOW or r > FAR_HIGH:
         return "ink"
-    if rung_touch and r in (FAR_LOW, FAR_HIGH):
-        return "rung_first_space"
+    # A ledger stub touching a first-space head is recorded (`rung_strokes`) but does NOT ask the ledger lines: measured on the Litolff sample (2.260e r2), the
+    # stub trigger asked about ONE end of a tie and not the other (-2 against -1), so five ties read as slurs. Only a box or ink centre outside the first space asks.
     return None
 
 
@@ -264,6 +266,12 @@ def read(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], dete
             for j, _ct in pm.strokes[i].touches:
                 s = pm.strokes[j]
                 if s.kind == "horizontal" and s.thickness_sp <= LEDGER_MAX_THICK_SP and s.length_sp <= LEDGER_MAX_LEN_SP and j not in rung_ids:
+                    # a ledger stub stands OUTSIDE the staff body: the staff line a head overlaps leaves residue beyond the eraser's band (Litolff p2 2/1/1/10: a head
+                    # above the top line, no ledger printed, a "rung" at the top line read as one) -- a stub within `RUNG_OUTSIDE_STEPS` of the lines is not a ledger
+                    if top_page is not None:
+                        sp_pos = position_of(float(s.box[1]) + float(s.box[3]) / 2.0, top_page, hs_page)
+                        if not (sp_pos <= -RUNG_OUTSIDE_STEPS or sp_pos >= 8 + RUNG_OUTSIDE_STEPS):
+                            continue
                     rung_ids.append(int(j))
         ext_s = None
         use = blobs or [i for i, _ in covered if kinds[i] != "vertical"]
