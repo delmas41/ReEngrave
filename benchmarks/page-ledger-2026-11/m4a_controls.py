@@ -114,7 +114,7 @@ def main():
     rec = load_record(rec_path)
     Q = rows_by_quantity(rec)
     geo = cell_geometry(Q)
-    allp = [dict(box=bb(o["detail"]), role=o["value"], ord=o["detail"]["ordinal"], page=page_of(o["subject"]), detail=o["detail"]) for o in Q["page_beam"] if o["value"] != "census"]
+    allp = [dict(box=bb(o["detail"]), role=o["value"], ord=o["detail"]["ordinal"], page=page_of(o["subject"]), detail=o["detail"]) for o in Q["page_beam"] if o["value"] not in ("census", "views")]
     beams = [b for b in allp if b["role"] == "beam"]
     pstrokes = []
     seq = defaultdict(int)

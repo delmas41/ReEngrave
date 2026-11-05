@@ -341,7 +341,7 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         log.observe(sub, Q.PAGE_BEAM_TIP, len(t["beams"]), reader=READERS.CV_PAGE_BEAMS, frame=FRAME_PAGE, stem=t["stem"], stem_rows=t["stem_rows"], end=t["end"],
                     tip_y=t["tip_y"], beams=t["beams"], fused=t["fused"], joined=t["joined"], joined_gap=t["joined_gap"], hooks=t["hooks"], stubs=t["stubs"],
                     doubt=t["doubt"], stem_beamed=t["stem_beamed"], tip_clean=t["tip_clean"], group=t["group"], cells=t["cells"], staff=[local.get(sidx, (0, 0))[0], lidx])
-    if retire_a_enabled():
+    if True:      # ROADMAP 2.260c M4b: the views are filed whenever the page beams are read (the retirement flag acts in ADJUDICATE / EXPORT only, so one saved gather serves both arms of an A/B)
         res["census"]["views"] = gather_page_beam_views(log, cells, local, res, page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None),
                                                         page_index=p, progress=progress)
     res["census"]["seconds"] = round(time.time() - t0, 2)
@@ -357,7 +357,7 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
 
 def gather_page_beam_views(log: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], res: Dict[str, Any], *, page_shape: Any = None,
                            page_index: int = 0, progress: bool = False) -> Dict[str, int]:
-    """ROADMAP 2.260c M4b (flag `OMR_PAGE_BEAMS_RETIRE_A`, default OFF), STAGED GATHER: each page beam of role `beam` filed ONCE (`read_page`) is handed to every
+    """ROADMAP 2.260c M4b (STAGED GATHER, filed whenever `OMR_PAGE_BEAMS` reads the page; the flag `OMR_PAGE_BEAMS_RETIRE_A`, default OFF, acts in ADJUDICATE / EXPORT only): each page beam of role `beam` filed ONCE (`read_page`) is handed to every
     cell that holds one of its stems as a `Q.BEAM_STROKE` row (reader CV_PAGE_BEAMS) in the SAME shape cell reader A files (value `(x, y, w, h)` in cell-canonical px,
     detail `x0`, `x1`, `y_center`), not clipped to the cell; then the two cell measures that read those rows run on them exactly as they run on A's:
     `Q.BEAM_STROKE_INK` (`gather_beam_stroke_ink`, restricted to this reader) and `Q.BEAM_STEM_JOIN` (`_observe_beam_stem_join`, the cell's `Q.STEM` rows x the views).
