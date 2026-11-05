@@ -1,5 +1,8 @@
 """2.229: per-kind fix-action counts from an exported arm: report.json (exporter's own accounting) + symbols.json (place-keyed file symbols).
-usage: rank_counts.py WORKDIR PLATE ARM COUNTPAGES"""
+usage: rank_counts.py WORKDIR PLATE ARM COUNTPAGES
+
+ROADMAP 2.265: COUNTPAGES is the COUNTED sample pages (never the context page; `export_saved.py` has already left the context page's arc
+and dot rows out of the report totals). The dots row also reads WORKDIR/PLATE.ARM.specks.json (`counted_view.dot_specks`)."""
 import pathlib as _p, sys as _s; _s.path.insert(0, str(_p.Path(__file__).resolve().parents[4]))  # repo root, so `tools` imports
 import json, sys, collections
 work, plate, arm, cp = sys.argv[1], sys.argv[2], sys.argv[3], [int(x) for x in sys.argv[4].split(",")]
@@ -31,8 +34,16 @@ for h in S["hosts"]:
 rows = {}
 for k, c in sorted(by.items()):
     rows[k] = dict(per_page={str(p): c.get(p, 0) for p in sorted(set(cp) | set(c))}, counted_total=sum(c.get(p, 0) for p in cp), counted_per_page=round(sum(c.get(p, 0) for p in cp) / n, 1))
-tot = dict(guessed_by_rule=R["guessed"]["by_rule"], accidental_reading=R["accidental_reading"], dot_role_not_placed=R["dot_role_not_placed"],
+SP = {"specks": [], "floor_sp2": None}
+try:
+    SP = json.load(open("%s/%s.%s.specks.json" % (work, plate, arm)))
+except FileNotFoundError:
+    pass  # a pre-2.265 export: no speck list, the dots row stays the raw count
+specks = SP["specks"]
+tot = dict(dot_specks_in_the_dots_row=sum(1 for x in specks if x["outcome"] == "abstained" and x["reason"] == "dot_role_ambiguous"),
+           dot_specks_all=len(specks), floor_sp2=SP["floor_sp2"],
+           guessed_by_rule=R["guessed"]["by_rule"], accidental_reading=R["accidental_reading"], dot_role_not_placed=R["dot_role_not_placed"],
            fermatas_not_written=R["fermatas_not_written"], arcs_not_written=R["arcs_not_written"], tie_contradictions=len(R.get("tie_contradictions") or []),
            inferred_clefs=len(R.get("inferred_clefs") or []), part_join={k: R["part_join"].get(k) for k in ("unidentified_parts", "held_out_staves")},
            bars_held_out=R["bars_held_out_sum"]["bars"], tacet=R["tacet_padding"]["tacet_bar_total"], decided_and_unwritten=R["decided_and_unwritten"])
-print(json.dumps(dict(rows=rows, totals_over_loaded_pages=tot, loaded_pages_note="totals cover ALL loaded pages incl. context page"), indent=1, default=str))
+print(json.dumps(dict(rows=rows, totals_over_loaded_pages=tot, loaded_pages_note="counted pages only (2.265): the context page is loaded, its arc/dot rows left out before the export"), indent=1, default=str))
