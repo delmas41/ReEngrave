@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-04 -- ROADMAP 2.263b landed ON: OMR_NATURAL_READ default ON (deny-list)
+STAGED EXPORT `accidental_family.reads`: a natural read from its two staggered stems at stagger margin >= 0.25 is written READ (plain), not GUESSED (blue); flats, sharps and `unclear` unchanged; the 2.186 one-ink guess keeps its own GUESSED. Sean answered the 12 tiles "All 12 are naturals" (`out/print/2.263b-natural-read/answers.json`, judged index rebuilt: 2205 tiles). Frozen sample: blue -62 Brahms / -21 Litolff, nothing else changed, judged right->wrong 0. Env deny-list "0"/"false"/"no"/"off"; pin test updated (default ON, explicit 0 OFF). Gate: fast tier 9922 passed + 2 fixture/doc-cell fixes re-run green (full run: 2 failed, both fixed; 12 skipped, 2 xfailed).
+
 ## 2026-11-04 -- ROADMAP 2.262 landed: the page-map cost (no flag, no behaviour change)
 STAGED GATHER, `stroke_map.merge_accidentals`, `_merge_clefs` and `_cut_touching_all` now test the cheap geometry before scanning the exclude boxes (they scanned every box before the region test, page-wide). Brahms p5 gather 1908 -> 536 s under cProfile (OFF 502), page-map step 1393 -> 17.5 s, p0 map 131 -> 6.2 s; records row-identical on p0+p5; two fast tests added. Whole-movement runs no longer need `OMR_PAGE_CLAIMS=0`. Gate: fast tier 9917 passed, 1 failed (test_judged_index_2_106: main's stale 2.263 judged index, not this branch). FINDINGS page-ledger-2026-11 "2.262".
 
