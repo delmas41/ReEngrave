@@ -1,0 +1,10 @@
+# 2.267 — why the detector draws no box on a dyad's other head (measurement only; lane-2.267-unboxed-heads 94d3cd70f)
+
+STAGED GATHER (detector). No gather, no code change; read from the shared detector cache's raw (pre-NMS) candidates.
+
+- **Cases:** 16 missing heads confirmed by crop on the 20261103-night record (Litolff 4 from lane tiles + 11 from a hollow-dyad census; Brahms 1). 14 have a cache entry; 2 (Litolff p7) do not.
+- **Cause:** the model SEES them and scores them below the 0.25 cut. Cause 2 (a head-sized candidate under the cut): Litolff 8, Brahms 1, scores 0.035-0.244, IoU with the head 0.5-0.8. Cause 2t (only a merged tall candidate, 2.1-3.7 sp, under the cut): Litolff 5, scores 0.093-0.234. **None** is "no candidate at all" (cause 1) and **none** was removed by NMS (cause 3). Control: the cache served at conf 0.25 / IoU 0.7 class-wise reproduces the record's boxes exactly in all 14 case cells.
+- **Why one head of the pair is boxed and the other not:** the boxed neighbour is often a RESCUE-pass box (a sub-cut candidate promoted by a stem-end or tie-end witness); the other head has no such witness because the stem ends at the far head.
+- **Fixes:** NMS settings would not help (no cause 3). A plain lower cut recovers few (0.15: 1-2 per page) while adding 97-211 head boxes per page, unjudged. In reach without new weights: a rescue witness for the other head -- adopt the model's own sub-cut head candidate where the ink supports it (hole / head ink touching the same stem a step from a boxed head). That is the 2.260e M6d question, now with the detector's own candidate as the subject (CLAUDE §7: the box exists, below the cut).
+- **Lesson:** "unboxed" in tiles and handoffs meant "no box in the record", and a record box already means "detector OR rescue pass". A count of missing heads must say which.
+- **Not established:** black-head dyads (census is hollow-only; Brahms is mostly black); heads where the head class is second-best at an anchor (cache keeps the best class only); heads on a line; precision of any lower cut; the 2 p7 cases.

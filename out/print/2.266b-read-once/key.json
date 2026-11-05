@@ -1,0 +1,446 @@
+[
+ {
+  "plate": "brahms",
+  "page": 14,
+  "box": [
+   4415.7225,
+   3224.2425,
+   4440.7925,
+   3312.805
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/14/0/11/7/9",
+  "head": "glyph/14/0/11/7/6",
+  "family_kind": "natural",
+  "family_margin": 0.42,
+  "detector_class": "accidentalSharp",
+  "one_ink_class": "accidentalSharp",
+  "written": "natural",
+  "tile": 1,
+  "crop_origin": [
+   4236,
+   3108
+  ],
+  "position": {
+   "page": 14,
+   "system": 0,
+   "staff": 11,
+   "cell": 7,
+   "page_box": [
+    4415.7225,
+    3224.2425,
+    4440.7925,
+    3312.805
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   4412.5225,
+   4045.845,
+   4436.775,
+   4130.32
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/19/1/0/7/6",
+  "head": "glyph/19/1/0/7/13",
+  "family_kind": "natural",
+  "family_margin": 0.29,
+  "detector_class": "accidentalFlat",
+  "one_ink_class": "accidentalFlat",
+  "written": "natural",
+  "tile": 2,
+  "crop_origin": [
+   4232,
+   3928
+  ],
+  "position": {
+   "page": 19,
+   "system": 1,
+   "staff": 0,
+   "cell": 7,
+   "page_box": [
+    4412.5225,
+    4045.845,
+    4436.775,
+    4130.32
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1694.6225,
+   3090.61,
+   1708.325,
+   3153.1375
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/16/1/7/7/4",
+  "head": "glyph/16/1/7/7/2",
+  "family_kind": "natural",
+  "family_margin": 0.61,
+  "detector_class": "accidentalNatural",
+  "one_ink_class": "accidentalNatural",
+  "written": "natural",
+  "tile": 3,
+  "crop_origin": [
+   1606,
+   3043
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 7,
+   "cell": 7,
+   "page_box": [
+    1694.6225,
+    3090.61,
+    1708.325,
+    3153.1375
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1713.075,
+   2022.68,
+   1732.76,
+   2067.785
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/10/1/0/8/11",
+  "head": "glyph/10/1/0/8/7",
+  "family_kind": "sharp",
+  "family_margin": 0.4,
+  "detector_class": "accidentalSharp",
+  "one_ink_class": "accidentalSharp",
+  "written": "#",
+  "tile": 4,
+  "crop_origin": [
+   1628,
+   1966
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 0,
+   "cell": 8,
+   "page_box": [
+    1713.075,
+    2022.68,
+    1732.76,
+    2067.785
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2378.8,
+   1262.4425,
+   2391.715,
+   1310.795
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/6/0/6/11/3",
+  "head": "glyph/6/0/6/11/0",
+  "family_kind": "natural",
+  "family_margin": 0.61,
+  "detector_class": "accidentalFlat",
+  "one_ink_class": "accidentalFlat",
+  "written": "natural",
+  "tile": 5,
+  "crop_origin": [
+   2290,
+   1207
+  ],
+  "position": {
+   "page": 6,
+   "system": 0,
+   "staff": 6,
+   "cell": 11,
+   "page_box": [
+    2378.8,
+    1262.4425,
+    2391.715,
+    1310.795
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4017.8740234375,
+   2760.57568359375,
+   4044.0419921875,
+   2849.4873046875
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/5/0/10/5/4",
+  "head": "glyph/5/0/10/5/0",
+  "family_kind": "natural",
+  "family_margin": 0.365,
+  "detector_class": "accidentalNatural",
+  "one_ink_class": "accidentalNatural",
+  "written": "natural",
+  "tile": 6,
+  "crop_origin": [
+   3838,
+   2645
+  ],
+  "position": {
+   "page": 5,
+   "system": 0,
+   "staff": 10,
+   "cell": 5,
+   "page_box": [
+    4017.8740234375,
+    2760.57568359375,
+    4044.0419921875,
+    2849.4873046875
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   1119.5025,
+   3421.4825,
+   1131.315,
+   3478.97
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/9/1/8/3/4",
+  "head": "glyph/9/1/8/3/1",
+  "family_kind": "natural",
+  "family_margin": 0.55,
+  "detector_class": "accidentalNatural",
+  "one_ink_class": "accidentalNatural",
+  "written": "natural",
+  "tile": 7,
+  "crop_origin": [
+   1030,
+   3371
+  ],
+  "position": {
+   "page": 9,
+   "system": 1,
+   "staff": 8,
+   "cell": 3,
+   "page_box": [
+    1119.5025,
+    3421.4825,
+    1131.315,
+    3478.97
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 25,
+  "box": [
+   1107.2919921875,
+   6788.4462890625,
+   1133.169921875,
+   6873.921875
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/25/1/10/0/0",
+  "head": "glyph/25/1/10/0/10",
+  "family_kind": "natural",
+  "family_margin": 0.356,
+  "detector_class": "accidentalFlat",
+  "one_ink_class": "accidentalFlat",
+  "written": "natural",
+  "tile": 8,
+  "crop_origin": [
+   928,
+   6671
+  ],
+  "position": {
+   "page": 25,
+   "system": 1,
+   "staff": 10,
+   "cell": 0,
+   "page_box": [
+    1107.2919921875,
+    6788.4462890625,
+    1133.169921875,
+    6873.921875
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   1748.5125,
+   398.6675,
+   1760.64,
+   445.445
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/11/0/0/11/4",
+  "head": "glyph/11/0/0/11/0",
+  "family_kind": "natural",
+  "family_margin": 0.55,
+  "detector_class": "accidentalFlat",
+  "one_ink_class": "accidentalFlat",
+  "written": "natural",
+  "tile": 9,
+  "crop_origin": [
+   1660,
+   343
+  ],
+  "position": {
+   "page": 11,
+   "system": 0,
+   "staff": 0,
+   "cell": 11,
+   "page_box": [
+    1748.5125,
+    398.6675,
+    1760.64,
+    445.445
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   2329.9275,
+   740.9575,
+   2361.5625,
+   813.94
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/4/0/1/4/7",
+  "head": "glyph/4/0/1/4/13",
+  "family_kind": "flat",
+  "family_margin": null,
+  "detector_class": "accidentalFlat",
+  "one_ink_class": "accidentalFlat",
+  "written": "b",
+  "tile": 10,
+  "crop_origin": [
+   2153,
+   617
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "cell": 4,
+   "page_box": [
+    2329.9275,
+    740.9575,
+    2361.5625,
+    813.94
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1155.7575,
+   527.995,
+   1168.2,
+   585.955
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/4/0/1/5/2",
+  "head": "glyph/4/0/1/5/5",
+  "family_kind": "natural",
+  "family_margin": 0.43,
+  "detector_class": "accidentalFlat",
+  "one_ink_class": "accidentalFlat",
+  "written": "natural",
+  "tile": 11,
+  "crop_origin": [
+   1067,
+   478
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 1,
+   "cell": 5,
+   "page_box": [
+    1155.7575,
+    527.995,
+    1168.2,
+    585.955
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   1997.985,
+   1225.3225,
+   2023.055,
+   1315.2475
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/19/0/3/2/4",
+  "head": "glyph/19/0/3/2/0",
+  "family_kind": "natural",
+  "family_margin": 0.43,
+  "detector_class": "accidentalSharp",
+  "one_ink_class": "accidentalSharp",
+  "written": "natural",
+  "tile": 12,
+  "crop_origin": [
+   1818,
+   1110
+  ],
+  "position": {
+   "page": 19,
+   "system": 0,
+   "staff": 3,
+   "cell": 2,
+   "page_box": [
+    1997.985,
+    1225.3225,
+    2023.055,
+    1315.2475
+   ]
+  },
+  "cell_map": null
+ }
+]
