@@ -280,11 +280,11 @@ machine-readable form.
   head's staff-side edge beats a "rung" hidden inside the head (2026-10-06,
   24 of 24); nothing lies above a tenuto, so a dash with a head on it or
   beyond it is a ledger (2026-10-10; ROADMAP 2.84).
-- **A hollow head's position is its detector box centre, not its hole**
-  (Sean, 2026-10-01, on the 2.50 sheet: *"The red is almost always right and
-  better"*; scope: Litolff + Brahms): the white-interior centre was tried and
-  dropped; a reader that re-centres a hollow head on its hole needs Sean's
-  tiles first (2.212 did, unasked).
+- **A hollow head's position is its detector box centre, except where its one hole says another** (Sean, 2026-10-01, on the 2.50 sheet: *"The red is almost
+  always right and better"*; scope: Litolff + Brahms; **superseded in part 2026-11-03**: `OMR_HEAD_HOLE_POSITION` landed ON, 11 of 11 tiles right, ROADMAP 2.252 r4 --
+  a hollow head whose one hole and own ink centre stand at another position than its box centre is placed at the hole, scope: in-staff heads, hollow classes,
+  Litolff + Brahms; the 2026-10-01 line stands for every head the hole read refuses, and outside the staff the ledger lines alone place a head). Stale until the
+  2.260e M6a commit: this line said the hole was never used. A reader that re-centres a head on any other ink needs Sean's tiles first (2.212 did, unasked).
 - **A cell index restarts per system**; key a bar on (page, system, cell).
 - **A canonical cell frame cannot answer a cross-staff question**; page
   pixels are carried beside it, DECLINED rather than defaulted.
