@@ -77,6 +77,13 @@ KNOWN_GAPS: Dict[str, str] = {
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M2 (docs/plan-2026-11-03-page-ledger.md): the page stroke map is filed and read by NOTHING until M3 "
         "(`[[cell, ordinal]]` claims -> page stroke ids) and M4 (one beam reader on page strokes) land; the exported file is byte-identical with "
         "`OMR_PAGE_STROKES` on, which is the proof. A reader that appears removes this entry."),
+    Q.PAGE_BEAM: (
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a (docs/plan-2026-11-04-page-beams-m4.md): the page beam reader files the roles and joined stems of the page map's "
+        "strokes and the beam levels at each stem tip, and NOTHING reads them until M4b (the cell views replace the cell beam reads); the exported file is "
+        "byte-identical with `OMR_PAGE_BEAMS` on, which is the proof. A reader that appears removes this entry."),
+    Q.PAGE_BEAM_TIP: (
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
+        "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),
     # ROADMAP 2.240 step 3: Q.PAGE_MARK / Q.PAGE_MARK_OWNER / Q.PAGE_SPAN are read by `glyph_owner` / `arc_owner` (OMR_PAGE_OWNER_READ).
     Q.DYNAMIC_ANCHOR: (
         "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
@@ -348,6 +355,8 @@ STAGE_OF_FILE = {
     # ROADMAP 2.260a M1 / M2: files `Q.BARLINE_COLUMN_FIT` / `Q.PAGE_STROKE` from their hook lines in `gather.gather()`.
     "barline_columns.py": "GATHER",
     "page_strokes.py": "GATHER",
+    # ROADMAP 2.260c M4a: files `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP` from its hook line in `gather.gather()`.
+    "page_beams.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
     "page_owner.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",

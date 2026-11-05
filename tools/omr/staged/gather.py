@@ -17570,7 +17570,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default ON): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
         # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
         if not _page_strokes.claims_on():
-            _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
+            _pm_late = _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
+            from . import page_beams as _pb_keep
+            if _pb_keep.enabled():              # ROADMAP 2.260c M4a: the map is kept for the page beam reader; otherwise it is dropped as before
+                page_map_pre = _pm_late
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
         gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
@@ -17624,6 +17627,10 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # holds them. The order was always right; what was missing is that
         # `gather_cv_lines` was never handed the map.
         gather_cv_lines(log, cells, local, detections, stroke_cells)
+        # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF): the page map's strokes read for beams (roles, joined stems, tip levels), filed as
+        # `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows) and the page map; reads no raster; NOTHING READS THE ROWS.
+        from . import page_beams as _page_beams
+        _page_beams.gather_page_beams(log, pws, cells, local, page_map_pre, barline_cols or None, detections, progress=progress)
         # ⚠️ AFTER detection, because a component's row records how much of it
         # the detections account for -- the same edge `gather_direction_words`
         # has and for the same reason. BESIDE `gather_cv_lines` because the
