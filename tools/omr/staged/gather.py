@@ -1395,7 +1395,7 @@ def gather_dyad_head_rescue(log: Log, cells: Sequence[Any],
                             detections: Dict[str, List[Any]], *,
                             detector: Any = None, imgsz: Optional[int] = None,
                             progress: bool = False, pws: Any = None) -> None:
-    """ROADMAP 2.268 (TRIAL; flag `OMR_DYAD_HEAD_RESCUE`, default OFF; the caller gates). STAGED GATHER; decides nothing.
+    """ROADMAP 2.268 (flag `OMR_DYAD_HEAD_RESCUE`, default ON, deny-list; the caller gates). STAGED GATHER; decides nothing.
 
     The other head of a chord from the detector's OWN sub-cut head candidate (the same call the stem-end rescue makes, one shared run):
     a candidate below the production cut that sits on a CV stem a boxed head also touches, a step or more along it from that head, whose
@@ -17684,7 +17684,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         if detector is not None and _SEH.enabled():
             gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
-        # ROADMAP 2.268 (TRIAL; flag `OMR_DYAD_HEAD_RESCUE`, default OFF): a chord's other head from the detector's own sub-cut candidate. AFTER the
+        # ROADMAP 2.268 (flag `OMR_DYAD_HEAD_RESCUE`, default ON): a chord's other head from the detector's own sub-cut candidate. AFTER the
         # stem-end rescue (its boxes count as seen), BEFORE every `detections` walker, for the rescue's reason: a kept box is appended in place.
         from . import dyad_head_rescue as _DHR
         if detector is not None and _DHR.enabled():

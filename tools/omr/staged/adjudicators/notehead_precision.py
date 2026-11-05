@@ -3887,7 +3887,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # lane-stem-end-head round 2: a head the ink ALONE read at a stem end, its one witness; any claim on its ink refuses it.
     from .. import stem_end_heads as _SEH
     from .. import dyad_head_rescue as _DHR
-    # ROADMAP 2.268 (flag `OMR_DYAD_HEAD_RESCUE`, OFF): a chord's other head from a sub-cut candidate has the ink as its witness too, so any
+    # ROADMAP 2.268 (flag `OMR_DYAD_HEAD_RESCUE`, ON): a chord's other head from a sub-cut candidate has the ink as its witness too, so any
     # claim on its ink (arc, word, accidental ...) refuses it, as for an ink-only stem-end head. OFF files no such box.
     ink_only = _SEH.is_ink_only(box_row.detail) or _DHR.is_dyad(box_row.detail)
     if ink_only:

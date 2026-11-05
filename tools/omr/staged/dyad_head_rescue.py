@@ -1,4 +1,4 @@
-"""ROADMAP 2.268 (TRIAL; flag `OMR_DYAD_HEAD_RESCUE`, default OFF) -- the other head of a chord, from the detector's OWN sub-cut candidate.
+"""ROADMAP 2.268 (flag `OMR_DYAD_HEAD_RESCUE`, default ON, deny-list; Sean 12/12 tiles, landed 2026-11-04) -- the other head of a chord, from the detector's OWN sub-cut candidate.
 STAGED GATHER; decides nothing.
 
 CAUSE (2.267, `benchmarks/detector-unboxed-heads-2026-11/FINDINGS.md`): a dyad's other head was never boxed because the detector scores it
@@ -48,8 +48,8 @@ COVERED_SHARE = 0.5
 
 
 def enabled() -> bool:
-    """`OMR_DYAD_HEAD_RESCUE`, default OFF; only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_DYAD_HEAD_RESCUE` (ROADMAP 2.268), default ON (deny-list): "0"/"false"/"no"/"off" turns it off."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _share_inside(box: Sequence[float], other: Sequence[float]) -> float:

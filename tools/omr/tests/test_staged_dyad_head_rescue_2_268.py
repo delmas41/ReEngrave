@@ -1,4 +1,4 @@
-"""ROADMAP 2.268 (TRIAL) -- `dyad_head_rescue`: a chord's other head from the detector's own sub-cut candidate (flag OMR_DYAD_HEAD_RESCUE, OFF)."""
+"""ROADMAP 2.268 -- `dyad_head_rescue`: a chord's other head from the detector's own sub-cut candidate (flag OMR_DYAD_HEAD_RESCUE, default ON, deny-list)."""
 from dataclasses import dataclass
 
 from tools.omr.staged import dyad_head_rescue as DHR
@@ -27,12 +27,13 @@ def head(x, y, name="noteheadHalfInSpace", conf=0.5):
     return D(name, x - 65, y - 50, 130, 100, conf)
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(DHR.ENV, raising=False)
-    assert DHR.enabled() is False
-    monkeypatch.setenv(DHR.ENV, "1")
     assert DHR.enabled() is True
-    for v in ("0", "off", ""):
+    for v in ("1", "on", ""):
+        monkeypatch.setenv(DHR.ENV, v)
+        assert DHR.enabled() is True
+    for v in ("0", "false", "no", "off", "OFF"):
         monkeypatch.setenv(DHR.ENV, v)
         assert DHR.enabled() is False
 
