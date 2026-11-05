@@ -118,15 +118,6 @@ ANCHOR_DY_SPACES = 2.5
 #: A tie's two heads sit at one staff position (page-facts §1; the staged tolerance `TIE_SAME_POSITION_MAX_SPACES`).
 SAME_POSITION_SPACES = 0.25
 
-#: ROADMAP 2.271 (`OMR_ARC_CROSS_BARLINE`, default OFF): a barline is a RAW-page run at least this tall (spaces) through the trace's row (a staff is 4 sp
-#: tall, a stem 3.5), no wider than `BARLINE_MAX_SPACES` (the carve's own `CARVE_MAX_WIDTH_SPACES`). NOT CONFIRMED beyond Litolff 984073 / Brahms 317803.
-BARLINE_RUN_SPACES = 3.8
-BARLINE_MAX_SPACES = 0.9
-#: ... and the stroke resumes beyond it no farther than this (spaces) from where it went in (the slur's tail drops or climbs into its note there), and
-#: the tail may then be as steep as the trace's own slope clamp (a slur ends steeply into its head; `EXT_MAX_SLOPE` is for the stroke past a CUT, not past a rule).
-CROSS_DY_SPACES = 1.2
-CROSS_MAX_SLOPE = 2.0
-
 _ARC_CLASSES = ("tie", "slur")
 _NOTEHEAD_PREFIX = "notehead"
 #: The detector classes whose ink is never erased where the arc touches them (heads, stems, accidentals and every
@@ -287,32 +278,10 @@ class _Columns:
                 if (b - a + 1) <= self.raw_max]
 
 
-def _is_barline_col(raw: Optional[np.ndarray], x: int, y: float, sp: float) -> bool:
-    """ROADMAP 2.271: the RAW page column `x` holds a barline-tall run through row `y` (stems, heads and staff lines merge into one run on the raw page)."""
-    if raw is None or x < 0 or x >= raw.shape[1]:
-        return False
-    col = raw[:, x]
-    yy = int(round(y))
-    # the run through the row, or through a row within a pixel of it (the trace's own stroke may be a hair off the rule's ink)
-    for r in (yy, yy - 1, yy + 1):
-        if 0 <= r < len(col) and col[r]:
-            a = b = r
-            while a > 0 and col[a - 1]:
-                a -= 1
-            while b < len(col) - 1 and col[b + 1]:
-                b += 1
-            return (b - a + 1) >= BARLINE_RUN_SPACES * sp
-    return False
-
-
 def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float,
             pts: Dict[int, Tuple[int, int]], box_x: Tuple[int, int] = (-1 << 30, 1 << 30),
-            raw_pts: Optional[set] = None, crossed: Optional[List[Dict[str, Any]]] = None) -> None:
-    """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y.
-
-    ROADMAP 2.271 (`crossed` not None, i.e. `OMR_ARC_CROSS_BARLINE`): a barline column (`_is_barline_col`) is stepped across as no gap, and the first
-    column beyond it takes the thin run within `CROSS_DY_SPACES` of where the stroke went in (nearest the prediction): the stroke is one curve, the rule
-    cut it. Each crossing is appended to `crossed`; past one the tail may be as steep as `CROSS_MAX_SLOPE`. No such run: the trace ends as before."""
+            raw_pts: Optional[set] = None) -> None:
+    """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y."""
     hist: List[Tuple[int, float]] = [(x, yc)]
     seed = pts.get(x)
     thick: List[int] = [seed[1] - seed[0] + 1] if seed else []
@@ -321,9 +290,6 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
     tol0 = max(2.0, TOL_SPACES * sp)
     look = max(3, int(round(0.5 * sp)))
     xx = x + step
-    bar_in = None            # x of the first barline column of the crossing in progress
-    ext_slope = EXT_MAX_SLOPE
-    pend = None              # the fallback resume point beyond a rule (see the gap branch below)
     while (xx <= x_stop) if step > 0 else (xx >= x_stop):
         lx, ly = hist[-1]
         k = hist[0]
@@ -335,18 +301,11 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         slope = max(-2.0, min(2.0, slope))
         # past its own box the trace is a TAIL the crop cut: a tie's or slur's end runs shallow into its head; a steep
         # climb there is the outline of a head or a stem, not the arc
-        if not (box_x[0] <= xx <= box_x[1]) and abs(slope) > ext_slope:
+        if not (box_x[0] <= xx <= box_x[1]) and abs(slope) > EXT_MAX_SLOPE:
             return
         dx = xx - lx
         pred = ly + slope * dx
-        on_bar = False
-        if crossed is not None:
-            on_bar = _is_barline_col(cols.raw, xx, ly if bar_in is not None else pred, sp)
-            if on_bar and bar_in is None:
-                bar_in = xx             # the stroke has reached a rule: the columns it covers are bridged as gap columns, as before
-                if os.environ.get("DBG271"):
-                    print("DBG271 bar at", xx, "ly", ly, "step", step, flush=True)
-        tol =tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
+        tol = tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
         best = None
         from_raw = False
         # THE STROKE CONTINUES (Sean's tile 11, 2026-10-17: our trace left a tie at the barline and carried on along
@@ -365,33 +324,11 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
             if best is not None:
                 break
             from_raw = True
-        if best is None and bar_in is not None and not on_bar and pend is None:
-            # ROADMAP 2.271: the stroke went into a rule and the usual tolerance finds nothing beyond it (a slur's tail drops or climbs steeply into its
-            # note there). Keep the ONE thin run within `CROSS_DY_SPACES` of where the stroke went in as the fallback -- never a choice between two --
-            # and use it only if the usual bridging finds nothing before the gap budget runs out (a stroke the usual rule continues keeps its own height)
-            near = [(a, b, (a + b) / 2.0) for a, b in cols.thin(xx) if abs((a + b) / 2.0 - ly) <= CROSS_DY_SPACES * sp]
-            if len(near) == 1:
-                pend = (xx, near[0][0], near[0][1], near[0][2], bar_in, ly)
         if best is None:
             gap += 1
             if gap > gap_max:
-                if pend is None:
-                    return
-                xx, a, b, c, bx_in, y_in = pend
-                pts[xx] = (a, b)
-                crossed.append({"x_in": bx_in, "x_out": xx, "y_in": round(y_in, 1), "y_out": round(c, 1), "step": step})
-                hist = [(xx, c)]
-                thick = [b - a + 1]
-                gap = 0
-                bar_in = None
-                pend = None
-                ext_slope = CROSS_MAX_SLOPE
-                xx += step
-                continue
+                return
         else:
-            if bar_in is not None and not on_bar:
-                bar_in = None
-            pend = None
             # a run found only on the RAW page (the stroke merged with a staff line) BRIDGES, at a quarter of a gap's
             # cost, so a trace can never ride a staff line far; such points are trimmed off the trace's two ends
             gap = gap + RAW_BRIDGE_COST if from_raw else 0
@@ -408,7 +345,7 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
 
 
 def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float, x_max: float,
-              raw: Optional[np.ndarray] = None, cross_barline: bool = False
+              raw: Optional[np.ndarray] = None
               ) -> Optional[Dict[str, Any]]:
     """Follow the thin stroke inside `box` (page px) out to `x_min..x_max`. `None` off the raster / no unit.
 
@@ -445,9 +382,8 @@ def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float,
         pts: Dict[int, Tuple[int, int]] = {x: (a, b)}
         yc = (a + b) / 2.0
         raw_pts: set = set()
-        crossed: Optional[List[Dict[str, Any]]] = [] if cross_barline and raw is not None else None
-        _follow(cols, x, yc, +1, hi, sp, pts, (bx0, bx1), raw_pts, crossed)
-        _follow(cols, x, yc, -1, lo, sp, pts, (bx0, bx1), raw_pts, crossed)
+        _follow(cols, x, yc, +1, hi, sp, pts, (bx0, bx1), raw_pts)
+        _follow(cols, x, yc, -1, lo, sp, pts, (bx0, bx1), raw_pts)
         for order in (sorted(pts), sorted(pts, reverse=True)):     # trim raw-only points off both ends
             for xx in order:
                 if xx not in raw_pts:
@@ -456,13 +392,10 @@ def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float,
         inside = sum(1 for xx in pts if bx0 <= xx <= bx1)
         cov = inside / width
         if best is None or cov > best["coverage"]:
-            best = {"points": pts, "coverage": round(cov, 3), "crossed": crossed or []}
+            best = {"points": pts, "coverage": round(cov, 3)}
     if best is None:
         return {"points": {}, "coverage": 0.0, "x0": None, "x1": None, "y_left": None, "y_right": None}
-    out = _finish(best["points"], best["coverage"])
-    if best.get("crossed"):
-        out["crossed"] = best["crossed"]
-    return out
+    return _finish(best["points"], best["coverage"])
 
 
 def _finish(pts: Dict[int, Tuple[int, int]], coverage: float) -> Dict[str, Any]:
@@ -813,11 +746,6 @@ def _is_arc_tail_box(hg: str, hb: Sequence[float], binary: Any, cell_of: Dict[Tu
     return got is not None and float(got["oval_width_sp"]) < ARC_TAIL_OVAL_MAX_SPACES
 
 
-def _arc_claim_cross_barline() -> bool:
-    from . import arc_claim as _ac
-    return _ac.cross_barline_enabled()
-
-
 def _arc_claim_one_curve() -> bool:
     from . import arc_claim as _ac
     return _ac.one_curve_enabled()
@@ -925,8 +853,7 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             # (ROADMAP 2.260b r2: the trace keeps the box rule; the STROKE's own extent is read from the page map below, `stroke_*_page`)
             x_min = max(sx0, bx0 - (CUT_EXTEND_SPACES if cut_left else FREE_EXTEND_SPACES) * sp)
             x_max = min(sx1, bx1 + (CUT_EXTEND_SPACES if cut_right else FREE_EXTEND_SPACES) * sp)
-            t = trace_arc(ink, p["box"], sp, x_min=x_min, x_max=x_max, raw=raw,
-                          cross_barline=_arc_claim_cross_barline() and (cut_left or cut_right))
+            t = trace_arc(ink, p["box"], sp, x_min=x_min, x_max=x_max, raw=raw)
             if t is not None and t["points"] and on_a_staff_line(
                     {x: r for x, r in t["points"].items() if bx0 <= x <= bx1}, line_ys, sp):
                 log.abstain(p["glyph"], Q.SYSTEM_ARC, reader=READERS.CV_SYSTEM_ARC, frame="page",
@@ -1020,10 +947,6 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             )
             if joins is not None:
                 detail["joins"] = joins
-            _crossed = [c for m in members for c in (m.get("crossed") or ())]
-            if _crossed:
-                detail["crossed_barline"] = _crossed          # ROADMAP 2.271: where the one traced curve stepped across a rule
-                summary["crossed_barline"] = summary.get("crossed_barline", 0) + len(_crossed)
             if page_map is not None:
                 # ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`): the curve names the PAGE strokes it runs along (built before this erase, so the arc is on
                 # the map whole), and each piece the strokes ITS OWN trace runs along: two pieces on one page stroke are one stroke seen twice

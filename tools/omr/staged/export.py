@@ -2989,9 +2989,11 @@ def _edge_curves(rec: Record) -> List[Dict[str, Any]]:
             if e.get("edge") and other.get("head"):
                 x = d.get("x_%s_page" % side)
                 p = _parse_subject(sub)
+                tr = d.get("trace") or ()
+                box = ([min(t[0] for t in tr), min(t[1] for t in tr), max(t[0] for t in tr), max(t[2] for t in tr)] if tr else None)
                 out.append({"curve": curve, "side": side, "head": str(other["head"]), "x_end": None if x is None else float(x),
                             "sp": float(d.get("space_page_px") or 0.0), "page": p["page"], "system": p["system"], "home": pb.get("home"),
-                            "pieces": len(d.get("pieces") or ())})
+                            "pieces": len(d.get("pieces") or ()), "trace_box": box})
     return out
 
 

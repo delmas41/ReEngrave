@@ -63,16 +63,9 @@ def claim_enabled() -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
-#: ROADMAP 2.271 (Sean 2026-11-05 "Arcs should be read page level so they shouldn't be reread and broken up later"), default OFF: the traced
-#: curve is followed ACROSS a barline (`arcs_system._follow`), so the one curve reaches the note beyond the rule instead of stopping at the cell cut.
-ENV_CROSS_BARLINE = "OMR_ARC_CROSS_BARLINE"
 #: ROADMAP 2.271 step 3 (Sean 2026-11-05 "Anything that needs to be done to connect arc separated by systems is fine"), default OFF: EXPORT joins an arc
 #: that runs off one system's edge to the piece that picks up at the next system's edge, on the same part's staff, when exactly one fits.
 ENV_ACROSS_SYSTEMS = "OMR_ARC_ACROSS_SYSTEMS"
-
-
-def cross_barline_enabled() -> bool:
-    return _on(ENV_CROSS_BARLINE)
 
 
 def across_systems_enabled() -> bool:
