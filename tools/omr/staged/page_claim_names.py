@@ -227,7 +227,7 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
         filed += 1
         log.observe(c["subject"], Q.CLAIMED_AREA, list(c["won"]), reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=c["owner"],
                     owner_row=c["row"], owner_glyph=None, unit=UNIT, standing="READ", source=SOURCE, how=c["how"], page_strokes=list(c["won"]),
-                    contested=c["contested"], twins=c["twins"])
+                    contested=c["contested"])
     census.update(rows=filed, named=len(res["named"]), double_named=res["double"], seconds=round(time.time() - t0, 3))
     log.observe(page_sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner="page_names", unit=UNIT_CENSUS,
                 standing="READ", source=SOURCE, **census)
