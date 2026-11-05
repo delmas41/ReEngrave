@@ -31,8 +31,8 @@ Read FIRST. The 11-03 evening block holds the direction (page ledger, "read once
 - **2.265** ranking hygiene (counting tools only).
 - Measured, no code: 2.263 (no READ bar can be placed by data), 2.266 (one-ink 0/19 where it disagrees), 2.267 (the detector SEES a chord's missing second head but scores it 0.04-0.24, under the 0.25 cut; none unseen, none NMS-removed), the Brahms p14 2.256b growth (three staves named, not new ink).
 
-**In flight at session end** (their rows are the truth; this line is updated when they land):
-- **2.268** dyad head rescue `OMR_DYAD_HEAD_RESCUE`: landing ON (Sean 12/12 tiles; "Yes. Do that - go": the overnight is its frozen-sample measure). Round 2 fixed tile 9 (a NARROWED false-clef claim no longer blocks the rescue). Not measured beyond 4 pages.
+**Finished at session end** (both on main; their rows are the truth):
+- **2.268** dyad head rescue `OMR_DYAD_HEAD_RESCUE`: **LANDED ON** (main d4c5dafc5; Sean 12/12 tiles; "Yes. Do that - go": the overnight is its frozen-sample measure). Round 2 fixed tile 9 (a NARROWED false-clef claim no longer blocks the rescue). Measured on 4 pages only; fast tier 9974 after the ink-rules page rebuild.
 - **2.269** steps 0+1 **merged OFF** (with M4a): page-wide claims name their page strokes; export identical; M4a false beams Brahms 31 -> 17, Litolff 74 -> 67; left: dynamic-letter crossbars (GUESSED claims are not named), hollow-head ink, title text -> step 3 / M6.
 
 **Merged OFF:** 2.260c M4a `OMR_PAGE_BEAMS` + 2.269 `OMR_PAGE_CLAIM_NAMES` (export identical); M4b waits on step 3. **Parked:** 2.264 (premise wrong; causes are missing heads -> 2.268 / M6).
