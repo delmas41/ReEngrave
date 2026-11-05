@@ -1390,6 +1390,165 @@ def gather_stem_end_heads(log: Log, cells: Sequence[Any],
             print(f"  gather stem-end heads {cell_key}: {len(kept)} box(es), {n_orph} orphan stem(s)")
 
 
+def gather_dyad_head_rescue(log: Log, cells: Sequence[Any],
+                            local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]], *,
+                            detector: Any = None, imgsz: Optional[int] = None,
+                            progress: bool = False, pws: Any = None) -> None:
+    """ROADMAP 2.268 (TRIAL; flag `OMR_DYAD_HEAD_RESCUE`, default OFF; the caller gates). STAGED GATHER; decides nothing.
+
+    The other head of a chord from the detector's OWN sub-cut head candidate (the same call the stem-end rescue makes, one shared run):
+    a candidate below the production cut that sits on a CV stem a boxed head also touches, a step or more along it from that head, whose
+    page ink is ONE head (`head_ink.read_head_ink`, the stem-end reader's own tests) with the stem at its edge, covered by no head box and
+    held by no other mark's confident box, is APPENDED to the cell's `detections` under `READERS.RESCUE_STEM_HEAD` (`source`
+    `dyad_head_rescue`), the box being the ink's own head with its rim, the class its fill at its staff position, the score the detector's
+    (below the cut: ADJUDICATE writes it GUESSED). A merged tall candidate is used only through 2.252's hole split. Production boxes and
+    every glyph index already filed are unchanged. `dyad_head_rescue` holds the rule."""
+    import dataclasses
+    from . import dyad_head_rescue as DHR
+    from . import head_ink
+    from . import stem_end_heads as SEH
+    from . import box_kind as _bk
+    from ..line_detection import detect_lines, staged_stem_finder
+    from ..template_matcher import SymbolDetection
+    if detector is None:
+        return
+    page_binary = getattr(getattr(pws, "page", None), "binary", None)
+    for c in cells or ():
+        key = local.get(c.staff_index)
+        bbox = getattr(c, "bbox_page_px", None)
+        up = getattr(c, "upscale_factor", None)
+        grid = _cell_grid(c)
+        if key is None or grid is None or page_binary is None or not bbox or not up:
+            continue
+        sys_idx, st_idx = key
+        p = c.page_index
+        cell_sub = R.cell(p, sys_idx, st_idx, c.measure_index)
+        cell_key = cell_sub.to_key()
+        frame = frame_cell(c.measure_index)
+        existing = detections.get(cell_key) or []
+        if not any(SEH.is_head(d.smufl_name) for d in existing):
+            continue
+        rerun = _rescue_detect(detector, c, DHR.FLOOR, imgsz)
+        space = 2.0 * grid[1]
+        sub_cut = [d for d in rerun if SEH.is_head(d.smufl_name) and not str(d.smufl_name).startswith("noteheadWhole")
+                   and float(d.confidence) < DHR.CUT]
+        if not sub_cut:
+            continue
+        one = [d for d in sub_cut if d.height_canonical / space < _bk.TALL_MIN_H_SP]
+        tall = [d for d in sub_cut if d.height_canonical / space >= _bk.TALL_MIN_H_SP]
+        pool = list(one)
+        if tall and _bk.tall_split_enabled():
+            from . import head_hole_position as _hhp
+            allb = list(existing) + tall
+            outb, tinfo = _bk.split_tall_heads(allb, getattr(c, "image", None), space, staff_top=grid[0],
+                                               line_ys=list(getattr(c, "staff_line_ys_canonical", None) or ()),
+                                               only=set(range(len(existing), len(allb))), black_too=_hhp.r5_enabled())
+            for j, nd in enumerate(outb[len(allb):]):
+                src = tinfo[len(allb) + j]["tall_split"]["split_from"]
+                pool.append(dataclasses.replace(nd, confidence=float(allb[src].confidence)))
+        if not pool:
+            continue
+        try:
+            stems = (detect_lines(c, candidates_out=None, noteheads=None, stem_finder=staged_stem_finder()) or {}).get("stems") or []
+        except Exception as exc:                                  # noqa: BLE001
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame,
+                        reason=ABSTAIN.READER_UNAVAILABLE, error=type(exc).__name__)
+            continue
+        kept, refused = DHR.candidates_for_cell(stems, existing, pool, grid)
+        for rf in refused:
+            d = rf["det"]
+            log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                        why="dyad:" + rf["why"], candidate_class=d.smufl_name, score=float(rf["score"]),
+                        box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical])
+        if not kept:
+            continue
+        up = float(up)
+        sp_page = space / up
+        to_page = lambda b: (bbox[0] + b[0] / up, bbox[1] + b[1] / up, bbox[0] + b[2] / up, bbox[1] + b[3] / up)  # noqa: E731
+        foreign = [pb for pb in (_page_box(c, d) for d in existing if head_ink.is_foreign_class(d.smufl_name)) if pb is not None]
+        seen = [to_page(SEH._box(d)) for d in existing if SEH.is_head(d.smufl_name)]
+        for c2 in cells:
+            k2 = local.get(c2.staff_index)
+            if c2.page_index != p or k2 is None or c2 is c:
+                continue
+            for d2 in detections.get(R.cell(p, k2[0], k2[1], c2.measure_index).to_key()) or ():
+                if SEH.is_head(d2.smufl_name):
+                    pb = _page_box(c2, d2)
+                    if pb is not None:
+                        seen.append(pb)
+        home_of = _staff_home_finder(pws, cells, local, p)
+        lst = detections.get(cell_key)
+        if lst is None:
+            lst = []
+            detections[cell_key] = lst
+        n_filed = 0
+        for kb in kept:
+            d = kb["det"]
+            s = stems[kb["stem_index"]]
+            sx = SEH.stem_ends(s)[0]
+            got = head_ink.read_head_ink(page_binary, to_page(SEH._box(d)), sp_page, foreign, head_interior_white, notehead_ink_under)
+            why = None
+            if got is None or got.get("trimmed") is None:
+                why = "no_head_ink"
+            else:
+                if got.get("not_one_head") == "too_small" and SEH._rim_head_sized(got):
+                    got = dict(got, not_one_head=None)
+                    got["value"], got["margin"], _w = head_ink.fill_from_slit(got.get("slit"))
+                if got.get("not_one_head"):
+                    why = "not_one_head:" + str(got["not_one_head"])
+                else:
+                    tx0, ty0, tx1, ty1 = got["trimmed"]
+                    w_sp, h_sp = got["extent_sp"]
+                    sx_page = bbox[0] + sx / up
+                    if w_sp < h_sp or (got.get("oval_width_sp") or 0.0) < head_ink.MIN_SPACES:
+                        why = "not_oval"
+                    elif min(abs(sx_page - tx0), abs(sx_page - tx1)) / sp_page > DHR.STEM_AT_EDGE_SPACES:
+                        why = "stem_not_at_the_ink_edge"
+                    elif got.get("value") is None:
+                        why = "fill_unread"
+                    elif any(SEH.same_ink(got["trimmed"], h) or DHR._share_inside(got["trimmed"], h) >= DHR.COVERED_SHARE
+                             for h in seen):
+                        why = "a_seen_head"
+            if why is not None:
+                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                            why="dyad_ink:" + why, candidate_class=d.smufl_name, score=float(kb["score"]),
+                            box_canonical=[d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical])
+                continue
+            rx0, ry0, rx1, ry1 = got.get("rim_trimmed") or got["trimmed"]
+            if home_of((rx0 + rx1) / 2.0, (ry0 + ry1) / 2.0, c) is not None:
+                log.abstain(cell_sub, Q.GLYPH_BOX, reader=READERS.RESCUE_STEM_HEAD, frame=frame, reason=ABSTAIN.AMBIGUOUS,
+                            why="dyad_ink:on_another_staff", candidate_class=d.smufl_name, score=float(kb["score"]))
+                continue
+            cx0, cy0, cx1, cy1 = (rx0 - bbox[0]) * up, (ry0 - bbox[1]) * up, (rx1 - bbox[0]) * up, (ry1 - bbox[1]) * up
+            name = SEH.ink_head_class(got["value"], (cy0 + cy1) / 2.0, grid[0], grid[1])
+            nd = SymbolDetection(cell=c, smufl_name=name, category="notehead", x_canonical=int(round(cx0)), y_canonical=int(round(cy0)),
+                                 width_canonical=int(round(cx1 - cx0)), height_canonical=int(round(cy1 - cy0)),
+                                 confidence=float(kb["score"]))
+            seen.append(got["trimmed"])
+            g = R.glyph(p, sys_idx, st_idx, c.measure_index, len(lst))
+            partner = existing[kb["partner"]]
+            box_detail: Dict[str, Any] = {
+                "category": "notehead", "source": "dyad_head_rescue", "read_from": str(d.smufl_name), "detector_score": float(kb["score"]),
+                "detector_box_canonical": [d.x_canonical, d.y_canonical, d.width_canonical, d.height_canonical],
+                "partner_glyph": R.glyph(p, sys_idx, st_idx, c.measure_index, kb["partner"]).to_key(),
+                "partner_class": str(partner.smufl_name),
+                "stem_canonical": [s.x_canonical, s.y_canonical, s.width_canonical, s.height_canonical],
+                "ink_trimmed": got.get("trimmed"), "ink_fill": got.get("value"), "ink_extent_sp": got.get("extent_sp")}
+            page_box = _page_box(c, nd)
+            if page_box is not None:
+                px0, py0, px1, py1 = page_box
+                box_detail.update(bbox_page_px=[px0, py0, px1, py1], x_center_page=(px0 + px1) / 2.0, y_center_page=(py0 + py1) / 2.0)
+            log.observe(g, Q.GLYPH_BOX, (nd.smufl_name, nd.x_canonical, nd.y_canonical, nd.width_canonical, nd.height_canonical),
+                        reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(nd.confidence), **box_detail)
+            log.observe(g, Q.GLYPH_CONF, float(nd.confidence), reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(nd.confidence))
+            log.observe(g, Q.NOTEHEAD_CLASS, nd.smufl_name, reader=READERS.RESCUE_STEM_HEAD, frame=frame, score=float(nd.confidence))
+            lst.append(nd)
+            n_filed += 1
+        if progress:
+            print(f"  gather dyad heads {cell_key}: {n_filed} box(es) of {len(kept)} candidate(s)")
+
+
 def _staff_home_finder(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], p: int) -> Any:
     """Round 2 (lane-stem-end-head): `home_of(x, y, c)` -> the cell of page `p` whose STAFF LINES stand around the page point (its top
     line to its bottom line, half a space of slack: a head in the top or bottom space) and whose x span holds it, when that is NOT the
@@ -17524,6 +17683,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         from . import stem_end_heads as _SEH
         if detector is not None and _SEH.enabled():
             gather_stem_end_heads(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
+
+        # ROADMAP 2.268 (TRIAL; flag `OMR_DYAD_HEAD_RESCUE`, default OFF): a chord's other head from the detector's own sub-cut candidate. AFTER the
+        # stem-end rescue (its boxes count as seen), BEFORE every `detections` walker, for the rescue's reason: a kept box is appended in place.
+        from . import dyad_head_rescue as _DHR
+        if detector is not None and _DHR.enabled():
+            gather_dyad_head_rescue(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
         # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON since 2026-11-02). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
