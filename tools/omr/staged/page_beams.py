@@ -12,7 +12,7 @@ landed cut-offs and nothing new --
     one (a position grid) instead of the whole cell;
   * a stem END's reading is `beam_strokes.tip_reading` over TIP_OUTWARD_SPACES / TIP_INWARD_SPACES, the same function, once per end of each stem stroke,
     plus the not-touching join `JOIN_MAX_GAP_SPACES` (the box-gap join of 2.202b, `face_join=False`) so the two joins can be compared;
-  * a BEAMED GROUP is the stems joined through beam-role strokes (union-find), so a beam the cell edge cut in two is one beam here.
+  * a BEAMED GROUP is the stems joined through beam-role strokes (union-find), so a beam the cell edge cut in two is one beam here. Every beam is within a bar (Sean 2026-11-04): a group whose stems stand in two bars, or a beam cut by a barline column, is a READING ERROR, counted (`two_bar_reading_errors`) and never filed as a group.
 
 WHAT IT FILES (a SIBLING of `Q.PAGE_STROKE`, not columns added to it: `Q.PAGE_STROKE` is filed by `page_strokes.gather_page_strokes` BEFORE the arcs
 are traced -- and before the stems exist -- and is referenced by the arc claims' `page_strokes` ids; the stems are read later, so a row about them
@@ -169,7 +169,7 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
         for s in ss[1:]:
             union(ss[0], s)
 
-    # 3. a beam the carved barline column cut in two is one beam: pair the cut ends across each column
+    # 3. a beam the carved barline column cut in two: pair the cut ends across each column (to COUNT them as the reading error they are)
     cut_pairs: List[Tuple[int, int, int]] = []          # (left beam, right beam, column index)
     spans: Dict[int, List[int]] = {}                    # beam -> columns it runs across, whole
     for ci, col in enumerate(columns):
@@ -198,12 +198,8 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
                     continue
                 if abs(ya - yb) <= 0.5 * min(a.thickness, b.thickness) * (a.space_px or sp):
                     cut_pairs.append((lo, ro, ci))
-    cut_sets = []
-    for lo, ro, _ci in cut_pairs:
-        cut_sets.append((lo, ro))
-        for sa in roles[lo]["stem_ordinals"]:
-            for sb in roles[ro]["stem_ordinals"]:
-                union(sa, sb)
+    # Sean 2026-11-04: every beam is within a bar. A cut pair across a column is TWO beams (one per bar) and a reading error to count, never one group.
+    cut_sets = [(lo, ro) for lo, ro, _ci in cut_pairs]
 
     # 4. rows: one per horizontal / curve stroke with a role
     beams: List[Dict[str, Any]] = []
@@ -220,7 +216,7 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
         beams.append(dict(ordinal=v.ordinal, role=str(r["role"]), stems=ss, stems_by_face=list(r["stems_by_face"]), group=grp,
                           thickness_spaces=v.thickness, thickness_margin=r["thickness_margin"], length_spaces=v.length,
                           kind=v.kind, head_fused=head_fused, claimed_by=claimed.get(v.ordinal),
-                          spans_columns=spans.get(v.ordinal, []), cut_by_column=v.ordinal in cut_by_column, box=list(v.box)))
+                          spans_columns=spans.get(v.ordinal, []), cut_by_column=v.ordinal in cut_by_column, two_bars=False, box=list(v.box)))
 
     # 5. the tips: both ends of each stem stroke
     tips: List[Dict[str, Any]] = []
@@ -236,23 +232,49 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
             tips.append(dict(stem=so, stem_rows=stem_rows[so], end=end, side=side, tip_y=tr["tip_y"], beams=list(tr["beams"]), fused=list(tr["fused"]),
                              joined=list(tr["joined"]), joined_gap=list(gap["joined"]), hooks=list(tr["hooks"]), stubs=list(tr["stubs"]),
                              doubt=list(tr["doubt"]), stem_beamed=bool(tr["stem_beamed"]), tip_clean=BS.tip_clean(near, sv, side),
-                             group=find(so) if so in parent else None))
+                             group=find(so) if so in parent else None, two_bars=False))
 
     groups: Dict[int, set] = {}
-    for s in parent:
-        groups.setdefault(find(s), set()).add(s)
-    multi = {g: m for g, m in groups.items() if len(m) >= 2}
-    crossing = set()
-    for o in spans:
+    for s_ in parent:
+        groups.setdefault(find(s_), set()).add(s_)
+    bad: set = set()                                   # groups whose stems stand in two bars (a reading error, Sean 2026-11-04)
+    for g, members in groups.items():
+        if len(members) < 2:
+            continue
+        for col in columns:
+            sides = set()
+            for m in members:
+                v = by_ord[m]
+                ym = v.box[1] + v.box[3] / 2.0
+                if system_of is not None and system_of.get(m) != col.get("system"):
+                    continue
+                if ym < col["y0"] - sp or ym > col["y1"] + sp:
+                    continue
+                xc = col["slope"] * ym + col["intercept"]
+                xm = v.box[0] + v.box[2] / 2.0
+                sides.add(-1 if xm < xc - 0.3 * sp else 1 if xm > xc + 0.3 * sp else 0)
+            if -1 in sides and 1 in sides:
+                bad.add(g)
+    for o in spans:                                    # a whole beam running across a rule is the same error
         if roles[o]["stem_ordinals"]:
-            crossing.add(find(roles[o]["stem_ordinals"][0]))
+            bad.add(find(roles[o]["stem_ordinals"][0]))
+    for b in beams:
+        if b["group"] is not None and b["group"] in bad:
+            b["two_bars"] = True
+            b["group"] = None
+    for t in tips:
+        if t["group"] is not None and t["group"] in bad:
+            t["two_bars"] = True
+            t["group"] = None
+    multi = {g: m for g, m in groups.items() if len(m) >= 2 and g not in bad}
+    crossing = set(bad)
     for lo, ro, _ci in cut_pairs:
         for o in (lo, ro):
             if roles[o]["stem_ordinals"]:
                 crossing.add(find(roles[o]["stem_ordinals"][0]))
     census = dict(roles=dict(sorted(counts.items())), beam_strokes=len(beam_ords), stem_strokes=len(stem_rows), stem_rows_unmatched=unmatched,
                   groups=len(multi), beams_spanning_a_column=len(spans), column_cut_pairs=len(cut_pairs),
-                  cross_barline_groups=len(crossing), seconds=round(time.time() - t0, 2))
+                  two_bar_reading_errors=len(crossing), seconds=round(time.time() - t0, 2))
     return dict(beams=beams, tips=tips, census=census, cut_pairs=[list(p) for p in cut_pairs])
 
 
@@ -340,20 +362,38 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
                 w = float(b.get("width_px") or 0.0)
         cols.append(dict(system=c["system"], slope=float(c["slope"]), intercept=float(c["intercept"]), y0=float(c["y0"]), y1=float(c["y1"]), width_px=w))
     res = read_page(views, stems, page_map.sp, heads=heads, claimed=claimed, columns=cols, system_of=system_of)
+    cell_boxes = []
+    cell_staff = []
+    for c in cells:
+        rect = getattr(c, "bbox_page_px", None)
+        if rect and len(rect) == 4:
+            cell_boxes.append((float(rect[0]), float(rect[1]), float(rect[2] - rect[0]), float(rect[3] - rect[1])))
+            cell_staff.append(c.staff_index)
+    cgrid = Grid(cell_boxes, GRID_SPACES * page_map.sp * 4) if cell_boxes else None
+    n_outside = n_multi = 0
     for b in res["beams"]:
         sidx, lidx = page_map.staff_of[b["ordinal"]]
+        hits = [i for i in (cgrid.query(b["box"]) if cgrid else ()) if cell_staff[i] == sidx]
+        whole = any(cell_boxes[i][0] <= b["box"][0] and cell_boxes[i][1] <= b["box"][1] and cell_boxes[i][0] + cell_boxes[i][2] >= b["box"][0] + b["box"][2]
+                    and cell_boxes[i][1] + cell_boxes[i][3] >= b["box"][1] + b["box"][3] for i in hits)
+        b["in_cells"], b["outside_cell"] = len(hits), not whole
+        if b["role"] == "beam":
+            n_outside += int(not whole)
+            n_multi += int(len(hits) >= 2)
         log.observe(sub, Q.PAGE_BEAM, b["role"], reader=READERS.CV_PAGE_BEAMS, frame=FRAME_PAGE, ordinal=b["ordinal"], stems=b["stems"],
                     stems_by_face=b["stems_by_face"], group=b["group"], thickness_spaces=b["thickness_spaces"], thickness_margin=b["thickness_margin"],
                     length_spaces=b["length_spaces"], stroke_kind=b["kind"], head_fused=b["head_fused"], claimed_by=b["claimed_by"],
-                    spans_columns=b["spans_columns"], cut_by_column=b["cut_by_column"], bbox_page_px=[b["box"][0], b["box"][1], b["box"][0] + b["box"][2], b["box"][1] + b["box"][3]],
+                    spans_columns=b["spans_columns"], cut_by_column=b["cut_by_column"], two_bars=b["two_bars"], in_cells=b["in_cells"], outside_cell=b["outside_cell"], bbox_page_px=[b["box"][0], b["box"][1], b["box"][0] + b["box"][2], b["box"][1] + b["box"][3]],
                     staff=[local.get(sidx, (0, 0))[0], lidx])
     for t in res["tips"]:
         sidx, lidx = page_map.staff_of[t["stem"]]
         log.observe(sub, Q.PAGE_BEAM_TIP, len(t["beams"]), reader=READERS.CV_PAGE_BEAMS, frame=FRAME_PAGE, stem=t["stem"], stem_rows=t["stem_rows"], end=t["end"],
                     tip_y=t["tip_y"], beams=t["beams"], fused=t["fused"], joined=t["joined"], joined_gap=t["joined_gap"], hooks=t["hooks"], stubs=t["stubs"],
-                    doubt=t["doubt"], stem_beamed=t["stem_beamed"], tip_clean=t["tip_clean"], group=t["group"], staff=[local.get(sidx, (0, 0))[0], lidx])
+                    doubt=t["doubt"], stem_beamed=t["stem_beamed"], tip_clean=t["tip_clean"], group=t["group"], two_bars=t["two_bars"], staff=[local.get(sidx, (0, 0))[0], lidx])
     res["census"]["seconds"] = round(time.time() - t0, 2)
     res["census"]["claimed_strokes"] = len(claimed)
+    res["census"]["beams_outside_any_one_cell"] = n_outside
+    res["census"]["beams_in_two_or_more_cells"] = n_multi
     res["census"]["heads"] = len(heads)
     log.observe(sub, Q.PAGE_BEAM, "census", reader=READERS.CV_PAGE_BEAMS, frame=FRAME_PAGE, **res["census"])
     if progress:
