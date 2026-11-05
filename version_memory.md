@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-04 -- ROADMAP 2.268 landed ON: OMR_DYAD_HEAD_RESCUE default ON (deny-list)
+STAGED GATHER `dyad_head_rescue` / `gather_dyad_head_rescue`: a chord's other head the detector scored below the 0.25 cut is rescued from the detector's own candidate when it sits on a stem a boxed head shares and its ink is one head; written GUESSED (blue). Round 2: `notehead_precision._stem_end_ink_claimed(skip_narrowed=...)` ignores a NARROWED claim (tile 9, a false clefG box). Sean 12/12 tiles ("All orange boxes contain notes"). Flag "0"/"false"/"no"/"off" turns it off; pin tests flipped to default ON; docs/flags-2026-09.md rows updated. Frozen-sample measure: the 20261104 overnight (rescued heads' pitch vs local staff position; judged right->wrong). Main d1e9551ce.
+
 ## 2026-11-04 -- ROADMAP 2.269 steps 0+1 and 2.260c M4a merged OFF (OMR_PAGE_CLAIM_NAMES, OMR_PAGE_BEAMS)
 STAGED GATHER, file only: `page_beams.py` reads beams once on the page map (M4a); `page_claim_names.py` names the page strokes each existing page-wide claim owns (word, key, clef, leading column, barline incl. carved rules, meter, hairpin), rows `unit: page_ink`; `page_beams` skips named strokes. Export byte-identical; claim_readout/claim_order identical; M4a no-slab beams Brahms 31 -> 17, Litolff 74 -> 67. Both flags OFF (no value written changes). FINDINGS page-ledger-2026-11 "2.260c M4a", "2.269".
 
