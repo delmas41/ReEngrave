@@ -5987,6 +5987,10 @@ def _own_voice_from_written_events(rec: Record, events: List[Dict[str, Any]],
         d = rec.verdict(Q.DURATION, det["glyph"])
         if d and d.get("outcome") == "decided" and d.get("reason") == "rest_hangs_from_own_line":
             cands.append(e)
+        elif det.get("whole_rest_from_ink"):
+            # ROADMAP 2.270: a head-boxed whole rest the ink reader passed has no duration verdict of its own; the same bar-sum
+            # evidence below (the other written events fill the meter alone) makes it the other voice.
+            cands.append(e)
     if len(cands) != 1:
         return events, None
     rest = cands[0]
