@@ -17923,6 +17923,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # dynamic, hairpin) expressed as the PAGE strokes it owns, once, in claim order. AFTER `gather_page_claims`; reads rows + the in-memory page map.
         from . import page_claim_names as _page_claim_names
         _page_claim_names.gather_page_claim_names(log, pws, cells, local, page_map_pre, progress=progress)
+        # ROADMAP 2.269 step 3 (flag OMR_PAGE_CLAIM_BOXES, default OFF): the boxed dynamics (letters), whole rests and repeat dots name their page strokes by ink
+        # share, AFTER the page-wide claims and BEFORE the page beams read (ledgers and hollow-head ink are M6's, ROADMAP 2.260e).
+        _page_claim_names.gather_page_claim_boxes(log, pws, cells, local, detections, page_map_pre, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),
         # filed as `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows), the page map and the claim names (a stroke another claim
         # owns is no beam); reads no raster; NOTHING READS THE ROWS.

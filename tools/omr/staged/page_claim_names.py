@@ -267,3 +267,122 @@ def gather_page_claim_names(log: Any, pws: Any, cells: Sequence[Any], local: Dic
     if progress:
         print("  gather page claim names p%s: %s" % (p, census))
     return dict(census, named_by=res["named"])
+
+
+# ───────────────────────────── step 3: boxed marks, by ink share (ROADMAP 2.269 step 3) ─────────────────────────────
+
+ENV_BOXES = "OMR_PAGE_CLAIM_BOXES"
+SOURCE_BOXES = "page_boxes"
+#: the detector classes step 3 names page strokes for, by the owner (claim-order family) they claim as. Ledgers and hollow-head ink are NOT here:
+#: ROADMAP 2.260e M6 (`page_heads`) reads and claims every notehead and ledger stub on the page (manager, 2026-11-05).
+BOX_FAMILIES = ("dynamic", "whole_rest")
+BOX_CLASSES = ("repeatdot",)          # a `dot`-family class named by itself: the repeat dot, never an augmentation dot (a different mark, M6/rhythm's)
+
+
+def boxes_enabled() -> bool:
+    """`OMR_PAGE_CLAIM_BOXES` (ROADMAP 2.269 step 3), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
+    return os.environ.get(ENV_BOXES, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def box_owner(cls: str, category: Optional[str] = None) -> Optional[str]:
+    """The claim-order owner a detector class names strokes as (module doc above); None = not step 3's."""
+    from . import stroke_owner as SO
+    lc = str(cls or "").lower()
+    if lc in BOX_CLASSES:
+        return "dot"
+    fam = SO.family_of(cls, category)
+    return fam if fam in BOX_FAMILIES else None
+
+
+def strokes_by_share(page_map: Any, box: Sequence[float], index: StrokeIndex, share_min: float) -> List[int]:
+    """The page strokes with at least `share_min` of their ink inside `box` (page px): a bounding-box test on the index first (cheap), then the mask share
+    (`stroke_map.strokes_in_box`'s own arithmetic, only on the few strokes the box meets). A carved barline rule has no mask here and is never named."""
+    out = []
+    s = float(page_map.scale)
+    bx0, by0, bx1, by1 = (float(v) * s for v in box)
+    for i in index.meeting(box):
+        if i >= len(page_map.masks):
+            continue
+        m, x0, y0 = page_map.masks[i]
+        h, w = m.shape
+        lx0, ly0 = max(0, int(round(bx0)) - x0), max(0, int(round(by0)) - y0)
+        lx1, ly1 = min(w, int(round(bx1)) - x0), min(h, int(round(by1)) - y0)
+        if lx1 <= lx0 or ly1 <= ly0:
+            continue
+        total = int(m.sum())
+        if total > 0 and int(m[ly0:ly1, lx0:lx1].sum()) / float(total) >= share_min:
+            out.append(i)
+    return out
+
+
+def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Optional[Dict[str, List[Any]]],
+                            page_map: Any, *, progress: bool = False) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.269 step 3 (flag `OMR_PAGE_CLAIM_BOXES`, default OFF), STAGED GATHER: the detector's boxed dynamics (the letters), whole rests and repeat dots name the
+    page strokes they own BY INK SHARE (`stroke_map.COVER_SHARE_MIN`, the register's one cut), once, after the page-wide claims and before the page beams read.
+    A box names a stroke when at least that share of the stroke's ink lies in it; a stroke an earlier claim names (the claims already on the log, by claim order)
+    is recorded CONTESTED, never taken. Files `Q.CLAIMED_AREA` rows like step 1's (`unit: page_ink`, `source: page_boxes`, `page_strokes`) and a census row.
+    Reads no raster beyond the page map's own masks; decides nothing: only `page_beams` reads the rows (export byte-identical on / off)."""
+    if not boxes_enabled() or detections is None:
+        return None
+    from . import record as R
+    from .record import Q, READERS, Scope
+    from . import claim_order as CO
+    from . import stroke_map as SM
+    p = int(getattr(pws.page, "page_index", 0))
+    page_sub = R.page(p)
+    if page_map is None or not getattr(page_map, "strokes", None):
+        return None
+    t0 = time.time()
+    index = StrokeIndex(*_boxes_of(page_map))
+    claims: List[Dict[str, Any]] = []
+    for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=Scope.SELF_AND_DESCENDANTS):          # what already holds page strokes, in the order the rows stand
+        d = r.detail or {}
+        if d.get("page_strokes"):
+            lay = CO.layer_of(str(d.get("owner") or ""))
+            claims.append(dict(owner=str(d.get("owner") or ""), layer=99 if lay is None else int(lay), ids=[int(o) for o in d["page_strokes"]], existing=True,
+                               row=r.id, subject=r.subject))
+    census: Dict[str, Any] = dict(boxes=0, twins_skipped=0, by_class={}, named_nothing={}, existing_claims=len(claims))
+    seen = set()
+    for c in cells:
+        key = local.get(c.staff_index)
+        rect, up = getattr(c, "bbox_page_px", None), getattr(c, "upscale_factor", None)
+        if key is None or not rect or not up:
+            continue
+        csub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        for d in detections.get(csub.to_key()) or ():
+            cls = str(getattr(d, "smufl_name", ""))
+            owner = box_owner(cls, getattr(d, "category", None))
+            if owner is None:
+                continue
+            x, y, w, h = float(d.x_canonical), float(d.y_canonical), float(d.width_canonical), float(d.height_canonical)
+            pb = (rect[0] + x / up, rect[1] + y / up, rect[0] + (x + w) / up, rect[1] + (y + h) / up)
+            k = (owner, cls.lower()) + tuple(int(round(v / 2.0)) for v in pb)
+            if k in seen:
+                census["twins_skipped"] += 1
+                continue
+            seen.add(k)
+            ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
+            census["boxes"] += 1
+            census["by_class"][cls] = census["by_class"].get(cls, 0) + 1
+            lay = CO.layer_of(owner)
+            claims.append(dict(owner=owner, layer=99 if lay is None else int(lay), ids=ids, existing=False, row=None, subject=csub, cls=cls, box=list(pb)))
+    res = settle(claims)
+    filed = 0
+    for c in res["claims"]:
+        if c["existing"]:
+            continue
+        if not c["won"]:
+            if not c["ids"]:
+                census["named_nothing"][c["owner"]] = census["named_nothing"].get(c["owner"], 0) + 1
+            continue
+        filed += 1
+        log.observe(c["subject"], Q.CLAIMED_AREA, list(c["won"]), reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=c["owner"], owner_row=None,
+                    owner_glyph=None, unit=UNIT, standing="READ", source=SOURCE_BOXES, how="ink_share", cls=c["cls"], box_page_px=c["box"],
+                    page_strokes=list(c["won"]), contested=c["contested"])
+    census.update(rows=filed, named=sum(len(c["won"]) for c in res["claims"] if not c["existing"]),
+                  contested=sum(len(c["contested"]) for c in res["claims"] if not c["existing"]), seconds=round(time.time() - t0, 3))
+    log.observe(page_sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner="page_boxes", unit=UNIT_CENSUS, standing="READ",
+                source=SOURCE_BOXES, **census)
+    if progress:
+        print("  gather page claim boxes p%s: %s" % (p, census))
+    return census
