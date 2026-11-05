@@ -118,6 +118,11 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
             s = by_ord[o]
             if s.kind not in ("horizontal", "curve"):
                 r = {"role": "other", "why": "kind:" + s.kind}
+            elif o in claimed:
+                # ROADMAP 2.269 step 0 (CLAUDE §3 claim order: a later reader may mark claimed ink, never take it): a stroke an earlier claim names
+                # (an arc's page ids since M3; the page-wide claims' with `OMR_PAGE_CLAIM_NAMES`) is that owner's ink, not a beam. It files no row;
+                # the census counts it by owner.
+                r = {"role": "other", "why": "claimed:" + str(claimed[o])}
             else:
                 near = {views[i].ordinal: views[i] for i in grid.query(s.box, NEIGHBOUR_SPACES * sp)}
                 for j, _c in s.touches:
@@ -203,7 +208,12 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
     for s_ in parent:
         groups.setdefault(find(s_), set()).add(s_)
     multi = {g: m for g, m in groups.items() if len(m) >= 2}
-    census = dict(roles=dict(sorted(counts.items())), beam_strokes=len(beam_ords), stem_strokes=len(stem_rows), stem_rows_unmatched=unmatched,
+    skipped: Dict[str, int] = {}
+    for v in horiz:
+        w = str(roles[v.ordinal].get("why") or "")
+        if w.startswith("claimed:"):
+            skipped[w[8:]] = skipped.get(w[8:], 0) + 1
+    census = dict(roles=dict(sorted(counts.items())), claimed_not_read=skipped, beam_strokes=len(beam_ords), stem_strokes=len(stem_rows), stem_rows_unmatched=unmatched,
                   groups=len(multi), seconds=round(time.time() - t0, 2))
     return dict(beams=beams, tips=tips, census=census)
 
@@ -269,8 +279,13 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
                     seen_heads.add(k)
                     heads.append(b)
     claimed: Dict[int, str] = {}
+    from . import claim_order as _CO
+    named = []
     for r in log.rows(Q.CLAIMED_AREA, sub, scope=Scope.SELF_AND_DESCENDANTS):
         d = r.detail or {}
+        if d.get("page_strokes"):
+            named.append((_CO.layer_of(str(d.get("owner") or "")) if _CO.layer_of(str(d.get("owner") or "")) is not None else 99, len(named), d))
+    for _lay, _k, d in sorted(named, key=lambda t: (t[0], t[1])):      # claim order (CLAUDE §3): the first claim names the owner
         for o in d.get("page_strokes") or ():
             claimed.setdefault(int(o), str(d.get("owner") or "?"))
     res = read_page(views, stems, page_map.sp, heads=heads, claimed=claimed)
