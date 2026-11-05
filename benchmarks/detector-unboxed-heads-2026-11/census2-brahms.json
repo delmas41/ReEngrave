@@ -1,0 +1,28 @@
+[
+ {
+  "doc": "brahms",
+  "page": 12,
+  "cx": 3350.0,
+  "cy": 1020.6,
+  "area_sp2": 0.415,
+  "sp": 27.62,
+  "nearest_box": "glyph/12/0/2/8/5",
+  "nearest_class": "noteheadHalfInSpace",
+  "nearest_reader": "detector",
+  "dx_sp": -0.04,
+  "dy_sp": -1.08
+ },
+ {
+  "doc": "brahms",
+  "page": 12,
+  "cx": 3392.2,
+  "cy": 6260.0,
+  "area_sp2": 0.39,
+  "sp": 27.62,
+  "nearest_box": "glyph/12/1/10/5/10",
+  "nearest_class": "noteheadHalfOnLine",
+  "nearest_reader": "detector",
+  "dx_sp": 0.18,
+  "dy_sp": -1.35
+ }
+]

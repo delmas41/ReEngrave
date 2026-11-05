@@ -1,0 +1,130 @@
+[
+ {
+  "id": "N1",
+  "source": "named 2.264 litolff_02 family / 2.252 r1 tile 12 (stop dyad, lower head)",
+  "doc": "litolff",
+  "page": 3,
+  "cx": 1377,
+  "cy": 1046
+ },
+ {
+  "id": "N2",
+  "source": "named 2.252 r1 tile 2 (right dyad, lower head)",
+  "doc": "litolff",
+  "page": 2,
+  "cx": 2360,
+  "cy": 2282
+ },
+ {
+  "id": "N3",
+  "source": "named 2.260b r2 tile 2 (upper head of the left dyad)",
+  "doc": "litolff",
+  "page": 10,
+  "cx": 1917,
+  "cy": 2692
+ },
+ {
+  "id": "N4",
+  "source": "named 2.260b r2 tile 9 (upper head of the left dyad)",
+  "doc": "litolff",
+  "page": 10,
+  "cx": 1757,
+  "cy": 2823
+ },
+ {
+  "id": "C0",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 2,
+  "cx": 2112.1,
+  "cy": 2282.3
+ },
+ {
+  "id": "C1",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 2,
+  "cx": 2353.9,
+  "cy": 3487.4
+ },
+ {
+  "id": "C2",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 3,
+  "cx": 1551.3,
+  "cy": 1857.0
+ },
+ {
+  "id": "C6",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 7,
+  "cx": 860.3,
+  "cy": 721.5
+ },
+ {
+  "id": "C9",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 7,
+  "cx": 2571.1,
+  "cy": 2542.7
+ },
+ {
+  "id": "C11",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 10,
+  "cx": 667.0,
+  "cy": 2255.9
+ },
+ {
+  "id": "C12",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 10,
+  "cx": 669.8,
+  "cy": 2430.6
+ },
+ {
+  "id": "C13",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 10,
+  "cx": 797.8,
+  "cy": 2430.4
+ },
+ {
+  "id": "C14",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 10,
+  "cx": 920.6,
+  "cy": 2688.7
+ },
+ {
+  "id": "C15",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 11,
+  "cx": 1775.5,
+  "cy": 606.1
+ },
+ {
+  "id": "C16",
+  "source": "census (hollow, same column, no box of any reader)",
+  "doc": "litolff",
+  "page": 14,
+  "cx": 2079.4,
+  "cy": 2352.5
+ },
+ {
+  "id": "B0",
+  "source": "census (hollow, same column, no box of any reader; Brahms; crop-confirmed, B1 rejected: a slur gap)",
+  "doc": "brahms",
+  "page": 12,
+  "cx": 3350.0,
+  "cy": 1020.6
+ }
+]
