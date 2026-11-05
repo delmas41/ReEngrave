@@ -3516,7 +3516,7 @@ def _claimed_by_a_whole_rest(ev: Evidence):
     return v
 
 
-def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
+def _stem_end_ink_claimed(ev: Evidence, box_row, *, skip_narrowed: bool = False) -> Optional[Ruling]:
     """lane-stem-end-head round 2 (flag `OMR_STEM_END_HEAD_INK`; only boxes it filed): a head the page ink ALONE read at a stem end has one
     witness, so any claim on its ink refuses it -- every `Q.CLAIMED_AREA` row of its staff, ANY owner (`stem_end_heads.claims_holding`:
     barline, clef, key, meter, header column, arc, and a word claim the day one lands), or the stroke owner giving its strokes to a
@@ -3527,7 +3527,12 @@ def _stem_end_ink_claimed(ev: Evidence, box_row) -> Optional[Ruling]:
     cell = ev.subject.at(Kind.CELL)
     gs = ev.rows(Q.GLYPH_STROKES)
     strokes = gs[-1].value if gs and isinstance(gs[-1].value, (list, tuple)) else None
-    held = _SEH.claims_holding(ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), key, d.get("bbox_page_px"), strokes,
+    rows_c = ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS)
+    if skip_narrowed:
+        # ROADMAP 2.268 r2 (dyad rescue only): a NARROWED claim is the owner's one witness (claims.py: "may narrow a box, never refuse it";
+        # Sean 2.144 / 2.181: a real note inside a false clef box). The dyad box has the detector's own candidate as a second witness.
+        rows_c = [r for r in rows_c if (getattr(r, "detail", None) or {}).get("standing") != "NARROWED"]
+    held = _SEH.claims_holding(rows_c, key, d.get("bbox_page_px"), strokes,
                                cell.cell if cell is not None else None)
     if held:
         r0, e0 = held[0]
@@ -3886,7 +3891,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # claim on its ink (arc, word, accidental ...) refuses it, as for an ink-only stem-end head. OFF files no such box.
     ink_only = _SEH.is_ink_only(box_row.detail) or _DHR.is_dyad(box_row.detail)
     if ink_only:
-        seh_claim = _stem_end_ink_claimed(ev, box_row)
+        seh_claim = _stem_end_ink_claimed(ev, box_row, skip_narrowed=_DHR.is_dyad(box_row.detail))
         if seh_claim is not None:
             return seh_claim
     seh_split = _stem_end_box_ink_disagrees(ev, box_row)
