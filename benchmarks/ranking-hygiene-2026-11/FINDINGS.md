@@ -1,0 +1,10 @@
+# 2.265 — ranking hygiene (counting tools only; merged 2026-11-04, branch lane-2.265-ranking-hygiene 16800de22)
+
+Tools: `benchmarks/acceptance/overnight/ranking/` (`export_saved.py`, `rank_counts.py`, `rank_table.py`, new `counted_view.py`), driven by `compare_20261029.sh`. No reader, no record row changed. Counts on the 20261103-night records, sample pages.
+
+1. **Dot specks counted as abstained dots.** `rank_table.kinds` counted the refusal reason `abstained_dot_role_ambiguous` raw. Now a dot-class box whose own ink (`Q.MARK_SHAPE`) is under `stroke_map.MIN_AREA_SP2` (0.05 sp², the GATHER stroke floor, imported) is not counted. Dots row: Litolff 68 -> 49 (17 specks + 2 context-page dots), Brahms 127 -> 96 (31 specks). Crops (6 per plate): Litolff 6/6 not dots; Brahms 4 not dots, 1 slur-end ink, 1 (`glyph/25/0/10/7/13`) possibly a real small dot -- the cut is not perfectly clean.
+2. **Brahms junk tie boxes: NOT fixed.** Bar-wide tie-class boxes on a staff line, ink coverage 0.35-0.5, just above the landed `family_precision.ARC_LINE_MAX_COVERAGE` 0.35; 123 of 487 counted `tie_pair_*` refusals. No landed rule separates them (2.252 r5: 12 real Brahms ties along a line at coverage 0.16; 3 of 6 crops hold real arc ends). Count 805 -> 805. A cut would need Sean's blind tiles.
+3. **Litolff p1 context page counted.** The ranking scripts re-implemented the export and did not filter context pages as `lane_report` does. Fixed (`counted_view.drop_context_marks`, totals over counted pages). Litolff pages 9 -> 8; ties/slurs not written 519 -> 493 (57.7 -> 61.6 per page); red bars 21.6 -> 23.5 per page (old per-page figures ~7% low). Control: with the exclusions off, the Brahms export is byte-identical to the stored one.
+
+**Lesson:** a ranking row that counts a refusal reason, or a tool that re-implements a filter, overstates; count what the row names, reuse the reader's own floor.
+**Not established:** `bars_marked_clef_unread` differs from the stored overnight output (21 vs 9), untraced; whether any ranking decision changes. Crops in out/print/2.265-ranking/.

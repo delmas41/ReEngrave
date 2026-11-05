@@ -543,7 +543,7 @@ def one_ink_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
             from . import accidental_family as _af
             fam = (b.get("detail") or {}).get("family")
             fg = _af.guess_of(fam) if fam else None
-            if fg is not None and not _af.reads(fg.get("margin")):
+            if fg is not None and not _af.reads(fg.get("margin"), (fam or {}).get("type")):
                 return {"stage": "ADJUDICATE", "rule": _af.REASON, "quantity": Q.ACCIDENTAL, "candidates": fg["candidates"],
                         "chosen": fg["chosen"], "margin": fg.get("margin")}
             oi = (b.get("detail") or {}).get("one_ink")

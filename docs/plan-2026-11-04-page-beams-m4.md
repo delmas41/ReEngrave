@@ -158,4 +158,4 @@ Old reads stay in the tree and run when the flag is off, so the control is the w
 - **Ordering.** The cross-ink reader (g:11687) must keep seeing the beam rows. The views are filed at A's place.
 - **Beams between staves** are not covered. Not established.
 
-**Question for Sean** (not answered in page-facts or DECISIONS, grepped 2026-11-04): on these plates, does a beamed group ever run across a barline, or is every beam inside one bar?
+**Answered (Sean 2026-11-04):** "Every beam is within a bar - horizontal is easy. Vertical is hard because beams can be outside of a cell or show up in multiple cells." Sean, same day: "Don't add more work. We want it to read and claim once and we want that info to be passed on to every subsequent view or cell cut." -- one page read, one claim, the same result handed to every cell view; no extra controls for the vertical case.

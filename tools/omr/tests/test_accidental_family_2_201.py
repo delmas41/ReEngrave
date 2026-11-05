@@ -287,7 +287,8 @@ def _file(family, cls="accidentalFlat", alteration="natural"):
 class FamilyAdjudicateExport(unittest.TestCase):
     def test_a_clear_family_type_is_written_with_its_alteration_and_blue(self):
         fam = _fam("natural", "accidentalFlat", ["flat"])
-        log, xml, report = _file(fam)
+        with mock.patch.dict(os.environ, {"OMR_NATURAL_READ": "0"}):   # pinned OFF: this tests the GUESSED (blue) write, not 2.263b
+            log, xml, report = _file(fam)
         v = log.verdict(Q.ACCIDENTAL_OWNER, R.glyph(0, 0, 0, 0, 0))
         self.assertEqual(v.outcome, "decided")
         self.assertEqual(v.detail["alteration"], "natural")

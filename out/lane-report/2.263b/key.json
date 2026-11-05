@@ -1,0 +1,299 @@
+[
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 8,
+  "box": [
+   1916.21,
+   710.59,
+   1938.89,
+   726.34
+  ],
+  "rg": "glyph/8/0/2/15/7",
+  "value": "guessed",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   1833,
+   639
+  ],
+  "position": {
+   "page": 8,
+   "system": 0,
+   "staff": 2,
+   "cell": 15,
+   "page_box": [
+    1916.21,
+    710.59,
+    1938.89,
+    726.34
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 14,
+  "box": [
+   1726.2075,
+   2997.775,
+   1766.2649999999999,
+   3031.8375
+  ],
+  "rg": "glyph/14/0/10/1/3",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1554,
+   2854
+  ],
+  "position": {
+   "page": 14,
+   "system": 0,
+   "staff": 10,
+   "cell": 1,
+   "page_box": [
+    1726.2075,
+    2997.775,
+    1766.2649999999999,
+    3031.8375
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 4,
+  "box": [
+   1954.53,
+   1293.26,
+   1978.155,
+   1314.8375
+  ],
+  "rg": "glyph/4/0/6/10/0",
+  "value": "guessed",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   1871,
+   1225
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 6,
+   "cell": 10,
+   "page_box": [
+    1954.53,
+    1293.26,
+    1978.155,
+    1314.8375
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 25,
+  "box": [
+   4179.3,
+   5179.4,
+   4217.25,
+   5211.85
+  ],
+  "rg": "glyph/25/1/3/7/0",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   4006,
+   5035
+  ],
+  "position": {
+   "page": 25,
+   "system": 1,
+   "staff": 3,
+   "cell": 7,
+   "page_box": [
+    4179.3,
+    5179.4,
+    4217.25,
+    5211.85
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 14,
+  "box": [
+   3564.755,
+   2997.23,
+   3603.995,
+   3030.2025
+  ],
+  "rg": "glyph/14/0/10/5/2",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   3392,
+   2853
+  ],
+  "position": {
+   "page": 14,
+   "system": 0,
+   "staff": 10,
+   "cell": 5,
+   "page_box": [
+    3564.755,
+    2997.23,
+    3603.995,
+    3030.2025
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 16,
+  "box": [
+   1235.2725,
+   2031.4475,
+   1257.9525,
+   2056.175
+  ],
+  "rg": "glyph/16/1/0/4/13",
+  "value": "guessed",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   1152,
+   1965
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 0,
+   "cell": 4,
+   "page_box": [
+    1235.2725,
+    2031.4475,
+    1257.9525,
+    2056.175
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 12,
+  "box": [
+   1923.9025,
+   2577.96,
+   1965.5275,
+   2607.375
+  ],
+  "rg": "glyph/12/0/9/3/3",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1752,
+   2432
+  ],
+  "position": {
+   "page": 12,
+   "system": 0,
+   "staff": 9,
+   "cell": 3,
+   "page_box": [
+    1923.9025,
+    2577.96,
+    1965.5275,
+    2607.375
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 14,
+  "box": [
+   2819.485,
+   3213.615,
+   2858.725,
+   3243.59
+  ],
+  "rg": "glyph/14/0/11/4/8",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   2647,
+   3068
+  ],
+  "position": {
+   "page": 14,
+   "system": 0,
+   "staff": 11,
+   "cell": 4,
+   "page_box": [
+    2819.485,
+    3213.615,
+    2858.725,
+    3243.59
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "kind": "blue",
+  "side": "lost",
+  "page": 25,
+  "box": [
+   980.2548828125,
+   4948.921875,
+   1014.36669921875,
+   4977.9365234375
+  ],
+  "rg": "glyph/25/1/2/0/11",
+  "value": "guessed",
+  "plate": "brahms",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   805,
+   4803
+  ],
+  "position": {
+   "page": 25,
+   "system": 1,
+   "staff": 2,
+   "cell": 0,
+   "page_box": [
+    980.2548828125,
+    4948.921875,
+    1014.36669921875,
+    4977.9365234375
+   ]
+  },
+  "cell_map": null
+ }
+]
