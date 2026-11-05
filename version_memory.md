@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-04 -- ROADMAP 2.269 steps 0+1 and 2.260c M4a merged OFF (OMR_PAGE_CLAIM_NAMES, OMR_PAGE_BEAMS)
+STAGED GATHER, file only: `page_beams.py` reads beams once on the page map (M4a); `page_claim_names.py` names the page strokes each existing page-wide claim owns (word, key, clef, leading column, barline incl. carved rules, meter, hairpin), rows `unit: page_ink`; `page_beams` skips named strokes. Export byte-identical; claim_readout/claim_order identical; M4a no-slab beams Brahms 31 -> 17, Litolff 74 -> 67. Both flags OFF (no value written changes). FINDINGS page-ledger-2026-11 "2.260c M4a", "2.269".
+
 ## 2026-11-04 -- ROADMAP 2.266b landed ON: OMR_ACCIDENTAL_READ_ONCE default ON (deny-list)
 STAGED EXPORT `export.one_ink_guess_of`: an accidental whose family reading names a kind is read once; the 2.186 one-ink guess is never consulted for that ink and no longer re-flags it. Sean answered the 12 tiles "1-3 natural 4 sharp 5-9 natural 10 flat 11-12natural", 12/12 matching what is written (`out/print/2.266b-read-once/answers.json`, judged index rebuilt: 2229 tiles). Frozen sample: blue -264 Brahms / -49 Litolff, nothing else changed, judged right->wrong 0. Env deny-list "0"/"false"/"no"/"off"; pin test updated (default ON, explicit 0 OFF). FINDINGS omr-one-ink-one-mark-2026-10 "2.266b".
 
