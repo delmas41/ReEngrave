@@ -9926,6 +9926,8 @@ WHOLE_REST_STEM_RULE_ENV = "OMR_WHOLE_REST_STEM_RULE"
 WHOLE_REST_INK_MAX_TRIMMED_HEIGHT_SP = 0.92
 #: the least ink share on BOTH sides of a stem for the mark to be a slash across it, not a head beside it (gap 0.03-0.41 on 5 marks).
 WHOLE_REST_STRADDLE_MIN_SHARE = 0.25
+#: the narrowest ink a head or a whole rest can be (gap 0.62 -- the half sharp -- to 1.27 sp on Sean's marks).
+WHOLE_REST_INK_MIN_WIDTH_SP = 0.9
 
 
 def whole_rest_from_ink_enabled() -> bool:
@@ -9940,6 +9942,17 @@ def _whole_rest_ink_read(ev: Evidence) -> Tuple[Optional[str], Dict[str, Any]]:
     """What the INK says about a box the shape and slot call a whole rest: `(veto reason or None, detail)`. `detail["ink_read"]` is True
     only when the head's own ink was measured (height) and passed -- EXPORT converts only such a box; an unmeasured one stays refused."""
     info: Dict[str, Any] = {"ink_read": False}
+    if whole_rest_from_ink_enabled():
+        # ROADMAP 2.270 r1 (Sean's tile 12: "half of a sharp sign", a box freed from the rest verdict was written as a quarter): ink
+        # narrower than a head is neither a rest nor a head. Real heads of Sean's 16 marks are 1.29-1.59 sp wide, rests 1.27+, the half sharp 0.62.
+        _hi = _head_ink(ev)
+        try:
+            _w = float(_hi["extent_sp"][0]) if _hi else None
+        except (TypeError, ValueError, IndexError, KeyError):
+            _w = None
+        if _w is not None and _w < WHOLE_REST_INK_MIN_WIDTH_SP:
+            info["trimmed_width_sp"] = round(_w, 3)
+            return "ink_not_head_shaped", info
     stem = None
     for r in ev.rows(Q.NOTEHEAD_STEM_CROSS_INK):
         stem = {"by": "stem_cross_ink", "value": r.value}
@@ -9991,7 +10004,7 @@ def _whole_rest_ink_read(ev: Evidence) -> Tuple[Optional[str], Dict[str, Any]]:
     reasons=("shape_and_position_agree", "not_rest_shaped",
              "not_where_a_whole_rest_can_hang", "no_page_frame",
              "read_at_a_stem_end",
-             "has_a_stem", "straddles_a_stem", "ink_is_hollow", "ink_is_head_tall",
+             "has_a_stem", "straddles_a_stem", "ink_not_head_shaped", "ink_is_hollow", "ink_is_head_tall",
              ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )

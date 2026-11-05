@@ -1659,9 +1659,10 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if not is_rest and (whole_rest_from_ink_enabled()
                             or os.environ.get("OMR_WHOLE_REST_STEM_RULE", "").strip().lower() in ("1", "true", "yes", "on")):
             _sv = rec.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) or {}
-            if _sv.get("outcome") == "decided" and _sv.get("reason") == "straddles_a_stem":
-                # ROADMAP 2.270: ink across a stem on both sides is a slash (tremolo), not a head and not a rest: refused, counted
-                _drop("ink_straddles_a_stem", s)
+            if _sv.get("outcome") == "decided" and _sv.get("reason") in ("straddles_a_stem", "ink_not_head_shaped"):
+                # ROADMAP 2.270: ink across a stem on both sides is a slash (tremolo); ink narrower than a head is a piece of a sign
+                # (Sean's tile 12, half a sharp): neither a head nor a rest -- refused, counted under its own name
+                _drop("ink_straddles_a_stem" if _sv["reason"] == "straddles_a_stem" else "ink_not_head_shaped", s)
                 continue
         # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
         # pitch is what kept rests out of the file for as long as they had no

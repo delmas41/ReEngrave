@@ -63,6 +63,16 @@ class TestFromInk(_Flag):
         self.assertIs(v.value, False)
         self.assertEqual(v.reason, "ink_is_head_tall")
 
+    def test_ink_narrower_than_a_head_is_neither_rest_nor_head(self):
+        """Sean's tile 12: half a sharp sign (0.62 sp wide, 1.5 tall) was freed as a note."""
+        log = Log()
+        _staff(log)
+        g = _glyph(log, 0, 0, cy=SLOT_Y, h_spaces=0.7, aspect=2.1)
+        log.observe(g, Q.HEAD_INK, "filled", reader=READERS.CV_HEAD_INK, frame="page", margin=0.06, extent_sp=[0.62, 1.49])
+        v = _verdict(_run(log), g)
+        self.assertIs(v.value, False)
+        self.assertEqual(v.reason, "ink_not_head_shaped")
+
     def test_a_hollow_one_is_not(self):
         v = self._verdict("hollow", 0.5)
         self.assertIs(v.value, False)
