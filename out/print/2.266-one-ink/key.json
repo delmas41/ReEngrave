@@ -1,0 +1,498 @@
+[
+ {
+  "plate": "brahms",
+  "page": 21,
+  "box": [
+   1661.5725,
+   6154.21,
+   1687.935,
+   6241.0675
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/21/1/7/1/7",
+  "head": "glyph/21/1/7/1/8",
+  "family_kind": "natural",
+  "family_margin": 0.31,
+  "oneink_kind": "sharp",
+  "oneink_margin": 0.0841,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/sharp",
+  "tile": 1,
+  "crop_origin": [
+   1482,
+   6037
+  ],
+  "position": {
+   "page": 21,
+   "system": 1,
+   "staff": 7,
+   "cell": 1,
+   "page_box": [
+    1661.5725,
+    6154.21,
+    1687.935,
+    6241.0675
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   2535.615,
+   2478.665,
+   2551.05,
+   2539.145
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/10/1/3/14/1",
+  "head": "glyph/10/1/3/14/4",
+  "family_kind": "natural",
+  "family_margin": 0.62,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.4249,
+  "oneink_rivals": [
+   "accidentalNatural",
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 2,
+  "crop_origin": [
+   2448,
+   2430
+  ],
+  "position": {
+   "page": 10,
+   "system": 1,
+   "staff": 3,
+   "cell": 14,
+   "page_box": [
+    2535.615,
+    2478.665,
+    2551.05,
+    2539.145
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   3911.5725,
+   1212.4475,
+   3934.3275,
+   1299.0275
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/4/0/3/7/2",
+  "head": "glyph/4/0/3/7/1",
+  "family_kind": "natural",
+  "family_margin": 0.36,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.0369,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 3,
+  "crop_origin": [
+   3730,
+   1095
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 3,
+   "cell": 7,
+   "page_box": [
+    3911.5725,
+    1212.4475,
+    3934.3275,
+    1299.0275
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 13,
+  "box": [
+   1693.5225,
+   2256.065,
+   1705.8075,
+   2315.915
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/13/1/1/9/0",
+  "head": "glyph/13/1/1/9/3",
+  "family_kind": "natural",
+  "family_margin": 0.61,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.2135,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 4,
+  "crop_origin": [
+   1605,
+   2207
+  ],
+  "position": {
+   "page": 13,
+   "system": 1,
+   "staff": 1,
+   "cell": 9,
+   "page_box": [
+    1693.5225,
+    2256.065,
+    1705.8075,
+    2315.915
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 3,
+  "box": [
+   1004.6625,
+   848.675,
+   1017.735,
+   886.3175
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/3/0/3/3/6",
+  "head": "glyph/3/0/3/3/8",
+  "family_kind": "sharp",
+  "family_margin": 0.08,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.2768,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "#",
+  "family_kind_pair": "sharp/flat",
+  "tile": 5,
+  "crop_origin": [
+   916,
+   788
+  ],
+  "position": {
+   "page": 3,
+   "system": 0,
+   "staff": 3,
+   "cell": 3,
+   "page_box": [
+    1004.6625,
+    848.675,
+    1017.735,
+    886.3175
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 16,
+  "box": [
+   2681.2799999999997,
+   4181.72,
+   2707.88,
+   4269.64
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/16/1/1/3/8",
+  "head": "glyph/16/1/1/3/13",
+  "family_kind": "natural",
+  "family_margin": 0.37,
+  "oneink_kind": "sharp",
+  "oneink_margin": 0.1544,
+  "oneink_rivals": [
+   "accidentalNatural",
+   "accidentalFlat"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/sharp",
+  "tile": 6,
+  "crop_origin": [
+   2502,
+   4065
+  ],
+  "position": {
+   "page": 16,
+   "system": 1,
+   "staff": 1,
+   "cell": 3,
+   "page_box": [
+    2681.2799999999997,
+    4181.72,
+    2707.88,
+    4269.64
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 12,
+  "box": [
+   1263.185,
+   3137.405,
+   1275.6275,
+   3180.0875
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/12/1/7/4/4",
+  "head": "glyph/12/1/7/4/6",
+  "family_kind": "natural",
+  "family_margin": 0.74,
+  "oneink_kind": "sharp",
+  "oneink_margin": 0.1449,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/sharp",
+  "tile": 7,
+  "crop_origin": [
+   1174,
+   3079
+  ],
+  "position": {
+   "page": 12,
+   "system": 1,
+   "staff": 7,
+   "cell": 4,
+   "page_box": [
+    1263.185,
+    3137.405,
+    1275.6275,
+    3180.0875
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 15,
+  "box": [
+   1339.77,
+   2310.9025,
+   1352.37,
+   2368.2325
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/15/1/1/8/0",
+  "head": "glyph/15/1/1/8/1",
+  "family_kind": "natural",
+  "family_margin": 0.75,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.0477,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 8,
+  "crop_origin": [
+   1251,
+   2260
+  ],
+  "position": {
+   "page": 15,
+   "system": 1,
+   "staff": 1,
+   "cell": 8,
+   "page_box": [
+    1339.77,
+    2310.9025,
+    1352.37,
+    2368.2325
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 18,
+  "box": [
+   1138.4345703125,
+   1140.6220703125,
+   1163.517578125,
+   1228.640625
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/18/0/3/0/22",
+  "head": "glyph/18/0/3/0/2",
+  "family_kind": "natural",
+  "family_margin": 0.363,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.0066,
+  "oneink_rivals": [
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 9,
+  "crop_origin": [
+   958,
+   1024
+  ],
+  "position": {
+   "page": 18,
+   "system": 0,
+   "staff": 3,
+   "cell": 0,
+   "page_box": [
+    1138.4345703125,
+    1140.6220703125,
+    1163.517578125,
+    1228.640625
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 15,
+  "box": [
+   4406.075,
+   5325.025,
+   4438.525,
+   5405.325
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/15/1/6/9/13",
+  "head": "glyph/15/1/6/9/3",
+  "family_kind": "flat",
+  "family_margin": null,
+  "oneink_kind": "sharp",
+  "oneink_margin": 0.0335,
+  "oneink_rivals": [
+   "accidentalFlat"
+  ],
+  "written": "b",
+  "family_kind_pair": "flat/sharp",
+  "tile": 10,
+  "crop_origin": [
+   4230,
+   5205
+  ],
+  "position": {
+   "page": 15,
+   "system": 1,
+   "staff": 6,
+   "cell": 9,
+   "page_box": [
+    4406.075,
+    5325.025,
+    4438.525,
+    5405.325
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 19,
+  "box": [
+   3041.825,
+   5948.3,
+   3067.95,
+   6036.025
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/19/1/8/4/14",
+  "head": "glyph/19/1/8/4/9",
+  "family_kind": "natural",
+  "family_margin": 0.42,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.0141,
+  "oneink_rivals": [
+   "accidentalNatural",
+   "accidentalSharp"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 11,
+  "crop_origin": [
+   2862,
+   5832
+  ],
+  "position": {
+   "page": 19,
+   "system": 1,
+   "staff": 8,
+   "cell": 4,
+   "page_box": [
+    3041.825,
+    5948.3,
+    3067.95,
+    6036.025
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 7,
+  "box": [
+   2464.9775,
+   522.71,
+   2477.42,
+   584.135
+  ],
+  "role": "case",
+  "kind": "accidental",
+  "subject": "glyph/7/0/1/16/3",
+  "head": "glyph/7/0/1/16/1",
+  "family_kind": "natural",
+  "family_margin": 0.55,
+  "oneink_kind": "flat",
+  "oneink_margin": 0.1985,
+  "oneink_rivals": [
+   "accidentalSharp",
+   "accidentalNatural"
+  ],
+  "written": "natural",
+  "family_kind_pair": "natural/flat",
+  "tile": 12,
+  "crop_origin": [
+   2376,
+   474
+  ],
+  "position": {
+   "page": 7,
+   "system": 0,
+   "staff": 1,
+   "cell": 16,
+   "page_box": [
+    2464.9775,
+    522.71,
+    2477.42,
+    584.135
+   ]
+  },
+  "cell_map": null
+ }
+]
