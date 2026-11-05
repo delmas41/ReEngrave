@@ -1,0 +1,196 @@
+[
+ {
+  "plate": "brahms",
+  "page": 0,
+  "start": "glyph/0/0/5/1/16",
+  "stop": "glyph/0/0/5/2/16",
+  "pitch": "C4",
+  "part": "P6",
+  "measure": "2",
+  "off_ties": [
+   "stop"
+  ],
+  "on_ties": [
+   "start",
+   "stop"
+  ],
+  "crop": [
+   2132,
+   3466,
+   2854,
+   3828
+  ],
+  "tile": 1
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "start": "glyph/4/1/10/13/10",
+  "stop": "glyph/4/1/10/14/3",
+  "pitch": "E-13",
+  "part": "P11",
+  "measure": "77",
+  "off_ties": [
+   "stop"
+  ],
+  "on_ties": [
+   "start",
+   "stop"
+  ],
+  "crop": [
+   2281,
+   3460,
+   2579,
+   3641
+  ],
+  "tile": 2
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "start": "glyph/0/0/5/2/16",
+  "stop": "glyph/0/0/5/3/14",
+  "pitch": "C4",
+  "part": "P6",
+  "measure": "3",
+  "off_ties": [],
+  "on_ties": [
+   "start",
+   "stop"
+  ],
+  "crop": [
+   2615,
+   3468,
+   3283,
+   3828
+  ],
+  "tile": 3
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "start": "glyph/2/0/9/6/2",
+  "stop": "glyph/2/0/9/7/1",
+  "pitch": "F3",
+  "part": "P10",
+  "measure": "23",
+  "off_ties": [
+   "start"
+  ],
+  "on_ties": [],
+  "crop": [
+   1193,
+   1708,
+   1385,
+   1889
+  ],
+  "tile": 4
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/3/12/3",
+  "stop": "glyph/11/0/3/13/1",
+  "pitch": "E4",
+  "part": "P5",
+  "measure": "214",
+  "off_ties": [
+   "start"
+  ],
+  "on_ties": [
+   "start",
+   "stop"
+  ],
+  "crop": [
+   1827,
+   859,
+   2069,
+   1042
+  ],
+  "tile": 5
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/3/16/1",
+  "stop": "glyph/11/0/3/17/1",
+  "pitch": "E4",
+  "part": "P5",
+  "measure": "218",
+  "off_ties": [
+   "start"
+  ],
+  "on_ties": [],
+  "crop": [
+   2353,
+   864,
+   2599,
+   1044
+  ],
+  "tile": 6
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "start": "glyph/0/0/5/3/14",
+  "stop": "glyph/0/0/5/4/15",
+  "pitch": "C4",
+  "part": "P6",
+  "measure": "4",
+  "off_ties": [],
+  "on_ties": [
+   "start",
+   "stop"
+  ],
+  "crop": [
+   3044,
+   3468,
+   3763,
+   3828
+  ],
+  "tile": 7
+ },
+ {
+  "plate": "brahms",
+  "page": 0,
+  "start": "glyph/0/0/5/5/12",
+  "stop": "glyph/0/0/5/6/12",
+  "pitch": "C4",
+  "part": "P6",
+  "measure": "6",
+  "off_ties": [],
+  "on_ties": [
+   "start"
+  ],
+  "crop": [
+   4050,
+   3463,
+   4855,
+   3826
+  ],
+  "tile": 8
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "start": "glyph/11/0/3/11/3",
+  "stop": "glyph/11/0/3/12/3",
+  "pitch": "E4",
+  "part": "P5",
+  "measure": "213",
+  "off_ties": [
+   "stop"
+  ],
+  "on_ties": [
+   "start",
+   "stop"
+  ],
+  "crop": [
+   1714,
+   859,
+   1944,
+   1044
+  ],
+  "tile": 9
+ }
+]

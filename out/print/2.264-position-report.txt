@@ -1,0 +1,25 @@
+LANE REPORT  OMR_TIE_POSITION_EVERYWHERE (OFF=0 ON=1)  --from adjudicate
+  OMR_TIE_POSITION_EVERYWHERE: read in staged/adjudicators/ownership.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5625 notes+rests OFF, 5625 ON, 5625 paired)
+  file:   ties +4 -4
+  red bars 195 -> 195 | notes not written 2115 -> 2115
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 9036
+  Sean's judged answers (291 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 8 (at another id than asked 2) | by id key, no position 379 | position but no mark here 0
+  NOT JUDGED: 8 changed places no tile of Sean's covers (0 are covered; 0 have no page place): tie 8 -> unjudged.txt
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6637 notes+rests OFF, 6637 ON, 6637 paired)
+  file:   ties +8
+  red bars 153 -> 153 | notes not written 3099 -> 3099
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 12336
+  Sean's judged answers (255 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 4 (at another id than asked 4) | by id key, no position 369 | position but no mark here 0
+  NOT JUDGED: 8 changed places no tile of Sean's covers (0 are covered; 0 have no page place): tie 8 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 2858 s
