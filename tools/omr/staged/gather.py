@@ -12866,7 +12866,8 @@ def _SM_cut_enabled() -> bool:
 
 
 def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
-                           local: Dict[int, Tuple[int, int]], page_shape: Optional[Sequence[int]] = None) -> None:
+                           local: Dict[int, Tuple[int, int]], page_shape: Optional[Sequence[int]] = None,
+                           readers: Optional[Sequence[str]] = None) -> None:
     """`Q.BEAM_STROKE_INK` -- one row per `Q.BEAM_STROKE` row in each cell, CV
     and detector alike, keyed by `beam_row_id`. ROADMAP 2.74.
 
@@ -12884,6 +12885,8 @@ def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
             continue
         seen.add(sub.to_key())
         rows = log.rows(Q.BEAM_STROKE, sub)
+        if readers is not None:           # ROADMAP 2.260c M4b: measure only these readers' rows (the page-beam views, filed late)
+            rows = [r for r in rows if r.reader in readers]
         if not rows:
             continue
         frame = frame_cell(c.measure_index)
@@ -17920,6 +17923,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # dynamic, hairpin) expressed as the PAGE strokes it owns, once, in claim order. AFTER `gather_page_claims`; reads rows + the in-memory page map.
         from . import page_claim_names as _page_claim_names
         _page_claim_names.gather_page_claim_names(log, pws, cells, local, page_map_pre, progress=progress)
+        # ROADMAP 2.269 step 3 (flag OMR_PAGE_CLAIM_BOXES, default OFF): the boxed dynamics (letters), whole rests and repeat dots name their page strokes by ink
+        # share, AFTER the page-wide claims and BEFORE the page beams read (ledgers and hollow-head ink are M6's, ROADMAP 2.260e).
+        _page_claim_names.gather_page_claim_boxes(log, pws, cells, local, detections, page_map_pre, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),
         # filed as `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows), the page map and the claim names (a stroke another claim
         # owns is no beam); reads no raster; NOTHING READS THE ROWS.

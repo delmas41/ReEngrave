@@ -52,6 +52,48 @@ NEIGHBOUR_SPACES = 1.5
 #: The strokes a stem end is read against: its box grown by this many spaces (the tip window reaches 0.5 out and 3.3 in; the face join 1.0 + a beam).
 TIP_REACH_SPACES = 2.5
 
+RETIRE_ENV = "OMR_PAGE_BEAMS_RETIRE_A"
+
+
+def retire_a_enabled() -> bool:
+    """`OMR_PAGE_BEAMS_RETIRE_A` (ROADMAP 2.260c M4b), default OFF: the cell beam reader A (`gather_cv_lines`' beam strokes) stops answering "which strokes are
+    beams"; the page beam rows (this module's `Q.PAGE_BEAM`) answer it, handed to each cell as `Q.BEAM_STROKE` rows of reader CV_PAGE_BEAMS. Needs `OMR_PAGE_BEAMS`
+    to have filed them (checked per page by `views_filed`)."""
+    return os.environ.get(RETIRE_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def views_filed(ev: Any, cell: Any) -> bool:
+    """True when the page filed its beam views for this cell: a `Q.BEAM_STROKE` row, or a refusal ("no page beam holds a stem of this cell"), of reader CV_PAGE_BEAMS
+    (`gather_page_beam_views` files one or the other for every cell it covers). Read from the cell's own `Q.BEAM_STROKE` evidence, which every beam consumer already declares."""
+    from .record import Q, READERS, Scope
+    for r in ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        if r.reader == READERS.CV_PAGE_BEAMS:
+            return True
+    return any(r.reader == READERS.CV_PAGE_BEAMS for r in ev.refusals(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+
+
+def retired_for(ev: Any, cell: Any) -> bool:
+    """The ADJUDICATE-side switch: A's rows are ignored and the page views read, only where the flag is on AND this page filed the views (a record
+    gathered without them keeps A: never an empty beam set from a record that has no views)."""
+    return retire_a_enabled() and views_filed(ev, cell)
+
+
+def live_rows(ev: Any, cell: Any, rows: Sequence[Any]) -> List[Any]:
+    """`Q.BEAM_STROKE` rows (or refusals) as the consumers should see them: with the retirement on, the cell reader A's (CV_LINES) are dropped (the detector's
+    and the page views' stay); with it off, the page views are dropped (a record gathered with the views reads exactly as before)."""
+    from .record import READERS
+    if retired_for(ev, cell):
+        # (Tried and reverted, ROADMAP 2.260c M4b: not offering the views of page beams fused to a head box. It lost MORE notes, 128 against 63 on the Litolff
+        # sample -- the fused beams are real beams the page reader reads and the cell reader A also read; the page map does not split them from heads, M6's job.)
+        return [r for r in rows if r.reader != READERS.CV_LINES]
+    return [r for r in rows if r.reader != READERS.CV_PAGE_BEAMS]
+
+
+def is_cv_beam_reader(reader: str) -> bool:
+    from .record import READERS
+    return reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)
+
+
 def enabled() -> bool:
     """`OMR_PAGE_BEAMS` (ROADMAP 2.260c M4a), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
     return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
@@ -301,6 +343,9 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         log.observe(sub, Q.PAGE_BEAM_TIP, len(t["beams"]), reader=READERS.CV_PAGE_BEAMS, frame=FRAME_PAGE, stem=t["stem"], stem_rows=t["stem_rows"], end=t["end"],
                     tip_y=t["tip_y"], beams=t["beams"], fused=t["fused"], joined=t["joined"], joined_gap=t["joined_gap"], hooks=t["hooks"], stubs=t["stubs"],
                     doubt=t["doubt"], stem_beamed=t["stem_beamed"], tip_clean=t["tip_clean"], group=t["group"], cells=t["cells"], staff=[local.get(sidx, (0, 0))[0], lidx])
+    if True:      # ROADMAP 2.260c M4b: the views are filed whenever the page beams are read (the retirement flag acts in ADJUDICATE / EXPORT only, so one saved gather serves both arms of an A/B)
+        res["census"]["views"] = gather_page_beam_views(log, cells, local, res, page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None),
+                                                        page_index=p, progress=progress)
     res["census"]["seconds"] = round(time.time() - t0, 2)
     res["census"]["claimed_strokes"] = len(claimed)
     res["census"]["heads"] = len(heads)
@@ -308,3 +353,66 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     if progress:
         print("  gather page beams p%s: %s" % (p, res["census"]))
     return res
+
+
+# ───────────────────────────── M4b: the page beams, handed to every cell as A's rows ─────────────────────────────
+
+def gather_page_beam_views(log: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], res: Dict[str, Any], *, page_shape: Any = None,
+                           page_index: int = 0, progress: bool = False) -> Dict[str, int]:
+    """ROADMAP 2.260c M4b (STAGED GATHER, filed whenever `OMR_PAGE_BEAMS` reads the page; the flag `OMR_PAGE_BEAMS_RETIRE_A`, default OFF, acts in ADJUDICATE / EXPORT only): each page beam of role `beam` filed ONCE (`read_page`) is handed to every
+    cell that holds one of its stems as a `Q.BEAM_STROKE` row (reader CV_PAGE_BEAMS) in the SAME shape cell reader A files (value `(x, y, w, h)` in cell-canonical px,
+    detail `x0`, `x1`, `y_center`), not clipped to the cell; then the two cell measures that read those rows run on them exactly as they run on A's:
+    `Q.BEAM_STROKE_INK` (`gather_beam_stroke_ink`, restricted to this reader) and `Q.BEAM_STEM_JOIN` (`_observe_beam_stem_join`, the cell's `Q.STEM` rows x the views).
+    A cell with no view gets a refusal (reader CV_PAGE_BEAMS, NO_LINE_ACCEPTED) so `_beam_reader_looked` still says "ran empty", never "never ran".
+    The marker (`Q.PAGE_BEAM` row with `views_filed`) tells ADJUDICATE this page has views. Reads rows and the cell rasters the old reads read; no new tuning."""
+    from types import SimpleNamespace
+    from . import record as R
+    from .record import Q, READERS, ABSTAIN
+    from . import gather as G
+    by_cell: Dict[str, List[Dict[str, Any]]] = {}
+    for b in res["beams"]:
+        if b["role"] != "beam":
+            continue
+        for ck in b["cells"]:
+            by_cell.setdefault(ck, []).append(b)
+    census = dict(cells=0, views=0, cells_empty=0, no_geometry=0)
+    sub_page = R.page(page_index)
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is None:
+            continue
+        csub = R.cell(c.page_index, key[0], key[1], c.measure_index)
+        frame = G.frame_cell(c.measure_index)
+        rect, up = getattr(c, "bbox_page_px", None), getattr(c, "upscale_factor", None)
+        mine = by_cell.get(csub.to_key(), [])
+        census["cells"] += 1
+        if not mine:
+            census["cells_empty"] += 1
+            log.abstain(csub, Q.BEAM_STROKE, reader=READERS.CV_PAGE_BEAMS, frame=frame, reason=ABSTAIN.NO_LINE_ACCEPTED,
+                        note="no page beam of role 'beam' holds a stem of this cell")
+            continue
+        if not rect or not up:
+            census["no_geometry"] += 1
+            continue
+        views = []
+        for b in sorted(mine, key=lambda t: t["ordinal"]):
+            x, y, w, h = b["box"]
+            cx, cy, cw, ch = (x - rect[0]) * up, (y - rect[1]) * up, w * up, h * up
+            row = log.observe(csub, Q.BEAM_STROKE, (cx, cy, cw, ch), reader=READERS.CV_PAGE_BEAMS, frame=frame, x0=cx, x1=cx + cw, y_center=cy + ch / 2.0,
+                              image="page_strokes", staff_lines_erased=False, page_stroke=b["ordinal"])
+            views.append((SimpleNamespace(x_canonical=cx, y_canonical=cy, width_canonical=cw, height_canonical=ch), row.id))
+            census["views"] += 1
+        stems = []
+        for r in log.rows(Q.STEM, csub):
+            if r.reader == READERS.CV_LINES and isinstance(r.value, (list, tuple)) and len(r.value) >= 4:
+                sx, sy, sw, sh = (float(v) for v in r.value[:4])
+                stems.append((SimpleNamespace(x_canonical=sx, y_canonical=sy, width_canonical=sw, height_canonical=sh), r.id))
+        if stems:
+            grid = G._cell_grid(c)
+            space = grid[1] * 2.0 if grid is not None else None
+            G._observe_beam_stem_join(log, csub, frame, c, stems, views, space)
+    G.gather_beam_stroke_ink(log, [c for c in cells if local.get(c.staff_index) is not None], local, page_shape=page_shape, readers=(READERS.CV_PAGE_BEAMS,))
+    log.observe(sub_page, Q.PAGE_BEAM, "views", reader=READERS.CV_PAGE_BEAMS, frame=G.FRAME_PAGE, views_filed=True, **census)
+    if progress:
+        print("  gather page beam views p%s: %s" % (page_index, census))
+    return census
