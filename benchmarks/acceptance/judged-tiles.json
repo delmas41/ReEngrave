@@ -1,6 +1,6 @@
 {
- "n_items": 179,
- "n_tiles": 2181,
+ "n_items": 180,
+ "n_tiles": 2193,
  "tiles": [
   {
    "answer": "right",
@@ -27873,6 +27873,414 @@
    "subjects": null,
    "tile": "9",
    "value": "tie"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    3251.3425,
+    366.0,
+    3277.15,
+    447.03
+   ],
+   "position": {
+    "cell": 6,
+    "page": 4,
+    "page_box": [
+     3251.3425,
+     366.0,
+     3277.15,
+     447.03
+    ],
+    "staff": 0,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/4/0/0/6/5",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "1",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    4402.9175,
+    6314.3,
+    4431.7775,
+    6403.1
+   ],
+   "position": {
+    "cell": 9,
+    "page": 7,
+    "page_box": [
+     4402.9175,
+     6314.3,
+     4431.7775,
+     6403.1
+    ],
+    "staff": 8,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/7/1/8/9/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "10",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    2469.7175,
+    2437.4175,
+    2494.7875,
+    2528.16
+   ],
+   "position": {
+    "cell": 4,
+    "page": 13,
+    "page_box": [
+     2469.7175,
+     2437.4175,
+     2494.7875,
+     2528.16
+    ],
+    "staff": 9,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/13/0/9/4/8",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "11",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    3724.075,
+    2694.725,
+    3751.3,
+    2779.15
+   ],
+   "position": {
+    "cell": 7,
+    "page": 16,
+    "page_box": [
+     3724.075,
+     2694.725,
+     3751.3,
+     2779.15
+    ],
+    "staff": 10,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/16/0/10/7/13",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "12",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    3498.0087890625,
+    6290.4765625,
+    3521.8447265625,
+    6375.888671875
+   ],
+   "position": {
+    "cell": 3,
+    "page": 17,
+    "page_box": [
+     3498.0087890625,
+     6290.4765625,
+     3521.8447265625,
+     6375.888671875
+    ],
+    "staff": 10,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/17/1/10/3/10",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "2",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    4742.425,
+    6523.925,
+    4771.575,
+    6609.725
+   ],
+   "position": {
+    "cell": 7,
+    "page": 14,
+    "page_box": [
+     4742.425,
+     6523.925,
+     4771.575,
+     6609.725
+    ],
+    "staff": 9,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/14/1/9/7/10",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "3",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    2985.985,
+    2482.1075,
+    3013.5075,
+    2577.755
+   ],
+   "position": {
+    "cell": 5,
+    "page": 13,
+    "page_box": [
+     2985.985,
+     2482.1075,
+     3013.5075,
+     2577.755
+    ],
+    "staff": 9,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/13/0/9/5/6",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "4",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    1564.7,
+    2494.35,
+    1591.925,
+    2582.075
+   ],
+   "position": {
+    "cell": 1,
+    "page": 11,
+    "page_box": [
+     1564.7,
+     2494.35,
+     1591.925,
+     2582.075
+    ],
+    "staff": 9,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/11/0/9/1/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "5",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    5075.175,
+    4768.2,
+    5100.2,
+    4856.2
+   ],
+   "position": {
+    "cell": 9,
+    "page": 11,
+    "page_box": [
+     5075.175,
+     4768.2,
+     5100.2,
+     4856.2
+    ],
+    "staff": 3,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/11/1/3/9/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "6",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    3749.725,
+    799.075,
+    3775.575,
+    879.925
+   ],
+   "position": {
+    "cell": 6,
+    "page": 19,
+    "page_box": [
+     3749.725,
+     799.075,
+     3775.575,
+     879.925
+    ],
+    "staff": 1,
+    "system": 0
+   },
+   "question_kind": "duration",
+   "subject": "glyph/19/0/1/6/4",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "7",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    916.0390625,
+    6665.091796875,
+    942.525390625,
+    6739.328125
+   ],
+   "position": {
+    "cell": 0,
+    "page": 21,
+    "page_box": [
+     916.0390625,
+     6665.091796875,
+     942.525390625,
+     6739.328125
+    ],
+    "staff": 9,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/21/1/9/0/10",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "8",
+   "value": "accidental"
+  },
+  {
+   "answer": "natural sign",
+   "answer_kind": "not_a_note",
+   "control": false,
+   "date": "2026-11-04",
+   "doc": "brahms",
+   "followup": false,
+   "item": "2.263-accidental-margin",
+   "mark_kind": "accidental",
+   "page_box": [
+    2592.3675,
+    4553.2425,
+    2617.3424999999997,
+    4643.43
+   ],
+   "position": {
+    "cell": 3,
+    "page": 9,
+    "page_box": [
+     2592.3675,
+     4553.2425,
+     2617.3424999999997,
+     4643.43
+    ],
+    "staff": 3,
+    "system": 1
+   },
+   "question_kind": "duration",
+   "subject": "glyph/9/1/3/3/1",
+   "subject_kind": "glyph",
+   "subjects": null,
+   "tile": "9",
+   "value": "accidental"
   },
   {
    "answer": "8th note on first ledger line",

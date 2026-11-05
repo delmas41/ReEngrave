@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-04 -- ROADMAP 2.262 landed: the page-map cost (no flag, no behaviour change)
+STAGED GATHER, `stroke_map.merge_accidentals`, `_merge_clefs` and `_cut_touching_all` now test the cheap geometry before scanning the exclude boxes (they scanned every box before the region test, page-wide). Brahms p5 gather 1908 -> 536 s under cProfile (OFF 502), page-map step 1393 -> 17.5 s, p0 map 131 -> 6.2 s; records row-identical on p0+p5; two fast tests added. Whole-movement runs no longer need `OMR_PAGE_CLAIMS=0`. Gate: fast tier 9917 passed, 1 failed (test_judged_index_2_106: main's stale 2.263 judged index, not this branch). FINDINGS page-ledger-2026-11 "2.262".
+
 ## 2026-11-04 -- manager session end: 2.260b M3, 2.261, 2.256b landed ON; START HERE after 2026-11-04 written
 
 Overnight 20261103-night compared (Litolff blue/page 140.6 -> 116.9; Brahms ties/slurs not written/page 154.5 -> 100.6; Brahms judged right->wrong 0, Litolff 3 traced -> 2.261 fixed 2, litolff_02 open). Census of both plates' records by deciding rule set the next list (ROADMAP START HERE after 2026-11-04): page-map cost (2.262) first, then M4 beams, position everywhere, Brahms accidental_family, fill_part_key re-census, ranking hygiene. Lessons: pgrep wait loops match themselves; a stopped agent leaves processes and a stale `.record-load.lock`; don't re-gate a clean merge.
