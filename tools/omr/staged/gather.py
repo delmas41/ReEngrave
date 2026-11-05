@@ -12866,7 +12866,8 @@ def _SM_cut_enabled() -> bool:
 
 
 def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
-                           local: Dict[int, Tuple[int, int]], page_shape: Optional[Sequence[int]] = None) -> None:
+                           local: Dict[int, Tuple[int, int]], page_shape: Optional[Sequence[int]] = None,
+                           readers: Optional[Sequence[str]] = None) -> None:
     """`Q.BEAM_STROKE_INK` -- one row per `Q.BEAM_STROKE` row in each cell, CV
     and detector alike, keyed by `beam_row_id`. ROADMAP 2.74.
 
@@ -12884,6 +12885,8 @@ def gather_beam_stroke_ink(log: Log, cells: Sequence[Any],
             continue
         seen.add(sub.to_key())
         rows = log.rows(Q.BEAM_STROKE, sub)
+        if readers is not None:           # ROADMAP 2.260c M4b: measure only these readers' rows (the page-beam views, filed late)
+            rows = [r for r in rows if r.reader in readers]
         if not rows:
             continue
         frame = frame_cell(c.measure_index)
