@@ -6,7 +6,7 @@
 
 ## Summary
 
-1. **518 rule exits** are sorted (569 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 48 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **90 DOUBLE-COUNT** (C), **170 OTHER** (D), **69 UNSURE** (U).
+1. **519 rule exits** are sorted (569 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 49 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **91 DOUBLE-COUNT** (C), **170 OTHER** (D), **69 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
@@ -317,6 +317,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `accidental_family.py` | U | NOT YET CLASSIFIED | - | open |
 | `accidental_shape.py` | C | a shape check on a merged accidental ink chooses among the detector's own candidates | Sean 2026-10-22 (2.190 tiles 7/9) | landed 2.190 |
 | `arc_claim.py` | U | NOT YET CLASSIFIED | - | open |
+| `arc_strip.py` | C | the far half of an arc a barline cuts, boxed by the same detector on the whole staff row and kept only where its far side is one continuous arc stroke; OFF by default | Sean 2026-11-06 (2.273 "Yes build") | open: built, not landed |
 | `arcs_system.py` | C | arcs read ONCE per staff across the system, then their own stroke erased (a cell cuts an arc in two) | Sean 2026-10-18 (2.166, default ON) | retires with 2.205 (arcs own their strokes) |
 | `bar_length.py` | A | a bar's length from the durations standing in it | Sean 2026-10-17 (2.162/2.165) | kept |
 | `barline_columns.py` | C | the tilted line of each barline column kept as a fact (slope + intercept per column), refit in staged from the page raster; records, decides nothing | Sean 2026-11-03 (2.260a M1) | open: M2's carve reads it |
