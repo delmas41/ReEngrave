@@ -1,0 +1,30 @@
+curves 967 (483.5/page); boxes 1085
+not_an_arc (staff lines/barlines/key slot) 458; real arc curves 509 (254.5/page)
+  written           282  141.0/page
+  written_as_slur     0  0.0/page
+  written_as_tie      0  0.0/page
+  wrong_note         44  22.0/page
+  two_arcs           18  9.0/page
+  dropped           165  82.5/page
+FIRST RULE THAT LOST A DROPPED CURVE:
+  X export:arc_binds_fewer_than_two_notes_or_not_in_file                     29  14.5/page
+  P tie_pair:not_adjacent                                                    23  11.5/page
+  X export:tie_not_in_file:start_head_not_written(chord_value_undecided)     18  9.0/page
+  P tie_pair:no_head_near_the_arc                                            16  8.0/page
+  P tie_pair:no_pair_at_one_position                                         14  7.0/page
+  P tie_pair:no_start_head                                                   10  5.0/page
+  P tie_pair:enters_from_previous_system                                     10  5.0/page
+  P tie_pair:no_stop_head                                                     8  4.0/page
+  X export:tie_not_in_file:ends_in_two_voices                                 8  4.0/page
+  X export:tie_not_in_file:start_head_not_written(duration_narrowed)          7  3.5/page
+  X export:slur_bound_not_in_file:start_head_not_written(duration_narrowed)    4  2.0/page
+  X export:slur_bound_not_in_file:stop_head_not_written(duration_narrowed)    3  1.5/page
+  X export:tie_not_in_file:stop_head_not_written(no_refusal_logged)           3  1.5/page
+  X export:tie_not_in_file:both_heads_in_file_arc_not_marked                  3  1.5/page
+  X export:slur_bound_not_in_file:both_heads_in_file_arc_not_marked           2  1.0/page
+  P tie_pair:no_head_near_the_arc/not_a_tie                                   2  1.0/page
+  K arc_kind:same_pitch_accidental_unread(same_pitch_accidental_unknown)      1  0.5/page
+  P tie_pair:more_than_one_pair                                               1  0.5/page
+  X export:slur_bound_not_in_file:start+stop_head_not_written(duration_narrowed/no_refusal_logged)    1  0.5/page
+  X export:tie_not_in_file:tie_pitch_contradiction                            1  0.5/page
+  X export:slur_bound_not_in_file:start_head_not_written(chord_value_undecided)    1  0.5/page

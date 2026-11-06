@@ -1,5 +1,61 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2026-11-06 ARC DEEP DIVE (measure only; STAGED; branch `arc-deep-dive-2026-11`; scripts + results in `deep-dive-2026-11/`)
+
+Sean 11-06: "a deeper dive into the arc issue ... make sure there are not later rules like the arc joining rule that is making it worse."
+Method: the saved 20261104-night GATHER of the frozen sample, re-adjudicated and exported (`arm.py`, the lane report's own replay; no re-gather). Litolff 8 pages; Brahms p0+p5 (the same replay cut to 2 pages). The "written" test reads the exported MusicXML (`written.py`; a `<slur>` hangs off the chord's representative note, a tie off the member).
+
+### Cause and process lesson
+CAUSE. An arc is still a **per-cell detector box** at every stage. GATHER traces it only as box + 0.5 sp (3 sp past a cut edge); "the page curve" is the box with a margin, not the ink. ADJUDICATE binds the curve's two ends to heads only if both land in a ~1.6 sp window; otherwise the OFF path re-reads the box (`_flank_search`, `_two_note_reading`); EXPORT's slur path (`_merge_arcs_across_barlines` + `_paired_spans`, LEGACY functions called from staged) re-reads the boxes again. The detector is not the loss: Brahms p0 hand arcs 148/153 boxed, 141/153 kept (92%), 90.6% of kept boxes land on a hand arc.
+LESSON. Every lane measured its own population. 2.271's "near misses 1.6-2.1 sp" counts all ends; on DROPPED curves only 3% of unbound ends (Litolff 6/204) sit within 2 sp of a head and 80% are over 4 sp away, so closest-note alone binds far heads. And a test must fail on a known-false case: my own ink-walk for "does ink run on past the trace" said yes at 70% of ends that truly end at a head (control failed; script deleted, no number used). The page-stroke map is cut at barlines, so it is no witness for arcs that cross them (this is why "13% short" under-counts).
+
+### Fate ledger (identity = page curve; over-joined chains split into their boxes) -- `ledger.py`, `results/`
+Per page: Litolff 111.6 real arc curves (289 more boxes are staff lines/barlines/key slot, refused; 3 of 3 looked at were right), written 53.5, wrong note 2.1, two arcs 0.8, **dropped 55.1**. Brahms p0+p5: 254.5 real curves/page, written 141, wrong note 22, two arcs 9, **dropped 82.5** (458 more boxes refused as staff lines). ("wrong note"/"two arcs" are judged against our own file by x extent: indicative only.)
+First rule that lost a dropped curve (per page, Litolff | Brahms):
+- X legacy EXPORT slur box path (`arc_binds_fewer_than_two_notes`): 17.6 | 14.5
+- P `adjudicate_tie_pair` local flank search: no_head_near/no_start/no_stop 12.4 | 17; not_adjacent 3.4 | 11.5; enters_from_previous_system/runs_off 4 | 5; no_pair_at_one_position 1.6 | 7
+- X decided pair names a head EXPORT never wrote: Litolff ~6/page, of which `mark_group_duplicate` (one-mark-one-note wrote the OTHER twin box) 4.1; Brahms ~17/page, note refusals (`chord_value_undecided`, `duration_narrowed`): collateral of unwritten notes
+- X exporter pitch-contradiction guard on a decided tie: 2.0 | 0.5 (9 of 14 on Litolff have an end the exporter calls unsure)
+- X ends in two voices / one chord: 0.4 | 4
+- K arc_kind abstains: 1 | 0.5.
+End-binding failures (X legacy + P no_head/cross-system) are ~63% of Litolff drops, ~44% of Brahms'. Of 138 Litolff unbound ends >4 sp from any head, 111 have NO neighbouring detector box (the arc was boxed in part, the other half never boxed), 89 of them at a cell edge.
+Brahms p0 vs Sean's 153 hand boxes: written 68 (44%), written to a wrong note 17, two arcs 9, dropped 47, refused as staff line 7, never boxed 5. Written curves with a hand arc under them 111/120. Written kind agrees with Sean's class 84/94 (hand boxes are prefill-confirmed, so weak).
+Over-joined curves: `join_traces` also joins arcs that meet at a note: Brahms 15 curves hold 71 boxes (one 9-box chain: 8 slurs + 1 tie), Litolff 10 curves/31 boxes. The binder rightly refuses them (`joined_not_at_a_barline`), then the box path decides each piece and `_arcs_by_kind` "tie wins" gives a merged group ONE kind.
+
+### Rule inventory (file:function; question; reads; flag/default; read-once?)
+1. gather.gather_detections (YOLO per cell crop): is there an arc box; the cell crop. The origin of pieces: arcs are cut at every barline here.
+2. gather.arc_ink_shape/gather_arc_ink: line or curve; the cell raster; OMR_ARC_LINE_THICKNESS ON. Cell-local re-read of a box.
+3. arcs_system.gather_system_arcs/trace_arc/_follow: the trace; page ink composite, box +0.5 sp (+3 sp at a cut); OMR_SYSTEM_ARCS ON (ERASE OFF). The one page read, but seeded and bounded by the box.
+4. arcs_system.join_traces/same_curve/end_join_cost/FREE_EXTEND_SPACES: which boxes are one arc; trace ends; ON (OMR_ARC_ONE_CURVE rides OMR_PAGE_CLAIMS ON). VIOLATION: over-joins chains, leaves overlapping twin curves unjoined (2.271 tile 10: one printed arc = two curve rows).
+5. gather_arc_claim + arc_claim.page_strokes_along/page_stroke_extent: strokes the curve runs along; page stroke map; OMR_ARC_CLAIM/OMR_PAGE_CLAIMS ON.
+6. family_precision.adjudicate_arc_is_not_an_arc (+OMR_ARC_TRACE_NOT_A_LINE ON): staff line/barline/key slot; the BOX's cell ink. VIOLATION (re-reads the box, not the curve); on p0 it lost 7/153 hand arcs.
+7. ownership.adjudicate_arc_owner/_page_span_owner: which staff; box + page span; ON.
+8. ownership._page_binding + arc_claim.bind_curve/bind_end (OMR_ARC_BIND_PAGEWIDE ON, OMR_BIND_END_PITCH ON, `_joins_not_at_a_barline`): ends to heads, kind by Sean's tie rule; reads the page curve, only if it joins cleanly and both ends fall in the window; else falls to 9.
+9. ownership._flank_search/_two_note_reading/_stack_reading (+OMR_TALL_HEAD_SPLIT ON, OMR_HEAD_HOLE_POSITION ON, OMR_ARC_KIND_FROM_ENDS OFF): heads under/beside the BOX padded one arc height, windows of 3 head widths. VIOLATION: re-reads the detector piece; no flag.
+10. ownership.adjudicate_tie_pair (+OMR_TIE_PAIR_ARC_SIDE ON, paired_by_system_arc fallback): which two heads; page binding if present, else 9. VIOLATION.
+11. export._record_tie_pairs/_record_tie_spans (+OMR_TIE_CARRIES_ACCIDENTAL ON, OMR_UNISON_TIE_VOICE OFF, pitch-contradiction guard, one-voice rule): writes the pair; the pair names a box key, the file holds the mark's other box. VIOLATION of identity.
+12. export._page_bound_slurs/_page_bound_slur_spans (`slur_bound_end_not_in_file`): same head-key issue.
+13. export._arcs_by_kind + LEGACY `_merge_arcs_across_barlines`/`_paired_spans`/`_noteheads_under`/`_number_spans` (+`_anchored_slur_spans` OMR_SLUR_FROM_ANCHORS OFF): box merge at cell edges within 0.5 sp, heads under the box extent, "tie wins". VIOLATION: cell-cut pieces re-read after the curve existed; no flag; a LEGACY mechanism on the STAGED path.
+14. voicing._chord_span_states (`arc_ends_in_one_chord`): silent drop of a span whose ends share a chord.
+15. rhythm._not_a_decided_arc/_strokes_on_a_system_arc (OMR_BEAM_NOT_ON_SYSTEM_ARC ON), notehead_precision._arc_tail_refusal (OMR_ARC_TAIL_NOT_A_HEAD ON), stroke_owner._arc_claims, infer.collapse_arc_ink_not_beam (ON): arc consumers (beams/heads); they read the curve.
+16. LEGACY OMR_ARC_RECLASS OFF.
+
+### Ablation of the later rules (re-adjudicate; ties/slurs gained +/lost -; `ablation_table.py`)
+Litolff (base 215 ties/100 slurs): BIND_PAGEWIDE=0 ties +4/-7, slurs +19/-49 (binder net +30 slurs); TIE_PAIR_ARC_SIDE=0 -14 ties; ARC_TRACE_NOT_A_LINE=0 none; UNISON_TWO_NOTES=0 +3 slurs, 1 note fewer; **UNISON_TIE_VOICE=1 (OFF today): +12 ties, 0 lost, notes unchanged**.
+Brahms p0+p5 (base 129/118): BIND_PAGEWIDE=0 ties -10, slurs +26/-16; PAGE_CLAIMS=0 (adjudicate side only) slurs +8/-3; BIND_END_PITCH=0 -6; NOT_A_LINE=0 -4; PAIR_ARC_SIDE=0 -2; TIE_CARRIES_ACCIDENTAL=0 **-18**; ARC_KIND_FROM_ENDS=1 slurs -26; SLUR_FROM_ANCHORS=1 +1; ARC_TAIL_NOT_A_HEAD=0 +1; **UNISON_TWO_NOTES=0 +6 ties, 0 lost** (ties_in_two_voices); UNISON_TIE_VOICE=1 +1.
+Judged right->wrong: 0 in every arm checked (lane report scorer; 221 Brahms / 302 Litolff scored; few judged answers touch arcs, so this control is weak for arcs).
+No flagged ON rule loses arcs when removed except the two unison items; every other ON rule gains arcs. Measured from verdicts (no flag): the pitch-contradiction guard drops 16 Litolff ties (9 with an end the exporter calls unsure); tie_pair `not_adjacent`/binder `same_pitch_heads_between` leave ~10-15 curves/plate with both ends bound at one position and a note between: a tie cannot skip a note, so slur (CONVENTION ASSUMED; WOULD FALSIFY: Sean reading such an arc as a tie; NOT CONFIRMED). Rules that break up a page curve: `join_traces` over-join and the LEGACY box merge. No removal gains arcs at scale: the loss is structural (rows 9, 10, 13).
+
+### The 2.271 vs 2.272 contradiction (r1 code 8d6f7fdbb run read-only on the saved gather; `tiles271.py`, `results/tiles271crops/`)
+Both partly right. The bind used the joined curve (2.271), but that curve is the detector piece plus a margin (2.272). Tiles (annotated crops, my look = control): 2 (Brahms p0): one curve, box + 3 sp, the printed slur runs far left past the barline; left end bound 7.7 sp away to a head inside the arc: half an arc, wrong note. 4 (Litolff p11): four separate ties of a unison chain all bound by closest-note (17-18 sp) to one far pair: wrong. 5 (Litolff p4): a 5 sp piece bound at 11-14 sp to rest-like boxes of the staff above: wrong. 9, 10: the box is a duplicate/tip curve of an arc whose whole curve already wrote the right pair (file identical with the flag off). 12: short curve, both bound heads right, slur right. So 3 of 6 are wrong closest binds from a short curve (2.272 right; 2.271's later `continues_in_another_curve` guard addresses tile 4), 3 of 6 are right or unchanged files with a piece box on the tile (2.271 right).
+
+### Crops
+`out/print/arc-deep-dive/01-12.png` (6 Litolff, 6 Brahms; one staff, whole arc boxed, nothing else drawn; key.json has ids/buckets; copy in `results/key.json`). I looked at all 12: real arcs lost to the twin key (04), to the local window beside clear heads (01, 03), to a note between same-pitch ends (05, 09), to the barline cut (07, 08, 12: the box is half the printed arc), cross-system entry (06), notes never written (10, 11). In 09 the box sits on the note row, not on the arc.
+
+### The ONE fix to build first
+Make the arc's identity the printed arc and bind from it alone: trace each curve end to end along its ink (2.272), joined across cell edges, with `join_traces` splitting chains that meet at a note; bind both ends to the nearest usable head with the `continues_in_another_curve` guard (2.271); and for any curve with a page curve retire the box re-reads (rows 9, 10, 13) and write from the curve. Why first: end-binding failures are ~63% (Litolff) / ~44% (Brahms p0,p5) of dropped arcs, only a fifth of those ends are near misses, and the far ones have no neighbouring box, so only a true end-to-end curve reaches the right note. Next: bind arcs to the MARK, not a box key (~4/page Litolff; the built OMR_UNISON_TIE_VOICE alias already gives +12 ties, 0 lost). Caveat: 2.272's yield was measured on Litolff only; Brahms long phrase slurs (crops 07, 08) need re-tiling.
+
+
 ## 2026-11-03 (2.252 round 6): Landed ON -- `OMR_HEAD_HOLE_POSITION` default ON (deny-list), Sean "Land OMR_HEAD_HOLE_POSITION on"
 `head_hole_position.enabled()`/`r5_enabled()`/`r6_enabled()` all read the one flag, so with it ON: hole position (r4), the black-box split (`gather.py` `black_too=`), the r6 local line check (`arc_ink_shape(local_lines=)`), `one_end_contested`, `unsure_ends`. `OMR_UNISON_TIE_VOICE` stays OFF. r6 tiles: positions 11/11, ties 10/12, 0 wrong. Landing check (STAGED re-adjudicate only of the r6 saved gathers, flag 0 vs 1, `report_saved_gathers_r4.py`, main's defaults + this merge): judged right->wrong 0 and unwritten->wrong 0 on all three plates. Litolff p10-11: notes +3, ties +14 -6, slurs +4 -4, pitches ~24 (unwritten->right 1); Litolff p2-3: notes +2, ties +14 -4, slurs +2 -6, pitches ~13; Brahms p0,5: nothing changed in the exported file.
 
