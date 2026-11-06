@@ -280,9 +280,21 @@ class _Columns:
 
 def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float,
             pts: Dict[int, Tuple[int, int]], box_x: Tuple[int, int] = (-1 << 30, 1 << 30),
-            raw_pts: Optional[set] = None) -> None:
-    """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y."""
-    hist: List[Tuple[int, float]] = [(x, yc)]
+            raw_pts: Optional[set] = None, *, hist0: Optional[List[Tuple[int, float]]] = None,
+            stop: Optional[Dict[str, Any]] = None, avoid: Optional[Sequence[Sequence[float]]] = None,
+            others: Optional[Dict[int, Sequence[Tuple[int, int]]]] = None,
+            gaps: Optional[List[Tuple[int, str]]] = None) -> None:
+    """Greedy: from the run at (x, yc) walk `step` (+1/-1) to `x_stop`, adding the run nearest the predicted y.
+
+    The keyword-only arguments are ROADMAP 2.272's (`arc_ink_trace`, flag `OMR_ARC_INK_TRACE`); every default leaves the walk as it was:
+    `hist0` seeds the slope with the curve's own previous columns; `stop` receives `why` (`slope`, `gap`, `meets_arc`, `limit`);
+    `avoid` is boxes `(x0, y0, x1, y1)` of marks that claimed their ink first (a word, a dynamic, a beam): a column inside one where the
+    prediction stands is BRIDGED at no cost (the arc follows its own curvature through the contact and takes none of the mark's ink);
+    `others` is `{x: [(y0, y1), ...]}` of OTHER arcs' traced runs: reaching one stops the walk (`meets_arc`, counted, never followed);
+    `gaps` receives `(x, 'gap'|'avoid')` for every column bridged."""
+    hist: List[Tuple[int, float]] = list(hist0) if hist0 else [(x, yc)]
+    if hist[-1][0] != x:
+        hist.append((x, yc))
     seed = pts.get(x)
     thick: List[int] = [seed[1] - seed[0] + 1] if seed else []
     gap = 0
@@ -302,12 +314,19 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         # past its own box the trace is a TAIL the crop cut: a tie's or slur's end runs shallow into its head; a steep
         # climb there is the outline of a head or a stem, not the arc
         if not (box_x[0] <= xx <= box_x[1]) and abs(slope) > EXT_MAX_SLOPE:
+            if stop is not None:
+                stop["why"], stop["x"] = "slope", xx
             return
         dx = xx - lx
         pred = ly + slope * dx
         tol = tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
         best = None
         from_raw = False
+        if avoid is not None and any(a[0] <= xx <= a[2] and a[1] - tol <= pred <= a[3] + tol for a in avoid):
+            if gaps is not None:
+                gaps.append((xx, "avoid"))
+            xx += step
+            continue
         # THE STROKE CONTINUES (Sean's tile 11, 2026-10-17: our trace left a tie at the barline and carried on along
         # the slur beside it). A run much thicker than the stroke so far is the stroke MERGED with something -- a
         # barline, or the other arc where the two touch -- and its centre is not the stroke's height: it bridges as
@@ -324,15 +343,26 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
             if best is not None:
                 break
             from_raw = True
+        if best is not None and others is not None and any(
+                abs(best[3] - (o0 + o1) / 2.0) <= tol0 for o0, o1 in others.get(xx, ())):
+            if stop is not None:
+                stop["why"], stop["x"] = "meets_arc", xx
+            return
         if best is None:
             gap += 1
+            if gaps is not None:
+                gaps.append((xx, "gap"))
             if gap > gap_max:
+                if stop is not None:
+                    stop["why"], stop["x"] = "gap", xx
                 return
         else:
             # a run found only on the RAW page (the stroke merged with a staff line) BRIDGES, at a quarter of a gap's
             # cost, so a trace can never ride a staff line far; such points are trimmed off the trace's two ends
             gap = gap + RAW_BRIDGE_COST if from_raw else 0
             if gap > gap_max:
+                if stop is not None:
+                    stop["why"], stop["x"] = "gap", xx
                 return
             if from_raw and raw_pts is not None:
                 raw_pts.add(xx)
@@ -342,6 +372,8 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
             if len(hist) > 4 * look:
                 hist = hist[-2 * look:]
         xx += step
+    if stop is not None:
+        stop["why"], stop["x"] = "limit", x_stop
 
 
 def trace_arc(ink: np.ndarray, box: Sequence[float], sp: float, *, x_min: float, x_max: float,
@@ -883,6 +915,32 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             continue
         sp_staff = float(np.median([t["piece"]["sp"] for t in traces]))
         heads = heads_by_staff.get((pg, sy, st), [])
+        from . import arc_ink_trace as _ait
+        if _ait.enabled():
+            # ROADMAP 2.272 (`OMR_ARC_INK_TRACE`, default OFF): each trace's two ends are walked on along the arc's own ink, then `join_traces` folds
+            # the pieces that now share the stroke. Words / dynamics / hairpin legs / beams keep their ink; another arc's run stops the walk.
+            from . import arc_claim as _ac_ink
+            sx0_, sx1_ = sys_x.get((pg, sy), (0.0, float(ink.shape[1] - 1)))
+            col_pts: Dict[int, List[Tuple[int, Tuple[int, int]]]] = {}
+            for i_, t_ in enumerate(traces):
+                for x_, r_ in t_["points"].items():
+                    col_pts.setdefault(x_, []).append((i_, r_))
+            named = [(n_, b_) for _g, n_, b_ in others]
+            stems_ = [b_ for _g, n_, b_ in others if str(n_).startswith("stem")]
+            bars_ = [tuple(float(v) for v in b_["box"]) for b_ in (getattr(page_map, "barlines", None) or ())]
+            bars_ += [b_ for _g, n_, b_ in others if str(n_).startswith("barline")]
+            for i_, t_ in enumerate(traces):
+                sp_ = float(t_["piece"]["sp"])
+                tr_ = {int(x): (float(a), float(b)) for x, (a, b) in t_["points"].items()}
+                own_ = [k for k, _sh in _ac_ink.page_strokes_along(page_map, tr_, sp_)] if page_map is not None else []
+                ys_ = [v for r_ in t_["points"].values() for v in r_]
+                y_lo_, y_hi_ = min(ys_) - 4 * sp_, max(ys_) + 4 * sp_
+                oth_ = {x_: [r_ for j_, r_ in lst if j_ != i_] for x_, lst in col_pts.items() if any(j_ != i_ for j_, _r in lst)}
+                ctx_ = dict(heads=[(hg_, hb_) for hg_, hb_ in heads], stems=stems_, barlines=bars_,
+                            line_ys=[ly_ for ly_ in line_ys if y_lo_ <= ly_ <= y_hi_])
+                av_ = _ait.avoid_boxes(named, page_map, own_, sp_, y_lo_, y_hi_, [t_["piece"]["box"]])
+                _ait.extend_ends(ink, raw, t_, sp_, x_lo=sx0_, x_hi=sx1_, avoid=av_, others=oth_, ctx=ctx_)
+                summary["ink_trace_ends"] = summary.get("ink_trace_ends", 0) + 2
         for grp in join_traces(traces, sp_staff):
             members = sorted((traces[i] for i in grp), key=lambda t: t["x0"])
             pts = merge_points(members)
@@ -947,6 +1005,16 @@ def gather_system_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int
             )
             if joins is not None:
                 detail["joins"] = joins
+            if _ait.enabled():
+                # the record of what the walk did at each piece's two ends (box extent, columns added, what stopped it, what it crossed); a stop on
+                # another piece of this SAME curve is the fold, not an end
+                folded = len(members) > 1
+                detail["ink_trace"] = [dict(piece=m["piece"]["glyph"].to_key(), **(m.get("ink_ext") or {})) for m in members]
+                if folded:
+                    for e_ in detail["ink_trace"]:
+                        for side_ in ("left", "right"):
+                            if (e_.get(side_) or {}).get("stop") == "meets_arc":
+                                e_[side_] = dict(e_[side_], stop="folds_with_piece")
             if page_map is not None:
                 # ROADMAP 2.260b M3 (`OMR_PAGE_CLAIMS`): the curve names the PAGE strokes it runs along (built before this erase, so the arc is on
                 # the map whole), and each piece the strokes ITS OWN trace runs along: two pieces on one page stroke are one stroke seen twice
