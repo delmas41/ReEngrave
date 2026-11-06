@@ -93,11 +93,13 @@ def main():
     sp = PS.page_spacing(pws)
     PS.carve_columns(asm.canvas, BC.fit_columns(pws), sp)
     t1 = time.time()
+    import cv2
+    cv2.imwrite(str(out / ("%s-p%d.raw.png" % (plate, page))), pws.page.binary)
     rows, curves, refused = slice_rows(plate, page, tag)
     boxes, areas, arc_boxes = PA.inputs_from_rows(rows)
     line_ys = [float(y) for s in pws.staves for y in s.line_ys]
     t2 = time.time()
-    res = PA.read_runs(asm.canvas, sp, line_ys, boxes, areas)
+    res = PA.read_runs(asm.canvas, sp, line_ys, boxes, areas, keep_rejected=True)
     runs = res["runs"]
     by_run, alone = PA.witnesses_of(runs, arc_boxes, sp)
     t3 = time.time()
@@ -133,6 +135,13 @@ def main():
         for s in seeded:
             sd = max(sd, covered_by(np.array(s["run"]["pts"], float), c["trace"], sp))
         c["seeded_best"] = round(sd, 2)
+        # why no run: the rejected track that lies under the curve for most of its span (else none was tracked)
+        why, wbest = "no_track", 0.0
+        for q in res["rejected"]:
+            ov = min(q["x1"], c["x1"]) - max(q["x0"], c["x0"])
+            if ov > 0 and c["box"][1] - 0.8 * sp <= q["y"] <= c["box"][3] + 0.8 * sp and ov / max(1.0, c["x1"] - c["x0"]) > wbest:
+                why, wbest = "%s(%.2f)" % (q["why"], q["thick_sp"]), ov / max(1.0, c["x1"] - c["x0"])
+        c["why_no_run"] = why if c["best"] < 0.8 else None
     summary = dict(plate=plate, page=page, sp=sp,
                    seconds=dict(canvas=round(t1 - t0, 1), rows=round(t2 - t1, 1), runs=round(t3 - t2, 2), seeded=round(t4 - t3, 2)),
                    peak_rss_gb=round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e9, 2),
@@ -142,6 +151,12 @@ def main():
                    whole=sum(1 for c in kept if c["best"] >= 0.8), partial=sum(1 for c in kept if 0.3 <= c["best"] < 0.8),
                    none=sum(1 for c in kept if c["best"] < 0.3),
                    whole_after_seed=sum(1 for c in kept if c["best"] >= 0.8 or c["seeded_best"] >= 0.8))
+    ink = asm.canvas == 0
+    for c in kept:
+        x0, y0, x1, y1 = [int(v) for v in c["box"]]
+        reg = (slice(max(0, y0 - 8), y1 + 8), slice(max(0, x0), x1))
+        tot = int(ink[reg].sum())
+        c["blank_share"] = round(float((ink & blank)[reg].sum()) / max(1, tot), 2)
     json.dump(dict(summary=summary, runs=[dict(r, witnesses=by_run[r["id"]]) for r in runs], seeded=seeded, alone=alone,
                    curves=[{k: v for k, v in c.items() if k != "trace"} for c in det]), open(out / ("%s-p%d.step1.json" % (plate, page)), "w"))
     print(json.dumps(summary))

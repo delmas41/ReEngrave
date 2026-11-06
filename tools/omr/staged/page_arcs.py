@@ -21,7 +21,7 @@ It reads NO cell and needs no detector pass. Cost: about a second a page.
 WHAT IT FILES (`Q.PAGE_ARC`, one row per run, on the page's subject). `value` = `run` (read from the ink alone) | `seeded` (no run existed under a
 DETECTOR arc box that a bounded local read of its ink found: the box SEEDED it, so it is not ink-first; counted apart) | `census` (one per page: counts,
 seconds, peak memory). `detail`: `ordinal`, `bbox_page_px`, `points` (page px, about one per quarter space), `width_spaces`, `sagitta_spaces` (signed:
-positive = the middle is LOWER than the chord), `thickness_spaces`, `resid_spaces`, `inked`, `chord_deg`, `ends` ([[x, y, tangent_deg], [x, y, tangent_deg]],
+positive = the middle is LOWER than the chord), `thickness_spaces`, `ends` ([[x, y, tangent_deg], [x, y, tangent_deg]],
 left then right), `page_strokes` ([[Q.PAGE_STROKE ordinal, share]]: the strokes the run runs along -- what it WOULD claim; nothing is claimed in step 1, so no
 `Q.CLAIMED_AREA` row is added), `witnesses` (glyph keys of the detector slur/tie boxes it overlaps, a witness only), `staff` ([system, staff]).
 A detector arc box no run witnesses is a `Q.PAGE_ARC` row of value `box_without_run` (its glyph key, box, and `seeded` outcome) so both counts are in the record.
@@ -52,11 +52,16 @@ MAX_THICK_SP = 0.42       # median run thickness
 MIN_INKED = 0.6           # inked columns / span
 MAX_CHORD_DEG = 40.0
 JAG_SP = 0.08             # rms off the 1-sp running mean
+HOLE_MIN_SP = 0.1         # a gap between two inked columns at least this wide is a bridged hole
+HOLE_PAD_SP = 0.3         # the jag is not measured this close to a hole
 CUSP_SP = 0.75            # the stretch each side of a hole the slope is read over
 CUSP_GAP_SP = 0.3         # a bridged hole at least this wide (a blanked head is ~1.2 sp)
 CUSP_SLOPE = 0.15         # both sides at least this steep, opposite signs
 LINE_STUB_SP = 0.14       # a run whose centre sits this close to a staff line row over most of its length is the eraser's leftover
 STRAIGHT_SAG_SP = 0.10    # a run straighter than this ...
+MIN_THICK_SP = 0.10       # median thickness under this is a staff line's residue (a staff line is ~0.1 sp)
+STRAIGHT_REL = 0.02       # a run whose bow is under this share of its width is a line: a slur's bow grows with its length (measured: lines 0.005, the flattest tie 0.05)
+STRAIGHT_LONG_REL = 0.047  # a run over STRAIGHT_MAX_SP whose bow is under this share of its width is a line (round-1 measurement on 5 pages: 12 lines at 0.023-0.045, the flattest real arc 0.050; confirmed on 4 fresh pages)
 STRAIGHT_MAX_SP = 4.0     # ... and longer than this is a line, not an arc
 WITNESS_SHARE = 0.5       # a detector arc box witnesses a run when the run covers this share of the box's width inside the box (grown 0.5 sp)
 POINT_STEP_SP = 0.25      # one filed point per this many staff spaces
@@ -100,8 +105,10 @@ def inputs_from_rows(rows: Sequence[Tuple[str, str, Any, Dict[str, Any]]]
                 continue
             if cls in ("slur", "tie"):
                 arc_boxes.append(dict(subject=subject, cls=cls, box=[float(v) for v in bb]))
-            elif cls.startswith("beam") or "airpin" in cls:
-                continue
+            elif "airpin" in cls:
+                areas.append(("hairpin", [float(v) for v in bb]))      # a hairpin claims before an arc: its ink COMPONENTS inside the box, never the rectangle
+            elif cls.startswith("beam"):
+                continue          # claimed AFTER arcs (CLAUDE §3); a false beam box over a slur took half of one
             elif not any(cls.startswith(k) for k in NOT_ARC_SKIP):
                 boxes.append((cls, [float(v) for v in bb]))
         elif q == "claimed_area" and det.get("owner") in CLAIM_OWNERS and det.get("unit") == "area":
@@ -109,6 +116,8 @@ def inputs_from_rows(rows: Sequence[Tuple[str, str, Any, Dict[str, Any]]]
             if isinstance(v, str):
                 v = json.loads(v)
             areas.append((det["owner"], [float(t) for t in v]))
+        elif q == "claimed_area" and det.get("owner") == "hairpin" and det.get("bbox_page_px"):
+            areas.append(("hairpin", [float(t) for t in det["bbox_page_px"]]))
     return boxes, areas, arc_boxes
 
 
@@ -214,10 +223,25 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
         return "sparse", None
     if np.median(th) > MAX_THICK_SP * sp:
         return "thick", None
+    if np.median(th) < MIN_THICK_SP * sp:
+        return "thin", None            # one reduced pixel of ink: the staff line's own residue, never a slur (a slur's body is thicker than a staff line)
     k = max(3, int(round(sp)))
     ys_ = np.convolve(y, np.ones(k) / k, mode="same")
+    if len(ys_) != len(y):       # a track shorter than the window: nothing to smooth
+        ys_ = y.copy()
     inner = slice(k, len(y) - k) if len(y) > 2 * k + 2 else slice(0, len(y))
-    resid = float(np.sqrt(np.mean((ys_[inner] - y[inner]) ** 2)))
+    # a bridged hole (a stem, a head, a carved rule the arc crosses) is not the arc's own ink: the columns beside it carry the stem's flank, so the jag is
+    # measured away from every hole (`HOLE_PAD_SP` each side), never across one
+    near_hole = np.zeros(len(x), bool)
+    for i in np.flatnonzero(np.diff(x) > HOLE_MIN_SP * sp):
+        near_hole |= (x >= x[i] - HOLE_PAD_SP * sp) & (x <= x[i + 1] + HOLE_PAD_SP * sp)
+    keep = ~near_hole
+    keep[:inner.start] = False
+    keep[inner.stop:] = False
+    if int(keep.sum()) < 8:
+        keep = np.zeros(len(x), bool)
+        keep[inner] = True
+    resid = float(np.sqrt(np.mean((ys_[keep] - y[keep]) ** 2)))
     if resid > JAG_SP * sp:
         return "rough", None
     deg = 4 if width > 8 * sp else 2
@@ -233,7 +257,7 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
         dist = np.min(np.abs(y[:, None] - lines[None, :]), axis=1)
         if np.mean(dist < LINE_STUB_SP * sp) > 0.7:
             return "on_a_line", None
-    if abs(sag) < STRAIGHT_SAG_SP * sp and width > STRAIGHT_MAX_SP * sp:
+    if (width > STRAIGHT_MAX_SP * sp and abs(sag) < STRAIGHT_LONG_REL * width) or abs(sag) < STRAIGHT_REL * width:
         return "straight", None
     if abs(sag) >= STRAIGHT_SAG_SP * sp:
         inn = np.abs(dev) > 0.03 * sp
@@ -262,7 +286,7 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
 
 
 def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxes: Sequence[Tuple[str, Sequence[float]]],
-              areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None) -> Dict[str, Any]:
+              areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None, keep_rejected: bool = False) -> Dict[str, Any]:
     """The runs of the page ink (module doc). `canvas`: 0 = ink, page px. Returns `{runs, why, tracks, scale, sp, blanked}`; each run has `pts` (page px,
     ~one per 2 reduced px), `box`, `width_sp`, `sagitta_sp`, `thick_sp`, `resid_sp`, `inked`, `chord_deg`, `half` (half its thickness, page px)."""
     import cv2
@@ -279,6 +303,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     tracks = [q for t in tracks for q in _split_at_cusps(t, sp)]
     why: Dict[str, int] = {}
     out: List[Dict[str, Any]] = []
+    rejected: List[Dict[str, Any]] = []
     for t in tracks:
         if len(t["pts"]) < 3:
             why["tiny"] = why.get("tiny", 0) + 1
@@ -286,9 +311,13 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
         v, info = _judge(t, sp, lines)
         why[v] = why.get(v, 0) + 1
         if v != "arc":
+            if keep_rejected and v != "short":
+                q = np.array(t["pts"], float)
+                rejected.append(dict(why=v, x0=float(q[0, 0] / scale), x1=float(q[-1, 0] / scale), y=float(np.median(q[:, 1]) / scale),
+                                     thick_sp=round(float(np.median(q[:, 2]) / sp), 2), n=len(q)))
             continue
         out.append(_run_row(t, info, scale, len(out)))
-    return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()))
+    return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected)
 
 
 def _run_row(t: Dict[str, Any], info: Dict[str, Any], scale: float, ordinal: int) -> Dict[str, Any]:
@@ -447,8 +476,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
         along = _AC.page_strokes_along(page_map, trace, sp_page)
         mid_y = float(np.median(pts[:, 1]))
         log.observe(sub, Q.PAGE_ARC, "run", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in r["box"]],
-                    points=thin, width_spaces=r["width_sp"], sagitta_spaces=r["sagitta_sp"], thickness_spaces=r["thick_sp"], resid_spaces=r["resid_sp"],
-                    inked=r["inked"], chord_deg=r["chord_deg"], ends=ends_of(r["pts"], sp_page), page_strokes=[[int(i), s] for i, s in along],
+                    points=thin, width_spaces=r["width_sp"], sagitta_spaces=r["sagitta_sp"], thickness_spaces=r["thick_sp"], ends=ends_of(r["pts"], sp_page), page_strokes=[[int(i), s] for i, s in along],
                     witnesses=by_run[r["id"]], staff=staff_of(mid_y))
         n += 1
     blank = None
@@ -462,12 +490,12 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
             n_seeded += 1
             log.observe(sub, Q.PAGE_ARC, "seeded", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in s["box"]],
                         points=thin_points(s["pts"], sp_page), width_spaces=s["width_sp"], sagitta_spaces=s["sagitta_sp"], thickness_spaces=s["thick_sp"],
-                        resid_spaces=s["resid_sp"], inked=s["inked"], chord_deg=s["chord_deg"], ends=ends_of(s["pts"], sp_page), page_strokes=[],
+                        ends=ends_of(s["pts"], sp_page), page_strokes=[],
                         witnesses=[b["subject"]], staff=staff_of(float(np.median(np.array(s["pts"])[:, 1]))))
             n += 1
         else:
             log.observe(sub, Q.PAGE_ARC, "box_without_run", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in b["box"]],
-                        witnesses=[b["subject"]], box_class=b["cls"])
+                        witnesses=[b["subject"]])
             n += 1
     census = dict(runs=len(runs), seeded=n_seeded, boxes_without_run=len(alone) - n_seeded, arc_boxes=len(arc_boxes),
                   runs_with_witness=sum(1 for v in by_run.values() if v), runs_without_witness=sum(1 for v in by_run.values() if not v),
