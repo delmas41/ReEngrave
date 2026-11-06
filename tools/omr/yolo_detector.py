@@ -490,6 +490,7 @@ class YoloDetector:
         agnostic_nms: bool = False,
         natural_candidates: bool = False,
         floor_memo: bool = False,
+        max_det: int | None = None,
     ) -> list[SymbolDetection]:
         """Run YOLO on `cell.image` and return SymbolDetection objects in
         canonical-image coordinates.
@@ -509,6 +510,8 @@ class YoloDetector:
                 asked of this cell is kept on the cell and every higher floor is served from it -- one forward pass per cell, not one per
                 floor. Identical to a run at the higher floor because greedy NMS never lets a lower-scored box remove a higher-scored one
                 (kept: score > floor, the test ultralytics applies). Not used with `natural_candidates`.
+            max_det: ROADMAP 2.273 (STAGED staff-row arc strip only): ultralytics' per-image box cap (default 300) raised for a whole-row
+                strip, which can carry hundreds of boxes. None (every other caller) passes nothing and changes nothing.
             agnostic_nms: if True, NMS suppresses across classes (one box
                 per region regardless of class). Useful for music notation
                 where the same region can fire multiple semantically-similar
@@ -564,6 +567,7 @@ class YoloDetector:
                 imgsz=imgsz,
                 device=self.device if self.device != "auto" else None,
                 verbose=False,
+                **({"max_det": int(max_det)} if max_det else {}),
                 **extra,
             )
             if not results:
