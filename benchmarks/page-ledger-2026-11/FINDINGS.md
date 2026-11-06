@@ -111,3 +111,27 @@ Flags `OMR_PAGE_HEADS` (M6a, file only), `OMR_PAGE_HEAD_VIEWS` (M6b), `OMR_PAGE_
 - **Three measures (Litolff 8 frozen pages, all three flags, re-gathered both arms):** notes +2 -2, flags +1 -1, beams +2 -1 ~1, slurs -4, pitches ~5, blue +1 -2; red bars 0 -> 0; judged right->wrong 0, unwritten->wrong 0, **right->narrowed 1** (2.154-review tile 1, glyph/11/1/0/9/3: duration `beams_ambiguous`; traced to M6c: with `OMR_PAGE_HEAD_CLAIM=0` it stays decided). Brahms p0+p5: NOTHING CHANGED, red bars 41 -> 41, judged 0 / 0. Misshapen ledger claims 64 -> 126 (stubs not level) and heads 141 -> 96 on Brahms p0.
 - **Tile 20 (glyph/11/0/2/8/3) does NOT come back.** Its G4 is narrowed `whole_class_filled_on_a_stem` and the rescued E4 stem-mate is decided half: the missing step is every note on one stem sharing one written value (CLAUDE §4), a rhythm rule, not head reading. M6 changes neither head's position or pitch there.
 - **Open:** `staged.check` 226 -> 228 (PAGE_HEAD declared-ungathered + producer-only, by design as PAGE_BEAM). M6d not built; see census above.
+
+## 2.260c M4b with M6 ON (2026-11-05; measure-only, branch measure-m4b-m6, main 741d63f4f)
+**Answer: NO. M6 does not fix M4b's Litolff loss.** STAGED. Litolff 8 frozen pages (2,4,6,8,9,10,11,16), Brahms p0+p5. Every arm RE-GATHERED (the M6 flags, `OMR_PAGE_BEAMS`, `OMR_PAGE_CLAIM_NAMES`, `OMR_PAGE_CLAIM_BOXES` all act in GATHER; only `OMR_PAGE_BEAMS_RETIRE_A` acts later), same tree, shared detector cache, tag 20261029-night, one large process at a time.
+- **A (baseline):** `OMR_PAGE_HEADS`, `_HEAD_VIEWS`, `_HEAD_CLAIM` = 1; M4b flags 0. **B:** A + `OMR_PAGE_BEAMS`, `_CLAIM_NAMES`, `_CLAIM_BOXES`, `_BEAMS_RETIRE_A` = 1. **C:** B with `OMR_PAGE_HEAD_CLAIM=0`. Command: `lane_report --from gather --plates litolff --flag OMR_PAGE_HEADS=1:1 ... --flag OMR_PAGE_BEAMS_RETIRE_A=0:1` (B vs A); C = a direct `tools.omr.staged` gather with the flags in the environment, then `lane_report arm` + `rescore` against A's files.
+- **First attempt at C was a no-op** (re-exporting B's saved gather with the claim flag off: byte-identical to B, because the head claim acts inside the gather's own ADJUDICATE). Redone as a real re-gather. Lesson: `--from gather` records carry their verdicts; a flag read in ADJUDICATE still needs its own gather.
+
+| Litolff | B vs A | C vs A |
+|---|---|---|
+| notes | +24 -59 | +26 -59 |
+| beams | +23 -51 ~20 | +24 -51 ~21 |
+| flags / values / pitches | +5 -23 / ~21 / ~7 | same |
+| blue marks | +3 -11 | +3 -11 |
+| notes not written (A 2435) | 2461 (+26) | 2459 (+24) |
+| red bars | 0 -> 0 | 0 -> 0 |
+| judged right->wrong / unwritten->wrong | 0 / 0 | 0 / 0 |
+| judged right->narrowed | 1 (glyph/2/0/0/5/5) | 1 (glyph/2/0/0/5/5) |
+
+M4b alone measured notes +22 -63, not written +27: with M6 on it is +24 -59, +26. No change in kind.
+- **glyph/2/0/0/5/5** (Sean: eighth): A decides eighth (`head_and_marks`, right); B and C narrow {0.5, 1.0} `beams_ambiguous`. Still right -> narrowed with M6 on, with or without the head claim. The answer stays inside the set, nothing is wrong, but M4b still loses a decided answer.
+- **glyph/11/1/0/9/3** (Sean: quarter): A already narrowed it (`beams_ambiguous`: M6c's cost, baseline); B narrowed; C decided quarter (`stem_tip_reads_no_beam`, right). So `OMR_PAGE_HEAD_CLAIM` alone owns that loss, and C is the only arm that gets it back. judged score (Litolff, whole index): A right 100 / wrong 12 / narrowed 11; B 100/12/11; C 101/12/10.
+- **Brahms p0+p5:** B vs A and C vs A are identical: notes +3 -6, beams +4 -12 ~4, slurs +3 -7, blue +8 -2, dots +3 -1, flags +7 -3; red bars 41 -> 40; notes not written 759 -> 762 (B), 759 -> 762 (C); judged right->wrong 0, right->narrowed 0, unwritten->wrong 0. Near neutral, as M4b alone.
+- **Cause / lesson:** the loss is not (only) beams fused into head blobs. With heads read once on the page the Litolff note loss is unchanged (-59), so the page beam rows still disagree with reader A on Litolff slabs; the next step is to look at the crops of the 59 lost notes (not done here), not to flip. Not recommended to flip M4b; leave `OMR_PAGE_HEAD_CLAIM` OFF on Litolff too (C regains one answer B/A lose).
+- Disk filled during the lane (manager notice): checked, no "No space left" in any log, all saved records load; nothing re-run for that reason.
+- Work dirs (local, not committed): `out/m4b-m6/{lit,brh}-{B,C}/work`.
