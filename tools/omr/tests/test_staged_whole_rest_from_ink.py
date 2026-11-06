@@ -30,6 +30,8 @@ class _Flag(unittest.TestCase):
         self._old = {k: os.environ.get(k) for k in (rhythm.WHOLE_REST_FROM_INK_ENV, rhythm.WHOLE_REST_STEM_RULE_ENV)}
         for k in self._old:
             os.environ.pop(k, None)
+        # FROM_INK is default ON since 2026-11-05 (2.270 landed); a test class names the flags it wants and the others are set to 0
+        os.environ[rhythm.WHOLE_REST_FROM_INK_ENV] = "0"
         for k in self.ENV:
             os.environ[k] = "1"
 
@@ -118,6 +120,25 @@ class TestStemRuleAlone(_Flag):
         _run(log)
         self.assertEqual(_verdict(log, a).reason, "has_a_stem")
         self.assertIs(_verdict(log, b).value, True)
+
+
+class TestDefaultIsOn(unittest.TestCase):
+    def test_from_ink_default_on_deny_list_and_stem_rule_default_off(self):
+        old = {k: os.environ.pop(k, None) for k in (rhythm.WHOLE_REST_FROM_INK_ENV, rhythm.WHOLE_REST_STEM_RULE_ENV)}
+        try:
+            self.assertTrue(rhythm.whole_rest_from_ink_enabled())
+            self.assertTrue(SX.whole_rest_from_ink_enabled())
+            self.assertFalse(rhythm.whole_rest_stem_rule_enabled())
+            for off in ("0", "false", "no", "off"):
+                os.environ[rhythm.WHOLE_REST_FROM_INK_ENV] = off
+                self.assertFalse(rhythm.whole_rest_from_ink_enabled())
+                self.assertFalse(SX.whole_rest_from_ink_enabled())
+        finally:
+            for k, v in old.items():
+                if v is None:
+                    os.environ.pop(k, None)
+                else:
+                    os.environ[k] = v
 
 
 class TestOffIsTheOldReading(_Flag):

@@ -1314,13 +1314,14 @@ def _bar_has_other_head_or_rest_box(rec: "Record", sub: str) -> bool:
     return bool(idx.get((s["page"], s["system"], s["staff"], s["cell"]), set()) - {sub})
 
 
-#: ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default OFF; == rhythm.WHOLE_REST_FROM_INK_ENV).
+#: ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default ON since 2026-11-05; == rhythm.WHOLE_REST_FROM_INK_ENV).
 WHOLE_REST_FROM_INK_ENV = "OMR_WHOLE_REST_FROM_INK"
 WHOLE_REST_FROM_INK_RULE = "whole_rest_from_ink"
 
 
 def whole_rest_from_ink_enabled() -> bool:
-    return os.environ.get(WHOLE_REST_FROM_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    # default ON since 2026-11-05 (ROADMAP 2.270 landed): deny-list -- off only for 0/false/no/off
+    return os.environ.get(WHOLE_REST_FROM_INK_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def _rest_twin_in_bar(rec: "Record", sub: str, o: Dict[str, Any]) -> bool:
@@ -1646,7 +1647,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # is strong and still thin -- n = 1 document, and two of the six
             # cuts have no plateau.
             #
-            # ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default OFF): the verdict now rests on the head's own INK (height, fill, stem;
+            # ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default ON since 2026-11-05): the verdict now rests on the head's own INK (height, fill, stem;
             # `rhythm._whole_rest_ink_read`), and a box whose ink was MEASURED and passed is WRITTEN AS THE REST it is (Sean 2026-11-05,
             # "Fix the reader"; his 10-29 "Improve the reader first"). A box whose ink was not measured stays refused, not converted.
             if (whole_rest_from_ink_enabled() and _whole_rest_ink_was_read(rec, sub)

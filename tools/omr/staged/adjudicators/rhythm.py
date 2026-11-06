@@ -9911,7 +9911,7 @@ def _rest_shaped(height_spaces: float, aspect: float) -> bool:
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.270 (flags `OMR_WHOLE_REST_FROM_INK`, `OMR_WHOLE_REST_STEM_RULE`, both default OFF). STAGED ADJUDICATE.
+# ROADMAP 2.270 (flags `OMR_WHOLE_REST_FROM_INK` default ON since 2026-11-05, `OMR_WHOLE_REST_STEM_RULE` default OFF). STAGED ADJUDICATE.
 # CAUSE: `adjudicate_notehead_is_a_whole_rest` measures the DETECTOR'S BOX (height, aspect) and the slot, never the INK under it. Sean's 16
 # refused marks (benchmarks/whole-rest-refusal-2026-11): the box of a stemmed quarter, three eighths, a clef fragment and a tremolo slash
 # is as short as a rest's, because the detector boxes the head's interior; the page ink says 1.0-1.6 sp tall, hollow, or on a stem. The
@@ -9931,7 +9931,8 @@ WHOLE_REST_INK_MIN_WIDTH_SP = 0.9
 
 
 def whole_rest_from_ink_enabled() -> bool:
-    return os.environ.get(WHOLE_REST_FROM_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    # default ON since 2026-11-05 (ROADMAP 2.270 landed): deny-list -- off only for 0/false/no/off
+    return os.environ.get(WHOLE_REST_FROM_INK_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
 
 
 def whole_rest_stem_rule_enabled() -> bool:
