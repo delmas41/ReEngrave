@@ -40,6 +40,13 @@ MAX_THICK_SP = 0.42       # median run thickness
 MIN_INKED = 0.6           # inked columns / span
 MAX_RESID_SP = 0.12       # rms of a quadratic fit
 MAX_CHORD_DEG = 40.0
+JAG_SP = 0.08            # v2: rms off the 1-sp running mean
+V4 = "--v4" in sys.argv
+V3 = "--v3" in sys.argv or V4
+CUSP_SP = 0.75            # v4: the stretch each side of a hole the slope is read over
+CUSP_GAP_SP = 0.3         # v4: a bridged hole at least this wide (a blanked head is ~1.2 sp)
+CUSP_SLOPE = 0.15         # v4: both sides at least this steep, opposite signs
+V2 = "--v2" in sys.argv or V3
 LINE_STUB_SP = 0.14       # a run whose centre sits this close to a staff line row over most of its length is the eraser's leftover
 STRAIGHT_SAG_SP = 0.10    # a run straighter than this ...
 STRAIGHT_MAX_SP = 4.0     # ... and longer than this is a line, not an arc
@@ -71,6 +78,8 @@ def page_rows(plate, page, tag):
                     continue
                 if cls in ("slur", "tie"):
                     arc_boxes.append(dict(subject=o["subject"], cls=cls, box=bb))
+                elif V3 and (cls.startswith("beam") or "Hairpin" in cls or "hairpin" in cls):
+                    continue        # v3: a long stroke box is not blanked as a rectangle (a false 'beam' box over a slur took half of it)
                 elif not any(cls.startswith(k) for k in NOT_ARC_SKIP):
                     boxes.append((cls, bb))
             elif o["quantity"] == "claimed_area" and det.get("owner") in CLAIM_OWNERS and det.get("unit") == "area":
@@ -148,6 +157,40 @@ def line_rows(staves, scale):
     return np.array(sorted(rows))
 
 
+def split_at_cusps(t, sp):
+    """v4: two arcs that meet at a note (a tie chain, a slur ending where the next begins) bridge the blanked head between them and chain into
+    one track. An arc turns smoothly through ONE apex; where two meet, the track crosses a HOLE (the claimed head) and turns the other way in
+    a V. Split at a bridged hole of at least CUSP_GAP_SP where the track's slope either side (over CUSP_SP) has opposite signs, each at least
+    CUSP_SLOPE steep -- a smooth apex has a shallow slope both sides and almost never sits on a hole."""
+    p = t["pts"]
+    if len(p) < 8:
+        return [t]
+    x = np.array([q[0] for q in p], float)
+    y = np.array([q[1] for q in p], float)
+    w = CUSP_SP * sp
+    cuts = []
+    for i in range(1, len(p)):
+        if x[i] - x[i - 1] < CUSP_GAP_SP * sp:
+            continue
+        lo = np.searchsorted(x, x[i - 1] - w)
+        hi = np.searchsorted(x, x[i] + w, side="right")
+        L, Rr = slice(lo, i), slice(i, hi)
+        if i - lo < 3 or hi - i < 3:
+            continue
+        sl = np.polyfit(x[L], y[L], 1)[0]
+        sr = np.polyfit(x[Rr], y[Rr], 1)[0]
+        if sl * sr < 0 and min(abs(sl), abs(sr)) >= CUSP_SLOPE:
+            cuts.append(i)
+    if not cuts:
+        return [t]
+    out, a = [], 0
+    for c in cuts:
+        out.append(dict(pts=p[a:c]))
+        a = c
+    out.append(dict(pts=p[a:]))
+    return out
+
+
 def judge(t, sp, lines):
     p = np.array(t["pts"], float)
     x, y, th = p[:, 0], p[:, 1], p[:, 2]
@@ -162,7 +205,19 @@ def judge(t, sp, lines):
     c = np.polyfit(x, y, 2)
     fit = np.polyval(c, x)
     resid = float(np.sqrt(np.mean((fit - y) ** 2)))
-    if resid > MAX_RESID_SP * sp:
+    if V2:
+        # v2 (after one look at Brahms p0's misses): a long slur is flat in the middle and bends at its ends, so a quadratic over its whole
+        # length says nothing about jags. Jag = rms off its own 1-sp running mean; and an arc bows ONE way (the chord deviation keeps its sign).
+        k = max(3, int(round(sp)))
+        ys_ = np.convolve(y, np.ones(k) / k, mode="same")
+        inner = slice(k, len(y) - k) if len(y) > 2 * k + 2 else slice(0, len(y))
+        resid = float(np.sqrt(np.mean((ys_[inner] - y[inner]) ** 2)))
+        if resid > JAG_SP * sp:
+            return "rough", None
+        deg = 4 if width > 8 * sp else 2
+        c = np.polyfit(x, y, deg)
+        fit = np.polyval(c, x)
+    elif resid > MAX_RESID_SP * sp:
         return "rough", None
     chord = np.degrees(np.arctan2(abs(fit[-1] - fit[0]), width))
     if chord > MAX_CHORD_DEG:
@@ -176,6 +231,10 @@ def judge(t, sp, lines):
             return "on_a_line", None
     if abs(sag) < STRAIGHT_SAG_SP * sp and width > STRAIGHT_MAX_SP * sp:
         return "straight", None
+    if V2 and abs(sag) >= STRAIGHT_SAG_SP * sp:
+        inner = np.abs(dev) > 0.03 * sp
+        if inner.sum() >= 5 and np.mean(np.sign(dev[inner]) == np.sign(sag)) < 0.85:
+            return "two_bows", None
     return "arc", dict(width_sp=round(width / sp, 2), sagitta_sp=round(sag / sp, 3), thick_sp=round(float(np.median(th)) / sp, 3),
                        resid_sp=round(resid / sp, 3), inked=round(inked, 2), chord_deg=round(float(chord), 1))
 
@@ -187,8 +246,10 @@ def main():
         i = argv.index("--tag")
         tag = argv[i + 1]
         del argv[i:i + 2]
+    argv = [a for a in argv if a not in ("--v2", "--v3", "--v4")]
     plate, page, wd = argv[0], int(argv[1]), pathlib.Path(argv[2])
     stem = "%s-p%d" % (plate, page)
+    tag_out = ".v4" if V4 else ".v3" if V3 else ".v2" if V2 else ""
     meta = json.load(open(wd / (stem + ".page.json")))
     canvas = cv2.imread(str(wd / (stem + ".canvas.png")), 0)
     ink = canvas == 0
@@ -197,8 +258,19 @@ def main():
     blank = np.zeros_like(ink)
     for cls, (x0, y0, x1, y1) in boxes:
         blank[max(0, int(y0) - 1):min(H, int(np.ceil(y1)) + 1), max(0, int(x0) - 1):min(W, int(np.ceil(x1)) + 1)] = True
-    for own, (x0, y0, x1, y1) in areas:
-        blank[max(0, int(y0)):min(H, int(np.ceil(y1))), max(0, int(x0)):min(W, int(np.ceil(x1)))] = True
+    if V2:
+        # v2: an AREA claim takes the ink components wholly inside it (+1 px) -- `stroke_owner._areas`' own page-wide predicate, as 2.269
+        # names page strokes -- never the rectangle (v1 blanked a word area that covered half of a slur on Brahms p0)
+        n, lab, st, _c = cv2.connectedComponentsWithStats(ink.astype(np.uint8), connectivity=8)
+        take = np.zeros(n, bool)
+        for own, (x0, y0, x1, y1) in areas:
+            bx, by, bw, bh = st[:, 0], st[:, 1], st[:, 2], st[:, 3]
+            take |= (bx >= x0 - 1) & (by >= y0 - 1) & (bx + bw <= x1 + 1) & (by + bh <= y1 + 1)
+        take[0] = False
+        blank |= take[lab]
+    else:
+        for own, (x0, y0, x1, y1) in areas:
+            blank[max(0, int(y0)):min(H, int(np.ceil(y1))), max(0, int(x0)):min(W, int(np.ceil(x1)))] = True
     ink2 = ink & ~blank
     sp_page = float(meta["sp"])
     scale = min(1.0, TARGET_SP_PX / sp_page)
@@ -209,6 +281,8 @@ def main():
     lines = line_rows(meta["staves"], scale)
     why = {}
     out = []
+    if V4:
+        tracks = [q for t in tracks for q in split_at_cusps(t, sp)]
     for t in tracks:
         if len(t["pts"]) < 3:
             why["tiny"] = why.get("tiny", 0) + 1
@@ -225,7 +299,7 @@ def main():
         info.update(id=len(out), pts=pts, box=[float(xs.min()), float(ys.min() - half), float(xs.max()), float(ys.max() + half)])
         out.append(info)
     json.dump(dict(plate=plate, page=page, sp=sp_page, n_blanked_boxes=len(boxes), n_claim_areas=len(areas), arc_boxes=arc_boxes,
-                   tracks_total=len(tracks), why=why, runs=out), open(wd / (stem + ".runs.json"), "w"))
+                   tracks_total=len(tracks), why=why, runs=out), open(wd / (stem + tag_out + ".runs.json"), "w"))
     print(stem, "tracks", len(tracks), "candidate arc runs", len(out), "why", why, "blanked boxes", len(boxes), "claim areas", len(areas))
 
 
