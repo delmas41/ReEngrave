@@ -1,0 +1,71 @@
+{
+ "lane": "2.269 OMR_PAGE_TIP_REFUTES_BOX (lane-2.269-box-claims-spare-beams 4635528eb), M4b + M6 ON",
+ "date": "2026-11-06",
+ "sean_verbatim": "All the tiles are quarter notes",
+ "summary": "7/7 notes the tip fix newly writes on Litolff are quarters, written quarter: right (tiles 2 and 3 are one subject). With Brahms tiles 5 and 10 fixed, the tip fix is 9/9 right; M4b still breaks Sean's tile 11 (Litolff p2) and loses tiles 2/7 (Brahms 16ths, split not landable).",
+ "answers": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "subject": "glyph/11/1/2/16/3",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "subject": "glyph/10/0/3/8/0",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "subject": "glyph/10/0/3/8/0",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "subject": "glyph/16/1/5/8/1",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "subject": "glyph/16/1/5/8/2",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "subject": "glyph/16/1/5/9/0",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "subject": "glyph/16/1/5/9/2",
+   "written": "quarter",
+   "change": "note gained",
+   "sean": "quarter",
+   "verdict": "right"
+  }
+ ]
+}
