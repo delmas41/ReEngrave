@@ -365,12 +365,13 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             seen.add(k)
             ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
             if ids:
-                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is not a letter's or a rest's ink when its stems stand OUTSIDE
-                # the box (2.269 step 3, spare beams); an "ff" crossbar joins the letters' own stems, which the box holds, and stays named
+                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is not a letter's or a rest's ink when NONE of its stems is
+                # held by the box (2.269 step 3, spare beams); an "ff" / "f" crossbar joins the letters' own strokes, which the box holds, and stays named
+                # (measured: every crossbar had a stem inside; a neighbour's stem the role reader also counts may stand outside, so "any outside" is too weak)
                 if spare is None:
                     spare = _PB.plain_beams(_PB.views_of(page_map), page_map.sp)
                 inside = set(ids)
-                beams = {o for o, stems in spare(ids).items() if any(t not in inside for t in stems)}
+                beams = {o for o, stems in spare(ids).items() if not any(t in inside for t in stems)}
                 if beams:
                     census["beams_spared"] = census.get("beams_spared", 0) + len(beams)
                     ids = [i for i in ids if i not in beams]
