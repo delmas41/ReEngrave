@@ -1,0 +1,34 @@
+== litolff pages [2, 4, 6, 8, 9, 10, 11, 16] | cut items 835 (pairs 69, lone 766) | uncut real arcs 224
+  CONTROL A re-detect vs saved record: cells 2684/2684 matched by cell box; record arc boxes reproduced 1330/1330 (IoU>=.9 same class); A arcs not in record 0
+  CONTROL FAIL-CASE same cells at imgsz 1024: reproduced 0/18
+  A alone: far half boxed only where the cut test saw a pair: 69/835 = 8%
+  B   far half boxed 456/835 =  55% (whole 157 =  19%) | A+B covers both sides 485 =  58% | still miss 350 =  42% | lone far 416/766
+  B2  far half boxed 549/835 =  66% (whole 489 =  59%) | A+B2 covers both sides 565 =  68% | still miss 270 =  32% | lone far 496/766
+  C   far half boxed 630/835 =  75% (whole 564 =  68%) | A+C covers both sides 644 =  77% | still miss 191 =  23% | lone far 575/766
+  B   uncut arcs found: IoU>=.5 67/224 = 30%, lenient 73 = 33% | in a window 66, found there 38
+  B2  uncut arcs found: IoU>=.5 171/224 = 76%, lenient 183 = 82% | in a window 205, found there 159
+  C   uncut arcs found: IoU>=.5 162/224 = 72%, lenient 179 = 80%
+  B   NEW arc boxes (no record arc under them, not a far-half): 29.9 per page {'2': 22, '4': 34, '6': 21, '8': 16, '9': 50, '10': 26, '11': 32, '16': 38} | under them: {'no A box': 147, 'beam': 38, 'staff': 35, 'fermataAbove': 5, 'dynamicF': 4, 'noteheadBlackInSpace': 4, 'noteheadBlackOnLine': 3, 'ledgerLine': 2}
+  B2  NEW arc boxes (no record arc under them, not a far-half): 92.9 per page {'2': 110, '4': 103, '6': 132, '8': 42, '9': 116, '10': 68, '11': 86, '16': 86} | under them: {'no A box': 475, 'staff': 123, 'beam': 78, 'noteheadBlackOnLine': 39, 'noteheadBlackInSpace': 16, 'fermataAbove': 7, 'dynamicF': 2, 'restWhole': 1}
+  C   NEW arc boxes (no record arc under them, not a far-half): 29.0 per page {'2': 21, '4': 31, '6': 17, '8': 16, '9': 29, '10': 48, '11': 40, '16': 30} | under them: {'no A box': 107, 'staff': 62, 'beam': 44, 'noteheadBlackOnLine': 5, 'noteheadBlackInSpace': 4, 'fermataAbove': 2, 'restWhole': 2, 'ledgerLine': 1}
+  runtime s/page (detect only; prepare 5.6 s): {'A': 16.7, 'B': 14.5, 'B2': 19.4, 'C': 6.6} | calls/page {'A': 335.5, 'B': 314.0, 'B2': 314.0, 'C': 21.5} | most boxes in one call {'A': 31, 'B': 34, 'B2': 56, 'C': 178}
+  in passing B   boxes not in A 8899 (top [['ledgerLine', 3008], ['staff', 1162], ['arpeggiato', 956], ['beam', 729], ['noteheadBlackOnLine', 524]]) | A boxes not in X 7397 (top [['ledgerLine', 2341], ['beam', 910], ['staff', 685], ['arpeggiato', 521], ['tie', 426]])
+  in passing B2  boxes not in A 12868 (top [['ledgerLine', 2767], ['staff', 2222], ['arpeggiato', 2184], ['tie', 892], ['noteheadBlackInSpace', 718]]) | A boxes not in X 6757 (top [['ledgerLine', 2247], ['staff', 1489], ['beam', 669], ['tie', 457], ['arpeggiato', 345]])
+  in passing C   boxes not in A 4734 (top [['arpeggiato', 993], ['ledgerLine', 610], ['noteheadHalfInSpace', 371], ['slur', 321], ['noteheadHalfOnLine', 306]]) | A boxes not in X 8874 (top [['ledgerLine', 2990], ['staff', 1489], ['beam', 1020], ['tie', 606], ['arpeggiato', 540]])
+== brahms pages [0, 5] | cut items 392 (pairs 98, lone 294) | uncut real arcs 203
+  CONTROL A re-detect vs saved record: cells 364/364 matched by cell box; record arc boxes reproduced 1085/1085 (IoU>=.9 same class); A arcs not in record 0
+  CONTROL FAIL-CASE same cells at imgsz 1024: reproduced 3/160
+  A alone: far half boxed only where the cut test saw a pair: 98/392 = 25%
+  B   far half boxed 279/392 =  71% (whole 206 =  53%) | A+B covers both sides 292 =  74% | still miss 100 =  26% | lone far 194/294
+  B2  far half boxed 286/392 =  73% (whole 262 =  67%) | A+B2 covers both sides 298 =  76% | still miss  94 =  24% | lone far 200/294
+  C   far half boxed 312/392 =  80% (whole 286 =  73%) | A+C covers both sides 322 =  82% | still miss  70 =  18% | lone far 224/294
+  B   uncut arcs found: IoU>=.5 119/203 = 59%, lenient 125 = 62% | in a window 68, found there 56
+  B2  uncut arcs found: IoU>=.5 191/203 = 94%, lenient 194 = 96% | in a window 196, found there 184
+  C   uncut arcs found: IoU>=.5 180/203 = 89%, lenient 191 = 94%
+  B   NEW arc boxes (no record arc under them, not a far-half): 81.5 per page {'0': 44, '5': 119} | under them: {'no A box': 126, 'staff': 18, 'beam': 14, 'noteheadBlackOnLine': 3, 'noteheadBlackInSpace': 1, 'augmentationDot': 1}
+  B2  NEW arc boxes (no record arc under them, not a far-half): 56.5 per page {'0': 36, '5': 77} | under them: {'no A box': 63, 'staff': 31, 'beam': 17, 'noteheadBlackOnLine': 2}
+  C   NEW arc boxes (no record arc under them, not a far-half): 16.0 per page {'0': 5, '5': 27} | under them: {'beam': 14, 'no A box': 11, 'staff': 5, 'noteheadBlackOnLine': 2}
+  runtime s/page (detect only; prepare 7.3 s): {'A': 12.7, 'B': 10.7, 'B2': 17.3, 'C': 7.7} | calls/page {'A': 182.0, 'B': 161.0, 'B2': 161.0, 'C': 21.0} | most boxes in one call {'A': 60, 'B': 50, 'B2': 82, 'C': 230}
+  in passing B   boxes not in A 1542 (top [['tie', 363], ['beam', 194], ['staff', 187], ['ledgerLine', 163], ['slur', 147]]) | A boxes not in X 1810 (top [['tie', 432], ['beam', 340], ['noteheadBlackInSpace', 166], ['ledgerLine', 159], ['slur', 128]])
+  in passing B2  boxes not in A 2000 (top [['tie', 381], ['staff', 296], ['ledgerLine', 274], ['slur', 155], ['beam', 133]]) | A boxes not in X 1655 (top [['tie', 492], ['beam', 253], ['staff', 178], ['noteheadBlackInSpace', 157], ['ledgerLine', 130]])
+  in passing C   boxes not in A 1559 (top [['stem', 387], ['ledgerLine', 258], ['slur', 179], ['staff', 133], ['tie', 73]]) | A boxes not in X 2391 (top [['tie', 644], ['beam', 537], ['noteheadBlackInSpace', 212], ['staff', 178], ['ledgerLine', 166]])
