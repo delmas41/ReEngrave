@@ -318,7 +318,7 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         # climb there is the outline of a head or a stem, not the arc
         if not (box_x[0] <= xx <= box_x[1]) and abs(slope) > EXT_MAX_SLOPE:
             if stop is not None:
-                stop["why"], stop["x"] = "slope", xx
+                stop["why"], stop["x"] = "steep_end", xx
             return
         dx = xx - lx
         pred = ly + slope * dx

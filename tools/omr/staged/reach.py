@@ -440,6 +440,8 @@ NOT_A_STAGE = frozenset({
     "box_kind.py",
     # lane-arcs-claim-1029. Pure helpers for `gather.gather_arc_claim`, `adjudicate_arc_kind` and the exporter's anchored slurs: files no row, names no quantity.
     "arc_claim.py",
+    # ROADMAP 2.272 (`OMR_ARC_INK_TRACE`, OFF): pure helpers for `arcs_system.gather_system_arcs`; files no row, names no quantity.
+    "arc_ink_trace.py",
     # ROADMAP 2.223. Pure helpers for `adjudicate_wedge_anchor`'s page-wide hairpin binding (OMR_HAIRPIN_BIND_PAGEWIDE): files no row.
     "hairpin_bind.py",
     # ROADMAP 2.254. The OMR_HAIRPIN_REACH flag (read by `gather.gather_wedge_boxes` and `ownership._wedge_page_binding`): files no row.

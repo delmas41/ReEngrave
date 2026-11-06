@@ -86,7 +86,7 @@ def avoid_boxes(named_boxes: Sequence[Tuple[str, Sequence[float]]], page_map: An
 
 def classify_stop(why: str, x: float, y: float, sp: float, ctx: Dict[str, Any]) -> str:
     """What stands at the place the walk stopped: head | stem | barline | word_or_mark:<class> | staff_line | system_edge | meets_arc | ink_end | slope | cap."""
-    if why in ("meets_arc", "slope"):
+    if why in ("meets_arc", "steep_end"):
         return why
     if why == "limit":
         return ctx.get("limit_kind", "cap")

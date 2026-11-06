@@ -20,8 +20,8 @@ def rows(path):
 
 
 def main():
-    on = rows(sys.argv[1])
-    off = rows(sys.argv[2]) if len(sys.argv) > 2 else None
+    on = [o for p in sys.argv[1:] for o in rows(p)]      # one or more ON records (a plate's sample pages)
+    off = None
     n_curves = len(on)
     short = 0
     stops = collections.Counter()
