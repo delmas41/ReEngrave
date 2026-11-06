@@ -14,11 +14,13 @@ WHAT THIS DOES, per staff row that holds at least one arc box cut at an interior
 2. A strip box is a CANDIDATE only where it continues a cell-cut arc box across the barline (`continues`): same staff, y bands overlap, it starts
    before the barline and reaches back over half of the cut box, and ends at least `FAR_MIN_SPACES` past it. A strip box that continues nothing
    is dropped without a trace: the 20+ false boxes a page the unguarded strip adds all sit there.
-3. Two guards, each recorded on the candidate with its measurement (the numbers are read off the record, never off a lane's own table):
-   (a) `several_arcs_inside`: the candidate holds two or more cell arc boxes that are each a whole arc (cut at neither end);
-   (b) `not_one_stroke`: the candidate's ink along its length is not ONE continuous arc stroke -- the existing thin-stroke follower
-       (`arcs_system.trace_arc`) must cover at least `arcs_system.MIN_COVER` of its columns AND the traced centre line may turn at most
-       `MAX_TURNS` times (one apex; three or more is a chain of arcs meeting at notes).
+3. ONE guard, `far_not_one_stroke` (`far_part`), and every number it reads is recorded on the candidate: the part of the box on the far side of the
+   barline -- the only part filed -- must be ONE continuous arc stroke on the page ink (the existing thin-stroke follower, `arcs_system.trace_arc`):
+   the stroke starts at the barline, runs to the box's far edge, and inks most of the columns between. A box over two arcs with a gap between, a
+   staff-wide box and a box on empty ink all fail it; its cut-offs are the page trace's own constants, none new.
+   MEASURED AND NOT USED: (a) the trial's "box holds two or more whole cell arcs" -- on Brahms p0 it refuses 15 of 15 boxes, and the four looked at are
+   real phrase slurs over smaller slurs (a nested slur is not two arcs in one box); (b) the number of turns of the stroke -- it wobbles where
+   sub-slurs touch the phrase slur above them (3-4 turns on clean arcs). Both are still written on every row (`whole_arcs_inside`, `far.turns`).
 4. A kept candidate is FILED as detector boxes: for every cell the box reaches beyond the cut box's, a piece clipped to that cell is APPENDED to
    the cell's `detections` (every glyph index already filed is unchanged; the reader is the detector's, `source` `arc_strip`), unless a cell arc
    box already stands on it (the far half was boxed: nothing is added). `arcs_system.gather_system_arcs` then traces each piece, and
@@ -43,13 +45,19 @@ REACH_BACK_SHARE = 0.5
 Y_OVERLAP_MIN = 0.5
 #: A cell arc box is inside the candidate where this share of its area is.
 INSIDE_SHARE = 0.8
-#: ... and a whole arc (cut at neither end) counts for guard (a); two of them make the candidate several arcs.
-MAX_WHOLE_ARCS_INSIDE = 1
-#: Guard (b): the traced centre line may turn (apex or cusp) at most this many times; each turn needs this much rise (spaces).
-MAX_TURNS = 1
+#: A turn of the traced centre line (`turns`, a measurement only) needs this much rise (spaces).
 TURN_PROMINENCE_SPACES = 0.35
 #: The detector's box cap for a row (ultralytics' default 300 truncates a whole row; the trial's rows reached 230).
 MAX_DET = 3000
+#: THE GUARD (`far_part`): the far side of the box must be ONE continuous arc stroke on the page ink. Each cut-off is an EXISTING constant of the page
+#: arc trace, none a new number: the stroke is on the far side of the barline within a gap the trace bridges (`GAP_MAX_SPACES`), ends within the
+#: reach the trace already allows past a cut box's edge (`CUT_EXTEND_SPACES`) of the box's far edge, and inks at least `MIN_COVER` of the far
+#: columns. Measured on Brahms p0 + p5 (187 strip candidates, crops looked at): every far half that is a real arc has cross <= 0.44, end <= 1.76,
+#: cover >= 0.52; every over-wide, two-arc or empty box has cross >= 1.1, or end >= 3.35, or cover <= 0.31. NOT CONFIRMED on a third plate.
+from . import arcs_system as _AS                          # noqa: E402  (the constants live there; nothing is copied)
+FAR_CROSS_MAX_SPACES = _AS.GAP_MAX_SPACES
+FAR_END_MAX_SPACES = _AS.CUT_EXTEND_SPACES
+FAR_COVER_MIN = _AS.MIN_COVER
 #: A clipped piece narrower than this (spaces) is not filed.
 PIECE_MIN_SPACES = 0.75
 
@@ -108,6 +116,33 @@ def turns(points: Dict[int, Tuple[int, int]], sp: float) -> int:
             elif y - ext >= need:
                 count, direction, ext = count + 1, 1, y
     return count
+
+
+def stroke_gaps(points: Dict[int, Tuple[int, int]], box: Sequence[float], sp: float) -> Dict[str, float]:
+    """Where the traced stroke does NOT cover the box (spaces): `left` and `right` = the box edge to the stroke's first/last column; `inner` = the widest
+    run of columns between two traced ones. (A measurement over the WHOLE box, recorded; the guard reads `far_part`.)"""
+    xs = sorted(points)
+    if not xs or not sp:
+        return {"left": 99.0, "right": 99.0, "inner": 99.0}
+    inner = max([b - a - 1 for a, b in zip(xs, xs[1:])] or [0])
+    return {"left": round(max(0.0, xs[0] - box[0]) / sp, 2), "right": round(max(0.0, box[2] - xs[-1]) / sp, 2), "inner": round(inner / sp, 2)}
+
+
+def far_part(points: Dict[int, Tuple[int, int]], side: str, bar: float, box: Sequence[float], sp: float) -> Dict[str, Any]:
+    """The traced stroke on the FAR side of the barline `bar` of a box that continues a cut arc to the `side` ('r': to the right), in spaces. Only this
+    part is filed (the near side is the cell box's), so only this part is judged: `cross` = the barline to the stroke's first column on the far side
+    (an arc crosses a barline: the stroke is there within a barline's width); `end` = the stroke's last column to the box's far edge (the box ends
+    where the arc does); `turns` = how often the far stroke turns (an apex or a cusp). A far part that is two arcs with a gap between has a large
+    `cross` or `end`; one that is a chain of arcs meeting at notes has `turns` >= 2."""
+    far = {x: v for x, v in points.items() if (x >= bar if side == "r" else x <= bar)}
+    if not far or not sp:
+        return {"cross": 99.0, "end": 99.0, "turns": -1, "cover": 0.0}
+    xs = sorted(far)
+    width = max(1.0, (box[2] - bar) if side == "r" else (bar - box[0]))
+    cover = round(min(1.0, len(xs) / width), 3)                  # the share of the far part's columns the stroke inks
+    if side == "r":
+        return {"cross": round(max(0.0, xs[0] - bar) / sp, 2), "end": round(max(0.0, box[2] - xs[-1]) / sp, 2), "turns": turns(far, sp), "cover": cover}
+    return {"cross": round(max(0.0, bar - xs[-1]) / sp, 2), "end": round(max(0.0, xs[0] - box[0]) / sp, 2), "turns": turns(far, sp), "cover": cover}
 
 
 def whole_arcs_inside(box: Sequence[float], cell_arcs: Sequence[Dict[str, Any]], sp: float) -> Tuple[int, int]:
@@ -243,46 +278,52 @@ def gather_arc_strip(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
             summary["candidates"] += 1
             k0 = matched[0]
             sp_row = float(k0["sp"])
-            # which cells does the box reach beyond the cut box's own cell?
+            # which cells does the box reach beyond each cut box's own cell, in the direction that cut box was cut?
             reach: List[Any] = []
+            beyond: List[int] = []
             for k in matched:
                 step = 1 if k["side"] == "r" else -1
                 j = pos[k["cell"].measure_index] + step
+                n_k = 0
                 while 0 <= j < len(row_cells):
                     rc = row_cells[j]
                     rb = rc.bbox_page_px
                     inside = (min(pb[2], rb[2]) - rb[0]) if step == 1 else (rb[2] - max(pb[0], rb[0]))
                     if inside < PIECE_MIN_SPACES * sp_row or abs(rc.measure_index - row_cells[j - step].measure_index) != 1:
                         break
+                    n_k += 1
                     if rc not in reach:
                         reach.append(rc)
                     j += step
+                beyond.append(n_k)
             measure = {"strip_box": [round(float(v), 1) for v in pb], "strip_class": str(d.smufl_name), "strip_score": round(float(d.confidence), 4),
                        "cut_glyphs": [R.glyph(page, sys_idx, st_idx, k["cell"].measure_index, k["gi"]).to_key() for k in matched],
-                       "cut_sides": [k["side"] for k in matched],
+                       "cut_sides": [k["side"] for k in matched], "bars_beyond": beyond,
+                       "width_spaces": round((pb[2] - pb[0]) / sp_row, 1),
                        "cells_reached": [rc.measure_index for rc in reach]}
             home = reach[0] if reach else k0["cell"]
             fsub = R.cell(page, sys_idx, st_idx, home.measure_index)
             fframe = frame_cell(home.measure_index)
-            if not reach:
-                refuse(fsub, fframe, "no_cell_reached", **measure)
-                continue
             whole, any_ = whole_arcs_inside(pb, arcs, sp_row)
             measure.update(whole_arcs_inside=whole, arcs_inside=any_)
-            if whole > MAX_WHOLE_ARCS_INSIDE:
-                refuse(fsub, fframe, "several_arcs_inside", **measure)
-                continue
+            tr = None
             if binary is not None and getattr(binary, "ndim", 0) == 2:
                 if ink is None:
                     ink = AS.composite_ink(binary, [c for c in cells if local.get(c.staff_index) is not None])
                     raw = binary < 128
                 tr = AS.trace_arc(ink, pb, sp_row, x_min=pb[0], x_max=pb[2], raw=raw)
-                cov = float((tr or {}).get("coverage") or 0.0)
-                nt = turns((tr or {}).get("points") or {}, sp_row) if tr else -1
-                measure.update(stroke_coverage=round(cov, 3), stroke_turns=nt)
-                if tr is None or cov < AS.MIN_COVER or nt > MAX_TURNS:
-                    refuse(fsub, fframe, "not_one_stroke", **measure)
-                    continue
+                measure.update(stroke_coverage=round(float((tr or {}).get("coverage") or 0.0), 3),
+                               stroke_turns=turns((tr or {}).get("points") or {}, sp_row) if tr else -1)
+                measure.update(stroke_gaps_sp=stroke_gaps((tr or {}).get("points") or {}, pb, sp_row))
+                measure["far"] = [far_part((tr or {}).get("points") or {}, k["side"], k["bar"], pb, sp_row) for k in matched]
+            # every measurement is taken BEFORE the first refusal, so a refused candidate carries the numbers of the guards it did not reach
+            if not reach:
+                refuse(fsub, fframe, "no_cell_reached", **measure)
+                continue
+            if tr is not None and any(f["cross"] > FAR_CROSS_MAX_SPACES or f["end"] > FAR_END_MAX_SPACES or f["cover"] < FAR_COVER_MIN
+                                      for f in measure["far"]):
+                refuse(fsub, fframe, "far_not_one_stroke", **measure)
+                continue
             summary["kept"] += 1
             for rc in reach:
                 rb = rc.bbox_page_px

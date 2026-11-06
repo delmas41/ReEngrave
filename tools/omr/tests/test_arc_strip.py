@@ -43,8 +43,41 @@ def _arch(n, amp=20, width=60):
 
 
 def test_turns_one_arc_is_one_chain_is_many():
-    assert S.turns(_arch(1), 10.0) <= S.MAX_TURNS                      # the control that must pass
-    assert S.turns(_arch(3), 10.0) > S.MAX_TURNS                       # the control that must FAIL: three arcs meeting at notes
+    assert S.turns(_arch(1), 10.0) <= 1                                # one arc: its apex
+    assert S.turns(_arch(3), 10.0) > 1                                 # three arcs meeting at notes
+
+
+def _passes(f):
+    return f["cross"] <= S.FAR_CROSS_MAX_SPACES and f["end"] <= S.FAR_END_MAX_SPACES and f["cover"] >= S.FAR_COVER_MIN
+
+
+def test_guard_cutoffs_are_the_page_traces_own():
+    from tools.omr.staged import arcs_system as AS
+    assert (S.FAR_CROSS_MAX_SPACES, S.FAR_END_MAX_SPACES, S.FAR_COVER_MIN) == (AS.GAP_MAX_SPACES, AS.CUT_EXTEND_SPACES, AS.MIN_COVER)
+
+
+def test_far_part_guard_passes_one_arc_and_fails_where_it_must():
+    sp = 10.0
+    box = (0.0, 80.0, 400.0, 105.0)
+    bar = 100.0
+    # a far half: the stroke runs from the barline to the box's far edge
+    one = {x: (90, 93) for x in range(100, 400)}
+    assert _passes(S.far_part(one, "r", bar, box, sp))
+    # CONTROL 1 (must fail): a box over two arcs with a gap between -- the stroke on the far side begins 19 sp after the barline
+    two = {x: (90, 93) for x in range(290, 400)}
+    assert not _passes(S.far_part(two, "r", bar, box, sp))
+    # CONTROL 2 (must fail): a box that runs on far past the arc's end (a staff-wide box)
+    short = {x: (90, 93) for x in range(100, 160)}
+    assert not _passes(S.far_part(short, "r", bar, box, sp))
+    # CONTROL 3 (must fail): a box on empty ink
+    assert not _passes(S.far_part({}, "r", bar, box, sp))
+    # CONTROL 4 (must fail): a sparse trace (a few columns of a 300-column far part)
+    sparse = {x: (90, 93) for x in range(100, 400, 25)}
+    assert not _passes(S.far_part(sparse, "r", bar, box, sp))
+    # the mirror: an arc that ENDS in this cell, cut at its left edge (bar = 300): the far part is to the left
+    left = {x: (90, 93) for x in range(0, 300)}
+    assert _passes(S.far_part(left, "l", 300.0, box, sp))
+    assert not _passes(S.far_part({x: (90, 93) for x in range(0, 40)}, "l", 300.0, box, sp))
 
 
 def _a(x0, x1, cut_l=False, cut_r=False):
