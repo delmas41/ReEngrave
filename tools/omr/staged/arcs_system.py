@@ -83,6 +83,8 @@ CUT_EXTEND_SPACES = 3.0
 FREE_EXTEND_SPACES = 0.5
 #: A box ends this close to its cell's edge -> the crop cut the arc there (2.164: all 226 candidates <= 0.357).
 CUT_EDGE_SPACES = 0.4
+#: ROADMAP 2.272: the most columns (spaces) a walk bridges for free through the boxes of marks that claimed their ink first, in one stretch.
+AVOID_BRIDGE_SPACES = 3.0
 #: The rows a trace may use around its seed box.
 ROW_PAD_SPACES = 1.0
 #: How far the next run's centre may sit from the predicted y.
@@ -298,6 +300,7 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
     seed = pts.get(x)
     thick: List[int] = [seed[1] - seed[0] + 1] if seed else []
     gap = 0
+    avoid_run = 0
     gap_max = max(2, int(round(GAP_MAX_SPACES * sp)))
     tol0 = max(2.0, TOL_SPACES * sp)
     look = max(3, int(round(0.5 * sp)))
@@ -322,11 +325,16 @@ def _follow(cols: _Columns, x: int, yc: float, step: int, x_stop: int, sp: float
         tol = tol0 + 0.5 * abs(slope) * abs(dx) + 0.25 * abs(dx) * (1 if gap else 0)
         best = None
         from_raw = False
-        if avoid is not None and any(a[0] <= xx <= a[2] and a[1] - tol <= pred <= a[3] + tol for a in avoid):
+        in_box = avoid is not None and any(a[0] <= xx <= a[2] and a[1] - tol <= pred <= a[3] + tol for a in avoid)
+        if in_box and avoid_run <= AVOID_BRIDGE_SPACES * sp:
+            # bridged at no cost, but only for a mark's own width: a long box is no licence to walk on without ink
+            avoid_run += 1
             if gaps is not None:
                 gaps.append((xx, "avoid"))
             xx += step
             continue
+        if not in_box:
+            avoid_run = 0
         # THE STROKE CONTINUES (Sean's tile 11, 2026-10-17: our trace left a tie at the barline and carried on along
         # the slur beside it). A run much thicker than the stroke so far is the stroke MERGED with something -- a
         # barline, or the other arc where the two touch -- and its centre is not the stroke's height: it bridges as

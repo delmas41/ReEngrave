@@ -35,7 +35,7 @@ import numpy as np
 
 ENV = "OMR_ARC_INK_TRACE"
 #: the farthest one end is walked past where the box trace stopped (spaces). A slur is at most ~25 sp; a half arc is missing a few. A cap is a guard.
-EXTEND_CAP_SPACES = 8.0
+EXTEND_CAP_SPACES = 24.0
 #: rows around the end the walk may use
 ROW_WINDOW_SPACES = 4.0
 #: previous columns of the curve that seed the walk's slope
@@ -43,7 +43,11 @@ SEED_COLUMNS_SPACES = 1.5
 #: detector classes whose ink is claimed before arcs and is never followed
 AVOID_PREFIXES = ("dynamic", "artic", "fermata", "ornament", "tuplet", "grace", "tremolo", "fingering", "repeat", "beam")
 #: a page stroke of these kinds is a beam / rung / hairpin leg / letter, not an arc, unless it is one of the arc's own
-AVOID_STROKE_KINDS = ("horizontal",)
+#: (none: a long flat slur's middle is itself a 'horizontal' page stroke -- measured on Litolff p6 -- so the kind says nothing; beams are the detector's
+#: own `beam` boxes)
+AVOID_STROKE_KINDS: Tuple[str, ...] = ()
+#: far-end columns whose centre lies this close (spaces) to a staff line row are the line's stub, not the arc, and are trimmed
+LINE_STUB_SPACES = 0.2
 #: a 'curve' page stroke this straight (sagitta, spaces) and at least this long (spaces) is a hairpin leg, not an arc
 STRAIGHT_SAGITTA_SPACES = 0.08
 STRAIGHT_MIN_SPACES = 1.5
@@ -147,6 +151,13 @@ def extend_ends(ink: np.ndarray, raw: np.ndarray, t: Dict[str, Any], sp: float, 
                     break
                 del new[xx]
         added = {x: r for x, r in new.items() if x not in pts}
+        lys = ctx.get("line_ys", ())
+        for xx in sorted(added, reverse=(step > 0)):               # farthest first: trim a staff line's stub off the far end
+            yy = sum(added[xx]) / 2.0
+            if any(abs(ly - yy) <= LINE_STUB_SPACES * sp for ly in lys):
+                del added[xx]
+            else:
+                break
         if added:
             far = max(added) if step > 0 else min(added)
             # trim the gap columns past the last added point
