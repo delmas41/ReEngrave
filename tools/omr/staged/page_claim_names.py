@@ -370,14 +370,14 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             seen.add(k)
             ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
             if ids:
-                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is not a letter's or a rest's ink when NONE of its stems is the
-                # box's OWN stroke (2.269 step 3, spare beams). An "ff" / "f" crossbar joins the letters' own strokes, which lie wholly in the box
-                # (measured: every crossbar had a stem with >= 0.85 of its ink inside); a real beam's stems run out of it (Litolff p2: a stem 0.77 inside a
-                # box that was itself too tall). The role reader may also count a neighbour's stem, so "some stem outside" is too weak a test.
+                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is not a letter's or a rest's ink when LESS THAN HALF of its stems
+                # are the box's OWN strokes (2.269 step 3, spare beams). An "ff" / "f" crossbar joins the letters' own strokes, which lie wholly in the box
+                # (measured: each crossbar was named by a box holding half or more of its stems at >= 0.85); a real beam's stems run out of it (Litolff p2: 1 of 4 stems inside
+                # a dynamic box that was itself too tall). The role reader also counts neighbours' stems, so "any stem outside" is too weak a test.
                 if spare is None:
                     spare = _PB.plain_beams(_PB.views_of(page_map), page_map.sp)
                 own = set(strokes_by_share(page_map, pb, index, STEM_OWN_SHARE))
-                beams = {o for o, stems in spare(ids).items() if not any(t in own for t in stems)}
+                beams = {o for o, stems in spare(ids).items() if 2 * sum(1 for t in stems if t in own) < len(stems)}
                 if beams:
                     census["beams_spared"] = census.get("beams_spared", 0) + len(beams)
                     ids = [i for i in ids if i not in beams]
