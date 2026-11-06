@@ -1,0 +1,141 @@
+{
+ "lane": "2.271 OMR_ARC_CLOSEST_HEAD (branch lane-2.271-arcs-page-once 8d6f7fdbb)",
+ "date": "2026-11-05",
+ "tiles": "out/print/2.271-closest (lane worktree)",
+ "sean_general": "In general, it looks like a lot of those issues have to do with the orange box not capturing the full arc.",
+ "summary": "real arcs bound to the right notes: 1,3,4,6,8 (+9 should be a tie); NOT arcs: 7 (c of cresc.), 11 (hairpin); box covers only a PIECE of the arc: 2,4,5,9,10,12 -- the bind acts on a detector piece, not the one page curve",
+ "answers": [
+  {
+   "tile": 1,
+   "key": {
+    "plate": "litolff",
+    "page": 10,
+    "kind": "slur",
+    "start": "glyph/10/1/2/2/3",
+    "stop": "glyph/10/1/2/4/5"
+   },
+   "sean": "a tie that connects two half notes"
+  },
+  {
+   "tile": 2,
+   "key": {
+    "plate": "brahms",
+    "page": 0,
+    "kind": "slur",
+    "start": "glyph/0/0/11/2/2",
+    "stop": "glyph/0/0/11/3/6"
+   },
+   "sean": "orange box only covers half of the slur within one measure"
+  },
+  {
+   "tile": 3,
+   "key": {
+    "plate": "brahms",
+    "page": 4,
+    "kind": "tie",
+    "start": "glyph/4/1/12/6/0",
+    "stop": "glyph/4/1/12/6/1"
+   },
+   "sean": "a tie from a dotted quarter to a quarter"
+  },
+  {
+   "tile": 4,
+   "key": {
+    "plate": "litolff",
+    "page": 11,
+    "kind": "slur",
+    "start": "glyph/11/0/2/4/6",
+    "stop": "glyph/11/0/2/7/0"
+   },
+   "sean": "half note to half note; unisons with ties above and below; box on the lower one but it doesn't go all the way to the end of the tie or the note"
+  },
+  {
+   "tile": 5,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "tie",
+    "start": "glyph/4/0/0/4/3",
+    "stop": "glyph/4/0/0/6/2"
+   },
+   "sean": "box doesn't cover all of the arc"
+  },
+  {
+   "tile": 6,
+   "key": {
+    "plate": "brahms",
+    "page": 8,
+    "kind": "slur",
+    "start": "glyph/8/0/8/5/4",
+    "stop": "glyph/8/0/8/6/14"
+   },
+   "sean": "dotted half to the dotted half at the start of the next measure; the arc stops very short but it is implied it goes to that next note"
+  },
+  {
+   "tile": 7,
+   "key": {
+    "plate": "brahms",
+    "page": 25,
+    "kind": "slur",
+    "start": "glyph/25/0/12/9/9",
+    "stop": "glyph/25/0/12/9/2"
+   },
+   "sean": "a little bit of a C from crescendo"
+  },
+  {
+   "tile": 8,
+   "key": {
+    "plate": "litolff",
+    "page": 10,
+    "kind": "tie",
+    "start": "glyph/10/1/5/10/13",
+    "stop": "glyph/10/1/5/11/5"
+   },
+   "sean": "a tie from a half note to another half note, both on the first ledger line below the staff"
+  },
+  {
+   "tile": 9,
+   "key": {
+    "plate": "litolff",
+    "page": 10,
+    "kind": "tie",
+    "start": "glyph/10/1/4/9/4",
+    "stop": "glyph/10/1/4/10/8"
+   },
+   "sean": "just a part of the arc between two half notes, which should be a tie"
+  },
+  {
+   "tile": 10,
+   "key": {
+    "plate": "brahms",
+    "page": 14,
+    "kind": "tie",
+    "start": "glyph/14/1/4/6/4",
+    "stop": "glyph/14/1/4/7/8"
+   },
+   "sean": "too small a box, just covering the tip of the arc"
+  },
+  {
+   "tile": 11,
+   "key": {
+    "plate": "brahms",
+    "page": 19,
+    "kind": "slur",
+    "start": "glyph/19/0/4/1/0",
+    "stop": "glyph/19/0/4/3/1"
+   },
+   "sean": "a hairpin"
+  },
+  {
+   "tile": 12,
+   "key": {
+    "plate": "litolff",
+    "page": 11,
+    "kind": "slur",
+    "start": "glyph/11/0/6/4/3",
+    "stop": "glyph/11/0/6/5/0"
+   },
+   "sean": "just half the arc for a slur"
+  }
+ ]
+}
