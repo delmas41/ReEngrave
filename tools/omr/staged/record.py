@@ -982,6 +982,13 @@ class Q(_Vocab):
     #: `hooks`, `stubs`, `doubt`, `stem_beamed`, `tip_clean`. Decides nothing and NOTHING READS IT.
     PAGE_BEAM_TIP = "page_beam_tip"
 
+    #: ROADMAP 2.274 step 1 (flag `OMR_PAGE_ARCS`, default OFF; `page_arcs.gather_page_arcs`): ONE ROW PER ARC RUN read from the PAGE ink, whole across barlines /
+    #: stems / heads, the detector's arc boxes only its witnesses. `value` = `run` (ink alone) | `seeded` (a detector arc box no run answered, a bounded local
+    #: read of its ink found one) | `box_without_run` (a detector arc box, nothing found) | `census` (one per page). `detail`: `points`, `ends` ([x, y, tangent_deg] x2),
+    #: `width_spaces`, `sagitta_spaces`, `thickness_spaces`, `page_strokes` ([[Q.PAGE_STROKE ordinal, share]]), `witnesses` (glyph keys), `staff`. Decides nothing,
+    #: claims nothing and NOTHING READS IT (binding and writing are step 2).
+    PAGE_ARC = "page_arc"
+
     #: ROADMAP 2.260e M6a (flag `OMR_PAGE_HEADS`, default OFF; `page_heads.file_page_heads`): ONE ROW PER HEAD of the PAGE, notehead boxes of every cell folded to one
     #: (IoU), its ink the page strokes the box stands on: `value` = `box` | `ink_only` (head-shaped ink no detector box stands on, census only: no Glyph, no note)
     #: | `census` (one per page). `detail`: `members` (the folded glyph keys), `strokes`, `stroke_extent` / `trim_extent` (page px), `box_position_float` /
@@ -2394,6 +2401,7 @@ CLAIMS: "dict[str, str]" = {
     #: ROADMAP 2.260c M4a: a stroke's beam role / a stem tip's beam levels read off the page map -- measurements of ink, naming no note.
     "PAGE_BEAM": CLAIM.MEASUREMENT,
     "PAGE_BEAM_TIP": CLAIM.MEASUREMENT,
+    "PAGE_ARC": CLAIM.MEASUREMENT,
     "PAGE_HEAD": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
@@ -3016,6 +3024,7 @@ class READERS(_Vocab):
     CV_PAGE_STROKES = "cv_page_strokes"
     #: `page_beams.gather_page_beams` -- ROADMAP 2.260c M4a. No raster: the page map's strokes and the cell `Q.STEM` rows.
     CV_PAGE_BEAMS = "cv_page_beams"
+    CV_PAGE_ARCS = "cv_page_arcs"
     #: `page_heads.gather_page_heads` -- ROADMAP 2.260e M6a. The page map's strokes, the detector's notehead boxes and the page render (`head_extent.ink_extent`).
     CV_PAGE_HEADS = "cv_page_heads"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.

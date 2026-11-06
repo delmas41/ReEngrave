@@ -17783,7 +17783,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
             _pm_late = _page_strokes.gather_page_strokes(log, pws, cells, local, detections, barline_cols or None, progress=progress)
             from . import page_beams as _pb_keep
             from . import page_claim_names as _pcn_keep
-            if _pb_keep.enabled() or _pcn_keep.enabled():   # ROADMAP 2.260c M4a / 2.269: the map is kept for the page beam reader and the claim names; otherwise it is dropped as before
+            from . import page_arcs as _pa_keep
+            if _pb_keep.enabled() or _pcn_keep.enabled() or _pa_keep.enabled():   # ROADMAP 2.260c M4a / 2.269: the map is kept for the page beam reader and the claim names; otherwise it is dropped as before
                 page_map_pre = _pm_late
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
@@ -17981,6 +17982,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # owns is no beam); reads no raster; NOTHING READS THE ROWS.
         from . import page_beams as _page_beams
         _page_beams.gather_page_beams(log, pws, cells, local, page_map_pre, detections, progress=progress)
+        # ROADMAP 2.274 step 1 (flag OMR_PAGE_ARCS, default OFF): the arcs read from the PAGE ink, one run each, across barlines / stems / heads; the detector's arc
+        # boxes are only witnesses. LAST of the page-wide ink readers (claim order: after staff lines, barlines, clef / key / meter, words, hairpins and heads
+        # are claimed or blanked). Files `Q.PAGE_ARC` rows only; claims nothing, decides nothing, NOTHING READS THE ROWS (step 2 binds them).
+        from . import page_arcs as _page_arcs
+        _page_arcs.gather_page_arcs(log, pws, cells, local, page_map_pre, progress=progress)
         # ⚠️ AFTER EVERYTHING, AND THAT IS A HARD EDGE OF ITS OWN. Two of the
         # ten position rows are PROMOTED off rows already on the record -- the
         # CV hairpins and the direction words, whose ink no detection carries

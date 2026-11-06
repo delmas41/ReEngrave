@@ -81,6 +81,10 @@ KNOWN_GAPS: Dict[str, str] = {
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
         "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
         "the proof. A reader that appears removes this entry."),
+    Q.PAGE_ARC: (
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.274 step 1 (docs/plan-2026-11-06-page-ink-arcs.md): the arc runs read from the page ink are filed and read by NOTHING until "
+        "step 2 (bind each run's ends to the closest note, write one tie / slur per run); the exported file is byte-identical with `OMR_PAGE_ARCS` on, which is the "
+        "proof. A reader that appears removes this entry."),
     Q.PAGE_BEAM_TIP: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
         "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),
@@ -357,6 +361,8 @@ STAGE_OF_FILE = {
     "page_strokes.py": "GATHER",
     # ROADMAP 2.260c M4a: files `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP` from its hook line in `gather.gather()`.
     "page_beams.py": "GATHER",
+    # ROADMAP 2.274 step 1: files `Q.PAGE_ARC` from its hook line in `gather.gather()`.
+    "page_arcs.py": "GATHER",
     # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
     "page_heads.py": "GATHER",
     # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
