@@ -157,7 +157,8 @@ def main():
         reg = (slice(max(0, y0 - 8), y1 + 8), slice(max(0, x0), x1))
         tot = int(ink[reg].sum())
         c["blank_share"] = round(float((ink & blank)[reg].sum()) / max(1, tot), 2)
-    json.dump(dict(summary=summary, runs=[dict(r, witnesses=by_run[r["id"]]) for r in runs], seeded=seeded, alone=alone,
+    staves = [dict(lines=[float(y) for y in st.line_ys], x0=float(getattr(st, "x_start", 0) or 0), x1=float(getattr(st, "x_end", 0) or 0)) for st in pws.staves]
+    json.dump(dict(summary=summary, staves=staves, runs=[dict(r, witnesses=by_run[r["id"]]) for r in runs], seeded=seeded, alone=alone,
                    curves=[{k: v for k, v in c.items() if k != "trace"} for c in det]), open(out / ("%s-p%d.step1.json" % (plate, page)), "w"))
     print(json.dumps(summary))
 
