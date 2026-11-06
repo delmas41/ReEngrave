@@ -1,4 +1,4 @@
-"""ROADMAP 2.273 -- A STAFF-ROW READ OF THE ARCS A BARLINE CUTS (flag `OMR_ARC_STRIP`, default OFF). STAGED GATHER; decides nothing.
+"""ROADMAP 2.273 -- A STAFF-ROW READ OF THE ARCS A BARLINE CUTS (flag `OMR_ARC_STRIP`, default ON since 2026-11-06). STAGED GATHER; decides nothing.
 
 Sean 2026-11-06 ("Yes build"): *"the cutoff of the orange boxes is with the barlines. That goes against the page wide read."* Standing rules:
 arcs are read ONCE at page level and never re-read or broken up (2.260, 2.271); *"Often arcs stop short"*; the kind is page-facts' (two adjacent
@@ -63,8 +63,8 @@ PIECE_MIN_SPACES = 0.75
 
 
 def enabled() -> bool:
-    """`OMR_ARC_STRIP` (ROADMAP 2.273), default OFF: only an explicit 1/true/yes/on enables it."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ARC_STRIP` (ROADMAP 2.273), default ON since 2026-11-06 (deny-list): ON unless 0/false/no/off."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _y_overlap(a: Sequence[float], b: Sequence[float]) -> float:

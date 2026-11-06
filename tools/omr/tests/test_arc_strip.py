@@ -9,13 +9,14 @@ def _cut(side="r"):
     return {"box": (40.0, 10.0, 100.0, 30.0), "side": side, "bar": 100.0, "sp": 10.0}
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(S.ENV, raising=False)
-    assert not S.enabled()
+    assert S.enabled()                                   # default ON since 2026-11-06 (deny-list)
+    for off in ("0", "false", "no", "off"):
+        monkeypatch.setenv(S.ENV, off)
+        assert not S.enabled()
     monkeypatch.setenv(S.ENV, "1")
     assert S.enabled()
-    monkeypatch.setenv(S.ENV, "0")
-    assert not S.enabled()
 
 
 def test_continues_far_half():

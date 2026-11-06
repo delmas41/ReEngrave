@@ -317,7 +317,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `accidental_family.py` | U | NOT YET CLASSIFIED | - | open |
 | `accidental_shape.py` | C | a shape check on a merged accidental ink chooses among the detector's own candidates | Sean 2026-10-22 (2.190 tiles 7/9) | landed 2.190 |
 | `arc_claim.py` | U | NOT YET CLASSIFIED | - | open |
-| `arc_strip.py` | C | the far half of an arc a barline cuts, boxed by the same detector on the whole staff row and kept only where its far side is one continuous arc stroke; OFF by default | Sean 2026-11-06 (2.273 "Yes build") | open: built, not landed |
+| `arc_strip.py` | C | the far half of an arc a barline cuts, boxed by the same detector on the whole staff row and kept only where its far side is one continuous arc stroke; ON by default since 2026-11-06 | Sean 2026-11-06 (2.273 "Yes build", "Land it.") | landed ON 2026-11-06 |
 | `arcs_system.py` | C | arcs read ONCE per staff across the system, then their own stroke erased (a cell cuts an arc in two) | Sean 2026-10-18 (2.166, default ON) | retires with 2.205 (arcs own their strokes) |
 | `bar_length.py` | A | a bar's length from the durations standing in it | Sean 2026-10-17 (2.162/2.165) | kept |
 | `barline_columns.py` | C | the tilted line of each barline column kept as a fact (slope + intercept per column), refit in staged from the page raster; records, decides nothing | Sean 2026-11-03 (2.260a M1) | open: M2's carve reads it |
