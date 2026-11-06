@@ -350,6 +350,8 @@ STAGE_OF_FILE = {
     # ROADMAP 2.166: files `Q.SYSTEM_ARC` (and erases the traced stroke from `cell.image_no_staff`) from its one hook
     # line in `gather.gather()`.
     "arcs_system.py": "GATHER",
+    # ROADMAP 2.273: files `Q.GLYPH_BOX` / `Q.GLYPH_CONF` (and refusals) for the far halves of barline-cut arcs from its one hook line in `gather.gather()`.
+    "arc_strip.py": "GATHER",
     # ROADMAP 2.240 step 1: files `Q.PAGE_MARK` from its one hook line in `gather.gather()`.
     "page_marks.py": "GATHER",
     # ROADMAP 2.260a M1 / M2: files `Q.BARLINE_COLUMN_FIT` / `Q.PAGE_STROKE` from their hook lines in `gather.gather()`.
