@@ -149,18 +149,21 @@ def _neighbours(s: StrokeView, views: Sequence[StrokeView], by_ord: Dict[int, St
 
 
 def plain_beams(views: Sequence[StrokeView], sp: float):
-    """ROADMAP 2.269 step 3 (spare beams): returns `f(ordinals) -> [ordinals]`, those among `views` that `read_page` itself would read as a BEAM (touches >= 2
-    stems, thick enough): the same neighbours and the same `BS.role_of` call, no claim consulted. A box claim by ink share must not name these: a dynamic
-    letter or a whole rest never spans two stems. The grid is built once per page."""
+    """ROADMAP 2.269 step 3 (spare beams): returns `f(ordinals) -> {ordinal: [its stem ordinals]}` for those among `views` that `read_page` itself would read as a
+    BEAM (touches >= 2 stems, thick enough): the same neighbours and the same `BS.role_of` call, no claim consulted. The caller decides whether the stems are
+    the box's own (an "ff" crossbar joins the two f stems, which the letter's box holds) or stand outside it (a real beam). The grid is built once per page."""
     by_ord = {v.ordinal: v for v in views}
     grid = Grid([v.box for v in views], GRID_SPACES * sp)
 
-    def f(ordinals: Sequence[int]) -> List[int]:
-        out = []
+    def f(ordinals: Sequence[int]) -> Dict[int, List[int]]:
+        out = {}
         for o in ordinals:
             s = by_ord.get(o)
-            if s is not None and s.kind in ("horizontal", "curve") and BS.role_of(s, _neighbours(s, views, by_ord, grid, sp), face_join=True, trough=True)["role"] == "beam":
-                out.append(o)
+            if s is None or s.kind not in ("horizontal", "curve"):
+                continue
+            r = BS.role_of(s, _neighbours(s, views, by_ord, grid, sp), face_join=True, trough=True)
+            if r["role"] == "beam":
+                out[o] = [int(x) for x in r["stem_ordinals"]]
         return out
     return f
 

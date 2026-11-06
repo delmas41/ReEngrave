@@ -145,14 +145,20 @@ class SpareBeams(unittest.TestCase):
 
     def test_a_beam_inside_a_dynamic_box_is_spared(self):
         pm = self._pm([(0, 1.0), (1, 1.0)])
-        log, cen = run([det("dynamicF", 0, 0, 80, 70)], pm)
+        log, cen = run([det("dynamicF", 0, 0, 80, 14)], pm)      # the box holds the bar; the two stems run far out of it
         named = [i for r in filed(log) for i in r.value]
         self.assertNotIn(2, named)
         self.assertEqual(cen["beams_spared"], 1)
 
+    def test_an_ff_crossbar_joining_the_boxs_own_stems_stays_named(self):       # control that can fail: stems inside the box are the letters' own
+        pm = self._pm([(0, 1.0), (1, 1.0)])
+        log, cen = run([det("dynamicF", 0, 0, 80, 70)], pm)
+        self.assertEqual(sorted(i for r in filed(log) for i in r.value), [0, 1, 2])
+        self.assertNotIn("beams_spared", cen)
+
     def test_control_the_same_bar_touching_no_stem_is_named(self):       # can fail: without the beam test the bar is plain ink in the box
         pm = self._pm([])
-        log, cen = run([det("dynamicF", 0, 0, 80, 70)], pm)
+        log, cen = run([det("dynamicF", 0, 0, 80, 14)], pm)
         self.assertIn(2, [i for r in filed(log) for i in r.value])
         self.assertNotIn("beams_spared", cen)
 
