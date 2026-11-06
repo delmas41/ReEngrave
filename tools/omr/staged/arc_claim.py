@@ -519,3 +519,73 @@ def heads_between(a: Dict[str, Any], b: Dict[str, Any], heads: Sequence[Dict[str
         if ok(h["key"]):
             out.append(h["key"])
     return out
+
+
+# ---------------------------------------------------------------------------------------------------------------------------------------------
+# TEST HARNESS (never landed): `OMR_TEST_ARC_CURVE_ONLY=1` (branch arc-curve-only-test). Bind a page curve from the curve alone: split an
+# over-joined chain at its non-barline junctions, bind each end to the nearest usable head with NO distance window (capped), no box-path fallback.
+CURVE_ONLY_ENV = "OMR_TEST_ARC_CURVE_ONLY"
+CURVE_ONLY_CAP_SPACES = 8.0        # an end farther than this from every usable head on its staff is a system edge / a half arc: unbound
+
+
+def curve_only_enabled() -> bool:
+    import os
+    return os.environ.get(CURVE_ONLY_ENV, "0") not in ("", "0", "false", "False")
+
+
+def curve_only_ends(detail: Dict[str, Any], arc_key: str, bad: Sequence[str], heads: Sequence[Dict[str, Any]], sp: float,
+                    usable: Any, by_height: bool) -> Dict[str, Any]:
+    trace = [t for t in (detail.get("trace") or ()) if len(t) >= 3]
+    pieces = list(detail.get("pieces") or ())
+    lo, hi, grp = float("-inf"), float("inf"), 0
+    if len(pieces) > 1 and bad:
+        rng: Dict[str, Tuple[float, float]] = {}
+        for j in detail.get("joins") or ():
+            rng[j["a"]] = (float(j["a_x0"]), float(j["a_x1"]))
+            rng[j["b"]] = (float(j["b_x0"]), float(j["b_x1"]))
+        cuts = []
+        for s_ in bad:
+            ka, kb = s_.split(">")
+            if ka in rng and kb in rng:
+                cuts.append((rng[ka][1] + rng[kb][0]) / 2.0)
+        cuts.sort()
+        me = rng.get(arc_key)
+        if me is not None and cuts:
+            cx = (me[0] + me[1]) / 2.0
+            grp = sum(1 for c_ in cuts if c_ < cx)
+            lo = cuts[grp - 1] if grp > 0 else float("-inf")
+            hi = cuts[grp] if grp < len(cuts) else float("inf")
+    sub = sorted((t for t in trace if lo <= t[0] <= hi), key=lambda t: t[0])
+    side = curve_side(sub, sp)
+    split = (lo, hi) != (float("-inf"), float("inf"))
+    if len(sub) < 2 or sp <= 0:
+        return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side, "group": grp, "split": split}
+    ends = {"left": (float(sub[0][0]), (float(sub[0][1]) + float(sub[0][2])) / 2.0, -1),
+            "right": (float(sub[-1][0]), (float(sub[-1][1]) + float(sub[-1][2])) / 2.0, +1)}
+    out: Dict[str, Any] = {"side": side, "group": grp, "split": split, "end_x": [ends["left"][0], ends["right"][0]]}
+    for nm, (ex, ey, sgn) in ends.items():
+        ok = [h for h in heads if usable(h["key"])]
+        if side == "above":
+            ok = [h for h in ok if h["cy"] >= ey - 1.0 * sp]
+        elif side == "below":
+            ok = [h for h in ok if h["cy"] <= ey + 1.0 * sp]
+        if not ok:
+            out[nm] = {"edge": True}
+            continue
+        cols = sorted(_columns(sorted(ok, key=lambda h: h["cx"])), key=lambda c: min(abs(h["cx"] - ex) for h in c))
+        col = cols[0]
+        dx = min(abs(h["cx"] - ex) for h in col)
+        if dx > CURVE_ONLY_CAP_SPACES * sp:
+            out[nm] = {"unbound": "no_head_within_cap", "candidates": [col[0]["key"]], "margin_spaces": round((dx - CURVE_ONLY_CAP_SPACES * sp) / sp, 3)}
+            continue
+        mx = sum(h["cx"] for h in col) / len(col)
+        ys = [h["cy"] for h in col]
+        ey2 = min(max(ey, min(ys) - 2.0 * sp), max(ys) + 2.0 * sp)
+        got = bind_end(mx, ey2, sgn, col, sp, side, usable, by_height)
+        if got.get("head") is not None:
+            got["gap_spaces"] = round(dx / sp, 3)
+        out[nm] = got
+    lk, rk = out["left"].get("head"), out["right"].get("head")
+    if lk is not None and lk == rk:
+        out["left"] = out["right"] = {"unbound": "one_head_both_ends", "candidates": [lk], "margin_spaces": None}
+    return out

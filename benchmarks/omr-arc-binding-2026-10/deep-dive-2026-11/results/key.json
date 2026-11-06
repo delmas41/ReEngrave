@@ -1,0 +1,230 @@
+[
+ {
+  "n": 1,
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1704.92,
+   1521.0,
+   1794.84,
+   1533.0
+  ],
+  "sp": 15.75,
+  "curve": "glyph/2/0/8/10/2",
+  "bucket": "slur box path: ends 1-2 sp past the box (over-joined chain, binder refused the curve)",
+  "fate": "dropped",
+  "lost": [
+   "X",
+   "export:arc_binds_fewer_than_two_notes_or_not_in_file"
+  ]
+ },
+ {
+  "n": 2,
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   2081,
+   614.3725,
+   2296,
+   629.4925000000001
+  ],
+  "sp": 15.75,
+  "curve": "glyph/16/0/1/13/1",
+  "bucket": "end > 4 sp from any head: arc boxed in part (cut at the barline, no neighbour box)",
+  "fate": "dropped",
+  "lost": [
+   "P",
+   "tie_pair:spans_a_whole_bar"
+  ]
+ },
+ {
+  "n": 3,
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   1975.7925,
+   2135.2075,
+   2083.995,
+   2157.1
+  ],
+  "sp": 15.75,
+  "curve": "glyph/2/1/0/10/6",
+  "bucket": "tie_pair local flank search: no_head_near_the_arc (tie under a dyad)",
+  "fate": "dropped",
+  "lost": [
+   "P",
+   "tie_pair:no_head_near_the_arc"
+  ]
+ },
+ {
+  "n": 4,
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   691,
+   506.85,
+   831,
+   535.9875
+  ],
+  "sp": 15.75,
+  "curve": "glyph/10/0/0/1/0",
+  "bucket": "arc bound right, its end head is the twin box; the exporter wrote the other twin (tie_end_not_in_file)",
+  "fate": "dropped",
+  "lost": [
+   "X",
+   "export:tie_not_in_file:start_head_not_written(no_refusal_logged)"
+  ]
+ },
+ {
+  "n": 5,
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   2435,
+   809.8725,
+   2527,
+   822.0
+  ],
+  "sp": 15.75,
+  "curve": "glyph/9/0/2/14/0",
+  "bucket": "tie_pair not_adjacent (a note stands between two same-pitch ends: a slur)",
+  "fate": "dropped",
+  "lost": [
+   "P",
+   "tie_pair:not_adjacent"
+  ]
+ },
+ {
+  "n": 6,
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   480,
+   1710.0,
+   524,
+   1717.0875
+  ],
+  "sp": 15.75,
+  "curve": "glyph/16/0/10/0/7",
+  "bucket": "tie enters from the previous system (tie_pair enters_from_previous_system)",
+  "fate": "dropped",
+  "lost": [
+   "P",
+   "tie_pair:enters_from_previous_system"
+  ]
+ },
+ {
+  "n": 7,
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   3107.4,
+   6251.84,
+   3479.56,
+   6319.04
+  ],
+  "sp": 15.75,
+  "curve": "glyph/0/0/12/3/0",
+  "bucket": "slur cut at the barline: box covers the right part, the arc runs on to the left (written to the wrong note)",
+  "fate": "wrong_note",
+  "lost": [
+   null,
+   null
+  ]
+ },
+ {
+  "n": 8,
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   3014,
+   6200.0,
+   3436,
+   6223.68
+  ],
+  "sp": 32.0,
+  "curve": "glyph/0/0/12/3/15",
+  "bucket": "long phrase slur boxed in part, ends > 4 sp from any head",
+  "fate": "dropped",
+  "lost": [
+   "P",
+   "tie_pair:no_head_near_the_arc"
+  ]
+ },
+ {
+  "n": 9,
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4576.025,
+   7031.275,
+   5013.825,
+   7074.175
+  ],
+  "sp": 15.75,
+  "curve": "glyph/5/1/13/8/8",
+  "bucket": "tie_pair not_adjacent (notes between the same-pitch ends)",
+  "fate": "dropped",
+  "lost": [
+   "P",
+   "tie_pair:not_adjacent"
+  ]
+ },
+ {
+  "n": 10,
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   1815,
+   1101.20166015625,
+   2069,
+   1141.90185546875
+  ],
+  "sp": 27.28,
+  "curve": "glyph/5/0/2/1/14",
+  "bucket": "tie bound right; its start note never written (duration_narrowed)",
+  "fate": "dropped",
+  "lost": [
+   "X",
+   "export:tie_not_in_file:start_head_not_written(duration_narrowed)"
+  ]
+ },
+ {
+  "n": 11,
+  "plate": "brahms",
+  "page": 5,
+  "box": [
+   4402,
+   5975.765,
+   4615,
+   6010.9175
+  ],
+  "sp": 27.25,
+  "curve": "glyph/5/1/8/7/0",
+  "bucket": "slur bound right; its start chord never written (chord_value_undecided)",
+  "fate": "dropped",
+  "lost": [
+   "X",
+   "export:tie_not_in_file:start_head_not_written(chord_value_undecided)"
+  ]
+ },
+ {
+  "n": 12,
+  "plate": "brahms",
+  "page": 0,
+  "box": [
+   3554.0,
+   6288.64,
+   3635.92,
+   6319.68
+  ],
+  "sp": 15.75,
+  "curve": "glyph/0/0/12/4/7",
+  "bucket": "half arc at a barline (binder refused: joined_not_at_a_barline)",
+  "fate": "dropped",
+  "lost": [
+   "X",
+   "export:arc_binds_fewer_than_two_notes_or_not_in_file"
+  ]
+ }
+]

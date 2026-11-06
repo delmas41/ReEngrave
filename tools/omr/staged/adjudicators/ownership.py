@@ -3056,13 +3056,20 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     alt = None
     if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
         alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt)
-    b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
+    co = _arc_claim.curve_only_enabled()          # TEST HARNESS (never landed): OMR_TEST_ARC_CURVE_ONLY
+    pieces = list(d.get("pieces") or ())
+    if co:
+        bad_co = _joins_not_at_a_barline(ev, pieces, sp, d.get("joins"), d.get("piece_strokes")) if len(pieces) > 1 else []
+        b = _arc_claim.curve_only_ends(d, arc.subject.to_key(), bad_co, heads + tips, sp, usable, end_pitch)
+        b.update(curve=sysarc.subject.to_key() + (("#g%d" % b.get("group", 0)) if b.get("split") else ""), home=home, kind=None,
+                 sysarc_id=sysarc.id, curve_only=True)
+    else:
+        b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt)
+        b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
             b.setdefault("stem_tip_ends", []).append(side_)
-    pieces = list(d.get("pieces") or ())
-    if len(pieces) > 1:
+    if len(pieces) > 1 and not co:
         # ⚠️ A JOINED CURVE IS ONLY AS GOOD AS ITS JOIN. 2.166 joins a box cut at a barline to its continuation -- and also, where two
         # printed arcs meet end to start at one note (slur, tie, slur along Brahms p0 staff 12, bars 0-4: four ties bound as one slur
         # in the first build), boxes that were each a WHOLE arc. A curve with a junction that is not a barline's cut is not trusted as
@@ -3177,7 +3184,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
              crosses_barline=hl["cell"] != hr["cell"])
     if contested is not None:
         b.update(why="step_conflict_one_end_contested", contested_end=contested)
-    elif relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+    elif relation == "different" and not co and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
         # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
         # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
         # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he
@@ -3192,6 +3199,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":
         b["why"] = "step_" + relation
+    elif between and co:
+        b.update(kind="slur", rule="page_binding_same_pitch_not_adjacent")      # page-facts: a tie joins ADJACENT same-pitch notes; else a slur
     elif between:
         b["why"] = "same_pitch_heads_between"
     else:
@@ -3402,6 +3411,13 @@ def adjudicate_arc_kind(ev: Evidence) -> Ruling:
                 return Ruling(value=pb["kind"], reason=pb["kind"],
                               used=(arc.id, pb["sysarc_id"]) + tuple(pb.get("head_ids") or ()),
                               detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb})
+            if _arc_claim.curve_only_enabled():
+                # TEST HARNESS: the curve binds from itself or the arc is written as neither kind -- no box path (flank search / two-note reading)
+                if pb is not None:
+                    grammar["page_binding"] = pb
+                return Ruling(value=None, reason="arc_ends_unread", used=(arc.id,),
+                              detail={"grammar": grammar, "detector_class": str(arc.value), "page_binding": pb, "curve_only": True,
+                                      "no_curve": pb is None})
             if pb is not None:
                 grammar["page_binding"] = pb
             if pb is not None and pb.get("why") in ("tie_box_end_only_at_a_stem_tip", "step_conflict_one_end_contested"):
