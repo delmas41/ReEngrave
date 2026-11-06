@@ -10147,8 +10147,19 @@ def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
         if whole_rest_stem_rule_enabled() or whole_rest_from_ink_enabled():
             veto, ink = _whole_rest_ink_read(ev)
             detail["ink"] = ink
+            # literal reasons (not `reason=veto`) so the brakes vocabulary check can judge them statically
+            if veto == "ink_not_head_shaped":
+                return Ruling(value=False, reason="ink_not_head_shaped", used=tuple(used), detail=detail)
+            if veto == "straddles_a_stem":
+                return Ruling(value=False, reason="straddles_a_stem", used=tuple(used), detail=detail)
+            if veto == "has_a_stem":
+                return Ruling(value=False, reason="has_a_stem", used=tuple(used), detail=detail)
+            if veto == "ink_is_hollow":
+                return Ruling(value=False, reason="ink_is_hollow", used=tuple(used), detail=detail)
+            if veto == "ink_is_head_tall":
+                return Ruling(value=False, reason="ink_is_head_tall", used=tuple(used), detail=detail)
             if veto is not None:
-                return Ruling(value=False, reason=veto, used=tuple(used), detail=detail)
+                raise ValueError(f"_whole_rest_ink_read returned an undeclared veto {veto!r}")
         return Ruling(value=True, reason="shape_and_position_agree",
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="not_where_a_whole_rest_can_hang",
