@@ -1,0 +1,21 @@
+hand arcs on p0: 153 {'slur': 68, 'tie': 85}
+by origin: {'prefill-confirmed': 98, 'prefill-fixed': 37, 'drawn': 18}
+fate per hand box: {'written': 109, 'dropped': 30, 'never_boxed': 5, 'written_far_end': 2, 'not_an_arc': 7}
+detector recall (boxed):  148/153 = 0.967
+kept after adjudicate:    141/153 = 0.922
+precision of kept boxes:  202/223 = 0.906 ; all boxes incl. refused: 348
+WRITTEN (ledger 'written') of hand boxes: 109/153 = 0.712
+HAND END CHECK of written/wrong-note hand arcs: {('written', 'lenient'): 33, ('written', 'strict'): 74, ('written_far_end', 'lenient'): 2, ('written', 'wrong_end'): 2}
+KIND of the written arc vs Sean's class (hand class, our decided kind): {('slur', 'slur'): 49, ('tie', 'tie'): 54, ('slur', 'tie'): 3, ('tie', 'slur'): 3} agree 103/109
+kind decided on the DROPPED hand arcs (hand class, kind): {('slur', 'slur'): 11, ('tie', 'slur'): 3}
+hand arcs dropped, first rule:
+    ('X', 'export:slur_bound_not_in_file:both_heads_in_file_arc_not_marked') 7
+    ('K', 'arc_kind:arc_ends_unread(system_edge)') 5
+    ('K', 'arc_kind:arc_ends_unread(end_unbound)') 5
+    ('K', 'arc_kind:arc_ends_unread(step_conflict)') 3
+    ('X', 'export:slur_bound_not_in_file:stop_head_not_written(chord_value_undecided)') 3
+    ('K', 'arc_kind:arc_ends_unread') 2
+    ('X', 'export:slur_bound_not_in_file:start_head_not_written(chord_value_undecided)') 2
+    ('X', 'export:slur_bound_not_in_file:stop_head_not_written(duration_narrowed)') 1
+    ('K', 'arc_kind:arc_ends_unread(same_pitch_accidental_unknown)') 1
+    ('X', 'export:slur_bound_not_in_file:ends_in_two_voices') 1

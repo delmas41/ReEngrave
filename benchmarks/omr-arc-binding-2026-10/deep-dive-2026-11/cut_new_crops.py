@@ -43,8 +43,8 @@ for n, (plate, r) in enumerate(picks, 1):
         box[0], box[2] = min(box[0], r["x_left"]), max(box[2], r["x_right"])
     pr = r["pair"]
     hb = [heads[k] for k in pr if k in heads]
-    wx0 = min([box[0]] + [b[0] for b in hb]) - 2 * sp
-    wx1 = max([box[2]] + [b[2] for b in hb]) + 2 * sp
+    wx0 = min([box[0]] + [b[0] for b in hb]) - 5 * sp
+    wx1 = max([box[2]] + [b[2] for b in hb]) + 5 * sp
     wy0 = min([box[1]] + [b[1] for b in hb]) - 4 * sp
     wy1 = max([box[3]] + [b[3] for b in hb]) + 4 * sp
     im = C.page_image(plate, r["page"])
@@ -59,8 +59,10 @@ for n, (plate, r) in enumerate(picks, 1):
     if c.width > 1500:
         from PIL import Image
         c = c.resize((1500, int(c.height * 1500 / c.width)), Image.LANCZOS)
+    scale = c.width / max(1, (win[2] - win[0]))
+    heads_px = [[round(((b[0] + b[2]) / 2 - win[0]) * scale), round(((b[1] + b[3]) / 2 - win[1]) * scale)] for b in hb]
     c.save(out / ("%02d.png" % n))
-    key.append(dict(n=n, plate=plate, page=r["page"], curve=r["curve"], pieces=r["pieces"], kind=r.get("kind"), pair=list(pr), ext_gap=r.get("ext_gap"),
+    key.append(dict(n=n, heads_px=heads_px, size=[c.width, c.height], plate=plate, page=r["page"], curve=r["curve"], pieces=r["pieces"], kind=r.get("kind"), pair=list(pr), ext_gap=r.get("ext_gap"),
                     binding={k: v for k, v in (r.get("binding") or {}).items() if k in ("relation", "between", "rule", "split", "group", "side")}))
 (out / "key.json").write_text(json.dumps(key, indent=1, default=str))
 print("wrote", len(key), "crops to", out)

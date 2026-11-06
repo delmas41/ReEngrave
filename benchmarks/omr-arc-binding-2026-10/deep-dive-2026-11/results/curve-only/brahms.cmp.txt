@@ -1,0 +1,64 @@
+PLATE brahms pages [0, 5]
+OFF (INK_TRACE on, bypass off): real arcs 507 (253.5/page)
+   written           282  141.0/page   (raw ledger label: 286)
+   written_far_end     4  2.0/page   (raw ledger label: 4)
+   written_as_slur     0  0.0/page   (raw ledger label: 0)
+   written_as_tie      0  0.0/page   (raw ledger label: 0)
+   wrong_note         39  19.5/page   (raw ledger label: 39)
+   two_arcs           17  8.5/page   (raw ledger label: 17)
+   dropped           165  82.5/page   (raw ledger label: 165)
+   dropped by first rule:
+      P tie_pair:not_adjacent                                                              25
+      X export:arc_binds_fewer_than_two_notes_or_not_in_file                               22
+      P tie_pair:no_head_near_the_arc                                                      18
+      X export:tie_not_in_file:start_head_not_written(chord_value_undecided)               18
+      P tie_pair:no_pair_at_one_position                                                   14
+      P tie_pair:no_start_head                                                             10
+      P tie_pair:enters_from_previous_system                                               10
+      P tie_pair:no_stop_head                                                               8
+      X export:tie_not_in_file:ends_in_two_voices                                           8
+      X export:tie_not_in_file:start_head_not_written(duration_narrowed)                    8
+      X export:slur_bound_not_in_file:start_head_not_written(duration_narrowed)             5
+      X export:slur_bound_not_in_file:stop_head_not_written(duration_narrowed)              3
+      X export:tie_not_in_file:stop_head_not_written(no_refusal_logged)                     3
+      X export:tie_not_in_file:both_heads_in_file_arc_not_marked                            3
+ON  (INK_TRACE on, bypass on): real arcs 507 (253.5/page)
+   written           306  153.0/page   (raw ledger label: 309)
+   written_far_end     3  1.5/page   (raw ledger label: 3)
+   written_as_slur     0  0.0/page   (raw ledger label: 0)
+   written_as_tie      0  0.0/page   (raw ledger label: 0)
+   wrong_note          0  0.0/page   (raw ledger label: 0)
+   two_arcs            0  0.0/page   (raw ledger label: 0)
+   dropped           198  99.0/page   (raw ledger label: 198)
+   dropped by first rule:
+      K arc_kind:arc_ends_unread                                                           74
+      K arc_kind:arc_ends_unread(end_unbound)                                              26
+      K arc_kind:arc_ends_unread(system_edge)                                              22
+      X export:tie_not_in_file:start_head_not_written(chord_value_undecided)               16
+      X export:slur_bound_not_in_file:start_head_not_written(duration_narrowed)            14
+      X export:tie_not_in_file:ends_in_two_voices                                           7
+      X export:tie_not_in_file:start_head_not_written(duration_narrowed)                    6
+      X export:slur_bound_not_in_file:start_head_not_written(chord_value_undecided)         5
+      X export:slur_bound_not_in_file:ends_in_two_voices                                    4
+      X export:slur_bound_not_in_file:both_heads_in_file_arc_not_marked                     4
+      X export:slur_bound_not_in_file:stop_head_not_written(duration_narrowed)              3
+      X export:slur_bound_not_in_file:stop_head_not_written(chord_value_undecided)          3
+      X export:tie_not_in_file:stop_head_not_written(no_refusal_logged)                     3
+      X export:tie_not_in_file:both_heads_in_file_arc_not_marked                            3
+rows OFF 965 ON 965 common 965
+OFF fate -> ON fate (common rows):
+   written          -> written          262
+   dropped          -> dropped          153
+   wrong_note       -> written          23
+   written          -> dropped          20
+   wrong_note       -> dropped          16
+   dropped          -> written          10
+   two_arcs         -> written          10
+   two_arcs         -> dropped          7
+   written_far_end  -> dropped          2
+   dropped          -> written_far_end  2
+   written_far_end  -> written_far_end  1
+   written_far_end  -> written          1
+NEW writes (ON written, OFF not): 45 ; written OFF (clean) but not ON: 20
+   new writes' end gap (sp) median 0.52, p90 2.24, >3sp: 2
+ON arc_kind abstentions by why (per BOX): {'no_curve': 74, 'step_conflict': 4, 'end_unbound': 26, 'system_edge': 28, 'same_pitch_accidental_unknown': 3, 'far_stem_tip_end': 2}

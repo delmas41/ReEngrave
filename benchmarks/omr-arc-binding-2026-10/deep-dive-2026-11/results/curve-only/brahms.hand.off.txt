@@ -1,0 +1,19 @@
+hand arcs on p0: 153 {'slur': 68, 'tie': 85}
+by origin: {'prefill-confirmed': 98, 'prefill-fixed': 37, 'drawn': 18}
+fate per hand box: {'written': 98, 'dropped': 21, 'never_boxed': 5, 'written_far_end': 1, 'wrong_note': 14, 'not_an_arc': 7, 'two_arcs': 7}
+detector recall (boxed):  148/153 = 0.967
+kept after adjudicate:    141/153 = 0.922
+precision of kept boxes:  202/223 = 0.906 ; all boxes incl. refused: 348
+WRITTEN (ledger 'written') of hand boxes: 98/153 = 0.641
+HAND END CHECK of written/wrong-note hand arcs: {('written', 'lenient'): 20, ('written', 'strict'): 76, ('written', 'wrong_end'): 2, ('written_far_end', 'lenient'): 1, ('wrong_note', 'wrong_end'): 7, ('wrong_note', 'lenient'): 7}
+KIND of the written arc vs Sean's class (hand class, our decided kind): {('slur', 'slur'): 57, ('tie', 'tie'): 50, ('tie', 'slur'): 9, ('slur', 'tie'): 3} agree 107/119
+kind decided on the DROPPED hand arcs (hand class, kind): {('slur', 'slur'): 4, ('tie', 'tie'): 15, ('tie', 'slur'): 1}
+hand arcs dropped, first rule:
+    ('P', 'tie_pair:no_pair_at_one_position') 8
+    ('P', 'tie_pair:no_stop_head') 4
+    ('X', 'export:slur_bound_not_in_file:both_heads_in_file_arc_not_marked') 3
+    ('P', 'tie_pair:no_head_near_the_arc') 2
+    ('X', 'export:slur_bound_not_in_file:stop_head_not_written(duration_narrowed)') 1
+    ('P', 'tie_pair:no_start_head') 1
+    ('X', 'export:arc_binds_fewer_than_two_notes_or_not_in_file') 1
+    ('K', 'arc_kind:same_pitch_accidental_unread(same_pitch_accidental_unknown)') 1

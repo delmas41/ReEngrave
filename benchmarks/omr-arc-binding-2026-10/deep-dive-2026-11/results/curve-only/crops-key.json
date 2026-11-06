@@ -1,0 +1,299 @@
+[
+ {
+  "n": 1,
+  "heads_px": [
+   [
+    90,
+    109
+   ],
+   [
+    251,
+    111
+   ]
+  ],
+  "size": [
+   341,
+   182
+  ],
+  "plate": "litolff",
+  "page": 9,
+  "curve": "glyph/9/0/2/14/0",
+  "pieces": [
+   "glyph/9/0/2/14/0"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/9/0/3/13/5",
+   "glyph/9/0/3/14/10"
+  ],
+  "ext_gap": 1.35,
+  "binding": {
+   "relation": "same",
+   "between": 2,
+   "rule": "page_binding_same_pitch_not_adjacent",
+   "split": false,
+   "group": 0,
+   "side": "above"
+  }
+ },
+ {
+  "n": 2,
+  "heads_px": [
+   [
+    158,
+    179
+   ],
+   [
+    274,
+    156
+   ]
+  ],
+  "size": [
+   473,
+   304
+  ],
+  "plate": "brahms",
+  "page": 5,
+  "curve": "glyph/5/0/0/7/13",
+  "pieces": [
+   "glyph/5/0/0/7/13"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/5/0/0/7/3",
+   "glyph/5/0/0/7/7"
+  ],
+  "ext_gap": 2.29,
+  "binding": {
+   "relation": "different",
+   "between": 1,
+   "rule": "page_binding_different_pitch",
+   "split": false,
+   "group": 0,
+   "side": "above"
+  }
+ },
+ {
+  "n": 3,
+  "heads_px": [
+   [
+    90,
+    104
+   ],
+   [
+    280,
+    102
+   ]
+  ],
+  "size": [
+   370,
+   177
+  ],
+  "plate": "litolff",
+  "page": 16,
+  "curve": "glyph/16/0/1/1/4",
+  "pieces": [
+   "glyph/16/0/1/1/4"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/16/0/2/0/4",
+   "glyph/16/0/2/2/3"
+  ],
+  "ext_gap": 0.74,
+  "binding": {
+   "relation": "same",
+   "between": 5,
+   "rule": "page_binding_same_pitch_not_adjacent",
+   "split": false,
+   "group": 0,
+   "side": "above"
+  }
+ },
+ {
+  "n": 4,
+  "heads_px": [
+   [
+    181,
+    240
+   ],
+   [
+    932,
+    221
+   ]
+  ],
+  "size": [
+   1112,
+   387
+  ],
+  "plate": "brahms",
+  "page": 0,
+  "curve": "glyph/0/0/12/3/0",
+  "pieces": [
+   "glyph/0/0/12/3/0"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/0/0/12/2/1",
+   "glyph/0/0/12/3/3"
+  ],
+  "ext_gap": 0.17,
+  "binding": {
+   "relation": "different",
+   "between": 6,
+   "rule": "page_binding_different_pitch",
+   "split": true,
+   "group": 2,
+   "side": "above"
+  }
+ },
+ {
+  "n": 5,
+  "heads_px": [
+   [
+    90,
+    109
+   ],
+   [
+    251,
+    111
+   ]
+  ],
+  "size": [
+   341,
+   182
+  ],
+  "plate": "litolff",
+  "page": 9,
+  "curve": "glyph/9/0/3/14/1",
+  "pieces": [
+   "glyph/9/0/3/14/1"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/9/0/3/13/5",
+   "glyph/9/0/3/14/10"
+  ],
+  "ext_gap": 1.03,
+  "binding": {
+   "relation": "same",
+   "between": 2,
+   "rule": "page_binding_same_pitch_not_adjacent",
+   "split": false,
+   "group": 0,
+   "side": "above"
+  }
+ },
+ {
+  "n": 6,
+  "heads_px": [
+   [
+    158,
+    162
+   ],
+   [
+    377,
+    148
+   ]
+  ],
+  "size": [
+   533,
+   288
+  ],
+  "plate": "brahms",
+  "page": 5,
+  "curve": "glyph/5/0/2/6/3",
+  "pieces": [
+   "glyph/5/0/2/6/3"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/5/0/2/5/7",
+   "glyph/5/0/2/6/2"
+  ],
+  "ext_gap": 0.2,
+  "binding": {
+   "relation": "different",
+   "between": 4,
+   "rule": "page_binding_different_pitch",
+   "split": true,
+   "group": 0,
+   "side": "above"
+  }
+ },
+ {
+  "n": 7,
+  "heads_px": [
+   [
+    92,
+    104
+   ],
+   [
+    711,
+    106
+   ]
+  ],
+  "size": [
+   801,
+   178
+  ],
+  "plate": "litolff",
+  "page": 6,
+  "curve": "glyph/6/0/3/1/8",
+  "pieces": [
+   "glyph/6/0/3/1/8",
+   "glyph/6/0/3/2/2"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/6/0/3/1/9",
+   "glyph/6/0/3/5/4"
+  ],
+  "ext_gap": 1.07,
+  "binding": {
+   "relation": "same",
+   "between": 5,
+   "rule": "page_binding_same_pitch_not_adjacent",
+   "split": false,
+   "group": 0,
+   "side": "above"
+  }
+ },
+ {
+  "n": 8,
+  "heads_px": [
+   [
+    181,
+    264
+   ],
+   [
+    1129,
+    200
+   ]
+  ],
+  "size": [
+   1309,
+   410
+  ],
+  "plate": "brahms",
+  "page": 0,
+  "curve": "glyph/0/0/10/1/3",
+  "pieces": [
+   "glyph/0/0/10/1/3"
+  ],
+  "kind": "slur",
+  "pair": [
+   "glyph/0/0/10/0/11",
+   "glyph/0/0/10/1/0"
+  ],
+  "ext_gap": 0.55,
+  "binding": {
+   "relation": "different",
+   "between": 7,
+   "rule": "page_binding_different_pitch",
+   "split": true,
+   "group": 0,
+   "side": "above"
+  }
+ }
+]

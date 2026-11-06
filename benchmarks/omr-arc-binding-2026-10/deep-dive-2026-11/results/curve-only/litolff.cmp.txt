@@ -1,0 +1,66 @@
+PLATE litolff pages [2, 4, 6, 8, 9, 10, 11, 16]
+OFF (INK_TRACE on, bypass off): real arcs 893 (111.6/page)
+   written           411  51.4/page   (raw ledger label: 426)
+   written_far_end    15  1.9/page   (raw ledger label: 15)
+   written_as_slur     1  0.1/page   (raw ledger label: 1)
+   written_as_tie      0  0.0/page   (raw ledger label: 0)
+   wrong_note         15  1.9/page   (raw ledger label: 15)
+   two_arcs            8  1.0/page   (raw ledger label: 8)
+   dropped           443  55.4/page   (raw ledger label: 443)
+   dropped by first rule:
+      X export:arc_binds_fewer_than_two_notes_or_not_in_file                              147
+      P tie_pair:no_head_near_the_arc                                                      39
+      P tie_pair:no_start_head                                                             31
+      P tie_pair:no_stop_head                                                              24
+      P tie_pair:not_adjacent                                                              23
+      P tie_pair:enters_from_previous_system                                               22
+      X export:tie_not_in_file:start_head_not_written(mark_group_duplicate)                19
+      X export:tie_not_in_file:tie_pitch_contradiction                                     16
+      P tie_pair:no_pair_at_one_position                                                   13
+      X export:tie_not_in_file:both_heads_in_file_arc_not_marked                           10
+      P tie_pair:no_start_head/not_a_tie                                                    9
+      X export:tie_not_in_file:start_head_not_written(chord_value_undecided)                9
+      P tie_pair:runs_off_the_system                                                        8
+      X export:tie_not_in_file:stop_head_not_written(mark_group_duplicate)                  8
+ON  (INK_TRACE on, bypass on): real arcs 893 (111.6/page)
+   written           421  52.6/page   (raw ledger label: 434)
+   written_far_end    13  1.6/page   (raw ledger label: 13)
+   written_as_slur     2  0.2/page   (raw ledger label: 2)
+   written_as_tie      0  0.0/page   (raw ledger label: 0)
+   wrong_note          0  0.0/page   (raw ledger label: 0)
+   two_arcs            0  0.0/page   (raw ledger label: 0)
+   dropped           457  57.1/page   (raw ledger label: 457)
+   dropped by first rule:
+      K arc_kind:arc_ends_unread                                                          128
+      K arc_kind:arc_ends_unread(end_unbound)                                              78
+      K arc_kind:arc_ends_unread(system_edge)                                              68
+      K arc_kind:arc_ends_unread(step_conflict)                                            60
+      X export:tie_not_in_file:start_head_not_written(mark_group_duplicate)                19
+      K arc_kind:arc_ends_unread(far_stem_tip_end)                                         13
+      X export:tie_not_in_file:stop_head_not_written(mark_group_duplicate)                 10
+      X export:tie_not_in_file:both_heads_in_file_arc_not_marked                            9
+      X export:slur_bound_not_in_file:both_heads_in_file_arc_not_marked                     7
+      X export:slur_bound_not_in_file:start_head_not_written(mark_group_duplicate)          7
+      K arc_kind:arc_ends_unread(step_unread)                                               7
+      X export:slur_bound_not_in_file:stop_head_not_written(duration_narrowed)              7
+      X export:tie_not_in_file:tie_pitch_contradiction                                      7
+      X export:slur_bound_not_in_file:start_head_not_written(duration_narrowed)             6
+rows OFF 1182 ON 1182 common 1182
+OFF fate -> ON fate (common rows):
+   dropped          -> dropped          373
+   written          -> written          350
+   written          -> dropped          61
+   dropped          -> written          60
+   wrong_note       -> dropped          10
+   dropped          -> written_far_end  8
+   written_far_end  -> dropped          6
+   written_far_end  -> written          6
+   two_arcs         -> dropped          6
+   wrong_note       -> written          5
+   written_far_end  -> written_far_end  3
+   two_arcs         -> written_far_end  2
+   dropped          -> written_as_slur  2
+   written_as_slur  -> dropped          1
+NEW writes (ON written, OFF not): 75 ; written OFF (clean) but not ON: 61
+   new writes' end gap (sp) median 1.10, p90 4.64, >3sp: 10
+ON arc_kind abstentions by why (per BOX): {'step_conflict': 78, 'no_curve': 128, 'end_unbound': 94, 'system_edge': 75, 'far_stem_tip_end': 19, 'step_unread': 8, 'same_pitch_accidental_printed': 4, 'step_conflict_one_end_contested': 4}

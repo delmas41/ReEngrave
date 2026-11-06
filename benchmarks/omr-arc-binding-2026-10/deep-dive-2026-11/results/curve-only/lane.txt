@@ -1,0 +1,28 @@
+LANE REPORT  OMR_TEST_ARC_CURVE_ONLY (OFF=0 ON=1)  --from adjudicate
+  OMR_TEST_ARC_CURVE_ONLY: read in staged/adjudicators/ownership.py, staged/arc_claim.py -> ADJUDICATE..EXPORT
+  REPLAY OF A RECORD GATHERED WITH THE GATHER-SIDE FLAGS ON (--replay-gathered): the arms differ only in ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-session-placeholder-setup-6802ad/c91823fb-6cde-4194-b762-519aca0451f9/scratchpad/sample2.json (a development control)
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5710 notes+rests OFF, 5710 ON, 5710 paired)
+  file:   ties +11 -79 ~1 | slurs +174 -50 ~1
+  red bars 190 -> 190 | notes not written 2100 -> 2100
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (302 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 21 (at another id than asked 2) | by id key, no position 390 | position but no mark here 5
+  NOT JUDGED: 313 changed places no tile of Sean's covers (3 are covered; 0 have no page place): slur 224, tie 89 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.75-chords tile 1 glyph/2/1/3/10/2  was worse
+
+brahms  pages [0, 5]  (1535 notes+rests OFF, 1535 ON, 1535 paired)
+  file:   ties +6 -16 | slurs +40 -69 ~2
+  red bars 41 -> 41 | notes not written 759 -> 759
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (221 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 6 (at another id than asked 4) | by id key, no position 366 | position but no mark here 28
+  NOT JUDGED: 129 changed places no tile of Sean's covers (4 are covered; 0 have no page place): slur 108, tie 21 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1022 s
