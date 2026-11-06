@@ -118,6 +118,7 @@ def split_levels(beams: Sequence[Dict[str, Any]]) -> None:
             lv = max(1, int(round((float(b["thickness_spaces"]) / m1) if b["head_fused"] else (float(b["peak_spaces"]) / p1))))
         b["levels"] = lv
         b["single_beam_spaces"] = m1 if b["head_fused"] else p1
+        b["stack_spaces"] = float(b["thickness_spaces"]) if b["head_fused"] else float(b["peak_spaces"])
 
 
 def _clean_tip(tip_rows: Sequence[Any]) -> bool:
@@ -513,12 +514,17 @@ def gather_page_beam_views(log: Any, cells: Sequence[Any], local: Dict[int, Tupl
             x, y, w, h = b["box"]
             cx, cy, cw, ch = (x - rect[0]) * up, (y - rect[1]) * up, w * up, h * up
             lv = int(b.get("levels") or 1)
-            pitch = (float(b["peak_spaces"]) * float(b.get("space_px") or 0.0) * up / lv) if lv > 1 else 0.0
+            # a stack of `lv` beams: one view per level. The stack's thickness (peak, or the median where it is fused to a head) less one beam is the span of the level
+            # centres; level k's box is the stroke's box (slope included) with that span cut away, so each view is a slab of the stroke's own slope, as cell reader A's were.
+            sp_cell = float(b.get("space_px") or 0.0) * up
+            span = max(0.0, (float(b["stack_spaces"]) - float(b["single_beam_spaces"])) * sp_cell) if lv > 1 else 0.0
+            d = span / (lv - 1) if lv > 1 else 0.0
+            vh = max(ch - span, ch / lv) if lv > 1 else ch
             for k in range(lv):
-                off = (k - (lv - 1) / 2.0) * pitch      # a fused stack of `lv` beams: one view per level, stacked about the stroke's own centre line
-                row = log.observe(csub, Q.BEAM_STROKE, (cx, cy + off, cw, ch), reader=READERS.CV_PAGE_BEAMS, frame=frame, x0=cx, x1=cx + cw, y_center=cy + off + ch / 2.0,
+                vy = cy + k * d
+                row = log.observe(csub, Q.BEAM_STROKE, (cx, vy, cw, vh), reader=READERS.CV_PAGE_BEAMS, frame=frame, x0=cx, x1=cx + cw, y_center=vy + vh / 2.0,
                                   image="page_strokes", staff_lines_erased=False, page_stroke=b["ordinal"], **(dict(level=k, levels=lv) if lv > 1 else {}))
-                views.append((SimpleNamespace(x_canonical=cx, y_canonical=cy + off, width_canonical=cw, height_canonical=ch), row.id))
+                views.append((SimpleNamespace(x_canonical=cx, y_canonical=vy, width_canonical=cw, height_canonical=vh), row.id))
                 census["views"] += 1
         stems = []
         for r in log.rows(Q.STEM, csub):
