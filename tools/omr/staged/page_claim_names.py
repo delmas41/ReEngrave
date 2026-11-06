@@ -294,6 +294,11 @@ def box_owner(cls: str, category: Optional[str] = None) -> Optional[str]:
     return fam if fam in BOX_FAMILIES else None
 
 
+#: the share of a stem's ink inside a box at which the stem is the box's OWN stroke (2.269 step 3, spare beams); measured on the Litolff + Brahms frozen pages only,
+#: so a number to re-measure on another publisher, not a convention
+STEM_OWN_SHARE = 0.85
+
+
 def strokes_by_share(page_map: Any, box: Sequence[float], index: StrokeIndex, share_min: float) -> List[int]:
     """The page strokes with at least `share_min` of their ink inside `box` (page px): a bounding-box test on the index first (cheap), then the mask share
     (`stroke_map.strokes_in_box`'s own arithmetic, only on the few strokes the box meets). A carved barline rule has no mask here and is never named."""
@@ -365,13 +370,14 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             seen.add(k)
             ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
             if ids:
-                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is not a letter's or a rest's ink when NONE of its stems is
-                # held by the box (2.269 step 3, spare beams); an "ff" / "f" crossbar joins the letters' own strokes, which the box holds, and stays named
-                # (measured: every crossbar had a stem inside; a neighbour's stem the role reader also counts may stand outside, so "any outside" is too weak)
+                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is not a letter's or a rest's ink when NONE of its stems is the
+                # box's OWN stroke (2.269 step 3, spare beams). An "ff" / "f" crossbar joins the letters' own strokes, which lie wholly in the box
+                # (measured: every crossbar had a stem with >= 0.85 of its ink inside); a real beam's stems run out of it (Litolff p2: a stem 0.77 inside a
+                # box that was itself too tall). The role reader may also count a neighbour's stem, so "some stem outside" is too weak a test.
                 if spare is None:
                     spare = _PB.plain_beams(_PB.views_of(page_map), page_map.sp)
-                inside = set(ids)
-                beams = {o for o, stems in spare(ids).items() if not any(t in inside for t in stems)}
+                own = set(strokes_by_share(page_map, pb, index, STEM_OWN_SHARE))
+                beams = {o for o, stems in spare(ids).items() if not any(t in own for t in stems)}
                 if beams:
                     census["beams_spared"] = census.get("beams_spared", 0) + len(beams)
                     ids = [i for i in ids if i not in beams]
