@@ -477,3 +477,16 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
     if progress:
         print("  gather page arcs p%s: %s" % (p, census))
     return census
+
+
+def rows_of(rec: Any, page: Optional[int] = None) -> List[Any]:
+    """The record's own `Q.PAGE_ARC` rows (empty when the gather ran with the flag OFF), of `page` when given. The measurement readout reads the record
+    through this (benchmarks/omr-arc-binding-2026-10/page-ink-2026-11/step1); no stage reads it in step 1."""
+    from .record import Q
+    out = []
+    for o in rec.obs_of(Q.PAGE_ARC):
+        sub = str(getattr(o, "subject", "") or "")
+        if page is None or sub == "page/%d" % page or sub.startswith("page/%d/" % page):
+            out.append(o)
+    return out
+
