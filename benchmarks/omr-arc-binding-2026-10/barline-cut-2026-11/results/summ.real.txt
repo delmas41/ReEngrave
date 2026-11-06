@@ -1,0 +1,34 @@
+   [real arcs only: ledger fate != not_an_arc; pages [2, 4, 6, 8, 9, 10, 11, 16] ]
+== litolff boxes 1041
+  all boxes                                ends  2082 | at cell edge  47.3% (chance 33.2%, x1.4) | at any barline of system  47.5% (chance 33.3%, x1.4) | interior-edge only  45.9% | at a head  54.0% (chance 47.9%, x1.1)
+  boxes WITH a page curve                  ends  1824 | at cell edge  48.2% (chance 33.3%, x1.5) | at any barline of system  48.5% (chance 33.3%, x1.5) | interior-edge only  46.9% | at a head  54.0% (chance 47.5%, x1.1)
+  boxes with NO page curve                 ends   258 | at cell edge  40.3% (chance 32.8%, x1.2) | at any barline of system  40.3% (chance 33.2%, x1.2) | interior-edge only  38.8% | at a head  53.9% (chance 50.4%, x1.1)
+  slur/tie boxes, curve, width >= 1.5 sp   ends  1786 | at cell edge  48.4% (chance 33.6%, x1.4) | at any barline of system  48.4% (chance 33.6%, x1.4) | interior-edge only  47.0% | at a head  53.6% (chance 47.2%, x1.1)
+  cut ends (interior edges): left 161, right 794
+  barline-crossing edge PAIRS (two boxes, one per side): 83 | lone right-cut 711 | lone left-cut 95
+  boxes wider than their cell: 0
+  page curves 756 | spanning >1 cell 46 (6%) | pieces per curve {1: 624, 2: 106, 3: 20, 4: 5, 5: 1}
+  curves with a piece cut at an interior edge: 643 ; of those joined across it (>1 cell): 46
+  boxes with no page curve row: 129
+      ('below_threshold', 'cut_r') 66
+      ('below_threshold', 'free') 41
+      ('below_threshold', 'cut_l+cut_r') 12
+      ('below_threshold', 'cut_l') 10
+   share of no-curve boxes cut at an interior edge: 68.2% ; of boxes WITH a curve: 86.2%
+   [real arcs only: ledger fate != not_an_arc; pages [0, 5] ]
+== brahms boxes 627
+  all boxes                                ends  1254 | at cell edge  37.5% (chance 16.7%, x2.2) | at any barline of system  37.5% (chance 16.7%, x2.2) | interior-edge only  36.5% | at a head  66.7% (chance 55.2%, x1.2)
+  boxes WITH a page curve                  ends  1106 | at cell edge  34.4% (chance 12.4%, x2.8) | at any barline of system  34.4% (chance 12.4%, x2.8) | interior-edge only  33.7% | at a head  68.4% (chance 56.5%, x1.2)
+  boxes with NO page curve                 ends   148 | at cell edge  60.8% (chance 48.6%, x1.3) | at any barline of system  60.8% (chance 48.7%, x1.2) | interior-edge only  57.4% | at a head  54.7% (chance 45.8%, x1.2)
+  slur/tie boxes, curve, width >= 1.5 sp   ends  1092 | at cell edge  34.2% (chance 12.5%, x2.7) | at any barline of system  34.2% (chance 12.5%, x2.7) | interior-edge only  33.6% | at a head  68.5% (chance 56.7%, x1.2)
+  cut ends (interior edges): left 142, right 316
+  barline-crossing edge PAIRS (two boxes, one per side): 128 | lone right-cut 188 | lone left-cut 38
+  boxes wider than their cell: 0
+  page curves 1344 | spanning >1 cell 160 (12%) | pieces per curve {1: 955, 2: 299, 3: 69, 4: 12, 5: 4, 6: 2, 8: 2, 9: 1}
+  curves with a piece cut at an interior edge: 231 ; of those joined across it (>1 cell): 50
+  boxes with no page curve row: 74
+      ('below_threshold', 'cut_l+cut_r') 26
+      ('below_threshold', 'cut_r') 18
+      ('below_threshold', 'free') 15
+      ('below_threshold', 'cut_l') 15
+   share of no-curve boxes cut at an interior edge: 79.7% ; of boxes WITH a curve: 66.0%

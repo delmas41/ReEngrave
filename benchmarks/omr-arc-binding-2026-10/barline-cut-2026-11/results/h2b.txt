@@ -1,0 +1,15 @@
+== litolff cut arcs (printed barline) 699
+   written                                                       351  50%
+   lost at EXPORT pairing                                        192  27%
+   lost at ADJUDICATE binding/tie_pair                           129  18%
+   wrong_note (written, to the wrong note / split in two)         12  2%
+   lost at ADJUDICATE kind                                         9  1%
+   two_arcs (written, to the wrong note / split in two)            6  1%
+   of the 330 lost: cell-keyed rule 195, other 135 | {('X', 'other rule'): 86, ('P', 'cell-keyed rule'): 89, ('X', 'cell-keyed rule'): 106, ('P', 'other rule'): 40, ('K', 'other rule'): 9}
+== brahms cut arcs (printed barline) 334
+   written                                                       151  45%
+   lost at EXPORT pairing                                         64  19%
+   lost at ADJUDICATE binding/tie_pair                            60  18%
+   wrong_note (written, to the wrong note / split in two)         43  13%
+   two_arcs (written, to the wrong note / split in two)           16  5%
+   of the 124 lost: cell-keyed rule 42, other 82 | {('P', 'other rule'): 38, ('P', 'cell-keyed rule'): 22, ('X', 'cell-keyed rule'): 20, ('X', 'other rule'): 44}

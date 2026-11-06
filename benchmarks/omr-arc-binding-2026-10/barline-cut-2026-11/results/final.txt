@@ -1,0 +1,26 @@
+== litolff real arc boxes 1041 pages [2, 4, 6, 8, 9, 10, 11, 16]
+  cell edges of these boxes that are a printed barline: 92.5% of 2082
+  Q2a ends within 1 sp of a PRINTED barline at the cell edge: 919 of 2082 = 44.1% | chance (box slid in its cell) 33.2% | ratio x1.33
+     left  end within 0.25 sp of a printed barline: 10.7% vs chance 11.5% (x0.9)
+     right end within 0.25 sp of a printed barline: 56.9% vs chance 11.5% (x4.9)
+  Q2b barline-cut real boxes: right-cut 740, left-cut 151. Edge PAIRS (a box each side of one barline, y overlapping): 71; right-cut with no box on the far side: 669; left-cut with none on the near side: 80
+      crossing arcs seen as >=2 pieces: 71 ; seen as one piece with the other half never boxed: 749 (91%)
+      a box wider than its cell: 0 (a box cannot cross a cell edge)
+  Q2c page curves of real arcs: 747; joined across a cell edge (>1 cell): 45 (6%); curves holding a barline-cut piece: 642, of which joined across it: 45
+  Q4 real boxes with NO page curve row: 129; cut at a printed barline: 84 (65%) [boxes WITH a curve: 80%]
+      both ends cut: 12; ends: left-only 10, right-only 66, neither 41
+      why no curve (abstention note): [("trace inks # of the box's columns (needs #)", 95), ('the trace lies flat along a staff line', 23), ('the trace is straight and as thick as a beam: not an arc', 10), ('bows # sp over # sp (an arc bows >= #)', 1)]
+      width of no-curve boxes: median 4.4 sp (with-curve boxes 5.8 sp)
+== brahms real arc boxes 627 pages [0, 5]
+  cell edges of these boxes that are a printed barline: 99.4% of 1254
+  Q2a ends within 1 sp of a PRINTED barline at the cell edge: 468 of 1254 = 37.3% | chance (box slid in its cell) 16.7% | ratio x2.24
+     left  end within 0.25 sp of a printed barline: 20.6% vs chance 8.2% (x2.5)
+     right end within 0.25 sp of a printed barline: 47.5% vs chance 8.2% (x5.8)
+  Q2b barline-cut real boxes: right-cut 316, left-cut 142. Edge PAIRS (a box each side of one barline, y overlapping): 102; right-cut with no box on the far side: 214; left-cut with none on the near side: 40
+      crossing arcs seen as >=2 pieces: 102 ; seen as one piece with the other half never boxed: 254 (71%)
+      a box wider than its cell: 0 (a box cannot cross a cell edge)
+  Q2c page curves of real arcs: 379; joined across a cell edge (>1 cell): 50 (13%); curves holding a barline-cut piece: 228, of which joined across it: 48
+  Q4 real boxes with NO page curve row: 74; cut at a printed barline: 59 (80%) [boxes WITH a curve: 66%]
+      both ends cut: 26; ends: left-only 15, right-only 18, neither 15
+      why no curve (abstention note): [("trace inks # of the box's columns (needs #)", 65), ('the trace lies flat along a staff line', 8), ('the trace is straight and as thick as a beam: not an arc', 1)]
+      width of no-curve boxes: median 10.7 sp (with-curve boxes 6.5 sp)

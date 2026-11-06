@@ -1,0 +1,18 @@
+tile 2 litolff p 9 glyph/9/0/3/12/2 start cell 12 stop cell 13 sub cell 12
+   box edge distance to its cell edge (sp): left 3.72 right 0.08; box 7.9 sp wide, cell 11.7 sp; cut_l False cut_r True; partner_l None partner_r None
+   curve glyph/9/0/3/12/2 cells [12] pieces ['glyph/9/0/3/12/2', 'glyph/9/0/3/12/5']
+tile 4 litolff p 9 glyph/9/1/1/9/2 start cell 9 stop cell 10 sub cell 9
+   box edge distance to its cell edge (sp): left 2.28 right 4.52; box 3.7 sp wide, cell 10.5 sp; cut_l False cut_r False; partner_l None partner_r None
+   curve glyph/9/1/1/9/2 cells [9] pieces ['glyph/9/1/1/9/2']
+tile 5 litolff p 6 glyph/6/0/2/2/2 start cell 1 stop cell 4 sub cell 2
+   box edge distance to its cell edge (sp): left 0.15 right 0.07; box 10.2 sp wide, cell 10.4 sp; cut_l True cut_r True; partner_l None partner_r glyph/6/0/2/3/0
+   curve glyph/6/0/2/2/2 cells [2, 3] pieces ['glyph/6/0/2/2/2', 'glyph/6/0/2/3/0']
+tile 9 litolff p 8 glyph/8/1/4/13/1 start cell 13 stop cell 14 sub cell 13
+   box edge distance to its cell edge (sp): left 2.85 right 0.19; box 5.5 sp wide, cell 8.5 sp; cut_l False cut_r True; partner_l None partner_r None
+   curve glyph/8/1/4/13/1 cells [13] pieces ['glyph/8/1/4/13/1']
+tile 10 litolff p 6 glyph/6/1/11/5/1 start cell 4 stop cell 6 sub cell 5
+   box edge distance to its cell edge (sp): left 0.00 right 8.90; box 2.9 sp wide, cell 11.7 sp; cut_l True cut_r False; partner_l None partner_r None
+   curve glyph/6/1/11/5/1 cells [5] pieces ['glyph/6/1/11/5/1']
+tile 12 brahms p 4 glyph/4/1/1/4/23 start cell 3 stop cell 4 sub cell 4
+   box edge distance to its cell edge (sp): left 0.01 right 17.40; box 2.6 sp wide, cell 20.0 sp; cut_l True cut_r False; partner_l None partner_r None
+   curve glyph/4/1/1/4/23 cells [4] pieces ['glyph/4/1/1/4/23']
