@@ -1,5 +1,32 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2026-11-06 PAGE-INK ARCS: feasibility of reading each arc from the page ink (measure only; branch `plan-page-ink-arcs`; plan `docs/plan-2026-11-06-page-ink-arcs.md`; scripts `page-ink-2026-11/`)
+
+Cause and lesson: in the plan §1 (the arc's identity is a per-cell detector box; every fix so far repaired its pieces downstream).
+Method: `canvas.py` rebuilds the M2 page raster with GATHER's own functions (`pipeline.prepare_pages`, `page_strokes.assemble`,
+`barline_columns.fit_columns`, `page_strokes.carve_columns`; no detector, no OCR, ~6 s/page). `runs.py` blanks what claims first or is not
+arc ink (page claim AREAS take the components wholly inside them; compact detector boxes blank their rectangle; beam/hairpin boxes are not
+blanked), splits each column into thin runs (<= 0.62 sp), tracks them left to right on their own slope across holes <= 1.25 sp, splits at
+a V-turn on a hole (two arcs meeting at a head), keeps smooth thin bowed runs. `score.py` scores against Sean's hand arcs (Brahms p0) and the
+saved 20261104-night page curves (pre-2.273) by the rule fixed in `page-ink-2026-11/RULES.md` (committed before any number).
+Results (v4):
+- Brahms p0, 109 printed arcs (153 hand boxes, cell pieces joined): RULE AS WRITTEN ink-first whole 69 / detector 72 (missed 33 / 18);
+  "fakes" 16. The look (crops below) showed the rule's scorer was wrong for long runs: Sean's arcs are one box per CELL and several first
+  halves are unboxed, so a run covering the whole printed arc failed "70% of its points inside the boxes"; 14 of the 16 "fakes" are real
+  arcs. CLIPPED scorer (only the run's points inside the arc's own x span): whole 96 vs 92; multi-bar arcs 23/26 vs 19/26; per hand box
+  135 vs 134. Fakes by look: 2 (runs 50, 73: two ledger lines between chord heads, unboxed ledgers).
+- Litolff p16 (no truth; run once, untuned): 58 runs vs 99 kept page curves (twins included); 72 curves covered >= 80% by one run. 8 runs
+  with no curve: 7 real ties the detector path never boxed, 1 fake (ledger pair). 27 curves with no / partial run: ~9 distinct real arcs
+  the ink path missed (short ties into a barline or stem, ties inside the staff touching lines, one at the system start), 4 fermatas and
+  ~4 staff/ledger bits the detector filed as arcs.
+- Tuning: v1 (fixed before looking) gave whole 45 / 23 "fakes"; v2-v4 each fixed one seen cause (a word AREA rectangle took half a slur;
+  long slurs failed a global quadratic; a false `beam` box took half a slur; tie chains fused at the heads). The Brahms figures are in-sample.
+- Verdict by RULES.md as written: NOT MET (69 < 72). With the corrected scorer: PROMISING (96 >= 92, fakes 2 and 1 per page). The
+  correction was made after looking and is disclosed as such; the next measure is Sean's tiles on the runs.
+Crops (whole run boxed, nothing else drawn; key `page-ink-2026-11/crops-key.json`): `out/print/page-ink-arcs/01-08.png` -- 1-2 Brahms long
+slurs crossing a barline read as one run; 3 Brahms tie across a barline; 4 Brahms horn tie; 5-8 Litolff ties (5, 8 under the notes;
+6, 7 across a barline). I looked at all 8: each box holds one whole printed arc.
+
 ## 2026-11-03 (2.252 round 6): Landed ON -- `OMR_HEAD_HOLE_POSITION` default ON (deny-list), Sean "Land OMR_HEAD_HOLE_POSITION on"
 `head_hole_position.enabled()`/`r5_enabled()`/`r6_enabled()` all read the one flag, so with it ON: hole position (r4), the black-box split (`gather.py` `black_too=`), the r6 local line check (`arc_ink_shape(local_lines=)`), `one_end_contested`, `unsure_ends`. `OMR_UNISON_TIE_VOICE` stays OFF. r6 tiles: positions 11/11, ties 10/12, 0 wrong. Landing check (STAGED re-adjudicate only of the r6 saved gathers, flag 0 vs 1, `report_saved_gathers_r4.py`, main's defaults + this merge): judged right->wrong 0 and unwritten->wrong 0 on all three plates. Litolff p10-11: notes +3, ties +14 -6, slurs +4 -4, pitches ~24 (unwritten->right 1); Litolff p2-3: notes +2, ties +14 -4, slurs +2 -6, pitches ~13; Brahms p0,5: nothing changed in the exported file.
 
