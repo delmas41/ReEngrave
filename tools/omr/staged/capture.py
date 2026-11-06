@@ -512,7 +512,7 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
 
     "PAGE_BEAM_TIP": (
         RAW_INK,
-        "ROADMAP 2.260c M4a: the beam levels the page map's strokes count at each end of a stem stroke (`beam_strokes.tip_reading`); scoreless, a measurement of ink; nothing reads it yet.",
+        "ROADMAP 2.260c M4a: the beam levels the page map's strokes count at each end of a stem stroke (`beam_strokes.tip_reading`); scoreless, a measurement of ink; read only by `adjudicate_duration` under `OMR_PAGE_TIP_REFUTES_BOX` (default OFF).",
         None),
 
     "PAGE_HEAD": (

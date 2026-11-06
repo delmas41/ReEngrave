@@ -4985,6 +4985,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     from .. import page_beams as _PB
     _gone_ids = frozenset()
     if own_stems and _PB.tip_refutes_enabled() and _PB.retired_for(ev, cell):
+        ev.state(Q.PAGE_BEAM_TIP, scope=Scope.SELF_AND_ANCESTORS, subject=cell)      # the page's tip rows, read below by `refuted_by_page_tips` (declared here so the inventory sees the read)
         _gone_ids = frozenset(b.id for b in yolo if _PB.refuted_by_page_tips(ev, cell, b, own_stems))
         if _gone_ids:
             kept, cv, yolo = _kept_beams(ev, cell, _gone_ids)

@@ -81,9 +81,7 @@ KNOWN_GAPS: Dict[str, str] = {
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
         "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
         "the proof. A reader that appears removes this entry."),
-    Q.PAGE_BEAM_TIP: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
-        "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),
+    # Q.PAGE_BEAM_TIP is read by `rhythm.adjudicate_duration` since ROADMAP 2.269 (`OMR_PAGE_TIP_REFUTES_BOX`, default OFF): its entry left this list.
     # ROADMAP 2.240 step 3: Q.PAGE_MARK / Q.PAGE_MARK_OWNER / Q.PAGE_SPAN are read by `glyph_owner` / `arc_owner` (OMR_PAGE_OWNER_READ).
     Q.DYNAMIC_ANCHOR: (
         "⚠️ PRODUCER ONLY, SCOPED TO THIS LANE DELIBERATELY -- ROADMAP 2.68 "
