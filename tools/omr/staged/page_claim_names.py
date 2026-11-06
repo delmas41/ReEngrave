@@ -341,6 +341,8 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             lay = CO.layer_of(str(d.get("owner") or ""))
             claims.append(dict(owner=str(d.get("owner") or ""), layer=99 if lay is None else int(lay), ids=[int(o) for o in d["page_strokes"]], existing=True,
                                row=r.id, subject=r.subject))
+    from . import page_beams as _PB
+    spare = None
     census: Dict[str, Any] = dict(boxes=0, twins_skipped=0, by_class={}, named_nothing={}, existing_claims=len(claims))
     seen = set()
     for c in cells:
@@ -362,6 +364,14 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                 continue
             seen.add(k)
             ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
+            if ids:
+                # a stroke the page-beam reader itself calls a beam (>= 2 stems, thick enough) is never a letter's or a rest's ink (2.269 step 3, spare beams)
+                if spare is None:
+                    spare = _PB.plain_beams(_PB.views_of(page_map), page_map.sp)
+                beams = set(spare(ids))
+                if beams:
+                    census["beams_spared"] = census.get("beams_spared", 0) + len(beams)
+                    ids = [i for i in ids if i not in beams]
             census["boxes"] += 1
             census["by_class"][cls] = census["by_class"].get(cls, 0) + 1
             lay = CO.layer_of(owner)

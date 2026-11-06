@@ -25,7 +25,8 @@ def stroke_mask(x0, y0, w, h):
 
 def pagemap(specs):
     """specs: [(x0, y0, w, h)] -- solid rectangles; scale 1."""
-    strokes = [SimpleNamespace(box=(x, y, w, h), kind="blob") for x, y, w, h in specs]
+    strokes = [SimpleNamespace(box=(x, y, w, h), kind="blob", length_sp=1.0, thickness_sp=1.0, sagitta_sp=0.0, angle_deg=0.0, touches=[], staff_space_local=20.0,
+                               profile=(), ends=((x, y), (x + w, y + h))) for x, y, w, h in specs]
     return SimpleNamespace(strokes=strokes, masks=[stroke_mask(*s) for s in specs], scale=1.0, sp=20.0)
 
 
@@ -128,6 +129,32 @@ class Retire(unittest.TestCase):
         with mock.patch.dict(os.environ, {PB.RETIRE_ENV: "1"}):
             got = PB.live_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=R.Scope.SELF_AND_ANCESTORS, subject=cell))
         self.assertEqual([r.id for r in got], [a.id, d.id])
+
+
+class SpareBeams(unittest.TestCase):
+    """2.269 step 3, spare beams: a stroke the page-beam reader calls a beam is never named by a box (a letter or a rest spans no two stems)."""
+
+    def _pm(self, bar_touches):
+        # 0, 1: two stems (vertical, 3 sp long); 2: a thick horizontal bar between their tops, inside the box; sp = 20 px
+        specs = [(10, 0, 3, 60), (60, 0, 3, 60), (13, 0, 47, 12)]
+        mk = lambda box, kind, ln, th, touches: SimpleNamespace(box=box, kind=kind, length_sp=ln, thickness_sp=th, sagitta_sp=0.0, angle_deg=0.0, touches=touches,
+                                                                  staff_space_local=20.0, profile=(), ends=((box[0], box[1]), (box[0] + box[2], box[1] + box[3])))
+        strokes = [mk(specs[0], "vertical", 3.0, 0.15, [(2, 1.0)]), mk(specs[1], "vertical", 3.0, 0.15, [(2, 1.0)]),
+                   mk(specs[2], "horizontal", 2.35, 0.6, bar_touches)]
+        return SimpleNamespace(strokes=strokes, masks=[stroke_mask(*s) for s in specs], scale=1.0, sp=20.0, staff_of=[(0, 0)] * 3)
+
+    def test_a_beam_inside_a_dynamic_box_is_spared(self):
+        pm = self._pm([(0, 1.0), (1, 1.0)])
+        log, cen = run([det("dynamicF", 0, 0, 80, 70)], pm)
+        named = [i for r in filed(log) for i in r.value]
+        self.assertNotIn(2, named)
+        self.assertEqual(cen["beams_spared"], 1)
+
+    def test_control_the_same_bar_touching_no_stem_is_named(self):       # can fail: without the beam test the bar is plain ink in the box
+        pm = self._pm([])
+        log, cen = run([det("dynamicF", 0, 0, 80, 70)], pm)
+        self.assertIn(2, [i for r in filed(log) for i in r.value])
+        self.assertNotIn("beams_spared", cen)
 
 
 if __name__ == "__main__":

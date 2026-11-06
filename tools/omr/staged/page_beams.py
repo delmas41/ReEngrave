@@ -139,6 +139,32 @@ def _covers(box: Sequence[float], head: Sequence[float]) -> bool:
     return ix > 0 and iy > 0 and ix * iy >= 0.5 * head[2] * head[3]
 
 
+def _neighbours(s: StrokeView, views: Sequence[StrokeView], by_ord: Dict[int, StrokeView], grid: "Grid", sp: float) -> Dict[int, StrokeView]:
+    """The strokes `BS.role_of` reads for `s`: those within `NEIGHBOUR_SPACES` of its box, plus whatever it touches."""
+    near = {views[i].ordinal: views[i] for i in grid.query(s.box, NEIGHBOUR_SPACES * sp)}
+    for j, _c in s.touches:
+        if j in by_ord:
+            near.setdefault(j, by_ord[j])
+    return near
+
+
+def plain_beams(views: Sequence[StrokeView], sp: float):
+    """ROADMAP 2.269 step 3 (spare beams): returns `f(ordinals) -> [ordinals]`, those among `views` that `read_page` itself would read as a BEAM (touches >= 2
+    stems, thick enough): the same neighbours and the same `BS.role_of` call, no claim consulted. A box claim by ink share must not name these: a dynamic
+    letter or a whole rest never spans two stems. The grid is built once per page."""
+    by_ord = {v.ordinal: v for v in views}
+    grid = Grid([v.box for v in views], GRID_SPACES * sp)
+
+    def f(ordinals: Sequence[int]) -> List[int]:
+        out = []
+        for o in ordinals:
+            s = by_ord.get(o)
+            if s is not None and s.kind in ("horizontal", "curve") and BS.role_of(s, _neighbours(s, views, by_ord, grid, sp), face_join=True, trough=True)["role"] == "beam":
+                out.append(o)
+        return out
+    return f
+
+
 # ───────────────────────────── the reader ─────────────────────────────
 
 def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: float, *, heads: Sequence[Sequence[float]] = (),
@@ -166,11 +192,7 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
                 # the census counts it by owner.
                 r = {"role": "other", "why": "claimed:" + str(claimed[o])}
             else:
-                near = {views[i].ordinal: views[i] for i in grid.query(s.box, NEIGHBOUR_SPACES * sp)}
-                for j, _c in s.touches:
-                    if j in by_ord:
-                        near.setdefault(j, by_ord[j])
-                r = BS.role_of(s, near, face_join=True, trough=True)
+                r = BS.role_of(s, _neighbours(s, views, by_ord, grid, sp), face_join=True, trough=True)
             cache[o] = r
         return r
 
