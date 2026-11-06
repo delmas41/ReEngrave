@@ -1314,6 +1314,47 @@ def _bar_has_other_head_or_rest_box(rec: "Record", sub: str) -> bool:
     return bool(idx.get((s["page"], s["system"], s["staff"], s["cell"]), set()) - {sub})
 
 
+#: ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default OFF; == rhythm.WHOLE_REST_FROM_INK_ENV).
+WHOLE_REST_FROM_INK_ENV = "OMR_WHOLE_REST_FROM_INK"
+WHOLE_REST_FROM_INK_RULE = "whole_rest_from_ink"
+
+
+def whole_rest_from_ink_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_FROM_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _rest_twin_in_bar(rec: "Record", sub: str, o: Dict[str, Any]) -> bool:
+    """ROADMAP 2.270: True when the detector ALSO boxed this ink as a rest (a `rest*` GLYPH_BOX in the same bar whose page box overlaps
+    this one): the same mark twice, which the rest box already writes -- converting the head box too would put two rests in the bar
+    (Litolff: 40 of 108 refused boxes are such twins; first run, +44 bars that no longer added up)."""
+    idx = rec.__dict__.get("_rest_boxes_by_bar")
+    if idx is None:
+        idx = {}
+        for r in rec.obs_of(Q.GLYPH_BOX):
+            val = r.get("value")
+            lc = str(val[0] if isinstance(val, (list, tuple)) and val else "").lower()
+            if lc.startswith("rest"):
+                p = _parse_subject(r["subject"])
+                pb = _page_box_of(r)
+                if pb:
+                    idx.setdefault((p["page"], p["system"], p["staff"], p["cell"]), []).append(pb)
+        rec.__dict__["_rest_boxes_by_bar"] = idx
+    s = _parse_subject(sub)
+    mine = _page_box_of(o)
+    if not mine:
+        return False
+    for b in idx.get((s["page"], s["system"], s["staff"], s["cell"]), ()):
+        if b[0] < mine[2] and mine[0] < b[2] and b[1] < mine[3] and mine[1] < b[3]:
+            return True
+    return False
+
+
+def _whole_rest_ink_was_read(rec: "Record", sub: str) -> bool:
+    """ROADMAP 2.270: the DECIDED whole-rest verdict says its ink was measured and passed (`detail.ink.ink_read`)."""
+    v = rec.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) or {}
+    return bool(v.get("outcome") == "decided" and ((v.get("detail") or {}).get("ink") or {}).get("ink_read"))
+
+
 def found_whole_rest_enabled() -> bool:
     return os.environ.get(FOUND_WHOLE_REST_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
@@ -1494,6 +1535,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if s["glyph"] is None:
             continue
         is_rest = bool(rec.obs(Q.REST, sub))
+        whole_rest_conv = False         # ROADMAP 2.270: a head-boxed whole rest the ink reader passed, written as restWhole
         # ⚠️ ROADMAP 2.80b. A narrow box refused `too_narrow` as a head that
         # ADJUDICATE read, on its OWN ink, as an eighth rest (Sean, Brahms
         # Contrabass bar 13: *"It is an 8th note rest"*) is WRITTEN AS A REST
@@ -1603,8 +1645,25 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # on the record. See `whole_rest_ink_enabled` for why the evidence
             # is strong and still thin -- n = 1 document, and two of the six
             # cuts have no plateau.
-            _drop("ink_is_a_whole_rest", s)
-            continue
+            #
+            # ROADMAP 2.270 (flag `OMR_WHOLE_REST_FROM_INK`, default OFF): the verdict now rests on the head's own INK (height, fill, stem;
+            # `rhythm._whole_rest_ink_read`), and a box whose ink was MEASURED and passed is WRITTEN AS THE REST it is (Sean 2026-11-05,
+            # "Fix the reader"; his 10-29 "Improve the reader first"). A box whose ink was not measured stays refused, not converted.
+            if (whole_rest_from_ink_enabled() and _whole_rest_ink_was_read(rec, sub)
+                    and not _rest_twin_in_bar(rec, sub, o)):
+                is_rest = True
+                whole_rest_conv = True
+            else:
+                _drop("ink_is_a_whole_rest", s)
+                continue
+        if not is_rest and (whole_rest_from_ink_enabled()
+                            or os.environ.get("OMR_WHOLE_REST_STEM_RULE", "").strip().lower() in ("1", "true", "yes", "on")):
+            _sv = rec.verdict(Q.NOTEHEAD_IS_A_WHOLE_REST, sub) or {}
+            if _sv.get("outcome") == "decided" and _sv.get("reason") in ("straddles_a_stem", "ink_not_head_shaped"):
+                # ROADMAP 2.270: ink across a stem on both sides is a slash (tremolo); ink narrower than a head is a piece of a sign
+                # (Sean's tile 12, half a sharp): neither a head nor a rest -- refused, counted under its own name
+                _drop("ink_straddles_a_stem" if _sv["reason"] == "straddles_a_stem" else "ink_not_head_shaped", s)
+                continue
         # ⚠️ A REST HAS NO PITCH AND MUST NOT BE ASKED FOR ONE. Requiring a
         # pitch is what kept rests out of the file for as long as they had no
         # quantity at all; asking for one now would keep them out for a
@@ -1660,6 +1719,9 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 printed = alteration
         dur_v = rec.verdict(Q.DURATION, sub)
         dur = dur_v["value"] if dur_v and dur_v["outcome"] == "decided" else None
+        if whole_rest_conv:
+            # 4 beats, sized to the bar by `_lone_whole_rest_is_the_bar` when alone in it (as every detected restWhole)
+            dur = {"beats": 4.0, "written": 4.0, "dots": 0, "beam_levels": 0}
 
         if pitch is None and not is_rest:
             # ⚠️ NO POSITIONAL DEFAULT. A staff whose clef abstained produces
@@ -1791,6 +1853,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             x, y, w, h = plan["bbox"]
         if reinstated_rest:
             name = "rest8th"        # what ADJUDICATE read it as, not the head
+        if whole_rest_conv:
+            name = "restWhole"      # ROADMAP 2.270: what the ink read it as, not the head the detector boxed
         written = float(dur.get("written") or dur.get("beats") or 0.0)
         # ⚠️ A MEASURE REST NEEDS NO NOTE VALUE, and demanding one would
         # refuse the bar the convention exists for. `<rest measure="yes"/>`
@@ -1880,6 +1944,17 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # is how this project has already paid for the confusion once.
             "bbox_page": _corners_to_wh(_page_box_of(o)),
         }
+        if whole_rest_conv:
+            # CLAUDE §4: READ (plain) only when the rest stands alone in its bar's boxes; a bar that also holds a head or rest box is the
+            # confusion case (or a second voice) and is written GUESSED (blue), as 2.230 m2's found whole rest.
+            _det.pop("guess", None)
+            if not (whole_rest_plain_enabled() and not _bar_has_other_head_or_rest_box(rec, sub)):
+                _det["guess"] = {"stage": "ADJUDICATE", "rule": WHOLE_REST_FROM_INK_RULE, "quantity": Q.NOTEHEAD_IS_A_WHOLE_REST,
+                                 "candidates": [{"value": "whole_rest", "support": 1.0}, {"value": "unread", "support": 0.0}],
+                                 "chosen": {"value": "whole_rest"}}
+            _det["whole_rest_from_ink"] = True
+            if relocated is not None:
+                relocated["whole_rests_from_ink"] = relocated.get("whole_rests_from_ink", 0) + 1
         if not is_rest and plan is None:
             # ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, ON): a head with a stem each way is two notes; see export_unison.
             _export_unison.split(rec, sub, _det)
@@ -5933,6 +6008,10 @@ def _own_voice_from_written_events(rec: Record, events: List[Dict[str, Any]],
             continue
         d = rec.verdict(Q.DURATION, det["glyph"])
         if d and d.get("outcome") == "decided" and d.get("reason") == "rest_hangs_from_own_line":
+            cands.append(e)
+        elif det.get("whole_rest_from_ink"):
+            # ROADMAP 2.270: a head-boxed whole rest the ink reader passed has no duration verdict of its own; the same bar-sum
+            # evidence below (the other written events fill the meter alone) makes it the other voice.
             cands.append(e)
     if len(cands) != 1:
         return events, None

@@ -9910,15 +9910,101 @@ def _rest_shaped(height_spaces: float, aspect: float) -> bool:
             <= WHOLE_REST_INK_MAX_ASPECT)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.270 (flags `OMR_WHOLE_REST_FROM_INK`, `OMR_WHOLE_REST_STEM_RULE`, both default OFF). STAGED ADJUDICATE.
+# CAUSE: `adjudicate_notehead_is_a_whole_rest` measures the DETECTOR'S BOX (height, aspect) and the slot, never the INK under it. Sean's 16
+# refused marks (benchmarks/whole-rest-refusal-2026-11): the box of a stemmed quarter, three eighths, a clef fragment and a tremolo slash
+# is as short as a rest's, because the detector boxes the head's interior; the page ink says 1.0-1.6 sp tall, hollow, or on a stem. The
+# ink readers (`Q.HEAD_INK`, `Q.NOTEHEAD_STEM_CROSS_INK`, `Q.HEAD_STEM_REACH`) were on the record and nothing here read them.
+# The evidence a whole rest has on the print: a filled bar about half a space tall, no stem. Anything taller, hollow, or on a stem is
+# never decided one. The stem test alone is Sean's fallback ("add the stem rule", 2026-11-05).
+# ─────────────────────────────────────────────────────────────────────────────
+WHOLE_REST_FROM_INK_ENV = "OMR_WHOLE_REST_FROM_INK"
+WHOLE_REST_STEM_RULE_ENV = "OMR_WHOLE_REST_STEM_RULE"
+#: Measured on Sean's 16 marks: the ink-trimmed height of his 8 whole rests is 0.44-0.83 sp; of the filled non-rests 1.02-1.59 sp (hollow
+#: ones are vetoed by their fill). A cut-off is a measurement: two plates, 16 marks, a gap 0.83-1.02 is the whole of the evidence.
+WHOLE_REST_INK_MAX_TRIMMED_HEIGHT_SP = 0.92
+#: the least ink share on BOTH sides of a stem for the mark to be a slash across it, not a head beside it (gap 0.03-0.41 on 5 marks).
+WHOLE_REST_STRADDLE_MIN_SHARE = 0.25
+#: the narrowest ink a head or a whole rest can be (gap 0.62 -- the half sharp -- to 1.27 sp on Sean's marks).
+WHOLE_REST_INK_MIN_WIDTH_SP = 0.9
+
+
+def whole_rest_from_ink_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_FROM_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def whole_rest_stem_rule_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_STEM_RULE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _whole_rest_ink_read(ev: Evidence) -> Tuple[Optional[str], Dict[str, Any]]:
+    """What the INK says about a box the shape and slot call a whole rest: `(veto reason or None, detail)`. `detail["ink_read"]` is True
+    only when the head's own ink was measured (height) and passed -- EXPORT converts only such a box; an unmeasured one stays refused."""
+    info: Dict[str, Any] = {"ink_read": False}
+    if whole_rest_from_ink_enabled():
+        # ROADMAP 2.270 r1 (Sean's tile 12: "half of a sharp sign", a box freed from the rest verdict was written as a quarter): ink
+        # narrower than a head is neither a rest nor a head. Real heads of Sean's 16 marks are 1.29-1.59 sp wide, rests 1.27+, the half sharp 0.62.
+        _hi = _head_ink(ev)
+        try:
+            _w = float(_hi["extent_sp"][0]) if _hi else None
+        except (TypeError, ValueError, IndexError, KeyError):
+            _w = None
+        if _w is not None and _w < WHOLE_REST_INK_MIN_WIDTH_SP:
+            info["trimmed_width_sp"] = round(_w, 3)
+            return "ink_not_head_shaped", info
+    stem = None
+    for r in ev.rows(Q.NOTEHEAD_STEM_CROSS_INK):
+        stem = {"by": "stem_cross_ink", "value": r.value}
+        d = r.detail or {}
+        try:
+            both = min(float(d.get("left_share")), float(d.get("right_share")))
+        except (TypeError, ValueError):
+            both = 0.0
+        if both >= WHOLE_REST_STRADDLE_MIN_SHARE:
+            # a head sits on ONE side of its stem (Sean's 5 stemmed marks: 0.00-0.03 on the other side); ink with 0.25+ on both is a
+            # slash drawn across the stem (his tremolo slash: 0.41/0.59) -- not a rest, not a head
+            info["stem"] = stem
+            return "straddles_a_stem", info
+    for r in (() if stems_from_strokes_enabled() else ev.rows(Q.HEAD_STEM_REACH)):
+        if str(r.value).lower() in ("up", "down", "both"):
+            stem = {"by": "head_stem_reach", "value": r.value}
+    if stem is not None:
+        info["stem"] = stem
+        return "has_a_stem", info
+    if not whole_rest_from_ink_enabled():
+        return None, info
+    hi = _head_ink(ev)
+    if hi is None:
+        info["ink"] = "unmeasured"
+        return None, info
+    info["head_ink"] = hi.get("value")
+    if hi.get("value") == "hollow":
+        return "ink_is_hollow", info
+    ext = hi.get("extent_sp")
+    try:
+        height = float(ext[1])
+    except (TypeError, ValueError, IndexError):
+        info["ink"] = "no_extent"
+        return None, info
+    info["trimmed_height_sp"] = round(height, 3)
+    if height > WHOLE_REST_INK_MAX_TRIMMED_HEIGHT_SP:
+        return "ink_is_head_tall", info
+    info["ink_read"] = True
+    return None, info
+
+
 @decision(
     quantity=Q.NOTEHEAD_IS_A_WHOLE_REST,
     composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.REST),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.REST),
+    wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.REST,
+           Q.HEAD_INK, Q.HEAD_STEM_REACH, Q.NOTEHEAD_STEM_CROSS_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("shape_and_position_agree", "not_rest_shaped",
              "not_where_a_whole_rest_can_hang", "no_page_frame",
              "read_at_a_stem_end",
+             "has_a_stem", "straddles_a_stem", "ink_not_head_shaped", "ink_is_hollow", "ink_is_head_tall",
              ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
@@ -10057,6 +10143,11 @@ def adjudicate_notehead_is_a_whole_rest(ev: Evidence) -> Ruling:
         detail["witness"] = "slot" if at_the_slot else "neighbouring_bar"
         if neighbour is not None:
             detail["neighbour"] = neighbour
+        if whole_rest_stem_rule_enabled() or whole_rest_from_ink_enabled():
+            veto, ink = _whole_rest_ink_read(ev)
+            detail["ink"] = ink
+            if veto is not None:
+                return Ruling(value=False, reason=veto, used=tuple(used), detail=detail)
         return Ruling(value=True, reason="shape_and_position_agree",
                       used=tuple(used), detail=detail)
     return Ruling(value=False, reason="not_where_a_whole_rest_can_hang",
