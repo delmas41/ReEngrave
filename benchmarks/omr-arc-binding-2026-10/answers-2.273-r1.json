@@ -1,0 +1,116 @@
+{
+ "lane": "2.273 OMR_ARC_STRIP (lane-2.273-arc-strip-read 00989d027)",
+ "date": "2026-11-06",
+ "sean_verbatim": "Tile 7 stops 1 note short - the rest are good.",
+ "summary": "11/12 arcs read across the barline start and end on the right notes; tile 7 stops one note short.",
+ "answers": [
+  {
+   "tile": 1,
+   "key": {
+    "plate": "brahms",
+    "page": 0,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 2,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 3,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 4,
+   "key": {
+    "plate": "brahms",
+    "page": 0,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 5,
+   "key": {
+    "plate": "brahms",
+    "page": 0,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 6,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 7,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "stops 1 note short"
+  },
+  {
+   "tile": 8,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 9,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 10,
+   "key": {
+    "plate": "brahms",
+    "page": 0,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 11,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  },
+  {
+   "tile": 12,
+   "key": {
+    "plate": "litolff",
+    "page": 4,
+    "kind": "slur"
+   },
+   "sean": "right"
+  }
+ ]
+}
