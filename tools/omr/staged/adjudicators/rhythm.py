@@ -394,7 +394,7 @@ def _beam_reader_looked(ev: Evidence, cell) -> Optional[str]:
     return None
 
 
-def _kept_beams(ev: Evidence, cell):
+def _kept_beams(ev: Evidence, cell, drop=frozenset()):
     """CV strokes, plus the YOLO boxes no CV stroke already explains.
 
     ⚠️ KEPT, NOT UNIONED AND NOT REPLACED, and both alternatives are measured.
@@ -407,7 +407,7 @@ def _kept_beams(ev: Evidence, cell):
     edits is less than one measure's amplification is worth; the beams are the
     thing.
     """
-    rows = _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
+    rows = [r for r in _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)) if r.id not in drop]
     cv = [r for r in rows if r.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
     yolo = [r for r in rows if r.reader == READERS.DETECTOR]
 
@@ -4736,7 +4736,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     # discounting a cross-staff stroke, so the OUTCOME can depend on a fact
     # about the SYSTEM and the neighbour's own STAFF_GROUP, not only on this
     # glyph's own cell.
-    composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
+    composed_from=(Q.BEAM_STROKE, Q.PAGE_BEAM_TIP, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
@@ -4806,7 +4806,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     # ink-continuity reading -- so the OUTCOME, not only the value, depends
     # on it, same reason `Q.STEM_TIP_INK` is declared above rather than left
     # a bare `wants`.
-    wants=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
+    wants=(Q.BEAM_STROKE, Q.PAGE_BEAM_TIP, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE, Q.NOTEHEAD_CLASS,
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
@@ -4980,6 +4980,14 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # it touches) needs this head's attached stems before any filtering,
     # not only after 2.18's side test. Reused below where 2.18/2.18b read it.
     own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    # ROADMAP 2.269 follow-up (flag `OMR_PAGE_TIP_REFUTES_BOX`, default OFF; needs M4b on for the cell): a detector beam box that lies beyond this head's own stem tip,
+    # touching no own stem, is out of THIS head's reading when the PAGE's tip row for that stem end is clean. The page reading decides; no cell re-read overrides it.
+    from .. import page_beams as _PB
+    _gone_ids = frozenset()
+    if own_stems and _PB.tip_refutes_enabled() and _PB.retired_for(ev, cell):
+        _gone_ids = frozenset(b.id for b in yolo if _PB.refuted_by_page_tips(ev, cell, b, own_stems))
+        if _gone_ids:
+            kept, cv, yolo = _kept_beams(ev, cell, _gone_ids)
     # ROADMAP 2.204 (flag `OMR_STEMS_FROM_STROKES`): the head's stem from the stroke map, set against the finder's. OFF: `_stems_on`, as above.
     stem_info = None
     if stems_from_strokes_enabled():
@@ -5245,9 +5253,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     break
             _cv_all = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b),
                         (_ink[b.id].detail or {}).get("thickness_px") if b.id in _ink else None)
-                       for b in _kept_beams(ev, cell)[1] if _xywh(b) is not None]
+                       for b in _kept_beams(ev, cell, _gone_ids)[1] if _xywh(b) is not None]
             _yolo = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b))
-                     for b in _kept_beams(ev, cell)[2] if _xywh(b) is not None]
+                     for b in _kept_beams(ev, cell, _gone_ids)[2] if _xywh(b) is not None]
             _ex, _how = stack_box_excess_beams(_cv_all, _yolo, _stem_x) if _stem_x is not None else (None, None)
             _box_agrees = _ex is not None and _ex >= BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS
             stem_levels = {"page_count": tip["count"], "side": tip["side"], "runs": tip["runs"], "unit_spaces": tip["unit_spaces"],
@@ -5275,7 +5283,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     sb_detail = None
     if (beams_from_strokes_enabled() and not hollow and voice_levels is None and own_stems and head_box is not None
             and side in ("up", "down")):
-        sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side, detector_pre=_kept_beams(ev, cell)[0])
+        sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side, detector_pre=_kept_beams(ev, cell, _gone_ids)[0])
         if sb is not None:
             used.extend(sb["rows"])
             before = [certain, possible]

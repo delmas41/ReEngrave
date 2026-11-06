@@ -78,6 +78,93 @@ def retired_for(ev: Any, cell: Any) -> bool:
     return retire_a_enabled() and views_filed(ev, cell)
 
 
+TIP_REFUTES_ENV = "OMR_PAGE_TIP_REFUTES_BOX"
+SPLIT_ENV = "OMR_PAGE_BEAM_SPLIT"
+
+
+def tip_refutes_enabled() -> bool:
+    """`OMR_PAGE_TIP_REFUTES_BOX` (ROADMAP 2.269 follow-up, default OFF; ADJUDICATE): with M4b on for the cell, a detector beam box that touches none of the stems it
+    lies beyond is refuted when the PAGE's stem-tip row (`Q.PAGE_BEAM_TIP`) for each of those stems, at the end facing the box, reads clean (no beam, hook, stub or ink)."""
+    return os.environ.get(TIP_REFUTES_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def split_enabled() -> bool:
+    """`OMR_PAGE_BEAM_SPLIT` (ROADMAP 2.269 follow-up, default OFF; GATHER): a page beam stroke thicker than one beam is filed as one view per level (`split_levels`)."""
+    return os.environ.get(SPLIT_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def peak_spaces(v: StrokeView) -> float:
+    """A stroke's PEAK thickness in staff spaces: the 90th percentile of its sampled thickness profile (`StrokeView.profile`, px across the axis). The median
+    (`thickness`) is diluted where a second beam of a stack covers only part of the length; the peak is not. Falls back to `thickness` with no profile."""
+    prof = sorted(int(x) for x in (v.profile or ()) if x)
+    if not prof or not v.space_px:
+        return float(v.thickness)
+    return float(prof[min(len(prof) - 1, int(0.9 * len(prof)))]) / float(v.space_px)
+
+
+def split_levels(beams: Sequence[Dict[str, Any]]) -> None:
+    """Sets `levels` (>= 1) on each beam row of role `beam`: the nearest whole number of the page's OWN single beam that the stroke holds. The page measures one beam twice,
+    on the beams not fused to a head box: the median PEAK thickness (`peak_spaces`) and the median thickness; a free stroke is counted on its peak against the first, a stroke
+    fused to a head box (its peak is head ink) on its median thickness against the second. No cut-off: a stack of two beams drawn in contact reads twice as thick. A page with
+    fewer than 3 free beams has no measure, so every stroke is one level (cannot tell is never "two")."""
+    free = [b for b in beams if b["role"] == "beam" and not b["head_fused"]]
+    t_peak = sorted(float(b["peak_spaces"]) for b in free)
+    t_med = sorted(float(b["thickness_spaces"]) for b in free)
+    p1 = t_peak[len(t_peak) // 2] if len(free) >= 3 else None
+    m1 = t_med[len(t_med) // 2] if len(free) >= 3 else None
+    for b in beams:
+        lv = 1
+        if p1 and b["role"] == "beam":
+            lv = max(1, int(round((float(b["thickness_spaces"]) / m1) if b["head_fused"] else (float(b["peak_spaces"]) / p1))))
+        b["levels"] = lv
+        b["single_beam_spaces"] = m1 if b["head_fused"] else p1
+
+
+def _clean_tip(tip_rows: Sequence[Any]) -> bool:
+    return bool(tip_rows) and all(bool(r.detail.get("tip_clean")) and not (r.detail.get("beams") or r.detail.get("hooks") or r.detail.get("stubs") or r.detail.get("doubt")
+                                                                        or r.detail.get("stem_beamed")) for r in tip_rows)
+
+
+def refuted_by_page_tips(ev: Any, cell: Any, box_row: Any, own_stems: Sequence[Any]) -> bool:
+    """True when the detector beam `box_row` is refuted FOR THIS HEAD by the page's tip rows: `own_stems` are the head's own `Q.STEM` rows (cell reader's), and for EVERY
+    one of them the box overlaps it in x, lies beyond one of its ends without touching it, and the page's `Q.PAGE_BEAM_TIP` row at that end is clean (no beam, hook, stub, doubt
+    or ink). A box that touches any own stem, or a head with no own stem, is not refuted. (The box may still be the beam of ANOTHER stem of the cell: it is only kept out of THIS
+    head's reading.) Read once: the page's reading decides; the cell is not re-read."""
+    box = box_row.value
+    if not isinstance(box, (list, tuple)) or len(box) < 4 or not own_stems:
+        return False
+    bx, by, bw, bh = (float(v) for v in box[:4])
+    tips = _tips_by_stem_row(ev, cell)
+    for st in own_stems:
+        if not isinstance(st.value, (list, tuple)) or len(st.value) < 4:
+            return False
+        sx, sy, sw, sh = (float(v) for v in st.value[:4])
+        if not (bx <= sx + sw and bx + bw >= sx):
+            return False                              # not over this stem's column: not the question here
+        if by <= sy + sh and by + bh >= sy:
+            return False                              # touches this stem
+        end = "top" if by + bh < sy else "bottom"
+        if not _clean_tip(tips.get((st.id, end), ())):
+            return False
+    return True
+
+
+def _tips_by_stem_row(ev: Any, cell: Any) -> Dict[Tuple[str, str], List[Any]]:
+    """The page's `Q.PAGE_BEAM_TIP` rows that name this cell, keyed (Q.STEM row id, end). Cached on the evidence object per cell key."""
+    from .record import Q, Scope
+    cache = ev.__dict__.setdefault("_page_tip_cache", {}) if hasattr(ev, "__dict__") else {}
+    key = cell.to_key()
+    got = cache.get(key)
+    if got is None:
+        got = {}
+        for r in ev.rows(Q.PAGE_BEAM_TIP, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+            if key in (r.detail.get("cells") or ()):
+                for sid in r.detail.get("stem_rows") or ():
+                    got.setdefault((sid, r.detail.get("end")), []).append(r)
+        cache[key] = got
+    return got
+
+
 def live_rows(ev: Any, cell: Any, rows: Sequence[Any]) -> List[Any]:
     """`Q.BEAM_STROKE` rows (or refusals) as the consumers should see them: with the retirement on, the cell reader A's (CV_LINES) are dropped (the detector's
     and the page views' stay); with it off, the page views are dropped (a record gathered with the views reads exactly as before)."""
@@ -251,7 +338,7 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
         grp = find(ss[0]) if ss and r["role"] == "beam" else None
         head_fused = bool(head_grid is not None and any(_covers(v.box, heads[i]) for i in head_grid.query(v.box)))
         beams.append(dict(ordinal=v.ordinal, role=str(r["role"]), stems=ss, stems_by_face=list(r["stems_by_face"]), group=grp,
-                          thickness_spaces=v.thickness, thickness_margin=r["thickness_margin"], length_spaces=v.length,
+                          thickness_spaces=v.thickness, space_px=v.space_px, peak_spaces=peak_spaces(v), thickness_margin=r["thickness_margin"], length_spaces=v.length,
                           kind=v.kind, head_fused=head_fused, claimed_by=claimed.get(v.ordinal),
                           cells=sorted(set().union(*[stem_cells.get(x, set()) for x in ss])) if ss else [], box=list(v.box)))
 
@@ -280,6 +367,8 @@ def read_page(views: Sequence[StrokeView], stems: Sequence[Dict[str, Any]], sp: 
         w = str(roles[v.ordinal].get("why") or "")
         if w.startswith("claimed:"):
             skipped[w[8:]] = skipped.get(w[8:], 0) + 1
+    if split_enabled():
+        split_levels(beams)
     census = dict(roles=dict(sorted(counts.items())), claimed_not_read=skipped, beam_strokes=len(beam_ords), stem_strokes=len(stem_rows), stem_rows_unmatched=unmatched,
                   groups=len(multi), seconds=round(time.time() - t0, 2))
     return dict(beams=beams, tips=tips, census=census)
@@ -361,7 +450,7 @@ def gather_page_beams(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         log.observe(sub, Q.PAGE_BEAM, b["role"], reader=READERS.CV_PAGE_BEAMS, frame=FRAME_PAGE, ordinal=b["ordinal"], stems=b["stems"],
                     stems_by_face=b["stems_by_face"], group=b["group"], thickness_spaces=b["thickness_spaces"], thickness_margin=b["thickness_margin"],
                     length_spaces=b["length_spaces"], stroke_kind=b["kind"], head_fused=b["head_fused"], claimed_by=b["claimed_by"],
-                    cells=b["cells"], bbox_page_px=[b["box"][0], b["box"][1], b["box"][0] + b["box"][2], b["box"][1] + b["box"][3]],
+                    cells=b["cells"], **(dict(peak_spaces=b["peak_spaces"], levels=b["levels"], single_beam_spaces=b["single_beam_spaces"]) if "levels" in b else {}), bbox_page_px=[b["box"][0], b["box"][1], b["box"][0] + b["box"][2], b["box"][1] + b["box"][3]],
                     staff=[local.get(sidx, (0, 0))[0], lidx])
     for t in res["tips"]:
         sidx, lidx = page_map.staff_of[t["stem"]]
@@ -423,10 +512,14 @@ def gather_page_beam_views(log: Any, cells: Sequence[Any], local: Dict[int, Tupl
         for b in sorted(mine, key=lambda t: t["ordinal"]):
             x, y, w, h = b["box"]
             cx, cy, cw, ch = (x - rect[0]) * up, (y - rect[1]) * up, w * up, h * up
-            row = log.observe(csub, Q.BEAM_STROKE, (cx, cy, cw, ch), reader=READERS.CV_PAGE_BEAMS, frame=frame, x0=cx, x1=cx + cw, y_center=cy + ch / 2.0,
-                              image="page_strokes", staff_lines_erased=False, page_stroke=b["ordinal"])
-            views.append((SimpleNamespace(x_canonical=cx, y_canonical=cy, width_canonical=cw, height_canonical=ch), row.id))
-            census["views"] += 1
+            lv = int(b.get("levels") or 1)
+            pitch = (float(b["peak_spaces"]) * float(b.get("space_px") or 0.0) * up / lv) if lv > 1 else 0.0
+            for k in range(lv):
+                off = (k - (lv - 1) / 2.0) * pitch      # a fused stack of `lv` beams: one view per level, stacked about the stroke's own centre line
+                row = log.observe(csub, Q.BEAM_STROKE, (cx, cy + off, cw, ch), reader=READERS.CV_PAGE_BEAMS, frame=frame, x0=cx, x1=cx + cw, y_center=cy + off + ch / 2.0,
+                                  image="page_strokes", staff_lines_erased=False, page_stroke=b["ordinal"], **(dict(level=k, levels=lv) if lv > 1 else {}))
+                views.append((SimpleNamespace(x_canonical=cx, y_canonical=cy + off, width_canonical=cw, height_canonical=ch), row.id))
+                census["views"] += 1
         stems = []
         for r in log.rows(Q.STEM, csub):
             if r.reader == READERS.CV_LINES and isinstance(r.value, (list, tuple)) and len(r.value) >= 4:
