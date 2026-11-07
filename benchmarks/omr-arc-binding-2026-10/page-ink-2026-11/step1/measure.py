@@ -125,7 +125,7 @@ def main():
     runs = res["runs"]
     by_run, alone = PA.witnesses_of(runs, arc_boxes, sp)
     t3 = time.time()
-    blank = PA.blank_mask(canvas == 0, boxes, areas)
+    blank = PA.blank_mask(canvas == 0, boxes, areas, sp)
     seeded = []
     for b in alone:
         s = PA.seed_read(canvas, sp, line_ys, b["box"], blank)

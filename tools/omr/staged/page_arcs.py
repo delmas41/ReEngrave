@@ -109,6 +109,10 @@ LEDGER_THIN_PX = 3
 TRIM_LINE = 1             # r3: an arc's end that runs along a staff line row is the line's, not the arc's
 TRIM_MIN_SP = 1.0
 LINE_RESIDUE = 1          # r3: ink wholly inside a staff line's own band is the line's
+ARC_IN_WORD = 1           # r3: an arc-shaped component inside a word's rectangle is not the word's
+ARC_COMP_MIN_SP = 3.0
+RAGGED_TRIM = 1           # r3: cut the junction points off an arc fused with a stem / flag / beam, and judge what is left
+RAGGED_DEV_SP = 0.2
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
 LINE_PAD_SP = 0.1         # r3: a line's band for the wait-through
 
@@ -490,6 +494,33 @@ def _trim_line_ends(t: Dict[str, Any], lines: np.ndarray, sp: float, ledgers: Se
     return dict(t, pts=p[a:b], gaps=[g for g in t.get("gaps", []) if g[0] >= xs[a] and g[1] <= xs[b - 1]]) if b - a >= 3 else t
 
 
+def _trim_ragged_ends(t: Dict[str, Any], sp: float) -> Optional[Dict[str, Any]]:
+    """An arc that is fused with a stem, a flag or a beam at an end has a few junction points that lie off its own curve (ROADMAP 2.274 r3: refused "rough" or
+    "two bows" where it merges). The curve is the quadratic of the MIDDLE of the track; the end points that stand off it by more than `RAGGED_DEV_SP` (running
+    in from the end, no further) are the junction's and are cut. None when nothing is cut or too little is left."""
+    p = t["pts"]
+    if len(p) < 10:
+        return None
+    x = np.array([q[0] for q in p], float)
+    y = np.array([q[1] for q in p], float)
+    f = (x - x[0]) / max(1.0, x[-1] - x[0])
+    mid = (f >= 0.2) & (f <= 0.8)
+    if mid.sum() < 6:
+        return None
+    c = np.polyfit(x[mid], y[mid], 2)
+    off = np.abs(y - np.polyval(c, x)) > RAGGED_DEV_SP * sp
+    a, b = 0, len(p)
+    while a < len(p) // 3 and off[a]:
+        a += 1
+    while b > a + 3 and b > 2 * len(p) // 3 and off[b - 1]:
+        b -= 1
+    if a == 0 and b == len(p):
+        return None
+    if x[b - 1] - x[a] < MIN_WIDTH_SP * sp:
+        return None
+    return dict(t, pts=p[a:b], gaps=[g for g in t.get("gaps", []) if g[0] >= x[a] and g[1] <= x[b - 1]])
+
+
 def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: float = MIN_WIDTH_SP, allow_on_line: bool = False
            ) -> Tuple[str, Optional[Dict[str, Any]]]:
     p = np.array(t["pts"], float)
@@ -620,7 +651,32 @@ def _line_rows(line_ys: Sequence[float], scale: float, H: int) -> np.ndarray:
     return rows
 
 
-def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]]) -> np.ndarray:
+def _is_arc_component(lab: np.ndarray, i: int, x0: int, y0: int, w: int, h: int, sp: float) -> bool:
+    """One thin bowed run: nearly every column holds ONE stroke no thicker than an arc column (`RUN_MAX_SP`), the strokes' centres follow a smooth quadratic, and
+    the bow is not a line's. Letters, a dash line, a stem or a head are none of these."""
+    m = lab[y0:y0 + h, x0:x0 + w] == i
+    cen, th = [], []
+    multi = 0
+    for x in range(w):
+        col = np.flatnonzero(m[:, x])
+        if len(col) == 0:
+            continue
+        runs = 1 + int(np.count_nonzero(np.diff(col) > 1))
+        if runs > 1:
+            multi += 1
+            continue
+        cen.append((x, (col[0] + col[-1]) / 2.0))
+        th.append(len(col))
+    if len(cen) < 0.9 * w or multi > 0.04 * w or float(np.median(th)) > RUN_MAX_SP * sp or max(th) > 1.4 * RUN_MAX_SP * sp:
+        return False
+    cx = np.array([c[0] for c in cen], float)
+    cy = np.array([c[1] for c in cen], float)
+    c2 = np.polyfit(cx, cy, 2)
+    if float(np.sqrt(np.mean((np.polyval(c2, cx) - cy) ** 2))) > 0.12 * sp:
+        return False
+    return True          # a straight stroke this long is no letter either; the judge refuses a line, a piece of an arc is nearly one
+
+def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: Optional[float] = None) -> np.ndarray:
     """What claims first or is not arc ink: the compact detector boxes' rectangles, and the ink COMPONENTS wholly inside a page claim's area (+1 px)."""
     import cv2
     H, W = ink.shape
@@ -656,6 +712,12 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
         ins = np.bincount(lab[union & ink].ravel(), minlength=n)
         take |= (ins >= 0.98 * np.maximum(tot, 1))
         take[0] = False
+        if ARC_IN_WORD and sp_page:
+            # a word's rectangle can run over an arc (a long "cresc. - - -" line); the arc, cut at a barline, is a component wholly inside it. A component that is
+            # ONE thin bowed run (every column one stroke, no taller than an arc, wide for a letter) is an arc, not a letter: not taken (2.274 r3)
+            for i in np.flatnonzero(take & (bw >= ARC_COMP_MIN_SP * sp_page)):
+                if _is_arc_component(lab, int(i), int(bx[i]), int(by[i]), int(bw[i]), int(bh[i]), sp_page):
+                    take[i] = False
         blank |= take[lab]
     return blank
 
@@ -773,7 +835,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     import cv2
     ink = canvas == 0
     if blank is None:
-        blank = blank_mask(ink, boxes, areas)
+        blank = blank_mask(ink, boxes, areas, sp_page)
     ink2 = ink & ~blank
     scale = min(1.0, TARGET_SP_PX / sp_page)
     small = cv2.resize(ink2.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink2
@@ -789,7 +851,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             band_s = line_arc_ink(raw_f > 0.5, model, sp, cols, blank_s, int(round(RUN_MAX_SP * sp)))
     # a track may wait out, and an arc be carried on through, only what a WORD or a dynamic claims (the marks an arc passes THROUGH); a head, an accidental,
     # a rest, a flag is where an arc ENDS, and a track that waited across heads linked their edges into fake runs
-    cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas)
+    cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas, sp_page)
     cross_s = cv2.resize(cross.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else cross
     tracks = _track(cols, sp, small.shape[1], cross_s if (band_s is None or not LINE_WAIT) else (cross_s | band_s))
     lines = np.array(sorted(y * scale for y in line_ys))
@@ -829,6 +891,12 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
         if TRIM_LINE and raw is not None:
             t = _trim_line_ends(t, lines, sp, ledgers_s)
         v, info = _judge(t, sp, lines)
+        if v in ("rough", "two_bows", "steep", "straight", "sparse") and RAGGED_TRIM and raw is not None:
+            t2 = _trim_ragged_ends(t, sp)
+            if t2 is not None:
+                v2, info2 = _judge(t2, sp, lines)
+                if v2 == "arc":
+                    t, v, info = t2, v2, info2
         why[v] = why.get(v, 0) + 1
         if v != "arc":
             if keep_rejected and v != "short":
@@ -1046,7 +1114,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
     n_seeded = 0
     if alone:
         ink = canvas == 0
-        blank = blank_mask(ink, boxes, areas)
+        blank = blank_mask(ink, boxes, areas, sp_page)
     for b in alone:
         s = seed_read(canvas, sp_page, line_ys, b["box"], blank)
         if s is not None:
