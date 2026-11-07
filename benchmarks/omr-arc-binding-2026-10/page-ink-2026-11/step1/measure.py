@@ -125,7 +125,10 @@ def main():
     runs = res["runs"]
     by_run, alone = PA.witnesses_of(runs, arc_boxes, sp)
     t3 = time.time()
-    blank = PA.blank_mask(canvas == 0, boxes, areas, sp)
+    try:
+        blank = PA.blank_mask(canvas == 0, boxes, areas, sp)
+    except TypeError:          # the round-2 module (R2_PA_FILE) has no sp argument
+        blank = PA.blank_mask(canvas == 0, boxes, areas)
     seeded = []
     for b in alone:
         s = PA.seed_read(canvas, sp, line_ys, b["box"], blank)

@@ -31,7 +31,10 @@ for stem in argv[2:]:
     z = np.load(os.environ["R2_CACHE"] + "/%s.canvas.npz" % stem, allow_pickle=True)
     canvas, raw, sp = z["canvas"], z["raw"], float(z["sp"])
     for r in J["runs"]:
-        if (r["witnesses"] and not src) or (src and r.get("src") != src):
+        if os.environ.get("WITNESSED"):
+            if not r["witnesses"]:
+                continue
+        elif (r["witnesses"] and not src) or (src and r.get("src") != src):
             continue
         if any(abs(o["box"][0] - r["box"][0]) < 0.5 * sp and abs(o["box"][2] - r["box"][2]) < 0.5 * sp and abs(o["box"][1] - r["box"][1]) < sp for o in old):
             continue
@@ -49,6 +52,14 @@ for stem in argv[2:]:
         cv2.putText(cell, "%s run %d w%.1f" % (stem, r["id"], r["width_sp"]), (2, 12), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 200), 1)
         cells.append(cell)
         index.append(dict(stem=stem, run=r["id"], box=[round(v) for v in r["box"]], width=r["width_sp"]))
+if os.environ.get("SAMPLE"):
+    import random
+    k = int(os.environ["SAMPLE"])
+    order = list(range(len(cells)))
+    random.Random(int(os.environ.get("SEED", "2743"))).shuffle(order)
+    order = sorted(order[:k])
+    cells = [cells[i] for i in order]
+    index = [index[i] for i in order]
 per = 6
 for i in range(0, len(cells), per):
     chunk = cells[i:i + per]
