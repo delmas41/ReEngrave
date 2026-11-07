@@ -1,0 +1,98 @@
+[
+ {
+  "tile": 1,
+  "page": "litolff-p12",
+  "kind": "arc on / across staff lines and a barline",
+  "reason": "straight(0.25)",
+  "best": 0.55,
+  "run": true
+ },
+ {
+  "tile": 2,
+  "page": "litolff-p12",
+  "kind": "arc on staff lines",
+  "reason": "sparse(0.32)",
+  "best": 0.59,
+  "run": true
+ },
+ {
+  "tile": 3,
+  "page": "litolff-p12",
+  "kind": "arc on staff lines",
+  "reason": "sparse(0.32)",
+  "best": 0.68,
+  "run": true
+ },
+ {
+  "tile": 4,
+  "page": "brahms-p22",
+  "kind": "flat arc on a staff line",
+  "reason": "straight(0.31)",
+  "best": 0.0,
+  "run": false
+ },
+ {
+  "tile": 5,
+  "page": "brahms-p7",
+  "kind": "short tie into a stem",
+  "reason": "rough(0.25)",
+  "best": 0.0,
+  "run": false
+ },
+ {
+  "tile": 6,
+  "page": "brahms-p22",
+  "kind": "short tie into a stem",
+  "reason": "rough(0.28)",
+  "best": 0.0,
+  "run": false
+ },
+ {
+  "tile": 7,
+  "page": "brahms-p7",
+  "kind": "short tie into a stem",
+  "reason": "rough(0.25)",
+  "best": 0.0,
+  "run": false
+ },
+ {
+  "tile": 8,
+  "page": "brahms-p7",
+  "kind": "short tie into a stem",
+  "reason": "rough(0.25)",
+  "best": 0.0,
+  "run": false
+ },
+ {
+  "tile": 9,
+  "page": "brahms-p22",
+  "kind": "other: sparse",
+  "reason": "sparse(0.38)",
+  "best": 0.0,
+  "run": false
+ },
+ {
+  "tile": 10,
+  "page": "litolff-p6",
+  "kind": "other: partial run",
+  "reason": "no_track",
+  "best": 0.57,
+  "run": true
+ },
+ {
+  "tile": 11,
+  "page": "brahms-p22",
+  "kind": "other: partial run",
+  "reason": "no_track",
+  "best": 0.76,
+  "run": true
+ },
+ {
+  "tile": 12,
+  "page": "litolff-p12",
+  "kind": "other: heavy arc, sparse",
+  "reason": "sparse(0.38)",
+  "best": 0.0,
+  "run": false
+ }
+]
