@@ -100,6 +100,15 @@ LINK_DEV_SP = 0.25        # the largest deviation of either fragment's points fr
 LINK_SUPPORT = 0.7        # the share of the gap's columns that carry raw ink within LINK_SUP_SP of the fit
 LINK_SUP_SP = 0.3
 LINK_YNEAR_SP = 2.5       # fragments whose facing ends lie further apart than this are not tried
+THICK_PASS = 1            # r3: a heavy slur's middle (thicker than RUN_MAX_SP) is read as a thick run, never a hole
+THICK_MAX_SP = 1.3        # ... up to this thick (a head is as tall, and no wider than ~1.3 sp: a thick track must be longer than THICK_MIN_SP)
+THICK_MIN_SP = 3.0
+THICK_SHARE = 0.25        # ... and at least this share of its columns thicker than RUN_MAX_SP
+LEDGER_THIN = 1           # r3: a ledger box does not claim a column whose ink is much thicker than the box
+LEDGER_THIN_PX = 3
+TRIM_LINE = 1             # r3: an arc's end that runs along a staff line row is the line's, not the arc's
+TRIM_MIN_SP = 1.0
+LINE_RESIDUE = 1          # r3: ink wholly inside a staff line's own band is the line's
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
 LINE_PAD_SP = 0.1         # r3: a line's band for the wait-through
 
@@ -454,6 +463,33 @@ def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) 
     return [dict(pts=m["pts"], gaps=m["gaps"], linked=True) for m in made]
 
 
+def _trim_line_ends(t: Dict[str, Any], lines: np.ndarray, sp: float, ledgers: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
+    """An arc that ends at a staff line chains with the line's own ink: the track runs on along the row (ROADMAP 2.274 r3: a bowl hanging from a line is read
+    with two bows). A stretch of at least `TRIM_MIN_SP` at an end whose centre stays within `LINE_STUB_SP` of one staff-line row is the line's; it is cut off."""
+    p = t["pts"]
+    if len(p) < 8 or (len(lines) == 0 and not len(ledgers)):
+        return t
+    ys = np.array([q[1] for q in p], float)
+    xs = np.array([q[0] for q in p], float)
+    on = np.min(np.abs(ys[:, None] - lines[None, :]), axis=1) < LINE_STUB_SP * sp if len(lines) else np.zeros(len(p), bool)
+    for (lx0, ly0, lx1, ly1) in ledgers:        # a ledger line claims first too: its own stretch of row (page boxes, reduced)
+        on |= (xs >= lx0 - 2) & (xs <= lx1 + 2) & (ys >= ly0 - LINE_STUB_SP * sp) & (ys <= ly1 + LINE_STUB_SP * sp)
+    a, b = 0, len(p)
+    i = 0
+    while i < len(p) and on[i]:
+        i += 1
+    if i > 0 and xs[i - 1] - xs[0] >= TRIM_MIN_SP * sp:
+        a = i
+    j = len(p)
+    while j > a and on[j - 1]:
+        j -= 1
+    if j < len(p) and xs[-1] - xs[j] >= TRIM_MIN_SP * sp:
+        b = j
+    if a == 0 and b == len(p):
+        return t
+    return dict(t, pts=p[a:b], gaps=[g for g in t.get("gaps", []) if g[0] >= xs[a] and g[1] <= xs[b - 1]]) if b - a >= 3 else t
+
+
 def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: float = MIN_WIDTH_SP, allow_on_line: bool = False
            ) -> Tuple[str, Optional[Dict[str, Any]]]:
     p = np.array(t["pts"], float)
@@ -590,7 +626,23 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
     H, W = ink.shape
     blank = np.zeros_like(ink)
     for _cls, (x0, y0, x1, y1) in boxes:
-        blank[max(0, int(y0) - 1):min(H, int(np.ceil(y1)) + 1), max(0, int(x0) - 1):min(W, int(np.ceil(x1)) + 1)] = True
+        ya, yb, xa, xb = max(0, int(y0) - 1), min(H, int(np.ceil(y1)) + 1), max(0, int(x0) - 1), min(W, int(np.ceil(x1)) + 1)
+        if LEDGER_THIN and _cls.startswith("ledger"):
+            # a ledger line is a thin level stroke: where the ink through the box is much thicker than the box is tall, something else lies there (the top of
+            # a heavy slur the detector boxed as a ledger line, 2.274 r3), and that column is not claimed
+            for x in range(xa, xb):
+                col = ink[:, x]
+                top = ya
+                while top > 0 and col[top - 1]:
+                    top -= 1
+                bot = yb
+                while bot < H and col[bot]:
+                    bot += 1
+                if bot - top > (yb - ya) + LEDGER_THIN_PX and col[ya:yb].any():
+                    continue
+                blank[ya:yb, x] = True
+            continue
+        blank[ya:yb, xa:xb] = True
     if areas:
         n, lab, st, _c = cv2.connectedComponentsWithStats(ink.astype(np.uint8), connectivity=8)
         take = np.zeros(n, bool)
@@ -685,6 +737,13 @@ def line_arc_ink(small_raw: np.ndarray, model: Sequence[Dict[str, Any]], sp: flo
                 continue
             lo, hi = int(round(c[x] - tl[x] / 2.0)) - pad, int(round(c[x] + tl[x] / 2.0)) + pad
             band[max(0, lo):min(H, hi + 1), x] = True
+        if LINE_RESIDUE:
+            # the eraser can leave a staff line standing in a stretch (its band is a few px off): ink wholly inside the line's own band is the line's, and a
+            # track that chains with it makes a bowl hanging from the line read as a straight run along it
+            for x in range(W):
+                if m["have"][x] and cols[x]:
+                    lo, hi = int(round(c[x] - tl[x] / 2.0)) - 1, int(round(c[x] + tl[x] / 2.0)) + 1
+                    cols[x] = [(p, q) for (p, q) in cols[x] if not (p >= lo and q - 1 <= hi)]
         top, bot = m["top"], m["bot"]
         t = (bot - top + 1).astype(float)
         la, lb = c - tl / 2.0, c + tl / 2.0
@@ -735,6 +794,17 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     tracks = _track(cols, sp, small.shape[1], cross_s if (band_s is None or not LINE_WAIT) else (cross_s | band_s))
     lines = np.array(sorted(y * scale for y in line_ys))
     tracks = [q for t in tracks for q in _split_at_cusps(t, sp)]
+    if THICK_PASS and raw is not None:
+        cols_t = _column_runs(small.astype(np.int8), int(round(THICK_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
+        extra = []
+        for t in _track(cols_t, sp, small.shape[1], cross_s):
+            for q in _split_at_cusps(t, sp):
+                pp = q["pts"]
+                if len(pp) < 8 or (pp[-1][0] - pp[0][0]) < THICK_MIN_SP * sp:
+                    continue
+                if np.mean([c[2] > RUN_MAX_SP * sp for c in pp]) >= THICK_SHARE:
+                    extra.append(dict(q, linked=True, thick=True))
+        tracks = extra + tracks
     n_linked = 0
     if raw is not None and LINK:
         raw_b = cv2.resize((raw == 0).astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else (raw == 0)
@@ -746,6 +816,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     if extend:
         small_raw = cv2.resize(ink.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink
         raw_cols = _column_runs(small_raw.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
+    ledgers_s = [[b[0] * scale, b[1] * scale, b[2] * scale, b[3] * scale] for c, b in boxes if c.startswith("ledger")]
     why: Dict[str, int] = {}
     out: List[Dict[str, Any]] = []
     rejected: List[Dict[str, Any]] = []
@@ -755,6 +826,8 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
         if len(t["pts"]) < 3:
             why["tiny"] = why.get("tiny", 0) + 1
             continue
+        if TRIM_LINE and raw is not None:
+            t = _trim_line_ends(t, lines, sp, ledgers_s)
         v, info = _judge(t, sp, lines)
         why[v] = why.get(v, 0) + 1
         if v != "arc":
