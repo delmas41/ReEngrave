@@ -49,6 +49,7 @@ GAP_SP = 1.25             # the widest hole a track bridges (a carved rule ~0.2 
 SLOPE_SP = 1.5            # the stretch of its own recent points a track predicts from
 MIN_WIDTH_SP = 1.4
 CROSS_CLASSES = ("dynamic", "fermata", "ornament", "trill", "ottava", "pedal", "tremolo", "articulation", "tuplet")     # compact marks an arc may touch without ending there
+EXT_ALL = 1               # the extension runs through every claim (a head too): an arc's end is carried on to the note it stops at
 EXT_MIN_SP = 1.0         # a run shorter than this is not extended
 EXT_TOL_SP = 0.2          # the extension takes ink this close to the end's tangent
 EXT_FIT_SP = 4.0          # the extension follows the quadratic fitted to this much of the run's end
@@ -66,9 +67,8 @@ HOLE_PAD_SP = 0.3         # the jag is not measured this close to a hole
 CUSP_SP = 0.75            # the stretch each side of a hole the slope is read over
 CUSP_GAP_SP = 0.3         # a bridged hole at least this wide (a blanked head is ~1.2 sp)
 HUG_SP = 0.3             # a run's body this close to a compact claimed mark's box is its rim
-LEDGER_MAX_SP = 4.0
-LEDGER_FLAT_SP = 0.12      # a run that bows less than this ...
-LEDGER_ROW_SP = 0.15       # ... and lies this close to a row of the staff's line grid is a ledger line
+FLAT_MAX_SP = 4.0          # a run this narrow ...
+FLAT_SAG_SP = 0.12         # ... that bows less than this is a ledger line / head base / beam stub
 HEADER_OWNERS = ("leading_column", "bracket", "clef", "key_signature", "meter")   # claimed before an arc: no arc lies along them
 DOT_MIN_SP = 0.2
 DOT_MAX_SP = 0.75
@@ -251,8 +251,8 @@ def _extend_through_claims(t: Dict[str, Any], raw_cols: List[List[Tuple[int, int
     egaps: List[Tuple[int, int]] = []
     for side, step in (("left", -1), ("right", 1)):
         seq = p if step == 1 else p[::-1]
-        ex = np.array([q[0] for q in seq if abs(q[0] - seq[0][0]) <= fit_w], float)
-        ey = np.array([q[1] for q in seq if abs(q[0] - seq[0][0]) <= fit_w], float)
+        ex = np.array([q[0] for q in seq if abs(q[0] - seq[-1][0]) <= fit_w], float)
+        ey = np.array([q[1] for q in seq if abs(q[0] - seq[-1][0]) <= fit_w], float)
         if len(ex) < 6:
             continue
         coef = np.polyfit(ex, ey, 2)        # the run's own curve over its last stretch: the extension may not wander off it (a dynamic's strokes lie close by)
@@ -463,21 +463,10 @@ def is_a_fermata(pts: np.ndarray, dots: np.ndarray, sag_sp: float, width_sp: flo
     return len(sel) > 0
 
 
-def on_a_ledger_row(pts: np.ndarray, sag_sp: float, width_sp: float, line_ys: Sequence[float], sp_page: float) -> bool:
-    """A short, flat run whose middle lies on the staff's own line grid (a staff line or its continuation above / below the staff) is a ledger line or a
-    head's base, never a tie: a tie bows, and one that does lies between the lines. Needs the staff's lines: groups of five."""
-    if width_sp > LEDGER_MAX_SP or abs(sag_sp) >= LEDGER_FLAT_SP or len(line_ys) < 5:
-        return False
-    ys = np.array(sorted(line_ys), float)
-    my = float(np.median(pts[:, 1]))
-    k = int(np.argmin(np.abs(ys - my)))
-    g = (k // 5) * 5
-    grp = ys[g:g + 5]
-    if len(grp) < 5:
-        return False
-    d = (grp[-1] - grp[0]) / 4.0
-    off = ((my - grp[0]) / d) % 1.0
-    return min(off, 1.0 - off) * d < LEDGER_ROW_SP * sp_page
+def short_and_flat(sag_sp: float, width_sp: float) -> bool:
+    """A run no wider than `FLAT_MAX_SP` that bows less than `FLAT_SAG_SP` is a ledger line, a head's base or a beam's stub, never a tie. Measured on the five
+    develop pages: 2 such runs lie under a detector arc box and 28 under none (a tie bows; and a mark that is not an arc is not boxed as one)."""
+    return width_sp <= FLAT_MAX_SP and abs(sag_sp) < FLAT_SAG_SP
 
 
 def _line_rows(line_ys: Sequence[float], scale: float, H: int) -> np.ndarray:
@@ -531,6 +520,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     # a rest, a flag is where an arc ENDS, and a track that waited across heads linked their edges into fake runs
     cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas)
     cross_s = cv2.resize(cross.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else cross
+    blank_s = cv2.resize(blank.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else blank
     tracks = _track(cols, sp, small.shape[1], cross_s)
     lines = np.array(sorted(y * scale for y in line_ys))
     tracks = [q for t in tracks for q in _split_at_cusps(t, sp)]
@@ -557,8 +547,8 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                 rejected_tracks.append(dict(why=v, pts=[[float(a / scale), float(b / scale)] for a, b, _c in q]))
             continue
         hug = hugs_a_claimed_mark(np.array(t["pts"], float) / scale, boxes, areas, sp_page)
-        if not hug and on_a_ledger_row(np.array(t["pts"], float)[:, :2] / scale, info["sagitta_sp"], info["width_sp"], line_ys, sp_page):
-            hug = "ledger_row"
+        if not hug and short_and_flat(info["sagitta_sp"], info["width_sp"]):
+            hug = "short_flat"
         if not hug and is_a_fermata(np.array(t["pts"], float)[:, :2] / scale, dots, info["sagitta_sp"], info["width_sp"], sp_page):
             hug = "fermata"
         if hug:
@@ -570,7 +560,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
         if raw_cols is not None:
             # the core was judged on its own ink; only an accepted arc is carried on through the marks that claim before it, so an extension can never
             # make a run fail (a tail into a head used to turn a clean arc "steep")
-            t = _extend_through_claims(t, raw_cols, cross_s, sp)
+            t = _extend_through_claims(t, raw_cols, blank_s if EXT_ALL else cross_s, sp)
             info = dict(info, width_sp=round((t["pts"][-1][0] - t["pts"][0][0] + 1) / sp, 2))
         out.append(_run_row(t, info, scale, len(out)))
     return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected,

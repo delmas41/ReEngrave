@@ -147,6 +147,17 @@ def main():
             if sh > best:
                 best, bid = sh, r["id"]
         c["best"], c["run"] = round(best, 2), bid
+        # AMENDMENT r2 (disclosed, made on the develop pages before the hold-out ran): a detector curve that joins two arcs meeting at a note is covered by the
+        # UNION of the runs on it; the pre-registered one-run share stays the verdict and is reported first
+        un = 0
+        for x, t_, b_ in c["trace"]:
+            for r in runs:
+                if r["box"][0] <= x <= r["box"][2]:
+                    P = pts[r["id"]]
+                    if abs(float(np.interp(x, P[:, 0], P[:, 1])) - (t_ + b_) / 2.0) <= 0.6 * sp:
+                        un += 1
+                        break
+        c["union"] = round(un / max(1, len(c["trace"])), 2)
         sd = 0.0
         for s in seeded:
             sd = max(sd, covered_by(np.array(s["run"]["pts"], float), c["trace"], sp))
@@ -166,7 +177,8 @@ def main():
                    curves_total=len(det), curves_refused=sum(1 for c in det if c["refused"]), curves_kept=len(kept),
                    whole=sum(1 for c in kept if c["best"] >= 0.8), partial=sum(1 for c in kept if 0.3 <= c["best"] < 0.8),
                    none=sum(1 for c in kept if c["best"] < 0.3),
-                   whole_after_seed=sum(1 for c in kept if c["best"] >= 0.8 or c["seeded_best"] >= 0.8))
+                   whole_after_seed=sum(1 for c in kept if c["best"] >= 0.8 or c["seeded_best"] >= 0.8),
+                   whole_union=sum(1 for c in kept if c["union"] >= 0.8))
     ink = canvas == 0
     for c in kept:
         x0, y0, x1, y1 = [int(v) for v in c["box"]]
