@@ -256,7 +256,7 @@ def _serve(meta: Dict[str, Any], arrays: Dict[str, np.ndarray], images: Sequence
 
 def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: float = 0.7,
             agnostic_nms: bool = False, imgsz: int, device: Optional[str] = None, verbose: bool = False,
-            root: Optional[Path] = None, aux: Optional[tuple] = None):
+            root: Optional[Path] = None, aux: Optional[tuple] = None, max_det: Optional[int] = None):
     """`model.predict(...)` with the cache in front of it. `root` None -> `$OMR_DETECTOR_CACHE`; neither -> the
     plain call, untouched.
 
@@ -267,7 +267,9 @@ def predict(model: Any, weights_path: str, *, source: Any, conf: float, iou: flo
     root = Path(root) if root else cache_dir()
     kw = dict(source=source, conf=conf, iou=iou, agnostic_nms=agnostic_nms, imgsz=imgsz, device=device,
               verbose=verbose)
-    if root is None:
+    if max_det:                                  # ROADMAP 2.273: only the staff-row strip asks; every other call is unchanged
+        kw["max_det"] = int(max_det)
+    if root is None or max_det:                  # a raised box cap is never served from (or written to) the 300-box cache
         t0 = time.perf_counter()
         if aux is not None:
             rec0: Dict[str, Any] = {}

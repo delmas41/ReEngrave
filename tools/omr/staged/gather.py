@@ -17755,6 +17755,12 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_letter_look(log, pws, cells, local, detections,
                            detector=detector, progress=progress)
 
+        # ROADMAP 2.273 (flag OMR_ARC_STRIP, default ON since 2026-11-06): the far half of an arc a barline cuts, read once on the staff-row strip and APPENDED to its cell's
+        # `detections`. AFTER every detector pass (the cut boxes are final), BEFORE the page stroke map and the arc trace, which fold the piece into its curve.
+        from . import arc_strip as _arc_strip
+        if detector is not None and _arc_strip.enabled():
+            _arc_strip.gather_arc_strip(log, pws, cells, local, detections, detector=detector, conf_threshold=conf_threshold, progress=progress)
+
         # ROADMAP 2.166 (flag OMR_SYSTEM_ARCS, default ON; erase OMR_SYSTEM_ARCS_ERASE, default ON since 2026-11-02): ties/slurs read once per staff across the system on page
         # pixels, then their own stroke erased from `cell.image_no_staff`. AFTER every detector call (the box set is
         # final, so every head is protected; the detector never sees the erase), BEFORE every ink reader below.

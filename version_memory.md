@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-06 -- ROADMAP 2.273 landed ON: OMR_ARC_STRIP default ON (deny-list)
+STAGED GATHER `arc_strip.gather_arc_strip` (hook in `gather.gather()` after the detector passes, before the page stroke map): the same detector is run once per staff row holding an arc box cut at an interior cell edge (`max_det` raised through `yolo_detector`/`detector_cache`, a raised cap never cached) and a strip tie/slur box that continues a cut cell arc box across the barline is appended as a clipped detector piece (`source` `arc_strip`). `enabled()` is deny-list: "0"/"false"/"no"/"off" turns it off. Sean: "Land it." (11/12 tiles right, tile 7 one note short). Brahms p0 vs hand arcs: written 89->96, two-piece 9->5, wrong-note 17->20 (being traced). Flag-OFF export byte-compared to main on Litolff p4 and Brahms p0. Flag rows, rule page and test pin updated.
+
 ## 2026-11-05 -- ROADMAP 2.270 landed ON: OMR_WHOLE_REST_FROM_INK default ON (deny-list)
 STAGED ADJUDICATE `rhythm.adjudicate_notehead_is_a_whole_rest` / `_whole_rest_ink_read` + EXPORT `_place_notes`: a whole-rest verdict now rests on the head's own ink (trimmed height, hollow, stem, ink across a stem, width), and a box whose ink was measured and passed is written as `restWhole` instead of dropped `ink_is_a_whole_rest`. `whole_rest_from_ink_enabled()` (rhythm.py and export.py) is deny-list: "0"/"false"/"no"/"off" turns it off. `OMR_WHOLE_REST_STEM_RULE` stays OFF (FROM_INK already runs the stem test). Sean's 12 reader tiles: rests right; tile 12 (half a sharp) fixed in r1; Litolff rests +55. Known item: the F-clef fragment (Brahms p25) is written as a note until clef ink is claimed (2.251/2.269). Pin tests updated; docs/flags-2026-09.md rows and docs/ink-rules.md rebuilt.
 

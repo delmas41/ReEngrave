@@ -1,5 +1,15 @@
 # ROADMAP 2.223 -- page-wide arc binding (STAGED)
 
+## 2.274 step 1 -- page-ink arcs, file-only, OUT OF SAMPLE (2026-11-06)
+
+STAGED, GATHER. Branch lane-2.274-page-ink-arcs 33a43d211 (`page_arcs.gather_page_arcs`, called after `gather_page_beams`; flag default OFF; export byte-identical ON/OFF on Litolff p4, Brahms p5).
+
+- Pre-registered verdict: GOOD if runs cover >=95% of detector-witnessed arcs whole, add real NEW arcs, and fakes <3/page. RESULT: coverage 81.0% (681/841; 83.2% with a seeded local read) on Brahms p4/p5/p19 + Litolff p4/p16; 81.0% on fresh pages Brahms 12/14 + Litolff 8/10. NOT MET.
+- NEW arcs: 49-66 real arcs per page set that no detector box covers. Fakes ~1.4/page: hairpin legs and wedge residue, a hairline by a brace, a line along beamed heads, a digit base, a rehearsal-letter frame.
+- Litolff misses (106 of 401 curves): thick (39; the 0.42 cap is a knife edge; stemless hooks over black heads mixed in), rough (26; arcs through stems cut by blanked compact boxes), ties on staff lines (16), short ties into a barline or stem (23).
+- Cost: 0.7 s Litolff p4, 2.8 s Brahms p5.
+- Lesson: the in-sample test (Brahms p0, scorer corrected after looking) overstated it; out of sample the ink read is a strong second witness that finds real missed arcs, not a replacement for the detector. Sean judged the in-sample crops 8/8.
+
 ## 2026-11-06 PAGE-INK ARCS: feasibility of reading each arc from the page ink (measure only; branch `plan-page-ink-arcs`; plan `docs/plan-2026-11-06-page-ink-arcs.md`; scripts `page-ink-2026-11/`)
 
 Cause and lesson: in the plan §1 (the arc's identity is a per-cell detector box; every fix so far repaired its pieces downstream).
