@@ -88,6 +88,20 @@ STRAIGHT_LONG_REL = 0.047  # a run over STRAIGHT_MAX_SP whose bow is under this 
 STRAIGHT_MAX_SP = 4.0     # ... and longer than this is a line, not an arc
 WITNESS_SHARE = 0.5       # a detector arc box witnesses a run when the run covers this share of the box's width inside the box (grown 0.5 sp)
 POINT_STEP_SP = 0.25      # one filed point per this many staff spaces
+LINE_WIN_SP = 2.0         # r3: the line's own thickness is the median over this much each side (never above LINE_THICK_CAP x its page median)
+LINE_THICK_CAP = 1.25
+LINE_EXCESS_SP = 0.12     # r3: a raw run on a staff line at least this much thicker than the line's own thickness there is an arc on the line
+ARC_NOMINAL_SP = 0.25     # r3: an arc's depth when it leaves the line on one side only (the rest lies in the line)
+LINK = 1                  # r3: join fragments of one arc that a joint curve fit and the raw ink under the gap explain
+LINK_GAP_SP = 6.0         # the widest gap two fragments are joined across
+LINK_MIN_SP = 0.6         # the shortest fragment that is joined
+LINK_RES_SP = 0.08        # rms of the joint fit over both fragments
+LINK_DEV_SP = 0.25        # the largest deviation of either fragment's points from the joint fit
+LINK_SUPPORT = 0.7        # the share of the gap's columns that carry raw ink within LINK_SUP_SP of the fit
+LINK_SUP_SP = 0.3
+LINK_YNEAR_SP = 2.5       # fragments whose facing ends lie further apart than this are not tried
+LINE_WAIT = 0             # r3 experiment: a track waits through a line band
+LINE_PAD_SP = 0.1         # r3: a line's band for the wait-through
 
 NOT_ARC_SKIP = ("staff", "slur", "tie", "brace", "bracket", "barline", "arpeggiato", "systemicBarline")
 CLAIM_OWNERS = ("meter", "clef", "key_signature", "leading_column", "word", "bracket")
@@ -354,6 +368,92 @@ def _split_at_cusps(t: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
     return out
 
 
+def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) -> List[Dict[str, Any]]:
+    """ROADMAP 2.274 r3, THE ARC IS ONE INK RUN (Sean's process): fragments the tracker left where the arc touches other ink -- a staff line the eraser took a
+    band out of, a carved barline, a stem or a head, a thick apex -- are joined when ONE smooth curve explains both (the joint quadratic, quartic over 8 sp,
+    off by no more than `LINK_RES_SP` rms and `LINK_DEV_SP` at any point), the curve at the join is where the two ends face each other, and the RAW ink
+    (nothing erased) lies along that curve under the gap in at least `LINK_SUPPORT` of its columns. Two arcs that meet at a note do not fit one curve (a V);
+    two ties in a chain bow separately. Greedy by the smallest residual; a joined track can be joined again. Returns the joined tracks only (the fragments stay
+    in the caller's list; it drops what a joined run covers). A joined track carries the gap in `gaps`, which the judge counts as explained, not missing."""
+    frag = []
+    for t in tracks:
+        p = t["pts"]
+        if len(p) >= 3 and (p[-1][0] - p[0][0]) >= LINK_MIN_SP * sp:
+            frag.append(dict(t, _x=np.array([q[0] for q in p], float), _y=np.array([q[1] for q in p], float)))
+    if len(frag) < 2:
+        return []
+    import heapq
+    H, W = raw_b.shape
+    gap_max, ynear = LINK_GAP_SP * sp, LINK_YNEAR_SP * sp
+    r_sup = max(1, int(round(LINK_SUP_SP * sp)))
+
+    def score(a: Dict[str, Any], b: Dict[str, Any]) -> Optional[float]:
+        gx = b["_x"][0] - a["_x"][-1]
+        if gx > gap_max or gx < -2 or abs(b["_y"][0] - a["_y"][-1]) > ynear:
+            return None
+        x = np.concatenate([a["_x"], b["_x"]])
+        y = np.concatenate([a["_y"], b["_y"]])
+        deg = 2 if (x.max() - x.min()) <= 8 * sp else 4
+        if len(x) < deg + 3:
+            return None
+        c = np.polyfit(x, y, deg)
+        res = y - np.polyval(c, x)
+        rms = float(np.sqrt(np.mean(res ** 2)))
+        if rms > LINK_RES_SP * sp or float(np.abs(res).max()) > LINK_DEV_SP * sp:
+            return None
+        if gx > 2:
+            gxs = np.arange(int(a["_x"][-1]) + 1, int(b["_x"][0]))
+            gy = np.round(np.polyval(c, gxs)).astype(int)
+            ok = 0
+            for xx, yy in zip(gxs, gy):
+                if 0 <= yy < H and 0 <= xx < W and raw_b[max(0, yy - r_sup):min(H, yy + r_sup + 1), xx].any():
+                    ok += 1
+            if ok < LINK_SUPPORT * len(gxs):
+                return None
+        return rms
+
+    heap: List[Tuple[float, int, int]] = []
+    order = sorted(range(len(frag)), key=lambda i: frag[i]["_x"][0])
+    xs0 = [frag[i]["_x"][0] for i in order]
+    import bisect
+    for ai, i in enumerate(order):
+        lim = bisect.bisect_right(xs0, frag[i]["_x"][-1] + gap_max)
+        for j in order[ai + 1:lim]:
+            sc = score(frag[i], frag[j])
+            if sc is not None:
+                heapq.heappush(heap, (sc, i, j))
+    dead = set()
+    made: List[Dict[str, Any]] = []
+    while heap and len(made) < 4 * len(frag):
+        _r, i, j = heapq.heappop(heap)
+        if i in dead or j in dead:
+            continue
+        a, b = frag[i], frag[j]
+        gaps = list(a.get("gaps", [])) + list(b.get("gaps", []))
+        if b["_x"][0] - a["_x"][-1] > 2:
+            gaps.append((int(a["_x"][-1]), int(b["_x"][0])))
+        pts = list(a["pts"]) + list(b["pts"])
+        m = dict(pts=pts, gaps=gaps, linked=True, _x=np.array([q[0] for q in pts], float), _y=np.array([q[1] for q in pts], float))
+        dead.add(i)
+        dead.add(j)
+        k = len(frag)
+        frag.append(m)
+        made.append(m)
+        for o in range(k):
+            if o in dead:
+                continue
+            f = frag[o]
+            if f["_x"][-1] <= m["_x"][0] + 2:
+                sc = score(f, m)
+                if sc is not None:
+                    heapq.heappush(heap, (sc, o, k))
+            if f["_x"][0] >= m["_x"][-1] - 2:
+                sc = score(m, f)
+                if sc is not None:
+                    heapq.heappush(heap, (sc, k, o))
+    return [dict(pts=m["pts"], gaps=m["gaps"], linked=True) for m in made]
+
+
 def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: float = MIN_WIDTH_SP, allow_on_line: bool = False
            ) -> Tuple[str, Optional[Dict[str, Any]]]:
     p = np.array(t["pts"], float)
@@ -508,8 +608,107 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
     return blank
 
 
+def line_model(raw_ink: np.ndarray, line_ys: Sequence[float], sp: float, scale: float) -> List[Dict[str, Any]]:
+    """ROADMAP 2.274 r3, the staff lines' OWN local geometry on the UNERASED raster (reduced frame): per line, `c` (the line's centre at every column, from the
+    page's own local staff reader `stroke_map.LocalStaff`, so a tilted or wavy staff is measured where the arc is, never with a staff-wide value) and `t` (the
+    line's own thickness at every column: the run thickness on the raw raster, medianed over +-`LINE_WIN_SP` and never above `LINE_THICK_CAP` times the line's
+    own median, so an arc lying on the line does not become part of it). The lines are taken in staves of five, as the page's staves are. [] when the lines
+    are not whole staves."""
+    from .stroke_map import LocalStaff
+    ys = sorted(float(y) * scale for y in line_ys)
+    if not ys or len(ys) % 5:
+        return []
+    H, W = raw_ink.shape
+    out: List[Dict[str, Any]] = []
+    win = max(3, int(round(LINE_WIN_SP * sp)))
+    ink = raw_ink > 0.5
+    for s in range(0, len(ys), 5):
+        grp = ys[s:s + 5]
+        ya = max(0, int(grp[0] - 3 * sp))
+        yb = min(H, int(grp[-1] + 3 * sp) + 1)
+        ls = LocalStaff(raw_ink[ya:yb], [y - ya for y in grp], sp)
+        xs = np.arange(W)
+        for i in range(5):
+            cen = np.array([ls.lines_at(float(x))[i] + ya for x in range(0, W, 4)])
+            c = np.interp(xs, np.arange(0, W, 4), cen)
+            r0 = np.clip(np.round(c).astype(int), 0, H - 1)
+            # the ink row nearest the centre (within 2 px), then the run's extent up and down
+            r = r0.copy()
+            for d in (1, -1, 2, -2):
+                miss = ~ink[r, xs]
+                r[miss] = np.clip(r0[miss] + d, 0, H - 1)
+            have = ink[r, xs]
+            top = r.copy()
+            bot = r.copy()
+            lim = int(1.5 * sp)
+            alive_u = have.copy()
+            alive_d = have.copy()
+            for k in range(1, lim + 1):
+                yu = np.clip(r - k, 0, H - 1)
+                yd = np.clip(r + k, 0, H - 1)
+                alive_u &= ink[yu, xs]
+                alive_d &= ink[yd, xs]
+                top[alive_u] = yu[alive_u]
+                bot[alive_d] = yd[alive_d]
+            t = (bot - top + 1).astype(float)
+            t[~have] = np.nan
+            tmed = float(np.nanmedian(t)) if np.isfinite(t).any() else 2.0
+            tl = np.full(W, tmed)
+            tt = np.where(np.isfinite(t), np.minimum(t, LINE_THICK_CAP * tmed), np.nan)
+            for x in range(0, W, 2):
+                seg = tt[max(0, x - win):x + win + 1]
+                seg = seg[np.isfinite(seg)]
+                if len(seg) >= 3:
+                    tl[x:x + 2] = float(np.median(seg))
+            out.append(dict(c=c, t=tl, tmed=tmed, have=have, top=top, bot=bot))
+    return out
+
+
+def line_arc_ink(small_raw: np.ndarray, model: Sequence[Dict[str, Any]], sp: float, cols: List[List[Tuple[int, int]]], blank_s: Optional[np.ndarray],
+                 max_run: int) -> np.ndarray:
+    """What lies ON a staff line is read on the unerased raster (ROADMAP 2.274 r3; lane brief 1, Sean's process: an arc is the ink that leaves the line's own band
+    or is thicker than the line's own local thickness at that x). In each column where the raw run through a line is thicker than that line's own thickness
+    here by at least `LINE_EXCESS_SP` (and no taller than an arc column, and not claimed), the eraser may have taken part of an arc with the line: the column's
+    runs under the raw run are replaced by the arc's own rows -- the whole raw run when it leaves the line on BOTH sides, else the side it leaves on, one
+    nominal arc thickness deep (the rest lies in the line). Returns the boolean mask of the line bands (rows of each line's own band, with `LINE_PAD_SP`),
+    where a track may wait on its own slope through the stretch where the arc lies wholly in the line and nothing shows."""
+    H, W = small_raw.shape
+    band = np.zeros((H, W), bool)
+    xs = np.arange(W)
+    pad = max(1, int(round(LINE_PAD_SP * sp)))
+    nom = max(2, int(round(ARC_NOMINAL_SP * sp)))
+    emin = max(2.0, LINE_EXCESS_SP * sp)
+    for m in model:
+        c, tl = m["c"], m["t"]
+        for x in range(W):
+            if not m["have"][x]:
+                continue
+            lo, hi = int(round(c[x] - tl[x] / 2.0)) - pad, int(round(c[x] + tl[x] / 2.0)) + pad
+            band[max(0, lo):min(H, hi + 1), x] = True
+        top, bot = m["top"], m["bot"]
+        t = (bot - top + 1).astype(float)
+        la, lb = c - tl / 2.0, c + tl / 2.0
+        et, eb = la - top, bot - lb
+        ok = m["have"] & (t - tl >= emin) & (t <= max_run)
+        for x in np.flatnonzero(ok):
+            a, b = int(top[x]), int(bot[x])
+            if blank_s is not None and blank_s[a:b + 1, x].any():
+                continue
+            if et[x] >= 1.0 and eb[x] >= 1.0:
+                A, B = a, b
+            elif et[x] >= eb[x]:
+                A, B = a, min(b, a + max(nom, int(round(et[x]))))
+            else:
+                A, B = max(a, b - max(nom, int(round(eb[x])))), b
+            keep = [(p, q) for (p, q) in cols[x] if q < a - 1 or p > b + 1]
+            keep.append((A, B + 1))
+            cols[x] = sorted(keep)
+    return band
+
+
 def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxes: Sequence[Tuple[str, Sequence[float]]],
-              areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None, keep_rejected: bool = False, extend: bool = True) -> Dict[str, Any]:
+              areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None, keep_rejected: bool = False, extend: bool = True,
+              raw: Optional[np.ndarray] = None) -> Dict[str, Any]:
     """The runs of the page ink (module doc). `canvas`: 0 = ink, page px. Returns `{runs, why, tracks, scale, sp, blanked}`; each run has `pts` (page px,
     ~one per 2 reduced px), `box`, `width_sp`, `sagitta_sp`, `thick_sp`, `resid_sp`, `inked`, `chord_deg`, `half` (half its thickness, page px)."""
     import cv2
@@ -522,14 +721,26 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     sp = sp_page * scale
     line_rows = _line_rows(line_ys, scale, small.shape[0])
     cols = _column_runs(small.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
+    blank_s = cv2.resize(blank.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else blank
+    band_s = None
+    if raw is not None and line_ys:
+        raw_f = cv2.resize((raw == 0).astype(np.float32), None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) if scale < 1 else (raw == 0).astype(np.float32)
+        model = line_model(raw_f, line_ys, sp, scale)
+        if model:
+            band_s = line_arc_ink(raw_f > 0.5, model, sp, cols, blank_s, int(round(RUN_MAX_SP * sp)))
     # a track may wait out, and an arc be carried on through, only what a WORD or a dynamic claims (the marks an arc passes THROUGH); a head, an accidental,
     # a rest, a flag is where an arc ENDS, and a track that waited across heads linked their edges into fake runs
     cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas)
     cross_s = cv2.resize(cross.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else cross
-    blank_s = cv2.resize(blank.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else blank
-    tracks = _track(cols, sp, small.shape[1], cross_s)
+    tracks = _track(cols, sp, small.shape[1], cross_s if (band_s is None or not LINE_WAIT) else (cross_s | band_s))
     lines = np.array(sorted(y * scale for y in line_ys))
     tracks = [q for t in tracks for q in _split_at_cusps(t, sp)]
+    n_linked = 0
+    if raw is not None and LINK:
+        raw_b = cv2.resize((raw == 0).astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else (raw == 0)
+        joined = _link_fragments(tracks, sp, raw_b)
+        n_linked = len(joined)
+        tracks = joined + tracks
     dots = page_dots(ink, sp_page)
     raw_cols = None
     if extend:
@@ -539,6 +750,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     out: List[Dict[str, Any]] = []
     rejected: List[Dict[str, Any]] = []
     rejected_tracks: List[Dict[str, Any]] = []
+    acc: List[Tuple[Dict[str, Any], Dict[str, Any]]] = []
     for t in tracks:
         if len(t["pts"]) < 3:
             why["tiny"] = why.get("tiny", 0) + 1
@@ -563,14 +775,38 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             if keep_rejected:
                 rejected_tracks.append(dict(why=hug, pts=[[float(a / scale), float(b / scale)] for a, b, _c in t["pts"]]))
             continue
+        acc.append((t, info))
+    # a joined run replaces the fragments it covers (an accepted fragment inside an accepted joined run is that run's own part)
+    joined_acc = [(t, info) for t, info in acc if t.get("linked")]
+    if joined_acc:
+        keep = []
+        for t, info in acc:
+            if not t.get("linked"):
+                px = np.array([q[0] for q in t["pts"]], float)
+                py = np.array([q[1] for q in t["pts"]], float)
+                inside = False
+                for jt, _ji in joined_acc:
+                    jx = np.array([q[0] for q in jt["pts"]], float)
+                    jy = np.array([q[1] for q in jt["pts"]], float)
+                    sel = (px >= jx[0] - 2) & (px <= jx[-1] + 2)
+                    if sel.mean() >= 0.8 and float(np.median(np.abs(np.interp(px[sel], jx, jy) - py[sel]))) <= 0.6 * sp:
+                        inside = True
+                        break
+                if inside:
+                    why["covered_by_joined"] = why.get("covered_by_joined", 0) + 1
+                    continue
+            keep.append((t, info))
+        acc = keep
+    for t, info in acc:
         if raw_cols is not None:
             # the core was judged on its own ink; only an accepted arc is carried on through the marks that claim before it, so an extension can never
             # make a run fail (a tail into a head used to turn a clean arc "steep")
             t = _extend_through_claims(t, raw_cols, blank_s if EXT_ALL else cross_s, sp)
             info = dict(info, width_sp=round((t["pts"][-1][0] - t["pts"][0][0] + 1) / sp, 2))
         out.append(_run_row(t, info, scale, len(out)))
+    why['joined_tracks'] = n_linked
     return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected,
-                rejected_tracks=rejected_tracks if keep_rejected else [], blank_mask=blank if keep_rejected else None)
+                rejected_tracks=rejected_tracks if keep_rejected else [], all_tracks=tracks if keep_rejected else [], blank_mask=blank if keep_rejected else None)
 
 
 def _run_row(t: Dict[str, Any], info: Dict[str, Any], scale: float, ordinal: int) -> Dict[str, Any]:
