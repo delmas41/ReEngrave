@@ -117,7 +117,7 @@ HEADER_INK = 1            # r3: a run hugs a header claim by the claimed INK, no
 HUG_EXEMPT = ("accidental",)   # r3: an arc passes over the top of a tall accidental's box; a sharp has no rim an arc could be mistaken for
 LINK_PLAIN_GAP_SP = 1.3   # a gap this short needs only the raw ink under it (a carved rule, a stem); a longer one must lie in what claims / hides ink
 LINK_EXPL_SHARE = 0.8
-LINK_QUAD_SP = 12.0       # the joint fit is a quadratic up to this wide (a quartic absorbs the kink of two beam groups); a quartic beyond
+LINK_QUAD_SP = 8.0        # the joint fit is a quadratic up to this wide, a quartic beyond
 LINK_BOW_REL = 0.03       # the joint curve's bow, as a share of its width, at least (the flattest real tie measured 0.05, lines 0.005)
 BEAM_LIKE_SP = 0.5        # r3: a run this thick at its middle that does not taper (end / middle thickness above BEAM_TAPER) is a beam
 BEAM_TAPER = 0.75
@@ -736,8 +736,12 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
         take = np.zeros(n, bool)
         bx, by, bw, bh = st[:, 0], st[:, 1], st[:, 2], st[:, 3]
         union = np.zeros(ink.shape, bool)
+        hdr = np.zeros(n, bool)
         for _own, (x0, y0, x1, y1) in areas:
-            take |= (bx >= x0 - 1) & (by >= y0 - 1) & (bx + bw <= x1 + 1) & (by + bh <= y1 + 1)
+            inside = (bx >= x0 - 1) & (by >= y0 - 1) & (bx + bw <= x1 + 1) & (by + bh <= y1 + 1)
+            take |= inside
+            if _own != "word":
+                hdr |= inside          # a bracket, clef, key signature, meter, leading column, hairpin: their strokes are never an arc
             union[max(0, int(y0) - 1):min(H, int(np.ceil(y1)) + 1), max(0, int(x0) - 1):min(W, int(np.ceil(x1)) + 1)] = True
         # a label whose letters straddle two claimed areas (a staff name stacked over its crook) is wholly inside their UNION
         tot = np.bincount(lab.ravel(), minlength=n)
@@ -747,7 +751,7 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
         if ARC_IN_WORD and sp_page:
             # a word's rectangle can run over an arc (a long "cresc. - - -" line); the arc, cut at a barline, is a component wholly inside it. A component that is
             # ONE thin bowed run (every column one stroke, no taller than an arc, wide for a letter) is an arc, not a letter: not taken (2.274 r3)
-            for i in np.flatnonzero(take & (bw >= ARC_COMP_MIN_SP * sp_page)):
+            for i in np.flatnonzero(take & ~hdr & (bw >= ARC_COMP_MIN_SP * sp_page)):
                 if _is_arc_component(lab, int(i), int(bx[i]), int(by[i]), int(bw[i]), int(bh[i]), sp_page):
                     take[i] = False
         blank |= take[lab]

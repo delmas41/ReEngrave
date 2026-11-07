@@ -49,7 +49,7 @@ def test_a_single_arc_with_its_apex_in_a_hole_is_one_run_but_two_touching_arcs_a
 
 def test_a_tie_cut_by_an_erased_staff_line_is_one_run():
     # "ties on staff lines": the eraser parts the arc where it lies on the line; the staff-line row is a crossing, not an end
-    c = _bow(_canvas(), 100, 360, 200, 14, thick=9)
+    c = _bow(_canvas(), 100, 360, 200, 14, thick=7)      # r3: 7 px (0.44 sp); a UNIFORM 0.56-sp stroke is a beam by the r3 taper rule
     c[199:202, :] = 255                            # the erased band of a staff line through the tie
     joined = PA.read_runs(c, SP, [200.0], [], [])
     assert _whole(joined, 100, 360)
