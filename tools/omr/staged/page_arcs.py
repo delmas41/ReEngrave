@@ -104,9 +104,9 @@ THICK_PASS = 1            # r3: a heavy slur's middle (thicker than RUN_MAX_SP) 
 THICK_MAX_SP = 1.3        # ... up to this thick (a head is as tall, and no wider than ~1.3 sp: a thick track must be longer than THICK_MIN_SP)
 THICK_MIN_SP = 3.0
 THICK_SHARE = 0.25        # ... and at least this share of its columns thicker than RUN_MAX_SP
-LEDGER_THIN = 1           # r3: a ledger box does not claim a column whose ink is much thicker than the box
+LEDGER_THIN = 0           # r3: a ledger box does not claim a column whose ink is much thicker than the box
 LEDGER_THIN_PX = 3
-TRIM_LINE = 1             # r3: an arc's end that runs along a staff line row is the line's, not the arc's
+TRIM_LINE = 0             # r3: an arc's end that runs along a staff line row is the line's, not the arc's
 TRIM_MIN_SP = 1.0
 LINE_RESIDUE = 1          # r3: ink wholly inside a staff line's own band is the line's
 ARC_IN_WORD = 1           # r3: an arc-shaped component inside a word's rectangle is not the word's
@@ -115,6 +115,12 @@ RAGGED_TRIM = 1           # r3: cut the junction points off an arc fused with a 
 RAGGED_DEV_SP = 0.2
 HEADER_INK = 1            # r3: a run hugs a header claim by the claimed INK, not the claim's rectangle
 HUG_EXEMPT = ("accidental",)   # r3: an arc passes over the top of a tall accidental's box; a sharp has no rim an arc could be mistaken for
+LINK_PLAIN_GAP_SP = 1.3   # a gap this short needs only the raw ink under it (a carved rule, a stem); a longer one must lie in what claims / hides ink
+LINK_EXPL_SHARE = 0.8
+LINK_QUAD_SP = 12.0       # the joint fit is a quadratic up to this wide (a quartic absorbs the kink of two beam groups); a quartic beyond
+LINK_BOW_REL = 0.03       # the joint curve's bow, as a share of its width, at least (the flattest real tie measured 0.05, lines 0.005)
+BEAM_LIKE_SP = 0.5        # r3: a run this thick at its middle that does not taper (end / middle thickness above BEAM_TAPER) is a beam
+BEAM_TAPER = 0.75
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
 LINE_PAD_SP = 0.1         # r3: a line's band for the wait-through
 
@@ -383,7 +389,7 @@ def _split_at_cusps(t: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
     return out
 
 
-def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) -> List[Dict[str, Any]]:
+def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray, expl: Optional[np.ndarray] = None) -> List[Dict[str, Any]]:
     """ROADMAP 2.274 r3, THE ARC IS ONE INK RUN (Sean's process): fragments the tracker left where the arc touches other ink -- a staff line the eraser took a
     band out of, a carved barline, a stem or a head, a thick apex -- are joined when ONE smooth curve explains both (the joint quadratic, quartic over 8 sp,
     off by no more than `LINK_RES_SP` rms and `LINK_DEV_SP` at any point), the curve at the join is where the two ends face each other, and the RAW ink
@@ -408,7 +414,7 @@ def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) 
             return None
         x = np.concatenate([a["_x"], b["_x"]])
         y = np.concatenate([a["_y"], b["_y"]])
-        deg = 2 if (x.max() - x.min()) <= 8 * sp else 4
+        deg = 2 if (x.max() - x.min()) <= LINK_QUAD_SP * sp else 4
         if len(x) < deg + 3:
             return None
         c = np.polyfit(x, y, deg)
@@ -416,6 +422,10 @@ def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) 
         rms = float(np.sqrt(np.mean(res ** 2)))
         if rms > LINK_RES_SP * sp or float(np.abs(res).max()) > LINK_DEV_SP * sp:
             return None
+        xa, xb = float(x.min()), float(x.max())
+        bow = abs(float(np.polyval(c, (xa + xb) / 2.0)) - (float(np.polyval(c, xa)) + float(np.polyval(c, xb))) / 2.0)
+        if bow < LINK_BOW_REL * (xb - xa):
+            return None          # two straight pieces on one line (a beam between its stems, a staff line) are one straight line, not an arc
         if gx > 2:
             gxs = np.arange(int(a["_x"][-1]) + 1, int(b["_x"][0]))
             gy = np.round(np.polyval(c, gxs)).astype(int)
@@ -425,6 +435,12 @@ def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) 
                     ok += 1
             if ok < LINK_SUPPORT * len(gxs):
                 return None
+            if expl is not None and gx > LINK_PLAIN_GAP_SP * sp:
+                # a long gap is the arc passing THROUGH something that claims or hides ink (a claimed mark, a staff line's band); a gap over open page or over
+                # other ink (a beam, a stem) is not the same arc (runs fused with a beam or run on to the next group were the fakes of the first build)
+                ex = sum(1 for xx, yy in zip(gxs, gy) if 0 <= yy < H and 0 <= xx < W and expl[max(0, yy - r_sup):min(H, yy + r_sup + 1), xx].any())
+                if ex < LINK_EXPL_SHARE * len(gxs):
+                    return None
         return max(0.0, gx) / sp + rms / sp      # the nearest fragment first (a joint fit with a far piece can have a smaller residual), then the better fit
 
     heap: List[Tuple[float, int, int]] = []
@@ -886,7 +902,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     n_linked = 0
     if raw is not None and LINK:
         raw_b = cv2.resize((raw == 0).astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else (raw == 0)
-        joined = _link_fragments(tracks, sp, raw_b)
+        joined = _link_fragments(tracks, sp, raw_b, (blank_s | band_s) if band_s is not None else blank_s)
         n_linked = len(joined)
         tracks = joined + tracks
     dots = page_dots(ink, sp_page)
@@ -913,7 +929,9 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             if t2 is not None:
                 v2, info2 = _judge(t2, sp, lines)
                 if v2 == "arc":
-                    t, v, info = t2, v2, info2
+                    t, v, info = dict(t2, ragged=True), v2, info2
+        if v == "arc" and info["mid_th_sp"] >= BEAM_LIKE_SP and info["taper"] > BEAM_TAPER:
+            v = "beam_like"          # a thick run that does not thin toward its ends is a beam, not the heavy middle of a slur (r3: thick pass + linking built beam runs)
         why[v] = why.get(v, 0) + 1
         if v != "arc":
             if keep_rejected and v != "short":
@@ -961,6 +979,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             # make a run fail (a tail into a head used to turn a clean arc "steep")
             t = _extend_through_claims(t, raw_cols, blank_s if EXT_ALL else cross_s, sp)
             info = dict(info, width_sp=round((t["pts"][-1][0] - t["pts"][0][0] + 1) / sp, 2))
+        info = dict(info, src=("thick" if t.get("thick") else "linked" if t.get("linked") else "ragged" if t.get("ragged") else "plain"))
         out.append(_run_row(t, info, scale, len(out)))
     why['joined_tracks'] = n_linked
     return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected,
@@ -1103,7 +1122,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
     boxes, areas, arc_boxes = inputs_from_rows(rows)
     sp_page = float(page_map.sp)
     line_ys = [float(y) for s in pws.staves for y in s.line_ys]
-    res = read_runs(canvas, sp_page, line_ys, boxes, areas)
+    res = read_runs(canvas, sp_page, line_ys, boxes, areas, raw=getattr(getattr(pws, "page", None), "binary", None))
     runs = res["runs"]
     by_run, alone = witnesses_of(runs, arc_boxes, sp_page)
     t_runs = time.time()
