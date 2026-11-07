@@ -17,3 +17,5 @@ VERDICT (hold-out pages only, pooled; definitions exactly those of RULES-step1.m
 3. fakes (hairpin leg, line residue, ledger pair, frame, any run that is not an arc, by look) are under 3 per page over the NEW runs and 20 sampled witnessed runs.
 Otherwise NOT GOOD, and the report says which of the three failed. Per-page numbers are reported next to the pooled ones. Dev numbers are reported apart.
 No constant is changed after the hold-out is run; if it fails, it fails.
+
+FROZEN: reader and constants as of commit 74a9ba1b2 (page_arcs.py), committed and pushed BEFORE the hold-out pages were read, measured or looked at. Develop-page numbers at the freeze: strict one-run whole 738 of 841 (87.8%) against 678 (80.6%) for the round-1 reader on the same five pages; NEW runs 66 against 58.
