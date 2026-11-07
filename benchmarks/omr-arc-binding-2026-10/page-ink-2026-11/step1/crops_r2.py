@@ -27,16 +27,31 @@ for pp in pages:
     J2, J1 = json.load(open(r2d / (stem + ".step1.json"))), json.load(open(r1d / (stem + ".step1.json")))
     data[stem] = J2
     runs = {r["id"]: r for r in J2["runs"]}
+    sp_ = J2["summary"]["sp"]
+
+    def alone(r):
+        """RECUT rule (chosen after looking at the first 12): the rectangle must hold ONE arc. A run whose padded box also holds >= 30% of another run's points
+        (a nested or neighbouring arc) is not asked about: Sean would be judging two arcs in one box."""
+        x0, y0, x1, y1 = r["box"]
+        pad = 0.35 * sp_
+        for o in J2["runs"]:
+            if o["id"] == r["id"] or o["box"][2] < x0 or o["box"][0] > x1:
+                continue
+            P = np.array(o["pts"])
+            inn = (P[:, 0] >= x0 - pad) & (P[:, 0] <= x1 + pad) & (P[:, 1] >= y0 - pad) & (P[:, 1] <= y1 + pad)
+            if inn.mean() >= 0.3:
+                return False
+        return True
     for k, (c2, c1) in enumerate(zip(J2["curves"], J1["curves"])):
         if c2["refused"] or c2["best"] < 0.8 or c1["best"] >= 0.8 or c2["run"] not in runs:
             continue
         r = runs[c2["run"]]
-        if r["width_sp"] < 2.0:
+        if r["width_sp"] < 2.0 or not alone(r):
             continue
         why = re.sub(r"\(.*", "", c1.get("why_no_run") or "?")
         pool["fixed"].append((stem, r, "round-1 miss: %s" % why))
     for r in J2["runs"]:
-        if not r["witnesses"] and r["width_sp"] >= 2.5:
+        if not r["witnesses"] and r["width_sp"] >= 2.5 and alone(r):
             pool["new"].append((stem, r, "new"))
 rng = random.Random(2742)
 pick = []

@@ -1,0 +1,191 @@
+[
+ {
+  "tile": 1,
+  "plate_page": "brahms-p22",
+  "run": 100,
+  "why": "new",
+  "width_sp": 10.31,
+  "witnesses": [],
+  "box_page_px": [
+   3477,
+   6810,
+   3762,
+   6888
+  ]
+ },
+ {
+  "tile": 2,
+  "plate_page": "litolff-p12",
+  "run": 6,
+  "why": "new",
+  "width_sp": 6.54,
+  "witnesses": [],
+  "box_page_px": [
+   617,
+   656,
+   719,
+   678
+  ]
+ },
+ {
+  "tile": 3,
+  "plate_page": "litolff-p12",
+  "run": 49,
+  "why": "round-1 miss: no_track",
+  "width_sp": 6.92,
+  "witnesses": [
+   "glyph/12/0/0/8/12",
+   "glyph/12/0/0/8/23",
+   "glyph/12/0/1/8/23"
+  ],
+  "box_page_px": [
+   1550,
+   518,
+   1658,
+   558
+  ]
+ },
+ {
+  "tile": 4,
+  "plate_page": "litolff-p12",
+  "run": 29,
+  "why": "round-1 miss: two_bows",
+  "width_sp": 11.87,
+  "witnesses": [
+   "glyph/12/0/9/2/6",
+   "glyph/12/0/9/2/8",
+   "glyph/12/0/9/3/4",
+   "glyph/12/0/10/2/12"
+  ],
+  "box_page_px": [
+   804,
+   1714,
+   990,
+   1738
+  ]
+ },
+ {
+  "tile": 5,
+  "plate_page": "litolff-p12",
+  "run": 70,
+  "why": "new",
+  "width_sp": 9.46,
+  "witnesses": [],
+  "box_page_px": [
+   2300,
+   3584,
+   2448,
+   3628
+  ]
+ },
+ {
+  "tile": 6,
+  "plate_page": "brahms-p22",
+  "run": 4,
+  "why": "round-1 miss: thick",
+  "width_sp": 11.94,
+  "witnesses": [
+   "glyph/22/0/3/0/14",
+   "glyph/22/0/4/0/2"
+  ],
+  "box_page_px": [
+   1004,
+   1540,
+   1334,
+   1599
+  ]
+ },
+ {
+  "tile": 7,
+  "plate_page": "litolff-p12",
+  "run": 7,
+  "why": "round-1 miss: straight",
+  "width_sp": 4.38,
+  "witnesses": [
+   "glyph/12/0/9/1/3",
+   "glyph/12/0/10/1/5"
+  ],
+  "box_page_px": [
+   655,
+   1722,
+   723,
+   1738
+  ]
+ },
+ {
+  "tile": 8,
+  "plate_page": "brahms-p22",
+  "run": 116,
+  "why": "new",
+  "width_sp": 6.5,
+  "witnesses": [],
+  "box_page_px": [
+   3993,
+   1144,
+   4171,
+   1238
+  ]
+ },
+ {
+  "tile": 9,
+  "plate_page": "litolff-p12",
+  "run": 5,
+  "why": "new",
+  "width_sp": 2.6,
+  "witnesses": [],
+  "box_page_px": [
+   672,
+   768,
+   712,
+   792
+  ]
+ },
+ {
+  "tile": 10,
+  "plate_page": "litolff-p12",
+  "run": 53,
+  "why": "round-1 miss: rough",
+  "width_sp": 4.51,
+  "witnesses": [
+   "glyph/12/0/4/8/5",
+   "glyph/12/0/4/8/7",
+   "glyph/12/0/4/8/9"
+  ],
+  "box_page_px": [
+   1575,
+   959,
+   1645,
+   978
+  ]
+ },
+ {
+  "tile": 11,
+  "plate_page": "litolff-p12",
+  "run": 36,
+  "why": "round-1 miss: no_track",
+  "width_sp": 5.71,
+  "witnesses": [
+   "glyph/12/0/10/6/3"
+  ],
+  "box_page_px": [
+   1333,
+   1742,
+   1422,
+   1760
+  ]
+ },
+ {
+  "tile": 12,
+  "plate_page": "brahms-p22",
+  "run": 29,
+  "why": "new",
+  "width_sp": 5.38,
+  "witnesses": [],
+  "box_page_px": [
+   1722,
+   5143,
+   1870,
+   5246
+  ]
+ }
+]

@@ -159,8 +159,8 @@ def main():
         for x, t_, b_ in c["trace"]:
             for r in runs:
                 if r["box"][0] <= x <= r["box"][2]:
-                    P = pts[r["id"]]
-                    if abs(float(np.interp(x, P[:, 0], P[:, 1])) - (t_ + b_) / 2.0) <= 0.6 * sp:
+                    Pp = pts[r["id"]]
+                    if abs(float(np.interp(x, Pp[:, 0], Pp[:, 1])) - (t_ + b_) / 2.0) <= 0.6 * sp:
                         un += 1
                         break
         c["union"] = round(un / max(1, len(c["trace"])), 2)
