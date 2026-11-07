@@ -113,6 +113,8 @@ ARC_IN_WORD = 1           # r3: an arc-shaped component inside a word's rectangl
 ARC_COMP_MIN_SP = 3.0
 RAGGED_TRIM = 1           # r3: cut the junction points off an arc fused with a stem / flag / beam, and judge what is left
 RAGGED_DEV_SP = 0.2
+HEADER_INK = 1            # r3: a run hugs a header claim by the claimed INK, not the claim's rectangle
+HUG_EXEMPT = ("accidental",)   # r3: an arc passes over the top of a tall accidental's box; a sharp has no rim an arc could be mistaken for
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
 LINE_PAD_SP = 0.1         # r3: a line's band for the wait-through
 
@@ -423,7 +425,7 @@ def _link_fragments(tracks: List[Dict[str, Any]], sp: float, raw_b: np.ndarray) 
                     ok += 1
             if ok < LINK_SUPPORT * len(gxs):
                 return None
-        return rms
+        return max(0.0, gx) / sp + rms / sp      # the nearest fragment first (a joint fit with a far piece can have a smaller residual), then the better fit
 
     heap: List[Tuple[float, int, int]] = []
     order = sorted(range(len(frag)), key=lambda i: frag[i]["_x"][0])
@@ -591,7 +593,8 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
                        mid_th_sp=round(mid_th / sp, 3), taper=round(min(end_l, end_r) / max(mid_th, 1e-6), 2))
 
 
-def hugs_a_claimed_mark(pts: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: float) -> Optional[str]:
+def hugs_a_claimed_mark(pts: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: float,
+                        header_ink: Optional[np.ndarray] = None) -> Optional[str]:
     """CLAIM ORDER (CLAUDE §3): a run whose body (the middle of it, page px) lies along a mark that claims before an arc is that mark's own rim, not an arc: the
     foot of a head, an accidental, a dot, a rest, a ledger line (`HUG_SP` of its box) (a word's rectangle is no test: an arc passes over a "cresc."). The ends of an
     arc touch a head and a dynamic is crossed, so the ends are not looked at and dynamics are not counted. Returns the reason or None."""
@@ -601,9 +604,22 @@ def hugs_a_claimed_mark(pts: np.ndarray, boxes: Sequence[Tuple[str, Sequence[flo
     mid = pts[(pts[:, 0] >= x0 + 0.2 * (x1 - x0)) & (pts[:, 0] <= x1 - 0.2 * (x1 - x0))]
     if len(mid) < 2:
         mid = pts
-    for name, rects, g in (("claimed_mark", [b for c, b in boxes if not c.startswith(CROSS_CLASSES)], HUG_SP),
+    for name, rects, g in (("claimed_mark", [b for c, b in boxes if not c.startswith(CROSS_CLASSES + HUG_EXEMPT)], HUG_SP),
                            ("claimed_header", [a for o, a in areas if o in HEADER_OWNERS], HUG_SP)):
         g *= sp_page
+        if name == "claimed_header" and header_ink is not None:
+            # r3: the header's own INK (the components its areas claim), not its rectangle: a tie that starts after the key signature lies inside the
+            # key's rectangle and is not along any of its strokes
+            Hh, Ww = header_ink.shape
+            gi = int(np.ceil(g))
+            near = 0
+            for x, y in mid[:, :2]:
+                xi, yi = int(round(x)), int(round(y))
+                if header_ink[max(0, yi - gi):min(Hh, yi + gi + 1), max(0, xi - gi):min(Ww, xi + gi + 1)].any():
+                    near += 1
+            if near / float(len(mid)) >= HUG_SHARE:
+                return name
+            continue
         inside = np.zeros(len(mid), bool)
         for (a0, b0, a1, b1) in rects:
             if a1 < mid[:, 0].min() - g or a0 > mid[:, 0].max() + g:
@@ -878,6 +894,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     if extend:
         small_raw = cv2.resize(ink.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink
         raw_cols = _column_runs(small_raw.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
+    header_ink = blank_mask(ink, [], [(o, a) for o, a in areas if o in HEADER_OWNERS], sp_page) if (HEADER_INK and areas) else None
     ledgers_s = [[b[0] * scale, b[1] * scale, b[2] * scale, b[3] * scale] for c, b in boxes if c.startswith("ledger")]
     why: Dict[str, int] = {}
     out: List[Dict[str, Any]] = []
@@ -905,7 +922,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                                      thick_sp=round(float(np.median(q[:, 2]) / sp), 2), n=len(q)))
                 rejected_tracks.append(dict(why=v, pts=[[float(a / scale), float(b / scale)] for a, b, _c in q]))
             continue
-        hug = hugs_a_claimed_mark(np.array(t["pts"], float) / scale, boxes, areas, sp_page)
+        hug = hugs_a_claimed_mark(np.array(t["pts"], float) / scale, boxes, areas, sp_page, header_ink)
         if not hug and short_and_flat(info["sagitta_sp"], info["width_sp"]):
             hug = "short_flat"
         if not hug and is_a_fermata(np.array(t["pts"], float)[:, :2] / scale, dots, info["sagitta_sp"], info["width_sp"], sp_page):
