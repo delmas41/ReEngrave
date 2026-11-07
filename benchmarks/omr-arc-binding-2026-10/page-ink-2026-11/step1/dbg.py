@@ -16,15 +16,14 @@ from tools.omr.staged import page_arcs as m, lane_report as L, pipeline as P, pa
 plate, page, wd = sys.argv[1], int(sys.argv[2]), pathlib.Path(sys.argv[3])
 ids = [int(x) for x in sys.argv[4:]]
 J = json.load(open(wd / ("%s-p%d.step1.json" % (plate, page))))
-(pws, cells), = P.prepare_pages(str(L.LIB / L.PLATES[plate]["pdf"]), [page])
-asm = PS.assemble(pws, cells)
-sp = PS.page_spacing(pws)
-PS.carve_columns(asm.canvas, BC.fit_columns(pws), sp)
-rows, curves, refused = M.slice_rows(plate, page, "20261104-night")
+import os
+z = np.load(os.environ["R2_CACHE"] + "/%s-p%d.canvas.npz" % (plate, page), allow_pickle=True)
+canvas, sp, staves = z["canvas"], float(z["sp"]), json.loads(str(z["staves"]))
+rows, curves, refused = M.slice_rows(plate, page, os.environ["R2_SLICES"])
 boxes, areas, arc_boxes = m.inputs_from_rows(rows)
-ink = asm.canvas == 0
+ink = canvas == 0
 blank = m.blank_mask(ink, boxes, areas)
-line_ys = [float(y) for s in pws.staves for y in s.line_ys]
+line_ys = [y for s in staves for y in s['lines']]
 scale = min(1.0, 16 / sp)
 sp_s = sp * scale
 ink2 = ink & ~blank

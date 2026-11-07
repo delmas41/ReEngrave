@@ -7,6 +7,7 @@ Rebuilds the page canvas exactly as GATHER does (`canvas.py`), reads the rows of
 `readback(rec, page)` reads the fields a gather with the flag ON files (the same fields), for the gather-vs-standalone control.
 """
 import json
+import os
 import pathlib
 import resource
 import sys
@@ -24,6 +25,9 @@ from tools.omr.staged import barline_columns as BC  # noqa: E402
 from tools.omr.staged import page_arcs as PA  # noqa: E402
 
 REFUSED = "refused_not_an_arc"
+for _kv in [t for t in os.environ.get("R2_SET", "").split(",") if t]:     # experiments: R2_SET="MAX_THICK_SP=0.6,JAG_SP=0.1"
+    _k, _v = _kv.split("=")
+    setattr(PA, _k, type(getattr(PA, _k))(_v))
 
 
 def readback(rec, page):
@@ -88,25 +92,37 @@ def main():
     out.mkdir(parents=True, exist_ok=True)
     pdf = str(L.LIB / L.PLATES[plate]["pdf"])
     t0 = time.time()
-    (pws, cells), = P.prepare_pages(pdf, [page])
-    asm = PS.assemble(pws, cells)
-    sp = PS.page_spacing(pws)
-    PS.carve_columns(asm.canvas, BC.fit_columns(pws), sp)
-    t1 = time.time()
+    import os
+    cache = os.environ.get("R2_CACHE")
+    cf = pathlib.Path(cache) / ("%s-p%d.canvas.npz" % (plate, page)) if cache else None
     import cv2
-    cv2.imwrite(str(out / ("%s-p%d.raw.png" % (plate, page))), pws.page.binary)
+    if cf is not None and cf.exists():
+        z = np.load(cf, allow_pickle=True)
+        canvas, raw, sp, staves = z["canvas"], z["raw"], float(z["sp"]), json.loads(str(z["staves"]))
+    else:
+        (pws, cells), = P.prepare_pages(pdf, [page])
+        asm = PS.assemble(pws, cells)
+        sp = PS.page_spacing(pws)
+        PS.carve_columns(asm.canvas, BC.fit_columns(pws), sp)
+        canvas, raw = asm.canvas, pws.page.binary
+        staves = [dict(lines=[float(y) for y in st.line_ys], x0=float(getattr(st, "x_start", 0) or 0), x1=float(getattr(st, "x_end", 0) or 0)) for st in pws.staves]
+        if cf is not None:
+            cf.parent.mkdir(parents=True, exist_ok=True)
+            np.savez_compressed(cf, canvas=canvas, raw=raw, sp=sp, staves=json.dumps(staves))
+    t1 = time.time()
+    cv2.imwrite(str(out / ("%s-p%d.raw.png" % (plate, page))), raw)
     rows, curves, refused = slice_rows(plate, page, tag)
     boxes, areas, arc_boxes = PA.inputs_from_rows(rows)
-    line_ys = [float(y) for s in pws.staves for y in s.line_ys]
+    line_ys = [y for s in staves for y in s['lines']]
     t2 = time.time()
-    res = PA.read_runs(asm.canvas, sp, line_ys, boxes, areas, keep_rejected=True)
+    res = PA.read_runs(canvas, sp, line_ys, boxes, areas, keep_rejected=True)
     runs = res["runs"]
     by_run, alone = PA.witnesses_of(runs, arc_boxes, sp)
     t3 = time.time()
-    blank = PA.blank_mask(asm.canvas == 0, boxes, areas)
+    blank = PA.blank_mask(canvas == 0, boxes, areas)
     seeded = []
     for b in alone:
-        s = PA.seed_read(asm.canvas, sp, line_ys, b["box"], blank)
+        s = PA.seed_read(canvas, sp, line_ys, b["box"], blank)
         if s is not None:
             seeded.append(dict(box_subject=b["subject"], run=s))
     t4 = time.time()
@@ -151,13 +167,12 @@ def main():
                    whole=sum(1 for c in kept if c["best"] >= 0.8), partial=sum(1 for c in kept if 0.3 <= c["best"] < 0.8),
                    none=sum(1 for c in kept if c["best"] < 0.3),
                    whole_after_seed=sum(1 for c in kept if c["best"] >= 0.8 or c["seeded_best"] >= 0.8))
-    ink = asm.canvas == 0
+    ink = canvas == 0
     for c in kept:
         x0, y0, x1, y1 = [int(v) for v in c["box"]]
         reg = (slice(max(0, y0 - 8), y1 + 8), slice(max(0, x0), x1))
         tot = int(ink[reg].sum())
         c["blank_share"] = round(float((ink & blank)[reg].sum()) / max(1, tot), 2)
-    staves = [dict(lines=[float(y) for y in st.line_ys], x0=float(getattr(st, "x_start", 0) or 0), x1=float(getattr(st, "x_end", 0) or 0)) for st in pws.staves]
     json.dump(dict(summary=summary, staves=staves, runs=[dict(r, witnesses=by_run[r["id"]]) for r in runs], seeded=seeded, alone=alone,
                    curves=[{k: v for k, v in c.items() if k != "trace"} for c in det]), open(out / ("%s-p%d.step1.json" % (plate, page)), "w"))
     print(json.dumps(summary))

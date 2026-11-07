@@ -48,7 +48,10 @@ TOL_SP = 0.30             # how far from the predicted centre the next run may l
 GAP_SP = 1.25             # the widest hole a track bridges (a carved rule ~0.2 sp, a blanked stem ~0.3 sp, a head box ~1.3 sp)
 SLOPE_SP = 1.5            # the stretch of its own recent points a track predicts from
 MIN_WIDTH_SP = 1.4
-MAX_THICK_SP = 0.42       # median run thickness
+LINE_GAP_SP = 0.25        # the widest erased staff-line band an arc's two halves are joined across
+CLAIM_GAP_SP = 6.0        # the longest stretch a track waits inside a blanked region (a dynamic, a word, a head cluster) on its own slope
+CLAIM_TOL_PER_SP = 0.05   # the tolerance for the ink that comes out grows this much per space of blanked stretch crossed
+MIN_OWN_INKED = 0.45      # inked columns that are the run's own (not counted as claimed by another mark) / span
 MIN_INKED = 0.6           # inked columns / span
 MAX_CHORD_DEG = 40.0
 JAG_SP = 0.08             # rms off the 1-sp running mean
@@ -56,6 +59,7 @@ HOLE_MIN_SP = 0.1         # a gap between two inked columns at least this wide i
 HOLE_PAD_SP = 0.3         # the jag is not measured this close to a hole
 CUSP_SP = 0.75            # the stretch each side of a hole the slope is read over
 CUSP_GAP_SP = 0.3         # a bridged hole at least this wide (a blanked head is ~1.2 sp)
+BOW_SP = 4.0              # the stretch each side of a hole the pieces' own bow is read over
 CUSP_SLOPE = 0.15         # both sides at least this steep, opposite signs
 LINE_STUB_SP = 0.14       # a run whose centre sits this close to a staff line row over most of its length is the eraser's leftover
 STRAIGHT_SAG_SP = 0.10    # a run straighter than this ...
@@ -123,8 +127,9 @@ def inputs_from_rows(rows: Sequence[Tuple[str, str, Any, Dict[str, Any]]]
 
 # ───────────────────────────── 2. the run reader (pure; page raster in, runs out) ─────────────────────────────
 
-def _column_runs(ink: np.ndarray, max_run: int) -> List[List[Tuple[int, int]]]:
-    """Per column: the (top, bottom) ink runs no taller than `max_run`."""
+def _column_runs(ink: np.ndarray, max_run: int, line_rows: Optional[np.ndarray] = None, line_gap: int = 0) -> List[List[Tuple[int, int]]]:
+    """Per column: the (top, bottom) ink runs no taller than `max_run`. Two runs of one column that the page's own staff-line eraser parted (the gap lies
+    wholly on a staff-line row, at most `line_gap` rows) are ONE run: a line crossing an arc is a crossing, not an end (ROADMAP 2.274 r2)."""
     H, W = ink.shape
     pad = np.zeros((H + 2, W), np.int8)
     pad[1:-1] = ink
@@ -133,12 +138,29 @@ def _column_runs(ink: np.ndarray, max_run: int) -> List[List[Tuple[int, int]]]:
     for x in range(W):
         starts = np.flatnonzero(d[:, x] == 1)
         ends = np.flatnonzero(d[:, x] == -1)
-        out.append([(int(a), int(b)) for a, b in zip(starts, ends) if b - a <= max_run])
+        runs = [(int(a), int(b)) for a, b in zip(starts, ends)]
+        if line_rows is not None and len(runs) > 1:
+            merged = [runs[0]]
+            for a, b in runs[1:]:
+                pa, pb = merged[-1]
+                if 0 < a - pb <= line_gap and line_rows[pb:a].all():
+                    merged[-1] = (pa, b)
+                else:
+                    merged.append((a, b))
+            runs = merged
+        out.append([(a, b) for a, b in runs if b - a <= max_run])
     return out
 
 
-def _track(runs: List[List[Tuple[int, int]]], sp: float, W: int) -> List[Dict[str, Any]]:
+def _track(runs: List[List[Tuple[int, int]]], sp: float, W: int, blank: Optional[np.ndarray] = None) -> List[Dict[str, Any]]:
+    """Tracks left to right. A track whose predicted path (its own recent slope) runs INTO a blanked region (a mark that claims before an arc: a dynamic, a
+    word, a head, a flag, whatever box the detector drew) waits there up to `CLAIM_GAP_SP` and takes the first ink that comes out on its own slope: a claimed
+    mark claims its own ink pixels, so the arc continues through it (ROADMAP 2.274 r2; the rectangle used to cut it). The columns it waited in are counted
+    (`claimed`) so that a stretch another mark holds is not read as a run with no ink."""
     tol, gap, look = TOL_SP * sp, int(round(GAP_SP * sp)), SLOPE_SP * sp
+    cgap = int(round(CLAIM_GAP_SP * sp))
+    rad = max(1, int(round(0.15 * sp)))
+    H = blank.shape[0] if blank is not None else 0
     active: List[Dict[str, Any]] = []
     done: List[Dict[str, Any]] = []
     for x in range(W):
@@ -154,9 +176,11 @@ def _track(runs: List[List[Tuple[int, int]]], sp: float, W: int) -> List[Dict[st
             preds.append(ly + slope * (x - lx))
         pairs = []
         for ti, py in enumerate(preds):
+            lx = active[ti]["pts"][-1][0]
+            tol_t = tol + (CLAIM_TOL_PER_SP * (x - lx) / sp if x - lx > gap else 0.0) * sp
             for ci, (cy, th) in enumerate(cand):
                 dy = abs(cy - py)
-                if dy <= tol + 0.5 * th:
+                if dy <= tol_t + 0.5 * th:
                     pairs.append((dy, ti, ci))
         pairs.sort()
         used_t, used_c = set(), set()
@@ -165,10 +189,24 @@ def _track(runs: List[List[Tuple[int, int]]], sp: float, W: int) -> List[Dict[st
                 continue
             used_t.add(ti)
             used_c.add(ci)
-            active[ti]["pts"].append((x, cand[ci][0], cand[ci][1]))
+            t = active[ti]
+            if t.get("wait"):
+                t.setdefault("gaps", []).append((t["pts"][-1][0], x))
+                t["wait"] = 0
+            t["pts"].append((x, cand[ci][0], cand[ci][1]))
         nxt = []
         for ti, t in enumerate(active):
-            if ti in used_t or x - t["pts"][-1][0] <= gap:
+            if ti in used_t:
+                nxt.append(t)
+                continue
+            lx = t["pts"][-1][0]
+            in_blank = False
+            if blank is not None and x - lx <= cgap:
+                yy = int(round(preds[ti]))
+                in_blank = 0 <= yy < H and bool(blank[max(0, yy - rad):min(H, yy + rad + 1), x].any())
+            if in_blank:
+                t["wait"] = t.get("wait", 0) + 1
+            if x - lx <= gap or in_blank:
                 nxt.append(t)
             else:
                 done.append(t)
@@ -200,14 +238,26 @@ def _split_at_cusps(t: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
         sl = np.polyfit(x[lo:i], y[lo:i], 1)[0]
         sr = np.polyfit(x[i:hi], y[i:hi], 1)[0]
         if sl * sr < 0 and min(abs(sl), abs(sr)) >= CUSP_SLOPE:
-            cuts.append(i)
+            # the turn at the hole, against the bow of the two pieces: a single arc turns THROUGH its apex (the turn has the pieces' own bow); two arcs that
+            # meet at a note turn the OTHER way (the pieces bow one way, the join is a corner the other way)
+            wb = BOW_SP * sp
+            lo2 = int(np.searchsorted(x, x[i - 1] - wb))
+            hi2 = int(np.searchsorted(x, x[i] + wb, side="right"))
+            if i - lo2 < 8 or hi2 - i < 8:
+                continue         # a piece too short to tell its bow: never cut what cannot be told
+            bl = np.polyfit(x[lo2:i], y[lo2:i], 2)[0]
+            br = np.polyfit(x[i:hi2], y[i:hi2], 2)[0]
+            turn = sr - sl
+            if np.sign(bl) == np.sign(br) and np.sign(turn) != np.sign(bl):
+                cuts.append(i)
     if not cuts:
         return [t]
     out, a = [], 0
-    for c in cuts:
-        out.append(dict(pts=p[a:c]))
+    gaps = t.get("gaps", [])
+    for c in cuts + [len(p)]:
+        x0, x1 = p[a][0], p[c - 1][0]
+        out.append(dict(pts=p[a:c], gaps=[g for g in gaps if g[0] >= x0 and g[1] <= x1]))
         a = c
-    out.append(dict(pts=p[a:]))
     return out
 
 
@@ -218,11 +268,11 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
     width = x[-1] - x[0] + 1
     if width < min_width_sp * sp:
         return "short", None
-    inked = len(np.unique(x)) / width
-    if inked < MIN_INKED:
+    own = len(np.unique(x))
+    claimed = float(sum(g1 - g0 for g0, g1 in t.get("gaps", []) if g0 >= x[0] and g1 <= x[-1]))
+    inked = (own + claimed) / width
+    if inked < MIN_INKED or own / width < MIN_OWN_INKED:
         return "sparse", None
-    if np.median(th) > MAX_THICK_SP * sp:
-        return "thick", None
     if np.median(th) < MIN_THICK_SP * sp:
         return "thin", None            # one reduced pixel of ink: the staff line's own residue, never a slur (a slur's body is thicker than a staff line)
     k = max(3, int(round(sp)))
@@ -230,6 +280,10 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
     if len(ys_) != len(y):       # a track shorter than the window: nothing to smooth
         ys_ = y.copy()
     inner = slice(k, len(y) - k) if len(y) > 2 * k + 2 else slice(0, len(y))
+    if len(y) <= 2 * k + 2 and len(y) >= 6:
+        # a run shorter than two smoothing windows has no interior: the zero-padded running mean is wrong at both ends (it made every short, clean tie "rough"),
+        # so its roughness is the scatter off its own smooth (quadratic) curve
+        ys_ = np.polyval(np.polyfit(x, y, 2), x)
     # a bridged hole (a stem, a head, a carved rule the arc crosses) is not the arc's own ink: the columns beside it carry the stem's flank, so the jag is
     # measured away from every hole (`HOLE_PAD_SP` each side), never across one
     near_hole = np.zeros(len(x), bool)
@@ -267,6 +321,15 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
                        resid_sp=round(resid / sp, 3), inked=round(inked, 2), chord_deg=round(float(chord), 1))
 
 
+def _line_rows(line_ys: Sequence[float], scale: float, H: int) -> np.ndarray:
+    """The rows (reduced px) a staff line, and so its erased band, occupies."""
+    rows = np.zeros(H, bool)
+    for y in line_ys:
+        c = int(round(y * scale))
+        rows[max(0, c - 1):min(H, c + 2)] = True
+    return rows
+
+
 def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]]) -> np.ndarray:
     """What claims first or is not arc ink: the compact detector boxes' rectangles, and the ink COMPONENTS wholly inside a page claim's area (+1 px)."""
     import cv2
@@ -297,13 +360,16 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     scale = min(1.0, TARGET_SP_PX / sp_page)
     small = cv2.resize(ink2.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink2
     sp = sp_page * scale
-    cols = _column_runs(small.astype(np.int8), int(round(RUN_MAX_SP * sp)))
-    tracks = _track(cols, sp, small.shape[1])
+    blank_s = cv2.resize(blank.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else blank
+    line_rows = _line_rows(line_ys, scale, small.shape[0])
+    cols = _column_runs(small.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
+    tracks = _track(cols, sp, small.shape[1], blank_s)
     lines = np.array(sorted(y * scale for y in line_ys))
     tracks = [q for t in tracks for q in _split_at_cusps(t, sp)]
     why: Dict[str, int] = {}
     out: List[Dict[str, Any]] = []
     rejected: List[Dict[str, Any]] = []
+    rejected_tracks: List[Dict[str, Any]] = []
     for t in tracks:
         if len(t["pts"]) < 3:
             why["tiny"] = why.get("tiny", 0) + 1
@@ -315,9 +381,11 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                 q = np.array(t["pts"], float)
                 rejected.append(dict(why=v, x0=float(q[0, 0] / scale), x1=float(q[-1, 0] / scale), y=float(np.median(q[:, 1]) / scale),
                                      thick_sp=round(float(np.median(q[:, 2]) / sp), 2), n=len(q)))
+                rejected_tracks.append(dict(why=v, pts=[[float(a / scale), float(b / scale)] for a, b, _c in q]))
             continue
         out.append(_run_row(t, info, scale, len(out)))
-    return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected)
+    return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected,
+                rejected_tracks=rejected_tracks if keep_rejected else [], blank_mask=blank if keep_rejected else None)
 
 
 def _run_row(t: Dict[str, Any], info: Dict[str, Any], scale: float, ordinal: int) -> Dict[str, Any]:
@@ -402,7 +470,8 @@ def seed_read(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], box:
     scale = min(1.0, TARGET_SP_PX / sp_page)
     small = cv2.resize(sub.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else sub
     sp = sp_page * scale
-    cols = _column_runs(small.astype(np.int8), int(round(RUN_MAX_SP * sp)))
+    line_rows = _line_rows([y - y0 for y in line_ys], scale, small.shape[0])
+    cols = _column_runs(small.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
     tracks = [q for t in _track(cols, sp, small.shape[1]) for q in _split_at_cusps(t, sp)]
     lines = np.array(sorted((y - y0) * scale for y in line_ys))
     best, best_w = None, 0.0
