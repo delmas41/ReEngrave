@@ -20,9 +20,9 @@ for p in sorted(wd.glob("*.step1.json")):
     for k, c in enumerate(J["curves"]):
         if c["refused"] or c["best"] >= 0.8:
             continue
-        if re.sub(r"\(.*", "", c["why_no_run"] or "?") != why:
+        if why != "all" and re.sub(r"\(.*", "", c["why_no_run"] or "?") != why:
             continue
-        if (c["blank_share"] >= 0.3) != want_blank:
+        if why != "all" and (c["blank_share"] >= 0.3) != want_blank:
             continue
         items.append((stem, k, c))
 random.Random(seed).shuffle(items)
@@ -56,6 +56,8 @@ for stem, k, c in items:
 while len(tiles) % 4:
     tiles.append(np.full((160, 300, 3), 255, np.uint8))
 rows = [np.hstack(tiles[i:i + 4]) for i in range(0, len(tiles), 4)]
-out = wd / ("bucket.%s%s.png" % (why, ".blank" if want_blank else ""))
-cv2.imwrite(str(out), np.vstack(rows))
-print(out, len(items))
+for part in range(0, len(rows), 6):
+    out = wd / ("bucket.%s%s.%d.png" % (why, ".blank" if want_blank else "", part // 6))
+    cv2.imwrite(str(out), np.vstack(rows[part:part + 6]))
+    print(out)
+print(len(items))

@@ -48,6 +48,12 @@ TOL_SP = 0.30             # how far from the predicted centre the next run may l
 GAP_SP = 1.25             # the widest hole a track bridges (a carved rule ~0.2 sp, a blanked stem ~0.3 sp, a head box ~1.3 sp)
 SLOPE_SP = 1.5            # the stretch of its own recent points a track predicts from
 MIN_WIDTH_SP = 1.4
+CROSS_CLASSES = ("dynamic", "fermata", "ornament", "trill", "ottava", "pedal", "tremolo", "articulation", "tuplet")     # compact marks an arc may touch without ending there
+EXT_MIN_SP = 1.0         # a run shorter than this is not extended
+EXT_TOL_SP = 0.2          # the extension takes ink this close to the end's tangent
+EXT_FIT_SP = 4.0          # the extension follows the quadratic fitted to this much of the run's end
+EXT_THICK = 1.5           # ... no thicker than this many times the run's own median thickness (+1 px)
+EXT_MAX_SP = 4.0          # ... for at most this long a stretch
 LINE_GAP_SP = 0.25        # the widest erased staff-line band an arc's two halves are joined across
 CLAIM_GAP_SP = 6.0        # the longest stretch a track waits inside a blanked region (a dynamic, a word, a head cluster) on its own slope
 CLAIM_TOL_PER_SP = 0.05   # the tolerance for the ink that comes out grows this much per space of blanked stretch crossed
@@ -59,6 +65,16 @@ HOLE_MIN_SP = 0.1         # a gap between two inked columns at least this wide i
 HOLE_PAD_SP = 0.3         # the jag is not measured this close to a hole
 CUSP_SP = 0.75            # the stretch each side of a hole the slope is read over
 CUSP_GAP_SP = 0.3         # a bridged hole at least this wide (a blanked head is ~1.2 sp)
+HUG_SP = 0.3             # a run's body this close to a compact claimed mark's box is its rim
+LEDGER_MAX_SP = 4.0
+LEDGER_FLAT_SP = 0.12      # a run that bows less than this ...
+LEDGER_ROW_SP = 0.15       # ... and lies this close to a row of the staff's line grid is a ledger line
+HEADER_OWNERS = ("leading_column", "bracket", "clef", "key_signature", "meter")   # claimed before an arc: no arc lies along them
+DOT_MIN_SP = 0.2
+DOT_MAX_SP = 0.75
+FERMATA_MAX_SP = 4.5      # a fermata's hump is at most this wide
+HUG_SHARE = 0.5          # (share of the body)
+CORNER_TURN = 0.35        # the change of slope that makes a corner where two touching arcs meet
 BOW_SP = 4.0              # the stretch each side of a hole the pieces' own bow is read over
 CUSP_SLOPE = 0.15         # both sides at least this steep, opposite signs
 LINE_STUB_SP = 0.14       # a run whose centre sits this close to a staff line row over most of its length is the eraser's leftover
@@ -217,44 +233,118 @@ def _track(runs: List[List[Tuple[int, int]]], sp: float, W: int, blank: Optional
     return done + active
 
 
+def _extend_through_claims(t: Dict[str, Any], raw_cols: List[List[Tuple[int, int]]], blank: np.ndarray, sp: float) -> Dict[str, Any]:
+    """An arc that touches a mark that claims before it (a dynamic's foot, a word, a head) has its ink inside that mark's blanked area, where no track can
+    start. A run's own ink continues there on its own slope: from each end, follow the thin ink of the RAW page (claims not blanked) that lies on the
+    end's tangent, as long as the path runs inside blanked area and the ink is no thicker than the run's own. A claimed mark claims its own pixels, not
+    the arc's (ROADMAP 2.274 r2; Sean's claim order: a later reader marks claimed ink, never takes it -- and never loses its own to a claim by contact)."""
+    p = list(t["pts"])
+    if len(p) < 6 or (p[-1][0] - p[0][0]) < EXT_MIN_SP * sp:
+        return t
+    W = len(raw_cols)
+    H = blank.shape[0]
+    tol, gap, rad = EXT_TOL_SP * sp, int(round(GAP_SP * sp)), max(1, int(round(0.15 * sp)))
+    max_th = EXT_THICK * float(np.median([q[2] for q in p])) + 1.0
+    limit = int(round(EXT_MAX_SP * sp))
+    fit_w = EXT_FIT_SP * sp
+    out = {"left": [], "right": []}
+    egaps: List[Tuple[int, int]] = []
+    for side, step in (("left", -1), ("right", 1)):
+        seq = p if step == 1 else p[::-1]
+        ex = np.array([q[0] for q in seq if abs(q[0] - seq[0][0]) <= fit_w], float)
+        ey = np.array([q[1] for q in seq if abs(q[0] - seq[0][0]) <= fit_w], float)
+        if len(ex) < 6:
+            continue
+        coef = np.polyfit(ex, ey, 2)        # the run's own curve over its last stretch: the extension may not wander off it (a dynamic's strokes lie close by)
+        lx = seq[-1][0]
+        new = []
+        x = lx + step
+        x0 = lx
+        while 0 <= x < W and abs(x - x0) <= limit:
+            py = float(np.polyval(coef, x))
+            yy = int(round(py))
+            if not (0 <= yy < H):
+                break
+            if bool(blank[max(0, yy - rad):min(H, yy + rad + 1), x].any()):
+                best = None
+                for (ra, rb) in raw_cols[x]:
+                    cy, th = (ra + rb - 1) / 2.0, rb - ra
+                    if th <= max_th and abs(cy - py) <= tol + 0.5 * th and (best is None or abs(cy - py) < abs(best[0] - py)):
+                        best = (cy, th)
+                if best is not None:
+                    if abs(x - lx) > 1:
+                        egaps.append((min(lx, x), max(lx, x)))      # columns skipped inside the claimed area are the other mark's, not a lack of ink
+                    new.append((x, best[0], best[1]))
+                    lx = x
+            if abs(x - lx) > gap:
+                break
+            x += step
+        out[side] = new
+    if not out["left"] and not out["right"]:
+        return t
+    return dict(pts=out["left"][::-1] + p + out["right"], gaps=list(t.get("gaps", [])) + egaps)
+
+
 def _split_at_cusps(t: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
-    """Two arcs that meet at a note bridge the blanked head between them and chain into one track; an arc turns smoothly through ONE apex, so where two
-    meet the track crosses a HOLE and turns the other way in a V. Split at a bridged hole of at least `CUSP_GAP_SP` where the slope either side has
-    opposite signs, each at least `CUSP_SLOPE` steep."""
+    """Two arcs that meet at a note chain into one track: across the blanked head between them (a bridged HOLE) or, where their ends touch, at a CORNER.
+    An arc turns smoothly through ONE apex, with the turn in the sense of its own bow; where two arcs meet the pieces bow one way and the join turns the
+    other way, in a V. Split there: at a bridged hole of at least `CUSP_GAP_SP`, or at a corner (a change of slope of at least `CORNER_TURN` between the
+    space before and the space after) -- where the slope either side has opposite signs, each at least `CUSP_SLOPE` steep, and both pieces (each long
+    enough to tell) bow against the turn. A piece too short to tell its bow is never cut."""
     p = t["pts"]
     if len(p) < 8:
         return [t]
     x = np.array([q[0] for q in p], float)
     y = np.array([q[1] for q in p], float)
     w = CUSP_SP * sp
-    cuts = []
-    for i in range(1, len(p)):
-        if x[i] - x[i - 1] < CUSP_GAP_SP * sp:
-            continue
-        lo = int(np.searchsorted(x, x[i - 1] - w))
-        hi = int(np.searchsorted(x, x[i] + w, side="right"))
+    wb = BOW_SP * sp
+    n = len(p)
+
+    def turn_at(i: int, xl: float, xr: float) -> Optional[float]:
+        lo = int(np.searchsorted(x, xl - w))
+        hi = int(np.searchsorted(x, xr + w, side="right"))
         if i - lo < 3 or hi - i < 3:
-            continue
+            return None
         sl = np.polyfit(x[lo:i], y[lo:i], 1)[0]
         sr = np.polyfit(x[i:hi], y[i:hi], 1)[0]
-        if sl * sr < 0 and min(abs(sl), abs(sr)) >= CUSP_SLOPE:
-            # the turn at the hole, against the bow of the two pieces: a single arc turns THROUGH its apex (the turn has the pieces' own bow); two arcs that
-            # meet at a note turn the OTHER way (the pieces bow one way, the join is a corner the other way)
-            wb = BOW_SP * sp
-            lo2 = int(np.searchsorted(x, x[i - 1] - wb))
-            hi2 = int(np.searchsorted(x, x[i] + wb, side="right"))
-            if i - lo2 < 8 or hi2 - i < 8:
-                continue         # a piece too short to tell its bow: never cut what cannot be told
-            bl = np.polyfit(x[lo2:i], y[lo2:i], 2)[0]
-            br = np.polyfit(x[i:hi2], y[i:hi2], 2)[0]
-            turn = sr - sl
-            if np.sign(bl) == np.sign(br) and np.sign(turn) != np.sign(bl):
-                cuts.append(i)
+        if sl * sr >= 0 or min(abs(sl), abs(sr)) < CUSP_SLOPE:
+            return None
+        lo2 = int(np.searchsorted(x, xl - wb))
+        hi2 = int(np.searchsorted(x, xr + wb, side="right"))
+        if i - lo2 < 8 or hi2 - i < 8:
+            return None
+        bl = np.polyfit(x[lo2:i], y[lo2:i], 2)[0]
+        br = np.polyfit(x[i:hi2], y[i:hi2], 2)[0]
+        turn = sr - sl
+        if np.sign(bl) == np.sign(br) and np.sign(turn) != np.sign(bl):
+            return float(abs(turn))
+        return None
+
+    holes = {i for i in range(1, n) if x[i] - x[i - 1] >= CUSP_GAP_SP * sp}
+    cand: List[Tuple[int, float]] = []
+    for i in sorted(holes):
+        tn = turn_at(i, x[i - 1], x[i])
+        if tn is not None:
+            cand.append((i, 1e9))
+    if n >= 16 and x[-1] - x[0] >= 2.5 * sp:
+        run: List[Tuple[int, float]] = []
+        for i in range(4, n - 3):
+            if i in holes or (x[i] - x[i - 1]) >= CUSP_GAP_SP * sp:
+                continue
+            tn = turn_at(i, x[i], x[i])
+            if tn is not None and tn >= CORNER_TURN:
+                if run and i - run[-1][0] > 2:
+                    cand.append(max(run, key=lambda c: c[1]))
+                    run = []
+                run.append((i, tn))
+        if run:
+            cand.append(max(run, key=lambda c: c[1]))
+    cuts = sorted({c for c, _ in cand})
     if not cuts:
         return [t]
     out, a = [], 0
     gaps = t.get("gaps", [])
-    for c in cuts + [len(p)]:
+    for c in cuts + [n]:
         x0, x1 = p[a][0], p[c - 1][0]
         out.append(dict(pts=p[a:c], gaps=[g for g in gaps if g[0] >= x0 and g[1] <= x1]))
         a = c
@@ -317,8 +407,77 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
         inn = np.abs(dev) > 0.03 * sp
         if inn.sum() >= 5 and np.mean(np.sign(dev[inn]) == np.sign(sag)) < 0.85:
             return "two_bows", None
+    q = np.argsort(x)
+    xs_, ths_ = x[q], th[q]
+    f = (xs_ - xs_[0]) / max(1.0, xs_[-1] - xs_[0])
+    mid_th = float(np.median(ths_[(f >= 0.3) & (f <= 0.7)])) if np.any((f >= 0.3) & (f <= 0.7)) else float(np.median(ths_))
+    end_l = float(np.median(ths_[f <= 0.2])) if np.any(f <= 0.2) else mid_th
+    end_r = float(np.median(ths_[f >= 0.8])) if np.any(f >= 0.8) else mid_th
     return "arc", dict(width_sp=round(width / sp, 2), sagitta_sp=round(sag / sp, 3), thick_sp=round(float(np.median(th)) / sp, 3),
-                       resid_sp=round(resid / sp, 3), inked=round(inked, 2), chord_deg=round(float(chord), 1))
+                       resid_sp=round(resid / sp, 3), inked=round(inked, 2), chord_deg=round(float(chord), 1),
+                       mid_th_sp=round(mid_th / sp, 3), taper=round(min(end_l, end_r) / max(mid_th, 1e-6), 2))
+
+
+def hugs_a_claimed_mark(pts: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: float) -> Optional[str]:
+    """CLAIM ORDER (CLAUDE §3): a run whose body (the middle of it, page px) lies along a mark that claims before an arc is that mark's own rim, not an arc: the
+    foot of a head, an accidental, a dot, a rest, a ledger line (`HUG_SP` of its box) (a word's rectangle is no test: an arc passes over a "cresc."). The ends of an
+    arc touch a head and a dynamic is crossed, so the ends are not looked at and dynamics are not counted. Returns the reason or None."""
+    if len(pts) < 4:
+        return None
+    x0, x1 = pts[0, 0], pts[-1, 0]
+    mid = pts[(pts[:, 0] >= x0 + 0.2 * (x1 - x0)) & (pts[:, 0] <= x1 - 0.2 * (x1 - x0))]
+    if len(mid) < 2:
+        mid = pts
+    for name, rects, g in (("claimed_mark", [b for c, b in boxes if not c.startswith(CROSS_CLASSES)], HUG_SP),
+                           ("claimed_header", [a for o, a in areas if o in HEADER_OWNERS], HUG_SP)):
+        g *= sp_page
+        inside = np.zeros(len(mid), bool)
+        for (a0, b0, a1, b1) in rects:
+            if a1 < mid[:, 0].min() - g or a0 > mid[:, 0].max() + g:
+                continue
+            inside |= (mid[:, 0] >= a0 - g) & (mid[:, 0] <= a1 + g) & (mid[:, 1] >= b0 - g) & (mid[:, 1] <= b1 + g)
+        if inside.mean() >= HUG_SHARE:
+            return name
+    return None
+
+
+def page_dots(ink: np.ndarray, sp_page: float) -> np.ndarray:
+    """Centres (x, y, page px) of the small round ink blobs of the page (a dot: 0.2 - 0.75 space across, filling most of its box): what a fermata's hump sits
+    over, what a staccato or a dotted note carries."""
+    import cv2
+    n, lab, st, cen = cv2.connectedComponentsWithStats(ink.astype(np.uint8), connectivity=8)
+    w, h, a = st[:, 2], st[:, 3], st[:, 4]
+    ok = (w >= DOT_MIN_SP * sp_page) & (w <= DOT_MAX_SP * sp_page) & (h >= DOT_MIN_SP * sp_page) & (h <= DOT_MAX_SP * sp_page) & (a >= 0.5 * w * h)
+    ok[0] = False
+    return cen[ok]
+
+
+def is_a_fermata(pts: np.ndarray, dots: np.ndarray, sag_sp: float, width_sp: float, sp_page: float) -> bool:
+    """A short hump (bow up) with a dot under its middle is a fermata, a mark that claims before an arc (page-facts: a fermata is a mark, not an arc)."""
+    if sag_sp >= 0 or width_sp > FERMATA_MAX_SP or len(dots) == 0:
+        return False
+    x0, x1 = pts[0, 0], pts[-1, 0]
+    mx, w = (x0 + x1) / 2.0, x1 - x0
+    top = float(pts[:, 1].min())
+    sel = dots[(np.abs(dots[:, 0] - mx) <= 0.2 * w) & (dots[:, 1] >= top + 0.2 * sp_page) & (dots[:, 1] <= top + 1.8 * sp_page)]
+    return len(sel) > 0
+
+
+def on_a_ledger_row(pts: np.ndarray, sag_sp: float, width_sp: float, line_ys: Sequence[float], sp_page: float) -> bool:
+    """A short, flat run whose middle lies on the staff's own line grid (a staff line or its continuation above / below the staff) is a ledger line or a
+    head's base, never a tie: a tie bows, and one that does lies between the lines. Needs the staff's lines: groups of five."""
+    if width_sp > LEDGER_MAX_SP or abs(sag_sp) >= LEDGER_FLAT_SP or len(line_ys) < 5:
+        return False
+    ys = np.array(sorted(line_ys), float)
+    my = float(np.median(pts[:, 1]))
+    k = int(np.argmin(np.abs(ys - my)))
+    g = (k // 5) * 5
+    grp = ys[g:g + 5]
+    if len(grp) < 5:
+        return False
+    d = (grp[-1] - grp[0]) / 4.0
+    off = ((my - grp[0]) / d) % 1.0
+    return min(off, 1.0 - off) * d < LEDGER_ROW_SP * sp_page
 
 
 def _line_rows(line_ys: Sequence[float], scale: float, H: int) -> np.ndarray:
@@ -341,15 +500,21 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
         n, lab, st, _c = cv2.connectedComponentsWithStats(ink.astype(np.uint8), connectivity=8)
         take = np.zeros(n, bool)
         bx, by, bw, bh = st[:, 0], st[:, 1], st[:, 2], st[:, 3]
+        union = np.zeros(ink.shape, bool)
         for _own, (x0, y0, x1, y1) in areas:
             take |= (bx >= x0 - 1) & (by >= y0 - 1) & (bx + bw <= x1 + 1) & (by + bh <= y1 + 1)
+            union[max(0, int(y0) - 1):min(H, int(np.ceil(y1)) + 1), max(0, int(x0) - 1):min(W, int(np.ceil(x1)) + 1)] = True
+        # a label whose letters straddle two claimed areas (a staff name stacked over its crook) is wholly inside their UNION
+        tot = np.bincount(lab.ravel(), minlength=n)
+        ins = np.bincount(lab[union & ink].ravel(), minlength=n)
+        take |= (ins >= 0.98 * np.maximum(tot, 1))
         take[0] = False
         blank |= take[lab]
     return blank
 
 
 def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxes: Sequence[Tuple[str, Sequence[float]]],
-              areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None, keep_rejected: bool = False) -> Dict[str, Any]:
+              areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None, keep_rejected: bool = False, extend: bool = True) -> Dict[str, Any]:
     """The runs of the page ink (module doc). `canvas`: 0 = ink, page px. Returns `{runs, why, tracks, scale, sp, blanked}`; each run has `pts` (page px,
     ~one per 2 reduced px), `box`, `width_sp`, `sagitta_sp`, `thick_sp`, `resid_sp`, `inked`, `chord_deg`, `half` (half its thickness, page px)."""
     import cv2
@@ -360,12 +525,20 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     scale = min(1.0, TARGET_SP_PX / sp_page)
     small = cv2.resize(ink2.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink2
     sp = sp_page * scale
-    blank_s = cv2.resize(blank.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else blank
     line_rows = _line_rows(line_ys, scale, small.shape[0])
     cols = _column_runs(small.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
-    tracks = _track(cols, sp, small.shape[1], blank_s)
+    # a track may wait out, and an arc be carried on through, only what a WORD or a dynamic claims (the marks an arc passes THROUGH); a head, an accidental,
+    # a rest, a flag is where an arc ENDS, and a track that waited across heads linked their edges into fake runs
+    cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas)
+    cross_s = cv2.resize(cross.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else cross
+    tracks = _track(cols, sp, small.shape[1], cross_s)
     lines = np.array(sorted(y * scale for y in line_ys))
     tracks = [q for t in tracks for q in _split_at_cusps(t, sp)]
+    dots = page_dots(ink, sp_page)
+    raw_cols = None
+    if extend:
+        small_raw = cv2.resize(ink.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink
+        raw_cols = _column_runs(small_raw.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
     why: Dict[str, int] = {}
     out: List[Dict[str, Any]] = []
     rejected: List[Dict[str, Any]] = []
@@ -383,6 +556,22 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                                      thick_sp=round(float(np.median(q[:, 2]) / sp), 2), n=len(q)))
                 rejected_tracks.append(dict(why=v, pts=[[float(a / scale), float(b / scale)] for a, b, _c in q]))
             continue
+        hug = hugs_a_claimed_mark(np.array(t["pts"], float) / scale, boxes, areas, sp_page)
+        if not hug and on_a_ledger_row(np.array(t["pts"], float)[:, :2] / scale, info["sagitta_sp"], info["width_sp"], line_ys, sp_page):
+            hug = "ledger_row"
+        if not hug and is_a_fermata(np.array(t["pts"], float)[:, :2] / scale, dots, info["sagitta_sp"], info["width_sp"], sp_page):
+            hug = "fermata"
+        if hug:
+            why[hug] = why.get(hug, 0) + 1
+            why["arc"] = why.get("arc", 1) - 1
+            if keep_rejected:
+                rejected_tracks.append(dict(why=hug, pts=[[float(a / scale), float(b / scale)] for a, b, _c in t["pts"]]))
+            continue
+        if raw_cols is not None:
+            # the core was judged on its own ink; only an accepted arc is carried on through the marks that claim before it, so an extension can never
+            # make a run fail (a tail into a head used to turn a clean arc "steep")
+            t = _extend_through_claims(t, raw_cols, cross_s, sp)
+            info = dict(info, width_sp=round((t["pts"][-1][0] - t["pts"][0][0] + 1) / sp, 2))
         out.append(_run_row(t, info, scale, len(out)))
     return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected,
                 rejected_tracks=rejected_tracks if keep_rejected else [], blank_mask=blank if keep_rejected else None)
