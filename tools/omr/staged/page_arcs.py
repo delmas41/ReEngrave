@@ -166,7 +166,7 @@ def inputs_from_rows(rows: Sequence[Tuple[str, str, Any, Dict[str, Any]]]
             elif "airpin" in cls:
                 areas.append(("hairpin", [float(v) for v in bb]))      # a hairpin claims before an arc: its ink COMPONENTS inside the box, never the rectangle
             elif cls.startswith("beam"):
-                continue          # claimed AFTER arcs (CLAUDE §3); a false beam box over a slur took half of one
+                continue          # claimed AFTER arcs (CLAUDE §3); a false beam box over a slur took half of one (r3: a beam box is no veto either: 22 real slurs on Brahms p22 lie under one)
             elif not any(cls.startswith(k) for k in NOT_ARC_SKIP):
                 boxes.append((cls, [float(v) for v in bb]))
         elif q == "claimed_area" and det.get("owner") in CLAIM_OWNERS and det.get("unit") == "area":
