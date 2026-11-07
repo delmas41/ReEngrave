@@ -24,6 +24,12 @@ from tools.omr.staged import page_strokes as PS  # noqa: E402
 from tools.omr.staged import barline_columns as BC  # noqa: E402
 from tools.omr.staged import page_arcs as PA  # noqa: E402
 
+if os.environ.get("R2_PA_FILE"):        # the round-1 reader (git show 33a43d211:tools/omr/staged/page_arcs.py), for the before column on the same pages
+    import importlib.util as _u
+    _spec = _u.spec_from_file_location("page_arcs_r1", os.environ["R2_PA_FILE"])
+    PA = _u.module_from_spec(_spec)
+    _spec.loader.exec_module(PA)
+
 REFUSED = "refused_not_an_arc"
 for _kv in [t for t in os.environ.get("R2_SET", "").split(",") if t]:     # experiments: R2_SET="MAX_THICK_SP=0.6,JAG_SP=0.1"
     _k, _v = _kv.split("=")

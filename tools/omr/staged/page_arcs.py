@@ -61,6 +61,9 @@ CLAIM_TOL_PER_SP = 0.05   # the tolerance for the ink that comes out grows this 
 MIN_OWN_INKED = 0.45      # inked columns that are the run's own (not counted as claimed by another mark) / span
 MIN_INKED = 0.6           # inked columns / span
 MAX_CHORD_DEG = 40.0
+JAG_SHORT_SP = 0.035      # a run under two smoothing windows is measured against its own quadratic, which a clean arc follows to 0.01-0.025 and a head's rim or a letter does not (0.04-0.065, develop pages)
+SHORT_RUN_SP = 4.0
+SHORT_THICK_SP = 0.5      # a short run this thick at its middle is a head's base or a beam stub (develop pages: 1 under a detector arc box, 14 under none)
 JAG_SP = 0.08             # rms off the 1-sp running mean
 HOLE_MIN_SP = 0.1         # a gap between two inked columns at least this wide is a bridged hole
 HOLE_PAD_SP = 0.3         # the jag is not measured this close to a hole
@@ -386,7 +389,8 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
         keep = np.zeros(len(x), bool)
         keep[inner] = True
     resid = float(np.sqrt(np.mean((ys_[keep] - y[keep]) ** 2)))
-    if resid > JAG_SP * sp:
+    short_run = len(y) <= 2 * k + 2 and len(y) >= 6
+    if resid > (JAG_SHORT_SP if short_run else JAG_SP) * sp:
         return "rough", None
     deg = 4 if width > 8 * sp else 2
     c = np.polyfit(x, y, deg)
@@ -409,6 +413,8 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
             return "two_bows", None
     q = np.argsort(x)
     xs_, ths_ = x[q], th[q]
+    if width <= SHORT_RUN_SP * sp and float(np.median(ths_[(xs_ - xs_[0] >= 0.3 * (xs_[-1] - xs_[0])) & (xs_ - xs_[0] <= 0.7 * (xs_[-1] - xs_[0]))] if np.any((xs_ - xs_[0] >= 0.3 * (xs_[-1] - xs_[0])) & (xs_ - xs_[0] <= 0.7 * (xs_[-1] - xs_[0]))) else np.median(ths_))) >= SHORT_THICK_SP * sp:
+        return "thick", None
     f = (xs_ - xs_[0]) / max(1.0, xs_[-1] - xs_[0])
     mid_th = float(np.median(ths_[(f >= 0.3) & (f <= 0.7)])) if np.any((f >= 0.3) & (f <= 0.7)) else float(np.median(ths_))
     end_l = float(np.median(ths_[f <= 0.2])) if np.any(f <= 0.2) else mid_th
