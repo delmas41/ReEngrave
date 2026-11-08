@@ -136,6 +136,8 @@ ERASED_MIN_SLOPE = 0.1
 WIDE_BOX = 1              # r4: a detector box of a class that is one note-space wide (accidental, head, dot, flag) that is wider than WIDE_BOX_SP is not that mark (round-2 tile 9: a 4-space "accidentalFlat" box lay over a slur and blanked it): it blanks nothing
 WIDE_BOX_SP = 2.5
 WIDE_BOX_CLASSES = ("accidental", "notehead", "augmentationDot", "flag")
+WEDGE = 1                # r4: a hairpin's leg is thick at one end and a point at the other; a slur is thin at BOTH ends. An ink-only run whose thickness at its two ends differs by more than this ratio is a wedge
+WEDGE_RATIO = 1.8
 BEAM_RAW = 1              # r4: a run that lies on RAW ink (nothing erased or blanked) taller than BEAM_RAW_SP in at least BEAM_RAW_SHARE of its points and that does not thin toward its ends (end / middle >= BEAM_RAW_ENDS) is a beam's edge piece: the beam owns that ink
 BEAM_RAW_SP = 0.45        # (develop pages, 5 pages: 16 of 109 NEW runs and 0 of 553 witnessed runs)
 BEAM_RAW_SHARE = 0.9
@@ -691,6 +693,19 @@ def _is_lens(x: np.ndarray, th: np.ndarray, width: float, sp: float) -> bool:
     return tm <= TAPER_MID_MAX_SP * sp and te <= TAPER_END_RATIO * tm
 
 
+def _is_wedge(t: Dict[str, Any], sp: float) -> bool:
+    """ROADMAP 2.274 r4: thick at one end and thin at the other (a hairpin's leg, a flag's stroke), not thin at both ends like a slur. Mean thickness of the outer
+    quarters; the thick end must be a stroke (at least 3 reduced px) so a one-pixel difference is not a wedge."""
+    p = np.array(t["pts"], float)
+    x, th = p[:, 0], p[:, 2]
+    if len(x) < 8:
+        return False
+    f = (x - x[0]) / max(1.0, x[-1] - x[0])
+    a, b = float(np.mean(th[f <= 0.25])), float(np.mean(th[f >= 0.75]))
+    hi, lo = max(a, b), max(min(a, b), 1.0)
+    return hi >= 3.0 and hi / lo >= WEDGE_RATIO
+
+
 def _raw_beam_like(t: Dict[str, Any], raw_b: np.ndarray, sp: float, need_stems: bool = True) -> bool:
     """ROADMAP 2.274 r4, CLAIM ORDER (CLAUDE §3, Sean: "a beam is thick, straight, and joined to two or more stems"): a beam is claimed before an arc, and the
     linker / the thick pass built runs out of beams' edge pieces (9 of the 12 fakes of round 3). A run's body that lies on RAW ink (the unerased, unblanked
@@ -1162,10 +1177,15 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             # r4, count evidence by source: a run no detector arc box witnesses stands on its ink alone, so it meets the stricter standard (tall, uniform raw ink is a
             # beam's edge even with no stems seen at its ends); a witnessed run (0 fakes in 20, rounds 3 and 4) keeps the stems-at-both-ends test above
             pg = np.array(t["pts"], float)[:, :2] / scale
-            if not any(witness_share(pg, b["box"], sp_page) >= WITNESS_SHARE for b in arc_boxes) and _raw_beam_like(t, raw_b, sp, need_stems=False):
-                why["beam_raw_new"] = why.get("beam_raw_new", 0) + 1
-                why["arc"] = why.get("arc", 1) - 1
-                continue
+            if not any(witness_share(pg, b["box"], sp_page) >= WITNESS_SHARE for b in arc_boxes):
+                if _raw_beam_like(t, raw_b, sp, need_stems=False):
+                    why["beam_raw_new"] = why.get("beam_raw_new", 0) + 1
+                    why["arc"] = why.get("arc", 1) - 1
+                    continue
+                if WEDGE and _is_wedge(t, sp):
+                    why["wedge_new"] = why.get("wedge_new", 0) + 1
+                    why["arc"] = why.get("arc", 1) - 1
+                    continue
         if raw_cols is not None:
             # the core was judged on its own ink; only an accepted arc is carried on through the marks that claim before it, so an extension can never
             # make a run fail (a tail into a head used to turn a clean arc "steep")

@@ -44,15 +44,15 @@ def test_an_arc_cut_by_a_barline_inside_a_words_rectangle_is_still_an_arc():
 def test_fragments_of_one_arc_are_joined_across_a_gap_that_claims_ink_but_a_straight_line_is_not():
     # tiles 5-8: the arc is lost where it touches a stem / head / flag: the pieces either side are one curve
     c = _bow(_canvas(), 100, 460, 200, 50)
-    blank = [("flag8thUp", [250.0, 120.0, 330.0, 215.0])]
-    c[120:215, 250:331] = 0                          # the claimed mark's own ink fills the gap
+    blank = [("flag8thUp", [250.0, 120.0, 271.0, 215.0])]      # r4: a flag is about a space wide (a box over 2.5 sp wide is not a flag: WIDE_BOX)
+    c[120:215, 250:272] = 0                          # the claimed mark's own ink fills the gap
     res = PA.read_runs(c, SP, [], blank, [], raw=c)
     assert _whole(res, 100, 460)
     # CONTROL: two collinear straight strokes either side of the same claimed block are one straight line, not an arc (no bow)
     s = _canvas()
     s[198:203, 100:250] = 0
-    s[198:203, 331:460] = 0
-    s[120:215, 250:331] = 0
+    s[198:203, 272:460] = 0
+    s[120:215, 250:272] = 0
     res2 = PA.read_runs(s, SP, [], blank, [], raw=s)
     assert not res2["runs"]
 

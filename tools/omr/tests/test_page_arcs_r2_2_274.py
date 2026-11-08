@@ -47,12 +47,13 @@ def test_a_single_arc_with_its_apex_in_a_hole_is_one_run_but_two_touching_arcs_a
     assert len(r2["runs"]) == 2
 
 
-def test_a_tie_cut_by_an_erased_staff_line_is_one_run():
+def test_a_tie_cut_by_an_erased_staff_line_is_one_run(monkeypatch):
     # "ties on staff lines": the eraser parts the arc where it lies on the line; the staff-line row is a crossing, not an end
     c = _bow(_canvas(), 100, 360, 200, 14, thick=7)      # r3: 7 px (0.44 sp); a UNIFORM 0.56-sp stroke is a beam by the r3 taper rule
     c[199:202, :] = 255                            # the erased band of a staff line through the tie
     joined = PA.read_runs(c, SP, [200.0], [], [])
     assert _whole(joined, 100, 360)
+    monkeypatch.setattr(PA, "TAPER_SLUR", 0)        # r4: a lens-shaped middle with thin ends is now read as an arc whatever the line does; the control isolates THIS mechanism
     unjoined = PA.read_runs(c, SP, [], [], [])     # CONTROL: no staff line known -> the old behaviour (the slivers are too thin for an arc)
     assert not _whole(unjoined, 100, 360)
 
@@ -88,8 +89,8 @@ def test_an_arc_touching_a_dynamic_is_carried_on_into_it(monkeypatch):
     dyn = PA.read_runs(c, SP, [], [("dynamicF", [96, 150, 150, 215])], [])
     assert dyn["runs"][0]["box"][0] <= 110
     monkeypatch.setattr(PA, "EXT_ALL", 0)           # CONTROL: with the extension limited to what a dynamic / word claims, a head's box keeps the old cut
-    head = PA.read_runs(c, SP, [], [("noteheadBlackInSpace", [96, 150, 150, 215])], [])
-    assert head["runs"][0]["box"][0] >= 148 - 2
+    head = PA.read_runs(c, SP, [], [("noteheadBlackInSpace", [96, 150, 118, 215])], [])      # r4: a head's box is a head's width (a box over 2.5 sp wide is not a head: WIDE_BOX)
+    assert head["runs"][0]["box"][0] >= 116 - 2
     monkeypatch.setattr(PA, "EXT_ALL", 1)           # and on, the same head is where the arc is attached to its note
     head_on = PA.read_runs(c, SP, [], [("noteheadBlackInSpace", [96, 150, 150, 215])], [])
     assert head_on["runs"][0]["box"][0] <= 110
