@@ -119,6 +119,13 @@ LINK_PLAIN_GAP_SP = 1.3   # a gap this short needs only the raw ink under it (a 
 LINK_EXPL_SHARE = 0.8
 LINK_QUAD_SP = 8.0        # the joint fit is a quadratic up to this wide, a quartic beyond
 LINK_BOW_REL = 0.03       # the joint curve's bow, as a share of its width, at least (the flattest real tie measured 0.05, lines 0.005)
+TAPER_SLUR = 1            # r4: a long flat slur is a lens: thinner at both ends than in the middle. A run over STRAIGHT_MAX_SP that bows at least STRAIGHT_REL of its width and tapers is an arc, not a line
+TAPER_MID_MAX_SP = 0.5    # ... whose middle is no thicker than this (a beam is ~0.6-0.9 sp, a staff line ~0.1; develop pages: real flat slurs 0.25-0.5)
+TAPER_END_RATIO = 0.9     # ... and whose end thickness (mean of the outer 12% each side) is at most this share of the mean of the middle 30% (develop pages: 31 of 41 refused-straight real slurs; 5 of 127 non-arc B runs after the thickness limit)
+BEAM_RAW = 1              # r4: a run that lies on RAW ink (nothing erased or blanked) taller than BEAM_RAW_SP in at least BEAM_RAW_SHARE of its points and that does not thin toward its ends (end / middle >= BEAM_RAW_ENDS) is a beam's edge piece: the beam owns that ink
+BEAM_RAW_SP = 0.45        # (develop pages, 5 pages: 16 of 109 NEW runs and 0 of 553 witnessed runs)
+BEAM_RAW_SHARE = 0.9
+BEAM_RAW_ENDS = 0.85
 BEAM_LIKE_SP = 0.5        # r3: a run this thick at its middle that does not taper (end / middle thickness above BEAM_TAPER) is a beam
 BEAM_TAPER = 0.75
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
@@ -590,8 +597,12 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
         dist = np.min(np.abs(y[:, None] - lines[None, :]), axis=1)
         if np.mean(dist < LINE_STUB_SP * sp) > 0.7:
             return "on_a_line", None
-    if (width > STRAIGHT_MAX_SP * sp and abs(sag) < STRAIGHT_LONG_REL * width) or abs(sag) < STRAIGHT_REL * width:
+    if abs(sag) < STRAIGHT_REL * width:
         return "straight", None
+    if width > STRAIGHT_MAX_SP * sp and abs(sag) < STRAIGHT_LONG_REL * width:
+        # r4: a long flat slur bows 2-4.7% of its width but is a LENS (thin at both ends); a line or a beam keeps its thickness
+        if not (TAPER_SLUR and _is_lens(x, th, width, sp)):
+            return "straight", None
     if abs(sag) >= STRAIGHT_SAG_SP * sp:
         inn = np.abs(dev) > 0.03 * sp
         if inn.sum() >= 5 and np.mean(np.sign(dev[inn]) == np.sign(sag)) < 0.85:
@@ -607,6 +618,63 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
     return "arc", dict(width_sp=round(width / sp, 2), sagitta_sp=round(sag / sp, 3), thick_sp=round(float(np.median(th)) / sp, 3),
                        resid_sp=round(resid / sp, 3), inked=round(inked, 2), chord_deg=round(float(chord), 1),
                        mid_th_sp=round(mid_th / sp, 3), taper=round(min(end_l, end_r) / max(mid_th, 1e-6), 2))
+
+
+def _is_lens(x: np.ndarray, th: np.ndarray, width: float, sp: float) -> bool:
+    """ROADMAP 2.274 r4: a slur is thin at both ends and thickest in the middle, even when it is shallow; a beam, a staff line and a hairpin leg keep their
+    thickness. True when the middle's mean thickness is that of a slur (no more than `TAPER_MID_MAX_SP`) and both ends are thinner than it by `TAPER_END_RATIO`
+    (the two ends' mean against the middle's)."""
+    f = (x - x[0]) / max(1.0, width)
+    mid = (f >= 0.35) & (f <= 0.65)
+    ends = (f <= 0.12) | (f >= 0.88)
+    if mid.sum() < 3 or ends.sum() < 4:
+        return False
+    tm, te = float(np.mean(th[mid])), float(np.mean(th[ends]))
+    return tm <= TAPER_MID_MAX_SP * sp and te <= TAPER_END_RATIO * tm
+
+
+def _raw_beam_like(t: Dict[str, Any], raw_b: np.ndarray, sp: float) -> bool:
+    """ROADMAP 2.274 r4, CLAIM ORDER (CLAUDE §3, Sean: "a beam is thick, straight, and joined to two or more stems"): a beam is claimed before an arc, and the
+    linker / the thick pass built runs out of beams' edge pieces (9 of the 12 fakes of round 3). A run's body that lies on RAW ink (the unerased, unblanked
+    raster, reduced) taller than `BEAM_RAW_SP` in nearly all its points, with a raw thickness that does not fall toward the ends, is on a beam's ink. A slur's
+    raw ink is its own run (thin) or tapers; a heavy slur's middle is tall but its ends are not."""
+    pts = t["pts"]
+    if len(pts) < 8:
+        return False
+    H, W = raw_b.shape
+    th = []
+    for q in pts:
+        xi, yi = int(round(q[0])), int(round(q[1]))
+        if not (0 <= xi < W and 0 <= yi < H):
+            th.append(np.nan)
+            continue
+        if not raw_b[yi, xi]:
+            for d in (1, -1, 2, -2, 3, -3):
+                if 0 <= yi + d < H and raw_b[yi + d, xi]:
+                    yi += d
+                    break
+            else:
+                th.append(np.nan)
+                continue
+        a = yi
+        while a > 0 and raw_b[a - 1, xi]:
+            a -= 1
+        b = yi
+        while b < H - 1 and raw_b[b + 1, xi]:
+            b += 1
+        th.append(b - a + 1)
+    th = np.array(th, float)
+    ok = np.isfinite(th)
+    if ok.sum() < 8:
+        return False
+    x = np.array([q[0] for q in pts], float)
+    f = (x - x[0]) / max(1.0, x[-1] - x[0])
+    if float(np.mean(th[ok] > BEAM_RAW_SP * sp)) < BEAM_RAW_SHARE:
+        return False
+    mid, ends = th[(f >= 0.3) & (f <= 0.7) & ok], th[((f <= 0.12) | (f >= 0.88)) & ok]
+    if len(mid) < 3 or len(ends) < 3:
+        return False
+    return float(np.median(ends)) >= BEAM_RAW_ENDS * float(np.median(mid))
 
 
 def hugs_a_claimed_mark(pts: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: float,
@@ -904,8 +972,10 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                     extra.append(dict(q, linked=True, thick=True))
         tracks = extra + tracks
     n_linked = 0
-    if raw is not None and LINK:
+    raw_b = None
+    if raw is not None:
         raw_b = cv2.resize((raw == 0).astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else (raw == 0)
+    if raw is not None and LINK:
         joined = _link_fragments(tracks, sp, raw_b, (blank_s | band_s) if band_s is not None else blank_s)
         n_linked = len(joined)
         tracks = joined + tracks
@@ -936,6 +1006,8 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                     t, v, info = dict(t2, ragged=True), v2, info2
         if v == "arc" and info["mid_th_sp"] >= BEAM_LIKE_SP and info["taper"] > BEAM_TAPER:
             v = "beam_like"          # a thick run that does not thin toward its ends is a beam, not the heavy middle of a slur (r3: thick pass + linking built beam runs)
+        if v == "arc" and BEAM_RAW and raw_b is not None and _raw_beam_like(t, raw_b, sp):
+            v = "beam_raw"           # r4: on a beam's raw ink (tall, uniform): the beam owns it
         why[v] = why.get(v, 0) + 1
         if v != "arc":
             if keep_rejected and v != "short":
