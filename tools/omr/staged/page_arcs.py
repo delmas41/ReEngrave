@@ -128,10 +128,20 @@ GLYPH_COMP = 1            # r4: a small ink component that no detector mark over
 GLYPH_MAX_W_SP = 5.5
 GLYPH_MAX_H_SP = 4.5
 GLYPH_MIN_H_SP = 0.9      # shorter than this it can be a tie's piece or a dash
+ERASED_EXT = 0            # r4 EXPERIMENT, OFF (tried and removed, see FINDINGS r4; delete when the round closes): an arc's thin tail can lie INSIDE a staff line's erased band (Sean's tiles 6 and 11 of round 3: the tail left of the line was cut off); the end extension may cross an erased band of up to this many spaces and take the ink that comes out on the end's own curve
+ERASED_GAP_SP = 2.5
+ERASED_TOL_SP = 0.35
+ERASED_FIT_SP = 1.5
+ERASED_MIN_SLOPE = 0.1
+WIDE_BOX = 1              # r4: a detector box of a class that is one note-space wide (accidental, head, dot, flag) that is wider than WIDE_BOX_SP is not that mark (round-2 tile 9: a 4-space "accidentalFlat" box lay over a slur and blanked it): it blanks nothing
+WIDE_BOX_SP = 2.5
+WIDE_BOX_CLASSES = ("accidental", "notehead", "augmentationDot", "flag")
 BEAM_RAW = 1              # r4: a run that lies on RAW ink (nothing erased or blanked) taller than BEAM_RAW_SP in at least BEAM_RAW_SHARE of its points and that does not thin toward its ends (end / middle >= BEAM_RAW_ENDS) is a beam's edge piece: the beam owns that ink
 BEAM_RAW_SP = 0.45        # (develop pages, 5 pages: 16 of 109 NEW runs and 0 of 553 witnessed runs)
 BEAM_RAW_SHARE = 0.9
 BEAM_RAW_ENDS = 0.85
+BEAM_STEM_NEAR_SP = 0.8   # (a stem within this of the run's end)
+BEAM_STEM_SP = 2.0        # ... and standing on stems: raw ink at least this tall at both ends of the run
 BEAM_LIKE_SP = 0.5        # r3: a run this thick at its middle that does not taper (end / middle thickness above BEAM_TAPER) is a beam
 BEAM_TAPER = 0.75
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
@@ -284,7 +294,7 @@ def _track(runs: List[List[Tuple[int, int]]], sp: float, W: int, blank: Optional
     return done + active
 
 
-def _extend_through_claims(t: Dict[str, Any], raw_cols: List[List[Tuple[int, int]]], blank: np.ndarray, sp: float) -> Dict[str, Any]:
+def _extend_through_claims(t: Dict[str, Any], raw_cols: List[List[Tuple[int, int]]], blank: np.ndarray, sp: float, erased: Optional[np.ndarray] = None) -> Dict[str, Any]:
     """An arc that touches a mark that claims before it (a dynamic's foot, a word, a head) has its ink inside that mark's blanked area, where no track can
     start. A run's own ink continues there on its own slope: from each end, follow the thin ink of the RAW page (claims not blanked) that lies on the
     end's tangent, as long as the path runs inside blanked area and the ink is no thicker than the run's own. A claimed mark claims its own pixels, not
@@ -311,12 +321,28 @@ def _extend_through_claims(t: Dict[str, Any], raw_cols: List[List[Tuple[int, int
         new = []
         x = lx + step
         x0 = lx
+        broken = False
+        unexpl = 0
+        blank_seen = False
+        lin = None
+        if erased is not None and ERASED_EXT:
+            sel = [(q[0], q[1]) for q in seq if abs(q[0] - seq[-1][0]) <= ERASED_FIT_SP * sp]
+            if len(sel) >= 4:
+                lin = np.polyfit([a for a, _b in sel], [b for _a, b in sel], 1)
+                if abs(float(lin[0])) < ERASED_MIN_SLOPE:
+                    lin = None          # a flat end runs along the line it would cross: nothing to tell it from the line (and a beam's flat edge reached the next beam)
         while 0 <= x < W and abs(x - x0) <= limit:
             py = float(np.polyval(coef, x))
             yy = int(round(py))
             if not (0 <= yy < H):
                 break
-            if bool(blank[max(0, yy - rad):min(H, yy + rad + 1), x].any()):
+            in_blank = bool(blank[max(0, yy - rad):min(H, yy + rad + 1), x].any())
+            on_tangent = False
+            if lin is not None and not broken and not blank_seen:
+                ty = int(round(float(np.polyval(lin, x))))
+                on_tangent = 0 <= ty < H and not bool(blank[max(0, ty - rad):min(H, ty + rad + 1), x].any())      # the tangent's own path is open: the erased path reads it, the quadratic (which can curl into a neighbour's blanked area) is not asked
+            if in_blank and not on_tangent:
+                blank_seen = True
                 best = None
                 for (ra, rb) in raw_cols[x]:
                     cy, th = (ra + rb - 1) / 2.0, rb - ra
@@ -327,7 +353,31 @@ def _extend_through_claims(t: Dict[str, Any], raw_cols: List[List[Tuple[int, int
                         egaps.append((min(lx, x), max(lx, x)))      # columns skipped inside the claimed area are the other mark's, not a lack of ink
                     new.append((x, best[0], best[1]))
                     lx = x
-            if abs(x - lx) > gap:
+                    blank_seen = False
+            elif lin is not None and not (broken and False):
+                ly_ = float(np.polyval(lin, x))          # the tail leaves on the end's own tangent (a line, never a quadratic carried 2 sp out)
+                yl = int(round(ly_))
+                r2 = max(rad, int(round(0.3 * sp)))
+                expl = 0 <= yl < H and bool(erased[max(0, yl - r2):min(H, yl + r2 + 1), x].any())
+                best = None
+                for (ra, rb) in raw_cols[x]:
+                    cy, th = (ra + rb - 1) / 2.0, rb - ra
+                    if th <= max_th * 1.6 and abs(cy - ly_) <= ERASED_TOL_SP * sp + 0.5 * th and not bool(blank[max(0, int(cy) - rad):min(H, int(cy) + rad + 1), x].any()) \
+                            and (best is None or abs(cy - ly_) < abs(best[0] - ly_)):
+                        best = (cy, th)
+                if best is not None and not broken:
+                    if abs(x - lx) > 1:
+                        egaps.append((min(lx, x), max(lx, x)))
+                    new.append((x, best[0], best[1]))
+                    lx = x
+                    blank_seen = False
+                elif best is None and not expl:
+                    unexpl += 1
+                    if unexpl > 0.4 * sp:
+                        broken = True          # neither ink nor an erased band on the tangent for 0.4 sp: nothing hides the tail here
+                if best is not None or expl:
+                    unexpl = 0
+            if abs(x - lx) > (int(round(ERASED_GAP_SP * sp)) if (lin is not None and not broken and not blank_seen) else gap):
                 break
             x += step
         out[side] = new
@@ -641,7 +691,7 @@ def _is_lens(x: np.ndarray, th: np.ndarray, width: float, sp: float) -> bool:
     return tm <= TAPER_MID_MAX_SP * sp and te <= TAPER_END_RATIO * tm
 
 
-def _raw_beam_like(t: Dict[str, Any], raw_b: np.ndarray, sp: float) -> bool:
+def _raw_beam_like(t: Dict[str, Any], raw_b: np.ndarray, sp: float, need_stems: bool = True) -> bool:
     """ROADMAP 2.274 r4, CLAIM ORDER (CLAUDE §3, Sean: "a beam is thick, straight, and joined to two or more stems"): a beam is claimed before an arc, and the
     linker / the thick pass built runs out of beams' edge pieces (9 of the 12 fakes of round 3). A run's body that lies on RAW ink (the unerased, unblanked
     raster, reduced) taller than `BEAM_RAW_SP` in nearly all its points, with a raw thickness that does not fall toward the ends, is on a beam's ink. A slur's
@@ -682,7 +732,24 @@ def _raw_beam_like(t: Dict[str, Any], raw_b: np.ndarray, sp: float) -> bool:
     mid, ends = th[(f >= 0.3) & (f <= 0.7) & ok], th[((f <= 0.12) | (f >= 0.88)) & ok]
     if len(mid) < 3 or len(ends) < 3:
         return False
-    return float(np.median(ends)) >= BEAM_RAW_ENDS * float(np.median(mid))
+    if float(np.median(ends)) < BEAM_RAW_ENDS * float(np.median(mid)):
+        return False
+    # a beam stands on its stems: raw ink at least BEAM_STEM_SP long rises or hangs at BOTH ends (a heavy slur's lens-middle has none: round-3 tile 6)
+    def stem_at(q) -> bool:
+        xc, yc = int(round(q[0])), int(round(q[1]))
+        for xi in range(max(0, xc - int(BEAM_STEM_NEAR_SP * sp)), min(W, xc + int(BEAM_STEM_NEAR_SP * sp) + 1)):
+            if not (0 <= yc < H) or not raw_b[yc, xi]:
+                continue
+            a = yc
+            while a > 0 and raw_b[a - 1, xi]:
+                a -= 1
+            b = yc
+            while b < H - 1 and raw_b[b + 1, xi]:
+                b += 1
+            if b - a + 1 >= BEAM_STEM_SP * sp:
+                return True
+        return False
+    return (not need_stems) or (stem_at(pts[0]) and stem_at(pts[-1]))
 
 
 def hugs_a_claimed_mark(pts: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: float,
@@ -802,6 +869,8 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
     H, W = ink.shape
     blank = np.zeros_like(ink)
     for _cls, (x0, y0, x1, y1) in boxes:
+        if WIDE_BOX and sp_page and _cls.startswith(WIDE_BOX_CLASSES) and (x1 - x0) > WIDE_BOX_SP * sp_page:
+            continue          # r4: not a mark of that class (a flat is one space wide): the detector boxed an arc
         ya, yb, xa, xb = max(0, int(y0) - 1), min(H, int(np.ceil(y1)) + 1), max(0, int(x0) - 1), min(W, int(np.ceil(x1)) + 1)
         if LEDGER_THIN and _cls.startswith("ledger"):
             # a ledger line is a thin level stroke: where the ink through the box is much thicker than the box is tall, something else lies there (the top of
@@ -969,7 +1038,7 @@ def line_arc_ink(small_raw: np.ndarray, model: Sequence[Dict[str, Any]], sp: flo
 
 def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxes: Sequence[Tuple[str, Sequence[float]]],
               areas: Sequence[Tuple[str, Sequence[float]]], *, blank: Optional[np.ndarray] = None, keep_rejected: bool = False, extend: bool = True,
-              raw: Optional[np.ndarray] = None) -> Dict[str, Any]:
+              raw: Optional[np.ndarray] = None, arc_boxes: Optional[Sequence[Dict[str, Any]]] = None) -> Dict[str, Any]:
     """The runs of the page ink (module doc). `canvas`: 0 = ink, page px. Returns `{runs, why, tracks, scale, sp, blanked}`; each run has `pts` (page px,
     ~one per 2 reduced px), `box`, `width_sp`, `sagitta_sp`, `thick_sp`, `resid_sp`, `inked`, `chord_deg`, `half` (half its thickness, page px)."""
     import cv2
@@ -1017,9 +1086,12 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
         tracks = joined + tracks
     dots = page_dots(ink, sp_page)
     raw_cols = None
+    erased_s = None
     if extend:
         small_raw = cv2.resize(ink.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink
         raw_cols = _column_runs(small_raw.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
+        if raw_b is not None and ERASED_EXT:
+            erased_s = raw_b & ~(small_raw > 0)          # what the staff-line eraser and the barline carve took out of the page's ink
     header_ink = blank_mask(ink, [], [(o, a) for o, a in areas if o in HEADER_OWNERS], sp_page, glyphs=False) if (HEADER_INK and areas) else None
     ledgers_s = [[b[0] * scale, b[1] * scale, b[2] * scale, b[3] * scale] for c, b in boxes if c.startswith("ledger")]
     why: Dict[str, int] = {}
@@ -1086,10 +1158,18 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             keep.append((t, info))
         acc = keep
     for t, info in acc:
+        if BEAM_RAW and raw_b is not None and arc_boxes is not None:
+            # r4, count evidence by source: a run no detector arc box witnesses stands on its ink alone, so it meets the stricter standard (tall, uniform raw ink is a
+            # beam's edge even with no stems seen at its ends); a witnessed run (0 fakes in 20, rounds 3 and 4) keeps the stems-at-both-ends test above
+            pg = np.array(t["pts"], float)[:, :2] / scale
+            if not any(witness_share(pg, b["box"], sp_page) >= WITNESS_SHARE for b in arc_boxes) and _raw_beam_like(t, raw_b, sp, need_stems=False):
+                why["beam_raw_new"] = why.get("beam_raw_new", 0) + 1
+                why["arc"] = why.get("arc", 1) - 1
+                continue
         if raw_cols is not None:
             # the core was judged on its own ink; only an accepted arc is carried on through the marks that claim before it, so an extension can never
             # make a run fail (a tail into a head used to turn a clean arc "steep")
-            t = _extend_through_claims(t, raw_cols, blank_s if EXT_ALL else cross_s, sp)
+            t = _extend_through_claims(t, raw_cols, blank_s if EXT_ALL else cross_s, sp, erased_s)
             info = dict(info, width_sp=round((t["pts"][-1][0] - t["pts"][0][0] + 1) / sp, 2))
         info = dict(info, src=("thick" if t.get("thick") else "linked" if t.get("linked") else "ragged" if t.get("ragged") else "plain"))
         out.append(_run_row(t, info, scale, len(out)))
@@ -1234,7 +1314,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
     boxes, areas, arc_boxes = inputs_from_rows(rows)
     sp_page = float(page_map.sp)
     line_ys = [float(y) for s in pws.staves for y in s.line_ys]
-    res = read_runs(canvas, sp_page, line_ys, boxes, areas, raw=getattr(getattr(pws, "page", None), "binary", None))
+    res = read_runs(canvas, sp_page, line_ys, boxes, areas, raw=getattr(getattr(pws, "page", None), "binary", None), arc_boxes=arc_boxes)
     runs = res["runs"]
     by_run, alone = witnesses_of(runs, arc_boxes, sp_page)
     t_runs = time.time()

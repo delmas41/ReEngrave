@@ -121,7 +121,7 @@ def main():
     boxes, areas, arc_boxes = PA.inputs_from_rows(rows)
     line_ys = [y for s in staves for y in s['lines']]
     t2 = time.time()
-    res = PA.read_runs(canvas, sp, line_ys, boxes, areas, keep_rejected=True, **({"raw": raw} if os.environ.get("R3_RAW", "1") == "1" else {}))
+    res = PA.read_runs(canvas, sp, line_ys, boxes, areas, keep_rejected=True, **({"raw": raw, "arc_boxes": arc_boxes} if os.environ.get("R3_RAW", "1") == "1" else {}))
     runs = res["runs"]
     by_run, alone = PA.witnesses_of(runs, arc_boxes, sp)
     t3 = time.time()
