@@ -122,6 +122,12 @@ LINK_BOW_REL = 0.03       # the joint curve's bow, as a share of its width, at l
 TAPER_SLUR = 1            # r4: a long flat slur is a lens: thinner at both ends than in the middle. A run over STRAIGHT_MAX_SP that bows at least STRAIGHT_REL of its width and tapers is an arc, not a line
 TAPER_MID_MAX_SP = 0.5    # ... whose middle is no thicker than this (a beam is ~0.6-0.9 sp, a staff line ~0.1; develop pages: real flat slurs 0.25-0.5)
 TAPER_END_RATIO = 0.9     # ... and whose end thickness (mean of the outer 12% each side) is at most this share of the mean of the middle 30% (develop pages: 31 of 41 refused-straight real slurs; 5 of 127 non-arc B runs after the thickness limit)
+FIT_MAX_SP = 5.0          # ... on a run no wider than this (a longer run that joins an arc to a head or a stem is judged by its jag; 2 real arcs were lost to this on long runs)
+FIT_RMS_SP = 0.12         # r4: a run that stays further than this (rms) off its own smooth fit (quadratic, quartic over 8 sp) is a zig-zag through letters, not an arc ("piu f" read as a run)
+GLYPH_COMP = 1            # r4: a small ink component that no detector mark overlaps and that is not one thin bowed stroke is a glyph (a digit, a letter, a rehearsal frame): page marks claim before an arc
+GLYPH_MAX_W_SP = 5.5
+GLYPH_MAX_H_SP = 4.5
+GLYPH_MIN_H_SP = 0.9      # shorter than this it can be a tie's piece or a dash
 BEAM_RAW = 1              # r4: a run that lies on RAW ink (nothing erased or blanked) taller than BEAM_RAW_SP in at least BEAM_RAW_SHARE of its points and that does not thin toward its ends (end / middle >= BEAM_RAW_ENDS) is a beam's edge piece: the beam owns that ink
 BEAM_RAW_SP = 0.45        # (develop pages, 5 pages: 16 of 109 NEW runs and 0 of 553 witnessed runs)
 BEAM_RAW_SHARE = 0.9
@@ -590,6 +596,8 @@ def _judge(t: Dict[str, Any], sp: float, lines: np.ndarray, *, min_width_sp: flo
     chord = np.degrees(np.arctan2(abs(fit[-1] - fit[0]), width))
     if chord > MAX_CHORD_DEG:
         return "steep", None
+    if FIT_RMS_SP and width <= FIT_MAX_SP * sp and float(np.sqrt(np.mean((y - fit) ** 2))) > FIT_RMS_SP * sp:
+        return "bad_fit", None
     line_y = fit[0] + (fit[-1] - fit[0]) * (x - x[0]) / max(1.0, x[-1] - x[0])
     dev = fit - line_y
     sag = float(dev[np.argmax(np.abs(dev))])
@@ -776,7 +784,19 @@ def _is_arc_component(lab: np.ndarray, i: int, x0: int, y0: int, w: int, h: int,
         return False
     return True          # a straight stroke this long is no letter either; the judge refuses a line, a piece of an arc is nearly one
 
-def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: Optional[float] = None) -> np.ndarray:
+def _has_hole(m: np.ndarray, sp: float) -> bool:
+    """The component mask encloses background (a ring: 0, 6, 8, 9, O, D, a boxed rehearsal letter) of at least a fifth of a space across."""
+    import cv2
+    pad = np.pad(~m, 1, constant_values=True).astype(np.uint8)
+    n, lab, st, _c = cv2.connectedComponentsWithStats(pad, connectivity=4)
+    outer = lab[0, 0]
+    for i in range(1, n):
+        if i != outer and st[i, 2] >= 0.2 * sp and st[i, 3] >= 0.2 * sp:
+            return True
+    return False
+
+
+def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: Optional[float] = None, glyphs: bool = True) -> np.ndarray:
     """What claims first or is not arc ink: the compact detector boxes' rectangles, and the ink COMPONENTS wholly inside a page claim's area (+1 px)."""
     import cv2
     H, W = ink.shape
@@ -799,10 +819,26 @@ def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], ar
                 blank[ya:yb, x] = True
             continue
         blank[ya:yb, xa:xb] = True
-    if areas:
+    glyphs = bool(glyphs and GLYPH_COMP and sp_page)
+    if areas or glyphs:
         n, lab, st, _c = cv2.connectedComponentsWithStats(ink.astype(np.uint8), connectivity=8)
         take = np.zeros(n, bool)
         bx, by, bw, bh = st[:, 0], st[:, 1], st[:, 2], st[:, 3]
+        if glyphs:
+            cand = np.flatnonzero((bw <= GLYPH_MAX_W_SP * sp_page) & (bh <= GLYPH_MAX_H_SP * sp_page) & (bh >= GLYPH_MIN_H_SP * sp_page) & (bw >= 0.5 * sp_page))
+            cand = cand[cand > 0]
+            if len(cand) and boxes:
+                bxs = np.array([[b[0], b[1], b[2], b[3]] for _c2, b in boxes], float)
+            else:
+                bxs = np.zeros((0, 4))
+            for i in cand:
+                if len(bxs) and np.any((bxs[:, 0] <= bx[i] + bw[i]) & (bxs[:, 2] >= bx[i]) & (bxs[:, 1] <= by[i] + bh[i]) & (bxs[:, 3] >= by[i])):
+                    continue          # a detector mark lies on it: a note, an accidental, a rest ... never a glyph
+                if _is_arc_component(lab, int(i), int(bx[i]), int(by[i]), int(bw[i]), int(bh[i]), sp_page):
+                    continue
+                if not _has_hole(lab[by[i]:by[i] + bh[i], bx[i]:bx[i] + bw[i]] == i, sp_page):
+                    continue          # a slur's piece with a hook, a tie, a dash has no ring; a digit, an O, a rehearsal frame has
+                take[i] = True
         union = np.zeros(ink.shape, bool)
         hdr = np.zeros(n, bool)
         for _own, (x0, y0, x1, y1) in areas:
@@ -955,7 +991,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
             band_s = line_arc_ink(raw_f > 0.5, model, sp, cols, blank_s, int(round(RUN_MAX_SP * sp)))
     # a track may wait out, and an arc be carried on through, only what a WORD or a dynamic claims (the marks an arc passes THROUGH); a head, an accidental,
     # a rest, a flag is where an arc ENDS, and a track that waited across heads linked their edges into fake runs
-    cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas, sp_page)
+    cross = blank_mask(ink, [(c, b) for c, b in boxes if c.startswith(CROSS_CLASSES)], areas, sp_page, glyphs=False)
     cross_s = cv2.resize(cross.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 32 if scale < 1 else cross
     tracks = _track(cols, sp, small.shape[1], cross_s if (band_s is None or not LINE_WAIT) else (cross_s | band_s))
     lines = np.array(sorted(y * scale for y in line_ys))
@@ -984,7 +1020,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     if extend:
         small_raw = cv2.resize(ink.astype(np.uint8) * 255, None, fx=scale, fy=scale, interpolation=cv2.INTER_AREA) > 96 if scale < 1 else ink
         raw_cols = _column_runs(small_raw.astype(np.int8), int(round(RUN_MAX_SP * sp)), line_rows, int(np.ceil(LINE_GAP_SP * sp)))
-    header_ink = blank_mask(ink, [], [(o, a) for o, a in areas if o in HEADER_OWNERS], sp_page) if (HEADER_INK and areas) else None
+    header_ink = blank_mask(ink, [], [(o, a) for o, a in areas if o in HEADER_OWNERS], sp_page, glyphs=False) if (HEADER_INK and areas) else None
     ledgers_s = [[b[0] * scale, b[1] * scale, b[2] * scale, b[3] * scale] for c, b in boxes if c.startswith("ledger")]
     why: Dict[str, int] = {}
     out: List[Dict[str, Any]] = []
@@ -998,7 +1034,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
         if TRIM_LINE and raw is not None:
             t = _trim_line_ends(t, lines, sp, ledgers_s)
         v, info = _judge(t, sp, lines)
-        if v in ("rough", "two_bows", "steep", "straight", "sparse") and RAGGED_TRIM and raw is not None:
+        if v in ("rough", "two_bows", "steep", "straight", "sparse", "bad_fit") and RAGGED_TRIM and raw is not None:
             t2 = _trim_ragged_ends(t, sp)
             if t2 is not None:
                 v2, info2 = _judge(t2, sp, lines)
