@@ -1,0 +1,92 @@
+{
+ "lane": "2.274 r3 (lane-2.274-page-ink-arcs a5fb15aaa, reader frozen e671999c5)",
+ "date": "2026-11-07",
+ "sean_verbatim": "Tile 6 and 11 are not the full arc - all the rest are. Keep going do another round. We can get this",
+ "summary": "10/12 hold-out runs whole; 6 and 11 cut short",
+ "answers": [
+  {
+   "tile": 1,
+   "key": {
+    "run": 71
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 2,
+   "key": {
+    "run": 28
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 3,
+   "key": {
+    "run": 50
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 4,
+   "key": {
+    "run": 21
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 5,
+   "key": {
+    "run": 38
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 6,
+   "key": {
+    "run": 55
+   },
+   "sean": "not the full arc"
+  },
+  {
+   "tile": 7,
+   "key": {
+    "run": 82
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 8,
+   "key": {
+    "run": 6
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 9,
+   "key": {
+    "run": 27
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 10,
+   "key": {
+    "run": 2
+   },
+   "sean": "whole arc"
+  },
+  {
+   "tile": 11,
+   "key": {
+    "run": 3
+   },
+   "sean": "not the full arc"
+  },
+  {
+   "tile": 12,
+   "key": {
+    "run": 71
+   },
+   "sean": "whole arc"
+  }
+ ]
+}
