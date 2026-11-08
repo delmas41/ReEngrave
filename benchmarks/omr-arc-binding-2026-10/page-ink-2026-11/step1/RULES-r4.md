@@ -23,3 +23,5 @@ Otherwise NOT GOOD, naming which of the three failed. Per-page numbers next to p
 Gates: export byte-identical flag ON vs OFF; fast tier; `check` no higher than main + the existing 3; 12 crops from the new hold-out pages (long flat slurs and meeting pairs among them).
 Controls that can fail: each mechanism ships with a drawn case it fixes and the same case with the property removed, which it must NOT fix (a straight uniform line is
 not a slur; a beam is not an arc; two arcs that meet are split and one arc through a head is not).
+
+FROZEN: reader and constants as of commit 6a64c47b8 (page_arcs.py), committed and pushed BEFORE the hold-out pages were read, measured or looked at. Develop-page numbers at the freeze (18 pages): strict one-run whole 2281 of 2458 (92.8%; the round-3 reader on the same pages 2243, 91.3%), union (meeting pairs counted) 2330 (94.8%); NEW runs 238 (round 3: 301).
