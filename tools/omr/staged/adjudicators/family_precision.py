@@ -1136,6 +1136,12 @@ def _rest_claim_refusal(claim, box_row, detail: Dict[str, Any]) -> Ruling:
                            band=None, would_choose=(True,))
 
 
+def _cell_owner_verdict(ev: Evidence):
+    """The cell's `Q.STROKE_OWNER` verdict, READ in the deciding body (its `wants` entry is live); None where there is no cell."""
+    cell = ev.subject.at(Kind.CELL)
+    return ev.verdict(Q.STROKE_OWNER, subject=cell) if cell is not None else None
+
+
 def _rest_claim_final_refusal(cf, box_row, detail: Dict[str, Any]) -> Ruling:
     """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): a rest box mostly on a claim's ink is refused BY THAT CLAIM (a LITERAL reason per kind)."""
     detail = {**detail, **cf.detail}
@@ -1740,7 +1746,7 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
 
     used = [box_row.id]
 
-    cf_row = _claim_final.finding(ev, box_row)       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+    cf_row = _claim_final.finding(ev, box_row, _cell_owner_verdict(ev))       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, box_row, detail)
 
@@ -1936,7 +1942,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
-    cf_row = _claim_final.finding(ev, None)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+    cf_row = _claim_final.finding(ev, None, _cell_owner_verdict(ev))          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
     return Ruling(value=False, reason="accidental", used=used, detail=detail)
@@ -2217,7 +2223,7 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     in_key = _key_slot_refusal(ev, detail)
     if in_key is not None:
         return in_key
-    cf_row = _claim_final.finding(ev, None)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+    cf_row = _claim_final.finding(ev, None, _cell_owner_verdict(ev))          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
     return Ruling(value=False, reason="arpeggiato", used=used, detail=detail)

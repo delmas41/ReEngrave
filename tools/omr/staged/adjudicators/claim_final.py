@@ -30,14 +30,14 @@ def enabled() -> bool:
     return CF.enabled()
 
 
-def entry(ev: Any, box_key: str) -> Optional[Tuple[Dict[str, Any], Any]]:
+def entry(ev: Any, box_key: str, verdict: Any = None) -> Optional[Tuple[Dict[str, Any], Any]]:
     """`(held entry, the cell's stroke-owner verdict)` for this box, or None (flag off, no verdict, not held)."""
     if not CF.enabled():
         return None
     cell = ev.subject.at(Kind.CELL)
     if cell is None:
         return None
-    v = ev.verdict(Q.STROKE_OWNER, subject=cell)
+    v = verdict if verdict is not None else ev.verdict(Q.STROKE_OWNER, subject=cell)
     cf = (getattr(v, "detail", None) or {}).get("claim_final")
     if not isinstance(cf, dict):
         return None
@@ -45,9 +45,10 @@ def entry(ev: Any, box_key: str) -> Optional[Tuple[Dict[str, Any], Any]]:
     return (e, v) if e else None
 
 
-def finding(ev: Any, box_row: Any) -> Optional[Finding]:
-    """The refusal this box earns from a claim it stands on, or None. Decides nothing else."""
-    got = entry(ev, ev.subject.to_key())
+def finding(ev: Any, box_row: Any, verdict: Any = None) -> Optional[Finding]:
+    """The refusal this box earns from a claim it stands on, or None. Decides nothing else. `verdict`: the cell's `Q.STROKE_OWNER` verdict the deciding
+    module READ in its own body (so its `wants` entry is visibly live); None reads it here."""
+    got = entry(ev, ev.subject.to_key(), verdict)
     if got is None:
         return None
     e, v = got
