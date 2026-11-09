@@ -222,3 +222,71 @@ Four places, in order of the pipeline. Whole movement, `augmentationDot`-class b
 
 ### What this does not say
 No fix built, no flag flipped. Counts of eighth rests and dots lost under the floor are from a 45-bars-a-plate hand sample; the 767 shared heads are an upper bound (about two thirds by a 32-crop look); the 75-whole look is mine. A fix for Q4 is the smallest of the four (an open-class head whose centre reads filled, or whose stem is decided, narrows instead of deciding, as `head_fill_from_ink` already does for a black head over a hollow reading) and would touch 29 of the 56 written wholes by the record's ink alone; the other 27 need a digit / rest-fragment witness. Proposed to Sean before dispatch, not built.
+
+## 2.275 re-census 20261104-night
+
+Sean 2026-11-08 "Biggest issues first". STAGED, GATHER..EXPORT, read-only, no product code changed. Records: `library/_shared-records/{beethoven5-litolff,brahms1-breitkopf}-mvt1-whole-20261104-night.record.json` (gathered by 636ec4742), exported by the CURRENT main tree (242289863: 2.270 whole-rest-from-ink and 2.273 arc strip ON). Probes `probe/2.275/` (`p1_table.py` = 2.167's instrumented export with an `OMR_TREE` switch, `p3_partition.py`, `p3b_ink.py`, `relation.py`, `near_written.py`, `tiles.py`, `mkkey.py`); Brahms loaded alone, slim, after a `ps` check that no other `tools.omr` process was running.
+
+### The cause, and the process lesson
+
+**Cause.** The headline "heads that reach the file" (Litolff 9,029 of 12,039; Brahms 15,403 of 24,454) counts detector BOXES, not marks, and most of what it calls "not written" is not a lost note. Of the overnight's `notes_not_written` (4,440 / 11,044): 607 / 2,010 are REST-box refusals (not heads at all); the rest are notehead boxes. Of those, 2,169 / 3,452 are copies of ink that IS in the file (a twin box was written, the copy correctly refused), and the remaining 1,664 / 5,582 boxes are 1,439 / 5,035 distinct pieces of ink not in the file. Of those, by my look (ours, not Sean's), the real notes are the duration-NARROWED notes (Litolff 236, Brahms 696: a read head whose value the reader could not tell, eighth or quarter), plus `no_pitch` (114 / 53), `chord_value_undecided` (97 / 182) and part of `clipped_fragment`. The biggest bucket, Brahms `too_narrow` (2,887), is non-notes (augmentation dots, barline and stem slivers; 12 of 12 looked at). So real notes not reaching the file are about 450-550 of Litolff's 9,623 distinct marks and about 930-1,100 of Brahms's 20,455 (about 5%), not the 25% / 37% the box ratio suggests.
+**Process lesson.** A coverage figure built on boxes conflates three things (copies, non-notes, real notes) and points a lane at the largest, which is the least real. The unit for "what is lost" is distinct ink with a first cause, then Sean's look; the box ratio stays a control only. And the biggest 2.167 bucket (bar held out, 1,237 / 2,612) is GONE: held-out bars are 0 on both plates (heads in the red gaps of partial bars: 27 / 159), so the order of causes changed under us between 10-16 and today, which is why a census is re-run, not quoted.
+
+### Controls (rule 7)
+
+The instrumented export reproduces the overnight's `notes_not_written_total` exactly on both plates: **Litolff 4,440 and Brahms 11,044**. Litolff was also exported by the overnight's own code (`git archive 636ec4742`) and by the current tree: per-fate counts identical, so none of the landings since (2.270, 2.273) moves a head's export fate on these records. (Brahms was exported by the current tree only; it equals the overnight figure.) Bucket sums asserted by `p3_partition.py` (boxes 12,039 / 24,454) and `p3b_ink.py` (clusters partition the boxes). Both `notes written` reports match the README (9,029 / 15,403); they differ from boxes-in-file because the doubled Contrabass staff and relocations are written without a box row (2.167 residue).
+A control that can fail: Brahms `too_narrow` was expected to be non-notes (2.167: 16 of 16); two of the 12 blind tiles are `too_narrow` and should be answered "not a note"; any other answer says that is wrong.
+
+### The relation: heads not written vs distinct ink
+
+| | Litolff | Brahms |
+|---|--:|--:|
+| `notes_not_written` (overnight report) | 4,440 | 11,044 |
+| less REST-box refusals (duplicate box, clipped by crop, key slot, barline ...) | 607 | 2,010 |
+| = notehead boxes not written | 3,833 | 9,034 |
+| less copies: the ink has a twin box that IS written (owned_by_another_staff, mark_group_duplicate, duplicate / stacked boxes, cut pieces joined by IoU > 0.3) | 2,169 | 3,452 |
+| = boxes of ink not in the file | 1,664 | 5,582 |
+| = distinct ink not in the file | **1,439** | **5,035** |
+| (heads written in a bar with a red gap; counted as written; gap rows unlocatable) | 374 (27 in gaps) | 807 (159 in gaps) |
+
+### Bucket table: distinct ink not in file, FIRST cause (10-16 from 2.167, today from `p3b_ink.py`)
+
+| first cause | Lit 10-16 | Lit now | Brahms 10-16 | Brahms now | real notes? (my look, ours) |
+|---|--:|--:|--:|--:|---|
+| bar held out, durations do not sum | 1,237 | 0 | 2,612 | 0 | retired (held-out bars are 0; bars are written with red gaps) |
+| duration NARROWED | 292 | 236 | 1,232 | 696 | **real**, 12/12 + 12/12 looked; value unknown (beams_ambiguous 115 / 301, beam_discounted_uncertain 81 / 321) |
+| too_narrow box | 236 | 212 | 3,037 | 2,887 | Brahms non-notes 12/12 (dots, slivers); Litolff mostly slivers, stem bits, slash strokes |
+| clipped_fragment | 199 | 204 | 310 | 322 | 158 / 137 sit within 1 staff space of a WRITTEN head (cut copies IoU did not join); the other 46 / 185 uncertain, some real heads |
+| no_pitch (clef-abstained staves) | 95 | 114 | 0 | 53 | **real**, 12/12 looked (Litolff) |
+| chord_value_undecided | 96 | 97 | 211 | 182 | real |
+| ink read as whole rest | 108 | 104 | 15 | 13 | rests |
+| tremolo slash | 49 | 62 | 114 | 123 | non-note |
+| claimed_by clef / key / bracket / meter / leading column / word | n/a | 75+33+20+2+11+12 | n/a | 78+7+181+70+68+24 | non-notes if the claim is right (page-claim order); Brahms bracket 181 not looked at |
+| owned_by_another_staff, no twin kept | 30 | 17 | 53 | 62 | copy whose owner lost it |
+| other (dynamic letter, rest twin, beam piece, nearer staff, arc tail, stem-end ink ...) | ~100 | ~220 | ~100 | ~280 | non-notes |
+| **total** | **2,573** | **1,439** | **7,892** | **5,035** | |
+
+10-16 figures are the 20261016-night column of 2.167 / 2.167b (those two tables did not itemise every small bucket, so "other" is approximate and the claimed_by rows did not exist). Buckets are first-cause and mutually exclusive; the rank order inside a cluster is `p3b_ink.py`'s (new fates rank last).
+
+### My look at samples (seeded 7, 12 per bucket per plate; sheets in the scratchpad, not committed)
+
+Duration narrowed: Litolff 12/12 and Brahms 12/12 black heads of a real note, mostly in chords or beamed groups, with a flag, beam or dot nearby: the pitch is a read head, only the value is open. No pitch (Litolff): 12/12 real heads on staves whose clef is abstained. Too narrow: Brahms 12/12 not notes (augmentation dots 6, barline or stem slivers 4, a dynamic's foot 1, an accidental stub 1); Litolff mostly slivers and slash strokes. Clipped fragment: Brahms 12: slivers 3, dots 3, the lower half of a real head 5, a ledger-line head 1; Litolff 12: the top or bottom of a real head 8. Those heads are mostly in the file under a neighbouring box, which `near_written.py` counts.
+
+### Top real-note buckets: where decided, which rule owns it, upstream or downstream
+
+1. **duration NARROWED** (Litolff 236 / Brahms 696): the biggest REAL bucket. Decided in `rhythm.adjudicate_duration` (`tools/omr/staged/adjudicators/rhythm.py`): `Ruling.narrow(..., "beams_ambiguous")` near L5646 (a stroke that might cover the stem; certain level below possible level) and `"beam_discounted_uncertain"` near L5779 (no flag read at the tip but a refused stroke there). Refused at EXPORT in `export._place_notes` (`_drop("duration_narrowed")`, near L1749, "THE EXPORTER DOES NOT DECIDE"). Owning rules: CLAUDE.md section 4 "A note is an eighth only on evidence -- a flag or beam read on its stem" (bar arithmetic only confirms; two exceptions written GUESSED blue) and rule 8; DECISIONS 2026-10-28 "a beam owns the stemmed notes under its width even where the ink is broken" (OMR_BEAMS_FROM_STROKES); precedent for writing a narrowed reading blue with its candidates: 2026-10-13 (2.107, narrowed dynamics, page-facts). **Upstream, not a downstream refusal:** the export refusal is correct given the verdict; the cause is the reading of the beam/flag ink at the stem tip (a stroke seen but not tied to a stem). Page-level beam reading is 2.202 / `page_beams.py` and the claim order of CLAUDE.md section 3. The 2.170 lane measured the same population.
+2. **no_pitch** (Litolff 114; Brahms 53): `export._place_notes` `_drop("no_pitch")` near L1736; the pitch needs the clef, which ADJUDICATE abstained on those staves. Owning rule: page-facts (a clef is read or the staff abstains; "no rungs either way is OUR failure -- abstain and count it"; clef-free range check as second witness). Upstream: clef reading (2.251 / 2.269, clef ink claimed).
+3. **chord_value_undecided** (Litolff 97; Brahms 182): `export._place_notes`; one stem's heads disagree or the chord value is narrowed (`adjudicate_event`, rhythm.py); owning rule: page-facts "every note on one stem shares one written value". Upstream: the same beam / flag / dot reading as bucket 1, so fixing bucket 1 should shrink it too (as 2.170 shrank both).
+
+### Tiles
+
+- `out/print/2.275-pattern/`: 28 tiles for Sean (his request 2026-11-08, "20-30 tiles where we are currently losing notes"), seeded proportional to bucket size per plate, wide one-staff crops, thin blue box, nothing else drawn; bucket only in `key.json`.
+- `out/print/2.275/`: 12 blind tiles for the check-the-count step, "Is the boxed mark a note? If yes, what value?". Blue box = the detector box of the head asked about (padded 0.15 staff space; no arrows; one staff; 28 staff spaces wide). By `key.json`: duration_narrowed 4 (tiles 2, 4, 11, 12), no_pitch 2 (1, 5), chord_value_undecided 2 (6, 7), clipped_fragment with no written head within a staff space 2 (3, 10), too_narrow 2 (8, 9; controls expected "not a note"). My look (ours, not evidence): 1, 2, 4, 5, 6, 11, 12 real heads; 7 a head glued to a beam; 3 a stub under a dynamic; 8, 9, 10 slivers or head parts. Sean's answers go to `answers.json` (none yet).
+
+### What this does not say
+
+No fix built. Real-note shares are my look at 12 per bucket per plate (ours); `clipped_fragment`'s real share is bounded by the nearness test only; Brahms bracket / leading-column claims (181 / 68) not looked at; the 10-16 columns came from a different tree, and the landings in between are not isolated here; not traced: why Brahms `no_pitch` rose from 0 to 53.
+
+### Recommended first lane
+
+Fix the narrowed-duration notes at their source, the beam / flag ink at the stem tip: the biggest real-note bucket (Litolff 236, Brahms 696; with chord_undecided about 330 / 880 distinct marks), every one a read, pitched head. The lane should (a) read the page's beam strokes once on the page-wide pass and bind each to the stems under its width (DECISIONS 2026-10-28), so a stroke is certain or absent, never "possible"; (b) use Sean's answers on the 4 narrowed tiles as the check; (c) report the three measures (file diff, 12 tiles, right to wrong 0). No lane on `too_narrow` (non-notes) or the red-bar hold (retired).

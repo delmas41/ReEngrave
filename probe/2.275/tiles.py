@@ -25,11 +25,25 @@ BLUE = (31, 111, 235)
 ink = json.load(open(INK))
 rows = {r["sub"]: r for r in (json.loads(l) for l in open(ROWS))}
 mem = {b: sorted(v) for b, v in ink["members"].items()}
-tot = sum(len(v) for v in mem.values())
-quota = {b: N * len(v) / tot for b, v in mem.items()}
-take = {b: int(q) for b, q in quota.items()}
-for b in sorted(quota, key=lambda b: -(quota[b] - take[b]))[: N - sum(take.values())]:
-    take[b] += 1
+if os.environ.get("QUOTA"):
+    # explicit per-bucket quota (the 12 blind tiles); `FAR` buckets keep only ink with no written head within 1 staff space
+    Q = json.loads(os.environ["QUOTA"])
+    FAR = os.environ.get("FAR", "")
+    if FAR:
+        wr = [((r["bbox"][0] + r["bbox"][2]) / 2, (r["bbox"][1] + r["bbox"][3]) / 2, r["sub"].split("/")[1])
+              for r in rows.values() if r["bucket"] in ("WRITTEN", "partial_bar_cell")]
+        mem[FAR] = [s for s in mem[FAR]
+                    if not any(pg == s.split("/")[1] and ((x - (rows[s]["bbox"][0] + rows[s]["bbox"][2]) / 2) ** 2
+                                                          + (y - (rows[s]["bbox"][1] + rows[s]["bbox"][3]) / 2) ** 2) ** 0.5 <= SP
+                               for x, y, pg in wr)]
+    mem = {b: v for b, v in mem.items() if b in Q}
+    take = {b: Q[b] for b in mem}
+else:
+    tot = sum(len(v) for v in mem.values())
+    quota = {b: N * len(v) / tot for b, v in mem.items()}
+    take = {b: int(q) for b, q in quota.items()}
+    for b in sorted(quota, key=lambda b: -(quota[b] - take[b]))[: N - sum(take.values())]:
+        take[b] += 1
 rng = random.Random(SEED)
 pick = []
 for b in sorted(mem):

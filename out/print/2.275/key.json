@@ -1,0 +1,281 @@
+{
+ "note": "bucket = FIRST cause the exporter refused the ink (20261104-night records, main 242289863). Never drawn on a tile. Box (blue) = the detector box of the head, padded 0.15 staff space. Litolff tiles first, then Brahms; seeded, proportional to bucket size per plate.",
+ "tiles": {
+  "1": {
+   "file": "tile_01.png",
+   "plate": "litolff",
+   "page": 12,
+   "system": 0,
+   "staff": 10,
+   "cell": 2,
+   "subject": "glyph/12/0/10/2/2",
+   "bucket": "refused:no_pitch",
+   "page_box": [
+    843.64,
+    1758.5875,
+    871.8325,
+    1780.795
+   ],
+   "box_tile_px": [
+    601.9,
+    169.7,
+    699.1,
+    249.3
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "2": {
+   "file": "tile_02.png",
+   "plate": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 3,
+   "cell": 3,
+   "subject": "glyph/4/1/3/3/0",
+   "bucket": "refused:duration_narrowed",
+   "page_box": [
+    894.9,
+    2618.6975,
+    918.84,
+    2640.7475
+   ],
+   "box_tile_px": [
+    608.2,
+    169.5,
+    692.8,
+    248.5
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "3": {
+   "file": "tile_03.png",
+   "plate": "litolff",
+   "page": 12,
+   "system": 0,
+   "staff": 11,
+   "cell": 8,
+   "subject": "glyph/12/0/11/8/2",
+   "bucket": "refused:not_a_notehead:clipped_fragment",
+   "page_box": [
+    1538.3675,
+    1849.0,
+    1554.4325,
+    1852.9375
+   ],
+   "box_tile_px": [
+    619.8,
+    196.7,
+    681.2,
+    222.3
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "4": {
+   "file": "tile_04.png",
+   "plate": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 0,
+   "cell": 1,
+   "subject": "glyph/2/0/0/1/15",
+   "bucket": "refused:duration_narrowed",
+   "page_box": [
+    699.08,
+    364.8,
+    721.0,
+    389.28
+   ],
+   "box_tile_px": [
+    611.2,
+    166.3,
+    689.8,
+    252.7
+   ],
+   "class_": "noteheadBlackInSpace"
+  },
+  "5": {
+   "file": "tile_05.png",
+   "plate": "litolff",
+   "page": 5,
+   "system": 0,
+   "staff": 6,
+   "cell": 0,
+   "subject": "glyph/5/0/6/0/0",
+   "bucket": "refused:no_pitch",
+   "page_box": [
+    532.73,
+    1641.995,
+    557.065,
+    1662.3
+   ],
+   "box_tile_px": [
+    607.6,
+    172.5,
+    693.4,
+    246.5
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "6": {
+   "file": "tile_06.png",
+   "plate": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "cell": 2,
+   "subject": "glyph/2/0/10/2/1",
+   "bucket": "refused:chord_value_undecided",
+   "page_box": [
+    796.5225,
+    1853.855,
+    824.2425,
+    1875.4325
+   ],
+   "box_tile_px": [
+    602.6,
+    170.6,
+    698.4,
+    248.4
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "7": {
+   "file": "tile_07.png",
+   "plate": "brahms",
+   "page": 18,
+   "system": 0,
+   "staff": 4,
+   "cell": 0,
+   "subject": "glyph/18/0/4/0/29",
+   "bucket": "refused:chord_value_undecided",
+   "page_box": [
+    1079.1474609375,
+    1497.11328125,
+    1118.3681640625,
+    1537.24609375
+   ],
+   "box_tile_px": [
+    610.2,
+    168.3,
+    690.8,
+    250.7
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "8": {
+   "file": "tile_08.png",
+   "plate": "brahms",
+   "page": 16,
+   "system": 0,
+   "staff": 10,
+   "cell": 7,
+   "subject": "glyph/16/0/10/7/10",
+   "bucket": "refused:not_a_notehead:too_narrow",
+   "page_box": [
+    3739.2,
+    2782.45,
+    3762.025,
+    2809.675
+   ],
+   "box_tile_px": [
+    624.1,
+    179.3,
+    676.9,
+    239.7
+   ],
+   "class_": "noteheadBlackInSpace"
+  },
+  "9": {
+   "file": "tile_09.png",
+   "plate": "brahms",
+   "page": 15,
+   "system": 1,
+   "staff": 1,
+   "cell": 9,
+   "subject": "glyph/15/1/1/9/1",
+   "bucket": "refused:not_a_notehead:too_narrow",
+   "page_box": [
+    4637.5525,
+    4223.185,
+    4648.9975,
+    4244.7125
+   ],
+   "box_tile_px": [
+    633.8,
+    184.2,
+    667.2,
+    234.8
+   ],
+   "class_": "noteheadBlackOnLine"
+  },
+  "10": {
+   "file": "tile_10.png",
+   "plate": "brahms",
+   "page": 1,
+   "system": 1,
+   "staff": 9,
+   "cell": 4,
+   "subject": "glyph/1/1/9/4/11",
+   "bucket": "refused:not_a_notehead:clipped_fragment",
+   "page_box": [
+    3419.0,
+    6118.0,
+    3425.7265625,
+    6133.4150390625
+   ],
+   "box_tile_px": [
+    637.8,
+    189.4,
+    663.2,
+    229.6
+   ],
+   "class_": "noteheadBlackInSpace"
+  },
+  "11": {
+   "file": "tile_11.png",
+   "plate": "brahms",
+   "page": 14,
+   "system": 1,
+   "staff": 9,
+   "cell": 1,
+   "subject": "glyph/14/1/9/1/5",
+   "bucket": "refused:duration_narrowed",
+   "page_box": [
+    1738.725,
+    6556.375,
+    1776.675,
+    6586.35
+   ],
+   "box_tile_px": [
+    611.2,
+    177.0,
+    689.8,
+    242.0
+   ],
+   "class_": "noteheadBlackInSpace"
+  },
+  "12": {
+   "file": "tile_12.png",
+   "plate": "brahms",
+   "page": 11,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "subject": "glyph/11/0/1/3/8",
+   "bucket": "refused:duration_narrowed",
+   "page_box": [
+    2279.7675,
+    856.865,
+    2320.6425,
+    886.295
+   ],
+   "box_tile_px": [
+    608.7,
+    177.4,
+    692.3,
+    241.6
+   ],
+   "class_": "noteheadBlackInSpace"
+  }
+ }
+}
