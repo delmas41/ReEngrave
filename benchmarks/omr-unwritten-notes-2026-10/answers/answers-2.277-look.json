@@ -1,0 +1,274 @@
+{
+ "lane": "2.277 (lane-2.277-claim-final; tiles out/print/2.277-look, shuffled 12)",
+ "date": "2026-11-08",
+ "question": "Is the boxed mark a notehead?",
+ "sean_verbatim": "One, no. Two, yes. Three, no. Four, yes. Five, no. Six, no. Seven, yes. Eight, no. Nine, yes. 10 yes 11-12 no",
+ "note": "second take; the first take was garbled by the mic (tile 3 missing, tiles 5/6 said yes)",
+ "summary": "arc-trace-held heads 4/4 real (arc claims must stay mark-only); barline-held >=0.5 0/4 notes; barline 0.34-0.40 kept boxes 1/4 real (3 kept false heads)",
+ "answers": [
+  {
+   "sean_tile": 1,
+   "look_tile": 24,
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1468.0,
+    3155.0,
+    1492.16,
+    3177.4
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "NEAR .25-.5",
+    "noown",
+    "kept"
+   ],
+   "share": 0.4,
+   "pipeline_reason": "notehead",
+   "is_notehead": "no"
+  },
+  {
+   "sean_tile": 2,
+   "look_tile": 5,
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1817.64,
+    1670.0,
+    1841.48,
+    1682.0
+   ],
+   "bucket": [
+    "head",
+    "arc_trace",
+    "HELD>=.5",
+    "owns",
+    "kept"
+   ],
+   "share": 0.82,
+   "pipeline_reason": "notehead",
+   "is_notehead": "yes"
+  },
+  {
+   "sean_tile": 3,
+   "look_tile": 21,
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    2326.0,
+    2321.92,
+    2332.4,
+    2336.16
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "HELD>=.5",
+    "noown",
+    "refused"
+   ],
+   "share": 1.0,
+   "pipeline_reason": "too_narrow",
+   "is_notehead": "no"
+  },
+  {
+   "sean_tile": 4,
+   "look_tile": 1,
+   "plate": "litolff",
+   "page": 9,
+   "box": [
+    1194.12,
+    1596.0,
+    1221.09,
+    1608.865
+   ],
+   "bucket": [
+    "head",
+    "arc_trace",
+    "HELD>=.5",
+    "noown",
+    "kept"
+   ],
+   "share": 0.83,
+   "pipeline_reason": "notehead",
+   "is_notehead": "yes"
+  },
+  {
+   "sean_tile": 5,
+   "look_tile": 26,
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    979.0,
+    1461.88,
+    996.44,
+    1474.68
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "NEAR .25-.5",
+    "noown",
+    "kept"
+   ],
+   "share": 0.37,
+   "pipeline_reason": "notehead",
+   "is_notehead": "no"
+  },
+  {
+   "sean_tile": 6,
+   "look_tile": 31,
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    1425.1575,
+    2883.7,
+    1437.6,
+    2953.315
+   ],
+   "bucket": [
+    "rest",
+    "barline",
+    "HELD>=.5",
+    "noown",
+    "refused"
+   ],
+   "share": 1.0,
+   "pipeline_reason": "rest_is_a_barline",
+   "is_notehead": "no"
+  },
+  {
+   "sean_tile": 7,
+   "look_tile": 6,
+   "plate": "litolff",
+   "page": 9,
+   "box": [
+    1121.5075,
+    1102.25,
+    1145.4475,
+    1118.63
+   ],
+   "bucket": [
+    "head",
+    "arc_trace",
+    "HELD>=.5",
+    "owns",
+    "kept"
+   ],
+   "share": 0.53,
+   "pipeline_reason": "notehead",
+   "is_notehead": "yes"
+  },
+  {
+   "sean_tile": 8,
+   "look_tile": 22,
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1035.125,
+    883.385,
+    1038.845,
+    894.235
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "HELD>=.5",
+    "noown",
+    "refused"
+   ],
+   "share": 1.0,
+   "pipeline_reason": "too_narrow",
+   "is_notehead": "no"
+  },
+  {
+   "sean_tile": 9,
+   "look_tile": 27,
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1827.0275,
+    3446.8175,
+    1850.81,
+    3468.395
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "NEAR .25-.5",
+    "owns",
+    "kept"
+   ],
+   "share": 0.34,
+   "pipeline_reason": "notehead",
+   "is_notehead": "yes"
+  },
+  {
+   "sean_tile": 10,
+   "look_tile": 7,
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    2481.665,
+    2255.695,
+    2507.0225,
+    2269.87
+   ],
+   "bucket": [
+    "head",
+    "arc_trace",
+    "HELD>=.5",
+    "owns",
+    "kept"
+   ],
+   "share": 0.57,
+   "pipeline_reason": "notehead",
+   "is_notehead": "yes"
+  },
+  {
+   "sean_tile": 11,
+   "look_tile": 23,
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    1224.0,
+    3236.0,
+    1230.615,
+    3248.285
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "HELD>=.5",
+    "noown",
+    "refused"
+   ],
+   "share": 0.64,
+   "pipeline_reason": "too_narrow",
+   "is_notehead": "no"
+  },
+  {
+   "sean_tile": 12,
+   "look_tile": 25,
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    979.16,
+    1478.2,
+    996.12,
+    1493.72
+   ],
+   "bucket": [
+    "head",
+    "barline",
+    "NEAR .25-.5",
+    "noown",
+    "kept"
+   ],
+   "share": 0.38,
+   "pipeline_reason": "notehead",
+   "is_notehead": "no"
+  }
+ ]
+}
