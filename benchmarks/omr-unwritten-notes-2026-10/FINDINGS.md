@@ -222,3 +222,137 @@ Four places, in order of the pipeline. Whole movement, `augmentationDot`-class b
 
 ### What this does not say
 No fix built, no flag flipped. Counts of eighth rests and dots lost under the floor are from a 45-bars-a-plate hand sample; the 767 shared heads are an upper bound (about two thirds by a 32-crop look); the 75-whole look is mine. A fix for Q4 is the smallest of the four (an open-class head whose centre reads filled, or whose stem is decided, narrows instead of deciding, as `head_fill_from_ink` already does for a black head over a hollow reading) and would touch 29 of the 56 written wholes by the record's ink alone; the other 27 need a digit / rest-fragment witness. Proposed to Sean before dispatch, not built.
+
+
+## 2.280 -- why read heads have no stem row (Sean 2026-11-08 overnight, after the 2.278 micro KILL; diagnosis only, no code in tools/)
+
+STAGED GATHER (`line_detection.detect_stems`, `gather_cv_lines`) files the `Q.STEM` rows; STAGED ADJUDICATE (`stem_value.adjudicate_head_stem`) joins a head to a row (`geometry.stem_touches_head`, zero tolerance, with the 2.161 duration-side bridge in `rhythm`). LEGACY is not involved. Records: the 20261104-night slices (`library/_shared-records/lane-report-slices-20261104-night/`, the frozen 9 Litolff + 8 Brahms pages; no full record loaded, no other `tools.omr` process was touched: a 10 GB Litolff gather was running, so I used slices and re-adjudicated the slices, 6-13 GB). Probes `probe/2.280/` (`p1_population.py` .. `p16_tall.py`, `p9_tiles.py`); data `out/2.280/`; tiles `out/print/2.280/` (12 + key.json). Branch `lane-2.280-stem-diagnosis`.
+
+### Cause and process lesson
+
+**Cause.** "No stem row" (2.278: 27% of Brahms and 35% of Litolff beam-family narrowed heads) is three different things, and only one of them is a stem finder fault on a clean note. Of the 83 narrowed heads with no touching stem row on the frozen pages (Litolff 42, Brahms 41), by my look at every one (ours, not evidence; Sean's tiles are out): **30 (36%) are not notes** (Litolff 16 whole-rest blocks and 1 word letter; Brahms 13: 7 accidentals, 3 clef pieces, 1 word letter, 1 slur piece, 1 small bar); **51 (61%) are real heads whose stem is on the page and fused into a bigger piece of ink** (Litolff 23 in chord and beam clumps, against ledger lines or against a barline; Brahms 18 heads of a second whose stem stands on the partner head, and 10 single heads); 2 Litolff I cannot call. Those 51 are the real loss. The stem finder cuts a COMPONENT out of the page and judges its size and pairing; a stem that is fused to a head, a second, a ledger line, a barline or a chord tower is not a component of stem size, so it is refused as too WIDE or too TALL, or never offered. The ink holds the stem (50 of the 51 have a vertical run of 1.5 sp or more at the head's side); the cut-out step loses it.
+
+**Process lessons.** (1) 2.275 and 2.278 counted a head as "a real narrowed note" from the duration verdict alone. On Litolff 16 of 132 narrowed heads (12%) are whole-rest blocks that the SAME record already decides as whole rests (`NOTEHEAD_IS_A_WHOLE_REST` decided True, `shape_and_position_agree`) and that 2.270 writes as rests (10 written as rests, 6 refused as rest ink, none as a note); the duration reader never consults that verdict, so two verdicts on one ink disagree and a census reads the unreconciled one: the "value computed and never read" class again, on a verdict this time. On Brahms 13 of 41 are accidentals and clef pieces boxed as heads and counted as lost notes. A headline number made of verdicts is not a count of notes (rule 7: 2.275's "12 of 12 real" was a look at the narrowed class, not at the no-stem part of it). (2) A cause named by the filter that fired ("too WIDE", "too TALL") names the finder, not the ink; the ink classes (rest block, accidental, second, chord tower, clump) are what a fix has to be keyed to. (3) Nobody owns the 8.0-space stem cap: the largest refusal today (below) is a number with no measurement behind it (2.169: "3.5-space figure NOT CONFIRMED").
+
+### History from the tree (every stem effort, ON or OFF today, why it stopped)
+
+| effort | what it did | today | why it stopped |
+|---|---|---|---|
+| omr-stem-pair-rule (09-17) | measured: `_drop_paired_strokes` deletes 244 strokes; 73 of 793 no-stem heads (9.2%) would stop abstaining | no code | bounded at 9.2%; premise false (62 of 80 deleted strokes were paired with another real stem) |
+| omr-stem-ink (09-17) | measured: the missing stems are printed (95.8% / 93.1% have a run >= 1.75 sp); right-up/left-down agrees 95.9% / 98.2% | no code | measurement only |
+| omr-stem-stroke (09-18) `OMR_STEM_STROKE` | column-profile reader inside fused blobs; reach 346 of 793 (43.6%) Litolff, 544 of 1,529 (35.6%) Brahms no-stem heads; re-finds 98% of the shipped stems | **OFF** | Litolff quality undetermined (82.6% vs a 96.1% bar, then withdrawn), beam risk unpriced; never tiled for Sean |
+| omr-stem-attachment (09-18) | the attachment convention as a tier | refused, no code | marginal reach 371 / 483 |
+| omr-stem-notehead-gate (09-20) `OMR_STEM_NOTEHEAD_GATE` | a stroke meeting a detected head is never pair-deleted; no-stem 793 -> 720, 1,529 -> 1,351 | **OFF** (`line_detection.stem_notehead_gate_enabled` returns OFF unless the env is set; no run script sets it). `gather.py` L5314 says "default ON since 2026-11-02": that comment came in with merge 65c1b3e7c2 and is wrong against the code | fixtures inverted (page total two errors cancelling), never put to Sean; superseded by 2.169 |
+| omr-stem-run-split (09-20) | two stems as one run: confirmed, but 3 runs of 4,225 | no code | 0.23% of heads |
+| 2.87 `OMR_STEM_FINDER` (10-10) | five repairs: thin_run, pair_evidence, attach_tolerance, refuse_owned, pair_head_end | **ON** (staged default) | landed |
+| 2.155 `OMR_STEM_AT_BAR_EDGE` (10-16) | a run refused at the cell edge whose end stands in a head box is that head's stem | **ON** | landed (Sean's 40 tiles) |
+| 2.161 `OMR_HEAD_STEM_BRIDGE` (10-17) | duration side only: a head with no touching row but ink running into a stem beside it takes that stem for the first step | **ON** | landed; it reads the stem in ink without filing a row, so the join and every later consumer still see "no stem" |
+| 2.167 (10-16..18) | census: of 40 kept no-stem Litolff heads 39 have a run >= 1.5 sp; Sean's tiles: the 4 "paired" refusals are real stems | measured | opened 2.169 |
+| 2.169 `OMR_STEM_PAIR_AT_HEAD` (10-18) | a stroke ending in a head's rows is never pair-deleted; 346 Litolff / 280 Brahms no-stem heads gain a stem | **ON** | landed (Sean tiles 5/5); the TALL clause was not built ("3.5 sp NOT CONFIRMED") |
+| 2.170 (10-19) | beams, not stems: bare quarters decided | **ON** | landed |
+| 2.179 `OMR_STEM_END_HEADS` (10-20) | the other direction: a stem with no head gets a head looked for | **ON** | landed |
+| 2.204 `OMR_STEMS_FROM_STROKES` (10-25..28) | stems from the stroke map, claimed strokes first | **OFF**, parked by the stop rule | right->wrong 0, but notes not written +5% Litolff: the new stems brought their own `stem_readers_disagree` abstentions beside the old finder's (two readers voting per head) |
+| 2.205 `OMR_STROKE_OWNER` (10-26) | one owner per page stroke; heads, accidentals, dynamics claim first | **ON** | ownership alone changes nothing in the file; its consumer (2.204) is OFF, so no stem reads "unclaimed strokes only" |
+| 2.216 (10-28) | the ledger lines decide the owner where they clash with the stem | **ON** | landed; the stem is a second witness only |
+| M6 / 2.260e (11-05) | heads and ledger lines read once on the page; `OMR_PAGE_HEADS`, `OMR_PAGE_HEAD_VIEWS`, `OMR_PAGE_HEAD_CLAIM` | merged **OFF** | export identical; the head claim costs one right->narrowed; nothing reads a stem from a claimed head yet |
+| 2.278 micro (11-09) | beam group read once | **KILLED** | no stem row for 27% / 35% of its heads: this lane |
+
+### Method and controls (rule 7)
+
+Same shipped functions throughout: the 2.167 `p2_stems.py` method (re-cut the page as production cuts it, re-run `detect_lines` with the record's own boxes, collect every vertical run with the filter that refused it), same head-to-stem test as `adjudicate_head_stem`. Controls:
+- **Cell control: the re-run's accepted stems equal the record's `Q.STEM` rows, box for box**: Litolff 233 of 235 cells, Brahms 145 of 147 (the 4 differing cells are counted, not dropped).
+- **The 2.278 headline reproduces and splits**: on the m4b-sample slices the beam-family narrowed counts are exactly 2.278's (Litolff 182, Brahms 269); "no stem row" 63 / 73 = 40 / 46 heads with NO stem touching plus the rest with two or more distinct stems touching (37 / 37 touch; `adjudicate_head_stem` can narrow `two_stems`), so about a third of 2.278's "no stem row" is the dyad / two-stem case, not a missing stem.
+- A control that can fail: the not-a-note heads (rests, accidentals). A reader that files a stem for them is wrong (below, the naive run test fails it 11 of 30).
+- The export fates come from re-adjudicating the same slices on the current tree and running the shipped export with `_place_notes` instrumented (`p8_fates.py`; Litolff 2,100 / Brahms 3,100 `notes_not_written_total` on the sample pages).
+
+### Counts
+
+**Narrowed kept heads on the frozen pages, current tree** (`p15_narrowed_rest.py`): Litolff 132: 16 whole-rest blocks (already rests), 26 no stem row (20%), 88 stem row, 2 no pitch. Brahms 163: 122 stem row, 41 no stem row (25%) (1 of them a refused whole-rest block). So the no-stem share of narrowed notes is about 20% Litolff and 25% Brahms once rests are taken out and 2-stem heads are not counted as stemless; 2.278's 35% / 27% included the rests and the two-stem heads.
+
+**The 83 narrowed no-stem heads, first cause of the finder against what the ink is** (my look at all 83; `p3_buckets.py` x `p6_labels.py`):
+
+| plate | what the ink is (my look) | n | finder's first cause |
+|---|---|--:|---|
+| Litolff 42 | whole-rest block kept as a head (R) | 16 | no vertical ink 15, never a candidate 1 |
+| | real head, stem fused into a clump / ledger lines / barline (H) | 23 | WIDE 9, contact fails 9, never a candidate 2, EDGE 1, TALL 1, no ink 1 |
+| | word letter / unclear | 1 / 2 | |
+| Brahms 41 | accidental, clef piece, word letter, slur piece boxed as a head (N) | 13 | contact fails 6, no ink 4, never 1, PAIRED 1, TALL 1 |
+| | head of a second, stem on its partner (D) | 18 | WIDE 15, never 2, contact fails 1 |
+| | single head, stem fused or near (S) | 10 | TALL 4, contact fails 4, WIDE 1, never 1 |
+
+**Like-for-like with 2.167** (kept heads, no touching stem row, minus copies owned by another staff, refused non-notes and whole-rest ink, as 2.167 excluded; `p12_likeforlike.py`): Litolff 185 heads (9 pages) now against 2.167's 40 seeded of 760 (10-16); Brahms 140 now (2.167 Part 1 was Litolff only).
+
+| first cause | Litolff 10-16 (40) | Litolff now (185) | Brahms now (140) |
+|---|--:|--:|--:|
+| PAIRED with a neighbour | 14 (35%) | **0** | 5 (3.6%) |
+| too WIDE | 7 (17.5%) | 32 (17.3%) | 33 (23.6%) |
+| too TALL | 5 (12.5%) | **60 (32.4%)** | 37 (26.4%) |
+| too SHORT | 4 (10%) | 10 (5.4%) | 8 (5.7%) |
+| cell EDGE | 2 (5%) | 16 (8.6%) | 2 (1.4%) |
+| never a candidate | 1 (2.5%) | 14 (7.6%) | 28 (20.0%) |
+| stem found, contact fails | 6 (15%) | 48 (25.9%) | 22 (15.7%) |
+| no vertical ink | 1 (2.5%) | 5 (2.7%) | 4 (2.9%) + 1 |
+
+What shrank: **PAIRED, 35% to 0 on Litolff** (2.169 ON, as built). What stayed: WIDE (17.5% to 17.3%), EDGE, no ink. What now leads: **TALL (32% / 26%)**, which was 12.5% and is the largest refusal on both plates because nothing owns it. The refused TALL runs are 8.0-12.0 sp, median **8.4 sp**, quartiles 8.1 / 8.2 / 8.4 / 9.2 / 10.9 (Litolff) and 8.1 / 8.2 / 8.4 / 9.5 / 9.9 (Brahms): they are chord towers (a stem through 3-5 stacked heads, my look at 12 Litolff ones) just over `STEM_MAX_HEIGHT_LINES = 8.0` (line_detection.py L170). The 60 / 37 are mostly heads whose duration is DECIDED (the 193 / 106 "decided with no stem row" heads: black 1.0 for 131 of Litolff's 193, 46 + 32 (dotted) of Brahms's 106), so what they cost is not a narrowed note but a stem tip nobody read: whether a flag or beam was there stays unlooked (a quarter is the default, never shortened without evidence, CLAUDE section 4). Absolute counts do not compare: 2.167 counted the whole movement (760 kept no-stem Litolff heads), this is 9 of its pages.
+
+### Crops (rule 7: the biggest bucket before it counts)
+
+Contact sheets (my look, ours): every one of the 83 narrowed heads; 12 of the Litolff TALL refusals. Findings: of Litolff's 16 "no vertical ink" heads 15 are whole-rest blocks (a half-oval hanging from a line; 5 of the 16 rests overlap a `restWhole` box scored 0.34-0.60; none has any vertical ink: there is no stem to find). Litolff WIDE: heads in beam clumps and heads on ledger lines whose stem runs through the ledger lines (a "WIDE" run of stem plus ledger ink); contact-fails: a stem beside a clump head by up to 0.5 sp. **Brahms WIDE 15 of 16 are the displaced head of a second: both heads fused into one blob with the stem standing on the partner; the stem is plainly visible below or above.** Brahms contact-fails: 6 are accidentals boxed as heads (sharps and naturals read as a black head) and 4 are single heads with the stem 0.1-0.5 sp away. Not looked at: whether the 193 / 106 decided heads hide flags.
+
+### Do the page strokes already hold it? ("value computed, never read")
+
+Per head, any `Q.PAGE_STROKE` whose box touches the head's x-range (0.5 sp) and y-range and reaches 1 sp beyond it; `Q.HEAD_STEM_REACH` (the 2.58d ruler `gather.measure_head_stem`, filed ONLY for contested heads and second-only heads, read by `ownership` and by `rhythm._second_only_evidence`, never by the head-to-stem join) up or down extent >= 1.5 sp:
+
+| the 51 real heads | page VERTICAL stroke at the head | page BLOB / barline stroke at the head | none | `head_stem_reach` >= 1.5 sp |
+|---|--:|--:|--:|--:|
+| Litolff H 23 | 3 | 2 / 10 | 8 | 4 |
+| Brahms D 18 | 3 | 1 / 0 | 14 | 2 |
+| Brahms S 10 | 6 | 1 / 0 | 3 | 6 |
+
+So the page strokes hold a stem-shaped stroke at 16 of 51 real heads (31%) and the filed ruler row at 12 (24%; only 14 of the 51 even have a ruler row, 37 have none, because the ruler is run for contested heads only): a small part, and none for the Brahms seconds (the stem and the second head are ONE blob on the page too, so the page map fails where the cell finder fails). Ten of the 23 Litolff heads stand against a page barline stroke (the stem ink merged with the barline column; 2.155 handles a run at the CELL edge only). This agrees with 2.204's parking: moving the same component filter to page strokes does not reach the fused stems.
+
+### What would reach them: the head-anchored ruler that is already in the tree
+
+Two tests on the 83, both mine (ours) and both on the head's own ink:
+- **A crude run test** (`p11_headrun.py`): is there a vertical ink run of 1.5 sp or more in the band at either side of the head? Real heads: **50 of 51**. Not-a-note heads, the control that can fail: whole-rest blocks 1 of 16, accidentals and clef pieces **10 of 14**, so 11 of 30 not-notes get a "stem": the naive test FAILS its control, as it should.
+- **The shipped ruler** (`p18_ruler_all.py`: `gather.measure_head_stem`, ROADMAP 2.58d, run unchanged on the page raster for each of the 83). It is already a head-anchored read: a 0.18-sp column slid at the head's engraving edge (down -> left, up -> right), a run of 0.8 sp or more past the head, up to 9 sp, answers `up` / `down` / `both` (through-ink: a barline or a through-stem, "claims nothing") / `none`.
+
+| my label | up or down | both (through-ink) | none |
+|---|--:|--:|--:|
+| Litolff real heads 23 | 12 | 6 | 5 |
+| Brahms second heads 18 | 8 | 9 | 1 |
+| Brahms single heads 10 | 9 | 1 | 0 |
+| **real heads 51** | **29 (57%)** | 16 (31%) | 6 (12%) |
+| rest blocks 16 (Litolff) | 0 | 0 | 16 |
+| accidentals, clef pieces, word, slur piece 14 | **8** | 2 | 4 |
+
+So the ruler that 2.58d wrote for contested heads already answers a stem direction for 29 of the 51 real heads that have no row (57%), says nothing for all 16 rest blocks (a real control that held), and is fooled by 8 of the 14 accidental / clef-piece heads (the control that fails: it reads the original raster, blind to what an accidental has already claimed). Its `both` answer is where the Brahms seconds land (9 of 18): the stem passes the head on both sides because the head sits against its pair's stem. It is NOT used for these heads: `gather_head_stem_reach` files it only for contested and second-only heads (14 of the 51 have a row), and the join (`adjudicate_head_stem`) reads `Q.STEM` rows only. That is the "value computed, never read" bucket, in a different shape from the page-stroke one: the tree has a head-anchored stem read, measured and tested in 2.58d, and the join cannot use it.
+
+### The one change at the source
+
+**The stem is read from the head, not the head from the stem.** For a kept head that has no `Q.STEM` row after the finder, ask the head's own ink at its engraving edge (the 2.58d ruler, which is that question), on UNCLAIMED ink, and file the answer as an ordinary `Q.STEM` row (the same row the finder files; new reader name `cv_head_stem_ruler`) that the existing join, direction, tip and chord readers then read as they read any stem. Two things the shipped ruler lacks, both with an owner in the tree: (a) it must read the page ink MINUS the ink the page has already claimed (accidental, key, clef, bracket, barline, ledger rung, 2.277 "claimed ink is final"), which is what fences the 8 accidentals it is fooled by; (b) a `both` answer is a chord stem, not a barline, when the run ends in another kept head's box (the stem always ends at a head, 2.179) and a barline when it ends in none; that decides the Brahms seconds. The shipped finder keeps every row it has; the new reader fills only where there is none and abstains (no row, counted) wherever the ruler says `none`, or `both` with no head at an end, or the two sides disagree. It is a CONNECTION of a decision the tree already makes (rule 6), not a new guess. It adds no flag to the product until the micro test passes (rule 9: a roadmap item first).
+
+**Rules that own each value it would touch** (checked, not assumed): stem presence and side: CLAUDE section 5 "Stems: up -> right, down -> left; every note on one stem shares one written value", `conventions.py` C9 + L10 (96 of 96 against print). Which staff owns the head: the ledger lines decide (page-facts; 2.216 `OMR_OWNER_LEDGER_WINS`); the new row must not be offered to `glyph_owner` as a stem witness against the ledger lines. Duration: CLAUDE section 4 "a note is an eighth only on evidence: a flag or beam read on its stem; bar arithmetic never supplies one": the row only makes the tip readable; every value stays with the existing beam and flag readers (2.202, 2.170, 2.146). Direction: `Q.STEM_DIRECTION` from the side convention. Pitch and far-head position are not touched (a far head is placed by its ledger lines only, 2.248).
+
+**How it composes with read once / claim once (2.277).** It runs after the claims it must respect and reads only what they leave, so the accidental that the shipped ruler mistook for a stem is already someone's ink; it claims the ink it reads as a stem (owner family `stem`, the 2.205 stroke owner already has the slot), so no later reader can take the stem for a beam or a slur; and it never overturns a decided row. It is not 2.204 (which gave every head a SECOND stem opinion from the stroke map that disagreed with the finder's, and failed on its own abstentions): here a head has one opinion where it had none. It does not need the page-wide beam pass (M4) or the page head list (M6) to exist, but it is the natural next step after M6c, which claims the head first.
+
+**What it does not do:** the 30 not-notes. The 16 Litolff whole-rest blocks need the duration reader to read the whole-rest verdict the record already holds (they cost nothing in the file today: 10 written as rests, 6 refused as rest ink); the 7 Brahms accidentals, 3 clef pieces and 3 other marks boxed as heads are a claim question (2.277). Neither is a stem fix and neither is counted as one. And it does not touch the 299 decided no-stem heads' TALL refusals directly; those heads gain a row too (the ruler's 9-sp run is longer than the finder's 8.0 cap) and the beam / flag readers then look at their tips, which is where a hidden eighth would show.
+
+### Micro test (pre-registered here, before any code; offline GATHER-side prototype in `probe/`, nothing in `tools/`, no flag, export untouched)
+
+Population: the 83 narrowed no-stem heads, the 299 decided no-stem heads (193 + 106), and 200 seeded heads that already have a shipped stem row (100 a plate, same 17 pages). Arms: (A) the shipped ruler as it stands (the numbers above: reach 29 of 51, false 8 of 14 accidentals); (B) the ruler on unclaimed ink with the chord-through rule.
+1. **Reach (must pass):** arm B files a stem for at least 85% of the 51 real heads (arm A: 57%); baseline 0 by construction. Sean's tiles confirm the sample.
+2. **False stems (must pass):** at most 1 of the 30 not-a-note heads (arm A: 8 of 30; the control can fail, and it does).
+3. **Agreement (must pass):** on the 200 heads that already have a stem, the same stem (box IoU >= 0.5) and the same direction in at least 98%; every disagreement is looked at on a crop, never settled by our own reading.
+4. **Side control (must fail when broken):** arm B with the engraving side flipped (up -> left): reach must drop by at least 30 points, or the convention is not doing the work.
+5. **Sean's tiles** (the 12 in `out/print/2.280/`: "Does the boxed note have a stem, and which way does it go?"): arm B's answer matches his on at least 9 of the 10 test tiles and 2 of 2 controls.
+6. **Judged:** Sean's judged answers right -> wrong = 0 (`python3 -m tools.omr.staged.judged score`).
+**Kill:** 2, 3 or 6 fails, or reach under 60%. The whole movement is the overnight's job; this measures 17 frozen pages.
+
+### Tiles for Sean
+
+`out/print/2.280/` (12 tiles + key.json + README): one staff, one thin blue box (the head plus 4 staff spaces above and below), nothing else drawn; "Does the boxed note have a stem, and which way does it go?" Ten test heads (Litolff: 2 whole-rest blocks, 3 clump heads; Brahms: 3 heads of a second, 1 single, 1 accidental boxed as a head; the picks are seeded, see key.json) and 2 controls (a clear stemmed black head, Litolff; a clear stemmed half note, Brahms). The 17 frozen pages hold no whole note (32 whole-class boxes looked at are 6/8, 9/8 digit loops, halves and rests), so there is no whole-note control; the two rest tiles and the accidental tile are the "no stem possible" controls. Bucket, my label and the record's reading are in key.json only. Sean's answers: none yet.
+
+### What this does not say
+
+My labels are mine (ours): the 83 and the 20 TALL looks are not Sean's; his tiles check a 12-head sample. The sample is 17 frozen pages, not the movement. "Real head" means a head on the print, not a head the file should keep. The 193 / 106 decided no-stem heads were not looked at for flags. The `two_stems` narrowing was inferred from the m4b-sample split (40 + about 23 of 63), not replayed. Nothing was built: the 57% is the shipped ruler as it stands, and nothing says its direction is right (that is what the tiles and bar 5 are for). The shipped ruler was run on the page raster for the 83 only, not on the decided heads.

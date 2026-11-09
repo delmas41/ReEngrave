@@ -16,6 +16,10 @@ for plate, lab in (("litolff", LIT), ("brahms", BRA)):
         ct[(l, B[s]["cause"])] += 1
         out[s] = l
     json.dump(out, open("out/2.280/labels_%s.json" % plate, "w"))
+    pg = collections.Counter((l, B[s]["page"][:40], B[s]["reach_sp"] >= 1.5) for s, l in zip(subs, lab))
+    print("  -- by label: does a PAGE stroke / head_stem_reach already hold a stem-shaped stroke at the head?")
+    for k, v in sorted(pg.items()):
+        print("   %s  %-42s reach>=1.5sp:%s  %d" % (k[0], k[1], k[2], v))
     print(plate, dict(collections.Counter(lab)))
     for k, v in sorted(ct.items()):
         print("   %s  %-62s %d" % (k[0], k[1], v))

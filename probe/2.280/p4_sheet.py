@@ -28,7 +28,7 @@ for i, s in enumerate(subs):
     r = R[s]
     x0, y0, x1, y1 = r["page_box"]
     cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
-    HW, HH = 6.0 * SP, 5.5 * SP
+    HW, HH = 6.0 * SP, float(os.environ.get("HH_SP", "5.5")) * SP
     clip = (cx - HW, cy - HH, cx + HW, cy + HH)
     Z = 330 / (2 * HW)
     k = 72 / 600

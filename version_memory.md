@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-09 -- ROADMAP 2.280 diagnosis: why read heads have no stem row (lane-2.280-stem-diagnosis; no product code)
+
+Of 83 narrowed no-stem heads on the frozen pages, 30 are not notes (16 Litolff whole-rest blocks the record already decides as rests; 14 Brahms accidentals / clef pieces boxed as heads) and 51 are real heads whose stem is fused into a clump, a second, a chord tower or a barline; 2.278's "no stem row" also counted two-stem heads. The shipped 2.58d ruler (`gather.measure_head_stem`) already answers a stem for 29 of the 51 but is filed only for contested heads and read by no join. TALL (median 8.4 sp against the 8.0 cap) is now the largest finder refusal; PAIRED fell 35% -> 0 on Litolff. FINDINGS "2.280" in benchmarks/omr-unwritten-notes-2026-10/, probes `probe/2.280/`, 12 blind tiles `out/print/2.280/` (not yet answered). Stale comment: gather.py L5314 says the notehead gate is "default ON since 2026-11-02"; the code is OFF.
+
 ## 2026-11-06 -- ROADMAP 2.273 landed ON: OMR_ARC_STRIP default ON (deny-list)
 STAGED GATHER `arc_strip.gather_arc_strip` (hook in `gather.gather()` after the detector passes, before the page stroke map): the same detector is run once per staff row holding an arc box cut at an interior cell edge (`max_det` raised through `yolo_detector`/`detector_cache`, a raised cap never cached) and a strip tie/slur box that continues a cut cell arc box across the barline is appended as a clipped detector piece (`source` `arc_strip`). `enabled()` is deny-list: "0"/"false"/"no"/"off" turns it off. Sean: "Land it." (11/12 tiles right, tile 7 one note short). Brahms p0 vs hand arcs: written 89->96, two-piece 9->5, wrong-note 17->20 (being traced). Flag-OFF export byte-compared to main on Litolff p4 and Brahms p0. Flag rows, rule page and test pin updated.
 

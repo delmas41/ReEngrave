@@ -1,0 +1,884 @@
+{
+"glyph/0/0/0/5/12": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/0/5/4": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "page BLOB stroke at the head",
+"reach_sp": 3.0
+},
+"glyph/12/0/4/0/15": {
+"stratum": "A",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 2.34
+},
+"glyph/12/0/5/0/5": {
+"stratum": "A",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 2.34
+},
+"glyph/12/1/6/7/1": {
+"stratum": "A",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 8.61
+},
+"glyph/12/1/6/7/2": {
+"stratum": "A",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 8.51
+},
+"glyph/12/1/6/7/6": {
+"stratum": "A",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 8.47
+},
+"glyph/12/1/6/8/2": {
+"stratum": "A",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 8.46
+},
+"glyph/14/0/11/1/10": {
+"stratum": "A",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.35
+},
+"glyph/14/0/11/1/8": {
+"stratum": "A",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/0/2/0/15": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/0/2/0/32": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/1/0/5": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/1/0/7": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/2/4/9": {
+"stratum": "A",
+"cause": "i   run REFUSED: PAIRED",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/3/0/7": {
+"stratum": "A",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "page BLOB stroke at the head",
+"reach_sp": 4.6
+},
+"glyph/14/1/3/4/10": {
+"stratum": "A",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/3/4/9": {
+"stratum": "A",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/3/5/3": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/3/5/4": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/5/5/1": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/5/5/4": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/9/1/16": {
+"stratum": "A",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "no page stroke at the head",
+"reach_sp": 0.63
+},
+"glyph/19/0/1/7/6": {
+"stratum": "A",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 6.22
+},
+"glyph/19/0/11/5/8": {
+"stratum": "A",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 8.71
+},
+"glyph/19/0/7/9/3": {
+"stratum": "A",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/1/0/9/16": {
+"stratum": "A",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page BLOB stroke at the head",
+"reach_sp": 4.84
+},
+"glyph/25/1/7/1/0": {
+"stratum": "A",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/1/8/1/1": {
+"stratum": "A",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/0/6/9": {
+"stratum": "A",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": -0.03
+},
+"glyph/5/0/11/3/13": {
+"stratum": "A",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/0/12/7/1": {
+"stratum": "A",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.44
+},
+"glyph/5/0/12/7/26": {
+"stratum": "A",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/0/13/2/3": {
+"stratum": "A",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/0/13/7/15": {
+"stratum": "A",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/0/1/8/4": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/0/1/8/6": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/0/2/4/10": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/0/2/4/11": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/0/5/1/3": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/0/5/1/4": {
+"stratum": "A",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/0/5/10": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/0/5/13": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/1/2/6": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/1/2/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/11/4/16": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/13/1/4": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/2/5/12": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/2/5/3": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/2/6/2": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/2/6/8": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/0/0/4/6/4": {
+"stratum": "B",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.08
+},
+"glyph/12/0/11/12/9": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/12/0/4/0/12": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.48
+},
+"glyph/12/0/4/0/17": {
+"stratum": "B",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.85
+},
+"glyph/12/1/0/0/14": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/12/1/11/5/0": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.46
+},
+"glyph/12/1/5/0/1": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 2.45
+},
+"glyph/12/1/6/7/4": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.62
+},
+"glyph/12/1/6/7/5": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.6
+},
+"glyph/12/1/6/7/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.68
+},
+"glyph/12/1/6/8/5": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.46
+},
+"glyph/14/0/11/7/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/0/13/4/7": {
+"stratum": "B",
+"cause": "i   ink run only on the ORIGINAL image (fused to a staff line)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/0/3/1/5": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/0/3/5/14": {
+"stratum": "B",
+"cause": "i   run REFUSED: PAIRED",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/0/3/5/9": {
+"stratum": "B",
+"cause": "i   run REFUSED: PAIRED",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/0/3/12": {
+"stratum": "B",
+"cause": "i   run REFUSED: PAIRED",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/8/1/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/9/2/11": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/14/1/9/7/7": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/0/12/0/21": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/0/13/3/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.08
+},
+"glyph/19/0/2/3/3": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/0/3/7/3": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.02
+},
+"glyph/19/0/4/6/4": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/0/5/0/18": {
+"stratum": "B",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.19
+},
+"glyph/19/0/7/6/10": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/0/7/6/11": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/0/2/3": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/0/2/8": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/1/6/16": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/12/2/3": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.46
+},
+"glyph/19/1/12/4/1": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 2.6
+},
+"glyph/19/1/3/5/2": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/5/7/3": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/5/7/4": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/8/1/0": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/8/1/12": {
+"stratum": "B",
+"cause": "i   run REFUSED: EDGE",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/8/1/13": {
+"stratum": "B",
+"cause": "i   run REFUSED: EDGE",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/19/1/8/7/2": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.63
+},
+"glyph/19/1/8/7/4": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.04
+},
+"glyph/19/1/8/7/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/0/0/3/2": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0.03
+},
+"glyph/25/0/12/6/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page BARLINE stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/0/12/9/7": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/0/13/3/3": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.13
+},
+"glyph/25/1/0/9/10": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page BLOB stroke at the head",
+"reach_sp": 4.87
+},
+"glyph/25/1/10/3/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.2
+},
+"glyph/25/1/10/4/5": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "page BLOB stroke at the head",
+"reach_sp": -0.05
+},
+"glyph/25/1/2/9/5": {
+"stratum": "B",
+"cause": "ii  stem FOUND beside the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/1/8/9/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/25/1/9/3/3": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 4.79
+},
+"glyph/4/0/1/10/21": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/13/6/2": {
+"stratum": "B",
+"cause": "ii  stem FOUND above/below the box; contact fails",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/2/7/13": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.1
+},
+"glyph/4/0/9/5/1": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/9/7/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/9/9/10": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/9/9/5": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 7.4
+},
+"glyph/4/0/9/9/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/0/9/9/8": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/1/1/2/3": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/1/12/8/12": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/1/12/8/16": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/4/1/12/8/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 6.58
+},
+"glyph/4/1/12/8/9": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.8
+},
+"glyph/4/1/4/6/4": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.1
+},
+"glyph/5/0/5/0/15": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0.12
+},
+"glyph/5/0/5/5/18": {
+"stratum": "B",
+"cause": "i   run REFUSED: SHORT",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/0/8/3/16": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0.0
+},
+"glyph/5/1/10/2/3": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 7.03
+},
+"glyph/5/1/10/2/6": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/2/9": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/4/1": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 7.51
+},
+"glyph/5/1/10/4/3": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/4/7": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/6/17": {
+"stratum": "B",
+"cause": "i   run REFUSED: PAIRED",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/7/10": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/7/18": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/10/7/2": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 7.91
+},
+"glyph/5/1/10/7/8": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/11/2/6": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/12/0/0": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 2.8
+},
+"glyph/5/1/3/0/28": {
+"stratum": "B",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0.11
+},
+"glyph/5/1/9/2/14": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/9/2/3": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 7.29
+},
+"glyph/5/1/9/2/6": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/9/6/1": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/9/6/14": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/5/1/9/6/8": {
+"stratum": "B",
+"cause": "i   run REFUSED: TALL",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 1.3
+},
+"glyph/5/1/9/7/2": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 6.99
+},
+"glyph/8/1/5/9/5": {
+"stratum": "B",
+"cause": "0   no vertical ink >= 1.5 sp beside the head",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/1/7/3/1": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "page VERTICAL stroke at the head",
+"reach_sp": 3.05
+},
+"glyph/8/1/7/4/8": {
+"stratum": "B",
+"cause": "i   ink run never a candidate (erased image)",
+"page": "no page stroke at the head",
+"reach_sp": 0
+},
+"glyph/8/1/7/8/2": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 5.94
+},
+"glyph/8/1/7/8/5": {
+"stratum": "B",
+"cause": "i   run REFUSED: WIDE",
+"page": "no page stroke at the head",
+"reach_sp": 0
+}
+}
