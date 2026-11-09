@@ -6386,13 +6386,28 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
     page = ev.subject
     rows = [r for r in ev.rows(Q.PAGE_ARC, scope=Scope.SELF_AND_DESCENDANTS, subject=page)
             if r.value == "run" and (r.detail or {}).get("ends") and (r.detail or {}).get("space_page_px")]
-    details = [dict(r.detail or {}) for r in rows]
+    # round 2 (cause b): a run is cut at every bridged gap of 2 spaces or more (`page_arc_bind.pieces_of`): a stretch of columns with no ink seen is where two arcs meet at a note
+    # or where a tail of the next arc was carried on through a blanked head. Each stretch of 3 spaces or more is a piece bound ALONE; a shorter one is a tail and is dropped.
+    items: List[Tuple[Any, Dict[str, Any]]] = []
+    no_ink: List[Tuple[Any, Dict[str, Any]]] = []
+    for r in rows:
+        dt0 = dict(r.detail or {})
+        ps = PB.pieces_of(dt0, float(dt0["space_page_px"]))
+        if not ps:
+            no_ink.append((r, dt0))
+        for pc in ps:
+            items.append((r, pc))
+    details = [dt for _r, dt in items]
     peers = [dict(ends=dt.get("core_ends") or dt.get("ends"), staff=dt.get("staff") or [0, 0]) for dt in details]          # the ink's own ends, as the binder uses
     out: List[Dict[str, Any]] = []
     used: List[str] = []
-    for i, r in enumerate(rows):
-        dt = details[i]
+    for r, dt0 in no_ink:
+        out.append({"ordinal": dt0.get("ordinal"), "row": r.id, "status": PB.ABSTAINED, "witnesses": [], "why": "no_stretch_of_ink"})
+    for i, (r, dt) in enumerate(items):
         entry: Dict[str, Any] = {"ordinal": dt.get("ordinal"), "row": r.id, "status": PB.NOT_WITNESSED, "witnesses": []}
+        if dt.get("trimmed"):
+            entry["piece"] = dt.get("piece")
+            entry["x_range"] = [float(dt["points"][0][0]), float(dt["points"][-1][0])]
         out.append(entry)
         sp = float(dt["space_page_px"])
         ws = []

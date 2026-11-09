@@ -100,11 +100,13 @@ def per_run(extra, off_arcs, boxes, runs_by_ordinal):
                 continue
             xs = [p[0] for p in row["points"]]
             x0, x1 = min(xs), max(xs)
+            if r.get("x_range"):          # round 2: a piece of a run cut at a bridged gap (or a run trimmed of its tail) covers its own stretch
+                x0, x1 = r["x_range"]
             st = tuple(row.get("staff") or ())
             if r.get("home"):          # the staff the binder bound on (the witnessing boxes' decided owner where they agree), not the staff nearest the run
                 hp = r["home"].split("/")
                 st = (int(hp[2]), int(hp[3]))
-            rec = dict(page=page, ordinal=r.get("ordinal"), status=r["status"], kind=r.get("kind"), why=r.get("why"), start=r.get("start"), stop=r.get("stop"),
+            rec = dict(page=page, piece=r.get("piece"), ordinal=r.get("ordinal"), status=r["status"], kind=r.get("kind"), why=r.get("why"), start=r.get("start"), stop=r.get("stop"),
                        x0=x0, x1=x1, staff=st, witnesses=r["witnesses"], closest=r.get("closest"), edge=r.get("edge"))
             ov = []
             for a in off_arcs:

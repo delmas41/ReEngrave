@@ -48,6 +48,45 @@ def write_enabled() -> bool:
     return _on(ENV_WRITE)
 
 
+#: ROADMAP 2.274 step 2 round 2 (cause b, measured on the develop pages before this was written; FINDINGS "2.274 step 2 round 2"): the tracker BRIDGES stretches of columns where it saw no
+#: ink (a blanked head, a stem, a barline, a dynamic); a run's thinned points then jump in x. Across the 370 written runs the OFF file already wrote whole, the largest bridge is under 2
+#: spaces but for one (3.1); a bridge of 2 spaces or more is where two arcs meet at a note (a tie A->B, then an arc B->C) or where a tail of the next arc was carried on through the
+#: blanked head. NOT CONFIRMED beyond the pages measured; it only ever shortens a run or abstains, never invents an end.
+GAP_SPLIT_SP = 2.0
+#: (cause d, FINDINGS) the end stands more than this many spaces on the arc's own side of the head it bound to (Litolff p4 runs 1, 12, 20, 99: the head nearest the ink was never boxed and
+#: the bound one stood 4.5-5.2 spaces off). A stem is 3.5 spaces long (Gould; `arc_claim.TIP_MAX_SPACES` 4.5): beyond 3 a stem tip does not reach it. NOT CONFIRMED beyond the develop pages;
+#: it only ever DECLINES a binding.
+END_BEYOND_HEAD_SPACES = 3.0
+#: (cause c) three or more members: the end's own height may name an inner member only within this many spaces of it.
+INNER_MEMBER_DY_SPACES = 1.2
+#: a stretch of tracked ink shorter than this (spaces of x) between a bridge and the run's end is a TAIL, not an arc: dropped. Two longer stretches are two arcs (each bound alone).
+MIN_PIECE_SP = 3.0
+
+
+def pieces_of(detail: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
+    """The run cut at every bridged gap of `GAP_SPLIT_SP` or more; stretches under `MIN_PIECE_SP` wide are tails and dropped. Returns one detail per piece (`points`, `ends`,
+    `core_ends` = where the piece's own ink stops; an end that is the run's own end keeps the run's `core_ends`), `piece` = its index and `trimmed` = whether anything was cut off.
+    A run with no such gap returns itself unchanged (a list of one, `trimmed` False)."""
+    pts = detail.get("points") or []
+    if len(pts) < 2 or sp <= 0:
+        return [dict(detail, piece=0, trimmed=False)]
+    cuts = [i + 1 for i in range(len(pts) - 1) if pts[i + 1][0] - pts[i][0] >= GAP_SPLIT_SP * sp]
+    if not cuts:
+        return [dict(detail, piece=0, trimmed=False)]
+    bounds = [0] + cuts + [len(pts)]
+    segs = [pts[a:b] for a, b in zip(bounds, bounds[1:])]
+    core = detail.get("core_ends") or [pts[0][:2], pts[-1][:2]]
+    out: List[Dict[str, Any]] = []
+    for k, seg in enumerate(segs):
+        if (seg[-1][0] - seg[0][0]) < MIN_PIECE_SP * sp:
+            continue
+        left = core[0] if k == 0 else [seg[0][0], seg[0][1]]
+        right = core[1] if k == len(segs) - 1 else [seg[-1][0], seg[-1][1]]
+        out.append(dict(detail, points=seg, core_ends=[[float(left[0]), float(left[1])], [float(right[0]), float(right[1])]],
+                        ends=[[float(left[0]), float(left[1]), 0.0], [float(right[0]), float(right[1]), 0.0]], piece=len(out), trimmed=True))
+    return out
+
+
 def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, Any]]:
     """A `Q.SYSTEM_ARC`-shaped detail for one `Q.PAGE_ARC` run (`ownership._page_binding(page_run=...)` reads this shape): `space_page_px`, `x_left_page` / `y_left_page` /
     `x_right_page` / `y_right_page` (the run's two ends, left then right) and `trace` (`[x, y_top, y_bottom]`, one row per filed point). No `pieces`: a run is already one
@@ -88,7 +127,36 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]]):
                                 behind_spaces=None)
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
             if hd is not None:
+                ey = float(d[yk])
+                # round 2 (cause c): a CHORD end. Page-facts: an arc is OVER its notes, and of stacked arcs the nearer is the tie -- the arc's side names the member: a cap (`above`) ends on the
+                # TOP head of the chord, a cup (`below`) on the BOTTOM one. Measured: the end's own height picked the wrong member where the ink end rises or falls past the chord
+                # (stacked arcs; a tail). Two members: the arc's side decides. Three or more: the end's own height decides only where it stands within `INNER_MEMBER_DY_SPACES` of that member,
+                # else the end abstains (the middle of a stack is not read from the side).
+                col_ = {}
+                for h in heads:
+                    if h.get("tip") or abs(h["cx"] - hd["cx"]) > 0.5 * max(h["w"], hd["w"]) or (usable is not None and not usable(h["key"])):
+                        continue
+                    col_.setdefault(h["key"], h)
+                col_ = list(col_.values())
+                if len(col_) > 1 and side in ("above", "below") and not b[s_].get("via_stem_tip") and not hd.get("tip"):
+                    outer = min(col_, key=lambda h: h["cy"]) if side == "above" else max(col_, key=lambda h: h["cy"])
+                    b[s_]["chord"] = len(col_)
+                    b[s_]["outer_on_side"] = outer["key"] == hd["key"]
+                    if outer["key"] != hd["key"]:
+                        if len(col_) == 2:
+                            b[s_] = dict(b[s_], head=outer["key"], chord_by_side=True, was=hd["key"], distance_spaces=round((abs(outer["cx"] - ex) + abs(outer["cy"] - ey)) / sp, 3))
+                            hd = outer
+                        elif abs(hd["cy"] - ey) > INNER_MEMBER_DY_SPACES * sp:
+                            b[s_] = {"unbound": "chord_member_unclear", "candidates": [h["key"] for h in col_], "margin_spaces": round(INNER_MEMBER_DY_SPACES - abs(hd["cy"] - ey) / sp, 3)}
+                            continue
                 out_by = (hd["cx"] - ex) * sgn
+                b[s_]["out_by_spaces"] = round(out_by / sp, 2)          # round 2 (cause d): how far past the ink's own end the bound head stands (negative: behind it)
+                # round 2 (cause d): the end stands far on the arc's own side of the head it bound to: a nearer head was never boxed (or is another member). An arc's end sits beside its note;
+                # a stem's tip (the 2.75 rule) is a candidate in its own right and is exempt.
+                beyond = ((ey - hd["cy"]) if side == "below" else (hd["cy"] - ey) if side == "above" else abs(ey - hd["cy"])) / sp
+                if beyond > END_BEYOND_HEAD_SPACES and not hd.get("tip") and not b[s_].get("via_stem_tip"):
+                    b[s_] = {"unbound": "end_far_beyond_head", "candidates": [hd["key"]], "margin_spaces": round(END_BEYOND_HEAD_SPACES - beyond, 3)}
+                    continue
                 if out_by > ANCHOR_OUT_SPACES * sp or out_by < -ANCHOR_IN_SPACES * sp or abs(hd["cy"] - float(d[yk])) > ANCHOR_DY_SPACES * sp:
                     b[s_]["outside_window"] = True          # the head stands outside 2.166's window: the end "stops short" (or overshoots) and the closest-note rule bound it
         if b["left"].get("head") is not None and b["left"].get("head") == b["right"].get("head"):

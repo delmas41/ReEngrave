@@ -138,7 +138,7 @@ def _run(log, monkey_flag=True):
     return log.verdict(Q.PAGE_ARC_BINDING, R.page(0))
 
 
-PTS = [[55.0, 100.0], [85.0, 95.0], [115.0, 95.0], [145.0, 100.0]]
+PTS = [[float(x), 100.0 - 5.0 * 4 * ((x - 55.0) / 90.0) * (1 - (x - 55.0) / 90.0)] for x in range(55, 146, 10)]          # dense, as the reader's thinned points are (round 2 cuts a run at a gap of 2 spaces)
 ENDS = [[55.0, 100.0, 10.0], [145.0, 100.0, -10.0]]
 
 
