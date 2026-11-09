@@ -47,6 +47,7 @@ def fate_of(r):
     return "no_verdict"
 
 
+ESC = []
 M = collections.defaultdict(collections.Counter)      # (box family, holder) -> fate counter
 dist = collections.defaultdict(list)
 for r in rows:
@@ -61,7 +62,10 @@ for r in rows:
             sh = w / tot
             dist[(fam, f)].append(sh)
             if sh >= cut:
-                M[(fam, f)][fate_of(r)] += 1
+                owns = any(own and own[0] in ("decided", "merged") and own[1] == fam and cov for o, _s, cov, _i, _k, own in r["strokes"])
+                M[(fam, f)][fate_of(r) + ("  [OWNS-A-STROKE]" if owns else "")] += 1
+                if owns:
+                    ESC.append((r["sub"], fam, f, round(sh, 2), fate_of(r)))
 print("cut", cut, "plate", D["plate"], "boxes", len(rows))
 for (fam, f), c in sorted(M.items(), key=lambda t: -sum(t[1].values())):
     n = sum(c.values())
@@ -77,3 +81,7 @@ for (fam, f), v in sorted(dist.items()):
     print("%-10s %-15s n=%-5d deciles:%s" % (fam, f, len(v), [h.get(i, 0) for i in range(10)]))
 if "--json" in args:
     json.dump({"%s|%s" % k: dict(v) for k, v in M.items()}, open(args[args.index("--json") + 1], "w"), indent=1)
+
+print("--- escape: held >= cut but the box owns a stroke of its own family:", len(ESC))
+for e in ESC[:40]:
+    print(e)
