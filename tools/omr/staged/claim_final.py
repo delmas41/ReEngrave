@@ -134,3 +134,83 @@ def refusal_kind(by: str) -> str:
     """The `<kind>` of `claimed_by:<kind>` for the claim family `by`. The deciders hold a fixed vocabulary of literals (the vocabulary check reads them): `barline`;
     any other family is the generic `page_claim`, so a claim layer a later lane files (a tremolo slash) is consumed with no code here."""
     return "barline" if by == "barline" else "page_claim"
+
+
+# ── the derived check (CLAUDE rule 7: it must be able to fail) ─────────────────────────────────────────────────────────────────────────────
+#: the precision deciders that refuse a head / a rest, and the file each lives in (relative to `staged/`)
+CONSUMER_DECIDERS = {"notehead": "adjudicators/notehead_precision.py", "rest": "adjudicators/family_precision.py"}
+_OWNER_TOKENS = {"OWNER_METER": "meter", "OWNER_KEY": "key_signature", "OWNER_CLEF": "clef", "OWNER_BRACKET": "bracket", "OWNER_WORD": "word",
+                 "OWNER_COLUMN": "leading_column"}
+
+
+def static_wiring(staged_dir: Optional[Any] = None) -> List[Dict[str, str]]:
+    """Every (claim family, deciding reader) pair where a claim the register files is neither consulted by `claimed_by.consult` nor refused by the generic consult
+    in this reader, as `{claim, reader, why}`. Reads SOURCE TEXT under `staged_dir` (default: this tree), so it can be pointed at another tree -- a `git archive` of
+    main -- and must FIND the barline / arc / hairpin cases there. A family that `MARK_ONLY` keeps from refusing is a finding too, with its reason: marked, by
+    decision, not consulted."""
+    import pathlib
+    import re
+    root = pathlib.Path(staged_dir) if staged_dir else pathlib.Path(__file__).resolve().parent
+    so = (root / "stroke_owner.py").read_text()
+    m = re.search(r"TIERS[^=]*=\s*\(\s*\(([^)]*)\)", so)
+    filed = [x.strip().strip("\"'") for x in re.sub(r"#[^\n]*", "", m.group(1) if m else "").split(",") if x.strip().strip("\"'")]
+    cb = (root / "adjudicators" / "claimed_by.py").read_text()
+    mo = re.search(r"_ORDER\s*=\s*\(([^)]*)\)", cb)
+    consulted = {_OWNER_TOKENS[t.strip().split(".")[-1]] for t in (mo.group(1) if mo else "").split(",") if t.strip().split(".")[-1] in _OWNER_TOKENS}
+    mark_only: set = set()
+    cf = root / "claim_final.py"
+    if cf.exists():
+        mm = re.search(r"MARK_ONLY\s*=\s*frozenset\(\{([^}]*)\}\)", cf.read_text())
+        mark_only = {x.strip().strip("\"'") for x in (mm.group(1) if mm else "").split(",") if x.strip()}
+    generic = {rd: "_claim_final.finding(" in (root / rel).read_text() for rd, rel in CONSUMER_DECIDERS.items()}
+    out: List[Dict[str, str]] = []
+    for fam in filed:
+        if fam in consulted:
+            continue
+        for rd in CONSUMER_DECIDERS:
+            if not generic[rd]:
+                out.append({"claim": fam, "reader": rd, "why": "filed and owned, no reader consults it (marks only)"})
+            elif fam in mark_only:
+                out.append({"claim": fam, "reader": rd, "why": "consulted generically but MARK_ONLY by decision (the claim over-reaches onto head ink)"})
+    return out
+
+
+def survivors(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, float, str, Optional[str]]], bool]],
+              claim_families: Iterable[str], cut: float = CUT) -> List[Dict[str, Any]]:
+    """The record-level check: boxes (`key, family, strokes, refused`) that are NOT refused although at least `cut` of their own ink is held by a claim that is not
+    consulted elsewhere and not MARK_ONLY. Zero on a tree where claimed ink is final; the census cases on a tree where it is not."""
+    out = []
+    for key, family, strokes, refused in boxes:
+        if refused or family not in BOX_FAMILIES:
+            continue
+        total, by = held_share(strokes, family, claim_families)
+        top = dominant(total, {f: v for f, v in by.items() if f not in CONSULTED_ELSEWHERE and f not in MARK_ONLY})
+        if top is not None and top[1] >= cut:
+            out.append({"box": key, "family": family, "by": top[0], "share": round(top[1], 3)})
+    return out
+
+
+def double_marks(marks_of: Dict[str, str], written: Iterable[str]) -> List[Tuple[str, List[str]]]:
+    """Marks (copies by position) with more than one box WRITTEN: one head's ink counted twice in the file."""
+    g: Dict[str, List[str]] = {}
+    for k in written:
+        if k in marks_of:
+            g.setdefault(marks_of[k], []).append(k)
+    return sorted((m, ks) for m, ks in g.items() if len(ks) > 1)
+
+
+def distinct_heads(head_boxes: Iterable[str], marks_of: Dict[str, str]) -> int:
+    """Heads counted by distinct ink: a box in a mark counts as its mark, once."""
+    return len({marks_of.get(k, k) for k in head_boxes})
+
+
+if __name__ == "__main__":
+    import argparse
+    import json
+    ap = argparse.ArgumentParser(description="2.277 derived check: python3 -m tools.omr.staged.claim_final static [--root DIR]")
+    ap.add_argument("what", choices=["static"])
+    ap.add_argument("--root", default=None, help="a staged/ directory (e.g. a `git archive` of main)")
+    a = ap.parse_args()
+    f = static_wiring(a.root)
+    print(json.dumps(f, indent=1))
+    print("open: %d" % len(f))
