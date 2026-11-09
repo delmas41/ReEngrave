@@ -76,6 +76,15 @@ def closest_head_enabled() -> bool:
     return _on(ENV_CLOSEST_HEAD)
 
 
+#: ROADMAP 2.281 (Sean 2026-11-09 plan; FINDINGS "2.281"), default OFF: a page-ink run's end whose closest head has ANOTHER curve starting at the SAME head (two arcs meeting at a note: A ends
+#: on it, B begins on it) is not "half of one arc" -- both bind to that head. Without the flag `bind_end` refuses with `continues_in_another_curve`.
+ENV_MEETING_AT_HEAD = "OMR_ARC_MEETING_AT_HEAD"
+
+
+def meeting_at_head_enabled() -> bool:
+    return _on(ENV_MEETING_AT_HEAD)
+
+
 def across_systems_enabled() -> bool:
     return _on(ENV_ACROSS_SYSTEMS)
 
@@ -447,8 +456,22 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
             # arc and the other half is what reaches the note (Sean's tiles 2, 4, 5, 9, 10, 12) -- no number, the head's own distance is the bound
             # (and it stands nearer this end than the head does: a second arc that begins AT the head is a chain of two arcs, not a continuation)
             hh = picked[0]
-            if any(abs(ox - ex) + abs(oy - ey) < min(hh["d"], abs(ox - hh["cx"]) + abs(oy - hh["cy"])) and (ox - ex) * sgn > -ANCHOR_IN_SPACES * sp
-                   for ox, oy in (others or ())):
+            offenders = [(ox, oy) for ox, oy in (others or ())
+                         if abs(ox - ex) + abs(oy - ey) < min(hh["d"], abs(ox - hh["cx"]) + abs(oy - hh["cy"])) and (ox - ex) * sgn > -ANCHOR_IN_SPACES * sp]
+            if offenders and meeting_at_head_enabled():
+                # ROADMAP 2.281 (the cause: on Brahms legato the next arc BEGINS on the very head this one ends on and its ink starts at the head's edge, so its start always stands nearer
+                # than the head's centre -- the test above cannot tell "half of one arc" from "two arcs meet at a note"). A curve that stands AT the head -- this end inside the binder's own
+                # head windows (`ANCHOR_OUT_SPACES` ahead, `back` behind, `ANCHOR_DY_SPACES` high: 2.166's numbers and round 2's look-behind, no new number) and every offending end inside
+                # the same windows measured the other way -- does not continue this arc: both attach to the head. A head far from this end (the half of an arc: ties along a chord,
+                # the arc beyond a barline) keeps the refusal.
+                from .arcs_system import ANCHOR_DY_SPACES as _DY, ANCHOR_OUT_SPACES as _OUT
+
+                def _at(x: float, y: float, s_: int) -> bool:
+                    out = (hh["cx"] - x) * s_
+                    return -back * sp < out <= _OUT * sp and abs(hh["cy"] - y) <= _DY * sp
+                if _at(ex, ey, sgn) and all(_at(ox, oy, -sgn) for ox, oy in offenders):
+                    offenders = []
+            if offenders:
                 return {"unbound": "continues_in_another_curve", "candidates": [picked[0]["key"]], "margin_spaces": None}
             cands, closest = picked, True
     if not cands:
