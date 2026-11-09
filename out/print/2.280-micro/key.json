@@ -1,0 +1,395 @@
+{
+ "1": {
+  "file": "tile_01.png",
+  "plate": "brahms",
+  "subject": "glyph/8/0/2/4/10",
+  "page": 8,
+  "why_picked": "real head, arm B filed a chord-through stem",
+  "my_label": "D",
+  "armA_ruler": "both",
+  "armB": {
+   "status": "filed",
+   "direction": "down",
+   "kind": "chord",
+   "box": [
+    2595,
+    1235,
+    2603,
+    1364
+   ],
+   "ruler": "both",
+   "ends": [
+    1,
+    0
+   ]
+  },
+  "armB_noclaims": "filed",
+  "flipped": "filed",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   2593.625,
+   1264.1,
+   2632.95,
+   1293.8
+  ],
+  "sp": 27.499999999999872
+ },
+ "2": {
+  "file": "tile_02.png",
+  "plate": "brahms",
+  "subject": "glyph/19/0/7/9/3",
+  "page": 19,
+  "why_picked": "NOT-NOTE control, accidental/clef piece, arm B abstained (correct)",
+  "my_label": "N",
+  "armA_ruler": "none",
+  "armB": {
+   "status": "abstain",
+   "why": "ruler_none",
+   "ruler": "none"
+  },
+  "armB_noclaims": "abstain",
+  "flipped": "abstain",
+  "groups": [
+   "notnote30"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   4898.3,
+   2183.25,
+   4933.225,
+   2195.35
+  ],
+  "sp": 27.500000000000142
+ },
+ "3": {
+  "file": "tile_03.png",
+  "plate": "litolff",
+  "subject": "glyph/1/0/7/11/3",
+  "page": 1,
+  "why_picked": "real head, arm B abstained: ruler_none (Litolff)",
+  "my_label": "H",
+  "armA_ruler": "none",
+  "armB": {
+   "status": "abstain",
+   "why": "ruler_none",
+   "ruler": "none"
+  },
+  "armB_noclaims": "abstain",
+  "flipped": "filed",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   2051.4975,
+   2402.99,
+   2070.3975,
+   2419.2125
+  ],
+  "sp": 15.750000000000076
+ },
+ "4": {
+  "file": "tile_04.png",
+  "plate": "brahms",
+  "subject": "glyph/5/0/12/7/26",
+  "page": 5,
+  "why_picked": "NOT-NOTE control, arm B FILED a stem (false stem)",
+  "my_label": "N",
+  "armA_ruler": "up",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    4939,
+    3330,
+    4967,
+    3384.481201171875
+   ],
+   "ruler": "up",
+   "ext": 1.41
+  },
+  "armB_noclaims": "filed",
+  "flipped": "filed",
+  "groups": [
+   "notnote30"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   4931.25634765625,
+   3368.24853515625,
+   4967.52392578125,
+   3400.7138671875
+  ],
+  "sp": 27.20068359375
+ },
+ "5": {
+  "file": "tile_05.png",
+  "plate": "brahms",
+  "subject": "glyph/5/0/3/4/9",
+  "page": 5,
+  "why_picked": "head WITH a shipped stem row, arm B's direction DIFFERS from the row",
+  "my_label": null,
+  "armA_ruler": "both",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "chord",
+   "box": [
+    3655,
+    1228,
+    3677,
+    1397
+   ],
+   "ruler": "both",
+   "ends": [
+    0,
+    2
+   ]
+  },
+  "armB_noclaims": "filed",
+  "flipped": "filed",
+  "groups": [
+   "agree200"
+  ],
+  "row_boxes": [
+   [
+    3669.1328125,
+    1227.05859375,
+    3677.04296875,
+    1410.1640625
+   ]
+  ],
+  "head_page_box": [
+   3634.26953125,
+   1285.65234375,
+   3676.45703125,
+   1321.1015625
+  ],
+  "sp": 27.24609375
+ },
+ "6": {
+  "file": "tile_06.png",
+  "plate": "brahms",
+  "subject": "glyph/14/1/2/4/9",
+  "page": 14,
+  "why_picked": "NOT-NOTE control, arm B FILED a stem (false stem)",
+  "my_label": "N",
+  "armA_ruler": "up",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    3010,
+    4723,
+    3037,
+    4771.75
+   ],
+   "ruler": "up",
+   "ext": 1.1
+  },
+  "armB_noclaims": "filed",
+  "flipped": "abstain",
+  "groups": [
+   "notnote30"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   3001.75,
+   4753.325,
+   3036.675,
+   4790.175
+  ],
+  "sp": 27.500000000000142
+ },
+ "7": {
+  "file": "tile_07.png",
+  "plate": "litolff",
+  "subject": "glyph/6/0/1/8/5",
+  "page": 6,
+  "why_picked": "real head, arm B filed a single stem (Litolff)",
+  "my_label": "H",
+  "armA_ruler": "both",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    1809,
+    511,
+    1824,
+    543.425
+   ],
+   "ruler": "up",
+   "ext": 1.51
+  },
+  "armB_noclaims": "filed",
+  "flipped": "abstain",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   1802.75,
+   533.6,
+   1822.85,
+   553.25
+  ],
+  "sp": 14.99999999999993
+ },
+ "8": {
+  "file": "tile_08.png",
+  "plate": "brahms",
+  "subject": "glyph/0/0/0/5/4",
+  "page": 0,
+  "why_picked": "real head, arm B filed a single stem (Brahms)",
+  "my_label": "D",
+  "armA_ruler": "down",
+  "armB": {
+   "status": "filed",
+   "direction": "down",
+   "kind": "single",
+   "box": [
+    4581,
+    1534.5124999999998,
+    4588,
+    1651
+   ],
+   "ruler": "down",
+   "ext": 3.0
+  },
+  "armB_noclaims": "filed",
+  "flipped": "filed",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   4581.075,
+   1514.84,
+   4623.0,
+   1554.185
+  ],
+  "sp": 32.25000000000014
+ },
+ "9": {
+  "file": "tile_09.png",
+  "plate": "litolff",
+  "subject": "glyph/4/0/5/6/10",
+  "page": 4,
+  "why_picked": "NOT-NOTE control, whole-rest block, arm B abstained (correct)",
+  "my_label": "R",
+  "armA_ruler": "none",
+  "armB": {
+   "status": "abstain",
+   "why": "ruler_none",
+   "ruler": "none"
+  },
+  "armB_noclaims": "abstain",
+  "flipped": "abstain",
+  "groups": [
+   "notnote30"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   1362.7375,
+   1170.475,
+   1385.7325,
+   1181.6575
+  ],
+  "sp": 15.75000000000008
+ },
+ "10": {
+  "file": "tile_10.png",
+  "plate": "litolff",
+  "subject": "glyph/16/0/9/16/1",
+  "page": 16,
+  "why_picked": "real head, arm B filed a single stem (Litolff)",
+  "my_label": "H",
+  "armA_ruler": "up",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    2508,
+    1505,
+    2529,
+    1574.8825000000002
+   ],
+   "ruler": "up",
+   "ext": 4.13
+  },
+  "armB_noclaims": "filed",
+  "flipped": "abstain",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   2495.215,
+   1570.0,
+   2520.73,
+   1579.765
+  ],
+  "sp": 15.749999999999922
+ },
+ "11": {
+  "file": "tile_11.png",
+  "plate": "brahms",
+  "subject": "glyph/14/1/1/0/7",
+  "page": 14,
+  "why_picked": "real head of a second, arm B abstained: both_two_columns",
+  "my_label": "D",
+  "armA_ruler": "both",
+  "armB": {
+   "status": "abstain",
+   "why": "both_two_columns",
+   "ruler": "both"
+  },
+  "armB_noclaims": "abstain",
+  "flipped": "filed",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   1231.8369140625,
+   4502.875,
+   1272.57421875,
+   4536.09765625
+  ],
+  "sp": 27.191162109375
+ },
+ "12": {
+  "file": "tile_12.png",
+  "plate": "brahms",
+  "subject": "glyph/14/0/2/0/32",
+  "page": 14,
+  "why_picked": "real head of a second, arm B abstained: both_two_columns",
+  "my_label": "D",
+  "armA_ruler": "both",
+  "armB": {
+   "status": "abstain",
+   "why": "both_two_columns",
+   "ruler": "both"
+  },
+  "armB_noclaims": "abstain",
+  "flipped": "filed",
+  "groups": [
+   "real51"
+  ],
+  "row_boxes": [],
+  "head_page_box": [
+   1124.8876953125,
+   1060.494140625,
+   1164.41796875,
+   1091.5810546875
+  ],
+  "sp": 27.249023437499996
+ }
+}
