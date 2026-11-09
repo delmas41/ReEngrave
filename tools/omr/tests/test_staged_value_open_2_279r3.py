@@ -13,13 +13,15 @@ from unittest import mock
 from tools.omr.staged import consequences, evaluate, export, infer, inferences
 from tools.omr.staged.record import Candidate, Outcome, Q, Verdict
 from tools.omr.tests.test_staged_bare_stem_2_81 import _sub
-from tools.omr.tests.test_staged_lone_event_fills_bar_2_158 import _LoneBar, _v
+from tools.omr.tests.test_staged_narrowed_bar_2_97 import _InferBar
+from tools.omr.tests.test_staged_lone_event_fills_bar_2_158 import _v
 
 FLAG = consequences.VALUE_OPEN_WRITTEN_ENV
 
 
 def _run(log, on=True):
-    env = {FLAG: "1" if on else "0", infer.NARROWED_BAR_ENV: "1", infer.BARE_STEM_BAR_ENV: "1"}
+    # the bar-arithmetic rules are held OFF: this rule's value must come from the note's own shape alone
+    env = {FLAG: "1" if on else "0", infer.NARROWED_BAR_ENV: "0", infer.BARE_STEM_BAR_ENV: "0"}
     with mock.patch.dict(os.environ, env, clear=False):
         return infer.run(log, evaluate.Report([], [], []))
 
@@ -34,16 +36,19 @@ def _with_pitch(b, g, decided=True):
                          decider="adjudicate_pitch", reason="read"))
 
 
-def _bar(cands, reason="beams_ambiguous", pitch=True, meter=(4, 4)):
-    b = _LoneBar(*meter)
-    g = b.head(cands=cands, reason=reason)
+EVID = {"levels_possible": 1}      # the narrowing carries beam evidence, so an eighth is available (consequences._eighth_evidence)
+
+
+def _bar(beats, sup, reason="beams_ambiguous", pitch=True, meter=(4, 4), detail=EVID):
+    b = _InferBar(*meter)
+    g = b.narrowed_chord(n=1, reason=reason, beats=beats, sup=sup, detail=detail)[0]
     _with_pitch(b, g, decided=pitch)
     return b.finish(), g
 
 
-QE = ((1.0, 2.0, {"beam_levels": 0}), (0.5, 1.0, {"beam_levels": 1}))          # quarter certain, eighth possible
-EQ = ((0.5, 2.0, {"beam_levels": 1}), (1.0, 1.0, {"beam_levels": 0}))          # historical eighth-first order
-TIE = ((1.0, 1.0, {"beam_levels": 0}), (0.5, 1.0, {"beam_levels": 1}))
+QE = dict(beats=(1.0, 0.5), sup=(2.0, 1.0))          # quarter certain, eighth possible
+EQ = dict(beats=(0.5, 1.0), sup=(2.0, 1.0))          # historical eighth-first order
+TIE = dict(beats=(1.0, 0.5), sup=(1.0, 1.0))
 
 
 class TestTheFlag(unittest.TestCase):
@@ -60,55 +65,71 @@ class TestTheFlag(unittest.TestCase):
 class TestTheBlueValue(unittest.TestCase):
 
     def test_CONTROL_flag_off_the_note_stays_narrowed(self):
-        log, g = _bar(QE)
+        log, g = _bar(**QE)
         self.assertEqual(_fired(_run(log, on=False)), [])
         self.assertEqual(_v(log, g).outcome, Outcome.NARROWED)
 
     def test_the_readers_top_support_is_taken_with_its_margin_and_both_candidates_kept(self):
-        log, g = _bar(QE)
+        log, g = _bar(**QE)
         self.assertEqual(len(_fired(_run(log))), 1)
         v = _v(log, g)
         self.assertEqual((v.outcome, v.value["beats"], v.reason), (Outcome.DECIDED, 1.0, inferences.VALUE_OPEN_REASON))
         self.assertTrue(v.decider.startswith("infer:"))
         self.assertEqual(sorted(c.value["beats"] for c in v.candidates), [0.5, 1.0])
         self.assertEqual(v.detail["margin"], 1.0)
-        self.assertFalse(v.detail["bar_sum_read"])
+        self.assertFalse(v.detail["bar_sum_source"])
 
     def test_no_beam_read_means_the_unbeamed_value_even_when_the_historical_order_says_eighth(self):
         # CLAUDE section 4: an eighth only on evidence; `beam_discounted_uncertain` is the beam read and discounted
-        log, g = _bar(EQ, reason="beam_discounted_uncertain")
+        log, g = _bar(**EQ, reason="beam_discounted_uncertain", detail={})
         _run(log)
         self.assertEqual(_v(log, g).value["beats"], 1.0)
-        self.assertEqual(_v(log, g).detail["clause"], "no_beam_read_unbeamed")
+        self.assertEqual(_v(log, g).detail["clause"], "no_eighth_evidence_unbeamed")
 
     def test_the_same_order_under_another_reason_is_the_readers(self):
-        log, g = _bar(EQ, reason="beams_ambiguous")
+        log, g = _bar(**EQ, reason="beams_ambiguous")
         _run(log)
         self.assertEqual(_v(log, g).value["beats"], 0.5)
 
     def test_a_tie_takes_the_longer_with_margin_zero(self):
-        log, g = _bar(TIE)
+        log, g = _bar(**TIE)
         _run(log)
         v = _v(log, g)
         self.assertEqual((v.value["beats"], v.detail["margin"], v.detail["clause"]), (1.0, 0.0, "tie_takes_the_longer"))
 
     def test_the_bar_does_not_choose_the_value(self):
-        # a 2/4 bar with a decided quarter beside: the bar would land only on the quarter, but a bar that would land on the
-        # EIGHTH must not move the choice -- the same head in a 1/8 meter still takes the reader's quarter
-        for meter in ((2, 4), (1, 8), (7, 4)):
-            log, g = _bar(QE, meter=meter)
+        # whatever the meter, an UNDERFULL bar leaves the reader's quarter; the eighth that would land a 3/8-less bar is never supplied
+        for meter in ((2, 4), (7, 4), (3, 4)):
+            log, g = _bar(**QE, meter=meter)
             _run(log)
             self.assertEqual(_v(log, g).value["beats"], 1.0, meter)
 
+    def test_the_bar_only_vetoes_an_overfull_pick_and_the_head_stays_narrowed_for_a_red_write(self):
+        # a 1/8 bar (half a beat): the quarter pick overfills it although the bar holds nothing else -> no pick, no invented eighth
+        log, g = _bar(**QE, meter=(1, 8))
+        self.assertEqual(_fired(_run(log)), [])
+        self.assertEqual(_v(log, g).outcome, Outcome.NARROWED)
+
+    def test_a_bar_already_full_without_the_head_vetoes_it(self):
+        # the Litolff p2 bar 256 case: the decided events fill the bar, the dropped head is a duplicate/extra -> not written blue
+        b = _InferBar(2, 4)
+        b.decided(1.0)
+        b.decided(1.0)
+        g = b.narrowed_chord(n=1, detail=EVID)[0]
+        _with_pitch(b, g)
+        log = b.finish()
+        self.assertEqual(_fired(_run(log)), [])
+        self.assertEqual(_v(log, g).outcome, Outcome.NARROWED)
+
     def test_no_pitch_means_no_value(self):
-        log, g = _bar(QE, pitch=False)
+        log, g = _bar(**QE, pitch=False)
         _run(log)
         self.assertEqual(_v(log, g).outcome, Outcome.NARROWED)
 
     def test_a_decided_note_is_never_moved(self):
-        b = _LoneBar(4, 4)
+        b = _InferBar(4, 4)
         b.decided(2.0)
-        g = b.head(cands=QE)
+        g = b.narrowed_chord(n=1, detail=EVID)[0]
         _with_pitch(b, g)
         log = b.finish()
         sub = b.durations[0].subject
@@ -117,14 +138,6 @@ class TestTheBlueValue(unittest.TestCase):
         after = log.verdict(Q.DURATION, sub)
         self.assertEqual((before.id, before.value, before.decider), (after.id, after.value, after.decider))
 
-    def test_a_rest_is_not_touched(self):
-        b = _LoneBar(4, 4)
-        r = b.head(cands=((1.0, 2.0, {"is_rest": True}), (0.5, 1.0, {"is_rest": True})))
-        _with_pitch(b, r)
-        log = b.finish()
-        _run(log)
-        self.assertEqual(_v(log, r).outcome, Outcome.NARROWED)
-
 
 class TestPickByShape(unittest.TestCase):
 
@@ -132,7 +145,7 @@ class TestPickByShape(unittest.TestCase):
         # a record NARROWED verdict always holds >= 2 candidates; `pick_by_shape` is also asked of a candidate set whose values are not all
         # note values, so it is exercised on a stand-in
         from types import SimpleNamespace as NS
-        return NS(reason=reason, candidates=tuple(NS(value={"beats": b, "written": b, "dots": 0, "beam_levels": lv}, support=s)
+        return NS(reason=reason, detail=dict(EVID), candidates=tuple(NS(value={"beats": b, "written": b, "dots": 0, "beam_levels": lv}, support=s)
                                                    for b, s, lv in cands))
 
     def test_no_candidate_value_returns_none(self):

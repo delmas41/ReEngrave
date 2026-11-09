@@ -310,6 +310,11 @@ def traced_export() -> Iterator[None]:
         out, units = orig(events, divisions, counters, voice=voice, doubled=doubled)
         glyphs: List[Optional[str]] = []
         for ev in events:
+            if not doubled:
+                # ROADMAP 2.279 r3: a pitch-read head with no value is written first, as a red `<grace/>` `<note>`, before its event
+                for u in ev.get("unread_heads") or ():
+                    if E._legacy._mxl_pitch_block(u["pitch"], "") is not None:
+                        glyphs.append(u["sub"])
             if ev.get("kind") == "rest":
                 glyphs.append(ev.get("glyph") or (ev.get("rest") or {}).get("glyph"))
             else:
@@ -444,6 +449,9 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                         sub["accidental"].append(acc)
                     sub["dot"].extend(["."] * len(el.findall("dot")))
                     typ = el.findtext("type") or "?"
+                    unread_value = el.find("grace") is not None and (el.findtext("notehead") or "") == "x"
+                    if unread_value:
+                        typ = "unread-value"       # ROADMAP 2.279 r3: red pitch-read head, no value claimed
                     beams = [b.text for b in el.findall("beam")]
                     if beams:
                         sub["beam"].append("/".join(beams))
@@ -454,7 +462,7 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                     tm = el.find("time-modification")
                     if tm is not None:
                         sub["tuplet"].append("%s:%s" % (tm.findtext("actual-notes"), tm.findtext("normal-notes")))
-                    guessed = el.get("color") is not None
+                    guessed = el.get("color") is not None and not unread_value
                     if notations is not None:
                         for s in notations.findall("slur"):
                             sub["slur"].append(s.get("type"))

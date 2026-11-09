@@ -2452,24 +2452,22 @@ def pick_by_shape(v: Any) -> Optional[Dict[str, Any]]:
     """The most likely of a NARROWED duration's own candidates by the head's OWN evidence, or `None` where there is no candidate.
 
     Owner of the value: CLAUDE section 4 ("a note is an eighth only on evidence -- a flag or beam read on its stem"; the bar never
-    supplies a value). The order is the reader's own `support` (a stroke that certainly covers a note outranks one that might; flag-level
-    votes); where the reason is `beam_discounted_uncertain` no beam was READ, so the unbeamed value is taken whatever the historical
-    order said; a tie in support takes the LONGER value (nothing shortens a note without evidence). Returns the candidate, the signed
-    margin (chosen support minus the best other, 0 on a tie) and which clause chose. The bar is not an input."""
+    supplies a value) through `consequences._shortens_without_evidence`, the one test of it (a candidate with beam levels is not
+    available unless the narrowing carries flag/beam evidence). Among what is available the order is the reader's own `support` (a stroke
+    that certainly covers a note outranks one that might; flag-level votes); a tie in support takes the LONGER value (nothing shortens a
+    note without evidence). Returns the candidate, the signed margin (chosen support minus the best other, 0 on a tie) and which clause
+    chose. The bar is not an input."""
+    from .consequences import _shortens_without_evidence
     cands = [c for c in (v.candidates or ()) if isinstance(c.value, dict) and c.value.get("beats")
              and not c.value.get("is_rest")]
     if not cands:
         return None
-    if len(cands) == 1:
-        return {"cand": cands[0], "margin": None, "clause": "only_candidate"}
-    if (v.reason or "") == "beam_discounted_uncertain":
-        lo = min(int(c.value.get("beam_levels") or 0) for c in cands)
-        un = [c for c in cands if int(c.value.get("beam_levels") or 0) == lo]
-        if len(un) == 1:
-            rest = [c for c in cands if c is not un[0]]
-            return {"cand": un[0], "margin": float(un[0].support) - max(float(c.support) for c in rest),
-                    "clause": "no_beam_read_unbeamed"}
-    ranked = sorted(cands, key=lambda c: (-float(c.support), -float(c.value.get("beats") or 0.0)))
+    avail = [c for c in cands if not _shortens_without_evidence(v, c.value)] or cands
+    if len(avail) == 1:
+        others = [float(c.support) for c in cands if c is not avail[0]]
+        return {"cand": avail[0], "margin": (float(avail[0].support) - max(others)) if others else None,
+                "clause": "only_candidate" if len(cands) == 1 else "no_eighth_evidence_unbeamed"}
+    ranked = sorted(avail, key=lambda c: (-float(c.support), -float(c.value.get("beats") or 0.0)))
     top, second = ranked[0], ranked[1]
     gap = float(top.support) - float(second.support)
     if gap > 0:
@@ -2477,19 +2475,65 @@ def pick_by_shape(v: Any) -> Optional[Dict[str, Any]]:
     return {"cand": top, "margin": 0.0, "clause": "tie_takes_the_longer"}
 
 
+def _bar_refuses_the_picks(log: Log, cell: Subject, picks: Dict[Any, float]) -> Optional[str]:
+    """The bar as a VETO, never a source. A reason string where this staff's bar -- its decided neighbours held fixed, every event of
+    the picks at the pick -- is longer than the printed meter although the decided neighbours alone are not; else `None` (the bar cannot
+    judge, or it does not contradict). Nothing here chooses a value: a refused pick is simply not made, and the head stays narrowed (EXPORT
+    then writes it RED at its pitch). No judgement is made for a bar with a tuplet, without a decided meter or without a decided event
+    grouping. A second voice on the staff adds to the sum, so it can only refuse more, never write more."""
+    from collections import Counter
+    from .consequences import _bar_beats_at, _left_the_bar, _standing
+    meter = log.verdict(Q.METER, cell.at(Kind.SYSTEM))
+    if meter is None or meter.outcome is not Outcome.DECIDED:
+        return None
+    expected = _bar_beats_at(meter, cell)
+    grouping = log.verdict(Q.EVENT, cell)
+    if expected is None or grouping is None or grouping.outcome is not Outcome.DECIDED:
+        return None
+    if bar_has_tuplet(log, cell):
+        return None
+    by_glyph = {v.subject.glyph: v for v in _standing(log, cell, Q.DURATION) if _left_the_bar(log, v.subject) is None}
+    fixed = _frac(0)
+    pick_sum = _frac(0)
+    for ev in (grouping.value or {}).get("events", ()):
+        ms = [by_glyph[g] for g in ev.get("glyphs", ()) if g in by_glyph]
+        if not ms:
+            continue
+        decided = [m for m in ms if m.outcome is Outcome.DECIDED and isinstance(m.value, dict)]
+        if decided and len(decided) == len(ms):
+            fixed += Counter(_frac(m.value.get("beats") or 0.0) for m in decided).most_common(1)[0][0]
+            continue
+        got = [picks[m.subject] for m in ms if m.subject in picks]
+        if got:
+            pick_sum += _frac(max(got))
+        elif decided:
+            fixed += _frac(decided[0].value.get("beats") or 0.0)
+        else:
+            lows = [float(c.value.get("beats")) for m in ms for c in (m.candidates or ())
+                    if isinstance(c.value, dict) and c.value.get("beats")]
+            if lows:
+                pick_sum += _frac(min(lows))
+    if fixed > _frac(expected):
+        return None                 # the bar is over without us: not the picks' doing, and not ours to judge
+    if fixed + pick_sum > _frac(expected):
+        return "bar_overfull_at_the_picks:%s>%s" % (float(fixed + pick_sum), float(expected))
+    return None
+
+
 @rule(
     inference=Inference.COLLAPSE_VALUE_OPEN_BY_SHAPE,
     target=Q.DURATION,
-    reads=(Q.DURATION, Q.PITCH, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    reads=(Q.DURATION, Q.PITCH, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST, Q.METER, Q.EVENT),
     scope=Kind.CELL,
     sideways=False,
     switch=VALUE_OPEN_SWITCH,
     bound=(
         "It collapses a NARROWED duration of a head whose PITCH is DECIDED to one of that reader's OWN candidates and nothing else, by the "
-        "reader's own `support` order (the unbeamed value where the reason is `beam_discounted_uncertain`, the longer value on a tie), "
-        "recording the signed margin. It reads no bar arithmetic and no meter, never overturns a DECIDED verdict (it runs after every bar "
-        "rule, and a decided prior is skipped), and a head that left the bar (a duplicate, another staff's, ink that is not a head) is "
-        "skipped."),
+        "reader's own `support` order among the candidates CLAUDE section 4 allows (no eighth without flag/beam evidence; the longer on a "
+        "tie), recording the signed margin. The bar sum is never its source: it only VETOES -- a bar whose decided neighbours fit the meter "
+        "but would be overfull at the picks gets none of them (the heads stay narrowed and are written red at their pitch). It never "
+        "overturns a DECIDED verdict (it runs after every bar rule, and a decided prior is skipped), skips a head that left the bar, and a "
+        "chord whose members would be given different values gets none."),
     why_witnesses_are_independent=(
         "It counts no witnesses: the evidence is the head's own shape (what its stem, beams and flags showed), which is ONE reading, so the "
         "verdict is GUESSED (blue, candidates carried) and the rule default OFF; the bar sum may later CONFIRM or contradict it but is "
@@ -2499,9 +2543,10 @@ def collapse_value_open_by_shape(log: Log, cell: Subject) -> List[Proposal]:
     """Pitch read, value open: the most likely value by the note's own shape, written blue (Sean 2026-11-09).
 
     Which stage, and why: the value does not FOLLOW (the reader kept two), it is merely BEST -- so it is INFER's, labelled, bounded to the
-    reader's candidates, margin recorded. Nothing is invented: a head with no candidate value stays narrowed and EXPORT writes it red."""
+    reader's candidates, margin recorded. Nothing is invented: a head with no candidate value, or one the bar refuses, stays narrowed/
+    abstained and EXPORT writes it red."""
     from .consequences import _left_the_bar, _standing
-    out: List[Proposal] = []
+    picked: Dict[Any, Tuple[Verdict, Verdict, Dict[str, Any]]] = {}
     for v in _standing(log, cell, Q.DURATION):
         if v.outcome is not Outcome.NARROWED or not v.candidates:
             continue
@@ -2513,10 +2558,27 @@ def collapse_value_open_by_shape(log: Log, cell: Subject) -> List[Proposal]:
         pick = pick_by_shape(v)
         if pick is None:
             continue
+        picked[v.subject] = (v, pv, pick)
+    if not picked:
+        return []
+    # a chord is one value on one stem: members the shape would give different values get none (EXPORT writes them red)
+    grouping = log.verdict(Q.EVENT, cell)
+    disagree = set()
+    if grouping is not None and grouping.outcome is Outcome.DECIDED:
+        by_glyph = {s.glyph: s for s in picked}
+        for ev in (grouping.value or {}).get("events", ()):
+            ms = [by_glyph[g] for g in ev.get("glyphs", ()) if g in by_glyph]
+            if len({_frac(picked[m][2]["cand"].value["beats"]) for m in ms}) > 1:
+                disagree.update(ms)
+    live = {s: t for s, t in picked.items() if s not in disagree}
+    why = _bar_refuses_the_picks(log, cell, {s: float(t[2]["cand"].value["beats"]) for s, t in live.items()})
+    if why is not None:
+        return []
+    out: List[Proposal] = []
+    for s, (v, pv, pick) in live.items():
         c = pick["cand"]
         out.append(Proposal(
-            subject=v.subject, value=c.value, reason=VALUE_OPEN_REASON, basis=(v.id, pv.id), witnesses=(),
+            subject=s, value=c.value, reason=VALUE_OPEN_REASON, basis=(v.id, pv.id), witnesses=(),
             detail={"margin": pick["margin"], "margin_axis": "reader_support_gap", "clause": pick["clause"],
-                    "reader_reason": v.reason, "n_candidates": len(v.candidates), "bar_sum_read": False}))
+                    "reader_reason": v.reason, "n_candidates": len(v.candidates), "bar_sum_source": False}))
     return out
-
