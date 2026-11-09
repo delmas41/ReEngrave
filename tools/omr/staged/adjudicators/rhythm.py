@@ -2447,9 +2447,9 @@ def _foreign_staccato_owner(dot_box, foreign_targets, space):
 
 
 #: Refusal reasons that name a mark which is never a note (ROADMAP 2.102).
-#: ROADMAP 2.277: a box refused BY a barline's (or a later layer's) claimed ink is that mark's ink, never a note: no duration (a Brahms sliver on a barline
-#: otherwise got `head_and_marks` quarter once its reason was not the old `too_narrow` in a meter column).
-NOT_A_NOTE_REFUSALS = ("tremolo_slash_crosses_stem", "on_a_dynamic_letter", "claimed_by:barline", "claimed_by:page_claim")
+#: ROADMAP 2.277: a box refused BY a later layer's claimed ink (a tremolo slash) is that mark's ink, never a note: no duration. A box refused by the BARLINE claim
+#: is treated exactly as its `too_narrow` was (`claim_final.SHAPE_EQUIVALENT_REASONS`, below): its duration verdict feeds the same readers as before.
+NOT_A_NOTE_REFUSALS = ("tremolo_slash_crosses_stem", "on_a_dynamic_letter", "claimed_by:page_claim")
 
 
 REFUSED_HEAD_NO_DURATION_ENV = "OMR_REFUSED_HEAD_NO_DURATION"
@@ -2475,7 +2475,8 @@ def _not_a_note_mark(ev: Evidence, refusal) -> Optional[str]:
     """
     if refusal.reason in NOT_A_NOTE_REFUSALS:
         return str(refusal.reason)
-    if refusal.reason != "too_narrow":
+    from .. import claim_final as _CF
+    if refusal.reason != "too_narrow" and refusal.reason not in _CF.SHAPE_EQUIVALENT_REASONS:
         return None
     own = ev.rows(Q.GLYPH_BOX)
     if not own:
