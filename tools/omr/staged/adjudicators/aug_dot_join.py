@@ -180,7 +180,7 @@ def dot_head_compatible(dot_row: Optional[R.Observation],
 DOT_BOXED_AS_A_HEAD_ENV = "OMR_DOT_BOXED_AS_A_HEAD"
 
 #: The notehead gate's refusals that say "this box is dot-shaped ink".
-DOT_SHAPED_REFUSALS = ("too_narrow", "is_a_dot")
+DOT_SHAPED_REFUSALS = ("too_narrow", "is_a_dot", "claimed_by:barline")      # 2.277: claim_final.SHAPE_EQUIVALENT_REASONS
 #: A refused box no larger than this on BOTH sides, in staff spaces, is
 #: dot-sized (`notehead_precision.DOT_SIZED_MAX_SPACES`; restated as a literal
 #: so this light module does not import the notehead adjudicator, and pinned

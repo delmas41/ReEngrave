@@ -103,7 +103,7 @@ def adjudicate_narrow_box_is_an_eighth_rest(ev: Evidence) -> Ruling:
     """
     refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD)
     if (refusal is None or refusal.outcome is not Outcome.DECIDED
-            or refusal.value is not True or refusal.reason != "too_narrow"):
+            or refusal.value is not True or refusal.reason not in ("too_narrow", "claimed_by:barline")):     # 2.277: claim_final.SHAPE_EQUIVALENT_REASONS
         return Ruling.abstain("not_refused_as_too_narrow")
     rows = ev.rows(Q.NARROW_BOX_SHAPE)
     if not rows:

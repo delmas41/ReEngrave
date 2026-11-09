@@ -46,6 +46,10 @@ CONSULTED_ELSEWHERE = frozenset({"clef", "meter", "key_signature", "leading_colu
 #: claims that only MARK, never refuse a box here (Sean's manager 2026-11-08, after the 2.277 crops): the arc and hairpin TRACES took real heads' ink where a
 #: slur touches a head (Litolff tiles 1, 5, 6, 7: held 0.53-0.83 by the arc trace, real notes), so refusing by them would lose notes. That is itself a claim-order
 #: violation of the arc claim (it took head ink); it belongs to the arc lanes (2.273, 2.274). Recorded in `held`, never refused.
+#: a box refused BY the barline claim is, to every reader keyed on the SHAPE reason it would have got (`too_narrow`: the meter-column "not a note mark", the
+#: dot-shaped box at a head's dot step, the narrow-box eighth-rest look), the same box: the claim renames the first cause, it must not change what those
+#: readers do (the 2.277 hold: the sliver's duration fed a bar sum, a neighbour was confirmed by it). Only a layer's OWN ink is "not a note" (page_claim).
+SHAPE_EQUIVALENT_REASONS = ("claimed_by:barline",)
 MARK_ONLY = frozenset({"arc_trace", "arc", "hairpin_trace", "hairpin"})
 
 
