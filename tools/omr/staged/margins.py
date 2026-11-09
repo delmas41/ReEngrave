@@ -169,7 +169,7 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         # ROADMAP 2.221: the box's ink share inside the READ word's / bracket's page-wide claim minus `claims.INSIDE_SHARE_MIN`
         "claimed_by:word": THRESHOLD, "claimed_by:bracket": THRESHOLD,
         # ROADMAP 2.277: the share of the box's own ink the claim holds minus `claim_final.CUT`
-        "claimed_by:barline": THRESHOLD, "claimed_by:arc": THRESHOLD, "claimed_by:hairpin": THRESHOLD, "claimed_by:page_claim": THRESHOLD,
+        "claimed_by:barline": THRESHOLD, "claimed_by:page_claim": THRESHOLD,
         # ROADMAP 2.108: past the declared reach of every staff, in staff spaces
         "off_staff_glyph": THRESHOLD,
     },
@@ -182,7 +182,7 @@ PARTIAL: Dict[str, Dict[str, str]] = {
         # ROADMAP 2.221: the box's ink share inside the READ word's / bracket's page-wide claim minus `claims.INSIDE_SHARE_MIN`
         "claimed_by:word": THRESHOLD, "claimed_by:bracket": THRESHOLD,
         # ROADMAP 2.277: the share of the box's own ink the claim holds minus `claim_final.CUT`
-        "claimed_by:barline": THRESHOLD, "claimed_by:arc": THRESHOLD, "claimed_by:hairpin": THRESHOLD, "claimed_by:page_claim": THRESHOLD,
+        "claimed_by:barline": THRESHOLD, "claimed_by:page_claim": THRESHOLD,
         # ROADMAP 2.150: the class's width floor minus the box's width, in staff spaces
         "rest_narrower_than_its_class": THRESHOLD,
         # ROADMAP 2.150b: the binding one of {stroke length, head evidence} over its cut, as a ratio minus 1

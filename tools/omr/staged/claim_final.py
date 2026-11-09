@@ -43,6 +43,10 @@ BOX_FAMILIES = ("head", "ledger", "accidental", "rest", "whole_rest", "dot", "ma
 #: families the register consult (`claimed_by.consult`) already refuses by its own, stricter tests (it has the stem exceptions of 2.176 / 2.177 /
 #: 2.208 / 2.221 and a NARROW path); this mechanism leaves them to it and takes every other claim kind
 CONSULTED_ELSEWHERE = frozenset({"clef", "meter", "key_signature", "leading_column", "word", "bracket"})
+#: claims that only MARK, never refuse a box here (Sean's manager 2026-11-08, after the 2.277 crops): the arc and hairpin TRACES took real heads' ink where a
+#: slur touches a head (Litolff tiles 1, 5, 6, 7: held 0.53-0.83 by the arc trace, real notes), so refusing by them would lose notes. That is itself a claim-order
+#: violation of the arc claim (it took head ink); it belongs to the arc lanes (2.273, 2.274). Recorded in `held`, never refused.
+MARK_ONLY = frozenset({"arc_trace", "arc", "hairpin_trace", "hairpin"})
 
 
 def enabled() -> bool:
@@ -127,14 +131,6 @@ def marks(owned_by_head: Iterable[Sequence[str]]) -> Dict[str, str]:
 
 # ── what a decider is told ────────────────────────────────────────────────────────────────────────────────────────────────────────────────
 def refusal_kind(by: str) -> str:
-    """The `<kind>` of `claimed_by:<kind>` for the claim family `by`. A fixed vocabulary of literals lives in the deciders (the vocabulary check
-    reads them); a family it does not name is the generic `page_claim`, so a claim layer a later lane files is consumed with no code here."""
-    if by == "barline":
-        return "barline"
-    if by == "arc_trace" or by == "arc":
-        return "arc"
-    if by == "hairpin_trace" or by == "hairpin":
-        return "hairpin"
-    if by == "whole_rest":
-        return "whole_rest"
-    return "page_claim"
+    """The `<kind>` of `claimed_by:<kind>` for the claim family `by`. The deciders hold a fixed vocabulary of literals (the vocabulary check reads them): `barline`;
+    any other family is the generic `page_claim`, so a claim layer a later lane files (a tremolo slash) is consumed with no code here."""
+    return "barline" if by == "barline" else "page_claim"

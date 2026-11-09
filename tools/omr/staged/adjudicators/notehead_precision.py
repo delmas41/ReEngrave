@@ -652,10 +652,6 @@ def _claim_final_refusal(cf, box_row) -> Ruling:
     detail = {"class": box_row.value[0], **cf.detail}
     if cf.kind == "barline":
         r = Ruling(value=True, reason="claimed_by:barline", used=cf.used, detail=detail)
-    elif cf.kind == "arc":
-        r = Ruling(value=True, reason="claimed_by:arc", used=cf.used, detail=detail)
-    elif cf.kind == "hairpin":
-        r = Ruling(value=True, reason="claimed_by:hairpin", used=cf.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:page_claim", used=cf.used, detail=detail)
     return _margins.attach(r, margin=cf.share - _claim_final.CF.CUT, axis="ink_share_held", unit="fraction of the box's own ink the claim holds",
@@ -3713,7 +3709,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
                                      "claimed_by:whole_rest",
-                                     "claimed_by:barline", "claimed_by:arc", "claimed_by:hairpin", "claimed_by:page_claim",
+                                     "claimed_by:barline", "claimed_by:page_claim",
                                      "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only",
                                      "stem_end_ink_disagrees",
                                      "is_a_rest_shape",

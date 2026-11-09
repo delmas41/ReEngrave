@@ -1141,10 +1141,6 @@ def _rest_claim_final_refusal(cf, box_row, detail: Dict[str, Any]) -> Ruling:
     detail = {**detail, **cf.detail}
     if cf.kind == "barline":
         r = Ruling(value=True, reason="claimed_by:barline", used=cf.used, detail=detail)
-    elif cf.kind == "arc":
-        r = Ruling(value=True, reason="claimed_by:arc", used=cf.used, detail=detail)
-    elif cf.kind == "hairpin":
-        r = Ruling(value=True, reason="claimed_by:hairpin", used=cf.used, detail=detail)
     else:
         r = Ruling(value=True, reason="claimed_by:page_claim", used=cf.used, detail=detail)
     return _margins.attach(r, margin=cf.share - _claim_final.CF.CUT, axis="ink_share_held",
@@ -1961,7 +1957,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_is_a_meter_digit", "inside_the_meter",
                                      "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
                                      "claimed_by:word", "claimed_by:bracket", "claim_narrowed:word", "claim_narrowed:bracket",
-                                     "claimed_by:barline", "claimed_by:arc", "claimed_by:hairpin", "claimed_by:page_claim",
+                                     "claimed_by:barline", "claimed_by:page_claim",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
                                      "one_ink_merged",
