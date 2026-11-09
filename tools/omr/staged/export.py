@@ -2144,7 +2144,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 valueless_pending.append((_run, _s["cell"] or 0, {
                     "sub": _sub, "pitch": _det["pitch"], "x": float(_bb[0]) + float(_bb[2]) / 2.0,
                     "reason": "chord_value_undecided",
-                    "candidates": [{"beats": b, "written": b, "dots": d, "support": None} for b, t, d in _vals]}))
+                    "candidates": ((_det.get("guess") or {}).get("candidates")
+                                   or [{"beats": b, "written": b, "dots": d, "support": None} for b, t, d in _vals])}))
         for _run, _ci, _rec in valueless_pending:
             _vcell = _run.cells.get(_ci)
             if _vcell is None or not _vcell.detections:
@@ -2268,6 +2269,16 @@ def _chords_whose_value_would_be_voted(
                 values = {(h.get("duration_beats"), h.get("duration_type"),
                            h.get("dots")) for h in heads}
                 if len(values) > 1:
+                    if value_open_written_enabled():
+                        # ROADMAP 2.279 r3: a head this lane gave a guessed value (INFER `collapse_value_open_by_shape`) must never take a
+                        # head that was already written down with it: where the others agree it is the guess alone that is refused (and
+                        # filed red); where the others disagree among themselves the group is refused as before.
+                        _vo = [h for h in heads if (h.get("guess") or {}).get("rule") == "collapse_value_open_by_shape"]
+                        _rest = [h for h in heads if h not in _vo]
+                        if _vo and _rest and len({(h.get("duration_beats"), h.get("duration_type"), h.get("dots"))
+                                                  for h in _rest}) == 1:
+                            doomed.extend(id(h) for h in _vo)
+                            continue
                     doomed.extend(id(h) for h in heads)
             if not doomed:
                 continue

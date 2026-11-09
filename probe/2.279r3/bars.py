@@ -36,13 +36,15 @@ def bars(path):
                 if t is not None:
                     beats, bt = int(t.findtext("beats")), int(t.findtext("beat-type"))
             length = beats * 4 * divisions / bt
-            red = blue = False
+            red = blue = redhead = False
             per_voice = collections.defaultdict(int)
             notes = []
             pos = collections.defaultdict(int)
             for el in m.iter():
-                if el.get("color") == RED or (el.tag == "words" and el.get("color") == RED):
-                    red = True
+                if el.get("color") == RED and not (el.tag == "note" and el.find("grace") is not None) and el.tag != "notehead":
+                    red = True          # an unread bracket / word / note colour: the bar is marked unread
+                if el.tag == "note" and el.find("grace") is not None and el.get("color") == RED:
+                    redhead = True      # only a red pitch-read head with no value (a silent drop now marked)
                 if el.tag == "note":
                     v = el.findtext("voice") or "1"
                     if el.get("color") == BLUE:
@@ -66,7 +68,9 @@ def bars(path):
                 elif el.tag == "backup":
                     pass
             # backup handling: voices are written one after another; each voice's own sum is what is compared
-            state = "red" if red else ("blue" if blue else "clean")
+            state = "red" if red else ("redhead" if redhead and not blue else "blue" if blue else "clean")
+            if redhead and blue and not red:
+                state = "blue+redhead"
             fill = {v: ("exact" if s == length else "over" if s > length else "under") for v, s in per_voice.items()}
             out[(pid, m.get("number"))] = dict(state=state, fill=fill, notes=notes, length=length,
                                                unread_heads=len([n for n in m.findall("note") if n.find("grace") is not None
@@ -108,6 +112,13 @@ def main(work, plates):
                               red_heads_written=sum(b["unread_heads"] for b in on.values()))
         print("== %s ==" % plate)
         print(json.dumps(summary[plate], indent=1))
+        print("new blue notes in a bar the voice does NOT land exactly (over = CONTRADICTED by the bar):")
+        shown = set()
+        for k, n, f, g, st in new_blue:
+            if f != "exact" and (k, f) not in shown:
+                shown.add((k, f))
+                print("  ", k, f, "state", st, "length", on[k]["length"], "off-state", off[k]["state"], "off-fill", off[k]["fill"],
+                      [(m["voice"], m["onset"], m["pitch"], m["type"]) for kk, m, ff, gg, ss in new_blue if kk == k])
         print("clean -> worse bars (every one):")
         for w in worse:
             print("  ", w)
