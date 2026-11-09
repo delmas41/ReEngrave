@@ -155,7 +155,10 @@ CLAIM_OWNERS = ("meter", "clef", "key_signature", "leading_column", "word", "bra
 
 def enabled() -> bool:
     """`OMR_PAGE_ARCS` (ROADMAP 2.274 step 1), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    if os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on"):
+        return True
+    from . import page_arc_bind as _pab
+    return _pab.write_enabled()          # step 2 (`OMR_PAGE_ARC_WRITE`) reads these rows: it turns the reader on
 
 
 # ───────────────────────────── 1. the rows the reader needs (any source) ─────────────────────────────
@@ -1356,7 +1359,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
         mid_y = float(np.median(pts[:, 1]))
         log.observe(sub, Q.PAGE_ARC, "run", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in r["box"]],
                     points=thin, width_spaces=r["width_sp"], sagitta_spaces=r["sagitta_sp"], thickness_spaces=r["thick_sp"], ends=ends_of(r["pts"], sp_page), page_strokes=[[int(i), s] for i, s in along],
-                    witnesses=by_run[r["id"]], staff=staff_of(mid_y))
+                    witnesses=by_run[r["id"]], staff=staff_of(mid_y), space_page_px=round(sp_page, 3))
         n += 1
     blank = None
     n_seeded = 0

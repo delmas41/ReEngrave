@@ -3021,10 +3021,26 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
         return None
     staff_of_arc = ev.subject.at(Kind.STAFF)
     d = sysarc.detail or {}
-    sp = float(d.get("space_page_px") or 0.0)
     owner = ev.verdict(Q.ARC_OWNER)
     home = (owner.value if owner is not None and isinstance(owner.value, str) and owner.value
             else ev.subject.at(Kind.STAFF).to_key())
+
+    def _binder(heads_: List[Dict[str, Any]], sp_: float, usable_: Any, end_pitch_: bool, alt_: Any) -> Dict[str, Any]:
+        closest_sides, closest_why, closest_others = (_closest_sides(ev, sysarc, d, sp_, staff_of_arc) if _arc_claim.closest_head_enabled() else (None, {}, None))
+        b_ = _arc_claim.bind_curve(d, heads_, sp_, usable_, by_height=end_pitch_, alt_ends=alt_, closest_sides=closest_sides, other_ends=closest_others)
+        if closest_why:
+            b_["closest_refused"] = closest_why
+        return b_
+    return _bind_detail(ev, str(getattr(arc, "value", "")), d, home, sysarc.subject.to_key(), sysarc.id, _binder)
+
+
+def _bind_detail(ev: Evidence, arc_class: str, d: Dict[str, Any], home: str, curve_key: str, curve_id: Any, binder: Any,
+                 ) -> Dict[str, Any]:
+    """The body of `_page_binding`, on a curve DETAIL (`space_page_px`, `trace`, `x_left_page` / `y_left_page` / `x_right_page` / `y_right_page`, `pieces`) and the staff
+    `home`: the heads of that staff, usable ones, `binder(heads, sp, usable, end_pitch, alt)` for the ends, then Sean's tie rule on the two bound heads. Moved out of
+    `_page_binding` UNCHANGED (ROADMAP 2.274 step 2) so that a PAGE-INK run (`adjudicate_page_arc_binding`) is bound by the very same code as a detector curve:
+    the detector's class `arc_class` is a prior that only the one 2.252 r2 rule reads (a page-ink run passes `""`)."""
+    sp = float(d.get("space_page_px") or 0.0)
     staff = R.Subject.from_key(home)
     rows: Dict[str, Any] = {}
     heads: List[Dict[str, Any]] = []
@@ -3094,11 +3110,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     alt = None
     if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
         alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
-    closest_sides, closest_why, closest_others = (_closest_sides(ev, sysarc, d, sp, staff_of_arc) if _arc_claim.closest_head_enabled() else (None, {}, None))
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt, closest_sides=closest_sides, other_ends=closest_others)
-    if closest_why:
-        b["closest_refused"] = closest_why
-    b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
+    b = binder(heads + tips, sp, usable, end_pitch, alt)
+    b.update(curve=curve_key, home=home, kind=None, sysarc_id=curve_id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
             b.setdefault("stem_tip_ends", []).append(side_)
@@ -3218,7 +3231,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
              crosses_barline=hl["cell"] != hr["cell"])
     if contested is not None:
         b.update(why="step_conflict_one_end_contested", contested_end=contested)
-    elif relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+    elif relation == "different" and tie_arc_side_enabled() and arc_class == "tie" and b.get("stem_tip_ends"):
         # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
         # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
         # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he

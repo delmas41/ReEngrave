@@ -989,6 +989,13 @@ class Q(_Vocab):
     #: claims nothing and NOTHING READS IT (binding and writing are step 2).
     PAGE_ARC = "page_arc"
 
+    #: ROADMAP 2.274 step 2 (flag `OMR_PAGE_ARC_WRITE`, default OFF; `adjudicators/ownership.adjudicate_page_arc_binding`): ONE VERDICT PER PAGE that holds `Q.PAGE_ARC` runs,
+    #: AFTER the heads are read: each WITNESSED run's two ends bound to notes (the closest note, page-facts 2026-11-05) and the kind Sean's tie rule makes of the two. `value` =
+    #: `{"runs": n, "written": n, "abstained": n}`; `detail["runs"]` = one entry per run: `ordinal`, `row`, `status` (`written` | `abstained` | `not_witnessed`), `kind`, `start`,
+    #: `stop` (glyph keys), `why`, `witnesses` (the detector arc boxes this run REPLACES), `left` / `right` (the end bindings), `edge` (`left` | `right` | None). EXPORT writes one
+    #: arc per `written` run and drops the detector arcs of its witnesses (one mark, one arc).
+    PAGE_ARC_BINDING = "page_arc_binding"
+
     #: ROADMAP 2.260e M6a (flag `OMR_PAGE_HEADS`, default OFF; `page_heads.file_page_heads`): ONE ROW PER HEAD of the PAGE, notehead boxes of every cell folded to one
     #: (IoU), its ink the page strokes the box stands on: `value` = `box` | `ink_only` (head-shaped ink no detector box stands on, census only: no Glyph, no note)
     #: | `census` (one per page). `detail`: `members` (the folded glyph keys), `strokes`, `stroke_extent` / `trim_extent` (page px), `box_position_float` /
@@ -2402,6 +2409,7 @@ CLAIMS: "dict[str, str]" = {
     "PAGE_BEAM": CLAIM.MEASUREMENT,
     "PAGE_BEAM_TIP": CLAIM.MEASUREMENT,
     "PAGE_ARC": CLAIM.MEASUREMENT,
+    "PAGE_ARC_BINDING": CLAIM.INTERPRETATION,
     "PAGE_HEAD": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,

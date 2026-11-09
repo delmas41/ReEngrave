@@ -61,6 +61,7 @@ from . import export_unison as _export_unison
 from ..voicing import group_chords_in_measure, split_events_into_voices
 from . import adjudicate as A
 from . import arc_claim as _arc_claim
+from . import page_arc_bind as _page_arc_bind
 # ⚠️ Imported as a bare module name, not through the dotted module path:
 # `wiring.details` matches a detail key by bare substring, and a dot followed
 # by the module's first three letters reads as a consumer of
@@ -2408,6 +2409,17 @@ def _corners_to_wh(box: Optional[Sequence[float]]) -> Optional[List[float]]:
     return [x0, y0, x1 - x0, y1 - y0]
 
 
+def _page_arc_plan(rec: Record) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.274 step 2 (`OMR_PAGE_ARC_WRITE`, default OFF): the witnessed page-ink runs the record's `Q.PAGE_ARC_BINDING` verdicts bound (`page_arc_bind.plan_of`), or
+    None with the flag OFF or a record that holds none. Reads the record only."""
+    if not _page_arc_bind.write_enabled():
+        return None
+    standing = [v for v in rec.verdicts_of(Q.PAGE_ARC_BINDING) if rec.verdict(Q.PAGE_ARC_BINDING, v["subject"]) is v]
+    if not standing:
+        return None
+    return _page_arc_bind.plan_of([v.get("detail") or {} for v in standing])
+
+
 def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     """Every decided arc, in the cell its OWNER puts it in.
 
@@ -2426,10 +2438,16 @@ def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
     nothing read it, inside the architecture built to stop exactly that.
     """
     dropped: Dict[str, int] = collections.Counter()
+    pa_plan = _page_arc_plan(rec)
     for o in rec.obs_of(Q.ARC_BOX):
         sub = o["subject"]
         s = _parse_subject(sub)
         if s["glyph"] is None:
+            continue
+        if pa_plan is not None and sub in pa_plan["replaced"]:
+            # ROADMAP 2.274 step 2 (`OMR_PAGE_ARC_WRITE`): ONE MARK, ONE ARC -- a detector box that witnesses a page-ink run which was bound and written
+            # is replaced by that run's arc (every box of it, whatever the box's own kind); counted
+            dropped["replaced_by_page_arc"] += 1
             continue
         # ⚠️ ROADMAP 3.4g, AND BEFORE THE KIND: *slur or tie* and *a symbol
         # at all* are different questions, and a box a human said is nothing
@@ -2994,8 +3012,11 @@ def _page_bound_slurs(rec: Record) -> Dict[str, Dict[str, Any]]:
     out: Dict[str, Dict[str, Any]] = {}
     if not _arc_claim.bind_enabled():
         return out
+    pa_plan = _page_arc_plan(rec)
     for o in rec.obs_of(Q.ARC_BOX):
         sub = o["subject"]
+        if pa_plan is not None and sub in pa_plan["replaced"]:
+            continue                # ROADMAP 2.274 step 2: replaced by the page-ink run's arc
         anv = rec.verdict(Q.ARC_IS_NOT_AN_ARC, sub)
         if anv is not None and anv["outcome"] == "decided" and anv["value"] is True:
             continue
@@ -3215,6 +3236,33 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     bound_written: set = set()
     # ROADMAP 2.271 step 3 (`OMR_ARC_ACROSS_SYSTEMS`, default OFF): the arcs that run off one system and pick up on the next
     across_edges = _edge_curves(rec) if _arc_claim.across_systems_enabled() else []
+    # ROADMAP 2.274 step 2 (`OMR_PAGE_ARC_WRITE`, default OFF): the witnessed page-ink runs the record bound. A written run is ONE arc on its two heads and REPLACES the detector
+    # arcs of the boxes that witness it (`_place_arcs`, `_page_bound_slurs` and here the tie pairs); a run off a system's edge is offered to 2.271's join across systems.
+    pa_plan = _page_arc_plan(rec)
+    pa_ties: Dict[Tuple[str, str], str] = {}
+    if pa_plan is not None:
+        counters["page_arc_runs"] += len(pa_plan["runs"])
+        counters["page_arc_runs_not_witnessed"] += pa_plan["counts"].get(_page_arc_bind.NOT_WITNESSED, 0)
+        counters["page_arc_runs_abstained"] += pa_plan["counts"].get(_page_arc_bind.ABSTAINED, 0)
+        counters["page_arc_boxes_replaced"] += len(pa_plan["replaced"])
+        counters["page_arc_boxes_shared_with_an_unwritten_run_kept"] += len(pa_plan["shared_kept"])
+        if record_ties is not None:
+            for key in list(record_ties["pairs"]):
+                if any(a in pa_plan["replaced"] for a in record_ties["pairs"][key]):
+                    del record_ties["pairs"][key]
+                    counters["page_arc_tie_pairs_replaced"] += 1
+        for r_ in pa_plan["written"]:
+            if r_["kind"] == "slur":
+                bound_slurs["page_arc/%s" % r_["row"]] = {"start": str(r_["start"]), "stop": str(r_["stop"]), "pieces": 1}
+            elif record_ties is None:
+                counters["page_arc_tie_no_record_pairing"] += 1          # a record with no `Q.TIE_PAIR` verdict pairs ties the old way: not ours to add to
+            else:
+                key = (str(r_["start"]), str(r_["stop"]))
+                record_ties["pairs"].setdefault(key, []).extend(r_["witnesses"])
+                pa_ties[key] = str(r_["row"])
+        for r_ in pa_plan["edges"]:
+            across_edges.append({"curve": "page_arc/%s" % r_["row"], "side": r_["edge"], "head": r_["edge_head"], "x_end": r_["x_end"], "sp": r_["sp"],
+                                 "home": r_.get("staff_key")})
     across_positions: Dict[str, Any] = {}
     if across_edges:
         for o in rec.obs_of(Q.NOTEHEAD_STAFF_POSITION):
@@ -3224,7 +3272,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     for part in parts:
         measures, per_measure_arcs, kinds, spacings, tops, breaks = \
             _flatten_part(part)
-        if not measures or not (any(per_measure_arcs) or bound_slurs or across_edges):
+        if not measures or not (any(per_measure_arcs) or bound_slurs or across_edges or pa_ties):
             continue
         voice_of = _voice_of_notehead(rec, part)
         # ⚠️ An arc is drawn to a note's STEM, not to its head. See
@@ -3263,6 +3311,8 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                                         groups_by_kind=groups_by_kind)
         if bound_slurs and "slur" not in by_kind:
             by_kind["slur"] = [[] for _ in measures]      # ROADMAP 2.223: a part whose only slurs are page-bound curves
+        if pa_ties and "tie" not in by_kind:
+            by_kind["tie"] = [[] for _ in measures]       # ROADMAP 2.274 step 2: a part whose only ties are page-ink runs
         x_slurs: List[tuple] = []
         x_ties: List[tuple] = []
         if across_edges:
@@ -3365,6 +3415,13 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         if curve not in bound_written:
             # ROADMAP 2.223: a bound curve whose two heads no one part holds (a head refused on the way to the file), counted per box
             dropped["slur_bound_end_not_in_file"] += c["pieces"]
+    if pa_plan is not None:
+        # ROADMAP 2.274 step 2: what of the written runs reached the file (a run whose head is not in the file, or whose ends sit in two voices, is counted, never moved)
+        counters["page_arc_slurs_in_file"] += sum(1 for k in bound_written if str(k).startswith("page_arc/"))
+        counters["page_arc_slurs_not_in_file"] += sum(1 for k in bound_slurs if str(k).startswith("page_arc/") and k not in bound_written)
+        if record_ties is not None:
+            counters["page_arc_ties_in_file"] += sum(1 for lk in record_ties["linked"] if (lk["start"], lk["stop"]) in pa_ties)
+            counters["page_arc_ties_not_in_file"] += sum(1 for k in pa_ties if k not in record_ties["consumed"])
     if record_ties is not None:
         for reason, n in record_ties["refused"].items():
             dropped[reason] += n
