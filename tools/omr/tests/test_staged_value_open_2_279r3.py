@@ -255,6 +255,13 @@ class TestR4NoGuessMovesAReadNote(unittest.TestCase):
             self.assertEqual(export._partial_bar_plan(ev, None, 4, None, []), {"ok": True, "x": 1})
             self.assertEqual(c.call_count, 1)
 
+    def test_a_guess_may_not_turn_a_partial_bar_held(self):
+        ev = [{"kind": "note", "x_position": 1.0, "noteheads": [{"guess": {"rule": "collapse_value_open_by_shape"}, "duration_beats": 1.0}]},
+              {"kind": "note", "x_position": 2.0, "noteheads": [{"duration_beats": 1.0}]}]
+        plans = [{"ok": False, "why": "voice_overfull"}, {"ok": True, "unwritten": []}]
+        with mock.patch.dict(os.environ, {FLAG: "1"}), mock.patch.object(export, "_partial_bar_plan_core", side_effect=plans):
+            self.assertTrue(export._partial_bar_plan(ev, None, 4, None, [])["ok"])
+
     def test_a_guess_may_not_turn_a_held_bar_partial(self):
         ev = [{"kind": "note", "x_position": 1.0, "noteheads": [{"guess": {"rule": "collapse_value_open_by_shape"}, "duration_beats": 1.0}]},
               {"kind": "note", "x_position": 2.0, "noteheads": [{"duration_beats": 1.0}]}]

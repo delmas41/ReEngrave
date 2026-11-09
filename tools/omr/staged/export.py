@@ -6582,14 +6582,19 @@ def _partial_bar_plan(events: List[Dict[str, Any]],
     plan = _partial_bar_plan_core(events, streams, divisions, meter, unplaced)
     if not value_open_written_enabled() or not any(_is_value_open_guess(e) for e in events):
         return plan
-    if not plan.get("ok"):
-        return plan
     gone = {id(e) for e in events if _is_value_open_guess(e)}
     ev0 = [e for e in events if id(e) not in gone]
     st0 = None if streams is None else [[e for e in st if id(e) not in gone] for st in streams]
     extra = [{"sub": "value_open_withheld", "reason": "value_open_withheld", "x": float(e.get("x_position") or 0.0), "w": 0.0}
              for e in events if id(e) in gone]
     plan0 = _partial_bar_plan_core(ev0, st0, divisions, meter, list(unplaced) + extra)
+    if not plan.get("ok"):
+        # a guess may not turn a partial bar (READ notes kept, its tie links written) into a held one either (Brahms P10 b130: the stop
+        # of a tie lost its start's spelling): the bar as flag OFF planned it
+        if plan0.get("ok"):
+            plan0["value_open_withheld"] = len(gone)
+            return plan0
+        return plan
     if not plan0.get("ok"):
         # the bar without the guesses stays held (its READ events written plain in the red bar, as flag OFF): a guess may not turn a held
         # bar into a partial one, which relabels every READ event it keeps blue
