@@ -1,0 +1,188 @@
+{
+ "1": {
+  "file": "tile_01.png",
+  "page": 11,
+  "head_stem_reach": null,
+  "plate": "litolff",
+  "sub": "glyph/11/1/10/11/7",
+  "kind": "A: Litolff real head in a clump (ii)",
+  "expect": "a head with a stem fused into the clump (look)"
+ },
+ "2": {
+  "file": "tile_02.png",
+  "page": 14,
+  "head_stem_reach": null,
+  "plate": "brahms",
+  "sub": "glyph/14/0/2/0/15",
+  "kind": "A: Brahms head of a second, stem on its partner",
+  "expect": "a stem is on this head's pair (look)"
+ },
+ "3": {
+  "file": "tile_03.png",
+  "page": 12,
+  "head_stem_reach": {
+   "dir": "up",
+   "up_ext": 8.471,
+   "down_ext": -0.029,
+   "up_tip_y": 5257.0,
+   "down_tip_y": null,
+   "sp": 27.75,
+   "head_box_page": [
+    4401.34,
+    5492.06,
+    4439.64,
+    5529.81
+   ]
+  },
+  "plate": "brahms",
+  "sub": "glyph/12/1/6/7/6",
+  "kind": "A: Brahms single head, stem refused TALL",
+  "expect": "a stem (look)"
+ },
+ "4": {
+  "file": "tile_04.png",
+  "page": 16,
+  "head_stem_reach": null,
+  "plate": "litolff",
+  "sub": "glyph/16/0/10/1/2",
+  "kind": "A: Litolff rest block kept as a head",
+  "expect": "not a note (a rest), no stem"
+ },
+ "5": {
+  "file": "tile_05.png",
+  "page": 4,
+  "head_stem_reach": null,
+  "plate": "litolff",
+  "sub": "glyph/4/1/5/3/3",
+  "kind": "A: Litolff rest block kept as a head",
+  "expect": "not a note (a rest), no stem"
+ },
+ "6": {
+  "file": "tile_06.png",
+  "page": 12,
+  "head_stem_reach": {
+   "dir": "up",
+   "up_ext": 3.507,
+   "down_ext": -0.048,
+   "up_tip_y": 2775.0,
+   "down_tip_y": null,
+   "sp": 27.75,
+   "head_box_page": [
+    2157.02,
+    2872.32,
+    2202.53,
+    2905.34
+   ]
+  },
+  "plate": "brahms",
+  "sub": "glyph/12/0/10/4/4",
+  "kind": "control: half",
+  "expect": "a stem, direction up (record)"
+ },
+ "7": {
+  "file": "tile_07.png",
+  "page": 0,
+  "head_stem_reach": {
+   "dir": "down",
+   "up_ext": -0.067,
+   "down_ext": 3.002,
+   "up_tip_y": null,
+   "down_tip_y": 1651.0,
+   "sp": 32.25,
+   "head_box_page": [
+    4581.07,
+    1514.84,
+    4623.0,
+    1554.18
+   ]
+  },
+  "plate": "brahms",
+  "sub": "glyph/0/0/0/5/4",
+  "kind": "A: Brahms head of a second, stem on its partner",
+  "expect": "a stem is on this head's pair (look)"
+ },
+ "8": {
+  "file": "tile_08.png",
+  "page": 16,
+  "head_stem_reach": {
+   "dir": "down",
+   "up_ext": -0.121,
+   "down_ext": 4.816,
+   "up_tip_y": null,
+   "down_tip_y": 421.0,
+   "sp": 15.75,
+   "head_box_page": [
+    857.66,
+    326.09,
+    881.76,
+    345.15
+   ]
+  },
+  "plate": "litolff",
+  "sub": "glyph/16/0/0/3/2",
+  "kind": "A: Litolff real head in a clump (i   run REFUSED: WIDE)",
+  "expect": "a head with a stem fused into the clump (look)"
+ },
+ "9": {
+  "file": "tile_09.png",
+  "page": 14,
+  "head_stem_reach": null,
+  "plate": "brahms",
+  "sub": "glyph/14/1/1/0/5",
+  "kind": "A: Brahms head of a second, stem on its partner",
+  "expect": "a stem is on this head's pair (look)"
+ },
+ "10": {
+  "file": "tile_10.png",
+  "page": 11,
+  "head_stem_reach": {
+   "dir": "up",
+   "up_ext": 3.035,
+   "down_ext": 0.119,
+   "up_tip_y": 1818.0,
+   "down_tip_y": null,
+   "sp": 15.75,
+   "head_box_page": [
+    1142.04,
+    1865.8,
+    1164.88,
+    1886.12
+   ]
+  },
+  "plate": "litolff",
+  "sub": "glyph/11/1/0/5/3",
+  "kind": "control: stemmed",
+  "expect": "a stem, direction up (record)"
+ },
+ "11": {
+  "file": "tile_11.png",
+  "page": 2,
+  "head_stem_reach": {
+   "dir": "none",
+   "up_ext": -0.026,
+   "down_ext": 0.39,
+   "up_tip_y": null,
+   "down_tip_y": null,
+   "sp": 15.75,
+   "head_box_page": [
+    1603.57,
+    3080.59,
+    1625.93,
+    3101.85
+   ]
+  },
+  "plate": "litolff",
+  "sub": "glyph/2/1/7/7/2",
+  "kind": "A: Litolff real head in a clump (i   ink run never)",
+  "expect": "a head with a stem fused into the clump (look)"
+ },
+ "12": {
+  "file": "tile_12.png",
+  "page": 5,
+  "head_stem_reach": null,
+  "plate": "brahms",
+  "sub": "glyph/5/0/13/7/15",
+  "kind": "A: Brahms accidental boxed as a head",
+  "expect": "not a note (a sharp/natural), no stem"
+ }
+}

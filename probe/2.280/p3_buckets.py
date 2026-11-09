@@ -45,17 +45,25 @@ def cause(r):
 
 
 def page_stroke(r):
-    """The page strokes beside the head: a vertical stroke >= 1.5 sp whose x is within 0.6 sp of the head and that reaches >= 1 sp beyond it."""
+    """A page stroke AT the head: x-range within 0.5 sp of the head's x-range, y-range overlapping the head's y-range (+-0.5 sp),
+    reaching >= 1.0 sp beyond the head (up or down). VERTICAL kind with length >= 1.5 sp is the stem-shaped one; a BLOB (stem fused to the head
+    or to a beam / line) or BARLINE reaching beyond is counted apart."""
+    px0, py0, px1, py1 = r["page_box"]
+    sp = (r.get("reach") or {}).get("sp") or 15.75
     best = None
     for p in r.get("page_strokes", []):
+        bx0, by0, bx1, by1 = p["box"]
+        if bx1 < px0 - 0.5 * sp or bx0 > px1 + 0.5 * sp or by1 < py0 - 0.5 * sp or by0 > py1 + 0.5 * sp:
+            continue
         ln = p["len_sp"] or 0
         ext = max(p["ext_up_sp"], p["ext_dn_sp"])
-        if p["dx_sp"] <= 0.6 and ext >= 1.0:
-            if p["kind"] == "vertical" and ln >= 1.5:
-                return "page VERTICAL stroke beside the head (len %.1f sp, reaches %.1f sp)" % (ln, ext), p
-            if p["kind"] in ("blob", "barline") and best is None:
-                best = ("page %s stroke reaching %.1f sp beyond the head" % (p["kind"].upper(), ext), p)
-    return best if best else ("no page stroke reaching beyond the head", None)
+        if ext < 1.0:
+            continue
+        if p["kind"] == "vertical" and ln >= 1.5:
+            return "page VERTICAL stroke at the head (len %.1f sp, reaches %.1f sp)" % (ln, ext), p
+        if p["kind"] in ("blob", "barline") and best is None:
+            best = ("page %s stroke at the head reaching %.1f sp beyond" % (p["kind"].upper(), ext), p)
+    return best if best else ("no page stroke at the head reaching beyond it", None)
 
 
 tot = collections.Counter()
@@ -70,9 +78,9 @@ for st in ("A", "B"):
         ps, pobj = page_stroke(r)
         reach = r.get("reach") or {}
         rch = max(reach.get("up_ext") or 0, reach.get("down_ext") or 0)
-        out[s] = dict(stratum=st, cause=cs, page=ps.split(" (")[0], reach_sp=round(rch, 2))
+        out[s] = dict(stratum=st, cause=cs, page=ps.split(" (")[0].split(" reaching")[0], reach_sp=round(rch, 2))
         c[cs] += 1
-        cp[ps.split(" (")[0]] += 1
+        cp[ps.split(" (")[0].split(" reaching")[0]] += 1
         x[(cs[:3].strip(), "page stroke" if ps.startswith("page VERT") else "-")] += 1
     print("== stratum %s (%s) n=%d" % (st, "narrowed" if st == "A" else "decided with no stem row", sum(c.values())))
     for k, v in sorted(c.items()):
