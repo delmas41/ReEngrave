@@ -1,0 +1,258 @@
+[
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1468.0,
+   3155.0,
+   1492.16,
+   3177.4
+  ],
+  "role": "case",
+  "subject": "glyph/4/1/7/7/8",
+  "share": 0.4,
+  "reaches_file": true,
+  "tile": 1,
+  "crop_origin": [
+   1385,
+   3087
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 7,
+   "cell": 7,
+   "page_box": [
+    1468.0,
+    3155.0,
+    1492.16,
+    3177.4
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2044.4975,
+   3345.62,
+   2067.335,
+   3367.1975
+  ],
+  "role": "case",
+  "subject": "glyph/6/1/9/8/1",
+  "share": 0.32,
+  "reaches_file": true,
+  "tile": 2,
+  "crop_origin": [
+   1961,
+   3277
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 9,
+   "cell": 8,
+   "page_box": [
+    2044.4975,
+    3345.62,
+    2067.335,
+    3367.1975
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   979.16,
+   1478.2,
+   996.12,
+   1493.72
+  ],
+  "role": "case",
+  "subject": "glyph/2/0/7/4/5",
+  "share": 0.38,
+  "reaches_file": true,
+  "tile": 3,
+  "crop_origin": [
+   893,
+   1407
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 4,
+   "page_box": [
+    979.16,
+    1478.2,
+    996.12,
+    1493.72
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "box": [
+   1827.0275,
+   3446.8175,
+   1850.81,
+   3468.395
+  ],
+  "role": "case",
+  "subject": "glyph/4/1/9/9/2",
+  "share": 0.34,
+  "reaches_file": true,
+  "tile": 4,
+  "crop_origin": [
+   1744,
+   3378
+  ],
+  "position": {
+   "page": 4,
+   "system": 1,
+   "staff": 9,
+   "cell": 9,
+   "page_box": [
+    1827.0275,
+    3446.8175,
+    1850.81,
+    3468.395
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2465.645,
+   3582.2625,
+   2485.805,
+   3597.855
+  ],
+  "role": "case",
+  "subject": "glyph/6/1/11/11/1",
+  "share": 0.37,
+  "reaches_file": true,
+  "tile": 5,
+  "crop_origin": [
+   2381,
+   3511
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 11,
+   "cell": 11,
+   "page_box": [
+    2465.645,
+    3582.2625,
+    2485.805,
+    3597.855
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   650.9140625,
+   3540.0048828125,
+   674.1845703125,
+   3561.4599609375
+  ],
+  "role": "case",
+  "subject": "glyph/8/1/10/0/5",
+  "share": 0.3,
+  "reaches_file": false,
+  "tile": 6,
+  "crop_origin": [
+   568,
+   3471
+  ],
+  "position": {
+   "page": 8,
+   "system": 1,
+   "staff": 10,
+   "cell": 0,
+   "page_box": [
+    650.9140625,
+    3540.0048828125,
+    674.1845703125,
+    3561.4599609375
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   979.0,
+   1461.88,
+   996.44,
+   1474.68
+  ],
+  "role": "case",
+  "subject": "glyph/2/0/7/4/12",
+  "share": 0.37,
+  "reaches_file": true,
+  "tile": 7,
+  "crop_origin": [
+   893,
+   1389
+  ],
+  "position": {
+   "page": 2,
+   "system": 0,
+   "staff": 7,
+   "cell": 4,
+   "page_box": [
+    979.0,
+    1461.88,
+    996.44,
+    1474.68
+   ]
+  },
+  "cell_map": null
+ },
+ {
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   3533.825,
+   1254.2,
+   3590.2,
+   1278.675
+  ],
+  "role": "case",
+  "subject": "glyph/8/0/2/7/11",
+  "share": 0.41,
+  "reaches_file": true,
+  "tile": 8,
+  "crop_origin": [
+   3370,
+   1106
+  ],
+  "position": {
+   "page": 8,
+   "system": 0,
+   "staff": 2,
+   "cell": 7,
+   "page_box": [
+    3533.825,
+    1254.2,
+    3590.2,
+    1278.675
+   ]
+  },
+  "cell_map": null
+ }
+]
