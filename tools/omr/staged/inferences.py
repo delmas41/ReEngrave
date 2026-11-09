@@ -2242,8 +2242,28 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
         kept = _bare_stem_confirmations(log, props)
         # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default ON, Sean 2026-10-17): and a bar holding ONE event under a known meter may
         # still be guessed to the one candidate that fills it (Sean 2026-10-17).
-        props = kept + _lone_event_guesses(log, cell, props, kept)
+        lone = _lone_event_guesses(log, cell, props, kept)
+        landed = _landing_guesses(props, kept + lone)
+        props = kept + lone + landed
     return props
+
+
+#: ROADMAP 2.279 (`OMR_DROPPED_BLUE`, default OFF): the reason a narrowed head's bar-confirmed candidate is written blue.
+DROPPED_BLUE_REASON = "narrowed_bar_lands_blue"
+
+
+def _landing_guesses(props: List[Proposal], have_props: List[Proposal]) -> List[Proposal]:
+    """ROADMAP 2.279: the bar's proposals that 2.154's filter dropped (the arithmetic landed every member of the bar on exactly one
+    of the reader's OWN candidates; `solve_bare_stem_bar` kept every one of its guards), re-labelled `narrowed_bar_lands_blue` --
+    GUESSED, the harness carries the reader's candidates forward. Nothing is added here: a proposal is relabelled, never created."""
+    import dataclasses
+    from .consequences import dropped_blue_enabled
+    if not dropped_blue_enabled():
+        return []
+    have = {id(p) for p in have_props}
+    return [dataclasses.replace(p, reason=DROPPED_BLUE_REASON,
+                                detail={**dict(p.detail or {}), "dropped_blue": True})
+            for p in props if id(p) not in have and isinstance(p.value, dict)]
 
 
 # ─────────────────────────────────────────────────────────────────────────────

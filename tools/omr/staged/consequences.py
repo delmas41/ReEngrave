@@ -480,6 +480,21 @@ def lone_event_fills_bar_enabled() -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
+#: ROADMAP 2.279 (Sean 2026-11-08: *"I think I want red reserved for we can't read this. For that which we can read I want the most likely
+#: option in blue"*), default OFF. Under `OMR_BAR_SUM_CONFIRM_ONLY` arm a, a NARROWED head or chord (read, with a pitch; only its VALUE is
+#: open) whose bar lands EXACTLY on the printed meter under exactly one of the reader's OWN candidates -- the arithmetic `solve_bare_stem_bar`
+#: already does, with every guard it already has (decided neighbours fixed, no tuplet, meter from the print, no abstained element in the
+#: bar, an eighth only with evidence, one landing for every member) -- is written GUESSED (blue, candidates kept), reason
+#: `narrowed_bar_lands_blue`, instead of being dropped and leaving its bar short. INFER, labelled; the choice is the reader's candidate the bar
+#: CONFIRMS, never `support`, never an eighth the page does not show. An allow-list: only an explicit on-word turns it on.
+DROPPED_BLUE_ENV = "OMR_DROPPED_BLUE"
+
+
+def dropped_blue_enabled() -> bool:
+    import os
+    return os.environ.get(DROPPED_BLUE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 #: ROADMAP 2.168, default ON (Sean 2026-10-18, DECISIONS: the bar MARKS, never moves, a decided note it disagrees with). Where
 #: `reconcile_duration` (meter known, a bar holding NO narrowed note) would have moved a DECIDED note -- one unique landing, the
 #: move 2.162's block now declines -- the note keeps its value and is written GUESSED (blue) carrying the bar's alternative as a
