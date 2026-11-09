@@ -19,6 +19,10 @@ rows = [json.loads(l) for l in open(DIAG)]
 rng = random.Random(SEED)
 if KIND == "narrowed":
     pool = [r for r in rows if r["fate"] == "duration_narrowed" and r.get("bbox")]
+    if os.environ.get("BFS"):
+        pool = [r for r in pool if (r.get("bfs") or {}).get("settled") == os.environ["BFS"]]
+    if os.environ.get("REASON"):
+        pool = [r for r in pool if r.get("reason") == os.environ["REASON"]]
     pick = rng.sample(pool, min(N, len(pool)))
     items = [dict(sub=r["sub"], bbox=r["bbox"], reason=r.get("reason"), cands=r.get("cands"),
                   d={k: r["d"].get(k) for k in ("levels_certain", "levels_possible", "stems_attached", "beams_by_stem", "cv_beams", "yolo_beams", "yolo_kept",

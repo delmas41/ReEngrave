@@ -57,6 +57,8 @@ for sub, fate in fates.items():
         r["detail_keys"] = sorted(dt.keys())
     hs = rec.verdict(Q.HEAD_STEM, sub)
     if hs: r["head_stem"] = [hs["outcome"], hs["reason"], str(hs.get("value"))[:200]]
+    sd = rec.verdict(Q.STEM_DIRECTION, sub)
+    if sd: r["stem_dir"] = [sd["outcome"], str(sd.get("value"))]
     sv = rec.verdict(Q.STEM_VALUE, sub)
     if sv: r["stem_value"] = [sv["outcome"], sv["reason"], str(sv.get("value"))[:200]]
     ev = rec.verdict(Q.EVENT_DURATION, sub) if hasattr(Q, "EVENT_DURATION") else None
