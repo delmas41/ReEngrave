@@ -87,7 +87,7 @@ RULES = [
     R(HEADS, "notehead_is_not_a_notehead", "claimed_by:clef,claim_narrowed:clef,claimed_by:leading_column,claim_narrowed:leading_column,claimed_by:key_signature,claim_narrowed:key_signature",
       "C", "ink belongs to a clef / key / leading column", "a head box standing on ink another reading already owns is refused (narrowed when the owner is not sure)",
       "2.181 claimed-area register (default ON); Sean 2026-10-20", "retires with 2.205 (strokes are claimed once)"),
-    # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, OFF): claimed ink is final -- the ONE consult for every claim layer the register consult does not know
+    # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, ON): claimed ink is final -- the ONE consult for every claim layer the register consult does not know
     R(HEADS, "notehead_is_not_a_notehead", "claimed_by:barline,claimed_by:page_claim", "C", "ink belongs to a barline / a later page claim",
       "a box that is mostly a claim's ink (>= 0.5 of its own ink, owning no stroke) is refused BY THE CLAIM, so the claim is the first cause, never a shape rule",
       "2.277; Sean 2026-11-08 (claimed ink can not be counted again or reboxed); look tiles 2026-11-09", "kept (the claim order, CLAUDE section 3)"),

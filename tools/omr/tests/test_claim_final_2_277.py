@@ -1,4 +1,4 @@
-"""ROADMAP 2.277 -- claimed ink is final (flag `OMR_CLAIM_FINAL`, default OFF). Pure measurement, the consult, the derived check. Every control can fail."""
+"""ROADMAP 2.277 -- claimed ink is final (flag `OMR_CLAIM_FINAL`, default ON). Pure measurement, the consult, the derived check. Every control can fail."""
 from __future__ import annotations
 
 import os
@@ -18,10 +18,13 @@ CLAIMS = ["barline", "arc_trace", "word"]
 
 
 class TestMeasure(unittest.TestCase):
-    def test_flag_default_off(self):
+    def test_flag_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(CF.ENV, None)
-            self.assertFalse(CF.enabled())
+            self.assertTrue(CF.enabled())                # default ON (deny-list)
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {CF.ENV: off}):
+                self.assertFalse(CF.enabled())
         with mock.patch.dict(os.environ, {CF.ENV: "1"}):
             self.assertTrue(CF.enabled())
 

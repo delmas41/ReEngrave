@@ -3900,7 +3900,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if wr_row is not None:
         return Ruling(value=True, reason="claimed_by:whole_rest", used=(box_row.id, wr_row.id),
                       detail={"class": box_row.value[0], "claimed_by": "whole_rest"})
-    # ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default OFF): claimed ink is final -- every OTHER claim kind (barline, an arc's or a hairpin's traced
+    # ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): claimed ink is final -- every OTHER claim kind (barline, an arc's or a hairpin's traced
     # ink, a layer a later lane files) refuses a box that is mostly its ink, BY THE CLAIM, before any shape rule can name a different first cause.
     cf_row = _claim_final.finding(ev, box_row)
     if cf_row is not None:

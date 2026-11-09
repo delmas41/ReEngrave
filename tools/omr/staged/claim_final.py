@@ -1,4 +1,4 @@
-"""ROADMAP 2.277 -- CLAIMED INK IS FINAL (flag `OMR_CLAIM_FINAL`, default OFF). PATH: STAGED ADJUDICATE; this module is PURE (plain numbers in, plain
+"""ROADMAP 2.277 -- CLAIMED INK IS FINAL (flag `OMR_CLAIM_FINAL`, default ON). PATH: STAGED ADJUDICATE; this module is PURE (plain numbers in, plain
 numbers out; it names no quantity and files no row). `adjudicators/stroke_owner.py` calls `held_boxes` / `marks` once per cell and records the
 result on the cell's `Q.STROKE_OWNER` verdict (`detail.claim_final`); `adjudicators/notehead_precision.py` and `adjudicators/family_precision.py`
 (the rest) read it through `adjudicators/claim_final.py` and refuse BY THE CLAIM.
@@ -50,8 +50,8 @@ MARK_ONLY = frozenset({"arc_trace", "arc", "hairpin_trace", "hairpin"})
 
 
 def enabled() -> bool:
-    """`OMR_CLAIM_FINAL`, default OFF; only an explicit 1/true/yes/on enables."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_CLAIM_FINAL`, default ON (deny-list): ON unless 0/false/no/off."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 # ── the measurement, pure ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────

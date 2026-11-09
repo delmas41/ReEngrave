@@ -399,7 +399,7 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
 
 
 def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default OFF): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
     another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
     the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
     from .. import claim_final as CF
@@ -496,7 +496,7 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
     if head_census["replaced"] or head_census["ledger_claims"]:
         detail["page_head_claim"] = head_census
-    cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): None with it OFF
+    cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): None with it OFF
     if cf is not None:
         detail["claim_final"] = cf
     if shaped:

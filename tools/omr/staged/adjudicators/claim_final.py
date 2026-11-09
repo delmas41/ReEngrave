@@ -1,4 +1,4 @@
-"""ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default OFF) -- the ONE consult of "claimed ink is final", for the precision rules (STAGED ADJUDICATE).
+"""ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON) -- the ONE consult of "claimed ink is final", for the precision rules (STAGED ADJUDICATE).
 
 It reads, never measures: the cell's `Q.STROKE_OWNER` verdict carries `detail.claim_final` (`adjudicators/stroke_owner._claim_final`, the pure rule in
 `claim_final.py`): for every box held at least `NEAR_MIN` of its own ink by a claim of another kind, which claim, how much, which strokes. A box held
