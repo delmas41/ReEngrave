@@ -1,0 +1,278 @@
+{
+ "1": {
+  "file": "tile_01.png",
+  "plate": "brahms",
+  "page": 14,
+  "stroke": 4398,
+  "stroke_box_page_px": [
+   4575.0,
+   6768.0,
+   4721.0,
+   6785.0
+  ],
+  "thickness_spaces": 0.625,
+  "length_spaces": 5.315,
+  "prototype": "read",
+  "stems_joined": 3,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   1,
+   10
+  ]
+ },
+ "2": {
+  "file": "tile_02.png",
+  "plate": "brahms",
+  "page": 5,
+  "stroke": 5174,
+  "stroke_box_page_px": [
+   4057.0,
+   870.0,
+   4284.0,
+   907.0
+  ],
+  "thickness_spaces": 0.683,
+  "length_spaces": 8.359,
+  "prototype": "read",
+  "stems_joined": 4,
+  "levels_read": 2,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   1
+  ]
+ },
+ "3": {
+  "file": "tile_03.png",
+  "plate": "brahms",
+  "page": 5,
+  "stroke": 4533,
+  "stroke_box_page_px": [
+   3708.0,
+   6876.0,
+   3732.0,
+   6922.0
+  ],
+  "thickness_spaces": 0.315,
+  "length_spaces": 1.868,
+  "prototype": "read",
+  "stems_joined": 2,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   1,
+   12
+  ]
+ },
+ "4": {
+  "file": "tile_04.png",
+  "plate": "litolff",
+  "page": 2,
+  "stroke": 574,
+  "stroke_box_page_px": [
+   665.0,
+   1835.0,
+   765.0,
+   1847.0
+  ],
+  "thickness_spaces": 0.635,
+  "length_spaces": 6.358,
+  "prototype": "read",
+  "stems_joined": 5,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   10
+  ]
+ },
+ "5": {
+  "file": "tile_05.png",
+  "plate": "brahms",
+  "page": 5,
+  "stroke": 6699,
+  "stroke_box_page_px": [
+   5210.0,
+   2524.0,
+   5270.0,
+   2555.0
+  ],
+  "thickness_spaces": 0.932,
+  "length_spaces": 2.168,
+  "prototype": "refused_single_stem",
+  "stems_joined": 1,
+  "levels_read": null,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   9
+  ]
+ },
+ "6": {
+  "file": "tile_06.png",
+  "plate": "brahms",
+  "page": 5,
+  "stroke": 6903,
+  "stroke_box_page_px": [
+   5356.0,
+   681.0,
+   5501.0,
+   700.0
+  ],
+  "thickness_spaces": 0.312,
+  "length_spaces": 5.314,
+  "prototype": "refused_arc",
+  "stems_joined": 2,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": "arc",
+  "staff": [
+   0,
+   0
+  ]
+ },
+ "7": {
+  "file": "tile_07.png",
+  "plate": "brahms",
+  "page": 25,
+  "stroke": 1680,
+  "stroke_box_page_px": [
+   1585.0,
+   2081.0,
+   1644.0,
+   2097.0
+  ],
+  "thickness_spaces": 0.562,
+  "length_spaces": 2.127,
+  "prototype": "read",
+  "stems_joined": 2,
+  "levels_read": 2,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   6
+  ]
+ },
+ "8": {
+  "file": "tile_08.png",
+  "plate": "brahms",
+  "page": 25,
+  "stroke": 960,
+  "stroke_box_page_px": [
+   1087.0,
+   2081.0,
+   1153.0,
+   2097.0
+  ],
+  "thickness_spaces": 0.562,
+  "length_spaces": 2.376,
+  "prototype": "read",
+  "stems_joined": 2,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   6
+  ]
+ },
+ "9": {
+  "file": "tile_09.png",
+  "plate": "brahms",
+  "page": 14,
+  "stroke": 2123,
+  "stroke_box_page_px": [
+   2124.0,
+   3286.0,
+   2251.0,
+   3305.0
+  ],
+  "thickness_spaces": 0.625,
+  "length_spaces": 4.628,
+  "prototype": "read",
+  "stems_joined": 3,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   11
+  ]
+ },
+ "10": {
+  "file": "tile_10.png",
+  "plate": "litolff",
+  "page": 16,
+  "stroke": 2543,
+  "stroke_box_page_px": [
+   1673.0,
+   336.0,
+   1691.0,
+   338.0
+  ],
+  "thickness_spaces": 0.127,
+  "length_spaces": 1.143,
+  "prototype": "read",
+  "stems_joined": 2,
+  "levels_read": 2,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   0
+  ]
+ },
+ "11": {
+  "file": "tile_11.png",
+  "plate": "brahms",
+  "page": 5,
+  "stroke": 6868,
+  "stroke_box_page_px": [
+   5315.0,
+   949.0,
+   5364.0,
+   976.0
+  ],
+  "thickness_spaces": 0.27,
+  "length_spaces": 1.984,
+  "prototype": "refused_arc",
+  "stems_joined": 2,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": "arc",
+  "staff": [
+   0,
+   2
+  ]
+ },
+ "12": {
+  "file": "tile_12.png",
+  "plate": "brahms",
+  "page": 0,
+  "stroke": 1206,
+  "stroke_box_page_px": [
+   2122.0,
+   6138.0,
+   2458.0,
+   6158.0
+  ],
+  "thickness_spaces": 0.312,
+  "length_spaces": 10.514,
+  "prototype": "read_false_by_my_look",
+  "stems_joined": 2,
+  "levels_read": 1,
+  "question": "Is the boxed stroke a beam joining these notes, and how many beams?",
+  "claimed_by": null,
+  "staff": [
+   0,
+   11
+  ]
+ }
+}

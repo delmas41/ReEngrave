@@ -85,7 +85,7 @@ def barlines(P):
     return [k["bbox"] for k in P["strokes"].values() if k["kind"] == "barline"]
 
 
-def read_page(P, shift_px=0.0, two_stem=True, shift_only=None, shift_x=0.0, use_claims=True):
+def read_page(P, shift_px=0.0, two_stem=True, shift_only=None, shift_x=0.0, use_claims=True, diag_shape=False):
     strokes, claimed = P["strokes"], (P["claimed"] if use_claims else {})
     stems = sorted({t["stem"] for t in P["tips"]})
     SG = {o: stem_geom(P, o) for o in stems}
@@ -97,6 +97,8 @@ def read_page(P, shift_px=0.0, two_stem=True, shift_only=None, shift_x=0.0, use_
     cand = []
     for o, k in strokes.items():
         if k["kind"] not in BEAM_KINDS or o in claimed:
+            continue
+        if diag_shape and (k["kind"] != "horizontal" or (k["thick"] or 0) < BS.BEAM_MIN_THICKNESS_SP):   # POST-HOC DIAGNOSTIC (variant C): the old per-stroke shape+thickness test
             continue
         cand.append(o)
     V = {o: view(o, strokes[o]) for o in cand}
@@ -210,4 +212,4 @@ def read_page(P, shift_px=0.0, two_stem=True, shift_only=None, shift_x=0.0, use_
             if levels:
                 r["owned"] = True
         rows[s] = r
-    return dict(certified=certified, uncertified=uncertified, rows=rows, SG=SG, V=V, cut_by_bar=cut_by_bar, cand=len(cand), claimed_skipped=sum(1 for o, k in strokes.items() if k["kind"] in BEAM_KINDS and o in claimed))
+    return dict(V_all={o: view(o, k) for o, k in strokes.items()}, certified=certified, uncertified=uncertified, rows=rows, SG=SG, V=V, cut_by_bar=cut_by_bar, cand=len(cand), claimed_skipped=sum(1 for o, k in strokes.items() if k["kind"] in BEAM_KINDS and o in claimed))

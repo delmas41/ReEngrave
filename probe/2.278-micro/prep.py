@@ -93,7 +93,7 @@ for sub in sorted({v["subject"] for v in R.verdicts_of(Q.DURATION)}):
         rec["bbox"] = dd.get("bbox_page_px"); rec["cls"] = gb[-1]["value"][0] if gb[-1].get("value") else None
     if v:
         rec["outcome"] = v["outcome"]; rec["reason"] = v["reason"]; rec["value"] = v.get("value")
-        rec["cands"] = [(c["value"].get("written"), c["value"].get("beam_levels"), c["value"].get("dots"), c.get("support")) for c in (v.get("candidates") or []) if isinstance(c.get("value"), dict)]
+        rec["cands"] = [(c["value"].get("written"), c["value"].get("beam_levels"), c["value"].get("dots"), c.get("support"), c["value"].get("beats")) for c in (v.get("candidates") or []) if isinstance(c.get("value"), dict)]
         dt = v.get("detail") or {}
         rec["d"] = {k: dt.get(k) for k in ("head", "head_is_open", "beam_evidence", "cv_beams", "yolo_kept", "stems_attached", "levels_certain", "levels_possible",
                                            "beam_side", "bare_stem_tip_window_clean", "bare_stem_likelihood", "refused_strokes", "beams_from_strokes", "flags_attached")}
