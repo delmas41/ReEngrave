@@ -74,6 +74,8 @@ PLATES: Dict[str, Dict[str, Any]] = {
 #: Stored verdicts kept in a slice: the control (OFF vs the record) and Sean's judged answers read these.
 STORED_QUANTITIES = ("duration", "rest_is_not_a_rest", "notehead_is_not_a_notehead", "unboxed_ink_is_a_rest",
                      "notehead_is_an_eighth_rest", "arc_kind")
+#: Verdict quantities an arm saves in full next to its MusicXML (`<plate>.<arm>.extra.json`) -- not scored, read by a lane's own per-item readout.
+EXTRA_QUANTITIES = ("page_arc_binding",)
 #: Modules whose code runs in GATHER: a flag named in one of them cannot show in an ADJUDICATE-only replay.
 GATHER_MODULES = ("gather.py", "positions.py", "arcs_system.py", "detector_views.py", "second_hollow.py",
                   "stem_end_heads.py", "legacy.py", "page_marks.py", "page_owner.py", "barline_columns.py", "page_strokes.py", "page_heads.py")
@@ -586,6 +588,9 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
     work.mkdir(parents=True, exist_ok=True)
     stem = "%s.%s" % (plate, arm)
     (work / (stem + ".musicxml")).write_text(xml)
+    extra = [v for v in vs if v["quantity"] in EXTRA_QUANTITIES]
+    if extra:       # ROADMAP 2.274 step 2: the page-arc binding verdicts (per-run status / ends) next to the arm's file, for the per-arc readout
+        (work / (stem + ".extra.json")).write_text(json.dumps(extra, default=str))
     (work / (stem + ".mini-record.json")).write_text(json.dumps(mini, default=str))
     out = dict(plate=plate, arm=arm, mode=mode, flags=[list(f) for f in flags], hosts=sym["hosts"], loose=sym["loose"],
                red_bars=_count(red.get("bars") if isinstance(red, dict) else red), bars_held_out=_count(report.get("bars_held_out_sum")),
