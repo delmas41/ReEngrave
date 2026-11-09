@@ -1,0 +1,263 @@
+[
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1921.0,
+   2922.0,
+   1949.0,
+   2945.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 3108,
+  "angle": 23.0,
+  "thickness_ratio": 3.107,
+  "tile": 1,
+  "crop_origin": [
+   1840,
+   2854
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   670.0,
+   2517.0,
+   699.0,
+   2538.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 685,
+  "angle": 24.8,
+  "thickness_ratio": 2.723,
+  "tile": 2,
+  "crop_origin": [
+   590,
+   2448
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1163.0,
+   487.0,
+   1190.0,
+   506.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 1553,
+  "angle": 24.1,
+  "thickness_ratio": 2.511,
+  "tile": 3,
+  "crop_origin": [
+   1082,
+   417
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2107.0,
+   3235.0,
+   2136.0,
+   3263.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 3568,
+  "angle": 29.0,
+  "thickness_ratio": 3.062,
+  "tile": 4,
+  "crop_origin": [
+   2027,
+   3170
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   2399.0,
+   3122.0,
+   2435.0,
+   3145.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 3976,
+  "angle": 15.0,
+  "thickness_ratio": 2.656,
+  "tile": 5,
+  "crop_origin": [
+   2322,
+   3054
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   2339,
+   3622,
+   2365,
+   3650
+  ],
+  "role": "case",
+  "kind": "tremolo_claim_refused_by_end_test",
+  "tile": 6,
+  "crop_origin": [
+   2257,
+   3557
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2285.0,
+   3566.0,
+   2314.0,
+   3594.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 3342,
+  "angle": 24.4,
+  "thickness_ratio": 2.961,
+  "tile": 7,
+  "crop_origin": [
+   2205,
+   3501
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "box": [
+   2462.0,
+   3289.0,
+   2492.0,
+   3316.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 3681,
+  "angle": 30.5,
+  "thickness_ratio": 3.014,
+  "tile": 8,
+  "crop_origin": [
+   2382,
+   3223
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   915.0,
+   3229.0,
+   943.0,
+   3251.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 1238,
+  "angle": 27.0,
+  "thickness_ratio": 2.673,
+  "tile": 9,
+  "crop_origin": [
+   834,
+   3161
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "box": [
+   638.0,
+   1253.0,
+   664.0,
+   1278.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 513,
+  "angle": 41.6,
+  "thickness_ratio": 1.402,
+  "tile": 10,
+  "crop_origin": [
+   556,
+   1186
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   1075.0,
+   3405.0,
+   1103.0,
+   3430.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 1529,
+  "angle": 26.7,
+  "thickness_ratio": 2.903,
+  "tile": 11,
+  "crop_origin": [
+   994,
+   3338
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "box": [
+   1149.0,
+   1008.0,
+   1176.0,
+   1033.0
+  ],
+  "role": "case",
+  "kind": "tremolo_claim",
+  "stem": 1479,
+  "angle": 27.2,
+  "thickness_ratio": 3.114,
+  "tile": 12,
+  "crop_origin": [
+   1068,
+   941
+  ],
+  "position": null,
+  "cell_map": null
+ }
+]
