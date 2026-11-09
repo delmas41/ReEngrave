@@ -290,3 +290,65 @@ No fix built. Real-note shares are my look at 12 per bucket per plate (ours); `c
 ### Recommended first lane
 
 Fix the narrowed-duration notes at their source, the beam / flag ink at the stem tip: the biggest real-note bucket (Litolff 236, Brahms 696; with chord_undecided about 330 / 880 distinct marks), every one a read, pitched head. The lane should (a) read the page's beam strokes once on the page-wide pass and bind each to the stems under its width (DECISIONS 2026-10-28), so a stroke is certain or absent, never "possible"; (b) use Sean's answers on the 4 narrowed tiles as the check; (c) report the three measures (file diff, 12 tiles, right to wrong 0). No lane on `too_narrow` (non-notes) or the red-bar hold (retired).
+
+### 2.275b -- Sean's question on the 28 pattern tiles: is this ink not already claimed on the page read?
+
+Sean 2026-11-08: "Many of these are parts of a bar line or parts of a dynamic mark. Or a trem slash. Isn't all of this ink already claimed in the page read first? Are these secondary boxes or are they not being read correctly the first time? There are some real notes but my guess is that they are being detected and lost later."
+STAGED, same two records, current main (242289863), measure only, no code changed. Probes `probe/2.275/claims_probe.py` (per head box: register area claims, the stroke owner's family on its strokes, the box id against the claim's id, the tremolo reader's rows), `claims_tab.py`, `stage_lost.py`, `tile_subjects.py`, `inspect_claims.py`. Each claim is READ off the record's own rows: `Q.CLAIMED_AREA` (GATHER's register: barline, bracket, leading column, clef, key signature, meter, word; page-px rectangles), `Q.STROKE_OWNER` (ADJUDICATE's per-cell verdict, the owner family of every page stroke), `Q.GLYPH_STROKES` (the strokes under a box), `Q.STEM_SLASH` (the tremolo reader). Who says it is right: the record's own rows (ours, not Sean's); the tile look is Sean's.
+
+#### Answer in one paragraph
+
+Yes, the ink is mostly claimed, and yes, the boxes are secondary: the detector draws a head box on that ink per cell, blind to the claims, and the claim that holds the ink is not what refuses the box. The barline claim stands in the record before the box is even drawn (a system-column claim, lower observation id than the box in 1,686 of the 1,712 Brahms `too_narrow` boxes that an area claim covers), yet the head rules never consult it: `claimed_by.consult` refuses only for meter, key, clef, bracket, word and the leading column, so a sliver on a barline is refused by the SHAPE rule `too_narrow` (or `clipped_fragment`), a claim that only MARKS the ink. For tremolo slashes there is no page-wide claim at all. The real notes are as Sean guessed: detected, then lost later, but they are lost at ADJUDICATE (the reader says "cannot tell") and EXPORT only enforces it.
+
+#### 1. The 28 tiles, one line each (what holds the ink under the box; first refusal)
+
+Numbers are tiles of `out/print/2.275-pattern/`. "Claim stood before ADJUDICATE" is true of every register claim (all are GATHER rows); "before the box was drawn" is true only of barline claims (filed with the system column) and not of word / clef / key / bracket claims, which are filed after the detector's boxes (page claims, `gather.gather_page_claims`) but still before any head is judged.
+- Tile 1 (Litolff, trem slash): only head boxes hold the ink (`merged`); NO page claim; a `Q.STEM_SLASH` row exists in the cell; first refusal `tremolo_slash_crosses_stem`, a rule reading that per-cell row.
+- Tile 2 (Litolff): key-signature claim holds 83% of the box; REFUSED BY THE CLAIM first (`claimed_by:key_signature`).
+- Tile 3 (Litolff): a real head; no claim but its own head box; ADJUDICATE narrowed its duration; not written (see 3 below).
+- Tile 4 (Litolff, barline piece): barline claim covers the box; stood before the box; refused first by the SHAPE rule `too_narrow`.
+- Tile 5 (Litolff, dynamic): the dynamic box's strokes hold it (family `dynamic`, a detector-box claim, not a register area); refused by the rule `on_a_dynamic_letter`, which reads that dynamic.
+- Tile 6 (Litolff): a real head, duration narrowed.
+- Tiles 7 and 9 (Litolff, `clipped_fragment`): the ink is a real head's own ink, held by a head box; a half-height box on a head, refused by the shape rule.
+- Tile 8 (Litolff): a real head; no pitch verdict (clef-abstained staff).
+- Tile 10 (Litolff): clef claim holds all of it; REFUSED BY THE CLAIM first (`claimed_by:clef`).
+- Tile 11 (Litolff): a real head whose chord stem is contested; `chord_value_undecided` at EXPORT.
+- Tile 12 (Litolff, `too_narrow`): ink on no page stroke at all; no claim holds it; shape rule.
+- Tile 13 (Litolff, whole-rest ink): the strokes are a contested whole-rest block; EXPORT's `ink_is_a_whole_rest`.
+- Tiles 14, 15, 23, 26, 28 (Brahms, barline pieces): the barline claim covers the whole box (a barline stroke under it in all but 14); stood before the box; refused first by `too_narrow`.
+- Tile 16 (Brahms, `clipped_fragment`): a real head's ink, held by a head box; shape rule.
+- Tile 17 (Brahms, trem slash): only head boxes hold the ink; no page claim; two `Q.STEM_SLASH` rows in the cell; first refusal `tremolo_slash_crosses_stem`.
+- Tile 18 (Brahms, `too_narrow`): an augmentation dot, held by a dot box's stroke (a detector-box claim); the head box on it is refused by `too_narrow`.
+- Tiles 19 and 25 (Brahms): real heads, duration narrowed.
+- Tile 20 (Brahms, `too_narrow`): barline stroke touches only 6% of the box, no area claim covers it; effectively unclaimed.
+- Tiles 21 and 22 (Brahms, `too_narrow`): slivers of a real head's ink, held by a head box; shape rule.
+- Tile 24 (Brahms): bracket and leading-column claims hold all of it; REFUSED BY THE CLAIM first (`claimed_by:bracket`).
+- Tile 27 (Brahms): a real head, chord with a refused sibling; `chord_value_undecided`.
+Counts of the 28: held by a barline claim and refused by a shape rule 6 (tiles 4, 14, 15, 23, 26, 28); refused by a register claim first 3 (2, 10, 24); dynamic 1; tremolo slash, no page claim 2; a real head's own ink cut by a shape rule 5 (7, 9, 16, 21, 22); a dot 1; no claim at all 2 (12, 20); whole-rest block 1; real heads lost to a "cannot tell" 7 (3, 6, 8, 11, 19, 25, 27).
+
+#### 2. At scale: every distinct ink not in the file
+
+Holder = the register area claim covering at least half the box, else the stroke owner's family of the box's biggest stroke; `head box only` = nothing but a detector head box holds it; `none` = no stroke under it. Counts are distinct ink.
+- Brahms `too_narrow` (2,887): barline claim 2,184; other claims (dot box 77, rest 21, arc trace 11, word 11, dynamic 8) 128; a head box only 308; none 240. So **about 80% (2,312) is ink a claim already holds, refused by the shape rule, not the claim**; about 19% (548) no page claim holds.
+- Litolff `too_narrow` (212): barline claim 87; other claims (dynamic 6, word 5, clef 3, accidental 2, trem box 2) 18; head box only 49; none 57. About 50% claim-held, 50% not.
+- `clipped_fragment`: Litolff 204 = claim 18 (9%), head box only 154 (75%), none 32; Brahms 322 = claim 96 (30%: barline 68, dot 10, arc 7, clef 5, word 4, key 2), head box only 184 (57%), none 35. So most clipped fragments are a real head's OWN ink cut by a box (the head is held by a head box); they are copies by position that the IoU join missed (158 / 137 sit within a staff space of a written head, 2.275 above).
+- Refused by the claim first (`claimed_by:*`, all owners): Litolff 153 ink, Brahms 428. These refusals use the register consult and are correct under the claim order.
+- `on_a_dynamic_letter` (51 / 41): held by the dynamic's own boxes (38 / 29) or a word claim (10 / 12): refused by a rule that reads that claim.
+- Ink NO page reader claims, over all 1,439 / 5,035: `none` 266 / 375 (strokes of no owner) plus `head box only` 761 / 1,613; of these the real notes (narrowed, no_pitch, chord_undecided) are the bulk of `head box only` (Litolff 368, Brahms 884); the remaining head-box-only ink is cut pieces of heads, tremolo slashes and rests.
+- **Tremolo slashes.** Tremolo bucket Litolff 62 / Brahms 123: head box only 56 / 108, none 3 / 12, any claim 3 / 3. **There is no page-wide reader or claim for a tremolo slash.** The only reader is per cell and per stem: `gather._observe_stem_slashes` (calls `gather.stem_slashes`) files `Q.STEM_SLASH` (a count and strokes per stem; READERS.CV_STEM_SLASH); its consumers are `notehead_precision._tremolo_slash_crosses_stem`, `rhythm` (beam count, blanking the slash) and `family_precision` (rests). It files no `Q.CLAIMED_AREA` row, is not a layer of `claim_order.LAYERS`, and `stroke_owner` has no tremolo owner except a detector `tremolo1-5` box (family `mark`: 2 of the 62 Litolff boxes, none of the Brahms 123). 50 of 62 / 112 of 123 of these tremolo-bucket boxes sit in a cell whose slash reader fired; the other 12 / 11 had no slash read on any stem of the cell. So a slash is read per stem, after the detector has already boxed it as a head, and its ink is not claimed on the page before heads.
+
+#### Marked versus taken (CLAIM order, CLAUDE section 3)
+
+TAKEN (the claim refuses a head box that overlaps it, in `claimed_by.consult`): meter (READ), clef (READ or naming the box), leading column (only where the box's own ink is a line running past it), bracket and word (`claimed_by:bracket`, `claimed_by:word`, `claim_narrowed:*` where weak), a found whole rest (`claimed_by:whole_rest`). MARKED only (the claim is on the record and the head rules do not consult it): barline (the register's biggest owner by rows, 10,406 / 12,731), arcs and hairpins (`unit: ink` ids, no rectangle), dots and rests held by detector boxes, tremolo (no claim). For these a head box on the claimed ink is refused by an unrelated shape rule, or not refused (so a real notehead can be written on a barline's ink only if the shape passes).
+
+#### 3. Sean's guess for the real notes: confirmed, with the stage named
+
+Every real note in the three biggest buckets has a detector box (GATHER saw it), and the heads are not lost in GATHER. From the record's own verdicts on the representative box of each distinct ink:
+- **duration NARROWED** (Litolff 236 / Brahms 696): pitch DECIDED in all 236 / 696; duration NARROWED in all. Lost at ADJUDICATE (`rhythm.adjudicate_duration` says "cannot tell eighth or quarter") and enforced at EXPORT (`_place_notes` `_drop("duration_narrowed")`). Detected, read with pitch, value not read, not written.
+- **no_pitch** (114 / 53): duration DECIDED in 111 / 52 (the rest narrowed); NO pitch verdict at all in the 114 / 53. Lost at ADJUDICATE (no pitch, the clef abstained or the pitch rule never fired) and enforced at EXPORT (`_drop("no_pitch")`).
+- **chord_value_undecided** (97 / 182): pitch DECIDED and the head's own duration DECIDED for every one; the chord's members disagree. Lost at EXPORT, by the vote guard `_chords_whose_value_would_be_voted` (export.py, near L2093), whose cause is upstream: the stem's value stayed narrowed in ADJUDICATE (`stem_value`), so the heads keep unequal values. This is the one bucket where a head was fully read and EXPORT alone refuses it.
+So Sean's guess is right for all three: detected, mostly read, lost after (two at ADJUDICATE by a "cannot tell" verdict, one at EXPORT by a guard on a narrowed stem). None is a GATHER miss. The decisive stage to fix is ADJUDICATE's duration and stem value, which is where the beam / flag ink at the stem tip is read (the 2.275 first-lane recommendation stands).
+
+#### What this does not say
+
+The claim holder is the box's biggest stroke or the area covering at least half of it (a head sitting partly on a barline is counted by the larger one); the ids order (claim before box) is the record's own filing order; "no page reader claims" counts `none` + `head box only` and includes real heads (a head box is a reading of a head, not a claim on somebody else's ink). Whether the barline claim SHOULD refuse a sliver on it is a rule question for Sean and the claim order (CLAUDE section 3 says a later reader may mark claimed ink, never take it; here the head box is refused by a shape rule, which is a different route to the same result). Not looked at: the ink of the 548 non-claimed Brahms `too_narrow` boxes beyond the 12 samples.
