@@ -238,3 +238,40 @@ STAGED ADJUDICATE. Probes `probe/2.277/` (`dump.py` re-adjudicates a saved slice
 **Finding for the arc lanes (2.273, 2.274): the arc claim took head ink.** Head boxes held 0.53-0.83 by the ARC TRACE that are kept: tile 1 (0.83, owns no stroke), tiles 5, 6, 7 (0.53-0.82): REAL note heads with a slur through or against them. Of 14 arc-held head boxes 6 are kept, at least 4 real notes. The traced curve's strokes include a head's ink where a slur touches it (Litolff MERGES). That is itself a claim-order violation: a later mark (the head) lost its ink to an earlier claim that over-reached. So arc and hairpin traces are MARK_ONLY in `claim_final` (recorded in `held`, never refused): a refusal by them would lose real notes. Fix at the arc trace (do not take a stroke a head box owns or that a head blob fits), not here.
 
 **The "owns a stroke" escape.** `claim_final` never refuses a box that owns a stroke of its own family. Of 86 boxes held >= 0.5 that do (Litolff): arc boxes on their own trace (same kind), dynamic boxes on their own word claim (6, same mark), heads on arc trace (7-10, tiles 5-7: real heads), heads on a clef (2, the clef consult decides), one ledger, one mark. It lets through no head or rest on barline ink (0 barline escapes). It is not a leak for the barline claim; for arcs it is what protects real notes.
+
+### 2.277 what was built (branch `lane-2.277-claim-final`, flag `OMR_CLAIM_FINAL`, default OFF)
+
+- `claim_final.py` (pure): the share of a box's OWN ink another claim holds (stroke ink x share inside the box, strokes the owner DECIDED to a claim of another kind), cut 0.5 (`INSIDE_SHARE_MIN`), near misses from 0.25 recorded; `MARK_ONLY` = arc and hairpin traces; copies by position (`marks`, box IoU >= 0.7); `static_wiring` / `survivors` / `double_marks` / `distinct_heads` for the derived check and the counts.
+- `adjudicators/stroke_owner.py`: `_claim_final` records the measurement on the cell's `Q.STROKE_OWNER` verdict (`detail.claim_final`); `_layer_claims` makes ANY claim layer's `Q.CLAIMED_AREA` rows (whatever owner, whatever unit: `area`, `page_ink`, a later lane's) tier-0 owners of the strokes wholly inside their rectangle. No hand list: 2.276's `tremolo` layer is consumed with no tremolo code.
+- `adjudicators/claim_final.py` (the one consult) read by `notehead_precision`, `family_precision` (rest, ledger, accidental, arpeggiato): a box held >= 0.5 by barline or any other layer, not owning a stroke of its own, is refused `claimed_by:barline` / `claimed_by:page_claim`. clef / meter / key / column / word / bracket stay with `claimed_by.consult`.
+- Also: the two reasons are in `export._NOT_A_GAP_REASONS` (no unread gap from a barline sliver) and in `rhythm.NOT_A_NOTE_REFUSALS` (no duration for such a box; without it 183 + 48 + 8 Brahms slivers got a decided quarter once their reason stopped being `too_narrow`).
+- Derived check `staged.claim_final` in `check.py`: on a `git archive` of main it FINDS 6 (barline, arc trace, hairpin trace x notehead, rest); on this branch 4 (arc, hairpin: mark-only by decision). It also finds a layer in `claim_order.LAYERS` whose rows no consumer reads (a synthetic-tree test can fail it). Whole-tree open findings: main 227 -> branch 229 including the 4 new; without them 225.
+- Record-level audit (`probe/2.277/audit.py`, kept boxes >= 0.5 held by a barline / page claim): Litolff 135 OFF (117 arpeggiato, 13 accidental, 5 ledger boxes) -> 4 ON (accidentals that own a stroke); Brahms 2 dynamics (the dynamic decider is not hooked).
+
+### 2.277 the three measures (frozen sample, 20261104-night)
+
+- **File, flag OFF vs ON.** Litolff: NOTHING CHANGED (red bars 190 -> 190). Brahms: notes +4 -1, rests +4 -5, accidentals +1, dots -1, flags +3, ties -1, articulations +1, values ~3, blue +23 -29, words (unread marks) +15 -18, red bars 154 -> 150. Cause: 712 `too_narrow`, 15 `clipped_fragment`, 1 `on_a_barline` Brahms boxes are now refused `claimed_by:barline`, which is in `_NOT_A_GAP_REASONS`, so a barline sliver no longer leaves an unread gap; bars a gap held out now write their notes and rests. The 12 shared-command tiles for these changes show real heads and eighth rests (our look; Sean has not judged them); 81 changed places are not covered by any tile of Sean's (`out/lane-report/2.277-brahms/unjudged.txt`). The one lost dot is a barline sliver that was read as a head's augmentation dot (the head has no dot on the print). 711 `notehead_is_an_eighth_rest` verdicts moved reason only (the sliver is still not a rest).
+- **Judged right->wrong 0, unwritten->wrong 0, right->gone 0** on both plates (302 Litolff tiles, 256 Brahms).
+- **Blind tiles:** `out/print/2.277/` (12, key.json outside the folder; "Is the boxed mark a note?": 7 newly refused by the barline claim, 5 controls that must stay) and `out/print/2.277-near-barline/` (8: the kept heads at barline share 0.3-0.5).
+- **Export identity:** flag OFF is byte-identical to the merge-base tree's export on Litolff (all 8 sample pages, p4 included) and Brahms (8 pages, p5 included); flag ON on Litolff is byte-identical too.
+
+### 2.277 before / after: the picture of what we read (ink counted once)
+
+| | Litolff 9 pages | Brahms 8 pages |
+|---|--:|--:|
+| head BOXES (the old figure) | 6,095 | 7,039 |
+| refused by the precision rules (any reason) | 754 | 1,371 |
+| boxes on claimed ink (barline, page claims, clef, key, word...) | 127 | 851 |
+| head boxes left | 5,968 | 6,188 |
+| heads detected = DISTINCT unclaimed head ink | 5,849 | 6,148 |
+| copies by position collapsed (box IoU >= 0.7) | 119 | 40 |
+| distinct heads kept by the precision rules | 5,136 | 5,607 |
+| distinct head ink with no kept box | 713 | 541 |
+| copy marks with more than one box WRITTEN in the file | 0 of 116 | 0 of 40 |
+
+The box ratio overstated "not written" with copies and non-notes; the file never counted a copy twice (0 double-written marks). First reasons for the distinct ink not kept: Litolff clipped_fragment 183, duplicate box 108, stem-end ink only 90, stacked duplicate 85, too_narrow 69; Brahms too_narrow 198, clipped_fragment 150, tremolo slash crosses stem 47.
+The copy cut 0.7 was looked at on crops both sides (`out/2.277/look-pairs/`): under 0.5 the pairs are different heads (a second's two sides of a stem, a chord's neighbours); 0.5-0.7 ambiguous; 0.7 and over single heads. It never merges two heads of a second or a unison (page-facts, 2.175), and it only COUNTS.
+
+### 2.277 Sean's answers on the look tiles, and the heads that stay false
+
+Sean (2026-11-09, `answers/answers-2.277-look.json`): arc-held heads real 4/4 (MARK_ONLY confirmed); barline-held >= 0.5 not a note 4/4 including a rest box on a barline (refusing by the claim confirmed); kept heads at barline share 0.34-0.40: only 1 of 4 real (looks 24, 25, 26 false). Those are false heads we keep TODAY (not caused by this lane), no clean lower cut, 0.5 kept. Measured: Litolff 7 and Brahms 1 kept head boxes at barline share 0.3-0.5 in the frozen sample; 7 of the 8 reach the exported file. Eight tiles for a later look: `out/print/2.277-near-barline/`. A separate source of false notes.
