@@ -463,6 +463,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.241. The claim-order check beside the capture readout: reads the same claims and asks whether the earliest READ layer
     # owns each piece of ink; files no row, names no quantity, decides nothing.
     "claim_order.py",
+    # ROADMAP 2.277. Claimed ink is final: the PURE measurement (the share of a box's own ink another claim holds; copies by position as one mark);
+    # files no row, names no quantity, decides nothing (the stroke owner records it, the precision rules read it).
+    "claim_final.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a

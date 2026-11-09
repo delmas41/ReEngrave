@@ -1,0 +1,17 @@
+2.277 OMR_CLAIM_FINAL, Brahms, 12 tiles. Source: work/brahms.{off,on}.symbols.json (hosts + loose), matched by rg glyph id AND page box/measure.
+tile: Sean | OFF wrote | ON wrote | verdict
+1 (p8 m47 P12): dotted half | half D4, no dot, BLUE | half D4, no dot, plain READ (bar now carries "does not add up: should hold 3, counted 2") | OFF wrong but flagged; ON wrong AND unflagged (blue lost = became plain, value unchanged, dot still missing) -> ON WORSE
+2 (p25 m147 P11): quarter note | quarter A4, plain READ (bar warning 2.5/3) | quarter A4, BLUE; bar's words = "unread"; neighbour B-14 quarter (x~2358) no longer written, rest onset shifted | value right in both; ON only adds blue/unread at this box -> SAME at box (caution: neighbour note lost, not a judged place)
+3 (p14 m110 P10): dotted quarter | chord E-13 + G3(natural) quarters, dotted, plain | same two notes, same values, both now BLUE | right in both; ON only over-flags -> SAME
+4 (p19 m120 P4): eighth note | eighth E-12 with flag, BLUE | same eighth, plain READ | both right; ON promoted a correct guess -> ON BETTER (cleaner)
+5 (p14 m107 P3): quarter rest | quarter rest, plain (words dolce/dyn. share the box; control) | identical | right in both -> SAME
+6 (p19 m120 P4): quarter note | quarter F2, BLUE | quarter F2, plain READ (bar warning 2.75/3 added for P4) | both right; blue lost = became plain -> ON BETTER (value unchanged)
+7 (p4 m21 P13): dotted quarter | quarter D-13 flat, dot, tie start, plain (wedge on box) | identical | right in both -> SAME
+8 (p8 m68 P7): part of a bar line, not a note/rest | wrote a QUARTER REST (onset 4) here, plus a whole rest | quarter rest REMOVED (bar's rest now "?" unread) | OFF wrong (invented from bar-line ink); ON right -> ON BETTER
+9 (p14 m101 P9): eighth rest | eighth rest, plain | identical | right in both -> SAME
+10 (p5 m31 P4): unison quarter notes | ONE quarter E-14, BLUE (second unison head missing) | TWO quarter E-14 heads (same rg listed twice), BLUE | OFF half right; ON right -> ON BETTER
+11 (p19 m115 P?): eighth rest | eighth rest, BLUE | eighth rest, plain READ (neighbour rest also plain) | both right; ON promoted correct guess -> ON BETTER (cleaner)
+12 (p25 m138 P10): eighth note | eighth B-14 flag, BLUE | eighth B-14, plain READ (whole bar blue->plain) | both right; ON promoted correct guess -> ON BETTER (cleaner)
+
+TOTAL: ON worse than OFF by Sean's reading at 1 of 12 places (tile 1: dotted half written as undotted half, blue flag dropped so the error is now unmarked). Landing gate (0) NOT met on this key. ON better at 6 (4, 6, 8, 10, 11, 12); same at 5 (2, 3, 5, 7, 9).
+Notes: tile 5 in key.json says words/dolce but the box is a quarter REST (host) with the words attached; tile 2 key "words gained unread" is the bar-level "unread" mark that ON added over the A4 note's bar. lane_report's own landing check reported 0 right->wrong because no judged-tile answer covered tile 1 (blue->plain on a note that was wrong both ways is not right->wrong).
