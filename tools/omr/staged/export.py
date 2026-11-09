@@ -1990,8 +1990,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             _det["whole_rest_from_ink"] = True
             if relocated is not None:
                 relocated["whole_rests_from_ink"] = relocated.get("whole_rests_from_ink", 0) + 1
-        if not is_rest and plan is None:
+        if not is_rest and plan is None and not (
+                value_open_written_enabled() and (_det.get("guess") or {}).get("rule") == "collapse_value_open_by_shape"):
             # ROADMAP 2.175 (flag `OMR_UNISON_TWO_NOTES`, ON): a head with a stem each way is two notes; see export_unison.
+            # ROADMAP 2.279 r4: not for a head whose VALUE this lane guessed -- its second voice would split a bar the READ notes were
+            # written in one voice in (Brahms P10 b130: the tie into b131 lost its link and its spelling).
             _export_unison.split(rec, sub, _det)
         if plan is None:
             _emit(run, cell_index, _det, s, sub, float(o.get("score") or 0.0))
