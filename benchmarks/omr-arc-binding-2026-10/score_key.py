@@ -55,31 +55,36 @@ def yd(y, y0, y1):
 
 
 def score(spans, reach=2.5, shift=0.0, list_rows=False):
+    """global greedy assignment: every feasible (key, written) pair, cheapest first (kind-right pairs before other-kind ones); one written arc satisfies one key arc."""
     keys = [k for k in KEY["arcs"] if k["scorable"]]
-    used = set()
-    res = collections.Counter()
-    rows = []
-    for k in keys:
+    pairs = []
+    for ki, k in enumerate(keys):
         r = (3.5 if k["kind"] == "tie" else reach) * SP if reach == 2.5 else reach * SP
         x0, x1 = k["x0"] + shift * SP, k["x1"] + shift * SP
-        best = None
         for i, s in enumerate(spans):
-            if i in used:
-                continue
             if abs(s["xa"] - x0) <= r and abs(s["xz"] - x1) <= r and yd(s["ya"], k["y0"], k["y1"]) <= 6 * SP and yd(s["yz"], k["y0"], k["y1"]) <= 6 * SP:
-                good = k["kind_conflict"] or s["kind"] == k["kind"]
-                cost = abs(s["xa"] - x0) + abs(s["xz"] - x1)
-                if best is None or (good, -cost) > (best[1], -best[2]):
-                    best = (i, good, cost)
-        if best is None:
+                good = bool(k["kind_conflict"] or s["kind"] == k["kind"])
+                cost = abs(s["xa"] - x0) + abs(s["xz"] - x1) + yd(s["ya"], k["y0"], k["y1"]) + yd(s["yz"], k["y0"], k["y1"])
+                pairs.append((not good, cost, ki, i, good))
+    pairs.sort()
+    used_k, used_w = {}, set()
+    for _ng, cost, ki, i, good in pairs:
+        if ki in used_k or i in used_w:
+            continue
+        used_k[ki] = (i, good)
+        used_w.add(i)
+    res = collections.Counter()
+    rows = []
+    for ki, k in enumerate(keys):
+        if ki in used_k:
+            i, good = used_k[ki]
+            res["right" if good else "other_kind"] += 1
+            rows.append((k["id"], k["kind"], k["x0"], k["x1"], "right" if good else "other_kind", spans[i]))
+        else:
             res["none"] += 1
             rows.append((k["id"], k["kind"], k["x0"], k["x1"], "none", None))
-        else:
-            used.add(best[0])
-            res["right" if best[1] else "other_kind"] += 1
-            rows.append((k["id"], k["kind"], k["x0"], k["x1"], "right" if best[1] else "other_kind", spans[best[0]]))
     res["keys"] = len(keys)
-    res["written_unmatched"] = len(spans) - len(used)
+    res["written_unmatched"] = len(spans) - len(used_w)
     return res, rows
 
 

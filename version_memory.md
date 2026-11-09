@@ -6735,3 +6735,6 @@ STAGED GATHER, `OMR_PAGE_ARCS` still default OFF, file-only. Reader frozen at 6a
 
 ## 2026-11-09 2.274 step 2 round 2 (lane-2.274-step2-r2, flag OMR_PAGE_ARC_WRITE, default OFF, STAGED)
 Runs are cut at a bridged gap of 2 spaces or more (page_arc_bind.pieces_of), a chord end takes the member on the arc's side, an end more than 3 spaces beyond its head abstains, a head up to 1.6 spaces behind the ink's end is a candidate. Hold-out (6 pages, 2 NEW): replaced runs 25 -> 10, 26/30 right, 4/10 replaced lost, 8/12 tiles: NOT GOOD. Left: no horizontal limit on the closest note, 2-3 space beyond-head ends, bridgeless straight tails, off-staff box drop. Gates: export identical OFF vs main, fast tier 10077, check 229. Tiles out/print/2.274-step2-r2/ not yet shown to Sean.
+
+## 2026-11-09 2.281 two arcs that meet at a note (lane-2.281, flag OMR_ARC_MEETING_AT_HEAD, default OFF, STAGED, not landed)
+Corrected Brahms p0 arc key (key-brahms-p0-corrected.json, 153 hand boxes -> 100 arcs, builder beside it); `arc_claim.bind_end` no longer refuses `continues_in_another_curve` when the other curve BEGINS on the same head (33 -> 7 refusals on p0). Brahms p0 vs the corrected key: main 69 / page-ink write 73 / flag 78 of 95. Needs the unmerged 2.274 stack. FINDINGS 2.281; 12 tiles out/print/2.281/tiles not yet shown to Sean.

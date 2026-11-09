@@ -1,0 +1,235 @@
+{
+ "question": "Is the boxed arc one arc, and which two notes does it join?",
+ "seed": 2281,
+ "drawn": "one thin orange box round the page-ink run; nothing else",
+ "tiles": [
+  {
+   "tile": "01.png",
+   "plate": "brahms",
+   "page": 5,
+   "run": 156,
+   "piece": null,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/5/0/1/6/5",
+   "written_stop": "glyph/5/0/1/6/3",
+   "kind": "tie",
+   "shape": [
+    221,
+    454,
+    3
+   ]
+  },
+  {
+   "tile": "02.png",
+   "plate": "brahms",
+   "page": 5,
+   "run": 149,
+   "piece": null,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/5/0/1/5/4",
+   "written_stop": "glyph/5/0/1/6/5",
+   "kind": "slur",
+   "shape": [
+    232,
+    490,
+    3
+   ]
+  },
+  {
+   "tile": "03.png",
+   "plate": "brahms",
+   "page": 4,
+   "run": 65,
+   "piece": null,
+   "category": "same",
+   "flag_off_status": "written",
+   "flag_off_why": null,
+   "flag_on_status": "written",
+   "written_start": "glyph/4/1/5/4/5",
+   "written_stop": "glyph/4/1/5/5/2",
+   "kind": "tie",
+   "shape": [
+    220,
+    512,
+    3
+   ]
+  },
+  {
+   "tile": "04.png",
+   "plate": "brahms",
+   "page": 0,
+   "run": 21,
+   "piece": null,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/0/0/12/0/4",
+   "written_stop": "glyph/0/0/12/1/1",
+   "kind": "slur",
+   "shape": [
+    306,
+    1011,
+    3
+   ]
+  },
+  {
+   "tile": "05.png",
+   "plate": "brahms",
+   "page": 0,
+   "run": 47,
+   "piece": null,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/0/0/12/1/1",
+   "written_stop": "glyph/0/0/12/2/1",
+   "kind": "tie",
+   "shape": [
+    251,
+    420,
+    3
+   ]
+  },
+  {
+   "tile": "06.png",
+   "plate": "brahms",
+   "page": 4,
+   "run": 13,
+   "piece": null,
+   "category": "same",
+   "flag_off_status": "written",
+   "flag_off_why": null,
+   "flag_on_status": "written",
+   "written_start": "glyph/4/0/12/0/1",
+   "written_stop": "glyph/4/0/12/1/4",
+   "kind": "tie",
+   "shape": [
+    237,
+    427,
+    3
+   ]
+  },
+  {
+   "tile": "07.png",
+   "plate": "brahms",
+   "page": 0,
+   "run": 49,
+   "piece": null,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/0/0/12/3/3",
+   "written_stop": "glyph/0/0/12/4/2",
+   "kind": "tie",
+   "shape": [
+    258,
+    487,
+    3
+   ]
+  },
+  {
+   "tile": "08.png",
+   "plate": "brahms",
+   "page": 5,
+   "run": 16,
+   "piece": 0,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/5/0/1/7/9",
+   "written_stop": "glyph/5/0/1/7/10",
+   "kind": "tie",
+   "shape": [
+    243,
+    588,
+    3
+   ]
+  },
+  {
+   "tile": "09.png",
+   "plate": "brahms",
+   "page": 0,
+   "run": 24,
+   "piece": null,
+   "category": "gained",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "written",
+   "written_start": "glyph/0/0/10/1/0",
+   "written_stop": "glyph/0/0/10/2/2",
+   "kind": "tie",
+   "shape": [
+    249,
+    419,
+    3
+   ]
+  },
+  {
+   "tile": "10.png",
+   "plate": "brahms",
+   "page": 5,
+   "run": 122,
+   "piece": null,
+   "category": "same",
+   "flag_off_status": "written",
+   "flag_off_why": null,
+   "flag_on_status": "written",
+   "written_start": "glyph/5/1/1/5/2",
+   "written_stop": "glyph/5/1/1/6/0",
+   "kind": "tie",
+   "shape": [
+    225,
+    471,
+    3
+   ]
+  },
+  {
+   "tile": "11.png",
+   "plate": "litolff",
+   "page": 4,
+   "run": 4,
+   "piece": 0,
+   "category": "kept_refused",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "abstained",
+   "written_start": null,
+   "written_stop": null,
+   "kind": null,
+   "shape": [
+    120,
+    493,
+    3
+   ]
+  },
+  {
+   "tile": "12.png",
+   "plate": "brahms",
+   "page": 0,
+   "run": 82,
+   "piece": null,
+   "category": "kept_refused",
+   "flag_off_status": "abstained",
+   "flag_off_why": "end_unbound",
+   "flag_on_status": "abstained",
+   "written_start": null,
+   "written_stop": null,
+   "kind": null,
+   "shape": [
+    247,
+    650,
+    3
+   ]
+  }
+ ]
+}

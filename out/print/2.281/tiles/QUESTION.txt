@@ -1,0 +1,3 @@
+Each tile shows one staff with one thin orange box round one arc.
+Question for every tile: Is the boxed arc one arc, and which two notes does it join?
+(If the box covers only part of a longer arc, or two arcs, say so.)
