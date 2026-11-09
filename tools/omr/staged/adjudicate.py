@@ -1008,6 +1008,8 @@ ORDER: Tuple[str, ...] = (
     # `Q.GLYPH_OWNER` (a relocated copy is not a candidate). ADJUDICATE reads
     # a frozen log, so a verdict decided after this line would be None here.
     Q.TIE_PAIR,
+    # ROADMAP 2.274 step 2 (flag `OMR_PAGE_ARC_WRITE`, see `page_arc_bind`), AFTER the heads, `Q.ARC_OWNER` and `Q.ARC_KIND` it reads; files nothing with the flag OFF.
+    Q.PAGE_ARC_BINDING,
     # ⚠️ ROADMAP 2.12c, BEFORE `Q.DURATION` AND `Q.ARTICULATION_OWNER`. Its
     # evidence is GATHER rows only (`Q.AUG_DOT`, `Q.GLYPH_BOX`,
     # `Q.NOTEHEAD_CLASS`, `Q.REST`, `Q.CELL_STAFF_SPACE`), so it needs no
@@ -1328,6 +1330,11 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # ROADMAP 2.205: OFF is byte-identical -- with the flag off the decision files nothing at all, not an abstention per cell.
             from .adjudicators import stroke_owner as _so
             if not _so.enabled():
+                continue
+        if quantity == Q.PAGE_ARC_BINDING:
+            # ROADMAP 2.274 step 2: OFF files nothing at all (not an abstention per page), so the record is what it was
+            from . import page_arc_bind as _pab
+            if not _pab.write_enabled():
                 continue
         for subject in subjects_for(log, spec):
             out.append(adjudicate_one(log, spec, subject))

@@ -2963,7 +2963,44 @@ def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float,
     return bad
 
 
-def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
+def _closest_sides(ev: Evidence, sysarc: Any, d: Dict[str, Any], sp: float, staff: Any) -> Tuple[Dict[str, bool], Dict[str, str], Dict[str, List[Tuple[float, float]]]]:
+    """ROADMAP 2.271 (`OMR_ARC_CLOSEST_HEAD`; page-facts, Sean 2026-11-05): which ends of THIS ONE traced curve may bind to the closest head, and why not.
+
+    Sean's tiles 7 and 11: the c of 'cresc.' and a hairpin were boxed as arcs and the closest-note rule wrote them as slurs. A curve whose trace lies at
+    least `ON_TRACE_SHARE_MIN` inside a printed direction word or a hairpin box is that mark's ink (claim order, CLAUDE s3: words and hairpins claim first)
+    and binds nothing here. And Sean's tiles 2, 4, 5, 9, 10, 12: a curve that stops short where ANOTHER curve of the staff begins (its end within the
+    BEGINS nearer this end than the closest head stands) is HALF of one arc: `arc_claim.bind_end` leaves that end unbound (`continues_in_another_curve`;
+    the join of the two curves is not built here). Returns the sides allowed, why not, and the other curves' facing ends."""
+    why: Dict[str, str] = {}
+    tr = d.get("trace") or ()
+    if tr:
+        cx0, cy0 = min(t[0] for t in tr), min(t[1] for t in tr)
+        cx1, cy1 = max(t[0] for t in tr), max(t[2] for t in tr)
+        area = max(1.0, (cx1 - cx0) * (cy1 - cy0))
+        page = ev.subject.at(Kind.PAGE)
+        for q in (Q.DIRECTION_WORD, Q.WEDGE_BOX):
+            for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=page):
+                b = (r.detail or {}).get("bbox_page_px")
+                if not b or len(b) != 4:
+                    continue
+                w, h = min(cx1, b[2]) - max(cx0, b[0]), min(cy1, b[3]) - max(cy0, b[1])
+                if w > 0 and h > 0 and w * h / area >= _arc_claim.ON_TRACE_SHARE_MIN:
+                    why["left"] = why["right"] = "inside_a_word_or_wedge"
+                    break
+            if why:
+                break
+    others: Dict[str, List[Tuple[float, float]]] = {"left": [], "right": []}
+    for r in ev.rows(Q.SYSTEM_ARC, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        if r.id == sysarc.id:
+            continue
+        o = r.detail or {}
+        if o.get("x_right_page") is not None and o.get("x_left_page") is not None:
+            others["left"].append((float(o["x_right_page"]), float(o["y_right_page"])))      # a curve ENDING near this one's left end
+            others["right"].append((float(o["x_left_page"]), float(o["y_left_page"])))       # a curve BEGINNING near this one's right end
+    return {s_: s_ not in why for s_ in ("left", "right")}, why, others
+
+
+def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the CURVE this arc box is a piece of, bound at both ends to notes AFTER the heads are read,
     and the kind Sean's tie rule makes of the two bound heads. None where GATHER traced no curve through this box (the OFF path stands).
 
@@ -2978,15 +3015,33 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
 
     ⚠️ CONVENTION ASSUMED (not yet asked of Sean): ACROSS A BARLINE the far head of a tie never restates the accidental, so a printed
     accidental on the START head and none on the STOP head is "unchanged" (the OFF reading, `_two_note_reading`, required none on both).
-    WHAT WOULD FALSIFY IT: a same-step arc across a barline Sean reads as a slur to the natural note."""
-    sysarc = _system_arc_row(ev)
-    if sysarc is None:
-        return None
-    d = sysarc.detail or {}
+    WHAT WOULD FALSIFY IT: a same-step arc across a barline Sean reads as a slur to the natural note.
+
+    ROADMAP 2.274 step 2: `page_run` = `(d, home, curve_key, curve_id, binder)` binds a PAGE-INK run (`adjudicate_page_arc_binding`) by this very body -- `d` is the run as a curve
+    detail (`space_page_px`, `trace`, the four end coordinates), `home` the staff, `binder(heads, sp, usable, end_pitch, alt)` the ends' rule; `arc` is then None and the
+    detector's class (read only by the 2.252 r2 tie rule below) is not an input. With `page_run` None this is the function it was."""
+    if page_run is not None:
+        d, home, curve_key, curve_id, binder = page_run
+        arc_class = ""
+    else:
+        sysarc = _system_arc_row(ev)
+        if sysarc is None:
+            return None
+        staff_of_arc = ev.subject.at(Kind.STAFF)
+        d = sysarc.detail or {}
+        owner = ev.verdict(Q.ARC_OWNER, subject=ev.subject)          # (the same read as before; `subject=` says its reach, which is the arc's own glyph)
+        home = (owner.value if owner is not None and isinstance(owner.value, str) and owner.value
+                else ev.subject.at(Kind.STAFF).to_key())
+
+        def binder(heads_: List[Dict[str, Any]], sp_: float, usable_: Any, end_pitch_: bool, alt_: Any) -> Dict[str, Any]:
+            closest_sides, closest_why, closest_others = (_closest_sides(ev, sysarc, d, sp_, staff_of_arc) if _arc_claim.closest_head_enabled() else (None, {}, None))
+            b_ = _arc_claim.bind_curve(d, heads_, sp_, usable_, by_height=end_pitch_, alt_ends=alt_, closest_sides=closest_sides, other_ends=closest_others)
+            if closest_why:
+                b_["closest_refused"] = closest_why
+            return b_
+        arc_class = str(getattr(arc, "value", ""))
+        curve_key, curve_id = sysarc.subject.to_key(), sysarc.id
     sp = float(d.get("space_page_px") or 0.0)
-    owner = ev.verdict(Q.ARC_OWNER)
-    home = (owner.value if owner is not None and isinstance(owner.value, str) and owner.value
-            else ev.subject.at(Kind.STAFF).to_key())
     staff = R.Subject.from_key(home)
     rows: Dict[str, Any] = {}
     heads: List[Dict[str, Any]] = []
@@ -3056,8 +3111,8 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     alt = None
     if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
         alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt)
-    b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
+    b = binder(heads + tips, sp, usable, end_pitch, alt)
+    b.update(curve=curve_key, home=home, kind=None, sysarc_id=curve_id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
             b.setdefault("stem_tip_ends", []).append(side_)
@@ -3177,7 +3232,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
              crosses_barline=hl["cell"] != hr["cell"])
     if contested is not None:
         b.update(why="step_conflict_one_end_contested", contested_end=contested)
-    elif relation == "different" and tie_arc_side_enabled() and str(getattr(arc, "value", "")) == "tie" and b.get("stem_tip_ends"):
+    elif relation == "different" and tie_arc_side_enabled() and arc_class == "tie" and b.get("stem_tip_ends"):
         # ROADMAP 2.252 r2 (flag `OMR_TIE_PAIR_ARC_SIDE`): a TIE is drawn head to head; only a slur ends at a stem's free end (2.75). A box
         # the detector called a tie, made a SLUR only by an end that reached a head through a stem tip, has its own head unread there
         # (Sean's 2.252 tile 2: the lower note before the dyad is not boxed; the end bound to the UPPER note's stem wrote a slur where he
@@ -3237,7 +3292,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
            Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION,
            Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER,
-           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC),
+           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC, Q.DIRECTION_WORD, Q.WEDGE_BOX),
     subjects_from=Q.ARC_BOX,
     # ⚠️ A DECIDED arc's reason stays `tie` / `slur`; WHICH rule decided it
     # (`two_notes_same_pitch`, `two_notes_different_pitch`,
@@ -6298,3 +6353,125 @@ def _box_overlap_of_smaller(a, b) -> float:
         return 0.0
     small = min((a[2] - a[0]) * (a[3] - a[1]), (b[2] - b[0]) * (b[3] - b[1]))
     return ((ix1 - ix0) * (iy1 - iy0)) / small if small > 0 else 0.0
+
+
+# ───────────────────────────── ROADMAP 2.274 step 2: the witnessed page-ink arc runs, bound to notes ─────────────────────────────
+# (in THIS module so that the wiring / inventory checks' AST walk follows `_page_binding` and its helpers as the decision's own reads, as they do for `adjudicate_arc_kind`)
+
+@decision(
+    quantity=Q.PAGE_ARC_BINDING,
+    checkable=Checkable.MIXED,
+    checked_by=(
+        "a TIE's two bound heads sound ONE pitch -- EXPORT compares the two placed pitches and refuses (and counts) a pair that differs",
+        "the two ends of one run are two DIFFERENT heads of the run's own staff, in one voice (EXPORT refuses one head at both ends and two voices)",
+    ),
+    implicates=(Q.PAGE_ARC_BINDING, Q.ARC_KIND, Q.TIE_PAIR, Q.NOTEHEAD_STAFF_POSITION),
+    composed_from=(Q.PAGE_ARC, Q.GLYPH_BOX, Q.NOTEHEAD_STAFF_POSITION),
+    scope=Kind.PAGE,
+    wants=(Q.PAGE_ARC, Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM, Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
+           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION, Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER, Q.CELL_STAFF_SPACE),
+    subjects_from=Q.PAGE_ARC,
+    reasons=("bound", "none_bound", "no_witnessed_run"),
+    mode=Mode.ADDITIVE,
+)
+def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
+    """ROADMAP 2.274 step 2 (flag `OMR_PAGE_ARC_WRITE`, default OFF; the rule is `page_arc_bind`'s docstring): ONE page-wide pass, AFTER the heads are read, over the page's
+    `Q.PAGE_ARC` runs that a detector arc box WITNESSES. Each run's two ends are bound to notes by the SAME code as a detector curve (`_page_binding`, 2.223's, with `page_run`), with the
+    closest-note rule (`page_arc_bind.closest_binder`), measured from the ink's own end, and the kind follows by Sean's tie rule on the two bound heads. The detector's class is not
+    an input. A run that binds both ends to two different heads and reads a kind is `written`; any other is `abstained` with the reason (an end unbound, two columns about equally
+    near, a chord end that cannot choose, one head at both ends, same pitch with heads between, a step unread ...), and the old path keeps the mark. A run with one end bound and
+    the other off the system's edge is `abstained` with `edge` set: EXPORT may join it to the run that picks up on the next system. One verdict per page; `detail["runs"]` one
+    entry per run (see `Q.PAGE_ARC_BINDING`)."""
+    from .. import page_arc_bind as PB
+    page = ev.subject
+    rows = [r for r in ev.rows(Q.PAGE_ARC, scope=Scope.SELF_AND_DESCENDANTS, subject=page)
+            if r.value == "run" and (r.detail or {}).get("ends") and (r.detail or {}).get("space_page_px")]
+    # round 2 (cause b): a run is cut at every bridged gap of 2 spaces or more (`page_arc_bind.pieces_of`): a stretch of columns with no ink seen is where two arcs meet at a note
+    # or where a tail of the next arc was carried on through a blanked head. Each stretch of 3 spaces or more is a piece bound ALONE; a shorter one is a tail and is dropped.
+    items: List[Tuple[Any, Dict[str, Any]]] = []
+    no_ink: List[Tuple[Any, Dict[str, Any]]] = []
+    for r in rows:
+        dt0 = dict(r.detail or {})
+        ps = PB.pieces_of(dt0, float(dt0["space_page_px"]))
+        if not ps:
+            no_ink.append((r, dt0))
+        for pc in ps:
+            items.append((r, pc))
+    details = [dt for _r, dt in items]
+    peers = [dict(ends=dt.get("core_ends") or dt.get("ends"), staff=dt.get("staff") or [0, 0]) for dt in details]          # the ink's own ends, as the binder uses
+    out: List[Dict[str, Any]] = []
+    used: List[str] = []
+    for r, dt0 in no_ink:
+        out.append({"ordinal": dt0.get("ordinal"), "row": r.id, "status": PB.ABSTAINED, "witnesses": [], "why": "no_stretch_of_ink"})
+    for i, (r, dt) in enumerate(items):
+        entry: Dict[str, Any] = {"ordinal": dt.get("ordinal"), "row": r.id, "status": PB.NOT_WITNESSED, "witnesses": []}
+        if dt.get("trimmed"):
+            entry["piece"] = dt.get("piece")
+            entry["x_range"] = [float(dt["points"][0][0]), float(dt["points"][-1][0])]
+        out.append(entry)
+        sp = float(dt["space_page_px"])
+        ws = []
+        for w in dt.get("witnesses") or ():
+            try:
+                wsub = R.Subject.from_key(str(w))
+            except Exception:
+                continue
+            anv = ev.verdict(Q.ARC_IS_NOT_AN_ARC, subject=wsub)
+            if anv is not None and anv.outcome is Outcome.DECIDED and anv.value is True:
+                continue          # a box ADJUDICATE refused as an arc (a staff line, a barline) witnesses nothing
+            ws.append(str(w))
+        if not ws:
+            entry["why"] = "no_usable_witness" if dt.get("witnesses") else "no_detector_box"
+            continue
+        entry["witnesses"] = ws
+        # the staff: the witnessing boxes' decided owner where they agree, else the staff nearest the run's middle (the row's own `staff`)
+        owners = []
+        for w in ws:
+            ov = ev.verdict(Q.ARC_OWNER, subject=R.Subject.from_key(w))
+            if ov is not None and ov.outcome is Outcome.DECIDED and isinstance(ov.value, str) and ov.value:
+                owners.append(ov.value)
+        st = dt.get("staff") or [0, 0]
+        own_row = R.Subject(Kind.STAFF, page.page, int(st[0]), int(st[1])).to_key()
+        if owners and len(set(owners)) == 1:
+            home = owners[0]
+            entry["home_from"] = "witness_owner"
+        else:
+            home = own_row
+            entry["home_from"] = "run_staff" if not owners else "witnesses_disagree"
+        entry["home"] = home
+        d = PB.curve_detail(dt, sp)
+        if d is None:
+            entry.update(status=PB.ABSTAINED, why="no_ends")
+            continue
+        binder = PB.closest_binder(PB.facing_ends(peers, i, st))
+        b = _page_binding(ev, None, page_run=(d, home, "page_arc/%s" % r.id, r.id,
+                                              lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
+        entry["left"], entry["right"] = b.get("left"), b.get("right")
+        used.append(r.id)
+        if b.get("kind") in ("tie", "slur") and b.get("start") and b.get("stop") and b["start"] != b["stop"]:
+            entry.update(status=PB.WRITTEN, kind=b["kind"], start=b["start"], stop=b["stop"], relation=b.get("relation"),
+                         crosses_barline=b.get("crosses_barline"), rule=b.get("rule"),
+                         closest=[s_ for s_ in ("left", "right") if b[s_].get("outside_window")])
+            used.extend(b.get("head_ids") or ())
+        else:
+            why = b.get("why") or next((b[s_].get("unbound") for s_ in ("left", "right") if b[s_].get("unbound")), None) or "no_kind"
+            entry.update(status=PB.ABSTAINED, why=why)
+            for s_ in ("left", "right"):
+                if b[s_].get("unbound"):
+                    entry.setdefault("unbound", {})[s_] = {k: v for k, v in b[s_].items() if k in ("unbound", "candidates", "margin_spaces")}
+            if why == "system_edge":
+                side = "left" if b["left"].get("edge") else "right"
+                other = b["right"] if side == "left" else b["left"]
+                if other.get("head") and not (b["left"].get("edge") and b["right"].get("edge")):
+                    e = (dt.get("core_ends") or dt["ends"])[0 if side == "left" else 1]
+                    entry.update(edge=side, edge_head=str(other["head"]), x_end=float(e[0]), sp=sp, staff_key=home)
+            if b.get("relation") is not None:
+                entry["relation"] = b.get("relation")
+    n_w = sum(1 for e in out if e["status"] == PB.WRITTEN)
+    n_a = sum(1 for e in out if e["status"] == PB.ABSTAINED)
+    if not any(e["witnesses"] for e in out):
+        return Ruling.abstain("no_witnessed_run", runs=out)
+    value = {"runs": len(out), "written": n_w, "abstained": n_a, "not_witnessed": len(out) - n_w - n_a}
+    if n_w:
+        return Ruling(value=value, reason="bound", used=tuple(dict.fromkeys(used)), detail={"runs": out})
+    return Ruling(value=value, reason="none_bound", used=tuple(dict.fromkeys(used)), detail={"runs": out})

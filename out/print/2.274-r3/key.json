@@ -1,0 +1,205 @@
+[
+ {
+  "tile": 1,
+  "plate_page": "brahms-p25",
+  "run": 71,
+  "why": "witnessed",
+  "width_sp": 23.5,
+  "witnesses": [
+   "glyph/25/1/7/6/17",
+   "glyph/25/1/7/6/18",
+   "glyph/25/1/8/6/7"
+  ],
+  "box_page_px": [
+   3753,
+   6298,
+   4404,
+   6361
+  ]
+ },
+ {
+  "tile": 2,
+  "plate_page": "litolff-p3",
+  "run": 28,
+  "why": "r2-miss (not whole under the round-2 reader): sparse",
+  "width_sp": 7.17,
+  "witnesses": [
+   "glyph/3/0/4/0/4"
+  ],
+  "box_page_px": [
+   518,
+   1048,
+   630,
+   1082
+  ]
+ },
+ {
+  "tile": 3,
+  "plate_page": "brahms-p9",
+  "run": 50,
+  "why": "r2-miss (not whole under the round-2 reader): straight",
+  "width_sp": 4.0,
+  "witnesses": [
+   "glyph/9/1/3/3/14"
+  ],
+  "box_page_px": [
+   2671,
+   4654,
+   2779,
+   4682
+  ]
+ },
+ {
+  "tile": 4,
+  "plate_page": "litolff-p3",
+  "run": 21,
+  "why": "r2-miss (not whole under the round-2 reader): rough",
+  "width_sp": 6.29,
+  "witnesses": [
+   "glyph/3/1/2/16/1",
+   "glyph/3/1/2/16/5"
+  ],
+  "box_page_px": [
+   2376,
+   2666,
+   2474,
+   2705
+  ]
+ },
+ {
+  "tile": 5,
+  "plate_page": "litolff-p3",
+  "run": 38,
+  "why": "r2-miss (not whole under the round-2 reader): no_track",
+  "width_sp": 11.94,
+  "witnesses": [
+   "glyph/3/0/4/1/5",
+   "glyph/3/0/4/1/6",
+   "glyph/3/0/4/1/7"
+  ],
+  "box_page_px": [
+   630,
+   1050,
+   817,
+   1092
+  ],
+  "note": "recut: the first draw boxed a hairpin leg and the stem beside the arc"
+ },
+ {
+  "tile": 6,
+  "plate_page": "litolff-p9",
+  "run": 55,
+  "why": "r2-miss (not whole under the round-2 reader): thick",
+  "width_sp": 4.63,
+  "witnesses": [
+   "glyph/9/0/2/14/7"
+  ],
+  "box_page_px": [
+   2403,
+   709,
+   2475,
+   738
+  ]
+ },
+ {
+  "tile": 7,
+  "plate_page": "litolff-p3",
+  "run": 82,
+  "why": "witnessed",
+  "width_sp": 9.21,
+  "witnesses": [
+   "glyph/3/0/4/4/0"
+  ],
+  "box_page_px": [
+   1223,
+   990,
+   1367,
+   1014
+  ]
+ },
+ {
+  "tile": 8,
+  "plate_page": "brahms-p25",
+  "run": 6,
+  "why": "witnessed",
+  "width_sp": 17.62,
+  "witnesses": [
+   "glyph/25/1/2/8/12",
+   "glyph/25/1/2/8/14",
+   "glyph/25/1/2/8/15"
+  ],
+  "box_page_px": [
+   4650,
+   4964,
+   5137,
+   5022
+  ],
+  "note": "recut: the first draw boxed a second line under the arc"
+ },
+ {
+  "tile": 9,
+  "plate_page": "litolff-p3",
+  "run": 27,
+  "why": "r2-miss (not whole under the round-2 reader): no_track",
+  "width_sp": 7.17,
+  "witnesses": [
+   "glyph/3/0/1/0/6"
+  ],
+  "box_page_px": [
+   512,
+   612,
+   624,
+   642
+  ]
+ },
+ {
+  "tile": 10,
+  "plate_page": "litolff-p3",
+  "run": 2,
+  "why": "witnessed",
+  "width_sp": 9.71,
+  "witnesses": [
+   "glyph/3/0/3/1/6",
+   "glyph/3/0/3/1/7",
+   "glyph/3/0/3/1/9"
+  ],
+  "box_page_px": [
+   707,
+   866,
+   859,
+   889
+  ]
+ },
+ {
+  "tile": 11,
+  "plate_page": "brahms-p25",
+  "run": 3,
+  "why": "r2-miss (not whole under the round-2 reader): no_track",
+  "width_sp": 11.06,
+  "witnesses": [
+   "glyph/25/1/2/9/8"
+  ],
+  "box_page_px": [
+   5186,
+   4981,
+   5491,
+   5023
+  ]
+ },
+ {
+  "tile": 12,
+  "plate_page": "litolff-p3",
+  "run": 71,
+  "why": "r2-miss (not whole under the round-2 reader): rough",
+  "width_sp": 2.1,
+  "witnesses": [
+   "glyph/3/1/1/5/1"
+  ],
+  "box_page_px": [
+   1173,
+   2476,
+   1205,
+   2488
+  ]
+ }
+]
