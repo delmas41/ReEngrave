@@ -57,6 +57,9 @@ GAP_SPLIT_SP = 2.0
 #: the bound one stood 4.5-5.2 spaces off). A stem is 3.5 spaces long (Gould; `arc_claim.TIP_MAX_SPACES` 4.5): beyond 3 a stem tip does not reach it. NOT CONFIRMED beyond the develop pages;
 #: it only ever DECLINES a binding.
 END_BEYOND_HEAD_SPACES = 3.0
+#: (cause d, FINDINGS) the ink of an arc often ends PAST its note's centre (on the head's far edge, a stem): Brahms p5 runs 14 and 86 ended 1.1 spaces past the centre of the head they belong to, outside
+#: 2.166's 0.8-space look-behind, so the binder took the next head 6.5-7.1 spaces on. A head up to this far behind the end is a candidate; the closest by distance still wins.
+HEAD_BEHIND_END_SPACES = 1.6
 #: (cause c) three or more members: the end's own height may name an inner member only within this many spaces of it.
 INNER_MEMBER_DY_SPACES = 1.2
 #: a stretch of tracked ink shorter than this (spaces of x) between a bridge and the run's end is a TAIL, not an arc: dropped. Two longer stretches are two arcs (each bound alone).
@@ -120,11 +123,11 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]]):
         b = {"left": None, "right": None, "side": side}
         for s_, sgn, xk, yk in (("left", -1, "x_left_page", "y_left_page"), ("right", +1, "x_right_page", "y_right_page")):
             ex = float(d[xk])
-            if not any((h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp and (usable is None or usable(h["key"])) for h in heads):
+            if not any((h["cx"] - ex) * sgn > -HEAD_BEHIND_END_SPACES * sp and (usable is None or usable(h["key"])) for h in heads):
                 b[s_] = {"edge": True}
                 continue
             b[s_] = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, side, usable, end_pitch, True, others.get(s_), closest_only=True,
-                                behind_spaces=None)
+                                behind_spaces=HEAD_BEHIND_END_SPACES)
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
             if hd is not None:
                 ey = float(d[yk])

@@ -101,5 +101,20 @@ class TestAnEndFarBeyondItsHead(unittest.TestCase):
         return PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
 
 
+class TestAHeadJustBehindTheEnd(unittest.TestCase):
+    def test_the_head_the_ink_ends_just_past_binds_not_the_next_one_on(self):
+        d = _detail(0, 100, 111, 100, sag=-15.0)          # the ink's right end stands 1.1 spaces PAST the centre of head b (cx 100)
+        heads = [_h("a", -2, 108), _h("b", 100, 108), _h("far", 190, 108)]
+        b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
+        self.assertEqual(b["right"]["head"], "b")
+        self.assertNotIn("edge", b["right"])
+
+    def test_a_head_three_spaces_behind_is_not_a_candidate(self):
+        d = _detail(0, 100, 130, 100, sag=-15.0)          # 3 spaces past b: b is not the end's note
+        heads = [_h("a", -2, 108), _h("b", 100, 108), _h("far", 190, 108)]
+        b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
+        self.assertEqual(b["right"]["head"], "far")
+
+
 if __name__ == "__main__":
     unittest.main()
