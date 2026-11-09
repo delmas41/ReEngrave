@@ -296,6 +296,14 @@ def arc_ink_not_beam_enabled() -> bool:
 ARC_INK_NOT_BEAM_SWITCH = Switch(ARC_INK_NOT_BEAM_ENV, arc_ink_not_beam_enabled)
 
 
+def value_open_by_shape_enabled() -> bool:
+    from .consequences import value_open_written_enabled
+    return value_open_written_enabled()
+
+
+VALUE_OPEN_SWITCH = Switch("OMR_VALUE_OPEN_WRITTEN", value_open_by_shape_enabled)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # The vocabulary
 # ─────────────────────────────────────────────────────────────────────────────
@@ -398,6 +406,11 @@ class Inference(str, Enum):
     #: tip read clean, collapsed to the head's own unbeamed value. Evidence: the arc reader's DECIDED glyph and the CV ink test read
     #: the SAME ink, so they are ONE witness -- GUESSED, never READ. No bar arithmetic.
     COLLAPSE_ARC_INK_NOT_BEAM = "collapse_arc_ink_not_beam"
+
+    #: ROADMAP 2.279 r3 (Sean 2026-11-09 ruling). A head whose PITCH is read and whose duration is NARROWED, collapsed to the most likely of
+    #: the reader's OWN candidates by the head's own shape (the reader's `support` order; the unbeamed value where no beam was read; a
+    #: tie takes the longer). The bar sum is not read. GUESSED (blue), the margin recorded.
+    COLLAPSE_VALUE_OPEN_BY_SHAPE = "collapse_value_open_by_shape"
 
 
 #: The only prior states an inference may speak into.

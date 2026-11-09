@@ -495,6 +495,19 @@ def dropped_blue_enabled() -> bool:
     return os.environ.get(DROPPED_BLUE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: ROADMAP 2.279 r3 (Sean 2026-11-09 RULING, DECISIONS): a note whose PITCH is read but whose VALUE is open is written BLUE at its pitch
+#: with the most likely value when its own shape leaves candidate values (INFER `collapse_value_open_by_shape`: the reader's own
+#: candidates, its own `support` order, the unbeamed value where no beam was read; the bar never supplies it), and RED at its pitch with
+#: NOTHING invented (a zero-duration `x` grace head, EXPORT `Cell.unread_heads`) where no candidate value exists or a chord's members
+#: disagree. Default OFF, an allow-list: only an explicit on-word turns it on.
+VALUE_OPEN_WRITTEN_ENV = "OMR_VALUE_OPEN_WRITTEN"
+
+
+def value_open_written_enabled() -> bool:
+    import os
+    return os.environ.get(VALUE_OPEN_WRITTEN_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 #: ROADMAP 2.168, default ON (Sean 2026-10-18, DECISIONS: the bar MARKS, never moves, a decided note it disagrees with). Where
 #: `reconcile_duration` (meter known, a bar holding NO narrowed note) would have moved a DECIDED note -- one unique landing, the
 #: move 2.162's block now declines -- the note keeps its value and is written GUESSED (blue) carrying the bar's alternative as a

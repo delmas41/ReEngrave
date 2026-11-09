@@ -815,6 +815,25 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
                        dyns: Optional[Dict[int, str]] = None,
                        counters: Optional[Dict[str, int]] = None,
                        plain: bool = False) -> str:
+    """ROADMAP 2.279 r3: `_lily_event_marked_core`, preceded by a RED `\\grace` cross head (no duration, so no time) for each pitch-read
+    head of this event's bar that has no value (`Cell.unread_heads`; the same encoding as the MusicXML `<grace/>` `x` head)."""
+    text = _lily_event_marked_core(ev, wedges, dyns, counters, plain)
+    if plain:
+        return text
+    pre = ""
+    for u in ev.get("unread_heads") or ():
+        lp = _legacy._pitch_to_lily(u["pitch"])
+        if lp is not None:
+            pre += "\\grace { \\once \\override NoteHead.color = #red \\once \\override NoteHead.style = #'cross %s4 } " % lp
+            if counters is not None:
+                counters["unread_heads_written"] += 1
+    return pre + text
+
+
+def _lily_event_marked_core(ev: Dict[str, Any], wedges: Dict[int, str],
+                            dyns: Optional[Dict[int, str]] = None,
+                            counters: Optional[Dict[str, int]] = None,
+                            plain: bool = False) -> str:
     """`_legacy._lily_event`, with a GUESSED symbol drawn in the guess colour.
 
     ROADMAP 2.103. The frozen legacy renderer is called UNCHANGED and its

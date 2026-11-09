@@ -70,6 +70,7 @@ from .adjudicators import ownership as _ownership_rules
 _OWNER_NOT_READ_REASONS = _ownership_rules.OWNER_NOT_READ_REASONS
 from .adjudicators.rhythm import (METER_RETURN_NOT_READ_REASON)
 from .record import Q, meter_at
+from .consequences import value_open_written_enabled      # ROADMAP 2.279 r3
 
 
 #: `OMR_HOLD_OUT_UNIDENTIFIED` and `OMR_METER_SEGMENTS` — PROMOTED at roadmap
@@ -684,6 +685,11 @@ class Cell:
     #: canonical frame as an event's `x_position`. EMPTY unless
     #: `OMR_PARTIAL_BARS` is on or `measure`; nothing else reads it.
     unplaced: List[Dict[str, Any]] = field(default_factory=list)
+    #: ROADMAP 2.279 r3 (`OMR_VALUE_OPEN_WRITTEN`, Sean 2026-11-09): heads of THIS bar whose PITCH was read and whose VALUE is open with no
+    #: candidate (or whose chord's members disagree): each `{"sub", "pitch", "x", "reason", "candidates"}`. Written RED at their pitch as a
+    #: zero-duration `x` grace head (`_unread_head_xml`), nothing invented; the bar's gap/red marking is untouched (`fates` still files the
+    #: glyph in `unplaced`). EMPTY with the flag off.
+    unread_heads: List[Dict[str, Any]] = field(default_factory=list)
 
 
 def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
@@ -1505,6 +1511,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     # split one export between two behaviours — which is exactly the kind of
     # half-applied change no count would show.
     refuse_whole_rest_ink = whole_rest_ink_enabled()
+    valueless_pending: List[Tuple[StaffRun, int, Dict[str, Any]]] = []     # ROADMAP 2.279 r3, resolved after the bars are known
     relocate = relocate_at_export_enabled()
     pending_relocations: List[Tuple[StaffRun, int, Dict[str, Any],
                                     Dict[str, Any], Optional[str], str,
@@ -1536,6 +1543,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if s["glyph"] is None:
             continue
         is_rest = bool(rec.obs(Q.REST, sub))
+        valueless_reason = None         # ROADMAP 2.279 r3: set where a PITCH-read head has no value to write (written red below)
         whole_rest_conv = False         # ROADMAP 2.270: a head-boxed whole rest the ink reader passed, written as restWhole
         # ⚠️ ROADMAP 2.80b. A narrow box refused `too_narrow` as a head that
         # ADJUDICATE read, on its OWN ink, as an eighth rest (Sean, Brahms
@@ -1758,9 +1766,14 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                     and dur_v.get("reason") == "owned_by_another_staff"):
                 _drop("owned_by_another_staff", s)
                 continue
-            _drop(("rest_" if is_rest else "") + "duration_"
-                  + (dur_v["outcome"] if dur_v else "absent"), s)
-            continue
+            _vo_reason = ("rest_" if is_rest else "") + "duration_" + (dur_v["outcome"] if dur_v else "absent")
+            if not (value_open_written_enabled() and not is_rest and not reinstated_rest and not whole_rest_conv
+                    and pitch is not None):
+                _drop(_vo_reason, s)
+                continue
+            # ROADMAP 2.279 r3 (Sean 2026-11-09): PITCH READ, VALUE OPEN with no candidate INFER could take. Counted as before (the
+            # accounting equality holds) and, once the bar is known below, written RED at its pitch with nothing invented.
+            valueless_reason = _vo_reason
 
         owner = rec.value(Q.GLYPH_OWNER, sub)
         plan = None
@@ -1846,6 +1859,19 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             _drop("cell_past_the_last_bar" if run.n_measures_decided
                   else "bar_count_not_decided", s)
             continue
+        if valueless_reason is not None:
+            # ROADMAP 2.279 r3: counted under its reason as ever (the accounting equality), and filed on its bar as a RED head at its pitch
+            # when the bar holds written events to stand beside; a relocated copy or an event-less bar is counted, never silent.
+            _drop(valueless_reason, s)
+            if plan is not None:
+                if relocated is not None:
+                    relocated["unread_head_relocated_copy"] = relocated.get("unread_head_relocated_copy", 0) + 1
+            else:
+                _vx = o["value"]
+                valueless_pending.append((run, cell_index, {
+                    "sub": sub, "pitch": pitch, "x": float(_vx[1]) + float(_vx[3]) / 2.0, "reason": valueless_reason,
+                    "candidates": _guess_candidates(dur_v)}))
+            continue
         cell = run.cells.setdefault(
             cell_index, Cell(run.page, run.system, run.staff, cell_index))
 
@@ -1877,6 +1903,11 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             # not a note we read; emitting a nearest match would put a wrong
             # rhythm in the file and call it a reading.
             _drop("written_value_fits_no_note", s)
+            if value_open_written_enabled() and not is_rest and pitch is not None and plan is None and not whole_rest_conv:
+                # ROADMAP 2.279 r3: the pitch was read and no note value can be written: RED at its pitch, no value
+                valueless_pending.append((run, cell_index, {
+                    "sub": sub, "pitch": pitch, "x": float(o["value"][1]) + float(o["value"][3]) / 2.0,
+                    "reason": "written_value_fits_no_note", "candidates": []}))
             continue
         dtype, derived_dots = fit
         _det = {
@@ -2088,11 +2119,41 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     _export_unison.settle(runs, divisi if divisi is not None else {})
     # ⚠️ ROADMAP 2.89, LAST, after relocation, because a relocated head joins
     # a chord too. See `_chords_whose_value_would_be_voted`.
-    for _det in _chords_whose_value_would_be_voted(runs):
+    _vote_removed = _chords_whose_value_would_be_voted(runs)
+    for _det in _vote_removed:
         _sub = _det.get("glyph")
         if _sub is None:
             continue
         _drop("chord_value_undecided", _again(_sub))
+    if value_open_written_enabled():
+        # ROADMAP 2.279 r3: a chord whose members were written with DIFFERENT values is not voted (2.89): each member is pitch-read with
+        # its value disputed, so it is filed RED at its pitch carrying the members' values (nothing chosen).
+        for _det in _vote_removed:
+            _sub = _det.get("glyph")
+            if _sub is None or _det.get("pitch") is None:
+                continue
+            _s = _parse_subject(_sub)
+            _run = runs.get(_staff_key(_s["page"] or 0, _s["system"] or 0, _s["staff"] or 0))
+            _bb = _det.get("bbox") or [0, 0, 0, 0]
+            _vals = sorted({(h.get("duration_beats"), h.get("duration_type"), h.get("dots")) for h in _vote_removed
+                            if h.get("glyph") and _parse_subject(h["glyph"]).get("cell") == _s.get("cell")
+                            and _parse_subject(h["glyph"]).get("staff") == _s.get("staff")
+                            and _parse_subject(h["glyph"]).get("system") == _s.get("system")
+                            and _parse_subject(h["glyph"]).get("page") == _s.get("page")}, key=str)
+            if _run is not None:
+                valueless_pending.append((_run, _s["cell"] or 0, {
+                    "sub": _sub, "pitch": _det["pitch"], "x": float(_bb[0]) + float(_bb[2]) / 2.0,
+                    "reason": "chord_value_undecided",
+                    "candidates": [{"beats": b, "written": b, "dots": d, "support": None} for b, t, d in _vals]}))
+        for _run, _ci, _rec in valueless_pending:
+            _vcell = _run.cells.get(_ci)
+            if _vcell is None or not _vcell.detections:
+                _tally = "unread_head_in_eventless_bar"
+            else:
+                _vcell.unread_heads.append(_rec)
+                _tally = "unread_head_filed"
+            if relocated is not None:
+                relocated[_tally] = relocated.get(_tally, 0) + 1
     return dict(dropped)
 
 
@@ -4141,7 +4202,16 @@ def _meter_dict(meter: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     if cell is None or not cell.detections:
         return []
-    return group_chords_in_measure(cell.detections)
+    events = group_chords_in_measure(cell.detections)
+    if cell.unread_heads and events:
+        # ROADMAP 2.279 r3: each RED pitch-read head with no value rides, as a zero-duration grace head, in front of the written event nearest
+        # it in x (the first event with a nonempty x; ties to the earlier). It adds no time, so no bar sum, voice split or gap plan moves.
+        for ev in events:
+            ev.pop("unread_heads", None)
+        for u in sorted(cell.unread_heads, key=lambda r: (r["x"], r["sub"])):
+            near = min(events, key=lambda ev: abs(float(ev.get("x_position") or 0.0) - u["x"]))
+            near.setdefault("unread_heads", []).append(u)
+    return events
 
 
 def _document_bar_offsets(
@@ -6600,6 +6670,26 @@ def _partial_measure_xml(rec: Record, run: StaffRun, cell_index: int,
     return lines
 
 
+def _unread_head_xml(u: Dict[str, Any], voice: int, indent: str = "      ") -> Optional[str]:
+    """ROADMAP 2.279 r3 (Sean 2026-11-09): a head whose PITCH was read and whose VALUE is open with no candidate, RED, at its pitch, NOTHING
+    invented. ENCODING (the choice the task asked to be stated): a `<grace/>` note has no `<duration>`, so it adds no time and the bar is
+    not filled by it (the bar's red gap / unread marking, which stays, still says the time is unread); `<notehead>x</notehead>` with
+    `<stem>none</stem>` says no value is claimed (the `<type>` is a schema placeholder only). `color` is the same red as the unread bar
+    mark; `<other-notation>` carries the candidates for a program. None when the pitch has no MusicXML spelling."""
+    block = _legacy._mxl_pitch_block(u["pitch"], indent + "  ")
+    if block is None:
+        return None
+    body = json.dumps({"sub": u["sub"], "reason": u["reason"], "candidates": u.get("candidates") or []},
+                      sort_keys=True, separators=(",", ":"))
+    body = body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return "\n".join([
+        f'{indent}<note color="{UNREAD_BAR_MARK_COLOR}">', f"{indent}  <grace/>", block,
+        f"{indent}  <voice>{voice}</voice>", f"{indent}  <type>quarter</type>", f"{indent}  <stem>none</stem>",
+        f'{indent}  <notehead color="{UNREAD_BAR_MARK_COLOR}">x</notehead>',
+        f"{indent}  <notations>", f'{indent}    <other-notation type="single">reengrave:unread_value {body}</other-notation>',
+        f"{indent}  </notations>", f"{indent}</note>"])
+
+
 def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                         counters: Dict[str, int], voice: int = 1,
                         doubled: bool = False
@@ -6619,6 +6709,11 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
     out: List[str] = []
     units = 0
     for ev in events:
+        for _u in ev.get("unread_heads") or ():
+            _ux = _unread_head_xml(_u, voice)
+            if _ux is not None and not doubled:
+                out.append(_ux)
+                counters["unread_heads_written"] += 1
         if ev.get("kind") == "rest":
             out.extend(_rest_xml(ev, divisions, counters, voice=voice,
                                  doubled=doubled))

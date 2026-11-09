@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, ARC_INK_NOT_BEAM_SWITCH, carried_meter_fix_enabled, ledger_owner_heads_enabled, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, ARC_INK_NOT_BEAM_SWITCH, carried_meter_fix_enabled, ledger_owner_heads_enabled, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, VALUE_OPEN_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -2439,4 +2439,84 @@ def collapse_dynamic_by_ink(log: Log, cell: Subject) -> List[Proposal]:
                 "margin_unit": "letter-reader confidence, lower of two erasures",
                 "runner_up": runner, "min_score": INK_PICK_MIN_SCORE,
                 "required_margin": INK_PICK_MARGIN})]
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.279 r3 -- a head whose PITCH is read and whose VALUE is open, collapsed by its own shape
+# ─────────────────────────────────────────────────────────────────────────────
+
+VALUE_OPEN_REASON = "value_open_by_shape"
+
+
+def pick_by_shape(v: Any) -> Optional[Dict[str, Any]]:
+    """The most likely of a NARROWED duration's own candidates by the head's OWN evidence, or `None` where there is no candidate.
+
+    Owner of the value: CLAUDE section 4 ("a note is an eighth only on evidence -- a flag or beam read on its stem"; the bar never
+    supplies a value). The order is the reader's own `support` (a stroke that certainly covers a note outranks one that might; flag-level
+    votes); where the reason is `beam_discounted_uncertain` no beam was READ, so the unbeamed value is taken whatever the historical
+    order said; a tie in support takes the LONGER value (nothing shortens a note without evidence). Returns the candidate, the signed
+    margin (chosen support minus the best other, 0 on a tie) and which clause chose. The bar is not an input."""
+    cands = [c for c in (v.candidates or ()) if isinstance(c.value, dict) and c.value.get("beats")
+             and not c.value.get("is_rest")]
+    if not cands:
+        return None
+    if len(cands) == 1:
+        return {"cand": cands[0], "margin": None, "clause": "only_candidate"}
+    if (v.reason or "") == "beam_discounted_uncertain":
+        lo = min(int(c.value.get("beam_levels") or 0) for c in cands)
+        un = [c for c in cands if int(c.value.get("beam_levels") or 0) == lo]
+        if len(un) == 1:
+            rest = [c for c in cands if c is not un[0]]
+            return {"cand": un[0], "margin": float(un[0].support) - max(float(c.support) for c in rest),
+                    "clause": "no_beam_read_unbeamed"}
+    ranked = sorted(cands, key=lambda c: (-float(c.support), -float(c.value.get("beats") or 0.0)))
+    top, second = ranked[0], ranked[1]
+    gap = float(top.support) - float(second.support)
+    if gap > 0:
+        return {"cand": top, "margin": gap, "clause": "reader_support"}
+    return {"cand": top, "margin": 0.0, "clause": "tie_takes_the_longer"}
+
+
+@rule(
+    inference=Inference.COLLAPSE_VALUE_OPEN_BY_SHAPE,
+    target=Q.DURATION,
+    reads=(Q.DURATION, Q.PITCH, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
+    scope=Kind.CELL,
+    sideways=False,
+    switch=VALUE_OPEN_SWITCH,
+    bound=(
+        "It collapses a NARROWED duration of a head whose PITCH is DECIDED to one of that reader's OWN candidates and nothing else, by the "
+        "reader's own `support` order (the unbeamed value where the reason is `beam_discounted_uncertain`, the longer value on a tie), "
+        "recording the signed margin. It reads no bar arithmetic and no meter, never overturns a DECIDED verdict (it runs after every bar "
+        "rule, and a decided prior is skipped), and a head that left the bar (a duplicate, another staff's, ink that is not a head) is "
+        "skipped."),
+    why_witnesses_are_independent=(
+        "It counts no witnesses: the evidence is the head's own shape (what its stem, beams and flags showed), which is ONE reading, so the "
+        "verdict is GUESSED (blue, candidates carried) and the rule default OFF; the bar sum may later CONFIRM or contradict it but is "
+        "never its source."),
+)
+def collapse_value_open_by_shape(log: Log, cell: Subject) -> List[Proposal]:
+    """Pitch read, value open: the most likely value by the note's own shape, written blue (Sean 2026-11-09).
+
+    Which stage, and why: the value does not FOLLOW (the reader kept two), it is merely BEST -- so it is INFER's, labelled, bounded to the
+    reader's candidates, margin recorded. Nothing is invented: a head with no candidate value stays narrowed and EXPORT writes it red."""
+    from .consequences import _left_the_bar, _standing
+    out: List[Proposal] = []
+    for v in _standing(log, cell, Q.DURATION):
+        if v.outcome is not Outcome.NARROWED or not v.candidates:
+            continue
+        if _left_the_bar(log, v.subject) is not None:
+            continue
+        pv = log.verdict(Q.PITCH, v.subject)
+        if pv is None or pv.outcome is not Outcome.DECIDED:
+            continue
+        pick = pick_by_shape(v)
+        if pick is None:
+            continue
+        c = pick["cand"]
+        out.append(Proposal(
+            subject=v.subject, value=c.value, reason=VALUE_OPEN_REASON, basis=(v.id, pv.id), witnesses=(),
+            detail={"margin": pick["margin"], "margin_axis": "reader_support_gap", "clause": pick["clause"],
+                    "reader_reason": v.reason, "n_candidates": len(v.candidates), "bar_sum_read": False}))
+    return out
 
