@@ -153,6 +153,7 @@ from .. import rest_ink as _rest_ink
 from . import key_slots as _key_slots
 from . import inside_meter as _inside_meter
 from . import claimed_by as _claimed_by
+from . import claim_final as _claim_final
 from . import letter_cover as _letter_cover
 from . import stroke_owner as _stroke_owner
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
@@ -1135,6 +1136,21 @@ def _rest_claim_refusal(claim, box_row, detail: Dict[str, Any]) -> Ruling:
                            band=None, would_choose=(True,))
 
 
+def _rest_claim_final_refusal(cf, box_row, detail: Dict[str, Any]) -> Ruling:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): a rest box mostly on a claim's ink is refused BY THAT CLAIM (a LITERAL reason per kind)."""
+    detail = {**detail, **cf.detail}
+    if cf.kind == "barline":
+        r = Ruling(value=True, reason="claimed_by:barline", used=cf.used, detail=detail)
+    elif cf.kind == "arc":
+        r = Ruling(value=True, reason="claimed_by:arc", used=cf.used, detail=detail)
+    elif cf.kind == "hairpin":
+        r = Ruling(value=True, reason="claimed_by:hairpin", used=cf.used, detail=detail)
+    else:
+        r = Ruling(value=True, reason="claimed_by:page_claim", used=cf.used, detail=detail)
+    return _margins.attach(r, margin=cf.share - _claim_final.CF.CUT, axis="ink_share_held",
+                           unit="fraction of the box's own ink the claim holds", band=None, would_choose=(True,))
+
+
 def _one_ink_rest_narrowing(merged: Dict[str, Any], used, detail: Dict[str, Any]) -> Ruling:
     """ROADMAP 2.186: NARROWED {a rest, not a rest}, the rest first (written, blue); the merged classes ride on `detail.one_ink`, the
     detector-confidence margin to the best rival is the signed margin."""
@@ -1945,6 +1961,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
                                      "rest_is_a_meter_digit", "inside_the_meter",
                                      "claimed_by:meter", "claimed_by:clef", "claimed_by:leading_column", "claimed_by:key_signature",
                                      "claimed_by:word", "claimed_by:bracket", "claim_narrowed:word", "claim_narrowed:bracket",
+                                     "claimed_by:barline", "claimed_by:arc", "claimed_by:hairpin", "claimed_by:page_claim",
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
                                      "one_ink_merged",
@@ -2040,6 +2057,9 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         if claim is not None and claim.refuse:
             detail.update(claim.detail)
             return _rest_claim_refusal(claim, box_row, detail)
+        cf_row = _claim_final.finding(ev, box_row)       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+        if cf_row is not None:
+            return _rest_claim_final_refusal(cf_row, box_row, detail)
         if _inside_meter.enabled() and not _claimed_by.enabled():
             claimed = _inside_meter.read(ev, box_row, ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS), head=False)
             if claimed is not None:

@@ -104,6 +104,7 @@ from . import head_rest_shape as _head_rest_shape
 from . import head_on_mark as _head_on_mark
 from . import inside_meter as _inside_meter
 from . import claimed_by as _claimed_by
+from . import claim_final as _claim_final
 from . import letter_cover as _letter_cover
 from . import stroke_owner as _stroke_owner
 from .. import head_oval as _head_oval
@@ -641,6 +642,23 @@ def _claim_refusal(claim, box_row) -> Ruling:
         return _margins.attach(r, margin=claim.margin, axis="stand_margin_spaces", unit="staff spaces inside the key run",
                                band=None, would_choose=(True,))
     return _margins.attach(r, margin=claim.margin, axis="ink_share_inside", unit="fraction of the box's ink inside the claim",
+                           band=None, would_choose=(True,))
+
+
+def _claim_final_refusal(cf, box_row) -> Ruling:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): a box mostly on a claim's ink is refused BY THAT CLAIM -- the reason a LITERAL per kind (the
+    vocabulary check reads it); a claim family the literals do not name is the generic `claimed_by:page_claim`, so a layer a later lane files
+    (a tremolo slash) is consumed with no code here. The margin is the claim's ink share minus the cut."""
+    detail = {"class": box_row.value[0], **cf.detail}
+    if cf.kind == "barline":
+        r = Ruling(value=True, reason="claimed_by:barline", used=cf.used, detail=detail)
+    elif cf.kind == "arc":
+        r = Ruling(value=True, reason="claimed_by:arc", used=cf.used, detail=detail)
+    elif cf.kind == "hairpin":
+        r = Ruling(value=True, reason="claimed_by:hairpin", used=cf.used, detail=detail)
+    else:
+        r = Ruling(value=True, reason="claimed_by:page_claim", used=cf.used, detail=detail)
+    return _margins.attach(r, margin=cf.share - _claim_final.CF.CUT, axis="ink_share_held", unit="fraction of the box's own ink the claim holds",
                            band=None, would_choose=(True,))
 
 
@@ -3695,6 +3713,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
                                      "claim_narrowed:clef", "claim_narrowed:meter", "claim_narrowed:leading_column",
                                      "claim_narrowed:key_signature",
                                      "claimed_by:whole_rest",
+                                     "claimed_by:barline", "claimed_by:arc", "claimed_by:hairpin", "claimed_by:page_claim",
                                      "stem_end_ink_claimed", "stem_end_ink_unladdered", "stem_end_ink_only",
                                      "stem_end_ink_disagrees",
                                      "is_a_rest_shape",
@@ -3885,6 +3904,11 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     if wr_row is not None:
         return Ruling(value=True, reason="claimed_by:whole_rest", used=(box_row.id, wr_row.id),
                       detail={"class": box_row.value[0], "claimed_by": "whole_rest"})
+    # ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default OFF): claimed ink is final -- every OTHER claim kind (barline, an arc's or a hairpin's traced
+    # ink, a layer a later lane files) refuses a box that is mostly its ink, BY THE CLAIM, before any shape rule can name a different first cause.
+    cf_row = _claim_final.finding(ev, box_row)
+    if cf_row is not None:
+        return _claim_final_refusal(cf_row, box_row)
     # lane-stem-end-head round 2: a head the ink ALONE read at a stem end, its one witness; any claim on its ink refuses it.
     from .. import stem_end_heads as _SEH
     from .. import dyad_head_rescue as _DHR

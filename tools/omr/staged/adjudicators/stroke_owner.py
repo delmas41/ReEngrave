@@ -26,7 +26,7 @@ the consumers need; which staff the MARK belongs to stays `glyph_owner`'s questi
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import Kind, Q, Scope, STROKE_GLYPH_BASE
@@ -361,6 +361,35 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
     return out
 
 
+def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default OFF): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
+    another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
+    the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
+    from .. import claim_final as CF
+    if not CF.enabled():
+        return None
+    shares: Dict[str, Dict[int, float]] = {}
+    for r in ev.rows(Q.GLYPH_STROKES, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if isinstance(r.value, (list, tuple)):
+            d = r.detail or {}
+            sh = list(d.get("shares") or ())
+            m = {int(o): float(sh[i]) if i < len(sh) else 1.0 for i, o in enumerate(r.value)}
+            for o, s_ in d.get("partial") or ():
+                m.setdefault(int(o), float(s_))
+            shares[r.subject.to_key()] = m
+    claim_families = sorted({c.family for c in claims if c.area})
+    boxes = []
+    for c in claims:
+        if c.area or c.key not in shares:
+            continue
+        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family)
+                                         for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
+    held = CF.held_boxes(boxes, claim_families)
+    keys = {c.key for c in claims if not c.area and c.family == "head"}
+    mk = CF.marks([[k for k in w.owners if k in keys] for w in owned.values() if w.family == "head" and w.state in ("decided", "merged")])
+    return {"cut": CF.CUT, "near_min": CF.NEAR_MIN, "claims": claim_families, "held": held, "marks": mk}
+
+
 @decision(
     quantity=Q.STROKE_OWNER,
     scope=Kind.CELL,
@@ -422,6 +451,9 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
     if head_census["replaced"] or head_census["ledger_claims"]:
         detail["page_head_claim"] = head_census
+    cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): None with it OFF
+    if cf is not None:
+        detail["claim_final"] = cf
     if shaped:
         # 2.238: which boxes own their ink (the precision rules' `owns`; flag OFF keeps the 2.205 detail byte-identical) and every veto
         detail["box_owns"] = sorted(box_owns)
