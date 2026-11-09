@@ -2963,6 +2963,43 @@ def _joins_not_at_a_barline(ev: Evidence, pieces: Sequence[str], sp: float,
     return bad
 
 
+def _closest_sides(ev: Evidence, sysarc: Any, d: Dict[str, Any], sp: float, staff: Any) -> Tuple[Dict[str, bool], Dict[str, str], Dict[str, List[Tuple[float, float]]]]:
+    """ROADMAP 2.271 (`OMR_ARC_CLOSEST_HEAD`; page-facts, Sean 2026-11-05): which ends of THIS ONE traced curve may bind to the closest head, and why not.
+
+    Sean's tiles 7 and 11: the c of 'cresc.' and a hairpin were boxed as arcs and the closest-note rule wrote them as slurs. A curve whose trace lies at
+    least `ON_TRACE_SHARE_MIN` inside a printed direction word or a hairpin box is that mark's ink (claim order, CLAUDE s3: words and hairpins claim first)
+    and binds nothing here. And Sean's tiles 2, 4, 5, 9, 10, 12: a curve that stops short where ANOTHER curve of the staff begins (its end within the
+    BEGINS nearer this end than the closest head stands) is HALF of one arc: `arc_claim.bind_end` leaves that end unbound (`continues_in_another_curve`;
+    the join of the two curves is not built here). Returns the sides allowed, why not, and the other curves' facing ends."""
+    why: Dict[str, str] = {}
+    tr = d.get("trace") or ()
+    if tr:
+        cx0, cy0 = min(t[0] for t in tr), min(t[1] for t in tr)
+        cx1, cy1 = max(t[0] for t in tr), max(t[2] for t in tr)
+        area = max(1.0, (cx1 - cx0) * (cy1 - cy0))
+        page = ev.subject.at(Kind.PAGE)
+        for q in (Q.DIRECTION_WORD, Q.WEDGE_BOX):
+            for r in ev.rows(q, scope=Scope.SELF_AND_DESCENDANTS, subject=page):
+                b = (r.detail or {}).get("bbox_page_px")
+                if not b or len(b) != 4:
+                    continue
+                w, h = min(cx1, b[2]) - max(cx0, b[0]), min(cy1, b[3]) - max(cy0, b[1])
+                if w > 0 and h > 0 and w * h / area >= _arc_claim.ON_TRACE_SHARE_MIN:
+                    why["left"] = why["right"] = "inside_a_word_or_wedge"
+                    break
+            if why:
+                break
+    others: Dict[str, List[Tuple[float, float]]] = {"left": [], "right": []}
+    for r in ev.rows(Q.SYSTEM_ARC, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
+        if r.id == sysarc.id:
+            continue
+        o = r.detail or {}
+        if o.get("x_right_page") is not None and o.get("x_left_page") is not None:
+            others["left"].append((float(o["x_right_page"]), float(o["y_right_page"])))      # a curve ENDING near this one's left end
+            others["right"].append((float(o["x_left_page"]), float(o["y_left_page"])))       # a curve BEGINNING near this one's right end
+    return {s_: s_ not in why for s_ in ("left", "right")}, why, others
+
+
 def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the CURVE this arc box is a piece of, bound at both ends to notes AFTER the heads are read,
     and the kind Sean's tie rule makes of the two bound heads. None where GATHER traced no curve through this box (the OFF path stands).
@@ -2982,6 +3019,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     sysarc = _system_arc_row(ev)
     if sysarc is None:
         return None
+    staff_of_arc = ev.subject.at(Kind.STAFF)
     d = sysarc.detail or {}
     sp = float(d.get("space_page_px") or 0.0)
     owner = ev.verdict(Q.ARC_OWNER)
@@ -3056,7 +3094,10 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
     alt = None
     if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
         alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
-    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt)
+    closest_sides, closest_why, closest_others = (_closest_sides(ev, sysarc, d, sp, staff_of_arc) if _arc_claim.closest_head_enabled() else (None, {}, None))
+    b = _arc_claim.bind_curve(d, heads + tips, sp, usable, by_height=end_pitch, alt_ends=alt, closest_sides=closest_sides, other_ends=closest_others)
+    if closest_why:
+        b["closest_refused"] = closest_why
     b.update(curve=sysarc.subject.to_key(), home=home, kind=None, sysarc_id=sysarc.id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
@@ -3237,7 +3278,7 @@ def _page_binding(ev: Evidence, arc: Any) -> Optional[Dict[str, Any]]:
            Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION,
            Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER,
-           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC),
+           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC, Q.DIRECTION_WORD, Q.WEDGE_BOX),
     subjects_from=Q.ARC_BOX,
     # ⚠️ A DECIDED arc's reason stays `tie` / `slur`; WHICH rule decided it
     # (`two_notes_same_pitch`, `two_notes_different_pitch`,

@@ -63,6 +63,23 @@ def claim_enabled() -> bool:
     return raw.strip().lower() not in ("0", "false", "no", "off", "")
 
 
+#: ROADMAP 2.271 step 3 (Sean 2026-11-05 "Anything that needs to be done to connect arc separated by systems is fine"), default OFF: EXPORT joins an arc
+#: that runs off one system's edge to the piece that picks up at the next system's edge, on the same part's staff, when exactly one fits.
+ENV_ACROSS_SYSTEMS = "OMR_ARC_ACROSS_SYSTEMS"
+
+
+#: ROADMAP 2.271 (page-facts, Sean 2026-11-05 "Often arcs stop short. Closest note works"), default OFF: an arc end with no head in the window binds to the closest one beyond it.
+ENV_CLOSEST_HEAD = "OMR_ARC_CLOSEST_HEAD"
+
+
+def closest_head_enabled() -> bool:
+    return _on(ENV_CLOSEST_HEAD)
+
+
+def across_systems_enabled() -> bool:
+    return _on(ENV_ACROSS_SYSTEMS)
+
+
 def kind_enabled() -> bool:
     return _on(ENV_KIND)
 
@@ -388,7 +405,8 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
 
 
 def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],
-             usable: Any = None, by_height: bool = False) -> Dict[str, Any]:
+             usable: Any = None, by_height: bool = False, closest_ok: Optional[bool] = None,
+             others: Optional[Sequence[Tuple[float, float]]] = None) -> Dict[str, Any]:
     """One end of a curve at page `(ex, ey)`; `sgn` -1 for the left end, +1 for the right. `heads`: `{key, cx, cy, w, h}` of the staff in the
     system (GATHER boxes); `usable(key)` says whether ADJUDICATE left it a notehead of this staff (asked only of heads that could matter).
 
@@ -406,6 +424,26 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
         if not ok(h["key"]):
             continue
         cands.append(dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)))
+    closest = False
+    if not cands and (closest_head_enabled() if closest_ok is None else closest_ok):
+        # ROADMAP 2.271 (`OMR_ARC_CLOSEST_HEAD`; page-facts, Sean 2026-11-05 "Often arcs stop short. Closest note works"): no head inside the window
+        # -> the heads BEYOND the end on the curve's own side (the staff's own usable heads), the closest one binds; two about equally near
+        # (the binder's own column margin, no new number) stay the `two_columns_at_end` refusal below, never a pick. No fixed distance.
+        near = sorted((dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)) for h in heads if (h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp),
+                      key=lambda h: h["d"])
+        picked: List[Dict[str, Any]] = []
+        for h in near[:8]:
+            if ok(h["key"]):
+                picked.append(h)
+        if picked:
+            # another curve of the staff BEGINS (its opposite end stands) nearer this end than the closest head does: this curve is half of one
+            # arc and the other half is what reaches the note (Sean's tiles 2, 4, 5, 9, 10, 12) -- no number, the head's own distance is the bound
+            # (and it stands nearer this end than the head does: a second arc that begins AT the head is a chain of two arcs, not a continuation)
+            hh = picked[0]
+            if any(abs(ox - ex) + abs(oy - ey) < min(hh["d"], abs(ox - hh["cx"]) + abs(oy - hh["cy"])) and (ox - ex) * sgn > -ANCHOR_IN_SPACES * sp
+                   for ox, oy in (others or ())):
+                return {"unbound": "continues_in_another_curve", "candidates": [picked[0]["key"]], "margin_spaces": None}
+            cands, closest = picked, True
     if not cands:
         beyond = sorted((h for h in heads if (h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp),
                         key=lambda h: abs(h["cx"] - ex))
@@ -428,6 +466,8 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
         if got:
             if got.get("head") is not None and all(h.get("tip") for h in col):
                 got["via_stem_tip"] = True
+            if closest:
+                got["via_closest"] = True
             return got
     if len(col) == 1:
         pick = col[0]
@@ -440,6 +480,8 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
     out = {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3)}
     if pick.get("tip"):
         out["via_stem_tip"] = True
+    if closest:
+        out["via_closest"] = True
     return out
 
 
@@ -477,15 +519,18 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]],
 
 
 def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None,
-               by_height: bool = False, alt_ends: Optional[Dict[str, Sequence[float]]] = None) -> Dict[str, Any]:
+               by_height: bool = False, alt_ends: Optional[Dict[str, Sequence[float]]] = None,
+               closest_sides: Optional[Dict[str, bool]] = None,
+               other_ends: Optional[Dict[str, Sequence[Tuple[float, float]]]] = None) -> Dict[str, Any]:
     """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
     side = curve_side(detail.get("trace"), sp)
     xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
     xr, yr = detail.get("x_right_page"), detail.get("y_right_page")
     if None in (xl, yl, xr, yr) or sp <= 0:
         return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
-    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height)
-    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height)
+    cs = closest_sides or {}
+    left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height, False)
+    right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height, False)
     if alt_ends:
         # ROADMAP 2.260b r2 (OMR_PAGE_CLAIMS): an end that bound NO head at the traced end is tried once more at the end of the curve's own page
         # stroke; an end that bound a head (the OFF reading) is never moved
@@ -493,13 +538,29 @@ def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: floa
             cur = left if side_ == "left" else right
             alt = alt_ends.get(side_)
             if alt is not None and cur.get("unbound") == "no_head_at_end":
-                got = bind_end(float(alt[0]), float(alt[1]), sgn_, heads, sp, side, usable, by_height)
+                got = bind_end(float(alt[0]), float(alt[1]), sgn_, heads, sp, side, usable, by_height, False)
                 if got.get("head") is not None:
                     got["via_stroke_end"] = True
                     if side_ == "left":
                         left = got
                     else:
                         right = got
+    if closest_head_enabled():
+        # ROADMAP 2.271: the closest head only for an end that STILL has none, measured from the end of the curve's own PAGE STROKE where that runs
+        # past the traced end (the trace is the detector box + 0.5 sp; the stroke is the whole arc: Sean's tiles, "the box not capturing the full arc")
+        for side_, sgn_, xe, ye in (("left", -1, xl, yl), ("right", +1, xr, yr)):
+            cur = left if side_ == "left" else right
+            if cur.get("unbound") != "no_head_at_end" or cs.get(side_) is False:
+                continue
+            alt = (alt_ends or {}).get(side_)
+            if alt is not None and (float(alt[0]) - float(xe)) * sgn_ > 0:
+                xe, ye = alt[0], alt[1]
+            got = bind_end(float(xe), float(ye), sgn_, heads, sp, side, usable, by_height, True, (other_ends or {}).get(side_))
+            if got.get("head") is not None or got.get("unbound") == "continues_in_another_curve":
+                if side_ == "left":
+                    left = got
+                else:
+                    right = got
     if left.get("head") is not None and left.get("head") == right.get("head"):
         left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
     return {"left": left, "right": right, "side": side}
