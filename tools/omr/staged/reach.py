@@ -361,6 +361,8 @@ STAGE_OF_FILE = {
     "page_beams.py": "GATHER",
     # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
     "page_heads.py": "GATHER",
+    # ROADMAP 2.276: files the `owner: tremolo` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
+    "page_tremolo.py": "GATHER",
     # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
     "page_claim_names.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
