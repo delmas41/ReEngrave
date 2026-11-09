@@ -88,6 +88,57 @@ class TestReadPage(unittest.TestCase):
         self.assertEqual(len(b), 1)
 
 
+def _head(img, cy, side="L"):
+    """A heavy filled head blob beside the stem at height `cy` (1.2 sp wide, 0.9 sp tall)."""
+    cx = SX0 - 24 if side == "L" else SX1 + 24
+    cv2.ellipse(img, (cx, cy), (26, 30), 0, 0, 360, 0, -1)
+
+
+class TestStemEndTest(unittest.TestCase):
+    """ROADMAP 2.276 r2 (Sean 2026-11-09): a slash is never at or past the stem's HEAD end; from ink alone; abstains when the ink cannot tell."""
+
+    def test_a_slash_away_from_the_head_end_is_kept(self):
+        img = _paper()
+        _stem(img)
+        _head(img, SBOT - 10)
+        _slash(img, 150)
+        got, reasons = PT.read_page(img == 0, _stems(), [], SP, LINE)
+        self.assertEqual(len(got), 1)
+        self.assertEqual(reasons.get("end:ok"), 1)
+
+    def test_a_slash_at_the_head_end_is_refused_by_the_end_test(self):
+        img = _paper()
+        _stem(img)
+        _head(img, SBOT - 10)
+        _slash(img, 150)
+        with mock.patch.object(PT, "head_end_verdict", return_value="refuse"):      # the geometry of a slash touching a head defeats the finder first; the verdict is tested alone below
+            got, reasons = PT.read_page(img == 0, _stems(), [], SP, LINE)
+        self.assertEqual(got, [])
+        self.assertEqual(reasons.get("at_head_end"), 1)
+
+    def test_a_stem_whose_head_end_the_ink_cannot_tell_abstains_and_keeps_the_slash(self):
+        """Blobs at BOTH ends (a chord, a fused neighbour) and at NEITHER: no refusal on a guess."""
+        for both in (True, False):
+            img = _paper()
+            _stem(img)
+            if both:
+                _head(img, SBOT - 10)
+                _head(img, STOP + 10, "R")
+            _slash(img, 200)
+            got, reasons = PT.read_page(img == 0, _stems(), [], SP, LINE)
+            self.assertEqual(len(got), 1, both)
+            self.assertEqual(reasons.get("end:abstain"), 1, both)
+
+    def test_the_verdict_alone(self):
+        img = _paper()
+        _stem(img)
+        _head(img, STOP + 10, "R")
+        box = _stems()[0][1]
+        self.assertEqual(PT.head_end_verdict(img == 0, box, STOP + 20, SP), "refuse")
+        self.assertEqual(PT.head_end_verdict(img == 0, box, STOP - 15, SP), "refuse")      # past the end
+        self.assertEqual(PT.head_end_verdict(img == 0, box, 250, SP), "ok")
+
+
 class TestOwnStrokes(unittest.TestCase):
 
     def test_strokes_held_by_the_slash_box_are_its_own_the_stem_and_far_strokes_are_not(self):
