@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **519 rule exits** are sorted (569 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 49 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **91 DOUBLE-COUNT** (C), **170 OTHER** (D), **69 UNSURE** (U).
+1. **520 rule exits** are sorted (569 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 50 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **91 DOUBLE-COUNT** (C), **170 OTHER** (D), **70 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **69 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **70 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -351,6 +351,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `page_marks.py` | C | cells are views, the page is the ledger: boxes of one family from two padded cells on the same page ink are ONE page mark (records ids, decides nothing yet) | Sean 2026-10-30 (2.240 crops 2, 3) | open: step 2 (one owner per page mark) reads it |
 | `page_owner.py` | A | one owner staff per page mark: the staff's own lines, then the ledger lines, the stem a second witness, never nearness; arcs and hairpins read page-wide once (records, decides nothing yet) | Sean 2026-10-28/30 (2.216 option B; 2.240 step-1 tiles) | open: step 3 retires the cell-copy rules where it agrees, on tiles |
 | `page_strokes.py` | C | the PAGE stroke map: the cell finders on one raster assembled from each staff's erased band + the page, barline columns carved out first; records, decides nothing | Sean 2026-11-03 (2.260a M2) | open: M3 / M4 read it |
+| `page_tremolo.py` | U | NOT YET CLASSIFIED | - | open |
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
 | `second_hollow.py` | U | a SECOND detector at GATHER for hollow heads only | ROADMAP 2.114 | open: a second reading of the same ink |
 | `stem_end_heads.py` | A | a stem with no head is a note we have not seen: look at its end | Sean 2026-10-01 (2.179 "if there are stems then there are notes") | kept |
@@ -402,6 +403,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`head_ink.py`**: not classified.
 - **`key_header_ink.py`**: not classified.
 - **`page_heads.py`**: not classified.
+- **`page_tremolo.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
 - **`stem_strokes.py`**: not classified.
 - **`stroke_map.py`**: not classified.

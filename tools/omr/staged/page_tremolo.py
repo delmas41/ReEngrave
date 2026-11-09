@@ -20,8 +20,8 @@ the one generic rule (ROADMAP 2.277: a later box whose ink an earlier claim hold
 
 WHAT IT FILES (a claim, nothing else). One `Q.CLAIMED_AREA` row per slash, on the page's subject: value = the page stroke ordinals the slash's ink owns (`[]` where the
 slash is fused with ink the map did not cut), `detail`: `owner` "tremolo", `unit` "page_ink", `standing` "READ", `source` "page_tremolo", `page_strokes`, `area`
-(the slash's page box), `centreline`, `stem` (the stem stroke's ordinal), `angle_deg`, `thickness_px`, `thickness_ratio`. A census row says how many stems were read, how
-many passed and each refusal reason. `claim_order.LAYERS` carries the owner as the layer "tremolo". It decides no meaning: a slash is never a note, a value or a
+(the slash's page box), `centreline`, `stem` (the stem stroke's ordinal), `angle_deg`, `thickness_px`, `thickness_ratio`. The census (stems read, slashes, each refusal reason) is printed
+with `--progress`, not filed (nothing reads it; the wiring check would list it). `claim_order.LAYERS` carries the owner as the layer "tremolo". It decides no meaning: a slash is never a note, a value or a
 rest, and is not bound to the stem's note (a later step).
 
 CONVENTION ASSUMED (2.71, Sean 2026-10-09/15): a slash is a thick angled line crossing both sides of one stem. WHAT WOULD FALSIFY IT: a real notehead pair either side of a stem
@@ -153,10 +153,7 @@ def gather_page_tremolo(log: Any, pws: Any, cells: Sequence[Any], local: Dict[in
         won = own_strokes(s, boxes, kinds, s["stem"])
         log.observe(sub, Q.CLAIMED_AREA, won, reader=READERS.CV_PAGE_TREMOLO, frame=FRAME_PAGE, owner=OWNER, unit=UNIT, standing="READ", source=SOURCE,
                     how="stem_slash", page_strokes=won, contested=[], area=[round(float(v), 1) for v in s["box"]], centreline=s.get("centreline"), stem=s["stem"],
-                    stem_box=s["stem_box"], angle_deg=s.get("angle_deg"), thickness_px=s.get("thickness_px"), thickness_ratio=s.get("thickness_ratio"),
-                    left_reach=s.get("left_reach"), right_reach=s.get("right_reach"))
-    log.observe(sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_PAGE_TREMOLO, frame=FRAME_PAGE, owner=OWNER, unit=UNIT + "_census", standing="READ", source=SOURCE,
-                stems_read=len(stems), slashes=len(slashes), reasons=reasons, heads_known=len(heads), seconds=seconds)
+                    stem_box=s["stem_box"], angle_deg=s.get("angle_deg"), thickness_px=s.get("thickness_px"), thickness_ratio=s.get("thickness_ratio"))
     if progress:
-        print("  gather page tremolo p%s: %d slashes of %d stems" % (p, len(slashes), len(stems)))
+        print("  gather page tremolo p%s: %d slashes of %d stems, %d heads known, refusals %s, %s s" % (p, len(slashes), len(stems), len(heads), reasons, seconds))
     return res

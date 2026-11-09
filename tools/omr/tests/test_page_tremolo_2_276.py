@@ -133,7 +133,7 @@ class TestFiling(unittest.TestCase):
         self.assertEqual(d["unit"], "page_ink")
         self.assertEqual(d["page_strokes"], [1])
         self.assertEqual(claims[0].reader, READERS.CV_PAGE_TREMOLO)
-        self.assertEqual(len([r for r in rows if r.value == "census"]), 1)
+        self.assertEqual(len(rows), 1)
 
     def test_the_claim_never_names_the_stem(self):
         log, _out = self._run({PT.ENV: "1"})
