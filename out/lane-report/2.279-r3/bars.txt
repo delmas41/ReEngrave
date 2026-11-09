@@ -1,0 +1,86 @@
+== litolff ==
+{
+ "transitions": {
+  "clean->clean": 2407,
+  "blue->blue": 424,
+  "blue->blue+redhead": 3,
+  "red->red": 341,
+  "clean->redhead": 8,
+  "red->blue": 20,
+  "clean->blue": 1
+ },
+ "clean_to_worse": 9,
+ "new_blue_notes": 52,
+ "new_blue_gained_notes": 52,
+ "bar_says_all": {
+  "exact": 40,
+  "over": 10,
+  "under": 2
+ },
+ "bar_says_gained": {
+  "exact": 40,
+  "over": 10,
+  "under": 2
+ },
+ "red_heads_written": 85
+}
+new blue notes in a bar the voice does NOT land exactly (over = CONTRADICTED by the bar):
+   ('P2', '87') over state red length 16.0 off-state red off-fill {'1': 'over'} [('1', 4, 'E-15', 'quarter')]
+   ('P2', '107') under state red length 16.0 off-state red off-fill {'1': 'exact'} [('1', 0, 'A5', 'quarter'), ('2', 0, 'A5', 'quarter')]
+   ('P3', '93') over state red length 16.0 off-state red off-fill {'1': 'over'} [('1', 0, 'A4', 'quarter'), ('1', 8, 'C5', 'quarter'), ('1', 8, 'A4', 'quarter')]
+   ('P9', '71') over state red length 16.0 off-state red off-fill {'1': 'exact'} [('1', 4, 'D5', 'quarter')]
+   ('P10', '1') over state red length 16.0 off-state red off-fill {'1': 'exact'} [('1', 8, 'G3', 'quarter')]
+   ('P11', '260') over state red length 16.0 off-state red off-fill {'1': 'exact'} [('1', 8, 'G2', 'quarter'), ('1', 16, 'G2', 'eighth')]
+   ('P12', '260') over state red length 16.0 off-state red off-fill {'1': 'under'} [('1', 8, 'G2', 'quarter'), ('1', 16, 'G2', 'eighth')]
+clean -> worse bars (every one):
+   (('P1', '146'), 'redhead', 3, [])
+   (('P2', '256'), 'redhead', 2, [])
+   (('P2', '39'), 'redhead', 1, [])
+   (('P2', '89'), 'redhead', 4, [])
+   (('P3', '89'), 'redhead', 5, [])
+   (('P4', '91'), 'redhead', 2, [])
+   (('P6', '47'), 'redhead', 3, [])
+   (('P8', '88'), 'blue', 0, [{'voice': '1', 'onset': 0, 'pitch': 'D5', 'blue': True, 'type': 'half'}])
+   (('P8', '94'), 'redhead', 1, [])
+== brahms ==
+{
+ "transitions": {
+  "clean->clean": 1668,
+  "blue->blue": 170,
+  "red->red": 266,
+  "red->blue": 30,
+  "clean->redhead": 7,
+  "blue->blue+redhead": 1
+ },
+ "clean_to_worse": 7,
+ "new_blue_notes": 64,
+ "new_blue_gained_notes": 64,
+ "bar_says_all": {
+  "exact": 54,
+  "over": 7,
+  "under": 3
+ },
+ "bar_says_gained": {
+  "exact": 54,
+  "over": 7,
+  "under": 3
+ },
+ "red_heads_written": 127
+}
+new blue notes in a bar the voice does NOT land exactly (over = CONTRADICTED by the bar):
+   ('P4', '49') over state red length 12.0 off-state red off-fill {'1': 'over'} [('1', 18, 'D4', 'quarter')]
+   ('P10', '130') under state red length 12.0 off-state red off-fill {'1': 'exact'} [('1', 0, 'E5', 'quarter'), ('2', 0, 'E5', 'quarter')]
+   ('P11', '2') over state red length 12.0 off-state red off-fill {'1': 'over'} [('1', 9, 'E-15', 'eighth')]
+   ('P12', '53') under state red length 12.0 off-state red off-fill {'1': 'exact'} [('1', 0, 'F4', 'quarter')]
+   ('P13', '24') over state red length 12.0 off-state red off-fill {'1': 'over'} [('1', 8, 'E3', 'eighth'), ('1', 10, 'G2', 'half'), ('1', 18, 'G3', 'eighth')]
+   ('P14', '27') under state red length 12.0 off-state red off-fill {'1': 'exact'} [('1', 5, 'A-12', 'quarter')]
+   ('P14', '30') over state red length 12.0 off-state red off-fill {'1': 'over'} [('1', 4, 'C3', 'quarter')]
+   ('P14', '35') over state red length 12.0 off-state red off-fill {'1': 'over'} [('1', 0, 'E-13', 'quarter')]
+clean -> worse bars (every one):
+   (('P12', '96'), 'redhead', 2, [])
+   (('P13', '2'), 'redhead', 2, [])
+   (('P13', '27'), 'redhead', 1, [])
+   (('P3', '109'), 'redhead', 1, [])
+   (('P4', '109'), 'redhead', 2, [])
+   (('P4', '134'), 'redhead', 1, [])
+   (('P7', '92'), 'redhead', 4, [])

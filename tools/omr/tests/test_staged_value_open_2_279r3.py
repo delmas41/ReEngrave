@@ -194,5 +194,43 @@ class TestTheRedHead(unittest.TestCase):
         self.assertEqual(len(export._events(cell)[0]["unread_heads"]), 1)
 
 
+class TestNothingWrittenIsMoved(unittest.TestCase):
+
+    def _det(self, pitch, beats, glyph, guess=None, x=0.0):
+        return {"category": "notehead", "pitch": pitch, "duration_beats": beats, "duration_type": "quarter" if beats == 1.0 else "eighth",
+                "dots": 0, "bbox": [x, 0, 10, 10], "bbox_page": [x, 0, 10, 10], "glyph": glyph, **({"guess": guess} if guess else {})}
+
+    def _runs(self, dets):
+        cell = export.Cell(0, 0, 0, 0)
+        cell.detections.extend(dets)
+        run = export.StaffRun(key="staff/0/0/0", page=0, system=0, staff=0)
+        run.cells[0] = cell
+        return {"staff/0/0/0": run}, cell
+
+    def test_a_guessed_value_that_disagrees_with_a_written_chord_mate_is_refused_alone(self):
+        # the Litolff p8 tile 8 case: the written eighth keeps its place, only the guess is taken out (and later filed red)
+        mine = {"rule": "collapse_value_open_by_shape", "stage": "INFER", "candidates": []}
+        runs, cell = self._runs([self._det("C4", 0.5, "glyph/0/0/0/0/1"), self._det("C4", 1.0, "glyph/0/0/0/0/2", guess=mine)])
+        with mock.patch.dict(os.environ, {FLAG: "1"}):
+            removed = export._chords_whose_value_would_be_voted(runs)
+        self.assertEqual([d["glyph"] for d in removed], ["glyph/0/0/0/0/2"])
+        self.assertEqual([d["glyph"] for d in cell.detections], ["glyph/0/0/0/0/1"])
+
+    def test_CONTROL_flag_off_both_are_refused_as_before(self):
+        mine = {"rule": "collapse_value_open_by_shape", "stage": "INFER", "candidates": []}
+        runs, cell = self._runs([self._det("C4", 0.5, "glyph/0/0/0/0/1"), self._det("C4", 1.0, "glyph/0/0/0/0/2", guess=mine)])
+        with mock.patch.dict(os.environ, {FLAG: "0"}):
+            removed = export._chords_whose_value_would_be_voted(runs)
+        self.assertEqual(len(removed), 2)
+
+    def test_the_same_ink_as_a_written_head_is_not_filed_red(self):
+        cell = export.Cell(0, 0, 0, 0)
+        cell.detections.append(self._det("C4", 0.5, "g1"))
+        near = {"pitch": "C4", "bbox_page": [2, 1, 10, 10]}
+        self.assertTrue(export._same_ink_as_written(cell, near, 10.0))
+        self.assertFalse(export._same_ink_as_written(cell, dict(near, pitch="D4"), 10.0))            # another pitch is another note
+        self.assertFalse(export._same_ink_as_written(cell, dict(near, bbox_page=[200, 1, 10, 10]), 10.0))   # far away is another note
+
+
 if __name__ == "__main__":
     unittest.main()

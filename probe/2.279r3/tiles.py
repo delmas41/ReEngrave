@@ -29,8 +29,10 @@ def pt(ac, asame, seed, n_cases=9, n_controls=3):
 L.pick_tiles = pt
 tmp = pathlib.Path("out/lane-report/2.279-r3-tiles-" + KIND)
 shutil.rmtree(tmp, ignore_errors=True)
+tmp.mkdir(parents=True)
+(tmp / "work").symlink_to(pathlib.Path("out/lane-report/2.279-r3/work").resolve())      # --reuse reads OUT/work
 sys.argv = ["lane_report", "--flag", "OMR_VALUE_OPEN_WRITTEN", "--tag", "20261104-night", "--reuse", "--out", str(tmp),
-            "--work", "out/lane-report/2.279-r3/work", "--seed", "2279"]
+            "--seed", "2279"]
 L.main()
 OUT.mkdir(parents=True, exist_ok=True)
 shutil.rmtree(OUT / "tiles", ignore_errors=True)

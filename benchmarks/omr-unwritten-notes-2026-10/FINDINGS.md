@@ -255,3 +255,35 @@ Flag `OMR_DROPPED_BLUE` (default OFF, `consequences.dropped_blue_enabled`, `infe
 
 ### 5. Tiles
 `out/print/2.279/` (12 tiles, 9 gained notes + 3 controls, `key.json` outside the folder, orange box, question: what is the written value of the boxed note?). Drawn by the lane-report cutter restricted to gained notes (`probe/2.279/notetiles.py`), page crops with the neutral box, not the written file. My look (ours, not evidence): 9 shows an eighth flag (written eighth, agree); 4 a double-beamed head (16th, plausible); 7 a beamed eighth control, 6 and 10 plausible quarter controls; 1, 2, 8, 11 plausible; 3, 5, 12 cannot tell (merged Litolff plate; tile 5 may be a quarter chord). Sean's answers: none yet. Not done: Brahms probe, export byte-identity (identical by construction: flag OFF returns before any relabel; the Litolff OFF arm reproduces the record), a clef-from-slot fix, the stem grouping fix.
+
+
+## 2.279 r3 -- pitch read, value open: blue by the note's own shape, red at its pitch (Sean 2026-11-09 ruling; flag `OMR_VALUE_OPEN_WRITTEN`, default OFF)
+
+STAGED, ADJUDICATE..EXPORT re-adjudication of the 20261104-night slices (frozen 8-page samples), OFF vs ON. Branch `lane-2.279-r3`. Probes `probe/2.279r3/` (`bars.py`, `read_moves.py`, `tiles.py`); report `out/lane-report/2.279-r3/`.
+
+**Cause and process lesson.** A pitch-read head was dropped because EXPORT writes one value per note and INFER was held to "the bar only confirms", so nothing wrote or marked the note ("red" marked a bar, never a note). The ruling splits it: value open with candidates -> blue (INFER, reader's own candidates); no candidate -> red at pitch. Lessons: (1) a NARROWED verdict always holds >= 2 candidates (record invariant), so "no candidate" is only abstained/absent durations, chord disputes and unwritable values; (2) the silent drops are mostly NOT missing notes: in the bars that were clean OFF (one Litolff example, P2 bar 256), the dropped head is often a repeated/doubled note the bar already counts, so writing it blue at the reader's top value overfills the bar. The first build (reader order only) turned 8 clean Litolff bars red-unread; the bar must be allowed to VETO (never to supply) a pick. (3) Writing a dropped note changes its neighbours: a chord vote refuses READ mates, a partial-bar plan hides READ notes in its gap, a printed accidental now carries to later READ notes. Those are the losses below.
+
+**Value owner.** CLAUDE s4 / page-facts "an eighth only on evidence" through `consequences._shortens_without_evidence` (the one test); order = the reader's `support`; tie takes the longer; margin recorded (`reader_support_gap`); the bar sum is never the source. The bar VETOES: where the decided neighbours fit the meter and the picks would overfill it, none is made (head stays narrowed -> red). A chord whose members would get different values gets none. A guessed value never takes a written chord-mate (export vote refuses the guess alone).
+
+**Red encoding (b).** A `<grace/>` note (no `<duration>`, adds no time, the bar is not filled; the bar's red gap/unread marking is untouched) with `<notehead>x</notehead>`, `<stem>none</stem>`, red, `other-notation reengrave:unread_value {candidates}`; LilyPond: red `\grace` cross head. Rides before the nearest written event in x. A head that is the same ink as a written head (same pitch, < 0.75 space) is counted (`unread_head_same_ink_as_written`), a head in an event-less bar or a relocated copy is counted under its drop reason and its bar's unread mark -- never silent. Not built: red heads in bars with no written event (counted only).
+
+### Numbers (frozen samples; OFF reproduces the record on Litolff 0 diffs, Brahms 1 diff of 12350; Brahms line says "neither arm reproduces" only because ON moves as it must)
+| | Litolff | Brahms |
+|---|---|---|
+| notes (file) | +133 -2 | +190 -6 |
+| not written | 2100 -> 2058 | 3100 -> 3047 |
+| red bars | 190 -> 191 | 154 -> 146 |
+| new blue notes / red heads written | 52 / 85 | 64 / 127 |
+| bar transitions | red->blue 20, red->red 341, clean->redhead 8, clean->blue 1, blue->blue+redhead 3 | red->blue 30, red->red 266, clean->redhead 7, blue->blue+redhead 1 |
+| judged right->wrong | 1 (see below) | 0 |
+| unwritten->wrong / ->right | 0 / 3 | 0 / 0 |
+| READ notes changed or gone (value or pitch or vanished) | 2 | 10 |
+
+**(2) Not 0 -- the landing check fails; do not land as is.**
+- Litolff right->wrong 1 (rhythm-leftovers-2 tile 8, glyph/2/1/7/13/1): the judged eighth is STILL written as the same blue eighth in both arms (symbols.json); the scorer's place match picked the new red head of the neighbouring dropped C4 (glyph/…/13/2, 28 px away, a real repeated note) as "now: unread-value". A scorer-pairing artefact, but the scorer cannot tell and the rule is 0.
+- READ notes changed: Litolff P11 bar 79 (2 eighths); Brahms P3 b29 (2 quarters), P4 b95 (4 eighths), P12 b105 (1): bars red OFF and ON whose READ notes OFF showed inside a red bar are now inside the red GAP of a partial bar (the blue note newly written moves the partial planner's choice). Brahms P3 b30 (A4,A5 -> A-flat) and P10 b131 (F#5 -> F5): a printed accidental on a newly written note now carries to later READ notes (more correct, but a READ pitch moved). Brahms P10 b129 (1 note) same value, label turned blue (red bar became a partial bar).
+**(3) Bar losses, every one.** No clean bar became red-unread. Clean -> red head only (a silent drop now marked, the music unchanged): Litolff P1/146, P2/256, P2/39, P2/89, P3/89, P4/91, P6/47, P8/94; Brahms P12/96, P13/2, P13/27, P3/109, P4/109, P4/134, P7/92. Clean -> blue: Litolff P8/88 (a half D5 written blue). Blue -> blue+red head: Litolff 3, Brahms 1. Improvements: red -> blue 20 + 30.
+**(4) New blue notes vs the bar** (bar says: voice lands exactly / overfull / short): Litolff 40 / 10 / 2, Brahms 54 / 7 / 3 (all 17 overfull sit in bars that are red OFF and ON). NOT an accuracy: the veto removes overfull picks by construction, so "exact" is partly selected; Sean's tiles are the evidence.
+**(5) Tiles** `out/print/2.279-r3/blue/tiles` (12 blue; "What is the value of the boxed note?") and `out/print/2.279-r3/red/tiles` (4 red; "Is this a note, and can you read its value?"), keys `key.json` beside each folder. Sean's answers: none yet. The 12 blue tiles are 8 written quarters and 4 written eighths (Litolff 6, Brahms 6).
+
+**What a reader should know before deciding.** The gain is real (red bars Brahms 154->146; 20+30 red bars become blue/partial; 15 silent drops now marked), but the READ-neighbour changes (12 notes in 7 bars, via the partial-plan gap, the accidental carry and the scorer pairing) break the "READ never changes" rule, so the flag stays OFF. Next, if Sean wants it: keep READ events out of a gap the new note creates; the judged scorer should ignore a red head that is not at the tile's own glyph.

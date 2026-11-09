@@ -392,6 +392,7 @@ INFER_RULES = {
     "collapse_narrowed_by_bar": (BEAMS, "D:infer", "the bar chooses among a narrowed note's own candidates when every other note is decided and the bar fills", "Sean 2026-10-17 (the two exceptions, CLAUDE s4)", "kept"),
     "collapse_bare_stem_by_bar": (BEAMS, "D:infer", "a bare stem narrowed by an uncertain beam takes the value that fills a bar of decided notes", "Sean 2026-10-17 (CLAUDE s4)", "kept"),
     "collapse_arc_ink_not_beam": (BEAMS, "C", "a stem tip whose only stroke is an arc's is unbeamed", "2.202 cause: slur starts read as hooks", "retires with 2.205 (the arc owns its stroke first)"),
+    "collapse_value_open_by_shape": (BEAMS, "D:infer", "a pitch-read head with an open value takes the reader's most likely own candidate by its shape (the bar only vetoes); flag OFF", "Sean 2026-11-09 ruling (2.279 r3)", "kept"),
     "collapse_slot_index_to_family_block": (STRUCT, "D:infer", "a short unnamed block takes the one slot left in the family", "Sean 2026-09-22 (strings always five)", "kept"),
     "fill_clef_gap": (KEYS, "D:infer", "an unread clef takes the clef its slot has in other systems", "Sean 2026-09-17 (identity)", "kept"),
     "fill_part_key": (KEYS, "D:infer", "an unread key takes the document majority, re-transposed by this staff's own offset", "Sean 2026-09-23; transposing staves 2026-10-22", "kept"),

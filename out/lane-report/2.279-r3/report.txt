@@ -1,0 +1,26 @@
+LANE REPORT  OMR_VALUE_OPEN_WRITTEN (OFF=0 ON=1)  --from adjudicate
+  OMR_VALUE_OPEN_WRITTEN: read in staged/consequences.py, staged/export.py, staged/infer.py -> ADJUDICATE..EXPORT
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5710 notes+rests OFF, 5839 ON, 5708 paired)
+  file:   notes +133 -2 | rests +1 | accidentals +3 | flags +13 -17 | beams +28 -13 ~4 | ties +8 | slurs +14 -2 | articulations +3 -2 | note values ~21 | pitches ~1 | blue marks +57 -51 | words +9 -27
+  red bars 190 -> 191 | notes not written 2100 -> 2058
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 59 of 9107 (e.g. glyph/10/0/0/6/1, glyph/10/0/8/2/0, glyph/10/0/9/8/5)
+  Sean's judged answers (302 tiles on these pages): right->wrong 1 | right->narrowed/abstained/gone 0 | wrong->right 0
+      RIGHT->WRONG  rhythm-leftovers-2 tile 8 glyph/2/1/7/13/1  Sean: 8th  now: written unread-value (OFF eighth blue)
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 3 | invented->removed 0 (good)
+  judged tiles found by place 21 (at another id than asked 2) | by id key, no position 390 | position but no mark here 5
+  NOT JUDGED: 364 changed places no tile of Sean's covers (16 are covered; 29 have no page place): accidental 3, articulation 5, beam 45, blue 104, flag 29, note 121, pitch 1, rest 1, slur 16, tie 8, value 21, words 10 -> unjudged.txt
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6650 notes+rests OFF, 6836 ON, 6643 paired)
+  file:   notes +190 -6 | rests +3 -1 | accidentals +18 -2 | dots +38 | flags +5 -8 | beams +14 -3 | ties +22 -2 | slurs +21 | articulations +2 -2 | note values ~2 | pitches ~5 | blue marks +62 -52 | wedges +5 | words +13 -42
+  red bars 154 -> 146 | notes not written 3100 -> 3047
+  control: NEITHER ARM REPRODUCES THE RECORD -- the tree moved, not only the flag; distrust every number: duration/rest verdicts differing from the record OFF 1 / ON 62 of 12350 (e.g. glyph/12/0/10/8/7)
+  Sean's judged answers (256 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 21 (at another id than asked 4) | by id key, no position 370 | position but no mark here 13
+  NOT JUDGED: 478 changed places no tile of Sean's covers (1 are covered; 39 have no page place): accidental 20, articulation 4, beam 17, blue 113, dot 38, flag 13, note 196, pitch 5, rest 4, slur 21, tie 24, value 2, wedge 5, words 16 -> unjudged.txt
+
+LANDING CHECK FAILS: judged right->wrong 1, UNWRITTEN->WRONG 0 (a note OFF left unwritten that ON writes against Sean's answer) -- must be 0 to land (wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 1281 s
