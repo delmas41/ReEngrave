@@ -1687,16 +1687,16 @@ def _refused_by_a_human(ev: Evidence, detail: Dict[str, Any]
     quantity=Q.LEDGER_IS_NOT_A_LEDGER,
     composed_from=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.CELL_STAFF_SPACE, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER),
+                   Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.STAFF_LINES, Q.STAFF_SPACING, Q.CELL_STAFF_SPACE,
-           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER),
+           Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE, Q.LEDGER_INK_UNDER, Q.STROKE_OWNER),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("ledgerLine",),
     reasons=HUMAN_REFUSAL_REASONS + ("inside_the_staff", "on_a_staff_line",
                                      "tall_not_a_rung", "no_head_on_the_rung",
                                      "ink_under_the_rung", "ledger_line",
-                                     "rung_without_boxed_head",
+                                     "rung_without_boxed_head", "claimed_by:barline", "claimed_by:page_claim",
                                      ABSTAIN.NO_STAFF_GEOMETRY),
     mode=Mode.ADDITIVE,
 )
@@ -1739,6 +1739,10 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
         return Ruling.abstain(ABSTAIN.NO_STAFF_GEOMETRY)
 
     used = [box_row.id]
+
+    cf_row = _claim_final.finding(ev, box_row)       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+    if cf_row is not None:
+        return _rest_claim_final_refusal(cf_row, box_row, detail)
 
     # ⚠️⚠️ THE ORDER, 3.4g-2, AND WHY. Human (above) -> POSITION (inside the
     # band, then on an outer line: need nothing but the staff) -> SHAPE (tall,
@@ -1910,13 +1914,13 @@ def _ink_under_the_rung(ev: Evidence) -> Optional[Dict[str, Any]]:
 @decision(
     quantity=Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
     composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE),
+                   Q.GLYPH_BAND_DISTANCE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE),
+           Q.GLYPH_BAND_DISTANCE, Q.STROKE_OWNER),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("accidental",),
-    reasons=_human_only_reasons(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL),
+    reasons=_human_only_reasons(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL) + ("claimed_by:barline", "claimed_by:page_claim"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
@@ -1932,6 +1936,9 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    cf_row = _claim_final.finding(ev, None)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+    if cf_row is not None:
+        return _rest_claim_final_refusal(cf_row, None, detail)
     return Ruling(value=False, reason="accidental", used=used, detail=detail)
 
 
@@ -2186,14 +2193,14 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
 @decision(
     quantity=Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO,
     composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
+                   Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
+           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.STROKE_OWNER),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("arpeggiato",),
     reasons=_human_only_reasons(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO)
-    + ("in_a_key_signature_slot", "claimed_by:key_signature"),
+    + ("in_a_key_signature_slot", "claimed_by:key_signature", "claimed_by:barline", "claimed_by:page_claim"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
@@ -2210,6 +2217,9 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     in_key = _key_slot_refusal(ev, detail)
     if in_key is not None:
         return in_key
+    cf_row = _claim_final.finding(ev, None)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default OFF): claimed ink is final
+    if cf_row is not None:
+        return _rest_claim_final_refusal(cf_row, None, detail)
     return Ruling(value=False, reason="arpeggiato", used=used, detail=detail)
 
 

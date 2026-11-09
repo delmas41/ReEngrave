@@ -44,13 +44,16 @@ for o in obs:
             d = o["detail"]
             b = d.get("stroke_box") or [0, 0, 0, 0]
             strokes[(o["subject"].rsplit("/", 1)[0], g - STROKE_GLYPH_BASE)] = (round(float(d.get("fill") or 0) * b[2] * b[3], 1), o["value"])
-fate, owner = {}, {}
+fate, owner, cfs, owns_by_cell = {}, {}, {}, {}
 for v in vs:
     q = v["quantity"]
     if q in PRECISION:
         fate.setdefault(v["subject"], {})[q] = [bool(v["value"]) if v["outcome"] == "decided" else None, v.get("reason"), v["outcome"]]
     elif q == "stroke_owner" and v["outcome"] == "decided":
         owner[v["subject"]] = (v.get("detail") or {}).get("strokes") or {}
+        if (v.get("detail") or {}).get("claim_final"):
+            cfs[v["subject"]] = v["detail"]["claim_final"]
+        owns_by_cell[v["subject"]] = (v.get("detail") or {}).get("box_owns") or []
 rows = []
 for sub, b in boxes.items():
     g = gs.get(sub)
@@ -71,6 +74,6 @@ for sub, b in boxes.items():
         srows.append([o, s, cov, ink[0] if ink else None, ink[1] if ink else None, (e[0], e[1]) if e else None])
     rows.append({"sub": sub, "cls": b["value"][0], "box": b["value"][1:5], "reader": b.get("reader"), "cat": (b.get("detail") or {}).get("category"),
                  "score": b.get("score"), "strokes": srows, "fate": fate.get(sub, {})})
-json.dump({"plate": plate, "tag": tag, "flags": {k: v for k, v in os.environ.items() if k.startswith("OMR_CLAIM")}, "rows": rows},
+json.dump({"plate": plate, "tag": tag, "flags": {k: v for k, v in os.environ.items() if k.startswith("OMR_CLAIM")}, "rows": rows, "cf": cfs, "box_owns": owns_by_cell},
           open(out, "w"))
 print("wrote", out, len(rows), "boxes %.0fs" % (time.time() - t0))
