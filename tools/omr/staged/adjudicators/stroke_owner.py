@@ -26,7 +26,7 @@ the consumers need; which staff the MARK belongs to stays `glyph_owner`'s questi
 from __future__ import annotations
 
 import os
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from ..adjudicate import Evidence, Mode, Ruling, decision
 from ..record import Kind, Q, Scope, STROKE_GLYPH_BASE
@@ -107,6 +107,43 @@ def _areas(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]]) -> List[SO.Cl
             inside = tuple(o for o, pb in sorted(page.items()) if x0 <= (pb[0] + pb[2]) / 2.0 <= x1 and y0 <= (pb[1] + pb[3]) / 2.0 <= y1)
         if inside:
             out.append(SO.Claim(r.id, owner, owner, inside, (), r.id, area=True))
+    return out
+
+
+#: owners the stroke owner already reads by their own path (the register's tier-0 areas, the arcs' and hairpins' traced ink, the page heads and their ledgers)
+_OWN_PATH_OWNERS = frozenset(SO.AREA_OWNERS) | {"arc", "hairpin", "head", "ledger"}
+
+
+def _rects(r) -> List[Tuple[float, float, float, float]]:
+    """The page-px rectangles a claim row names, WHATEVER its unit: its value when it is a rectangle (`area`), else `detail.area`, else `detail.stroke_boxes`."""
+    d = r.detail or {}
+    v = r.value
+    if isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v):
+        return [tuple(float(t) for t in v)]
+    if isinstance(d.get("area"), (list, tuple)) and len(d["area"]) == 4:
+        return [tuple(float(t) for t in d["area"])]
+    return [tuple(float(t) for t in b) for b in (d.get("stroke_boxes") or ()) if isinstance(b, (list, tuple)) and len(b) == 4]
+
+
+def _layer_claims(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]]) -> List[SO.Claim]:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): ANY claim layer's `Q.CLAIMED_AREA` rows -- whatever the owner and whatever the unit (`area`, `page_ink`, a
+    layer a later lane files, e.g. 2.276's `tremolo`) -- own the strokes of THIS cell that lie wholly inside their rectangle (+1 px: a stem crossing a slash keeps its
+    ink), at tier 0, exactly as a word's page-wide claim does. No hand list of owners: an owner this module has no path for is a layer by being in the register.
+    Nothing here is filed with the flag OFF."""
+    from .. import claim_final as CF
+    out: List[SO.Claim] = []
+    if not CF.enabled():
+        return out
+    for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        d = r.detail or {}
+        owner = str(d.get("owner") or "")
+        if not owner or owner in _OWN_PATH_OWNERS or d.get("standing", "READ") != "READ" or d.get("unit") == "ink":
+            continue
+        inside = set()
+        for x0, y0, x1, y1 in _rects(r):
+            inside |= {o for o, pb in page.items() if x0 - 1 <= pb[0] and pb[2] <= x1 + 1 and y0 - 1 <= pb[1] and pb[3] <= y1 + 1}
+        if inside:
+            out.append(SO.Claim(r.id, owner, owner, tuple(sorted(inside)), (), r.id, area=True))
     return out
 
 
@@ -361,6 +398,40 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
     return out
 
 
+def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
+    another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
+    the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
+    from .. import claim_final as CF
+    if not CF.enabled():
+        return None
+    shares: Dict[str, Dict[int, float]] = {}
+    for r in ev.rows(Q.GLYPH_STROKES, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if isinstance(r.value, (list, tuple)):
+            d = r.detail or {}
+            sh = list(d.get("shares") or ())
+            m = {int(o): float(sh[i]) if i < len(sh) else 1.0 for i, o in enumerate(r.value)}
+            for o, s_ in d.get("partial") or ():
+                m.setdefault(int(o), float(s_))
+            shares[r.subject.to_key()] = m
+    claim_families = sorted({c.family for c in claims if c.area})
+    boxes = []
+    for c in claims:
+        if c.area or c.key not in shares:
+            continue
+        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family)
+                                         for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
+    held = CF.held_boxes(boxes, claim_families)
+    keys = {c.key for c in claims if not c.area and c.family == "head"}
+    frames: Dict[str, Any] = {}
+    for b in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        v = b.value
+        if isinstance(v, (list, tuple)) and len(v) == 5 and b.subject.to_key() in keys:
+            frames[b.subject.to_key()] = tuple(float(t) for t in v[1:5])
+    mk = CF.marks([[k for k in w.owners if k in keys] for w in owned.values() if w.family == "head" and w.state in ("decided", "merged")], frames)
+    return {"cut": CF.CUT, "near_min": CF.NEAR_MIN, "claims": claim_families, "held": held, "marks": mk}
+
+
 @decision(
     quantity=Q.STROKE_OWNER,
     scope=Kind.CELL,
@@ -390,12 +461,15 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     claims += arc_claims
     hairpin_claims = _hairpin_claims(ev, cell)        # 2.254 r2 (flag OMR_HAIRPIN_REACH; [] with it OFF)
     claims += hairpin_claims
+    layer_claims = _layer_claims(ev, cell, page)       # 2.277 (flag OMR_CLAIM_FINAL): any other claim layer, whatever its unit
+    claims += layer_claims
     claims += _found_whole_rests(ev, cell, page, claims)
     claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
     from .rhythm import beams_from_strokes_enabled
     shaped = SO.owner_shape_enabled()
     vetoes = shape_vetoes(ev, cell, inks, claims) if shaped else None
-    owned = SO.own_strokes(inks, claims, tiers=SO.TIERS, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
+    tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
+    owned = SO.own_strokes(inks, claims, tiers=tiers, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
                            vetoes=vetoes)
     by_ord = {i.ordinal: i for i in inks}
     strokes: Dict[str, Any] = {}
@@ -422,6 +496,9 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
     if head_census["replaced"] or head_census["ledger_claims"]:
         detail["page_head_claim"] = head_census
+    cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): None with it OFF
+    if cf is not None:
+        detail["claim_final"] = cf
     if shaped:
         # 2.238: which boxes own their ink (the precision rules' `owns`; flag OFF keeps the 2.205 detail byte-identical) and every veto
         detail["box_owns"] = sorted(box_owns)

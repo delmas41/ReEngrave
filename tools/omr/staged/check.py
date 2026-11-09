@@ -207,6 +207,15 @@ def _check_accuracy_record() -> CheckResult:
     return CheckResult("accuracy_record", open=len(probs))
 
 
+def _check_claim_final() -> CheckResult:
+    """ROADMAP 2.277: every claim the register files is consulted by the readers that box ink, or says why it only marks. The record-level half (no box
+    survives on claimed ink; no mark written twice) needs a saved slice: `probe/2.277/audit.py`."""
+    from . import claim_final as CF
+    f = CF.static_wiring()
+    return CheckResult("staged.claim_final", open=len(f),
+                       note="; ".join("%s x %s" % (x["claim"], x["reader"]) for x in f) or None)
+
+
 def _check_producers() -> CheckResult:
     """ROADMAP 0.5 / 3.4b-check. `producers.py` declares the out-of-pipeline
     producers `inventory`/`gather_coverage` now read as producers rather than
@@ -340,6 +349,7 @@ CHECKS: List[tuple] = [
     ("no_producer", _check_no_producer),
     ("export_coverage", _check_export_coverage),
     ("accuracy_record", _check_accuracy_record),
+    ("staged.claim_final", _check_claim_final),
     ("staged.producers", _check_producers),
     ("staged.margins", _check_margins),
     ("source_text_tests", _check_source_text_tests),

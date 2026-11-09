@@ -690,6 +690,9 @@ class Cell:
     #: zero-duration `x` grace head (`_unread_head_xml`), nothing invented; the bar's gap/red marking is untouched (`fates` still files the
     #: glyph in `unplaced`). EMPTY with the flag off.
     unread_heads: List[Dict[str, Any]] = field(default_factory=list)
+    #: ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): glyphs of THIS bar refused BY a barline's / a layer's claimed ink (`_CLAIM_GAP_REASONS`): not a gap (the ink is
+    #: another mark's), but a bar that stops adding up when the false gap goes keeps what the gap gave it -- its notes stay GUESSED (`_mark_claimed_gap_events`).
+    claimed_slivers: List[Dict[str, Any]] = field(default_factory=list)
 
 
 def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
@@ -5096,6 +5099,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             # planner cannot keep in part is WRITTEN red, not held out.
             red = _red_bar_applies(held)
             partial = None
+            claimed_gap_plan = None
             if held is not None and partial_mode != "off":
                 if run.condensed_from is not None:
                     partial = {"ok": False, "why": "doubled_staff_copy"}
@@ -5103,6 +5107,24 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     partial = _partial_bar_plan(
                         events, split[0], divisions, judged,
                         cell_here.unplaced if cell_here else ())
+                    claimed_gap_plan = None
+                    if cell_here is not None and cell_here.claimed_slivers:
+                        # ROADMAP 2.277 (the hold): a box refused BY a claim leaves no gap, but it may not cost a read note: the plan this bar would
+                        # have had with the sliver as a gap (flag OFF) is kept wherever it writes MORE of what was read (a red bar writes every event;
+                        # Brahms p25 m46 lost a read B-flat to an unread gap once the false right-hand gap was gone)
+                        _off_plan = _partial_bar_plan(
+                            events, split[0], divisions, judged,
+                            list(cell_here.unplaced) + [{"sub": s["sub"], "reason": "too_narrow", "x": s["x"], "w": 0.0}
+                                                        for s in cell_here.claimed_slivers])
+                        _all_rows = _bar_event_rows(events)
+
+                        def _rows_written(p: Dict[str, Any]) -> int:
+                            return p["written_rows"] if p["ok"] else (_all_rows if red else 0)
+                        if _rows_written(_off_plan) > _rows_written(partial):
+                            partial = _off_plan
+                            counters["claimed_gap_kept_as_gap"] = counters.get("claimed_gap_kept_as_gap", 0) + 1
+                        elif _off_plan["ok"] and not partial["ok"]:
+                            claimed_gap_plan = _off_plan
                     if partial_bars is not None:
                         partial_bars.append({
                             **_bar_ids(run, i, emitted),
@@ -5414,6 +5436,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 lines.extend(_direction_xml(kind, text, "      ")
                              for _x, kind, text in directions)
                 _count_directions(counters, directions)
+                if red and claimed_gap_plan is not None:
+                    counters["claimed_gap_events_kept_blue"] = counters.get("claimed_gap_events_kept_blue", 0) + _mark_claimed_gap_events(events)
                 if red:
                     # ⚠️⚠️ ROADMAP 2.173. WRITTEN WITH EXACTLY WHAT WAS READ:
                     # `_measure_xml` is the ordinary writer, so each event
@@ -6378,10 +6402,40 @@ _NOT_A_GAP_REASONS = frozenset({
     "not_a_notehead:claimed_by:key_signature", "not_a_rest:claimed_by:key_signature",
     # ROADMAP 2.221 m1/m1b: a READ word's / dynamic's / bracket's ink, claimed page-wide (flags OMR_CLAIM_WORDS_FIRST / OMR_CLAIM_BRACKETS_FIRST)
     "not_a_notehead:claimed_by:word", "not_a_rest:claimed_by:word", "not_a_notehead:claimed_by:bracket", "not_a_rest:claimed_by:bracket",
+    # ROADMAP 2.277 (flag OMR_CLAIM_FINAL): a box mostly on a barline's / a later layer's claimed ink is that mark's ink
+    "not_a_notehead:claimed_by:barline", "not_a_rest:claimed_by:barline",
+    "not_a_notehead:claimed_by:page_claim", "not_a_rest:claimed_by:page_claim",
     "cell_past_the_last_bar", "bar_count_not_decided",
     "staff_not_identified", "owner_staff_has_no_measures",
     "relocation_collides",
 })
+
+
+#: ROADMAP 2.277: the fates of a box refused BY a barline's / a later layer's claimed ink (in `_NOT_A_GAP_REASONS`: no unread gap)
+_CLAIM_GAP_REASONS = frozenset({
+    "not_a_notehead:claimed_by:barline", "not_a_rest:claimed_by:barline",
+    "not_a_notehead:claimed_by:page_claim", "not_a_rest:claimed_by:page_claim"})
+
+
+def _mark_claimed_gap_events(events: List[Dict[str, Any]]) -> int:
+    """ROADMAP 2.277 (the hold, Brahms p8 m47: a dotted half read as a half): a false unread gap used to put a bar's kept notes in blue
+    (`_mark_kept_onsets`); refusing the sliver by its claim removes the gap, and a bar that then does NOT add up would write the same notes
+    plain READ. A claim may remove a gap, never promote a neighbour from GUESSED to READ: every event of such a bar without a guess of its own is
+    GUESSED, the rule named apart so the report counts it. Returns how many events it marked."""
+    n = 0
+    g = {"stage": "EXPORT", "rule": "bar_sum_wrong_after_claimed_gap", "quantity": "onset", "candidates": [], "chosen": {}}
+    for ev in events:
+        if ev.get("kind") == "rest":
+            det = ev.get("rest")
+            if isinstance(det, dict) and not det.get("guess"):
+                det["guess"] = dict(g)
+                n += 1
+            continue
+        for h in ev.get("noteheads") or ():
+            if not h.get("guess"):
+                h["guess"] = dict(g)
+                n += 1
+    return n
 
 
 def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
@@ -6396,6 +6450,14 @@ def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
     """
     boxes = {o["subject"]: o["value"] for o in rec.obs_of(Q.GLYPH_BOX)}
     for sub, reason in fates.items():
+        if reason in _CLAIM_GAP_REASONS:
+            v = boxes.get(sub)
+            s = _parse_subject(sub)
+            run = runs.get(_staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0))
+            cell = run.cells.get(s["cell"] or 0) if run is not None else None
+            if cell is not None and v and len(v) == 5:
+                cell.claimed_slivers.append({"sub": sub, "reason": reason, "x": float(v[1]) + float(v[3]) / 2.0})
+            continue
         if reason in ("written", "written_relocated") \
                 or reason in _NOT_A_GAP_REASONS:
             continue
