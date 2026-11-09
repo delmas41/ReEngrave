@@ -41,4 +41,9 @@ GOOD (worth Sean switching on) only if ALL hold:
 Otherwise NOT GOOD, naming which criterion failed. Abstentions are counted by reason and, for each reason, what the old path writes for the mark. No constant is changed after
 the hold-out is read. A tile is never recut to hide a miss.
 
-FROZEN: (the sha is appended below, in a commit of its own, before the hold-out and never-used pages are read.)
+FROZEN: reader, binder, decision and export as of commit 0f76b70ca (the develop-page measure-first and fixes are in it; fast tier 10066 passed; `check` TOTAL 229), committed and
+pushed BEFORE the hold-out pages (Brahms p11, p20; Litolff p5, p13) and the never-used pages (Brahms p8, Litolff p11) were looked at for step 2. Honest note: the develop run
+(`lane_report` replays every page of a slice, not only the counted one) also computed the hold-out pages' arms, and a debug line printed hold-out arc keys (not their content or
+verdicts) before this line was written; no hold-out number was read or acted on. The develop-page fixes before the freeze, each from a look at ONE develop page: (1) the closest note is
+measured from the ink's own end (`core_ends`), not the extension's (Brahms p0: a short tie carried on through an augmentation dot to a ledger stub bound to the wrong note, 11 printed arcs
+lost vs Sean's hand arcs); (2) closest with no window (a head a little behind the end is a candidate); an end with no head ahead of it on the staff is the system's edge, not the last note.
