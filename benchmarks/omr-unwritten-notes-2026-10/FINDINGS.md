@@ -275,3 +275,20 @@ The copy cut 0.7 was looked at on crops both sides (`out/2.277/look-pairs/`): un
 ### 2.277 Sean's answers on the look tiles, and the heads that stay false
 
 Sean (2026-11-09, `answers/answers-2.277-look.json`): arc-held heads real 4/4 (MARK_ONLY confirmed); barline-held >= 0.5 not a note 4/4 including a rest box on a barline (refusing by the claim confirmed); kept heads at barline share 0.34-0.40: only 1 of 4 real (looks 24, 25, 26 false). Those are false heads we keep TODAY (not caused by this lane), no clean lower cut, 0.5 kept. Measured: Litolff 7 and Brahms 1 kept head boxes at barline share 0.3-0.5 in the frozen sample; 7 of the 8 reach the exported file. Eight tiles for a later look: `out/print/2.277-near-barline/`. A separate source of false notes.
+
+### 2.277 the landing hold (Sean's Brahms file-change tiles 1 and 2, 2026-11-09): cause, lesson, fix
+
+**Cause.** Tile 1 (Brahms p8 m47 P12, a dotted half read as a half) was NOT a real dot claimed as barline ink: the dot is never boxed by the detector (separate item, not this lane), so the half was wrong in OFF and ON. The OFF blue was a side effect of the false unread gap a barline sliver (`too_narrow`) left in the bar: the bar took the partial-bar path, which writes its kept notes blue (`_mark_kept_onsets`, Sean 2026-10-14). Refusing the sliver by its claim removed the gap; the bar then went down the red "does not add up: should hold 3, counted 2" path, which writes each note at its own status, so the half became plain READ. Tile 2 (p25 m46 P11) is the same root: without the right-hand false gap the planner could place a smaller gap and put a read B-flat 4 into it (OFF: a red bar that wrote all three events plain).
+**Lesson.** A claim that renames a refusal and removes a gap must be tested against everything that keys on the old reason or the old gap: the gap was also the only flag a bar with a wrong sum carried, and the shape reason was an input to three other readers (the meter-column "not a note", the dot rescue, the narrow-rest look). "No unread gap" was not pure cleanup.
+**Fix** (flag OFF still; all inside `OMR_CLAIM_FINAL`): (1) `claimed_by:barline` is shape-equivalent (`claim_final.SHAPE_EQUIVALENT_REASONS`) for `rhythm._not_a_note_mark`, `aug_dot_join.DOT_SHAPED_REFUSALS`, `narrow_rest`, so those readers see what they saw; only `claimed_by:page_claim` has no duration. (2) A red bar that lost such a gap keeps its notes GUESSED (`export._mark_claimed_gap_events`, rule `bar_sum_wrong_after_claimed_gap`). (3) If the plan with the sliver counted as a gap writes more of what was read, that plan is kept (`claimed_gap_kept_as_gap`).
+**Proof, 3-page re-adjudicate** (Brahms pages 0, 8, 25; no re-gather; `probe/2.277/place_diff.py`, `blue_plain.py`):
+
+| | before the fix | after |
+|---|--:|--:|
+| tile 1, p8 m47 P12 | half plain READ, bar warning | half BLUE, bar warning |
+| tile 2, p25 m46 P11 | read B-flat 4 lost to an unread gap | bar identical to OFF |
+| blue -> plain while the ON bar does not add up and OFF added up | 4 | 0 |
+| blue -> plain where OFF was already wrong | 0 | 0 |
+| measures that differ from OFF | 7 | 6 (P12 m36 gains 3 notes + a rest, blue; P7 m30 one rest in place of a 5-beat whole+quarter; 3 bars red but still blue) |
+
+Tests: `test_claim_final_hold_2_277.py` (8) and the partial-bar / red-bar / aug-dot / narrow-rest / duration / rhythm / export files (1,129 passed; 3 `test_staged_export.py` padded-bar tests fail identically on a merge-base copy of main, not this lane). **Known items:** (1) tile 1's real dot is never boxed by the detector: a separate item. (2) `bar_sum_wrong_after_claimed_gap` is keyed on the OFF counterfactual (what the bar would have done with the sliver as a gap); to be restated from the bar's own evidence later. The two full Brahms / Litolff re-measures were stopped on Sean's word ("I don't want to waste a full rerun on such small fixes"); the earlier full-sample numbers above are from before this fix.
