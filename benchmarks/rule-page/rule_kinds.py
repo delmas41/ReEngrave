@@ -282,6 +282,8 @@ RULES = [
     R(ARCS, "arc_owner", "no_page_frame,no_evidence", "D:honesty", "-", "-", RULE8, "kept"),
     R(ARCS, "tie_pair", "paired,paired_by_system_arc,paired_by_page_binding", "ok", "tie joins two heads", "found by the heads just outside its two ends", "Sean 2026-10-01 (\"next to each other regardless of barlines and the same pitch\", 2.54)", "-"),
     R(ARCS, "tie_pair", "not_adjacent,no_pair_at_one_position,more_than_one_pair,no_start_head,no_stop_head,no_head_near_the_arc,spans_a_whole_bar", "A", "a tie joins adjacent same-pitch heads", "nothing between the heads in time, same staff position", "Sean 2026-10-01 (page-facts s1)", "kept"),
+    R(ARCS, "page_arc_binding", "bound,none_bound", "ok", "a page-ink arc run bound to notes", "each end of a run a detector box witnesses binds to the closest note (page-facts 2026-11-05), the kind by the tie rule (OMR_PAGE_ARC_WRITE, default OFF; ROADMAP 2.274 step 2)", "Sean 2026-11-08 \"Try 1\"; page-facts s1", "-"),
+    R(ARCS, "page_arc_binding", "no_witnessed_run", "D:honesty", "no run a detector box agrees with", "a run with no witnessing box is not written in step 2", "CLAUDE rule 8", "kept"),
     R(ARCS, "tie_pair", "enters_from_previous_system,runs_off_the_system", "A", "a tie may cross a system break", "the other end is on the next / previous system", "page-facts s1", "kept"),
     R(ARCS, "tie_pair", "not_a_tie,not_an_arc", "D:bookkeeping", "arc is a slur or not an arc", "the domain is every arc (`not_an_arc` includes staff-line boxes)", "-", "kept"),
     R(ARCS, "tie_pair", "no_page_frame,no_evidence", "D:honesty", "-", "-", RULE8, "kept"),

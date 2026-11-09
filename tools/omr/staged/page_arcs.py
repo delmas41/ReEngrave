@@ -1189,12 +1189,13 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
                     why["wedge_new"] = why.get("wedge_new", 0) + 1
                     why["arc"] = why.get("arc", 1) - 1
                     continue
+        core = [[t["pts"][0][0], t["pts"][0][1]], [t["pts"][-1][0], t["pts"][-1][1]]]          # step 2: where the arc's OWN ink stops, before the extension carries it on
         if raw_cols is not None:
             # the core was judged on its own ink; only an accepted arc is carried on through the marks that claim before it, so an extension can never
             # make a run fail (a tail into a head used to turn a clean arc "steep")
             t = _extend_through_claims(t, raw_cols, blank_s if EXT_ALL else cross_s, sp, erased_s)
             info = dict(info, width_sp=round((t["pts"][-1][0] - t["pts"][0][0] + 1) / sp, 2))
-        info = dict(info, src=("thick" if t.get("thick") else "linked" if t.get("linked") else "ragged" if t.get("ragged") else "plain"))
+        info = dict(info, src=("thick" if t.get("thick") else "linked" if t.get("linked") else "ragged" if t.get("ragged") else "plain"), core=core)
         out.append(_run_row(t, info, scale, len(out)))
     why['joined_tracks'] = n_linked
     return dict(runs=out, why=why, tracks=len(tracks), scale=scale, sp=sp, blanked=int(blank.sum()), rejected=rejected,
@@ -1208,6 +1209,8 @@ def _run_row(t: Dict[str, Any], info: Dict[str, Any], scale: float, ordinal: int
     xs, ys = p[:, 0] / scale, p[:, 1] / scale
     half = float(p[:, 2].max() / scale / 2)
     info = dict(info)
+    if info.get("core"):
+        info["core_ends"] = [[round(c[0] / scale, 1), round(c[1] / scale, 1)] for c in info.pop("core")]
     info.update(id=ordinal, pts=pts, half=round(half, 1), box=[float(xs.min()), float(ys.min() - half), float(xs.max()), float(ys.max() + half)])
     return info
 
@@ -1359,7 +1362,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
         mid_y = float(np.median(pts[:, 1]))
         log.observe(sub, Q.PAGE_ARC, "run", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in r["box"]],
                     points=thin, width_spaces=r["width_sp"], sagitta_spaces=r["sagitta_sp"], thickness_spaces=r["thick_sp"], ends=ends_of(r["pts"], sp_page), page_strokes=[[int(i), s] for i, s in along],
-                    witnesses=by_run[r["id"]], staff=staff_of(mid_y), space_page_px=round(sp_page, 3))
+                    witnesses=by_run[r["id"]], staff=staff_of(mid_y), space_page_px=round(sp_page, 3), core_ends=r.get("core_ends"))
         n += 1
     blank = None
     n_seeded = 0

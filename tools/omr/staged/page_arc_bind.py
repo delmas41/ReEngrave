@@ -15,7 +15,7 @@ THE RULE THAT OWNS EACH VALUE (CLAUDE §6, "name the rule that owns the value"):
     about equally near (`BIND_COLUMN_MARGIN_SPACES`) or a chord end that cannot choose ABSTAIN with both candidates and the signed margin; a run that is HALF of an arc (another run
     BEGINS nearer its end than the closest head stands) leaves that end unbound (`continues_in_another_curve`);
   * KIND: page-facts s1 "A tie joins exactly TWO ADJACENT notes of the SAME pitch; anything else is a slur", same pitch read from POSITION measured locally at each head
-    (`ownership._bind_detail`, the body of 2.223's `_page_binding`, MOVED not rewritten). The detector's class is a prior and is not an input (`arc_class` is empty);
+    (`ownership._page_binding` with `page_run`: 2.223's body, not a copy). The detector's class is a prior and is not an input (`arc_class` is empty);
   * a run off a system's edge joins the run that picks up on the next system (page-facts, Sean 2026-11-05): 2.271 step 3's `export._across_system_spans`, REUSED, one candidate
     only, fed by this binding's `edge` ends;
   * ONE MARK, ONE ARC: a written run REPLACES the detector arcs of every box that witnesses it (and only a box all of whose witnessed runs are written: a box shared with an
@@ -49,7 +49,7 @@ def write_enabled() -> bool:
 
 
 def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, Any]]:
-    """A `Q.SYSTEM_ARC`-shaped detail for one `Q.PAGE_ARC` run (`ownership._bind_detail` reads this shape): `space_page_px`, `x_left_page` / `y_left_page` /
+    """A `Q.SYSTEM_ARC`-shaped detail for one `Q.PAGE_ARC` run (`ownership._page_binding(page_run=...)` reads this shape): `space_page_px`, `x_left_page` / `y_left_page` /
     `x_right_page` / `y_right_page` (the run's two ends, left then right) and `trace` (`[x, y_top, y_bottom]`, one row per filed point). No `pieces`: a run is already one
     arc, so the 2.223 junction guard has nothing to test."""
     ends = run_detail.get("ends")
@@ -57,25 +57,40 @@ def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, An
     if not ends or len(ends) != 2 or not pts or sp <= 0:
         return None
     (xl, yl, _tl), (xr, yr, _tr) = ends
+    core = run_detail.get("core_ends")
+    if core and len(core) == 2:
+        # where the arc's OWN ink stops (step-1 `core_ends`), not where the extension carried the run on: the extension runs through marks that claim before an arc, up to 4 spaces,
+        # and can pass the note the arc stops at (Brahms p0 staff 9: a short tie carried on through an augmentation dot into a ledger stub). Page-facts: an arc often stops SHORT
+        # of its note and binds to the closest one -- measured from the ink's own end.
+        (xl, yl), (xr, yr) = core
     half = 0.5 * float(run_detail.get("thickness_spaces") or 0.0) * sp
     return {"space_page_px": float(sp), "x_left_page": float(xl), "y_left_page": float(yl), "x_right_page": float(xr), "y_right_page": float(yr),
             "trace": [[float(x), float(y) - half, float(y) + half] for x, y in pts]}
 
 
 def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]]):
-    """The `binder` `ownership._bind_detail` takes: 2.166's window first (`arc_claim.bind_curve`, unchanged), then, for an end that still has no head, the CLOSEST usable head
-    beyond it (`bind_end(closest_ok=True)`, 2.271's rule), refusing the half of an arc (`others`: the facing ends of the staff's other runs)."""
+    """The `binder` `ownership._page_binding(page_run=...)` takes. Each end binds to the CLOSEST usable head (`arc_claim.bind_end(closest_only=True)`, 2.271's rule with no window: a run's end
+    can stand a little PAST its note: heads up to 2.166's own `ANCHOR_IN_SPACES` behind the end are candidates too), refusing the half of an arc (`others`: the facing
+    ends of the staff's other runs) and two columns about equally near. An end with NO usable head ahead of it anywhere on the staff (the 2.223 window's own edge test) is the
+    SYSTEM'S EDGE, whatever stands behind it: the arc may run on to the next system, so it is not ended at the last note (`{"edge": True}`; EXPORT may join it)."""
     from . import arc_claim as AC
+    from .arcs_system import ANCHOR_DY_SPACES, ANCHOR_IN_SPACES, ANCHOR_OUT_SPACES
 
     def binder(heads: List[Dict[str, Any]], sp: float, usable: Any, end_pitch: bool, alt: Any, d: Dict[str, Any]) -> Dict[str, Any]:
-        b = AC.bind_curve(d, heads, sp, usable, by_height=end_pitch, alt_ends=alt)
-        for side, sgn, xk, yk in (("left", -1, "x_left_page", "y_left_page"), ("right", +1, "x_right_page", "y_right_page")):
-            cur = b[side]
-            if cur.get("unbound") != "no_head_at_end":
+        side = AC.curve_side(d.get("trace"), sp)
+        b = {"left": None, "right": None, "side": side}
+        for s_, sgn, xk, yk in (("left", -1, "x_left_page", "y_left_page"), ("right", +1, "x_right_page", "y_right_page")):
+            ex = float(d[xk])
+            if not any((h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp and (usable is None or usable(h["key"])) for h in heads):
+                b[s_] = {"edge": True}
                 continue
-            got = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, b.get("side"), usable, end_pitch, True, others.get(side))
-            if got.get("head") is not None or got.get("unbound") == "continues_in_another_curve":
-                b[side] = got
+            b[s_] = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, side, usable, end_pitch, True, others.get(s_), closest_only=True,
+                                behind_spaces=None)
+            hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
+            if hd is not None:
+                out_by = (hd["cx"] - ex) * sgn
+                if out_by > ANCHOR_OUT_SPACES * sp or out_by < -ANCHOR_IN_SPACES * sp or abs(hd["cy"] - float(d[yk])) > ANCHOR_DY_SPACES * sp:
+                    b[s_]["outside_window"] = True          # the head stands outside 2.166's window: the end "stops short" (or overshoots) and the closest-note rule bound it
         if b["left"].get("head") is not None and b["left"].get("head") == b["right"].get("head"):
             b["left"] = b["right"] = {"unbound": "one_head_both_ends", "candidates": [b["left"]["head"]], "margin_spaces": None}
         return b

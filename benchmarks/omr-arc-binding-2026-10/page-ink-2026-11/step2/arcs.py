@@ -46,6 +46,38 @@ def staff_of(key):
     return None if not m else (int(m.group(1)), int(m.group(2)), int(m.group(3)))
 
 
+def same_end(k1, k2, boxes):
+    """one note column: the same key, or a chord-mate / twin box of the same staff within 0.8 head heights in x (MusicXML hangs an arc on a chord's first note)"""
+    if k1 == k2:
+        return True
+    b1, b2 = boxes.get(k1), boxes.get(k2)
+    s1, s2 = staff_of(k1), staff_of(k2)
+    if not b1 or not b2 or s1 != s2:
+        return False
+    return abs((b1["box"][0] + b1["box"][2]) / 2 - (b2["box"][0] + b2["box"][2]) / 2) <= 0.8 * (b1["box"][3] - b1["box"][1])
+
+
+def diff_arcs(off, on, boxes):
+    """`(lost, gained, kept)`: OFF arcs with no ON arc of the same kind on the same note columns, the reverse, and the matched pairs. One to one."""
+    used = set()
+    lost, kept = [], []
+    for a in off:
+        hit = None
+        for j, b in enumerate(on):
+            if j in used or a["kind"] != b["kind"]:
+                continue
+            if same_end(a["start"], b["start"], boxes) and same_end(a["stop"], b["stop"], boxes):
+                hit = j
+                break
+        if hit is None:
+            lost.append(a)
+        else:
+            used.add(hit)
+            kept.append((a, on[hit]))
+    gained = [b for j, b in enumerate(on) if j not in used]
+    return lost, gained, kept
+
+
 def span_of(arc, boxes):
     a, b = boxes.get(arc["start"]), boxes.get(arc["stop"])
     if not a or not b:
@@ -69,6 +101,9 @@ def per_run(extra, off_arcs, boxes, runs_by_ordinal):
             xs = [p[0] for p in row["points"]]
             x0, x1 = min(xs), max(xs)
             st = tuple(row.get("staff") or ())
+            if r.get("home"):          # the staff the binder bound on (the witnessing boxes' decided owner where they agree), not the staff nearest the run
+                hp = r["home"].split("/")
+                st = (int(hp[2]), int(hp[3]))
             rec = dict(page=page, ordinal=r.get("ordinal"), status=r["status"], kind=r.get("kind"), why=r.get("why"), start=r.get("start"), stop=r.get("stop"),
                        x0=x0, x1=x1, staff=st, witnesses=r["witnesses"], closest=r.get("closest"), edge=r.get("edge"))
             ov = []
@@ -86,7 +121,7 @@ def per_run(extra, off_arcs, boxes, runs_by_ordinal):
                     ov.append(a)
             rec["off_overlap"] = ov
             if r["status"] == "written":
-                exact = [a for a in ov if (a["start"], a["stop"]) == (r["start"], r["stop"])]
+                exact = [a for a in ov if same_end(a["start"], r["start"], boxes) and same_end(a["stop"], r["stop"], boxes)]
                 same_kind = [a for a in exact if a["kind"] == r["kind"]]
                 if same_kind:
                     rec["off"] = "whole"

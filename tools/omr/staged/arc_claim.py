@@ -406,16 +406,23 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
 
 def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],
              usable: Any = None, by_height: bool = False, closest_ok: Optional[bool] = None,
-             others: Optional[Sequence[Tuple[float, float]]] = None) -> Dict[str, Any]:
+             others: Optional[Sequence[Tuple[float, float]]] = None, closest_only: bool = False,
+             behind_spaces: Optional[float] = None) -> Dict[str, Any]:
     """One end of a curve at page `(ex, ey)`; `sgn` -1 for the left end, +1 for the right. `heads`: `{key, cx, cy, w, h}` of the staff in the
     system (GATHER boxes); `usable(key)` says whether ADJUDICATE left it a notehead of this staff (asked only of heads that could matter).
 
     Returns `{"head": key, ...}` / `{"edge": True}` / `{"unbound": why, "candidates": [...], "margin_spaces": m}` (m < 0: how far inside the
-    cut the refusal came; for `no_head_at_end` how far past the window the nearest usable head lies)."""
+    cut the refusal came; for `no_head_at_end` how far past the window the nearest usable head lies).
+
+    ROADMAP 2.274 step 2 (`closest_only`, `behind_spaces`; both off by default, so the detector-curve callers are unchanged): a PAGE-INK run's end is where its ink stops,
+    carried on to the note by the step-1 extension (up to `page_arcs.EXT_MAX_SP`) and so it can stand PAST the note it stops at (Brahms p0: 1.4 spaces). The 2.166 window
+    (a head 1.6 spaces ahead / 0.8 behind) would then pass over the note behind the end for one further on. `closest_only` skips the window and takes the closest usable head
+    by distance, heads up to `behind_spaces` behind the end included; two columns about equally near still abstain."""
     from .arcs_system import ANCHOR_DY_SPACES, ANCHOR_IN_SPACES, ANCHOR_OUT_SPACES
     ok = usable or (lambda _k: True)
+    back = ANCHOR_IN_SPACES if behind_spaces is None else behind_spaces
     cands = []
-    for h in heads:
+    for h in (() if closest_only else heads):
         out_by = (h["cx"] - ex) * sgn
         if out_by > ANCHOR_OUT_SPACES * sp or out_by < -ANCHOR_IN_SPACES * sp:
             continue
@@ -429,7 +436,7 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
         # ROADMAP 2.271 (`OMR_ARC_CLOSEST_HEAD`; page-facts, Sean 2026-11-05 "Often arcs stop short. Closest note works"): no head inside the window
         # -> the heads BEYOND the end on the curve's own side (the staff's own usable heads), the closest one binds; two about equally near
         # (the binder's own column margin, no new number) stay the `two_columns_at_end` refusal below, never a pick. No fixed distance.
-        near = sorted((dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)) for h in heads if (h["cx"] - ex) * sgn > -ANCHOR_IN_SPACES * sp),
+        near = sorted((dict(h, d=abs(h["cx"] - ex) + abs(h["cy"] - ey)) for h in heads if (h["cx"] - ex) * sgn > -back * sp),
                       key=lambda h: h["d"])
         picked: List[Dict[str, Any]] = []
         for h in near[:8]:
