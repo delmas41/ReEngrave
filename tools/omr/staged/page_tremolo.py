@@ -45,6 +45,15 @@ OWN_SHARE_MIN = 0.5
 #: other stems near this one (spaces either side) that the finder's `joins_another_stem` test looks at
 NEIGHBOUR_SPACES = 6.0
 HEAD_PREFIX = "notehead"
+#: ROADMAP 2.276 r2 (Sean 2026-11-09: "could never be a trem slash because it is on the opposite side of the end of the stem"): the stem END test, from ink alone.
+#: A head end is a heavy blob beside the stem within `END_ZONE_SP` of the stem's end: on one side at least `END_MIN_ROWS_SP` of rows wide (a row holding
+#: `END_ROW_SP` of ink), `END_MIN_AREA_SP2` of ink, reaching less than `END_MAX_REACH_SP` (a beam or a neighbour runs on to the window's edge).
+END_ZONE_SP = 1.4
+END_WINDOW_SP = 1.7
+END_ROW_SP = 0.6
+END_MIN_ROWS_SP = 0.9
+END_MIN_AREA_SP2 = 1.0
+END_MAX_REACH_SP = 1.69
 
 
 def enabled() -> bool:
@@ -59,6 +68,44 @@ def stems_of(strokes: Sequence[Any]) -> List[Tuple[int, Tuple[float, float, floa
             x, y, w, h = s.box
             out.append((i, (float(x), float(y), float(w), float(h))))
     return out
+
+
+def _end_blob(ink: Any, stem: Tuple[float, float, float, float], sp: float, end: str) -> bool:
+    """True where `end` ("top" / "bottom") of the stem carries a heavy blob to one side (module doc, END_*): the ink of a head, measured on the page raster.
+    Pure; a window the page edge cuts reads what is there."""
+    import numpy as np
+    x, y, w, h = stem
+    H, W = ink.shape
+    x0, x1 = int(round(x)), int(round(x + w))
+    pad, zone, slack = int(round(END_WINDOW_SP * sp)), int(round(END_ZONE_SP * sp)), int(round(0.3 * sp))
+    e = int(round(y)) if end == "top" else int(round(y + h))
+    ya, yb = (e - slack, e + zone) if end == "top" else (e - zone, e + slack)
+    ya, yb = max(0, ya), min(H, yb)
+    for side in ("L", "R"):
+        a = ink[ya:yb, max(0, x0 - pad):max(0, x0)] if side == "L" else ink[ya:yb, min(W, x1 + 1):min(W, x1 + 1 + pad)]
+        if a.size == 0:
+            continue
+        cols = np.nonzero(a.any(axis=0))[0]
+        if not len(cols):
+            continue
+        rows = int((a.sum(axis=1) >= END_ROW_SP * sp).sum())
+        reach = ((a.shape[1] - cols.min()) if side == "L" else (cols.max() + 1)) / sp
+        if rows >= END_MIN_ROWS_SP * sp and float(a.sum()) / (sp * sp) >= END_MIN_AREA_SP2 and reach <= END_MAX_REACH_SP:
+            return True
+    return False
+
+
+def head_end_verdict(ink: Any, stem: Tuple[float, float, float, float], slash_y: float, sp: float) -> str:
+    """The stem end test (module doc): "refuse" where the slash's centre `slash_y` lies within `END_ZONE_SP` of the stem's HEAD end or past it, "ok" where the head end
+    was told and the slash lies on the shaft away from it, "abstain" where the ink cannot tell the head end (a blob at both ends: a chord or a fused neighbour; at neither).
+    It never refuses on a guess."""
+    x, y, w, h = stem
+    top, bot = _end_blob(ink, stem, sp, "top"), _end_blob(ink, stem, sp, "bottom")
+    if top == bot:
+        return "abstain"
+    if top:
+        return "refuse" if slash_y <= y + END_ZONE_SP * sp else "ok"
+    return "refuse" if slash_y >= y + h - END_ZONE_SP * sp else "ok"
 
 
 def read_page(ink: Any, stems: Sequence[Tuple[int, Tuple[float, float, float, float]]], heads: Sequence[Tuple[float, float, float, float]], sp: float, line_px: float
@@ -77,6 +124,11 @@ def read_page(ink: Any, stems: Sequence[Tuple[int, Tuple[float, float, float, fl
             r = s.get("reason")
             reasons[str(r)] = reasons.get(str(r), 0) + 1
             if r is None:
+                verdict = head_end_verdict(ink, box, float(s.get("y", 0.0)), sp)
+                reasons["end:" + verdict] = reasons.get("end:" + verdict, 0) + 1
+                if verdict == "refuse":
+                    reasons["at_head_end"] = reasons.get("at_head_end", 0) + 1
+                    continue
                 d = {kk: v for kk, v in s.items() if not kk.startswith("_")}
                 d["stem"] = ordn
                 d["stem_box"] = list(box)
@@ -155,5 +207,10 @@ def gather_page_tremolo(log: Any, pws: Any, cells: Sequence[Any], local: Dict[in
                     how="stem_slash", page_strokes=won, contested=[], area=[round(float(v), 1) for v in s["box"]], centreline=s.get("centreline"), stem=s["stem"],
                     stem_box=s["stem_box"], angle_deg=s.get("angle_deg"), thickness_px=s.get("thickness_px"), thickness_ratio=s.get("thickness_ratio"))
     if progress:
-        print("  gather page tremolo p%s: %d slashes of %d stems, %d heads known, refusals %s, %s s" % (p, len(slashes), len(stems), len(heads), reasons, seconds))
+        ends = {"told": 0, "both": 0, "neither": 0}
+        for _o, b in stems:
+            t, bt = _end_blob(ink, b, sp, "top"), _end_blob(ink, b, sp, "bottom")
+            ends["told" if t != bt else "both" if t else "neither"] += 1
+        print("  gather page tremolo p%s: %d slashes of %d stems, %d heads known, refusals %s, head end told/both/neither %s, %s s"
+              % (p, len(slashes), len(stems), len(heads), reasons, ends, seconds))
     return res
