@@ -1,0 +1,22 @@
+brahms observations 25278 7s
+brahms abstentions 3210 8s
+brahms verdicts 1430 17s
+brahms p0 page_arc rows 237 runs 96
+       32.42 real        27.75 user         4.73 sys
+          5582864384  maximum resident set size
+                   0  average shared memory size
+                   0  average unshared data size
+                   0  average unshared stack size
+              608565  page reclaims
+              118752  page faults
+                   0  swaps
+                   0  block input operations
+                   0  block output operations
+                   0  messages sent
+                   0  messages received
+                   0  signals received
+                1496  voluntary context switches
+               80813  involuntary context switches
+        367956319226  instructions retired
+         99324199703  cycles elapsed
+          2139267648  peak memory footprint
