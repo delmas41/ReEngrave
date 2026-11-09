@@ -21,7 +21,21 @@ Inside the beam family (the verdict's own recorded detail, `probe/2.278/causes.p
 | first level certain, second level only possible (eighth or sixteenth) | 17 |
 | certain stroke, join reader says not joined | 8 |
 
-BRAHMS_TABLE_PLACEHOLDER
+Brahms, same records and tree: 703 boxes `duration_narrowed` (696 distinct ink); **645 (92%) are the beam family**
+(`beam_discounted_uncertain` 323, `beams_ambiguous` 302, `beam_certain_not_joined` 20); flags 23; dots 22; head fill / class 13.
+The shape differs from Litolff because the Brahms ink is clean and the notes are shorter:
+
+| cause (Brahms) | heads |
+|---|--:|
+| first beam level certain, second only possible (eighth or sixteenth): fused double beams; the cell reader counts 2 levels, the tip reading 1 on 35 of them | about 190 |
+| a detector `beam` box kept, no beam stroke in the ink at all (`cv_beams` 0, `yolo_kept` > 0): the box is a hairpin or slur, the head is a plain or dotted quarter, the tip window sees the hairpin's ink and is "not clean" | 248 |
+| every stroke refused by the ink test (`too_thin`, `owned_by_another_mark`, `through_heads`) and none certain | 194 |
+| no own stem row, no tip is ever read | 109 + 89 |
+
+My look at 40 seeded Brahms narrowed heads (ours, not evidence): a clear printed beam 17 (at least 7 of them double beams), a flag seen 4,
+a plain or dotted quarter with nothing on the stem but a hairpin or slur nearby 15, a rest or other false head 4. So on Brahms about
+half the narrowed heads have an answer a reader of the stem tip can see; the 15 plain quarters should already be decided by 2.146
+("clean tip means no beam") and are not because the tip window reports another mark's ink.
 
 **The cause is not any one reader. It is that a beam is never an object.** Each head asks, on its own, in its own cell, five or six
 readers (detector beam box, cell strokes A, ink test C, join reader, tip reader, stroke map) whether "a stroke over my stem" is a
@@ -37,7 +51,8 @@ swapped only the SOURCE of the strokes (page map instead of cell) and kept the p
 disagreement bucket came with it (M4b: Litolff -63 notes). Reading the ink once on the page does not help while the decision stays
 "per head, by vote". The unit that has to be read once is the beam group, not the stroke.
 
-**A premise of 2.275 does not hold.** `chord_value_undecided` (Litolff 98 heads / 42 groups) is not a stem whose value stayed
+**A premise of 2.275 does not hold.** `chord_value_undecided` (Brahms 183 heads / 81 groups: one stem in 14 groups, dotted-versus-undotted in about
+40, half-versus-quarter in 26; 5 of the first 8 crops I looked at are not heads at all: an F-clef piece, dynamic letters, beam pieces) and (Litolff 98 heads / 42 groups) is not a stem whose value stayed
 narrowed. In 41 of 42 groups the heads are NOT on one stem (21 groups on two stems, 20 with a head that has no stem); in only 1 group
 do all heads share one stem. The disagreement is half-versus-quarter in 30 groups (a hollow head and a head read black: fused ink, or
 a flag / rest piece boxed as a head: crops 3, 10, 11, 13 of my 16), eighth-versus-quarter in 11. Fixing beams will not

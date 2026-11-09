@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-08 -- ROADMAP 2.278: beams and flags diagnosis (no pipeline code)
+Diagnosis lane, STAGED ADJUDICATE/EXPORT read-only. Probes `probe/2.278/`, FINDINGS `benchmarks/page-ledger-2026-11` "2.278", plan `docs/plan-2026-11-08-beam-flag-reading.md`, 12 blind tiles `out/print/2.278` (unanswered). Result: the narrowed-duration loss (Litolff 256 / Brahms 703 boxes) is 86% / 92% the beam family; no beam is ever an object, each head votes six readers and disagreement narrows; chord_value_undecided is not a beam problem; the proposal is a page-wide beam GROUP (two-stem rule, bind by width) behind a pre-registered micro test.
+
 ## 2026-11-06 -- ROADMAP 2.273 landed ON: OMR_ARC_STRIP default ON (deny-list)
 STAGED GATHER `arc_strip.gather_arc_strip` (hook in `gather.gather()` after the detector passes, before the page stroke map): the same detector is run once per staff row holding an arc box cut at an interior cell edge (`max_det` raised through `yolo_detector`/`detector_cache`, a raised cap never cached) and a strip tie/slur box that continues a cut cell arc box across the barline is appended as a clipped detector piece (`source` `arc_strip`). `enabled()` is deny-list: "0"/"false"/"no"/"off" turns it off. Sean: "Land it." (11/12 tiles right, tile 7 one note short). Brahms p0 vs hand arcs: written 89->96, two-piece 9->5, wrong-note 17->20 (being traced). Flag-OFF export byte-compared to main on Litolff p4 and Brahms p0. Flag rows, rule page and test pin updated.
 
