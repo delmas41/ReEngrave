@@ -1,0 +1,406 @@
+{
+ "develop-r3-behaviour": {
+  "brahms-p0": {
+   "runs": 94,
+   "runs_witnessed": 92,
+   "runs_new": 2,
+   "curves_kept": 115,
+   "whole": 100,
+   "whole_union": 108,
+   "arc_boxes": 348
+  },
+  "brahms-p12": {
+   "runs": 125,
+   "runs_witnessed": 117,
+   "runs_new": 8,
+   "curves_kept": 145,
+   "whole": 136,
+   "whole_union": 139,
+   "arc_boxes": 674
+  },
+  "brahms-p14": {
+   "runs": 105,
+   "runs_witnessed": 91,
+   "runs_new": 14,
+   "curves_kept": 125,
+   "whole": 117,
+   "whole_union": 117,
+   "arc_boxes": 424
+  },
+  "brahms-p19": {
+   "runs": 177,
+   "runs_witnessed": 151,
+   "runs_new": 26,
+   "curves_kept": 213,
+   "whole": 193,
+   "whole_union": 195,
+   "arc_boxes": 716
+  },
+  "brahms-p22": {
+   "runs": 165,
+   "runs_witnessed": 132,
+   "runs_new": 33,
+   "curves_kept": 180,
+   "whole": 170,
+   "whole_union": 173,
+   "arc_boxes": 441
+  },
+  "brahms-p25": {
+   "runs": 111,
+   "runs_witnessed": 106,
+   "runs_new": 5,
+   "curves_kept": 144,
+   "whole": 120,
+   "whole_union": 126,
+   "arc_boxes": 635
+  },
+  "brahms-p4": {
+   "runs": 111,
+   "runs_witnessed": 105,
+   "runs_new": 6,
+   "curves_kept": 137,
+   "whole": 128,
+   "whole_union": 130,
+   "arc_boxes": 714
+  },
+  "brahms-p5": {
+   "runs": 199,
+   "runs_witnessed": 178,
+   "runs_new": 21,
+   "curves_kept": 240,
+   "whole": 226,
+   "whole_union": 232,
+   "arc_boxes": 737
+  },
+  "brahms-p7": {
+   "runs": 172,
+   "runs_witnessed": 163,
+   "runs_new": 9,
+   "curves_kept": 215,
+   "whole": 199,
+   "whole_union": 200,
+   "arc_boxes": 673
+  },
+  "brahms-p9": {
+   "runs": 128,
+   "runs_witnessed": 115,
+   "runs_new": 13,
+   "curves_kept": 150,
+   "whole": 140,
+   "whole_union": 146,
+   "arc_boxes": 556
+  },
+  "litolff-p10": {
+   "runs": 139,
+   "runs_witnessed": 91,
+   "runs_new": 48,
+   "curves_kept": 108,
+   "whole": 98,
+   "whole_union": 101,
+   "arc_boxes": 204
+  },
+  "litolff-p12": {
+   "runs": 89,
+   "runs_witnessed": 69,
+   "runs_new": 20,
+   "curves_kept": 108,
+   "whole": 97,
+   "whole_union": 98,
+   "arc_boxes": 195
+  },
+  "litolff-p16": {
+   "runs": 81,
+   "runs_witnessed": 59,
+   "runs_new": 22,
+   "curves_kept": 93,
+   "whole": 83,
+   "whole_union": 83,
+   "arc_boxes": 126
+  },
+  "litolff-p3": {
+   "runs": 128,
+   "runs_witnessed": 115,
+   "runs_new": 13,
+   "curves_kept": 141,
+   "whole": 128,
+   "whole_union": 131,
+   "arc_boxes": 253
+  },
+  "litolff-p4": {
+   "runs": 115,
+   "runs_witnessed": 99,
+   "runs_new": 16,
+   "curves_kept": 158,
+   "whole": 133,
+   "whole_union": 134,
+   "arc_boxes": 265
+  },
+  "litolff-p6": {
+   "runs": 60,
+   "runs_witnessed": 47,
+   "runs_new": 13,
+   "curves_kept": 77,
+   "whole": 69,
+   "whole_union": 71,
+   "arc_boxes": 171
+  },
+  "litolff-p8": {
+   "runs": 51,
+   "runs_witnessed": 35,
+   "runs_new": 16,
+   "curves_kept": 42,
+   "whole": 42,
+   "whole_union": 42,
+   "arc_boxes": 81
+  },
+  "litolff-p9": {
+   "runs": 61,
+   "runs_witnessed": 45,
+   "runs_new": 16,
+   "curves_kept": 67,
+   "whole": 64,
+   "whole_union": 66,
+   "arc_boxes": 157
+  }
+ },
+ "develop-r4": {
+  "brahms-p0": {
+   "runs": 96,
+   "runs_witnessed": 95,
+   "runs_new": 1,
+   "curves_kept": 115,
+   "whole": 103,
+   "whole_union": 111,
+   "arc_boxes": 348
+  },
+  "brahms-p12": {
+   "runs": 121,
+   "runs_witnessed": 117,
+   "runs_new": 4,
+   "curves_kept": 145,
+   "whole": 136,
+   "whole_union": 139,
+   "arc_boxes": 674
+  },
+  "brahms-p14": {
+   "runs": 110,
+   "runs_witnessed": 95,
+   "runs_new": 15,
+   "curves_kept": 125,
+   "whole": 122,
+   "whole_union": 122,
+   "arc_boxes": 424
+  },
+  "brahms-p19": {
+   "runs": 175,
+   "runs_witnessed": 153,
+   "runs_new": 22,
+   "curves_kept": 213,
+   "whole": 192,
+   "whole_union": 194,
+   "arc_boxes": 716
+  },
+  "brahms-p22": {
+   "runs": 170,
+   "runs_witnessed": 134,
+   "runs_new": 36,
+   "curves_kept": 180,
+   "whole": 173,
+   "whole_union": 176,
+   "arc_boxes": 441
+  },
+  "brahms-p25": {
+   "runs": 119,
+   "runs_witnessed": 114,
+   "runs_new": 5,
+   "curves_kept": 144,
+   "whole": 130,
+   "whole_union": 136,
+   "arc_boxes": 635
+  },
+  "brahms-p4": {
+   "runs": 111,
+   "runs_witnessed": 106,
+   "runs_new": 5,
+   "curves_kept": 137,
+   "whole": 130,
+   "whole_union": 132,
+   "arc_boxes": 714
+  },
+  "brahms-p5": {
+   "runs": 196,
+   "runs_witnessed": 178,
+   "runs_new": 18,
+   "curves_kept": 240,
+   "whole": 226,
+   "whole_union": 232,
+   "arc_boxes": 737
+  },
+  "brahms-p7": {
+   "runs": 171,
+   "runs_witnessed": 166,
+   "runs_new": 5,
+   "curves_kept": 215,
+   "whole": 205,
+   "whole_union": 206,
+   "arc_boxes": 673
+  },
+  "brahms-p9": {
+   "runs": 125,
+   "runs_witnessed": 115,
+   "runs_new": 10,
+   "curves_kept": 150,
+   "whole": 140,
+   "whole_union": 146,
+   "arc_boxes": 556
+  },
+  "litolff-p10": {
+   "runs": 127,
+   "runs_witnessed": 91,
+   "runs_new": 36,
+   "curves_kept": 108,
+   "whole": 98,
+   "whole_union": 101,
+   "arc_boxes": 204
+  },
+  "litolff-p12": {
+   "runs": 86,
+   "runs_witnessed": 70,
+   "runs_new": 16,
+   "curves_kept": 108,
+   "whole": 97,
+   "whole_union": 98,
+   "arc_boxes": 195
+  },
+  "litolff-p16": {
+   "runs": 76,
+   "runs_witnessed": 59,
+   "runs_new": 17,
+   "curves_kept": 93,
+   "whole": 83,
+   "whole_union": 83,
+   "arc_boxes": 126
+  },
+  "litolff-p3": {
+   "runs": 125,
+   "runs_witnessed": 115,
+   "runs_new": 10,
+   "curves_kept": 141,
+   "whole": 128,
+   "whole_union": 131,
+   "arc_boxes": 253
+  },
+  "litolff-p4": {
+   "runs": 115,
+   "runs_witnessed": 102,
+   "runs_new": 13,
+   "curves_kept": 158,
+   "whole": 138,
+   "whole_union": 139,
+   "arc_boxes": 265
+  },
+  "litolff-p6": {
+   "runs": 56,
+   "runs_witnessed": 49,
+   "runs_new": 7,
+   "curves_kept": 77,
+   "whole": 73,
+   "whole_union": 75,
+   "arc_boxes": 171
+  },
+  "litolff-p8": {
+   "runs": 42,
+   "runs_witnessed": 35,
+   "runs_new": 7,
+   "curves_kept": 42,
+   "whole": 42,
+   "whole_union": 42,
+   "arc_boxes": 81
+  },
+  "litolff-p9": {
+   "runs": 57,
+   "runs_witnessed": 46,
+   "runs_new": 11,
+   "curves_kept": 67,
+   "whole": 65,
+   "whole_union": 67,
+   "arc_boxes": 157
+  }
+ },
+ "holdout-r3-behaviour": {
+  "brahms-p11": {
+   "runs": 134,
+   "runs_witnessed": 115,
+   "runs_new": 19,
+   "curves_kept": 173,
+   "whole": 149,
+   "whole_union": 158,
+   "arc_boxes": 653
+  },
+  "brahms-p20": {
+   "runs": 62,
+   "runs_witnessed": 51,
+   "runs_new": 11,
+   "curves_kept": 64,
+   "whole": 62,
+   "whole_union": 62,
+   "arc_boxes": 283
+  },
+  "litolff-p13": {
+   "runs": 128,
+   "runs_witnessed": 100,
+   "runs_new": 28,
+   "curves_kept": 151,
+   "whole": 127,
+   "whole_union": 129,
+   "arc_boxes": 277
+  },
+  "litolff-p5": {
+   "runs": 124,
+   "runs_witnessed": 80,
+   "runs_new": 44,
+   "curves_kept": 89,
+   "whole": 78,
+   "whole_union": 81,
+   "arc_boxes": 143
+  }
+ },
+ "holdout-r4": {
+  "brahms-p11": {
+   "runs": 134,
+   "runs_witnessed": 115,
+   "runs_new": 19,
+   "curves_kept": 173,
+   "whole": 149,
+   "whole_union": 158,
+   "arc_boxes": 653
+  },
+  "brahms-p20": {
+   "runs": 65,
+   "runs_witnessed": 53,
+   "runs_new": 12,
+   "curves_kept": 64,
+   "whole": 63,
+   "whole_union": 63,
+   "arc_boxes": 283
+  },
+  "litolff-p13": {
+   "runs": 116,
+   "runs_witnessed": 100,
+   "runs_new": 16,
+   "curves_kept": 151,
+   "whole": 129,
+   "whole_union": 131,
+   "arc_boxes": 277
+  },
+  "litolff-p5": {
+   "runs": 117,
+   "runs_witnessed": 82,
+   "runs_new": 35,
+   "curves_kept": 89,
+   "whole": 80,
+   "whole_union": 83,
+   "arc_boxes": 143
+  }
+ }
+}
