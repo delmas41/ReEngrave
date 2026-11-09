@@ -386,7 +386,12 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
                                          for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
     held = CF.held_boxes(boxes, claim_families)
     keys = {c.key for c in claims if not c.area and c.family == "head"}
-    mk = CF.marks([[k for k in w.owners if k in keys] for w in owned.values() if w.family == "head" and w.state in ("decided", "merged")])
+    frames: Dict[str, Any] = {}
+    for b in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        v = b.value
+        if isinstance(v, (list, tuple)) and len(v) == 5 and b.subject.to_key() in keys:
+            frames[b.subject.to_key()] = tuple(float(t) for t in v[1:5])
+    mk = CF.marks([[k for k in w.owners if k in keys] for w in owned.values() if w.family == "head" and w.state in ("decided", "merged")], frames)
     return {"cut": CF.CUT, "near_min": CF.NEAR_MIN, "claims": claim_families, "held": held, "marks": mk}
 
 

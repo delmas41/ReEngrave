@@ -104,10 +104,26 @@ def held_boxes(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, float,
 
 
 # ── copies by position: ONE mark per head's ink ───────────────────────────────────────────────────────────────────────────────────────────
-def marks(owned_by_head: Iterable[Sequence[str]]) -> Dict[str, str]:
-    """`{box key: mark id}` for every head box that shares a head-owned stroke with another box. `owned_by_head`: for each stroke a HEAD owns, the
-    claim keys that own it (a MERGED stroke lists several boxes). Union-find; the mark id is the smallest key of the group (deterministic). A box
-    alone on its ink is not listed: it is its own mark."""
+#: two boxes are COPIES BY POSITION (one head's ink drawn twice) only where their boxes overlap at least this much (intersection over union). A MEASUREMENT on the
+#: Litolff sample, looked at on crops both sides of the line (2.277 FINDINGS): under 0.5 the pairs are different heads (a second's two sides of a stem, a chord's
+#: neighbours, a tall chord blob); 0.5-0.7 is ambiguous; 0.7 and over are single heads. It only NARROWS: it can never fuse two heads of a second or a unison
+#: (page-facts: a second puts heads on both sides of the stem; a head with a stem each way is TWO notes, 2.175 -- and this module only COUNTS ink, it refuses nothing).
+COPY_IOU_MIN = 0.7
+
+
+def _iou(a: Sequence[float], b: Sequence[float]) -> float:
+    ix = min(a[0] + a[2], b[0] + b[2]) - max(a[0], b[0])
+    iy = min(a[1] + a[3], b[1] + b[3]) - max(a[1], b[1])
+    if ix <= 0 or iy <= 0:
+        return 0.0
+    i = ix * iy
+    return i / float(a[2] * a[3] + b[2] * b[3] - i)
+
+
+def marks(owned_by_head: Iterable[Sequence[str]], boxes: Dict[str, Sequence[float]], min_iou: float = COPY_IOU_MIN) -> Dict[str, str]:
+    """`{box key: mark id}` for every head box that is a copy by position of another. `owned_by_head`: for each stroke a HEAD owns, the claim keys that own it (a
+    MERGED stroke lists several boxes); `boxes`: key -> (x, y, w, h) in one frame. Two boxes of one merged stroke are one mark only if their boxes overlap at least
+    `min_iou`; union-find over those pairs; the mark id is the smallest key of the group (deterministic). A box alone on its ink is not listed: it is its own mark."""
     parent: Dict[str, str] = {}
 
     def find(a: str) -> str:
@@ -116,14 +132,14 @@ def marks(owned_by_head: Iterable[Sequence[str]]) -> Dict[str, str]:
             a = parent[a]
         return a
     for keys in owned_by_head:
-        ks = [str(k) for k in keys]
-        for k in ks:
-            find(k)
-        for k in ks[1:]:
-            ra, rb = find(ks[0]), find(k)
-            if ra != rb:
-                parent[max(ra, rb)] = min(ra, rb)
-    groups: Dict[str, List[str]] = {}
+        ks = [str(k) for k in keys if str(k) in boxes]
+        for x in range(len(ks)):
+            for y in range(x + 1, len(ks)):
+                if _iou(boxes[ks[x]], boxes[ks[y]]) >= min_iou:
+                    ra, rb = find(ks[x]), find(ks[y])
+                    if ra != rb:
+                        parent[max(ra, rb)] = min(ra, rb)
+    groups = {}
     for k in list(parent):
         groups.setdefault(find(k), []).append(k)
     return {k: root for root, ks in groups.items() if len(ks) > 1 for k in ks}

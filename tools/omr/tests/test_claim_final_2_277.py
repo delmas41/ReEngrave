@@ -53,18 +53,24 @@ class TestMeasure(unittest.TestCase):
         self.assertNotIn("b", held)                    # 12 / 52 = 0.23, under NEAR_MIN
         self.assertNotIn("c", held)
 
+    BOXES = {"g/1": (0, 0, 10, 10), "g/2": (0.5, 0.5, 10, 10), "g/3": (1, 0, 10, 10), "g/9": (50, 0, 10, 10), "g/7": (10, 5, 10, 10)}
+
     def test_marks_are_one_head_by_ink(self):
-        m = CF.marks([["g/2", "g/1"], ["g/1", "g/3"], ["g/9"]])
+        m = CF.marks([["g/2", "g/1"], ["g/1", "g/3"], ["g/9"]], self.BOXES)
         self.assertEqual(set(m), {"g/1", "g/2", "g/3"})
         self.assertEqual(len(set(m.values())), 1)
         self.assertEqual(CF.distinct_heads(["g/1", "g/2", "g/3", "g/9"], m), 2)
 
     def test_CONTROL_two_unrelated_heads_are_two_marks(self):
-        self.assertEqual(CF.marks([["g/1"], ["g/2"]]), {})
+        self.assertEqual(CF.marks([["g/1"], ["g/2"]], self.BOXES), {})
         self.assertEqual(CF.distinct_heads(["g/1", "g/2"], {}), 2)
 
+    def test_CONTROL_the_heads_of_a_second_on_a_merged_blob_are_never_one_mark(self):
+        # two boxes that share a stroke but sit side by side (a second's two sides of the stem; IoU well under the cut) stay two marks
+        self.assertEqual(CF.marks([["g/1", "g/7"]], self.BOXES), {})
+
     def test_double_marks_found(self):
-        m = CF.marks([["g/1", "g/2"]])
+        m = CF.marks([["g/1", "g/2"]], self.BOXES)
         self.assertEqual(len(CF.double_marks(m, ["g/1", "g/2"])), 1)
         self.assertEqual(CF.double_marks(m, ["g/1"]), [])
 
