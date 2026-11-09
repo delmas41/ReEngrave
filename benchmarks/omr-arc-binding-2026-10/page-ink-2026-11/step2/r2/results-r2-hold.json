@@ -1,0 +1,320 @@
+{
+ "pages": {
+  "litolff p5": {
+   "witnessed_runs": 82,
+   "status": {
+    "written": 39,
+    "abstained": 43
+   },
+   "abstain_why": {
+    "step_conflict": 8,
+    "step_conflict_one_end_contested": 1,
+    "system_edge": 2,
+    "end_unbound": 27,
+    "step_unread": 3,
+    "same_pitch_heads_between": 2
+   },
+   "written_by_kind": {
+    "slur": 9,
+    "tie": 30
+   },
+   "written_vs_OFF": {
+    "none": 19,
+    "whole": 19,
+    "cut_or_short": 1
+   },
+   "abstained_with_an_OFF_arc_over_it": 10,
+   "abstained_with_no_OFF_arc_over_it": 33,
+   "closest_ends_used": 18,
+   "arcs_OFF": {
+    "tie": 27,
+    "slur": 2
+   },
+   "arcs_ON": {
+    "tie": 26,
+    "slur": 7
+   },
+   "OFF_arcs_not_in_ON": {
+    "tie": 2
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 5,
+    "tie": 1
+   }
+  },
+  "litolff p13": {
+   "witnessed_runs": 99,
+   "status": {
+    "abstained": 33,
+    "written": 66
+   },
+   "abstain_why": {
+    "step_conflict": 9,
+    "step_unread": 2,
+    "end_unbound": 13,
+    "system_edge": 6,
+    "same_pitch_heads_between": 3
+   },
+   "written_by_kind": {
+    "tie": 56,
+    "slur": 10
+   },
+   "written_vs_OFF": {
+    "whole": 44,
+    "none": 21,
+    "same_notes_other_kind": 1
+   },
+   "abstained_with_an_OFF_arc_over_it": 13,
+   "abstained_with_no_OFF_arc_over_it": 20,
+   "closest_ends_used": 22,
+   "arcs_OFF": {
+    "tie": 50,
+    "slur": 6
+   },
+   "arcs_ON": {
+    "tie": 51,
+    "slur": 11
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 1,
+    "tie": 1
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [
+    [
+     "tie",
+     "glyph/13/0/8/12/4",
+     "glyph/13/0/8/13/2"
+    ]
+   ],
+   "ON_arcs_not_in_OFF": {
+    "slur": 6,
+    "tie": 2
+   }
+  },
+  "litolff p15": {
+   "witnessed_runs": 72,
+   "status": {
+    "abstained": 24,
+    "written": 48
+   },
+   "abstain_why": {
+    "system_edge": 10,
+    "end_unbound": 12,
+    "same_pitch_heads_between": 2
+   },
+   "written_by_kind": {
+    "slur": 47,
+    "tie": 1
+   },
+   "written_vs_OFF": {
+    "none": 16,
+    "whole": 32
+   },
+   "abstained_with_an_OFF_arc_over_it": 5,
+   "abstained_with_no_OFF_arc_over_it": 19,
+   "closest_ends_used": 15,
+   "arcs_OFF": {
+    "slur": 72,
+    "tie": 1
+   },
+   "arcs_ON": {
+    "slur": 59,
+    "tie": 1
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 18
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 5
+   }
+  },
+  "brahms p11": {
+   "witnessed_runs": 116,
+   "status": {
+    "abstained": 46,
+    "written": 70
+   },
+   "abstain_why": {
+    "end_unbound": 27,
+    "system_edge": 18,
+    "same_pitch_accidental_printed": 1
+   },
+   "written_by_kind": {
+    "slur": 19,
+    "tie": 51
+   },
+   "written_vs_OFF": {
+    "cut_or_short": 2,
+    "whole": 59,
+    "none": 9
+   },
+   "abstained_with_an_OFF_arc_over_it": 20,
+   "abstained_with_no_OFF_arc_over_it": 26,
+   "closest_ends_used": 6,
+   "arcs_OFF": {
+    "tie": 63,
+    "slur": 26
+   },
+   "arcs_ON": {
+    "tie": 62,
+    "slur": 26
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 6,
+    "tie": 1
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 6
+   }
+  },
+  "brahms p18": {
+   "witnessed_runs": 132,
+   "status": {
+    "written": 92,
+    "abstained": 40
+   },
+   "abstain_why": {
+    "same_pitch_heads_between": 7,
+    "system_edge": 24,
+    "same_pitch_accidental_printed": 4,
+    "end_unbound": 4,
+    "step_conflict": 1
+   },
+   "written_by_kind": {
+    "slur": 30,
+    "tie": 62
+   },
+   "written_vs_OFF": {
+    "whole": 61,
+    "none": 30,
+    "cut_or_short": 1
+   },
+   "abstained_with_an_OFF_arc_over_it": 3,
+   "abstained_with_no_OFF_arc_over_it": 37,
+   "closest_ends_used": 18,
+   "arcs_OFF": {
+    "tie": 44,
+    "slur": 29
+   },
+   "arcs_ON": {
+    "tie": 43,
+    "slur": 22
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 9,
+    "tie": 1
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [
+    [
+     "tie",
+     "glyph/18/1/13/4/2",
+     "glyph/18/1/13/5/0"
+    ]
+   ],
+   "ON_arcs_not_in_OFF": {
+    "slur": 2
+   }
+  },
+  "brahms p20": {
+   "witnessed_runs": 53,
+   "status": {
+    "written": 42,
+    "abstained": 11
+   },
+   "abstain_why": {
+    "end_unbound": 7,
+    "system_edge": 3,
+    "same_pitch_accidental_unknown": 1
+   },
+   "written_by_kind": {
+    "slur": 24,
+    "tie": 18
+   },
+   "written_vs_OFF": {
+    "whole": 29,
+    "same_notes_other_kind": 1,
+    "cut_or_short": 4,
+    "none": 8
+   },
+   "abstained_with_an_OFF_arc_over_it": 3,
+   "abstained_with_no_OFF_arc_over_it": 8,
+   "closest_ends_used": 5,
+   "arcs_OFF": {
+    "tie": 14,
+    "slur": 30
+   },
+   "arcs_ON": {
+    "slur": 27,
+    "tie": 14
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 11
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 8
+   }
+  }
+ },
+ "pooled": {
+  "witnessed_runs": 554,
+  "status": {
+   "written": 357,
+   "abstained": 197
+  },
+  "abstain_why": {
+   "step_conflict": 18,
+   "step_conflict_one_end_contested": 1,
+   "system_edge": 63,
+   "end_unbound": 90,
+   "step_unread": 5,
+   "same_pitch_heads_between": 14,
+   "same_pitch_accidental_printed": 5,
+   "same_pitch_accidental_unknown": 1
+  },
+  "written_by_kind": {
+   "slur": 139,
+   "tie": 218
+  },
+  "written_vs_OFF": {
+   "none": 103,
+   "whole": 244,
+   "cut_or_short": 8,
+   "same_notes_other_kind": 2
+  },
+  "abstained_with_an_OFF_arc_over_it": 54,
+  "abstained_with_no_OFF_arc_over_it": 143,
+  "closest_ends_used": 84,
+  "arcs_OFF": {
+   "tie": 199,
+   "slur": 165
+  },
+  "arcs_ON": {
+   "tie": 197,
+   "slur": 152
+  },
+  "OFF_arcs_not_in_ON": {
+   "tie": 5,
+   "slur": 45
+  },
+  "ON_arcs_not_in_OFF": {
+   "slur": 32,
+   "tie": 3
+  },
+  "lost_under_no_written_run": [
+   [
+    "tie",
+    "glyph/13/0/8/12/4",
+    "glyph/13/0/8/13/2"
+   ],
+   [
+    "tie",
+    "glyph/18/1/13/4/2",
+    "glyph/18/1/13/5/0"
+   ]
+  ]
+ }
+}
