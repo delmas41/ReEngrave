@@ -6593,6 +6593,7 @@ def _partial_bar_plan(events: List[Dict[str, Any]],
         # of a tie lost its start's spelling): the bar as flag OFF planned it
         if plan0.get("ok"):
             plan0["value_open_withheld"] = len(gone)
+            plan0["gap_rows"] = plan0.get("gap_rows", 0) + _bar_event_rows([e for e in events if id(e) in gone])      # counted, never lost
             return plan0
         return plan
     if not plan0.get("ok"):
@@ -6603,6 +6604,7 @@ def _partial_bar_plan(events: List[Dict[str, Any]],
     if not hidden:
         return plan
     plan0["value_open_withheld"] = len(gone)
+    plan0["gap_rows"] = plan0.get("gap_rows", 0) + _bar_event_rows([e for e in events if id(e) in gone])      # counted, never lost
     return plan0
 
 
