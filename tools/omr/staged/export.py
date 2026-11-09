@@ -1870,7 +1870,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 _vx = o["value"]
                 valueless_pending.append((run, cell_index, {
                     "sub": sub, "pitch": pitch, "x": float(_vx[1]) + float(_vx[3]) / 2.0, "reason": valueless_reason,
-                    "candidates": _guess_candidates(dur_v)}))
+                    "candidates": _guess_candidates(dur_v), "bbox_page": _corners_to_wh(_page_box_of(o))}))
             continue
         cell = run.cells.setdefault(
             cell_index, Cell(run.page, run.system, run.staff, cell_index))
@@ -1907,7 +1907,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 # ROADMAP 2.279 r3: the pitch was read and no note value can be written: RED at its pitch, no value
                 valueless_pending.append((run, cell_index, {
                     "sub": sub, "pitch": pitch, "x": float(o["value"][1]) + float(o["value"][3]) / 2.0,
-                    "reason": "written_value_fits_no_note", "candidates": []}))
+                    "reason": "written_value_fits_no_note", "candidates": [], "bbox_page": _corners_to_wh(_page_box_of(o))}))
             continue
         dtype, derived_dots = fit
         _det = {
@@ -2143,13 +2143,17 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             if _run is not None:
                 valueless_pending.append((_run, _s["cell"] or 0, {
                     "sub": _sub, "pitch": _det["pitch"], "x": float(_bb[0]) + float(_bb[2]) / 2.0,
-                    "reason": "chord_value_undecided",
+                    "reason": "chord_value_undecided", "bbox_page": _det.get("bbox_page"),
                     "candidates": ((_det.get("guess") or {}).get("candidates")
                                    or [{"beats": b, "written": b, "dots": d, "support": None} for b, t, d in _vals])}))
         for _run, _ci, _rec in valueless_pending:
             _vcell = _run.cells.get(_ci)
             if _vcell is None or not _vcell.detections:
                 _tally = "unread_head_in_eventless_bar"
+            elif _same_ink_as_written(_vcell, _rec, _run.spacing):
+                # the SAME INK as a head the bar already writes (a duplicate box: same pitch, within RELOCATE_COLLISION_SPACES on both
+                # axes): counted, not filed -- a red mark beside the real note would be a second note that is not there
+                _tally = "unread_head_same_ink_as_written"
             else:
                 _vcell.unread_heads.append(_rec)
                 _tally = "unread_head_filed"
@@ -2435,6 +2439,23 @@ def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
     return {"owner": owner, "cell": ci,
             "bbox": [(box[0] - cb[0]) * up, (box[1] - cb[1]) * up,
                      (box[2] - box[0]) * up, (box[3] - box[1]) * up]}
+
+
+def _same_ink_as_written(cell: "Cell", u: Dict[str, Any], spacing: Optional[float]) -> bool:
+    """ROADMAP 2.279 r3: is a pitch-read head with no value the SAME INK as a head the bar already writes -- the same pitch, within
+    `RELOCATE_COLLISION_SPACES` staff spaces on both axes (a duplicate box, as `_near_existing_head` reads it)? Counted, never filed red."""
+    b = u.get("bbox_page")
+    if b is None or not spacing:
+        return False
+    cx, cy = b[0] + b[2] / 2.0, b[1] + b[3] / 2.0
+    lim = RELOCATE_COLLISION_SPACES * spacing
+    for d in cell.detections:
+        e = d.get("bbox_page")
+        if d.get("category") != "notehead" or d.get("pitch") != u["pitch"] or not e:
+            continue
+        if abs(e[0] + e[2] / 2.0 - cx) < lim and abs(e[1] + e[3] / 2.0 - cy) < lim:
+            return True
+    return False
 
 
 def _near_existing_head(cell: "Cell", det: Dict[str, Any],
