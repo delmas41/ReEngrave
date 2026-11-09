@@ -180,6 +180,24 @@ def static_wiring(staged_dir: Optional[Any] = None) -> List[Dict[str, str]]:
         mark_only = {x.strip().strip("\"'") for x in (mm.group(1) if mm else "").split(",") if x.strip()}
     generic = {rd: "_claim_final.finding(" in (root / rel).read_text() for rd, rel in CONSUMER_DECIDERS.items()}
     out: List[Dict[str, str]] = []
+    # a claim LAYER in `claim_order.LAYERS` (before the heads) whose rows no consumer reads: the stroke owner has no generic path and the family is neither a tier-0
+    # owner nor a box family it already reads. (2.276's `tremolo` is such a layer on a tree without `_layer_claims`.)
+    co = root / "claim_order.py"
+    if co.exists():
+        lay = re.search(r"LAYERS[^=]*=\s*\((.*?)\n\)\n", co.read_text(), re.S)
+        names = []
+        for ln in (lay.group(1) if lay else "").split("\n"):
+            mm = re.match(r'\s*\("(\w+)",\s*\(([^)]*)\)', ln)
+            if mm:
+                if mm.group(1) == "head":
+                    break
+                names += [x.strip().strip("\"'") for x in mm.group(2).split(",") if x.strip().strip("\"'")]
+        tiers_all = re.search(r"TIERS[^=]*=\s*\((.*?)\n\)\n", so, re.S)
+        read_by_owner = {x for x in re.findall(r'"(\w+)"', re.sub(r"#[^\n]*", "", tiers_all.group(1) if tiers_all else ""))}
+        has_generic = "_layer_claims(" in (root / "adjudicators" / "stroke_owner.py").read_text()
+        for fam in names:
+            if fam not in read_by_owner and not has_generic:
+                out.append({"claim": fam, "reader": "stroke_owner", "why": "a claim layer in claim_order.LAYERS whose rows no consumer reads"})
     for fam in filed:
         if fam in consulted:
             continue

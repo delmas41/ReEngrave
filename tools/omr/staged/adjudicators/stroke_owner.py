@@ -110,6 +110,43 @@ def _areas(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]]) -> List[SO.Cl
     return out
 
 
+#: owners the stroke owner already reads by their own path (the register's tier-0 areas, the arcs' and hairpins' traced ink, the page heads and their ledgers)
+_OWN_PATH_OWNERS = frozenset(SO.AREA_OWNERS) | {"arc", "hairpin", "head", "ledger"}
+
+
+def _rects(r) -> List[Tuple[float, float, float, float]]:
+    """The page-px rectangles a claim row names, WHATEVER its unit: its value when it is a rectangle (`area`), else `detail.area`, else `detail.stroke_boxes`."""
+    d = r.detail or {}
+    v = r.value
+    if isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v):
+        return [tuple(float(t) for t in v)]
+    if isinstance(d.get("area"), (list, tuple)) and len(d["area"]) == 4:
+        return [tuple(float(t) for t in d["area"])]
+    return [tuple(float(t) for t in b) for b in (d.get("stroke_boxes") or ()) if isinstance(b, (list, tuple)) and len(b) == 4]
+
+
+def _layer_claims(ev: Evidence, cell, page: Dict[int, Tuple[float, ...]]) -> List[SO.Claim]:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): ANY claim layer's `Q.CLAIMED_AREA` rows -- whatever the owner and whatever the unit (`area`, `page_ink`, a
+    layer a later lane files, e.g. 2.276's `tremolo`) -- own the strokes of THIS cell that lie wholly inside their rectangle (+1 px: a stem crossing a slash keeps its
+    ink), at tier 0, exactly as a word's page-wide claim does. No hand list of owners: an owner this module has no path for is a layer by being in the register.
+    Nothing here is filed with the flag OFF."""
+    from .. import claim_final as CF
+    out: List[SO.Claim] = []
+    if not CF.enabled():
+        return out
+    for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
+        d = r.detail or {}
+        owner = str(d.get("owner") or "")
+        if not owner or owner in _OWN_PATH_OWNERS or d.get("standing", "READ") != "READ" or d.get("unit") == "ink":
+            continue
+        inside = set()
+        for x0, y0, x1, y1 in _rects(r):
+            inside |= {o for o, pb in page.items() if x0 - 1 <= pb[0] and pb[2] <= x1 + 1 and y0 - 1 <= pb[1] and pb[3] <= y1 + 1}
+        if inside:
+            out.append(SO.Claim(r.id, owner, owner, tuple(sorted(inside)), (), r.id, area=True))
+    return out
+
+
 def _arc_claims(ev: Evidence, cell) -> List[SO.Claim]:
     """lane-arcs-claim-1029 (`OMR_ARC_CLAIM`): the strokes of THIS cell that a system arc's claim (ONE row per arc, value `[[cell, ordinal], ...]`,
     filed on the arc's staff) names. Tier 0: the traced curve runs along them, whatever box also stands on them. Reads the flag so the OFF arm of an A/B replay ignores the rows."""
@@ -424,12 +461,15 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     claims += arc_claims
     hairpin_claims = _hairpin_claims(ev, cell)        # 2.254 r2 (flag OMR_HAIRPIN_REACH; [] with it OFF)
     claims += hairpin_claims
+    layer_claims = _layer_claims(ev, cell, page)       # 2.277 (flag OMR_CLAIM_FINAL): any other claim layer, whatever its unit
+    claims += layer_claims
     claims += _found_whole_rests(ev, cell, page, claims)
     claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
     from .rhythm import beams_from_strokes_enabled
     shaped = SO.owner_shape_enabled()
     vetoes = shape_vetoes(ev, cell, inks, claims) if shaped else None
-    owned = SO.own_strokes(inks, claims, tiers=SO.TIERS, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
+    tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
+    owned = SO.own_strokes(inks, claims, tiers=tiers, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
                            vetoes=vetoes)
     by_ord = {i.ordinal: i for i in inks}
     strokes: Dict[str, Any] = {}
