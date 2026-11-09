@@ -877,7 +877,7 @@ def written_moves(rep: Dict[str, Any], idx: Dict[str, Any], doc: str, page_boxes
         off_h = host_for_row(off_hosts, r, sub, boxes.get(sub))
         if off_h is None or off_h["kind"] != "note" or place_of(off_h) is None:
             continue
-        on_h = event_at(on_hosts, place_of(off_h), off_h.get("pitch"), "note")
+        on_h = event_at(on_hosts, place_of(off_h), off_h.get("pitch"), "note", off_h.get("rg"))
         if on_h is None or on_h["kind"] != "note" or on_h.get("pitch") != off_h.get("pitch"):
             continue   # the note is gone or moved pitch: a lost / changed note, not a changed value
         was, now = _right_value(off_h, r["value"]), _right_value(on_h, r["value"])
@@ -948,9 +948,15 @@ def host_for_row(hosts: Sequence[dict], row: dict, subject: str, box: Optional[S
     return written_at(hosts, subject, box)
 
 
-def event_at(hosts: Sequence[dict], place: tuple, pitch: Optional[str], kind: str) -> Optional[dict]:
-    """The event an arm wrote at a place: same pitch (or kind, for a rest) first, else any event at that slot."""
+def event_at(hosts: Sequence[dict], place: tuple, pitch: Optional[str], kind: str, rg: Optional[str] = None) -> Optional[dict]:
+    """The event an arm wrote at a place: the tile's OWN glyph first (ROADMAP 2.279 r4: a neighbouring red head at the same slot and pitch
+    may not take the tile), then same pitch (or kind, for a rest), else any event at that slot."""
     here = [h for h in hosts if place_of(h) == place]
+    if rg:
+        own = [h for h in here if h.get("rg") == rg]
+        if own:
+            return own[0]
+    here = sorted(here, key=lambda h: h.get("type") == "unread-value")      # a red head with no value is the last to be taken for a tile
     for h in here:
         if (h.get("pitch") or h.get("kind")) == (pitch or kind):
             return h

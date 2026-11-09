@@ -232,5 +232,37 @@ class TestNothingWrittenIsMoved(unittest.TestCase):
         self.assertFalse(export._same_ink_as_written(cell, dict(near, bbox_page=[200, 1, 10, 10]), 10.0))   # far away is another note
 
 
+class TestR4NoGuessMovesAReadNote(unittest.TestCase):
+
+    def test_the_judged_scorer_takes_the_tiles_own_glyph_before_a_red_head_at_its_slot(self):
+        from tools.omr.staged import lane_report as LR
+        place = (1, 2)
+        with mock.patch.object(LR, "place_of", lambda h: place):
+            red = {"rg": "g/2", "type": "unread-value", "pitch": "C4", "kind": "note"}
+            own = {"rg": "g/1", "type": "eighth", "pitch": "C4", "kind": "note"}
+            self.assertIs(LR.event_at([red, own], place, "C4", "note", "g/1"), own)
+            self.assertIs(LR.event_at([red, own], place, "C4", "note"), own)          # even without the glyph the red head is last
+
+    def test_a_value_open_event_is_one_whose_every_head_is_this_lanes_guess(self):
+        mine = {"guess": {"rule": "collapse_value_open_by_shape"}}
+        self.assertTrue(export._is_value_open_guess({"noteheads": [mine, mine]}))
+        self.assertFalse(export._is_value_open_guess({"noteheads": [mine, {}]}))
+        self.assertFalse(export._is_value_open_guess({"noteheads": [{"guess": {"rule": "lone_event_fills_bar"}}]}))
+
+    def test_the_wrapper_is_the_core_with_the_flag_off(self):
+        ev = [{"kind": "note", "x_position": 1.0, "noteheads": [{"guess": {"rule": "collapse_value_open_by_shape"}, "duration_beats": 1.0}]}]
+        with mock.patch.dict(os.environ, {FLAG: "0"}), mock.patch.object(export, "_partial_bar_plan_core", return_value={"ok": True, "x": 1}) as c:
+            self.assertEqual(export._partial_bar_plan(ev, None, 4, None, []), {"ok": True, "x": 1})
+            self.assertEqual(c.call_count, 1)
+
+    def test_a_guess_may_not_turn_a_held_bar_partial(self):
+        ev = [{"kind": "note", "x_position": 1.0, "noteheads": [{"guess": {"rule": "collapse_value_open_by_shape"}, "duration_beats": 1.0}]},
+              {"kind": "note", "x_position": 2.0, "noteheads": [{"duration_beats": 1.0}]}]
+        plans = [{"ok": True, "unwritten": []}, {"ok": False, "why": "nothing_before_or_after_the_gap"}]
+        with mock.patch.dict(os.environ, {FLAG: "1"}), mock.patch.object(export, "_partial_bar_plan_core", side_effect=plans):
+            r = export._partial_bar_plan(ev, None, 4, None, [])
+        self.assertFalse(r["ok"])
+
+
 if __name__ == "__main__":
     unittest.main()

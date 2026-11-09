@@ -2932,7 +2932,10 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
         p0, p1 = first.get("pitch"), last.get("pitch")
         if (p0 != p1 and rec is not None and tie_carry_enabled() and sm != tm and p0 and p1
                 and _legacy._pitch_step(p0) == _legacy._pitch_step(p1)
-                and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)):
+                and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)
+                # ROADMAP 2.279 r4 (CLAUDE s4: a guess never moves a DECIDED note; page-facts 2026-10-30 owns the carry): a start note this
+                # lane GUESSED the value of never carries its spelling onto a READ stop (the tie still pairs or is counted as differing)
+                and not (value_open_written_enabled() and (first.get("guess") or {}).get("rule") == "collapse_value_open_by_shape")):
             # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default ON; page-facts, Sean 2026-10-30, general: "A tie carries an
             # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
             # start's pitch; counted, and the stop's own reading kept on the note.
@@ -6498,7 +6501,45 @@ def _plan_one_stream(stream: List[Dict[str, Any]], want: int, divisions: int,
             "suf": [stream[k] for k in suf], "gap_units": gap}
 
 
+_VALUE_OPEN_RULE = "collapse_value_open_by_shape"
+
+
+def _is_value_open_guess(ev: Dict[str, Any]) -> bool:
+    hs = ev.get("noteheads") or ()
+    return bool(hs) and all((h.get("guess") or {}).get("rule") == _VALUE_OPEN_RULE for h in hs)
+
+
 def _partial_bar_plan(events: List[Dict[str, Any]],
+                      streams: Optional[List[List[Dict[str, Any]]]],
+                      divisions: int, meter: Optional[Dict[str, Any]],
+                      unplaced: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """ROADMAP 2.279 r4 (Sean/coordinator: a guess never moves a DECIDED note, CLAUDE s4). `_partial_bar_plan_core`, except that a bar whose
+    plan would hide a READ event in its gap because of an event this lane GUESSED (`collapse_value_open_by_shape`: a guessed duration ends
+    the anchored run, so READ events beyond it fall into the gap) is planned as the flag-OFF bar was: without those guessed events, their
+    places standing as unread glyphs. They are then not written (counted), and the READ events keep the place they had."""
+    plan = _partial_bar_plan_core(events, streams, divisions, meter, unplaced)
+    if not value_open_written_enabled() or not any(_is_value_open_guess(e) for e in events):
+        return plan
+    if not plan.get("ok"):
+        return plan
+    gone = {id(e) for e in events if _is_value_open_guess(e)}
+    ev0 = [e for e in events if id(e) not in gone]
+    st0 = None if streams is None else [[e for e in st if id(e) not in gone] for st in streams]
+    extra = [{"sub": "value_open_withheld", "reason": "value_open_withheld", "x": float(e.get("x_position") or 0.0), "w": 0.0}
+             for e in events if id(e) in gone]
+    plan0 = _partial_bar_plan_core(ev0, st0, divisions, meter, list(unplaced) + extra)
+    if not plan0.get("ok"):
+        # the bar without the guesses stays held (its READ events written plain in the red bar, as flag OFF): a guess may not turn a held
+        # bar into a partial one, which relabels every READ event it keeps blue
+        return {"ok": False, "why": "a_guess_would_turn_a_held_bar_partial"}
+    hidden = [e for e in plan["unwritten"] if not any(h.get("guess") for h in e.get("noteheads") or ()) and e.get("kind") != "rest"]
+    if not hidden:
+        return plan
+    plan0["value_open_withheld"] = len(gone)
+    return plan0
+
+
+def _partial_bar_plan_core(events: List[Dict[str, Any]],
                       streams: Optional[List[List[Dict[str, Any]]]],
                       divisions: int, meter: Optional[Dict[str, Any]],
                       unplaced: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
