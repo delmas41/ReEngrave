@@ -155,7 +155,10 @@ def normalize_meter(text: Optional[str]) -> Optional[str]:
     """``'6 8'`` / ``'6-8'`` / ``'6:8'`` -> ``'6/8'``; ``'c'`` -> ``'C'``; ``'cut'`` / ``'c|'`` -> ``'C|'``."""
     if text is None:
         return None
-    t = "".join(str(text).split())
+    two = str(text).split()
+    if len(two) == 2 and all(p.isdigit() for p in two):
+        return "/".join(two)                    # "6 8": numerator, space, denominator
+    t = "".join(two)
     if not t:
         return None
     low = t.lower()

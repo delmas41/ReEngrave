@@ -434,3 +434,180 @@ def test_a_pagepass_file_beside_a_page_is_not_loaded_as_a_page(tmp_path):
     p.save(pp.pagepass_path(t.edition, t.pdf_page_index, tmp_path))
     assert [x.pdf_page_index for x in store.load_all(tmp_path)] == [0]
     assert pp.pagepass_path("e", 3, tmp_path).name == "3.pagepass.json"
+
+
+# ================================================================== round 2 (Sean's feedback, 2026-11-10)
+def _vbar(x0, y0, x1, y1, kind="barline", cls="barlineSingle", i=None):
+    return {"kind": kind, "rect": (x0, y0, x1, y1), "id": i, "cls": cls, "source": "hand-cell-labels"}
+
+
+def test_barline_pieces_of_one_printed_line_join_full_height_only_where_the_print_is_unbroken():
+    """Item 2: a barline is proposed from the top staff to the bottom one, never per cell. The print breaks
+    between instrument groups (no ink in the gap), so the proposal breaks there too."""
+    img = np.zeros((900, 200), bool)
+    img[100:500, 98:102] = True                       # unbroken from y=100 to 500 (three cells' worth)
+    img[560:800, 98:102] = True                       # a second group, after a gap with no ink
+    pieces = [_vbar(96, 100, 104, 200, i="a"), _vbar(96, 260, 104, 340, i="b"), _vbar(97, 400, 103, 500, i="c"),
+              _vbar(96, 560, 104, 800, i="d")]
+    out = pf.join_vertical(pieces, SP, x_sp=pf.BARLINE_X_SP, ink=img)
+    assert sorted(o["rect"] for o in out) == [(96, 100, 104, 500), (96, 560, 104, 800)]
+    assert any(o["joined_from"] == ["a", "b", "c"] for o in out)
+    # CONTROL that can fail: with no ink to look at, only near-touching boxes join (gaps of 60 px > 0.5 sp)
+    assert len(pf.join_vertical(pieces, SP, x_sp=pf.BARLINE_X_SP, ink=None)) == 4
+    # a barline column further right is another printed line, not joined sideways
+    other = pf.join_vertical(pieces + [_vbar(150, 100, 158, 500, i="z")], SP, x_sp=pf.BARLINE_X_SP, ink=img)
+    assert len(other) == 3
+
+
+def test_a_brace_and_the_bracket_it_sits_inside_are_never_joined():
+    img = np.zeros((600, 200), bool)
+    img[100:500, 40:60] = True
+    pieces = [_vbar(40, 100, 60, 300, "bracket", "brace", "br1"), _vbar(41, 300, 59, 500, "bracket", "brace", "br2"),
+              _vbar(40, 100, 60, 500, "bracket", "bracket", "BR")]
+    out = pf.join_vertical(pieces, SP, x_sp=pf.BRACKET_X_SP, ink=img)
+    assert sorted(o["rect"] for o in out) == [(40, 100, 60, 500), (40, 100, 60, 500)]
+    assert sorted(o["cls"] for o in out) == ["brace", "bracket"]
+
+
+def test_a_meter_is_proposed_as_one_box_with_its_value_pre_typed_and_its_digits_kept():
+    """Item 3: '6 above 8' is ONE mark. The hand digit boxes join; the value is typed for Sean to confirm
+    (never for one digit alone); each digit's own box stays under the one label."""
+    t = _truth()
+    for i, (cls, r) in enumerate([("timeSig6", (700, 100, 722, 140)), ("timeSig8", (700, 142, 722, 182)),
+                                  ("timeSig9", (800, 100, 822, 140))]):       # the third stands alone
+        t.boxes.append(Box(id=f"m{i}", cls=cls, rect=r, origin="drawn", labeler="sean"))
+    meters = sorted((i for i in pf.hand_prefills(t, SP) if i["kind"] == "meter"), key=lambda i: i["rect"][0])
+    assert [m["text"] for m in meters] == ["6/8", None]
+    assert meters[0]["rect"] == (700, 100, 722, 182) and "confirm" in meters[0]["note"]
+    assert [p["text"] for p in meters[0]["parts"]] == ["6", "8"] and meters[0]["parts"][0]["rect"] == [700, 100, 722, 140]
+    assert "not a whole meter" in meters[1]["note"]                              # one digit is not guessed into a meter
+    p = pf.build(t)
+    lab = next(l for l in p.labels if l.kind == "meter" and l.text == "6/8")
+    assert lab.state == "pending" and lab.parts[1]["text"] == "8"
+    assert lab.to_json()["parts"][0]["from"] == "hand"
+
+
+def test_meter_values_are_normalised_and_split_in_reading_order():
+    assert pp.normalize_meter("6 8") == "6/8" and pp.normalize_meter("6-8") == "6/8"
+    assert pp.normalize_meter("c") == "C" and pp.normalize_meter("cut") == "C|" and pp.normalize_meter("2/2") == "2/2"
+    assert pp.normalize_meter("  ") is None and pp.normalize_meter(None) is None
+    assert pp.meter_split("12/8") == ["12", "8"] and pp.meter_split("C") == ["C"] and pp.meter_split("") == []
+
+
+def _meter_page():
+    """Two stacked digits on a staff: '6' in the two top spaces, '8' in the two lower ones, the middle line crossing both."""
+    img = np.zeros((300, 400), np.uint8)
+    for y in LINES:
+        img[int(y) - 1:int(y) + 2, 20:380] = 1
+    for (x, y0, y1) in ((200, 102, 138), (200, 142, 178)):
+        cv2.ellipse(img, (x, (y0 + y1) // 2), (9, (y1 - y0) // 2), 0, 0, 360, 1, 3)
+    return img.astype(bool)
+
+
+def test_one_meter_box_carries_one_typed_value_and_its_digit_pieces_are_read_from_its_ink(tmp_path):
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.pagepass_server import mount
+
+    svc = _service(tmp_path)
+    ink = InkMap(_meter_page(), SP, [(20, 380, LINES)])
+    svc._ink, svc._cellpass = ink, np.zeros_like(ink.ink)
+    svc.truth.width, svc.truth.height = 400, 300
+    svc.page.labels.clear()
+    app = FastAPI()
+    mount(app, svc)
+    c = TestClient(app)
+    r = c.post("/api/pp/label", json={"kind": "meter", "shape": {"rect": [180, 98, 222, 182]}, "text": "6 8"}).json()
+    lab = r["label"]
+    assert lab["text"] == "6/8" and lab["kind"] == "meter" and lab["state"] == "confirmed"
+    assert [p["text"] for p in lab["parts"]] == ["6", "8"] and all(p["from"] == "ink" for p in lab["parts"])
+    top, bot = (p["rect"] for p in lab["parts"])
+    assert top[3] <= 141 and bot[1] >= 139 and top[1] < bot[1]          # split at the middle line, upper over lower
+    saved = json.loads(svc.file.read_text())["labels"][0]
+    assert saved["text"] == "6/8" and len(saved["parts"]) == 2          # recoverable from the file
+    # a re-typed value re-reads the pieces; a meter with no text has pieces but no characters
+    r2 = c.post(f"/api/pp/label/{lab['id']}", json={"action": "edit", "text": "C"}).json()["label"]
+    assert r2["text"] == "C" and len(r2["parts"]) == 1 and r2["parts"][0]["text"] == "C"
+    c.post(f"/api/pp/label/{lab['id']}", json={"action": "delete"})     # (a second box over it would be contested)
+    r3 = c.post("/api/pp/label", json={"kind": "meter", "shape": {"rect": [180, 98, 222, 182]}}).json()["label"]
+    assert r3["text"] is None and all(p["text"] is None for p in r3["parts"])
+
+
+def test_a_word_box_may_be_a_text_block_and_the_prefill_fragments_inside_it_are_resolved(tmp_path):
+    """Item 4: one big box, 'title' / 'subtitle' / 'composer' / 'other', text optional. Pre-fill words inside
+    a CONFIRMED block need no answer: reported as covered, not left waiting. Instrument names stay words."""
+    p = _pp()
+    for i, r in enumerate([(100, 20, 160, 60), (170, 22, 260, 62), (400, 300, 460, 340)]):
+        p.add_prefill("word", pp.rect_shape(r), "hand-cell-labels", text=f"frag{i}")
+    p.add_prefill("dynamic", pp.rect_shape((110, 25, 150, 55)), "hand-cell-labels", text="f")
+    assert p.covered_prefills() == {}                                    # no block yet
+    blk = p.draw("word", pp.rect_shape((50, 0, 300, 90)), sub="title")
+    assert blk.is_block and blk.text is None
+    assert p.covered_prefills() == {"P0": blk.id, "P1": blk.id}           # the two inside; not the far one, not a dynamic
+    for bad in ("tie", "bogus"):
+        with pytest.raises(store.StoreError):
+            p.draw("word", pp.rect_shape((1, 1, 9, 9)), sub=bad)
+    with pytest.raises(store.StoreError):
+        p.draw("arc", pp.rect_shape((1, 1, 9, 9)), sub="title")
+    w = p.draw("word", pp.rect_shape((300, 100, 340, 130)), text="Hr.")  # an ordinary word keeps its typed text
+    assert not w.is_block and w.text == "Hr."
+    p.edit(blk.id, kind="dynamic")                                       # a sub belongs to its kind
+    assert p.label(blk.id).sub is None
+    # through the server: the block's covered pre-fills leave the waiting counts
+    svc = _service(tmp_path)
+    svc.page.labels.clear()
+    for i, r in enumerate([(100, 20, 160, 60), (400, 300, 460, 340)]):
+        svc.page.add_prefill("word", pp.rect_shape(r), "x", text=f"f{i}")
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.pagepass_server import mount
+
+    app = FastAPI()
+    mount(app, svc)
+    c = TestClient(app)
+    assert c.get("/api/pp/state").json()["counts"]["word"]["pending"] == 2
+    st = c.post("/api/pp/label", json={"kind": "word", "sub": "composer", "shape": {"rect": [50, 0, 300, 90]}}).json()
+    assert st["counts"]["word"]["pending"] == 1 and st["covered"] == {"P0": st["label"]["id"]}
+    assert next(l for l in st["labels"] if l["id"] == "P0")["covered_by"] == st["label"]["id"]
+    assert c.post("/api/pp/label", json={"kind": "word", "sub": "nope", "shape": {"rect": [1, 1, 9, 9]}}).status_code == 400
+
+
+def test_the_owned_ink_route_returns_exactly_the_ink_a_label_owns(tmp_path):
+    """Item 1(d): hovering a label shows precisely its owned ink -- here a tight word box inside a larger one."""
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.pagepass_server import mount
+
+    svc = _service(tmp_path)
+    svc.page.labels.clear()
+    app = FastAPI()
+    mount(app, svc)
+    c = TestClient(app)
+    big = c.post("/api/pp/label", json={"kind": "word", "shape": {"rect": [150, 80, 350, 130]}}).json()["label"]
+    small = c.post("/api/pp/label", json={"kind": "word", "shape": {"rect": [185, 90, 215, 125]}}).json()["label"]
+    r = c.get(f"/api/pp/owned/{small['id']}")
+    x0, y0, x1, y1 = (int(v) for v in r.headers["X-Region"].split(","))
+    ov = cv2.imdecode(np.frombuffer(r.content, np.uint8), cv2.IMREAD_UNCHANGED)
+    assert ov.shape[:2] == (y1 - y0, x1 - x0)                         # drawn 1:1 over the page, margin included
+    black = (ov[..., 3] == 255) & (ov[..., :3].sum(axis=2) == 0)
+    labs = {l["id"]: l for l in c.get("/api/pp/state").json()["labels"]}
+    assert black.sum() == labs[small["id"]]["px"] > 0                  # the picture IS the owned ink, pixel for pixel
+    assert labs[big["id"]]["px"] == labs[big["id"]]["raw_px"] - labs[big["id"]]["lost_px"]
+    assert labs[big["id"]]["lost_to"] == [small["id"]] and labs[big["id"]]["lost_px"] > 0
+    assert c.get("/api/pp/owned/nope").status_code == 404
+
+
+def test_round_1_files_load_and_save_unchanged_and_new_optional_fields_stay_out_of_the_way():
+    """Sean's labels are truth: a round-1 file (no ``parts`` anywhere) loads and writes back identically."""
+    from pathlib import Path
+
+    f = Path(__file__).resolve().parents[3] / "data/hand-truth/pages/imslp317803/0.pagepass.json"
+    if not f.exists():
+        pytest.skip("no page-pass file in this checkout")
+    raw = json.loads(f.read_text())
+    if any("parts" in l for l in raw["labels"]):
+        pytest.skip("a round-2 file: carries parts")
+    assert pp.load(f).to_json()["labels"] == raw["labels"]
