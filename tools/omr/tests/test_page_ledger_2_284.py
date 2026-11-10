@@ -118,3 +118,36 @@ def test_an_arc_claims_only_its_own_traced_pixels_never_a_head_box(monkeypatch):
     assert "arc_trace" in CF.mark_only()
     monkeypatch.setenv(PL.ENV, "1")
     assert "arc_trace" not in CF.mark_only() and "hairpin_trace" in CF.mark_only()
+
+
+def test_r5_a_piece_the_cell_split_off_inside_its_crop_is_not_a_view():
+    # Litolff p6 cell 6/1/8/10 (Sean's 2.284 tiles 3-4): the page map fused a dynamic f with a beam-stem blob the cell keeps apart. The f's piece
+    # (stroke 0) and the blob (stroke 1) both lie wholly on page stroke 9, each a small share of it, neither cut by the cell edge. The f's claim
+    # must not reach the blob through the page stroke: the blob keeps its own (unclaimed) verdict.
+    a = SO.own_strokes([_ink(0, "blob", (0, 0, 10, 10), 0.6, 0.3), _ink(1, "blob", (40, 0, 5, 8), 0.4, 0.3)],
+                       [SO.Claim("f", "dynamic", "dynamicF", (0,), (), "g1")])
+    assert a[0].family == "dynamic" and a[1].state == "unclaimed"
+    links = {"A": {0: (9, 1.0, 0.15, 0.0), 1: (9, 0.85, 0.05, 0.0)}}
+    page, cen = PL.pool({"A": a}, links, SO.TIERS)
+    assert cen["split_differently"] == 2 and 9 not in page
+    na, ch = PL.apply(a, links["A"], page)
+    assert na[1].state == "unclaimed" and not ch
+    # control (rule 7): with the old rule (no cut fact filed, a 3-tuple link) the f's claim does reach the blob
+    links3 = {"A": {0: (9, 1.0, 0.15), 1: (9, 0.85, 0.05)}}
+    page3, _ = PL.pool({"A": a}, links3, SO.TIERS)
+    na3, _ = PL.apply(a, links3["A"], page3)
+    assert na3[1].family == "dynamic"
+
+
+def test_r5_a_piece_the_cell_edge_cut_is_still_a_view():
+    # the barline case stays: the neighbour cell's piece of the rule is CUT by its crop (top and bottom), so it takes the one owner
+    a = SO.own_strokes([_ink(0)], [SO.Claim("area-1", "barline", "barline", (0,), (), "r1", area=True)])
+    b = SO.own_strokes([_ink(3)], [])
+    links = {"A": {0: (7, 1.0, 0.03, 1.0)}, "B": {3: (7, 1.0, 0.03, 1.0)}}
+    page, _ = PL.pool({"A": a, "B": b}, links, SO.TIERS)
+    nb, _ = PL.apply(b, links["B"], page)
+    assert nb[3].family == "barline"
+    links0 = {"A": {0: (7, 1.0, 0.03, 0.0)}, "B": {3: (7, 1.0, 0.03, 0.0)}}
+    page0, _ = PL.pool({"A": a, "B": b}, links0, SO.TIERS)
+    nb0, _ = PL.apply(b, links0["B"], page0)
+    assert nb0[3].state == "unclaimed"

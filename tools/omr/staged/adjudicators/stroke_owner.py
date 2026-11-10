@@ -468,14 +468,18 @@ def _settle_view(view: Dict[str, Any], vetoes: Optional[Dict[str, SO.Veto]]) -> 
 
 
 def _links(ev: Evidence, cell) -> Dict[int, Tuple[float, ...]]:
-    """ROADMAP 2.284: `{cell stroke ordinal: (page stroke ordinal, share, cover)}` from the cell's `Q.STROKE` rows (`page_stroke`, filed by GATHER with the flag on)."""
+    """ROADMAP 2.284: `{cell stroke ordinal: (page stroke ordinal, share, cover, cut by the cell edge 1/0)}` from the cell's `Q.STROKE` rows (`page_stroke`, filed by GATHER with the flag on)."""
     out: Dict[int, Tuple[int, float]] = {}
     for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         g = getattr(r.subject, "glyph", None)
         ln = (r.detail or {}).get("page_stroke")
         if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not (isinstance(ln, (list, tuple)) and len(ln) >= 2):
             continue
-        out[g - STROKE_GLYPH_BASE] = tuple([int(ln[0])] + [float(t) for t in ln[1:]])
+        t = [int(ln[0])] + [float(x) for x in ln[1:]]
+        if len(t) >= 3:
+            # r5: did the CELL EDGE cut this piece (`page_ledger.is_view`)? the stroke map's own fact, as the cell row carries it
+            t = t[:3] + [1.0 if str((r.detail or {}).get("cut") or "") else 0.0]
+        out[g - STROKE_GLYPH_BASE] = tuple(t)
     return out
 
 

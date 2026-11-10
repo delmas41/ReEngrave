@@ -49,6 +49,19 @@ LINK_SHARE_MIN = 0.8
 WHOLE_VIEW_MIN = 0.8
 
 
+def is_view(ln: Sequence[float]) -> bool:
+    """ROADMAP 2.284 r5: a linked cell piece is a VIEW of its page stroke -- the same ink, as one frame shows it -- only where it sees the stroke whole
+    (`cover` >= `WHOLE_VIEW_MIN`) or the CELL EDGE cut it (`ln[3]` = 1: the stroke map's `cut` fact, an edge of the crop the piece touches). A piece the
+    cell's own finders split off INSIDE the crop, holding a small share of the page stroke, is a different SPLIT of the ink, not a view of it: the page
+    map fused it with another mark the cell keeps apart (Litolff p6 cell 6/1/8/10: a beam-stem blob the page map fused with a dynamic `f`; the f's
+    claim reached the blob through the page stroke and the chord's beam read went ambiguous, Sean's 2.284 tiles 3-4). Such a piece neither feeds the
+    page settle nor takes it: it keeps its cell's own verdict, exactly as a piece the CELL fused (`LINK_SHARE_MIN`) does. No new cut: the whole-view
+    share and the stroke map's own cut fact. A link filed without the cut fact (`len(ln) < 4`, an r1-r4 record) is read as before (a view)."""
+    if len(ln) < 4:
+        return True
+    return float(ln[2]) >= WHOLE_VIEW_MIN or float(ln[3]) > 0.0
+
+
 def enabled() -> bool:
     """`OMR_PAGE_LEDGER_OWNS` (ROADMAP 2.284), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
     return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
@@ -126,7 +139,7 @@ def tier_index(tiers: Sequence[Sequence[str]]) -> Dict[str, int]:
 
 def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple[float, ...]]], tiers: Sequence[Sequence[str]]
          ) -> Tuple[Dict[int, Any], Dict[str, int]]:
-    """PURE. `cell_views` = `{cell key: {ordinal: stroke_owner.Ownership}}` (each cell's own settle); `links` = `{cell key: {ordinal: (page id, share)}}`.
+    """PURE. `cell_views` = `{cell key: {ordinal: stroke_owner.Ownership}}` (each cell's own settle); `links` = `{cell key: {ordinal: (page id, share[, cover, cut by the cell edge])}}`.
     Returns (`{page id: Ownership}` -- the one settle of the pooled candidates of every LINKED cell stroke, ordinal = the page id --, census).
     A claimant is pooled once per (key, how); candidates are ordered by claim tier, then key, as `own_strokes` lists them."""
     from . import stroke_owner as SO
@@ -143,6 +156,9 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
             ln = lk.get(o)
             if ln is None or ln[1] < LINK_SHARE_MIN:
                 census["unlinked_strokes"] = census.get("unlinked_strokes", 0) + 1
+                continue
+            if not is_view(ln):
+                census["split_differently"] = census.get("split_differently", 0) + 1
                 continue
             pid = int(ln[0])
             members[pid] = members.get(pid, 0) + 1
@@ -179,7 +195,7 @@ def apply(view: Dict[int, Any], link: Dict[int, Tuple[float, ...]], page: Dict[i
     ch: Dict[str, int] = {}
     for o, w in view.items():
         ln = link.get(o)
-        if ln is None or ln[1] < LINK_SHARE_MIN or int(ln[0]) not in page:
+        if ln is None or ln[1] < LINK_SHARE_MIN or not is_view(ln) or int(ln[0]) not in page:
             continue
         p = page[int(ln[0])]
         nw = replace(p, ordinal=o)
