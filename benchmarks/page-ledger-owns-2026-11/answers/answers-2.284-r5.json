@@ -1,0 +1,35 @@
+{
+ "lane": "2.284 r5 (lane-2.284-r6-merged)",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box?",
+ "verbatim": "Tile 1 is a quarter note. Tile 2 is an eighth note. Tile 3 is a half note. Tile 4 is a quarter note. Tile 5 is the tip of an arc. Tile 6 is the tip of an arc. Tile 7 is the tip of an arc. Tile 8 is the tip of an arc. Tile 9, 10, 11, and 12 are all arc tips.",
+ "answers": {
+  "5": "arc tip",
+  "6": "arc tip",
+  "7": "arc tip",
+  "8": "arc tip",
+  "9": "arc tip",
+  "10": "arc tip",
+  "11": "arc tip",
+  "12": "arc tip",
+  "1": "quarter note",
+  "2": "eighth note",
+  "3": "half note",
+  "4": "quarter note"
+ },
+ "verdict_vs_ON": {
+  "1": "RIGHT: flag removed from a quarter (same note as tile 4)",
+  "2": "MIXED: real note gained, but written quarter; Sean: eighth",
+  "3": "WRONG: tie start gained on a half note's ink",
+  "4": "RIGHT: value eighth->quarter",
+  "5": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "6": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "7": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "8": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "9": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "10": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "11": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "12": "RIGHT: false flag refused (reason given claimed_by:barline; the ink is an arc tip)"
+ },
+ "summary": "ON right 10/12 (8 false flags on arc tips refused; a false flag and eighth->quarter on one real quarter), mixed 1 (tile 2: real note gained at quarter, is an eighth), wrong 1 (tile 3: tie gained on a half note)."
+}
