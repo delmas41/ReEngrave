@@ -285,6 +285,22 @@ def _overlap_small(a: Sequence[float], b: Sequence[float]) -> float:
     return ix * iy / small
 
 
+#: ROADMAP 2.284b r2: two boxes that overlap by `LETTER_TWIN_SHARE` are one ink boxed twice only when their CENTRES also lie within this share of the
+#: narrower box's width -- the two `f` of an `ff` overlap by about half (centres ~0.5 of a letter width apart, 0.48-0.53 measured, Litolff p10: four boxes of one `ff`
+#: folded into one slot and read as one `f`), one ink seen by two cells lies on the same centre
+LETTER_TWIN_CENTRE_SHARE = 0.4
+#: a single slot wider than this share of the system's median letter-box width is a word of unknown length (see `spell_letter_runs`)
+LETTER_WIDE_SHARE = 1.5
+
+
+def _is_twin(a: Sequence[float], b: Sequence[float]) -> bool:
+    """One ink boxed twice: `_overlap_small >= LETTER_TWIN_SHARE` AND centres within `LETTER_TWIN_CENTRE_SHARE` of the narrower width. PURE."""
+    if _overlap_small(a, b) < LETTER_TWIN_SHARE:
+        return False
+    w = max(1.0, min(a[2] - a[0], b[2] - b[0]))
+    return abs((a[0] + a[2]) / 2.0 - (b[0] + b[2]) / 2.0) <= LETTER_TWIN_CENTRE_SHARE * w
+
+
 def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spacing: float,
                       words: Iterable[str]) -> List[Dict[str, Any]]:
     """Join one system's detector dynamic letters `(page box, letter, row id)` into printed runs, left to right; PURE.
@@ -297,26 +313,36 @@ def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spaci
     slots: List[Dict[str, Any]] = []
     for box, letter, rid in sorted(letters, key=lambda t: (float(t[0][0]), float(t[0][1]))):
         b = [float(v) for v in box]
-        twin = next((s for s in slots if _overlap_small(s["box"], b) >= LETTER_TWIN_SHARE), None)
+        twin = next((s for s in slots if any(_is_twin(m, b) for m in s["members"])), None)
         if twin is not None:
             twin["letters"].add(str(letter))
             twin["rows"].append(rid)
+            twin["members"].append(b)
             twin["box"] = [min(twin["box"][0], b[0]), min(twin["box"][1], b[1]), max(twin["box"][2], b[2]), max(twin["box"][3], b[3])]
             continue
-        slots.append({"box": b, "letters": {str(letter)}, "rows": [rid]})
+        slots.append({"box": b, "letters": {str(letter)}, "rows": [rid], "members": [b]})
     slots.sort(key=lambda s: s["box"][0])
     runs: List[List[Dict[str, Any]]] = []
     for s in slots:
-        if runs:
-            last = runs[-1][-1]
+        # ROADMAP 2.284b r2 (Sean 2026-11-10: `ff` claimed letter by letter): the slots of ONE SYSTEM interleave in x across its staves, so the
+        # previous slot in x order is often another staff's letter (Litolff p10: an `f` of the staff above stood between the two of an `ff`
+        # and no pair ever joined). A slot joins the run whose last slot lies on ITS ROW -- the best vertical overlap among the open runs --
+        # never merely the previous one in x order.
+        best, best_ov = None, 0.0
+        for run in runs:
+            last = run[-1]
             gap = s["box"][0] - last["box"][2]
             hs = min(s["box"][3] - s["box"][1], last["box"][3] - last["box"][1])
             ov = min(s["box"][3], last["box"][3]) - max(s["box"][1], last["box"][1])
-            if gap <= LETTER_JOIN_GAP_SPACES * spacing and hs > 0 and ov >= LETTER_ROW_OVERLAP_MIN * hs:
-                runs[-1].append(s)
-                continue
+            if gap <= LETTER_JOIN_GAP_SPACES * spacing and hs > 0 and ov >= LETTER_ROW_OVERLAP_MIN * hs and ov > best_ov:
+                best, best_ov = run, ov
+        if best is not None:
+            best.append(s)
+            continue
         runs.append([s])
     out: List[Dict[str, Any]] = []
+    widths = sorted(m[2] - m[0] for sl in slots for m in sl["members"])
+    ref_w = widths[len(widths) // 2] if widths else 0.0
     for run in runs:
         box = [min(s["box"][0] for s in run), min(s["box"][1] for s in run), max(s["box"][2] for s in run), max(s["box"][3] for s in run)]
         rows = [r for s in run for r in s["rows"]]
@@ -324,6 +350,11 @@ def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spaci
             out.append({"box": box, "text": None, "slots": len(run), "rows": rows, "read": False, "why": "twin_letters_disagree"})
             continue
         text = "".join(next(iter(s["letters"])) for s in run)
+        if len(run) < 2 and ref_w and (box[2] - box[0]) > LETTER_WIDE_SHARE * ref_w:
+            # ROADMAP 2.284b r2: ONE slot whose boxes together are far wider than a letter of this system is a printed word the detector boxed
+            # as one wide `f` or as sloppy overlapping pieces (Litolff p10 `ff`): how many letters it holds is not told, so it is not spelled
+            out.append({"box": box, "text": None, "slots": len(run), "rows": rows, "read": False, "why": "wide_letter_box"})
+            continue
         if len(run) < 2:
             why = "lone_letter"
         elif text not in vocab:

@@ -15359,6 +15359,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         if key is not None:
             by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
     mark_boxes: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None      # ROADMAP 2.284b: built once, on first use (flag ON only)
+    line_keys: set = set()
     for d in arcs_summary.get("arcs_detail") or ():
         trace_rows = d.get("trace")
         if not trace_rows:
@@ -15375,7 +15376,8 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         got_all: List[List[Any]] = []
         shares: List[float] = []
         cells_hit: List[int] = []
-        crossings: List[List[Any]] = []          # ROADMAP 2.284b: [cell, ordinal, own px, mark box, box share] -- marked, not taken
+        crossings: List[List[Any]] = []          # ROADMAP 2.284b: [cell, ordinal, own px, mark box, box share, share of the box's ink on the curve]
+        line_boxes: List[List[Any]] = []         # ROADMAP 2.284b r2: [cell, mark box, share of its ink on the curve]: no mark, the arc's own ink
         px_tot: Dict[str, int] = {}
         no_map = 0
         for ck, c in sorted(by_cell.items()):
@@ -15397,14 +15399,17 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                 # mark's own ink (a crossing: marked, not taken). `arc_claim.claim_pixels`.
                 if mark_boxes is None:
                     mark_boxes = _arc_mark_boxes_page(detections, by_cell)
+                    line_keys = _arc_line_box_keys(detections)
                 pg = mark_boxes.get(ck[0], ())
                 near = [(k, b) for k, b in pg if b[0] <= cb[2] and b[2] >= cb[0] and b[1] <= cb[3] and b[3] >= cb[1]]
-                px_res = AC.claim_pixels(res, cb, float(up), trace, sp, near)
+                px_res = AC.claim_pixels(res, cb, float(up), trace, sp, near, line_keys)
                 got = px_res["claimed"]
                 for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
                     px_tot[kk] = px_tot.get(kk, 0) + int(px_res[kk])
                 for cr in px_res["crossings"]:
-                    crossings.append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"]])
+                    crossings.append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"], cr["box_on_line"]])
+                for lb in px_res.get("line_boxes", ()):
+                    line_boxes.append([ck[3]] + list(lb))
             else:
                 got = AC.claim_strokes(res, cb, float(up), trace, sp)
             if got:
@@ -15416,7 +15421,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         ssub = R.staff(*home)
         px_extra: Dict[str, Any] = {}
         if px_tot or crossings:
-            px_extra = {"pixels": dict(sorted(px_tot.items())), "crossings": crossings}
+            px_extra = {"pixels": dict(sorted(px_tot.items())), "crossings": crossings, "line_boxes": line_boxes}
             counts["crossings"] = counts.get("crossings", 0) + len(crossings)
             for kk, vv in px_tot.items():
                 counts[kk] = counts.get(kk, 0) + vv
@@ -15466,6 +15471,19 @@ def _arc_mark_boxes_page(detections: Optional[Dict[str, List[Any]]], by_cell: Di
                 pb = _page_box(c, d)
                 if pb is not None:
                     out.setdefault(sub.page, []).append((R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), [float(v) for v in pb]))
+    return out
+
+
+def _arc_line_box_keys(detections: Optional[Dict[str, List[Any]]]) -> set:
+    """ROADMAP 2.284b r2: the glyph keys of every LINE-class box (`arc_claim.LINE_BOX_CLASSES`: a ledger line) of the page's detections -- the boxes
+    whose ink can be a stretch of an arc (`arc_claim.BOX_ON_LINE_MIN`)."""
+    from . import arc_claim as _AC
+    out = set()
+    for ck, dets in (detections or {}).items():
+        sub = Subject.from_key(ck)
+        for gi, d in enumerate(dets):
+            if str(getattr(d, "smufl_name", "") or "").startswith(_AC.LINE_BOX_CLASSES):
+                out.add(R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key())
     return out
 
 
@@ -15531,7 +15549,7 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
                     for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
                         px_tot.setdefault(ck[:3], {})[kk] = px_tot.setdefault(ck[:3], {}).get(kk, 0) + int(px_res[kk])
                     for cr in px_res["crossings"]:
-                        crossings.setdefault(ck[:3], []).append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"]])
+                        crossings.setdefault(ck[:3], []).append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"], cr["box_on_line"]])
                 else:
                     got_c = HR.claim_strokes(res, cb, float(up), segs, bb, band)
                 for i, sh in got_c:
@@ -16495,7 +16513,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if not sp:
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
-                if not run["read"] and run["why"] == "lone_letter":
+                if not run["read"] and run["why"] in ("lone_letter", "wide_letter_box"):
                     # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
                     # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
                     # stemmed head is never touched) -- unless it lies on ink a word already claimed (a letter of "espr.", "dolce").
@@ -16510,7 +16528,9 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                         # page-wide"), so no later reader (a stem, beam, flag, tremolo slash) can take it; the note marks it overlaps are spared.
                         _file_sparing(s, run["box"], "dynamic_letters", "lone_inside_a_staff" if inside_staff else "outside_staff",
                                       own=[key_of_row[i] for i in run["rows"]], owner_row=run["rows"][0], letter_rows=list(run["rows"]),
-                                      text=run["text"], category="dynamic", lone=True)
+                                      # r2 (Sean 2026-11-10): the detector's lone letter names ink, not a word (`sf` boxed as one `dynamicF`,
+                                      # tile 2) -- the claim keeps the ink and carries the letter as `detector_letter`, never as `text`
+                                      text=None, detector_letter=run["text"], category="dynamic", lone=True)
                     else:
                         _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]], standing="GUESSED",
                               owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic", lone=True)
