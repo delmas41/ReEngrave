@@ -21,6 +21,11 @@ re-enter.
 
 **Direction (Sean 2026-11-09: "That plan sounds great make sure to document it and let's follow it unless something we learn along the way changes the direction.")** Claimed ink first, because twin boxes and boxes on other marks' ink poisoned every overnight lane (2.274 step 2, 2.278, 2.279b, 2.280).
 
+**ORDER CHANGED (Sean 2026-11-09 afternoon: "We should definitely fix claim wiring first. Everything is downstream of that. All of our tests for anything else is chasing our tails if the ink is not claimed and wired.")** Step 1 is done (2.277 LANDED, dcada1465). The NEXT list below is SUPERSEDED from step 3 on: no arc-binding, stem, beam or value lane builds until the claim wiring is fixed. Now:
+1. **2.283 audit** (in flight): claim_readout on the frozen sample + a code inventory of everything that breaks read once / claim once (re-reads, readers that take claimed ink or never consult claims, marks read but not claimed, mark-only kinds, two mechanisms for one rule, layer order vs run order, stale claims in test runs). Ranked by ink, at most 3 lanes proposed. Sean picks.
+2. **Claim-wiring lanes** from the audit, biggest first. Already known: accidentals claim LAST (sharps boxed as heads -> false stems and invented notes; 2.282 order test in flight); arcs are MARK-ONLY only because the arc trace takes head ink (a workaround, 2.277; the arc must claim only its own curve); page readers that do not consult claims and marks that file none (2.276 r3 in flight: beam piece + dynamic p taken by the tremolo claim).
+3. **Held until then:** 2.279 (blue values; Sean 5/12, b8b1a5ce2 -- 2 misses are sharps), 2.281 arc binding (Sean 7/7 gained, 1df0b9745), the stem and beam micro re-runs.
+
 **NEXT, in order:**
 1. **Land 2.277** (claimed ink is final). Sean 12/12 on its tiles (ca2b537f8). Left: the Brahms merged-tree slash count, and the manager's own check of the `check` number (branch 229 vs main 227; the lane says its new derived check reads 4 on the branch and 6 on main, so like-for-like 229 vs 233 -- VERIFY before landing).
 2. **In flight beside it:** 2.276 r2 (tremolo claim takes real heads, Sean 4/7, cd75eefed; fix at the source, plus Sean's stem-direction convention: a slash never sits past the head end of its stem); 2.279 r3 (Sean's red/blue ruling fdd251bb4, built OFF, with the "don't lose too much" measure).
