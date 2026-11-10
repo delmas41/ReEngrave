@@ -2797,13 +2797,12 @@ def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
 
 @decision(
     quantity=Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
-    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("keySharp", "keyFlat", "keyNatural"),
-    reasons=_human_only_reasons(Q.KEYSIG_MARKER_IS_NOT_A_MARKER)
-    + INK_CONSULT_REASONS,
+    reasons=_human_only_reasons(Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_keysig_marker_is_not_a_marker(ev: Evidence) -> Ruling:
@@ -2822,9 +2821,6 @@ def adjudicate_keysig_marker_is_not_a_marker(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
-    ink = _ink_consult_refusal(ev, "keysig_marker", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
-    if ink is not None:
-        return ink
     return Ruling(value=False, reason="keysig_marker", used=used,
                   detail=detail)
 

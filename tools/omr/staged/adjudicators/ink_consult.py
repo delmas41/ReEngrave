@@ -47,13 +47,16 @@ FAMILY_DECIDERS: Dict[str, Tuple[str, str]] = {
     "dynamic": ("adjudicators/family_precision.py", "adjudicate_dynamic_is_not_a_dynamic"),
     "articulation": ("adjudicators/family_precision.py", "adjudicate_articulation_is_not_an_articulation"),
     "flag": ("adjudicators/family_precision.py", "adjudicate_flag_is_not_a_flag"),
-    "keysig_marker": ("adjudicators/family_precision.py", "adjudicate_keysig_marker_is_not_a_marker"),
     "tuplet": ("adjudicators/family_precision.py", "adjudicate_tuplet_marker_is_not_a_marker"),
     "dot": ("adjudicators/rhythm.py", "adjudicate_dot_role"),
     # the stroke CONSUMERS read the owner per stroke (`stroke_owner.masked`: an owned / contested stroke is never a stem or a beam)
     "stem": ("adjudicators/rhythm.py", "_stem_views"),
     "beam": ("adjudicators/rhythm.py", "_stroke_views"),
 }
+#: NOT a consulting family: the key-signature marker (`adjudicate_keysig_marker_is_not_a_marker`) runs BEFORE the stroke owner in `adjudicate.ORDER` (its
+#: consumer, the header's key reader, is earlier still), and its ink IS the key run's tier-0 claim -- a key marker is the claimant, not a later reader.
+#: The inventory guard (`test_staged_out_of_pipeline_producer`) refused the r5 first wiring: it would always read None.
+EXEMPT = {"keysig_marker": "runs before the stroke owner (adjudicate.ORDER); its ink is the key run's own tier-0 claim"}
 #: the consumers' consult is the per-stroke mask, not a box consult
 CONSUMER_CALL = "_owner_mask("
 #: a decider is ON the one consult when its body calls `consult` here, or a family_precision helper that does (`_ink_consult_refusal`, `_ledger_finding`)
