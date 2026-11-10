@@ -5,11 +5,22 @@
  "labels": [
   {
    "id": "P0",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1239,
+     1581,
+     5501,
+     1718
+    ],
+    "mode": "lines",
+    "px": 135153,
+    "rule": "pageink-1",
+    "sha1": "5f15ebb56b0cd579"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 0: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -20,17 +31,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P1",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1221,
+     1965,
+     5501,
+     2104
+    ],
+    "mode": "lines",
+    "px": 135006,
+    "rule": "pageink-1",
+    "sha1": "c3d33094f1c4f5f9"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 1: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -41,17 +63,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P2",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1242,
+     2352,
+     5501,
+     2490
+    ],
+    "mode": "lines",
+    "px": 132066,
+    "rule": "pageink-1",
+    "sha1": "d7e0ba704fa3988c"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 2: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -62,17 +95,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P3",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1242,
+     2737,
+     5501,
+     2876
+    ],
+    "mode": "lines",
+    "px": 126707,
+    "rule": "pageink-1",
+    "sha1": "2518616940137395"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 3: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -83,17 +127,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P4",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1242,
+     3067,
+     5501,
+     3206
+    ],
+    "mode": "lines",
+    "px": 130614,
+    "rule": "pageink-1",
+    "sha1": "45ddafacb3c93b14"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 4: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -104,17 +159,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P5",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1220,
+     3480,
+     5500,
+     3621
+    ],
+    "mode": "lines",
+    "px": 140407,
+    "rule": "pageink-1",
+    "sha1": "4bb4142e863f8dfa"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 5: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -125,17 +191,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P6",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1224,
+     3953,
+     5501,
+     4091
+    ],
+    "mode": "lines",
+    "px": 131158,
+    "rule": "pageink-1",
+    "sha1": "5c6eb65c44aebb4e"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 6: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -146,17 +223,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P7",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1225,
+     4301,
+     5498,
+     4441
+    ],
+    "mode": "lines",
+    "px": 130874,
+    "rule": "pageink-1",
+    "sha1": "f2606ac17ce9f799"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 7: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -167,17 +255,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P8",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1226,
+     4650,
+     5497,
+     4791
+    ],
+    "mode": "lines",
+    "px": 130398,
+    "rule": "pageink-1",
+    "sha1": "2966cdcb9a10aaf9"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 8: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -188,17 +287,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P9",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1227,
+     5156,
+     5501,
+     5298
+    ],
+    "mode": "lines",
+    "px": 136625,
+    "rule": "pageink-1",
+    "sha1": "7aa83a6a69191926"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 9: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -209,17 +319,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P10",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1227,
+     5544,
+     5496,
+     5687
+    ],
+    "mode": "lines",
+    "px": 141507,
+    "rule": "pageink-1",
+    "sha1": "92a889a2b6fa6271"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 10: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -230,17 +351,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P11",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1243,
+     5991,
+     5499,
+     6133
+    ],
+    "mode": "lines",
+    "px": 133860,
+    "rule": "pageink-1",
+    "sha1": "56fde6f788291816"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 11: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -251,17 +383,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P12",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1225,
+     6385,
+     5497,
+     6528
+    ],
+    "mode": "lines",
+    "px": 137382,
+    "rule": "pageink-1",
+    "sha1": "86b856cd1ce79bfd"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 12: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -272,17 +415,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P13",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1241,
+     6737,
+     5494,
+     6880
+    ],
+    "mode": "lines",
+    "px": 135484,
+    "rule": "pageink-1",
+    "sha1": "ef095f9d76d8ed34"
+   },
    "kind": "staff",
    "labeler": "sean",
    "note": "system 0 staff 13: the five lines the cells measured",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -293,17 +447,28 @@
     ]
    },
    "source": "staff-lines",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P14",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     1530,
+     1364,
+     1765
+    ],
+    "mode": "all",
+    "px": 5329,
+    "rule": "pageink-1",
+    "sha1": "b97908801b1d9acb"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -314,17 +479,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P15",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     1916,
+     1363,
+     2151
+    ],
+    "mode": "all",
+    "px": 5179,
+    "rule": "pageink-1",
+    "sha1": "5cfbb96a99845f84"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -335,17 +511,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P16",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     2304,
+     1361,
+     2537
+    ],
+    "mode": "all",
+    "px": 4832,
+    "rule": "pageink-1",
+    "sha1": "936ca2b9fd1c64e8"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -356,17 +543,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P17",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     2738,
+     1367,
+     2844
+    ],
+    "mode": "all",
+    "px": 2290,
+    "rule": "pageink-1",
+    "sha1": "c906b10587136f93"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -377,17 +575,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P18",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     3068,
+     1367,
+     3172
+    ],
+    "mode": "all",
+    "px": 2170,
+    "rule": "pageink-1",
+    "sha1": "643f2d7604e53345"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -398,17 +607,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P19",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     3438,
+     1365,
+     3672
+    ],
+    "mode": "all",
+    "px": 5339,
+    "rule": "pageink-1",
+    "sha1": "2b123e1ba3093a7b"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -419,17 +639,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P20",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     3904,
+     1364,
+     4139
+    ],
+    "mode": "all",
+    "px": 5282,
+    "rule": "pageink-1",
+    "sha1": "af5afef83854abc5"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -440,17 +671,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P21",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     4253,
+     1374,
+     4488
+    ],
+    "mode": "all",
+    "px": 5402,
+    "rule": "pageink-1",
+    "sha1": "31a359d1f998d227"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -461,17 +703,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P22",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     4658,
+     1372,
+     4760
+    ],
+    "mode": "all",
+    "px": 2414,
+    "rule": "pageink-1",
+    "sha1": "5223e30a28ee000c"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -482,17 +735,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P23",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     5112,
+     1365,
+     5347
+    ],
+    "mode": "all",
+    "px": 5007,
+    "rule": "pageink-1",
+    "sha1": "9b37df025b4aa84b"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -503,17 +767,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P24",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     5501,
+     1367,
+     5735
+    ],
+    "mode": "all",
+    "px": 5080,
+    "rule": "pageink-1",
+    "sha1": "337a8a518920df0b"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -524,38 +799,60 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P25",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     5995,
+     1370,
+     6134
+    ],
+    "mode": "all",
+    "px": 4014,
+    "rule": "pageink-1",
+    "sha1": "71310cae6368ff83"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1292.736328125,
-     5998.0160744500845,
-     1365.908203125,
-     6131.776649746193
+     1274.7389322916667,
+     5989.8963620981385,
+     1369.7389322916667,
+     6136.5630287648055
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P26",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     6359,
+     1370,
+     6493
+    ],
+    "mode": "all",
+    "px": 3978,
+    "rule": "pageink-1",
+    "sha1": "bfe266a10fd3c4a9"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -566,17 +863,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P27",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4198,
+     6395,
+     4281,
+     6494
+    ],
+    "mode": "all",
+    "px": 2458,
+    "rule": "pageink-1",
+    "sha1": "50f0fcea5e51fdcc"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -587,17 +895,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P28",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1297,
+     6740,
+     1369,
+     6847
+    ],
+    "mode": "all",
+    "px": 2161,
+    "rule": "pageink-1",
+    "sha1": "18a51aa250effd36"
+   },
    "kind": "clef",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -608,7 +927,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
@@ -971,11 +1290,22 @@
   },
   {
    "id": "P46",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1389,
+     1539,
+     1487,
+     1687
+    ],
+    "mode": "all",
+    "px": 2647,
+    "rule": "pageink-1",
+    "sha1": "3af11fda10280a9e"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -986,38 +1316,60 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P47",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1386,
+     1925,
+     1488,
+     2071
+    ],
+    "mode": "all",
+    "px": 2645,
+    "rule": "pageink-1",
+    "sha1": "a2a304fe3875e197"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1390.298828125,
-     1925.1531914893617,
-     1455.630859375,
-     2058.055319148936
+     1386.6129557291667,
+     1921.349986632868,
+     1491.6129557291667,
+     2072.1833199662015
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P48",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1390,
+     2362,
+     1423,
+     2444
+    ],
+    "mode": "all",
+    "px": 869,
+    "rule": "pageink-1",
+    "sha1": "6fbe16f8696b6a3e"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1028,17 +1380,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P49",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1388,
+     2732,
+     1485,
+     2877
+    ],
+    "mode": "all",
+    "px": 2740,
+    "rule": "pageink-1",
+    "sha1": "269f0b65aa3e322d"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1049,17 +1412,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P50",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1390,
+     3062,
+     1485,
+     3205
+    ],
+    "mode": "all",
+    "px": 2472,
+    "rule": "pageink-1",
+    "sha1": "7ae185251b46fcbd"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1070,38 +1444,60 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P51",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1390,
+     5121,
+     1494,
+     5267
+    ],
+    "mode": "all",
+    "px": 2352,
+    "rule": "pageink-1",
+    "sha1": "fc6a6b1cb04d9967"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1395.08984375,
-     5121.495769881557,
-     1460.421875,
-     5254.384940778342
+     1390.6725260416667,
+     5119.607021996616,
+     1494.005859375,
+     5275.440355329949
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P52",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1395,
+     5508,
+     1491,
+     5656
+    ],
+    "mode": "all",
+    "px": 2241,
+    "rule": "pageink-1",
+    "sha1": "32cab9219fb17066"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1112,17 +1508,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P53",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1396,
+     5976,
+     1491,
+     6122
+    ],
+    "mode": "all",
+    "px": 2383,
+    "rule": "pageink-1",
+    "sha1": "4a05983130d92a4e"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1133,17 +1540,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P54",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1394,
+     6336,
+     1492,
+     6481
+    ],
+    "mode": "all",
+    "px": 2560,
+    "rule": "pageink-1",
+    "sha1": "9579c089906f1341"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1154,17 +1572,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P55",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1395,
+     6730,
+     1488,
+     6879
+    ],
+    "mode": "all",
+    "px": 2222,
+    "rule": "pageink-1",
+    "sha1": "3dc3c2ab27dc7781"
+   },
    "kind": "key",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1175,7 +1604,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
@@ -1742,7 +2171,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1763,7 +2192,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1784,7 +2213,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1805,7 +2234,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1826,7 +2255,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1847,7 +2276,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1868,7 +2297,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1889,7 +2318,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1910,17 +2339,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
   {
    "id": "P91",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2106,
+     3028,
+     2110,
+     3341
+    ],
+    "mode": "vertical",
+    "px": 873,
+    "rule": "pageink-1",
+    "sha1": "8506ce9b672410c3"
+   },
    "kind": "barline",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1931,7 +2371,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
@@ -1952,7 +2392,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1973,7 +2413,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -1994,7 +2434,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2015,7 +2455,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2036,7 +2476,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2057,7 +2497,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2078,7 +2518,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2099,7 +2539,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2120,7 +2560,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2141,7 +2581,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2162,7 +2602,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2183,7 +2623,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2204,7 +2644,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2225,7 +2665,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2246,7 +2686,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2267,7 +2707,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2288,7 +2728,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2309,7 +2749,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2330,7 +2770,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -2351,7 +2791,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3044,7 +3484,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3065,7 +3505,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3086,7 +3526,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3107,7 +3547,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3128,7 +3568,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3149,7 +3589,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3170,7 +3610,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3191,7 +3631,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
@@ -3212,17 +3652,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": null
   },
   {
    "id": "P153",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1186,
+     2738,
+     1217,
+     3197
+    ],
+    "mode": "all",
+    "px": 5276,
+    "rule": "pageink-1",
+    "sha1": "9f0e8ba2da75b34f"
+   },
    "kind": "bracket",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3233,17 +3684,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P154",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1180,
+     3505,
+     1222,
+     4071
+    ],
+    "mode": "all",
+    "px": 7407,
+    "rule": "pageink-1",
+    "sha1": "4f7a81aba41155c3"
+   },
    "kind": "bracket",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3254,7 +3716,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
@@ -5356,6 +5818,518 @@
    "source": "arc-key-2.281",
    "state": "pending",
    "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P255",
+   "ink_ref": {
+    "bbox": [
+     2103,
+     1590,
+     2126,
+     4788
+    ],
+    "mode": "vertical",
+    "px": 25720,
+    "rule": "pageink-1",
+    "sha1": "f19291ee3d960bb8"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2102.1666666666665,
+     1572.2979265343129,
+     2124.3888888888887,
+     4805.631259867646
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P256",
+   "ink_ref": {
+    "bbox": [
+     2664,
+     1589,
+     2678,
+     4792
+    ],
+    "mode": "vertical",
+    "px": 29054,
+    "rule": "pageink-1",
+    "sha1": "9907ccbbd0681622"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2652.1666666666665,
+     1572.2979265343129,
+     2679.9444444444443,
+     4794.5201487565355
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P257",
+   "ink_ref": {
+    "bbox": [
+     3093,
+     1589,
+     3108,
+     4791
+    ],
+    "mode": "vertical",
+    "px": 27367,
+    "rule": "pageink-1",
+    "sha1": "b241cbd3c5e62be7"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3085.5,
+     1566.7423709787572,
+     3113.277777777778,
+     4794.5201487565355
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P258",
+   "ink_ref": {
+    "bbox": [
+     3545,
+     1589,
+     3582,
+     4782
+    ],
+    "mode": "vertical",
+    "px": 27292,
+    "rule": "pageink-1",
+    "sha1": "de36ccdf4f39b13a"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3521.653409090909,
+     1556.6590909090908,
+     3580.767045454546,
+     4807.909090909091
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P259",
+   "ink_ref": {
+    "bbox": [
+     4099,
+     1589,
+     4112,
+     4782
+    ],
+    "mode": "vertical",
+    "px": 26864,
+    "rule": "pageink-1",
+    "sha1": "0f0dd40cc2cb90a9"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4073.380681818182,
+     1566.5113636363635,
+     4132.494318181818,
+     4807.909090909091
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P260",
+   "ink_ref": {
+    "bbox": [
+     4674,
+     1556,
+     4715,
+     4795
+    ],
+    "mode": "vertical",
+    "px": 28341,
+    "rule": "pageink-1",
+    "sha1": "65ab7de52d7278ae"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4644.8125,
+     1556.6590909090908,
+     4713.778409090909,
+     4817.761363636363
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P261",
+   "ink_ref": {
+    "bbox": [
+     5381,
+     1588,
+     5408,
+     4787
+    ],
+    "mode": "vertical",
+    "px": 47766,
+    "rule": "pageink-1",
+    "sha1": "10adf82fc3b331b1"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5354.176136363637,
+     1556.6590909090908,
+     5413.289772727273,
+     4817.761363636363
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P262",
+   "ink_ref": {
+    "bbox": [
+     2108,
+     5167,
+     2164,
+     6880
+    ],
+    "mode": "vertical",
+    "px": 11169,
+    "rule": "pageink-1",
+    "sha1": "3aff2cc042aaf418"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2083.221590909091,
+     5133.034090909091,
+     2162.039772727273,
+     6886.738636363636
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P263",
+   "ink_ref": {
+    "bbox": [
+     2665,
+     5169,
+     2680,
+     6871
+    ],
+    "mode": "vertical",
+    "px": 15484,
+    "rule": "pageink-1",
+    "sha1": "95794661d9f07d1e"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2644.801136363636,
+     5133.034090909091,
+     2684.210227272727,
+     6896.590909090909
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P264",
+   "ink_ref": {
+    "bbox": [
+     3097,
+     5168,
+     3108,
+     6878
+    ],
+    "mode": "vertical",
+    "px": 13896,
+    "rule": "pageink-1",
+    "sha1": "f7abe6b04a91c654"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3078.301136363636,
+     5133.034090909091,
+     3117.710227272727,
+     6906.443181818182
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P265",
+   "ink_ref": {
+    "bbox": [
+     3549,
+     5167,
+     3562,
+     6871
+    ],
+    "mode": "vertical",
+    "px": 14106,
+    "rule": "pageink-1",
+    "sha1": "94a1b697cd0ab188"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3521.653409090909,
+     5133.034090909091,
+     3580.767045454546,
+     6906.443181818182
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P266",
+   "ink_ref": {
+    "bbox": [
+     4102,
+     5165,
+     4114,
+     6880
+    ],
+    "mode": "vertical",
+    "px": 14607,
+    "rule": "pageink-1",
+    "sha1": "bf4f563343975db5"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4073.380681818182,
+     5142.886363636364,
+     4132.494318181818,
+     6906.443181818182
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P267",
+   "ink_ref": {
+    "bbox": [
+     4680,
+     5157,
+     4694,
+     6868
+    ],
+    "mode": "vertical",
+    "px": 14111,
+    "rule": "pageink-1",
+    "sha1": "9c879f13480c8447"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4644.8125,
+     5133.034090909091,
+     4713.778409090909,
+     6886.738636363636
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P268",
+   "ink_ref": {
+    "bbox": [
+     5382,
+     5157,
+     5406,
+     6873
+    ],
+    "mode": "vertical",
+    "px": 25408,
+    "rule": "pageink-1",
+    "sha1": "17ec7624ff3f45ad"
+   },
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5344.323863636364,
+     5133.034090909091,
+     5413.289772727273,
+     6906.443181818182
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P269",
+   "ink_ref": {
+    "bbox": [
+     1186,
+     1512,
+     1297,
+     6945
+    ],
+    "mode": "all",
+    "px": 143878,
+    "rule": "pageink-1",
+    "sha1": "1b4f93b02e01daca"
+   },
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1186.6647727272723,
+     1477.8409090909088,
+     1295.0397727272723,
+     7014.818181818182
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P270",
+   "ink_ref": {
+    "bbox": [
+     1186,
+     5178,
+     1220,
+     5671
+    ],
+    "mode": "all",
+    "px": 5260,
+    "rule": "pageink-1",
+    "sha1": "4cae480a93511ebd"
+   },
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1181.9798622904639,
+     5168.457684163005,
+     1224.7491590954803,
+     5680.501209800841
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
    "text": null
   }
  ],
