@@ -157,7 +157,7 @@ def ink_line(plate: str, pages: Sequence[int], tag: str) -> str:
         tot = rep["total"]
         sp = tot["state_px"]
         unc = sum(v for k, v in sp.items() if k.startswith(("unclaimed", "refused", "residue", "weak_claim", "debris", "outside_cells")))
-        return "%d of %d ink px unclaimed/debris (%.1f%%), claim_readout on pages %s" % (unc, tot["ink_px"], 100.0 * unc / max(1, tot["ink_px"]), list(pages))
+        return "%d of %d ink px in claim_readout's unclaimed/debris bucket (%.1f%%; ink, not a note count), pages %s" % (unc, tot["ink_px"], 100.0 * unc / max(1, tot["ink_px"]), list(pages))
     except Exception as e:           # a failed measure is "not measured", never a number
         return "not measured (%s: %s)" % (type(e).__name__, str(e)[:80])
 
