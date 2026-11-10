@@ -3946,6 +3946,41 @@
     },
     {
       "kind": "edition",
+      "path": "editions/cummings/hark-the-herald-angels-sing/cummings--hark-the-herald-angels-sing--robert-a-hudson--imslp404689.pdf",
+      "work_id": "cummings--hark-the-herald-angels-sing",
+      "composer": "Cummings, William Hayman",
+      "composer_slug": "cummings",
+      "title": "Hark! The Herald Angels Sing",
+      "source": "imslp",
+      "sha256": "6dc6f22da6945b3508ecaa65046dac1313e202cfa98666a99a0727b6197794ae",
+      "bytes": 193758,
+      "variant": "robert-a-hudson",
+      "pages": 17,
+      "has_text_layer": true,
+      "imslp_id": "404689",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/404689",
+      "publisher": "Robert A. Hudson",
+      "image_type": "Typeset",
+      "copyright": "Creative Commons Attribution 4.0",
+      "uploader": "Rah9639",
+      "date_submitted": "2015/12/27",
+      "original_filename": "IMSLP404689-PMLP576994-Hark_the_Herald_Angels_Sing_Full_Score.pdf",
+      "added": "2026-11-10",
+      "raw": {
+        "imslp_page": "Hark! The Herald Angels Sing (Cummings, William Hayman)",
+        "imslp_work_url": "https://imslp.org/wiki/Hark%21_The_Herald_Angels_Sing_%28Cummings%2C_William_Hayman%29",
+        "file_description": "Complete Score and Parts",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.4",
+          "producer": "iText 2.1.5 (by lowagie.com)",
+          "creationDate": "D:20160105224811Z",
+          "modDate": "D:20160105224811Z"
+        }
+      }
+    },
+    {
+      "kind": "edition",
       "path": "editions/debussy/la-boite-a-joujoux-cd-136/debussy--la-boite-a-joujoux-cd-136--durand-et-cie-1913--imslp199718.pdf",
       "work_id": "debussy--la-boite-a-joujoux",
       "composer": "Debussy, Claude",
@@ -8035,6 +8070,46 @@
     },
     {
       "kind": "edition",
+      "path": "editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137-2.pdf",
+      "work_id": "ravel--bolero",
+      "composer": "Ravel, Maurice",
+      "composer_slug": "ravel",
+      "title": "Boléro, M.81",
+      "source": "imslp",
+      "sha256": "859f47398a8fcc75431ee0e437f9955041dccc6b42b56075ef6ba8a6e67cfaa2",
+      "bytes": 3065525,
+      "variant": "2016",
+      "pages": 40,
+      "has_text_layer": true,
+      "imslp_id": "421137",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/421137",
+      "publisher": "2016.",
+      "publisher_year": "2016",
+      "editor": "Nicolas Sceaux",
+      "image_type": "Typeset",
+      "copyright": "Creative Commons Attribution 4.0",
+      "uploader": "NicolasSceaux",
+      "date_submitted": "2016/4/30",
+      "original_filename": "IMSLP421137-PMLP03667-Ravel_Bolero.pdf",
+      "added": "2026-11-10",
+      "raw": {
+        "imslp_page": "Boléro, M.81 (Ravel, Maurice)",
+        "imslp_work_url": "https://imslp.org/wiki/Bol%C3%A9ro%2C_M.81_%28Ravel%2C_Maurice%29",
+        "file_description": "Complete Score",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.3",
+          "title": "Bolero",
+          "author": "Sean Johnson",
+          "creator": "Preview",
+          "producer": "macOS Version 14.7.4 (Build 23H420) Quartz PDFContext",
+          "creationDate": "D:20260406230939Z00'00'",
+          "modDate": "D:20260406230939Z00'00'"
+        }
+      }
+    },
+    {
+      "kind": "edition",
       "path": "editions/ravel/bolero-m-81/ravel--bolero-m-81--2016--imslp421137.pdf",
       "work_id": "ravel--bolero",
       "composer": "Ravel, Maurice",
@@ -10565,6 +10640,38 @@
     },
     {
       "kind": "edition",
+      "path": "editions/tchaikovsky/symphony-2-op17-ii-andantino-marziale/tchaikovsky--symphony-2-op17-ii-andantino-marziale--unknown-edition--imslp36734.pdf",
+      "work_id": "tchaikovsky--symphony-2",
+      "composer": "Tchaikovsky, Pyotr",
+      "composer_slug": "tchaikovsky",
+      "title": "Symphony No.2, Op.17 (II. Andantino marziale)",
+      "source": "imslp",
+      "sha256": "1056210e8011382453326a496e2024c786ac7813805689b803e906ecaae27144",
+      "bytes": 398567,
+      "variant": "unknown-edition",
+      "pages": 28,
+      "has_text_layer": true,
+      "imslp_id": "36734",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/36734",
+      "original_filename": "IMSLP36734-PMLP02723-TH025A-sym2-2.pdf",
+      "added": "2026-11-10",
+      "raw": {
+        "imslp_page": "",
+        "imslp_work_url": "",
+        "file_description": "",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.4",
+          "creator": "Sibelius version 7.5.1 on Windows 7",
+          "producer": "Qt 4.8.0 (C) 2011 Nokia Corporation and/or its subsidiary(-ies)",
+          "creationDate": "D:20190428193007"
+        }
+      },
+      "composer_source": "manual",
+      "dossier_prefix": ""
+    },
+    {
+      "kind": "edition",
       "path": "editions/tchaikovsky/symphony-2-op17/tchaikovsky--symphony-2-op17--bessel-1881--imslp331351.pdf",
       "work_id": "tchaikovsky--symphony-2",
       "composer": "Tchaikovsky, Pyotr Ilyich",
@@ -11154,6 +11261,41 @@
         }
       },
       "composer_source": "imslp"
+    },
+    {
+      "kind": "edition",
+      "path": "editions/wade/adeste-fideles/wade--adeste-fideles--robert-a-hudson--imslp404812.pdf",
+      "work_id": "wade--adeste-fideles",
+      "composer": "Wade, John Francis",
+      "composer_slug": "wade",
+      "title": "Adeste Fideles",
+      "source": "imslp",
+      "sha256": "9df3e392d9ec10be90e3d19150a25f8b8a5ecfaf4715163a77f4cdba042c80e0",
+      "bytes": 218717,
+      "variant": "robert-a-hudson",
+      "pages": 16,
+      "has_text_layer": true,
+      "imslp_id": "404812",
+      "imslp_url": "https://imslp.org/wiki/Special:ReverseLookup/404812",
+      "publisher": "Robert A. Hudson",
+      "image_type": "Typeset",
+      "copyright": "Creative Commons Attribution 4.0",
+      "uploader": "Rah9639",
+      "date_submitted": "2015/12/28",
+      "original_filename": "IMSLP404812-PMLP101516-O_Come_All_Ye_Faithful_-_Full_Score.pdf",
+      "added": "2026-11-10",
+      "raw": {
+        "imslp_page": "Adeste Fideles (Wade, John Francis)",
+        "imslp_work_url": "https://imslp.org/wiki/Adeste_Fideles_%28Wade%2C_John_Francis%29",
+        "file_description": "Complete Score and Parts",
+        "misc_notes": "",
+        "pdf_metadata": {
+          "format": "PDF 1.4",
+          "producer": "iText 2.1.5 (by lowagie.com)",
+          "creationDate": "D:20160106005402Z",
+          "modDate": "D:20160106005402Z"
+        }
+      }
     },
     {
       "kind": "edition",
@@ -59177,6 +59319,49 @@
         "parse_rate": 0.0
       }
     },
+    "cummings--hark-the-herald-angels-sing": {
+      "work_id": "cummings--hark-the-herald-angels-sing",
+      "instrumentation": {
+        "roster_field": "Instrumentation",
+        "source": "imslp",
+        "source_kind": "catalog",
+        "evidence": "imslp work-page fields Instrumentation / InstrDetail",
+        "fetched": "2026-11-10",
+        "imslp_page": "Hark! The Herald Angels Sing (Cummings, William Hayman)",
+        "imslp_url": "https://imslp.org/wiki/Hark%21_The_Herald_Angels_Sing_%28Cummings%2C_William_Hayman%29",
+        "imslp_revid": 4548356,
+        "raw": {
+          "Instrumentation": "mixed chorus (SATB), organ",
+          "InstrDetail": ""
+        },
+        "describes": "work",
+        "note": "instrument counts describe the WORK; a printed edition may condense or split parts, so N instruments is not N staves",
+        "dialect": "prose",
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Chorus",
+            "family": "voice",
+            "lexicon_alias": "chorus",
+            "lexicon_confidence": "medium",
+            "text": "mixed chorus (SATB)",
+            "count": 1,
+            "qualifier": "SATB"
+          },
+          {
+            "kind": "instrument",
+            "instrument": "Organ",
+            "family": "keyboard",
+            "lexicon_alias": "organ",
+            "lexicon_confidence": "high",
+            "text": "organ",
+            "count": 1
+          }
+        ],
+        "unparsed": [],
+        "parse_rate": 1.0
+      }
+    },
     "debussy--la-boite-a-joujoux": {
       "work_id": "debussy--la-boite-a-joujoux",
       "instrumentation": {
@@ -78882,6 +79067,40 @@
             "kind": "section",
             "section": "Continuo",
             "text": "Continuo"
+          }
+        ],
+        "unparsed": [],
+        "parse_rate": 1.0
+      }
+    },
+    "wade--adeste-fideles": {
+      "work_id": "wade--adeste-fideles",
+      "instrumentation": {
+        "roster_field": "Instrumentation",
+        "source": "imslp",
+        "source_kind": "catalog",
+        "evidence": "imslp work-page fields Instrumentation / InstrDetail",
+        "fetched": "2026-11-10",
+        "imslp_page": "Adeste Fideles (Wade, John Francis)",
+        "imslp_url": "https://imslp.org/wiki/Adeste_Fideles_%28Wade%2C_John_Francis%29",
+        "imslp_revid": 4810162,
+        "raw": {
+          "Instrumentation": "voice or unison chorus (first edition)",
+          "InstrDetail": ""
+        },
+        "describes": "work",
+        "note": "instrument counts describe the WORK; a printed edition may condense or split parts, so N instruments is not N staves",
+        "dialect": "prose",
+        "roster": [
+          {
+            "kind": "instrument",
+            "instrument": "Chorus",
+            "family": "voice",
+            "lexicon_alias": "chorus",
+            "lexicon_confidence": "medium",
+            "text": "voice or unison chorus (first edition)",
+            "count": 1,
+            "qualifier": "first edition"
           }
         ],
         "unparsed": [],
@@ -137896,5 +138115,5 @@
     }
   },
   "schema_version": 3,
-  "count": 2034
+  "count": 2038
 }
