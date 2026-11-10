@@ -968,6 +968,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_PAGE_HEADS": ("staged/page_heads.py", "gather_page_heads"),
     # ROADMAP 2.276: the page map's vertical strokes and the PAGE canvas (staff-erased) read once for every slash crossing a stem.
     "CV_PAGE_TREMOLO": ("staged/page_tremolo.py", "gather_page_tremolo"),
+    # ROADMAP 2.285: the page map's strokes and the detector's boxes (no raster of its own).
+    "CV_PAGE_ACCIDENTAL_INK": None,
     # ROADMAP 2.240 step 2: no raster of its own (the page marks, staff lines, ledger / stem rows, traces and wedges).
     "CV_PAGE_OWNER": None,
     "CV_PAGE_SPANS": None,

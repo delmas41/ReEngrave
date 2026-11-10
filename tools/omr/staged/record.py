@@ -3020,6 +3020,8 @@ class READERS(_Vocab):
     CV_PAGE_HEADS = "cv_page_heads"
     #: `page_tremolo.gather_page_tremolo` -- ROADMAP 2.276. The page map's vertical strokes and the page canvas (the stem-crossing slash finder, once per page).
     CV_PAGE_TREMOLO = "cv_page_tremolo"
+    #: `page_accidental_ink.gather_page_accidental_ink` -- ROADMAP 2.285. The page map's strokes and the detector's boxes: unboxed accidental ink read once by the family reader.
+    CV_PAGE_ACCIDENTAL_INK = "cv_page_accidental_ink"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the page marks, the staves' own lines, the ledger / stem rows.
     CV_PAGE_OWNER = "cv_page_owner"
     #: `page_owner.gather_page_owners` -- ROADMAP 2.240 step 2. No raster: the `Q.SYSTEM_ARC` traces and `Q.WEDGE_BOX` reads, joined page-wide.

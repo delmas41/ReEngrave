@@ -89,6 +89,7 @@ LAYERS: Tuple[Tuple[str, Tuple[str, ...], str], ...] = (
     ("arc_hairpin", ("arc", "arc_trace", "hairpin", "hairpin_trace"), "plan §9 / §10 step 5 (page-wide, before heads)"),
     ("whole_rest", ("whole_rest",), "DECISIONS 2026-10-29: a whole rest claims its ink before heads"),
     ("tremolo", ("tremolo",), "ROADMAP 2.276 (Sean 2026-11-08): a tremolo slash is read once on the page and claims its ink before the heads (read with the head boxes known)"),
+    ("accidental_ink", ("accidental_ink",), "ROADMAP 2.285 (Sean 2026-11-09): an accidental the detector drew no box for is read once from its own ink on the page and claims it before the heads"),
     ("head", ("head", "ledger"), "plan §2 row 3; §3 head first among the per-cell marks"),
     ("stem_beam_flag", ("stem", "beam", "flag"), "plan §3 order head -> stem -> beam/flag; §2 row 5"),
     ("accidental", ("accidental",), "plan §2 row 3 open question 1"),
