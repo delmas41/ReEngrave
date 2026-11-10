@@ -1,0 +1,36 @@
+{
+ "lane": "2.284 r5 (lane-2.284-r6-merged)",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box?",
+ "verbatim": "Tile 1 is a quarter note. Tile 2 is an eighth note. Tile 3 is a half note. Tile 4 is a quarter note. Tile 5 is the tip of an arc. Tile 6 is the tip of an arc. Tile 7 is the tip of an arc. Tile 8 is the tip of an arc. Tile 9, 10, 11, and 12 are all arc tips.",
+ "answers": {
+  "5": "arc tip",
+  "6": "arc tip",
+  "7": "arc tip",
+  "8": "arc tip",
+  "9": "arc tip",
+  "10": "arc tip",
+  "11": "arc tip",
+  "12": "arc tip",
+  "1": "quarter note",
+  "2": "eighth note",
+  "3": "half note",
+  "4": "quarter note"
+ },
+ "verdict_vs_ON": {
+  "1": "RIGHT: flag removed from a quarter (same note as tile 4)",
+  "2": "OPEN: real note gained, written quarter; Sean's 'eighth' was given without the flag/beam in the tile (tile did not show what the answer needs) -- print check pending",
+  "3": "OPEN: the half note has ties on either side, so a tie start there may be right -- binding check pending",
+  "4": "RIGHT: value eighth->quarter",
+  "5": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "6": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "7": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "8": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "9": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "10": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "11": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
+  "12": "RIGHT: false flag refused (reason given claimed_by:barline; the ink is an arc tip)"
+ },
+ "summary": "ON right 10/12; tiles 2 and 3 OPEN after Sean's follow-up (tile 2 crop lacked the flag/beam; tile 3 has real ties on both sides of the half note).",
+ "verbatim_followup": "To be fair on tile 2 of the first round the flag or beam is not shown in the tile. Tile 3 is a half note with ties on either side."
+}

@@ -1,0 +1,35 @@
+{
+ "lane": "2.284b r2 (lane-2.284-r8-merged)",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box?",
+ "verbatim": "Tile 1 is an F, tile 2 is an SF, tile 3 is a double F, tile 4 is a part of a staff line, tile 5 is an F, tile 6 is a double F. I will say though that the orange box is very large, so I'm not sure if it's claiming ink for other things above it, because the orange box goes into the staff significantly and also includes a couple of half notes. Tile 6 is a part of, tile 7 is a part of an arc. Tile 8 is a staff line. Tile 9 is a double F. Tile 10 is a double F. Tile 11 is a double F. Tile 12 is a double F. My only concern would be that the boxes are the appropriate sizes and that they're not taking in other things.",
+ "answers": {
+  "1": "f",
+  "2": "sf",
+  "3": "ff",
+  "4": "part of a staff line",
+  "5": "f",
+  "6": "ff (box very large, reaches into the staff, includes a couple of half notes)",
+  "7": "part of an arc",
+  "8": "staff line",
+  "9": "ff",
+  "10": "ff",
+  "11": "ff",
+  "12": "ff"
+ },
+ "verdict_vs_ON": {
+  "1": "RIGHT: lone f",
+  "2": "RIGHT: sf held as one mark",
+  "3": "RIGHT: ff one mark",
+  "4": "CONTROL: false ledger box on a staff line; the arc does not take it (right), but it is no ledger",
+  "5": "RIGHT: lone f",
+  "6": "CLAIM RIGHT (ff), but the wide box reaches into the staff over two half notes -- Sean asks whether it takes their ink: OPEN, must be measured before landing",
+  "7": "RIGHT: arc keeps its own ink (the r1 tile-3 fix)",
+  "8": "CONTROL: false ledger box on a staff line, as tile 4",
+  "9": "RIGHT: ff",
+  "10": "RIGHT: ff",
+  "11": "RIGHT: ff",
+  "12": "CLAIM RIGHT, held whole but unspelled (is ff)"
+ },
+ "summary": "Dynamic words right on every case (f, sf, ff x5; two wide boxes are ff, unspelled). Arc ink fix right (tile 7). Ledger near-misses (4, 8) are false ledger boxes on staff lines. OPEN, Sean's concern: a wide dynamic box (tile 6) covers two half notes inside the staff -- measure that no claim takes another mark's ink before landing."
+}

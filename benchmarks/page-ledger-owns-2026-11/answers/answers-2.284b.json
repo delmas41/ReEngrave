@@ -1,0 +1,35 @@
+{
+ "lane": "2.284b (lane-2.284-r6-merged)",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box?",
+ "verbatim": "For the second set, tile 1 is a dynamic P, tile 2 is a dynamic SF, tile 3 is a part of an arc, tile 4 is an F from a double F, tile 5 is a double F, tile 6 is a double F, tile 7 is a single F, tile 8 is a flat accidental, tile 9 is a double F. Tile 10 is a double F. Tile 11 is a flat. Tile 12 is an F.",
+ "answers": {
+  "1": "dynamic p",
+  "2": "dynamic sf",
+  "3": "part of an arc",
+  "4": "f from ff",
+  "5": "ff",
+  "6": "ff",
+  "7": "f",
+  "8": "flat",
+  "9": "ff",
+  "10": "ff",
+  "11": "flat",
+  "12": "f"
+ },
+ "verdict_vs_ON": {
+  "1": "RIGHT: p kept from the arc",
+  "2": "CLAIM RIGHT (dynamic ink, not a note), word WRONG: read f, is sf",
+  "3": "WRONG: arc ink kept from the arc as a ledger-line crossing",
+  "4": "CLAIM RIGHT, word partial: one f of an ff",
+  "5": "CLAIM RIGHT, word WRONG: read f, is ff",
+  "6": "CLAIM RIGHT, word WRONG: read f, is ff",
+  "7": "RIGHT: f",
+  "8": "RIGHT: flat kept from the arc",
+  "9": "CLAIM RIGHT, word WRONG: read f, is ff",
+  "10": "CLAIM RIGHT, word WRONG: read f, is ff",
+  "11": "CLAIM RIGHT (accidental kept from the arc); class wrong: detector box doubleFlat, is a flat",
+  "12": "RIGHT: f"
+ },
+ "summary": "Crossings: 3 of 4 right (p, flat, flat kept from the arc; tile 3 arc ink kept as a ledger line). Letter claims: 8/8 are dynamic ink (claim right), but the word is right on only 2 (f, f): sf and ff are claimed letter by letter as f. GATHER-only; no file change."
+}
