@@ -421,4 +421,5 @@ def load(path: Path) -> PageTruth:
 def load_all(root: Path = PAGES_DIR) -> List[PageTruth]:
     if not root.exists():
         return []
-    return [load(p) for p in sorted(root.glob("*/*.json"))]
+    # `<n>.json` only: `<n>.review.json` and `<n>.pagepass.json` (ROADMAP 2.287) sit beside a page but are not pages
+    return [load(p) for p in sorted(root.glob("*/*.json")) if p.stem.isdigit()]

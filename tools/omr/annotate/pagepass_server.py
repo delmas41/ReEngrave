@@ -151,6 +151,22 @@ class PagePassService:
                                          self.truth.width, min(self.truth.height, max(r[3] for r in rs) + 2 * sp)]})
         return out
 
+    def strips(self) -> List[Dict]:
+        """One strip per staff, full page width: the working zoom (a one-system page, like a full score's, is
+        too tall to label at 'fit system'). Rect = the staff's lines plus 4 spaces above and below."""
+        sp = self.page.sp or 32.0
+        by: Dict[tuple, List[float]] = {}
+        for c in self.truth.cells:
+            if c.kind == "measure" and c.staff_line_ys and c.system is not None and c.staff is not None:
+                y0, y1 = c.rect[1], c.rect[3]
+                sy = (y1 - y0) / c.canonical_h
+                ys = [y0 + y * sy for y in c.staff_line_ys]
+                lo, hi = by.setdefault((c.system, c.staff), [min(ys), max(ys)])
+                by[(c.system, c.staff)] = [min(lo, min(ys)), max(hi, max(ys))]
+        return [{"system": k[0], "staff": k[1],
+                 "rect": [0, max(0, v[0] - 4 * sp), self.truth.width, min(self.truth.height, v[1] + 4 * sp)]}
+                for k, v in sorted(by.items())]
+
     def state_payload(self) -> Dict:
         c = self.claims()
         labels = []
@@ -164,7 +180,7 @@ class PagePassService:
             counts[lab.kind][lab.state] += 1
         return {"meta": {"edition": self.truth.edition, "page": self.truth.pdf_page_index,
                          "width": self.truth.width, "height": self.truth.height, "dpi": self.truth.dpi,
-                         "sp": self.page.sp, "systems": self.systems(), "kinds": list(pp.KINDS),
+                         "sp": self.page.sp, "systems": self.systems(), "strips": self.strips(), "kinds": list(pp.KINDS),
                          "text_kinds": list(pp.TEXT_KINDS), "file": str(self.file), "rule": "pageink-1",
                          "palette": {STATE_NAMES[k]: "#%02x%02x%02x" % PALETTE_RGB[k]
                                      for k in (UNCLAIMED, CLAIMED, PENDING, CELLPASS)}},

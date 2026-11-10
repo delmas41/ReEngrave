@@ -12,7 +12,7 @@ THE RULE (``RULE_VERSION``). A label owns INK PIXELS, decided by its KIND from t
             (bracket clef key meter word dynamic repeat)
 
 A staff-line pixel is a glyph's own (not the staff's) when the kind's ink stands directly above AND
-below it -- a clef, a barline or a slur crossing the line. Specks under 30 px are not claimed.
+below it -- a clef, a barline or a slur crossing the line. Specks under 30 px are not claimed (unless they touch a staff line: a line cuts every stem and barline into pieces).
 
 CLAIM ORDER decides a pixel two labels both reach: the EARLIER kind (``pagepass.KINDS``) wins
 ("a later reader may mark claimed ink but never take it"); within a kind the SMALLER shape wins.
@@ -69,6 +69,36 @@ def measure_sp(lines) -> float:
     return float(np.median(d)) if d else 0.0
 
 
+def measure_line_thickness(ink: np.ndarray, lines, sp: float, samples: int = 5) -> float:
+    """Median thickness (px) of the staff lines' own ink, measured where the cells say the lines are.
+
+    A 600 dpi scan's lines are 6-9 px (0.2-0.3 sp), not a fixed fraction of a space, so the band is measured.
+    """
+    h, w = ink.shape
+    reach = max(3, int(round(0.4 * sp)))
+    runs = []
+    for x0, x1, ys in lines:
+        for y in ys:
+            yc = int(round(y))
+            for k in range(samples):
+                x = int(x0 + (x1 - x0) * (k + 0.5) / samples)
+                if not (0 <= x < w and reach <= yc < h - reach):
+                    continue
+                col = ink[yc - reach:yc + reach + 1, x]
+                idx = np.nonzero(col)[0]
+                if not len(idx):
+                    continue
+                start = int(idx[np.argmin(np.abs(idx - reach))])
+                a = b = start
+                while a > 0 and col[a - 1]:
+                    a -= 1
+                while b < len(col) - 1 and col[b + 1]:
+                    b += 1
+                if abs(start - reach) <= 4 and (b - a + 1) < 0.5 * sp:     # a line, not a glyph sitting on it
+                    runs.append(b - a + 1)
+    return float(np.median(runs)) if runs else max(2.0, 0.1 * sp)
+
+
 @dataclass
 class Claim:
     bbox: Tuple[int, int, int, int]      # x0, y0, x1, y1 (exclusive) in page px
@@ -114,14 +144,19 @@ class InkMap:
         self.ink = ink
         self.h, self.w = ink.shape
         self.sp = float(sp) if sp else 32.0
-        self.hb = max(1, int(round(0.1 * self.sp)))          # half thickness of the line band
+        self.line_thickness = measure_line_thickness(ink, staff_lines, self.sp)
+        # the band around a measured line y: half the line's own ink thickness + 2 px for the scan's wander
+        self.hb = max(1, min(int(round(0.3 * self.sp)), int(np.ceil(self.line_thickness / 2.0)) + 2))
         line = np.zeros_like(ink)
         for x0, x1, ys in staff_lines:
             for y in ys:
                 a, b = max(0, int(round(y)) - self.hb), min(self.h, int(round(y)) + self.hb + 1)
                 if b > a:
                     line[a:b, max(0, int(x0)):min(self.w, int(x1))] = True
-        self.line = line & ink
+        # a band pixel is the STAFF LINE's only where the ink runs level for >= 1.5 sp: a glyph's own pixel in
+        # the band's edge rows (a stem, a slur's foot) is a short run and stays the glyph's
+        hor = cv2.morphologyEx(ink.view(np.uint8), cv2.MORPH_OPEN, np.ones((1, int(round(1.5 * self.sp))), np.uint8))
+        self.line = line & ink & hor.astype(bool)
         self.rest = ink & ~self.line
         k = _odd(0.5 * self.sp)
         blob = cv2.morphologyEx(self.rest.view(np.uint8), cv2.MORPH_OPEN,
@@ -162,7 +197,7 @@ class InkMap:
         if mode == "lines":
             return Claim((x0, y0, x1, y1), self.line[sl] & inside)
         cand = self._candidates(mode, sl) & inside
-        cand = self._drop_specks(cand)
+        cand = self._drop_specks(cand, self.line[sl])
         # staff-line pixels the glyph itself crosses (ink of this kind stands above AND below)
         k = 2 * self.hb + 2
         ext = (slice(max(0, y0 - k), min(self.h, y1 + k)), sl[1])
@@ -175,12 +210,16 @@ class InkMap:
         cross = (above & below)[oy:oy + (y1 - y0), :] & self.line[sl] & inside
         return Claim((x0, y0, x1, y1), cand | cross)
 
-    def _drop_specks(self, cand: np.ndarray) -> np.ndarray:
+    def _drop_specks(self, cand: np.ndarray, line: np.ndarray) -> np.ndarray:
+        """Drop pieces under MIN_PIECE_PX -- unless one touches a staff line: a staff line cuts every
+        stem and barline into pieces, and the stub left beside it is the glyph's own."""
         if not cand.any():
             return cand
         n, lab, stats, _ = cv2.connectedComponentsWithStats(cand.view(np.uint8), connectivity=8)
         keep = np.zeros(n, bool)
         keep[1:] = stats[1:, cv2.CC_STAT_AREA] >= self.MIN_PIECE_PX
+        near = cv2.dilate(line.view(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
+        keep[np.unique(lab[near & (lab > 0)])] = True
         return keep[lab]
 
     # ------------------------------------------------------------ the whole page
@@ -293,8 +332,9 @@ def claimed_overlay_rgba(claims: Claims, cellpass: Optional[np.ndarray], ink: np
     code[~ink[y0:y1, x0:x1]] = 0
     rgba = np.zeros((out_h, out_w, 4), np.float32)
     for st in states:
-        a = cv2.resize((code == st).astype(np.float32), (out_w, out_h), interpolation=cv2.INTER_AREA)
-        a = np.clip(a * 3.0, 0, 1)
+        interp = cv2.INTER_AREA if out_w < code.shape[1] else cv2.INTER_LINEAR
+        a = cv2.resize((code == st).astype(np.float32), (out_w, out_h), interpolation=interp)
+        a = (a >= 0.4).astype(np.float32) if out_w >= code.shape[1] else np.clip(a * 3.0, 0, 1)  # crisp when enlarged: never fatter than the ink
         r, g, b = PALETTE_RGB[st]
         m = a > 0
         rgba[m, 0], rgba[m, 1], rgba[m, 2] = b, g, r          # BGR

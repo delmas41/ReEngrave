@@ -110,7 +110,7 @@ function loadImage() {
     // the cell in blue, so what is still black is what this pass has left to label. 404 when the
     // server has no page pass (the cell tool is then exactly as before).
     const cl = new Image();
-    cl.onload = () => { state.claimedImg = cl; renderOverlay(); };
+    cl.onload = () => { state.claimedImg = cl; if (state.verdict) renderOverlay(); };
     cl.src = `/api/cell/${cellId}/claimed.png`;
   });
 }

@@ -134,7 +134,7 @@ function draw() {
     ctx.lineWidth = sel ? 3 : 1.6; ctx.strokeStyle = sel ? "#111" : col; ctx.stroke();
     ctx.setLineDash([]);
     const b = bbox(l.shape), [tx, ty] = toScreen(b[0], b[1]);
-    if (sel || S.view.z > 0.16 || (l.kind === S.kind)) {
+    if (sel || S.view.z > 0.4 || (l.kind === S.kind && S.view.z > 0.12)) {
       const t = l.kind + (l.sub ? " " + l.sub : "") + (l.text ? " “" + l.text + "”" : "");
       ctx.font = "11px -apple-system, Helvetica, sans-serif";
       const tw = ctx.measureText(t).width + 6;
@@ -191,7 +191,9 @@ function renderSide() {
   const sys = $("systems");
   if (!sys.childElementCount) {
     const g = document.createElement("button"); g.textContent = "page"; g.onclick = () => fit([0, 0, m.width, m.height]); sys.appendChild(g);
-    m.systems.forEach((s, i) => { const b = document.createElement("button"); b.textContent = "S" + (i + 1); b.title = "fit system " + (i + 1); b.onclick = () => fitSystem(i); sys.appendChild(b); });
+    if (m.systems.length > 1) m.systems.forEach((s, i) => { const b = document.createElement("button"); b.textContent = "system " + (i + 1); b.onclick = () => fitSystem(i); sys.appendChild(b); });
+    const lab = document.createElement("span"); lab.className = "muted"; lab.textContent = " staff:"; sys.appendChild(lab);
+    m.strips.forEach((s, i) => { const b = document.createElement("button"); b.textContent = String(i + 1); b.title = `system ${s.system + 1}, staff ${s.staff + 1}: fit its width`; b.onclick = () => fitStrip(i * 3); sys.appendChild(b); });
   }
   const pal = m.palette, st = S.stats;
   $("legend").innerHTML = `
@@ -233,6 +235,18 @@ function queue() {
 }
 function select(id) { S.sel = id; S.redraw = null; S.changeKind = false; renderSide(); draw(); }
 function fitSystem(i) { const s = S.meta.systems[i]; if (s) fit(s.rect, 12); }
+// the working view: one staff, the page's full width (a full score's one system is too tall to label at 'fit system')
+// A staff is walked in THIRDS (a 6000 px staff is a 1 px-thin line at full-width zoom; a third shows a slur's own curve).
+function tiles() {
+  if (S._tiles) return S._tiles;
+  S._tiles = [];
+  S.meta.strips.forEach((s, i) => {
+    const w = s.rect[2] - s.rect[0], t = w / 3;
+    for (let k = 0; k < 3; k++) S._tiles.push({ staff: i, rect: [s.rect[0] + k * t - 0.03 * w, s.rect[1], s.rect[0] + (k + 1) * t + 0.03 * w, s.rect[3]] });
+  });
+  return S._tiles;
+}
+function fitStrip(i) { const t = tiles()[i]; if (!t) return; S.stripI = i; fit(t.rect, 12); }
 
 // ---------------------------------------------------------------- label actions
 async function create(kind, shape) {
@@ -343,7 +357,7 @@ window.addEventListener("keydown", async (e) => {
   else if (k === "p") { S.polyMode = !S.polyMode; S.poly = null; draw(); }
   else if (k === "u" || ((e.ctrlKey || e.metaKey) && k === "z")) { take(await api("/api/pp/undo", {})); }
   else if (k === "g") fit([0, 0, S.meta.width, S.meta.height]);
-  else if (k === "[" || k === "]") { const n = S.meta.systems.length; if (n) { S.sysI = ((S.sysI ?? -1) + (k === "]" ? 1 : -1) + n) % n; fitSystem(S.sysI); } }
+  else if (k === "[" || k === "]") { const n = tiles().length; if (n) { fitStrip(((S.stripI ?? -1) + (k === "]" ? 1 : -1) + n) % n); } }
   else if (k === "h") { S.hidePrefill = !S.hidePrefill; draw(); }
   else if (k === "+" || k === "=") zoomAt(cw() / 2, ch() / 2, 1.25);
   else if (k === "_") zoomAt(cw() / 2, ch() / 2, 0.8);
@@ -359,6 +373,10 @@ window.addEventListener("keydown", async (e) => {
   const st = await api("/api/pp/state");
   S.meta = st.meta; S.labels = st.labels; S.counts = st.counts; S.stats = st.stats;
   renderPalette(); renderSide();
-  if (S.meta.systems.length) { S.sysI = 0; fitSystem(0); } else fit([0, 0, S.meta.width, S.meta.height]);
+  const h = new URLSearchParams(location.hash.slice(1));     // #view=x,y,z&kind=arc  (a bookmark / a scripted screenshot)
+  if (h.get("kind")) S.kind = h.get("kind");
+  if (h.get("view")) { const v = h.get("view").split(",").map(Number); S.view = { x: v[0], y: v[1], z: v[2] }; fetchInk(); draw(); }
+  else if (S.meta.strips.length) fitStrip(0); else fit([0, 0, S.meta.width, S.meta.height]);
+  renderPalette(); renderSide();
   setSave("saved");
 })();
