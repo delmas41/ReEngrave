@@ -69,3 +69,19 @@ def test_the_arc_skip_set_keeps_the_consumer_and_column_boxes_out():
         assert cls.startswith(skip), cls
     for cls in ("stem", "beam", "flag8thUp", "barlineSingle", "slur", "tie"):
         assert not cls.startswith(skip), cls
+
+
+def test_a_hairpin_claims_its_arm_pixels_by_the_same_rule():
+    from tools.omr.staged import hairpin_reach as HR
+    bb = [0.0, 0.0, 60.0, 20.0]
+    segs = HR.arms("crescendo", bb)
+    on = HR.on_arms_fn(segs, bb, HR.band_px(10.0))
+    # a stroke along the lower arm (from the left point at y 10 to the right end at y 20)
+    m = np.zeros((22, 61), bool)
+    for x in range(61):
+        m[int(round(10 + x * 10 / 60.0)), x] = True
+    res = _res((m, 0, 0))
+    assert [o for o, _ in AC.claim_pixels_on(res, (0, 0, 100, 100), 1.0, on, [], HR.ON_ARMS_SHARE_MIN)["claimed"]] == [0]
+    # a head box that holds the stroke's whole right half's ink: the stroke is a crossing, marked not taken
+    got = AC.claim_pixels_on(res, (0, 0, 100, 100), 1.0, on, [("glyph/h", (40.0, 12.0, 61.0, 21.0))], HR.ON_ARMS_SHARE_MIN)
+    assert got["claimed"] == [] and len(got["crossings"]) == 1

@@ -145,7 +145,16 @@ def _on_curve(px: Any, py: Any, trace: Dict[int, Tuple[float, float]], sp_page: 
 
 def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int, Tuple[float, float]], sp_page: float,
                  mark_boxes: Sequence[Tuple[str, Sequence[float]]]) -> Dict[str, Any]:
-    """PURE. ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): the arc's claim on ONE cell's strokes, pixel-honest.
+    """The ARC's pixel claim (`claim_pixels_on` with the traced curve as the `on` test). See `claim_pixels_on`."""
+    if not trace:
+        return claim_pixels_on(res, cell_box, up, None, mark_boxes)
+    return claim_pixels_on(res, cell_box, up, lambda px, py: _on_curve(px, py, trace, sp_page), mark_boxes)
+
+
+def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, mark_boxes: Sequence[Tuple[str, Sequence[float]]],
+                    share_min: float = ON_TRACE_SHARE_MIN) -> Dict[str, Any]:
+    """PURE. ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a page-wide line mark's claim (the arc's traced curve; the hairpin's arms,
+    `hairpin_reach`) on ONE cell's strokes, pixel-honest. `on_fn(px, py)` -> bool array: the pixels (page px) that lie on the mark's own line.
 
     `mark_boxes` = `[(box key, (x0, y0, x1, y1) PAGE px)]`: every other mark's detector box that meets the cell, from ANY cell or staff of the
     page (a padded cell sees the neighbour cell's and the neighbour staff's ink; r4: the 3 boxes still held >= 0.5 on p2 were all held through
@@ -162,7 +171,7 @@ def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int
     import numpy as np
     out: Dict[str, Any] = {"claimed": [], "crossings": [], "own_px": 0, "crossing_own_px": 0, "claimed_px": 0, "claimed_px_in_marks": 0}
     masks = getattr(res, "masks", None) or []
-    if not trace or not masks or res.scale <= 0 or up <= 0:
+    if on_fn is None or not masks or res.scale <= 0 or up <= 0:
         return out
     boxes = [(str(k), [float(v) for v in b]) for k, b in mark_boxes]
     cache: Dict[int, Tuple[Any, Any]] = {}
@@ -194,8 +203,8 @@ def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int
         px, py = xy(i)
         if px.size == 0:
             continue
-        on = _on_curve(px, py, trace, sp_page)
-        if float(on.sum()) < ON_TRACE_SHARE_MIN * px.size:
+        on = on_fn(px, py)
+        if float(on.sum()) < share_min * px.size:
             continue
         inside = np.zeros(px.shape, bool)
         hits: List[Tuple[int, int]] = []
@@ -209,7 +218,7 @@ def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int
                 hits.append((j, n))
         own = on & ~inside
         sh = float(own.sum()) / float(px.size)
-        if sh < ON_TRACE_SHARE_MIN:
+        if sh < share_min:
             continue
         cross = None
         for j, n in hits:

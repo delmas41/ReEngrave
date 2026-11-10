@@ -15470,7 +15470,8 @@ def _arc_mark_boxes_page(detections: Optional[Dict[str, List[Any]]], by_cell: Di
 
 
 def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
-                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]]) -> Dict[str, int]:
+                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]],
+                         detections: Optional[Dict[str, List[Any]]] = None) -> Dict[str, int]:
     """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default ON), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
     coarsest kind the reader is sure of (a hairpin; its owner staff and its start/stop notes are decided later, ADJUDICATE / 2.223).
 
@@ -15491,6 +15492,7 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
         if key is not None:
             by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
             pages.add(c.page_index)
+    mark_boxes: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None      # ROADMAP 2.284b: built once, on first use (flag ON only)
     for p in sorted(pages):
         for r in log.rows(Q.WEDGE_BOX, R.page(p), scope=R.Scope.SELF_AND_DESCENDANTS):
             d = r.detail or {}
@@ -15502,6 +15504,8 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
             band = HR.band_px(d.get("staff_spacing_px") or 0.0)
             per_staff: Dict[Tuple[int, int, int], List[List[int]]] = {}
             shares: Dict[Tuple[int, int, int], List[float]] = {}
+            px_tot: Dict[Tuple[int, int, int], Dict[str, int]] = {}            # ROADMAP 2.284b (flag ON only)
+            crossings: Dict[Tuple[int, int, int], List[List[Any]]] = {}
             for ck, c in sorted(by_cell.items()):
                 if ck[0] != p:
                     continue
@@ -15515,7 +15519,22 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
                 if res is None or isinstance(res, str):
                     counts["no_map_cells"] += 1
                     continue
-                for i, sh in HR.claim_strokes(res, cb, float(up), segs, bb, band):
+                if _page_ledger_on() and detections:
+                    # ROADMAP 2.284b (OMR_PAGE_LEDGER_OWNS): the hairpin claims its own arm pixels by the arc's rule -- never a pixel inside
+                    # another mark's box (any cell / staff of the page), never a stroke holding a mark's own ink (a crossing: marked)
+                    from . import arc_claim as _AC
+                    if mark_boxes is None:
+                        mark_boxes = _arc_mark_boxes_page(detections, by_cell)
+                    near = [(k, b_) for k, b_ in mark_boxes.get(p, ()) if b_[0] <= cb[2] and b_[2] >= cb[0] and b_[1] <= cb[3] and b_[3] >= cb[1]]
+                    px_res = _AC.claim_pixels_on(res, cb, float(up), HR.on_arms_fn(segs, bb, band), near, HR.ON_ARMS_SHARE_MIN)
+                    got_c = px_res["claimed"]
+                    for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
+                        px_tot.setdefault(ck[:3], {})[kk] = px_tot.setdefault(ck[:3], {}).get(kk, 0) + int(px_res[kk])
+                    for cr in px_res["crossings"]:
+                        crossings.setdefault(ck[:3], []).append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"]])
+                else:
+                    got_c = HR.claim_strokes(res, cb, float(up), segs, bb, band)
+                for i, sh in got_c:
                     per_staff.setdefault(ck[:3], []).append([ck[3], i])
                     shares.setdefault(ck[:3], []).append(sh)
             if not per_staff:
@@ -15531,7 +15550,8 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
                 log.observe(R.staff(*home), Q.CLAIMED_AREA, got, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=HR.OWNER,
                             owner_row=r.id, owner_glyph=r.subject.to_key(), unit="ink", scope="page_hairpin", standing="READ",
                             source="wedge_box", kind=r.value, bbox_page_px=[float(v) for v in bb], shares=shares[home],
-                            cover_min=HR.ON_ARMS_SHARE_MIN)
+                            cover_min=HR.ON_ARMS_SHARE_MIN,
+                            **({"pixels": dict(sorted(px_tot[home].items())), "crossings": crossings.get(home, [])} if home in px_tot else {}))
     return counts
 
 
@@ -17949,7 +17969,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_wedge_boxes(log, pws, cells, local, detections)
         # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH, default OFF): each CV hairpin read claims the strokes along its two arms (`unit: ink`, owner
         # `hairpin`) in every cell it crosses, so no beam / stem / flag reader takes them. AFTER the wedge read and the stroke map.
-        gather_hairpin_claim(log, cells, local, stroke_cells)
+        gather_hairpin_claim(log, cells, local, stroke_cells, detections=detections)     # 2.284b: the page's mark boxes (flag ON only)
         # ⚠️ AFTER detection, and now WITH it: the notehead gate on the pair
         # rule needs this cell's heads, and `gather_detections` above already
         # holds them. The order was always right; what was missing is that
