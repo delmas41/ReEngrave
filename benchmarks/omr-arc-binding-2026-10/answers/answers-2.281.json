@@ -1,0 +1,21 @@
+{
+ "lane": "2.281",
+ "branch": "lane-2.281 562e908be",
+ "date": "2026-11-09",
+ "question": "Is each boxed arc one arc, and which two notes does it join?",
+ "answers": {
+  "1": "tie, dotted quarter to dotted quarter",
+  "2": "slur from a quarter over two eighths to a dotted quarter in the next bar",
+  "3": "tie, dotted quarter to a quarter in the next bar",
+  "4": "slur covering two full bars",
+  "5": "tie, sixteenth to a quarter in the next bar",
+  "6": "box hard to read: a tie dotted quarter to quarter, and a slur above it going one note further to the eighth",
+  "7": "tie, eighth to (probably) dotted quarter, first note of the next bar",
+  "8": "box goes too far; should be just a tie from the dotted quarter to the first dotted eighth",
+  "9": "tie, sixteenth to a quarter in the next bar",
+  "10": "tie, dotted quarter to a quarter in the next bar",
+  "11": "long slur covering four bars",
+  "12": "tie, dotted half to dotted half in the next bar"
+ },
+ "score": "7 gained arcs (1,2,4,5,7,8,9) all real with the right kind; 8's box too long (ink joined past the stop); 3 unchanged (3,6,10) right, 6 has a slur above the tie not written; 2 still refused (11 four-bar slur, 12 dotted-half tie) are real arcs still lost"
+}
