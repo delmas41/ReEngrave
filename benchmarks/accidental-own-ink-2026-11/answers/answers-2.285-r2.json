@@ -60,7 +60,9 @@
     "pitch": "D-13",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "4": {
    "sean": "natural",
@@ -82,7 +84,9 @@
     "pitch": "B4",
     "blue": false
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "5": {
    "sean": "sharp",
@@ -104,7 +108,9 @@
     "pitch": "F13",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "6": {
    "sean": "flat",
@@ -126,7 +132,9 @@
     "pitch": "G-13",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "7": {
    "sean": "natural",
@@ -148,7 +156,9 @@
     "pitch": "B5",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "8": {
    "sean": "sharp",
@@ -170,7 +180,9 @@
     "pitch": "F12",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "9": {
    "sean": "natural",
@@ -192,7 +204,9 @@
     "pitch": "D5",
     "blue": false
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "10": {
    "sean": "sharp",
@@ -214,7 +228,9 @@
     "pitch": "G14",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "11": {
    "sean": "flat",
@@ -236,7 +252,9 @@
     "pitch": "B-13",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   },
   "12": {
    "sean": "sharp",
@@ -258,12 +276,17 @@
     "pitch": "F14",
     "blue": true
    },
-   "right": true
+   "right": true,
+   "sean_owner": "the note just to its right",
+   "owner_right": true
   }
  },
  "score": {
   "right": 12,
-  "of": 12
+  "of": 12,
+  "owner_right": 10,
+  "owner_of": 10
  },
- "note": "Tiles 1-2 are notes written OFF and removed ON: Sean says the ink there is part of a sharp, so both removals are right. Tiles 3-12: the kind the reader wrote matches Sean on every tile. Sean answered the KIND only; the second half of the question (the accidental belongs to the note to its right) was not answered and is NOT judged."
+ "note": "Tiles 1-2 are notes written OFF and removed ON: Sean says the ink there is part of a sharp, so both removals are right. Tiles 3-12: kind matches Sean on every tile, and Sean confirms each accidental is on the note just to its right (the note the reader wrote it on, per the key's head_box).",
+ "verbatim_ownership": "Tile 3 is just to the left of the note. Tile 4, just to the left of the note. Tile 5, just to the left of the note. Tile 6, just to the left of the note. 7, just to the left of the note. 8, also. 9, also. 10, also. 11, also. 12, also. So yes, all of them are."
 }
