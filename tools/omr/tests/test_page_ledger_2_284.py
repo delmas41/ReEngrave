@@ -96,11 +96,14 @@ def test_a_box_claim_from_a_cut_view_never_settles_a_stroke_another_cell_sees_wh
     b = SO.own_strokes([_ink(4, "blob", (0, 0, 3, 10), 0.6, 0.19)], [SO.Claim("hB", "head", "noteheadBlack", (4,), (), "g2")])
     assert b[4].family == "head"
     page, cen = PL.pool({"A": a, "B": b}, {"A": {0: (9, 1.0, 1.0)}, "B": {4: (9, 1.0, 0.2)}}, SO.TIERS)
-    assert page[9].state == "unclaimed" and cen["cut_view_box_claims_left_out"] == 1
-    # ... but a register claim (area) from the cut view still stands
+    assert page[9].state == "unclaimed" and cen["cut_view_claims_left_out"] == 1
+    # ... nor a register claim's centre rule on a cut edge (round 3: a barline area took a judged eighth's head) ...
     b2 = SO.own_strokes([_ink(4)], [SO.Claim("area-1", "barline", "barline", (4,), (), "r1", area=True)])
     page2, _ = PL.pool({"A": a, "B": b2}, {"A": {0: (9, 1.0, 1.0)}, "B": {4: (9, 1.0, 0.2)}}, SO.TIERS)
-    assert page2[9].family == "barline"
+    assert page2[9].state == "unclaimed"
+    # ... but where no cell sees the stroke whole, every view is pooled
+    page3, _ = PL.pool({"A": a, "B": b2}, {"A": {0: (9, 1.0, 0.5)}, "B": {4: (9, 1.0, 0.4)}}, SO.TIERS)
+    assert page3[9].family == "barline"
 
 
 def test_an_arc_claims_only_its_own_traced_pixels_never_a_head_box(monkeypatch):

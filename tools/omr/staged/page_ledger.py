@@ -20,7 +20,7 @@ WHAT, in two halves.
 
   ADJUDICATE (`settle_page`, called once per page before the cells' `Q.STROKE_OWNER` verdicts are made): every cell's candidates (the same
   `stroke_owner.own_strokes`, unchanged: boxes, register areas, arc / hairpin traces, layers, vetoes, shapes) are pooled PER PAGE STROKE over the
-  cells that see it -- a claimant counted once by its key; a BOX claim only from a view that sees the stroke whole (`WHOLE_VIEW_MIN`) -- and settled ONCE by the same table (`stroke_owner._settle`). Each cell's verdict then
+  cells that see it -- a claimant counted once by its key; only the views that see the stroke whole where one does (`WHOLE_VIEW_MIN`) -- and settled ONCE by the same table (`stroke_owner._settle`). Each cell's verdict then
   READS that one ownership for every linked stroke; it never re-derives it. Box verdicts, the claim-final census and every consumer read the cell
   verdict as before, so nothing downstream changes its code.
 
@@ -42,9 +42,10 @@ DERIVED_CHECK = False
 ENV = "OMR_PAGE_LEDGER_OWNS"
 #: a cell stroke joins a page stroke when at least this share of its own ink lies on that one page stroke (module doc)
 LINK_SHARE_MIN = 0.8
-#: a cell SEES a page stroke WHOLE when its piece holds at least this share of the page stroke's ink: only such a view's BOX claims are pooled (a box's
-#: shape test on a piece the cell edge cut is not a test of the mark -- round 1, Litolff p4: a neighbour staff's head box "could" on a 0.2-sp sliver of a
-#: stem took the whole stem). Register claims (area, trace: `how` area) are pooled from every view. A stroke no cell sees whole pools every view.
+#: a cell SEES a page stroke WHOLE when its piece holds at least this share of the page stroke's ink: where some cell sees it whole, only the whole views'
+#: claims are pooled. A claim on a piece the cell edge cut is not a claim on the mark: round 1 (Litolff p4) a neighbour staff's head box "could" on a 0.2-sp
+#: sliver of a stem took the whole stem; round 3 (Litolff p6, Sean's judged eighth, 2.78 tile 11) a barline area's CENTRE rule on the cut edge of a head
+#: took the whole head. A stroke no cell sees whole (a system-tall rule, a long slur) pools every view.
 WHOLE_VIEW_MIN = 0.8
 
 
@@ -153,8 +154,8 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
         cs = cands.setdefault(pid, [])
         sn = seen.setdefault(pid, set())
         for c in w.candidates:
-            if pid in whole and not is_whole and c.get("how") != "area":
-                census["cut_view_box_claims_left_out"] = census.get("cut_view_box_claims_left_out", 0) + 1
+            if pid in whole and not is_whole:
+                census["cut_view_claims_left_out"] = census.get("cut_view_claims_left_out", 0) + 1
                 continue
             key = (str(c["key"]), str(c.get("how", "")))
             if key in sn:
