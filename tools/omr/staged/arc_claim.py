@@ -107,6 +107,136 @@ def on_trace_share(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence
     return float(on.sum()) / float(ys.size)
 
 
+#: ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a stroke the curve runs along that ALSO holds at least this share of another mark's own ink (the
+#: stroke pixels inside that mark's detector box, over all of the cell's stroke pixels inside it) is a CROSSING -- the slur passes through the
+#: head, ledger, dot or letter and the cell's stroke map did not cut the two apart. The arc MARKS it (its own pixels counted, `crossings`) and
+#: never TAKES it (plan 2026-10-28 §9-10: "a later reader may mark claimed ink but never take it"; the arc may not take a mark's ink either).
+#: The value is `claim_final.NEAR_MIN` (0.25), the consumer's own "held at all" bar, so the arc never holds a mark box near (not tuned).
+CROSSING_BOX_SHARE = 0.25
+
+
+def _page_xy(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence[float], up: float):
+    import numpy as np
+    ys, xs = np.nonzero(mask)
+    px = float(cell_box[0]) + ((x0 + xs + 0.5) / scale) / up
+    py = float(cell_box[1]) + ((y0 + ys + 0.5) / scale) / up
+    return px, py
+
+
+def _in_box(px: Any, py: Any, b: Sequence[float]) -> Any:
+    return (px >= b[0]) & (px <= b[2]) & (py >= b[1]) & (py <= b[3])
+
+
+def _on_curve(px: Any, py: Any, trace: Dict[int, Tuple[float, float]], sp_page: float) -> Any:
+    """The pixels (page px arrays) on the traced curve: the column has a trace row and y lies within `BAND_SPACES` of its span (as `on_trace_share`)."""
+    import numpy as np
+    cols = np.floor(px).astype(int)
+    band = max(BAND_MIN_PX, BAND_SPACES * sp_page)
+    xmin, xmax = min(trace), max(trace)
+    lo = np.full(xmax - xmin + 1, np.inf)
+    hi = np.full(xmax - xmin + 1, -np.inf)
+    for x, (a, b) in trace.items():
+        lo[x - xmin] = a
+        hi[x - xmin] = b
+    inside = (cols >= xmin) & (cols <= xmax)
+    idx = np.clip(cols - xmin, 0, xmax - xmin)
+    return inside & (py >= lo[idx] - band) & (py <= hi[idx] + 1.0 + band)
+
+
+def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int, Tuple[float, float]], sp_page: float,
+                 mark_boxes: Sequence[Tuple[str, Sequence[float]]]) -> Dict[str, Any]:
+    """The ARC's pixel claim (`claim_pixels_on` with the traced curve as the `on` test). See `claim_pixels_on`."""
+    if not trace:
+        return claim_pixels_on(res, cell_box, up, None, mark_boxes)
+    return claim_pixels_on(res, cell_box, up, lambda px, py: _on_curve(px, py, trace, sp_page), mark_boxes)
+
+
+def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, mark_boxes: Sequence[Tuple[str, Sequence[float]]],
+                    share_min: float = ON_TRACE_SHARE_MIN) -> Dict[str, Any]:
+    """PURE. ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a page-wide line mark's claim (the arc's traced curve; the hairpin's arms,
+    `hairpin_reach`) on ONE cell's strokes, pixel-honest. `on_fn(px, py)` -> bool array: the pixels (page px) that lie on the mark's own line.
+
+    `mark_boxes` = `[(box key, (x0, y0, x1, y1) PAGE px)]`: every other mark's detector box that meets the cell, from ANY cell or staff of the
+    page (a padded cell sees the neighbour cell's and the neighbour staff's ink; r4: the 3 boxes still held >= 0.5 on p2 were all held through
+    a neighbour view whose own detections did not hold the box). A pixel inside one is never the arc's own (the 2.166 eraser protects them).
+
+      * a stroke is a candidate where at least `ON_TRACE_SHARE_MIN` of its pixels lie on the traced curve AND outside every mark box;
+      * a candidate holding `CROSSING_BOX_SHARE` or more of some mark box's own ink is a CROSSING: marked (its own on-curve pixels counted),
+        never taken -- the stroke is left to the stroke owner's other claimants;
+      * every other candidate is claimed whole (the register's unit is the stroke); its pixels inside a mark box, if any, are counted
+        (`claimed_px_in_marks`), so the residue is visible.
+
+    Returns `{"claimed": [(ordinal, share)], "crossings": [{"stroke", "own_px", "box", "box_share"}], "own_px": on-curve pixels of the claimed
+    strokes outside every mark box, "crossing_own_px", "claimed_px", "claimed_px_in_marks"}` (pixels in the stroke map's REDUCED frame)."""
+    import numpy as np
+    out: Dict[str, Any] = {"claimed": [], "crossings": [], "own_px": 0, "crossing_own_px": 0, "claimed_px": 0, "claimed_px_in_marks": 0}
+    masks = getattr(res, "masks", None) or []
+    if on_fn is None or not masks or res.scale <= 0 or up <= 0:
+        return out
+    boxes = [(str(k), [float(v) for v in b]) for k, b in mark_boxes]
+    cache: Dict[int, Tuple[Any, Any]] = {}
+
+    def xy(i: int):
+        if i not in cache:
+            m, x0, y0 = masks[i]
+            cache[i] = _page_xy(m, x0, y0, res.scale, cell_box, up)
+        return cache[i]
+
+    box_ink: Dict[int, int] = {}
+
+    def ink_of(j: int) -> int:
+        if j not in box_ink:
+            b = boxes[j][1]
+            tot = 0
+            for i, (m, _x0, _y0) in enumerate(masks):
+                if m.size == 0:
+                    continue
+                px, py = xy(i)
+                if px.size and px.max() >= b[0] and px.min() <= b[2] and py.max() >= b[1] and py.min() <= b[3]:
+                    tot += int(_in_box(px, py, b).sum())
+            box_ink[j] = tot
+        return box_ink[j]
+
+    for i, (m, _x0, _y0) in enumerate(masks):
+        if m.size == 0:
+            continue
+        px, py = xy(i)
+        if px.size == 0:
+            continue
+        on = on_fn(px, py)
+        if float(on.sum()) < share_min * px.size:
+            continue
+        inside = np.zeros(px.shape, bool)
+        hits: List[Tuple[int, int]] = []
+        for j, (_k, b) in enumerate(boxes):
+            if px.max() < b[0] or px.min() > b[2] or py.max() < b[1] or py.min() > b[3]:
+                continue
+            ib = _in_box(px, py, b)
+            n = int(ib.sum())
+            if n:
+                inside |= ib
+                hits.append((j, n))
+        own = on & ~inside
+        sh = float(own.sum()) / float(px.size)
+        if sh < share_min:
+            continue
+        cross = None
+        for j, n in hits:
+            tot = ink_of(j)
+            bs = n / float(tot) if tot else 0.0
+            if bs >= CROSSING_BOX_SHARE and (cross is None or bs > cross[1]):
+                cross = (j, bs)
+        if cross is not None:
+            out["crossings"].append({"stroke": i, "own_px": int(own.sum()), "box": boxes[cross[0]][0], "box_share": round(cross[1], 3)})
+            out["crossing_own_px"] += int(own.sum())
+            continue
+        out["claimed"].append((i, round(sh, 3)))
+        out["own_px"] += int(own.sum())
+        out["claimed_px"] += int(px.size)
+        out["claimed_px_in_marks"] += int(inside.sum())
+    return out
+
+
 def claim_strokes(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int, Tuple[float, float]],
                   sp_page: float, head_boxes: Sequence[Sequence[float]] = ()) -> List[Tuple[int, float]]:
     """`[(stroke ordinal, share)]` for every stroke of the cell (`stroke_map.CellStrokes`) whose ink lies at least `ON_TRACE_SHARE_MIN` on the curve.
