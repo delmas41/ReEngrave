@@ -1,0 +1,269 @@
+{
+ "lane": "2.285 r2 (lane-2.285-accidental-own-ink 67ad46114, flag OMR_ACCIDENTAL_OWN_INK OFF)",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box, and is it on the note to its right at the same height?",
+ "verbatim": "Tile 1 is a part of a sharp. Tile 2 is a part of a sharp. Tile 3 is a flat. Tile 4 is a natural. Tile 5 is a sharp. Tile 6 is a flat. Tile 7 is a natural. Tile 8 is a sharp. Tile 9 is a natural. Tile 10 is a sharp. Tile 11 is a flat. Tile 12 is a sharp.",
+ "answers": {
+  "1": {
+   "sean": "part of a sharp",
+   "role": "lost note",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3463.775,
+    1285.7,
+    3494.85,
+    1305.775
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "E-13"
+   },
+   "on": null,
+   "right": true
+  },
+  "2": {
+   "sean": "part of a sharp",
+   "role": "lost note",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    2416.575,
+    5321.5,
+    2449.025,
+    5353.675
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "E5"
+   },
+   "on": null,
+   "right": true
+  },
+  "3": {
+   "sean": "flat",
+   "role": "accidental flat",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4744.0,
+    1280.0,
+    4773.0,
+    1361.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "D3"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "D-13",
+    "blue": true
+   },
+   "right": true
+  },
+  "4": {
+   "sean": "natural",
+   "role": "accidental natural",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    5246.0,
+    4470.0,
+    5266.0,
+    4558.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "B-14"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "B4",
+    "blue": false
+   },
+   "right": true
+  },
+  "5": {
+   "sean": "sharp",
+   "role": "accidental sharp",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3462.0,
+    1241.0,
+    3497.0,
+    1329.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "F3"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "F13",
+    "blue": true
+   },
+   "right": true
+  },
+  "6": {
+   "sean": "flat",
+   "role": "accidental flat",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1023.0,
+    1512.0,
+    1038.0,
+    1554.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "G3"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "G-13",
+    "blue": true
+   },
+   "right": true
+  },
+  "7": {
+   "sean": "natural",
+   "role": "accidental natural",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    984.0,
+    369.0,
+    996.0,
+    423.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "B-15"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "B5",
+    "blue": true
+   },
+   "right": true
+  },
+  "8": {
+   "sean": "sharp",
+   "role": "accidental sharp",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    499.0,
+    3566.0,
+    519.0,
+    3613.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "F2"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "F12",
+    "blue": true
+   },
+   "right": true
+  },
+  "9": {
+   "sean": "natural",
+   "role": "accidental natural",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4108.0,
+    4118.0,
+    4130.0,
+    4206.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "D5"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "D5",
+    "blue": false
+   },
+   "right": true
+  },
+  "10": {
+   "sean": "sharp",
+   "role": "accidental sharp",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    1995.0,
+    4390.0,
+    2030.0,
+    4478.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "G4"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "G14",
+    "blue": true
+   },
+   "right": true
+  },
+  "11": {
+   "sean": "flat",
+   "role": "accidental flat",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1311.0,
+    3418.0,
+    1326.0,
+    3459.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "B3"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "B-13",
+    "blue": true
+   },
+   "right": true
+  },
+  "12": {
+   "sean": "sharp",
+   "role": "accidental sharp",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    881.0,
+    1473.0,
+    900.0,
+    1522.0
+   ],
+   "off": {
+    "kind": "note",
+    "pitch": "F4"
+   },
+   "on": {
+    "kind": "note",
+    "pitch": "F14",
+    "blue": true
+   },
+   "right": true
+  }
+ },
+ "score": {
+  "right": 12,
+  "of": 12
+ },
+ "note": "Tiles 1-2 are notes written OFF and removed ON: Sean says the ink there is part of a sharp, so both removals are right. Tiles 3-12: the kind the reader wrote matches Sean on every tile. Sean answered the KIND only; the second half of the question (the accidental belongs to the note to its right) was not answered and is NOT judged."
+}
