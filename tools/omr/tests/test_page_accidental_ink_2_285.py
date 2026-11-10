@@ -185,3 +185,39 @@ def test_earlier_claims_reads_areas_and_named_strokes_and_not_its_own():
             _Row([9.0, 9.0, 9.0, 9.0], unit=PAI.UNIT, owner=PAI.OWNER, page_strokes=[77])]
     rects, ids = PAI.earlier_claims(_Log(rows), None)
     assert rects == [(1.0, 2.0, 3.0, 4.0)] and ids == [4, 9]
+
+
+def test_TWINS_two_head_boxes_on_one_accidentals_ink_are_one_claim():
+    """A sharp the detector boxed twice as a weak notehead (two boxes on one mark: Litolff merges, Breitkopf shatters) and a real note beside it: ONE claim."""
+    strokes = sharp_at(100, 100)
+    twins = [PAI.Head((98.0, 120.0, 118.0, 140.0), 0.37, "a"), PAI.Head((99.0, 122.0, 119.0, 142.0), 0.31, "b")]
+    found, why = PAI.read_page(strokes, SP, twins + [note_head_beside(132, 119)], [], [])
+    assert len(found) == 1 and why["claimed"] == 1 and found[0]["type"] == "sharp"
+
+
+def test_TWINS_two_note_boxes_beside_one_accidental_are_still_one_claim():
+    """Twin boxes on the NOTE it is by must not claim the accidental twice: the claim is the ink's, the note is only evidence."""
+    found, why = PAI.read_page(sharp_at(100, 100), SP, [note_head_beside(132, 119), note_head_beside(133, 120)], [], [])
+    assert len(found) == 1 and why["claimed"] == 1
+
+
+def test_TWINS_two_seeds_of_one_mark_fold_even_when_the_growth_differs():
+    a = {"members": [0, 1, 2, 3], "box": [100.0, 100.0, 115.0, 158.0]}
+    b = {"members": [1, 3], "box": [112.0, 100.0, 115.0, 158.0]}        # the right stem alone, a different stop of the growth: inside a
+    assert [k["members"] for k in PAI.fold_twins([b, a])] == [[0, 1, 2, 3]]
+
+
+def test_CONTROL_the_twin_fold_can_fail():
+    """Two marks side by side (a chord's two accidentals, one column apart) are NOT twins: both stay."""
+    a = {"members": [0, 1, 2, 3], "box": [100.0, 100.0, 115.0, 158.0]}
+    b = {"members": [4, 5, 6, 7], "box": [60.0, 130.0, 75.0, 188.0]}
+    assert len(PAI.fold_twins([a, b])) == 2
+
+
+def test_CONTROL_a_real_small_head_beside_a_stem_is_not_an_accidental():
+    """An up-stem quarter note: a stem 2.9 sp long and a head at its lower LEFT. The solid blob is a head, so the stem stands alone: no claim."""
+    stem = stroke("vertical", 120, 100, 3, 58, touches=(1,))
+    head = stroke("blob", 100, 140, 22, 18, touches=(0,), fill=0.95)
+    for conf in (0.9, 0.3):
+        found, why = PAI.read_page([stem, head], SP, [PAI.Head((100, 140, 122, 158), conf, "h"), note_head_beside(160, 140)], [], [])
+        assert found == [], (conf, why)
