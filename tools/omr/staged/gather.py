@@ -8069,8 +8069,9 @@ def stems_from_strokes_retires_scans() -> bool:
 
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
                       detections: Optional[Dict[str, List[Any]]] = None,
-                      page_shape: Optional[Sequence[int]] = None) -> Dict[Tuple[int, int, int, int], Any]:
-    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
+                      page_shape: Optional[Sequence[int]] = None, page_map: Any = None) -> Dict[Tuple[int, int, int, int], Any]:
+    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. ROADMAP 2.284 (flag `OMR_PAGE_LEDGER_OWNS`, default OFF): with `page_map`
+    (the page stroke map built before the arcs), each row also carries `page_stroke: [page stroke ordinal, share]` (`page_ledger.link_cell_strokes`). Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
 
@@ -8088,6 +8089,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
     if not stroke_map_enabled():
         return cache
     from . import stroke_map as SM
+    from . import page_ledger as _PL
+    page_labels = _PL.PageLabels(page_map, page_shape) if (_PL.enabled() and page_map is not None and page_shape) else None
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -8127,6 +8130,7 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
         up = getattr(c, "upscale_factor", None)
         cell_box = getattr(c, "bbox_page_px", None)
         page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
+        links = _PL.link_cell_strokes(res, cell_box, up, page_labels) if (page_labels is not None and page_ok) else None
         for i, st in enumerate(res.strokes):
             g = R.glyph(c.page_index, key[0], key[1], c.measure_index, _STROKE_GLYPH_BASE + i)
             optional: Dict[str, Any] = {}
@@ -8152,6 +8156,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                     optional["cell_touch_boxes"] = touch
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
+            if links is not None and i < len(links) and links[i] is not None:
+                optional["page_stroke"] = [links[i][0], links[i][1]]     # ROADMAP 2.284: the page stroke this stroke's ink lies on, and its share
             if page_ok:
                 x, y, w, h = st.box
                 optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
@@ -17775,7 +17781,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
         stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections,
-                                         page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None))
+                                         page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None),
+                                         page_map=page_map_pre)       # ROADMAP 2.284: the link to the page strokes (flag OMR_PAGE_LEDGER_OWNS; unused OFF)
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)

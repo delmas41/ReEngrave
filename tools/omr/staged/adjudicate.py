@@ -1331,6 +1331,10 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
                 continue
         for subject in subjects_for(log, spec):
             out.append(adjudicate_one(log, spec, subject))
+        if quantity == Q.STROKE_OWNER:
+            # ROADMAP 2.284: the page ledger's one settle per page is memoised while the cells read it; dropped once they all have
+            from .adjudicators import stroke_owner as _so
+            _so.clear_page_memo()
         if quantity == Q.GLYPH_OWNER:
             # ⚠️ ROADMAP 2.58b: one ruling per physical mark. A no-op unless
             # the record carries `Q.MARK_GROUP` rows (`OMR_MARK_GROUPS`).
