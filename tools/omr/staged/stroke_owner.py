@@ -77,6 +77,36 @@ TIERS: Tuple[Tuple[str, ...], ...] = (
 )
 CONSUMERS = ("stem", "beam", "flag")
 AREA_OWNERS = TIERS[0]
+
+# ROADMAP 2.282 (flag `OMR_CLAIM_ORDER`, default OFF = today's behaviour exactly): which of heads / accidentals claims first, and what a stroke BOTH fit does.
+#: TODAY (flag unset): heads stand before accidentals in the order, but the order never PICKS -- two families that both fit a stroke and no one clear
+#: fit leave it CONTESTED (abstained, both candidates kept), so the order acts only through the ATTACHED strokes and the yields.
+#: `heads_first` / `accidentals_first`: the order DECIDES -- among the families that fit a stroke, the first in the claim order owns it (a stroke only
+#: one family fits, or only one CLEARLY fits, is unchanged). `accidentals_first` also moves the accidental tier before the head/ledger tier, and
+#: (adjudicators/stroke_owner._claim_final) lets a decided accidental claim hold a head box's ink like any earlier claim. A MICRO TEST, never a default.
+ENV_ORDER = "OMR_CLAIM_ORDER"
+ORDER_MODES = ("heads_first", "accidentals_first")
+
+
+def claim_order_mode() -> str:
+    """`OMR_CLAIM_ORDER`: "" (off, today), "heads_first" or "accidentals_first"; anything else is off."""
+    import os
+    v = os.environ.get(ENV_ORDER, "").strip().lower()
+    return v if v in ORDER_MODES else ""
+
+
+def tiers_for_order(tiers: Sequence[Sequence[str]], mode: str) -> Tuple[Tuple[str, ...], ...]:
+    """`tiers` with the accidental tier moved in front of the head / ledger tier under `accidentals_first`; unchanged otherwise."""
+    out = [tuple(t) for t in tiers]
+    if mode != "accidentals_first":
+        return tuple(out)
+    a = [i for i, t in enumerate(out) if "accidental" in t]
+    h = [i for i, t in enumerate(out) if "head" in t]
+    if not a or not h or a[0] < h[0]:
+        return tuple(out)
+    acc = out.pop(a[0])
+    out.insert(h[0], acc)
+    return tuple(out)
 STATES = ("unclaimed", "decided", "merged", "refused_claims", "contested")
 
 
@@ -342,7 +372,7 @@ def _crosses_a_stem(s: Ink, by_ord: Dict[int, Ink]) -> bool:
     return False
 
 
-def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[str, int]) -> Ownership:
+def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[str, int], resolve: bool = False) -> Ownership:
     """One stroke's ownership from its candidates (already in claim order). See the module doc for the table."""
     cs = cand[o]
     if not cs:
@@ -359,6 +389,11 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
     if pick is None:
         clear = list(dict.fromkeys(str(c["family"]) for c in fits if c["fit"] == "clear"))
         pick = clear[0] if len(clear) == 1 else None
+    if pick is None and resolve:
+        # 2.282 (`OMR_CLAIM_ORDER`): the claim ORDER decides -- the first family (candidates are listed in claim order) that fits owns the stroke
+        pick = fams[0]
+        keys = tuple(dict.fromkeys(str(c["key"]) for c in fits if c["family"] == pick))
+        return Ownership(o, "merged" if len(keys) > 1 else "decided", pick, keys, tuple(cs), "order", rows)
     if pick is None:
         return Ownership(o, "contested", candidates=tuple(cs), row_ids=rows)
     keys = tuple(dict.fromkeys(str(c["key"]) for c in fits if c["family"] == pick))
@@ -513,7 +548,7 @@ def accidental_not_whole(strokes: Sequence[Ink], claims: Sequence[Claim]) -> Dic
 
 
 def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence[Sequence[str]] = TIERS, *,
-                acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None) -> Dict[int, Ownership]:
+                acc_bar_clear_of_note: bool = False, vetoes: Optional[Dict[str, Veto]] = None, resolve: bool = False) -> Dict[int, Ownership]:
     """`{ordinal: Ownership}` for every stroke of one cell. `claims` = the cell's detector boxes (any family: consumers and non-marks are
     dropped here) and its area claims. `tiers` is the claim order -- a parameter only so a control can break it. Deterministic.
 
@@ -539,7 +574,7 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
         ti = tier_index[c.family]
         if ti > done_tier:
             if head_tier is not None and head_tier < ti and not head_owned:
-                head_owned = {o for o in by_ord if _settle(o, cand, tier_index).family == "head"}
+                head_owned = {o for o in by_ord if _settle(o, cand, tier_index, resolve).family == "head"}
                 note_ink = head_owned | {o for o, v in by_ord.items() if v.kind == "vertical" and any(j in head_owned for j, _c in v.touches)}
             done_tier = ti
         veto = vetoes.get(c.key) if (vetoes and not c.area) else None
@@ -564,7 +599,7 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                     cand[o].append({"key": veto.rival_key, "family": veto.rival_family, "cls": veto.rival_cls, "fit": "clear",
                                     "why": "named:%s" % veto.rule, "how": "named", "row": veto.row_id})
 
-    out: Dict[int, Ownership] = {o: _settle(o, cand, tier_index) for o in by_ord}
+    out: Dict[int, Ownership] = {o: _settle(o, cand, tier_index, resolve) for o in by_ord}
 
     # ATTACHED (module doc): one pass, in claim order, so it is deterministic. A stroke a HEAD owns is never attached to another mark.
     for c in live:

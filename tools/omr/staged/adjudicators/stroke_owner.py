@@ -422,6 +422,13 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
         boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family)
                                          for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
     held = CF.held_boxes(boxes, claim_families)
+    if SO.claim_order_mode() == "accidentals_first":
+        # ROADMAP 2.282: a decided ACCIDENTAL claim holds a HEAD box's ink like any earlier claim (heads only: a rest or a dot over a sign stays 2.192's)
+        acc = CF.held_boxes([b for b in boxes if b[1] == "head"], ["accidental"])
+        for k, e in acc.items():
+            if k not in held or e["share"] > held[k]["share"]:
+                held[k] = e
+        claim_families = sorted(set(claim_families) | {"accidental"})
     keys = {c.key for c in claims if not c.area and c.family == "head"}
     frames: Dict[str, Any] = {}
     for b in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
@@ -469,8 +476,10 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     shaped = SO.owner_shape_enabled()
     vetoes = shape_vetoes(ev, cell, inks, claims) if shaped else None
     tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
+    order_mode = SO.claim_order_mode()                  # ROADMAP 2.282 (flag OMR_CLAIM_ORDER, default OFF): "" = today
+    tiers = SO.tiers_for_order(tiers, order_mode)
     owned = SO.own_strokes(inks, claims, tiers=tiers, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
-                           vetoes=vetoes)
+                           vetoes=vetoes, resolve=bool(order_mode))
     by_ord = {i.ordinal: i for i in inks}
     strokes: Dict[str, Any] = {}
     used: List[str] = []
