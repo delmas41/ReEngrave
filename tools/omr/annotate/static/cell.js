@@ -106,6 +106,12 @@ function loadImage() {
       resolve();
     };
     img.src = `/api/cell/${cellId}/image`;
+    // ROADMAP 2.287 hand-off: ink the PAGE PASS has already claimed (confirmed labels only) is laid over
+    // the cell in blue, so what is still black is what this pass has left to label. 404 when the
+    // server has no page pass (the cell tool is then exactly as before).
+    const cl = new Image();
+    cl.onload = () => { state.claimedImg = cl; renderOverlay(); };
+    cl.src = `/api/cell/${cellId}/claimed.png`;
   });
 }
 
@@ -466,6 +472,7 @@ function renderOverlay() {
   const s = state.scale;
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  if (state.claimedImg) ctx.drawImage(state.claimedImg, 0, 0, canvas.width, canvas.height);
 
   for (const d of state.verdict.detections) {
     const b = d.human_bbox || d.model_bbox;

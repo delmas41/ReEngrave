@@ -1,0 +1,5370 @@
+{
+ "dpi": 600,
+ "edition": "imslp317803",
+ "height": 7803,
+ "labels": [
+  {
+   "id": "P0",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 0: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     1579.0671562082778,
+     5501.0,
+     1720.0951127819549
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P1",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 1: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     1964.2,
+     5501.0,
+     2103.7200000000003
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P2",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 2: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     2350.2,
+     5501.0,
+     2488.0723404255323
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P3",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 3: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     2736.04375,
+     5501.0,
+     2874.89375
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P4",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 4: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     3065.0754789272028,
+     5501.0,
+     3204.9867816091955
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P5",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 5: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     3480.351779717931,
+     5501.0,
+     3621.8153191489364
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P6",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 6: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     3951.2,
+     5501.0,
+     4089.0723404255323
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P7",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 7: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     4301.067156208278,
+     5501.0,
+     4439.932843791723
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P8",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 8: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     4650.2,
+     5501.0,
+     4789.72
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P9",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 9: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     5155.348197596795,
+     5501.0,
+     5299.063157894737
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P10",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 10: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     5542.320214909335,
+     5501.0,
+     5686.12255319149
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P11",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 11: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     5990.316822429906,
+     5501.0,
+     6131.836340852131
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P12",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 12: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     6384.320214909335,
+     5501.0,
+     6527.68
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P13",
+   "ink_ref": null,
+   "kind": "staff",
+   "labeler": "sean",
+   "note": "system 0 staff 13: the five lines the cells measured",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     6736.351779717931,
+     5501.0,
+     6878.68
+    ]
+   },
+   "source": "staff-lines",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P14",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1271.830078125,
+     1527.3747884940778,
+     1362.423828125,
+     1764.8324873096446
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P15",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1271.830078125,
+     1913.823829787234,
+     1361.98828125,
+     2150.433191489362
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P16",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1270.087890625,
+     2302.0025531914894,
+     1359.375,
+     2536.433191489362
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P17",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1267.474609375,
+     2738.4222222222224,
+     1365.037109375,
+     2850.409661835749
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P18",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1269.216796875,
+     3067.2605363984676,
+     1365.037109375,
+     3178.8314176245212
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P19",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1275.314453125,
+     3435.3097872340427,
+     1363.294921875,
+     3671.047659574468
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P20",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1274.443359375,
+     3903.0025531914894,
+     1362.859375,
+     4137.433191489362
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P21",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1268.345703125,
+     4244.1463620981385,
+     1372.44140625,
+     4492.496615905246
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P22",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1264.42578125,
+     4653.420425531915,
+     1371.5703125,
+     4764.099574468085
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P23",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1275.75,
+     5109.7318104906935,
+     1363.294921875,
+     5346.753807106599
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P24",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1277.056640625,
+     5499.617021276596,
+     1365.47265625,
+     5734.483404255319
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P25",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1292.736328125,
+     5998.0160744500845,
+     1365.908203125,
+     6131.776649746193
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P26",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1277.4921875,
+     6358.175319148936,
+     1368.95703125,
+     6491.077446808511
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P27",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4198.846367165835,
+     6395.84,
+     4279.811980033278,
+     6493.44
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P28",
+   "ink_ref": null,
+   "kind": "clef",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1266.603515625,
+     6739.6774468085105,
+     1367.21484375,
+     6849.485106382978
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P29",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1611.9921875,
+     1740.8688663282571,
+     1683.421875,
+     1818.4238578680204
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P30",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1613.298828125,
+     2122.1097872340424,
+     1683.857421875,
+     2202.722553191489
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P31",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1693.439453125,
+     2121.2382978723404,
+     1908.1640625,
+     2197.9293617021276
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P32",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1616.34765625,
+     2500.702127659574,
+     1685.1640625,
+     2581.3148936170214
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P33",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1695.181640625,
+     2505.059574468085,
+     1905.115234375,
+     2595.2587234042553
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P34",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1621.138671875,
+     2940.0,
+     1684.29296875,
+     3012.782567049808
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P35",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1620.267578125,
+     3312.4297872340426,
+     1688.212890625,
+     3393.9140425531914
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P36",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1840.654296875,
+     4098.216170212766,
+     1909.470703125,
+     4174.907234042553
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P37",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1604.587890625,
+     3793.194893617021,
+     1697.359375,
+     3886.008510638298
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P38",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1619.396484375,
+     4503.524255319149,
+     1687.77734375,
+     4582.829787234043
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P39",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1623.31640625,
+     4796.3446808510635,
+     1691.697265625,
+     4876.521702127659
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P40",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1621.138671875,
+     5311.026226734349,
+     1692.1328125,
+     5389.888324873096
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P41",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1707.376953125,
+     5320.175972927242,
+     2108.080078125,
+     5385.967005076142
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "p"
+  },
+  {
+   "id": "P42",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1621.57421875,
+     5715.310638297872,
+     1691.697265625,
+     5794.180425531915
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P43",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1622.4453125,
+     6177.52538071066,
+     1692.568359375,
+     6255.9517766497465
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P44",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1622.880859375,
+     6555.357446808511,
+     1692.1328125,
+     6634.662978723404
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P45",
+   "ink_ref": null,
+   "kind": "dynamic",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1619.83203125,
+     6891.752340425532,
+     1686.90625,
+     6970.1863829787235
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "f"
+  },
+  {
+   "id": "P46",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1389.86328125,
+     1538.7030456852792,
+     1485.248046875,
+     1686.84179357022
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P47",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1390.298828125,
+     1925.1531914893617,
+     1455.630859375,
+     2058.055319148936
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P48",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1390.734375,
+     2360.828085106383,
+     1421.658203125,
+     2444.055319148936
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P49",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1388.556640625,
+     2732.3217391304347,
+     1483.505859375,
+     2876.11884057971
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P50",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1390.734375,
+     3059.8515325670496,
+     1483.94140625,
+     3203.6733716475096
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P51",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1395.08984375,
+     5121.495769881557,
+     1460.421875,
+     5254.384940778342
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P52",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1395.525390625,
+     5506.588936170213,
+     1489.603515625,
+     5655.177872340426
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P53",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1396.396484375,
+     5974.923857868021,
+     1489.603515625,
+     6124.369712351946
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P54",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1394.21875,
+     6335.516595744681,
+     1490.474609375,
+     6483.669787234043
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P55",
+   "ink_ref": null,
+   "kind": "key",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1395.08984375,
+     6730.091063829787,
+     1486.990234375,
+     6877.808510638298
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P56",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1501.36328125,
+     1649.8071065989848,
+     1549.708984375,
+     1715.598138747885
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P57",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5430.294285714286,
+     1583.9636591478697,
+     5476.4628571428575,
+     1699.483709273183
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P58",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5428.334277620396,
+     1965.16,
+     5479.872521246459,
+     2101.16
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P59",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1503.10546875,
+     2356.4706382978725,
+     1547.095703125,
+     2418.3463829787233
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P60",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5427.373937677054,
+     2355.32,
+     5474.430594900849,
+     2484.6
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P61",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1500.927734375,
+     2743.6512077294688,
+     1546.224609375,
+     2870.018357487923
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P62",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5424.805714285714,
+     2744.788268955651,
+     5473.557142857143,
+     2865.442060085837
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P63",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1502.669921875,
+     3072.0545977011493,
+     1550.0,
+     3197.0
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P64",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5426.4265129683,
+     3070.975,
+     5472.99423631124,
+     3200.975
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P65",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1503.9765625,
+     3487.5991489361704,
+     1551.88671875,
+     3615.272340425532
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P66",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5422.252124645893,
+     3485.4,
+     5470.589235127479,
+     3612.44
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P67",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1506.58984375,
+     3956.5991489361704,
+     1554.064453125,
+     4085.579574468085
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P68",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5422.252124645893,
+     3957.92,
+     5469.308781869689,
+     4084.96
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P69",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1506.154296875,
+     4303.837563451777,
+     1554.064453125,
+     4435.419627749577
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P70",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5421.254285714285,
+     4303.704887218045,
+     5469.682857142857,
+     4436.649749373433
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P71",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1506.154296875,
+     4656.470638297872,
+     1553.62890625,
+     4784.143829787234
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P72",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5421.611898016997,
+     4655.96,
+     5467.067988668556,
+     4783.64
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P73",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5423.5142857142855,
+     5159.382205513784,
+     5471.942857142857,
+     5284.582706766917
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P74",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1505.71875,
+     5555.392340425532,
+     1552.7578125,
+     5682.629787234043
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P75",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5421.932011331444,
+     5542.96,
+     5468.6685552407935,
+     5676.08
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P76",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1504.412109375,
+     6000.630287648054,
+     1550.14453125,
+     6126.9839255499155
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P77",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5423.191428571428,
+     5991.5100250626565,
+     5474.5257142857145,
+     6121.550751879699
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P78",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1504.84765625,
+     6393.906382978724,
+     1550.580078125,
+     6518.965106382979
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P79",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5421.291784702549,
+     6385.28,
+     5475.070821529745,
+     6514.56
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P80",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1505.71875,
+     6740.984680851064,
+     1551.451171875,
+     6874.3225531914895
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P81",
+   "ink_ref": null,
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5419.691218130311,
+     6737.88,
+     5470.589235127479,
+     6873.56
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P82",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4670.131358300727,
+     1576.5419799498748,
+     4682.064840693125,
+     1903.4185463659148
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P83",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3534.7915194346288,
+     1783.08,
+     3550.1583038869258,
+     2284.84
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P84",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5388.322857142857,
+     2565.7432045779688,
+     5411.568571428571,
+     2956.4163090128754
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P85",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2656.05,
+     2966.975,
+     2669.05,
+     3216.9
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P86",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3089.3870967741937,
+     2559.936337625179,
+     3100.032258064516,
+     2986.4184549356223
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P87",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3541.7393162393164,
+     2559.936337625179,
+     3549.8055555555557,
+     2985.450643776824
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P88",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4091.5134189031505,
+     2556.0650929899857,
+     4101.8378063010505,
+     2986.4184549356223
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P89",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4668.841252096143,
+     2557.678111587983,
+     4681.742314141979,
+     2969.9656652360513
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P90",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5377.6875,
+     2626.03125,
+     5387.3125,
+     2959.8125
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P91",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2101.982421875,
+     3028.036398467433,
+     2108.080078125,
+     3339.6503831417626
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P92",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3089.949357520786,
+     3054.4,
+     3098.074829931973,
+     3221.125
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P93",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3545.870064608758,
+     2990.375,
+     3551.073223259153,
+     3352.75
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P94",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4094.6460905349795,
+     2994.275,
+     4104.399176954733,
+     3301.075
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P95",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4674.572957746479,
+     3043.675,
+     4682.049577464789,
+     3229.575
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P96",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5378.375,
+     3039.73544973545,
+     5386.28125,
+     3216.5079365079364
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P97",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5400.048991354467,
+     3034.9,
+     5414.377521613833,
+     3202.6
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P98",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4088.4386574074074,
+     3448.92,
+     4106.3599537037035,
+     3624.92
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P99",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4669.91902384914,
+     3470.04,
+     4680.7997781475315,
+     3636.12
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P100",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5370.8125,
+     3465.895903290799,
+     5386.96875,
+     3627.507723304231
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P101",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5396.00283286119,
+     3460.12,
+     5409.447592067989,
+     3615.64
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P102",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5390.240793201133,
+     3347.48,
+     5411.368271954674,
+     3798.68
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P103",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4091.958912037037,
+     3934.88,
+     4104.439814814815,
+     4104.16
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P104",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4669.91902384914,
+     3947.68,
+     4680.7997781475315,
+     4091.36
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P105",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5374.25,
+     3929.05036937542,
+     5386.28125,
+     4104.072531900604
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P106",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5394.402266288952,
+     3947.68,
+     5410.4079320113315,
+     4085.6
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P107",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2095.884765625,
+     4290.766497461929,
+     2108.951171875,
+     4458.076142131979
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P108",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2655.632302405498,
+     4632.28,
+     2668.4387170675827,
+     4798.04
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P109",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5371.84375,
+     4636.646742780389,
+     5385.25,
+     4790.349899261249
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P110",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5388.320113314448,
+     4483.16,
+     5403.685552407932,
+     4796.44
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P111",
+   "ink_ref": null,
+   "kind": "barline",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5389.291428571429,
+     5152.928571428572,
+     5405.434285714286,
+     5398.812030075188
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P112",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1696.48828125,
+     2930.587439613527,
+     1931.248046875,
+     2997.257004830918
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "legato"
+  },
+  {
+   "id": "P113",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1714.345703125,
+     5709.210212765957,
+     2108.080078125,
+     5791.130212765957
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "espr. e legato"
+  },
+  {
+   "id": "P114",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1569.30859375,
+     5842.470389170897,
+     1687.341796875,
+     5913.054145516075
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "div."
+  },
+  {
+   "id": "P115",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1705.19921875,
+     6188.417935702199,
+     2109.822265625,
+     6245.9306260575295
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "espr. e legato"
+  },
+  {
+   "id": "P116",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1699.1015625,
+     6558.182127659575,
+     2108.951171875,
+     6637.051914893617
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "espr. e legato"
+  },
+  {
+   "id": "P117",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1696.48828125,
+     6910.489361702128,
+     1968.705078125,
+     6978.0297872340425
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "pesante"
+  },
+  {
+   "id": "P118",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1491.345703125,
+     6978.901276595745,
+     2109.822265625,
+     7061.692765957447
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "un poco sostenuto"
+  },
+  {
+   "id": "P119",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2626.870744373918,
+     500.67105263157896,
+     3277.478361223312,
+     721.8157894736842
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "phonie from symphonie in title"
+  },
+  {
+   "id": "P120",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3251.9291503504046,
+     554.5065789473684,
+     3326.0145734132666,
+     673.7828947368421
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "e from symphonie in title"
+  },
+  {
+   "id": "P121",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3420.3236870310825,
+     495.1916790490342,
+     3700.9989281886387,
+     670.2748885586924
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Nr."
+  },
+  {
+   "id": "P122",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3718.6865203761754,
+     500.99829351535834,
+     3800.6990595611287,
+     671.2918088737201
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "1 (from title symphonie Nr. 1)"
+  },
+  {
+   "id": "P123",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2189.2537207654145,
+     500.739837398374,
+     2621.0361445783133,
+     714.8753387533875
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Sym (symphonie title)"
+  },
+  {
+   "id": "P124",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2761.6451612903224,
+     734.3012048192771,
+     2868.4193548387098,
+     844.7301204819277
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "(C mol)"
+  },
+  {
+   "id": "P125",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2915.6451612903224,
+     737.655421686747,
+     3192.741935483871,
+     850.0216867469879
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "moll). from Cmoll title"
+  },
+  {
+   "id": "P126",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3047.6451612903224,
+     936.648,
+     3577.0,
+     1038.6106666666667
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Orchester"
+  },
+  {
+   "id": "P127",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2622.9991708126036,
+     942.2554112554112,
+     2994.903814262023,
+     1070.2922077922078
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Grobes"
+  },
+  {
+   "id": "P128",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2422.608919382504,
+     939.3801652892562,
+     2590.9382504288164,
+     1037.0413223140495
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Fur"
+  },
+  {
+   "id": "P129",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4612.870744373918,
+     1144.107088989442,
+     5262.188113098672,
+     1319.051282051282
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "composer text"
+  },
+  {
+   "id": "P130",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5243.73389113291,
+     1133.4555052790347,
+     5481.391229082516,
+     1237.3891402714933
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Op 68"
+  },
+  {
+   "id": "P131",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4409.935628742515,
+     1136.4270833333333,
+     4826.418413173653,
+     1232.0104166666667
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Johannes"
+  },
+  {
+   "id": "P132",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1917.6787148594378,
+     1347.6451612903227,
+     2378.708165997323,
+     1405.0645161290322
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "sostenuto"
+  },
+  {
+   "id": "P133",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1662.416449086162,
+     1353.4232804232804,
+     1885.8772845953004,
+     1406.3544973544974
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "poco"
+  },
+  {
+   "id": "P134",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     691.5115546218487,
+     1610.6451612903227,
+     971.7457983193278,
+     1686.774193548387
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "floten"
+  },
+  {
+   "id": "P135",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     607.4803493449782,
+     1620.457627118644,
+     654.9825327510916,
+     1686.1525423728813
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "2"
+  },
+  {
+   "id": "P136",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     687.3539486203615,
+     1990.0696202531647,
+     971.8430066603235,
+     2070.76582278481
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Oboen"
+  },
+  {
+   "id": "P137",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     601.5414847161572,
+     2003.135593220339,
+     648.7205240174673,
+     2071.406779661017
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "2"
+  },
+  {
+   "id": "P138",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1108.8813559322034,
+     2379.6518987341774,
+     1179.7288135593221,
+     2457.1202531645567
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "B"
+  },
+  {
+   "id": "P139",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     491.3225806451613,
+     2381.029315960912,
+     1077.1290322580644,
+     2458.100977198697
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Klarinetten in"
+  },
+  {
+   "id": "P140",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     413.9775784753363,
+     2384.279069767442,
+     464.3452914798206,
+     2455.8205980066446
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "2"
+  },
+  {
+   "id": "P141",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     674.1653333333334,
+     2770.5873015873017,
+     1010.0613333333333,
+     2867.4126984126983
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "fagotte"
+  },
+  {
+   "id": "P142",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     580.8206278026906,
+     2779.505154639175,
+     626.0224215246636,
+     2845.0790378006873
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "2"
+  },
+  {
+   "id": "P143",
+   "ink_ref": null,
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     495.7723880597015,
+     3096.6825396825398,
+     1084.9701492537313,
+     3195.121693121693
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": "Kontrafagott"
+  },
+  {
+   "id": "P144",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.87109375,
+     2948.280651340996,
+     1259.19921875,
+     3393.256704980843
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P145",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5392.5590778097985,
+     3028.075,
+     5409.818443804034,
+     3238.675
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P146",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5390.881019830028,
+     3312.92,
+     5397.6033994334275,
+     3756.12
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P147",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     3787.094468085106,
+     1261.376953125,
+     4236.347234042553
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P148",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5390.240793201133,
+     3808.16,
+     5407.847025495751,
+     4260.64
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P149",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.0,
+     4478.251063829787,
+     1285.767578125,
+     4889.15829787234
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P150",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.87109375,
+     5394.1668085106385,
+     1267.474609375,
+     5793.308936170213
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P151",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1220.87109375,
+     5866.434010152284,
+     1258.328125,
+     6254.2089678511
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P152",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1216.5714285714287,
+     1560.76821192053,
+     1235.0285714285715,
+     1699.6777041942605
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P153",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1178.6926829268293,
+     2738.0396927016645,
+     1217.648780487805,
+     3207.192061459667
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P154",
+   "ink_ref": null,
+   "kind": "bracket",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1180.5428296438884,
+     3505.2914466737066,
+     1220.8460057747834,
+     4069.8373812038017
+    ]
+   },
+   "source": "hand-cell-labels",
+   "state": "pending",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P155",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) L extended past the hand box; extend_unboxed_half: slur boxed from the barline only; the arc starts at the first note of bar 1 (x~1666) and crosses the barline at 2112 (Sean's tile 2/5 pattern)",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1666.0,
+     1449.0,
+     2556.0,
+     1547.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P156",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2722.0,
+     1454.0,
+     2899.0,
+     1561.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P157",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3156.0,
+     1408.0,
+     3476.0,
+     1465.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P158",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3634.0,
+     1411.0,
+     4026.0,
+     1473.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P159",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4186.0,
+     1860.0,
+     4601.0,
+     1906.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P160",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4164.0,
+     1400.0,
+     4596.0,
+     1507.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P161",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4731.0,
+     1412.0,
+     5276.0,
+     1486.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P162",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4730.0,
+     1846.0,
+     5234.0,
+     1906.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P163",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) L extended past the hand box; extend_unboxed_half: same slur one staff lower (staff 1): left half in bar 1 unboxed",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1666.0,
+     1825.0,
+     2567.0,
+     1927.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P164",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2731.0,
+     1919.0,
+     2906.0,
+     1961.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P165",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3151.0,
+     1909.0,
+     3476.0,
+     1973.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P166",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3554.0,
+     1907.0,
+     4026.0,
+     1975.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P167",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1674.0,
+     2636.0,
+     2571.0,
+     2729.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P168",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1670.0,
+     2208.0,
+     2576.0,
+     2297.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P169",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2726.0,
+     2290.0,
+     2906.0,
+     2333.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P170",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3160.0,
+     2304.0,
+     3482.0,
+     2347.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P171",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3638.0,
+     2519.0,
+     4029.0,
+     2583.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P172",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4164.0,
+     2469.0,
+     4609.0,
+     2541.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P173",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4143.0,
+     2648.0,
+     4608.0,
+     2724.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P174",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4716.0,
+     2270.0,
+     5286.0,
+     2349.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P175",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2734.0,
+     2720.0,
+     2909.0,
+     2762.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P176",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3175.0,
+     2708.0,
+     3482.0,
+     2764.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P177",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3649.0,
+     2704.0,
+     4022.0,
+     2766.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P178",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4711.0,
+     2589.0,
+     5287.0,
+     2679.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P179",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1674.0,
+     3284.0,
+     2039.0,
+     3332.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P180",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1699.0,
+     3590.0,
+     2232.0,
+     3634.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P181",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1694.0,
+     3774.0,
+     1779.0,
+     3803.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P182",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2141.0,
+     3592.0,
+     2718.0,
+     3627.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P183",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "dedupe_label: two labels of ONE tie (chord 2720 -> chord 3185, staff 5 top): q639 2754-3094 and q647 2688-3095, then joined at 3101 with q660; the old scorer chained it with its neighbours; dedupe_label: two labels of ONE tie (chord 2720 -> chord 3185, staff 5 top): q639 2754-3094 and q647 2688-3095, then joined at 3101 with q660; the old scorer chained it with its neighbours; dedupe_label: two la",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2688.0,
+     3594.0,
+     3141.0,
+     3636.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P184",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2751.0,
+     3782.0,
+     3160.0,
+     3821.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P185",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3162.0,
+     3591.0,
+     3623.0,
+     3626.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P186",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3181.0,
+     3781.0,
+     3634.0,
+     3823.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P187",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3651.0,
+     3782.0,
+     4166.0,
+     3807.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P188",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3569.0,
+     3589.0,
+     4156.0,
+     3625.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P189",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4152.0,
+     3582.0,
+     4724.0,
+     3627.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P190",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4196.0,
+     3776.0,
+     4675.0,
+     3805.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P191",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "leaves the system (cross-system tie)",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4716.0,
+     3599.0,
+     5374.0,
+     3646.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P192",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "leaves the system (cross-system tie)",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4761.0,
+     3778.0,
+     5378.0,
+     3825.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P193",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1882.0,
+     3855.0,
+     3180.0,
+     3994.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P194",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1692.0,
+     3766.0,
+     2245.0,
+     3843.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P195",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2274.0,
+     3777.0,
+     2727.0,
+     3840.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P196",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1696.0,
+     4301.0,
+     1877.0,
+     4322.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P197",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1669.0,
+     4483.0,
+     1874.0,
+     4517.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P198",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) L extended past the hand box; extend_unboxed_half: slur boxed from the barline only (staff 8 region); left half in bar 1 unboxed",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1672.0,
+     4969.0,
+     2606.0,
+     5025.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P199",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1680.0,
+     5042.0,
+     1884.0,
+     5074.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P200",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) L extended past the hand box; extend_unboxed_half: tie boxed from the barline only: the left half (1994-2112) unboxed",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1994.0,
+     5040.0,
+     2254.0,
+     5075.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P201",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2354.0,
+     5035.0,
+     2433.0,
+     5056.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P202",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) R extended past the hand box; extend_unboxed_half: slur stub ending at the barline 2671; the arc runs on to 2742 in the next bar",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2619.0,
+     4985.0,
+     2742.0,
+     5010.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P203",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2826.0,
+     4971.0,
+     2923.0,
+     4996.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P204",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2744.0,
+     4969.0,
+     2950.0,
+     5005.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P205",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "halves disagree on tie / slur; join_halves: two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box'); join_halves: two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3019.0,
+     4922.0,
+     3469.0,
+     4994.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P206",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "halves disagree on tie / slur; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labe",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3269.0,
+     4963.0,
+     3357.0,
+     4981.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P207",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3489.0,
+     4951.0,
+     3634.0,
+     4995.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P208",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3373.0,
+     4969.0,
+     3480.0,
+     4991.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P209",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "gap_join: one slur boxed in two pieces with the middle (4107-4371) unboxed: q899 3672-4107 and q1073 4371-4603 (staff 9, bar 5); gap_join: one slur boxed in two pieces with the middle (4107-4371) unboxed: q899 3672-4107 and q1073 4371-4603 (staff 9, bar 5)",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3672.0,
+     4938.0,
+     4603.0,
+     5053.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P210",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4041.0,
+     5001.0,
+     4164.0,
+     5028.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P211",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3652.0,
+     4969.0,
+     3702.0,
+     4986.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P212",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4615.0,
+     5027.0,
+     4739.0,
+     5052.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P213",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4755.0,
+     5004.0,
+     5296.0,
+     5087.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P214",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4964.0,
+     5047.0,
+     5087.0,
+     5072.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P215",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "leaves the system (cross-system tie)",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5304.0,
+     5070.0,
+     5388.0,
+     5093.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P216",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1672.0,
+     5465.0,
+     2604.0,
+     5560.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P217",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1674.0,
+     5548.0,
+     1881.0,
+     5565.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P218",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) R extended past the hand box; extend_unboxed_half: tie boxed to the barline only: the right half (2112-2254) unboxed",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2047.0,
+     5529.0,
+     2254.0,
+     5562.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P219",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2616.0,
+     5488.0,
+     2738.0,
+     5514.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P220",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2350.0,
+     5535.0,
+     2435.0,
+     5556.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P221",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2748.0,
+     5422.0,
+     3478.0,
+     5506.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P222",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2829.0,
+     5479.0,
+     2915.0,
+     5496.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P223",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3018.0,
+     5467.0,
+     3160.0,
+     5497.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P224",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3269.0,
+     5457.0,
+     3356.0,
+     5476.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P225",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3487.0,
+     5462.0,
+     3634.0,
+     5499.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P226",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3655.0,
+     5433.0,
+     4601.0,
+     5542.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P227",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4037.0,
+     5499.0,
+     4160.0,
+     5525.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P228",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4612.0,
+     5521.0,
+     4732.0,
+     5553.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P229",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4966.0,
+     5615.0,
+     5080.0,
+     5635.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P230",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "leaves the system (cross-system tie)",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5299.0,
+     5644.0,
+     5387.0,
+     5661.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P231",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4713.0,
+     5671.0,
+     5381.0,
+     5778.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P232",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4760.0,
+     5805.0,
+     5303.0,
+     5882.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P233",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1690.0,
+     5840.0,
+     2575.0,
+     5937.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P234",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2686.0,
+     6110.0,
+     3462.0,
+     6224.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P235",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3021.0,
+     6290.0,
+     3166.0,
+     6318.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P236",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2829.0,
+     6301.0,
+     2918.0,
+     6320.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P237",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2735.0,
+     5859.0,
+     3486.0,
+     5923.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P238",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2747.0,
+     6252.0,
+     3480.0,
+     6328.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P239",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3268.0,
+     6287.0,
+     3358.0,
+     6306.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P240",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3492.0,
+     6289.0,
+     3636.0,
+     6320.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P241",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3653.0,
+     6246.0,
+     4602.0,
+     6317.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P242",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3650.0,
+     5831.0,
+     4615.0,
+     5984.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P243",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     3632.0,
+     6116.0,
+     4595.0,
+     6226.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P244",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4981.0,
+     6310.0,
+     5063.0,
+     6320.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P245",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4730.0,
+     6124.0,
+     5362.0,
+     6205.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P246",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4760.0,
+     6264.0,
+     5292.0,
+     6348.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P247",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1670.0,
+     6286.0,
+     2552.0,
+     6384.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P248",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1675.0,
+     6366.0,
+     1874.0,
+     6398.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P249",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2045.0,
+     6357.0,
+     2251.0,
+     6398.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P250",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2619.0,
+     6312.0,
+     2741.0,
+     6339.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P251",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "end(s) R extended past the hand box; extend_unboxed_half: tie boxed to the barline only: the right half (4107-4224) unboxed",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4040.0,
+     6326.0,
+     4224.0,
+     6349.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P252",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4615.0,
+     6289.0,
+     4737.0,
+     6317.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P253",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "leaves the system (cross-system tie); dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     5302.0,
+     6329.0,
+     5385.0,
+     6359.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P254",
+   "ink_ref": null,
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "prefill",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1682.0,
+     6856.0,
+     2044.0,
+     6901.0
+    ]
+   },
+   "source": "arc-key-2.281",
+   "state": "pending",
+   "sub": "slur",
+   "text": null
+  }
+ ],
+ "pdf_page_index": 0,
+ "provenance": {
+  "arc_key": "2.281 corrected key",
+  "built_from": "imslp317803/0.json (never edited)"
+ },
+ "schema_version": 1,
+ "sp": 32.0,
+ "width": 5930
+}

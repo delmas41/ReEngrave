@@ -1832,7 +1832,40 @@ def main() -> None:
             "overlapping cells are refreshed; `text` and `noise` join the picker."
         ),
     )
+    ap.add_argument(
+        "--page-pass",
+        action="store_true",
+        help=(
+            "ROADMAP 2.287: also serve the PAGE PASS at /page (whole page, page-wide kinds, ink tinted by "
+            "claim state; needs --page-store and the PDF). With no --bench-dir the page pass is served "
+            "alone. Labels go to <page>.pagepass.json beside the page file; the page file is never edited."
+        ),
+    )
+    ap.add_argument("--pdf", type=Path, help="the score PDF for --page-pass (default: found in library/ by the page file's name)")
+    ap.add_argument("--arc-key", type=Path, help="the 2.281 corrected arc key, for the page pass's arc pre-fills")
     args = ap.parse_args()
+
+    page_service = None
+    if args.page_pass:
+        if not args.page_store:
+            raise SystemExit("[server] --page-pass needs --page-store")
+        from tools.omr.annotate.pagepass_server import PagePassService
+
+        page_service = PagePassService(args.page_store.resolve(), pdf=args.pdf, arc_key=args.arc_key)
+        if not (args.bench_dir or args.verdicts_dir):
+            from fastapi import FastAPI
+            from fastapi.responses import RedirectResponse
+            from fastapi.staticfiles import StaticFiles
+            from tools.omr.annotate.pagepass_server import mount
+
+            app = FastAPI(title="ReEngrave page pass")
+            app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
+            app.get("/", include_in_schema=False)(lambda: RedirectResponse("/page"))
+            mount(app, page_service)
+            url = f"http://{args.host}:{args.port}"
+            print(f"[server] page pass only; open {url}/page")
+            uvicorn.run(app, host=args.host, port=args.port)
+            return
 
     bench = _derive_bench(args)
     print(f"[server] bench: {bench.root}")
@@ -1862,6 +1895,11 @@ def main() -> None:
         # Almost always a hand-edited batch_config.json. Say what is wrong
         # rather than serving the full picker to someone who asked for a pass.
         raise SystemExit(f"[server] ERROR: {e}")
+    if page_service is not None:
+        from tools.omr.annotate.pagepass_server import mount
+
+        mount(app, page_service)
+        print("[server] page pass at /page; pass-1 ink shows in the cell view")
     url = f"http://{args.host}:{args.port}"
     print(f"[server] listening on {url}")
     print(f"[server] open {url}/ to start labeling")

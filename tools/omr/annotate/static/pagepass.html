@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ReEngrave labeling — page pass</title>
+<link rel="stylesheet" href="/static/pagepass.css">
+</head>
+<body>
+<header class="bar">
+  <h1>Page pass <span id="pg" class="muted"></span></h1>
+  <span id="systems" class="systems"></span>
+  <span class="grow"></span>
+  <span id="save" class="muted">loading the page ink (about 20 s the first time) …</span>
+  <a href="/" class="link" id="to-cells" title="the cell pass">cell pass →</a>
+</header>
+
+<main>
+  <nav id="palette" class="palette" aria-label="what you are labelling"></nav>
+
+  <section id="stage" class="stage">
+    <canvas id="cv" tabindex="0"></canvas>
+    <div id="hint" class="hint"></div>
+  </section>
+
+  <aside id="side" class="side">
+    <section>
+      <h2>Ink <span class="muted">(colour = state)</span></h2>
+      <ul id="legend" class="legend"></ul>
+      <div id="bar" class="statbar"></div>
+      <div id="pct" class="pct"></div>
+    </section>
+    <section id="selbox" hidden>
+      <h2>Selected <span id="selid" class="muted"></span></h2>
+      <div id="seldesc"></div>
+      <label id="textrow" hidden>Text <input id="text" type="text" autocomplete="off" placeholder="type the words, Enter"></label>
+      <label id="subrow" hidden>Arc is a
+        <select id="sub"><option value="">(not said)</option><option value="tie">tie</option><option value="slur">slur</option></select>
+      </label>
+      <div class="btns">
+        <button id="b-confirm" title="t">confirm <kbd>t</kbd></button>
+        <button id="b-reject" title="f">reject <kbd>f</kbd></button>
+        <button id="b-delete" title="x">delete <kbd>x</kbd></button>
+        <button id="b-redraw" title="b">redraw <kbd>b</kbd></button>
+        <button id="b-kind" title="c">change kind <kbd>c</kbd></button>
+      </div>
+    </section>
+    <section>
+      <h2>Waiting for you <span id="qn" class="muted"></span></h2>
+      <ul id="queue" class="queue"></ul>
+    </section>
+    <section class="keys">
+      <h2>Keys</h2>
+      <p><kbd>1</kbd>–<kbd>9</kbd> <kbd>0</kbd> <kbd>-</kbd> pick the kind, then drag a box.
+         <kbd>p</kbd> polygon (click corners, <kbd>Enter</kbd> closes) to split a merged piece.</p>
+      <p><kbd>t</kbd> confirm · <kbd>f</kbd> reject · <kbd>x</kbd> delete · <kbd>b</kbd> redraw · <kbd>c</kbd> change kind · <kbd>u</kbd> undo</p>
+      <p><kbd>Tab</kbd> next waiting · <kbd>[</kbd> <kbd>]</kbd> system · <kbd>g</kbd> whole page ·
+         <kbd>h</kbd> hide pre-fill outlines · wheel/scroll pans, pinch zooms, <kbd>Space</kbd>+drag pans</p>
+    </section>
+  </aside>
+</main>
+<script src="/static/pagepass.js"></script>
+</body>
+</html>
