@@ -2364,8 +2364,7 @@ def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
     subjects_from=Q.ARC_BOX,
     reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC)
     + ("ink_is_a_staff_line", "ink_is_a_barline",
-       "in_a_key_signature_slot", "claimed_by:key_signature")
-    + INK_CONSULT_REASONS,
+       "in_a_key_signature_slot", "claimed_by:key_signature"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:

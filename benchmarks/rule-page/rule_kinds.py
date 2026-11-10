@@ -99,6 +99,18 @@ RULES = [
       "the same consult, for a rest box", "2.277", "kept (the claim order, CLAUDE section 3)"),
     R(HEADS, "arpeggiato_is_not_an_arpeggiato", "claimed_by:barline,claimed_by:page_claim", "C", "ink belongs to a barline / a later page claim",
       "the same consult, for an arpeggiato box", "2.277", "kept (the claim order, CLAUDE section 3)"),
+    R(HEADS, "dynamic_is_not_a_dynamic", "claimed_by:barline,claimed_by:page_claim,claimed_by:earlier_mark", "C", "ink belongs to an earlier claim (barline / page / layer claim / whole rest)",
+      "ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a dynamic letter box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM",
+      "2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces)", "open: tiles (out/print/2.284-r5)"),
+    R(HEADS, "articulation_is_not_an_articulation", "claimed_by:barline,claimed_by:page_claim,claimed_by:earlier_mark", "C", "ink belongs to an earlier claim (barline / page / layer claim / whole rest)",
+      "ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a articulation box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM",
+      "2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces)", "open: tiles (out/print/2.284-r5)"),
+    R(HEADS, "flag_is_not_a_flag", "claimed_by:barline,claimed_by:page_claim,claimed_by:earlier_mark", "C", "ink belongs to an earlier claim (barline / page / layer claim / whole rest)",
+      "ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a flag box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM",
+      "2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces)", "open: tiles (out/print/2.284-r5)"),
+    R(HEADS, "tuplet_marker_is_not_a_marker", "claimed_by:barline,claimed_by:page_claim,claimed_by:earlier_mark", "C", "ink belongs to an earlier claim (barline / page / layer claim / whole rest)",
+      "ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a tuplet marker box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM",
+      "2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces)", "open: tiles (out/print/2.284-r5)"),
     R(HEADS, "notehead_is_not_a_notehead", "notehead_in_a_key_signature_slot", "A", "no note stands in the key slots",
       "only a clef stands before the key accidentals, so a head box in a key slot is a key accidental", S_KEYORDER, "kept"),
     R(HEADS, "notehead_is_not_a_notehead", "on_a_dynamic_letter", "C", "ink is a dynamic letter",
@@ -425,6 +437,7 @@ PASSES = {
 # guards.  name -> (family, kind, meaning, evidence, fate)
 # ======================================================================================================
 MODULES = {
+    "adjudicators/ink_consult.py": (HEADS, "C", "the ONE consult (2.284 r5, flag OMR_PAGE_LEDGER_OWNS): every box family asks the page ledger's one owner per page stroke; the register's rule table, the ledger's finding and the owner's shape answer in one answer", "Sean 2026-11-09 (Fix 2), 2026-11-10", "open: tiles"),
     "adjudicators/claimed_by.py": (HEADS, "C", "the ONE consult of the claimed-area register: a head or rest box on ink a clef / leading column / key already owns is refused", "Sean 2026-10-20 claimed-area plan (2.181, default ON)", "retires with 2.205"),
     "claims.py": (HEADS, "C", "the claimed-area register: who owns which ink (clef, leading column, key, meter)", "2.181", "retires with 2.205"),
     "adjudicators/inside_meter.py": (HEADS, "C", "a box on the printed meter's ink is the meter's", "Sean 2026-10-20 (2.177, flag OFF)", "retires with 2.205"),
