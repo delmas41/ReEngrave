@@ -2328,61 +2328,69 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
         c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
         if c is None:
             continue
-        grid = _cell_grid(c)
-        if grid is None:
-            continue
-        top_y, half_step = grid
         for gi, d in enumerate(dets):
-            alteration = _alteration_of(d.smufl_name)
-            fam = getattr(d, "accidental_family", None)        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY): one family, type from the strokes
-            fam_detail: Dict[str, Any] = {}
-            bx0, by0, bx1, by1 = float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical)
-            if fam is not None:
-                fam_alt = {"flat": "b", "natural": "natural", "sharp": "#"}.get(fam["type"])
-                if fam_alt is not None:
-                    alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
-                elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
-                    alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
-                if (fam.get("features") or {}).get("class_sign_stands") is False:
-                    # ROADMAP 2.247 r2 (flag OMR_ACCIDENTAL_KIND): the strokes cannot name the kind and the shape EXCLUDES the class's sign, or the box
-                    # is not that glyph's size -- the class writes nothing here (rule 8; Sean's r1 tiles 5 and 6)
-                    continue
-                bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
-                fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
-                                                              "candidates", "agrees_with_detector", "head_right") if k in fam}}
-            if alteration is None:
-                continue
-            if fam is not None and fam["type"] in _acc_family.TYPES:
-                frac = float(fam["anchor_fraction"])
-            else:
-                frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
-            anchor_y = by0 + (by1 - by0) * frac
-            pos_float = (anchor_y - top_y) / half_step
-            centre_pos = ((by0 + by1) / 2.0 - top_y) / half_step if fam is not None else (d.y_center - top_y) / half_step
-            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
-            shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
-            log.observe(
-                g, Q.ACCIDENTAL_STAFF_POSITION, pos_float,
-                reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
-                alteration=alteration,
-                detector_class=str(d.smufl_name),
-                anchor_fraction=frac,
-                # ⚠️ THE UNCORRECTED READING, KEPT. The anchor is a claim about
-                # the GLYPH SHAPE and the two documents disagree with the font
-                # about it by 0.023 (Breitkopf) and 0.135 (Litolff) of a box
-                # height; a consumer that wants to re-price that must not need
-                # a re-gather to do it. Throwing the second reading away is
-                # this project's own named anti-pattern.
-                box_centre_position=centre_pos,
-                residual=abs(pos_float - round(pos_float)),
-                rounded=int(round(pos_float)),
-                x0=bx0,
-                x1=bx1,
-                y0=by0,
-                y1=by1,
-                confidence=float(d.confidence),
-                **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
-                **shape_detail, **fam_detail)
+            file_accidental_position(log, c, sub, gi, d)
+
+
+def file_accidental_position(log: Log, c: Any, sub: Subject, gi: int, d: Any) -> bool:
+    """ROADMAP 2.285 r2: ONE accidental's `Q.ACCIDENTAL_STAFF_POSITION` row (the body of `gather_accidental_positions`, unchanged, now callable for a mark that is not in
+    the cell's detection list: the page reader's own-ink accidental travels this same row, so `adjudicate_accidental_owner` and EVALUATE see it exactly as a boxed
+    one). `c` the cell, `sub` its subject, `gi` the glyph ordinal, `d` a detection (or a `SymbolDetection` built for the mark). True where a row was filed."""
+    grid = _cell_grid(c)
+    if grid is None:
+        return False
+    top_y, half_step = grid
+    alteration = _alteration_of(d.smufl_name)
+    fam = getattr(d, "accidental_family", None)        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY): one family, type from the strokes
+    fam_detail: Dict[str, Any] = {}
+    bx0, by0, bx1, by1 = float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical)
+    if fam is not None:
+        fam_alt = {"flat": "b", "natural": "natural", "sharp": "#"}.get(fam["type"])
+        if fam_alt is not None:
+            alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
+        elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
+            alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
+        if (fam.get("features") or {}).get("class_sign_stands") is False:
+            # ROADMAP 2.247 r2 (flag OMR_ACCIDENTAL_KIND): the strokes cannot name the kind and the shape EXCLUDES the class's sign, or the box
+            # is not that glyph's size -- the class writes nothing here (rule 8; Sean's r1 tiles 5 and 6)
+            return False
+        bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
+        fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
+                                                      "candidates", "agrees_with_detector", "head_right") if k in fam}}
+    if alteration is None:
+        return False
+    if fam is not None and fam["type"] in _acc_family.TYPES:
+        frac = float(fam["anchor_fraction"])
+    else:
+        frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+    anchor_y = by0 + (by1 - by0) * frac
+    pos_float = (anchor_y - top_y) / half_step
+    centre_pos = ((by0 + by1) / 2.0 - top_y) / half_step if fam is not None else (d.y_center - top_y) / half_step
+    g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+    shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
+    log.observe(
+        g, Q.ACCIDENTAL_STAFF_POSITION, pos_float,
+        reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
+        alteration=alteration,
+        detector_class=str(d.smufl_name),
+        anchor_fraction=frac,
+        # ⚠️ THE UNCORRECTED READING, KEPT. The anchor is a claim about
+        # the GLYPH SHAPE and the two documents disagree with the font
+        # about it by 0.023 (Breitkopf) and 0.135 (Litolff) of a box
+        # height; a consumer that wants to re-price that must not need
+        # a re-gather to do it. Throwing the second reading away is
+        # this project's own named anti-pattern.
+        box_centre_position=centre_pos,
+        residual=abs(pos_float - round(pos_float)),
+        rounded=int(round(pos_float)),
+        x0=bx0,
+        x1=bx1,
+        y0=by0,
+        y1=by1,
+        confidence=float(d.confidence),
+        **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
+        **shape_detail, **fam_detail)
+    return True
 
 
 def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:

@@ -647,14 +647,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "producer-only (ROADMAP 2.260a M1/M2, flags `OMR_BARLINE_COLUMN_FACT` / `OMR_PAGE_STROKES`, default ON): a measurement filed beside the cell strokes; its first reader is M3/M4 of `docs/plan-2026-11-03-page-ledger.md`. Leaves the day a decision reads it."),
     "DETAIL Q.CLAIMED_AREA.page_strokes": (
         "producer-only (ROADMAP 2.260b M3, flag `OMR_PAGE_CLAIMS`, default ON): the arc claim in the page's own `Q.PAGE_STROKE` ids, the translation from `[cell, ordinal]`. The binder reads the same ids from the curve's `Q.SYSTEM_ARC` row (`piece_strokes`); `stroke_owner` moves to these ids when the cell ordinals retire. Leaves the day a decision reads it."),
-    "DETAIL Q.CLAIMED_AREA.kind_margin": (
-        "producer-only (ROADMAP 2.285, flag `OMR_ACCIDENTAL_OWN_INK`, default OFF): what the family reader said of an unboxed accidental's ink (kind, standing, margin, the note it is by), filed on its claim row for the binding step (ROADMAP 2.223). Leaves the day the binder reads it."),
-    "DETAIL Q.CLAIMED_AREA.kind_standing": (
-        "producer-only (ROADMAP 2.285, flag `OMR_ACCIDENTAL_OWN_INK`, default OFF): what the family reader said of an unboxed accidental's ink (kind, standing, margin, the note it is by), filed on its claim row for the binding step (ROADMAP 2.223). Leaves the day the binder reads it."),
-    "DETAIL Q.CLAIMED_AREA.kind_why": (
-        "producer-only (ROADMAP 2.285, flag `OMR_ACCIDENTAL_OWN_INK`, default OFF): what the family reader said of an unboxed accidental's ink (kind, standing, margin, the note it is by), filed on its claim row for the binding step (ROADMAP 2.223). Leaves the day the binder reads it."),
-    "DETAIL Q.CLAIMED_AREA.note_beside": (
-        "producer-only (ROADMAP 2.285, flag `OMR_ACCIDENTAL_OWN_INK`, default OFF): what the family reader said of an unboxed accidental's ink (kind, standing, margin, the note it is by), filed on its claim row for the binding step (ROADMAP 2.223). Leaves the day the binder reads it."),
     "DETAIL Q.STROKE.thickness_spread_spaces": (
         "producer-only quantity (`OMR_STROKE_MAP`, default ON); its first consumer is step 3 of `docs/plan-2026-10-22-shared-ink-map.md` §5. Leaves the day a decision reads it."),
 }

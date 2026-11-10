@@ -19,8 +19,20 @@ is read ONCE as an accidental by the ONE family reader (`accidental_family.read_
 A cluster that passes is claimed (`Q.CLAIMED_AREA`, owner `accidental_ink`, unit `page_ink`, standing the family reader's: a natural at its READ margin is
 READ, everything else GUESSED with its candidates, nothing is READ by this reader on a flat or a sharp -- `accidental_family.reads`). The claim is a layer of
 `claim_order.LAYERS` before the heads: a head box standing on the ink is a LATER box, refused BY the claim through the one generic rule (2.277,
-`claimed_by:page_claim`), counted by the consult, never dropped silently. The kind rides on the row for the binding step (ROADMAP 2.223): this reader
-binds the accidental to no note and writes nothing into the file.
+`claimed_by:page_claim`), counted by the consult, never dropped silently.
+
+ROUND 2 (2026-11-10) -- TWO CAUSES, BOTH WIRING (benchmarks/accidental-own-ink-2026-11/FINDINGS.md).
+  A. THE READER DID NOT CONSULT WHAT WAS ALREADY READ. (1) A rest the detector boxed is an earlier READ of its ink, and a rest box is not a claim at GATHER (only a whole rest,
+     flag OFF), so the ledger rows could not refuse it: two correct quarter rests were read as flats (a stem and a curl) and removed from the file. Rest boxes are consulted now
+     (`rest_box`, counted). (2) The crook `(C)` of a shared-word label (`Hr.` between two staves) is not in its word claim, because the staff's detected x_start (538, the true
+     start is ~650) cut the margin strip: the `(` was free ink and read as a sharp. An accidental never stands left of its staff's first clef, and the clef and the leading column
+     are claims on the ledger: ink whose centre lies left of one, at its rows, is the margin's (`left_of_the_clef`, `header_claims`).
+  B. THE READ ACCIDENTAL HAD NO CONSUMER. Round 1 filed the kind on the claim row and nothing read it; the note beside was exported at the key's pitch, unmarked. Each claimed mark
+     now also files the `Q.ACCIDENTAL_STAFF_POSITION` row a boxed accidental gets, from the same function (`gather.file_accidental_position`), on a glyph subject of the cell of
+     the note it is by (ordinal `GLYPH_BASE`+n, no box in the cell's detection list, no class of the detector's). `adjudicate_accidental_owner` names the head by its position in
+     that cell's own grid, `consequences.apply_printed_accidental` carries it to the bar, EXPORT writes it READ or GUESSED from the family row (`accidental_family.guess_of`: the
+     mark has no detector class, so a sharp or flat is never a "lone agreement": GUESSED, blue; a natural at its READ margin is READ). A mark whose cell has no head to own it
+     abstains `no_candidate`, counted, never written.
 
 CONVENTION ASSUMED (page-facts "accidental"; accidental_family): an accidental is drawn in its font's shape and stands at the left of the note it alters. WHAT
 WOULD FALSIFY IT: a claimed cluster Sean calls a note's stem or head (the control: a down-stem quarter note reads as one stem and a bowl). NOT CONFIRMED beyond
@@ -51,9 +63,24 @@ BOXED_OVERLAP_MIN = 0.25
 #: holds nothing: the ink may be what the box mislabels. A measurement on two plates (2.282), only narrows.
 REAL_HEAD_CONF = 0.5
 HEAD_PREFIX = "notehead"
+#: glyph ordinals of the accidentals this reader files a row for (ROADMAP 2.285 r2): past `gather._UNBOXED_REST_GLYPH_BASE` (350k) and every other gather base, BELOW
+#: `record.STROKE_GLYPH_BASE` (375k: `Log.subjects(Kind.GLYPH)` does not list those) -- a collision would merge a row into another reader's subject
+GLYPH_BASE = 360_000
+#: what the accidental's family row says of the detector: nothing. The mark has NO detector class, so no class can "agree" with the strokes and make the reading a lone
+#: agreement (`accidental_family.guess_of` returns None for that: READ). Flats and sharps are GUESSED, a natural at its READ margin is READ -- the family reader's own bar.
+NO_DETECTOR = "page_ink"
 #: the detector classes (by lower-case prefix) whose box is an EARLIER mark's read than an accidental in the reading order (2.276 r3): a dynamic letter, a beam, a flag, a clef,
-#: a meter digit, a key, a fermata, an ornament. Rests are not here: a rest box over an accidental is the false box this reader exists for (2.282).
+#: a meter digit, a key, a fermata, an ornament.
 EARLIER_READ_PREFIXES = ("dynamic", "beam", "flag", "clef", "timesig", "key", "fermata", "ornament", "tremolo", "keyboardpedal", "ottava", "repeat")
+#: ROADMAP 2.285 r2: a RESTS' boxes are an earlier read too. Round 1 left them out ("a rest box over an accidental is the false box this reader exists for") and took two correct
+#: quarter rests of Brahms p14 for flats (a quarter rest is a stem-like stroke and a curl to its right, `accidental_family.read_type`'s flat). A rest box is NOT a claim at GATHER
+#: (only a whole rest names strokes, `page_claim_names.BOX_FAMILIES`, flag OFF), so the claims on the log cannot refuse its ink: the detector's box is the only earlier read of it.
+#: Counted apart (`rest_box`), never silent. The order that makes this consult a claim is proposed in FINDINGS (rests claim page-wide before this reader).
+REST_PREFIX = "rest"
+#: the claims that stand at a system's LEFT EDGE (claim order, plan section 10 step 2): the header column and the clef, as the page-wide pass read them (cell 0 = the system's start).
+#: An accidental never stands left of its staff's first clef (page-facts: "Only a clef stands before the key accidentals"), so ink whose centre lies left of such a claim, at its rows,
+#: is the margin's -- a label, a crook, a brace. A clef CHANGE mid-system is not here (cell > 0): accidentals stand before it.
+HEADER_OWNERS = ("clef", "leading_column")
 #: the tallest ink that is ONE accidental, as a share of its glyph's height: Breitkopf prints ~10% larger than the font (`stroke_map`: the first try lost 15 of 21
 #: naturals trimming to the font size), plus the register's tolerance. A measurement on two plates; it only narrows.
 GLYPH_H_MAX_FRAC = 1.3
@@ -171,13 +198,23 @@ def head_beside(box: Sequence[float], anchor_y: float, heads: Sequence[Head], sp
     return best
 
 
+def left_of_header(box: Sequence[float], header: Sequence[Sequence[float]]) -> bool:
+    """True where the ink's centre lies LEFT of a system-start header claim (`HEADER_OWNERS`) whose rows hold the ink's own: the margin's ink, never an accidental's
+    (no accidental stands before its staff's first clef). `header`: the claims' rectangles `(x0, y0, x1, y1)`, page px. Pure."""
+    cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+    return any(r[1] <= cy <= r[3] and cx < r[0] for r in header)
+
+
 def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], held: Sequence[Sequence[float]],
-              reads: Sequence[Sequence[float]] = (), held_ids: Sequence[int] = ()) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+              reads: Sequence[Sequence[float]] = (), held_ids: Sequence[int] = (), rests: Sequence[Sequence[float]] = (),
+              header: Sequence[Sequence[float]] = ()) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The finder over every vertical stroke of the page (module doc). Returns the clusters that pass (each `{members, box, type, why, margin, standing, head,
-    candidates, fam}`) and the refusal-reason counts. Pure: strokes in, dicts out."""
+    candidates, fam}`) and the refusal-reason counts. Pure: strokes in, dicts out. `rests`: the detector's rest boxes (an earlier read, counted apart: `rest_box`);
+    `header`: the system-start header claims' rectangles (`left_of_the_clef`)."""
     from . import accidental_family as AF
     blocked = set(real_head_strokes(strokes, heads, boxed, sp))
     held_set = held_strokes(strokes, held, boxed, reads) | {int(i) for i in held_ids}
+    rest_held = held_strokes(strokes, (), (), rests) - held_set
     reasons: Dict[str, int] = {}
     seen: Dict[frozenset, Dict[str, Any]] = {}
     out: List[Dict[str, Any]] = []
@@ -190,13 +227,19 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
             continue
         if i in held_set or i in blocked:
             continue
+        if i in rest_held:
+            count("rest_box")             # a rest the detector boxed stands on this stroke: an earlier read of the ink, never taken (a quarter rest is a stem and a curl)
+            continue
         spl = float(getattr(s, "staff_space_local", None) or sp)
-        ext = AF.ink_members_and_extent(_box(s), strokes, [(i, 1.0)], spl, sorted(blocked | held_set))
+        ext = AF.ink_members_and_extent(_box(s), strokes, [(i, 1.0)], spl, sorted(blocked | held_set | rest_held))
         mem = frozenset(ext["members"])
         if not mem or mem in seen:
             continue
         seen[mem] = ext
         ink_box = [float(v) for v in ext["box"]]
+        if left_of_header(ink_box, header):
+            count("left_of_the_clef")     # the margin's ink (a label's crook, a brace), left of the system's first clef: no accidental stands there
+            continue
         t = AF.read_type([strokes[m] for m in sorted(mem)], list(range(len(mem))), spl, [])
         ty = t["type"]
         if ty not in AF.TYPES:
@@ -220,7 +263,7 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
             continue
         margin = t.get("margin")
         out.append({"members": sorted(mem), "box": [round(v, 1) for v in ink_box], "type": ty, "why": t.get("why"), "margin": margin,
-                    "standing": "READ" if AF.reads(margin, ty) else "GUESSED", "head": list(h.box), "head_conf": h.conf,
+                    "standing": "READ" if AF.reads(margin, ty) else "GUESSED", "head": list(h.box), "head_conf": h.conf, "head_key": h.key,
                     "candidates": [ty], "features": {k: v for k, v in t.items() if k not in ("type", "why", "margin")},
                     "w_sp": round((ink_box[2] - ink_box[0]) / spl, 2), "h_sp": round((ink_box[3] - ink_box[1]) / spl, 2)})
     out = fold_twins(out)
@@ -239,8 +282,8 @@ def fold_twins(found: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
 
 
 def _detector_reads(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]]
-                    ) -> Tuple[List[Head], List[Tuple[float, float, float, float]], List[Tuple[float, float, float, float]]]:
-    """The detector's boxes of the page, page px, twins from two cells folded by identical rounded box: `(noteheads, accidental / key boxes, earlier-mark boxes)`."""
+                    ) -> Tuple[List[Head], List[Tuple[float, float, float, float]], List[Tuple[float, float, float, float]], List[Tuple[float, float, float, float]]]:
+    """The detector's boxes of the page, page px, twins from two cells folded by identical rounded box: `(noteheads, accidental / key boxes, earlier-mark boxes, rest boxes)`."""
     from .record import Subject
     from .gather import _page_box
     cell_by_key = {}
@@ -251,6 +294,7 @@ def _detector_reads(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], det
     heads: List[Head] = []
     boxed: List[Tuple[float, float, float, float]] = []
     reads: List[Tuple[float, float, float, float]] = []
+    rests: List[Tuple[float, float, float, float]] = []
     seen = set()
     for ck, dets in detections.items():
         sub = Subject.from_key(ck)
@@ -273,7 +317,9 @@ def _detector_reads(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], det
                 boxed.append(tuple(float(v) for v in pb))
             elif low.startswith(EARLIER_READ_PREFIXES):
                 reads.append(tuple(float(v) for v in pb))
-    return heads, boxed, reads
+            elif low.startswith(REST_PREFIX):
+                rests.append(tuple(float(v) for v in pb))
+    return heads, boxed, reads, rests
 
 
 def earlier_claims(log: Any, page_sub: Any) -> Tuple[List[Tuple[float, float, float, float]], List[int]]:
@@ -296,10 +342,86 @@ def earlier_claims(log: Any, page_sub: Any) -> Tuple[List[Tuple[float, float, fl
     return rects, ids
 
 
+def header_claims(log: Any, page_sub: Any) -> List[Tuple[float, float, float, float]]:
+    """The rectangles of the system-start header claims the page-wide pass filed (`HEADER_OWNERS`, READ, `unit: area`, cell 0): the page ledger's own rows, the one place the
+    system's left edge is claimed. A clef change (cell > 0) is not one."""
+    from .record import Q, Scope
+    out: List[Tuple[float, float, float, float]] = []
+    for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=Scope.SELF_AND_DESCENDANTS):
+        d = r.detail or {}
+        v = r.value
+        if (str(d.get("owner") or "") in HEADER_OWNERS and d.get("unit") == "area" and d.get("standing", "READ") == "READ" and d.get("cell") == 0
+                and isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v)):
+            out.append(tuple(float(t) for t in v))
+    return out
+
+
+def cell_of_head(cells: Sequence[Any], local: Dict[int, Tuple[int, int]]) -> Dict[str, Any]:
+    """`{cell subject key: cell}` for every cell the page holds (the key a `Head` carries is its detection list's, a cell subject key)."""
+    from .record import Subject
+    from . import record as R
+    out: Dict[str, Any] = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            out[R.cell(c.page_index, key[0], key[1], c.measure_index).to_key()] = c
+    return out
+
+
+def own_accidental_detection(cell: Any, cluster: Dict[str, Any]) -> Optional[Any]:
+    """The mark as a `SymbolDetection` of its OWN cell (never put in the cell's detection list: no box, no class of the detector's), carrying the family reading the
+    boxed accidentals carry (`d.accidental_family`), so `gather.file_accidental_position` files its `Q.ACCIDENTAL_STAFF_POSITION` row exactly as for a boxed one.
+    Canonical cell frame from the page box (the inverse of `gather._page_box`). None where the cell has no page frame."""
+    from . import accidental_family as AF
+    from ..template_matcher import SymbolDetection
+    rect, up = getattr(cell, "bbox_page_px", None), getattr(cell, "upscale_factor", None)
+    if not rect or not up:
+        return None
+    x0, y0, x1, y1 = (float(v) for v in cluster["box"])
+    cx0, cy0 = int(round((x0 - rect[0]) * up)), int(round((y0 - rect[1]) * up))
+    cw, ch = max(1, int(round((x1 - x0) * up))), max(1, int(round((y1 - y0) * up)))
+    ty = cluster["type"]
+    d = SymbolDetection(cell=cell, smufl_name=AF.class_of_type(ty), category="accidental", x_canonical=cx0, y_canonical=cy0, width_canonical=cw,
+                        height_canonical=ch, confidence=0.0)
+    d.accidental_family = {"type": ty, "why": cluster.get("why"), "margin": cluster.get("margin"), "features": dict(cluster.get("features") or {}),
+                           "box": [float(cx0), float(cy0), float(cx0 + cw), float(cy0 + ch)], "grown": [], "grown_sp": 0.0, "members": list(cluster["members"]),
+                           "detector_class": NO_DETECTOR, "detector_type": None, "candidates": [], "agrees_with_detector": None,
+                           "anchor_fraction": AF.anchor_fraction(ty)}
+    return d
+
+
+def file_own_accidentals(log: Any, found: Sequence[Dict[str, Any]], cells: Sequence[Any], local: Dict[int, Tuple[int, int]]) -> List[Optional[str]]:
+    """ROADMAP 2.285 r2 (the value existed and nothing read it): each claimed cluster's `Q.ACCIDENTAL_STAFF_POSITION` row, on a glyph subject of the cell of the note it
+    is by -- the SAME row, from the SAME function, a detector-boxed accidental gets (`gather.file_accidental_position`). `adjudicate_accidental_owner` then names the
+    head by position (local staff grid of that cell), EVALUATE carries the alteration to the bar's later notes, and EXPORT writes READ or GUESSED from the family row.
+    Returns each cluster's glyph key (None where no row could be filed: no page frame / no staff grid for the cell)."""
+    from .record import Subject
+    from . import record as R
+    from . import gather as G
+    by_cell = cell_of_head(cells, local)
+    count: Dict[str, int] = {}
+    keys: List[Optional[str]] = []
+    for c in found:
+        ck = c.get("head_key")
+        cell = by_cell.get(ck)
+        d = own_accidental_detection(cell, c) if cell is not None else None
+        if d is None:
+            keys.append(None)
+            continue
+        sub = Subject.from_key(ck)
+        gi = GLYPH_BASE + count.get(ck, 0)
+        if G.file_accidental_position(log, cell, sub, gi, d):
+            count[ck] = count.get(ck, 0) + 1
+            keys.append(R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key())
+        else:
+            keys.append(None)
+    return keys
+
+
 def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any, *,
                                file: bool = True, progress: bool = False) -> Optional[Tuple[List[Dict[str, Any]], Dict[str, int]]]:
-    """ROADMAP 2.285 (flag `OMR_ACCIDENTAL_OWN_INK`, default OFF), STAGED GATHER. Reads the page's unboxed accidental ink once and files its claims (module doc). `file=False`
-    reads only. Returns `(clusters, reasons)`, or None where the flag is off or there is no page map."""
+    """ROADMAP 2.285 (flag `OMR_ACCIDENTAL_OWN_INK`, default OFF), STAGED GATHER. Reads the page's unboxed accidental ink once, claims it and (r2) files each claimed mark's
+    own `Q.ACCIDENTAL_STAFF_POSITION` row (module doc). `file=False` reads only. Returns `(clusters, reasons)`, or None where the flag is off or there is no page map."""
     if not enabled() or pm is None or not getattr(pm, "strokes", None):
         return None
     from . import record as R
@@ -308,19 +430,20 @@ def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: 
     t0 = time.time()
     p = int(getattr(pws.page, "page_index", 0))
     sub = R.page(p)
-    heads, boxed, reads = _detector_reads(cells, local, detections)
+    heads, boxed, reads, rests = _detector_reads(cells, local, detections)
     rects, ids = earlier_claims(log, sub)
-    found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids)
+    found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids, rests, header_claims(log, sub))
     if not file:
         return found, reasons
-    for c in found:
+    glyphs = file_own_accidentals(log, found, cells, local)
+    reasons["row_filed"] = sum(1 for g in glyphs if g)
+    for c, g in zip(found, glyphs):
         x0, y0, x1, y1 = c["box"]
         log.observe(sub, Q.CLAIMED_AREA, [x0, y0, x1, y1], reader=READERS.CV_PAGE_ACCIDENTAL_INK, frame=FRAME_PAGE, owner=OWNER, unit=UNIT, standing="READ", source=SOURCE,
-                    how="family_reader_on_unboxed_ink", kind=c["type"], kind_standing=c["standing"], kind_why=c["why"], kind_margin=c["margin"], candidates=c["candidates"],
-                    page_strokes=list(c["members"]), contested=[], area=[x0, y0, x1, y1], note_beside=c["head"], note_beside_conf=round(float(c["head_conf"]), 3),
-                    w_sp=c["w_sp"], h_sp=c["h_sp"])
+                    how="family_reader_on_unboxed_ink", kind=c["type"], candidates=c["candidates"], page_strokes=list(c["members"]), contested=[], area=[x0, y0, x1, y1],
+                    owner_row=None, owner_glyph=g, w_sp=c["w_sp"], h_sp=c["h_sp"])
     if progress:
-        print("  gather page accidental ink p%s: %d claimed (%s), %d heads known, refusals %s, %s s"
-              % (p, len(found), ", ".join("%s %s" % (k, sum(1 for c in found if c["type"] == k)) for k in ("sharp", "flat", "natural")), len(heads),
-                 {k: v for k, v in reasons.items() if k != "claimed"}, round(time.time() - t0, 2)))
+        print("  gather page accidental ink p%s: %d claimed (%s), %d with a position row, %d heads known, refusals %s, %s s"
+              % (p, len(found), ", ".join("%s %s" % (k, sum(1 for c in found if c["type"] == k)) for k in ("sharp", "flat", "natural")), reasons["row_filed"],
+                 len(heads), {k: v for k, v in reasons.items() if k not in ("claimed", "row_filed")}, round(time.time() - t0, 2)))
     return found, reasons
