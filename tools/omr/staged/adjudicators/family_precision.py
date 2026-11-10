@@ -154,6 +154,7 @@ from . import key_slots as _key_slots
 from . import inside_meter as _inside_meter
 from . import claimed_by as _claimed_by
 from . import claim_final as _claim_final
+from . import ink_consult as _ink_consult
 from . import letter_cover as _letter_cover
 from . import stroke_owner as _stroke_owner
 from .notehead_precision import (HUMAN_OTHER_STAFF, HUMAN_REFUSAL_REASONS,
@@ -1153,6 +1154,42 @@ def _rest_claim_final_refusal(cf, box_row, detail: Dict[str, Any]) -> Ruling:
                            unit="fraction of the box's own ink the claim holds", band=None, would_choose=(True,))
 
 
+#: ROADMAP 2.284 r5: the reasons the ONE consult adds to a decider (`_ink_consult_refusal`)
+INK_CONSULT_REASONS = ("claimed_by:barline", "claimed_by:page_claim", "claimed_by:earlier_mark")
+
+
+def _ledger_finding(ev: Evidence, family: str, box_row: Any = None):
+    """ROADMAP 2.277 / 2.284 r5: the claim-final refusal of a box -- with `OMR_PAGE_LEDGER_OWNS` ON, the ONE consult's page-ledger finding
+    (`ink_consult.consult(...).ledger`); OFF, `claim_final.finding` exactly as before."""
+    if _ink_consult.enabled():
+        return _ink_consult.consult(ev, box_row, family, verdict=_cell_owner_verdict(ev)).ledger
+    return _claim_final.finding(ev, box_row, _cell_owner_verdict(ev))
+
+
+def _ink_consult_refusal(ev: Evidence, family: str, detail: Dict[str, Any], box_row: Any = None) -> Optional[Ruling]:
+    """ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`, default OFF: None, nothing read): the ONE consult for a family that consulted no claim before
+    (dynamic, articulation, flag, key marker, tuplet marker): a box whose own ink the page ledger gave mostly to an EARLIER claim (2.205 tiers), and
+    which owns none of its own, is refused BY THAT CLAIM (CLAUDE section 3: a later reader may mark claimed ink, never take it). The reason is a
+    LITERAL per kind (the vocabulary check reads them). A box the consult only records (a spanner) is left to the rules below."""
+    if not _ink_consult.enabled():
+        return None
+    c = _ink_consult.consult(ev, box_row if box_row is not None else _glyph_box_row(ev), family, verdict=_cell_owner_verdict(ev))
+    if c.entry:
+        detail["ink_consult_entry"] = dict(c.entry, verdict=c.verdict_id)
+    f = c.first()
+    if f is None:
+        return None
+    detail = {**detail, **f.detail}
+    if f.kind == "barline":
+        r = Ruling(value=True, reason="claimed_by:barline", used=f.used, detail=detail)
+    elif f.kind == "page_claim":
+        r = Ruling(value=True, reason="claimed_by:page_claim", used=f.used, detail=detail)
+    else:
+        r = Ruling(value=True, reason="claimed_by:earlier_mark", used=f.used, detail=detail)
+    return _margins.attach(r, margin=f.share - _claim_final.CF.CUT, axis="ink_share_held",
+                           unit="fraction of the box's own ink the claim holds", band=None, would_choose=(True,))
+
+
 def _one_ink_rest_narrowing(merged: Dict[str, Any], used, detail: Dict[str, Any]) -> Ruling:
     """ROADMAP 2.186: NARROWED {a rest, not a rest}, the rest first (written, blue); the merged classes ride on `detail.one_ink`, the
     detector-confidence margin to the best rival is the signed margin."""
@@ -1746,7 +1783,7 @@ def adjudicate_ledger_is_not_a_ledger(ev: Evidence) -> Ruling:
 
     used = [box_row.id]
 
-    cf_row = _claim_final.finding(ev, box_row, _cell_owner_verdict(ev))       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): claimed ink is final
+    cf_row = _ledger_finding(ev, "ledger", box_row)       # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, box_row, detail)
 
@@ -1942,7 +1979,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
-    cf_row = _claim_final.finding(ev, None, _cell_owner_verdict(ev))          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): claimed ink is final
+    cf_row = _ledger_finding(ev, "accidental")          # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
     return Ruling(value=False, reason="accidental", used=used, detail=detail)
@@ -2062,11 +2099,16 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # 18-space `meter_column` (which swallowed real eighth rests) is not consulted.
         # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE register consult, in place of the 2.177 meter read; a
         # claim too weak to refuse NARROWS at the end instead.
-        claim = _claimed_by.consult(ev, box_row, head=False, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
+        # ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`): the ONE consult, read once here; its three parts stand where the three old consults stood
+        ic = _ink_consult.consult(ev, box_row, "rest", head=False, tail_reads=lambda: _key_tail_reads(ev)) if _ink_consult.enabled() else None
+        if ic is not None:
+            claim = ic.register
+        else:
+            claim = _claimed_by.consult(ev, box_row, head=False, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
         if claim is not None and claim.refuse:
             detail.update(claim.detail)
             return _rest_claim_refusal(claim, box_row, detail)
-        cf_row = _claim_final.finding(ev, box_row)       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): claimed ink is final
+        cf_row = ic.ledger if ic is not None else _claim_final.finding(ev, box_row)       # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): claimed ink is final
         if cf_row is not None:
             return _rest_claim_final_refusal(cf_row, box_row, detail)
         if _inside_meter.enabled() and not _claimed_by.enabled():
@@ -2089,7 +2131,7 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
         # ROADMAP 2.238 (`OMR_OWNER_SHAPE`, default OFF): the reworked stroke owner decides the cross-family questions ONCE, here, where
         # the first of them stood: refused -> refused; owns -> the covered rules below (`rest_on_a_dynamic_letter`,
         # `rest_overlaps_a_notehead`, `rest_stroke_into_a_head`) do not decide; contested / silent -> they decide as before (rule 8).
-        owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+        owner_says, owner_lost, owner_vid = ic.shape if ic is not None else _stroke_owner.box_says(ev, ev.subject.to_key())
         holds_stem = owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "rest_holds_a_stem"
         if holds_stem:
             # 2.238 round 3 (Sean's r2 tile 1, Brahms 5/0/13/2): the rest box's ink is a note's stem, but that note's stem is not read
@@ -2223,7 +2265,7 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     in_key = _key_slot_refusal(ev, detail)
     if in_key is not None:
         return in_key
-    cf_row = _claim_final.finding(ev, None, _cell_owner_verdict(ev))          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): claimed ink is final
+    cf_row = _ledger_finding(ev, "arpeggiato")          # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
     return Ruling(value=False, reason="arpeggiato", used=used, detail=detail)
@@ -2313,16 +2355,17 @@ def _arc_ink_refusal(ev: Evidence, detail: Dict[str, Any]
 
 @decision(
     quantity=Q.ARC_IS_NOT_AN_ARC,
-    composed_from=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
+    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE,
                    Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.SYSTEM_ARC),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
+    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.ARC_BOX, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.ARC_INK_SHAPE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.SYSTEM_ARC),
     subjects_from=Q.ARC_BOX,
     reasons=_human_only_reasons(Q.ARC_IS_NOT_AN_ARC)
     + ("ink_is_a_staff_line", "ink_is_a_barline",
-       "in_a_key_signature_slot", "claimed_by:key_signature"),
+       "in_a_key_signature_slot", "claimed_by:key_signature")
+    + INK_CONSULT_REASONS,
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
@@ -2348,18 +2391,22 @@ def adjudicate_arc_is_not_an_arc(ev: Evidence) -> Ruling:
     by_ink = _arc_ink_refusal(ev, detail)
     if by_ink is not None:
         return by_ink
+    ink = _ink_consult_refusal(ev, "arc", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
+    if ink is not None:
+        return ink
     return Ruling(value=False, reason="arc", used=used, detail=detail)
 
 
 @decision(
     quantity=Q.DYNAMIC_IS_NOT_A_DYNAMIC,
-    composed_from=(Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT,
+    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT,
+    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.DYNAMIC_LETTER, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.DYNAMIC_LETTER,
-    reasons=_human_only_reasons(Q.DYNAMIC_IS_NOT_A_DYNAMIC),
+    reasons=_human_only_reasons(Q.DYNAMIC_IS_NOT_A_DYNAMIC)
+    + INK_CONSULT_REASONS,
     mode=Mode.ADDITIVE,
 )
 def adjudicate_dynamic_is_not_a_dynamic(ev: Evidence) -> Ruling:
@@ -2374,6 +2421,9 @@ def adjudicate_dynamic_is_not_a_dynamic(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    ink = _ink_consult_refusal(ev, "dynamic", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
+    if ink is not None:
+        return ink
     return Ruling(value=False, reason="dynamic", used=used, detail=detail)
 
 
@@ -2572,17 +2622,17 @@ def _ledger_reading(ev: Evidence, mark_box: List[float]
 
 @decision(
     quantity=Q.ARTICULATION_IS_NOT_AN_ARTICULATION,
-    composed_from=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
+    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
                    Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
+    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.ARTICULATION_MARK, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
            Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     subjects_from=Q.ARTICULATION_MARK,
     reasons=_human_only_reasons(Q.ARTICULATION_IS_NOT_AN_ARTICULATION) + (
         "ledger_between_staff_and_note", "head_owner_unread",
-        ABSTAIN.NO_STAFF_GEOMETRY),
+        ABSTAIN.NO_STAFF_GEOMETRY) + INK_CONSULT_REASONS,
     mode=Mode.ADDITIVE,
 )
 def adjudicate_articulation_is_not_an_articulation(ev: Evidence) -> Ruling:
@@ -2605,6 +2655,9 @@ def adjudicate_articulation_is_not_an_articulation(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    ink = _ink_consult_refusal(ev, "articulation", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
+    if ink is not None:
+        return ink
     cls = str(marks[-1].value) if marks else str(detail.get("class") or "")
     if not cls.startswith(TENUTO_CLASS_PREFIX):
         return Ruling(value=False, reason="articulation", used=used,
@@ -2706,14 +2759,15 @@ def _key_slot_refusal(ev: Evidence, detail: Dict[str, Any]
 
 @decision(
     quantity=Q.FLAG_IS_NOT_A_FLAG,
-    composed_from=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT,
+    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE,
+    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.FLAG, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE,
            Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     subjects_from=Q.FLAG,
     reasons=_human_only_reasons(Q.FLAG_IS_NOT_A_FLAG)
-    + ("in_a_key_signature_slot", "claimed_by:key_signature"),
+    + ("in_a_key_signature_slot", "claimed_by:key_signature")
+    + INK_CONSULT_REASONS,
     mode=Mode.ADDITIVE,
 )
 def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
@@ -2735,17 +2789,21 @@ def adjudicate_flag_is_not_a_flag(ev: Evidence) -> Ruling:
     in_key = _key_slot_refusal(ev, detail)
     if in_key is not None:
         return in_key
+    ink = _ink_consult_refusal(ev, "flag", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
+    if ink is not None:
+        return ink
     return Ruling(value=False, reason="flag", used=used, detail=detail)
 
 
 @decision(
     quantity=Q.KEYSIG_MARKER_IS_NOT_A_MARKER,
-    composed_from=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
+    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT, Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("keySharp", "keyFlat", "keyNatural"),
-    reasons=_human_only_reasons(Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
+    reasons=_human_only_reasons(Q.KEYSIG_MARKER_IS_NOT_A_MARKER)
+    + INK_CONSULT_REASONS,
     mode=Mode.ADDITIVE,
 )
 def adjudicate_keysig_marker_is_not_a_marker(ev: Evidence) -> Ruling:
@@ -2764,19 +2822,23 @@ def adjudicate_keysig_marker_is_not_a_marker(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    ink = _ink_consult_refusal(ev, "keysig_marker", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
+    if ink is not None:
+        return ink
     return Ruling(value=False, reason="keysig_marker", used=used,
                   detail=detail)
 
 
 @decision(
     quantity=Q.TUPLET_MARKER_IS_NOT_A_MARKER,
-    composed_from=(Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
+    composed_from=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
                    Q.GLYPH_BAND_DISTANCE),
     scope=Kind.GLYPH,
-    wants=(Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
+    wants=(Q.STROKE_OWNER, Q.GLYPH_BOX, Q.TUPLET_MARKER, Q.HUMAN_BOX_VERDICT,
            Q.GLYPH_BAND_DISTANCE),
     subjects_from=Q.TUPLET_MARKER,
-    reasons=_human_only_reasons(Q.TUPLET_MARKER_IS_NOT_A_MARKER),
+    reasons=_human_only_reasons(Q.TUPLET_MARKER_IS_NOT_A_MARKER)
+    + INK_CONSULT_REASONS,
     mode=Mode.ADDITIVE,
 )
 def adjudicate_tuplet_marker_is_not_a_marker(ev: Evidence) -> Ruling:
@@ -2796,6 +2858,9 @@ def adjudicate_tuplet_marker_is_not_a_marker(ev: Evidence) -> Ruling:
     refused = _refused_by_a_human(ev, detail)
     if refused is not None:
         return refused
+    ink = _ink_consult_refusal(ev, "tuplet", detail)          # ROADMAP 2.284 r5 (OMR_PAGE_LEDGER_OWNS): the ONE consult
+    if ink is not None:
+        return ink
     return Ruling(value=False, reason="tuplet_marker", used=used,
                   detail=detail)
 

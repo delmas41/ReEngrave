@@ -3196,6 +3196,14 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     # a role already DECIDED above is never overturned by the owner (Litolff: 3 staccatos the arc trace claimed are real; rule 8).
     if dots_honour_claims_enabled():
         owned = _dot_ink_owned_elsewhere(ev, cell)
+        from . import ink_consult as _ink_consult
+        if owned is None and _ink_consult.enabled():
+            # ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`): the ONE consult -- the page ledger gave most of this box's own ink to an EARLIER claim (2.205
+            # tiers) and the box owns none of it. Beside 2.243's all-strokes rule above (its own shape rule, kept), at the same place: never a role
+            # already decided above (rule 8).
+            ic = _ink_consult.consult(ev, box_rows[-1], "dot", verdict=ev.verdict(Q.STROKE_OWNER, subject=cell))
+            if ic.ledger is not None:
+                owned = {"rows": list(ic.ledger.used), "families": [ic.ledger.by], "strokes": list(ic.entry.get("strokes") or ())}
         if owned is not None:
             return Ruling(value=None, reason="ink_owned_by_another_mark", used=tuple(owned["rows"]),
                           detail={**detail, "owner_families": owned["families"], "strokes": owned["strokes"]})

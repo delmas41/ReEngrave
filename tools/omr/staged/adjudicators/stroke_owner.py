@@ -398,13 +398,8 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
     return out
 
 
-def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
-    another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
-    the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
-    from .. import claim_final as CF
-    if not CF.enabled():
-        return None
+def _box_shares(ev: Evidence, cell) -> Dict[str, Dict[int, float]]:
+    """`{box key: {stroke ordinal: share of the stroke inside the box}}` from the cell's `Q.GLYPH_STROKES` rows (covered and partial strokes)."""
     shares: Dict[str, Dict[int, float]] = {}
     for r in ev.rows(Q.GLYPH_STROKES, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         if isinstance(r.value, (list, tuple)):
@@ -414,6 +409,36 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
             for o, s_ in d.get("partial") or ():
                 m.setdefault(int(o), float(s_))
             shares[r.subject.to_key()] = m
+    return shares
+
+
+def _ink_consult(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink],
+                 tiers: Any) -> Dict[str, Any]:
+    """ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`): what the ONE consult (`adjudicators/ink_consult.py`) reads for every box of the cell, of EVERY family --
+    how much of its own ink the page ledger's one owner per stroke gave to a claim of an EARLIER tier (`ink_consult.held_by_earlier`, pure). Bookkeeping on the
+    verdict just computed: it decides nothing about any box."""
+    from . import ink_consult as IC
+    shares = _box_shares(ev, cell)
+    areas = {c.family for c in claims if c.area}
+    # a stroke the page's one settle gave to a register / layer claim another cell filed is held by that claim here too (as `_claim_final`)
+    areas |= {str(c["family"]) for w in owned.values() for c in w.candidates if c.get("how") == "area" and w.family == c["family"]}
+    boxes = []
+    for c in claims:
+        if c.area or c.key not in shares:
+            continue
+        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family, tuple(owned[o].owners))
+                                         for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
+    return {"held": IC.held_by_earlier(boxes, tiers, sorted(areas)), "areas": sorted(areas)}
+
+
+def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
+    another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
+    the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
+    from .. import claim_final as CF
+    if not CF.enabled():
+        return None
+    shares = _box_shares(ev, cell)
     claim_families = sorted({c.family for c in claims if c.area})
     from .. import page_ledger as _PL
     if _PL.enabled():
@@ -595,6 +620,8 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): None with it OFF
     if cf is not None:
         detail["claim_final"] = cf
+    if _PL.enabled():
+        detail["ink_consult"] = _ink_consult(ev, cell, claims, owned, by_ord, view["tiers"])     # ROADMAP 2.284 r5: the one consult's measure
     if shaped:
         # 2.238: which boxes own their ink (the precision rules' `owns`; flag OFF keeps the 2.205 detail byte-identical) and every veto
         detail["box_owns"] = sorted(box_owns)
@@ -624,6 +651,10 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
             for f in {c["family"] for c in w.candidates if c["family"] != "hairpin_trace"}:
                 cen["hairpin_claim:from:" + str(f)] = cen.get("hairpin_claim:from:" + str(f), 0) + 1
     used_t = tuple(dict.fromkeys(u for u in used if u))
+    if ledger_census is not None:
+        # ROADMAP 2.284 r5 (provenance): the rows another cell's view filed (a neighbour's box, its register area) that the page's one settle used here
+        # were read through THAT cell's Evidence; they enter this verdict's `considered`, not only its `used`
+        ev.considered_from_another_frame(used_t)
     if not strokes:
         return Ruling(value=value, reason="no_claimant", used=used_t, detail=detail)
     if value["contested"]:
