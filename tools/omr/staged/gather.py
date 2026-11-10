@@ -15358,6 +15358,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         key = local.get(c.staff_index)
         if key is not None:
             by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
+    mark_boxes: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None      # ROADMAP 2.284b: built once, on first use (flag ON only)
     for d in arcs_summary.get("arcs_detail") or ():
         trace_rows = d.get("trace")
         if not trace_rows:
@@ -15374,6 +15375,8 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         got_all: List[List[Any]] = []
         shares: List[float] = []
         cells_hit: List[int] = []
+        crossings: List[List[Any]] = []          # ROADMAP 2.284b: [cell, ordinal, own px, mark box, box share] -- marked, not taken
+        px_tot: Dict[str, int] = {}
         no_map = 0
         for ck, c in sorted(by_cell.items()):
             if ck[:3] != home:
@@ -15388,9 +15391,22 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
             if res is None or isinstance(res, str):
                 no_map += 1
                 continue
-            # ROADMAP 2.284 (OMR_PAGE_LEDGER_OWNS): the arc claims its own traced pixels only, never a head box's (as the arc eraser protects them)
-            heads = _arc_skip_head_boxes(detections, R.cell(*ck)) if (_page_ledger_on() and detections) else ()
-            got = AC.claim_strokes(res, cb, float(up), trace, sp, head_boxes=heads)
+            if _page_ledger_on() and detections:
+                # ROADMAP 2.284b (OMR_PAGE_LEDGER_OWNS): the arc claims its OWN traced pixels only -- never a pixel inside another mark's box,
+                # from whichever cell or staff of the page boxed it (a padded cell sees its neighbours' ink), and never a stroke that holds a
+                # mark's own ink (a crossing: marked, not taken). `arc_claim.claim_pixels`.
+                if mark_boxes is None:
+                    mark_boxes = _arc_mark_boxes_page(detections, by_cell)
+                pg = mark_boxes.get(ck[0], ())
+                near = [(k, b) for k, b in pg if b[0] <= cb[2] and b[2] >= cb[0] and b[1] <= cb[3] and b[3] >= cb[1]]
+                px_res = AC.claim_pixels(res, cb, float(up), trace, sp, near)
+                got = px_res["claimed"]
+                for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
+                    px_tot[kk] = px_tot.get(kk, 0) + int(px_res[kk])
+                for cr in px_res["crossings"]:
+                    crossings.append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"]])
+            else:
+                got = AC.claim_strokes(res, cb, float(up), trace, sp)
             if got:
                 cells_hit.append(ck[3])
             for i, sh in got:
@@ -15398,10 +15414,16 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                 shares.append(sh)
         counts["no_map_cells"] += no_map
         ssub = R.staff(*home)
+        px_extra: Dict[str, Any] = {}
+        if px_tot or crossings:
+            px_extra = {"pixels": dict(sorted(px_tot.items())), "crossings": crossings}
+            counts["crossings"] = counts.get("crossings", 0) + len(crossings)
+            for kk, vv in px_tot.items():
+                counts[kk] = counts.get(kk, 0) + vv
         if not got_all:
             counts["no_stroke_arcs"] += 1
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page", reason=ABSTAIN.NO_INK, owner=AC.OWNER, unit="ink",
-                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces)
+                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces, **px_extra)
             continue
         counts["rows"] += 1
         counts["strokes"] += len(got_all)
@@ -15410,7 +15432,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                     pieces=pieces, cells=cells_hit, cover_min=AC.ON_TRACE_SHARE_MIN,
                     # ROADMAP 2.260b M3 (OMR_PAGE_CLAIMS): the same claim in the page's own ids (`Q.PAGE_STROKE` ordinals on the page), the
                     # translation from `[cell, ordinal]`; empty where the flag is off
-                    page_strokes=[i for i, _sh in (d.get("page_strokes") or ())])
+                    page_strokes=[i for i, _sh in (d.get("page_strokes") or ())], **px_extra)
         if progress:
             print(f"  gather arc claim {d.get('subject')} {d.get('shape')} boxes={len(pieces)}")
     return counts
@@ -15427,15 +15449,23 @@ def _page_ledger_on() -> bool:
 ARC_SKIP_NOT = ("stem", "flag", "beam", "tremolo", "barline", "brace", "bracket")
 
 
-def _arc_skip_head_boxes(detections: Optional[Dict[str, List[Any]]], csub: Any) -> List[Tuple[float, float, float, float]]:
-    """ROADMAP 2.284: the cell's non-arc MARK boxes (`ARC_SKIP_NOT` left out), canonical px (x0, y0, x1, y1): pixels an arc's claim never counts as its own."""
+def _arc_mark_boxes_page(detections: Optional[Dict[str, List[Any]]], by_cell: Dict[Tuple[int, int, int, int], Any]
+                         ) -> Dict[int, List[Tuple[str, List[float]]]]:
+    """ROADMAP 2.284b: `{page: [(glyph key, page-px box)]}` -- every non-arc MARK box of the page (`ARC_SKIP_NOT` left out), from every cell of
+    every staff, in page px: the pixels no arc claim counts as its own, whichever padded cell sees them."""
     from .arcs_system import PROTECTED_PREFIXES
     skip = tuple(p for p in PROTECTED_PREFIXES if p not in ARC_SKIP_NOT)
-    out = []
-    for d in (detections or {}).get(csub.to_key(), ()):
-        if str(getattr(d, "smufl_name", "") or "").startswith(skip):
-            x, y = float(d.x_canonical), float(d.y_canonical)
-            out.append((x, y, x + float(d.width_canonical), y + float(d.height_canonical)))
+    out: Dict[int, List[Tuple[str, List[float]]]] = {}
+    for ck, dets in (detections or {}).items():
+        sub = Subject.from_key(ck)
+        c = by_cell.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            if str(getattr(d, "smufl_name", "") or "").startswith(skip):
+                pb = _page_box(c, d)
+                if pb is not None:
+                    out.setdefault(sub.page, []).append((R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), [float(v) for v in pb]))
     return out
 
 
@@ -16189,6 +16219,10 @@ def _overlap_share(a: Sequence[float], b: Sequence[float]) -> float:
     return iw * ih / (aw * ah) if iw > 0 and ih > 0 and aw > 0 and ah > 0 else 0.0
 
 
+#: ROADMAP 2.284b: the note-family detector boxes a dynamic letter's / in-staff word's page claim never takes ink from (it marks them)
+DYNAMIC_SPARES = ("notehead", "stem", "flag", "beam", "rest", "accidental", "augmentationDot", "ledgerLine")
+
+
 def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
     """`Q.CLAIMED_AREA` rows of owner `word` and `bracket`, ONE PER MARK PER (page, system) -- ROADMAP 2.221 m1 (flag
@@ -16310,6 +16344,27 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                         got.append(([float(v) for v in pb], str(d.smufl_name)))
         return got
 
+    from . import page_ledger as _PL
+    ledger_on = _PL.enabled()
+
+    def _file_sparing(sys_idx: int, area: Sequence[float], source: str, why: str, **extra: Any) -> None:
+        """ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a dynamic letter / in-staff word claims its OWN ink, READ, on the page-wide pass -- the ink
+        components of its box that neither lie in nor touch a note-family detector box (`DYNAMIC_SPARES`: head, stem, flag, beam, rest,
+        accidental, dot, ledger): a letter's claim MARKS a notehead or stem it overlaps and never TAKES it (plan 2026-10-28 §9-10; 2.221 census:
+        a head on a dynamic letter was a real note 1 in 5). Nothing left = counted, not claimed."""
+        from . import hairpin_reach as _hr
+        boxes = [b for b, _n in _page_boxes(sys_idx, lambda n: n.startswith(DYNAMIC_SPARES))]
+        areas, spared = _hr.word_area_sparing_heads(binary, area, boxes, _sp(sys_idx))
+        if spared:
+            extra["marks_left_out"] = spared
+            extra.setdefault("word_box", [float(v) for v in area])
+        if not areas:
+            _count(f"word:{source}:{why}:all_ink_on_a_mark")
+            return
+        _count(f"word:{source}:{why}:claimed_sparing" if spared else f"word:{source}:{why}:claimed")
+        for a in areas:
+            _file(sys_idx, a, CL.OWNER_WORD, source, inside_staff=(why != "outside_staff"), **extra)
+
     if words_on:
         for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
             d = r.detail or {}
@@ -16322,6 +16377,12 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                 _count("word:direction_word:no_system")
                 continue
             if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                if ledger_on:
+                    # ROADMAP 2.284b: a READ word inside the staff (Sean 2026-10-28: "almost always short" -- a dynamic, `pizz.`, `dolce`)
+                    # claims its own ink page-wide like every other word, sparing the note marks it overlaps
+                    _file_sparing(s, [float(v) for v in bb], "direction_word", "inside_a_staff", owner_row=r.id, text=r.value,
+                                  category=d.get("category"))
+                    continue
                 _count("word:direction_word:inside_a_staff")       # milestone 4's, not claimed here
                 continue
             from . import hairpin_reach as _hairpin_reach
@@ -16418,10 +16479,18 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
                     # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
                     # stemmed head is never touched) -- unless it lies on ink a word already claimed (a letter of "espr.", "dolce").
-                    if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                    inside_staff = CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
+                    if inside_staff and not ledger_on:
                         _count("word:dynamic_letters:lone_letter_inside_a_staff")
                     elif any(CL._overlap_small(run["box"], f) >= CL.LETTER_TWIN_SHARE for f in filed):
                         _count("word:dynamic_letters:lone_letter_inside_a_claim")
+                    elif ledger_on:
+                        # ROADMAP 2.284b (flag OMR_PAGE_LEDGER_OWNS): a lone dynamic letter the detector boxed (`dynamicP`, `dynamicF`) claims its
+                        # ink READ on the page-wide pass, inside the staff or out (Sean 2026-11-09 "Fix 2": "single-letter dynamics claim
+                        # page-wide"), so no later reader (a stem, beam, flag, tremolo slash) can take it; the note marks it overlaps are spared.
+                        _file_sparing(s, run["box"], "dynamic_letters", "lone_inside_a_staff" if inside_staff else "outside_staff",
+                                      own=[key_of_row[i] for i in run["rows"]], owner_row=run["rows"][0], letter_rows=list(run["rows"]),
+                                      text=run["text"], category="dynamic", lone=True)
                     else:
                         _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]], standing="GUESSED",
                               owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic", lone=True)
@@ -16430,6 +16499,11 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     _count(f"word:dynamic_letters:{run['why']}")
                     continue
                 if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                    if ledger_on:
+                        # ROADMAP 2.284b: a spelled dynamic (`ff`, `sf`) inside the staff claims its own ink page-wide, sparing the note marks
+                        _file_sparing(s, run["box"], "dynamic_letters", "inside_a_staff", own=[key_of_row[i] for i in run["rows"]],
+                                      owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic")
+                        continue
                     _count("word:dynamic_letters:inside_a_staff")
                     continue
                 _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]],
