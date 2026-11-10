@@ -1,4 +1,4 @@
-"""ROADMAP 2.285 -- AN ACCIDENTAL CLAIMS ITS OWN INK WHERE THE DETECTOR DREW NO ACCIDENTAL BOX (STAGED GATHER; flag `OMR_ACCIDENTAL_OWN_INK`, default OFF).
+"""ROADMAP 2.285 -- AN ACCIDENTAL CLAIMS ITS OWN INK WHERE THE DETECTOR DREW NO ACCIDENTAL BOX (STAGED GATHER; flag `OMR_ACCIDENTAL_OWN_INK`, default ON ("0" turns it off)).
 
     Sean's tiles 2.280 r2 (b40cca964), 2.279 r3 (b8b1a5ce2), 2.282 (5d882f939); 2.282 FINDINGS (benchmarks/claim-order-accid-stem-2026-11).
     CLAUDE section 3 (claim order: GATHER claims a mark's ink at the coarsest kind it is sure of; a later reader may mark claimed ink, never take it);
@@ -90,8 +90,8 @@ SOLID_HEAD_FILL = 0.8
 
 
 def enabled() -> bool:
-    """`OMR_ACCIDENTAL_OWN_INK` (ROADMAP 2.285), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_OWN_INK` (ROADMAP 2.285), default ON (Sean 2026-11-10; "0"/"false"/"no"/"off" turns it off): the same opt-out as `OMR_PAGE_TREMOLO`."""
+    return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _box(s: Any) -> Tuple[float, float, float, float]:
@@ -420,7 +420,7 @@ def file_own_accidentals(log: Any, found: Sequence[Dict[str, Any]], cells: Seque
 
 def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any, *,
                                file: bool = True, progress: bool = False) -> Optional[Tuple[List[Dict[str, Any]], Dict[str, int]]]:
-    """ROADMAP 2.285 (flag `OMR_ACCIDENTAL_OWN_INK`, default OFF), STAGED GATHER. Reads the page's unboxed accidental ink once, claims it and (r2) files each claimed mark's
+    """ROADMAP 2.285 (flag `OMR_ACCIDENTAL_OWN_INK`, default ON), STAGED GATHER. Reads the page's unboxed accidental ink once, claims it and (r2) files each claimed mark's
     own `Q.ACCIDENTAL_STAFF_POSITION` row (module doc). `file=False` reads only. Returns `(clusters, reasons)`, or None where the flag is off or there is no page map."""
     if not enabled() or pm is None or not getattr(pm, "strokes", None):
         return None

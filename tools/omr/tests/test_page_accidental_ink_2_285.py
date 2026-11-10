@@ -29,15 +29,16 @@ def note_head_beside(x0, y0, conf=0.8):
     return PAI.Head((x0, y0, x0 + 26, y0 + 20), conf, "head")
 
 
-def test_default_off():
+def test_default_on_and_opt_out():
     import os
     os.environ.pop(PAI.ENV, None)
-    assert PAI.enabled() is False
-    os.environ[PAI.ENV] = "1"
-    try:
-        assert PAI.enabled() is True
-    finally:
-        os.environ.pop(PAI.ENV, None)
+    assert PAI.enabled() is True
+    for off in ("0", "false", "no", "off"):
+        os.environ[PAI.ENV] = off
+        try:
+            assert PAI.enabled() is False
+        finally:
+            os.environ.pop(PAI.ENV, None)
 
 
 def test_a_sharp_with_a_note_beside_is_claimed_guessed():

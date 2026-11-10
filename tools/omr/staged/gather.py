@@ -18137,7 +18137,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # `claim_order.LAYERS`, BEFORE the head layer). The READ is handed the detector's head boxes (the micro test's winner); the CLAIM stands before the head claim.
         from . import page_tremolo as _page_tremolo
         _page_tremolo.gather_page_tremolo(log, pws, cells, local, detections, page_map_pre, progress=progress)
-        # ROADMAP 2.285 (flag OMR_ACCIDENTAL_OWN_INK, default OFF): an accidental the detector drew no box for is read ONCE from its own ink by the family reader and claimed
+        # ROADMAP 2.285 (flag OMR_ACCIDENTAL_OWN_INK, default ON): an accidental the detector drew no box for is read ONCE from its own ink by the family reader and claimed
         # (owner `accidental_ink`, layer before the heads), AFTER every earlier page-wide claim it must not take and BEFORE the page heads claim.
         from . import page_accidental_ink as _page_accidental_ink
         _page_accidental_ink.gather_page_accidental_ink(log, pws, cells, local, detections, page_map_pre, progress=progress)
