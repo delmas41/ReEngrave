@@ -460,6 +460,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.236. The capture readout: re-runs `stroke_owner` over saved GATHER rows and counts page ink by claim state;
     # files no row, names no quantity it writes, decides nothing.
     "claim_readout.py",
+    # ROADMAP 2.286. The note-conservation command: replays saved GATHER rows to EXPORT and prints where every read head/rest went;
+    # reads the export's report, files no row, names no quantity, decides nothing.
+    "conservation.py",
     # ROADMAP 2.241. The claim-order check beside the capture readout: reads the same claims and asks whether the earliest READ layer
     # owns each piece of ink; files no row, names no quantity, decides nothing.
     "claim_order.py",
