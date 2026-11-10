@@ -40,11 +40,15 @@ KINDS: Tuple[str, ...] = ("staff", "barline", "bracket", "clef", "key", "meter",
 #: What each kind takes from the ink under its shape (see pageink.InkMap).
 KIND_MODE: Dict[str, str] = {
     "staff": "lines", "barline": "vertical", "arc": "thin", "hairpin": "thin",
-    "bracket": "all", "clef": "all", "key": "all", "meter": "all", "word": "all",
+    "bracket": "tall", "clef": "all", "key": "all", "meter": "all", "word": "all",
     "dynamic": "all", "repeat": "all",
 }
-#: kinds that carry typed text
-TEXT_KINDS = ("word", "dynamic")
+#: kinds that carry typed text. A METER's text is its whole value ("6/8", "C", "2/2"): one mark, one box
+#: (Sean 2026-11-10: "box the meter, 6-8, both numbers at the same time"); its digits stay recoverable in ``parts``.
+TEXT_KINDS = ("word", "dynamic", "meter")
+#: a WORD box may be a text BLOCK (Sean 2026-11-10: "a big box around all of it and just say title or subtitle")
+BLOCK_SUBS = ("title", "subtitle", "composer", "other")
+ARC_SUBS = ("tie", "slur")
 STATES = ("pending", "confirmed", "rejected")
 ORIGINS = ("drawn", "prefill", "prefill-confirmed", "prefill-fixed")
 
@@ -137,6 +141,41 @@ def shape_contains(shape: Dict, x: float, y: float) -> bool:
     return inside
 
 
+def check_sub(kind: str, sub: Optional[str]) -> Optional[str]:
+    """The sub-kind a NEW or EDITED label may carry (loading a file is lenient; round 1 wrote free values)."""
+    if not sub:
+        return None
+    ok = ARC_SUBS if kind == "arc" else BLOCK_SUBS if kind == "word" else ()
+    if sub not in ok:
+        raise StoreError(f"a {kind} label's sub is one of {ok or '(none)'}, not {sub!r}")
+    return sub
+
+
+def normalize_meter(text: Optional[str]) -> Optional[str]:
+    """``'6 8'`` / ``'6-8'`` / ``'6:8'`` -> ``'6/8'``; ``'c'`` -> ``'C'``; ``'cut'`` / ``'c|'`` -> ``'C|'``."""
+    if text is None:
+        return None
+    t = "".join(str(text).split())
+    if not t:
+        return None
+    low = t.lower()
+    if low in ("c", "common"):
+        return "C"
+    if low in ("c|", "c/", "cut", "alla-breve", "allabreve"):
+        return "C|"
+    for sep in ("-", ":", "over"):
+        low = low.replace(sep, "/")
+    return low if "/" in low else t
+
+
+def meter_split(text: Optional[str]) -> List[str]:
+    """The pieces of a meter's value in reading order: ``'6/8'`` -> ``['6', '8']``; ``'C'`` -> ``['C']``."""
+    t = normalize_meter(text)
+    if not t:
+        return []
+    return t.split("/") if "/" in t else [t]
+
+
 # --------------------------------------------------------------------------- labels
 @dataclass
 class PLabel:
@@ -147,11 +186,18 @@ class PLabel:
     origin: str
     source: str = ""            # where a pre-fill came from ("hand-p0", "arc-key-2.281", "staff-lines")
     text: Optional[str] = None  # a word / dynamic's letters
-    sub: Optional[str] = None   # an arc's "tie" | "slur"
+    sub: Optional[str] = None   # an arc's "tie" | "slur"; a word's BLOCK_SUBS (one box over a block of text)
     note: str = ""              # a pre-fill's assumption, said plainly
     labeler: str = "sean"
     pass_: str = PASS_NAME
     ink_ref: Optional[Dict] = None
+    #: a meter's per-digit ink pieces under its ONE label: [{"rect": [...], "text": "6", "from": "hand"|"ink"}, ...]
+    #: (round 2; optional, absent in round-1 files). Lets detector training get digit boxes later.
+    parts: Optional[List[Dict]] = None
+
+    @property
+    def is_block(self) -> bool:
+        return self.kind == "word" and self.sub in BLOCK_SUBS
 
     def validate(self) -> None:
         if self.kind not in KINDS:
@@ -169,6 +215,8 @@ class PLabel:
     def to_json(self) -> Dict:
         d = asdict(self)
         d["pass"] = d.pop("pass_")
+        if d.get("parts") is None:
+            d.pop("parts", None)        # round-2 field: absent unless set, so a round-1 label's JSON is unchanged
         return d
 
     @classmethod
@@ -213,15 +261,18 @@ class PagePass:
 
     # ------------------------------------------------------------ writes
     def add_prefill(self, kind: str, shape: Dict, source: str, *, text: Optional[str] = None,
-                    sub: Optional[str] = None, note: str = "") -> PLabel:
+                    sub: Optional[str] = None, note: str = "", parts: Optional[List[Dict]] = None) -> PLabel:
         lab = PLabel(id=self._next_id(), kind=kind, shape=shape, state="pending", origin="prefill",
-                     source=source, text=text, sub=sub, note=note)
+                     source=source, text=text, sub=sub, note=note, parts=parts)
         lab.validate()
         self.labels.append(lab)
         return lab
 
     def draw(self, kind: str, shape: Dict, *, text: Optional[str] = None, sub: Optional[str] = None,
              labeler: str = "sean") -> PLabel:
+        sub = check_sub(kind, sub)
+        if kind == "meter":
+            text = normalize_meter(text)
         lab = PLabel(id=self._next_id(), kind=kind, shape=shape, state="confirmed", origin="drawn",
                      text=text, sub=sub, labeler=labeler)
         lab.validate()
@@ -250,19 +301,48 @@ class PagePass:
         changed_geom = False
         if kind is not None and kind != lab.kind:
             lab.kind, changed_geom = kind, True
+            if lab.sub and lab.sub not in (ARC_SUBS if kind == "arc" else BLOCK_SUBS if kind == "word" else ()):
+                lab.sub = None          # a sub-kind belongs to its kind
+            if kind != "meter":
+                lab.parts = None
         if shape is not None:
             lab.shape, changed_geom = check_shape(shape), True
         if text is not None:
-            lab.text = text or None
+            lab.text = (normalize_meter(text) if lab.kind == "meter" else text) or None
         if sub is not None:
-            lab.sub = sub or None
+            lab.sub = check_sub(lab.kind, sub)
         if lab.state == "pending" and changed_geom:
             lab.state, lab.origin = "confirmed", "prefill-fixed"
         elif lab.state == "confirmed" and lab.origin == "prefill-confirmed" and changed_geom:
             lab.origin = "prefill-fixed"
         lab.ink_ref = None
+        if lab.parts and (changed_geom or text is not None):
+            lab.parts = None            # the digit pieces are re-read from the ink of the new shape / the new value
         lab.validate()
         return lab
+
+    def covered_prefills(self) -> Dict[str, str]:
+        """Pending WORD pre-fills lying inside a CONFIRMED text block -> that block's id.
+
+        The block is Sean's one statement about all the words in it, so the fragments need no answer
+        (resolved by the block, shown as such; derived here, never written to the file)."""
+        out: Dict[str, str] = {}
+        blocks = [b for b in self.labels if b.state == "confirmed" and b.is_block]
+        if not blocks:
+            return out
+        for lab in self.labels:
+            if lab.state != "pending" or lab.kind != "word":
+                continue
+            bx0, by0, bx1, by1 = shape_bbox(lab.shape)
+            a = max(1e-9, (bx1 - bx0) * (by1 - by0))
+            for b in blocks:
+                cx0, cy0, cx1, cy1 = shape_bbox(b.shape)
+                iw, ih = min(bx1, cx1) - max(bx0, cx0), min(by1, cy1) - max(by0, cy0)
+                if iw > 0 and ih > 0 and iw * ih >= 0.8 * a and shape_contains(
+                        b.shape, (bx0 + bx1) / 2, (by0 + by1) / 2):
+                    out[lab.id] = b.id
+                    break
+        return out
 
     def delete(self, label_id: str) -> PLabel:
         """Remove a CONFIRMED label (Sean's latest word). A pending one is rejected, not deleted."""

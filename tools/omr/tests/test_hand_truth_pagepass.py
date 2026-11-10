@@ -13,7 +13,7 @@ import pytest
 from tools.omr.hand_truth import pagepass as pp
 from tools.omr.hand_truth import pagepass_prefill as pf
 from tools.omr.hand_truth import store
-from tools.omr.hand_truth.pageink import CLAIMED, PENDING, UNCLAIMED, InkMap, render_states
+from tools.omr.hand_truth.pageink import CLAIMED, CONTESTED, PENDING, UNCLAIMED, InkMap, render_states
 from tools.omr.hand_truth.store import Box, Cell, PageTruth
 
 SP = 20.0
@@ -80,36 +80,140 @@ def test_barline_claims_its_rule_and_the_staff_pixels_it_crosses():
     assert only.px == ink.line[95:186, 395:409].sum()
 
 
-def test_claim_order_earlier_kind_wins_then_smaller_shape():
+def test_the_tighter_shape_wins_whatever_the_kind_order():
+    """Round 2: the earlier KIND no longer wins a pixel (a page-long bracket box took the clefs inside it)."""
     ink, heads, slur = _ink()
     big_arc = pp.PLabel("A", "arc", {"rect": [180, 55, 320, 125]}, "confirmed", "drawn")
     word = pp.PLabel("W", "word", {"rect": [185, 90, 215, 125]}, "confirmed", "drawn")   # the left head
     c = ink.claims([big_arc, word])
     wi = 1 + c.labels.index(word)
-    # the word (earlier kind) owns the left head's ink; the arc keeps the rest of the arch
     assert (c.owner == wi)[heads].sum() > 0.7 * heads[:, :250].sum()
     assert c.px["A"] > 0.8 * c.raw_px["A"] - 1
-    # same kind, two shapes over one mark: the smaller one owns the overlap
-    big = pp.PLabel("B", "word", {"rect": [150, 80, 350, 130]}, "confirmed", "drawn")
+    # an EARLIER kind (clef) with the big box against a later kind (word) with the small one: the small one wins
+    big_clef = pp.PLabel("C", "clef", {"rect": [150, 80, 350, 130]}, "confirmed", "drawn")
     small = pp.PLabel("S", "word", {"rect": [185, 90, 215, 125]}, "confirmed", "drawn")
-    c2 = ink.claims([big, small])
+    c2 = ink.claims([big_clef, small])
     assert c2.px["S"] == c2.raw_px["S"] > 0
+    assert c2.lost_px["C"] > 0 and c2.lost_to["C"] == ["S"] and c2.contested_px == 0
 
 
-def test_a_merged_piece_is_split_by_two_shapes_and_a_polygon_cuts_a_diagonal():
+def test_a_staff_label_keeps_its_line_pixels_even_under_a_tighter_glyph_box():
+    ink, _, _ = _ink()
+    staff = pp.PLabel("ST", "staff", {"rect": [20, 95, 580, 185]}, "confirmed", "drawn")
+    bar = pp.PLabel("B", "barline", {"rect": [395, 95, 408, 185]}, "confirmed", "drawn")   # far tighter
+    c = ink.claims([staff, bar])
+    assert c.px["ST"] == ink.line.sum()                              # every line pixel, the barline's crossings included
+    assert c.px["B"] == c.raw_px["B"] - c.lost_px["B"] and c.lost_px["B"] > 0 and c.lost_to["B"] == ["ST"]
+    assert c.contested_px == 0                                       # a staff's pixels are never 'contested'
+
+
+def test_a_confirmed_label_is_never_displaced_by_a_prefill():
+    ink, heads, _ = _ink()
+    pend = pp.PLabel("Q", "word", {"rect": [185, 90, 215, 125]}, "pending", "prefill", source="x")   # tighter
+    conf = pp.PLabel("C", "word", {"rect": [150, 80, 350, 130]}, "confirmed", "drawn")
+    c = ink.claims([pend, conf])
+    assert c.px["C"] == c.raw_px["C"] > 0 and c.px["Q"] == 0         # a proposal never takes Sean's ink
+
+
+def test_two_shapes_of_one_size_leave_the_pixel_contested_and_visible():
+    ink, heads, _ = _ink()
+    a = pp.PLabel("A", "word", {"rect": [185, 90, 215, 125]}, "confirmed", "drawn")
+    b = pp.PLabel("B", "word", {"rect": [186, 91, 216, 126]}, "confirmed", "drawn")   # the same head, the same size
+    c = ink.claims([a, b])
+    assert c.px["A"] == 0 and c.px["B"] == 0 and c.contested_px > 100             # owned by neither
+    assert c.contested_with["A"] == ["B"] and c.contested_of["A"] == c.contested_px
+    assert c.summary()["contested_px"] == c.contested_px
+    code = ink.states(c, None, (0, 0, 600, 300))
+    assert (code == CONTESTED).sum() == c.contested_px                             # drawn in its own colour
+    assert c.summary()["claimed_px"] == 0 and c.summary()["unclaimed_px"] + c.contested_px == c.ink_px
+
+
+def test_a_merged_piece_is_split_by_polygons_and_rectangles_do_not_cut_it():
     img = np.zeros((200, 300), bool)
     img[60:100, 40:120] = True            # two blobs touching: one connected piece (Litolff MERGES)
     img[60:100, 120:200] = True
     ink = InkMap(img, SP, [])
+    # round 2: a rectangle takes a piece WHOLE (or not at all); two rectangles over one merged piece both reach
+    # all of it, at one size: CONTESTED, not silently split
     a = pp.PLabel("A", "word", {"rect": [30, 50, 119, 110]}, "confirmed", "drawn")
     b = pp.PLabel("B", "word", {"rect": [120, 50, 210, 110]}, "confirmed", "drawn")
     c = ink.claims([a, b])
-    assert c.px["A"] + c.px["B"] == img.sum()                        # every pixel owned, none twice
-    assert abs(c.px["A"] - c.px["B"]) <= 40
+    assert c.raw_px["A"] == c.raw_px["B"] == img.sum() and c.px["A"] == c.px["B"] == 0 and c.contested_px == img.sum()
+    # POLYGONS are the tool for splitting it: each cuts exactly at its edge
+    pa = pp.PLabel("PA", "word", {"poly": [[30, 50], [120, 50], [120, 110], [30, 110]]}, "confirmed", "drawn")
+    pb = pp.PLabel("PB", "word", {"poly": [[121, 50], [210, 50], [210, 110], [121, 110]]}, "confirmed", "drawn")
+    c1 = ink.claims([pa, pb])
+    assert c1.px["PA"] + c1.px["PB"] == img.sum() and c1.contested_px == 0
+    assert abs(c1.px["PA"] - c1.px["PB"]) <= 80
     poly = pp.PLabel("P", "word", {"poly": [[30, 50], [150, 50], [100, 110], [30, 110]]}, "confirmed", "drawn")
     rest = pp.PLabel("R", "word", {"rect": [30, 50, 210, 110]}, "confirmed", "drawn")
     c2 = ink.claims([poly, rest])
-    assert 0 < c2.px["P"] < img.sum() and c2.px["P"] + c2.px["R"] == img.sum()
+    assert 0 < c2.px["P"] < img.sum() and c2.px["P"] + c2.px["R"] == img.sum()    # the tighter polygon, then the rest
+
+
+def _glyph_page():
+    """A page like Brahms p0's left edge: a tall bracket stroke with a hook, a clef whose box the bracket's box
+    overlaps, a clef that TOUCHES the stroke, and a speck inside the tall box. Five staff lines run right of x=60."""
+    img = np.zeros((520, 300), bool)
+    img[40:480, 40:52] = True                                   # the tall bracket stroke
+    cv2.line(img.view(np.uint8), (52, 40), (80, 20), 1, 5)      # its top hook (connected)
+    img[60:94, 118:142] = True                                   # a CLEF-like blob, partly inside the bracket's box
+    img[94:230, 130:136] = True                                  # ... its tall stem
+    img[300:340, 52:90] = True                                   # a second clef-like blob TOUCHING the stroke
+    img[400:410, 60:66] = True                                   # a speck piece inside the tall box
+    lines = [(60.0, 290.0, [100.0, 120.0, 140.0, 160.0, 180.0])]
+    for y in lines[0][2]:
+        img[int(y) - 1:int(y) + 2, 60:290] = True
+    return img, lines
+
+
+def test_a_tall_bracket_box_overlapping_a_clef_takes_none_of_the_clefs_ink():
+    """THE REAL CASE (Sean 2026-11-10, Brahms p0): 'I drew a box around the large bracket that is the length of
+    the page, but it also made some of the ink on some of the clefs claimed.' The control fails where it should:
+    under the old rule (all ink in the shape, earlier kind wins) the bracket takes the clef's inked pixels."""
+    img, lines = _glyph_page()
+    ink = InkMap(img, SP, lines)
+    bracket = pp.PLabel("BR", "bracket", {"rect": [30, 15, 125, 500]}, "confirmed", "drawn")   # reaches into the clef
+    clef = pp.PLabel("CL", "clef", {"rect": [112, 55, 160, 235]}, "confirmed", "drawn")
+    c = ink.claims([bracket, clef])
+    bi, ci = 1 + c.labels.index(bracket), 1 + c.labels.index(clef)
+    clef_ink = np.zeros_like(img)
+    clef_ink[60:94, 118:142] = True
+    clef_ink[94:230, 130:136] = True
+    assert (c.owner == bi)[clef_ink].sum() == 0                             # 0 px of the clef to the bracket
+    assert (c.owner == ci)[clef_ink].sum() >= 0.99 * clef_ink.sum()          # the clef's ink goes to the clef
+    assert (c.owner == bi)[40:480, 40:52].sum() >= 0.99 * (440 * 12)         # the bracket keeps its own stroke
+    assert (c.owner == bi)[400:410, 60:66].sum() == 0                        # a small separate piece in its box: no
+    # control: the OLD rule (clipped 'all' ink, no tall test) hands the bracket the clef pixels inside its box
+    old = ink.claim({"rect": [30, 15, 125, 500]}, "clef", whole=False)
+    x0, y0, x1, y1 = old.bbox
+    assert (old.mask & clef_ink[y0:y1, x0:x1]).sum() > 0
+
+
+def test_a_clef_touching_the_bracket_goes_to_the_tighter_clef_box_and_a_box_never_cuts_a_piece():
+    img, lines = _glyph_page()
+    ink = InkMap(img, SP, lines)
+    bracket = pp.PLabel("BR", "bracket", {"rect": [30, 15, 125, 500]}, "confirmed", "drawn")
+    touching = pp.PLabel("T", "clef", {"rect": [50, 295, 95, 345]}, "confirmed", "drawn")
+    c = ink.claims([bracket, touching])
+    ti, bi = 1 + c.labels.index(touching), 1 + c.labels.index(bracket)
+    blob = np.zeros_like(img)
+    blob[300:340, 53:90] = True
+    assert (c.owner == ti)[blob].sum() > 0.95 * blob.sum()                  # the tighter box owns what it touches
+    assert (c.owner == bi)[300:340, 60:90].sum() == 0
+    # a rectangle takes a piece WHOLE when it holds most of it: a clef box that stops short of the clef's tail
+    short = pp.PLabel("S", "clef", {"rect": [112, 55, 160, 150]}, "confirmed", "drawn")
+    cs = ink.claims([short])
+    whole = np.zeros_like(img)
+    whole[60:94, 118:142] = True
+    whole[94:230, 130:136] = True
+    assert cs.px["S"] >= 0.99 * (img & whole).sum()                         # blob + ALL of the stem, past the box's edge
+    # ... and not at all when it holds only a sliver: this box touches the stem's top 20 rows of a 130-row piece
+    sliver = pp.PLabel("V", "clef", {"rect": [128, 100, 138, 118]}, "confirmed", "drawn")
+    img2 = img.copy()
+    img2[60:94, 118:142] = False                                             # no blob: stem alone is the piece
+    cv = InkMap(img2, SP, lines).claims([sliver])
+    assert cv.refs["V"].get("cut") is True and 0 < cv.px["V"] < 18 * 6 + 20  # the lone box on one piece cuts it, said so
 
 
 def test_percent_claimed_and_states_split_confirmed_from_pending():
@@ -131,7 +235,7 @@ def test_ink_ref_names_the_rule_and_hashes_the_claim():
     ink, _, _ = _ink()
     lab = pp.PLabel("A", "arc", {"rect": [180, 55, 320, 125]}, "confirmed", "drawn")
     ref = ink.claims([lab]).refs["A"]
-    assert ref["rule"] == "pageink-1" and ref["mode"] == "thin" and ref["px"] > 0 and len(ref["sha1"]) == 16
+    assert ref["rule"] == "pageink-2" and ref["mode"] == "thin" and ref["px"] > 0 and len(ref["sha1"]) == 16
     assert ink.claims([lab]).refs["A"] == ref                        # deterministic
 
 
