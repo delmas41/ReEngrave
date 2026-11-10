@@ -1,0 +1,118 @@
+[
+ {
+  "page": 2,
+  "verify": {
+   "cells_ok": 352
+  },
+  "ink_nonstaff_px": 1050300,
+  "stroke_px": 1028855,
+  "multi_px": 268300,
+  "disagree_px": 20963,
+  "fam_fam_px": 2328,
+  "own_none_px": 17602,
+  "pairs": {
+   "head|none": 7095,
+   "barline|none": 3291,
+   "dynamic|none": 2788,
+   "clef|none": 2294,
+   "accidental|none": 927,
+   "none|word": 612,
+   "none|rest": 545,
+   "dynamic|word": 527,
+   "contested|dynamic": 422,
+   "dynamic|head": 405,
+   "contested|none": 395,
+   "ledger|none": 383,
+   "arc|barline": 287,
+   "clef|mark": 253,
+   "head|ledger": 250
+  }
+ },
+ {
+  "page": 4,
+  "verify": {
+   "cells_ok": 330
+  },
+  "ink_nonstaff_px": 1156077,
+  "stroke_px": 1132251,
+  "multi_px": 287345,
+  "disagree_px": 23550,
+  "fam_fam_px": 1416,
+  "own_none_px": 21230,
+  "pairs": {
+   "head|none": 11625,
+   "clef|none": 3314,
+   "dynamic|none": 2130,
+   "arc_trace|none": 1623,
+   "leading_column|none": 975,
+   "barline|none": 517,
+   "clef|head": 423,
+   "clef|contested": 422,
+   "none|word": 318,
+   "mark|none": 281,
+   "arc|none": 248,
+   "contested|head": 193,
+   "dynamic|head": 188,
+   "arc_trace|barline": 180,
+   "ledger|none": 171
+  }
+ },
+ {
+  "page": 6,
+  "verify": {
+   "cells_ok": 286
+  },
+  "ink_nonstaff_px": 1100101,
+  "stroke_px": 1078985,
+  "multi_px": 253381,
+  "disagree_px": 20048,
+  "fam_fam_px": 2437,
+  "own_none_px": 17016,
+  "pairs": {
+   "head|none": 8993,
+   "clef|none": 1678,
+   "dynamic|none": 1355,
+   "arc|none": 1115,
+   "barline|none": 1093,
+   "arc_trace|none": 1061,
+   "dynamic|head": 700,
+   "none|word": 690,
+   "arc|arc_trace": 445,
+   "accidental|none": 407,
+   "none|tremolo": 382,
+   "contested|head": 361,
+   "dynamic|word": 355,
+   "arc|dynamic": 345,
+   "none|rest": 279
+  }
+ },
+ {
+  "page": 10,
+  "verify": {
+   "cells_ok": 319
+  },
+  "ink_nonstaff_px": 1078845,
+  "stroke_px": 1057794,
+  "multi_px": 216190,
+  "disagree_px": 18091,
+  "fam_fam_px": 2632,
+  "own_none_px": 15259,
+  "pairs": {
+   "head|none": 9368,
+   "clef|none": 2314,
+   "arc_trace|none": 883,
+   "dynamic|word": 752,
+   "dynamic|none": 745,
+   "clef|head": 664,
+   "ledger|none": 647,
+   "barline|none": 594,
+   "clef|meter": 404,
+   "accidental|none": 375,
+   "accidental|barline": 168,
+   "arc|dynamic": 153,
+   "contested|none": 144,
+   "none|tremolo": 113,
+   "none|rest": 94
+  }
+ }
+]

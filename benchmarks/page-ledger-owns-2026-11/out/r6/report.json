@@ -1,0 +1,236 @@
+{
+ "flags": [
+  [
+   "OMR_PAGE_LEDGER_OWNS",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    10
+   ],
+   "counts": {
+    "note": {
+     "gained": 5,
+     "lost": 1,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 2
+    },
+    "tie": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "articulation": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 3,
+     "lost": 0,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 2
+    },
+    "flag": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "words": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    2825,
+    2829
+   ],
+   "paired": 2824,
+   "red_bars": [
+    0,
+    0
+   ],
+   "notes_not_written": [
+    1401,
+    1397
+   ],
+   "control": null,
+   "judged": {
+    "worse": [
+     {
+      "item": "2.78-phase2-review",
+      "tile": "11",
+      "subject": [
+       "glyph/6/1/10/9/5",
+       "glyph/6/1/10/9/9"
+      ],
+      "answer": "eighth",
+      "now": "decided 0.5 beats (head_and_marks); refused as not a note (claimed_by:barline)"
+     }
+    ],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 252,
+    "matched": {
+     "off": {
+      "key": 371,
+      "place": 13,
+      "place_moved_id": 2,
+      "place_no_mark": 13
+     },
+     "on": {
+      "key": 371,
+      "place": 13,
+      "place_moved_id": 2,
+      "place_no_mark": 13
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    7.6,
+    8.8
+   ],
+   "unjudged": {
+    "n": 20,
+    "judged": 0,
+    "no_place": 1,
+    "by_kind": {
+     "note": 6,
+     "beam": 4,
+     "tie": 2,
+     "articulation": 1,
+     "blue": 3,
+     "value": 2,
+     "flag": 2
+    },
+    "places": [
+     "litolff p2 2/1/1/3  flag lost eighth",
+     "litolff p2 2/1/1/3  flag lost eighth",
+     "litolff p2 2/1/1/3  value changed quarter (was eighth)",
+     "litolff p2 2/1/1/3  value changed quarter (was eighth)",
+     "litolff p2 2/1/5/13  blue gained guessed",
+     "litolff p2 2/1/5/13  note gained quarter",
+     "litolff p2 2/1/9/7  beam changed continue (was end)",
+     "litolff p2 2/1/9/7  beam gained end",
+     "litolff p2 2/1/9/7  blue gained guessed",
+     "litolff p2 2/1/9/7  note gained eighth",
+     "litolff p4 4/0/4/11  blue gained guessed",
+     "litolff p4 4/0/4/11  note gained half",
+     "litolff p6 6/1/10/9  beam lost begin",
+     "litolff p6 6/1/10/9  beam changed begin (was continue)",
+     "litolff p6 6/1/10/9  note lost eighth",
+     "litolff p10 10/1/3/2  articulation gained staccato",
+     "litolff p10 10/1/3/2  note gained half",
+     "litolff p10 10/1/3/2  note gained half",
+     "litolff p10 10/1/3/2  tie gained start",
+     "litolff p10 10/1/3/3  tie gained stop"
+    ]
+   }
+  },
+  "brahms": {
+   "pages": [
+    0
+   ],
+   "counts": {
+    "rest": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    },
+    "words": {
+     "gained": 0,
+     "lost": 1,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    424,
+    423
+   ],
+   "paired": 423,
+   "red_bars": [
+    6,
+    5
+   ],
+   "notes_not_written": [
+    83,
+    84
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 202,
+    "matched": {
+     "off": {
+      "key": 361,
+      "place_no_mark": 31,
+      "place": 3,
+      "place_moved_id": 2
+     },
+     "on": {
+      "key": 361,
+      "place_no_mark": 31,
+      "place": 3,
+      "place_moved_id": 2
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    1.8,
+    1.7
+   ],
+   "unjudged": {
+    "n": 1,
+    "judged": 0,
+    "no_place": 1,
+    "by_kind": {
+     "rest": 1
+    },
+    "places": [
+     "brahms p0 0/0/8/1  rest lost quarter"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_PAGE_LEDGER_OWNS: read in staged/adjudicators/family_precision.py, staged/adjudicators/ink_consult.py, staged/adjudicators/notehead_precision.py, staged/adjudicators/rhythm.py ... -> GATHER",
+  "NOT THE FROZEN SAMPLE: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2842a08d39c8609c/benchmarks/page-ledger-owns-2026-11/sample-r2.json (a development control)",
+  "cells LOADED from master cm-54ccb4729528 (litolff) for both arms",
+  "cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms"
+ ],
+ "tiles": {
+  "n": 11,
+  "cases": 8,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 2736.6
+}
