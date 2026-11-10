@@ -5,12 +5,29 @@ Plan: [`docs/plan-2026-10-08-hand-labeled-truth.md`](../../docs/plan-2026-10-08-
 | file | what | written by |
 |---|---|---|
 | `pages/<edition>/<pdf_page_index>.json` | one printed page: every box in PAGE pixels, the cells it was labeled through, pre-fills still in the queue, the staff-line checks, the page's state (`labeling` → `checked` → `verified`) | the labeling tool (`store.PageTruth.save`) — none yet |
+| `pages/<edition>/<pdf_page_index>.pagepass.json` | the PAGE PASS (ROADMAP 2.287, Sean 2026-11-10): page-wide marks (staff, barline, bracket, clef, key, meter, word, dynamic, arc, hairpin, repeat) labelled once on the whole page. One list of `labels`: `kind`, `shape` (`{"rect":[x0,y0,x1,y1]}` or `{"poly":[[x,y],...]}`, PAGE pixels at the page's dpi), `pass` (`"page"`), `state` (`pending` = a pre-fill, NOT truth; `confirmed`; `rejected`, kept so it is never proposed again), `origin` (`drawn` / `prefill-confirmed` / `prefill-fixed`), `source`, `text` (words, dynamics), `sub` (`tie`/`slur`), `note` (a pre-fill's assumption), `ink_ref` (the claimed-ink reference: `rule` `pageink-1`, `mode`, `px`, `bbox`, `sha1` of the claimed mask). A label claims INK, not its rectangle: `tools/omr/hand_truth/pageink.py` documents the rule per kind. Cell-pass labels stay in `<page>.json`, which is never edited by the page pass | the labeling tool's page pass (`pagepass.PagePass.save`); first built by `python3 -m tools.omr.hand_truth.pagepass_prefill new <page>.json --arc-key prefill/imslp317803-0.arc-key-2.281.json` (pre-fills only) |
+| `prefill/imslp317803-0.arc-key-2.281.json` | a COPY of the 2.281 corrected Brahms p0 arc key (e1e0bf726, `benchmarks/omr-arc-binding-2026-10/key-brahms-p0-corrected.json`: 100 arcs from 153 hand boxes), the arc pre-fill source for the page pass. A proposal list, not truth | copied, never edited |
 | `INVENTORY.json` | every hand label in the tree, who judged it, how complete it is, and the weights lineage | GENERATED: `python3 -m tools.omr.hand_truth.inventory` (`--check` to verify) — never edit |
 | `aligned/<edition>/<page>.<master>.json` | each labelled box's cell in the MASTER cell map (ROADMAP 2.231), by page rect, and why the old `cell_id` disagrees; Sean's page files are not touched | GENERATED: `python3 -m tools.omr.hand_truth.align` (`--check`, `--report`, `--control`) — never edit |
 | `held-out.json` | pages that are test truth and never train weights tested on them | Sean's decision, 2026-10-08 |
 | `weights-lineage.json` | which corpus trained which detector weights, with evidence | DECLARED; `inventory --verify-checkpoints omr-weights/` checks it against the `.pt` files |
 
 Truth is what Sean acted on. A model pre-fill is a queue; Claude's double-check only flags.
+
+## Two passes (ROADMAP 2.287): the page, then the cell
+
+Pass 1 -- the page. Page-wide marks, once, end to end across barlines, in claim order, with ink tinted by state
+(vermilion = nobody has claimed it, blue = claimed by what you confirmed, purple = under a pre-fill still waiting,
+green = claimed in the cell pass). Pass 2 -- the cell pass below, with pass-1 ink laid over each cell in blue.
+
+```bash
+python3 -m tools.omr.annotate.server --page-pass \
+    --page-store data/hand-truth/pages/imslp317803/0.json \
+    --arc-key data/hand-truth/prefill/imslp317803-0.arc-key-2.281.json      # page pass alone: http://127.0.0.1:5050/page
+# with the cell pass too (also pass-1 ink in the cell view): add --bench-dir $BENCH
+```
+
+The PDF is found in `library/` by the page file's name (or `--pdf`). The first request renders the page (a few seconds).
 
 ## Labeling a page, start to finish (on the machine with the PDFs and weights)
 

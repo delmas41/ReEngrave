@@ -310,6 +310,18 @@ def test_routes_draw_confirm_undo_render_and_cell_overlay(tmp_path):
     assert c.get("/api/cell/nope/claimed.png").status_code == 404
 
 
+def test_an_augmentation_dot_inside_an_arcs_box_is_not_the_arcs_ink():
+    img, heads, slur = _page_arrays()
+    dot = np.zeros(img.shape, np.uint8)
+    cv2.circle(dot, (230, 112), 4, 1, -1)                            # a dot in the top space beside a head
+    ink = InkMap(img | dot.astype(bool), SP, [(20, 580, LINES)])
+    box = {"rect": [180, 55, 320, 125]}
+    arc = ink.claim(box, "arc")
+    word = ink.claim(box, "word")
+    assert not arc.mask[112 - arc.bbox[1], 230 - arc.bbox[0]]
+    assert word.mask[112 - word.bbox[1], 230 - word.bbox[0]]         # control: a word takes it
+
+
 def test_a_pagepass_file_beside_a_page_is_not_loaded_as_a_page(tmp_path):
     t = _truth()
     t.save(tmp_path)

@@ -197,7 +197,7 @@ class InkMap:
         if mode == "lines":
             return Claim((x0, y0, x1, y1), self.line[sl] & inside)
         cand = self._candidates(mode, sl) & inside
-        cand = self._drop_specks(cand, self.line[sl])
+        cand = self._drop_specks(cand, self.line[sl], min_extent=int(round(0.6 * self.sp)) if mode == "thin" else 0)
         # staff-line pixels the glyph itself crosses (ink of this kind stands above AND below)
         k = 2 * self.hb + 2
         ext = (slice(max(0, y0 - k), min(self.h, y1 + k)), sl[1])
@@ -210,7 +210,7 @@ class InkMap:
         cross = (above & below)[oy:oy + (y1 - y0), :] & self.line[sl] & inside
         return Claim((x0, y0, x1, y1), cand | cross)
 
-    def _drop_specks(self, cand: np.ndarray, line: np.ndarray) -> np.ndarray:
+    def _drop_specks(self, cand: np.ndarray, line: np.ndarray, min_extent: int = 0) -> np.ndarray:
         """Drop pieces under MIN_PIECE_PX -- unless one touches a staff line: a staff line cuts every
         stem and barline into pieces, and the stub left beside it is the glyph's own."""
         if not cand.any():
@@ -220,6 +220,10 @@ class InkMap:
         keep[1:] = stats[1:, cv2.CC_STAT_AREA] >= self.MIN_PIECE_PX
         near = cv2.dilate(line.view(np.uint8), np.ones((3, 3), np.uint8)).astype(bool)
         keep[np.unique(lab[near & (lab > 0)])] = True
+        if min_extent:      # a thin curve is longer than a dot: an augmentation dot under an arc's box is not the arc's
+            ext = np.maximum(stats[:, cv2.CC_STAT_WIDTH], stats[:, cv2.CC_STAT_HEIGHT])
+            keep &= ext >= min_extent
+        keep[0] = False
         return keep[lab]
 
     # ------------------------------------------------------------ the whole page
