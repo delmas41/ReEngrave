@@ -1,0 +1,13 @@
+{
+ "plate": "brahms",
+ "src": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/claim-readout-slices-2284b-r2-brahms.on.gathered",
+ "pages": {
+  "0": {
+   "claims": [],
+   "plant": {
+    "error": "no hollow head near a claim on this page"
+   }
+  }
+ },
+ "totals": {}
+}

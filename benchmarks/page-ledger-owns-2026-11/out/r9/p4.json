@@ -1,0 +1,260 @@
+{
+ "plate": "litolff",
+ "src": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/claim-readout-slices-2284b-r2-litolff.on.gathered",
+ "pages": {
+  "4": {
+   "claims": [
+    {
+     "id": "obs:092565",
+     "box": [
+      619.0,
+      1128.0,
+      716.0,
+      1148.0
+     ],
+     "source": "direction_word",
+     "text": "cresc.",
+     "letter": null,
+     "category": "dynamic",
+     "sp": 15.75,
+     "box_w_sp": 6.16,
+     "box_h_sp": 1.27,
+     "inside_px": 874,
+     "owned_px": 524,
+     "owned_strokes": 11,
+     "contested_strokes": 0,
+     "own_px": 524,
+     "taken_px": 0,
+     "taken_by_kind": {},
+     "taken_boxed": 0,
+     "taken_unboxed": 0,
+     "comps": [],
+     "left_out": null
+    },
+    {
+     "id": "obs:092589",
+     "box": [
+      2077.0,
+      798.0,
+      2085.0,
+      809.0
+     ],
+     "source": "dynamic_letters",
+     "text": null,
+     "letter": null,
+     "category": "dynamic",
+     "sp": 15.75,
+     "box_w_sp": 0.51,
+     "box_h_sp": 0.7,
+     "inside_px": 63,
+     "owned_px": 67,
+     "owned_strokes": 2,
+     "contested_strokes": 0,
+     "own_px": 63,
+     "taken_px": 0,
+     "taken_by_kind": {},
+     "taken_boxed": 0,
+     "taken_unboxed": 0,
+     "comps": [],
+     "left_out": [
+      [
+       2040.15,
+       699.4125,
+       2057.7,
+       744.5875
+      ],
+      [
+       2060.1375,
+       721.5125,
+       2086.625,
+       747.1875
+      ]
+     ]
+    },
+    {
+     "id": "obs:092593",
+     "box": [
+      470.3,
+      3032.1,
+      504.0,
+      3083.4
+     ],
+     "source": "dynamic_letters",
+     "text": null,
+     "letter": "f",
+     "category": "dynamic",
+     "sp": 15.75,
+     "box_w_sp": 2.14,
+     "box_h_sp": 3.26,
+     "inside_px": 448,
+     "owned_px": 391,
+     "owned_strokes": 10,
+     "contested_strokes": 0,
+     "own_px": 391,
+     "taken_px": 0,
+     "taken_by_kind": {},
+     "taken_boxed": 0,
+     "taken_unboxed": 0,
+     "comps": [],
+     "left_out": null
+    },
+    {
+     "id": "obs:092594",
+     "box": [
+      1106.0,
+      2254.0,
+      1150.0,
+      2263.0
+     ],
+     "source": "dynamic_letters",
+     "text": null,
+     "letter": null,
+     "category": "dynamic",
+     "sp": 15.75,
+     "box_w_sp": 2.79,
+     "box_h_sp": 0.57,
+     "inside_px": 43,
+     "owned_px": 0,
+     "owned_strokes": 0,
+     "contested_strokes": 0,
+     "own_px": 0,
+     "taken_px": 0,
+     "taken_by_kind": {},
+     "taken_boxed": 0,
+     "taken_unboxed": 0,
+     "comps": [],
+     "left_out": [
+      [
+       1137.6975,
+       2209.685,
+       1189.83,
+       2213.9375
+      ],
+      [
+       1038.315,
+       2252.0,
+       1060.2075,
+       2263.34
+      ]
+     ]
+    },
+    {
+     "id": "obs:092596",
+     "box": [
+      1044.3,
+      2678.8,
+      1105.7,
+      2730.0
+     ],
+     "source": "dynamic_letters",
+     "text": "ff",
+     "letter": null,
+     "category": "dynamic",
+     "sp": 15.75,
+     "box_w_sp": 3.9,
+     "box_h_sp": 3.25,
+     "inside_px": 927,
+     "owned_px": 819,
+     "owned_strokes": 22,
+     "contested_strokes": 0,
+     "own_px": 611,
+     "taken_px": 208,
+     "taken_by_kind": {
+      "beam": 202,
+      "other": 6
+     },
+     "taken_boxed": 0,
+     "taken_unboxed": 208,
+     "comps": [
+      {
+       "box": [
+        1044.0,
+        2714.0,
+        1084.0,
+        2723.0
+       ],
+       "px": 202,
+       "shape": "beam",
+       "kind": "beam",
+       "in_letter": true,
+       "boxed": false,
+       "boxed_by": []
+      },
+      {
+       "box": [
+        1077.0,
+        2730.0,
+        1083.0,
+        2731.0
+       ],
+       "px": 6,
+       "shape": "other",
+       "kind": "other",
+       "in_letter": false,
+       "boxed": false,
+       "boxed_by": []
+      }
+     ],
+     "left_out": null
+    }
+   ],
+   "plant": {
+    "claim": "obs:092565",
+    "head_box": [
+     615.94,
+     1082.7125,
+     650.59,
+     1122.7175
+    ],
+    "deleted_boxes": [
+     "glyph/4/0/4/1/5",
+     "glyph/4/0/4/1/6",
+     "glyph/4/0/5/1/4"
+    ],
+    "new_box": [
+     611.94,
+     1078.7125,
+     716.0,
+     1148.0
+    ],
+    "result": {
+     "id": "obs:092565",
+     "box": [
+      611.94,
+      1078.7125,
+      716.0,
+      1148.0
+     ],
+     "source": "direction_word",
+     "text": "cresc.",
+     "letter": null,
+     "category": "dynamic",
+     "sp": 15.75,
+     "box_w_sp": 6.61,
+     "box_h_sp": 4.4,
+     "inside_px": 1677,
+     "owned_px": 1083,
+     "owned_strokes": 21,
+     "contested_strokes": 0,
+     "own_px": 1082,
+     "taken_px": 0,
+     "taken_by_kind": {},
+     "taken_boxed": 0,
+     "taken_unboxed": 0,
+     "comps": [],
+     "left_out": null
+    }
+   }
+  }
+ },
+ "totals": {
+  "claims": 5,
+  "claims_taking": 1,
+  "inside_px": 2355,
+  "owned_px": 1801,
+  "own_px": 1589,
+  "taken_px": 208,
+  "taken_beam": 202,
+  "taken_other": 6
+ }
+}
