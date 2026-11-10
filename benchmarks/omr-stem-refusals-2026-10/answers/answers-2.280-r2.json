@@ -1,0 +1,17 @@
+{
+ "lane": "2.280 r2 (KILLED micro)",
+ "branch": "lane-2.280-r2 636d71f5e",
+ "date": "2026-11-09",
+ "question": "Does this head have a stem, and which way does it go? (or: is the boxed ink not a head at all)",
+ "answers": {
+  "1": "stem down",
+  "2": "stem down",
+  "3": "stem down",
+  "4": "part of a sharp",
+  "5": "part of a sharp",
+  "6": "stem up",
+  "7": "part of a sharp",
+  "8": "eighth rest"
+ },
+ "score": "controls 2,6 right. 4,5,7: sharps boxed as heads by the detector, arm B filed false stems on them. 1,3: heads of a second, both stem DOWN, arm B abstained (both_two_columns). 8: an eighth rest boxed as a head (agent thought a real head)"
+}
