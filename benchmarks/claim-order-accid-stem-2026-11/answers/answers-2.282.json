@@ -1,0 +1,65 @@
+{
+ "lane": "2.282",
+ "date": "2026-11-09",
+ "question": "Is the boxed ink part of a note (head or stem), part of an accidental, or something else?",
+ "verbatim": "1. Note head 2-4. Part of an accidental 5. Barline 6. Notehead and accidental 7. A few pixels of a ledger line. 8-11. Part of an accidental 13. A small part of a hollow notehead.",
+ "note": "Sean wrote '13' for the last tile; the sheet has 12 tiles, recorded as tile 12. Tiles 3 and 8 are the same stroke (cell/14/0/11/1/12).",
+ "answers": {
+  "1": "notehead",
+  "2": "accidental",
+  "3": "accidental",
+  "4": "accidental",
+  "5": "barline",
+  "6": "notehead and accidental",
+  "7": "ledger line (a few pixels)",
+  "8": "accidental",
+  "9": "accidental",
+  "10": "accidental",
+  "11": "accidental",
+  "12": "hollow notehead (small part)"
+ },
+ "score": {
+  "accidentals_first": {
+   "tiles": [
+    "1",
+    "4",
+    "5",
+    "6",
+    "8",
+    "12"
+   ],
+   "right": [
+    "4",
+    "8"
+   ],
+   "wrong": [
+    "1",
+    "5",
+    "12"
+   ],
+   "mixed": [
+    "6"
+   ]
+  },
+  "heads_first": {
+   "tiles": [
+    "2",
+    "3",
+    "7",
+    "9",
+    "10",
+    "11"
+   ],
+   "right": [
+    "7"
+   ],
+   "wrong": [
+    "2",
+    "3",
+    "9",
+    "10",
+    "11"
+   ]
+  }
+ }
+}
