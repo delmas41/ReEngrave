@@ -1,8 +1,9 @@
 :root {
   --bg: #f4f4f1; --panel: #ffffff; --ink: #1c1c1c; --muted: #6b6b6b; --line: #d4d4cf;
-  --unclaimed: #D55E00; --claimed: #0072B2; --pending: #CC79A7; --cellpass: #009E73;
+  --unclaimed: #D55E00; --claimed: #0072B2; --pending: #CC79A7; --cellpass: #009E73; --contested: #F0E442;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }      /* `#selbox label { display: block }` otherwise shows every hidden row */
 html, body { height: 100%; margin: 0; background: var(--bg); color: var(--ink);
   font: 14px/1.35 -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; }
 body { display: flex; flex-direction: column; }
@@ -53,5 +54,13 @@ main { flex: 1; display: grid; grid-template-columns: 190px 1fr 300px; min-heigh
 .queue li.cur { background: #fff3c4; }
 .queue li .w { color: var(--muted); font-size: 12px; margin-left: auto; }
 .keys p { font-size: 12px; color: #444; margin: 4px 0; }
+.zoom { display: inline-flex; align-items: center; gap: 4px; }
+.zoom button { background: #3a3f4b; color: #fff; border: 0; border-radius: 4px; padding: 3px 10px; cursor: pointer; font-size: 15px; }
+.zoom button:hover { background: #4d5465; }
+#zlvl { min-width: 44px; text-align: center; font: 13px ui-monospace, monospace; }
+.wordsub { font-size: 12px; color: #333; margin: 6px 2px 10px; }
+.wordsub select { width: 100%; margin-top: 3px; font-size: 13px; padding: 4px; }
+.covered { font-size: 12px; margin: 0 0 6px; }
+#seldesc .warn { color: #8a6d00; background: #fff8c4; border-left: 4px solid var(--contested); padding: 3px 6px; margin-top: 4px; }
 #seldesc { font-size: 13px; }
 #seldesc .note { color: #8a5a00; margin-top: 4px; }

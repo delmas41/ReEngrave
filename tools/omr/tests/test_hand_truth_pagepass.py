@@ -13,7 +13,7 @@ import pytest
 from tools.omr.hand_truth import pagepass as pp
 from tools.omr.hand_truth import pagepass_prefill as pf
 from tools.omr.hand_truth import store
-from tools.omr.hand_truth.pageink import CLAIMED, PENDING, UNCLAIMED, InkMap, render_states
+from tools.omr.hand_truth.pageink import CLAIMED, CONTESTED, PENDING, UNCLAIMED, InkMap, render_states
 from tools.omr.hand_truth.store import Box, Cell, PageTruth
 
 SP = 20.0
@@ -80,36 +80,140 @@ def test_barline_claims_its_rule_and_the_staff_pixels_it_crosses():
     assert only.px == ink.line[95:186, 395:409].sum()
 
 
-def test_claim_order_earlier_kind_wins_then_smaller_shape():
+def test_the_tighter_shape_wins_whatever_the_kind_order():
+    """Round 2: the earlier KIND no longer wins a pixel (a page-long bracket box took the clefs inside it)."""
     ink, heads, slur = _ink()
     big_arc = pp.PLabel("A", "arc", {"rect": [180, 55, 320, 125]}, "confirmed", "drawn")
     word = pp.PLabel("W", "word", {"rect": [185, 90, 215, 125]}, "confirmed", "drawn")   # the left head
     c = ink.claims([big_arc, word])
     wi = 1 + c.labels.index(word)
-    # the word (earlier kind) owns the left head's ink; the arc keeps the rest of the arch
     assert (c.owner == wi)[heads].sum() > 0.7 * heads[:, :250].sum()
     assert c.px["A"] > 0.8 * c.raw_px["A"] - 1
-    # same kind, two shapes over one mark: the smaller one owns the overlap
-    big = pp.PLabel("B", "word", {"rect": [150, 80, 350, 130]}, "confirmed", "drawn")
+    # an EARLIER kind (clef) with the big box against a later kind (word) with the small one: the small one wins
+    big_clef = pp.PLabel("C", "clef", {"rect": [150, 80, 350, 130]}, "confirmed", "drawn")
     small = pp.PLabel("S", "word", {"rect": [185, 90, 215, 125]}, "confirmed", "drawn")
-    c2 = ink.claims([big, small])
+    c2 = ink.claims([big_clef, small])
     assert c2.px["S"] == c2.raw_px["S"] > 0
+    assert c2.lost_px["C"] > 0 and c2.lost_to["C"] == ["S"] and c2.contested_px == 0
 
 
-def test_a_merged_piece_is_split_by_two_shapes_and_a_polygon_cuts_a_diagonal():
+def test_a_staff_label_keeps_its_line_pixels_even_under_a_tighter_glyph_box():
+    ink, _, _ = _ink()
+    staff = pp.PLabel("ST", "staff", {"rect": [20, 95, 580, 185]}, "confirmed", "drawn")
+    bar = pp.PLabel("B", "barline", {"rect": [395, 95, 408, 185]}, "confirmed", "drawn")   # far tighter
+    c = ink.claims([staff, bar])
+    assert c.px["ST"] == ink.line.sum()                              # every line pixel, the barline's crossings included
+    assert c.px["B"] == c.raw_px["B"] - c.lost_px["B"] and c.lost_px["B"] > 0 and c.lost_to["B"] == ["ST"]
+    assert c.contested_px == 0                                       # a staff's pixels are never 'contested'
+
+
+def test_a_confirmed_label_is_never_displaced_by_a_prefill():
+    ink, heads, _ = _ink()
+    pend = pp.PLabel("Q", "word", {"rect": [185, 90, 215, 125]}, "pending", "prefill", source="x")   # tighter
+    conf = pp.PLabel("C", "word", {"rect": [150, 80, 350, 130]}, "confirmed", "drawn")
+    c = ink.claims([pend, conf])
+    assert c.px["C"] == c.raw_px["C"] > 0 and c.px["Q"] == 0         # a proposal never takes Sean's ink
+
+
+def test_two_shapes_of_one_size_leave_the_pixel_contested_and_visible():
+    ink, heads, _ = _ink()
+    a = pp.PLabel("A", "word", {"rect": [185, 90, 215, 125]}, "confirmed", "drawn")
+    b = pp.PLabel("B", "word", {"rect": [186, 91, 216, 126]}, "confirmed", "drawn")   # the same head, the same size
+    c = ink.claims([a, b])
+    assert c.px["A"] == 0 and c.px["B"] == 0 and c.contested_px > 100             # owned by neither
+    assert c.contested_with["A"] == ["B"] and c.contested_of["A"] == c.contested_px
+    assert c.summary()["contested_px"] == c.contested_px
+    code = ink.states(c, None, (0, 0, 600, 300))
+    assert (code == CONTESTED).sum() == c.contested_px                             # drawn in its own colour
+    assert c.summary()["claimed_px"] == 0 and c.summary()["unclaimed_px"] + c.contested_px == c.ink_px
+
+
+def test_a_merged_piece_is_split_by_polygons_and_rectangles_do_not_cut_it():
     img = np.zeros((200, 300), bool)
     img[60:100, 40:120] = True            # two blobs touching: one connected piece (Litolff MERGES)
     img[60:100, 120:200] = True
     ink = InkMap(img, SP, [])
+    # round 2: a rectangle takes a piece WHOLE (or not at all); two rectangles over one merged piece both reach
+    # all of it, at one size: CONTESTED, not silently split
     a = pp.PLabel("A", "word", {"rect": [30, 50, 119, 110]}, "confirmed", "drawn")
     b = pp.PLabel("B", "word", {"rect": [120, 50, 210, 110]}, "confirmed", "drawn")
     c = ink.claims([a, b])
-    assert c.px["A"] + c.px["B"] == img.sum()                        # every pixel owned, none twice
-    assert abs(c.px["A"] - c.px["B"]) <= 40
+    assert c.raw_px["A"] == c.raw_px["B"] == img.sum() and c.px["A"] == c.px["B"] == 0 and c.contested_px == img.sum()
+    # POLYGONS are the tool for splitting it: each cuts exactly at its edge
+    pa = pp.PLabel("PA", "word", {"poly": [[30, 50], [120, 50], [120, 110], [30, 110]]}, "confirmed", "drawn")
+    pb = pp.PLabel("PB", "word", {"poly": [[121, 50], [210, 50], [210, 110], [121, 110]]}, "confirmed", "drawn")
+    c1 = ink.claims([pa, pb])
+    assert c1.px["PA"] + c1.px["PB"] == img.sum() and c1.contested_px == 0
+    assert abs(c1.px["PA"] - c1.px["PB"]) <= 80
     poly = pp.PLabel("P", "word", {"poly": [[30, 50], [150, 50], [100, 110], [30, 110]]}, "confirmed", "drawn")
     rest = pp.PLabel("R", "word", {"rect": [30, 50, 210, 110]}, "confirmed", "drawn")
     c2 = ink.claims([poly, rest])
-    assert 0 < c2.px["P"] < img.sum() and c2.px["P"] + c2.px["R"] == img.sum()
+    assert 0 < c2.px["P"] < img.sum() and c2.px["P"] + c2.px["R"] == img.sum()    # the tighter polygon, then the rest
+
+
+def _glyph_page():
+    """A page like Brahms p0's left edge: a tall bracket stroke with a hook, a clef whose box the bracket's box
+    overlaps, a clef that TOUCHES the stroke, and a speck inside the tall box. Five staff lines run right of x=60."""
+    img = np.zeros((520, 300), bool)
+    img[40:480, 40:52] = True                                   # the tall bracket stroke
+    cv2.line(img.view(np.uint8), (52, 40), (80, 20), 1, 5)      # its top hook (connected)
+    img[60:94, 118:142] = True                                   # a CLEF-like blob, partly inside the bracket's box
+    img[94:230, 130:136] = True                                  # ... its tall stem
+    img[300:340, 52:90] = True                                   # a second clef-like blob TOUCHING the stroke
+    img[400:410, 60:66] = True                                   # a speck piece inside the tall box
+    lines = [(60.0, 290.0, [100.0, 120.0, 140.0, 160.0, 180.0])]
+    for y in lines[0][2]:
+        img[int(y) - 1:int(y) + 2, 60:290] = True
+    return img, lines
+
+
+def test_a_tall_bracket_box_overlapping_a_clef_takes_none_of_the_clefs_ink():
+    """THE REAL CASE (Sean 2026-11-10, Brahms p0): 'I drew a box around the large bracket that is the length of
+    the page, but it also made some of the ink on some of the clefs claimed.' The control fails where it should:
+    under the old rule (all ink in the shape, earlier kind wins) the bracket takes the clef's inked pixels."""
+    img, lines = _glyph_page()
+    ink = InkMap(img, SP, lines)
+    bracket = pp.PLabel("BR", "bracket", {"rect": [30, 15, 125, 500]}, "confirmed", "drawn")   # reaches into the clef
+    clef = pp.PLabel("CL", "clef", {"rect": [112, 55, 160, 235]}, "confirmed", "drawn")
+    c = ink.claims([bracket, clef])
+    bi, ci = 1 + c.labels.index(bracket), 1 + c.labels.index(clef)
+    clef_ink = np.zeros_like(img)
+    clef_ink[60:94, 118:142] = True
+    clef_ink[94:230, 130:136] = True
+    assert (c.owner == bi)[clef_ink].sum() == 0                             # 0 px of the clef to the bracket
+    assert (c.owner == ci)[clef_ink].sum() >= 0.99 * clef_ink.sum()          # the clef's ink goes to the clef
+    assert (c.owner == bi)[40:480, 40:52].sum() >= 0.99 * (440 * 12)         # the bracket keeps its own stroke
+    assert (c.owner == bi)[400:410, 60:66].sum() == 0                        # a small separate piece in its box: no
+    # control: the OLD rule (clipped 'all' ink, no tall test) hands the bracket the clef pixels inside its box
+    old = ink.claim({"rect": [30, 15, 125, 500]}, "clef", whole=False)
+    x0, y0, x1, y1 = old.bbox
+    assert (old.mask & clef_ink[y0:y1, x0:x1]).sum() > 0
+
+
+def test_a_clef_touching_the_bracket_goes_to_the_tighter_clef_box_and_a_box_never_cuts_a_piece():
+    img, lines = _glyph_page()
+    ink = InkMap(img, SP, lines)
+    bracket = pp.PLabel("BR", "bracket", {"rect": [30, 15, 125, 500]}, "confirmed", "drawn")
+    touching = pp.PLabel("T", "clef", {"rect": [50, 295, 95, 345]}, "confirmed", "drawn")
+    c = ink.claims([bracket, touching])
+    ti, bi = 1 + c.labels.index(touching), 1 + c.labels.index(bracket)
+    blob = np.zeros_like(img)
+    blob[300:340, 53:90] = True
+    assert (c.owner == ti)[blob].sum() > 0.95 * blob.sum()                  # the tighter box owns what it touches
+    assert (c.owner == bi)[300:340, 60:90].sum() == 0
+    # a rectangle takes a piece WHOLE when it holds most of it: a clef box that stops short of the clef's tail
+    short = pp.PLabel("S", "clef", {"rect": [112, 55, 160, 150]}, "confirmed", "drawn")
+    cs = ink.claims([short])
+    whole = np.zeros_like(img)
+    whole[60:94, 118:142] = True
+    whole[94:230, 130:136] = True
+    assert cs.px["S"] >= 0.99 * (img & whole).sum()                         # blob + ALL of the stem, past the box's edge
+    # ... and not at all when it holds only a sliver: this box touches the stem's top 20 rows of a 130-row piece
+    sliver = pp.PLabel("V", "clef", {"rect": [128, 100, 138, 118]}, "confirmed", "drawn")
+    img2 = img.copy()
+    img2[60:94, 118:142] = False                                             # no blob: stem alone is the piece
+    cv = InkMap(img2, SP, lines).claims([sliver])
+    assert cv.refs["V"].get("cut") is True and 0 < cv.px["V"] < 18 * 6 + 20  # the lone box on one piece cuts it, said so
 
 
 def test_percent_claimed_and_states_split_confirmed_from_pending():
@@ -131,7 +235,7 @@ def test_ink_ref_names_the_rule_and_hashes_the_claim():
     ink, _, _ = _ink()
     lab = pp.PLabel("A", "arc", {"rect": [180, 55, 320, 125]}, "confirmed", "drawn")
     ref = ink.claims([lab]).refs["A"]
-    assert ref["rule"] == "pageink-1" and ref["mode"] == "thin" and ref["px"] > 0 and len(ref["sha1"]) == 16
+    assert ref["rule"] == "pageink-2" and ref["mode"] == "thin" and ref["px"] > 0 and len(ref["sha1"]) == 16
     assert ink.claims([lab]).refs["A"] == ref                        # deterministic
 
 
@@ -330,3 +434,195 @@ def test_a_pagepass_file_beside_a_page_is_not_loaded_as_a_page(tmp_path):
     p.save(pp.pagepass_path(t.edition, t.pdf_page_index, tmp_path))
     assert [x.pdf_page_index for x in store.load_all(tmp_path)] == [0]
     assert pp.pagepass_path("e", 3, tmp_path).name == "3.pagepass.json"
+
+
+# ================================================================== round 2 (Sean's feedback, 2026-11-10)
+def _vbar(x0, y0, x1, y1, kind="barline", cls="barlineSingle", i=None):
+    return {"kind": kind, "rect": (x0, y0, x1, y1), "id": i, "cls": cls, "source": "hand-cell-labels"}
+
+
+def test_barline_pieces_of_one_printed_line_join_full_height_only_where_the_print_is_unbroken():
+    """Item 2: a barline is proposed from the top staff to the bottom one, never per cell. The print breaks
+    between instrument groups (no ink in the gap), so the proposal breaks there too."""
+    img = np.zeros((900, 200), bool)
+    img[100:500, 98:102] = True                       # unbroken from y=100 to 500 (three cells' worth)
+    img[560:800, 98:102] = True                       # a second group, after a gap with no ink
+    pieces = [_vbar(96, 100, 104, 200, i="a"), _vbar(96, 260, 104, 340, i="b"), _vbar(97, 400, 103, 500, i="c"),
+              _vbar(96, 560, 104, 800, i="d")]
+    out = pf.join_vertical(pieces, SP, x_sp=pf.BARLINE_X_SP, ink=img)
+    assert sorted(o["rect"] for o in out) == [(96, 100, 104, 500), (96, 560, 104, 800)]
+    assert any(o["joined_from"] == ["a", "b", "c"] for o in out)
+    # CONTROL that can fail: with no ink to look at, only near-touching boxes join (gaps of 60 px > 0.5 sp)
+    assert len(pf.join_vertical(pieces, SP, x_sp=pf.BARLINE_X_SP, ink=None)) == 4
+    # a barline column further right is another printed line, not joined sideways
+    other = pf.join_vertical(pieces + [_vbar(150, 100, 158, 500, i="z")], SP, x_sp=pf.BARLINE_X_SP, ink=img)
+    assert len(other) == 3
+
+
+def test_a_brace_and_the_bracket_it_sits_inside_are_never_joined():
+    img = np.zeros((600, 200), bool)
+    img[100:500, 40:60] = True
+    pieces = [_vbar(40, 100, 60, 300, "bracket", "brace", "br1"), _vbar(41, 300, 59, 500, "bracket", "brace", "br2"),
+              _vbar(40, 100, 60, 500, "bracket", "bracket", "BR")]
+    out = pf.join_vertical(pieces, SP, x_sp=pf.BRACKET_X_SP, ink=img)
+    assert sorted(o["rect"] for o in out) == [(40, 100, 60, 500), (40, 100, 60, 500)]
+    assert sorted(o["cls"] for o in out) == ["brace", "bracket"]
+
+
+def test_a_meter_is_proposed_as_one_box_with_its_value_pre_typed_and_its_digits_kept():
+    """Item 3: '6 above 8' is ONE mark. The hand digit boxes join; the value is typed for Sean to confirm
+    (never for one digit alone); each digit's own box stays under the one label."""
+    t = _truth()
+    for i, (cls, r) in enumerate([("timeSig6", (700, 100, 722, 140)), ("timeSig8", (700, 142, 722, 182)),
+                                  ("timeSig9", (800, 100, 822, 140))]):       # the third stands alone
+        t.boxes.append(Box(id=f"m{i}", cls=cls, rect=r, origin="drawn", labeler="sean"))
+    meters = sorted((i for i in pf.hand_prefills(t, SP) if i["kind"] == "meter"), key=lambda i: i["rect"][0])
+    assert [m["text"] for m in meters] == ["6/8", None]
+    assert meters[0]["rect"] == (700, 100, 722, 182) and "confirm" in meters[0]["note"]
+    assert [p["text"] for p in meters[0]["parts"]] == ["6", "8"] and meters[0]["parts"][0]["rect"] == [700, 100, 722, 140]
+    assert "not a whole meter" in meters[1]["note"]                              # one digit is not guessed into a meter
+    p = pf.build(t)
+    lab = next(l for l in p.labels if l.kind == "meter" and l.text == "6/8")
+    assert lab.state == "pending" and lab.parts[1]["text"] == "8"
+    assert lab.to_json()["parts"][0]["from"] == "hand"
+
+
+def test_meter_values_are_normalised_and_split_in_reading_order():
+    assert pp.normalize_meter("6 8") == "6/8" and pp.normalize_meter("6-8") == "6/8"
+    assert pp.normalize_meter("c") == "C" and pp.normalize_meter("cut") == "C|" and pp.normalize_meter("2/2") == "2/2"
+    assert pp.normalize_meter("  ") is None and pp.normalize_meter(None) is None
+    assert pp.meter_split("12/8") == ["12", "8"] and pp.meter_split("C") == ["C"] and pp.meter_split("") == []
+
+
+def _meter_page():
+    """Two stacked digits on a staff: '6' in the two top spaces, '8' in the two lower ones, the middle line crossing both."""
+    img = np.zeros((300, 400), np.uint8)
+    for y in LINES:
+        img[int(y) - 1:int(y) + 2, 20:380] = 1
+    for (x, y0, y1) in ((200, 102, 138), (200, 142, 178)):
+        cv2.ellipse(img, (x, (y0 + y1) // 2), (9, (y1 - y0) // 2), 0, 0, 360, 1, 3)
+    return img.astype(bool)
+
+
+def test_one_meter_box_carries_one_typed_value_and_its_digit_pieces_are_read_from_its_ink(tmp_path):
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.pagepass_server import mount
+
+    svc = _service(tmp_path)
+    ink = InkMap(_meter_page(), SP, [(20, 380, LINES)])
+    svc._ink, svc._cellpass = ink, np.zeros_like(ink.ink)
+    svc.truth.width, svc.truth.height = 400, 300
+    svc.page.labels.clear()
+    app = FastAPI()
+    mount(app, svc)
+    c = TestClient(app)
+    r = c.post("/api/pp/label", json={"kind": "meter", "shape": {"rect": [180, 98, 222, 182]}, "text": "6 8"}).json()
+    lab = r["label"]
+    assert lab["text"] == "6/8" and lab["kind"] == "meter" and lab["state"] == "confirmed"
+    assert [p["text"] for p in lab["parts"]] == ["6", "8"] and all(p["from"] == "ink" for p in lab["parts"])
+    top, bot = (p["rect"] for p in lab["parts"])
+    assert top[3] <= 141 and bot[1] >= 139 and top[1] < bot[1]          # split at the middle line, upper over lower
+    saved = json.loads(svc.file.read_text())["labels"][0]
+    assert saved["text"] == "6/8" and len(saved["parts"]) == 2          # recoverable from the file
+    # a re-typed value re-reads the pieces; a meter with no text has pieces but no characters
+    r2 = c.post(f"/api/pp/label/{lab['id']}", json={"action": "edit", "text": "C"}).json()["label"]
+    assert r2["text"] == "C" and len(r2["parts"]) == 1 and r2["parts"][0]["text"] == "C"
+    c.post(f"/api/pp/label/{lab['id']}", json={"action": "delete"})     # (a second box over it would be contested)
+    r3 = c.post("/api/pp/label", json={"kind": "meter", "shape": {"rect": [180, 98, 222, 182]}}).json()["label"]
+    assert r3["text"] is None and all(p["text"] is None for p in r3["parts"])
+
+
+def test_a_word_box_may_be_a_text_block_and_the_prefill_fragments_inside_it_are_resolved(tmp_path):
+    """Item 4: one big box, 'title' / 'subtitle' / 'composer' / 'other', text optional. Pre-fill words inside
+    a CONFIRMED block need no answer: reported as covered, not left waiting. Instrument names stay words."""
+    p = _pp()
+    for i, r in enumerate([(100, 20, 160, 60), (170, 22, 260, 62), (400, 300, 460, 340)]):
+        p.add_prefill("word", pp.rect_shape(r), "hand-cell-labels", text=f"frag{i}")
+    p.add_prefill("dynamic", pp.rect_shape((110, 25, 150, 55)), "hand-cell-labels", text="f")
+    assert p.covered_prefills() == {}                                    # no block yet
+    blk = p.draw("word", pp.rect_shape((50, 0, 300, 90)), sub="title")
+    assert blk.is_block and blk.text is None
+    assert p.covered_prefills() == {"P0": blk.id, "P1": blk.id}           # the two inside; not the far one, not a dynamic
+    for bad in ("tie", "bogus"):
+        with pytest.raises(store.StoreError):
+            p.draw("word", pp.rect_shape((1, 1, 9, 9)), sub=bad)
+    with pytest.raises(store.StoreError):
+        p.draw("arc", pp.rect_shape((1, 1, 9, 9)), sub="title")
+    w = p.draw("word", pp.rect_shape((300, 100, 340, 130)), text="Hr.")  # an ordinary word keeps its typed text
+    assert not w.is_block and w.text == "Hr."
+    p.edit(blk.id, kind="dynamic")                                       # a sub belongs to its kind
+    assert p.label(blk.id).sub is None
+    # through the server: the block's covered pre-fills leave the waiting counts
+    svc = _service(tmp_path)
+    svc.page.labels.clear()
+    for i, r in enumerate([(100, 20, 160, 60), (400, 300, 460, 340)]):
+        svc.page.add_prefill("word", pp.rect_shape(r), "x", text=f"f{i}")
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.pagepass_server import mount
+
+    app = FastAPI()
+    mount(app, svc)
+    c = TestClient(app)
+    assert c.get("/api/pp/state").json()["counts"]["word"]["pending"] == 2
+    st = c.post("/api/pp/label", json={"kind": "word", "sub": "composer", "shape": {"rect": [50, 0, 300, 90]}}).json()
+    assert st["counts"]["word"]["pending"] == 1 and st["covered"] == {"P0": st["label"]["id"]}
+    assert next(l for l in st["labels"] if l["id"] == "P0")["covered_by"] == st["label"]["id"]
+    assert c.post("/api/pp/label", json={"kind": "word", "sub": "nope", "shape": {"rect": [1, 1, 9, 9]}}).status_code == 400
+
+
+def test_the_owned_ink_route_returns_exactly_the_ink_a_label_owns(tmp_path):
+    """Item 1(d): hovering a label shows precisely its owned ink -- here a tight word box inside a larger one."""
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.pagepass_server import mount
+
+    svc = _service(tmp_path)
+    svc.page.labels.clear()
+    app = FastAPI()
+    mount(app, svc)
+    c = TestClient(app)
+    big = c.post("/api/pp/label", json={"kind": "word", "shape": {"rect": [150, 80, 350, 130]}}).json()["label"]
+    small = c.post("/api/pp/label", json={"kind": "word", "shape": {"rect": [185, 90, 215, 125]}}).json()["label"]
+    r = c.get(f"/api/pp/owned/{small['id']}")
+    x0, y0, x1, y1 = (int(v) for v in r.headers["X-Region"].split(","))
+    ov = cv2.imdecode(np.frombuffer(r.content, np.uint8), cv2.IMREAD_UNCHANGED)
+    assert ov.shape[:2] == (y1 - y0, x1 - x0)                         # drawn 1:1 over the page, margin included
+    black = (ov[..., 3] == 255) & (ov[..., :3].sum(axis=2) == 0)
+    labs = {l["id"]: l for l in c.get("/api/pp/state").json()["labels"]}
+    assert black.sum() == labs[small["id"]]["px"] > 0                  # the picture IS the owned ink, pixel for pixel
+    assert labs[big["id"]]["px"] == labs[big["id"]]["raw_px"] - labs[big["id"]]["lost_px"]
+    assert labs[big["id"]]["lost_to"] == [small["id"]] and labs[big["id"]]["lost_px"] > 0
+    assert c.get("/api/pp/owned/nope").status_code == 404
+
+
+def test_round_1_files_load_and_save_unchanged_and_new_optional_fields_stay_out_of_the_way():
+    """Sean's labels are truth: a round-1 file (no ``parts`` anywhere) loads and writes back identically."""
+    from pathlib import Path
+
+    f = Path(__file__).resolve().parents[3] / "data/hand-truth/pages/imslp317803/0.pagepass.json"
+    if not f.exists():
+        pytest.skip("no page-pass file in this checkout")
+    raw = json.loads(f.read_text())
+    if any("parts" in l for l in raw["labels"]):
+        pytest.skip("a round-2 file: carries parts")
+    assert pp.load(f).to_json()["labels"] == raw["labels"]
+
+
+def test_a_round_1_pending_meter_prefill_gets_its_value_in_memory_and_an_acted_on_one_is_left_alone():
+    t = _truth()
+    for i, (cls, r) in enumerate([("timeSig6", (700, 100, 722, 140)), ("timeSig8", (700, 142, 722, 182)),
+                                  ("timeSig9", (800, 100, 822, 140)), ("timeSig8", (800, 142, 822, 182))]):
+        t.boxes.append(Box(id=f"m{i}", cls=cls, rect=r, origin="drawn", labeler="sean"))
+    p = _pp()
+    pending = p.add_prefill("meter", pp.rect_shape((695, 95, 727, 187)), "hand-cell-labels")       # round-1 style: no value
+    acted = p.add_prefill("meter", pp.rect_shape((795, 95, 827, 187)), "hand-cell-labels")
+    p.confirm(acted.id)                                                                            # Sean already answered it
+    assert pf.migrate_meter_prefills(p, t) == 1
+    assert pending.text == "6/8" and [x["text"] for x in pending.parts] == ["6", "8"]
+    assert acted.text is None and acted.parts is None and acted.state == "confirmed"
+    assert pending.shape == {"rect": [695.0, 95.0, 727.0, 187.0]}                                   # shape untouched

@@ -29,6 +29,38 @@ python3 -m tools.omr.annotate.server --page-pass \
 
 The PDF is found in `library/` by the page file's name (or `--pdf`). The first request renders the page (a few seconds).
 
+**Round 2 (Sean 2026-11-10, after a real session).** Who owns a pixel two labels reach, in plain words (rule `pageink-2`,
+`tools/omr/hand_truth/pageink.py` docstring):
+
+1. a label you CONFIRMED outranks a pre-fill;
+2. a staff-line pixel belongs to the staff label that reaches it;
+3. any other pixel goes to the TIGHTER shape (smaller area), whatever the kinds -- the more specific statement;
+4. two shapes of about one size (within 25%) cannot be told apart: the pixel is CONTESTED, owned by neither, drawn
+   yellow and counted in the legend.
+
+A rectangle takes a connected piece of ink WHOLE if at least half of it lies inside, and not at all if most of it lies
+outside (a clef poking into a bracket's box stays the clef's). A bracket / brace takes only its own tall stroke (a piece
+at least half the box's height), hooks and curl included. A polygon still cuts exactly at its edge: it is the tool for
+splitting a merged piece. If a rectangle holds only part of ONE merged piece it cuts it at its edge and the label says
+so ("cut"). Hovering or selecting a label draws exactly the ink it owns (`GET /api/pp/owned/<id>`).
+
+New optional label data, absent in round-1 files and never written unless set (a round-1 label's JSON is unchanged):
+
+- `kind: "meter"` is ONE box around the whole meter with `text` its value (`"6/8"`, `"C"`, `"C|"`, `"2/2"`; typed
+  `6 8` is stored `6/8`). `parts` keeps the per-digit pieces under that one label -- `[{"rect": [x0,y0,x1,y1], "text": "6",
+  "from": "hand"|"ink"}, ...]`, numerator first -- so digit boxes can still be taken for detector training later
+  (`hand` = from Sean's cell-pass digit boxes, `ink` = read from the ink the label owns, cut at the staff's middle line).
+- `kind: "word"` with `sub` one of `title`, `subtitle`, `composer`, `other` is a text BLOCK: one box, `text` optional.
+  Instrument names, crooks like `(C)`, tempo and expression words stay single words with typed `text`. Pending word
+  pre-fills inside a confirmed block are reported as covered (`covered` in `/api/pp/state`), hidden and not queued;
+  nothing is written for them.
+- Pre-fills for barlines and brackets / braces are built full height: per-cell pieces of one printed vertical join where
+  the ink between them is unbroken (the print's own breaks stay breaks); a brace and the bracket it sits in are never
+  joined. A still-pending round-1 meter pre-fill is given its value and digit pieces in memory when the server loads.
+
+View: wheel = zoom at the pointer, `+` / `-`, `0` or `g` fits the page, `Shift`+wheel / arrows / `Space`+drag move; a
+box (or polygon) dragged to the edge of the view pulls the view along. Kind keys: `1`-`9`, hairpin `v`, repeat `r`.
+
 ## Labeling a page, start to finish (on the machine with the PDFs and weights)
 
 The first page is Brahms 1, Breitkopf `317803`, PDF index 0 (plan §3, page order).

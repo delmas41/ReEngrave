@@ -10,6 +10,9 @@
   <h1>Page pass <span id="pg" class="muted"></span></h1>
   <span id="systems" class="systems"></span>
   <span class="grow"></span>
+  <span class="zoom" title="zoom: wheel at the pointer, + / -, 0 fits the page">
+    <button id="zout" aria-label="zoom out">&minus;</button><span id="zlvl">20%</span><button id="zin" aria-label="zoom in">+</button><button id="zfit">fit page</button>
+  </span>
   <span id="save" class="muted">loading the page ink (about 20 s the first time) …</span>
   <a href="/" class="link" id="to-cells" title="the cell pass">cell pass →</a>
 </header>
@@ -33,8 +36,8 @@
       <h2>Selected <span id="selid" class="muted"></span></h2>
       <div id="seldesc"></div>
       <label id="textrow" hidden>Text <input id="text" type="text" autocomplete="off" placeholder="type the words, Enter"></label>
-      <label id="subrow" hidden>Arc is a
-        <select id="sub"><option value="">(not said)</option><option value="tie">tie</option><option value="slur">slur</option></select>
+      <label id="subrow" hidden><span id="subname">Arc is a</span>
+        <select id="sub"></select>
       </label>
       <div class="btns">
         <button id="b-confirm" title="t">confirm <kbd>t</kbd></button>
@@ -46,15 +49,20 @@
     </section>
     <section>
       <h2>Waiting for you <span id="qn" class="muted"></span></h2>
+      <div id="covered" class="muted covered"></div>
       <ul id="queue" class="queue"></ul>
     </section>
     <section class="keys">
       <h2>Keys</h2>
-      <p><kbd>1</kbd>–<kbd>9</kbd> <kbd>0</kbd> <kbd>-</kbd> pick the kind, then drag a box.
+      <p><kbd>1</kbd>–<kbd>9</kbd> <kbd>v</kbd> <kbd>r</kbd> pick the kind (hairpin, repeat), then drag a box. Drag past the
+         edge of the view and it follows you.
          <kbd>p</kbd> polygon (click corners, <kbd>Enter</kbd> closes) to split a merged piece.</p>
       <p><kbd>t</kbd> confirm · <kbd>f</kbd> reject · <kbd>x</kbd> delete · <kbd>b</kbd> redraw · <kbd>c</kbd> change kind · <kbd>u</kbd> undo</p>
-      <p><kbd>Tab</kbd> next waiting · <kbd>[</kbd> <kbd>]</kbd> walk the staves in thirds · <kbd>g</kbd> whole page ·
-         <kbd>h</kbd> hide pre-fill outlines · wheel/scroll pans, pinch zooms, <kbd>Space</kbd>+drag pans</p>
+      <p><b>Zoom:</b> mouse <b>wheel</b> (or trackpad scroll) zooms at the pointer · <kbd>+</kbd> <kbd>-</kbd> zoom ·
+         <kbd>0</kbd> or <kbd>g</kbd> whole page · buttons at the top.
+         <b>Move:</b> <kbd>Shift</kbd>+wheel, arrow keys, <kbd>Space</kbd>+drag (or drag with no kind picked).</p>
+      <p><kbd>Tab</kbd> next waiting · <kbd>[</kbd> <kbd>]</kbd> walk the staves in thirds ·
+         <kbd>h</kbd> hide pre-fill outlines · hover a label: black = the ink it owns</p>
     </section>
   </aside>
 </main>

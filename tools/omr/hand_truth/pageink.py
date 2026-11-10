@@ -1,24 +1,34 @@
 """Which INK a page-pass label claims, and the picture of it (ROADMAP 2.287). Read-only on the page.
 
-THE RULE (``RULE_VERSION``). A label owns INK PIXELS, decided by its KIND from the page's dark pixels
-(the page binary the cells are cut from, ``ink = binary < 128``), restricted to the label's shape:
+THE RULE (``RULE_VERSION`` pageink-2, round 2). A label owns INK PIXELS, decided by its KIND from the
+page's dark pixels (the page binary the cells are cut from, ``ink = binary < 128``), inside its shape:
 
   staff     the staff-line pixels (the lines' own rows, from the cells' measured ``staff_line_ys``)
   barline   long vertical runs (>= 2.5 sp tall) -- plus the staff-line pixels the rule crosses
   arc       THIN CURVE ink only: no staff line, no blob (a head, a beam, a clef curl: ink that
   hairpin   survives an opening of 0.5 sp), no stem-like vertical run (>= 1.5 sp tall). The
             noteheads under an arc's box are NOT its ink
-  others    every non-staff ink pixel in the shape (+ staff-line pixels the glyph crosses)
-            (bracket clef key meter word dynamic repeat)
+  bracket   (and brace) ONLY its own tall stroke: a connected piece of ink at least half as tall as the
+            box (and 4 sp), hooks and curl included -- never a small separate piece that merely falls
+            inside the tall box
+  others    every connected piece of non-staff ink in the shape (clef key meter word dynamic repeat)
 
-A staff-line pixel is a glyph's own (not the staff's) when the kind's ink stands directly above AND
-below it -- a clef, a barline or a slur crossing the line. Specks under 30 px are not claimed (unless they touch a staff line: a line cuts every stem and barline into pieces).
+A PIECE IS NOT CUT BY A BOX EDGE (round 2). For the kinds that take whole marks (bracket, clef, key, meter,
+word, dynamic, repeat) a RECTANGLE takes a connected piece of ink WHOLE if at least half of it lies inside
+the rectangle, and not at all if most of it lies outside. A POLYGON still cuts exactly at its edge: it is
+the tool for deliberately splitting a merged piece (Litolff MERGES; Breitkopf SHATTERS: a shattered mark is
+one label over all its pieces). A "piece" joins what a staff line cuts apart where a glyph crosses the line
+(a clef, a bracket and a barline cross the five lines): ink standing directly above AND below a staff-line
+pixel makes that pixel the glyph's own. Specks under 30 px are not claimed (unless they touch a staff line).
 
-CLAIM ORDER decides a pixel two labels both reach: the EARLIER kind (``pagepass.KINDS``) wins
-("a later reader may mark claimed ink but never take it"); within a kind the SMALLER shape wins.
-That is how a merged piece (Litolff) is split: draw each mark's own shape around its own part
-(a polygon where a rectangle cannot), the tighter one owns the overlap. A shattered mark
-(Breitkopf) is one label over all its pieces. A pixel no shape reaches stays UNCLAIMED, visibly.
+WHO OWNS A PIXEL TWO LABELS REACH (round 2; round 1 gave it to the earlier kind, which let a page-long
+bracket box take the clefs inside it):
+  1. a CONFIRMED label (Sean's statement) outranks a pre-fill (a proposal);
+  2. a staff-line pixel belongs to the STAFF label that reaches it;
+  3. any other pixel goes to the TIGHTER shape (smaller area) -- the more specific statement;
+  4. two shapes of about the same size (within 25%) cannot be told apart: the pixel is CONTESTED, owned by
+     neither, drawn in its own colour and counted. Never silently assigned.
+A pixel no shape reaches stays UNCLAIMED, visibly.
 
 Nothing here writes the page, the cells or the pipeline's stroke map: it reads a binary and the
 staff-line positions and returns arrays.
@@ -34,15 +44,21 @@ import numpy as np
 
 from tools.omr.hand_truth.pagepass import KIND_MODE, KINDS, PLabel, Rect, shape_area, shape_bbox
 
-RULE_VERSION = "pageink-1"
+RULE_VERSION = "pageink-2"
+#: two shapes whose areas are within this factor cannot be told apart by "the tighter wins": contested
+CLOSE_AREA = 1.25
+#: a TALL (bracket / brace) stroke is at least this fraction of the box's height, and at least this many spaces
+TALL_FRAC, TALL_MIN_SP = 0.5, 4.0
 
 # states drawn in the picture (index into PALETTE)
-BG, UNCLAIMED, CLAIMED, PENDING, CELLPASS = 0, 1, 2, 3, 4
-#: BGR. Okabe-Ito (colour-blind safe): vermilion = needs claiming, blue = claimed by a confirmed page
-#: label, reddish-purple = under a pre-fill still waiting for Sean, bluish-green = claimed in the cell pass.
+BG, UNCLAIMED, CLAIMED, PENDING, CELLPASS, CONTESTED = 0, 1, 2, 3, 4, 5
+#: RGB. Okabe-Ito (colour-blind safe): vermilion = needs claiming, blue = claimed by a confirmed page
+#: label, reddish-purple = under a pre-fill still waiting for Sean, bluish-green = claimed in the cell pass,
+#: yellow = CONTESTED (two confirmed labels of about one size reach it; owned by neither until you decide).
 PALETTE_RGB = {BG: (255, 255, 255), UNCLAIMED: (213, 94, 0), CLAIMED: (0, 114, 178),
-               PENDING: (204, 121, 167), CELLPASS: (0, 158, 115)}
-STATE_NAMES = {UNCLAIMED: "unclaimed", CLAIMED: "claimed", PENDING: "pending", CELLPASS: "cell pass"}
+               PENDING: (204, 121, 167), CELLPASS: (0, 158, 115), CONTESTED: (240, 228, 66)}
+STATE_NAMES = {UNCLAIMED: "unclaimed", CLAIMED: "claimed", PENDING: "pending", CELLPASS: "cell pass",
+               CONTESTED: "contested"}
 
 
 def _odd(n: float) -> int:
@@ -103,6 +119,7 @@ def measure_line_thickness(ink: np.ndarray, lines, sp: float, samples: int = 5) 
 class Claim:
     bbox: Tuple[int, int, int, int]      # x0, y0, x1, y1 (exclusive) in page px
     mask: np.ndarray                     # bool, bbox-shaped
+    cut: bool = False                    # a rectangle that sits on ONE merged piece cut it at its edge
 
     @property
     def px(self) -> int:
@@ -120,15 +137,22 @@ class Claims:
     confirmed_px: int
     pending_px: int
     cellpass_px: int
+    contested: Optional[np.ndarray] = None            # bool page-shaped: ink two same-size labels both reach
+    contested_px: int = 0
+    lost_px: Dict[str, int] = field(default_factory=dict)       # label id -> pixels a TIGHTER label took from it
+    lost_to: Dict[str, List[str]] = field(default_factory=dict)  # ... and which labels
+    contested_with: Dict[str, List[str]] = field(default_factory=dict)  # label id -> labels it is contested with
+    contested_of: Dict[str, int] = field(default_factory=dict)  # label id -> its pixels left contested
 
     def summary(self) -> Dict:
         t = max(1, self.ink_px)
-        un = self.ink_px - self.confirmed_px - self.pending_px - self.cellpass_px
+        un = self.ink_px - self.confirmed_px - self.pending_px - self.cellpass_px - self.contested_px
         return {"ink_px": self.ink_px, "claimed_px": self.confirmed_px, "pending_px": self.pending_px,
-                "cellpass_px": self.cellpass_px, "unclaimed_px": un,
+                "cellpass_px": self.cellpass_px, "unclaimed_px": un, "contested_px": self.contested_px,
                 "claimed_pct": 100.0 * self.confirmed_px / t,
                 "pending_pct": 100.0 * self.pending_px / t,
                 "cellpass_pct": 100.0 * self.cellpass_px / t,
+                "contested_pct": 100.0 * self.contested_px / t,
                 "unclaimed_pct": 100.0 * un / t}
 
 
@@ -168,10 +192,13 @@ class InkMap:
         lv = cv2.morphologyEx(ink.view(np.uint8), cv2.MORPH_OPEN,
                               np.ones((int(round(2.5 * self.sp)), 1), np.uint8))
         self.longvert = cv2.dilate(lv, np.ones((1, 3), np.uint8)).astype(bool) & ~self.line
+        self._cc = None         # connected pieces, built on first use (see _pieces)
+        self._glue = None
+        self.staff_lines = [(float(a), float(b), [float(y) for y in ys]) for a, b, ys in staff_lines]
 
     # ------------------------------------------------------------ one claim
     def _candidates(self, mode: str, sl: Tuple[slice, slice]) -> np.ndarray:
-        if mode == "all":
+        if mode in ("all", "tall"):
             return self.rest[sl]
         if mode == "thin":
             return self.rest[sl] & ~self.blob[sl] & ~self.vert[sl]
@@ -179,7 +206,9 @@ class InkMap:
             return self.longvert[sl] & self.rest[sl]
         raise ValueError(mode)
 
-    def claim(self, shape: Dict, kind: str) -> Claim:
+    def claim(self, shape: Dict, kind: str, whole: bool = True) -> Claim:
+        """The ink ``kind`` takes inside ``shape``. ``whole=False`` clips every kind at the shape's edge (the
+        cell pass's boxes: a head box must not take its stem and beam with it)."""
         mode = KIND_MODE[kind]
         fx0, fy0, fx1, fy1 = shape_bbox(shape)
         x0, y0 = max(0, int(np.floor(fx0))), max(0, int(np.floor(fy0)))
@@ -196,6 +225,8 @@ class InkMap:
         inside = inside.astype(bool)
         if mode == "lines":
             return Claim((x0, y0, x1, y1), self.line[sl] & inside)
+        if mode in ("all", "tall") and whole:
+            return self._claim_pieces(shape, mode, (x0, y0, x1, y1), inside, fy1 - fy0)
         cand = self._candidates(mode, sl) & inside
         cand = self._drop_specks(cand, self.line[sl], min_extent=int(round(0.6 * self.sp)) if mode == "thin" else 0)
         # staff-line pixels the glyph itself crosses (ink of this kind stands above AND below)
@@ -209,6 +240,71 @@ class InkMap:
         below = cv2.dilate(cmask.view(np.uint8), np.ones((k, 1), np.uint8), anchor=(0, 0)).astype(bool)
         cross = (above & below)[oy:oy + (y1 - y0), :] & self.line[sl] & inside
         return Claim((x0, y0, x1, y1), cand | cross)
+
+    # ------------------------------------------------------------ whole pieces (round 2)
+    def _pieces(self):
+        """Connected pieces of the page's non-staff ink, a staff line bridged where a glyph crosses it
+        (ink directly above AND below the line pixel): a clef, a bracket or a barline is ONE piece."""
+        if self._cc is None:
+            k = 2 * self.hb + 2
+            r8 = self.rest.view(np.uint8)
+            above = cv2.dilate(r8, np.ones((k, 1), np.uint8), anchor=(0, k - 1)).astype(bool)
+            below = cv2.dilate(r8, np.ones((k, 1), np.uint8), anchor=(0, 0)).astype(bool)
+            self._glue = self.rest | (above & below & self.line)
+            del above, below
+            n, lab, stats, _ = cv2.connectedComponentsWithStats(self._glue.view(np.uint8), connectivity=8)
+            self._cc = (n, lab, stats)
+        return self._cc
+
+    def _claim_pieces(self, shape: Dict, mode: str, box: Tuple[int, int, int, int], inside: np.ndarray,
+                      box_h: float) -> Claim:
+        """A RECTANGLE takes a connected piece WHOLE when at least half of it lies inside (and not at all when
+        most of it lies outside); a TALL kind (bracket, brace) takes only pieces at least half the box's
+        height; a POLYGON cuts exactly at its edge (the tool for splitting a merged piece)."""
+        x0, y0, x1, y1 = box
+        sl = (slice(y0, y1), slice(x0, x1))
+        n, lab, stats = self._pieces()
+        if "poly" in shape:
+            cand = self._drop_specks(self._glue[sl] & inside, self.line[sl])
+            return Claim(box, cand)
+        sub = lab[sl]
+        ids, counts = np.unique(sub[sub > 0], return_counts=True)
+        none = Claim((x0, y0, x0, y0), np.zeros((0, 0), bool))
+        if not len(ids):
+            return none
+        passes = np.ones(len(ids), bool)
+        if mode == "tall":
+            hh = stats[ids, cv2.CC_STAT_HEIGHT]
+            passes = (hh >= TALL_FRAC * max(1.0, box_h)) & (hh >= TALL_MIN_SP * self.sp)
+        keep = passes & (counts * 2 >= stats[ids, cv2.CC_STAT_AREA])
+        if not passes.any():
+            return none
+        # The box sits on a MERGED piece (a brace that touches a bracket; a clef that touches a barline) when the
+        # pieces it could take whole hold under half of the ink it holds of the pieces that qualify: nothing
+        # else could be meant, so it cuts the merged piece at its edge (said on the label: "cut") rather than
+        # claim a speck or nothing. A bracket box with its own tall stroke inside is NOT that case: the clef
+        # pieces poking into it are small beside the stroke and stay unclaimed by it.
+        merged = passes & ~keep
+        cut = bool(merged.any() and counts[keep].sum() * 2 < counts[passes].sum())
+        if not keep.any() and not cut:
+            return none
+        whole = ids[keep]
+        rx0, ry0, rx1, ry1 = x0, y0, x1, y1
+        if len(whole):
+            rx0, ry0 = min(rx0, int(stats[whole, cv2.CC_STAT_LEFT].min())), min(ry0, int(stats[whole, cv2.CC_STAT_TOP].min()))
+            rx1 = max(rx1, int((stats[whole, cv2.CC_STAT_LEFT] + stats[whole, cv2.CC_STAT_WIDTH]).max()))
+            ry1 = max(ry1, int((stats[whole, cv2.CC_STAT_TOP] + stats[whole, cv2.CC_STAT_HEIGHT]).max()))
+        reg = (slice(ry0, ry1), slice(rx0, rx1))
+        mask = np.isin(lab[reg], whole) if len(whole) else np.zeros((ry1 - ry0, rx1 - rx0), bool)
+        if cut:
+            m2 = np.zeros_like(mask)
+            m2[y0 - ry0:y1 - ry0, x0 - rx0:x1 - rx0] = np.isin(sub, ids[merged])
+            mask |= m2
+        if not len(whole):          # nothing taken whole: shrink to the box
+            mask, reg = mask[y0 - ry0:y1 - ry0, x0 - rx0:x1 - rx0], (slice(y0, y1), slice(x0, x1))
+            rx0, ry0, rx1, ry1 = x0, y0, x1, y1
+        mask = self._drop_specks(mask, self.line[reg])
+        return Claim((rx0, ry0, rx1, ry1), mask, cut=cut)
 
     def _drop_specks(self, cand: np.ndarray, line: np.ndarray, min_extent: int = 0) -> np.ndarray:
         """Drop pieces under MIN_PIECE_PX -- unless one touches a staff line: a staff line cuts every
@@ -228,39 +324,83 @@ class InkMap:
 
     # ------------------------------------------------------------ the whole page
     def claims(self, labels: Sequence[PLabel], cellpass: Optional[np.ndarray] = None) -> Claims:
-        """Resolve every claiming label (confirmed + pending). Earlier kind wins; then smaller shape."""
+        """Resolve every claiming label (confirmed + pending) by the rule in the module docstring:
+        confirmed before pre-fill; a staff label owns the staff-line pixels it reaches; otherwise the
+        TIGHTER shape wins; shapes of about one size leave the pixel CONTESTED (owned by neither)."""
         labs = list(labels)
-        order = sorted(range(len(labs)), key=lambda i: (KINDS.index(labs[i].kind),
-                                                         shape_area(labs[i].shape), labs[i].id))
+        n = len(labs)
+        areas = np.array([shape_area(l.shape) for l in labs] + [0.0])
+        is_staff = np.array([l.kind == "staff" for l in labs] + [False])
+        order = sorted(range(n), key=lambda i: (labs[i].state != "confirmed", labs[i].kind != "staff",
+                                                areas[i], KINDS.index(labs[i].kind), labs[i].id))
         owner = np.zeros((self.h, self.w), np.int32)
-        px: Dict[str, int] = {}
+        contested = np.zeros((self.h, self.w), bool)
         raw: Dict[str, int] = {}
-        refs: Dict[str, Dict] = {}
+        claims_: Dict[int, Claim] = {}
+        lost: Dict[int, Dict[int, int]] = {}          # label index -> {winner index: px lost}
+        cont_pairs: Dict[int, Dict[int, int]] = {}    # label index -> {other index: px contested}
         for i in order:
             lab = labs[i]
             c = self.claim(lab.shape, lab.kind)
-            x0, y0, x1, y1 = c.bbox
             raw[lab.id] = c.px
+            claims_[i] = c
             if c.mask.size == 0:
-                px[lab.id] = 0
-                refs[lab.id] = self._ref(lab, c, c.mask)
                 continue
-            region = owner[y0:y1, x0:x1]
-            take = c.mask & (region == 0)
-            region[take] = i + 1
-            px[lab.id] = int(take.sum())
-            refs[lab.id] = self._ref(lab, c, take)
-        conf = np.zeros(len(labs) + 1, bool)
-        pend = np.zeros(len(labs) + 1, bool)
+            x0, y0, x1, y1 = c.bbox
+            region, creg = owner[y0:y1, x0:x1], contested[y0:y1, x0:x1]
+            free = c.mask & (region == 0) & ~creg
+            clash = c.mask & (region > 0)
+            if clash.any():
+                other = region[clash].astype(np.int64) - 1
+                if lab.state == "confirmed":
+                    # same-size shapes (neither is the tighter) and not a staff label's line pixels: contested
+                    same = (areas[i] <= CLOSE_AREA * areas[other]) & ~is_staff[other] & ~is_staff[i]
+                    if same.any():
+                        cy, cx = np.nonzero(clash)
+                        cy, cx, oo = cy[same], cx[same], other[same]
+                        for o, cnt in zip(*np.unique(oo, return_counts=True)):
+                            cont_pairs.setdefault(i, {})[int(o)] = cont_pairs.setdefault(i, {}).get(int(o), 0) + int(cnt)
+                            cont_pairs.setdefault(int(o), {})[i] = cont_pairs.setdefault(int(o), {}).get(i, 0) + int(cnt)
+                        region[cy, cx] = 0
+                        creg[cy, cx] = True
+                        other = other[~same]
+                for o, cnt in zip(*np.unique(other, return_counts=True)):
+                    lost.setdefault(i, {})[int(o)] = lost.setdefault(i, {}).get(int(o), 0) + int(cnt)
+            region[free] = i + 1
+        counts = np.bincount(owner.ravel(), minlength=n + 1)
+        px: Dict[str, int] = {}
+        refs: Dict[str, Dict] = {}
+        for i, lab in enumerate(labs):
+            c = claims_[i]
+            px[lab.id] = int(counts[i + 1])
+            if c.mask.size:
+                x0, y0, x1, y1 = c.bbox
+                mine = owner[y0:y1, x0:x1] == i + 1
+            else:
+                mine = c.mask
+            refs[lab.id] = self._ref(lab, c, mine)
+            if c.cut and int(counts[i + 1]):
+                refs[lab.id]["cut"] = True
+        conf = np.zeros(n + 1, bool)
+        pend = np.zeros(n + 1, bool)
         for i, lab in enumerate(labs):
             conf[i + 1] = lab.state == "confirmed"
             pend[i + 1] = lab.state == "pending"
         cp = 0
         if cellpass is not None:
-            cp = int((cellpass & self.ink & (owner == 0)).sum())
+            cp = int((cellpass & self.ink & (owner == 0) & ~contested).sum())
+        ids = [l.id for l in labs]
+        for i, d in cont_pairs.items():
+            refs[ids[i]]["contested_px"] = int(sum(d.values()))
         return Claims(owner=owner, labels=labs, px=px, raw_px=raw, refs=refs,
                       ink_px=int(self.ink.sum()), confirmed_px=int(conf[owner].sum()),
-                      pending_px=int(pend[owner].sum()), cellpass_px=cp)
+                      pending_px=int(pend[owner].sum()), cellpass_px=cp,
+                      contested=contested, contested_px=int((contested & self.ink).sum()),
+                      lost_px={ids[i]: int(sum(d.values())) for i, d in lost.items()},
+                      lost_to={ids[i]: [ids[o] for o in sorted(d, key=lambda k: -d[k])] for i, d in lost.items()},
+                      contested_with={ids[i]: [ids[o] for o in sorted(d, key=lambda k: -d[k])]
+                                      for i, d in cont_pairs.items()},
+                      contested_of={ids[i]: int(sum(d.values())) for i, d in cont_pairs.items()})
 
     def _ref(self, lab: PLabel, c: Claim, mask: np.ndarray) -> Dict:
         """The claimed-ink reference stored on the label: the rule, how much, where, a hash of which."""
@@ -272,11 +412,79 @@ class InkMap:
         return {"rule": RULE_VERSION, "mode": KIND_MODE[lab.kind], "px": int(mask.sum()),
                 "bbox": bb, "sha1": digest}
 
+    def _mid_line_y(self, x: float, y: float) -> Optional[float]:
+        best, bd = None, 3.0 * self.sp
+        for x0, x1, ys in self.staff_lines:
+            if x0 <= x <= x1 and len(ys) >= 3:
+                d = abs(sorted(ys)[len(ys) // 2] - y)
+                if d <= bd:
+                    best, bd = sorted(ys)[len(ys) // 2], d
+        return best
+
+    def meter_parts(self, bbox: Tuple[int, int, int, int], mask: np.ndarray, value: Optional[str]) -> List[Dict]:
+        """The per-digit ink pieces of ONE meter label, read from the ink it owns, so a detector can later get digit
+        boxes from the one label (README: ``parts``). A stacked meter is cut at its staff's middle line (the numeral
+        above, the denominator below -- ink is not cut by a staff line, which crosses a 6 or an 8); each row is
+        cut into digits at gaps in its columns. A digit gets its character only when the value's row has exactly
+        that many digits; otherwise the row stays one piece carrying the row's text (or none)."""
+        from tools.omr.hand_truth.pagepass import meter_split
+
+        if mask.size == 0 or not mask.any():
+            return []
+        x0, y0 = bbox[0], bbox[1]
+        rows = meter_split(value)
+        ys = np.nonzero(mask.any(axis=1))[0]
+        cy = y0 + (ys.min() + ys.max()) / 2.0
+        groups: List[Tuple[np.ndarray, Optional[str]]]
+        if len(rows) == 2:
+            mid = self._mid_line_y(x0 + mask.shape[1] / 2.0, cy)
+            cut = int(round((mid if mid is not None else cy) - y0))
+            top, bot = mask.copy(), mask.copy()
+            top[cut:, :] = False
+            bot[:cut, :] = False
+            groups = [(top, rows[0]), (bot, rows[1])]
+        else:
+            groups = [(mask, rows[0] if len(rows) == 1 else None)]
+        out: List[Dict] = []
+        for g, text in groups:
+            if not g.any():
+                continue
+            cols = g.any(axis=0)
+            xs = np.nonzero(cols)[0]
+            runs, start = [], xs[0]
+            for a, b in zip(xs[:-1], xs[1:]):
+                if b - a > 3:
+                    runs.append((start, a))
+                    start = b
+            runs.append((start, xs[-1]))
+            texts: List[Optional[str]] = [None] * len(runs)
+            if text and len(text) == len(runs) and text.isdigit():
+                texts = list(text)
+            elif text and len(runs) > 1:
+                runs, texts = [(runs[0][0], runs[-1][1])], [text]       # not enough to name each digit: one piece
+            elif text:
+                texts = [text]
+            for (a, b), t in zip(runs, texts):
+                sub = g[:, a:b + 1]
+                yy = np.nonzero(sub.any(axis=1))[0]
+                out.append({"rect": [float(x0 + a), float(y0 + yy.min()), float(x0 + b + 1), float(y0 + yy.max() + 1)],
+                            "text": t, "from": "ink"})
+        return out
+
+    def owned_mask(self, claims: Claims, label_id: str) -> Tuple[Tuple[int, int, int, int], np.ndarray]:
+        """(bbox, mask) of exactly the ink ``label_id`` owns after precedence -- what hovering it highlights."""
+        i = next(k for k, l in enumerate(claims.labels) if l.id == label_id)
+        ref = claims.refs[label_id].get("bbox")
+        if not ref:
+            return (0, 0, 0, 0), np.zeros((0, 0), bool)
+        x0, y0, x1, y1 = ref
+        return (x0, y0, x1, y1), claims.owner[y0:y1, x0:x1] == i + 1
+
     def cellpass_mask(self, rects: Iterable[Rect]) -> np.ndarray:
         """Ink under cell-pass boxes (all non-staff ink in each rectangle), as one page mask."""
         out = np.zeros((self.h, self.w), bool)
         for r in rects:
-            c = self.claim({"rect": list(r)}, "word")     # 'all' mode
+            c = self.claim({"rect": list(r)}, "word", whole=False)     # 'all' mode, clipped at the box
             if c.mask.size:
                 x0, y0, x1, y1 = c.bbox
                 out[y0:y1, x0:x1] |= c.mask
@@ -299,13 +507,15 @@ class InkMap:
             ow = claims.owner[sl]
             m = ow > 0
             code[m & ink] = lut[ow][m & ink]
+            if claims.contested is not None:
+                code[ink & claims.contested[sl]] = CONTESTED
         return code
 
 
 def render_states(code: np.ndarray, out_w: int) -> np.ndarray:
     """BGR picture of a state-code region at ``out_w`` px wide (thin ink boosted so it stays visible)."""
     h, w = code.shape
-    pal = np.zeros((5, 3), np.uint8)
+    pal = np.zeros((6, 3), np.uint8)
     for k, (r, g, b) in PALETTE_RGB.items():
         pal[k] = (b, g, r)
     img = pal[code]
@@ -316,6 +526,26 @@ def render_states(code: np.ndarray, out_w: int) -> np.ndarray:
     small = cv2.resize(img, (out_w, out_h), interpolation=cv2.INTER_AREA).astype(np.float32)
     gain = min(6.0, max(1.0, 0.35 / scale))
     return np.clip(255.0 - (255.0 - small) * gain, 0, 255).astype(np.uint8)
+
+
+def owned_overlay_rgba(mask: np.ndarray, out_w: int) -> np.ndarray:
+    """RGBA picture of ONE label's owned ink (black with a white halo, so it reads on blue, pink or white),
+    ``out_w`` px wide; the height follows the mask's shape. Thin ink is widened when shrunk, as render_states does."""
+    h, w = mask.shape
+    scale = out_w / float(max(1, w))
+    out_h = max(1, int(round(h * scale)))
+    m = mask.astype(np.float32)
+    if scale >= 1.0:
+        a = cv2.resize(m, (out_w, out_h), interpolation=cv2.INTER_NEAREST)
+        a = a > 0.5
+    else:
+        a = cv2.resize(m, (out_w, out_h), interpolation=cv2.INTER_AREA)
+        a = a * min(6.0, max(1.0, 0.35 / scale)) > 0.25
+    halo = cv2.dilate(a.astype(np.uint8), np.ones((5, 5), np.uint8)).astype(bool)
+    rgba = np.zeros((out_h, out_w, 4), np.uint8)
+    rgba[halo] = (255, 255, 255, 235)
+    rgba[a] = (0, 0, 0, 255)
+    return rgba
 
 
 def claimed_overlay_rgba(claims: Claims, cellpass: Optional[np.ndarray], ink: np.ndarray,

@@ -85,8 +85,113 @@ def join_pieces(items: List[Dict], gx: float, gy: float) -> List[Dict]:
     out = []
     for idx in groups.values():
         out.append({**items[idx[0]], "rect": _union([items[i]["rect"] for i in idx]),
-                    "n_pieces": len(idx)})
+                    "n_pieces": len(idx),
+                    "pieces": [{"rect": tuple(items[i]["rect"]), "cls": items[i].get("cls")} for i in idx]})
     return out
+
+
+#: a vertical join: boxes whose centres are within this many spaces in x are one printed vertical (a barline
+#: through several cells; a brace / bracket); their gap is joined when the print is unbroken across it
+BARLINE_X_SP = 0.6
+BRACKET_X_SP = 0.6
+#: with no ink to look at (tests, a page not rendered yet): join boxes whose vertical gap is under this many spaces
+JOIN_GAP_SP = 0.5
+#: the share of the gap's rows that must carry ink in the verticals' own columns for the print to be unbroken
+UNBROKEN_FRAC = 0.9
+
+
+def _gap_unbroken(ink: Optional[np.ndarray], x0: float, x1: float, y0: float, y1: float) -> bool:
+    """True if every (almost every) row of the gap y0..y1 has ink inside the central columns x0..x1."""
+    if y1 <= y0:
+        return True
+    if ink is None:
+        return False
+    h, w = ink.shape
+    a, b = max(0, int(round(y0))), min(h, int(round(y1)))
+    c, d = max(0, int(round(x0))), min(w, int(round(x1)) + 1)
+    if b <= a or d <= c:
+        return False
+    return float(ink[a:b, c:d].any(axis=1).mean()) >= UNBROKEN_FRAC
+
+
+def join_vertical(items: List[Dict], sp: float, *, x_sp: float, ink: Optional[np.ndarray] = None) -> List[Dict]:
+    """Per-cell pieces of one printed vertical (a barline, a brace / bracket) -> ONE full-height box.
+
+    Sean 2026-11-10: "I did the full length of the bar lines that goes through all of the systems, which I
+    think is the way that it should be." A cell cuts a barline at every staff; the print does not. Boxes whose
+    centres lie within ``x_sp`` spaces of one another's column are one candidate; consecutive boxes (top to
+    bottom) join when the gap between them is unbroken ink in the column (``ink`` = the page's ink), or, with no ink to
+    look at, no more than ``JOIN_GAP_SP``. Where the print breaks (between instrument groups, between systems) the
+    proposal breaks too. Never regenerated over labels Sean has already acted on (build only makes a new file)."""
+    tol = x_sp * sp
+    cols: List[List[Dict]] = []
+    for it in sorted(items, key=lambda i: (i["rect"][0] + i["rect"][2]) / 2):
+        cx = (it["rect"][0] + it["rect"][2]) / 2
+        for col in cols:
+            # one class per column: a brace and the bracket it sits inside are two marks, however close
+            if col[0].get("cls") == it.get("cls") and abs(
+                    cx - sum((c["rect"][0] + c["rect"][2]) / 2 for c in col) / len(col)) <= tol:
+                col.append(it)
+                break
+        else:
+            cols.append([it])
+    out: List[Dict] = []
+    for col in cols:
+        col.sort(key=lambda i: i["rect"][1])
+        cur = [col[0]]
+        runs = []
+        for it in col[1:]:
+            gap0, gap1 = max(c["rect"][3] for c in cur), it["rect"][1]
+            xs = [(c["rect"][0] + c["rect"][2]) / 2 for c in cur + [it]]
+            core0, core1 = min(xs) - 0.1 * sp, max(xs) + 0.1 * sp
+            if gap1 - gap0 <= JOIN_GAP_SP * sp or _gap_unbroken(ink, core0, core1, gap0, gap1):
+                cur.append(it)
+            else:
+                runs.append(cur)
+                cur = [it]
+        runs.append(cur)
+        for run in runs:
+            out.append({**run[0], "rect": _union([c["rect"] for c in run]), "n_pieces": len(run),
+                        "joined_from": [c.get("id") for c in run],
+                        "note": (f"{len(run)} per-cell pieces joined into one full-height {run[0]['kind']}"
+                                 if len(run) > 1 else run[0].get("note", ""))})
+    return out
+
+
+def _meter_piece(cls: Optional[str]) -> Optional[str]:
+    """The value one hand-labelled meter piece stands for (``timeSig6`` -> ``6``; common time -> ``C``)."""
+    if not cls or not cls.lower().startswith("timesig"):
+        return None
+    t = cls[len("timeSig"):]
+    if t.isdigit():
+        return t
+    return {"common": "C", "cutcommon": "C|"}.get(t.lower())
+
+
+def meter_from_pieces(pieces: List[Dict]) -> Tuple[Optional[str], List[Dict], str]:
+    """(value, parts, note) for the digit boxes of ONE meter: top digit over bottom digit -> ``'6/8'``.
+
+    The value is pre-typed for Sean to confirm and only when it is fully known (two stacked rows of digits, or one
+    common / cut-time sign); one digit alone is NOT guessed into a meter. ``parts`` keeps each digit's own box."""
+    ps = sorted(({"rect": [float(v) for v in p["rect"]], "text": _meter_piece(p.get("cls")), "from": "hand"}
+                 for p in pieces), key=lambda p: ((p["rect"][1] + p["rect"][3]) / 2, p["rect"][0]))
+    parts = [{**p} for p in ps]
+    if not ps or any(p["text"] is None for p in ps):
+        return None, parts, ""
+    rows: List[List[Dict]] = []
+    for p in ps:
+        h = p["rect"][3] - p["rect"][1]
+        if rows and (p["rect"][1] + p["rect"][3]) / 2 - sum(
+                (q["rect"][1] + q["rect"][3]) / 2 for q in rows[-1]) / len(rows[-1]) < 0.5 * h:
+            rows[-1].append(p)
+        else:
+            rows.append([p])
+    texts = ["".join(q["text"] for q in sorted(r, key=lambda q: q["rect"][0])) for r in rows]
+    if len(texts) == 2 and all(t.isdigit() for t in texts):
+        return "/".join(texts), parts, "value read from the hand-labelled digits; confirm it"
+    if len(texts) == 1 and texts[0] in ("C", "C|"):
+        return texts[0], parts, "value read from the hand-labelled sign; confirm it"
+    return None, parts, f"hand-labelled digits found: {' over '.join(texts)} (not a whole meter)"
 
 
 def join_arc_pieces(arcs: List[Dict], barline_xs: Sequence[float], sp: float) -> List[Dict]:
@@ -158,14 +263,16 @@ def _dynamic_text(cls: str) -> str:
     return cls[len("dynamic"):].lower() if cls.lower().startswith("dynamic") else cls
 
 
-def hand_prefills(truth: store.PageTruth, sp: float, *, arcs_from_labels: bool = True) -> List[Dict]:
-    """Sean's per-cell labels of the page-wide kinds, re-read at the page's grain."""
+def hand_prefills(truth: store.PageTruth, sp: float, *, arcs_from_labels: bool = True,
+                  ink: Optional[np.ndarray] = None) -> List[Dict]:
+    """Sean's per-cell labels of the page-wide kinds, re-read at the page's grain (a barline or a bracket is
+    one full-height box, a meter is one box with its value pre-typed)."""
     kinds: Dict[str, List[Dict]] = {}
     for b in truth.boxes:
         k = pp.kind_of_class(b.cls)
         if k is None or k == "staff":
             continue
-        it = {"kind": k, "rect": tuple(b.rect), "source": "hand-cell-labels", "id": b.id,
+        it = {"kind": k, "rect": tuple(b.rect), "source": "hand-cell-labels", "id": b.id, "cls": b.cls,
               "sub": b.cls if b.cls in ("tie", "slur") else None,
               "text": (b.text if b.cls == "text" else _dynamic_text(b.cls) if k == "dynamic" else None),
               "note": ""}
@@ -177,6 +284,13 @@ def hand_prefills(truth: store.PageTruth, sp: float, *, arcs_from_labels: bool =
             items = join_pieces(items, KEY_JOIN_SP * sp, 1.0 * sp)
         elif k == "meter":
             items = join_pieces(items, METER_JOIN_SP * sp, METER_JOIN_SP * sp)
+            for it in items:
+                it["text"], it["parts"], why = meter_from_pieces(it.get("pieces", []))
+                it["note"] = why or it.get("note", "")
+        elif k == "barline":
+            items = join_vertical(items, sp, x_sp=BARLINE_X_SP, ink=ink)
+        elif k == "bracket":
+            items = join_vertical(items, sp, x_sp=BRACKET_X_SP, ink=ink)
         elif k == "arc":
             if not arcs_from_labels:
                 continue
@@ -209,20 +323,43 @@ def key_prefills(key: Dict) -> List[Dict]:
     return out
 
 
-def build(truth: store.PageTruth, *, arc_key: Optional[Dict] = None) -> pp.PagePass:
-    """A fresh page pass: pre-fills only (pending), nothing confirmed."""
+def migrate_meter_prefills(page: pp.PagePass, truth: store.PageTruth) -> int:
+    """A round-1 page-pass file proposed meters as joined boxes with no value. Give each STILL-PENDING one its
+    pre-typed value and digit pieces, read from the hand-labelled digits inside it (in memory; written with the next
+    change). Never touches a label Sean has acted on, and never changes a shape."""
+    n = 0
+    for lab in page.labels:
+        if lab.kind != "meter" or lab.state != "pending" or lab.text or lab.parts or "rect" not in lab.shape:
+            continue
+        x0, y0, x1, y1 = lab.shape["rect"]
+        pieces = [{"rect": tuple(b.rect), "cls": b.cls} for b in truth.boxes
+                  if pp.kind_of_class(b.cls) == "meter"
+                  and x0 <= (b.rect[0] + b.rect[2]) / 2 <= x1 and y0 <= (b.rect[1] + b.rect[3]) / 2 <= y1]
+        if not pieces:
+            continue
+        text, parts, why = meter_from_pieces(pieces)
+        lab.text, lab.parts = text, parts
+        if why:
+            lab.note = (lab.note + " " + why).strip()
+        n += 1
+    return n
+
+
+def build(truth: store.PageTruth, *, arc_key: Optional[Dict] = None, ink: Optional[np.ndarray] = None) -> pp.PagePass:
+    """A fresh page pass: pre-fills only (pending), nothing confirmed. ``ink`` (the page's dark pixels) lets a
+    barline / bracket pre-fill join across the gaps between cells only where the print is unbroken."""
     sp = measure_sp(staff_lines_from_cells(truth.cells)) or 32.0
     page = pp.PagePass(edition=truth.edition, pdf_page_index=truth.pdf_page_index, dpi=truth.dpi,
                        width=truth.width, height=truth.height, sp=sp,
                        provenance={"built_from": f"{truth.edition}/{truth.pdf_page_index}.json (never edited)",
                                    "arc_key": "2.281 corrected key" if arc_key else None})
-    items = staff_prefills(truth) + hand_prefills(truth, sp, arcs_from_labels=arc_key is None)
+    items = staff_prefills(truth) + hand_prefills(truth, sp, arcs_from_labels=arc_key is None, ink=ink)
     if arc_key is not None:
         items += key_prefills(arc_key)
     for it in items:
         shape = pp.rect_shape(it["rect"])
         page.add_prefill(it["kind"], shape, it["source"], text=it.get("text"), sub=it.get("sub"),
-                         note=it.get("note", ""))
+                         note=it.get("note", ""), parts=it.get("parts"))
     return page
 
 

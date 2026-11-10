@@ -28,8 +28,8 @@ from fastapi.responses import HTMLResponse, JSONResponse, Response
 from tools.omr.hand_truth import pagepass as pp
 from tools.omr.hand_truth import pagepass_prefill, store
 from tools.omr.hand_truth.pageink import (
-    CELLPASS, CLAIMED, PALETTE_RGB, PENDING, STATE_NAMES, UNCLAIMED, Claims, InkMap,
-    claimed_overlay_rgba, measure_sp, render_states, staff_lines_from_cells,
+    CELLPASS, CLAIMED, CONTESTED, PALETTE_RGB, PENDING, RULE_VERSION, STATE_NAMES, UNCLAIMED, Claims, InkMap,
+    claimed_overlay_rgba, measure_sp, owned_overlay_rgba, render_states, staff_lines_from_cells,
 )
 
 _STATIC = Path(__file__).parent / "static"
@@ -75,9 +75,14 @@ class PagePassService:
         self._claims: Optional[Claims] = None
         if self.file.exists():
             self.page = pp.load(self.file)
+            n = pagepass_prefill.migrate_meter_prefills(self.page, self.truth)     # in memory only
+            if n:
+                print(f"[page pass] {n} still-pending meter pre-fills now carry their value and digit pieces "
+                      f"(in memory; written with the next change)")
         else:
             key = json.loads(Path(arc_key).read_text()) if arc_key else None
-            self.page = pagepass_prefill.build(self.truth, arc_key=key)
+            # the ink lets a barline / bracket pre-fill join across cells only where the print is unbroken
+            self.page = pagepass_prefill.build(self.truth, arc_key=key, ink=self.ink().ink)
             self.page.save(self.file)
             print(f"[page pass] new page-pass file with {len(self.page.labels)} pre-fills: {self.file}")
 
@@ -94,7 +99,7 @@ class PagePassService:
                     raise HTTPException(500, detail=f"rendered page {ink.shape} is not the page file's "
                                                     f"{(self.truth.height, self.truth.width)}")
                 lines = staff_lines_from_cells(self.truth.cells)
-                self._ink = InkMap(ink, measure_sp(lines) or self.page.sp, lines)
+                self._ink = InkMap(ink, measure_sp(lines) or getattr(getattr(self, "page", None), "sp", 0.0), lines)
                 rects = [b.rect for b in self.truth.boxes
                          if pp.kind_of_class(b.cls) is None and b.cls not in ("noise",)]
                 self._cellpass = self._ink.cellpass_mask(rects)
@@ -106,6 +111,11 @@ class PagePassService:
             ink = self.ink()
             if self._claims is None:
                 self._claims = ink.claims(self.page.claimers(), self._cellpass)
+                if not getattr(self, "_restamped", False):
+                    # a file written under an older rule: re-derive every label's ink_ref (and a meter's digit
+                    # pieces) in memory now; it reaches the disk with the next change, never at load
+                    self._restamped = True
+                    self._stamp_refs()
             return self._claims
 
     # ------------------------------------------------------------ mutation (snapshot -> change -> claims -> save)
@@ -134,9 +144,15 @@ class PagePassService:
             return self.state_payload()
 
     def _stamp_refs(self) -> None:
+        """Derived data on every label: its ink_ref under the CURRENT rule, and a meter's digit pieces."""
         c = self.claims()
+        ink = self.ink()
         for lab in self.page.labels:
             lab.ink_ref = c.refs.get(lab.id) if lab.state == "confirmed" else None
+            if lab.kind == "meter" and lab.state == "confirmed" and lab.parts is None and lab.ink_ref \
+                    and lab.ink_ref.get("bbox"):
+                bbox, mask = ink.owned_mask(c, lab.id)
+                lab.parts = ink.meter_parts(bbox, mask, lab.text) or None
 
     # ------------------------------------------------------------ payloads
     def systems(self) -> List[Dict]:
@@ -169,22 +185,32 @@ class PagePassService:
 
     def state_payload(self) -> Dict:
         c = self.claims()
+        covered = self.page.covered_prefills()
         labels = []
         for lab in self.page.labels:
             d = lab.to_json()
             d["px"] = c.px.get(lab.id)
             d["raw_px"] = c.raw_px.get(lab.id)
+            d["lost_px"] = c.lost_px.get(lab.id, 0)
+            d["lost_to"] = c.lost_to.get(lab.id, [])
+            d["contested_px"] = c.contested_of.get(lab.id, 0)
+            d["contested_with"] = c.contested_with.get(lab.id, [])
+            d["cut"] = bool((c.refs.get(lab.id) or {}).get("cut"))
+            if lab.id in covered:
+                d["covered_by"] = covered[lab.id]
             labels.append(d)
         counts = {k: {"pending": 0, "confirmed": 0, "rejected": 0} for k in pp.KINDS}
         for lab in self.page.labels:
-            counts[lab.kind][lab.state] += 1
+            if lab.id not in covered:           # a pre-fill a confirmed text block covers is not waiting for you
+                counts[lab.kind][lab.state] += 1
         return {"meta": {"edition": self.truth.edition, "page": self.truth.pdf_page_index,
                          "width": self.truth.width, "height": self.truth.height, "dpi": self.truth.dpi,
                          "sp": self.page.sp, "systems": self.systems(), "strips": self.strips(), "kinds": list(pp.KINDS),
-                         "text_kinds": list(pp.TEXT_KINDS), "file": str(self.file), "rule": "pageink-1",
+                         "text_kinds": list(pp.TEXT_KINDS), "word_blocks": list(pp.BLOCK_SUBS),
+                         "file": str(self.file), "rule": RULE_VERSION,
                          "palette": {STATE_NAMES[k]: "#%02x%02x%02x" % PALETTE_RGB[k]
-                                     for k in (UNCLAIMED, CLAIMED, PENDING, CELLPASS)}},
-                "labels": labels, "counts": counts, "stats": c.summary()}
+                                     for k in (UNCLAIMED, CLAIMED, PENDING, CELLPASS, CONTESTED)}},
+                "labels": labels, "counts": counts, "covered": covered, "stats": c.summary()}
 
 
 def mount(app, service: PagePassService) -> None:
@@ -213,6 +239,25 @@ def mount(app, service: PagePassService) -> None:
         ok, buf = cv2.imencode(".png", img, [cv2.IMWRITE_PNG_COMPRESSION, 1])
         return Response(buf.tobytes(), media_type="image/png",
                         headers={"X-Region": f"{X0},{Y0},{X1},{Y1}", "Cache-Control": "no-store"})
+
+    @r.get("/api/pp/owned/{label_id}")
+    def owned(label_id: str, w: int = 0) -> Response:
+        """EXACTLY the ink this label owns after precedence, as a transparent picture covering its bbox
+        (+3 px of margin; X-Region says where). Hovering or selecting a label draws this: the answer to
+        'where those two boxes overlap, how does it know which is which?'"""
+        c = service.claims()
+        if not any(l.id == label_id for l in c.labels):
+            raise HTTPException(404, detail=f"no claiming label {label_id}")
+        (x0, y0, x1, y1), mask = service.ink().owned_mask(c, label_id)
+        if mask.size == 0:
+            return Response(status_code=204, headers={"X-Region": "0,0,0,0", "Cache-Control": "no-store"})
+        pad = 3
+        mask = np.pad(mask, pad)
+        x0, y0, x1, y1 = x0 - pad, y0 - pad, x1 + pad, y1 + pad
+        rgba = owned_overlay_rgba(mask, max(1, min(int(w) or mask.shape[1], 4000)))
+        ok, buf = cv2.imencode(".png", rgba, [cv2.IMWRITE_PNG_COMPRESSION, 1])
+        return Response(buf.tobytes(), media_type="image/png",
+                        headers={"X-Region": f"{x0},{y0},{x1},{y1}", "Cache-Control": "no-store"})
 
     @r.post("/api/pp/label")
     async def draw(request: Request) -> Dict:
