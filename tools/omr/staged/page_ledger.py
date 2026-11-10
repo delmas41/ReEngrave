@@ -15,12 +15,12 @@ WHAT, in two halves.
 
   GATHER (`link_cell_strokes`, inside `gather.gather_stroke_map`): each cell stroke is LINKED to the page stroke (`Q.PAGE_STROKE`, the page map built
   before the arcs, 2.260b M3) that holds its ink: its pixels mapped into the page map's frame, the page stroke holding the most of them, and that
-  share. Filed on the cell's `Q.STROKE` row as `page_stroke: [ordinal, share]`. Pure geometry; decides nothing. A carved barline rule
+  share, and the share of the page stroke's ink the piece holds (`cover`). Filed on the cell's `Q.STROKE` row as `page_stroke: [ordinal, share, cover]`. Pure geometry; decides nothing. A carved barline rule
   (`page_strokes.carve_columns`, no mask) holds the carved rows of its column box.
 
   ADJUDICATE (`settle_page`, called once per page before the cells' `Q.STROKE_OWNER` verdicts are made): every cell's candidates (the same
   `stroke_owner.own_strokes`, unchanged: boxes, register areas, arc / hairpin traces, layers, vetoes, shapes) are pooled PER PAGE STROKE over the
-  cells that see it -- a claimant counted once by its key -- and settled ONCE by the same table (`stroke_owner._settle`). Each cell's verdict then
+  cells that see it -- a claimant counted once by its key; a BOX claim only from a view that sees the stroke whole (`WHOLE_VIEW_MIN`) -- and settled ONCE by the same table (`stroke_owner._settle`). Each cell's verdict then
   READS that one ownership for every linked stroke; it never re-derives it. Box verdicts, the claim-final census and every consumer read the cell
   verdict as before, so nothing downstream changes its code.
 
@@ -42,6 +42,10 @@ DERIVED_CHECK = False
 ENV = "OMR_PAGE_LEDGER_OWNS"
 #: a cell stroke joins a page stroke when at least this share of its own ink lies on that one page stroke (module doc)
 LINK_SHARE_MIN = 0.8
+#: a cell SEES a page stroke WHOLE when its piece holds at least this share of the page stroke's ink: only such a view's BOX claims are pooled (a box's
+#: shape test on a piece the cell edge cut is not a test of the mark -- round 1, Litolff p4: a neighbour staff's head box "could" on a 0.2-sp sliver of a
+#: stem took the whole stem). Register claims (area, trace: `how` area) are pooled from every view. A stroke no cell sees whole pools every view.
+WHOLE_VIEW_MIN = 0.8
 
 
 def enabled() -> bool:
@@ -81,11 +85,12 @@ class PageLabels:
         d = cv2.dilate(lab.astype(np.float32), np.ones((3, 3), np.uint8)).astype(np.int32)
         self.lab = np.where(lab == 0, d, lab)
         self.scale = s
+        self.ink = np.bincount(lab.ravel())             # each page stroke's own ink, px of the map's frame (index = ordinal + 1)
 
 
-def link_cell_strokes(res: Any, cell_rect: Sequence[float], upscale: float, labels: PageLabels) -> List[Optional[Tuple[int, float]]]:
-    """Per cell stroke (ordinal = index of `res.strokes`): `(page stroke ordinal, share of the cell stroke's ink on it)` or None (no page stroke under
-    it). `res` = the cell's `stroke_map.CellStrokes` (masks in its reduced frame, `res.scale` reduced / canonical); `cell_rect` / `upscale` = the
+def link_cell_strokes(res: Any, cell_rect: Sequence[float], upscale: float, labels: PageLabels) -> List[Optional[Tuple[int, float, float]]]:
+    """Per cell stroke (ordinal = index of `res.strokes`): `(page stroke ordinal, share of the cell stroke's ink on it, share of the PAGE stroke's ink the
+    piece holds)` or None (no page stroke under it). `res` = the cell's `stroke_map.CellStrokes` (masks in its reduced frame, `res.scale` reduced / canonical); `cell_rect` / `upscale` = the
     cell's `bbox_page_px` and `upscale_factor` (canonical px = page px x upscale)."""
     out: List[Optional[Tuple[int, float]]] = []
     rs = float(res.scale)
@@ -106,7 +111,9 @@ def link_cell_strokes(res: Any, cell_rect: Sequence[float], upscale: float, labe
             out.append(None)
             continue
         best = int(cnt.argmax())
-        out.append((best - 1, round(float(cnt[best]) / float(xs.size), 3)))
+        page_ink = float(labels.ink[best]) if best < labels.ink.size else 0.0
+        cover = min(1.0, float(cnt[best]) * k * k / page_ink) if page_ink > 0 else 0.0
+        out.append((best - 1, round(float(cnt[best]) / float(xs.size), 3), round(cover, 3)))
     return out
 
 
@@ -116,7 +123,7 @@ def tier_index(tiers: Sequence[Sequence[str]]) -> Dict[str, int]:
     return {f: i for i, t in enumerate(tiers) for f in t}
 
 
-def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple[int, float]]], tiers: Sequence[Sequence[str]]
+def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple[float, ...]]], tiers: Sequence[Sequence[str]]
          ) -> Tuple[Dict[int, Any], Dict[str, int]]:
     """PURE. `cell_views` = `{cell key: {ordinal: stroke_owner.Ownership}}` (each cell's own settle); `links` = `{cell key: {ordinal: (page id, share)}}`.
     Returns (`{page id: Ownership}` -- the one settle of the pooled candidates of every LINKED cell stroke, ordinal = the page id --, census).
@@ -126,7 +133,9 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
     cands: Dict[int, List[Dict[str, Any]]] = {}
     seen: Dict[int, set] = {}
     members: Dict[int, int] = {}
+    whole: set = set()
     census: Dict[str, int] = {}
+    views: List[Tuple[int, bool, Any]] = []
     for ck, view in cell_views.items():
         lk = links.get(ck) or {}
         for o, w in view.items():
@@ -136,24 +145,33 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
                 continue
             pid = int(ln[0])
             members[pid] = members.get(pid, 0) + 1
-            cs = cands.setdefault(pid, [])
-            sn = seen.setdefault(pid, set())
-            for c in w.candidates:
-                key = (str(c["key"]), str(c.get("how", "")))
-                if key in sn:
-                    continue
-                sn.add(key)
-                cs.append(dict(c))
+            is_whole = len(ln) < 3 or float(ln[2]) >= WHOLE_VIEW_MIN
+            if is_whole:
+                whole.add(pid)
+            views.append((pid, is_whole, w))
+    for pid, is_whole, w in views:
+        cs = cands.setdefault(pid, [])
+        sn = seen.setdefault(pid, set())
+        for c in w.candidates:
+            if pid in whole and not is_whole and c.get("how") != "area":
+                census["cut_view_box_claims_left_out"] = census.get("cut_view_box_claims_left_out", 0) + 1
+                continue
+            key = (str(c["key"]), str(c.get("how", "")))
+            if key in sn:
+                continue
+            sn.add(key)
+            cs.append(dict(c))
     out: Dict[int, Any] = {}
     for pid, cs in cands.items():
         cs.sort(key=lambda c: (ti.get(str(c["family"]), 0 if c.get("how") == "area" else 99), str(c["key"])))
         out[pid] = SO._settle(pid, {pid: cs}, {**ti, **{str(c["family"]): 0 for c in cs if str(c["family"]) not in ti}})
     census["page_strokes"] = len(members)
     census["page_strokes_seen_twice"] = sum(1 for n in members.values() if n > 1)
+    census["page_strokes_seen_whole"] = len(whole)
     return out, census
 
 
-def apply(view: Dict[int, Any], link: Dict[int, Tuple[int, float]], page: Dict[int, Any]) -> Tuple[Dict[int, Any], Dict[str, int]]:
+def apply(view: Dict[int, Any], link: Dict[int, Tuple[float, ...]], page: Dict[int, Any]) -> Tuple[Dict[int, Any], Dict[str, int]]:
     """PURE. One cell's ownership with every LINKED stroke given the page's one settle (ordinal restored to the cell's). Returns (view, what changed)."""
     from dataclasses import replace
     out = dict(view)

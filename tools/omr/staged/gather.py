@@ -8157,7 +8157,7 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
             if links is not None and i < len(links) and links[i] is not None:
-                optional["page_stroke"] = [links[i][0], links[i][1]]     # ROADMAP 2.284: the page stroke this stroke's ink lies on, and its share
+                optional["page_stroke"] = list(links[i])     # ROADMAP 2.284: the page stroke this stroke's ink lies on, and its share
             if page_ok:
                 x, y, w, h = st.box
                 optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
@@ -15340,7 +15340,7 @@ def _file_ink_claim(log: Log, ssub: Any, *, strokes: Optional[List[Tuple[int, fl
 
 def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                      stroke_cells: Dict[Tuple[int, int, int, int], Any], arcs_summary: Optional[Dict[str, Any]], *,
-                     progress: bool = False) -> Dict[str, int]:
+                     progress: bool = False, detections: Optional[Dict[str, List[Any]]] = None) -> Dict[str, int]:
     """lane-arcs-claim-1029 (flag `OMR_ARC_CLAIM`, default ON; needs `OMR_SYSTEM_ARCS` and `OMR_STROKE_MAP`), STAGED GATHER: the register's `ink`
     branch for ARCS, ONE CLAIM PER SYSTEM ARC (Sean 2026-10-29: "arcs ... need to be treated system or page wide not based on individual measures").
     The unit is the curve `gather_system_arcs` traced and joined across barlines (`Q.SYSTEM_ARC`'s `trace`), keyed by (page, system, staff) and its
@@ -15388,7 +15388,9 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
             if res is None or isinstance(res, str):
                 no_map += 1
                 continue
-            got = AC.claim_strokes(res, cb, float(up), trace, sp)
+            # ROADMAP 2.284 (OMR_PAGE_LEDGER_OWNS): the arc claims its own traced pixels only, never a head box's (as the arc eraser protects them)
+            heads = _arc_skip_head_boxes(detections, R.cell(*ck)) if (_page_ledger_on() and detections) else ()
+            got = AC.claim_strokes(res, cb, float(up), trace, sp, head_boxes=heads)
             if got:
                 cells_hit.append(ck[3])
             for i, sh in got:
@@ -15412,6 +15414,21 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         if progress:
             print(f"  gather arc claim {d.get('subject')} {d.get('shape')} boxes={len(pieces)}")
     return counts
+
+
+def _page_ledger_on() -> bool:
+    from . import page_ledger as _PL
+    return _PL.enabled()
+
+
+def _arc_skip_head_boxes(detections: Optional[Dict[str, List[Any]]], csub: Any) -> List[Tuple[float, float, float, float]]:
+    """ROADMAP 2.284: the cell's notehead detector boxes, canonical px (x0, y0, x1, y1): the pixels an arc's claim never counts as its own."""
+    out = []
+    for d in (detections or {}).get(csub.to_key(), ()):
+        if str(getattr(d, "smufl_name", "") or "").lower().startswith("notehead"):
+            x, y = float(d.x_canonical), float(d.y_canonical)
+            out.append((x, y, x + float(d.width_canonical), y + float(d.height_canonical)))
+    return out
 
 
 def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
@@ -17800,7 +17817,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                 page_map_pre = _pm_late
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
-        gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
+        gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress, detections=detections)
         # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default ON; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
         # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
         gather_accidental_family(cells, local, detections, stroke_cells)

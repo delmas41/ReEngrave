@@ -73,7 +73,8 @@ def slur_enabled() -> bool:
 
 # ── the claim: which strokes does a traced curve run along? ────────────────────────────────────────────────────────────────────────────────
 def on_trace_share(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence[float], up: float,
-                   trace: Dict[int, Tuple[float, float]], sp_page: float) -> float:
+                   trace: Dict[int, Tuple[float, float]], sp_page: float,
+                   skip_boxes: Sequence[Sequence[float]] = ()) -> float:
     """The share of one stroke's ink (`mask`, REDUCED px, origin `x0, y0` in the reduced frame of the cell) that lies on the traced curve.
 
     `trace` = `{page column x: (y top, y bottom)}` in page px. A reduced pixel maps to canonical px by `/ scale` and to page px by `cell_box origin
@@ -96,18 +97,26 @@ def on_trace_share(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence
     inside = (cols >= xmin) & (cols <= xmax)
     idx = np.clip(cols - xmin, 0, xmax - xmin)
     on = inside & (py >= lo[idx] - band) & (py <= hi[idx] + 1.0 + band)
+    if skip_boxes:
+        # ROADMAP 2.284 (`OMR_PAGE_LEDGER_OWNS`): the arc claims only its OWN traced pixels -- a pixel inside a head box is never the arc's
+        # (`arcs_system.erase_in_cell` protects the non-arc boxes the same way), so a hollow head's rim piece the trace overruns is not the arc's
+        cx = (x0 + xs + 0.5) / scale
+        cy = (y0 + ys + 0.5) / scale
+        for bx0, by0, bx1, by1 in skip_boxes:
+            on &= ~((cx >= bx0) & (cx <= bx1) & (cy >= by0) & (cy <= by1))
     return float(on.sum()) / float(ys.size)
 
 
 def claim_strokes(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int, Tuple[float, float]],
-                  sp_page: float) -> List[Tuple[int, float]]:
-    """`[(stroke ordinal, share)]` for every stroke of the cell (`stroke_map.CellStrokes`) whose ink lies at least `ON_TRACE_SHARE_MIN` on the curve."""
+                  sp_page: float, head_boxes: Sequence[Sequence[float]] = ()) -> List[Tuple[int, float]]:
+    """`[(stroke ordinal, share)]` for every stroke of the cell (`stroke_map.CellStrokes`) whose ink lies at least `ON_TRACE_SHARE_MIN` on the curve.
+    `head_boxes` (ROADMAP 2.284, canonical cell px x0, y0, x1, y1; empty = as before): pixels inside them are never counted on the curve."""
     out: List[Tuple[int, float]] = []
     masks = getattr(res, "masks", None) or []
     for i, (m, x0, y0) in enumerate(masks):
         if m.size == 0:
             continue
-        sh = on_trace_share(m, x0, y0, res.scale, cell_box, up, trace, sp_page)
+        sh = on_trace_share(m, x0, y0, res.scale, cell_box, up, trace, sp_page, skip_boxes=head_boxes)
         if sh >= ON_TRACE_SHARE_MIN:
             out.append((i, round(sh, 3)))
     return out

@@ -78,7 +78,7 @@ def test_link_finds_the_page_stroke_under_a_cell_stroke_and_its_share():
     far = np.ones((3, 3), bool)                         # ink where the page map has none
     res = _Res([(cm, 10, 10), (far, 60, 60)], scale=0.5)
     out = PL.link_cell_strokes(res, (10.0, 25.0, 90.0, 90.0), 2.0, lab)
-    assert out[0] == (0, 1.0)
+    assert out[0] == (0, 1.0, 0.5)                      # all its ink on page stroke 0, half of page stroke 0's ink
     assert out[1] is None
 
 
@@ -87,4 +87,31 @@ def test_carved_barline_rule_is_a_page_stroke_where_no_other_stroke_stands():
     lab = PL.PageLabels(pm, (60, 60))
     rule = np.ones((20, 2), bool)
     out = PL.link_cell_strokes(_Res([(rule, 40, 10)], 1.0), (0.0, 0.0, 60.0, 60.0), 1.0, lab)
-    assert out[0] == (0, 1.0)                            # ordinal n_strokes + k = 0 + 0
+    assert out[0][:2] == (0, 1.0)                        # ordinal n_strokes + k = 0 + 0
+
+
+def test_a_box_claim_from_a_cut_view_never_settles_a_stroke_another_cell_sees_whole():
+    # cell A sees the stem whole, no claimant (a consumer's); cell B's padding cut it to a sliver its neighbour head box "could" own: left out
+    a = SO.own_strokes([_ink(0)], [])
+    b = SO.own_strokes([_ink(4, "blob", (0, 0, 3, 10), 0.6, 0.19)], [SO.Claim("hB", "head", "noteheadBlack", (4,), (), "g2")])
+    assert b[4].family == "head"
+    page, cen = PL.pool({"A": a, "B": b}, {"A": {0: (9, 1.0, 1.0)}, "B": {4: (9, 1.0, 0.2)}}, SO.TIERS)
+    assert page[9].state == "unclaimed" and cen["cut_view_box_claims_left_out"] == 1
+    # ... but a register claim (area) from the cut view still stands
+    b2 = SO.own_strokes([_ink(4)], [SO.Claim("area-1", "barline", "barline", (4,), (), "r1", area=True)])
+    page2, _ = PL.pool({"A": a, "B": b2}, {"A": {0: (9, 1.0, 1.0)}, "B": {4: (9, 1.0, 0.2)}}, SO.TIERS)
+    assert page2[9].family == "barline"
+
+
+def test_an_arc_claims_only_its_own_traced_pixels_never_a_head_box(monkeypatch):
+    from tools.omr.staged import arc_claim as AC
+    from tools.omr.staged import claim_final as CF
+    m = np.ones((4, 10), bool)                          # a piece lying on the trace: page x 0..9, y 0..3 (scale 1, up 1, cell at 0, 0)
+    trace = {x: (0.0, 3.0) for x in range(0, 10)}
+    assert AC.on_trace_share(m, 0, 0, 1.0, (0, 0, 0, 0), 1.0, trace, 10.0) == 1.0
+    # the rim of a hollow head: the same pixels inside a head box are never the arc's
+    assert AC.on_trace_share(m, 0, 0, 1.0, (0, 0, 0, 0), 1.0, trace, 10.0, skip_boxes=[(0, 0, 6, 4)]) == 0.4
+    monkeypatch.delenv(PL.ENV, raising=False)
+    assert "arc_trace" in CF.mark_only()
+    monkeypatch.setenv(PL.ENV, "1")
+    assert "arc_trace" not in CF.mark_only() and "hairpin_trace" in CF.mark_only()

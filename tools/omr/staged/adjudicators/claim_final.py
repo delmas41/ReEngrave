@@ -52,7 +52,7 @@ def finding(ev: Any, box_row: Any, verdict: Any = None) -> Optional[Finding]:
     if got is None:
         return None
     e, v = got
-    if e["by"] in CF.CONSULTED_ELSEWHERE or e["by"] in CF.MARK_ONLY or float(e["share"]) < CF.CUT:
+    if e["by"] in CF.CONSULTED_ELSEWHERE or e["by"] in CF.mark_only() or float(e["share"]) < CF.CUT:
         return None
     if ev.subject.to_key() in set((getattr(v, "detail", None) or {}).get("box_owns") or ()):
         return None

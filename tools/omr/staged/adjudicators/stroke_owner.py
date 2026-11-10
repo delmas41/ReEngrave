@@ -458,15 +458,15 @@ def _cell_view(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
                 head_census=head_census, shaped=shaped, vetoes=vetoes, tiers=tiers, owned=owned)
 
 
-def _links(ev: Evidence, cell) -> Dict[int, Tuple[int, float]]:
-    """ROADMAP 2.284: `{cell stroke ordinal: (page stroke ordinal, share)}` from the cell's `Q.STROKE` rows (`page_stroke`, filed by GATHER with the flag on)."""
+def _links(ev: Evidence, cell) -> Dict[int, Tuple[float, ...]]:
+    """ROADMAP 2.284: `{cell stroke ordinal: (page stroke ordinal, share, cover)}` from the cell's `Q.STROKE` rows (`page_stroke`, filed by GATHER with the flag on)."""
     out: Dict[int, Tuple[int, float]] = {}
     for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         g = getattr(r.subject, "glyph", None)
         ln = (r.detail or {}).get("page_stroke")
-        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not (isinstance(ln, (list, tuple)) and len(ln) == 2):
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not (isinstance(ln, (list, tuple)) and len(ln) >= 2):
             continue
-        out[g - STROKE_GLYPH_BASE] = (int(ln[0]), float(ln[1]))
+        out[g - STROKE_GLYPH_BASE] = tuple([int(ln[0])] + [float(t) for t in ln[1:]])
     return out
 
 

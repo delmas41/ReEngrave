@@ -51,6 +51,15 @@ CONSULTED_ELSEWHERE = frozenset({"clef", "meter", "key_signature", "leading_colu
 #: readers do (the 2.277 hold: the sliver's duration fed a bar sum, a neighbour was confirmed by it). Only a layer's OWN ink is "not a note" (page_claim).
 SHAPE_EQUIVALENT_REASONS = ("claimed_by:barline",)
 MARK_ONLY = frozenset({"arc_trace", "arc", "hairpin_trace", "hairpin"})
+#: ROADMAP 2.284 (`OMR_PAGE_LEDGER_OWNS`): the arc claims only its own traced pixels (head-box pixels skipped, `arc_claim.claim_strokes`), so the
+#: workaround above goes for the ARC; the hairpin stays mark-only (its claim unit is unchanged)
+MARK_ONLY_LEDGER = frozenset({"hairpin_trace", "hairpin"})
+
+
+def mark_only() -> frozenset:
+    """The claim families that only MARK (flag `OMR_PAGE_LEDGER_OWNS` OFF: `MARK_ONLY`, as before)."""
+    from . import page_ledger as _PL
+    return MARK_ONLY_LEDGER if _PL.enabled() else MARK_ONLY
 
 
 def enabled() -> bool:
@@ -222,7 +231,7 @@ def survivors(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, float, 
         if refused or family not in BOX_FAMILIES:
             continue
         total, by = held_share(strokes, family, claim_families)
-        top = dominant(total, {f: v for f, v in by.items() if f not in CONSULTED_ELSEWHERE and f not in MARK_ONLY})
+        top = dominant(total, {f: v for f, v in by.items() if f not in CONSULTED_ELSEWHERE and f not in mark_only()})
         if top is not None and top[1] >= cut:
             out.append({"box": key, "family": family, "by": top[0], "share": round(top[1], 3)})
     return out
