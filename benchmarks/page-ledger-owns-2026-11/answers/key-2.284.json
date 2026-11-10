@@ -1,0 +1,316 @@
+[
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 6,
+  "box": [
+   2099.6575,
+   3435.37,
+   2122.6525,
+   3453.01
+  ],
+  "rg": "glyph/6/1/10/9/5",
+  "was": "continue",
+  "value": "begin",
+  "place": [
+   6,
+   1,
+   10,
+   9
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   2016,
+   3365
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 10,
+   "cell": 9,
+   "page_box": [
+    2099.6575,
+    3435.37,
+    2122.6525,
+    3453.01
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 2,
+  "box": [
+   1604.52,
+   3453.8,
+   1628.52,
+   3473.8
+  ],
+  "rg": "glyph/2/1/9/7/4",
+  "value": "eighth",
+  "place": [
+   2,
+   1,
+   9,
+   7
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1522,
+   3385
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 7,
+   "page_box": [
+    1604.52,
+    3453.8,
+    1628.52,
+    3473.8
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   2380.875,
+   3215.2775,
+   2406.8,
+   3235.7125
+  ],
+  "rg": "glyph/6/1/8/10/7",
+  "value": "eighth",
+  "place": [
+   6,
+   1,
+   8,
+   10
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   2299,
+   3146
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 8,
+   "cell": 10,
+   "page_box": [
+    2380.875,
+    3215.2775,
+    2406.8,
+    3235.7125
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   2379.96,
+   3173.645,
+   2402.835,
+   3195.4525
+  ],
+  "rg": "glyph/6/1/8/10/2",
+  "value": "eighth",
+  "place": [
+   6,
+   1,
+   8,
+   10
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   2296,
+   3105
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 8,
+   "cell": 10,
+   "page_box": [
+    2379.96,
+    3173.645,
+    2402.835,
+    3195.4525
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "rest",
+  "side": "lost",
+  "page": 0,
+  "box": [
+   2112.0,
+   4743.0,
+   2120.32,
+   4788.76
+  ],
+  "rg": "glyph/0/0/8/1/7",
+  "value": "quarter",
+  "place": [
+   0,
+   0,
+   8,
+   1
+  ],
+  "plate": "brahms",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   1924,
+   4605
+  ],
+  "position": {
+   "page": 0,
+   "system": 0,
+   "staff": 8,
+   "cell": 1,
+   "page_box": [
+    2112.0,
+    4743.0,
+    2120.32,
+    4788.76
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ },
+ {
+  "kind": "beam",
+  "side": "changed",
+  "page": 2,
+  "box": [
+   1575.24,
+   3436.84,
+   1598.76,
+   3456.04
+  ],
+  "rg": "glyph/2/1/9/7/8",
+  "was": "end",
+  "value": "continue",
+  "place": [
+   2,
+   1,
+   9,
+   7
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   1492,
+   3367
+  ],
+  "position": {
+   "page": 2,
+   "system": 1,
+   "staff": 9,
+   "cell": 7,
+   "page_box": [
+    1575.24,
+    3436.84,
+    1598.76,
+    3456.04
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "beam",
+  "side": "lost",
+  "page": 6,
+  "box": [
+   2076.19,
+   3465.295,
+   2106.43,
+   3483.88
+  ],
+  "rg": "glyph/6/1/10/9/9",
+  "value": "begin",
+  "place": [
+   6,
+   1,
+   10,
+   9
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1996,
+   3395
+  ],
+  "position": {
+   "page": 6,
+   "system": 1,
+   "staff": 10,
+   "cell": 9,
+   "page_box": [
+    2076.19,
+    3465.295,
+    2106.43,
+    3483.88
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ },
+ {
+  "kind": "note",
+  "side": "gained",
+  "page": 4,
+  "box": [
+   2087.0225,
+   1040.975,
+   2113.955,
+   1066.0175
+  ],
+  "rg": "glyph/4/0/4/11/12",
+  "value": "half",
+  "place": [
+   4,
+   0,
+   4,
+   11
+  ],
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   2005,
+   974
+  ],
+  "position": {
+   "page": 4,
+   "system": 0,
+   "staff": 4,
+   "cell": 11,
+   "page_box": [
+    2087.0225,
+    1040.975,
+    2113.955,
+    1066.0175
+   ]
+  },
+  "cell_map": "cm-54ccb4729528"
+ }
+]

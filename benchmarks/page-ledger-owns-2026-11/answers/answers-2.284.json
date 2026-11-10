@@ -1,0 +1,27 @@
+{
+ "lane": "2.284",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box?",
+ "verbatim": "1-4. 8 note 5. Barline 6. 8 note 7. Space on the staff in between a barline and a note 8. Half note",
+ "answers": {
+  "1": "eighth note",
+  "2": "eighth note",
+  "3": "eighth note",
+  "4": "eighth note",
+  "5": "barline",
+  "6": "eighth note",
+  "7": "empty staff space between a barline and a note",
+  "8": "half note"
+ },
+ "verdict_vs_ON": {
+  "1": "mark is an eighth; ON changes its beam role continue->begin (role not asked)",
+  "2": "RIGHT: eighth gained",
+  "3": "WRONG: real eighth lost",
+  "4": "WRONG: real eighth lost",
+  "5": "RIGHT: false quarter rest on a barline removed",
+  "6": "mark is an eighth; ON changes its beam role end->continue (role not asked)",
+  "7": "RIGHT: false beam on empty space removed",
+  "8": "RIGHT: half note gained"
+ },
+ "summary": "ON right 4 (2 gains, 2 fakes removed), wrong 2 (real eighths lost, Litolff p6), 2 beam-role changes not judged; plus the judged right->wrong eighth (Litolff p6 6/1/10/9)."
+}
