@@ -36,4 +36,4 @@ res = {"off_held_ge_0.5": sorted(k for k, v in off.items() if v >= 0.5), "on_hel
        "shares": {k: [off.get(k), on.get(k)] for k in sorted(set(off) | set(on))}}
 print(json.dumps({k: (v if not isinstance(v, list) else len(v)) for k, v in res.items() if k != "shares"}))
 print("still held >= 0.5 ON:", res["still_held_ge_0.5"])
-json.dump(res, open(pathlib.Path(__file__).parent / "out" / "r2" / "arc_held.json", "w"), indent=1)
+json.dump(res, open(pathlib.Path(__file__).parent / "out" / "r4" / "arc_held.json", "w"), indent=1)
