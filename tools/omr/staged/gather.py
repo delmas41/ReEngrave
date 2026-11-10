@@ -17979,7 +17979,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.269 step 3 (flag OMR_PAGE_CLAIM_BOXES, default OFF): the boxed dynamics (letters), whole rests and repeat dots name their page strokes by ink
         # share, AFTER the page-wide claims and BEFORE the page beams read (ledgers and hollow-head ink are M6's, ROADMAP 2.260e).
         _page_claim_names.gather_page_claim_boxes(log, pws, cells, local, detections, page_map_pre, progress=progress)
-        # ROADMAP 2.276 (flag OMR_PAGE_TREMOLO, default OFF): every tremolo slash read ONCE on the page map and claimed (owner `tremolo`, layer "tremolo" in
+        # ROADMAP 2.276 (flag OMR_PAGE_TREMOLO, default ON): every tremolo slash read ONCE on the page map and claimed (owner `tremolo`, layer "tremolo" in
         # `claim_order.LAYERS`, BEFORE the head layer). The READ is handed the detector's head boxes (the micro test's winner); the CLAIM stands before the head claim.
         from . import page_tremolo as _page_tremolo
         _page_tremolo.gather_page_tremolo(log, pws, cells, local, detections, page_map_pre, progress=progress)

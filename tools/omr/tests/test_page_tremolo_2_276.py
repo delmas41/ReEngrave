@@ -1,4 +1,4 @@
-"""ROADMAP 2.276 -- tremolo slashes read ONCE on the page and claimed (STAGED GATHER, `page_tremolo.py`, flag `OMR_PAGE_TREMOLO` default OFF).
+"""ROADMAP 2.276 -- tremolo slashes read ONCE on the page and claimed (STAGED GATHER, `page_tremolo.py`, flag `OMR_PAGE_TREMOLO` default ON).
 
 Every refusal has a positive control in the same class: a real slash across a stem is read and claimed; a head beside a stem, a one-sided flag hook, a stem
 with nothing across it are not; flag OFF files nothing.
@@ -208,8 +208,9 @@ class TestFiling(unittest.TestCase):
             out = PT.gather_page_tremolo(log, pws, [], {}, {}, pm)
         return log, out
 
-    def test_flag_off_files_nothing_and_reads_nothing(self):
+    def test_flag_zero_files_nothing_and_reads_nothing(self):
         env = {k: v for k, v in os.environ.items() if k != PT.ENV}
+        env[PT.ENV] = "0"
         with mock.patch.dict(os.environ, env, clear=True):
             log = Log()
             self.assertIsNone(PT.gather_page_tremolo(log, SimpleNamespace(), [], {}, {}, SimpleNamespace(strokes=[1])))

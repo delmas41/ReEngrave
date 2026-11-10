@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-09 -- ROADMAP 2.276 landed ON: OMR_PAGE_TREMOLO default ON (deny-list)
+STAGED GATHER `page_tremolo.gather_page_tremolo` (once per page after `gather_page_claim_boxes`, before the head claim): every tremolo slash read once on the page canvas and filed as one `Q.CLAIMED_AREA` row (owner `tremolo`, layer before `head`); r3 `held_by_earlier_read` refuses candidates inside a dynamic letter, beam or flag box (Sean's tiles 5 and 10, wrong in r2, now not claimed). Sean's r2 tiles 9/11 claims right; "Land" 2026-11-09. Default flipped in `page_tremolo.enabled()` (`OMR_PAGE_TREMOLO=0` turns it off); the flag-off test now sets "0". No re-gather (merge was clean). Fast tier run on the merged tree.
+
 ## 2026-11-06 -- ROADMAP 2.273 landed ON: OMR_ARC_STRIP default ON (deny-list)
 STAGED GATHER `arc_strip.gather_arc_strip` (hook in `gather.gather()` after the detector passes, before the page stroke map): the same detector is run once per staff row holding an arc box cut at an interior cell edge (`max_det` raised through `yolo_detector`/`detector_cache`, a raised cap never cached) and a strip tie/slur box that continues a cut cell arc box across the barline is appended as a clipped detector piece (`source` `arc_strip`). `enabled()` is deny-list: "0"/"false"/"no"/"off" turns it off. Sean: "Land it." (11/12 tiles right, tile 7 one note short). Brahms p0 vs hand arcs: written 89->96, two-piece 9->5, wrong-note 17->20 (being traced). Flag-OFF export byte-compared to main on Litolff p4 and Brahms p0. Flag rows, rule page and test pin updated.
 

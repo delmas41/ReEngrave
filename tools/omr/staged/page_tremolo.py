@@ -1,4 +1,4 @@
-"""ROADMAP 2.276 -- TREMOLO SLASHES READ ONCE ON THE PAGE, THEIR INK CLAIMED ONCE (STAGED GATHER; flag `OMR_PAGE_TREMOLO`, default OFF).
+"""ROADMAP 2.276 -- TREMOLO SLASHES READ ONCE ON THE PAGE, THEIR INK CLAIMED ONCE (STAGED GATHER; flag `OMR_PAGE_TREMOLO`, default ON (Sean 2026-11-09 "Land"; "0" turns it off)).
 
     Sean 2026-11-08: "I don't think we have tackled trem slashes yet. I think that should be a CV treatment on the page read."
     benchmarks/tremolo-claim-2026-11/FINDINGS.md; CLAUDE section 3 (claim order: a later reader may mark claimed ink but never take it).
@@ -72,7 +72,7 @@ END_MAX_REACH_SP = 1.69
 
 
 def enabled() -> bool:
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def stems_of(strokes: Sequence[Any]) -> List[Tuple[int, Tuple[float, float, float, float]]]:
@@ -218,7 +218,7 @@ def held_boxes(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]]
 
 def gather_page_tremolo(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any, *,
                         file: bool = True, progress: bool = False) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.276 (flag `OMR_PAGE_TREMOLO`, default OFF), STAGED GATHER. Reads the page's slashes once and files their claims (module doc). `file=False` reads only.
+    """ROADMAP 2.276 (flag `OMR_PAGE_TREMOLO`, default ON (Sean 2026-11-09 "Land"; "0" turns it off)), STAGED GATHER. Reads the page's slashes once and files their claims (module doc). `file=False` reads only.
     Returns `(slashes, reasons)`, or None where the flag is off or there is no page map."""
     if not enabled() or pm is None or not getattr(pm, "strokes", None):
         return None
