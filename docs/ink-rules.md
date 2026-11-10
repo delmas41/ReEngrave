@@ -336,6 +336,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `claim_order.py` | U | NOT YET CLASSIFIED | - | open |
 | `claims.py` | C | the claimed-area register: who owns which ink (clef, leading column, key, meter) | 2.181 | retires with 2.205 |
 | `clef_pagewide.py` | U | NOT YET CLASSIFIED | - | open |
+| `conservation.py` | U | NOT YET CLASSIFIED | - | open |
 | `detector_views.py` | D:gather | the detector looks at each symbol family at its own size | Sean 2026-10-19 (2.172) | kept |
 | `dyad_head_rescue.py` | U | NOT YET CLASSIFIED | - | open |
 | `export_unison.py` | A | EXPORT of a unison head as two notes | Sean 2026-10-19 (2.175) | kept |
@@ -411,6 +412,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`claim_final.py`**: not classified.
 - **`claim_order.py`**: not classified.
 - **`clef_pagewide.py`**: not classified.
+- **`conservation.py`**: not classified.
 - **`dyad_head_rescue.py`**: not classified.
 - **`hairpin_bind.py`**: not classified.
 - **`head_extent.py`**: not classified.
