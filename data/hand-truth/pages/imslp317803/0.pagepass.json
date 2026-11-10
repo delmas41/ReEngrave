@@ -933,11 +933,22 @@
   },
   {
    "id": "P29",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1612,
+     1740,
+     1684,
+     1820
+    ],
+    "mode": "all",
+    "px": 1574,
+    "rule": "pageink-1",
+    "sha1": "7cc8235670610223"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -948,17 +959,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P30",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1613,
+     2122,
+     1685,
+     2204
+    ],
+    "mode": "all",
+    "px": 1492,
+    "rule": "pageink-1",
+    "sha1": "f1cceaa38439870c"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -969,7 +991,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
@@ -990,17 +1012,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P32",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1617,
+     2501,
+     1686,
+     2582
+    ],
+    "mode": "all",
+    "px": 1547,
+    "rule": "pageink-1",
+    "sha1": "061d9d7378b24601"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1011,7 +1044,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
@@ -1032,38 +1065,60 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P34",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1621,
+     2933,
+     1690,
+     3014
+    ],
+    "mode": "all",
+    "px": 1460,
+    "rule": "pageink-1",
+    "sha1": "608e51df8d06aad6"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1621.138671875,
-     2940.0,
-     1684.29296875,
-     3012.782567049808
+     1613.9658203125,
+     2928.891283524904,
+     1691.4658203125,
+     3017.2246168582374
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P35",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1620,
+     3312,
+     1690,
+     3395
+    ],
+    "mode": "all",
+    "px": 1625,
+    "rule": "pageink-1",
+    "sha1": "546208246d49c607"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1074,17 +1129,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P36",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1841,
+     4098,
+     1911,
+     4176
+    ],
+    "mode": "all",
+    "px": 1435,
+    "rule": "pageink-1",
+    "sha1": "ce55138de6a62b7a"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1095,17 +1161,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P37",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1624,
+     3799,
+     1695,
+     3882
+    ],
+    "mode": "all",
+    "px": 1645,
+    "rule": "pageink-1",
+    "sha1": "c38a4b75c5c7f591"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1116,17 +1193,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P38",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1619,
+     4504,
+     1688,
+     4584
+    ],
+    "mode": "all",
+    "px": 1485,
+    "rule": "pageink-1",
+    "sha1": "c72576e2e60f3551"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1137,17 +1225,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P39",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1624,
+     4797,
+     1692,
+     4878
+    ],
+    "mode": "all",
+    "px": 1501,
+    "rule": "pageink-1",
+    "sha1": "286a1c80ad8c1736"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1158,17 +1257,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P40",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1621,
+     5311,
+     1693,
+     5390
+    ],
+    "mode": "all",
+    "px": 1558,
+    "rule": "pageink-1",
+    "sha1": "9aac2f78fd7b6b3a"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1179,7 +1289,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
@@ -1200,17 +1310,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "p"
   },
   {
    "id": "P42",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1621,
+     5716,
+     1692,
+     5795
+    ],
+    "mode": "all",
+    "px": 1500,
+    "rule": "pageink-1",
+    "sha1": "d5415e86c66d01ed"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1221,17 +1342,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P43",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1622,
+     6178,
+     1694,
+     6256
+    ],
+    "mode": "all",
+    "px": 1510,
+    "rule": "pageink-1",
+    "sha1": "47bf634e96e053a8"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1242,17 +1374,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P44",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1625,
+     6555,
+     1693,
+     6636
+    ],
+    "mode": "all",
+    "px": 1486,
+    "rule": "pageink-1",
+    "sha1": "dfe1cb512de80721"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1263,17 +1406,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
   {
    "id": "P45",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1620,
+     6892,
+     1688,
+     6972
+    ],
+    "mode": "all",
+    "px": 1473,
+    "rule": "pageink-1",
+    "sha1": "4e7413b1020abba5"
+   },
    "kind": "dynamic",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1284,7 +1438,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "f"
   },
@@ -1610,53 +1764,86 @@
   },
   {
    "id": "P56",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1494,
+     1588,
+     1565,
+     1717
+    ],
+    "mode": "all",
+    "px": 2871,
+    "rule": "pageink-1",
+    "sha1": "f2a9685ec027dd79"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1501.36328125,
-     1649.8071065989848,
-     1549.708984375,
-     1715.598138747885
+     1494.1191158900835,
+     1585.7709829632165,
+     1563.7865790521705,
+     1716.7458137079395
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P57",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5426,
+     1588,
+     5489,
+     1711
+    ],
+    "mode": "all",
+    "px": 2649,
+    "rule": "pageink-1",
+    "sha1": "0782c1beac0b6b74"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     5430.294285714286,
-     1583.9636591478697,
-     5476.4628571428575,
-     1699.483709273183
+     5426.295238095238,
+     1583.5559596011515,
+     5487.961904761904,
+     1714.3892929344847
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P58",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5428,
+     1965,
+     5481,
+     2101
+    ],
+    "mode": "all",
+    "px": 2634,
+    "rule": "pageink-1",
+    "sha1": "ee580e29e203921a"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1667,38 +1854,60 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P59",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1491,
+     2358,
+     1561,
+     2479
+    ],
+    "mode": "all",
+    "px": 2745,
+    "rule": "pageink-1",
+    "sha1": "6069775b369d6e6a"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1503.10546875,
-     2356.4706382978725,
-     1547.095703125,
-     2418.3463829787233
+     1491.3324173636001,
+     2354.4303305455996,
+     1560.9998805256869,
+     2482.618462763839
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P60",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5427,
+     2358,
+     5476,
+     2486
+    ],
+    "mode": "all",
+    "px": 2534,
+    "rule": "pageink-1",
+    "sha1": "4d54c74396007df2"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1709,17 +1918,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P61",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1500,
+     2744,
+     1548,
+     2867
+    ],
+    "mode": "all",
+    "px": 2690,
+    "rule": "pageink-1",
+    "sha1": "98d77ed711ad9937"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1730,17 +1950,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P62",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5424,
+     2746,
+     5475,
+     2867
+    ],
+    "mode": "all",
+    "px": 2681,
+    "rule": "pageink-1",
+    "sha1": "4cf362c514350665"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1751,17 +1982,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P63",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1502,
+     3074,
+     1551,
+     3197
+    ],
+    "mode": "all",
+    "px": 2740,
+    "rule": "pageink-1",
+    "sha1": "d1865e7e23eff8a0"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1772,17 +2014,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P64",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5426,
+     3073,
+     5474,
+     3198
+    ],
+    "mode": "all",
+    "px": 2744,
+    "rule": "pageink-1",
+    "sha1": "497a8b38f73ec00c"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1793,17 +2046,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P65",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1503,
+     3492,
+     1553,
+     3614
+    ],
+    "mode": "all",
+    "px": 2633,
+    "rule": "pageink-1",
+    "sha1": "52de6ba93fa40053"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1814,17 +2078,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P66",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5422,
+     3488,
+     5472,
+     3610
+    ],
+    "mode": "all",
+    "px": 2709,
+    "rule": "pageink-1",
+    "sha1": "8cffe35109856627"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1835,17 +2110,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P67",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1506,
+     3960,
+     1556,
+     4082
+    ],
+    "mode": "all",
+    "px": 2649,
+    "rule": "pageink-1",
+    "sha1": "77aeeb2b45856a72"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1856,17 +2142,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P68",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5422,
+     3960,
+     5471,
+     4086
+    ],
+    "mode": "all",
+    "px": 2625,
+    "rule": "pageink-1",
+    "sha1": "50a7acdbf7fd112a"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1877,17 +2174,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P69",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1506,
+     4303,
+     1556,
+     4431
+    ],
+    "mode": "all",
+    "px": 2741,
+    "rule": "pageink-1",
+    "sha1": "15bb1ed7fdb8a2c3"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1898,17 +2206,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P70",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5421,
+     4307,
+     5471,
+     4438
+    ],
+    "mode": "all",
+    "px": 2697,
+    "rule": "pageink-1",
+    "sha1": "700d6165f3d11cd7"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1919,17 +2238,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P71",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1506,
+     4658,
+     1555,
+     4781
+    ],
+    "mode": "all",
+    "px": 2644,
+    "rule": "pageink-1",
+    "sha1": "f3e3ec5d5b0982ae"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1940,17 +2270,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P72",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5421,
+     4658,
+     5469,
+     4785
+    ],
+    "mode": "all",
+    "px": 2684,
+    "rule": "pageink-1",
+    "sha1": "b429ad674329d71b"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1961,17 +2302,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P73",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5423,
+     5162,
+     5473,
+     5285
+    ],
+    "mode": "all",
+    "px": 2792,
+    "rule": "pageink-1",
+    "sha1": "2e1ae4d46e5d86e0"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -1982,17 +2334,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P74",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1505,
+     5556,
+     1554,
+     5679
+    ],
+    "mode": "all",
+    "px": 2527,
+    "rule": "pageink-1",
+    "sha1": "7a7d48a47a431ff3"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2003,17 +2366,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P75",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5421,
+     5542,
+     5470,
+     5672
+    ],
+    "mode": "all",
+    "px": 3062,
+    "rule": "pageink-1",
+    "sha1": "d534bb5f194ba21c"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2024,17 +2398,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P76",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1504,
+     6002,
+     1552,
+     6126
+    ],
+    "mode": "all",
+    "px": 2568,
+    "rule": "pageink-1",
+    "sha1": "8862300b8d7b7592"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2045,17 +2430,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P77",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5423,
+     5991,
+     5476,
+     6121
+    ],
+    "mode": "all",
+    "px": 3167,
+    "rule": "pageink-1",
+    "sha1": "2ea59ffb2a925512"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2066,17 +2462,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P78",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1504,
+     6398,
+     1552,
+     6518
+    ],
+    "mode": "all",
+    "px": 2559,
+    "rule": "pageink-1",
+    "sha1": "017174b28690dac7"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2087,17 +2494,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P79",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5421,
+     6385,
+     5477,
+     6514
+    ],
+    "mode": "all",
+    "px": 3093,
+    "rule": "pageink-1",
+    "sha1": "5218e83196ad8fcf"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2108,17 +2526,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P80",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1505,
+     6741,
+     1553,
+     6870
+    ],
+    "mode": "all",
+    "px": 2490,
+    "rule": "pageink-1",
+    "sha1": "7e8e4fe8ff66bae7"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2129,17 +2558,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
   {
    "id": "P81",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5419,
+     6737,
+     5472,
+     6873
+    ],
+    "mode": "all",
+    "px": 2749,
+    "rule": "pageink-1",
+    "sha1": "24e2672a74d68eff"
+   },
    "kind": "meter",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2150,7 +2590,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": null
   },
@@ -2797,53 +3237,86 @@
   },
   {
    "id": "P112",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1699,
+     2944,
+     1903,
+     3013
+    ],
+    "mode": "all",
+    "px": 4276,
+    "rule": "pageink-1",
+    "sha1": "e00d2da727b27694"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1696.48828125,
-     2930.587439613527,
-     1931.248046875,
-     2997.257004830918
+     1697.6181640625,
+     2938.9222222222224,
+     1910.9514973958335,
+     3018.088888888889
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "legato"
   },
   {
    "id": "P113",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1711,
+     5721,
+     2150,
+     5795
+    ],
+    "mode": "all",
+    "px": 7994,
+    "rule": "pageink-1",
+    "sha1": "153ce6fe906ee9e9"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1714.345703125,
-     5709.210212765957,
-     2108.080078125,
-     5791.130212765957
+     1707.462890625,
+     5721.836879432624,
+     2156.629557291667,
+     5796.00354609929
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "espr. e legato"
   },
   {
    "id": "P114",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1577,
+     5852,
+     1689,
+     5915
+    ],
+    "mode": "all",
+    "px": 1841,
+    "rule": "pageink-1",
+    "sha1": "6072793fd6b9d9a9"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -2854,93 +3327,105 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "div."
   },
   {
    "id": "P115",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1710,
+     6181,
+     2153,
+     6254
+    ],
+    "mode": "all",
+    "px": 7819,
+    "rule": "pageink-1",
+    "sha1": "281f310e27de0180"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1705.19921875,
-     6188.417935702199,
-     2109.822265625,
-     6245.9306260575295
+     1701.2607421875,
+     6178.0076142131975,
+     2159.5940755208335,
+     6256.340947546531
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "espr. e legato"
   },
   {
    "id": "P116",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1706,
+     6556,
+     2146,
+     6637
+    ],
+    "mode": "all",
+    "px": 8203,
+    "rule": "pageink-1",
+    "sha1": "34f089b1a9dbd481"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1699.1015625,
-     6558.182127659575,
-     2108.951171875,
-     6637.051914893617
+     1696.1097005208333,
+     6556.7836879432625,
+     2151.1097005208335,
+     6638.450354609929
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "espr. e legato"
   },
   {
    "id": "P117",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1697,
+     6907,
+     1965,
+     6977
+    ],
+    "mode": "all",
+    "px": 5265,
+    "rule": "pageink-1",
+    "sha1": "d10d649005f6712e"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1696.48828125,
-     6910.489361702128,
-     1968.705078125,
-     6978.0297872340425
+     1692.1800130208333,
+     6900.092907801419,
+     1979.6800130208335,
+     6978.426241134753
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "pesante"
-  },
-  {
-   "id": "P118",
-   "ink_ref": null,
-   "kind": "word",
-   "labeler": "sean",
-   "note": "",
-   "origin": "prefill",
-   "pass": "page",
-   "shape": {
-    "rect": [
-     1491.345703125,
-     6978.901276595745,
-     2109.822265625,
-     7061.692765957447
-    ]
-   },
-   "source": "hand-cell-labels",
-   "state": "pending",
-   "sub": null,
-   "text": "un poco sostenuto"
   },
   {
    "id": "P119",
@@ -2959,7 +3444,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "phonie from symphonie in title"
   },
@@ -2980,7 +3465,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "e from symphonie in title"
   },
@@ -3001,7 +3486,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Nr."
   },
@@ -3022,7 +3507,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "1 (from title symphonie Nr. 1)"
   },
@@ -3043,7 +3528,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Sym (symphonie title)"
   },
@@ -3064,7 +3549,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "(C mol)"
   },
@@ -3085,7 +3570,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "moll). from Cmoll title"
   },
@@ -3106,7 +3591,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Orchester"
   },
@@ -3127,7 +3612,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Grobes"
   },
@@ -3148,7 +3633,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Fur"
   },
@@ -3169,7 +3654,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "composer text"
   },
@@ -3190,7 +3675,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Op 68"
   },
@@ -3211,7 +3696,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Johannes"
   },
@@ -3232,7 +3717,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "sostenuto"
   },
@@ -3253,28 +3738,39 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "poco"
   },
   {
    "id": "P134",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     607,
+     1616,
+     968,
+     1684
+    ],
+    "mode": "all",
+    "px": 7143,
+    "rule": "pageink-1",
+    "sha1": "a767a17506928de7"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     691.5115546218487,
-     1610.6451612903227,
-     971.7457983193278,
-     1686.774193548387
+     598.7120098039217,
+     1603.7096774193549,
+     972.045343137255,
+     1687.8763440860216
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "floten"
   },
@@ -3295,28 +3791,39 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "2"
   },
   {
    "id": "P136",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     603,
+     1998,
+     969,
+     2068
+    ],
+    "mode": "all",
+    "px": 6703,
+    "rule": "pageink-1",
+    "sha1": "502d2745bb63597c"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     687.3539486203615,
-     1990.0696202531647,
-     971.8430066603235,
-     2070.76582278481
+     588.3484776403425,
+     1980.4177215189875,
+     977.5151443070092,
+     2071.251054852321
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "Oboen"
   },
@@ -3337,7 +3844,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "2"
   },
@@ -3358,7 +3865,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "B"
   },
@@ -3379,7 +3886,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "Klarinetten in"
   },
@@ -3400,28 +3907,39 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "2"
   },
   {
    "id": "P141",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     581,
+     2774,
+     1006,
+     2864
+    ],
+    "mode": "all",
+    "px": 8339,
+    "rule": "pageink-1",
+    "sha1": "83d551cb838e3340"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     674.1653333333334,
-     2770.5873015873017,
-     1010.0613333333333,
-     2867.4126984126983
+     570.03,
+     2769.0,
+     1016.6966666666667,
+     2868.1666666666665
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "fagotte"
   },
@@ -3442,17 +3960,28 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "rejected",
    "sub": null,
    "text": "2"
   },
   {
    "id": "P143",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     505,
+     3103,
+     1078,
+     3193
+    ],
+    "mode": "all",
+    "px": 11876,
+    "rule": "pageink-1",
+    "sha1": "8f082c46cd7311be"
+   },
    "kind": "word",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3463,7 +3992,7 @@
     ]
    },
    "source": "hand-cell-labels",
-   "state": "pending",
+   "state": "confirmed",
    "sub": null,
    "text": "Kontrafagott"
   },
@@ -3722,11 +4251,22 @@
   },
   {
    "id": "P155",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1666,
+     1452,
+     2557,
+     1548
+    ],
+    "mode": "thin",
+    "px": 8028,
+    "rule": "pageink-1",
+    "sha1": "7bd7aa99ea27b212"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) L extended past the hand box; extend_unboxed_half: slur boxed from the barline only; the arc starts at the first note of bar 1 (x~1666) and crosses the barline at 2112 (Sean's tile 2/5 pattern)",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3737,17 +4277,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P156",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2722,
+     1455,
+     2900,
+     1561
+    ],
+    "mode": "thin",
+    "px": 1594,
+    "rule": "pageink-1",
+    "sha1": "1e097928698f1c89"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3758,17 +4309,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P157",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3156,
+     1409,
+     3477,
+     1466
+    ],
+    "mode": "thin",
+    "px": 2545,
+    "rule": "pageink-1",
+    "sha1": "4c7ecc7464c7c83e"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3779,17 +4341,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P158",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3635,
+     1411,
+     4027,
+     1474
+    ],
+    "mode": "thin",
+    "px": 3299,
+    "rule": "pageink-1",
+    "sha1": "c889c0f0fb09125e"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3800,38 +4373,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P159",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4161,
+     1860,
+     4603,
+     1923
+    ],
+    "mode": "thin",
+    "px": 3757,
+    "rule": "pageink-1",
+    "sha1": "7011ac582728a404"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4186.0,
-     1860.0,
-     4601.0,
-     1906.0
+     4152.25,
+     1850.5,
+     4605.583333333333,
+     1921.3333333333335
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P160",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4164,
+     1404,
+     4597,
+     1507
+    ],
+    "mode": "thin",
+    "px": 3649,
+    "rule": "pageink-1",
+    "sha1": "ff1b07168a7bb561"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3842,17 +4437,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P161",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4732,
+     1412,
+     5277,
+     1487
+    ],
+    "mode": "thin",
+    "px": 4772,
+    "rule": "pageink-1",
+    "sha1": "2abe33f4b81d52a0"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3863,38 +4469,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P162",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4731,
+     1848,
+     5281,
+     1942
+    ],
+    "mode": "thin",
+    "px": 4573,
+    "rule": "pageink-1",
+    "sha1": "a0e3cbdbaafbeb8b"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4730.0,
-     1846.0,
-     5234.0,
-     1906.0
+     4731.721554770318,
+     1843.7060070671378,
+     5304.465017667844,
+     1941.537809187279
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P163",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1666,
+     1834,
+     2554,
+     1928
+    ],
+    "mode": "thin",
+    "px": 7560,
+    "rule": "pageink-1",
+    "sha1": "ac5f17861c71474b"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) L extended past the hand box; extend_unboxed_half: same slur one staff lower (staff 1): left half in bar 1 unboxed",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3905,17 +4533,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P164",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2731,
+     1920,
+     2907,
+     1961
+    ],
+    "mode": "thin",
+    "px": 1259,
+    "rule": "pageink-1",
+    "sha1": "cbdcd52ca5635b32"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3926,17 +4565,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P165",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3153,
+     1909,
+     3477,
+     1974
+    ],
+    "mode": "thin",
+    "px": 2694,
+    "rule": "pageink-1",
+    "sha1": "ccd828e33627df69"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3947,17 +4597,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P166",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3612,
+     1907,
+     4027,
+     1974
+    ],
+    "mode": "thin",
+    "px": 3415,
+    "rule": "pageink-1",
+    "sha1": "aa1465f233581bac"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3968,17 +4629,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P167",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1674,
+     2637,
+     2567,
+     2730
+    ],
+    "mode": "thin",
+    "px": 7365,
+    "rule": "pageink-1",
+    "sha1": "8bedce2b12cab51b"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -3989,17 +4661,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P168",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1670,
+     2208,
+     2567,
+     2298
+    ],
+    "mode": "thin",
+    "px": 8009,
+    "rule": "pageink-1",
+    "sha1": "99f74c22c49464a1"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4010,17 +4693,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P169",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2726,
+     2290,
+     2907,
+     2333
+    ],
+    "mode": "thin",
+    "px": 1324,
+    "rule": "pageink-1",
+    "sha1": "fba6367dda838aec"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4031,17 +4725,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P170",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3160,
+     2304,
+     3483,
+     2346
+    ],
+    "mode": "thin",
+    "px": 2577,
+    "rule": "pageink-1",
+    "sha1": "50e017d287f34662"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4052,17 +4757,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P171",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3638,
+     2519,
+     4030,
+     2584
+    ],
+    "mode": "thin",
+    "px": 3037,
+    "rule": "pageink-1",
+    "sha1": "56c764e5add2091e"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4073,17 +4789,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P172",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4164,
+     2469,
+     4610,
+     2538
+    ],
+    "mode": "thin",
+    "px": 3850,
+    "rule": "pageink-1",
+    "sha1": "26b7cddc340d0e1a"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4094,17 +4821,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P173",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4158,
+     2657,
+     4605,
+     2725
+    ],
+    "mode": "thin",
+    "px": 3614,
+    "rule": "pageink-1",
+    "sha1": "ca67a0b3aeede342"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4115,17 +4853,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P174",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4733,
+     2270,
+     5285,
+     2350
+    ],
+    "mode": "thin",
+    "px": 4702,
+    "rule": "pageink-1",
+    "sha1": "5845c2a9f2aa7a16"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4136,17 +4885,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P175",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2734,
+     2720,
+     2910,
+     2762
+    ],
+    "mode": "thin",
+    "px": 1185,
+    "rule": "pageink-1",
+    "sha1": "37c149152465a27c"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4157,17 +4917,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P176",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3182,
+     2709,
+     3483,
+     2756
+    ],
+    "mode": "thin",
+    "px": 2286,
+    "rule": "pageink-1",
+    "sha1": "afef65771228cbe6"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4178,17 +4949,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P177",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3657,
+     2704,
+     4023,
+     2757
+    ],
+    "mode": "thin",
+    "px": 2815,
+    "rule": "pageink-1",
+    "sha1": "8ae83cac96bf314f"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4199,17 +4981,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P178",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4734,
+     2597,
+     5285,
+     2680
+    ],
+    "mode": "thin",
+    "px": 4669,
+    "rule": "pageink-1",
+    "sha1": "f95e4c60a050f0a3"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4220,17 +5013,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P179",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1674,
+     3286,
+     2040,
+     3333
+    ],
+    "mode": "thin",
+    "px": 3099,
+    "rule": "pageink-1",
+    "sha1": "1e145a2de8df0ca9"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4241,17 +5045,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P180",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1699,
+     3593,
+     2233,
+     3634
+    ],
+    "mode": "thin",
+    "px": 4303,
+    "rule": "pageink-1",
+    "sha1": "4f4a588224b801ba"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4262,7 +5077,7 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
@@ -4283,7 +5098,7 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "rejected",
    "sub": "tie",
    "text": null
   },
@@ -4304,38 +5119,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "rejected",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P183",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2764,
+     3595,
+     3143,
+     3629
+    ],
+    "mode": "thin",
+    "px": 2674,
+    "rule": "pageink-1",
+    "sha1": "7ab276effa6104ba"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "dedupe_label: two labels of ONE tie (chord 2720 -> chord 3185, staff 5 top): q639 2754-3094 and q647 2688-3095, then joined at 3101 with q660; the old scorer chained it with its neighbours; dedupe_label: two labels of ONE tie (chord 2720 -> chord 3185, staff 5 top): q639 2754-3094 and q647 2688-3095, then joined at 3101 with q660; the old scorer chained it with its neighbours; dedupe_label: two la",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     2688.0,
-     3594.0,
-     3141.0,
-     3636.0
+     2755.283038869258,
+     3590.242402826855,
+     3145.4286219081273,
+     3631.2204946996467
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P184",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2751,
+     3782,
+     3161,
+     3821
+    ],
+    "mode": "thin",
+    "px": 3079,
+    "rule": "pageink-1",
+    "sha1": "ee044cc696fbb3a2"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4346,38 +5183,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P185",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3191,
+     3586,
+     3597,
+     3621
+    ],
+    "mode": "thin",
+    "px": 3209,
+    "rule": "pageink-1",
+    "sha1": "a64c09030fb03f0c"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3162.0,
-     3591.0,
-     3623.0,
-     3626.0
+     3191.3758539458186,
+     3585.0427561837455,
+     3601.443227326266,
+     3623.26937573616
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P186",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3181,
+     3782,
+     3634,
+     3822
+    ],
+    "mode": "thin",
+    "px": 3393,
+    "rule": "pageink-1",
+    "sha1": "5780ac10c4aa67d1"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4388,122 +5247,188 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P187",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3659,
+     3788,
+     4168,
+     3820
+    ],
+    "mode": "thin",
+    "px": 3740,
+    "rule": "pageink-1",
+    "sha1": "4d868b33eb665525"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3651.0,
-     3782.0,
-     4166.0,
-     3807.0
+     3658.5824499411074,
+     3785.7650176678444,
+     4171.034746760895,
+     3820.7049469964663
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P188",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3668,
+     3586,
+     4134,
+     3621
+    ],
+    "mode": "thin",
+    "px": 3373,
+    "rule": "pageink-1",
+    "sha1": "e845cd0168bd8849"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3569.0,
-     3589.0,
-     4156.0,
-     3625.0
+     3661.716961130742,
+     3582.6626619552417,
+     4142.932508833923,
+     3621.3811542991757
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P189",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4200,
+     3586,
+     4722,
+     3622
+    ],
+    "mode": "thin",
+    "px": 3612,
+    "rule": "pageink-1",
+    "sha1": "72c395f6c6165ea7"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4152.0,
-     3582.0,
-     4724.0,
-     3627.0
+     4195.9948174322735,
+     3580.7845700824496,
+     4720.968197879859,
+     3620.6696113074204
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P190",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4200,
+     3785,
+     4732,
+     3817
+    ],
+    "mode": "thin",
+    "px": 3670,
+    "rule": "pageink-1",
+    "sha1": "db374f8f4e7a0311"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4196.0,
-     3776.0,
-     4675.0,
-     3805.0
+     4196.733451118964,
+     3782.375618374558,
+     4735.650765606596,
+     3823.9002355712605
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P191",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4766,
+     3587,
+     5366,
+     3629
+    ],
+    "mode": "thin",
+    "px": 4339,
+    "rule": "pageink-1",
+    "sha1": "8b6a88fc20f17a3a"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "leaves the system (cross-system tie)",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4716.0,
-     3599.0,
-     5374.0,
-     3646.0
+     4760.409187279152,
+     3581.5784452296816,
+     5368.032273262662,
+     3631.1803297997644
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P192",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4761,
+     3780,
+     5379,
+     3821
+    ],
+    "mode": "thin",
+    "px": 4250,
+    "rule": "pageink-1",
+    "sha1": "853e54b0caee139e"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "leaves the system (cross-system tie)",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4514,17 +5439,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P193",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1882,
+     3865,
+     3178,
+     3994
+    ],
+    "mode": "thin",
+    "px": 12409,
+    "rule": "pageink-1",
+    "sha1": "77db70107b2c0618"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4535,17 +5471,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P194",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1695,
+     3776,
+     2246,
+     3825
+    ],
+    "mode": "thin",
+    "px": 4308,
+    "rule": "pageink-1",
+    "sha1": "45851839d9360117"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4556,17 +5503,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P195",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2274,
+     3781,
+     2728,
+     3822
+    ],
+    "mode": "thin",
+    "px": 3648,
+    "rule": "pageink-1",
+    "sha1": "fd5cf05ca04443df"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4577,38 +5535,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P196",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1718,
+     4288,
+     1875,
+     4322
+    ],
+    "mode": "thin",
+    "px": 1085,
+    "rule": "pageink-1",
+    "sha1": "be1c0e2817ad4a5f"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1696.0,
-     4301.0,
-     1877.0,
-     4322.0
+     1697.0843486874694,
+     4269.845861071967,
+     1873.8388806339776,
+     4321.832488115058
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P197",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1669,
+     4484,
+     1859,
+     4518
+    ],
+    "mode": "thin",
+    "px": 1369,
+    "rule": "pageink-1",
+    "sha1": "728dfc532b223ec5"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4619,38 +5599,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P198",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1671,
+     4968,
+     2606,
+     5060
+    ],
+    "mode": "thin",
+    "px": 7799,
+    "rule": "pageink-1",
+    "sha1": "ea0d7268d9d41643"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) L extended past the hand box; extend_unboxed_half: slur boxed from the barline only (staff 8 region); left half in bar 1 unboxed",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1672.0,
-     4969.0,
-     2606.0,
-     5025.0
+     1661.1088339222615,
+     4947.714723203769,
+     2609.850412249705,
+     5058.606595995288
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P199",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1680,
+     5042,
+     1885,
+     5074
+    ],
+    "mode": "thin",
+    "px": 1600,
+    "rule": "pageink-1",
+    "sha1": "0451c4fae0a8221c"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4661,38 +5663,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P200",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2046,
+     5040,
+     2255,
+     5077
+    ],
+    "mode": "thin",
+    "px": 1500,
+    "rule": "pageink-1",
+    "sha1": "773f2bbe3a971205"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) L extended past the hand box; extend_unboxed_half: tie boxed from the barline only: the left half (1994-2112) unboxed",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1994.0,
-     5040.0,
-     2254.0,
-     5075.0
+     2042.75,
+     5037.5,
+     2256.9166666666665,
+     5078.333333333333
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P201",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2354,
+     5035,
+     2434,
+     5056
+    ],
+    "mode": "thin",
+    "px": 694,
+    "rule": "pageink-1",
+    "sha1": "7edc1f1c7a9222d0"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4703,17 +5727,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P202",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2619,
+     4986,
+     2743,
+     5011
+    ],
+    "mode": "thin",
+    "px": 791,
+    "rule": "pageink-1",
+    "sha1": "3e1be42efced6183"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) R extended past the hand box; extend_unboxed_half: slur stub ending at the barline 2671; the arc runs on to 2742 in the next bar",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4724,17 +5759,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
-   "sub": "slur",
+   "state": "confirmed",
+   "sub": "tie",
    "text": null
   },
   {
    "id": "P203",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2828,
+     4972,
+     2918,
+     4993
+    ],
+    "mode": "thin",
+    "px": 567,
+    "rule": "pageink-1",
+    "sha1": "e350af8c0f71d2cc"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4745,7 +5791,7 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
@@ -4766,38 +5812,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "rejected",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P205",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2750,
+     4924,
+     3482,
+     5007
+    ],
+    "mode": "thin",
+    "px": 6757,
+    "rule": "pageink-1",
+    "sha1": "cef973021f3b30c2"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "halves disagree on tie / slur; join_halves: two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box'); join_halves: two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3019.0,
-     4922.0,
-     3469.0,
-     4994.0
+     2737.2862190812725,
+     4902.0282685512375,
+     3485.2720848056542,
+     5005.491166077739
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P206",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3270,
+     4963,
+     3358,
+     4982
+    ],
+    "mode": "thin",
+    "px": 534,
+    "rule": "pageink-1",
+    "sha1": "c5efbe26eb4619f6"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "halves disagree on tie / slur; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labe",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4808,17 +5876,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P207",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3489,
+     4965,
+     3635,
+     4995
+    ],
+    "mode": "thin",
+    "px": 945,
+    "rule": "pageink-1",
+    "sha1": "63d7ae6fb5403079"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4829,59 +5908,92 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P208",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3021,
+     4967,
+     3168,
+     4995
+    ],
+    "mode": "thin",
+    "px": 916,
+    "rule": "pageink-1",
+    "sha1": "4dec566d8912c24d"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3373.0,
-     4969.0,
-     3480.0,
-     4991.0
+     3010.6666666666665,
+     4962.916666666666,
+     3179.0,
+     4994.583333333333
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
-   "sub": "slur",
+   "state": "confirmed",
+   "sub": "tie",
    "text": null
   },
   {
    "id": "P209",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3652,
+     4938,
+     4605,
+     5050
+    ],
+    "mode": "thin",
+    "px": 8544,
+    "rule": "pageink-1",
+    "sha1": "d563f0e7ff4f9ea4"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "gap_join: one slur boxed in two pieces with the middle (4107-4371) unboxed: q899 3672-4107 and q1073 4371-4603 (staff 9, bar 5); gap_join: one slur boxed in two pieces with the middle (4107-4371) unboxed: q899 3672-4107 and q1073 4371-4603 (staff 9, bar 5)",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3672.0,
-     4938.0,
-     4603.0,
-     5053.0
+     3647.182474226804,
+     4929.137113402062,
+     4613.557731958763,
+     5048.7
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P210",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4041,
+     5002,
+     4165,
+     5028
+    ],
+    "mode": "thin",
+    "px": 809,
+    "rule": "pageink-1",
+    "sha1": "c0bf579cf276dbd7"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4892,7 +6004,7 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
@@ -4913,17 +6025,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "rejected",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P212",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4616,
+     5027,
+     4740,
+     5052
+    ],
+    "mode": "thin",
+    "px": 711,
+    "rule": "pageink-1",
+    "sha1": "6d70ddd9765f55f8"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4934,17 +6057,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P213",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4755,
+     5006,
+     5297,
+     5085
+    ],
+    "mode": "thin",
+    "px": 4364,
+    "rule": "pageink-1",
+    "sha1": "baaddf0564f85a0a"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4955,17 +6089,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P214",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4964,
+     5047,
+     5088,
+     5072
+    ],
+    "mode": "thin",
+    "px": 737,
+    "rule": "pageink-1",
+    "sha1": "32302826c7b62e28"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4976,17 +6121,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P215",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5304,
+     5070,
+     5389,
+     5091
+    ],
+    "mode": "thin",
+    "px": 496,
+    "rule": "pageink-1",
+    "sha1": "553716dc54baf2ec"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "leaves the system (cross-system tie)",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -4997,17 +6153,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P216",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1672,
+     5466,
+     2605,
+     5561
+    ],
+    "mode": "thin",
+    "px": 7980,
+    "rule": "pageink-1",
+    "sha1": "6625027c6be81963"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5018,38 +6185,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P217",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1674,
+     5528,
+     1858,
+     5566
+    ],
+    "mode": "thin",
+    "px": 1462,
+    "rule": "pageink-1",
+    "sha1": "a34a2f684c616fc8"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1674.0,
-     5548.0,
-     1881.0,
-     5565.0
+     1674.1666666666665,
+     5528.583333333333,
+     1885.8333333333333,
+     5571.083333333333
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P218",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2066,
+     5530,
+     2255,
+     5563
+    ],
+    "mode": "thin",
+    "px": 1134,
+    "rule": "pageink-1",
+    "sha1": "40dc79616a436030"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) R extended past the hand box; extend_unboxed_half: tie boxed to the barline only: the right half (2112-2254) unboxed",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5060,17 +6249,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P219",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2616,
+     5488,
+     2739,
+     5515
+    ],
+    "mode": "thin",
+    "px": 728,
+    "rule": "pageink-1",
+    "sha1": "f36bc8b39c04560f"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5081,17 +6281,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P220",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2350,
+     5535,
+     2436,
+     5550
+    ],
+    "mode": "thin",
+    "px": 481,
+    "rule": "pageink-1",
+    "sha1": "4733753768c595bd"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5102,17 +6313,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P221",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2748,
+     5425,
+     3479,
+     5507
+    ],
+    "mode": "thin",
+    "px": 6304,
+    "rule": "pageink-1",
+    "sha1": "9fcfa5d73a3d4610"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5123,17 +6345,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P222",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2829,
+     5479,
+     2916,
+     5497
+    ],
+    "mode": "thin",
+    "px": 473,
+    "rule": "pageink-1",
+    "sha1": "8edd90605473bdc2"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5144,17 +6377,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P223",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3018,
+     5467,
+     3161,
+     5496
+    ],
+    "mode": "thin",
+    "px": 915,
+    "rule": "pageink-1",
+    "sha1": "0d498fb88fcf5bf0"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5165,17 +6409,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P224",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3270,
+     5458,
+     3357,
+     5477
+    ],
+    "mode": "thin",
+    "px": 517,
+    "rule": "pageink-1",
+    "sha1": "9f1e4facdaf50b5f"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5186,17 +6441,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P225",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3488,
+     5468,
+     3635,
+     5500
+    ],
+    "mode": "thin",
+    "px": 892,
+    "rule": "pageink-1",
+    "sha1": "e23606382d18cc7f"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5207,38 +6473,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P226",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3646,
+     5439,
+     4600,
+     5547
+    ],
+    "mode": "thin",
+    "px": 8991,
+    "rule": "pageink-1",
+    "sha1": "2048753a542fff27"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     3655.0,
-     5433.0,
+     3636.0,
+     5430.75,
      4601.0,
-     5542.0
+     5545.75
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P227",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4037,
+     5499,
+     4161,
+     5525
+    ],
+    "mode": "thin",
+    "px": 746,
+    "rule": "pageink-1",
+    "sha1": "9e47f053b4d68061"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5249,17 +6537,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P228",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4617,
+     5525,
+     4728,
+     5546
+    ],
+    "mode": "thin",
+    "px": 640,
+    "rule": "pageink-1",
+    "sha1": "e6a2b2e1d8ef1792"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5270,17 +6569,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P229",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4966,
+     5615,
+     5081,
+     5636
+    ],
+    "mode": "thin",
+    "px": 646,
+    "rule": "pageink-1",
+    "sha1": "999199e91b46b34b"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5291,17 +6601,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P230",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5300,
+     5644,
+     5385,
+     5662
+    ],
+    "mode": "thin",
+    "px": 464,
+    "rule": "pageink-1",
+    "sha1": "6b1adfe16d5f1d32"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "leaves the system (cross-system tie)",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5312,38 +6633,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P231",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4724,
+     5620,
+     5304,
+     5769
+    ],
+    "mode": "thin",
+    "px": 6314,
+    "rule": "pageink-1",
+    "sha1": "1f86c99b6c08bb69"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4713.0,
-     5671.0,
-     5381.0,
-     5778.0
+     4724.5,
+     5620.75,
+     5302.833333333334,
+     5777.416666666666
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P232",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4763,
+     5805,
+     5304,
+     5883
+    ],
+    "mode": "thin",
+    "px": 4640,
+    "rule": "pageink-1",
+    "sha1": "61dd6e0475bdbc6d"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5354,17 +6697,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P233",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1694,
+     5848,
+     2576,
+     5937
+    ],
+    "mode": "thin",
+    "px": 7432,
+    "rule": "pageink-1",
+    "sha1": "a7d69d654264b6fd"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5375,17 +6729,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P234",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2722,
+     6111,
+     3462,
+     6222
+    ],
+    "mode": "thin",
+    "px": 5754,
+    "rule": "pageink-1",
+    "sha1": "c965aae9fb7de86d"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5396,17 +6761,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P235",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3021,
+     6290,
+     3167,
+     6317
+    ],
+    "mode": "thin",
+    "px": 914,
+    "rule": "pageink-1",
+    "sha1": "5e37d7bc029636c3"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5417,17 +6793,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P236",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2829,
+     6301,
+     2917,
+     6320
+    ],
+    "mode": "thin",
+    "px": 479,
+    "rule": "pageink-1",
+    "sha1": "cbfb657cd26e20a5"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5438,17 +6825,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P237",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2750,
+     5865,
+     3485,
+     5924
+    ],
+    "mode": "thin",
+    "px": 6066,
+    "rule": "pageink-1",
+    "sha1": "3ab360225f290e70"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5459,17 +6857,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P238",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2748,
+     6253,
+     3481,
+     6329
+    ],
+    "mode": "thin",
+    "px": 6235,
+    "rule": "pageink-1",
+    "sha1": "87aaec3054530c09"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5480,17 +6889,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P239",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3269,
+     6287,
+     3358,
+     6305
+    ],
+    "mode": "thin",
+    "px": 509,
+    "rule": "pageink-1",
+    "sha1": "a0c119487055363b"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5501,17 +6921,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P240",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3493,
+     6289,
+     3637,
+     6321
+    ],
+    "mode": "thin",
+    "px": 894,
+    "rule": "pageink-1",
+    "sha1": "6600731b47db44d6"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5522,17 +6953,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P241",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3654,
+     6247,
+     4603,
+     6316
+    ],
+    "mode": "thin",
+    "px": 7699,
+    "rule": "pageink-1",
+    "sha1": "6936bb57df606dbf"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5543,17 +6985,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P242",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3658,
+     5832,
+     4616,
+     5983
+    ],
+    "mode": "thin",
+    "px": 8040,
+    "rule": "pageink-1",
+    "sha1": "148ed3fa30e348c6"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5564,17 +7017,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P243",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     3633,
+     6116,
+     4586,
+     6208
+    ],
+    "mode": "thin",
+    "px": 8732,
+    "rule": "pageink-1",
+    "sha1": "6d262e87019b33e9"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5585,38 +7049,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P244",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4961,
+     6310,
+     5077,
+     6335
+    ],
+    "mode": "thin",
+    "px": 656,
+    "rule": "pageink-1",
+    "sha1": "205057a520081a3a"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4981.0,
-     6310.0,
-     5063.0,
-     6320.0
+     4956.166666666667,
+     6303.75,
+     5096.166666666667,
+     6338.75
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P245",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4731,
+     6126,
+     5278,
+     6204
+    ],
+    "mode": "thin",
+    "px": 4734,
+    "rule": "pageink-1",
+    "sha1": "cf6067acbecec588"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5627,17 +7113,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P246",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4760,
+     6267,
+     5293,
+     6345
+    ],
+    "mode": "thin",
+    "px": 4266,
+    "rule": "pageink-1",
+    "sha1": "02ceefb9998dd222"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5648,38 +7145,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P247",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1671,
+     6297,
+     2606,
+     6389
+    ],
+    "mode": "thin",
+    "px": 8405,
+    "rule": "pageink-1",
+    "sha1": "ac0342806398d583"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     1670.0,
-     6286.0,
-     2552.0,
-     6384.0
+     1661.037113402062,
+     6278.364948453608,
+     2609.8041237113403,
+     6387.478350515464
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
   {
    "id": "P248",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1675,
+     6366,
+     1871,
+     6392
+    ],
+    "mode": "thin",
+    "px": 1512,
+    "rule": "pageink-1",
+    "sha1": "b258eee3acb3fe4a"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5690,17 +7209,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P249",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2045,
+     6361,
+     2251,
+     6399
+    ],
+    "mode": "thin",
+    "px": 1559,
+    "rule": "pageink-1",
+    "sha1": "86b87113f328960a"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5711,17 +7241,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P250",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     2619,
+     6313,
+     2742,
+     6339
+    ],
+    "mode": "thin",
+    "px": 725,
+    "rule": "pageink-1",
+    "sha1": "aed410608d93b5c7"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5732,38 +7273,60 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P251",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4041,
+     6325,
+     4166,
+     6352
+    ],
+    "mode": "thin",
+    "px": 802,
+    "rule": "pageink-1",
+    "sha1": "99da495cd5802d57"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "end(s) R extended past the hand box; extend_unboxed_half: tie boxed to the barline only: the right half (4107-4224) unboxed",
-   "origin": "prefill",
+   "origin": "prefill-fixed",
    "pass": "page",
    "shape": {
     "rect": [
-     4040.0,
-     6326.0,
-     4224.0,
-     6349.0
+     4035.333333333333,
+     6322.083333333333,
+     4166.166666666666,
+     6352.916666666666
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P252",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     4615,
+     6290,
+     4738,
+     6317
+    ],
+    "mode": "thin",
+    "px": 677,
+    "rule": "pageink-1",
+    "sha1": "6fbceff702b50b64"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5774,17 +7337,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P253",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     5302,
+     6329,
+     5382,
+     6353
+    ],
+    "mode": "thin",
+    "px": 461,
+    "rule": "pageink-1",
+    "sha1": "6e8c0e9af74de040"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "leaves the system (cross-system tie); dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once; dedupe_label: two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5795,17 +7369,28 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "tie",
    "text": null
   },
   {
    "id": "P254",
-   "ink_ref": null,
+   "ink_ref": {
+    "bbox": [
+     1683,
+     6857,
+     2045,
+     6900
+    ],
+    "mode": "thin",
+    "px": 2623,
+    "rule": "pageink-1",
+    "sha1": "a5e8abcaecf56484"
+   },
    "kind": "arc",
    "labeler": "sean",
    "note": "",
-   "origin": "prefill",
+   "origin": "prefill-confirmed",
    "pass": "page",
    "shape": {
     "rect": [
@@ -5816,7 +7401,7 @@
     ]
    },
    "source": "arc-key-2.281",
-   "state": "pending",
+   "state": "confirmed",
    "sub": "slur",
    "text": null
   },
@@ -6325,6 +7910,870 @@
      5168.457684163005,
      1224.7491590954803,
      5680.501209800841
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P271",
+   "ink_ref": {
+    "bbox": [
+     2193,
+     507,
+     3796,
+     1063
+    ],
+    "mode": "all",
+    "px": 104371,
+    "rule": "pageink-1",
+    "sha1": "4dd74740b5055a04"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2171.8920454545455,
+     433.4999999999998,
+     3905.892045454545,
+     1133.0113636363635
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P272",
+   "ink_ref": {
+    "bbox": [
+     4424,
+     1143,
+     5477,
+     1325
+    ],
+    "mode": "all",
+    "px": 35194,
+    "rule": "pageink-1",
+    "sha1": "3bfc161d27bec54d"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     4398.505681818182,
+     1113.306818181818,
+     5531.517045454545,
+     1339.9090909090908
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P273",
+   "ink_ref": {
+    "bbox": [
+     1494,
+     1337,
+     2374,
+     1440
+    ],
+    "mode": "all",
+    "px": 23555,
+    "rule": "pageink-1",
+    "sha1": "3680de1ab1bdce25"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1492.085227272727,
+     1300.4999999999998,
+     2408.346590909091,
+     1438.431818181818
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P274",
+   "ink_ref": {
+    "bbox": [
+     419,
+     2385,
+     1175,
+     2455
+    ],
+    "mode": "all",
+    "px": 13974,
+    "rule": "pageink-1",
+    "sha1": "6c5abbf4ddc0a740"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     410.5240700634522,
+     2377.6134006928028,
+     1180.0074090960902,
+     2457.100919215543
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P275",
+   "ink_ref": {
+    "bbox": [
+     1503,
+     6989,
+     2391,
+     7098
+    ],
+    "mode": "all",
+    "px": 23044,
+    "rule": "pageink-1",
+    "sha1": "3dd4863cbd3965bc"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1482.2329545454545,
+     6975.409090909091,
+     2447.7556818181815,
+     7103.488636363636
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P276",
+   "ink_ref": {
+    "bbox": [
+     1712,
+     5317,
+     2153,
+     5394
+    ],
+    "mode": "all",
+    "px": 7933,
+    "rule": "pageink-1",
+    "sha1": "24f29cd0fb584ad5"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1705.5133463541667,
+     5317.758414800114,
+     2165.513346354167,
+     5392.758414800114
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P277",
+   "ink_ref": {
+    "bbox": [
+     1693,
+     2513,
+     1901,
+     2584
+    ],
+    "mode": "all",
+    "px": 4668,
+    "rule": "pageink-1",
+    "sha1": "3670f31c3eb7d6a7"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1688.0133463541667,
+     2504.646842534489,
+     1921.3466796875,
+     2588.8135092011557
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P278",
+   "ink_ref": {
+    "bbox": [
+     1693,
+     2125,
+     1899,
+     2196
+    ],
+    "mode": "all",
+    "px": 4608,
+    "rule": "pageink-1",
+    "sha1": "c835a8715490428a"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1690.5133463541667,
+     2117.362194910792,
+     1914.6800130208335,
+     2199.0288615774584
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P279",
+   "ink_ref": {
+    "bbox": [
+     1697,
+     1740,
+     1900,
+     1812
+    ],
+    "mode": "all",
+    "px": 4586,
+    "rule": "pageink-1",
+    "sha1": "232479ff2394fc99"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1696.3466796875,
+     1736.1644816946464,
+     1911.3466796875,
+     1817.8311483613131
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P280",
+   "ink_ref": {
+    "bbox": [
+     935,
+     3522,
+     1094,
+     3592
+    ],
+    "mode": "all",
+    "px": 2643,
+    "rule": "pageink-1",
+    "sha1": "8a64df82a06e0561"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     914.4858223815214,
+     3494.515240184567,
+     1106.7680207088808,
+     3617.1299753498397
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P281",
+   "ink_ref": {
+    "bbox": [
+     1134,
+     3500,
+     1180,
+     3551
+    ],
+    "mode": "all",
+    "px": 681,
+    "rule": "pageink-1",
+    "sha1": "c5b676dcec7bf33d"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1129.0616089207488,
+     3497.3019387110508,
+     1182.0088809239346,
+     3555.8226077672034
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P282",
+   "ink_ref": {
+    "bbox": [
+     1129,
+     3558,
+     1180,
+     3610
+    ],
+    "mode": "all",
+    "px": 892,
+    "rule": "pageink-1",
+    "sha1": "bdf790fb14c1fbbb"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1129.0616089207488,
+     3553.03590924072,
+     1182.0088809239346,
+     3619.9166738763233
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P283",
+   "ink_ref": {
+    "bbox": [
+     548,
+     3752,
+     946,
+     3822
+    ],
+    "mode": "all",
+    "px": 7316,
+    "rule": "pageink-1",
+    "sha1": "8f2e57b38ab999d3"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     521.5613301473517,
+     3739.7447105151127,
+     956.2863002787734,
+     3845.639254521485
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P284",
+   "ink_ref": {
+    "bbox": [
+     917,
+     3982,
+     1111,
+     4048
+    ],
+    "mode": "all",
+    "px": 3469,
+    "rule": "pageink-1",
+    "sha1": "d64aacbd2c739eb6"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     900.5523297491039,
+     3957.107195580824,
+     1117.9148148148147,
+     4068.5751366401623
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P285",
+   "ink_ref": {
+    "bbox": [
+     1141,
+     3962,
+     1173,
+     4014
+    ],
+    "mode": "all",
+    "px": 778,
+    "rule": "pageink-1",
+    "sha1": "1845567f078c1fa4"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1131.8483074472322,
+     3951.5337985278566,
+     1195.942373556352,
+     4021.2012616899437
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P286",
+   "ink_ref": {
+    "bbox": [
+     1136,
+     4028,
+     1186,
+     4079
+    ],
+    "mode": "all",
+    "px": 616,
+    "rule": "pageink-1",
+    "sha1": "3334dd5f69eb0dc8"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1129.0616089207488,
+     4018.41456316346,
+     1198.7290720828355,
+     4088.082026325547
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P287",
+   "ink_ref": {
+    "bbox": [
+     430,
+     4336,
+     1159,
+     4429
+    ],
+    "mode": "all",
+    "px": 12472,
+    "rule": "pageink-1",
+    "sha1": "2a6327587768f46f"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     415.66678614097975,
+     4328.6899041047245,
+     1170.8620868180008,
+     4429.01105105813
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P288",
+   "ink_ref": {
+    "bbox": [
+     435,
+     4685,
+     1134,
+     4756
+    ],
+    "mode": "all",
+    "px": 11320,
+    "rule": "pageink-1",
+    "sha1": "7b106d7189d85940"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     421.2401831939467,
+     4663.093727282741,
+     1156.9285941855835,
+     4771.774969815597
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P289",
+   "ink_ref": {
+    "bbox": [
+     587,
+     5195,
+     975,
+     5265
+    ],
+    "mode": "all",
+    "px": 6280,
+    "rule": "pageink-1",
+    "sha1": "5076cbddaf595f5b"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     566.1485065710873,
+     5168.100513303158,
+     1003.6601752289924,
+     5285.141851415464
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P290",
+   "ink_ref": {
+    "bbox": [
+     588,
+     5582,
+     989,
+     5652
+    ],
+    "mode": "all",
+    "px": 6601,
+    "rule": "pageink-1",
+    "sha1": "911e254ad9bea7fb"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     574.5086021505376,
+     5577.745196696228,
+     995.300079649542,
+     5658.559453964249
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P291",
+   "ink_ref": {
+    "bbox": [
+     602,
+     6028,
+     985,
+     6096
+    ],
+    "mode": "all",
+    "px": 7653,
+    "rule": "pageink-1",
+    "sha1": "c3b343b0754f86b4"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     580.0819992035047,
+     6018.0435638806175,
+     998.0867781760256,
+     6115.578012307538
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P292",
+   "ink_ref": {
+    "bbox": [
+     555,
+     6422,
+     996,
+     6490
+    ],
+    "mode": "all",
+    "px": 7823,
+    "rule": "pageink-1",
+    "sha1": "83a40280fbb43b05"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     543.8549183592195,
+     6409.230111440494,
+     1017.5936678614099,
+     6503.977861340932
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P293",
+   "ink_ref": {
+    "bbox": [
+     556,
+     6772,
+     1009,
+     6842
+    ],
+    "mode": "all",
+    "px": 9072,
+    "rule": "pageink-1",
+    "sha1": "5b0b680d90c095ec"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     543.8549183592195,
+     6754.780728724444,
+     1017.5936678614099,
+     6852.315177151366
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P294",
+   "ink_ref": {
+    "bbox": [
+     1499,
+     1973,
+     1560,
+     2095
+    ],
+    "mode": "all",
+    "px": 2833,
+    "rule": "pageink-1",
+    "sha1": "e46679de5d84e009"
+   },
+   "kind": "meter",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1499.6925129430506,
+     1969.8659338908801,
+     1558.2131819992035,
+     2095.2673675826363
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": null,
+   "text": null
+  },
+  {
+   "id": "P295",
+   "ink_ref": {
+    "bbox": [
+     1678,
+     6090,
+     2549,
+     6159
+    ],
+    "mode": "thin",
+    "px": 7387,
+    "rule": "pageink-1",
+    "sha1": "8b88234e5f19ad96"
+   },
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     1673.0,
+     6083.628885904946,
+     2551.3333333333335,
+     6164.462219238279
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": "slur",
+   "text": null
+  },
+  {
+   "id": "P296",
+   "ink_ref": {
+    "bbox": [
+     2275,
+     3594,
+     2720,
+     3629
+    ],
+    "mode": "thin",
+    "px": 3312,
+    "rule": "pageink-1",
+    "sha1": "dfdee89da2848ff0"
+   },
+   "kind": "arc",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2274.1359088657755,
+     3587.088159239376,
+     2722.9537890044576,
+     3628.6774608738488
+    ]
+   },
+   "source": "",
+   "state": "confirmed",
+   "sub": "tie",
+   "text": null
+  },
+  {
+   "id": "P297",
+   "ink_ref": {
+    "bbox": [
+     2893,
+     7289,
+     3067,
+     7341
+    ],
+    "mode": "all",
+    "px": 2522,
+    "rule": "pageink-1",
+    "sha1": "3d2611ee313d548f"
+   },
+   "kind": "word",
+   "labeler": "sean",
+   "note": "",
+   "origin": "drawn",
+   "pass": "page",
+   "shape": {
+    "rect": [
+     2873.715007429421,
+     7265.397978831673,
+     3092.0588410104015,
+     7358.973907509237
     ]
    },
    "source": "",
