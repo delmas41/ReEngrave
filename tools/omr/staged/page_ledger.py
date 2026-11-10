@@ -165,9 +165,9 @@ def pool(cell_views: Dict[Any, Dict[int, Any]], links: Dict[Any, Dict[int, Tuple
     for pid, cs in cands.items():
         cs.sort(key=lambda c: (ti.get(str(c["family"]), 0 if c.get("how") == "area" else 99), str(c["key"])))
         out[pid] = SO._settle(pid, {pid: cs}, {**ti, **{str(c["family"]): 0 for c in cs if str(c["family"]) not in ti}})
-    census["page_strokes"] = len(members)
-    census["page_strokes_seen_twice"] = sum(1 for n in members.values() if n > 1)
-    census["page_strokes_seen_whole"] = len(whole)
+    census["linked"] = len(members)
+    census["seen_twice"] = sum(1 for n in members.values() if n > 1)
+    census["seen_whole"] = len(whole)
     return out, census
 
 

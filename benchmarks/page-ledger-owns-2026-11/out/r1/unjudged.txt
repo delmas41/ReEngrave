@@ -1,0 +1,11 @@
+litolff p4 4/0/7/12  articulation lost staccato
+litolff p4 4/0/7/12  beam lost continue
+litolff p4 4/0/7/12  blue lost guessed
+litolff p4 4/0/7/12  note lost eighth
+litolff p4 4/1/7/11  beam lost continue
+litolff p4 4/1/7/11  beam lost end
+litolff p4 4/1/7/11  beam changed end (was continue)
+litolff p4 4/1/7/11  blue lost guessed
+litolff p4 4/1/7/11  blue lost guessed
+litolff p4 4/1/7/11  note lost eighth
+litolff p4 4/1/7/11  note lost eighth

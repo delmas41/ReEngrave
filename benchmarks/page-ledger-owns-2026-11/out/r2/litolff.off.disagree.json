@@ -1,0 +1,118 @@
+[
+ {
+  "page": 2,
+  "verify": {
+   "cells_ok": 352
+  },
+  "ink_nonstaff_px": 1050300,
+  "stroke_px": 1028855,
+  "multi_px": 268300,
+  "disagree_px": 57030,
+  "fam_fam_px": 3110,
+  "own_none_px": 52707,
+  "pairs": {
+   "barline|none": 26315,
+   "head|none": 12159,
+   "dynamic|none": 5473,
+   "clef|none": 3267,
+   "accidental|none": 1836,
+   "arc_trace|none": 1273,
+   "mark|none": 1213,
+   "none|rest": 576,
+   "arc_trace|mark": 552,
+   "none|whole_rest": 524,
+   "contested|dynamic": 456,
+   "dynamic|head": 439,
+   "ledger|none": 414,
+   "contested|none": 396,
+   "arc|barline": 279
+  }
+ },
+ {
+  "page": 4,
+  "verify": {
+   "cells_ok": 330
+  },
+  "ink_nonstaff_px": 1156077,
+  "stroke_px": 1132251,
+  "multi_px": 287345,
+  "disagree_px": 57637,
+  "fam_fam_px": 2325,
+  "own_none_px": 54154,
+  "pairs": {
+   "head|none": 19501,
+   "barline|none": 12745,
+   "arc_trace|none": 9800,
+   "clef|none": 4494,
+   "dynamic|none": 4086,
+   "accidental|none": 993,
+   "leading_column|none": 975,
+   "mark|none": 773,
+   "clef|head": 596,
+   "ledger|none": 440,
+   "clef|contested": 422,
+   "head|ledger": 364,
+   "contested|head": 330,
+   "contested|none": 231,
+   "arc_trace|head": 200
+  }
+ },
+ {
+  "page": 6,
+  "verify": {
+   "cells_ok": 286
+  },
+  "ink_nonstaff_px": 1100101,
+  "stroke_px": 1078985,
+  "multi_px": 253381,
+  "disagree_px": 41680,
+  "fam_fam_px": 2166,
+  "own_none_px": 38895,
+  "pairs": {
+   "head|none": 12880,
+   "barline|none": 8702,
+   "arc_trace|none": 6604,
+   "dynamic|none": 2875,
+   "clef|none": 2564,
+   "accidental|none": 1632,
+   "arc|none": 1177,
+   "none|word": 947,
+   "dynamic|head": 868,
+   "none|rest": 865,
+   "contested|head": 409,
+   "key_signature|none": 353,
+   "arc_trace|dynamic": 271,
+   "head|ledger": 261,
+   "mark|none": 206
+  }
+ },
+ {
+  "page": 10,
+  "verify": {
+   "cells_ok": 319
+  },
+  "ink_nonstaff_px": 1078845,
+  "stroke_px": 1057794,
+  "multi_px": 216190,
+  "disagree_px": 39069,
+  "fam_fam_px": 2386,
+  "own_none_px": 36280,
+  "pairs": {
+   "head|none": 14644,
+   "barline|none": 7266,
+   "arc_trace|none": 4562,
+   "clef|none": 4047,
+   "dynamic|none": 2579,
+   "accidental|none": 1127,
+   "ledger|none": 821,
+   "clef|head": 664,
+   "arc|none": 635,
+   "clef|meter": 404,
+   "mark|none": 330,
+   "head|ledger": 236,
+   "contested|none": 194,
+   "contested|dynamic": 189,
+   "none|rest": 184
+  }
+ }
+]

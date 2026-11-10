@@ -415,6 +415,11 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
                 m.setdefault(int(o), float(s_))
             shares[r.subject.to_key()] = m
     claim_families = sorted({c.family for c in claims if c.area})
+    from .. import page_ledger as _PL
+    if _PL.enabled():
+        # ROADMAP 2.284: a stroke the page's one settle gave to a register claim another cell filed is held by that claim here too
+        claim_families = sorted(set(claim_families) | {str(c["family"]) for w in owned.values() for c in w.candidates
+                                                       if c.get("how") == "area" and w.family == c["family"]})
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
@@ -448,14 +453,18 @@ def _cell_view(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
     claims += layer_claims
     claims += _found_whole_rests(ev, cell, page, claims)
     claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
-    from .rhythm import beams_from_strokes_enabled
-    shaped = SO.owner_shape_enabled()
-    vetoes = shape_vetoes(ev, cell, inks, claims) if shaped else None
     tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
-    owned = SO.own_strokes(inks, claims, tiers=tiers, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
-                           vetoes=vetoes)
     return dict(inks=inks, page=page, claims=claims, arc_claims=arc_claims, hairpin_claims=hairpin_claims, layer_claims=layer_claims,
-                head_census=head_census, shaped=shaped, vetoes=vetoes, tiers=tiers, owned=owned)
+                head_census=head_census, tiers=tiers)
+
+
+def _settle_view(view: Dict[str, Any], vetoes: Optional[Dict[str, SO.Veto]]) -> Dict[str, Any]:
+    """`own_strokes` over a `_cell_view` with the box vetoes the caller read (`shape_vetoes`, in the decision's own body)."""
+    from .rhythm import beams_from_strokes_enabled
+    view = dict(view, shaped=vetoes is not None, vetoes=vetoes)
+    view["owned"] = SO.own_strokes(view["inks"], view["claims"], tiers=view["tiers"], acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
+                                   vetoes=vetoes)
+    return view
 
 
 def _links(ev: Evidence, cell) -> Dict[int, Tuple[float, ...]]:
@@ -504,6 +513,7 @@ def _page_ledger(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
         v = _cell_view(e2, c)
         if v is None:
             continue
+        v = _settle_view(v, shape_vetoes(e2, c, v["inks"], v["claims"]) if SO.owner_shape_enabled() else None)
         views[c.to_key()] = v["owned"]
         links[c.to_key()] = lk
         tiers_all[0] = tuple(dict.fromkeys(tiers_all[0] + tuple(v["tiers"][0])))
@@ -540,6 +550,7 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     view = _cell_view(ev, cell)
     if view is None:
         return Ruling.abstain("no_strokes")
+    view = _settle_view(view, shape_vetoes(ev, cell, view["inks"], view["claims"]) if SO.owner_shape_enabled() else None)
     inks, claims, owned = view["inks"], view["claims"], view["owned"]
     arc_claims, hairpin_claims, head_census = view["arc_claims"], view["hairpin_claims"], view["head_census"]
     shaped, vetoes = view["shaped"], view["vetoes"]

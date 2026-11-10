@@ -1,0 +1,10 @@
+litolff p2 2/1/9/7  beam changed continue (was end)
+litolff p2 2/1/9/7  beam gained end
+litolff p2 2/1/9/7  blue gained guessed
+litolff p2 2/1/9/7  note gained eighth
+litolff p4 4/0/4/11  blue gained guessed
+litolff p4 4/0/4/11  note gained half
+litolff p6 6/1/8/10  flag lost eighth
+litolff p6 6/1/8/10  flag lost eighth
+litolff p6 6/1/8/10  note lost eighth
+litolff p6 6/1/8/10  note lost eighth

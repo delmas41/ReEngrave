@@ -1,0 +1,31 @@
+[
+ {
+  "page": 4,
+  "verify": {
+   "cells_ok": 330
+  },
+  "ink_nonstaff_px": 1156077,
+  "stroke_px": 1132251,
+  "multi_px": 287345,
+  "disagree_px": 57637,
+  "fam_fam_px": 2325,
+  "own_none_px": 54154,
+  "pairs": {
+   "head|none": 19501,
+   "barline|none": 12745,
+   "arc_trace|none": 9800,
+   "clef|none": 4494,
+   "dynamic|none": 4086,
+   "accidental|none": 993,
+   "leading_column|none": 975,
+   "mark|none": 773,
+   "clef|head": 596,
+   "ledger|none": 440,
+   "clef|contested": 422,
+   "head|ledger": 364,
+   "contested|head": 330,
+   "contested|none": 231,
+   "arc_trace|head": 200
+  }
+ }
+]

@@ -28,7 +28,7 @@ def test_a_neighbour_cells_copy_takes_the_one_owner():
     nb, ch = PL.apply(b, {3: (7, 1.0)}, page)
     assert nb[3].family == "barline" and nb[3].ordinal == 3
     assert ch == {"unclaimed:->decided:barline": 1}
-    assert cen["page_strokes_seen_twice"] == 1
+    assert cen["seen_twice"] == 1
 
 
 def test_a_fused_piece_keeps_its_cells_own_verdict():

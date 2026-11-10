@@ -15421,11 +15421,19 @@ def _page_ledger_on() -> bool:
     return _PL.enabled()
 
 
+#: ROADMAP 2.284: the boxes an arc's claim never takes pixels from -- the arc eraser's protected marks (`arcs_system.PROTECTED_PREFIXES`) minus the
+#: CONSUMER boxes (stem, flag, beam, tremolo: the arc claim stands before them, 2.205 tiers) and the column marks the register claims first (barline,
+#: brace, bracket). r2 measured why: with heads alone skipped, 8 ledger lines, 3 augmentation dots and a dynamic stayed >= 0.5 held by the arc.
+ARC_SKIP_NOT = ("stem", "flag", "beam", "tremolo", "barline", "brace", "bracket")
+
+
 def _arc_skip_head_boxes(detections: Optional[Dict[str, List[Any]]], csub: Any) -> List[Tuple[float, float, float, float]]:
-    """ROADMAP 2.284: the cell's notehead detector boxes, canonical px (x0, y0, x1, y1): the pixels an arc's claim never counts as its own."""
+    """ROADMAP 2.284: the cell's non-arc MARK boxes (`ARC_SKIP_NOT` left out), canonical px (x0, y0, x1, y1): pixels an arc's claim never counts as its own."""
+    from .arcs_system import PROTECTED_PREFIXES
+    skip = tuple(p for p in PROTECTED_PREFIXES if p not in ARC_SKIP_NOT)
     out = []
     for d in (detections or {}).get(csub.to_key(), ()):
-        if str(getattr(d, "smufl_name", "") or "").lower().startswith("notehead"):
+        if str(getattr(d, "smufl_name", "") or "").startswith(skip):
             x, y = float(d.x_canonical), float(d.y_canonical)
             out.append((x, y, x + float(d.width_canonical), y + float(d.height_canonical)))
     return out
