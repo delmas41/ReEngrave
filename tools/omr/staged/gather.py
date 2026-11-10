@@ -15375,7 +15375,8 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         got_all: List[List[Any]] = []
         shares: List[float] = []
         cells_hit: List[int] = []
-        crossings: List[List[Any]] = []          # ROADMAP 2.284b: [cell, ordinal, own px, mark box, box share] -- marked, not taken
+        crossings: List[List[Any]] = []          # ROADMAP 2.284b: [cell, ordinal, own px, mark box, box share, share of the box's ink on the curve]
+        line_boxes: List[List[Any]] = []         # ROADMAP 2.284b r2: [cell, mark box, share of its ink on the curve]: no mark, the arc's own ink
         px_tot: Dict[str, int] = {}
         no_map = 0
         for ck, c in sorted(by_cell.items()):
@@ -15404,7 +15405,9 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                 for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
                     px_tot[kk] = px_tot.get(kk, 0) + int(px_res[kk])
                 for cr in px_res["crossings"]:
-                    crossings.append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"]])
+                    crossings.append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"], cr["box_on_line"]])
+                for lb in px_res.get("line_boxes", ()):
+                    line_boxes.append([ck[3]] + list(lb))
             else:
                 got = AC.claim_strokes(res, cb, float(up), trace, sp)
             if got:
@@ -15416,7 +15419,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         ssub = R.staff(*home)
         px_extra: Dict[str, Any] = {}
         if px_tot or crossings:
-            px_extra = {"pixels": dict(sorted(px_tot.items())), "crossings": crossings}
+            px_extra = {"pixels": dict(sorted(px_tot.items())), "crossings": crossings, "line_boxes": line_boxes}
             counts["crossings"] = counts.get("crossings", 0) + len(crossings)
             for kk, vv in px_tot.items():
                 counts[kk] = counts.get(kk, 0) + vv
@@ -15531,7 +15534,7 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
                     for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
                         px_tot.setdefault(ck[:3], {})[kk] = px_tot.setdefault(ck[:3], {}).get(kk, 0) + int(px_res[kk])
                     for cr in px_res["crossings"]:
-                        crossings.setdefault(ck[:3], []).append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"]])
+                        crossings.setdefault(ck[:3], []).append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"], cr["box_on_line"]])
                 else:
                     got_c = HR.claim_strokes(res, cb, float(up), segs, bb, band)
                 for i, sh in got_c:
@@ -16495,7 +16498,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if not sp:
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
-                if not run["read"] and run["why"] == "lone_letter":
+                if not run["read"] and run["why"] in ("lone_letter", "wide_letter_box"):
                     # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
                     # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
                     # stemmed head is never touched) -- unless it lies on ink a word already claimed (a letter of "espr.", "dolce").
@@ -16510,7 +16513,9 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                         # page-wide"), so no later reader (a stem, beam, flag, tremolo slash) can take it; the note marks it overlaps are spared.
                         _file_sparing(s, run["box"], "dynamic_letters", "lone_inside_a_staff" if inside_staff else "outside_staff",
                                       own=[key_of_row[i] for i in run["rows"]], owner_row=run["rows"][0], letter_rows=list(run["rows"]),
-                                      text=run["text"], category="dynamic", lone=True)
+                                      # r2 (Sean 2026-11-10): the detector's lone letter names ink, not a word (`sf` boxed as one `dynamicF`,
+                                      # tile 2) -- the claim keeps the ink and carries the letter as `detector_letter`, never as `text`
+                                      text=None, detector_letter=run["text"], category="dynamic", lone=True)
                     else:
                         _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]], standing="GUESSED",
                               owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic", lone=True)

@@ -115,6 +115,13 @@ def on_trace_share(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence
 CROSSING_BOX_SHARE = 0.25
 
 
+#: ROADMAP 2.284b r2 (Sean 2026-11-10, tile 3: a `ledgerLine` box lying along an arc is "part of an arc"): a mark box whose own ink lies at least
+#: this share ON THE MARK'S OWN LINE (the arc's traced curve; the hairpin's arms) is a false box on that line's ink, not a mark it crosses -- it
+#: protects nothing and is no crossing. A true crossing (a `p`, a flat, a head the slur passes through) has most of its ink OFF the line.
+#: A cut is a measurement (CLAUDE §4): the value is the majority, and the share of every crossing and every dropped box is in the row.
+BOX_ON_LINE_MIN = 0.5
+
+
 def _page_xy(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence[float], up: float):
     import numpy as np
     ys, xs = np.nonzero(mask)
@@ -152,7 +159,7 @@ def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int
 
 
 def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, mark_boxes: Sequence[Tuple[str, Sequence[float]]],
-                    share_min: float = ON_TRACE_SHARE_MIN) -> Dict[str, Any]:
+                    share_min: float = ON_TRACE_SHARE_MIN, line_boxes_free: bool = True) -> Dict[str, Any]:
     """PURE. ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a page-wide line mark's claim (the arc's traced curve; the hairpin's arms,
     `hairpin_reach`) on ONE cell's strokes, pixel-honest. `on_fn(px, py)` -> bool array: the pixels (page px) that lie on the mark's own line.
 
@@ -163,6 +170,8 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
       * a stroke is a candidate where at least `ON_TRACE_SHARE_MIN` of its pixels lie on the traced curve AND outside every mark box;
       * a candidate holding `CROSSING_BOX_SHARE` or more of some mark box's own ink is a CROSSING: marked (its own on-curve pixels counted),
         never taken -- the stroke is left to the stroke owner's other claimants;
+      * a mark box whose own ink lies at least `BOX_ON_LINE_MIN` on the mark's own line is that line's ink (`line_boxes_free`, ROADMAP 2.284b r2;
+        False = r6's rule, the control): it protects nothing, is no crossing;
       * every other candidate is claimed whole (the register's unit is the stroke); its pixels inside a mark box, if any, are counted
         (`claimed_px_in_marks`), so the residue is visible.
 
@@ -183,19 +192,42 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
         return cache[i]
 
     box_ink: Dict[int, int] = {}
+    box_on: Dict[int, int] = {}
+    on_cache: Dict[int, Any] = {}
+
+    def on_of(i: int):
+        if i not in on_cache:
+            px, py = xy(i)
+            on_cache[i] = on_fn(px, py)
+        return on_cache[i]
 
     def ink_of(j: int) -> int:
         if j not in box_ink:
             b = boxes[j][1]
-            tot = 0
+            tot = on_n = 0
             for i, (m, _x0, _y0) in enumerate(masks):
                 if m.size == 0:
                     continue
                 px, py = xy(i)
                 if px.size and px.max() >= b[0] and px.min() <= b[2] and py.max() >= b[1] and py.min() <= b[3]:
-                    tot += int(_in_box(px, py, b).sum())
-            box_ink[j] = tot
+                    ib = _in_box(px, py, b)
+                    tot += int(ib.sum())
+                    on_n += int((ib & on_of(i)).sum())
+            box_ink[j], box_on[j] = tot, on_n
         return box_ink[j]
+
+    line_boxes: Dict[int, float] = {}
+
+    def on_line_share(j: int) -> float:
+        ink_of(j)
+        return box_on[j] / float(box_ink[j]) if box_ink[j] else 0.0
+
+    def is_line_box(j: int) -> bool:
+        """A mark box that is the mark's OWN line's ink (`BOX_ON_LINE_MIN`): recorded in `line_boxes`, never protected."""
+        if j not in line_boxes:
+            sh = on_line_share(j)
+            line_boxes[j] = sh if sh >= BOX_ON_LINE_MIN else -1.0
+        return line_boxes[j] >= 0.0
 
     for i, (m, _x0, _y0) in enumerate(masks):
         if m.size == 0:
@@ -214,6 +246,8 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
             ib = _in_box(px, py, b)
             n = int(ib.sum())
             if n:
+                if line_boxes_free and is_line_box(j):
+                    continue
                 inside |= ib
                 hits.append((j, n))
         own = on & ~inside
@@ -227,13 +261,15 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
             if bs >= CROSSING_BOX_SHARE and (cross is None or bs > cross[1]):
                 cross = (j, bs)
         if cross is not None:
-            out["crossings"].append({"stroke": i, "own_px": int(own.sum()), "box": boxes[cross[0]][0], "box_share": round(cross[1], 3)})
+            out["crossings"].append({"stroke": i, "own_px": int(own.sum()), "box": boxes[cross[0]][0], "box_share": round(cross[1], 3),
+                                     "box_on_line": round(on_line_share(cross[0]), 3)})
             out["crossing_own_px"] += int(own.sum())
             continue
         out["claimed"].append((i, round(sh, 3)))
         out["own_px"] += int(own.sum())
         out["claimed_px"] += int(px.size)
         out["claimed_px_in_marks"] += int(inside.sum())
+    out["line_boxes"] = [[boxes[j][0], round(sh, 3)] for j, sh in sorted(line_boxes.items()) if sh >= 0.0]
     return out
 
 
