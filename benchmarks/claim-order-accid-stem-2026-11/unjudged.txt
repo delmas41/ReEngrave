@@ -1,0 +1,13 @@
+brahms p5 5/1/0/9  accidental lost natural
+brahms p5 5/1/0/9  articulation lost staccato
+brahms p5 5/1/0/9  articulation gained staccato
+brahms p5 5/1/0/9  flag lost eighth
+brahms p5 5/1/0/9  note lost eighth
+brahms p19 19/1/0/8  accidental lost natural
+brahms p19 19/1/1/6  note lost quarter
+brahms p19 19/1/8/1  accidental lost sharp
+brahms p19 19/1/8/1  accidental gained sharp
+brahms p19 19/1/8/1  blue lost guessed
+brahms p19 19/1/8/1  blue gained guessed
+brahms p19 19/1/8/1  note lost half
+brahms p19 19/1/8/1  pitch changed D15 (was D5)

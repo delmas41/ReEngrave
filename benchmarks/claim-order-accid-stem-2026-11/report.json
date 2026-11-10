@@ -1,0 +1,277 @@
+{
+ "flags": [
+  [
+   "OMR_CLAIM_ORDER",
+   "0",
+   "accidentals_first"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {},
+   "hosts": [
+    5710,
+    5710
+   ],
+   "paired": 5710,
+   "red_bars": [
+    190,
+    190
+   ],
+   "notes_not_written": [
+    2100,
+    2100
+   ],
+   "control": {
+    "reproduces": "neither",
+    "off": {
+     "stored": 9107,
+     "same": 9077,
+     "differ": 30,
+     "first_differ": [
+      "glyph/10/0/6/0/7",
+      "glyph/10/1/9/2/1",
+      "glyph/11/0/7/10/2",
+      "glyph/11/0/8/17/1",
+      "glyph/11/1/0/5/4",
+      "glyph/11/1/0/5/8",
+      "glyph/11/1/4/8/3",
+      "glyph/11/1/5/8/4",
+      "glyph/16/0/10/0/5",
+      "glyph/16/0/2/0/12"
+     ]
+    },
+    "on": {
+     "stored": 9107,
+     "same": 9077,
+     "differ": 30,
+     "first_differ": [
+      "glyph/10/0/6/0/7",
+      "glyph/10/1/9/2/1",
+      "glyph/11/0/7/10/2",
+      "glyph/11/0/8/17/1",
+      "glyph/11/1/0/5/4",
+      "glyph/11/1/0/5/8",
+      "glyph/11/1/4/8/3",
+      "glyph/11/1/5/8/4",
+      "glyph/16/0/10/0/5",
+      "glyph/16/0/2/0/12"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 302,
+    "matched": {
+     "off": {
+      "key": 390,
+      "place": 21,
+      "place_moved_id": 2,
+      "place_no_mark": 5
+     },
+     "on": {
+      "key": 390,
+      "place": 21,
+      "place_moved_id": 2,
+      "place_no_mark": 5
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    441.1,
+    440.1
+   ],
+   "unjudged": {
+    "n": 0,
+    "judged": 0,
+    "no_place": 0,
+    "by_kind": {},
+    "places": []
+   }
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 0,
+     "lost": 4,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 1,
+     "lost": 3,
+     "changed": 0
+    },
+    "flag": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "articulation": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 1
+    },
+    "words": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6654,
+    6650
+   ],
+   "paired": 6650,
+   "red_bars": [
+    153,
+    151
+   ],
+   "notes_not_written": [
+    3097,
+    3101
+   ],
+   "control": {
+    "reproduces": "neither",
+    "off": {
+     "stored": 12350,
+     "same": 12268,
+     "differ": 82,
+     "first_differ": [
+      "glyph/0/0/13/1/5",
+      "glyph/12/0/10/8/7",
+      "glyph/12/0/5/10/7",
+      "glyph/12/1/13/4/4",
+      "glyph/12/1/13/7/15",
+      "glyph/12/1/2/0/23",
+      "glyph/12/1/5/2/1",
+      "glyph/12/1/6/2/10",
+      "glyph/12/1/6/4/15",
+      "glyph/12/1/7/2/3"
+     ]
+    },
+    "on": {
+     "stored": 12350,
+     "same": 12260,
+     "differ": 90,
+     "first_differ": [
+      "glyph/0/0/13/1/5",
+      "glyph/12/0/10/8/7",
+      "glyph/12/0/5/10/7",
+      "glyph/12/1/13/4/4",
+      "glyph/12/1/13/7/15",
+      "glyph/12/1/2/0/23",
+      "glyph/12/1/5/2/1",
+      "glyph/12/1/6/2/10",
+      "glyph/12/1/6/4/15",
+      "glyph/12/1/7/2/3"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 256,
+    "matched": {
+     "off": {
+      "key": 370,
+      "place": 21,
+      "place_moved_id": 4,
+      "place_no_mark": 13
+     },
+     "on": {
+      "key": 370,
+      "place": 21,
+      "place_moved_id": 4,
+      "place_no_mark": 13
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    738.7,
+    731.9
+   ],
+   "unjudged": {
+    "n": 13,
+    "judged": 2,
+    "no_place": 2,
+    "by_kind": {
+     "note": 3,
+     "accidental": 4,
+     "flag": 1,
+     "articulation": 2,
+     "blue": 2,
+     "pitch": 1
+    },
+    "places": [
+     "brahms p5 5/1/0/9  accidental lost natural",
+     "brahms p5 5/1/0/9  articulation lost staccato",
+     "brahms p5 5/1/0/9  articulation gained staccato",
+     "brahms p5 5/1/0/9  flag lost eighth",
+     "brahms p5 5/1/0/9  note lost eighth",
+     "brahms p19 19/1/0/8  accidental lost natural",
+     "brahms p19 19/1/1/6  note lost quarter",
+     "brahms p19 19/1/8/1  accidental lost sharp",
+     "brahms p19 19/1/8/1  accidental gained sharp",
+     "brahms p19 19/1/8/1  blue lost guessed",
+     "brahms p19 19/1/8/1  blue gained guessed",
+     "brahms p19 19/1/8/1  note lost half",
+     "brahms p19 19/1/8/1  pitch changed D15 (was D5)"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_CLAIM_ORDER: read in staged/adjudicators/stroke_owner.py, staged/stroke_owner.py -> ADJUDICATE..EXPORT"
+ ],
+ "tiles": {
+  "n": 9,
+  "cases": 6,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 1252.8
+}
