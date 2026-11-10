@@ -115,11 +115,15 @@ def on_trace_share(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence
 CROSSING_BOX_SHARE = 0.25
 
 
-#: ROADMAP 2.284b r2 (Sean 2026-11-10, tile 3: a `ledgerLine` box lying along an arc is "part of an arc"): a mark box whose own ink lies at least
-#: this share ON THE MARK'S OWN LINE (the arc's traced curve; the hairpin's arms) is a false box on that line's ink, not a mark it crosses -- it
-#: protects nothing and is no crossing. A true crossing (a `p`, a flat, a head the slur passes through) has most of its ink OFF the line.
-#: A cut is a measurement (CLAUDE §4): the value is the majority, and the share of every crossing and every dropped box is in the row.
-BOX_ON_LINE_MIN = 0.5
+#: ROADMAP 2.284b r2 (Sean 2026-11-10, tile 3: a `ledgerLine` box lying along an arc is "part of an arc"): a LINE-class mark box (`LINE_BOX_CLASSES`:
+#: its own ink is a line, so it can be a stretch of another line) whose ink lies at least this share ON THE MARK'S OWN LINE (the arc's traced
+#: curve) is a false box on that line's ink, not a mark it crosses -- it protects nothing and is no crossing. A head, dot, flat, fermata or
+#: letter is never a stretch of a curve, whatever its share (measured on Litolff p2/4/6/10 with the first cut 0.5 and every class: 7 half-note
+#: heads at 0.52-0.77, 4 dots, 3 fermatas, a flat and a clef at 1.0 were "on the line" -- a band of 0.12 sp round a slur holds any small mark).
+#: The cut is a MEASUREMENT, n = 1 judged (tile 3, 0.90; the other 10 ledger boxes of the four pages lie at 0.54-0.83): it only NARROWS the
+#: crossing rule, and the near-misses go to Sean as blind tiles (CLAUDE §4). `box_on_line` is in every crossing row, `line_boxes` in the claim.
+BOX_ON_LINE_MIN = 0.85
+LINE_BOX_CLASSES = ("ledgerLine",)
 
 
 def _page_xy(mask: Any, x0: int, y0: int, scale: float, cell_box: Sequence[float], up: float):
@@ -151,15 +155,16 @@ def _on_curve(px: Any, py: Any, trace: Dict[int, Tuple[float, float]], sp_page: 
 
 
 def claim_pixels(res: Any, cell_box: Sequence[float], up: float, trace: Dict[int, Tuple[float, float]], sp_page: float,
-                 mark_boxes: Sequence[Tuple[str, Sequence[float]]]) -> Dict[str, Any]:
+                 mark_boxes: Sequence[Tuple[str, Sequence[float]]], line_box_keys: Optional[Sequence[str]] = None) -> Dict[str, Any]:
     """The ARC's pixel claim (`claim_pixels_on` with the traced curve as the `on` test). See `claim_pixels_on`."""
     if not trace:
         return claim_pixels_on(res, cell_box, up, None, mark_boxes)
-    return claim_pixels_on(res, cell_box, up, lambda px, py: _on_curve(px, py, trace, sp_page), mark_boxes)
+    return claim_pixels_on(res, cell_box, up, lambda px, py: _on_curve(px, py, trace, sp_page), mark_boxes, line_box_keys=line_box_keys)
 
 
 def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, mark_boxes: Sequence[Tuple[str, Sequence[float]]],
-                    share_min: float = ON_TRACE_SHARE_MIN, line_boxes_free: bool = True) -> Dict[str, Any]:
+                    share_min: float = ON_TRACE_SHARE_MIN, line_boxes_free: bool = True, line_box_keys: Optional[Sequence[str]] = None
+                    ) -> Dict[str, Any]:
     """PURE. ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a page-wide line mark's claim (the arc's traced curve; the hairpin's arms,
     `hairpin_reach`) on ONE cell's strokes, pixel-honest. `on_fn(px, py)` -> bool array: the pixels (page px) that lie on the mark's own line.
 
@@ -170,8 +175,9 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
       * a stroke is a candidate where at least `ON_TRACE_SHARE_MIN` of its pixels lie on the traced curve AND outside every mark box;
       * a candidate holding `CROSSING_BOX_SHARE` or more of some mark box's own ink is a CROSSING: marked (its own on-curve pixels counted),
         never taken -- the stroke is left to the stroke owner's other claimants;
-      * a mark box whose own ink lies at least `BOX_ON_LINE_MIN` on the mark's own line is that line's ink (`line_boxes_free`, ROADMAP 2.284b r2;
-        False = r6's rule, the control): it protects nothing, is no crossing;
+      * a LINE-class mark box (`line_box_keys`: the keys of the `LINE_BOX_CLASSES` boxes; none = the rule is off) whose own ink lies at least
+        `BOX_ON_LINE_MIN` on the mark's own line is that line's ink (`line_boxes_free`, ROADMAP 2.284b r2; False = r6's rule, the control): it
+        protects nothing, is no crossing;
       * every other candidate is claimed whole (the register's unit is the stroke); its pixels inside a mark box, if any, are counted
         (`claimed_px_in_marks`), so the residue is visible.
 
@@ -183,6 +189,7 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
     if on_fn is None or not masks or res.scale <= 0 or up <= 0:
         return out
     boxes = [(str(k), [float(v) for v in b]) for k, b in mark_boxes]
+    keyset = set(line_box_keys or ())
     cache: Dict[int, Tuple[Any, Any]] = {}
 
     def xy(i: int):
@@ -225,7 +232,7 @@ def claim_pixels_on(res: Any, cell_box: Sequence[float], up: float, on_fn: Any, 
     def is_line_box(j: int) -> bool:
         """A mark box that is the mark's OWN line's ink (`BOX_ON_LINE_MIN`): recorded in `line_boxes`, never protected."""
         if j not in line_boxes:
-            sh = on_line_share(j)
+            sh = on_line_share(j) if boxes[j][0] in keyset else 0.0
             line_boxes[j] = sh if sh >= BOX_ON_LINE_MIN else -1.0
         return line_boxes[j] >= 0.0
 

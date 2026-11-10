@@ -41,12 +41,18 @@ def test_a_ledger_box_lying_along_the_arc_is_the_arcs_own_ink():
     trace = {x: (10.0, 11.0) for x in range(0, 200)}
     slur = (np.ones((2, 200), bool), 0, 10)
     led = ("glyph/4/0/7/1/10", (60.0, 9.0, 100.0, 13.0))
-    got = AC.claim_pixels(_res(slur), (0, 0, 300, 100), 1.0, trace, 10.0, [led])
+    got = AC.claim_pixels(_res(slur), (0, 0, 300, 100), 1.0, trace, 10.0, [led], [led[0]])
     assert got["crossings"] == [] and [o for o, _ in got["claimed"]] == [0]
     assert got["line_boxes"] and got["line_boxes"][0][0] == led[0] and got["line_boxes"][0][1] >= AC.BOX_ON_LINE_MIN
     # the control that can fail: r6's rule (`line_boxes_free=False`) keeps the arc's ink as a crossing and claims nothing
-    old = AC.claim_pixels_on(_res(slur), (0, 0, 300, 100), 1.0, lambda px, py: AC._on_curve(px, py, trace, 10.0), [led], 0.5, False)
+    old = AC.claim_pixels_on(_res(slur), (0, 0, 300, 100), 1.0, lambda px, py: AC._on_curve(px, py, trace, 10.0), [led], 0.5, False, [led[0]])
     assert old["claimed"] == [] and len(old["crossings"]) == 1
+    # a box that is not a LINE-class box (a dot, a fermata, a head: all their ink lies inside the 0.12 sp band) stays a mark the arc crosses
+    dot = ("glyph/4/1/10/13/3", (60.0, 9.0, 66.0, 13.0))
+    kept = AC.claim_pixels(_res(slur), (0, 0, 300, 100), 1.0, trace, 10.0, [dot], [led[0]])
+    assert kept["line_boxes"] == [] and len(kept["crossings"]) == 1
+    # and the rule is off where the caller names no line-class box (the hairpin claim)
+    assert AC.claim_pixels(_res(slur), (0, 0, 300, 100), 1.0, trace, 10.0, [led])["line_boxes"] == []
 
 
 def test_a_letter_crossing_the_arc_stays_a_crossing():

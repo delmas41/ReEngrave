@@ -15359,6 +15359,7 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         if key is not None:
             by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
     mark_boxes: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None      # ROADMAP 2.284b: built once, on first use (flag ON only)
+    line_keys: set = set()
     for d in arcs_summary.get("arcs_detail") or ():
         trace_rows = d.get("trace")
         if not trace_rows:
@@ -15398,9 +15399,10 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                 # mark's own ink (a crossing: marked, not taken). `arc_claim.claim_pixels`.
                 if mark_boxes is None:
                     mark_boxes = _arc_mark_boxes_page(detections, by_cell)
+                    line_keys = _arc_line_box_keys(detections)
                 pg = mark_boxes.get(ck[0], ())
                 near = [(k, b) for k, b in pg if b[0] <= cb[2] and b[2] >= cb[0] and b[1] <= cb[3] and b[3] >= cb[1]]
-                px_res = AC.claim_pixels(res, cb, float(up), trace, sp, near)
+                px_res = AC.claim_pixels(res, cb, float(up), trace, sp, near, line_keys)
                 got = px_res["claimed"]
                 for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
                     px_tot[kk] = px_tot.get(kk, 0) + int(px_res[kk])
@@ -15469,6 +15471,19 @@ def _arc_mark_boxes_page(detections: Optional[Dict[str, List[Any]]], by_cell: Di
                 pb = _page_box(c, d)
                 if pb is not None:
                     out.setdefault(sub.page, []).append((R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), [float(v) for v in pb]))
+    return out
+
+
+def _arc_line_box_keys(detections: Optional[Dict[str, List[Any]]]) -> set:
+    """ROADMAP 2.284b r2: the glyph keys of every LINE-class box (`arc_claim.LINE_BOX_CLASSES`: a ledger line) of the page's detections -- the boxes
+    whose ink can be a stretch of an arc (`arc_claim.BOX_ON_LINE_MIN`)."""
+    from . import arc_claim as _AC
+    out = set()
+    for ck, dets in (detections or {}).items():
+        sub = Subject.from_key(ck)
+        for gi, d in enumerate(dets):
+            if str(getattr(d, "smufl_name", "") or "").startswith(_AC.LINE_BOX_CLASSES):
+                out.add(R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key())
     return out
 
 
