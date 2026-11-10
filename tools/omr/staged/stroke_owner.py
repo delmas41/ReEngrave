@@ -389,8 +389,9 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
     if pick is None:
         clear = list(dict.fromkeys(str(c["family"]) for c in fits if c["fit"] == "clear"))
         pick = clear[0] if len(clear) == 1 else None
-    if pick is None and resolve:
-        # 2.282 (`OMR_CLAIM_ORDER`): the claim ORDER decides -- the first family (candidates are listed in claim order) that fits owns the stroke
+    if pick is None and resolve and "accidental" in fams and set(fams) <= {"accidental", "head", "ledger"} and len(fams) > 1:
+        # 2.282 (`OMR_CLAIM_ORDER`): the claim ORDER decides, and only between the two families the question names (a note's ink and an accidental's):
+        # the first family (candidates are listed in claim order) that fits owns the stroke. Every other contest stays contested.
         pick = fams[0]
         keys = tuple(dict.fromkeys(str(c["key"]) for c in fits if c["family"] == pick))
         return Ownership(o, "merged" if len(keys) > 1 else "decided", pick, keys, tuple(cs), "order", rows)
