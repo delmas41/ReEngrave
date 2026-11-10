@@ -19,8 +19,8 @@
  },
  "verdict_vs_ON": {
   "1": "RIGHT: flag removed from a quarter (same note as tile 4)",
-  "2": "MIXED: real note gained, but written quarter; Sean: eighth",
-  "3": "WRONG: tie start gained on a half note's ink",
+  "2": "OPEN: real note gained, written quarter; Sean's 'eighth' was given without the flag/beam in the tile (tile did not show what the answer needs) -- print check pending",
+  "3": "OPEN: the half note has ties on either side, so a tie start there may be right -- binding check pending",
   "4": "RIGHT: value eighth->quarter",
   "5": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
   "6": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
@@ -31,5 +31,6 @@
   "11": "RIGHT: false flag on an arc tip refused (claimed_by:page_claim)",
   "12": "RIGHT: false flag refused (reason given claimed_by:barline; the ink is an arc tip)"
  },
- "summary": "ON right 10/12 (8 false flags on arc tips refused; a false flag and eighth->quarter on one real quarter), mixed 1 (tile 2: real note gained at quarter, is an eighth), wrong 1 (tile 3: tie gained on a half note)."
+ "summary": "ON right 10/12; tiles 2 and 3 OPEN after Sean's follow-up (tile 2 crop lacked the flag/beam; tile 3 has real ties on both sides of the half note).",
+ "verbatim_followup": "To be fair on tile 2 of the first round the flag or beam is not shown in the tile. Tile 3 is a half note with ties on either side."
 }
