@@ -49,3 +49,42 @@ Sean (2026-11-10): "I think we are on the right path. The issue is not what is b
 4. The twin-host note loss.
 5. Residual disagreement: Litolff head/none 0.6–0.9% (fused pieces under the 0.8 link share); Brahms barline/none 0.23% (no cell sees the rule whole).
 6. Provenance gap: other cells' rows appear in a verdict's `used` but not its `considered`.
+
+## Round 5 (2026-11-10, lane-2.284-r5-core 22ed06d00)
+
+Cause and process lesson. Of the three "lost eighths": 2.78-phase2 tile 11 (6/1/10/9) is no note -- box 9 is a noteheadWhole box over the barline and the stem with no head ink (print checked); Sean's eighth is box 5, still written; ON removes an invented head and the scorer counts it right->wrong because the tile lists both ids. Tiles 3-4 (6/1/8/10) are one real chord (boxes 3/13) lost because the PAGE map fused a dynamic f with a beam-stem blob the CELL keeps apart; the f's claim reached the blob through the page stroke, the chord's beam read went ambiguous. Lesson: r4 asserted a mechanism (a twin host) without the print or the export trace; and a page stroke is one mark only where every frame splits it alike.
+
+Built (flag ON only; OFF byte-identical on Litolff p2/4/6/10 re-adjudicated against the base tree):
+- page_ledger.is_view: a link counts only where the piece sees its page stroke whole or the cell edge cut it (the stroke map's cut fact; no new cut). Restores the chord.
+- adjudicators/ink_consult.py, the ONE consult: detail.ink_consult on each cell's stroke-owner verdict (every box's own ink held by an EARLIER 2.205 tier, from the page ledger's one owner); consult() = register rule table + ledger finding + owner shape. Heads/rests read its parts where the three old consults stood; ledger/accidental/arpeggiato its ledger finding; dynamic, articulation, flag, tuplet marker refuse claimed_by:barline|page_claim|earlier_mark; dots beside 2.243; arcs/tuplet brackets recorded only (spanner boxes). Refusals only by area/layer claims and a whole rest (box-vs-box refusal took a real quarter rest a misdrawn head box claimed, Litolff 2/0/8/2/4). Unconsulted families 6 -> 0 (ink_consult.unconsulted, a check a planted gap fails). Key-signature marker exempt: it runs before the stroke owner and is the key claim's own ink.
+- Evidence.considered_from_another_frame: other cells' rows used by the page settle enter `considered`.
+
+CONVENTION ASSUMED: a box mostly on an earlier claim's ink, owning none of its own, is not a mark of its kind. WHAT WOULD FALSIFY IT: a print-confirmed flag/dynamic/articulation/tuplet refused claimed_by:* (tiles out/print/2.284-r5). NOT CONFIRMED.
+
+Measures (sample r2, fresh gathers both arms, master cell map):
+- File: Litolff notes +5 -1 (the -1 = phantom box 9), flags -2, beams +1 -1 ~2, ties +2, articulations +1, values ~2, blue +3, words -1; not written 1401 -> 1397. Brahms rests -1 (Sean r4: barline), words -1, red bars 6 -> 5.
+- Judged right->wrong 1 (tile 11, phantom; scorer artifact); unwritten->wrong 0.
+- Disagreement ON (OFF): Brahms p0 0.54% (2.74); Litolff 2.02/2.04/1.78/1.65% (5.43/4.99/3.82/3.63). Up from r4 (0.43; 1.53/1.60/1.40/1.21): the price of is_view. Residual Litolff head/none 0.66-1.0%, Brahms barline/none 0.23% -- not fixed (needs pixel-level page labels per piece).
+- claim_readout Brahms p0: right 1291 -> 1297, nothing 85 -> 77, wrong kind 183; twin 4.8 -> 5.4%, contested 4.7 -> 5.7%.
+- check 229 (main's figure from r4; main not re-run this round). Fast tier 10095 passed.
+- 12 blind tiles out/print/2.284-r5/ (key.json outside tiles/).
+
+Cross-fence (2.284b): dropping hairpin from claim_final.MARK_ONLY_LEDGER follows from this design but only on the merged tree with 2.284b's pixel hairpin claim; one line at merge: MARK_ONLY_LEDGER = frozenset().
+
+## 2.284b — arcs claim only their own pixels; dynamics claimed page-wide (2026-11-10, lane-2.284b-arcs-dynamics 2674e0f20, flag OMR_PAGE_LEDGER_OWNS OFF)
+Cause: r4's 8 still-held boxes were held through NEIGHBOUR views (the padded neighbour cell / neighbour staff boxed nothing there), pooled by the page ledger — the skip set was per cell, the ink per page. Lesson: a rule protecting a mark's pixels names the mark by page position, never by which cell boxed it.
+Built (flag ON): arc_claim.claim_pixels_on (page-wide mark boxes skipped; a stroke holding >= 0.25 (= claim_final.NEAR_MIN) of a mark's ink is a CROSSING, marked not taken; rows carry `pixels`, `crossings`); hairpin claim through the same rule (GATHER half; still MARK_ONLY in claim_final); gather_page_claims: lone dynamic letters (in/out of staff), in-staff spelled dynamics and in-staff READ words claim READ page-wide, sparing note-family boxes (DYNAMIC_SPARES). Not built: claim_final hairpin MARK_ONLY drop (fence); arc page_strokes skip.
+Measures (sample-r2, fresh gathers): file changes = r4's (none from these pieces); judged right->wrong 1 = r4's (Litolff p6 tile 11, barline twin host); arc_held_probe >= 0.5: 22 OFF / 8 r4 / 0 now (near 54 -> 3); arc register px Litolff 194,061 / 262,730 / 244,795, Brahms p0 318,780 / 317,317 / 316,775; 17 crossings (flats 7, ledgers 3, double flats 2, p 2, natural, half head, dot); word_dynamic px Litolff 54,518 / 71,234 / 126,453, Brahms 73,152 / 112,886 / 119,756; Brahms truth right 1297 (=r4), via register 281 -> 286; hairpin 448 -> 170; check 229 = 229; fast tier 10094 passed; tests test_arcs_dynamics_claim_2_284b.py (7 pure), test_arcs_dynamics_real_page_2_284b.py (slow, OFF control fails).
+Tiles: out/print/2.284b (8 in-staff letter claims, 4 crossings), key.json beside; unanswered.
+
+## Round 6 — the two halves merged (2026-11-10, lane-2.284-r6-merged 6fc1fa93c, flag OFF)
+
+Merged r5 core (22ed06d00) + 2.284b (2674e0f20) + main; only docs/flags-2026-09.md conflicted (both texts kept). `claim_final.MARK_ONLY_LEDGER = frozenset()`: under the flag the hairpin is no longer mark-only, since 2.284b claims its pixels in GATHER. OFF unchanged (`mark_only()` returns MARK_ONLY).
+
+Measures (sample-r2, `--from gather --cell-map master`, both arms fresh on the merged tree; summaries in out/r6/):
+- File: Litolff p2/4/6/10 notes +5 -1, flags -2, beams +1 -1 ~2, ties +2, articulations +1, values ~2, blue +3, words -1; red 0 -> 0; not written 1401 -> 1397. Brahms p0 rests -1, words -1, red 6 -> 5; not written 83 -> 84. Same as r5's own report.
+- Judged right->wrong 1 (2.78-phase2 tile 11, the phantom whole-note box over the barline; Sean's eighth, box 5, still written); unwritten->wrong 0 on both plates.
+- arc_held_probe >= 0.5: 22 OFF -> 0 ON (near 54 -> 3).
+- Disagreement ON (fam-vs-fam): Litolff p2 2.00% (0.22), p4 2.04% (0.12), p6 1.82% (0.22), p10 1.68% (0.24); Brahms p0 0.59% (0.15).
+- check TOTAL 229 = main 229. Fast tier 10103 passed, 0 failed.
+- 20 Litolff + 1 Brahms changed places no tile of Sean's covers (out/r6/unjudged.txt).
