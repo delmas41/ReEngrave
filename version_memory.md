@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-10 -- ROADMAP 2.284 landed ON: OMR_PAGE_LEDGER_OWNS default ON (opt-out `=0`)
+STAGED GATHER + ADJUDICATE (`page_ledger.enabled()`, the single reader of the flag; same pattern as `OMR_PAGE_TREMOLO`). One owner per page stroke, settled once and read by every cell; the arc and hairpin claim only their own traced pixels (no longer mark-only); dynamic letters and in-staff words claim their own ink page-wide; one consult (`ink_consult`) for every box family. Sean 2026-11-10 "Yes, land it" after the r9 gate (24 in-staff dynamic claims, 0 px of foreign ink taken; r5 tiles 10/12 + 2 resolved; 2.284b-r2 words right). Fast tier 10105 passed + 7 tests that pinned the old OFF default updated and re-passed (full run had 7 failed, 0 others), check TOTAL 229 (= main). Left to retire is listed in the ROADMAP 2.284 row. Branch `land-2.284` (`lane-2.284-r9` + main); the manager pushes main.
+
 ## 2026-11-09 -- ROADMAP 2.276 landed ON: OMR_PAGE_TREMOLO default ON (deny-list)
 STAGED GATHER `page_tremolo.gather_page_tremolo` (once per page after `gather_page_claim_boxes`, before the head claim): every tremolo slash read once on the page canvas and filed as one `Q.CLAIMED_AREA` row (owner `tremolo`, layer before `head`); r3 `held_by_earlier_read` refuses candidates inside a dynamic letter, beam or flag box (Sean's tiles 5 and 10, wrong in r2, now not claimed). Sean's r2 tiles 9/11 claims right; "Land" 2026-11-09. Default flipped in `page_tremolo.enabled()` (`OMR_PAGE_TREMOLO=0` turns it off); the flag-off test now sets "0". No re-gather (merge was clean). Fast tier run on the merged tree.
 

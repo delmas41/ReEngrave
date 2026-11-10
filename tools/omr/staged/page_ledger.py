@@ -1,5 +1,5 @@
 """ROADMAP 2.284 -- THE PAGE LEDGER OWNS THE INK: one owner per PAGE stroke, resolved once; every cell view reads it (flag `OMR_PAGE_LEDGER_OWNS`,
-default OFF). STAGED, GATHER (the link) + ADJUDICATE (the one settle).
+default ON (Sean 2026-11-10 "Yes, land it"; "0" turns it off)). STAGED, GATHER (the link) + ADJUDICATE (the one settle).
 
     Sean 2026-11-09 ("Fix 2", after the 2.283 audit): "the page ledger owns the ink, one owner per page stroke, one consult for every box family ...".
     CLAUDE north star: all ink is accounted for ONE time. CLAUDE §3 claim order; docs/plan-2026-11-03-page-ledger.md §B (the page is the ledger, a
@@ -63,8 +63,8 @@ def is_view(ln: Sequence[float]) -> bool:
 
 
 def enabled() -> bool:
-    """`OMR_PAGE_LEDGER_OWNS` (ROADMAP 2.284), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_PAGE_LEDGER_OWNS` (ROADMAP 2.284), default ON (Sean 2026-11-10 "Yes, land it"; "0" turns it off): the same opt-out as `OMR_PAGE_TREMOLO`."""
+    return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 # ───────────────────────────── GATHER: the link ─────────────────────────────

@@ -9,9 +9,9 @@ from tools.omr.staged.adjudicators import ink_consult as IC
 
 def test_flag_follows_the_page_ledger(monkeypatch):
     monkeypatch.delenv("OMR_PAGE_LEDGER_OWNS", raising=False)
+    assert IC.enabled()                         # landed ON 2026-11-10
+    monkeypatch.setenv("OMR_PAGE_LEDGER_OWNS", "0")
     assert not IC.enabled()
-    monkeypatch.setenv("OMR_PAGE_LEDGER_OWNS", "1")
-    assert IC.enabled()
 
 
 def test_tiers_areas_first_consumers_last():

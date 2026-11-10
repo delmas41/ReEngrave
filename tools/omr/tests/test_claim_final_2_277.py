@@ -94,8 +94,14 @@ class TestSurvivors(unittest.TestCase):
         self.assertEqual(CF.survivors([("b", "head", HEAD_BESIDE_BARLINE, False)], CLAIMS), [])
 
     def test_CONTROL_arc_trace_is_mark_only_and_consulted_elsewhere_owners_are_left_to_the_consult(self):
-        self.assertEqual(CF.survivors([("a", "head", HEAD_ON_ARC, False)], CLAIMS), [])
+        # 2.284 landed ON (2026-11-10): the arc trace is mark-only only under the opt-out `OMR_PAGE_LEDGER_OWNS=0`
+        with mock.patch.dict(os.environ, {"OMR_PAGE_LEDGER_OWNS": "0"}):
+            self.assertEqual(CF.survivors([("a", "head", HEAD_ON_ARC, False)], CLAIMS), [])
         self.assertEqual(CF.survivors([("a", "head", [(0, 1.0, 10.0, "decided", "word")], False)], CLAIMS), [])
+
+    def test_with_the_page_ledger_on_nothing_is_mark_only(self):
+        with mock.patch.dict(os.environ, {"OMR_PAGE_LEDGER_OWNS": "1"}):
+            self.assertEqual(CF.survivors([("a", "head", HEAD_ON_ARC, False)], CLAIMS)[0]["by"], "arc_trace")
 
 
 class _Sub:
@@ -130,6 +136,11 @@ class TestConsult(unittest.TestCase):
         self.assertEqual(f.kind, "page_claim")
 
     def test_CONTROL_arc_and_hairpin_traces_only_mark(self):
+        # mark-only is the opt-out path since 2.284 landed ON (2026-11-10)
+        with mock.patch.dict(os.environ, {"OMR_PAGE_LEDGER_OWNS": "0"}):
+            self._arc_hairpin_only_mark()
+
+    def _arc_hairpin_only_mark(self):
         for by in ("arc_trace", "hairpin_trace"):
             self.assertIsNone(self._find({"glyph/1/0/0/0/5": {"by": by, "share": 0.9, "strokes": [0]}}))
 

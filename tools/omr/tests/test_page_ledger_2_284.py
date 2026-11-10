@@ -11,9 +11,12 @@ def _ink(o, kind="vertical", box=(0, 0, 2, 40), length=2.5, thick=0.15):
     return SO.Ink(o, kind, box, length, thick, 0.3, 16.0)
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(PL.ENV, raising=False)
-    assert not PL.enabled()
+    assert PL.enabled()                         # landed ON 2026-11-10
+    for off in ("0", "false", "no", "off"):
+        monkeypatch.setenv(PL.ENV, off)
+        assert not PL.enabled()
     monkeypatch.setenv(PL.ENV, "1")
     assert PL.enabled()
 
@@ -114,7 +117,7 @@ def test_an_arc_claims_only_its_own_traced_pixels_never_a_head_box(monkeypatch):
     assert AC.on_trace_share(m, 0, 0, 1.0, (0, 0, 0, 0), 1.0, trace, 10.0) == 1.0
     # the rim of a hollow head: the same pixels inside a head box are never the arc's
     assert AC.on_trace_share(m, 0, 0, 1.0, (0, 0, 0, 0), 1.0, trace, 10.0, skip_boxes=[(0, 0, 6, 4)]) == 0.4
-    monkeypatch.delenv(PL.ENV, raising=False)
+    monkeypatch.setenv(PL.ENV, "0")
     assert "arc_trace" in CF.mark_only()
     monkeypatch.setenv(PL.ENV, "1")
     assert "arc_trace" not in CF.mark_only() and "hairpin_trace" not in CF.mark_only()

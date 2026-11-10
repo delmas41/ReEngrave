@@ -26,9 +26,9 @@ from tools.omr.staged.record import Log, Q, READERS
 from tools.omr.tests.test_staged_duration import _staff_space
 
 SP = 16.0
-WORDS = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "1", "OMR_CLAIM_BRACKETS_FIRST": "0"}
-BRACKETS = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "0", "OMR_CLAIM_BRACKETS_FIRST": "1"}
-OFF = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "0", "OMR_CLAIM_BRACKETS_FIRST": "0"}
+WORDS = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "1", "OMR_CLAIM_BRACKETS_FIRST": "0", "OMR_PAGE_LEDGER_OWNS": "0"}
+BRACKETS = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "0", "OMR_CLAIM_BRACKETS_FIRST": "1", "OMR_PAGE_LEDGER_OWNS": "0"}
+OFF = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "0", "OMR_CLAIM_BRACKETS_FIRST": "0", "OMR_PAGE_LEDGER_OWNS": "0"}
 L0 = [100.0 + SP * i for i in range(5)]
 L1 = [300.0 + SP * i for i in range(5)]
 DYN = frozenset({"p", "pp", "f", "ff", "sf", "mf"})
