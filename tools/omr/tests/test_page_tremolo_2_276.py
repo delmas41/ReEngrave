@@ -139,6 +139,47 @@ class TestStemEndTest(unittest.TestCase):
         self.assertEqual(PT.head_end_verdict(img == 0, box, 250, SP), "ok")
 
 
+class TestHeldByAnEarlierRead(unittest.TestCase):
+    """ROADMAP 2.276 r3 (Sean 2026-10-16 reading order: beam / flag before the slash, which never overturns them; dynamics claim first): a candidate that lies inside the
+    detector's read of a dynamic letter, a beam or a flag is that mark's ink. Each refusal has its positive control: the same raster, no earlier read there, is a slash."""
+
+    def _raster(self):
+        img = _paper()
+        _stem(img)
+        _slash(img, 200)
+        return img
+
+    def test_no_earlier_read_there_the_slash_is_kept(self):
+        got, reasons = PT.read_page(self._raster() == 0, _stems(), [], SP, LINE, held=[(0.0, 0.0, 40.0, 40.0)])
+        self.assertEqual(len(got), 1)
+        self.assertNotIn("held_by_earlier_read", reasons)
+
+    def test_an_earlier_read_over_the_candidate_holds_it(self):
+        img = self._raster()
+        a, _ = PT.read_page(img == 0, _stems(), [], SP, LINE)
+        box = a[0]["box"]
+        held = [(box[0] - 5.0, box[1] - 5.0, box[2] - box[0] + 10.0, box[3] - box[1] + 10.0)]
+        got, reasons = PT.read_page(img == 0, _stems(), [], SP, LINE, held=held)
+        self.assertEqual(got, [])
+        self.assertEqual(reasons.get("held_by_earlier_read"), 1)
+
+    def test_a_read_that_holds_less_than_the_register_cut_keeps_it(self):
+        img = self._raster()
+        box = PT.read_page(img == 0, _stems(), [], SP, LINE)[0][0]["box"]
+        third = [(box[0], box[1], (box[2] - box[0]) * 0.3, box[3] - box[1])]
+        got, _r = PT.read_page(img == 0, _stems(), [], SP, LINE, held=third)
+        self.assertEqual(len(got), 1)
+
+    def test_held_share_alone(self):
+        self.assertEqual(PT.held_share([0, 0, 10, 10], []), 0.0)
+        self.assertAlmostEqual(PT.held_share([0, 0, 10, 10], [(0, 0, 5, 10)]), 0.5)
+        self.assertEqual(PT.held_share([0, 0, 10, 10], [(20, 20, 5, 5)]), 0.0)
+
+    def test_the_cut_is_the_registers(self):
+        from tools.omr.staged import claims as CL
+        self.assertEqual(PT.HELD_SHARE_MIN, CL.INSIDE_SHARE_MIN)
+
+
 class TestOwnStrokes(unittest.TestCase):
 
     def test_strokes_held_by_the_slash_box_are_its_own_the_stem_and_far_strokes_are_not(self):
