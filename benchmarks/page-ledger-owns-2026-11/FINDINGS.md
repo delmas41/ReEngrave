@@ -88,3 +88,15 @@ Measures (sample-r2, `--from gather --cell-map master`, both arms fresh on the m
 - Disagreement ON (fam-vs-fam): Litolff p2 2.00% (0.22), p4 2.04% (0.12), p6 1.82% (0.22), p10 1.68% (0.24); Brahms p0 0.59% (0.15).
 - check TOTAL 229 = main 229. Fast tier 10103 passed, 0 failed.
 - 20 Litolff + 1 Brahms changed places no tile of Sean's covers (out/r6/unjudged.txt).
+
+## Round 7 — core tiles 2 and 3 (2026-11-10, lane-2.284-r7 cc2e10888, flag OFF)
+
+Cause. Tile 2 (Litolff p2 2/1/5/13/0): the print has two stems joined by a beam, so Sean's eighth is right; the tile did not show the beam. A `noteheadDoubleWholeInSpace` box over the printed beam (2/1/4/13/4, 2.1 x 0.56 sp) is a head claim the page ledger carries into the neighbour staff's cell; the 2.235 tip reader skips owned ink, so the tip read clean and a quarter was decided. OFF keeps the tip "occupied" and the value narrowed. Tile 3 (10/1/3/2): ON is right. A false flag on an arc tip (box 10) narrowed a real half note OFF (open_head_flag_contradiction); ON refuses the flag, decides the half, and the tie start binds to it.
+
+Process lesson. An owner label says nothing about shape. "Ignore owned ink" assumed every owned stroke is a round head; a claim carried in from another frame turned "cannot tell" into "clean". A tile must show what the answer needs (Sean, follow-up).
+
+Built (flag ON only): `rhythm._head_owned_bar` — a bar (>= 1.8 sp wide, aspect >= 2.5) owned by a head stays at the tip, so the word stays "occupied" (rule 8). Test test_tip_bar_owned_by_head_2_284_r7.py (fails with the cut at 1800).
+
+Measures (sample-r2, fresh gathers both arms; baseline reproduces r6): Litolff notes +4 -1 (r6 +5 -1: the tile-2 quarter is back to unwritten), blue +2, not written 1401 -> 1398; Brahms unchanged from r6. Judged right->wrong 1 (the phantom, as r6); unwritten->wrong 0. Fast tier 10106 passed. check not re-run (229 = 229 at r6).
+
+Open, at the source: the phantom doubleWhole head box over a printed beam is still decided as a head in BOTH arms (8 beats; an invented note OFF). r7 is a downstream guard; the source is that box.
