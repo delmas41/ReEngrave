@@ -1,0 +1,19 @@
+litolff p2 2/1/1/3  flag lost eighth
+litolff p2 2/1/1/3  flag lost eighth
+litolff p2 2/1/1/3  value changed quarter (was eighth)
+litolff p2 2/1/1/3  value changed quarter (was eighth)
+litolff p2 2/1/9/7  beam changed continue (was end)
+litolff p2 2/1/9/7  beam gained end
+litolff p2 2/1/9/7  blue gained guessed
+litolff p2 2/1/9/7  note gained eighth
+litolff p4 4/0/4/11  blue gained guessed
+litolff p4 4/0/4/11  note gained half
+litolff p6 6/1/10/9  beam lost begin
+litolff p6 6/1/10/9  beam changed begin (was continue)
+litolff p6 6/1/10/9  note lost eighth
+litolff p10 10/1/3/2  articulation gained staccato
+litolff p10 10/1/3/2  note gained half
+litolff p10 10/1/3/2  note gained half
+litolff p10 10/1/3/2  tie gained start
+litolff p10 10/1/3/3  tie gained stop
+brahms p0 0/0/8/1  rest lost quarter
