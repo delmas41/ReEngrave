@@ -52,8 +52,8 @@ CONSULTED_ELSEWHERE = frozenset({"clef", "meter", "key_signature", "leading_colu
 SHAPE_EQUIVALENT_REASONS = ("claimed_by:barline",)
 MARK_ONLY = frozenset({"arc_trace", "arc", "hairpin_trace", "hairpin"})
 #: ROADMAP 2.284 (`OMR_PAGE_LEDGER_OWNS`): the arc claims only its own traced pixels (head-box pixels skipped, `arc_claim.claim_strokes`), so the
-#: workaround above goes for the ARC; the hairpin stays mark-only (its claim unit is unchanged)
-MARK_ONLY_LEDGER = frozenset({"hairpin_trace", "hairpin"})
+#: workaround above goes for the ARC; 2.284b (r6 merge) makes the hairpin claim pixel-honest too, so under the flag nothing is mark-only
+MARK_ONLY_LEDGER = frozenset()
 
 
 def mark_only() -> frozenset:

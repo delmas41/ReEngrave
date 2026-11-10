@@ -117,7 +117,7 @@ def test_an_arc_claims_only_its_own_traced_pixels_never_a_head_box(monkeypatch):
     monkeypatch.delenv(PL.ENV, raising=False)
     assert "arc_trace" in CF.mark_only()
     monkeypatch.setenv(PL.ENV, "1")
-    assert "arc_trace" not in CF.mark_only() and "hairpin_trace" in CF.mark_only()
+    assert "arc_trace" not in CF.mark_only() and "hairpin_trace" not in CF.mark_only()
 
 
 def test_r5_a_piece_the_cell_split_off_inside_its_crop_is_not_a_view():
