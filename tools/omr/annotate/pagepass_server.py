@@ -75,6 +75,10 @@ class PagePassService:
         self._claims: Optional[Claims] = None
         if self.file.exists():
             self.page = pp.load(self.file)
+            n = pagepass_prefill.migrate_meter_prefills(self.page, self.truth)     # in memory only
+            if n:
+                print(f"[page pass] {n} still-pending meter pre-fills now carry their value and digit pieces "
+                      f"(in memory; written with the next change)")
         else:
             key = json.loads(Path(arc_key).read_text()) if arc_key else None
             # the ink lets a barline / bracket pre-fill join across cells only where the print is unbroken

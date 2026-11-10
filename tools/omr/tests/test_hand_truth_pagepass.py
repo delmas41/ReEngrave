@@ -611,3 +611,18 @@ def test_round_1_files_load_and_save_unchanged_and_new_optional_fields_stay_out_
     if any("parts" in l for l in raw["labels"]):
         pytest.skip("a round-2 file: carries parts")
     assert pp.load(f).to_json()["labels"] == raw["labels"]
+
+
+def test_a_round_1_pending_meter_prefill_gets_its_value_in_memory_and_an_acted_on_one_is_left_alone():
+    t = _truth()
+    for i, (cls, r) in enumerate([("timeSig6", (700, 100, 722, 140)), ("timeSig8", (700, 142, 722, 182)),
+                                  ("timeSig9", (800, 100, 822, 140)), ("timeSig8", (800, 142, 822, 182))]):
+        t.boxes.append(Box(id=f"m{i}", cls=cls, rect=r, origin="drawn", labeler="sean"))
+    p = _pp()
+    pending = p.add_prefill("meter", pp.rect_shape((695, 95, 727, 187)), "hand-cell-labels")       # round-1 style: no value
+    acted = p.add_prefill("meter", pp.rect_shape((795, 95, 827, 187)), "hand-cell-labels")
+    p.confirm(acted.id)                                                                            # Sean already answered it
+    assert pf.migrate_meter_prefills(p, t) == 1
+    assert pending.text == "6/8" and [x["text"] for x in pending.parts] == ["6", "8"]
+    assert acted.text is None and acted.parts is None and acted.state == "confirmed"
+    assert pending.shape == {"rect": [695.0, 95.0, 727.0, 187.0]}                                   # shape untouched

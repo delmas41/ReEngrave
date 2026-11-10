@@ -323,6 +323,28 @@ def key_prefills(key: Dict) -> List[Dict]:
     return out
 
 
+def migrate_meter_prefills(page: pp.PagePass, truth: store.PageTruth) -> int:
+    """A round-1 page-pass file proposed meters as joined boxes with no value. Give each STILL-PENDING one its
+    pre-typed value and digit pieces, read from the hand-labelled digits inside it (in memory; written with the next
+    change). Never touches a label Sean has acted on, and never changes a shape."""
+    n = 0
+    for lab in page.labels:
+        if lab.kind != "meter" or lab.state != "pending" or lab.text or lab.parts or "rect" not in lab.shape:
+            continue
+        x0, y0, x1, y1 = lab.shape["rect"]
+        pieces = [{"rect": tuple(b.rect), "cls": b.cls} for b in truth.boxes
+                  if pp.kind_of_class(b.cls) == "meter"
+                  and x0 <= (b.rect[0] + b.rect[2]) / 2 <= x1 and y0 <= (b.rect[1] + b.rect[3]) / 2 <= y1]
+        if not pieces:
+            continue
+        text, parts, why = meter_from_pieces(pieces)
+        lab.text, lab.parts = text, parts
+        if why:
+            lab.note = (lab.note + " " + why).strip()
+        n += 1
+    return n
+
+
 def build(truth: store.PageTruth, *, arc_key: Optional[Dict] = None, ink: Optional[np.ndarray] = None) -> pp.PagePass:
     """A fresh page pass: pre-fills only (pending), nothing confirmed. ``ink`` (the page's dark pixels) lets a
     barline / bracket pre-fill join across the gaps between cells only where the print is unbroken."""
