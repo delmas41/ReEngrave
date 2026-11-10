@@ -1,0 +1,21 @@
+{
+ "lane": "2.279 r3 blue",
+ "branch": "lane-2.279-r3 (tiles drawn at r3; r4 032bf3c6f)",
+ "date": "2026-11-09",
+ "question": "What is the value of the boxed note?",
+ "answers": {
+  "1": "part of a sharp",
+  "2": "dotted quarter",
+  "3": "eighth",
+  "4": "quarter",
+  "5": "eighth",
+  "6": "unison half notes",
+  "7": "dotted quarter",
+  "8": "dotted quarter",
+  "9": "part of a sharp",
+  "10": "eighth",
+  "11": "quarter",
+  "12": "eighth"
+ },
+ "score": "guessed value right 5/12 (4,5,10,11,12). Wrong: 1,9 not notes (sharp pieces); 2,8 dot missed (quarter for dotted quarter); 7 eighth for dotted quarter; 3 quarter for eighth (withheld at r4); 6 quarter for unison halves"
+}

@@ -1,0 +1,194 @@
+{
+ "1": {
+  "file": "tile_01.png",
+  "subject": "brahms:glyph/14/1/1/0/7",
+  "page": 14,
+  "why_picked": "real head of a second, arm B abstained",
+  "my_label": "D",
+  "armB": {
+   "status": "abstain",
+   "why": "both_two_columns",
+   "ruler": "both"
+  },
+  "head_page_box": [
+   1231.8369140625,
+   4502.875,
+   1272.57421875,
+   4536.09765625
+  ],
+  "sp": 27.191162109375
+ },
+ "2": {
+  "file": "tile_02.png",
+  "subject": "brahms:glyph/0/0/0/5/4",
+  "page": 0,
+  "why_picked": "control: real head, single stem, arm B filed",
+  "my_label": "D",
+  "armB": {
+   "status": "filed",
+   "direction": "down",
+   "kind": "single",
+   "box": [
+    4581,
+    1534.5124999999998,
+    4588,
+    1651
+   ],
+   "ruler": "down",
+   "ext": 3.0
+  },
+  "head_page_box": [
+   4581.075,
+   1514.84,
+   4623.0,
+   1554.185
+  ],
+  "sp": 32.25000000000014
+ },
+ "3": {
+  "file": "tile_03.png",
+  "subject": "brahms:glyph/14/0/2/0/32",
+  "page": 14,
+  "why_picked": "real head of a second, arm B abstained",
+  "my_label": "D",
+  "armB": {
+   "status": "abstain",
+   "why": "both_two_columns",
+   "ruler": "both"
+  },
+  "head_page_box": [
+   1124.8876953125,
+   1060.494140625,
+   1164.41796875,
+   1091.5810546875
+  ],
+  "sp": 27.249023437499996
+ },
+ "4": {
+  "file": "tile_04.png",
+  "subject": "brahms:glyph/5/0/12/7/26",
+  "page": 5,
+  "why_picked": "micro false stem (a sharp boxed as a head), 2.277 does not refuse it",
+  "my_label": "N",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    4939,
+    3330,
+    4967,
+    3384.481201171875
+   ],
+   "ruler": "up",
+   "ext": 1.41
+  },
+  "head_page_box": [
+   4931.25634765625,
+   3368.24853515625,
+   4967.52392578125,
+   3400.7138671875
+  ],
+  "sp": 27.20068359375
+ },
+ "5": {
+  "file": "tile_05.png",
+  "subject": "brahms:glyph/14/1/2/4/9",
+  "page": 14,
+  "why_picked": "micro false stem (a sharp boxed as a head)",
+  "my_label": "N",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    3010,
+    4723,
+    3037,
+    4771.75
+   ],
+   "ruler": "up",
+   "ext": 1.1
+  },
+  "head_page_box": [
+   3001.75,
+   4753.325,
+   3036.675,
+   4790.175
+  ],
+  "sp": 27.500000000000142
+ },
+ "6": {
+  "file": "tile_06.png",
+  "subject": "litolff:glyph/16/0/9/16/1",
+  "page": 16,
+  "why_picked": "control: real head, single stem, arm B filed",
+  "my_label": "H",
+  "armB": {
+   "status": "filed",
+   "direction": "up",
+   "kind": "single",
+   "box": [
+    2508,
+    1505,
+    2529,
+    1574.8825000000002
+   ],
+   "ruler": "up",
+   "ext": 4.13
+  },
+  "head_page_box": [
+   2495.215,
+   1570.0,
+   2520.73,
+   1579.765
+  ],
+  "sp": 15.749999999999922
+ },
+ "7": {
+  "file": "tile_07.png",
+  "subject": "brahms:glyph/14/1/3/4/10",
+  "page": 14,
+  "why_picked": "micro false stem (a sharp boxed as a head)",
+  "my_label": "N",
+  "armB": {
+   "status": "filed",
+   "direction": "down",
+   "kind": "single",
+   "box": [
+    3001,
+    4954.717500000001,
+    3031,
+    5029
+   ],
+   "ruler": "down",
+   "ext": 2.05
+  },
+  "head_page_box": [
+   3002.715,
+   4936.1875,
+   3036.2325,
+   4973.2475
+  ],
+  "sp": 27.249999999999943
+ },
+ "8": {
+  "file": "tile_08.png",
+  "subject": "litolff:glyph/1/0/7/11/3",
+  "page": 1,
+  "why_picked": "real head, arm B abstained: ruler_none",
+  "my_label": "H",
+  "armB": {
+   "status": "abstain",
+   "why": "ruler_none",
+   "ruler": "none"
+  },
+  "head_page_box": [
+   2051.4975,
+   2402.99,
+   2070.3975,
+   2419.2125
+  ],
+  "sp": 15.750000000000076
+ }
+}

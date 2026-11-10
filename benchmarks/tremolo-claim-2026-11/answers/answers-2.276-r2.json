@@ -1,0 +1,21 @@
+{
+ "lane": "2.276 r2",
+ "branch": "lane-2.276-r2 1695b9339",
+ "date": "2026-11-09",
+ "question": "Is each boxed mark a note, a tremolo slash, or something else?",
+ "answers": {
+  "1": "tremolo slash",
+  "2": "tremolo slash",
+  "3": "tremolo slash",
+  "4": "tremolo slash",
+  "5": "part of a beam",
+  "6": "dynamic p",
+  "7": "tremolo slash",
+  "8": "tremolo slash",
+  "9": "tremolo slash",
+  "10": "dynamic p",
+  "11": "tremolo slash",
+  "12": "tremolo slash"
+ },
+ "score": "claims 9/11 right (tile 5 beam piece, tile 10 dynamic p wrongly claimed); end-test refusal tile 6 (a p) right"
+}
