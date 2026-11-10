@@ -1,0 +1,822 @@
+{
+ "env": {},
+ "layers": [
+  [
+   "staff_line",
+   [],
+   "plan \u00a710 pass order step 1; \u00a72 row 1"
+  ],
+  [
+   "barline_bracket",
+   [
+    "barline",
+    "bracket",
+    "leading_column"
+   ],
+   "plan \u00a710 step 1; \u00a79 brackets/braces claim page-wide"
+  ],
+  [
+   "clef_key_meter",
+   [
+    "clef",
+    "key_signature",
+    "meter"
+   ],
+   "plan \u00a710 step 2 system registers; \u00a72 row 1"
+  ],
+  [
+   "word_dynamic",
+   [
+    "word",
+    "dynamic",
+    "text"
+   ],
+   "plan \u00a710 steps 3-4; \u00a79 step 1 (page-wide, before heads)"
+  ],
+  [
+   "arc_hairpin",
+   [
+    "arc",
+    "arc_trace",
+    "hairpin",
+    "hairpin_trace"
+   ],
+   "plan \u00a79 / \u00a710 step 5 (page-wide, before heads)"
+  ],
+  [
+   "whole_rest",
+   [
+    "whole_rest"
+   ],
+   "DECISIONS 2026-10-29: a whole rest claims its ink before heads"
+  ],
+  [
+   "head",
+   [
+    "head",
+    "ledger"
+   ],
+   "plan \u00a72 row 3; \u00a73 head first among the per-cell marks"
+  ],
+  [
+   "stem_beam_flag",
+   [
+    "stem",
+    "beam",
+    "flag"
+   ],
+   "plan \u00a73 order head -> stem -> beam/flag; \u00a72 row 5"
+  ],
+  [
+   "accidental",
+   [
+    "accidental"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ],
+  [
+   "rest",
+   [
+    "rest"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ],
+  [
+   "dot_mark",
+   [
+    "dot",
+    "mark"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ]
+ ],
+ "master": "cm-54ccb4729528",
+ "pages": [
+  1,
+  2,
+  4,
+  6,
+  8,
+  9,
+  10,
+  11,
+  16
+ ],
+ "per_page": {
+  "1": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 1322,
+     "arc_hairpin": 9438,
+     "barline_bracket": 160760,
+     "clef_key_meter": 38261,
+     "dot_mark": 9595,
+     "head": 32944,
+     "rest": 4594,
+     "stem_beam_flag": 57934,
+     "whole_rest": 27300,
+     "word_dynamic": 48970
+    },
+    "OPEN": {
+     "arc_hairpin|head": 150,
+     "barline_bracket|-": 494,
+     "clef_key_meter|rest": 402,
+     "whole_rest|head": 766,
+     "word_dynamic|-": 17
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 5275,
+     "barline_bracket": 248,
+     "clef_key_meter": 12511,
+     "head": 1626,
+     "stem_beam_flag": 518,
+     "word_dynamic": 1702
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->accidental": 102,
+     "stem_beam_flag->accidental": 191,
+     "word_dynamic->stem_beam_flag": 1102
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "clef_key_meter": 134
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 391118,
+    "NO-READER": 89806,
+    "OPEN": 1829,
+    "ORDER-OK": 21880,
+    "ORDER-VIOLATION": 1395,
+    "SPLIT-ACROSS-CLAIM": 134
+   },
+   "ink_px": 506162,
+   "split_pieces": 1,
+   "staff_line_px": 399360
+  },
+  "10": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 13339,
+     "arc_hairpin": 37407,
+     "barline_bracket": 304789,
+     "clef_key_meter": 44582,
+     "dot_mark": 2443,
+     "head": 159394,
+     "rest": 37280,
+     "stem_beam_flag": 258780,
+     "whole_rest": 17674,
+     "word_dynamic": 68998
+    },
+    "OPEN": {
+     "accidental|dot_mark": 64,
+     "arc_hairpin|head": 158,
+     "barline_bracket|-": 5872,
+     "clef_key_meter|-": 239,
+     "clef_key_meter|accidental": 547,
+     "head|-": 45,
+     "head|dot_mark": 282,
+     "head|rest": 194,
+     "head|stem_beam_flag": 77,
+     "rest|dot_mark": 529,
+     "whole_rest|head": 777,
+     "word_dynamic|dot_mark": 384
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 12387,
+     "barline_bracket": 3784,
+     "clef_key_meter": 14441,
+     "head": 4705,
+     "stem_beam_flag": 670,
+     "whole_rest": 53,
+     "word_dynamic": 3868
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->accidental": 142,
+     "barline_bracket->stem_beam_flag": 4,
+     "head->dot_mark": 70,
+     "head->rest": 93,
+     "stem_beam_flag->accidental": 274,
+     "stem_beam_flag->dot_mark": 379,
+     "stem_beam_flag->rest": 1430,
+     "word_dynamic->arc_hairpin": 444,
+     "word_dynamic->stem_beam_flag": 50
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 69,
+     "clef_key_meter": 4664,
+     "none": 90
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 944686,
+    "NO-READER": 130722,
+    "OPEN": 9168,
+    "ORDER-OK": 39908,
+    "ORDER-VIOLATION": 2886,
+    "SPLIT-ACROSS-CLAIM": 4823
+   },
+   "ink_px": 1132193,
+   "split_pieces": 39,
+   "staff_line_px": 828640
+  },
+  "11": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 15592,
+     "arc_hairpin": 16203,
+     "barline_bracket": 320926,
+     "clef_key_meter": 38080,
+     "dot_mark": 1879,
+     "head": 69390,
+     "rest": 6317,
+     "stem_beam_flag": 118512,
+     "whole_rest": 48198,
+     "word_dynamic": 20002
+    },
+    "OPEN": {
+     "accidental|dot_mark": 158,
+     "accidental|rest": 400,
+     "arc_hairpin|accidental": 125,
+     "barline_bracket|-": 1978,
+     "barline_bracket|clef_key_meter": 4,
+     "clef_key_meter|-": 34,
+     "clef_key_meter|accidental": 299,
+     "clef_key_meter|head": 123,
+     "head|dot_mark": 73,
+     "whole_rest|head": 1054,
+     "word_dynamic|-": 58
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 20632,
+     "barline_bracket": 4754,
+     "clef_key_meter": 14526,
+     "head": 2188,
+     "stem_beam_flag": 51,
+     "word_dynamic": 1645
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->word_dynamic": 43,
+     "head->dot_mark": 76,
+     "stem_beam_flag->accidental": 747,
+     "stem_beam_flag->dot_mark": 47,
+     "word_dynamic->arc_hairpin": 291
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 1596,
+     "clef_key_meter": 11397,
+     "none": 73,
+     "stem_beam_flag": 117
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 655099,
+    "NO-READER": 86793,
+    "OPEN": 4306,
+    "ORDER-OK": 43796,
+    "ORDER-VIOLATION": 1204,
+    "SPLIT-ACROSS-CLAIM": 13183
+   },
+   "ink_px": 804381,
+   "split_pieces": 93,
+   "staff_line_px": 825403
+  },
+  "16": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 16254,
+     "arc_hairpin": 16329,
+     "barline_bracket": 283727,
+     "clef_key_meter": 42912,
+     "dot_mark": 5878,
+     "head": 219691,
+     "rest": 45781,
+     "stem_beam_flag": 242814,
+     "whole_rest": 17567,
+     "word_dynamic": 30659
+    },
+    "OPEN": {
+     "accidental|dot_mark": 347,
+     "accidental|rest": 437,
+     "barline_bracket|-": 5164,
+     "clef_key_meter|-": 280,
+     "clef_key_meter|accidental": 499,
+     "clef_key_meter|rest": 1838,
+     "head|-": 159,
+     "head|rest": 232,
+     "rest|dot_mark": 1962,
+     "whole_rest|head": 244,
+     "word_dynamic|-": 175,
+     "word_dynamic|arc_hairpin": 107
+    },
+    "ORDER-OK": {
+     "accidental": 301,
+     "arc_hairpin": 13839,
+     "barline_bracket": 3556,
+     "clef_key_meter": 13796,
+     "head": 3361,
+     "rest": 48,
+     "stem_beam_flag": 821,
+     "word_dynamic": 2378
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->stem_beam_flag": 39,
+     "clef_key_meter->arc_hairpin": 58,
+     "clef_key_meter->dot_mark": 9,
+     "head->dot_mark": 28,
+     "head->rest": 155,
+     "stem_beam_flag->accidental": 5,
+     "stem_beam_flag->dot_mark": 46,
+     "stem_beam_flag->rest": 307,
+     "word_dynamic->arc_hairpin": 3,
+     "word_dynamic->dot_mark": 25
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 1211,
+     "clef_key_meter": 5170,
+     "head": 49,
+     "none": 277,
+     "stem_beam_flag": 31
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 921612,
+    "NO-READER": 152603,
+    "OPEN": 11444,
+    "ORDER-OK": 38100,
+    "ORDER-VIOLATION": 675,
+    "SPLIT-ACROSS-CLAIM": 6738
+   },
+   "ink_px": 1131172,
+   "split_pieces": 52,
+   "staff_line_px": 761791
+  },
+  "2": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 8370,
+     "arc_hairpin": 33007,
+     "barline_bracket": 307549,
+     "clef_key_meter": 43584,
+     "dot_mark": 10067,
+     "head": 142263,
+     "rest": 47881,
+     "stem_beam_flag": 249527,
+     "whole_rest": 31050,
+     "word_dynamic": 77306
+    },
+    "OPEN": {
+     "accidental|dot_mark": 167,
+     "arc_hairpin|head": 447,
+     "barline_bracket|-": 8341,
+     "clef_key_meter|-": 954,
+     "clef_key_meter|accidental": 8,
+     "clef_key_meter|rest": 402,
+     "clef_key_meter|word_dynamic": 53,
+     "head|-": 109,
+     "rest|dot_mark": 974,
+     "whole_rest|head": 239,
+     "word_dynamic|-": 345,
+     "word_dynamic|dot_mark": 118,
+     "word_dynamic|rest": 204
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 10819,
+     "barline_bracket": 6108,
+     "clef_key_meter": 14983,
+     "head": 5597,
+     "stem_beam_flag": 983,
+     "whole_rest": 266,
+     "word_dynamic": 5450
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->arc_hairpin": 7,
+     "barline_bracket->clef_key_meter": 15,
+     "barline_bracket->stem_beam_flag": 37,
+     "barline_bracket->word_dynamic": 7,
+     "clef_key_meter->arc_hairpin": 155,
+     "clef_key_meter->stem_beam_flag": 117,
+     "clef_key_meter->word_dynamic": 413,
+     "head->dot_mark": 68,
+     "head->rest": 575,
+     "stem_beam_flag->accidental": 1108,
+     "word_dynamic->dot_mark": 44
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 2596,
+     "clef_key_meter": 6363,
+     "none": 519,
+     "stem_beam_flag": 34
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 950604,
+    "NO-READER": 139752,
+    "OPEN": 12361,
+    "ORDER-OK": 44206,
+    "ORDER-VIOLATION": 2546,
+    "SPLIT-ACROSS-CLAIM": 9512
+   },
+   "ink_px": 1158981,
+   "split_pieces": 60,
+   "staff_line_px": 780823
+  },
+  "4": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 15804,
+     "arc_hairpin": 39273,
+     "barline_bracket": 287191,
+     "clef_key_meter": 43023,
+     "dot_mark": 3860,
+     "head": 202214,
+     "rest": 43087,
+     "stem_beam_flag": 295553,
+     "whole_rest": 7664,
+     "word_dynamic": 38845
+    },
+    "OPEN": {
+     "accidental|dot_mark": 73,
+     "accidental|rest": 311,
+     "arc_hairpin|head": 381,
+     "barline_bracket|-": 7923,
+     "barline_bracket|word_dynamic": 357,
+     "clef_key_meter|-": 135,
+     "clef_key_meter|accidental": 11,
+     "clef_key_meter|rest": 207,
+     "clef_key_meter|word_dynamic": 3604,
+     "dot_mark|-": 233,
+     "head|-": 318,
+     "head|dot_mark": 195,
+     "head|stem_beam_flag": 504,
+     "rest|dot_mark": 2619,
+     "stem_beam_flag|accidental": 46,
+     "whole_rest|head": 275,
+     "word_dynamic|-": 3066,
+     "word_dynamic|head": 278
+    },
+    "ORDER-OK": {
+     "accidental": 136,
+     "arc_hairpin": 18272,
+     "barline_bracket": 10595,
+     "clef_key_meter": 16566,
+     "head": 11850,
+     "stem_beam_flag": 717,
+     "word_dynamic": 6387
+    },
+    "ORDER-VIOLATION": {
+     "accidental->rest": 1339,
+     "arc_hairpin->head": 165,
+     "arc_hairpin->stem_beam_flag": 43,
+     "barline_bracket->arc_hairpin": 1,
+     "barline_bracket->clef_key_meter": 48,
+     "barline_bracket->stem_beam_flag": 13,
+     "barline_bracket->word_dynamic": 35,
+     "head->accidental": 116,
+     "head->dot_mark": 216,
+     "head->rest": 32,
+     "stem_beam_flag->accidental": 939,
+     "stem_beam_flag->dot_mark": 1440,
+     "word_dynamic->arc_hairpin": 3320,
+     "word_dynamic->dot_mark": 62,
+     "word_dynamic->stem_beam_flag": 304
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 3858,
+     "clef_key_meter": 9834,
+     "head": 108,
+     "none": 864,
+     "stem_beam_flag": 187
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 976514,
+    "NO-READER": 124008,
+    "OPEN": 20536,
+    "ORDER-OK": 64523,
+    "ORDER-VIOLATION": 8073,
+    "SPLIT-ACROSS-CLAIM": 14851
+   },
+   "ink_px": 1208505,
+   "split_pieces": 92,
+   "staff_line_px": 855200
+  },
+  "6": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 23440,
+     "arc_hairpin": 27909,
+     "barline_bracket": 260198,
+     "clef_key_meter": 47301,
+     "dot_mark": 1104,
+     "head": 183416,
+     "rest": 46389,
+     "stem_beam_flag": 279289,
+     "whole_rest": 12449,
+     "word_dynamic": 32743
+    },
+    "OPEN": {
+     "accidental|rest": 416,
+     "arc_hairpin|head": 264,
+     "arc_hairpin|rest": 227,
+     "barline_bracket|-": 2210,
+     "clef_key_meter|-": 7,
+     "head|-": 196,
+     "head|accidental": 92,
+     "head|dot_mark": 191,
+     "rest|dot_mark": 269,
+     "whole_rest|head": 536,
+     "word_dynamic|-": 2092,
+     "word_dynamic|head": 186
+    },
+    "ORDER-OK": {
+     "accidental": 163,
+     "arc_hairpin": 15494,
+     "barline_bracket": 4597,
+     "clef_key_meter": 16528,
+     "head": 11040,
+     "rest": 5,
+     "stem_beam_flag": 787,
+     "whole_rest": 301,
+     "word_dynamic": 5533
+    },
+    "ORDER-VIOLATION": {
+     "accidental->rest": 221,
+     "arc_hairpin->head": 181,
+     "arc_hairpin->stem_beam_flag": 1,
+     "barline_bracket->accidental": 146,
+     "barline_bracket->stem_beam_flag": 1,
+     "clef_key_meter->arc_hairpin": 134,
+     "head->accidental": 53,
+     "head->dot_mark": 218,
+     "head->rest": 77,
+     "stem_beam_flag->accidental": 1962,
+     "stem_beam_flag->dot_mark": 814,
+     "stem_beam_flag->rest": 1146,
+     "whole_rest->head": 123,
+     "whole_rest->stem_beam_flag": 20,
+     "word_dynamic->arc_hairpin": 1,
+     "word_dynamic->dot_mark": 52,
+     "word_dynamic->head": 1536,
+     "word_dynamic->stem_beam_flag": 1435
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 2821,
+     "clef_key_meter": 8176,
+     "none": 383,
+     "word_dynamic": 105
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 914238,
+    "NO-READER": 173442,
+    "OPEN": 6686,
+    "ORDER-OK": 54448,
+    "ORDER-VIOLATION": 8121,
+    "SPLIT-ACROSS-CLAIM": 11485
+   },
+   "ink_px": 1168420,
+   "split_pieces": 86,
+   "staff_line_px": 872911
+  },
+  "8": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 29384,
+     "arc_hairpin": 14103,
+     "barline_bracket": 349424,
+     "clef_key_meter": 42682,
+     "dot_mark": 1063,
+     "head": 124205,
+     "rest": 6602,
+     "stem_beam_flag": 206496,
+     "whole_rest": 43094,
+     "word_dynamic": 66536
+    },
+    "OPEN": {
+     "accidental|dot_mark": 69,
+     "accidental|rest": 291,
+     "arc_hairpin|head": 175,
+     "barline_bracket|-": 5579,
+     "barline_bracket|clef_key_meter": 81,
+     "clef_key_meter|-": 929,
+     "clef_key_meter|head": 62,
+     "head|-": 25,
+     "head|dot_mark": 32,
+     "whole_rest|head": 2301,
+     "word_dynamic|-": 689,
+     "word_dynamic|dot_mark": 42
+    },
+    "ORDER-OK": {
+     "accidental": 259,
+     "arc_hairpin": 3768,
+     "barline_bracket": 3546,
+     "clef_key_meter": 15844,
+     "head": 7320,
+     "stem_beam_flag": 508,
+     "whole_rest": 243,
+     "word_dynamic": 4087
+    },
+    "ORDER-VIOLATION": {
+     "accidental->dot_mark": 220,
+     "accidental->rest": 553,
+     "clef_key_meter->head": 144,
+     "head->accidental": 35,
+     "head->dot_mark": 95,
+     "stem_beam_flag->accidental": 458,
+     "stem_beam_flag->dot_mark": 114
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 1346,
+     "clef_key_meter": 4254,
+     "none": 543,
+     "stem_beam_flag": 52
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 883589,
+    "NO-READER": 106850,
+    "OPEN": 10275,
+    "ORDER-OK": 35575,
+    "ORDER-VIOLATION": 1619,
+    "SPLIT-ACROSS-CLAIM": 6195
+   },
+   "ink_px": 1044103,
+   "split_pieces": 28,
+   "staff_line_px": 774558
+  },
+  "9": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 8544,
+     "arc_hairpin": 21903,
+     "barline_bracket": 251790,
+     "clef_key_meter": 47807,
+     "dot_mark": 13561,
+     "head": 123150,
+     "rest": 31670,
+     "stem_beam_flag": 187396,
+     "whole_rest": 30161,
+     "word_dynamic": 39744
+    },
+    "OPEN": {
+     "arc_hairpin|head": 142,
+     "barline_bracket|-": 6778,
+     "clef_key_meter|-": 65,
+     "clef_key_meter|accidental": 354,
+     "clef_key_meter|rest": 417,
+     "head|-": 53,
+     "head|rest": 280,
+     "rest|dot_mark": 972,
+     "whole_rest|head": 268,
+     "word_dynamic|-": 149,
+     "word_dynamic|dot_mark": 34
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 8536,
+     "barline_bracket": 3289,
+     "clef_key_meter": 16361,
+     "head": 4065,
+     "stem_beam_flag": 257,
+     "word_dynamic": 1820
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->arc_hairpin": 1,
+     "barline_bracket->clef_key_meter": 21,
+     "barline_bracket->stem_beam_flag": 1,
+     "clef_key_meter->accidental": 57,
+     "clef_key_meter->arc_hairpin": 107,
+     "head->rest": 215,
+     "stem_beam_flag->accidental": 708,
+     "stem_beam_flag->rest": 185,
+     "word_dynamic->rest": 92
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 1978,
+     "clef_key_meter": 2351,
+     "none": 72
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 755726,
+    "NO-READER": 96089,
+    "OPEN": 9512,
+    "ORDER-OK": 34328,
+    "ORDER-VIOLATION": 1387,
+    "SPLIT-ACROSS-CLAIM": 4401
+   },
+   "ink_px": 901443,
+   "split_pieces": 20,
+   "staff_line_px": 820572
+  }
+ },
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-report-slices-20261104-night/litolff",
+ "total": {
+  "by_pair": {
+   "EARLIER-UNREAD": {
+    "accidental": 132049,
+    "arc_hairpin": 215572,
+    "barline_bracket": 2526354,
+    "clef_key_meter": 388232,
+    "dot_mark": 49450,
+    "head": 1256667,
+    "rest": 269601,
+    "stem_beam_flag": 1896301,
+    "whole_rest": 235157,
+    "word_dynamic": 423803
+   },
+   "OPEN": {
+    "accidental|dot_mark": 878,
+    "accidental|rest": 1855,
+    "arc_hairpin|accidental": 125,
+    "arc_hairpin|head": 1717,
+    "arc_hairpin|rest": 227,
+    "barline_bracket|-": 44339,
+    "barline_bracket|clef_key_meter": 85,
+    "barline_bracket|word_dynamic": 357,
+    "clef_key_meter|-": 2643,
+    "clef_key_meter|accidental": 1718,
+    "clef_key_meter|head": 185,
+    "clef_key_meter|rest": 3266,
+    "clef_key_meter|word_dynamic": 3657,
+    "dot_mark|-": 233,
+    "head|-": 905,
+    "head|accidental": 92,
+    "head|dot_mark": 773,
+    "head|rest": 706,
+    "head|stem_beam_flag": 581,
+    "rest|dot_mark": 7325,
+    "stem_beam_flag|accidental": 46,
+    "whole_rest|head": 6460,
+    "word_dynamic|-": 6591,
+    "word_dynamic|arc_hairpin": 107,
+    "word_dynamic|dot_mark": 578,
+    "word_dynamic|head": 464,
+    "word_dynamic|rest": 204
+   },
+   "ORDER-OK": {
+    "accidental": 859,
+    "arc_hairpin": 109022,
+    "barline_bracket": 40477,
+    "clef_key_meter": 135556,
+    "head": 51752,
+    "rest": 53,
+    "stem_beam_flag": 5312,
+    "whole_rest": 863,
+    "word_dynamic": 32870
+   },
+   "ORDER-VIOLATION": {
+    "accidental->dot_mark": 220,
+    "accidental->rest": 2113,
+    "arc_hairpin->head": 346,
+    "arc_hairpin->stem_beam_flag": 44,
+    "barline_bracket->accidental": 390,
+    "barline_bracket->arc_hairpin": 9,
+    "barline_bracket->clef_key_meter": 84,
+    "barline_bracket->stem_beam_flag": 95,
+    "barline_bracket->word_dynamic": 85,
+    "clef_key_meter->accidental": 57,
+    "clef_key_meter->arc_hairpin": 454,
+    "clef_key_meter->dot_mark": 9,
+    "clef_key_meter->head": 144,
+    "clef_key_meter->stem_beam_flag": 117,
+    "clef_key_meter->word_dynamic": 413,
+    "head->accidental": 204,
+    "head->dot_mark": 771,
+    "head->rest": 1147,
+    "stem_beam_flag->accidental": 6392,
+    "stem_beam_flag->dot_mark": 2840,
+    "stem_beam_flag->rest": 3068,
+    "whole_rest->head": 123,
+    "whole_rest->stem_beam_flag": 20,
+    "word_dynamic->arc_hairpin": 4059,
+    "word_dynamic->dot_mark": 183,
+    "word_dynamic->head": 1536,
+    "word_dynamic->rest": 92,
+    "word_dynamic->stem_beam_flag": 2891
+   },
+   "SPLIT-ACROSS-CLAIM": {
+    "barline_bracket": 15475,
+    "clef_key_meter": 52343,
+    "head": 157,
+    "none": 2821,
+    "stem_beam_flag": 421,
+    "word_dynamic": 105
+   }
+  },
+  "class_px": {
+   "EARLIER-UNREAD": 7393186,
+   "NO-READER": 1100065,
+   "OPEN": 86117,
+   "ORDER-OK": 376764,
+   "ORDER-VIOLATION": 27906,
+   "SPLIT-ACROSS-CLAIM": 71322
+  },
+  "ink_px": 9055360,
+  "split_pieces": 471,
+  "staff_line_px": 6919258
+ },
+ "verify": {
+  "cells_ok": 2876,
+  "strokes_ok": 48537
+ }
+}

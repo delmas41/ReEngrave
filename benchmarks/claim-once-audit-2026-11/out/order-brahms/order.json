@@ -1,0 +1,819 @@
+{
+ "env": {},
+ "layers": [
+  [
+   "staff_line",
+   [],
+   "plan \u00a710 pass order step 1; \u00a72 row 1"
+  ],
+  [
+   "barline_bracket",
+   [
+    "barline",
+    "bracket",
+    "leading_column"
+   ],
+   "plan \u00a710 step 1; \u00a79 brackets/braces claim page-wide"
+  ],
+  [
+   "clef_key_meter",
+   [
+    "clef",
+    "key_signature",
+    "meter"
+   ],
+   "plan \u00a710 step 2 system registers; \u00a72 row 1"
+  ],
+  [
+   "word_dynamic",
+   [
+    "word",
+    "dynamic",
+    "text"
+   ],
+   "plan \u00a710 steps 3-4; \u00a79 step 1 (page-wide, before heads)"
+  ],
+  [
+   "arc_hairpin",
+   [
+    "arc",
+    "arc_trace",
+    "hairpin",
+    "hairpin_trace"
+   ],
+   "plan \u00a79 / \u00a710 step 5 (page-wide, before heads)"
+  ],
+  [
+   "whole_rest",
+   [
+    "whole_rest"
+   ],
+   "DECISIONS 2026-10-29: a whole rest claims its ink before heads"
+  ],
+  [
+   "head",
+   [
+    "head",
+    "ledger"
+   ],
+   "plan \u00a72 row 3; \u00a73 head first among the per-cell marks"
+  ],
+  [
+   "stem_beam_flag",
+   [
+    "stem",
+    "beam",
+    "flag"
+   ],
+   "plan \u00a73 order head -> stem -> beam/flag; \u00a72 row 5"
+  ],
+  [
+   "accidental",
+   [
+    "accidental"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ],
+  [
+   "rest",
+   [
+    "rest"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ],
+  [
+   "dot_mark",
+   [
+    "dot",
+    "mark"
+   ],
+   "plan \u00a72 row 3 open question 1"
+  ]
+ ],
+ "master": "cm-3ccd049d7c3c",
+ "pages": [
+  0,
+  4,
+  5,
+  8,
+  12,
+  14,
+  19,
+  25
+ ],
+ "per_page": {
+  "0": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 58472,
+     "arc_hairpin": 188633,
+     "barline_bracket": 435092,
+     "clef_key_meter": 171406,
+     "dot_mark": 18776,
+     "head": 517502,
+     "rest": 10237,
+     "stem_beam_flag": 466852,
+     "whole_rest": 7301,
+     "word_dynamic": 221241
+    },
+    "OPEN": {
+     "arc_hairpin|accidental": 63,
+     "arc_hairpin|head": 2313,
+     "clef_key_meter|-": 17,
+     "clef_key_meter|arc_hairpin": 624,
+     "clef_key_meter|head": 1386,
+     "head|-": 998,
+     "word_dynamic|-": 2119
+    },
+    "ORDER-OK": {
+     "arc_hairpin": 103722,
+     "barline_bracket": 3628,
+     "clef_key_meter": 37292,
+     "head": 26930,
+     "stem_beam_flag": 905,
+     "word_dynamic": 1627
+    },
+    "ORDER-VIOLATION": {
+     "arc_hairpin->head": 5,
+     "head->dot_mark": 160,
+     "stem_beam_flag->accidental": 1775,
+     "stem_beam_flag->dot_mark": 1200,
+     "word_dynamic->arc_hairpin": 2246,
+     "word_dynamic->head": 2430
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 9257,
+     "clef_key_meter": 3670
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 2095512,
+    "NO-READER": 307941,
+    "OPEN": 7520,
+    "ORDER-OK": 174104,
+    "ORDER-VIOLATION": 7816,
+    "SPLIT-ACROSS-CLAIM": 12927
+   },
+   "ink_px": 2605820,
+   "split_pieces": 16,
+   "staff_line_px": 1747578
+  },
+  "12": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 174664,
+     "arc_hairpin": 269417,
+     "barline_bracket": 908335,
+     "clef_key_meter": 131362,
+     "dot_mark": 71887,
+     "head": 569523,
+     "rest": 157623,
+     "stem_beam_flag": 853919,
+     "whole_rest": 62270,
+     "word_dynamic": 211935
+    },
+    "OPEN": {
+     "accidental|rest": 11865,
+     "arc_hairpin|accidental": 112,
+     "arc_hairpin|head": 1155,
+     "barline_bracket|-": 4712,
+     "clef_key_meter|-": 3403,
+     "dot_mark|-": 324,
+     "head|-": 589,
+     "head|dot_mark": 864,
+     "head|rest": 427,
+     "rest|dot_mark": 1951,
+     "word_dynamic|-": 4096,
+     "word_dynamic|dot_mark": 501
+    },
+    "ORDER-OK": {
+     "accidental": 1341,
+     "arc_hairpin": 138476,
+     "barline_bracket": 18644,
+     "clef_key_meter": 70867,
+     "head": 15483,
+     "stem_beam_flag": 3928,
+     "whole_rest": 10548,
+     "word_dynamic": 13408
+    },
+    "ORDER-VIOLATION": {
+     "accidental->rest": 1723,
+     "arc_hairpin->head": 572,
+     "barline_bracket->accidental": 176,
+     "barline_bracket->arc_hairpin": 20,
+     "barline_bracket->stem_beam_flag": 146,
+     "clef_key_meter->accidental": 3,
+     "clef_key_meter->arc_hairpin": 14,
+     "clef_key_meter->dot_mark": 2,
+     "clef_key_meter->head": 65,
+     "clef_key_meter->stem_beam_flag": 2,
+     "clef_key_meter->word_dynamic": 25,
+     "head->dot_mark": 953,
+     "head->stem_beam_flag": 41,
+     "stem_beam_flag->accidental": 1778,
+     "stem_beam_flag->dot_mark": 2006,
+     "stem_beam_flag->rest": 582,
+     "word_dynamic->arc_hairpin": 441,
+     "word_dynamic->dot_mark": 51,
+     "word_dynamic->stem_beam_flag": 297
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "arc_hairpin": 527,
+     "barline_bracket": 14496,
+     "clef_key_meter": 2780,
+     "none": 7654
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3410935,
+    "NO-READER": 647298,
+    "OPEN": 29999,
+    "ORDER-OK": 272695,
+    "ORDER-VIOLATION": 8897,
+    "SPLIT-ACROSS-CLAIM": 25457
+   },
+   "ink_px": 4395281,
+   "split_pieces": 85,
+   "staff_line_px": 3195737
+  },
+  "14": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 182878,
+     "arc_hairpin": 140348,
+     "barline_bracket": 709449,
+     "clef_key_meter": 140822,
+     "dot_mark": 41303,
+     "head": 569213,
+     "rest": 226543,
+     "stem_beam_flag": 710997,
+     "whole_rest": 34732,
+     "word_dynamic": 216538
+    },
+    "OPEN": {
+     "accidental|dot_mark": 255,
+     "accidental|rest": 7155,
+     "arc_hairpin|accidental": 380,
+     "barline_bracket|-": 12840,
+     "clef_key_meter|-": 161,
+     "clef_key_meter|accidental": 915,
+     "head|-": 462,
+     "head|accidental": 1048,
+     "head|dot_mark": 868,
+     "head|rest": 2366,
+     "word_dynamic|-": 936,
+     "word_dynamic|accidental": 165,
+     "word_dynamic|head": 990,
+     "word_dynamic|rest": 467
+    },
+    "ORDER-OK": {
+     "accidental": 4849,
+     "arc_hairpin": 159994,
+     "barline_bracket": 11136,
+     "clef_key_meter": 57462,
+     "head": 12867,
+     "stem_beam_flag": 2345,
+     "whole_rest": 2586,
+     "word_dynamic": 17567
+    },
+    "ORDER-VIOLATION": {
+     "accidental->rest": 3092,
+     "barline_bracket->arc_hairpin": 130,
+     "barline_bracket->stem_beam_flag": 33,
+     "clef_key_meter->stem_beam_flag": 152,
+     "head->accidental": 944,
+     "head->dot_mark": 1425,
+     "head->rest": 30,
+     "head->stem_beam_flag": 59,
+     "stem_beam_flag->accidental": 1569,
+     "stem_beam_flag->dot_mark": 1913,
+     "stem_beam_flag->rest": 1183,
+     "word_dynamic->accidental": 937,
+     "word_dynamic->arc_hairpin": 50,
+     "word_dynamic->dot_mark": 96,
+     "word_dynamic->head": 2
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "arc_hairpin": 14,
+     "barline_bracket": 18847,
+     "clef_key_meter": 12803,
+     "none": 24
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 2972823,
+    "NO-READER": 340007,
+    "OPEN": 29008,
+    "ORDER-OK": 268806,
+    "ORDER-VIOLATION": 11615,
+    "SPLIT-ACROSS-CLAIM": 31688
+   },
+   "ink_px": 3653947,
+   "split_pieces": 71,
+   "staff_line_px": 3398163
+  },
+  "19": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 327243,
+     "arc_hairpin": 243418,
+     "barline_bracket": 719255,
+     "clef_key_meter": 123548,
+     "dot_mark": 66179,
+     "head": 712930,
+     "rest": 211363,
+     "stem_beam_flag": 752300,
+     "whole_rest": 24929,
+     "word_dynamic": 153133
+    },
+    "OPEN": {
+     "accidental|dot_mark": 1461,
+     "accidental|rest": 2756,
+     "arc_hairpin|accidental": 466,
+     "arc_hairpin|head": 450,
+     "barline_bracket|-": 6563,
+     "clef_key_meter|-": 275,
+     "clef_key_meter|accidental": 9,
+     "dot_mark|-": 93,
+     "head|-": 1075,
+     "head|accidental": 421,
+     "head|rest": 2025,
+     "whole_rest|head": 34,
+     "word_dynamic|-": 674,
+     "word_dynamic|accidental": 243,
+     "word_dynamic|dot_mark": 197
+    },
+    "ORDER-OK": {
+     "accidental": 2947,
+     "arc_hairpin": 206356,
+     "barline_bracket": 10391,
+     "clef_key_meter": 57799,
+     "head": 51375,
+     "rest": 149,
+     "stem_beam_flag": 7317,
+     "whole_rest": 2791,
+     "word_dynamic": 8391
+    },
+    "ORDER-VIOLATION": {
+     "accidental->dot_mark": 1468,
+     "accidental->rest": 967,
+     "arc_hairpin->accidental": 1,
+     "arc_hairpin->head": 144,
+     "barline_bracket->arc_hairpin": 4,
+     "clef_key_meter->accidental": 16,
+     "clef_key_meter->arc_hairpin": 514,
+     "clef_key_meter->stem_beam_flag": 2,
+     "head->accidental": 766,
+     "head->dot_mark": 650,
+     "head->rest": 343,
+     "stem_beam_flag->accidental": 2773,
+     "stem_beam_flag->dot_mark": 6092,
+     "stem_beam_flag->rest": 1460,
+     "whole_rest->head": 973,
+     "word_dynamic->accidental": 936,
+     "word_dynamic->arc_hairpin": 99,
+     "word_dynamic->dot_mark": 194,
+     "word_dynamic->stem_beam_flag": 139
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 16219,
+     "clef_key_meter": 8181,
+     "none": 1132,
+     "stem_beam_flag": 271
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3334298,
+    "NO-READER": 573591,
+    "OPEN": 16742,
+    "ORDER-OK": 347516,
+    "ORDER-VIOLATION": 17541,
+    "SPLIT-ACROSS-CLAIM": 25803
+   },
+   "ink_px": 4315491,
+   "split_pieces": 41,
+   "staff_line_px": 3134630
+  },
+  "25": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 169090,
+     "arc_hairpin": 260118,
+     "barline_bracket": 734388,
+     "clef_key_meter": 125305,
+     "dot_mark": 56274,
+     "head": 560704,
+     "rest": 248905,
+     "stem_beam_flag": 764213,
+     "whole_rest": 37892,
+     "word_dynamic": 295001
+    },
+    "OPEN": {
+     "accidental|rest": 7790,
+     "arc_hairpin|accidental": 64,
+     "arc_hairpin|head": 1791,
+     "barline_bracket|-": 2428,
+     "clef_key_meter|-": 202,
+     "clef_key_meter|accidental": 1408,
+     "clef_key_meter|head": 853,
+     "dot_mark|-": 97,
+     "head|-": 264,
+     "head|accidental": 74,
+     "head|rest": 1250,
+     "head|stem_beam_flag": 31,
+     "rest|dot_mark": 496,
+     "whole_rest|rest": 770,
+     "word_dynamic|-": 2556,
+     "word_dynamic|accidental": 20,
+     "word_dynamic|dot_mark": 131,
+     "word_dynamic|rest": 412
+    },
+    "ORDER-OK": {
+     "accidental": 1326,
+     "arc_hairpin": 235790,
+     "barline_bracket": 11570,
+     "clef_key_meter": 57476,
+     "head": 53184,
+     "stem_beam_flag": 3689,
+     "whole_rest": 3329,
+     "word_dynamic": 7260
+    },
+    "ORDER-VIOLATION": {
+     "accidental->rest": 4759,
+     "arc_hairpin->head": 416,
+     "barline_bracket->clef_key_meter": 741,
+     "head->accidental": 400,
+     "head->dot_mark": 284,
+     "stem_beam_flag->accidental": 2290,
+     "stem_beam_flag->dot_mark": 2546,
+     "stem_beam_flag->rest": 544,
+     "word_dynamic->accidental": 1667,
+     "word_dynamic->arc_hairpin": 174,
+     "word_dynamic->stem_beam_flag": 155
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 17824,
+     "clef_key_meter": 12156
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3251890,
+    "NO-READER": 481251,
+    "OPEN": 20637,
+    "ORDER-OK": 373624,
+    "ORDER-VIOLATION": 13976,
+    "SPLIT-ACROSS-CLAIM": 29980
+   },
+   "ink_px": 4171358,
+   "split_pieces": 43,
+   "staff_line_px": 3221699
+  },
+  "4": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 255635,
+     "arc_hairpin": 291442,
+     "barline_bracket": 712277,
+     "clef_key_meter": 134667,
+     "dot_mark": 51966,
+     "head": 674617,
+     "rest": 233381,
+     "stem_beam_flag": 615442,
+     "whole_rest": 38591,
+     "word_dynamic": 244349
+    },
+    "OPEN": {
+     "accidental|rest": 3206,
+     "arc_hairpin|accidental": 498,
+     "arc_hairpin|head": 76,
+     "barline_bracket|-": 1499,
+     "clef_key_meter|-": 185,
+     "clef_key_meter|accidental": 1,
+     "head|-": 192,
+     "head|rest": 1053,
+     "whole_rest|head": 1,
+     "word_dynamic|-": 2577,
+     "word_dynamic|accidental": 19,
+     "word_dynamic|head": 5
+    },
+    "ORDER-OK": {
+     "accidental": 190,
+     "arc_hairpin": 146760,
+     "barline_bracket": 17007,
+     "clef_key_meter": 54866,
+     "head": 69233,
+     "stem_beam_flag": 7615,
+     "whole_rest": 2482,
+     "word_dynamic": 8835
+    },
+    "ORDER-VIOLATION": {
+     "accidental->dot_mark": 686,
+     "arc_hairpin->head": 508,
+     "arc_hairpin->stem_beam_flag": 13,
+     "clef_key_meter->arc_hairpin": 1232,
+     "clef_key_meter->rest": 5,
+     "clef_key_meter->stem_beam_flag": 132,
+     "clef_key_meter->word_dynamic": 19,
+     "head->dot_mark": 429,
+     "stem_beam_flag->accidental": 2142,
+     "stem_beam_flag->dot_mark": 2199,
+     "stem_beam_flag->rest": 2557,
+     "whole_rest->head": 202,
+     "word_dynamic->accidental": 432,
+     "word_dynamic->arc_hairpin": 1313,
+     "word_dynamic->dot_mark": 139,
+     "word_dynamic->head": 757,
+     "word_dynamic->stem_beam_flag": 227
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "arc_hairpin": 763,
+     "barline_bracket": 17371,
+     "clef_key_meter": 3061,
+     "head": 430,
+     "none": 1566
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3252367,
+    "NO-READER": 587833,
+    "OPEN": 9312,
+    "ORDER-OK": 306988,
+    "ORDER-VIOLATION": 12992,
+    "SPLIT-ACROSS-CLAIM": 23191
+   },
+   "ink_px": 4192683,
+   "split_pieces": 40,
+   "staff_line_px": 2697231
+  },
+  "5": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 111002,
+     "arc_hairpin": 328563,
+     "barline_bracket": 774966,
+     "clef_key_meter": 142500,
+     "dot_mark": 59645,
+     "head": 693193,
+     "rest": 333261,
+     "stem_beam_flag": 1091482,
+     "whole_rest": 25442,
+     "word_dynamic": 151681
+    },
+    "OPEN": {
+     "accidental|dot_mark": 120,
+     "accidental|rest": 13029,
+     "arc_hairpin|accidental": 273,
+     "arc_hairpin|head": 402,
+     "barline_bracket|-": 4059,
+     "clef_key_meter|-": 647,
+     "dot_mark|-": 249,
+     "head|-": 182,
+     "head|dot_mark": 1320,
+     "head|rest": 6869,
+     "head|stem_beam_flag": 395,
+     "word_dynamic|-": 1232,
+     "word_dynamic|accidental": 349,
+     "word_dynamic|dot_mark": 796
+    },
+    "ORDER-OK": {
+     "accidental": 2399,
+     "arc_hairpin": 241680,
+     "barline_bracket": 12605,
+     "clef_key_meter": 70109,
+     "head": 96807,
+     "rest": 133,
+     "stem_beam_flag": 13692,
+     "whole_rest": 2132,
+     "word_dynamic": 10422
+    },
+    "ORDER-VIOLATION": {
+     "accidental->rest": 7390,
+     "arc_hairpin->accidental": 125,
+     "arc_hairpin->head": 541,
+     "arc_hairpin->stem_beam_flag": 36,
+     "barline_bracket->arc_hairpin": 422,
+     "barline_bracket->head": 10,
+     "barline_bracket->stem_beam_flag": 36,
+     "clef_key_meter->head": 8,
+     "head->accidental": 111,
+     "head->dot_mark": 1216,
+     "head->rest": 594,
+     "head->stem_beam_flag": 103,
+     "stem_beam_flag->accidental": 2574,
+     "stem_beam_flag->dot_mark": 6033,
+     "stem_beam_flag->rest": 1615,
+     "word_dynamic->accidental": 2569,
+     "word_dynamic->arc_hairpin": 296,
+     "word_dynamic->dot_mark": 450,
+     "word_dynamic->head": 212,
+     "word_dynamic->stem_beam_flag": 381
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "accidental": 393,
+     "arc_hairpin": 319,
+     "barline_bracket": 17428,
+     "clef_key_meter": 19933,
+     "head": 417,
+     "none": 1154,
+     "stem_beam_flag": 612
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 3711735,
+    "NO-READER": 576501,
+    "OPEN": 29922,
+    "ORDER-OK": 449979,
+    "ORDER-VIOLATION": 24722,
+    "SPLIT-ACROSS-CLAIM": 40256
+   },
+   "ink_px": 4833115,
+   "split_pieces": 94,
+   "staff_line_px": 3371703
+  },
+  "8": {
+   "by_pair": {
+    "EARLIER-UNREAD": {
+     "accidental": 58425,
+     "arc_hairpin": 74668,
+     "barline_bracket": 821263,
+     "clef_key_meter": 130158,
+     "dot_mark": 40841,
+     "head": 299340,
+     "rest": 151320,
+     "stem_beam_flag": 398133,
+     "whole_rest": 71431,
+     "word_dynamic": 211695
+    },
+    "OPEN": {
+     "accidental|rest": 993,
+     "arc_hairpin|head": 129,
+     "barline_bracket|-": 5741,
+     "clef_key_meter|-": 163,
+     "clef_key_meter|arc_hairpin": 6,
+     "head|-": 180,
+     "head|dot_mark": 1100,
+     "head|rest": 2597,
+     "head|stem_beam_flag": 571,
+     "rest|dot_mark": 1638,
+     "whole_rest|head": 864,
+     "word_dynamic|-": 5101,
+     "word_dynamic|accidental": 31
+    },
+    "ORDER-OK": {
+     "accidental": 61,
+     "arc_hairpin": 204241,
+     "barline_bracket": 9192,
+     "clef_key_meter": 58025,
+     "head": 9616,
+     "rest": 95,
+     "stem_beam_flag": 3906,
+     "whole_rest": 7441,
+     "word_dynamic": 11439
+    },
+    "ORDER-VIOLATION": {
+     "barline_bracket->arc_hairpin": 180,
+     "clef_key_meter->arc_hairpin": 331,
+     "clef_key_meter->dot_mark": 4,
+     "clef_key_meter->head": 18,
+     "clef_key_meter->whole_rest": 18,
+     "clef_key_meter->word_dynamic": 359,
+     "head->accidental": 32,
+     "head->dot_mark": 325,
+     "head->rest": 412,
+     "stem_beam_flag->accidental": 2971,
+     "stem_beam_flag->dot_mark": 2531,
+     "stem_beam_flag->rest": 2250,
+     "word_dynamic->arc_hairpin": 6,
+     "word_dynamic->dot_mark": 359,
+     "word_dynamic->stem_beam_flag": 113
+    },
+    "SPLIT-ACROSS-CLAIM": {
+     "barline_bracket": 22004,
+     "clef_key_meter": 6847,
+     "none": 146
+    }
+   },
+   "class_px": {
+    "EARLIER-UNREAD": 2257274,
+    "NO-READER": 243883,
+    "OPEN": 19114,
+    "ORDER-OK": 304016,
+    "ORDER-VIOLATION": 9909,
+    "SPLIT-ACROSS-CLAIM": 28997
+   },
+   "ink_px": 2863193,
+   "split_pieces": 63,
+   "staff_line_px": 3349801
+  }
+ },
+ "record": "/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-report-slices-20261104-night/brahms",
+ "total": {
+  "by_pair": {
+   "EARLIER-UNREAD": {
+    "accidental": 1337409,
+    "arc_hairpin": 1796607,
+    "barline_bracket": 5815025,
+    "clef_key_meter": 1099768,
+    "dot_mark": 406871,
+    "head": 4597022,
+    "rest": 1572633,
+    "stem_beam_flag": 5653338,
+    "whole_rest": 302588,
+    "word_dynamic": 1705573
+   },
+   "OPEN": {
+    "accidental|dot_mark": 1836,
+    "accidental|rest": 46794,
+    "arc_hairpin|accidental": 1856,
+    "arc_hairpin|head": 6316,
+    "barline_bracket|-": 37842,
+    "clef_key_meter|-": 5053,
+    "clef_key_meter|accidental": 2333,
+    "clef_key_meter|arc_hairpin": 630,
+    "clef_key_meter|head": 2239,
+    "dot_mark|-": 763,
+    "head|-": 3942,
+    "head|accidental": 1543,
+    "head|dot_mark": 4152,
+    "head|rest": 16587,
+    "head|stem_beam_flag": 997,
+    "rest|dot_mark": 4085,
+    "whole_rest|head": 899,
+    "whole_rest|rest": 770,
+    "word_dynamic|-": 19291,
+    "word_dynamic|accidental": 827,
+    "word_dynamic|dot_mark": 1625,
+    "word_dynamic|head": 995,
+    "word_dynamic|rest": 879
+   },
+   "ORDER-OK": {
+    "accidental": 13113,
+    "arc_hairpin": 1437019,
+    "barline_bracket": 94173,
+    "clef_key_meter": 463896,
+    "head": 335495,
+    "rest": 377,
+    "stem_beam_flag": 43397,
+    "whole_rest": 31309,
+    "word_dynamic": 78949
+   },
+   "ORDER-VIOLATION": {
+    "accidental->dot_mark": 2154,
+    "accidental->rest": 17931,
+    "arc_hairpin->accidental": 126,
+    "arc_hairpin->head": 2186,
+    "arc_hairpin->stem_beam_flag": 49,
+    "barline_bracket->accidental": 176,
+    "barline_bracket->arc_hairpin": 756,
+    "barline_bracket->clef_key_meter": 741,
+    "barline_bracket->head": 10,
+    "barline_bracket->stem_beam_flag": 215,
+    "clef_key_meter->accidental": 19,
+    "clef_key_meter->arc_hairpin": 2091,
+    "clef_key_meter->dot_mark": 6,
+    "clef_key_meter->head": 91,
+    "clef_key_meter->rest": 5,
+    "clef_key_meter->stem_beam_flag": 288,
+    "clef_key_meter->whole_rest": 18,
+    "clef_key_meter->word_dynamic": 403,
+    "head->accidental": 2253,
+    "head->dot_mark": 5442,
+    "head->rest": 1379,
+    "head->stem_beam_flag": 203,
+    "stem_beam_flag->accidental": 17872,
+    "stem_beam_flag->dot_mark": 24520,
+    "stem_beam_flag->rest": 10191,
+    "whole_rest->head": 1175,
+    "word_dynamic->accidental": 6541,
+    "word_dynamic->arc_hairpin": 4625,
+    "word_dynamic->dot_mark": 1289,
+    "word_dynamic->head": 3401,
+    "word_dynamic->stem_beam_flag": 1312
+   },
+   "SPLIT-ACROSS-CLAIM": {
+    "accidental": 393,
+    "arc_hairpin": 1623,
+    "barline_bracket": 133446,
+    "clef_key_meter": 69431,
+    "head": 847,
+    "none": 11676,
+    "stem_beam_flag": 883
+   }
+  },
+  "class_px": {
+   "EARLIER-UNREAD": 24286834,
+   "NO-READER": 3758305,
+   "OPEN": 162254,
+   "ORDER-OK": 2497728,
+   "ORDER-VIOLATION": 107468,
+   "SPLIT-ACROSS-CLAIM": 218299
+  },
+  "ink_px": 31030888,
+  "split_pieces": 453,
+  "staff_line_px": 24116542
+ },
+ "verify": {
+  "cells_ok": 2034,
+  "strokes_ok": 60473
+ }
+}

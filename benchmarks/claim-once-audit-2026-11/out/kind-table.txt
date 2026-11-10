@@ -1,0 +1,68 @@
+
+### brahms pages [0, 4, 5, 8, 12, 14, 19, 25]  mark ink (staff lines out) 31297584 px
+overall (share of mark ink): one owner 68.4%  twin 9.8%  contested settled 8.4% open 0.4%  unclaimed/other 13.1%
+unclaimed classes (share of mark ink): residue:horizontal 6.4%, weak_claim 1.6%, unclaimed:vertical 1.3%, unclaimed:blob 1.3%, unclaimed:horizontal 0.7%, debris 0.7%, outside_cells 0.4%, refused:vertical 0.3%, refused:blob 0.3%, refused:horizontal 0.2%, unclaimed:curve 0.0%, residue:curve 0.0%, refused:curve 0.0%
+kind               one px   twin px  cont.set cont.open any claim
+head              3817702    536572    408416     37506   4800196
+ledger             194071     32739     62075     11077    299962
+accidental         834455    513837    488019     61575   1897886
+dot                246726     48492     21952      8846    326016
+rest              1721764    159705    114488     74249   2070206
+arc               1266493    526727   1119178     12198   2924596
+hairpin             24110         0    363867         0    387977
+stem              2653251      1989    137156       206   2792602
+beam              1442958    583425   1559695      2825   3588903
+flag               792922     99260    319958        55   1212195
+word_dynamic      1316999    412587     80895      9245   1819726
+mark                66014     44299     65355     10419    186087
+bracket           1433086         0     50682         0   1483768
+barline           4514261         0     60461         3   4574725
+clef_key_meter    1068303    118481    456939      6920   1650643
+top contested pairs:
+    952613 3.04%  arc+beam|settled
+    388331 1.24%  accidental+clef_key_meter|settled
+    345193 1.10%  hairpin+beam|settled
+    220769 0.71%  head+flag|settled
+     47127 0.15%  head+beam|settled
+     45725 0.15%  accidental+rest|open
+     45542 0.15%  stem+beam|settled
+     37741 0.12%  head+ledger|settled
+     29192 0.09%  stem+flag|settled
+     29124 0.09%  head+arc|settled
+     28993 0.09%  rest+beam|settled
+     28608 0.09%  accidental+rest|settled
+register-claimed px by kind (area/trace): {'arc': 1826051, 'barline': 4573463, 'bracket': 1270345, 'clef_key_meter': 1609626, 'hairpin': 387283, 'word_dynamic': 632941}
+
+### litolff pages [1, 2, 4, 6, 8, 9, 10, 11, 16]  mark ink (staff lines out) 9168830 px
+overall (share of mark ink): one owner 74.5%  twin 7.3%  contested settled 4.0% open 0.4%  unclaimed/other 13.8%
+unclaimed classes (share of mark ink): unclaimed:vertical 3.3%, unclaimed:blob 2.9%, residue:horizontal 2.1%, weak_claim 1.7%, refused:vertical 1.3%, unclaimed:horizontal 1.1%, debris 0.5%, refused:blob 0.4%, refused:horizontal 0.4%, outside_cells 0.2%, unclaimed:curve 0.0%, residue:curve 0.0%, refused:curve 0.0%
+kind               one px   twin px  cont.set cont.open any claim
+head              1047920    197962     62785     13206   1321873
+ledger              24616      2980     14562      1467     43625
+accidental          93810     42978    117365      5638    259791
+dot                  1692         0      1203       924      3819
+rest               495666     11474     18994     20278    546412
+arc                131785     86738    112553      2921    333997
+hairpin               994         0       384         0      1378
+stem              1292723         0     39419       204   1332346
+beam               438565    102308    124260        71    665204
+flag                45253      5802     14306       123     65484
+word_dynamic       259337    176692     40378      7513    483920
+mark                31600     18215     10945     11472     72232
+bracket            434788         0     25884       999    461671
+barline           2108551         0     23409        77   2132037
+clef_key_meter     422443     22584    136714     12585    594326
+top contested pairs:
+    100074 1.09%  accidental+clef_key_meter|settled
+     94817 1.03%  arc+beam|settled
+     15064 0.16%  word_dynamic+bracket|settled
+     13436 0.15%  stem+beam|settled
+     13161 0.14%  head+clef_key_meter|settled
+     11129 0.12%  head+ledger|settled
+     10309 0.11%  bracket+barline|settled
+      9602 0.10%  head+stem|settled
+      8206 0.09%  head+flag|settled
+      7325 0.08%  rest+mark|open
+      7176 0.08%  head+rest|open
+      6827 0.07%  head+arc|settled
+register-claimed px by kind (area/trace): {'arc': 304829, 'barline': 2130579, 'bracket': 425131, 'clef_key_meter': 570821, 'hairpin': 1378, 'word_dynamic': 108627}

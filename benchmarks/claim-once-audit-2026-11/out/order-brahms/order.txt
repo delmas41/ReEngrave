@@ -1,0 +1,67 @@
+claim_order brahms pages [0, 4, 5, 8, 12, 14, 19, 25] master cm-3ccd049d7c3c
+TOTAL: 31030888 ink px (staff lines 24116542 left out)
+  ORDER-OK 8.05%   EARLIER-UNREAD 78.27%   ORDER-VIOLATION 0.35%   OPEN 0.52%   SPLIT-ACROSS-CLAIM 0.70%   NO-READER 12.11%
+  ORDER-VIOLATION by pair: stem_beam_flag->dot_mark 0.08%, accidental->rest 0.06%, stem_beam_flag->accidental 0.06%, stem_beam_flag->rest 0.03%, word_dynamic->accidental 0.02%, head->dot_mark 0.02%, word_dynamic->arc_hairpin 0.01%, word_dynamic->head 0.01%
+  OPEN by pair: accidental|rest 0.15%, barline_bracket|- 0.12%, word_dynamic|- 0.06%, head|rest 0.05%, arc_hairpin|head 0.02%, clef_key_meter|- 0.02%, head|dot_mark 0.01%, rest|dot_mark 0.01%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.43%, clef_key_meter 0.22%, none 0.04%, arc_hairpin 0.01%, stem_beam_flag 0.00%, head 0.00%, accidental 0.00%
+  EARLIER-UNREAD by owner: barline_bracket 18.74%, stem_beam_flag 18.22%, head 14.81%, arc_hairpin 5.79%, word_dynamic 5.50%, rest 5.07%, accidental 4.31%, clef_key_meter 3.54%
+  top ORDER-VIOLATION pairs (share of ink; code_agrees False = the code's own tier order also differs from the plan):
+    stem_beam_flag->dot_mark               24520 px 0.08%  code_agrees=False
+    accidental->rest                       17931 px 0.06%  code_agrees=True
+    stem_beam_flag->accidental             17872 px 0.06%  code_agrees=False
+    stem_beam_flag->rest                   10191 px 0.03%  code_agrees=False
+    word_dynamic->accidental                6541 px 0.02%  code_agrees=False
+    head->dot_mark                          5442 px 0.02%  code_agrees=True
+    word_dynamic->arc_hairpin               4625 px 0.01%  code_agrees=False
+    word_dynamic->head                      3401 px 0.01%  code_agrees=False
+    head->accidental                        2253 px 0.01%  code_agrees=True
+    arc_hairpin->head                       2186 px 0.01%  code_agrees=False
+page 0: 2605820 ink px (staff lines 1747578 left out)
+  ORDER-OK 6.68%   EARLIER-UNREAD 80.42%   ORDER-VIOLATION 0.30%   OPEN 0.29%   SPLIT-ACROSS-CLAIM 0.50%   NO-READER 11.82%
+  ORDER-VIOLATION by pair: word_dynamic->head 0.09%, word_dynamic->arc_hairpin 0.09%, stem_beam_flag->accidental 0.07%, stem_beam_flag->dot_mark 0.05%, head->dot_mark 0.01%, arc_hairpin->head 0.00%
+  OPEN by pair: arc_hairpin|head 0.09%, word_dynamic|- 0.08%, clef_key_meter|head 0.05%, head|- 0.04%, clef_key_meter|arc_hairpin 0.02%, arc_hairpin|accidental 0.00%, clef_key_meter|- 0.00%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.36%, clef_key_meter 0.14%
+  EARLIER-UNREAD by owner: head 19.86%, stem_beam_flag 17.92%, barline_bracket 16.70%, word_dynamic 8.49%, arc_hairpin 7.24%, clef_key_meter 6.58%, accidental 2.24%, dot_mark 0.72%
+page 4: 4192683 ink px (staff lines 2697231 left out)
+  ORDER-OK 7.32%   EARLIER-UNREAD 77.57%   ORDER-VIOLATION 0.31%   OPEN 0.22%   SPLIT-ACROSS-CLAIM 0.55%   NO-READER 14.02%
+  ORDER-VIOLATION by pair: stem_beam_flag->rest 0.06%, stem_beam_flag->dot_mark 0.05%, stem_beam_flag->accidental 0.05%, word_dynamic->arc_hairpin 0.03%, clef_key_meter->arc_hairpin 0.03%, word_dynamic->head 0.02%, accidental->dot_mark 0.02%, arc_hairpin->head 0.01%
+  OPEN by pair: accidental|rest 0.08%, word_dynamic|- 0.06%, barline_bracket|- 0.04%, head|rest 0.03%, arc_hairpin|accidental 0.01%, head|- 0.00%, clef_key_meter|- 0.00%, arc_hairpin|head 0.00%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.41%, clef_key_meter 0.07%, none 0.04%, arc_hairpin 0.02%, head 0.01%
+  EARLIER-UNREAD by owner: barline_bracket 16.99%, head 16.09%, stem_beam_flag 14.68%, arc_hairpin 6.95%, accidental 6.10%, word_dynamic 5.83%, rest 5.57%, clef_key_meter 3.21%
+page 5: 4833115 ink px (staff lines 3371703 left out)
+  ORDER-OK 9.31%   EARLIER-UNREAD 76.80%   ORDER-VIOLATION 0.51%   OPEN 0.62%   SPLIT-ACROSS-CLAIM 0.83%   NO-READER 11.93%
+  ORDER-VIOLATION by pair: accidental->rest 0.15%, stem_beam_flag->dot_mark 0.12%, stem_beam_flag->accidental 0.05%, word_dynamic->accidental 0.05%, stem_beam_flag->rest 0.03%, head->dot_mark 0.03%, head->rest 0.01%, arc_hairpin->head 0.01%
+  OPEN by pair: accidental|rest 0.27%, head|rest 0.14%, barline_bracket|- 0.08%, head|dot_mark 0.03%, word_dynamic|- 0.03%, word_dynamic|dot_mark 0.02%, clef_key_meter|- 0.01%, arc_hairpin|head 0.01%
+  SPLIT-ACROSS-CLAIM by owner: clef_key_meter 0.41%, barline_bracket 0.36%, none 0.02%, stem_beam_flag 0.01%, head 0.01%, accidental 0.01%, arc_hairpin 0.01%
+  EARLIER-UNREAD by owner: stem_beam_flag 22.58%, barline_bracket 16.03%, head 14.34%, rest 6.90%, arc_hairpin 6.80%, word_dynamic 3.14%, clef_key_meter 2.95%, accidental 2.30%
+page 8: 2863193 ink px (staff lines 3349801 left out)
+  ORDER-OK 10.62%   EARLIER-UNREAD 78.84%   ORDER-VIOLATION 0.35%   OPEN 0.67%   SPLIT-ACROSS-CLAIM 1.01%   NO-READER 8.52%
+  ORDER-VIOLATION by pair: stem_beam_flag->accidental 0.10%, stem_beam_flag->dot_mark 0.09%, stem_beam_flag->rest 0.08%, head->rest 0.01%, clef_key_meter->word_dynamic 0.01%, word_dynamic->dot_mark 0.01%, clef_key_meter->arc_hairpin 0.01%, head->dot_mark 0.01%
+  OPEN by pair: barline_bracket|- 0.20%, word_dynamic|- 0.18%, head|rest 0.09%, rest|dot_mark 0.06%, head|dot_mark 0.04%, accidental|rest 0.03%, whole_rest|head 0.03%, head|stem_beam_flag 0.02%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.77%, clef_key_meter 0.24%, none 0.01%
+  EARLIER-UNREAD by owner: barline_bracket 28.68%, stem_beam_flag 13.91%, head 10.45%, word_dynamic 7.39%, rest 5.29%, clef_key_meter 4.55%, arc_hairpin 2.61%, whole_rest 2.49%
+page 12: 4395281 ink px (staff lines 3195737 left out)
+  ORDER-OK 6.20%   EARLIER-UNREAD 77.60%   ORDER-VIOLATION 0.20%   OPEN 0.68%   SPLIT-ACROSS-CLAIM 0.58%   NO-READER 14.73%
+  ORDER-VIOLATION by pair: stem_beam_flag->dot_mark 0.05%, stem_beam_flag->accidental 0.04%, accidental->rest 0.04%, head->dot_mark 0.02%, stem_beam_flag->rest 0.01%, arc_hairpin->head 0.01%, word_dynamic->arc_hairpin 0.01%, word_dynamic->stem_beam_flag 0.01%
+  OPEN by pair: accidental|rest 0.27%, barline_bracket|- 0.11%, word_dynamic|- 0.09%, clef_key_meter|- 0.08%, rest|dot_mark 0.04%, arc_hairpin|head 0.03%, head|dot_mark 0.02%, head|- 0.01%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.33%, none 0.17%, clef_key_meter 0.06%, arc_hairpin 0.01%
+  EARLIER-UNREAD by owner: barline_bracket 20.67%, stem_beam_flag 19.43%, head 12.96%, arc_hairpin 6.13%, word_dynamic 4.82%, accidental 3.97%, rest 3.59%, clef_key_meter 2.99%
+page 14: 3653947 ink px (staff lines 3398163 left out)
+  ORDER-OK 7.36%   EARLIER-UNREAD 81.36%   ORDER-VIOLATION 0.32%   OPEN 0.79%   SPLIT-ACROSS-CLAIM 0.87%   NO-READER 9.31%
+  ORDER-VIOLATION by pair: accidental->rest 0.08%, stem_beam_flag->dot_mark 0.05%, stem_beam_flag->accidental 0.04%, head->dot_mark 0.04%, stem_beam_flag->rest 0.03%, head->accidental 0.03%, word_dynamic->accidental 0.03%, clef_key_meter->stem_beam_flag 0.00%
+  OPEN by pair: barline_bracket|- 0.35%, accidental|rest 0.20%, head|rest 0.06%, head|accidental 0.03%, word_dynamic|head 0.03%, word_dynamic|- 0.03%, clef_key_meter|accidental 0.03%, head|dot_mark 0.02%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.52%, clef_key_meter 0.35%, none 0.00%, arc_hairpin 0.00%
+  EARLIER-UNREAD by owner: stem_beam_flag 19.46%, barline_bracket 19.42%, head 15.58%, rest 6.20%, word_dynamic 5.93%, accidental 5.00%, clef_key_meter 3.85%, arc_hairpin 3.84%
+page 19: 4315491 ink px (staff lines 3134630 left out)
+  ORDER-OK 8.05%   EARLIER-UNREAD 77.26%   ORDER-VIOLATION 0.41%   OPEN 0.39%   SPLIT-ACROSS-CLAIM 0.60%   NO-READER 13.29%
+  ORDER-VIOLATION by pair: stem_beam_flag->dot_mark 0.14%, stem_beam_flag->accidental 0.06%, accidental->dot_mark 0.03%, stem_beam_flag->rest 0.03%, whole_rest->head 0.02%, accidental->rest 0.02%, word_dynamic->accidental 0.02%, head->accidental 0.02%
+  OPEN by pair: barline_bracket|- 0.15%, accidental|rest 0.06%, head|rest 0.05%, accidental|dot_mark 0.03%, head|- 0.02%, word_dynamic|- 0.02%, arc_hairpin|accidental 0.01%, arc_hairpin|head 0.01%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.38%, clef_key_meter 0.19%, none 0.03%, stem_beam_flag 0.01%
+  EARLIER-UNREAD by owner: stem_beam_flag 17.43%, barline_bracket 16.67%, head 16.52%, accidental 7.58%, arc_hairpin 5.64%, rest 4.90%, word_dynamic 3.55%, clef_key_meter 2.86%
+page 25: 4171358 ink px (staff lines 3221699 left out)
+  ORDER-OK 8.96%   EARLIER-UNREAD 77.96%   ORDER-VIOLATION 0.34%   OPEN 0.49%   SPLIT-ACROSS-CLAIM 0.72%   NO-READER 11.54%
+  ORDER-VIOLATION by pair: accidental->rest 0.11%, stem_beam_flag->dot_mark 0.06%, stem_beam_flag->accidental 0.05%, word_dynamic->accidental 0.04%, barline_bracket->clef_key_meter 0.02%, stem_beam_flag->rest 0.01%, arc_hairpin->head 0.01%, head->accidental 0.01%
+  OPEN by pair: accidental|rest 0.19%, word_dynamic|- 0.06%, barline_bracket|- 0.06%, arc_hairpin|head 0.04%, clef_key_meter|accidental 0.03%, head|rest 0.03%, clef_key_meter|head 0.02%, whole_rest|rest 0.02%
+  SPLIT-ACROSS-CLAIM by owner: barline_bracket 0.43%, clef_key_meter 0.29%
+  EARLIER-UNREAD by owner: stem_beam_flag 18.32%, barline_bracket 17.61%, head 13.44%, word_dynamic 7.07%, arc_hairpin 6.24%, rest 5.97%, accidental 4.05%, clef_key_meter 3.00%
+  cells re-cut and matched stroke-for-stroke to the record: {'cells_ok': 2034, 'strokes_ok': 60473}

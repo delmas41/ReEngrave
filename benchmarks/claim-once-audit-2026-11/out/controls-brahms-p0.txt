@@ -1,0 +1,9 @@
+(a) OMR_ARC_CLAIM: register-claimed arc ink px 292857 -> 0 with the flag 0 (must drop)
+    Sean's arcs (tie+slur) right via the register: 135 of 153 -> 0 with the flag 0 (must drop)
+(b) planted head+rest double claim: contested ink px 177913 -> 495372 (must rise)
+(c) readout of an identical copy of the rows: identical
+(f) heads planted cut in half: black heads WHOLE 221 -> 2, fragmented+misshapen -> 372 (whole must drop)
+(e) no saved stroke_owner verdicts beside these rows (a `.record.json` cut by this command keeps them): parity not checked
+(d) stroke-for-stroke match of the re-cut cells with the record: {'cells_ok': 112, 'strokes_ok': 3256}
+controls: ALL BEHAVE
+python3 -m tools.omr.staged.claim_readout controls $S/brahms --page 0  78.57s user 12.01s system 108% cpu 1:23.52 total
