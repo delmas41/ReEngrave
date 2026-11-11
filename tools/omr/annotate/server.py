@@ -1856,14 +1856,16 @@ def main() -> None:
             from fastapi import FastAPI
             from fastapi.responses import RedirectResponse
             from fastapi.staticfiles import StaticFiles
+            from tools.omr.annotate.cellpass_server import CellPassService, mount as mount_cells
             from tools.omr.annotate.pagepass_server import mount
 
-            app = FastAPI(title="ReEngrave page pass")
+            app = FastAPI(title="ReEngrave page pass + cell pass")
             app.mount("/static", StaticFiles(directory=str(_STATIC_DIR)), name="static")
             app.get("/", include_in_schema=False)(lambda: RedirectResponse("/page"))
             mount(app, page_service)
+            mount_cells(app, CellPassService(page_service))
             url = f"http://{args.host}:{args.port}"
-            print(f"[server] page pass only; open {url}/page")
+            print(f"[server] pass 1 (the page): {url}/page    pass 2 (the cells): {url}/cellpass")
             uvicorn.run(app, host=args.host, port=args.port)
             return
 
@@ -1899,7 +1901,10 @@ def main() -> None:
         from tools.omr.annotate.pagepass_server import mount
 
         mount(app, page_service)
-        print("[server] page pass at /page; pass-1 ink shows in the cell view")
+        from tools.omr.annotate.cellpass_server import CellPassService, mount as mount_cells
+
+        mount_cells(app, CellPassService(page_service))
+        print("[server] page pass at /page; pass 2 (cell pass) at /cellpass; pass-1 ink shows in the old cell view")
     url = f"http://{args.host}:{args.port}"
     print(f"[server] listening on {url}")
     print(f"[server] open {url}/ to start labeling")

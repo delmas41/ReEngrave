@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>ReEngrave labeling — cell pass</title>
+<link rel="stylesheet" href="/static/pagepass.css">
+<link rel="stylesheet" href="/static/cellpass.css">
+</head>
+<body>
+<header class="bar">
+  <a href="/page" class="link" title="pass 1: the whole page">&larr; page pass</a>
+  <h1>Cell pass <span id="pg" class="muted"></span></h1>
+  <span class="cellnav">
+    <button id="prev" title="previous cell (Shift+Tab)">&lsaquo;</button>
+    <b id="cellname">…</b> <span id="cellpos" class="muted"></span>
+    <button id="next" title="next cell that still has work (Tab)">&rsaquo; next cell <kbd>Tab</kbd></button>
+  </span>
+  <span class="grow"></span>
+  <span class="zoom" title="zoom: wheel at the pointer, + / -, 0 fits the cell">
+    <button id="zout" aria-label="zoom out">&minus;</button><span id="zlvl">100%</span><button id="zin" aria-label="zoom in">+</button><button id="zfit">fit cell</button>
+  </span>
+  <span id="save" class="muted">loading the page ink (about 30 s the first time) …</span>
+</header>
+
+<main>
+  <nav id="palette" class="palette" aria-label="what you are labelling"></nav>
+
+  <section id="stage" class="stage">
+    <canvas id="cv" tabindex="0"></canvas>
+    <div id="hint" class="hint"></div>
+    <div id="toast" class="toast" hidden></div>
+  </section>
+
+  <aside id="side" class="side">
+    <section>
+      <h2>Ink <span class="muted">(colour = state)</span></h2>
+      <ul id="legend" class="legend"></ul>
+      <div id="bar" class="statbar"></div>
+      <div id="pct" class="pct"></div>
+      <div id="done" class="doneline"></div>
+    </section>
+    <section id="selbox" hidden>
+      <h2>Selected <span id="selid" class="muted"></span></h2>
+      <div id="seldesc"></div>
+      <label id="clsrow">Class <select id="clssel"></select></label>
+      <div class="btns">
+        <button id="b-confirm" title="t">confirm <kbd>t</kbd></button>
+        <button id="b-reject" title="f">reject <kbd>f</kbd></button>
+        <button id="b-delete" title="x">delete <kbd>x</kbd></button>
+        <button id="b-redraw" title="b">redraw <kbd>b</kbd></button>
+        <button id="b-kind" title="c">change kind <kbd>c</kbd></button>
+      </div>
+    </section>
+    <section>
+      <h2>This cell <span id="qn" class="muted"></span></h2>
+      <div class="btns"><button id="b-bulk" title="Shift+T">confirm all waiting of this kind, in this cell <kbd>Shift+T</kbd></button><button id="b-undo" title="u">undo <kbd>u</kbd></button></div>
+      <div id="autonote" class="muted covered"></div>
+      <ul id="queue" class="queue"></ul>
+    </section>
+    <section>
+      <h2>Cells <span id="cellsn" class="muted"></span></h2>
+      <label class="muted"><input type="checkbox" id="onlywork" checked> only cells with work left</label>
+      <ul id="celllist" class="celllist"></ul>
+    </section>
+    <section class="keys">
+      <h2>Keys</h2>
+      <p>Pick ONE kind (<kbd>1</kbd>–<kbd>9</kbd> or the letter on its button), then drag a box round the mark. The ink under the box
+         is taken by shape: a head box takes the head, never the stem beside it.
+         <kbd>p</kbd> polygon (click corners, <kbd>Enter</kbd> closes) takes every unclaimed pixel inside it.</p>
+      <p><kbd>t</kbd> confirm · <kbd>f</kbd> reject · <kbd>x</kbd> delete · <kbd>b</kbd> redraw · <kbd>c</kbd> change kind ·
+         <kbd>Shift+T</kbd> confirm all waiting of the active kind in THIS cell · <kbd>u</kbd> undo</p>
+      <p><kbd>n</kbd> next waiting in this cell · <kbd>Tab</kbd> next cell with work · <kbd>Shift+Tab</kbd> previous · <kbd>h</kbd> hide pre-fill outlines ·
+         <kbd>q</kbd>/<kbd>w</kbd> previous/next class of the kind</p>
+      <p><b>Zoom:</b> wheel at the pointer · <kbd>+</kbd> <kbd>-</kbd> · <kbd>0</kbd> fits the cell. <b>Move:</b> <kbd>Shift</kbd>+wheel, arrows, <kbd>Space</kbd>+drag.
+         A box dragged to the edge of the view pulls the view along. Hover or select a label: black = the ink it owns.</p>
+    </section>
+  </aside>
+</main>
+<script src="/static/cellpass.js"></script>
+</body>
+</html>

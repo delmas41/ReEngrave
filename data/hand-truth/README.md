@@ -6,6 +6,7 @@ Plan: [`docs/plan-2026-10-08-hand-labeled-truth.md`](../../docs/plan-2026-10-08-
 |---|---|---|
 | `pages/<edition>/<pdf_page_index>.json` | one printed page: every box in PAGE pixels, the cells it was labeled through, pre-fills still in the queue, the staff-line checks, the page's state (`labeling` → `checked` → `verified`) | the labeling tool (`store.PageTruth.save`) — none yet |
 | `pages/<edition>/<pdf_page_index>.pagepass.json` | the PAGE PASS (ROADMAP 2.287, Sean 2026-11-10): page-wide marks (staff, barline, bracket, clef, key, meter, word, dynamic, arc, hairpin, repeat) labelled once on the whole page. One list of `labels`: `kind`, `shape` (`{"rect":[x0,y0,x1,y1]}` or `{"poly":[[x,y],...]}`, PAGE pixels at the page's dpi), `pass` (`"page"`), `state` (`pending` = a pre-fill, NOT truth; `confirmed`; `rejected`, kept so it is never proposed again), `origin` (`drawn` / `prefill-confirmed` / `prefill-fixed`), `source`, `text` (words, dynamics), `sub` (`tie`/`slur`), `note` (a pre-fill's assumption), `ink_ref` (the claimed-ink reference: `rule` `pageink-1`, `mode`, `px`, `bbox`, `sha1` of the claimed mask). A label claims INK, not its rectangle: `tools/omr/hand_truth/pageink.py` documents the rule per kind. Cell-pass labels stay in `<page>.json`, which is never edited by the page pass | the labeling tool's page pass (`pagepass.PagePass.save`); first built by `python3 -m tools.omr.hand_truth.pagepass_prefill new <page>.json --arc-key prefill/imslp317803-0.arc-key-2.281.json` (pre-fills only) |
+| `pages/<edition>/<pdf_page_index>.cellpass.json` | the CELL PASS, pass 2 (ROADMAP 2.287 round 3): what is left once the page is labelled. Same shape as the page-pass file: `labels` with `kind` (`notehead stem beam flag ledger dot accidental rest articulation tremolo tuplet staffedge other noise`), `cls` (the exact class, `noteheadHalfInSpace`), `shape` (PAGE px), `pass` (`"cell"`), `state` / `origin` as in pass 1, `source` (`hand-p0` = your old box, `staff-edge` = a fringe strip proposed from the ink), `cell_id`, `box_id` (the old box), `ink_ref` (rule `cellink-1`, the `roles` taken, `px`, `bbox`, `sha1`). A SIBLING file: the page-pass file and `<page>.json` are only read. See "Round 3" below | the labeling tool's cell pass (`cellpass.CellPass.save`); built on first start from the page file's old boxes (pending pre-fills only) |
 | `prefill/imslp317803-0.arc-key-2.281.json` | a COPY of the 2.281 corrected Brahms p0 arc key (e1e0bf726, `benchmarks/omr-arc-binding-2026-10/key-brahms-p0-corrected.json`: 100 arcs from 153 hand boxes), the arc pre-fill source for the page pass. A proposal list, not truth | copied, never edited |
 | `INVENTORY.json` | every hand label in the tree, who judged it, how complete it is, and the weights lineage | GENERATED: `python3 -m tools.omr.hand_truth.inventory` (`--check` to verify) — never edit |
 | `aligned/<edition>/<page>.<master>.json` | each labelled box's cell in the MASTER cell map (ROADMAP 2.231), by page rect, and why the old `cell_id` disagrees; Sean's page files are not touched | GENERATED: `python3 -m tools.omr.hand_truth.align` (`--check`, `--report`, `--control`) — never edit |
@@ -23,9 +24,45 @@ green = claimed in the cell pass). Pass 2 -- the cell pass below, with pass-1 in
 ```bash
 python3 -m tools.omr.annotate.server --page-pass \
     --page-store data/hand-truth/pages/imslp317803/0.json \
-    --arc-key data/hand-truth/prefill/imslp317803-0.arc-key-2.281.json      # page pass alone: http://127.0.0.1:5050/page
-# with the cell pass too (also pass-1 ink in the cell view): add --bench-dir $BENCH
+    --arc-key data/hand-truth/prefill/imslp317803-0.arc-key-2.281.json      # pass 1: http://127.0.0.1:5050/page
+                                                                              # pass 2: http://127.0.0.1:5050/cellpass
+# (no bench directory is needed any more: pass 2 is built from the page file's recorded cells + the page render.
+#  `--bench-dir $BENCH` still adds the OLD cell UI at `/`, which lays pass-1 ink over each cell in blue.)
 ```
+
+## Round 3 (2026-11-10): pass 2, the cell pass, at `/cellpass`
+
+You labelled the page; this pass labels what is LEFT. Same canvas, colours and keys as the page pass, zoomed to ONE cell.
+No bench directory, no detector: the cells are the page file's recorded cells, the picture is the page render. Writes go to
+`<page>.cellpass.json` only (a new file; `<page>.json` and `<page>.pagepass.json` are never written).
+
+Ink states (the legend on the right): **blue** = claimed in the PAGE pass -- final, a pass-2 label can never take it; **vermilion**
+= nobody has claimed it; **purple / dashed** = under a pre-fill still waiting for you; **green** = claimed by a cell-pass label you
+confirmed; **grey** = marked noise.
+
+**Pre-fills.** Your old per-cell boxes of the cell-level kinds come in as PENDING pre-fills (never truth by themselves): confirm
+`t`, reject `f`, fix `c` / `b`. Old boxes of a page-wide kind (arc, barline, clef ...) are dropped: pass 1 superseded them. A pre-fill
+whose box holds mostly ink the page pass already claimed (at least half of it) is resolved automatically, hidden, and counted. A
+pre-fill whose box claims no ink under its kind's rule says "(no ink)" and waits for you to fix or reject it. Plus one `staffedge`
+pre-fill per measure cell: the fringe of the staff lines that the page pass's band left (proposed from the ink, a proposal like any
+other). `Shift+T` confirms every waiting pre-fill of the ACTIVE kind in THIS cell (never the page, never another kind); `u` undoes it.
+
+**What a label claims** (`tools/omr/hand_truth/cellink.py`, rule `cellink-1`). A note is merged ink, so the SHAPE decides, inside your
+box: the free ink (page ink minus the page pass's) is split once into roles, and a kind takes only its roles: `notehead` the round
+blob (half and whole heads included), `stem` the thin vertical run in a piece that holds a head, `ledger` the thin horizontal stubs
+either side of a head, `beam` / `flag` / `tremolo` the thick bars and curves a stem carries, `dot` / `accidental` / `rest` /
+`articulation` / `tuplet` / `other` a piece with no head, `staffedge` the fringe along a staff line, `noise` any ink in the box. A box
+takes a piece whole when at least half of it is inside, and never cuts it (a polygon `p` takes every unclaimed pixel inside it); a box on
+part of a cluster of touching heads takes what it holds. A confirmed label over a pre-fill, then the tighter shape.
+
+**The queue.** The right panel lists the cells top-left to bottom-right with the share of each cell's ink still unclaimed and how many
+pre-fills wait. `Tab` goes to the next cell that still has unclaimed ink or a waiting pre-fill, `n` to the next waiting label in this
+cell. **Done** for the page = no ink pixel is left unclaimed (claimed by a confirmed label of either pass, or marked `noise`) and
+nothing waits; the legend says so when it is true.
+
+Keys as before: `1`-`9` (then `m y e o z` for tremolo, tuplet, staff edge, other, noise) pick the ONE kind to draw; `t` confirm, `f` reject,
+`x` delete, `b` redraw, `c` change kind, `u` undo, `p` polygon, `q`/`w` class of the kind, `h` hide pre-fill outlines; wheel zooms at the
+pointer, `+` `-` `0`, `Space`-drag moves, a box dragged to the edge pulls the view along.
 
 The PDF is found in `library/` by the page file's name (or `--pdf`). The first request renders the page (a few seconds).
 

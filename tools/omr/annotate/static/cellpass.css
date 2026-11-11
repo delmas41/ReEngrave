@@ -1,0 +1,20 @@
+/* pass 2 (the cell pass): additions to pagepass.css */
+.cellnav { display: inline-flex; align-items: center; gap: 8px; }
+.cellnav button { background: #3a3f4b; color: #fff; border: 0; border-radius: 4px; padding: 4px 10px; cursor: pointer; font-size: 14px; }
+.cellnav button:hover { background: #4d5465; }
+.cellnav b { font: 15px ui-monospace, monospace; }
+.palette button .k { min-width: 14px; text-align: center; }
+.palette .sub { margin: 2px 0 10px; font-size: 12px; }
+.palette .sub select { width: 100%; font-size: 13px; padding: 4px; margin-top: 3px; }
+.celllist { list-style: none; padding: 0; margin: 4px 0 0; max-height: 36vh; overflow-y: auto; font-size: 12px; }
+.celllist li { display: grid; grid-template-columns: 1fr 52px 34px; gap: 4px; padding: 3px 6px; cursor: pointer; border-left: 4px solid var(--unclaimed); border-radius: 3px; }
+.celllist li:hover { background: #f0f0ec; }
+.celllist li.cur { background: #fff3c4; }
+.celllist li.zero { border-left-color: var(--cellpass); color: var(--muted); }
+.celllist li .pc { text-align: right; font-family: ui-monospace, monospace; }
+.celllist li .wt { text-align: right; color: #8a4f7d; }
+.doneline { margin-top: 6px; font-size: 13px; }
+.doneline.ok { color: #006b4e; font-weight: 600; }
+.toast { position: absolute; right: 12px; top: 10px; background: #0b5a44; color: #fff; padding: 6px 12px; border-radius: 6px; font-size: 13px; max-width: 60%; }
+#selbox select { width: 100%; padding: 4px; font-size: 13px; }
+.sw.noise { background: #8c8c8c; }
