@@ -49,7 +49,7 @@ for k in sys.argv[3:]:
     for o in rec.obs_of(Q.GLYPH_BOX):
         if o["subject"].startswith("glyph/%s/" % k) and rec.obs(Q.NOTEHEAD_CLASS, o["subject"]):
             hs = rec.verdict(Q.HEAD_STEM, o["subject"]) or {}
-            print(" HEAD", o["subject"], [round(v) for v in E._page_box_of(o)], hs.get("outcome"), hs.get("reason"), hs.get("value"), (hs.get("detail") or {}).get("x_frac"))
+            print(" HEAD", o["subject"], "canon", [round(v) for v in o["value"][1:5]], "page", [round(v) for v in E._page_box_of(o)], hs.get("outcome"), hs.get("reason"), hs.get("value"), (hs.get("detail") or {}).get("x_frac"))
     ev = CAP["ev"].get((p, s, st, c))
     if ev:
         events, r, why = ev

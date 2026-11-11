@@ -507,6 +507,14 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         return {"stage": "ADJUDICATE", "rule": PAGE_OWNER_GUESSED_REASON, "quantity": Q.GLYPH_OWNER,
                 "candidates": [{"value": c.get("value"), "support": c.get("support")} for c in (v.get("candidates") or [])],
                 "chosen": {"value": v.get("value")}}
+    v = rec.verdict(Q.HEAD_STEM, sub)
+    if v is not None and v.get("outcome") == "decided" and v.get("reason") == "stem_of_a_second":
+        # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`): this head touches no stem; it is put on its neighbour's stem by the geometry of a
+        # second (a step off, one head width over, the stem between). Two beamed notes whose first stem was missed look the same
+        # (2.300 step 1), so the head is written GUESSED (blue) with both readings. None is filed with the flag OFF.
+        return {"stage": "ADJUDICATE", "rule": "stem_of_a_second", "quantity": Q.HEAD_STEM,
+                "candidates": [{"value": "on_the_neighbours_stem", "support": 1.0}, {"value": "a_note_of_its_own", "support": 1.0}],
+                "chosen": {"value": "on_the_neighbours_stem"}}
     for q in (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST):
         v = rec.verdict(q, sub)
         if v is not None and v.get("outcome") == "narrowed" and str(v.get("reason") or "").startswith(CLAIM_NARROWED_PREFIX):

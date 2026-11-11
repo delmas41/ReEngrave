@@ -6683,6 +6683,8 @@ def _second_group_of(g, groups, second_ok):
         return None
     found = None
     for grp in reversed(groups):
+        if len(grp) != 1:
+            continue        # a DYAD only (see `voicing._second_group`): two chords side by side are a beamed run, never joined
         for i in grp:
             theirs = second_ok.get(i)
             if (theirs is not None and theirs[4] == mine[4]

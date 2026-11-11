@@ -121,6 +121,8 @@ def _second_group(nh: dict[str, Any], groups: list[list[dict[str, Any]]]) -> lis
         return None
     found = None
     for group in reversed(groups):
+        if len(group) != 1:
+            continue        # a DYAD only: a head joins a lone head; two chords side by side are never joined (a beamed run)
         for n in group:
             nb = n.get("bbox")
             if not nb or len(nb) < 4 or not one_chord.is_second(tuple(box[:4]), tuple(nb[:4])):

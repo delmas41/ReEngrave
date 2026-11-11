@@ -18,6 +18,7 @@ from __future__ import annotations
 import json
 import os
 import pathlib
+import re
 import unittest
 from unittest import mock
 
@@ -29,6 +30,7 @@ from tools.omr.staged.review import rerun as RR
 FX = pathlib.Path(__file__).parent / "fixtures" / "one_chord_2_300"
 FLAG = OC.ENV
 _CACHE = {}
+_XML = {}
 
 
 def _replay(name: str, on: bool):
@@ -52,7 +54,8 @@ def _replay(name: str, on: bool):
     with mock.patch.dict(os.environ, {**env, "OMR_SURYA_KEEP_ALIVE": "0"}), mock.patch.object(E, "_voice_split", spy):
         log, _ = RR.rebuild_gather(rows)
         RR.run_stages(log)
-        E.to_musicxml({"record": log.to_json(), "summary": log.summary()})
+        xml, _rep = E.to_musicxml({"record": log.to_json(), "summary": log.summary()})
+    _XML[key] = xml
     _CACHE[key] = seen
     return seen
 
@@ -129,6 +132,15 @@ class TestSeansBars(unittest.TestCase):
         self.assertAlmostEqual(_sum(off[0]), 3.0)                 # the red bar Sean saw
         self.assertEqual([e["heads"] for e in on[0]], [2])
         self.assertAlmostEqual(_sum(on[0]), 2.0)                  # his 2/4 bar: one chord of 2.0
+
+    def test_the_partner_head_is_written_blue_and_only_with_the_flag(self):
+        """The partner's stem is inferred from the geometry of a second, so the head is GUESSED (CLAUDE.md §4); OFF writes none blue."""
+        _replay(self.L, False)
+        _replay(self.L, True)
+        blue = lambda xml: [m for m in re.findall(r"<note[^>]*>", xml) if "1F6FEB" in m.upper()]
+        n_off = len(blue(_XML[(self.L, False)]))
+        n_on = len(blue(_XML[(self.L, True)]))
+        self.assertEqual(n_on - n_off, 1)
 
     def test_tile_10_was_never_a_chord_split_and_is_untouched(self):
         key = (2, 0, 2, 3)
