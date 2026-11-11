@@ -385,7 +385,7 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
     from ..geometry import stem_touches_head
     touching = [(r, b) for r, b in stems if stem_touches_head(b, head)]
     if not touching:
-        # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default OFF): a head no stem touches may stand beside the head of a
+        # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default ON): a head no stem touches may stand beside the head of a
         # SECOND that holds the stem (the stem stands at the seam of the two heads). `one_chord` owns the geometry.
         from .. import one_chord
         if one_chord.enabled():

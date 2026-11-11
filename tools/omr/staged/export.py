@@ -4150,7 +4150,7 @@ def _meter_dict(meter: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
 
 
 def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    """`voicing.group_chords_in_measure` on a bar's detections; with `OMR_ONE_CHORD_ONE_EVENT` (ROADMAP 2.300, default OFF) the
+    """`voicing.group_chords_in_measure` on a bar's detections; with `OMR_ONE_CHORD_ONE_EVENT` (ROADMAP 2.300, default ON) the
     two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
     settle see the same events."""
     from . import one_chord

@@ -1,4 +1,4 @@
-"""ONE CHORD IS ONE EVENT -- ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default OFF). PATH: STAGED.
+"""ONE CHORD IS ONE EVENT -- ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default ON). PATH: STAGED.
 
 CONVENTION ASSUMED (page-facts: "Every note on one stem shares one written value"; CLAUDE.md §5 "Stems: up -> right, down -> left"):
 the two heads of a SECOND stand on opposite sides of ONE stem, one head a half-space above the other and about one head
@@ -35,8 +35,8 @@ SECOND_DY = (0.3, 0.8)
 
 
 def enabled() -> bool:
-    """`OMR_ONE_CHORD_ONE_EVENT`, default OFF; only 1/true/yes/on enables."""
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ONE_CHORD_ONE_EVENT`, default ON (landed 2026-11-11); only 0/false/no/off disables."""
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 Box = Tuple[float, float, float, float]   # x, y, w, h in the cell's canonical frame

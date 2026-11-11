@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **551 rule exits** are sorted (592 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 58 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **170 OTHER** (D), **78 UNSURE** (U).
+1. **553 rule exits** are sorted (593 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 59 guard modules): **180 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **170 OTHER** (D), **79 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **78 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **79 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -88,6 +88,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_notehead_i
 |---|---|---|---|---|---|---|---|
 | head with no stem found | U | Heads with no stem found are common (see fires). 2.167 found 33 of 40 sampled 'no stem' real notes had a stem the finder refused (C: a false rest/flag box ate it; B: stem cut at a staff line on the erased raster; A: a whole note has none) | `adjudicate_head_stem` (stem_value): `no_stem` | 2,307 / 7,209 | 1,064 / 2,035 | Sean 2026-10-18 (2.167); 2.169 landed | open: mixed A / B / C; 2.204 stems-from-strokes waits for 2.205 |
 | a head with a stem each way is two notes | A | a head carrying one stem up and one down is two voices on one head | `adjudicate_head_stem` (stem_value): `unison_two_voices`, `two_stems` | 684 / 299 | 282 / 72 | Sean 2026-10-19 (2.175), convention assumed | kept |
+| the other head of a second stands on the same stem | A | a head no stem touches, beside a head that does, a step off and one head width over, with the stem between them, is on that stem (flag OMR_ONE_CHORD_ONE_EVENT, default OFF) | `adjudicate_head_stem` (stem_value): `stem_of_a_second` | 0 / 0 | 0 / 0 | page-facts: every note on one stem shares one written value; Sean 2026-11-10 (2.291 tile 7: two half notes a second apart), convention assumed | new: OFF |
 | no evidence | D:honesty | - | `adjudicate_head_stem` (stem_value): `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | no stem / no heads read | D:honesty | the cell has strokes and no head box, or no stem: says nothing | `adjudicate_stem_head_contact` (stem_value): `no_heads_read`, `no_stem` | 1,606 / 1,551 | 802 / 434 | CLAUDE rule 8 | kept |
 | no stem found | D:passthrough | passes on the head_stem refusal | `adjudicate_stem_direction` (rhythm): `no_stem` | 1,843 / 5,520 | 862 / 1,519 | - | follows head_stem |
@@ -357,6 +358,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `margins.py` | D:honesty | every threshold refusal records how close it came | Sean 2026-10-12 (inference principles) | kept |
 | `meter_object.py` | C | the printed meter measured as ONE object (two digits blocked out together) | Sean 2026-10-20 (2.177) | retires with 2.205 |
 | `movements.py` | A | a meter or key carry never crosses a movement boundary | ROADMAP 4.2 | kept |
+| `one_chord.py` | U | NOT YET CLASSIFIED | - | open |
 | `one_ink.py` | C | ONE INK, ONE MARK: two classes of one family on one ink merge, the stronger stays, the weaker is a candidate | Sean 2026-10-22, 2.186 tiles 6/9 vs 1/9 | landed 2.186 |
 | `one_note.py` | D:infer | the one-note correction: a bar holding one event takes the value that fills it (blue) | Sean 2026-10-17/18 (CLAUDE s4 exceptions) | kept |
 | `page_accidental_ink.py` | U | NOT YET CLASSIFIED | - | open |
@@ -425,6 +427,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`ink_attachment.py`**: not classified.
 - **`key_header_ink.py`**: not classified.
 - **`key_kind_slots.py`**: not classified.
+- **`one_chord.py`**: not classified.
 - **`page_accidental_ink.py`**: not classified.
 - **`page_heads.py`**: not classified.
 - **`page_ledger.py`**: not classified.

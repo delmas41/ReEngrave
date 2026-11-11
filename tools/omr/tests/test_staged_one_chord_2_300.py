@@ -1,4 +1,4 @@
-"""ROADMAP 2.300 -- ONE CHORD IS ONE EVENT (flag `OMR_ONE_CHORD_ONE_EVENT`, default OFF).
+"""ROADMAP 2.300 -- ONE CHORD IS ONE EVENT (flag `OMR_ONE_CHORD_ONE_EVENT`, default ON).
 
 Controls are cut from the REAL gather rows of Sean's 2.291 red-bar tiles (`fixtures/one_chord_2_300/*.json`, made by
 `benchmarks/one-chord-one-event-2026-11/cut_fixture.py`; rows exactly as saved, nothing edited):
@@ -65,10 +65,13 @@ def _sum(events):
 
 
 class TestTheGeometry(unittest.TestCase):
-    def test_default_is_off(self):
+    def test_default_is_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(OC.enabled())
+            self.assertTrue(OC.enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {FLAG: off}):
+                self.assertFalse(OC.enabled())
 
     def test_a_second_is_beside_and_one_step_off(self):
         self.assertTrue(OC.is_second((0, 0, 24, 14), (24, 7, 24, 14)))

@@ -6795,7 +6795,7 @@ def adjudicate_event(ev: Evidence) -> Ruling:
         theirs = {directions[i] for i in grp if directions.get(i)}
         return bool(theirs) and mine not in theirs
 
-    # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default OFF): the two heads of a SECOND on one decided stem are one
+    # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default ON): the two heads of a SECOND on one decided stem are one
     # event though their x lies outside the tolerance (`one_chord` owns the geometry; EXPORT's `voicing` grouping reads the same).
     second_ok = _second_evidence(ev, head_ids) if _one_chord.enabled() else None
 
