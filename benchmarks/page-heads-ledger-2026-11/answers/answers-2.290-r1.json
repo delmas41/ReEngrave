@@ -1,0 +1,218 @@
+{
+ "lane": "2.290 r1 (lane-2.290-page-heads 2c4868ca8; measure + plan only)",
+ "date": "2026-11-10",
+ "question": "Is the boxed mark ONE notehead? Filled or hollow? A second head touching? If not, what is it?",
+ "verbatim": "Tile 1 is a beam, tile 2 is a tremolo slash, tile 3 is a tremolo slash, tile 4 is a part of an eighth note, tile 5 is a ledger line, tile 6 is a part of a bar line, tile 7 is an eighth note, tile 8 is most of a half note, tile 9 is a quarter note, tile 10 is part of a quarter note, it's a small box. Tile 11 is an eighth note. Tile 12 is a large rectangle around quarter notes and a good amount of stem on either side because it's part of a chord.",
+ "answers": {
+  "1": {
+   "sean": "a beam",
+   "reading": "refusal right",
+   "stratum": "clipped_fragment",
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/1/8/1/4",
+   "fate": "not_a_notehead:clipped_fragment",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.2936036288738251,
+   "page_box": [
+    648.6325,
+    3193.0,
+    735.2575,
+    3199.3
+   ]
+  },
+  "2": {
+   "sean": "a tremolo slash",
+   "reading": "refusal right (NOT a head: contradicts the lane's crop look)",
+   "stratum": "page_claim",
+   "plate": "litolff",
+   "page": 6,
+   "glyph": "glyph/6/1/6/11/2",
+   "fate": "not_a_notehead:claimed_by:page_claim",
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.5294407606124878,
+   "page_box": [
+    2457.14,
+    2877.4,
+    2480.135,
+    2902.915
+   ]
+  },
+  "3": {
+   "sean": "a tremolo slash",
+   "reading": "refusal right (NOT a head: contradicts the lane's crop look)",
+   "stratum": "page_claim",
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/1/8/13/5",
+   "fate": "not_a_notehead:claimed_by:page_claim",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.34421274065971375,
+   "page_box": [
+    2351.83,
+    3237.73,
+    2379.235,
+    3258.6775
+   ]
+  },
+  "4": {
+   "sean": "part of an eighth note",
+   "reading": "refusal right (a part, not one head)",
+   "stratum": "too_narrow",
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/0/8/5/8",
+   "fate": "not_a_notehead:too_narrow",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.5756093263626099,
+   "page_box": [
+    1172.6,
+    1631.6,
+    1187.32,
+    1645.52
+   ]
+  },
+  "5": {
+   "sean": "a ledger line",
+   "reading": "refusal right",
+   "stratum": "clipped_fragment",
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/0/12/7/22",
+   "fate": "not_a_notehead:clipped_fragment",
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.33629530668258667,
+   "page_box": [
+    5352.720703125,
+    3548.1240234375,
+    5407.70703125,
+    3560.9931640625
+   ]
+  },
+  "6": {
+   "sean": "part of a barline",
+   "reading": "refusal right",
+   "stratum": "claimed_by_barline",
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/0/9/2/9",
+   "fate": "not_a_notehead:claimed_by:barline",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.4287988543510437,
+   "page_box": [
+    2572.6375,
+    2669.365,
+    2579.995,
+    2693.89
+   ]
+  },
+  "7": {
+   "sean": "an eighth note",
+   "reading": "control right",
+   "stratum": "control_written",
+   "plate": "litolff",
+   "page": 6,
+   "glyph": "glyph/6/1/10/8/2",
+   "fate": "written",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.8109849095344543,
+   "page_box": [
+    1989.845,
+    3415.525,
+    2011.7375,
+    3435.5275
+   ]
+  },
+  "8": {
+   "sean": "most of a half note",
+   "reading": "real head, box covers most of it; dropped as owned_by_another_staff with no written twin",
+   "stratum": "owned_orphan",
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/0/2/4/1",
+   "fate": "owned_by_another_staff",
+   "detector_class": "noteheadHalfInSpace",
+   "conf": 0.6303528547286987,
+   "page_box": [
+    1055.9,
+    828.7625,
+    1077.35,
+    839.0
+   ]
+  },
+  "9": {
+   "sean": "a quarter note",
+   "reading": "control right",
+   "stratum": "control_written",
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/4/3/3",
+   "fate": "written",
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.7255672812461853,
+   "page_box": [
+    972.2325,
+    2748.5875,
+    997.275,
+    2769.6925
+   ]
+  },
+  "10": {
+   "sean": "part of a quarter note (a small box)",
+   "reading": "part of a real head, small box; dropped as owned_by_another_staff",
+   "stratum": "owned_orphan",
+   "plate": "brahms",
+   "page": 0,
+   "glyph": "glyph/0/0/0/6/20",
+   "fate": "owned_by_another_staff",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.3176330327987671,
+   "page_box": [
+    4708.0625,
+    1883.59375,
+    4757.21875,
+    1904.21875
+   ]
+  },
+  "11": {
+   "sean": "an eighth note",
+   "reading": "control right",
+   "stratum": "control_written",
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/0/10/3/5",
+   "fate": "written",
+   "detector_class": "noteheadBlackInSpace",
+   "conf": 0.7420366406440735,
+   "page_box": [
+    3031.71,
+    2882.49,
+    3069.7799999999997,
+    2915.7
+   ]
+  },
+  "12": {
+   "sean": "a large rectangle around quarter notes and a good amount of stem either side (part of a chord)",
+   "reading": "duplicate-box refusal right (a tall chord box, not one head)",
+   "stratum": "twin_low_iou",
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/1/4/5",
+   "fate": "not_a_notehead:notehead_is_a_duplicate_box",
+   "detector_class": "noteheadBlackOnLine",
+   "conf": 0.2815452516078949,
+   "page_box": [
+    990.1825,
+    560.655,
+    1021.21,
+    617.6700000000001
+   ]
+  }
+ },
+ "score": {
+  "refusals_right": "7/7 (tiles 1,2,3,4,5,6,12)",
+  "controls_right": "3/3 (7,9,11)",
+  "real_heads_dropped": "tiles 8 and 10 (owned_by_another_staff, no written copy)"
+ },
+ "note": "Tiles 2 and 3 are the `claimed_by:page_claim` (tremolo) stratum. The lane's own crop look called 10/10 of these printed black heads; Sean calls both sampled ones tremolo slashes. The tremolo claim is right on 2/2 judged; the lane's '16 heads lost to the tremolo claim' is NOT supported."
+}
