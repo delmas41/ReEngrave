@@ -168,6 +168,19 @@ def ink_line(plate: str, pages: Sequence[int], tag: str) -> str:
         return "not measured (%s: %s)" % (type(e).__name__, str(e)[:80])
 
 
+def judged_claims_line(plate: str, pages: Sequence[int], tag: str) -> str:
+    """ROADMAP 2.295, report-only: Sean's answered CLAIM tiles replayed on the same slice (`judged_claims`). A failed measure is "not measured"."""
+    try:
+        from . import judged_claims as JC
+        rep = JC.replay("%s:%s" % (plate, tag), doc=plate, pages=list(pages), log=lambda *_: None)
+        rs = rep["results"]["base"]
+        bad = [r["id"] for r in rs if r["verdict"] == "contradicts"]
+        return "judged claims (Sean's answered claim tiles, slice %s, pages %s): %s%s" % (
+            tag, list(pages), JC.summary_line(plate, rs).split(": ", 1)[1], ("; CONTRADICTS: " + ", ".join(bad)) if bad else "")
+    except Exception as e:
+        return "judged claims: not measured (%s: %s)" % (type(e).__name__, str(e)[:80])
+
+
 def main(argv: Optional[Sequence[str]] = None) -> int:
     ap = argparse.ArgumentParser(prog="conservation", description=__doc__.split("\n")[2].strip())
     ap.add_argument("--plates", default="litolff,brahms")
@@ -193,6 +206,8 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             d.mkdir(parents=True, exist_ok=True)
             (d / ("%s.musicxml" % plate)).write_text(out["xml"])
         print(block(plate, pages, out, ink_line(plate, pages, a.tag) if a.ink else None))
+        if a.ink:
+            print("  " + judged_claims_line(plate, pages, a.tag))
         rc = rc or (1 if check(out["report"]) else 0)
     return rc
 
