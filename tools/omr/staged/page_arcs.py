@@ -22,8 +22,7 @@ WHAT IT FILES (`Q.PAGE_ARC`, one row per run, on the page's subject). `value` = 
 DETECTOR arc box that a bounded local read of its ink found: the box SEEDED it, so it is not ink-first; counted apart) | `census` (one per page: counts,
 seconds, peak memory). `detail`: `ordinal`, `bbox_page_px`, `points` (page px, about one per quarter space), `width_spaces`, `sagitta_spaces` (signed:
 positive = the middle is LOWER than the chord), `thickness_spaces`, `ends` ([[x, y, tangent_deg], [x, y, tangent_deg]],
-left then right), `page_strokes` ([[Q.PAGE_STROKE ordinal, share]]: the strokes the run runs along -- what it WOULD claim; nothing is claimed in step 1, so no
-`Q.CLAIMED_AREA` row is added), `witnesses` (glyph keys of the detector slur/tie boxes it overlaps, a witness only), `staff` ([system, staff]).
+left then right), `witnesses` (glyph keys of the detector slur/tie boxes it overlaps, a witness only), `staff` ([system, staff]).
 A detector arc box no run witnesses is a `Q.PAGE_ARC` row of value `box_without_run` (its glyph key, box, and `seeded` outcome) so both counts are in the record.
 
 CONVENTIONS ASSUMED / WHAT WOULD FALSIFY / NOT CONFIRMED: the run parameters were tuned four times on Brahms p0 (in-sample) and are NOT confirmed beyond it;
@@ -1350,18 +1349,13 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
     def staff_of(y: float) -> List[int]:
         best = min(staves, key=lambda s: abs((s.line_ys[0] + s.line_ys[-1]) / 2.0 - y))
         return [local.get(best.staff_index, (0, 0))[0], local.get(best.staff_index, (0, 0))[1]]
-    from . import arc_claim as _AC
     n = 0
     for r in runs:
         pts = np.array(r["pts"], float)
         thin = thin_points(r["pts"], sp_page)
-        trace = {}
-        for x, y in pts:
-            trace[int(round(x))] = (y - r["half"], y + r["half"])
-        along = _AC.page_strokes_along(page_map, trace, sp_page)
         mid_y = float(np.median(pts[:, 1]))
         log.observe(sub, Q.PAGE_ARC, "run", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in r["box"]],
-                    points=thin, width_spaces=r["width_sp"], sagitta_spaces=r["sagitta_sp"], thickness_spaces=r["thick_sp"], ends=ends_of(r["pts"], sp_page), page_strokes=[[int(i), s] for i, s in along],
+                    points=thin, width_spaces=r["width_sp"], sagitta_spaces=r["sagitta_sp"], thickness_spaces=r["thick_sp"], ends=ends_of(r["pts"], sp_page),
                     witnesses=by_run[r["id"]], staff=staff_of(mid_y), space_page_px=round(sp_page, 3), core_ends=r.get("core_ends"))
         n += 1
     blank = None
@@ -1375,7 +1369,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
             n_seeded += 1
             log.observe(sub, Q.PAGE_ARC, "seeded", reader=READERS.CV_PAGE_ARCS, frame=FRAME_PAGE, ordinal=n, bbox_page_px=[round(v, 1) for v in s["box"]],
                         points=thin_points(s["pts"], sp_page), width_spaces=s["width_sp"], sagitta_spaces=s["sagitta_sp"], thickness_spaces=s["thick_sp"],
-                        ends=ends_of(s["pts"], sp_page), page_strokes=[],
+                        ends=ends_of(s["pts"], sp_page),
                         witnesses=[b["subject"]], staff=staff_of(float(np.median(np.array(s["pts"])[:, 1]))))
             n += 1
         else:
