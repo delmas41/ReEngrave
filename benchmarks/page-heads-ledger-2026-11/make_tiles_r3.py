@@ -41,15 +41,18 @@ def main(out, picks_path):
         im = cache[k]
         top, bot = r["staff_lines"]
         sp = (bot - top) / 4.0
-        b = r["box"]
+        boxes = r.get("boxes") or [r["box"]]          # the landing gate draws a box on each END of an arc
+        b = [min(q[0] for q in boxes), min(q[1] for q in boxes), max(q[2] for q in boxes), max(q[3] for q in boxes)]
         cx = (b[0] + b[2]) / 2
-        x0, x1 = max(0, int(cx - HALF_WIDTH_SP * sp)), min(im.width, int(cx + HALF_WIDTH_SP * sp))
+        hw = float(r.get("half_width_sp") or HALF_WIDTH_SP)
+        x0, x1 = max(0, int(cx - hw * sp)), min(im.width, int(cx + hw * sp))
         y0, y1 = max(0, int(top - MARGIN_SP * sp)), min(im.height, int(bot + MARGIN_SP * sp))
         crop = im.crop((x0, y0, x1, y1)).copy()
         scale = TILE_W / float(crop.width)
         crop = crop.resize((TILE_W, max(1, int(crop.height * scale))), Image.LANCZOS)
         w = max(2, int(round(sp * scale / 14)))
-        ImageDraw.Draw(crop).rectangle([(b[0] - BOX_PAD_PX - x0) * scale, (b[1] - BOX_PAD_PX - y0) * scale, (b[2] + BOX_PAD_PX - x0) * scale, (b[3] + BOX_PAD_PX - y0) * scale], outline=(255, 120, 0), width=w)
+        for q in boxes:
+            ImageDraw.Draw(crop).rectangle([(q[0] - BOX_PAD_PX - x0) * scale, (q[1] - BOX_PAD_PX - y0) * scale, (q[2] + BOX_PAD_PX - x0) * scale, (q[3] + BOX_PAD_PX - y0) * scale], outline=(255, 120, 0), width=w)
         crop.save(os.path.join(tdir, "tile_%02d.png" % n))
         ims.append(crop)
         key.append(dict(tile=n, crop_origin=[x0, y0], scale=scale, **r))
