@@ -128,6 +128,22 @@ def test_page_head_never_takes_a_tier0_claim():
     assert w.family == "accidental_ink"
 
 
+def test_a_later_box_on_a_page_heads_ink_is_held_by_it():
+    """The one consult's measure: a rest box standing on ink the ledger gave a PAGE HEAD is held by `page_head` (head tier, earlier than rests) and
+    `page_head` is a final claim; the head's own member box is never held by it; with a per-cell head BOX owner (the flag OFF) the rest is held by `head`,
+    which is NOT final (the 2.284 r5 rule: box-against-box is recorded, never a refusal)."""
+    from tools.omr.staged.adjudicators import ink_consult as IC
+    tiers = tuple(tuple(t) + ((IC.PAGE_HEAD_OWNER,) if "head" in t else ()) for t in SO.TIERS)
+    rest = ("glyph/0/0/0/1/7", "rest", [(0, 1.0, 1.0, "decided", IC.PAGE_HEAD_OWNER, ("page_head/r9", "glyph/0/0/0/1/2"))])
+    head = ("glyph/0/0/0/1/2", "head", [(0, 1.0, 1.0, "decided", "head", ("page_head/r9", "glyph/0/0/0/1/2"))])
+    held = IC.held_by_earlier([rest, head], tiers)
+    assert held["glyph/0/0/0/1/7"]["by"] == IC.PAGE_HEAD_OWNER and not held["glyph/0/0/0/1/7"]["owns"]
+    assert "glyph/0/0/0/1/2" not in held
+    assert IC.PAGE_HEAD_OWNER in IC.FINAL_BOX_CLAIMS and "head" not in IC.FINAL_BOX_CLAIMS
+    off = IC.held_by_earlier([("glyph/0/0/0/1/7", "rest", [(0, 1.0, 1.0, "decided", "head", ("glyph/0/0/0/1/2",))])], SO.TIERS)
+    assert off["glyph/0/0/0/1/7"]["by"] == "head"
+
+
 def test_apply_to_page_marks():
     from tools.omr.staged.page_marks import Marks
     marks = Marks(mark_of={"glyph/0/0/0/1/1": 0, "glyph/0/0/1/1/1": 1, "glyph/0/0/0/1/3": 2},

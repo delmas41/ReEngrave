@@ -160,7 +160,11 @@ SPANNER_FAMILIES = ("arc",)
 #: family (a head, an accidental) is RECORDED (`entry`, a tile), never a refusal: box-against-box is the owner's shape rules' question, and r5's first try
 #: refused a real quarter rest a misdrawn head box had "decided" (Litolff glyph/2/0/8/2/4: the 2.205 tiers put rests last, so a head box's could-fit on a
 #: rest's strokes wins them). Measured, not assumed: r5 re-adjudication, 3 written rests lost, 18 arpeggiatos refused by heads / accidentals.
-FINAL_BOX_CLAIMS = ("whole_rest",)
+#: ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): a stroke the ledger gave to a PAGE HEAD's claim (its oval's own page strokes, read once on the page;
+#: `page_heads.file_one_claims`) is held by this owner name, at the head tier -- unlike a per-cell head BOX, it is final: a later box mostly on it and owning
+#: none of its own ink is refused `claimed_by:earlier_mark` (by `page_head`). Never present with the flag OFF.
+PAGE_HEAD_OWNER = "page_head"
+FINAL_BOX_CLAIMS = ("whole_rest", PAGE_HEAD_OWNER)
 SPANNER_CLASSES = ("tupletBracket", "tupleBracket", "slur", "tie")
 
 

@@ -451,11 +451,19 @@ def _ink_consult(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
     # (2.290, `members`) is the head tier's own claim, never a tier-0 area
     areas |= {str(c["family"]) for w in owned.values() for c in w.candidates
               if c.get("how") == "area" and w.family == c["family"] and not c.get("members")}
+    # ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): a stroke the ledger gave to a PAGE HEAD is held by the owner `page_head` (the head tier): a box of a
+    # LATER tier (a rest, an accidental, a dot, a letter, a flag) standing on a head's claimed ink is told so by the one consult (`ink_consult.FINAL_BOX_CLAIMS`)
+    # -- claimed ink is final (2.277). A box of the head family itself is never held by it (same tier). Absent with the flag OFF (no `page_head/` owner).
+    def fam_of(w: Any) -> Optional[str]:
+        return IC.PAGE_HEAD_OWNER if (w.family == "head" and w.owners and str(w.owners[0]).startswith("page_head/")) else w.family
+    if any(fam_of(w) == IC.PAGE_HEAD_OWNER for w in owned.values()):
+        tiers = tuple(tuple(t) + ((IC.PAGE_HEAD_OWNER,) if "head" in t else ()) for t in tiers)
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
             continue
-        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family, tuple(owned[o].owners))
+        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family if c.family == "head" else fam_of(owned[o]),
+                                          tuple(owned[o].owners))
                                          for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
     return {"held": IC.held_by_earlier(boxes, tiers, sorted(areas)), "areas": sorted(areas)}
 
