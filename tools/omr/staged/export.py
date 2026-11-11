@@ -2051,6 +2051,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 cur = best.get(gid)
                 if cur is None or (-conf, sub) < (-cur[0], cur[1]):
                     best[gid] = (conf, sub)
+        _settle_folded_pitches(rec, queued, best)           # ROADMAP 2.290 r4: ONE position per folded head, never the more confident box's
         for gid, conf, sub, run, ci, det, s in queued:
             if gid is not None and best[gid][1] != sub:
                 _drop("mark_group_duplicate", _again(sub))
@@ -2724,6 +2725,72 @@ _TIE_PAIR_COUNTED_ELSEWHERE = frozenset(
     {"not_a_tie", "not_an_arc", "no_page_frame"})
 
 
+FOLD_PITCH_RULE = "folded_head_pitch_disagrees"
+#: a box this much taller / this much shorter than a head (staff spaces) is no witness of where the head sits (`page_heads.CLAIM_MAX_H_SP`, `head_ink.MIN_SPACES`)
+_FOLD_BOX_MAX_SP, _FOLD_BOX_MIN_SP = 1.6, 0.6
+
+
+def _settle_folded_pitches(rec: "Record", queued: List[Any], best: Dict[str, Tuple[float, str]]) -> None:
+    """ROADMAP 2.290 round 4 (the one head identity, `OMR_PAGE_HEAD_ONE`): a head the identity folds from boxes that WRITE DIFFERENT PITCHES is one head with ONE
+    position -- measured from the head's own ink, never inherited from whichever box scored higher (Litolff p2 m7: boxes at 7.04 and 8.28 steps, the hole of the
+    head at 7.81; the more confident box wrote G3, the page and the tie say F3). Of the group's head-sized boxes on ONE staff (a tall box or a sliver of a box
+    is no witness), when their pitches differ: the ink witness is the head's hole position (`hole_ink_position`) else its ink-centre position
+    (`ink_centre_position_float`) off `Q.NOTEHEAD_STAFF_POSITION`; the member whose ROUNDED position is the step the witness rounds to is the one written (decided,
+    no flag). With no witness, or none/two members on it, the most confident member stands and is written GUESSED (blue) with every pitch as a candidate.
+    Page-facts: measure against the staff locally; never silently one of two. Flag OFF (no `page_head` identity on the group): untouched."""
+    by_gid: Dict[str, List[Any]] = {}
+    for q in queued:
+        gid, conf, sub, run, ci, det, s = q
+        if gid is None or det.get("category") != "notehead" or not det.get("pitch"):
+            continue
+        by_gid.setdefault(gid, []).append(q)
+    for gid, members in by_gid.items():
+        if len(members) < 2:
+            continue
+        ident = rec.obs(Q.MARK_GROUP, members[0][2])
+        if not ident or (ident[-1].get("detail") or {}).get("identity") != "page_head":
+            continue
+        run0 = members[0][3]
+        heads = []
+        for q in members:
+            _gid, conf, sub, run, ci, det, s = q
+            sp = float(getattr(run, "spacing", 0) or 0)
+            gb = rec.obs(Q.GLYPH_BOX, sub)
+            pb = ((gb[-1].get("detail") or {}).get("bbox_page_px") if gb else None)          # the box in PAGE px, as the staff space is
+            if run is not run0 or sp <= 0 or not pb:
+                continue
+            bw, bh = float(pb[2]) - float(pb[0]), float(pb[3]) - float(pb[1])
+            if bh > _FOLD_BOX_MAX_SP * sp or min(bw, bh) < _FOLD_BOX_MIN_SP * sp:
+                continue
+            heads.append(q)
+        if len({q[5]["pitch"] for q in heads}) < 2:
+            continue
+        wit, rounded = [], {}
+        for q in heads:
+            rows = rec.obs(Q.NOTEHEAD_STAFF_POSITION, q[2])
+            if not rows:
+                continue
+            d = rows[-1].get("detail") or {}
+            rounded[q[2]] = d.get("rounded")
+            for k in ("hole_ink_position", "ink_centre_position_float"):
+                if isinstance(d.get(k), (int, float)):
+                    wit.append(float(d[k]))
+                    break
+        pick = None
+        if wit:
+            step = int(round(sum(wit) / len(wit)))
+            on = [q for q in heads if rounded.get(q[2]) == step]
+            if len(on) == 1:
+                pick = on[0]
+        if pick is not None:
+            best[gid] = (pick[1], pick[2])
+            continue
+        win = next((q for q in heads if q[2] == best[gid][1]), None)
+        if win is not None and not win[5].get("guess"):
+            cands = [{"value": q[5]["pitch"], "support": q[1], "source": q[2]} for q in heads]
+            win[5]["guess"] = {"stage": "EXPORT", "rule": FOLD_PITCH_RULE, "quantity": Q.PITCH, "candidates": cands, "chosen": {"value": win[5]["pitch"]}}
+
+
 def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
     """The tie links the RECORD names (`Q.TIE_PAIR`), or None if it names none.
 
@@ -2826,19 +2893,24 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                     continue
                 index.setdefault(str(key), (m_idx, det))
     voice_on = rec is not None and _export_unison.tie_voice_enabled()
-    alias = _export_unison.written_member(rec, index) if voice_on else {}
+    from . import page_heads as _PH_
+    _one_id = rec is not None and _PH_.one_enabled()
+    alias = _export_unison.written_member(rec, index) if (voice_on or _one_id) else {}
     seen_spans: set = set()
     spans = []
     for (start, stop), arcs in ties["pairs"].items():
         orig = (start, stop)
-        if voice_on:
-            # ROADMAP 2.252 r3: an end bound to a box the one-mark-one-note rule (2.58b) did not write is the mark
+        if voice_on or _one_id:
+            # ROADMAP 2.252 r3 (and 2.290 r4: under the one head identity always): an end bound to a box the one-mark-one-note rule (2.58b) did not write is the mark
             # its group DID write (the same ink); counted.
             for end in (start, stop):
                 if end not in index and end in alias:
                     counters_ = counters if counters is not None else {}
                     counters_["tie_end_moved_to_its_marks_written_box"] = counters_.get(
                         "tie_end_moved_to_its_marks_written_box", 0) + 1
+            if not voice_on:
+                # the one identity's alias only moves an end to the written member of its OWN staff (a cross-staff copy of the ink is another staff's note)
+                alias = {k: v for k, v in alias.items() if str(k).split("/")[1:4] == str(v).split("/")[1:4]}
             start, stop = alias.get(start, start), alias.get(stop, stop)
         if start not in index or stop not in index:
             continue
