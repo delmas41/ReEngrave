@@ -41,7 +41,8 @@ class Cell:
 
 def run(dets, pm, log=None, env="1"):
     log = log or Log()
-    with mock.patch.dict(os.environ, {PN.ENV_BOXES: env}):
+    # 2.288 landing: the REST flag defaults ON now; these 2.269 tests are about the dynamics / repeat-dot step and a synthetic page map, so the rest step is pinned OFF here
+    with mock.patch.dict(os.environ, {PN.ENV_BOXES: env, PN.ENV_RESTS: "0"}):
         cen = PN.gather_page_claim_boxes(log, PWS, [Cell()], {0: (0, 0)}, {R.cell(0, 0, 0, 0).to_key(): dets}, pm)
     return log, cen
 

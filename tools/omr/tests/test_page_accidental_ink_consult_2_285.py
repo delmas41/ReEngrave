@@ -57,24 +57,18 @@ def head_right(x0=130, y0=125):
     return PAI.Head((x0, y0, x0 + 26, y0 + 20), 0.8, CELL.to_key())
 
 
-def test_CONTROL_a_flat_shaped_ink_is_claimed_without_the_rest_box_and_refused_with_it():
+def test_a_flat_shaped_ink_is_claimed_when_no_ledger_claim_holds_it():
+    """The control for 2.288's ledger refusal (`test_rests_claim_first_2_288`): this ink IS a flat's when nothing holds it. (2.288 landing: the private rest-box list that used to
+    refuse it here is retired; a rest reaches this reader only as a ledger claim.)"""
     found, _why = PAI.read_page(flat(), SP, [head_right()], [], [])
-    assert len(found) == 1 and found[0]["type"] == "flat"                  # the control: this ink IS claimed when no rest stands on it
-    found, why = PAI.read_page(flat(), SP, [head_right()], [], [], rests=[(95.0, 95.0, 125.0, 160.0)])
-    assert found == [] and why.get("rest_box") == 1 and why["claimed"] == 0
+    assert len(found) == 1 and found[0]["type"] == "flat"
 
 
-def test_a_rest_box_elsewhere_does_not_refuse_it():
-    found, _why = PAI.read_page(flat(), SP, [head_right()], [], [], rests=[(400.0, 95.0, 430.0, 160.0)])
-    assert len(found) == 1
-
-
-def test_the_detector_rest_boxes_are_read_apart_from_the_other_earlier_reads():
+def test_the_detector_rest_boxes_are_not_read_here_any_more():
     dets = {CELL.to_key(): [_D("restQuarter", 100, 20, 30, 60), _D("restWhole", 300, 20, 30, 10), _D("dynamicForte", 500, 20, 30, 30),
                             _D("noteheadBlackInSpace", 700, 20, 26, 20, 0.9), _D("accidentalSharp", 900, 20, 15, 58)]}
-    heads, boxed, reads, rests = PAI._detector_reads([_Cell()], {0: (0, 0)}, dets)
-    assert len(rests) == 2 and len(reads) == 1 and len(heads) == 1 and len(boxed) == 1
-    assert rests[0][0] == 1100.0 and rests[0][1] == 520.0                   # canonical + the cell's page origin (1000, 500)
+    heads, boxed, reads = PAI._detector_reads([_Cell()], {0: (0, 0)}, dets)
+    assert len(reads) == 1 and len(heads) == 1 and len(boxed) == 1          # the two rest boxes are in none of the three lists
 
 
 def test_CONTROL_a_read_word_claims_its_ink_through_the_ledger_rows():
