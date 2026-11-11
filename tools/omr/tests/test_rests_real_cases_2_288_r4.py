@@ -83,6 +83,32 @@ def test_a_real_head_boxed_as_a_block_rest_is_refused(cid):
     assert any(s_["both_sides"] or s_["two_lines"] for s_ in per)
 
 
+def test_a_real_sharp_boxed_as_a_16th_rest_is_refused():
+    """Litolff p8, Sean's 2.285 r1 tile 3 'sharp': the detector drew `rest16th` over it and round 3 claimed its strokes. Two long parallel verticals crossed by two bars: no rest holds two."""
+    assert "acc-2285r1-03" in IDS, "the real sharp's fixture (dump_real_cases.py, Litolff p8)"
+    c = RC.load("acc-2285r1-03")
+    v = RC.verdict(c)
+    assert c["cls"] == "rest16th" and v["standing"] == "weak" and v["why"] == "two_parallel_verticals", (v["standing"], v["why"])
+    (p,) = v["pairs"]
+    assert p["overlap"] >= IA.PAIR_OVERLAP_MIN and len(p["bars"]) >= IA.PAIR_BARS_MIN
+    assert IA.parallel_verticals(c["page_map"], [p["a"]]) == []          # one vertical alone is not a pair
+
+
+@pytest.mark.parametrize("cid", [i for i in IDS if CASES[i]["is_rest"]])
+def test_no_real_rest_holds_two_long_verticals(cid):
+    """What would FALSIFY the rule: a real rest (Sean named it) whose own strokes hold a crossed pair. Replayed on all 25 real rests; the first draft of the rule (no bars, no thickness)
+    refused five real Breitkopf quarter / eighth rests on Brahms p14 and was tightened."""
+    c = RC.load(cid)
+    v = RC.verdict(c)
+    assert not v["pairs"], (cid, v["pairs"])
+
+
+@pytest.mark.parametrize("cid", [i for i in IDS if CASES[i].get("group") == "accidental"])
+def test_an_accidental_sean_named_never_gets_a_rest_claim(cid):
+    """Every accidental he named (registry 2.285 / 2.282 / 2.288) that a detector rest box meets is refused as a rest."""
+    assert RC.verdict(RC.load(cid))["standing"] != "READ"
+
+
 def test_the_questions_are_not_about_rests():
     """`ink_attachment` is for any reader: the answers do not name a rest."""
     c = RC.load("r3-04")
