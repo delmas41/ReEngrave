@@ -48,7 +48,6 @@ import numpy as np
 DERIVED_CHECK = False
 ENV = "OMR_PAGE_HEADS"
 VIEWS_ENV = "OMR_PAGE_HEAD_VIEWS"
-CLAIM_ENV = "OMR_PAGE_HEAD_CLAIM"
 SOURCE = "page_heads"
 UNIT = "page_ink"
 HEAD_PREFIX = "notehead"
@@ -83,11 +82,6 @@ def _flag(name: str) -> bool:
 def views_enabled() -> bool:
     """`OMR_PAGE_HEAD_VIEWS` (M6b), default OFF; needs `OMR_PAGE_HEADS`."""
     return enabled() and _flag(VIEWS_ENV)
-
-
-def claim_enabled() -> bool:
-    """`OMR_PAGE_HEAD_CLAIM` (M6c), default OFF; needs `OMR_PAGE_HEADS`."""
-    return enabled() and _flag(CLAIM_ENV)
 
 
 # ───────────────────────────── the pure core ─────────────────────────────
