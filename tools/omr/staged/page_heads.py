@@ -886,6 +886,21 @@ CASES_DUMP_ENV = "OMR_PAGE_HEAD_CASES_DUMP"
 CASE_MARGIN_SP = 4.0
 
 
+def _cases_for(spec: Dict[str, Any], sp: Optional[float]) -> Tuple[Optional[str], List[Dict[str, Any]]]:
+    """The spec's cases for this document: a one-plate spec (`plate`, `cases`), or `plates` = {name: {"sp": [lo, hi], "cases": [...]}} picked by the
+    page's staff space (one run gathers both plates; the plate is not otherwise known in GATHER)."""
+    if "plates" not in spec:
+        return spec.get("plate"), list(spec.get("cases") or ())
+    for name, d in spec["plates"].items():
+        lo, hi = d["sp"]
+        if sp is not None and lo <= float(sp) <= hi:
+            return name, list(d.get("cases") or ())
+    return None, []
+
+
+_LAST_SP: Dict[str, float] = {}
+
+
 def case_file_name(case_id: str) -> str:
     return "%s.npz" % "".join(ch if ch.isalnum() or ch in "._-" else "_" for ch in str(case_id))
 
@@ -900,7 +915,9 @@ def _dump_cases(out: OneHeads, items: Sequence[Dict[str, Any]], foreign: Sequenc
     spec = json.loads(pathlib.Path(path).read_text())
     od = pathlib.Path(spec["out_dir"])
     od.mkdir(parents=True, exist_ok=True)
-    for case in spec.get("cases") or ():
+    _LAST_SP["sp"] = sp
+    plate, cases = _cases_for(spec, sp)
+    for case in cases:
         if int(case["page"]) != page:
             continue
         b = [float(v) for v in case["box"]]
@@ -924,7 +941,7 @@ def _dump_cases(out: OneHeads, items: Sequence[Dict[str, Any]], foreign: Sequenc
                     cls=it["cls"], conf=it["conf"], scope=list(it["scope"]), sp_head=it.get("sp_head"), tall=it.get("tall")) for it in mine]
         fg = [[f[0] - ox, f[1] - oy, f[2] - ox, f[3] - oy] for f in foreign if inside(f)]
         keys = {it["key"] for it in mine}
-        meta = dict(case=case, plate=spec.get("plate"), page=page, origin=[ox, oy], raster_origin=[px0, py0], scale=s, sp=sp, items=its, foreign=fg,
+        meta = dict(case=case, plate=plate, page=page, origin=[ox, oy], raster_origin=[px0, py0], scale=s, sp=sp, items=its, foreign=fg,
                     props=[list(props[v - 1]) for v in ids], stroke_ids=[v - 1 for v in ids],
                     page_reading=dict(groups={k: out.group_of_key.get(k) for k in sorted(keys)},
                                       heads=[h for h in out.heads if any(k in keys for k in h["members"])]))
@@ -998,7 +1015,7 @@ def _dump_held(held: Dict[int, str], page: int) -> None:
     import pathlib
     spec = json.loads(pathlib.Path(path).read_text())
     od = pathlib.Path(spec["out_dir"])
-    for case in spec.get("cases") or ():
+    for case in _cases_for(spec, _LAST_SP.get("sp"))[1]:
         f = od / case_file_name(case["id"])
         if int(case["page"]) != page or not f.exists():
             continue

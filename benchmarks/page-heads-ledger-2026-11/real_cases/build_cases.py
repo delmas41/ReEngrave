@@ -65,6 +65,11 @@ def main():
     for plate in ("litolff", "brahms"):
         spec = dict(out_dir=str(HERE / "crops"), plate=plate, cases=[c for c in cases if c["plate"] == plate and c.get("box")])
         (HERE / ("dump-%s.json" % plate)).write_text(json.dumps(spec, indent=1))
+    # one spec for a run that gathers both plates (`lane_report`): the plate is picked by the page's staff space (Litolff 15.75 px, Brahms ~22+)
+    allspec = dict(out_dir=str(HERE / "crops"), plates={
+        "litolff": dict(sp=[10.0, 19.0], cases=[c for c in cases if c["plate"] == "litolff" and c.get("box")]),
+        "brahms": dict(sp=[19.0, 45.0], cases=[c for c in cases if c["plate"] == "brahms" and c.get("box")])})
+    (HERE / "dump-all.json").write_text(json.dumps(allspec, indent=1))
 
 
 if __name__ == "__main__":
