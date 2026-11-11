@@ -364,6 +364,95 @@ def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spaci
         out.append({"box": box, "text": text, "slots": len(run), "rows": rows, "read": why is None, "why": why})
     return out
 
+#: ROADMAP 2.296 (flag `OMR_DYNAMIC_OWN_CLAIM`, default ON since 2026-11-11): a printed dynamic is ONE mark and is claimed as a dynamic, never as the first letters of the word
+#: printed beside it (`f legato`, `p dolce`, `piu p`).
+ENV_DYNAMIC_OWN = "OMR_DYNAMIC_OWN_CLAIM"
+
+
+def dynamic_own_enabled() -> bool:
+    """`OMR_DYNAMIC_OWN_CLAIM` (ROADMAP 2.296), default ON (Sean 2026-11-11; "0"/"false"/"no"/"off" turns it off), the same opt-out as `OMR_PAGE_TREMOLO`. Needs the page-wide words pass (`words_first_enabled`)."""
+    return words_first_enabled() and os.environ.get(ENV_DYNAMIC_OWN, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+def compound_dynamic_slots(text: str, dynamics: Iterable[str], letters: Sequence[Tuple[Sequence[float], str, Any]]) -> Dict[str, Any]:
+    """Which of the detector letters a reader's MARKING (`f legato`: the direction word row, `dynamics` = the lexicon's dynamic tokens of its text,
+    `letters` = the detector dynamic letters the row includes, `(page box, letter, row id)`) are the DYNAMIC's own ink; PURE.
+
+    CONVENTION ASSUMED (Sean 2026-10-08 "dynamic markings and descriptive words only mean something together", the marking splits back into the
+    word and its dynamic, `consequences.pair_word_and_dynamic`; 2026-11-11 "a printed dynamic is one mark"): the text's own order says where the
+    dynamic stands. Dynamic tokens that LEAD the text are the leftmost slots of the included letters, tokens that TRAIL it the rightmost; a token in
+    the middle, a text that is all dynamic, or letters that do not spell the tokens (twins fold into one slot, as `spell_letter_runs` folds them; a
+    slot's letters must contain the token's letter) split nothing and say why -- never a guess. WHAT WOULD FALSIFY IT: a dynamic printed AFTER the
+    word's first letters with the word's own letters boxed as dynamics on its left (`piu p`: the `p` of `piu` is the word's, the rightmost slot is the dynamic).
+
+    Returns `{"slots": [{box, letters, rows, text}] (left to right), "rows": every row the marking includes, "why": None}`, or `{"slots": [], "why": ...}`."""
+    dyn = {str(t).lower() for t in dynamics if str(t)}
+    toks = str(text).split()
+    if not dyn or not toks:
+        return {"slots": [], "rows": [], "why": "no_dynamic_token"}
+    lead: List[str] = []
+    for t in toks:
+        if t.lower() not in dyn:
+            break
+        lead.append(t)
+    trail: List[str] = []
+    if len(lead) < len(toks):
+        for t in reversed(toks):
+            if t.lower() not in dyn:
+                break
+            trail.insert(0, t)
+    if len(lead) == len(toks):
+        return {"slots": [], "rows": [], "why": "text_is_all_dynamic"}
+    if not lead and not trail:
+        return {"slots": [], "rows": [], "why": "dynamic_token_in_the_middle"}
+    slots: List[Dict[str, Any]] = []
+    for box, letter, rid in sorted(letters, key=lambda t: (float(t[0][0]), float(t[0][1]))):
+        b = [float(v) for v in box]
+        twin = next((s for s in slots if any(_is_twin(m, b) for m in s["members"])), None)
+        if twin is not None:
+            twin["letters"].add(str(letter).lower())
+            twin["rows"].append(rid)
+            twin["members"].append(b)
+            twin["box"] = [min(twin["box"][0], b[0]), min(twin["box"][1], b[1]), max(twin["box"][2], b[2]), max(twin["box"][3], b[3])]
+            continue
+        slots.append({"box": b, "letters": {str(letter).lower()}, "rows": [rid], "members": [b]})
+    slots.sort(key=lambda s: s["box"][0])
+    rows = [r for s in slots for r in s["rows"]]
+    chosen: List[Dict[str, Any]] = []
+    for part, tokens in (("lead", lead), ("trail", trail)):
+        if not tokens:
+            continue
+        want = "".join(tokens).lower()
+        if len(slots) < len(want) + (len(chosen) if chosen else 0):
+            return {"slots": [], "rows": rows, "why": "fewer_letters_than_the_token"}
+        mine = slots[:len(want)] if part == "lead" else slots[len(slots) - len(want):]
+        if any(want[i] not in mine[i]["letters"] for i in range(len(want))):
+            return {"slots": [], "rows": rows, "why": "letters_do_not_spell_the_token"}
+        for i, s in enumerate(mine):
+            chosen.append({"box": s["box"], "letters": sorted(s["letters"]), "rows": list(s["rows"]), "text": want[i]})
+    chosen.sort(key=lambda s: s["box"][0])
+    return {"slots": chosen, "rows": rows, "why": None}
+
+
+#: ROADMAP 2.296: a detector letter box is TIGHT (a `p`'s descender ends past it: Litolff p8 `sempre piu p`, box bottom 1607, ink to 1613), so a claim of the box's rectangle leaves a
+#: stroke that is not WHOLLY inside it to nobody. The dynamic split out of a marking claims the box grown to the ink that touches it, at most this far past any side (staff spaces)
+DYNAMIC_INK_GROW_SPACES = 0.5
+
+
+def grow_to_ink(binary: Any, box: Sequence[float], spacing: float, grow: float = DYNAMIC_INK_GROW_SPACES) -> List[float]:
+    """`box` grown to the ink components that TOUCH it, never more than `grow` staff spaces past a side (the page raster the claim already holds; no new pass). PURE."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return [float(v) for v in box]
+    g = grow * float(spacing)
+    region = [float(box[0]) - g, float(box[1]) - g, float(box[2]) + g, float(box[3]) + g]
+    out = [float(v) for v in box]
+    for c in _components(binary, region):
+        if c[2] < box[0] or c[0] > box[2] or c[3] < box[1] or c[1] > box[3]:
+            continue                                  # does not touch the box
+        out = [min(out[0], c[0]), min(out[1], c[1]), max(out[2], c[2]), max(out[3], c[3])]
+    return out
+
+
 #: ROADMAP 2.221 word coverage -- the geometry of the extra word claims. All of it reads rows and rasters GATHER already holds.
 #: a metronome note stands this far right of its tempo word (staff spaces; Litolff p1: 1200 -> 1228 = 1.8) ...
 TEMPO_NOTE_GAP_SPACES = 3.0

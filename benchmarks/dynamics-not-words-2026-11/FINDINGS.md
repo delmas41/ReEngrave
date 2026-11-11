@@ -69,3 +69,21 @@ script names.
 ## Not verified
 Sean has judged none of the tiles; the compound reading (the text's order places the dynamic) is his to confirm.
 Brahms OFF was not compared row-for-row with a main-code gather (the first was OCR-starved).
+
+## LANDED ON 2026-11-11 (land-2.296 088719bdb)
+Sean, going to bed: "Land what you can overnight and start working on the next steps when you can."
+`OMR_DYNAMIC_OWN_CLAIM` default ON (`=0` opts out; still needs the page-wide words pass). The tool naming fix is
+`claim_readout.named_owner` (owner `word` + source `dynamic_letters` -> `dynamic`), used by `owner_verdicts`,
+`area_claims_fine` and `page_stroke_claims`, so `judged_claims` shares it. Real-tile test:
+`tools/omr/tests/test_dynamic_naming_real_2_296.py` (slow; Sean's five dynamic tiles read dynamic, "cr of cresc."
+stays a word). Fast tier on the landing tree 10,319 passed; check 228; conservation holds; export byte-identical for
+the tool fix. No gather was run at landing: the "file unchanged, 14 of 14" evidence is the lane's.
+
+`judged_claims` on the saved Litolff main slice: 28 agree / 6 contradict -> 32 / 2. FOUR of the five dynamic tiles now
+agree; the fifth (2.284b r2 #2, `sf`) still CONTRADICTS as claimed twice — the dynamic owns 76% and a beam (27%) and a
+stem (11%) also stand on its ink, at the tool's 0.3 cut. The other remaining Litolff contradiction is the tremolo
+slash 2.276 r2 #4. (The lane's "5 -> 0" was on its own slices.)
+
+Retired at landing: NOTHING. Every candidate is still reachable with the flag ON (a marking the split cannot place
+stays one word claim): `gather.gather_page_claims`' `lone_letter_inside_a_claim` guard and `claims.spell_letter_runs`
+go only when the flag itself is removed.

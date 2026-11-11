@@ -489,8 +489,21 @@ def edition_info(rows: Dict[str, List[dict]]) -> Dict[str, Any]:
     return {}
 
 
+#: ROADMAP 2.296: the register files a printed dynamic as owner `word`, source `dynamic_letters`. A claim is named by the READER THAT FILED IT (its
+#: `source`), never by the lexicon category: `cresc.` / `dim.` are category `dynamic` and are WORDS. Every tool naming a claim goes through `named_owner`.
+DYNAMIC_SOURCE = "dynamic_letters"
+
+
+def named_owner(detail: Dict[str, Any]) -> str:
+    """The owner a claim row is NAMED by in the readout tools: `dynamic` for a word-owner claim filed by the dynamic-letters reader, else its owner."""
+    owner = str((detail or {}).get("owner") or "")
+    return "dynamic" if owner == "word" and (detail or {}).get("source") == DYNAMIC_SOURCE else owner
+
+
 def owner_verdicts(rows: Dict[str, List[dict]], env: Optional[Dict[str, str]] = None) -> Dict[Tuple[int, int, int, int], Dict[str, Any]]:
-    """Re-run ONLY `adjudicate_stroke_owner` over the GATHER rows: `{cell key: verdict detail}` (flags read at call time, so `env` is the OFF arm)."""
+    """Re-run ONLY `adjudicate_stroke_owner` over the GATHER rows: `{cell key: verdict detail}` (flags read at call time, so `env` is the OFF arm).
+    A candidate whose claim row `named_owner` calls a dynamic is renamed `dynamic` (2.296). The verdict holds the REBUILT log's ids, so the claim rows are
+    looked up through `rebuild_gather`'s `old_id -> new_id`."""
     from . import adjudicate as A
     from .record import Q
     from .review import rerun as RR
@@ -498,7 +511,9 @@ def owner_verdicts(rows: Dict[str, List[dict]], env: Optional[Dict[str, str]] = 
     try:
         for k, v in (env or {}).items():
             os.environ[k] = v
-        log, _ = RR.rebuild_gather({"observations": rows["observations"], "abstentions": rows["abstentions"], "verdicts": []})
+        log, id_map = RR.rebuild_gather({"observations": rows["observations"], "abstentions": rows["abstentions"], "verdicts": []})
+        dyn = {id_map.get(o["id"], o["id"]) for o in rows["observations"]
+               if o.get("quantity") == "claimed_area" and named_owner(o.get("detail") or {}) == "dynamic" and (o.get("detail") or {}).get("owner") == "word"}
         A._ensure_decisions()
         spec = A.REGISTRY[Q.STROKE_OWNER]
         log.freeze()
@@ -507,6 +522,14 @@ def owner_verdicts(rows: Dict[str, List[dict]], env: Optional[Dict[str, str]] = 
             v = A.adjudicate_one(log, spec, sub)
             if isinstance(v.detail, dict):
                 out[(sub.page, sub.system, sub.staff, sub.cell)] = v.detail
+        if dyn:
+            for det in out.values():
+                for ent in (det.get("strokes") or {}).values():
+                    for c in ent[4]:
+                        if c[1] == "word" and c[0] in dyn:
+                            c[1] = "dynamic"
+                    if ent[1] == "word" and any(k in dyn for k in (ent[2] or ())):
+                        ent[1] = "dynamic"
         return out
     finally:
         for k, v in saved.items():
@@ -1202,7 +1225,7 @@ def area_claims_fine(rows: Dict[str, List[dict]], skip_rows: Sequence[str] = ())
             continue
         if not d.get("owner"):
             continue
-        out.append({"rect": [float(t) for t in v], "kind": fine_of(str(d["owner"])), "owner": d["owner"], "weak": d.get("standing", "READ") != "READ"})
+        out.append({"rect": [float(t) for t in v], "kind": fine_of(named_owner(d)), "owner": d["owner"], "weak": d.get("standing", "READ") != "READ"})
     return out
 
 
@@ -1226,7 +1249,7 @@ def page_stroke_claims(rows: Dict[str, List[dict]]) -> List[Dict[str, Any]]:
             continue
         mine = [i for i in ids if taken.setdefault(i, owner) == owner]
         if mine:
-            out.append({"owner": owner, "kind": fine_of(owner), "ids": mine, "weak": d.get("standing", "READ") != "READ", "source": d.get("source"),
+            out.append({"owner": owner, "kind": fine_of(named_owner(d)), "ids": mine, "weak": d.get("standing", "READ") != "READ", "source": d.get("source"),
                         "cls": d.get("cls"), "subject": o.get("subject"), "row": o.get("id")})
     return out
 
