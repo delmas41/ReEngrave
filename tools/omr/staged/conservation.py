@@ -160,7 +160,7 @@ def ink_line(plate: str, pages: Sequence[int], tag: str) -> str:
         L, tot = t["lines"], max(1, t["ink_px"])
         staff = t["one"]["by_kind"].get("staff_line", 0)
         links = "page-ledger links %d of %d strokes" % (t["links_filed"], t["strokes_filed"]) if t["links_filed"] else "NO page-ledger links in this slice (a gather before 2.284)"
-        return ("one owner %.1f%% (%.1f%% of the non-staff ink; %.1f%% of it by a page-wide claim, the rest by a cell box) / weak only %.1f%% / claimed twice %.1f%% / "
+        return ("one owner %.1f%% (%.1f%% of the non-staff ink; page-wide claims hold %.1f%% of all the ink, cell boxes the rest) / weak only %.1f%% / claimed twice %.1f%% / "
                 "no owner %.1f%%, of %d dark px, pages %s, slice %s, %s (ink, not a note count)" % (
                     100.0 * L["one"] / tot, 100.0 * (L["one"] - staff) / max(1, tot - staff), 100.0 * t["one"]["ledger_px"] / tot, 100.0 * L["weak"] / tot,
                     100.0 * L["twice"] / tot, 100.0 * L["none"] / tot, t["ink_px"], list(pages), tag, links))

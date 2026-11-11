@@ -9,6 +9,10 @@ names no quantity it writes (registered in `reach.NOT_A_STAGE`, `rule_kinds.INFR
 gather stage, what matters most is that we are capturing the ink and designating it" -- CLAUDE north star: all ink is accounted for
 ONE time. Until now each lane built a one-off script ("136/153 arcs", "49/60 words"); this is the one command.
 
+ROADMAP 2.293 -- THE ONE INK NUMBER (`ink`, section 10 below): the same re-cut cells, read AS THE PAGE LEDGER (2.284) ANSWERED THEM instead of as a union of every
+candidate -- every dark pixel is one owner (by kind; on the page ledger vs claimed by a cell box) / weak only / claimed twice / no owner (shape-guessed), the four
+lines sum to 100% and the tool raises otherwise; `conservation --ink` prints it. The 2.236 readout below stays for the per-class truth tables and the tiles.
+
 REC is a SLICE DIRECTORY (`observations.jsonl` + `abstentions.jsonl`: `lane_report`'s frozen-sample slices, `PLATE:TAG` such as
 `brahms:20261029-night` names them) or a `.record.json` (cut once into `library/_shared-records/claim-readout-slices-*`, streamed, GATHER
 rows only). A record over 5 GB is refused: the 19.6 GB Brahms record is never loaded -- use its lane-report slices.
