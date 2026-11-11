@@ -14,7 +14,7 @@ LIB = "/Users/seanjohnson/Desktop/ReEngrave/library/"
 PDFS = {"litolff": (LIB + "editions/beethoven/symphony-5-op67/beethoven--symphony-5-op67--henry-litolff-s-verlag-1870--imslp984073.pdf", 15.75),
         "brahms": (LIB + "editions/brahms/symphony-1-op68/brahms--symphony-1-op68--breitkopf-hartel-brahms--imslp317803.pdf", 27.3)}
 BLUE = (31, 111, 235)
-HWX, HWY = 9.0, 9.0
+HWX, HWY = 9.0, 8.0
 
 
 def crop(doc, pg, SP, box, width_px=420, thin=True, mark=True):
@@ -28,7 +28,7 @@ def crop(doc, pg, SP, box, width_px=420, thin=True, mark=True):
         sx, sy = im.width / (clip[2] - clip[0]), im.height / (clip[3] - clip[1])
         pad = 0.12 * SP
         b = [(x0 - pad - clip[0]) * sx, (y0 - pad - clip[1]) * sy, (x1 + pad - clip[0]) * sx, (y1 + pad - clip[1]) * sy]
-        ImageDraw.Draw(im).rectangle(b, outline=BLUE, width=1)
+        ImageDraw.Draw(im).rectangle(b, outline=BLUE, width=2)
     return im
 
 

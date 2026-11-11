@@ -1,0 +1,725 @@
+{
+ "1": {
+  "file": "tile_01.png",
+  "plate": "litolff",
+  "page": 2,
+  "sub": "glyph/2/0/0/1/4",
+  "page_box": [
+   697.96,
+   340.96,
+   723.4,
+   363.52
+  ],
+  "bucket": "(ii) ",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:046039"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 2,
+    "yolo_beams": 0,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 1,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 1,
+    "beam_evidence": "none_over_this_note",
+    "bare_stem_likelihood": "not_claimed",
+    "bare_stem_evidence_holds": false,
+    "bare_stem_tip_window_clean": true,
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:051856",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "2": {
+  "file": "tile_02.png",
+  "plate": "brahms",
+  "page": 14,
+  "sub": "glyph/14/0/13/0/6",
+  "page_box": [
+   974.826171875,
+   3656.3798828125,
+   1013.5888671875,
+   3686.69921875
+  ],
+  "bucket": "(ii) ",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 2,
+   "head_stem": [
+    "decided",
+    "stem_by_side",
+    "obs:070647"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "flag_ink_unread",
+    null
+   ],
+   "d": {
+    "stems_attached": 2,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "beams_not_by_ink": 1,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "none_over_this_note",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:074812",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "3": {
+  "file": "tile_03.png",
+  "plate": "litolff",
+  "page": 2,
+  "sub": "glyph/2/1/9/4/8",
+  "page_box": [
+   1146.24,
+   3432.68,
+   1169.28,
+   3452.84
+  ],
+  "bucket": "(iii)",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:049556"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "beams_ambiguous",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 1,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "cv_beams": 1,
+    "yolo_beams": 1,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 0,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "read",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:052490",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "4": {
+  "file": "tile_04.png",
+  "plate": "litolff",
+  "page": 2,
+  "sub": "glyph/2/0/0/1/3",
+  "page_box": [
+   729.96,
+   371.68,
+   750.76,
+   390.56
+  ],
+  "bucket": "(ii) ",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:046041"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 2,
+    "yolo_beams": 0,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 1,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 1,
+    "beam_evidence": "none_over_this_note",
+    "bare_stem_likelihood": "not_claimed",
+    "bare_stem_evidence_holds": false,
+    "bare_stem_tip_window_clean": true,
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:051855",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "5": {
+  "file": "tile_05.png",
+  "plate": "brahms",
+  "page": 14,
+  "sub": "glyph/14/0/3/0/8",
+  "page_box": [
+   1240.0244140625,
+   1367.0625,
+   1276.484375,
+   1399.6845703125
+  ],
+  "bucket": "(ii) ",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:068959"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "up"
+   ],
+   "duration": [
+    "narrowed",
+    "flag_ink_unread",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 2,
+    "yolo_beams": 4,
+    "yolo_kept": 1,
+    "beams_not_by_ink": 1,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 1,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "none_over_this_note",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:074403",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "6": {
+  "file": "tile_06.png",
+  "plate": "brahms",
+  "page": 0,
+  "sub": "glyph/0/0/10/1/4",
+  "page_box": [
+   2493.44,
+   5552.56,
+   2536.0,
+   5588.08
+  ],
+  "bucket": "(iii)",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:021101"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "beams_ambiguous",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 1,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "cv_beams": 1,
+    "yolo_beams": 1,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 0,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "read",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:023643",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "7": {
+  "file": "tile_07.png",
+  "plate": "litolff",
+  "page": 2,
+  "sub": "glyph/2/1/4/3/3",
+  "page_box": [
+   930.7375,
+   2718.285,
+   953.575,
+   2730.0975
+  ],
+  "bucket": "(i) n",
+  "ours": {
+   "fate": "written",
+   "n_stem": 0,
+   "head_stem": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "stem_dir": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "duration": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "d": {
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 0,
+    "yolo_beams": 2,
+    "yolo_kept": 2,
+    "beams_not_by_ink": 2,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "none_over_this_note",
+    "bare_stem_likelihood": "not_claimed",
+    "bare_stem_evidence_holds": false,
+    "bare_stem_tip_window_clean": false,
+    "head_fill_first": {
+     "fill": null,
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:052294",
+     "margin": -0.18,
+     "not_head_sized": true
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "8": {
+  "file": "tile_08.png",
+  "plate": "brahms",
+  "page": 19,
+  "sub": "glyph/19/0/4/0/20",
+  "page_box": [
+   1307.17724609375,
+   1585.34423828125,
+   1345.80615234375,
+   1620.46142578125
+  ],
+  "bucket": "(iii)",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:204044"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "up"
+   ],
+   "duration": [
+    "narrowed",
+    "beams_ambiguous",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 1,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "cv_beams": 1,
+    "yolo_beams": 3,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 0,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "read",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:210126",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "9": {
+  "file": "tile_09.png",
+  "plate": "litolff",
+  "page": 2,
+  "sub": "glyph/2/0/10/1/5",
+  "page_box": [
+   673.07,
+   1918.5875,
+   697.7975,
+   1940.9525
+  ],
+  "bucket": "(iii)",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 1,
+   "head_stem": [
+    "decided",
+    "one_stem",
+    "obs:047961"
+   ],
+   "stem_dir": [
+    "decided",
+    "stem_projection",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "beams_ambiguous",
+    null
+   ],
+   "d": {
+    "stems_attached": 1,
+    "beams_by_stem": 1,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 1,
+    "levels_possible": 2,
+    "cv_beams": 2,
+    "yolo_beams": 2,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 0,
+    "beams_far_side": 1,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "read",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:052146",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "10": {
+  "file": "tile_10.png",
+  "plate": "brahms",
+  "page": 14,
+  "sub": "glyph/14/1/1/0/5",
+  "page_box": [
+   1231.44140625,
+   4473.2119140625,
+   1271.3876953125,
+   4505.6435546875
+  ],
+  "bucket": "(i) n",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 0,
+   "head_stem": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "stem_dir": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "duration": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "d": {
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "beams_not_by_ink": 1,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "none_over_this_note",
+    "bare_stem_likelihood": "not_claimed",
+    "bare_stem_evidence_holds": false,
+    "bare_stem_tip_window_clean": false,
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:074868",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "11": {
+  "file": "tile_11.png",
+  "plate": "brahms",
+  "page": 14,
+  "sub": "glyph/14/1/3/5/3",
+  "page_box": [
+   3742.6075,
+   4953.355,
+   3779.6675,
+   4984.6925
+  ],
+  "bucket": "(i) n",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 0,
+   "head_stem": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "stem_dir": [
+    "decided",
+    "beam_mate",
+    "down"
+   ],
+   "duration": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "d": {
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 0,
+    "cv_beams": 0,
+    "yolo_beams": 1,
+    "yolo_kept": 1,
+    "beams_not_by_ink": 1,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 0,
+    "beam_evidence": "none_over_this_note",
+    "bare_stem_likelihood": "not_claimed",
+    "bare_stem_evidence_holds": false,
+    "bare_stem_tip_window_clean": false,
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:074949",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ },
+ "12": {
+  "file": "tile_12.png",
+  "plate": "litolff",
+  "page": 2,
+  "sub": "glyph/2/1/7/7/2",
+  "page_box": [
+   1603.565,
+   3080.59,
+   1625.93,
+   3101.8525
+  ],
+  "bucket": "(i) n",
+  "ours": {
+   "fate": "duration_narrowed",
+   "n_stem": 0,
+   "head_stem": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "stem_dir": [
+    "abstained",
+    "no_stem",
+    null
+   ],
+   "duration": [
+    "narrowed",
+    "beams_ambiguous",
+    null
+   ],
+   "d": {
+    "stems_attached": 0,
+    "beams_by_stem": 0,
+    "flags_attached": 0,
+    "flag_levels": 0,
+    "levels_certain": 0,
+    "levels_possible": 1,
+    "cv_beams": 2,
+    "yolo_beams": 0,
+    "yolo_kept": 0,
+    "beams_not_by_ink": 0,
+    "beams_far_side": 0,
+    "beams_neighbour_staff": 0,
+    "beams_decided_arc": 0,
+    "beams_beyond_stem": 0,
+    "beams_ledger_line": 1,
+    "beam_evidence": "none_over_this_note",
+    "head_fill_first": {
+     "fill": "black",
+     "rows_share": 0.0,
+     "hole_share": 0.0,
+     "row": "obs:052379",
+     "margin": -0.18,
+     "settled": "black"
+    },
+    "head_is_open": false
+   }
+  }
+ }
+}
