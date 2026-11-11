@@ -16671,8 +16671,10 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     lw = _letters_of_a_read_word(s, run, letter_box_of_row, sides_of_key, key_of_row)
                     if lw is not None:
                         _count("word:dynamic_letters:letters_of_a_word")
-                        if _uncovered_ink(run["box"]):
-                            # the word's own claim does not hold this ink (cut round a hairpin, a note mark): the letters' own box is filed as the WORD's, source `direction_word`
+                        if run["read"] and _uncovered_ink(run["box"]):
+                            # the word's own claim does not hold the ink of a run OFF would have claimed as a dynamic (cut round a hairpin, a note mark): the letters' own box is filed as the
+                            # WORD's, source `direction_word`, so the ink stays claimed once (north star). A run that was never a READ dynamic (a lone letter, an unspelled slot: OFF claimed
+                            # nothing for it either) files nothing: the 2.303 r1 look at claims ON added showed a barline's 8 x 13 px stub boxed as a letter taking the word's name.
                             _count("word:dynamic_letters:letters_of_a_word_claimed")
                             _file_sparing(s, run["box"], "direction_word", "letters_of_a_word", own=[key_of_row[i] for i in run["rows"]], owner_row=lw["row"],
                                           text=lw["text"], category=lw["category"], letters_of_word=True, letter_rows=list(run["rows"]))

@@ -28,13 +28,13 @@ def centre_in(v, b):
     return b[0] <= cx <= b[2] and b[1] <= cy <= b[3]
 
 
-def analyse(rec, page, probe_path=None):
+def analyse(rec, page, probe_path=None, call=0):
     from tools.omr.staged import claim_readout as CR
     rows = CR.read_rows(CR.resolve_source(rec), [page])
     obs = rows["observations"]
     words = [(o["detail"]["bbox_page_px"], o["value"], o["detail"].get("dynamics") or [], o["id"]) for o in obs
              if o["quantity"] == "direction_word" and (o.get("detail") or {}).get("bbox_page_px")]
-    probe = json.load(open(probe_path))[0] if probe_path else None
+    probe = json.load(open(probe_path))[call] if probe_path else None
     cands = probe["candidates"] if probe else []
     reads = {}
     for r in (probe["readings"] if probe else []):
@@ -62,8 +62,9 @@ def main():
     ap.add_argument("page", type=int)
     ap.add_argument("--probe")
     ap.add_argument("--json")
+    ap.add_argument("--call", type=int, default=0, help="which read_directions call of the probe (one per page gathered, in page order)")
     a = ap.parse_args()
-    out = analyse(a.rec, a.page, a.probe)
+    out = analyse(a.rec, a.page, a.probe, a.call)
     for it in out:
         print("%s %s %-5s box=%s compound=%s | READ word: %s | rejected cand: %s" % (
             it["id"], it["standing"], it["text"] or ("letter " + str(it["letter"])), it["box"], bool(it["compound_of"]),
