@@ -4,7 +4,7 @@
 
 REMOVED = a dynamic claim of the OFF record (owner `word`, source `dynamic_letters`) that the ON record no longer files as a dynamic over the same ink (no ON dynamic claim holds half of its box).
 One tile per removed claim (the pieces of one claim, rows sharing a `letter_rows` set, are one tile): the window holds the WHOLE word the claim stands in (the READ word's box when one holds it, else
-the OCR candidate's box when a probe is given, else 9 staff spaces either side), the tinted ink is the ink the OFF ledger gives that claim, a thin box on every piece of the claim. Nothing else
+the OCR candidate's box when a probe is given, else 9 staff spaces either side), the tinted ink is every ink pixel inside the boxes of the OFF claim (what OFF claimed for the dynamic), a thin box on every piece of the claim. Nothing else
 is drawn: no text, no arrow. The key (key.json, beside the sheet) names plate / page / box / the word it sat in / what OFF filed / what the rule did. The sheet: 3 columns, large numbers.
 """
 import argparse
@@ -108,7 +108,7 @@ def main():
     tiles, key, cache = [], [], {}
     for n, it in enumerate(items, 1):
         plate, pg = it["plate"], it["page"]
-        u = UNIT[plate]
+        u = UNIT[plate.rstrip("0123456789")]       # a record name may carry a digit suffix (`brahms4`: the page-4 gather of its own file)
         if (plate, pg) not in cache:
             cache.clear()
             rows = rowsets[(plate, pg)]
@@ -132,7 +132,8 @@ def main():
         near = np.zeros(mine.shape, bool)      # only the ink of THIS claim's boxes (the ledger's dynamic family elsewhere in the window is another claim)
         for b in it["pieces"]:
             near[max(0, int(b[1]) - y0 - 2):max(0, int(b[3]) - y0 + 2), max(0, int(b[0]) - x0 - 2):max(0, int(b[2]) - x0 + 2)] = True
-        mine &= near
+        fam_px = int((mine & near).sum())       # what the ledger's settle gave the dynamic family there (the word's own claim stands on the same letters: often 0)
+        mine = ink & near                       # the tint is the ink OFF CLAIMED for the dynamic: every ink pixel of the claim's own boxes
         crop[mine] = TINT
         im = Image.fromarray(crop)
         dr = ImageDraw.Draw(im)
@@ -141,8 +142,8 @@ def main():
             dr.rectangle([round(v) for v in bb], outline=TINT, width=max(1, int(u / 16)))
         im = im.resize((W, int(W * im.height / im.width)))
         tiles.append(im)
-        key.append(dict(tile=n, plate=plate, page=pg, role=it["role"], claim_ids=it["ids"], boxes=[[round(v, 1) for v in b] for b in it["pieces"]], off_filed_as=it["text"],
-                        standing=it["standing"], word_it_sat_in=it["word"], word_box=it["word_box"], crop_origin=[x0, y0], tinted_px=int(mine.sum())))
+        key.append(dict(tile=n, plate=plate.rstrip("0123456789"), record=plate, page=pg, role=it["role"], claim_ids=it["ids"], boxes=[[round(v, 1) for v in b] for b in it["pieces"]], off_filed_as=it["text"],
+                        standing=it["standing"], word_it_sat_in=it["word"], word_box=it["word_box"], crop_origin=[x0, y0], tinted_px=int(mine.sum()), ledger_dynamic_px=fam_px))
         im.save(out / ("tile_%02d.png" % n))
     cols = 3
     rows_n = (len(tiles) + cols - 1) // cols
