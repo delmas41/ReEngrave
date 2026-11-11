@@ -459,7 +459,7 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
     fit_row, fit_fifths = _fit_for_clef(fits, clef)
     tpl_row, tpl_fifths = _fit_for_clef(tpls, clef)
 
-    # ⚠️ ROADMAP 2.299 (flag `OMR_KEY_KIND_FROM_SLOTS`, default OFF): the key's KIND and COUNT from where the key object's measured slots sit (the fixed
+    # ⚠️ ROADMAP 2.299 (flag `OMR_KEY_KIND_FROM_SLOTS`, default ON): the key's KIND and COUNT from where the key object's measured slots sit (the fixed
     # flat / sharp order at the clef's staff steps) -- for a staff whose boxes gave NO reading (natural / mixed kinds, or no marker and no fitter).
     # It never overrides a reading that exists (a fitter that speaks stands; a marker run of another kind stands: recorded), never lowers a count,
     # and its READ goes through the system and part checks below like any staff reading. Abstains: the existing path runs untouched.

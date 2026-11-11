@@ -1,6 +1,6 @@
 """The key signature's KIND (flats / sharps) and COUNT read from where its signs sit -- ROADMAP 2.299 (STAGED ADJUDICATE; GATHER rows only read).
 
-Flag `OMR_KEY_KIND_FROM_SLOTS` (default OFF; "1"/"true"/"yes"/"on" turns it on).
+Flag `OMR_KEY_KIND_FROM_SLOTS` (default ON since 2026-11-11; "0"/"false"/"no"/"off" turns it off).
 
 CAUSE (benchmarks/key-kind-from-slots-2026-11/FINDINGS.md; 2.292): `adjudicators/header.py:_marker_run` takes the COUNT and the KIND of a key signature
 from the detector's key boxes. Litolff crushes the flats together, so boxes go missing or are classed natural / sharp, the staff abstains, and INFER
@@ -53,7 +53,7 @@ MAX_SLOTS = 7
 
 
 def enabled() -> bool:
-    return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def key_object_row(rows: Sequence[Any]) -> Optional[Dict[str, Any]]:

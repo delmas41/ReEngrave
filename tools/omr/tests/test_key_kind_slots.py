@@ -40,13 +40,13 @@ def test_a_crushed_bowl_alone_reads_at_its_pitch():
     assert K.fifths_of(r) == -3
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(K.ENV, raising=False)
-    assert not K.enabled()
-    for v in ("1", "true", "YES", "on"):
+    assert K.enabled()
+    for v in ("", "1", "true", "YES", "on"):
         monkeypatch.setenv(K.ENV, v)
         assert K.enabled()
-    for v in ("", "0", "false", "off", "no"):
+    for v in ("0", "false", "OFF", "no"):
         monkeypatch.setenv(K.ENV, v)
         assert not K.enabled()
 
