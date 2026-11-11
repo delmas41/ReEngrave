@@ -101,6 +101,9 @@ def parallel_verticals(page_map: Any, own: Sequence[int]) -> List[Dict[str, Any]
     joined by two bars (engraving: they are one accidental's pair); a rest is ONE mark whose body is one stroke (a quarter rest's slanted stroke, an eighth / 16th rest's one
     slanted stem with its curls, a whole / half rest's one block) and so holds at most ONE long vertical; a stem beside a barline is not one ink either. A "long vertical" is a
     stroke of kind `vertical` at least `stroke_map.V_MIN_SPACES` long (the map's own cut, the same one `attachment` uses for a stem), at its own staff's local space.
+    REFUSAL ONLY (CLAUDE §4: a cut-off found on our plates may only narrow, never decide): the numbers here (`PAIR_THICK_MIN_SP` 0.15, `PAIR_GAP_SP` 1.0, `PAIR_OVERLAP_MIN` 0.5, `PAIR_BARS_MIN`
+    2) were MEASURED ON LITOLFF + BRAHMS, NOT CONFIRMED ON ANOTHER PUBLISHER. A pair here means "do not claim this ink as a single mark of another kind"; it never says the ink IS an
+    accidental (the accidental reader reads that from the ink itself) and no caller may use it to decide a kind.
     Returns one dict per pair (`a`, `b`, `overlap` = share of the shorter's height, `gap_sp`); empty = none. A reader of ANY mark that is not an accidental, a bracket or a barline
     may refuse ink that returns a pair.
     WHAT WOULD FALSIFY IT: a real rest (or other single mark) whose own strokes include two long verticals side by side -- e.g. a quarter rest the map cut into two long overlapping
