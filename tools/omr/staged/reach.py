@@ -433,6 +433,9 @@ NOT_A_STAGE = frozenset({
     "stem_end_heads.py",
     # ROADMAP 2.268 (trial). Pure helpers for `gather.gather_dyad_head_rescue`; files no row, names no quantity.
     "dyad_head_rescue.py",
+    # ROADMAP 2.300. Pure geometry for the second's stem join (`stem_value._stem_of_a_second`) and the one-stem grouping
+    # (`rhythm.adjudicate_event`, `voicing.group_chords_in_measure`): files no row, names no quantity, decides nothing.
+    "one_chord.py",
     # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
     "stroke_map.py",
     # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes
@@ -675,6 +678,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.256. `key_header_ink.py` is PURE (the staff's `cv_key_object` claim rows and the marker slot count in, a raised slot count out; the
     # flag): it files no row and names no quantity -- `adjudicators/header._staff_reading` calls it.
     "key_header_ink.py",
+    # ROADMAP 2.299. `key_kind_slots.py` is PURE (the staff's `cv_key_object` claim rows and its READ clef in; a kind, a count and a margin out; the flag):
+    # it files no row and names no quantity -- `adjudicators/header._staff_reading` calls it.
+    "key_kind_slots.py",
     # ROADMAP 2.190. `accidental_shape.py` is PURE (a raster and a box in, two corner stem strengths and a shape out; the flag, the READ bar, the
     # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
     # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.

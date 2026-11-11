@@ -1,0 +1,212 @@
+{
+ "lane": "2.301-r1",
+ "date": "2026-11-11",
+ "question": "which word or dynamic is the tinted ink; is anything else tinted?",
+ "note": "Scored by the manager against key.json: 11 of 12 right, and all six changed places (1, 5, 6, 7, 9, 10) are right with nothing stray reported. The miss is tile 4 (litolff p8, a LONE dynamic claim the flag did not touch): the letters m-p inside the word 'sempre' are claimed as a dynamic -- an older fault, not this fix's.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "an f dynamic",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "kind": "dynamic",
+   "box": [
+    1613.0,
+    2122.0,
+    1685.0,
+    2204.0
+   ],
+   "text": "f legato",
+   "role": "changed: the same marking's dynamic",
+   "marking": "obs:001881"
+  },
+  {
+   "tile": 2,
+   "sean": "an f dynamic",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "kind": "dynamic",
+   "box": [
+    1623.3,
+    4796.2,
+    1691.7,
+    4876.3
+   ],
+   "text": null,
+   "role": "a dynamic the flag did not move (lone)",
+   "marking": null
+  },
+  {
+   "tile": 3,
+   "sean": "a double f (ff) dynamic",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 8,
+   "kind": "dynamic",
+   "box": [
+    1588.3,
+    2638.2,
+    1651.4,
+    2684.9
+   ],
+   "text": null,
+   "role": "a dynamic the flag did not move (lone)",
+   "marking": null
+  },
+  {
+   "tile": 4,
+   "sean": "it boxes mp, but it is actually part of the word sempre; that should be a word",
+   "ours_right": false,
+   "plate": "litolff",
+   "page": 8,
+   "kind": "dynamic",
+   "box": [
+    1547.8,
+    788.4,
+    1587.3,
+    839.1
+   ],
+   "text": null,
+   "role": "a dynamic the flag did not move (lone)",
+   "marking": null
+  },
+  {
+   "tile": 5,
+   "sean": "pesante, a word",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "kind": "word",
+   "box": [
+    1693.8,
+    6891.0,
+    1968.2,
+    6980.2
+   ],
+   "text": "f pesante",
+   "role": "changed: the word of a marking",
+   "marking": "obs:001889"
+  },
+  {
+   "tile": 6,
+   "sean": "legato, a word",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "kind": "word",
+   "box": [
+    1689.8,
+    2509.8,
+    1904.2,
+    2587.2
+   ],
+   "text": "f legato",
+   "role": "changed: the word of a marking",
+   "marking": "obs:001882"
+  },
+  {
+   "tile": 7,
+   "sean": "f dynamic",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "kind": "dynamic",
+   "box": [
+    1616.3,
+    2500.5,
+    1686.0,
+    2582.0
+   ],
+   "text": "f legato",
+   "role": "changed: the same marking's dynamic",
+   "marking": "obs:001882"
+  },
+  {
+   "tile": 8,
+   "sean": "f, double f",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 8,
+   "kind": "dynamic",
+   "box": [
+    508.0,
+    3608.7,
+    564.6,
+    3656.5
+   ],
+   "text": null,
+   "role": "a dynamic the flag did not move (lone)",
+   "marking": null
+  },
+  {
+   "tile": 9,
+   "sean": "sempre più, word",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 8,
+   "kind": "word",
+   "box": [
+    1615.4,
+    1563.4,
+    1823.6,
+    1613.0
+   ],
+   "text": "sempre più p",
+   "role": "changed: the word of a marking",
+   "marking": "obs:002761"
+  },
+  {
+   "tile": 10,
+   "sean": "legato",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "kind": "word",
+   "box": [
+    1689.8,
+    2121.8,
+    1902.2,
+    2199.2
+   ],
+   "text": "f legato",
+   "role": "changed: the word of a marking",
+   "marking": "obs:001881"
+  },
+  {
+   "tile": 11,
+   "sean": "p dynamic",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 14,
+   "kind": "dynamic",
+   "box": [
+    1214.0,
+    6669.2,
+    1274.9,
+    6722.0
+   ],
+   "text": null,
+   "role": "a dynamic the flag did not move (lone)",
+   "marking": null
+  },
+  {
+   "tile": 12,
+   "sean": "p dynamic",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 14,
+   "kind": "dynamic",
+   "box": [
+    4672.8,
+    3547.4,
+    4734.0,
+    3601.0
+   ],
+   "text": "p dim",
+   "role": "a dynamic the flag did not move",
+   "marking": "obs:003613"
+  }
+ ]
+}

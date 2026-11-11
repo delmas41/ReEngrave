@@ -60,3 +60,8 @@ The key object's COUNT: keep the extra pieces on the record and count fused
 blobs (`key_object.read_pieces`, GATHER). That is where the other ~190 blue
 notes are. Nothing retired: `raise_count` still fires where this reader
 abstains (23 of 49 Litolff staff-systems).
+
+
+## Landed
+
+Landed ON 2026-11-11 on Sean's "Yes land it" (12 tiles: all three flats, 3 newly READ staves right, 23 of 23 with the 2.292 set). Default ON, deny-list `0/false/no/off`. Not confirmed: sharps (no real sharp-key page); thresholds measured on two plates. Next: the key object's COUNT at GATHER.
