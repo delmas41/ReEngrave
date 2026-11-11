@@ -744,7 +744,29 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
             _plant_cut_head(lab, res, claims, meta)
         canvas.add_cell(c.bbox_page_px, lab, claims, er, [c.bbox_page_px[1] + y / c.upscale_factor for y in ys], meta)
     if ledger:
-        for a in area_claims_fine(prows):
+        sclaims = page_stroke_claims(prows)
+        resolved_rows: List[str] = []
+        if sclaims:
+            # 2.295b: page-STROKE claims (rests, dynamics, repeat dots, arcs, tremolos, own-ink accidentals) -> the dark pixels of the strokes they name. EXACT where the
+            # page map can be re-cut stroke for stroke as the record has it; else the bbox approximation (said in the header, per page).
+            boxes = page_stroke_boxes(prows)
+            if boxes:
+                want = sorted({i for c in sclaims for i in c["ids"]})
+                labels, how = exact_stroke_labels(prows, pws, cells, local, keep_whole, touch)
+                if labels is not None:
+                    ys, xs = np.nonzero(canvas.ink)
+                    s_ = labels.scale
+                    H_, W_ = labels.lab.shape
+                    ids = labels.lab[np.clip((ys * s_).astype(np.int64), 0, H_ - 1), np.clip((xs * s_).astype(np.int64), 0, W_ - 1)].astype(np.int64) - 1
+                    keep_ = ids >= 0
+                    ys, xs, ids = ys[keep_], xs[keep_], ids[keep_]
+                    del labels
+                else:
+                    ys, xs, ids = stroke_ids_on_ink(canvas.ink, boxes, want)
+                    how = "bbox_approximation (%s)" % how
+                canvas.add_page_strokes(sclaims, ys, xs, ids, how)
+                resolved_rows = [str(c["row"]) for c in sclaims if c.get("row")]
+        for a in area_claims_fine(prows, resolved_rows):
             canvas.add_area(a["rect"], a["kind"], a["weak"])
         canvas.bands = staff_bands(cells)
         canvas.links_filed = sum(len(v) for v in page_links.values())
@@ -1044,7 +1066,10 @@ def render_truth(tr: Dict[str, Any], tr_reg: Optional[Dict[str, Any]] = None) ->
 #   WEAK ONLY    no READ claim; a GUESSED / NARROWED claim's area stands on it. Never counted as claimed.
 #   TWICE        the ledger's own settle left it with two owners: TWIN (one kind, two boxes: `merged`), TWO KINDS (`contested`: the settle could not
 #                choose), VIEWS DISAGREE (two padded cells' verdicts of an UNLINKED piece name different kinds), TWIN VIEWS (one kind named in two
-#                unlinked cell views).
+#                unlinked cell views), and (2.295b) PAGE-STROKE CLAIM NOT CONSULTED BY THE CELL SETTLE: a READ claim filed as page-stroke ids
+#                (every READ rest, dynamics, repeat dots, arcs, tremolos, own-ink accidentals: `page_stroke_claims`) and a READ cell/register owner of a DIFFERENT
+#                kind on one pixel, by pair ("page rest / cell beam"). Its own sub-line, never mixed with twin boxes: it is the measure of ROADMAP 2.297's gap.
+#                A page-stroke claim of the SAME kind as the cell's is one owner; one with no cell owner is ONE OWNER "on the page ledger".
 #   NO OWNER     nothing claims it. Split by a simple shape test on its connected pieces -- a GUESS OF THIS TOOL, never a claim: refused claim (a
 #                claim stood and its shape did not fit: a fact), staff-line residue, specks, long thin strokes, note-like blobs, text-like, small marks, other.
 #
@@ -1058,6 +1083,7 @@ FINE_OF_FAMILY = {
     "arc": "arc", "arc_trace": "arc", "hairpin": "hairpin", "hairpin_trace": "hairpin", "stem": "stem", "beam": "beam", "flag": "flag",
     "dynamic": "dynamic", "word": "word", "text": "mark", "mark": "mark", "bracket": "bracket", "leading_column": "bracket",
     "barline": "barline", "clef": "clef", "meter": "meter", "key_signature": "key", "tremolo": "tremolo",
+    "accidental_ink": "accidental",      # 2.285's own-ink accidental claim (`page_accidental_ink.OWNER`); unnamed here it was filed under `other` (2.295b)
 }
 #: the print order, and the bit of each kind in the canvas (an owner name not listed gets `other`)
 FINE_KINDS = ("staff_line", "barline", "bracket", "clef", "key", "meter", "word", "dynamic", "arc", "hairpin", "tremolo", "accidental", "rest",
@@ -1159,20 +1185,138 @@ def ledger_claims_for_cell(strokes: Sequence[Any], verdict: Optional[Dict[str, A
     return out
 
 
-def area_claims_fine(rows: Dict[str, List[dict]]) -> List[Dict[str, Any]]:
-    """The register's page-wide RECTANGLE claims (`unit` area / page_ink, value a rectangle), READ or weak, by fine kind. Applied to ink OUTSIDE every cell."""
+def area_claims_fine(rows: Dict[str, List[dict]], skip_rows: Sequence[str] = ()) -> List[Dict[str, Any]]:
+    """The register's page-wide RECTANGLE claims (`unit` area / page_ink, value a rectangle), READ or weak, by fine kind. Applied to ink OUTSIDE every cell.
+    `skip_rows` = observation ids whose page strokes were resolved (`LedgerInk.add_page_strokes` owns them exactly; their rectangle is not applied twice).
+    A row whose value IS its `page_strokes` list (a tremolo of exactly four strokes) is not a rectangle."""
     out = []
+    skip = set(skip_rows)
     for o in rows["observations"]:
-        if o.get("quantity") != "claimed_area":
+        if o.get("quantity") != "claimed_area" or o.get("id") in skip:
             continue
         d = o.get("detail") or {}
         v = o.get("value")
         if d.get("unit") not in ("area", "page_ink") or not (isinstance(v, list) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v)):
             continue
+        if d.get("page_strokes") is not None and d.get("page_strokes") == v:
+            continue
         if not d.get("owner"):
             continue
         out.append({"rect": [float(t) for t in v], "kind": fine_of(str(d["owner"])), "owner": d["owner"], "weak": d.get("standing", "READ") != "READ"})
     return out
+
+
+def page_stroke_claims(rows: Dict[str, List[dict]]) -> List[Dict[str, Any]]:
+    """THE ONE READER OF PAGE-STROKE CLAIMS (ROADMAP 2.295b; `claim_readout ink` and `judged_claims` both call it, nothing else reads them).
+    A claim filed as page-stroke ids is a `Q.CLAIMED_AREA` row whose detail carries `page_strokes` (the page map's stroke ordinals the claim WON): the
+    whole and half rests and every other READ rest since 2.288 / the dynamics and repeat dots / `page_boxes`, the arcs (`system_arc`), tremolos
+    (`page_tremolo`), own-ink accidentals (`page_accidental_ink`). It has no rectangle the cell settle or `area_claims_fine` could see (a few also carry
+    a rectangle: `area_claims_fine` skips those when their strokes resolve, see `LedgerInk.add_page_strokes`).
+    Returns `[{owner, kind (fine), ids, weak (GUESSED / NARROWED), source, cls, subject, row}]`; the first claim on a stroke keeps it (the settle already
+    made the ids disjoint, this only guards a re-filed row)."""
+    out: List[Dict[str, Any]] = []
+    taken: Dict[int, str] = {}
+    for o in rows["observations"]:
+        if o.get("quantity") != "claimed_area":
+            continue
+        d = o.get("detail") or {}
+        ids = d.get("page_strokes")
+        owner = str(d.get("owner") or "")
+        if not owner or not isinstance(ids, list) or not ids or not all(isinstance(i, int) and not isinstance(i, bool) for i in ids):
+            continue
+        mine = [i for i in ids if taken.setdefault(i, owner) == owner]
+        if mine:
+            out.append({"owner": owner, "kind": fine_of(owner), "ids": mine, "weak": d.get("standing", "READ") != "READ", "source": d.get("source"),
+                        "cls": d.get("cls"), "subject": o.get("subject"), "row": o.get("id")})
+    return out
+
+
+def page_stroke_boxes(rows: Dict[str, List[dict]]) -> Dict[int, List[int]]:
+    """`{page stroke ordinal: [x0, y0, x1, y1]}` in page px, from the page's `Q.PAGE_STROKE` rows (strokes and carved barline rules)."""
+    out: Dict[int, List[int]] = {}
+    for o in rows["observations"]:
+        if o.get("quantity") != "page_stroke":
+            continue
+        d = o.get("detail") or {}
+        b = d.get("stroke_box")
+        if isinstance(d.get("ordinal"), int) and isinstance(b, (list, tuple)) and len(b) == 4:
+            out[int(d["ordinal"])] = [int(b[0]), int(b[1]), int(b[0]) + int(b[2]), int(b[1]) + int(b[3])]
+    return out
+
+
+def stroke_ids_on_ink(ink: np.ndarray, boxes: Dict[int, List[int]], want: Sequence[int]) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+    """BBOX APPROXIMATION (used where the page map cannot be re-cut): `(ys, xs, ids)` of the dark pixels a wanted stroke's box holds, each given to the
+    SMALLEST-area box that holds it among ALL the page's strokes (a head inside an arc's box is the head's). Approximate: a long thin stroke's box can hold
+    a neighbour's ink; the exact path is `exact_stroke_labels`."""
+    if not want or not boxes:
+        return np.zeros(0, np.int64), np.zeros(0, np.int64), np.zeros(0, np.int64)
+    H, W = ink.shape
+    keys = np.array(sorted(boxes), dtype=np.int64)
+    B = np.array([boxes[k] for k in keys], dtype=np.int64)
+    area = (B[:, 2] - B[:, 0]) * (B[:, 3] - B[:, 1])
+    ys_all: List[np.ndarray] = []
+    xs_all: List[np.ndarray] = []
+    id_all: List[np.ndarray] = []
+    for i in want:
+        if i not in boxes:
+            continue
+        x0, y0, x1, y1 = (max(0, boxes[i][0]), max(0, boxes[i][1]), min(W, boxes[i][2]), min(H, boxes[i][3]))
+        if x1 <= x0 or y1 <= y0:
+            continue
+        sub = ink[y0:y1, x0:x1].copy()
+        a_i = (boxes[i][2] - boxes[i][0]) * (boxes[i][3] - boxes[i][1])
+        hit = (B[:, 0] < x1) & (B[:, 2] > x0) & (B[:, 1] < y1) & (B[:, 3] > y0) & ((area < a_i) | ((area == a_i) & (keys < i)))
+        for j in np.nonzero(hit)[0]:
+            bx0, by0, bx1, by1 = B[j]
+            sub[max(0, by0 - y0):max(0, by1 - y0), max(0, bx0 - x0):max(0, bx1 - x0)] = False
+        ys, xs = np.nonzero(sub)
+        ys_all.append(ys + y0)
+        xs_all.append(xs + x0)
+        id_all.append(np.full(ys.size, i, np.int64))
+    if not ys_all:
+        return np.zeros(0, np.int64), np.zeros(0, np.int64), np.zeros(0, np.int64)
+    return np.concatenate(ys_all), np.concatenate(xs_all), np.concatenate(id_all)
+
+
+def exact_stroke_labels(rows: Dict[str, List[dict]], pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], keep_whole: Dict[Tuple, list],
+                        touch: Dict[Tuple, list]) -> Tuple[Optional[Any], str]:
+    """THE EXACT PATH: re-cut the PAGE stroke map as the gather cut it (`page_strokes.map_page` on the master cells, the keep-whole / touch boxes the gather
+    saved on each cell's first stroke row) and paint it as `page_ledger.PageLabels`. Returns `(PageLabels, "exact")` ONLY when every stroke's box equals the
+    record's `Q.PAGE_STROKE` row of that ordinal (the same check `build_page` makes cell by cell); else `(None, why)` and the caller uses the bbox approximation."""
+    from . import page_strokes as PS
+    from . import page_ledger as PL
+    from . import record as R
+    keep: List[List[Any]] = []
+    tch: List[List[Any]] = []
+    for c in cells:
+        key = local.get(c.staff_index)
+        rect, up = getattr(c, "bbox_page_px", None), getattr(c, "upscale_factor", None)
+        if key is None or not rect or not up:
+            continue
+        ck = (c.page_index, key[0], key[1], c.measure_index)
+
+        def to_page(r: Sequence[float]) -> List[float]:
+            return [rect[0] + r[0] / up, rect[1] + r[1] / up, rect[0] + r[2] / up, rect[1] + r[3] / up]
+        for r in keep_whole.get(ck, ()):
+            keep.append([int(round(v)) for v in to_page(r[:4])] + list(r[4:]))
+        for r in touch.get(ck, ()):
+            tch.append([r[0]] + [int(round(v)) for v in to_page(r[1:5])] + list(r[5:]))
+    keep = sorted(PS._dedup(keep, 0, 4), key=lambda r: (r[:4], len(r)))
+    tch = sorted(PS._dedup(tch, 1, 5), key=lambda r: [str(t) for t in r])
+    saved = PS.split_inputs
+    PS.split_inputs = lambda *_a, **_k: (keep, tch)
+    try:
+        pm = PS.map_page(pws, cells, local, {})
+    finally:
+        PS.split_inputs = saved
+    if pm is None:
+        return None, "no_page_map"
+    boxes = page_stroke_boxes(rows)
+    mine = {i: [int(st.box[0]), int(st.box[1]), int(st.box[0] + st.box[2]), int(st.box[1] + st.box[3])] for i, st in enumerate(pm.strokes)}
+    bad = sum(1 for i, b in mine.items() if boxes.get(i) != b)
+    if bad or len([k for k in boxes if k < len(pm.strokes)]) != len(mine):
+        return None, "page_map_differs_from_record (%d of %d strokes)" % (bad, len(mine))
+    return PL.PageLabels(pm, pws.page.binary.shape), "exact"
 
 
 def _pop(a: np.ndarray) -> np.ndarray:
@@ -1187,8 +1331,8 @@ def mask_fine(m: int) -> Tuple[str, ...]:
 
 
 # state codes of the partition image
-ST_ONE, ST_TWIN, ST_TWIN_VIEWS, ST_TWO_OPEN, ST_TWO_VIEWS, ST_STAFF, ST_WEAK, ST_NONE = range(8)
-ST_NAMES = ("one", "twin", "twin_views", "two_kinds", "views_disagree", "staff_line", "weak", "none")
+ST_ONE, ST_TWIN, ST_TWIN_VIEWS, ST_TWO_OPEN, ST_TWO_VIEWS, ST_STAFF, ST_WEAK, ST_NONE, ST_PAGE_NOT_CONSULTED = range(9)
+ST_NAMES = ("one", "twin", "twin_views", "two_kinds", "views_disagree", "staff_line", "weak", "none", "page_not_consulted")
 
 
 class LedgerInk:
@@ -1217,6 +1361,9 @@ class LedgerInk:
         self.staff = zb()
         self.nearline = zb()
         self.planted = zb()              # a control's second owner
+        self.pfam = z32()                # READ page-STROKE claims (2.295b: rests, dynamics, repeat dots, arcs, tremolos, own-ink accidentals), by pixel
+        self.pweak = z32()               # GUESSED / NARROWED page-stroke claims
+        self.stroke_claim_res: Dict[str, Any] = {}       # how the page-stroke ids were resolved to pixels (`add_page_strokes`)
         self.bands: List[Tuple[float, float]] = []
         self.sp = 0.0
         self._sps: List[float] = []
@@ -1282,12 +1429,41 @@ class LedgerInk:
             return
         (self.weak if weak else self.afam)[y0:y1, x0:x1] |= FINE_BIT[kind]
 
+    def add_page_strokes(self, claims: Sequence[Dict[str, Any]], ys: np.ndarray, xs: np.ndarray, ids: np.ndarray, how: str) -> int:
+        """ROADMAP 2.295b: page-STROKE claims (`page_stroke_claims`), painted on the dark pixels `(ys, xs)` whose page stroke ordinal is `ids`. A READ claim lands in
+        `pfam`, a GUESSED / NARROWED one in `pweak`. Returns the number of claimed strokes that own no dark pixel here (named, never silently dropped)."""
+        top = max([int(max(c["ids"])) for c in claims] + [int(ids.max()) if ids.size else 0]) + 1
+        rbits, wbits = np.zeros(top, np.uint32), np.zeros(top, np.uint32)
+        for c in claims:
+            for i in c["ids"]:
+                if 0 <= i < top:
+                    (wbits if c["weak"] else rbits)[i] |= FINE_BIT[c["kind"]]
+        if ids.size:
+            self.pfam[ys, xs] |= rbits[ids]
+            self.pweak[ys, xs] |= wbits[ids]
+        seen = set(np.unique(ids).tolist()) if ids.size else set()
+        self.stroke_claim_res = {"how": how, "claims": len(claims), "strokes": sum(len(c["ids"]) for c in claims),
+                                 "strokes_with_ink": sum(1 for c in claims for i in c["ids"] if i in seen)}
+        return self.stroke_claim_res["strokes"] - self.stroke_claim_res["strokes_with_ink"]
+
     # ── the partition ──
     def finish(self) -> None:
-        """Fix the state of every dark pixel (`ST_*`), then the NO OWNER class of the unowned ones. RAISES if a dark pixel has no state."""
+        """Fix the state of every dark pixel (`ST_*`), then the NO OWNER class of the unowned ones. RAISES if a dark pixel has no state.
+        Owners of a pixel = the cell settle's (inside a cell) or the register's rectangle (outside) UNION the READ page-STROKE claims (2.295b). The sources
+        stay apart: `src_cell`, `src_area`, `src_page` (`judged_claims` names them). A page-stroke claim of a kind the cell settle does not name on the same
+        pixel is `ST_PAGE_NOT_CONSULTED`: the settle never read that claim (ROADMAP 2.297)."""
         ink = self.ink
-        fam = np.where(self.incell, self.fam, self.afam)
-        led = np.where(self.incell, self.led, self.afam)             # a rectangle claim outside the cells is a register claim by nature
+        cellfam = np.where(self.incell, self.fam, self.afam)
+        # a page-stroke claim never takes the staff's own ink the eraser took (the page map is cut on the erased band)
+        eraser = self.incell & ~self.seen & self.staff
+        pf = np.where(eraser, np.uint32(0), self.pfam)
+        pw = np.where(eraser, np.uint32(0), self.pweak)
+        self.src_cell = np.where(self.incell, self.fam, np.uint32(0))
+        self.src_area = np.where(self.incell, np.uint32(0), self.afam)
+        self.src_page = pf
+        fam = cellfam | pf
+        led = np.where(self.incell, self.led, self.afam) | pf         # a rectangle claim outside the cells and a page-stroke claim are register claims by nature
+        self.weak_eff = self.weak | pw
         self.fam_eff, self.led_eff = fam, led
         pop = _pop(fam)
         self.pop = pop
@@ -1297,6 +1473,7 @@ class LedgerInk:
             st[sel & (st == 255)] = code
 
         claimed = ink & (pop > 0)
+        put(claimed & (cellfam != 0) & ((pf & ~cellfam) != 0), ST_PAGE_NOT_CONSULTED)
         put(claimed & (pop >= 2) & self.open & self.incell, ST_TWO_OPEN)
         put(claimed & (pop >= 2), ST_TWO_VIEWS)
         put(claimed & (pop == 1) & self.twin & self.incell, ST_TWIN)
@@ -1304,7 +1481,7 @@ class LedgerInk:
         put(claimed & (pop == 1), ST_ONE)
         rest = ink & (pop == 0)
         put(rest & self.incell & ~self.seen & self.staff, ST_STAFF)       # the staff's own ink, which the eraser took (READ staff geometry)
-        put(rest & (self.weak != 0), ST_WEAK)
+        put(rest & (self.weak_eff != 0), ST_WEAK)
         put(rest, ST_NONE)
         if (ink & (st == 255)).any():
             raise InkPartitionError("%d dark pixel(s) have no state" % int((ink & (st == 255)).sum()))
@@ -1360,6 +1537,9 @@ class LedgerInk:
         total = int(ink.sum())
         fam, led = self.fam_eff, self.led_eff
         t: Dict[str, Any] = {"ink_px": total, "cells": self.cells_added, "links_filed": self.links_filed, "strokes_filed": self.strokes_filed}
+        res = self.stroke_claim_res
+        t["stroke_claims"] = {"claims": res.get("claims", 0), "strokes": res.get("strokes", 0), "strokes_with_ink": res.get("strokes_with_ink", 0),
+                              "pages_exact": int(res.get("how") == "exact"), "pages_approx": int(bool(res) and res.get("how") != "exact")}
 
         def count(sel: np.ndarray) -> int:
             return int((sel & ink).sum())
@@ -1391,14 +1571,25 @@ class LedgerInk:
         t["weak"] = {"px": count(st == ST_WEAK)}
         wk = {}
         for k in FINE_KINDS:
-            n = count((st == ST_WEAK) & ((self.weak & FINE_BIT[k]) != 0))
+            n = count((st == ST_WEAK) & ((self.weak_eff & FINE_BIT[k]) != 0))
             if n:
                 wk[k] = n
         t["weak"]["by_kind"] = wk
         twin, tv, two, vd = st == ST_TWIN, st == ST_TWIN_VIEWS, st == ST_TWO_OPEN, st == ST_TWO_VIEWS
         pairs = by_kind(two | vd)
-        t["twice"] = {"px": count(twin | tv | two | vd), "twin_px": count(twin), "twin_mixed_px": count(twin & self.twin_mix), "twin_views_px": count(tv), "two_kinds_px": count(two),
-                      "views_disagree_px": count(vd), "twin_by_kind": by_kind(twin), "twin_views_by_kind": by_kind(tv), "pairs": pairs,
+        pnc = st == ST_PAGE_NOT_CONSULTED
+        page_pairs: Dict[str, int] = {}                  # "page rest / cell beam": the page-stroke kinds the cell settle does not name there, and what it names
+        if (pnc & ink).any():
+            sel = pnc & ink
+            code = (self.src_page[sel].astype(np.uint64) << np.uint64(32)) | self.src_cell[sel].astype(np.uint64) | self.src_area[sel].astype(np.uint64)
+            vals, cnt = np.unique(code, return_counts=True)
+            for v, c_ in zip(vals, cnt):
+                pg, cl = int(v) >> 32, int(v) & 0xFFFFFFFF
+                lab = "page %s / cell %s" % ("+".join(mask_fine(pg & ~cl)), "+".join(mask_fine(cl)))
+                page_pairs[lab] = page_pairs.get(lab, 0) + int(c_)
+        t["twice"] = {"px": count(twin | tv | two | vd | pnc), "twin_px": count(twin), "twin_mixed_px": count(twin & self.twin_mix), "twin_views_px": count(tv), "two_kinds_px": count(two),
+                      "views_disagree_px": count(vd), "page_not_consulted_px": count(pnc), "page_not_consulted_pairs": page_pairs,
+                      "twin_by_kind": by_kind(twin), "twin_views_by_kind": by_kind(tv), "pairs": pairs,
                       "planted_px": count((twin | tv) & self.planted)}
         nn = self.none_class
         cls = {}
@@ -1417,6 +1608,7 @@ class LedgerInk:
         c = copy.copy(self)
         b = ~FINE_BIT[kind]
         c.fam, c.led, c.afam, c.weak = self.fam & b, self.led & b, self.afam & b, self.weak & b
+        c.pfam, c.pweak = self.pfam & b, self.pweak & b
         c.finish()
         return c
 
@@ -1437,8 +1629,10 @@ def verify_tally(t: Dict[str, Any]) -> None:
     tw = t["twice"]
     if tw["twin_mixed_px"] > tw["twin_px"]:
         raise InkPartitionError("twin box+register ink exceeds the twin line")
-    if tw["twin_px"] + tw["twin_views_px"] + tw["two_kinds_px"] + tw["views_disagree_px"] != tw["px"]:
+    if tw["twin_px"] + tw["twin_views_px"] + tw["two_kinds_px"] + tw["views_disagree_px"] + tw.get("page_not_consulted_px", 0) != tw["px"]:
         raise InkPartitionError("twice sub-lines do not add to the twice line")
+    if sum(tw.get("page_not_consulted_pairs", {}).values()) != tw.get("page_not_consulted_px", 0):
+        raise InkPartitionError("page-stroke-not-consulted pairs do not add to their sub-line")
     n = t["none"]
     if sum(n["by_class"].values()) != n["px"]:
         raise InkPartitionError("no-owner classes add to %d, the line is %d" % (sum(n["by_class"].values()), n["px"]))
@@ -1479,9 +1673,13 @@ def render_ink_number(label: str, t: Dict[str, Any]) -> List[str]:
            "      claimed by a cell box / cv read, NOT on the page ledger                 %s" % ink_pct(o["cell_px"], tot),
            "      of the one-owner ink: on a linked page stroke %s, settled over a rival kind %s" % (ink_pct(o["linked_px"], tot), ink_pct(o["over_rival_px"], tot)),
            "  WEAK ONLY      %s   (a GUESSED / NARROWED claim stands on it: %s)" % (ink_pct(L["weak"], tot), kinds(w["by_kind"])),
-           "  CLAIMED TWICE  %s   one kind twice %s (of which a box AND a register claim %s), two kinds (settle left it open) %s, unlinked views disagree %s, same kind in two unlinked views %s" % (
+           "  CLAIMED TWICE  %s   one kind twice %s (of which a box AND a register claim %s), two kinds (settle left it open) %s, unlinked views disagree %s, same kind in two unlinked views %s;" % (
                ink_pct(L["twice"], tot), ink_pct(tw["twin_px"], tot), ink_pct(tw["twin_mixed_px"], tot), ink_pct(tw["two_kinds_px"], tot), ink_pct(tw["views_disagree_px"], tot),
                ink_pct(tw["twin_views_px"], tot)),
+           "      of which a PAGE-STROKE claim the cell settle did not consult (ROADMAP 2.297's gap), a READ page-stroke claim and a READ cell/register owner of "
+           "a DIFFERENT kind on one pixel  %s (%d px)   by pair (px): %s" % (
+               ink_pct(tw.get("page_not_consulted_px", 0), tot), tw.get("page_not_consulted_px", 0),
+               ", ".join("%s %d" % (k, v) for k, v in sorted(tw.get("page_not_consulted_pairs", {}).items(), key=lambda kv: -kv[1])) or "-"),
            "  NO OWNER       %s   (outside every cell %s)" % (ink_pct(L["none"], tot), ink_pct(n["outside_cells_px"], tot)),
            "  sum of the four lines %s (checked: the tool raises otherwise)" % ink_pct(sum(L.values()), tot),
            "  one owner by kind:                 " + kinds(o["by_kind"]),
@@ -1495,6 +1693,7 @@ def render_ink_number(label: str, t: Dict[str, Any]) -> List[str]:
 def ink_header(src: pathlib.Path, pages: Sequence[int], master: str, totals: Dict[str, Any], tree: Dict[str, str]) -> List[str]:
     obs = src / "observations.jsonl"
     lk, st = totals.get("links_filed", 0), totals.get("strokes_filed", 0)
+    sc = totals.get("stroke_claims") or {}
     stamp = json.loads((src / "stamp.json").read_text()) if (src / "stamp.json").exists() else {}
     when = stamp.get("mtime") or obs.stat().st_mtime          # the SOURCE record's write time when the slice carries it (a cut slice's own mtime is the cut's)
     return [
@@ -1502,6 +1701,9 @@ def ink_header(src: pathlib.Path, pages: Sequence[int], master: str, totals: Dic
         "  slice %s (source record written %s), pages %s, cell map %s" % (src, time.strftime("%Y-%m-%d %H:%M", time.localtime(when)), list(pages), master),
         "  tree %s (%s)   page-ledger flag OMR_PAGE_LEDGER_OWNS=%s" % (tree.get("sha", "?"), tree.get("date", "?"), os.environ.get("OMR_PAGE_LEDGER_OWNS", "1")),
         "  page-stroke links in this slice: %d of %d cell strokes%s" % (lk, st, "" if lk else "  -- NONE: a gather before 2.284; every owner below is a per-cell verdict"),
+        "  page-STROKE claims (rests, dynamics, repeat dots, arcs, tremolos, own-ink accidentals: `Q.CLAIMED_AREA` rows naming page strokes; ROADMAP 2.295b): %d claims on %d strokes, "
+        "%d of them on dark ink; resolved to pixels EXACTLY (page map re-cut, every stroke box equal to the record's) on %d page(s), by BBOX APPROXIMATION on %d"
+        % (sc.get("claims", 0), sc.get("strokes", 0), sc.get("strokes_with_ink", 0), sc.get("pages_exact", 0), sc.get("pages_approx", 0)),
         "  ON THE PAGE LEDGER = held by a page-wide register claim (barline, bracket, clef, key, meter, word, arc trace, tremolo, staff lines). "
         "CLAIMED BY A CELL BOX = held by a detector box of one padded cell (head, rest, accidental, ledger, dot, stem, beam, flag) or a cv read: "
         "settled by the same ledger, but the claim itself is not yet page-wide. READ claims only; GUESSED / NARROWED ones are WEAK.",
