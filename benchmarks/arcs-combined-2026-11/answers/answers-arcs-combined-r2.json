@@ -2,7 +2,7 @@
  "lane": "arcs-combined-r2 (ROADMAP 2.298)",
  "date": "2026-11-11",
  "question": "Is this one arc? Does it start and stop on the two ticked notes? Tie or slur?",
- "note": "Scored by the manager against key.json: 9 of 12 right. The 3 wrong (7, 8, 12) are exactly the three the lane's own look had already called wrong on the new tree, all on runs we write as SLURS: two ties written as one slur, beams written as a slur, a tie written as a slur with wrong ends. All 4 'binding changed base->new' tiles are right. Box faults: 2 starts early, 9 holds another staff's slur, 12 too long.",
+ "note": "Scored by the manager against key.json: 9 of 12 right. The 3 wrong (7, 8, 12) are exactly the three the lane's own look had already called wrong on the new tree, all on runs we write as SLURS: two ties written as one slur, beams written as a slur, a tie written as a slur with wrong ends. All 4 'binding changed base->new' tiles are right. Box faults: 2 starts early, 9 MAY hold another staff's slur (Sean unsure: the drawn box may only look that way; check the claimed pixels, not the box), 12 too long.",
  "tiles": [
   {
    "tile": 1,
@@ -110,7 +110,8 @@
    "why": "binding changed base->new",
    "kind": "slur",
    "start": "glyph/15/1/2/1/3",
-   "stop": "glyph/15/1/2/3/5"
+   "stop": "glyph/15/1/2/3/5",
+   "sean_clarification": "I'm not sure if the box actually is claiming the ink from the slur from the other system or if it just looks that way because of the orange box"
   },
   {
    "tile": 10,
