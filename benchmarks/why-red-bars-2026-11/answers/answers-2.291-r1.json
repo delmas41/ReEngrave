@@ -228,8 +228,8 @@
     1.0
    ],
    "want_quarters": 3.0,
-   "sean": null,
-   "reading": "UNANSWERED"
+   "sean": "treble clef, one flat; two eighth notes on a single stem (staccato; the top head is outside the box), eighth rest, eighth, quarter, eighth; mf and a2 in the box",
+   "reading": "Sean's bar is 3.0 in ONE voice with a CHORD first; we counted the chord's two heads as two notes and split two voices [2.5, 1.0]: chord not grouped (family VOICES not supported). Tile fault: box cut the top head"
   },
   "12": {
    "plate": "brahms",
@@ -250,26 +250,26 @@
     3.5
    ],
    "want_quarters": 3.0,
-   "sean": null,
-   "reading": "UNANSWERED"
+   "sean": "eighth note (staccato), eighth rest, eighth rest, quarter rest, eighth rest",
+   "reading": "Sean's bar is 3.0; we read the first note as a QUARTER (blue) -> 3.5: a flagged eighth read too long. Family LONG supported"
   }
  },
  "score": {
-  "answered": 9,
+  "answered": 11,
   "unanswered": [
-   5,
-   11,
-   12
+   5
   ],
   "family_supported": {
    "SHORT": "tile 2",
-   "FALSE": "tiles 3, 8"
+   "FALSE": "tiles 3, 8",
+   "LONG": "tile 12"
   },
   "family_not_supported": {
-   "VOICES": "tile 1 (one voice)",
+   "VOICES": "tiles 1, 11 (one voice; 11 is a chord)",
    "SHORT": "tiles 4 (mis-read), 6 (bar right, refusal wrong)"
   },
-  "new_from_sean": "tiles 7 and 10: a chord (two heads on one stem / a second) counted as two events; tile 6: bar right, refusal wrong -- a family the lane found none of",
+  "new_from_sean": "tiles 7, 10 and 11: a chord (two heads on one stem / a second) counted as two events; tile 6: bar right, refusal wrong",
   "tile_faults": "tile 4 box cut noteheads and held another staff's marks; tile 6 box cut the f and held the upper staff's sf; the sheet's inset was mistaken for a tile (5)"
- }
+ },
+ "verbatim_tiles_11_12": "Tile 11 has a G clef with one single flat. It's a key accidental to B flat. It has two eighth notes on a single stem with a staccato marking above it. The top note goes out of the orange box. That's followed by an eighth note rest, which is followed by an eighth note, then a quarter, and then an eighth note. It has an MF marking and an A2 in it. And then the last tile, 12, is an eighth note with a staccato marking, followed by an eighth rest, by another eighth rest, by a quarter rest, and then an eighth rest."
 }
