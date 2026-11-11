@@ -34,6 +34,7 @@ from ... import transcribe as _legacy_stems
 from ... import voicing as _legacy_voicing
 
 from .. import margins as _margins
+from .. import one_chord as _one_chord
 from .. import movements as _movements
 from ..record import (ABSTAIN, DOCUMENT, Kind, Outcome, Q, READERS, Scope,
                       State, Subject, meter_at)
@@ -6655,6 +6656,43 @@ def _box_of(rows):
     return out
 
 
+def _second_evidence(ev: Evidence, head_ids) -> Dict[int, Any]:
+    """ROADMAP 2.300. For each head of this bar: `(box x, y, w, h, decided stem id or None)` -- what `_second_group_of` reads."""
+    out: Dict[int, Any] = {}
+    full = {}
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS):
+        val = r.value
+        if isinstance(val, (list, tuple)) and len(val) >= 5 and r.subject.glyph is not None:
+            full[r.subject.glyph] = (float(val[1]), float(val[2]), float(val[3]), float(val[4]))
+    for g in head_ids:
+        if g not in full:
+            continue
+        sub = Subject(Kind.GLYPH, page=ev.subject.page, system=ev.subject.system,
+                      staff=ev.subject.staff, cell=ev.subject.cell, glyph=g)
+        hs = ev.verdict(Q.HEAD_STEM, subject=sub)
+        sid = hs.value if (hs is not None and hs.outcome is Outcome.DECIDED) else None
+        out[g] = full[g] + (sid,)
+    return out
+
+
+def _second_group_of(g, groups, second_ok):
+    """The open group holding the other head of a second on ONE decided stem with `g`, or None (two fit: cannot tell)."""
+    oc = _one_chord
+    mine = second_ok.get(g)
+    if mine is None or not mine[4]:
+        return None
+    found = None
+    for grp in reversed(groups):
+        for i in grp:
+            theirs = second_ok.get(i)
+            if (theirs is not None and theirs[4] == mine[4]
+                    and oc.is_second(mine[:4], theirs[:4])):
+                if found is not None and found is not grp:
+                    return None
+                found = grp
+    return found
+
+
 @decision(
     quantity=Q.EVENT,
     checkable=Checkable.CHECKABLE,
@@ -6673,7 +6711,7 @@ def _box_of(rows):
     # (`stem_evidence`); the second is what the guard actually runs on. A bar
     # whose stems were read and whose directions all abstained is a real state
     # and the two fields are how it is told from a bar with no stems at all.
-    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES),
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES, Q.HEAD_STEM),
     reasons=("x_clustered", "nothing_to_group"),
     mode=Mode.ADDITIVE,
     subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
@@ -6755,6 +6793,10 @@ def adjudicate_event(ev: Evidence) -> Ruling:
         theirs = {directions[i] for i in grp if directions.get(i)}
         return bool(theirs) and mine not in theirs
 
+    # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default OFF): the two heads of a SECOND on one decided stem are one
+    # event though their x lies outside the tolerance (`one_chord` owns the geometry; EXPORT's `voicing` grouping reads the same).
+    second_ok = _second_evidence(ev, head_ids) if _one_chord.enabled() else None
+
     groups = []
     separated = 0
     for g in sorted(head_ids, key=lambda i: boxes[i][0]):
@@ -6777,6 +6819,8 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                 continue
             target = grp
             break
+        if target is None and second_ok is not None:
+            target = _second_group_of(g, groups, second_ok)
         if target is None:
             groups.append([g])
             if blocked:

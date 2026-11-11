@@ -2142,7 +2142,7 @@ def _settle_divisi_pairs(runs: Dict[str, "StaffRun"],
                         d["stem_direction"] = None
                 stats["stems_with_two_directions_taken_off"] = (
                     stats.get("stems_with_two_directions_taken_off", 0) + len(clash))
-            events = group_chords_in_measure(cell.detections)
+            events = _group_chords(cell.detections)
             pairs = _divisi_pairs(events)
             if not pairs:
                 continue
@@ -2203,7 +2203,7 @@ def _chords_whose_value_would_be_voted(
             if not cell.detections:
                 continue
             doomed: List[int] = []
-            for ev in group_chords_in_measure(cell.detections):
+            for ev in _group_chords(cell.detections):
                 heads = ev.get("noteheads") or ()
                 if len(heads) < 2:
                     continue
@@ -4141,10 +4141,18 @@ def _meter_dict(meter: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     return out
 
 
+def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """`voicing.group_chords_in_measure` on a bar's detections; with `OMR_ONE_CHORD_ONE_EVENT` (ROADMAP 2.300, default OFF) the
+    two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
+    settle see the same events."""
+    from . import one_chord
+    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled())
+
+
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     if cell is None or not cell.detections:
         return []
-    return group_chords_in_measure(cell.detections)
+    return _group_chords(cell.detections)
 
 
 def _document_bar_offsets(

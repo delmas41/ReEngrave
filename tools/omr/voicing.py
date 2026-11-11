@@ -109,10 +109,40 @@ def _notehead_y(det: dict[str, Any]) -> int:
     return bbox[1] + bbox[3] // 2
 
 
+def _second_group(nh: dict[str, Any], groups: list[list[dict[str, Any]]]) -> list[dict[str, Any]] | None:
+    """ROADMAP 2.300: the open group whose head `nh` is the other head of a second on one stem (or a whole-note second), or None."""
+    from .staged import one_chord
+
+    def _vals(n):
+        return (n.get("duration_beats"), n.get("duration_type"), n.get("dots"))
+
+    box = nh.get("bbox")
+    if not box or len(box) < 4:
+        return None
+    found = None
+    for group in reversed(groups):
+        for n in group:
+            nb = n.get("bbox")
+            if not nb or len(nb) < 4 or not one_chord.is_second(tuple(box[:4]), tuple(nb[:4])):
+                continue
+            if _vals(n) != _vals(nh):
+                continue
+            sid = nh.get("stem_id")
+            on_one_stem = bool(sid) and sid == n.get("stem_id")
+            whole = (not sid and not n.get("stem_id") and str(nh.get("duration_type")) == "whole"
+                     and str(n.get("duration_type")) == "whole")
+            if on_one_stem or whole:
+                if found is not None and found is not group:
+                    return None      # two groups fit: cannot tell
+                found = group
+    return found
+
+
 def group_chords_in_measure(
     detections: list[dict[str, Any]],
     *,
     chord_x_tolerance: float | None = None,
+    merge_seconds_on_one_stem: bool = False,
 ) -> list[dict[str, Any]]:
     """Turn one measure's flat detection list into an ordered list of
     musical events.
@@ -127,6 +157,12 @@ def group_chords_in_measure(
       - `rest`: detection dict             (for rests; None for chords)
 
     Events are sorted by x_position (= musical time).
+
+    `merge_seconds_on_one_stem` (ROADMAP 2.300, STAGED export only, default False = unchanged): two heads that carry the SAME
+    `stem_id` and stand as the two heads of a second (`staged.one_chord.is_second`: a step apart, one head width to the side,
+    out of the x tolerance's reach) are ONE chord, and so are two whole-note heads in that geometry with no stem. Only where
+    the heads agree on (beats, type, dots): heads that disagree stay as they were (never an argmax). Inert on a detection
+    without a `stem_id` (the legacy path never sets one).
     """
     # Pull out the pitched noteheads + durationed rests in x-order.
     noteheads = sorted(
@@ -189,6 +225,8 @@ def group_chords_in_measure(
                 continue
             target = group
             break
+        if target is None and merge_seconds_on_one_stem:
+            target = _second_group(nh, chord_groups)
         if target is not None:
             target.append(nh)
         else:
