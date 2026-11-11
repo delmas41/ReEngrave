@@ -23,8 +23,10 @@ from typing import Any, Dict, List, Optional, Sequence
 #: a pixel row of a stroke is a STAFF-LINE row when the raw raster is dark in this many columns just left AND just right of the stroke (>= LINE_FLANK_SHARE of them)
 LINE_FLANK_PX = 5
 LINE_FLANK_SHARE = 0.8
-#: ink on a side of the line counts when it is at least this tall (staff spaces): below it is the roughness of a scanned edge, not a side
-SIDE_MIN_SP = 0.1
+#: ink on a side of the line counts as a SIDE when it is at least this tall (staff spaces): half of a rest block's own height (a block is at most half a space,
+#: `stroke_owner.BLOCK_MAX_H_SP` / the printed rest), so a block cannot have a side on both sides of its line; below it is the roughness of the scanned edge or the
+#: line's own tilt (measured, Brahms p14 real whole rests: 0.00-0.12 sp on the far side; a notehead on a line: 0.44-0.50 sp each side)
+SIDE_MIN_SP = 0.25
 
 
 def head_shaped(page_map: Any, j: int) -> bool:
