@@ -199,6 +199,13 @@
  },
  "score": {
   "newly_claimed_whole_rests_right": "8/9",
-  "still_refused_right": "2/3"
- }
+  "false_claim": {
+   "4": "claimed as a whole rest; Sean: an eighth note (a notehead on a staff line in a beamed group) -- a WRONG CLAIM"
+  },
+  "still_refused_right": "2/3",
+  "missed": {
+   "1": "still refused; Sean: a whole rest -- a real rest left unclaimed"
+  }
+ },
+ "note": "The manager first mis-scored this as all right (assumed which tiles were the refused ones); corrected against the key the same hour. The lane's own look ('all nine claimed tinted ink is a rest block') was wrong on tile 4."
 }
