@@ -62,7 +62,12 @@ project. Ask him.
 6. **Connect, never guess.** A wiring change may connect a decision, never
    let one guess. Guessing lives in INFER and is labelled.
 7. **A control must be able to fail.** Run it where it fails before trusting
-   it where it passes. A number that is exactly another number is a
+   it where it passes. **A control for a page rule is built from a REAL
+   judged case** (Sean, 2026-11-10, after 2.288 r3: a synthetic "notehead on a
+   line stays refused" control passed while the real page claimed a notehead
+   as a whole rest): the pixels of a mark Sean has named, never a drawing of
+   what we think the case is; and every claim tile Sean answers is replayed
+   on later lanes (`judged_claims`, ROADMAP 2.295). A number that is exactly another number is a
    computation, not a measurement. **Before trusting any result, ask who
    says it's right:** Sean, the print or the reference encoding is evidence;
    a model's own output, or a result whose raw data is gone, is not.
@@ -227,7 +232,7 @@ file.
 **Lean lanes, one shared box** (Sean, DECISIONS 2026-10-12 "HOW LANES
 RUN", after two machine crashes; ROADMAP "How to work"; widened 2026-10-29):
 up to 4 lanes at once, Sonnet by default and Opus where it helps; one large
-gather at a time plus small 2-page checks beside it; OCR servers are shut
+gather at a time plus small 2-page checks beside it (two small page gathers may run at once: Sean 2026-11-10); OCR servers are shut
 when a run ends (`OMR_SURYA_KEEP_ALIVE=0`); the fast tier at
 ≤ 4 workers or serial; every lane commits and pushes at each milestone;
 test output quiet (pass count + failures only); landings, answer-recording
