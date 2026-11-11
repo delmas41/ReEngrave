@@ -27,7 +27,7 @@ def main():
     assert off["plate"] == on["plate"] and off["pages"] == on["pages"], "same plate and pages"
     ob = {tuple(b["key"]): b for b in off["bars"]}
     nb = {tuple(b["key"]): b for b in on["bars"]}
-    res = {"plate": off["plate"], "pages": off["pages"], "bars": len(ob), "bars_on": len(nb)}
+    res = {"plate": off["plate"], "pages": off["pages"], "bars": len(ob), "bars_on": len(nb), "_off_path": sys.argv[1], "_on_path": sys.argv[2]}
     stat = {"off": {"red": 0, "partial": 0, "red_notes": 0}, "on": {"red": 0, "partial": 0, "red_notes": 0}}
     stopped, became_red, became_partial, partial_to_plain, chords_formed = [], [], [], [], []
     lost, gained, changed = [], [], []

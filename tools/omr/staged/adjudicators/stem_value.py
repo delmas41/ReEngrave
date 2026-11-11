@@ -349,7 +349,7 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
     wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
-           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
              "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
@@ -535,6 +535,11 @@ def _stem_of_a_second(ev: Evidence, cell: Subject, head, stems, head_row_id) -> 
     from .. import one_chord
     from ..geometry import stem_touches_head
 
+    # Only a head whose own value is already DECIDED (written either way): the join lets the stem SHARE a value and group the chord;
+    # it never lifts a head out of `duration_narrowed` (2.300 step 2: it turned an accidental boxed as a head into a written note).
+    own = ev.verdict(Q.DURATION)
+    if own is None or own.outcome is not Outcome.DECIDED:
+        return None
     others = []
     for row in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         k = row.subject
