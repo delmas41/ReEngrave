@@ -53,7 +53,8 @@ def key_sean():
 def head_boxes(record_path, page):
     out = {}
     pre = "glyph/%d/" % page
-    for o in json.loads(pathlib.Path(record_path).read_text())["observations"]:
+    rec = json.loads(pathlib.Path(record_path).read_text())
+    for o in (rec["observations"] if "observations" in rec else rec["record"]["observations"]):
         b = (o.get("detail") or {}).get("bbox_page_px")
         if b and o["subject"].startswith(pre):
             out.setdefault(o["subject"], [float(v) for v in b])
