@@ -16411,7 +16411,63 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
         for a in areas:
             _file(sys_idx, a, CL.OWNER_WORD, source, inside_staff=(why != "outside_staff"), **extra)
 
+    # ROADMAP 2.296 (flag OMR_DYNAMIC_OWN_CLAIM, default OFF): a marking the word reader read whole (`f legato`, `p dolce`, `piu p`) is two marks, the word and
+    # the dynamic it holds (`consequences.pair_word_and_dynamic` writes them as two kinds). The word's claim stops at the dynamic's own ink and the
+    # dynamic claims its own, READ, on this same page-wide pass -- the word never owns a dynamic's letters (Sean 2026-11-11: a printed dynamic is one mark).
+    dyn_own = bool(words_on and ledger_on and CL.dynamic_own_enabled())
+    letter_of_key: Dict[str, Tuple[Sequence[float], str, Any]] = {}
+    key_of_letter_row: Dict[Any, str] = {}
+    compound_rows: set = set()            # the detector letter rows a split marking holds: its own, not a lone / spelled dynamic's (the loop below skips them)
+
+    def _file_compound(r: Any, d: Dict[str, Any], bb: Sequence[float], s: int) -> bool:
+        """Split ONE marking into the word's claim and the dynamic's claim(s); True when it did, False (counted, why) when the marking is left as one word claim."""
+        from . import hairpin_reach as _hr
+        inc = [letter_of_key[k] for k in (d.get("includes_dynamic_glyphs") or ()) if k in letter_of_key]
+        got = CL.compound_dynamic_slots(str(r.value), d.get("dynamics") or (), inc)
+        if got["why"] is not None:
+            _count(f"word:direction_word:compound_not_split:{got['why']}")
+            return False
+        area = [float(v) for v in bb]
+        pieces, spared = _hr.word_area_sparing_heads(binary, area, [sl["box"] for sl in got["slots"]], _sp(s))
+        inside_staff = CL.band_share(area, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
+        base: Dict[str, Any] = dict(owner_row=r.id, text=r.value, category=d.get("category"))
+        if spared:
+            base["dynamic_left_out"] = spared
+            base["word_box"] = area
+        _count("word:direction_word:compound_split")
+        if not pieces:
+            _count("word:direction_word:compound_all_ink_is_the_dynamic")
+        for a in pieces:
+            if inside_staff:
+                _file_sparing(s, a, "direction_word", "inside_a_staff", **base)
+                continue
+            areas2, wedges = [a], []
+            if _hr.enabled():
+                areas2, wedges = _hr.word_area_without_wedges(binary, a, _sp(s))
+            ex = dict(base)
+            if wedges:
+                ex["wedges_left_out"] = wedges
+                ex.setdefault("word_box", area)
+            for a2 in areas2:
+                _file(s, a2, CL.OWNER_WORD, "direction_word", **ex)
+        for sl in got["slots"]:
+            sl_inside = CL.band_share(sl["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
+            _count("word:dynamic_letters:compound_dynamic")
+            _file_sparing(s, sl["box"], "dynamic_letters", "lone_inside_a_staff" if sl_inside else "outside_staff",
+                          own=[key_of_letter_row[i] for i in sl["rows"] if i in key_of_letter_row], owner_row=sl["rows"][0],
+                          letter_rows=list(sl["rows"]), text=None, detector_letter="".join(sl["letters"]), dynamic_token=sl["text"],
+                          category="dynamic", lone=True, compound_of=r.id)
+        compound_rows.update(got["rows"])
+        return True
+
     if words_on:
+        if dyn_own:
+            for lr in log.rows(Q.DYNAMIC_LETTER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                ld = lr.detail or {}
+                lbb, lletter = ld.get("bbox_page_px"), ld.get("letter")
+                if isinstance(lbb, (list, tuple)) and len(lbb) == 4 and lletter:
+                    letter_of_key[lr.subject.to_key()] = (lbb, str(lletter), lr.id)
+                    key_of_letter_row[lr.id] = lr.subject.to_key()
         for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
             d = r.detail or {}
             bb = d.get("bbox_page_px")
@@ -16422,6 +16478,12 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if s is None:
                 _count("word:direction_word:no_system")
                 continue
+            if dyn_own and d.get("dynamics") and d.get("category") != "tempo":
+                from . import hairpin_reach as _hr0
+                if d.get("ink_boxes") or (_hr0.word_retry_spares_heads_enabled() and _hr0.is_retry_only_reading(d.get("winning_reader"))):
+                    _count("word:direction_word:compound_not_split:other_ink_cut")
+                elif _file_compound(r, d, bb, s):
+                    continue
             if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
                 if ledger_on:
                     # ROADMAP 2.284b: a READ word inside the staff (Sean 2026-10-28: "almost always short" -- a dynamic, `pizz.`, `dolce`)
@@ -16511,6 +16573,8 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             bb, letter = d.get("bbox_page_px"), d.get("letter")
             if not (isinstance(bb, (list, tuple)) and len(bb) == 4 and letter):
                 continue
+            if r.id in compound_rows:
+                continue                    # ROADMAP 2.296: a split marking's letter -- the dynamic's own claim is filed, the rest are the word's
             s = _system_of(bb)
             if s is None:
                 continue
