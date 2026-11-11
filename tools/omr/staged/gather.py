@@ -16609,11 +16609,74 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                 continue
             letters_by_sys.setdefault(s, []).append((bb, str(letter), r.id))
             key_of_row[r.id] = r.subject.to_key()
+        letters_of_word_on = bool(dyn_own and ledger_on and CL.letters_are_the_word_enabled())
+        letter_box_of_row: Dict[Any, List[float]] = {}
+        sides_of_key: Dict[str, Any] = {}
+        read_words_by_sys: Dict[int, List[Dict[str, Any]]] = {}
+        if letters_of_word_on:
+            for r in log.rows(Q.DYNAMIC_LETTER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                bb = (r.detail or {}).get("bbox_page_px")
+                if isinstance(bb, (list, tuple)) and len(bb) == 4:
+                    letter_box_of_row[r.id] = [float(v) for v in bb]
+            for r in log.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                sides_of_key[r.subject.to_key()] = r.value
+            for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                wd = r.detail or {}
+                wb = wd.get("bbox_page_px")
+                ws = _system_of(wb) if isinstance(wb, (list, tuple)) and len(wb) == 4 else None
+                if isinstance(r.value, str) and ws is not None:
+                    read_words_by_sys.setdefault(ws, []).append(dict(row=r.id, text=r.value, box=[float(v) for v in wb], category=wd.get("category")))
+
+        def _letters_of_a_read_word(s_: int, run_: Dict[str, Any], box_of_row: Dict[Any, List[float]], sides: Dict[str, Any], key_of: Dict[Any, str]) -> Optional[Dict[str, Any]]:
+            """The READ word (system `s_`) whose letters `run_` are, or None. EVERY word holding the run must say so (two readings of one ink: if one calls it a dynamic, nothing changes)."""
+            boxes = [box_of_row[i] for i in run_["rows"] if i in box_of_row]
+            if not boxes or len(boxes) != len(run_["rows"]):
+                return None
+            near = False
+            for i in run_["rows"]:
+                sd = sides.get(key_of.get(i, ""))
+                near = near or (isinstance(sd, dict) and bool(sd.get("left") or sd.get("right")))
+            holding = [w for w in read_words_by_sys.get(s_, ()) if CL.overlaps(run_["box"], w["box"])]
+            if not holding:
+                return None
+            for w in holding:
+                if CL.letters_of_the_word(boxes, w["box"], w["text"], near) is None:
+                    return None
+            return holding[0]
+
+        def _uncovered_ink(box: Sequence[float]) -> bool:
+            """Is there dark ink in `box` that no READ word claim filed so far holds?  (the run's own letters are not a claim yet)"""
+            import numpy as np
+            x0, y0, x1, y1 = (max(0, int(round(v))) for v in box)
+            crop = binary[y0:y1, x0:x1] == 0
+            if not crop.size:
+                return False
+            held = np.zeros(crop.shape, bool)
+            for f in filed:
+                fx0, fy0 = max(0, int(f[0]) - x0), max(0, int(f[1]) - y0)
+                fx1, fy1 = min(crop.shape[1], int(np.ceil(f[2])) - x0), min(crop.shape[0], int(np.ceil(f[3])) - y0)
+                if fx1 > fx0 and fy1 > fy0:
+                    held[fy0:fy1, fx0:fx1] = True
+            return bool((crop & ~held).any())
+
         for s, letters in sorted(letters_by_sys.items()):
             sp = sp_by_sys.get(s)
             if not sp:
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
+                if letters_of_word_on:
+                    # ROADMAP 2.303 (flag OMR_LETTERS_ARE_THE_WORD, default OFF; Sean 2026-11-11, Litolff p8 `sempre`: "it boxes MP, but it's actually a part of the word"): letters
+                    # inside a word the lexicon READ, at a spot its text gives to a word and not to a dynamic token, with letter ink beside them, are the word's -- no dynamic claim.
+                    # A word that is not a read word (the OCR refused it) or a spot that cannot be told changes nothing.
+                    lw = _letters_of_a_read_word(s, run, letter_box_of_row, sides_of_key, key_of_row)
+                    if lw is not None:
+                        _count("word:dynamic_letters:letters_of_a_word")
+                        if _uncovered_ink(run["box"]):
+                            # the word's own claim does not hold this ink (cut round a hairpin, a note mark): the letters' own box is filed as the WORD's, source `direction_word`
+                            _count("word:dynamic_letters:letters_of_a_word_claimed")
+                            _file_sparing(s, run["box"], "direction_word", "letters_of_a_word", own=[key_of_row[i] for i in run["rows"]], owner_row=lw["row"],
+                                          text=lw["text"], category=lw["category"], letters_of_word=True, letter_rows=list(run["rows"]))
+                        continue
                 if not run["read"] and run["why"] in ("lone_letter", "wide_letter_box"):
                     # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
                     # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
