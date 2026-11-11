@@ -30,7 +30,11 @@ def choose(picks, seed):
     und = list(picks.get("undecided") or [])
     rng.shuffle(und)
     out += [("partition_undecided", r) for r in und[:max(0, 12 - len(out) - 2 - 2)]]
-    ch = list(picks.get("chord") or [])
+    ch, seen = [], set()
+    for r in picks.get("chord") or []:                 # one head of each 2.291 chord bar
+        if r["why"] not in seen:
+            seen.add(r["why"])
+            ch.append(r)
     out += [("chord_2.291", r) for r in ch[:2]][:max(0, 12 - len(out))]
     led = {p: [r for r in (picks.get("ledger") or []) if r["plate"] == p] for p in ("litolff", "brahms")}
     for p in led:

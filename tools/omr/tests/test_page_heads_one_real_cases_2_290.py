@@ -93,6 +93,27 @@ def test_real_case(path):
     del groups
 
 
+@pytest.mark.skipif(not CROPS, reason="no real-case crops cut yet")
+def test_the_control_can_fail(monkeypatch):
+    """CLAUDE rule 7: with the head-ink shape test broken (every stroke is head ink, any size is claimable) some of Sean's not-a-head marks DO get a head
+    claim -- the fixture is able to fail. (Broken: any stroke touching a head's oval is claimed, whatever its shape or size.)"""
+    monkeypatch.setattr(PH, "is_head_ink", lambda *a: True)
+    monkeypatch.setattr(PH, "CLAIM_MAX_W_SP", 99.0)
+    monkeypatch.setattr(PH, "CLAIM_MAX_H_SP", 99.0)
+    monkeypatch.setattr(PH, "CLAIM_SHARE_MIN", 0.0)
+    monkeypatch.setattr(PH, "OTHER_HEAD_MAX", 99.0)
+    broke = 0
+    for path in CROPS:
+        meta, items, foreign, lab, props, binary = _load(path)
+        if meta["case"]["expect"] != "not_head":
+            continue
+        oh, B, sb, _mine = _read(meta, items, foreign, lab, props, binary)
+        held = {n for n, pid in enumerate(meta["stroke_ids"]) if str(pid) in (meta.get("held") or {})}
+        if any(i in sb and i not in held and _share(sb[i], B) >= 0.5 for h in oh.heads for i in h["strokes"]):
+            broke += 1
+    assert broke >= 1
+
+
 def test_the_cases_list_is_current():
     cases = json.loads((HERE / "cases.json").read_text())["cases"]
     assert len(cases) >= 80 and {c["expect"] for c in cases} >= {"head", "not_head", "part_of_head", "chord"}
