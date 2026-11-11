@@ -32,14 +32,18 @@ def key_cause(v):
                 own_slots=own, system_count=sysc, more_than_system=ko.get("more_than_system"),
                 clef_measured=ko.get("clef_measured"), staff_read=pd.get("written_fifths"), read_by=pd.get("read_by"),
                 slot_from_infer=(f.get("detail") or {}).get("part_from_an_inference"))
-    if reason == "needs_clef":
+    if fill == 0 and off is None:
+        # a staff whose printed key is NONE (C horns / trumpets / timpani in these plates; crop-checked 2.292) -- whatever its own reading did
+        # (no evidence; a fit or one stray marker read -1; no slot table), the fill is 0 from the part's other systems
+        c = "K5 blank signature (none printed): staff abstained on %s, filled 0 from the part's other systems" % reason
+    elif reason == "needs_clef":
         c = "K6 clef unread, so the key could not be checked"
     elif reason == "natural_markers":
         c = "K3 a flat box read as a natural (marker kind)"
     elif reason == "mixed_marker_kinds":
         c = "K4 mixed marker kinds in the run (a flat/sharp/natural mix)"
     elif reason == "no_evidence":
-        c = "K5 no marker evidence (blank signature, or none read)"
+        c = "K8 no marker evidence on a staff whose fill is not 0 (key printed, nothing read)"
     elif reason.startswith("disagrees"):
         wr = pd.get("written_fifths")
         if reason == "disagrees_with_system" and wr is not None and wr == fill:

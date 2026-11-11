@@ -1,0 +1,24 @@
+== litolff  pages [4, 6]  distinct notes written 1273, blue 201 (15.8%)
+   blue for PITCH (key and/or clef filled): 120 = 9.4% of notes, 59.7% of blue
+   blue ONLY for pitch (no other reason): 119
+   pitch reason HIDDEN behind another first-reported rule: 0
+     any-reason  key_fill                                   94
+     any-reason  far                                        33
+     any-reason  clef_fill                                  26
+     any-reason  claim(head presence)                       21
+     any-reason  accidental                                 11
+     any-reason  bar_structure(whole_rest_from_ink)         10
+     any-reason  bar_structure(voice_guessed)                7
+     any-reason  value                                       3
+   exclusive combinations:
+       93  key_fill
+       29  far
+       26  clef_fill
+       20  claim(head presence)
+       11  accidental
+       10  bar_structure(whole_rest_from_ink)
+        7  bar_structure(voice_guessed)
+        2  far+value
+        1  value
+        1  claim(head presence)+far
+        1  far+key_fill

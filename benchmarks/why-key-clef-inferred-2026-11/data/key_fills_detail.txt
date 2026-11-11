@@ -1,0 +1,47 @@
+staff/1/0/10  K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=-2 by markers | inst=Violoncello.
+staff/2/0/0   K1  fill -3 | markers 2 ['keyFlat'] | own_slots 3 of sys 3 MORE | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by markers | inst=Fl.
+staff/2/0/1   K4  fill -3 | markers 6 ['keyFlat', 'keyNatural', 'keySharp'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Ob.
+staff/2/0/3   K2  fill -3 | markers 3 ['keyFlat'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=-3 by markers | inst=Fag.
+staff/2/0/9   K3  fill -3 | markers 2 ['keyNatural'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=None by None | inst=None
+staff/2/0/10  K7  fill -3 | markers 0 [] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=-1 by fitted_no_markers | inst=None
+staff/2/1/2   K3  fill -1 | markers 1 ['keyNatural'] | own_slots 1 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Cl.
+staff/2/1/3   K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=-2 by markers | inst=Fag.
+staff/2/1/4   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Cor.
+staff/2/1/5   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Tr.
+staff/2/1/9   K6  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=None by None | inst=None
+staff/4/0/4   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Cor.
+staff/4/0/6   K7  fill -3 | markers 0 [] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by fitted_no_markers | inst=None
+staff/4/0/7   K3  fill -3 | markers 1 ['keyNatural'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=None
+staff/4/0/8   K6  fill -3 | markers 0 [] | own_slots 1 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=None by None | inst=None
+staff/4/1/1   K3  fill -3 | markers 3 ['keyNatural'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Ob.
+staff/4/1/4   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-1 by fitted_no_markers | inst=Cor.
+staff/4/1/5   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Tr.
+staff/4/1/6   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=-1 by fitted_no_markers | inst=Tp.
+staff/4/1/7   K4  fill -3 | markers 2 ['keyFlat', 'keyNatural'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=None
+staff/4/1/10  K6  fill -3 | markers 2 ['keyFlat', 'keySharp'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=None by None | inst=None
+staff/6/0/4   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-1 by fitted_no_markers | inst=Cor.
+staff/6/1/3   K4  fill -3 | markers 3 ['keyFlat', 'keyNatural'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=tenor | read=None by None | inst=Fag.
+staff/6/1/5   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Tr.
+staff/6/1/6   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=-1 by fitted_no_markers | inst=Tp.
+staff/6/1/9   K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=-2 by markers | inst=None
+staff/6/1/10  K8  fill -3 | markers 0 [] | own_slots 1 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=None by None | inst=None
+staff/6/1/11  K4  fill -3 | markers 2 ['keyFlat', 'keyNatural'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=None by None | inst=None
+staff/8/1/3   K1  fill -3 | markers 3 ['keyFlat'] | own_slots 1 of sys 3  | refused=None | header_ink_slots=None | clefmeas=tenor | read=-2 by markers | inst=Fag.
+staff/8/1/6   K1  fill -3 | markers 2 ['keyFlat', 'keyNatural'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by markers | inst=None
+staff/8/1/8   K3  fill -3 | markers 1 ['keyNatural'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=None by None | inst=None
+staff/8/1/9   K1  fill -3 | markers 1 ['keySharp'] | own_slots 3 of sys 3 MORE | refused=None | header_ink_slots=None | clefmeas=bass | read=1 by markers | inst=None
+staff/9/0/4   K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Cor.
+staff/10/0/4  K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Cor.
+staff/10/1/1  K1  fill -3 | markers 3 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by markers | inst=Ob.
+staff/10/1/4  K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Cor.
+staff/10/1/5  K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=None by None | inst=Tr.
+staff/10/1/6  K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=None by None | inst=Tp.
+staff/10/1/7  K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by markers | inst=None
+staff/11/0/1  K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by markers | inst=Oh.
+staff/11/0/7  K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=-2 by markers | inst=None
+staff/11/0/8  K1  fill -3 | markers 2 ['keyFlat'] | own_slots 1 of sys 3  | refused=None | header_ink_slots=None | clefmeas=None | read=-1 by markers | inst=None
+staff/11/1/1  K1  fill -3 | markers 3 ['keyFlat', 'keyNatural'] | own_slots 3 of sys 3 MORE | refused=None | header_ink_slots=None | clefmeas=treble | read=-1 by markers | inst=Ob.
+staff/11/1/4  K5  fill  0 | markers 0 [] | own_slots 0 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-1 by fitted_no_markers | inst=Cor.
+staff/11/1/9  K1  fill -3 | markers 2 ['keyFlat'] | own_slots 2 of sys 3  | refused=None | header_ink_slots=None | clefmeas=bass | read=-2 by markers | inst=None
+staff/16/0/0  K2  fill -3 | markers 3 ['keyFlat'] | own_slots 3 of sys 3  | refused=None | header_ink_slots=None | clefmeas=treble | read=-3 by markers | inst=Fl.
+staff/16/0/1  K1  fill -3 | markers 3 ['keyFlat'] | own_slots 3 of sys 3 MORE | refused=None | header_ink_slots=None | clefmeas=treble | read=-2 by markers | inst=Ob.

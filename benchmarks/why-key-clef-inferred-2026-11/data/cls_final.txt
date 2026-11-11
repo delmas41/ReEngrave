@@ -1,0 +1,16 @@
+== keys: cause / staff-systems / blue notes / notes on those staves
+  brahms   K5 blank signature (none printed): staff abstained on no_evidence, filled 0 from the part's oth    2     0     23
+  brahms   K5 blank signature (none printed): staff abstained on disagrees_with_part, filled 0 from the pa    1     0     17
+  litolff  K1 marker run counted fewer flats than printed (crushed flats)                                    15   129    396
+  litolff  K3 a flat box read as a natural (marker kind)                                                      5    57    160
+  litolff  K4 mixed marker kinds in the run (a flat/sharp/natural mix)                                        4    50    126
+  litolff  K6 clef unread, so the key could not be checked                                                    3    38     94
+  litolff  K7 no marker box at all; a fit (read_by=fitted_no_markers) guessed a different count               2    19     64
+  litolff  K8 no marker evidence on a staff whose fill is not 0 (key printed, nothing read)                   1    15     48
+  litolff  K2 staff read the right count; the system check had no peer for it and abstained it                2     8     50
+  litolff  K5 blank signature (none printed): staff abstained on no_evidence, filled 0 from the part's oth    8     0    148
+  litolff  K5 blank signature (none printed): staff abstained on disagrees_with_part, filled 0 from the pa    5     0     78
+  litolff  K5 blank signature (none printed): staff abstained on run_fits_no_slot_table, filled 0 from the    2     0     39
+== clefs: cause / staff-systems / blue notes / notes on those staves
+  litolff  C2 clef narrowed (margin_below_floor): contest not separated                                       2    47     49
+  litolff  C1 clef abstained (no_candidates): no candidate read at the header                                 1    43     45

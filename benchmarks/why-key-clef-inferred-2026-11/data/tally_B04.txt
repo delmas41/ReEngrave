@@ -1,0 +1,17 @@
+== brahms  pages [0, 4]  distinct notes written 1128, blue 76 (6.7%)
+   blue for PITCH (key and/or clef filled): 0 = 0.0% of notes, 0.0% of blue
+   blue ONLY for pitch (no other reason): 0
+   pitch reason HIDDEN behind another first-reported rule: 0
+     any-reason  accidental                                 30
+     any-reason  bar_structure(onset_from_partial_bar_prefix)   24
+     any-reason  bar_structure(onset_from_partial_bar_suffix)    9
+     any-reason  claim(head presence)                        7
+     any-reason  far                                         3
+     any-reason  value                                       3
+   exclusive combinations:
+       30  accidental
+       24  bar_structure(onset_from_partial_bar_prefix)
+        9  bar_structure(onset_from_partial_bar_suffix)
+        7  claim(head presence)
+        3  far
+        3  value

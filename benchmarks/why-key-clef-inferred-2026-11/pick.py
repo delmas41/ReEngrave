@@ -2,7 +2,7 @@
 GROUPS (from classify.py causes): G1 crushed count (K1), G2 marker kind (K3, K4), G3 key blocked by an unread clef / clef filled (K6, C*), G4 a right
 read or a printed key with no marker box (K2, K7 with fill != 0), G5 blank signature filled 0 (fill 0: K5, K7 with fill 0, K9).
 SANITY (my look; 15): random.Random(2921), one pass: every G3 and G4 staff-system first (these are few), then fill up round-robin over G1, G2, G5.
-TILES (blind; 12): random.Random(2922); plan per plate: Litolff G1 2, G2 2, G3 2, G4 2, G5 1 (9); Brahms 3 from whichever groups it has (G1, G5 first);
+TILES (blind; 12): random.Random(2922); plan per plate: Litolff G1 2, G2 2, G3 2, G4 2, G5 2 (10); Brahms 2 from whichever groups it has (G1, G5 first);
 a group short of its quota is topped up from Litolff G1/G2; the 12 are then shuffled with the same RNG. Tiles never repeat a staff-system used in sanity? -- they
 may (sanity is not evidence).
 """
@@ -16,6 +16,8 @@ outdir = sys.argv[2]
 
 def group(r, kind):
     c = r["cause"][:2]
+    if c == "K5":
+        return "G5"
     if kind == "clefs":
         return "G3"
     if c == "K1":
@@ -57,7 +59,7 @@ san = san[:15]
 json.dump(san, open(outdir + "/sel_sanity.json", "w"), indent=1)
 
 rng = random.Random(2922)
-quota = [("litolff", "G1", 2), ("litolff", "G2", 2), ("litolff", "G3", 2), ("litolff", "G4", 2), ("litolff", "G5", 1)]
+quota = [("litolff", "G1", 2), ("litolff", "G2", 2), ("litolff", "G3", 2), ("litolff", "G4", 2), ("litolff", "G5", 2)]
 tiles = []
 used = set()
 
@@ -74,10 +76,10 @@ def take(plate, g, n):
 
 for plate, g, n in quota:
     tiles += take(plate, g, n)
-for g in ("G1", "G5", "G2", "G4", "G3"):
-    if len([t for t in tiles if t["plate"] == "brahms"]) >= 3:
-        break
-    tiles += take("brahms", g, 1)
+for g in ("G1", "G5", "G2", "G4", "G3"):          # Brahms: first groups that have cases, up to 2 tiles
+    need = 2 - len([t for t in tiles if t["plate"] == "brahms"])
+    if need > 0:
+        tiles += take("brahms", g, need)
 for g in ("G1", "G2", "G5", "G4"):
     if len(tiles) >= 12:
         break

@@ -1,0 +1,11 @@
+KEY DISAGREE staff/2/1/5 Trumpet fill 0 dossier [-3] ['C Trumpet 1', 'C Trumpet 2']
+CLEF staff/2/1/9 Viola fill alto dossier ['alto'] agree
+CLEF staff/4/0/8 Viola fill alto dossier ['alto'] agree
+KEY DISAGREE staff/4/1/5 Trumpet fill 0 dossier [-3] ['C Trumpet 1', 'C Trumpet 2']
+KEY DISAGREE staff/4/1/6 Timpani fill 0 dossier [-3] ['C, G Timpani']
+CLEF staff/4/1/10 Violoncello fill bass dossier ['bass'] agree
+KEY DISAGREE staff/6/1/5 Trumpet fill 0 dossier [-3] ['C Trumpet 1', 'C Trumpet 2']
+KEY DISAGREE staff/6/1/6 Timpani fill 0 dossier [-3] ['C, G Timpani']
+KEY DISAGREE staff/10/1/5 Trumpet fill 0 dossier [-3] ['C Trumpet 1', 'C Trumpet 2']
+KEY DISAGREE staff/10/1/6 Timpani fill 0 dossier [-3] ['C, G Timpani']
+litolff {'key agree': 40, 'key DISAGREE': 7, 'clef agree': 3}
