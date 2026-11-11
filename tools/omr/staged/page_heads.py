@@ -38,6 +38,7 @@ IT: the control that plants a half-head (Brahms p0 black heads must fall) and th
 """
 from __future__ import annotations
 
+import collections
 import os
 import time
 from typing import Any, Dict, List, Optional, Sequence, Tuple
@@ -500,6 +501,15 @@ BEAM_MIN_W_SP = 1.8
 BEAM_MIN_ASPECT = 2.5
 #: a curve longer than this is an arc piece, not a head's outline (`stroke_owner.shape_fit` head_outline_piece)
 CURVE_MAX_LEN_SP = 2.0
+#: a printed head's size (sp), for the oval where the trim cannot cut one head out (`stroke_owner`: "a notehead ~1.3 x 1.0")
+OVAL_W_SP = 1.3
+OVAL_H_SP = 1.0
+#: a THIN horizontal no longer than this is a hollow head's top or bottom (a head ~1.3 sp wide; a ledger rung sticks out both sides, ~2 sp)
+HOLLOW_PIECE_MAX_LEN_SP = 1.6
+#: ... and its box no wider than a head can print (`head_ink.MAX_WIDTH_SPACES` 1.75, plus the anti-alias edge)
+HOLLOW_PIECE_MAX_W_SP = 1.9
+#: a blob's shorter side must be at least this (sp): thinner is a stem piece
+BLOB_MIN_SIDE_SP = 0.3
 #: a stroke is the head's claimed ink when this share of it lies in the head's oval ...
 CLAIM_SHARE_MIN = 0.5
 #: ... it is no bigger than a head (`stroke_owner.HEAD_MAX_W_SP` / `HEAD_MAX_H_SP`) ...
@@ -527,13 +537,16 @@ def is_head_ink(kind: str, w_sp: float, h_sp: float, thick_sp: float, length_sp:
         return False
     if kind == "horizontal":
         if thick_sp <= LEDGER_MAX_THICK_SP:
-            return False
+            # thin: a ledger rung (~2 sp long) or line residue -- unless it is no longer than a head is wide: the top / bottom of a HOLLOW head the staff-line
+            # erase cut in two (Litolff p2, Sean's unison half note 2.289 tile 9: every box on it held no head ink by the old test)
+            return length_sp <= HOLLOW_PIECE_MAX_LEN_SP and w_sp <= HOLLOW_PIECE_MAX_W_SP
         if w_sp >= BEAM_MIN_W_SP and h_sp > 0 and w_sp / h_sp >= BEAM_MIN_ASPECT:
             return False
         return True
     if kind == "curve":
         return length_sp <= CURVE_MAX_LEN_SP
-    return True
+    # a blob thinner than a stem's double is a stem / sharp-stem piece the finders left a blob (Litolff p2, Sean's sharp 2.285 r2 tile 12: 0.13 x 1.15 sp)
+    return min(w_sp, h_sp) >= BLOB_MIN_SIDE_SP
 
 
 def same_head(a: Dict[str, Any], b: Dict[str, Any], shared_px: float, sp: float) -> Optional[str]:
@@ -570,8 +583,13 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
         buckets.setdefault(it["scope"], []).append(i)
     pairs: List[list] = []
     how: Dict[int, str] = {}
+    comp: Dict[int, List[int]] = {i: [i] for i in range(len(items))}
+
+    def one_oval(x: int, y: int) -> bool:
+        return abs(items[x]["cx"] - items[y]["cx"]) <= OVAL_DX_SP * sp and abs(items[x]["cy"] - items[y]["cy"]) <= OVAL_DY_SP * sp
     for members in buckets.values():
         members.sort(key=lambda i: (items[i]["box"][0], i))
+        joins: List[Tuple[float, int, int]] = []
         for a in range(len(members)):
             i = members[a]
             bi = items[i]["box"]
@@ -587,7 +605,20 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
                 small = min(items[i]["ink_px"], items[j]["ink_px"])
                 pairs.append([i, j, why, round(sh / small, 3) if small else 0.0])
                 if why is None:
-                    parent[find(i)] = find(j)
+                    joins.append((abs(items[i]["cx"] - items[j]["cx"]) + abs(items[i]["cy"] - items[j]["cy"]), i, j))
+        # nearest pairs first; two groups join only if EVERY member of one lies in one oval with every member of the other (no chain: a box drawn
+        # over both heads of a chord, its ink centre between them, never joins the two heads -- Litolff p2, 2.291 tile 10)
+        for _d, i, j in sorted(joins):
+            ri, rj = find(i), find(j)
+            if ri == rj:
+                continue
+            if not all(one_oval(x, y) for x in comp[ri] for y in comp[rj]):
+                for p in pairs:
+                    if p[0] in (i, j) and p[1] in (i, j):
+                        p[2] = "chain_across_two_ovals"
+                continue
+            parent[rj] = ri
+            comp[ri] += comp.pop(rj)
         # a box on no head ink joins the INK head whose box it overlaps most at the old twin rule (one mark written once stays written once), else alone
         for i in members:
             if items[i]["ink_px"] or items[i].get("tall"):
@@ -600,7 +631,10 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
                 if v > no_ink_iou and (best is None or (v, -j) > (best[0], -best[1])):
                     best = (v, j)
             if best is not None:
-                parent[find(i)] = find(best[1])
+                ri, rj = find(i), find(best[1])
+                if ri != rj:
+                    parent[ri] = rj
+                    comp[rj] += comp.pop(ri)
                 how[i] = "no_head_ink_twin"
             else:
                 how[i] = "no_head_ink"
@@ -782,6 +816,7 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
     ovals: Dict[int, Dict[int, int]] = {}
     oval_box: Dict[int, Any] = {}
     oval_why: Dict[int, Optional[str]] = {}
+    oval_from: Dict[int, str] = {}
     reps: Dict[int, int] = {}
     for gi_, g in enumerate(groups):
         for i in g:
@@ -799,8 +834,15 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
                                      [f for f in foreign if abs(f[0] - box[0]) < 4 * sp and abs(f[1] - box[1]) < 4 * sp], others)
         oval_why[gi_] = got["why"]
         if got["why"] is not None or got["extent"] is None:
-            continue
-        ext = [float(v) for v in got["extent"]]
+            # the trim could not cut one head out of the ink (a head fused with its stem or a chord neighbour: `too_tall`, `not_one_head`, ...): the oval is
+            # a printed head's size (`OVAL_W_SP` x `OVAL_H_SP`, the engraving size `stroke_owner` names) centred on the head's OWN ink -- still the ink's
+            # place, never the detector's rectangle; a stroke bigger than a head, or held by another head's oval, is still not claimed
+            hs = float(it.get("sp_head") or sp)
+            ext = [it["cx"] - OVAL_W_SP * hs / 2.0, it["cy"] - OVAL_H_SP * hs / 2.0, it["cx"] + OVAL_W_SP * hs / 2.0, it["cy"] + OVAL_H_SP * hs / 2.0]
+            oval_from[gi_] = "ink_centre"
+        else:
+            ext = [float(v) for v in got["extent"]]
+            oval_from[gi_] = "ink_extent"
         oval_box[gi_] = ext
         x0, y0, x1, y1 = rrect((ext[0] - 1.0 / s, ext[1] - 1.0 / s, ext[2] + 1.0 / s, ext[3] + 1.0 / s))
         if x1 <= x0 or y1 <= y0:
@@ -823,13 +865,15 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
         g = groups[gi_]
         st = claims.get(gi_, [])
         h = dict(ordinal=len(out.heads), group=gi_, members=[out.items[i]["key"] for i in g], rep=out.items[rep]["key"],
-                 oval=None if gi_ not in oval_box else [round(v, 1) for v in oval_box[gi_]], oval_why=oval_why.get(gi_), strokes=sorted(st),
+                 oval=None if gi_ not in oval_box else [round(v, 1) for v in oval_box[gi_]], oval_why=oval_why.get(gi_),
+                 oval_from=oval_from.get(gi_), strokes=sorted(st),
                  staff=[out.items[rep]["cell"][1], out.items[rep]["cell"][2]])
         if st:
             cen["claims"] += 1
             cen["claimed_strokes"] += len(st)
         out.heads.append(h)
     cen["not_claimed"] = ccen
+    cen["oval_from"] = dict(collections.Counter(oval_from.values()))
     out.census = cen
     return out
 
@@ -944,6 +988,27 @@ def apply_to_page_marks(marks: Any, oh: Optional[OneHeads]) -> Any:
     return marks
 
 
+def _dump_held(held: Dict[int, str], page: int) -> None:
+    """Benchmark tooling (`OMR_PAGE_HEAD_CASES_DUMP`): add to each real-case crop of this page which of its page strokes an earlier page-wide claim holds
+    (so a fixture replays the claim exactly as `file_one_claims` files it)."""
+    path = os.environ.get(CASES_DUMP_ENV, "").strip()
+    if not path:
+        return
+    import json
+    import pathlib
+    spec = json.loads(pathlib.Path(path).read_text())
+    od = pathlib.Path(spec["out_dir"])
+    for case in spec.get("cases") or ():
+        f = od / case_file_name(case["id"])
+        if int(case["page"]) != page or not f.exists():
+            continue
+        z = dict(np.load(f, allow_pickle=False))
+        meta = json.loads(str(z["meta"]))
+        meta["held"] = {str(i): held[i] for i in meta["stroke_ids"] if i in held}
+        z["meta"] = np.array(json.dumps(meta, default=str))
+        np.savez_compressed(f, **z)
+
+
 def file_one_claims(log: Any, pws: Any, oh: Optional[OneHeads], *, progress: bool = False) -> None:
     """ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): one `Q.CLAIMED_AREA` row per head that claims a stroke (section doc), and one census row.
     AFTER every earlier page-wide claim (accidental ink, 2.285, is the last before the heads); the ledger's one settle in ADJUDICATE keeps every earlier
@@ -953,17 +1018,31 @@ def file_one_claims(log: Any, pws: Any, oh: Optional[OneHeads], *, progress: boo
     from . import record as R
     from .record import Q, READERS
     from .gather import FRAME_PAGE
+    from .record import Scope
     p = int(getattr(pws.page, "page_index", 0))
     sub = R.page(p)
-    filed = 0
+    # claimed ink is final (2.277): a page stroke an EARLIER page-wide READ claim names by id (tremolo, accidental ink, the claim names) is MARKED on the head's
+    # row, never claimed again (the ledger's tier-0 settle would keep it the earlier claim's anyway; this keeps the head's own row honest)
+    held: Dict[int, str] = {}
+    for r in log.rows(Q.CLAIMED_AREA, sub, scope=Scope.SELF_AND_DESCENDANTS):
+        d = r.detail or {}
+        if d.get("unit") == UNIT and d.get("source") != ONE_SOURCE and d.get("standing", "READ") == "READ":
+            for i in (d.get("page_strokes") or ()):
+                held.setdefault(int(i), str(d.get("owner") or ""))
+    filed = marked = 0
     for h in oh.heads:
-        if not h["strokes"]:
+        mine = [i for i in h["strokes"] if i not in held]
+        h["marked"] = [[i, held[i]] for i in h["strokes"] if i in held]
+        marked += len(h["marked"])
+        h["strokes"] = mine
+        if not mine:
             continue
         log.observe(sub, Q.CLAIMED_AREA, int(h["ordinal"]), reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, owner=ONE_OWNER, unit=UNIT, standing="READ",
-                    source=ONE_SOURCE, how="page_head_oval", page_strokes=list(h["strokes"]), members=list(h["members"]), rep=h["rep"],
-                    oval=h["oval"], staff=h["staff"])
+                    source=ONE_SOURCE, how="page_head_oval", page_strokes=list(mine), members=list(h["members"]), rep=h["rep"],
+                    oval=h["oval"], staff=h["staff"], marked=h["marked"])
         filed += 1
-    cen = dict(oh.census, rows=filed)
+    _dump_held(held, p)
+    cen = dict(oh.census, rows=filed, marked_earlier_claim=marked)
     log.observe(sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, owner=ONE_SOURCE, unit="page_ink_census", standing="READ",
                 source=ONE_SOURCE, **cen)
     if progress:
