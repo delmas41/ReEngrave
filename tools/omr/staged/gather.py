@@ -16411,7 +16411,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
         for a in areas:
             _file(sys_idx, a, CL.OWNER_WORD, source, inside_staff=(why != "outside_staff"), **extra)
 
-    # ROADMAP 2.296 (flag OMR_DYNAMIC_OWN_CLAIM, default OFF): a marking the word reader read whole (`f legato`, `p dolce`, `piu p`) is two marks, the word and
+    # ROADMAP 2.296 (flag OMR_DYNAMIC_OWN_CLAIM, default ON): a marking the word reader read whole (`f legato`, `p dolce`, `piu p`) is two marks, the word and
     # the dynamic it holds (`consequences.pair_word_and_dynamic` writes them as two kinds). The word's claim stops at the dynamic's own ink and the
     # dynamic claims its own, READ, on this same page-wide pass -- the word never owns a dynamic's letters (Sean 2026-11-11: a printed dynamic is one mark).
     dyn_own = bool(words_on and ledger_on and CL.dynamic_own_enabled())

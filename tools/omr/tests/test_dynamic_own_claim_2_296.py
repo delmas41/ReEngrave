@@ -25,10 +25,13 @@ OFF = dict(ON, OMR_DYNAMIC_OWN_CLAIM="0")
 
 
 class TestFlag(unittest.TestCase):
-    def test_default_off_and_needs_the_words_pass(self):
+    def test_default_on_opt_out_and_needs_the_words_pass(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop("OMR_DYNAMIC_OWN_CLAIM", None)
-            self.assertFalse(CL.dynamic_own_enabled())
+            self.assertTrue(CL.dynamic_own_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {"OMR_DYNAMIC_OWN_CLAIM": off}):
+                self.assertFalse(CL.dynamic_own_enabled())
         with mock.patch.dict(os.environ, {"OMR_DYNAMIC_OWN_CLAIM": "1", "OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "1"}):
             self.assertTrue(CL.dynamic_own_enabled())
         with mock.patch.dict(os.environ, {"OMR_DYNAMIC_OWN_CLAIM": "1", "OMR_CLAIM_WORDS_FIRST": "0"}):

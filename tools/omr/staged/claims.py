@@ -364,14 +364,14 @@ def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spaci
         out.append({"box": box, "text": text, "slots": len(run), "rows": rows, "read": why is None, "why": why})
     return out
 
-#: ROADMAP 2.296 (flag `OMR_DYNAMIC_OWN_CLAIM`, default OFF): a printed dynamic is ONE mark and is claimed as a dynamic, never as the first letters of the word
+#: ROADMAP 2.296 (flag `OMR_DYNAMIC_OWN_CLAIM`, default ON since 2026-11-11): a printed dynamic is ONE mark and is claimed as a dynamic, never as the first letters of the word
 #: printed beside it (`f legato`, `p dolce`, `piu p`).
 ENV_DYNAMIC_OWN = "OMR_DYNAMIC_OWN_CLAIM"
 
 
 def dynamic_own_enabled() -> bool:
-    """`OMR_DYNAMIC_OWN_CLAIM` (ROADMAP 2.296), default OFF; `1/true/yes/on` enables. Needs the page-wide words pass (`words_first_enabled`)."""
-    return words_first_enabled() and os.environ.get(ENV_DYNAMIC_OWN, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_DYNAMIC_OWN_CLAIM` (ROADMAP 2.296), default ON (Sean 2026-11-11; "0"/"false"/"no"/"off" turns it off), the same opt-out as `OMR_PAGE_TREMOLO`. Needs the page-wide words pass (`words_first_enabled`)."""
+    return words_first_enabled() and os.environ.get(ENV_DYNAMIC_OWN, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def compound_dynamic_slots(text: str, dynamics: Iterable[str], letters: Sequence[Tuple[Sequence[float], str, Any]]) -> Dict[str, Any]:
