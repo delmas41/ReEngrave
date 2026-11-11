@@ -18049,7 +18049,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
-        # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE, default OFF): every notehead box's head read ONCE from the page ink -- the one identity of a head (filed below as
+        # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE, default ON since the landing flip): every notehead box's head read ONCE from the page ink -- the one identity of a head (filed below as
         # the notehead `Q.MARK_GROUP` and head `Q.PAGE_MARK` ids) and the page strokes of its oval (claimed after the accidental ink). AFTER the final box set, the
         # page map and the glyph strokes; BEFORE `page_marks` and `gather_mark_groups`. Reads only. None with the flag OFF.
         from . import page_heads as _page_heads
@@ -18264,7 +18264,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS): `Q.PAGE_HEAD` rows and the head / ledger-stub claims on the page strokes, AFTER the page-wide claim names (an
         # earlier owner's stroke is marked contested, never taken) and after the cell position rows (they ride on the head). Nothing reads them in M6a.
         _page_heads.file_page_heads(log, pws, _page_head_list, page_map_pre, progress=progress)
-        # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default OFF): one claim per head on the page strokes of its oval, layer `head` of
+        # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default ON since the landing flip): one claim per head on the page strokes of its oval, layer `head` of
         # `claim_order.LAYERS` -- AFTER every earlier page-wide claim (accidental ink last), BEFORE the page beams; ADJUDICATE's ledger settles it at the head tier.
         _page_heads.file_one_claims(log, pws, _one_heads, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),

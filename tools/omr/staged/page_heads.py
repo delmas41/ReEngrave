@@ -452,7 +452,7 @@ def gather_page_heads(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
 # none of them asked the INK whether the two boxes stand on one printed head, and each consumer read a different one. And a head's ink was claimed per
 # padded cell by "a box covers half a cell stroke" (`stroke_owner` head tier), so the same page ink was a head in one cell and a twin in the next.
 #
-# STEP 1+2, ONE IDENTITY (flag `OMR_PAGE_HEAD_ONE`, default OFF). A notehead box's HEAD INK is the page-map pixels inside its rectangle that lie on a
+# STEP 1+2, ONE IDENTITY (flag `OMR_PAGE_HEAD_ONE`, default ON since the landing flip). A notehead box's HEAD INK is the page-map pixels inside its rectangle that lie on a
 # head-shaped stroke (`is_head_ink`: no stem, no ledger rung or line residue, no beam piece, no long curve). Two notehead boxes of one system are ONE
 # HEAD when (a) both hold head ink, (b) they share at least `SHARE_MIN` of the smaller one's head ink (the same pixels, not a near box) and (c) the
 # centres of their head ink lie within one oval (`OVAL_DX_SP` across, `OVAL_DY_SP` along: a third stands two steps away, a second's two heads stand
@@ -464,7 +464,7 @@ def gather_page_heads(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
 # `glyph_owner` once per group, `rhythm`'s twin -- reads it unchanged) and as the head `Q.PAGE_MARK` ids (so the page owner, 2.240, rules once per
 # head). `cluster_marks` for noteheads, `page_marks.link` for heads and M6a's `fold` are then not consulted for heads.
 #
-# STEP 4, ONE CLAIM (flag `OMR_PAGE_HEAD_LEDGER`, needs `OMR_PAGE_HEAD_ONE`, default OFF). Each head claims the PAGE STROKES of its own oval: the
+# STEP 4, ONE CLAIM (flag `OMR_PAGE_HEAD_LEDGER`, needs `OMR_PAGE_HEAD_ONE`, default ON since the landing flip). Each head claims the PAGE STROKES of its own oval: the
 # head's ink extent grown from its representative box on the page raster (`head_extent.ink_extent`, the 2.220 trim; never the detector rectangle),
 # and a stroke is the head's when at least `CLAIM_SHARE_MIN` of the stroke's ink lies inside that oval, the stroke is head-shaped and no bigger than a
 # head (`stroke_owner.HEAD_MAX_*`), and no OTHER head's oval holds `OTHER_HEAD_MAX` of it. A stroke fused with another mark (a slash, a stem, a
@@ -543,14 +543,19 @@ CUT_THROUGH_CONTACT_MIN_SP = 0.9
 CUT_THROUGH_CONTACT_MAX_SP = 1.7
 
 
+def _flag_on(name: str) -> bool:
+    """Default ON, deny-list: off only for an explicit 0 / false / no / off."""
+    return os.environ.get(name, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
 def one_enabled() -> bool:
-    """`OMR_PAGE_HEAD_ONE` (ROADMAP 2.290 steps 1-2), default OFF: allow-list."""
-    return _flag(ONE_ENV)
+    """`OMR_PAGE_HEAD_ONE` (ROADMAP 2.290 steps 1-2), default ON (landing flip): deny-list, `=0` opts out."""
+    return _flag_on(ONE_ENV)
 
 
 def ledger_enabled() -> bool:
-    """`OMR_PAGE_HEAD_LEDGER` (ROADMAP 2.290 step 4), default OFF; needs `OMR_PAGE_HEAD_ONE`."""
-    return one_enabled() and _flag(LEDGER_ENV)
+    """`OMR_PAGE_HEAD_LEDGER` (ROADMAP 2.290 step 4), default ON (landing flip): deny-list, `=0` opts out; needs `OMR_PAGE_HEAD_ONE`."""
+    return one_enabled() and _flag_on(LEDGER_ENV)
 
 
 def is_head_ink(kind: str, w_sp: float, h_sp: float, thick_sp: float, length_sp: float) -> bool:

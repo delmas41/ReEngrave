@@ -11,14 +11,18 @@ from tools.omr.staged import stroke_owner as SO
 SP = 20.0
 
 
-def test_flags_default_off(monkeypatch):
+def test_flags_default_on_and_deny_list(monkeypatch):
+    """Landing flip (2.290): both flags ON by default; off only for an explicit 0/false/no/off; the claim still needs the one identity."""
     monkeypatch.delenv(PH.ONE_ENV, raising=False)
     monkeypatch.delenv(PH.LEDGER_ENV, raising=False)
-    assert not PH.one_enabled() and not PH.ledger_enabled()
-    monkeypatch.setenv(PH.LEDGER_ENV, "1")
-    assert not PH.ledger_enabled(), "the claim needs the one identity"
-    monkeypatch.setenv(PH.ONE_ENV, "1")
     assert PH.one_enabled() and PH.ledger_enabled()
+    monkeypatch.setenv(PH.LEDGER_ENV, "0")
+    assert PH.one_enabled() and not PH.ledger_enabled()
+    monkeypatch.setenv(PH.LEDGER_ENV, "1")
+    monkeypatch.setenv(PH.ONE_ENV, "off")
+    assert not PH.one_enabled() and not PH.ledger_enabled(), "the claim needs the one identity"
+    monkeypatch.setenv(PH.ONE_ENV, "banana")
+    assert PH.one_enabled(), "deny-list: only an explicit off disables"
 
 
 @pytest.mark.parametrize("args,want", [
@@ -209,9 +213,9 @@ def test_same_page_head_skips_the_other_box_of_one_head(monkeypatch):
     from tools.omr.staged.adjudicators import stem_value as SV
     rows = {"a": [SimpleNamespace(value="mg/1")], "b": [SimpleNamespace(value="mg/1")], "c": [SimpleNamespace(value="mg/2")]}
     ev = SimpleNamespace(subject="a", rows=lambda q, subject=None, **kw: rows.get(subject, []))
-    monkeypatch.delenv(PH.ONE_ENV, raising=False)
+    monkeypatch.setenv(PH.ONE_ENV, "0")
     assert SV._same_page_head(ev, "b") is False
-    monkeypatch.setenv(PH.ONE_ENV, "1")
+    monkeypatch.delenv(PH.ONE_ENV, raising=False)
     assert SV._same_page_head(ev, "b") is True
     assert SV._same_page_head(ev, "c") is False
     assert SV._same_page_head(ev, "zz") is False
