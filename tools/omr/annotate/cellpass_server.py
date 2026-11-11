@@ -18,7 +18,6 @@ Pass 1's ink is FINAL: pass-2 claims read ``free = ink - confirmed pass-1 ink`` 
 from __future__ import annotations
 
 import json
-import threading
 from pathlib import Path
 from typing import Dict, List, Optional
 

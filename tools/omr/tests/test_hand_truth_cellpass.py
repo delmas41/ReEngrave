@@ -322,7 +322,6 @@ def test_bulk_confirm_takes_one_kind_in_one_cell_and_undo_gives_it_back(tmp_path
     svc, ps = _service(tmp_path, _boxes())
     before = {l["id"]: l["state"] for l in svc.state_payload()["labels"]}
     out = svc.mutate(lambda p: p.bulk_confirm(svc.bulk_ids("c0", "notehead")["ids"]))
-    after = {l["id"]: l for l in out["labels"]}
     heads_c0 = [l for l in out["labels"] if l["kind"] == "notehead" and l["cell_id"] == "c0"]
     assert len(heads_c0) == 2 and all(l["state"] == "confirmed" and l["px"] > 0 for l in heads_c0)
     # NEVER across kinds, NEVER across cells
