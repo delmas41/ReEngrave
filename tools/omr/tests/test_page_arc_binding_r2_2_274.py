@@ -131,9 +131,13 @@ class TestAHeadJustBehindTheEnd(unittest.TestCase):
     def test_arcs_r2_barline_ambiguity_abstains(self):
         """arcs-r2 fix 1 (Litolff p5 run 104 shape): the ink starts after a barline; the chord before it stands 1.4 sp out, the note the ink starts over 1.8 behind in the end's own bar: two
         columns about equally near -> abstain. Mirror: with no own-bar note behind, the outward head still binds (a tie across a barline)."""
-        d = _detail(0, 100, 130, 100, sag=-15.0)
-        d["x_left_page"] = 100.0
-        heads = [dict(_h("before", 86, 108), cell=0), dict(_h("inside", 118, 108), cell=1), _h("r", 130, 108)]
+        d = _detail(100, 100, 160, 100, sag=-15.0)
+        heads = [dict(_h("before", 86, 108), cell=0), dict(_h("inside", 118, 108), cell=1), _h("r", 165, 108)]
+        # mirror (Brahms p11 runs 33/37): the TRACED ink crosses the barline (starts at 90, before it): the end's bar is the head's, the head before the barline binds
+        dc = _detail(90, 100, 160, 100, sag=-15.0)
+        dc["x_left_page"] = 100.0
+        bc = PB.closest_binder({"left": [], "right": []}, {0: (0.0, 96.0), 1: (96.0, 200.0)})(heads, SP, None, True, None, dc)
+        self.assertEqual(bc["left"].get("head"), "before")
         cells = {0: (0.0, 96.0), 1: (96.0, 200.0)}
         b = PB.closest_binder({"left": [], "right": []}, cells)(heads, SP, None, True, None, d)
         self.assertEqual(b["left"].get("unbound"), "two_columns_at_end")

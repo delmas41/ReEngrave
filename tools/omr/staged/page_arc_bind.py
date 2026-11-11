@@ -138,7 +138,10 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
             behind_ = HEAD_BEHIND_END_SPACES
             if cells:
                 # arcs-r2 fix 1: heads of the end's own bar join the candidates up to OWN_BAR_BEHIND_SPACES behind it; every other head keeps the 1.6 look-behind
-                own = next((c for c, (cx0, cx1) in cells.items() if cx0 <= ex <= cx1), None)
+                # the bar the ink REACHES: the outermost TRACED point (the trace crosses a barline for a tie across it; Brahms p11 runs 33/37: own ink starts 7 px after the barline, the traced ink before it)
+                tx = [float(t[0]) for t in (d.get("trace") or ())]
+                ink_x = (min(tx) if sgn < 0 else max(tx)) if tx else ex
+                own = next((c for c, (cx0, cx1) in cells.items() if cx0 <= ink_x <= cx1), None)
                 if own is not None:
                     behind_ = max(HEAD_BEHIND_END_SPACES, OWN_BAR_BEHIND_SPACES)
                     by_key = {h["key"]: h for h in heads}
