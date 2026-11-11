@@ -92,3 +92,50 @@ only. Known misses left for plan step 5: r1 tile 3 (an eighth fused with its
 stem stub, unclaimed) and 2.289 tile 9 (unison half note, two thin rims, now
 refused by design). Hazard: `claim_readout` slices are cached by file name
 and one lane silently reused another's stale slice.
+
+## 2.290 build, round 3 (2026-11-11) — built OFF, waiting on Sean's tiles
+
+Written by the manager from the lane's report. Branch `lane-2.290-build-r3`
+790595078 (flags OFF; no retire commit). Sean's r2 tiles:
+`answers/answers-2.290-build-r2.json` (a unison lost; too-tall refusals were
+real heads; too-small refusals right).
+
+**Causes**
+- Lost unison (Litolff p8 m69 half F5): the detector drew two boxes on one
+  head; flags OFF they were two heads so two notes were written BY LUCK. With
+  one head identity, the existing unison reader `stem_value._one_stem_per_head`
+  abstained: it asks whether "another head" sits under the stems and counted
+  the sibling box of the SAME head as that other head. Fix: that reader skips
+  boxes of the same page head (`Q.MARK_GROUP`) when `OMR_PAGE_HEAD_ONE` is on.
+  **Lesson: every reader that asks "another head" must know the one identity.**
+- Too-tall refusals: the 1.5 sp cut judged head + whatever ink runs on (a fat
+  stem's stubs, a stem root, the long side strokes of a hollow half). Raised
+  to 2.0 sp; a stem-column exclusion was tried and dropped (it removed the
+  sides of hollow heads). 1 of 52 too-tall refusals remains.
+- The quarter rest (r1 tile 9) was caught by the 1.5 cut only by accident. New
+  rule: two heads' claimed strokes touching with contact 0.9-1.7 sp are ONE
+  ink the stroke map cut; both claims refused (tangent chord heads touch at
+  2.2-2.5 sp, the rest pieces at 1.27).
+- Tiles 4 and 12 "on the system below": the pipeline's owner staff was right
+  (`glyph_owner`), the tile was centred on the cell's staff. Tile maker fixed.
+- Boxes "a little small" (tiles 1, 2, 6): the CLAIM is short of the head
+  (about 60%, 56%, 38% of the oval's dark pixels, staff-line pixels included):
+  the hollow head's top rim fused with stem or ledger — plan step 5, not built.
+
+**Lost notes re-checked from the rows:** p8 m69 unison (real loss, fixed);
+p2 m4, p11 m86, p2 m7, p11 m107 fold-right (one stem); p2 m32 two heads a
+third apart (fixed r2). New GAIN p11 m75 half C4: a unison the OFF arm writes
+once — unjudged, tile 1 of the r3 sheet.
+
+**Measured** (OFF vs ON, both arms re-made on the merged tree with 2.299 and
+2.300 ON; Litolff p2, 8, 11; Brahms p14, 19)
+- Litolff notes +3 -4 (r2 +2 -5), slurs +2, ties -2; Brahms notes +1.
+- Ledger: Litolff 71.8 -> 76.8%, Brahms 65.8 -> 73.9%; one owner 89.5 -> 90.2 / 87.7 -> 88.4.
+- Refusals: 215 (186 too small, 18 cut-through/moved, 1 too tall).
+- judged right->wrong 0 (203 / 173); judged_claims no new contradiction; check 228.
+- Fast tier 10,534 passed, 0 failed with flags OFF AND with both flags exported ON.
+- Real-pixel controls: all 24 judged tiles (r1 + r2); 85 cases pass, 3 known xfails.
+
+**Not confirmed:** cut-offs 2.0 sp / 0.9-1.7 sp contact measured on two plates;
+the 18 cut-through refusals mostly unlooked; conservation tool not re-run
+flags ON; ties -2 on Litolff not explained in the report.

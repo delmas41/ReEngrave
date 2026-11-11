@@ -453,6 +453,51 @@ def grow_to_ink(binary: Any, box: Sequence[float], spacing: float, grow: float =
     return out
 
 
+#: ROADMAP 2.301 (flag `OMR_WORD_OWNS_ITS_INK`, default ON): the word of a split marking claims its LETTERS WHOLE. CAUSE (Brahms p0 `f legato`, Sean's 2.296 r1 tile 8): the stroke owner gives a
+#: page-wide word claim only the strokes WHOLLY inside its box (`adjudicators.stroke_owner._areas`, +1 px), and the OCR's word box is cut at the text line, so the descender of the `g` of
+#: `legato` (ink to y 2584, the stroke map's box of it to 2585.5, the word's box to 2584: 0.5 px past the +1 px allowance) was not the word's; it fell to the detector `dynamicF` box drawn on
+#: the `g` and was settled as a DYNAMIC. The claim of the word's piece grows to the ink components that touch it (at most this far past a side) and keeps a small slack past them, never
+#: onto ink a note mark's box, an earlier claim or the marking's own dynamic holds.
+ENV_WORD_INK = "OMR_WORD_OWNS_ITS_INK"
+WORD_INK_GROW_SPACES = 0.5
+#: the stroke map's box lies up to this far past the ink it holds (1.5 px = 0.05 sp on Brahms p0); the claim keeps this much past its ink (0.1 sp = 3 px Brahms, 1.6 px Litolff)
+WORD_STROKE_SLACK_SPACES = 0.1
+#: a clipped component this wide and this thin is a staff or ledger line, not a letter's stroke
+WORD_LINE_WIDTH_SPACES = 4.0
+WORD_LINE_THICK_SPACES = 0.4
+
+
+def word_ink_enabled() -> bool:
+    """`OMR_WORD_OWNS_ITS_INK` (ROADMAP 2.301), default ON since 2026-11-11 (Sean "add the rule fix then land"; "0"/"false"/"no"/"off" turns it off). Needs the 2.296 split."""
+    return dynamic_own_enabled() and os.environ.get(ENV_WORD_INK, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+def edge_ink_boxes(binary: Any, box: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), grow: float = WORD_INK_GROW_SPACES) -> List[List[float]]:
+    """The word's OWN letters that stand on or past the edge of its claim `box`: for each ink component that touches `box` (clipped to `grow` staff spaces past a side), overlaps no
+    `avoid` box (a note mark's box, an earlier claim, the marking's own dynamic: ink another mark holds is never taken) and is no staff-line-like piece, whose bounding box padded by the
+    stroke map's slack (`WORD_STROKE_SLACK_SPACES`) is NOT already inside `box`: that padded box, one rectangle per such letter. Claiming it too gives the stroke owner a stroke
+    its page box (a little larger than the ink) would otherwise leave outside the word's claim. PURE; [] when nothing pokes out."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return []
+    g = grow * float(spacing)
+    slack = WORD_STROKE_SLACK_SPACES * float(spacing)
+    region = [float(box[0]) - g, float(box[1]) - g, float(box[2]) + g, float(box[3]) + g]
+    avoid = [list(a) for a in avoid]
+    out: List[List[float]] = []
+    for c in _components(binary, region):
+        if c[2] < box[0] or c[0] > box[2] or c[3] < box[1] or c[1] > box[3]:
+            continue                                  # does not touch the box
+        if (c[2] - c[0]) > WORD_LINE_WIDTH_SPACES * spacing and (c[3] - c[1]) < WORD_LINE_THICK_SPACES * spacing:
+            continue                                  # a staff / ledger line the box lies on
+        if any(overlaps(c, a) for a in avoid):
+            continue                                  # ink another mark holds
+        pad = [c[0] - slack, c[1] - slack, c[2] + slack, c[3] + slack]
+        if pad[0] >= box[0] and pad[1] >= box[1] and pad[2] <= box[2] and pad[3] <= box[3]:
+            continue                                  # a letter wholly inside the claim already
+        out.append([float(v) for v in pad])
+    return out
+
+
 #: ROADMAP 2.221 word coverage -- the geometry of the extra word claims. All of it reads rows and rasters GATHER already holds.
 #: a metronome note stands this far right of its tempo word (staff spaces; Litolff p1: 1200 -> 1228 = 1.8) ...
 TEMPO_NOTE_GAP_SPACES = 3.0

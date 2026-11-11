@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-11 -- ROADMAP 2.301 landed ON: OMR_WORD_OWNS_ITS_INK (deny-list) + the dynamic claim row names its own slot
+STAGED GATHER (`gather._file_compound`, `claims.edge_ink_boxes`). Label: `detector_letter` is the slot's token, not the twin letters (`fp` -> `p`). Edge letters: a split marking's word also claims ink components standing on its OCR box's edge (slack 0.1 sp), never ink a note box, an earlier claim or its dynamic holds; moves the `g` of `legato` dynamic->word. Real gathers: export unchanged, judged 0 right->wrong; Sean 11/12 tiles right. Inside-a-word rule NOT landed (word unread on tile 4). Tools: benchmarks/dynamics-not-words-2026-11/{replay_claims,ledger_probe,ledger_diff,tiles_r2,make_fixture_2_301}.py.
+
 ## 2026-11-10 -- ROADMAP 2.285 landed ON: OMR_ACCIDENTAL_OWN_INK default ON (opt-out `=0`)
 STAGED GATHER `page_accidental_ink.gather_page_accidental_ink` (once per page after `gather_page_tremolo`, before the head claim): an accidental the detector drew no box for is read once from its own ink by the family reader, claimed (owner `accidental_ink`), given the accidental position row a boxed one gets, and written on its note (GUESSED blue; a natural at its READ margin READ). Flag flipped to the `OMR_PAGE_TREMOLO` opt-out (`page_accidental_ink.enabled`); depends only on flags already ON on main (`OMR_PAGE_CLAIMS` builds the page map it reads; `OMR_PAGE_STROKES`, `OMR_CLAIMED_REGISTER`); with `OMR_PAGE_CLAIMS=0` it reads nothing. Evidence: Sean's r2 tiles 12/12 kind, 10/10 owner; 4 frozen pages accidentals +7 L / +26 B, rests lost 0, judged right->wrong 0. Open: the reader's own rest-box list (retired by 2.288, rests claiming page-wide). benchmarks/accidental-own-ink-2026-11/FINDINGS.md
 

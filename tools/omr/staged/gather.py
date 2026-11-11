@@ -16461,6 +16461,14 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             _count("word:direction_word:compound_not_split:a_note_mark_meets_the_dynamic")
             return False
         pieces, spared = _hr.word_area_sparing_heads(binary, area, [sl["claim_box"] for sl in got["slots"]], _sp(s))
+        if CL.word_ink_enabled():
+            # ROADMAP 2.301 (flag OMR_WORD_OWNS_ITS_INK): the word owns its letters WHOLE -- a letter standing on the edge of the OCR box (the `g` of `legato`, whose stroke box lies 0.5 px past
+            # the box +1 px) is the word's, not the stroke the detector's `dynamicF` box on that `g` settles as a dynamic; never ink a note mark, an earlier claim or the marking's own dynamic holds
+            keep_out = [list(b) for b in note_boxes] + [list(f) for f in filed] + [list(sl["claim_box"]) for sl in got["slots"]]
+            edge = [e for a in pieces for e in CL.edge_ink_boxes(binary, a, _sp(s), keep_out)]
+            if edge:
+                _count("word:direction_word:compound_edge_letters")
+            pieces = list(pieces) + edge
         ax0, ay0, ax1, ay1 = (max(0, int(round(v))) for v in area)
         crop = binary[ay0:ay1, ax0:ax1] == 0
         if crop.size:
@@ -16499,7 +16507,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             _count("word:dynamic_letters:compound_dynamic")
             _file_sparing(s, sl["claim_box"], "dynamic_letters", "lone_inside_a_staff" if sl_inside else "outside_staff",
                           own=[key_of_letter_row[i] for i in sl["rows"] if i in key_of_letter_row], owner_row=sl["rows"][0],
-                          letter_rows=list(sl["rows"]), text=None, detector_letter="".join(sl["letters"]), dynamic_token=sl["text"],
+                          letter_rows=list(sl["rows"]), text=None, detector_letter=sl["text"], detector_letters=list(sl["letters"]), dynamic_token=sl["text"],
                           category="dynamic", lone=True, compound_of=r.id)
         compound_rows.update(got["rows"])
         return True
