@@ -1,0 +1,224 @@
+{
+ "lane": "2.296-r1",
+ "date": "2026-11-11",
+ "question": "is the blue ink a dynamic or a word -- which one exactly? is anything of another mark blue?",
+ "note": "Scored by the manager against key.json: dynamic-vs-word KIND right on 12 of 12. Four open points: tiles 2 and 4 carry text 'fp' where Sean reads p; tile 8's dynamic claim takes the g of legato; tile 3's word claim tints part of the preceding word.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "the word più",
+   "kind_right": true,
+   "issue": null,
+   "plate": "brahms",
+   "page": 14,
+   "row": "obs:083492",
+   "box": [
+    5251.0,
+    6145.0,
+    5377.0,
+    6195.0
+   ],
+   "text": "piu p",
+   "kind": "word",
+   "role": "word of a split marking"
+  },
+  {
+   "tile": 2,
+   "sean": "dynamic p",
+   "kind_right": true,
+   "issue": "our text says 'fp', Sean reads p",
+   "plate": "brahms",
+   "page": 14,
+   "row": "obs:083479",
+   "box": [
+    4677.4,
+    3320.2,
+    4737.0,
+    3374.0
+   ],
+   "text": "fp",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 3,
+   "sean": "the word più; some blue also covers another word before it, like o-r-e, can't see what it is",
+   "kind_right": true,
+   "issue": "word claim tints part of the word before it (sempre) outside its box",
+   "plate": "litolff",
+   "page": 8,
+   "row": "obs:082159",
+   "box": [
+    1761.0,
+    1715.0,
+    1826.0,
+    1749.0
+   ],
+   "text": "sempre più p",
+   "kind": "word",
+   "role": "word of a split marking"
+  },
+  {
+   "tile": 4,
+   "sean": "dynamic p",
+   "kind_right": true,
+   "issue": "our text says 'fp', Sean reads p (it is the p of 'piu p', tile 1)",
+   "plate": "brahms",
+   "page": 14,
+   "row": "obs:083493",
+   "box": [
+    5383.1,
+    6147.4,
+    5441.0,
+    6199.0
+   ],
+   "text": "fp",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 5,
+   "sean": "dynamic p",
+   "kind_right": true,
+   "issue": null,
+   "plate": "litolff",
+   "page": 8,
+   "row": "obs:082157",
+   "box": [
+    1825.0,
+    1573.0,
+    1863.0,
+    1607.4
+   ],
+   "text": "p",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 6,
+   "sean": "dynamic f",
+   "kind_right": true,
+   "issue": null,
+   "plate": "brahms",
+   "page": 0,
+   "row": "obs:028620",
+   "box": [
+    1623.3,
+    3799.3,
+    1694.3,
+    3880.3
+   ],
+   "text": null,
+   "kind": "dynamic",
+   "role": "control"
+  },
+  {
+   "tile": 7,
+   "sean": "the word dim.",
+   "kind_right": true,
+   "issue": null,
+   "plate": "brahms",
+   "page": 14,
+   "row": "obs:083480",
+   "box": [
+    4740.0,
+    3537.0,
+    4885.0,
+    3589.0
+   ],
+   "text": "p dim",
+   "kind": "word",
+   "role": "word of a split marking"
+  },
+  {
+   "tile": 8,
+   "sean": "dynamic f; the letter g of legato is not in the blue box but is also blue",
+   "kind_right": true,
+   "issue": "the dynamic's claim holds the g of 'legato' (2693 px against ~1500-1640 for the other f's)",
+   "plate": "brahms",
+   "page": 0,
+   "row": "obs:028584",
+   "box": [
+    1616.3,
+    2500.5,
+    1686.0,
+    2582.0
+   ],
+   "text": "f",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 9,
+   "sean": "dynamic p",
+   "kind_right": true,
+   "issue": null,
+   "plate": "brahms",
+   "page": 14,
+   "row": "obs:083472",
+   "box": [
+    4847.0,
+    1385.8,
+    4907.0,
+    1438.0
+   ],
+   "text": "p",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 10,
+   "sean": "dynamic p",
+   "kind_right": true,
+   "issue": null,
+   "plate": "litolff",
+   "page": 8,
+   "row": "obs:082160",
+   "box": [
+    1834.8,
+    1716.0,
+    1867.5,
+    1748.0
+   ],
+   "text": "p",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 11,
+   "sean": "dynamic f",
+   "kind_right": true,
+   "issue": null,
+   "plate": "brahms",
+   "page": 0,
+   "row": "obs:028591",
+   "box": [
+    1620.0,
+    5715.1,
+    1692.0,
+    5795.0
+   ],
+   "text": "f",
+   "kind": "dynamic",
+   "role": "newly a dynamic"
+  },
+  {
+   "tile": 12,
+   "sean": "dynamic f",
+   "kind_right": true,
+   "issue": null,
+   "plate": "brahms",
+   "page": 0,
+   "row": "obs:028617",
+   "box": [
+    1620.3,
+    3311.5,
+    1688.2,
+    3393.9
+   ],
+   "text": null,
+   "kind": "dynamic",
+   "role": "control"
+  }
+ ]
+}
