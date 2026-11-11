@@ -2,6 +2,7 @@
 
     python3 -m tools.omr.staged.claim_readout REC [--pages 0,4] [--truth auto] [--tiles DIR] [--out DIR] [--env NAME=V ...]
     python3 -m tools.omr.staged.claim_readout controls REC --page 0          # the three controls that can fail (module doc, 5)
+    python3 -m tools.omr.staged.claim_readout ink REC [--pages 0,4] [--controls]   # ROADMAP 2.293: THE ONE INK NUMBER (section 10): one owner / weak / twice / none
 
 PATH: STAGED GATHER's claim register and ADJUDICATE's `stroke_owner` verdict, READ -- this module files no row, decides nothing and
 names no quantity it writes (registered in `reach.NOT_A_STAGE`, `rule_kinds.INFRA`). Why (Sean, 2026-10-30): "as we're working on the
@@ -53,6 +54,7 @@ from __future__ import annotations
 
 import argparse
 import collections
+import copy
 import hashlib
 import json
 import os
@@ -650,9 +652,10 @@ def _plant_cut_head(lab: np.ndarray, res: Any, claims: Dict[int, StrokeClaims], 
 
 
 def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_root: pathlib.Path,
-               env: Optional[Dict[str, str]] = None, plant: Optional[Tuple[str, str]] = None, want_rgb: bool = False
-               ) -> Tuple[PageInk, Dict[str, int], Any, List[Any]]:
-    """The page canvas of `page` (module doc). Returns (canvas, verify counts, the loaded page with staves, its cells)."""
+               env: Optional[Dict[str, str]] = None, plant: Optional[Tuple[str, str]] = None, want_rgb: bool = False,
+               ledger: bool = False) -> Tuple[Any, Dict[str, int], Any, List[Any]]:
+    """The page canvas of `page` (module doc). Returns (canvas, verify counts, the loaded page with staves, its cells).
+    `ledger=True` (ROADMAP 2.293, module section 10) builds the `LedgerInk` canvas of the one ink number instead of the 2.236 `PageInk`."""
     from . import cell_map as CM
     from . import gather as G
     from . import stroke_map as SM
@@ -660,6 +663,7 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
     verdicts = owner_verdicts(prows, env)
     det, reads = consumer_rows(prows)
     rec_boxes: Dict[Tuple, Dict[int, list]] = collections.defaultdict(dict)
+    page_links: Dict[Tuple, Dict[int, list]] = collections.defaultdict(dict)       # 2.293: {cell: {ordinal: page_stroke link + cut}}
     keep_whole: Dict[Tuple, list] = {}
     touch: Dict[Tuple, list] = {}
     for o in prows["observations"]:
@@ -668,12 +672,16 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
             g = int(p[5])
             if g >= STROKE_BASE:
                 rec_boxes[cell_key(o["subject"])][g - STROKE_BASE] = (o.get("detail") or {}).get("stroke_box")
+                ln = (o.get("detail") or {}).get("page_stroke")
+                if isinstance(ln, (list, tuple)) and len(ln) >= 2:
+                    page_links[cell_key(o["subject"])][g - STROKE_BASE] = list(ln) + ([1.0 if (o.get("detail") or {}).get("cut") else 0.0]
+                                                                                    if len(ln) >= 3 else [])
                 if (o.get("detail") or {}).get("cell_keep_whole"):     # ROADMAP 2.239: the boxes the split left whole, as the gather saw them
                     keep_whole[cell_key(o["subject"])] = o["detail"]["cell_keep_whole"]
                 if (o.get("detail") or {}).get("cell_touch_boxes"):    # 2.239 r3: the boxes a touching accidental was cut against
                     touch[cell_key(o["subject"])] = o["detail"]["cell_touch_boxes"]
     (pws, cells), = CM.load_prepared(pdf, [page], root=cm_root)
-    canvas = PageInk(pws.page.binary == 0)
+    canvas = LedgerInk(pws.page.binary == 0) if ledger else PageInk(pws.page.binary == 0)
     local = G._system_local(pws.staves)
     verify = collections.Counter()
     for c in cells:
@@ -709,8 +717,12 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
             if y1 > y0 and x1 > x0:
                 sub = lab[y0:y1, x0:x1]
                 sub[m[:y1 - y0, :x1 - x0]] = i + 1
-        claims = claims_for_cell(res.strokes, verdicts.get(ck), det.get(ck, {}), cv_read_strokes(res, reads.get(ck, ())))
-        if plant and plant != ("cut", "head"):
+        if ledger:
+            claims = ledger_claims_for_cell(res.strokes, verdicts.get(ck), det.get(ck, {}), cv_read_strokes(res, reads.get(ck, ())),
+                                            page_links.get(ck, {}), plant)
+        else:
+            claims = claims_for_cell(res.strokes, verdicts.get(ck), det.get(ck, {}), cv_read_strokes(res, reads.get(ck, ())))
+        if plant and plant != ("cut", "head") and not ledger:
             plant_double_claim(claims, plant[0], plant[1])
         raw = getattr(c, "binary", None)
         er = ((raw == 0) & (img != 0)) if raw is not None else None
@@ -724,11 +736,18 @@ def build_page(rows: Dict[str, List[dict]], pdf: pathlib.Path, page: int, cm_roo
                            "angle": st.angle_deg, "touches": bool(st.touches),
                            "page_box": [round(c.bbox_page_px[0] + x / up), round(c.bbox_page_px[1] + y / up),
                                         round(c.bbox_page_px[0] + (x + w_) / up), round(c.bbox_page_px[1] + (y + h_) / up)]}
-        if plant == ("cut", "head"):
+        if plant == ("cut", "head") and not ledger:
             _plant_cut_head(lab, res, claims, meta)
         canvas.add_cell(c.bbox_page_px, lab, claims, er, [c.bbox_page_px[1] + y / c.upscale_factor for y in ys], meta)
-    for a in area_claims(prows):
-        canvas.add_area(a["rect"], a["kind"], a["weak"])
+    if ledger:
+        for a in area_claims_fine(prows):
+            canvas.add_area(a["rect"], a["kind"], a["weak"])
+        canvas.bands = staff_bands(cells)
+        canvas.links_filed = sum(len(v) for v in page_links.values())
+        canvas.strokes_filed = int(verify.get("strokes_ok", 0))
+    else:
+        for a in area_claims(prows):
+            canvas.add_area(a["rect"], a["kind"], a["weak"])
     canvas.finish()
     return canvas, dict(verify), pws, cells
 
@@ -1004,6 +1023,597 @@ def render_truth(tr: Dict[str, Any], tr_reg: Optional[Dict[str, Any]] = None) ->
     return lines
 
 
+# ───────────────────────────── 10. THE ONE INK NUMBER (ROADMAP 2.293) ─────────────────────────────
+#
+#   python3 -m tools.omr.staged.claim_readout ink REC [--pages 0,4] [--out DIR] [--controls]
+#
+# Every dark pixel of the page is exactly ONE of four things, and the four lines add to 100% of the page's dark pixels (the tool RAISES if they do not):
+#
+#   ONE OWNER    a READ claim stands on it and the ledger's settle gave it to one kind (staff line, barline, bracket/brace, clef, key, meter, word,
+#                dynamic, arc, hairpin, tremolo, accidental, rest, notehead, stem, beam, flag, ledger line, dot, mark). A stroke two kinds claimed and the
+#                settle chose between by tier or shape (`stroke_owner._settle`: decided) HAS one owner -- the loser is told it owns nothing -- and is
+#                reported on its own sub-line ("settled over a rival"), never as claimed twice. Sub-lines: ON THE PAGE LEDGER = the owner holds the ink by a
+#                page-wide register claim (a `claimed_area` area / trace / layer row: barline, bracket, clef, key, meter, word, arc trace, tremolo,
+#                the staff lines); CLAIMED BY A CELL BOX, NOT ON THE PAGE LEDGER = the owner holds it by a detector box in one padded cell (head, rest,
+#                accidental, ledger, dot, stem, beam, flag ...) or a cv_lines read. The plan's progress is ink moving from the second sub-line to the first.
+#                "Linked" is a different fact (a cell stroke whose ink lies on one page stroke, `page_ledger`), printed beside it.
+#   WEAK ONLY    no READ claim; a GUESSED / NARROWED claim's area stands on it. Never counted as claimed.
+#   TWICE        the ledger's own settle left it with two owners: TWIN (one kind, two boxes: `merged`), TWO KINDS (`contested`: the settle could not
+#                choose), VIEWS DISAGREE (two padded cells' verdicts of an UNLINKED piece name different kinds), TWIN VIEWS (one kind named in two
+#                unlinked cell views).
+#   NO OWNER     nothing claims it. Split by a simple shape test on its connected pieces -- a GUESS OF THIS TOOL, never a claim: refused claim (a
+#                claim stood and its shape did not fit: a fact), staff-line residue, specks, long thin strokes, note-like blobs, text-like, small marks, other.
+#
+# A GATHER change is not visible on a saved slice: the header prints the slice's directory and write time, the tree's sha and date, and how many of
+# the slice's cell strokes carry a page-stroke link (a slice gathered before 2.284 has none: its owners are per-cell verdicts only).
+
+#: owner family (stroke_owner's, or a register layer's own `owner` name) -> the fine kind the one ink number reports. A family this table does not
+#: name is reported UNDER ITS OWN NAME (a layer a later lane files, e.g. `tremolo`, needs no edit here).
+FINE_OF_FAMILY = {
+    "head": "notehead", "ledger": "ledger_line", "accidental": "accidental", "dot": "dot", "rest": "rest", "whole_rest": "rest",
+    "arc": "arc", "arc_trace": "arc", "hairpin": "hairpin", "hairpin_trace": "hairpin", "stem": "stem", "beam": "beam", "flag": "flag",
+    "dynamic": "dynamic", "word": "word", "text": "mark", "mark": "mark", "bracket": "bracket", "leading_column": "bracket",
+    "barline": "barline", "clef": "clef", "meter": "meter", "key_signature": "key", "tremolo": "tremolo",
+}
+#: the print order, and the bit of each kind in the canvas (an owner name not listed gets `other`)
+FINE_KINDS = ("staff_line", "barline", "bracket", "clef", "key", "meter", "word", "dynamic", "arc", "hairpin", "tremolo", "accidental", "rest",
+              "notehead", "stem", "beam", "flag", "ledger_line", "dot", "mark", "other")
+FINE_BIT = {k: np.uint32(1 << i) for i, k in enumerate(FINE_KINDS)}
+#: the NO OWNER classes, in the order the shape test tries them (module section 10: a guess of the tool)
+NONE_CLASSES = ("refused_claim", "staff_line_residue", "specks", "long_thin_stroke", "note_like_blob", "text_like", "small_mark", "other_shape")
+#: shape-test limits, staff spaces. THIS TOOL'S GUESS (labelled so in every print), not a convention: a speck is smaller than a head's smallest side
+#: (`head_ink.MIN_SPACES` 0.6, half of it); a long thin stroke runs 2 sp and is at most half a space thick; a note-like blob is head-sized
+#: (`head_ink.MIN_SPACES` .. `MAX_WIDTH_SPACES`) and mostly filled; text is small and stands outside every staff.
+SPECK_MAX_SP = 0.3
+LONG_MIN_SP, THIN_MAX_SP = 2.0, 0.5
+BLOB_MIN_SP, BLOB_MAX_SP, BLOB_FILL_MIN = 0.6, 1.9, 0.4
+TEXT_MAX_H_SP, SMALL_MAX_SP = 2.5, 2.5
+
+
+class InkPartitionError(AssertionError):
+    """The four lines do not add to the page's dark pixels (or a sub-line does not add to its line): the count is wrong, never printed as a number."""
+
+
+def fine_of(family: str) -> str:
+    f = FINE_OF_FAMILY.get(str(family), str(family))
+    return f if f in FINE_BIT else "other"
+
+
+@dataclass
+class LedgerStroke:
+    """What the page ledger's answer is for ONE cell stroke: the standing kinds (fine), where each one's claim comes from (`ledger` = a page-wide register
+    claim, `cell` = a detector box / cv read of one cell), and the facts the one number reports."""
+    shape: str = "blob"
+    kinds: Set[str] = field(default_factory=set)
+    src: Dict[str, str] = field(default_factory=dict)
+    twin: bool = False              # one kind, two or more boxes in the one verdict (`merged`, or two consumer boxes of one kind)
+    twin_mixed: bool = False        # ... and one of the claims is a page-wide register claim (a box AND the register named the same kind)
+    open: bool = False              # the settle left the stroke `contested`
+    rival: bool = False             # decided, and another kind's fit claim lost the settle
+    refused: bool = False           # a claim stood on it and its shape did not fit
+    linked: bool = False            # the cell stroke lies on one page stroke (`page_ledger`)
+    planted: bool = False           # a control put the second owner here
+
+
+def link_is_linked(ln: Optional[Sequence[float]]) -> bool:
+    """A cell stroke is LINKED to its page stroke by the ledger's own rule (`page_ledger.LINK_SHARE_MIN`, `is_view`)."""
+    if not ln or len(ln) < 2:
+        return False
+    from . import page_ledger as PL
+    t = [int(ln[0])] + [float(x) for x in ln[1:]]
+    return t[1] >= PL.LINK_SHARE_MIN and PL.is_view(tuple(t))
+
+
+def ledger_claims_for_cell(strokes: Sequence[Any], verdict: Optional[Dict[str, Any]], det: Dict[int, List[str]], cv_reads: Dict[int, List[str]],
+                           links: Dict[int, Sequence[float]], plant: Optional[Tuple[str, str]] = None, limit: int = 40) -> Dict[int, LedgerStroke]:
+    """`{label (ordinal + 1): LedgerStroke}` for one cell: the stroke owner's verdict read AS THE LEDGER ANSWERED IT (state decided / merged / contested /
+    refused_claims), then the consumers' detector boxes and cv reads on the strokes the settle left unclaimed. `plant` = a control: `("twin", kind)` puts
+    a second box of `kind` on up to `limit` strokes that kind owns."""
+    vs = (verdict or {}).get("strokes") or {}
+    out: Dict[int, LedgerStroke] = {}
+    planted = 0
+    for o, st in enumerate(strokes):
+        ls = LedgerStroke(shape=st.kind if hasattr(st, "kind") else str(st), linked=link_is_linked(links.get(o)))
+        ent = vs.get(str(o))
+        det_f = [fine_of(f) for f in det.get(o, ())]
+        if ent:
+            state, fam, _owners, _by, cands = ent[0], ent[1], ent[2], ent[3], ent[4]
+            fits = [c for c in cands if c[3] != "no"]
+            if state in ("decided", "merged") and fam:
+                k = fine_of(fam)
+                ls.kinds.add(k)
+                ls.src[k] = "ledger" if any(c[1] == fam and c[5] == "area" for c in fits) else "cell"
+                ls.twin = state == "merged"
+                ls.twin_mixed = ls.twin and ls.src[k] == "ledger" and any(c[1] == fam and c[5] != "area" for c in fits)
+                ls.rival = any(fine_of(c[1]) != k for c in fits) or any(f != k for f in det_f)
+            elif state == "contested":
+                for c in fits:
+                    k = fine_of(c[1])
+                    ls.kinds.add(k)
+                    if c[5] == "area":
+                        ls.src[k] = "ledger"
+                    else:
+                        ls.src.setdefault(k, "cell")
+                ls.open = len(ls.kinds) >= 2
+            elif state == "refused_claims":
+                ls.refused = True
+        if not ls.kinds and det_f:                      # the consumers' boxes on a stroke the settle left unclaimed
+            ls.kinds.update(det_f)
+            for k in det_f:
+                ls.src[k] = "cell"
+            ls.twin = len(set(det_f)) == 1 and len(det_f) >= 2
+        if not ls.kinds:
+            for k in cv_reads.get(o, ()):               # a cv_lines stem / beam read, only where nothing else claims
+                ls.kinds.add(k)
+                ls.src[k] = "cell"
+        if ls.kinds:
+            ls.refused = False
+        if plant and plant[0] == "twin" and plant[1] in ls.kinds and len(ls.kinds) == 1 and not ls.twin and planted < limit:
+            ls.twin, ls.planted = True, True
+            planted += 1
+        out[o + 1] = ls
+    return out
+
+
+def area_claims_fine(rows: Dict[str, List[dict]]) -> List[Dict[str, Any]]:
+    """The register's page-wide RECTANGLE claims (`unit` area / page_ink, value a rectangle), READ or weak, by fine kind. Applied to ink OUTSIDE every cell."""
+    out = []
+    for o in rows["observations"]:
+        if o.get("quantity") != "claimed_area":
+            continue
+        d = o.get("detail") or {}
+        v = o.get("value")
+        if d.get("unit") not in ("area", "page_ink") or not (isinstance(v, list) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v)):
+            continue
+        if not d.get("owner"):
+            continue
+        out.append({"rect": [float(t) for t in v], "kind": fine_of(str(d["owner"])), "owner": d["owner"], "weak": d.get("standing", "READ") != "READ"})
+    return out
+
+
+def _pop(a: np.ndarray) -> np.ndarray:
+    n = np.zeros(a.shape, np.uint8)
+    for i in range(len(FINE_KINDS)):
+        n += ((a >> np.uint32(i)) & np.uint32(1)).astype(np.uint8)
+    return n
+
+
+def mask_fine(m: int) -> Tuple[str, ...]:
+    return tuple(k for k in FINE_KINDS if m & int(FINE_BIT[k]))
+
+
+# state codes of the partition image
+ST_ONE, ST_TWIN, ST_TWIN_VIEWS, ST_TWO_OPEN, ST_TWO_VIEWS, ST_STAFF, ST_WEAK, ST_NONE = range(8)
+ST_NAMES = ("one", "twin", "twin_views", "two_kinds", "views_disagree", "staff_line", "weak", "none")
+
+
+class LedgerInk:
+    """ONE page's ledger canvas (module section 10). `add_cell` ORs a cell's strokes in page pixels; `finish` fixes every dark pixel's state; `tally`
+    counts the four lines. A pixel's owners are the UNION over every cell view that saw it."""
+
+    def __init__(self, ink: np.ndarray):
+        self.ink = ink.astype(bool)
+        h, w = self.ink.shape
+        self.shape = (h, w)
+        z32 = lambda: np.zeros((h, w), np.uint32)
+        zb = lambda: np.zeros((h, w), bool)
+        self.fam = z32()                 # fine kinds standing on the pixel (any view)
+        self.led = z32()                 # ... of those, by a page-wide register claim
+        self.afam = z32()                # READ rectangle claims (applied outside cells)
+        self.weak = z32()                # GUESSED / NARROWED rectangle claims
+        self.twin = zb()                 # one verdict says twin boxes here
+        self.twin_mix = zb()             # ... a box and a register claim
+        self.open = zb()                 # a verdict left it contested
+        self.rival = zb()                # decided over a rival kind
+        self.lnk = zb()                  # on a linked stroke in some view
+        self.nview = np.zeros((h, w), np.uint8)    # views that name an owner here
+        self.seen = zb()
+        self.uk = np.zeros((h, w), np.uint8)       # stroke shape code where unowned (1..4 STROKE_KINDS, +4 refused)
+        self.incell = zb()
+        self.staff = zb()
+        self.nearline = zb()
+        self.planted = zb()              # a control's second owner
+        self.bands: List[Tuple[float, float]] = []
+        self.sp = 0.0
+        self._sps: List[float] = []
+        self.cells_added = 0
+        self.links_filed = 0
+        self.strokes_filed = 0
+
+    def add_cell(self, rect: Sequence[int], labels: np.ndarray, claims: Dict[int, LedgerStroke], erased_staff: Optional[np.ndarray] = None,
+                 lines_page: Sequence[float] = (), meta: Any = None) -> None:
+        x0, y0, x1, y1 = (int(v) for v in rect)
+        x0, y0 = max(0, x0), max(0, y0)
+        x1, y1 = min(self.shape[1], x1), min(self.shape[0], y1)
+        w, h = x1 - x0, y1 - y0
+        if w <= 0 or h <= 0:
+            return
+        n = int(labels.max()) + 1 if labels.size else 1
+        fam_t, led_t = np.zeros(n, np.uint32), np.zeros(n, np.uint32)
+        twin_t, open_t, riv_t, lnk_t, pl_t, mix_t = (np.zeros(n, bool) for _ in range(6))
+        uk_t = np.zeros(n, np.uint8)
+        for i, c in claims.items():
+            if i >= n:
+                continue
+            for k in c.kinds:
+                fam_t[i] |= FINE_BIT[k]
+                if c.src.get(k) == "ledger":
+                    led_t[i] |= FINE_BIT[k]
+            twin_t[i], open_t[i], riv_t[i], lnk_t[i], pl_t[i], mix_t[i] = c.twin, c.open, c.rival, c.linked, c.planted, c.twin_mixed
+            if not c.kinds:
+                code = STROKE_KINDS.index(c.shape) + 1 if c.shape in STROKE_KINDS else 4
+                uk_t[i] = code + (4 if c.refused else 0)
+        lab = sample_to_rect(fill_labels(labels), w, h)
+        sl = (slice(y0, y1), slice(x0, x1))
+        self.fam[sl] |= fam_t[lab]
+        self.led[sl] |= led_t[lab]
+        self.twin[sl] |= twin_t[lab]
+        self.twin_mix[sl] |= mix_t[lab]
+        self.open[sl] |= open_t[lab]
+        self.rival[sl] |= riv_t[lab]
+        self.lnk[sl] |= lnk_t[lab]
+        self.planted[sl] |= pl_t[lab]
+        self.nview[sl] = np.minimum(self.nview[sl].astype(np.int16) + (fam_t[lab] != 0), 255).astype(np.uint8)
+        self.seen[sl] |= lab > 0
+        self.uk[sl] = np.maximum(self.uk[sl], uk_t[lab])
+        self.incell[sl] = True
+        if len(lines_page) >= 2:
+            u = (lines_page[-1] - lines_page[0]) / (len(lines_page) - 1)
+            self._sps.append(float(u))
+            self.sp = float(np.median(self._sps))
+            for ly in lines_page:
+                a, b = max(y0, int(round(ly - LINE_NEAR_SPACES * u))), min(y1, int(round(ly + LINE_NEAR_SPACES * u)) + 1)
+                if b > a:
+                    self.nearline[a:b, x0:x1] = True
+        if erased_staff is not None:
+            self.staff[sl] |= sample_to_rect(erased_staff.astype(np.uint8), w, h).astype(bool)
+        self.cells_added += 1
+
+    def add_area(self, rect: Sequence[float], kind: str, weak: bool = False) -> None:
+        """A page-px rectangle claim; it claims the ink OUTSIDE every cell (inside, the stroke owner already read it)."""
+        x0, y0, x1, y1 = (int(round(v)) for v in rect)
+        x0, y0 = max(0, x0), max(0, y0)
+        x1, y1 = min(self.shape[1], x1), min(self.shape[0], y1)
+        if x1 <= x0 or y1 <= y0:
+            return
+        (self.weak if weak else self.afam)[y0:y1, x0:x1] |= FINE_BIT[kind]
+
+    # ── the partition ──
+    def finish(self) -> None:
+        """Fix the state of every dark pixel (`ST_*`), then the NO OWNER class of the unowned ones. RAISES if a dark pixel has no state."""
+        ink = self.ink
+        fam = np.where(self.incell, self.fam, self.afam)
+        led = np.where(self.incell, self.led, self.afam)             # a rectangle claim outside the cells is a register claim by nature
+        self.fam_eff, self.led_eff = fam, led
+        pop = _pop(fam)
+        self.pop = pop
+        st = np.full(self.shape, 255, np.uint8)
+
+        def put(sel: np.ndarray, code: int) -> None:
+            st[sel & (st == 255)] = code
+
+        claimed = ink & (pop > 0)
+        put(claimed & (pop >= 2) & self.open & self.incell, ST_TWO_OPEN)
+        put(claimed & (pop >= 2), ST_TWO_VIEWS)
+        put(claimed & (pop == 1) & self.twin & self.incell, ST_TWIN)
+        put(claimed & (pop == 1) & self.incell & (self.nview >= 2) & ~self.lnk, ST_TWIN_VIEWS)
+        put(claimed & (pop == 1), ST_ONE)
+        rest = ink & (pop == 0)
+        put(rest & self.incell & ~self.seen & self.staff, ST_STAFF)       # the staff's own ink, which the eraser took (READ staff geometry)
+        put(rest & (self.weak != 0), ST_WEAK)
+        put(rest, ST_NONE)
+        if (ink & (st == 255)).any():
+            raise InkPartitionError("%d dark pixel(s) have no state" % int((ink & (st == 255)).sum()))
+        self.state = st
+        self.none_class = self._classify_unowned(ink & (st == ST_NONE))
+
+    def _classify_unowned(self, m: np.ndarray) -> np.ndarray:
+        """The NO OWNER class of each unowned dark pixel (`NONE_CLASSES`, an index + 1; 0 elsewhere): a GUESS of this tool, from the pixel's stroke and
+        its connected piece's size in staff spaces."""
+        import cv2
+        out = np.zeros(self.shape, np.uint8)
+        if not m.any():
+            return out
+        ref = m & self.incell & self.seen & (self.uk >= 5)
+        out[ref] = 1 + NONE_CLASSES.index("refused_claim")
+        shp = (self.uk - 1) % 4                                     # STROKE_KINDS index: 1 horizontal, 2 curve
+        res = m & ~ref & self.incell & self.seen & self.nearline & (self.uk > 0) & np.isin(shp, (1, 2))
+        out[res] = 1 + NONE_CLASSES.index("staff_line_residue")
+        left = m & (out == 0)
+        if not left.any():
+            return out
+        u = self.sp if self.sp > 0 else 32.0
+        n, lab, stats, _c = cv2.connectedComponentsWithStats(cv2.dilate(left.astype(np.uint8), np.ones((3, 3), np.uint8)), connectivity=8)
+        w, h, bx, by = stats[:, 2].astype(float), stats[:, 3].astype(float), stats[:, 0].astype(float), stats[:, 1].astype(float)
+        px = np.bincount(lab[left], minlength=n).astype(float)
+        cls = np.full(n, NONE_CLASSES.index("other_shape"), np.int64)
+        cy = by + h / 2.0
+        in_band = np.zeros(n, bool)
+        for top, bot in self.bands:
+            in_band |= (cy >= top - 0.5 * u) & (cy <= bot + 0.5 * u)
+        big, small = np.maximum(w, h), np.minimum(w, h)
+        todo = np.ones(n, bool)
+
+        def take(sel: np.ndarray, name: str) -> None:
+            nonlocal todo
+            s = sel & todo
+            cls[s] = NONE_CLASSES.index(name)
+            todo = todo & ~s
+
+        take(big <= SPECK_MAX_SP * u, "specks")
+        take((big >= LONG_MIN_SP * u) & (small <= THIN_MAX_SP * u), "long_thin_stroke")
+        take((w >= BLOB_MIN_SP * u) & (h >= BLOB_MIN_SP * u) & (w <= BLOB_MAX_SP * u) & (h <= BLOB_MAX_SP * u)
+             & (px / np.maximum(w * h, 1.0) >= BLOB_FILL_MIN), "note_like_blob")
+        take(~in_band & (h <= TEXT_MAX_H_SP * u), "text_like")
+        take(big <= SMALL_MAX_SP * u, "small_mark")
+        lc = lab[left]
+        out[left] = (cls[lc] + 1).astype(np.uint8)
+        return out
+
+    def tally(self) -> Dict[str, Any]:
+        """The four lines and every sub-line, in ink px (module section 10). Verified before it is returned."""
+        ink, st = self.ink, self.state
+        total = int(ink.sum())
+        fam, led = self.fam_eff, self.led_eff
+        t: Dict[str, Any] = {"ink_px": total, "cells": self.cells_added, "links_filed": self.links_filed, "strokes_filed": self.strokes_filed}
+
+        def count(sel: np.ndarray) -> int:
+            return int((sel & ink).sum())
+
+        def by_kind(sel: np.ndarray, src_ledger: Optional[bool] = None) -> Dict[str, int]:
+            out: Dict[str, int] = {}
+            s = sel & ink
+            if src_ledger is not None:
+                lb = (led & fam) == fam
+                s = s & (lb if src_ledger else ~lb)
+            vals, cnt = np.unique(fam[s], return_counts=True)
+            for v, c in zip(vals, cnt):
+                k = mask_fine(int(v))
+                out[k[0] if len(k) == 1 else "+".join(k)] = out.get(k[0] if len(k) == 1 else "+".join(k), 0) + int(c)
+            return out
+
+        one_core = st == ST_ONE
+        staff_px = count(st == ST_STAFF)
+        one_by = by_kind(one_core)
+        if staff_px:
+            one_by["staff_line"] = staff_px
+        one_led = by_kind(one_core, True)
+        one_cell = by_kind(one_core, False)
+        if staff_px:
+            one_led["staff_line"] = staff_px
+        t["one"] = {"px": count(one_core) + staff_px, "by_kind": one_by, "ledger_px": sum(one_led.values()), "cell_px": sum(one_cell.values()),
+                    "by_kind_ledger": one_led, "by_kind_cell": one_cell,
+                    "linked_px": count(one_core & self.lnk), "over_rival_px": count(one_core & self.rival)}
+        t["weak"] = {"px": count(st == ST_WEAK)}
+        wk = {}
+        for k in FINE_KINDS:
+            n = count((st == ST_WEAK) & ((self.weak & FINE_BIT[k]) != 0))
+            if n:
+                wk[k] = n
+        t["weak"]["by_kind"] = wk
+        twin, tv, two, vd = st == ST_TWIN, st == ST_TWIN_VIEWS, st == ST_TWO_OPEN, st == ST_TWO_VIEWS
+        pairs = by_kind(two | vd)
+        t["twice"] = {"px": count(twin | tv | two | vd), "twin_px": count(twin), "twin_mixed_px": count(twin & self.twin_mix), "twin_views_px": count(tv), "two_kinds_px": count(two),
+                      "views_disagree_px": count(vd), "twin_by_kind": by_kind(twin), "twin_views_by_kind": by_kind(tv), "pairs": pairs,
+                      "planted_px": count((twin | tv) & self.planted)}
+        nn = self.none_class
+        cls = {}
+        for i, name in enumerate(NONE_CLASSES):
+            n = count((st == ST_NONE) & (nn == i + 1))
+            if n:
+                cls[name] = n
+        t["none"] = {"px": count(st == ST_NONE), "by_class": cls, "outside_cells_px": count((st == ST_NONE) & ~self.incell)}
+        t["lines"] = {k: t[k]["px"] for k in ("one", "weak", "twice", "none")}
+        verify_tally(t)
+        return t
+
+    # ── controls ──
+    def without_kind(self, kind: str) -> "LedgerInk":
+        """CONTROL: the same canvas with every claim of `kind` erased (module section 10, control a)."""
+        c = copy.copy(self)
+        b = ~FINE_BIT[kind]
+        c.fam, c.led, c.afam, c.weak = self.fam & b, self.led & b, self.afam & b, self.weak & b
+        c.finish()
+        return c
+
+
+def verify_tally(t: Dict[str, Any]) -> None:
+    """RAISES `InkPartitionError` unless the four lines add to the dark pixels and every sub-line adds to its line. Reads only the numbers, so a
+    doctored tally fails it (control c)."""
+    L = t["lines"]
+    if sum(L.values()) != t["ink_px"]:
+        raise InkPartitionError("one %d + weak %d + twice %d + none %d = %d, the page has %d dark pixels" % (
+            L["one"], L["weak"], L["twice"], L["none"], sum(L.values()), t["ink_px"]))
+    o = t["one"]
+    if sum(o["by_kind"].values()) != o["px"] or o["ledger_px"] + o["cell_px"] != o["px"]:
+        raise InkPartitionError("one-owner sub-lines: by kind %d, ledger %d + cell %d, line %d" % (sum(o["by_kind"].values()), o["ledger_px"], o["cell_px"], o["px"]))
+    w = t["weak"]
+    if sum(w["by_kind"].values()) > w["px"]:
+        raise InkPartitionError("weak by kind exceeds the weak line")
+    tw = t["twice"]
+    if tw["twin_mixed_px"] > tw["twin_px"]:
+        raise InkPartitionError("twin box+register ink exceeds the twin line")
+    if tw["twin_px"] + tw["twin_views_px"] + tw["two_kinds_px"] + tw["views_disagree_px"] != tw["px"]:
+        raise InkPartitionError("twice sub-lines do not add to the twice line")
+    n = t["none"]
+    if sum(n["by_class"].values()) != n["px"]:
+        raise InkPartitionError("no-owner classes add to %d, the line is %d" % (sum(n["by_class"].values()), n["px"]))
+
+
+def merge_ink_tallies(ts: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """Page tallies summed (every number is a pixel count, so a sum is exact); the sum is verified again."""
+    def add(a: Any, b: Any) -> Any:
+        if isinstance(a, dict):
+            out = dict(a)
+            for k, v in b.items():
+                out[k] = add(out[k], v) if k in out else v
+            return out
+        return a + b
+    out = ts[0]
+    for t in ts[1:]:
+        out = add(out, t)
+    verify_tally(out)
+    return out
+
+
+def ink_pct(x: int, tot: int) -> str:
+    return "%5.1f%%" % (100.0 * x / tot) if tot else "   -  "
+
+
+def render_ink_number(label: str, t: Dict[str, Any]) -> List[str]:
+    tot = t["ink_px"]
+    L = t["lines"]
+    o, w, tw, n = t["one"], t["weak"], t["twice"], t["none"]
+    staff = o["by_kind"].get("staff_line", 0)
+    ns = tot - staff
+
+    def kinds(d: Dict[str, int], top: int = 99) -> str:
+        return ", ".join("%s %s" % (k, ink_pct(v, tot)) for k, v in sorted(d.items(), key=lambda kv: -kv[1])[:top] if v) or "-"
+    out = ["%s: %d dark px (%d cells)" % (label, tot, t["cells"]),
+           "  ONE OWNER      %s   (%s of the ink that is not staff line)" % (ink_pct(L["one"], tot), ink_pct(L["one"] - staff, ns)),
+           "      on the page ledger (a page-wide register claim, staff lines included)  %s" % ink_pct(o["ledger_px"], tot),
+           "      claimed by a cell box / cv read, NOT on the page ledger                 %s" % ink_pct(o["cell_px"], tot),
+           "      of the one-owner ink: on a linked page stroke %s, settled over a rival kind %s" % (ink_pct(o["linked_px"], tot), ink_pct(o["over_rival_px"], tot)),
+           "  WEAK ONLY      %s   (a GUESSED / NARROWED claim stands on it: %s)" % (ink_pct(L["weak"], tot), kinds(w["by_kind"])),
+           "  CLAIMED TWICE  %s   one kind twice %s (of which a box AND a register claim %s), two kinds (settle left it open) %s, unlinked views disagree %s, same kind in two unlinked views %s" % (
+               ink_pct(L["twice"], tot), ink_pct(tw["twin_px"], tot), ink_pct(tw["twin_mixed_px"], tot), ink_pct(tw["two_kinds_px"], tot), ink_pct(tw["views_disagree_px"], tot),
+               ink_pct(tw["twin_views_px"], tot)),
+           "  NO OWNER       %s   (outside every cell %s)" % (ink_pct(L["none"], tot), ink_pct(n["outside_cells_px"], tot)),
+           "  sum of the four lines %s (checked: the tool raises otherwise)" % ink_pct(sum(L.values()), tot),
+           "  one owner by kind:                 " + kinds(o["by_kind"]),
+           "    ... on the page ledger:          " + kinds(o["by_kind_ledger"]),
+           "    ... cell box, not on the ledger: " + kinds(o["by_kind_cell"]),
+           "  claimed twice, by kind (one kind twice): " + kinds(tw["twin_by_kind"]) + "   two-kind pairs: " + kinds(tw["pairs"], 6),
+           "  no owner, shape GUESS of this tool (refused claim is a fact): " + kinds(n["by_class"])]
+    return out
+
+
+def ink_header(src: pathlib.Path, pages: Sequence[int], master: str, totals: Dict[str, Any], tree: Dict[str, str]) -> List[str]:
+    obs = src / "observations.jsonl"
+    lk, st = totals.get("links_filed", 0), totals.get("strokes_filed", 0)
+    return [
+        "claim_readout ink -- THE ONE INK NUMBER (ROADMAP 2.293). Every dark pixel of the page is one of: one owner / weak only / claimed twice / no owner.",
+        "  slice %s (observations written %s), pages %s, cell map %s" % (src, time.strftime("%Y-%m-%d %H:%M", time.localtime(obs.stat().st_mtime)), list(pages), master),
+        "  tree %s (%s)   page-ledger flag OMR_PAGE_LEDGER_OWNS=%s" % (tree.get("sha", "?"), tree.get("date", "?"), os.environ.get("OMR_PAGE_LEDGER_OWNS", "1")),
+        "  page-stroke links in this slice: %d of %d cell strokes%s" % (lk, st, "" if lk else "  -- NONE: a gather before 2.284; every owner below is a per-cell verdict"),
+        "  ON THE PAGE LEDGER = held by a page-wide register claim (barline, bracket, clef, key, meter, word, arc trace, tremolo, staff lines). "
+        "CLAIMED BY A CELL BOX = held by a detector box of one padded cell (head, rest, accidental, ledger, dot, stem, beam, flag) or a cv read: "
+        "settled by the same ledger, but the claim itself is not yet page-wide. READ claims only; GUESSED / NARROWED ones are WEAK.",
+        "  A saved slice shows the GATHER it was cut from, not the tree above: a GATHER change is not visible here until a slice is re-gathered."]
+
+
+def tree_info() -> Dict[str, str]:
+    import subprocess
+    try:
+        r = subprocess.run(["git", "-C", str(ROOT), "log", "-1", "--format=%h|%cd", "--date=short"], capture_output=True, text=True, timeout=20).stdout.strip()
+        sha, _, date = r.partition("|")
+        return {"sha": sha, "date": date}
+    except Exception:
+        return {}
+
+
+def run_ink(rec: str, pages: Optional[Sequence[int]], *, out: Optional[pathlib.Path] = None, env: Optional[Dict[str, str]] = None,
+            cm_root: Optional[pathlib.Path] = None, controls_page: Optional[int] = None, log=print, keep_canvas: bool = False) -> Dict[str, Any]:
+    """The one ink number for `pages` of the slice `rec` (module section 10)."""
+    from . import cell_map as CM
+    src = resolve_source(rec)
+    pages = list(pages) if pages else slice_pages(src)
+    rows_all = read_rows(src, pages)
+    ed = edition_info(rows_all)
+    pdf = LIB / ed["edition_path"]
+    cm_root = cm_root or CM.ROOT_DEFAULT
+    man = CM.info(pdf, root=cm_root)
+    per: Dict[int, Dict[str, Any]] = {}
+    canvases: Dict[int, Any] = {}
+    verify: Dict[str, int] = collections.Counter()
+    for pg in pages:
+        t0 = time.time()
+        canvas, ver, _pws, _cells = build_page(rows_all, pdf, pg, cm_root, env, ledger=True)
+        per[pg] = canvas.tally()
+        per[pg]["seconds"] = round(time.time() - t0, 1)
+        for k, v in ver.items():
+            verify[k] += v
+        if keep_canvas:
+            canvases[pg] = canvas
+        del canvas, _pws, _cells
+    total = merge_ink_tallies([{k: v for k, v in per[p].items() if k != "seconds"} for p in pages])
+    lines = ink_header(src, pages, man["version"], total, tree_info())
+    lines += render_ink_number("TOTAL", total)
+    for p in pages:
+        lines += render_ink_number("page %d (%.0f s)" % (p, per[p]["seconds"]), per[p])
+    lines.append("  cells re-cut and matched stroke-for-stroke to the record: %s" % dict(verify))
+    text = "\n".join(lines)
+    report = {"record": str(src), "pages": pages, "master": man["version"], "tree": tree_info(), "total": total, "per_page": {str(p): per[p] for p in pages},
+              "verify": dict(verify), "canvases": canvases}
+    if out is not None:
+        out.mkdir(parents=True, exist_ok=True)
+        (out / "ink_number.json").write_text(json.dumps({k: v for k, v in report.items() if k != "canvases"}, indent=1, sort_keys=True, default=str))
+        (out / "ink_number.txt").write_text(text + "\n")
+    log(text)
+    return report
+
+
+def ink_headline(plate: str, total: Dict[str, Any], pages: Sequence[int]) -> str:
+    """The one sentence (denominator named)."""
+    tot, L = total["ink_px"], total["lines"]
+    staff = total["one"]["by_kind"].get("staff_line", 0)
+    return ("%s pages %s: %.1f%% of the page's dark ink has exactly one READ owner (%.1f%% of the ink that is not staff line); %.1f%% is claimed twice, "
+            "%.1f%% weak only, %.1f%% has no owner (denominator: all %d dark px of those pages)." % (
+                plate, ",".join(str(p) for p in pages), 100.0 * L["one"] / tot, 100.0 * (L["one"] - staff) / max(1, tot - staff),
+                100.0 * L["twice"] / tot, 100.0 * L["weak"] / tot, 100.0 * L["none"] / tot, tot))
+
+
+def ink_controls(rec: str, page: int, cm_root: Optional[pathlib.Path] = None, log=print) -> int:
+    """The three controls of the one ink number that can fail (module section 10): (a) erase a kind's claims -> exactly its sole-owned ink leaves the
+    claimed lines and lands in weak / no owner; (b) a planted second box on strokes of one kind -> claimed twice rises by exactly their one-owner ink;
+    (c) a doctored canvas / tally trips the sum check."""
+    from . import cell_map as CM
+    src = resolve_source(rec)
+    rows = read_rows(src, [page])
+    ed = edition_info(rows)
+    pdf = LIB / ed["edition_path"]
+    cm_root = cm_root or CM.ROOT_DEFAULT
+    ok = True
+    base, _v, *_ = build_page(rows, pdf, page, cm_root, ledger=True)
+    t0 = base.tally()
+    # (a) erase one kind
+    kind = max(t0["one"]["by_kind_cell"], key=lambda k: t0["one"]["by_kind_cell"][k])
+    sole = int(((base.fam_eff == FINE_BIT[kind]) & base.ink).sum())
+    er = base.without_kind(kind).tally()
+    moved = (er["lines"]["weak"] + er["lines"]["none"]) - (t0["lines"]["weak"] + t0["lines"]["none"])
+    log("(a) erase every '%s' claim: ink it alone held %d px; weak+no owner rose by %d px (must be equal); one owner by that kind now %d (must be 0)" % (
+        kind, sole, moved, er["one"]["by_kind"].get(kind, 0)))
+    ok &= moved == sole and sole > 0 and er["one"]["by_kind"].get(kind, 0) == 0
+    # (b) a second owner planted
+    pl, *_ = build_page(rows, pdf, page, cm_root, plant=("twin", kind), ledger=True)
+    tp = pl.tally()
+    before_one = int(((base.state == ST_ONE) & pl.planted & base.ink).sum())
+    rose = tp["lines"]["twice"] - t0["lines"]["twice"]
+    log("(b) a second '%s' box planted on its first strokes: claimed twice rose by %d px; the planted strokes' one-owner ink was %d px (must be equal)" % (kind, rose, before_one))
+    ok &= rose == before_one and rose > 0
+    # (c) the sum check trips
+    bad = copy.copy(base)
+    bad.state = base.state.copy()
+    ys, xs = np.nonzero(base.ink)
+    bad.state[ys[0], xs[0]] = 255
+    trips = 0
+    try:
+        bad_t = bad.tally()
+        verify_tally(bad_t)
+    except (InkPartitionError, IndexError, ValueError):
+        trips += 1
+    doctored = copy.deepcopy(t0)
+    doctored["lines"]["none"] += 1
+    try:
+        verify_tally(doctored)
+    except InkPartitionError:
+        trips += 1
+    log("(c) a pixel with no state, and a tally one pixel off: the sum check raised %d of 2 times (must be 2)" % trips)
+    ok &= trips == 2
+    log("ink controls: %s" % ("ALL BEHAVE" if ok else "A CONTROL DID NOT DO WHAT IT MUST"))
+    return 0 if ok else 1
+
+
 # ───────────────────────────── 9. the command ─────────────────────────────
 
 def parse_env(specs: Sequence[str]) -> Dict[str, str]:
@@ -1186,6 +1796,27 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     if argv and argv[0] == "order":                  # ROADMAP 2.241: the claim-order check (claim_order.py), same command family
         from . import claim_order as CO
         return CO.main(argv[1:])
+    if argv and argv[0] == "ink":                    # ROADMAP 2.293: the one ink number (module section 10)
+        ap.add_argument("cmd")
+        ap.add_argument("rec", help="slice directory, PLATE:TAG (lane_report slices) or a .record.json under 5 GB")
+        ap.add_argument("--pages", default=None)
+        ap.add_argument("--out", default=None)
+        ap.add_argument("--controls", action="store_true", help="run the three controls that can fail on the first page, then the number")
+        ap.add_argument("--env", action="append", default=[])
+        ap.add_argument("--cell-map", default=None)
+        a = ap.parse_args(argv)
+        pages = None
+        if a.pages:
+            pages = []
+            for part in a.pages.split(","):
+                lo, _, hi = part.partition("-")
+                pages += list(range(int(lo), int(hi or lo) + 1))
+        cmr = pathlib.Path(a.cell_map) if a.cell_map else None
+        rc = 0
+        if a.controls:
+            rc = ink_controls(a.rec, (pages or slice_pages(resolve_source(a.rec)))[0], cmr)
+        run_ink(a.rec, pages, out=pathlib.Path(a.out) if a.out else None, env=parse_env(a.env), cm_root=cmr)
+        return rc
     if argv and argv[0] == "controls":
         ap.add_argument("cmd")
         ap.add_argument("rec")
