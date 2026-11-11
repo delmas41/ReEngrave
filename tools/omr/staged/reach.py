@@ -369,6 +369,7 @@ STAGE_OF_FILE = {
     "page_accidental_ink.py": "GATHER",
     # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
     "page_claim_names.py": "GATHER",
+    "ink_attachment.py": "GATHER",          # 2.288 r4: pure shared questions of the stroke map (what the ink hangs from, which side of its line, two long verticals), called by GATHER readers
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
     "page_owner.py": "GATHER",
     "adjudicate.py": "ADJUDICATE", "groups.py": "ADJUDICATE",
@@ -469,6 +470,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.286. The note-conservation command: replays saved GATHER rows to EXPORT and prints where every read head/rest went;
     # reads the export's report, files no row, names no quantity, decides nothing.
     "conservation.py",
+    # ROADMAP 2.295. The judged-claims replay: Sean's answers about what a boxed ink IS, replayed over a saved slice's page ledger;
+    # reads the ledger canvas, files no row, names no quantity, decides nothing.
+    "judged_claims.py",
     # ROADMAP 2.241. The claim-order check beside the capture readout: reads the same claims and asks whether the earliest READ layer
     # owns each piece of ink; files no row, names no quantity, decides nothing.
     "claim_order.py",

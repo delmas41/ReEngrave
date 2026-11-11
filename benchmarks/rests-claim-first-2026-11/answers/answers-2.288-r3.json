@@ -1,0 +1,211 @@
+{
+ "lane": "2.288 r3 (lane-2.288-rests-claim-first f4a59088c, flag OMR_PAGE_CLAIM_RESTS OFF)",
+ "date": "2026-11-10",
+ "question": "Is the blue ink a rest, and only the rest? Which kind? If not, what is it?",
+ "verbatim": "Tile 1, whole rest. Tile 2, whole rest. Tile 3, whole rest. Tile 4, eighth note. Tile 5, stem. Tile 6, whole note. Tile 7, whole note rest. Sorry. Tile 6 is a whole note rest. Tile 7 is a whole note rest. Tile 8 is a whole note rest in the second place. Tile 9 is a whole note rest. Tile 10 is an eighth note in its stem. Tile 11 is a whole note rest. Tile 12 is a whole note rest.",
+ "answers": {
+  "1": {
+   "sean": "whole rest",
+   "claimed_in_r3": false,
+   "right": false,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "still-refused",
+   "box": [
+    2074.3,
+    2202.3,
+    2096.9,
+    2219.2
+   ],
+   "cell": "cell/14/0/7/2"
+  },
+  "2": {
+   "sean": "whole rest",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    4711.0,
+    4266.0,
+    4754.0,
+    4287.0
+   ],
+   "cell": "cell/14/1/0/7"
+  },
+  "3": {
+   "sean": "whole rest",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    4398.0,
+    2191.0,
+    4439.0,
+    2213.0
+   ],
+   "cell": "cell/14/0/7/7"
+  },
+  "4": {
+   "sean": "eighth note",
+   "claimed_in_r3": true,
+   "right": false,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    2520.0,
+    6851.0,
+    2549.0,
+    6884.0
+   ],
+   "cell": "cell/14/1/11/3"
+  },
+  "5": {
+   "sean": "stem",
+   "claimed_in_r3": false,
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "still-refused",
+   "box": [
+    3543.3,
+    5060.0,
+    3550.2,
+    5082.6
+   ],
+   "cell": "cell/14/1/4/5"
+  },
+  "6": {
+   "sean": "whole rest (corrected from 'whole note')",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    1987.0,
+    848.0,
+    2009.0,
+    862.0
+   ],
+   "cell": "cell/2/0/3/12"
+  },
+  "7": {
+   "sean": "whole rest",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    1822.0,
+    591.0,
+    1843.0,
+    603.0
+   ],
+   "cell": "cell/8/0/1/14"
+  },
+  "8": {
+   "sean": "whole rest (in the second space)",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    2112.0,
+    467.0,
+    2134.0,
+    479.0
+   ],
+   "cell": "cell/8/0/0/17"
+  },
+  "9": {
+   "sean": "whole rest",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    2511.0,
+    1280.0,
+    2554.0,
+    1302.0
+   ],
+   "cell": "cell/14/0/3/3"
+  },
+  "10": {
+   "sean": "eighth note and its stem",
+   "claimed_in_r3": false,
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "still-refused",
+   "box": [
+    1606.5,
+    6871.1,
+    1642.2,
+    6887.9
+   ],
+   "cell": "cell/14/1/11/1"
+  },
+  "11": {
+   "sean": "whole rest",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    2215.0,
+    435.0,
+    2237.0,
+    448.0
+   ],
+   "cell": "cell/8/0/0/18"
+  },
+  "12": {
+   "sean": "whole rest",
+   "claimed_in_r3": true,
+   "right": true,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "restWhole",
+   "group": "newly-claimed",
+   "box": [
+    519.0,
+    598.0,
+    541.0,
+    612.0
+   ],
+   "cell": "cell/8/0/1/0"
+  }
+ },
+ "score": {
+  "newly_claimed_whole_rests_right": "8/9",
+  "false_claim": {
+   "4": "claimed as a whole rest; Sean: an eighth note (a notehead on a staff line in a beamed group) -- a WRONG CLAIM"
+  },
+  "still_refused_right": "2/3",
+  "missed": {
+   "1": "still refused; Sean: a whole rest -- a real rest left unclaimed"
+  }
+ },
+ "note": "The manager first mis-scored this as all right (assumed which tiles were the refused ones); corrected against the key the same hour. The lane's own look ('all nine claimed tinted ink is a rest block') was wrong on tile 4."
+}
