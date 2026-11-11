@@ -19,7 +19,7 @@ def arm(path):
     from tools.omr.staged import export as E
     from tools.omr.staged.review import rerun as RR
     from tools.omr.staged.record import Q
-    rec = json.load(open(path))
+    rec = json.load(open(path))["record"]            # the `--out` file is {record, summary, ...}
     log, _ = RR.rebuild_gather(rec)
     RR.run_stages(log)
     result = {"record": log.to_json(), "summary": log.summary()}
