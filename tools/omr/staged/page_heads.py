@@ -560,9 +560,18 @@ def same_head(a: Dict[str, Any], b: Dict[str, Any], shared_px: float, sp: float)
         return "no_shared_ink"
     if shared_px < SHARE_MIN * min(a["ink_px"], b["ink_px"]):
         return "share_below"
+    if one_head_stroke(a, b):
+        return None
     if abs(a["cx"] - b["cx"]) > OVAL_DX_SP * sp or abs(a["cy"] - b["cy"]) > OVAL_DY_SP * sp:
         return "two_ovals"
     return None
+
+
+def one_head_stroke(a: Dict[str, Any], b: Dict[str, Any]) -> bool:
+    """PURE. Both boxes stand mostly on the SAME page stroke (`anchor`) and that stroke is no bigger than one head (`anchor_head`): a head-sized stroke is one
+    printed head, so the two boxes are one head wherever each was drawn on it (a box drawn half a step off its head puts the ink it CLIPS off-centre --
+    measured, Litolff p2/p8/p11 round 1: 56 twin pairs read as two ovals). The oval test is for a stroke bigger than a head (fused heads)."""
+    return a.get("anchor") is not None and a.get("anchor") == b.get("anchor") and bool(a.get("anchor_head"))
 
 
 def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_iou: float) -> Tuple[List[List[int]], Dict[int, str], List[list]]:
@@ -586,6 +595,8 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
     comp: Dict[int, List[int]] = {i: [i] for i in range(len(items))}
 
     def one_oval(x: int, y: int) -> bool:
+        if one_head_stroke(items[x], items[y]):
+            return True
         return abs(items[x]["cx"] - items[y]["cx"]) <= OVAL_DX_SP * sp and abs(items[x]["cy"] - items[y]["cy"]) <= OVAL_DY_SP * sp
     for members in buckets.values():
         members.sort(key=lambda i: (items[i]["box"][0], i))
@@ -630,6 +641,14 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
                 v = _box_iou(items[i]["box"], items[j]["box"])
                 if v > no_ink_iou and (best is None or (v, -j) > (best[0], -best[1])):
                     best = (v, j)
+            if best is None:
+                # no ink box twins it: another box on no head ink may (two cells' copies of one phantom) -- the old twin rule, so it is not written twice
+                for j in members:
+                    if j == i or items[j]["ink_px"] or items[j].get("tall"):
+                        continue
+                    v = _box_iou(items[i]["box"], items[j]["box"])
+                    if v > no_ink_iou and (best is None or (v, -j) > (best[0], -best[1])):
+                        best = (v, j)
             if best is not None:
                 ri, rj = find(i), find(best[1])
                 if ri != rj:
@@ -791,7 +810,12 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
         if n * px_sp2 < HEAD_INK_MIN_SP2:
             n = 0
         it["ink_px"] = n
+        it["anchor"], it["anchor_head"] = None, False
         if n:
+            lb = lab[y0:y1, x0:x1][m]
+            cnt = np.bincount(lb)
+            a = int(cnt.argmax())
+            it["anchor"], it["anchor_head"] = a - 1, bool(claim_ok.get(a - 1, False))
             ys, xs = np.nonzero(m)
             it["cx"], it["cy"] = (x0 + float(xs.mean()) + 0.5) / s, (y0 + float(ys.mean()) + 0.5) / s
         else:

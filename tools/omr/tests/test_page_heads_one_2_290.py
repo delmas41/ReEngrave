@@ -51,6 +51,24 @@ def test_same_head_rules():
     assert PH.same_head(a, _it(10, 10.1), 0, SP) == "no_shared_ink"
 
 
+def test_a_head_sized_stroke_is_one_head_wherever_each_box_was_drawn():
+    # Litolff p11 glyph/11/0/3/16/1 + /2 (round 1): one box drawn ~0.7 sp off the head; the ink each CLIPS is off-centre (dy 0.52 sp)
+    a = dict(_it(10, 10), anchor=7, anchor_head=True)
+    b = dict(_it(10.1, 10.6), anchor=7, anchor_head=True)
+    assert PH.same_head(a, b, 80, SP) is None
+    # a stroke bigger than a head (fused chord) keeps the oval test
+    assert PH.same_head(dict(a, anchor_head=False), dict(b, anchor_head=False), 80, SP) == "two_ovals"
+    # two strokes: the oval test
+    assert PH.same_head(a, dict(b, anchor=8), 80, SP) == "two_ovals"
+
+
+def test_no_ink_boxes_twin_each_other():
+    items = [_it(10, 10, ink=0), _it(10.02, 10.01, ink=0), _it(20, 10, ink=0)]
+    groups, how, _p = PH.partition(items, lambda i, j: 0, SP, 0.3)
+    g = {i: k for k, gg in enumerate(groups) for i in gg}
+    assert g[0] == g[1] != g[2]
+
+
 def test_partition_twins_chords_and_no_ink_boxes():
     items = [_it(10, 10), _it(10.05, 10.02),            # 0, 1: one head boxed twice (two cells)
              _it(11.2, 10.5),                           # 2: its neighbour a second away
