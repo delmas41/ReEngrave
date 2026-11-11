@@ -522,6 +522,23 @@ CLAIM_MAX_W_SP = 3.0
 CLAIM_MAX_H_SP = 1.6
 #: ... and no other head's oval holds this share of it (fused with another head: plan step 5)
 OTHER_HEAD_MAX = 0.2
+#: ROUND 2 (Sean's 2.290 build r1 tiles 8, 9, 10, 12; his correction to 12: the claim lay BETWEEN two half notes a third apart).
+#: (1) Two HEAD-SIZED boxes (neither taller than `CLAIM_MAX_H_SP`: a tall box covers two heads and says nothing) whose centres stand this far apart (sp) are TWO
+#: heads, never one, whatever ink each clips. A printed head is ~1.0 sp tall; on one side of a stem two heads stand a third (1.0 sp) apart at least, a second's
+#: heads stand either side of the stem (page-facts, Sean 2026-10-26); a twin box is the detector's second drawing of ONE head and is off it by less (measured: the
+#: farthest twin pair on the five sample pages is 0.85 sp, round 1's p11 case; every joined head-sized pair at or above 0.9 is this tile). Cause of tile 12: the ink
+#: each box CLIPS lies toward the other's (centres 0.53 sp apart for boxes 0.99 apart; the lower half note's head ink in its box is only 88 px) -- the ink centres
+#: were the only witness to where a head is, and a biased one. NOT CONFIRMED beyond two plates.
+BOX_CENTRES_A_THIRD_SP = 0.9
+#: (2) A head's CLAIM is a WHOLE head's ink: the union of the page strokes it claims is at least `CLAIM_UNION_MIN_SP` (`head_ink.MIN_SPACES`, 0.6 sp: "the width
+#: floor costs 0 of 103 confirmed heads", page-facts) on each side and at most `CLAIM_UNION_MAX_H_SP` (`head_ink.MAX_HEIGHT_SPACES`, 1.5) tall. A smaller union is a
+#: SLIVER of a head or of another mark (Sean: "a small sliver that just touches part of a half note" 1.59 x 0.19 sp; "a long, thin sliver that covers part of a
+#: quarter note" 0.38 x 1.52 sp); a taller one is more than one head's ink ("half of a quarter note rest", 1.02 x 1.59 sp: the detector boxed the rest as a notehead
+#: and no rest box named it, so nothing claimed its ink before the head tier). It is REFUSED WHOLE and COUNTED (`claim_size`); the ink stays with the cell boxes.
+#: Not a WIDTH cut: a head fused to its ledger line is ~2.8 wide and is still the head's (`stroke_owner.HEAD_MAX_W_SP` 3.0; Brahms 2.282 tile 1). A hollow head that
+#: shows on the page as two thin rims only (2.289 r1 tile 9) is a pair of slivers by this rule and stays with the cell boxes (plan step 5).
+CLAIM_UNION_MIN_SP = 0.6
+CLAIM_UNION_MAX_H_SP = 1.5
 
 
 def one_enabled() -> bool:
@@ -565,11 +582,23 @@ def same_head(a: Dict[str, Any], b: Dict[str, Any], shared_px: float, sp: float)
         return "no_shared_ink"
     if shared_px < SHARE_MIN * min(a["ink_px"], b["ink_px"]):
         return "share_below"
+    if boxes_a_third_apart(a, b, sp):
+        return "boxes_a_third_apart"
     if one_head_stroke(a, b) and abs(a["cy"] - b["cy"]) < ANCHOR_MAX_DY_SP * sp:
         return None
     if abs(a["cx"] - b["cx"]) > OVAL_DX_SP * sp or abs(a["cy"] - b["cy"]) > OVAL_DY_SP * sp:
         return "two_ovals"
     return None
+
+
+def boxes_a_third_apart(a: Dict[str, Any], b: Dict[str, Any], sp: float) -> bool:
+    """PURE (ROUND 2). Two head-sized boxes whose centres stand `BOX_CENTRES_A_THIRD_SP` or more apart (vertically) hold two heads, never one."""
+    ba, bb = a.get("box"), b.get("box")
+    if not ba or not bb:
+        return False
+    if (ba[3] - ba[1]) > CLAIM_MAX_H_SP * sp or (bb[3] - bb[1]) > CLAIM_MAX_H_SP * sp:
+        return False
+    return abs((ba[1] + ba[3]) / 2.0 - (bb[1] + bb[3]) / 2.0) >= BOX_CENTRES_A_THIRD_SP * sp
 
 
 def one_head_stroke(a: Dict[str, Any], b: Dict[str, Any]) -> bool:
@@ -600,6 +629,8 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
     comp: Dict[int, List[int]] = {i: [i] for i in range(len(items))}
 
     def one_oval(x: int, y: int) -> bool:
+        if boxes_a_third_apart(items[x], items[y], sp):
+            return False
         if one_head_stroke(items[x], items[y]) and abs(items[x]["cy"] - items[y]["cy"]) < ANCHOR_MAX_DY_SP * sp:
             return True
         return abs(items[x]["cx"] - items[y]["cx"]) <= OVAL_DX_SP * sp and abs(items[x]["cy"] - items[y]["cy"]) <= OVAL_DY_SP * sp
@@ -699,6 +730,16 @@ def choose_claims(ovals: Dict[int, Dict[int, int]], totals: Dict[int, int], ok: 
             continue
         out[top_h].append(int(s))
     return out, cen
+
+
+def claim_size_reason(w_sp: float, h_sp: float) -> Optional[str]:
+    """PURE (ROUND 2). None when a union of claimed strokes `w_sp` x `h_sp` staff spaces (the head's own bar's) is ONE head's ink, else why not: `too_small` (a
+    sliver: a side under `CLAIM_UNION_MIN_SP`) or `too_tall` (more than one head: over `CLAIM_UNION_MAX_H_SP`)."""
+    if min(w_sp, h_sp) < CLAIM_UNION_MIN_SP:
+        return "too_small"
+    if h_sp > CLAIM_UNION_MAX_H_SP:
+        return "too_tall"
+    return None
 
 
 class OneHeads:
@@ -879,6 +920,25 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
         cnt = np.bincount(lab[y0:y1, x0:x1].ravel(), minlength=n_st + 1)
         ovals[gi_] = {int(k) - 1: int(cnt[k]) for k in np.nonzero(cnt)[0] if k > 0}
     claims, ccen = choose_claims(ovals, {i: int(totals[i + 1]) for i in range(n_st)}, claim_ok)
+    # ROUND 2: a head's claim is a WHOLE head -- the union of the strokes it claims lies inside one head's ink size (`claim_size_reason`); else it is refused
+    # whole, counted, and its ink stays with the cell boxes (Sean's tiles 8, 9, 10: a sliver, half a rest, a thin sliver)
+    if any(claims.values()):
+        from scipy import ndimage
+        objs = ndimage.find_objects(lab, max_label=n_st)
+        for gi_, st_ in list(claims.items()):
+            if not st_:
+                continue
+            sl = [objs[i] for i in st_ if i < len(objs) and objs[i] is not None]
+            if not sl:
+                continue
+            hs = float(out.items[reps[gi_]].get("sp_head") or sp)
+            w_sp = (max(t[1].stop for t in sl) - min(t[1].start for t in sl)) / s / hs
+            h_sp = (max(t[0].stop for t in sl) - min(t[0].start for t in sl)) / s / hs
+            why = claim_size_reason(w_sp, h_sp)
+            if why:
+                ccen["claim_size:" + why] = ccen.get("claim_size:" + why, 0) + 1
+                ccen["claim_size_strokes"] = ccen.get("claim_size_strokes", 0) + len(st_)
+                claims[gi_] = []
     cen: Dict[str, Any] = dict(boxes=len(out.items), heads=sum(1 for g in groups if g), heads_with_ink=len(reps), oval=len(oval_box), claims=0,
                                claimed_strokes=0, oval_why={}, how={}, pairs_joined=sum(1 for p in pairs if p[2] is None), pairs_kept_apart={})
     for v in how.values():

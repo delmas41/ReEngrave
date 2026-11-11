@@ -22,6 +22,11 @@ CROPS = sorted((HERE / "npz").glob("*.npz")) if (HERE / "npz").exists() else []
 
 #: real cases this build does NOT pass, each with its cause and the plan step that owns it (never silently skipped)
 KNOWN = {
+    "2.289_r1__9": "Sean's unison half note (Litolff p2) shows on the page as two thin horizontal rims only (1.27 x 0.19 and 1.27 x 0.25 sp): by 2.290 build r2's "
+                   "rule a claim is a whole head's ink, so each rim is a sliver and stays with the cell boxes (the same shape as r1 tile 8, which Sean called "
+                   "a sliver); reading a hollow head from its rims is plan step 5",
+    "2.290_build_r1__3": "Sean's eighth (Litolff p2, 2.290 build r1 tile 3) is a head fused with its stem stub into ONE page stroke 0.9 x 2.5 sp: a stroke bigger "
+                         "than a head is not claimed (left to the cell boxes, never mis-claimed: Sean judged r1's empty claim right); plan step 5",
     "2.289_r1__10": "Sean's eighth (Litolff p2) is fused with its chord neighbour into ONE page stroke 1.26 x 3.15 sp: a stroke bigger than a head is not "
                     "claimed (it stays with the cell boxes, as today); splitting merged ink is plan step 5",
 }
@@ -72,6 +77,10 @@ def _read(meta, items, foreign, lab, props, binary):
 def test_real_case(path):
     if path.stem in KNOWN:
         pytest.xfail(KNOWN[path.stem])
+    _check_case(path)
+
+
+def _check_case(path):
     meta, items, foreign, lab, props, binary = _load(path)
     e = meta["case"]["expect"]
     oh, B, sb, mine = _read(meta, items, foreign, lab, props, binary)
@@ -119,6 +128,32 @@ def test_the_control_can_fail(monkeypatch):
         if any(i in sb and i not in held and _share(sb[i], B) >= 0.5 for h in oh.heads for i in h["strokes"]):
             broke += 1
     assert broke >= 1
+
+
+#: Sean's four WRONG answers on 2.290 build r1 (answers-2.290-build-r1.json): the claim was a sliver (8, 10), half of a rest (9), a box between two heads a third apart (12)
+R1_WRONG = ["2.290_build_r1__8", "2.290_build_r1__9", "2.290_build_r1__10", "2.290_build_r1__12"]
+
+
+@pytest.mark.skipif(not CROPS, reason="no real-case crops")
+def test_round_2_controls_fail_on_the_round_1_rules(monkeypatch):
+    """CLAUDE rule 7: each of Sean's four wrong r1 claims, on its own pixels, PASSES with the round-2 rules and FAILS with them switched off (the r1 reader)."""
+    paths = {p.stem: p for p in CROPS}
+    for name in R1_WRONG:
+        _check_case(paths[name])
+    monkeypatch.setattr(PH, "BOX_CENTRES_A_THIRD_SP", 99.0)
+    monkeypatch.setattr(PH, "CLAIM_UNION_MIN_SP", 0.0)
+    monkeypatch.setattr(PH, "CLAIM_UNION_MAX_H_SP", 99.0)
+    for name in R1_WRONG:
+        with pytest.raises(AssertionError):
+            _check_case(paths[name])
+
+
+def test_claim_size_reason():
+    assert PH.claim_size_reason(0.89, 1.33) is None          # r1 tile 1, right
+    assert PH.claim_size_reason(1.59, 0.19) == "too_small"   # r1 tile 8
+    assert PH.claim_size_reason(0.38, 1.52) == "too_small"   # r1 tile 10
+    assert PH.claim_size_reason(1.02, 1.59) == "too_tall"    # r1 tile 9
+    assert PH.claim_size_reason(2.78, 1.45) is None          # a head fused to its ledger line is still one head (Brahms 2.282 tile 1)
 
 
 def test_the_cases_list_is_current():

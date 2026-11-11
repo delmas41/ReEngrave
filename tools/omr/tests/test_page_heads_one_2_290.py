@@ -44,7 +44,8 @@ def test_same_head_rules():
     a = _it(10, 10)
     assert PH.same_head(a, _it(10.1, 10.05), 90, SP) is None                    # a twin box on the same head
     assert PH.same_head(a, _it(11.2, 10.5), 60, SP) == "two_ovals"             # a second fused into one blob: the heads either side of the stem
-    assert PH.same_head(a, _it(10, 11.0), 60, SP) == "two_ovals"               # a third on one side of a stem, fused
+    assert PH.same_head(a, _it(10, 10.8), 60, SP) == "two_ovals"               # nearly a third on one side of a stem, fused
+    assert PH.same_head(a, _it(10, 11.0), 60, SP) == "boxes_a_third_apart"     # a third: two head-sized boxes (Sean, 2.290 build r1 tile 12)
     assert PH.same_head(a, _it(10, 10, tall=True), 100, SP) == "tall_read"
     assert PH.same_head(a, _it(10, 10, ink=0), 0, SP) == "no_head_ink"
     assert PH.same_head(a, _it(10, 10.1), 40, SP) == "share_below"
