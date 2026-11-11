@@ -46,7 +46,7 @@ def raster(slots=(1, 2, 3), *, broken=(2, 3)):
 
 
 def run(img, clef="treble", on=True):
-    env = {KO.ENV_COUNT: "1"} if on else {KO.ENV_COUNT: "0"}
+    env = dict({KO.ENV_COUNT: "1"} if on else {KO.ENV_COUNT: "0"}, **{KO.ENV_FLATS: "0"})      # 2.302 is another mechanism: pinned off here
     with mock.patch.dict(os.environ, env):
         return KO.staff_run(img, LINES, SP, X_START, X_START + 11 * SP, (), clef=clef)
 
