@@ -205,12 +205,16 @@ class CellInk:
         # the fringe of a staff line: near a line, and in no vertical run of 0.3 sp or more
         v3 = cv2.morphologyEx(R8, cv2.MORPH_OPEN, np.ones((max(3, int(round(0.3 * sp))), 1), np.uint8)).astype(bool)
         cand = R & near & ~v3 & ~head & ~ledger & ~stem & ~bar
-        # ... and a STRAND: a fringe runs along the line for at least 0.9 sp (a sharp's short crossbar does not)
+        # ... and a fringe: a STRAND along the line of at least 0.9 sp, or a fragment that touches no glyph (a sharp's
+        # short crossbar touches its own strokes; a fringe fragment touches only the staff line)
         en, el_, est, _ = cv2.connectedComponentsWithStats(cand.view(np.uint8), connectivity=8)
-        long_ = est[:, cv2.CC_STAT_WIDTH] >= 0.9 * sp
-        long_[0] = False
-        edge = long_[el_]
-        del el_, cand
+        glyph = R & ~cand & ~self.staff_line & ~self.bridge
+        touches = np.zeros(en, bool)
+        touches[np.unique(el_[cv2.dilate(glyph.view(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & cand])] = True
+        fringe = (est[:, cv2.CC_STAT_WIDTH] >= 0.9 * sp) | ~touches
+        fringe[0] = False
+        edge = fringe[el_]
+        del el_, cand, glyph
         note_rest = R & ~head & ~ledger & ~stem & ~edge
         role[note_rest & in_note] = ROLE_ID["attached"]
         role[note_rest & ~in_note] = ROLE_ID["own"]

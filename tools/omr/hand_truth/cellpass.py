@@ -29,7 +29,7 @@ from __future__ import annotations
 
 import json
 import os
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
@@ -111,9 +111,10 @@ class CLabel:
         self.shape = pp.check_shape(self.shape)
 
     def to_json(self) -> Dict:
-        d = asdict(self)
-        d["pass"] = d.pop("pass_")
-        return d
+        # by hand, not dataclasses.asdict: that deep-copies every field and made each change cost seconds at 1,000 labels
+        return {"id": self.id, "kind": self.kind, "cls": self.cls, "shape": self.shape, "state": self.state,
+                "origin": self.origin, "source": self.source, "cell_id": self.cell_id, "box_id": self.box_id,
+                "note": self.note, "labeler": self.labeler, "pass": self.pass_, "ink_ref": self.ink_ref}
 
     @classmethod
     def from_json(cls, d: Dict) -> "CLabel":
@@ -240,9 +241,9 @@ class CellPass:
 
     def to_json(self) -> Dict:
         self.validate()
-        d = asdict(self)
-        d["labels"] = [lab.to_json() for lab in self.labels]
-        return d
+        return {"edition": self.edition, "pdf_page_index": self.pdf_page_index, "dpi": self.dpi, "width": self.width,
+                "height": self.height, "sp": self.sp, "labels": [lab.to_json() for lab in self.labels],
+                "provenance": self.provenance, "schema_version": self.schema_version}
 
     @classmethod
     def from_json(cls, d: Dict) -> "CellPass":

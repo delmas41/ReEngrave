@@ -438,6 +438,10 @@ def mount(app, service: CellPassService) -> None:
         b = await request.json()
         a = b.get("action")
         if a == "confirm":
+            c = service.claims()
+            lab = next((x for x in c["labels"] if x.id == label_id), None)
+            if lab is not None and lab.state == "pending" and (c["raw"].get(label_id) or 0) == 0:
+                raise HTTPException(400, detail="this box claims no ink under its kind's rule: redraw it (b) or reject it (f)")
             return service.mutate(lambda p: p.confirm(label_id))
         if a == "reject":
             return service.mutate(lambda p: p.reject(label_id))

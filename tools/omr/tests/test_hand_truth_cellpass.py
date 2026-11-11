@@ -361,7 +361,8 @@ def test_a_twin_box_from_the_next_cell_is_covered_once_one_is_confirmed_and_neve
     twin = ("augmentationDot", (244, 251, 266, 273), "c0"), ("augmentationDot", (245, 252, 267, 274), "c1")
     svc, ps = _service(tmp_path, list(twin))
     st = svc.state_payload()
-    assert st["totals"]["pending"] >= 2 and not any(l.get("covered") for l in st["labels"])
+    # two pre-fills of one ink: one waits, the other is covered by it (derived, never written), so one answer settles both
+    assert sum(1 for l in st["labels"] if l.get("covered")) == 1 and st["totals"]["covered"] == 1
     first = svc.bulk_ids("c0", "dot")["ids"]
     assert len(first) == 1
     out = svc.mutate(lambda p: p.bulk_confirm(first))
@@ -453,6 +454,26 @@ def test_routes_state_draw_bulk_undo_render_owned_and_the_other_files_are_never_
     saved = json.loads(svc.file.read_text())
     assert all(l["pass"] == "cell" for l in saved["labels"])
     assert page_file.read_bytes() == guard                            # pass 2 never writes the page-pass file
+
+
+def test_a_prefill_that_claims_no_ink_cannot_be_confirmed_and_bulk_leaves_it_alone(tmp_path):
+    from fastapi import FastAPI
+    from fastapi.testclient import TestClient
+
+    from tools.omr.annotate.cellpass_server import mount
+
+    svc, ps = _service(tmp_path, [("stem", (5, 5, 12, 40), "c0"), ("augmentationDot", (244, 251, 266, 273), "c0")])
+    c = TestClient(FastAPI())
+    app = c.app
+    mount(app, svc)
+    st = c.get("/api/cp/state").json()
+    empty = next(l for l in st["labels"] if l["kind"] == "stem")
+    assert empty.get("empty") and st["totals"]["empty"] >= 1
+    r = c.post(f"/api/cp/label/{empty['id']}", json={"action": "confirm"})
+    assert r.status_code == 400 and "no ink" in r.json()["detail"]
+    assert svc.bulk_ids("c0", "stem") == {"ids": [], "empty": [empty["id"]]}
+    assert c.post("/api/cp/bulk", json={"cell_id": "c0", "kind": "stem"}).status_code == 400
+    assert c.post(f"/api/cp/label/{empty['id']}", json={"action": "reject"}).status_code == 200   # he can reject it
 
 
 def test_sean_page_pass_labels_stay_byte_for_byte_through_a_whole_pass_two_session(tmp_path):

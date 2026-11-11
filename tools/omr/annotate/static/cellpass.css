@@ -6,7 +6,7 @@
 .palette button .k { min-width: 14px; text-align: center; }
 .palette .sub { margin: 2px 0 10px; font-size: 12px; }
 .palette .sub select { width: 100%; font-size: 13px; padding: 4px; margin-top: 3px; }
-.celllist { list-style: none; padding: 0; margin: 4px 0 0; max-height: 36vh; overflow-y: auto; font-size: 12px; }
+.celllist { position: relative; list-style: none; padding: 0; margin: 4px 0 0; max-height: 36vh; overflow-y: auto; font-size: 12px; }
 .celllist li { display: grid; grid-template-columns: 1fr 52px 34px; gap: 4px; padding: 3px 6px; cursor: pointer; border-left: 4px solid var(--unclaimed); border-radius: 3px; }
 .celllist li:hover { background: #f0f0ec; }
 .celllist li.cur { background: #fff3c4; }

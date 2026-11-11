@@ -312,7 +312,8 @@ function renderCells() {
     li.onclick = () => gotoCell(c.id);
     ul.appendChild(li);
   });
-  const cur = ul.querySelector(".cur"); if (cur) cur.scrollIntoView({ block: "nearest" });
+  const cur = ul.querySelector(".cur");       // keep the current cell in the list's own view (not the whole panel)
+  if (cur) ul.scrollTop = Math.max(0, cur.offsetTop - ul.clientHeight / 2);
 }
 $("onlywork").onchange = renderCells;
 function gotoCell(id, noFit) {
@@ -481,7 +482,7 @@ window.addEventListener("keydown", async (e) => {
   if (k === "Escape") { S.poly = null; S.redraw = null; S.changeKind = false; S.kind = null; S.sel = null; renderPalette(); renderSel(); renderQueue(); fetchOwned(); draw(); return; }
   if (k === "Enter" && S.poly) { closePoly(); return; }
   if (k === "Tab") { e.preventDefault(); stepCell(e.shiftKey ? -1 : 1); return; }
-  if (k === "T") { bulk(); return; }
+  if (k === "T" || (k === "t" && e.shiftKey)) { bulk(); return; }
   if (k === "t") confirm();
   else if (k === "f") reject();
   else if (k === "x" || k === "Delete" || k === "Backspace") del();
