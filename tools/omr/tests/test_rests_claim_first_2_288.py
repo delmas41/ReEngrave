@@ -21,13 +21,17 @@ STEM_WITH_HEAD = {"thin_run_sp": 2.4, "blob_sp": 1.2, "head_ink_sp2": 0.8}
 FLAT_STEM = {"thin_run_sp": 1.8, "blob_sp": 0.5, "head_ink_sp2": 0.0}
 
 
+FREE = dict(stem_with_head=[], touches_a_head=[], bare_stroke=False)
+
+
 def test_a_rest_stands_READ_only_when_its_ink_stands_free_and_every_cannot_tell_is_weak():
-    assert PCN.rest_standing(QUARTER_REST) == ("READ", "stands_free")
-    assert PCN.rest_standing(STEM)[0] == "weak"                  # the control that can fail: a long thin stroke is a stem, a flat's or a sharp's vertical
-    assert PCN.rest_standing(FLAT_STEM)[0] == "weak"
-    assert PCN.rest_standing(STEM_WITH_HEAD) == ("weak", "stroke_into_a_head")
-    assert PCN.rest_standing(None) == ("weak", "no_ink_contact_row")        # rule 8: no measurement is never READ
-    assert PCN.rest_standing({}) == ("weak", "no_ink_contact_row")
+    assert PCN.rest_standing(QUARTER_REST, FREE) == ("READ", "stands_free")
+    assert PCN.rest_standing(STEM_WITH_HEAD, FREE) == ("weak", "stroke_into_a_head")
+    assert PCN.rest_standing(None, FREE) == ("weak", "no_ink_contact_row")        # rule 8: no measurement is never READ
+    assert PCN.rest_standing({}, FREE) == ("weak", "no_ink_contact_row")
+    assert PCN.rest_standing(QUARTER_REST, None) == ("weak", "names_no_stroke")    # a box that names no page stroke (a barline's sliver) has nothing to claim
+    # round 1's cell-raster rule, kept as the second witness
+    assert PCN._contact_standing(STEM)[0] == "weak" and PCN._contact_standing(FLAT_STEM)[0] == "weak"
 
 
 def test_the_rest_families_are_step_3s_only_with_their_own_flag(monkeypatch):
@@ -80,3 +84,39 @@ def test_a_read_rest_owns_its_own_ink_and_not_a_stem_beside_it():
     pm = SimpleNamespace(strokes=[st("vertical", 0, 0, 4, 50), st("vertical", 20, 0, 3, 100)], sp=SP)
     assert PCN._rest_stroke_fits(pm, 0, "rest", "restQuarter")              # 2.5 sp: a rest's slanted stroke
     assert not PCN._rest_stroke_fits(pm, 1, "rest", "restQuarter")          # 5 sp: a stem
+
+
+# ── round 2: a rest's slanted stroke is not a stem's -- answered from what the ink is ATTACHED to ──────────────────────────────────────────────────────────────────────────────────────
+def _stroke(kind, box, length, area=0.1, touches=(), thick=0.2):
+    return SimpleNamespace(kind=kind, box=box, length_sp=length, thickness_sp=thick, area_sp2=area, angle_deg=90.0, staff_space_local=20.0, touches=list(touches), joined_to=[])
+
+
+def _pm(strokes):
+    return SimpleNamespace(strokes=strokes, sp=20.0, scale=1.0)
+
+
+def test_a_flag_hangs_from_a_stem_that_carries_a_head_and_a_free_eighth_rest_does_not():
+    # tile 7 (Brahms p19): the claim's own ink is a hook (0), the stem (1) touches it and a head blob (2) stands at the stem's end
+    flag = _pm([_stroke("curve", (5, 40, 14, 15), 0.9, touches=[(1, 0.4)]),
+                _stroke("vertical", (0, 0, 5, 80), 4.0, touches=[(0, 0.4), (2, 1.3)]),
+                _stroke("blob", (0, 0, 24, 28), 1.3, area=0.9, thick=0.9, touches=[(1, 1.3)])])
+    got = PCN.rest_attachment(flag, [0])
+    assert got["stem_with_head"] == [1] and PCN.rest_standing(QUARTER_REST, got) == ("weak", "hangs_from_a_stem_with_a_head")
+    # the control that can fail: an eighth rest -- a curl and its own slanted stroke, touching nothing else
+    rest = _pm([_stroke("blob", (0, 0, 20, 30), 1.2, area=0.5, touches=[(1, 0.6)]), _stroke("vertical", (6, 15, 3, 45), 1.7, touches=[(0, 0.6)])])
+    free = PCN.rest_attachment(rest, [0, 1])
+    assert free == dict(stem_with_head=[], touches_a_head=[], bare_stroke=False)
+    # ... and its thin run (a slanted stroke over one space) no longer makes it weak by itself: round 1's `stem_like_stroke` is gone where the page strokes are read
+    assert PCN.rest_standing(STEM, free) == ("READ", "stands_free") and PCN._contact_standing(STEM)[0] == "weak"
+
+
+def test_a_stem_with_no_head_a_bare_stroke_and_a_head_touching_the_rest_are_weak_and_missing_evidence_stays_weak():
+    stem_only = _pm([_stroke("vertical", (0, 0, 4, 60), 3.0)])
+    assert PCN.rest_attachment(stem_only, [0])["bare_stroke"] is True
+    assert PCN.rest_standing(QUARTER_REST, PCN.rest_attachment(stem_only, [0])) == ("weak", "bare_vertical_stroke")
+    touching = _pm([_stroke("blob", (0, 0, 20, 30), 1.2, area=0.5, touches=[(1, 0.3)]), _stroke("blob", (22, 20, 26, 20), 1.3, area=0.9, thick=0.9, touches=[(0, 0.3)])])
+    assert PCN.rest_attachment(touching, [0])["touches_a_head"] == [1]
+    free = PCN.rest_attachment(_pm([_stroke("blob", (0, 0, 20, 30), 1.2, area=0.5)]), [0])
+    assert PCN.rest_standing(None, free) == ("weak", "no_ink_contact_row")                      # rule 8: no cell measurement is never READ
+    assert PCN.rest_standing(STEM_WITH_HEAD, free) == ("weak", "stroke_into_a_head")             # the second witness (the cell raster) still refuses
+    assert PCN.rest_attachment(_pm([]), []) is None

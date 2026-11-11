@@ -305,12 +305,8 @@ def box_owner(cls: str, category: Optional[str] = None, rests: bool = False) -> 
     return fam if (fam in BOX_FAMILIES or (rests and fam in REST_FAMILIES)) else None
 
 
-def rest_standing(detail: Optional[Dict[str, Any]]) -> Tuple[str, str]:
-    """`("READ" | "weak", why)`: does a detector rest box STAND as a rest on the evidence GATHER already holds (ROADMAP 2.288)? The evidence is `Q.REST_INK_CONTACT` (2.150b:
-    Sean 2026-10-16 "a rest box whose stroke runs on into a notehead is a stem; a real rest stands free"): the box's own ink is one piece that is neither a thin stroke longer
-    than a rest's (`family_precision.REST_STROKE_MIN_SP`: stems 1.45-2.98 sp, quarter rests 0.40-0.70) nor a stem with a head on it. The SAME margin `family_precision.
-    _rest_stroke_into_head_refusal` computes: a box that margin would refuse is `weak` (a stem, a flat's or a sharp's vertical), and so is a box with no measurement (rule 8: "cannot
-    tell" never becomes READ). A WEAK box files no claim, so it blocks nobody (the caller counts them). Pure."""
+def _contact_standing(detail: Optional[Dict[str, Any]]) -> Tuple[str, str]:
+    """The round-1 standing, off `Q.REST_INK_CONTACT` alone (the cell raster): kept as the second witness and the fallback where the page strokes cannot be read."""
     from .adjudicators import family_precision as FP
     if not isinstance(detail, dict) or "thin_run_sp" not in detail:
         return "weak", "no_ink_contact_row"
@@ -320,7 +316,85 @@ def rest_standing(detail: Optional[Dict[str, Any]]) -> Tuple[str, str]:
     if min(m_stroke, max(m_blob, m_ink)) >= 0:
         return "weak", "stroke_into_a_head"
     if m_stroke >= 0:
-        return "weak", "stem_like_stroke"          # a long thin stroke with no head on it: a stem, a flat's or a sharp's vertical, never a rest's
+        return "weak", "stem_like_stroke"          # a long thin stroke with no head found on it by the cell raster
+    return "READ", "stands_free"
+
+
+def _head_shaped(page_map: Any, j: int) -> bool:
+    """Is page stroke `j` a notehead's own piece: the register's head shape (`stroke_owner.shape_fit` family `head`, CLEAR only), a blob or a thick lens, never a dot's
+    "could". The same shape rule the head tier claims by, not a new cut."""
+    from . import stroke_owner as SO
+    if not (0 <= j < len(page_map.strokes)):
+        return False
+    st = page_map.strokes[j]
+    if st.kind not in ("blob", "horizontal"):
+        return False
+    sp = float(getattr(st, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
+    if sp <= 0:
+        return False
+    ink = SO.Ink(ordinal=j, kind=st.kind, box=tuple(float(v) for v in st.box), length=float(st.length_sp), thickness=float(st.thickness_sp),
+                 area=float(st.area_sp2), space_px=sp, angle=float(st.angle_deg))
+    return SO.shape_fit("head", ink)[0] == "clear"
+
+
+def _neighbours(page_map: Any, i: int) -> List[int]:
+    st = page_map.strokes[i]
+    return [int(j) for j, _c in (getattr(st, "touches", None) or ())] + [int(j) for j, _h in (getattr(st, "joined_to", None) or ())]
+
+
+def rest_attachment(page_map: Any, own: Sequence[int]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.288 round 2, STAGED GATHER, pure: is the ink a rest box names a rest's, or does it HANG from a stem that carries a head? One question for both
+    sides -- "is this slanted stroke a rest's or a stem's?" -- answered from what the ink is ATTACHED to on the page stroke map, never from its length or thickness
+    (Sean 2.150b: "a real rest stands free"; a stem carries a head, a flag hangs from a stem, an eighth rest's own slanted stroke starts at its dot and ends free).
+    `own` = the page strokes the box names by ink share. Returns None when nothing can be read (no strokes), else
+      stem_with_head   strokes outside `own` that TOUCH it and are a stem (a vertical at least the map's own vertical cut) which itself touches a head-shaped stroke
+                       outside `own`: the flag / beam hook / stem-end of a note (tile 7, Brahms p19)
+      touches_a_head   head-shaped strokes outside `own` touching it directly (a rest never touches a note, 2.150b)
+      bare_stroke      `own` holds nothing but vertical strokes: a stem or a flat's vertical, a rest has a body (curl, block, dot)."""
+    if not own or not getattr(page_map, "strokes", None):
+        return None
+    from . import stroke_map as SM
+    n = len(page_map.strokes)
+    own_set = {int(i) for i in own if 0 <= int(i) < n}
+    if not own_set:
+        return None
+    stems: Dict[int, int] = {}
+    heads: List[int] = []
+    for i in sorted(own_set):
+        for j in _neighbours(page_map, i):
+            if j in own_set or not (0 <= j < n):
+                continue
+            sj = page_map.strokes[j]
+            sp = float(getattr(sj, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
+            if sj.kind == "vertical" and float(sj.length_sp) >= SM.V_MIN_SPACES and sp > 0:
+                carried = [k for k in _neighbours(page_map, j) if k not in own_set and _head_shaped(page_map, k)]
+                if carried:
+                    stems[j] = carried[0]
+            elif _head_shaped(page_map, j):
+                heads.append(j)
+    return dict(stem_with_head=sorted(stems), touches_a_head=sorted(set(heads)),
+                bare_stroke=all(page_map.strokes[i].kind == "vertical" for i in own_set))
+
+
+def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
+    """`("READ" | "weak", why)`: does a detector rest box STAND as a rest (ROADMAP 2.288)? Round 2: the question is attachment, not a stroke length. With the page
+    strokes read (`attachment` from `rest_attachment`): a box whose ink hangs from a stem carrying a head, touches a head, or is a bare vertical is `weak`
+    (a flag, a stem, a flat's vertical); otherwise it stands free and is READ -- unless the cell raster's own ink contact (`Q.REST_INK_CONTACT`, 2.150b, a second
+    witness off a different raster) says the stroke runs into a head, or has no measurement (rule 8: "cannot tell" never becomes READ). A thin stroke of a rest's length
+    is NOT a reason by itself any more (round 1's `stem_like_stroke` weakened 252 of 276 free-standing eighth rests on Brahms p19/p14; what it still caught there was a
+    barline's sliver boxed as a quarter rest: no page stroke to stand on, `names_no_stroke`). A box that names no page stroke has no ink to claim: weak. A WEAK box files
+    no claim, so it blocks nobody (the caller counts them). Pure."""
+    old = _contact_standing(detail)
+    if attachment is None:
+        return "weak", "names_no_stroke"
+    if attachment.get("stem_with_head"):
+        return "weak", "hangs_from_a_stem_with_a_head"
+    if attachment.get("touches_a_head"):
+        return "weak", "touches_a_head"
+    if attachment.get("bare_stroke"):
+        return "weak", "bare_vertical_stroke"
+    if old[1] in ("no_ink_contact_row", "stroke_into_a_head"):
+        return old
     return "READ", "stands_free"
 
 
@@ -406,7 +480,7 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                                ids=area_names(index, v, d.get("scope") == "system" and d.get("cell") is None, owner)))
     census: Dict[str, Any] = dict(boxes=0, twins_skipped=0, by_class={}, named_nothing={}, existing_claims=len(claims))
     if rests:
-        census.update(rest_boxes=0, rest_read=0, rest_weak={}, rest_weak_boxes=[])
+        census.update(rest_boxes=0, rest_read=0, rest_weak={}, rest_weak_boxes=[], rest_read_boxes=[], rest_changed={}, rest_changed_boxes=[])
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -427,18 +501,24 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                 continue
             seen.add(k)
             standing = None
+            ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
             if rests and owner in REST_FAMILIES:
                 # 2.288: only a rest that STANDS as one (READ) claims; a weak box files nothing and blocks nobody (counted, with where it stands)
                 rr = log.rows(Q.REST_INK_CONTACT, R.glyph(c.page_index, key[0], key[1], c.measure_index, gi))
-                standing, why = rest_standing(rr[-1].detail if rr else None)
+                detail = rr[-1].detail if rr else None
+                standing, why = rest_standing(detail, rest_attachment(page_map, ids))
+                was, _ = _contact_standing(detail)                       # round 1's answer, for the census (what attachment freed / refused)
                 census["rest_boxes"] += 1
+                if standing != was:
+                    k2 = ("freed_" if standing == "READ" else "refused_") + why
+                    census["rest_changed"][k2] = census["rest_changed"].get(k2, 0) + 1
+                    census["rest_changed_boxes"].append([cls, [round(v, 1) for v in pb], k2, csub.to_key()])
                 if standing != "READ":
                     census["rest_weak"][why] = census["rest_weak"].get(why, 0) + 1
                     census["rest_weak_boxes"].append([cls, [round(v, 1) for v in pb], why, csub.to_key()])
                     continue
                 census["rest_read"] += 1
-            ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
-            if standing == "READ":
+                census["rest_read_boxes"].append([cls, [round(v, 1) for v in pb], csub.to_key()])
                 ids = [i for i in ids if _rest_stroke_fits(page_map, i, owner, cls)]
             census["boxes"] += 1
             census["by_class"][cls] = census["by_class"].get(cls, 0) + 1
