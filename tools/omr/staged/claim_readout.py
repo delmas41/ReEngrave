@@ -1066,7 +1066,10 @@ def render_truth(tr: Dict[str, Any], tr_reg: Optional[Dict[str, Any]] = None) ->
 #   WEAK ONLY    no READ claim; a GUESSED / NARROWED claim's area stands on it. Never counted as claimed.
 #   TWICE        the ledger's own settle left it with two owners: TWIN (one kind, two boxes: `merged`), TWO KINDS (`contested`: the settle could not
 #                choose), VIEWS DISAGREE (two padded cells' verdicts of an UNLINKED piece name different kinds), TWIN VIEWS (one kind named in two
-#                unlinked cell views).
+#                unlinked cell views), and (2.295b) PAGE-STROKE CLAIM NOT CONSULTED BY THE CELL SETTLE: a READ claim filed as page-stroke ids
+#                (every READ rest, dynamics, repeat dots, arcs, tremolos, own-ink accidentals: `page_stroke_claims`) and a READ cell/register owner of a DIFFERENT
+#                kind on one pixel, by pair ("page rest / cell beam"). Its own sub-line, never mixed with twin boxes: it is the measure of ROADMAP 2.297's gap.
+#                A page-stroke claim of the SAME kind as the cell's is one owner; one with no cell owner is ONE OWNER "on the page ledger".
 #   NO OWNER     nothing claims it. Split by a simple shape test on its connected pieces -- a GUESS OF THIS TOOL, never a claim: refused claim (a
 #                claim stood and its shape did not fit: a fact), staff-line residue, specks, long thin strokes, note-like blobs, text-like, small marks, other.
 #
@@ -1674,7 +1677,9 @@ def render_ink_number(label: str, t: Dict[str, Any]) -> List[str]:
                ink_pct(L["twice"], tot), ink_pct(tw["twin_px"], tot), ink_pct(tw["twin_mixed_px"], tot), ink_pct(tw["two_kinds_px"], tot), ink_pct(tw["views_disagree_px"], tot),
                ink_pct(tw["twin_views_px"], tot)),
            "      of which a PAGE-STROKE claim the cell settle did not consult (ROADMAP 2.297's gap), a READ page-stroke claim and a READ cell/register owner of "
-           "a DIFFERENT kind on one pixel  %s   by pair: %s" % (ink_pct(tw.get("page_not_consulted_px", 0), tot), kinds(tw.get("page_not_consulted_pairs", {}))),
+           "a DIFFERENT kind on one pixel  %s (%d px)   by pair (px): %s" % (
+               ink_pct(tw.get("page_not_consulted_px", 0), tot), tw.get("page_not_consulted_px", 0),
+               ", ".join("%s %d" % (k, v) for k, v in sorted(tw.get("page_not_consulted_pairs", {}).items(), key=lambda kv: -kv[1])) or "-"),
            "  NO OWNER       %s   (outside every cell %s)" % (ink_pct(L["none"], tot), ink_pct(n["outside_cells_px"], tot)),
            "  sum of the four lines %s (checked: the tool raises otherwise)" % ink_pct(sum(L.values()), tot),
            "  one owner by kind:                 " + kinds(o["by_kind"]),
