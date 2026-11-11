@@ -388,6 +388,22 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             lay = CO.layer_of(str(d.get("owner") or ""))
             claims.append(dict(owner=str(d.get("owner") or ""), layer=99 if lay is None else int(lay), ids=[int(o) for o in d["page_strokes"]], existing=True,
                                row=r.id, subject=r.subject))
+    if rests and not enabled():
+        # 2.288: with `OMR_PAGE_CLAIM_NAMES` OFF the READ area claims (word, clef, key, meter, header column, barline, bracket) stand on the log as rectangles and are NOT yet page
+        # strokes; the rest claim must not take their ink ("cresc." claimed as a rest 8th, 2.288 first gather). Named here by step 1's own predicate (`area_names`), not filed.
+        from . import stroke_owner as _SO
+        n_area = 0
+        for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=Scope.SELF_AND_DESCENDANTS):
+            d = r.detail or {}
+            v = r.value
+            owner = str(d.get("owner") or "")
+            if (d.get("unit") != "area" or d.get("standing", "READ") != "READ" or owner not in _SO.AREA_OWNERS
+                    or not (isinstance(v, (list, tuple)) and len(v) == 4)):
+                continue
+            n_area += 1
+            lay = CO.layer_of(owner)
+            claims.append(dict(owner=owner, layer=99 if lay is None else int(lay), existing=True, row=r.id, subject=r.subject,
+                               ids=area_names(index, v, d.get("scope") == "system" and d.get("cell") is None, owner)))
     census: Dict[str, Any] = dict(boxes=0, twins_skipped=0, by_class={}, named_nothing={}, existing_claims=len(claims))
     if rests:
         census.update(rest_boxes=0, rest_read=0, rest_weak={}, rest_weak_boxes=[])
@@ -401,7 +417,7 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
         for gi, d in enumerate(detections.get(csub.to_key()) or ()):
             cls = str(getattr(d, "smufl_name", ""))
             owner = box_owner(cls, getattr(d, "category", None), rests)
-            if owner is None or (owner not in REST_FAMILIES and not boxes_enabled()):
+            if owner is None or (owner not in REST_FAMILIES and not boxes_enabled()) or (owner in REST_FAMILIES and not (rests or boxes_enabled())):
                 continue
             x, y, w, h = float(d.x_canonical), float(d.y_canonical), float(d.width_canonical), float(d.height_canonical)
             pb = (rect[0] + x / up, rect[1] + y / up, rect[0] + (x + w) / up, rect[1] + (y + h) / up)
@@ -411,7 +427,7 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                 continue
             seen.add(k)
             standing = None
-            if owner in REST_FAMILIES:
+            if rests and owner in REST_FAMILIES:
                 # 2.288: only a rest that STANDS as one (READ) claims; a weak box files nothing and blocks nobody (counted, with where it stands)
                 rr = log.rows(Q.REST_INK_CONTACT, R.glyph(c.page_index, key[0], key[1], c.measure_index, gi))
                 standing, why = rest_standing(rr[-1].detail if rr else None)
