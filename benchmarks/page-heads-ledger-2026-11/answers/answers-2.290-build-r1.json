@@ -1,0 +1,234 @@
+{
+ "lane": "2.290-build-r1",
+ "date": "2026-11-11",
+ "question": "Is the tinted ink ONE notehead, and only that notehead?",
+ "note": "Sean: tiles very small and zoomed in; stems' ends not visible. Scored by the manager against key.json: 8 of 12 claims right; wrong 8 (sliver), 9 (rest claimed as a head), 10 (sliver, 3 boxes merged), 12 (a small claim lying BETWEEN two half notes a third apart, taking a little of each -- Sean's clarification: not a box around both).",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "a quarter note head",
+   "claim_right": true,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/8/3/4",
+   "box": [
+    905.0,
+    1634.0,
+    919.0,
+    1655.0
+   ],
+   "members": [
+    "glyph/2/0/8/3/3",
+    "glyph/2/0/8/3/4"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 2,
+   "sean": "a quarter note head",
+   "claim_right": true,
+   "plate": "brahms",
+   "page": 14,
+   "glyph": "glyph/14/0/7/0/2",
+   "box": [
+    978.0,
+    2243.0,
+    1009.0,
+    2279.0
+   ],
+   "members": [
+    "glyph/14/0/7/0/2"
+   ],
+   "stratum": "newly_on_ledger"
+  },
+  {
+   "tile": 3,
+   "sean": "an eighth note",
+   "claim_right": true,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/1/9/10/9",
+   "box": [
+    2054.2,
+    3472.7,
+    2076.6,
+    3491.6
+   ],
+   "members": [
+    "glyph/2/1/9/10/9"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 4,
+   "sean": "a quarter note",
+   "claim_right": true,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/2/3/0",
+   "box": [
+    895.0,
+    734.0,
+    911.0,
+    757.0
+   ],
+   "members": [
+    "glyph/2/0/2/3/0",
+    "glyph/2/0/3/3/1"
+   ],
+   "stratum": "chord_2.291"
+  },
+  {
+   "tile": 5,
+   "sean": "a quarter or an eighth note, probably an eighth; flag/beam not visible in the tile",
+   "claim_right": true,
+   "plate": "litolff",
+   "page": 8,
+   "glyph": "glyph/8/1/3/18/17",
+   "box": [
+    2540.0,
+    2433.0,
+    2555.0,
+    2455.0
+   ],
+   "members": [
+    "glyph/8/1/3/18/14",
+    "glyph/8/1/3/18/17"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 6,
+   "sean": "most of a half note",
+   "claim_right": true,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/9/6/2",
+   "box": [
+    1242.0,
+    1781.0,
+    1269.0,
+    1803.0
+   ],
+   "members": [
+    "glyph/2/0/9/6/1",
+    "glyph/2/0/9/6/2"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 7,
+   "sean": "an eighth note",
+   "claim_right": true,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/0/5/6/20",
+   "box": [
+    3900.0,
+    1729.0,
+    3938.0,
+    1755.0
+   ],
+   "members": [
+    "glyph/19/0/5/6/20",
+    "glyph/19/0/5/6/25"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 8,
+   "sean": "a small sliver that just touches part of a half note",
+   "claim_right": false,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/1/4/14/6",
+   "box": [
+    2464.0,
+    2719.0,
+    2489.0,
+    2722.0
+   ],
+   "members": [
+    "glyph/2/1/4/14/6"
+   ],
+   "stratum": "chord_2.291"
+  },
+  {
+   "tile": 9,
+   "sean": "half of a quarter note rest",
+   "claim_right": false,
+   "plate": "litolff",
+   "page": 11,
+   "glyph": "glyph/11/1/10/12/3",
+   "box": [
+    2099.0,
+    3561.0,
+    2115.0,
+    3586.0
+   ],
+   "members": [
+    "glyph/11/1/10/12/3"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 10,
+   "sean": "a long, thin sliver that covers part of a quarter note",
+   "claim_right": false,
+   "plate": "litolff",
+   "page": 11,
+   "glyph": "glyph/11/1/9/15/10",
+   "box": [
+    2408.0,
+    3322.0,
+    2414.0,
+    3346.0
+   ],
+   "members": [
+    "glyph/11/1/8/15/1",
+    "glyph/11/1/9/15/3",
+    "glyph/11/1/9/15/10"
+   ],
+   "stratum": "lost_or_changed"
+  },
+  {
+   "tile": 11,
+   "sean": "a quarter note",
+   "claim_right": true,
+   "plate": "litolff",
+   "page": 11,
+   "glyph": "glyph/11/1/9/12/2",
+   "box": [
+    2058.0,
+    3341.0,
+    2077.0,
+    3363.0
+   ],
+   "members": [
+    "glyph/11/1/9/12/2"
+   ],
+   "stratum": "newly_on_ledger"
+  },
+  {
+   "tile": 12,
+   "sean": "a small box that lands in between two half notes, a third apart on the same beat",
+   "claim_right": false,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/1/9/14/8",
+   "box": [
+    2488.0,
+    3478.0,
+    2503.0,
+    3489.0
+   ],
+   "members": [
+    "glyph/2/1/9/14/2",
+    "glyph/2/1/9/14/8",
+    "glyph/2/1/9/14/9"
+   ],
+   "stratum": "lost_or_changed",
+   "sean_clarification": "it was not a box that encompassed both but one that landed in between the two notes and got a little bit of each"
+  }
+ ]
+}

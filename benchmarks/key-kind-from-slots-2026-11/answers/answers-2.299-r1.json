@@ -1,0 +1,248 @@
+{
+ "lane": "2.299-r1",
+ "date": "2026-11-11",
+ "question": "What clef and key signature is printed at this staff start?",
+ "note": "Sean: every tile is three flats. Scored by the manager against key.json: the 3 newly READ staves (tiles 2, 6, 7) are right; both Brahms controls right; all 7 refusals had three plain flats printed, so the INFER fill (-3) was right on all of them too. The key holds no clef reading, so the clef answers are recorded but not scored.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "F clef, 3 flats",
+   "key_right": true,
+   "plate": "brahms",
+   "staff": "staff/4/1/12",
+   "rule": "3 Brahms control (existing read, unchanged)",
+   "bucket": "READ",
+   "off": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "on": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_one_order"
+  },
+  {
+   "tile": 2,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/2/0/1",
+   "rule": "2 newly READ",
+   "bucket": "K4",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_one_order"
+  },
+  {
+   "tile": 3,
+   "sean": "F clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/1/0/10",
+   "rule": "4 near-miss refusal (fewer_than_system)",
+   "bucket": "K1",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "fewer_than_system"
+  },
+  {
+   "tile": 4,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/16/0/1",
+   "rule": "4 near-miss refusal (more_than_system)",
+   "bucket": "K1",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "more_than_system"
+  },
+  {
+   "tile": 5,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/2/0/0",
+   "rule": "4 near-miss refusal (more_than_system)",
+   "bucket": "K1",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "more_than_system"
+  },
+  {
+   "tile": 6,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/4/0/7",
+   "rule": "2 newly READ",
+   "bucket": "K3",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_one_order"
+  },
+  {
+   "tile": 7,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/4/1/7",
+   "rule": "2 newly READ",
+   "bucket": "K4",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_one_order"
+  },
+  {
+   "tile": 8,
+   "sean": "F clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/8/1/9",
+   "rule": "4 near-miss refusal (more_than_system)",
+   "bucket": "K1",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "more_than_system"
+  },
+  {
+   "tile": 9,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "brahms",
+   "staff": "staff/4/1/10",
+   "rule": "3 Brahms control (existing read, unchanged)",
+   "bucket": "READ",
+   "off": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "on": [
+    "adjudicate_key_signature",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_one_order"
+  },
+  {
+   "tile": 10,
+   "sean": "G clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/16/0/0",
+   "rule": "4 near-miss refusal (slots_fit_neither_order)",
+   "bucket": "K2",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_neither_order"
+  },
+  {
+   "tile": 11,
+   "sean": "F clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/2/0/10",
+   "rule": "4 near-miss refusal (slots_not_one_apart)",
+   "bucket": "K7",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "slots_not_one_apart"
+  },
+  {
+   "tile": 12,
+   "sean": "F clef, 3 flats",
+   "key_right": true,
+   "plate": "litolff",
+   "staff": "staff/6/1/11",
+   "rule": "4 near-miss refusal (slots_fit_neither_order)",
+   "bucket": "K4",
+   "off": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "on": [
+    "infer:fill_part_key",
+    "decided",
+    -3
+   ],
+   "why": "slots_fit_neither_order"
+  }
+ ]
+}
