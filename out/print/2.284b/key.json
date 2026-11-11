@@ -1,0 +1,262 @@
+[
+ {
+  "page": 6,
+  "box": [
+   671.8125,
+   757.695,
+   703.6275,
+   795.9675
+  ],
+  "what": "arc crossing (mark kept from the arc)",
+  "mark_box": "glyph/6/0/2/1/1",
+  "mark_class": "dynamicP",
+  "arc": "glyph/6/0/2/1/2",
+  "row": "obs:115773",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 1,
+  "crop_origin": [
+   593,
+   698
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 2,
+  "box": [
+   1510.0,
+   2145.9,
+   1541.8,
+   2194.0
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:042626",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 2,
+  "crop_origin": [
+   1431,
+   2091
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   594.205,
+   1557.5625,
+   634.525,
+   1564.1775
+  ],
+  "what": "arc crossing (mark kept from the arc)",
+  "mark_box": "glyph/4/0/7/1/10",
+  "mark_class": "ledgerLine",
+  "arc": "glyph/4/0/7/0/5",
+  "row": "obs:069404",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 3,
+  "crop_origin": [
+   519,
+   1482
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1735.9,
+   2571.3,
+   1769.9,
+   2610.7
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:176477",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 4,
+  "crop_origin": [
+   1658,
+   2512
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1716.4,
+   2764.9,
+   1779.7,
+   2817.1
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:176474",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 5,
+  "crop_origin": [
+   1653,
+   2712
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   1044.3,
+   2678.8,
+   1105.7,
+   2730.0
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:092568",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 6,
+  "crop_origin": [
+   980,
+   2625
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 2,
+  "box": [
+   1943.0,
+   2186.9,
+   1986.2,
+   2233.3
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:042629",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 7,
+  "crop_origin": [
+   1870,
+   2131
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   1880.48,
+   1700.08,
+   1896.48,
+   1738.0
+  ],
+  "what": "arc crossing (mark kept from the arc)",
+  "mark_box": "glyph/4/0/8/10/2",
+  "mark_class": "accidentalFlat",
+  "arc": "glyph/4/0/9/7/4",
+  "row": "obs:069417",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 8,
+  "crop_origin": [
+   1793,
+   1640
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1711.2,
+   2897.5,
+   1785.8,
+   2956.9
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:176469",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 9,
+  "crop_origin": [
+   1654,
+   2848
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1703.2,
+   2432.4,
+   1765.7,
+   2486.1
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:176468",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 10,
+  "crop_origin": [
+   1639,
+   2380
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   1715.0,
+   1702.8,
+   1738.84,
+   1738.0
+  ],
+  "what": "arc crossing (mark kept from the arc)",
+  "mark_box": "glyph/4/0/8/9/4",
+  "mark_class": "accidentalDoubleFlat",
+  "arc": "glyph/4/0/9/7/4",
+  "row": "obs:069417",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 11,
+  "crop_origin": [
+   1632,
+   1641
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 2,
+  "box": [
+   776.3625,
+   605.315,
+   816.9975,
+   661.14
+  ],
+  "what": "lone dynamic letter claim (in staff)",
+  "text": "f",
+  "row": "obs:042606",
+  "plate": "litolff",
+  "role": "case",
+  "tile": 12,
+  "crop_origin": [
+   702,
+   554
+  ],
+  "position": null,
+  "cell_map": null
+ }
+]

@@ -1,0 +1,8 @@
+(a) OMR_ARC_CLAIM: register-claimed arc ink px 318780 -> 0 with the flag 0 (must drop)
+    Sean's arcs (tie+slur) right via the register: 139 of 153 -> 0 with the flag 0 (must drop)
+(b) planted head+rest double claim: contested ink px 203840 -> 521299 (must rise)
+(c) readout of an identical copy of the rows: identical
+(f) heads planted cut in half: black heads WHOLE 221 -> 2, fragmented+misshapen -> 372 (whole must drop)
+(e) the stroke owner re-run on the GATHER rows vs the record's own saved verdicts: {'compared': 112, 'differ': 0, 'cells_not_rerun': 0}
+(d) stroke-for-stroke match of the re-cut cells with the record: {'cells_ok': 112, 'strokes_ok': 3256}
+controls: ALL BEHAVE

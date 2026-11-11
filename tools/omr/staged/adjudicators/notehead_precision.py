@@ -3893,7 +3893,14 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # ROADMAP 2.181 (flag `OMR_CLAIMED_REGISTER`, default ON): the ONE consult of the claimed-area register, where `is_a_clef`
     # stood (it cites reads, measures nothing). With the flag ON it subsumes `is_a_clef`, `on_another_symbols_box`,
     # `on_the_staffs_leading_barline` and the 2.177 meter consult; a claim too weak to refuse NARROWS at the end instead.
-    claim = _claimed_by.consult(ev, box_row, head=True, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
+    # ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`): the ONE consult, read once here; its three parts (the register's rule table, the page ledger's
+    # finding, the owner's shape answer) stand where the three old consults stood. OFF: the old calls, unchanged.
+    from . import ink_consult as _ink_consult
+    ic = _ink_consult.consult(ev, box_row, "head", head=True, tail_reads=lambda: _key_tail_reads(ev)) if _ink_consult.enabled() else None
+    if ic is not None:
+        claim = ic.register
+    else:
+        claim = _claimed_by.consult(ev, box_row, head=True, tail_reads=lambda: _key_tail_reads(ev)) if _claimed_by.enabled() else None
     if claim is not None and claim.refuse:
         return _claim_refusal(claim, box_row)
     wr_row = _claimed_by_a_whole_rest(ev)
@@ -3902,7 +3909,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
                       detail={"class": box_row.value[0], "claimed_by": "whole_rest"})
     # ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): claimed ink is final -- every OTHER claim kind (barline, an arc's or a hairpin's traced
     # ink, a layer a later lane files) refuses a box that is mostly its ink, BY THE CLAIM, before any shape rule can name a different first cause.
-    cf_row = _claim_final.finding(ev, box_row)
+    cf_row = ic.ledger if ic is not None else _claim_final.finding(ev, box_row)
     if cf_row is not None:
         return _claim_final_refusal(cf_row, box_row)
     # lane-stem-end-head round 2: a head the ink ALONE read at a stem end, its one witness; any claim on its ink refuses it.
@@ -4020,7 +4027,7 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     # `stroke_owner.shape_vetoes`) decides the cross-family questions ONCE, here, where the first of them stood: refused -> refused;
     # owns -> the covered rules below (`on_a_rest`, `is_a_rest_shape`, `on_a_dynamic_letter` by both readers) do not decide; contested /
     # silent -> they decide as before (the owner cannot tell; rule 8). Flag OFF: `box_says` is silent and nothing here changes.
-    owner_says, owner_lost, owner_vid = _stroke_owner.box_says(ev, ev.subject.to_key())
+    owner_says, owner_lost, owner_vid = ic.shape if ic is not None else _stroke_owner.box_says(ev, ev.subject.to_key())
     if owner_says == "refused" and _stroke_owner.veto_rule(ev, ev.subject.to_key()) == "is_a_rest_shape":
         # the same reading, refused by its own rule below with its own reason: 2.145's rest is written at the cluster from that reason
         owner_says = "silent"

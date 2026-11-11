@@ -171,6 +171,20 @@ def on_arms_share(mask, x0: int, y0: int, scale: float, cell_box, up: float, seg
     return float(on.sum()) / float(ys.size)
 
 
+def on_arms_fn(segs, bbox, band: float):
+    """ROADMAP 2.284b: the `on` test of `arc_claim.claim_pixels_on` for a hairpin -- page px inside the box (+ `band`) and within `band` of an arm."""
+    import numpy as np
+    bx0, by0, bx1, by1 = (float(v) for v in bbox)
+
+    def on(px, py):
+        inside = (px >= bx0 - band) & (px <= bx1 + band) & (py >= by0 - band) & (py <= by1 + band)
+        out = np.zeros(px.shape, bool)
+        if inside.any():
+            out[inside] = dist_to_segments(px[inside], py[inside], segs) <= band
+        return out
+    return on
+
+
 def claim_strokes(res, cell_box, up: float, segs, bbox, band: float) -> list:
     """`[(stroke ordinal, share)]` for every stroke of a cell (`stroke_map.CellStrokes`) that lies `ON_ARMS_SHARE_MIN` on the arms."""
     out = []

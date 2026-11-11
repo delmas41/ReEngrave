@@ -363,6 +363,10 @@ STAGE_OF_FILE = {
     "page_arcs.py": "GATHER",
     # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
     "page_heads.py": "GATHER",
+    # ROADMAP 2.276: files the `owner: tremolo` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
+    "page_tremolo.py": "GATHER",
+    # ROADMAP 2.285: files the `owner: accidental_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
+    "page_accidental_ink.py": "GATHER",
     # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
     "page_claim_names.py": "GATHER",
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
@@ -462,12 +466,18 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.236. The capture readout: re-runs `stroke_owner` over saved GATHER rows and counts page ink by claim state;
     # files no row, names no quantity it writes, decides nothing.
     "claim_readout.py",
+    # ROADMAP 2.286. The note-conservation command: replays saved GATHER rows to EXPORT and prints where every read head/rest went;
+    # reads the export's report, files no row, names no quantity, decides nothing.
+    "conservation.py",
     # ROADMAP 2.241. The claim-order check beside the capture readout: reads the same claims and asks whether the earliest READ layer
     # owns each piece of ink; files no row, names no quantity, decides nothing.
     "claim_order.py",
     # ROADMAP 2.277. Claimed ink is final: the PURE measurement (the share of a box's own ink another claim holds; copies by position as one mark);
     # files no row, names no quantity, decides nothing (the stroke owner records it, the precision rules read it).
     "claim_final.py",
+    # ROADMAP 2.284. The page ledger: pure helpers -- the cell-stroke -> page-stroke link `gather.gather_stroke_map` files on `Q.STROKE`, and the one
+    # settle per page stroke `adjudicators/stroke_owner` reads; files no row, names no quantity, decides nothing of its own.
+    "page_ledger.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a

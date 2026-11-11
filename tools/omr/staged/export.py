@@ -7901,7 +7901,62 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
             f"read off unboxed ink), {written} written "
             f"and {report['notes_not_written_total']} accounted as dropped — "
             f"the difference went nowhere. {report['notes_not_written']}")
+    # ROADMAP 2.286: REPORT ONLY -- reads lists and counters this function
+    # already built; the file above is not touched.
+    report["conservation"] = _conservation_report(
+        report, counters, red_bars, held_bars, partial_bars)
     return xml, report
+
+
+def _conservation_report(report: Dict[str, Any], counters: Dict[str, int],
+                         red_bars: Sequence[Dict[str, Any]],
+                         held_bars: Sequence[Dict[str, Any]],
+                         partial_bars: Sequence[Dict[str, Any]]) -> Dict[str, Any]:
+    """ROADMAP 2.286: where every head/rest the log read went, with the three
+    bar-level places (red bar, partial-bar gap, held bar) each LOCATABLE as
+    (page, system, staff, cell). Report-only: nothing here changes what is
+    written, and nothing is guessed -- a place list that does not add up to
+    its counter is reported as `located: False`, never repaired.
+
+    A head inside a RED bar is counted WRITTEN by the balance (the bar writes
+    every event it read, drawn red); it gets its own line here so it can be
+    found. Gap and held rows are counted NOT-written under their own reasons
+    already; they are listed here by bar."""
+    def _ids(b: Dict[str, Any]) -> Dict[str, Any]:
+        return {"page": b.get("page"), "system": b.get("system"),
+                "staff": b.get("staff"), "cell": b.get("cell"),
+                "measure": b.get("measure"), "part": b.get("part")}
+    red_places = [{**_ids(b), "rows": b["noteheads_and_rests"],
+                   "read": b["read"], "guessed": b["guessed"],
+                   "glyphs": [r.get("glyph") for r in b.get("rows") or ()]}
+                  for b in red_bars]
+    gap_places = [{**_ids(b), "rows": b["rows_in_gap"]}
+                  for b in partial_bars
+                  if b.get("status") == "partial" and b.get("rows_in_gap")]
+    held_places = [{**_ids(b), "rows": b["noteheads_and_rests"]}
+                   for b in held_bars]
+    n_red = int(counters.get("notes_written_in_red_bars", 0))
+    n_gap = int(counters.get("notes_in_partial_gaps", 0))
+    n_held = int(counters.get("notes_held_out_sum", 0))
+    bal = report["balance"]
+    g = report.get("guessed") or {}
+    return {
+        "read_by_adjudicate": bal["events_in_log"] + bal["unboxed_rests_placed"],
+        "written": bal["events_written"],
+        "written_guessed": int(g.get("notes", 0)) + int(g.get("rests", 0)),
+        "in_red_bars": {"rows": n_red, "counted_as": "written",
+                        "guessed": sum(p["guessed"] for p in red_places),
+                        "places": red_places},
+        "in_partial_gaps": {"rows": n_gap, "counted_as": "not written",
+                            "places": gap_places},
+        "in_held_bars": {"rows": n_held, "counted_as": "not written",
+                         "places": held_places},
+        "located": (sum(p["rows"] for p in red_places) == n_red
+                    and sum(p["rows"] for p in gap_places) == n_gap
+                    and sum(p["rows"] for p in held_places) == n_held),
+        "not_written": dict(report["notes_not_written"]),
+        "not_written_total": report["notes_not_written_total"],
+    }
 
 
 def _default_name(part: Sequence[StaffRun]) -> str:

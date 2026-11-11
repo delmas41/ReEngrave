@@ -2328,61 +2328,69 @@ def gather_accidental_positions(log: Log, cells: Sequence[Any],
         c = by_key.get((sub.page, sub.system, sub.staff, sub.cell))
         if c is None:
             continue
-        grid = _cell_grid(c)
-        if grid is None:
-            continue
-        top_y, half_step = grid
         for gi, d in enumerate(dets):
-            alteration = _alteration_of(d.smufl_name)
-            fam = getattr(d, "accidental_family", None)        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY): one family, type from the strokes
-            fam_detail: Dict[str, Any] = {}
-            bx0, by0, bx1, by1 = float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical)
-            if fam is not None:
-                fam_alt = {"flat": "b", "natural": "natural", "sharp": "#"}.get(fam["type"])
-                if fam_alt is not None:
-                    alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
-                elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
-                    alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
-                if (fam.get("features") or {}).get("class_sign_stands") is False:
-                    # ROADMAP 2.247 r2 (flag OMR_ACCIDENTAL_KIND): the strokes cannot name the kind and the shape EXCLUDES the class's sign, or the box
-                    # is not that glyph's size -- the class writes nothing here (rule 8; Sean's r1 tiles 5 and 6)
-                    continue
-                bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
-                fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
-                                                              "candidates", "agrees_with_detector", "head_right") if k in fam}}
-            if alteration is None:
-                continue
-            if fam is not None and fam["type"] in _acc_family.TYPES:
-                frac = float(fam["anchor_fraction"])
-            else:
-                frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
-            anchor_y = by0 + (by1 - by0) * frac
-            pos_float = (anchor_y - top_y) / half_step
-            centre_pos = ((by0 + by1) / 2.0 - top_y) / half_step if fam is not None else (d.y_center - top_y) / half_step
-            g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
-            shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
-            log.observe(
-                g, Q.ACCIDENTAL_STAFF_POSITION, pos_float,
-                reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
-                alteration=alteration,
-                detector_class=str(d.smufl_name),
-                anchor_fraction=frac,
-                # ⚠️ THE UNCORRECTED READING, KEPT. The anchor is a claim about
-                # the GLYPH SHAPE and the two documents disagree with the font
-                # about it by 0.023 (Breitkopf) and 0.135 (Litolff) of a box
-                # height; a consumer that wants to re-price that must not need
-                # a re-gather to do it. Throwing the second reading away is
-                # this project's own named anti-pattern.
-                box_centre_position=centre_pos,
-                residual=abs(pos_float - round(pos_float)),
-                rounded=int(round(pos_float)),
-                x0=bx0,
-                x1=bx1,
-                y0=by0,
-                y1=by1,
-                confidence=float(d.confidence),
-                **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
-                **shape_detail, **fam_detail)
+            file_accidental_position(log, c, sub, gi, d)
+
+
+def file_accidental_position(log: Log, c: Any, sub: Subject, gi: int, d: Any) -> bool:
+    """ROADMAP 2.285 r2: ONE accidental's `Q.ACCIDENTAL_STAFF_POSITION` row (the body of `gather_accidental_positions`, unchanged, now callable for a mark that is not in
+    the cell's detection list: the page reader's own-ink accidental travels this same row, so `adjudicate_accidental_owner` and EVALUATE see it exactly as a boxed
+    one). `c` the cell, `sub` its subject, `gi` the glyph ordinal, `d` a detection (or a `SymbolDetection` built for the mark). True where a row was filed."""
+    grid = _cell_grid(c)
+    if grid is None:
+        return False
+    top_y, half_step = grid
+    alteration = _alteration_of(d.smufl_name)
+    fam = getattr(d, "accidental_family", None)        # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY): one family, type from the strokes
+    fam_detail: Dict[str, Any] = {}
+    bx0, by0, bx1, by1 = float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical), float(d.y_canonical + d.height_canonical)
+    if fam is not None:
+        fam_alt = {"flat": "b", "natural": "natural", "sharp": "#"}.get(fam["type"])
+        if fam_alt is not None:
+            alteration = fam_alt                      # the strokes name the type; the detector's label stays on the row as `detector_class`
+        elif alteration is None and _acc_family.type_of_class(d.smufl_name) is not None:
+            alteration = {"flat": "b", "natural": "natural", "sharp": "#"}[_acc_family.type_of_class(d.smufl_name)]   # a key* box the strokes cannot type: its class as a candidate
+        if (fam.get("features") or {}).get("class_sign_stands") is False:
+            # ROADMAP 2.247 r2 (flag OMR_ACCIDENTAL_KIND): the strokes cannot name the kind and the shape EXCLUDES the class's sign, or the box
+            # is not that glyph's size -- the class writes nothing here (rule 8; Sean's r1 tiles 5 and 6)
+            return False
+        bx0, by0, bx1, by1 = [float(v) for v in fam["box"]]
+        fam_detail = {"family": {k: fam[k] for k in ("type", "why", "margin", "features", "grown", "grown_sp", "detector_class", "detector_type",
+                                                      "candidates", "agrees_with_detector", "head_right") if k in fam}}
+    if alteration is None:
+        return False
+    if fam is not None and fam["type"] in _acc_family.TYPES:
+        frac = float(fam["anchor_fraction"])
+    else:
+        frac = _ANCHOR_FRACTION.get(str(d.smufl_name).lower(), 0.5)
+    anchor_y = by0 + (by1 - by0) * frac
+    pos_float = (anchor_y - top_y) / half_step
+    centre_pos = ((by0 + by1) / 2.0 - top_y) / half_step if fam is not None else (d.y_center - top_y) / half_step
+    g = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi)
+    shape_detail = _accidental_shape_detail(c, d, top_y, half_step) if _acc_shape.enabled() else {}
+    log.observe(
+        g, Q.ACCIDENTAL_STAFF_POSITION, pos_float,
+        reader=READERS.GEOMETRY, frame=frame_cell(sub.cell),
+        alteration=alteration,
+        detector_class=str(d.smufl_name),
+        anchor_fraction=frac,
+        # ⚠️ THE UNCORRECTED READING, KEPT. The anchor is a claim about
+        # the GLYPH SHAPE and the two documents disagree with the font
+        # about it by 0.023 (Breitkopf) and 0.135 (Litolff) of a box
+        # height; a consumer that wants to re-price that must not need
+        # a re-gather to do it. Throwing the second reading away is
+        # this project's own named anti-pattern.
+        box_centre_position=centre_pos,
+        residual=abs(pos_float - round(pos_float)),
+        rounded=int(round(pos_float)),
+        x0=bx0,
+        x1=bx1,
+        y0=by0,
+        y1=by1,
+        confidence=float(d.confidence),
+        **({"one_ink_absorbed": True} if getattr(d, "one_ink_absorbed_by", None) is not None else _one_ink.box_detail(d)),
+        **shape_detail, **fam_detail)
+    return True
 
 
 def _accidental_shape_detail(c: Any, d: Any, top_y: float, half_step: float) -> Dict[str, Any]:
@@ -8069,8 +8077,9 @@ def stems_from_strokes_retires_scans() -> bool:
 
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
                       detections: Optional[Dict[str, List[Any]]] = None,
-                      page_shape: Optional[Sequence[int]] = None) -> Dict[Tuple[int, int, int, int], Any]:
-    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. Reads the erased raster (`READERS.CV_STROKE`) and the cell's
+                      page_shape: Optional[Sequence[int]] = None, page_map: Any = None) -> Dict[Tuple[int, int, int, int], Any]:
+    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. ROADMAP 2.284 (flag `OMR_PAGE_LEDGER_OWNS`, default OFF): with `page_map`
+    (the page stroke map built before the arcs), each row also carries `page_stroke: [page stroke ordinal, share]` (`page_ledger.link_cell_strokes`). Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
 
@@ -8088,6 +8097,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
     if not stroke_map_enabled():
         return cache
     from . import stroke_map as SM
+    from . import page_ledger as _PL
+    page_labels = _PL.PageLabels(page_map, page_shape) if (_PL.enabled() and page_map is not None and page_shape) else None
     for c in cells:
         key = local.get(c.staff_index)
         if key is None:
@@ -8127,6 +8138,7 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
         up = getattr(c, "upscale_factor", None)
         cell_box = getattr(c, "bbox_page_px", None)
         page_ok = bool(up) and bool(cell_box) and len(cell_box or ()) == 4
+        links = _PL.link_cell_strokes(res, cell_box, up, page_labels) if (page_labels is not None and page_ok) else None
         for i, st in enumerate(res.strokes):
             g = R.glyph(c.page_index, key[0], key[1], c.measure_index, _STROKE_GLYPH_BASE + i)
             optional: Dict[str, Any] = {}
@@ -8152,6 +8164,8 @@ def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int
                     optional["cell_touch_boxes"] = touch
             if st.joined_to:                             # ROADMAP 2.239 (OMR_SPLIT_JOINS): cut from one fused piece with these strokes
                 optional["joined_to"] = [[j, how] for j, how in st.joined_to]
+            if links is not None and i < len(links) and links[i] is not None:
+                optional["page_stroke"] = list(links[i])     # ROADMAP 2.284: the page stroke this stroke's ink lies on, and its share
             if page_ok:
                 x, y, w, h = st.box
                 optional["bbox_page_px"] = [round(cell_box[0] + x / up, 1), round(cell_box[1] + y / up, 1),
@@ -15334,7 +15348,7 @@ def _file_ink_claim(log: Log, ssub: Any, *, strokes: Optional[List[Tuple[int, fl
 
 def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                      stroke_cells: Dict[Tuple[int, int, int, int], Any], arcs_summary: Optional[Dict[str, Any]], *,
-                     progress: bool = False) -> Dict[str, int]:
+                     progress: bool = False, detections: Optional[Dict[str, List[Any]]] = None) -> Dict[str, int]:
     """lane-arcs-claim-1029 (flag `OMR_ARC_CLAIM`, default ON; needs `OMR_SYSTEM_ARCS` and `OMR_STROKE_MAP`), STAGED GATHER: the register's `ink`
     branch for ARCS, ONE CLAIM PER SYSTEM ARC (Sean 2026-10-29: "arcs ... need to be treated system or page wide not based on individual measures").
     The unit is the curve `gather_system_arcs` traced and joined across barlines (`Q.SYSTEM_ARC`'s `trace`), keyed by (page, system, staff) and its
@@ -15352,6 +15366,8 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         key = local.get(c.staff_index)
         if key is not None:
             by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
+    mark_boxes: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None      # ROADMAP 2.284b: built once, on first use (flag ON only)
+    line_keys: set = set()
     for d in arcs_summary.get("arcs_detail") or ():
         trace_rows = d.get("trace")
         if not trace_rows:
@@ -15368,6 +15384,9 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
         got_all: List[List[Any]] = []
         shares: List[float] = []
         cells_hit: List[int] = []
+        crossings: List[List[Any]] = []          # ROADMAP 2.284b: [cell, ordinal, own px, mark box, box share, share of the box's ink on the curve]
+        line_boxes: List[List[Any]] = []         # ROADMAP 2.284b r2: [cell, mark box, share of its ink on the curve]: no mark, the arc's own ink
+        px_tot: Dict[str, int] = {}
         no_map = 0
         for ck, c in sorted(by_cell.items()):
             if ck[:3] != home:
@@ -15382,7 +15401,25 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
             if res is None or isinstance(res, str):
                 no_map += 1
                 continue
-            got = AC.claim_strokes(res, cb, float(up), trace, sp)
+            if _page_ledger_on() and detections:
+                # ROADMAP 2.284b (OMR_PAGE_LEDGER_OWNS): the arc claims its OWN traced pixels only -- never a pixel inside another mark's box,
+                # from whichever cell or staff of the page boxed it (a padded cell sees its neighbours' ink), and never a stroke that holds a
+                # mark's own ink (a crossing: marked, not taken). `arc_claim.claim_pixels`.
+                if mark_boxes is None:
+                    mark_boxes = _arc_mark_boxes_page(detections, by_cell)
+                    line_keys = _arc_line_box_keys(detections)
+                pg = mark_boxes.get(ck[0], ())
+                near = [(k, b) for k, b in pg if b[0] <= cb[2] and b[2] >= cb[0] and b[1] <= cb[3] and b[3] >= cb[1]]
+                px_res = AC.claim_pixels(res, cb, float(up), trace, sp, near, line_keys)
+                got = px_res["claimed"]
+                for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
+                    px_tot[kk] = px_tot.get(kk, 0) + int(px_res[kk])
+                for cr in px_res["crossings"]:
+                    crossings.append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"], cr["box_on_line"]])
+                for lb in px_res.get("line_boxes", ()):
+                    line_boxes.append([ck[3]] + list(lb))
+            else:
+                got = AC.claim_strokes(res, cb, float(up), trace, sp)
             if got:
                 cells_hit.append(ck[3])
             for i, sh in got:
@@ -15390,10 +15427,16 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                 shares.append(sh)
         counts["no_map_cells"] += no_map
         ssub = R.staff(*home)
+        px_extra: Dict[str, Any] = {}
+        if px_tot or crossings:
+            px_extra = {"pixels": dict(sorted(px_tot.items())), "crossings": crossings, "line_boxes": line_boxes}
+            counts["crossings"] = counts.get("crossings", 0) + len(crossings)
+            for kk, vv in px_tot.items():
+                counts[kk] = counts.get(kk, 0) + vv
         if not got_all:
             counts["no_stroke_arcs"] += 1
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame="page", reason=ABSTAIN.NO_INK, owner=AC.OWNER, unit="ink",
-                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces)
+                        why="trace_runs_along_no_filed_stroke", source="system_arc", pieces=pieces, **px_extra)
             continue
         counts["rows"] += 1
         counts["strokes"] += len(got_all)
@@ -15402,14 +15445,59 @@ def gather_arc_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int,
                     pieces=pieces, cells=cells_hit, cover_min=AC.ON_TRACE_SHARE_MIN,
                     # ROADMAP 2.260b M3 (OMR_PAGE_CLAIMS): the same claim in the page's own ids (`Q.PAGE_STROKE` ordinals on the page), the
                     # translation from `[cell, ordinal]`; empty where the flag is off
-                    page_strokes=[i for i, _sh in (d.get("page_strokes") or ())])
+                    page_strokes=[i for i, _sh in (d.get("page_strokes") or ())], **px_extra)
         if progress:
             print(f"  gather arc claim {d.get('subject')} {d.get('shape')} boxes={len(pieces)}")
     return counts
 
 
+def _page_ledger_on() -> bool:
+    from . import page_ledger as _PL
+    return _PL.enabled()
+
+
+#: ROADMAP 2.284: the boxes an arc's claim never takes pixels from -- the arc eraser's protected marks (`arcs_system.PROTECTED_PREFIXES`) minus the
+#: CONSUMER boxes (stem, flag, beam, tremolo: the arc claim stands before them, 2.205 tiers) and the column marks the register claims first (barline,
+#: brace, bracket). r2 measured why: with heads alone skipped, 8 ledger lines, 3 augmentation dots and a dynamic stayed >= 0.5 held by the arc.
+ARC_SKIP_NOT = ("stem", "flag", "beam", "tremolo", "barline", "brace", "bracket")
+
+
+def _arc_mark_boxes_page(detections: Optional[Dict[str, List[Any]]], by_cell: Dict[Tuple[int, int, int, int], Any]
+                         ) -> Dict[int, List[Tuple[str, List[float]]]]:
+    """ROADMAP 2.284b: `{page: [(glyph key, page-px box)]}` -- every non-arc MARK box of the page (`ARC_SKIP_NOT` left out), from every cell of
+    every staff, in page px: the pixels no arc claim counts as its own, whichever padded cell sees them."""
+    from .arcs_system import PROTECTED_PREFIXES
+    skip = tuple(p for p in PROTECTED_PREFIXES if p not in ARC_SKIP_NOT)
+    out: Dict[int, List[Tuple[str, List[float]]]] = {}
+    for ck, dets in (detections or {}).items():
+        sub = Subject.from_key(ck)
+        c = by_cell.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            if str(getattr(d, "smufl_name", "") or "").startswith(skip):
+                pb = _page_box(c, d)
+                if pb is not None:
+                    out.setdefault(sub.page, []).append((R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), [float(v) for v in pb]))
+    return out
+
+
+def _arc_line_box_keys(detections: Optional[Dict[str, List[Any]]]) -> set:
+    """ROADMAP 2.284b r2: the glyph keys of every LINE-class box (`arc_claim.LINE_BOX_CLASSES`: a ledger line) of the page's detections -- the boxes
+    whose ink can be a stretch of an arc (`arc_claim.BOX_ON_LINE_MIN`)."""
+    from . import arc_claim as _AC
+    out = set()
+    for ck, dets in (detections or {}).items():
+        sub = Subject.from_key(ck)
+        for gi, d in enumerate(dets):
+            if str(getattr(d, "smufl_name", "") or "").startswith(_AC.LINE_BOX_CLASSES):
+                out.add(R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key())
+    return out
+
+
 def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
-                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]]) -> Dict[str, int]:
+                         stroke_cells: Optional[Dict[Tuple[int, int, int, int], Any]],
+                         detections: Optional[Dict[str, List[Any]]] = None) -> Dict[str, int]:
     """ROADMAP 2.254 round 2 (flag `OMR_HAIRPIN_REACH`, default ON), STAGED GATHER: the register's `ink` branch for HAIRPINS, claimed at the
     coarsest kind the reader is sure of (a hairpin; its owner staff and its start/stop notes are decided later, ADJUDICATE / 2.223).
 
@@ -15430,6 +15518,7 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
         if key is not None:
             by_cell[(c.page_index, key[0], key[1], c.measure_index)] = c
             pages.add(c.page_index)
+    mark_boxes: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None      # ROADMAP 2.284b: built once, on first use (flag ON only)
     for p in sorted(pages):
         for r in log.rows(Q.WEDGE_BOX, R.page(p), scope=R.Scope.SELF_AND_DESCENDANTS):
             d = r.detail or {}
@@ -15441,6 +15530,8 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
             band = HR.band_px(d.get("staff_spacing_px") or 0.0)
             per_staff: Dict[Tuple[int, int, int], List[List[int]]] = {}
             shares: Dict[Tuple[int, int, int], List[float]] = {}
+            px_tot: Dict[Tuple[int, int, int], Dict[str, int]] = {}            # ROADMAP 2.284b (flag ON only)
+            crossings: Dict[Tuple[int, int, int], List[List[Any]]] = {}
             for ck, c in sorted(by_cell.items()):
                 if ck[0] != p:
                     continue
@@ -15454,7 +15545,22 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
                 if res is None or isinstance(res, str):
                     counts["no_map_cells"] += 1
                     continue
-                for i, sh in HR.claim_strokes(res, cb, float(up), segs, bb, band):
+                if _page_ledger_on() and detections:
+                    # ROADMAP 2.284b (OMR_PAGE_LEDGER_OWNS): the hairpin claims its own arm pixels by the arc's rule -- never a pixel inside
+                    # another mark's box (any cell / staff of the page), never a stroke holding a mark's own ink (a crossing: marked)
+                    from . import arc_claim as _AC
+                    if mark_boxes is None:
+                        mark_boxes = _arc_mark_boxes_page(detections, by_cell)
+                    near = [(k, b_) for k, b_ in mark_boxes.get(p, ()) if b_[0] <= cb[2] and b_[2] >= cb[0] and b_[1] <= cb[3] and b_[3] >= cb[1]]
+                    px_res = _AC.claim_pixels_on(res, cb, float(up), HR.on_arms_fn(segs, bb, band), near, HR.ON_ARMS_SHARE_MIN)
+                    got_c = px_res["claimed"]
+                    for kk in ("own_px", "crossing_own_px", "claimed_px", "claimed_px_in_marks"):
+                        px_tot.setdefault(ck[:3], {})[kk] = px_tot.setdefault(ck[:3], {}).get(kk, 0) + int(px_res[kk])
+                    for cr in px_res["crossings"]:
+                        crossings.setdefault(ck[:3], []).append([ck[3], cr["stroke"], cr["own_px"], cr["box"], cr["box_share"], cr["box_on_line"]])
+                else:
+                    got_c = HR.claim_strokes(res, cb, float(up), segs, bb, band)
+                for i, sh in got_c:
                     per_staff.setdefault(ck[:3], []).append([ck[3], i])
                     shares.setdefault(ck[:3], []).append(sh)
             if not per_staff:
@@ -15470,7 +15576,8 @@ def gather_hairpin_claim(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[
                 log.observe(R.staff(*home), Q.CLAIMED_AREA, got, reader=READERS.CV_CLAIMED_REGISTER, frame="page", owner=HR.OWNER,
                             owner_row=r.id, owner_glyph=r.subject.to_key(), unit="ink", scope="page_hairpin", standing="READ",
                             source="wedge_box", kind=r.value, bbox_page_px=[float(v) for v in bb], shares=shares[home],
-                            cover_min=HR.ON_ARMS_SHARE_MIN)
+                            cover_min=HR.ON_ARMS_SHARE_MIN,
+                            **({"pixels": dict(sorted(px_tot[home].items())), "crossings": crossings.get(home, [])} if home in px_tot else {}))
     return counts
 
 
@@ -16158,6 +16265,10 @@ def _overlap_share(a: Sequence[float], b: Sequence[float]) -> float:
     return iw * ih / (aw * ah) if iw > 0 and ih > 0 and aw > 0 and ah > 0 else 0.0
 
 
+#: ROADMAP 2.284b: the note-family detector boxes a dynamic letter's / in-staff word's page claim never takes ink from (it marks them)
+DYNAMIC_SPARES = ("notehead", "stem", "flag", "beam", "rest", "accidental", "augmentationDot", "ledgerLine")
+
+
 def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
                        detections: Dict[str, List[Any]], *, progress: bool = False) -> None:
     """`Q.CLAIMED_AREA` rows of owner `word` and `bracket`, ONE PER MARK PER (page, system) -- ROADMAP 2.221 m1 (flag
@@ -16279,6 +16390,27 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                         got.append(([float(v) for v in pb], str(d.smufl_name)))
         return got
 
+    from . import page_ledger as _PL
+    ledger_on = _PL.enabled()
+
+    def _file_sparing(sys_idx: int, area: Sequence[float], source: str, why: str, **extra: Any) -> None:
+        """ROADMAP 2.284b (flag `OMR_PAGE_LEDGER_OWNS`): a dynamic letter / in-staff word claims its OWN ink, READ, on the page-wide pass -- the ink
+        components of its box that neither lie in nor touch a note-family detector box (`DYNAMIC_SPARES`: head, stem, flag, beam, rest,
+        accidental, dot, ledger): a letter's claim MARKS a notehead or stem it overlaps and never TAKES it (plan 2026-10-28 §9-10; 2.221 census:
+        a head on a dynamic letter was a real note 1 in 5). Nothing left = counted, not claimed."""
+        from . import hairpin_reach as _hr
+        boxes = [b for b, _n in _page_boxes(sys_idx, lambda n: n.startswith(DYNAMIC_SPARES))]
+        areas, spared = _hr.word_area_sparing_heads(binary, area, boxes, _sp(sys_idx))
+        if spared:
+            extra["marks_left_out"] = spared
+            extra.setdefault("word_box", [float(v) for v in area])
+        if not areas:
+            _count(f"word:{source}:{why}:all_ink_on_a_mark")
+            return
+        _count(f"word:{source}:{why}:claimed_sparing" if spared else f"word:{source}:{why}:claimed")
+        for a in areas:
+            _file(sys_idx, a, CL.OWNER_WORD, source, inside_staff=(why != "outside_staff"), **extra)
+
     if words_on:
         for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
             d = r.detail or {}
@@ -16291,6 +16423,12 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                 _count("word:direction_word:no_system")
                 continue
             if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                if ledger_on:
+                    # ROADMAP 2.284b: a READ word inside the staff (Sean 2026-10-28: "almost always short" -- a dynamic, `pizz.`, `dolce`)
+                    # claims its own ink page-wide like every other word, sparing the note marks it overlaps
+                    _file_sparing(s, [float(v) for v in bb], "direction_word", "inside_a_staff", owner_row=r.id, text=r.value,
+                                  category=d.get("category"))
+                    continue
                 _count("word:direction_word:inside_a_staff")       # milestone 4's, not claimed here
                 continue
             from . import hairpin_reach as _hairpin_reach
@@ -16383,14 +16521,24 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if not sp:
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
-                if not run["read"] and run["why"] == "lone_letter":
+                if not run["read"] and run["why"] in ("lone_letter", "wide_letter_box"):
                     # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
                     # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
                     # stemmed head is never touched) -- unless it lies on ink a word already claimed (a letter of "espr.", "dolce").
-                    if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                    inside_staff = CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
+                    if inside_staff and not ledger_on:
                         _count("word:dynamic_letters:lone_letter_inside_a_staff")
                     elif any(CL._overlap_small(run["box"], f) >= CL.LETTER_TWIN_SHARE for f in filed):
                         _count("word:dynamic_letters:lone_letter_inside_a_claim")
+                    elif ledger_on:
+                        # ROADMAP 2.284b (flag OMR_PAGE_LEDGER_OWNS): a lone dynamic letter the detector boxed (`dynamicP`, `dynamicF`) claims its
+                        # ink READ on the page-wide pass, inside the staff or out (Sean 2026-11-09 "Fix 2": "single-letter dynamics claim
+                        # page-wide"), so no later reader (a stem, beam, flag, tremolo slash) can take it; the note marks it overlaps are spared.
+                        _file_sparing(s, run["box"], "dynamic_letters", "lone_inside_a_staff" if inside_staff else "outside_staff",
+                                      own=[key_of_row[i] for i in run["rows"]], owner_row=run["rows"][0], letter_rows=list(run["rows"]),
+                                      # r2 (Sean 2026-11-10): the detector's lone letter names ink, not a word (`sf` boxed as one `dynamicF`,
+                                      # tile 2) -- the claim keeps the ink and carries the letter as `detector_letter`, never as `text`
+                                      text=None, detector_letter=run["text"], category="dynamic", lone=True)
                     else:
                         _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]], standing="GUESSED",
                               owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic", lone=True)
@@ -16399,6 +16547,11 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                     _count(f"word:dynamic_letters:{run['why']}")
                     continue
                 if CL.band_share(run["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
+                    if ledger_on:
+                        # ROADMAP 2.284b: a spelled dynamic (`ff`, `sf`) inside the staff claims its own ink page-wide, sparing the note marks
+                        _file_sparing(s, run["box"], "dynamic_letters", "inside_a_staff", own=[key_of_row[i] for i in run["rows"]],
+                                      owner_row=run["rows"][0], letter_rows=list(run["rows"]), text=run["text"], category="dynamic")
+                        continue
                     _count("word:dynamic_letters:inside_a_staff")
                     continue
                 _file(s, run["box"], CL.OWNER_WORD, "dynamic_letters", own=[key_of_row[i] for i in run["rows"]],
@@ -17775,7 +17928,8 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.195 (flag OMR_STROKE_MAP, default ON; producer only, nothing reads it): the strokes of each cell, AFTER the arc erase (the
         # raster the CV readers read) and before every ink reader. Reads the raster alone, so its place is fixed by that, not by a row.
         stroke_cells = gather_stroke_map(log, cells, local, progress=progress, detections=detections,
-                                         page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None))
+                                         page_shape=getattr(getattr(getattr(pws, "page", None), "binary", None), "shape", None),
+                                         page_map=page_map_pre)       # ROADMAP 2.284: the link to the page strokes (flag OMR_PAGE_LEDGER_OWNS; unused OFF)
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
@@ -17794,7 +17948,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
                 page_map_pre = _pm_late
         # lane-arcs-claim-1029 (flag OMR_ARC_CLAIM, default ON): each traced curve claims the strokes it runs along as ONE owner, `arc` (no kind).
         # AFTER the stroke map and the glyph strokes, reads the curves `gather_system_arcs` traced; files `Q.CLAIMED_AREA` rows only.
-        gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress)
+        gather_arc_claim(log, cells, local, stroke_cells, arcs_summary, progress=progress, detections=detections)
         # ROADMAP 2.201 (flag OMR_ACCIDENTAL_FAMILY, default ON; needs OMR_STROKE_MAP): every accidental-family box (accidental* and key*) measured as
         # ONE family -- extent along its own strokes, type from them -- before the two readers of it (`gather_accidental_positions`, the key markers).
         gather_accidental_family(cells, local, detections, stroke_cells)
@@ -17844,7 +17998,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         gather_wedge_boxes(log, pws, cells, local, detections)
         # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH, default OFF): each CV hairpin read claims the strokes along its two arms (`unit: ink`, owner
         # `hairpin`) in every cell it crosses, so no beam / stem / flag reader takes them. AFTER the wedge read and the stroke map.
-        gather_hairpin_claim(log, cells, local, stroke_cells)
+        gather_hairpin_claim(log, cells, local, stroke_cells, detections=detections)     # 2.284b: the page's mark boxes (flag ON only)
         # ⚠️ AFTER detection, and now WITH it: the notehead gate on the pair
         # rule needs this cell's heads, and `gather_detections` above already
         # holds them. The order was always right; what was missing is that
@@ -17980,6 +18134,14 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.269 step 3 (flag OMR_PAGE_CLAIM_BOXES, default OFF): the boxed dynamics (letters), whole rests and repeat dots name their page strokes by ink
         # share, AFTER the page-wide claims and BEFORE the page beams read (ledgers and hollow-head ink are M6's, ROADMAP 2.260e).
         _page_claim_names.gather_page_claim_boxes(log, pws, cells, local, detections, page_map_pre, progress=progress)
+        # ROADMAP 2.276 (flag OMR_PAGE_TREMOLO, default ON): every tremolo slash read ONCE on the page map and claimed (owner `tremolo`, layer "tremolo" in
+        # `claim_order.LAYERS`, BEFORE the head layer). The READ is handed the detector's head boxes (the micro test's winner); the CLAIM stands before the head claim.
+        from . import page_tremolo as _page_tremolo
+        _page_tremolo.gather_page_tremolo(log, pws, cells, local, detections, page_map_pre, progress=progress)
+        # ROADMAP 2.285 (flag OMR_ACCIDENTAL_OWN_INK, default ON): an accidental the detector drew no box for is read ONCE from its own ink by the family reader and claimed
+        # (owner `accidental_ink`, layer before the heads), AFTER every earlier page-wide claim it must not take and BEFORE the page heads claim.
+        from . import page_accidental_ink as _page_accidental_ink
+        _page_accidental_ink.gather_page_accidental_ink(log, pws, cells, local, detections, page_map_pre, progress=progress)
         # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS): `Q.PAGE_HEAD` rows and the head / ledger-stub claims on the page strokes, AFTER the page-wide claim names (an
         # earlier owner's stroke is marked contested, never taken) and after the cell position rows (they ride on the head). Nothing reads them in M6a.
         _page_heads.file_page_heads(log, pws, _page_head_list, page_map_pre, progress=progress)

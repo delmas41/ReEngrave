@@ -3196,6 +3196,14 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     # a role already DECIDED above is never overturned by the owner (Litolff: 3 staccatos the arc trace claimed are real; rule 8).
     if dots_honour_claims_enabled():
         owned = _dot_ink_owned_elsewhere(ev, cell)
+        from . import ink_consult as _ink_consult
+        if owned is None and _ink_consult.enabled():
+            # ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`): the ONE consult -- the page ledger gave most of this box's own ink to an EARLIER claim (2.205
+            # tiers) and the box owns none of it. Beside 2.243's all-strokes rule above (its own shape rule, kept), at the same place: never a role
+            # already decided above (rule 8).
+            ic = _ink_consult.consult(ev, box_rows[-1], "dot", verdict=ev.verdict(Q.STROKE_OWNER, subject=cell))
+            if ic.ledger is not None:
+                owned = {"rows": list(ic.ledger.used), "families": [ic.ledger.by], "strokes": list(ic.entry.get("strokes") or ())}
         if owned is not None:
             return Ruling(value=None, reason="ink_owned_by_another_mark", used=tuple(owned["rows"]),
                           detail={**detail, "owner_families": owned["families"], "strokes": owned["strokes"]})
@@ -4408,6 +4416,22 @@ TIP_START_SPACES = 0.6
 TIP_LEVEL_GAP_SPACES = 1.1
 
 
+#: ROADMAP 2.284 r7 (`OMR_PAGE_LEDGER_OWNS`): a BAR (wider than any head, a flat run) that a HEAD box owns is not "another mark's ink" at a stem tip. Litolff
+#: p2 2/1/5/13/0: a noteheadDoubleWholeInSpace box over a printed beam (head_lens, 2.1 x 0.56 sp) carried by the page ledger into the neighbour
+#: staff's cell turned the beam into "owned ink" and the tip into "clean": a quarter, where the print has a beam (Sean: eighth). A bar at the tip
+#: owned by a head cannot be told from a beam: it stays at the tip (the GATHER word stands, rule 8). Round head blobs are ignored as before.
+TIP_BAR_MIN_SPACES = 1.8
+TIP_BAR_ASPECT_MIN = 2.5
+
+
+def _head_owned_bar(v, family: Optional[str], sp: float) -> bool:
+    from .. import page_ledger as _PL
+    if not _PL.enabled() or family != "head" or sp <= 0:
+        return False
+    w, h = float(v.box[2]), float(v.box[3])
+    return w >= TIP_BAR_MIN_SPACES * sp and w >= TIP_BAR_ASPECT_MIN * max(h, 1e-6)
+
+
 def _tips_from_strokes(ev: Evidence, cell, own_stems, ignore_owned: bool = False):
     """`(observation-like rows, abstention-like rows)` standing in for `Q.STEM_TIP_INK` -- one per (own stem, end) -- read off the stroke
     map, or `None` where there is no stroke map in the cell (the caller then reads the GATHER rows as today). Row shapes follow
@@ -4456,7 +4480,7 @@ def _tips_from_strokes(ev: Evidence, cell, own_stems, ignore_owned: bool = False
                     continue
                 s_in = (v.box[1] - tip_y) / sp if side == "up" else (tip_y - (v.box[1] + v.box[3])) / sp
                 if -_BS.TIP_OUTWARD_SPACES <= s_in <= _BS.TIP_INWARD_SPACES:
-                    if ignore_owned and v.kind == "owned":
+                    if ignore_owned and v.kind == "owned" and not _head_owned_bar(v, fams.get(v.ordinal), sp):
                         ignored.append(fams.get(v.ordinal) or "owned")
                         continue
                     cand.append((s_in, v))

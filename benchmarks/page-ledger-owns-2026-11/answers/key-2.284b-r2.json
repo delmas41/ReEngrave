@@ -1,0 +1,252 @@
+[
+ {
+  "page": 2,
+  "box": [
+   776.3625,
+   605.315,
+   816.9975,
+   661.14
+  ],
+  "row": "obs:031632",
+  "what": "lone detector letter, still one letter",
+  "text": "f",
+  "role": "control",
+  "plate": "litolff",
+  "tile": 1,
+  "crop_origin": [
+   702,
+   554
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 2,
+  "box": [
+   1795.5225,
+   2764.26,
+   1836.945,
+   2812.14
+  ],
+  "row": "obs:032098",
+  "what": "dynamic word held as one mark",
+  "text": "sf",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 2,
+  "crop_origin": [
+   1721,
+   2709
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1730.6,
+   2283.7,
+   1792.1,
+   2332.1
+  ],
+  "row": "obs:166367",
+  "what": "dynamic word held as one mark",
+  "text": "ff",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 3,
+  "crop_origin": [
+   1666,
+   2229
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   1375.81,
+   1009.16,
+   1431.4075,
+   1015.6175000000001
+  ],
+  "what": "ledger box still a crossing (below the cut)",
+  "mark_box": "glyph/4/0/4/6/7",
+  "share": 0.667,
+  "role": "control",
+  "plate": "litolff",
+  "tile": 4,
+  "crop_origin": [
+   1309,
+   933
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 2,
+  "box": [
+   1943.0,
+   2186.9,
+   1986.2,
+   2233.3
+  ],
+  "row": "obs:031959",
+  "what": "lone detector letter, still one letter",
+  "text": "f",
+  "role": "control",
+  "plate": "litolff",
+  "tile": 5,
+  "crop_origin": [
+   1870,
+   2131
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   2057.18,
+   722.975,
+   2134.8875,
+   811.0
+  ],
+  "row": "obs:079427",
+  "what": "wide letter box held whole, unspelled",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 6,
+  "crop_origin": [
+   2001,
+   688
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   594.205,
+   1557.5625,
+   634.525,
+   1564.1775
+  ],
+  "what": "ledger box on the arc's own ink (now the arc's)",
+  "mark_box": "glyph/4/0/7/1/10",
+  "share": 0.9,
+  "role": "case",
+  "plate": "litolff",
+  "tile": 7,
+  "crop_origin": [
+   519,
+   1482
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   1434.3,
+   768.15,
+   1596.9625,
+   771.725
+  ],
+  "what": "ledger box still a crossing (below the cut)",
+  "mark_box": "glyph/4/0/2/7/13",
+  "share": 0.79,
+  "role": "control",
+  "plate": "litolff",
+  "tile": 8,
+  "crop_origin": [
+   1421,
+   691
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1717.6,
+   3613.9,
+   1771.6,
+   3662.4
+  ],
+  "row": "obs:166564",
+  "what": "dynamic word held as one mark",
+  "text": "ff",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 9,
+  "crop_origin": [
+   1650,
+   3559
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 4,
+  "box": [
+   1044.3,
+   2678.8,
+   1105.7,
+   2730.0
+  ],
+  "row": "obs:079657",
+  "what": "dynamic word held as one mark",
+  "text": "ff",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 10,
+  "crop_origin": [
+   980,
+   2625
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1735.9,
+   2571.3,
+   1785.8,
+   2613.8
+  ],
+  "row": "obs:166388",
+  "what": "dynamic word held as one mark",
+  "text": "ff",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 11,
+  "crop_origin": [
+   1666,
+   2513
+  ],
+  "position": null,
+  "cell_map": null
+ },
+ {
+  "page": 10,
+  "box": [
+   1711.2,
+   2897.5,
+   1785.8,
+   2956.9
+  ],
+  "row": "obs:166461",
+  "what": "wide letter box held whole, unspelled",
+  "role": "case",
+  "plate": "litolff",
+  "tile": 12,
+  "crop_origin": [
+   1654,
+   2848
+  ],
+  "position": null,
+  "cell_map": null
+ }
+]

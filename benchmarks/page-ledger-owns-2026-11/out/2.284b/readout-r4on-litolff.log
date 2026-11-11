@@ -1,0 +1,53 @@
+claim_readout: /Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/claim-readout-slices-litolff.on.gathered  pages [2, 4, 6, 10]  master cm-54ccb4729528
+  page 2: 1939804 ink px, 352 cells ok / 0 mismatched (20s)
+  page 4: 2063705 ink px, 330 cells ok / 0 mismatched (19s)
+  page 6: 2041331 ink px, 286 cells ok / 0 mismatched (18s)
+  page 10: 1960833 ink px, 319 cells ok / 0 mismatched (19s)
+claim_readout claim-readout-slices-litolff.on.gathered pages [2, 4, 6, 10] master cm-54ccb4729528
+TOTAL: 8005673 ink px, 1287 cells
+  one owner  41.1%   twin   5.8%   contested   5.1% (open   0.4%)   unclaimed   7.0%   staff line (erased, the staff's)  41.0%
+  one owner by kind: barline  10.9%, stem   8.9%, head   6.7%, beam   3.3%, rest   3.0%, bracket   2.7%, clef_key_meter   2.3%, word_dynamic   1.5%, arc   0.9%, accidental   0.5%, flag   0.2%, mark   0.1%, ledger   0.1%, dot   0.0%, hairpin   0.0%
+  claimed by the register (area / trace), any state: barline  13.3%, clef_key_meter   3.6%, arc   3.3%, bracket   2.5%, word_dynamic   0.9%, hairpin   0.0%
+  unclaimed: unclaimed:blob   1.9%, residue:horizontal   1.3%, weak_claim   0.9%, unclaimed:horizontal   0.6%, refused:vertical   0.6%, unclaimed:vertical   0.6%, debris   0.3%, refused:blob   0.3%, refused:horizontal   0.3%, outside_cells   0.1%, unclaimed:curve   0.0%, residue:curve   0.0%, refused:curve   0.0%
+  de-dup: stroke ink px summed per cell 5609669 -> in page pixels 4580661 (18.3% of the sum was the same ink seen twice)
+  misshapen pieces (claimed by one kind, outside its size/shape limits): head 2600 (head_too_small 2339, head_too_tall 181, head_too_wide 80), ledger 186 (ledger_not_a_line 103, ledger_not_level 83), stem 16 (stem_too_wide 11, stem_short_and_alone 5)
+  cells re-cut and matched stroke-for-stroke to the record: {'cells_ok': 1287, 'strokes_ok': 25722}
+page 2: 1939804 ink px, 352 cells
+  one owner  40.9%   twin   6.3%   contested   6.5% (open   0.4%)   unclaimed   6.8%   staff line (erased, the staff's)  39.5%
+  one owner by kind: barline  10.7%, stem   8.2%, head   5.8%, rest   3.8%, beam   3.6%, bracket   2.8%, clef_key_meter   2.2%, word_dynamic   1.8%, arc   1.2%, accidental   0.3%, mark   0.2%, flag   0.1%, ledger   0.1%, dot   0.0%
+  claimed by the register (area / trace), any state: barline  15.0%, clef_key_meter   3.8%, arc   2.7%, bracket   2.6%, word_dynamic   1.0%, hairpin   0.0%
+  unclaimed: residue:horizontal   2.0%, unclaimed:blob   1.7%, weak_claim   0.9%, unclaimed:horizontal   0.5%, unclaimed:vertical   0.4%, refused:vertical   0.4%, debris   0.3%, refused:horizontal   0.2%, refused:blob   0.2%, outside_cells   0.1%, unclaimed:curve   0.0%, residue:curve   0.0%
+  de-dup: stroke ink px summed per cell 1407941 -> in page pixels 1137536 (19.2% of the sum was the same ink seen twice)
+  misshapen pieces (claimed by one kind, outside its size/shape limits): head 513 (head_too_small 487, head_too_tall 16, head_too_wide 10), ledger 48 (ledger_not_a_line 35, ledger_not_level 13), stem 1 (stem_short_and_alone 1)
+page 4: 2063705 ink px, 330 cells
+  one owner  41.7%   twin   6.0%   contested   5.3% (open   0.6%)   unclaimed   6.2%   staff line (erased, the staff's)  40.8%
+  one owner by kind: barline  11.2%, stem  10.0%, head   7.4%, beam   2.7%, bracket   2.6%, rest   2.5%, clef_key_meter   2.3%, word_dynamic   1.2%, arc   0.8%, accidental   0.5%, flag   0.2%, mark   0.2%, ledger   0.2%, dot   0.0%, hairpin   0.0%
+  claimed by the register (area / trace), any state: barline  12.9%, clef_key_meter   3.9%, arc   3.5%, bracket   2.5%, word_dynamic   1.6%, hairpin   0.0%
+  unclaimed: unclaimed:blob   1.6%, residue:horizontal   0.9%, weak_claim   0.8%, refused:vertical   0.8%, unclaimed:horizontal   0.5%, unclaimed:vertical   0.4%, refused:blob   0.3%, debris   0.3%, refused:horizontal   0.3%, outside_cells   0.2%, residue:curve   0.0%, unclaimed:curve   0.0%, refused:curve   0.0%
+  de-dup: stroke ink px summed per cell 1472464 -> in page pixels 1184679 (19.5% of the sum was the same ink seen twice)
+  misshapen pieces (claimed by one kind, outside its size/shape limits): head 785 (head_too_small 687, head_too_tall 62, head_too_wide 36), ledger 68 (ledger_not_a_line 34, ledger_not_level 34), stem 10 (stem_too_wide 6, stem_short_and_alone 4)
+page 6: 2041331 ink px, 286 cells
+  one owner  40.6%   twin   5.6%   contested   4.1% (open   0.2%)   unclaimed   7.6%   staff line (erased, the staff's)  42.1%
+  one owner by kind: barline  10.6%, stem   8.6%, head   7.2%, beam   3.4%, rest   2.9%, bracket   2.7%, clef_key_meter   2.5%, word_dynamic   1.2%, accidental   0.8%, arc   0.4%, ledger   0.1%, flag   0.1%, mark   0.1%, dot   0.0%
+  claimed by the register (area / trace), any state: barline  12.0%, clef_key_meter   3.4%, arc   2.7%, bracket   2.5%, word_dynamic   0.7%
+  unclaimed: unclaimed:blob   2.0%, residue:horizontal   1.5%, unclaimed:vertical   0.9%, refused:vertical   0.8%, weak_claim   0.8%, unclaimed:horizontal   0.6%, refused:blob   0.3%, debris   0.3%, refused:horizontal   0.2%, outside_cells   0.1%, unclaimed:curve   0.0%, residue:curve   0.0%
+  de-dup: stroke ink px summed per cell 1401630 -> in page pixels 1147304 (18.1% of the sum was the same ink seen twice)
+  misshapen pieces (claimed by one kind, outside its size/shape limits): head 712 (head_too_small 631, head_too_tall 58, head_too_wide 23), ledger 39 (ledger_not_level 23, ledger_not_a_line 16), stem 4 (stem_too_wide 4)
+page 10: 1960833 ink px, 319 cells
+  one owner  41.3%   twin   5.4%   contested   4.6% (open   0.3%)   unclaimed   7.2%   staff line (erased, the staff's)  41.5%
+  one owner by kind: barline  11.2%, stem   8.7%, head   6.4%, beam   3.5%, rest   2.8%, bracket   2.6%, clef_key_meter   2.3%, word_dynamic   1.6%, arc   1.1%, flag   0.5%, accidental   0.4%, ledger   0.1%, mark   0.1%, dot   0.0%
+  claimed by the register (area / trace), any state: barline  13.6%, arc   4.2%, clef_key_meter   3.1%, bracket   2.6%, word_dynamic   0.3%
+  unclaimed: unclaimed:blob   2.2%, unclaimed:horizontal   1.0%, weak_claim   1.0%, residue:horizontal   0.9%, unclaimed:vertical   0.6%, refused:vertical   0.5%, debris   0.3%, refused:horizontal   0.3%, refused:blob   0.3%, outside_cells   0.2%, unclaimed:curve   0.0%, residue:curve   0.0%, refused:curve   0.0%
+  de-dup: stroke ink px summed per cell 1327634 -> in page pixels 1111142 (16.3% of the sum was the same ink seen twice)
+  misshapen pieces (claimed by one kind, outside its size/shape limits): head 590 (head_too_small 534, head_too_tall 45, head_too_wide 11), ledger 31 (ledger_not_a_line 18, ledger_not_level 13), stem 1 (stem_too_wide 1)
+TO-DO (top 10 unclaimed / contested ink, share of the plate's ink):
+   1. unclaimed:blob                              151404 px    1.9%
+   2. twin:head                                   150453 px    1.9%
+   3. twin:word_dynamic                           107623 px    1.3%
+   4. residue:horizontal                          106885 px    1.3%
+   5. contested(settled):arc+barline              100621 px    1.3%
+   6. twin:arc                                     73238 px    0.9%
+   7. weak_claim                                   68927 px    0.9%
+   8. twin:beam                                    68555 px    0.9%
+   9. contested(settled):arc+beam                  55641 px    0.7%
+  10. unclaimed:horizontal                         51372 px    0.6%

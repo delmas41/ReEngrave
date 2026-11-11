@@ -1,0 +1,192 @@
+{
+ "lane": "2.285 r1 (lane-2.285-accidental-own-ink 9497715ad, flag OMR_ACCIDENTAL_OWN_INK OFF)",
+ "date": "2026-11-10",
+ "question": "What is the mark in the orange box?",
+ "verbatim": "Tile 1 is a sharp, tile 2 is a quarter note rest, tile 3 is a sharp, tile 4 is a sharp, tile 5 is a quarter note rest, tile 6 is a sharp, tile 7 is a flat, tile 8 is a natural sign, tile 9 is a flat, tile 10 is a flat, tile 11 is part of a C that's connected to the front end of the instrument names. Tile 12 is a sharp.",
+ "answers": {
+  "1": {
+   "sean": "sharp",
+   "reader_kind": "sharp",
+   "standing": "GUESSED",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    881.0,
+    1473.0,
+    900.0,
+    1522.0
+   ],
+   "right": true
+  },
+  "2": {
+   "sean": "quarter rest",
+   "reader_kind": "flat",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3068.0,
+    2731.0,
+    3103.0,
+    2813.0
+   ],
+   "right": false
+  },
+  "3": {
+   "sean": "sharp",
+   "reader_kind": "sharp",
+   "standing": "GUESSED",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1972.0,
+    1661.0,
+    1991.0,
+    1708.0
+   ],
+   "right": true
+  },
+  "4": {
+   "sean": "sharp",
+   "reader_kind": "sharp",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    2417.0,
+    5323.0,
+    2451.0,
+    5402.0
+   ],
+   "right": true
+  },
+  "5": {
+   "sean": "quarter rest",
+   "reader_kind": "flat",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3986.0,
+    547.0,
+    4021.0,
+    633.0
+   ],
+   "right": false
+  },
+  "6": {
+   "sean": "sharp",
+   "reader_kind": "sharp",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3462.0,
+    1241.0,
+    3497.0,
+    1329.0
+   ],
+   "right": true
+  },
+  "7": {
+   "sean": "flat",
+   "reader_kind": "flat",
+   "standing": "GUESSED",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1023.0,
+    1512.0,
+    1038.0,
+    1554.0
+   ],
+   "right": true
+  },
+  "8": {
+   "sean": "natural",
+   "reader_kind": "natural",
+   "standing": "READ",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    1635.0,
+    1021.0,
+    1657.0,
+    1108.0
+   ],
+   "right": true
+  },
+  "9": {
+   "sean": "flat",
+   "reader_kind": "flat",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4744.0,
+    1280.0,
+    4773.0,
+    1361.0
+   ],
+   "right": true
+  },
+  "10": {
+   "sean": "flat",
+   "reader_kind": "flat",
+   "standing": "GUESSED",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1311.0,
+    3418.0,
+    1326.0,
+    3459.0
+   ],
+   "right": true
+  },
+  "11": {
+   "sean": "part of the (C) crook label by the instrument names",
+   "reader_kind": "sharp",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    536.0,
+    1722.0,
+    568.0,
+    1794.0
+   ],
+   "right": false
+  },
+  "12": {
+   "sean": "sharp",
+   "reader_kind": "sharp",
+   "standing": "GUESSED",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    3835.0,
+    4577.0,
+    3866.0,
+    4666.0
+   ],
+   "right": true
+  }
+ },
+ "score": {
+  "right": 9,
+  "of": 12,
+  "real_accidentals": 9,
+  "kind_right_on_real_accidentals": 9,
+  "false_claims": {
+   "quarter rests claimed as flats": [
+    2,
+    5
+   ],
+   "word ink claimed as a sharp": [
+    11
+   ]
+  }
+ },
+ "note": "Tiles cut from the reader's CLAIM boxes on a 4-page development control, not from the written file; round 2 fixes the three false claims at the source and wires the accidental to its note."
+}

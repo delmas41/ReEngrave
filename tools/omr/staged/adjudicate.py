@@ -294,6 +294,20 @@ class Evidence:
         self._note(quantity, kept, sub, scope)
         return kept
 
+    def considered_from_another_frame(self, ids: Sequence[str]) -> None:
+        """ROADMAP 2.284 r5: rows a decision used that ANOTHER frame's Evidence read on its behalf (the page ledger settles a page stroke from every
+        cell that sees it, through each cell's own Evidence) enter this verdict's `considered` -- so its basis names them, not only its `used`. Only rows
+        of a quantity this decision declares (`wants`), and only rows the log holds; a row already considered is not repeated."""
+        seen = set(self._seen)
+        for i in ids:
+            if not i or i in seen:
+                continue
+            r = self.log.row(i)
+            if r is None or getattr(r, "quantity", None) not in self._spec.wants or not self._admit(r):
+                continue
+            self._seen.append(i)
+            seen.add(i)
+
     def refusals(self, quantity: str, *, scope: Scope = Scope.EXACT,
                  subject: Optional[Subject] = None) -> Tuple[Abstention, ...]:
         self._check(quantity)
@@ -1338,6 +1352,10 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
                 continue
         for subject in subjects_for(log, spec):
             out.append(adjudicate_one(log, spec, subject))
+        if quantity == Q.STROKE_OWNER:
+            # ROADMAP 2.284: the page ledger's one settle per page is memoised while the cells read it; dropped once they all have
+            from .adjudicators import stroke_owner as _so
+            _so.clear_page_memo()
         if quantity == Q.GLYPH_OWNER:
             # ⚠️ ROADMAP 2.58b: one ruling per physical mark. A no-op unless
             # the record carries `Q.MARK_GROUP` rows (`OMR_MARK_GROUPS`).

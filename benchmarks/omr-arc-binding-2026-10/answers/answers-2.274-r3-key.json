@@ -287,5 +287,14 @@
    "scale": 0.7,
    "answer": null
   }
- ]
+ ],
+ "answers": {
+  "7": "a tie from a dotted half",
+  "8": "seven boxes; should be just 3 ties, all chopped up",
+  "9": "first part of a slur cut off at the barline, plus 2 small boxes for one tie that should be a single box",
+  "10": "staff lines (not an arc)",
+  "11": "half of a slur cut off at a barline",
+  "12": "half of a slur cut off at a barline"
+ },
+ "note_7_12": "2026-11-09: tiles 7-12 answered; hand key errors: 8 (3 ties boxed as 7 pieces), 9 (tie as 2 boxes, slur cut at barline), 10 (staff line boxed as an arc), 11-12 (slur halves cut at barlines)"
 }

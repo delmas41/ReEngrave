@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **534 rule exits** are sorted (583 declared reasons on 63 decisions, less 67 positive exits and 63 stubs, plus 28 EVALUATE/INFER/post-pass rules and 53 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **101 DOUBLE-COUNT** (C), **171 OTHER** (D), **73 UNSURE** (U).
+1. **548 rule exits** are sorted (591 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 56 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **170 OTHER** (D), **75 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **73 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **75 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -40,6 +40,10 @@ Counts are of declared exits, not of distinct ink mistakes: one B rule and one C
 | ink belongs to a barline / a later page claim | C | the same consult, for an accidental box | `adjudicate_accidental_is_not_an_accidental` (family_precision): `claimed_by:barline`, `claimed_by:page_claim` | 0 / 0 | 0 / 0 | 2.277 | kept (the claim order, CLAUDE section 3) |
 | ink belongs to a barline / a later page claim | C | the same consult, for a rest box | `adjudicate_rest_is_not_a_rest` (family_precision): `claimed_by:barline`, `claimed_by:page_claim` | 0 / 0 | 0 / 0 | 2.277 | kept (the claim order, CLAUDE section 3) |
 | ink belongs to a barline / a later page claim | C | the same consult, for an arpeggiato box | `adjudicate_arpeggiato_is_not_an_arpeggiato` (family_precision): `claimed_by:barline`, `claimed_by:page_claim` | 0 / 0 | 0 / 0 | 2.277 | kept (the claim order, CLAUDE section 3) |
+| ink belongs to an earlier claim (barline / page / layer claim / whole rest) | C | ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a dynamic letter box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM | `adjudicate_dynamic_is_not_a_dynamic` (family_precision): `claimed_by:barline`, `claimed_by:page_claim`, `claimed_by:earlier_mark` | 0 / 0 | 0 / 0 | 2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces) | open: tiles (out/print/2.284-r5) |
+| ink belongs to an earlier claim (barline / page / layer claim / whole rest) | C | ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a articulation box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM | `adjudicate_articulation_is_not_an_articulation` (family_precision): `claimed_by:barline`, `claimed_by:page_claim`, `claimed_by:earlier_mark` | 0 / 0 | 0 / 0 | 2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces) | open: tiles (out/print/2.284-r5) |
+| ink belongs to an earlier claim (barline / page / layer claim / whole rest) | C | ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a flag box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM | `adjudicate_flag_is_not_a_flag` (family_precision): `claimed_by:barline`, `claimed_by:page_claim`, `claimed_by:earlier_mark` | 0 / 0 | 0 / 0 | 2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces) | open: tiles (out/print/2.284-r5) |
+| ink belongs to an earlier claim (barline / page / layer claim / whole rest) | C | ROADMAP 2.284 r5 (flag OMR_PAGE_LEDGER_OWNS, OFF): the ONE consult -- a tuplet marker box whose own ink the page ledger gave mostly (>= 0.5) to an EARLIER claim, owning none of its own, is refused BY THE CLAIM | `adjudicate_tuplet_marker_is_not_a_marker` (family_precision): `claimed_by:barline`, `claimed_by:page_claim`, `claimed_by:earlier_mark` | 0 / 0 | 0 / 0 | 2.284 r5; Sean 2026-11-09 (one consult for every box family), 2026-11-10 (build the pieces) | open: tiles (out/print/2.284-r5) |
 | no note stands in the key slots | A | only a clef stands before the key accidentals, so a head box in a key slot is a key accidental | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `notehead_in_a_key_signature_slot` | 12 / 2 | 0 / 0 | Sean 2026-10-12 (page-facts s2) | kept |
 | ink is a dynamic letter | C | a head or rest box whose ink the second look reads as dynamic letters (sf, f, p) is text | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `on_a_dynamic_letter` | 66 / 50 | 38 / 14 | Sean 2026-10-13 ("sf should be read as a dynamic - it is letters", 2.107) | retires with 2.205 (letters claim their strokes) |
 | head box on ink that is another mark | C | a head box that is really a beam piece, a rest's twin box, a rest, a tie tail, or any other box's ink | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `is_a_beam_piece`, `is_a_rest_twin`, `on_a_rest`, `is_a_rest_shape`, `is_an_arc_tail`, `on_another_symbols_box`, `off_staff_glyph` | 70 / 122 | 41 / 34 | 2.205 FINDINGS (parity with the old pair rules 47% / 27%; old rules kept until parity) | retires with 2.205 |
@@ -193,12 +197,11 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_clef`: `sc
 | an arc belongs to the staff whose heads it hugs | A | an arc is over its notes, and the staff it hugs owns it | `adjudicate_arc_owner` (ownership): `hugs_noteheads`, `no_better_staff`, `no_rival_staff`, `ends_on_noteheads` | 2,644 / 14,814 | 1,330 / 4,630 | page-facts s1; ROADMAP arc attribution | kept |
 | - | D:honesty | - | `adjudicate_arc_owner` (ownership): `no_page_frame`, `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a tie joins adjacent same-pitch heads | A | nothing between the heads in time, same staff position | `adjudicate_tie_pair` (ownership): `more_than_one_pair`, `no_start_head`, `no_stop_head`, `no_head_near_the_arc`, `spans_a_whole_bar`, `no_pair_at_one_position`, `not_adjacent` | 528 / 1,973 | 275 / 605 | Sean 2026-10-01 (page-facts s1) | kept |
-| no run a detector box agrees with | D:honesty | a run with no witnessing box is not written in step 2 | `adjudicate_page_arc_binding` (ownership): `no_witnessed_run` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a tie may cross a system break | A | the other end is on the next / previous system | `adjudicate_tie_pair` (ownership): `enters_from_previous_system`, `runs_off_the_system` | 104 / 378 | 48 / 102 | page-facts s1 | kept |
 | arc is a slur or not an arc | D:bookkeeping | the domain is every arc (`not_an_arc` includes staff-line boxes) | `adjudicate_tie_pair` (ownership): `not_a_tie`, `not_an_arc` | 1,529 / 10,477 | 742 / 3,386 | - | kept |
 | - | D:honesty | - | `adjudicate_tie_pair` (ownership): `no_page_frame`, `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 
-Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not_an_arc`: `arc` (2,141 / 6,864); `adjudicate_arc_kind`: `tie`, `slur` (2,637 / 14,761); `adjudicate_tie_pair`: `paired`, `paired_by_system_arc`, `paired_by_page_binding` (483 / 1,986); `adjudicate_page_arc_binding`: `bound`, `none_bound` (0 / 0).
+Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not_an_arc`: `arc` (2,141 / 6,864); `adjudicate_arc_kind`: `tie`, `slur` (2,637 / 14,761); `adjudicate_tie_pair`: `paired`, `paired_by_system_arc`, `paired_by_page_binding` (483 / 1,986).
 
 ## Dots
 
@@ -333,6 +336,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `claim_order.py` | U | NOT YET CLASSIFIED | - | open |
 | `claims.py` | C | the claimed-area register: who owns which ink (clef, leading column, key, meter) | 2.181 | retires with 2.205 |
 | `clef_pagewide.py` | U | NOT YET CLASSIFIED | - | open |
+| `conservation.py` | U | NOT YET CLASSIFIED | - | open |
 | `detector_views.py` | D:gather | the detector looks at each symbol family at its own size | Sean 2026-10-19 (2.172) | kept |
 | `dyad_head_rescue.py` | U | NOT YET CLASSIFIED | - | open |
 | `export_unison.py` | A | EXPORT of a unison head as two notes | Sean 2026-10-19 (2.175) | kept |
@@ -352,14 +356,15 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `movements.py` | A | a meter or key carry never crosses a movement boundary | ROADMAP 4.2 | kept |
 | `one_ink.py` | C | ONE INK, ONE MARK: two classes of one family on one ink merge, the stronger stays, the weaker is a candidate | Sean 2026-10-22, 2.186 tiles 6/9 vs 1/9 | landed 2.186 |
 | `one_note.py` | D:infer | the one-note correction: a bar holding one event takes the value that fills it (blue) | Sean 2026-10-17/18 (CLAUDE s4 exceptions) | kept |
-| `page_arc_bind.py` | U | NOT YET CLASSIFIED | - | open |
-| `page_arcs.py` | U | NOT YET CLASSIFIED | - | open |
+| `page_accidental_ink.py` | U | NOT YET CLASSIFIED | - | open |
 | `page_beams.py` | C | the page beam reader: roles, joined stems and tip levels of the PAGE stroke map's strokes (beam_strokes cut-offs, no raster), each beam read once and filed once; records, decides nothing | Sean 2026-11-04 (2.260c M4a) | open: M4b-d read it |
 | `page_claim_names.py` | A | CLAUDE s3 claim order: every page-wide claim (barline, bracket, clef, key, meter, word, hairpin) names the PAGE strokes it owns, once, first claim wins, so a later reader on the page map takes none of their ink; the register's own predicates on page-stroke boxes, no raster | Sean 2026-10-28/29 (claim order), 2026-11-04 (2.269 "read and claim once") | open: page_beams reads it; M4b-d |
 | `page_heads.py` | U | NOT YET CLASSIFIED | - | open |
+| `page_ledger.py` | U | NOT YET CLASSIFIED | - | open |
 | `page_marks.py` | C | cells are views, the page is the ledger: boxes of one family from two padded cells on the same page ink are ONE page mark (records ids, decides nothing yet) | Sean 2026-10-30 (2.240 crops 2, 3) | open: step 2 (one owner per page mark) reads it |
 | `page_owner.py` | A | one owner staff per page mark: the staff's own lines, then the ledger lines, the stem a second witness, never nearness; arcs and hairpins read page-wide once (records, decides nothing yet) | Sean 2026-10-28/30 (2.216 option B; 2.240 step-1 tiles) | open: step 3 retires the cell-copy rules where it agrees, on tiles |
 | `page_strokes.py` | C | the PAGE stroke map: the cell finders on one raster assembled from each staff's erased band + the page, barline columns carved out first; records, decides nothing | Sean 2026-11-03 (2.260a M2) | open: M3 / M4 read it |
+| `page_tremolo.py` | U | NOT YET CLASSIFIED | - | open |
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
 | `second_hollow.py` | U | a SECOND detector at GATHER for hollow heads only | ROADMAP 2.114 | open: a second reading of the same ink |
 | `stem_end_heads.py` | A | a stem with no head is a note we have not seen: look at its end | Sean 2026-10-01 (2.179 "if there are stems then there are notes") | kept |
@@ -369,6 +374,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `adjudicators/claim_final.py` | U | NOT YET CLASSIFIED | - | open |
 | `adjudicators/claimed_by.py` | C | the ONE consult of the claimed-area register: a head or rest box on ink a clef / leading column / key already owns is refused | Sean 2026-10-20 claimed-area plan (2.181, default ON) | retires with 2.205 |
 | `adjudicators/head_on_mark.py` | C | a head box standing on ink another reading already owns | ROADMAP 2.176 (default ON) | retires with 2.205 |
+| `adjudicators/ink_consult.py` | C | the ONE consult (2.284 r5, flag OMR_PAGE_LEDGER_OWNS): every box family asks the page ledger's one owner per page stroke; the register's rule table, the ledger's finding and the owner's shape answer in one answer | Sean 2026-11-09 (Fix 2), 2026-11-10 | open: tiles |
 | `adjudicators/inside_meter.py` | C | a box on the printed meter's ink is the meter's | Sean 2026-10-20 (2.177, flag OFF) | retires with 2.205 |
 | `adjudicators/key_slots.py` | A | the key-signature SLOTS of a header and what may not stand in them (no rest or note before the key) | Sean 2026-10-12 (page-facts s2) | kept |
 | `adjudicators/letter_cover.py` | C | a head or rest box whose ink the second look read as dynamic letters | Sean 2026-10-13 (2.107) | retires with 2.205 |
@@ -406,15 +412,17 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`claim_final.py`**: not classified.
 - **`claim_order.py`**: not classified.
 - **`clef_pagewide.py`**: not classified.
+- **`conservation.py`**: not classified.
 - **`dyad_head_rescue.py`**: not classified.
 - **`hairpin_bind.py`**: not classified.
 - **`head_extent.py`**: not classified.
 - **`head_hole_position.py`**: not classified.
 - **`head_ink.py`**: not classified.
 - **`key_header_ink.py`**: not classified.
-- **`page_arc_bind.py`**: not classified.
-- **`page_arcs.py`**: not classified.
+- **`page_accidental_ink.py`**: not classified.
 - **`page_heads.py`**: not classified.
+- **`page_ledger.py`**: not classified.
+- **`page_tremolo.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
 - **`stem_strokes.py`**: not classified.
 - **`stroke_map.py`**: not classified.

@@ -1,0 +1,211 @@
+{
+ "seed": 282,
+ "pool_sizes": {
+  "accidental": 23,
+  "head": 7
+ },
+ "question": "Is the boxed ink part of a note (head or stem), part of an accidental, or something else?",
+ "tiles": {
+  "1": {
+   "file": "tile_01.png",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4950.58203125,
+    4077.10546875,
+    4991.890625,
+    4107.8671875
+   ],
+   "what": "head box glyph/19/1/0/8/20",
+   "today": [
+    "decided",
+    "notehead"
+   ],
+   "wins": "accidentals_first -> head box refused claimed_by accidental"
+  },
+  "2": {
+   "file": "tile_02.png",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    1880.1,
+    504.2,
+    1914.5,
+    514.6
+   ],
+   "what": "stroke cell/14/0/0/2/2",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "heads_first -> ledger"
+  },
+  "3": {
+   "file": "tile_03.png",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    1653.2,
+    3259.4,
+    1663.5,
+    3281.5
+   ],
+   "what": "stroke cell/14/0/11/1/12",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "heads_first -> head"
+  },
+  "4": {
+   "file": "tile_04.png",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    3842.5325,
+    4370.5275,
+    3875.2325,
+    4413.31
+   ],
+   "what": "head box glyph/19/1/1/6/16",
+   "today": [
+    "decided",
+    "notehead"
+   ],
+   "wins": "accidentals_first -> head box refused claimed_by accidental"
+  },
+  "5": {
+   "file": "tile_05.png",
+   "plate": "litolff",
+   "page": 11,
+   "box": [
+    1743.0,
+    667.0,
+    1746.9,
+    716.1
+   ],
+   "what": "stroke cell/11/0/2/11/0",
+   "today": null,
+   "wins": "accidentals_first -> accidental"
+  },
+  "6": {
+   "file": "tile_06.png",
+   "plate": "brahms",
+   "page": 5,
+   "box": [
+    5220.2,
+    3915.2,
+    5302.8,
+    3947.9
+   ],
+   "what": "stroke cell/5/1/0/9/35",
+   "today": [
+    "refused_claims",
+    null
+   ],
+   "wins": "accidentals_first -> accidental"
+  },
+  "7": {
+   "file": "tile_07.png",
+   "plate": "brahms",
+   "page": 25,
+   "box": [
+    2940.9,
+    3890.9,
+    2946.0,
+    3896.1
+   ],
+   "what": "stroke cell/25/0/13/4/11",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "heads_first -> ledger"
+  },
+  "8": {
+   "file": "tile_08.png",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    1653.2,
+    3259.4,
+    1663.5,
+    3281.5
+   ],
+   "what": "stroke cell/14/0/11/1/12",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "accidentals_first -> accidental"
+  },
+  "9": {
+   "file": "tile_09.png",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    2510.6,
+    2605.5,
+    2545.3,
+    2616.0
+   ],
+   "what": "stroke cell/14/0/9/3/17",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "heads_first -> ledger"
+  },
+  "10": {
+   "file": "tile_10.png",
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    1138.9,
+    841.8,
+    1144.9,
+    855.7
+   ],
+   "what": "stroke cell/6/0/3/4/4",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "heads_first -> head"
+  },
+  "11": {
+   "file": "tile_11.png",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4922.8,
+    4107.0,
+    4950.0,
+    4110.5
+   ],
+   "what": "stroke cell/19/1/0/8/6",
+   "today": [
+    "contested",
+    null
+   ],
+   "wins": "heads_first -> ledger"
+  },
+  "12": {
+   "file": "tile_12.png",
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1174.5,
+    748.6,
+    1207.0,
+    753.7
+   ],
+   "what": "stroke cell/4/0/2/5/13",
+   "today": [
+    "refused_claims",
+    null
+   ],
+   "wins": "accidentals_first -> accidental"
+  }
+ }
+}

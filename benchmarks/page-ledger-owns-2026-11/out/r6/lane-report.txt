@@ -1,0 +1,33 @@
+  gather litolff off pages [2, 4, 6, 10] ...
+  gather litolff on pages [2, 4, 6, 10] ...
+  gather brahms off pages [0] ...
+  gather brahms on pages [0] ...
+LANE REPORT  OMR_PAGE_LEDGER_OWNS (OFF=0 ON=1)  --from gather
+  OMR_PAGE_LEDGER_OWNS: read in staged/adjudicators/family_precision.py, staged/adjudicators/ink_consult.py, staged/adjudicators/notehead_precision.py, staged/adjudicators/rhythm.py ... -> GATHER
+  NOT THE FROZEN SAMPLE: /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a2842a08d39c8609c/benchmarks/page-ledger-owns-2026-11/sample-r2.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+litolff  pages [2, 4, 6, 10]  (2825 notes+rests OFF, 2829 ON, 2824 paired)
+  file:   notes +5 -1 | flags -2 | beams +1 -1 ~2 | ties +2 | articulations +1 | note values ~2 | blue marks +3 | words -1
+  red bars 0 -> 0 | notes not written 1401 -> 1397
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (252 tiles on these pages): right->wrong 1 | right->narrowed/abstained/gone 0 | wrong->right 0
+      RIGHT->WRONG  2.78-phase2-review tile 11 ['glyph/6/1/10/9/5', 'glyph/6/1/10/9/9']  Sean: eighth  now: decided 0.5 beats (head_and_marks); refused as not a note (claimed_by:barline)
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 13 (at another id than asked 2) | by id key, no position 371 | position but no mark here 13
+  NOT JUDGED: 20 changed places no tile of Sean's covers (0 are covered; 1 have no page place): articulation 1, beam 4, blue 3, flag 2, note 6, tie 2, value 2 -> unjudged.txt
+
+brahms  pages [0]  (424 notes+rests OFF, 423 ON, 423 paired)
+  file:   rests -1 | words -1
+  red bars 6 -> 5 | notes not written 83 -> 84
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (202 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 3 (at another id than asked 2) | by id key, no position 361 | position but no mark here 31
+  NOT JUDGED: 1 changed places no tile of Sean's covers (0 are covered; 1 have no page place): rest 1 -> unjudged.txt
+
+LANDING CHECK FAILS: judged right->wrong 1, UNWRITTEN->WRONG 0 (a note OFF left unwritten that ON writes against Sean's answer) -- must be 0 to land (wrong->right 0)
+
+tiles: 11 (8 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 2737 s

@@ -1,0 +1,16 @@
+p0  ink 2523742  multi 12.97%  DISAGREE 0.54%  fam-vs-fam 0.10%  owner-vs-none 0.44%  cells {'cells_ok': 112}
+     barline|none                     5864 px  0.23%
+     head|none                        2210 px  0.09%
+     arc_trace|none                   1499 px  0.06%
+     dynamic|word                     1098 px  0.04%
+     clef|none                         637 px  0.03%
+     accidental|none                   424 px  0.02%
+     arc_trace|barline                 410 px  0.02%
+     arc|head                          373 px  0.01%
+     none|tremolo                      297 px  0.01%
+     head|ledger                       278 px  0.01%
+     arc|arc_trace                     159 px  0.01%
+     none|word                         137 px  0.01%
+     ledger|none                       120 px  0.00%
+     barline|word                      110 px  0.00%
+     accidental|arc_trace               97 px  0.00%

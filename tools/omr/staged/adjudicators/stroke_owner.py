@@ -398,13 +398,8 @@ def shape_vetoes(ev: Evidence, cell, inks: List[SO.Ink], claims: List[SO.Claim])
     return out
 
 
-def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
-    another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
-    the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
-    from .. import claim_final as CF
-    if not CF.enabled():
-        return None
+def _box_shares(ev: Evidence, cell) -> Dict[str, Dict[int, float]]:
+    """`{box key: {stroke ordinal: share of the stroke inside the box}}` from the cell's `Q.GLYPH_STROKES` rows (covered and partial strokes)."""
     shares: Dict[str, Dict[int, float]] = {}
     for r in ev.rows(Q.GLYPH_STROKES, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         if isinstance(r.value, (list, tuple)):
@@ -414,7 +409,42 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
             for o, s_ in d.get("partial") or ():
                 m.setdefault(int(o), float(s_))
             shares[r.subject.to_key()] = m
+    return shares
+
+
+def _ink_consult(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink],
+                 tiers: Any) -> Dict[str, Any]:
+    """ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`): what the ONE consult (`adjudicators/ink_consult.py`) reads for every box of the cell, of EVERY family --
+    how much of its own ink the page ledger's one owner per stroke gave to a claim of an EARLIER tier (`ink_consult.held_by_earlier`, pure). Bookkeeping on the
+    verdict just computed: it decides nothing about any box."""
+    from . import ink_consult as IC
+    shares = _box_shares(ev, cell)
+    areas = {c.family for c in claims if c.area}
+    # a stroke the page's one settle gave to a register / layer claim another cell filed is held by that claim here too (as `_claim_final`)
+    areas |= {str(c["family"]) for w in owned.values() for c in w.candidates if c.get("how") == "area" and w.family == c["family"]}
+    boxes = []
+    for c in claims:
+        if c.area or c.key not in shares:
+            continue
+        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family, tuple(owned[o].owners))
+                                         for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
+    return {"held": IC.held_by_earlier(boxes, tiers, sorted(areas)), "areas": sorted(areas)}
+
+
+def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, Any], by_ord: Dict[int, SO.Ink]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`, default ON): what the owner's own ownership says about every box -- how much of its ink an EARLIER claim of
+    another kind holds (`claim_final.held_boxes`), and which head boxes are copies of one head's ink (`claim_final.marks`). Pure bookkeeping on
+    the verdict just computed; it decides nothing about any box (the precision rules read it through `adjudicators/claim_final.py`)."""
+    from .. import claim_final as CF
+    if not CF.enabled():
+        return None
+    shares = _box_shares(ev, cell)
     claim_families = sorted({c.family for c in claims if c.area})
+    from .. import page_ledger as _PL
+    if _PL.enabled():
+        # ROADMAP 2.284: a stroke the page's one settle gave to a register claim another cell filed is held by that claim here too
+        claim_families = sorted(set(claim_families) | {str(c["family"]) for w in owned.values() for c in w.candidates
+                                                       if c.get("how") == "area" and w.family == c["family"]})
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
@@ -430,6 +460,99 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
             frames[b.subject.to_key()] = tuple(float(t) for t in v[1:5])
     mk = CF.marks([[k for k in w.owners if k in keys] for w in owned.values() if w.family == "head" and w.state in ("decided", "merged")], frames)
     return {"cut": CF.CUT, "near_min": CF.NEAR_MIN, "claims": claim_families, "held": held, "marks": mk}
+
+
+def _cell_view(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
+    """The cell's OWN settle (everything `adjudicate_stroke_owner` reads, and `own_strokes` over it): None with no strokes. ROADMAP 2.284 calls it for
+    every cell of a page once (`_page_ledger`), so the pooled candidates are exactly the ones each cell's decision would settle alone."""
+    inks, page = _inks(ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
+    if not inks:
+        return None
+    claims = _claims(ev, cell)
+    claims += _areas(ev, cell, page)
+    arc_claims = _arc_claims(ev, cell)
+    claims += arc_claims
+    hairpin_claims = _hairpin_claims(ev, cell)        # 2.254 r2 (flag OMR_HAIRPIN_REACH; [] with it OFF)
+    claims += hairpin_claims
+    layer_claims = _layer_claims(ev, cell, page)       # 2.277 (flag OMR_CLAIM_FINAL): any other claim layer, whatever its unit
+    claims += layer_claims
+    claims += _found_whole_rests(ev, cell, page, claims)
+    claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
+    tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
+    return dict(inks=inks, page=page, claims=claims, arc_claims=arc_claims, hairpin_claims=hairpin_claims, layer_claims=layer_claims,
+                head_census=head_census, tiers=tiers)
+
+
+def _settle_view(view: Dict[str, Any], vetoes: Optional[Dict[str, SO.Veto]]) -> Dict[str, Any]:
+    """`own_strokes` over a `_cell_view` with the box vetoes the caller read (`shape_vetoes`, in the decision's own body)."""
+    from .rhythm import beams_from_strokes_enabled
+    view = dict(view, shaped=vetoes is not None, vetoes=vetoes)
+    view["owned"] = SO.own_strokes(view["inks"], view["claims"], tiers=view["tiers"], acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
+                                   vetoes=vetoes)
+    return view
+
+
+def _links(ev: Evidence, cell) -> Dict[int, Tuple[float, ...]]:
+    """ROADMAP 2.284: `{cell stroke ordinal: (page stroke ordinal, share, cover, cut by the cell edge 1/0)}` from the cell's `Q.STROKE` rows (`page_stroke`, filed by GATHER with the flag on)."""
+    out: Dict[int, Tuple[int, float]] = {}
+    for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        g = getattr(r.subject, "glyph", None)
+        ln = (r.detail or {}).get("page_stroke")
+        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not (isinstance(ln, (list, tuple)) and len(ln) >= 2):
+            continue
+        t = [int(ln[0])] + [float(x) for x in ln[1:]]
+        if len(t) >= 3:
+            # r5: did the CELL EDGE cut this piece (`page_ledger.is_view`)? the stroke map's own fact, as the cell row carries it
+            t = t[:3] + [1.0 if str((r.detail or {}).get("cut") or "") else 0.0]
+        out[g - STROKE_GLYPH_BASE] = tuple(t)
+    return out
+
+
+#: ROADMAP 2.284: the one settle of each page, made once per log (the log is frozen in ADJUDICATE; a new log replaces the memo)
+_PAGE_MEMO: Dict[str, Any] = {"log": None, "pages": {}}
+
+
+def clear_page_memo() -> None:
+    _PAGE_MEMO["log"] = None
+    _PAGE_MEMO["pages"] = {}
+
+
+def _page_ledger(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.284 (`OMR_PAGE_LEDGER_OWNS`): the page's one settle -- every cell of the page's own view pooled per linked page stroke
+    (`page_ledger.pool`) -- computed once for the page and memoised on this log. None where the page carries no link (a gather without the flag)."""
+    from .. import page_ledger as PL
+    from ..adjudicate import Evidence as _Ev, REGISTRY
+    log = ev.log
+    if _PAGE_MEMO["log"] is not log:
+        _PAGE_MEMO["log"] = log
+        _PAGE_MEMO["pages"] = {}
+    pg = cell.page
+    if pg in _PAGE_MEMO["pages"]:
+        return _PAGE_MEMO["pages"][pg]
+    spec = REGISTRY[Q.STROKE_OWNER]
+    views: Dict[Any, Dict[int, Any]] = {}
+    links: Dict[Any, Dict[int, Tuple[int, float]]] = {}
+    tiers_all: List[Tuple[str, ...]] = [tuple(t) for t in SO.TIERS]
+    cells = sorted({s.at(Kind.CELL) for s in log.subjects(Kind.GLYPH) if s.page == pg and s.at(Kind.CELL) is not None}, key=lambda s: s.to_key())
+    for c in cells:
+        e2 = _Ev(log, c, spec)
+        lk = _links(e2, c)
+        if not lk:
+            continue
+        v = _cell_view(e2, c)
+        if v is None:
+            continue
+        v = _settle_view(v, shape_vetoes(e2, c, v["inks"], v["claims"]) if SO.owner_shape_enabled() else None)
+        views[c.to_key()] = v["owned"]
+        links[c.to_key()] = lk
+        tiers_all[0] = tuple(dict.fromkeys(tiers_all[0] + tuple(v["tiers"][0])))
+    if not views:
+        _PAGE_MEMO["pages"][pg] = None
+        return None
+    owned, census = PL.pool(views, links, tiers_all)
+    res = dict(owned=owned, census=census)
+    _PAGE_MEMO["pages"][pg] = res
+    return res
 
 
 @decision(
@@ -450,27 +573,23 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
                    Q.ACCIDENTAL_STAFF_POSITION),
 )
 def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
-    """Which mark owns each stroke of this cell (module doc; the rule is `stroke_owner.own_strokes`)."""
+    """Which mark owns each stroke of this cell (module doc; the rule is `stroke_owner.own_strokes`). ROADMAP 2.284 (`OMR_PAGE_LEDGER_OWNS`): a stroke
+    linked to a page stroke takes the page's ONE settle (`_page_ledger`), never this cell's alone."""
     cell = ev.subject
-    inks, page = _inks(ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
-    if not inks:
+    view = _cell_view(ev, cell)
+    if view is None:
         return Ruling.abstain("no_strokes")
-    claims = _claims(ev, cell)
-    claims += _areas(ev, cell, page)
-    arc_claims = _arc_claims(ev, cell)
-    claims += arc_claims
-    hairpin_claims = _hairpin_claims(ev, cell)        # 2.254 r2 (flag OMR_HAIRPIN_REACH; [] with it OFF)
-    claims += hairpin_claims
-    layer_claims = _layer_claims(ev, cell, page)       # 2.277 (flag OMR_CLAIM_FINAL): any other claim layer, whatever its unit
-    claims += layer_claims
-    claims += _found_whole_rests(ev, cell, page, claims)
-    claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
-    from .rhythm import beams_from_strokes_enabled
-    shaped = SO.owner_shape_enabled()
-    vetoes = shape_vetoes(ev, cell, inks, claims) if shaped else None
-    tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
-    owned = SO.own_strokes(inks, claims, tiers=tiers, acc_bar_clear_of_note=beams_from_strokes_enabled(),   # 2.202f
-                           vetoes=vetoes)
+    view = _settle_view(view, shape_vetoes(ev, cell, view["inks"], view["claims"]) if SO.owner_shape_enabled() else None)
+    inks, claims, owned = view["inks"], view["claims"], view["owned"]
+    arc_claims, hairpin_claims, head_census = view["arc_claims"], view["hairpin_claims"], view["head_census"]
+    shaped, vetoes = view["shaped"], view["vetoes"]
+    ledger_census = None
+    from .. import page_ledger as _PL
+    if _PL.enabled():
+        led = _page_ledger(ev, cell)
+        if led is not None:
+            owned, changed = _PL.apply(owned, _links(ev, cell), led["owned"])
+            ledger_census = dict(changed=changed, page=led["census"])
     by_ord = {i.ordinal: i for i in inks}
     strokes: Dict[str, Any] = {}
     used: List[str] = []
@@ -494,11 +613,15 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     value = {"owned": sorted(o for o, w in owned.items() if w.state in ("decided", "merged")),
              "contested": sorted(o for o, w in owned.items() if w.state == "contested")}
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
+    if ledger_census is not None:
+        detail["page_ledger"] = ledger_census          # ROADMAP 2.284: what the page's one settle changed in this cell (flag OFF: absent)
     if head_census["replaced"] or head_census["ledger_claims"]:
         detail["page_head_claim"] = head_census
     cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): None with it OFF
     if cf is not None:
         detail["claim_final"] = cf
+    if _PL.enabled():
+        detail["ink_consult"] = _ink_consult(ev, cell, claims, owned, by_ord, view["tiers"])     # ROADMAP 2.284 r5: the one consult's measure
     if shaped:
         # 2.238: which boxes own their ink (the precision rules' `owns`; flag OFF keeps the 2.205 detail byte-identical) and every veto
         detail["box_owns"] = sorted(box_owns)
@@ -528,6 +651,10 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
             for f in {c["family"] for c in w.candidates if c["family"] != "hairpin_trace"}:
                 cen["hairpin_claim:from:" + str(f)] = cen.get("hairpin_claim:from:" + str(f), 0) + 1
     used_t = tuple(dict.fromkeys(u for u in used if u))
+    if ledger_census is not None:
+        # ROADMAP 2.284 r5 (provenance): the rows another cell's view filed (a neighbour's box, its register area) that the page's one settle used here
+        # were read through THAT cell's Evidence; they enter this verdict's `considered`, not only its `used`
+        ev.considered_from_another_frame(used_t)
     if not strokes:
         return Ruling(value=value, reason="no_claimant", used=used_t, detail=detail)
     if value["contested"]:
