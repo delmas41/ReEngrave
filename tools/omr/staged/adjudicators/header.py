@@ -9,6 +9,7 @@ from typing import Dict, List, Optional
 from ..adjudicate import Checkable, Evidence, Mode, Ruling, decision
 from .. import movements as _movements
 from .. import key_header_ink as _key_header_ink
+from .. import key_kind_slots as _key_kind_slots
 from ..record import DOCUMENT, Kind, Outcome, Q, Scope, State
 from .clef import UNKNOWN_FIT_KEY, _unknown_fit_candidates
 
@@ -457,6 +458,31 @@ def _staff_reading(ev: Evidence, subject=None) -> Optional[Ruling]:
     tpls = ev.rows(Q.KEYSIG_TEMPLATE_FIT, subject=subject)
     fit_row, fit_fifths = _fit_for_clef(fits, clef)
     tpl_row, tpl_fifths = _fit_for_clef(tpls, clef)
+
+    # ⚠️ ROADMAP 2.299 (flag `OMR_KEY_KIND_FROM_SLOTS`, default OFF): the key's KIND and COUNT from where the key object's measured slots sit (the fixed
+    # flat / sharp order at the clef's staff steps) -- for a staff whose boxes gave NO reading (natural / mixed kinds, or no marker and no fitter).
+    # It never overrides a reading that exists (a fitter that speaks stands; a marker run of another kind stands: recorded), never lowers a count,
+    # and its READ goes through the system and part checks below like any staff reading. Abstains: the existing path runs untouched.
+    if _key_kind_slots.enabled():
+        kslots = _key_kind_slots.read(
+            _key_kind_slots.key_object_row(ev.rows(Q.CLAIMED_AREA, subject=subject)), clef.value)
+        s_fifths = _key_kind_slots.fifths_of(kslots)
+        note = {"slots_why": kslots["why"]}
+        if s_fifths is None:
+            detail = dict(detail, **note)
+        elif fifths is None and (reason in ("natural_markers", "mixed_marker_kinds")
+                                 or (reason == "no_markers" and fit_row is None and tpl_row is None)):
+            detail = dict(detail, slots_replaces=reason, slots_margin=kslots["margin"], slots_devs=kslots["flat_devs"]
+                          if kslots["kind"] == "flat" else kslots["sharp_devs"])
+            fifths, reason = s_fifths, "key_slots"
+        elif fifths is not None and reason == "markers" and (fifths < 0) == (s_fifths < 0) and abs(s_fifths) > abs(fifths) \
+                and (key_ink is None or key_ink["slots"] is None):
+            detail = dict(detail, slots_raised_from=abs(int(fifths)), slots_margin=kslots["margin"])
+            fifths = s_fifths
+        elif fifths is not None and reason == "markers" and (fifths < 0) != (s_fifths < 0):
+            detail = dict(detail, slots_kind_stands_down=s_fifths)
+        else:
+            detail = dict(detail, slots_why="agrees_or_not_more")
 
     if fifths is not None:
         # ⚠️ THE FITTERS BECOME CORROBORATION, AND A DISAGREEMENT IS RECORDED
@@ -1484,7 +1510,7 @@ def adjudicate_system_key(ev: Evidence) -> Ruling:
                    Q.KEYSIG_MARKER_IS_NOT_A_MARKER),
     scope=Kind.STAFF,
     wants=_KEY_WANTS + (Q.SYSTEM_KEY, Q.PART_KEY, Q.SLOT_INDEX, Q.INSTRUMENT),
-    reasons=("markers", "fitted_no_markers", "needs_clef",
+    reasons=("markers", "key_slots", "fitted_no_markers", "needs_clef",
              "run_fits_no_slot_table", "no_run", "keysig_fit_unknown",
              "mixed_marker_kinds",
              "natural_markers", "too_many_markers", "no_cell_scale",

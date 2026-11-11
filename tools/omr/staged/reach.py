@@ -675,6 +675,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.256. `key_header_ink.py` is PURE (the staff's `cv_key_object` claim rows and the marker slot count in, a raised slot count out; the
     # flag): it files no row and names no quantity -- `adjudicators/header._staff_reading` calls it.
     "key_header_ink.py",
+    # ROADMAP 2.299. `key_kind_slots.py` is PURE (the staff's `cv_key_object` claim rows and its READ clef in; a kind, a count and a margin out; the flag):
+    # it files no row and names no quantity -- `adjudicators/header._staff_reading` calls it.
+    "key_kind_slots.py",
     # ROADMAP 2.190. `accidental_shape.py` is PURE (a raster and a box in, two corner stem strengths and a shape out; the flag, the READ bar, the
     # choice among the detector's own candidates): it files no row and names no quantity -- `gather._accidental_shape_detail` files it as
     # `detail.shape` on the ACCIDENTAL_STAFF_POSITION row, `adjudicate_accidental_owner` consumes it.

@@ -52,10 +52,36 @@ def test_flag_default_off(monkeypatch):
 
 
 def test_slots_off_their_steps_abstain():
-    r = K.read(_row("b", 3, dstep=1.5), "treble")
-    assert r["standing"] is None and r["why"] in ("slots_fit_neither_order", "margin_below_floor")
-    r = K.read(_row("b", 3, dstep=-2.0), "treble")
-    assert K.fifths_of(r) is None
+    for d in (2.5, -2.5, 4.0):
+        r = K.read(_row("b", 3, dstep=d), "treble")
+        assert r["standing"] is None, (d, r)
+        assert K.fifths_of(r) is None
+
+
+def test_a_flat_reads_anywhere_between_its_two_anchors():
+    # a crushed piece covers an unknown part of the glyph: its centre is between the whole flat's (e - 1.25) and the bowl alone's (e)
+    for frac in (0.0, 0.5, 1.0):
+        row = _row("b", 3)
+        for k, p in enumerate(row["ko"]["read_pieces"], start=1):
+            e = KO.expected_step("treble", "b", k)
+            p["step"] = round(e - 1.25 * frac, 2)
+        assert K.fifths_of(K.read(row, "treble")) == -3, frac
+
+
+def test_a_staff_that_read_fewer_than_the_system_is_not_read():
+    # two crushed flats of three (or a B-flat clarinet in one): the system's count is not this staff's to supply
+    row = _row("b", 2)
+    row["ko"]["system_count"] = 3
+    r = K.read(row, "treble")
+    assert r["standing"] is None and r["why"] == "fewer_than_system"
+    row["ko"]["system_count"] = None
+    assert K.read(row, "treble")["why"] == "no_system_count"
+
+
+def test_one_blob_counted_twice_does_not_read():
+    row = _row("b", 3)
+    row["ko"]["read_pieces"][2]["step"] = row["ko"]["read_pieces"][1]["step"]       # slots 2 and 3 are the same ink
+    assert K.fifths_of(K.read(row, "treble")) is None
 
 
 def test_a_slot_out_of_order_abstains():
@@ -116,4 +142,4 @@ def test_the_order_is_not_a_count_of_boxes():
 
 def test_a_read_says_how_close_it_came():
     r = K.read(_row("b", 3), "treble")
-    assert r["margin"] >= K.MIN_MARGIN_STEPS and r["flat_worst"] <= K.KIND_TOL_STEPS < r["sharp_worst"]
+    assert r["margin"] >= K.MIN_MARGIN_STEPS and max(r["flat_devs"]) <= K.KIND_TOL_STEPS and max(r["sharp_devs"]) > K.KIND_TOL_STEPS

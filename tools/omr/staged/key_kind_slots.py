@@ -10,22 +10,26 @@ STEP against the staff's own lines at that x (`key_object.measure_tail_box`). No
 
 THE RULE (page-facts §2, Sean 2026-10-12 / 2026-10-22: "If there are flats they only show up as Bb, Eb, Ab, Db"): the k-th sign of a key signature
 stands at ONE staff step for a clef -- the k-th flat of B E A D G C F, or the k-th sharp of F C G D A E B -- and the two orders stand at different
-steps. So the slots read FLATS 3 when every slot k (k = 1..3) stands within `KIND_TOL_STEPS` of the k-th FLAT step of the staff's READ clef (a whole
-flat's ink centre stands `ANCHOR_OFFSET_STEPS["flat"]` above its pitch: `key_object.glyph_offset_steps`, MEASURED) AND the sharp order does not fit.
-It is READ only when ONE order fits every slot, in order, one slot apart (no gap), for a READ clef, and the rival order misses by at least
-`MIN_MARGIN_STEPS` more. Anything else abstains and the existing reading stands UNCHANGED (rule 8: no fallback converts "cannot tell" into an
-answer; this never reads, promotes or consults the INFER fill).
+steps. A measured slot is the centre of the ink the key object found there. A flat's whole glyph (stem and bowl) has its centre
+`ANCHOR_OFFSET_STEPS["flat"]` above its pitch and a crushed bowl alone has it ON its pitch (`key_object.glyph_offset_steps`, MEASURED), and a crushed
+Litolff piece covers an unknown part of the glyph -- so a flat slot's feasible centres are the INTERVAL from one anchor to the other; a sharp's is
+the step itself. Per slot k: the distance of the measured centre from each order's feasible centres. The slots READ the order they all stand
+nearest, when: every slot stands within `KIND_TOL_STEPS` of it, no slot stands nearer the rival, and on average the rival misses by at least
+`MIN_MARGIN_STEPS` more (the margin the reading reports). THE COUNT is the number of slots the staff read, accepted only when it EQUALS the
+system's agreed count (`key_object` N: two staves read that many in full) -- a staff that read fewer (a crush, or a transposing instrument) is not
+read here, and the existing reading stands. Anything else abstains and the existing reading stands UNCHANGED (rule 8: no fallback converts
+"cannot tell" into an answer; this never reads, promotes or consults the INFER fill).
 
-OUT OF SCOPE, ABSTAINED: a run holding a NATURAL (a cancelling key change; CONVENTION: page-facts §2) -- a slot whose shape reader says natural and
-whose step is not the order's; a run past the system's count (`more_than_system`: a place to look again); no clef or a clef without a slot table;
-a slot with no measured step.
+OUT OF SCOPE, ABSTAINED: a run holding a NATURAL (a cancelling key change; page-facts §2) -- a slot whose shape reader says natural; a staff with
+more pieces than the system's count (`more_than_system`: the extra piece is not on the record, a place to look again); no READ clef or a clef without
+a slot table; a slot with no measured step; two slots less than `MIN_GAP_SPACES` apart (one blob counted twice).
 
 TWO WITNESSES OFF ONE RASTER: the key object and the detector's boxes are the same raster and fall silent together. This reading is therefore not
 a second witness to the detector's; the SECOND witness is the system ("a key is printed on every staff at one bar; a majority of the system's
 staves is enough"), which `header._system_checked` / `_part_checked` still apply to this reading exactly as to any staff reading. A transposing
-staff is read from ITS OWN slots (a horn that prints none reads no slots and is not touched here).
+staff is read from ITS OWN slots; one that prints fewer than the system (a B-flat clarinet in three flats) or none is not touched here.
 
-CONVENTION ASSUMED: the fixed order and the staff steps of the clef (Sean-confirmed); the tolerance, the flat anchor offset and the margin are
+CONVENTION ASSUMED: the fixed order and the staff steps of the clef (Sean-confirmed); the tolerance, the flat anchors and the margin are
 MEASUREMENTS on two plates, so they may only NARROW until another publisher confirms them. WHAT WOULD FALSIFY IT: a staff whose printed signature
 is a different count / kind from the slots' fit (Sean's staff-start tiles). NOT CONFIRMED: sharps on a real case (no saved page of either plate
 prints a sharp key signature -- see the FINDINGS).
@@ -37,11 +41,12 @@ ENV = "OMR_KEY_KIND_FROM_SLOTS"
 READER = "cv_key_object"
 SOURCE = "system_key_object"
 
-#: how far a slot's measured centre may stand from its fixed step: `header.ORDER_TOL_STEPS` (the fitter's `max_residual` after the anchor offset)
-KIND_TOL_STEPS = 0.6
-#: the rival order must miss by this many steps MORE than the fitting one at its worst slot (the margin the reading reports)
+#: how far a slot's measured centre may stand from its feasible centres (the interval between the glyph anchors): a MEASUREMENT on Litolff's scan
+#: (the 2.187b tail judge uses 0.5 on a point; the interval absorbs the anchor ambiguity, this absorbs the scan's wander)
+KIND_TOL_STEPS = 1.0
+#: on average over the slots, the rival order must miss by this many steps MORE than the fitting one (the margin the reading reports)
 MIN_MARGIN_STEPS = 1.0
-#: one slot apart, centre to centre (`key_object.RUN_GAP_SPACES`; Litolff crushes to ~0.6)
+#: one slot apart, centre to centre (`key_object.RUN_GAP_SPACES`; Litolff crushes to ~0.6); closer than this is one blob counted twice
 MIN_GAP_SPACES = 0.45
 MAX_GAP_SPACES = 2.0
 MAX_SLOTS = 7
@@ -65,17 +70,25 @@ def key_object_row(rows: Sequence[Any]) -> Optional[Dict[str, Any]]:
     return None
 
 
+def _feasible(acc: str, e: float):
+    """The centres a slot's ink can measure at when the k-th sign of `acc` stands at step `e`: a flat's from its whole glyph (`e` less the
+    anchor offset) to the bowl alone (`e`); a sharp's the step itself."""
+    from . import key_object as KO
+    return (e - KO.ANCHOR_OFFSET_STEPS["flat"], e) if acc == "b" else (e, e)
+
+
 def _fit(pieces: Sequence[Dict[str, Any]], clef: str, acc: str) -> Optional[Dict[str, Any]]:
-    """How far each slot k stands from the k-th `acc` ("b" | "#") step of `clef`; None where the clef has no table."""
+    """How far each slot k stands from the k-th `acc` ("b" | "#") step of `clef` (0 inside its feasible interval); None where the clef has no table."""
     from . import key_object as KO
     devs = []
     for k, p in enumerate(pieces, start=1):
         e = KO.expected_step(clef, acc, k)
         if e is None:
             return None
-        off = KO.glyph_offset_steps(acc, p.get("h") or 0.0)
-        devs.append(abs(float(p["step"]) - (e - off)))
-    return {"devs": [round(d, 2) for d in devs], "worst": round(max(devs), 2)}
+        lo, hi = _feasible(acc, e)
+        st = float(p["step"])
+        devs.append(0.0 if lo <= st <= hi else min(abs(st - lo), abs(st - hi)))
+    return {"devs": [round(d, 2) for d in devs], "worst": round(max(devs), 2), "sum": round(sum(devs), 2)}
 
 
 def read(row: Optional[Dict[str, Any]], clef: Optional[str]) -> Dict[str, Any]:
@@ -95,6 +108,11 @@ def read(row: Optional[Dict[str, Any]], clef: Optional[str]) -> Dict[str, Any]:
         return dict(base, why="no_slots")
     if ko.get("more_than_system") or n > MAX_SLOTS:
         return dict(base, why="more_than_system")
+    system_n = ko.get("system_count")
+    if not isinstance(system_n, int) or system_n < 1:
+        return dict(base, why="no_system_count")
+    if n != system_n:
+        return dict(base, why="fewer_than_system", system_count=system_n)
     pieces = sorted(pieces, key=lambda p: float(p.get("cx") or 0.0))
     if any(p.get("step") is None or p.get("cx") is None for p in pieces):
         return dict(base, why="slot_not_measured")
@@ -108,18 +126,18 @@ def read(row: Optional[Dict[str, Any]], clef: Optional[str]) -> Dict[str, Any]:
     fb, fs = _fit(pieces, clef, "b"), _fit(pieces, clef, "#")
     if fb is None or fs is None:
         return dict(base, why="clef_without_slot_table")
-    fits_b, fits_s = fb["worst"] <= KIND_TOL_STEPS, fs["worst"] <= KIND_TOL_STEPS
-    info = dict(base, flat_worst=fb["worst"], sharp_worst=fs["worst"], flat_devs=fb["devs"], sharp_devs=fs["devs"])
-    if fits_b == fits_s:
-        return dict(info, why="both_orders_fit" if fits_b else "slots_fit_neither_order")
-    kind, own, rival = ("flat", fb, fs) if fits_b else ("sharp", fs, fb)
-    margin = round(rival["worst"] - own["worst"], 2)
+    info = dict(base, flat_devs=fb["devs"], sharp_devs=fs["devs"])
+    kind, own, rival = ("flat", fb, fs) if fb["sum"] <= fs["sum"] else ("sharp", fs, fb)
+    if own["worst"] > KIND_TOL_STEPS:
+        return dict(info, why="slots_fit_neither_order", would_be=kind)
+    if any(o > r for o, r in zip(own["devs"], rival["devs"])):
+        return dict(info, why="a_slot_stands_nearer_the_other_order", would_be=kind)
+    margin = round((rival["sum"] - own["sum"]) / n, 2)
     if margin < MIN_MARGIN_STEPS:
         return dict(info, why="margin_below_floor", margin=margin, would_be=kind)
-    shapes = [str(p.get("shape")) for p in pieces]
-    if "natural" in shapes:
-        # CONVENTION (page-facts §2): cancelling naturals are part of a CHANGED key's run and stand at the OLD key's steps; a natural-shaped slot
-        # means this may be a cancel run, out of scope. The shape reader calls crushed flats natural / sharp (2.256: 8 of 90), so this only abstains.
+    if "natural" in [str(p.get("shape")) for p in pieces]:
+        # page-facts §2: cancelling naturals are part of a CHANGED key's run; a natural-shaped slot means this may be a cancel run, out of scope.
+        # The shape reader calls crushed flats natural / sharp (2.256: 8 of 90), so this only ever abstains.
         return dict(info, why="natural_shaped_slot", would_be=kind, margin=margin)
     return dict(info, kind=kind, standing="READ", margin=margin, why="slots_fit_one_order")
 
