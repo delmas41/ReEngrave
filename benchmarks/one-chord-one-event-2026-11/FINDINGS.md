@@ -79,3 +79,7 @@ removed by the guards above.
 Brahms p0: of 58 stemless heads nearly every pair is a STACKED pair (dx 0, a
 third apart) with the stem on the other head — a stacked-mate join, not the
 second join, is what reaches Sean's 11 Brahms stem labels.
+
+## Landed (2026-11-11)
+
+Default ON (Sean "Land it"). Re-run gate on the frozen sample (`lane_report --from adjudicate`, ON vs OFF): judged right->wrong 0 on both plates, unwritten->wrong 0; red bars Litolff 202->191, Brahms 155->146 (the saved record has moved under the tree, so the control line does not reproduce it in EITHER arm; the OFF-vs-ON difference is the measure). Fast tier 10427 passed; check TOTAL 228. With the flag ON `adjudicate_event` reads `Q.HEAD_STEM`, which adds basis-only human-row entries in the stage-review lists; the three tests pin the flag-OFF list and assert the extras are basis-only (control: forcing those rows "used" fails all three).

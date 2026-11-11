@@ -1,0 +1,128 @@
+{
+ "lane": "2.290-build-r2",
+ "date": "2026-11-11",
+ "question": "Is the ink in the box one whole notehead?",
+ "note": "Scored by the manager against key.json. NOT LANDED. (1) Lost note tile 1 is a UNISON with stems both ways = two printed notes, written once with the flags on: a real loss. (2) too-small refusals 3 of 3 right (two augmentation dots, a sliver). (3) too-tall refusals 3 of 3 WRONG: all real noteheads (tiles 5, 8, 11). (4) boxes on tiles 1, 2, 6 a little small; tiles 4 and 12 look drawn on the wrong system.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "box a little small; a half note UNISON with stems going in both directions",
+   "score": "WRONG: two notes are printed (a unison in two voices); ON writes one -- a real lost note",
+   "plate": "litolff",
+   "page": 8,
+   "kind": "note_lost",
+   "why": "LOST (OFF, not ON)  litolff p8 m69 note half F5  box [1853, 2072, 1877, 2089]",
+   "glyph": "glyph/8/1/1/14/4"
+  },
+  {
+   "tile": 2,
+   "sean": "a half note; the box is a little off, not the whole head",
+   "score": "loss right: one note",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "note_lost",
+   "why": "LOST (OFF, not ON)  litolff p11 m86 note half E-14  box [1876, 1352, 1901, 1372]",
+   "glyph": "glyph/11/0/6/12/4"
+  },
+  {
+   "tile": 3,
+   "sean": "a dotted quarter",
+   "score": "a real head (claim extent changed, not refused)",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_split",
+   "why": "a round-1 claim round 2 refuses (1.12 x 1.28 sp)",
+   "glyph": "glyph/19/1/11/2/10"
+  },
+  {
+   "tile": 4,
+   "sean": "an augmentation dot, but it looks like it is on the system below",
+   "score": "refusal right; tile drawn on the wrong staff",
+   "plate": "brahms",
+   "page": 14,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim round 2 refuses (0.44 x 0.47 sp)",
+   "glyph": "glyph/14/0/2/8/2"
+  },
+  {
+   "tile": 5,
+   "sean": "a half note unison, stems in both directions",
+   "score": "real head ink refused as too tall (1.52 sp): refusal wrong",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "refused_too_tall",
+   "why": "a round-1 claim round 2 refuses (1.08 x 1.52 sp)",
+   "glyph": "glyph/11/0/2/6/2"
+  },
+  {
+   "tile": 6,
+   "sean": "a half note; the box is a tiny bit small",
+   "score": "a real head (claim extent changed)",
+   "plate": "litolff",
+   "page": 2,
+   "kind": "refused_split",
+   "why": "a round-1 claim round 2 refuses (0.83 x 1.02 sp)",
+   "glyph": "glyph/2/1/4/11/2"
+  },
+  {
+   "tile": 7,
+   "sean": "a sliver on the bottom of a half note, very little of the note",
+   "score": "refusal right",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim round 2 refuses (1.46 x 0.32 sp)",
+   "glyph": "glyph/11/1/3/8/5"
+  },
+  {
+   "tile": 8,
+   "sean": "a quarter note",
+   "score": "real head refused as too tall (1.78 sp): refusal wrong",
+   "plate": "litolff",
+   "page": 2,
+   "kind": "refused_too_tall",
+   "why": "a round-1 claim round 2 refuses (1.65 x 1.78 sp)",
+   "glyph": "glyph/2/0/8/12/0"
+  },
+  {
+   "tile": 9,
+   "sean": "a dotted quarter",
+   "score": "a real head (claim extent changed)",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_split",
+   "why": "a round-1 claim round 2 refuses (1.19 x 1.28 sp)",
+   "glyph": "glyph/19/0/0/0/1"
+  },
+  {
+   "tile": 10,
+   "sean": "an augmentation dot",
+   "score": "refusal right",
+   "plate": "brahms",
+   "page": 14,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim round 2 refuses (0.47 x 0.66 sp)",
+   "glyph": "glyph/14/1/1/8/6"
+  },
+  {
+   "tile": 11,
+   "sean": "a quarter",
+   "score": "real head refused as too tall (1.59 sp): refusal wrong",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "refused_too_tall",
+   "why": "a round-1 claim round 2 refuses (1.52 x 1.59 sp)",
+   "glyph": "glyph/11/1/0/0/4"
+  },
+  {
+   "tile": 12,
+   "sean": "looks like a quarter note, but maybe it belongs to the system below",
+   "score": "a real head; tile may be on the wrong staff",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_split",
+   "why": "a round-1 claim round 2 refuses (1.25 x 1.28 sp)",
+   "glyph": "glyph/19/1/11/1/3"
+  }
+ ]
+}

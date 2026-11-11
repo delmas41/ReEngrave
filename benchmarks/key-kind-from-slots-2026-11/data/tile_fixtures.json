@@ -1,0 +1,742 @@
+{
+ "1": {
+  "plate": "litolff",
+  "staff": "staff/2/0/3",
+  "sean_clef": "F",
+  "sean_fifths": -3,
+  "bucket": "key K2",
+  "clef_read": "bass",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 4,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 1,
+     "6": 0,
+     "7": 3,
+     "8": 3,
+     "9": 2,
+     "10": 3
+    },
+    "pitch_spaces": 1.01,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "bass",
+    "own_slots": 3,
+    "placed_slots": 0,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 422.5,
+      "step": 5.87,
+      "h": 2.67,
+      "basis": "box",
+      "shape": "unread",
+      "bl": null,
+      "tr": null,
+      "margin": null,
+      "slot": 1
+     },
+     {
+      "cx": 438.5,
+      "step": 2.69,
+      "h": 2.67,
+      "basis": "box",
+      "shape": "unread",
+      "bl": null,
+      "tr": null,
+      "margin": null,
+      "slot": 2
+     },
+     {
+      "cx": 454.5,
+      "step": 6.43,
+      "h": 2.48,
+      "basis": "box",
+      "shape": "unread",
+      "bl": null,
+      "tr": null,
+      "margin": null,
+      "slot": 3
+     }
+    ]
+   },
+   "space": 15.75
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "2": {
+  "plate": "litolff",
+  "staff": "staff/4/1/10",
+  "sean_clef": "F",
+  "sean_fifths": -3,
+  "bucket": "key K6",
+  "clef_read": null,
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 0,
+     "6": 0,
+     "7": 3,
+     "8": 3,
+     "9": 3,
+     "10": 2
+    },
+    "pitch_spaces": 0.9,
+    "clef_edge": "fallback_median",
+    "clef_measured": null,
+    "own_slots": 2,
+    "placed_slots": 1,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 438.0,
+      "step": 5.07,
+      "h": 3.31,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 0.97,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 1
+     },
+     {
+      "cx": 461.5,
+      "step": 5.15,
+      "h": 3.38,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 1.0,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 2
+     }
+    ]
+   },
+   "space": 16.0
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "3": {
+  "plate": "brahms",
+  "staff": "staff/4/1/8",
+  "sean_clef": "F",
+  "sean_fifths": 0,
+  "bucket": "key K5",
+  "clef_read": "bass",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 3,
+     "5": 0,
+     "6": 0,
+     "7": 0,
+     "8": 0,
+     "9": 3,
+     "10": 3,
+     "11": 3,
+     "12": 3,
+     "13": 3
+    },
+    "pitch_spaces": 1.101,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "treble",
+    "own_slots": 0,
+    "placed_slots": 3,
+    "more_than_system": false,
+    "read_pieces": []
+   },
+   "space": 28.0
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": 0,
+   "reason": "key_from_other_systems"
+  }
+ },
+ "4": {
+  "plate": "litolff",
+  "staff": "staff/11/1/9",
+  "sean_clef": "F",
+  "sean_fifths": -3,
+  "bucket": "key K1",
+  "clef_read": "bass",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 4,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 0,
+     "6": 3,
+     "7": 3,
+     "8": 3,
+     "9": 2,
+     "10": 3
+    },
+    "pitch_spaces": 1.155,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "bass",
+    "own_slots": 2,
+    "placed_slots": 1,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 434.5,
+      "step": 4.65,
+      "h": 2.86,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 0.963,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 1
+     },
+     {
+      "cx": 453.5,
+      "step": 1.9,
+      "h": 2.48,
+      "basis": "piece",
+      "shape": "natural",
+      "bl": 0.0,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 2
+     }
+    ]
+   },
+   "space": 15.75
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "5": {
+  "plate": "litolff",
+  "staff": "staff/4/0/6",
+  "sean_clef": "treble",
+  "sean_fifths": -3,
+  "bucket": "key K7",
+  "clef_read": "treble",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 0,
+     "6": 3,
+     "7": 3,
+     "8": 1,
+     "9": 3,
+     "10": 3
+    },
+    "pitch_spaces": 0.952,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "treble",
+    "own_slots": 3,
+    "placed_slots": 0,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 438.5,
+      "step": 4.43,
+      "h": 2.79,
+      "basis": "piece",
+      "shape": "sharp",
+      "bl": 1.0,
+      "tr": 0.889,
+      "margin": 0.289,
+      "slot": 1
+     },
+     {
+      "cx": 453.5,
+      "step": 5.04,
+      "h": 3.49,
+      "basis": "piece",
+      "shape": "unclear",
+      "bl": 0.0,
+      "tr": 0.333,
+      "margin": -0.083,
+      "slot": 2
+     },
+     {
+      "cx": 460.0,
+      "step": 5.06,
+      "h": 3.49,
+      "basis": "piece",
+      "shape": "unclear",
+      "bl": 0.0,
+      "tr": 0.333,
+      "margin": -0.083,
+      "slot": 3
+     }
+    ]
+   },
+   "space": 15.75
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "6": {
+  "plate": "litolff",
+  "staff": "staff/2/1/9",
+  "sean_clef": "C",
+  "sean_fifths": -3,
+  "bucket": "key K6",
+  "clef_read": null,
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 2,
+     "4": 0,
+     "5": 0,
+     "6": 0,
+     "7": 3,
+     "8": 3,
+     "9": 2,
+     "10": 3
+    },
+    "pitch_spaces": 1.095,
+    "clef_edge": "fallback_median",
+    "clef_measured": null,
+    "own_slots": 2,
+    "placed_slots": 1,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 423.0,
+      "step": 3.62,
+      "h": 2.5,
+      "basis": "box",
+      "shape": "unread",
+      "bl": null,
+      "tr": null,
+      "margin": null,
+      "slot": 1
+     },
+     {
+      "cx": 454.5,
+      "step": 3.95,
+      "h": 3.19,
+      "basis": "piece",
+      "shape": "unclear",
+      "bl": 0.567,
+      "tr": 0.0,
+      "margin": -0.033,
+      "slot": 2
+     }
+    ]
+   },
+   "space": 16.0
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "7": {
+  "plate": "litolff",
+  "staff": "staff/6/0/4",
+  "sean_clef": "treble",
+  "sean_fifths": 0,
+  "bucket": "key K5",
+  "clef_read": "treble",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 3,
+     "6": 3,
+     "7": 3,
+     "8": 3,
+     "9": 3
+    },
+    "pitch_spaces": 1.098,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "treble",
+    "own_slots": 0,
+    "placed_slots": 3,
+    "more_than_system": false,
+    "read_pieces": []
+   },
+   "space": 16.0
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": 0,
+   "reason": "key_from_other_systems"
+  }
+ },
+ "8": {
+  "plate": "litolff",
+  "staff": "staff/6/1/3",
+  "sean_clef": "C",
+  "sean_fifths": -3,
+  "bucket": "key K4",
+  "clef_read": "tenor",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 0,
+     "6": 0,
+     "7": 3,
+     "8": 3,
+     "9": 2,
+     "10": 1,
+     "11": 3
+    },
+    "pitch_spaces": 1.098,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "tenor",
+    "own_slots": 3,
+    "placed_slots": 0,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 429.5,
+      "step": 1.6,
+      "h": 2.71,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 1.0,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 1
+     },
+     {
+      "cx": 446.5,
+      "step": -1.49,
+      "h": 2.71,
+      "basis": "box",
+      "shape": "unread",
+      "bl": null,
+      "tr": null,
+      "margin": null,
+      "slot": 2
+     },
+     {
+      "cx": 463.0,
+      "step": 2.33,
+      "h": 3.94,
+      "basis": "piece",
+      "shape": "natural",
+      "bl": 0.056,
+      "tr": 0.0,
+      "margin": 0.194,
+      "slot": 3
+     }
+    ]
+   },
+   "space": 15.5
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "9": {
+  "plate": "brahms",
+  "staff": "staff/4/1/7",
+  "sean_clef": "treble",
+  "sean_fifths": 0,
+  "bucket": "key K5",
+  "clef_read": "treble",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 3,
+     "5": 0,
+     "6": 0,
+     "7": 0,
+     "8": 0,
+     "9": 3,
+     "10": 3,
+     "11": 3,
+     "12": 3,
+     "13": 3
+    },
+    "pitch_spaces": 1.101,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "treble",
+    "own_slots": 0,
+    "placed_slots": 3,
+    "more_than_system": false,
+    "read_pieces": []
+   },
+   "space": 27.5
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": 0,
+   "reason": "key_from_other_systems"
+  }
+ },
+ "10": {
+  "plate": "litolff",
+  "staff": "staff/6/1/6",
+  "sean_clef": "F",
+  "sean_fifths": 0,
+  "bucket": "key K5",
+  "clef_read": "bass",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 3,
+     "4": 0,
+     "5": 0,
+     "6": 0,
+     "7": 3,
+     "8": 3,
+     "9": 2,
+     "10": 1,
+     "11": 3
+    },
+    "pitch_spaces": 1.098,
+    "clef_edge": "detector_clef_box",
+    "clef_measured": "bass",
+    "own_slots": 0,
+    "placed_slots": 3,
+    "more_than_system": false,
+    "read_pieces": []
+   },
+   "space": 15.75
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": 0,
+   "reason": "key_from_other_systems"
+  }
+ },
+ "11": {
+  "plate": "litolff",
+  "staff": "staff/2/1/3",
+  "sean_clef": "F",
+  "sean_fifths": null,
+  "bucket": "key K1",
+  "clef_read": "tenor",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 2,
+     "4": 0,
+     "5": 0,
+     "6": 0,
+     "7": 3,
+     "8": 3,
+     "9": 2,
+     "10": 3
+    },
+    "pitch_spaces": 1.095,
+    "clef_edge": "fallback_median",
+    "clef_measured": null,
+    "own_slots": 2,
+    "placed_slots": 1,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 424.5,
+      "step": 4.49,
+      "h": 2.86,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 1.0,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 1
+     },
+     {
+      "cx": 441.5,
+      "step": 5.17,
+      "h": 3.62,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 0.636,
+      "tr": 0.0,
+      "margin": 0.036,
+      "slot": 2
+     }
+    ]
+   },
+   "space": 15.75
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ },
+ "12": {
+  "plate": "litolff",
+  "staff": "staff/8/1/8",
+  "sean_clef": "C",
+  "sean_fifths": -3,
+  "bucket": "key K3",
+  "clef_read": "alto",
+  "key_row": {
+   "ko": {
+    "system_count": 3,
+    "basis": "two_staves",
+    "dossier": "silent",
+    "allowed_counts": null,
+    "system_counts": {
+     "0": 3,
+     "1": 3,
+     "2": 1,
+     "3": 1,
+     "4": 0,
+     "5": 0,
+     "6": 2,
+     "7": 3,
+     "8": 2,
+     "9": 5,
+     "10": 3
+    },
+    "pitch_spaces": 1.132,
+    "clef_edge": "fallback_median",
+    "clef_measured": null,
+    "own_slots": 2,
+    "placed_slots": 1,
+    "more_than_system": false,
+    "read_pieces": [
+     {
+      "cx": 432.0,
+      "step": 3.99,
+      "h": 2.56,
+      "basis": "piece",
+      "shape": "flat",
+      "bl": 1.0,
+      "tr": 0.0,
+      "margin": 0.25,
+      "slot": 1
+     },
+     {
+      "cx": 450.5,
+      "step": 1.94,
+      "h": 3.5,
+      "basis": "box",
+      "shape": "unread",
+      "bl": null,
+      "tr": null,
+      "margin": null,
+      "slot": 2
+     }
+    ]
+   },
+   "space": 16.0
+  },
+  "adjudicate_key": {
+   "decider": "infer:fill_part_key",
+   "outcome": "decided",
+   "value": -3,
+   "reason": "key_from_document_majority"
+  }
+ }
+}

@@ -349,10 +349,10 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
     wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
-           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
-             "stem_by_one_per_head", "unison_two_voices",
+             "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
              "two_stems", "no_stem", "no_evidence"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
@@ -385,6 +385,13 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
     from ..geometry import stem_touches_head
     touching = [(r, b) for r, b in stems if stem_touches_head(b, head)]
     if not touching:
+        # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`, default ON): a head no stem touches may stand beside the head of a
+        # SECOND that holds the stem (the stem stands at the seam of the two heads). `one_chord` owns the geometry.
+        from .. import one_chord
+        if one_chord.enabled():
+            joined = _stem_of_a_second(ev, cell, head, stems, boxes[-1].id)
+            if joined is not None:
+                return joined
         return Ruling.abstain("no_stem", used=(boxes[-1].id,))
 
     # one entry per PHYSICAL stem: rows that are the same stem collapse onto
@@ -518,6 +525,67 @@ def _rep_ids_touching(stems, head, physical_of) -> Set[str]:
         if stem_touches_head(b, head):
             out.add(physical_of(row, b))
     return out
+
+
+def _stem_of_a_second(ev: Evidence, cell: Subject, head, stems, head_row_id) -> Optional[Ruling]:
+    """ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`). A head that touches no stem, whose NEIGHBOUR in a second does and whose
+    stem stands between the two heads, stands on that stem (reason `stem_of_a_second`). `None` where nothing in the cell fits
+    or two stems fit. Geometry only (`one_chord.partner_stem`); a refused neighbour is no partner (a neighbour owned by another
+    staff stands a staff away, never in a second's window)."""
+    from .. import one_chord
+    from ..geometry import stem_touches_head
+
+    # Only a head whose own value is already DECIDED (written either way): the join lets the stem SHARE a value and group the chord;
+    # it never lifts a head out of `duration_narrowed` (2.300 step 2: it turned an accidental boxed as a head into a written note).
+    own = ev.verdict(Q.DURATION)
+    if own is None or own.outcome is not Outcome.DECIDED:
+        return None
+    others = []
+    for row in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        k = row.subject
+        if k == ev.subject:
+            continue
+        refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=k)
+        if refusal is not None and refusal.outcome is Outcome.DECIDED and refusal.value is True:
+            continue
+        boxes = ev.rows(Q.GLYPH_BOX, subject=k)
+        kb = _head_xywh(boxes[-1].value) if boxes else None
+        if kb is not None:
+            others.append((k, kb))
+    found = one_chord.partner_stems(head, others, [(r, b) for r, b in stems], stem_touches_head)
+    # The join may only RAISE this head to the stem's value, never move the stem-holder's: the partner's own decided value must be at least
+    # this head's (tile 7: a black quarter beside a half; refused: a quarter 'head' that is a flag, beside an eighth chord).
+    try:
+        mine = float(own.value["beats"])
+    except (TypeError, KeyError, ValueError):
+        return None
+    kept = []
+    for f in found:
+        pd = ev.verdict(Q.DURATION, subject=f[1])
+        try:
+            if pd is not None and pd.outcome is Outcome.DECIDED and float(pd.value["beats"]) >= mine:
+                kept.append(f)
+        except (TypeError, KeyError, ValueError):
+            continue
+    found = kept
+    if not found:
+        return None
+    reps = {}
+    for row, partner_key, partner_box in found:
+        b = next(bb for rr, bb in stems if rr is row)
+        cluster = [(r2, b2) for r2, b2 in stems if r2 is row or _same_stem_row(b, b2)]
+        rep_row, rep_box = min(cluster, key=lambda t: (-t[1][3], t[0].id))
+        reps[rep_row.id] = (rep_row, rep_box, cluster, partner_key)
+    if len(reps) != 1:
+        return None                      # two physical stems fit: cannot tell
+    rep_row, rep_box, cluster, partner_key = next(iter(reps.values()))
+    frac = _x_frac(rep_box, head)
+    return Ruling(value=rep_row.id, reason="stem_of_a_second",
+                  used=(head_row_id,) + tuple(sorted(r2.id for r2, _b in cluster)),
+                  detail={"stem": rep_row.id, "stem_rows": sorted(r2.id for r2, _b in cluster),
+                          "stem_box": [round(v, 2) for v in rep_box],
+                          "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
+                          "partner": partner_key.to_key()})
 
 
 def _one_stem_per_head(ev: Evidence, cell: Subject, head, stems, physical,
