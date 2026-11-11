@@ -320,63 +320,16 @@ def _contact_standing(detail: Optional[Dict[str, Any]]) -> Tuple[str, str]:
     return "READ", "stands_free"
 
 
-def _head_shaped(page_map: Any, j: int) -> bool:
-    """Is page stroke `j` a notehead's own piece: the register's head shape (`stroke_owner.shape_fit` family `head`, CLEAR only), a blob or a thick lens, never a dot's
-    "could". The same shape rule the head tier claims by, not a new cut."""
-    from . import stroke_owner as SO
-    if not (0 <= j < len(page_map.strokes)):
-        return False
-    st = page_map.strokes[j]
-    if st.kind not in ("blob", "horizontal"):
-        return False
-    sp = float(getattr(st, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
-    if sp <= 0:
-        return False
-    ink = SO.Ink(ordinal=j, kind=st.kind, box=tuple(float(v) for v in st.box), length=float(st.length_sp), thickness=float(st.thickness_sp),
-                 area=float(st.area_sp2), space_px=sp, angle=float(st.angle_deg))
-    return SO.shape_fit("head", ink)[0] == "clear"
+# 2.288 r4: the two questions any reader of the stroke map asks of ink -- WHAT DOES IT HANG FROM, WHICH SIDE OF ITS STAFF LINE -- live in `ink_attachment` (shared); the rest
+# reader is the first caller. The old names stay as aliases (tests, tile scripts).
+from . import ink_attachment as IA
+
+_head_shaped = IA.head_shaped
+_neighbours = IA.neighbours
+rest_attachment = IA.attachment
 
 
-def _neighbours(page_map: Any, i: int) -> List[int]:
-    st = page_map.strokes[i]
-    return [int(j) for j, _c in (getattr(st, "touches", None) or ())] + [int(j) for j, _h in (getattr(st, "joined_to", None) or ())]
-
-
-def rest_attachment(page_map: Any, own: Sequence[int]) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.288 round 2, STAGED GATHER, pure: is the ink a rest box names a rest's, or does it HANG from a stem that carries a head? One question for both
-    sides -- "is this slanted stroke a rest's or a stem's?" -- answered from what the ink is ATTACHED to on the page stroke map, never from its length or thickness
-    (Sean 2.150b: "a real rest stands free"; a stem carries a head, a flag hangs from a stem, an eighth rest's own slanted stroke starts at its dot and ends free).
-    `own` = the page strokes the box names by ink share. Returns None when nothing can be read (no strokes), else
-      stem_with_head   strokes outside `own` that TOUCH it and are a stem (a vertical at least the map's own vertical cut) which itself touches a head-shaped stroke
-                       outside `own`: the flag / beam hook / stem-end of a note (tile 7, Brahms p19)
-      touches_a_head   head-shaped strokes outside `own` touching it directly (a rest never touches a note, 2.150b)
-      bare_stroke      `own` holds nothing but vertical strokes: a stem or a flat's vertical, a rest has a body (curl, block, dot)."""
-    if not own or not getattr(page_map, "strokes", None):
-        return None
-    from . import stroke_map as SM
-    n = len(page_map.strokes)
-    own_set = {int(i) for i in own if 0 <= int(i) < n}
-    if not own_set:
-        return None
-    stems: Dict[int, int] = {}
-    heads: List[int] = []
-    for i in sorted(own_set):
-        for j in _neighbours(page_map, i):
-            if j in own_set or not (0 <= j < n):
-                continue
-            sj = page_map.strokes[j]
-            sp = float(getattr(sj, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
-            if sj.kind == "vertical" and float(sj.length_sp) >= SM.V_MIN_SPACES and sp > 0:
-                carried = [k for k in _neighbours(page_map, j) if k not in own_set and _head_shaped(page_map, k)]
-                if carried:
-                    stems[j] = carried[0]
-            elif _head_shaped(page_map, j):
-                heads.append(j)
-    return dict(stem_with_head=sorted(stems), touches_a_head=sorted(set(heads)),
-                bare_stroke=all(page_map.strokes[i].kind == "vertical" for i in own_set))
-
-
-def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
+def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None, sides: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
     """`("READ" | "weak", why)`: does a detector rest box STAND as a rest (ROADMAP 2.288)? Round 2: the question is attachment, not a stroke length. With the page
     strokes read (`attachment` from `rest_attachment`): a box whose ink hangs from a stem carrying a head, touches a head, or is a bare vertical is `weak`
     (a flag, a stem, a flat's vertical); otherwise it stands free and is READ -- unless the cell raster's own ink contact (`Q.REST_INK_CONTACT`, 2.150b, a second
@@ -393,6 +346,10 @@ def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[st
         return "weak", "touches_a_head"
     if attachment.get("bare_stroke"):
         return "weak", "bare_vertical_stroke"
+    if sides and sides.get("two_lines"):
+        return "weak", "touches_two_staff_lines"          # a block rest never touches two lines (Sean 2026-09-29); `ink_attachment.line_sides`
+    if sides and sides.get("both_sides"):
+        return "weak", "ink_on_both_sides_of_its_line"    # a whole rest hangs from a line, a half rest sits on one: a head is centred on it (2.288 r4, tile 4)
     if old[1] in ("no_ink_contact_row", "stroke_into_a_head"):
         return old
     return "READ", "stands_free"
@@ -421,26 +378,9 @@ def strokes_by_share(page_map: Any, box: Sequence[float], index: StrokeIndex, sh
 
 #: ROADMAP 2.288 round 3: the block rests whose block hangs from (whole) or sits on (half) ONE staff line.
 BLOCK_REST_CLASSES = ("restwhole", "resthalf")
-#: a pixel row of a stroke is a STAFF-LINE row when the raw raster is dark in this many columns just left AND just right of the stroke (>= LINE_FLANK_SHARE of them)
-LINE_FLANK_PX = 5
-LINE_FLANK_SHARE = 0.8
-
-
-def _line_row_flags(raw: Any, m: Any, x0: int, y0: int, scale: float) -> List[bool]:
-    """Per row of a stroke mask (reduced frame, offset `x0, y0`): True = the block's OWN row, False = a staff-line row (module doc of `block_rest_strokes`). No raster: all True."""
-    h, w = m.shape
-    keep = [True] * h
-    if raw is None:
-        return keep
-    fx0, fx1 = int(round(x0 / scale)), int(round((x0 + w) / scale))
-    for r in range(h):
-        y = int((y0 + r + 0.5) / scale)
-        if not (0 <= y < raw.shape[0]):
-            continue
-        left, right = raw[y, max(0, fx0 - 1 - LINE_FLANK_PX):max(0, fx0 - 1)], raw[y, min(raw.shape[1], fx1 + 1):min(raw.shape[1], fx1 + 1 + LINE_FLANK_PX)]
-        if len(left) >= LINE_FLANK_PX - 1 and len(right) >= LINE_FLANK_PX - 1 and float((left == 0).mean()) >= LINE_FLANK_SHARE and float((right == 0).mean()) >= LINE_FLANK_SHARE:
-            keep[r] = False
-    return keep
+LINE_FLANK_PX = IA.LINE_FLANK_PX
+LINE_FLANK_SHARE = IA.LINE_FLANK_SHARE
+_line_row_flags = IA.line_row_flags
 
 
 def own_block_height_sp(page_map: Any, i: int, raw: Any) -> Optional[float]:
@@ -510,6 +450,32 @@ def _rest_stroke_fits(page_map: Any, i: int, owner: str, cls: str, raw: Any = No
     ink = SO.Ink(ordinal=i, kind=st.kind, box=tuple(float(v) for v in st.box), length=float(st.length_sp), thickness=float(st.thickness_sp),
                  area=float(st.area_sp2), space_px=sp, angle=float(st.angle_deg))
     return SO.shape_fit(owner, ink, cls)[0] != "no"
+
+
+def rest_box_verdict(page_map: Any, index: StrokeIndex, raw: Any, pb: Sequence[float], cls: str, owner: str, detail: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+    """ROADMAP 2.288, STAGED GATHER, pure: does ONE detector rest box (page px `pb`, class `cls`, family `owner`) STAND as a rest, and which page strokes are its ink?
+    The per-box half of `gather_page_claim_boxes`, a function of its own so that a real page case (Sean's answered tiles, `benchmarks/rests-claim-first-2026-11/real_cases.json`)
+    can be replayed through exactly the code the gather runs. Returns `standing` ("READ" | "weak"), `why`, `ids` (READ: only the strokes the printed rest's shape allows; weak: the
+    strokes the box named), `block_extra` (the strokes added by the block's own rows, round 3), `attachment` and `sides` (the two shared questions of `ink_attachment`).
+    Round 4: a whole / half rest's block must lie on ONE side of ONE staff line (`ink_attachment.line_sides`), and a stem that carries the claimed ink as ITS head attaches it."""
+    from . import stroke_map as SM
+    ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
+    block_extra: List[int] = []
+    block = cls.lower() in BLOCK_REST_CLASSES
+    if block:
+        # round 3: a block rest's box holds the BLOCK; the stroke is the block plus a slab of the staff line it hangs from / sits on
+        # (a stroke the line merges into a note is no block: only strokes whose shape the printed rest allows are added, so a head boxed as a whole rest stays weak)
+        block_extra = [i for i in block_rest_strokes(page_map, pb, index, raw, SM.COVER_SHARE_MIN) if i not in ids and _rest_stroke_fits(page_map, i, owner, cls, raw)]
+        ids = sorted(set(ids) | set(block_extra))
+    att = IA.attachment(page_map, ids)
+    fit = [i for i in ids if _rest_stroke_fits(page_map, i, owner, cls, raw)]
+    sides = None
+    if block:
+        per = [s_ for s_ in (IA.line_sides(page_map, i, raw) for i in fit) if s_]
+        if per:
+            sides = dict(both_sides=any(s_["both_sides"] for s_ in per), two_lines=any(s_["two_lines"] for s_ in per), strokes=per)
+    standing, why = rest_standing(detail, att, sides)
+    return dict(standing=standing, why=why, ids=fit if standing == "READ" else ids, block_extra=block_extra, attachment=att, sides=sides)
 
 
 def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Optional[Dict[str, List[Any]]],
@@ -582,32 +548,27 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             standing = None
             ids = strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN)
             block_extra: List[int] = []
-            if rests and owner in REST_FAMILIES and cls.lower() in BLOCK_REST_CLASSES:
-                # 2.288 round 3: a block rest's box holds the BLOCK; the stroke is the block plus a slab of the staff line it hangs from / sits on
-                # (a stroke the line merges into a note is no block: only strokes whose shape the printed rest allows are added, so a head boxed as a whole rest stays weak)
-                block_extra = [i for i in block_rest_strokes(page_map, pb, index, raw, SM.COVER_SHARE_MIN) if i not in ids and _rest_stroke_fits(page_map, i, owner, cls, raw)]
-                ids = sorted(set(ids) | set(block_extra))
             if rests and owner in REST_FAMILIES:
                 # 2.288: only a rest that STANDS as one (READ) claims; a weak box files nothing and blocks nobody (counted, with where it stands)
                 rr = log.rows(Q.REST_INK_CONTACT, R.glyph(c.page_index, key[0], key[1], c.measure_index, gi))
                 detail = rr[-1].detail if rr else None
-                standing, why = rest_standing(detail, rest_attachment(page_map, ids))
+                v = rest_box_verdict(page_map, index, raw, pb, cls, owner, detail)
+                standing, why, ids, block_extra = v["standing"], v["why"], v["ids"], v["block_extra"]
                 was, _ = _contact_standing(detail)                       # round 1's answer, for the census (what attachment freed / refused)
                 census["rest_boxes"] += 1
                 if standing != was:
                     k2 = ("freed_" if standing == "READ" else "refused_") + why
                     census["rest_changed"][k2] = census["rest_changed"].get(k2, 0) + 1
-                    census["rest_changed_boxes"].append([cls, [round(v, 1) for v in pb], k2, csub.to_key()])
+                    census["rest_changed_boxes"].append([cls, [round(v_, 1) for v_ in pb], k2, csub.to_key()])
                 if standing != "READ":
                     census["rest_weak"][why] = census["rest_weak"].get(why, 0) + 1
-                    census["rest_weak_boxes"].append([cls, [round(v, 1) for v in pb], why, csub.to_key()])
+                    census["rest_weak_boxes"].append([cls, [round(v_, 1) for v_ in pb], why, csub.to_key()])
                     continue
                 census["rest_read"] += 1
-                census["rest_read_boxes"].append([cls, [round(v, 1) for v in pb], csub.to_key()])
-                ids = [i for i in ids if _rest_stroke_fits(page_map, i, owner, cls, raw)]
+                census["rest_read_boxes"].append([cls, [round(v_, 1) for v_ in pb], csub.to_key()])
                 if block_extra and any(i in ids for i in block_extra):
                     census["rest_block_named"] += 1
-                    census["rest_block_named_boxes"].append([cls, [round(v, 1) for v in pb], [i for i in ids if i in block_extra], csub.to_key()])
+                    census["rest_block_named_boxes"].append([cls, [round(v_, 1) for v_ in pb], [i for i in ids if i in block_extra], csub.to_key()])
             census["boxes"] += 1
             census["by_class"][cls] = census["by_class"].get(cls, 0) + 1
             lay = CO.layer_of(owner)
