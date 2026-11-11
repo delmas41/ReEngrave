@@ -1,0 +1,174 @@
+{
+ "lane": "2.292 r1 (lane-2.292-why-key-clef-inferred ce04ca9fb; measure only)",
+ "date": "2026-11-10",
+ "question": "What clef is printed, and how many sharps or flats in the key signature (0 if none)? Anything unusual?",
+ "verbatim": "Tau1 is an F clef, 3 flats, C minor. Tau2 is the same. Tau3 is an F clef with no accidental. Tau4 is an F clef with 3 flats. Tau5 is a treble clef, 3 flats. Tau6 is a C clef with 3 flats. Tau7 is a treble clef, no accidentals. Tau8 is a C clef with 3 flats. Tau9 is a treble clef with no sharps or flats. Tau10 is an F clef, no accidentals. Tau11 is an F clef. It looks like it probably had 3 flats, but I can't tell because it's cut off. And Tau12 is a C clef with 3 flats. [transcribed by voice: 'Tau' = 'Tile']",
+ "answers": {
+  "1": {
+   "sean_clef": "F",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/2/0/3",
+   "bucket": "key K2",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K2"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "2": {
+   "sean_clef": "F",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/4/1/10",
+   "bucket": "key K6",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K6",
+    "clef_fill": "bass"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": true
+  },
+  "3": {
+   "sean_clef": "F",
+   "sean_fifths": 0,
+   "plate": "brahms",
+   "staff": "staff/4/1/8",
+   "bucket": "key K5",
+   "ours": {
+    "key_fill_fifths": 0,
+    "key_cause": "K5"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "4": {
+   "sean_clef": "F",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/11/1/9",
+   "bucket": "key K1",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K1"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "5": {
+   "sean_clef": "treble",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/4/0/6",
+   "bucket": "key K7",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K7"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "6": {
+   "sean_clef": "C",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/2/1/9",
+   "bucket": "key K6",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K6",
+    "clef_fill": "alto"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": true
+  },
+  "7": {
+   "sean_clef": "treble",
+   "sean_fifths": 0,
+   "plate": "litolff",
+   "staff": "staff/6/0/4",
+   "bucket": "key K5",
+   "ours": {
+    "key_fill_fifths": 0,
+    "key_cause": "K5"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "8": {
+   "sean_clef": "C",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/6/1/3",
+   "bucket": "key K4",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K4"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "9": {
+   "sean_clef": "treble",
+   "sean_fifths": 0,
+   "plate": "brahms",
+   "staff": "staff/4/1/7",
+   "bucket": "key K5",
+   "ours": {
+    "key_fill_fifths": 0,
+    "key_cause": "K5"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "10": {
+   "sean_clef": "F",
+   "sean_fifths": 0,
+   "plate": "litolff",
+   "staff": "staff/6/1/6",
+   "bucket": "key K5",
+   "ours": {
+    "key_fill_fifths": 0,
+    "key_cause": "K5"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  },
+  "11": {
+   "sean_clef": "F",
+   "sean_fifths": null,
+   "plate": "litolff",
+   "staff": "staff/2/1/3",
+   "bucket": "key K1",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K1"
+   },
+   "key_fill_right": null,
+   "clef_fill_right": null
+  },
+  "12": {
+   "sean_clef": "C",
+   "sean_fifths": -3,
+   "plate": "litolff",
+   "staff": "staff/8/1/8",
+   "bucket": "key K3",
+   "ours": {
+    "key_fill_fifths": -3,
+    "key_cause": "K3"
+   },
+   "key_fill_right": true,
+   "clef_fill_right": null
+  }
+ },
+ "score": {
+  "key_fill_right": 11,
+  "key_fill_judged": 11,
+  "clef_fill_right": "2/2 (tile 2 bass = F clef; tile 6 alto = C clef; Sean named the clef family, not alto vs tenor)",
+  "unjudged": {
+   "11": "Sean: probably 3 flats but the tile cuts the key signature off -- a tile fault (a tile must show everything its answer needs)"
+  }
+ }
+}

@@ -14,8 +14,9 @@ the block says what it counted) and one more -- Litolff 1,2; Brahms 0,4.
 WHAT IT PRINTS, per plate (every number comes from the export's own REPORT, `report["conservation"]`, `report["balance"]`):
   read by ADJUDICATE (heads + rests) -- the denominator; written plain; written GUESSED (blue); INSIDE a red bar (counted
   written by the balance, listed by bar so it can be found); inside a partial-bar gap and inside a held bar (counted not
-  written, listed by bar); not written by named reason, largest first; UNACCOUNTED (must be 0); and the ink never boxed,
-  which no count here can see (`--ink` runs `claim_readout` on the same slice; otherwise "not measured").
+  written, listed by bar); not written by named reason, largest first; UNACCOUNTED (must be 0); and, with `--ink`, THE INK NUMBER
+  (ROADMAP 2.293, `claim_readout ink` on the same slice): every dark pixel of the pages is one owner / weak only / claimed twice / no owner,
+  summing to 100% (so the two numbers Sean asks for -- notes, and ink -- come from one two-minute command; without `--ink` "not measured").
 
 THE INVARIANT (`check`): every read head/rest is exactly one of written, in a marked bar, or not written under a NAMED
 reason; no reason is empty or unknown; the places listed add up to their counters; the totals balance. `to_musicxml`
@@ -143,21 +144,26 @@ def block(plate: str, pages: Sequence[int], out: Dict[str, Any], ink: Optional[s
         L.append("           0  -")
     L.append("  UNACCOUNTED (must be 0)                 %6d" % unacc)
     L.append("  places located (bars add up to counters)  %s" % ("yes" if c["located"] else "NO"))
-    L.append("  ink never boxed: outside this count     %s" % (ink or "not measured (--ink runs claim_readout on this slice)"))
+    L.append("  ink: every dark pixel, one of four lines  %s" % (ink or "not measured (--ink runs `claim_readout ink` on this slice)"))
     problems = check(rep)
     L.append("  invariant: %s" % ("HOLDS" if not problems else "FAILS -- " + "; ".join(problems)))
     return "\n".join(L)
 
 
 def ink_line(plate: str, pages: Sequence[int], tag: str) -> str:
-    """The plate's unclaimed-ink share from `claim_readout` on the same slice; never a guess."""
+    """The plate's INK number from `claim_readout ink` on the same slice (ROADMAP 2.293: one owner / weak only / claimed twice / no owner, of ALL the
+    pages' dark pixels; replaces the old "unclaimed/debris bucket"). Never a guess: a failed measure is "not measured"."""
     try:
         from . import claim_readout as CR
-        rep = CR.run("%s:%s" % (plate, tag), list(pages), truth=None, tiles=None, out=None, log=lambda *_: None)
-        tot = rep["total"]
-        sp = tot["state_px"]
-        unc = sum(v for k, v in sp.items() if k.startswith(("unclaimed", "refused", "residue", "weak_claim", "debris", "outside_cells")))
-        return "%d of %d ink px in claim_readout's unclaimed/debris bucket (%.1f%%; ink, not a note count), pages %s" % (unc, tot["ink_px"], 100.0 * unc / max(1, tot["ink_px"]), list(pages))
+        rep = CR.run_ink("%s:%s" % (plate, tag), list(pages), log=lambda *_: None)
+        t = rep["total"]
+        L, tot = t["lines"], max(1, t["ink_px"])
+        staff = t["one"]["by_kind"].get("staff_line", 0)
+        links = "page-ledger links %d of %d strokes" % (t["links_filed"], t["strokes_filed"]) if t["links_filed"] else "NO page-ledger links in this slice (a gather before 2.284)"
+        return ("one owner %.1f%% (%.1f%% of the non-staff ink; page-wide claims hold %.1f%% of all the ink, cell boxes the rest) / weak only %.1f%% / claimed twice %.1f%% / "
+                "no owner %.1f%%, of %d dark px, pages %s, slice %s, %s (ink, not a note count)" % (
+                    100.0 * L["one"] / tot, 100.0 * (L["one"] - staff) / max(1, tot - staff), 100.0 * t["one"]["ledger_px"] / tot, 100.0 * L["weak"] / tot,
+                    100.0 * L["twice"] / tot, 100.0 * L["none"] / tot, t["ink_px"], list(pages), tag, links))
     except Exception as e:           # a failed measure is "not measured", never a number
         return "not measured (%s: %s)" % (type(e).__name__, str(e)[:80])
 

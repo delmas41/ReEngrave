@@ -298,6 +298,16 @@ machine-readable form.
   half note's hole is a thin slanted sliver, so a centre window reads mostly
   ink (ROADMAP 2.70).
 
+- **Where a mark crosses a staff line, the crossing ink is the MARK's** (Sean, 2026-11-10:
+  *"In reality, those cross sections function as a member of both. But because the staff lines
+  are so consistent, it doesn't really matter that they claim it. It does matter that it's
+  claimed for the symbols, because that helps us distinguish what those symbols actually look
+  like."*; scope: general -- every mark that crosses a line: clef, key and meter signs,
+  noteheads, stems, rests, accidentals, arcs). A staff line is still read as ONE continuous
+  line (it is consistent enough to need no claim on the crossings); in the ink account and in
+  the labelling tool the crossing pixels are counted for the mark, never for the staff, and
+  never as claimed twice. Shape readers see a mark WITH its crossings (ROADMAP 2.293).
+
 ## 4. Identity: which instrument is on which staff
 
 - **The label lexicon** (`instruments.py`): aliases are GLOBAL, so a widening
