@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **548 rule exits** are sorted (591 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 56 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **170 OTHER** (D), **75 UNSURE** (U).
+1. **551 rule exits** are sorted (595 declared reasons on 63 decisions, less 67 positive exits and 63 stubs, plus 28 EVALUATE/INFER/post-pass rules and 58 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **171 OTHER** (D), **77 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **75 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **77 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -197,11 +197,12 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_clef`: `sc
 | an arc belongs to the staff whose heads it hugs | A | an arc is over its notes, and the staff it hugs owns it | `adjudicate_arc_owner` (ownership): `hugs_noteheads`, `no_better_staff`, `no_rival_staff`, `ends_on_noteheads` | 2,644 / 14,814 | 1,330 / 4,630 | page-facts s1; ROADMAP arc attribution | kept |
 | - | D:honesty | - | `adjudicate_arc_owner` (ownership): `no_page_frame`, `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a tie joins adjacent same-pitch heads | A | nothing between the heads in time, same staff position | `adjudicate_tie_pair` (ownership): `more_than_one_pair`, `no_start_head`, `no_stop_head`, `no_head_near_the_arc`, `spans_a_whole_bar`, `no_pair_at_one_position`, `not_adjacent` | 528 / 1,973 | 275 / 605 | Sean 2026-10-01 (page-facts s1) | kept |
+| no run a detector box agrees with | D:honesty | a run with no witnessing box is not written in step 2 | `adjudicate_page_arc_binding` (ownership): `no_witnessed_run` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a tie may cross a system break | A | the other end is on the next / previous system | `adjudicate_tie_pair` (ownership): `enters_from_previous_system`, `runs_off_the_system` | 104 / 378 | 48 / 102 | page-facts s1 | kept |
 | arc is a slur or not an arc | D:bookkeeping | the domain is every arc (`not_an_arc` includes staff-line boxes) | `adjudicate_tie_pair` (ownership): `not_a_tie`, `not_an_arc` | 1,529 / 10,477 | 742 / 3,386 | - | kept |
 | - | D:honesty | - | `adjudicate_tie_pair` (ownership): `no_page_frame`, `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 
-Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not_an_arc`: `arc` (2,141 / 6,864); `adjudicate_arc_kind`: `tie`, `slur` (2,637 / 14,761); `adjudicate_tie_pair`: `paired`, `paired_by_system_arc`, `paired_by_page_binding` (483 / 1,986).
+Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not_an_arc`: `arc` (2,141 / 6,864); `adjudicate_arc_kind`: `tie`, `slur` (2,637 / 14,761); `adjudicate_tie_pair`: `paired`, `paired_by_system_arc`, `paired_by_page_binding` (483 / 1,986); `adjudicate_page_arc_binding`: `bound`, `none_bound` (0 / 0).
 
 ## Dots
 
@@ -357,6 +358,8 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `one_ink.py` | C | ONE INK, ONE MARK: two classes of one family on one ink merge, the stronger stays, the weaker is a candidate | Sean 2026-10-22, 2.186 tiles 6/9 vs 1/9 | landed 2.186 |
 | `one_note.py` | D:infer | the one-note correction: a bar holding one event takes the value that fills it (blue) | Sean 2026-10-17/18 (CLAUDE s4 exceptions) | kept |
 | `page_accidental_ink.py` | U | NOT YET CLASSIFIED | - | open |
+| `page_arc_bind.py` | U | NOT YET CLASSIFIED | - | open |
+| `page_arcs.py` | U | NOT YET CLASSIFIED | - | open |
 | `page_beams.py` | C | the page beam reader: roles, joined stems and tip levels of the PAGE stroke map's strokes (beam_strokes cut-offs, no raster), each beam read once and filed once; records, decides nothing | Sean 2026-11-04 (2.260c M4a) | open: M4b-d read it |
 | `page_claim_names.py` | A | CLAUDE s3 claim order: every page-wide claim (barline, bracket, clef, key, meter, word, hairpin) names the PAGE strokes it owns, once, first claim wins, so a later reader on the page map takes none of their ink; the register's own predicates on page-stroke boxes, no raster | Sean 2026-10-28/29 (claim order), 2026-11-04 (2.269 "read and claim once") | open: page_beams reads it; M4b-d |
 | `page_heads.py` | U | NOT YET CLASSIFIED | - | open |
@@ -420,6 +423,8 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`head_ink.py`**: not classified.
 - **`key_header_ink.py`**: not classified.
 - **`page_accidental_ink.py`**: not classified.
+- **`page_arc_bind.py`**: not classified.
+- **`page_arcs.py`**: not classified.
 - **`page_heads.py`**: not classified.
 - **`page_ledger.py`**: not classified.
 - **`page_tremolo.py`**: not classified.
