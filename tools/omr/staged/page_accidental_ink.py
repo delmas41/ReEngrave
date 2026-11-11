@@ -207,10 +207,12 @@ def left_of_header(box: Sequence[float], header: Sequence[Sequence[float]]) -> b
 
 def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], held: Sequence[Sequence[float]],
               reads: Sequence[Sequence[float]] = (), held_ids: Sequence[int] = (), rests: Sequence[Sequence[float]] = (),
-              header: Sequence[Sequence[float]] = ()) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+              header: Sequence[Sequence[float]] = (), held_by: Optional[Dict[int, str]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The finder over every vertical stroke of the page (module doc). Returns the clusters that pass (each `{members, box, type, why, margin, standing, head,
     candidates, fam}`) and the refusal-reason counts. Pure: strokes in, dicts out. `rests`: the detector's rest boxes (an earlier read, counted apart: `rest_box`);
-    `header`: the system-start header claims' rectangles (`left_of_the_clef`)."""
+    `header`: the system-start header claims' rectangles (`left_of_the_clef`).
+    `held_by` (ROADMAP 2.288): `{stroke ordinal: owner}` of the ledger's page-stroke claims; where given, a seed stroke the LEDGER holds is counted `claimed_by:<owner>` (the one consult's
+    own words) instead of passing silently, and `rests` is expected EMPTY (a read rest is a ledger claim now, not a private list)."""
     from . import accidental_family as AF
     blocked = set(real_head_strokes(strokes, heads, boxed, sp))
     held_set = held_strokes(strokes, held, boxed, reads) | {int(i) for i in held_ids}
@@ -226,6 +228,8 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
         if s.kind != "vertical" or not (AF.STEM_MIN_SP <= float(s.length_sp) <= AF.STEM_MAX_SP):
             continue
         if i in held_set or i in blocked:
+            if held_by is not None and i in held_by and i not in blocked:
+                count("claimed_by:" + held_by[i])
             continue
         if i in rest_held:
             count("rest_box")             # a rest the detector boxed stands on this stroke: an earlier read of the ink, never taken (a quarter rest is a stem and a curl)
@@ -342,6 +346,22 @@ def earlier_claims(log: Any, page_sub: Any) -> Tuple[List[Tuple[float, float, fl
     return rects, ids
 
 
+def earlier_owners(log: Any, page_sub: Any) -> Dict[int, str]:
+    """`{page stroke ordinal: owner}` for the page strokes the ledger's earlier claims name (`earlier_claims`' second answer, with the owner kept so the consult can say
+    `claimed_by:<owner>`). The first claim on a stroke keeps it. This reader's own rows are not read back."""
+    from .record import Q, Scope
+    out: Dict[int, str] = {}
+    for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=Scope.SELF_AND_DESCENDANTS):
+        d = r.detail or {}
+        owner = str(d.get("owner") or "")
+        if owner == OWNER:
+            continue
+        for o in d.get("page_strokes") or ():
+            if isinstance(o, int):
+                out.setdefault(int(o), owner)
+    return out
+
+
 def header_claims(log: Any, page_sub: Any) -> List[Tuple[float, float, float, float]]:
     """The rectangles of the system-start header claims the page-wide pass filed (`HEADER_OWNERS`, READ, `unit: area`, cell 0): the page ledger's own rows, the one place the
     system's left edge is claimed. A clef change (cell > 0) is not one."""
@@ -432,7 +452,13 @@ def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: 
     sub = R.page(p)
     heads, boxed, reads, rests = _detector_reads(cells, local, detections)
     rects, ids = earlier_claims(log, sub)
-    found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids, rests, header_claims(log, sub))
+    from . import page_claim_names as _PCN
+    if _PCN.rests_enabled():
+        # ROADMAP 2.288: a rest that stands READ is a claim on the ledger (`page_claim_names.gather_page_claim_boxes`, before this reader) and the ledger consult above refuses its
+        # ink; the private list of detector rest boxes (2.285 r2) is NOT consulted (a weak rest box blocks nobody, by rule: only a READ rest claims)
+        found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids, (), header_claims(log, sub), earlier_owners(log, sub))
+    else:
+        found, reasons = read_page(pm.strokes, float(pm.sp), heads, boxed, rects, reads, ids, rests, header_claims(log, sub))
     if not file:
         return found, reasons
     glyphs = file_own_accidentals(log, found, cells, local)
