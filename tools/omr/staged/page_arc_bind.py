@@ -56,7 +56,7 @@ GAP_SPLIT_SP = 2.0
 #: (cause d, FINDINGS) the end stands more than this many spaces on the arc's own side of the head it bound to (Litolff p4 runs 1, 12, 20, 99: the head nearest the ink was never boxed and
 #: the bound one stood 4.5-5.2 spaces off). A stem is 3.5 spaces long (Gould; `arc_claim.TIP_MAX_SPACES` 4.5): beyond 3 a stem tip does not reach it. NOT CONFIRMED beyond the develop pages;
 #: it only ever DECLINES a binding.
-END_BEYOND_HEAD_SPACES = 3.0
+END_BEYOND_HEAD_SPACES = 2.0          # arcs-r2 fix 3: 3.0 -> 2.0 (r2 "what would move it" (ii); a cup's end beside its head sits within ~1.5; Brahms p20 run 18 stands 2.5 below). Only declines.
 #: (cause d, FINDINGS) the ink of an arc often ends PAST its note's centre (on the head's far edge, a stem): Brahms p5 runs 14 and 86 ended 1.1 spaces past the centre of the head they belong to, outside
 #: 2.166's 0.8-space look-behind, so the binder took the next head 6.5-7.1 spaces on. A head up to this far behind the end is a candidate; the closest by distance still wins.
 HEAD_BEHIND_END_SPACES = 1.6
@@ -64,6 +64,14 @@ HEAD_BEHIND_END_SPACES = 1.6
 INNER_MEMBER_DY_SPACES = 1.2
 #: a stretch of tracked ink shorter than this (spaces of x) between a bridge and the run's end is a TAIL, not an arc: dropped. Two longer stretches are two arcs (each bound alone).
 MIN_PIECE_SP = 3.0
+#: arcs-r2 fix 2 (an end binds only a head the ink REACHES): an arc's end stands beside its note; a stem is 3.5 spaces (Gould) and `arc_claim.TIP_MAX_SPACES` 4.5. A head farther than this from the end
+#: (measured on the 1552 written ends of the ten pages: 99% stand within 4.02) means the head the ink really ends at was never boxed (Litolff p13 run 80: 6.49; Brahms p11 run 3: 83). The end is
+#: `end_far_from_head` (UNREAD, the old path keeps its arc). A number that only ever DECLINES a binding (CLAUDE 4: a cut-off tuned on two plates may only narrow).
+END_REACH_SPACES = 4.0
+#: arcs-r2 fix 1 (an end binds where the ink is): a head in the END'S OWN BAR (the cell its ink end stands in) up to this far behind the end is a candidate beside the closest head outward across a
+#: barline; two columns about equally near then abstain (`two_columns_at_end`, the binder's own margin) instead of the outward head silently winning (Litolff p5 run 104: the chord before the barline
+#: 1.44 sp out, the half note the ink starts over 1.8 behind). It only ever adds a rival, so it can only turn a binding into an abstention or leave it. (2.166's `ANCHOR_OUT_SPACES`, no new number.)
+OWN_BAR_BEHIND_SPACES = 2.5
 
 
 def pieces_of(detail: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
@@ -110,7 +118,7 @@ def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, An
             "trace": [[float(x), float(y) - half, float(y) + half] for x, y in pts]}
 
 
-def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]]):
+def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Optional[Dict[Any, Tuple[float, float]]] = None):
     """The `binder` `ownership._page_binding(page_run=...)` takes. Each end binds to the CLOSEST usable head (`arc_claim.bind_end(closest_only=True)`, 2.271's rule with no window: a run's end
     can stand a little PAST its note: heads up to 2.166's own `ANCHOR_IN_SPACES` behind the end are candidates too), refusing the half of an arc (`others`: the facing
     ends of the staff's other runs) and two columns about equally near. An end with NO usable head ahead of it anywhere on the staff (the 2.223 window's own edge test) is the
@@ -126,8 +134,22 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]]):
             if not any((h["cx"] - ex) * sgn > -HEAD_BEHIND_END_SPACES * sp and (usable is None or usable(h["key"])) for h in heads):
                 b[s_] = {"edge": True}
                 continue
-            b[s_] = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, side, usable, end_pitch, True, others.get(s_), closest_only=True,
-                                behind_spaces=HEAD_BEHIND_END_SPACES)
+            usable_ = usable
+            behind_ = HEAD_BEHIND_END_SPACES
+            if cells:
+                # arcs-r2 fix 1: heads of the end's own bar join the candidates up to OWN_BAR_BEHIND_SPACES behind it; every other head keeps the 1.6 look-behind
+                own = next((c for c, (cx0, cx1) in cells.items() if cx0 <= ex <= cx1), None)
+                if own is not None:
+                    behind_ = max(HEAD_BEHIND_END_SPACES, OWN_BAR_BEHIND_SPACES)
+                    by_key = {h["key"]: h for h in heads}
+
+                    def usable_(k, _u=usable, _own=own, _sgn=sgn, _ex=ex, _by=by_key):
+                        h = _by.get(k)
+                        if h is not None and (h["cx"] - _ex) * _sgn < -HEAD_BEHIND_END_SPACES * sp and h.get("cell") != _own:
+                            return False
+                        return _u is None or _u(k)
+            b[s_] = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, side, usable_, end_pitch, True, others.get(s_), closest_only=True,
+                                behind_spaces=behind_)
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
             if hd is not None:
                 ey = float(d[yk])
@@ -153,6 +175,9 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]]):
                             b[s_] = {"unbound": "chord_member_unclear", "candidates": [h["key"] for h in col_], "margin_spaces": round(INNER_MEMBER_DY_SPACES - abs(hd["cy"] - ey) / sp, 3)}
                             continue
                 out_by = (hd["cx"] - ex) * sgn
+                if out_by > END_REACH_SPACES * sp:
+                    b[s_] = {"unbound": "end_far_from_head", "candidates": [hd["key"]], "margin_spaces": round(END_REACH_SPACES - out_by / sp, 3)}
+                    continue
                 b[s_]["out_by_spaces"] = round(out_by / sp, 2)          # round 2 (cause d): how far past the ink's own end the bound head stands (negative: behind it)
                 # round 2 (cause d): the end stands far on the arc's own side of the head it bound to: a nearer head was never boxed (or is another member). An arc's end sits beside its note;
                 # a stem's tip (the 2.75 rule) is a candidate in its own right and is exempt.

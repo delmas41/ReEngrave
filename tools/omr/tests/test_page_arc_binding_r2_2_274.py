@@ -111,9 +111,34 @@ class TestAHeadJustBehindTheEnd(unittest.TestCase):
 
     def test_a_head_three_spaces_behind_is_not_a_candidate(self):
         d = _detail(0, 100, 130, 100, sag=-15.0)          # 3 spaces past b: b is not the end's note
-        heads = [_h("a", -2, 108), _h("b", 100, 108), _h("far", 190, 108)]
+        heads = [_h("a", -2, 108), _h("b", 100, 108), _h("far", 160, 108)]
         b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
         self.assertEqual(b["right"]["head"], "far")
+
+    def test_arcs_r2_a_head_beyond_the_reach_is_not_bound(self):
+        """arcs-r2 fix 2: the only head ahead stands 6 spaces from the end (Litolff p13 run 80 shape): UNREAD, never a pick."""
+        d = _detail(0, 100, 130, 100, sag=-15.0)
+        heads = [_h("a", -2, 108), _h("far", 190, 108)]
+        b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
+        self.assertEqual(b["right"].get("unbound"), "end_far_from_head")
+
+    def test_arcs_r2_mirror_a_head_inside_the_reach_binds(self):
+        d = _detail(0, 100, 130, 100, sag=-15.0)
+        heads = [_h("a", -2, 108), _h("near", 150, 108)]
+        b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
+        self.assertEqual(b["right"]["head"], "near")
+
+    def test_arcs_r2_barline_ambiguity_abstains(self):
+        """arcs-r2 fix 1 (Litolff p5 run 104 shape): the ink starts after a barline; the chord before it stands 1.4 sp out, the note the ink starts over 1.8 behind in the end's own bar: two
+        columns about equally near -> abstain. Mirror: with no own-bar note behind, the outward head still binds (a tie across a barline)."""
+        d = _detail(0, 100, 130, 100, sag=-15.0)
+        d["x_left_page"] = 100.0
+        heads = [dict(_h("before", 86, 108), cell=0), dict(_h("inside", 118, 108), cell=1), _h("r", 130, 108)]
+        cells = {0: (0.0, 96.0), 1: (96.0, 200.0)}
+        b = PB.closest_binder({"left": [], "right": []}, cells)(heads, SP, None, True, None, d)
+        self.assertEqual(b["left"].get("unbound"), "two_columns_at_end")
+        b2 = PB.closest_binder({"left": [], "right": []}, cells)([dict(_h("before", 86, 108), cell=0)] + heads[2:], SP, None, True, None, d)
+        self.assertEqual(b2["left"].get("head"), "before")
 
 
 if __name__ == "__main__":

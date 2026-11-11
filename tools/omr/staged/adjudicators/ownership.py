@@ -6435,6 +6435,11 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         if owners and len(set(owners)) == 1:
             home = owners[0]
             entry["home_from"] = "witness_owner"
+            if home != own_row:
+                # arcs-r2 fix 4 (the staff is where the INK lies): the run's own staff (nearest the run's middle) and the witnessing box's owner disagree. The ink decides; the owner is only a
+                # second witness, so the heads of the owner's staff are NOT bound (Brahms p18 run 7, Litolff p15 run 30: ink on one staff, heads bound on its neighbour). UNREAD: the old path keeps its arc.
+                entry.update(status=PB.ABSTAINED, why="staff_ink_vs_owner", home=home, ink_staff=own_row)
+                continue
         else:
             home = own_row
             entry["home_from"] = "run_staff" if not owners else "witnesses_disagree"
@@ -6443,7 +6448,11 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         if d is None:
             entry.update(status=PB.ABSTAINED, why="no_ends")
             continue
-        binder = PB.closest_binder(PB.facing_ends(peers, i, st))
+        cells_ = {}
+        for crow in ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=R.Subject.from_key(home)):
+            if isinstance(crow.value, (list, tuple)) and len(crow.value) == 4:
+                cells_[crow.subject.cell or 0] = (float(crow.value[0]), float(crow.value[2]))
+        binder = PB.closest_binder(PB.facing_ends(peers, i, st), cells_)
         b = _page_binding(ev, None, page_run=(d, home, "page_arc/%s" % r.id, r.id,
                                               lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
         entry["left"], entry["right"] = b.get("left"), b.get("right")

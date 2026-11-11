@@ -96,8 +96,8 @@ class TestClosestNote(unittest.TestCase):
 
     def test_the_half_of_an_arc_leaves_the_end_unbound(self):
         d = _detail(0, 100, 100, 100)
-        heads = [_h("a", -5, 108), _h("far", 190, 108)]
-        # another run of the staff BEGINS 2 px past this one's right end, nearer than the closest head (90 px away)
+        heads = [_h("a", -5, 108), _h("far", 135, 108)]          # arcs-r2: 3.5 spaces out (inside the 4-space reach)
+        # another run of the staff BEGINS 2 px past this one's right end, nearer than the closest head (35 px away)
         b = PB.closest_binder({"left": [], "right": [(104.0, 100.0)]})(heads, SP, None, True, None, d)
         self.assertEqual(b["right"].get("unbound"), "continues_in_another_curve")
         b2 = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)          # the twin: nothing begins there
