@@ -78,3 +78,28 @@ def test_flag_off_groups_are_untouched():
     best2 = {"mg/2/0/245": (0.4016, "glyph/2/0/9/6/1")}
     E._settle_folded_pitches(_Rec(members), q2, best2)
     assert best2["mg/2/0/245"][1] == "glyph/2/0/9/6/1" and not any(q[5].get("guess") for q in q2)
+
+
+def test_a_tie_stop_keeps_an_accidental_owned_by_the_other_box_of_its_fold():
+    """The accidental of a fold's head may be owned by the box the one-mark-one-note rule did not write: the tie carry (page-facts) must not overwrite it."""
+    gid = "mg/9/9/9"
+    members = {"glyph/1/0/0/0/1": gid, "glyph/1/0/0/0/2": gid, "glyph/1/0/1/0/1": gid}   # the last stands on another staff
+
+    verdict = {"outcome": "decided", "value": "glyph/1/0/0/0/2", "subject": "acc/1"}
+
+    class Rec:
+        def obs(self, q, sub):
+            return [{"value": members[sub]}] if sub in members else []
+
+        def obs_of(self, q):
+            return [{"subject": k, "value": v} for k, v in members.items()]
+
+        def verdicts_of(self, q):
+            return [verdict]
+
+        def verdict(self, q, subject):
+            return verdict
+    rec = Rec()
+    assert E._has_printed_accidental(rec, "glyph/1/0/0/0/1") is False
+    assert E._fold_has_printed_accidental(rec, "glyph/1/0/0/0/1") is True            # the sibling box on the same staff owns it
+    assert E._fold_has_printed_accidental(rec, "glyph/1/0/1/0/1") is False           # the copy on another staff is another staff's note

@@ -2843,6 +2843,22 @@ def _has_printed_accidental(rec: Record, head: str) -> bool:
     return False
 
 
+def _fold_has_printed_accidental(rec: Record, head: str) -> bool:
+    """`_has_printed_accidental` for ANY box of `head`'s page head on its own staff (ROADMAP 2.290 r4: the one identity writes one of a fold's boxes; the accidental
+    may be owned by the box that was not written)."""
+    if _has_printed_accidental(rec, head):
+        return True
+    rows = rec.obs(Q.MARK_GROUP, head)
+    if not rows:
+        return False
+    gid = rows[-1].get("value")
+    for o in rec.obs_of(Q.MARK_GROUP):
+        m = str(o["subject"])
+        if o.get("value") == gid and m != head and m.split("/")[1:4] == str(head).split("/")[1:4] and _has_printed_accidental(rec, m):
+            return True
+    return False
+
+
 def _tie_end_unsure(rec: Record, start: str, stop: str) -> List[Dict[str, Any]]:
     """ROADMAP 2.252 r6: which end of a refused tie has an unsure position -- `[{end, why, ...}]`. A far head whose ledger count was not
     DECIDED (`Q.NOTEHEAD_POSITION` filed and not decided: the written pitch is the box's extrapolation), or a head whose own single hole
@@ -2922,7 +2938,7 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
         p0, p1 = first.get("pitch"), last.get("pitch")
         if (p0 != p1 and rec is not None and tie_carry_enabled() and sm != tm and p0 and p1
                 and _legacy._pitch_step(p0) == _legacy._pitch_step(p1)
-                and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)):
+                and str(p0)[-1:] == str(p1)[-1:] and not _fold_has_printed_accidental(rec, stop)):
             # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default ON; page-facts, Sean 2026-10-30, general: "A tie carries an
             # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
             # start's pitch; counted, and the stop's own reading kept on the note.
