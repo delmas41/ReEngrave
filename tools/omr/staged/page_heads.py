@@ -493,9 +493,14 @@ ONE_OWNER = "head"
 HEAD_INK_MIN_SP2 = 0.1
 #: two boxes share a head when the pixels they share are at least this share of the smaller one's head ink (the register's one cut, `page_marks.SHARE_MIN`)
 SHARE_MIN = 0.5
-#: ... and the centres of their head ink lie inside one oval (staff spaces): across, half a head's width (~1.3 sp); along, under one step (0.5 sp)
+#: ... and the centres of their head ink lie inside one oval (staff spaces): across, half a head's width (~1.3 sp); along, under a THIRD (1 sp). A
+#: convention, not a cut tuned here: on one side of a stem two heads stand at least a third apart -- a second's two heads stand EITHER side of the
+#: stem (page-facts), so they differ across by a head's width -- and nothing is printed a step apart at one x. Round 1 had 0.4 (half a step): 6 heads
+#: on Litolff p2/p8/p11 were written TWICE at one pitch (twin boxes 0.45-0.6 sp apart by their clipped ink).
 OVAL_DX_SP = 0.65
-OVAL_DY_SP = 0.4
+OVAL_DY_SP = 0.75
+#: two boxes on one head-sized stroke are one head unless their ink centres stand a third apart (then the stroke holds two heads' pieces)
+ANCHOR_MAX_DY_SP = 0.9
 #: a horizontal piece at least this wide and this flat is a beam piece, not head ink (2.284 r7's bar test, `rhythm._head_owned_bar`)
 BEAM_MIN_W_SP = 1.8
 BEAM_MIN_ASPECT = 2.5
@@ -560,7 +565,7 @@ def same_head(a: Dict[str, Any], b: Dict[str, Any], shared_px: float, sp: float)
         return "no_shared_ink"
     if shared_px < SHARE_MIN * min(a["ink_px"], b["ink_px"]):
         return "share_below"
-    if one_head_stroke(a, b):
+    if one_head_stroke(a, b) and abs(a["cy"] - b["cy"]) < ANCHOR_MAX_DY_SP * sp:
         return None
     if abs(a["cx"] - b["cx"]) > OVAL_DX_SP * sp or abs(a["cy"] - b["cy"]) > OVAL_DY_SP * sp:
         return "two_ovals"
@@ -595,7 +600,7 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
     comp: Dict[int, List[int]] = {i: [i] for i in range(len(items))}
 
     def one_oval(x: int, y: int) -> bool:
-        if one_head_stroke(items[x], items[y]):
+        if one_head_stroke(items[x], items[y]) and abs(items[x]["cy"] - items[y]["cy"]) < ANCHOR_MAX_DY_SP * sp:
             return True
         return abs(items[x]["cx"] - items[y]["cx"]) <= OVAL_DX_SP * sp and abs(items[x]["cy"] - items[y]["cy"]) <= OVAL_DY_SP * sp
     for members in buckets.values():

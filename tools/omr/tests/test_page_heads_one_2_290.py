@@ -54,12 +54,16 @@ def test_same_head_rules():
 def test_a_head_sized_stroke_is_one_head_wherever_each_box_was_drawn():
     # Litolff p11 glyph/11/0/3/16/1 + /2 (round 1): one box drawn ~0.7 sp off the head; the ink each CLIPS is off-centre (dy 0.52 sp)
     a = dict(_it(10, 10), anchor=7, anchor_head=True)
-    b = dict(_it(10.1, 10.6), anchor=7, anchor_head=True)
+    b = dict(_it(10.1, 10.85), anchor=7, anchor_head=True)
     assert PH.same_head(a, b, 80, SP) is None
     # a stroke bigger than a head (fused chord) keeps the oval test
     assert PH.same_head(dict(a, anchor_head=False), dict(b, anchor_head=False), 80, SP) == "two_ovals"
     # two strokes: the oval test
     assert PH.same_head(a, dict(b, anchor=8), 80, SP) == "two_ovals"
+    # a third apart on one head-sized stroke: two heads' pieces, never joined
+    assert PH.same_head(a, dict(b, cy=11.0 * SP), 80, SP) == "two_ovals"
+    # one x, half a step apart: nothing is printed a step apart on one side of a stem -> one head (round 1's same-pitch doubles)
+    assert PH.same_head(a, _it(10.02, 10.5), 80, SP) is None
 
 
 def test_no_ink_boxes_twin_each_other():
