@@ -191,7 +191,9 @@ def static_wiring(staged_dir: Optional[Any] = None) -> List[Dict[str, str]]:
     if cf.exists():
         mm = re.search(r"MARK_ONLY\s*=\s*frozenset\(\{([^}]*)\}\)", cf.read_text())
         mark_only = {x.strip().strip("\"'") for x in (mm.group(1) if mm else "").split(",") if x.strip()}
-    generic = {rd: "_claim_final.finding(" in (root / rel).read_text() for rd, rel in CONSUMER_DECIDERS.items()}
+    # the generic consult is `claim_final.finding` or the ONE consult that returns its finding (`ink_consult.consult`, 2.284 r5; ROADMAP 2.290 landing deleted
+    # the head decider's direct `finding` call, its flag-OFF branch)
+    generic = {rd: any(c in (root / rel).read_text() for c in ("_claim_final.finding(", "_ink_consult.consult(")) for rd, rel in CONSUMER_DECIDERS.items()}
     out: List[Dict[str, str]] = []
     # a claim LAYER in `claim_order.LAYERS` (before the heads) whose rows no consumer reads: the stroke owner has no generic path and the family is neither a tier-0
     # owner nor a box family it already reads. (2.276's `tremolo` is such a layer on a tree without `_layer_claims`.)

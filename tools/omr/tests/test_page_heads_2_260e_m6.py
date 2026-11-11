@@ -1,40 +1,11 @@
-"""ROADMAP 2.260e M6: the page head list's pure core on SYNTHETIC boxes (no raster): the fold (a planted double box is ONE head; two heads a second apart or a
-unison side by side are TWO), the ledger-read trigger (tile 9: box 9.38 rounds 9, ink near 10 -> asked), and the claim order (an earlier owner's stroke is
-contested, never taken; the same owner twice is a twin)."""
+"""ROADMAP 2.260e M6b's surviving pure core (the far-head ledger-read trigger and the half-step position) and the M6b head list built on the ONE identity.
+ROADMAP 2.290 landing deleted M6a's IoU fold, its `Q.PAGE_HEAD` rows and claims (`file_page_heads`, `head_claims`) and M6c (`OMR_PAGE_HEADS`,
+`OMR_PAGE_HEAD_CLAIM`): the one identity and the one claim are `test_page_heads_one_2_290.py`'s."""
 import unittest
 
 from tools.omr.staged import page_heads as PH
 
 HEAD = (100.0, 200.0, 120.0, 215.0)          # a head 20 x 15 px
-
-
-def shifted(b, dx=0.0, dy=0.0):
-    return (b[0] + dx, b[1] + dy, b[2] + dx, b[3] + dy)
-
-
-class Fold(unittest.TestCase):
-    def test_a_planted_double_box_folds_to_one_head(self):
-        g = PH.fold([HEAD, shifted(HEAD, 1, 2)], [0, 0])
-        self.assertEqual(g, [[0, 1]])
-
-    def test_twin_in_a_neighbour_cell_folds_but_needs_the_same_staff(self):
-        self.assertEqual(PH.fold([HEAD, shifted(HEAD, 1, 1)], [0, 1]), [[0], [1]])
-
-    def test_a_second_apart_is_two_heads(self):
-        # opposite sides of a stem: one head width across, half a space (7 px) down
-        g = PH.fold([HEAD, shifted(HEAD, 21, 7)], [0, 0])
-        self.assertEqual(g, [[0], [1]])
-
-    def test_a_unison_side_by_side_is_two_heads(self):
-        self.assertEqual(PH.fold([HEAD, shifted(HEAD, 20, 0)], [0, 0]), [[0], [1]])
-
-    def test_the_control_can_fail(self):
-        # a threshold of 0.0 folds the second-apart pair too: the fold is the IoU cut, nothing else
-        self.assertEqual(PH.fold([HEAD, shifted(HEAD, 10, 7)], [0, 0], min_iou=0.0), [[0, 1]])
-        self.assertEqual(PH.fold([HEAD, shifted(HEAD, 10, 7)], [0, 0]), [[0], [1]])
-
-    def test_chain_of_three_boxes_is_one_head(self):
-        self.assertEqual(PH.fold([HEAD, shifted(HEAD, 3, 0), shifted(HEAD, 6, 0)], [0, 0, 0]), [[0, 1, 2]])
 
 
 class Trigger(unittest.TestCase):
@@ -65,43 +36,28 @@ class Positions(unittest.TestCase):
         self.assertAlmostEqual(PH.position_of(100.0 + 10 * 7.0, 100.0, 7.0), 10.0)
 
 
-class Claims(unittest.TestCase):
-    def test_an_earlier_owner_holds_a_stroke_and_the_head_is_contested_not_given_it(self):
-        ph = PH.PageHeads()
-        ph.heads = [dict(ordinal=0, blob_strokes=[5, 6], rung_strokes=[9], members=["g0"])]
-        got = PH.head_claims(ph, None, held={6: "word"})
-        head = [c for c in got if c["owner"] == "head"][0]
-        self.assertEqual(head["won"], [5])
-        self.assertEqual(head["contested"], [[6, "word"]])
+class GroupsFromTheOneIdentity(unittest.TestCase):
+    def test_m6b_groups_are_the_one_identitys(self):
+        one = PH.OneHeads()
+        one.group_of_key = {"g0": 3, "g1": 3, "g2": 4}
+        hb = [dict(key="g0", box=HEAD), dict(key="g1", box=HEAD), dict(key="g2", box=(200.0, 200.0, 220.0, 215.0)), dict(key="g9", box=(300.0, 0, 1, 1))]
+        self.assertEqual(PH._groups_from_one(hb, one), [[0, 1], [2], [3]])
 
-    def test_the_same_owner_twice_is_a_twin_and_a_ledger_stub_is_the_ledgers(self):
-        ph = PH.PageHeads()
-        ph.heads = [dict(ordinal=0, blob_strokes=[5], rung_strokes=[9], members=["g0"]),
-                    dict(ordinal=1, blob_strokes=[5], rung_strokes=[9], members=["g1"])]
-        got = PH.head_claims(ph, None)
-        self.assertEqual([c["owner"] for c in got], ["head", "head", "ledger", "ledger"])
-        self.assertEqual(got[1]["twins"], 1)
-        self.assertEqual(got[1]["contested"], [])
-        self.assertEqual(got[3]["twins"], 1)
-
-    def test_a_stub_a_head_holds_is_contested_for_the_ledger(self):
-        ph = PH.PageHeads()
-        ph.heads = [dict(ordinal=0, blob_strokes=[5], rung_strokes=[5], members=["g0"])]
-        got = PH.head_claims(ph, None)
-        self.assertEqual(got[1]["contested"], [[5, "head"]])
+    def test_without_the_identity_every_box_stands_alone(self):
+        hb = [dict(key="g0", box=HEAD), dict(key="g1", box=HEAD)]
+        self.assertEqual(PH._groups_from_one(hb, None), [[0], [1]])
 
 
 class Flags(unittest.TestCase):
-    def test_off_by_default_and_views_need_the_reader(self):
+    def test_views_off_by_default_and_the_old_flags_are_gone(self):
         import os
         from unittest import mock
         with mock.patch.dict(os.environ, {}, clear=True):
-            self.assertFalse(PH.enabled())
             self.assertFalse(PH.views_enabled())
         with mock.patch.dict(os.environ, {PH.VIEWS_ENV: "1"}, clear=True):
-            self.assertFalse(PH.views_enabled())
-        with mock.patch.dict(os.environ, {PH.ENV: "1", PH.VIEWS_ENV: "1", PH.CLAIM_ENV: "1"}, clear=True):
-            self.assertTrue(PH.views_enabled() and PH.claim_enabled())
+            self.assertTrue(PH.views_enabled())
+        for gone in ("ENV", "CLAIM_ENV", "fold", "FOLD_IOU", "file_page_heads", "head_claims", "claim_enabled", "enabled"):
+            self.assertFalse(hasattr(PH, gone), gone)
 
 
 if __name__ == "__main__":

@@ -965,7 +965,7 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     # ROADMAP 2.260c M4a: no raster of its own (the page map's strokes and the cell stem rows).
     "CV_PAGE_BEAMS": None,
     # ROADMAP 2.260e M6a: the page map's strokes and the PAGE render read once for every head.
-    "CV_PAGE_HEADS": ("staged/page_heads.py", "gather_page_heads"),
+    "CV_PAGE_HEADS": ("staged/page_heads.py", "file_one_claims"),
     # ROADMAP 2.276: the page map's vertical strokes and the PAGE canvas (staff-erased) read once for every slash crossing a stem.
     "CV_PAGE_TREMOLO": ("staged/page_tremolo.py", "gather_page_tremolo"),
     # ROADMAP 2.285: the page map's strokes and the detector's boxes (no raster of its own).

@@ -46,14 +46,9 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 import numpy as np
 
 DERIVED_CHECK = False
-ENV = "OMR_PAGE_HEADS"
 VIEWS_ENV = "OMR_PAGE_HEAD_VIEWS"
-CLAIM_ENV = "OMR_PAGE_HEAD_CLAIM"
-SOURCE = "page_heads"
 UNIT = "page_ink"
 HEAD_PREFIX = "notehead"
-#: two notehead boxes are one head at this IoU (unison / second neighbours are ~0; a double box is >0.5)
-FOLD_IOU = 0.5
 #: the register's one cover cut (`stroke_map.COVER_SHARE_MIN`)
 COVER_SHARE_MIN = 0.5
 #: a head-shaped blob (`stroke_owner` HEAD_*): area at least this (sp^2) and at most this wide / tall (sp)
@@ -71,59 +66,17 @@ RUNG_OUTSIDE_STEPS = 1.5
 STEM_MIN_LEN_SP = 1.5
 
 
-def enabled() -> bool:
-    """`OMR_PAGE_HEADS` (ROADMAP 2.260e M6a), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
-    return os.environ.get(ENV, "0").strip().lower() in ("1", "true", "yes", "on")
-
-
 def _flag(name: str) -> bool:
     return os.environ.get(name, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
 def views_enabled() -> bool:
-    """`OMR_PAGE_HEAD_VIEWS` (M6b), default OFF; needs `OMR_PAGE_HEADS`."""
-    return enabled() and _flag(VIEWS_ENV)
-
-
-def claim_enabled() -> bool:
-    """`OMR_PAGE_HEAD_CLAIM` (M6c), default OFF; needs `OMR_PAGE_HEADS`."""
-    return enabled() and _flag(CLAIM_ENV)
+    """`OMR_PAGE_HEAD_VIEWS` (M6b), default OFF. ROADMAP 2.290 landing: `OMR_PAGE_HEADS` is deleted (its fold is replaced by the one identity, its rows
+    and claims by `file_one_claims`); M6b reads the page head list built ON the one identity, and plan step 3 rewrites it."""
+    return _flag(VIEWS_ENV)
 
 
 # ───────────────────────────── the pure core ─────────────────────────────
-
-def iou(a: Sequence[float], b: Sequence[float]) -> float:
-    ix0, iy0, ix1, iy1 = max(a[0], b[0]), max(a[1], b[1]), min(a[2], b[2]), min(a[3], b[3])
-    if ix1 <= ix0 or iy1 <= iy0:
-        return 0.0
-    inter = (ix1 - ix0) * (iy1 - iy0)
-    union = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter
-    return inter / union if union > 0 else 0.0
-
-
-def fold(boxes: Sequence[Sequence[float]], staff_ids: Sequence[Any], min_iou: float = FOLD_IOU) -> List[List[int]]:
-    """Groups of indices: boxes on the same staff whose IoU is at least `min_iou`, joined transitively. Sorted by left edge, so a box meets only its
-    neighbours in x."""
-    n = len(boxes)
-    parent = list(range(n))
-
-    def find(i: int) -> int:
-        while parent[i] != i:
-            parent[i] = parent[parent[i]]
-            i = parent[i]
-        return i
-    order = sorted(range(n), key=lambda i: boxes[i][0])
-    for a, i in enumerate(order):
-        for j in order[a + 1:]:
-            if boxes[j][0] > boxes[i][2]:
-                break
-            if staff_ids[i] == staff_ids[j] and iou(boxes[i], boxes[j]) >= min_iou:
-                parent[find(i)] = find(j)
-    groups: Dict[int, List[int]] = {}
-    for i in range(n):
-        groups.setdefault(find(i), []).append(i)
-    return sorted((sorted(g) for g in groups.values()), key=lambda g: (boxes[g[0]][0], boxes[g[0]][1]))
-
 
 def position_of(y_page: float, top_page: float, half_step_page: float) -> float:
     """Half steps below the top line (0 = top line, 8 = bottom line) of a page y against ONE bar's grid."""
@@ -187,7 +140,18 @@ def _share(pm: Any, i: int, box: Sequence[float], totals: Dict[int, int]) -> flo
     return float(m[ly0:ly1, lx0:lx1].sum()) / totals[i]
 
 
-def read(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any) -> Optional[PageHeads]:
+def _groups_from_one(hb: Sequence[Dict[str, Any]], one: Any) -> List[List[int]]:
+    """The M6b head list's groups ARE the one identity's (ROADMAP 2.290 landing: M6a's IoU fold is deleted); a box the one identity does not hold
+    stands alone."""
+    by: Dict[Any, List[int]] = {}
+    for i, h in enumerate(hb):
+        g = (one.group_of_key.get(h["key"]) if one is not None else None)
+        by.setdefault(("g", g) if g is not None else ("i", i), []).append(i)
+    return sorted((sorted(g) for g in by.values()), key=lambda g: (hb[g[0]]["box"][0], hb[g[0]]["box"][1]))
+
+
+def read(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any,
+         one: Any = None) -> Optional[PageHeads]:
     """The page head list (module doc). None where there is no page map. Pure of the log: positions of the members' own rows are attached by `file_page_heads`."""
     if pm is None or not getattr(pm, "strokes", None):
         return None
@@ -225,7 +189,7 @@ def read(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], dete
                                glyph=gi, box=pb, cls=name, conf=float(getattr(d, "confidence", 0.0) or 0.0), staff_index=int(c.staff_index), c=c))
     stroke_boxes, kinds = _stroke_arrays(pm)
     totals: Dict[int, int] = {}
-    groups = fold([h["box"] for h in hb], [h["staff_index"] for h in hb])
+    groups = _groups_from_one(hb, one)
     stem_ids = {i for i, s in enumerate(pm.strokes) if s.kind == "vertical" and s.length_sp >= STEM_MIN_LEN_SP}
     head_stems: set = set()
     taken = np.zeros(len(pm.strokes), bool)
@@ -361,88 +325,13 @@ def read(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], dete
 
 # ───────────────────────────── filing ─────────────────────────────
 
-def _settle(claims: List[Dict[str, Any]], held: Dict[int, str]) -> None:
-    """First claim wins: `held` is {stroke: owner} (earlier page-wide claims, then these in order). A stroke another owner holds is CONTESTED on the claim; the same
-    owner again is a twin (counted, not contested)."""
-    for c in claims:
-        won, contested, twins = [], [], 0
-        for i in c["ids"]:
-            h = held.get(i)
-            if h is None:
-                held[i] = c["owner"]
-                won.append(i)
-            elif h == c["owner"]:
-                twins += 1
-                won.append(i)
-            else:
-                contested.append([i, h])
-        c["won"], c["contested"], c["twins"] = won, contested, twins
-
-
-def head_claims(ph: PageHeads, pm: Any, held: Optional[Dict[int, str]] = None) -> List[Dict[str, Any]]:
-    """The claims of a page head list, in claim order: every head's blob strokes (owner `head`), then every head's level thin stubs (owner `ledger`). `held` =
-    {stroke: owner} already named by an earlier owner."""
-    claims: List[Dict[str, Any]] = []
-    for owner, field in (("head", "blob_strokes"), ("ledger", "rung_strokes")):
-        for h in ph.heads + ph.ink_only:
-            ids = [int(i) for i in h.get(field) or ()]
-            if ids:
-                claims.append(dict(owner=owner, ids=ids, head=h["ordinal"], members=h.get("members") or []))
-    _settle(claims, dict(held or {}))
-    # a second pass is unnecessary: `_settle` mutates a copy in claim order, so the result above is the order the claims stand in
-    return claims
-
-
-def file_page_heads(log: Any, pws: Any, ph: Optional[PageHeads], pm: Any, *, progress: bool = False) -> None:
-    """`Q.PAGE_HEAD` rows and the `unit: page_ink` head / ledger claims (module doc). AFTER the page-wide claim names (`page_claim_names`) so `held` is complete, and
-    after `gather_notehead_positions` so the members' own position rows ride on the head."""
-    if ph is None:
-        return
-    from . import record as R
-    from .record import Q, READERS, Scope, Subject
-    from .gather import FRAME_PAGE
-    p = int(getattr(pws.page, "page_index", 0))
-    sub = R.page(p)
-    held: Dict[int, str] = {}
-    for r in log.rows(Q.CLAIMED_AREA, sub, scope=Scope.SELF_AND_DESCENDANTS):
-        d = r.detail or {}
-        if d.get("unit") == UNIT and d.get("source") != SOURCE:
-            for i in (d.get("page_strokes") or ()):
-                held.setdefault(int(i), str(d.get("owner") or ""))
-    claims = head_claims(ph, pm, held)
-    for h in ph.heads:
-        rows = []
-        for k in h["members"]:
-            for r in log.rows(Q.NOTEHEAD_STAFF_POSITION, Subject.from_key(k)):
-                rows.append(round(float(r.value), 3))
-                break
-        h["member_row_positions"] = rows
-    n = 0
-    for h in ph.heads + ph.ink_only:
-        log.observe(sub, Q.PAGE_HEAD, h["source"], reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, **h)
-        n += 1
-    filed = 0
-    for c in claims:
-        if not c["won"] and not c["contested"]:
-            continue
-        sb = [[round(float(pm.strokes[i].box[0]), 1), round(float(pm.strokes[i].box[1]), 1), round(float(pm.strokes[i].box[0] + pm.strokes[i].box[2]), 1),
-               round(float(pm.strokes[i].box[1] + pm.strokes[i].box[3]), 1)] for i in c["won"]]
-        log.observe(sub, Q.CLAIMED_AREA, list(c["won"]), reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, owner=c["owner"], unit=UNIT, standing="READ", source=SOURCE,
-                    how="page_head", page_strokes=list(c["won"]), contested=c["contested"], head=c["head"], members=c["members"], stroke_boxes=sb)
-        filed += 1
-    cen = dict(ph.census, rows=n, claims=filed, claims_contested=sum(1 for c in claims if c["contested"]), seconds=ph.seconds)
-    log.observe(sub, Q.PAGE_HEAD, "census", reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, **cen)
-    if progress:
-        print("  gather page heads p%s: %s" % (p, cen))
-
-
 def gather_page_heads(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any, *,
-                      progress: bool = False) -> Optional[PageHeads]:
-    """ROADMAP 2.260e M6a (flag `OMR_PAGE_HEADS`, default OFF), STAGED GATHER: read the page head list (decides nothing, files nothing yet). Placed AFTER the final
-    box set and the page map, BEFORE `gather_notehead_positions`. `file_page_heads` files it later."""
-    if not enabled():
+                      one: Any = None, progress: bool = False) -> Optional[PageHeads]:
+    """ROADMAP 2.260e M6b's input (flag `OMR_PAGE_HEAD_VIEWS`, default OFF): the page head list -- position, ink extent, far trigger -- of the ONE
+    identity's heads (`one`, ROADMAP 2.290), for the far-head job list. Files nothing. Plan step 3 rewrites M6b on the one identity."""
+    if not views_enabled():
         return None
-    ph = read(pws, cells, local, detections, pm)
+    ph = read(pws, cells, local, detections, pm, one)
     if ph is not None and progress:
         print("  gather page heads p%s: read %d heads (%s)" % (getattr(pws.page, "page_index", 0), len(ph.heads), ph.seconds))
     return ph
@@ -485,8 +374,6 @@ def gather_page_heads(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
 # bigger than a head is fused and not the head's alone. WHAT WOULD FALSIFY IT: a tile Sean calls two heads that this joins (a chord drawn tight), one
 # head this keeps apart (a twin box drawn off its ink by more than the oval), or claimed ink that is not the head's. NOT CONFIRMED beyond two plates.
 
-ONE_ENV = "OMR_PAGE_HEAD_ONE"
-LEDGER_ENV = "OMR_PAGE_HEAD_LEDGER"
 ONE_SOURCE = "page_head_one"
 ONE_OWNER = "head"
 #: a notehead box holding less head ink than this (sp^2) stands on no head: a tenth of a filled head (~1.0 sp^2, `stroke_owner.HEAD_MIN_AREA_SP2` doc)
@@ -525,13 +412,13 @@ OTHER_HEAD_MAX = 0.2
 
 
 def one_enabled() -> bool:
-    """`OMR_PAGE_HEAD_ONE` (ROADMAP 2.290 steps 1-2), default OFF: allow-list."""
-    return _flag(ONE_ENV)
+    """ROADMAP 2.290 steps 1-2, LANDED: the one identity of a head is the only one (`OMR_PAGE_HEAD_ONE` deleted with the mechanisms it replaced)."""
+    return True
 
 
 def ledger_enabled() -> bool:
-    """`OMR_PAGE_HEAD_LEDGER` (ROADMAP 2.290 step 4), default OFF; needs `OMR_PAGE_HEAD_ONE`."""
-    return one_enabled() and _flag(LEDGER_ENV)
+    """ROADMAP 2.290 step 4, LANDED: every page head claims its oval on the ledger (`OMR_PAGE_HEAD_LEDGER` deleted with M6c)."""
+    return True
 
 
 def is_head_ink(kind: str, w_sp: float, h_sp: float, thick_sp: float, length_sp: float) -> bool:

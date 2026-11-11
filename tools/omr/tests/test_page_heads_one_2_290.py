@@ -11,14 +11,10 @@ from tools.omr.staged import stroke_owner as SO
 SP = 20.0
 
 
-def test_flags_default_off(monkeypatch):
-    monkeypatch.delenv(PH.ONE_ENV, raising=False)
-    monkeypatch.delenv(PH.LEDGER_ENV, raising=False)
-    assert not PH.one_enabled() and not PH.ledger_enabled()
-    monkeypatch.setenv(PH.LEDGER_ENV, "1")
-    assert not PH.ledger_enabled(), "the claim needs the one identity"
-    monkeypatch.setenv(PH.ONE_ENV, "1")
+def test_landed_the_one_identity_and_the_one_claim_are_the_only_ones():
+    # ROADMAP 2.290 landing: `OMR_PAGE_HEAD_ONE` / `OMR_PAGE_HEAD_LEDGER` deleted with what they replaced
     assert PH.one_enabled() and PH.ledger_enabled()
+    assert not hasattr(PH, "ONE_ENV") and not hasattr(PH, "LEDGER_ENV")
 
 
 @pytest.mark.parametrize("args,want", [

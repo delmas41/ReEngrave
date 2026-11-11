@@ -17997,10 +17997,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # by index) and BEFORE `gather_notehead_positions` and
         # `gather_notehead_ink`, which both read its row.
         gather_head_line_cut(log, cells, local, detections)
-        # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS, default OFF): every head read ONCE on the page map (twin boxes folded, ink = the page strokes the box stands on,
-        # position from the ink against the head's own bar). AFTER the final box set and the page map, BEFORE the cell position / far-head reads (M6b drives the
-        # far-head job list from it). Reads only; `file_page_heads` files it after the page-wide claim names.
-        _page_head_list = _page_heads.gather_page_heads(log, pws, cells, local, detections, page_map_pre, progress=progress)
+        # ROADMAP 2.260e M6b's input (flag OMR_PAGE_HEAD_VIEWS, default OFF): the page head list of the ONE identity's heads (2.290: M6a's fold and filing are
+        # deleted), for the far-head job list. AFTER the final box set and the page map, BEFORE the cell position / far-head reads. Reads only.
+        _page_head_list = _page_heads.gather_page_heads(log, pws, cells, local, detections, page_map_pre, one=_one_heads, progress=progress)
         gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
@@ -18168,10 +18167,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # (owner `accidental_ink`, layer before the heads), AFTER every earlier page-wide claim it must not take and BEFORE the page heads claim.
         from . import page_accidental_ink as _page_accidental_ink
         _page_accidental_ink.gather_page_accidental_ink(log, pws, cells, local, detections, page_map_pre, progress=progress)
-        # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS): `Q.PAGE_HEAD` rows and the head / ledger-stub claims on the page strokes, AFTER the page-wide claim names (an
-        # earlier owner's stroke is marked contested, never taken) and after the cell position rows (they ride on the head). Nothing reads them in M6a.
-        _page_heads.file_page_heads(log, pws, _page_head_list, page_map_pre, progress=progress)
-        # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default OFF): one claim per head on the page strokes of its oval, layer `head` of
+        # ROADMAP 2.290 step 4 (landed; M6a's `file_page_heads` and M6c deleted): one claim per head on the page strokes of its oval, layer `head` of
         # `claim_order.LAYERS` -- AFTER every earlier page-wide claim (accidental ink last), BEFORE the page beams; ADJUDICATE's ledger settles it at the head tier.
         _page_heads.file_one_claims(log, pws, _one_heads, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),

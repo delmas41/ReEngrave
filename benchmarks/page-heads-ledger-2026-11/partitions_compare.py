@@ -62,10 +62,40 @@ def pairs_of(part, keys):
     return out
 
 
+def _iou(a, b):
+    ix0, iy0, ix1, iy1 = max(a[0], b[0]), max(a[1], b[1]), min(a[2], b[2]), min(a[3], b[3])
+    if ix1 <= ix0 or iy1 <= iy0:
+        return 0.0
+    inter = (ix1 - ix0) * (iy1 - iy0)
+    u = (a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter
+    return inter / u if u > 0 else 0.0
+
+
+def fold(boxes, staff_ids, min_iou=0.5):
+    """M6a's fold as it stood before the 2.290 landing deleted it (`page_heads.fold`: IoU >= 0.5, same staff, union-find), kept here for the comparison."""
+    parent = list(range(len(boxes)))
+
+    def find(i):
+        while parent[i] != i:
+            parent[i] = parent[parent[i]]
+            i = parent[i]
+        return i
+    order = sorted(range(len(boxes)), key=lambda i: boxes[i][0])
+    for a, i in enumerate(order):
+        for j in order[a + 1:]:
+            if boxes[j][0] > boxes[i][2]:
+                break
+            if staff_ids[i] == staff_ids[j] and _iou(boxes[i], boxes[j]) >= min_iou:
+                parent[find(i)] = find(j)
+    groups = {}
+    for i in range(len(boxes)):
+        groups.setdefault(find(i), []).append(i)
+    return [sorted(g) for g in groups.values()]
+
+
 def fold_partition(boxes):
-    from tools.omr.staged import page_heads as PH
     keys = sorted(boxes)
-    groups = PH.fold([boxes[k][0] for k in keys], ["/".join(k.split("/")[1:4]) for k in keys])
+    groups = fold([boxes[k][0] for k in keys], ["/".join(k.split("/")[1:4]) for k in keys])
     return {keys[i]: n for n, g in enumerate(groups) for i in g}
 
 

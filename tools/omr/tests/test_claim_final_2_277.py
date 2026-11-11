@@ -176,7 +176,8 @@ class TestStaticCheck(unittest.TestCase):
             shutil.copy(self.STAGED / "stroke_owner.py", root)
             shutil.copy(self.STAGED / "adjudicators" / "claimed_by.py", root / "adjudicators")
             for rel in CF.CONSUMER_DECIDERS.values():
-                text = (self.STAGED / rel).read_text().replace("_claim_final.finding(", "_nothing(")
+                # ROADMAP 2.290 landing: the head decider reaches the generic consult only through the one consult (`_ink_consult.consult`)
+                text = (self.STAGED / rel).read_text().replace("_claim_final.finding(", "_nothing(").replace("_ink_consult.consult(", "_nothing(")
                 (root / rel).write_text(text)
             f = CF.static_wiring(root)
             self.assertIn("barline", {x["claim"] for x in f})
