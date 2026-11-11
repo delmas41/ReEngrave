@@ -118,6 +118,8 @@ def test_the_control_can_fail(monkeypatch):
     monkeypatch.setattr(PH, "CLAIM_MAX_H_SP", 99.0)
     monkeypatch.setattr(PH, "CLAIM_SHARE_MIN", 0.0)
     monkeypatch.setattr(PH, "OTHER_HEAD_MAX", 99.0)
+    monkeypatch.setattr(PH, "CLAIM_UNION_MIN_SP", 0.0)           # (round 2's size rule is another control, below)
+    monkeypatch.setattr(PH, "CLAIM_UNION_MAX_H_SP", 99.0)
     broke = 0
     for path in CROPS:
         meta, items, foreign, lab, props, binary = _load(path)

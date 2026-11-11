@@ -828,7 +828,7 @@ def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], 
 
 
 def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: np.ndarray, props: Sequence[Tuple[str, float, float, float, float]],
-         binary: Any, s: float, sp: float) -> OneHeads:
+         binary: Any, s: float, sp: float, _no_ink: Optional[frozenset] = None) -> OneHeads:
     """The one-head reading on one frame (a page, or a real-case crop): `items` = the notehead boxes (key, cell, gi, box, cls, conf, scope, sp_head,
     tall), `foreign` = boxes of the classes `head_ink` treats as another mark's, `lab` = the page map's label image (reduced frame, scale `s`, 0 = none,
     i + 1 = stroke i), `props` = per stroke (kind, w_sp, h_sp, thickness_sp, length_sp), `binary` = the page raster (0 = ink) in the same page-px frame."""
@@ -853,7 +853,7 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
         x0, y0, x1, y1 = rrect(it["box"])
         m = hmask[y0:y1, x0:x1] if (x1 > x0 and y1 > y0) else np.zeros((0, 0), bool)
         n = int(m.sum())
-        if n * px_sp2 < HEAD_INK_MIN_SP2:
+        if n * px_sp2 < HEAD_INK_MIN_SP2 or (_no_ink and it["key"] in _no_ink):
             n = 0
         it["ink_px"] = n
         it["anchor"], it["anchor_head"] = None, False
@@ -922,6 +922,7 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
     claims, ccen = choose_claims(ovals, {i: int(totals[i + 1]) for i in range(n_st)}, claim_ok)
     # ROUND 2: a head's claim is a WHOLE head -- the union of the strokes it claims lies inside one head's ink size (`claim_size_reason`); else it is refused
     # whole, counted, and its ink stays with the cell boxes (Sean's tiles 8, 9, 10: a sliver, half a rest, a thin sliver)
+    refused_alone: List[str] = []
     if any(claims.values()):
         from scipy import ndimage
         objs = ndimage.find_objects(lab, max_label=n_st)
@@ -936,6 +937,8 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
             h_sp = (max(t[0].stop for t in sl) - min(t[0].start for t in sl)) / s / hs
             why = claim_size_reason(w_sp, h_sp)
             if why:
+                if len(groups[gi_]) == 1:
+                    refused_alone.append(out.items[groups[gi_][0]]["key"])
                 ccen["claim_size:" + why] = ccen.get("claim_size:" + why, 0) + 1
                 ccen["claim_size_strokes"] = ccen.get("claim_size_strokes", 0) + len(st_)
                 claims[gi_] = []
@@ -964,6 +967,14 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
     cen["not_claimed"] = ccen
     cen["oval_from"] = dict(collections.Counter(oval_from.values()))
     out.census = cen
+    if refused_alone and _no_ink is None:
+        # a lone box whose claim was refused for its size stands on ink that is NOT one head's (a sliver, half a rest): it is no confirmed head. It is read again
+        # as a box on no head ink -- the old twin rule (`gather.MARK_GROUP_IOU`) joins it to the head box it overlaps, else it stands alone, counted -- so what
+        # the file writes there is what it wrote without the flag, never a new note from ink that is not a head (Litolff p11 m104: the quarter rest's box
+        # gained a quarter C3 when its twin fold was undone and its claim refused)
+        again = core(items, foreign, lab, props, binary, s, sp, _no_ink=frozenset(refused_alone))
+        again.census["size_fallback"] = len(refused_alone)
+        return again
     return out
 
 
