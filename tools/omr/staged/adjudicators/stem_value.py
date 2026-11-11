@@ -553,6 +553,21 @@ def _stem_of_a_second(ev: Evidence, cell: Subject, head, stems, head_row_id) -> 
         if kb is not None:
             others.append((k, kb))
     found = one_chord.partner_stems(head, others, [(r, b) for r, b in stems], stem_touches_head)
+    # The join may only RAISE this head to the stem's value, never move the stem-holder's: the partner's own decided value must be at least
+    # this head's (tile 7: a black quarter beside a half; refused: a quarter 'head' that is a flag, beside an eighth chord).
+    try:
+        mine = float(own.value["beats"])
+    except (TypeError, KeyError, ValueError):
+        return None
+    kept = []
+    for f in found:
+        pd = ev.verdict(Q.DURATION, subject=f[1])
+        try:
+            if pd is not None and pd.outcome is Outcome.DECIDED and float(pd.value["beats"]) >= mine:
+                kept.append(f)
+        except (TypeError, KeyError, ValueError):
+            continue
+    found = kept
     if not found:
         return None
     reps = {}
