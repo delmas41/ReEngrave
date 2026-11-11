@@ -16,7 +16,8 @@ import pytest
 from tools.omr.staged import page_heads as PH
 
 HERE = pathlib.Path(__file__).resolve().parents[3] / "benchmarks" / "page-heads-ledger-2026-11" / "real_cases"
-CROPS = sorted((HERE / "crops").glob("*.npz")) if (HERE / "crops").exists() else []
+# the crops are TRACKED (benchmarks/**/crops/ is gitignored, so they live in npz/): a clean checkout runs the controls, it does not skip them
+CROPS = sorted((HERE / "npz").glob("*.npz")) if (HERE / "npz").exists() else []
 
 
 #: real cases this build does NOT pass, each with its cause and the plan step that owns it (never silently skipped)
@@ -74,7 +75,7 @@ def test_real_case(path):
     meta, items, foreign, lab, props, binary = _load(path)
     e = meta["case"]["expect"]
     oh, B, sb, mine = _read(meta, items, foreign, lab, props, binary)
-    cut = 0.5 if e == "not_head" else 0.3
+    cut = 0.5 if e in ("not_head", "between_heads") else 0.3
     # a stroke an earlier page-wide claim holds is marked, never claimed (`page_heads.file_one_claims`; the crop carries which, `held`)
     held = {n for n, pid in enumerate(meta["stroke_ids"]) if str(pid) in (meta.get("held") or {})}
     claims = [h for h in oh.heads if any(i in sb and i not in held and _share(sb[i], B) >= cut for i in h["strokes"])]
@@ -86,6 +87,12 @@ def test_real_case(path):
         assert len(claims) <= 1, "%s -- %d head claims on the box" % (said, len(claims))
     elif e == "not_head":
         assert not claims, "%s -- a head claims its ink (%s)" % (said, [h["rep"] for h in claims])
+    elif e == "between_heads":
+        # Sean, 2.290 build r1 tile 12: the box lands BETWEEN two half notes a third apart and takes a little ink of each: the two heads are TWO page heads
+        # (never one, however the ink the boxes clip lies) and the ink between them is claimed by neither
+        near = [it for it in oh.items if it["ink_px"] and _share(B, it["box"]) >= 0.25]
+        assert len({oh.group_of_key[it["key"]] for it in near}) >= 2, "%s -- the heads a third apart were joined into one" % said
+        assert not claims, "%s -- a head claims the ink between the two heads (%s)" % (said, [h["rep"] for h in claims])
     elif e == "tall_box":
         big = [it for it in oh.items if _share(B, it["box"]) >= 0.8]
         assert all(oh.how[oh.items.index(it)] == "tall_read" or not it["ink_px"] or len(oh.groups[oh.group_of_key[it["key"]]]) == 1 for it in big), said
