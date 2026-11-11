@@ -161,6 +161,27 @@ class TestMarkingSplitInGather(unittest.TestCase):
         self.assertFalse([r for r in rows if r.detail.get("source") == "dynamic_letters" and r.detail.get("text") == "fp"])
         self.assertEqual([r.detail.get("detector_letter") for r in rows if r.detail.get("source") == "dynamic_letters"], ["f"])
 
+    def test_CONTROL_ON_a_note_mark_on_the_dynamics_ink_leaves_the_marking_one_word_claim(self):
+        # Brahms p14 `p dolce` (obs:083223): a detector note box stood on the p, the dynamic's own claim spares note boxes, so a split would leave that ink nobody's
+        log = _log_with_marking()
+        _PWS.page.binary = _marking_page()
+        det = {R.cell(0, 0, 0, 0).to_key(): [_Det("noteheadBlackOnLine", 222.0 - 60, 198.0 - 50, 18.0, 22.0)]}
+        with mock.patch.dict(os.environ, ON):
+            G.gather_page_claims(log, _PWS(), CELLS, LOCAL, det)
+        rows = [r for r in log.rows(Q.CLAIMED_AREA, R.system(0, 0)) if r.detail.get("owner") == "word" and r.detail.get("unit") == "area"]
+        self.assertFalse([r for r in rows if r.detail.get("compound_of")])
+        self.assertLessEqual(min(r.value[0] for r in rows if r.detail.get("source") == "direction_word"), 224.0)       # the word still holds the f
+
+    def test_CONTROL_ON_a_component_joining_the_dynamic_to_the_word_is_not_split_into_nobodys_ink(self):
+        log = _log_with_marking()
+        img = _marking_page()
+        img[205:208, 236:262] = 0                       # a stroke bridging the f and the `l` of legato
+        _PWS.page.binary = img
+        with mock.patch.dict(os.environ, ON):
+            G.gather_page_claims(log, _PWS(), CELLS, LOCAL, {})
+        rows = [r for r in log.rows(Q.CLAIMED_AREA, R.system(0, 0)) if r.detail.get("owner") == "word" and r.detail.get("unit") == "area"]
+        self.assertFalse([r for r in rows if r.detail.get("compound_of")])
+
     def test_ON_a_marking_the_split_cannot_place_stays_one_word_claim(self):
         log = _log_with_marking(text="legato f legato")          # a dynamic in the middle: no guess
         rows = _claims(ON, log)

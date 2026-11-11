@@ -16421,6 +16421,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
 
     def _file_compound(r: Any, d: Dict[str, Any], bb: Sequence[float], s: int) -> bool:
         """Split ONE marking into the word's claim and the dynamic's claim(s); True when it did, False (counted, why) when the marking is left as one word claim."""
+        import numpy as np
         from . import hairpin_reach as _hr
         inc = [letter_of_key[k] for k in (d.get("includes_dynamic_glyphs") or ()) if k in letter_of_key]
         got = CL.compound_dynamic_slots(str(r.value), d.get("dynamics") or (), inc)
@@ -16430,7 +16431,25 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
         area = [float(v) for v in bb]
         for sl in got["slots"]:         # the dynamic's own claim is its ink, not the detector's tight box (a `p` descender past it would be nobody's)
             sl["claim_box"] = CL.grow_to_ink(binary, sl["box"], _sp(s))
+        # the split must keep every dark pixel of the marking claimed ONCE (north star): never split where a note mark's box meets the dynamic's ink (the dynamic's own
+        # claim spares note boxes, so that ink would be nobody's), and never where a component joins the dynamic to the word beyond the dynamic's claim
+        note_boxes = [b for b, _n in _page_boxes(s, lambda n: n.startswith(DYNAMIC_SPARES))]
+        if any(CL.overlaps(sl["claim_box"], nb) for sl in got["slots"] for nb in note_boxes):
+            _count("word:direction_word:compound_not_split:a_note_mark_meets_the_dynamic")
+            return False
         pieces, spared = _hr.word_area_sparing_heads(binary, area, [sl["claim_box"] for sl in got["slots"]], _sp(s))
+        ax0, ay0, ax1, ay1 = (max(0, int(round(v))) for v in area)
+        crop = binary[ay0:ay1, ax0:ax1] == 0
+        if crop.size:
+            held = np.zeros(crop.shape, bool)
+            for r_ in list(pieces) + [sl["claim_box"] for sl in got["slots"]]:
+                rx0, ry0 = max(0, int(r_[0]) - ax0), max(0, int(r_[1]) - ay0)
+                rx1, ry1 = min(crop.shape[1], int(np.ceil(r_[2])) - ax0), min(crop.shape[0], int(np.ceil(r_[3])) - ay0)
+                if rx1 > rx0 and ry1 > ry0:
+                    held[ry0:ry1, rx0:rx1] = True
+            if (crop & ~held).any():
+                _count("word:direction_word:compound_not_split:ink_would_be_nobodys")
+                return False
         inside_staff = CL.band_share(area, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
         base: Dict[str, Any] = dict(owner_row=r.id, text=r.value, category=d.get("category"))
         if spared:

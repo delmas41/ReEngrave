@@ -74,13 +74,22 @@ def per_label(rec, ht, patched, page=0):
         weak = int((m & (st == CR.ST_WEAK)).sum())
         none = int((m & (st == CR.ST_NONE)).sum())
         want = l.kind
-        got = by.get(want, 0)
+        bit = int(CR.FINE_BIT[want])
+        exact = int((m & (fam == bit) & (st == CR.ST_ONE)).sum())                       # ONE owner, and it is Sean's kind
+        present = int((m & ((fam & bit) != 0) & (st != CR.ST_WEAK) & (st != CR.ST_NONE)).sum())   # his kind stands on it (alone or beside another)
         top = max(by, key=by.get) if by else None
-        verdict = "RIGHT" if got >= 0.5 * n else ("SPLIT" if top and by[top] < 0.5 * n else "WRONG KIND (%s)" % top if top else "NOBODY")
-        if verdict == "WRONG KIND (%s)" % top and weak >= 0.5 * n:
+        if exact >= 0.5 * n:
+            verdict = "RIGHT"
+        elif present >= 0.5 * n:
+            verdict = "SHARED (%s)" % "+".join(sorted(k for k in by if k != want)[:2])
+        elif weak >= 0.5 * n:
             verdict = "WEAK ONLY"
-        out.append(dict(id=getattr(l, "id", i), kind=l.kind, text=getattr(l, "text", None), ink_px=n, by_kind={k: v for k, v in sorted(by.items(), key=lambda kv: -kv[1])[:4]},
-                        weak_px=weak, none_px=none, verdict=verdict))
+        elif top:
+            verdict = "WRONG KIND (%s)" % top
+        else:
+            verdict = "NOBODY"
+        out.append(dict(id=getattr(l, "id", i), kind=l.kind, text=getattr(l, "text", None), ink_px=n, one_owner_his_kind_px=exact, present_px=present,
+                        by_kind={k: v for k, v in sorted(by.items(), key=lambda kv: -kv[1])[:4]}, weak_px=weak, none_px=none, verdict=verdict))
     return out
 
 
@@ -98,13 +107,15 @@ def main():
     print("%-5s %-8s %-18s %8s | %-22s | %-22s" % ("id", "kind", "text", "ink px", "OFF", "ON"))
     off, on = res["off"], res["on"]
     for o, n in zip(off, on):
-        print("%-5s %-8s %-18s %8d | %-22s | %-22s" % (o["id"], o["kind"], str(o["text"])[:18], o["ink_px"], o["verdict"], n["verdict"]))
+        print("%-5s %-8s %-18s %8d | %-26s | %-26s" % (o["id"], o["kind"], str(o["text"])[:18], o["ink_px"], o["verdict"], n["verdict"]))
     for arm in ("off", "on"):
         for kind in ("dynamic", "word"):
             rows = [r for r in res[arm] if r["kind"] == kind]
             tot = sum(r["ink_px"] for r in rows)
-            right = sum(r["ink_px"] for r in rows if r["verdict"] == "RIGHT")
-            print("%s %-8s labels %d, RIGHT on %d, ink %d, right ink %.1f%%" % (arm.upper(), kind, len(rows), sum(r["verdict"] == "RIGHT" for r in rows), tot, 100.0 * right / max(1, tot)))
+            right = sum(r["one_owner_his_kind_px"] for r in rows)
+            pres = sum(r["present_px"] for r in rows)
+            print("%s %-8s labels %d, RIGHT on %d, ink %d, one owner = his kind %.1f%%, his kind stands there (alone or beside another) %.1f%%"
+                  % (arm.upper(), kind, len(rows), sum(r["verdict"] == "RIGHT" for r in rows), tot, 100.0 * right / max(1, tot), 100.0 * pres / max(1, tot)))
 
 
 main()
