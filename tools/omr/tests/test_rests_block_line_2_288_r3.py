@@ -73,10 +73,10 @@ def test_a_half_rest_sitting_on_its_line_is_read_the_same_way():
 
 
 def test_a_head_fused_to_the_line_and_boxed_as_a_whole_rest_stays_refused():
-    # a note head on a line: 24 px (1.2 sp) tall, 24 wide; the box is round its lower part
-    pm = pagemap_full([(80, 50, 24, 24)])
-    pws = page(LINE, block=(80, 50, 104, 74))
-    log, cen = run([det("restWhole", 80, 64, 24, 10)], pm, pws)
+    # a note head on a line: 24 rows of its own (1.2 sp) under a 4-row line slab, 24 wide; the box is round its lower part
+    pm = pagemap_full([(80, 50, 24, 28)])
+    pws = page(LINE, block=(80, 50, 104, 78))
+    log, cen = run([det("restWhole", 80, 68, 24, 10)], pm, pws)
     assert filed(log) == [] and cen["rest_weak"] == {"names_no_stroke": 1} and cen["rest_block_named"] == 0
 
 
@@ -96,3 +96,18 @@ def test_block_share_is_the_old_share_where_there_is_no_line():
     box = (80, 52, 110, 62)
     assert PCN.block_rest_strokes(pm, box, idx, pws.page.binary, 0.5) == PCN.strokes_by_share(pm, box, idx, 0.5) == [0]
     assert PCN.block_rest_strokes(pm, box, idx, None, 0.5) == [0]
+
+
+def test_a_wide_block_the_old_width_cut_refused_is_claimed_by_its_own_height_and_a_tall_one_is_not():
+    # Litolff's whole rest: 1.9 sp wide (38 px at sp 20), half a space of its own rows under the line slab; shape_fit's width cut (1.6) refused 67 of 282 READ ones
+    pm = pagemap_full([(80, 50, 38, 14)])
+    pws = page(LINE, block=(80, 50, 118, 64))
+    log, cen = run([det("restWhole", 82, 50, 34, 14)], pm, pws)
+    assert len(filed(log)) == 1 and filed(log)[0].value == [0]
+    log, cen = run([det("restWhole", 82, 50, 34, 14)], pm, SimpleNamespace(page=SimpleNamespace(page_index=0)))   # control: no raster -> the old cut, READ and names nothing
+    assert filed(log) == [] and cen["named_nothing"] == {"whole_rest": 1}
+    # a head the same width, 1.2 sp of its own rows: refused on height
+    pm = pagemap_full([(80, 50, 38, 28)])
+    pws = page(LINE, block=(80, 50, 118, 78))
+    log, cen = run([det("restWhole", 82, 50, 34, 28)], pm, pws)
+    assert filed(log) == []

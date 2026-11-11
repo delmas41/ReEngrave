@@ -426,6 +426,38 @@ LINE_FLANK_PX = 5
 LINE_FLANK_SHARE = 0.8
 
 
+def _line_row_flags(raw: Any, m: Any, x0: int, y0: int, scale: float) -> List[bool]:
+    """Per row of a stroke mask (reduced frame, offset `x0, y0`): True = the block's OWN row, False = a staff-line row (module doc of `block_rest_strokes`). No raster: all True."""
+    h, w = m.shape
+    keep = [True] * h
+    if raw is None:
+        return keep
+    fx0, fx1 = int(round(x0 / scale)), int(round((x0 + w) / scale))
+    for r in range(h):
+        y = int((y0 + r + 0.5) / scale)
+        if not (0 <= y < raw.shape[0]):
+            continue
+        left, right = raw[y, max(0, fx0 - 1 - LINE_FLANK_PX):max(0, fx0 - 1)], raw[y, min(raw.shape[1], fx1 + 1):min(raw.shape[1], fx1 + 1 + LINE_FLANK_PX)]
+        if len(left) >= LINE_FLANK_PX - 1 and len(right) >= LINE_FLANK_PX - 1 and float((left == 0).mean()) >= LINE_FLANK_SHARE and float((right == 0).mean()) >= LINE_FLANK_SHARE:
+            keep[r] = False
+    return keep
+
+
+def own_block_height_sp(page_map: Any, i: int, raw: Any) -> Optional[float]:
+    """The stroke's height in staff spaces WITHOUT its staff-line rows (rows that have ink in the mask), at its own staff's local space; None where it cannot be measured."""
+    if i >= len(page_map.masks) or i >= len(page_map.strokes):
+        return None
+    st = page_map.strokes[i]
+    sp = float(getattr(st, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
+    if sp <= 0:
+        return None
+    s = float(page_map.scale)
+    m, x0, y0 = page_map.masks[i]
+    keep = _line_row_flags(raw, m, x0, y0, s)
+    rows = sum(1 for r in range(m.shape[0]) if keep[r] and m[r].any())
+    return rows / s / sp
+
+
 def block_rest_strokes(page_map: Any, box: Sequence[float], index: StrokeIndex, raw: Any, share_min: float) -> List[int]:
     """ROADMAP 2.288 round 3, STAGED GATHER, pure: the page strokes a whole / half rest's box holds BY THE BLOCK'S OWN INK, the staff line it hangs from set aside.
     A whole rest hangs from a line and a half rest sits on one (Sean's convention, page-facts); the page stroke map erases a staff line only where nothing but the
@@ -443,16 +475,7 @@ def block_rest_strokes(page_map: Any, box: Sequence[float], index: StrokeIndex, 
             continue
         m, x0, y0 = page_map.masks[i]
         h, w = m.shape
-        keep = [True] * h
-        if raw is not None:
-            fx0, fx1 = int(round(x0 / s)), int(round((x0 + w) / s))
-            for r in range(h):
-                y = int(round((y0 + r + 0.5) / s))
-                if not (0 <= y < raw.shape[0]):
-                    continue
-                left, right = raw[y, max(0, fx0 - 1 - LINE_FLANK_PX):max(0, fx0 - 1)], raw[y, min(raw.shape[1], fx1 + 1):min(raw.shape[1], fx1 + 1 + LINE_FLANK_PX)]
-                if len(left) >= LINE_FLANK_PX - 1 and len(right) >= LINE_FLANK_PX - 1 and float((left == 0).mean()) >= LINE_FLANK_SHARE and float((right == 0).mean()) >= LINE_FLANK_SHARE:
-                    keep[r] = False
+        keep = _line_row_flags(raw, m, x0, y0, s)
         rows = [r for r in range(h) if keep[r]]
         if not rows:
             continue
@@ -464,14 +487,23 @@ def block_rest_strokes(page_map: Any, box: Sequence[float], index: StrokeIndex, 
     return out
 
 
-def _rest_stroke_fits(page_map: Any, i: int, owner: str, cls: str) -> bool:
+def _rest_stroke_fits(page_map: Any, i: int, owner: str, cls: str, raw: Any = None) -> bool:
     """A READ rest owns its OWN ink only: of the strokes the box names by ink share, the ones whose shape the rest's printed shape allows (`stroke_owner.shape_fit`, family
     `rest` / `whole_rest`: a stem longer than a rest, a beam, a block thicker than a rest's are "no"). `could` stays: a quarter rest's slanted stroke reads as a short vertical.
-    A carved barline rule (no page stroke here) is never a rest's."""
+    A carved barline rule (no page stroke here) is never a rest's.
+    ROADMAP 2.288 round 3 (with the page raster `raw`): a whole / half rest's BLOCK is measured on its own rows, the staff line it hangs from set aside. `shape_fit` measures the stroke
+    whole, line slab included, against a width cut (`REST_BLOCK_MAX_W_SP` 1.6) and a height cut tuned on Brahms: it refused 49 of 165 READ whole rests on Litolff p8 and 18 of 117 on
+    p2 (Litolff's block is wider, median 1.4 sp, a cluster at 1.9, and its slab taller), every one a whole rest on the print. The block's OWN height is the convention (half a space; a
+    head fills a space): 0.38-0.85 sp on Litolff p8, and the same cut `BLOCK_MAX_H_SP` is applied to it. The map's own kind says it is not a beam (`blob`, not `horizontal`); the width cut
+    stays for a `horizontal` piece, which is how a beam piece reads."""
     from . import stroke_owner as SO
     if i >= len(page_map.strokes):
         return False
     st = page_map.strokes[i]
+    if raw is not None and cls.lower() in BLOCK_REST_CLASSES and st.kind == "blob":
+        h_own = own_block_height_sp(page_map, i, raw)
+        if h_own is not None:
+            return h_own <= SO.BLOCK_MAX_H_SP
     sp = float(getattr(st, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
     if sp <= 0:
         return True                      # no unit to measure in: the share named it, nothing here can refuse it (a fallback never narrows silently)
@@ -553,7 +585,7 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
             if rests and owner in REST_FAMILIES and cls.lower() in BLOCK_REST_CLASSES:
                 # 2.288 round 3: a block rest's box holds the BLOCK; the stroke is the block plus a slab of the staff line it hangs from / sits on
                 # (a stroke the line merges into a note is no block: only strokes whose shape the printed rest allows are added, so a head boxed as a whole rest stays weak)
-                block_extra = [i for i in block_rest_strokes(page_map, pb, index, raw, SM.COVER_SHARE_MIN) if i not in ids and _rest_stroke_fits(page_map, i, owner, cls)]
+                block_extra = [i for i in block_rest_strokes(page_map, pb, index, raw, SM.COVER_SHARE_MIN) if i not in ids and _rest_stroke_fits(page_map, i, owner, cls, raw)]
                 ids = sorted(set(ids) | set(block_extra))
             if rests and owner in REST_FAMILIES:
                 # 2.288: only a rest that STANDS as one (READ) claims; a weak box files nothing and blocks nobody (counted, with where it stands)
@@ -572,7 +604,7 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                     continue
                 census["rest_read"] += 1
                 census["rest_read_boxes"].append([cls, [round(v, 1) for v in pb], csub.to_key()])
-                ids = [i for i in ids if _rest_stroke_fits(page_map, i, owner, cls)]
+                ids = [i for i in ids if _rest_stroke_fits(page_map, i, owner, cls, raw)]
                 if block_extra and any(i in ids for i in block_extra):
                     census["rest_block_named"] += 1
                     census["rest_block_named_boxes"].append([cls, [round(v, 1) for v in pb], [i for i in ids if i in block_extra], csub.to_key()])
