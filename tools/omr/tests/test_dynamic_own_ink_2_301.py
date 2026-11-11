@@ -196,10 +196,14 @@ class TestEdgeInkBoxesPure(unittest.TestCase):
         img[139:142, 0:300] = 0
         self.assertEqual(CL.edge_ink_boxes(img, [90.0, 90.0, 200.0, 140.0], 32.0, []), [])
 
-    def test_the_flag_is_off_unless_asked(self):
-        with mock.patch.dict(os.environ, {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "1", "OMR_PAGE_LEDGER_OWNS": "1"}):
+    def test_the_flag_is_on_by_default_and_opts_out_on_0_false_no_off(self):
+        base = {"OMR_CLAIMED_REGISTER": "1", "OMR_CLAIM_WORDS_FIRST": "1", "OMR_PAGE_LEDGER_OWNS": "1"}
+        with mock.patch.dict(os.environ, base):
             os.environ.pop("OMR_WORD_OWNS_ITS_INK", None)
-            self.assertFalse(CL.word_ink_enabled())
+            self.assertTrue(CL.word_ink_enabled())
+            for off in ("0", "false", "no", "off"):
+                os.environ["OMR_WORD_OWNS_ITS_INK"] = off
+                self.assertFalse(CL.word_ink_enabled())
             os.environ["OMR_WORD_OWNS_ITS_INK"] = "1"
             self.assertTrue(CL.word_ink_enabled())
 

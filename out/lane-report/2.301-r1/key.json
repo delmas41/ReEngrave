@@ -1,0 +1,35 @@
+[
+ {
+  "kind": "note",
+  "page": 0,
+  "box": [
+   4394.025,
+   5078.65,
+   4436.9175,
+   5117.0275
+  ],
+  "rg": "glyph/0/0/9/5/5",
+  "value": "16th",
+  "plate": "brahms",
+  "role": "control",
+  "side": "unchanged",
+  "tile": 1,
+  "crop_origin": [
+   4223,
+   4937
+  ],
+  "position": {
+   "page": 0,
+   "system": 0,
+   "staff": 9,
+   "cell": 5,
+   "page_box": [
+    4394.025,
+    5078.65,
+    4436.9175,
+    5117.0275
+   ]
+  },
+  "cell_map": "cm-3ccd049d7c3c"
+ }
+]

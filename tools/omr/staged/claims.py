@@ -453,7 +453,7 @@ def grow_to_ink(binary: Any, box: Sequence[float], spacing: float, grow: float =
     return out
 
 
-#: ROADMAP 2.301 (flag `OMR_WORD_OWNS_ITS_INK`, default OFF): the word of a split marking claims its LETTERS WHOLE. CAUSE (Brahms p0 `f legato`, Sean's 2.296 r1 tile 8): the stroke owner gives a
+#: ROADMAP 2.301 (flag `OMR_WORD_OWNS_ITS_INK`, default ON): the word of a split marking claims its LETTERS WHOLE. CAUSE (Brahms p0 `f legato`, Sean's 2.296 r1 tile 8): the stroke owner gives a
 #: page-wide word claim only the strokes WHOLLY inside its box (`adjudicators.stroke_owner._areas`, +1 px), and the OCR's word box is cut at the text line, so the descender of the `g` of
 #: `legato` (ink to y 2584, the stroke map's box of it to 2585.5, the word's box to 2584: 0.5 px past the +1 px allowance) was not the word's; it fell to the detector `dynamicF` box drawn on
 #: the `g` and was settled as a DYNAMIC. The claim of the word's piece grows to the ink components that touch it (at most this far past a side) and keeps a small slack past them, never
@@ -468,8 +468,8 @@ WORD_LINE_THICK_SPACES = 0.4
 
 
 def word_ink_enabled() -> bool:
-    """`OMR_WORD_OWNS_ITS_INK` (ROADMAP 2.301), default OFF (it changes which kind the stroke owner gives a stroke; "1"/"true"/"yes"/"on" turns it on). Needs the 2.296 split."""
-    return dynamic_own_enabled() and os.environ.get(ENV_WORD_INK, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_WORD_OWNS_ITS_INK` (ROADMAP 2.301), default ON since 2026-11-11 (Sean "add the rule fix then land"; "0"/"false"/"no"/"off" turns it off). Needs the 2.296 split."""
+    return dynamic_own_enabled() and os.environ.get(ENV_WORD_INK, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def edge_ink_boxes(binary: Any, box: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), grow: float = WORD_INK_GROW_SPACES) -> List[List[float]]:

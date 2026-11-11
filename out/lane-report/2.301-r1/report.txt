@@ -1,0 +1,28 @@
+LANE REPORT  OMR_WORD_OWNS_ITS_INK (OFF=0 ON=1)  --from gather
+  OMR_WORD_OWNS_ITS_INK: read in staged/claims.py, staged/gather.py -> GATHER
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/sample-2301.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+litolff  pages [8]  (699 notes+rests OFF, 699 ON, 699 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 0 -> 0 | notes not written 201 -> 201
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (141 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 2 (at another id than asked 0) | by id key, no position 346 | position but no mark here 24
+  NOT JUDGED: 0 changed places no tile of Sean's covers (0 are covered; 0 have no page place): none -> unjudged.txt
+
+brahms  pages [0, 14]  (1289 notes+rests OFF, 1289 ON, 1289 paired)
+  file:   NOTHING CHANGED in the exported file
+  red bars 24 -> 24 | notes not written 531 -> 531
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (210 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 6 (at another id than asked 2) | by id key, no position 361 | position but no mark here 28
+  NOT JUDGED: 0 changed places no tile of Sean's covers (0 are covered; 0 have no page place): none -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 1 (0 from the changes, 1 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 2529 s
