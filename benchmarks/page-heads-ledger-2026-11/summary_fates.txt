@@ -1,0 +1,76 @@
+litolff [2, 10] boxes 1514
+   by class: {'read_but_value_or_pitch_unwritten': 41, 'refused_as_not_a_head_or_claimed': 135, 'twin_copy': 269, 'written': 1069} | marks 1234 detected_more_than_once 247 written_once 1069 marks_with_no_written_member 165
+litolff [4, 6] boxes 1888
+   by class: {'refused_as_not_a_head_or_claimed': 192, 'twin_copy': 372, 'read_but_value_or_pitch_unwritten': 129, 'written': 1195} | marks 1472 detected_more_than_once 352 written_once 1195 marks_with_no_written_member 277
+brahms [0] boxes 486
+   by class: {'refused_as_not_a_head_or_claimed': 65, 'read_but_value_or_pitch_unwritten': 8, 'twin_copy': 6, 'written': 407} | marks 467 detected_more_than_once 17 written_once 407 marks_with_no_written_member 60
+brahms [5] boxes 1251
+   by class: {'read_but_value_or_pitch_unwritten': 87, 'refused_as_not_a_head_or_claimed': 280, 'twin_copy': 197, 'written': 687} | marks 1022 detected_more_than_once 220 written_once 687 marks_with_no_written_member 335
+
+TOTAL by plate/class {('litolff', 'read_but_value_or_pitch_unwritten'): 170, ('litolff', 'refused_as_not_a_head_or_claimed'): 327, ('litolff', 'twin_copy'): 641, ('litolff', 'written'): 2264, ('brahms', 'refused_as_not_a_head_or_claimed'): 345, ('brahms', 'read_but_value_or_pitch_unwritten'): 95, ('brahms', 'twin_copy'): 203, ('brahms', 'written'): 1094}
+TOTAL marks {('litolff', 'marks'): 2706, ('litolff', 'detected_more_than_once'): 599, ('litolff', 'written_once'): 2264, ('litolff', 'counted_under_a_reason'): 442, ('brahms', 'marks'): 1489, ('brahms', 'detected_more_than_once'): 237, ('brahms', 'written_once'): 1094, ('brahms', 'counted_under_a_reason'): 395}
+
+ litolff box fates
+   2264  written
+    444  owned_by_another_staff
+    112  not_a_notehead:clipped_fragment
+     91  duration_narrowed
+     87  mark_group_duplicate
+     54  not_a_notehead:notehead_is_a_duplicate_box
+     46  not_a_notehead:stacked_head_duplicate
+     44  no_pitch
+     39  not_a_notehead:too_narrow
+     33  not_a_notehead:on_a_dynamic_letter
+     27  chord_value_undecided
+     21  not_a_notehead:claimed_by:clef
+     19  not_a_notehead:claimed_by:barline
+     16  not_a_notehead:claimed_by:page_claim
+     11  not_a_notehead:belongs_to_a_nearer_staff
+     11  not_a_notehead:tremolo_slash_crosses_stem
+     10  not_a_notehead:is_a_beam_piece
+     10  not_a_notehead:is_a_rest_twin
+      8  not_a_notehead:claimed_by:key_signature
+      7  ink_is_a_whole_rest
+      7  not_a_notehead:is_a_rest_shape
+      7  unread:wide_box_unread
+      7  not_a_notehead:claimed_by:bracket
+      7  not_a_notehead:stem_end_ink_disagrees
+      6  not_a_notehead:taller_than_a_head
+      4  not_a_notehead:claimed_by:word
+      2  not_a_notehead:head_cut_piece
+      2  not_a_notehead:on_a_rest
+      2  not_a_notehead:stem_end_ink_claimed
+      1  duration_abstained
+      1  not_a_notehead:wider_than_a_head
+      1  not_a_notehead:is_an_arc_tail
+      1  owner_not_read
+
+ brahms box fates
+   1094  written
+    185  owned_by_another_staff
+    161  not_a_notehead:claimed_by:barline
+     59  duration_narrowed
+     58  not_a_notehead:too_narrow
+     35  not_a_notehead:clipped_fragment
+     35  chord_value_undecided
+     19  not_a_notehead:claimed_by:bracket
+     14  not_a_notehead:claimed_by:meter
+     12  not_a_notehead:claimed_by:clef
+     11  not_a_notehead:tremolo_slash_crosses_stem
+      6  not_a_notehead:on_a_read_meter
+      6  not_a_notehead:notehead_is_a_duplicate_box
+      5  not_a_notehead:belongs_to_a_nearer_staff
+      5  not_a_notehead:is_a_rest_twin
+      4  not_a_notehead:head_cut_piece
+      4  not_a_notehead:stacked_head_duplicate
+      4  not_a_notehead:taller_than_a_filled_head
+      3  not_a_notehead:is_a_beam_piece
+      3  mark_group_duplicate
+      3  not_a_notehead:stem_end_ink_disagrees
+      2  not_a_notehead:on_a_dynamic_letter
+      2  not_a_notehead:on_a_barline
+      2  not_a_notehead:on_a_rest
+      2  not_a_notehead:stem_end_ink_unladdered
+      1  not_a_notehead:claimed_by:key_signature
+      1  not_a_notehead:claimed_by:page_claim
+      1  unread:wide_box_unread

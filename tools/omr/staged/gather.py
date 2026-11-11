@@ -2625,10 +2625,13 @@ def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
                   key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
 
 
-def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
-    """One `Q.MARK_GROUP` row per item. Returns the number of groups."""
+def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]], groups: Optional[List[List[int]]] = None,
+                      extra_of: Optional[Dict[str, Dict[str, Any]]] = None) -> int:
+    """One `Q.MARK_GROUP` row per item. Returns the number of groups. `groups` (ROADMAP 2.290, flag `OMR_PAGE_HEAD_ONE`): the partition when it is
+    not `cluster_marks(items)`'s; `extra_of`: per item key, detail fields to add (the page head's `identity`)."""
     seq: Dict[Tuple[int, int], int] = {}
-    groups = cluster_marks(items)
+    if groups is None:
+        groups = cluster_marks(items)
     for g in groups:
         scope = items[g[0]]["scope"]
         n = seq[scope] = seq.get(scope, -1) + 1
@@ -2642,6 +2645,8 @@ def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
             extra: Dict[str, Any] = {}
             if len(g) > 1:
                 extra["members"] = [items[j]["key"] for j in g]
+            if extra_of and it["key"] in extra_of:
+                extra.update(extra_of[it["key"]])
             glyph = R.glyph(*it["coords"])
             log.observe(glyph, Q.MARK_GROUP, gid,
                         reader=READERS.GEOMETRY, frame=it["frame"],
@@ -2652,7 +2657,8 @@ def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
 
 def gather_mark_groups(log: Log, cells: Sequence[Any],
                        local: Dict[int, Tuple[int, int]],
-                       detections: Dict[str, List[Any]]) -> int:
+                       detections: Dict[str, List[Any]],
+                       page_heads: Any = None) -> int:
     """ROADMAP 2.58b: file the physical-mark identity of every notehead, rest
     and accidental box of a page (`OMR_MARK_GROUPS`, default ON since 2026-11-02).
 
@@ -2688,7 +2694,24 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                           "conf": float(d.confidence),
                           "frame": frame_cell(sub.cell),
                           "tall_read": bool(getattr(d, _box_kind.TALL_READ_ATTR, False))})
-    return _file_mark_groups(log, items)
+    # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE): the notehead groups ARE the page heads (`page_heads.read_one`: one identity from the ink); the other
+    # families keep `cluster_marks`. With the flag OFF `page_heads` is None and this is the 2.58b grouping exactly.
+    from . import page_heads as _ph
+    part = _ph.mark_group_partition(page_heads)
+    if part is None:
+        return _file_mark_groups(log, items)
+    head_group, head_how = part
+    groups = cluster_marks([dict(it, category=it["category"] if it["key"] not in head_group else "__page_head__") for it in items])
+    groups = [g for g in groups if items[g[0]]["key"] not in head_group]
+    by_head: Dict[int, List[int]] = {}
+    for i, it in enumerate(items):
+        if it["key"] in head_group:
+            by_head.setdefault(head_group[it["key"]], []).append(i)
+    # a notehead box the page head list does not hold (its cell had no page box) keeps the 2.58b grouping above
+    groups += [sorted(g) for g in by_head.values()]
+    groups.sort(key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
+    extra_of = {k: {"identity": "page_head", "head_how": head_how.get(k, "")} for k in head_group}
+    return _file_mark_groups(log, items, groups=groups, extra_of=extra_of)
 
 
 def mark_groups_from_log(log: Log) -> int:
@@ -17933,10 +17956,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE, default OFF): every notehead box's head read ONCE from the page ink -- the one identity of a head (filed below as
+        # the notehead `Q.MARK_GROUP` and head `Q.PAGE_MARK` ids) and the page strokes of its oval (claimed after the accidental ink). AFTER the final box set, the
+        # page map and the glyph strokes; BEFORE `page_marks` and `gather_mark_groups`. Reads only. None with the flag OFF.
+        from . import page_heads as _page_heads
+        _one_heads = _page_heads.gather_one_heads(pws, cells, local, detections, page_map_pre, progress=progress)
         # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default ON since 2026-11-02): one page-mark id per detector box -- boxes of one family from two padded
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
-        page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
+        page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress, page_heads=_one_heads)
         # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default ON): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
         # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
         if not _page_strokes.claims_on():
@@ -17963,7 +17991,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.58b, BEFORE EVERY READER THAT COULD USE THE IDENTITY and
         # after the last thing that changes the box set (the rescue above).
         # A grouping over the detector's page boxes; flag-gated inside.
-        gather_mark_groups(log, cells, local, detections)
+        gather_mark_groups(log, cells, local, detections, page_heads=_one_heads)
         gather_notehead_recentre(log, cells, local, detections)
         # ⚠️ ROADMAP 2.73, AFTER detection and the rescue (it walks `detections`
         # by index) and BEFORE `gather_notehead_positions` and
@@ -17972,7 +18000,6 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS, default OFF): every head read ONCE on the page map (twin boxes folded, ink = the page strokes the box stands on,
         # position from the ink against the head's own bar). AFTER the final box set and the page map, BEFORE the cell position / far-head reads (M6b drives the
         # far-head job list from it). Reads only; `file_page_heads` files it after the page-wide claim names.
-        from . import page_heads as _page_heads
         _page_head_list = _page_heads.gather_page_heads(log, pws, cells, local, detections, page_map_pre, progress=progress)
         gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
@@ -18144,6 +18171,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS): `Q.PAGE_HEAD` rows and the head / ledger-stub claims on the page strokes, AFTER the page-wide claim names (an
         # earlier owner's stroke is marked contested, never taken) and after the cell position rows (they ride on the head). Nothing reads them in M6a.
         _page_heads.file_page_heads(log, pws, _page_head_list, page_map_pre, progress=progress)
+        # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default OFF): one claim per head on the page strokes of its oval, layer `head` of
+        # `claim_order.LAYERS` -- AFTER every earlier page-wide claim (accidental ink last), BEFORE the page beams; ADJUDICATE's ledger settles it at the head tier.
+        _page_heads.file_one_claims(log, pws, _one_heads, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),
         # filed as `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows), the page map and the claim names (a stroke another claim
         # owns is no beam); reads no raster; NOTHING READS THE ROWS.

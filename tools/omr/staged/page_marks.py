@@ -275,7 +275,7 @@ def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = Tr
 # ───────────────────────────── 2. the GATHER step ─────────────────────────────
 
 def gather_page_marks(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
-                      stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False) -> Optional[Marks]:
+                      stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False, page_heads: Any = None) -> Optional[Marks]:
     """ROADMAP 2.240 step 1 (flag `OMR_PAGE_MARKS`, default OFF), STAGED GATHER: `Q.PAGE_MARK` per detector box (module doc). Reads the
     page render, the cells' stroke maps and the final box set; files rows only and decides nothing. Returns the page's `Marks` (probes)."""
     if not enabled() or not stroke_cells:
@@ -317,6 +317,10 @@ def gather_page_marks(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     if not boxes:
         return None
     marks = link(boxes)
+    if page_heads is not None:
+        # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE): the head boxes' page-mark ids are the page heads (one identity); `link` above still marks every other family
+        from . import page_heads as _ph
+        marks = _ph.apply_to_page_marks(marks, page_heads)
     marks.boxes = boxes
     for b in boxes:
         n = marks.mark_of[b.key]

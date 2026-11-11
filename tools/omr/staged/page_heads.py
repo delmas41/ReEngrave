@@ -445,3 +445,446 @@ def gather_page_heads(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     if ph is not None and progress:
         print("  gather page heads p%s: read %d heads (%s)" % (getattr(pws.page, "page_index", 0), len(ph.heads), ph.seconds))
     return ph
+
+
+# ═════════════════════════════ ROADMAP 2.290 build: ONE HEAD, ONE IDENTITY, ONE CLAIM ═════════════════════════════
+#
+# docs/plan-2026-11-10-page-heads-on-the-ledger.md steps 1, 2 and 4. Sean 2026-11-05: "I want an actual fix that reads and claims all note heads
+# individually"; 2026-11-11: "I want the rest of the ink claimed especially note heads"; DECISIONS 2026-11-10 RETIRE AS YOU LAND.
+#
+# THE CAUSE. Three answers to "which boxes are one head" stood side by side -- `Q.MARK_GROUP` (box IoU > 0.3 in one system, `gather.cluster_marks`),
+# `Q.PAGE_MARK` (two CELLS' boxes sharing half the smaller box's ink, `page_marks.link`) and M6a's `fold` above (IoU 0.5, one staff, read by nothing) --
+# none of them asked the INK whether the two boxes stand on one printed head, and each consumer read a different one. And a head's ink was claimed per
+# padded cell by "a box covers half a cell stroke" (`stroke_owner` head tier), so the same page ink was a head in one cell and a twin in the next.
+#
+# STEP 1+2, ONE IDENTITY (flag `OMR_PAGE_HEAD_ONE`, default OFF). A notehead box's HEAD INK is the page-map pixels inside its rectangle that lie on a
+# head-shaped stroke (`is_head_ink`: no stem, no ledger rung or line residue, no beam piece, no long curve). Two notehead boxes of one system are ONE
+# HEAD when (a) both hold head ink, (b) they share at least `SHARE_MIN` of the smaller one's head ink (the same pixels, not a near box) and (c) the
+# centres of their head ink lie within one oval (`OVAL_DX_SP` across, `OVAL_DY_SP` along: a third stands two steps away, a second's two heads stand
+# either side of the stem; page-facts: stacked heads of a chord stay separate, a unison is one head with two stems and two notes, `export_unison`).
+# A tall box GATHER already read for the heads inside it (`box_kind` tall read) joins nothing (as `cluster_marks`). A box that holds no head ink
+# (`HEAD_INK_MIN_SP2`; the phantom doubleWhole over a beam, a barline sliver) makes NO head: it joins the head whose box it overlaps at the old
+# twin rule (`gather.MARK_GROUP_IOU`) so nothing written once today is written twice, else it stands alone -- and it is COUNTED (`no_head_ink`).
+# The partition is filed as the notehead `Q.MARK_GROUP` rows (the same quantity and fields, so every reader -- export write-once, `export_unison`,
+# `glyph_owner` once per group, `rhythm`'s twin -- reads it unchanged) and as the head `Q.PAGE_MARK` ids (so the page owner, 2.240, rules once per
+# head). `cluster_marks` for noteheads, `page_marks.link` for heads and M6a's `fold` are then not consulted for heads.
+#
+# STEP 4, ONE CLAIM (flag `OMR_PAGE_HEAD_LEDGER`, needs `OMR_PAGE_HEAD_ONE`, default OFF). Each head claims the PAGE STROKES of its own oval: the
+# head's ink extent grown from its representative box on the page raster (`head_extent.ink_extent`, the 2.220 trim; never the detector rectangle),
+# and a stroke is the head's when at least `CLAIM_SHARE_MIN` of the stroke's ink lies inside that oval, the stroke is head-shaped and no bigger than a
+# head (`stroke_owner.HEAD_MAX_*`), and no OTHER head's oval holds `OTHER_HEAD_MAX` of it. A stroke fused with another mark (a slash, a stem, a
+# letter, a rest: the stroke is bigger than a head) or with another head is NOT claimed -- splitting merged ink is plan step 5 -- and stays with the
+# cell boxes as today. Filed as ONE `Q.CLAIMED_AREA` row per head on the page (owner `head`, unit `page_ink`, source `page_head_one`, `page_strokes`,
+# `members`); ADJUDICATE's stroke owner hands each cell the claim on the cell strokes LINKED to those page strokes (`page_ledger`'s link rule) at the
+# HEAD tier, so every earlier claim (staff, barline, clef/key/meter, words, dynamics, arcs, tremolo, accidental ink, whole rests; tier 0 / 1) keeps
+# its ink and the stems / beams / flags read after it; the head's member boxes are ONE owner with it (`stroke_owner._settle`: decided, never a twin).
+# Claim order: `claim_order.LAYERS` layer `head`.
+#
+# CONVENTION ASSUMED: a printed head is one oval of ink; two boxes on the same pixels whose ink centres lie within one oval are one head; a stroke
+# bigger than a head is fused and not the head's alone. WHAT WOULD FALSIFY IT: a tile Sean calls two heads that this joins (a chord drawn tight), one
+# head this keeps apart (a twin box drawn off its ink by more than the oval), or claimed ink that is not the head's. NOT CONFIRMED beyond two plates.
+
+ONE_ENV = "OMR_PAGE_HEAD_ONE"
+LEDGER_ENV = "OMR_PAGE_HEAD_LEDGER"
+ONE_SOURCE = "page_head_one"
+ONE_OWNER = "head"
+#: a notehead box holding less head ink than this (sp^2) stands on no head: a tenth of a filled head (~1.0 sp^2, `stroke_owner.HEAD_MIN_AREA_SP2` doc)
+HEAD_INK_MIN_SP2 = 0.1
+#: two boxes share a head when the pixels they share are at least this share of the smaller one's head ink (the register's one cut, `page_marks.SHARE_MIN`)
+SHARE_MIN = 0.5
+#: ... and the centres of their head ink lie inside one oval (staff spaces): across, half a head's width (~1.3 sp); along, under one step (0.5 sp)
+OVAL_DX_SP = 0.65
+OVAL_DY_SP = 0.4
+#: a horizontal piece at least this wide and this flat is a beam piece, not head ink (2.284 r7's bar test, `rhythm._head_owned_bar`)
+BEAM_MIN_W_SP = 1.8
+BEAM_MIN_ASPECT = 2.5
+#: a curve longer than this is an arc piece, not a head's outline (`stroke_owner.shape_fit` head_outline_piece)
+CURVE_MAX_LEN_SP = 2.0
+#: a stroke is the head's claimed ink when this share of it lies in the head's oval ...
+CLAIM_SHARE_MIN = 0.5
+#: ... it is no bigger than a head (`stroke_owner.HEAD_MAX_W_SP` / `HEAD_MAX_H_SP`) ...
+CLAIM_MAX_W_SP = 3.0
+CLAIM_MAX_H_SP = 1.6
+#: ... and no other head's oval holds this share of it (fused with another head: plan step 5)
+OTHER_HEAD_MAX = 0.2
+
+
+def one_enabled() -> bool:
+    """`OMR_PAGE_HEAD_ONE` (ROADMAP 2.290 steps 1-2), default OFF: allow-list."""
+    return _flag(ONE_ENV)
+
+
+def ledger_enabled() -> bool:
+    """`OMR_PAGE_HEAD_LEDGER` (ROADMAP 2.290 step 4), default OFF; needs `OMR_PAGE_HEAD_ONE`."""
+    return one_enabled() and _flag(LEDGER_ENV)
+
+
+def is_head_ink(kind: str, w_sp: float, h_sp: float, thick_sp: float, length_sp: float) -> bool:
+    """PURE. Can a page stroke of this shape be a head's ink? Never a stem (vertical), a ledger rung or staff-line residue (a thin horizontal,
+    `LEDGER_MAX_THICK_SP`), a beam piece (`BEAM_MIN_W_SP` wide and `BEAM_MIN_ASPECT` flat) or an arc piece (a curve longer than `CURVE_MAX_LEN_SP`).
+    A blob of any size can (Litolff fuses heads: only the part inside the box counts toward identity)."""
+    if kind == "vertical":
+        return False
+    if kind == "horizontal":
+        if thick_sp <= LEDGER_MAX_THICK_SP:
+            return False
+        if w_sp >= BEAM_MIN_W_SP and h_sp > 0 and w_sp / h_sp >= BEAM_MIN_ASPECT:
+            return False
+        return True
+    if kind == "curve":
+        return length_sp <= CURVE_MAX_LEN_SP
+    return True
+
+
+def same_head(a: Dict[str, Any], b: Dict[str, Any], shared_px: float, sp: float) -> Optional[str]:
+    """PURE. None when boxes `a` and `b` (dicts: `ink_px`, `cx`, `cy` = their head ink's pixel count and centre, page px; `tall`) are ONE head, else the
+    reason they are not: `tall_read`, `no_head_ink`, `no_shared_ink`, `share_below`, `two_ovals`."""
+    if a.get("tall") or b.get("tall"):
+        return "tall_read"
+    if not a["ink_px"] or not b["ink_px"]:
+        return "no_head_ink"
+    if shared_px <= 0:
+        return "no_shared_ink"
+    if shared_px < SHARE_MIN * min(a["ink_px"], b["ink_px"]):
+        return "share_below"
+    if abs(a["cx"] - b["cx"]) > OVAL_DX_SP * sp or abs(a["cy"] - b["cy"]) > OVAL_DY_SP * sp:
+        return "two_ovals"
+    return None
+
+
+def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_iou: float) -> Tuple[List[List[int]], Dict[int, str], List[list]]:
+    """PURE. The one-head partition of a page's notehead boxes. `items`: dicts with `scope` (page, system), `box` (page corners), `ink_px`, `cx`, `cy`,
+    `tall`, `has_ink`; `shared(i, j)` = head-ink pixels the two boxes share. Returns (groups of indices -- each sorted, ordered by the group's leftmost x
+    then index, as `gather.cluster_marks` --, `how` per index: `ink` | `alone` | `no_head_ink_twin` | `no_head_ink` | `tall_read`, and the decided
+    pairs [i, j, reason or None] for the comparison census)."""
+    from .gather import _iou as _box_iou
+    parent = list(range(len(items)))
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+    buckets: Dict[Any, List[int]] = {}
+    for i, it in enumerate(items):
+        buckets.setdefault(it["scope"], []).append(i)
+    pairs: List[list] = []
+    how: Dict[int, str] = {}
+    for members in buckets.values():
+        members.sort(key=lambda i: (items[i]["box"][0], i))
+        for a in range(len(members)):
+            i = members[a]
+            bi = items[i]["box"]
+            for b in range(a + 1, len(members)):
+                j = members[b]
+                bj = items[j]["box"]
+                if bj[0] >= bi[2]:
+                    break
+                if bj[1] >= bi[3] or bi[1] >= bj[3]:
+                    continue
+                why = same_head(items[i], items[j], float(shared(i, j)), sp)
+                pairs.append([i, j, why])
+                if why is None:
+                    parent[find(i)] = find(j)
+        # a box on no head ink joins the INK head whose box it overlaps most at the old twin rule (one mark written once stays written once), else alone
+        for i in members:
+            if items[i]["ink_px"] or items[i].get("tall"):
+                continue
+            best = None
+            for j in members:
+                if j == i or not items[j]["ink_px"] or items[j].get("tall"):
+                    continue
+                v = _box_iou(items[i]["box"], items[j]["box"])
+                if v > no_ink_iou and (best is None or (v, -j) > (best[0], -best[1])):
+                    best = (v, j)
+            if best is not None:
+                parent[find(i)] = find(best[1])
+                how[i] = "no_head_ink_twin"
+            else:
+                how[i] = "no_head_ink"
+    groups: Dict[int, List[int]] = {}
+    for i in range(len(items)):
+        groups.setdefault(find(i), []).append(i)
+    out = sorted((sorted(g) for g in groups.values()), key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
+    for g in out:
+        for i in g:
+            if i in how:
+                continue
+            how[i] = "tall_read" if items[i].get("tall") else ("ink" if len(g) > 1 else "alone")
+    return out, how, pairs
+
+
+def choose_claims(ovals: Dict[int, Dict[int, int]], totals: Dict[int, int], ok: Dict[int, bool]) -> Tuple[Dict[int, List[int]], Dict[str, int]]:
+    """PURE. `ovals` = {head: {stroke: its pixels inside the head's oval}}; `totals` = {stroke: its pixels}; `ok` = {stroke: head-shaped and no bigger
+    than a head}. Returns ({head: [claimed strokes]}, census of strokes NOT claimed by reason). A stroke is claimed by the ONE head whose oval holds
+    `CLAIM_SHARE_MIN` of it, when no other head's oval holds `OTHER_HEAD_MAX` of it."""
+    by_stroke: Dict[int, List[Tuple[int, float]]] = {}
+    for h, d in ovals.items():
+        for s, n in d.items():
+            t = totals.get(s) or 0
+            if t > 0:
+                by_stroke.setdefault(s, []).append((h, n / float(t)))
+    out: Dict[int, List[int]] = {h: [] for h in ovals}
+    cen: Dict[str, int] = {}
+    for s in sorted(by_stroke):
+        hs = sorted(by_stroke[s], key=lambda t: (-t[1], t[0]))
+        top_h, top = hs[0]
+        if top < CLAIM_SHARE_MIN:
+            continue                                   # a sliver of a neighbouring stroke inside the oval: not this head's ink
+        if not ok.get(s, False):
+            cen["not_head_shaped_or_fused"] = cen.get("not_head_shaped_or_fused", 0) + 1
+            continue
+        if len(hs) > 1 and hs[1][1] >= OTHER_HEAD_MAX:
+            cen["shared_by_two_heads"] = cen.get("shared_by_two_heads", 0) + 1
+            continue
+        out[top_h].append(int(s))
+    return out, cen
+
+
+class OneHeads:
+    """What `read_one` found on one page: `items` (one per notehead box: key, cell, gi, box, cls, conf, ink_px, cx, cy, tall), `groups` (index lists),
+    `how` (per index), `heads` (one dict per group with ink: ordinal, members, rep, oval, oval_why, strokes), `census`."""
+
+    def __init__(self) -> None:
+        self.items: List[Dict[str, Any]] = []
+        self.groups: List[List[int]] = []
+        self.how: Dict[int, str] = {}
+        self.heads: List[Dict[str, Any]] = []
+        self.census: Dict[str, Any] = {}
+        self.group_of_key: Dict[str, int] = {}
+
+
+def _label_image(pm: Any, shape_px: Sequence[int]) -> np.ndarray:
+    """The page map's strokes painted into one label image in the map's reduced frame (0 = none, i + 1 = stroke i), no dilation (every pixel counted
+    once, exactly)."""
+    s = float(pm.scale)
+    h, w = int(np.ceil(shape_px[0] * s)) + 2, int(np.ceil(shape_px[1] * s)) + 2
+    lab = np.zeros((h, w), np.int32)
+    for i, (m, x0, y0) in enumerate(pm.masks):
+        if getattr(m, "size", 0) == 0:
+            continue
+        mh, mw = m.shape
+        y1, x1 = min(h, y0 + mh), min(w, x0 + mw)
+        if y1 <= y0 or x1 <= x0 or x0 < 0 or y0 < 0:
+            continue
+        sub = lab[y0:y1, x0:x1]
+        sub[m[:y1 - y0, :x1 - x0].astype(bool)] = i + 1
+    return lab
+
+
+def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any) -> Optional[OneHeads]:
+    """ROADMAP 2.290 (flag `OMR_PAGE_HEAD_ONE`), STAGED GATHER, decides nothing: the page's notehead boxes partitioned into heads by their ink (section
+    doc), each head's oval and the page strokes it claims. None where there is no page map or raster (the old identities then stand)."""
+    if pm is None or not getattr(pm, "strokes", None) or not getattr(pm, "masks", None):
+        return None
+    binary = getattr(getattr(pws, "page", None), "binary", None)
+    if binary is None:
+        return None
+    from . import record as R
+    from .record import Subject
+    from . import head_extent, head_ink
+    from . import box_kind as _box_kind
+    from .gather import _cell_grid, _page_box, MARK_GROUP_IOU
+    t0 = time.time()
+    out = OneHeads()
+    sp = float(pm.sp)
+    s = float(pm.scale)
+    cell_by_key: Dict[Tuple[int, int, int, int], Any] = {}
+    for c in cells:
+        key = local.get(c.staff_index)
+        if key is not None:
+            cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
+    foreign: List[Tuple[float, float, float, float]] = []
+    for ck, dets in detections.items():
+        sub = Subject.from_key(ck)
+        c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
+        if c is None:
+            continue
+        for gi, d in enumerate(dets):
+            pb = _page_box(c, d)
+            if pb is None:
+                continue
+            if head_ink.is_foreign_class(str(d.smufl_name)):
+                foreign.append(pb)
+            if getattr(d, "category", None) != "notehead":
+                continue
+            out.items.append(dict(key=R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), cell=(sub.page, sub.system, sub.staff, sub.cell),
+                                  gi=gi, box=tuple(float(v) for v in pb), cls=str(d.smufl_name), conf=float(getattr(d, "confidence", 0.0) or 0.0),
+                                  scope=(sub.page, sub.system), c=c, tall=bool(getattr(d, _box_kind.TALL_READ_ATTR, False))))
+    lab = _label_image(pm, binary.shape)
+    n_st = len(pm.strokes)
+    head_lab = np.zeros(n_st + 1, bool)
+    claim_ok: Dict[int, bool] = {}
+    for i, st in enumerate(pm.strokes):
+        spl = float(getattr(st, "staff_space_local", None) or sp) or sp
+        w_sp, h_sp = float(st.box[2]) / spl, float(st.box[3]) / spl
+        hi = is_head_ink(str(st.kind), w_sp, h_sp, float(st.thickness_sp), float(st.length_sp))
+        head_lab[i + 1] = hi
+        claim_ok[i] = bool(hi and w_sp <= CLAIM_MAX_W_SP and h_sp <= CLAIM_MAX_H_SP)
+    hmask = head_lab[lab]
+    H, W = lab.shape
+
+    def rrect(b: Sequence[float]) -> Tuple[int, int, int, int]:
+        return (max(0, int(np.floor(b[0] * s))), max(0, int(np.floor(b[1] * s))), min(W, int(np.ceil(b[2] * s))), min(H, int(np.ceil(b[3] * s))))
+    px_sp2 = 1.0 / (s * s * sp * sp)
+    for it in out.items:
+        x0, y0, x1, y1 = rrect(it["box"])
+        m = hmask[y0:y1, x0:x1] if (x1 > x0 and y1 > y0) else np.zeros((0, 0), bool)
+        n = int(m.sum())
+        if n * px_sp2 < HEAD_INK_MIN_SP2:
+            n = 0
+        it["ink_px"] = n
+        if n:
+            ys, xs = np.nonzero(m)
+            it["cx"], it["cy"] = (x0 + float(xs.mean()) + 0.5) / s, (y0 + float(ys.mean()) + 0.5) / s
+        else:
+            it["cx"] = (it["box"][0] + it["box"][2]) / 2.0
+            it["cy"] = (it["box"][1] + it["box"][3]) / 2.0
+
+    def shared(i: int, j: int) -> int:
+        a, b = out.items[i]["box"], out.items[j]["box"]
+        x0, y0, x1, y1 = rrect((max(a[0], b[0]), max(a[1], b[1]), min(a[2], b[2]), min(a[3], b[3])))
+        if x1 <= x0 or y1 <= y0:
+            return 0
+        return int(hmask[y0:y1, x0:x1].sum())
+    groups, how, pairs = partition(out.items, shared, sp, MARK_GROUP_IOU)
+    out.groups, out.how = groups, how
+    # each head with ink: its representative (the most confident member with ink, the export's own write-once choice), its oval, and the strokes in it
+    totals = np.bincount(lab.ravel(), minlength=n_st + 1)
+    ovals: Dict[int, Dict[int, int]] = {}
+    oval_box: Dict[int, Any] = {}
+    oval_why: Dict[int, Optional[str]] = {}
+    reps: Dict[int, int] = {}
+    for gi_, g in enumerate(groups):
+        for i in g:
+            out.group_of_key[out.items[i]["key"]] = gi_
+        inked = [i for i in g if out.items[i]["ink_px"] and not out.items[i].get("tall")]
+        if not inked:
+            continue
+        rep = min(inked, key=lambda i: (-out.items[i]["conf"], out.items[i]["key"]))
+        reps[gi_] = rep
+        it = out.items[rep]
+        grid = _cell_grid(it["c"])
+        up = getattr(it["c"], "upscale_factor", None)
+        sp_head = (2.0 * grid[1] / up) if (grid is not None and up) else sp
+        box = it["box"]
+        others = [out.items[j]["box"] for g2 in groups if g2 is not g for j in g2[:1]
+                  if abs(out.items[j]["box"][0] - box[0]) < 4 * sp and abs(out.items[j]["box"][1] - box[1]) < 4 * sp]
+        got = head_extent.ink_extent(binary, box, sp_head, [f for f in foreign if abs(f[0] - box[0]) < 4 * sp and abs(f[1] - box[1]) < 4 * sp], others)
+        oval_why[gi_] = got["why"]
+        if got["why"] is not None or got["extent"] is None:
+            continue
+        ext = [float(v) for v in got["extent"]]
+        oval_box[gi_] = ext
+        x0, y0, x1, y1 = rrect((ext[0] - 1.0 / s, ext[1] - 1.0 / s, ext[2] + 1.0 / s, ext[3] + 1.0 / s))
+        if x1 <= x0 or y1 <= y0:
+            continue
+        cnt = np.bincount(lab[y0:y1, x0:x1].ravel(), minlength=n_st + 1)
+        ovals[gi_] = {int(k) - 1: int(cnt[k]) for k in np.nonzero(cnt)[0] if k > 0}
+    claims, ccen = choose_claims(ovals, {i: int(totals[i + 1]) for i in range(n_st)}, claim_ok)
+    cen: Dict[str, Any] = dict(boxes=len(out.items), heads=sum(1 for g in groups if g), heads_with_ink=len(reps), oval=len(oval_box), claims=0,
+                               claimed_strokes=0, oval_why={}, how={}, pairs_joined=sum(1 for p in pairs if p[2] is None), pairs_kept_apart={})
+    for v in how.values():
+        cen["how"][v] = cen["how"].get(v, 0) + 1
+    for p in pairs:
+        if p[2] is not None:
+            cen["pairs_kept_apart"][p[2]] = cen["pairs_kept_apart"].get(p[2], 0) + 1
+    for g_, w in oval_why.items():
+        if w is not None:
+            k = str(w).split(":")[0]
+            cen["oval_why"][k] = cen["oval_why"].get(k, 0) + 1
+    for gi_, rep in sorted(reps.items()):
+        g = groups[gi_]
+        st = claims.get(gi_, [])
+        h = dict(ordinal=len(out.heads), group=gi_, members=[out.items[i]["key"] for i in g], rep=out.items[rep]["key"],
+                 oval=None if gi_ not in oval_box else [round(v, 1) for v in oval_box[gi_]], oval_why=oval_why.get(gi_), strokes=sorted(st),
+                 staff=[out.items[rep]["cell"][1], out.items[rep]["cell"][2]])
+        if st:
+            cen["claims"] += 1
+            cen["claimed_strokes"] += len(st)
+        out.heads.append(h)
+    cen["not_claimed"] = ccen
+    cen["seconds"] = round(time.time() - t0, 2)
+    out.census = cen
+    return out
+
+
+def mark_group_partition(oh: Optional[OneHeads]) -> Optional[Tuple[Dict[str, int], Dict[str, str]]]:
+    """For `gather.gather_mark_groups`: ({notehead box key: page-head group index}, {box key: how}). None without a page head list."""
+    if oh is None:
+        return None
+    return dict(oh.group_of_key), {oh.items[i]["key"]: oh.how.get(i, "") for i in range(len(oh.items))}
+
+
+def apply_to_page_marks(marks: Any, oh: Optional[OneHeads]) -> Any:
+    """ROADMAP 2.290 step 2: the head boxes' `Q.PAGE_MARK` ids ARE the page heads (one identity; the page owner, 2.240, then rules once per head).
+    Every other family's marks are kept. Ordinals renumbered as `page_marks.link` numbers them (by the smallest (cell, glyph) of each mark)."""
+    if oh is None or marks is None:
+        return marks
+    keys = set(oh.group_of_key)
+    groups: List[List[str]] = []
+    for n in sorted(marks.members):
+        rest = [k for k in marks.members[n] if k not in keys]
+        if rest:
+            groups.append(rest)
+    by_g: Dict[int, List[str]] = {}
+    for k, g in oh.group_of_key.items():
+        if k in marks.mark_of:
+            by_g.setdefault(g, []).append(k)
+    head_of: Dict[str, str] = {}
+    for g, ks in by_g.items():
+        groups.append(ks)
+        for k in ks:
+            head_of[k] = "page_head" if len(ks) > 1 else "page_head_alone"
+
+    def order_key(k: str) -> Tuple[int, ...]:
+        return tuple(int(t) for t in k.split("/")[1:6])
+    groups = [sorted(g, key=order_key) for g in groups]
+    groups.sort(key=lambda g: min(order_key(k) for k in g))
+    marks.mark_of, marks.members = {}, {}
+    for n, g in enumerate(groups):
+        marks.members[n] = g
+        for k in g:
+            marks.mark_of[k] = n
+    for k, w in head_of.items():
+        marks.why[k] = w
+    return marks
+
+
+def file_one_claims(log: Any, pws: Any, oh: Optional[OneHeads], *, progress: bool = False) -> None:
+    """ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): one `Q.CLAIMED_AREA` row per head that claims a stroke (section doc), and one census row.
+    AFTER every earlier page-wide claim (accidental ink, 2.285, is the last before the heads); the ledger's one settle in ADJUDICATE keeps every earlier
+    claim's ink (tier 0 / 1), so nothing here re-reads them."""
+    if oh is None or not ledger_enabled():
+        return
+    from . import record as R
+    from .record import Q, READERS
+    from .gather import FRAME_PAGE
+    p = int(getattr(pws.page, "page_index", 0))
+    sub = R.page(p)
+    filed = 0
+    for h in oh.heads:
+        if not h["strokes"]:
+            continue
+        log.observe(sub, Q.CLAIMED_AREA, int(h["ordinal"]), reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, owner=ONE_OWNER, unit=UNIT, standing="READ",
+                    source=ONE_SOURCE, how="page_head_oval", page_strokes=list(h["strokes"]), members=list(h["members"]), rep=h["rep"],
+                    oval=h["oval"], staff=h["staff"])
+        filed += 1
+    cen = dict(oh.census, rows=filed)
+    log.observe(sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_PAGE_HEADS, frame=FRAME_PAGE, owner=ONE_SOURCE, unit="page_ink_census", standing="READ",
+                source=ONE_SOURCE, **cen)
+    if progress:
+        print("  gather page heads (2.290) p%s: %d heads, %d claims (%s)" % (p, len(oh.heads), filed, {k: cen[k] for k in ("boxes", "heads", "oval", "claimed_strokes")}))
+
+
+def gather_one_heads(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any, *,
+                     progress: bool = False) -> Optional[OneHeads]:
+    """ROADMAP 2.290 (flag `OMR_PAGE_HEAD_ONE`), STAGED GATHER: read the page's heads once (decides nothing, files nothing). Placed AFTER the final box
+    set, the page map and the glyph strokes, BEFORE `page_marks` and `gather_mark_groups` (both file this partition for heads)."""
+    if not one_enabled():
+        return None
+    oh = read_one(pws, cells, local, detections, pm)
+    if oh is not None and progress:
+        print("  gather page heads (2.290) p%s: %d boxes -> %d heads (%s s)" % (getattr(pws.page, "page_index", 0), len(oh.items), len(oh.groups),
+                                                                                  oh.census.get("seconds")))
+    return oh

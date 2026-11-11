@@ -221,6 +221,33 @@ def _head_claims(ev: Evidence, cell, claims: List[SO.Claim], page: Dict[int, Tup
     return out, cen
 
 
+def _page_head_claims(ev: Evidence, cell) -> List[SO.Claim]:
+    """ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): each page head's ONE claim (`page_heads.file_one_claims`: a `Q.CLAIMED_AREA` row on the page,
+    `page_strokes` = the page strokes of the head's oval, `members` = its boxes) as a claim on THIS cell's strokes LINKED to those page strokes by the
+    ledger's own rule (`page_ledger.LINK_SHARE_MIN`, `is_view`: a piece the cell split differently is not the head's here). HEAD tier, `how` area (on the
+    page ledger), the head's shape test kept. Reads the flag so the OFF arm of an A/B replay ignores the rows."""
+    from .. import page_heads as _PH
+    from .. import page_ledger as _PL
+    out: List[SO.Claim] = []
+    if not _PH.ledger_enabled() or not _PL.enabled():
+        return out
+    rows = [r for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+            if (r.detail or {}).get("source") == _PH.ONE_SOURCE and (r.detail or {}).get("owner") == _PH.ONE_OWNER and (r.detail or {}).get("page_strokes")]
+    if not rows:
+        return out
+    by_page: Dict[int, List[int]] = {}
+    for o, ln in _links(ev, cell).items():
+        if ln[1] >= _PL.LINK_SHARE_MIN and _PL.is_view(ln):
+            by_page.setdefault(int(ln[0]), []).append(int(o))
+    for r in rows:
+        d = r.detail or {}
+        mine = sorted({o for p in d["page_strokes"] for o in by_page.get(int(p), ())})
+        if mine:
+            out.append(SO.Claim("page_head/%s" % r.id, "head", "page_head", tuple(mine), (), r.id, area=True,
+                                members=tuple(str(k) for k in (d.get("members") or ()))))
+    return out
+
+
 def _hairpin_claims(ev: Evidence, cell) -> List[SO.Claim]:
     """ROADMAP 2.254 r2 (`OMR_HAIRPIN_REACH`): the strokes of THIS cell a CV hairpin read's ink claim names (`gather.gather_hairpin_claim`: one row
     per (hairpin, staff), value `[[cell, ordinal], ...]`, filed on the staff). Tier 0 beside the arcs: a stroke along the hairpin's arms is the
@@ -419,9 +446,11 @@ def _ink_consult(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
     verdict just computed: it decides nothing about any box."""
     from . import ink_consult as IC
     shares = _box_shares(ev, cell)
-    areas = {c.family for c in claims if c.area}
-    # a stroke the page's one settle gave to a register / layer claim another cell filed is held by that claim here too (as `_claim_final`)
-    areas |= {str(c["family"]) for w in owned.values() for c in w.candidates if c.get("how") == "area" and w.family == c["family"]}
+    areas = {c.family for c in claims if c.area and not c.members}
+    # a stroke the page's one settle gave to a register / layer claim another cell filed is held by that claim here too (as `_claim_final`); a page head
+    # (2.290, `members`) is the head tier's own claim, never a tier-0 area
+    areas |= {str(c["family"]) for w in owned.values() for c in w.candidates
+              if c.get("how") == "area" and w.family == c["family"] and not c.get("members")}
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
@@ -439,12 +468,12 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
     if not CF.enabled():
         return None
     shares = _box_shares(ev, cell)
-    claim_families = sorted({c.family for c in claims if c.area})
+    claim_families = sorted({c.family for c in claims if c.area and not c.members})
     from .. import page_ledger as _PL
     if _PL.enabled():
-        # ROADMAP 2.284: a stroke the page's one settle gave to a register claim another cell filed is held by that claim here too
+        # ROADMAP 2.284: a stroke the page's one settle gave to a register claim another cell filed is held by that claim here too (2.290: a page head is not one)
         claim_families = sorted(set(claim_families) | {str(c["family"]) for w in owned.values() for c in w.candidates
-                                                       if c.get("how") == "area" and w.family == c["family"]})
+                                                       if c.get("how") == "area" and w.family == c["family"] and not c.get("members")})
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
@@ -478,6 +507,7 @@ def _cell_view(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
     claims += layer_claims
     claims += _found_whole_rests(ev, cell, page, claims)
     claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
+    claims += _page_head_claims(ev, cell)              # 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER; [] with it OFF): one claim per head, by page stroke
     tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
     return dict(inks=inks, page=page, claims=claims, arc_claims=arc_claims, hairpin_claims=hairpin_claims, layer_claims=layer_claims,
                 head_census=head_census, tiers=tiers)
