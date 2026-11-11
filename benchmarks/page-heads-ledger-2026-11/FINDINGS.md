@@ -37,3 +37,58 @@ box) → step 5. `DYNAMIC_SPARES` by box not pixel → step 5.
 1 one identity (measure) · 2 one identity ON · 3 one position / far-head read per head · 4 one claim per head on the
 ledger · 5 pixels where a head meets another claim · 6 refusals from ink · 7 ink-only heads (on Sean's yes).
 Build of steps 1, 2, 4 started 2026-11-11 on `lane-2.290-build`.
+
+## 2.290 build, round 2 (2026-11-11) — built OFF, waiting on Sean's tiles
+
+Written by the manager from the lane's report. Branch `lane-2.290-build-r2`
+df506a4b9 (flags OFF; the retire commit is NOT included). Sean's r1 tiles: 8
+of 12 right (`answers/answers-2.290-build-r1.json`).
+
+**Cause of the four wrong r1 claims**
+- Tile 12 (a claim between two half notes a third apart): `page_heads.same_head`
+  compared ink centres CLIPPED by each detector box; each box clips toward
+  the other, the centres came out 0.53 sp apart and the two heads were called
+  one. The file then wrote ONE note where two are printed.
+- Tiles 8 and 10 (slivers): nothing checked that a claim is a whole head; a
+  rim-of-a-hollow-head allowance (thin piece up to 1.6 sp) and a 0.3 sp
+  minimum side let slivers through.
+- Tile 9 (half a quarter rest): the detector boxed the rest as a notehead and
+  never as a rest, so the rest reader (which claims first) had nothing to fire
+  on; the head tier claimed rest pieces by shape. It also wrote a false
+  quarter C3 (Litolff p11 m104).
+
+**Process lesson:** an ink centre clipped by a detector box is a biased
+witness; a claim must be checked against what ONE head can be; a lone box
+whose claim is refused falls back to the old twin rule, never becomes a new
+note. Also: `benchmarks/**/crops/` is gitignored, so r1's real-case controls
+SKIPPED on a clean checkout — real-case pixels now live in a tracked
+`real_cases/npz/`.
+
+**What changed**
+- Two head-sized boxes whose centres are >= 0.9 sp apart are never one head
+  (`BOX_CENTRES_A_THIRD_SP`; the farthest true twin pair on five pages is 0.85).
+- A head claim is refused whole and counted (`claim_size`) when a side is
+  under 0.6 sp or it is taller than 1.5 sp. No width cut (a head fused to its
+  ledger line is ~2.8 sp wide).
+- A lone box refused for size is re-read by the old twin rule (removes the false C3).
+- `ink_attachment` could NOT separate the rest from stacked chord heads (same
+  contact, 2.4-2.5 sp): the remaining half of that quarter rest is still
+  claimed by a head. Only reading rests from ink fixes it.
+
+**Measured** (flags OFF vs ON, fresh arms; Litolff p2, 8, 11; Brahms p14, 19)
+- Litolff file: notes +2 -5 (r1: +3 -6). All five lost are one pitch at one x
+  written once instead of twice; all three gained are eighths Sean judged.
+  Brahms: notes +1.
+- Ink on the page ledger: Litolff 71.8 -> 76.5%, Brahms 65.8 -> 74.0%;
+  one owner 89.5 -> 90.1 / 87.7 -> 88.4.
+- 258 of ~2,400 r1 claims are now refused (192 too small, 52 too tall): that
+  ink stays with the cell boxes. Only ~10 of them are on Sean's tiles.
+- judged right->wrong 0 (203 / 173 scored); judged_claims no new
+  contradiction; check 228; fast tier 10,412 passed, 0 failed.
+- All 12 r1 tiles replayed on real pixels; 5 cases fail on the r1 code.
+
+**Not confirmed:** the 0.9 / 0.6 / 1.5 cut-offs are measured on two plates
+only. Known misses left for plan step 5: r1 tile 3 (an eighth fused with its
+stem stub, unclaimed) and 2.289 tile 9 (unison half note, two thin rims, now
+refused by design). Hazard: `claim_readout` slices are cached by file name
+and one lane silently reused another's stale slice.
