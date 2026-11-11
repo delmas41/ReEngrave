@@ -1,0 +1,275 @@
+{
+ "lane": "2.291 r1 (lane-2.291-why-red-bars 641d48b2f; measure only)",
+ "date": "2026-11-10",
+ "question": "What is in this bar, in order? Anything unusual (two voices, a triplet, a grace note, a pickup)?",
+ "verbatim": "How one has a quarter note followed by an eighth note tied to a dotted eighth note followed by 3 sixteenth notes. There's a tie going to the first quarter note from the previous bar and a slur from the previous bar going all the way to the last note of the bar. Tile 2 has an eighth note rest and 3/8 notes with a P dynamic underneath it. Tile 3 is a whole note rest. Tile 4 is a quarter note followed by an eighth note with a natural sign in front of it, followed by a quarter and then another eighth note. There are a lot of other things in the box, including an MF, a hairpin crescendo, and the 2/8 note heads, as well as the natural, accidental, are outside of the orange box, as well as an A2 and a slur. That one seems pretty messy. That's 4. 5. Tile 5 has only an F clef, nothing else in it. I don't see any orange box, actually. Tile 6 is a quarter note followed by a quarter note rest with an F dynamic marking underneath it that belongs to it. It's half cut by the orange box and then an SF that belongs to the staff above it that's snuck into the orange box. That's through 6. File7 has two half notes a second apart, both with ties. Eight has an F clef. Three key accidental flats. And a whole rest . Nine has a dotted half with a tremolo slash. Ten has two quarters on a single stem, followed by a quarter rest. 'On the top of those two quarter notes has a sharp in front of it.",
+ "answers": {
+  "1": {
+   "plate": "brahms",
+   "page": 0,
+   "system": 0,
+   "staff": 10,
+   "cell": 1,
+   "our_family": "VOICES",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "note 1.0",
+    "note 0.5",
+    "note 0.75",
+    "note 1.0",
+    "note 0.5"
+   ],
+   "counted_quarters_per_voice": [
+    3.75
+   ],
+   "want_quarters": 3.0,
+   "sean": "quarter, eighth tied to a dotted eighth, three sixteenths (tie in from the previous bar; a slur from the previous bar to the bar's last note)",
+   "reading": "Sean's bar sums to the meter (3.0 in 6/8) in ONE voice: our family VOICES is not supported; values were mis-read"
+  },
+  "2": {
+   "plate": "litolff",
+   "page": 1,
+   "system": 0,
+   "staff": 7,
+   "cell": 7,
+   "our_family": "SHORT",
+   "why_red": "short_without_an_unread_symbol",
+   "our_events_in_order": [
+    "note 0.5",
+    "note 0.5",
+    "note 0.5"
+   ],
+   "counted_quarters_per_voice": [
+    1.5
+   ],
+   "want_quarters": 2.0,
+   "sean": "eighth rest, three eighth notes (p underneath)",
+   "reading": "confirms SHORT: the eighth rest is printed and we read only three eighths"
+  },
+  "3": {
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 6,
+   "cell": 5,
+   "our_family": "FALSE",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "rest 4.0",
+    "rest 4.0"
+   ],
+   "counted_quarters_per_voice": [
+    8.0
+   ],
+   "want_quarters": 3.0,
+   "sean": "a whole rest",
+   "reading": "confirms FALSE: one whole rest printed, we counted two (8.0)"
+  },
+  "4": {
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 0,
+   "cell": 3,
+   "our_family": "SHORT",
+   "why_red": "short_without_an_unread_symbol",
+   "our_events_in_order": [
+    "rest 1.0",
+    "note 0.5",
+    "note 0.5",
+    "note 0.5"
+   ],
+   "counted_quarters_per_voice": [
+    2.5
+   ],
+   "want_quarters": 3.0,
+   "sean": "quarter, eighth (with a natural), quarter, eighth -- the box is messy: mf, hairpin, a2 and a slur inside it; two eighth-note heads and the natural fall outside it",
+   "reading": "Sean's bar is 3.0; we read 'rest 1.0, three eighths' = 2.5: a quarter NOTE read as a rest and a quarter read as an eighth -- mis-read, not a missing member; TILE FAULT: box cut heads and held other staves' marks"
+  },
+  "5": {
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 11,
+   "cell": 8,
+   "our_family": "SHORT",
+   "why_red": "short_without_an_unread_symbol",
+   "our_events_in_order": [
+    "note 0.5",
+    "note 0.5",
+    "rest 0.5",
+    "rest 0.5",
+    "note 1.5"
+   ],
+   "counted_quarters_per_voice": [
+    1.0,
+    3.0
+   ],
+   "want_quarters": 3.0,
+   "sean": null,
+   "reading": "UNANSWERED -- Sean's 'tile 5' describes a bare F clef with no orange box, i.e. the clef inset of another tile, not this bar (alto-clef staff)"
+  },
+  "6": {
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 6,
+   "cell": 9,
+   "our_family": "SHORT",
+   "why_red": "short_without_an_unread_symbol",
+   "our_events_in_order": [
+    "note 1.0 (blue)",
+    "rest 1.0"
+   ],
+   "counted_quarters_per_voice": [
+    2.0,
+    1.0
+   ],
+   "want_quarters": 2.0,
+   "sean": "quarter note, quarter rest (its f is half cut by the box; an sf from the staff above is inside the box)",
+   "reading": "Sean's bar is complete (quarter + quarter rest = 2.0), exactly what we read in one voice; a phantom second voice (1.0) made it red: the bar is right and the refusal is wrong"
+  },
+  "7": {
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 4,
+   "cell": 14,
+   "our_family": "LONG",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "note 1.0",
+    "note 2.0"
+   ],
+   "counted_quarters_per_voice": [
+    3.0
+   ],
+   "want_quarters": 2.0,
+   "sean": "two half notes a second apart, both with ties",
+   "reading": "one CHORD of two half notes (a second) = 2.0; we counted the two heads as two events (1.0 + 2.0): chord of a second not grouped, and one head a quarter"
+  },
+  "8": {
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 3,
+   "cell": 0,
+   "our_family": "FALSE",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "rest 0.5",
+    "rest 4.0"
+   ],
+   "counted_quarters_per_voice": [
+    4.5
+   ],
+   "want_quarters": 2.0,
+   "sean": "F clef, three flats, a whole rest",
+   "reading": "one whole rest printed; we read an extra eighth rest (0.5) beside it: FALSE rest confirmed"
+  },
+  "9": {
+   "plate": "brahms",
+   "page": 0,
+   "system": 0,
+   "staff": 8,
+   "cell": 1,
+   "our_family": "LONG",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "rest 1.0",
+    "note 3.0"
+   ],
+   "counted_quarters_per_voice": [
+    4.0
+   ],
+   "want_quarters": 3.0,
+   "sean": "a dotted half with a tremolo slash",
+   "reading": "one dotted half = 3.0 fills the 6/8 bar; our family LONG -- we read it longer; (tremolo slash on the stem)"
+  },
+  "10": {
+   "plate": "litolff",
+   "page": 2,
+   "system": 0,
+   "staff": 2,
+   "cell": 3,
+   "our_family": "LONG",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "rest 0.25",
+    "note 1.0",
+    "note 1.0",
+    "rest 1.0"
+   ],
+   "counted_quarters_per_voice": [
+    2.25
+   ],
+   "want_quarters": 2.0,
+   "sean": "two quarters on a single stem (the top one has a sharp), then a quarter rest",
+   "reading": "one CHORD of two quarters + a quarter rest = 2.0; we counted the two heads as two events and added a 0.25 rest (the sharp?): chord not grouped + a false rest"
+  },
+  "11": {
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 2,
+   "cell": 0,
+   "our_family": "VOICES",
+   "why_red": "short_without_an_unread_symbol",
+   "our_events_in_order": [
+    "note 0.5",
+    "note 0.5",
+    "rest 0.5",
+    "note 0.5",
+    "note 1.0",
+    "note 0.5"
+   ],
+   "counted_quarters_per_voice": [
+    2.5,
+    1.0
+   ],
+   "want_quarters": 3.0,
+   "sean": null,
+   "reading": "UNANSWERED"
+  },
+  "12": {
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "staff": 13,
+   "cell": 7,
+   "our_family": "LONG",
+   "why_red": "voice_overfull",
+   "our_events_in_order": [
+    "note 1.0 (blue)",
+    "rest 0.5",
+    "rest 0.5",
+    "rest 1.0",
+    "rest 0.5"
+   ],
+   "counted_quarters_per_voice": [
+    3.5
+   ],
+   "want_quarters": 3.0,
+   "sean": null,
+   "reading": "UNANSWERED"
+  }
+ },
+ "score": {
+  "answered": 9,
+  "unanswered": [
+   5,
+   11,
+   12
+  ],
+  "family_supported": {
+   "SHORT": "tile 2",
+   "FALSE": "tiles 3, 8"
+  },
+  "family_not_supported": {
+   "VOICES": "tile 1 (one voice)",
+   "SHORT": "tiles 4 (mis-read), 6 (bar right, refusal wrong)"
+  },
+  "new_from_sean": "tiles 7 and 10: a chord (two heads on one stem / a second) counted as two events; tile 6: bar right, refusal wrong -- a family the lane found none of",
+  "tile_faults": "tile 4 box cut noteheads and held another staff's marks; tile 6 box cut the f and held the upper staff's sf; the sheet's inset was mistaken for a tile (5)"
+ }
+}
