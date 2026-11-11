@@ -67,10 +67,14 @@ def main(out, picks_path, seed):
         x0, x1 = max(0, int(cx - 5 * u)), int(cx + 5 * u)
         crop = im.crop((x0, int(y0), x1, int(y1))).copy()
         px = crop.load()
-        for x, y in r.get("pixels") or ():
-            xx, yy = int(x) - x0, int(y) - int(y0)
-            if 0 <= xx < crop.width and 0 <= yy < crop.height:
-                px[xx, yy] = TINT
+        # the claimed ink: the dark pixels inside the head's claimed page strokes' boxes (the record keeps stroke boxes, not their masks: a stroke box
+        # can hold a sliver of a crossing staff line -- crossing ink is the mark's, DECISIONS 2026-11-10)
+        for sb in r.get("strokes") or ():
+            for yy in range(max(0, int(sb[1]) - int(y0)), min(crop.height, int(sb[3]) + 1 - int(y0))):
+                for xx in range(max(0, int(sb[0]) - x0), min(crop.width, int(sb[2]) + 1 - x0)):
+                    p = px[xx, yy]
+                    if sum(p[:3]) < 3 * 128:
+                        px[xx, yy] = TINT
         ImageDraw.Draw(crop).rectangle([b[0] - x0 - 1, b[1] - y0 - 1, b[2] - x0 + 1, b[3] - y0 + 1], outline=BOX, width=max(1, int(u / 14)))
         crop = crop.resize((520, max(1, int(520 * crop.height / crop.width))))
         crop.save(os.path.join(tdir, "tile_%02d.png" % n))
