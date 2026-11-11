@@ -6432,14 +6432,11 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
                 owners.append(ov.value)
         st = dt.get("staff") or [0, 0]
         own_row = R.Subject(Kind.STAFF, page.page, int(st[0]), int(st[1])).to_key()
+        disagree = False
         if owners and len(set(owners)) == 1:
             home = owners[0]
             entry["home_from"] = "witness_owner"
-            if home != own_row:
-                # arcs-r2 fix 4 (the staff is where the INK lies): the run's own staff (nearest the run's middle) and the witnessing box's owner disagree. The ink decides; the owner is only a
-                # second witness, so the heads of the owner's staff are NOT bound (Brahms p18 run 7, Litolff p15 run 30: ink on one staff, heads bound on its neighbour). UNREAD: the old path keeps its arc.
-                entry.update(status=PB.ABSTAINED, why="staff_ink_vs_owner", home=home, ink_staff=own_row)
-                continue
+            disagree = home != own_row          # arcs-r2 fix 4, judged after the binding below
         else:
             home = own_row
             entry["home_from"] = "run_staff" if not owners else "witnesses_disagree"
@@ -6457,6 +6454,12 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
                                               lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
         entry["left"], entry["right"] = b.get("left"), b.get("right")
         used.append(r.id)
+        if disagree and b.get("kind") in ("tie", "slur") and any(float((b[s_] or {}).get("distance_spaces") or 0.0) > PB.END_REACH_SPACES for s_ in ("left", "right")):
+            # arcs-r2 fix 4 (the staff is where the INK lies): the run's own staff (nearest its middle) and the witnessing box's owner disagree AND the owner's heads stand farther than the ink's reach
+            # from an end (Brahms p18 run 7: both ends bound through stem tips 6.5 sp off, on the neighbouring staff). The ink decides, the owner is a second witness: UNREAD, the old path keeps its
+            # arc. Where the owner's heads ARE reached (64 written runs on the hold-out pages disagree; the 5 crops looked at are right on the owner's staff) the binding stands.
+            entry.update(status=PB.ABSTAINED, why="staff_ink_vs_owner", ink_staff=own_row)
+            continue
         if b.get("kind") in ("tie", "slur") and b.get("start") and b.get("stop") and b["start"] != b["stop"]:
             entry.update(status=PB.WRITTEN, kind=b["kind"], start=b["start"], stop=b["stop"], relation=b.get("relation"),
                          crosses_barline=b.get("crosses_barline"), rule=b.get("rule"),
