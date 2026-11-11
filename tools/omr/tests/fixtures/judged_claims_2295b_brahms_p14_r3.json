@@ -1,0 +1,906 @@
+{
+"about": "ROADMAP 2.295b: rows of the REAL 2.288 r3 gather of Brahms p14 (tree f4a59088c, OMR_PAGE_CLAIM_RESTS=1): the page strokes and the page-stroke claims around Sean's 2.288 r3 tiles 2 and 4, plus one claim of each other page-stroke owner. Cut by out/tmp/extract_fx.py-style code; not edited by hand.",
+"claim_rows": [
+{
+"basis": [],
+"detail": {
+"cls": "restWhole",
+"contested": [],
+"how": "ink_share",
+"owner": "whole_rest",
+"owner_glyph": null,
+"owner_row": null,
+"page_strokes": [
+4478
+],
+"rest_standing": "READ",
+"source": "page_boxes",
+"standing": "READ",
+"unit": "page_ink"
+},
+"frame": "page",
+"id": "obs:055089",
+"quantity": "claimed_area",
+"reader": "cv_claimed_register",
+"score": null,
+"subject": "cell/14/1/0/7",
+"value": [
+4478
+]
+},
+{
+"basis": [],
+"detail": {
+"cls": "restWhole",
+"contested": [],
+"how": "ink_share",
+"owner": "whole_rest",
+"owner_glyph": null,
+"owner_row": null,
+"page_strokes": [
+2494
+],
+"rest_standing": "READ",
+"source": "page_boxes",
+"standing": "READ",
+"unit": "page_ink"
+},
+"frame": "page",
+"id": "obs:055173",
+"quantity": "claimed_area",
+"reader": "cv_claimed_register",
+"score": null,
+"subject": "cell/14/1/11/3",
+"value": [
+2494
+]
+},
+{
+"basis": [],
+"detail": {
+"cells": [
+0
+],
+"cover_min": 0.5,
+"crossings": [],
+"line_boxes": [],
+"owner": "arc",
+"owner_glyph": "glyph/14/0/0/0/34",
+"owner_row": null,
+"page_strokes": [
+1283,
+1370
+],
+"pieces": [
+"glyph/14/0/0/0/34"
+],
+"pixels": {
+"claimed_px": 483,
+"claimed_px_in_marks": 0,
+"crossing_own_px": 0,
+"own_px": 463
+},
+"scope": "system_arc",
+"shares": [
+1.0,
+0.947
+],
+"source": "system_arc",
+"standing": "READ",
+"unit": "ink"
+},
+"frame": "page",
+"id": "obs:029090",
+"quantity": "claimed_area",
+"reader": "cv_claimed_register",
+"score": null,
+"subject": "staff/14/0/0",
+"value": [
+[
+0,
+102
+],
+[
+0,
+108
+]
+]
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 27.2,
+"area": [
+5161.0,
+3210.0,
+5202.0,
+3245.0
+],
+"centreline": [
+5161.0,
+3239.8,
+5201.0,
+3219.3
+],
+"contested": [],
+"how": "stem_slash",
+"owner": "tremolo",
+"page_strokes": [
+4847,
+4860
+],
+"source": "page_tremolo",
+"standing": "READ",
+"stem": 4853,
+"stem_box": [
+5179.0,
+3209.0,
+5.0,
+107.0
+],
+"thickness_px": 17.3,
+"thickness_ratio": 2.478,
+"unit": "page_ink"
+},
+"frame": "page",
+"id": "obs:055181",
+"quantity": "claimed_area",
+"reader": "cv_page_tremolo",
+"score": null,
+"subject": "page/14",
+"value": [
+4847,
+4860
+]
+},
+{
+"basis": [],
+"detail": {
+"area": [
+940.0,
+2961.0,
+965.0,
+3050.0
+],
+"candidates": [
+"natural"
+],
+"contested": [],
+"h_sp": 3.28,
+"how": "family_reader_on_unboxed_ink",
+"kind": "natural",
+"owner": "accidental_ink",
+"owner_glyph": "glyph/14/0/10/0/360000",
+"owner_row": null,
+"page_strokes": [
+784,
+801,
+802,
+812
+],
+"source": "page_accidental_ink",
+"standing": "READ",
+"unit": "page_ink",
+"w_sp": 0.92
+},
+"frame": "page",
+"id": "obs:055191",
+"quantity": "claimed_area",
+"reader": "cv_page_accidental_ink",
+"score": null,
+"subject": "page/14",
+"value": [
+940.0,
+2961.0,
+965.0,
+3050.0
+]
+}
+],
+"page_stroke_rows": [
+{
+"basis": [],
+"detail": {
+"angle_deg": -89.8,
+"bbox_page_px": [
+940.0,
+2961.0,
+949.0,
+3035.0
+],
+"component": 832,
+"end_steps_from_top": [
+0.96,
+6.28
+],
+"ends": [
+940,
+2961,
+945,
+3034
+],
+"fill": 0.949,
+"length_spaces": 2.688,
+"ordinal": 784,
+"profile_sixteenths": [
+3,
+4,
+5,
+5,
+5,
+5,
+5,
+5,
+5,
+5,
+5,
+4
+],
+"sagitta_spaces": 0.058,
+"staff": [
+0,
+10
+],
+"staff_space_local_px": 27.11,
+"stroke_box": [
+940,
+2961,
+9,
+74
+],
+"thickness_spaces": 0.312,
+"thickness_spread_spaces": 0.0,
+"touches": [
+[
+801,
+0.56
+],
+[
+802,
+0.5
+]
+]
+},
+"frame": "page",
+"id": "obs:010445",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "vertical"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 88.8,
+"bbox_page_px": [
+950.0,
+2982.0,
+953.0,
+2997.0
+],
+"component": 832,
+"end_steps_from_top": [
+3.49,
+2.48
+],
+"ends": [
+950,
+2996,
+952,
+2982
+],
+"fill": 0.944,
+"hole_share": 0.0,
+"length_spaces": 0.564,
+"ordinal": 801,
+"staff": [
+0,
+10
+],
+"staff_space_local_px": 27.11,
+"stroke_box": [
+950,
+2982,
+3,
+15
+],
+"thickness_spaces": 0.125,
+"thickness_spread_spaces": 0.0,
+"touches": [
+[
+784,
+0.56
+],
+[
+812,
+0.5
+]
+]
+},
+"frame": "page",
+"id": "obs:010462",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "blob"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 88.4,
+"bbox_page_px": [
+950.0,
+3011.0,
+953.0,
+3025.0
+],
+"component": 832,
+"end_steps_from_top": [
+5.52,
+4.63
+],
+"ends": [
+950,
+3023,
+952,
+3011
+],
+"fill": 0.938,
+"hole_share": 0.0,
+"length_spaces": 0.502,
+"ordinal": 802,
+"staff": [
+0,
+10
+],
+"staff_space_local_px": 27.11,
+"stroke_box": [
+950,
+3011,
+3,
+14
+],
+"thickness_spaces": 0.125,
+"thickness_spread_spaces": 0.0,
+"touches": [
+[
+784,
+0.5
+],
+[
+812,
+0.44
+]
+]
+},
+"frame": "page",
+"id": "obs:010463",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "blob"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": -89.4,
+"bbox_page_px": [
+956.0,
+2973.0,
+965.0,
+3050.0
+],
+"component": 832,
+"end_steps_from_top": [
+1.84,
+7.42
+],
+"ends": [
+957,
+2973,
+959,
+3049
+],
+"fill": 0.929,
+"length_spaces": 2.813,
+"ordinal": 812,
+"profile_sixteenths": [
+3,
+4,
+5,
+5,
+5,
+5,
+5,
+5,
+5,
+5,
+4,
+1
+],
+"sagitta_spaces": 0.031,
+"staff": [
+0,
+10
+],
+"staff_space_local_px": 27.11,
+"stroke_box": [
+956,
+2973,
+9,
+77
+],
+"thickness_spaces": 0.312,
+"thickness_spread_spaces": 0.0,
+"touches": [
+[
+801,
+0.5
+],
+[
+802,
+0.44
+],
+[
+851,
+1.38
+]
+]
+},
+"frame": "page",
+"id": "obs:010473",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "vertical"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 21.2,
+"bbox_page_px": [
+1265.0,
+679.0,
+1311.0,
+698.0
+],
+"component": 106,
+"end_steps_from_top": [
+11.45,
+10.47
+],
+"ends": [
+1265,
+694,
+1310,
+681
+],
+"fill": 0.337,
+"length_spaces": 1.758,
+"ordinal": 1283,
+"profile_sixteenths": [
+1,
+3,
+4,
+5,
+6,
+4,
+5,
+5,
+3,
+3,
+2,
+1
+],
+"sagitta_spaces": 0.13,
+"staff": [
+0,
+0
+],
+"staff_space_local_px": 27.25,
+"stroke_box": [
+1265,
+679,
+46,
+19
+],
+"thickness_spaces": 0.233,
+"thickness_spread_spaces": 0.117,
+"touches": [
+[
+1370,
+0.56
+]
+]
+},
+"frame": "page",
+"id": "obs:010944",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "curve"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 0.6,
+"bbox_page_px": [
+1299.0,
+665.0,
+1419.0,
+679.0
+],
+"component": 106,
+"end_steps_from_top": [
+10.21,
+9.83
+],
+"ends": [
+1299,
+677,
+1418,
+672
+],
+"fill": 0.65,
+"length_spaces": 4.377,
+"ordinal": 1370,
+"profile_sixteenths": [
+1,
+3,
+5,
+6,
+6,
+6,
+6,
+6,
+7,
+6,
+5,
+4
+],
+"sagitta_spaces": 0.24,
+"staff": [
+0,
+0
+],
+"staff_space_local_px": 26.61,
+"stroke_box": [
+1299,
+665,
+120,
+14
+],
+"thickness_spaces": 0.312,
+"thickness_spread_spaces": 0.062,
+"touches": [
+[
+1283,
+0.56
+]
+]
+},
+"frame": "page",
+"id": "obs:011031",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "horizontal"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 66.9,
+"bbox_page_px": [
+2520.0,
+6851.0,
+2549.0,
+6884.0
+],
+"component": 2057,
+"end_steps_from_top": [
+9.11,
+6.85
+],
+"ends": [
+2527,
+6882,
+2547,
+6851
+],
+"fill": 0.836,
+"hole_share": 0.0,
+"length_spaces": 1.391,
+"ordinal": 2494,
+"staff": [
+1,
+10
+],
+"staff_space_local_px": 27.29,
+"stroke_box": [
+2520,
+6851,
+29,
+33
+],
+"thickness_spaces": 0.863,
+"thickness_spread_spaces": 0.144,
+"touches": [
+[
+2529,
+1.12
+]
+]
+},
+"frame": "page",
+"id": "obs:012155",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "blob"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 89.8,
+"bbox_page_px": [
+2551.0,
+6777.0,
+2558.0,
+6882.0
+],
+"component": 2057,
+"end_steps_from_top": [
+8.99,
+1.43
+],
+"ends": [
+2551,
+6880,
+2556,
+6777
+],
+"fill": 0.963,
+"length_spaces": 3.813,
+"ordinal": 2529,
+"profile_sixteenths": [
+2,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+4,
+1
+],
+"sagitta_spaces": 0.083,
+"staff": [
+1,
+10
+],
+"staff_space_local_px": 27.3,
+"stroke_box": [
+2551,
+6777,
+7,
+105
+],
+"thickness_spaces": 0.25,
+"thickness_spread_spaces": 0.0,
+"touches": [
+[
+2494,
+1.12
+],
+[
+2531,
+2.62
+]
+]
+},
+"frame": "page",
+"id": "obs:012190",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "vertical"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": -0.5,
+"bbox_page_px": [
+4711.0,
+4266.0,
+4754.0,
+4287.0
+],
+"component": 1237,
+"end_steps_from_top": [
+2.6,
+2.99
+],
+"ends": [
+4711,
+4278,
+4752,
+4283
+],
+"fill": 0.923,
+"hole_share": 0.0,
+"length_spaces": 1.564,
+"ordinal": 4478,
+"staff": [
+1,
+0
+],
+"staff_space_local_px": 27.22,
+"stroke_box": [
+4711,
+4266,
+43,
+21
+],
+"thickness_spaces": 0.75,
+"thickness_spread_spaces": 0.0,
+"touches": []
+},
+"frame": "page",
+"id": "obs:014139",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "blob"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 15.5,
+"bbox_page_px": [
+5163.0,
+3221.0,
+5204.0,
+3242.0
+],
+"component": 944,
+"end_steps_from_top": [
+4.05,
+2.69
+],
+"ends": [
+5163,
+3240,
+5203,
+3221
+],
+"fill": 0.785,
+"length_spaces": 1.632,
+"ordinal": 4847,
+"profile_sixteenths": [
+7,
+9,
+10,
+10,
+12,
+12,
+12,
+12,
+7,
+7,
+7,
+3
+],
+"sagitta_spaces": 0.119,
+"staff": [
+0,
+11
+],
+"staff_space_local_px": 27.54,
+"stroke_box": [
+5163,
+3221,
+41,
+21
+],
+"thickness_spaces": 0.602,
+"thickness_spread_spaces": 0.301,
+"touches": [
+[
+4853,
+3.0
+],
+[
+4860,
+0.56
+]
+]
+},
+"frame": "page",
+"id": "obs:014508",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "horizontal"
+},
+{
+"basis": [],
+"detail": {
+"angle_deg": 16.6,
+"bbox_page_px": [
+5187.0,
+3211.0,
+5202.0,
+3220.0
+],
+"component": 944,
+"end_steps_from_top": [
+2.43,
+1.94
+],
+"ends": [
+5187,
+3218,
+5201,
+3211
+],
+"fill": 0.756,
+"hole_share": 0.0,
+"length_spaces": 0.613,
+"ordinal": 4860,
+"staff": [
+0,
+11
+],
+"staff_space_local_px": 27.55,
+"stroke_box": [
+5187,
+3211,
+15,
+9
+],
+"thickness_spaces": 0.299,
+"thickness_spread_spaces": 0.18,
+"touches": [
+[
+4847,
+0.56
+]
+]
+},
+"frame": "page",
+"id": "obs:014521",
+"quantity": "page_stroke",
+"reader": "cv_page_strokes",
+"score": null,
+"subject": "page/14",
+"value": "blob"
+}
+],
+"tiles": {
+"r3_tile2_whole_rest": [
+4711,
+4266,
+4754,
+4287
+],
+"r3_tile4_eighth_note": [
+2520,
+6851,
+2549,
+6884
+]
+}
+}

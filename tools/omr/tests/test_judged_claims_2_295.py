@@ -177,10 +177,16 @@ class TestOverlapRule(unittest.TestCase):
         self.assertNotEqual(JC.judge_tile(c, tile("rest:whole", box=(10, 10, 19, 19)))["verdict"], "agrees")
 
     def test_a_minority_of_wrong_kind_ink_does_not_contradict_an_agreeing_mark(self):
-        c = canvas({"rest": MARK, "beam": (20, 20, 30, 24)})             # 20% of the ink also a beam: R still 1.0
+        c = canvas({"rest": MARK, "beam": (20, 20, 30, 24)})             # 20% of the ink also a beam: R still 1.0, Wa 0.2 < 0.3
         self.assertEqual(JC.judge_tile(c, tile("rest:whole"))["verdict"], "agrees")
-        c = canvas({"rest": (20, 20, 30, 32), "beam": (20, 32, 30, 40)})   # 60% rest: agrees; 40% beam named wrong but R wins
-        self.assertEqual(JC.judge_tile(c, tile("rest:whole"))["verdict"], "agrees")
+
+    def test_2_295b_a_wrong_READ_claim_standing_on_30_percent_contradicts_even_where_his_kind_owns_it(self):
+        # CHANGED RULE (2.295b): before, a mark that was 60% his kind and 40% a beam "agreed" (R wins). A READ claim of another kind on >= 30% of the ink
+        # is a wrong claim whether or not his kind also stands there: CONTRADICTS, flagged `twice`.
+        c = canvas({"rest": (20, 20, 30, 32), "beam": (20, 32, 30, 40)})
+        r = JC.judge_tile(c, tile("rest:whole"))
+        self.assertEqual((r["verdict"], r["twice"]), ("contradicts", True))
+        self.assertAlmostEqual(r["wrong_any"], 0.4, places=2)
 
     def test_summary_line_counts_four_ways(self):
         rs = [{"verdict": "agrees"}, {"verdict": "agrees"}, {"verdict": "contradicts"}, {"verdict": "unclaimed"}, {"verdict": "cannot_tell"}]
