@@ -5,7 +5,7 @@
 
 SELECTION RULE (stated, seeded; read off the census row `rest_changed_boxes` of the ON records -- the boxes where round 2's standing differs from round 1's):
   1. every box round 1 stood READ and round 2 refuses ("refused_*": the ink hangs from a stem carrying a head, touches a head, or is a bare vertical), Brahms p19
-     [3680,1612,3711,1651] (Sean's tile 7) first, then the rest in page order; at most 7 of them (an even draw with `random.Random(seed)` if more);
+     detector box [3676.6,1620.8,3708.3,1668.6] (Sean's round-1 tile 7, whose claim extent was [3680,1612,3711,1651]) first, then the rest in page order; at most 7 of them (an even draw with `random.Random(seed)` if more);
   2. then the newly claimed eighth rests ("freed_*": round 1 weak, round 2 READ), drawn with `random.Random(seed)` alternating between the plates;
   3. then `--extra` boxes (a file change, a control twin), in the order given;
   up to 12 tiles. Tiles are shuffled; the key is ONE LEVEL ABOVE the tile folder.
@@ -100,11 +100,11 @@ def main():
         for pg, d in census:
             for cls, box, why, cell in d.get("rest_changed_boxes", []):
                 item = dict(plate=plate, page=pg, cls=cls, box=box, why=why, cell=cell)
-                if why.startswith("refused_"):
+                if why.startswith("refused_") and "names_no_stroke" not in why:
                     refused.append(item)
                 elif cls == "rest8th":
                     freed.append(item)
-    tile7 = [r for r in refused if r["plate"] == "brahms" and r["page"] == 19 and abs(r["box"][0] - 3680) < 3 and abs(r["box"][1] - 1612) < 3]
+    tile7 = [r for r in refused if r["plate"] == "brahms" and r["page"] == 19 and abs(r["box"][0] - 3676.6) < 4 and abs(r["box"][1] - 1620.8) < 4]
     rest = sorted([r for r in refused if r not in tile7], key=lambda r: (r["plate"], r["page"], r["box"]))
     if len(rest) > 6:
         rest = sorted(rng.sample(rest, 6), key=lambda r: (r["plate"], r["page"], r["box"]))
