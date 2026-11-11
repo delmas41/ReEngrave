@@ -285,13 +285,14 @@ def boxes_enabled() -> bool:
 
 
 ENV_RESTS = "OMR_PAGE_CLAIM_RESTS"
-#: ROADMAP 2.288 (flag `OMR_PAGE_CLAIM_RESTS`, default OFF): the REST families, switched on alone (never with the dynamics / repeat dots `OMR_PAGE_CLAIM_BOXES` names).
+#: ROADMAP 2.288 (flag `OMR_PAGE_CLAIM_RESTS`, default ON (Sean 2026-11-11 "Land what you can overnight"; "0"/"false"/"no"/"off" turns it off)): the REST families, switched on alone (never with the dynamics / repeat dots `OMR_PAGE_CLAIM_BOXES` names).
 REST_FAMILIES = ("rest", "whole_rest")
 
 
 def rests_enabled() -> bool:
-    """`OMR_PAGE_CLAIM_RESTS` (ROADMAP 2.288), default OFF: allow-list, so an empty value or a typo cannot switch a document onto an unpriced change."""
-    return os.environ.get(ENV_RESTS, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_PAGE_CLAIM_RESTS` (ROADMAP 2.288), default ON (Sean 2026-11-11; "0"/"false"/"no"/"off" turns it off): the same opt-out as `OMR_PAGE_TREMOLO`. Turning it off also turns
+    the own-ink accidental reader off (`page_accidental_ink.enabled()`): that reader learns of a rest only through the rest's ledger claim."""
+    return os.environ.get(ENV_RESTS, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def box_owner(cls: str, category: Optional[str] = None, rests: bool = False) -> Optional[str]:

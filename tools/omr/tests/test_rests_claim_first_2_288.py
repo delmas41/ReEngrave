@@ -1,5 +1,5 @@
 """ROADMAP 2.288 -- a rest that STANDS READ claims its own ink on the page ledger, and the own-ink accidental reader is refused that ink BY THE LEDGER (`claimed_by:rest`),
-not by the private list of detector rest boxes 2.285 round 2 kept (`page_accidental_ink.read_page(rests=...)`, which flag-ON no longer fills).
+not by the private list of detector rest boxes 2.285 round 2 kept (RETIRED at the landing: flag default ON, the list deleted).
 
 The two 2.285 round-1 false claims (Brahms p14 near (3068,2731) and (3986,547): correct quarter rests read as flats) are the flat-shaped ink below; each refusal has a CONTROL twin
 that is claimed when no rest stands there.
@@ -39,11 +39,15 @@ def test_the_rest_families_are_step_3s_only_with_their_own_flag(monkeypatch):
     assert PCN.box_owner("restWhole", None, True) == "whole_rest"
     assert PCN.box_owner("dynamicForte", None, True) == "dynamic"           # the old family stays the old flag's: the caller filters on `boxes_enabled()`
     monkeypatch.delenv(PCN.ENV_RESTS, raising=False)
-    assert not PCN.rests_enabled()
-    monkeypatch.setenv(PCN.ENV_RESTS, "yes")
+    assert PCN.rests_enabled()                                              # default ON (Sean 2026-11-11), the opt-out of OMR_PAGE_TREMOLO
+    for off in ("0", "false", "no", "off", " OFF "):
+        monkeypatch.setenv(PCN.ENV_RESTS, off)
+        assert not PCN.rests_enabled()
+    monkeypatch.setenv(PCN.ENV_RESTS, "1")
     assert PCN.rests_enabled()
-    monkeypatch.setenv(PCN.ENV_RESTS, "")
-    assert not PCN.rests_enabled()
+    # rest claims on do not switch the OTHER step-3 families on (`gather_page_claim_boxes` filters by `boxes_enabled()`)
+    monkeypatch.delenv(PCN.ENV_BOXES, raising=False)
+    assert not PCN.boxes_enabled()
 
 
 def test_CONTROL_flat_shaped_ink_is_claimed_with_no_rest_claim_and_refused_by_the_ledger_with_one():
@@ -55,14 +59,14 @@ def test_CONTROL_flat_shaped_ink_is_claimed_with_no_rest_claim_and_refused_by_th
     rects, ids = PAI.earlier_claims(_Log(rows), None)
     owners = PAI.earlier_owners(_Log(rows), None)
     assert owners == {0: "rest", 1: "rest"}
-    found, why = PAI.read_page(strokes, SP, [head_right()], [], rects, [], ids, (), (), owners)
+    found, why = PAI.read_page(strokes, SP, [head_right()], [], rects, [], ids, (), owners)
     assert found == [] and why.get("claimed_by:rest") >= 1 and why["claimed"] == 0 and "rest_box" not in why
 
 
 def test_a_rest_claim_on_other_ink_refuses_nothing_here():
     rows = [_Row([7, 8], unit="page_ink", standing="READ", owner="rest", source="page_boxes", page_strokes=[7, 8])]
     rects, ids = PAI.earlier_claims(_Log(rows), None)
-    found, _ = PAI.read_page(flat(), SP, [head_right()], [], rects, [], ids, (), (), PAI.earlier_owners(_Log(rows), None))
+    found, _ = PAI.read_page(flat(), SP, [head_right()], [], rects, [], ids, (), PAI.earlier_owners(_Log(rows), None))
     assert len(found) == 1
 
 
@@ -71,9 +75,23 @@ def test_the_readers_own_rows_are_not_read_back_as_an_earlier_owner():
     assert PAI.earlier_owners(_Log(rows), None) == {}
 
 
-def test_flag_OFF_still_consults_the_private_rest_list_so_OFF_is_the_main_behaviour():
-    found, why = PAI.read_page(flat(), SP, [head_right()], [], [], rests=[(95.0, 95.0, 125.0, 160.0)])
-    assert found == [] and why.get("rest_box") == 1
+def test_the_own_ink_accidental_reader_does_not_run_when_rest_claims_are_off(monkeypatch):
+    """The dependency that replaced the private rest-box list: with `OMR_PAGE_CLAIM_RESTS` off no rest holds its ink on the ledger, so the reader (which would take a quarter rest's
+    stem and curl for a flat, 2.285 r1) is off too, whatever its own flag says."""
+    monkeypatch.delenv(PAI.ENV, raising=False)
+    monkeypatch.delenv(PCN.ENV_RESTS, raising=False)
+    assert PAI.enabled()
+    monkeypatch.setenv(PCN.ENV_RESTS, "0")
+    assert not PAI.enabled()
+    monkeypatch.setenv(PCN.ENV_RESTS, "1")
+    monkeypatch.setenv(PAI.ENV, "0")
+    assert not PAI.enabled()                                                # and its own opt-out still works with rests on
+
+
+def test_read_page_has_no_private_rest_list_any_more():
+    import inspect
+    assert "rests" not in inspect.signature(PAI.read_page).parameters
+    assert not hasattr(PAI, "REST_PREFIX")
 
 
 def test_a_read_rest_owns_its_own_ink_and_not_a_stem_beside_it():
