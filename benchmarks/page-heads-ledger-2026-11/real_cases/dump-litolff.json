@@ -1,0 +1,646 @@
+{
+ "out_dir": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-acb53b92a62246a38/benchmarks/page-heads-ledger-2026-11/real_cases/crops",
+ "plate": "litolff",
+ "cases": [
+  {
+   "id": "2.284 r1 #1",
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    2099.66,
+    3435.37,
+    2122.65,
+    3453.01
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.284 r1",
+   "tile": 1
+  },
+  {
+   "id": "2.284 r1 #2",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1604.52,
+    3453.8,
+    1628.52,
+    3473.8
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.284 r1",
+   "tile": 2
+  },
+  {
+   "id": "2.284 r1 #3",
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    2380.88,
+    3215.28,
+    2406.8,
+    3235.71
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.284 r1",
+   "tile": 3
+  },
+  {
+   "id": "2.284 r1 #4",
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    2379.96,
+    3173.64,
+    2402.84,
+    3195.45
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.284 r1",
+   "tile": 4
+  },
+  {
+   "id": "2.284 r1 #6",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1575.24,
+    3436.84,
+    1598.76,
+    3456.04
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.284 r1",
+   "tile": 6
+  },
+  {
+   "id": "2.284 r1 #8",
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    2087.02,
+    1040.97,
+    2113.95,
+    1066.02
+   ],
+   "expect": "head",
+   "sean": "half note",
+   "kind": "notehead",
+   "lane": "2.284 r1",
+   "tile": 8
+  },
+  {
+   "id": "2.285 r2 #6",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1023.0,
+    1512.0,
+    1038.0,
+    1554.0
+   ],
+   "expect": "not_head",
+   "sean": "flat",
+   "kind": "accidental:flat",
+   "lane": "2.285 r2",
+   "tile": 6
+  },
+  {
+   "id": "2.285 r2 #7",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    984.0,
+    369.0,
+    996.0,
+    423.0
+   ],
+   "expect": "not_head",
+   "sean": "natural",
+   "kind": "accidental:natural",
+   "lane": "2.285 r2",
+   "tile": 7
+  },
+  {
+   "id": "2.285 r2 #8",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    499.0,
+    3566.0,
+    519.0,
+    3613.0
+   ],
+   "expect": "not_head",
+   "sean": "sharp",
+   "kind": "accidental:sharp",
+   "lane": "2.285 r2",
+   "tile": 8
+  },
+  {
+   "id": "2.285 r2 #11",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1311.0,
+    3418.0,
+    1326.0,
+    3459.0
+   ],
+   "expect": "not_head",
+   "sean": "flat",
+   "kind": "accidental:flat",
+   "lane": "2.285 r2",
+   "tile": 11
+  },
+  {
+   "id": "2.285 r2 #12",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    881.0,
+    1473.0,
+    900.0,
+    1522.0
+   ],
+   "expect": "not_head",
+   "sean": "sharp",
+   "kind": "accidental:sharp",
+   "lane": "2.285 r2",
+   "tile": 12
+  },
+  {
+   "id": "2.288 r1 #3",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    837.0,
+    1881.0,
+    855.0,
+    1933.0
+   ],
+   "expect": "not_head",
+   "sean": "quarter rest",
+   "kind": "rest:quarter",
+   "lane": "2.288 r1",
+   "tile": 3
+  },
+  {
+   "id": "2.288 r1 #4",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1483.0,
+    3064.0,
+    1505.0,
+    3076.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r1",
+   "tile": 4
+  },
+  {
+   "id": "2.288 r1 #6",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    808.0,
+    2839.0,
+    830.0,
+    2852.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r1",
+   "tile": 6
+  },
+  {
+   "id": "2.288 r1 #8",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    934.0,
+    841.0,
+    955.0,
+    893.0
+   ],
+   "expect": "not_head",
+   "sean": "quarter rest",
+   "kind": "rest:quarter",
+   "lane": "2.288 r1",
+   "tile": 8
+  },
+  {
+   "id": "2.288 r1 #10",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    682.0,
+    772.0,
+    719.0,
+    793.0
+   ],
+   "expect": "not_head",
+   "sean": "the CR from crescendo",
+   "kind": "word",
+   "lane": "2.288 r1",
+   "tile": 10
+  },
+  {
+   "id": "2.288 r1 #11",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    2554.0,
+    650.0,
+    2568.0,
+    703.0
+   ],
+   "expect": "not_head",
+   "sean": "quarter rest",
+   "kind": "rest:quarter",
+   "lane": "2.288 r1",
+   "tile": 11
+  },
+  {
+   "id": "2.288 r2 #8",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    2367.9,
+    520.5,
+    2389.7,
+    549.2
+   ],
+   "expect": "not_head",
+   "sean": "an eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r2",
+   "tile": 8
+  },
+  {
+   "id": "2.288 r2 #9",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1714.1,
+    3228.0,
+    1734.1,
+    3258.0
+   ],
+   "expect": "not_head",
+   "sean": "an eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r2",
+   "tile": 9
+  },
+  {
+   "id": "2.288 r2 #11",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    524.3,
+    3547.3,
+    545.8,
+    3580.3
+   ],
+   "expect": "not_head",
+   "sean": "an eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r2",
+   "tile": 11
+  },
+  {
+   "id": "2.288 r3 #6",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1987.0,
+    848.0,
+    2009.0,
+    862.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest (corrected from 'whole note')",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 6
+  },
+  {
+   "id": "2.288 r3 #7",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    1822.0,
+    591.0,
+    1843.0,
+    603.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 7
+  },
+  {
+   "id": "2.288 r3 #8",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    2112.0,
+    467.0,
+    2134.0,
+    479.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest (in the second space)",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 8
+  },
+  {
+   "id": "2.288 r3 #11",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    2215.0,
+    435.0,
+    2237.0,
+    448.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 11
+  },
+  {
+   "id": "2.288 r3 #12",
+   "plate": "litolff",
+   "page": 8,
+   "box": [
+    519.0,
+    598.0,
+    541.0,
+    612.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 12
+  },
+  {
+   "id": "2.289 r1 #1",
+   "plate": "litolff",
+   "page": 1,
+   "box": [
+    1213.71,
+    1780.97,
+    1238.51,
+    1803.76
+   ],
+   "expect": "metronome",
+   "sean": "the half note of a tempo (metronome) marking",
+   "kind": "unmapped",
+   "lane": "2.289 r1",
+   "tile": 1
+  },
+  {
+   "id": "2.289 r1 #2",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    623.86,
+    2886.0,
+    627.95,
+    2897.03
+   ],
+   "expect": "not_head",
+   "sean": "part of a barline",
+   "kind": "barline",
+   "lane": "2.289 r1",
+   "tile": 2
+  },
+  {
+   "id": "2.289 r1 #7",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    2389.63,
+    2905.69,
+    2413.89,
+    2927.11
+   ],
+   "expect": "head",
+   "sean": "eighth note head",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 7
+  },
+  {
+   "id": "2.289 r1 #9",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    496.81,
+    813.22,
+    530.2,
+    824.24
+   ],
+   "expect": "head",
+   "sean": "unison half note (box a little thin for that head)",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 9
+  },
+  {
+   "id": "2.289 r1 #10",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    650.55,
+    742.79,
+    678.11,
+    764.37
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 10
+  },
+  {
+   "id": "2.289 r1 #12",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    1002.0,
+    1064.68,
+    1024.99,
+    1086.41
+   ],
+   "expect": "head",
+   "sean": "quarter note",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 12
+  },
+  {
+   "id": "2.290 r1 #1",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    648.63,
+    3193.0,
+    735.26,
+    3199.3
+   ],
+   "expect": "not_head",
+   "sean": "a beam",
+   "kind": "beam",
+   "lane": "2.290 r1",
+   "tile": 1
+  },
+  {
+   "id": "2.290 r1 #2",
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    2457.14,
+    2877.4,
+    2480.14,
+    2902.91
+   ],
+   "expect": "not_head",
+   "sean": "a tremolo slash",
+   "kind": "tremolo",
+   "lane": "2.290 r1",
+   "tile": 2
+  },
+  {
+   "id": "2.290 r1 #3",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    2351.83,
+    3237.73,
+    2379.24,
+    3258.68
+   ],
+   "expect": "not_head",
+   "sean": "a tremolo slash",
+   "kind": "tremolo",
+   "lane": "2.290 r1",
+   "tile": 3
+  },
+  {
+   "id": "2.290 r1 #4",
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1172.6,
+    1631.6,
+    1187.32,
+    1645.52
+   ],
+   "expect": "part_of_head",
+   "sean": "part of an eighth note",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 4
+  },
+  {
+   "id": "2.290 r1 #7",
+   "plate": "litolff",
+   "page": 6,
+   "box": [
+    1989.85,
+    3415.53,
+    2011.74,
+    3435.53
+   ],
+   "expect": "head",
+   "sean": "an eighth note",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 7
+  },
+  {
+   "id": "2.290 r1 #8",
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1055.9,
+    828.76,
+    1077.35,
+    839.0
+   ],
+   "expect": "part_of_head",
+   "sean": "most of a half note",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 8
+  },
+  {
+   "id": "2.290 r1 #9",
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    972.23,
+    2748.59,
+    997.27,
+    2769.69
+   ],
+   "expect": "head",
+   "sean": "a quarter note",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 9
+  },
+  {
+   "id": "2.290 r1 #12",
+   "plate": "litolff",
+   "page": 2,
+   "box": [
+    990.18,
+    560.65,
+    1021.21,
+    617.67
+   ],
+   "expect": "tall_box",
+   "sean": "a large rectangle around quarter notes and a good amount of stem either side (part of a chord)",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 12
+  },
+  {
+   "id": "2.282 #12",
+   "plate": "litolff",
+   "page": 4,
+   "box": [
+    1174.5,
+    748.6,
+    1207.0,
+    753.7
+   ],
+   "expect": "part_of_head",
+   "sean": "hollow notehead (small part)",
+   "kind": "notehead",
+   "lane": "2.282",
+   "tile": 12
+  }
+ ]
+}

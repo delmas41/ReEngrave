@@ -674,7 +674,8 @@ def _label_image(pm: Any, shape_px: Sequence[int]) -> np.ndarray:
 
 def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], pm: Any) -> Optional[OneHeads]:
     """ROADMAP 2.290 (flag `OMR_PAGE_HEAD_ONE`), STAGED GATHER, decides nothing: the page's notehead boxes partitioned into heads by their ink (section
-    doc), each head's oval and the page strokes it claims. None where there is no page map or raster (the old identities then stand)."""
+    doc), each head's oval and the page strokes it claims. None where there is no page map or raster (the old identities then stand). The work is
+    `core` (the same function the real-case fixtures replay on their crops)."""
     if pm is None or not getattr(pm, "strokes", None) or not getattr(pm, "masks", None):
         return None
     binary = getattr(getattr(pws, "page", None), "binary", None)
@@ -682,43 +683,62 @@ def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], 
         return None
     from . import record as R
     from .record import Subject
-    from . import head_extent, head_ink
+    from . import head_ink
     from . import box_kind as _box_kind
-    from .gather import _cell_grid, _page_box, MARK_GROUP_IOU
+    from .gather import _cell_grid, _page_box
     t0 = time.time()
-    out = OneHeads()
     sp = float(pm.sp)
-    s = float(pm.scale)
     cell_by_key: Dict[Tuple[int, int, int, int], Any] = {}
     for c in cells:
         key = local.get(c.staff_index)
         if key is not None:
             cell_by_key[(c.page_index, key[0], key[1], c.measure_index)] = c
     foreign: List[Tuple[float, float, float, float]] = []
+    items: List[Dict[str, Any]] = []
     for ck, dets in detections.items():
         sub = Subject.from_key(ck)
         c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
         if c is None:
             continue
+        grid = _cell_grid(c)
+        up = getattr(c, "upscale_factor", None)
+        sp_cell = (2.0 * grid[1] / up) if (grid is not None and up) else sp      # the head's OWN bar's space (page-facts: measure locally)
         for gi, d in enumerate(dets):
             pb = _page_box(c, d)
             if pb is None:
                 continue
             if head_ink.is_foreign_class(str(d.smufl_name)):
-                foreign.append(pb)
+                foreign.append(tuple(float(v) for v in pb))
             if getattr(d, "category", None) != "notehead":
                 continue
-            out.items.append(dict(key=R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), cell=(sub.page, sub.system, sub.staff, sub.cell),
-                                  gi=gi, box=tuple(float(v) for v in pb), cls=str(d.smufl_name), conf=float(getattr(d, "confidence", 0.0) or 0.0),
-                                  scope=(sub.page, sub.system), c=c, tall=bool(getattr(d, _box_kind.TALL_READ_ATTR, False))))
+            items.append(dict(key=R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key(), cell=(sub.page, sub.system, sub.staff, sub.cell),
+                              gi=gi, box=tuple(float(v) for v in pb), cls=str(d.smufl_name), conf=float(getattr(d, "confidence", 0.0) or 0.0),
+                              scope=(sub.page, sub.system), sp_head=float(sp_cell), tall=bool(getattr(d, _box_kind.TALL_READ_ATTR, False))))
     lab = _label_image(pm, binary.shape)
-    n_st = len(pm.strokes)
+    props = []
+    for st in pm.strokes:
+        spl = float(getattr(st, "staff_space_local", None) or sp) or sp
+        props.append((str(st.kind), float(st.box[2]) / spl, float(st.box[3]) / spl, float(st.thickness_sp), float(st.length_sp)))
+    out = core(items, foreign, lab, props, binary, float(pm.scale), sp)
+    out.census["seconds"] = round(time.time() - t0, 2)
+    _dump_cases(out, items, foreign, lab, props, binary, float(pm.scale), sp, int(getattr(pws.page, "page_index", 0)))
+    return out
+
+
+def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: np.ndarray, props: Sequence[Tuple[str, float, float, float, float]],
+         binary: Any, s: float, sp: float) -> OneHeads:
+    """The one-head reading on one frame (a page, or a real-case crop): `items` = the notehead boxes (key, cell, gi, box, cls, conf, scope, sp_head,
+    tall), `foreign` = boxes of the classes `head_ink` treats as another mark's, `lab` = the page map's label image (reduced frame, scale `s`, 0 = none,
+    i + 1 = stroke i), `props` = per stroke (kind, w_sp, h_sp, thickness_sp, length_sp), `binary` = the page raster (0 = ink) in the same page-px frame."""
+    from . import head_extent
+    from .gather import MARK_GROUP_IOU
+    out = OneHeads()
+    out.items = list(items)
+    n_st = len(props)
     head_lab = np.zeros(n_st + 1, bool)
     claim_ok: Dict[int, bool] = {}
-    for i, st in enumerate(pm.strokes):
-        spl = float(getattr(st, "staff_space_local", None) or sp) or sp
-        w_sp, h_sp = float(st.box[2]) / spl, float(st.box[3]) / spl
-        hi = is_head_ink(str(st.kind), w_sp, h_sp, float(st.thickness_sp), float(st.length_sp))
+    for i, (kind, w_sp, h_sp, thick, length) in enumerate(props):
+        hi = is_head_ink(str(kind), float(w_sp), float(h_sp), float(thick), float(length))
         head_lab[i + 1] = hi
         claim_ok[i] = bool(hi and w_sp <= CLAIM_MAX_W_SP and h_sp <= CLAIM_MAX_H_SP)
     hmask = head_lab[lab]
@@ -764,13 +784,11 @@ def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], 
         rep = min(inked, key=lambda i: (-out.items[i]["conf"], out.items[i]["key"]))
         reps[gi_] = rep
         it = out.items[rep]
-        grid = _cell_grid(it["c"])
-        up = getattr(it["c"], "upscale_factor", None)
-        sp_head = (2.0 * grid[1] / up) if (grid is not None and up) else sp
         box = it["box"]
         others = [out.items[j]["box"] for g2 in groups if g2 is not g for j in g2[:1]
                   if abs(out.items[j]["box"][0] - box[0]) < 4 * sp and abs(out.items[j]["box"][1] - box[1]) < 4 * sp]
-        got = head_extent.ink_extent(binary, box, sp_head, [f for f in foreign if abs(f[0] - box[0]) < 4 * sp and abs(f[1] - box[1]) < 4 * sp], others)
+        got = head_extent.ink_extent(binary, box, float(it.get("sp_head") or sp),
+                                     [f for f in foreign if abs(f[0] - box[0]) < 4 * sp and abs(f[1] - box[1]) < 4 * sp], others)
         oval_why[gi_] = got["why"]
         if got["why"] is not None or got["extent"] is None:
             continue
@@ -804,9 +822,62 @@ def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], 
             cen["claimed_strokes"] += len(st)
         out.heads.append(h)
     cen["not_claimed"] = ccen
-    cen["seconds"] = round(time.time() - t0, 2)
     out.census = cen
     return out
+
+
+#: ROADMAP 2.290 real-case fixtures (CLAUDE rule 7: a control for a page rule is built from the pixels of a mark Sean has named). A JSON file
+#: {"out_dir", "plate", "cases": [{"id", "page", "box"}]}; when this names one, `read_one` writes, per case on the page, the crop `core` reads (label image,
+#: raster, the notehead and foreign boxes, stroke props) to `out_dir/<id>.npz`. Benchmark tooling only: it changes nothing the reader decides or files.
+CASES_DUMP_ENV = "OMR_PAGE_HEAD_CASES_DUMP"
+#: the crop around a case's box, staff spaces each side
+CASE_MARGIN_SP = 4.0
+
+
+def case_file_name(case_id: str) -> str:
+    return "%s.npz" % "".join(ch if ch.isalnum() or ch in "._-" else "_" for ch in str(case_id))
+
+
+def _dump_cases(out: OneHeads, items: Sequence[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: np.ndarray, props: Sequence[Any],
+                binary: Any, s: float, sp: float, page: int) -> None:
+    path = os.environ.get(CASES_DUMP_ENV, "").strip()
+    if not path:
+        return
+    import json
+    import pathlib
+    spec = json.loads(pathlib.Path(path).read_text())
+    od = pathlib.Path(spec["out_dir"])
+    od.mkdir(parents=True, exist_ok=True)
+    for case in spec.get("cases") or ():
+        if int(case["page"]) != page:
+            continue
+        b = [float(v) for v in case["box"]]
+        m = CASE_MARGIN_SP * sp
+        rx0, ry0 = max(0, int(np.floor((b[0] - m) * s))), max(0, int(np.floor((b[1] - m) * s)))
+        rx1, ry1 = min(lab.shape[1], int(np.ceil((b[2] + m) * s))), min(lab.shape[0], int(np.ceil((b[3] + m) * s)))
+        ox, oy = rx0 / s, ry0 / s                       # the crop's origin, page px (the label crop starts exactly there)
+        px0, py0 = int(round(ox)), int(round(oy))
+        px1, py1 = int(round(rx1 / s)), int(round(ry1 / s))
+        sub_lab = lab[ry0:ry1, rx0:rx1]
+        ids = sorted(int(v) for v in np.unique(sub_lab) if v > 0)
+        remap = np.zeros(int(lab.max()) + 1, np.int32)
+        for n, v in enumerate(ids):
+            remap[v] = n + 1
+        cx0, cy0, cx1, cy1 = ox, oy, rx1 / s, ry1 / s
+
+        def inside(bx: Sequence[float]) -> bool:
+            return bx[2] > cx0 and bx[0] < cx1 and bx[3] > cy0 and bx[1] < cy1
+        mine = [it for it in items if inside(it["box"])]
+        its = [dict(key=it["key"], cell=list(it["cell"]), gi=it["gi"], box=[it["box"][0] - ox, it["box"][1] - oy, it["box"][2] - ox, it["box"][3] - oy],
+                    cls=it["cls"], conf=it["conf"], scope=list(it["scope"]), sp_head=it.get("sp_head"), tall=it.get("tall")) for it in mine]
+        fg = [[f[0] - ox, f[1] - oy, f[2] - ox, f[3] - oy] for f in foreign if inside(f)]
+        keys = {it["key"] for it in mine}
+        meta = dict(case=case, plate=spec.get("plate"), page=page, origin=[ox, oy], raster_origin=[px0, py0], scale=s, sp=sp, items=its, foreign=fg,
+                    props=[list(props[v - 1]) for v in ids], stroke_ids=[v - 1 for v in ids],
+                    page_reading=dict(groups={k: out.group_of_key.get(k) for k in sorted(keys)},
+                                      heads=[h for h in out.heads if any(k in keys for k in h["members"])]))
+        np.savez_compressed(od / case_file_name(case["id"]), lab=remap[sub_lab], binary=binary[py0:py1, px0:px1],
+                            meta=np.array(json.dumps(meta, default=str)))
 
 
 def mark_group_partition(oh: Optional[OneHeads]) -> Optional[Tuple[Dict[str, int], Dict[str, str]]]:
