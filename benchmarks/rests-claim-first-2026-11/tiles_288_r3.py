@@ -2,10 +2,11 @@
 (`page_claim_names.block_rest_strokes`).
 
     python3 benchmarks/rests-claim-first-2026-11/tiles_288_r3.py --out OUT --seed 2883 \
-        litolff:ON_RECORD.json:PDF:2,8 brahms:ON_RECORD.json:PDF:14,19
+        litolff:ON_RECORD.json:BEFORE_RECORD.json:PDF:2,8 brahms:ON_RECORD.json:BEFORE_RECORD.json:PDF:14,19
 
-SELECTION RULE (stated, seeded; read off the census row of the ON records: `rest_block_named_boxes` = whole/half rest boxes this round's block share newly names, and
-`rest_weak_boxes` with why `names_no_stroke` and class restWhole / restHalf = boxes still refused):
+SELECTION RULE (stated, seeded; read off the records: a whole / half rest claim row (`claimed_area`, cls restWhole / restHalf, source page_boxes) of the ON record that the
+BEFORE record (round 2's tree, same pages, same flag) does not hold = newly claimed; and the census row's `rest_weak_boxes` with why `names_no_stroke` and class
+restWhole / restHalf = still refused):
   1. up to 9 newly claimed whole/half rests, drawn with `random.Random(seed)` alternating between the plates (Litolff first; when one plate's pool is empty the other fills);
   2. then 3 still-refused whole/half boxes (`names_no_stroke`), drawn the same way (alternating, seeded);
   12 tiles in all. Tiles are shuffled; the key is ONE LEVEL ABOVE the tile folder; nothing on a tile says which group it is from.
@@ -28,9 +29,19 @@ from PIL import Image, ImageDraw
 from tools.omr.preprocessing import render_page
 
 
+def claim_keys(observations):
+    out = {}
+    for o in observations:
+        d = o.get("detail") or {}
+        if d.get("source") == "page_boxes" and d.get("unit") == "page_ink" and d.get("cls") in ("restWhole", "restHalf"):
+            out[(o["subject"], d["cls"], tuple(o["value"]))] = o
+    return out
+
+
 def load(record, pages):
     rec = json.load(open(record))["record"]
     strokes, census = {}, []
+    load.claims = claim_keys(rec["observations"])
     for o in rec["observations"]:
         sub = o["subject"]
         if o["quantity"] == "page_stroke" and o["value"] != "barline":
@@ -89,20 +100,25 @@ def main():
     rng = random.Random(a.seed)
     pdfs, data, claimed, refused = {}, {}, [], []
     for spec in a.plates:
-        plate, rec, pdf, pages = spec.split(":")
+        plate, rec, before, pdf, pages = spec.split(":")
         pages = [int(p) for p in pages.split(",")]
         pdfs[plate] = pdf
         strokes, census = load(rec, pages)
+        after_claims = load.claims
+        load(before, pages)
+        before_claims = load.claims
         data[plate] = strokes
+        for sub, cls, ids in sorted(set(after_claims) - set(before_claims)):
+            pg = int(sub.split("/")[1])
+            if pg in pages:
+                claimed.append(dict(plate=plate, page=pg, cls=cls, box=None, ids=list(ids), cell=sub))
         for pg, d in census:
-            for cls, box, ids, cell in d.get("rest_block_named_boxes", []):
-                claimed.append(dict(plate=plate, page=pg, cls=cls, box=box, ids=ids, cell=cell))
             for cls, box, why, cell in d.get("rest_weak_boxes", []):
                 if why == "names_no_stroke" and cls in ("restWhole", "restHalf"):
                     refused.append(dict(plate=plate, page=pg, cls=cls, box=box, ids=[], cell=cell))
 
     def draw(pool_items, n, group):
-        pools = {p: sorted([r for r in pool_items if r["plate"] == p], key=lambda r: (r["page"], r["box"])) for p in data}
+        pools = {p: sorted([r for r in pool_items if r["plate"] == p], key=lambda r: (r["page"], r["cell"], r["ids"], r["box"] or [])) for p in data}
         for p in pools:
             rng.shuffle(pools[p])
         order, k, got = list(pools), 0, []
@@ -132,7 +148,7 @@ def main():
         t = tile(cache[k2], box, sbs, sp)
         t.save(out / "tiles" / ("tile_%02d.png" % i))
         tiles.append(t)
-        key.append(dict(tile=i, plate=c["plate"], page=c["page"], cls=c["cls"], group=c["group"], box=[round(v, 1) for v in box], detector_box=[round(v, 1) for v in c["box"]],
+        key.append(dict(tile=i, plate=c["plate"], page=c["page"], cls=c["cls"], group=c["group"], box=[round(v, 1) for v in box], detector_box=[round(v, 1) for v in (c["box"] or [])],
                         ids=ids, cell=c["cell"]))
     w, h = max(t.width for t in tiles), max(t.height for t in tiles)
     cols = 3
