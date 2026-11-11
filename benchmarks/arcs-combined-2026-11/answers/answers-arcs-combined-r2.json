@@ -1,0 +1,152 @@
+{
+ "lane": "arcs-combined-r2 (ROADMAP 2.298)",
+ "date": "2026-11-11",
+ "question": "Is this one arc? Does it start and stop on the two ticked notes? Tie or slur?",
+ "note": "Scored by the manager against key.json: 9 of 12 right. The 3 wrong (7, 8, 12) are exactly the three the lane's own look had already called wrong on the new tree, all on runs we write as SLURS: two ties written as one slur, beams written as a slur, a tie written as a slur with wrong ends. All 4 'binding changed base->new' tiles are right. Box faults: 2 starts early, 9 holds another staff's slur, 12 too long.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "a single tie",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 15,
+   "run": 68,
+   "why": "fresh sample (new)",
+   "kind": "tie",
+   "start": "glyph/15/1/8/18/3",
+   "stop": "glyph/15/1/8/19/1"
+  },
+  {
+   "tile": 2,
+   "sean": "a tie; the orange box starts a little before it",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 5,
+   "run": 111,
+   "why": "binding changed base->new",
+   "kind": "tie",
+   "start": "glyph/5/0/11/4/4",
+   "stop": "glyph/5/0/11/4/12"
+  },
+  {
+   "tile": 3,
+   "sean": "a tie",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 11,
+   "run": 3,
+   "why": "binding changed base->new",
+   "kind": "tie",
+   "start": "glyph/11/0/2/8/2",
+   "stop": "glyph/11/0/2/9/7"
+  },
+  {
+   "tile": 4,
+   "sean": "a tie",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 13,
+   "run": 88,
+   "why": "fresh sample (new)",
+   "kind": "tie",
+   "start": "glyph/13/1/3/10/6",
+   "stop": "glyph/13/1/3/11/5"
+  },
+  {
+   "tile": 5,
+   "sean": "a tie",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 13,
+   "run": 82,
+   "why": "fresh sample (new)",
+   "kind": "tie",
+   "start": "glyph/13/1/3/10/2",
+   "stop": "glyph/13/1/3/11/1"
+  },
+  {
+   "tile": 6,
+   "sean": "a tie",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 5,
+   "run": 70,
+   "why": "fresh sample (new)",
+   "kind": "tie",
+   "start": "glyph/5/1/0/2/6",
+   "stop": "glyph/5/1/0/3/4"
+  },
+  {
+   "tile": 7,
+   "sean": "two ties; the start and end note are missing a point of connection between the two",
+   "ours_right": false,
+   "plate": "litolff",
+   "page": 5,
+   "run": 97,
+   "why": "found wrong on the new tree (old seed 07)",
+   "kind": "slur",
+   "start": "glyph/5/1/0/8/7",
+   "stop": "glyph/5/1/0/10/5"
+  },
+  {
+   "tile": 8,
+   "sean": "beams",
+   "ours_right": false,
+   "plate": "brahms",
+   "page": 18,
+   "run": 42,
+   "why": "found wrong on the new tree (fresh seed 06)",
+   "kind": "slur",
+   "start": "glyph/18/0/12/0/11",
+   "stop": "glyph/18/0/12/0/6"
+  },
+  {
+   "tile": 9,
+   "sean": "confusing, systems close together: the box holds a slur from the lower staff and one from the upper staff; the green and pink marks are correct for the start and end note of the slur that belongs to the top staff",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 15,
+   "run": 4,
+   "why": "binding changed base->new",
+   "kind": "slur",
+   "start": "glyph/15/1/2/1/3",
+   "stop": "glyph/15/1/2/3/5"
+  },
+  {
+   "tile": 10,
+   "sean": "correct, just a tie",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 5,
+   "run": 84,
+   "why": "fresh sample (unchanged)",
+   "kind": "tie",
+   "start": "glyph/5/1/5/4/2",
+   "stop": "glyph/5/1/5/5/1"
+  },
+  {
+   "tile": 11,
+   "sean": "single tie, correct",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 4,
+   "run": 57,
+   "why": "binding changed base->new",
+   "kind": "tie",
+   "start": "glyph/4/1/1/4/7",
+   "stop": "glyph/4/1/1/5/7"
+  },
+  {
+   "tile": 12,
+   "sean": "the green and pink markers are off for the tie, and the orange box extends too far",
+   "ours_right": false,
+   "plate": "litolff",
+   "page": 5,
+   "run": 18,
+   "why": "found wrong on the new tree (old seed 17)",
+   "kind": "slur",
+   "start": "glyph/5/1/6/6/1",
+   "stop": "glyph/5/1/6/6/3"
+  }
+ ]
+}
