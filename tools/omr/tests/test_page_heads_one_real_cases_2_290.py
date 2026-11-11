@@ -63,7 +63,8 @@ def _stroke_boxes(lab, s):
 
 
 def _read(meta, items, foreign, lab, props, binary):
-    oh = PH.core([dict(i) for i in items], foreign, lab, props, binary, float(meta["scale"]), float(meta["sp"]))
+    touches = {int(k): [tuple(t) for t in v] for k, v in (meta.get("touches") or {}).items()} or None
+    oh = PH.core([dict(i) for i in items], foreign, lab, props, binary, float(meta["scale"]), float(meta["sp"]), touches=touches)
     ox, oy = meta["origin"]
     b = meta["case"]["box"]
     B = (b[0] - ox, b[1] - oy, b[2] - ox, b[3] - oy)
@@ -145,7 +146,24 @@ def test_round_2_controls_fail_on_the_round_1_rules(monkeypatch):
     monkeypatch.setattr(PH, "BOX_CENTRES_A_THIRD_SP", 99.0)
     monkeypatch.setattr(PH, "CLAIM_UNION_MIN_SP", 0.0)
     monkeypatch.setattr(PH, "CLAIM_UNION_MAX_H_SP", 99.0)
+    monkeypatch.setattr(PH, "CUT_THROUGH_CONTACT_MAX_SP", 0.0)
     for name in R1_WRONG:
+        with pytest.raises(AssertionError):
+            _check_case(paths[name])
+
+
+#: Sean's r2 answers: three REAL heads refused as too tall by round 2's 1.5 sp cut (a unison half 1.52, a quarter 1.78, a quarter 1.59)
+R2_TOO_TALL = ["2.290_build_r2__5", "2.290_build_r2__8", "2.290_build_r2__11"]
+
+
+@pytest.mark.skipif(not CROPS, reason="no real-case crops")
+def test_round_3_controls_fail_on_the_round_2_height_cut(monkeypatch):
+    """CLAUDE rule 7: the three real heads round 2 refused as too tall are claimed now (head + a stem's stub is not too tall) and refused again with round 2's cut."""
+    paths = {p.stem: p for p in CROPS}
+    for name in R2_TOO_TALL:
+        _check_case(paths[name])
+    monkeypatch.setattr(PH, "CLAIM_UNION_MAX_H_SP", 1.5)
+    for name in R2_TOO_TALL:
         with pytest.raises(AssertionError):
             _check_case(paths[name])
 
@@ -154,7 +172,8 @@ def test_claim_size_reason():
     assert PH.claim_size_reason(0.89, 1.33) is None          # r1 tile 1, right
     assert PH.claim_size_reason(1.59, 0.19) == "too_small"   # r1 tile 8
     assert PH.claim_size_reason(0.38, 1.52) == "too_small"   # r1 tile 10
-    assert PH.claim_size_reason(1.02, 1.59) == "too_tall"    # r1 tile 9
+    assert PH.claim_size_reason(1.02, 2.1) == "too_tall"     # more than a head and a stem's stub each way
+    assert PH.claim_size_reason(1.65, 1.78) is None          # r2 tile 8: a head with a stem's stub each side (a quarter, Sean)
     assert PH.claim_size_reason(2.78, 1.45) is None          # a head fused to its ledger line is still one head (Brahms 2.282 tile 1)
 
 

@@ -538,7 +538,15 @@ BOX_CENTRES_A_THIRD_SP = 0.9
 #: Not a WIDTH cut: a head fused to its ledger line is ~2.8 wide and is still the head's (`stroke_owner.HEAD_MAX_W_SP` 3.0; Brahms 2.282 tile 1). A hollow head that
 #: shows on the page as two thin rims only (2.289 r1 tile 9) is a pair of slivers by this rule and stays with the cell boxes (plan step 5).
 CLAIM_UNION_MIN_SP = 0.6
-CLAIM_UNION_MAX_H_SP = 1.5
+CLAIM_UNION_MAX_H_SP = 2.0
+#: ROUND 3: the height cut judges what a head's claim CAN carry: one head 1.0-1.6 sp (a hollow half up to 1.62: head_ink FINDINGS) plus a fat stem's stub each side
+#: (a head with a stem each way: a unison; 0.9-1.0 sp each side on Litolff p2 glyph/2/0/8/12/0, 1.65 x 1.78 sp). Round 2's 1.5 refused three real heads Sean named
+#: (a unison half 1.52, a quarter 1.78, a quarter 1.59); 2.0 is a head and a stub each way, no more.
+#: ROUND 3: two heads' claimed strokes that TOUCH with a contact between these (sp) are two pieces of ONE ink the stroke map cut (a quarter rest's zigzag: 1.27 sp
+#: between the stroke claimed by the head box above and the one claimed by the box below), neither is a whole head. Two heads a third apart touch TANGENTLY along
+#: their whole width: contact 2.2-2.5 sp in all 15 touching pairs on the five pages that are chords (Litolff 2.29-2.54, Brahms 2.38-2.5). Both claims are refused.
+CUT_THROUGH_CONTACT_MIN_SP = 0.9
+CUT_THROUGH_CONTACT_MAX_SP = 1.7
 
 
 def one_enabled() -> bool:
@@ -821,14 +829,16 @@ def read_one(pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], 
     for st in pm.strokes:
         spl = float(getattr(st, "staff_space_local", None) or sp) or sp
         props.append((str(st.kind), float(st.box[2]) / spl, float(st.box[3]) / spl, float(st.thickness_sp), float(st.length_sp)))
-    out = core(items, foreign, lab, props, binary, float(pm.scale), sp)
+    touches = {i: [(int(j), float(c)) for j, c in (getattr(st, "touches", None) or ())] for i, st in enumerate(pm.strokes)}
+    out = core(items, foreign, lab, props, binary, float(pm.scale), sp, touches=touches)
     out.census["seconds"] = round(time.time() - t0, 2)
-    _dump_cases(out, items, foreign, lab, props, binary, float(pm.scale), sp, int(getattr(pws.page, "page_index", 0)))
+    _dump_cases(out, items, foreign, lab, props, binary, float(pm.scale), sp, int(getattr(pws.page, "page_index", 0)), touches)
     return out
 
 
 def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: np.ndarray, props: Sequence[Tuple[str, float, float, float, float]],
-         binary: Any, s: float, sp: float, _no_ink: Optional[frozenset] = None) -> OneHeads:
+         binary: Any, s: float, sp: float, _no_ink: Optional[frozenset] = None,
+         touches: Optional[Dict[int, Sequence[Tuple[int, float]]]] = None) -> OneHeads:
     """The one-head reading on one frame (a page, or a real-case crop): `items` = the notehead boxes (key, cell, gi, box, cls, conf, scope, sp_head,
     tall), `foreign` = boxes of the classes `head_ink` treats as another mark's, `lab` = the page map's label image (reduced frame, scale `s`, 0 = none,
     i + 1 = stroke i), `props` = per stroke (kind, w_sp, h_sp, thickness_sp, length_sp), `binary` = the page raster (0 = ink) in the same page-px frame."""
@@ -942,6 +952,21 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
                 ccen["claim_size:" + why] = ccen.get("claim_size:" + why, 0) + 1
                 ccen["claim_size_strokes"] = ccen.get("claim_size_strokes", 0) + len(st_)
                 claims[gi_] = []
+    if touches:
+        owner_of = {i: g_ for g_, st_ in claims.items() for i in st_}
+        cut: set = set()
+        for i, g_ in owner_of.items():
+            for j, c in touches.get(i, ()):
+                h2 = owner_of.get(int(j))
+                if h2 is not None and h2 != g_ and CUT_THROUGH_CONTACT_MIN_SP <= float(c) <= CUT_THROUGH_CONTACT_MAX_SP:
+                    cut.add(g_)
+                    cut.add(h2)
+        for g_ in sorted(cut):
+            if claims.get(g_):
+                if len(groups[g_]) == 1:
+                    refused_alone.append(out.items[groups[g_][0]]["key"])
+                ccen["claim_size:cut_through_one_ink"] = ccen.get("claim_size:cut_through_one_ink", 0) + 1
+                claims[g_] = []
     cen: Dict[str, Any] = dict(boxes=len(out.items), heads=sum(1 for g in groups if g), heads_with_ink=len(reps), oval=len(oval_box), claims=0,
                                claimed_strokes=0, oval_why={}, how={}, pairs_joined=sum(1 for p in pairs if p[2] is None), pairs_kept_apart={})
     for v in how.values():
@@ -972,7 +997,7 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
         # as a box on no head ink -- the old twin rule (`gather.MARK_GROUP_IOU`) joins it to the head box it overlaps, else it stands alone, counted -- so what
         # the file writes there is what it wrote without the flag, never a new note from ink that is not a head (Litolff p11 m104: the quarter rest's box
         # gained a quarter C3 when its twin fold was undone and its claim refused)
-        again = core(items, foreign, lab, props, binary, s, sp, _no_ink=frozenset(refused_alone))
+        again = core(items, foreign, lab, props, binary, s, sp, _no_ink=frozenset(refused_alone), touches=touches)
         again.census["size_fallback"] = len(refused_alone)
         return again
     return out
@@ -1006,7 +1031,7 @@ def case_file_name(case_id: str) -> str:
 
 
 def _dump_cases(out: OneHeads, items: Sequence[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: np.ndarray, props: Sequence[Any],
-                binary: Any, s: float, sp: float, page: int) -> None:
+                binary: Any, s: float, sp: float, page: int, touches: Optional[Dict[int, Any]] = None) -> None:
     path = os.environ.get(CASES_DUMP_ENV, "").strip()
     if not path:
         return
@@ -1043,6 +1068,7 @@ def _dump_cases(out: OneHeads, items: Sequence[Dict[str, Any]], foreign: Sequenc
         keys = {it["key"] for it in mine}
         meta = dict(case=case, plate=plate, page=page, origin=[ox, oy], raster_origin=[px0, py0], scale=s, sp=sp, items=its, foreign=fg,
                     props=[list(props[v - 1]) for v in ids], stroke_ids=[v - 1 for v in ids],
+                    touches={str(n): [[int(remap[int(j) + 1]) - 1, float(c)] for j, c in (touches or {}).get(v - 1, ()) if int(j) + 1 < len(remap) and remap[int(j) + 1] > 0] for n, v in enumerate(ids)},
                     page_reading=dict(groups={k: out.group_of_key.get(k) for k in sorted(keys)},
                                       heads=[h for h in out.heads if any(k in keys for k in h["members"])]))
         np.savez_compressed(od / case_file_name(case["id"]), lab=remap[sub_lab], binary=binary[py0:py1, px0:px1],

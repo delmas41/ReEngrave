@@ -201,3 +201,17 @@ def test_core_on_a_synthetic_frame():
     heads = {h["rep"]: h for h in oh.heads}
     assert "glyph/0/0/0/1/2" not in heads, "a box over no head ink makes no head"
     assert heads["glyph/0/0/0/1/0"]["strokes"] == [0] and heads["glyph/0/0/0/1/1"]["strokes"] == [1]
+
+
+def test_same_page_head_skips_the_other_box_of_one_head(monkeypatch):
+    """ROADMAP 2.290 r3: the unison reader's 'another head under the stems' test skips boxes of the SAME page head (Sean, r2 tile 1: a half note UNISON, stems
+    both ways, the detector's two boxes on it); flag off: no skip (byte-identical)."""
+    from tools.omr.staged.adjudicators import stem_value as SV
+    rows = {"a": [SimpleNamespace(value="mg/1")], "b": [SimpleNamespace(value="mg/1")], "c": [SimpleNamespace(value="mg/2")]}
+    ev = SimpleNamespace(subject="a", rows=lambda q, subject=None, **kw: rows.get(subject, []))
+    monkeypatch.delenv(PH.ONE_ENV, raising=False)
+    assert SV._same_page_head(ev, "b") is False
+    monkeypatch.setenv(PH.ONE_ENV, "1")
+    assert SV._same_page_head(ev, "b") is True
+    assert SV._same_page_head(ev, "c") is False
+    assert SV._same_page_head(ev, "zz") is False
