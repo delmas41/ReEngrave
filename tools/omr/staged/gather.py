@@ -2710,7 +2710,7 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
     # a notehead box the page head list does not hold (its cell had no page box) keeps the 2.58b grouping above
     groups += [sorted(g) for g in by_head.values()]
     groups.sort(key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
-    extra_of = {k: {"identity": "page_head", "head_how": head_how.get(k, "")} for k in head_group}
+    extra_of = _ph.mark_group_detail(page_heads)
     return _file_mark_groups(log, items, groups=groups, extra_of=extra_of)
 
 

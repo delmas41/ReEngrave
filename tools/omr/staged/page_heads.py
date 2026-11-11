@@ -582,8 +582,10 @@ def partition(items: Sequence[Dict[str, Any]], shared: Any, sp: float, no_ink_io
                     break
                 if bj[1] >= bi[3] or bi[1] >= bj[3]:
                     continue
-                why = same_head(items[i], items[j], float(shared(i, j)), sp)
-                pairs.append([i, j, why])
+                sh = float(shared(i, j))
+                why = same_head(items[i], items[j], sh, sp)
+                small = min(items[i]["ink_px"], items[j]["ink_px"])
+                pairs.append([i, j, why, round(sh / small, 3) if small else 0.0])
                 if why is None:
                     parent[find(i)] = find(j)
         # a box on no head ink joins the INK head whose box it overlaps most at the old twin rule (one mark written once stays written once), else alone
@@ -652,6 +654,7 @@ class OneHeads:
         self.heads: List[Dict[str, Any]] = []
         self.census: Dict[str, Any] = {}
         self.group_of_key: Dict[str, int] = {}
+        self.apart: Dict[int, List[list]] = {}
 
 
 def _label_image(pm: Any, shape_px: Sequence[int]) -> np.ndarray:
@@ -769,6 +772,11 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
         return int(hmask[y0:y1, x0:x1].sum())
     groups, how, pairs = partition(out.items, shared, sp, MARK_GROUP_IOU)
     out.groups, out.how = groups, how
+    out.apart = {}
+    for i, j, why, sh in pairs:
+        if why is not None:
+            out.apart.setdefault(i, []).append([out.items[j]["key"], why, sh])
+            out.apart.setdefault(j, []).append([out.items[i]["key"], why, sh])
     # each head with ink: its representative (the most confident member with ink, the export's own write-once choice), its oval, and the strokes in it
     totals = np.bincount(lab.ravel(), minlength=n_st + 1)
     ovals: Dict[int, Dict[int, int]] = {}
@@ -885,6 +893,20 @@ def mark_group_partition(oh: Optional[OneHeads]) -> Optional[Tuple[Dict[str, int
     if oh is None:
         return None
     return dict(oh.group_of_key), {oh.items[i]["key"]: oh.how.get(i, "") for i in range(len(oh.items))}
+
+
+def mark_group_detail(oh: OneHeads) -> Dict[str, Dict[str, Any]]:
+    """The fields the notehead `Q.MARK_GROUP` rows carry under the flag: `identity` page_head, `head_how`, the box's head ink (px of the page map's
+    frame) and its centre (page px), and `apart` -- every overlapping box of its system it was NOT joined with, [key, reason, shared share] (step 1's
+    comparison reads them; the one identity is the group id itself)."""
+    out: Dict[str, Dict[str, Any]] = {}
+    for i, it in enumerate(oh.items):
+        d: Dict[str, Any] = {"identity": "page_head", "head_how": oh.how.get(i, ""), "head_ink_px": int(it.get("ink_px") or 0),
+                             "ink_centre": [round(float(it["cx"]), 1), round(float(it["cy"]), 1)]}
+        if getattr(oh, "apart", None) and oh.apart.get(i):
+            d["apart"] = oh.apart[i]
+        out[it["key"]] = d
+    return out
 
 
 def apply_to_page_marks(marks: Any, oh: Optional[OneHeads]) -> Any:
