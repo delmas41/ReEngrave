@@ -87,3 +87,43 @@ slash 2.276 r2 #4. (The lane's "5 -> 0" was on its own slices.)
 Retired at landing: NOTHING. Every candidate is still reachable with the flag ON (a marking the split cannot place
 stays one word claim): `gather.gather_page_claims`' `lone_letter_inside_a_claim` guard and `claims.spell_letter_runs`
 go only when the flag itself is removed.
+
+## 2.301 — dynamics hold their own ink only (2026-11-11), built, waiting on Sean's tiles
+
+Written by the manager from the lane's report. Branch
+`lane-2.301-dynamics-own-ink-only` 99e780117. From Sean's 2.296 r1 tiles
+(`answers/answers-2.296-r1.json`).
+
+**Causes**
+- (a) `fp` where the page has p (tiles 2, 4): the detector boxed one p twice
+  (`dynamicP` and `dynamicF`); `gather._file_compound` filed the joined twin
+  letters as `detector_letter`. The split had already chosen p
+  (`dynamic_token`); nothing reads `detector_letter`, so `fp` never reached
+  the MusicXML. Fixed with no flag: the label is the slot's own token.
+- (b) the g of "legato" in an f claim (tile 8): the stroke owner gives a
+  page-wide claim only strokes wholly inside its box (+1 px,
+  `stroke_owner._areas`); the g's stroke box ends 0.5 px outside, so it fell
+  to a detector `dynamicF` box drawn on the g. Fix behind
+  `OMR_WORD_OWNS_ITS_INK` (default OFF): `claims.edge_ink_boxes` files the
+  word's own edge letters as slack-padded rectangles (0.1 sp), skipping
+  anything overlapping a note-family box, an earlier claim, the marking's own
+  dynamic, or a staff-line-like piece.
+- (c) "sempre" blue on the più tile (tile 3): NOT a claim fault — it is the
+  sibling word piece of the same marking; the tile boxed one piece only.
+
+**Lessons:** a split part's label comes from its own slot, never the
+detector's raw spelling; a tile boxes every piece of a claim. A first padded
+box took a flat's stem and was caught by a control built from real tile-7
+pixels (rule 7 held).
+
+**Measured** (OFF vs ON, real gathers, Litolff p8, Brahms p0, p14)
+- Exported file: nothing changed (699 / 1289 paired); red bars 0->0, 24->24.
+- Ink that changes kind ON: Brahms p0 two g's dynamic -> word, an unclaimed
+  o (legato) and e (pesante) -> word; Litolff p8 the accent of più (40 px)
+  mark -> word; nothing leaves word.
+- judged right->wrong 0 (141 / 210); check 228; fast tier 10,330 passed, 0 failed.
+- 12 real-pixel controls: 6 fail on main, 12 pass.
+
+**Not done:** `claim_readout ink` lines not captured; `judged_claims` on
+Litolff p8 only (10 agree, 0 contradict). A barline stroke tinted as word
+inside a "sempre più" (its tile 9) is a separate, older over-claim, unexamined.
