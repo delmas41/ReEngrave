@@ -6762,3 +6762,6 @@ STAGED GATHER (`OMR_DYNAMIC_OWN_CLAIM` default ON, deny-list; `claims.dynamic_ow
 
 ## 2026-11-11 -- ROADMAP 2.299 landed ON: the key's kind from where its signs sit (OMR_KEY_KIND_FROM_SLOTS, deny-list)
 STAGED ADJUDICATE (`key_kind_slots`, wired in `header._staff_reading`). Reaches 4 staff-systems / 48 Litolff notes blue->plain, 0 pitch changes; Sean answered all 12 tiles right. Nothing deleted (`raise_count` still fires where it abstains). Not confirmed: sharps, thresholds beyond two plates. Next: key object COUNT at GATHER (2.302). Tests: `test_key_kind_slots.py`.
+
+## 2026-11-11 -- ROADMAP 2.300 landed ON: one chord is one event (OMR_ONE_CHORD_ONE_EVENT, deny-list)
+STAGED ADJUDICATE/EXPORT (`one_chord.py`, `stem_value._stem_of_a_second`, `rhythm.adjudicate_event`, `voicing.group_chords_in_measure`). Two heads of a second on one decided stem are one chord event; a stemless head beside a stemmed one takes its stem (blue). Frozen pages: red bars Litolff 191->180, Brahms 155->146, one value change, judged right->wrong 0; fast tier 10427 passed, check 228. Nothing retired. `adjudicate_event` now reads `Q.HEAD_STEM`, so human-row basis lists grew (basis only); the three stage-review tests are per-row. Open: Brahms stacked-mate join, chords one head short, the unread quarter rest.
