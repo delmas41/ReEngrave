@@ -182,6 +182,7 @@ RULES = [
       "Heads with no stem found are common (see fires). 2.167 found 33 of 40 sampled 'no stem' real notes had a stem the finder refused (C: a false rest/flag box ate it; B: stem cut at a staff line on the erased raster; A: a whole note has none)",
       "Sean 2026-10-18 (2.167); 2.169 landed", "open: mixed A / B / C; 2.204 stems-from-strokes waits for 2.205"),
     R(STEMS, "head_stem", "unison_two_voices,two_stems", "A", "a head with a stem each way is two notes", "a head carrying one stem up and one down is two voices on one head", "Sean 2026-10-19 (2.175), convention assumed", "kept"),
+    R(STEMS, "head_stem", "stem_of_a_second", "A", "the other head of a second stands on the same stem", "a head no stem touches, beside a head that does, a step off and one head width over, with the stem between them, is on that stem (flag OMR_ONE_CHORD_ONE_EVENT, default OFF)", "page-facts: every note on one stem shares one written value; Sean 2026-11-10 (2.291 tile 7: two half notes a second apart), convention assumed", "new: OFF"),
     R(STEMS, "head_stem", "no_evidence", "D:honesty", "no evidence", "-", RULE8, "kept"),
 
     R(STEMS, "stem_head_contact", "all_touch_a_head,some_touch_no_head", "ok", "does every stem touch a head", "a stem that touches no head is listed", "Sean 2026-10-11 (\"All stems should be connected to a notehead\", 2.87)", "-"),

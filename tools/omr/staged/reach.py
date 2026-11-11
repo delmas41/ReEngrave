@@ -433,6 +433,9 @@ NOT_A_STAGE = frozenset({
     "stem_end_heads.py",
     # ROADMAP 2.268 (trial). Pure helpers for `gather.gather_dyad_head_rescue`; files no row, names no quantity.
     "dyad_head_rescue.py",
+    # ROADMAP 2.300. Pure geometry for the second's stem join (`stem_value._stem_of_a_second`) and the one-stem grouping
+    # (`rhythm.adjudicate_event`, `voicing.group_chords_in_measure`): files no row, names no quantity, decides nothing.
+    "one_chord.py",
     # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
     "stroke_map.py",
     # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes
