@@ -16428,7 +16428,9 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             _count(f"word:direction_word:compound_not_split:{got['why']}")
             return False
         area = [float(v) for v in bb]
-        pieces, spared = _hr.word_area_sparing_heads(binary, area, [sl["box"] for sl in got["slots"]], _sp(s))
+        for sl in got["slots"]:         # the dynamic's own claim is its ink, not the detector's tight box (a `p` descender past it would be nobody's)
+            sl["claim_box"] = CL.grow_to_ink(binary, sl["box"], _sp(s))
+        pieces, spared = _hr.word_area_sparing_heads(binary, area, [sl["claim_box"] for sl in got["slots"]], _sp(s))
         inside_staff = CL.band_share(area, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
         base: Dict[str, Any] = dict(owner_row=r.id, text=r.value, category=d.get("category"))
         if spared:
@@ -16453,7 +16455,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
         for sl in got["slots"]:
             sl_inside = CL.band_share(sl["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
             _count("word:dynamic_letters:compound_dynamic")
-            _file_sparing(s, sl["box"], "dynamic_letters", "lone_inside_a_staff" if sl_inside else "outside_staff",
+            _file_sparing(s, sl["claim_box"], "dynamic_letters", "lone_inside_a_staff" if sl_inside else "outside_staff",
                           own=[key_of_letter_row[i] for i in sl["rows"] if i in key_of_letter_row], owner_row=sl["rows"][0],
                           letter_rows=list(sl["rows"]), text=None, detector_letter="".join(sl["letters"]), dynamic_token=sl["text"],
                           category="dynamic", lone=True, compound_of=r.id)

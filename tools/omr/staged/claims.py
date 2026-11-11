@@ -434,6 +434,25 @@ def compound_dynamic_slots(text: str, dynamics: Iterable[str], letters: Sequence
     return {"slots": chosen, "rows": rows, "why": None}
 
 
+#: ROADMAP 2.296: a detector letter box is TIGHT (a `p`'s descender ends past it: Litolff p8 `sempre piu p`, box bottom 1607, ink to 1613), so a claim of the box's rectangle leaves a
+#: stroke that is not WHOLLY inside it to nobody. The dynamic split out of a marking claims the box grown to the ink that touches it, at most this far past any side (staff spaces)
+DYNAMIC_INK_GROW_SPACES = 0.5
+
+
+def grow_to_ink(binary: Any, box: Sequence[float], spacing: float, grow: float = DYNAMIC_INK_GROW_SPACES) -> List[float]:
+    """`box` grown to the ink components that TOUCH it, never more than `grow` staff spaces past a side (the page raster the claim already holds; no new pass). PURE."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return [float(v) for v in box]
+    g = grow * float(spacing)
+    region = [float(box[0]) - g, float(box[1]) - g, float(box[2]) + g, float(box[3]) + g]
+    out = [float(v) for v in box]
+    for c in _components(binary, region):
+        if c[2] < box[0] or c[0] > box[2] or c[3] < box[1] or c[1] > box[3]:
+            continue                                  # does not touch the box
+        out = [min(out[0], c[0]), min(out[1], c[1]), max(out[2], c[2]), max(out[3], c[3])]
+    return out
+
+
 #: ROADMAP 2.221 word coverage -- the geometry of the extra word claims. All of it reads rows and rasters GATHER already holds.
 #: a metronome note stands this far right of its tempo word (staff spaces; Litolff p1: 1200 -> 1228 = 1.8) ...
 TEMPO_NOTE_GAP_SPACES = 3.0

@@ -81,8 +81,26 @@ class TestCompoundSlots(unittest.TestCase):
         self.assertEqual(CL.compound_dynamic_slots("legato", [], [((1, 1, 9, 9), "f", "a")])["why"], "no_dynamic_token")
 
 
+class TestGrowToInk(unittest.TestCase):
+    def test_a_descender_past_the_tight_detector_box_is_the_dynamics_own_ink(self):
+        # Litolff p8 `sempre piu p`: the detector's box ends at 1607, the p's stem at 1613 (6 px = 0.4 sp)
+        img = np.full((200, 200), 255, np.uint8)
+        img[50:60, 100:112] = 0                      # the bowl, inside the box
+        img[60:66, 103:106] = 0                      # the descender, past it
+        img[50:66, 140:150] = 0                      # another letter, far off: not touched
+        got = CL.grow_to_ink(img, [99.0, 49.0, 113.0, 61.0], SP)
+        self.assertEqual(got, [99.0, 49.0, 113.0, 66.0])
+
+    def test_CONTROL_growth_never_runs_more_than_half_a_space_past_a_side(self):
+        img = np.full((200, 200), 255, np.uint8)
+        img[50:61, 100:112] = 0
+        img[61:100, 103:106] = 0                     # a long stem running on down: only its first 0.5 sp is taken
+        got = CL.grow_to_ink(img, [99.0, 49.0, 113.0, 61.0], SP)
+        self.assertEqual(got[3], 61.0 + 0.5 * SP)
+
+
 WORD = (222.0, 198.0, 330.0, 220.0)          # "f legato", between the staves; the `f` is ink 222..236, `legato` 252..330
-F_LETTER = (220.0, 196.0, 238.0, 222.0)     # the detector's dynamicF on the f
+F_LETTER = (221.0, 199.0, 237.0, 216.0)     # the detector's dynamicF on the f: TIGHT, the ink runs to y 218
 P_LETTER = (252.0, 198.0, 264.0, 220.0)     # a dynamicP the detector drew on the `l` of legato
 
 
@@ -129,6 +147,7 @@ class TestMarkingSplitInGather(unittest.TestCase):
         self.assertTrue(wrd)
         self.assertGreaterEqual(min(r.value[0] for r in wrd), 240.0)     # the word owns none of the f's ink
         self.assertEqual(dyn[0].detail.get("detector_letter"), "f")
+        self.assertGreaterEqual(dyn[0].value[3], 218.0)                  # its ink, not the detector's tight box (a stroke past the box would be nobody's)
 
     def test_CONTROL_OFF_the_word_covers_the_f_and_no_dynamic_claim_stands_on_it(self):
         rows = _claims(OFF, _log_with_marking())
