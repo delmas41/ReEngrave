@@ -20,6 +20,8 @@ def main():
     for cid in sorted(cases):
         case = cases[cid]
         if cid not in RC.case_ids():
+            if case.get("group") == "accidental":
+                continue                      # no detector rest box meets this accidental: nothing the rest reader could have claimed there
             out.append(dict(id=cid, sean=case["sean"], result="NO FIXTURE (no detector rest box met this tile's box)"))
             continue
         v = RC.verdict(RC.load(cid))
@@ -32,7 +34,10 @@ def main():
                         result=ok, note=WON_BY_AN_EARLIER_CLAIM.get(cid, "")))
     for r in out:
         print("%-6s %-9s p%-2s %-44s %-12s -> %-6s %-32s %s" % (r["id"], r.get("plate", ""), r.get("page", ""), r["sean"][:44], r.get("cls", ""), r.get("standing", ""), r.get("why", ""), r["result"]))
-    print("agrees %d of %d" % (n_agree, len(out)))
+    tiles = [r for r in out if cases[r["id"]].get("group") != "accidental"]
+    accs = [r for r in out if cases[r["id"]].get("group") == "accidental"]
+    print("rest tiles: agrees %d of %d" % (sum(r["result"].startswith("AGREES") for r in tiles), len(tiles)))
+    print("accidentals Sean named that a detector rest box meets: refused %d of %d" % (sum(r["result"].startswith("AGREES") for r in accs), len(accs)))
     if "--json" in sys.argv:
         open(sys.argv[sys.argv.index("--json") + 1], "w").write(json.dumps(out, indent=1))
 

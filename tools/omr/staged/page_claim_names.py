@@ -329,7 +329,7 @@ _neighbours = IA.neighbours
 rest_attachment = IA.attachment
 
 
-def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None, sides: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
+def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None, sides: Optional[Dict[str, Any]] = None, pairs: Optional[Sequence[Any]] = None) -> Tuple[str, str]:
     """`("READ" | "weak", why)`: does a detector rest box STAND as a rest (ROADMAP 2.288)? Round 2: the question is attachment, not a stroke length. With the page
     strokes read (`attachment` from `rest_attachment`): a box whose ink hangs from a stem carrying a head, touches a head, or is a bare vertical is `weak`
     (a flag, a stem, a flat's vertical); otherwise it stands free and is READ -- unless the cell raster's own ink contact (`Q.REST_INK_CONTACT`, 2.150b, a second
@@ -346,6 +346,8 @@ def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[st
         return "weak", "touches_a_head"
     if attachment.get("bare_stroke"):
         return "weak", "bare_vertical_stroke"
+    if pairs:
+        return "weak", "two_parallel_verticals"           # a sharp / natural's pair, not one rest's one body (`ink_attachment.parallel_verticals`, 2.288 r4)
     if sides and sides.get("two_lines"):
         return "weak", "touches_two_staff_lines"          # a block rest never touches two lines (Sean 2026-09-29); `ink_attachment.line_sides`
     if sides and sides.get("both_sides"):
@@ -474,8 +476,9 @@ def rest_box_verdict(page_map: Any, index: StrokeIndex, raw: Any, pb: Sequence[f
         per = [s_ for s_ in (IA.line_sides(page_map, i, raw) for i in fit) if s_]
         if per:
             sides = dict(both_sides=any(s_["both_sides"] for s_ in per), two_lines=any(s_["two_lines"] for s_ in per), strokes=per)
-    standing, why = rest_standing(detail, att, sides)
-    return dict(standing=standing, why=why, ids=fit if standing == "READ" else ids, block_extra=block_extra, attachment=att, sides=sides)
+    pairs = IA.parallel_verticals(page_map, fit)                 # every rest family: one rest holds at most one long vertical
+    standing, why = rest_standing(detail, att, sides, pairs)
+    return dict(standing=standing, why=why, ids=fit if standing == "READ" else ids, block_extra=block_extra, attachment=att, sides=sides, pairs=pairs)
 
 
 def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Optional[Dict[str, List[Any]]],

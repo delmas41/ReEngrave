@@ -15,7 +15,8 @@
   ],
   "sean": "quarter rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-02",
@@ -33,7 +34,8 @@
   ],
   "sean": "eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-03",
@@ -51,7 +53,8 @@
   ],
   "sean": "quarter rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-04",
@@ -69,7 +72,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-05",
@@ -87,7 +91,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-06",
@@ -105,7 +110,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-07",
@@ -123,7 +129,8 @@
   ],
   "sean": "part of a flag on an eighth note",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r1-08",
@@ -141,7 +148,8 @@
   ],
   "sean": "quarter rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-09",
@@ -159,7 +167,8 @@
   ],
   "sean": "eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-10",
@@ -177,7 +186,8 @@
   ],
   "sean": "the CR from crescendo",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r1-11",
@@ -195,7 +205,8 @@
   ],
   "sean": "quarter rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r1-12",
@@ -213,7 +224,8 @@
   ],
   "sean": "eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-01",
@@ -231,7 +243,8 @@
   ],
   "sean": "a natural sign",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r2-02",
@@ -249,7 +262,8 @@
   ],
   "sean": "half of a quarter rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-03",
@@ -267,7 +281,8 @@
   ],
   "sean": "a stem",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r2-04",
@@ -285,7 +300,8 @@
   ],
   "sean": "part of an eighth note's flag",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r2-05",
@@ -303,7 +319,8 @@
   ],
   "sean": "an eighth note",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r2-06",
@@ -321,7 +338,8 @@
   ],
   "sean": "an eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-07",
@@ -339,7 +357,8 @@
   ],
   "sean": "a quarter note",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r2-08",
@@ -357,7 +376,8 @@
   ],
   "sean": "an eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-09",
@@ -375,7 +395,8 @@
   ],
   "sean": "an eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-10",
@@ -393,7 +414,8 @@
   ],
   "sean": "an eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-11",
@@ -411,7 +433,8 @@
   ],
   "sean": "an eighth rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r2-12",
@@ -429,7 +452,8 @@
   ],
   "sean": "an eighth note",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r3-01",
@@ -447,7 +471,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-02",
@@ -465,7 +490,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-03",
@@ -483,7 +509,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-04",
@@ -501,7 +528,8 @@
   ],
   "sean": "eighth note",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r3-05",
@@ -519,7 +547,8 @@
   ],
   "sean": "stem",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r3-06",
@@ -537,7 +566,8 @@
   ],
   "sean": "whole rest (corrected from 'whole note')",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-07",
@@ -555,7 +585,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-08",
@@ -573,7 +604,8 @@
   ],
   "sean": "whole rest (in the second space)",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-09",
@@ -591,7 +623,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-10",
@@ -609,7 +642,8 @@
   ],
   "sean": "eighth note and its stem",
   "is_rest": false,
-  "must": "refused"
+  "must": "refused",
+  "group": "rest-tile"
  },
  {
   "id": "r3-11",
@@ -627,7 +661,8 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
  },
  {
   "id": "r3-12",
@@ -645,6 +680,539 @@
   ],
   "sean": "whole rest",
   "is_rest": true,
-  "must": "claimed_or_refused_for_merged_ink"
+  "must": "claimed_or_refused_for_merged_ink",
+  "group": "rest-tile"
+ },
+ {
+  "id": "acc-2285r1-01",
+  "round": null,
+  "tile": 1,
+  "plate": "litolff",
+  "page": 2,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   881.0,
+   1473.0,
+   900.0,
+   1522.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-03",
+  "round": null,
+  "tile": 3,
+  "plate": "litolff",
+  "page": 8,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   1972.0,
+   1661.0,
+   1991.0,
+   1708.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-04",
+  "round": null,
+  "tile": 4,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   2417.0,
+   5323.0,
+   2451.0,
+   5402.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-06",
+  "round": null,
+  "tile": 6,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   3462.0,
+   1241.0,
+   3497.0,
+   1329.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-07",
+  "round": null,
+  "tile": 7,
+  "plate": "litolff",
+  "page": 8,
+  "cell": null,
+  "cls": "accidental:flat",
+  "box": [
+   1023.0,
+   1512.0,
+   1038.0,
+   1554.0
+  ],
+  "sean": "flat",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-08",
+  "round": null,
+  "tile": 8,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental:natural",
+  "box": [
+   1635.0,
+   1021.0,
+   1657.0,
+   1108.0
+  ],
+  "sean": "natural",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-09",
+  "round": null,
+  "tile": 9,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:flat",
+  "box": [
+   4744.0,
+   1280.0,
+   4773.0,
+   1361.0
+  ],
+  "sean": "flat",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-10",
+  "round": null,
+  "tile": 10,
+  "plate": "litolff",
+  "page": 2,
+  "cell": null,
+  "cls": "accidental:flat",
+  "box": [
+   1311.0,
+   3418.0,
+   1326.0,
+   3459.0
+  ],
+  "sean": "flat",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r1-12",
+  "round": null,
+  "tile": 12,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   3835.0,
+   4577.0,
+   3866.0,
+   4666.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-01",
+  "round": null,
+  "tile": 1,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   3463.78,
+   1285.7,
+   3494.85,
+   1305.78
+  ],
+  "sean": "part of a sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-02",
+  "round": null,
+  "tile": 2,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   2416.57,
+   5321.5,
+   2449.03,
+   5353.68
+  ],
+  "sean": "part of a sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-03",
+  "round": null,
+  "tile": 3,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:flat",
+  "box": [
+   4744.0,
+   1280.0,
+   4773.0,
+   1361.0
+  ],
+  "sean": "flat",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-04",
+  "round": null,
+  "tile": 4,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental:natural",
+  "box": [
+   5246.0,
+   4470.0,
+   5266.0,
+   4558.0
+  ],
+  "sean": "natural",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-05",
+  "round": null,
+  "tile": 5,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   3462.0,
+   1241.0,
+   3497.0,
+   1329.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-06",
+  "round": null,
+  "tile": 6,
+  "plate": "litolff",
+  "page": 8,
+  "cell": null,
+  "cls": "accidental:flat",
+  "box": [
+   1023.0,
+   1512.0,
+   1038.0,
+   1554.0
+  ],
+  "sean": "flat",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-07",
+  "round": null,
+  "tile": 7,
+  "plate": "litolff",
+  "page": 2,
+  "cell": null,
+  "cls": "accidental:natural",
+  "box": [
+   984.0,
+   369.0,
+   996.0,
+   423.0
+  ],
+  "sean": "natural",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-08",
+  "round": null,
+  "tile": 8,
+  "plate": "litolff",
+  "page": 8,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   499.0,
+   3566.0,
+   519.0,
+   3613.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-09",
+  "round": null,
+  "tile": 9,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:natural",
+  "box": [
+   4108.0,
+   4118.0,
+   4130.0,
+   4206.0
+  ],
+  "sean": "natural",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-10",
+  "round": null,
+  "tile": 10,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   1995.0,
+   4390.0,
+   2030.0,
+   4478.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-11",
+  "round": null,
+  "tile": 11,
+  "plate": "litolff",
+  "page": 2,
+  "cell": null,
+  "cls": "accidental:flat",
+  "box": [
+   1311.0,
+   3418.0,
+   1326.0,
+   3459.0
+  ],
+  "sean": "flat",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2285r2-12",
+  "round": null,
+  "tile": 12,
+  "plate": "litolff",
+  "page": 2,
+  "cell": null,
+  "cls": "accidental:sharp",
+  "box": [
+   881.0,
+   1473.0,
+   900.0,
+   1522.0
+  ],
+  "sean": "sharp",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2288r2-01",
+  "round": null,
+  "tile": 1,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental:natural",
+  "box": [
+   934.8,
+   6390.0,
+   961.7,
+   6445.4
+  ],
+  "sean": "a natural sign",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2282-02",
+  "round": null,
+  "tile": 2,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental",
+  "box": [
+   1880.1,
+   504.2,
+   1914.5,
+   514.6
+  ],
+  "sean": "accidental",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2282-03",
+  "round": null,
+  "tile": 3,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental",
+  "box": [
+   1653.2,
+   3259.4,
+   1663.5,
+   3281.5
+  ],
+  "sean": "accidental",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2282-04",
+  "round": null,
+  "tile": 4,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental",
+  "box": [
+   3842.53,
+   4370.53,
+   3875.23,
+   4413.31
+  ],
+  "sean": "accidental",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2282-08",
+  "round": null,
+  "tile": 8,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental",
+  "box": [
+   1653.2,
+   3259.4,
+   1663.5,
+   3281.5
+  ],
+  "sean": "accidental",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2282-09",
+  "round": null,
+  "tile": 9,
+  "plate": "brahms",
+  "page": 14,
+  "cell": null,
+  "cls": "accidental",
+  "box": [
+   2510.6,
+   2605.5,
+   2545.3,
+   2616.0
+  ],
+  "sean": "accidental",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
+ },
+ {
+  "id": "acc-2282-11",
+  "round": null,
+  "tile": 11,
+  "plate": "brahms",
+  "page": 19,
+  "cell": null,
+  "cls": "accidental",
+  "box": [
+   4922.8,
+   4107.0,
+   4950.0,
+   4110.5
+  ],
+  "sean": "accidental",
+  "is_rest": false,
+  "must": "refused",
+  "group": "accidental"
  }
 ]

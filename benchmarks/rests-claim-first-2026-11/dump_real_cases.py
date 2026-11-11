@@ -62,7 +62,7 @@ def install(out_dir, plate_hint):
                 v = PCN.rest_box_verdict(page_map, index, raw, pb, cls, owner, detail)
                 diag.append(dict(cls=cls, box=[round(q, 1) for q in pb], cell=csub.to_key(), standing=v["standing"], why=v["why"], ids=v["ids"],
                                  attachment=v["attachment"], sides=({k: v["sides"][k] for k in ("both_sides", "two_lines")} if v["sides"] else None),
-                                 own_h_sp=[PCN.own_block_height_sp(page_map, i, raw) for i in v["ids"]]))
+                                 pairs=v.get("pairs"), own_h_sp=[PCN.own_block_height_sp(page_map, i, raw) for i in v["ids"]]))
                 for cs in CASES:
                     if cs["page"] != p or cs["plate"] != plate_hint or overlap(pb, cs["box"]) < 0.5:
                         continue

@@ -82,6 +82,64 @@ def attachment(page_map: Any, own: Sequence[int]) -> Optional[Dict[str, Any]]:
                 bare_stroke=all(page_map.strokes[i].kind == "vertical" for i in own_set))
 
 
+#: two long verticals are "side by side" when their vertical extents overlap by at least this share of the shorter one (a sharp's two verticals overlap ~1.0; a natural's
+#: staggered pair ~0.6) and the gap between them is at most `PAIR_GAP_SP` staff spaces (the pair of one accidental, never two marks)
+PAIR_OVERLAP_MIN = 0.5
+PAIR_GAP_SP = 1.0
+#: ... and CROSSED: an accidental's verticals are joined by two bars (a sharp's two slanted bars, a natural's two), which the stroke map keeps as the pieces lying in the gap
+#: between the verticals. Two verticals with fewer than this many strokes between them are only two verticals (a quarter rest the map shattered, Breitkopf: Brahms p14).
+PAIR_BARS_MIN = 2
+#: ... and DRAWN: each vertical is a pen stroke, at least this thick (staff spaces). Measured on the 17 real accidentals Sean named with two long verticals on the four pages:
+#: 0.19-0.32 sp (one natural 0.13, missed); the 2 px (0.06 sp) edge slivers the map leaves beside a shattered Breitkopf quarter rest (Brahms p14) are not strokes.
+PAIR_THICK_MIN_SP = 0.15
+GAP_SLACK_PX = 2.0
+
+
+def parallel_verticals(page_map: Any, own: Sequence[int]) -> List[Dict[str, Any]]:
+    """THREE: DOES THIS INK HOLD TWO LONG VERTICALS SIDE BY SIDE? (Sean 2026-11-10: the 2.285 sharp on Litolff p8 was claimed as a 16th rest.) Pure, from the stroke map alone
+    (kind, box, length: no raster). The rule, in the piece's own strokes: a sharp is TWO long parallel verticals crossed by two bars and a natural is two STAGGERED verticals
+    joined by two bars (engraving: they are one accidental's pair); a rest is ONE mark whose body is one stroke (a quarter rest's slanted stroke, an eighth / 16th rest's one
+    slanted stem with its curls, a whole / half rest's one block) and so holds at most ONE long vertical; a stem beside a barline is not one ink either. A "long vertical" is a
+    stroke of kind `vertical` at least `stroke_map.V_MIN_SPACES` long (the map's own cut, the same one `attachment` uses for a stem), at its own staff's local space.
+    Returns one dict per pair (`a`, `b`, `overlap` = share of the shorter's height, `gap_sp`); empty = none. A reader of ANY mark that is not an accidental, a bracket or a barline
+    may refuse ink that returns a pair.
+    WHAT WOULD FALSIFY IT: a real rest (or other single mark) whose own strokes include two long verticals side by side -- e.g. a quarter rest the map cut into two long overlapping
+    slivers. The real judged rest tiles (`benchmarks/rests-claim-first-2026-11/real_cases.json`, 25 rests) are replayed in `test_rests_real_cases_2_288_r4.py`: none holds a pair."""
+    if not own or not getattr(page_map, "strokes", None):
+        return []
+    from . import stroke_map as SM
+    n = len(page_map.strokes)
+    longs = []
+    for i in sorted({int(i) for i in own if 0 <= int(i) < n}):
+        st = page_map.strokes[i]
+        sp = float(getattr(st, "staff_space_local", None) or getattr(page_map, "sp", 0.0) or 0.0)
+        if (st.kind == "vertical" and float(st.length_sp) >= SM.V_MIN_SPACES and sp > 0
+                and float(getattr(st, "thickness_sp", PAIR_THICK_MIN_SP) or 0.0) >= PAIR_THICK_MIN_SP):
+            x, y, w, h = (float(v) for v in st.box)
+            longs.append((i, x, y, x + w, y + h, sp))
+    out = []
+    for a in range(len(longs)):
+        for b in range(a + 1, len(longs)):
+            ia, xa0, ya0, xa1, ya1, sp = longs[a]
+            ib, xb0, yb0, xb1, yb1, _sp = longs[b]
+            overlap = (min(ya1, yb1) - max(ya0, yb0)) / max(1.0, min(ya1 - ya0, yb1 - yb0))
+            gap = (max(xa0, xb0) - min(xa1, xb1)) / sp
+            if overlap >= PAIR_OVERLAP_MIN and gap <= PAIR_GAP_SP:
+                # the crossbars: the OTHER strokes of the ink that sit in the gap between the two verticals (the map cuts a sharp's two slanted bars into the pieces between its verticals)
+                lo_x, hi_x = min(xa1, xb1) - GAP_SLACK_PX, max(xa0, xb0) + GAP_SLACK_PX
+                lo_y, hi_y = max(ya0, yb0), min(ya1, yb1)
+                bars = []
+                for k in sorted({int(i) for i in own if 0 <= int(i) < n}):
+                    if k in (ia, ib):
+                        continue
+                    kx, ky, kw, kh = (float(v) for v in page_map.strokes[k].box)
+                    if kx + kw >= lo_x and kx <= hi_x and lo_y <= ky + kh / 2.0 <= hi_y:
+                        bars.append(k)
+                if len(bars) >= PAIR_BARS_MIN:
+                    out.append(dict(a=ia, b=ib, overlap=round(overlap, 3), gap_sp=round(gap, 3), bars=bars))
+    return out
+
+
 def line_row_flags(raw: Any, m: Any, x0: int, y0: int, scale: float) -> List[bool]:
     """Per row of a stroke mask (reduced frame, offset `x0, y0`): True = the block's OWN row, False = a staff-line row. No raster: all True."""
     h, w = m.shape
