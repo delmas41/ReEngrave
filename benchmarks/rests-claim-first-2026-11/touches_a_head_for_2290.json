@@ -1,0 +1,571 @@
+{
+ "what": "ROADMAP 2.288 round 3: every whole/half/quarter/eighth/16th rest box refused `touches_a_head` on the four pages (Litolff p2,p8; Brahms p14,p19), on the lane tree (OMR_PAGE_CLAIM_RESTS=1). Belongs to ROADMAP 2.290 step 5 (merged ink: pixels where a head meets another claim). `agent_look` is ONE contact-sheet look by the lane agent, NOT Sean's answer.",
+ "counts": {
+  "total": 40,
+  "real_rest": 12,
+  "unsure": 4,
+  "not_a_rest": 24
+ },
+ "boxes": [
+  {
+   "n": 1,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    1043,
+    517,
+    1061,
+    595
+   ],
+   "cell": "cell/14/0/0/0",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 2,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restHalf",
+   "box": [
+    2901,
+    739,
+    2940,
+    755
+   ],
+   "cell": "cell/14/0/0/4",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 3,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest8th",
+   "box": [
+    1629,
+    1584,
+    1661,
+    1633
+   ],
+   "cell": "cell/14/0/5/1",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 4,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest8th",
+   "box": [
+    4113,
+    1730,
+    4140,
+    1777
+   ],
+   "cell": "cell/14/0/5/6",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 5,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    1668,
+    1970,
+    1696,
+    2042
+   ],
+   "cell": "cell/14/0/6/1",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 6,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    1919,
+    1967,
+    1950,
+    2014
+   ],
+   "cell": "cell/14/0/6/2",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 7,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    3303,
+    2406,
+    3331,
+    2475
+   ],
+   "cell": "cell/14/0/8/5",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 8,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest8th",
+   "box": [
+    5006,
+    2747,
+    5028,
+    2782
+   ],
+   "cell": "cell/14/0/9/8",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 9,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    1329,
+    2948,
+    1344,
+    3004
+   ],
+   "cell": "cell/14/0/10/0",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 10,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    5171,
+    2978,
+    5184,
+    3060
+   ],
+   "cell": "cell/14/0/10/9",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 11,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest8th",
+   "box": [
+    3472,
+    3303,
+    3506,
+    3341
+   ],
+   "cell": "cell/14/0/12/5",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 12,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    3074,
+    3664,
+    3102,
+    3718
+   ],
+   "cell": "cell/14/0/13/4",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 13,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    4027,
+    5990,
+    4038,
+    6068
+   ],
+   "cell": "cell/14/1/7/6",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 14,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restQuarter",
+   "box": [
+    1735,
+    6253,
+    1749,
+    6349
+   ],
+   "cell": "cell/14/1/8/1",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 15,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest16th",
+   "box": [
+    935,
+    6390,
+    962,
+    6445
+   ],
+   "cell": "cell/14/1/9/0",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 16,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest8th",
+   "box": [
+    1645,
+    6390,
+    1664,
+    6413
+   ],
+   "cell": "cell/14/1/9/1",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 17,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    4265,
+    1249,
+    4280,
+    1342
+   ],
+   "cell": "cell/19/0/3/7",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 18,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    3928,
+    1508,
+    3961,
+    1603
+   ],
+   "cell": "cell/19/0/4/6",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 19,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    4774,
+    1739,
+    4807,
+    1814
+   ],
+   "cell": "cell/19/0/5/9",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 20,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    4775,
+    1739,
+    4812,
+    1795
+   ],
+   "cell": "cell/19/0/5/9",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 21,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "rest8th",
+   "box": [
+    3899,
+    2239,
+    3932,
+    2284
+   ],
+   "cell": "cell/19/0/8/6",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 22,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    3291,
+    2836,
+    3324,
+    2929
+   ],
+   "cell": "cell/19/0/10/5",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 23,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    1588,
+    3606,
+    1603,
+    3705
+   ],
+   "cell": "cell/19/0/13/1",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 24,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    2574,
+    3554,
+    2588,
+    3650
+   ],
+   "cell": "cell/19/0/13/3",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 25,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "rest8th",
+   "box": [
+    4871,
+    3624,
+    4898,
+    3670
+   ],
+   "cell": "cell/19/0/13/9",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 26,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    2027,
+    4120,
+    2043,
+    4245
+   ],
+   "cell": "cell/19/1/0/2",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 27,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "rest8th",
+   "box": [
+    5128,
+    5579,
+    5158,
+    5628
+   ],
+   "cell": "cell/19/1/6/8",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 28,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    1635,
+    5958,
+    1652,
+    6038
+   ],
+   "cell": "cell/19/1/8/1",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 29,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    2418,
+    6151,
+    2435,
+    6198
+   ],
+   "cell": "cell/19/1/8/3",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 30,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    1396,
+    6946,
+    1411,
+    7051
+   ],
+   "cell": "cell/19/1/12/1",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 31,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    1915,
+    6940,
+    1935,
+    7052
+   ],
+   "cell": "cell/19/1/12/2",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 32,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    3070,
+    6972,
+    3082,
+    7068
+   ],
+   "cell": "cell/19/1/12/4",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 33,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "box": [
+    3390,
+    6975,
+    3405,
+    7053
+   ],
+   "cell": "cell/19/1/12/5",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 34,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "rest8th",
+   "box": [
+    2368,
+    520,
+    2389,
+    542
+   ],
+   "cell": "cell/2/0/0/15",
+   "agent_look": "real rest"
+  },
+  {
+   "n": 35,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "restQuarter",
+   "box": [
+    2552,
+    649,
+    2567,
+    675
+   ],
+   "cell": "cell/2/0/1/16",
+   "agent_look": "unsure"
+  },
+  {
+   "n": 36,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "rest8th",
+   "box": [
+    1542,
+    1605,
+    1555,
+    1634
+   ],
+   "cell": "cell/2/0/8/9",
+   "agent_look": "unsure"
+  },
+  {
+   "n": 37,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "restWhole",
+   "box": [
+    1235,
+    2143,
+    1251,
+    2154
+   ],
+   "cell": "cell/2/1/0/5",
+   "agent_look": "unsure"
+  },
+  {
+   "n": 38,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "rest16th",
+   "box": [
+    1375,
+    2158,
+    1394,
+    2199
+   ],
+   "cell": "cell/2/1/0/6",
+   "agent_look": "unsure"
+  },
+  {
+   "n": 39,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "rest16th",
+   "box": [
+    2412,
+    1661,
+    2442,
+    1708
+   ],
+   "cell": "cell/8/0/8/20",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  },
+  {
+   "n": 40,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "restQuarter",
+   "box": [
+    536,
+    3223,
+    559,
+    3278
+   ],
+   "cell": "cell/8/1/8/0",
+   "agent_look": "not a rest (barline/stem piece, sharp, letter, head or note)"
+  }
+ ]
+}
