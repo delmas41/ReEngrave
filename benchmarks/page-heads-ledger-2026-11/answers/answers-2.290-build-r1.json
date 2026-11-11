@@ -2,7 +2,7 @@
  "lane": "2.290-build-r1",
  "date": "2026-11-11",
  "question": "Is the tinted ink ONE notehead, and only that notehead?",
- "note": "Sean: tiles very small and zoomed in; stems' ends not visible. Scored by the manager against key.json: 8 of 12 claims right; wrong 8 (sliver), 9 (rest claimed as a head), 10 (sliver, 3 boxes merged), 12 (a REAL THIRD merged into one claim between the two heads).",
+ "note": "Sean: tiles very small and zoomed in; stems' ends not visible. Scored by the manager against key.json: 8 of 12 claims right; wrong 8 (sliver), 9 (rest claimed as a head), 10 (sliver, 3 boxes merged), 12 (a small claim lying BETWEEN two half notes a third apart, taking a little of each -- Sean's clarification: not a box around both).",
  "tiles": [
   {
    "tile": 1,
@@ -227,7 +227,8 @@
     "glyph/2/1/9/14/8",
     "glyph/2/1/9/14/9"
    ],
-   "stratum": "lost_or_changed"
+   "stratum": "lost_or_changed",
+   "sean_clarification": "it was not a box that encompassed both but one that landed in between the two notes and got a little bit of each"
   }
  ]
 }
