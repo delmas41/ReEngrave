@@ -1,0 +1,207 @@
+{
+ "lane": "2.288 r2 (lane-2.288-rests-claim-first 313c537b7, flag OMR_PAGE_CLAIM_RESTS OFF)",
+ "date": "2026-11-10",
+ "question": "Is the tinted ink a rest, and only the rest? If not, what is it?",
+ "verbatim": "Tile 1 is a natural sign. Tile 2 is half of a quarter note rest. Tile 3 is a stem. Tile 4 is a part of an eighth note flag. Tile 5 is an eighth note. Tile 6 is an eighth note rest. Tile 7 is a quarter note. Tile 8 is an eighth note rest. Tile 9 is an eighth note rest. Tile 10 is an eighth note rest. Tile 11 is an eighth note rest. And tile 12 is an eighth note.",
+ "answers": {
+  "1": {
+   "sean": "a natural sign",
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest16th",
+   "group": "refused-hang",
+   "why": "refused_touches_a_head",
+   "box": [
+    934.8,
+    6390.0,
+    961.7,
+    6445.4
+   ],
+   "cell": "cell/14/1/9/0"
+  },
+  "2": {
+   "sean": "half of a quarter rest",
+   "right": false,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "group": "refused-hang",
+   "why": "refused_touches_a_head",
+   "box": [
+    4774.7,
+    1739.0,
+    4811.6,
+    1794.8
+   ],
+   "cell": "cell/19/0/5/9"
+  },
+  "3": {
+   "sean": "a stem",
+   "right": true,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restQuarter",
+   "group": "refused-hang",
+   "why": "refused_touches_a_head",
+   "box": [
+    2418.2,
+    6151.0,
+    2435.0,
+    6197.7
+   ],
+   "cell": "cell/19/1/8/3"
+  },
+  "4": {
+   "sean": "part of an eighth note's flag",
+   "right": true,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "rest8th",
+   "group": "refused-hang",
+   "why": "refused_hangs_from_a_stem_with_a_head",
+   "box": [
+    3676.6,
+    1620.8,
+    3708.3,
+    1668.6
+   ],
+   "cell": "cell/19/0/5/6"
+  },
+  "5": {
+   "sean": "an eighth note",
+   "right": true,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "restWhole",
+   "group": "refused-hang",
+   "why": "refused_hangs_from_a_stem_with_a_head",
+   "box": [
+    3739.2,
+    6335.0,
+    3778.2,
+    6354.5
+   ],
+   "cell": "cell/19/1/10/5"
+  },
+  "6": {
+   "sean": "an eighth rest",
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "rest8th",
+   "group": "newly-claimed-eighth",
+   "why": "freed_stands_free",
+   "box": [
+    5186.7,
+    4972.4,
+    5219.9,
+    5025.6
+   ],
+   "cell": "cell/14/1/3/8"
+  },
+  "7": {
+   "sean": "a quarter note",
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restWhole",
+   "group": "refused-hang",
+   "why": "refused_hangs_from_a_stem_with_a_head",
+   "box": [
+    3748.1,
+    1255.5,
+    3787.2,
+    1284.0
+   ],
+   "cell": "cell/14/0/3/6"
+  },
+  "8": {
+   "sean": "an eighth rest",
+   "right": true,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "rest8th",
+   "group": "newly-claimed-eighth",
+   "why": "freed_stands_free",
+   "box": [
+    2367.9,
+    520.5,
+    2389.7,
+    549.2
+   ],
+   "cell": "cell/2/0/1/15"
+  },
+  "9": {
+   "sean": "an eighth rest",
+   "right": true,
+   "plate": "litolff",
+   "page": 8,
+   "cls": "rest8th",
+   "group": "newly-claimed-eighth",
+   "why": "freed_stands_free",
+   "box": [
+    1714.1,
+    3228.0,
+    1734.1,
+    3258.0
+   ],
+   "cell": "cell/8/1/8/13"
+  },
+  "10": {
+   "sean": "an eighth rest",
+   "right": true,
+   "plate": "brahms",
+   "page": 19,
+   "cls": "rest8th",
+   "group": "newly-claimed-eighth",
+   "why": "freed_stands_free",
+   "box": [
+    2444.7,
+    1319.9,
+    2477.1,
+    1372.2
+   ],
+   "cell": "cell/19/0/3/3"
+  },
+  "11": {
+   "sean": "an eighth rest",
+   "right": true,
+   "plate": "litolff",
+   "page": 2,
+   "cls": "rest8th",
+   "group": "newly-claimed-eighth",
+   "why": "freed_stands_free",
+   "box": [
+    524.3,
+    3547.3,
+    545.8,
+    3580.3
+   ],
+   "cell": "cell/2/1/10/0"
+  },
+  "12": {
+   "sean": "an eighth note",
+   "right": true,
+   "plate": "brahms",
+   "page": 14,
+   "cls": "restHalf",
+   "group": "refused-hang",
+   "why": "refused_hangs_from_a_stem_with_a_head",
+   "box": [
+    2814.6,
+    3145.2,
+    2866.4,
+    3163.7
+   ],
+   "cell": "cell/14/0/10/4"
+  }
+ },
+ "score": {
+  "newly_claimed_eighth_rests_right": "5/5 (tiles 6,8,9,10,11)",
+  "refusals_right": "6/7 (tiles 1,3,4,5,7,12 are not rests)",
+  "refusal_wrong": {
+   "2": "half of a real quarter rest, refused `touches_a_head` -- a real rest left unclaimed (the cautious side; the box covers half the rest)"
+  }
+ }
+}

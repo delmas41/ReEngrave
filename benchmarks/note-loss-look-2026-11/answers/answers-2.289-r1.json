@@ -1,0 +1,243 @@
+{
+ "lane": "2.289 r1 (lane-2.289-note-loss-look cfd1dba5e; measure only)",
+ "date": "2026-11-10",
+ "question": "Is the boxed mark a notehead? If yes, which staff is it on (upper/lower)?",
+ "verbatim": "Tile 1 is a tempo marking half notes. Tile 2 is a part of a bar line. Tile 3 is a quarter note head. Tile 4 is an eighth note head. Tile 5 is a part of a bar line. Tile 6 is a part of a bar line. Tile 7 is an eighth note head. That was tile 7, yeah. Tile 8 is a quarter note. Tile 9 is unison half note, although the box looks a little thin for that head. Tile 10 is an eighth note. Tile 11 is a quarter note. Tile 12 is a quarter note.",
+ "answers": {
+  "1": {
+   "sean": "the half note of a tempo (metronome) marking",
+   "role": "d",
+   "cls": "d_candidate_lost_owner_copy_not_written",
+   "reason": "owned_by_another_staff",
+   "plate": "litolff",
+   "page": 1,
+   "system": 0,
+   "home_staff": 4,
+   "owner_staff": 3,
+   "cell": 3,
+   "box": [
+    1213.71,
+    1780.975,
+    1238.51,
+    1803.76
+   ],
+   "sub": "glyph/1/0/4/3/1"
+  },
+  "2": {
+   "sean": "part of a barline",
+   "role": "b",
+   "cls": "b_proxy_narrow_sliver",
+   "reason": "not_a_notehead:claimed_by:barline",
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "home_staff": 6,
+   "owner_staff": 5,
+   "cell": 0,
+   "box": [
+    623.855,
+    2886.0,
+    627.95,
+    2897.025
+   ],
+   "sub": "glyph/2/1/6/0/4"
+  },
+  "3": {
+   "sean": "quarter note head",
+   "role": "d",
+   "cls": "d_candidate_lost_owner_copy_not_written",
+   "reason": "owned_by_another_staff",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "home_staff": 4,
+   "owner_staff": 3,
+   "cell": 3,
+   "box": [
+    2596.8825,
+    4943.8925,
+    2632.8525,
+    4977.1375
+   ],
+   "sub": "glyph/4/1/4/3/2"
+  },
+  "4": {
+   "sean": "eighth note head",
+   "role": "d",
+   "cls": "d_candidate_lost_owner_copy_not_written",
+   "reason": "owned_by_another_staff",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "home_staff": 13,
+   "owner_staff": 12,
+   "cell": 8,
+   "box": [
+    5147.4175,
+    6904.0,
+    5185.435,
+    6926.4775
+   ],
+   "sub": "glyph/4/1/13/8/12"
+  },
+  "5": {
+   "sean": "part of a barline",
+   "role": "b",
+   "cls": "b_proxy_narrow_sliver",
+   "reason": "not_a_notehead:claimed_by:barline",
+   "plate": "brahms",
+   "page": 4,
+   "system": 1,
+   "home_staff": 3,
+   "owner_staff": null,
+   "cell": 6,
+   "box": [
+    3904.0,
+    4943.2425,
+    3911.085,
+    4966.405
+   ],
+   "sub": "glyph/4/1/3/6/24"
+  },
+  "6": {
+   "sean": "part of a barline",
+   "role": "b",
+   "cls": "b_proxy_narrow_sliver",
+   "reason": "not_a_notehead:claimed_by:barline",
+   "plate": "brahms",
+   "page": 0,
+   "system": 0,
+   "home_staff": 10,
+   "owner_staff": null,
+   "cell": 1,
+   "box": [
+    2663.04,
+    5551.28,
+    2670.7200000000003,
+    5584.24
+   ],
+   "sub": "glyph/0/0/10/1/21"
+  },
+  "7": {
+   "sean": "eighth note head",
+   "role": "d",
+   "cls": "d_candidate_lost_owner_copy_not_written",
+   "reason": "owned_by_another_staff",
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "home_staff": 6,
+   "owner_staff": 5,
+   "cell": 13,
+   "box": [
+    2389.63,
+    2905.6875,
+    2413.885,
+    2927.1075
+   ],
+   "sub": "glyph/2/1/6/13/0"
+  },
+  "8": {
+   "sean": "quarter note",
+   "role": "d",
+   "cls": "d_candidate_lost_owner_copy_not_written",
+   "reason": "owned_by_another_staff",
+   "plate": "brahms",
+   "page": 4,
+   "system": 0,
+   "home_staff": 10,
+   "owner_staff": 9,
+   "cell": 9,
+   "box": [
+    4852.7,
+    2816.1,
+    4889.0,
+    2847.725
+   ],
+   "sub": "glyph/4/0/10/9/13"
+  },
+  "9": {
+   "sean": "unison half note (box a little thin for that head)",
+   "role": "ce",
+   "cls": "c_written_elsewhere",
+   "reason": "owned_by_another_staff",
+   "plate": "litolff",
+   "page": 2,
+   "system": 0,
+   "home_staff": 2,
+   "owner_staff": 3,
+   "cell": 0,
+   "box": [
+    496.8075,
+    813.215,
+    530.1975,
+    824.24
+   ],
+   "sub": "glyph/2/0/2/0/7"
+  },
+  "10": {
+   "sean": "eighth note",
+   "role": "ce",
+   "cls": "e_group_twin_check",
+   "reason": "owned_by_another_staff",
+   "plate": "litolff",
+   "page": 2,
+   "system": 0,
+   "home_staff": 3,
+   "owner_staff": 2,
+   "cell": 1,
+   "box": [
+    650.5475,
+    742.7875,
+    678.11,
+    764.365
+   ],
+   "sub": "glyph/2/0/3/1/15"
+  },
+  "11": {
+   "sean": "quarter note",
+   "role": "a-control",
+   "cls": "a_twin_written_on_owner",
+   "reason": "owned_by_another_staff",
+   "plate": "brahms",
+   "page": 4,
+   "system": 0,
+   "home_staff": 7,
+   "owner_staff": 6,
+   "cell": 2,
+   "box": [
+    1654.6575,
+    2045.0375,
+    1691.01,
+    2076.6725
+   ],
+   "sub": "glyph/4/0/7/2/0"
+  },
+  "12": {
+   "sean": "quarter note",
+   "role": "a-control",
+   "cls": "a_twin_written_on_owner",
+   "reason": "owned_by_another_staff",
+   "plate": "litolff",
+   "page": 2,
+   "system": 0,
+   "home_staff": 5,
+   "owner_staff": 4,
+   "cell": 4,
+   "box": [
+    1001.995,
+    1064.6775,
+    1024.99,
+    1086.4125
+   ],
+   "sub": "glyph/2/0/5/4/2"
+  }
+ },
+ "score": {
+  "barline_slivers_confirmed": "3/3 (tiles 2,5,6)",
+  "candidate_lost_d": "4 of 5 are real noteheads (tiles 3,4,7,8); tile 1 is a metronome-mark note, not a staff note",
+  "c_e": "tiles 9,10 are real noteheads (9: box thin for the head)",
+  "a_controls": "2/2 real noteheads (tiles 11,12)"
+ },
+ "note": "Sean named the mark only; WHICH STAFF each head is on was asked and not answered, so owner correctness is not judged."
+}
