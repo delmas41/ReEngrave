@@ -6,7 +6,7 @@
 
 SELECTION RULE (stated, seeded; read off the two ON records of the SAME pages: a whole/half rest claim = a `claimed_area` row, source `page_boxes`, cls restWhole/restHalf, keyed by
 (cell, class); r3 = round 3's tree, r4 = this tree):
-  1. every claim r4 NEWLY REFUSES (in r3, not in r4), up to 12, drawn with `random.Random(seed)` -- tile 4's kind first;
+  1. every rest claim of ANY kind r4 NEWLY REFUSES (in r3, not in r4; whole/half, 16th, ...), up to 11, drawn with `random.Random(seed)` -- tile 4's kind first;
   2. then a seeded sample of the whole/half rests r4 STILL CLAIMS on the two Brahms pages (where the false claim was), 11 minus group 3 minus group 1;
   3. then tile 1's site (Brahms p14, detector box [2074.3, 2202.3, 2096.9, 2219.2], the real whole rest still refused).
 Tiles are shuffled; the key is ONE LEVEL ABOVE the tile folder; nothing on a tile says which group it is from.
@@ -43,7 +43,7 @@ def claims_of(record, pages):
             pg = int(o["subject"].split("/")[1])
             if pg in pages:
                 strokes.setdefault(pg, {})[d["ordinal"]] = d
-        if o["quantity"] == "claimed_area" and d.get("source") == "page_boxes" and d.get("unit") == "page_ink" and d.get("cls") in ("restWhole", "restHalf"):
+        if o["quantity"] == "claimed_area" and d.get("source") == "page_boxes" and d.get("unit") == "page_ink" and str(d.get("cls", "")).startswith("rest"):
             pg = int(o["subject"].split("/")[1])
             if pg in pages:
                 claims[(o["subject"], d["cls"])] = dict(subject=o["subject"], cls=d["cls"], page=pg, ids=list(d["page_strokes"]))
@@ -83,10 +83,10 @@ def main():
         for k in sorted(set(c3) - set(c4)):
             refused.append(dict(plate=plate, group="newly-refused", strokes=st3, **c3[k]))
         for k in sorted(set(c4) & set(c3)):
-            if plate == "brahms":
+            if plate == "brahms" and k[1] in ("restWhole", "restHalf"):
                 still.append(dict(plate=plate, group="still-claimed", strokes=st4, **c4[k]))
         for k in sorted(set(c4) - set(c3)):
-            if plate == "brahms":
+            if plate == "brahms" and k[1] in ("restWhole", "restHalf"):
                 still.append(dict(plate=plate, group="newly-claimed-by-r4", strokes=st4, **c4[k]))
     rng.shuffle(refused)
     chosen = refused[:11]
