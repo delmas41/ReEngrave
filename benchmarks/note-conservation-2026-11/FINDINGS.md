@@ -48,10 +48,11 @@ MusicXML saved with `--save` from the branch vs the same replay from a `git arch
 identical on both plates (Litolff 352,197 bytes, Brahms 456,439 bytes). Fast tier 10121 passed, 0 failed.
 `check` TOTAL 229 (= main).
 
-## CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED
+## Red-bar notes: Sean's ruling (2026-11-10)
 
-Assumed: a head in a red bar is "written" (the bar keeps every event it read, drawn red) and is reported on its own
-line. Falsified by: Sean calling a red bar's notes "not written". Not confirmed by Sean.
+"Keep reporting - My long-term goal is to get to a point where we're just fixing a few notes." Notes inside red bars are
+reported on their own line, never folded into "written" or "lost" (DECISIONS 2026-11-10). The earlier assumption
+("a red-bar head is written") is withdrawn as a headline; the three lines to read are plain, blue, and in red bars.
 
 ## Not verified
 
