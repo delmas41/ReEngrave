@@ -185,7 +185,11 @@ def consult(ev: Any, box_row: Any, family: str, *, head: bool = False, tail_read
     e = (((getattr(v, "detail", None) or {}).get("ink_consult") or {}).get("held") or {}).get(key)
     led = None
     cls = str((box_row.value[0] if box_row is not None and isinstance(box_row.value, (list, tuple)) and box_row.value else "") or "")
-    if e and float(e["share"]) >= CF.CUT and not e.get("owns") and e["by"] not in CF.mark_only() and (e.get("area") or e["by"] in FINAL_BOX_CLAIMS) \
+    # a REST is never refused by a page head: rests claim BEFORE heads in the claim order (2.288), so a head box standing on a rest's ink is the head's
+    # error (2.284 r5 measured exactly this on Litolff glyph/2/0/8/2/4, a real quarter rest a misdrawn head box "held"; the 2.290 build met it again)
+    rest_vs_head = family == "rest" and e is not None and e.get("by") == PAGE_HEAD_OWNER
+    if e and not rest_vs_head and float(e["share"]) >= CF.CUT and not e.get("owns") and e["by"] not in CF.mark_only() \
+            and (e.get("area") or e["by"] in FINAL_BOX_CLAIMS) \
             and e["by"] not in CF.CONSULTED_ELSEWHERE and family not in SPANNER_FAMILIES and cls not in SPANNER_CLASSES:
         kind = refusal_kind(e["by"], bool(e.get("area")))
         detail = {"ink_consult": {"by": e["by"], "share": e["share"], "cut": CF.CUT, "strokes": e["strokes"], "also": e.get("also") or [],
