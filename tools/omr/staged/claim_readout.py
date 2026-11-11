@@ -1491,9 +1491,11 @@ def render_ink_number(label: str, t: Dict[str, Any]) -> List[str]:
 def ink_header(src: pathlib.Path, pages: Sequence[int], master: str, totals: Dict[str, Any], tree: Dict[str, str]) -> List[str]:
     obs = src / "observations.jsonl"
     lk, st = totals.get("links_filed", 0), totals.get("strokes_filed", 0)
+    stamp = json.loads((src / "stamp.json").read_text()) if (src / "stamp.json").exists() else {}
+    when = stamp.get("mtime") or obs.stat().st_mtime          # the SOURCE record's write time when the slice carries it (a cut slice's own mtime is the cut's)
     return [
         "claim_readout ink -- THE ONE INK NUMBER (ROADMAP 2.293). Every dark pixel of the page is one of: one owner / weak only / claimed twice / no owner.",
-        "  slice %s (observations written %s), pages %s, cell map %s" % (src, time.strftime("%Y-%m-%d %H:%M", time.localtime(obs.stat().st_mtime)), list(pages), master),
+        "  slice %s (source record written %s), pages %s, cell map %s" % (src, time.strftime("%Y-%m-%d %H:%M", time.localtime(when)), list(pages), master),
         "  tree %s (%s)   page-ledger flag OMR_PAGE_LEDGER_OWNS=%s" % (tree.get("sha", "?"), tree.get("date", "?"), os.environ.get("OMR_PAGE_LEDGER_OWNS", "1")),
         "  page-stroke links in this slice: %d of %d cell strokes%s" % (lk, st, "" if lk else "  -- NONE: a gather before 2.284; every owner below is a per-cell verdict"),
         "  ON THE PAGE LEDGER = held by a page-wide register claim (barline, bracket, clef, key, meter, word, arc trace, tremolo, staff lines). "
