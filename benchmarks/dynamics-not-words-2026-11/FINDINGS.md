@@ -182,3 +182,63 @@ a 2.296 follow-up). Brahms p4 adds 3 removals. 11 removed in all.
 and 2.301 r1 answers are not registered in `judged_claims` SOURCES (replayed
 by the lane's own script); slices `claim-readout-slices-*-base/-on/-on2`
 were left in `library/_shared-records`.
+
+## 2.303 Part 1 r1 (2026-11-11) -- unread word, sibling witness; built OFF, NOT ready
+
+Branch `lane-2.303-p1-unread-word-sibling` 0f73e5c99, flag `OMR_UNREAD_WORD_SIBLING`
+default OFF. Agent's report; none of its 36 changed places is judged by Sean.
+
+- **Cause:** on Litolff p8 staves 0-3 the word "sempre più p" is crossed by a
+  BARLINE. The text reader's crop kept that stroke, read `sempre piu: °`, and
+  `direction_lexicon._prepare` refused it. Staff 8 prints the same word clear of
+  the barline and it was READ. The detector's m+p inside the unread line then
+  became a dynamic.
+- **Process lesson:** the barline's ink is claimed on the page-wide pass before
+  words, but the text reader is still handed the raw crop with that ink in it.
+  A reader should not be shown ink another reader already owns. The source fix
+  is the crop, not a witness downstream (not built; proposed to Sean).
+- **Built:** refused windows on one staff merge into a line (>= 2 detector
+  letters, >= 4 median letter widths); a READ word at the same x-extent on a
+  sibling staff makes it that word, GUESSED; otherwise red `unread text`;
+  letters inside the line with ink on both sides are not written as a dynamic.
+- **Measures (frozen sample, re-adjudicated, flag OFF vs ON):** Litolff dynamics
+  +5 -7, words +7 -3; Brahms dynamics +5 -3, words +8 -2; notes and red bars
+  unchanged. Judged right->wrong 0. Fast tier flag ON 10,462 passed, 0 failed;
+  check 228. The saved night record does not reproduce under either arm (older
+  code), equally OFF and ON.
+- **Known faults (agent's own):** Brahms p0 staff 10 loses `ff`, gains `f` + a red
+  mark; Litolff p8 P2 bar 12 still gets a stray `dyn.` and `pp`; a final `p`
+  outside the unread window is written twice (blue in the word, plain as the
+  dynamic).
+- Tiles (not sent): `out/print-from-worktrees/2.303-p1-r1/` (12 of 15 changed
+  lines; they box the whole line).
+
+## 2.304 r1 (2026-11-12) -- the text reader not shown owned ink: built OFF, NEGATIVE, not to land
+
+Branch `lane-2.304-text-reader-owned-ink` 3f557db7c, flag `OMR_TEXT_CROP_OWNED_INK`
+default OFF (`tools/omr/staged/owned_ink.py`, `direction_text._without_owned_ink`).
+Agent's report; its tiles are not judged.
+
+- **Cause, corrected:** the 2.303 hypothesis (a barline left in the crop) is only
+  part of it. On Litolff p8 the `p` of sempre and the `i` of più STAND ON the
+  barline: letter and rule share pixels, so no ownership mask can split them.
+  Whiting the rule inside the word took the `i`, and the lexicon then accepted
+  `sempre p` for the printed `sempre più p` -- a wrong READ.
+- **Process lesson:** "is the owned ink there" does not discriminate. A mask is
+  safe only OUTSIDE the candidate's own box; where two marks share pixels the
+  reader has to read through the crossing, not have it removed. And the earlier
+  2.254 r3 retry had already whited lines on most refused windows (164 of 190
+  Litolff, 119 of 124 Brahms) -- the prior work should have been in the brief.
+- **Step 0** (Litolff 8 pages, Brahms 4): windows whose crop carries an earlier
+  owner's ink -- Litolff 48 of 71 READ, 154 of 190 REFUSED; Brahms 54 of 80 READ,
+  91 of 124 REFUSED. READ words carry it as often as refused ones.
+- **Measures, flag ON vs OFF, same tree:** Litolff dynamics +2 -1, words +11 -9;
+  Brahms dynamics -2 (two `p` lost), words +8 -8. READ words 69 -> 69 and
+  77 -> 77 (as many lost as gained; one gain a wrong `min.`). Judged
+  right->wrong 0. The false `mp` at Litolff p8 P2/P3 m12 is STILL written in
+  every arm. Fast tier flag ON was not re-run whole after the lane's fixes.
+- **Verdict:** no gain, new wrong reads. Stays OFF; candidate for removal.
+  The cause case goes back to 2.303 part 1 (unread line: sibling witness, and
+  no dynamic from letters inside an unread line).
+- Also seen, not judged: the OFF arm READS `sempre p` for a printed `sempre più`
+  at Litolff p8 staff 3 bar 11.

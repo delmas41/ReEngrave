@@ -349,7 +349,7 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
     wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
-           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION),
+           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION, Q.MARK_GROUP),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
              "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
@@ -500,6 +500,20 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
                          stems={i: detail_of(i) for i in ranked})
 
 
+def _same_page_head(ev: Evidence, other: Any) -> bool:
+    """ROADMAP 2.290 round 3 (flag `OMR_PAGE_HEAD_ONE`, else False): `other` is a notehead box of the SAME page head (`Q.MARK_GROUP`, the one identity
+    `page_heads.read_one` files) as `ev.subject`. A unison half note whose box the detector drew twice (one OnLine, one InSpace, 0.53 sp apart) is ONE head
+    with a stem each way; asked box by box, each box saw the other as "another head" at a different position sharing both stems, so the reader abstained
+    (`two_stems`) and, with the one identity, the head was written ONCE: a real lost note (Sean, 2.290 build r2 tile 1). Page-facts: "when one note has stems
+    going up and down it is always 2 voices", never collapsed."""
+    from .. import page_heads
+    if not page_heads.one_enabled():
+        return False
+    a = ev.rows(Q.MARK_GROUP, subject=ev.subject)
+    b = ev.rows(Q.MARK_GROUP, subject=other)
+    return bool(a and b and a[-1].value == b[-1].value)
+
+
 #: ROADMAP 2.175: how many times further than its touch past the head a unison stem must run away from it.
 UNISON_TOUCH_RATIO = 2.0
 
@@ -629,6 +643,8 @@ def _one_stem_per_head(ev: Evidence, cell: Subject, head, stems, physical,
         k = row.subject
         if k == ev.subject:
             continue
+        if _same_page_head(ev, k):
+            continue                    # ROADMAP 2.290 r3: another BOX on this head's own ink is this head, never "another head under the stems"
         refusal = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=k)
         if (refusal is not None and refusal.outcome is Outcome.DECIDED
                 and refusal.value is True):

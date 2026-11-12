@@ -1,0 +1,120 @@
+"""ROADMAP 2.290 round 4 (CLAUDE rule 7, a control from REAL rows): a page head the one identity folds from boxes that write DIFFERENT pitches is ONE head with ONE
+position, measured from its own ink -- never the more confident box's (Litolff p2 m7: G3 written, the page and the tie F3). The rows are those of every such fold on
+the five sample pages (`benchmarks/page-heads-ledger-2026-11/real_cases/fold_rows.json`, built by `build_fold_rows.py`)."""
+import json
+import pathlib
+from types import SimpleNamespace
+
+import pytest
+
+from tools.omr.staged import export as E
+
+HERE = pathlib.Path(__file__).resolve().parents[3] / "benchmarks" / "page-heads-ledger-2026-11" / "real_cases"
+FOLDS = json.loads((HERE / "fold_rows.json").read_text())
+SPACING = {"litolff": 16.0, "brahms": 26.4}      # the staff space of the plates' sample pages in page px (export `run.spacing`)
+
+
+class _Rec:
+    def __init__(self, members):
+        self.rows = {m["sub"]: m["rows"] for m in members}
+
+    def obs(self, quantity, sub):
+        key = {E.Q.GLYPH_BOX: "glyph_box", E.Q.NOTEHEAD_STAFF_POSITION: "notehead_staff_position", E.Q.MARK_GROUP: "mark_group", E.Q.GLYPH_CONF: "glyph_conf"}[quantity]
+        r = self.rows.get(sub, {}).get(key)
+        return [r] if r else []
+
+
+def _run(fold_id, tall_ok=True):
+    fold = FOLDS[fold_id]
+    run = SimpleNamespace(spacing=SPACING[fold["plate"]])
+    members = fold["members"]
+    queued = []
+    for m in members:
+        conf = float(m["rows"]["glyph_conf"]["value"])
+        queued.append((fold_id, conf, m["sub"], run, 0, {"category": "notehead", "pitch": m["pitch"]}, {}))
+    best = {}
+    for gid, conf, sub, *_r in queued:
+        cur = best.get(gid)
+        if cur is None or (-conf, sub) < (-cur[0], cur[1]):
+            best[gid] = (conf, sub)
+    before = dict(best)
+    E._settle_folded_pitches(_Rec(members), queued, best)
+    return queued, before, best
+
+
+@pytest.mark.parametrize("fold_id", sorted(FOLDS))
+def test_the_one_position_of_a_folded_head(fold_id):
+    expect = FOLDS[fold_id]["expect"]
+    queued, before, best = _run(fold_id)
+    guessed = [q for q in queued if (q[5].get("guess") or {}).get("rule") == E.FOLD_PITCH_RULE]
+    if expect == "settle":
+        # Litolff p2 m7: the hole puts the head at step 8 = the F3 box; the G3 box (the more confident) loses; nothing is guessed (the ink decides)
+        assert before[fold_id][1] == "glyph/2/0/9/6/1" and best[fold_id][1] == "glyph/2/0/9/6/2"
+        assert not guessed
+    elif expect == "guess":
+        assert best[fold_id] == before[fold_id], "the most confident member stands where no ink witness settles it"
+        assert len(guessed) == 1 and guessed[0][2] == best[fold_id][1], FOLDS[fold_id]["what"]
+        cands = {c["value"] for c in guessed[0][5]["guess"]["candidates"]}
+        assert len(cands) >= 2 and guessed[0][5]["guess"]["chosen"]["value"] in cands
+    else:
+        assert best[fold_id] == before[fold_id] and not guessed, FOLDS[fold_id]["what"]
+
+
+def test_the_control_can_fail(monkeypatch):
+    """With the settle switched off (the round-3 export) p2 m7 keeps the G3 box: the control fails where it should."""
+    monkeypatch.setattr(E, "_settle_folded_pitches", lambda rec, queued, best: None)
+    queued, before, best = _run("mg/2/0/245")
+    assert best["mg/2/0/245"][1] == "glyph/2/0/9/6/1"          # G3, the wrong note
+    with pytest.raises(AssertionError):
+        test_the_one_position_of_a_folded_head("mg/2/0/245")
+
+
+def test_flag_off_groups_are_untouched():
+    """A group the old identity filed (no `identity: page_head`) is never touched."""
+    queued, before, best = _run("mg/2/0/245")
+    members = [dict(m, rows={k: v for k, v in m["rows"].items() if k != "mark_group"}) for m in FOLDS["mg/2/0/245"]["members"]]
+    run = SimpleNamespace(spacing=16.0)
+    q2 = [("mg/2/0/245", float(m["rows"]["glyph_conf"]["value"]), m["sub"], run, 0, {"category": "notehead", "pitch": m["pitch"]}, {}) for m in members]
+    best2 = {"mg/2/0/245": (0.4016, "glyph/2/0/9/6/1")}
+    E._settle_folded_pitches(_Rec(members), q2, best2)
+    assert best2["mg/2/0/245"][1] == "glyph/2/0/9/6/1" and not any(q[5].get("guess") for q in q2)
+
+
+def test_a_tie_stop_keeps_an_accidental_owned_by_the_other_box_of_its_fold():
+    """The accidental of a fold's head may be owned by the box the one-mark-one-note rule did not write: the tie carry (page-facts) must not overwrite it."""
+    gid = "mg/9/9/9"
+    members = {"glyph/1/0/0/0/1": gid, "glyph/1/0/0/0/2": gid, "glyph/1/0/1/0/1": gid}   # the last stands on another staff
+
+    verdict = {"outcome": "decided", "value": "glyph/1/0/0/0/2", "subject": "acc/1"}
+
+    class Rec:
+        def obs(self, q, sub):
+            return [{"value": members[sub]}] if sub in members else []
+
+        def obs_of(self, q):
+            return [{"subject": k, "value": v} for k, v in members.items()]
+
+        def verdicts_of(self, q):
+            return [verdict]
+
+        def verdict(self, q, subject):
+            return verdict
+    rec = Rec()
+    assert E._has_printed_accidental(rec, "glyph/1/0/0/0/1") is False
+    assert E._fold_has_printed_accidental(rec, "glyph/1/0/0/0/1") is True            # the sibling box on the same staff owns it
+    assert E._fold_has_printed_accidental(rec, "glyph/1/0/1/0/1") is False           # the copy on another staff is another staff's note
+
+
+def test_no_slur_is_added_between_two_notes_of_one_pitch_from_a_unison(monkeypatch):
+    """Sean, gate r2 tile 1 (Litolff p8 m69-70): the arc between a unison half F5 and the F5 eighth is the unison's TIES (one per voice); the detector class said slur and
+    the binding is undecided, so the export writes NOTHING there (counted), never a slur on voice 1. A slur between two different pitches, or from a plain head, is kept."""
+    monkeypatch.delenv("OMR_PAGE_HEAD_ONE", raising=False)
+    uni = {"unison_head": True, "pitch": "F5"}
+    plain = {"pitch": "F5"}
+    other = {"pitch": "G5"}
+    counters = {}
+    spans = [((0, 1.0), (1, 2.0), uni, plain), ((0, 1.0), (1, 2.0), uni, other), ((0, 1.0), (1, 2.0), plain, dict(plain))]
+    kept = E._drop_unison_same_pitch_slurs(spans, counters)
+    assert [sp[3]["pitch"] for sp in kept] == ["G5", "F5"] and counters["slur_unison_same_pitch_binding_undecided"] == 1
+    monkeypatch.setenv("OMR_PAGE_HEAD_ONE", "0")
+    assert E._drop_unison_same_pitch_slurs(spans, {}) == spans            # flag off: untouched

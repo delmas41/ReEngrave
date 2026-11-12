@@ -1,0 +1,646 @@
+{
+ "out_dir": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-acb53b92a62246a38/benchmarks/page-heads-ledger-2026-11/real_cases/crops",
+ "plate": "brahms",
+ "cases": [
+  {
+   "id": "2.285 r2 #1",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3463.78,
+    1285.7,
+    3494.85,
+    1305.78
+   ],
+   "expect": "not_head",
+   "sean": "part of a sharp",
+   "kind": "accidental:sharp",
+   "lane": "2.285 r2",
+   "tile": 1
+  },
+  {
+   "id": "2.285 r2 #2",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    2416.57,
+    5321.5,
+    2449.03,
+    5353.68
+   ],
+   "expect": "not_head",
+   "sean": "part of a sharp",
+   "kind": "accidental:sharp",
+   "lane": "2.285 r2",
+   "tile": 2
+  },
+  {
+   "id": "2.285 r2 #3",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4744.0,
+    1280.0,
+    4773.0,
+    1361.0
+   ],
+   "expect": "not_head",
+   "sean": "flat",
+   "kind": "accidental:flat",
+   "lane": "2.285 r2",
+   "tile": 3
+  },
+  {
+   "id": "2.285 r2 #4",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    5246.0,
+    4470.0,
+    5266.0,
+    4558.0
+   ],
+   "expect": "not_head",
+   "sean": "natural",
+   "kind": "accidental:natural",
+   "lane": "2.285 r2",
+   "tile": 4
+  },
+  {
+   "id": "2.285 r2 #5",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3462.0,
+    1241.0,
+    3497.0,
+    1329.0
+   ],
+   "expect": "not_head",
+   "sean": "sharp",
+   "kind": "accidental:sharp",
+   "lane": "2.285 r2",
+   "tile": 5
+  },
+  {
+   "id": "2.285 r2 #9",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4108.0,
+    4118.0,
+    4130.0,
+    4206.0
+   ],
+   "expect": "not_head",
+   "sean": "natural",
+   "kind": "accidental:natural",
+   "lane": "2.285 r2",
+   "tile": 9
+  },
+  {
+   "id": "2.285 r2 #10",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    1995.0,
+    4390.0,
+    2030.0,
+    4478.0
+   ],
+   "expect": "not_head",
+   "sean": "sharp",
+   "kind": "accidental:sharp",
+   "lane": "2.285 r2",
+   "tile": 10
+  },
+  {
+   "id": "2.288 r1 #1",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    1588.0,
+    1965.0,
+    1621.0,
+    2045.0
+   ],
+   "expect": "not_head",
+   "sean": "quarter rest",
+   "kind": "rest:quarter",
+   "lane": "2.288 r1",
+   "tile": 1
+  },
+  {
+   "id": "2.288 r1 #2",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    2449.0,
+    804.0,
+    2484.0,
+    870.0
+   ],
+   "expect": "not_head",
+   "sean": "eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r1",
+   "tile": 2
+  },
+  {
+   "id": "2.288 r1 #5",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3223.0,
+    7002.0,
+    3263.0,
+    7023.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r1",
+   "tile": 5
+  },
+  {
+   "id": "2.288 r1 #7",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    3680.0,
+    1612.0,
+    3711.0,
+    1651.0
+   ],
+   "expect": "not_head",
+   "sean": "part of a flag on an eighth note",
+   "kind": "flag",
+   "lane": "2.288 r1",
+   "tile": 7
+  },
+  {
+   "id": "2.288 r1 #9",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    1380.0,
+    6786.0,
+    1416.0,
+    6849.0
+   ],
+   "expect": "not_head",
+   "sean": "eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r1",
+   "tile": 9
+  },
+  {
+   "id": "2.288 r1 #12",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    1684.0,
+    3381.0,
+    1717.0,
+    3438.0
+   ],
+   "expect": "not_head",
+   "sean": "eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r1",
+   "tile": 12
+  },
+  {
+   "id": "2.288 r2 #1",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    934.8,
+    6390.0,
+    961.7,
+    6445.4
+   ],
+   "expect": "not_head",
+   "sean": "a natural sign",
+   "kind": "accidental:natural",
+   "lane": "2.288 r2",
+   "tile": 1
+  },
+  {
+   "id": "2.288 r2 #2",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4774.7,
+    1739.0,
+    4811.6,
+    1794.8
+   ],
+   "expect": "not_head",
+   "sean": "half of a quarter rest",
+   "kind": "rest:quarter",
+   "lane": "2.288 r2",
+   "tile": 2
+  },
+  {
+   "id": "2.288 r2 #3",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    2418.2,
+    6151.0,
+    2435.0,
+    6197.7
+   ],
+   "expect": "not_head",
+   "sean": "a stem",
+   "kind": "stem",
+   "lane": "2.288 r2",
+   "tile": 3
+  },
+  {
+   "id": "2.288 r2 #4",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    3676.6,
+    1620.8,
+    3708.3,
+    1668.6
+   ],
+   "expect": "not_head",
+   "sean": "part of an eighth note's flag",
+   "kind": "flag",
+   "lane": "2.288 r2",
+   "tile": 4
+  },
+  {
+   "id": "2.288 r2 #5",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    3739.2,
+    6335.0,
+    3778.2,
+    6354.5
+   ],
+   "expect": "head",
+   "sean": "an eighth note",
+   "kind": "notehead",
+   "lane": "2.288 r2",
+   "tile": 5
+  },
+  {
+   "id": "2.288 r2 #6",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    5186.7,
+    4972.4,
+    5219.9,
+    5025.6
+   ],
+   "expect": "not_head",
+   "sean": "an eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r2",
+   "tile": 6
+  },
+  {
+   "id": "2.288 r2 #7",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3748.1,
+    1255.5,
+    3787.2,
+    1284.0
+   ],
+   "expect": "head",
+   "sean": "a quarter note",
+   "kind": "notehead",
+   "lane": "2.288 r2",
+   "tile": 7
+  },
+  {
+   "id": "2.288 r2 #10",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    2444.7,
+    1319.9,
+    2477.1,
+    1372.2
+   ],
+   "expect": "not_head",
+   "sean": "an eighth rest",
+   "kind": "rest:eighth",
+   "lane": "2.288 r2",
+   "tile": 10
+  },
+  {
+   "id": "2.288 r2 #12",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    2814.6,
+    3145.2,
+    2866.4,
+    3163.7
+   ],
+   "expect": "head",
+   "sean": "an eighth note",
+   "kind": "notehead",
+   "lane": "2.288 r2",
+   "tile": 12
+  },
+  {
+   "id": "2.288 r3 #1",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    2074.3,
+    2202.3,
+    2096.9,
+    2219.2
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 1
+  },
+  {
+   "id": "2.288 r3 #2",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    4711.0,
+    4266.0,
+    4754.0,
+    4287.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 2
+  },
+  {
+   "id": "2.288 r3 #3",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    4398.0,
+    2191.0,
+    4439.0,
+    2213.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 3
+  },
+  {
+   "id": "2.288 r3 #4",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    2520.0,
+    6851.0,
+    2549.0,
+    6884.0
+   ],
+   "expect": "head",
+   "sean": "eighth note",
+   "kind": "notehead",
+   "lane": "2.288 r3",
+   "tile": 4
+  },
+  {
+   "id": "2.288 r3 #5",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    3543.3,
+    5060.0,
+    3550.2,
+    5082.6
+   ],
+   "expect": "not_head",
+   "sean": "stem",
+   "kind": "stem",
+   "lane": "2.288 r3",
+   "tile": 5
+  },
+  {
+   "id": "2.288 r3 #9",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    2511.0,
+    1280.0,
+    2554.0,
+    1302.0
+   ],
+   "expect": "not_head",
+   "sean": "whole rest",
+   "kind": "rest:whole",
+   "lane": "2.288 r3",
+   "tile": 9
+  },
+  {
+   "id": "2.288 r3 #10",
+   "plate": "brahms",
+   "page": 14,
+   "box": [
+    1606.5,
+    6871.1,
+    1642.2,
+    6887.9
+   ],
+   "expect": "head",
+   "sean": "eighth note and its stem",
+   "kind": "notehead",
+   "lane": "2.288 r3",
+   "tile": 10
+  },
+  {
+   "id": "2.289 r1 #3",
+   "plate": "brahms",
+   "page": 4,
+   "box": [
+    2596.88,
+    4943.89,
+    2632.85,
+    4977.14
+   ],
+   "expect": "head",
+   "sean": "quarter note head",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 3
+  },
+  {
+   "id": "2.289 r1 #4",
+   "plate": "brahms",
+   "page": 4,
+   "box": [
+    5147.42,
+    6904.0,
+    5185.44,
+    6926.48
+   ],
+   "expect": "head",
+   "sean": "eighth note head",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 4
+  },
+  {
+   "id": "2.289 r1 #5",
+   "plate": "brahms",
+   "page": 4,
+   "box": [
+    3904.0,
+    4943.24,
+    3911.09,
+    4966.4
+   ],
+   "expect": "not_head",
+   "sean": "part of a barline",
+   "kind": "barline",
+   "lane": "2.289 r1",
+   "tile": 5
+  },
+  {
+   "id": "2.289 r1 #6",
+   "plate": "brahms",
+   "page": 0,
+   "box": [
+    2663.04,
+    5551.28,
+    2670.72,
+    5584.24
+   ],
+   "expect": "not_head",
+   "sean": "part of a barline",
+   "kind": "barline",
+   "lane": "2.289 r1",
+   "tile": 6
+  },
+  {
+   "id": "2.289 r1 #8",
+   "plate": "brahms",
+   "page": 4,
+   "box": [
+    4852.7,
+    2816.1,
+    4889.0,
+    2847.72
+   ],
+   "expect": "head",
+   "sean": "quarter note",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 8
+  },
+  {
+   "id": "2.289 r1 #11",
+   "plate": "brahms",
+   "page": 4,
+   "box": [
+    1654.66,
+    2045.04,
+    1691.01,
+    2076.67
+   ],
+   "expect": "head",
+   "sean": "quarter note",
+   "kind": "notehead",
+   "lane": "2.289 r1",
+   "tile": 11
+  },
+  {
+   "id": "2.290 r1 #5",
+   "plate": "brahms",
+   "page": 5,
+   "box": [
+    5352.72,
+    3548.12,
+    5407.71,
+    3560.99
+   ],
+   "expect": "not_head",
+   "sean": "a ledger line",
+   "kind": "ledger_line",
+   "lane": "2.290 r1",
+   "tile": 5
+  },
+  {
+   "id": "2.290 r1 #6",
+   "plate": "brahms",
+   "page": 5,
+   "box": [
+    2572.64,
+    2669.36,
+    2579.99,
+    2693.89
+   ],
+   "expect": "not_head",
+   "sean": "part of a barline",
+   "kind": "barline",
+   "lane": "2.290 r1",
+   "tile": 6
+  },
+  {
+   "id": "2.290 r1 #10",
+   "plate": "brahms",
+   "page": 0,
+   "box": [
+    4708.06,
+    1883.59,
+    4757.22,
+    1904.22
+   ],
+   "expect": "part_of_head",
+   "sean": "part of a quarter note (a small box)",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 10
+  },
+  {
+   "id": "2.290 r1 #11",
+   "plate": "brahms",
+   "page": 5,
+   "box": [
+    3031.71,
+    2882.49,
+    3069.78,
+    2915.7
+   ],
+   "expect": "head",
+   "sean": "an eighth note",
+   "kind": "notehead",
+   "lane": "2.290 r1",
+   "tile": 11
+  },
+  {
+   "id": "2.282 #1",
+   "plate": "brahms",
+   "page": 19,
+   "box": [
+    4950.58,
+    4077.11,
+    4991.89,
+    4107.87
+   ],
+   "expect": "head",
+   "sean": "notehead",
+   "kind": "notehead",
+   "lane": "2.282",
+   "tile": 1
+  }
+ ]
+}
