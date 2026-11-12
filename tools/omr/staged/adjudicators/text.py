@@ -272,14 +272,14 @@ def dynamic_lexicon_word_enabled() -> bool:
         "0", "", "false", "no", "off")
 
 
-#: ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default OFF; Sean 2026-11-11, Litolff p8 `sempre piu p`, P2/P3 bar 12: "it boxes MP, but it's actually a part of the word sempre").
+#: ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default ON since 2026-11-12; Sean 2026-11-11, Litolff p8 `sempre piu p`, P2/P3 bar 12: "it boxes MP, but it's actually a part of the word sempre").
 #: Written out on its own line so the AST scan in `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
 UNREAD_WORD_SIBLING_ENV = "OMR_UNREAD_WORD_SIBLING"
 
 
 def unread_word_sibling_enabled() -> bool:
-    """Default OFF ("1"/"true"/"yes"/"on" turns it on)."""
-    return os.environ.get(UNREAD_WORD_SIBLING_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """Default ON since 2026-11-12 (Sean "Land it", 15 blind tiles, 14 of 15); "0"/"false"/"no"/"off" turns it off."""
+    return os.environ.get(UNREAD_WORD_SIBLING_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: candidate windows of ONE staff are one text line where their x-ranges overlap by this share of the narrower and their y-ranges by `UNREAD_LINE_Y_SHARE` of the shorter
@@ -1429,7 +1429,7 @@ def _close(run: List[Tuple[float, float, float, str, Any]],
 
 
 def _unread_line_extras(ev: Evidence) -> Dict[str, Any]:
-    """ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default OFF): the unread text lines this BAR OF THIS STAFF owns (the cell of the line's leftmost candidate window) where the detector
+    """ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default ON): the unread text lines this BAR OF THIS STAFF owns (the cell of the line's leftmost candidate window) where the detector
     boxed letters `adjudicate_dynamic` withheld. With ONE sibling reading (a READ word of another staff of the system at the same x-extent, a different ink) the line is `guessed_words`: that word,
     GUESSED, carrying its candidate and its witness. With none (or two different readings) it is `unread_lines`: UNREAD, marked, nothing invented. `{}` when the flag is off or nothing qualifies."""
     if not unread_word_sibling_enabled():

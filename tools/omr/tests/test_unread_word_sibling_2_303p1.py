@@ -1,4 +1,4 @@
-"""ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default OFF) -- a text line the lexicon refused, a sibling staff's READ word at the same x-extent, and the letters the detector boxed inside.
+"""ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default ON since 2026-11-12) -- a text line the lexicon refused, a sibling staff's READ word at the same x-extent, and the letters the detector boxed inside.
 
 CONTROLS FROM THE REAL ROWS (fixture `data_unread_word_sibling_2_303p1.json`, cut by `benchmarks/dynamics-not-words-2026-11/make_fixture_2_303p1.py` from the saved gather of Litolff p8, the
 20261029-night record): Sean's 2.301 r1 tile 4 ("it boxes MP, but it's actually a part of the word sempre. So that should be a word"). The print: `sempre piu p` on staves 0-3 (a barline cuts the
@@ -58,11 +58,14 @@ class TestUnreadWordSibling(unittest.TestCase):
         cls.off = _decided("0")
         cls.on = _decided("1")
 
-    def test_flag_default_is_off(self):
+    def test_flag_default_is_on_and_deny_list(self):
         from tools.omr.staged.adjudicators import text as T
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(FLAG, None)
-            self.assertFalse(T.unread_word_sibling_enabled())
+            self.assertTrue(T.unread_word_sibling_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {FLAG: off}):
+                self.assertFalse(T.unread_word_sibling_enabled(), off)
 
     def test_p2_bar12_the_false_mp_is_written_OFF_and_not_ON(self):
         off = _dyn(self.off, 2, 11)

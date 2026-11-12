@@ -4120,7 +4120,7 @@ def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
             words = rec.value(Q.DIRECTION, sub)
             verdict = rec.verdict(Q.DIRECTION, sub) or {}
             detail = verdict.get("detail") or {}
-            # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING, default OFF; the keys exist only where the flag filed them): an unread text line written as its sibling staff's word, GUESSED
+            # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING, default ON; the keys exist only where the flag filed them): an unread text line written as its sibling staff's word, GUESSED
             # (blue, carrying its candidate and witness), or marked UNREAD (red) where nothing could say what it is. Neither is ever plain.
             for g in (detail.get("guessed_words") or ()):
                 cell = run.cells.setdefault(cell_index, Cell(run.page, run.system, run.staff, cell_index))
