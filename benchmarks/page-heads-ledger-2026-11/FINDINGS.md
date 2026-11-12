@@ -186,3 +186,32 @@ dynamic anchors.
 **Retire:** removed M6c (`stroke_owner._head_claims`, never fires). Kept: the
 no-ink twin rule (the fallback; 53 / 72 boxes), `gather.cluster_marks` and
 `page_marks.link` as the `=0` opt-out.
+
+## 2.290 gate r3 (2026-11-11) -- after Sean's gate r2 tiles; NOT landed, two tiles out
+
+Branch `land-2.290` 3e761c585 (main merged at ab1d82daf). Agent's report, checked
+against the branch log only; its looks are not evidence.
+
+- **Cause of the gate r2 doubts:** the tiles did not say how many notes each arm
+  writes, so a fold of two boxes on ONE head looked like a lost chord note.
+  Process lesson: a fold tile must draw every box and the key must say which
+  arm writes which.
+- Tile 12 (Brahms p19 m30): both arms write two notes (G-flat 6 and A-flat 5);
+  the fold joins a sliver box to the lower head. No chord note lost.
+- All 8 disagreeing folds: one printed head each (members trim to the same ink,
+  centres within 0.1 sp). New rule `page_heads.split_by_ink_extent`: members whose
+  trimmed extents are centred >= 0.8 sp apart vertically or >= 0.9 sp across are
+  two heads (r1 tile 12 is the positive real case). A first version on extent
+  overlap split a twin box into a false third note (p2 m32) and was dropped.
+- Tile 7 (Litolff p11 m107): ON writes two notes, OFF three (the third a thin
+  box at the same x). Tile 11 (Brahms p14 m11): both arms write two dotted halves.
+- Tile 3 (Litolff p8 m58-59 staff 3): the lower-left head has NO detector box
+  and is unwritten in BOTH arms (a detector miss, not this lane). ON writes
+  A-natural tied to A-natural; OFF wrote A-flat at m59 with no tie.
+- Tile 1 (Litolff p8 m69-70): `export._drop_unison_same_pitch_slurs` -- no slur is
+  written from a unison head to a note of the same pitch; the drop is counted.
+  The tie itself is the arc binding job (2.298 job 2).
+- Five pages, flags off vs on: Litolff notes +3 -4, ties +10, pitches ~1, blue +6;
+  Brahms notes +1, flags +1, blue +2. Judged right->wrong 0. Fast tier 10,567
+  passed flags ON (run one tooling commit before the tip); check 228.
+- Tiles: `out/print-from-worktrees/2.290-gate-r3/` (two tiles).
