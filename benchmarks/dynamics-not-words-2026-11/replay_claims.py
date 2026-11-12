@@ -43,7 +43,7 @@ def replay(plate, slice_dir, page, env=None):
         os.environ[k] = v
     try:
         rows = page_rows(slice_dir, page)
-        keep_q = ("direction_word", "dynamic_letter", "glyph_box", "staff_lines", "document_identity")
+        keep_q = ("direction_word", "dynamic_letter", "dynamic_letter_neighbours", "glyph_box", "staff_lines", "document_identity")
         obs = [o for o in rows["observations"] if o.get("quantity") in keep_q]
         log, _ = RR.rebuild_gather({"observations": obs, "abstentions": [], "verdicts": []})
         (pws, cells), = CM.load_prepared(LR.LIB / LR.PLATES[plate]["pdf"], [page], root=LR.CELL_MAP_ROOT)
