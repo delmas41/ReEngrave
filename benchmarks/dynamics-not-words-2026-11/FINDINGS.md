@@ -242,3 +242,27 @@ Agent's report; its tiles are not judged.
   no dynamic from letters inside an unread line).
 - Also seen, not judged: the OFF arm READS `sempre p` for a printed `sempre più`
   at Litolff p8 staff 3 bar 11.
+
+## 2.303 Part 1 r2 (2026-11-12) -- Sean's tiles 14 of 15; not landed
+
+Branch `lane-2.303-p1-unread-word-sibling` b035325ba (+ tile script), flag OFF.
+- **Causes found in r2:** the "lost ff" (Brahms p0 staff 10) was never READ -- a
+  guess from the run `f`+`m`+`p` (f, then the m,p of "espr."); siblings that
+  differ only by an end dynamic token were called disagreeing; the two boxes of
+  one printed `m` were judged separately; a tempo heading (printed once per
+  system) was used as a sibling. All four fixed with real-row controls (13).
+- **File change OFF vs ON (38 places):** Litolff dynamics +4 -13, words +7 -4;
+  Brahms dynamics +3 -5, words +8 -2. Judged right->wrong 0. Check 228. Fast
+  tier flag ON 10,593 passed, 1 failed (stale flag-doc rows, fixed; whole suite
+  NOT re-run).
+- **Sean's 15 tiles:** every removed dynamic he saw is letters of a word; both
+  kept dynamics are dynamics; both guessed words are right. Tile 9 (Brahms p4
+  staff 10 bar 0): the p of "pesante" goes mp -> an unnamed dynamic; should be
+  nothing.
+- **Process lesson:** the agent called six removals "lost READ dynamics"; the
+  three it named were each letters of a word on Sean's tiles. A dynamic made of
+  letters inside a word was never a read.
+- The word is written without its dynamic token ("sempre più"), the p stays the
+  dynamic reader's; they are two directions (pairing for a guessed word not wired).
+- Open: tile 9; 23 changed places unjudged; Brahms red `unread text` marks with
+  no sibling (as designed, not judged).

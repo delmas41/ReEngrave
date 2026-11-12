@@ -1,0 +1,143 @@
+{
+ "lane": "2.303 part 1 r2 (OMR_UNREAD_WORD_SIBLING)",
+ "date": "2026-11-12",
+ "question": "what is the ink inside the orange box: a dynamic on its own, or letters of a word (which)?",
+ "note": "Sean by voice ('pew' = più). 14 of 15 ON right; tile 9 partly.",
+ "tiles": {
+  "1": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/5/12",
+   "OFF_writes": "pp",
+   "ON_writes": "nothing",
+   "sean": "SE from sempre",
+   "scored": "right"
+  },
+  "2": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/3/12",
+   "OFF_writes": "p",
+   "ON_writes": "nothing",
+   "sean": "P, the first letter in più, part of the word",
+   "scored": "right"
+  },
+  "3": {
+   "plate": "brahms",
+   "page": 12,
+   "cell": "cell/12/0/10/12",
+   "OFF_writes": "ppp",
+   "ON_writes": "p",
+   "sean": "a dynamic P",
+   "scored": "right"
+  },
+  "4": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/7/13",
+   "OFF_writes": "pp p",
+   "ON_writes": "nothing",
+   "sean": "PRE from sempre, as well as P from the first letter of più; the box spans two partial words",
+   "scored": "right"
+  },
+  "5": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/3/13",
+   "OFF_writes": "fp",
+   "ON_writes": "p",
+   "sean": "a P dynamic",
+   "scored": "right"
+  },
+  "6": {
+   "plate": "brahms",
+   "page": 0,
+   "cell": "cell/0/0/10/1",
+   "OFF_writes": "p",
+   "ON_writes": "nothing",
+   "sean": "the O from legato",
+   "scored": "right"
+  },
+  "7": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/7/12",
+   "OFF_writes": "dyn.",
+   "ON_writes": "nothing",
+   "sean": "the M from sempre",
+   "scored": "right"
+  },
+  "8": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/3/11",
+   "OFF_writes": "dyn.",
+   "ON_writes": "nothing",
+   "sean": "the M from sempre again",
+   "scored": "right"
+  },
+  "9": {
+   "plate": "brahms",
+   "page": 4,
+   "cell": "cell/4/0/10/0",
+   "OFF_writes": "mp",
+   "ON_writes": "dyn.",
+   "sean": "part of the P from pesante",
+   "scored": "ON better, still wrong: mp becomes an unnamed dynamic; the ink is part of a word, nothing should be written"
+  },
+  "10": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/1/11",
+   "OFF_writes": "nothing",
+   "ON_writes": "guessed word: sempre più",
+   "sean": "a large box that includes sempre, più, as well as the dynamic P",
+   "scored": "right"
+  },
+  "11": {
+   "plate": "brahms",
+   "page": 12,
+   "cell": "cell/12/0/10/12",
+   "OFF_writes": "nothing",
+   "ON_writes": "guessed word: cresc.",
+   "sean": "dynamic P and crescendo",
+   "scored": "right"
+  },
+  "12": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/0/12",
+   "OFF_writes": "p",
+   "ON_writes": "nothing",
+   "sean": "a P from più",
+   "scored": "right"
+  },
+  "13": {
+   "plate": "brahms",
+   "page": 19,
+   "cell": "cell/19/0/10/10",
+   "OFF_writes": "mp",
+   "ON_writes": "nothing",
+   "sean": "the NTE from pesante",
+   "scored": "right"
+  },
+  "14": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/5/13",
+   "OFF_writes": "pppp",
+   "ON_writes": "nothing",
+   "sean": "the PRE from sempre, as well as the P from più",
+   "scored": "right"
+  },
+  "15": {
+   "plate": "litolff",
+   "page": 8,
+   "cell": "cell/8/0/6/13",
+   "OFF_writes": "p p",
+   "ON_writes": "nothing",
+   "sean": "same thing: PRE from sempre and the P from più",
+   "scored": "right"
+  }
+ }
+}
