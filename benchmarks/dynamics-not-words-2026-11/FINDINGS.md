@@ -182,3 +182,33 @@ a 2.296 follow-up). Brahms p4 adds 3 removals. 11 removed in all.
 and 2.301 r1 answers are not registered in `judged_claims` SOURCES (replayed
 by the lane's own script); slices `claim-readout-slices-*-base/-on/-on2`
 were left in `library/_shared-records`.
+
+## 2.303 Part 1 r1 (2026-11-11) -- unread word, sibling witness; built OFF, NOT ready
+
+Branch `lane-2.303-p1-unread-word-sibling` 0f73e5c99, flag `OMR_UNREAD_WORD_SIBLING`
+default OFF. Agent's report; none of its 36 changed places is judged by Sean.
+
+- **Cause:** on Litolff p8 staves 0-3 the word "sempre più p" is crossed by a
+  BARLINE. The text reader's crop kept that stroke, read `sempre piu: °`, and
+  `direction_lexicon._prepare` refused it. Staff 8 prints the same word clear of
+  the barline and it was READ. The detector's m+p inside the unread line then
+  became a dynamic.
+- **Process lesson:** the barline's ink is claimed on the page-wide pass before
+  words, but the text reader is still handed the raw crop with that ink in it.
+  A reader should not be shown ink another reader already owns. The source fix
+  is the crop, not a witness downstream (not built; proposed to Sean).
+- **Built:** refused windows on one staff merge into a line (>= 2 detector
+  letters, >= 4 median letter widths); a READ word at the same x-extent on a
+  sibling staff makes it that word, GUESSED; otherwise red `unread text`;
+  letters inside the line with ink on both sides are not written as a dynamic.
+- **Measures (frozen sample, re-adjudicated, flag OFF vs ON):** Litolff dynamics
+  +5 -7, words +7 -3; Brahms dynamics +5 -3, words +8 -2; notes and red bars
+  unchanged. Judged right->wrong 0. Fast tier flag ON 10,462 passed, 0 failed;
+  check 228. The saved night record does not reproduce under either arm (older
+  code), equally OFF and ON.
+- **Known faults (agent's own):** Brahms p0 staff 10 loses `ff`, gains `f` + a red
+  mark; Litolff p8 P2 bar 12 still gets a stray `dyn.` and `pp`; a final `p`
+  outside the unread window is written twice (blue in the word, plain as the
+  dynamic).
+- Tiles (not sent): `out/print-from-worktrees/2.303-p1-r1/` (12 of 15 changed
+  lines; they box the whole line).
