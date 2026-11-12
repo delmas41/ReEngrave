@@ -1095,6 +1095,20 @@ def through_line_mask(binary: np.ndarray, box: Sequence[int], spacing: float,
     return hit[ry0 - Y0:ry1 - Y0, rx0 - X0:rx1 - X0]
 
 
+def _without_owned_ink(page: PageImage, crop: np.ndarray, region: Sequence[int], spacing: float, retry: bool = False) -> np.ndarray:
+    """ROADMAP 2.304 (STAGED, flag `OMR_TEXT_CROP_OWNED_INK`; LEGACY never sets `page.owned_ink`, so nothing changes): the crop minus the pixels an owner earlier than `word` in the claim order
+    holds (a barline rule, optionally a staff line), a mark crossing the stroke keeping its ink. The ONE place a crop for the OCR is cleaned of another reader's ink."""
+    oi = getattr(page, "owned_ink", None)
+    if oi is None or not crop.size or not (retry or oi.replace):
+        return crop           # default: only the RETRY crops (`lines=True`, a candidate nothing was accepted from) lose the owned ink; a letter ON a rule would lose its stroke on a first look
+    own = oi.mask(region, spacing, before_owner="word")
+    if own is None or own.shape != crop.shape[:2]:
+        return crop
+    crop = crop.copy()
+    crop[own] = 255
+    return crop
+
+
 def crop_for(page: PageImage, candidate: TextCandidate,
              spacing: float, erase: np.ndarray | None = None,
              lines: bool = False) -> np.ndarray:
@@ -1126,6 +1140,7 @@ def crop_for(page: PageImage, candidate: TextCandidate,
         if through.any():
             crop = crop.copy()
             crop[through] = 255
+    crop = _without_owned_ink(page, crop, (cx0, cy0, cx1, cy1), spacing, retry=lines)
     scale = min(MAX_CROP_UPSCALE, MIN_CROP_SPACING_PX / max(1.0, spacing))
     if scale <= 1.0 or crop.size == 0:
         return crop
@@ -1158,6 +1173,7 @@ def tight_crop_for(page: PageImage, candidate: TextCandidate,
         if through.any():
             crop = crop.copy()
             crop[through] = 255
+    crop = _without_owned_ink(page, crop, region, spacing, retry=lines)
     m = int(round(TIGHT_MARGIN_SPACES * spacing))
     white = (255,) * (crop.shape[2] if crop.ndim == 3 else 1)
     crop = cv2.copyMakeBorder(crop, m, m, m, m, cv2.BORDER_CONSTANT,
@@ -1911,7 +1927,7 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
     # ROADMAP 2.254 r3 (STAGED, flag): a LATER look, never a replacement -- a candidate nothing was accepted from, with a line coming into
     # its box (`through_line_mask`), is read once more from the crops with that line whited out. The plain crops are read first and as
     # before: a letter that lies ON the barline (Litolff p9: the `p` of `pizz.` stands on it) loses its stroke with the line.
-    lines = bool(page_dict.get("erase_through_lines"))
+    lines = bool(page_dict.get("erase_through_lines")) or getattr(pws.page, "owned_ink", None) is not None
     n = len(candidates)
     wide: dict[int, np.ndarray] = {}
     tight: dict[int, np.ndarray] = {}
@@ -1935,6 +1951,9 @@ def _read_scan_flow(pws, page_dict, candidates, readers, spacing, erase,
             px, py = int(round(CROP_PAD_X_SPACES * spacing)), int(round(CROP_PAD_Y_SPACES * spacing))
             region = (max(0, b[0] - px), max(0, b[1] - py), min(w, b[2] + px), min(h, b[3] + py))
             has_line[i] = bool(through_line_mask(pws.page.binary, b, spacing, region).any())
+            oi = getattr(pws.page, "owned_ink", None)          # ROADMAP 2.304: ink an earlier owner holds in the crop is a reason to look again, too
+            if not has_line[i] and oi is not None:
+                has_line[i] = oi.mask(region, spacing, before_owner="word") is not None
         return has_line[i]
 
     def wide_line_crop(i):

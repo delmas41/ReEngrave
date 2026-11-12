@@ -17362,6 +17362,10 @@ def gather_direction_words(log: Log, pws: Any, cells: Sequence[Any],
             return
 
     page_dict = _direction_page_dict(pws, cells, local, detections)
+    from . import owned_ink as _owned_ink
+    if _owned_ink.enabled():
+        # ROADMAP 2.304 (flag OMR_TEXT_CROP_OWNED_INK, default OFF): the OCR crop is not shown ink an earlier page-wide owner holds (a barline rule; staff lines are a separate arm)
+        _owned_ink.attach(pws)
     from . import hairpin_reach as _hairpin_reach
     if _hairpin_reach.enabled():
         # ROADMAP 2.254 r2 (flag OMR_HAIRPIN_REACH): a hairpin the CV reach reader read (and claimed, `gather_hairpin_claim`) is page-wide ink
