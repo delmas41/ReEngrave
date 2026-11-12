@@ -1,0 +1,18 @@
+{
+ "lane": "2.290 gate r3",
+ "date": "2026-11-11",
+ "question": "tile 1: are the top notes of the two chords the same pitch? tile 2: upper staff only, does every notehead have an orange box?",
+ "note": "Sean's words by voice. Tile 2's crop shows two staves; he was asked about one.",
+ "tiles": {
+  "1": {
+   "place": "litolff p8 m58-59 staff 3",
+   "sean": "those are the same note",
+   "scored": "right: ON writes the tied note at the first note's pitch (tie carries the natural)"
+  },
+  "2": {
+   "place": "litolff p8 m69-70",
+   "sean": "everything in the middle staff has an orange box around it, but ... there are 3 orange boxes around eighth notes in the staff below the middle staff",
+   "scored": "right for the asked staff: every head boxed; the staff below shows boxes on three eighths only (its half and quarter unboxed in the tile) -- not judged, to be answered from the data"
+  }
+ }
+}

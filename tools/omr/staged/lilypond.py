@@ -346,6 +346,17 @@ def _direction_suffix(directions: Sequence[Tuple[float, str, str]],
                 continue
             counters["direction_words_not_renderable"] += 1
             continue
+        if kind in ("words_guess", "words_unread"):
+            # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING): an unread text line written as its sibling staff's word (blue) or marked unread (red)
+            if not writable:
+                counters["direction_words_not_renderable"] += 1
+                continue
+            if kind == "words_guess":
+                out.append('_\\markup { \\with-color #guessedColor \\italic "%s" }' % _ly_escape(str(json.loads(text)["text"])))
+            else:
+                out.append('_\\markup { \\with-color #red \\italic "%s" }' % _ly_escape(str(text)))
+            counters["direction_words"] += 1
+            continue
         if kind == "dynamics_guess":
             payload = json.loads(text)
             counters[led + "in_musicxml"] += 1

@@ -508,6 +508,14 @@ def claim_guess_of(rec: "Record", sub: str) -> Optional[Dict[str, Any]]:
         return {"stage": "ADJUDICATE", "rule": PAGE_OWNER_GUESSED_REASON, "quantity": Q.GLYPH_OWNER,
                 "candidates": [{"value": c.get("value"), "support": c.get("support")} for c in (v.get("candidates") or [])],
                 "chosen": {"value": v.get("value")}}
+    v = rec.verdict(Q.HEAD_STEM, sub)
+    if v is not None and v.get("outcome") == "decided" and v.get("reason") == "stem_of_a_second":
+        # ROADMAP 2.300 (flag `OMR_ONE_CHORD_ONE_EVENT`): this head touches no stem; it is put on its neighbour's stem by the geometry of a
+        # second (a step off, one head width over, the stem between). Two beamed notes whose first stem was missed look the same
+        # (2.300 step 1), so the head is written GUESSED (blue) with both readings. None is filed with the flag OFF.
+        return {"stage": "ADJUDICATE", "rule": "stem_of_a_second", "quantity": Q.HEAD_STEM,
+                "candidates": [{"value": "on_the_neighbours_stem", "support": 1.0}, {"value": "a_note_of_its_own", "support": 1.0}],
+                "chosen": {"value": "on_the_neighbours_stem"}}
     for q in (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST):
         v = rec.verdict(q, sub)
         if v is not None and v.get("outcome") == "narrowed" and str(v.get("reason") or "").startswith(CLAIM_NARROWED_PREFIX):
@@ -2044,6 +2052,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                 cur = best.get(gid)
                 if cur is None or (-conf, sub) < (-cur[0], cur[1]):
                     best[gid] = (conf, sub)
+        _settle_folded_pitches(rec, queued, best)           # ROADMAP 2.290 r4: ONE position per folded head, never the more confident box's
         for gid, conf, sub, run, ci, det, s in queued:
             if gid is not None and best[gid][1] != sub:
                 _drop("mark_group_duplicate", _again(sub))
@@ -2143,7 +2152,7 @@ def _settle_divisi_pairs(runs: Dict[str, "StaffRun"],
                         d["stem_direction"] = None
                 stats["stems_with_two_directions_taken_off"] = (
                     stats.get("stems_with_two_directions_taken_off", 0) + len(clash))
-            events = group_chords_in_measure(cell.detections)
+            events = _group_chords(cell.detections)
             pairs = _divisi_pairs(events)
             if not pairs:
                 continue
@@ -2204,7 +2213,7 @@ def _chords_whose_value_would_be_voted(
             if not cell.detections:
                 continue
             doomed: List[int] = []
-            for ev in group_chords_in_measure(cell.detections):
+            for ev in _group_chords(cell.detections):
                 heads = ev.get("noteheads") or ()
                 if len(heads) < 2:
                     continue
@@ -2734,6 +2743,72 @@ _TIE_PAIR_COUNTED_ELSEWHERE = frozenset(
     {"not_a_tie", "not_an_arc", "no_page_frame"})
 
 
+FOLD_PITCH_RULE = "folded_head_pitch_disagrees"
+#: a box this much taller / this much shorter than a head (staff spaces) is no witness of where the head sits (`page_heads.CLAIM_MAX_H_SP`, `head_ink.MIN_SPACES`)
+_FOLD_BOX_MAX_SP, _FOLD_BOX_MIN_SP = 1.6, 0.6
+
+
+def _settle_folded_pitches(rec: "Record", queued: List[Any], best: Dict[str, Tuple[float, str]]) -> None:
+    """ROADMAP 2.290 round 4 (the one head identity, `OMR_PAGE_HEAD_ONE`): a head the identity folds from boxes that WRITE DIFFERENT PITCHES is one head with ONE
+    position -- measured from the head's own ink, never inherited from whichever box scored higher (Litolff p2 m7: boxes at 7.04 and 8.28 steps, the hole of the
+    head at 7.81; the more confident box wrote G3, the page and the tie say F3). Of the group's head-sized boxes on ONE staff (a tall box or a sliver of a box
+    is no witness), when their pitches differ: the ink witness is the head's hole position (`hole_ink_position`) else its ink-centre position
+    (`ink_centre_position_float`) off `Q.NOTEHEAD_STAFF_POSITION`; the member whose ROUNDED position is the step the witness rounds to is the one written (decided,
+    no flag). With no witness, or none/two members on it, the most confident member stands and is written GUESSED (blue) with every pitch as a candidate.
+    Page-facts: measure against the staff locally; never silently one of two. Flag OFF (no `page_head` identity on the group): untouched."""
+    by_gid: Dict[str, List[Any]] = {}
+    for q in queued:
+        gid, conf, sub, run, ci, det, s = q
+        if gid is None or det.get("category") != "notehead" or not det.get("pitch"):
+            continue
+        by_gid.setdefault(gid, []).append(q)
+    for gid, members in by_gid.items():
+        if len(members) < 2:
+            continue
+        ident = rec.obs(Q.MARK_GROUP, members[0][2])
+        if not ident or (ident[-1].get("detail") or {}).get("identity") != "page_head":
+            continue
+        run0 = members[0][3]
+        heads = []
+        for q in members:
+            _gid, conf, sub, run, ci, det, s = q
+            sp = float(getattr(run, "spacing", 0) or 0)
+            gb = rec.obs(Q.GLYPH_BOX, sub)
+            pb = ((gb[-1].get("detail") or {}).get("bbox_page_px") if gb else None)          # the box in PAGE px, as the staff space is
+            if run is not run0 or sp <= 0 or not pb:
+                continue
+            bw, bh = float(pb[2]) - float(pb[0]), float(pb[3]) - float(pb[1])
+            if bh > _FOLD_BOX_MAX_SP * sp or min(bw, bh) < _FOLD_BOX_MIN_SP * sp:
+                continue
+            heads.append(q)
+        if len({q[5]["pitch"] for q in heads}) < 2:
+            continue
+        wit, rounded = [], {}
+        for q in heads:
+            rows = rec.obs(Q.NOTEHEAD_STAFF_POSITION, q[2])
+            if not rows:
+                continue
+            d = rows[-1].get("detail") or {}
+            rounded[q[2]] = d.get("rounded")
+            for k in ("hole_ink_position", "ink_centre_position_float"):
+                if isinstance(d.get(k), (int, float)):
+                    wit.append(float(d[k]))
+                    break
+        pick = None
+        if wit:
+            step = int(round(sum(wit) / len(wit)))
+            on = [q for q in heads if rounded.get(q[2]) == step]
+            if len(on) == 1:
+                pick = on[0]
+        if pick is not None:
+            best[gid] = (pick[1], pick[2])
+            continue
+        win = next((q for q in heads if q[2] == best[gid][1]), None)
+        if win is not None and not win[5].get("guess"):
+            cands = [{"value": q[5]["pitch"], "support": q[1], "source": q[2]} for q in heads]
+            win[5]["guess"] = {"stage": "EXPORT", "rule": FOLD_PITCH_RULE, "quantity": Q.PITCH, "candidates": cands, "chosen": {"value": win[5]["pitch"]}}
+
+
 def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
     """The tie links the RECORD names (`Q.TIE_PAIR`), or None if it names none.
 
@@ -2782,6 +2857,22 @@ def _has_printed_accidental(rec: Record, head: str) -> bool:
     for v in rec.verdicts_of(Q.ACCIDENTAL_OWNER):
         if (v.get("outcome") == "decided" and str(v.get("value")) == str(head)
                 and rec.verdict(Q.ACCIDENTAL_OWNER, v["subject"]) is v):
+            return True
+    return False
+
+
+def _fold_has_printed_accidental(rec: Record, head: str) -> bool:
+    """`_has_printed_accidental` for ANY box of `head`'s page head on its own staff (ROADMAP 2.290 r4: the one identity writes one of a fold's boxes; the accidental
+    may be owned by the box that was not written)."""
+    if _has_printed_accidental(rec, head):
+        return True
+    rows = rec.obs(Q.MARK_GROUP, head)
+    if not rows:
+        return False
+    gid = rows[-1].get("value")
+    for o in rec.obs_of(Q.MARK_GROUP):
+        m = str(o["subject"])
+        if o.get("value") == gid and m != head and m.split("/")[1:4] == str(head).split("/")[1:4] and _has_printed_accidental(rec, m):
             return True
     return False
 
@@ -2836,19 +2927,24 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                     continue
                 index.setdefault(str(key), (m_idx, det))
     voice_on = rec is not None and _export_unison.tie_voice_enabled()
-    alias = _export_unison.written_member(rec, index) if voice_on else {}
+    from . import page_heads as _PH_
+    _one_id = rec is not None and _PH_.one_enabled()
+    alias = _export_unison.written_member(rec, index) if (voice_on or _one_id) else {}
     seen_spans: set = set()
     spans = []
     for (start, stop), arcs in ties["pairs"].items():
         orig = (start, stop)
-        if voice_on:
-            # ROADMAP 2.252 r3: an end bound to a box the one-mark-one-note rule (2.58b) did not write is the mark
+        if voice_on or _one_id:
+            # ROADMAP 2.252 r3 (and 2.290 r4: under the one head identity always): an end bound to a box the one-mark-one-note rule (2.58b) did not write is the mark
             # its group DID write (the same ink); counted.
             for end in (start, stop):
                 if end not in index and end in alias:
                     counters_ = counters if counters is not None else {}
                     counters_["tie_end_moved_to_its_marks_written_box"] = counters_.get(
                         "tie_end_moved_to_its_marks_written_box", 0) + 1
+            if not voice_on:
+                # the one identity's alias only moves an end to the written member of its OWN staff (a cross-staff copy of the ink is another staff's note)
+                alias = {k: v for k, v in alias.items() if str(k).split("/")[1:4] == str(v).split("/")[1:4]}
             start, stop = alias.get(start, start), alias.get(stop, stop)
         if start not in index or stop not in index:
             continue
@@ -2860,7 +2956,7 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
         p0, p1 = first.get("pitch"), last.get("pitch")
         if (p0 != p1 and rec is not None and tie_carry_enabled() and sm != tm and p0 and p1
                 and _legacy._pitch_step(p0) == _legacy._pitch_step(p1)
-                and str(p0)[-1:] == str(p1)[-1:] and not _has_printed_accidental(rec, stop)):
+                and str(p0)[-1:] == str(p1)[-1:] and not _fold_has_printed_accidental(rec, stop)):
             # ROADMAP 2.252 r4 (`OMR_TIE_CARRIES_ACCIDENTAL`, default ON; page-facts, Sean 2026-10-30, general: "A tie carries an
             # accidental even across a bar line"): the stop of a cross-barline tie that prints no accidental of its own keeps the
             # start's pitch; counted, and the stop's own reading kept on the note.
@@ -2997,6 +3093,24 @@ def _anchored_slur_spans(rec: Record, measures, pools, spacings, tops, breaks, v
         seen_pairs.add((a, z))
         out.append(((sm, xa), (tm, xz), first, last))
         counters["slur_spans_from_anchors"] += 1
+    return out
+
+
+def _drop_unison_same_pitch_slurs(spans: List[tuple], counters: Dict[str, int]) -> List[tuple]:
+    """ROADMAP 2.290 gate r3 (the one head identity on; Sean on Litolff p8 m69-70: "a unison half note TIED to a unison eighth note ... in both voices"): an arc between
+    two notes of the SAME written pitch whose start is a UNISON head (one head, two voices: `export_unison`'s twin) is, on the page, the unison's two TIES (one per
+    voice), not a slur: the detector's class said slur, the voices are not told apart, and the binding is undecided -- so NOTHING is written (counted, named), never a
+    slur on voice 1. Flag OFF: untouched (the fold that makes the head a unison head is the one identity's)."""
+    from . import page_heads as _PH_
+    if not _PH_.one_enabled():
+        return spans
+    out = []
+    for sp in spans:
+        first, last = sp[2], sp[3]
+        if isinstance(first, dict) and isinstance(last, dict) and (first.get("unison_head") or last.get("unison_head")) and first.get("pitch") and first.get("pitch") == last.get("pitch"):
+            counters["slur_unison_same_pitch_binding_undecided"] = counters.get("slur_unison_same_pitch_binding_undecided", 0) + 1
+            continue
+        out.append(sp)
     return out
 
 
@@ -3358,6 +3472,9 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                             counters[join_kind + "_spans_across_systems"] -= 1
                             continue
                         spans.append(s)
+            if kind == "slur":
+                # main 2.290: after the joins too
+                spans = _drop_unison_same_pitch_slurs(spans, counters)
             if kind == "tie":
                 # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY
                 # PLACE THAT KNOWS IT. Since ROADMAP 3.2b the record names each
@@ -3995,6 +4112,12 @@ def _count_directions(counters: Dict[str, int],
             counters["guessed_dynamics"] += 1
             counters["guessed_by_rule:" + json.loads(text)["guess"]["rule"]] += 1
             continue
+        if kind == "words_guess":
+            # ROADMAP 2.303 PART 1: a GUESSED direction word, counted by deciding rule
+            counters["direction_words"] += 1
+            counters["guessed_words"] += 1
+            counters["guessed_by_rule:" + json.loads(text)["guess"]["rule"]] += 1
+            continue
         if kind == "marking":
             # ROADMAP 2.68: one `<direction>`, but a `<words>` AND its
             # `<dynamics>` reached the file -- each family counts its own.
@@ -4132,6 +4255,26 @@ def _dynamic_guess(rec: Record, v: Dict[str, Any], words: Any
     return x, (words if inferred else "dyn."), guess
 
 
+#: ROADMAP 2.303 PART 1: the red words of a text line the lexicon refused and no sibling staff could name (Sean 2026-11-11: it stays UNREAD and is MARKED). Nothing downstream reads the string.
+UNREAD_TEXT_LINE_WORD = "unread text"
+
+
+def _word_guess_xml(payload: str, indent: str) -> str:
+    """ROADMAP 2.303 PART 1: a GUESSED direction word (an unread text line written as its sibling staff's word): `<words color=blue>` and the `<other-direction>reengrave:guessed {json}`
+    twin, like `_dynamic_guess_xml`."""
+    m = json.loads(payload)
+    body = json.dumps(m["guess"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    body = body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return (f'{indent}<direction placement="below">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <words color="{GUESS_COLOR}">{_legacy._xml_escape(m["text"])}</words>\n'
+            f"{indent}  </direction-type>\n"
+            f"{indent}  <direction-type>\n"
+            f"{indent}    <other-direction>reengrave:guessed {body}</other-direction>\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
 def _dynamic_guess_xml(payload: str, indent: str) -> str:
     """A GUESSED dynamic: `<dynamics color=...>` holding the word (or a
     `<words color=...>dyn.</words>` where the ink favoured none), and a second
@@ -4202,10 +4345,25 @@ def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
         for cell_index in range(run.n_measures):
             sub = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
             words = rec.value(Q.DIRECTION, sub)
-            if not isinstance(words, list) or not words:
-                continue
             verdict = rec.verdict(Q.DIRECTION, sub) or {}
             detail = verdict.get("detail") or {}
+            # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING, default ON; the keys exist only where the flag filed them): an unread text line written as its sibling staff's word, GUESSED
+            # (blue, carrying its candidate and witness), or marked UNREAD (red) where nothing could say what it is. Neither is ever plain.
+            for g in (detail.get("guessed_words") or ()):
+                cell = run.cells.setdefault(cell_index, Cell(run.page, run.system, run.staff, cell_index))
+                cell.directions.append((float(g.get("x_page") or 0.0), "words_guess", json.dumps(
+                    {"text": g["text"], "guess": {
+                        "stage": "ADJUDICATE", "rule": "unread_word_sibling", "quantity": Q.DIRECTION,
+                        "candidates": g.get("guess_candidates") or [], "chosen": {"value": g["text"]},
+                        "evidence": "this staff's text line was refused by the lexicon; a READ word of the same text stands on another staff of the system at the same x-extent (another ink)",
+                        "witness": g.get("witness")}}, sort_keys=True, ensure_ascii=False)))
+                cell.directions.sort()
+            for u in (detail.get("unread_lines") or ()):
+                cell = run.cells.setdefault(cell_index, Cell(run.page, run.system, run.staff, cell_index))
+                cell.directions.append((float(u.get("x_page") or 0.0), "words_unread", UNREAD_TEXT_LINE_WORD))
+                cell.directions.sort()
+            if not isinstance(words, list) or not words:
+                continue
             by_text: Dict[str, Any] = {}
             for w in (detail.get("words") or []):
                 if isinstance(w, dict):
@@ -4284,6 +4442,12 @@ def _direction_xml(kind: str, text: str, indent: str) -> str:
         return _marking_direction_xml(text, indent)
     if kind == "dynamics_guess":
         return _dynamic_guess_xml(text, indent)
+    if kind == "words_guess":
+        return _word_guess_xml(text, indent)
+    if kind == "words_unread":
+        return (f'{indent}<direction placement="below">\n{indent}  <direction-type>\n'
+                f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">{_legacy._xml_escape(text)}</words>\n'
+                f"{indent}  </direction-type>\n{indent}</direction>")
     return _legacy._mxl_direction((kind, text), indent)
 
 
@@ -4367,10 +4531,18 @@ def _meter_dict(meter: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     return out
 
 
+def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """`voicing.group_chords_in_measure` on a bar's detections; with `OMR_ONE_CHORD_ONE_EVENT` (ROADMAP 2.300, default ON) the
+    two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
+    settle see the same events."""
+    from . import one_chord
+    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled())
+
+
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     if cell is None or not cell.detections:
         return []
-    return group_chords_in_measure(cell.detections)
+    return _group_chords(cell.detections)
 
 
 def _document_bar_offsets(

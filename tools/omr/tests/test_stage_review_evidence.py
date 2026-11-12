@@ -142,6 +142,14 @@ def tearDownModule() -> None:
         os.environ["OMR_DOT_BOXED_AS_A_HEAD"] = _DOT_FLAG_WAS
 
 
+ONE_CHORD_ENV = "OMR_ONE_CHORD_ONE_EVENT"
+#: ROADMAP 2.300: the verdict kinds that, with the flag ON, gain a human row in their BASIS only (they now read `Q.HEAD_STEM`).
+#: `onset_column` and `voices` read `Q.EVENT`, so they inherit the same basis one step down (measured: both are basis-only).
+ONE_CHORD_BASIS_KINDS = {"event", "head_stem", "stem_value", "unison_voices", "onset_column", "voices"}
+ONE_CHORD_BASIS_DECIDERS = {"adjudicate_event", "adjudicate_head_stem", "adjudicate_stem_value", "adjudicate_unison_voices",
+                            "adjudicate_onset_column", "adjudicate_voices"}
+
+
 class _Case(unittest.TestCase):
     """Writes the fixture record to a temp dir and runs `rerun` over it."""
 
@@ -163,6 +171,19 @@ class _Case(unittest.TestCase):
             str(self.dir / f"{tag}.record.json"), staff="staff/0/0/0",
             musicxml_path=str(self.dir / f"{tag}.musicxml"))
         return d, arm, ing
+
+    def run_review_flag(self, sidecar, *, tag, flag):
+        """`run_review` with `OMR_ONE_CHORD_ONE_EVENT` pinned to `flag` ("0"/"1") -- ROADMAP 2.300 landed it ON, and it adds
+        `Q.HEAD_STEM` reads to `adjudicate_event`, so the basis lists are asserted per arm."""
+        old = os.environ.get(ONE_CHORD_ENV)
+        os.environ[ONE_CHORD_ENV] = flag
+        try:
+            return self.run_review(sidecar, tag=tag)
+        finally:
+            if old is None:
+                os.environ.pop(ONE_CHORD_ENV, None)
+            else:
+                os.environ[ONE_CHORD_ENV] = old
 
     def standing(self, record: dict, quantity: str, subject: str):
         idx = RR._verdict_index(record["verdicts"])          # noqa: SLF001
@@ -550,7 +571,13 @@ class TestARedrawnBoxFilesBothHalves(_Case):
                           for r in h["human_rows"])]
         self.assertTrue(offered, "the row reached no decision at all, so this "
                                  "test proves nothing about `used`")
-        self.assertTrue(all(h["how"] != "used" for h in offered))
+        # ROADMAP 2.300 (flag ON): `adjudicate_event` now reads `Q.HEAD_STEM`, so its BASIS reaches this row too, and the same verdict
+        # legitimately USES a DIFFERENT human row (the human-drawn replacement head). `how` is per VERDICT, so the contract is checked
+        # PER ROW: for every verdict that reaches the redrawn row, THAT row is basis-only, never in `in_used`.
+        for h in offered:
+            self.assertNotIn(next(iter(redrawn)), h["in_used"],
+                             "the redrawn row was WEIGHED by %s/%s" % (h["quantity"], h["subject"]))
+            self.assertIn(next(iter(redrawn)), h["in_basis"])
 
     def test_the_machines_box_still_stands_and_is_still_written(self):
         rows = [o for o in self.arm["record"]["observations"]
@@ -1200,9 +1227,10 @@ class TestBelongsToAnotherStaff(_Case):
 
         ⚠️ AND THE NOTE COUNT MOVES, which is what says the refusal reached
         the file rather than only the record."""
-        d, arm, ing = self.run_review(_sidecar(
+        sidecar = _sidecar(
             {"id": "act-own5", "stage": "gather", "kind": "own_box",
-             "glyph": "glyph/0/0/0/0/2", "staff": "staff/0/0/1"}), tag="own5")
+             "glyph": "glyph/0/0/0/0/2", "staff": "staff/0/0/1"})
+        d, arm, ing = self.run_review_flag(sidecar, tag="own5", flag="0")
         self.assertIsNone(self.standing(arm["record"], Q.GLYPH_OWNER,
                                         "glyph/0/0/0/0/2"),
                           "the contest still never sees this glyph")
@@ -1210,12 +1238,25 @@ class TestBelongsToAnotherStaff(_Case):
                           "glyph/0/0/0/0/2")
         self.assertIs(v["value"], True)
         self.assertEqual(v["reason"], "human_other_staff")
+        off = [(h["quantity"], h["how"]) for h in d.basis_names_human]
         self.assertEqual(
-            [(h["quantity"], h["how"]) for h in d.basis_names_human],
+            off,
             # ROADMAP 2.102: `adjudicate_duration` now reads the refusal, so the
             # duration (and the meter voted on it) name it in their basis too
             [(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, "used"),
              (Q.DURATION, "basis"), (Q.METER, "basis")])
+        # ROADMAP 2.300 (flag ON, the default): the OFF list is a subset, and every EXTRA entry is BASIS-only on an event /
+        # head_stem / stem_value / unison_voices verdict; nothing is "used" that was not used with the flag OFF.
+        d1, arm1, _i1 = self.run_review_flag(sidecar, tag="own5-on", flag="1")
+        on = [(h["quantity"], h["how"]) for h in d1.basis_names_human]
+        import collections as _c
+        extra = _c.Counter(on) - _c.Counter(off)
+        self.assertFalse(_c.Counter(off) - _c.Counter(on), "an OFF entry vanished with the flag ON")
+        for (q, how), _n in extra.items():
+            self.assertEqual(how, "basis", "%s is %s with the flag ON: a human row was WEIGHED" % (q, how))
+            self.assertIn(q, ONE_CHORD_BASIS_KINDS)
+        self.assertEqual(sorted(x for x in on if x[1] == "used"), sorted(x for x in off if x[1] == "used"))
+        self.assertEqual(d1.notes_after, d1.notes_before - 1)
         self.assertEqual(d.notes_after, d.notes_before - 1)
 
     def test_an_owner_row_on_a_CONTESTED_glyph_is_still_the_contest_s(self):
@@ -1359,20 +1400,38 @@ class TestAConfirmedBoxIsFiledAndChangesNothing(_Case):
         first cut of this test claimed `reached_nothing` and was wrong, which
         is exactly the distinction `basis` and `used` exist to keep.
         """
-        fb = FB.export_feedback(self.arm["record"], self.ing, self.d,
-                                str(self.dir / "confirm.feedback.json"))
-        entry = fb["actions"]["act-ok"]
-        self.assertEqual(entry["action"]["kind"], "confirm_box")
-        self.assertIsNone(entry["action"]["refused"])
-        self.assertEqual(entry["action"]["subject"], "glyph/0/0/0/0/1")
-        self.assertTrue(entry["human_rows"])
-        self.assertEqual(entry["human_rows"][0]["value"],
-                         "confirmed:noteheadBlackOnLine")
-        named = entry["verdicts_that_named_it"]
-        self.assertEqual(sorted(v["decider"] for v in named),
+        def feedback(d, arm, ing, tag):
+            fb = FB.export_feedback(arm["record"], ing, d, str(self.dir / (tag + ".feedback.json")))
+            entry = fb["actions"]["act-ok"]
+            self.assertEqual(entry["action"]["kind"], "confirm_box")
+            self.assertIsNone(entry["action"]["refused"])
+            self.assertEqual(entry["action"]["subject"], "glyph/0/0/0/0/1")
+            self.assertTrue(entry["human_rows"])
+            self.assertEqual(entry["human_rows"][0]["value"],
+                             "confirmed:noteheadBlackOnLine")
+            return entry["verdicts_that_named_it"]
+
+        # flag OFF: the list is pinned exactly (2.102 added duration and meter)
+        d0, arm0, ing0 = self.run_review_flag(_sidecar(CONFIRM), tag="confirm-off", flag="0")
+        named0 = feedback(d0, arm0, ing0, "confirm-off")
+        self.assertEqual(sorted(v["decider"] for v in named0),
                          ["adjudicate_duration", "adjudicate_meter",
                           "adjudicate_notehead_is_not_a_notehead"])  # 2.102
-        named = [v for v in named
+        # ROADMAP 2.300 (flag ON, the default): `adjudicate_event` reads `Q.HEAD_STEM`, so event / head_stem / stem_value /
+        # unison_voices verdicts name the row in their BASIS. The OFF list is a subset; every extra is basis-only (`in_used` empty);
+        # nothing is used that was not used with the flag OFF.
+        d1, arm1, ing1 = self.run_review_flag(_sidecar(CONFIRM), tag="confirm-on", flag="1")
+        named1 = feedback(d1, arm1, ing1, "confirm-on")
+        import collections as _c
+        extra = _c.Counter(v["decider"] for v in named1) - _c.Counter(v["decider"] for v in named0)
+        self.assertFalse(_c.Counter(v["decider"] for v in named0) - _c.Counter(v["decider"] for v in named1))
+        self.assertTrue(set(extra) <= ONE_CHORD_BASIS_DECIDERS, set(extra) - ONE_CHORD_BASIS_DECIDERS)
+        self.assertEqual(sorted(v["decider"] for v in named1 if v["in_used"]),
+                         sorted(v["decider"] for v in named0 if v["in_used"]))
+        for v in named1:
+            if v["decider"] in extra:
+                self.assertEqual(v["in_used"], [], "the agreement was WEIGHED by " + v["decider"])
+        named = [v for v in named0
                  if v["decider"] == "adjudicate_notehead_is_not_a_notehead"]
         self.assertEqual(named[0]["in_used"], [],
                          "the agreement was WEIGHED — no rule reads "

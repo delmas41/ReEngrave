@@ -160,7 +160,13 @@ SPANNER_FAMILIES = ("arc",)
 #: family (a head, an accidental) is RECORDED (`entry`, a tile), never a refusal: box-against-box is the owner's shape rules' question, and r5's first try
 #: refused a real quarter rest a misdrawn head box had "decided" (Litolff glyph/2/0/8/2/4: the 2.205 tiers put rests last, so a head box's could-fit on a
 #: rest's strokes wins them). Measured, not assumed: r5 re-adjudication, 3 written rests lost, 18 arpeggiatos refused by heads / accidentals.
-FINAL_BOX_CLAIMS = ("whole_rest",)
+#: ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): a stroke the ledger gave to a PAGE HEAD's claim (its oval's own page strokes, read once on the page;
+#: `page_heads.file_one_claims`) is held by this owner name, at the head tier -- unlike a per-cell head BOX, it is final: a later box mostly on it and owning
+#: none of its own ink is refused `claimed_by:earlier_mark` (by `page_head`). Never present with the flag OFF.
+PAGE_HEAD_OWNER = "page_head"
+FINAL_BOX_CLAIMS = ("whole_rest", PAGE_HEAD_OWNER)
+#: the families a page head's claim refuses (owners after the head tier; never a rest -- rests claim before heads, 2.288 -- nor a consumer)
+PAGE_HEAD_FINAL_FOR = ("accidental", "dot", "dynamic", "articulation")
 SPANNER_CLASSES = ("tupletBracket", "tupleBracket", "slur", "tie")
 
 
@@ -181,7 +187,14 @@ def consult(ev: Any, box_row: Any, family: str, *, head: bool = False, tail_read
     e = (((getattr(v, "detail", None) or {}).get("ink_consult") or {}).get("held") or {}).get(key)
     led = None
     cls = str((box_row.value[0] if box_row is not None and isinstance(box_row.value, (list, tuple)) and box_row.value else "") or "")
-    if e and float(e["share"]) >= CF.CUT and not e.get("owns") and e["by"] not in CF.mark_only() and (e.get("area") or e["by"] in FINAL_BOX_CLAIMS) \
+    # a REST is never refused by a page head: rests claim BEFORE heads in the claim order (2.288), so a head box standing on a rest's ink is the head's
+    # error (2.284 r5 measured exactly this on Litolff glyph/2/0/8/2/4, a real quarter rest a misdrawn head box "held"; the 2.290 build met it again)
+    # ... and only the families that OWN ink after the head tier are refused by a page head (an accidental, a dot, a letter, an articulation): a flag /
+    # beam / stem is a consumer that reads unclaimed strokes anyway, and refusing its box by the head next to it changed two Brahms eighths to quarters
+    # (2.290 build r3, p19 19/1/2/8 and 19/0/9/8: the flag box stands mostly on its own note's head)
+    rest_vs_head = (family not in PAGE_HEAD_FINAL_FOR) and e is not None and e.get("by") == PAGE_HEAD_OWNER
+    if e and not rest_vs_head and float(e["share"]) >= CF.CUT and not e.get("owns") and e["by"] not in CF.mark_only() \
+            and (e.get("area") or e["by"] in FINAL_BOX_CLAIMS) \
             and e["by"] not in CF.CONSULTED_ELSEWHERE and family not in SPANNER_FAMILIES and cls not in SPANNER_CLASSES:
         kind = refusal_kind(e["by"], bool(e.get("area")))
         detail = {"ink_consult": {"by": e["by"], "share": e["share"], "cut": CF.CUT, "strokes": e["strokes"], "also": e.get("also") or [],

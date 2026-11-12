@@ -1,0 +1,462 @@
+{
+ "out_dir": "/Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/agent-a22c741543d691b6c/benchmarks/page-heads-ledger-2026-11/real_cases/npz",
+ "plates": {
+  "litolff": {
+   "sp": [
+    10.0,
+    19.0
+   ],
+   "cases": [
+    {
+     "id": "2.290 build r1 #1",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      905.0,
+      1634.0,
+      919.0,
+      1655.0
+     ],
+     "expect": "head",
+     "sean": "a quarter note head",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 1,
+     "members": [
+      "glyph/2/0/8/3/3",
+      "glyph/2/0/8/3/4"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #3",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      2054.2,
+      3472.7,
+      2076.6,
+      3491.6
+     ],
+     "expect": "head",
+     "sean": "an eighth note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 3,
+     "members": [
+      "glyph/2/1/9/10/9"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #4",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      895.0,
+      734.0,
+      911.0,
+      757.0
+     ],
+     "expect": "head",
+     "sean": "a quarter note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 4,
+     "members": [
+      "glyph/2/0/2/3/0",
+      "glyph/2/0/3/3/1"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #5",
+     "plate": "litolff",
+     "page": 8,
+     "box": [
+      2540.0,
+      2433.0,
+      2555.0,
+      2455.0
+     ],
+     "expect": "head",
+     "sean": "a quarter or an eighth note, probably an eighth; flag/beam not visible in the tile",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 5,
+     "members": [
+      "glyph/8/1/3/18/14",
+      "glyph/8/1/3/18/17"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #6",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      1242.0,
+      1781.0,
+      1269.0,
+      1803.0
+     ],
+     "expect": "head",
+     "sean": "most of a half note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 6,
+     "members": [
+      "glyph/2/0/9/6/1",
+      "glyph/2/0/9/6/2"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #8",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      2464.0,
+      2719.0,
+      2489.0,
+      2722.0
+     ],
+     "expect": "not_head",
+     "sean": "a small sliver that just touches part of a half note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 8,
+     "members": [
+      "glyph/2/1/4/14/6"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #9",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      2099.0,
+      3561.0,
+      2115.0,
+      3586.0
+     ],
+     "expect": "not_head",
+     "sean": "half of a quarter note rest",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 9,
+     "members": [
+      "glyph/11/1/10/12/3"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #10",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      2408.0,
+      3322.0,
+      2414.0,
+      3346.0
+     ],
+     "expect": "not_head",
+     "sean": "a long, thin sliver that covers part of a quarter note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 10,
+     "members": [
+      "glyph/11/1/8/15/1",
+      "glyph/11/1/9/15/3",
+      "glyph/11/1/9/15/10"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #11",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      2058.0,
+      3341.0,
+      2077.0,
+      3363.0
+     ],
+     "expect": "head",
+     "sean": "a quarter note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 11,
+     "members": [
+      "glyph/11/1/9/12/2"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #12",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      2488.0,
+      3478.0,
+      2503.0,
+      3489.0
+     ],
+     "expect": "between_heads",
+     "sean": "a small box that lands in between two half notes, a third apart on the same beat",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 12,
+     "members": [
+      "glyph/2/1/9/14/2",
+      "glyph/2/1/9/14/8",
+      "glyph/2/1/9/14/9"
+     ]
+    },
+    {
+     "id": "2.290 build r2 #1",
+     "plate": "litolff",
+     "page": 8,
+     "box": [
+      1853.0,
+      2083.0,
+      1880.0,
+      2096.0
+     ],
+     "expect": "head",
+     "sean": "box a little small; a half note UNISON with stems going in both directions",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 1,
+     "glyph": "glyph/8/1/1/14/4"
+    },
+    {
+     "id": "2.290 build r2 #2",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      1877.0,
+      1350.0,
+      1903.0,
+      1370.0
+     ],
+     "expect": "head",
+     "sean": "a half note; the box is a little off, not the whole head",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 2,
+     "glyph": "glyph/11/0/6/12/4"
+    },
+    {
+     "id": "2.290 build r2 #5",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      1170.0,
+      757.0,
+      1187.0,
+      781.0
+     ],
+     "expect": "head",
+     "sean": "a half note unison, stems in both directions",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 5,
+     "glyph": "glyph/11/0/2/6/2"
+    },
+    {
+     "id": "2.290 build r2 #6",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      2105.0,
+      2702.0,
+      2118.0,
+      2718.0
+     ],
+     "expect": "head",
+     "sean": "a half note; the box is a tiny bit small",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 6,
+     "glyph": "glyph/2/1/4/11/2"
+    },
+    {
+     "id": "2.290 build r2 #7",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      1521.0,
+      2402.0,
+      1544.0,
+      2407.0
+     ],
+     "expect": "not_head",
+     "sean": "a sliver on the bottom of a half note, very little of the note",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 7,
+     "glyph": "glyph/11/1/3/8/5"
+    },
+    {
+     "id": "2.290 build r2 #8",
+     "plate": "litolff",
+     "page": 2,
+     "box": [
+      1957.0,
+      1647.0,
+      1983.0,
+      1675.0
+     ],
+     "expect": "head",
+     "sean": "a quarter note",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 8,
+     "glyph": "glyph/2/0/8/12/0"
+    },
+    {
+     "id": "2.290 build r2 #11",
+     "plate": "litolff",
+     "page": 11,
+     "box": [
+      524.0,
+      1848.0,
+      548.0,
+      1873.0
+     ],
+     "expect": "head",
+     "sean": "a quarter",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 11,
+     "glyph": "glyph/11/1/0/0/4"
+    }
+   ]
+  },
+  "brahms": {
+   "sp": [
+    19.0,
+    45.0
+   ],
+   "cases": [
+    {
+     "id": "2.290 build r1 #2",
+     "plate": "brahms",
+     "page": 14,
+     "box": [
+      978.0,
+      2243.0,
+      1009.0,
+      2279.0
+     ],
+     "expect": "head",
+     "sean": "a quarter note head",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 2,
+     "members": [
+      "glyph/14/0/7/0/2"
+     ]
+    },
+    {
+     "id": "2.290 build r1 #7",
+     "plate": "brahms",
+     "page": 19,
+     "box": [
+      3900.0,
+      1729.0,
+      3938.0,
+      1755.0
+     ],
+     "expect": "head",
+     "sean": "an eighth note",
+     "kind": "notehead",
+     "lane": "2.290 build r1",
+     "tile": 7,
+     "members": [
+      "glyph/19/0/5/6/20",
+      "glyph/19/0/5/6/25"
+     ]
+    },
+    {
+     "id": "2.290 build r2 #3",
+     "plate": "brahms",
+     "page": 19,
+     "box": [
+      2038.0,
+      6662.0,
+      2074.0,
+      6703.0
+     ],
+     "expect": "head",
+     "sean": "a dotted quarter",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 3,
+     "glyph": "glyph/19/1/11/2/10"
+    },
+    {
+     "id": "2.290 build r2 #4",
+     "plate": "brahms",
+     "page": 14,
+     "box": [
+      4928.0,
+      1203.0,
+      4942.0,
+      1218.0
+     ],
+     "expect": "not_head",
+     "sean": "an augmentation dot, but it looks like it is on the system below",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 4,
+     "glyph": "glyph/14/0/2/8/2"
+    },
+    {
+     "id": "2.290 build r2 #9",
+     "plate": "brahms",
+     "page": 19,
+     "box": [
+      949.0,
+      406.0,
+      987.0,
+      447.0
+     ],
+     "expect": "head",
+     "sean": "a dotted quarter",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 9,
+     "glyph": "glyph/19/0/0/0/1"
+    },
+    {
+     "id": "2.290 build r2 #10",
+     "plate": "brahms",
+     "page": 14,
+     "box": [
+      5328.0,
+      4455.0,
+      5343.0,
+      4476.0
+     ],
+     "expect": "not_head",
+     "sean": "an augmentation dot",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 10,
+     "glyph": "glyph/14/1/1/8/6"
+    },
+    {
+     "id": "2.290 build r2 #12",
+     "plate": "brahms",
+     "page": 19,
+     "box": [
+      1406.0,
+      6902.0,
+      1446.0,
+      6943.0
+     ],
+     "expect": "head",
+     "sean": "looks like a quarter note, but maybe it belongs to the system below",
+     "kind": "notehead",
+     "lane": "2.290 build r2",
+     "tile": 12,
+     "glyph": "glyph/19/1/11/1/3"
+    }
+   ]
+  }
+ }
+}

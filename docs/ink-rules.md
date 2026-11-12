@@ -6,11 +6,11 @@
 
 ## Summary
 
-1. **552 rule exits** are sorted (595 declared reasons on 63 decisions, less 67 positive exits and 63 stubs, plus 28 EVALUATE/INFER/post-pass rules and 59 guard modules): **179 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **171 OTHER** (D), **78 UNSURE** (U).
+1. **553 rule exits** are sorted (593 declared reasons on 62 decisions, less 65 positive exits and 62 stubs, plus 28 EVALUATE/INFER/post-pass rules and 59 guard modules): **180 CONVENTION** (A), **10 ERASURE** (B), **114 DOUBLE-COUNT** (C), **170 OTHER** (D), **79 UNSURE** (U).
 2. **Fires** (Litolff / Brahms verdicts, all stages): CONVENTION 48,267 / 110,992; ERASURE 695 / 3,759; DOUBLE-COUNT 7,466 / 24,163; OTHER 51,123 / 127,468; UNSURE 5,717 / 22,664. A fire is a verdict, not a note lost: most OTHER fires are bookkeeping ("nothing to decide here").
 3. **The conventions the new path must carry** are the A rows below. The ones that fire most: an arc belongs to the staff whose heads it hugs (17,458), a chord is one onset (11,753), the ledger lines name the owner (11,452), voices follow the bar (11,023), augmentation right of the head, staccato above or below (10,012), a ledger line stands outside the staff (7,391), ledgers not read: abstain and count (6,924).
 4. **The workarounds that fire most** (B, C): the neighbour staff's padded crop boxed this note [C] (5,019), no ink left under a narrow box [B] (2,830), accidental box absorbed into its stronger twin [C] (1,404), same head boxed twice [C] (1,002), same rest boxed twice [C] (888), stem's beam level not read [B] (887).
-5. **78 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
+5. **79 rules are UNSURE** (section at the end): I would not guess a kind for them. Not enumerated one by one: the GATHER ink readers in `gather.py` (15k lines; the ~22 that read the erased raster are listed in 2.206 FINDINGS s2, the ~500 that re-measure ink in the 2.194 plan), the detector, and EXPORT.
 
 **How to read a row.** *kind*: A convention (keep) / B erasure workaround (retires with 2.206, the staff-eraser fix) / C double-count workaround (retires with 2.205 stroke ownership, or landed with 2.186 one-ink-one-mark / 2.201 accidental family) / D other (the sub-kind says what: honesty = a rule-8 "cannot tell" exit; bookkeeping = nothing to decide here; passthrough = an earlier refusal handed on; cutoff = a number measured on our two plates, which may only NARROW; lookup = catalog/roster/lexicon; infer = INFER, always blue) / U unsure. *code* is `decision function`: `reason, reason` (the module is in the heading). *fires* is Litolff / Brahms. *fate*: kept / retires with 2.206 / retires with 2.205 / landed (2.186-2.201) / open. A fate that says "measure after the fix" is a prediction from the cause, not a measurement: the rule is retired only when the three measures say so.
 
@@ -88,6 +88,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_notehead_i
 |---|---|---|---|---|---|---|---|
 | head with no stem found | U | Heads with no stem found are common (see fires). 2.167 found 33 of 40 sampled 'no stem' real notes had a stem the finder refused (C: a false rest/flag box ate it; B: stem cut at a staff line on the erased raster; A: a whole note has none) | `adjudicate_head_stem` (stem_value): `no_stem` | 2,307 / 7,209 | 1,064 / 2,035 | Sean 2026-10-18 (2.167); 2.169 landed | open: mixed A / B / C; 2.204 stems-from-strokes waits for 2.205 |
 | a head with a stem each way is two notes | A | a head carrying one stem up and one down is two voices on one head | `adjudicate_head_stem` (stem_value): `unison_two_voices`, `two_stems` | 684 / 299 | 282 / 72 | Sean 2026-10-19 (2.175), convention assumed | kept |
+| the other head of a second stands on the same stem | A | a head no stem touches, beside a head that does, a step off and one head width over, with the stem between them, is on that stem (flag OMR_ONE_CHORD_ONE_EVENT, default OFF) | `adjudicate_head_stem` (stem_value): `stem_of_a_second` | 0 / 0 | 0 / 0 | page-facts: every note on one stem shares one written value; Sean 2026-11-10 (2.291 tile 7: two half notes a second apart), convention assumed | new: OFF |
 | no evidence | D:honesty | - | `adjudicate_head_stem` (stem_value): `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | no stem / no heads read | D:honesty | the cell has strokes and no head box, or no stem: says nothing | `adjudicate_stem_head_contact` (stem_value): `no_heads_read`, `no_stem` | 1,606 / 1,551 | 802 / 434 | CLAUDE rule 8 | kept |
 | no stem found | D:passthrough | passes on the head_stem refusal | `adjudicate_stem_direction` (rhythm): `no_stem` | 1,843 / 5,520 | 862 / 1,519 | - | follows head_stem |
@@ -197,12 +198,11 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_clef`: `sc
 | an arc belongs to the staff whose heads it hugs | A | an arc is over its notes, and the staff it hugs owns it | `adjudicate_arc_owner` (ownership): `hugs_noteheads`, `no_better_staff`, `no_rival_staff`, `ends_on_noteheads` | 2,644 / 14,814 | 1,330 / 4,630 | page-facts s1; ROADMAP arc attribution | kept |
 | - | D:honesty | - | `adjudicate_arc_owner` (ownership): `no_page_frame`, `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a tie joins adjacent same-pitch heads | A | nothing between the heads in time, same staff position | `adjudicate_tie_pair` (ownership): `more_than_one_pair`, `no_start_head`, `no_stop_head`, `no_head_near_the_arc`, `spans_a_whole_bar`, `no_pair_at_one_position`, `not_adjacent` | 528 / 1,973 | 275 / 605 | Sean 2026-10-01 (page-facts s1) | kept |
-| no run a detector box agrees with | D:honesty | a run with no witnessing box is not written in step 2 | `adjudicate_page_arc_binding` (ownership): `no_witnessed_run` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 | a tie may cross a system break | A | the other end is on the next / previous system | `adjudicate_tie_pair` (ownership): `enters_from_previous_system`, `runs_off_the_system` | 104 / 378 | 48 / 102 | page-facts s1 | kept |
 | arc is a slur or not an arc | D:bookkeeping | the domain is every arc (`not_an_arc` includes staff-line boxes) | `adjudicate_tie_pair` (ownership): `not_a_tie`, `not_an_arc` | 1,529 / 10,477 | 742 / 3,386 | - | kept |
 | - | D:honesty | - | `adjudicate_tie_pair` (ownership): `no_page_frame`, `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
 
-Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not_an_arc`: `arc` (2,141 / 6,864); `adjudicate_arc_kind`: `tie`, `slur` (2,637 / 14,761); `adjudicate_tie_pair`: `paired`, `paired_by_system_arc`, `paired_by_page_binding` (483 / 1,986); `adjudicate_page_arc_binding`: `bound`, `none_bound` (0 / 0).
+Positive exits (the rule answered; not counted as rules): `adjudicate_arc_is_not_an_arc`: `arc` (2,141 / 6,864); `adjudicate_arc_kind`: `tie`, `slur` (2,637 / 14,761); `adjudicate_tie_pair`: `paired`, `paired_by_system_arc`, `paired_by_page_binding` (483 / 1,986).
 
 ## Dots
 
@@ -273,6 +273,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_staff_ordi
 | rule | kind | plain meaning | code | fires L / B (10-22 whole) | fresh L / B (sample) | evidence | fate |
 |---|---|---|---|---|---|---|---|
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_rest_is_not_a_rest` (family_precision): `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `whole_rest_hangs`, `rest_owner_refused`, `rest_holds_a_stem` | 0 / 0 | 58 / 20 | - | open |
+| NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_key_signature` (header): `key_slots` | 0 / 0 | 0 / 0 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_notehead_is_not_a_notehead` (notehead_precision): `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `claimed_by:whole_rest`, `stem_end_ink_claimed`, `stem_end_ink_unladdered`, `stem_end_ink_only`, `stem_end_ink_disagrees`, `owner_refused` | 0 / 0 | 58 / 74 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_accidental_owner` (ownership): `owner_refused` | 0 / 0 | 0 / 0 | - | open |
 | NOT YET CLASSIFIED | U | the code declares this exit and rule_kinds.py does not name it | `adjudicate_arc_kind` (ownership): `arc_ends_unread` | 0 / 0 | 0 / 0 | - | open |
@@ -351,16 +352,16 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `head_oval.py` | C | does a notehead box hold a head-shaped oval? (boxes at a bar's left edge were tie ends or barlines) | Sean 2026-10-17 (2.164) | retires with 2.205 |
 | `ink_attachment.py` | U | NOT YET CLASSIFIED | - | open |
 | `key_header_ink.py` | U | NOT YET CLASSIFIED | - | open |
+| `key_kind_slots.py` | U | NOT YET CLASSIFIED | - | open |
 | `key_object.py` | C | the printed key signature measured as ONE system object | ROADMAP 2.187 | retires with 2.205 |
 | `letter_look.py` | D:gather | reads dynamic letters the detector never boxed (second look at head/rest ink) | Sean 2026-10-13 ("sf ... it is letters") | kept |
 | `margins.py` | D:honesty | every threshold refusal records how close it came | Sean 2026-10-12 (inference principles) | kept |
 | `meter_object.py` | C | the printed meter measured as ONE object (two digits blocked out together) | Sean 2026-10-20 (2.177) | retires with 2.205 |
 | `movements.py` | A | a meter or key carry never crosses a movement boundary | ROADMAP 4.2 | kept |
+| `one_chord.py` | U | NOT YET CLASSIFIED | - | open |
 | `one_ink.py` | C | ONE INK, ONE MARK: two classes of one family on one ink merge, the stronger stays, the weaker is a candidate | Sean 2026-10-22, 2.186 tiles 6/9 vs 1/9 | landed 2.186 |
 | `one_note.py` | D:infer | the one-note correction: a bar holding one event takes the value that fills it (blue) | Sean 2026-10-17/18 (CLAUDE s4 exceptions) | kept |
 | `page_accidental_ink.py` | U | NOT YET CLASSIFIED | - | open |
-| `page_arc_bind.py` | U | NOT YET CLASSIFIED | - | open |
-| `page_arcs.py` | U | NOT YET CLASSIFIED | - | open |
 | `page_beams.py` | C | the page beam reader: roles, joined stems and tip levels of the PAGE stroke map's strokes (beam_strokes cut-offs, no raster), each beam read once and filed once; records, decides nothing | Sean 2026-11-04 (2.260c M4a) | open: M4b-d read it |
 | `page_claim_names.py` | A | CLAUDE s3 claim order: every page-wide claim (barline, bracket, clef, key, meter, word, hairpin) names the PAGE strokes it owns, once, first claim wins, so a later reader on the page map takes none of their ink; the register's own predicates on page-stroke boxes, no raster | Sean 2026-10-28/29 (claim order), 2026-11-04 (2.269 "read and claim once") | open: page_beams reads it; M4b-d |
 | `page_heads.py` | U | NOT YET CLASSIFIED | - | open |
@@ -401,6 +402,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **rest flush against the crop edge** (`adjudicate_rest_is_not_a_rest`: `rest_clipped_by_crop`; fires 81 / 568): a notehead sliced by the cell's crop edge reads as a rest. Fate: open: C if neighbour-staff bleed, A if only a crop edge.
 - **an arc box that is a staff line or a barline** (`adjudicate_arc_is_not_an_arc`: `ink_is_a_staff_line`, `ink_is_a_barline`; fires 502 / 7,944): a box with no curved ink and a staff line through it is a staff line; a narrow tall one is a barline. C if 2.205 makes lines and barlines owners of their strokes; otherwise a plain detector false positive (D). Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_rest_is_not_a_rest`: `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `whole_rest_hangs`, `rest_owner_refused`, `rest_holds_a_stem`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
+- **NOT YET CLASSIFIED** (`adjudicate_key_signature`: `key_slots`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_notehead_is_not_a_notehead`: `claimed_by:word`, `claimed_by:bracket`, `claim_narrowed:word`, `claim_narrowed:bracket`, `claimed_by:whole_rest`, `stem_end_ink_claimed`, `stem_end_ink_unladdered`, `stem_end_ink_only`, `stem_end_ink_disagrees`, `owner_refused`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_accidental_owner`: `owner_refused`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
 - **NOT YET CLASSIFIED** (`adjudicate_arc_kind`: `arc_ends_unread`; fires 0 / 0): the code declares this exit and rule_kinds.py does not name it. Fate: open.
@@ -424,9 +426,9 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`head_ink.py`**: not classified.
 - **`ink_attachment.py`**: not classified.
 - **`key_header_ink.py`**: not classified.
+- **`key_kind_slots.py`**: not classified.
+- **`one_chord.py`**: not classified.
 - **`page_accidental_ink.py`**: not classified.
-- **`page_arc_bind.py`**: not classified.
-- **`page_arcs.py`**: not classified.
 - **`page_heads.py`**: not classified.
 - **`page_ledger.py`**: not classified.
 - **`page_tremolo.py`**: not classified.

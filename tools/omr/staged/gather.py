@@ -2625,10 +2625,13 @@ def cluster_marks(items: Sequence[Dict[str, Any]]) -> List[List[int]]:
                   key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
 
 
-def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
-    """One `Q.MARK_GROUP` row per item. Returns the number of groups."""
+def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]], groups: Optional[List[List[int]]] = None,
+                      extra_of: Optional[Dict[str, Dict[str, Any]]] = None) -> int:
+    """One `Q.MARK_GROUP` row per item. Returns the number of groups. `groups` (ROADMAP 2.290, flag `OMR_PAGE_HEAD_ONE`): the partition when it is
+    not `cluster_marks(items)`'s; `extra_of`: per item key, detail fields to add (the page head's `identity`)."""
     seq: Dict[Tuple[int, int], int] = {}
-    groups = cluster_marks(items)
+    if groups is None:
+        groups = cluster_marks(items)
     for g in groups:
         scope = items[g[0]]["scope"]
         n = seq[scope] = seq.get(scope, -1) + 1
@@ -2642,6 +2645,8 @@ def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
             extra: Dict[str, Any] = {}
             if len(g) > 1:
                 extra["members"] = [items[j]["key"] for j in g]
+            if extra_of and it["key"] in extra_of:
+                extra.update(extra_of[it["key"]])
             glyph = R.glyph(*it["coords"])
             log.observe(glyph, Q.MARK_GROUP, gid,
                         reader=READERS.GEOMETRY, frame=it["frame"],
@@ -2652,7 +2657,8 @@ def _file_mark_groups(log: Log, items: Sequence[Dict[str, Any]]) -> int:
 
 def gather_mark_groups(log: Log, cells: Sequence[Any],
                        local: Dict[int, Tuple[int, int]],
-                       detections: Dict[str, List[Any]]) -> int:
+                       detections: Dict[str, List[Any]],
+                       page_heads: Any = None) -> int:
     """ROADMAP 2.58b: file the physical-mark identity of every notehead, rest
     and accidental box of a page (`OMR_MARK_GROUPS`, default ON since 2026-11-02).
 
@@ -2688,7 +2694,24 @@ def gather_mark_groups(log: Log, cells: Sequence[Any],
                           "conf": float(d.confidence),
                           "frame": frame_cell(sub.cell),
                           "tall_read": bool(getattr(d, _box_kind.TALL_READ_ATTR, False))})
-    return _file_mark_groups(log, items)
+    # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE): the notehead groups ARE the page heads (`page_heads.read_one`: one identity from the ink); the other
+    # families keep `cluster_marks`. With the flag OFF `page_heads` is None and this is the 2.58b grouping exactly.
+    from . import page_heads as _ph
+    part = _ph.mark_group_partition(page_heads)
+    if part is None:
+        return _file_mark_groups(log, items)
+    head_group, head_how = part
+    groups = cluster_marks([dict(it, category=it["category"] if it["key"] not in head_group else "__page_head__") for it in items])
+    groups = [g for g in groups if items[g[0]]["key"] not in head_group]
+    by_head: Dict[int, List[int]] = {}
+    for i, it in enumerate(items):
+        if it["key"] in head_group:
+            by_head.setdefault(head_group[it["key"]], []).append(i)
+    # a notehead box the page head list does not hold (its cell had no page box) keeps the 2.58b grouping above
+    groups += [sorted(g) for g in by_head.values()]
+    groups.sort(key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
+    extra_of = _ph.mark_group_detail(page_heads)
+    return _file_mark_groups(log, items, groups=groups, extra_of=extra_of)
 
 
 def mark_groups_from_log(log: Log) -> int:
@@ -16411,7 +16434,92 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
         for a in areas:
             _file(sys_idx, a, CL.OWNER_WORD, source, inside_staff=(why != "outside_staff"), **extra)
 
+    # ROADMAP 2.296 (flag OMR_DYNAMIC_OWN_CLAIM, default ON): a marking the word reader read whole (`f legato`, `p dolce`, `piu p`) is two marks, the word and
+    # the dynamic it holds (`consequences.pair_word_and_dynamic` writes them as two kinds). The word's claim stops at the dynamic's own ink and the
+    # dynamic claims its own, READ, on this same page-wide pass -- the word never owns a dynamic's letters (Sean 2026-11-11: a printed dynamic is one mark).
+    dyn_own = bool(words_on and ledger_on and CL.dynamic_own_enabled())
+    letter_of_key: Dict[str, Tuple[Sequence[float], str, Any]] = {}
+    key_of_letter_row: Dict[Any, str] = {}
+    compound_rows: set = set()            # the detector letter rows a split marking holds: its own, not a lone / spelled dynamic's (the loop below skips them)
+
+    def _file_compound(r: Any, d: Dict[str, Any], bb: Sequence[float], s: int) -> bool:
+        """Split ONE marking into the word's claim and the dynamic's claim(s); True when it did, False (counted, why) when the marking is left as one word claim."""
+        import numpy as np
+        from . import hairpin_reach as _hr
+        inc = [letter_of_key[k] for k in (d.get("includes_dynamic_glyphs") or ()) if k in letter_of_key]
+        got = CL.compound_dynamic_slots(str(r.value), d.get("dynamics") or (), inc)
+        if got["why"] is not None:
+            _count(f"word:direction_word:compound_not_split:{got['why']}")
+            return False
+        area = [float(v) for v in bb]
+        for sl in got["slots"]:         # the dynamic's own claim is its ink, not the detector's tight box (a `p` descender past it would be nobody's)
+            sl["claim_box"] = CL.grow_to_ink(binary, sl["box"], _sp(s))
+        # the split must keep every dark pixel of the marking claimed ONCE (north star): never split where a note mark's box meets the dynamic's ink (the dynamic's own
+        # claim spares note boxes, so that ink would be nobody's), and never where a component joins the dynamic to the word beyond the dynamic's claim
+        note_boxes = [b for b, _n in _page_boxes(s, lambda n: n.startswith(DYNAMIC_SPARES))]
+        if any(CL.overlaps(sl["claim_box"], nb) for sl in got["slots"] for nb in note_boxes):
+            _count("word:direction_word:compound_not_split:a_note_mark_meets_the_dynamic")
+            return False
+        pieces, spared = _hr.word_area_sparing_heads(binary, area, [sl["claim_box"] for sl in got["slots"]], _sp(s))
+        if CL.word_ink_enabled():
+            # ROADMAP 2.301 (flag OMR_WORD_OWNS_ITS_INK): the word owns its letters WHOLE -- a letter standing on the edge of the OCR box (the `g` of `legato`, whose stroke box lies 0.5 px past
+            # the box +1 px) is the word's, not the stroke the detector's `dynamicF` box on that `g` settles as a dynamic; never ink a note mark, an earlier claim or the marking's own dynamic holds
+            keep_out = [list(b) for b in note_boxes] + [list(f) for f in filed] + [list(sl["claim_box"]) for sl in got["slots"]]
+            edge = [e for a in pieces for e in CL.edge_ink_boxes(binary, a, _sp(s), keep_out)]
+            if edge:
+                _count("word:direction_word:compound_edge_letters")
+            pieces = list(pieces) + edge
+        ax0, ay0, ax1, ay1 = (max(0, int(round(v))) for v in area)
+        crop = binary[ay0:ay1, ax0:ax1] == 0
+        if crop.size:
+            held = np.zeros(crop.shape, bool)
+            for r_ in list(pieces) + [sl["claim_box"] for sl in got["slots"]]:
+                rx0, ry0 = max(0, int(r_[0]) - ax0), max(0, int(r_[1]) - ay0)
+                rx1, ry1 = min(crop.shape[1], int(np.ceil(r_[2])) - ax0), min(crop.shape[0], int(np.ceil(r_[3])) - ay0)
+                if rx1 > rx0 and ry1 > ry0:
+                    held[ry0:ry1, rx0:rx1] = True
+            if (crop & ~held).any():
+                _count("word:direction_word:compound_not_split:ink_would_be_nobodys")
+                return False
+        inside_staff = CL.band_share(area, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
+        base: Dict[str, Any] = dict(owner_row=r.id, text=r.value, category=d.get("category"))
+        if spared:
+            base["dynamic_left_out"] = spared
+            base["word_box"] = area
+        _count("word:direction_word:compound_split")
+        if not pieces:
+            _count("word:direction_word:compound_all_ink_is_the_dynamic")
+        for a in pieces:
+            if inside_staff:
+                _file_sparing(s, a, "direction_word", "inside_a_staff", **base)
+                continue
+            areas2, wedges = [a], []
+            if _hr.enabled():
+                areas2, wedges = _hr.word_area_without_wedges(binary, a, _sp(s))
+            ex = dict(base)
+            if wedges:
+                ex["wedges_left_out"] = wedges
+                ex.setdefault("word_box", area)
+            for a2 in areas2:
+                _file(s, a2, CL.OWNER_WORD, "direction_word", **ex)
+        for sl in got["slots"]:
+            sl_inside = CL.band_share(sl["box"], bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX
+            _count("word:dynamic_letters:compound_dynamic")
+            _file_sparing(s, sl["claim_box"], "dynamic_letters", "lone_inside_a_staff" if sl_inside else "outside_staff",
+                          own=[key_of_letter_row[i] for i in sl["rows"] if i in key_of_letter_row], owner_row=sl["rows"][0],
+                          letter_rows=list(sl["rows"]), text=None, detector_letter=sl["text"], detector_letters=list(sl["letters"]), dynamic_token=sl["text"],
+                          category="dynamic", lone=True, compound_of=r.id)
+        compound_rows.update(got["rows"])
+        return True
+
     if words_on:
+        if dyn_own:
+            for lr in log.rows(Q.DYNAMIC_LETTER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                ld = lr.detail or {}
+                lbb, lletter = ld.get("bbox_page_px"), ld.get("letter")
+                if isinstance(lbb, (list, tuple)) and len(lbb) == 4 and lletter:
+                    letter_of_key[lr.subject.to_key()] = (lbb, str(lletter), lr.id)
+                    key_of_letter_row[lr.id] = lr.subject.to_key()
         for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
             d = r.detail or {}
             bb = d.get("bbox_page_px")
@@ -16422,6 +16530,12 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             if s is None:
                 _count("word:direction_word:no_system")
                 continue
+            if dyn_own and d.get("dynamics") and d.get("category") != "tempo":
+                from . import hairpin_reach as _hr0
+                if d.get("ink_boxes") or (_hr0.word_retry_spares_heads_enabled() and _hr0.is_retry_only_reading(d.get("winning_reader"))):
+                    _count("word:direction_word:compound_not_split:other_ink_cut")
+                elif _file_compound(r, d, bb, s):
+                    continue
             if CL.band_share(bb, bands_by_sys[s]) > CL.WORD_BAND_OVERLAP_MAX:
                 if ledger_on:
                     # ROADMAP 2.284b: a READ word inside the staff (Sean 2026-10-28: "almost always short" -- a dynamic, `pizz.`, `dolce`)
@@ -16511,16 +16625,83 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
             bb, letter = d.get("bbox_page_px"), d.get("letter")
             if not (isinstance(bb, (list, tuple)) and len(bb) == 4 and letter):
                 continue
+            if r.id in compound_rows:
+                continue                    # ROADMAP 2.296: a split marking's letter -- the dynamic's own claim is filed, the rest are the word's
             s = _system_of(bb)
             if s is None:
                 continue
             letters_by_sys.setdefault(s, []).append((bb, str(letter), r.id))
             key_of_row[r.id] = r.subject.to_key()
+        letters_of_word_on = bool(dyn_own and ledger_on and CL.letters_are_the_word_enabled())
+        letter_box_of_row: Dict[Any, List[float]] = {}
+        sides_of_key: Dict[str, Any] = {}
+        read_words_by_sys: Dict[int, List[Dict[str, Any]]] = {}
+        if letters_of_word_on:
+            for r in log.rows(Q.DYNAMIC_LETTER, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                bb = (r.detail or {}).get("bbox_page_px")
+                if isinstance(bb, (list, tuple)) and len(bb) == 4:
+                    letter_box_of_row[r.id] = [float(v) for v in bb]
+            for r in log.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                sides_of_key[r.subject.to_key()] = r.value
+            for r in log.rows(Q.DIRECTION_WORD, page_sub, scope=R.Scope.SELF_AND_DESCENDANTS):
+                wd = r.detail or {}
+                wb = wd.get("bbox_page_px")
+                ws = _system_of(wb) if isinstance(wb, (list, tuple)) and len(wb) == 4 else None
+                if isinstance(r.value, str) and ws is not None:
+                    read_words_by_sys.setdefault(ws, []).append(dict(row=r.id, text=r.value, box=[float(v) for v in wb], category=wd.get("category")))
+
+        def _letters_of_a_read_word(s_: int, run_: Dict[str, Any], box_of_row: Dict[Any, List[float]], sides: Dict[str, Any], key_of: Dict[Any, str]) -> Optional[Dict[str, Any]]:
+            """The READ word (system `s_`) whose letters `run_` are, or None. EVERY word holding the run must say so (two readings of one ink: if one calls it a dynamic, nothing changes)."""
+            boxes = [box_of_row[i] for i in run_["rows"] if i in box_of_row]
+            if not boxes or len(boxes) != len(run_["rows"]):
+                return None
+            near = False
+            for i in run_["rows"]:
+                sd = sides.get(key_of.get(i, ""))
+                near = near or (isinstance(sd, dict) and bool(sd.get("left") or sd.get("right")))
+            holding = [w for w in read_words_by_sys.get(s_, ()) if CL.overlaps(run_["box"], w["box"])]
+            if not holding:
+                return None
+            for w in holding:
+                if CL.letters_of_the_word(boxes, w["box"], w["text"], near) is None:
+                    return None
+            return holding[0]
+
+        def _uncovered_ink(box: Sequence[float]) -> bool:
+            """Is there dark ink in `box` that no READ word claim filed so far holds?  (the run's own letters are not a claim yet)"""
+            import numpy as np
+            x0, y0, x1, y1 = (max(0, int(round(v))) for v in box)
+            crop = binary[y0:y1, x0:x1] == 0
+            if not crop.size:
+                return False
+            held = np.zeros(crop.shape, bool)
+            for f in filed:
+                fx0, fy0 = max(0, int(f[0]) - x0), max(0, int(f[1]) - y0)
+                fx1, fy1 = min(crop.shape[1], int(np.ceil(f[2])) - x0), min(crop.shape[0], int(np.ceil(f[3])) - y0)
+                if fx1 > fx0 and fy1 > fy0:
+                    held[fy0:fy1, fx0:fx1] = True
+            return bool((crop & ~held).any())
+
         for s, letters in sorted(letters_by_sys.items()):
             sp = sp_by_sys.get(s)
             if not sp:
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
+                if letters_of_word_on:
+                    # ROADMAP 2.303 (flag OMR_LETTERS_ARE_THE_WORD, default ON; Sean 2026-11-11, Litolff p8 `sempre`: "it boxes MP, but it's actually a part of the word"): letters
+                    # inside a word the lexicon READ, at a spot its text gives to a word and not to a dynamic token, with letter ink beside them, are the word's -- no dynamic claim.
+                    # A word that is not a read word (the OCR refused it) or a spot that cannot be told changes nothing.
+                    lw = _letters_of_a_read_word(s, run, letter_box_of_row, sides_of_key, key_of_row)
+                    if lw is not None:
+                        _count("word:dynamic_letters:letters_of_a_word")
+                        if run["read"] and _uncovered_ink(run["box"]):
+                            # the word's own claim does not hold the ink of a run OFF would have claimed as a dynamic (cut round a hairpin, a note mark): the letters' own box is filed as the
+                            # WORD's, source `direction_word`, so the ink stays claimed once (north star). A run that was never a READ dynamic (a lone letter, an unspelled slot: OFF claimed
+                            # nothing for it either) files nothing: the 2.303 r1 look at claims ON added showed a barline's 8 x 13 px stub boxed as a letter taking the word's name.
+                            _count("word:dynamic_letters:letters_of_a_word_claimed")
+                            _file_sparing(s, run["box"], "direction_word", "letters_of_a_word", own=[key_of_row[i] for i in run["rows"]], owner_row=lw["row"],
+                                          text=lw["text"], category=lw["category"], letters_of_word=True, letter_rows=list(run["rows"]))
+                        continue
                 if not run["read"] and run["why"] in ("lone_letter", "wide_letter_box"):
                     # LONE LETTER (ROADMAP 2.221 word coverage; Brahms p0: 15 of 20 are that dynamic, 12 of 13 at detector score >= 0.8):
                     # the detector's word alone is not a READ, so its own box is claimed GUESSED (blue, `standing != READ` refuses nothing, a
@@ -17933,10 +18114,15 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.198 (same flag): each detector box linked to the strokes it covers. The box set is final here (every pass has run), so
         # it sits right after the map; it files rows only and decides nothing.
         gather_glyph_strokes(log, cells, local, detections, stroke_cells, progress=progress)
+        # ROADMAP 2.290 (flag OMR_PAGE_HEAD_ONE, default ON since the landing flip): every notehead box's head read ONCE from the page ink -- the one identity of a head (filed below as
+        # the notehead `Q.MARK_GROUP` and head `Q.PAGE_MARK` ids) and the page strokes of its oval (claimed after the accidental ink). AFTER the final box set, the
+        # page map and the glyph strokes; BEFORE `page_marks` and `gather_mark_groups`. Reads only. None with the flag OFF.
+        from . import page_heads as _page_heads
+        _one_heads = _page_heads.gather_one_heads(pws, cells, local, detections, page_map_pre, progress=progress)
         # ROADMAP 2.240 step 1 (flag OMR_PAGE_MARKS, default ON since 2026-11-02): one page-mark id per detector box -- boxes of one family from two padded
         # cells on the same page ink are one mark. The box set is final and the stroke map is built; files rows only, nothing reads them.
         from . import page_marks as _page_marks
-        page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress)
+        page_marks_of_page = _page_marks.gather_page_marks(log, pws, cells, local, detections, stroke_cells, progress=progress, page_heads=_one_heads)
         # ROADMAP 2.260a M2 (flag OMR_PAGE_STROKES, default ON): the PAGE stroke map, assembled from each staff's erased band + the page raster, the tilted
         # barline columns (M1) carved out first. Files `Q.PAGE_STROKE` rows only; nothing reads them.
         if not _page_strokes.claims_on():
@@ -17964,7 +18150,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ⚠️ ROADMAP 2.58b, BEFORE EVERY READER THAT COULD USE THE IDENTITY and
         # after the last thing that changes the box set (the rescue above).
         # A grouping over the detector's page boxes; flag-gated inside.
-        gather_mark_groups(log, cells, local, detections)
+        gather_mark_groups(log, cells, local, detections, page_heads=_one_heads)
         gather_notehead_recentre(log, cells, local, detections)
         # ⚠️ ROADMAP 2.73, AFTER detection and the rescue (it walks `detections`
         # by index) and BEFORE `gather_notehead_positions` and
@@ -17973,7 +18159,6 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS, default OFF): every head read ONCE on the page map (twin boxes folded, ink = the page strokes the box stands on,
         # position from the ink against the head's own bar). AFTER the final box set and the page map, BEFORE the cell position / far-head reads (M6b drives the
         # far-head job list from it). Reads only; `file_page_heads` files it after the page-wide claim names.
-        from . import page_heads as _page_heads
         _page_head_list = _page_heads.gather_page_heads(log, pws, cells, local, detections, page_map_pre, progress=progress)
         gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
@@ -18145,6 +18330,9 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS): `Q.PAGE_HEAD` rows and the head / ledger-stub claims on the page strokes, AFTER the page-wide claim names (an
         # earlier owner's stroke is marked contested, never taken) and after the cell position rows (they ride on the head). Nothing reads them in M6a.
         _page_heads.file_page_heads(log, pws, _page_head_list, page_map_pre, progress=progress)
+        # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default ON since the landing flip): one claim per head on the page strokes of its oval, layer `head` of
+        # `claim_order.LAYERS` -- AFTER every earlier page-wide claim (accidental ink last), BEFORE the page beams; ADJUDICATE's ledger settles it at the head tier.
+        _page_heads.file_one_claims(log, pws, _one_heads, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),
         # filed as `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows), the page map and the claim names (a stroke another claim
         # owns is no beam); reads no raster; NOTHING READS THE ROWS.

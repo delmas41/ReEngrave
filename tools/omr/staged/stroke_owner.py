@@ -164,6 +164,10 @@ class Claim:
     partial: Tuple[Tuple[int, float], ...] = ()
     row_id: str = ""
     area: bool = False
+    #: ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): a PAGE HEAD's claim -- an area-like claim (`how` "area": it is on the page ledger) at the HEAD tier
+    #: whose strokes are its oval's (`page_heads.file_one_claims`); `members` = the glyph keys of the boxes that are this one head. Its strokes still take the
+    #: head's shape test, and its member boxes own with it as ONE owner (`_settle`). () on every other claim.
+    members: Tuple[str, ...] = ()
 
 
 # ── the shapes ────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
@@ -363,6 +367,13 @@ def _settle(o: int, cand: Dict[int, List[Dict[str, object]]], tier_index: Dict[s
         return Ownership(o, "contested", candidates=tuple(cs), row_ids=rows)
     keys = tuple(dict.fromkeys(str(c["key"]) for c in fits if c["family"] == pick))
     how = "single" if len(cs) == 1 else "shape"
+    if len(keys) > 1:
+        # ROADMAP 2.290 step 4: a page head and the boxes that are its members are ONE head -- decided, owner the page head first, its members after it
+        # (each member box still owns: `box_verdict`), never a twin. Any key outside the head (another head's box) keeps the stroke MERGED, counted.
+        ph = [c for c in fits if c["family"] == pick and c.get("members")]
+        if len(ph) == 1 and set(keys) <= set(ph[0]["members"]) | {str(ph[0]["key"])}:
+            keys = (str(ph[0]["key"]),) + tuple(k for k in keys if k != str(ph[0]["key"]))
+            return Ownership(o, "decided", pick, keys, tuple(cs), "page_head", rows)
     return Ownership(o, "merged" if len(keys) > 1 else "decided", pick, keys, tuple(cs), how, rows)
 
 
@@ -548,9 +559,10 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                 s_ = by_ord[o]
                 touches_head = any(j in head_owned for j, _ct in s_.touches)
                 touches_note = o in note_ink or any(j in note_ink for j, _ct in s_.touches)
-                fit, why = ("clear", "area") if c.area else shape_fit(c.family, s_, c.cls, crosses_a_stem=o in crossing,
-                                                                        touches_a_head=touches_head, touches_a_note=touches_note,
-                                                                        acc_bar_clear_of_note=acc_bar_clear_of_note)
+                # ROADMAP 2.290: a page head's claim (`members`) is on the ledger (`how` area) but its strokes still take the head's shape test
+                fit, why = ("clear", "area") if (c.area and not c.members) else shape_fit(c.family, s_, c.cls, crosses_a_stem=o in crossing,
+                                                                                         touches_a_head=touches_head, touches_a_note=touches_note,
+                                                                                         acc_bar_clear_of_note=acc_bar_clear_of_note)
                 if acc_yield and c.family == "accidental" and o in acc_yield:
                     fit, why = "no", "%s:%s" % (acc_yield[o], why)
                 if acc_small and c.family == "accidental" and (c.key, o) in acc_small:
@@ -559,6 +571,8 @@ def own_strokes(strokes: Sequence[Ink], claims: Sequence[Claim], tiers: Sequence
                     fit, why = "no", "veto:%s:%s" % (veto.rule, why)
                 cand[o].append({"key": c.key, "family": c.family, "cls": c.cls, "fit": fit, "why": why,
                                 "how": "area" if c.area else "cover", "row": c.row_id})
+                if c.members:
+                    cand[o][-1]["members"] = list(c.members)          # ROADMAP 2.290 (flag OFF: never present)
                 if veto is not None and veto.rival_key and veto.rival_family in tier_index and veto.rival_key not in vetoes \
                         and not any(e["key"] == veto.rival_key and e["how"] == "named" for e in cand[o]):
                     cand[o].append({"key": veto.rival_key, "family": veto.rival_family, "cls": veto.rival_cls, "fit": "clear",

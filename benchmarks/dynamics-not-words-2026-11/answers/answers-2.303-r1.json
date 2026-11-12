@@ -1,0 +1,416 @@
+{
+ "lane": "2.303-r1",
+ "date": "2026-11-11",
+ "question": "is the tinted ink a dynamic, or letters of a word -- which word?",
+ "note": "Scored by the manager against key.json: 12 of 12. The control (tile 1, a real p) is a dynamic; all 11 removed dynamic claims are letters of a word (sempre x5, legato x2, pesante x2, crescendo, dim.). Tile 9's box falls short of its letters.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "a dynamic p",
+   "ours_right": true,
+   "key": {
+    "tile": 1,
+    "plate": "brahms",
+    "record": "brahms",
+    "page": 14,
+    "role": "control: a dynamic inside a word box the rule leaves a dynamic",
+    "claim_ids": [
+     "obs:083584"
+    ],
+    "boxes": [
+     [
+      5383.1,
+      6147.4,
+      5441.0,
+      6199.0
+     ]
+    ],
+    "off_filed_as": "letter p",
+    "standing": "READ",
+    "word_it_sat_in": "piu p",
+    "word_box": [
+     5251.0,
+     6144.0,
+     5439.0,
+     6199.0
+    ],
+    "tinted_px": 1220,
+    "ledger_dynamic_px": 1220
+   }
+  },
+  {
+   "tile": 2,
+   "sean": "p-r in the word sempre",
+   "ours_right": true,
+   "key": {
+    "tile": 2,
+    "plate": "litolff",
+    "record": "litolff",
+    "page": 8,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:039535"
+    ],
+    "boxes": [
+     [
+      1679.8,
+      1574.0,
+      1726.4,
+      1605.1
+     ]
+    ],
+    "off_filed_as": "pp",
+    "standing": "READ",
+    "word_it_sat_in": "sempre più p",
+    "word_box": [
+     1616.0,
+     1573.0,
+     1862.0,
+     1613.0
+    ],
+    "tinted_px": 624,
+    "ledger_dynamic_px": 78
+   }
+  },
+  {
+   "tile": 3,
+   "sean": "t-o in the word legato",
+   "ours_right": true,
+   "key": {
+    "tile": 3,
+    "plate": "brahms",
+    "record": "brahms",
+    "page": 0,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:028669"
+    ],
+    "boxes": [
+     [
+      2083.3,
+      6551.0,
+      2145.0,
+      6622.4
+     ]
+    ],
+    "off_filed_as": "fp",
+    "standing": "READ",
+    "word_it_sat_in": "f espr. e legato",
+    "word_box": [
+     1622.0,
+     6547.0,
+     2146.0,
+     6637.0
+    ],
+    "tinted_px": 1523,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 4,
+   "sean": "p-e in the word pesante",
+   "ours_right": true,
+   "key": {
+    "tile": 4,
+    "plate": "brahms",
+    "record": "brahms4",
+    "page": 4,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:069453"
+    ],
+    "boxes": [
+     [
+      2771.8,
+      3555.8,
+      2854.3,
+      3603.8
+     ]
+    ],
+    "off_filed_as": "pp",
+    "standing": "READ",
+    "word_it_sat_in": "pesante",
+    "word_box": [
+     2773.0,
+     3545.0,
+     3024.0,
+     3605.0
+    ],
+    "tinted_px": 1290,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 5,
+   "sean": "p-e-s in the word pesante",
+   "ours_right": true,
+   "key": {
+    "tile": 5,
+    "plate": "brahms",
+    "record": "brahms4",
+    "page": 4,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:069446"
+    ],
+    "boxes": [
+     [
+      1138.7,
+      2537.4,
+      1239.4,
+      2584.5
+     ]
+    ],
+    "off_filed_as": "pp",
+    "standing": "READ",
+    "word_it_sat_in": "pesante",
+    "word_box": [
+     1144.0,
+     2527.0,
+     1394.0,
+     2585.0
+    ],
+    "tinted_px": 1662,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 6,
+   "sean": "c-r in crescendo",
+   "ours_right": true,
+   "key": {
+    "tile": 6,
+    "plate": "brahms",
+    "record": "brahms4",
+    "page": 4,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:069477"
+    ],
+    "boxes": [
+     [
+      2537.0,
+      6469.9,
+      2604.8,
+      6505.8
+     ]
+    ],
+    "off_filed_as": "mp",
+    "standing": "READ",
+    "word_it_sat_in": "Cresc.",
+    "word_box": [
+     2537.0,
+     6470.0,
+     2707.0,
+     6506.0
+    ],
+    "tinted_px": 1095,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 7,
+   "sean": "the word dim.",
+   "ours_right": true,
+   "key": {
+    "tile": 7,
+    "plate": "brahms",
+    "record": "brahms",
+    "page": 14,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:083634"
+    ],
+    "boxes": [
+     [
+      5280.7,
+      5055.5,
+      5410.6,
+      5104.0
+     ]
+    ],
+    "off_filed_as": "fp",
+    "standing": "READ",
+    "word_it_sat_in": "dim.",
+    "word_box": [
+     5278.0,
+     5055.0,
+     5420.0,
+     5105.0
+    ],
+    "tinted_px": 2696,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 8,
+   "sean": "p-r-e in the word sempre",
+   "ours_right": true,
+   "key": {
+    "tile": 8,
+    "plate": "litolff",
+    "record": "litolff",
+    "page": 8,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:039536"
+    ],
+    "boxes": [
+     [
+      1684.0,
+      1294.8,
+      1745.6,
+      1326.3
+     ]
+    ],
+    "off_filed_as": "ppp",
+    "standing": "READ",
+    "word_it_sat_in": "sempre A",
+    "word_box": [
+     1613.0,
+     1247.0,
+     1871.0,
+     1330.0
+    ],
+    "tinted_px": 716,
+    "ledger_dynamic_px": 18
+   }
+  },
+  {
+   "tile": 9,
+   "sean": "s-e-m in the word sempre, though the box does not fully capture all the letters it is trying to get",
+   "ours_right": true,
+   "key": {
+    "tile": 9,
+    "plate": "litolff",
+    "record": "litolff",
+    "page": 8,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:039530"
+    ],
+    "boxes": [
+     [
+      1621.9,
+      1295.3,
+      1667.2,
+      1309.0
+     ]
+    ],
+    "off_filed_as": "pp",
+    "standing": "READ",
+    "word_it_sat_in": "sempre A",
+    "word_box": [
+     1613.0,
+     1247.0,
+     1871.0,
+     1330.0
+    ],
+    "tinted_px": 330,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 10,
+   "sean": "g-a in the word legato",
+   "ours_right": true,
+   "key": {
+    "tile": 10,
+    "plate": "brahms",
+    "record": "brahms",
+    "page": 0,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:028668"
+    ],
+    "boxes": [
+     [
+      2001.8,
+      6200.0,
+      2084.1,
+      6252.3
+     ]
+    ],
+    "off_filed_as": "fz",
+    "standing": "READ",
+    "word_it_sat_in": "f espr. e legato",
+    "word_box": [
+     1622.0,
+     6177.0,
+     2153.0,
+     6255.0
+    ],
+    "tinted_px": 1997,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 11,
+   "sean": "m-p in the word sempre",
+   "ours_right": true,
+   "key": {
+    "tile": 11,
+    "plate": "brahms",
+    "record": "brahms",
+    "page": 14,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:083632"
+    ],
+    "boxes": [
+     [
+      1540.6,
+      6377.0,
+      1640.5,
+      6427.7
+     ]
+    ],
+    "off_filed_as": "mp",
+    "standing": "READ",
+    "word_it_sat_in": "p dolce sempre",
+    "word_box": [
+     1214.0,
+     6355.0,
+     1707.0,
+     6429.0
+    ],
+    "tinted_px": 2364,
+    "ledger_dynamic_px": 0
+   }
+  },
+  {
+   "tile": 12,
+   "sean": "m-p in the word sempre",
+   "ours_right": true,
+   "key": {
+    "tile": 12,
+    "plate": "brahms",
+    "record": "brahms",
+    "page": 14,
+    "role": "removed by the flag",
+    "claim_ids": [
+     "obs:083633"
+    ],
+    "boxes": [
+     [
+      1547.0,
+      6666.1,
+      1647.4,
+      6714.6
+     ]
+    ],
+    "off_filed_as": "mp",
+    "standing": "READ",
+    "word_it_sat_in": "dolce sempre",
+    "word_box": [
+     1295.0,
+     6652.0,
+     1674.0,
+     6716.0
+    ],
+    "tinted_px": 2402,
+    "ledger_dynamic_px": 0
+   }
+  }
+ ]
+}

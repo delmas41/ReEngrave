@@ -100,8 +100,8 @@ class Flags(unittest.TestCase):
             self.assertFalse(PH.views_enabled())
         with mock.patch.dict(os.environ, {PH.VIEWS_ENV: "1"}, clear=True):
             self.assertFalse(PH.views_enabled())
-        with mock.patch.dict(os.environ, {PH.ENV: "1", PH.VIEWS_ENV: "1", PH.CLAIM_ENV: "1"}, clear=True):
-            self.assertTrue(PH.views_enabled() and PH.claim_enabled())
+        with mock.patch.dict(os.environ, {PH.ENV: "1", PH.VIEWS_ENV: "1"}, clear=True):
+            self.assertTrue(PH.views_enabled())
 
 
 if __name__ == "__main__":

@@ -20,17 +20,25 @@ accidental:sharp|flat|natural, dynamic, word, arc, barline, staff_line, ledger_l
 invented. Tiles with no page box (2.292 asks about a staff START) are kept and replay as "cannot tell".
 
 THE REPLAY. For every registry tile on a page of REC: the dark pixels inside its box (the staff's own eraser-taken ink excluded, as `judge_box` does,
-unless Sean named a staff line) are looked up on the page ledger. A pixel's owners are the READ claims standing on it (`fam_eff`); GUESSED / NARROWED
-ones are WEAK and reported apart; a detector box refused on it is reported apart; nothing is "no owner".
+unless Sean named a staff line) are looked up on the page ledger. A pixel's owners are the READ claims standing on it (`fam_eff`) from THREE SOURCES, each
+named in the report: `cell settle` (the stroke owner's verdict / detector boxes of the padded cell), `register area` (a page-wide rectangle claim outside
+the cells) and `page-stroke claim` (a claim filed as page-stroke ids, `claim_readout.page_stroke_claims`: every READ rest since 2.288, dynamics and repeat
+dots, arcs, tremolos, own-ink accidentals -- ROADMAP 2.295b; before it the tool could not see them). GUESSED / NARROWED ones are WEAK and reported apart; a
+detector box refused on it is reported apart; nothing is "no owner".
   OVERLAP RULE (by page place and ink, never by box or stroke id: twins, ids restart per system): with R = share of the box's ink owned by a READ claim
-  of a kind Sean's word accepts (`ACCEPT`), W = share owned ONLY by READ claims of other kinds (staff lines, ledger lines and dots crossing a mark are
-  the mark's -- page-facts 2026-11-10 -- and never count against it):
-    AGREES        R >= 0.5
-    CONTRADICTS   R < 0.5 and W > R and W >= 0.3      a READ claim of ANOTHER kind owns ink he named (the failure this tool exists for)
+  of a kind Sean's word accepts (`ACCEPT`), Wo = share owned ONLY by READ claims of other kinds, Wa = share on which a READ claim of another kind STANDS
+  (whether or not his kind also stands there); staff lines, ledger lines and dots crossing a mark are the mark's -- page-facts 2026-11-10 -- and never count
+  against it:
+    AGREES        R >= 0.5 and Wa < 0.3
+    CONTRADICTS   R >= 0.5 and Wa >= 0.3    CLAIMED TWICE (changed 2026-11-11, 2.295b): his kind owns the ink AND a READ claim of another kind stands on
+                                            >= 30% of it: a wrong READ claim is a wrong claim even where the cell settle agrees with him
+                  R < 0.5 and Wo > R and Wo >= 0.3      a READ claim of ANOTHER kind owns ink he named (the failure this tool exists for)
     UNCLAIMED     he named a real mark and no READ claim of its kind owns it (the to-do list; not a failure)
     CANNOT TELL   the page is not in REC; the box lands on < 8 dark px (geometry moved); no page box; the kind is unmapped. Never agrees (rule 8).
+  Before 2.295b the rule was AGREES = R >= 0.5 whatever else stood on the ink, and only cell-settle and rectangle claims were visible.
   The rule can fail: `--controls` relabels one of his rest tiles in memory (it must turn into exactly that one CONTRADICTS) and shifts every box by
-  three staff spaces (agrees must collapse).
+  three staff spaces (agrees must collapse); the REAL false claim (2.288 r3's whole rest on Sean's eighth note) is in
+  `tests/test_judged_claims_2_295b.py` as rows cut from the r3 gather, and must read CONTRADICTS.
 Exit status 1 when any tile CONTRADICTS, so a lane can gate on it: a lane's third measure is "judged right->wrong 0 AND judged_claims contradicts 0".
 
 A saved slice shows the gather it was cut from, not the tree: a contradiction on a slice is a contradiction of THAT gather (the header prints the slice,
@@ -69,9 +77,8 @@ ACCEPT: Dict[str, Tuple[str, ...]] = {
     "dynamic": ("dynamic",), "word": ("word",), "arc": ("arc",), "barline": ("barline",), "staff_line": ("staff_line",), "ledger_line": ("ledger_line",),
     "tremolo": ("tremolo",), "clef": ("clef",), "key": ("key",),
 }
-#: owner names the page ledger's claims carry that `claim_readout.FINE_OF_FAMILY` does not name, so the readout would file them under `other` (2.285's
-#: own-ink accidental claim is `accidental_ink`). Applied in THIS process only, never written into claim_readout; `unnamed_owners` lists any other.
-OWNER_FINE_EXTRA = {"accidental_ink": "accidental"}
+#: the three places a pixel's READ owner can come from (LedgerInk.src_*), in the words the report prints
+SOURCES_NAMED = (("src_cell", "cell settle"), ("src_area", "register area"), ("src_page", "page-stroke claim"))
 # a mark crosses a staff line, a ledger line, an augmentation dot: that crossing ink is the mark's (page-facts / DECISIONS 2026-11-10)
 NEUTRAL = ("staff_line", "ledger_line", "dot")
 
@@ -312,8 +319,16 @@ def judge_tile(c: Any, tile: Dict[str, Any], *, dx: float = 0.0, dy: float = 0.0
     unnamed = ((mm & OTHER) != 0) & ~right            # a claim the readout files under `other`: its kind is not known here
     wrong = ((mm & ~A & ~N & ~OTHER) != 0) & ~right
     none = mm == 0
-    R, Wr = float(right.mean()), float(wrong.mean())
-    weak = c.weak[sl][sel]
+    weak = getattr(c, "weak_eff", c.weak)[sl][sel]
+    src_masks = {name: (getattr(c, attr)[sl][sel] if hasattr(c, attr) else (fam[sel] if attr == "src_cell" else np.zeros(int(sel.sum()), np.uint32)))
+                 for attr, name in SOURCES_NAMED}
+    # "stands": a READ claim of another kind that is DECIDED. Ink the cell settle left OPEN between kinds (`contested`: it could not choose) holds every kind that
+    # fits, none of them a decided READ claim, so it never counts as a wrong claim standing (reported apart as `open_share`, the old rule's AGREES kept).
+    opn = (getattr(c, "open", None)[sl][sel] & getattr(c, "incell")[sl][sel]) if hasattr(c, "open") else np.zeros(int(sel.sum()), bool)
+    stand = src_masks["register area"] | src_masks["page-stroke claim"] | np.where(opn, np.uint32(0), src_masks["cell settle"])
+    wrong_any = (stand & ~A & ~N & ~OTHER) != 0        # a READ claim of another kind STANDS here (his kind may stand too)
+    R, Wr, Wa = float(right.mean()), float(wrong.mean()), float(wrong_any.mean())
+    open_share = float((opn & right).mean())
     weak_px = none & (weak != 0)
     refused_px = none & (c.uk[sl][sel] >= 5)
     claimed: Dict[str, float] = {}
@@ -323,18 +338,27 @@ def judge_tile(c: Any, tile: Dict[str, Any], *, dx: float = 0.0, dy: float = 0.0
             claimed[kk] = round(s, 3)
     weak_by = {kk: round(float((weak_px & ((weak & np.uint32(CR.FINE_BIT[kk])) != 0)).mean()), 3) for kk in CR.FINE_KINDS
                if (weak_px & ((weak & np.uint32(CR.FINE_BIT[kk])) != 0)).any()}
+    # where each READ owner came from, per kind: {kind: {source name: share of the box's ink}} (kinds he did not name show beside his)
+    sources: Dict[str, Dict[str, float]] = {}
+    for kk in claimed:
+        bit = np.uint32(CR.FINE_BIT[kk])
+        sources[kk] = {name: round(float(((sm & bit) != 0).mean()), 3) for name, sm in src_masks.items() if ((sm & bit) != 0).any()}
     U = float(unnamed.mean())
     if R < AGREE_MIN and U >= AGREE_MIN:
         return cannot("owned_by_unnamed_kind (the readout files it under `other`)")
+    twice = False
     if R >= AGREE_MIN:
-        v = "agrees"
+        if Wa >= CONTRA_MIN:
+            v, twice = "contradicts", True
+        else:
+            v = "agrees"
     elif Wr > R and Wr >= CONTRA_MIN:
         v = "contradicts"
     else:
         v = "unclaimed"
-    res.update({"verdict": v, "ink_px": n, "right": round(R, 3), "wrong": round(Wr, 3), "no_owner": round(float(none.mean()), 3),
-                "weak_only": round(float(weak_px.mean()), 3), "weak_kinds": weak_by, "refused_box": round(float(refused_px.mean()), 3),
-                "read_kinds": claimed, "box_px": [x0, y0, x1, y1]})
+    res.update({"verdict": v, "ink_px": n, "right": round(R, 3), "wrong": round(Wr, 3), "wrong_any": round(Wa, 3), "twice": twice, "open_share": round(open_share, 3),
+                "no_owner": round(float(none.mean()), 3), "weak_only": round(float(weak_px.mean()), 3), "weak_kinds": weak_by,
+                "refused_box": round(float(refused_px.mean()), 3), "read_kinds": claimed, "sources": sources, "box_px": [x0, y0, x1, y1]})
     return res
 
 
@@ -367,15 +391,13 @@ def replay(rec: str, *, doc: Optional[str] = None, pages: Optional[Sequence[int]
     as the base run (controls). Returns {plate, slice, pages, results: {variant: [verdict dicts]}, ...}."""
     from . import cell_map as CM
     from . import claim_readout as CR
-    for k, v in OWNER_FINE_EXTRA.items():
-        CR.FINE_OF_FAMILY.setdefault(k, v)
     src = CR.resolve_source(rec)
     in_rec = CR.slice_pages(src)
     reg = registry or load_registry()
     rows_all = CR.read_rows(src, in_rec if not pages else [p for p in pages if p in in_rec])
     unnamed = sorted({str(o["detail"]["owner"]) for o in rows_all["observations"] if o.get("quantity") == "claimed_area" and o.get("detail")
-                      and o["detail"].get("owner") and o["detail"].get("unit") in ("area", "page_ink") and o["detail"].get("standing", "READ") == "READ"
-                      and CR.fine_of(str(o["detail"]["owner"])) == "other"})
+                      and o["detail"].get("owner") and (o["detail"].get("unit") in ("area", "page_ink") or o["detail"].get("page_strokes"))
+                      and o["detail"].get("standing", "READ") == "READ" and CR.fine_of(str(o["detail"]["owner"])) == "other"})
     ed = CR.edition_info(rows_all)
     plate = doc or doc_of(src, ed)
     if plate is None:
@@ -433,8 +455,11 @@ def tally(rs: Sequence[Dict[str, Any]]) -> Dict[str, int]:
 
 def summary_line(plate: str, rs: Sequence[Dict[str, Any]]) -> str:
     t = tally(rs)
-    return "%s: %d tiles  agrees %d / contradicts %d / unclaimed %d / cannot tell %d" % (plate.upper(), len(rs), t["agrees"], t["contradicts"], t["unclaimed"],
-                                                                                    t["cannot_tell"])
+    twice = sum(1 for r in rs if r["verdict"] == "contradicts" and r.get("twice"))
+    opn = sum(1 for r in rs if r["verdict"] == "agrees" and r.get("open_share", 0.0) >= CONTRA_MIN)
+    return "%s: %d tiles  agrees %d%s / contradicts %d%s / unclaimed %d / cannot tell %d" % (
+        plate.upper(), len(rs), t["agrees"], (" (of which %d with >=30%% of the ink left open between kinds by the cell settle)" % opn) if opn else "",
+        t["contradicts"], (" (of which claimed twice %d)" % twice) if twice else "", t["unclaimed"], t["cannot_tell"])
 
 
 def render(rep: Dict[str, Any], unclaimed: bool = False) -> List[str]:
@@ -444,17 +469,20 @@ def render(rep: Dict[str, Any], unclaimed: bool = False) -> List[str]:
              rep["slice"], rep["slice_written"], rep["slice_pages"], rep["pages_judged"], rep["links"], rep["strokes"],
              "" if rep["links"] else "  -- NONE: a gather before 2.284"),
          "  READ-claim owners the readout cannot name (filed under `other`): %s" % (", ".join(rep["unnamed_owners"]) or "none"),
-         "  overlap rule: R = share of the box's ink a READ claim of Sean's kind owns; W = share only other kinds' READ claims own (staff/ledger line, dot crossings "
-         "are the mark's). agrees R>=%.1f; contradicts R<%.1f, W>R, W>=%.1f; unclaimed otherwise; cannot tell = page not in slice / box on <%d ink px / no box / kind unmapped"
-         % (AGREE_MIN, AGREE_MIN, CONTRA_MIN, MIN_INK), "  " + summary_line(rep["plate"], rs)]
+         "  overlap rule: R = share of the box's ink a READ claim of Sean's kind owns; Wo = share only other kinds' READ claims own; Wa = share another kind's READ claim "
+         "stands on, his kind or not (staff/ledger line, dot crossings are the mark's). agrees R>=%.1f and Wa<%.1f; CONTRADICTS Wa>=%.1f with R>=%.1f (CLAIMED TWICE) or R<%.1f, Wo>R, Wo>=%.1f; "
+         "unclaimed otherwise; cannot tell = page not in slice / box on <%d ink px / no box / kind unmapped. Owners come from: cell settle / register area / page-stroke claim."
+         % (AGREE_MIN, CONTRA_MIN, CONTRA_MIN, AGREE_MIN, AGREE_MIN, CONTRA_MIN, MIN_INK), "  " + summary_line(rep["plate"], rs)]
     why = collections.Counter(r.get("why") for r in rs if r["verdict"] == "cannot_tell")
     if why:
         L.append("  cannot tell because: " + ", ".join("%s %d" % (k, v) for k, v in why.most_common()))
     bad = [r for r in rs if r["verdict"] == "contradicts"]
     for r in bad:
-        L.append("  CONTRADICTS  %s  p%s  Sean: %r (%s)  READ claims there: %s  (right %.2f, other kinds only %.2f, no owner %.2f; box %s)" % (
-            r["id"], r["page"], r["words"], r["kind"], ", ".join("%s %.0f%%" % (k, 100 * v) for k, v in sorted(r["read_kinds"].items(), key=lambda kv: -kv[1])),
-            r["right"], r["wrong"], r["no_owner"], r["box_px"]))
+        L.append("  CONTRADICTS%s  %s  p%s  Sean: %r (%s)  READ claims there: %s  (right %.2f, other kinds stand on %.2f, other kinds only %.2f, no owner %.2f; box %s)" % (
+            " (CLAIMED TWICE)" if r.get("twice") else "", r["id"], r["page"], r["words"], r["kind"],
+            ", ".join("%s %.0f%% [%s]" % (k, 100 * v, ", ".join("%s %.0f%%" % (sn, 100 * sv) for sn, sv in r.get("sources", {}).get(k, {}).items()) or "?")
+                      for k, v in sorted(r["read_kinds"].items(), key=lambda kv: -kv[1])),
+            r["right"], r.get("wrong_any", r["wrong"]), r["wrong"], r["no_owner"], r["box_px"]))
     if unclaimed:
         for r in [r for r in rs if r["verdict"] == "unclaimed"]:
             L.append("  unclaimed    %s  p%s  Sean: %r (%s)  READ: %s  weak: %s  refused box %.0f%%  no owner %.0f%%" % (
@@ -486,11 +514,17 @@ def controls(rec: str, *, doc: Optional[str] = None, pages: Optional[Sequence[in
         x0, y0, x1, y1 = (int(round(v)) for v in t["box"])
         sl = (slice(max(0, y0), y1), slice(max(0, x0), x1))
         keep = c.fam_eff[sl].copy()
-        c.fam_eff[sl] = np.where(c.ink[sl], CR.FINE_BIT["rest"], np.uint32(0)).astype(c.fam_eff.dtype)
+        keep_src = {a: getattr(c, a)[sl].copy() for a, _n in SOURCES_NAMED}
+        planted = np.where(c.ink[sl], CR.FINE_BIT["rest"], np.uint32(0)).astype(c.fam_eff.dtype)
+        c.fam_eff[sl] = planted
+        for a, _n in SOURCES_NAMED:
+            getattr(c, a)[sl] = planted if a == "src_cell" else np.uint32(0)
         try:
             return judge_tile(c, t)
         finally:
             c.fam_eff[sl] = keep
+            for a, v in keep_src.items():
+                getattr(c, a)[sl] = v
 
     # pass 1: find a rest tile that agrees (the control needs a case that passes)
     first = replay(rec, doc=doc, pages=pages, registry=reg, log=lambda *_: None, **kw)

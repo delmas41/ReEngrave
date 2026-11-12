@@ -1,0 +1,128 @@
+{
+ "lane": "2.290-build-r3",
+ "date": "2026-11-11",
+ "question": "Is the ink in the box one whole notehead?",
+ "note": "Scored by the manager against key.json. The one file change shown (tile 1, a gained unison) is right. No false claim shown. Of 11 refusals, 4 are right (dot, half a quarter rest, staccato, ledger edge) and 7 are real noteheads refused (2, 4, 6, 7, 8, 9, 11) -- a refusal leaves the ink with the cell box and the note still written, so it costs ledger coverage, not notes. Sean: 'A few of those boxes looked a little small.'",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "a unison half note",
+   "score": "gain RIGHT (two voices on one head)",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "note_gained",
+   "why": "GAINED (ON, not OFF)  litolff p11 m75 note half C4  box [708, 731, 733, 749]",
+   "glyph": "glyph/11/0/2/1/2"
+  },
+  {
+   "tile": 2,
+   "sean": "a quarter note",
+   "score": "a real head refused",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_other",
+   "why": "a round-1 claim now refused (0.88 x 0.97 sp)",
+   "glyph": "glyph/19/0/6/10/5"
+  },
+  {
+   "tile": 3,
+   "sean": "an augmentation dot",
+   "score": "refusal right",
+   "plate": "brahms",
+   "page": 14,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim now refused (0.47 x 0.59 sp)",
+   "glyph": "glyph/14/1/1/8/7"
+  },
+  {
+   "tile": 4,
+   "sean": "a quarter note",
+   "score": "a real head refused (too tall 2.16 sp)",
+   "plate": "litolff",
+   "page": 2,
+   "kind": "refused_too_tall",
+   "why": "a round-1 claim now refused (1.40 x 2.16 sp)",
+   "glyph": "glyph/2/1/5/14/0"
+  },
+  {
+   "tile": 5,
+   "sean": "half of a quarter rest",
+   "score": "refusal right",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "refused_other",
+   "why": "a round-1 claim now refused (0.95 x 1.33 sp)",
+   "glyph": "glyph/11/1/10/16/2"
+  },
+  {
+   "tile": 6,
+   "sean": "an eighth note",
+   "score": "a real head refused (claim was 0.57 sp wide)",
+   "plate": "litolff",
+   "page": 11,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim now refused (0.57 x 1.33 sp)",
+   "glyph": "glyph/11/1/10/8/1"
+  },
+  {
+   "tile": 7,
+   "sean": "a quarter note",
+   "score": "a real head refused",
+   "plate": "brahms",
+   "page": 14,
+   "kind": "refused_other",
+   "why": "a round-1 claim now refused (0.91 x 0.88 sp)",
+   "glyph": "glyph/14/1/9/7/1"
+  },
+  {
+   "tile": 8,
+   "sean": "a quarter note",
+   "score": "a real head refused (claim was 0.38 sp wide)",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim now refused (0.38 x 1.06 sp)",
+   "glyph": "glyph/19/1/8/3/9"
+  },
+  {
+   "tile": 9,
+   "sean": "an eighth note",
+   "score": "a real head refused",
+   "plate": "litolff",
+   "page": 2,
+   "kind": "refused_other",
+   "why": "a round-1 claim now refused (1.40 x 1.90 sp)",
+   "glyph": "glyph/2/0/0/1/15"
+  },
+  {
+   "tile": 10,
+   "sean": "a staccato marking",
+   "score": "refusal right",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim now refused (0.28 x 0.53 sp)",
+   "glyph": "glyph/19/1/8/8/24"
+  },
+  {
+   "tile": 11,
+   "sean": "a quarter note",
+   "score": "a real head refused",
+   "plate": "brahms",
+   "page": 14,
+   "kind": "refused_other",
+   "why": "a round-1 claim now refused (1.19 x 1.06 sp)",
+   "glyph": "glyph/14/1/9/6/4"
+  },
+  {
+   "tile": 12,
+   "sean": "the edge of a ledger line",
+   "score": "refusal right",
+   "plate": "brahms",
+   "page": 19,
+   "kind": "refused_too_small",
+   "why": "a round-1 claim now refused (0.44 x 0.69 sp)",
+   "glyph": "glyph/19/0/0/4/10"
+  }
+ ]
+}

@@ -1,0 +1,1154 @@
+{
+ "mg/2/0/245": {
+  "plate": "litolff",
+  "expect": "settle",
+  "what": "p2 m7 half note: boxes 7.04 / 8.28 steps, hole 7.81 -> F3; the tie F3 (m7) -> F3 (m8) is kept",
+  "members": [
+   {
+    "sub": "glyph/2/0/9/6/1",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       138,
+       707,
+       164,
+       115
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        1240.08,
+        1783.12,
+        1266.32,
+        1801.52
+       ],
+       "x_center_page": 1253.1999999999998,
+       "y_center_page": 1792.32
+      }
+     },
+     "glyph_conf": {
+      "value": 0.4016162157058716,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/2/0/245",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/2/0/9/6/1",
+       "members": [
+        "glyph/2/0/9/6/1",
+        "glyph/2/0/9/6/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 219,
+       "ink_centre": [
+        1252.7,
+        1793.9
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 7.04,
+      "detail": {
+       "residual": 0.040000000000000036,
+       "rounded": 7
+      }
+     }
+    },
+    "pitch": "G3",
+    "off_pitches": [
+     "G3"
+    ]
+   },
+   {
+    "sub": "glyph/2/0/9/6/2",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadHalfOnLine",
+       140,
+       776,
+       163,
+       101
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        1240.4,
+        1794.16,
+        1266.48,
+        1810.32
+       ],
+       "x_center_page": 1253.44,
+       "y_center_page": 1802.24
+      }
+     },
+     "glyph_conf": {
+      "value": 0.34667450189590454,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/2/0/245",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/2/0/9/6/1",
+       "members": [
+        "glyph/2/0/9/6/1",
+        "glyph/2/0/9/6/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 177,
+       "ink_centre": [
+        1252.2,
+        1801.5
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 8.28,
+      "detail": {
+       "residual": 0.27999999999999936,
+       "rounded": 8,
+       "hole_refused": "ink_disagrees",
+       "hole_steps": [
+        7.32
+       ],
+       "hole_ink_position": 7.812
+      }
+     }
+    },
+    "pitch": "F3",
+    "off_pitches": [
+     "F3"
+    ]
+   }
+  ]
+ },
+ "mg/11/1/321": {
+  "plate": "litolff",
+  "expect": "guess",
+  "what": "p11 m107: B4 box and a thin A4 box, no ink witness",
+  "members": [
+   {
+    "sub": "glyph/11/1/8/15/1",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       176,
+       1268,
+       139,
+       124
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        2404.72,
+        3320.71,
+        2426.6125,
+        3340.24
+       ],
+       "x_center_page": 2415.66625,
+       "y_center_page": 3330.475
+      }
+     },
+     "glyph_conf": {
+      "value": 0.8053795695304871,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/11/1/321",
+      "detail": {
+       "family": "notehead",
+       "size": 3,
+       "rep": "glyph/11/1/9/15/3",
+       "members": [
+        "glyph/11/1/8/15/1",
+        "glyph/11/1/9/15/3",
+        "glyph/11/1/9/15/10"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 92,
+       "ink_centre": [
+        2411.5,
+        3331.8
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 18.48,
+      "detail": {
+       "residual": 0.4800000000000004,
+       "rounded": 18,
+       "ink_centre_why": "too_tall"
+      }
+     }
+    },
+    "pitch": "B4",
+    "off_pitches": []
+   },
+   {
+    "sub": "glyph/11/1/9/15/10",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       147,
+       444,
+       156,
+       61
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        2400.1525,
+        3334.93,
+        2424.7225,
+        3344.5375
+       ],
+       "x_center_page": 2412.4375,
+       "y_center_page": 3339.73375
+      }
+     },
+     "glyph_conf": {
+      "value": 0.32236534357070923,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/11/1/321",
+      "detail": {
+       "family": "notehead",
+       "size": 3,
+       "rep": "glyph/11/1/9/15/3",
+       "members": [
+        "glyph/11/1/8/15/1",
+        "glyph/11/1/9/15/3",
+        "glyph/11/1/9/15/10"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 55,
+       "ink_centre": [
+        2411.5,
+        3339.5
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": -2.58,
+      "detail": {
+       "residual": 0.41999999999999993,
+       "rounded": -3,
+       "ink_centre_why": "too_tall"
+      }
+     }
+    },
+    "pitch": "A4",
+    "off_pitches": [
+     "A4"
+    ]
+   },
+   {
+    "sub": "glyph/11/1/9/15/3",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       175,
+       353,
+       139,
+       121
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        2404.5625,
+        3320.5975,
+        2426.455,
+        3339.655
+       ],
+       "x_center_page": 2415.50875,
+       "y_center_page": 3330.1262500000003
+      }
+     },
+     "glyph_conf": {
+      "value": 0.8161026239395142,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/11/1/321",
+      "detail": {
+       "family": "notehead",
+       "size": 3,
+       "rep": "glyph/11/1/9/15/3",
+       "members": [
+        "glyph/11/1/8/15/1",
+        "glyph/11/1/9/15/3",
+        "glyph/11/1/9/15/10"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 87,
+       "ink_centre": [
+        2411.5,
+        3331.3
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": -3.8,
+      "detail": {
+       "residual": 0.20000000000000018,
+       "rounded": -4,
+       "ink_centre_why": "too_tall"
+      }
+     }
+    },
+    "pitch": "B4",
+    "off_pitches": [
+     "B-14"
+    ]
+   }
+  ]
+ },
+ "mg/8/1/100": {
+  "plate": "litolff",
+  "expect": "guess",
+  "what": "p8 D4 fold, no ink witness",
+  "members": [
+   {
+    "sub": "glyph/8/1/7/2/0",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       199,
+       790,
+       181,
+       156
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        776.84,
+        3112.4,
+        805.8,
+        3137.36
+       ],
+       "x_center_page": 791.3199999999999,
+       "y_center_page": 3124.88
+      }
+     },
+     "glyph_conf": {
+      "value": 0.5313911437988281,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/100",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/8/1/7/2/0",
+       "members": [
+        "glyph/8/1/7/2/0",
+        "glyph/8/1/7/2/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 105,
+       "ink_centre": [
+        794.7,
+        3118.6
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 9.48,
+      "detail": {
+       "residual": 0.4800000000000004,
+       "rounded": 9
+      }
+     }
+    },
+    "pitch": "D4",
+    "off_pitches": [
+     "D4"
+    ]
+   },
+   {
+    "sub": "glyph/8/1/7/2/2",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadHalfInSpace",
+       200,
+       794,
+       185,
+       152
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        777.0,
+        3113.04,
+        806.6,
+        3137.36
+       ],
+       "x_center_page": 791.8,
+       "y_center_page": 3125.2
+      }
+     },
+     "glyph_conf": {
+      "value": 0.34547993540763855,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/100",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/8/1/7/2/0",
+       "members": [
+        "glyph/8/1/7/2/0",
+        "glyph/8/1/7/2/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 94,
+       "ink_centre": [
+        794.5,
+        3119.3
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 9.52,
+      "detail": {
+       "residual": 0.4800000000000004,
+       "rounded": 10,
+       "ink_centre_why": "too_tall"
+      }
+     }
+    },
+    "pitch": "C4",
+    "off_pitches": []
+   }
+  ]
+ },
+ "mg/8/1/124": {
+  "plate": "litolff",
+  "expect": "guess",
+  "what": "p8 Ab2 fold, no ink witness",
+  "members": [
+   {
+    "sub": "glyph/8/1/10/3/1",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadHalfInSpace",
+       235,
+       667,
+       157,
+       141
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        853.6,
+        3562.72,
+        878.72,
+        3585.28
+       ],
+       "x_center_page": 866.1600000000001,
+       "y_center_page": 3574.0
+      }
+     },
+     "glyph_conf": {
+      "value": 0.41747426986694336,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/124",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/8/1/10/3/1",
+       "members": [
+        "glyph/8/1/10/3/1",
+        "glyph/8/1/10/3/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 404,
+       "ink_centre": [
+        866.6,
+        3573.8
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 6.86,
+      "detail": {
+       "residual": 0.13999999999999968,
+       "rounded": 7
+      }
+     }
+    },
+    "pitch": "Ab2",
+    "off_pitches": [
+     "A-12"
+    ]
+   },
+   {
+    "sub": "glyph/8/1/10/3/2",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       240,
+       674,
+       155,
+       134
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        854.4,
+        3563.84,
+        879.2,
+        3585.28
+       ],
+       "x_center_page": 866.8,
+       "y_center_page": 3574.5600000000004
+      }
+     },
+     "glyph_conf": {
+      "value": 0.3578729033470154,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/124",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/8/1/10/3/1",
+       "members": [
+        "glyph/8/1/10/3/1",
+        "glyph/8/1/10/3/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 396,
+       "ink_centre": [
+        867.3,
+        3573.5
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 6.94,
+      "detail": {
+       "residual": 0.05999999999999961,
+       "rounded": 7
+      }
+     }
+    },
+    "pitch": "A2",
+    "off_pitches": []
+   }
+  ]
+ },
+ "mg/8/1/233": {
+  "plate": "litolff",
+  "expect": "guess",
+  "what": "p8 C3 fold, no ink witness",
+  "members": [
+   {
+    "sub": "glyph/8/1/9/10/0",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       240,
+       599,
+       167,
+       140
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        1407.4,
+        3393.84,
+        1434.12,
+        3416.24
+       ],
+       "x_center_page": 1420.76,
+       "y_center_page": 3405.04
+      }
+     },
+     "glyph_conf": {
+      "value": 0.5365167260169983,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/233",
+      "detail": {
+       "family": "notehead",
+       "size": 3,
+       "rep": "glyph/8/1/9/10/0",
+       "members": [
+        "glyph/8/1/9/10/0",
+        "glyph/8/1/9/10/1",
+        "glyph/8/1/9/10/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 238,
+       "ink_centre": [
+        1421.0,
+        3404.7
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 5.38,
+      "detail": {
+       "residual": 0.3799999999999999,
+       "rounded": 5,
+       "hole_refused": "off_grid",
+       "hole_steps": [
+        5.4
+       ],
+       "hole_ink_position": null
+      }
+     }
+    },
+    "pitch": "C3",
+    "off_pitches": [
+     "C3"
+    ]
+   },
+   {
+    "sub": "glyph/8/1/9/10/1",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadHalfOnLine",
+       244,
+       636,
+       162,
+       124
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        1408.04,
+        3399.76,
+        1433.96,
+        3419.6
+       ],
+       "x_center_page": 1421.0,
+       "y_center_page": 3409.6800000000003
+      }
+     },
+     "glyph_conf": {
+      "value": 0.3028089702129364,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/233",
+      "detail": {
+       "family": "notehead",
+       "size": 3,
+       "rep": "glyph/8/1/9/10/0",
+       "members": [
+        "glyph/8/1/9/10/0",
+        "glyph/8/1/9/10/1",
+        "glyph/8/1/9/10/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 177,
+       "ink_centre": [
+        1419.5,
+        3409.5
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 5.96,
+      "detail": {
+       "residual": 0.040000000000000036,
+       "rounded": 6,
+       "hole_refused": "off_grid",
+       "hole_steps": [
+        5.4
+       ],
+       "hole_ink_position": null
+      }
+     }
+    },
+    "pitch": "B2",
+    "off_pitches": []
+   },
+   {
+    "sub": "glyph/8/1/9/10/2",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadHalfInSpace",
+       236,
+       598,
+       172,
+       143
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        1406.76,
+        3393.68,
+        1434.28,
+        3416.56
+       ],
+       "x_center_page": 1420.52,
+       "y_center_page": 3405.12
+      }
+     },
+     "glyph_conf": {
+      "value": 0.29493045806884766,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/8/1/233",
+      "detail": {
+       "family": "notehead",
+       "size": 3,
+       "rep": "glyph/8/1/9/10/0",
+       "members": [
+        "glyph/8/1/9/10/0",
+        "glyph/8/1/9/10/1",
+        "glyph/8/1/9/10/2"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 238,
+       "ink_centre": [
+        1421.0,
+        3404.7
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 5.38,
+      "detail": {
+       "residual": 0.3799999999999999,
+       "rounded": 5,
+       "hole_refused": "off_grid",
+       "hole_steps": [
+        5.4
+       ],
+       "hole_ink_position": null
+      }
+     }
+    },
+    "pitch": "C3",
+    "off_pitches": []
+   }
+  ]
+ },
+ "mg/2/0/148": {
+  "plate": "litolff",
+  "expect": "ignore",
+  "what": "p2 m4: a head-sized box and a tall (7 sp) box: the tall box is no witness, nothing changes",
+  "members": [
+   {
+    "sub": "glyph/2/0/8/3/3",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       198,
+       726,
+       141,
+       163
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        903.68,
+        1637.16,
+        926.24,
+        1663.24
+       ],
+       "x_center_page": 914.96,
+       "y_center_page": 1650.2
+      }
+     },
+     "glyph_conf": {
+      "value": 0.3115963637828827,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/2/0/148",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/2/0/8/3/3",
+       "members": [
+        "glyph/2/0/8/3/3",
+        "glyph/2/0/8/3/4"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 259,
+       "ink_centre": [
+        912.3,
+        1646.8
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 7.76,
+      "detail": {
+       "residual": 0.2400000000000002,
+       "rounded": 8
+      }
+     }
+    },
+    "pitch": "E4",
+    "off_pitches": [
+     "E14"
+    ]
+   },
+   {
+    "sub": "glyph/2/0/8/3/4",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       200,
+       287,
+       143,
+       696
+      ],
+      "detail": {
+       "category": "notehead",
+       "tall_split": {
+        "read": false,
+        "holes": 0
+       },
+       "bbox_page_px": [
+        904.0,
+        1566.92,
+        926.88,
+        1678.28
+       ],
+       "x_center_page": 915.44,
+       "y_center_page": 1622.6
+      }
+     },
+     "glyph_conf": {
+      "value": 0.28811830282211304,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/2/0/148",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/2/0/8/3/3",
+       "members": [
+        "glyph/2/0/8/3/3",
+        "glyph/2/0/8/3/4"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 735,
+       "ink_centre": [
+        912.6,
+        1637.1
+       ],
+       "apart": [
+        [
+         "glyph/2/0/8/3/0",
+         "share_below",
+         0.179
+        ],
+        [
+         "glyph/2/0/9/3/1",
+         "share_below",
+         0.179
+        ]
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 4.32,
+      "detail": {
+       "residual": 0.3200000000000003,
+       "rounded": 4
+      }
+     }
+    },
+    "pitch": "B4",
+    "off_pitches": [
+     "B-14"
+    ]
+   }
+  ]
+ },
+ "mg/14/1/43": {
+  "plate": "brahms",
+  "expect": "guess",
+  "what": "Brahms p14 G4 fold, no ink witness",
+  "members": [
+   {
+    "sub": "glyph/14/1/4/0/10",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadWholeOnLine",
+       781,
+       442,
+       105,
+       60
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        962.8916015625,
+        5234.814453125,
+        1004.419921875,
+        5258.544921875
+       ],
+       "x_center_page": 983.65576171875,
+       "y_center_page": 5246.6796875
+      }
+     },
+     "glyph_conf": {
+      "value": 0.3448893427848816,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/14/1/43",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/14/1/4/0/7",
+       "members": [
+        "glyph/14/1/4/0/7",
+        "glyph/14/1/4/0/10"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 156,
+       "ink_centre": [
+        982.7,
+        5250.0
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 5.35251798561151,
+      "detail": {
+       "residual": 0.3525179856115104,
+       "rounded": 5
+      }
+     }
+    },
+    "pitch": "A4",
+    "off_pitches": []
+   },
+   {
+    "sub": "glyph/14/1/4/0/7",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadWholeOnLine",
+       779,
+       472,
+       100,
+       59
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        962.1005859375,
+        5246.6796875,
+        1001.6513671875,
+        5270.0146484375
+       ],
+       "x_center_page": 981.8759765625,
+       "y_center_page": 5258.34716796875
+      }
+     },
+     "glyph_conf": {
+      "value": 0.4899163842201233,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/14/1/43",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/14/1/4/0/7",
+       "members": [
+        "glyph/14/1/4/0/7",
+        "glyph/14/1/4/0/10"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 120,
+       "ink_centre": [
+        979.4,
+        5253.7
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": 6.18705035971223,
+      "detail": {
+       "residual": 0.18705035971222994,
+       "rounded": 6
+      }
+     }
+    },
+    "pitch": "G4",
+    "off_pitches": [
+     "G4"
+    ]
+   }
+  ]
+ },
+ "mg/19/0/775": {
+  "plate": "brahms",
+  "expect": "guess",
+  "what": "Brahms p19 Ab5 fold, no ink witness",
+  "members": [
+   {
+    "sub": "glyph/19/0/0/10/12",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       157,
+       367,
+       155,
+       65
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        5137.7825,
+        487.0075,
+        5180.02,
+        504.72
+       ],
+       "x_center_page": 5158.901250000001,
+       "y_center_page": 495.86375
+      }
+     },
+     "glyph_conf": {
+      "value": 0.2615658640861511,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/19/0/775",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/19/0/0/10/5",
+       "members": [
+        "glyph/19/0/0/10/5",
+        "glyph/19/0/0/10/12"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 185,
+       "ink_centre": [
+        5164.5,
+        495.9
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": -3.62,
+      "detail": {
+       "residual": 0.3799999999999999,
+       "rounded": -4,
+       "ink_centre_why": "runs_into_another_head"
+      }
+     }
+    },
+    "pitch": "C6",
+    "off_pitches": []
+   },
+   {
+    "sub": "glyph/19/0/0/10/5",
+    "rows": {
+     "glyph_box": {
+      "value": [
+       "noteheadBlackInSpace",
+       162,
+       391,
+       140,
+       100
+      ],
+      "detail": {
+       "category": "notehead",
+       "bbox_page_px": [
+        5139.145,
+        493.5475,
+        5177.295,
+        520.7975
+       ],
+       "x_center_page": 5158.22,
+       "y_center_page": 507.1725
+      }
+     },
+     "glyph_conf": {
+      "value": 0.6379699110984802,
+      "detail": {}
+     },
+     "mark_group": {
+      "value": "mg/19/0/775",
+      "detail": {
+       "family": "notehead",
+       "size": 2,
+       "rep": "glyph/19/0/0/10/5",
+       "members": [
+        "glyph/19/0/0/10/5",
+        "glyph/19/0/0/10/12"
+       ],
+       "identity": "page_head",
+       "head_how": "ink",
+       "head_ink_px": 277,
+       "ink_centre": [
+        5163.4,
+        507.7
+       ]
+      }
+     },
+     "notehead_staff_position": {
+      "value": -2.78,
+      "detail": {
+       "residual": 0.2200000000000002,
+       "rounded": -3,
+       "ink_centre_why": "runs_into_another_head"
+      }
+     }
+    },
+    "pitch": "Ab5",
+    "off_pitches": [
+     "A-15"
+    ]
+   }
+  ]
+ }
+}

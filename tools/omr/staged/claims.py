@@ -364,6 +364,190 @@ def spell_letter_runs(letters: Sequence[Tuple[Sequence[float], str, Any]], spaci
         out.append({"box": box, "text": text, "slots": len(run), "rows": rows, "read": why is None, "why": why})
     return out
 
+#: ROADMAP 2.296 (flag `OMR_DYNAMIC_OWN_CLAIM`, default ON since 2026-11-11): a printed dynamic is ONE mark and is claimed as a dynamic, never as the first letters of the word
+#: printed beside it (`f legato`, `p dolce`, `piu p`).
+ENV_DYNAMIC_OWN = "OMR_DYNAMIC_OWN_CLAIM"
+
+
+def dynamic_own_enabled() -> bool:
+    """`OMR_DYNAMIC_OWN_CLAIM` (ROADMAP 2.296), default ON (Sean 2026-11-11; "0"/"false"/"no"/"off" turns it off), the same opt-out as `OMR_PAGE_TREMOLO`. Needs the page-wide words pass (`words_first_enabled`)."""
+    return words_first_enabled() and os.environ.get(ENV_DYNAMIC_OWN, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+def compound_dynamic_slots(text: str, dynamics: Iterable[str], letters: Sequence[Tuple[Sequence[float], str, Any]]) -> Dict[str, Any]:
+    """Which of the detector letters a reader's MARKING (`f legato`: the direction word row, `dynamics` = the lexicon's dynamic tokens of its text,
+    `letters` = the detector dynamic letters the row includes, `(page box, letter, row id)`) are the DYNAMIC's own ink; PURE.
+
+    CONVENTION ASSUMED (Sean 2026-10-08 "dynamic markings and descriptive words only mean something together", the marking splits back into the
+    word and its dynamic, `consequences.pair_word_and_dynamic`; 2026-11-11 "a printed dynamic is one mark"): the text's own order says where the
+    dynamic stands. Dynamic tokens that LEAD the text are the leftmost slots of the included letters, tokens that TRAIL it the rightmost; a token in
+    the middle, a text that is all dynamic, or letters that do not spell the tokens (twins fold into one slot, as `spell_letter_runs` folds them; a
+    slot's letters must contain the token's letter) split nothing and say why -- never a guess. WHAT WOULD FALSIFY IT: a dynamic printed AFTER the
+    word's first letters with the word's own letters boxed as dynamics on its left (`piu p`: the `p` of `piu` is the word's, the rightmost slot is the dynamic).
+
+    Returns `{"slots": [{box, letters, rows, text}] (left to right), "rows": every row the marking includes, "why": None}`, or `{"slots": [], "why": ...}`."""
+    dyn = {str(t).lower() for t in dynamics if str(t)}
+    toks = str(text).split()
+    if not dyn or not toks:
+        return {"slots": [], "rows": [], "why": "no_dynamic_token"}
+    lead: List[str] = []
+    for t in toks:
+        if t.lower() not in dyn:
+            break
+        lead.append(t)
+    trail: List[str] = []
+    if len(lead) < len(toks):
+        for t in reversed(toks):
+            if t.lower() not in dyn:
+                break
+            trail.insert(0, t)
+    if len(lead) == len(toks):
+        return {"slots": [], "rows": [], "why": "text_is_all_dynamic"}
+    if not lead and not trail:
+        return {"slots": [], "rows": [], "why": "dynamic_token_in_the_middle"}
+    slots: List[Dict[str, Any]] = []
+    for box, letter, rid in sorted(letters, key=lambda t: (float(t[0][0]), float(t[0][1]))):
+        b = [float(v) for v in box]
+        twin = next((s for s in slots if any(_is_twin(m, b) for m in s["members"])), None)
+        if twin is not None:
+            twin["letters"].add(str(letter).lower())
+            twin["rows"].append(rid)
+            twin["members"].append(b)
+            twin["box"] = [min(twin["box"][0], b[0]), min(twin["box"][1], b[1]), max(twin["box"][2], b[2]), max(twin["box"][3], b[3])]
+            continue
+        slots.append({"box": b, "letters": {str(letter).lower()}, "rows": [rid], "members": [b]})
+    slots.sort(key=lambda s: s["box"][0])
+    rows = [r for s in slots for r in s["rows"]]
+    chosen: List[Dict[str, Any]] = []
+    for part, tokens in (("lead", lead), ("trail", trail)):
+        if not tokens:
+            continue
+        want = "".join(tokens).lower()
+        if len(slots) < len(want) + (len(chosen) if chosen else 0):
+            return {"slots": [], "rows": rows, "why": "fewer_letters_than_the_token"}
+        mine = slots[:len(want)] if part == "lead" else slots[len(slots) - len(want):]
+        if any(want[i] not in mine[i]["letters"] for i in range(len(want))):
+            return {"slots": [], "rows": rows, "why": "letters_do_not_spell_the_token"}
+        for i, s in enumerate(mine):
+            chosen.append({"box": s["box"], "letters": sorted(s["letters"]), "rows": list(s["rows"]), "text": want[i]})
+    chosen.sort(key=lambda s: s["box"][0])
+    return {"slots": chosen, "rows": rows, "why": None}
+
+
+#: ROADMAP 2.296: a detector letter box is TIGHT (a `p`'s descender ends past it: Litolff p8 `sempre piu p`, box bottom 1607, ink to 1613), so a claim of the box's rectangle leaves a
+#: stroke that is not WHOLLY inside it to nobody. The dynamic split out of a marking claims the box grown to the ink that touches it, at most this far past any side (staff spaces)
+DYNAMIC_INK_GROW_SPACES = 0.5
+
+
+def grow_to_ink(binary: Any, box: Sequence[float], spacing: float, grow: float = DYNAMIC_INK_GROW_SPACES) -> List[float]:
+    """`box` grown to the ink components that TOUCH it, never more than `grow` staff spaces past a side (the page raster the claim already holds; no new pass). PURE."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return [float(v) for v in box]
+    g = grow * float(spacing)
+    region = [float(box[0]) - g, float(box[1]) - g, float(box[2]) + g, float(box[3]) + g]
+    out = [float(v) for v in box]
+    for c in _components(binary, region):
+        if c[2] < box[0] or c[0] > box[2] or c[3] < box[1] or c[1] > box[3]:
+            continue                                  # does not touch the box
+        out = [min(out[0], c[0]), min(out[1], c[1]), max(out[2], c[2]), max(out[3], c[3])]
+    return out
+
+
+#: ROADMAP 2.301 (flag `OMR_WORD_OWNS_ITS_INK`, default ON): the word of a split marking claims its LETTERS WHOLE. CAUSE (Brahms p0 `f legato`, Sean's 2.296 r1 tile 8): the stroke owner gives a
+#: page-wide word claim only the strokes WHOLLY inside its box (`adjudicators.stroke_owner._areas`, +1 px), and the OCR's word box is cut at the text line, so the descender of the `g` of
+#: `legato` (ink to y 2584, the stroke map's box of it to 2585.5, the word's box to 2584: 0.5 px past the +1 px allowance) was not the word's; it fell to the detector `dynamicF` box drawn on
+#: the `g` and was settled as a DYNAMIC. The claim of the word's piece grows to the ink components that touch it (at most this far past a side) and keeps a small slack past them, never
+#: onto ink a note mark's box, an earlier claim or the marking's own dynamic holds.
+ENV_WORD_INK = "OMR_WORD_OWNS_ITS_INK"
+WORD_INK_GROW_SPACES = 0.5
+#: the stroke map's box lies up to this far past the ink it holds (1.5 px = 0.05 sp on Brahms p0); the claim keeps this much past its ink (0.1 sp = 3 px Brahms, 1.6 px Litolff)
+WORD_STROKE_SLACK_SPACES = 0.1
+#: a clipped component this wide and this thin is a staff or ledger line, not a letter's stroke
+WORD_LINE_WIDTH_SPACES = 4.0
+WORD_LINE_THICK_SPACES = 0.4
+
+
+def word_ink_enabled() -> bool:
+    """`OMR_WORD_OWNS_ITS_INK` (ROADMAP 2.301), default ON since 2026-11-11 (Sean "add the rule fix then land"; "0"/"false"/"no"/"off" turns it off). Needs the 2.296 split."""
+    return dynamic_own_enabled() and os.environ.get(ENV_WORD_INK, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+#: ROADMAP 2.303 (flag `OMR_LETTERS_ARE_THE_WORD`, default ON since 2026-11-11): letters printed INSIDE a word the lexicon READ are the word's, never a dynamic (Sean 2026-11-11, 2.301 r1 tile 4, Litolff p8:
+#: "it boxes MP, but it's actually a part of the word sempre. So that should be a word"; 2026-10-09: "When p is by itself it is piano; when it is surrounded by other letters the context
+#: solves it"). The detector reads italic text letter by letter and calls some of them dynamics; `spell_letter_runs` then spells `mp` / `pp` out of the `m`+`p` of `sempre` and files a READ dynamic
+#: over ink the word's own box holds.
+ENV_LETTERS_OF_WORD = "OMR_LETTERS_ARE_THE_WORD"
+#: a run's letter is the word's only where the word's text puts that spot outside every dynamic token's stretch of the box plus this many characters either side (the layout is crude: an italic
+#: letter is wider than the average one, so a dynamic token is given room; a letter inside it, or within it by this margin, is a dynamic or CANNOT BE TOLD, and stays what the detector said)
+WORD_TOKEN_REACH_CHARS = 1.0
+#: a letter box with at least this share of its area inside the word's box is one of the word's letters (the same share `adjudicators.text.INSIDE_READ_WORD_SHARE` uses)
+WORD_LETTER_SHARE = 0.5
+
+
+def letters_are_the_word_enabled() -> bool:
+    """`OMR_LETTERS_ARE_THE_WORD` (ROADMAP 2.303), default ON since 2026-11-11 ("0"/"false"/"no"/"off" turns it off). Needs the 2.296 split (`dynamic_own_enabled`)."""
+    return dynamic_own_enabled() and os.environ.get(ENV_LETTERS_OF_WORD, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+def letters_of_the_word(letter_boxes: Sequence[Sequence[float]], word_box: Sequence[float], word_text: str, has_neighbour_ink: bool) -> Optional[str]:
+    """Do these detector letters (one run's boxes, page px) belong to the READ word `word_text` printed in `word_box`?  PURE.
+
+    Returns the reason (`letters_of_a_word`) or None (= cannot tell / they are a dynamic: nothing changes, CLAUDE rule 8). All of:
+      1. every letter box lies inside the word's box (`WORD_LETTER_SHARE`);
+      2. the word's text is not a dynamic alone, and the text laid along the box in proportion to its characters puts the run's CENTRE outside every dynamic token's stretch (+/- `WORD_TOKEN_REACH_CHARS`);
+      3. the CV reader measured letter ink beside the run on its own line (`has_neighbour_ink`, `Q.DYNAMIC_LETTER_NEIGHBOURS`): a dynamic standing clear beside a word (`p dolce` with the `p`
+         alone) is not the word's even where an OCR box swallowed it."""
+    from ..direction_lexicon import _DYNAMIC_LETTERS, _normalise
+    if not letter_boxes or not has_neighbour_ink:
+        return None
+    wx0, wy0, wx1, wy1 = (float(v) for v in word_box)
+    for lb in letter_boxes:
+        ix = max(0.0, min(float(lb[2]), wx1) - max(float(lb[0]), wx0))
+        iy = max(0.0, min(float(lb[3]), wy1) - max(float(lb[1]), wy0))
+        if ix * iy < WORD_LETTER_SHARE * max(1.0, (float(lb[2]) - float(lb[0])) * (float(lb[3]) - float(lb[1]))):
+            return None
+    text = (word_text or "").strip()
+    tokens = text.split()
+    if not tokens or all(_normalise(t) in _DYNAMIC_LETTERS for t in tokens):
+        return None
+    per = max(1.0, wx1 - wx0) / max(1, len(text))
+    cx = (min(float(b[0]) for b in letter_boxes) + max(float(b[2]) for b in letter_boxes)) / 2.0
+    at = 0
+    for t in tokens:
+        at = text.find(t, at)
+        s, e = wx0 + at * per, wx0 + (at + len(t)) * per
+        at += len(t)
+        if _normalise(t) in _DYNAMIC_LETTERS and s - WORD_TOKEN_REACH_CHARS * per <= cx <= e + WORD_TOKEN_REACH_CHARS * per:
+            return None
+    return "letters_of_a_word"
+
+
+def edge_ink_boxes(binary: Any, box: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), grow: float = WORD_INK_GROW_SPACES) -> List[List[float]]:
+    """The word's OWN letters that stand on or past the edge of its claim `box`: for each ink component that touches `box` (clipped to `grow` staff spaces past a side), overlaps no
+    `avoid` box (a note mark's box, an earlier claim, the marking's own dynamic: ink another mark holds is never taken) and is no staff-line-like piece, whose bounding box padded by the
+    stroke map's slack (`WORD_STROKE_SLACK_SPACES`) is NOT already inside `box`: that padded box, one rectangle per such letter. Claiming it too gives the stroke owner a stroke
+    its page box (a little larger than the ink) would otherwise leave outside the word's claim. PURE; [] when nothing pokes out."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or not spacing:
+        return []
+    g = grow * float(spacing)
+    slack = WORD_STROKE_SLACK_SPACES * float(spacing)
+    region = [float(box[0]) - g, float(box[1]) - g, float(box[2]) + g, float(box[3]) + g]
+    avoid = [list(a) for a in avoid]
+    out: List[List[float]] = []
+    for c in _components(binary, region):
+        if c[2] < box[0] or c[0] > box[2] or c[3] < box[1] or c[1] > box[3]:
+            continue                                  # does not touch the box
+        if (c[2] - c[0]) > WORD_LINE_WIDTH_SPACES * spacing and (c[3] - c[1]) < WORD_LINE_THICK_SPACES * spacing:
+            continue                                  # a staff / ledger line the box lies on
+        if any(overlaps(c, a) for a in avoid):
+            continue                                  # ink another mark holds
+        pad = [c[0] - slack, c[1] - slack, c[2] + slack, c[3] + slack]
+        if pad[0] >= box[0] and pad[1] >= box[1] and pad[2] <= box[2] and pad[3] <= box[3]:
+            continue                                  # a letter wholly inside the claim already
+        out.append([float(v) for v in pad])
+    return out
+
+
 #: ROADMAP 2.221 word coverage -- the geometry of the extra word claims. All of it reads rows and rasters GATHER already holds.
 #: a metronome note stands this far right of its tempo word (staff spaces; Litolff p1: 1200 -> 1228 = 1.8) ...
 TEMPO_NOTE_GAP_SPACES = 3.0

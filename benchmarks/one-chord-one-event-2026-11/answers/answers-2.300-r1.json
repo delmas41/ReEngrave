@@ -1,0 +1,1150 @@
+{
+ "lane": "2.300-r1",
+ "date": "2026-11-11",
+ "question": "What is in this bar, in order? Which notes are one chord?",
+ "note": "Scored by the manager against key.json: every merge the flag made is right (12 of 12 bars: event count and values equal Sean's). Not the merge's doing: tiles 6 and 11 each have one chord short a head; tile 9 misses a quarter rest.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "quarter chord; two eighths on a single stem a second apart; dotted quarter chord",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 2,
+   "cell": 5,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "G4",
+       "quarter"
+      ],
+      [
+       "Db5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "Bb4",
+       "eighth"
+      ],
+      [
+       "C5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "E4",
+       "quarter"
+      ],
+      [
+       "C5",
+       "quarter"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "G4",
+       "quarter"
+      ],
+      [
+       "Db5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "Bb4",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "E4",
+       "quarter"
+      ],
+      [
+       "C5",
+       "quarter"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 2,
+   "sean": "dotted quarter chord (a second); quarter chord; eighth chord",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "brahms",
+   "page": 0,
+   "system": 0,
+   "staff": 6,
+   "cell": 1,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "Eb5",
+       "quarter"
+      ],
+      [
+       "F#5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ],
+      [
+       "F5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C5",
+       "eighth"
+      ],
+      [
+       "Eb5",
+       "eighth"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "Eb5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "F#5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ],
+      [
+       "F5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C5",
+       "eighth"
+      ],
+      [
+       "Eb5",
+       "eighth"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 3,
+   "sean": "four chords: quarter, eighth, quarter, eighth (a second, a fourth, a third, a third)",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 0,
+   "cell": 6,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Ab5",
+       "quarter"
+      ],
+      [
+       "Bb5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G5",
+       "eighth"
+      ],
+      [
+       "C6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "B5",
+       "quarter"
+      ],
+      [
+       "D6",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C6",
+       "eighth"
+      ],
+      [
+       "Eb6",
+       "eighth"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Ab5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Bb5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G5",
+       "eighth"
+      ],
+      [
+       "C6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "B5",
+       "quarter"
+      ],
+      [
+       "D6",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C6",
+       "eighth"
+      ],
+      [
+       "Eb6",
+       "eighth"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 4,
+   "sean": "quarter chord, eighth chord, dotted quarter chord",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 1,
+   "cell": 5,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Ab4",
+       "quarter"
+      ],
+      [
+       "C5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F4",
+       "eighth"
+      ],
+      [
+       "Bb4",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "Ab4",
+       "quarter"
+      ],
+      [
+       "B4",
+       "quarter"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Ab4",
+       "quarter"
+      ],
+      [
+       "C5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F4",
+       "eighth"
+      ],
+      [
+       "Bb4",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "Ab4",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.5,
+     [
+      [
+       "B4",
+       "quarter"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 5,
+   "sean": "half note chord",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "litolff",
+   "page": 2,
+   "system": 1,
+   "staff": 4,
+   "cell": 14,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     2.0,
+     [
+      [
+       "D5",
+       "half"
+      ],
+      [
+       "F5",
+       "half"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     2.0,
+     [
+      [
+       "F5",
+       "half"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 6,
+   "sean": "eighth rest, then 3 eighth note chords",
+   "verdict": "event count and values match; ON's middle event is a single G where Sean reads a chord (a head not read, not the merge)",
+   "plate": "litolff",
+   "page": 16,
+   "system": 0,
+   "staff": 0,
+   "cell": 8,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "rest",
+     0.5,
+     []
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F6",
+       "eighth"
+      ],
+      [
+       "G6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F6",
+       "eighth"
+      ],
+      [
+       "G6",
+       "eighth"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "rest",
+     0.5,
+     []
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F6",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G6",
+       "eighth"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 7,
+   "sean": "eighth rest, then 3 eighth note chords (spoken as 'tile 9' after tile 6; taken as tile 7)",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "litolff",
+   "page": 9,
+   "system": 0,
+   "staff": 1,
+   "cell": 3,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "rest",
+     0.5,
+     []
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F5",
+       "eighth"
+      ],
+      [
+       "G5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F5",
+       "eighth"
+      ],
+      [
+       "G5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F5",
+       "eighth"
+      ],
+      [
+       "G5",
+       "eighth"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "rest",
+     0.5,
+     []
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "F5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G5",
+       "eighth"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 8,
+   "sean": "quarter chord, quarter chord",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "litolff",
+   "page": 16,
+   "system": 0,
+   "staff": 4,
+   "cell": 2,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "C5",
+       "quarter"
+      ],
+      [
+       "E5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ],
+      [
+       "E5",
+       "quarter"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "C5",
+       "quarter"
+      ],
+      [
+       "E5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "E5",
+       "quarter"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 9,
+   "sean": "quarter rest, then a quarter chord",
+   "verdict": "the merge is right (one quarter chord); the bar became red because a printed quarter rest is not read -- red is the honest state",
+   "plate": "litolff",
+   "page": 4,
+   "system": 1,
+   "staff": 1,
+   "cell": 9,
+   "category": "became_red_or_partial",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Eb5",
+       "quarter"
+      ],
+      [
+       "F5",
+       "quarter"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Eb5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "F5",
+       "quarter"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 10,
+   "sean": "2 quarter chords",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "litolff",
+   "page": 10,
+   "system": 1,
+   "staff": 1,
+   "cell": 7,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "F5",
+       "quarter"
+      ],
+      [
+       "G5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Eb5",
+       "quarter"
+      ],
+      [
+       "G5",
+       "quarter"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "F5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "G5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Eb5",
+       "quarter"
+      ],
+      [
+       "G5",
+       "quarter"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 11,
+   "sean": "2 quarter chords",
+   "verdict": "event count and values match; ON's second event is a single C where Sean reads a chord (a head not read, not the merge)",
+   "plate": "litolff",
+   "page": 10,
+   "system": 1,
+   "staff": 4,
+   "cell": 7,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ],
+      [
+       "E5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "C5",
+       "quarter"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "D5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "E5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "C5",
+       "quarter"
+      ]
+     ]
+    ]
+   ]
+  },
+  {
+   "tile": 12,
+   "sean": "quarter chord, eighth chord, quarter chord, eighth chord",
+   "verdict": "events and values match the flag-ON file",
+   "plate": "brahms",
+   "page": 19,
+   "system": 0,
+   "staff": 1,
+   "cell": 6,
+   "category": "stopped_red",
+   "on_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Ab4",
+       "quarter"
+      ],
+      [
+       "B4",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G4",
+       "eighth"
+      ],
+      [
+       "C5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "B4",
+       "quarter"
+      ],
+      [
+       "D5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C5",
+       "eighth"
+      ],
+      [
+       "Eb5",
+       "eighth"
+      ]
+     ]
+    ]
+   ],
+   "off_events": [
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "Ab4",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "B4",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "G4",
+       "eighth"
+      ],
+      [
+       "C5",
+       "eighth"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     1.0,
+     [
+      [
+       "B4",
+       "quarter"
+      ],
+      [
+       "D5",
+       "quarter"
+      ]
+     ]
+    ],
+    [
+     "chord",
+     0.5,
+     [
+      [
+       "C5",
+       "eighth"
+      ],
+      [
+       "Eb5",
+       "eighth"
+      ]
+     ]
+    ]
+   ]
+  }
+ ]
+}

@@ -337,6 +337,9 @@ LEGACY_TO_Q: Dict[str, str] = {
     # test. It is the discriminator the divisi guard runs on, and that guard
     # reported `not_implemented` until this landed.
     "stem_direction": "STEM_DIRECTION",
+    # ROADMAP 2.300: the canonical `Q.HEAD_STEM` id (`export._stem_facts_of`), read by `voicing._second_group` (flag `OMR_ONE_CHORD_ONE_EVENT`,
+    # default OFF) to join the two heads of a second that stand on ONE stem; the exporter already carried it for the divisi settle.
+    "stem_id": "HEAD_STEM",
     # ⚠️ THE VERDICT, and `voice_index` is a position inside its value. The
     # split CALLS `voicing.split_events_into_voices` rather than restating it,
     # so the two paths cannot disagree about a file's `<backup>` arithmetic.
