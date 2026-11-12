@@ -472,6 +472,56 @@ def word_ink_enabled() -> bool:
     return dynamic_own_enabled() and os.environ.get(ENV_WORD_INK, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
+#: ROADMAP 2.303 (flag `OMR_LETTERS_ARE_THE_WORD`, default ON since 2026-11-11): letters printed INSIDE a word the lexicon READ are the word's, never a dynamic (Sean 2026-11-11, 2.301 r1 tile 4, Litolff p8:
+#: "it boxes MP, but it's actually a part of the word sempre. So that should be a word"; 2026-10-09: "When p is by itself it is piano; when it is surrounded by other letters the context
+#: solves it"). The detector reads italic text letter by letter and calls some of them dynamics; `spell_letter_runs` then spells `mp` / `pp` out of the `m`+`p` of `sempre` and files a READ dynamic
+#: over ink the word's own box holds.
+ENV_LETTERS_OF_WORD = "OMR_LETTERS_ARE_THE_WORD"
+#: a run's letter is the word's only where the word's text puts that spot outside every dynamic token's stretch of the box plus this many characters either side (the layout is crude: an italic
+#: letter is wider than the average one, so a dynamic token is given room; a letter inside it, or within it by this margin, is a dynamic or CANNOT BE TOLD, and stays what the detector said)
+WORD_TOKEN_REACH_CHARS = 1.0
+#: a letter box with at least this share of its area inside the word's box is one of the word's letters (the same share `adjudicators.text.INSIDE_READ_WORD_SHARE` uses)
+WORD_LETTER_SHARE = 0.5
+
+
+def letters_are_the_word_enabled() -> bool:
+    """`OMR_LETTERS_ARE_THE_WORD` (ROADMAP 2.303), default ON since 2026-11-11 ("0"/"false"/"no"/"off" turns it off). Needs the 2.296 split (`dynamic_own_enabled`)."""
+    return dynamic_own_enabled() and os.environ.get(ENV_LETTERS_OF_WORD, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
+def letters_of_the_word(letter_boxes: Sequence[Sequence[float]], word_box: Sequence[float], word_text: str, has_neighbour_ink: bool) -> Optional[str]:
+    """Do these detector letters (one run's boxes, page px) belong to the READ word `word_text` printed in `word_box`?  PURE.
+
+    Returns the reason (`letters_of_a_word`) or None (= cannot tell / they are a dynamic: nothing changes, CLAUDE rule 8). All of:
+      1. every letter box lies inside the word's box (`WORD_LETTER_SHARE`);
+      2. the word's text is not a dynamic alone, and the text laid along the box in proportion to its characters puts the run's CENTRE outside every dynamic token's stretch (+/- `WORD_TOKEN_REACH_CHARS`);
+      3. the CV reader measured letter ink beside the run on its own line (`has_neighbour_ink`, `Q.DYNAMIC_LETTER_NEIGHBOURS`): a dynamic standing clear beside a word (`p dolce` with the `p`
+         alone) is not the word's even where an OCR box swallowed it."""
+    from ..direction_lexicon import _DYNAMIC_LETTERS, _normalise
+    if not letter_boxes or not has_neighbour_ink:
+        return None
+    wx0, wy0, wx1, wy1 = (float(v) for v in word_box)
+    for lb in letter_boxes:
+        ix = max(0.0, min(float(lb[2]), wx1) - max(float(lb[0]), wx0))
+        iy = max(0.0, min(float(lb[3]), wy1) - max(float(lb[1]), wy0))
+        if ix * iy < WORD_LETTER_SHARE * max(1.0, (float(lb[2]) - float(lb[0])) * (float(lb[3]) - float(lb[1]))):
+            return None
+    text = (word_text or "").strip()
+    tokens = text.split()
+    if not tokens or all(_normalise(t) in _DYNAMIC_LETTERS for t in tokens):
+        return None
+    per = max(1.0, wx1 - wx0) / max(1, len(text))
+    cx = (min(float(b[0]) for b in letter_boxes) + max(float(b[2]) for b in letter_boxes)) / 2.0
+    at = 0
+    for t in tokens:
+        at = text.find(t, at)
+        s, e = wx0 + at * per, wx0 + (at + len(t)) * per
+        at += len(t)
+        if _normalise(t) in _DYNAMIC_LETTERS and s - WORD_TOKEN_REACH_CHARS * per <= cx <= e + WORD_TOKEN_REACH_CHARS * per:
+            return None
+    return "letters_of_a_word"
+
+
 def edge_ink_boxes(binary: Any, box: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), grow: float = WORD_INK_GROW_SPACES) -> List[List[float]]:
     """The word's OWN letters that stand on or past the edge of its claim `box`: for each ink component that touches `box` (clipped to `grow` staff spaces past a side), overlaps no
     `avoid` box (a note mark's box, an earlier claim, the marking's own dynamic: ink another mark holds is never taken) and is no staff-line-like piece, whose bounding box padded by the
