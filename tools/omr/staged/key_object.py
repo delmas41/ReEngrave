@@ -146,7 +146,118 @@ def flat_stems(binary: Any, line_ys: Sequence[float], spacing: float, x_start: f
     return chain
 
 
-def _chain_from_stems(cand: List[Dict[str, Any]], stems: List[Dict[str, Any]], sp: float) -> List[Dict[str, Any]]:
+#: ROADMAP 2.302 (flag `OMR_KEY_OBJECT_COUNTS_FLATS`, default OFF): the key object counts every printed flat from its STEMS, in the fixed order.
+ENV_FLATS = "OMR_KEY_OBJECT_COUNTS_FLATS"
+
+
+def counts_flats_enabled() -> bool:
+    return os.environ.get(ENV_FLATS, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: a crushed scan breaks a flat's stem (measured on Sean's judged staff starts: stems of 1.46 / 1.48 / 1.52 spaces where the print stands 2.6): the floor
+#: drops from `STEM_RUN_SPACES[0]` to this, the slot's POSITION window (`STEM_TOP_STEPS`) being what keeps a fragment from being counted
+STEM_RUN_SPACES_V2 = (1.4, 4.2)
+BASE_CLEFS = ("treble", "bass", "alto", "tenor")
+
+
+def _thin_strokes(binary: Any, ly: Sequence[float], sp: float, x_start: float, x_hi: float, run_lo: float, run_hi: float) -> List[Dict[str, Any]]:
+    """Thin vertical ink strokes (longest vertical run, staff lines included, in [run_lo, run_hi] spaces, at most `STEM_MAX_W_SPACES` wide)."""
+    import numpy as np
+    H, W = binary.shape
+    x0 = max(0, int(round(x_start - 0.3 * sp)))
+    x1 = min(W, int(round(x_hi)))
+    y0 = max(0, int(round(ly[0] - BAND_SPACES * sp)))
+    y1 = min(H, int(round(ly[-1] + BAND_SPACES * sp)))
+    if x1 - x0 < 4 or y1 - y0 < 8:
+        return []
+    sub = binary[y0:y1, x0:x1] == 0
+    cur = np.zeros(sub.shape[1], dtype=np.int32)
+    best = np.zeros(sub.shape[1], dtype=np.int32)
+    btop = np.zeros(sub.shape[1], dtype=np.int32)
+    for y in range(sub.shape[0]):
+        cur = (cur + 1) * sub[y]
+        upd = cur > best
+        best = np.where(upd, cur, best)
+        btop = np.where(upd, y - cur + 1, btop)
+    ok = (best >= run_lo * sp) & (best <= run_hi * sp)
+    out: List[Dict[str, Any]] = []
+    c = 0
+    while c < len(ok):
+        if not ok[c]:
+            c += 1
+            continue
+        c2 = c
+        while c2 + 1 < len(ok) and ok[c2 + 1]:
+            c2 += 1
+        if (c2 + 1 - c) <= STEM_MAX_W_SPACES * sp:
+            i = c + int(np.argmax(best[c:c2 + 1]))
+            out.append({"x0": x0 + c, "x1": x0 + c2 + 1, "cx": x0 + (c + c2 + 1) / 2.0, "y0": y0 + int(btop[i]),
+                        "y1": y0 + int(btop[i]) + int(best[i])})
+        c = c2 + 1
+    return out
+
+
+def _chain_for_clef(binary: Any, ly: Sequence[float], sp: float, x_start: float, strokes: Sequence[Dict[str, Any]], clef: str) -> List[Dict[str, Any]]:
+    """The longest x-ordered chain of `strokes` whose j-th stroke is the j-th flat of `clef` (top within `STEM_TOP_STEPS` of its slot, successive
+    strokes `STEM_MIN_GAP_SPACES`..`RUN_GAP_SPACES` apart, the first within `MAX_START_AFTER_CLEF_SPACES` of the clef edge). A stroke that fits no
+    slot is SKIPPED (a bowl's edge, a note's stem in a crush), not the end of the chain."""
+    cands = []
+    for st in strokes:
+        shift = local_line_shift(binary, ly, sp, st["cx"] - 0.5 * sp, st["cx"] + 0.5 * sp)
+        cands.append(dict(st, top_step=(st["y0"] - (ly[0] + shift)) / (sp / 2.0)))
+    best: List[Dict[str, Any]] = []
+
+    def grow(chain: List[Dict[str, Any]], start: int) -> None:
+        nonlocal best
+        if len(chain) > len(best):
+            best = list(chain)
+        j = len(chain) + 1
+        if j > MAX_SLOTS:
+            return
+        e = expected_step(clef, "b", j)
+        if e is None:
+            return
+        for i in range(start, len(cands)):
+            st = cands[i]
+            if chain:
+                gap = st["cx"] - chain[-1]["cx"]
+                if gap < STEM_MIN_GAP_SPACES * sp:
+                    continue
+                if gap > RUN_GAP_SPACES * sp:
+                    break
+            elif st["cx"] - x_start > MAX_START_AFTER_CLEF_SPACES * sp:
+                break
+            delta = st["top_step"] - e
+            if STEM_TOP_STEPS[0] <= delta <= STEM_TOP_STEPS[1]:
+                grow(chain + [dict(st, slot=j, top_step=round(st["top_step"], 2), delta_steps=round(delta, 2))], i + 1)
+    grow([], 0)
+    return best
+
+
+def flat_stems_v2(binary: Any, line_ys: Sequence[float], spacing: float, x_start: float, x_hi: float, clef: Optional[str]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.302 (PURE; `flat_stems`' contract): the flat stems of the key zone as the longest fixed-order chain, with a lower run floor
+    (`STEM_RUN_SPACES_V2`) and skipping, not stopping at, a stroke that fits no slot.
+
+    CAUSE (benchmarks/key-object-counts-flats-2026-11): on Sean's judged Litolff staff starts the stems were THERE and each stood at its slot's
+    step; `flat_stems` lost them to a 2.0-space stem floor (a broken stem is 1.4-1.9), to ending the chain at the first foreign stroke, and to a
+    clef the detector's box could not name. NO CLEF NAMED: every base clef's table is tried and a chain is returned only where ONE clef gives the
+    strictly longest (otherwise `[]`: abstain, never a guess). The count never comes from the system's count or the INFER fill."""
+    if binary is None or getattr(binary, "ndim", 0) != 2 or len(line_ys) < 5 or not spacing or spacing <= 0:
+        return []
+    sp = float(spacing)
+    ly = [float(v) for v in line_ys]
+    strokes = _thin_strokes(binary, ly, sp, x_start, float(x_hi), STEM_RUN_SPACES_V2[0], STEM_RUN_SPACES_V2[1])
+    if not strokes:
+        return []
+    if clef:
+        return _chain_for_clef(binary, ly, sp, x_start, strokes, clef)
+    chains = sorted(((len(c), cl, c) for cl in BASE_CLEFS for c in [_chain_for_clef(binary, ly, sp, x_start, strokes, cl)]), key=lambda t: -t[0])
+    if chains[0][0] >= 1 and chains[0][0] > chains[1][0]:
+        return chains[0][2]
+    return []
+
+
+def _chain_from_stems(cand: List[Dict[str, Any]], stems: List[Dict[str, Any]], sp: float, narrow: bool = False) -> List[Dict[str, Any]]:
     """One piece per stem: the candidate (a raster piece or a detector box) that holds THAT stem and no other, else the stem's own box
     (`src: "stem"`: the stem to a flat's width, 1.0 space, the printed flat's own)."""
     out: List[Dict[str, Any]] = []
@@ -165,7 +276,11 @@ def _chain_from_stems(cand: List[Dict[str, Any]], stems: List[Dict[str, Any]], s
             out.append(cand[pick])
             continue
         bx0, bx1 = st["x0"] - 0.05 * sp, st["x0"] + 1.0 * sp
-        out.append({"x0": bx0, "y0": float(st["y0"]), "x1": bx1, "y1": float(st["y1"]), "cx": (bx0 + bx1) / 2.0, "fill": None, "src": "stem"})
+        piece = {"x0": bx0, "y0": float(st["y0"]), "x1": bx1, "y1": float(st["y1"]), "cx": (bx0 + bx1) / 2.0, "fill": None, "src": "stem"}
+        if narrow:
+            # 2.302: the box to MEASURE is the stem's own (its neighbours' bowls stand inside the 1.0-space claim box and would pull the centre)
+            piece["mbox"] = [st["x0"] - 0.1 * sp, float(st["y0"]), st["x1"] + 0.1 * sp, float(st["y1"])]
+        out.append(piece)
     return out
 
 
@@ -231,8 +346,35 @@ def staff_run(binary: Any, line_ys: Sequence[float], spacing: float, x_start: fl
                 q["rel"] = round((q["cx"] - x_start) / sp, 3)
                 q["rel0"] = round((q["x0"] - x_start) / sp, 3)
                 q["rel1"] = round((q["x1"] - x_start) / sp, 3)
-            return {"pieces": chain, "reason": None, "from_stems": len(stems), "pieces_before": len(res["pieces"])}
+            res = {"pieces": chain, "reason": None, "from_stems": len(stems), "pieces_before": len(res["pieces"])}
+    if counts_flats_enabled():
+        res = _counts_flats(binary, ly, sp, x_start, float(x1), clef, cand, res)
     return res
+
+
+def _counts_flats(binary: Any, ly: Sequence[float], sp: float, x_start: float, x1: float, clef: Optional[str], cand: List[Dict[str, Any]],
+                  res: Dict[str, Any]) -> Dict[str, Any]:
+    """ROADMAP 2.302 (flag `OMR_KEY_OBJECT_COUNTS_FLATS`): `res` (what `staff_run` counted, 2.256b included) corrected by the fixed-order stem chain
+    (`flat_stems_v2`) WHERE IT CHANGES THE ANSWER, never where the pieces already stand right: the stems count MORE slots than the pieces; or the
+    pieces hold ink that is not a flat (a clef's edge before the first stem, the first note after the last: kept on the record as `extra_pieces`,
+    never counted) and the chain is at least two; or two pieces are one blob counted twice (closer than `key_kind_slots.MIN_GAP_SPACES`). The
+    count is the stems' own: never the system's, never the INFER fill. Where the stems do not change it, `res` returns unchanged."""
+    stems2 = flat_stems_v2(binary, ly, sp, x_start, x1, clef)
+    old = res["pieces"]
+    if len(stems2) < 2:
+        return res                          # one stroke is a clef's edge or a note's stem as often as a flat: never a key by itself
+    lo, hi = stems2[0]["cx"] - 0.35 * sp, stems2[-1]["cx"] + 1.3 * sp
+    inside = [p for p in old if lo <= p["cx"] <= hi]
+    blob = any((b["cx"] - a["cx"]) < 0.45 * sp for a, b in zip(old, old[1:]))
+    if not ((len(stems2) > len(old)) or (len(stems2) >= 2 and len(stems2) >= len(inside) and len(inside) < len(old)) or (len(stems2) == len(old) and blob)):
+        return res
+    chain = _chain_from_stems(cand, stems2, sp, narrow=True)
+    for q in chain:
+        q["rel"] = round((q["cx"] - x_start) / sp, 3)
+        q["rel0"] = round((q["x0"] - x_start) / sp, 3)
+        q["rel1"] = round((q["x1"] - x_start) / sp, 3)
+    extra = [{"cx": p["cx"], "rel": p["rel"], "src": p.get("src")} for p in old if not (lo <= p["cx"] <= hi)]
+    return {"pieces": chain, "reason": None, "from_stems": len(stems2), "pieces_before": len(old), "extra_pieces": extra}
 
 
 def _chain_of(cand: List[Dict[str, Any]], x_start: float, sp: float) -> Dict[str, Any]:
@@ -308,6 +450,8 @@ def find_object(binary: Any, staves: Sequence[Dict[str, Any]], *, allowed_counts
         n = len(r["pieces"])
         by_staff[st["key"]] = {"own_slots": n, "pieces": r["pieces"], "reason": r["reason"], "x_start": st["x_start"], "x_hi": st["x_hi"],
                                "fewer_than_system": 0 < n < N, "more_than_system": N > 0 and n > N}
+        if r.get("extra_pieces"):
+            by_staff[st["key"]]["extra_pieces"] = r["extra_pieces"]       # 2.302: ink past / before the flats, kept on the record, never counted
     return {"n_staves": len(staves), "N": N, "pitch_spaces": round(pitch, 3), "by_staff": by_staff, "status": status, "dossier": dossier,
             "counts": counts, "basis": basis if N else None}
 
