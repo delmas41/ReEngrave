@@ -22,7 +22,13 @@ stroke's own run where no letter touches it -- above and below the word, between
 rows (the descender of that `p`) loses them. And a stroke is taken only where it RUNS THROUGH the window (`THROUGH_COVER_MIN`): a stub of the carve ending inside it is left. CONVENTION ASSUMED:
 a barline / staff line is one straight stroke. WHAT WOULD FALSIFY IT: a READ word that changes text or is lost with the flag on (the lane's `words changed` list), a rule remnant read as a letter.
 
-The flag value is a list of owners to take: `1` = barline; `1,staff_line` adds staff lines (a SEPARATE arm, 2.304: staff lines under a word were never measured); `staff_line` alone.
+The flag value is a list of owners to take: `1` = barline; `1,staff_line` adds staff lines (a SEPARATE arm, 2.304: staff lines under a word were never measured); `staff_line` alone; `inside`
+(with any) also takes the owned ink from INSIDE the candidate's own box.
+
+WHERE IT IS APPLIED (`direction_text._without_owned_ink`, called by `crop_for` and `tight_crop_for`): OUTSIDE the candidate's own box only, the convention of `crop_for`'s `erase` (the pad exists to
+recover letters and must not re-admit ink another reader owns). Inside the box every crossing pixel is the word's. MEASURED 2026-11-12 (Litolff p8, then the frozen sample; FINDINGS in
+benchmarks/text-reader-owned-ink-2026-11): taking the rule from inside the box too (`inside`) removed the `i` of `piu` that STANDS ON a thin barline and the lexicon accepted `sempre p` for the
+printed `sempre piu p`, and lost a READ word Sean judged right; a letter on a rule shares its pixels with it, so no ownership mask can split them. The mask never repaired the cause case.
 """
 from __future__ import annotations
 
