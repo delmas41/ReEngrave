@@ -16665,7 +16665,7 @@ def gather_page_claims(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int
                 continue
             for run in CL.spell_letter_runs(letters, sorted(sp)[len(sp) // 2], DYNAMIC_WORDS):
                 if letters_of_word_on:
-                    # ROADMAP 2.303 (flag OMR_LETTERS_ARE_THE_WORD, default OFF; Sean 2026-11-11, Litolff p8 `sempre`: "it boxes MP, but it's actually a part of the word"): letters
+                    # ROADMAP 2.303 (flag OMR_LETTERS_ARE_THE_WORD, default ON; Sean 2026-11-11, Litolff p8 `sempre`: "it boxes MP, but it's actually a part of the word"): letters
                     # inside a word the lexicon READ, at a spot its text gives to a word and not to a dynamic token, with letter ink beside them, are the word's -- no dynamic claim.
                     # A word that is not a read word (the OCR refused it) or a spot that cannot be told changes nothing.
                     lw = _letters_of_a_read_word(s, run, letter_box_of_row, sides_of_key, key_of_row)

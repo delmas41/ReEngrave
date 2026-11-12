@@ -1,4 +1,4 @@
-"""ROADMAP 2.303 -- letters printed inside a READ word are the word's, never a dynamic (flag `OMR_LETTERS_ARE_THE_WORD`, default OFF). CONTROLS FROM THE REAL PIXELS AND ROWS (fixture
+"""ROADMAP 2.303 -- letters printed inside a READ word are the word's, never a dynamic (flag `OMR_LETTERS_ARE_THE_WORD`, default ON). CONTROLS FROM THE REAL PIXELS AND ROWS (fixture
 `data_letters_of_a_word_2_303.npz`, cut by `benchmarks/dynamics-not-words-2026-11/make_fixture_2_303.py` from real page gathers): each case is a crop of the page's raster at its real page
 position plus the real direction-word row, the real detector dynamic letters with the neighbour ink the CV reader measured beside each, and the real detector boxes of the crop.
 
@@ -138,10 +138,13 @@ class TestLettersOfTheWordRealCases(unittest.TestCase):
         self.assertEqual(sorted((round(c["box"][0]), round(c["box"][2])) for c in _dyn("b14_piu_p", OFF)),
                          sorted((round(c["box"][0]), round(c["box"][2])) for c in _dyn("b14_piu_p", ON)))
 
-    def test_the_flag_is_off_by_default(self):
+    def test_the_flag_is_on_by_default_and_opts_out_on_0_false_no_off(self):
         with mock.patch.dict(os.environ, BASE, clear=False):
             os.environ.pop("OMR_LETTERS_ARE_THE_WORD", None)
-            self.assertFalse(CL.letters_are_the_word_enabled())
+            self.assertTrue(CL.letters_are_the_word_enabled())
+            for off in ("0", "false", "no", "off"):
+                os.environ["OMR_LETTERS_ARE_THE_WORD"] = off
+                self.assertFalse(CL.letters_are_the_word_enabled())
         with mock.patch.dict(os.environ, ON):
             self.assertTrue(CL.letters_are_the_word_enabled())
 

@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-11 -- ROADMAP 2.303 part 2 landed ON: OMR_LETTERS_ARE_THE_WORD (deny-list)
+
+Letters of a detector run inside a READ word, at a spot its text gives to a word, file no dynamic claim (`claims.letters_of_the_word`). Sean's 12 tiles 12 of 12; exported file unchanged. Nothing retired (a filter ahead of the claim). Part 1 (unread "sempre" writes a false mp, Litolff p8 P2/P3 m12) still open. Branch land-2.303.
+
 ## 2026-11-11 -- ROADMAP 2.301 landed ON: OMR_WORD_OWNS_ITS_INK (deny-list) + the dynamic claim row names its own slot
 STAGED GATHER (`gather._file_compound`, `claims.edge_ink_boxes`). Label: `detector_letter` is the slot's token, not the twin letters (`fp` -> `p`). Edge letters: a split marking's word also claims ink components standing on its OCR box's edge (slack 0.1 sp), never ink a note box, an earlier claim or its dynamic holds; moves the `g` of `legato` dynamic->word. Real gathers: export unchanged, judged 0 right->wrong; Sean 11/12 tiles right. Inside-a-word rule NOT landed (word unread on tile 4). Tools: benchmarks/dynamics-not-words-2026-11/{replay_claims,ledger_probe,ledger_diff,tiles_r2,make_fixture_2_301}.py.
 

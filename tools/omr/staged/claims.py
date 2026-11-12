@@ -472,7 +472,7 @@ def word_ink_enabled() -> bool:
     return dynamic_own_enabled() and os.environ.get(ENV_WORD_INK, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
-#: ROADMAP 2.303 (flag `OMR_LETTERS_ARE_THE_WORD`, default OFF): letters printed INSIDE a word the lexicon READ are the word's, never a dynamic (Sean 2026-11-11, 2.301 r1 tile 4, Litolff p8:
+#: ROADMAP 2.303 (flag `OMR_LETTERS_ARE_THE_WORD`, default ON since 2026-11-11): letters printed INSIDE a word the lexicon READ are the word's, never a dynamic (Sean 2026-11-11, 2.301 r1 tile 4, Litolff p8:
 #: "it boxes MP, but it's actually a part of the word sempre. So that should be a word"; 2026-10-09: "When p is by itself it is piano; when it is surrounded by other letters the context
 #: solves it"). The detector reads italic text letter by letter and calls some of them dynamics; `spell_letter_runs` then spells `mp` / `pp` out of the `m`+`p` of `sempre` and files a READ dynamic
 #: over ink the word's own box holds.
@@ -485,8 +485,8 @@ WORD_LETTER_SHARE = 0.5
 
 
 def letters_are_the_word_enabled() -> bool:
-    """`OMR_LETTERS_ARE_THE_WORD` (ROADMAP 2.303), default OFF ("1"/"true"/"yes"/"on" turns it on). Needs the 2.296 split (`dynamic_own_enabled`)."""
-    return dynamic_own_enabled() and os.environ.get(ENV_LETTERS_OF_WORD, "0").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_LETTERS_ARE_THE_WORD` (ROADMAP 2.303), default ON since 2026-11-11 ("0"/"false"/"no"/"off" turns it off). Needs the 2.296 split (`dynamic_own_enabled`)."""
+    return dynamic_own_enabled() and os.environ.get(ENV_LETTERS_OF_WORD, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def letters_of_the_word(letter_boxes: Sequence[Sequence[float]], word_box: Sequence[float], word_text: str, has_neighbour_ink: bool) -> Optional[str]:
