@@ -165,60 +165,31 @@ def _arc_claims(ev: Evidence, cell) -> List[SO.Claim]:
     return out
 
 
-def _head_claims(ev: Evidence, cell, claims: List[SO.Claim], page: Dict[int, Tuple[float, ...]]) -> Tuple[List[SO.Claim], Dict[str, int]]:
-    """ROADMAP 2.260e M6c (flag `OMR_PAGE_HEAD_CLAIM`, needs `OMR_PAGE_HEADS`): a head owns the ink OF ITS OWN PAGE HEAD, not "a box holds half of a cell stroke"
-    (Sean 2026-10-30: "arbitrary"). GATHER read every head once on the page (`page_heads`), folded twin boxes to one head and claimed its blob strokes (owner `head`)
-    and the level stubs touching it (owner `ledger`) as `unit: page_ink` rows filed on the page. For each such head:
-
-      * every detector box folded into it keeps its claim (its key, its class, its shape tests, its verdicts) but COVERS the strokes of THIS cell whose centre lies in
-        the page head's ink boxes -- a box drawn off its ink still owns the ink it stands for, and twins cover the same ink (MERGED, one family);
-      * a ledger claim covers this cell's strokes inside its stub boxes (a non-area claim, so the shape test applies).
-    A box that is not a member of any page head with ink (a flag-off record, a box on no stroke) keeps its box-overlap claim untouched. Returns the claims and the
-    counts (`replaced`, `ledger_claims`, `gained_strokes`, `lost_strokes`) for the verdict's census."""
+def _page_head_claims(ev: Evidence, cell) -> List[SO.Claim]:
+    """ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): each page head's ONE claim (`page_heads.file_one_claims`: a `Q.CLAIMED_AREA` row on the page,
+    `page_strokes` = the page strokes of the head's oval, `members` = its boxes) as a claim on THIS cell's strokes LINKED to those page strokes by the
+    ledger's own rule (`page_ledger.LINK_SHARE_MIN`, `is_view`: a piece the cell split differently is not the head's here). HEAD tier, `how` area (on the
+    page ledger), the head's shape test kept. Reads the flag so the OFF arm of an A/B replay ignores the rows."""
     from .. import page_heads as _PH
-    cen = {"replaced": 0, "ledger_claims": 0, "gained_strokes": 0, "lost_strokes": 0}
-    if not _PH.claim_enabled():
-        return claims, cen
-    by_member: Dict[str, List[List[float]]] = {}
-    ledgers: List[Tuple[str, List[List[float]]]] = []
-    for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
-        d = r.detail or {}
-        if d.get("source") != _PH.SOURCE or d.get("unit") != _PH.UNIT or not d.get("stroke_boxes"):
-            continue
-        boxes = [[float(t) for t in b] for b in d["stroke_boxes"]]
-        if d.get("owner") == "head":
-            for k in d.get("members") or ():
-                by_member.setdefault(str(k), []).extend(boxes)
-        elif d.get("owner") == "ledger":
-            ledgers.append((r.id, boxes))
-
-    def inside(boxes: List[List[float]]) -> Tuple[int, ...]:
-        res = []
-        for o, pb in sorted(page.items()):
-            cx, cy = (pb[0] + pb[2]) / 2.0, (pb[1] + pb[3]) / 2.0
-            if any(b[0] - 1 <= cx <= b[2] + 1 and b[1] - 1 <= cy <= b[3] + 1 for b in boxes):
-                res.append(o)
-        return tuple(res)
+    from .. import page_ledger as _PL
     out: List[SO.Claim] = []
-    for c in claims:
-        boxes = by_member.get(c.key) if (c.family == "head" and not c.area) else None
-        if not boxes:
-            out.append(c)
-            continue
-        mine = inside(boxes)
-        if not mine:
-            out.append(c)
-            continue
-        cen["replaced"] += 1
-        cen["gained_strokes"] += len(set(mine) - set(c.covers))
-        cen["lost_strokes"] += len(set(c.covers) - set(mine))
-        out.append(SO.Claim(c.key, c.family, c.cls, mine, c.partial, c.row_id))
-    for rid, boxes in ledgers:
-        mine = inside(boxes)
+    if not _PH.ledger_enabled() or not _PL.enabled():
+        return out
+    rows = [r for r in ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+            if (r.detail or {}).get("source") == _PH.ONE_SOURCE and (r.detail or {}).get("owner") == _PH.ONE_OWNER and (r.detail or {}).get("page_strokes")]
+    if not rows:
+        return out
+    by_page: Dict[int, List[int]] = {}
+    for o, ln in _links(ev, cell).items():
+        if ln[1] >= _PL.LINK_SHARE_MIN and _PL.is_view(ln):
+            by_page.setdefault(int(ln[0]), []).append(int(o))
+    for r in rows:
+        d = r.detail or {}
+        mine = sorted({o for p in d["page_strokes"] for o in by_page.get(int(p), ())})
         if mine:
-            cen["ledger_claims"] += 1
-            out.append(SO.Claim("page_head_ledger/" + rid, "ledger", "ledger", mine, (), rid))
-    return out, cen
+            out.append(SO.Claim("page_head/%s" % r.id, "head", "page_head", tuple(mine), (), r.id, area=True,
+                                members=tuple(str(k) for k in (d.get("members") or ()))))
+    return out
 
 
 def _hairpin_claims(ev: Evidence, cell) -> List[SO.Claim]:
@@ -419,14 +390,24 @@ def _ink_consult(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
     verdict just computed: it decides nothing about any box."""
     from . import ink_consult as IC
     shares = _box_shares(ev, cell)
-    areas = {c.family for c in claims if c.area}
-    # a stroke the page's one settle gave to a register / layer claim another cell filed is held by that claim here too (as `_claim_final`)
-    areas |= {str(c["family"]) for w in owned.values() for c in w.candidates if c.get("how") == "area" and w.family == c["family"]}
+    areas = {c.family for c in claims if c.area and not c.members}
+    # a stroke the page's one settle gave to a register / layer claim another cell filed is held by that claim here too (as `_claim_final`); a page head
+    # (2.290, `members`) is the head tier's own claim, never a tier-0 area
+    areas |= {str(c["family"]) for w in owned.values() for c in w.candidates
+              if c.get("how") == "area" and w.family == c["family"] and not c.get("members")}
+    # ROADMAP 2.290 step 4 (flag `OMR_PAGE_HEAD_LEDGER`): a stroke the ledger gave to a PAGE HEAD is held by the owner `page_head` (the head tier): a box of a
+    # LATER tier (a rest, an accidental, a dot, a letter, a flag) standing on a head's claimed ink is told so by the one consult (`ink_consult.FINAL_BOX_CLAIMS`)
+    # -- claimed ink is final (2.277). A box of the head family itself is never held by it (same tier). Absent with the flag OFF (no `page_head/` owner).
+    def fam_of(w: Any) -> Optional[str]:
+        return IC.PAGE_HEAD_OWNER if (w.family == "head" and w.owners and str(w.owners[0]).startswith("page_head/")) else w.family
+    if any(fam_of(w) == IC.PAGE_HEAD_OWNER for w in owned.values()):
+        tiers = tuple(tuple(t) + ((IC.PAGE_HEAD_OWNER,) if "head" in t else ()) for t in tiers)
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
             continue
-        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family, tuple(owned[o].owners))
+        boxes.append((c.key, c.family, [(o, sh, by_ord[o].area, owned[o].state, owned[o].family if c.family == "head" else fam_of(owned[o]),
+                                          tuple(owned[o].owners))
                                          for o, sh in sorted(shares[c.key].items()) if o in by_ord and o in owned]))
     return {"held": IC.held_by_earlier(boxes, tiers, sorted(areas)), "areas": sorted(areas)}
 
@@ -439,12 +420,12 @@ def _claim_final(ev: Evidence, cell, claims: List[SO.Claim], owned: Dict[int, An
     if not CF.enabled():
         return None
     shares = _box_shares(ev, cell)
-    claim_families = sorted({c.family for c in claims if c.area})
+    claim_families = sorted({c.family for c in claims if c.area and not c.members})
     from .. import page_ledger as _PL
     if _PL.enabled():
-        # ROADMAP 2.284: a stroke the page's one settle gave to a register claim another cell filed is held by that claim here too
+        # ROADMAP 2.284: a stroke the page's one settle gave to a register claim another cell filed is held by that claim here too (2.290: a page head is not one)
         claim_families = sorted(set(claim_families) | {str(c["family"]) for w in owned.values() for c in w.candidates
-                                                       if c.get("how") == "area" and w.family == c["family"]})
+                                                       if c.get("how") == "area" and w.family == c["family"] and not c.get("members")})
     boxes = []
     for c in claims:
         if c.area or c.key not in shares:
@@ -477,10 +458,10 @@ def _cell_view(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
     layer_claims = _layer_claims(ev, cell, page)       # 2.277 (flag OMR_CLAIM_FINAL): any other claim layer, whatever its unit
     claims += layer_claims
     claims += _found_whole_rests(ev, cell, page, claims)
-    claims, head_census = _head_claims(ev, cell, claims, page)       # 2.260e M6c (flag OMR_PAGE_HEAD_CLAIM; the claims untouched with it OFF)
+    claims += _page_head_claims(ev, cell)              # 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER; [] with it OFF): one claim per head, by page stroke
     tiers = ((tuple(SO.TIERS[0]) + tuple(sorted({c.family for c in layer_claims})),) + tuple(SO.TIERS[1:])) if layer_claims else SO.TIERS
     return dict(inks=inks, page=page, claims=claims, arc_claims=arc_claims, hairpin_claims=hairpin_claims, layer_claims=layer_claims,
-                head_census=head_census, tiers=tiers)
+                tiers=tiers)
 
 
 def _settle_view(view: Dict[str, Any], vetoes: Optional[Dict[str, SO.Veto]]) -> Dict[str, Any]:
@@ -581,7 +562,7 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
         return Ruling.abstain("no_strokes")
     view = _settle_view(view, shape_vetoes(ev, cell, view["inks"], view["claims"]) if SO.owner_shape_enabled() else None)
     inks, claims, owned = view["inks"], view["claims"], view["owned"]
-    arc_claims, hairpin_claims, head_census = view["arc_claims"], view["hairpin_claims"], view["head_census"]
+    arc_claims, hairpin_claims = view["arc_claims"], view["hairpin_claims"]
     shaped, vetoes = view["shaped"], view["vetoes"]
     ledger_census = None
     from .. import page_ledger as _PL
@@ -615,8 +596,6 @@ def adjudicate_stroke_owner(ev: Evidence) -> Ruling:
     detail = {"strokes": strokes, "boxes": boxes, "census": SO.census(owned)}
     if ledger_census is not None:
         detail["page_ledger"] = ledger_census          # ROADMAP 2.284: what the page's one settle changed in this cell (flag OFF: absent)
-    if head_census["replaced"] or head_census["ledger_claims"]:
-        detail["page_head_claim"] = head_census
     cf = _claim_final(ev, cell, claims, owned, by_ord)          # ROADMAP 2.277 (flag OMR_CLAIM_FINAL, default ON): None with it OFF
     if cf is not None:
         detail["claim_final"] = cf
