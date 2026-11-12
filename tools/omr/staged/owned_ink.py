@@ -144,6 +144,9 @@ def attach(pws: Any, kinds: Optional[Sequence[str]] = None) -> Optional[OwnedInk
     kinds = tuple(kinds if kinds is not None else kinds_enabled())
     if not kinds:
         return None
+    page = getattr(pws, "page", None)
+    if getattr(page, "rgb", None) is None or getattr(page, "binary", None) is None or not all(hasattr(s, "line_spacing_px") for s in getattr(pws, "staves", ())):
+        return None           # not a real rendered page (a test double): nothing to mask, the crop stays as it was
     sp = float(np.median([s.line_spacing_px for s in pws.staves])) if pws.staves else 20.0
     halo = max(1, int(round(HALO_SPACES * sp)))
     reach = max(2, int(round(CROSS_REACH_SPACES * sp)))
