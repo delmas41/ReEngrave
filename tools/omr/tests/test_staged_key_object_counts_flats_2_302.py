@@ -1,4 +1,4 @@
-"""ROADMAP 2.302 -- the key object counts every printed flat from its stems (flag OMR_KEY_OBJECT_COUNTS_FLATS, default OFF).
+"""ROADMAP 2.302 -- the key object counts every printed flat from its stems (flag OMR_KEY_OBJECT_COUNTS_FLATS, default ON, deny-list).
 
 CONTROLS ARE REAL PIXELS (CLAUDE rule 7): the key zones of Sean's 23 judged staff starts (2.292 r1, 2.299 r1), cut from the Litolff / Brahms pages
 (`benchmarks/key-object-counts-flats-2026-11/data/real_starts.npz`, built by make_fixtures.py). Each case says how many flats the tree counted BEFORE
@@ -31,10 +31,13 @@ def run(key, flag):
 
 
 class RealStarts(unittest.TestCase):
-    def test_flag_default_off(self):
+    def test_flag_default_on_and_deny_list(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(ENV, None)
-            self.assertFalse(KO.counts_flats_enabled())
+            self.assertTrue(KO.counts_flats_enabled())
+        for v in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {ENV: v}):
+                self.assertFalse(KO.counts_flats_enabled(), v)
 
     def test_off_reproduces_the_tree_before(self):
         for k, v in META.items():

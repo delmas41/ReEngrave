@@ -146,12 +146,12 @@ def flat_stems(binary: Any, line_ys: Sequence[float], spacing: float, x_start: f
     return chain
 
 
-#: ROADMAP 2.302 (flag `OMR_KEY_OBJECT_COUNTS_FLATS`, default OFF): the key object counts every printed flat from its STEMS, in the fixed order.
+#: ROADMAP 2.302 (flag `OMR_KEY_OBJECT_COUNTS_FLATS`, default ON, deny-list: 0/false/no/off opts out): the key object counts every printed flat from its STEMS, in the fixed order.
 ENV_FLATS = "OMR_KEY_OBJECT_COUNTS_FLATS"
 
 
 def counts_flats_enabled() -> bool:
-    return os.environ.get(ENV_FLATS, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ENV_FLATS, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: a crushed scan breaks a flat's stem (measured on Sean's judged staff starts: stems of 1.46 / 1.48 / 1.52 spaces where the print stands 2.6): the floor
