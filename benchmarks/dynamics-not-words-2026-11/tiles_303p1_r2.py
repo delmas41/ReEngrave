@@ -91,6 +91,9 @@ def main():
                 if not boxes:
                     continue
                 items.append(dict(plate=plate, cell=cell, part=part, off=x[0] if x else "nothing", on=y[0] if y else "nothing", box=union(boxes)))
+    if os.environ.get("TILES_ONLY_PREFIX"):       # round 3: only the places that changed since the sheet Sean saw (e.g. `cell/4/0/10/`)
+        items = [it for it in items if it["cell"].startswith(os.environ["TILES_ONLY_PREFIX"])]
+        n = len(items)
     random.Random(2303).shuffle(items)
     sel = items[:n]
     # tiles 13-15: changed places not yet shown, preferring a dynamic ON removes with no word change in its bar (not visibly inside a guessed word)
@@ -98,7 +101,7 @@ def main():
     word_cells = {it["cell"] for it in items if it["part"] == "word"}
     pref = [it for it in rest if it["part"] == "dyn" and it["on"] == "nothing" and it["cell"] not in word_cells]
     extra = (pref + [it for it in rest if it not in pref])[:3]
-    sel = sel + extra
+    sel = sel + (extra if not os.environ.get("TILES_ONLY_PREFIX") else [])
     out.mkdir(parents=True, exist_ok=True)
     for old in out.glob("tile_*.png"):
         old.unlink()
