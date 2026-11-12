@@ -161,10 +161,12 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
                 # (stacked arcs; a tail). Two members: the arc's side decides. Three or more: the end's own height decides only where it stands within `INNER_MEMBER_DY_SPACES` of that member,
                 # else the end abstains (the middle of a stack is not read from the side).
                 col_ = {}
+                # ROADMAP 2.305: a head boxed twice is ONE member (`head_id`, 2.290's one identity, set by `ownership._page_head_groups`); the bound box stands for its head
+                col_[hd.get("head_id") or hd["key"]] = hd
                 for h in heads:
                     if h.get("tip") or abs(h["cx"] - hd["cx"]) > 0.5 * max(h["w"], hd["w"]) or (usable is not None and not usable(h["key"])):
                         continue
-                    col_.setdefault(h["key"], h)
+                    col_.setdefault(h.get("head_id") or h["key"], h)
                 col_ = list(col_.values())
                 if len(col_) > 1 and side in ("above", "below") and not b[s_].get("via_stem_tip") and not hd.get("tip"):
                     outer = min(col_, key=lambda h: h["cy"]) if side == "above" else max(col_, key=lambda h: h["cy"])
@@ -187,6 +189,12 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
                 beyond = ((ey - hd["cy"]) if side == "below" else (hd["cy"] - ey) if side == "above" else abs(ey - hd["cy"])) / sp
                 if beyond > END_BEYOND_HEAD_SPACES and not hd.get("tip") and not b[s_].get("via_stem_tip"):
                     b[s_] = {"unbound": "end_far_beyond_head", "candidates": [hd["key"]], "margin_spaces": round(END_BEYOND_HEAD_SPACES - beyond, 3)}
+                    continue
+                # ROADMAP 2.305 (page-facts: an arc is OVER its notes -- a cap stands above the heads it joins, a cup below): the head stands on the arc's FAR side of
+                # its end, as far as `END_BEYOND_HEAD_SPACES` (r2's own number, only declines): the ink is not this head's arc (Litolff p5 run 99: a cap over the lower
+                # staff bound to the upper staff's heads 5 sp above its ends). A stem tip, which stands on the far side by design, is exempt.
+                if side in ("above", "below") and -beyond > END_BEYOND_HEAD_SPACES and not hd.get("tip") and not b[s_].get("via_stem_tip"):
+                    b[s_] = {"unbound": "head_on_the_arcs_far_side", "candidates": [hd["key"]], "margin_spaces": round(END_BEYOND_HEAD_SPACES + beyond, 3)}
                     continue
                 if out_by > ANCHOR_OUT_SPACES * sp or out_by < -ANCHOR_IN_SPACES * sp or abs(hd["cy"] - float(d[yk])) > ANCHOR_DY_SPACES * sp:
                     b[s_]["outside_window"] = True          # the head stands outside 2.166's window: the end "stops short" (or overshoots) and the closest-note rule bound it

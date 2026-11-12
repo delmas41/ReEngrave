@@ -3000,71 +3000,30 @@ def _closest_sides(ev: Evidence, sysarc: Any, d: Dict[str, Any], sp: float, staf
     return {s_: s_ not in why for s_ in ("left", "right")}, why, others
 
 
-def _one_head_candidates(ev: Evidence, heads: List[Dict[str, Any]], rows: Dict[str, Any], usable: Any) -> Tuple[List[Dict[str, Any]], Dict[str, Any]]:
-    """ROADMAP 2.305 (the page arc pass, `OMR_PAGE_ARC_WRITE`): the staff's notehead BOXES folded into its HEADS by 2.290's one identity (`Q.MARK_GROUP`
-    rows whose `identity` is page_head; `page_heads.read_one`). Returns `(heads, folded)`: one candidate per head, and `folded[rep] = {members, unread}`.
+def _page_head_groups(ev: Evidence, heads: List[Dict[str, Any]], rows: Dict[str, Any], usable: Any) -> Dict[str, Dict[str, Any]]:
+    """ROADMAP 2.305 (the page arc pass, `OMR_PAGE_ARC_WRITE`): which notehead BOXES of the staff are ONE head by 2.290's one identity (`Q.MARK_GROUP` rows whose
+    `identity` is page_head; `page_heads.read_one`). Returns `{box key: {head, members}}` for every box whose head was boxed more than once; each such head dict
+    also gets `head_id`. A record with no page-head identity returns {} and nothing changes.
 
-    THE RULE THAT OWNS THE VALUE: page-facts / 2.290 "a twin box is the same head" -- the head's identity is read once on the page ink; the arc pass only reads it.
-    Which box stands for the head is the box EXPORT writes for it (`export._write_once` and the 2.290 r4 pitch pick, mirrored here so the bound end is a note
-    the file holds): its members agree on their rounded position -> the most confident usable one; they disagree -> the member at the step its head INK
-    witnesses (hole, else ink centre, `Q.NOTEHEAD_STAFF_POSITION`), and where no member stands there the head's step is UNREAD (`unread`: the end binds,
-    its kind is not read -- rule 8, never one of two). The candidate's place is the head's INK centre (`ink_centre`, page px), not one box's centre.
-    A record with no page-head identity returns the boxes unchanged."""
-    gid: Dict[str, Tuple[str, Any]] = {}
+    THE RULE THAT OWNS THE VALUE: 2.290 (landed ON) "two boxes on the same head ink are ONE head" -- read once on the page ink; the arc pass only reads it. It
+    decides no position: the step is read off the box the end bound, as before."""
+    gid: Dict[str, str] = {}
     for h in heads:
         mg = ev.rows(Q.MARK_GROUP, subject=rows[h["key"]].subject)
         if mg and (mg[-1].detail or {}).get("identity") == "page_head":
-            gid[h["key"]] = (str(mg[-1].value), (mg[-1].detail or {}).get("ink_centre"))
+            gid[h["key"]] = str(mg[-1].value)
     groups: Dict[str, List[Dict[str, Any]]] = {}
     for h in heads:
-        g = gid.get(h["key"])
-        if g is not None:
-            groups.setdefault(g[0], []).append(h)
-    out: List[Dict[str, Any]] = []
-    folded: Dict[str, Any] = {}
-    done = set()
-
-    def score(h):
-        return float(getattr(rows[h["key"]], "score", None) or (rows[h["key"]].detail or {}).get("score") or 0.0)
-
-    for h in heads:
-        g = gid.get(h["key"])
-        if g is None or len(groups[g[0]]) < 2:
-            out.append(h)
+        if h["key"] in gid:
+            groups.setdefault(gid[h["key"]], []).append(h)
+    out: Dict[str, Dict[str, Any]] = {}
+    for g, mem in groups.items():
+        if len(mem) < 2:
             continue
-        if g[0] in done:
-            continue
-        done.add(g[0])
-        mem = groups[g[0]]
-        live = [m for m in mem if usable(m["key"])] or mem
-        rounded: Dict[str, Any] = {}
-        wit: List[float] = []
-        for m in live:
-            for p in ev.rows(Q.NOTEHEAD_STAFF_POSITION, subject=rows[m["key"]].subject):
-                d = p.detail or {}
-                rounded[m["key"]] = d.get("rounded")
-                for k in ("hole_ink_position", "ink_centre_position_float"):
-                    if isinstance(d.get(k), (int, float)):
-                        wit.append(float(d[k]))
-                        break
-                break
-        unread = False
-        pool = live
-        if len({rounded.get(m["key"]) for m in live}) > 1:
-            on = [m for m in live if wit and rounded.get(m["key"]) == int(round(sum(wit) / len(wit)))]
-            if on:
-                pool = on
-            else:
-                unread = True
-        rep = dict(max(pool, key=score))
-        ics = [gid[m["key"]][1] for m in mem if gid[m["key"]][1]]
-        if ics:
-            rep["cx"] = sum(float(c[0]) for c in ics) / len(ics)
-            rep["cy"] = sum(float(c[1]) for c in ics) / len(ics)
-        rep["members"] = [m["key"] for m in mem]
-        folded[rep["key"]] = {"members": rep["members"], "unread": unread}
-        out.append(rep)
-    return out, folded
+        for m in mem:
+            m["head_id"] = g
+            out[m["key"]] = {"head": g, "members": [x["key"] for x in mem]}
+    return out
 
 
 def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict[str, Any]]:
@@ -3143,13 +3102,13 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
             memo[key] = not (own is not None and _is_relocated_copy(row.subject, own.value)) and _head_usable(ev, key)
         return memo[key]
 
-    folded: Dict[str, Any] = {}
+    folded: Dict[str, Dict[str, Any]] = {}
     if page_run is not None:
         # ROADMAP 2.305 (job 2; the page pass only, so the 2.223 detector-curve path is unchanged): an end attaches to a KNOWN HEAD, and since 2.290 a head is the
-        # page head (`Q.MARK_GROUP` identity page_head), not a detector box. Two boxes of one head are ONE candidate -- never a chord of two members, a head
-        # "between", or one head at both ends. Measured on the merged tree (2.305 step 0, Litolff p5/8/13/15): 69 of 174 written runs and 47 of 120 abstained
-        # ones had an end or a candidate on such a twin.
-        heads, folded = _one_head_candidates(ev, heads, rows, usable)
+        # page head (`Q.MARK_GROUP` identity page_head), not a detector box: two boxes of one head are never two chord members, a head "between" or two heads
+        # (`head_id`, read by `page_arc_bind.closest_binder`), and an end on such a head names the box the file writes for it. Measured on the merged tree (2.305
+        # step 0, Litolff p5/8/13/15): 69 of 174 written runs and 47 of 120 abstained ones had an end or a candidate on a head boxed twice.
+        folded = _page_head_groups(ev, heads, rows, usable)
 
     # ⚠️ AN ARC IS DRAWN TO A STEM, NOT TO A NOTEHEAD (`benchmarks/omr-arc-recovery-2026-09/FINDINGS.md` s6): a slur over stemmed notes
     # ends at the stem's free end, 2-3 spaces from the head, outside the head window. Each detector STEM box (a GATHER row) joined to
@@ -3207,16 +3166,21 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
     if lk is None or rk is None:
         b["why"] = ("system_edge" if b["left"].get("edge") or b["right"].get("edge") else "end_unbound")
         return b
+    between_pool = heads
+    if folded and (lk in folded or rk in folded):
+        # ROADMAP 2.305: an end on a head boxed more than once (`_page_head_groups`). The same head at both ends is one head, not two notes; its other boxes are
+        # never heads "between". The step is still read off the box the end bound (r1 measured naming the box the file writes instead: Litolff p5 run 89, a
+        # printed tie, became a slur -- the written box's pitch is the head's own unsure reading, not a second witness).
+        b["page_head_ends"] = {s_: folded[k_]["members"] for s_, k_ in (("left", lk), ("right", rk)) if k_ in folded}
+        if lk in folded and rk in folded and folded[lk]["head"] == folded[rk]["head"]:
+            b["left"] = b["right"] = {"unbound": "one_head_both_ends", "candidates": [lk, rk], "margin_spaces": None}
+            b["why"] = "end_unbound"
+            return b
+        mine =set((folded.get(lk) or {}).get("members") or ()) | set((folded.get(rk) or {}).get("members") or ())
+        between_pool = [h for h in heads if h["key"] not in mine or h["key"] in (lk, rk)]
     by = {h["key"]: h for h in heads}
     hl, hr = by[lk], by[rk]
-    if folded and (lk in folded or rk in folded):
-        # ROADMAP 2.305: an end on a head boxed twice (one candidate, `_one_head_candidates`); where the twins' positions disagree and the head's ink names
-        # neither, the head's step is not read and neither is the kind (counted, the old path keeps its arc)
-        b["page_head_ends"] = {s_: folded[k_]["members"] for s_, k_ in (("left", lk), ("right", rk)) if k_ in folded}
-        if any(folded.get(k_, {}).get("unread") for k_ in (lk, rk)):
-            b.update(start=lk, stop=rk, why="step_unread_page_head")
-            return b
-    between = _arc_claim.heads_between(hl, hr, heads, usable)
+    between = _arc_claim.heads_between(hl, hr, between_pool, usable)
     cya, cyb = hl["cy"], hr["cy"]
     ea = eb = None
     if end_pitch:
@@ -6535,6 +6499,33 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         binder = PB.closest_binder(PB.facing_ends(peers, i, st), cells_)
         b = _page_binding(ev, None, page_run=(d, home, "page_arc/%s" % r.id, r.id,
                                               lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
+        far = [s_ for s_ in ("left", "right") if (b.get(s_) or {}).get("unbound") == "head_on_the_arcs_far_side"]
+        hs_ = R.Subject.from_key(home)
+        near = None
+        if len(far) == 2 and b.get("side") in ("above", "below") and hs_.staff is not None:
+            # a cap's notes are BELOW it, a cup's ABOVE: the neighbouring staff on the arc's own side
+            near = R.Subject(Kind.STAFF, hs_.page, hs_.system, hs_.staff + (1 if b["side"] == "above" else -1)).to_key()
+        cells2 = {}
+        if near is not None:
+            for crow in ev.rows(Q.CELL_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=R.Subject.from_key(near)):
+                if isinstance(crow.value, (list, tuple)) and len(crow.value) == 4:
+                    cells2[crow.subject.cell or 0] = (float(crow.value[0]), float(crow.value[2]))
+        if cells2:
+            # ROADMAP 2.305 (the staff of an arc is where its INK lies; page-facts: an arc is OVER its notes): BOTH ends' heads on the staff taken from the witnessing
+            # box's owner (or the run's own nearest-staff row) stand on the arc's FAR side -- that staff's notes are not this ink's (Litolff p13 run 31: the cup under
+            # the upper staff's tie bound to the lower staff's twin-tie heads, 3.4 sp below its ends). The arc's own side names the other staff: bind there, ONCE; the
+            # same binder decides or abstains. Only detector boxes owned by that staff are this run's witnesses (a box of the first staff keeps its own arc).
+            binder2 = PB.closest_binder(PB.facing_ends(peers, i, st), cells2)
+            b2 = _page_binding(ev, None, page_run=(d, near, "page_arc/%s" % r.id, r.id,
+                                                   lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder2, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
+            entry["owner_far_side"] = {"home": home, "ends": far}
+            ws_own = []
+            for w in ws:
+                ov = ev.verdict(Q.ARC_OWNER, subject=R.Subject.from_key(w))
+                if ov is not None and ov.outcome is Outcome.DECIDED and ov.value == near:
+                    ws_own.append(w)
+            b, home, disagree = b2, near, False
+            entry.update(home=home, home_from="arc_side_after_far_side", witnesses=ws_own)
         entry["left"], entry["right"] = b.get("left"), b.get("right")
         used.append(r.id)
         if disagree and b.get("kind") in ("tie", "slur") and any(float((b[s_] or {}).get("distance_spaces") or 0.0) > PB.END_REACH_SPACES for s_ in ("left", "right")):
