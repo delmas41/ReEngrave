@@ -1,0 +1,104 @@
+{
+ "lane": "2.290-gate-r2",
+ "date": "2026-11-11",
+ "question": "what notes are in the boxes; which are tied or slurred to which",
+ "note": "Scored by the manager against key.json. Tie places 2, 4, 8, 9, 10 right. Tile 1: a tie in both voices, we write one slur. Tile 12: two chord notes where we fold to one. Tiles 3, 7, 11 need the rows. NOT LANDED.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "a unison half note TIED to a unison eighth note in the next measure, followed by 3 unison eighth notes with beams",
+   "score": "ON writes ONE SLUR on voice 1: the arc is a TIE and both voices carry one -- kind wrong, one voice missing (OFF wrote none)",
+   "plate": "litolff",
+   "page": 8,
+   "why": "p8 m69-70: the unison half F5 and the eighth F5: OFF no arc; ON slur on voice 1, two voices"
+  },
+  {
+   "tile": 2,
+   "sean": "2 half notes with a tie between them across the bar line",
+   "score": "right: F3 tied to F3",
+   "plate": "litolff",
+   "page": 2,
+   "why": "p2 m7-8: F3 written (was G3 in r3), tie F3 -> F3 kept; OFF also wrote a spurious G3"
+  },
+  {
+   "tile": 3,
+   "sean": "2 half-note CHORDS with ties; only 3 of the 4 half notes are boxed -- the lower left-hand note is missing a box",
+   "score": "the tie shown is right; the fourth head (lower left) has no box: unread head or tile omission -- to check; the Ab3 -> A3 pitch change not judged",
+   "plate": "litolff",
+   "page": 8,
+   "why": "p8 m58-59 (staff 3): ON ties A3 -> the stop, whose A flat 3 became A3 (tie carry)"
+  },
+  {
+   "tile": 4,
+   "sean": "2 half notes with a tie",
+   "score": "right",
+   "plate": "litolff",
+   "page": 8,
+   "why": "p8 m58-59 (staff 10): ON ties the halves, written blue (fold pitch)"
+  },
+  {
+   "tile": 5,
+   "sean": "a half note with no ties, just a straight half note",
+   "score": "one note, written blue: consistent",
+   "plate": "litolff",
+   "page": 8,
+   "why": "p8 m57: a fold the pitch does not settle: D4 written blue"
+  },
+  {
+   "tile": 6,
+   "sean": "a half note",
+   "score": "one note, written blue: consistent",
+   "plate": "litolff",
+   "page": 8,
+   "why": "p8 m65: a fold the pitch does not settle: C3 written blue"
+  },
+  {
+   "tile": 7,
+   "sean": "2 quarter notes with a slur from the first note that extends past those notes; cannot see what is past that",
+   "score": "ON writes B4 blue and drops the thin A4 box: UNKNOWN whether two notes are written where he sees two -- to check from rows",
+   "plate": "litolff",
+   "page": 11,
+   "why": "p11 m107: B4 and a thin A4 box: B4 written blue (OFF wrote both)"
+  },
+  {
+   "tile": 8,
+   "sean": "2 half notes, each in their own measure, with ties going from before them and past both of them",
+   "score": "right: ties both ends",
+   "plate": "litolff",
+   "page": 11,
+   "why": "p11 m78-79: ON ties both ends, start and stop on each"
+  },
+  {
+   "tile": 9,
+   "sean": "same: 2 half notes, each its own bar, ties both directions on both",
+   "score": "right",
+   "plate": "litolff",
+   "page": 11,
+   "why": "p11 m82-83: ON ties both ends"
+  },
+  {
+   "tile": 10,
+   "sean": "same thing",
+   "score": "right",
+   "plate": "litolff",
+   "page": 11,
+   "why": "p11 m90-91: ON adds a tie"
+  },
+  {
+   "tile": 11,
+   "sean": "2 dotted half notes with ties extending to the next note",
+   "score": "ON writes G4 blue: UNKNOWN whether both notes are written -- to check",
+   "plate": "brahms",
+   "page": 14,
+   "why": "Brahms p14 m11: G4 written blue"
+  },
+  {
+   "tile": 12,
+   "sean": "2 quarter notes in a chord on a single stem",
+   "score": "ON writes ONE note (A flat 5, blue) from a fold whose boxes disagree in pitch: Sean sees TWO notes -- a chord folded into one head is WRONG unless the second is written separately; to check",
+   "plate": "brahms",
+   "page": 19,
+   "why": "Brahms p19 m30: A flat 5 written blue"
+  }
+ ]
+}

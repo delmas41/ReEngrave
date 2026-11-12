@@ -139,3 +139,50 @@ once — unjudged, tile 1 of the r3 sheet.
 **Not confirmed:** cut-offs 2.0 sp / 0.9-1.7 sp contact measured on two plates;
 the 18 cut-through refusals mostly unlooked; conservation tool not re-run
 flags ON; ties -2 on Litolff not explained in the report.
+
+## 2.290 landing gate (2026-11-11) — NOT landed; waiting on Sean's gate tiles
+
+Written by the manager from the gate reports. Branch `land-2.290`: merge
+ff2694d90, pitch fix b0d0d2298 + e601cb459, retire 2ada124ba, flip 6ea65de6e
+(main untouched). Sean's r3 tiles: `answers/answers-2.290-build-r3.json`.
+
+**Defect found at the gate (Litolff p2 m7):** a folded head was written with
+its most CONFIDENT box's pitch (G3) where the head's hole sits at F3; the tie
+bound to the dropped box was lost. Export inherited a detector score as a
+position; tie ends on a dropped box were resolved only behind
+`OMR_UNISON_TIE_VOICE` (off). Fix `export._settle_folded_pitches`: one
+position per folded head from its hole / ink centre; where that does not name
+one box's step the note is written GUESSED (blue) with all candidates; tie
+ends resolve to the written box of their own staff. 8 folds on the five pages
+have members that disagree in pitch (1 settled by ink, 6 written blue).
+
+**Why "judged right->wrong 0" could not see it:** `judged` scores only tiles
+that name a written note's value; Sean's r1 tile 6 ("most of a half note")
+is a claim answer with no pitch. The build r1-r3 answers are NOT yet in the
+`data/judged-claims` registry. A control sees only what its answers record.
+
+**After the fix (five pages, fresh arms):** Litolff notes +3 -4, ties +10,
+slurs +2, ONE pitch change (p8 m59 Ab3 -> A3, carried by a tie that now
+exists), blue +6; Brahms notes +1, blue +2. The +10 ties are chains of tied
+halves at p8 m58-59, p11 m78-83, m90-91 — UNJUDGED. judged right->wrong 0;
+check 228; conservation holds flags ON (0 unaccounted); fast tier on the
+final tree 10,557 passed, 0 failed.
+
+**Sean's question (are the wrongly refused heads duplicates, or small boxes?):**
+neither, for the seven on his tiles. None has an accepted sibling claim (1 of
+222 refusals does); detector boxes are normal size (1.2-1.45 x 1.0-1.5 sp);
+earlier owners took 0 px. Four were whole heads refused by the cut-through
+contact rule (contacts 1.5-1.69 sp, just under its 1.7 edge), one by too-tall,
+two were slivers because the rest of the head is fused with its stem and
+unclaimed. Over all 222: sibling 1, detector box small 30, earlier owner 1,
+cut or fused 25, head-shaped ink refused by a rule 165. 166 of the 222 are
+written as notes in both arms; 56 in neither (one of them a real eighth,
+Litolff p2 glyph 2/0/0/1/15).
+
+**Still keyed on a dropped box (not fixed):** accidental owners (23 Litolff,
+17 Brahms), slur/arc anchors, dot roles, stem values, fermatas, wedge and
+dynamic anchors.
+
+**Retire:** removed M6c (`stroke_owner._head_claims`, never fires). Kept: the
+no-ink twin rule (the fallback; 53 / 72 boxes), `gather.cluster_marks` and
+`page_marks.link` as the `=0` opt-out.

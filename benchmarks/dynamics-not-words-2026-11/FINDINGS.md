@@ -127,3 +127,58 @@ pixels (rule 7 held).
 **Not done:** `claim_readout ink` lines not captured; `judged_claims` on
 Litolff p8 only (10 agree, 0 contradict). A barline stroke tinted as word
 inside a "sempre più" (its tile 9) is a separate, older over-claim, unexamined.
+
+## 2.303 — letters inside a printed word are the word's (2026-11-11), built OFF, waiting on Sean's tiles
+
+Written by the manager from the lane's report. Branch
+`lane-2.303-letters-inside-a-word` 25bab2ce9, flag `OMR_LETTERS_ARE_THE_WORD`
+default OFF. From Sean's 2.301 r1 tile 4 ("it boxes MP, but it's actually a
+part of the word sempre").
+
+**Cause (Part 1, the unread word — NOT fixed)**
+- A false `<dynamics><mp/>` DOES reach the exported MusicXML: Litolff p8, P2
+  m12 and P3 m12, the m+p of "sempre" in "sempre più p".
+- The OCR candidate [1510,787,1718,822] read `sempre piu: °` — the right
+  letters plus a colon and a degree sign. `direction_lexicon._prepare` accepts
+  only letters, spaces and periods and refuses the whole string. Other
+  readings of the same marking on the page are garbled italic (`npre pin p`,
+  `Rempression`, `S2mpre Pir.`); 3 of ~9 staves with it were read.
+- ADJUDICATE's "letter of a known word" rule (2.68, 2026-10-09) acts only on
+  READ words; Sean's convention of that day ("surrounded by letters, the word
+  decides") was never built for a word the lexicon refused. A neighbour-gap
+  cut cannot stand in: the real final p sits 0.19-0.57 sp from "più" here.
+- About 14 dynamic claims on Litolff p8 sit inside REFUSED candidates, nearly
+  all letters of sempre/più; Brahms 2, both real p.
+- Only 2 of 149 refusals on Litolff p8 would be rescued by trimming end
+  debris. The lexicon gate is load-bearing and was not touched.
+
+**Lesson:** the record keeps only a page-level `rejected` list, so what the
+OCR said per candidate is invisible; a refusal needs its own text and box on
+its row.
+
+**Proposals for Part 1 (none built; need Sean):** (1) record each refused
+candidate's text on its abstention row; (2) build "surrounded by letters" for
+refused words; (3) a sibling staff's READ marking at the same x in the same
+system as a second witness (a different source: another staff's ink);
+(4) if the mp must go, mark it UNREAD, never silently drop or read it.
+
+**Part 2, built (flag OFF):** `claims.letters_of_the_word`, in
+`gather.gather_page_claims`. A run's letters are the word's only if every
+letter box lies inside the READ word's box, the run's centre along the text
+is outside every dynamic token (+1 character), and the CV reader measured
+letter ink beside the run; restricted to runs the OFF arm filed as a READ
+dynamic. Of the 11 candidates 2.301 counted: 8 removed, 1 real leading f kept
+("f espr. e legato"), 2 mixed runs kept (a word letter + the real final p:
+a 2.296 follow-up). Brahms p4 adds 3 removals. 11 removed in all.
+
+**Measured** (OFF vs ON, real gathers: Litolff p8; Brahms p0, p14, p4)
+- Exported file BYTE-IDENTICAL: the removals do not reach the file (2.68
+  already kept those out at ADJUDICATE). Part 2 moves ink ownership only.
+- judged right->wrong 0; judged_claims no new contradiction; the 24 judged
+  2.296/2.301 tiles agree both ways except 2.301 tile 4 (Part 1, unsolved).
+- check 228; fast tier 10,452 passed, 0 failed, flag OFF and ON.
+
+**Not confirmed:** cut-offs rest on three pages of two plates; the 2.296 r1
+and 2.301 r1 answers are not registered in `judged_claims` SOURCES (replayed
+by the lane's own script); slices `claim-readout-slices-*-base/-on/-on2`
+were left in `library/_shared-records`.
