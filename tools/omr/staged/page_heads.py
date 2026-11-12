@@ -540,11 +540,13 @@ CLAIM_UNION_MAX_H_SP = 2.0
 #: between the stroke claimed by the head box above and the one claimed by the box below), neither is a whole head. Two heads a third apart touch TANGENTLY along
 #: their whole width: contact 2.2-2.5 sp in all 15 touching pairs on the five pages that are chords (Litolff 2.29-2.54, Brahms 2.38-2.5). Both claims are refused.
 #: ROUND 4 (Sean, gate r2 tile 12, Brahms p19 m30: "2 quarter notes in a chord on a single stem"): the members of a group each get the head's TRIMMED INK EXTENT
-#: (`head_extent.ink_extent`, the 2.220 trim off the page raster: one head's ink cut out of what touches it). Members of ONE printed head trim to the SAME extent (all 8
-#: groups whose boxes write different pitches on the five sample pages: member extents identical to the pixel, union 1.3-1.8 x 1.1-1.6 sp); members standing on TWO
-#: heads trim to two extents that barely overlap (Litolff p2 glyph/2/1/9/14/2 + /8, a real third: 2.4 sp tall). Two members whose trimmed extents overlap by less than this
-#: share of the smaller (IoU of the extents) are two heads: the group is split. NOT CONFIRMED beyond two plates.
-TRIM_SAME_HEAD_IOU = 0.5
+#: (`head_extent.ink_extent`, the 2.220 trim off the page raster: one head's ink cut out of what touches it) and the extent's CENTRE. Members of ONE printed head trim to
+#: the same ink: on the five sample pages the 8 groups whose boxes write different pitches have member centres within 0.1 sp of one another. Members on TWO printed heads
+#: trim to ink centred a head apart (Litolff p2 glyph/2/1/9/14/2 + /8, a real third: 1.3 sp). A first try with the extents' IoU (0.5) split twin boxes of one head whose
+#: trims ran into a neighbour (Litolff p2 m32, a second's E5 boxed twice: a spurious third note), so the witness is the CENTRE: two members whose trimmed extents are
+#: centred more than this far apart (staff spaces, vertically; `TRIM_CENTRES_APART_X_SP` across) are two heads. NOT CONFIRMED beyond two plates.
+TRIM_CENTRES_APART_SP = 0.8
+TRIM_CENTRES_APART_X_SP = 0.9
 CUT_THROUGH_CONTACT_MIN_SP = 0.9
 CUT_THROUGH_CONTACT_MAX_SP = 1.7
 
@@ -758,7 +760,7 @@ def claim_size_reason(w_sp: float, h_sp: float) -> Optional[str]:
 def split_by_ink_extent(items: Sequence[Dict[str, Any]], groups: List[List[int]], how: Dict[int, str], binary: Any, foreign: Sequence[Sequence[float]],
                         sp: float) -> Tuple[List[List[int]], int]:
     """ROUND 4. For every group of two or more notehead boxes with head ink, the trimmed ink extent of each member (`head_extent.ink_extent`); members whose extents do not
-    overlap (IoU below `TRIM_SAME_HEAD_IOU`) stand on different printed heads and are split into one group per head (a member with no trimmed extent, or a tall box, stays
+    centred a head apart (`TRIM_CENTRES_APART_SP`) stand on different printed heads and are split into one group per head (a member with no trimmed extent, or a tall box, stays
     with the cluster its box overlaps most). Returns (the groups, how many were split). Decides nothing but the identity."""
     from . import head_extent
     from .gather import _iou as _box_iou
@@ -781,16 +783,14 @@ def split_by_ink_extent(items: Sequence[Dict[str, Any]], groups: List[List[int]]
             out.append(g)
             continue
 
-        def iou(a: Sequence[float], b: Sequence[float]) -> float:
-            ix, iy = min(a[2], b[2]) - max(a[0], b[0]), min(a[3], b[3]) - max(a[1], b[1])
-            if ix <= 0 or iy <= 0:
-                return 0.0
-            inter = ix * iy
-            return inter / float((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
+        def apart(a: Sequence[float], b: Sequence[float]) -> bool:
+            hs = float(items[inked[0]].get("sp_head") or sp)
+            return (abs((a[1] + a[3]) / 2.0 - (b[1] + b[3]) / 2.0) >= TRIM_CENTRES_APART_SP * hs
+                    or abs((a[0] + a[2]) / 2.0 - (b[0] + b[2]) / 2.0) >= TRIM_CENTRES_APART_X_SP * hs)
         clusters: List[List[int]] = []
         for i in sorted(ext):
             for c in clusters:
-                if all(iou(ext[i], ext[j]) >= TRIM_SAME_HEAD_IOU for j in c):
+                if not any(apart(ext[i], ext[j]) for j in c):
                     c.append(i)
                     break
             else:

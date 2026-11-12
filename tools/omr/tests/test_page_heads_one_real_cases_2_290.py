@@ -152,7 +152,8 @@ def test_round_2_controls_fail_on_the_round_1_rules(monkeypatch):
     monkeypatch.setattr(PH, "CLAIM_UNION_MIN_SP", 0.0)
     monkeypatch.setattr(PH, "CLAIM_UNION_MAX_H_SP", 99.0)
     monkeypatch.setattr(PH, "CUT_THROUGH_CONTACT_MAX_SP", 0.0)
-    monkeypatch.setattr(PH, "TRIM_SAME_HEAD_IOU", 0.0)           # (round 4's second witness to two heads)
+    monkeypatch.setattr(PH, "TRIM_CENTRES_APART_SP", 99.0)         # (round 4's second witness to two heads)
+    monkeypatch.setattr(PH, "TRIM_CENTRES_APART_X_SP", 99.0)
     for name in R1_WRONG:
         with pytest.raises(AssertionError):
             _check_case(paths[name])
@@ -198,7 +199,19 @@ def test_the_ink_extent_rule_splits_a_real_third_on_its_own_and_can_fail(monkeyp
     oh, B, sb, mine = _read(meta, items, foreign, lab, props, binary)
     near = [it for it in oh.items if it["ink_px"] and _share(B, it["box"]) >= 0.25]
     assert len({oh.group_of_key[it["key"]] for it in near}) >= 2 and oh.census.get("ink_extent_splits", 0) >= 1
-    monkeypatch.setattr(PH, "TRIM_SAME_HEAD_IOU", 0.0)
+    monkeypatch.setattr(PH, "TRIM_CENTRES_APART_SP", 99.0)
+    monkeypatch.setattr(PH, "TRIM_CENTRES_APART_X_SP", 99.0)
     oh2, B2, sb2, mine2 = _read(meta, items, foreign, lab, props, binary)
     near2 = [it for it in oh2.items if it["ink_px"] and _share(B2, it["box"]) >= 0.25]
     assert len({oh2.group_of_key[it["key"]] for it in near2}) == 1
+
+
+@pytest.mark.skipif(not CROPS, reason="no real-case crops")
+def test_the_centre_rule_keeps_a_second_s_twin_box_one_head_and_can_fail(monkeypatch):
+    """Litolff p2 m32 (a second: D5 and E5; the E5 head boxed twice): ONE head. A first version of the ink-extent rule (extents' IoU) split it and wrote a third note;
+    the control fails when the rule is made hair-trigger (centres 0 sp apart)."""
+    path = {p.stem: p for p in CROPS}["2.290_gate_r3_p2_m32"]
+    _check_case(path)
+    monkeypatch.setattr(PH, "TRIM_CENTRES_APART_SP", 0.0)
+    with pytest.raises(AssertionError):
+        _check_case(path)
