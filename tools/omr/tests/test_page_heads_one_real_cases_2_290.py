@@ -103,6 +103,11 @@ def _check_case(path):
         near = [it for it in oh.items if it["ink_px"] and _share(B, it["box"]) >= 0.25]
         assert len({oh.group_of_key[it["key"]] for it in near}) >= 2, "%s -- the heads a third apart were joined into one" % said
         assert not claims, "%s -- a head claims the ink between the two heads (%s)" % (said, [h["rep"] for h in claims])
+    elif e == "one_group":
+        # Sean, 2.290 gate r2: the boxes on this note are ONE printed head (a fold of boxes, here with the pitches they wrote disagreeing): one page head, never split
+        # by the ink-extent rule (`page_heads.split_by_ink_extent`: the members' trimmed extents coincide)
+        near = [it for it in oh.items if it["ink_px"] and (_share(B, it["box"]) >= 0.25 or _share(it["box"], B) >= 0.5)]
+        assert len({oh.group_of_key[it["key"]] for it in near}) == 1, "%s -- the head was split into %d heads" % (said, len({oh.group_of_key[it["key"]] for it in near}))
     elif e == "tall_box":
         big = [it for it in oh.items if _share(B, it["box"]) >= 0.8]
         assert all(oh.how[oh.items.index(it)] == "tall_read" or not it["ink_px"] or len(oh.groups[oh.group_of_key[it["key"]]]) == 1 for it in big), said
@@ -147,6 +152,7 @@ def test_round_2_controls_fail_on_the_round_1_rules(monkeypatch):
     monkeypatch.setattr(PH, "CLAIM_UNION_MIN_SP", 0.0)
     monkeypatch.setattr(PH, "CLAIM_UNION_MAX_H_SP", 99.0)
     monkeypatch.setattr(PH, "CUT_THROUGH_CONTACT_MAX_SP", 0.0)
+    monkeypatch.setattr(PH, "TRIM_SAME_HEAD_IOU", 0.0)           # (round 4's second witness to two heads)
     for name in R1_WRONG:
         with pytest.raises(AssertionError):
             _check_case(paths[name])
@@ -180,3 +186,19 @@ def test_claim_size_reason():
 def test_the_cases_list_is_current():
     cases = json.loads((HERE / "cases.json").read_text())["cases"]
     assert len(cases) >= 80 and {c["expect"] for c in cases} >= {"head", "not_head", "part_of_head", "chord"}
+
+
+@pytest.mark.skipif(not CROPS, reason="no real-case crops")
+def test_the_ink_extent_rule_splits_a_real_third_on_its_own_and_can_fail(monkeypatch):
+    """Sean's r1 tile 12 (Litolff p2, two half notes a third apart, boxes 0.99 sp apart): with the box-centre rule OFF the members' trimmed ink extents (2.4 sp
+    between them) still make TWO heads; with that rule off too, the boxes are joined again -- the control fails where it should (CLAUDE rule 7)."""
+    path = {p.stem: p for p in CROPS}["2.290_build_r1__12"]
+    monkeypatch.setattr(PH, "BOX_CENTRES_A_THIRD_SP", 99.0)
+    meta, items, foreign, lab, props, binary = _load(path)
+    oh, B, sb, mine = _read(meta, items, foreign, lab, props, binary)
+    near = [it for it in oh.items if it["ink_px"] and _share(B, it["box"]) >= 0.25]
+    assert len({oh.group_of_key[it["key"]] for it in near}) >= 2 and oh.census.get("ink_extent_splits", 0) >= 1
+    monkeypatch.setattr(PH, "TRIM_SAME_HEAD_IOU", 0.0)
+    oh2, B2, sb2, mine2 = _read(meta, items, foreign, lab, props, binary)
+    near2 = [it for it in oh2.items if it["ink_px"] and _share(B2, it["box"]) >= 0.25]
+    assert len({oh2.group_of_key[it["key"]] for it in near2}) == 1

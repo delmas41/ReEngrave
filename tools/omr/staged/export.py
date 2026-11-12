@@ -3078,6 +3078,24 @@ def _anchored_slur_spans(rec: Record, measures, pools, spacings, tops, breaks, v
     return out
 
 
+def _drop_unison_same_pitch_slurs(spans: List[tuple], counters: Dict[str, int]) -> List[tuple]:
+    """ROADMAP 2.290 gate r3 (the one head identity on; Sean on Litolff p8 m69-70: "a unison half note TIED to a unison eighth note ... in both voices"): an arc between
+    two notes of the SAME written pitch whose start is a UNISON head (one head, two voices: `export_unison`'s twin) is, on the page, the unison's two TIES (one per
+    voice), not a slur: the detector's class said slur, the voices are not told apart, and the binding is undecided -- so NOTHING is written (counted, named), never a
+    slur on voice 1. Flag OFF: untouched (the fold that makes the head a unison head is the one identity's)."""
+    from . import page_heads as _PH_
+    if not _PH_.one_enabled():
+        return spans
+    out = []
+    for sp in spans:
+        first, last = sp[2], sp[3]
+        if isinstance(first, dict) and isinstance(last, dict) and (first.get("unison_head") or last.get("unison_head")) and first.get("pitch") and first.get("pitch") == last.get("pitch"):
+            counters["slur_unison_same_pitch_binding_undecided"] = counters.get("slur_unison_same_pitch_binding_undecided", 0) + 1
+            continue
+        out.append(sp)
+    return out
+
+
 def _page_bound_slur(kind_v: Optional[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the `page_binding` of a DECIDED `slur` verdict whose curve was bound at both ends, or None."""
     if not _arc_claim.bind_enabled() or not kind_v or kind_v.get("outcome") != "decided" or kind_v.get("value") != "slur":
@@ -3237,6 +3255,8 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                     # ROADMAP 2.223: the page-bound curves, AFTER `n_spans` (they are not groups of the box merge above)
                     spans = list(spans) + _page_bound_slur_spans(
                         measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters)
+                if kind == "slur":
+                    spans = _drop_unison_same_pitch_slurs(spans, counters)
             if kind == "tie":
                 # ⚠️⚠️ THE CHAIN IS COUNTED HERE BECAUSE THIS IS THE ONLY
                 # PLACE THAT KNOWS IT. Since ROADMAP 3.2b the record names each

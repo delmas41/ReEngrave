@@ -539,6 +539,12 @@ CLAIM_UNION_MAX_H_SP = 2.0
 #: ROUND 3: two heads' claimed strokes that TOUCH with a contact between these (sp) are two pieces of ONE ink the stroke map cut (a quarter rest's zigzag: 1.27 sp
 #: between the stroke claimed by the head box above and the one claimed by the box below), neither is a whole head. Two heads a third apart touch TANGENTLY along
 #: their whole width: contact 2.2-2.5 sp in all 15 touching pairs on the five pages that are chords (Litolff 2.29-2.54, Brahms 2.38-2.5). Both claims are refused.
+#: ROUND 4 (Sean, gate r2 tile 12, Brahms p19 m30: "2 quarter notes in a chord on a single stem"): the members of a group each get the head's TRIMMED INK EXTENT
+#: (`head_extent.ink_extent`, the 2.220 trim off the page raster: one head's ink cut out of what touches it). Members of ONE printed head trim to the SAME extent (all 8
+#: groups whose boxes write different pitches on the five sample pages: member extents identical to the pixel, union 1.3-1.8 x 1.1-1.6 sp); members standing on TWO
+#: heads trim to two extents that barely overlap (Litolff p2 glyph/2/1/9/14/2 + /8, a real third: 2.4 sp tall). Two members whose trimmed extents overlap by less than this
+#: share of the smaller (IoU of the extents) are two heads: the group is split. NOT CONFIRMED beyond two plates.
+TRIM_SAME_HEAD_IOU = 0.5
 CUT_THROUGH_CONTACT_MIN_SP = 0.9
 CUT_THROUGH_CONTACT_MAX_SP = 1.7
 
@@ -749,6 +755,62 @@ def claim_size_reason(w_sp: float, h_sp: float) -> Optional[str]:
     return None
 
 
+def split_by_ink_extent(items: Sequence[Dict[str, Any]], groups: List[List[int]], how: Dict[int, str], binary: Any, foreign: Sequence[Sequence[float]],
+                        sp: float) -> Tuple[List[List[int]], int]:
+    """ROUND 4. For every group of two or more notehead boxes with head ink, the trimmed ink extent of each member (`head_extent.ink_extent`); members whose extents do not
+    overlap (IoU below `TRIM_SAME_HEAD_IOU`) stand on different printed heads and are split into one group per head (a member with no trimmed extent, or a tall box, stays
+    with the cluster its box overlaps most). Returns (the groups, how many were split). Decides nothing but the identity."""
+    from . import head_extent
+    from .gather import _iou as _box_iou
+    n_split = 0
+    out: List[List[int]] = []
+    for g in groups:
+        inked = [i for i in g if items[i].get("ink_px") and not items[i].get("tall") and (items[i]["box"][3] - items[i]["box"][1]) <= CLAIM_MAX_H_SP * float(items[i].get("sp_head") or sp)]   # a tall box covers several heads: no witness
+        if len(g) < 2 or len(inked) < 2:
+            out.append(g)
+            continue
+        ext: Dict[int, List[float]] = {}
+        for i in inked:
+            it = items[i]
+            box = it["box"]
+            near_f = [f for f in foreign if abs(f[0] - box[0]) < 4 * sp and abs(f[1] - box[1]) < 4 * sp]
+            got = head_extent.ink_extent(binary, box, float(it.get("sp_head") or sp), near_f, [items[j]["box"] for j in inked if j != i])
+            if got["extent"] is not None:          # a trim that ran into another head or came out too tall still says WHERE the member's ink is
+                ext[i] = [float(v) for v in got["extent"]]
+        if len(ext) < 2:
+            out.append(g)
+            continue
+
+        def iou(a: Sequence[float], b: Sequence[float]) -> float:
+            ix, iy = min(a[2], b[2]) - max(a[0], b[0]), min(a[3], b[3]) - max(a[1], b[1])
+            if ix <= 0 or iy <= 0:
+                return 0.0
+            inter = ix * iy
+            return inter / float((a[2] - a[0]) * (a[3] - a[1]) + (b[2] - b[0]) * (b[3] - b[1]) - inter)
+        clusters: List[List[int]] = []
+        for i in sorted(ext):
+            for c in clusters:
+                if all(iou(ext[i], ext[j]) >= TRIM_SAME_HEAD_IOU for j in c):
+                    c.append(i)
+                    break
+            else:
+                clusters.append([i])
+        if len(clusters) < 2:
+            out.append(g)
+            continue
+        n_split += 1
+        rest = [i for i in g if i not in ext]
+        for i in rest:
+            best = max(range(len(clusters)), key=lambda k: max(_box_iou(items[i]["box"], items[j]["box"]) for j in clusters[k]))
+            clusters[best].append(i)
+        for c in clusters:
+            for i in c:
+                how[i] = "ink_extent_split"
+            out.append(sorted(c))
+    out.sort(key=lambda g: (min(items[i]["box"][0] for i in g), g[0]))
+    return out, n_split
+
+
 class OneHeads:
     """What `read_one` found on one page: `items` (one per notehead box: key, cell, gi, box, cls, conf, ink_px, cx, cy, tall), `groups` (index lists),
     `how` (per index), `heads` (one dict per group with ink: ordinal, members, rep, oval, oval_why, strokes), `census`."""
@@ -884,6 +946,7 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
             return 0
         return int(hmask[y0:y1, x0:x1].sum())
     groups, how, pairs = partition(out.items, shared, sp, MARK_GROUP_IOU)
+    groups, n_trim_split = split_by_ink_extent(out.items, groups, how, binary, foreign, sp)
     out.groups, out.how = groups, how
     out.apart = {}
     for i, j, why, sh in pairs:
@@ -988,6 +1051,7 @@ def core(items: List[Dict[str, Any]], foreign: Sequence[Sequence[float]], lab: n
             cen["claims"] += 1
             cen["claimed_strokes"] += len(st)
         out.heads.append(h)
+    cen["ink_extent_splits"] = n_trim_split
     cen["not_claimed"] = ccen
     cen["oval_from"] = dict(collections.Counter(oval_from.values()))
     out.census = cen

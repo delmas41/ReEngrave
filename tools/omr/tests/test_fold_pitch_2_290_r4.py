@@ -103,3 +103,18 @@ def test_a_tie_stop_keeps_an_accidental_owned_by_the_other_box_of_its_fold():
     assert E._has_printed_accidental(rec, "glyph/1/0/0/0/1") is False
     assert E._fold_has_printed_accidental(rec, "glyph/1/0/0/0/1") is True            # the sibling box on the same staff owns it
     assert E._fold_has_printed_accidental(rec, "glyph/1/0/1/0/1") is False           # the copy on another staff is another staff's note
+
+
+def test_no_slur_is_added_between_two_notes_of_one_pitch_from_a_unison(monkeypatch):
+    """Sean, gate r2 tile 1 (Litolff p8 m69-70): the arc between a unison half F5 and the F5 eighth is the unison's TIES (one per voice); the detector class said slur and
+    the binding is undecided, so the export writes NOTHING there (counted), never a slur on voice 1. A slur between two different pitches, or from a plain head, is kept."""
+    monkeypatch.delenv("OMR_PAGE_HEAD_ONE", raising=False)
+    uni = {"unison_head": True, "pitch": "F5"}
+    plain = {"pitch": "F5"}
+    other = {"pitch": "G5"}
+    counters = {}
+    spans = [((0, 1.0), (1, 2.0), uni, plain), ((0, 1.0), (1, 2.0), uni, other), ((0, 1.0), (1, 2.0), plain, dict(plain))]
+    kept = E._drop_unison_same_pitch_slurs(spans, counters)
+    assert [sp[3]["pitch"] for sp in kept] == ["G5", "F5"] and counters["slur_unison_same_pitch_binding_undecided"] == 1
+    monkeypatch.setenv("OMR_PAGE_HEAD_ONE", "0")
+    assert E._drop_unison_same_pitch_slurs(spans, {}) == spans            # flag off: untouched
