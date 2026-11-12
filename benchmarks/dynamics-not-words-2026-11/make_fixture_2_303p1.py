@@ -14,7 +14,7 @@ import pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SLICES = pathlib.Path("/Users/seanjohnson/Desktop/ReEngrave/library/_shared-records/lane-report-slices-20261029-night")
-REGIONS = [("litolff", 8, 0, [1480, 440, 2120, 1800]), ("litolff", 8, 1, [1540, 2560, 1760, 2720]), ("brahms", 0, 0, [1480, 0, 2300, 9000])]
+REGIONS = [("litolff", 8, 0, [1480, 440, 2120, 1800]), ("litolff", 8, 1, [1540, 2560, 1760, 2720]), ("brahms", 0, 0, [1480, 0, 2300, 9000]), ("brahms", 4, 0, [1000, 0, 1500, 9000]), ("brahms", 12, 0, [0, 0, 9000, 9000]), ("brahms", 19, 0, [1000, 0, 2400, 9000])]
 KEEP = ("dynamic_letter", "dynamic_letter_neighbours", "direction_word")
 
 

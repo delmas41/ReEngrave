@@ -385,7 +385,10 @@ def unread_text_lines(ev: Evidence, system: Subject) -> List[Dict[str, Any]]:
             from ... import musical_terms as _MT
             if groups_ and all(_MT.is_heading(m.term) for m in groups_[0]):
                 continue                    # a movement / tempo heading (`Adagio.`) is printed once above a system, not on every staff: it witnesses nothing (Litolff p9 staff 5)
-            texts.setdefault(core.lower(), dict(r, core=core))
+            # readings that differ only in WHERE the OCR put a space (`pesan te` / `pesante`, Brahms p4) are one reading; the one with the fewest tokens is written
+            fold = "".join(core.lower().split())
+            if fold not in texts or len(core.split()) < len(texts[fold]["core"].split()):
+                texts[fold] = dict(r, core=core)
             lead_n = max(lead_n, sum(len(_normalise(t)) for t in toks[:i]))
             trail_n = max(trail_n, sum(len(_normalise(t)) for t in toks[j:]))
         ln["witness_texts"] = sorted(texts)

@@ -101,6 +101,37 @@ class TestUnreadWordSibling(unittest.TestCase):
         g = _dir_detail(self.on, 3, 11).get("guessed_words")
         self.assertTrue(g and "p" not in g[0]["text"].split(), g)
 
+    def test_fault_brahms_p4_pesante_partial_box_writes_nothing(self):
+        # round 3, Sean's tile 9 (Brahms p4 cell 10/0, "part of the P from pesante"): OFF wrote `mp`; round 2 wrote an unnamed `dyn.`. CAUSE: the unread line there was not witnessed -- the
+        # neighbouring staves' OCR read `pesan te` and `pesante` (one reading, the space put in two places), counted as two different words -- so only a letter with ink on both sides was
+        # withheld, and the line-start letter (the `p`, no ink to its left) stayed an unspellable `m`. Readings that differ only by spaces are now one.
+        v_off = self.off.verdict(Q.DYNAMIC, R.cell(4, 0, 10, 0))
+        self.assertEqual(v_off.value, ["mp"], "CONTROL: OFF writes mp over the p of pesante")
+        self.assertEqual(self.on.verdict(Q.DYNAMIC, R.cell(4, 0, 10, 0)).value, [])
+        g = _dir_detail(self.on, 10, 0, page=4).get("guessed_words")
+        self.assertTrue(g and g[0]["text"] == "pesante", g)
+
+    def test_Seans_15_tiles_replayed(self):
+        # answers-2.303-p1-r2.json: Sean's judged dynamic tiles whose rows the fixture holds. ON must write what he judged right (tile 9: nothing); OFF must write what OFF wrote (control).
+        ans = json.loads((pathlib.Path(__file__).resolve().parents[3] / "benchmarks" / "dynamics-not-words-2026-11" / "answers" / "answers-2.303-p1-r2.json").read_text())["tiles"]
+        have = {tuple(r["subject"].split("/")[1:5]) for r in ROWS}
+        n = 0
+        for t in ans.values():
+            if t["OFF_writes"].startswith("guessed") or t["ON_writes"].startswith("guessed"):
+                continue
+            pg, sy, st, ce = t["cell"].split("/")[1:5]
+            if (pg, sy, st, ce) not in have:
+                continue
+
+            def shown(log):
+                v = log.verdict(Q.DYNAMIC, R.cell(int(pg), int(sy), int(st), int(ce)))
+                return "dyn." if v.value is None else (" ".join(v.value) or "nothing")
+            want = "nothing" if t["cell"] == "cell/4/0/10/0" else t["ON_writes"]
+            self.assertEqual(shown(self.on), want, t["cell"])
+            self.assertEqual(shown(self.off), t["OFF_writes"], "OFF control " + t["cell"])
+            n += 1
+        self.assertGreaterEqual(n, 10, n)
+
     def test_p3_bar12_same(self):
         self.assertTrue(_dir_detail(self.on, 3, 11).get("guessed_words"))
 
