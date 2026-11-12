@@ -272,6 +272,125 @@ def dynamic_lexicon_word_enabled() -> bool:
         "0", "", "false", "no", "off")
 
 
+#: ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default OFF; Sean 2026-11-11, Litolff p8 `sempre piu p`, P2/P3 bar 12: "it boxes MP, but it's actually a part of the word sempre").
+#: Written out on its own line so the AST scan in `test_flag_default_direction.py` sees this flag's own `os.environ.get`.
+UNREAD_WORD_SIBLING_ENV = "OMR_UNREAD_WORD_SIBLING"
+
+
+def unread_word_sibling_enabled() -> bool:
+    """Default OFF ("1"/"true"/"yes"/"on" turns it on)."""
+    return os.environ.get(UNREAD_WORD_SIBLING_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: candidate windows of ONE staff are one text line where their x-ranges overlap by this share of the narrower and their y-ranges by `UNREAD_LINE_Y_SHARE` of the shorter
+#: (the reader proposes sibling windows over one printed line: Litolff p8 staff 2, [1510,1718] and [1573,1830] are `sempre piu p` cut by a barline)
+UNREAD_LINE_X_SHARE = 0.1
+UNREAD_LINE_Y_SHARE = 0.5
+#: a READ word on ANOTHER staff of the system is a witness for an unread line where it covers this share of the WITNESS's own width of the line's x-range and the two widths are within these ratios
+#: (line width / witness width). A COUNT-FREE, convention-free guess of a cut-off (CLAUDE 4: a cut-off is a measurement): it only ever GUESSES (blue), never reads.
+SIBLING_SPAN_SHARE = 0.5
+SIBLING_WIDTH_RATIO = (0.7, 1.5)
+#: an unread line is a TEXT line only where the DETECTOR (a reader of its own, not the OCR) boxed at least this many dynamic letters inside it; one lone letter is piano (Sean 2026-10-09)
+UNREAD_LINE_MIN_LETTERS = 2
+#: a candidate whose x-range shares this much of ITS OWN width with a word the same staff READ (y-ranges touching) is that word's own sibling window, not an unread line
+#: (Litolff p8 staff 6: the window right of the READ `dimin` is the same marking, and was taking a second `dimin.` in the first build)
+UNREAD_OWN_WORD_X_SHARE = 0.2
+#: a text line is wider than its detector letters: its width is at least this many times its MEDIAN letter box (a twin box of one letter can be twice as wide). A line a lone dynamic's own pair of boxes makes (Litolff p8 staff 8 bar 17: `pp`, 60 px for
+#: letters of 34) is a dynamic, never an unread word (the first build wrote `p` and `unread text` there: a real `pp` lost)
+UNREAD_LINE_MIN_WIDTH_LETTERS = 4.0
+
+
+def _box_share(a: Sequence[float], b: Sequence[float]) -> float:
+    """Share of `a`'s area inside `b`."""
+    ix = max(0.0, min(a[2], b[2]) - max(a[0], b[0]))
+    iy = max(0.0, min(a[3], b[3]) - max(a[1], b[1]))
+    return (ix * iy) / max(1.0, (a[2] - a[0]) * (a[3] - a[1]))
+
+
+def unread_text_lines(ev: Evidence, system: Subject) -> List[Dict[str, Any]]:
+    """The UNREAD TEXT LINES of `system` (ROADMAP 2.303 part 1): candidate boxes the text reader proposed on one staff that no READ word of that staff covers, merged where windows
+    overlap, that hold at least `UNREAD_LINE_MIN_LETTERS` detector dynamic letters. Each: `box` (page px), `staff` (key), `home_cell` (the cell of its leftmost candidate), `letters` (row ids),
+    `witness` (a READ word of another staff of the system at the same x-extent: `{text, box, staff, row}`, or None) and `witness_texts` (every distinct text that qualified).
+    PURE over the record; empty when nothing qualifies. Never reads the lexicon, never touches `_prepare`."""
+    cands = []
+    for a in ev.refusals(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS, subject=system):
+        d = a.detail or {}
+        bb = d.get("bbox_page_px")
+        if a.reason != ABSTAIN.NO_READING or not (isinstance(bb, (list, tuple)) and len(bb) == 4):
+            continue
+        cands.append(dict(box=[float(v) for v in bb], staff=a.subject.at(Kind.STAFF).to_key(), cell=a.subject.cell, id=a.id))
+    if not cands:
+        return []
+    read = []
+    for w in ev.rows(Q.DIRECTION_WORD, scope=Scope.SELF_AND_DESCENDANTS, subject=system):
+        bb = (w.detail or {}).get("bbox_page_px")
+        if isinstance(bb, (list, tuple)) and len(bb) == 4 and isinstance(w.value, str) and w.value.strip():
+            read.append(dict(box=[float(v) for v in bb], staff=w.subject.at(Kind.STAFF).to_key(), text=str(w.value), row=w.id))
+    cands = [c for c in cands if not any(
+        r["staff"] == c["staff"] and min(c["box"][3], r["box"][3]) > max(c["box"][1], r["box"][1])
+        and min(c["box"][2], r["box"][2]) - max(c["box"][0], r["box"][0]) >= UNREAD_OWN_WORD_X_SHARE * (c["box"][2] - c["box"][0]) for r in read)]
+    # merge windows of one staff into lines
+    lines: List[Dict[str, Any]] = []
+    for c in sorted(cands, key=lambda c: (c["staff"], c["box"][0])):
+        for ln in lines:
+            if ln["staff"] != c["staff"]:
+                continue
+            b = ln["box"]
+            ox = min(b[2], c["box"][2]) - max(b[0], c["box"][0])
+            oy = min(b[3], c["box"][3]) - max(b[1], c["box"][1])
+            if (ox >= UNREAD_LINE_X_SHARE * min(b[2] - b[0], c["box"][2] - c["box"][0])
+                    and oy >= UNREAD_LINE_Y_SHARE * min(b[3] - b[1], c["box"][3] - c["box"][1])):
+                ln["box"] = [min(b[0], c["box"][0]), min(b[1], c["box"][1]), max(b[2], c["box"][2]), max(b[3], c["box"][3])]
+                if c["box"][0] < ln["_left"]:
+                    ln["_left"], ln["home_cell"] = c["box"][0], c["cell"]
+                ln["candidates"].append(c["id"])
+                break
+        else:
+            lines.append(dict(box=list(c["box"]), staff=c["staff"], home_cell=c["cell"], _left=c["box"][0], candidates=[c["id"]]))
+    letters = [(r, [float(v) for v in (r.detail or {})["bbox_page_px"]]) for r in
+               ev.rows(Q.DYNAMIC_LETTER, scope=Scope.SELF_AND_DESCENDANTS, subject=system)
+               if len(((r.detail or {}).get("bbox_page_px")) or ()) == 4]
+    out = []
+    for ln in lines:
+        inside = [r for r, b in letters if _box_share(b, ln["box"]) >= INSIDE_READ_WORD_SHARE]
+        ln["letters"] = [r.id for r in inside]
+        if len(inside) < UNREAD_LINE_MIN_LETTERS:
+            continue
+        _widths = sorted(b[2] - b[0] for r, b in letters if r in inside)
+        if (ln["box"][2] - ln["box"][0]) < UNREAD_LINE_MIN_WIDTH_LETTERS * _widths[len(_widths) // 2]:
+            continue
+        # the letters `adjudicate_dynamic` withholds: letter ink measured beside them (the 2.68 convention); a letter nobody measured stays what the detector said
+        ln["withheld"] = sum(1 for r in inside
+                             if any(_is_a_letter_of_a_known_word(n.value) for n in ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=r.subject)[-1:]))
+        wid = ln["box"][2] - ln["box"][0]
+        texts: Dict[str, Dict[str, Any]] = {}
+        for r in read:
+            if r["staff"] == ln["staff"]:
+                continue
+            rw = max(1.0, r["box"][2] - r["box"][0])
+            ox = min(ln["box"][2], r["box"][2]) - max(ln["box"][0], r["box"][0])
+            if ox >= SIBLING_SPAN_SHARE * rw and SIBLING_WIDTH_RATIO[0] <= wid / rw <= SIBLING_WIDTH_RATIO[1]:
+                texts.setdefault(" ".join(r["text"].lower().split()), r)
+        ln["witness_texts"] = sorted(texts)
+        # two different readings of the marking: cannot tell, the line stays UNREAD (rule 8)
+        ln["witness"] = (None if len(texts) != 1 else
+                         {k: next(iter(texts.values()))[k] for k in ("text", "box", "staff", "row")})
+        ln.pop("_left", None)
+        out.append(ln)
+    return out
+
+
+def letter_in_unread_line(row: Any, lines: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """The unread line holding this detector letter (its box mostly inside the line's), else None."""
+    bb = (row.detail or {}).get("bbox_page_px")
+    if not (bb and len(bb) == 4):
+        return None
+    for ln in lines:
+        if row.id in ln["letters"]:
+            return ln
+    return None
+
+
 #: the single letters that are a whole dynamic on their own
 _LONE_DYNAMIC_LETTERS = frozenset({"p", "f"})
 
@@ -506,6 +625,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     dup_dropped = moved_out = no_frame = not_a_letter = inside_word = 0
     inside_alone = inside_unmeasured = in_a_dynamic_token = 0
     of_lexicon_word = 0
+    inside_unread_line = 0
+    # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING): the text lines the lexicon refused, where the detector boxed letters
+    unread_lines = unread_text_lines(ev, system) if unread_word_sibling_enabled() else []
     # ROADMAP 2.68 (twins): one printed letter boxed twice is ONE letter.
     ink_groups = _same_ink_groups(rows)
     seen_ink: set = set()
@@ -621,6 +743,14 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             dup_dropped += 1
             continue
         # (after ownership: counted once, on the staff that keeps the letter)
+        if unread_lines and letter_in_unread_line(row, unread_lines) is not None:
+            # ROADMAP 2.303 PART 1 (Sean 2026-11-11, "it boxes MP, but it's actually a part of the word sempre"; 2026-10-09 "surrounded by other letters the context solves it"): a letter
+            # inside a text line the lexicon REFUSED, with letter ink beside it, is not written as a dynamic -- rule 8, "cannot tell" is not "mp". The line is written as its sibling's
+            # word (GUESSED) or marked UNREAD by `adjudicate_direction`. A letter with no ink beside it, or no measurement of it, stays what the detector said.
+            _ul_sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
+            if _ul_sides and _is_a_letter_of_a_known_word(_ul_sides[-1].value):
+                inside_unread_line += 1
+                continue
         if _letter_of_a_known_word(row, word_boxes):
             sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
             if not sides:
@@ -705,6 +835,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             empty_detail["letters_inside_a_read_word"] = inside_word
         if of_lexicon_word:
             empty_detail["letters_of_a_lexicon_word"] = of_lexicon_word
+        if inside_unread_line:
+            empty_detail["letters_inside_an_unread_line"] = inside_unread_line
         return Ruling(value=[], reason="no_letters", detail=empty_detail)
 
     kept.sort()
@@ -771,6 +903,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
         "letters_identity_abstained": identity_abstained,
         "assembly": "x_adjacency_max_letter_width_page_px",
     }
+    if inside_unread_line:
+        # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING): letters inside a text line the lexicon refused, with letter ink beside them: withheld, never a dynamic.
+        detail["letters_inside_an_unread_line"] = inside_unread_line
     if unspellable and not any(w["spelled"] for w in words):
         # ⚠️ Only the whole-cell case narrows. A cell holding one good `ff` and
         # one unspellable `s` has DECIDED something, and reporting it as
@@ -1248,12 +1383,39 @@ def _close(run: List[Tuple[float, float, float, str, Any]],
     }
 
 
+def _unread_line_extras(ev: Evidence) -> Dict[str, Any]:
+    """ROADMAP 2.303 PART 1 (flag `OMR_UNREAD_WORD_SIBLING`, default OFF): the unread text lines this BAR OF THIS STAFF owns (the cell of the line's leftmost candidate window) where the detector
+    boxed letters `adjudicate_dynamic` withheld. With ONE sibling reading (a READ word of another staff of the system at the same x-extent, a different ink) the line is `guessed_words`: that word,
+    GUESSED, carrying its candidate and its witness. With none (or two different readings) it is `unread_lines`: UNREAD, marked, nothing invented. `{}` when the flag is off or nothing qualifies."""
+    if not unread_word_sibling_enabled():
+        return {}
+    mine = ev.subject.at(Kind.STAFF).to_key()
+    guessed: List[Dict[str, Any]] = []
+    unread: List[Dict[str, Any]] = []
+    for ln in unread_text_lines(ev, ev.subject.at(Kind.SYSTEM)):
+        if ln["staff"] != mine or ln["home_cell"] != ev.subject.cell or not ln["withheld"]:
+            continue
+        item = {"x_page": ln["box"][0], "box": ln["box"], "letters": list(ln["letters"]), "withheld": ln["withheld"], "candidates_refused": list(ln["candidates"])}
+        w = ln["witness"]
+        if w is not None:
+            guessed.append({**item, "text": w["text"], "witness": {"row": w["row"], "staff": w["staff"], "box": w["box"], "text": w["text"]},
+                            "guess_candidates": [{"value": w["text"], "support": None}]})
+        else:
+            unread.append({**item, "why": "no_sibling" if not ln["witness_texts"] else "siblings_disagree", "sibling_texts": ln["witness_texts"]})
+    out: Dict[str, Any] = {}
+    if guessed:
+        out["guessed_words"] = guessed
+    if unread:
+        out["unread_lines"] = unread
+    return out
+
+
 @decision(
     quantity=Q.DIRECTION,
     checkable=Checkable.UNCHECKABLE,
     composed_from=(Q.DIRECTION_WORD,),
     scope=Kind.CELL,
-    wants=(Q.DIRECTION_WORD, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
+    wants=(Q.DIRECTION_WORD, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT, Q.DYNAMIC_LETTER, Q.DYNAMIC_LETTER_NEIGHBOURS),
     # ⚠️ The subjects are the cells `Q.DIRECTION_WORD` speaks about --
     # OBSERVATIONS AND ABSTENTIONS ALIKE, because `subjects_for` reads
     # `log.all_rows()`. That is what makes the reader-unavailable state
@@ -1366,7 +1528,8 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
         return Ruling(value=[w["text"] for w in kept], reason="in_lexicon",
                       used=tuple(r.id for r in rows),
                       detail={"words": kept, "n_words": len(kept),
-                              "held_back": held, "n_held_back": len(held)})
+                              "held_back": held, "n_held_back": len(held),
+                              **_unread_line_extras(ev)})
 
     blocked = [a for a in ev.refusals(Q.DIRECTION_WORD,
                        scope=Scope.SELF_AND_DESCENDANTS)
@@ -1406,7 +1569,8 @@ def adjudicate_direction(ev: Evidence) -> Ruling:
                           "candidates_refused": sum(
                               n for r, n in reasons.items()
                               if r in (ABSTAIN.NO_READING,
-                                       ABSTAIN.NOT_IN_LEXICON))})
+                                       ABSTAIN.NOT_IN_LEXICON)),
+                          **_unread_line_extras(ev)})
 
 
 def _term_groups(text: str):

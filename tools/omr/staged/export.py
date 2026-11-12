@@ -3777,6 +3777,12 @@ def _count_directions(counters: Dict[str, int],
             counters["guessed_dynamics"] += 1
             counters["guessed_by_rule:" + json.loads(text)["guess"]["rule"]] += 1
             continue
+        if kind == "words_guess":
+            # ROADMAP 2.303 PART 1: a GUESSED direction word, counted by deciding rule
+            counters["direction_words"] += 1
+            counters["guessed_words"] += 1
+            counters["guessed_by_rule:" + json.loads(text)["guess"]["rule"]] += 1
+            continue
         if kind == "marking":
             # ROADMAP 2.68: one `<direction>`, but a `<words>` AND its
             # `<dynamics>` reached the file -- each family counts its own.
@@ -3914,6 +3920,26 @@ def _dynamic_guess(rec: Record, v: Dict[str, Any], words: Any
     return x, (words if inferred else "dyn."), guess
 
 
+#: ROADMAP 2.303 PART 1: the red words of a text line the lexicon refused and no sibling staff could name (Sean 2026-11-11: it stays UNREAD and is MARKED). Nothing downstream reads the string.
+UNREAD_TEXT_LINE_WORD = "unread text"
+
+
+def _word_guess_xml(payload: str, indent: str) -> str:
+    """ROADMAP 2.303 PART 1: a GUESSED direction word (an unread text line written as its sibling staff's word): `<words color=blue>` and the `<other-direction>reengrave:guessed {json}`
+    twin, like `_dynamic_guess_xml`."""
+    m = json.loads(payload)
+    body = json.dumps(m["guess"], sort_keys=True, separators=(",", ":"), ensure_ascii=False)
+    body = body.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    return (f'{indent}<direction placement="below">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <words color="{GUESS_COLOR}">{_legacy._xml_escape(m["text"])}</words>\n'
+            f"{indent}  </direction-type>\n"
+            f"{indent}  <direction-type>\n"
+            f"{indent}    <other-direction>reengrave:guessed {body}</other-direction>\n"
+            f"{indent}  </direction-type>\n"
+            f"{indent}</direction>")
+
+
 def _dynamic_guess_xml(payload: str, indent: str) -> str:
     """A GUESSED dynamic: `<dynamics color=...>` holding the word (or a
     `<words color=...>dyn.</words>` where the ink favoured none), and a second
@@ -3984,10 +4010,25 @@ def _place_direction_words(rec: Record, runs: Dict[str, StaffRun]) -> None:
         for cell_index in range(run.n_measures):
             sub = f"cell/{run.page}/{run.system}/{run.staff}/{cell_index}"
             words = rec.value(Q.DIRECTION, sub)
-            if not isinstance(words, list) or not words:
-                continue
             verdict = rec.verdict(Q.DIRECTION, sub) or {}
             detail = verdict.get("detail") or {}
+            # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING, default OFF; the keys exist only where the flag filed them): an unread text line written as its sibling staff's word, GUESSED
+            # (blue, carrying its candidate and witness), or marked UNREAD (red) where nothing could say what it is. Neither is ever plain.
+            for g in (detail.get("guessed_words") or ()):
+                cell = run.cells.setdefault(cell_index, Cell(run.page, run.system, run.staff, cell_index))
+                cell.directions.append((float(g.get("x_page") or 0.0), "words_guess", json.dumps(
+                    {"text": g["text"], "guess": {
+                        "stage": "ADJUDICATE", "rule": "unread_word_sibling", "quantity": Q.DIRECTION,
+                        "candidates": g.get("guess_candidates") or [], "chosen": {"value": g["text"]},
+                        "evidence": "this staff's text line was refused by the lexicon; a READ word of the same text stands on another staff of the system at the same x-extent (another ink)",
+                        "witness": g.get("witness")}}, sort_keys=True, ensure_ascii=False)))
+                cell.directions.sort()
+            for u in (detail.get("unread_lines") or ()):
+                cell = run.cells.setdefault(cell_index, Cell(run.page, run.system, run.staff, cell_index))
+                cell.directions.append((float(u.get("x_page") or 0.0), "words_unread", UNREAD_TEXT_LINE_WORD))
+                cell.directions.sort()
+            if not isinstance(words, list) or not words:
+                continue
             by_text: Dict[str, Any] = {}
             for w in (detail.get("words") or []):
                 if isinstance(w, dict):
@@ -4066,6 +4107,12 @@ def _direction_xml(kind: str, text: str, indent: str) -> str:
         return _marking_direction_xml(text, indent)
     if kind == "dynamics_guess":
         return _dynamic_guess_xml(text, indent)
+    if kind == "words_guess":
+        return _word_guess_xml(text, indent)
+    if kind == "words_unread":
+        return (f'{indent}<direction placement="below">\n{indent}  <direction-type>\n'
+                f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">{_legacy._xml_escape(text)}</words>\n'
+                f"{indent}  </direction-type>\n{indent}</direction>")
     return _legacy._mxl_direction((kind, text), indent)
 
 
