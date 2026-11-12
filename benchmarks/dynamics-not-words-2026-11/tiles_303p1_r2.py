@@ -93,8 +93,22 @@ def main():
                 items.append(dict(plate=plate, cell=cell, part=part, off=x[0] if x else "nothing", on=y[0] if y else "nothing", box=union(boxes)))
     random.Random(2303).shuffle(items)
     sel = items[:n]
+    # tiles 13-15: changed places not yet shown, preferring a dynamic ON removes with no word change in its bar (not visibly inside a guessed word)
+    rest = items[n:]
+    word_cells = {it["cell"] for it in items if it["part"] == "word"}
+    pref = [it for it in rest if it["part"] == "dyn" and it["on"] == "nothing" and it["cell"] not in word_cells]
+    extra = (pref + [it for it in rest if it not in pref])[:3]
+    sel = sel + extra
     out.mkdir(parents=True, exist_ok=True)
+    for old in out.glob("tile_*.png"):
+        old.unlink()
+    from PIL import ImageFont
+    try:
+        font = ImageFont.truetype("/System/Library/Fonts/Helvetica.ttc", 34)
+    except Exception:
+        font = ImageFont.load_default()
     docs, key, tiles = {}, [], []
+    TW, SPACES_ACROSS = 760, 70.0          # every tile: the same 70 staff spaces across, shown 760 px wide (same scale for all)
     for i, it in enumerate(sel, 1):
         page = int(it["cell"].split("/")[1])
         d = docs.setdefault(it["plate"], fitz.open(LIB / PDF[it["plate"]]))
@@ -102,21 +116,29 @@ def main():
         im = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
         x0, y0, x1, y1 = it["box"]
         u = UNIT[it["plate"]]
-        # wide enough for the whole word: at least 14 spaces across, centred on the mark
         cx = (x0 + x1) / 2
-        half = max((x1 - x0) / 2 + 3 * u, 8 * u)
-        c = (max(0, cx - half), max(0, y0 - 7 * u), min(im.width, cx + half), min(im.height, y1 + 1.5 * u))
-        t = im.crop(tuple(int(v) for v in c)).convert("RGB")
-        ImageDraw.Draw(t).rectangle([x0 - c[0], y0 - c[1], x1 - c[0], y1 - c[1]], outline=(255, 140, 0), width=2)
-        t.save(out / ("tile_%02d.png" % i))
+        half = SPACES_ACROSS * u / 2
+        c = (cx - half, max(0, y0 - 6.5 * u), cx + half, min(im.height, y1 + 1.2 * u))
+        ci = tuple(int(round(v)) for v in c)
+        t = Image.new("RGB", (ci[2] - ci[0], ci[3] - ci[1]), "white")      # off the page edge: white, same width
+        t.paste(im.crop((max(0, ci[0]), max(0, ci[1]), min(im.width, ci[2]), min(im.height, ci[3]))), (max(0, -ci[0]), max(0, -ci[1])))
+        ImageDraw.Draw(t).rectangle([x0 - c[0], y0 - c[1], x1 - c[0], y1 - c[1]], outline=(255, 140, 0), width=3)
+        t = t.resize((TW, int(round(t.height * TW / t.width))), Image.LANCZOS)
         tiles.append(t)
+        t.save(out / ("tile_%02d.png" % i))
         key.append(dict(tile=i, plate=it["plate"], page=page, cell=it["cell"], mark=it["part"], OFF_writes=it["off"], ON_writes=it["on"], box=it["box"]))
-    W = max(t.width for t in tiles)
-    sheet = Image.new("RGB", (W, sum(t.height + 6 for t in tiles)), "white")
-    y = 0
-    for t in tiles:
-        sheet.paste(t, (0, y))
-        y += t.height + 6
+    cols, pad, lab = 4, 14, 44
+    rows = (len(tiles) + cols - 1) // cols
+    rh = [max(t.height for t in tiles[r * cols:(r + 1) * cols]) + lab for r in range(rows)]
+    sheet = Image.new("RGB", (cols * (TW + pad) + pad, sum(rh) + pad * (rows + 1)), "white")
+    dr = ImageDraw.Draw(sheet)
+    y = pad
+    for r in range(rows):
+        for k, t in enumerate(tiles[r * cols:(r + 1) * cols]):
+            x = pad + k * (TW + pad)
+            dr.text((x, y), "Tile %d" % (r * cols + k + 1), fill=(0, 0, 0), font=font)
+            sheet.paste(t, (x, y + lab))
+        y += rh[r] + pad
     sheet.save(out / "sheet.png")
     json.dump(dict(n_changed_places=len(items), tiles=key), open(out / "key.json", "w"), indent=1)
     print(len(items), "changed places;", len(sel), "tiles ->", out)
