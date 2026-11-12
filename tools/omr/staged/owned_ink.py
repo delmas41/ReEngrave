@@ -60,7 +60,7 @@ def kinds_enabled() -> Tuple[str, ...]:
         return ()
     got = set()
     for tok in (t.strip() for t in v.replace(";", ",").split(",")):
-        if tok in ("1", "true", "yes", "on", "replace"):
+        if tok in ("1", "true", "yes", "on", "inside"):
             got.add("barline")
         elif tok in KINDS:
             got.add(tok)
@@ -71,20 +71,20 @@ def enabled() -> bool:
     return bool(kinds_enabled())
 
 
-def replace_mode() -> bool:
-    """`replace` among the flag's tokens: the crop MINUS the owned ink is read INSTEAD of the plain crop, on every look. Default (`1`): a RETRY only -- a candidate nothing was accepted from is
-    read once more from the crop minus the owned ink, exactly the 2.254 r3 pattern (a letter that stands ON a rule loses its stroke with it: Litolff p9 `pizz.`, and here the `i` of `piu` on
-    a thin barline; measured 2026-11-12, Litolff p8, replace mode lost 4 READ words and gained 4)."""
-    return "replace" in [t.strip() for t in os.environ.get(ENV, "").strip().lower().replace(";", ",").split(",")]
+def inside_mode() -> bool:
+    """`inside` among the flag's tokens: the owned ink is taken from INSIDE the candidate's own box too. Default (`1`): outside it only, the convention of `direction_text.crop_for`'s `erase` and
+    page-facts 3 (a mark crossing a stroke owns the crossing pixels). Measured 2026-11-12, Litolff p8, `inside`: the rule through the `i` of `piu` (a thin barline the letter stands on) went with
+    it and the lexicon accepted `sempre p` for the printed `sempre piu p`; 4 READ words lost, 4 gained, 3 of the gains that wrong `sempre p`."""
+    return "inside" in [t.strip() for t in os.environ.get(ENV, "").strip().lower().replace(";", ",").split(",")]
 
 
 class OwnedInk:
     """What `attach` hangs on the page: the page-sized owner masks, built once per page, and the one question a crop builder asks (`mask`). The builder in the shared `direction_text`
     calls the METHOD, so the shared reader imports nothing from `staged/`."""
 
-    def __init__(self, page: Any, masks: Dict[str, np.ndarray], kinds: Sequence[str], halo_px: int, reach_px: int, replace: bool = False):
+    def __init__(self, page: Any, masks: Dict[str, np.ndarray], kinds: Sequence[str], halo_px: int, reach_px: int, inside: bool = False):
         self.page, self.masks, self.kinds, self.halo_px, self.reach_px = page, masks, tuple(kinds), int(halo_px), int(reach_px)
-        self.replace = bool(replace)
+        self.inside = bool(inside)
 
     def mask(self, rect: Sequence[int], spacing: float = 0.0, before_owner: str = "word") -> Optional[np.ndarray]:
         return owned_ink_mask(self.page, rect, spacing, before_owner)
@@ -142,7 +142,7 @@ def attach(pws: Any, kinds: Optional[Sequence[str]] = None) -> Optional[OwnedInk
     halo = max(1, int(round(HALO_SPACES * sp)))
     reach = max(2, int(round(CROSS_REACH_SPACES * sp)))
     masks = {"staff_line": _staff_line_mask(pws, sp), "barline": _barline_mask(pws, sp, halo)}
-    oi = OwnedInk(pws.page, masks, kinds, halo, reach, replace_mode())
+    oi = OwnedInk(pws.page, masks, kinds, halo, reach, inside_mode())
     pws.page.owned_ink = oi
     return oi
 

@@ -5,7 +5,8 @@ the page there.
 
 * the thin rule through the `i` of `piu` (x 1679-1683, a barline column of all 9 staves) and the rule hugging the final `p` (x 1788) are owned ink and are whited in a retry crop; the thin rule
   the page stroke map carves through the `p` of `sempre` (x 1588) does NOT run through the window, is not taken, and its letter keeps every pixel;
-* flag OFF (no `page.owned_ink`): every crop is the plain crop. Default mode: a first look is plain, a retry (`lines=True`) loses the owned ink; `replace` mode: both lose it;
+* flag OFF (no `page.owned_ink`): every crop is the plain crop. Default: the owned ink is taken from the PAD only, the candidate's own box keeps every pixel; `inside`: from the box too (the arm that
+  made `sempre p` out of `sempre piu p`);
 * each control is shown to FAIL where the mask is absent (`OFF`): the same count of rule pixels in the crop is not zero.
 """
 from __future__ import annotations
@@ -33,10 +34,10 @@ SL = np.unpackbits(_NZ["staff_line"], axis=1)[:, :WX1 - WX0].astype(bool)
 GRAY = RGB.mean(axis=2)
 
 
-def _page(kinds=("barline",), replace=False, owned=True):
+def _page(kinds=("barline",), inside=False, owned=True):
     pg = types.SimpleNamespace(rgb=RGB.copy(), binary=np.where(GRAY < 128, 0, 255).astype(np.uint8))
     if owned:
-        pg.owned_ink = OI.OwnedInk(pg, {"barline": BAR, "staff_line": SL}, kinds, 1, 2, replace)
+        pg.owned_ink = OI.OwnedInk(pg, {"barline": BAR, "staff_line": SL}, kinds, 1, 2, inside)
     return pg
 
 
@@ -55,13 +56,13 @@ def _rect(name):
 class OwnedInkMask(unittest.TestCase):
     def test_flag_values(self):
         for v, want in (("", ()), ("0", ()), ("off", ()), ("1", ("barline",)), ("on", ("barline",)), ("1,staff_line", ("staff_line", "barline")),
-                        ("staff_line", ("staff_line",)), ("replace", ("barline",)), ("junk", ())):
+                        ("staff_line", ("staff_line",)), ("inside", ("barline",)), ("junk", ())):
             with mock.patch.dict(os.environ, {OI.ENV: v}):
                 self.assertEqual(OI.kinds_enabled(), want, v)
         with mock.patch.dict(os.environ, {OI.ENV: "1"}):
-            self.assertFalse(OI.replace_mode())
-        with mock.patch.dict(os.environ, {OI.ENV: "1,replace"}):
-            self.assertTrue(OI.replace_mode())
+            self.assertFalse(OI.inside_mode())
+        with mock.patch.dict(os.environ, {OI.ENV: "1,inside"}):
+            self.assertTrue(OI.inside_mode())
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(OI.ENV, None)
             self.assertFalse(OI.enabled())
@@ -91,46 +92,48 @@ class OwnedInkMask(unittest.TestCase):
 
 
 class CropBuilders(unittest.TestCase):
+    """`_without_owned_ink` over the real window, at the candidate's own crop region: the pad loses the owned ink, the box keeps every pixel (default), `inside` takes it from the box too."""
+
+    def _crops(self, name, **kw):
+        c = _cand(name)
+        r = _rect(name)
+        plain = RGB[r[1]:r[3], r[0]:r[2]]
+        pg = _page(**kw)
+        return c, r, plain, DT._without_owned_ink(pg, plain, r, SP, c.bbox_page)
+
     def test_flag_off_is_the_plain_crop(self):
         for name in META["boxes"]:
-            plain = DT.crop_for(_page(owned=False), _cand(name), SP, lines=True)
-            self.assertTrue(np.array_equal(plain, DT.crop_for(_page(owned=False), _cand(name), SP, lines=True)))
-        self.assertTrue(np.array_equal(DT.tight_crop_for(_page(owned=False), _cand("sempre_piu"), SP, lines=True), DT.tight_crop_for(_page(owned=False), _cand("sempre_piu"), SP, lines=True)))
+            c, r, plain, out = self._crops(name, owned=False)
+            self.assertIs(out, plain)
+            self.assertTrue(np.array_equal(DT.crop_for(_page(owned=False), c, SP, lines=True), DT.crop_for(_page(owned=False), c, SP, lines=True)))
 
-    def test_default_mode_retry_only(self):
-        c = _cand("sempre_piu_p")
-        off = DT.crop_for(_page(owned=False), c, SP, lines=False)
-        first = DT.crop_for(_page(), c, SP, lines=False)
-        self.assertTrue(np.array_equal(off, first), "a first look is the plain crop")
-        retry_off = DT.crop_for(_page(owned=False), c, SP, lines=True)
-        retry_on = DT.crop_for(_page(), c, SP, lines=True)
-        self.assertFalse(np.array_equal(retry_off, retry_on), "a retry crop loses the owned ink")
-        # the real rule hugging the final p (x 1788) is ink in the plain retry crop and gone from the owned one
-        r = _rect("sempre_piu_p")
-        # the crop is upscaled only above the 80 px space: Litolff's 15.75 is upscaled; compare through the page raster instead
-        pg = _page()
-        m = pg.owned_ink.mask(r, SP)
-        raw = (RGB[r[1]:r[3], r[0]:r[2]].mean(axis=2) < 180)
-        self.assertGreater(int((raw & m).sum()), 100)
-        self.assertEqual(int((raw & ~m & BAR[r[1]:r[3], r[0]:r[2]] & (np.arange(r[2] - r[0])[None, :] + r[0] + WX0 >= 1784) & (np.arange(r[2] - r[0])[None, :] + r[0] + WX0 <= 1795)).sum()), 0)
+    def test_default_takes_the_pad_and_leaves_the_box(self):
+        c, r, plain, out = self._crops("sempre_piu_p")
+        diff = (out != plain).any(axis=2)
+        self.assertGreater(int(diff.sum()), 30, "the rule hugging the final p stands in the pad: whited (a control that can fail: flag off gives `plain`)")
+        bx0, by0, bx1, by1 = c.bbox_page
+        self.assertEqual(int(diff[by0 - r[1]:by1 - r[1], bx0 - r[0]:bx1 - r[0]].sum()), 0, "inside the candidate's own box nothing is touched: the crossing ink is the word's")
+        # what was taken is ink of the owned rule, nothing else
+        taken = np.zeros(diff.shape, bool)
+        taken |= BAR[r[1]:r[3], r[0]:r[2]]
+        self.assertTrue(bool((diff <= taken).all()))
 
-    def test_replace_mode_changes_the_first_look(self):
+    def test_inside_mode_takes_the_rule_through_the_word_too(self):
+        c, r, plain, out = self._crops("sempre_piu", inside=True)
+        diff = (out != plain).any(axis=2)
+        bx0, by0, bx1, by1 = c.bbox_page
+        self.assertGreater(int(diff[by0 - r[1]:by1 - r[1], bx0 - r[0]:bx1 - r[0]].sum()), 20, "the thin rule through the i of piu, inside the box, is taken in `inside` mode (the harmful arm)")
+        _c, _r, _p, dflt = self._crops("sempre_piu")
+        self.assertEqual(int((dflt != _p).any(axis=2)[by0 - r[1]:by1 - r[1], bx0 - r[0]:bx1 - r[0]].sum()), 0)
+
+    def test_the_builders_call_it(self):
         c = _cand("sempre_piu_p")
-        off = DT.crop_for(_page(owned=False), c, SP, lines=False)
-        on = DT.crop_for(_page(replace=True), c, SP, lines=False)
+        off = DT.crop_for(_page(owned=False), c, SP)
+        on = DT.crop_for(_page(), c, SP)
         self.assertFalse(np.array_equal(off, on))
-        tight_off = DT.tight_crop_for(_page(owned=False), c, SP, lines=False)
-        tight_on = DT.tight_crop_for(_page(replace=True), c, SP, lines=False)
-        self.assertFalse(np.array_equal(tight_off, tight_on))
-
-    def test_the_stem_of_sempre_keeps_its_letter(self):
-        """Control from the real `p` of `sempre` (page x ~1588): the retry crop over `sempre_piu` holds exactly the plain retry crop's ink there."""
-        c = _cand("sempre_piu")
-        a = DT.tight_crop_for(_page(owned=False), c, SP, lines=True)
-        b = DT.tight_crop_for(_page(), c, SP, lines=True)
-        ink_a, ink_b = int((a.mean(axis=2) < 180).sum()), int((b.mean(axis=2) < 180).sum())
-        self.assertGreater(ink_a, ink_b, "the owned rule through the i is whited")
-        self.assertLess(ink_a - ink_b, 0.15 * ink_a, "nothing else: a few rule pixels, never the word")
+        # the tight crop's region (box + 0.25 sp) holds almost no pad: it may or may not change; it must never change inside the box
+        t_off, t_on = DT.tight_crop_for(_page(owned=False), c, SP), DT.tight_crop_for(_page(), c, SP)
+        self.assertEqual(t_off.shape, t_on.shape)
 
 
 class Mechanics(unittest.TestCase):

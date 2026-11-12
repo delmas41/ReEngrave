@@ -5,7 +5,7 @@
 Per text candidate: status = READ (a reading the lexicon accepted), REFUSED (the OCR said something, the lexicon accepted none), NO_READING (no rung spoke).
 A candidate "carries" an owner's ink when that owner's ink inside the crop window is at least MIN_SP2 staff-space squares. `own` = inside the candidate's own box
 (`crop_for` never whites it), `pad` = in the crop's padding (detector boxes are already whited there; a barline or a staff line is not, except by the 2.254 r3 retry).
-EARLIER owners = the page-wide marks claimed before words (CLAUDE.md 3, claim order): barline, staff line, bracket/brace/key/meter ('structural'), clef. The
+EARLIER owners = the page-wide marks claimed before words (CLAUDE.md 3, claim order) that have geometry at this moment: barline (the page stroke map's carved rule), staff line. A detector BOX (clef, structural = beam / slur / stem ...) is not a claim. The
 detector's notehead / accidental / stem / rest / ornament / dynamic boxes are PER-CELL readers (claim AFTER words); listed for information only.
 """
 import json
@@ -13,7 +13,7 @@ import sys
 from collections import Counter, defaultdict
 
 MIN_SP2 = 0.1
-EARLIER = ("barline", "staff_line", "det:structural", "det:clef")
+EARLIER = ("barline", "staff_line")
 
 
 def earlier(k):
@@ -70,7 +70,7 @@ for page, cd, status, kinds, rs in rows:
     rem = sorted(k for k in kinds if earlier(k) and shown(k))
     known["windows"] += 1
     known["carrying earlier ink"] += bool(rem)
-    known["carrying earlier ink, not staff lines"] += any(not k.startswith("staff_line") for k in rem)
+    known["carrying a barline's ink (own or pad)"] += any(k.startswith("barline") for k in rem)
     for k in rem:
         known[k] += 1
     print("  p%s staff %s m%s box %s earlier=%s | read %s | READ on staff %s" % (

@@ -367,6 +367,7 @@ STAGE_OF_FILE = {
     "page_accidental_ink.py": "GATHER",
     # ROADMAP 2.269 step 1: files `unit: page_ink` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
     "page_claim_names.py": "GATHER",
+    "owned_ink.py": "GATHER",               # 2.304 (flag OMR_TEXT_CROP_OWNED_INK, OFF): the pixels an earlier page-wide owner holds, taken from the text reader's OCR crop; files no row, called from `gather_direction_words`
     "ink_attachment.py": "GATHER",          # 2.288 r4: pure shared questions of the stroke map (what the ink hangs from, which side of its line, two long verticals), called by GATHER readers
     # ROADMAP 2.240 step 2: files `Q.PAGE_MARK_OWNER` / `Q.PAGE_SPAN` from its one hook line in `gather.gather()`.
     "page_owner.py": "GATHER",
