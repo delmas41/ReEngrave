@@ -3146,7 +3146,7 @@ def _page_bound_slurs(rec: Record) -> Dict[str, Dict[str, Any]]:
 
 
 def _page_bound_slur_spans(measures, bound: Dict[str, Dict[str, Any]], voice_of: Dict[int, int], have: set, written: set,
-                           counters: Dict[str, int]) -> List[tuple]:
+                           counters: Dict[str, int], rec: Optional[Record] = None) -> List[tuple]:
     """This part's slur spans for the page-bound curves whose two heads are both in the part (`_paired_spans`' shape, keyed by page x like
     `_anchored_slur_spans`). A curve is written ONCE (`written` holds its key across parts); two heads in two voices are counted, never
     written (MusicXML pairs a slur within a voice)."""
@@ -3157,11 +3157,24 @@ def _page_bound_slur_spans(measures, bound: Dict[str, Dict[str, Any]], voice_of:
             if key and det.get("category") == "notehead":
                 index.setdefault(str(key), (m_idx, det))
     out: List[tuple] = []
+    alias: Dict[str, str] = {}
+    if rec is not None and _page_arc_bind.write_enabled():
+        from . import page_heads as _PH_
+        if _PH_.one_enabled():
+            alias = _export_unison.written_member(rec, index)
     for curve, c in sorted(bound.items()):
-        if curve in written or c["start"] not in index or c["stop"] not in index:
+        start, stop = c["start"], c["stop"]
+        if alias and str(curve).startswith("page_arc/"):
+            # ROADMAP 2.305: the page pass binds a HEAD; where the box it names is one the one-mark-one-note rule did not write, the end is the box its head
+            # DID write (the same ink) -- as the tie pairs already do (2.252 r3 / 2.290 r4). Counted.
+            for end in (start, stop):
+                if end not in index and end in alias:
+                    counters["slur_end_moved_to_its_heads_written_box"] += 1
+            start, stop = alias.get(start, start), alias.get(stop, stop)
+        if curve in written or start not in index or stop not in index:
             continue
         written.add(curve)
-        (sm, first), (tm, last) = index[c["start"]], index[c["stop"]]
+        (sm, first), (tm, last) = index[start], index[stop]
         if voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
             counters["slur_bound_ends_in_two_voices"] += 1
             continue
@@ -3460,7 +3473,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 if kind == "slur" and bound_slurs:
                     # ROADMAP 2.223: the page-bound curves, AFTER `n_spans` (they are not groups of the box merge above)
                     spans = list(spans) + _page_bound_slur_spans(
-                        measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters)
+                        measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters, rec=rec)
             for join_kind, joins in (("slur", x_slurs), ("tie", x_ties)):
                 if kind == join_kind and joins:
                     # ROADMAP 2.271 step 3: a note that already starts or ends a span of its kind is not joined a second time (counted)
