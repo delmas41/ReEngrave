@@ -361,7 +361,7 @@ def unread_text_lines(ev: Evidence, system: Subject) -> List[Dict[str, Any]]:
             continue
         # the letters `adjudicate_dynamic` withholds: letter ink measured beside them (the 2.68 convention); a letter nobody measured stays what the detector said
         ln["withheld"] = sum(1 for r in inside
-                             if any(_is_a_letter_of_a_known_word(n.value) for n in ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=r.subject)[-1:]))
+                             if any(_letter_inside_a_line(n.value) for n in ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=r.subject)[-1:]))
         wid = ln["box"][2] - ln["box"][0]
         texts: Dict[str, Dict[str, Any]] = {}
         for r in read:
@@ -378,6 +378,12 @@ def unread_text_lines(ev: Evidence, system: Subject) -> List[Dict[str, Any]]:
         ln.pop("_left", None)
         out.append(ln)
     return out
+
+
+def _letter_inside_a_line(sides) -> bool:
+    """Letter ink on BOTH sides of the letter. A letter at an END of an unread line (the `p` of `p dolce`, the `f` of `f espr.`, the final `p`) may be the line's own dynamic, so it stays what the detector
+    said (rule 8): the first build withheld those too and took real `p` / `f` of Brahms `p dolce sempre`, `p marc.`, `f espr. e legato` (tiles, 2026-11-11)."""
+    return isinstance(sides, dict) and bool(sides.get("left")) and bool(sides.get("right"))
 
 
 def letter_in_unread_line(row: Any, lines: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
@@ -748,7 +754,7 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             # inside a text line the lexicon REFUSED, with letter ink beside it, is not written as a dynamic -- rule 8, "cannot tell" is not "mp". The line is written as its sibling's
             # word (GUESSED) or marked UNREAD by `adjudicate_direction`. A letter with no ink beside it, or no measurement of it, stays what the detector said.
             _ul_sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
-            if _ul_sides and _is_a_letter_of_a_known_word(_ul_sides[-1].value):
+            if _ul_sides and _letter_inside_a_line(_ul_sides[-1].value):
                 inside_unread_line += 1
                 continue
         if _letter_of_a_known_word(row, word_boxes):
