@@ -42,13 +42,13 @@ def _decided(flag):
         return _log()
 
 
-def _dyn(log, staff, cell, system=0):
-    v = log.verdict(Q.DYNAMIC, R.cell(8, system, staff, cell))
+def _dyn(log, staff, cell, system=0, page=8):
+    v = log.verdict(Q.DYNAMIC, R.cell(page, system, staff, cell))
     return None if v is None else v.value
 
 
-def _dir_detail(log, staff, cell):
-    v = log.verdict(Q.DIRECTION, R.cell(8, 0, staff, cell))
+def _dir_detail(log, staff, cell, page=8):
+    v = log.verdict(Q.DIRECTION, R.cell(page, 0, staff, cell))
     return {} if v is None else (v.detail or {})
 
 
@@ -73,9 +73,33 @@ class TestUnreadWordSibling(unittest.TestCase):
     def test_p2_bar12_the_line_is_its_siblings_word_guessed(self):
         self.assertFalse(_dir_detail(self.off, 2, 11).get("guessed_words"))
         g = _dir_detail(self.on, 2, 11).get("guessed_words")
-        self.assertTrue(g and g[0]["text"] == "sempre più p", g)
+        self.assertTrue(g and g[0]["text"] == "sempre più", g)
         self.assertEqual(g[0]["witness"]["staff"], R.cell(8, 0, 8, 12).at(R.Kind.STAFF).to_key())      # staff 8's READ word, another ink
-        self.assertEqual(g[0]["guess_candidates"], [{"value": "sempre più p", "support": None}])
+        self.assertEqual(g[0]["guess_candidates"], [{"value": "sempre più", "support": None}])
+
+    def test_fault2_p2_bar12_no_stray_dyn_and_no_pp(self):
+        # round 2, fault 2: with the lexicon-refused line witnessed, every letter but the sibling's dynamic token is the word's. the round-1 ON arm left a blue `dyn.` (the twin box of the first `m`, one
+        # printed letter judged by the wrong box: now one group) and a `pp` (the `p` and `i-u` of `piu`, boxed as two letters 0.9 spaces apart); the real final `p` (bar 14) stays its own dynamic.
+        off11, on11 = _dyn(self.off, 2, 11), _dyn(self.on, 2, 11)
+        self.assertEqual(off11, ["mp"], "CONTROL: OFF writes the false mp over sempre")
+        self.assertEqual(on11, [])
+        self.assertIsNone(_dyn(self.off, 2, 12), "CONTROL: OFF leaves the letters of piu an unspellable run (written `dyn.`), not an empty bar")
+        self.assertEqual(_dyn(self.on, 2, 12), [])
+        self.assertEqual(_dyn(self.on, 2, 13), ["p"])
+
+    def test_fault1_brahms_p0_staff10_the_f_keeps_its_ink_and_one_word_is_guessed(self):
+        # round 2, fault 1: OFF writes `ff` (the f of `f espr. e legato` plus the m, p of `espr.` spelled `fmp`, a guess); the neighbouring staves read `espr. e legato` and `f espr. e legato`
+        # (one marking: the leading f is a dynamic token). ON: the f is its own dynamic, the rest is the word, written `espr. e legato` blue.
+        self.assertEqual(_dyn(self.off, 10, 0, page=0), ["ff"])
+        self.assertEqual(_dyn(self.on, 10, 0, page=0), ["f"])
+        g = _dir_detail(self.on, 10, 0, page=0).get("guessed_words")
+        self.assertTrue(g and g[0]["text"] == "espr. e legato", g)
+        self.assertFalse(_dir_detail(self.on, 10, 0, page=0).get("unread_lines"))
+
+    def test_the_word_is_written_without_its_dynamic_token(self):
+        # CONVENTION (DECISIONS 2026-10-08: the dynamic stays the dynamic reader's, the word is read separately, `Q.MARKING` joins them): the sibling's `sempre piu p` is written `sempre piu`
+        g = _dir_detail(self.on, 3, 11).get("guessed_words")
+        self.assertTrue(g and "p" not in g[0]["text"].split(), g)
 
     def test_p3_bar12_same(self):
         self.assertTrue(_dir_detail(self.on, 3, 11).get("guessed_words"))

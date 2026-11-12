@@ -359,22 +359,54 @@ def unread_text_lines(ev: Evidence, system: Subject) -> List[Dict[str, Any]]:
         _widths = sorted(b[2] - b[0] for r, b in letters if r in inside)
         if (ln["box"][2] - ln["box"][0]) < UNREAD_LINE_MIN_WIDTH_LETTERS * _widths[len(_widths) // 2]:
             continue
-        # the letters `adjudicate_dynamic` withholds: letter ink measured beside them (the 2.68 convention); a letter nobody measured stays what the detector said
-        ln["withheld"] = sum(1 for r in inside
-                             if any(_letter_inside_a_line(n.value) for n in ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=r.subject)[-1:]))
         wid = ln["box"][2] - ln["box"][0]
+        # SIBLING READINGS: a READ word of another staff at the same x-extent, compared WITHOUT its dynamic tokens at either end (`f espr. e legato` and `espr. e legato` are one marking: the
+        # dynamic is the dynamic reader's -- Sean 2026-10-08 "read the dynamic glyph and the word separately, then JOIN them")
+        from ...direction_lexicon import _DYNAMIC_LETTERS, _normalise
         texts: Dict[str, Dict[str, Any]] = {}
+        lead_n = trail_n = 0
         for r in read:
             if r["staff"] == ln["staff"]:
                 continue
             rw = max(1.0, r["box"][2] - r["box"][0])
             ox = min(ln["box"][2], r["box"][2]) - max(ln["box"][0], r["box"][0])
-            if ox >= SIBLING_SPAN_SHARE * rw and SIBLING_WIDTH_RATIO[0] <= wid / rw <= SIBLING_WIDTH_RATIO[1]:
-                texts.setdefault(" ".join(r["text"].lower().split()), r)
+            if not (ox >= SIBLING_SPAN_SHARE * rw and SIBLING_WIDTH_RATIO[0] <= wid / rw <= SIBLING_WIDTH_RATIO[1]):
+                continue
+            toks = r["text"].split()
+            i, j = 0, len(toks)
+            while i < j and _normalise(toks[i]) in _DYNAMIC_LETTERS:
+                i += 1
+            while j > i and _normalise(toks[j - 1]) in _DYNAMIC_LETTERS:
+                j -= 1
+            if i == j:
+                continue                    # the reading is a bare dynamic: no word to witness
+            core = " ".join(toks[i:j])
+            texts.setdefault(core.lower(), dict(r, core=core))
+            lead_n = max(lead_n, sum(len(_normalise(t)) for t in toks[:i]))
+            trail_n = max(trail_n, sum(len(_normalise(t)) for t in toks[j:]))
         ln["witness_texts"] = sorted(texts)
         # two different readings of the marking: cannot tell, the line stays UNREAD (rule 8)
-        ln["witness"] = (None if len(texts) != 1 else
-                         {k: next(iter(texts.values()))[k] for k in ("text", "box", "staff", "row")})
+        one = next(iter(texts.values())) if len(texts) == 1 else None
+        ln["witness"] = None if one is None else {"text": one["core"], "box": one["box"], "staff": one["staff"], "row": one["row"], "full_text": one["text"]}
+        # THE LETTERS THE LINE WITHHOLDS (ids of every box). A letter group is one printed letter (twin boxes). WITH a witness the sibling's text says how many letters at each end are its dynamic
+        # tokens: those groups keep their own ink as the dynamic, every other letter is the word's (Sean 2026-10-09 "only if it makes a word we know"). WITHOUT one only a letter with ink on BOTH
+        # sides (the 2.68 convention); a letter at an end may be the line's own dynamic and stays what the detector said.
+        gm = _same_ink_groups(inside)
+        groups: Dict[frozenset, List[Any]] = {}
+        for r in inside:
+            groups.setdefault(frozenset(g.id for g in (gm.get(r.id) or [r])), []).append(r)
+        ordered = sorted(groups.values(), key=lambda g: min(float(x.detail["bbox_page_px"][0]) for x in g))
+        withheld_ids = set()
+        if ln["witness"] is not None:
+            keep = ordered[:lead_n] + (ordered[len(ordered) - trail_n:] if trail_n else [])
+            kept_ids = {x.id for g in keep for x in g}
+            withheld_ids = {r.id for r in inside if r.id not in kept_ids}
+        else:
+            for g in ordered:
+                if any(_letter_inside_a_line(n.value) for x in g for n in ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=x.subject)[-1:]):
+                    withheld_ids |= {x.id for x in g}
+        ln["withhold_ids"] = withheld_ids
+        ln["withheld"] = len(withheld_ids)
         ln.pop("_left", None)
         out.append(ln)
     return out
@@ -753,8 +785,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             # ROADMAP 2.303 PART 1 (Sean 2026-11-11, "it boxes MP, but it's actually a part of the word sempre"; 2026-10-09 "surrounded by other letters the context solves it"): a letter
             # inside a text line the lexicon REFUSED, with letter ink beside it, is not written as a dynamic -- rule 8, "cannot tell" is not "mp". The line is written as its sibling's
             # word (GUESSED) or marked UNREAD by `adjudicate_direction`. A letter with no ink beside it, or no measurement of it, stays what the detector said.
-            _ul_sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
-            if _ul_sides and _letter_inside_a_line(_ul_sides[-1].value):
+            # WITH a sibling reading every letter but the ones its dynamic tokens name is the word's; WITHOUT one, only a letter with ink on both sides (`unread_text_lines`).
+            if row.id in letter_in_unread_line(row, unread_lines)["withhold_ids"]:
                 inside_unread_line += 1
                 continue
         if _letter_of_a_known_word(row, word_boxes):
