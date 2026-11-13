@@ -1,0 +1,4 @@
+[{"plate": "brahms", "start": "glyph/11/0/12/3/2", "stop": "glyph/11/0/12/4/3", "why": "Sean r1 tile 5 redrawn: the arc from the second note into the next measure (r1 wrote a slur from the note before)"},
+ {"plate": "litolff", "start": "glyph/5/0/5/3/1", "stop": "glyph/5/0/5/4/3", "why": "Sean r1 tile 8 redrawn: the second of the two ties (r1 wrote one slur over both, one note too far)"},
+ {"plate": "litolff", "start": "glyph/15/1/9/18/4", "stop": "glyph/15/1/9/19/2", "why": "Sean r1 tile 9 redrawn: a tie r1 wrote as a slur; r2 writes no arc (kind unread: positions 7.50 / 6.82)"},
+ {"plate": "litolff", "start": "glyph/5/0/2/13/7", "stop": "glyph/5/0/2/14/2", "why": "Sean r1 tile 11 redrawn: a tie r1 wrote as a slur; r2 writes no arc (kind unread: positions 4.76 / 3.96)"}]

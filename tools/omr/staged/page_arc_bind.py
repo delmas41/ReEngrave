@@ -207,6 +207,8 @@ def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, An
 
 #: ROADMAP 2.305 r2: the gap (spaces) between the traced ink's near side and a head's near edge within which the ink LANDS on that head
 LAND_GAP_SPACES = 0.5
+#: ... and only in the outer share of the run's width at that end (the landing is the arc's END, not a note it passes over)
+LAND_OUTER_SHARE = 0.25
 
 
 def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], hd: Dict[str, Any], sgn: int, ex: float, side: str, sp: float,
@@ -215,11 +217,13 @@ def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], 
     of the end: a trace row over the head's x-span whose near side (bottom of a cap's stroke, top of a cup's) stands 0 .. `LAND_GAP_SPACES` from the head's
     near edge (top for a cap, bottom for a cup). The landed head nearest the end wins; None if there is none."""
     best = None
+    xs = [float(t[0]) for t in trace]
+    width = (max(xs) - min(xs)) if xs else 0.0
     for h in heads:
         if h["key"] == hd["key"] or h.get("tip") or (usable is not None and not usable(h["key"])):
             continue
-        if not (0 < (hd["cx"] - h["cx"]) * sgn and 0 <= (ex - h["cx"]) * sgn <= HEAD_BEHIND_END_SPACES * sp):
-            continue
+        if not (0 < (hd["cx"] - h["cx"]) * sgn and 0 <= (ex - h["cx"]) * sgn <= min(HEAD_BEHIND_END_SPACES * sp, LAND_OUTER_SHARE * width)):
+            continue          # only the run's OUTER quarter: a head further in is a note the arc passes over (r2: Litolff p15 runs 60, 66, two-note slurs)
         hx0, hx1 = h["cx"] - h["w"] / 2.0, h["cx"] + h["w"] / 2.0
         top, bot = h["cy"] - h["h"] / 2.0, h["cy"] + h["h"] / 2.0
         for t in trace:
