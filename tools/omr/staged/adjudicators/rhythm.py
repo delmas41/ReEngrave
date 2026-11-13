@@ -3443,7 +3443,7 @@ def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any
     """
     v = ev.verdict(Q.STEM_DIRECTION)
     if (v is not None and v.outcome is Outcome.DECIDED
-            and v.reason == "stem_projection" and v.value in ("up", "down")):
+            and v.reason in ("stem_projection", "page_stem") and v.value in ("up", "down")):
         return str(v.value), v
     # ⚠️ ROADMAP 2.77b (Sean, 2026-10-09, rhythm-leftovers-2 crop 9): WHERE NO
     # CV STEM IS ATTACHED THE HEAD'S OWN INK STILL SAYS WHICH WAY ITS STEM
@@ -9781,7 +9781,7 @@ def _stems_on(head_box, stems):
     wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER, Q.PAGE_STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
-             "no_evidence", "stem_readers_disagree"),
+             "no_evidence", "stem_readers_disagree", "page_stem"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_stem_direction(ev: Evidence) -> Ruling:
@@ -9821,6 +9821,16 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
 
     cell = ev.subject.at(Kind.CELL)
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+
+    # ROADMAP 2.306 r5 (flag `OMR_PAGE_STEMS`): where the page read this head's stem, its direction IS the page's answer (the engraving side the
+    # stroke stands at: up at the right, down at the left) -- one answer, read once; it is not worked out again from the cell's rows (r4: three
+    # Litolff heads, `6/1/9/10/2`, `6/1/9/10/7`, `10/1/7/3/2`, came out the opposite way from the cell rows' projection).
+    from .. import page_stems as _PS
+    if _PS.enabled():
+        _pr = ev.rows(Q.PAGE_STEM)
+        if _pr and _pr[-1].value is not None and (_pr[-1].detail or {}).get("direction") in ("up", "down"):
+            return Ruling(value=str(_pr[-1].detail["direction"]), reason="page_stem", used=(box[-1].id, _pr[-1].id),
+                          detail={"page_stroke": _pr[-1].detail.get("page_stroke"), "page_how": _pr[-1].detail.get("how")})
 
     mine = _stems_on(head_box, stems)
     _page_own = page_own_stems(ev, stems)        # ROADMAP 2.306: the page's one reading of this head's stem, where it read one

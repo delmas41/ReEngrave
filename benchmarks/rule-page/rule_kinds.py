@@ -192,6 +192,7 @@ RULES = [
 
     R(STEMS, "stem_direction", "stem_projection,beam_mate", "ok", "stem up or down", "direction from the stem's tip beyond the outer head, or from the beam mate; up -> right, down -> left", S_STEMTILES, "-"),
     R(STEMS, "stem_direction", "no_stem", "D:passthrough", "no stem found", "passes on the head_stem refusal", "-", "follows head_stem"),
+    R(STEMS, "stem_direction", "page_stem", "ok", "the stem's direction read once on the page", "the engraving side the page stem stands at (up: right, down: left), not worked out again from the cell rows (flag OMR_PAGE_STEMS, ROADMAP 2.306 r5, default OFF)", "page-facts stems (up -> right, down -> left)", "-"),
     R(STEMS, "stem_direction", "stems_disagree", "U", "readers disagree on direction", "the stem finders disagree; the stroke stem reader (2.204) is built to settle it", "Sean 2026-10-26 tiles: today's finder was right on chords", "open (2.204 after 2.205)"),
     R(STEMS, "stem_direction", "no_evidence", "D:honesty", "no evidence", "-", RULE8, "kept"),
 
