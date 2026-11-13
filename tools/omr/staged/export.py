@@ -2559,8 +2559,12 @@ def _stem_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
     that is not there.
     """
     out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
+    from . import page_stems as _PS
+    views_on = _PS.enabled()
     for o in rec.obs_of(Q.STEM):
         v = o["value"]
+        if o.get("reader") == "cv_page_stems" and not views_on:      # ROADMAP 2.306: a page stem view counts only with its flag on
+            continue
         if isinstance(v, (list, tuple)) and len(v) >= 4:
             out[o["subject"]].append(tuple(float(x) for x in v[:4]))
     return dict(out)

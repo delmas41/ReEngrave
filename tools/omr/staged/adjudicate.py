@@ -419,6 +419,12 @@ class Evidence:
         if getattr(row, "reader", None) in self._spec.excludes_tiers:
             self._excluded.append((row.id, f"reader:{row.reader}"))
             return False
+        # ROADMAP 2.306: a stem VIEW the page stem reader filed (`page_stems`, reader CV_PAGE_STEMS) exists for its flag's ADJUDICATE side only; with
+        # `OMR_PAGE_STEMS` off a record gathered with it reads exactly as one gathered without it (the A/B replays one gather, both arms).
+        if getattr(row, "reader", None) == "cv_page_stems" and getattr(row, "quantity", None) == "stem":
+            from . import page_stems as _PS
+            if not _PS.enabled():
+                return False
 
         # (a) our own quantity is nowhere in its ancestry -> nothing to check.
         closure_q = self.log.quantities_in_closure(row.id)
