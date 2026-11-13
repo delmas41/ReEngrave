@@ -377,15 +377,14 @@ def plan_of(details: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     def settled(r):
         # ROADMAP 2.305 r3 (ink is read and claimed ONCE; Sean's r2 tile 10, Litolff p5: boxes 5/0/5/3/0 and 4/11 witnessed both pieces of a cut run -- one written as a
         # tie, one abstained -- so they were "shared" and their old-path slur was written over the tie, one note too late): a box whose ink the page pass has
-        # bound OR abstained on writes nothing through the fallback. Every run with a witness was decided here (written / abstained / kind unread).
-        return r.get("status") in (WRITTEN, ABSTAINED)
+        # BOUND (a written run, or a run whose two heads are bound and whose kind is unread) writes nothing through the fallback, whatever else it witnesses.
+        # MEASURED (2305 r3, the 8 pages): the wider rule -- a box of ANY decided run, abstentions included -- removed 43 fallback arcs a plate and 11 of Sean's
+        # 98 Brahms p0 arcs that were right; a box that only witnesses abstained runs keeps its old arc until the fallback is retired (Sean's call).
+        return r.get("status") == WRITTEN or bool(r.get("kind_unread"))
 
     for box, rs in box_runs.items():
         if any(settled(r) for r in rs):
-            if all(settled(r) for r in rs):
-                replaced.add(box)
-            else:
-                shared_kept.add(box)
+            replaced.add(box)
     edges = [r for r in runs if r.get("status") == ABSTAINED and r.get("edge")]
     counts: Dict[str, int] = {}
     for r in runs:
