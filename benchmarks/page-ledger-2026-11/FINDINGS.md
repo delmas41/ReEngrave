@@ -181,3 +181,43 @@ never sent and are not controls.
 have none); Brahms measured on p0+p5 only; red-bar count on Litolff (only p6+p16 exported).
 **Prior work not to rebuild:** 2.204 stems from CELL strokes (parked: its "stem readers disagree" abstentions
 cost 2-5.5% of notes), 2.259, hairpin-ink exclusion (2.25b), `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM`.
+
+## 2.306 stems on the page, round 1 (2026-11-13) -- built OFF (`OMR_PAGE_STEMS`), NOT ready to land
+
+STAGED. `lane-2.306-stems-beams-page`; pre-retire tip 40f7b5bf2, retire commit 171568282 (+3 small commits).
+Code `tools/omr/staged/page_stems.py`, tests `tools/omr/tests/test_page_stems_2_306.py`, scripts
+`benchmarks/page-ledger-2026-11/2306/`. Sean's tiles (out/print/2.306-r1) not yet answered.
+
+**Cause.** A note's stem was decided three times by three cell readers (the head-to-stem join, the duration
+reader's own box overlap, the stem-direction reader). The page reader answers once -- the page map's vertical
+stroke at the head's engraving side (right edge up, left edge down; a second's displaced head sits on its
+partner's stem) -- and hands that answer to all three. Two page facts only seen on real pages: the page map
+splits a stem at its head (the stroke can stop ~2 sp from the head's centre); in divisi each head also meets
+the other voice's stem ending ~0.7 sp away -- the stroke that ENDS at the head wins.
+**Process lesson.** The stem join feeds voice split, chord grouping and arc binding; changing who owns a stem
+moves ties, rests and slurs far downstream and no lane reads those effects first.
+
+**File change, OFF vs ON, pre-retire** (frozen 8 pages; one flag-ON gather per plate, both arms replayed; the
+control line warns neither arm reproduces the stored record -- expected, gathered ON):
+Litolff notes +39 -33, flags +13 -26, ties +4 -2, rests +10 -3, red bars 172 -> 180, not written 2089 -> 2071.
+Brahms notes +36 -23, flags +27 -14, ties +8 -54, rests +62 -8, slurs -38, red bars 143 -> 157, not written
+3083 -> 3072. **The Brahms ties -54 / rests +62 / slurs -38 and Litolff flags -26 are UNEXPLAINED.**
+"No stem row" heads: Litolff 240 -> 126 now stemmed, 114 abstain (109 no free vertical stroke beside the head
+-- the plate fuses stem into head; 3 up-and-down; 1 two candidates; 1 held by a neighbour). Brahms 146 -> 107
+stemmed, 39 abstain (30 no stroke, 8 two voices, 1 two candidates).
+Sean's Brahms p0 stem labels: 261 of 277 right, 16 missed, 31 of ours not his (unchecked).
+Judged right->wrong 0, unwritten->wrong 0 on both (one Litolff right->narrowed, 2.158 tile 11).
+judged_claims: Litolff p6+p16 gain 2 contradictions (2.276 r2 #2, #8: tremolo slashes, the stem claim takes
+31-34% of the box; the base has 4 of the same kind); Brahms not run. check 229 (one over: `gather_coverage`
+counts `Q.PAGE_STEM` as ungathered, as PAGE_BEAM / PAGE_HEAD). Fast tier flag OFF 10,608 passed, 3 failed
+(ink-rules page, regenerated, file passes; whole tier not re-run).
+
+**Retire, measured.** Dropping the cell join where the page cannot stem a head: Litolff 266 stems lost, red
+bars 172 -> 187; Brahms 76 lost, 143 -> 157; right->wrong still 0. NOT retired: the cell stem finder, rescue
+stems, `gather_head_stem_reach` (flag, beam and tip readers still measure on the finder's rows).
+
+**Controls.** Real-ink Brahms p0 fixture (14 of Sean's 17 stems in eight bars; mirrored page finds almost
+none); 2.300 tile 2 (three chords on three stems; without the displaced-second rule the chord falls apart).
+NOT done: 2.150 tile 11 / 2.150b tile 20 (Brahms p15 not gathered), the four 2.300 tiles on Brahms p19.
+**Prior work.** 2.204 parked (reader-disagreement abstentions cost 2-5.5% of notes); 2.280 r3 (most no-stem
+heads are a second's partner); 2.260c M4a (page readers file other marks' ink until claims name strokes).
