@@ -6784,12 +6784,16 @@ def adjudicate_event(ev: Evidence) -> Ruling:
     # there. A head whose stem the CV rung missed must behave as it did before
     # this quantity existed; only an explicit CONFLICT separates.
     directions = {}
+    owned_elsewhere = []
     for g in head_ids:
         sub = Subject(Kind.GLYPH, page=ev.subject.page,
                       system=ev.subject.system, staff=ev.subject.staff,
                       cell=ev.subject.cell, glyph=g)
+        if owned_by_another_staff(ev, sub):
+            owned_elsewhere.append(g)        # ROADMAP 2.306 r3: another staff's head takes no part in this staff's split
+            continue
         d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
-        if d is not None and d.outcome == "decided" and not owned_by_another_staff(ev, sub):
+        if d is not None and d.outcome == "decided":
             directions[g] = d.value
 
     def _conflicts(g, grp) -> bool:
@@ -6873,6 +6877,7 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                 "n_glyphs": len(head_ids) + len(rest_ids),
                 "n_chords": chorded,
                 "tolerance_px": round(tol, 2),
+                **({"owned_by_another_staff": sorted(owned_elsewhere)} if owned_elsewhere else {}),
                 # ⚠️ IT SAID `not_implemented` UNTIL `Q.STEM_DIRECTION`
                 # EXISTED, and the field was written that way on purpose: an
                 # earlier draft wrote `divisi_guard: "ran"` wherever stem rows
@@ -10630,7 +10635,7 @@ def _rest_own_voice_split(ev: Evidence, events):
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
+           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
              "nothing_to_split", "one_voice_plus_displaced_whole_rest"),
@@ -10699,6 +10704,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                               event_outcome=(grouping.outcome if grouping
                                              else None))
     raw = (grouping.value or {}).get("events") or []
+    owned_elsewhere = set((grouping.detail or {}).get("owned_by_another_staff") or ()) if grouping is not None else set()
     if not raw:
         return Ruling.abstain("nothing_to_split", n_events=0)
 
@@ -10739,8 +10745,10 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                                   system=ev.subject.system,
                                   staff=ev.subject.staff, cell=ev.subject.cell,
                                   glyph=g)
+                    if g in owned_elsewhere:
+                        continue        # ROADMAP 2.306 r3: named by the event verdict (voices never reads the ownership contest itself)
                     d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
-                    if d is not None and d.outcome == "decided" and not owned_by_another_staff(ev, sub):
+                    if d is not None and d.outcome == "decided":
                         votes[d.value] += 1
                 if votes:
                     direction = votes.most_common(1)[0][0]
