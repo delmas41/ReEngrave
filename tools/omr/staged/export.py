@@ -3374,6 +3374,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         counters["page_arc_runs"] += len(pa_plan["runs"])
         counters["page_arc_runs_not_witnessed"] += pa_plan["counts"].get(_page_arc_bind.NOT_WITNESSED, 0)
         counters["page_arc_runs_abstained"] += pa_plan["counts"].get(_page_arc_bind.ABSTAINED, 0)
+        counters["page_arc_runs_kind_unread_nothing_written"] += pa_plan["counts"].get("kind_unread", 0)          # ROADMAP 2.305 r2
         counters["page_arc_boxes_replaced"] += len(pa_plan["replaced"])
         counters["page_arc_boxes_shared_with_an_unwritten_run_kept"] += len(pa_plan["shared_kept"])
         if record_ties is not None:

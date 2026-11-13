@@ -98,6 +98,93 @@ def pieces_of(detail: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
     return out
 
 
+#: ROADMAP 2.305 r2 (two arcs MEETING at a head, Sean's r1 tile 8 "it's two ties"): how deep (spaces) the traced ink must dip toward its notes at a head between its
+#: ends, below the higher hump on EACH side, to be two arcs, and how near (spaces) the dip must come to that head's box. Only ever CUTS a run (each piece binds alone,
+#: or abstains); NOT CONFIRMED beyond the real case (Litolff p5 run 76), measured there: dip 0.9 sp, 0.2 sp from the head's top.
+MEET_DIP_SPACES = 0.5
+MEET_NEAR_HEAD_SPACES = 1.0
+#: a meeting head stands at least this far (spaces) inside both ends of the run (an end at a head is the arc's own end, not a meeting)
+MEET_INSIDE_SPACES = 2.0
+
+
+def split_at_meeting_heads(piece: Dict[str, Any], heads: Sequence[Sequence[float]], sp: float) -> List[Dict[str, Any]]:
+    """ROADMAP 2.305 r2 (page-facts: an arc is OVER its notes; two arcs that MEET at a note each end there -- 2.281). One traced run that dips to a notehead box
+    BETWEEN its ends, the ink on both sides rising at least `MEET_DIP_SPACES` higher (a cap; lower, a cup), is two arcs meeting at that head: cut there, each piece's
+    end at the dip (the head then binds both). `heads` = page boxes `[x0, y0, x1, y1]`. A run with no such head returns `[piece]` unchanged."""
+    pts = piece.get("points") or []
+    if len(pts) < 5 or sp <= 0:
+        return [piece]
+    xs = [float(p[0]) for p in pts]
+    ys = [float(p[1]) for p in pts]
+    mid_y = ys[len(ys) // 2]
+    cap = mid_y < (ys[0] + ys[-1]) / 2.0          # the ink bows UP: its notes are below it
+    cuts = []
+    for hb in heads:
+        cx = (hb[0] + hb[2]) / 2.0
+        if not (xs[0] + MEET_INSIDE_SPACES * sp < cx < xs[-1] - MEET_INSIDE_SPACES * sp):
+            continue
+        i = min(range(len(xs)), key=lambda k: abs(xs[k] - cx))
+        if abs(xs[i] - cx) > 0.5 * sp:
+            continue          # the trace has no point over this head
+        yi = ys[i]
+        near = (hb[1] - yi) if cap else (yi - hb[3])          # the ink stands just over (cap) / under (cup) the head
+        if not (-0.5 * sp <= near <= MEET_NEAR_HEAD_SPACES * sp):
+            continue
+        left, right = ys[:i], ys[i + 1:]
+        if not left or not right:
+            continue
+        if cap:
+            depth = min(yi - min(left), yi - min(right))
+        else:
+            depth = min(max(left) - yi, max(right) - yi)
+        if depth >= MEET_DIP_SPACES * sp:
+            cuts.append(i)
+    if not cuts:
+        return [piece]
+    cuts = sorted(set(cuts))
+    bounds = [0] + cuts + [len(pts) - 1]
+    core = piece.get("core_ends") or [pts[0][:2], pts[-1][:2]]
+    out = []
+    for k, (a, z) in enumerate(zip(bounds, bounds[1:])):
+        seg = pts[a:z + 1]
+        if (seg[-1][0] - seg[0][0]) < MIN_PIECE_SP * sp:
+            continue
+        left = core[0] if k == 0 else [seg[0][0], seg[0][1]]
+        right = core[1] if k == len(bounds) - 2 else [seg[-1][0], seg[-1][1]]
+        out.append(dict(piece, points=seg, core_ends=[[float(left[0]), float(left[1])], [float(right[0]), float(right[1])]],
+                        ends=[[float(left[0]), float(left[1]), 0.0], [float(right[0]), float(right[1]), 0.0]], trimmed=True, met_at_head=True))
+    return out or [piece]
+
+
+def inked_witness(box: Sequence[float], runs_points: Sequence[Sequence[Sequence[float]]], sp: float, share: float) -> Optional[int]:
+    """ROADMAP 2.305 r2 (`ownership._witness_by_ink`): the index of the ONE run that covers `share` of a detector arc box's INKED width (the union of every run's
+    points inside the box, grown 0.5 sp in y), or None. An inked width under `MIN_PIECE_SP` spaces, or two runs that each cover the share, name none."""
+    if sp <= 0:
+        return None
+    x0, y0, x1, y1 = box
+    g = 0.5 * sp
+    spans: Dict[int, Tuple[float, float]] = {}
+    for i, pts in enumerate(runs_points):
+        inside = [float(p[0]) for p in pts if x0 <= float(p[0]) <= x1 and y0 - g <= float(p[1]) <= y1 + g]
+        if len(inside) >= 2:
+            spans[i] = (min(inside), max(inside))
+    if not spans:
+        return None
+    inked, cur = 0.0, None
+    for a, z in sorted(spans.values()):
+        if cur is None or a > cur[1]:
+            if cur is not None:
+                inked += cur[1] - cur[0]
+            cur = [a, z]
+        else:
+            cur[1] = max(cur[1], z)
+    inked += cur[1] - cur[0]
+    if inked < MIN_PIECE_SP * sp:
+        return None
+    best = [i for i, (a, z) in spans.items() if (z - a) >= share * inked]
+    return best[0] if len(best) == 1 else None
+
+
 def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, Any]]:
     """A `Q.SYSTEM_ARC`-shaped detail for one `Q.PAGE_ARC` run (`ownership._page_binding(page_run=...)` reads this shape): `space_page_px`, `x_left_page` / `y_left_page` /
     `x_right_page` / `y_right_page` (the run's two ends, left then right) and `trace` (`[x, y_top, y_bottom]`, one row per filed point). No `pieces`: a run is already one
@@ -116,6 +203,34 @@ def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, An
     half = 0.5 * float(run_detail.get("thickness_spaces") or 0.0) * sp
     return {"space_page_px": float(sp), "x_left_page": float(xl), "y_left_page": float(yl), "x_right_page": float(xr), "y_right_page": float(yr),
             "trace": [[float(x), float(y) - half, float(y) + half] for x, y in pts]}
+
+
+#: ROADMAP 2.305 r2: the gap (spaces) between the traced ink's near side and a head's near edge within which the ink LANDS on that head
+LAND_GAP_SPACES = 0.5
+
+
+def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], hd: Dict[str, Any], sgn: int, ex: float, side: str, sp: float,
+             usable: Any = None) -> Optional[Dict[str, Any]]:
+    """The head INWARD of `hd` (the closest head to the end at `ex`; `sgn` -1 left end, +1 right) that the traced ink lands on within `HEAD_BEHIND_END_SPACES`
+    of the end: a trace row over the head's x-span whose near side (bottom of a cap's stroke, top of a cup's) stands 0 .. `LAND_GAP_SPACES` from the head's
+    near edge (top for a cap, bottom for a cup). The landed head nearest the end wins; None if there is none."""
+    best = None
+    for h in heads:
+        if h["key"] == hd["key"] or h.get("tip") or (usable is not None and not usable(h["key"])):
+            continue
+        if not (0 < (hd["cx"] - h["cx"]) * sgn and 0 <= (ex - h["cx"]) * sgn <= HEAD_BEHIND_END_SPACES * sp):
+            continue
+        hx0, hx1 = h["cx"] - h["w"] / 2.0, h["cx"] + h["w"] / 2.0
+        top, bot = h["cy"] - h["h"] / 2.0, h["cy"] + h["h"] / 2.0
+        for t in trace:
+            if not (hx0 <= float(t[0]) <= hx1):
+                continue
+            gap = (top - float(t[2])) if side == "above" else (float(t[1]) - bot)
+            if 0 <= gap <= LAND_GAP_SPACES * sp:
+                if best is None or abs(h["cx"] - ex) < abs(best["cx"] - ex):
+                    best = h
+                break
+    return best
 
 
 def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Optional[Dict[Any, Tuple[float, float]]] = None):
@@ -154,6 +269,14 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
             b[s_] = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, side, usable_, end_pitch, True, others.get(s_), closest_only=True,
                                 behind_spaces=behind_)
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
+            if hd is not None and side in ("above", "below") and not hd.get("tip") and not b[s_].get("via_stem_tip"):
+                # ROADMAP 2.305 r2 (Sean's r1 tile 8, "it goes one extra note too far"; page-facts: an arc ends AT its note): the traced ink LANDS on a head
+                # INWARD of the one closest to its end -- it passes within `LAND_GAP_SPACES` of that head's near edge (a cap over its top, a cup under its
+                # bottom), within the look-behind of the end -- and the tracker then carried the end on to the next note. The head the ink lands on is the end's.
+                land = lands_on(d.get("trace") or (), heads, hd, sgn, ex, side, sp, usable)
+                if land is not None:
+                    b[s_] = dict(b[s_], head=land["key"], lands_on=True, was=hd["key"])
+                    hd = land
             if hd is not None:
                 ey = float(d[yk])
                 # round 2 (cause c): a CHORD end. Page-facts: an arc is OVER its notes, and of stacked arcs the nearer is the tie -- the arc's side names the member: a cap (`above`) ends on the
@@ -235,9 +358,13 @@ def plan_of(details: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     written = [r for r in runs if r.get("status") == WRITTEN]
     replaced: Set[str] = set()
     shared_kept: Set[str] = set()
+
+    def settled(r):          # ROADMAP 2.305 r2: a run whose kind is UNREAD (`kind_unread`) settles its boxes too -- they write nothing (rule 8)
+        return r.get("status") == WRITTEN or bool(r.get("kind_unread"))
+
     for box, rs in box_runs.items():
-        if any(r.get("status") == WRITTEN for r in rs):
-            if all(r.get("status") == WRITTEN for r in rs):
+        if any(settled(r) for r in rs):
+            if all(settled(r) for r in rs):
                 replaced.add(box)
             else:
                 shared_kept.add(box)
@@ -245,4 +372,6 @@ def plan_of(details: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     counts: Dict[str, int] = {}
     for r in runs:
         counts[str(r.get("status"))] = counts.get(str(r.get("status")), 0) + 1
+        if r.get("kind_unread"):
+            counts["kind_unread"] = counts.get("kind_unread", 0) + 1
     return {"written": written, "replaced": replaced, "shared_kept": shared_kept, "edges": edges, "counts": counts, "runs": runs}

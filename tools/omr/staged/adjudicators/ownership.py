@@ -3243,6 +3243,23 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
         return ("different" if not near_ else "conflict"), None, dy_
 
     relation, rsrc, dy = _relation(sa, sb, cya, cyb, src_a, src_b)
+    if page_run is not None and sa is not None and sb is not None and abs(sa - sb) <= 1 and "ledger" not in (src_a, src_b) \
+            and not b["left"].get("tall") and not b["right"].get("tall"):
+        # ROADMAP 2.305 r2 (page-facts s1, Sean 2026-11-03: same pitch is read from POSITION, measured against each head's own bar; the empty interval between
+        # one position (<= 0.168 sp) and two (>= 0.435 sp)). The page pass compares the two heads' LOCAL positions, not their box/extent centres:
+        #   * one step, local positions within `SAME_POSITION_SPACES` -> the same position, whatever the boxes say (Litolff p8 m69-70: the unison's twin box
+        #     drawn half a space high made `step_conflict`; positions 0.00 and 0.08);
+        #   * two steps read, local positions LESS than `BIND_DIFFERENT_POSITION_SPACES` apart -> the heads are not shown to be at two positions: the kind is
+        #     NOT read (Sean's 2.305 r1 tiles 9 and 11, two ties written as slurs: positions 7.50 / 6.82 and 4.76 / 3.96, one end's position misread upstream).
+        #     The binder does not move a pitch to make a tie (that is the position reader's fault, reported); it refuses the slur.
+        pa_l, pb_l = _local_position(ev, rows[lk]), _local_position(ev, rows[rk])
+        if pa_l is not None and pb_l is not None:
+            ldy = abs(pa_l - pb_l) / 2.0
+            b["local_positions"] = [round(pa_l, 2), round(pb_l, 2)]
+            if sa == sb and ldy <= SAME_POSITION_SPACES:
+                relation, rsrc = "same", "positions_local"
+            elif sa != sb and ldy < BIND_DIFFERENT_POSITION_SPACES:
+                relation, rsrc = "between", "positions_local"
     if rsrc:
         b["relation_source"] = rsrc
     lone = [s_ for s_ in ("left", "right") if b[s_].get("tall_lone")]
@@ -6404,6 +6421,37 @@ def _box_overlap_of_smaller(a, b) -> float:
 # ───────────────────────────── ROADMAP 2.274 step 2: the witnessed page-ink arc runs, bound to notes ─────────────────────────────
 # (in THIS module so that the wiring / inventory checks' AST walk follows `_page_binding` and its helpers as the decision's own reads, as they do for `adjudicate_arc_kind`)
 
+def _witness_by_ink(ev: Evidence, page: Any, items: Sequence[Tuple[Any, Dict[str, Any]]], rows: Sequence[Any]) -> Dict[int, List[str]]:
+    """ROADMAP 2.305 r2 (Sean's r1 tile 5, Brahms p11 staff 12 bar 3: "no arc between those two notes; one arc goes from the second note into the next measure").
+    A detector arc box is cut by its CELL: the box drawn for an arc that leaves a bar starts at the cell's left edge, where there is no arc ink, so GATHER's
+    witness test (the run covers half the box's WIDTH, `page_arcs.WITNESS_SHARE`) fails, the real run stays unwitnessed and the old path pairs the box with the
+    first head under its width (the wrong note). Here a box that witnesses NO run is measured against its INKED width instead: the union of every run's ink
+    inside it. Where that is at least `page_arc_bind.MIN_PIECE_SP` and ONE run covers `page_arcs.WITNESS_SHARE` of it, the box witnesses that run (the run then
+    binds its own ends; the box's own old-path arc is replaced if the run is written). Same share, no new number; it only ADDS a witness to ink that is there.
+    Returns {item index: [box subjects]}."""
+    from .. import page_arc_bind as PB
+    from ..page_arcs import WITNESS_SHARE
+    witnessed = set()
+    for r in rows:
+        witnessed.update(str(w) for w in ((r.detail or {}).get("witnesses") or ()))
+    out: Dict[int, List[str]] = {}
+    seen = set()
+    for arow in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=page):
+        key = arow.subject.to_key()
+        if key in witnessed or key in seen:
+            continue
+        seen.add(key)
+        gb = ev.rows(Q.GLYPH_BOX, subject=arow.subject)
+        box = ((gb[-1].detail or {}).get("bbox_page_px") if gb else None)
+        if not box or len(box) != 4:
+            continue
+        sp = float(items[0][1].get("space_page_px") or 0.0) if items else 0.0
+        best = PB.inked_witness([float(v) for v in box], [dt.get("points") or () for _r, dt in items], sp, WITNESS_SHARE)
+        if best is not None:
+            out.setdefault(best, []).append(key)
+    return out
+
+
 @decision(
     quantity=Q.PAGE_ARC_BINDING,
     checkable=Checkable.MIXED,
@@ -6437,15 +6485,25 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
     # or where a tail of the next arc was carried on through a blanked head. Each stretch of 3 spaces or more is a piece bound ALONE; a shorter one is a tail and is dropped.
     items: List[Tuple[Any, Dict[str, Any]]] = []
     no_ink: List[Tuple[Any, Dict[str, Any]]] = []
+    # ROADMAP 2.305 r2: the page's notehead boxes not refused as heads -- where one traced run dips to a head between its ends, it is two arcs meeting there
+    head_boxes = []
+    for hrow in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=page):
+        hb = (hrow.detail or {}).get("bbox_page_px")
+        if (hrow.detail or {}).get("category") == "notehead" and hb and len(hb) == 4 and _head_usable(ev, hrow.subject.to_key()):
+            head_boxes.append([float(v) for v in hb])
     for r in rows:
         dt0 = dict(r.detail or {})
-        ps = PB.pieces_of(dt0, float(dt0["space_page_px"]))
+        sp0 = float(dt0["space_page_px"])
+        ps = [q for pc in PB.pieces_of(dt0, sp0) for q in PB.split_at_meeting_heads(pc, head_boxes, sp0)]
         if not ps:
             no_ink.append((r, dt0))
+        if len(ps) > 1:
+            ps = [dict(pc, piece=k) for k, pc in enumerate(ps)]
         for pc in ps:
             items.append((r, pc))
     details = [dt for _r, dt in items]
-    peers = [dict(ends=dt.get("core_ends") or dt.get("ends"), staff=dt.get("staff") or [0, 0]) for dt in details]          # the ink's own ends, as the binder uses
+    extra_w = _witness_by_ink(ev, page, items, rows)
+    peers =[dict(ends=dt.get("core_ends") or dt.get("ends"), staff=dt.get("staff") or [0, 0]) for dt in details]          # the ink's own ends, as the binder uses
     out: List[Dict[str, Any]] = []
     used: List[str] = []
     for r, dt0 in no_ink:
@@ -6458,7 +6516,9 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         out.append(entry)
         sp = float(dt["space_page_px"])
         ws = []
-        for w in dt.get("witnesses") or ():
+        if extra_w.get(i):
+            entry["witness_by_ink"] = list(extra_w[i])
+        for w in list(dt.get("witnesses") or ()) + list(extra_w.get(i) or ()):
             try:
                 wsub = R.Subject.from_key(str(w))
             except Exception:
@@ -6542,6 +6602,10 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         else:
             why = b.get("why") or next((b[s_].get("unbound") for s_ in ("left", "right") if b[s_].get("unbound")), None) or "no_kind"
             entry.update(status=PB.ABSTAINED, why=why)
+            if why == "step_between" and b.get("start") and b.get("stop"):
+                # ROADMAP 2.305 r2: both ends name two heads, and their positions do not tell tie from slur: the arc is this ink's and its KIND is unread. Its
+                # witnessing boxes write nothing either (rule 8: the old path's slur is the guess this refusal is) -- counted by EXPORT, never a slur.
+                entry.update(kind_unread=True, start=b["start"], stop=b["stop"], local_positions=b.get("local_positions"))
             for s_ in ("left", "right"):
                 if b[s_].get("unbound"):
                     entry.setdefault("unbound", {})[s_] = {k: v for k, v in b[s_].items() if k in ("unbound", "candidates", "margin_spaces")}
