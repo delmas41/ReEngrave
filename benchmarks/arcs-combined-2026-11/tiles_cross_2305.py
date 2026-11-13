@@ -29,20 +29,22 @@ QUESTION = ("Top strip: the end of one system; bottom strip: the start of the ne
 def main():
     out, keyp, seed = pathlib.Path(sys.argv[1]), sys.argv[2], int(sys.argv[3])
     out.mkdir(parents=True, exist_ok=True)
-    items, gws = [], {}
+    items = []
+    seen = set()
     for spec in sys.argv[4:]:
         plate, work, gw = spec.split(":")
-        gws[plate] = gw
         for a in A.arcs_of_xml((pathlib.Path(work) / ("%s.on.musicxml" % plate)).read_text()):
-            if a["start"].split("/")[1:3] != a["stop"].split("/")[1:3]:
-                items.append(dict(a, plate=plate))
+            if a["start"].split("/")[1:3] != a["stop"].split("/")[1:3] and (plate, a["start"], a["stop"]) not in seen:
+                seen.add((plate, a["start"], a["stop"]))
+                items.append(dict(a, plate=plate, gw=gw, work=work))
     rnd = random.Random(seed)
     rnd.shuffle(items)
     items = items[:12]
     boxes, imgs, tiles, key = {}, {}, [], []
-    for plate in {i["plate"] for i in items}:
-        pages = {int(k.split("/")[1]) for i in items if i["plate"] == plate for k in (i["start"], i["stop"])}
-        for o in iter_array(pathlib.Path(gws[plate]) / ("%s.on.gathered.record.json" % plate), "observations"):
+    for gw in {i["gw"] for i in items}:
+        plate = next(i["plate"] for i in items if i["gw"] == gw)
+        pages = {int(k.split("/")[1]) for i in items if i["gw"] == gw for k in (i["start"], i["stop"])}
+        for o in iter_array(pathlib.Path(gw) / ("%s.on.gathered.record.json" % plate), "observations"):
             if o["quantity"] == "glyph_box" and L.page_of(o["subject"]) in pages and (o.get("detail") or {}).get("category") == "notehead":
                 boxes[(plate, o["subject"])] = o["detail"]["bbox_page_px"]
 
@@ -77,7 +79,7 @@ def main():
         tile = np.vstack([strips[0], np.full((16, W, 3), 160, np.uint8), strips[1]])
         cv2.imwrite(str(out / ("%02d.png" % n)), tile)
         tiles.append((n, tile))
-        key.append(dict(tile=n, plate=plate, kind=it["kind"], start=it["start"], stop=it["stop"], part=it.get("part")))
+        key.append(dict(tile=n, plate=plate, kind=it["kind"], start=it["start"], stop=it["stop"], part=it.get("part"), work=it["work"]))
     json.dump(dict(question=QUESTION, seed=seed, tiles=key), open(keyp, "w"), indent=1)
     cells = []
     for n, im in tiles:
