@@ -135,3 +135,49 @@ M4b alone measured notes +22 -63, not written +27: with M6 on it is +24 -59, +26
 - **Cause / lesson:** the loss is not (only) beams fused into head blobs. With heads read once on the page the Litolff note loss is unchanged (-59), so the page beam rows still disagree with reader A on Litolff slabs; the next step is to look at the crops of the 59 lost notes (not done here), not to flip. Not recommended to flip M4b; leave `OMR_PAGE_HEAD_CLAIM` OFF on Litolff too (C regains one answer B/A lose).
 - Disk filled during the lane (manager notice): checked, no "No space left" in any log, all saved records load; nothing re-run for that reason.
 - Work dirs (local, not committed): `out/m4b-m6/{lit,brh}-{B,C}/work`.
+
+## 2.306 step 0 — stems and beams on the page: measurement only (2026-11-12)
+
+STAGED. No code changed. Lane `lane-2.306-stems-beams-page` (local, nothing committed). Counts are the lane's;
+"real beam" below means agreement with cell reader A, which is a lead, not truth. Crops were leads only.
+
+**Cause.** The page beam reader (M4a, `OMR_PAGE_BEAMS`) runs in GATHER and can skip only ink a claim has already
+named as page-stroke ids. Arcs, heads, rests, tremolos and accidental ink now do (130-527 strokes a page). Clef,
+meter, word and dynamic claims still exist only as rectangles that the ledger (2.284) settles in ADJUDICATE --
+too late for a GATHER reader. Stems are still read cell by cell, and the page beam reader joins the stems of
+cell reader A. **Process lesson:** a page reader is only as clean as the claims made before it, in its own stage.
+
+**(a) M4a re-run on main** (Litolff p6+p16, Brahms p0+p5; same pages as 11-04):
+- Beams with no slab from the cell reader (false-beam pool): Litolff 54 (was 74), Brahms 28 (was 31).
+  Owned by another mark per the ledger: Litolff 28 (heads 19, clef 6, dynamic 2, word 1); Brahms 18 (meter 11,
+  dynamic 5, clef 2). Unclaimed: Litolff 18, Brahms 7.
+- Beams of reader A the page reader misses: Litolff 50, Brahms 69. Head claim holds the ink 13 / 12; read as
+  thin, hook or stub pieces 11 / 19; merged into a blob 8 / 7+; found at a slightly different place ~8 each.
+  Many Brahms misses are reader A's own errors (12 slurs, 13 staff-wide slabs with no page stroke under them).
+  Vertical reach and the cell edge are no longer the cause (3 Litolff slabs cut at the edge).
+- Biggest blocker: at the stem tip the page reader and the cell level count (D) disagree on 269 of 768 Litolff
+  stems and 311 of 516 Brahms stems, mostly page "no beam" where D reads one (158 / 260). Brahms p5: 37 beams
+  but 278 hooks and 201 thin spans -- the shattering plate breaks under the 0.5 sp cut-off. NOT looked at on crops.
+
+**(b) Size.** Litolff, 8 frozen pages, 4,560 real heads: 236 with no stem row (5.2%), 189 of them still written
+plain as quarters or halves; 129 narrowed by beam doubt (51 `beams_ambiguous`, 78 `beam_discounted_uncertain`);
+36 both. Brahms p0+p5, 1,190 heads: 43 no stem row (3.6%), 28 beam doubt (15 / 13); 12 of 39 red bars hold one.
+
+**(c) Cell readers of stem and beam ink today.** GATHER: `gather_cv_lines` (+ `_observe_stem_tip_ink`,
+`_observe_beam_stem_join`, `_observe_stem_slashes`, `_observe_dot_stroke_ink`), `_lowconf_rescue_witnesses`,
+`gather_stroke_map`, `gather_head_stem_reach`, `gather_notehead_stem_cross_ink`, `gather_beam_stroke_ink` (C),
+`gather_beam_stem_levels` (D), `gather_detector_beams`, `gather_stem_end_heads`. ADJUDICATE: `_beams_from_strokes`,
+`_tips_from_strokes`, `_strokes_on_a_system_arc`, `_beams_on_owned_strokes` (the last two re-ask arc ownership
+from boxes). No page stem reader exists.
+
+**(d) Lane's proposal.** Stems on the page first: a stem is the page vertical stroke a page head (2.290) touches
+on its engraving side, claimed once; retires the stem half of `gather_cv_lines`, the rescue stems and
+`gather_head_stem_reach`; M4a then reads page stems. Beams wait: M4b (built, OFF) still loses Litolff notes
+(+22 -63; -59 with page heads on) and the shattered-beam pieces need crops first. Controls from real judged
+cases: Sean's Brahms p0 stem labels, 2.150 tile 11, 2.150b tile 20, the 2.300 tiles. The 2.280 r3 tiles were
+never sent and are not controls.
+
+**Not verified:** export identity with `OMR_PAGE_BEAMS=1`; owner counts (through cell-stroke links, 3-5 beams
+have none); Brahms measured on p0+p5 only; red-bar count on Litolff (only p6+p16 exported).
+**Prior work not to rebuild:** 2.204 stems from CELL strokes (parked: its "stem readers disagree" abstentions
+cost 2-5.5% of notes), 2.259, hairpin-ink exclusion (2.25b), `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM`.
