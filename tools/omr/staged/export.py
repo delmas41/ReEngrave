@@ -3301,6 +3301,15 @@ def _across_system_spans(rec: Record, part: Sequence[StaffRun], measures, breaks
             counters["arc_across_systems_ambiguous"] += len(rs)
             continue
         (a, ma), (b, mb) = rs[0], ls[0]
+        if str(a.get("curve", "")).startswith("page_arc/") or str(b.get("curve", "")).startswith("page_arc/"):
+            # ROADMAP 2.305 r4: the next RUN of the part is not always the next SYSTEM of the page: a record that holds pages 0 and 11 only puts page 11's first
+            # system right after page 0's last (2305 r4 measured: a slur written from Brahms p0 to p11). The two halves must stand on physically consecutive
+            # systems -- the same page's next system, or the next page's first; otherwise the partner page is not in the record (counted, nothing written).
+            pa_, sa_ = (int(v) for v in str(a["head"]).split("/")[1:3])
+            pb_, sb_ = (int(v) for v in str(b["head"]).split("/")[1:3])
+            if not ((pb_ == pa_ and sb_ == sa_ + 1) or (pb_ == pa_ + 1 and sb_ == 0)):
+                counters["arc_across_systems_partner_page_not_in_record"] += 1
+                continue
         first, last = index[a["head"]][1], index[b["head"]][1]
         if first is last or voice_of.get(id(first), 0) != voice_of.get(id(last), 0):
             counters["arc_across_systems_two_voices"] += 1
