@@ -93,3 +93,34 @@ contradictions; Brahms p0 vs Sean's 98 arcs 74 -> 80 right; check 217; fast tier
 same-position slurs; the upstream position misreads behind r1 tiles 9, 11; cross-system ties; Brahms p18 run 80
 doubtful by the lane's look (lead only). Tiles: out/print-from-worktrees/2.305-r2 (12: 4 r1 faults redrawn,
 4 removed slurs boxed on the old ends, 4 new).
+
+## 2.305 round 3 (2026-11-13) -- gate numbers with both arc flags ON; `lane-2.305-arc-binding` eb59ce438; NOT landed
+
+STAGED. Sean's r2 tiles (answers/answers-2.305-r2.json): 8 right, 3 real ties unwritten (5, 8, 9), 1 written
+wrong (10); all 4 removed OFF slurs were ties on the page.
+
+**Tile 10, cause.** A cut run left its detector boxes counted twice: the boxes witness both the written piece
+(the tie `3/1`->`4/3`) and the abstained piece, and a box shared between a written and an abstained run was
+kept (`shared_kept`), so the old 2.223 slur was written on top of the tie, one note late. Lesson: "read and
+claimed once" must hold per BOX, not per run.
+**Rule as briefed, measured and REJECTED:** "a box of any run the pass bound or abstained on writes nothing
+through the fallback" removes 43 fallback arcs per plate and takes 11 of Sean's 98 Brahms p0 arcs right ->
+not right (80 -> 69). Many abstentions are honest and the fallback arc there is right.
+**Rule built:** a box that witnesses a WRITTEN run (or a run bound at both heads with kind unread) writes
+nothing through the fallback; a box witnessing only abstained runs keeps its old arc. Removes exactly 1 arc on
+the 8 pages (this slur). Control from the real run-76 rows: `test_arc_binding_r2_2_305.py::TestInkIsClaimedOnce`.
+**Tile 8, cause (upstream):** the tie's left note, the lower chord member, has no detector box; the only
+candidate head is 2.89 sp beyond the arc's end and is rightly declined.
+
+**Gate, both flags ON** (`OMR_PAGE_ARC_WRITE`, `OMR_ARC_MEETING_AT_HEAD`; re-adjudicated saved gathers, 8 pages):
+Litolff ties +18, slurs +7 -39; Brahms ties +8 -2, slurs +32 -99; judged right->wrong 0 on both; judged_claims
+0 contradictions; Brahms p0 vs Sean's 98: 74 -> 80 right, right->not right 0, written arcs matching none of
+his 31 -> 14; check 217; whole fast tier flags ON 10,683 passed / 2 failed, both default-off pins
+(`test_page_arcs_2_274.py::test_flag_is_off_by_default`,
+`test_staged_page_arc_binding_2_274_step2.py::...::test_the_decision_files_nothing_with_the_flag_off`).
+Flags-OFF tier not re-run after the r3 change (r2: 10,684 / 0).
+
+**Open.** The old fallback is NOT retired: it writes the 17 same-position slurs and every abstained run's
+arc; retiring it now costs ~43 arcs per plate incl. 11 of Sean's right p0 arcs, so it waits until the binder
+abstains less (unboxed heads, position misreads, cross-system ties). Unwritten ties: r2 tiles 5, 9 (position
+misreads), 8 (unboxed head); the down-voice tie at the Litolff p8 unison.
