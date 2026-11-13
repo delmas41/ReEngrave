@@ -124,3 +124,27 @@ Flags-OFF tier not re-run after the r3 change (r2: 10,684 / 0).
 arc; retiring it now costs ~43 arcs per plate incl. 11 of Sean's right p0 arcs, so it waits until the binder
 abstains less (unboxed heads, position misreads, cross-system ties). Unwritten ties: r2 tiles 5, 9 (position
 misreads), 8 (unboxed head); the down-voice tie at the Litolff p8 unison.
+
+## 2.305 size of "an arc ends at the notes standing at that point" (2026-11-13) -- measurement only, 47eaf4a18
+
+STAGED. Sean's proposed rule (2026-11-13): "if there are any notes in a chord at the same point where an arc
+ends then that is where it should end"; the anchor is the x place, no beats. Sized on the r3 replays (both arc
+flags ON, 8 pages), script `end_columns_2305.py`. A column = heads with centres within half a head-width; an
+end reaches a column within one head-width (both the lane's choices, not page-facts).
+
+Abstained runs: Litolff 120, Brahms 122. Unbound ends by what stands at that x: exactly one column 50 / 46;
+two or more 22 / 6; no note 14 / 9; system edge 18 / 53. Ends that ARE bound but whose kind (or other end)
+was refused: 82 / 130 (Litolff: step unread 28, step conflict 16, heads between 14, other end at system edge
+14, positions in the gap 8; Brahms: other end at system edge 45, other end unbound 29, heads between 26,
+accidental printed 14, step conflict 6, accidental unknown 6).
+
+**What the rule would add.** Runs with both ends resolving: Litolff 37, Brahms 26 -- but 20 / 17 are already
+in the file as the same pair (from the old fallback), 6 / 4 as a different pair, and only **11 / 5 are not
+written at all**. Against Sean's 98 Brahms p0 arcs: of his 18 missing, at most **3** distinct arcs would be
+fixed; 5 are ties running off the system, the rest are kind refusals with both ends already bound.
+**Reading.** "Which note" is NOT the main reason the page pass declines. The two large buckets are arcs at a
+system edge (18 / 53 ends, plus 14 / 45 partners) and bound arcs whose KIND is refused (step unread / step
+conflict / heads between / accidentals). The manager's simple account to Sean ("the note isn't there to
+attach to") overstated that bucket.
+Not determined: head-shaped ink with no box at the no-note ends (`OMR_PAGE_HEADS` is OFF in these gathers);
+nobody has looked at the 16 new arcs.
