@@ -1,0 +1,225 @@
+{
+ "lane": "2.307 r1 page and zoom (ROADMAP 2.307)",
+ "date": "2026-11-13",
+ "question": "Is there a notehead in the orange box?",
+ "sean": "Tile 1, yes. Tile 2, no. Tile 3, yes. Tile 4, no. Tile 5, yes. Tile 6, yes. Tile 1 and 6 are rests, but I'm assuming you mean notes by that. Tile 7 is a bit of a sharp, so no. Tile 8, yes. Tile 9, no. Tile 10, yes. Tile 11, no. It's a sharp. Tile 12 is a rest.",
+ "note": "Scored by the manager: a notehead in 4 of 12 (3, 5, 8, 10). Only-cells boxes (1, 4, 5, 7, 9, 10): 2 of 6 are noteheads (5, 10); 1 a rest, 1 part of a sharp, 2 nothing. Only-row boxes (2, 3, 6, 8, 11, 12): 2 of 6 are noteheads (3, 8); 2 rests, 1 a sharp, 1 nothing. Both ways box rests and sharps as filled noteheads. Pools: 758 only-cells places, 105 only-row places (7 pages). Six tiles a side is too few to rank the two ways.",
+ "tiles": [
+  {
+   "tile": 1,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 8,
+   "page_box": [
+    1316.2,
+    3222.4,
+    1338.3,
+    3232.4
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.4008,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 2.39,
+   "sean": "yes -- a rest",
+   "is_notehead": false
+  },
+  {
+   "tile": 2,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    1918.0,
+    570.8,
+    1932.5,
+    581.9
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.3292,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 0.2,
+   "sean": "no",
+   "is_notehead": false
+  },
+  {
+   "tile": 3,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    611.7,
+    1763.0,
+    632.8,
+    1783.0
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.73,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 1.89,
+   "sean": "yes",
+   "is_notehead": true
+  },
+  {
+   "tile": 4,
+   "way": "only_cells",
+   "plate": "brahms",
+   "page": 20,
+   "page_box": [
+    2263.1,
+    3602.0,
+    2289.8,
+    3622.1
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.4418,
+   "staff_space_px": 27.5,
+   "nearest_barline_spaces": 4.53,
+   "sean": "no",
+   "is_notehead": false
+  },
+  {
+   "tile": 5,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 13,
+   "page_box": [
+    2311.4,
+    1577.4,
+    2332.4,
+    1595.8
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.3487,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 1.93,
+   "sean": "yes",
+   "is_notehead": true
+  },
+  {
+   "tile": 6,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 8,
+   "page_box": [
+    1401.3,
+    2401.5,
+    1424.8,
+    2412.7
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.4172,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 1.94,
+   "sean": "yes -- a rest",
+   "is_notehead": false
+  },
+  {
+   "tile": 7,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    2536.1,
+    2713.3,
+    2556.1,
+    2732.8
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.3044,
+   "staff_space_px": 15.2,
+   "nearest_barline_spaces": 4.14,
+   "sean": "no; a bit of a sharp",
+   "is_notehead": false
+  },
+  {
+   "tile": 8,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    2368.6,
+    1516.2,
+    2396.4,
+    1538.3
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.5078,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 1.68,
+   "sean": "yes",
+   "is_notehead": true
+  },
+  {
+   "tile": 9,
+   "way": "only_cells",
+   "plate": "brahms",
+   "page": 18,
+   "page_box": [
+    3016.8,
+    5192.0,
+    3044.6,
+    5215.1
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.4836,
+   "staff_space_px": 27.8,
+   "nearest_barline_spaces": 2.61,
+   "sean": "no",
+   "is_notehead": false
+  },
+  {
+   "tile": 10,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 13,
+   "page_box": [
+    2507.7,
+    364.6,
+    2534.6,
+    385.2
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.286,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 0.33,
+   "sean": "yes",
+   "is_notehead": true
+  },
+  {
+   "tile": 11,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 13,
+   "page_box": [
+    812.1,
+    700.8,
+    837.7,
+    742.0
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.2616,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 0.44,
+   "sean": "no; it's a sharp",
+   "is_notehead": false
+  },
+  {
+   "tile": 12,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 8,
+   "page_box": [
+    2001.8,
+    729.0,
+    2026.3,
+    740.1
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.4049,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 1.84,
+   "sean": "a rest",
+   "is_notehead": false
+  }
+ ]
+}

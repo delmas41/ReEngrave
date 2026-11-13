@@ -181,3 +181,156 @@ never sent and are not controls.
 have none); Brahms measured on p0+p5 only; red-bar count on Litolff (only p6+p16 exported).
 **Prior work not to rebuild:** 2.204 stems from CELL strokes (parked: its "stem readers disagree" abstentions
 cost 2-5.5% of notes), 2.259, hairpin-ink exclusion (2.25b), `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM`.
+
+## 2.306 stems on the page, round 1 (2026-11-13) -- built OFF (`OMR_PAGE_STEMS`), NOT ready to land
+
+STAGED. `lane-2.306-stems-beams-page`; pre-retire tip 40f7b5bf2, retire commit 171568282 (+3 small commits).
+Code `tools/omr/staged/page_stems.py`, tests `tools/omr/tests/test_page_stems_2_306.py`, scripts
+`benchmarks/page-ledger-2026-11/2306/`. Sean's tiles (out/print/2.306-r1) not yet answered.
+
+**Cause.** A note's stem was decided three times by three cell readers (the head-to-stem join, the duration
+reader's own box overlap, the stem-direction reader). The page reader answers once -- the page map's vertical
+stroke at the head's engraving side (right edge up, left edge down; a second's displaced head sits on its
+partner's stem) -- and hands that answer to all three. Two page facts only seen on real pages: the page map
+splits a stem at its head (the stroke can stop ~2 sp from the head's centre); in divisi each head also meets
+the other voice's stem ending ~0.7 sp away -- the stroke that ENDS at the head wins.
+**Process lesson.** The stem join feeds voice split, chord grouping and arc binding; changing who owns a stem
+moves ties, rests and slurs far downstream and no lane reads those effects first.
+
+**File change, OFF vs ON, pre-retire** (frozen 8 pages; one flag-ON gather per plate, both arms replayed; the
+control line warns neither arm reproduces the stored record -- expected, gathered ON):
+Litolff notes +39 -33, flags +13 -26, ties +4 -2, rests +10 -3, red bars 172 -> 180, not written 2089 -> 2071.
+Brahms notes +36 -23, flags +27 -14, ties +8 -54, rests +62 -8, slurs -38, red bars 143 -> 157, not written
+3083 -> 3072. **The Brahms ties -54 / rests +62 / slurs -38 and Litolff flags -26 are UNEXPLAINED.**
+"No stem row" heads: Litolff 240 -> 126 now stemmed, 114 abstain (109 no free vertical stroke beside the head
+-- the plate fuses stem into head; 3 up-and-down; 1 two candidates; 1 held by a neighbour). Brahms 146 -> 107
+stemmed, 39 abstain (30 no stroke, 8 two voices, 1 two candidates).
+Sean's Brahms p0 stem labels: 261 of 277 right, 16 missed, 31 of ours not his (unchecked).
+Judged right->wrong 0, unwritten->wrong 0 on both (one Litolff right->narrowed, 2.158 tile 11).
+judged_claims: Litolff p6+p16 gain 2 contradictions (2.276 r2 #2, #8: tremolo slashes, the stem claim takes
+31-34% of the box; the base has 4 of the same kind); Brahms not run. check 229 (one over: `gather_coverage`
+counts `Q.PAGE_STEM` as ungathered, as PAGE_BEAM / PAGE_HEAD). Fast tier flag OFF 10,608 passed, 3 failed
+(ink-rules page, regenerated, file passes; whole tier not re-run).
+
+**Retire, measured.** Dropping the cell join where the page cannot stem a head: Litolff 266 stems lost, red
+bars 172 -> 187; Brahms 76 lost, 143 -> 157; right->wrong still 0. NOT retired: the cell stem finder, rescue
+stems, `gather_head_stem_reach` (flag, beam and tip readers still measure on the finder's rows).
+
+**Controls.** Real-ink Brahms p0 fixture (14 of Sean's 17 stems in eight bars; mirrored page finds almost
+none); 2.300 tile 2 (three chords on three stems; without the displaced-second rule the chord falls apart).
+NOT done: 2.150 tile 11 / 2.150b tile 20 (Brahms p15 not gathered), the four 2.300 tiles on Brahms p19.
+**Prior work.** 2.204 parked (reader-disagreement abstentions cost 2-5.5% of notes); 2.280 r3 (most no-stem
+heads are a second's partner); 2.260c M4a (page readers file other marks' ink until claims name strokes).
+
+## 2.306 stems round 2 (2026-11-13) -- cause of the r1 losses; no code changed (`lane-2.306-stems-beams-page` 59c64887d)
+
+STAGED. **The page stems are not what goes wrong.** Two downstream readers relied on the old cell join
+leaving stems unread or wrongly joined.
+- **Twins in the wrong staff's chords (Brahms, top cause).** The page hands a head's one stem reading to every
+  cell that shows the head, including the copy in the neighbouring staff's padded cell (a "twin", owned by
+  another staff). The old join almost never stemmed those copies. ON, 533 twins (Brahms) / 454 (Litolff) gain
+  a direction, and `adjudicate_event` (rhythm.py opposite-stems chord split) and `adjudicate_voices` group
+  every notehead box in the cell, twins included: a twin splits a chord, the bar gets a second voice and stops
+  adding up. Brahms: all 26 newly red bars hold such a twin (12 clear, net +14); 35 of the 54 lost ties and 57
+  of the 60 gained rests are in those bars (the rests are real rest boxes now written in the voice the split
+  made; none is filled in); 47 of the 54 tied notes are still written.
+- **A wrong join hid a weak beam read (Litolff).** The old box-overlap join sometimes gave a head its
+  neighbour's stem and the beam was read off that neighbour. On its own stem the tip reads 0 beam levels
+  (`gather_beam_stem_levels`) where the beam starts a hair right of the tip, and `stem_tip_reads_no_beam`
+  decides a quarter (real case `glyph/9/0/2/0/4`). Litolff: 14 new red bars (6 clear, net +8): 9 event/voice
+  splits (5 twins, 4 own heads), 5 value changes; of 25 lost flags 16 are eighths now written beamed (same
+  value), 6 eighth -> quarter, 3 notes gone.
+**Process lesson.** A downstream reader that relied on "unknown" or on a wrong join breaks the moment the join
+is right: list what READS a quantity before making it more correct.
+Tile 3 (Litolff p10): not clef/key ink -- a free down stem under heads fused with their ledger lines; the
+quarter became a half through the shared-stem value (Sean's tile decides). Tremolo contradictions: the stem
+claim takes only the vertical stroke; Sean's slash box includes the stem pixels it crosses (31-34%, over the
+30% line); main already has four of the same kind. Unresolved: `glyph/4/1/2/5/3` (page says down, the
+direction reader says up). Numbers unchanged from r1; right->wrong 0; check 229.
+**Proposed (not built):** `adjudicate_event` / `adjudicate_voices` skip heads owned by another staff; the
+clean-tip rule abstains where the beam-level read may have missed a beam that does not touch the tip.
+
+## 2.306 stems round 3 (2026-11-13) -- other-staff copies out of chord/voice grouping; built OFF (`lane-2.306-stems-beams-page` 00940d973, fix d1f632a80)
+
+STAGED. `rhythm.adjudicate_event` (opposite-stems chord split) and `adjudicate_voices` ignore the stem
+direction of a head whose `Q.GLYPH_OWNER` verdict names another staff -- the same test EXPORT uses to drop
+those copies; only under `OMR_PAGE_STEMS`. The cell join had already stemmed ~13 Litolff / 22 Brahms copies
+that were splitting chords BEFORE r1, so Brahms ends below OFF.
+Controls from replayed real rows: Brahms p4 staff 11 bar 1 (r1 ON split `[14]` / `[2,3,4,12]`; r3 ON = OFF);
+splits between a staff's own heads still happen (Litolff all 6; Brahms 42 OFF / 49 ON incl. the p0 staff 11
+divisi); splits involving a copy: Litolff 13 OFF (52 r1) -> 3, Brahms 22 OFF -> 1.
+
+**File change, pre-retire, OFF vs ON, same gathers (r1 -> r3):**
+Litolff red bars 172->180 -> **172->173**; ties +6 -2; rests +1 -7; slurs +12 -10; flags +13 -25; notes
++41 -29; not written 2089 -> 2062.
+Brahms red bars 143->157 -> **143->129**; ties +14 -17 (was +8 -54); rests +5 -25 (was +62 -8); slurs
++30 -20; flags +27 -14; notes +36 -16; not written 3083 -> 3065.
+Judged right->wrong 0, unwritten->wrong 0 on both. check 229 (Q.PAGE_STEM counted ungathered). Full fast
+tier NOT run this round.
+**Remaining.** Brahms: 1 of r1's 26 new red bars remains, 15 clear; 17 lost ties (10 on notes whose only
+change is the stem-join reason, 5 in bars with no direction change) and 25 rests no longer written are NOT
+traced. Litolff: 10 new red bars remain (9 clear), all from the staff's OWN heads -- the page stem decides a
+direction where the cell readers had "stems disagree" (4) or a beam-mate guess (4).
+**Readers of stem direction / join that do NOT skip other-staff heads** (static grep, unchanged):
+`stem_value.adjudicate_stem_value`, `adjudicate_head_stem`, `unison_two.adjudicate_unison_voices`,
+`rhythm._second_evidence`, `_flag_direction`, `_own_stem_side`, `_direction_from_a_beam_mate`,
+`ownership._long_chord_stem_tip` / `stem_of` / `both_ways`, `consequences._on_one_stem` / `_voice_count`,
+`export._stem_facts_of` / `_settle_divisi_pairs` / `_voice_split`.
+**Clean-tip rule, size only:** "a clean tip means no beam" decides 207 heads on Litolff (2 with beam-like ink
+within 1 sp of the tip) and 927 on Brahms (29 on 24 stems). Not changed -- it changes written values.
+
+## 2.306 stems round 4 (2026-11-13) -- a stem is the whole run; gate with the flag ON is MIXED (`lane-2.306-stems-beams-page` 39dc41788)
+
+STAGED. Sean's r1 tiles: 12 of 12 are stems; tiles 6 and 7 stop short (answers/answers-2.306-r1.json).
+**Cause.** The page map ends a stroke wherever another mark's ink crosses it (a head of the same chord, a
+tremolo slash, an erased staff line); the reader took each piece as a whole stem. Measured first: 262 of
+3,128 claimed stems (Litolff) and 207 of 3,393 (Brahms) were part of a longer run; the crossing was a chord
+head 245 / 193 times, an erased line 19 / 20.
+**Lesson.** The page map's unit is a stroke, not a mark: a reader that takes one stroke as one mark must say
+where it stitches pieces together, and why.
+**Built.** A stem = the whole run of vertical pieces in one column; a gap is bridged only by an erased line's
+thickness (<= 0.3 sp), a head on ONE side of the stem, or a stroke crossing the column (slash, beam) -- never
+empty paper (221 / 107 refused), never heads on both sides (two voices end to end, 15 / 4 refused). The stem
+claims only its own vertical pieces. Controls from Sean's tiles, failing on r1 first: tile 7 (Litolff p10
+`glyph/10/1/0/14/6`, one stem carrying both heads); tile 6 (Litolff p16, the run now reaches the half note --
+but the head's own stem reading still abstains because the tremolo slash is boxed and claimed as a NOTEHEAD:
+upstream); a real Brahms end-to-end pair not joined.
+**Gate, pre-retire, OFF vs ON (fresh r4 gathers):** Litolff red bars 172 -> 176, ties +6 -2, slurs +12 -4,
+flags +16 -30, notes +43 -32, not written 2156 -> 2130. Brahms red bars 143 -> 130, ties +18 -13, rests
++5 -25, slurs +30 -18, flags +25 -14, notes +41 -13, not written 3087 -> 3061. Judged right->wrong 0,
+unwritten->wrong 0 on both. Sean's p0 labels 261 right / 16 missed / 30 not his (unchanged). check 229.
+Fast tier flag ON 10,590 passed / 15 failed: 1 real break fixed (3845eddb5: voices read the owner verdict,
+which a test forbids -- now via the chord-grouping verdict); 14 fail with the flag OFF too in the frozen copy
+(no .git / gitignored files, stale ink-rules page, the lane's own retire test). NOT re-run after the fix.
+judged_claims: the two tremolo contradictions unchanged; one new Litolff one (2.288 r1 #10, "CR" claimed as
+a rest) arises before the stem read (believed OCR variation between gathers, not verified); Brahms none new.
+**What remains.** Litolff's 11 new red bars all come from the staff's OWN heads taking the page direction (4
+had "stems disagree", 4 a beam-mate guess); by the lane's look the page direction is right in the 10 it
+looked at, and in 3 the stem-direction reader still reports the opposite because it works from cell rows
+instead of taking the page's -- a hand-off bug, not fixed. Litolff flags: 16 eighths now beamed (same value),
+7 eighth -> quarter (the clean-tip read), 5 notes gone. Brahms 13 lost ties (join reason only, or the next
+bar's heads narrowed as "hollow head with a flag" / "beam doubt"; 3 notes gone); 23 rests no longer written
+are second-voice rests of splits the r3 fix removed.
+Tiles (12, on what the FILE changes): out/print/2.306-r4 -- not yet sent.
+
+## 2.306 stems round 5 (2026-11-13) -- the page's direction is THE direction; red bars fall on both plates (`lane-2.306-stems-beams-page` 8a6b815f3, fix ea7337de0)
+
+STAGED, flag OFF. **Cause.** The stem-direction reader worked the direction out a second time from cell rows
+where the page had already read it; for three Litolff heads (`6/1/9/10/2`, `6/1/9/10/7`, `10/1/7/3/2`) the
+second answer was the opposite. Where the page read a head's stem the direction is now the page's (reason
+`page_stem`). **Lesson.** One answer, read once: handing a reading to a reader is not enough if that reader
+still re-derives what the reading already says. Heads whose written direction changed r4 -> r5: Litolff 76,
+Brahms 23.
+**Gate, pre-retire, OFF vs ON (replays of the r4 gathers):** Litolff red bars **172 -> 167** (r4 176); notes
++50 -45, flags +22 -29, ties +6 -2, rests +1 -6, slurs +17 -7, not written 2156 -> 2136. Brahms red bars
+**143 -> 129**; notes +41 -14, flags +27 -14, ties +18 -13, rests +5 -25, slurs +31 -19, not written
+3087 -> 3062. Judged right->wrong 0, unwritten->wrong 0 on both. **Fast tier with `OMR_PAGE_STEMS` ON, real
+worktree at the branch tip (retire commit active): 10,616 passed, 0 failed.** check not re-run (229 in r4).
+Litolff: 9 new red bars remain, 14 clear -- 7 are own heads taking the page direction where cell rows read
+another or "stems disagree" (`2/0/3/5`, `2/0/8/0`, `4/0/8/11`, `4/1/2/4`, `4/1/8/8`, `6/1/4/8`, `8/0/1/2`),
+1 a head gaining a stem, 1 a stem newly touching a head. Unjudged.
+**Tile 6's slash (report only).** The detector boxed the right half of the tremolo slash as
+`noteheadBlackOnLine` (`glyph/16/0/9/6/0`); it is written as a phantom quarter note; the 2.290 page-head
+reader claims that half's ink (stroke 1756) as a head, the left half (1727) has no owner, the tremolo reader
+claims neither. That fake head is why the half note's stem reads both ways and abstains.
+The r4 tiles stand unchanged (out/print/2.306-r4), not yet sent.

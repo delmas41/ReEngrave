@@ -93,3 +93,89 @@ contradictions; Brahms p0 vs Sean's 98 arcs 74 -> 80 right; check 217; fast tier
 same-position slurs; the upstream position misreads behind r1 tiles 9, 11; cross-system ties; Brahms p18 run 80
 doubtful by the lane's look (lead only). Tiles: out/print-from-worktrees/2.305-r2 (12: 4 r1 faults redrawn,
 4 removed slurs boxed on the old ends, 4 new).
+
+## 2.305 round 3 (2026-11-13) -- gate numbers with both arc flags ON; `lane-2.305-arc-binding` eb59ce438; NOT landed
+
+STAGED. Sean's r2 tiles (answers/answers-2.305-r2.json): 8 right, 3 real ties unwritten (5, 8, 9), 1 written
+wrong (10); all 4 removed OFF slurs were ties on the page.
+
+**Tile 10, cause.** A cut run left its detector boxes counted twice: the boxes witness both the written piece
+(the tie `3/1`->`4/3`) and the abstained piece, and a box shared between a written and an abstained run was
+kept (`shared_kept`), so the old 2.223 slur was written on top of the tie, one note late. Lesson: "read and
+claimed once" must hold per BOX, not per run.
+**Rule as briefed, measured and REJECTED:** "a box of any run the pass bound or abstained on writes nothing
+through the fallback" removes 43 fallback arcs per plate and takes 11 of Sean's 98 Brahms p0 arcs right ->
+not right (80 -> 69). Many abstentions are honest and the fallback arc there is right.
+**Rule built:** a box that witnesses a WRITTEN run (or a run bound at both heads with kind unread) writes
+nothing through the fallback; a box witnessing only abstained runs keeps its old arc. Removes exactly 1 arc on
+the 8 pages (this slur). Control from the real run-76 rows: `test_arc_binding_r2_2_305.py::TestInkIsClaimedOnce`.
+**Tile 8, cause (upstream):** the tie's left note, the lower chord member, has no detector box; the only
+candidate head is 2.89 sp beyond the arc's end and is rightly declined.
+
+**Gate, both flags ON** (`OMR_PAGE_ARC_WRITE`, `OMR_ARC_MEETING_AT_HEAD`; re-adjudicated saved gathers, 8 pages):
+Litolff ties +18, slurs +7 -39; Brahms ties +8 -2, slurs +32 -99; judged right->wrong 0 on both; judged_claims
+0 contradictions; Brahms p0 vs Sean's 98: 74 -> 80 right, right->not right 0, written arcs matching none of
+his 31 -> 14; check 217; whole fast tier flags ON 10,683 passed / 2 failed, both default-off pins
+(`test_page_arcs_2_274.py::test_flag_is_off_by_default`,
+`test_staged_page_arc_binding_2_274_step2.py::...::test_the_decision_files_nothing_with_the_flag_off`).
+Flags-OFF tier not re-run after the r3 change (r2: 10,684 / 0).
+
+**Open.** The old fallback is NOT retired: it writes the 17 same-position slurs and every abstained run's
+arc; retiring it now costs ~43 arcs per plate incl. 11 of Sean's right p0 arcs, so it waits until the binder
+abstains less (unboxed heads, position misreads, cross-system ties). Unwritten ties: r2 tiles 5, 9 (position
+misreads), 8 (unboxed head); the down-voice tie at the Litolff p8 unison.
+
+## 2.305 size of "an arc ends at the notes standing at that point" (2026-11-13) -- measurement only, 47eaf4a18
+
+STAGED. Sean's proposed rule (2026-11-13): "if there are any notes in a chord at the same point where an arc
+ends then that is where it should end"; the anchor is the x place, no beats. Sized on the r3 replays (both arc
+flags ON, 8 pages), script `end_columns_2305.py`. A column = heads with centres within half a head-width; an
+end reaches a column within one head-width (both the lane's choices, not page-facts).
+
+Abstained runs: Litolff 120, Brahms 122. Unbound ends by what stands at that x: exactly one column 50 / 46;
+two or more 22 / 6; no note 14 / 9; system edge 18 / 53. Ends that ARE bound but whose kind (or other end)
+was refused: 82 / 130 (Litolff: step unread 28, step conflict 16, heads between 14, other end at system edge
+14, positions in the gap 8; Brahms: other end at system edge 45, other end unbound 29, heads between 26,
+accidental printed 14, step conflict 6, accidental unknown 6).
+
+**What the rule would add.** Runs with both ends resolving: Litolff 37, Brahms 26 -- but 20 / 17 are already
+in the file as the same pair (from the old fallback), 6 / 4 as a different pair, and only **11 / 5 are not
+written at all**. Against Sean's 98 Brahms p0 arcs: of his 18 missing, at most **3** distinct arcs would be
+fixed; 5 are ties running off the system, the rest are kind refusals with both ends already bound.
+**Reading.** "Which note" is NOT the main reason the page pass declines. The two large buckets are arcs at a
+system edge (18 / 53 ends, plus 14 / 45 partners) and bound arcs whose KIND is refused (step unread / step
+conflict / heads between / accidentals). The manager's simple account to Sean ("the note isn't there to
+attach to") overstated that bucket.
+Not determined: head-shaped ink with no box at the no-note ends (`OMR_PAGE_HEADS` is OFF in these gathers);
+nobody has looked at the 16 new arcs.
+
+## 2.305 round 4 (2026-11-13) -- arcs across a system break; built OFF, `lane-2.305-arc-binding` 2fc7e709b
+
+STAGED. Convention confirmed by Sean 2026-11-13 ("Correct"; page-facts): an arc off the right end of a system
+continues at the left of the same instrument's staff on the next system or page; one arc; same pitch = tie.
+
+**Cause.** No new binder was needed: the page pass already hands its system-edge halves to the 2.271 join,
+which pairs by part (staff identity). Within a page it works. **The system-edge bucket in the earlier count
+was mostly a SAMPLING artifact**: the frozen sample holds single pages, so a half at a page break has no
+partner page in the record (Brahms 14 right + 14 left, Litolff 5 + 7 of 23 + 22 / 7 + 7 halves).
+**The real fault:** the join took "the next run of the part" as the next system with no check that the two
+are next to each other; in a record holding only p0 and p11 it wrote a slur from Brahms p0 to p11.
+**Lesson.** A join across a break must check physical adjacency, not list order; a sampled record makes
+non-adjacent pages look adjacent -- and a count taken on single-page samples cannot size anything that
+crosses a page.
+**Fix.** A join is written only to the same page's next system or the next page's first system; otherwise
+`arc_across_systems_partner_page_not_in_record`, nothing written. Control from the real halves:
+`test_arc_across_pages_2_305.py` (fails on the r3 tree).
+
+**Counts.** 8 pages: Brahms 5 pairs one-to-one, 1 ambiguous, 3 + 3 no partner half (about 3 traced with no
+detector box, about 4 not traced). Extra 2-page gathers: Brahms p0+p1 8 pairs, file holds 5 cross-system arcs
+(4 ties, 1 slur); Litolff p13+p14 none.
+Sean's five Brahms p0 cross-system ties (needs p1): OFF 0 of 5; ON P215, P230, P253 right; **P191 (written as
+a slur) and P192 (no arc) are upstream** -- one head that 2.290 grouped with a box on staff 5 AND a box on
+staff 6 (mg/0/0/477), so the tie went to staff 5's part and staff 6 got none.
+File change OFF vs ON: Litolff [5,8,13,15] ties +18, slurs +7 -39; Brahms [0,11,18,20] ties +8 -2, slurs
++30 -99; Brahms [0,1] ties +18, slurs +22 -70; Litolff [13,14] ties +8, slurs +3 -21. Judged right->wrong 0
+on every record; judged_claims 0; check 217; fast tier flags OFF 10,687 / 0 (flags ON not re-run).
+**Open.** Unwitnessed edge halves are never offered to the join (~3); stacked halves abstain (1); clef change
+at the break untested; the P191/P192 head shared by two staves. Tiles (9: every cross-system arc written):
+out/print-from-worktrees/2.305-r4 -- not yet sent.
