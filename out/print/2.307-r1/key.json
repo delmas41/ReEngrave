@@ -1,0 +1,202 @@
+{
+ "question": "Is there a notehead in the orange box?",
+ "seed": 2307,
+ "pools": {
+  "only_cells": 758,
+  "only_row": 105
+ },
+ "tiles": [
+  {
+   "tile": 1,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 8,
+   "page_box": [
+    1316.2,
+    3222.4,
+    1338.3,
+    3232.4
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.4008,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 2.39
+  },
+  {
+   "tile": 2,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    1918.0,
+    570.8,
+    1932.5,
+    581.9
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.3292,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 0.2
+  },
+  {
+   "tile": 3,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    611.7,
+    1763.0,
+    632.8,
+    1783.0
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.73,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 1.89
+  },
+  {
+   "tile": 4,
+   "way": "only_cells",
+   "plate": "brahms",
+   "page": 20,
+   "page_box": [
+    2263.1,
+    3602.0,
+    2289.8,
+    3622.1
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.4418,
+   "staff_space_px": 27.5,
+   "nearest_barline_spaces": 4.53
+  },
+  {
+   "tile": 5,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 13,
+   "page_box": [
+    2311.4,
+    1577.4,
+    2332.4,
+    1595.8
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.3487,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 1.93
+  },
+  {
+   "tile": 6,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 8,
+   "page_box": [
+    1401.3,
+    2401.5,
+    1424.8,
+    2412.7
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.4172,
+   "staff_space_px": 16.0,
+   "nearest_barline_spaces": 1.94
+  },
+  {
+   "tile": 7,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    2536.1,
+    2713.3,
+    2556.1,
+    2732.8
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.3044,
+   "staff_space_px": 15.2,
+   "nearest_barline_spaces": 4.14
+  },
+  {
+   "tile": 8,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 5,
+   "page_box": [
+    2368.6,
+    1516.2,
+    2396.4,
+    1538.3
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.5078,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 1.68
+  },
+  {
+   "tile": 9,
+   "way": "only_cells",
+   "plate": "brahms",
+   "page": 18,
+   "page_box": [
+    3016.8,
+    5192.0,
+    3044.6,
+    5215.1
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.4836,
+   "staff_space_px": 27.8,
+   "nearest_barline_spaces": 2.61
+  },
+  {
+   "tile": 10,
+   "way": "only_cells",
+   "plate": "litolff",
+   "page": 13,
+   "page_box": [
+    2507.7,
+    364.6,
+    2534.6,
+    385.2
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.286,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 0.33
+  },
+  {
+   "tile": 11,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 13,
+   "page_box": [
+    812.1,
+    700.8,
+    837.7,
+    742.0
+   ],
+   "cls": "noteheadBlackOnLine",
+   "confidence": 0.2616,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 0.44
+  },
+  {
+   "tile": 12,
+   "way": "only_row",
+   "plate": "litolff",
+   "page": 8,
+   "page_box": [
+    2001.8,
+    729.0,
+    2026.3,
+    740.1
+   ],
+   "cls": "noteheadBlackInSpace",
+   "confidence": 0.4049,
+   "staff_space_px": 15.8,
+   "nearest_barline_spaces": 1.84
+  }
+ ]
+}
