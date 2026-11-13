@@ -13,6 +13,10 @@ handed. Readers registered as ADJUDICATE decisions are wrapped in the REGISTRY; 
 through a name bound elsewhere would be missed -- a floor, not a ceiling). `rhythm` nested helpers `ownership.stem_of` / `both_ways` live
 inside `adjudicate_articulation_owner` and are counted through it.
 """
+import os as _os
+import sys as _sys
+_sys.path.insert(0, _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", "..")))
+
 import collections
 import dataclasses
 import functools

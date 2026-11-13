@@ -15,6 +15,10 @@ Scoring:
   * Sean's judged answers where a judged mark exists: every tile of `judged` (benchmarks/*/answers via `tools.omr.staged.judged`) on these
     pages with a page box and a head/rest/accidental subject -- is a box of the way's family on it (same rule as labels).
 """
+import os as _os
+import sys as _sys
+_sys.path.insert(0, _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", "..")))
+
 import collections
 import glob
 import json

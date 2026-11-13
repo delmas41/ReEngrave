@@ -1,0 +1,17 @@
+LANE REPORT  OMR_PAGE_OWNED_VIEW (OFF=0 ON=1)  --from adjudicate
+  OMR_PAGE_OWNED_VIEW: read in staged/adjudicate.py, staged/export.py, staged/owned_view.py, staged/record.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/scr-2305/2305-sample.json (a development control)
+
+litolff  pages [5, 8, 13, 15]  (3054 notes+rests OFF, 3055 ON, 3051 paired)
+  file:   rests +4 -3 | dots +1 | ties +4 | slurs +6 -2 | articulations +1 | blue marks -3
+  red bars 0 -> 0 | notes not written 1298 -> 828
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 471 of 4847 (e.g. glyph/13/0/0/10/5, glyph/13/0/0/11/3, glyph/13/0/0/12/8)
+  Sean's judged answers (166 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 4 (at another id than asked 0) | by id key, no position 348 | position but no mark here 22
+  NOT JUDGED: 23 changed places no tile of Sean's covers (1 are covered; 0 have no page place): articulation 1, blue 3, dot 1, rest 6, slur 8, tie 4 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2307 -> tiles/ (sheet.png), key.json outside the folder
+wall time 301 s

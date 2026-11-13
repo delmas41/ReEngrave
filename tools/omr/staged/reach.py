@@ -402,6 +402,9 @@ STAGE_OF_FILE = {
     # take no `Evidence`/`Log` at all, so `_accessors()`'s scan finds nothing
     # in them to attribute to any other stage.
     "movements.py": "ADJUDICATE",
+    # ROADMAP 2.307 (`OMR_PAGE_OWNED_VIEW`, default OFF, a test prototype): names the copies once, right after `Q.GLYPH_OWNER`, from
+    # `adjudicate.run`; reads verdicts only and files nothing.
+    "owned_view.py": "ADJUDICATE",
 }
 ORDER = ["GATHER", "ADJUDICATE", "EVALUATE", "INFER", "EXPORT", "HARNESS"]
 

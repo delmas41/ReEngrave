@@ -1,0 +1,3877 @@
+{
+ "plate": "brahms",
+ "seconds": 254.5,
+ "copies_total": 653,
+ "copies_by_family": {
+  "head_filled": 489,
+  "accidental": 111,
+  "head_whole": 10,
+  "rest": 14,
+  "head_hollow": 29
+ },
+ "red_bars": {
+  "flag": "OMR_RED_BARS",
+  "bars": 64,
+  "color": "#D00000",
+  "noteheads_and_rests": 271,
+  "read": 227,
+  "guessed": 50,
+  "two_voice": 4,
+  "bars_list": [
+   {
+    "bar_key": "11/0/10",
+    "ordinal": 18,
+    "page": 11,
+    "system": 0,
+    "staff": 0,
+    "cell": 10,
+    "measure": 18,
+    "part": "P1",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     6.0
+    ],
+    "words": "does not add up: should hold 3, counted 6 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 0,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "A#5",
+      "beats": 6.0,
+      "type": "whole",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/0/10/9"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/10",
+    "ordinal": 29,
+    "page": 11,
+    "system": 1,
+    "staff": 0,
+    "cell": 10,
+    "measure": 29,
+    "part": "P1",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     0.5
+    ],
+    "words": "does not add up: should hold 3, counted 0.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 0,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "GUESSED",
+      "glyph": "glyph/11/1/0/10/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/5",
+    "ordinal": 35,
+    "page": 18,
+    "system": 0,
+    "staff": 0,
+    "cell": 5,
+    "measure": 35,
+    "part": "P1",
+    "events": 3,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D6",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/0/5/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#6",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/0/5/2"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/0/5/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/0/5/13"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/4",
+    "ordinal": 41,
+    "page": 18,
+    "system": 1,
+    "staff": 0,
+    "cell": 4,
+    "measure": 41,
+    "part": "P1",
+    "events": 4,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.5
+    ],
+    "words": "does not add up: should hold 3, counted 4.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/0/4/7"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/0/4/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "Bb5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/1/0/4/12"
+     },
+     {
+      "kind": "note",
+      "pitch": "G6",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/0/4/6"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/1/0/4/18"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/3",
+    "ordinal": 57,
+    "page": 20,
+    "system": 1,
+    "staff": 0,
+    "cell": 3,
+    "measure": 57,
+    "part": "P1",
+    "events": 5,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/0/3/8"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/0/3/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#6",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/20/1/0/3/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/0/3/1"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/0/3/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/0",
+    "ordinal": 8,
+    "page": 11,
+    "system": 0,
+    "staff": 1,
+    "cell": 0,
+    "measure": 8,
+    "part": "P2",
+    "events": 4,
+    "noteheads_and_rests": 8,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 4,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/1/0/13"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/1/0/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/1/0/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/1/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/1/0/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/1/0/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/1/0/21"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/1/0/11"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/7",
+    "ordinal": 26,
+    "page": 11,
+    "system": 1,
+    "staff": 1,
+    "cell": 7,
+    "measure": 26,
+    "part": "P2",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.0
+    ],
+    "words": "does not add up: should hold 3, counted 4 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G#5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/1/1/7/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/1/1/7/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "D#5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/1/1/7/0"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/0",
+    "ordinal": 30,
+    "page": 18,
+    "system": 0,
+    "staff": 1,
+    "cell": 0,
+    "measure": 30,
+    "part": "P2",
+    "events": 2,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.5
+    ],
+    "words": "does not add up: should hold 3, counted 4.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 5,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/18/0/1/0/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/18/0/1/0/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "G5",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/18/0/1/0/20"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/1/0/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "G5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/1/0/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/6",
+    "ordinal": 43,
+    "page": 18,
+    "system": 1,
+    "staff": 1,
+    "cell": 6,
+    "measure": 43,
+    "part": "P2",
+    "events": 5,
+    "noteheads_and_rests": 7,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.0
+    ],
+    "words": "does not add up: should hold 3, counted 4 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 7,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/16"
+     },
+     {
+      "kind": "note",
+      "pitch": "A5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/13"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/15"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb4",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "F5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/1/6/12"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/4",
+    "ordinal": 49,
+    "page": 20,
+    "system": 0,
+    "staff": 1,
+    "cell": 4,
+    "measure": 49,
+    "part": "P2",
+    "events": 5,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 5,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/1/4/20"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/1/4/6"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/1/4/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "C4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/1/4/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/1/4/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/3",
+    "ordinal": 57,
+    "page": 20,
+    "system": 1,
+    "staff": 1,
+    "cell": 3,
+    "measure": 57,
+    "part": "P2",
+    "events": 4,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 5,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/1/3/17"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/1/3/13"
+     },
+     {
+      "kind": "note",
+      "pitch": "G4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/1/1/3/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/1/1/3/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/1/3/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/2",
+    "ordinal": 10,
+    "page": 11,
+    "system": 0,
+    "staff": 2,
+    "cell": 2,
+    "measure": 10,
+    "part": "P3",
+    "events": 4,
+    "noteheads_and_rests": 7,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     5.0
+    ],
+    "words": "does not add up: should hold 3, counted 5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 5,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Db5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/2/2/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/2/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "D#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/2/2/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/2/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/2/20"
+     },
+     {
+      "kind": "note",
+      "pitch": "Db5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/2/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/2/16"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/9",
+    "ordinal": 17,
+    "page": 11,
+    "system": 0,
+    "staff": 2,
+    "cell": 9,
+    "measure": 17,
+    "part": "P3",
+    "events": 2,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "F#4",
+      "beats": 2.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/2/9/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "Db5",
+      "beats": 2.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/2/9/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "Db4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/9/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "B4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/2/9/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/4",
+    "ordinal": 41,
+    "page": 18,
+    "system": 1,
+    "staff": 2,
+    "cell": 4,
+    "measure": 41,
+    "part": "P3",
+    "events": 4,
+    "noteheads_and_rests": 6,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 6,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "A4",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/2/4/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/2/4/8"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/2/4/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/2/4/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "A4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/2/4/12"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/2/4/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/4",
+    "ordinal": 49,
+    "page": 20,
+    "system": 0,
+    "staff": 2,
+    "cell": 4,
+    "measure": 49,
+    "part": "P3",
+    "events": 8,
+    "noteheads_and_rests": 9,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.5
+    ],
+    "words": "does not add up: should hold 3, counted 4.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 8,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/1"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/6"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/7"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/8"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/10"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/21"
+     },
+     {
+      "kind": "note",
+      "pitch": "G#4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/2/4/12"
+     },
+     {
+      "kind": "note",
+      "pitch": "G#5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/20/0/2/4/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/5",
+    "ordinal": 59,
+    "page": 20,
+    "system": 1,
+    "staff": 2,
+    "cell": 5,
+    "measure": 59,
+    "part": "P3",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.5
+    ],
+    "words": "does not add up: should hold 3, counted 4.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "B4",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/20/1/2/5/16"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/20/1/2/5/7"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/3",
+    "ordinal": 11,
+    "page": 11,
+    "system": 0,
+    "staff": 3,
+    "cell": 3,
+    "measure": 11,
+    "part": "P4",
+    "events": 3,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "F#2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/3/3/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/3/3/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/11/0/3/3/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "D#3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/3/3/1"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/4",
+    "ordinal": 12,
+    "page": 11,
+    "system": 0,
+    "staff": 3,
+    "cell": 4,
+    "measure": 12,
+    "part": "P4",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.25
+    ],
+    "words": "does not add up: should hold 3, counted 3.25 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "F#3",
+      "beats": 1.75,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/3/4/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "D#4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/3/4/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/0",
+    "ordinal": 30,
+    "page": 18,
+    "system": 0,
+    "staff": 3,
+    "cell": 0,
+    "measure": 30,
+    "part": "P4",
+    "events": 4,
+    "noteheads_and_rests": 8,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.25
+    ],
+    "words": "does not add up: should hold 3, counted 3.25 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 4,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D3",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/0/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/0/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/3/0/32"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/3/0/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "B2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/0/17"
+     },
+     {
+      "kind": "note",
+      "pitch": "B3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "B2",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/3/0/19"
+     },
+     {
+      "kind": "note",
+      "pitch": "B3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/3/0/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/1",
+    "ordinal": 31,
+    "page": 18,
+    "system": 0,
+    "staff": 3,
+    "cell": 1,
+    "measure": 31,
+    "part": "P4",
+    "events": 8,
+    "noteheads_and_rests": 13,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     5.0
+    ],
+    "words": "does not add up: should hold 3, counted 5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 13,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Bb2",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/34"
+     },
+     {
+      "kind": "note",
+      "pitch": "Bb2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/19"
+     },
+     {
+      "kind": "note",
+      "pitch": "Bb3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/1"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/4"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/23"
+     },
+     {
+      "kind": "note",
+      "pitch": "A2",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "A3",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/15"
+     },
+     {
+      "kind": "note",
+      "pitch": "G2",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/20"
+     },
+     {
+      "kind": "note",
+      "pitch": "F2",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "F3",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "E2",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "E3",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/1/22"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/4",
+    "ordinal": 34,
+    "page": 18,
+    "system": 0,
+    "staff": 3,
+    "cell": 4,
+    "measure": 34,
+    "part": "P4",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/4/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "F2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/4/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb2",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/4/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/6",
+    "ordinal": 36,
+    "page": 18,
+    "system": 0,
+    "staff": 3,
+    "cell": 6,
+    "measure": 36,
+    "part": "P4",
+    "events": 5,
+    "noteheads_and_rests": 10,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.75
+    ],
+    "words": "does not add up: should hold 3, counted 3.75 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 10,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/18"
+     },
+     {
+      "kind": "note",
+      "pitch": "G4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/16"
+     },
+     {
+      "kind": "note",
+      "pitch": "G4",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/6"
+     },
+     {
+      "kind": "note",
+      "pitch": "F3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "F4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/17"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "D3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/3/6/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/1",
+    "ordinal": 38,
+    "page": 18,
+    "system": 1,
+    "staff": 3,
+    "cell": 1,
+    "measure": 38,
+    "part": "P4",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     1.0
+    ],
+    "words": "does not add up: should hold 3, counted 1 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/3/1/14"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/7",
+    "ordinal": 44,
+    "page": 18,
+    "system": 1,
+    "staff": 3,
+    "cell": 7,
+    "measure": 44,
+    "part": "P4",
+    "events": 5,
+    "noteheads_and_rests": 9,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     5.0
+    ],
+    "words": "does not add up: should hold 3, counted 5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 8,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "F3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "F4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/15"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "D3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/17"
+     },
+     {
+      "kind": "note",
+      "pitch": "C3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "C4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/3/7/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 2.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/18/1/3/7/20"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/0",
+    "ordinal": 45,
+    "page": 20,
+    "system": 0,
+    "staff": 3,
+    "cell": 0,
+    "measure": 45,
+    "part": "P4",
+    "events": 4,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/3/0/8"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/3/0/16"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/3/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/20/0/3/0/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/3/0/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/5",
+    "ordinal": 59,
+    "page": 20,
+    "system": 1,
+    "staff": 3,
+    "cell": 5,
+    "measure": 59,
+    "part": "P4",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.5
+    ],
+    "words": "does not add up: should hold 3, counted 4.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "A3",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/20/1/3/5/15"
+     },
+     {
+      "kind": "note",
+      "pitch": "C4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/20/1/3/5/5"
+     }
+    ]
+   },
+   {
+    "bar_key": "0/0/3",
+    "ordinal": 4,
+    "page": 0,
+    "system": 0,
+    "staff": 4,
+    "cell": 3,
+    "measure": 4,
+    "part": "P5",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     6.0
+    ],
+    "words": "does not add up: should hold 3, counted 6 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 0,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C#2",
+      "beats": 3.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/0/0/4/3/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#3",
+      "beats": 3.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/0/0/4/3/5"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/3",
+    "ordinal": 33,
+    "page": 18,
+    "system": 0,
+    "staff": 4,
+    "cell": 3,
+    "measure": 33,
+    "part": "P5",
+    "events": 6,
+    "noteheads_and_rests": 6,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5,
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 / 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": true,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Db3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/4/3/4"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/4/3/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/4/3/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "C3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/4/3/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "Bb2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/4/3/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "Ab2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/4/3/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/6",
+    "ordinal": 36,
+    "page": 18,
+    "system": 0,
+    "staff": 4,
+    "cell": 6,
+    "measure": 36,
+    "part": "P5",
+    "events": 7,
+    "noteheads_and_rests": 7,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.0
+    ],
+    "words": "does not add up: should hold 3, counted 4 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 6,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/4/6/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/4/6/4"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/4/6/7"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/4/6/12"
+     },
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/4/6/5"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/4/6/2"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/4/6/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/0",
+    "ordinal": 30,
+    "page": 18,
+    "system": 0,
+    "staff": 5,
+    "cell": 0,
+    "measure": 30,
+    "part": "P6",
+    "events": 7,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.0,
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 3 / 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": true,
+    "doubled_staff_copy": false,
+    "read": 6,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/5/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/0/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/0/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/0/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/0/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/0/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/4",
+    "ordinal": 34,
+    "page": 18,
+    "system": 0,
+    "staff": 5,
+    "cell": 4,
+    "measure": 34,
+    "part": "P6",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/5/4/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/0",
+    "ordinal": 37,
+    "page": 18,
+    "system": 1,
+    "staff": 5,
+    "cell": 0,
+    "measure": 37,
+    "part": "P6",
+    "events": 6,
+    "noteheads_and_rests": 10,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 10,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/6"
+     },
+     {
+      "kind": "note",
+      "pitch": "C5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/15"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/1"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "G5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/12"
+     },
+     {
+      "kind": "note",
+      "pitch": "G5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "G5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/5/0/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/4",
+    "ordinal": 58,
+    "page": 20,
+    "system": 1,
+    "staff": 4,
+    "cell": 4,
+    "measure": 58,
+    "part": "P6",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.0
+    ],
+    "words": "does not add up: should hold 3, counted 2 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/20/1/4/4/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/0",
+    "ordinal": 8,
+    "page": 11,
+    "system": 0,
+    "staff": 6,
+    "cell": 0,
+    "measure": 8,
+    "part": "P7",
+    "events": 4,
+    "noteheads_and_rests": 8,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.25
+    ],
+    "words": "does not add up: should hold 3, counted 3.25 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 8,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "E4",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/12"
+     },
+     {
+      "kind": "note",
+      "pitch": "E4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "E4",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "E4",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "E5",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/11/0/6/0/10"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/0",
+    "ordinal": 30,
+    "page": 18,
+    "system": 0,
+    "staff": 7,
+    "cell": 0,
+    "measure": 30,
+    "part": "P8",
+    "events": 7,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.0,
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 3 / 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": true,
+    "doubled_staff_copy": false,
+    "read": 0,
+    "guessed": 7,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/7/0/1"
+     }
+    ]
+   },
+   {
+    "bar_key": "0/0/3",
+    "ordinal": 4,
+    "page": 0,
+    "system": 0,
+    "staff": 8,
+    "cell": 3,
+    "measure": 4,
+    "part": "P9",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.0
+    ],
+    "words": "does not add up: should hold 3, counted 2 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C3",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/0/0/8/3/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "0/0/3",
+    "ordinal": 4,
+    "page": 0,
+    "system": 0,
+    "staff": 9,
+    "cell": 3,
+    "measure": 4,
+    "part": "P10",
+    "events": 4,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "A6",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/0/0/9/3/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "B6",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/0/0/9/3/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "B6",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/0/0/9/3/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "Ab6",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/0/0/9/3/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/4",
+    "ordinal": 12,
+    "page": 11,
+    "system": 0,
+    "staff": 9,
+    "cell": 4,
+    "measure": 12,
+    "part": "P10",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     6.0
+    ],
+    "words": "does not add up: should hold 3, counted 6 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "E4",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/0/9/4/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "C5",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/0/9/4/7"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/7",
+    "ordinal": 15,
+    "page": 11,
+    "system": 0,
+    "staff": 9,
+    "cell": 7,
+    "measure": 15,
+    "part": "P10",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "B4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/9/7/1"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/10",
+    "ordinal": 18,
+    "page": 11,
+    "system": 0,
+    "staff": 9,
+    "cell": 10,
+    "measure": 18,
+    "part": "P10",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.0
+    ],
+    "words": "does not add up: should hold 3, counted 2 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C#5",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/0/9/10/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/2",
+    "ordinal": 21,
+    "page": 11,
+    "system": 1,
+    "staff": 9,
+    "cell": 2,
+    "measure": 21,
+    "part": "P10",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.0
+    ],
+    "words": "does not add up: should hold 3, counted 2 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C5",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/1/9/2/5"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/5",
+    "ordinal": 50,
+    "page": 20,
+    "system": 0,
+    "staff": 8,
+    "cell": 5,
+    "measure": 50,
+    "part": "P10",
+    "events": 6,
+    "noteheads_and_rests": 6,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.75
+    ],
+    "words": "does not add up: should hold 3, counted 2.75 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 5,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Eb4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/8/5/6"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.25,
+      "measure_rest": false,
+      "status": "GUESSED",
+      "glyph": "glyph/20/0/8/5/16"
+     },
+     {
+      "kind": "note",
+      "pitch": "B5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/8/5/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "C6",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/8/5/9"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/8/5/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#6",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/8/5/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "0/0/1",
+    "ordinal": 2,
+    "page": 0,
+    "system": 0,
+    "staff": 10,
+    "cell": 1,
+    "measure": 2,
+    "part": "P11",
+    "events": 5,
+    "noteheads_and_rests": 5,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.75
+    ],
+    "words": "does not add up: should hold 3, counted 3.75 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/0/0/10/1/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/0/0/10/1/6"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/0/0/10/1/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#5",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/0/0/10/1/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "G5",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/0/0/10/1/0"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/8",
+    "ordinal": 16,
+    "page": 11,
+    "system": 0,
+    "staff": 10,
+    "cell": 8,
+    "measure": 16,
+    "part": "P11",
+    "events": 4,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     7.0
+    ],
+    "words": "does not add up: should hold 3, counted 7 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 2,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "A#3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/10/8/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "Gb4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/10/8/9"
+     },
+     {
+      "kind": "note",
+      "pitch": "B3",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/0/10/8/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "B4",
+      "beats": 2.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/11/0/10/8/15"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/0",
+    "ordinal": 19,
+    "page": 11,
+    "system": 1,
+    "staff": 10,
+    "cell": 0,
+    "measure": 19,
+    "part": "P11",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.0
+    ],
+    "words": "does not add up: should hold 3, counted 2 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D#4",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "GUESSED",
+      "glyph": "glyph/11/1/10/0/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "B3",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/11/1/10/0/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "A3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/1/10/0/7"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/1",
+    "ordinal": 20,
+    "page": 11,
+    "system": 1,
+    "staff": 10,
+    "cell": 1,
+    "measure": 20,
+    "part": "P11",
+    "events": 2,
+    "noteheads_and_rests": 2,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     6.0
+    ],
+    "words": "does not add up: should hold 3, counted 6 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "A3",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/1/10/1/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "G4",
+      "beats": 3.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/11/1/10/1/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/8",
+    "ordinal": 27,
+    "page": 11,
+    "system": 1,
+    "staff": 10,
+    "cell": 8,
+    "measure": 27,
+    "part": "P11",
+    "events": 2,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     6.0
+    ],
+    "words": "does not add up: should hold 3, counted 6 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "D#4",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/1/10/8/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "B4",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/1/10/8/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "D5",
+      "beats": 3.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/1/10/8/6"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/1",
+    "ordinal": 31,
+    "page": 18,
+    "system": 0,
+    "staff": 11,
+    "cell": 1,
+    "measure": 31,
+    "part": "P12",
+    "events": 7,
+    "noteheads_and_rests": 7,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.25
+    ],
+    "words": "does not add up: should hold 3, counted 3.25 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 7,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "B3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/21"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/11"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "A4",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "G4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "F4",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "E4",
+      "beats": 0.25,
+      "type": "sixteenth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/1/5"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/2",
+    "ordinal": 32,
+    "page": 18,
+    "system": 0,
+    "staff": 11,
+    "cell": 2,
+    "measure": 32,
+    "part": "P12",
+    "events": 2,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "C4",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/2/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 2.0,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/2/16"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/2/5"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/4",
+    "ordinal": 34,
+    "page": 18,
+    "system": 0,
+    "staff": 11,
+    "cell": 4,
+    "measure": 34,
+    "part": "P12",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/4/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "F3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/11/4/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/11/4/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/2",
+    "ordinal": 56,
+    "page": 20,
+    "system": 1,
+    "staff": 8,
+    "cell": 2,
+    "measure": 56,
+    "part": "P12",
+    "events": 5,
+    "noteheads_and_rests": 7,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 7,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Ab3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/5"
+     },
+     {
+      "kind": "note",
+      "pitch": "Ab4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/1"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/4"
+     },
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "G4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/8/2/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/1/6",
+    "ordinal": 60,
+    "page": 20,
+    "system": 1,
+    "staff": 8,
+    "cell": 6,
+    "measure": 60,
+    "part": "P12",
+    "events": 4,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.125
+    ],
+    "words": "does not add up: should hold 3, counted 3.125 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 0.125,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/8/6/7"
+     },
+     {
+      "kind": "note",
+      "pitch": "F#3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/20/1/8/6/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "G3",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/20/1/8/6/6"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/1/8/6/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/8",
+    "ordinal": 16,
+    "page": 11,
+    "system": 0,
+    "staff": 12,
+    "cell": 8,
+    "measure": 16,
+    "part": "P13",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "B2",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/0/12/8/0"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/9",
+    "ordinal": 28,
+    "page": 11,
+    "system": 1,
+    "staff": 12,
+    "cell": 9,
+    "measure": 28,
+    "part": "P13",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     1.5
+    ],
+    "words": "does not add up: should hold 3, counted 1.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G#2",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/1/12/9/2"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/1",
+    "ordinal": 31,
+    "page": 18,
+    "system": 0,
+    "staff": 12,
+    "cell": 1,
+    "measure": 31,
+    "part": "P13",
+    "events": 4,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.25
+    ],
+    "words": "does not add up: should hold 3, counted 2.25 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 4,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "B3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/12/1/5"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/12/1/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/18/0/12/1/6"
+     },
+     {
+      "kind": "note",
+      "pitch": "A3",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/12/1/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/4",
+    "ordinal": 34,
+    "page": 18,
+    "system": 0,
+    "staff": 12,
+    "cell": 4,
+    "measure": 34,
+    "part": "P13",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/12/4/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "F2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/12/4/3"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb2",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/12/4/5"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/1/7",
+    "ordinal": 44,
+    "page": 18,
+    "system": 1,
+    "staff": 12,
+    "cell": 7,
+    "measure": 44,
+    "part": "P13",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.75
+    ],
+    "words": "does not add up: should hold 3, counted 2.75 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "F4",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/18/1/12/7/10"
+     },
+     {
+      "kind": "note",
+      "pitch": "F4",
+      "beats": 0.75,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/12/7/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "D4",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/1/12/7/17"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/0/4",
+    "ordinal": 12,
+    "page": 11,
+    "system": 0,
+    "staff": 13,
+    "cell": 4,
+    "measure": 12,
+    "part": "P14",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 1,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "F#3",
+      "beats": 3.5,
+      "type": "half",
+      "status": "READ",
+      "glyph": "glyph/11/0/13/4/4"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/0",
+    "ordinal": 19,
+    "page": 11,
+    "system": 1,
+    "staff": 13,
+    "cell": 0,
+    "measure": 19,
+    "part": "P14",
+    "events": 4,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     4.0
+    ],
+    "words": "does not add up: should hold 3, counted 4 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "B2",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/1/13/0/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/11/1/13/0/2"
+     },
+     {
+      "kind": "note",
+      "pitch": "C#3",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "READ",
+      "glyph": "glyph/11/1/13/0/14"
+     },
+     {
+      "kind": "note",
+      "pitch": "D#3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/11/1/13/0/3"
+     }
+    ]
+   },
+   {
+    "bar_key": "11/1/6",
+    "ordinal": 25,
+    "page": 11,
+    "system": 1,
+    "staff": 13,
+    "cell": 6,
+    "measure": 25,
+    "part": "P14",
+    "events": 1,
+    "noteheads_and_rests": 1,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.0
+    ],
+    "words": "does not add up: should hold 3, counted 2 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 0,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G#2",
+      "beats": 2.0,
+      "type": "half",
+      "status": "GUESSED",
+      "glyph": "glyph/11/1/13/6/9"
+     }
+    ]
+   },
+   {
+    "bar_key": "18/0/4",
+    "ordinal": 34,
+    "page": 18,
+    "system": 0,
+    "staff": 13,
+    "cell": 4,
+    "measure": 34,
+    "part": "P14",
+    "events": 3,
+    "noteheads_and_rests": 3,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 2,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "G2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/13/4/0"
+     },
+     {
+      "kind": "note",
+      "pitch": "F2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/18/0/13/4/1"
+     },
+     {
+      "kind": "note",
+      "pitch": "Eb3",
+      "beats": 1.5,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/18/0/13/4/8"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/0",
+    "ordinal": 45,
+    "page": 20,
+    "system": 0,
+    "staff": 12,
+    "cell": 0,
+    "measure": 45,
+    "part": "P14",
+    "events": 4,
+    "noteheads_and_rests": 4,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 3,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/0/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/0/5"
+     },
+     {
+      "kind": "rest",
+      "beats": 1.0,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/0/6"
+     },
+     {
+      "kind": "note",
+      "pitch": "C3",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/20/0/12/0/7"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/1",
+    "ordinal": 46,
+    "page": 20,
+    "system": 0,
+    "staff": 12,
+    "cell": 1,
+    "measure": 46,
+    "part": "P14",
+    "events": 6,
+    "noteheads_and_rests": 6,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     2.5,
+     2.5
+    ],
+    "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": true,
+    "doubled_staff_copy": false,
+    "read": 6,
+    "guessed": 0,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Ab3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/12/1/2"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/1/3"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/1/11"
+     },
+     {
+      "kind": "note",
+      "pitch": "G2",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/12/1/0"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/1/14"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/1/7"
+     }
+    ]
+   },
+   {
+    "bar_key": "20/0/8",
+    "ordinal": 53,
+    "page": 20,
+    "system": 0,
+    "staff": 12,
+    "cell": 8,
+    "measure": 53,
+    "part": "P14",
+    "events": 6,
+    "noteheads_and_rests": 6,
+    "want_quarters": 3.0,
+    "counted_quarters": [
+     3.5
+    ],
+    "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+    "meter_carried_in_file": false,
+    "two_voice": false,
+    "doubled_staff_copy": false,
+    "read": 5,
+    "guessed": 1,
+    "rows": [
+     {
+      "kind": "note",
+      "pitch": "Gb3",
+      "beats": 0.5,
+      "type": "eighth",
+      "status": "READ",
+      "glyph": "glyph/20/0/12/8/2"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/8/6"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/8/8"
+     },
+     {
+      "kind": "note",
+      "pitch": "Gb3",
+      "beats": 1.0,
+      "type": "quarter",
+      "status": "GUESSED",
+      "glyph": "glyph/20/0/12/8/1"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/8/9"
+     },
+     {
+      "kind": "rest",
+      "beats": 0.5,
+      "measure_rest": false,
+      "status": "READ",
+      "glyph": "glyph/20/0/12/8/10"
+     }
+    ]
+   }
+  ]
+ },
+ "readers": {
+  "adjudicate_stem_value": {
+   "kind": "decision",
+   "calls": 3067,
+   "calls_with_copy": 528,
+   "copies": 528,
+   "copies_by_family": {
+    "head_hollow": 29,
+    "head_filled": 489,
+    "head_whole": 10
+   }
+  },
+  "adjudicate_head_stem": {
+   "kind": "decision",
+   "calls": 3067,
+   "calls_with_copy": 528,
+   "copies": 528,
+   "copies_by_family": {
+    "head_hollow": 29,
+    "head_filled": 489,
+    "head_whole": 10
+   }
+  },
+  "adjudicate_unison_voices": {
+   "kind": "decision",
+   "calls": 3067,
+   "calls_with_copy": 528,
+   "copies": 528,
+   "copies_by_family": {
+    "head_hollow": 29,
+    "head_filled": 489,
+    "head_whole": 10
+   }
+  },
+  "_second_evidence": {
+   "kind": "helper",
+   "calls": 818,
+   "calls_with_copy": 269,
+   "copies": 653,
+   "copies_by_family": {
+    "head_filled": 489,
+    "accidental": 111,
+    "head_whole": 10,
+    "rest": 14,
+    "head_hollow": 29
+   }
+  },
+  "_flag_direction": {
+   "kind": "helper",
+   "calls": 2453,
+   "calls_with_copy": 30,
+   "copies": 30,
+   "copies_by_family": {
+    "head_filled": 30
+   }
+  },
+  "_own_stem_side": {
+   "kind": "helper",
+   "calls": 2453,
+   "calls_with_copy": 30,
+   "copies": 30,
+   "copies_by_family": {
+    "head_filled": 30
+   }
+  },
+  "_direction_from_a_beam_mate": {
+   "kind": "helper",
+   "calls": 735,
+   "calls_with_copy": 548,
+   "copies": 598,
+   "copies_by_family": {
+    "head_hollow": 25,
+    "head_filled": 458,
+    "accidental": 97,
+    "head_whole": 9,
+    "rest": 9
+   }
+  },
+  "_long_chord_stem_tip": {
+   "kind": "helper",
+   "calls": 3,
+   "calls_with_copy": 3,
+   "copies": 8,
+   "copies_by_family": {
+    "head_filled": 8
+   }
+  },
+  "adjudicate_articulation_owner": {
+   "kind": "decision",
+   "calls": 199,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_on_one_stem": {
+   "kind": "helper",
+   "calls": 18,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_voice_count": {
+   "kind": "helper",
+   "calls": 9,
+   "calls_with_copy": 9,
+   "copies": 23,
+   "copies_by_family": {
+    "head_filled": 11,
+    "accidental": 3,
+    "rest": 9
+   }
+  },
+  "_stem_facts_of": {
+   "kind": "helper",
+   "calls": 2736,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_settle_divisi_pairs": {
+   "kind": "helper",
+   "calls": 1,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_voice_split": {
+   "kind": "helper",
+   "calls": 815,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "adjudicate_event": {
+   "kind": "decision",
+   "calls": 818,
+   "calls_with_copy": 269,
+   "copies": 653,
+   "copies_by_family": {
+    "head_filled": 489,
+    "accidental": 111,
+    "head_whole": 10,
+    "rest": 14,
+    "head_hollow": 29
+   }
+  },
+  "adjudicate_voices": {
+   "kind": "decision",
+   "calls": 846,
+   "calls_with_copy": 269,
+   "copies": 653,
+   "copies_by_family": {
+    "head_filled": 489,
+    "accidental": 111,
+    "head_whole": 10,
+    "rest": 14,
+    "head_hollow": 29
+   }
+  }
+ }
+}

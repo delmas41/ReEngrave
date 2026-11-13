@@ -15,6 +15,10 @@ the SAME `YoloDetector.detect` (conf 0.25, iou 0.7, staff lines intact, `one_ink
 Every box is mapped to page pixels (`arcs_system._page_box`). Nothing is merged here; `t2_score.py` merges ("same class at the same place,
 IoU >= 0.5, is one mark") and scores. Wall time of each way is recorded (detector calls only; page preparation once, shared).
 """
+import os as _os
+import sys as _sys
+_sys.path.insert(0, _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", "..")))
+
 import json
 import os
 import statistics

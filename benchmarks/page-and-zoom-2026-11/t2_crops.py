@@ -5,6 +5,10 @@
 Each crop: 6 staff spaces around the box (about), the box drawn in orange, nothing else. Names: <way>-<nn>-<plate>p<page>-<class>.png, and a
 sheet per way.
 """
+import os as _os
+import sys as _sys
+_sys.path.insert(0, _os.path.abspath(_os.path.join(_os.path.dirname(__file__), "..", "..")))
+
 import json
 import os
 import sys

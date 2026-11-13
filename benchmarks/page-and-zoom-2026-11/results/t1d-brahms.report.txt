@@ -1,0 +1,17 @@
+LANE REPORT  OMR_PAGE_OWNED_VIEW (OFF=0 ON=1)  --from adjudicate
+  OMR_PAGE_OWNED_VIEW: read in staged/adjudicate.py, staged/export.py, staged/owned_view.py, staged/record.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/scr-2305/2305-sample.json (a development control)
+
+brahms  pages [0, 11, 18, 20]  (2897 notes+rests OFF, 2897 ON, 2890 paired)
+  file:   notes +3 | rests +4 -7 | dots +3 | flags +3 -3 | beams +4 -2 | ties +4 | slurs +8 -1 | articulations +12 | pitches ~1 | blue marks +7 -11 | words +2 -4
+  red bars 64 -> 63 | notes not written 1259 -> 710
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 542 of 5199 (e.g. glyph/0/0/0/6/20, glyph/0/0/1/0/18, glyph/0/0/1/0/3)
+  Sean's judged answers (222 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 6 (at another id than asked 2) | by id key, no position 365 | position but no mark here 28
+  NOT JUDGED: 72 changed places no tile of Sean's covers (3 are covered; 4 have no page place): articulation 12, beam 6, blue 17, dot 2, flag 6, note 2, pitch 1, rest 11, slur 9, tie 4, words 2 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2307 -> tiles/ (sheet.png), key.json outside the folder
+wall time 319 s

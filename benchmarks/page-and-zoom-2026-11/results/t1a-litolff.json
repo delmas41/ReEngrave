@@ -1,0 +1,178 @@
+{
+ "plate": "litolff",
+ "seconds": 138.1,
+ "copies_total": 551,
+ "copies_by_family": {
+  "head_hollow": 107,
+  "head_filled": 359,
+  "accidental": 81,
+  "head_whole": 3,
+  "rest": 1
+ },
+ "red_bars": {
+  "flag": "OMR_RED_BARS",
+  "bars": 0,
+  "color": "#D00000",
+  "noteheads_and_rests": 0,
+  "read": 0,
+  "guessed": 0,
+  "two_voice": 0,
+  "bars_list": []
+ },
+ "readers": {
+  "adjudicate_stem_value": {
+   "kind": "decision",
+   "calls": 3441,
+   "calls_with_copy": 469,
+   "copies": 469,
+   "copies_by_family": {
+    "head_hollow": 107,
+    "head_filled": 359,
+    "head_whole": 3
+   }
+  },
+  "adjudicate_head_stem": {
+   "kind": "decision",
+   "calls": 3441,
+   "calls_with_copy": 469,
+   "copies": 469,
+   "copies_by_family": {
+    "head_hollow": 107,
+    "head_filled": 359,
+    "head_whole": 3
+   }
+  },
+  "adjudicate_unison_voices": {
+   "kind": "decision",
+   "calls": 3441,
+   "calls_with_copy": 469,
+   "copies": 469,
+   "copies_by_family": {
+    "head_hollow": 107,
+    "head_filled": 359,
+    "head_whole": 3
+   }
+  },
+  "_second_evidence": {
+   "kind": "helper",
+   "calls": 1422,
+   "calls_with_copy": 315,
+   "copies": 551,
+   "copies_by_family": {
+    "head_hollow": 107,
+    "head_filled": 359,
+    "accidental": 81,
+    "head_whole": 3,
+    "rest": 1
+   }
+  },
+  "_flag_direction": {
+   "kind": "helper",
+   "calls": 2917,
+   "calls_with_copy": 20,
+   "copies": 20,
+   "copies_by_family": {
+    "head_hollow": 4,
+    "head_filled": 16
+   }
+  },
+  "_own_stem_side": {
+   "kind": "helper",
+   "calls": 2917,
+   "calls_with_copy": 20,
+   "copies": 20,
+   "copies_by_family": {
+    "head_hollow": 4,
+    "head_filled": 16
+   }
+  },
+  "_direction_from_a_beam_mate": {
+   "kind": "helper",
+   "calls": 673,
+   "calls_with_copy": 465,
+   "copies": 479,
+   "copies_by_family": {
+    "head_hollow": 96,
+    "head_filled": 320,
+    "accidental": 59,
+    "head_whole": 3,
+    "rest": 1
+   }
+  },
+  "_long_chord_stem_tip": {
+   "kind": "helper",
+   "calls": 0,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "adjudicate_articulation_owner": {
+   "kind": "decision",
+   "calls": 3,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_on_one_stem": {
+   "kind": "helper",
+   "calls": 0,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_voice_count": {
+   "kind": "helper",
+   "calls": 0,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_stem_facts_of": {
+   "kind": "helper",
+   "calls": 2979,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_settle_divisi_pairs": {
+   "kind": "helper",
+   "calls": 1,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "_voice_split": {
+   "kind": "helper",
+   "calls": 1506,
+   "calls_with_copy": 0,
+   "copies": 0,
+   "copies_by_family": {}
+  },
+  "adjudicate_event": {
+   "kind": "decision",
+   "calls": 1422,
+   "calls_with_copy": 315,
+   "copies": 551,
+   "copies_by_family": {
+    "head_hollow": 107,
+    "head_filled": 359,
+    "accidental": 81,
+    "head_whole": 3,
+    "rest": 1
+   }
+  },
+  "adjudicate_voices": {
+   "kind": "decision",
+   "calls": 1479,
+   "calls_with_copy": 315,
+   "copies": 551,
+   "copies_by_family": {
+    "head_hollow": 107,
+    "head_filled": 359,
+    "accidental": 81,
+    "head_whole": 3,
+    "rest": 1
+   }
+  }
+ }
+}
