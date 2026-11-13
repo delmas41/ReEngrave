@@ -53,3 +53,43 @@ remove arcs and its cost is not counted. To retire on landing (named only): 2.22
 `paired_by_page_binding`, `_flank_search`, `_two_note_reading`, `_stack_reading`, 2.166 `paired_by_system_arc`,
 export `_paired_spans` box merge, `_anchored_slur_spans`, `_page_bound_slurs`, 2.271 `_edge_curves`.
 Tiles: out/print-from-worktrees/2.305-r1 (12: 9 slurs, 3 ties).
+
+## 2.305 round 2 (2026-11-12) -- built OFF, `lane-2.305-arc-binding` 6082f24e4; Sean's r2 tiles not yet answered
+
+STAGED. Sean's r1 tiles: 8 of 12, every fault an arc written as a SLUR (answers/answers-2.305-r1.json).
+
+**Cause.** Each r1 fault was a slur written plain on evidence that was not there.
+- Tiles 9, 11 (ties written as slurs): one head's POSITION is misread upstream (Litolff p15 `15/1/9/18/4`, a
+  16 px box at confidence 0.05, position 7.50 on the rounding line; Litolff p5 `5/0/2/13/7` read 0.76 of a step
+  off its unison partner). The binder decided "different pitch" from the two rounded steps and never asked
+  whether the measured positions were far enough apart to be two positions (page-facts gap 0.168-0.435 sp).
+  The pitch misreads are upstream faults, reported, NOT fixed here.
+- Tile 8 (two ties as one slur, a note too far): one traced run covered two ties meeting at a head and nothing
+  cut a run where its ink dips onto a head; the traced end also ran past its note to the next chord.
+- Tile 5 (no arc between the notes): written by the OLD fallback, not the page pass -- a detector box starting
+  at the cell's left edge where there is no arc ink; legacy pairing took the first head under the box.
+- Litolff p8 m69-70 unison tie: box-centre geometry disagreed with positions that read the same (0.00 / 0.08).
+
+**Process lesson.** When an upstream reading is a guess, the kind built on it is a guess too: a binder must
+say "cannot tell" in its inputs' own terms. The lane's own crop look was wrong again (r1 tile 3).
+
+**Size.** Slurs written with both ends at the same written position on one staff, 8 pages: Litolff 8,
+Brahms 9 -- all 17 from the OLD fallback path, 0 from the page pass. That bucket is untouched.
+
+**Built (page pass only, flags OFF).** (1) positions decide same/different: same step within 0.25 sp = same
+(writes the p8 m69-70 tie on voice 1); steps differ but positions < 0.435 sp apart = kind unread, nothing
+written (`page_arc_runs_kind_unread_nothing_written`); (2) a run that dips onto a head between its ends is cut
+there; (3) an end binds the head its ink lands on (outer quarter of the run only, and only when it does not
+already sit over its closest head -- both limits from the lane's own regressions, incl. Sean's P247); (4) a box
+cut at its cell edge is measured by its inked width. Controls from real rows:
+`tools/omr/tests/test_arc_binding_r2_2_305.py` (tiles 8 and 5; none for (1)).
+
+**File change, OFF vs ON** (re-adjudicated from the saved 2305 gathers):
+Litolff ties +18, slurs +7 -37; Brahms ties +8 -2, slurs +32 -99. Judged right->wrong 0; judged_claims 0
+contradictions; Brahms p0 vs Sean's 98 arcs 74 -> 80 right; check 217; fast tier flags OFF 10,684 / 0
+(NOT re-run with the arc flags ON).
+
+**Open.** The removed slurs (37, 99) are judged only by the 4 removal tiles in r2; the 17 fallback
+same-position slurs; the upstream position misreads behind r1 tiles 9, 11; cross-system ties; Brahms p18 run 80
+doubtful by the lane's look (lead only). Tiles: out/print-from-worktrees/2.305-r2 (12: 4 r1 faults redrawn,
+4 removed slurs boxed on the old ends, 4 new).
