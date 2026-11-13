@@ -278,3 +278,37 @@ direction where the cell readers had "stems disagree" (4) or a beam-mate guess (
 `export._stem_facts_of` / `_settle_divisi_pairs` / `_voice_split`.
 **Clean-tip rule, size only:** "a clean tip means no beam" decides 207 heads on Litolff (2 with beam-like ink
 within 1 sp of the tip) and 927 on Brahms (29 on 24 stems). Not changed -- it changes written values.
+
+## 2.306 stems round 4 (2026-11-13) -- a stem is the whole run; gate with the flag ON is MIXED (`lane-2.306-stems-beams-page` 39dc41788)
+
+STAGED. Sean's r1 tiles: 12 of 12 are stems; tiles 6 and 7 stop short (answers/answers-2.306-r1.json).
+**Cause.** The page map ends a stroke wherever another mark's ink crosses it (a head of the same chord, a
+tremolo slash, an erased staff line); the reader took each piece as a whole stem. Measured first: 262 of
+3,128 claimed stems (Litolff) and 207 of 3,393 (Brahms) were part of a longer run; the crossing was a chord
+head 245 / 193 times, an erased line 19 / 20.
+**Lesson.** The page map's unit is a stroke, not a mark: a reader that takes one stroke as one mark must say
+where it stitches pieces together, and why.
+**Built.** A stem = the whole run of vertical pieces in one column; a gap is bridged only by an erased line's
+thickness (<= 0.3 sp), a head on ONE side of the stem, or a stroke crossing the column (slash, beam) -- never
+empty paper (221 / 107 refused), never heads on both sides (two voices end to end, 15 / 4 refused). The stem
+claims only its own vertical pieces. Controls from Sean's tiles, failing on r1 first: tile 7 (Litolff p10
+`glyph/10/1/0/14/6`, one stem carrying both heads); tile 6 (Litolff p16, the run now reaches the half note --
+but the head's own stem reading still abstains because the tremolo slash is boxed and claimed as a NOTEHEAD:
+upstream); a real Brahms end-to-end pair not joined.
+**Gate, pre-retire, OFF vs ON (fresh r4 gathers):** Litolff red bars 172 -> 176, ties +6 -2, slurs +12 -4,
+flags +16 -30, notes +43 -32, not written 2156 -> 2130. Brahms red bars 143 -> 130, ties +18 -13, rests
++5 -25, slurs +30 -18, flags +25 -14, notes +41 -13, not written 3087 -> 3061. Judged right->wrong 0,
+unwritten->wrong 0 on both. Sean's p0 labels 261 right / 16 missed / 30 not his (unchanged). check 229.
+Fast tier flag ON 10,590 passed / 15 failed: 1 real break fixed (3845eddb5: voices read the owner verdict,
+which a test forbids -- now via the chord-grouping verdict); 14 fail with the flag OFF too in the frozen copy
+(no .git / gitignored files, stale ink-rules page, the lane's own retire test). NOT re-run after the fix.
+judged_claims: the two tremolo contradictions unchanged; one new Litolff one (2.288 r1 #10, "CR" claimed as
+a rest) arises before the stem read (believed OCR variation between gathers, not verified); Brahms none new.
+**What remains.** Litolff's 11 new red bars all come from the staff's OWN heads taking the page direction (4
+had "stems disagree", 4 a beam-mate guess); by the lane's look the page direction is right in the 10 it
+looked at, and in 3 the stem-direction reader still reports the opposite because it works from cell rows
+instead of taking the page's -- a hand-off bug, not fixed. Litolff flags: 16 eighths now beamed (same value),
+7 eighth -> quarter (the clean-tip read), 5 notes gone. Brahms 13 lost ties (join reason only, or the next
+bar's heads narrowed as "hollow head with a flag" / "beam doubt"; 3 notes gone); 23 rests no longer written
+are second-voice rests of splits the r3 fix removed.
+Tiles (12, on what the FILE changes): out/print/2.306-r4 -- not yet sent.
