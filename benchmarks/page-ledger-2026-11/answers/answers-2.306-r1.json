@@ -1,0 +1,614 @@
+{
+ "lane": "2.306 r1 stems on the page (ROADMAP 2.306)",
+ "date": "2026-11-13",
+ "question": "Each thin orange box is drawn on one stroke we now read as a stem. Is that a stem, yes or no?",
+ "sean": "Stem tiles - all stems. Tile 6 and 7 stop a bit short. 6 is interrupted by a trem slash and 7 is a long stem on a chord, the box only gets part of it.",
+ "note": "Scored by the manager: 12 of 12 are stems (incl. tile 3, which the lane's look doubted). Extent faults: 6 (the stem is cut where a tremolo slash crosses it) and 7 (a long chord stem; the box holds only part). The tiles ask only whether the stroke is a stem, not which heads hang on it.",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/1/10/7/8",
+   "change": "gained",
+   "off": [
+    "abstained",
+    "no_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "refused_strokes_are_slurs_or_too_thin_for_a_beam",
+    {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    }
+   ],
+   "stem_box_page_px": [
+    4403.0,
+    6276.0,
+    4410.0,
+    6327.0
+   ],
+   "crop_page_px": [
+    4239,
+    6172,
+    4542,
+    6568
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/0/1/8/0",
+   "change": "other_stem",
+   "off": [
+    "decided",
+    "one_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "stem_tip_reads_no_beam",
+    {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "stem_box_page_px": [
+    3879.1,
+    962.2,
+    3886.0,
+    1062.2
+   ],
+   "crop_page_px": [
+    3716,
+    702,
+    4075,
+    1180
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 10,
+   "glyph": "glyph/10/1/3/11/4",
+   "change": "other_stem",
+   "off": [
+    "decided",
+    "one_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "stem_value_follows",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0,
+     "head_fill": "half",
+     "shared_stem": "obs:272403"
+    }
+   ],
+   "stem_box_page_px": [
+    2192.0,
+    2474.0,
+    2198.0,
+    2557.0
+   ],
+   "crop_page_px": [
+    2116,
+    2431,
+    2293,
+    2657
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/1/2/7/4",
+   "change": "other_stem",
+   "off": [
+    "decided",
+    "one_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   ],
+   "stem_box_page_px": [
+    4369.0,
+    4501.0,
+    4378.0,
+    4608.0
+   ],
+   "crop_page_px": [
+    4235,
+    4351,
+    4538,
+    4747
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/1/8/1/0",
+   "change": "gained",
+   "off": [
+    "abstained",
+    "no_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    }
+   ],
+   "stem_box_page_px": [
+    1636.0,
+    5961.0,
+    1645.0,
+    6066.0
+   ],
+   "crop_page_px": [
+    1472,
+    5835,
+    1777,
+    6231
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 16,
+   "glyph": "glyph/16/0/9/6/1",
+   "change": "other_stem",
+   "off": [
+    "decided",
+    "one_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "bar_disagrees_with_decided",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "bar_disagrees_with_decided",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "stem_box_page_px": [
+    1263.9,
+    1632.8,
+    1266.9,
+    1661.8
+   ],
+   "crop_page_px": [
+    1167,
+    1551,
+    1344,
+    1777
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem; stops short: interrupted by a tremolo slash",
+   "is_stem": true,
+   "extent_right": false
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "page": 10,
+   "glyph": "glyph/10/1/0/14/6",
+   "change": "gained",
+   "off": [
+    "abstained",
+    "no_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "stem_box_page_px": [
+    2557.0,
+    2110.9,
+    2563.0,
+    2157.9
+   ],
+   "crop_page_px": [
+    2466,
+    1992,
+    2665,
+    2252
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem; stops short: a long stem on a chord, only part boxed",
+   "is_stem": true,
+   "extent_right": false
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/7/1/4",
+   "change": "gained",
+   "off": [
+    "narrowed",
+    "two_stems"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "chord_mate_shares_the_stem",
+    {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1,
+     "reconciled_by_chord_mate": true
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   ],
+   "stem_box_page_px": [
+    729.1,
+    3119.2,
+    736.1,
+    3196.3
+   ],
+   "crop_page_px": [
+    635,
+    3043,
+    814,
+    3274
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/3/6/1",
+   "change": "gained",
+   "off": [
+    "narrowed",
+    "unison_two_voices"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "stem_box_page_px": [
+    1261.0,
+    854.0,
+    1266.0,
+    919.0
+   ],
+   "crop_page_px": [
+    1138,
+    716,
+    1366,
+    1018
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 10,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/0/4/6/4",
+   "change": "gained",
+   "off": [
+    "abstained",
+    "no_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.0,
+     "written": 1.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 0.5,
+     "written": 0.5,
+     "dots": 0,
+     "beam_levels": 1
+    }
+   ],
+   "stem_box_page_px": [
+    3932.0,
+    1511.0,
+    3937.0,
+    1623.0
+   ],
+   "crop_page_px": [
+    3767,
+    1393,
+    4069,
+    1789
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "page": 2,
+   "glyph": "glyph/2/0/1/6/3",
+   "change": "gained",
+   "off": [
+    "narrowed",
+    "unison_two_voices"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 2.0,
+     "written": 2.0,
+     "dots": 0,
+     "beam_levels": 0
+    }
+   ],
+   "stem_box_page_px": [
+    1234.1,
+    544.3,
+    1239.1,
+    607.2
+   ],
+   "crop_page_px": [
+    1157,
+    467,
+    1333,
+    693
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/1/8/7/2",
+   "change": "gained",
+   "off": [
+    "abstained",
+    "no_stem"
+   ],
+   "on": [
+    "decided",
+    "page_stem"
+   ],
+   "dur_off": [
+    "decided",
+    "head_and_marks",
+    {
+     "beats": 1.5,
+     "written": 1.5,
+     "dots": 1,
+     "beam_levels": 0
+    }
+   ],
+   "dur_on": [
+    "narrowed",
+    "beam_discounted_uncertain",
+    null
+   ],
+   "stem_box_page_px": [
+    4673.0,
+    5943.0,
+    4680.0,
+    6165.0
+   ],
+   "crop_page_px": [
+    4541,
+    5835,
+    4845,
+    6231
+   ],
+   "page_reading": "read:engraving_side",
+   "sean": "stem",
+   "is_stem": true,
+   "extent_right": true
+  }
+ ]
+}
