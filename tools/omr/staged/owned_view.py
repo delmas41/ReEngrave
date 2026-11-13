@@ -2,7 +2,7 @@
 
 Sean 2026-11-13 (plan `docs/plan-2026-11-13-page-and-zoom.md` §4 A): "a view is how we look, the page is where facts live, a view's edge is
 never evidence". A padded measure cell shows a neighbour staff's head too; once `Q.GLYPH_OWNER` has decided that a glyph's owner is ANOTHER
-staff (`adjudicate.is_relocated_copy`: by the decision's domain its twin stands on that staff), the glyph is a COPY of a mark another cell
+staff (`adjudicate.is_relocated_copy`: by the decision's domain its twin stands on that staff) and it is a head, rest or accidental (`FAMILIES`), the glyph is a COPY of a mark another cell
 holds. With the flag ON, ONE rule (`copy_keys`) names those copies once, right after ownership is decided, and from then on no reader that
 LISTS marks -- a region query (`Scope.SELF_AND_DESCENDANTS`), `Log.subjects`, `Log.all_rows` / `all_verdicts` (every decision's domain) in
 ADJUDICATE / EVALUATE / INFER, and `export.Record.obs_of` / `verdicts_of` / `observations` in EXPORT -- is handed one. A question asked of the
@@ -21,6 +21,14 @@ import os
 from typing import Any, Iterable, Set
 
 ENV = "OMR_PAGE_OWNED_VIEW"
+#: The marks EXPORT itself drops as copies (`is_relocated_copy` in `_place_notes`): heads, rests, accidentals. Round 1 hid every family and lost
+#: slurs / articulations / dynamics that are written through their OWN owner decisions (`Q.ARC_OWNER`, `Q.ARTICULATION_OWNER`, the dynamic
+#: owner), where the copy can be the one written on the owner staff (frozen sample: Litolff slurs -50, articulations -42; Brahms -93 / -47).
+FAMILIES = ("notehead", "rest", "accidental")
+
+
+def _family_ok(cls) -> bool:
+    return str(cls or "").lower().startswith(FAMILIES)
 
 
 def enabled() -> bool:
@@ -49,15 +57,22 @@ def copy_keys_of_log(log: Any) -> Set[str]:
         if cur is None or getattr(cur.outcome, "value", cur.outcome) != "decided":
             continue
         if _is_copy(k, cur.value):
-            out.add(k)
+            box = log.rows(Q.GLYPH_BOX, v.subject)
+            if box and _family_ok(box[0].value[0]):
+                out.add(k)
     return out
 
 
-def copy_keys_of_verdicts(standing: Iterable[Any]) -> Set[str]:
-    """The same rule over EXPORT's standing verdict dicts (`export.Record._v.values()`)."""
+def copy_keys_of_verdicts(standing: Iterable[Any], obs: Any) -> Set[str]:
+    """The same rule over EXPORT's standing verdict dicts (`export.Record._v.values()`); `obs(quantity, subject)` is `Record.obs`."""
     from .record import Q
-    return {v["subject"] for v in standing
-            if v.get("quantity") == Q.GLYPH_OWNER and v.get("outcome") == "decided" and _is_copy(v["subject"], v.get("value"))}
+    out = set()
+    for v in standing:
+        if v.get("quantity") == Q.GLYPH_OWNER and v.get("outcome") == "decided" and _is_copy(v["subject"], v.get("value")):
+            box = obs(Q.GLYPH_BOX, v["subject"])
+            if box and _family_ok((box[0].get("value") or [None])[0]):
+                out.add(v["subject"])
+    return out
 
 
 def apply_to_log(log: Any) -> int:

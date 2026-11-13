@@ -329,10 +329,12 @@ class Record:
         # ROADMAP 2.307 (`OMR_PAGE_OWNED_VIEW`, default OFF): the SAME rule `owned_view` applies to the Log -- a listing (`observations`,
         # `obs_of`, `verdicts_of`) skips a copy of another staff's mark; `verdict` / `value` / `obs` asked by name still answer.
         from . import owned_view as _ov
-        self.hidden_copies = (_ov.copy_keys_of_verdicts(self._v.values()) if _ov.enabled() else set())
-        if self.hidden_copies:
-            self.observations = [o for o in self.observations if o["subject"] not in self.hidden_copies]
+        self.hidden_copies: set = set()
         self._by_q: Dict[str, List[Dict[str, Any]]] = {}
+        if _ov.enabled():
+            self.hidden_copies = _ov.copy_keys_of_verdicts(self._v.values(), self.obs)
+            if self.hidden_copies:
+                self.observations = [o for o in self.observations if o["subject"] not in self.hidden_copies]
         for v in self.verdicts:
             if self.hidden_copies and v["subject"] in self.hidden_copies:
                 continue

@@ -1,0 +1,274 @@
+{
+ "litolff": {
+  "accidental": {
+   "boxes": 452,
+   "bottom": 105,
+   "clipped_any": 168,
+   "left": 38,
+   "clipped_lr": 41,
+   "top": 33,
+   "right": 3
+  },
+  "arc": {
+   "boxes": 879,
+   "right": 255,
+   "bottom": 74,
+   "clipped_any": 552,
+   "clipped_lr": 492,
+   "top": 63,
+   "left": 272
+  },
+  "beam": {
+   "boxes": 468,
+   "left": 141,
+   "clipped_any": 251,
+   "clipped_lr": 208,
+   "right": 97,
+   "top": 58,
+   "bottom": 21
+  },
+  "clef": {
+   "boxes": 114,
+   "right": 1,
+   "clipped_any": 37,
+   "clipped_lr": 7,
+   "top": 21,
+   "left": 6,
+   "bottom": 13
+  },
+  "dot": {
+   "boxes": 31,
+   "bottom": 1,
+   "clipped_any": 1
+  },
+  "dynamic": {
+   "boxes": 393,
+   "bottom": 49,
+   "clipped_any": 133,
+   "left": 11,
+   "clipped_lr": 18,
+   "top": 72,
+   "right": 7
+  },
+  "flag": {
+   "boxes": 110,
+   "top": 5,
+   "clipped_any": 21,
+   "bottom": 14,
+   "left": 2,
+   "clipped_lr": 2
+  },
+  "head_filled": {
+   "boxes": 2636,
+   "right": 21,
+   "clipped_any": 300,
+   "clipped_lr": 48,
+   "bottom": 155,
+   "left": 27,
+   "top": 104
+  },
+  "head_hollow": {
+   "boxes": 599,
+   "bottom": 52,
+   "clipped_any": 92,
+   "top": 38,
+   "left": 2,
+   "clipped_lr": 2
+  },
+  "head_whole": {
+   "boxes": 11,
+   "left": 2,
+   "clipped_any": 5,
+   "clipped_lr": 2,
+   "bottom": 2,
+   "top": 1
+  },
+  "keysig": {
+   "boxes": 124,
+   "bottom": 25,
+   "clipped_any": 30,
+   "left": 1,
+   "top": 5,
+   "clipped_lr": 3,
+   "right": 2
+  },
+  "ledger": {
+   "boxes": 2678,
+   "right": 457,
+   "clipped_any": 1100,
+   "clipped_lr": 1091,
+   "left": 674,
+   "top": 3,
+   "bottom": 8
+  },
+  "meter": {
+   "boxes": 19,
+   "left": 10,
+   "clipped_any": 13,
+   "clipped_lr": 10,
+   "bottom": 2,
+   "top": 1
+  },
+  "other": {
+   "boxes": 1166,
+   "left": 394,
+   "bottom": 34,
+   "clipped_any": 561,
+   "clipped_lr": 528,
+   "right": 477,
+   "top": 22
+  },
+  "rest": {
+   "boxes": 656,
+   "top": 12,
+   "clipped_any": 42,
+   "right": 4,
+   "clipped_lr": 22,
+   "left": 18,
+   "bottom": 9
+  },
+  "stem": {
+   "boxes": 46,
+   "top": 8,
+   "clipped_any": 11,
+   "left": 5,
+   "bottom": 5,
+   "clipped_lr": 5
+  }
+ },
+ "brahms": {
+  "accidental": {
+   "boxes": 772,
+   "bottom": 84,
+   "clipped_any": 143,
+   "left": 9,
+   "clipped_lr": 22,
+   "top": 52,
+   "right": 13
+  },
+  "arc": {
+   "boxes": 2141,
+   "right": 1122,
+   "clipped_any": 1590,
+   "clipped_lr": 1512,
+   "left": 1027,
+   "bottom": 152,
+   "top": 112
+  },
+  "beam": {
+   "boxes": 1529,
+   "left": 454,
+   "bottom": 129,
+   "clipped_any": 764,
+   "clipped_lr": 638,
+   "right": 331,
+   "top": 106
+  },
+  "clef": {
+   "boxes": 163,
+   "right": 1,
+   "bottom": 34,
+   "clipped_any": 57,
+   "clipped_lr": 1,
+   "top": 23
+  },
+  "dot": {
+   "boxes": 799,
+   "top": 16,
+   "clipped_any": 45,
+   "bottom": 27,
+   "left": 2,
+   "clipped_lr": 2
+  },
+  "dynamic": {
+   "boxes": 456,
+   "top": 75,
+   "clipped_any": 124,
+   "bottom": 28,
+   "right": 21,
+   "clipped_lr": 28,
+   "left": 7
+  },
+  "flag": {
+   "boxes": 438,
+   "bottom": 20,
+   "clipped_any": 42,
+   "top": 21,
+   "right": 1,
+   "clipped_lr": 1
+  },
+  "head_filled": {
+   "boxes": 2814,
+   "right": 125,
+   "clipped_any": 418,
+   "clipped_lr": 168,
+   "bottom": 167,
+   "top": 103,
+   "left": 43
+  },
+  "head_hollow": {
+   "boxes": 184,
+   "top": 9,
+   "clipped_any": 17,
+   "bottom": 8
+  },
+  "head_whole": {
+   "boxes": 42,
+   "top": 3,
+   "clipped_any": 10,
+   "bottom": 6,
+   "left": 1,
+   "clipped_lr": 1
+  },
+  "keysig": {
+   "boxes": 234,
+   "bottom": 14,
+   "clipped_any": 18,
+   "top": 3,
+   "right": 1,
+   "clipped_lr": 1
+  },
+  "ledger": {
+   "boxes": 922,
+   "right": 15,
+   "clipped_any": 49,
+   "clipped_lr": 31,
+   "left": 16,
+   "top": 12,
+   "bottom": 6
+  },
+  "meter": {
+   "boxes": 114,
+   "left": 41,
+   "clipped_any": 48,
+   "clipped_lr": 45,
+   "bottom": 5,
+   "right": 4
+  },
+  "other": {
+   "boxes": 892,
+   "right": 396,
+   "clipped_any": 532,
+   "clipped_lr": 482,
+   "left": 376,
+   "bottom": 57,
+   "top": 59
+  },
+  "rest": {
+   "boxes": 988,
+   "left": 10,
+   "clipped_any": 88,
+   "clipped_lr": 31,
+   "right": 26,
+   "bottom": 48,
+   "top": 27
+  },
+  "stem": {
+   "boxes": 27,
+   "right": 1,
+   "bottom": 1,
+   "clipped_any": 1,
+   "clipped_lr": 1
+  }
+ }
+}
