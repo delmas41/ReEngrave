@@ -1,0 +1,98 @@
+{
+ "lane": "2.305 r4 arcs across a system break (ROADMAP 2.305)",
+ "date": "2026-11-13",
+ "question": "Top strip: the end of one system; bottom strip: the start of the next, same instrument. Is there one arc from the boxed note on top to the boxed note below? Tie or slur?",
+ "note": "Scored by the manager: 6 of 9 right (1, 2, 3, 7, 8, 9). Tiles 4 and 5 are ties written as slurs (5 is the P191 head shared by two staves; 4 is unexplained -- the two notes sit at different staff positions across the break, check the clef). Tile 6: the two notes do not look like they go together (a wrong pair, written as a slur).",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "brahms",
+   "kind": "slur",
+   "start": "glyph/11/0/0/8/1",
+   "stop": "glyph/11/1/0/0/1",
+   "part": "P1",
+   "sean": "slur",
+   "ours_right": true
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "kind": "tie",
+   "start": "glyph/1/0/1/6/1",
+   "stop": "glyph/1/1/1/0/3",
+   "part": "P2",
+   "sean": "tie",
+   "ours_right": true
+  },
+  {
+   "tile": 3,
+   "plate": "brahms",
+   "kind": "tie",
+   "start": "glyph/0/0/10/6/8",
+   "stop": "glyph/1/0/10/0/7",
+   "part": "P11",
+   "sean": "tie",
+   "ours_right": true
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "kind": "slur",
+   "start": "glyph/11/0/3/10/3",
+   "stop": "glyph/11/1/3/0/1",
+   "part": "P4",
+   "sean": "tie",
+   "ours_right": false
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "kind": "slur",
+   "start": "glyph/0/0/5/6/2",
+   "stop": "glyph/1/0/5/0/21",
+   "part": "P6",
+   "sean": "tie",
+   "ours_right": false
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "kind": "slur",
+   "start": "glyph/11/0/12/10/6",
+   "stop": "glyph/11/1/12/0/0",
+   "part": "P13",
+   "sean": "can't tell for sure, but those don't look like they go together",
+   "ours_right": false
+  },
+  {
+   "tile": 7,
+   "plate": "brahms",
+   "kind": "slur",
+   "start": "glyph/18/0/0/6/2",
+   "stop": "glyph/18/1/0/0/10",
+   "part": "P1",
+   "sean": "slur",
+   "ours_right": true
+  },
+  {
+   "tile": 8,
+   "plate": "brahms",
+   "kind": "tie",
+   "start": "glyph/0/0/12/6/10",
+   "stop": "glyph/1/0/12/0/1",
+   "part": "P13",
+   "sean": "tie",
+   "ours_right": true
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "kind": "tie",
+   "start": "glyph/0/0/9/6/8",
+   "stop": "glyph/1/0/9/0/6",
+   "part": "P10",
+   "sean": "tie",
+   "ours_right": true
+  }
+ ]
+}
