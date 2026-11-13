@@ -359,12 +359,12 @@ def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple
     same = sorted({r2.id for r2, b2 in stems if r2 is row or _same_stem_row(b, b2)})
     d = pr.detail or {}
     frac = _x_frac(b, head)
-    return Ruling(value=row.id, reason=("page_stem_of_a_second" if d.get("how") == "second_on_partner_stem" else "page_stem"),
-                  used=(box_id, pr.id) + tuple(same),
-                  detail={"stem": row.id, "stem_rows": same, "stem_box": [round(v, 2) for v in b],
-                          "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
-                          "page_stroke": d.get("page_stroke"), "direction": d.get("direction"), "page_how": d.get("how"),
-                          "margin": d.get("margin")})
+    detail = {"stem": row.id, "stem_rows": same, "stem_box": [round(v, 2) for v in b],
+              "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
+              "page_stroke": d.get("page_stroke"), "direction": d.get("direction"), "page_how": d.get("how"), "margin": d.get("margin")}
+    if d.get("how") == "second_on_partner_stem":
+        return Ruling(value=row.id, reason="page_stem_of_a_second", used=(box_id, pr.id) + tuple(same), detail=detail)
+    return Ruling(value=row.id, reason="page_stem", used=(box_id, pr.id) + tuple(same), detail=detail)
 
 
 def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:
