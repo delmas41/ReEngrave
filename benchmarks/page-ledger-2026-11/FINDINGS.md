@@ -334,3 +334,37 @@ another or "stems disagree" (`2/0/3/5`, `2/0/8/0`, `4/0/8/11`, `4/1/2/4`, `4/1/8
 reader claims that half's ink (stroke 1756) as a head, the left half (1727) has no owner, the tremolo reader
 claims neither. That fake head is why the half note's stem reads both ways and abstains.
 The r4 tiles stand unchanged (out/print/2.306-r4), not yet sent.
+
+## 2.306 stems round 6 (2026-11-13) -- why real notes are lost with the page stem reader ON; no code changed (`lane-2.306-stems-beams-page` 9349f0d7e)
+
+STAGED. Sean's r4 file-change tiles: 5 right, 1 wrong value, 4 real notes lost (answers/answers-2.306-r4.json).
+Control: r5's lines reproduce exactly on the frozen pre-retire tree (172 -> 167, 143 -> 129; right->wrong 0).
+**Cause. The stems are not wrong.** The losses come from what the page reader files BESIDES the stem, read by
+cell-era rules:
+1. **Copies of a stem filed in other staves' cells.** The reader files a stem row in every cell that shows
+   the head, including the neighbour's padded cell where the head is only a copy: 519 of 623 filed copies
+   (Litolff) and 669 of 748 (Brahms) exist only for heads the record gives to another staff.
+   `rhythm._not_the_neighbours_beam` treats any stem row in the next staff's cell as that staff's stem and
+   throws away this staff's own beam (97 / 115 heads lose beam strokes ON; in 94 / 112 the neighbour cell
+   holds such a copy). The filed copies also get no beam-level rows (`gather_beam_stem_levels` reads only
+   cell-reader rows: 0 of 623) and no beam-stem-join rows.
+2. **Stems stitched across empty paper.** r4's "head on one side" exception accepts any head whose box merely
+   touches the gap: stitched stems bridging more than 1 sp of blank paper are 57 of 133 (Litolff) and 64 of
+   109 (Brahms). The reader's own fault; not the top cause.
+3. **Downstream.** Where the page stem is right: EXPORT's chord check (`chord_value_undecided`), the duration
+   reader's rule-8 guard (`beam_discounted_uncertain`), bar arithmetic that can no longer force a value.
+The five tiles: 3 and 11 (Litolff) lose their beams to the neighbour-beam rule through a filed copy, then
+EXPORT refuses `duration_narrowed`; 5 (Sean: wrong) -- two strokes discounted as the neighbour's beam and,
+with no attached stem, the rule-8 guard does not apply, so a quarter is DECIDED; 7 (Brahms) -- a bar-mate
+takes the page direction, chord mates disagree, EXPORT drops it `chord_value_undecided`; 12 -- bar-mates
+gain a filed copy as their stem, are narrowed, and the bar is no longer forced.
+Per glyph, real losses 22 (Litolff) and 9 (Brahms); the page reader's own side output accounts for about 20
+of 29 changed notes on Litolff and 5 of 13 on Brahms; the rest downstream. (Not reconciled with the lane
+report's by-place -45 / -14.)
+**Process lesson.** A page reader's side output is read by cell-era rules as if a cell reader had filed it:
+before handing a page reading to old readers, list what they ASSUME about a row filed in a cell, not only who
+reads the quantity. This is the 2.307 cause again -- the cell as container -- now on the page reader's own rows.
+**Proposed, not built:** a crossing head must cover the gap (at most 0.3 sp blank; controls `10/1/6/7/3`,
+`9/0/2/1/0`); filed stems get the beam-level and beam-stem-join readings; a RULING on whether a page stem may
+be filed in a cell for a head that belongs to another staff; tile 5's decided quarter on a head with no
+attached stem (rule-8 guard). Unverified: page direction right in only the 4 cases looked at (leads).
