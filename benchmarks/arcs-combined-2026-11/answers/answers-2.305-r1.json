@@ -1,0 +1,140 @@
+{
+ "lane": "2.305 r1 arc binding, job 2 (ROADMAP 2.305)",
+ "date": "2026-11-12",
+ "question": "Each orange box runs from the note where we start one arc to the note where we end it. Are those the right two notes, and is it a tie or a slur?",
+ "note": "Scored by the manager against key.json: 8 of 12 fully right; ends right on 10 of 12. All 3 written ties right (2, 7, 12). All 4 faults are on arcs written as SLURS: two are ties with the right ends written as slurs (9, 11), one is two ties written as one slur running a note too far (8), one has no arc between its notes (5; the real arc leaves the second note into the next bar). Of the 5 arcs moved by 2.305 (2, 3, 7, 9, 12): 4 right; 9 has the right ends and the wrong kind. The lane's own look called 3 wrong; Sean says 3 is right.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "slur; those are the right notes",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 11,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/11/0/13/5/2",
+   "stop": "glyph/11/0/13/6/1"
+  },
+  {
+   "tile": 2,
+   "sean": "tie; those are the right notes",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 11,
+   "why": "moved by 2.305 (not in the ON file before)",
+   "kind": "tie",
+   "start": "glyph/11/0/12/9/2",
+   "stop": "glyph/11/0/12/10/6"
+  },
+  {
+   "tile": 3,
+   "sean": "slur, yes",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 15,
+   "why": "moved by 2.305 (not in the ON file before)",
+   "kind": "slur",
+   "start": "glyph/15/1/4/13/2",
+   "stop": "glyph/15/1/4/13/3"
+  },
+  {
+   "tile": 4,
+   "sean": "slur, yes",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/0/0/9/6/6",
+   "stop": "glyph/0/0/9/6/8"
+  },
+  {
+   "tile": 5,
+   "sean": "no, there's no arc between those two notes. There is one arc going from the second note into the next measure, but I can't see what that is",
+   "ours_right": false,
+   "plate": "brahms",
+   "page": 11,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/11/0/12/3/0",
+   "stop": "glyph/11/0/12/3/2"
+  },
+  {
+   "tile": 6,
+   "sean": "slur, yes",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 0,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/0/0/12/2/1",
+   "stop": "glyph/0/0/12/3/3"
+  },
+  {
+   "tile": 7,
+   "sean": "tie, yes",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 18,
+   "why": "moved by 2.305 (not in the ON file before)",
+   "kind": "tie",
+   "start": "glyph/18/0/1/3/3",
+   "stop": "glyph/18/0/1/4/5"
+  },
+  {
+   "tile": 8,
+   "sean": "it's two ties and it goes one extra note too far",
+   "ours_right": false,
+   "plate": "litolff",
+   "page": 5,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/5/0/5/2/3",
+   "stop": "glyph/5/0/5/4/9"
+  },
+  {
+   "tile": 9,
+   "sean": "tie, yes (right notes; we wrote a slur)",
+   "ours_right": false,
+   "plate": "litolff",
+   "page": 15,
+   "why": "moved by 2.305 (not in the ON file before)",
+   "kind": "slur",
+   "start": "glyph/15/1/9/18/4",
+   "stop": "glyph/15/1/9/19/2"
+  },
+  {
+   "tile": 10,
+   "sean": "slur, yes",
+   "ours_right": true,
+   "plate": "brahms",
+   "page": 18,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/18/0/3/1/9",
+   "stop": "glyph/18/0/3/1/8"
+  },
+  {
+   "tile": 11,
+   "sean": "tie, yes (right notes; we wrote a slur)",
+   "ours_right": false,
+   "plate": "litolff",
+   "page": 5,
+   "why": "slur the arc stack writes, OFF does not (seeded)",
+   "kind": "slur",
+   "start": "glyph/5/0/2/13/7",
+   "stop": "glyph/5/0/2/14/2"
+  },
+  {
+   "tile": 12,
+   "sean": "tie, yes",
+   "ours_right": true,
+   "plate": "litolff",
+   "page": 13,
+   "why": "moved by 2.305 (not in the ON file before)",
+   "kind": "tie",
+   "start": "glyph/13/0/8/1/6",
+   "stop": "glyph/13/0/8/2/6"
+  }
+ ]
+}
