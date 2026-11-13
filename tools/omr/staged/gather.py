@@ -15939,8 +15939,9 @@ def gather_key_object(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int,
             ko = {"system_count": obj["N"], "basis": obj["basis"], "dossier": obj["dossier"], "allowed_counts": allowed,
                   "system_counts": obj["counts"], "pitch_spaces": obj["pitch_spaces"], "clef_edge": s0["clef_edge"],
                   "clef_measured": s0.get("clef_measured"), "own_slots": cl["own"], "placed_slots": cl["placed"], "more_than_system": obj["by_staff"][li]["more_than_system"],
+                  **({"extra_pieces": obj["by_staff"][li]["extra_pieces"]} if obj["by_staff"][li].get("extra_pieces") else {}),
                   # 2.187b: what each slot the staff READ is (shape, step against the lines there): ADJUDICATE / the report check the fixed order
-                  "read_pieces": [dict(KO.measure_tail_box(binary, list(st.line_ys), sp, [q["x0"], q["y0"], q["x1"], q["y1"]]) or {}, slot=qi + 1)
+                  "read_pieces": [dict(KO.measure_tail_box(binary, list(st.line_ys), sp, q.get("mbox") or [q["x0"], q["y0"], q["x1"], q["y1"]]) or {}, slot=qi + 1)
                                   for qi, q in enumerate(obj["by_staff"][li]["pieces"][:obj["N"]])]}
             for part in cl["parts"]:
                 area = part["area"]

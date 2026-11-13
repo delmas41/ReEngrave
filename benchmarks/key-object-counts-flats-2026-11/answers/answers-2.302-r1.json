@@ -1,0 +1,99 @@
+{
+ "lane": "2.302 r1 key object counts every flat",
+ "date": "2026-11-12",
+ "question": "How many flats are inside the orange box?",
+ "sean_words": "There are three flats on every tile. On a couple of the squares, it looks like a little bit of one of the flats gets cut off, the one furthest to the right, but they're all there.",
+ "note": "Scored by the manager against key.json: 6 of 6 newly READ keys right (three flats). The 4 abstentions are all three flats on the page: the count is now 3 but the read is still declined (3 x slots_fit_neither_order, 1 x natural_shaped_slot = 2.299's veto and step position, the next cause). Box fault: on a couple of tiles the box cuts a little off the right-most flat.",
+ "tiles": [
+  {
+   "tile": 1,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "2/0/8",
+   "ours": "READ flats 3",
+   "ours_right": true,
+   "note": ""
+  },
+  {
+   "tile": 2,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "11/0/2",
+   "ours": "READ flats 3",
+   "ours_right": true,
+   "note": ""
+  },
+  {
+   "tile": 3,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "11/1/1",
+   "ours": "READ flats 3",
+   "ours_right": true,
+   "note": ""
+  },
+  {
+   "tile": 4,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "11/1/10",
+   "ours": "READ flats 3",
+   "ours_right": true,
+   "note": ""
+  },
+  {
+   "tile": 5,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "16/0/7",
+   "ours": "READ flats 3",
+   "ours_right": true,
+   "note": ""
+  },
+  {
+   "tile": 6,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "16/0/8",
+   "ours": "READ flats 3",
+   "ours_right": true,
+   "note": ""
+  },
+  {
+   "tile": 7,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "4/0/1",
+   "ours": "abstains",
+   "ours_right": null,
+   "note": "we abstain; the page has three flats (a miss, not a wrong answer): abstention: count now 3, slots_fit_neither_order"
+  },
+  {
+   "tile": 8,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "8/1/6",
+   "ours": "abstains",
+   "ours_right": null,
+   "note": "we abstain; the page has three flats (a miss, not a wrong answer): abstention: count now 3, slots_fit_neither_order"
+  },
+  {
+   "tile": 9,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "10/1/1",
+   "ours": "abstains",
+   "ours_right": null,
+   "note": "we abstain; the page has three flats (a miss, not a wrong answer): abstention: count now 3, slots_fit_neither_order"
+  },
+  {
+   "tile": 10,
+   "sean": "three flats",
+   "plate": "litolff",
+   "staff": "11/0/1",
+   "ours": "abstains",
+   "ours_right": null,
+   "note": "we abstain; the page has three flats (a miss, not a wrong answer): abstention: count now 3, natural_shaped_slot"
+  }
+ ]
+}
