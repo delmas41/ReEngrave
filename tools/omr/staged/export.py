@@ -3341,6 +3341,42 @@ def _across_system_spans(rec: Record, part: Sequence[StaffRun], measures, breaks
     return slurs, ties
 
 
+def _with_across_system_joins(kind: str, spans: Sequence[tuple], x_slurs: Sequence[tuple], x_ties: Sequence[tuple],
+                              counters: Dict[str, int]) -> List[tuple]:
+    """ROADMAP 2.271 step 3 / 2.305 r5: this kind's spans with the part's arcs joined across a system break (`_across_system_spans`) added.
+
+    A note that already STARTS a span of this kind is not the start of a join, and one that already ENDS one is not its end (counted,
+    `arc_across_systems_end_already_spanned`). For a TIE only the same end counts: a tie chain's middle note ends one tie and starts the next
+    (2.305 r5, Sean's r4 tile 4: Brahms p11 Fag. F#4 tied bar 9 -> 10 -> over the break; the join's tie was refused because the note
+    already ENDED the bar-9 tie). A slur keeps the older rule (either end held refuses), not measured here.
+    A span of this kind on the SAME two notes as a join of the OTHER kind is the same arc read a second time (the older box pairing
+    merges the two pieces across the break too) -- the join decides the kind from the two notes, so that span is dropped
+    (`arc_across_systems_other_kind_span_replaced`)."""
+    joins = x_slurs if kind == "slur" else x_ties if kind == "tie" else ()
+    other = x_ties if kind == "slur" else x_slurs if kind == "tie" else ()
+    out = list(spans)
+    if other:
+        pairs = {(id(s[2]), id(s[3])) for s in other}
+        kept = [s for s in out if (id(s[2]), id(s[3])) not in pairs]
+        counters["arc_across_systems_other_kind_span_replaced"] += len(out) - len(kept)
+        out = kept
+    if not joins:
+        return out
+    starts = {id(s[2]) for s in out}
+    ends = {id(s[3]) for s in out}
+    for s in joins:
+        if kind == "tie":
+            held = id(s[2]) in starts or id(s[3]) in ends
+        else:
+            held = bool({id(s[2]), id(s[3])} & (starts | ends))
+        if held:
+            counters["arc_across_systems_end_already_spanned"] += 1
+            counters[kind + "_spans_across_systems"] -= 1
+            continue
+        out.append(s)
+    return out
+
+
 def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                counters: Dict[str, int],
                tie_report: Optional[Dict[str, Any]] = None
@@ -3484,17 +3520,8 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                     # ROADMAP 2.223: the page-bound curves, AFTER `n_spans` (they are not groups of the box merge above)
                     spans = list(spans) + _page_bound_slur_spans(
                         measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters, rec=rec)
-            for join_kind, joins in (("slur", x_slurs), ("tie", x_ties)):
-                if kind == join_kind and joins:
-                    # ROADMAP 2.271 step 3: a note that already starts or ends a span of its kind is not joined a second time (counted)
-                    held = {id(s[2]) for s in spans} | {id(s[3]) for s in spans}
-                    spans = list(spans)
-                    for s in joins:
-                        if id(s[2]) in held or id(s[3]) in held:
-                            counters["arc_across_systems_end_already_spanned"] += 1
-                            counters[join_kind + "_spans_across_systems"] -= 1
-                            continue
-                        spans.append(s)
+            if x_slurs or x_ties:
+                spans = _with_across_system_joins(kind, spans, x_slurs, x_ties, counters)
             if kind == "slur":
                 # main 2.290: after the joins too
                 spans = _drop_unison_same_pitch_slurs(spans, counters)
