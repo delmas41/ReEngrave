@@ -6717,7 +6717,7 @@ def _second_group_of(g, groups, second_ok):
     # (`stem_evidence`); the second is what the guard actually runs on. A bar
     # whose stems were read and whose directions all abstained is a real state
     # and the two fields are how it is told from a bar with no stems at all.
-    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES, Q.HEAD_STEM),
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES, Q.HEAD_STEM, Q.GLYPH_OWNER),
     reasons=("x_clustered", "nothing_to_group"),
     mode=Mode.ADDITIVE,
     subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
@@ -6789,7 +6789,7 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                       system=ev.subject.system, staff=ev.subject.staff,
                       cell=ev.subject.cell, glyph=g)
         d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
-        if d is not None and d.outcome == "decided":
+        if d is not None and d.outcome == "decided" and not owned_by_another_staff(ev, sub):
             directions[g] = d.value
 
     def _conflicts(g, grp) -> bool:
@@ -9715,6 +9715,20 @@ def _direction_from_a_beam_mate(ev, cell, head_box, stems):
              "unanimous": True})
 
 
+def owned_by_another_staff(ev: Evidence, sub) -> bool:
+    """ROADMAP 2.306 r3 (flag `OMR_PAGE_STEMS`, default OFF): this head is a copy whose owner is ANOTHER staff -- the `Q.GLYPH_OWNER` verdict EXPORT already
+    honours (`is_relocated_copy`, the same test that drops the copy from the file). One owner per head; the ledger lines name the owner (2.216 B). Such a
+    head takes no part in THIS staff's chord or voice split: its stem direction is not read by the divisi guard (`adjudicate_event`) or the voice
+    streams (`adjudicate_voices`). With the flag off: False (today's behaviour)."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return False
+    v = ev.verdict(Q.GLYPH_OWNER, subject=sub)
+    if v is None or v.outcome != "decided":
+        return False
+    return bool(is_relocated_copy(sub, v.value))
+
+
 def page_own_stems(ev: Evidence, stems):
     """ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF): this head's own stem rows as the page read them -- the `Q.STEM` row the head's `Q.PAGE_STEM`
     names (the page map's vertical at its engraving side) and every row of the cell that is the same physical stem; `[]` where the page abstained (the
@@ -10616,7 +10630,7 @@ def _rest_own_voice_split(ev: Evidence, events):
     scope=Kind.CELL,
     wants=(Q.STEM_DIRECTION, Q.EVENT, Q.GLYPH_BOX, Q.STAFF_LINES,
            Q.STAFF_SPACING, Q.ONSET_COLUMN, Q.METER, Q.DURATION,
-           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
+           Q.NOTEHEAD_STAFF_POSITION, Q.REST_IS_NOT_A_REST, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.GLYPH_OWNER),
     reasons=("one_voice", "two_voices_same_beat", "one_voice_sums",
              "two_voices_separated_and_full", "no_voice_convention_fits",
              "nothing_to_split", "one_voice_plus_displaced_whole_rest"),
@@ -10726,7 +10740,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                                   staff=ev.subject.staff, cell=ev.subject.cell,
                                   glyph=g)
                     d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
-                    if d is not None and d.outcome == "decided":
+                    if d is not None and d.outcome == "decided" and not owned_by_another_staff(ev, sub):
                         votes[d.value] += 1
                 if votes:
                     direction = votes.most_common(1)[0][0]

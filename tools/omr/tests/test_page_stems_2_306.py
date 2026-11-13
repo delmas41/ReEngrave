@@ -105,6 +105,32 @@ def test_abstain_with_candidates_and_margin():
     assert r0["state"] == "none" and r0["how"] == "no_stroke"
 
 
+class _OwnerEv:
+    def __init__(self, v):
+        self.v = v
+
+    def verdict(self, q, subject=None):
+        return self.v
+
+
+def test_r3_a_copy_owned_by_another_staff_takes_no_part_in_this_staffs_split(monkeypatch):
+    """ROADMAP 2.306 r3 (the cause of r1's new red bars: 533 Brahms / 454 Litolff padded-cell copies gained a stem direction and split this staff's chords).
+    The owner test is EXPORT's own (`is_relocated_copy` on the decided `Q.GLYPH_OWNER`); with the flag off nothing changes."""
+    from types import SimpleNamespace as NS
+    from tools.omr.staged.adjudicators import rhythm as R
+    from tools.omr.staged.record import Subject
+    sub = Subject.from_key("glyph/4/0/11/1/4")                     # Brahms p4 staff 11 bar 1: a staff-12 head's copy (r2's first new red bar)
+    elsewhere = NS(outcome="decided", value="staff/4/0/12")
+    home = NS(outcome="decided", value="staff/4/0/11")
+    monkeypatch.setenv(PS.ENV, "1")
+    assert R.owned_by_another_staff(_OwnerEv(elsewhere), sub) is True
+    assert R.owned_by_another_staff(_OwnerEv(home), sub) is False
+    assert R.owned_by_another_staff(_OwnerEv(None), sub) is False
+    assert R.owned_by_another_staff(_OwnerEv(NS(outcome="abstained", value=None)), sub) is False
+    monkeypatch.setenv(PS.ENV, "0")
+    assert R.owned_by_another_staff(_OwnerEv(elsewhere), sub) is False
+
+
 class _Ev:
     """The two calls `page_own_stems` makes, on a hand-built reading (no record)."""
 
