@@ -156,3 +156,65 @@ def test_retire_page_abstention_is_no_stem_and_flag_off_keeps_the_cell_join(monk
     assert R.page_own_stems(_Ev(), [a, b]) is None                                                  # no page reading: the cell join stands
     monkeypatch.setenv(PS.ENV, "0")
     assert R.page_own_stems(_Ev(rows=[NS(value="obs:2", detail={})]), [a, b]) is None
+
+
+# ───────────── ROADMAP 2.306 r4: a stem is the whole collinear run (Sean's r1 tiles 6 and 7 "stop a bit short") ─────────────
+
+FX4 = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_r4_extent.json")
+
+
+def _case(name):
+    with open(FX4) as f:
+        c = json.load(f)[name]
+    t = lambda xs: [dict(x, box=tuple(x["box"])) for x in xs]
+    return c, t(c["heads"]), t(c["verticals"]), t(c["crossers"]), {int(k): v for k, v in c["held"].items()}
+
+
+def _stem_of(res, heads, glyph):
+    hid = next(h["id"] for h in heads if glyph in h["members"])
+    r = res["heads"][hid]
+    return r, (res["stems"].get(r["stroke"]) if r["stroke"] is not None else None)
+
+
+def test_r4_tile7_chord_stem_is_one_stroke_through_its_heads():
+    """Sean (r1 tile 7): "a long stem on a chord, the box only gets part of it". The page map cuts the stem at the chord's inner head."""
+    c, heads, verts, cross, held = _case("tile7")
+    r1 = PS.read(heads, verts, held)                                   # r1: no join -- the control fails here
+    _r, st1 = _stem_of(r1, heads, c["glyph"])
+    assert st1 is not None and len(st1["heads"]) == 1                 # the chord's heads stand on two different pieces
+    r4 = PS.read(heads, verts, held, crossers=cross)
+    _r, st = _stem_of(r4, heads, c["glyph"])
+    assert st is not None and len(st["members"]) == 2 and len(st["heads"]) == 2, st
+    assert st["box"][3] - st["box"][1] > (st1["box"][3] - st1["box"][1]) * 2
+
+
+def test_r4_tile6_stem_runs_through_the_tremolo_slash():
+    """Sean (r1 tile 6): "interrupted by a trem slash". r1 read only the piece above the junction; the whole run reaches the half note's head.
+    (The slash itself is boxed and claimed as a head there -- a head on the other side of the run -- so the head's reading abstains rather than pick.)"""
+    c, heads, verts, cross, held = _case("tile6")
+    r1 = PS.read(heads, verts, held)
+    _r, st1 = _stem_of(r1, heads, c["glyph"])
+    runs, cen = PS.join_runs(verts, heads, cross, held)
+    whole = max(runs, key=lambda r: len(r["members"]))
+    assert len(whole["members"]) == 2
+    assert st1 is not None and whole["box"][3] > st1["box"][3] + 20      # r1's stem stopped short of the head; the run reaches it
+
+
+def test_r4_two_voices_end_to_end_are_not_joined():
+    """A real Brahms pair: two collinear stems whose gap holds heads on both sides of the column -- two voices end to end, never one stem."""
+    c, heads, verts, cross, held = _case("divisi")
+    a, b = c["pair"]
+    pairs = []
+    runs, cen = PS.join_runs(verts, heads, cross, held, pairs)
+    assert (a, b, "!heads_both_sides") in pairs
+    run_of = {m: r["ord"] for r in runs for m in r["members"]}
+    assert run_of[a] != run_of[b]
+
+
+def test_r4_empty_paper_is_never_bridged():
+    v1 = dict(ord=1, box=(100.0, 0.0, 103.0, 60.0), sp=20.0)
+    v2 = dict(ord=2, box=(100.0, 75.0, 103.0, 140.0), sp=20.0)       # 15 px = 0.75 sp of empty paper
+    runs, cen = PS.join_runs([v1, v2], [], [])
+    assert len(runs) == 2 and cen.get("refused:empty_paper") == 1
+    runs, cen = PS.join_runs([v1, v2], [], [dict(ord=3, box=(90.0, 58.0, 120.0, 78.0), kind="slash")])
+    assert len(runs) == 1 and cen.get("joined:slash") == 1

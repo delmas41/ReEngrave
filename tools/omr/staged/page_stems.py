@@ -99,12 +99,116 @@ def _other_side(h: Dict[str, Any], st: Dict[str, Any]) -> Optional[str]:
     return None
 
 
-def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], held: Optional[Dict[int, str]] = None) -> Dict[str, Any]:
+#: ROADMAP 2.306 r4 (Sean, r1 tiles 6 and 7: "6 is interrupted by a trem slash and 7 is a long stem on a chord, the box only gets part of it"): the page
+#: map cuts a stem where another mark crosses it -- a tremolo slash, a head of its own chord, a beam, an erased staff line. One stem is the whole
+#: collinear run. Two vertical pieces join when they stand in one column (centres within the wider piece's width) and the gap between them is
+#: either an erased staff line's thickness (<= LINE_GAP_SP) or ink of a mark that crosses the stem there (a head on ONE side of the stem only --
+#: heads on both sides at a gap are two voices end to end, never joined -- or another stroke whose box spans the stem's column across the gap),
+#: never empty paper, and no wider than JOIN_GAP_SP. The stem claims only its own vertical pieces; the crossing mark keeps its ink.
+LINE_GAP_SP = 0.3
+JOIN_GAP_SP = 2.2
+
+
+def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any]] = (), crossers: Sequence[Dict[str, Any]] = (),
+              held: Optional[Dict[int, str]] = None, pairs: Optional[List[Tuple[int, int, str]]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+    """The collinear runs of the page's vertical pieces (constants above). Pure. `crossers`: `[{ord, box, kind}]` -- the page's other strokes (a
+    tremolo-claimed one has kind `slash`, a thick horizontal one `beam`). Returns `(runs, census)`: each run `{ord (its first piece), members, box,
+    sp, joins: [kind ...]}`; census = joins by kind of crossing and the refusals (`empty_paper`, `heads_both_sides`, `too_wide`). `pairs`, when given, is
+    filled with every end-to-end pair looked at (upper ord, lower ord, kind; a refusal's kind starts with "!"), the too-wide ones left out."""
+    held = held or {}
+    vs = sorted([v for v in verticals if int(v["ord"]) not in held], key=lambda v: (v["box"][0] + v["box"][2]) / 2.0)
+    parent = {int(v["ord"]): int(v["ord"]) for v in vs}
+    by = {int(v["ord"]): v for v in vs}
+    cen: Dict[str, int] = {}
+
+    def find(a: int) -> int:
+        while parent[a] != a:
+            parent[a] = parent[parent[a]]
+            a = parent[a]
+        return a
+
+    def gap_kind(a: Dict[str, Any], b: Dict[str, Any], y0: float, y1: float, sp: float) -> Optional[str]:
+        xc = ((a["box"][0] + a["box"][2]) / 2.0 + (b["box"][0] + b["box"][2]) / 2.0) / 2.0
+        if y1 - y0 <= LINE_GAP_SP * sp:
+            return "line_junction"
+        if y1 - y0 > JOIN_GAP_SP * sp:
+            return "!too_wide"
+        sides = set()
+        for h in heads:
+            hb = h["box"]
+            if hb[1] < y1 and hb[3] > y0 and hb[0] - 0.4 * sp <= xc <= hb[2] + 0.4 * sp:
+                sides.add("right" if (hb[0] + hb[2]) / 2.0 < xc else "left")
+        if len(sides) == 2:
+            return "!heads_both_sides"
+        if sides:
+            return "head"
+        for c in crossers:
+            cb = c["box"]
+            if cb[0] <= xc <= cb[2] and cb[1] <= y0 + 1 and cb[3] >= y1 - 1:
+                return str(c.get("kind") or "stroke")
+        return "!empty_paper"
+
+    import bisect
+    xsort = [(v["box"][0] + v["box"][2]) / 2.0 for v in vs]
+    wmax = max([v["box"][2] - v["box"][0] for v in vs] or [0.0])
+    for i, a in enumerate(vs):
+        sp = float(a.get("sp") or 1.0)
+        wa = a["box"][2] - a["box"][0]
+        xa = xsort[i]
+        j = bisect.bisect_left(xsort, xa - max(3.0, wmax))
+        for b in vs[j:]:
+            xb = (b["box"][0] + b["box"][2]) / 2.0
+            if xb > xa + max(3.0, wmax):
+                break
+            if int(b["ord"]) <= int(a["ord"]) or not (abs(xb - xa) <= max(a["box"][2] - a["box"][0], b["box"][2] - b["box"][0], 2.0)):
+                continue
+            up, lo = (a, b) if a["box"][1] <= b["box"][1] else (b, a)
+            y0, y1 = up["box"][3], lo["box"][1]
+            if y1 < y0 - 1:
+                continue          # overlapping in y: two pieces side by side, not end to end
+            k = gap_kind(up, lo, y0, y1, sp)
+            if k is None:
+                continue
+            if pairs is not None and k != "!too_wide":
+                pairs.append((int(up["ord"]), int(lo["ord"]), k))
+            if k.startswith("!"):
+                cen["refused:" + k[1:]] = cen.get("refused:" + k[1:], 0) + 1
+                continue
+            ra, rb = find(int(a["ord"])), find(int(b["ord"]))
+            if ra != rb:
+                parent[max(ra, rb)] = min(ra, rb)
+                cen["joined:" + k] = cen.get("joined:" + k, 0) + 1
+                by[min(ra, rb)].setdefault("_joins", []).append(k)
+    runs: Dict[int, Dict[str, Any]] = {}
+    for v in vs:
+        r = find(int(v["ord"]))
+        run = runs.setdefault(r, dict(ord=r, members=[], box=list(v["box"]), sp=float(v.get("sp") or 1.0), joins=[]))
+        run["members"].append(int(v["ord"]))
+        run["box"] = [min(run["box"][0], v["box"][0]), min(run["box"][1], v["box"][1]), max(run["box"][2], v["box"][2]), max(run["box"][3], v["box"][3])]
+        run["joins"] += v.pop("_joins", [])
+    out = sorted(runs.values(), key=lambda r: r["ord"])
+    for r in out:
+        r["box"] = tuple(r["box"])
+        r["members"] = sorted(r["members"])
+    cen["runs_of_two_or_more"] = sum(1 for r in out if len(r["members"]) > 1)
+    return out, cen
+
+
+def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], held: Optional[Dict[int, str]] = None,
+         crossers: Optional[Sequence[Dict[str, Any]]] = None) -> Dict[str, Any]:
     """The page's stems (module doc). Pure. `heads`: `[{id, members, box (x0, y0, x1, y1) page px, sp}]`; `verticals`: `[{ord, box (x0, y0, x1, y1), sp}]`
-    (the page map's vertical strokes); `held`: `{ord: owner}` of strokes an earlier claim holds. Returns `{"heads": {id: reading}, "stems": {ord: stem},
-    "census": {...}}`; a reading is `{state, stroke, direction, side, candidates, held, near, margin, how}`."""
+    (the page map's vertical strokes); `held`: `{ord: owner}` of strokes an earlier claim holds; `crossers` (ROADMAP 2.306 r4): the other page strokes
+    -- when given, the vertical pieces are first joined into whole stems (`join_runs`) and a stem's `members` are its pieces. Returns `{"heads": {id:
+    reading}, "stems": {ord: stem}, "census": {...}}`; a reading is `{state, stroke, direction, side, candidates, held, near, margin, how}`."""
     held = held or {}
     t0 = time.time()
+    run_census: Dict[str, int] = {}
+    members_of: Dict[int, List[int]] = {}
+    if crossers is not None:
+        runs, run_census = join_runs(verticals, heads, crossers, held)
+        joined = {m for r in runs for m in r["members"]}
+        verticals = [dict(ord=r["ord"], box=r["box"], sp=r["sp"]) for r in runs] + [v for v in verticals if int(v["ord"]) not in joined]
+        members_of = {r["ord"]: r["members"] for r in runs}
     vs = sorted(verticals, key=lambda v: v["box"][0])
     xs = [v["box"][0] for v in vs]
     import bisect
@@ -164,12 +268,38 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
     hb0 = {h["id"]: h for h in heads}
     split = [o for o, s in stems.items() if len(s["directions"]) > 1]
     n_kept = 0
+    vbox = {int(v["ord"]): v for v in vs}
     for o in split:
         inked = {d for d in stems[o]["directions"] if any(hb0[k].get("ink") and readings[k]["direction"] == d for k in stems[o]["heads"])}
         keep = next(iter(inked)) if len(inked) == 1 else None
+        by_end = None
+        if keep is None and o in vbox:
+            # ROADMAP 2.306 r4 (Sean's r1 tile 6: an up stem through a tremolo slash, the second's displaced head on its other side): a stem has ONE
+            # head end -- the bottom of an up stem, the top of a down stem. Where one direction's heads stand at their end of the stroke and the
+            # other's do not (by at least HEAD_END_SP), that direction holds it; a head of the other reading that stands within SECOND_DY_SP of a
+            # kept head is the displaced head of a second on this stem.
+            sb, spv = vbox[o]["box"], float(vbox[o].get("sp") or 1.0)
+            ends = {}
+            for d in stems[o]["directions"]:
+                ds = [abs(sb[3] - (hb0[k]["box"][1] + hb0[k]["box"][3]) / 2.0) if d == "up" else abs((hb0[k]["box"][1] + hb0[k]["box"][3]) / 2.0 - sb[1])
+                      for k in stems[o]["heads"] if readings[k]["direction"] == d]
+                ends[d] = min(ds) / spv
+            (d1, e1), (d2, e2) = sorted(ends.items(), key=lambda t: t[1])
+            if e2 - e1 >= HEAD_END_SP:
+                keep, by_end = d1, (e1, e2)
+        kept_heads = [k for k in stems[o]["heads"] if keep is not None and readings[k]["direction"] == keep]
         for hid in list(stems[o]["heads"]):
             r = readings[hid]
             if keep is not None and r["direction"] == keep:
+                continue
+            if by_end is not None:
+                spv = float(vbox[o].get("sp") or 1.0)
+                cy = (hb0[hid]["box"][1] + hb0[hid]["box"][3]) / 2.0
+                if any(abs(cy - (hb0[k]["box"][1] + hb0[k]["box"][3]) / 2.0) <= SECOND_DY_SP * spv for k in kept_heads):
+                    r.update(state="second", stroke=o, direction=keep, side="other", margin=round(by_end[1] - by_end[0], 3), how="second_on_partner_stem")
+                    continue
+                r.update(state="none", stroke=None, direction=None, side=None, how="stroke_held_by_its_head_end", margin=round(by_end[1] - by_end[0], 3))
+                stems[o]["heads"].remove(hid)
                 continue
             r.update(state="none" if keep is not None else "two", stroke=None, direction=None, side=None,
                      how="stroke_held_by_inked_heads" if keep is not None else "stroke_read_both_ways", margin=0.0)
@@ -205,6 +335,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
     for o, s in stems.items():
         st = vby[o]
         s["direction"] = next(iter(s["directions"]))
+        s["members"] = members_of.get(o, [o])
         s["box"] = [round(float(v), 1) for v in st["box"]]
         s["tip_y"] = round(float(st["box"][1] if s["direction"] == "up" else st["box"][3]), 1)
         s["directions"] = sorted(s["directions"])
@@ -212,6 +343,8 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
                                   split_kept_by_head_ink=n_kept)
     for r in readings.values():
         census[r["how"]] = census.get(r["how"], 0) + 1
+    for k, n in run_census.items():
+        census["run_" + k] = n
     census["seconds_read"] = round(time.time() - t0, 3)
     return dict(heads=readings, stems=stems, census=census)
 
@@ -306,7 +439,14 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         verticals.append(dict(ord=i, box=(x, y, x + w, y + h), sp=float(getattr(st, "staff_space_local", None) or sp_page)))
     heads = _page_heads_of(one_heads)
     held = held_strokes(log, page_sub, page_map, detections, cells, local)
-    res = read(heads, verticals, held)
+    crossers = []
+    for i, st in enumerate(page_map.strokes):
+        if st.kind == "vertical":
+            continue
+        x, y, w, h = (float(v) for v in st.box)
+        kind = "slash" if held.get(i) == "tremolo" else ("beam" if st.kind == "horizontal" and float(st.thickness_sp) >= 0.4 else str(st.kind))
+        crossers.append(dict(ord=i, box=(x, y, x + w, y + h), kind=kind))
+    res = read(heads, verticals, held, crossers=crossers)
     cell_by_key: Dict[Tuple[int, int, int, int], Any] = {}
     for c in cells:
         key = local.get(c.staff_index)
@@ -331,7 +471,7 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
                 continue
             ck = (csub.to_key(), int(r["stroke"]))
             if ck not in views:
-                views[ck], from_a = _cell_row_for(log, c, csub, vby[int(r["stroke"])]["box"])
+                views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][int(r["stroke"])]["box"])
                 n_a += int(from_a)
                 n_view += int(not from_a)
             log.observe(gsub, Q.PAGE_STEM, views[ck], page_stroke=int(r["stroke"]), direction=r["direction"], side=r["side"],
@@ -339,7 +479,7 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     filed = 0
     for o, s in sorted(res["stems"].items()):
         log.observe(page_sub, Q.CLAIMED_AREA, int(o), reader=READERS.CV_PAGE_STEMS, frame=G.FRAME_PAGE, owner=OWNER, unit=UNIT, standing="READ",
-                    source=SOURCE, how="head_engraving_side", page_strokes=[int(o)], direction=s["direction"], heads=list(s["heads"]),
+                    source=SOURCE, how="head_engraving_side", page_strokes=[int(m) for m in s["members"]], direction=s["direction"], heads=list(s["heads"]),
                     tip_y=s["tip_y"], stem_box=s["box"])
         filed += 1
     cen = dict(res["census"], claims=filed, rows_from_cell_reader=n_a, views_filed=n_view, seconds=round(time.time() - t0, 2))
