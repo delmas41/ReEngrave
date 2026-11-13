@@ -249,3 +249,32 @@ claim takes only the vertical stroke; Sean's slash box includes the stem pixels 
 direction reader says up). Numbers unchanged from r1; right->wrong 0; check 229.
 **Proposed (not built):** `adjudicate_event` / `adjudicate_voices` skip heads owned by another staff; the
 clean-tip rule abstains where the beam-level read may have missed a beam that does not touch the tip.
+
+## 2.306 stems round 3 (2026-11-13) -- other-staff copies out of chord/voice grouping; built OFF (`lane-2.306-stems-beams-page` 00940d973, fix d1f632a80)
+
+STAGED. `rhythm.adjudicate_event` (opposite-stems chord split) and `adjudicate_voices` ignore the stem
+direction of a head whose `Q.GLYPH_OWNER` verdict names another staff -- the same test EXPORT uses to drop
+those copies; only under `OMR_PAGE_STEMS`. The cell join had already stemmed ~13 Litolff / 22 Brahms copies
+that were splitting chords BEFORE r1, so Brahms ends below OFF.
+Controls from replayed real rows: Brahms p4 staff 11 bar 1 (r1 ON split `[14]` / `[2,3,4,12]`; r3 ON = OFF);
+splits between a staff's own heads still happen (Litolff all 6; Brahms 42 OFF / 49 ON incl. the p0 staff 11
+divisi); splits involving a copy: Litolff 13 OFF (52 r1) -> 3, Brahms 22 OFF -> 1.
+
+**File change, pre-retire, OFF vs ON, same gathers (r1 -> r3):**
+Litolff red bars 172->180 -> **172->173**; ties +6 -2; rests +1 -7; slurs +12 -10; flags +13 -25; notes
++41 -29; not written 2089 -> 2062.
+Brahms red bars 143->157 -> **143->129**; ties +14 -17 (was +8 -54); rests +5 -25 (was +62 -8); slurs
++30 -20; flags +27 -14; notes +36 -16; not written 3083 -> 3065.
+Judged right->wrong 0, unwritten->wrong 0 on both. check 229 (Q.PAGE_STEM counted ungathered). Full fast
+tier NOT run this round.
+**Remaining.** Brahms: 1 of r1's 26 new red bars remains, 15 clear; 17 lost ties (10 on notes whose only
+change is the stem-join reason, 5 in bars with no direction change) and 25 rests no longer written are NOT
+traced. Litolff: 10 new red bars remain (9 clear), all from the staff's OWN heads -- the page stem decides a
+direction where the cell readers had "stems disagree" (4) or a beam-mate guess (4).
+**Readers of stem direction / join that do NOT skip other-staff heads** (static grep, unchanged):
+`stem_value.adjudicate_stem_value`, `adjudicate_head_stem`, `unison_two.adjudicate_unison_voices`,
+`rhythm._second_evidence`, `_flag_direction`, `_own_stem_side`, `_direction_from_a_beam_mate`,
+`ownership._long_chord_stem_tip` / `stem_of` / `both_ways`, `consequences._on_one_stem` / `_voice_count`,
+`export._stem_facts_of` / `_settle_divisi_pairs` / `_voice_split`.
+**Clean-tip rule, size only:** "a clean tip means no beam" decides 207 heads on Litolff (2 with beam-like ink
+within 1 sp of the tip) and 927 on Brahms (29 on 24 stems). Not changed -- it changes written values.
