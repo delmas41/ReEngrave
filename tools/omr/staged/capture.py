@@ -515,6 +515,11 @@ UNSCORED: Dict[str, Tuple[str, str, Any]] = {
         "ROADMAP 2.260c M4a: the beam levels the page map's strokes count at each end of a stem stroke (`beam_strokes.tip_reading`); scoreless, a measurement of ink; nothing reads it yet.",
         None),
 
+    "PAGE_STEM": (
+        RAW_INK,
+        "ROADMAP 2.306: the page stroke a head's stem is (the page map's vertical at its engraving side), filed per glyph key with the cell's stem row; scoreless, a measurement of ink.",
+        None),
+
     "PAGE_HEAD": (
         RAW_INK,
         "ROADMAP 2.260e M6a: one row per HEAD of the page (twin notehead boxes folded, ink = the page strokes the box stands on, position from the ink against the head's own bar); scoreless, a measurement of ink; nothing reads it in M6a.",
@@ -964,6 +969,8 @@ READER_RASTER: Dict[str, Optional[Tuple[str, str]]] = {
     "CV_PAGE_STROKES": ("staged/page_strokes.py", "gather_page_strokes"),
     # ROADMAP 2.260c M4a: no raster of its own (the page map's strokes and the cell stem rows).
     "CV_PAGE_BEAMS": None,
+    # ROADMAP 2.306: the page map's vertical strokes and the page heads; a view's tip ink off the cell raster (`gather._observe_stem_tip_ink`).
+    "CV_PAGE_STEMS": ("staged/page_stems.py", "gather_page_stems"),
     # ROADMAP 2.260e M6a: the page map's strokes and the PAGE render read once for every head.
     "CV_PAGE_HEADS": ("staged/page_heads.py", "gather_page_heads"),
     # ROADMAP 2.276: the page map's vertical strokes and the PAGE canvas (staff-erased) read once for every slash crossing a stem.

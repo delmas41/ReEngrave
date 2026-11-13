@@ -359,6 +359,8 @@ STAGE_OF_FILE = {
     "page_strokes.py": "GATHER",
     # ROADMAP 2.260c M4a: files `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP` from its hook line in `gather.gather()`.
     "page_beams.py": "GATHER",
+    # ROADMAP 2.306: files `Q.PAGE_STEM`, the `owner: stem` `Q.CLAIMED_AREA` rows and the stem views from its hook line in `gather.gather()`; `Q.PAGE_STEM` is read by `adjudicate_head_stem` (ADJUDICATE).
+    "page_stems.py": "GATHER",
     # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
     "page_heads.py": "GATHER",
     # ROADMAP 2.276: files the `owner: tremolo` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.

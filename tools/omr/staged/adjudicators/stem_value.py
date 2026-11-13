@@ -342,6 +342,31 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple[Any, Tuple[float, ...]]], box_id: str) -> Optional[Ruling]:
+    """ROADMAP 2.306: `Q.HEAD_STEM` from the page stem reading (`page_stems.reading`), or None (flag off, no reading, an abstention, or a row the cell
+    no longer holds). The value is the cell row the page reader named; every row of the cell that is the same physical stem rides in `stem_rows`."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return None
+    rows = ev.rows(Q.PAGE_STEM)
+    pr = rows[-1] if rows else None
+    if pr is None or pr.value is None:
+        return None
+    mine = [(r, b) for r, b in stems if r.id == pr.value]
+    if not mine:
+        return None
+    row, b = mine[0]
+    same = sorted({r2.id for r2, b2 in stems if r2 is row or _same_stem_row(b, b2)})
+    d = pr.detail or {}
+    frac = _x_frac(b, head)
+    return Ruling(value=row.id, reason=("page_stem_of_a_second" if d.get("how") == "second_on_partner_stem" else "page_stem"),
+                  used=(box_id, pr.id) + tuple(same),
+                  detail={"stem": row.id, "stem_rows": same, "stem_box": [round(v, 2) for v in b],
+                          "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
+                          "page_stroke": d.get("page_stroke"), "direction": d.get("direction"), "page_how": d.get("how"),
+                          "margin": d.get("margin")})
+
+
 @decision(
     quantity=Q.HEAD_STEM,
     scope=Kind.GLYPH,
@@ -349,11 +374,11 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
     wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
-           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION, Q.MARK_GROUP),
+           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION, Q.MARK_GROUP, Q.PAGE_STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
              "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
-             "two_stems", "no_stem", "no_evidence"),
+             "two_stems", "no_stem", "no_evidence", "page_stem", "page_stem_of_a_second"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
                    Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
@@ -382,6 +407,12 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
         b = _xywh(row.value)
         if b is not None:
             stems.append((row, b))
+    # ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF): the page's ONE reading of this head's stem (the page map's vertical at the head's engraving
+    # side, `page_stems`) names the cell row; where the page read one, it is the join. Where the page abstained (no free stroke / two candidates / two
+    # voices) the cell join below still answers until the cell stems retire (the abstention stays on the record, counted).
+    page = _page_stem_join(ev, head, stems, boxes[-1].id)
+    if page is not None:
+        return page
     from ..geometry import stem_touches_head
     touching = [(r, b) for r, b in stems if stem_touches_head(b, head)]
     if not touching:
