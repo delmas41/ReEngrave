@@ -1354,6 +1354,9 @@ def run(log: Log, *, order: Sequence[str] = ORDER,
             # the record carries `Q.MARK_GROUP` rows (`OMR_MARK_GROUPS`).
             from .adjudicators import ownership as _own
             _own.reconcile_group_owners(log)
+            # ROADMAP 2.307 (`OMR_PAGE_OWNED_VIEW`, default OFF): from here on no listing reader is handed a copy of another staff's mark.
+            from . import owned_view as _ov
+            _ov.apply_to_log(log)
         if quantity == Q.ARTICULATION_OWNER:
             # ROADMAP 2.12m (Sean 2026-10-11): one printed mark, two owners
             # -> the loser is dropped (superseded), never relocated.

@@ -3743,7 +3743,7 @@ class Log:
                  "_quantity_version", "_desc_index_cache", "_desc_result_cache",
                  "_desc_index_builds", "_desc_result_builds", "_desc_result_hits",
                  "_closure_cache", "_qic_cache", "_subjects_cache", "_desc_prefix_cache",
-                 "_subject_keys", "_closure_memo_ids")
+                 "_subject_keys", "_closure_memo_ids", "_hidden", "_hidden_ids")
 
     def __init__(self) -> None:
         self._obs: dict[str, Observation] = {}
@@ -3812,6 +3812,9 @@ class Log:
         self._subjects_cache: dict[str, tuple] = {}
         #: every subject key any row is filed under (see `_index`).
         self._subject_keys: set = set()
+        #: ROADMAP 2.307 (`OMR_PAGE_OWNED_VIEW`, default OFF): glyph subject keys hidden from LISTING readers (`owned_view`). Empty = no-op.
+        self._hidden: frozenset = frozenset()
+        self._hidden_ids: frozenset = frozenset()
 
     # ── writing ─────────────────────────────────────────────────────────────
 
@@ -3951,6 +3954,16 @@ class Log:
         permitted, and what makes adjudication order free."""
         self._frozen = True
 
+    def hide_from_listing(self, keys) -> None:
+        """ROADMAP 2.307 (`owned_view`, flag OFF): from now on a listing (descendants scope, `subjects`, `all_rows`, `all_verdicts`) skips
+        rows filed under these subject keys; an EXACT question asked of one of them still answers."""
+        self._hidden = frozenset(keys)
+        self._hidden_ids = frozenset(i for (_q, k), ids in self._by_subject.items() if k in self._hidden for i in ids)
+        self._desc_index_cache.clear()
+        self._desc_result_cache.clear()
+        self._desc_prefix_cache.clear()
+        self._subjects_cache.clear()
+
     @property
     def frozen(self) -> bool:
         return self._frozen
@@ -3993,8 +4006,9 @@ class Log:
         if cached is not None and cached[0] == version:
             return cached[1]
         index: dict[str, tuple[Subject, list[str]]] = {}
+        hidden = self._hidden
         for (q, key), ids in self._by_subject.items():
-            if q == quantity:
+            if q == quantity and key not in hidden:
                 index[key] = (Subject.from_key(key), ids)
         self._desc_index_cache[quantity] = (version, index)
         self._desc_index_builds[quantity] = self._desc_index_builds.get(quantity, 0) + 1
@@ -4086,9 +4100,15 @@ class Log:
         currently concludes. A consumer that wants the live answer per subject
         must go through `verdict()`.
         """
+        if self._hidden:
+            h = self._hidden_ids
+            return tuple(v for v in self._vrd.values() if v.id not in h)
         return tuple(self._vrd.values())
 
     def all_rows(self) -> tuple[Row, ...]:
+        if self._hidden:
+            h = self._hidden_ids
+            return tuple(r for r in (*self._obs.values(), *self._abs.values(), *self._vrd.values()) if r.id not in h)
         return tuple(self._obs.values()) + tuple(self._abs.values()) + \
             tuple(self._vrd.values())
 
@@ -4109,6 +4129,8 @@ class Log:
             return hit
         seen: dict[str, Subject] = {}
         for _q, key in self._by_subject:
+            if key in self._hidden:
+                continue
             sub = Subject.from_key(key)
             # ROADMAP 2.198: a STROKE (`Q.STROKE`, a glyph subject numbered from `STROKE_GLYPH_BASE`) is a measurement, not a mark: no
             # EVALUATE / ADJUDICATE / INFER rule is asked about it (measured: walking 13,441 of them put +11.9 MB of "skipped: cause_absent"

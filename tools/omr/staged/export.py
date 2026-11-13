@@ -326,8 +326,16 @@ class Record:
         for o in self.observations:
             self._o.setdefault((o["quantity"], o["subject"]), []).append(o)
 
+        # ROADMAP 2.307 (`OMR_PAGE_OWNED_VIEW`, default OFF): the SAME rule `owned_view` applies to the Log -- a listing (`observations`,
+        # `obs_of`, `verdicts_of`) skips a copy of another staff's mark; `verdict` / `value` / `obs` asked by name still answer.
+        from . import owned_view as _ov
+        self.hidden_copies = (_ov.copy_keys_of_verdicts(self._v.values()) if _ov.enabled() else set())
+        if self.hidden_copies:
+            self.observations = [o for o in self.observations if o["subject"] not in self.hidden_copies]
         self._by_q: Dict[str, List[Dict[str, Any]]] = {}
         for v in self.verdicts:
+            if self.hidden_copies and v["subject"] in self.hidden_copies:
+                continue
             self._by_q.setdefault(v["quantity"], []).append(v)
 
     def verdict(self, quantity: str, subject: str) -> Optional[Dict[str, Any]]:
