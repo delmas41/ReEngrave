@@ -148,3 +148,34 @@ conflict / heads between / accidentals). The manager's simple account to Sean ("
 attach to") overstated that bucket.
 Not determined: head-shaped ink with no box at the no-note ends (`OMR_PAGE_HEADS` is OFF in these gathers);
 nobody has looked at the 16 new arcs.
+
+## 2.305 round 4 (2026-11-13) -- arcs across a system break; built OFF, `lane-2.305-arc-binding` 2fc7e709b
+
+STAGED. Convention confirmed by Sean 2026-11-13 ("Correct"; page-facts): an arc off the right end of a system
+continues at the left of the same instrument's staff on the next system or page; one arc; same pitch = tie.
+
+**Cause.** No new binder was needed: the page pass already hands its system-edge halves to the 2.271 join,
+which pairs by part (staff identity). Within a page it works. **The system-edge bucket in the earlier count
+was mostly a SAMPLING artifact**: the frozen sample holds single pages, so a half at a page break has no
+partner page in the record (Brahms 14 right + 14 left, Litolff 5 + 7 of 23 + 22 / 7 + 7 halves).
+**The real fault:** the join took "the next run of the part" as the next system with no check that the two
+are next to each other; in a record holding only p0 and p11 it wrote a slur from Brahms p0 to p11.
+**Lesson.** A join across a break must check physical adjacency, not list order; a sampled record makes
+non-adjacent pages look adjacent -- and a count taken on single-page samples cannot size anything that
+crosses a page.
+**Fix.** A join is written only to the same page's next system or the next page's first system; otherwise
+`arc_across_systems_partner_page_not_in_record`, nothing written. Control from the real halves:
+`test_arc_across_pages_2_305.py` (fails on the r3 tree).
+
+**Counts.** 8 pages: Brahms 5 pairs one-to-one, 1 ambiguous, 3 + 3 no partner half (about 3 traced with no
+detector box, about 4 not traced). Extra 2-page gathers: Brahms p0+p1 8 pairs, file holds 5 cross-system arcs
+(4 ties, 1 slur); Litolff p13+p14 none.
+Sean's five Brahms p0 cross-system ties (needs p1): OFF 0 of 5; ON P215, P230, P253 right; **P191 (written as
+a slur) and P192 (no arc) are upstream** -- one head that 2.290 grouped with a box on staff 5 AND a box on
+staff 6 (mg/0/0/477), so the tie went to staff 5's part and staff 6 got none.
+File change OFF vs ON: Litolff [5,8,13,15] ties +18, slurs +7 -39; Brahms [0,11,18,20] ties +8 -2, slurs
++30 -99; Brahms [0,1] ties +18, slurs +22 -70; Litolff [13,14] ties +8, slurs +3 -21. Judged right->wrong 0
+on every record; judged_claims 0; check 217; fast tier flags OFF 10,687 / 0 (flags ON not re-run).
+**Open.** Unwitnessed edge halves are never offered to the join (~3); stacked halves abstain (1); clef change
+at the break untested; the P191/P192 head shared by two staves. Tiles (9: every cross-system arc written):
+out/print-from-worktrees/2.305-r4 -- not yet sent.
