@@ -199,14 +199,15 @@ class TestThePlan(unittest.TestCase):
             dict(row="d", status="abstained", why="system_edge", edge="right", edge_head="h", witnesses=["box/5"]),
             dict(row="e", status="not_witnessed", witnesses=[])]}
 
-    def test_a_box_all_of_whose_runs_are_written_is_replaced(self):
+    def test_every_box_of_a_run_the_pass_decided_on_is_replaced(self):
+        # ROADMAP 2.305 r3 (ink is read and claimed once; Sean's 2.305 r2 tile 10): written OR abstained, the pass decided on the box's ink -- the fallback writes
+        # nothing for it. (Was 2.274: only boxes all of whose runs were written; a box shared with an abstained run kept its old arc.)
         p = PB.plan_of([self._runs()])
-        self.assertEqual(p["replaced"], {"box/1", "box/2"})
+        self.assertEqual(p["replaced"], {"box/1", "box/2", "box/3", "box/4", "box/5"})
 
-    def test_a_box_shared_with_an_unwritten_run_keeps_its_old_arc(self):
+    def test_no_box_is_kept_for_the_fallback(self):
         p = PB.plan_of([self._runs()])
-        self.assertEqual(p["shared_kept"], {"box/3"})
-        self.assertNotIn("box/3", p["replaced"])
+        self.assertEqual(p["shared_kept"], set())
 
     def test_edges_and_counts(self):
         p = PB.plan_of([self._runs()])

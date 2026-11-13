@@ -374,8 +374,11 @@ def plan_of(details: Iterable[Dict[str, Any]]) -> Dict[str, Any]:
     replaced: Set[str] = set()
     shared_kept: Set[str] = set()
 
-    def settled(r):          # ROADMAP 2.305 r2: a run whose kind is UNREAD (`kind_unread`) settles its boxes too -- they write nothing (rule 8)
-        return r.get("status") == WRITTEN or bool(r.get("kind_unread"))
+    def settled(r):
+        # ROADMAP 2.305 r3 (ink is read and claimed ONCE; Sean's r2 tile 10, Litolff p5: boxes 5/0/5/3/0 and 4/11 witnessed both pieces of a cut run -- one written as a
+        # tie, one abstained -- so they were "shared" and their old-path slur was written over the tie, one note too late): a box whose ink the page pass has
+        # bound OR abstained on writes nothing through the fallback. Every run with a witness was decided here (written / abstained / kind unread).
+        return r.get("status") in (WRITTEN, ABSTAINED)
 
     for box, rs in box_runs.items():
         if any(settled(r) for r in rs):

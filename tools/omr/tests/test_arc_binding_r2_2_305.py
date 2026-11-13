@@ -52,6 +52,16 @@ class TestTwoTiesMeetingAtAHead(unittest.TestCase):
         self.assertEqual(b["right"].get("head"), "glyph/5/0/5/4/3")
 
 
+class TestInkIsClaimedOnce(unittest.TestCase):
+    def test_sean_r2_tile10_a_box_of_a_cut_run_writes_nothing_through_the_fallback(self):
+        # round 3: boxes 5/0/5/3/0 and 4/11 witness both pieces of run 76 (one written as a tie, one abstained); the round-2 plan kept them "shared" and their
+        # old-path slur (3/1 -> 4/9) was written over the tie. Every box of a run the pass decided on is replaced.
+        plan = PB.plan_of([{"runs": DATA["litolff_p5_run76_entries_sean_r2_tile10"]["runs"]}])
+        for box in ("glyph/5/0/5/2/2", "glyph/5/0/5/3/0", "glyph/5/0/5/4/11"):
+            self.assertIn(box, plan["replaced"])
+        self.assertFalse(plan["shared_kept"])
+
+
 class TestABoxCutAtItsCellEdge(unittest.TestCase):
     def test_the_box_witnesses_the_run_that_is_its_ink(self):
         c = DATA["brahms_p11_box_3_22_sean_tile5"]

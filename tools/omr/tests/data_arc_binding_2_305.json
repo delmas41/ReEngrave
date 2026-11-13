@@ -1641,5 +1641,89 @@
 }
 ],
 "why": "Sean 2.305 r1 tile 5: \"no arc between those two notes. There is one arc going from the second note into the next measure\""
+},
+"litolff_p5_run76_entries_sean_r2_tile10": {
+"why": "Sean 2.305 r2 tile 10: 'tie; ends one note too late' -- the fallback slur of boxes 5/0/5/3/0 and 4/11 over the page pass's tie",
+"runs": [
+{
+"ordinal": 76,
+"row": "obs:030384",
+"status": "abstained",
+"witnesses": [
+"glyph/5/0/5/2/2",
+"glyph/5/0/5/3/0",
+"glyph/5/0/5/4/11"
+],
+"piece": 0,
+"x_range": [
+850.0,
+1009.0
+],
+"home_from": "witness_owner",
+"home": "staff/5/0/5",
+"left": {
+"head": "glyph/5/0/5/2/3",
+"column": 3,
+"distance_spaces": 1.578,
+"via_closest": true,
+"out_by_spaces": 0.74
+},
+"right": {
+"head": "glyph/5/0/5/3/1",
+"column": 1,
+"by_height": true,
+"distance_spaces": 0.809,
+"via_closest": true,
+"out_by_spaces": -0.06
+},
+"why": "step_conflict",
+"relation": "conflict"
+},
+{
+"ordinal": 76,
+"row": "obs:030384",
+"status": "written",
+"witnesses": [
+"glyph/5/0/5/2/2",
+"glyph/5/0/5/3/0",
+"glyph/5/0/5/4/11"
+],
+"piece": 1,
+"x_range": [
+1009.0,
+1156.0
+],
+"home_from": "witness_owner",
+"home": "staff/5/0/5",
+"left": {
+"head": "glyph/5/0/5/3/1",
+"column": 1,
+"by_height": true,
+"distance_spaces": 0.809,
+"via_closest": true,
+"out_by_spaces": 0.06
+},
+"right": {
+"head": "glyph/5/0/5/4/3",
+"column": 2,
+"by_height": true,
+"distance_spaces": 1.427,
+"via_closest": true,
+"lands_on": true,
+"was": "glyph/5/0/5/4/2",
+"out_by_spaces": -1.38,
+"outside_window": true
+},
+"kind": "tie",
+"start": "glyph/5/0/5/3/1",
+"stop": "glyph/5/0/5/4/3",
+"relation": "same",
+"crosses_barline": true,
+"rule": "page_binding_same_pitch_adjacent",
+"closest": [
+"right"
+]
+}
+]
 }
 }
