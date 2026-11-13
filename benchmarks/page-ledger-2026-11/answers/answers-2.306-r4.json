@@ -1,0 +1,331 @@
+{
+ "lane": "2.306 r4 stems, file-change tiles (ROADMAP 2.306)",
+ "date": "2026-11-13",
+ "question": "Each orange box is on one notehead. Is it a note, and what is its value?",
+ "note": "Scored by the manager against the key: all 12 are notes. With the stem reader ON: 5 changes right (gains 2, 4, 10; values 6, 9), 1 wrong (5: an eighth made a quarter), 4 real notes LOST (3, 7, 11, 12 -- every loss tiled was a note OFF had), 2 voice-only (1, 8: value unchanged). Tiles 1 and 12 are dotted quarters; the key carries no dots.",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/0/1/1/1",
+   "change": "voice",
+   "off_wrote": [
+    [
+     "C-16",
+     "quarter",
+     "v2"
+    ]
+   ],
+   "on_wrote": [
+    [
+     "C-16",
+     "quarter",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    1246.9,
+    851.7,
+    1285.7,
+    885.6
+   ],
+   "sean": "dotted quarter",
+   "verdict": "voice only; both arms write a quarter (dot not in the key)"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 16,
+   "glyph": "glyph/16/0/0/0/24",
+   "change": "gained",
+   "off_wrote": [],
+   "on_wrote": [
+    [
+     "G6",
+     "half",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    511.1,
+    328.6,
+    535.2,
+    350.2
+   ],
+   "sean": "half",
+   "verdict": "gain right"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/2/5/1",
+   "change": "lost",
+   "off_wrote": [
+    [
+     "C6",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "on_wrote": [],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    1205.7,
+    2405.5,
+    1230.7,
+    2426.9
+   ],
+   "sean": "eighth",
+   "verdict": "LOST a right eighth"
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "page": 4,
+   "glyph": "glyph/4/1/2/3/18",
+   "change": "gained",
+   "off_wrote": [],
+   "on_wrote": [
+    [
+     "F14",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    2736.3,
+    4640.5,
+    2770.5,
+    4671.0
+   ],
+   "sean": "eighth",
+   "verdict": "gain right"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/2/4/11",
+   "change": "value",
+   "off_wrote": [
+    [
+     "C5",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "on_wrote": [
+    [
+     "C5",
+     "quarter",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": true,
+   "box_page_px": [
+    1054.4,
+    2464.1,
+    1086.0,
+    2487.1
+   ],
+   "sean": "eighth",
+   "verdict": "WRONG: eighth made a quarter"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 8,
+   "glyph": "glyph/8/1/1/13/6",
+   "change": "value",
+   "off_wrote": [
+    [
+     "A-15",
+     "eighth",
+     "v1"
+    ],
+    [
+     "A-15",
+     "eighth",
+     "v2"
+    ]
+   ],
+   "on_wrote": [
+    [
+     "A-15",
+     "eighth",
+     "v2"
+    ]
+   ],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    1794.2,
+    2054.4,
+    1819.2,
+    2075.6
+   ],
+   "sean": "eighth",
+   "verdict": "right: one eighth where OFF wrote two"
+  },
+  {
+   "tile": 7,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/0/1/3/3",
+   "change": "lost",
+   "off_wrote": [
+    [
+     "F5",
+     "quarter",
+     "v1"
+    ]
+   ],
+   "on_wrote": [],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    2177.8,
+    902.7,
+    2217.7,
+    937.2
+   ],
+   "sean": "quarter",
+   "verdict": "LOST a right quarter"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/2/13/12",
+   "change": "voice",
+   "off_wrote": [
+    [
+     "C5",
+     "eighth",
+     "v2"
+    ]
+   ],
+   "on_wrote": [
+    [
+     "C5",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    2404.7,
+    2467.5,
+    2426.3,
+    2484.9
+   ],
+   "sean": "eighth",
+   "verdict": "voice only; value right in both"
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "page": 4,
+   "glyph": "glyph/4/1/12/8/7",
+   "change": "value",
+   "off_wrote": [
+    [
+     "C2",
+     "quarter",
+     "v1"
+    ]
+   ],
+   "on_wrote": [
+    [
+     "C2",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    5003.1,
+    6936.4,
+    5040.1,
+    6969.7
+   ],
+   "sean": "eighth",
+   "verdict": "right: quarter made an eighth"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/8/8/10",
+   "change": "gained",
+   "off_wrote": [],
+   "on_wrote": [
+    [
+     "D5",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "in_own_head_direction_red_bar": true,
+   "box_page_px": [
+    1641.1,
+    3265.0,
+    1663.2,
+    3280.0
+   ],
+   "sean": "eighth",
+   "verdict": "gain right"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "page": 9,
+   "glyph": "glyph/9/0/2/0/6",
+   "change": "lost",
+   "off_wrote": [
+    [
+     "B-14",
+     "eighth",
+     "v1"
+    ]
+   ],
+   "on_wrote": [],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    576.7,
+    715.3,
+    602.6,
+    736.9
+   ],
+   "sean": "eighth",
+   "verdict": "LOST a right eighth"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/1/8/7/6",
+   "change": "lost",
+   "off_wrote": [
+    [
+     "B4",
+     "quarter",
+     "v1"
+    ]
+   ],
+   "on_wrote": [],
+   "in_own_head_direction_red_bar": false,
+   "box_page_px": [
+    4449.6,
+    6013.8,
+    4490.3,
+    6049.2
+   ],
+   "sean": "dotted quarter",
+   "verdict": "LOST a real note (dotted quarter; OFF wrote quarter)"
+  }
+ ]
+}
