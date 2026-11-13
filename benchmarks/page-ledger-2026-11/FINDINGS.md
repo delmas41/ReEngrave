@@ -221,3 +221,31 @@ none); 2.300 tile 2 (three chords on three stems; without the displaced-second r
 NOT done: 2.150 tile 11 / 2.150b tile 20 (Brahms p15 not gathered), the four 2.300 tiles on Brahms p19.
 **Prior work.** 2.204 parked (reader-disagreement abstentions cost 2-5.5% of notes); 2.280 r3 (most no-stem
 heads are a second's partner); 2.260c M4a (page readers file other marks' ink until claims name strokes).
+
+## 2.306 stems round 2 (2026-11-13) -- cause of the r1 losses; no code changed (`lane-2.306-stems-beams-page` 59c64887d)
+
+STAGED. **The page stems are not what goes wrong.** Two downstream readers relied on the old cell join
+leaving stems unread or wrongly joined.
+- **Twins in the wrong staff's chords (Brahms, top cause).** The page hands a head's one stem reading to every
+  cell that shows the head, including the copy in the neighbouring staff's padded cell (a "twin", owned by
+  another staff). The old join almost never stemmed those copies. ON, 533 twins (Brahms) / 454 (Litolff) gain
+  a direction, and `adjudicate_event` (rhythm.py opposite-stems chord split) and `adjudicate_voices` group
+  every notehead box in the cell, twins included: a twin splits a chord, the bar gets a second voice and stops
+  adding up. Brahms: all 26 newly red bars hold such a twin (12 clear, net +14); 35 of the 54 lost ties and 57
+  of the 60 gained rests are in those bars (the rests are real rest boxes now written in the voice the split
+  made; none is filled in); 47 of the 54 tied notes are still written.
+- **A wrong join hid a weak beam read (Litolff).** The old box-overlap join sometimes gave a head its
+  neighbour's stem and the beam was read off that neighbour. On its own stem the tip reads 0 beam levels
+  (`gather_beam_stem_levels`) where the beam starts a hair right of the tip, and `stem_tip_reads_no_beam`
+  decides a quarter (real case `glyph/9/0/2/0/4`). Litolff: 14 new red bars (6 clear, net +8): 9 event/voice
+  splits (5 twins, 4 own heads), 5 value changes; of 25 lost flags 16 are eighths now written beamed (same
+  value), 6 eighth -> quarter, 3 notes gone.
+**Process lesson.** A downstream reader that relied on "unknown" or on a wrong join breaks the moment the join
+is right: list what READS a quantity before making it more correct.
+Tile 3 (Litolff p10): not clef/key ink -- a free down stem under heads fused with their ledger lines; the
+quarter became a half through the shared-stem value (Sean's tile decides). Tremolo contradictions: the stem
+claim takes only the vertical stroke; Sean's slash box includes the stem pixels it crosses (31-34%, over the
+30% line); main already has four of the same kind. Unresolved: `glyph/4/1/2/5/3` (page says down, the
+direction reader says up). Numbers unchanged from r1; right->wrong 0; check 229.
+**Proposed (not built):** `adjudicate_event` / `adjudicate_voices` skip heads owned by another staff; the
+clean-tip rule abstains where the beam-level read may have missed a beam that does not touch the tip.
