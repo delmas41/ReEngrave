@@ -4843,6 +4843,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
+           Q.PAGE_STEM,          # ROADMAP 2.306 (flag `OMR_PAGE_STEMS`): the head's stem read once on the page
            # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
@@ -5008,6 +5009,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # it touches) needs this head's attached stems before any filtering,
     # not only after 2.18's side test. Reused below where 2.18/2.18b read it.
     own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    _page_own = page_own_stems(ev, stems)        # ROADMAP 2.306: the page's one reading of this head's stem, where it read one
+    if _page_own is not None:
+        own_stems = _page_own
     # ROADMAP 2.204 (flag `OMR_STEMS_FROM_STROKES`): the head's stem from the stroke map, set against the finder's. OFF: `_stems_on`, as above.
     stem_info = None
     if stems_from_strokes_enabled():
@@ -9711,6 +9715,24 @@ def _direction_from_a_beam_mate(ev, cell, head_box, stems):
              "unanimous": True})
 
 
+def page_own_stems(ev: Evidence, stems):
+    """ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF): this head's own stem rows as the page read them -- the `Q.STEM` row the head's `Q.PAGE_STEM`
+    names (the page map's vertical at its engraving side) and every row of the cell that is the same physical stem -- or None (flag off, no page
+    reading, or a page abstention: the cell's own box-overlap join then stands, until the cell stems retire)."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return None
+    rows = ev.rows(Q.PAGE_STEM)
+    if not rows or rows[-1].value is None:
+        return None
+    named = [s for s in stems if s.id == rows[-1].value]
+    if not named:
+        return None
+    from .stem_value import _same_stem_row, _xywh as _sv_xywh
+    b = _sv_xywh(named[0].value)
+    return [s for s in stems if s is named[0] or (b is not None and _sv_xywh(s.value) is not None and _same_stem_row(b, _sv_xywh(s.value)))]
+
+
 def _stems_on(head_box, stems):
     """Every stem whose box overlaps this notehead's.
 
@@ -9732,7 +9754,7 @@ def _stems_on(head_box, stems):
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER, Q.PAGE_STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
              "no_evidence", "stem_readers_disagree"),
@@ -9777,6 +9799,9 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
     mine = _stems_on(head_box, stems)
+    _page_own = page_own_stems(ev, stems)        # ROADMAP 2.306: the page's one reading of this head's stem, where it read one
+    if _page_own is not None:
+        mine = _page_own
     stem_info = None
     if stems_from_strokes_enabled():
         # ROADMAP 2.204: the head's stem from the stroke map set against the finder's; a disagreement the strokes cannot settle abstains.
