@@ -63,3 +63,15 @@ he called not-a-note cells box 1, row 0, band 1. Time per page: cells 16-27 s, r
 Who is right in the row-vs-cells disagreements; T2 used fresh-cut cells without box splitting or rescues;
 replays ran on the 2.305 gathers, not the standard frozen sample; full fast tier not run
 (`test_staged_export.py` fails 3, the same 3 as origin/main).
+
+## Round 1 tiles (2026-11-13): Sean on 12 row-vs-cells disagreements
+
+answers/answers-2.307-r1.json. A notehead in 4 of 12. Only-cells boxes: 2 of 6 real (1 rest, 1 part of a
+sharp, 2 nothing). Only-row boxes: 2 of 6 real (2 rests, 1 sharp, 1 nothing).
+- **Both ways draw a filled notehead on rests and on sharps** (5 of 12). That confusion is the detector's and
+  does not depend on the view.
+- The two pools are unequal: 758 places only cells box, 105 only the row boxes (7 pages). If a third of each
+  pool is real (six tiles a side -- a rough guide, not a rate), cells find some 250 real heads the row misses
+  and the row some 35 that cells miss, while cells also draw some 500 boxes on nothing. So the row is NOT
+  shown to reach as far as cells; "reach before accuracy" (CLAUDE rule 5) says it cannot replace them on this
+  evidence. Neither falsified nor confirmed: the sample is too small to rank them.
