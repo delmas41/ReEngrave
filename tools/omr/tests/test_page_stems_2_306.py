@@ -103,3 +103,30 @@ def test_abstain_with_candidates_and_margin():
     assert r["state"] == "two_voices" and r["stroke"] is None and len(r["candidates"]) == 2 and r["margin"] is not None
     r0 = PS.read([h], [])["heads"]["h"]
     assert r0["state"] == "none" and r0["how"] == "no_stroke"
+
+
+class _Ev:
+    """The two calls `page_own_stems` makes, on a hand-built reading (no record)."""
+
+    def __init__(self, rows=(), refusals=()):
+        self._rows, self._ref = tuple(rows), tuple(refusals)
+
+    def rows(self, q, **kw):
+        return self._rows
+
+    def refusals(self, q, **kw):
+        return self._ref
+
+
+def test_retire_page_abstention_is_no_stem_and_flag_off_keeps_the_cell_join(monkeypatch):
+    from types import SimpleNamespace as NS
+    from tools.omr.staged.adjudicators import rhythm as R
+    a = NS(id="obs:1", value=[10.0, 0.0, 3.0, 80.0])
+    b = NS(id="obs:2", value=[40.0, 0.0, 3.0, 80.0])
+    monkeypatch.setenv(PS.ENV, "1")
+    assert R.page_own_stems(_Ev(rows=[NS(value="obs:2", detail={})]), [a, b]) == [b]
+    assert R.page_own_stems(_Ev(refusals=[NS(detail={"how": "no_stroke"})]), [a, b]) == []          # retired: the cell join no longer answers
+    assert R.page_own_stems(_Ev(refusals=[NS(detail={"how": "two_voices"})]), [a, b]) is None      # the unison rule keeps the cell join
+    assert R.page_own_stems(_Ev(), [a, b]) is None                                                  # no page reading: the cell join stands
+    monkeypatch.setenv(PS.ENV, "0")
+    assert R.page_own_stems(_Ev(rows=[NS(value="obs:2", detail={})]), [a, b]) is None

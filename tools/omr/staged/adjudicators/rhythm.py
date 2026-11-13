@@ -9717,13 +9717,18 @@ def _direction_from_a_beam_mate(ev, cell, head_box, stems):
 
 def page_own_stems(ev: Evidence, stems):
     """ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF): this head's own stem rows as the page read them -- the `Q.STEM` row the head's `Q.PAGE_STEM`
-    names (the page map's vertical at its engraving side) and every row of the cell that is the same physical stem -- or None (flag off, no page
-    reading, or a page abstention: the cell's own box-overlap join then stands, until the cell stems retire)."""
+    names (the page map's vertical at its engraving side) and every row of the cell that is the same physical stem; `[]` where the page abstained (the
+    cell join is retired: no stem the page cannot name); None (flag off, no page reading: the cell's own box-overlap join then stands)."""
     from .. import page_stems as _PS
     if not _PS.enabled():
         return None
     rows = ev.rows(Q.PAGE_STEM)
     if not rows or rows[-1].value is None:
+        # ROADMAP 2.306 RETIRE: where the page read this head and named no stem, the cell's box-overlap join no longer answers -- the head has no
+        # stem it can stand on (a unison of two voices, and a head the page could not hand to a cell, keep the cell join)
+        ab = ev.refusals(Q.PAGE_STEM)
+        if ab and str((ab[-1].detail or {}).get("how") or "") != "two_voices" and (ab[-1].detail or {}).get("note") != "no_cell":
+            return []
         return None
     named = [s for s in stems if s.id == rows[-1].value]
     if not named:

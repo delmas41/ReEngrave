@@ -367,6 +367,27 @@ def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple
                           "margin": d.get("margin")})
 
 
+def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:
+    """ROADMAP 2.306 RETIRE: with `OMR_PAGE_STEMS` on, where the page read this head and could not name one stem, the cell join no longer answers in
+    its place -- the head's stem is the page's question, asked once. `no_stroke` -> abstain `page_no_stem`; two candidates / a stroke read both ways
+    -> abstain `page_stem_ambiguous` with the candidates and margin. A unison of two voices (`two_voices`, page-facts: a head with a stem each way is two
+    notes) is left to the unison rule below. None: flag off, no page reading (no page map / no page head), or a page join."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return None
+    ab = ev.refusals(Q.PAGE_STEM)
+    if not ab:
+        return None
+    d = ab[-1].detail or {}
+    how = str(d.get("how") or "")
+    if how == "two_voices" or d.get("note") == "no_cell":
+        return None
+    detail = {"page_how": how, "candidates": d.get("candidates"), "held": d.get("held"), "margin": d.get("margin")}
+    if how == "no_stroke" or how == "stroke_held_by_inked_heads":
+        return Ruling.abstain("page_no_stem", used=(box_id,), **detail)
+    return Ruling.abstain("page_stem_ambiguous", used=(box_id,), **detail)
+
+
 @decision(
     quantity=Q.HEAD_STEM,
     scope=Kind.GLYPH,
@@ -378,7 +399,8 @@ def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
              "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
-             "two_stems", "no_stem", "no_evidence", "page_stem", "page_stem_of_a_second"),
+             "two_stems", "no_stem", "no_evidence", "page_stem", "page_stem_of_a_second",
+             "page_no_stem", "page_stem_ambiguous"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
                    Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
@@ -413,6 +435,9 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
     page = _page_stem_join(ev, head, stems, boxes[-1].id)
     if page is not None:
         return page
+    retired = _page_stem_abstained(ev, boxes[-1].id)
+    if retired is not None:
+        return retired
     from ..geometry import stem_touches_head
     touching = [(r, b) for r, b in stems if stem_touches_head(b, head)]
     if not touching:
