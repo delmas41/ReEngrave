@@ -217,6 +217,17 @@ def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], 
     of the end: a trace row over the head's x-span whose near side (bottom of a cap's stroke, top of a cup's) stands 0 .. `LAND_GAP_SPACES` from the head's
     near edge (top for a cap, bottom for a cup). The landed head nearest the end wins; None if there is none."""
     best = None
+    # the end already sits OVER the closest head (a cap's end at or above its top, a cup's at or below its bottom, within `LAND_GAP_SPACES`): that head IS its
+    # note and nothing is looked for (Brahms p0 run 21, Sean's P247: a long slur whose ink passes low over the 16th before its last note). Only an end that
+    # stands beside or under the closest head -- not over it -- may have landed earlier (Litolff p5 run 76: the end 1.3 sp below the chord head's top).
+    ey = None
+    for t in trace:
+        if ey is None or abs(float(t[0]) - ex) < abs(ey[0] - ex):
+            ey = (float(t[0]), float(t[1]), float(t[2]))
+    if ey is not None:
+        over = (hd["cy"] - hd["h"] / 2.0) - ey[2] if side == "above" else ey[1] - (hd["cy"] + hd["h"] / 2.0)
+        if over >= -LAND_GAP_SPACES * sp:
+            return None
     xs = [float(t[0]) for t in trace]
     width = (max(xs) - min(xs)) if xs else 0.0
     for h in heads:
