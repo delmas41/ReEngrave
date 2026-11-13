@@ -312,3 +312,25 @@ instead of taking the page's -- a hand-off bug, not fixed. Litolff flags: 16 eig
 bar's heads narrowed as "hollow head with a flag" / "beam doubt"; 3 notes gone); 23 rests no longer written
 are second-voice rests of splits the r3 fix removed.
 Tiles (12, on what the FILE changes): out/print/2.306-r4 -- not yet sent.
+
+## 2.306 stems round 5 (2026-11-13) -- the page's direction is THE direction; red bars fall on both plates (`lane-2.306-stems-beams-page` 8a6b815f3, fix ea7337de0)
+
+STAGED, flag OFF. **Cause.** The stem-direction reader worked the direction out a second time from cell rows
+where the page had already read it; for three Litolff heads (`6/1/9/10/2`, `6/1/9/10/7`, `10/1/7/3/2`) the
+second answer was the opposite. Where the page read a head's stem the direction is now the page's (reason
+`page_stem`). **Lesson.** One answer, read once: handing a reading to a reader is not enough if that reader
+still re-derives what the reading already says. Heads whose written direction changed r4 -> r5: Litolff 76,
+Brahms 23.
+**Gate, pre-retire, OFF vs ON (replays of the r4 gathers):** Litolff red bars **172 -> 167** (r4 176); notes
++50 -45, flags +22 -29, ties +6 -2, rests +1 -6, slurs +17 -7, not written 2156 -> 2136. Brahms red bars
+**143 -> 129**; notes +41 -14, flags +27 -14, ties +18 -13, rests +5 -25, slurs +31 -19, not written
+3087 -> 3062. Judged right->wrong 0, unwritten->wrong 0 on both. **Fast tier with `OMR_PAGE_STEMS` ON, real
+worktree at the branch tip (retire commit active): 10,616 passed, 0 failed.** check not re-run (229 in r4).
+Litolff: 9 new red bars remain, 14 clear -- 7 are own heads taking the page direction where cell rows read
+another or "stems disagree" (`2/0/3/5`, `2/0/8/0`, `4/0/8/11`, `4/1/2/4`, `4/1/8/8`, `6/1/4/8`, `8/0/1/2`),
+1 a head gaining a stem, 1 a stem newly touching a head. Unjudged.
+**Tile 6's slash (report only).** The detector boxed the right half of the tremolo slash as
+`noteheadBlackOnLine` (`glyph/16/0/9/6/0`); it is written as a phantom quarter note; the 2.290 page-head
+reader claims that half's ink (stroke 1756) as a head, the left half (1727) has no owner, the tremolo reader
+claims neither. That fake head is why the half note's stem reads both ways and abstains.
+The r4 tiles stand unchanged (out/print/2.306-r4), not yet sent.
