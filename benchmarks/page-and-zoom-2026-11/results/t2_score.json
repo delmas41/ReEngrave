@@ -1,0 +1,655 @@
+{
+ "pages": {
+  "brahms/0": {
+   "cells": {
+    "clef": 17,
+    "head_filled": 416,
+    "dot": 134,
+    "accidental": 68,
+    "flag": 43,
+    "head_whole": 19,
+    "head_hollow": 42,
+    "rest": 20
+   },
+   "row": {
+    "clef": 19,
+    "accidental": 49,
+    "head_filled": 394,
+    "flag": 46,
+    "dot": 135,
+    "head_hollow": 45,
+    "rest": 16
+   },
+   "band": {
+    "clef": 15,
+    "head_filled": 447,
+    "accidental": 72,
+    "dot": 142,
+    "head_whole": 24,
+    "flag": 52,
+    "rest": 23,
+    "head_hollow": 44
+   }
+  },
+  "brahms/11": {
+   "cells": {
+    "clef": 57,
+    "head_filled": 668,
+    "flag": 46,
+    "accidental": 140,
+    "rest": 233,
+    "dot": 199,
+    "head_whole": 8,
+    "head_hollow": 65
+   },
+   "row": {
+    "clef": 54,
+    "head_filled": 424,
+    "rest": 201,
+    "accidental": 184,
+    "dot": 224,
+    "flag": 57,
+    "head_hollow": 85,
+    "head_whole": 14
+   },
+   "band": {
+    "clef": 47,
+    "head_filled": 744,
+    "flag": 54,
+    "accidental": 170,
+    "rest": 339,
+    "dot": 228,
+    "head_hollow": 79,
+    "head_whole": 20
+   }
+  },
+  "brahms/18": {
+   "cells": {
+    "clef": 51,
+    "head_filled": 923,
+    "dot": 258,
+    "accidental": 296,
+    "rest": 243,
+    "flag": 95,
+    "head_whole": 11,
+    "head_hollow": 28
+   },
+   "row": {
+    "clef": 59,
+    "head_filled": 854,
+    "accidental": 280,
+    "rest": 202,
+    "dot": 256,
+    "flag": 107,
+    "head_whole": 7,
+    "head_hollow": 45
+   },
+   "band": {
+    "clef": 46,
+    "accidental": 336,
+    "head_filled": 989,
+    "dot": 294,
+    "rest": 276,
+    "flag": 102,
+    "head_whole": 21,
+    "head_hollow": 40
+   }
+  },
+  "brahms/20": {
+   "cells": {
+    "clef": 33,
+    "head_filled": 421,
+    "rest": 417,
+    "accidental": 180,
+    "flag": 218,
+    "dot": 88,
+    "head_hollow": 32,
+    "head_whole": 3
+   },
+   "row": {
+    "clef": 31,
+    "accidental": 166,
+    "head_filled": 394,
+    "rest": 433,
+    "flag": 264,
+    "dot": 80,
+    "head_hollow": 34,
+    "head_whole": 1
+   },
+   "band": {
+    "clef": 33,
+    "rest": 483,
+    "head_filled": 487,
+    "accidental": 197,
+    "flag": 251,
+    "dot": 94,
+    "head_hollow": 35,
+    "head_whole": 7
+   }
+  },
+  "litolff/13": {
+   "cells": {
+    "clef": 41,
+    "accidental": 127,
+    "head_filled": 680,
+    "flag": 24,
+    "rest": 157,
+    "head_hollow": 191,
+    "dot": 4,
+    "head_whole": 6
+   },
+   "row": {
+    "clef": 38,
+    "accidental": 126,
+    "head_filled": 525,
+    "flag": 29,
+    "head_hollow": 268,
+    "rest": 136,
+    "head_whole": 24,
+    "dot": 2
+   },
+   "band": {
+    "clef": 94,
+    "flag": 31,
+    "head_filled": 839,
+    "accidental": 182,
+    "head_whole": 10,
+    "rest": 144,
+    "head_hollow": 203,
+    "dot": 8
+   }
+  },
+  "litolff/15": {
+   "cells": {
+    "clef": 24,
+    "accidental": 107,
+    "head_filled": 831,
+    "head_hollow": 65,
+    "rest": 197,
+    "dot": 15,
+    "head_whole": 2,
+    "flag": 4
+   },
+   "row": {
+    "clef": 31,
+    "rest": 159,
+    "head_filled": 733,
+    "accidental": 98,
+    "head_hollow": 91,
+    "head_whole": 32,
+    "dot": 9,
+    "flag": 5
+   },
+   "band": {
+    "clef": 65,
+    "accidental": 167,
+    "head_filled": 1007,
+    "head_hollow": 79,
+    "rest": 267,
+    "flag": 24,
+    "head_whole": 19,
+    "dot": 23
+   }
+  },
+  "litolff/5": {
+   "cells": {
+    "accidental": 33,
+    "head_filled": 414,
+    "dot": 6,
+    "flag": 33,
+    "rest": 112,
+    "head_hollow": 60,
+    "clef": 15,
+    "head_whole": 1
+   },
+   "row": {
+    "head_filled": 384,
+    "rest": 95,
+    "clef": 19,
+    "flag": 28,
+    "head_hollow": 127,
+    "accidental": 55,
+    "head_whole": 14,
+    "dot": 3
+   },
+   "band": {
+    "clef": 42,
+    "head_filled": 562,
+    "rest": 128,
+    "flag": 48,
+    "accidental": 47,
+    "dot": 10,
+    "head_hollow": 56,
+    "head_whole": 5
+   }
+  },
+  "litolff/8": {
+   "cells": {
+    "clef": 31,
+    "rest": 181,
+    "head_filled": 357,
+    "accidental": 124,
+    "head_hollow": 189,
+    "head_whole": 2,
+    "dot": 6,
+    "flag": 42
+   },
+   "row": {
+    "clef": 24,
+    "accidental": 158,
+    "rest": 161,
+    "head_hollow": 262,
+    "head_whole": 14,
+    "head_filled": 286,
+    "dot": 1,
+    "flag": 53
+   },
+   "band": {
+    "clef": 59,
+    "accidental": 233,
+    "rest": 233,
+    "head_filled": 521,
+    "head_hollow": 231,
+    "dot": 14,
+    "head_whole": 7,
+    "flag": 61
+   }
+  }
+ },
+ "timing": {
+  "brahms/0": {
+   "cells": 100.9,
+   "row": 4.8,
+   "band": 16.7,
+   "prepare": 5.9,
+   "most_boxes_in_a_call": {
+    "cells": 38,
+    "row": 230,
+    "band": 49
+   }
+  },
+  "brahms/11": {
+   "cells": 21.1,
+   "row": 10.7,
+   "band": 33.3,
+   "prepare": 10.4,
+   "most_boxes_in_a_call": {
+    "cells": 37,
+    "row": 158,
+    "band": 40
+   }
+  },
+  "brahms/18": {
+   "cells": 18.0,
+   "row": 10.5,
+   "band": 30.3,
+   "prepare": 8.9,
+   "most_boxes_in_a_call": {
+    "cells": 49,
+    "row": 229,
+    "band": 48
+   }
+  },
+  "brahms/20": {
+   "cells": 17.8,
+   "row": 9.6,
+   "band": 25.9,
+   "prepare": 9.3,
+   "most_boxes_in_a_call": {
+    "cells": 37,
+    "row": 186,
+    "band": 31
+   }
+  },
+  "litolff/13": {
+   "cells": 20.0,
+   "row": 7.3,
+   "band": 36.5,
+   "prepare": 6.5,
+   "most_boxes_in_a_call": {
+    "cells": 28,
+    "row": 152,
+    "band": 26
+   }
+  },
+  "litolff/15": {
+   "cells": 27.0,
+   "row": 7.5,
+   "band": 43.7,
+   "prepare": 6.8,
+   "most_boxes_in_a_call": {
+    "cells": 24,
+    "row": 172,
+    "band": 22
+   }
+  },
+  "litolff/5": {
+   "cells": 16.3,
+   "row": 7.0,
+   "band": 29.6,
+   "prepare": 5.3,
+   "most_boxes_in_a_call": {
+    "cells": 19,
+    "row": 119,
+    "band": 17
+   }
+  },
+  "litolff/8": {
+   "cells": 20.6,
+   "row": 6.7,
+   "band": 41.7,
+   "prepare": 6.2,
+   "most_boxes_in_a_call": {
+    "cells": 23,
+    "row": 174,
+    "band": 21
+   }
+  }
+ },
+ "labels_p0": {
+  "cells": {
+   "head_filled": {
+    "labels": 378,
+    "found": 378,
+    "missed": 0,
+    "not_his": 37,
+    "missed_drawn": 0
+   },
+   "head_hollow": {
+    "labels": 33,
+    "found": 33,
+    "missed": 0,
+    "not_his": 5,
+    "missed_drawn": 0
+   },
+   "head_whole": {
+    "labels": 0,
+    "found": 0,
+    "missed": 0,
+    "not_his": 19,
+    "missed_drawn": 0
+   },
+   "rest": {
+    "labels": 16,
+    "found": 16,
+    "missed": 0,
+    "not_his": 4,
+    "missed_drawn": 0
+   },
+   "accidental": {
+    "labels": 41,
+    "found": 41,
+    "missed": 0,
+    "not_his": 9,
+    "missed_drawn": 0
+   },
+   "flag": {
+    "labels": 42,
+    "found": 39,
+    "missed": 3,
+    "not_his": 3,
+    "missed_drawn": 1
+   },
+   "dot": {
+    "labels": 131,
+    "found": 130,
+    "missed": 1,
+    "not_his": 4,
+    "missed_drawn": 1
+   },
+   "clef": {
+    "labels": 15,
+    "found": 15,
+    "missed": 0,
+    "not_his": 2,
+    "missed_drawn": 0
+   }
+  },
+  "row": {
+   "head_filled": {
+    "labels": 378,
+    "found": 377,
+    "missed": 1,
+    "not_his": 15,
+    "missed_drawn": 0
+   },
+   "head_hollow": {
+    "labels": 33,
+    "found": 33,
+    "missed": 0,
+    "not_his": 8,
+    "missed_drawn": 0
+   },
+   "head_whole": {
+    "labels": 0,
+    "found": 0,
+    "missed": 0,
+    "not_his": 0,
+    "missed_drawn": 0
+   },
+   "rest": {
+    "labels": 16,
+    "found": 15,
+    "missed": 1,
+    "not_his": 1,
+    "missed_drawn": 0
+   },
+   "accidental": {
+    "labels": 41,
+    "found": 41,
+    "missed": 0,
+    "not_his": 4,
+    "missed_drawn": 0
+   },
+   "flag": {
+    "labels": 42,
+    "found": 42,
+    "missed": 0,
+    "not_his": 3,
+    "missed_drawn": 0
+   },
+   "dot": {
+    "labels": 131,
+    "found": 130,
+    "missed": 1,
+    "not_his": 4,
+    "missed_drawn": 0
+   },
+   "clef": {
+    "labels": 15,
+    "found": 15,
+    "missed": 0,
+    "not_his": 4,
+    "missed_drawn": 0
+   }
+  },
+  "band": {
+   "head_filled": {
+    "labels": 378,
+    "found": 377,
+    "missed": 1,
+    "not_his": 59,
+    "missed_drawn": 0
+   },
+   "head_hollow": {
+    "labels": 33,
+    "found": 31,
+    "missed": 2,
+    "not_his": 6,
+    "missed_drawn": 0
+   },
+   "head_whole": {
+    "labels": 0,
+    "found": 0,
+    "missed": 0,
+    "not_his": 24,
+    "missed_drawn": 0
+   },
+   "rest": {
+    "labels": 16,
+    "found": 15,
+    "missed": 1,
+    "not_his": 7,
+    "missed_drawn": 0
+   },
+   "accidental": {
+    "labels": 41,
+    "found": 41,
+    "missed": 0,
+    "not_his": 15,
+    "missed_drawn": 0
+   },
+   "flag": {
+    "labels": 42,
+    "found": 42,
+    "missed": 0,
+    "not_his": 6,
+    "missed_drawn": 0
+   },
+   "dot": {
+    "labels": 131,
+    "found": 131,
+    "missed": 0,
+    "not_his": 10,
+    "missed_drawn": 0
+   },
+   "clef": {
+    "labels": 15,
+    "found": 15,
+    "missed": 0,
+    "not_his": 0,
+    "missed_drawn": 0
+   }
+  }
+ },
+ "vs_cells": {
+  "brahms": {
+   "row": {
+    "head_filled:both": 2046,
+    "head_filled:only_cells": 378,
+    "head_filled:only_this_way": 20,
+    "head_hollow:both": 152,
+    "head_hollow:only_cells": 10,
+    "head_hollow:only_this_way": 57,
+    "head_whole:both": 2,
+    "head_whole:only_cells": 39,
+    "head_whole:only_this_way": 20,
+    "rest:both": 765,
+    "rest:only_cells": 131,
+    "rest:only_this_way": 87,
+    "accidental:both": 581,
+    "accidental:only_cells": 84,
+    "accidental:only_this_way": 98,
+    "flag:both": 425,
+    "flag:only_cells": 6,
+    "flag:only_this_way": 49,
+    "dot:both": 642,
+    "dot:only_cells": 40,
+    "dot:only_this_way": 53,
+    "clef:both": 140,
+    "clef:only_cells": 15,
+    "clef:only_this_way": 23
+   },
+   "band": {
+    "head_filled:both": 2308,
+    "head_filled:only_cells": 243,
+    "head_filled:only_this_way": 359,
+    "head_hollow:both": 159,
+    "head_hollow:only_cells": 19,
+    "head_hollow:only_this_way": 39,
+    "head_whole:both": 20,
+    "head_whole:only_cells": 21,
+    "head_whole:only_this_way": 52,
+    "rest:both": 873,
+    "rest:only_cells": 96,
+    "rest:only_this_way": 248,
+    "accidental:both": 641,
+    "accidental:only_cells": 87,
+    "accidental:only_this_way": 134,
+    "flag:both": 414,
+    "flag:only_cells": 16,
+    "flag:only_this_way": 45,
+    "dot:both": 660,
+    "dot:only_cells": 29,
+    "dot:only_this_way": 98,
+    "clef:both": 135,
+    "clef:only_cells": 23,
+    "clef:only_this_way": 6
+   }
+  },
+  "litolff": {
+   "row": {
+    "head_filled:both": 1841,
+    "head_filled:only_cells": 405,
+    "head_filled:only_this_way": 87,
+    "head_hollow:both": 498,
+    "head_hollow:only_cells": 14,
+    "head_hollow:only_this_way": 250,
+    "head_whole:both": 3,
+    "head_whole:only_cells": 8,
+    "head_whole:only_this_way": 81,
+    "rest:both": 445,
+    "rest:only_cells": 201,
+    "rest:only_this_way": 106,
+    "accidental:both": 300,
+    "accidental:only_cells": 92,
+    "accidental:only_this_way": 137,
+    "flag:both": 95,
+    "flag:only_cells": 14,
+    "flag:only_this_way": 20,
+    "dot:both": 8,
+    "dot:only_cells": 23,
+    "dot:only_this_way": 7,
+    "clef:both": 87,
+    "clef:only_cells": 25,
+    "clef:only_this_way": 25
+   },
+   "band": {
+    "head_filled:both": 2305,
+    "head_filled:only_cells": 198,
+    "head_filled:only_this_way": 624,
+    "head_hollow:both": 450,
+    "head_hollow:only_cells": 91,
+    "head_hollow:only_this_way": 119,
+    "head_whole:both": 1,
+    "head_whole:only_cells": 10,
+    "head_whole:only_this_way": 40,
+    "rest:both": 545,
+    "rest:only_cells": 128,
+    "rest:only_this_way": 227,
+    "accidental:both": 377,
+    "accidental:only_cells": 60,
+    "accidental:only_this_way": 252,
+    "flag:both": 82,
+    "flag:only_cells": 23,
+    "flag:only_this_way": 82,
+    "dot:both": 19,
+    "dot:only_cells": 12,
+    "dot:only_this_way": 36,
+    "clef:both": 117,
+    "clef:only_cells": 18,
+    "clef:only_this_way": 143
+   }
+  }
+ },
+ "judged": {
+  "cells": {
+   "not_a_head:boxed": 1,
+   "rest:boxed": 1,
+   "head:boxed": 11,
+   "not_a_head:not_boxed": 8
+  },
+  "row": {
+   "not_a_head:not_boxed": 9,
+   "rest:boxed": 1,
+   "head:boxed": 11
+  },
+  "band": {
+   "not_a_head:boxed": 1,
+   "rest:boxed": 1,
+   "head:boxed": 11,
+   "not_a_head:not_boxed": 8
+  }
+ },
+ "judged_n": 21
+}

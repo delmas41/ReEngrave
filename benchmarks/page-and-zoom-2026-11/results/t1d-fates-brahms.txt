@@ -1,0 +1,19 @@
+== OMR_PAGE_OWNED_VIEW=0
+   glyph/20/0/1/1/0 fate: written | hidden copy: False | owner: decided staff/20/0/1 page_owner
+   glyph/20/0/1/1/1 fate: written | hidden copy: False | owner: None None None
+   glyph/20/0/1/1/13 fate: written | hidden copy: False | owner: None None None
+   glyph/20/0/1/1/15 fate: written | hidden copy: False | owner: None None None
+   glyph/11/1/1/0/2 fate: written | hidden copy: False | owner: None None None
+   glyph/11/1/1/0/3 fate: written | hidden copy: False | owner: None None None
+   glyph/11/1/1/0/4 fate: written | hidden copy: False | owner: None None None
+== OMR_PAGE_OWNED_VIEW=1
+   glyph/20/0/1/1/0 fate: written | hidden copy: False | owner: decided staff/20/0/1 page_owner
+   glyph/20/0/1/1/1 fate: written | hidden copy: False | owner: None None None
+   glyph/20/0/1/1/13 fate: written | hidden copy: False | owner: None None None
+   glyph/20/0/1/1/15 fate: written | hidden copy: False | owner: None None None
+   glyph/11/1/1/0/2 fate: written | hidden copy: False | owner: None None None
+   glyph/11/1/1/0/3 fate: written | hidden copy: False | owner: None None None
+   glyph/11/1/1/0/4 fate: written | hidden copy: False | owner: None None None
+   hidden in these cells: glyph/11/1/1/0/13
+   hidden in these cells: glyph/11/1/1/0/9
+   hidden in these cells: glyph/20/0/1/1/2
