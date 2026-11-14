@@ -334,3 +334,26 @@ another or "stems disagree" (`2/0/3/5`, `2/0/8/0`, `4/0/8/11`, `4/1/2/4`, `4/1/8
 reader claims that half's ink (stroke 1756) as a head, the left half (1727) has no owner, the tremolo reader
 claims neither. That fake head is why the half note's stem reads both ways and abstains.
 The r4 tiles stand unchanged (out/print/2.306-r4), not yet sent.
+
+## 2.306 stems round 7 (2026-11-13) -- Sean's ruling built: a stem is filed only with its own staff; a crossing must cover the gap (`lane-2.306-stems-beams-page` a4755ac78 + test pin)
+
+STAGED, flag `OMR_PAGE_STEMS` OFF. Ruling (Sean 2026-11-13 "Yes", DECISIONS + page-facts on main f0cf19da): a stem is filed only with the staff its note belongs to.
+**Cause found on the way (the process lesson).** GATHER cannot apply the ruling on most pages: the page owner's ledger answer for a head in the gap is DEFERRED to
+the end of the run while the far-head ledger reader builds its size pool, so at stem time 134 Litolff p4 heads had no owner (tile 3's among them). A ruling is
+applied in the stage where its fact exists: GATHER files only where the owner is known (page owner decided, else inside one staff); ADJUDICATE
+(`rhythm._page_view_only_for_copies`, read by `_not_the_neighbours_beam`) ignores a page view named only by heads whose decided `Q.GLYPH_OWNER` is another staff.
+Built: (1) the ruling, both stages; (2) a crossing mark joins two stem pieces only where it covers the gap (<= 0.3 sp blank) -- refuses `head_not_covering`;
+(3) a filed page stem view gets `Q.BEAM_STEM_JOIN` / `Q.BEAM_STEM_LEVELS` rows by the cell readers; (4) with the flag on, a head with no stem whose strokes were
+discounted stays narrowed (never a DECIDED quarter). Controls from real tiles: r6's two stitched-over-paper stems (p9 glyph/9/0/2/1/0, p10 glyph/10/1/6/7/3)
+refused; tile 3's ledger head owned by staff 2 by the page owner, nobody without it, the other staff when the row is flipped; 175 copies beside tiles 3/5/11 not
+filed; the view rule with a home owner / a cell reader's row / flag off.
+**Measured** (r7 re-gather of the frozen pages with the flag on, `--replay-gathered`, scratch `r7/lr7c-*`): Litolff red bars 162 -> 152, notes +48 -44, judged
+right->wrong 0, unwritten->wrong 0; Brahms red bars 143 -> 124 (r6 tree: 129), notes +43 -23, right->wrong 0, unwritten->wrong 0. Litolff control line says
+neither arm reproduces the record: ADJUDICATE changed after the gather (ON 11 of 9107 duration verdicts) -- expected, the copy-view rule is ADJUDICATE.
+Sean's r4 tiles: 11 (9/0/2/0) recovered; 5 (4/1/2/4) no longer an eighth made a quarter; 9/0/2/1 and 10/1/6/7 lose fewer. Tile 3 (4/1/2/5) still loses its
+four eighths -- a DIFFERENT cause, older than r7: its stem runs through a SECOND (heads on both sides at Litolff p4 y 2458-2488) and `join_runs` refuses every
+gap with heads on both sides (`heads_both_sides`, built for two voices end to end), so the page stem stops at the chord (58 px), never reaches its beam, and the
+beam-join reading (3) reports "not joined" against a certain beam (`beam_certain_not_joined`). Geometry of the two real cases: tile 3 (a second) has the HIGHER
+head on the RIGHT, centres 0.5 sp apart; the r4 divisi fixture (two voices end to end, Brahms) has the higher head on the LEFT, 1.5 sp apart. Question to Sean
+before code (rule 3). Fast tier (cloud, 2 workers): flag OFF no new failure (12 environment failures fail on the base commit too); flag ON one real change --
+`test_staged_duration` neighbour-beam test asserted the DECIDED quarter fix (4) removes; now pinned OFF = decided, ON = narrowed quarter/eighth.
