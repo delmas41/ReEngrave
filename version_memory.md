@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-13 -- ROADMAP 2.306 r7/r8 built OFF: a stem filed only with its own staff; a stem runs through its second
+STAGED GATHER `page_stems` (own staff from the page owner's decided answer, else inside one staff; a crossing must cover the gap, <= 0.3 sp blank; a second -- higher head right of the stem -- is joined, two voices refused; page stem views get beam-join and beam-level rows) + ADJUDICATE (`rhythm._page_view_only_for_copies` in the neighbour-beam rule; with the flag on, discounted strokes on a stemless head stay narrowed). Flag `OMR_PAGE_STEMS` stays OFF. Two rulings from Sean on main (f0cf19da, e02d32ad). Frozen pages: red bars 162->152 / 143->124, judged right->wrong 0. Lane ce7735cc6. benchmarks/page-ledger-2026-11/FINDINGS.md rounds 7-8.
+
 ## 2026-11-11 -- ROADMAP 2.303 part 2 landed ON: OMR_LETTERS_ARE_THE_WORD (deny-list)
 
 Letters of a detector run inside a READ word, at a spot its text gives to a word, file no dynamic claim (`claims.letters_of_the_word`). Sean's 12 tiles 12 of 12; exported file unchanged. Nothing retired (a filter ahead of the claim). Part 1 (unread "sempre" writes a false mp, Litolff p8 P2/P3 m12) still open. Branch land-2.303.

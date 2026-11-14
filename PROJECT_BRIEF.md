@@ -3,12 +3,14 @@
 
 **Owner:** Sean Johnson (sole user — see "Scope" in [PROJECT_STATUS.md](PROJECT_STATUS.md))
 **Status:** Active development, personal-use scope
-**Updated:** 2026-11-04 (un-frozen 2026-10-07; kept current with every commit alongside
+**Updated:** 2026-11-13 (un-frozen 2026-10-07; kept current with every commit alongside
 `CLAUDE.md` and `version_memory.md`; CLAUDE.md was cut to ~1,800 words on
 2026-10-13 and its detail moved to `docs/running.md`, `docs/staged-internals.md`,
 `docs/page-facts.md`, `docs/measuring.md`, `docs/data-sources.md`,
 `docs/detector.md` -- map in `docs/claude-md-migration-2026-10-13.md`). Sections below the next one are the
 dated record from before the 2026-09-22 freeze and are left as written.
+
+**In flight 2026-11-13:** 2.305 arc binding (built OFF), 2.306 stems and beams read once on the page (r8 built OFF on `lane-2.306-stems-beams-page`: a stem filed only with its own staff, run through its second; Sean's r8 tiles out), 2.307 page-and-zoom test (measured, waiting on Sean's ruling).
 
 ## Since then (2026-11-04)
 
