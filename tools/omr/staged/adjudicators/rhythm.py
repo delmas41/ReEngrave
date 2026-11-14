@@ -5761,7 +5761,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             used.extend(off_the_tip["rows"])
             shared["beam_refused_off_the_tip"] = {"strokes_in_cell": off_the_tip["strokes_in_cell"], "side": side,
                                                   "arc_strokes_at_the_stem_ends": off_the_tip["arc_strokes_at_the_stem_ends"]}
-    if off_the_tip is None and (((discount_removed_all_marks and (own_stems or reach_stem))
+    # ROADMAP 2.306 r7 (r6 tile 5, Sean "an eighth"; with OMR_PAGE_STEMS on): strokes discounted with no stem attached to the head are
+    # still unexplained ink at the head -- "cannot tell" stays a narrowing (CLAUDE rule 8), never a DECIDED quarter.
+    from .. import page_stems as _PS7
+    _no_stem_guard = _PS7.enabled() and discount_removed_all_marks and not own_stems
+    if off_the_tip is None and (((discount_removed_all_marks and (own_stems or reach_stem or _no_stem_guard))
          or ink_removed_all_marks or far_removed_all_marks)
             and beam_evidence == "none_over_this_note"
             and not flag_levels and not hollow and not tip_first):

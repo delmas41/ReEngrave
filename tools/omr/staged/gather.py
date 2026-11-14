@@ -13138,44 +13138,52 @@ def gather_beam_stem_levels(log: Log, cells: Sequence[Any], local: Dict[int, Tup
         if sub.to_key() in seen:
             continue
         seen.add(sub.to_key())
-        stems = [r for r in log.rows(Q.STEM, sub) if r.reader == READERS.CV_LINES]
+        stems = [(r.id, r.value) for r in log.rows(Q.STEM, sub) if r.reader == READERS.CV_LINES]
         if not stems:
             continue
-        frame = frame_cell(c.measure_index)
-        img = getattr(c, "image", None)
-        gray = None
-        if img is not None and getattr(img, "ndim", 0) >= 2:
-            if img.ndim == 3:
-                import cv2
-                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            else:
-                gray = img
-        grid = _cell_grid(c)
-        space = grid[1] * 2.0 if grid is not None else None
-        line_ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
-        if gray is None or not space or space <= 0:
-            for r in stems:
-                log.abstain(sub, Q.BEAM_STEM_LEVELS, reader=READERS.CV_BEAM_LEVELS, frame=frame,
-                            reason=ABSTAIN.NO_MASK if gray is None else ABSTAIN.NO_STAFF_GEOMETRY,
-                            stem_row_id=r.id, note="no cell raster" if gray is None else "no cell staff-space unit")
-            continue
-        ink = np.asarray(gray < BEAM_INK_THRESHOLD)
+        beam_stem_levels_for(log, sub, c, stems, _gated=False)
+
+
+def beam_stem_levels_for(log: Log, sub: Subject, c: Any, stems: Sequence[Tuple[str, Any]], _gated: bool = True) -> None:
+    """`Q.BEAM_STEM_LEVELS` for the given `(stem row id, value)` of ONE cell (`gather_beam_stem_levels`' body; ROADMAP 2.306 r7 calls it for
+    a page stem view filed in a cell). Off unless `OMR_BEAM_STEM_LEVELS`."""
+    if _gated and not beam_stem_levels_gather_enabled():
+        return
+    import numpy as np
+    frame = frame_cell(c.measure_index)
+    img = getattr(c, "image", None)
+    gray = None
+    if img is not None and getattr(img, "ndim", 0) >= 2:
+        if img.ndim == 3:
+            import cv2
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = img
+    grid = _cell_grid(c)
+    space = grid[1] * 2.0 if grid is not None else None
+    line_ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
+    if gray is None or not space or space <= 0:
+        for rid, _v in stems:
+            log.abstain(sub, Q.BEAM_STEM_LEVELS, reader=READERS.CV_BEAM_LEVELS, frame=frame,
+                        reason=ABSTAIN.NO_MASK if gray is None else ABSTAIN.NO_STAFF_GEOMETRY,
+                        stem_row_id=rid, note="no cell raster" if gray is None else "no cell staff-space unit")
+        return
+    ink = np.asarray(gray < BEAM_INK_THRESHOLD)
+    line_px = None
+    try:
+        line_px = local_line_thickness(ink, line_ys, 0, ink.shape[1], space)
+    except Exception:
         line_px = None
-        try:
-            line_px = local_line_thickness(ink, line_ys, 0, ink.shape[1], space)
-        except Exception:
-            line_px = None
-        for r in stems:
-            v = r.value
-            if not isinstance(v, (list, tuple)) or len(v) < 4:
-                continue
-            x, y, w, h = [float(t) for t in v[:4]]
-            ends = {}
-            for end, tip in (("top", y), ("bottom", y + h)):
-                ends[end] = beam_runs_at_stem_end(ink, x + w / 2.0, tip, end, space, line_ys, line_px or 0.0)
-            best = max(len(e[side]) for e in ends.values() for side in ("left", "right"))
-            log.observe(sub, Q.BEAM_STEM_LEVELS, best, reader=READERS.CV_BEAM_LEVELS, frame=frame,
-                        stem_row_id=r.id, ends=ends)
+    for rid, v in stems:
+        if not isinstance(v, (list, tuple)) or len(v) < 4:
+            continue
+        x, y, w, h = [float(t) for t in v[:4]]
+        ends = {}
+        for end, tip in (("top", y), ("bottom", y + h)):
+            ends[end] = beam_runs_at_stem_end(ink, x + w / 2.0, tip, end, space, line_ys, line_px or 0.0)
+        best = max(len(e[side]) for e in ends.values() for side in ("left", "right"))
+        log.observe(sub, Q.BEAM_STEM_LEVELS, best, reader=READERS.CV_BEAM_LEVELS, frame=frame,
+                    stem_row_id=rid, ends=ends)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

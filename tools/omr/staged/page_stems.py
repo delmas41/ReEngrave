@@ -109,6 +109,16 @@ LINE_GAP_SP = 0.3
 JOIN_GAP_SP = 2.2
 
 
+def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> float:
+    """The longest run of rows of [y0, y1] that no span covers (px). Pure."""
+    edge, worst = y0, 0.0
+    for a, b in sorted(spans):
+        if a > edge:
+            worst = max(worst, a - edge)
+        edge = max(edge, b)
+    return max(worst, y1 - edge)
+
+
 def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any]] = (), crossers: Sequence[Dict[str, Any]] = (),
               held: Optional[Dict[int, str]] = None, pairs: Optional[List[Tuple[int, int, str]]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The collinear runs of the page's vertical pieces (constants above). Pure. `crossers`: `[{ord, box, kind}]` -- the page's other strokes (a
@@ -134,18 +144,29 @@ def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any
         if y1 - y0 > JOIN_GAP_SP * sp:
             return "!too_wide"
         sides = set()
+        cover: List[Tuple[float, float]] = []
         for h in heads:
             hb = h["box"]
             if hb[1] < y1 and hb[3] > y0 and hb[0] - 0.4 * sp <= xc <= hb[2] + 0.4 * sp:
                 sides.add("right" if (hb[0] + hb[2]) / 2.0 < xc else "left")
+                cover.append((max(hb[1], y0), min(hb[3], y1)))
         if len(sides) == 2:
             return "!heads_both_sides"
-        if sides:
-            return "head"
+        kind = None
         for c in crossers:
             cb = c["box"]
-            if cb[0] <= xc <= cb[2] and cb[1] <= y0 + 1 and cb[3] >= y1 - 1:
-                return str(c.get("kind") or "stroke")
+            if cb[0] <= xc <= cb[2] and cb[1] < y1 and cb[3] > y0:
+                if cb[1] <= y0 + 1 and cb[3] >= y1 - 1 and not sides:
+                    return str(c.get("kind") or "stroke")
+                cover.append((max(cb[1], y0), min(cb[3], y1)))
+                kind = kind or str(c.get("kind") or "stroke")
+        if cover:
+            # ROADMAP 2.306 r7 (r6 cause 2): a crossing mark joins two pieces only where it COVERS the gap -- at most LINE_GAP_SP of the
+            # gap may be blank paper. A head that merely touches the gap (57 of 133 Litolff stitched stems bridged more than 1 sp of paper)
+            # is not a reason to join.
+            if _uncovered(cover, y0, y1) <= LINE_GAP_SP * sp:
+                return "head" if sides else kind
+            return "!head_not_covering" if sides else "!empty_paper"
         return "!empty_paper"
 
     import bisect
@@ -447,6 +468,10 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         kind = "slash" if held.get(i) == "tremolo" else ("beam" if st.kind == "horizontal" and float(st.thickness_sp) >= 0.4 else str(st.kind))
         crossers.append(dict(ord=i, box=(x, y, x + w, y + h), kind=kind))
     res = read(heads, verticals, held, crossers=crossers)
+    from . import page_owner as PO
+    frames = PO.staff_frames(cells, local)
+    own_of = {h["id"]: own_staff(h, frames) for h in heads}
+    n_copy = n_unknown = 0
     cell_by_key: Dict[Tuple[int, int, int, int], Any] = {}
     for c in cells:
         key = local.get(c.staff_index)
@@ -458,8 +483,15 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     head_of = {h["id"]: h for h in heads}
     for hid, r in res["heads"].items():
         h = head_of[hid]
+        own = own_of.get(hid)
+        n_unknown += int(own is None and len({_staff_key(m) for m in h["members"]}) > 1)
         for key in h["members"]:
             g = Subject.from_key(key)
+            if own is not None and _staff_key(key) != own:
+                # ROADMAP 2.306 r7 (Sean 2026-11-13, "Yes"): a stem is filed only with the staff its note belongs to -- never as a copy in the
+                # cell of a staff whose padded crop only shows the head. Nothing is filed on the copy; the copy is the other staff's view.
+                n_copy += 1
+                continue
             c = cell_by_key.get((g.page, g.system, g.staff, g.cell))
             csub = R.cell(g.page, g.system, g.staff, g.cell)
             gsub = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
@@ -482,12 +514,42 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
                     source=SOURCE, how="head_engraving_side", page_strokes=[int(m) for m in s["members"]], direction=s["direction"], heads=list(s["heads"]),
                     tip_y=s["tip_y"], stem_box=s["box"])
         filed += 1
-    cen = dict(res["census"], claims=filed, rows_from_cell_reader=n_a, views_filed=n_view, seconds=round(time.time() - t0, 2))
+    cen = dict(res["census"], claims=filed, rows_from_cell_reader=n_a, views_filed=n_view, copies_not_filed=n_copy,
+               heads_own_staff_unknown=n_unknown, seconds=round(time.time() - t0, 2))
     log.observe(page_sub, Q.CLAIMED_AREA, "census", reader=READERS.CV_PAGE_STEMS, frame=G.FRAME_PAGE, owner=SOURCE, unit="page_ink_census",
                 standing="READ", source=SOURCE, **cen)
     if progress:
         print("  gather page stems (2.306) p%s: %s" % (p, cen))
     return res
+
+
+def _staff_key(glyph_key: str) -> str:
+    p = glyph_key.split("/")
+    return "staff/%s/%s/%s" % (p[1], p[2], p[3])
+
+
+def own_staff(head: Dict[str, Any], frames: Dict[str, Any]) -> Optional[str]:
+    """ROADMAP 2.306 r7: the staff a page head belongs to, by the page owner's first rule (`page_owner.mark_owner` `inside_staff`, Sean's
+    rulings): the head's centre stands on or between ONE staff's five lines, or within `INSIDE_SPACES` outside them, measured on that staff's
+    own lines in the bar at the head's x -- and that staff is one the head was seen from. Otherwise None (a head in the gap: its owner is the
+    ledger / stem question the page owner asks later; the stem is then filed on every view, as before). Pure."""
+    from . import page_owner as PO
+    members = head.get("members") or ()
+    seen = sorted({_staff_key(m) for m in members})
+    if not seen:
+        return None
+    if len(seen) == 1:
+        return seen[0]
+    b = head["box"]
+    cx, cy = (float(b[0]) + float(b[2])) / 2.0, (float(b[1]) + float(b[3])) / 2.0
+    system = "/".join(seen[0].split("/")[:3]) + "/"
+    inside = []
+    for k in frames:
+        if k.startswith(system):
+            bar = PO.lines_at(frames, k, cx)
+            if bar is not None and PO.beyond_spaces(bar, cy) <= PO.INSIDE_SPACES:
+                inside.append(k)
+    return inside[0] if len(inside) == 1 and inside[0] in seen else None
 
 
 def _cell_row_for(log: Any, c: Any, csub: Any, stroke_box: Sequence[float]) -> Tuple[str, bool]:
@@ -520,7 +582,29 @@ def _cell_row_for(log: Any, c: Any, csub: Any, stroke_box: Sequence[float]) -> T
         G._observe_stem_tip_ink(log, csub, frame, c, row.id, (cx, cy, cw, ch), (), space)
     except Exception:          # noqa: BLE001 -- a raster the tip reader cannot read leaves the view with no tip row (`_beam_reader_looked`: never ran)
         pass
+    _beam_rows_for_view(log, c, csub, frame, row.id, (cx, cy, cw, ch), space)
     return row.id, False
+
+
+def _beam_rows_for_view(log: Any, c: Any, csub: Any, frame: str, stem_id: str, box: Sequence[float], space: Optional[float]) -> None:
+    """ROADMAP 2.306 r7 (r6: 0 of 623 filed views had them): a stem view filed here gets the readings a cell reader's stem gets -- its beam
+    levels (`Q.BEAM_STEM_LEVELS`, when that reader is on) and its join to every beam stroke of the cell (`Q.BEAM_STEM_JOIN`) -- by the same
+    readers, so the duration reader sees a page stem exactly as it sees a cell one."""
+    from types import SimpleNamespace
+    from .record import Q
+    from . import gather as G
+    stem = (SimpleNamespace(x_canonical=box[0], y_canonical=box[1], width_canonical=box[2], height_canonical=box[3]), stem_id)
+    beams = []
+    for r in log.rows(Q.BEAM_STROKE, csub):
+        if isinstance(r.value, (list, tuple)) and len(r.value) >= 4:
+            bx, by, bw, bh = (float(v) for v in r.value[:4])
+            beams.append((SimpleNamespace(x_canonical=bx, y_canonical=by, width_canonical=bw, height_canonical=bh), r.id))
+    try:
+        if beams:
+            G._observe_beam_stem_join(log, csub, frame, c, [stem], beams, space)
+        G.beam_stem_levels_for(log, csub, c, [(stem_id, list(box))])
+    except Exception:          # noqa: BLE001 -- a raster the readers cannot read leaves the view without these rows, as for a cell stem
+        pass
 
 
 # ADJUDICATE reads `Q.PAGE_STEM` in `adjudicators.stem_value._page_stem_join` (the reader lives in the stage that reads it: `staged.reach`).
