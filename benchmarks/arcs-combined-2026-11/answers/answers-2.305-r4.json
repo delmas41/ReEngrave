@@ -2,7 +2,7 @@
  "lane": "2.305 r4 arcs across a system break (ROADMAP 2.305)",
  "date": "2026-11-13",
  "question": "Top strip: the end of one system; bottom strip: the start of the next, same instrument. Is there one arc from the boxed note on top to the boxed note below? Tie or slur?",
- "note": "Scored by the manager: 6 of 9 right (1, 2, 3, 7, 8, 9). Tiles 4 and 5 are ties written as slurs (5 is the P191 head shared by two staves; 4 is unexplained -- the two notes sit at different staff positions across the break, check the clef). Tile 6: the two notes do not look like they go together (a wrong pair, written as a slur).",
+ "note": "Scored by the manager: 6 of 9 right (1, 2, 3, 7, 8, 9). Tiles 4 and 5 are ties written as slurs (5 is the P191 head shared by two staves; 4 is unexplained -- the two notes sit at different staff positions across the break, check the clef). Tile 6: the two notes do not look like they go together (a wrong pair, written as a slur). UPDATE 2026-11-13 on a wider crop of tile 6: Sean reads the arc as leaving an F and arriving on a D -- a slur, the pair is right; so 7 of 9. (We read the second note as B2; Sean said D -- asked again, Sean: \"A B\" -- our pitch read is right.)",
  "tiles": [
   {
    "tile": 1,
@@ -62,7 +62,8 @@
    "stop": "glyph/11/1/12/0/0",
    "part": "P13",
    "sean": "can't tell for sure, but those don't look like they go together",
-   "ours_right": false
+   "ours_right": true,
+   "sean_wide_crop": "It looks like it leaves an F from the previous system, and the new system it goes to a D, which would imply a slur."
   },
   {
    "tile": 7,
