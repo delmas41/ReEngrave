@@ -470,7 +470,8 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     res = read(heads, verticals, held, crossers=crossers)
     from . import page_owner as PO
     frames = PO.staff_frames(cells, local)
-    own_of = {h["id"]: own_staff(h, frames) for h in heads}
+    owners = _page_owner_rows(log, heads, Q.PAGE_MARK_OWNER, Subject)
+    own_of = {h["id"]: own_staff(h, frames, owners) for h in heads}
     n_copy = n_unknown = 0
     cell_by_key: Dict[Tuple[int, int, int, int], Any] = {}
     for c in cells:
@@ -528,11 +529,28 @@ def _staff_key(glyph_key: str) -> str:
     return "staff/%s/%s/%s" % (p[1], p[2], p[3])
 
 
-def own_staff(head: Dict[str, Any], frames: Dict[str, Any]) -> Optional[str]:
-    """ROADMAP 2.306 r7: the staff a page head belongs to, by the page owner's first rule (`page_owner.mark_owner` `inside_staff`, Sean's
-    rulings): the head's centre stands on or between ONE staff's five lines, or within `INSIDE_SPACES` outside them, measured on that staff's
-    own lines in the bar at the head's x -- and that staff is one the head was seen from. Otherwise None (a head in the gap: its owner is the
-    ledger / stem question the page owner asks later; the stem is then filed on every view, as before). Pure."""
+def _page_owner_rows(log: Any, heads: Sequence[Dict[str, Any]], q: str, Subject: Any) -> Dict[str, Tuple[str, str]]:
+    """{member glyph key: (status, owner staff)} from the page owner's `Q.PAGE_MARK_OWNER` rows already filed on this page (2.240; filed
+    before the page stems unless the far-head ledger reads were held, then deferred to the run's end and absent here)."""
+    out: Dict[str, Tuple[str, str]] = {}
+    for h in heads:
+        for m in h.get("members") or ():
+            if m in out:
+                continue
+            for r in log.rows(q, Subject.from_key(m)):
+                d = r.detail or {}
+                if d.get("family") == "head" and isinstance(r.value, str):
+                    for mm in d.get("members") or (m,):
+                        out.setdefault(mm, (str(d.get("status")), r.value))
+    return out
+
+
+def own_staff(head: Dict[str, Any], frames: Dict[str, Any], owners: Optional[Dict[str, Tuple[str, str]]] = None) -> Optional[str]:
+    """ROADMAP 2.306 r7: the staff a page head belongs to. (1) The page owner's DECIDED answer for the head's mark (`page_owner`, Sean's
+    rulings: inside the staff; else the ledger lines, which outrank the stem; else the stem) -- asked once on the page, never by nearness.
+    (2) Where the page owner has not filed (deferred, or none), its first rule read here: the head's centre stands on or between ONE staff's
+    five lines, or within `INSIDE_SPACES` outside them, on that staff's own lines in the bar at the head's x. The answer must be a staff the
+    head was seen from. Otherwise None -- guessed, abstained or unknown: the stem is filed on every view, as before. Pure."""
     from . import page_owner as PO
     members = head.get("members") or ()
     seen = sorted({_staff_key(m) for m in members})
@@ -540,6 +558,13 @@ def own_staff(head: Dict[str, Any], frames: Dict[str, Any]) -> Optional[str]:
         return None
     if len(seen) == 1:
         return seen[0]
+    po = {(owners or {}).get(m) for m in members} - {None}
+    if po:
+        decided = {o for st, o in po if st == "decided"}
+        if len(decided) == 1 and len(po) == 1:
+            o = decided.pop()
+            return o if o in seen else None
+        return None
     b = head["box"]
     cx, cy = (float(b[0]) + float(b[2])) / 2.0, (float(b[1]) + float(b[3])) / 2.0
     system = "/".join(seen[0].split("/")[:3]) + "/"
