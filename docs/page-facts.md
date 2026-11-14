@@ -84,7 +84,10 @@ machine-readable form.
   it goes up or down"; scope: general). So the side rule above reads only an
   isolated head: in a chord the direction is the stem's tip beyond its OUTER
   head, every head on it shares that stem, and a head of a second stands on
-  the far side; a long stem through stacked heads is a chord stem, never a
+  the far side -- **the HIGHER note of a second always on the RIGHT of the
+  stem, the lower on the left, stem up or down** (Sean, 2026-11-13: *"Yes,
+  always"*; scope: general engraving; ROADMAP 2.306 r8), so two heads on
+  opposite sides with the higher on the LEFT are two voices, not a second; a long stem through stacked heads is a chord stem, never a
   barline (2.204c: all 3 "barline" tiles were chord stems).
 - **A chord's stem can run in both directions past its notes, and a short
   stem is not by itself a grace note** (Sean, 2026-10-26: "In a chord the stem
