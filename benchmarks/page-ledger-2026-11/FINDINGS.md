@@ -401,3 +401,45 @@ kind `second`; the higher on the LEFT is two voices -- refused. Control from the
 1873), mirrored left-right it must refuse. **Measured:** Litolff red bars 162 -> 152, notes +48 -40 (r7: -44), right->wrong 0, unwritten->wrong 0, ON reproduces the
 record; tile 3's bar 4/1/2/5 loses nothing now (r7: 4 eighths); 4/1/2/4 still loses one eighth. Brahms unchanged from r7: red bars 143 -> 124, notes +43 -23,
 right->wrong 0. Sean's 12 blind tiles (6 Litolff + 6 Brahms from the lane report's cases, 2 controls): `out/print/2.306-r8/` (key outside), sent 2026-11-13.
+
+## 2.306 stems rounds 7-8, re-measured (2026-11-14) -- built OFF, `lane-2.306-stems-beams-page` 128ec0b7b; NOT landable: stems cannot stand alone yet
+
+STAGED. Rounds 7 and 8 were built on the lane by another session from Sean's two rulings (DECISIONS
+2026-11-13; page-facts): a stem is filed only with its own staff; in a second the higher note stands right
+of the stem. The round-7 write-up is on the lane branch's copy of this file. This section is the independent
+re-measure at the branch tip, pre-retire, fresh flag-ON gathers of the 8 frozen pages per plate.
+**Built (checked in the code):** a crossing head joins two stem pieces only where it covers the gap
+(<= 0.3 sp blank; `head_not_covering`); GATHER files a stem only where the head's owner is known, and
+`rhythm._page_view_only_for_copies` (read by `_not_the_neighbours_beam`) ignores a filed stem whose heads all
+belong to another staff; filed page stems get beam-join and beam-level rows; a head with no stem whose beam
+strokes were discounted stays NARROWED, not a decided quarter (in the rule-8 area); r8: a stem runs through a
+second.
+**Lesson (measurement).** The OFF baseline moves when GATHER changes (Litolff OFF red bars 172 on the r6
+gather, 162 on r8's -- both gathered with the flag ON, and the stem claims change what other readers can
+claim): compare rounds by their OFF->ON pair on ONE gather, never OFF to OFF.
+**Gate, OFF vs ON, same gather:** Litolff red bars 162 -> 152, notes +48 -40, flags +18 -21, ties +6 -2,
+rests +1 -7, slurs +18 -14, not written 2187 -> 2164. Brahms red bars 143 -> 124, notes +43 -23, flags
++31 -16, ties +14 -17, rests +5 -25, slurs +33 -23, not written 3089 -> 3071. Judged right->wrong 0,
+unwritten->wrong 0 on both (Litolff wrong->right 1). The ON arm reproduces the record exactly. Fast tier flag
+ON, real worktree: 10,622 passed, 0 failed. check 229. judged_claims: the same 3 Litolff contradictions as r4
+(two tremolo slashes, "CR" as a rest), Brahms none new (base = 11-12 main gathers, another tree).
+**r6's two causes are gone:** notes lost to a neighbour-cell stem copy 8 -> 0; to a stem stitched across paper
+5 -> 0 (runs bridging > 1 sp blank: 57 -> 1, 64 -> 2; filed page stems 623 -> 475, 748 -> 89).
+**Sean's 12 r4 tile places now:** 3 and 11 recovered (eighths written); 1, 2, 4, 6, 8, 9, 10 right; **5** no
+longer a wrong quarter but nothing is written (narrowed `beams_ambiguous`; its stem is still a stitched run
+with ~0.44 sp of blank -- the head's BOX covers the gap, its ink does not: a lead); **7** still lost (EXPORT
+`chord_value_undecided`); **12** still lost (bar-mates on page stems narrowed by the existing rule-8 guard).
+**Notes written OFF and not ON, real losses:** Litolff 22 -> 18, Brahms 9 -> 15. By first cause (L / B): page
+direction right, chord mate disagrees (EXPORT chord check) 7 / 3; filed page stem, reading changed 6 / 2;
+the r7 no-stem guard 4 / 5 (+2 bar-mates); `beams_ambiguous` on a page stem 1 / 1; bar-mates - / 2.
+**The r7 no-stem guard:** moves 14 (L) / 146 (B) heads decided -> narrowed, of which 7 / 140 are not real
+notes (92 Brahms ones claimed by a barline); it removes 4 / 5 notes OFF wrote -- UNJUDGED (`6/0/1/10/6`,
+`6/0/1/10/7`, `6/0/5/12/7`, `6/1/1/9/7`; `5/0/5/0/15`, `5/0/5/5/18`, `14/0/3/1/5`, `14/1/3/4/10`,
+`14/1/9/7/7`); red bars with it 153 -> 152, 128 -> 124.
+**Retire, re-measured** (old cell join removed for heads the page cannot stem): real heads losing a stem 259
+(L; r1 266) and 66 (B; r1 76); red bars OFF / ON / retire 162 / 152 / 155 and 143 / 124 / 123; notes written
+pre-retire and not with retire 27 (L, 28 gained) and 21 (B, 2 gained); right->wrong 0. **Stems cannot stand
+alone yet**: the page reader still abstains on 259 / 66 real heads.
+**The two owner filters would disagree** if both flags were on: 2.307's `owned_view` hides a copy's rows from
+region queries, and r7's filter finds the heads naming a stem by exactly such a query -- it would find none
+and treat the copy as the neighbour's stem again. One mechanism must replace the other before either lands.
