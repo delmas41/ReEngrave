@@ -443,3 +443,21 @@ alone yet**: the page reader still abstains on 259 / 66 real heads.
 **The two owner filters would disagree** if both flags were on: 2.307's `owned_view` hides a copy's rows from
 region queries, and r7's filter finds the heads naming a stem by exactly such a query -- it would find none
 and treat the copy as the neighbour's stem again. One mechanism must replace the other before either lands.
+
+## 2.306 stems round 9 (2026-11-14) -- two voices in one column: the upper head takes the up stem (lane 1dc2b5115; HANDED OVER, NOT MEASURED)
+
+STAGED GATHER, flag `OMR_PAGE_STEMS` OFF. **Sean's r8 tiles** (answers-2.306-r8.json): 11 of 12 right under ON; tile 10 wrong -- Brahms p14 bar 14/1/9/5,
+a correct blue dotted quarter became unread. **Cause** (traced on a page-14 replay of the r8 record): the bar is two voices sharing each chord (Sean "Yes"); the
+second chord's heads /7 and /12 BOTH read `two_voices` on the same pair of strokes (up 3729 at the right, down 3687 at the left -- gaps 0.54 vs 1.75 sp and 0.63
+vs 1.67 sp) and abstained, so the cell join hung both on the down stem, and the one-voice bar sum could not settle them. The per-voice bar sum (ROADMAP 2.308,
+claimed) is NOT the fix: Sean "Wait" -- 2.308 waits for a real bar that needs it. **Rule** (Sean 2026-11-14 "Always when it is 2 voices. Obviously chords are not
+always multiple voices. One of the voices may not have stems if it has rests."; DECISIONS + page-facts on main 15fae22f): `page_stems._two_voices_pairs` settles a
+column only where exactly two heads each read `two_voices` on the same up/down pair -- upper head up, lower head down (`how` = `two_voices_upper_takes_up`);
+anything else stays abstained. **Control** on the real tile-10 window (fixture `two_voices_p14`): /12 -> 3729 up, /7 -> 3687 down; with /12 removed /7 stays
+abstained; the first chord (/0 reads its own stem) untouched. 18 of 18 stem tests pass.
+**Measurement: gathers only.** Re-gather of the frozen pages with the flag on finished (`/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/2306-gather/2306-r9-lit.record.json`, `2306-r9-bra.record.json`;
+slices `/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/2306-slices9`; tree `/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/2306-tree-r7` = pre-retire + lane 1dc2b5115); the lane report was STOPPED at handover (Sean 2026-11-14) -- no r9 numbers.
+Next for whoever takes the lane: `lane_report --flag OMR_PAGE_STEMS --from adjudicate --replay-gathered --tag <slices9>` per plate (r9.sh in that scratch is the
+recipe), then confirm tile 10's bar writes /7 /12 as dotted quarters plain. **Process lesson** (Sean: "Are we doing unnecessary long gathers?" -- yes): r8 and
+r9 were narrow changes already proven by a real-tile test; a one- or two-page gather of the affected pages proves them in minutes. The full frozen sample runs
+once per round, before tiles go to Sean or a landing is proposed -- never per small fix.

@@ -237,7 +237,7 @@ when a run ends (`OMR_SURYA_KEEP_ALIVE=0`); the fast tier at
 ≤ 4 workers or serial; every lane commits and pushes at each milestone;
 test output quiet (pass count + failures only); landings, answer-recording
 and crash recovery go to a fresh small agent with a short brief, never by
-resuming the big lane agent; blind tiles and print checks are kept in full. Machine time is free, context and tokens are not —
+resuming the big lane agent; blind tiles and print checks are kept in full. Machine time is free, context and tokens are not (Sean 2026-11-14, 2.306 r8/r9: a narrow change already proven by a real-tile test gets a gather of only the pages it touches; the full frozen sample runs once per round, before tiles or a landing) —
 long runs are unattended nohup scripts that write a small summary, never
 per-change whole-movement A/Bs. Never `pkill -f llama-server`. Sean runs
 the overnight re-gather; never ask about it.
