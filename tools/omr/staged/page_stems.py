@@ -107,6 +107,8 @@ def _other_side(h: Dict[str, Any], st: Dict[str, Any]) -> Optional[str]:
 #: never empty paper, and no wider than JOIN_GAP_SP. The stem claims only its own vertical pieces; the crossing mark keeps its ink.
 LINE_GAP_SP = 0.3
 JOIN_GAP_SP = 2.2
+#: ROADMAP 2.306 r8: two heads a step apart (half a space; a second) differ in centre height by at most this (sp). Tile 3: 0.5 sp; the r4 divisi: 1.5 sp.
+SECOND_STEP_SP = 0.75
 
 
 def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> float:
@@ -145,13 +147,21 @@ def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any
             return "!too_wide"
         sides = set()
         cover: List[Tuple[float, float]] = []
+        at: Dict[str, List[float]] = {"left": [], "right": []}       # head centre y by the side of the stem the HEAD stands on
         for h in heads:
             hb = h["box"]
             if hb[1] < y1 and hb[3] > y0 and hb[0] - 0.4 * sp <= xc <= hb[2] + 0.4 * sp:
                 sides.add("right" if (hb[0] + hb[2]) / 2.0 < xc else "left")
+                at["left" if (hb[0] + hb[2]) / 2.0 < xc else "right"].append((hb[1] + hb[3]) / 2.0)
                 cover.append((max(hb[1], y0), min(hb[3], y1)))
         if len(sides) == 2:
-            return "!heads_both_sides"
+            # ROADMAP 2.306 r8 (Sean 2026-11-13, "Yes, always"): in a SECOND sharing one stem the HIGHER note stands on the RIGHT of the stem and the
+            # lower on the LEFT, whichever way the stem points -- so heads on both sides a step apart with the higher on the right are one chord's
+            # second and the stem runs through them (Litolff p4 tile 3). Two voices end to end put the higher head on the LEFT (the upper voice's
+            # up-stem) -- never joined (r4 divisi, Brahms).
+            if not any(0.0 < yl - yr <= SECOND_STEP_SP * sp for yl in at["left"] for yr in at["right"]):
+                return "!heads_both_sides"
+            sides = {"second"}
         kind = None
         for c in crossers:
             cb = c["box"]
@@ -165,7 +175,7 @@ def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any
             # gap may be blank paper. A head that merely touches the gap (57 of 133 Litolff stitched stems bridged more than 1 sp of paper)
             # is not a reason to join.
             if _uncovered(cover, y0, y1) <= LINE_GAP_SP * sp:
-                return "head" if sides else kind
+                return ("second" if sides == {"second"} else "head") if sides else kind
             return "!head_not_covering" if sides else "!empty_paper"
         return "!empty_paper"
 

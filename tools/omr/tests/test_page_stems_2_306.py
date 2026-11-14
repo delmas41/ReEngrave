@@ -335,3 +335,26 @@ def test_r7_a_view_filed_only_for_another_staffs_head_is_not_the_neighbours_stem
     assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, NS(id="obs:7", reader=READERS.CV_LINES)) is False
     monkeypatch.setenv(PS.ENV, "0")
     assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, view) is False
+
+
+def test_r8_tile3_stem_runs_through_its_second_and_reaches_the_beam():
+    """Sean's r4 tile 3 (Litolff p4, "an eighth", LOST with the page stems on) -- the cause behind r7: the stem (strokes 1936 and 1938) runs through a
+    SECOND whose heads stand on both sides of it (the higher, glyph/4/1/2/5/9, on the RIGHT; the lower, /16, on the LEFT, 0.3 sp apart) and on to its beam
+    (1873). r4..r7 refused every gap with heads on both sides, so the stem stopped at 2460 and never met its beam. Sean 2026-11-13 ("Yes, always"): in a
+    second the higher note stands right of the stem. Control: the same page mirrored left-right puts the higher head on the LEFT -- two voices end to end --
+    and the join must be refused there."""
+    c = _fx7()["second_p4"]
+    heads, verts, cross, held = _stitch(c)
+    pairs = []
+    runs, cen = PS.join_runs(verts, heads, cross, held, pairs)
+    assert (1936, 1938, "second") in pairs, [p for p in pairs if 1936 in p[:2]]
+    run = next(r for r in runs if 1936 in r["members"])
+    assert 1938 in run["members"] and run["box"][3] >= 2513              # the stem now reaches the beam's rows
+    W = 3000.0
+    m = lambda b: (W - b[2], b[1], W - b[0], b[3])
+    hm = [dict(h, box=m(h["box"])) for h in heads]
+    vm = [dict(v, box=m(v["box"])) for v in verts]
+    xm = [dict(x, box=m(x["box"])) for x in cross]
+    pairs_m = []
+    runs_m, _ = PS.join_runs(vm, hm, xm, held, pairs_m)
+    assert (1936, 1938, "!heads_both_sides") in pairs_m, [p for p in pairs_m if 1936 in p[:2]]
