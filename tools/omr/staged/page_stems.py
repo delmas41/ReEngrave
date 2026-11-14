@@ -558,7 +558,7 @@ def own_staff(head: Dict[str, Any], frames: Dict[str, Any], owners: Optional[Dic
         return None
     if len(seen) == 1:
         return seen[0]
-    po = {(owners or {}).get(m) for m in members} - {None}
+    po = {tuple((owners or {})[m][:2]) for m in members if (owners or {}).get(m)}
     if po:
         decided = {o for st, o in po if st == "decided"}
         if len(decided) == 1 and len(po) == 1:

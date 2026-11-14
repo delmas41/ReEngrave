@@ -218,3 +218,90 @@ def test_r4_empty_paper_is_never_bridged():
     assert len(runs) == 2 and cen.get("refused:empty_paper") == 1
     runs, cen = PS.join_runs([v1, v2], [], [dict(ord=3, box=(90.0, 58.0, 120.0, 78.0), kind="slash")])
     assert len(runs) == 1 and cen.get("joined:slash") == 1
+
+
+# ── ROADMAP 2.306 r7: real cases from the r6 gathers (benchmarks/page-ledger-2026-11/2306/cut_fixture_r7.py, trimmed) ──────────────────
+
+FX7 = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_r7.json")
+
+
+def _fx7():
+    with open(FX7) as f:
+        return json.load(f)
+
+
+def _frames7(c):
+    from tools.omr.staged import page_owner as PO
+    return {k: [PO.StaffBar(b["x0"], b["x1"], tuple(b["ys"]), b["sp"]) for b in v] for k, v in c["frames"].items()}
+
+
+def _stitch(c):
+    heads = [dict(h, box=tuple(h["box"])) for h in c["heads"]]
+    verts = [dict(v, box=tuple(v["box"])) for v in c["verticals"]]
+    cross = [dict(x, box=tuple(x["box"])) for x in c["crossers"]]
+    return heads, verts, cross, {int(k): v for k, v in c["held"].items()}
+
+
+def test_r7_stems_r6_stitched_over_blank_paper_are_not_joined():
+    """r6 cause 2, on the real runs behind lost notes (Litolff p9 glyph/9/0/2/1/0 -- 1.06 sp of empty column; p10 glyph/10/1/6/7/3): r4 joined
+    the two pieces because a head's box merely TOUCHED the gap. The pair is now refused `head_not_covering` -- the control is the refusal itself:
+    a head is there (the old rule's reason to join), it does not cover the gap."""
+    fx = _fx7()
+    for name in ("stitch_p9", "stitch_p10"):
+        c = fx[name]
+        heads, verts, cross, held = _stitch(c)
+        pairs = []
+        runs, cen = PS.join_runs(verts, heads, cross, held, pairs)
+        assert cen.get("refused:head_not_covering", 0) >= 1, (name, cen)
+        sb = c["stem_box"]                                              # the r6 stitched stem
+        assert not any(r["box"][1] <= sb[1] + 2 and r["box"][3] >= sb[3] - 2 and abs((r["box"][0] + r["box"][2]) / 2 - (sb[0] + sb[2]) / 2) < 6
+                       for r in runs), (name, [r["box"] for r in runs])
+
+
+def test_r7_a_covering_head_still_joins():
+    """The same rule keeps a real join: a head covering the whole gap (tile 7's chord, `test_r4_tile7...`) and, here, a gap a head covers
+    but for a sliver within LINE_GAP_SP."""
+    v1 = dict(ord=1, box=(100.0, 0.0, 103.0, 60.0), sp=20.0)
+    v2 = dict(ord=2, box=(100.0, 80.0, 103.0, 140.0), sp=20.0)
+    head = dict(id=0, members=[], box=(103.0, 62.0, 125.0, 80.0), sp=20.0)        # covers 62..80 of the gap 60..80: 2 px blank <= 6 px
+    runs, cen = PS.join_runs([v1, v2], [head], [])
+    assert len(runs) == 1 and cen.get("joined:head") == 1
+    short = dict(head, box=(103.0, 70.0, 125.0, 80.0))                             # 10 px blank > 6 px: touches, does not cover
+    runs, cen = PS.join_runs([v1, v2], [short], [])
+    assert len(runs) == 2 and cen.get("refused:head_not_covering") == 1
+
+
+def test_r7_tile3_head_in_the_gap_belongs_to_the_staff_the_page_owner_names():
+    """Sean's r4 tile 3 (Litolff p4, glyph/4/1/2/5/1, "an eighth", LOST with the page stems on): the head stands 2.2 spaces above staff 2 on its
+    ledger lines -- in the gap, so 'inside a staff' names nobody -- and r6 filed its stem in BOTH staves' cells. The page owner decided staff 2
+    (`ledger_and_stem`). Control: the same head without the page owner's row falls back to inside-the-staff and names nobody (filed on every
+    view, as before); with the owner row pointing the other way, the answer follows it -- the rule reads the owner, never nearness."""
+    c = _fx7()["copies"]["tile3"]
+    frames = _frames7(c)
+    h = next(h for h in c["heads"] if c["glyph"] in h["members"])
+    h = dict(h, box=tuple(h["box"]))
+    assert PS.own_staff(h, frames, c["owners"]) == "staff/4/1/2"
+    assert PS.own_staff(h, frames, {}) is None
+    flipped = {m: ["decided", "staff/4/1/1", "test"] for m in h["members"]}
+    assert PS.own_staff(h, frames, flipped) == "staff/4/1/1"
+    guessed = {m: ["guessed", "staff/4/1/2", "test"] for m in h["members"]}
+    assert PS.own_staff(h, frames, guessed) is None                    # a guess files on every view: GATHER never converts "cannot tell"
+
+
+def test_r7_the_copies_r6_filed_beside_seans_lost_tiles_are_not_filed():
+    """Around r4 tiles 3, 5 and 11 (Litolff; 5 = an eighth made a quarter, 3 and 11 lost): every head seen from two staves whose page stem r6
+    filed on a staff the page owner says is not its own -- the copies the neighbour-beam rule read as that staff's stem. Under r7 none of them
+    is filed; and the owner is always a staff the head was seen from."""
+    fx = _fx7()
+    dropped = 0
+    for name in ("tile3", "tile5", "tile11"):
+        c = fx["copies"][name]
+        frames = _frames7(c)
+        for h in c["heads"]:
+            hh = dict(h, box=tuple(h["box"]))
+            own = PS.own_staff(hh, frames, c["owners"])
+            seen = {PS._staff_key(m) for m in h["members"]}
+            assert own is None or own in seen
+            if own is not None:
+                dropped += sum(1 for m in h["filed_on"] if PS._staff_key(m) != own)
+    assert dropped >= 10, dropped
