@@ -31,7 +31,10 @@ def short(d):
             or (isinstance(v, (list, dict)) and len(json.dumps(v, default=str)) < 1500)}
 
 
+ARMS = sys.argv[sys.argv.index("--arms") + 1].split(",") if "--arms" in sys.argv else ["off", "on"]
 for arm, on in (("off", "0"), ("on", "1")):
+    if arm not in ARMS:
+        continue
     os.environ["OMR_PAGE_STEMS"] = on
     log, _ = RR.rebuild_gather({"observations": obs, "abstentions": abst, "verdicts": [], "format": rec.get("format")})
     RR.run_stages(log)
