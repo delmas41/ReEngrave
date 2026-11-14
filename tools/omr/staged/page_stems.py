@@ -111,6 +111,35 @@ JOIN_GAP_SP = 2.2
 SECOND_STEP_SP = 0.75
 
 
+def _two_voices_pairs(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]]) -> int:
+    """ROADMAP 2.306 r9 (Sean 2026-11-14, "Always when it is 2 voices", his r8 tile 10, Brahms p14 bar 14/1/9/5): where two voices share a column --
+    one stem up at the right, one down at the left -- the UPPER head takes the up stem and the LOWER head the down stem. Applied only where it is
+    two voices on the page: exactly two heads that each read `two_voices` on the SAME pair of strokes (one up, one down), one above the other.
+    A chord is not always two voices, and a voice with rests has no stem (Sean): anything else stays abstained. Returns how many heads it settled."""
+    tv = [h for h in heads if readings[h["id"]].get("state") == "two_voices"]
+    by_pair: Dict[Tuple[int, int], List[Dict[str, Any]]] = {}
+    for h in tv:
+        cs = readings[h["id"]]["candidates"]
+        up = [c for c in cs if c["direction"] == "up"]
+        dn = [c for c in cs if c["direction"] == "down"]
+        if len(up) == 1 and len(dn) == 1:
+            by_pair.setdefault((up[0]["stroke"], dn[0]["stroke"]), []).append(h)
+    n = 0
+    for (u, d), hs in by_pair.items():
+        if len(hs) != 2:
+            continue
+        cy = lambda h: (float(h["box"][1]) + float(h["box"][3])) / 2.0
+        upper, lower = sorted(hs, key=cy)
+        if cy(lower) - cy(upper) <= 0:
+            continue
+        for h, stroke, direction in ((upper, u, "up"), (lower, d, "down")):
+            r = readings[h["id"]]
+            c = next(c for c in r["candidates"] if c["stroke"] == stroke)
+            r.update(state="one", stroke=stroke, direction=direction, side=c["side"], margin=r.get("margin"), how="two_voices_upper_takes_up")
+            n += 1
+    return n
+
+
 def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> float:
     """The longest run of rows of [y0, y1] that no span covers (px). Pure."""
     edge, worst = y0, 0.0
@@ -285,6 +314,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
         else:
             r.update(state="two", stroke=None, direction=None, side=None, margin=round(cs[0]["fit"] - cs[1]["fit"], 3), how="two_candidates")
         readings[h["id"]] = r
+    _two_voices_pairs(heads, readings)
     # the stems: every stroke one head reads; direction = its heads' (one direction per stroke, else the stroke is two readings and abstains)
     stems: Dict[int, Dict[str, Any]] = {}
     for h in heads:

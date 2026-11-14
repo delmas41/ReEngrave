@@ -358,3 +358,20 @@ def test_r8_tile3_stem_runs_through_its_second_and_reaches_the_beam():
     pairs_m = []
     runs_m, _ = PS.join_runs(vm, hm, xm, held, pairs_m)
     assert (1936, 1938, "!heads_both_sides") in pairs_m, [p for p in pairs_m if 1936 in p[:2]]
+
+
+def test_r9_two_voices_in_one_column_upper_head_takes_the_up_stem():
+    """Sean's r8 tile 10 (Brahms p14 bar 14/1/9/5, "Dot 4", unread under r8): the second chord carries a stem up at the right (3729) and a stem down
+    at the left (3687), and both its heads read `two_voices` on that same pair. Sean 2026-11-14 ("Always when it is 2 voices"): the UPPER head takes
+    the up stem, the LOWER the down stem. Controls on the same real window: with only one head on the pair (a chord is not always two voices) it
+    stays abstained; the first chord, whose lower head already reads its own stem, is untouched."""
+    c = _fx7()["two_voices_p14"]
+    heads, verts, cross, held = _stitch(c)
+    r = PS.read(heads, verts, held, crossers=cross)["heads"]
+    assert (r["glyph/14/1/9/5/12"]["stroke"], r["glyph/14/1/9/5/12"]["direction"]) == (3729, "up")
+    assert (r["glyph/14/1/9/5/7"]["stroke"], r["glyph/14/1/9/5/7"]["direction"]) == (3687, "down")
+    assert r["glyph/14/1/9/5/7"]["how"] == "two_voices_upper_takes_up"
+    assert r["glyph/14/1/9/5/0"]["how"] == "engraving_side" and r["glyph/14/1/9/5/2"]["state"] == "two_voices"
+    alone = [h for h in heads if h["id"] != "glyph/14/1/9/5/12"]
+    r1 = PS.read(alone, verts, held, crossers=cross)["heads"]
+    assert r1["glyph/14/1/9/5/7"]["state"] == "two_voices"
