@@ -868,6 +868,20 @@ def _joins_n_stems(box, stems) -> int:
     return sum(1 for s in stems if _xywh(s) and _boxes_overlap(_xywh(s), box))
 
 
+def _page_view_only_for_copies(ev: Evidence, ncell, row) -> bool:
+    """ROADMAP 2.306 r7 (Sean 2026-11-13, "Yes": a stem is filed only with the staff its note belongs to; flag `OMR_PAGE_STEMS`, default OFF):
+    a page stem view (reader CV_PAGE_STEMS) filed in this cell ONLY for heads whose decided owner is another staff -- copies in the padded crop
+    -- is not this cell's staff's stem. GATHER files the view on every staff the head was seen from where the owner is not yet known there (the
+    page owner's ledger reading is deferred on most pages); here the owner IS known (`Q.GLYPH_OWNER`, the verdict EXPORT drops the copy by), so
+    the ruling is applied where the fact lives. r6: such views were 519 of 623 (Litolff) / 669 of 748 (Brahms), and this rule then threw the
+    home staff's own beam away (his r4 tiles 3, 5, 11). With the flag off, or a view no head reading names, or any naming head owned here: False."""
+    from .. import page_stems as _PS
+    if not _PS.enabled() or getattr(row, "reader", None) != READERS.CV_PAGE_STEMS:
+        return False
+    naming = [r for r in ev.rows(Q.PAGE_STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=ncell) if r.value == row.id]
+    return bool(naming) and all(owned_by_another_staff(ev, r.subject) for r in naming)
+
+
 def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
     """`(kept, dropped)`. ROADMAP 2.25b, class 1 (`other_staff_via_pad`,
     150 Brahms / 7 Litolff heads, FINDINGS SS13).
@@ -927,6 +941,8 @@ def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
             continue
         for s in _stems_connected_to_a_head(
                 ev, ncell, ev.rows(Q.STEM, scope=Scope.EXACT, subject=ncell)):
+            if _page_view_only_for_copies(ev, ncell, s):
+                continue
             box = _xywh(s)
             if box is not None:
                 neighbour_stems_page.append((st, _to_page(box, nframe)))

@@ -305,3 +305,33 @@ def test_r7_the_copies_r6_filed_beside_seans_lost_tiles_are_not_filed():
             if own is not None:
                 dropped += sum(1 for m in h["filed_on"] if PS._staff_key(m) != own)
     assert dropped >= 10, dropped
+
+
+def test_r7_a_view_filed_only_for_another_staffs_head_is_not_the_neighbours_stem(monkeypatch):
+    """Sean 2026-11-13 ("Yes"): a stem is filed only with its note's own staff. On most pages GATHER cannot know the owner when it files (the page
+    owner's ledger reading is deferred), so the neighbour-beam rule must not read a page view as the neighbour staff's stem when every head it was
+    filed for is owned elsewhere -- tile 3's head (glyph/4/1/1/5/2 seen from staff 1, owned by staff 2 per the page owner) is the real case.
+    Controls: the same view named by a head owned HERE is that staff's stem; a cell reader's row is never touched; flag off, nothing changes."""
+    from types import SimpleNamespace as NS
+    from tools.omr.staged.adjudicators import rhythm as R
+    from tools.omr.staged.record import Subject, READERS
+    ncell = Subject.from_key("cell/4/1/1/5")
+    copy = Subject.from_key("glyph/4/1/1/5/2")
+    view = NS(id="obs:7", reader=READERS.CV_PAGE_STEMS)
+
+    class Ev:
+        def __init__(self, owner):
+            self.owner = owner
+
+        def rows(self, q, scope=None, subject=None):
+            return (NS(value="obs:7", subject=copy),)
+
+        def verdict(self, q, subject=None):
+            return NS(outcome="decided", value=self.owner)
+
+    monkeypatch.setenv(PS.ENV, "1")
+    assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, view) is True
+    assert R._page_view_only_for_copies(Ev("staff/4/1/1"), ncell, view) is False
+    assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, NS(id="obs:7", reader=READERS.CV_LINES)) is False
+    monkeypatch.setenv(PS.ENV, "0")
+    assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, view) is False
