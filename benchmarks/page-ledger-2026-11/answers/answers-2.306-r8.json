@@ -1,0 +1,118 @@
+{
+ "lane": "2.306 r8",
+ "date": "2026-11-14",
+ "asked": "what does the print show at the orange box?",
+ "tiles_dir": "out/print/2.306-r8 (key.json outside tiles/)",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "glyph": "glyph/4/1/1/12/1",
+   "change": "flag gained eighth",
+   "sean": "8",
+   "on_wrote": "eighth (OFF: blue quarter)",
+   "verdict": "right (wrong->right)"
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "glyph": "glyph/5/1/9/6/14",
+   "change": "note gained quarter",
+   "sean": "Dot 4",
+   "on_wrote": "dotted quarter, tie start (OFF: nothing)",
+   "verdict": "right (unwritten->right)"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "glyph": "glyph/6/0/7/12/6",
+   "change": "note lost eighth",
+   "sean": "8",
+   "on_wrote": "eighth at the place (beam continue; OFF begin)",
+   "verdict": "right"
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "glyph": "glyph/4/1/11/8/12",
+   "change": "rest lost eighth",
+   "sean": "8 rest",
+   "on_wrote": "one eighth rest (OFF: two, voices 1 and 2)",
+   "verdict": "right (duplicate removed)"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "glyph": "glyph/11/0/2/0/7",
+   "change": "note lost eighth",
+   "sean": "Unison 8 notes",
+   "on_wrote": "two eighths, voices 1 and 2 (both arms)",
+   "verdict": "right"
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "glyph": "glyph/5/1/10/4/3",
+   "change": "flag gained eighth",
+   "sean": "8",
+   "on_wrote": "eighth, blue (OFF: nothing)",
+   "verdict": "right (unwritten->right)"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "glyph": "glyph/4/1/9/8/2",
+   "change": "beam gained continue",
+   "sean": "8",
+   "on_wrote": "eighth plain (OFF: blue eighth, flag)",
+   "verdict": "right"
+  },
+  {
+   "tile": 8,
+   "plate": "brahms",
+   "glyph": "glyph/19/0/12/0/13",
+   "change": "beam gained end/end",
+   "sean": "16",
+   "on_wrote": "sixteenth, blue (both arms)",
+   "verdict": "right"
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "glyph": "glyph/9/0/1/1/5",
+   "change": "blue lost guessed",
+   "sean": "8",
+   "on_wrote": "eighth plain (OFF: blue)",
+   "verdict": "right"
+  },
+  {
+   "tile": 10,
+   "plate": "brahms",
+   "glyph": "glyph/14/1/9/5/7",
+   "change": "dot lost",
+   "sean": "Dot 4",
+   "on_wrote": "nothing -- the chord /7 /12 left narrowed, bar marked (OFF: blue dotted quarter)",
+   "verdict": "WRONG: right->unread (marked, nothing invented)"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "glyph": "glyph/8/1/4/14/2",
+   "change": "control, note unchanged",
+   "sean": "8",
+   "on_wrote": "two eighths (both arms)",
+   "verdict": "right"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "glyph": "glyph/19/1/3/2/8",
+   "change": "control, note unchanged",
+   "sean": "Dot 4",
+   "on_wrote": "dotted quarter (both arms)",
+   "verdict": "right"
+  }
+ ],
+ "score": "11 of 12 right under ON; 1 wrong (tile 10: a correct blue dotted quarter became unread)",
+ "tile10_cause": "Brahms p14 bar 14/1/9/5: each chord carries a stem up AND a stem down (two voices sharing the heads, each a dotted quarter). ON's page stems give the stacked heads /0 and /2 different stems, the event grouping splits them and VOICES decides two voices -- the print's reading; OFF grouped them as one chord. The bar-arithmetic rule (inferences.solve_bare_stem_bar) declines a bar whose heads in one column are separate events (simultaneous_heads_not_grouped), so the second chord /7 /12 (narrowed, beam_discounted_uncertain in both arms) is no longer settled."
+}
