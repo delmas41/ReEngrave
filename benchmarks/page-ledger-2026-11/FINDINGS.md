@@ -483,3 +483,30 @@ cell join stems 350 / 86; retire takes away **259 / 66** (two-voice heads keep t
   its head end 4 / 1.
 So the blocker is ONE cause, not "stems fused into heads" as the manager had guessed: a stem that stands in
 the print and that the reader does not accept as standing at the head's side. Next: why.
+
+## 2.306 stems round 10 (2026-11-15) -- why "no free vertical at the head's stem side"; measurement only (`lane-2.306-stems-beams-page` 495fefbb6)
+
+STAGED. The page stem reader re-run offline from the r9 gathers; it reproduces the gathered answer for 175 of
+the 201 Litolff heads and all 35 Brahms heads (the other 26 left out). For each head: the nearest page-map
+vertical on the side the old join names, and the FIRST of the reader's three tests it fails.
+**There is no single cause.** First failing test (Litolff 175 / Brahms 35): stem starts more than 2 sp from
+the head centre 70 / 1; vertical more than 0.4 sp INSIDE the head-box edge 66 / 15; more than 0.4 sp OUTSIDE
+it 31 / 17; does not reach 1.5 sp past the head 5 / 2; no vertical near 3 / 0.
+- **A. Chord heads stacked against a mate (Litolff 64 of the 70).** One other head of the chord sits between
+  this head and where the stem starts; in 69 of 70 the stem column is inked all the way through. The stem is
+  printed and continuous; the reader measures the gap from this head's own centre and does not let a touching
+  chord mate carry the stem to it. 61 down stems, 9 up. Past the limit: 30 within 0.25 sp, 23 more within
+  0.5. The reader's own head-end test.
+- **B. Narrow ovals on half notes (Brahms 16 of 17 "outside"; Litolff 13).** The 2.290 head oval is 0.65-0.95
+  sp wide, narrower than the printed head, so the real stem stands 0.45-0.60 sp outside it, just past the 0.4
+  limit. The head reader's oval -- the stem reader's INPUT.
+- **C. Verticals inside the box edge (66 / 15): mixed.** 46 of the 66 use a detector box, not an oval; some
+  boxes span an accidental or a second head; some are cause A again; 43 Litolff heads miss the x limit by
+  0.1 sp or less.
+The "engraving side" is measured from the BOX edge (the 2.290 oval, else the strongest detector box), never
+from the head's ink edge locally -- against page-facts "measure locally". Half notes with short stems: a
+vertical is there and the side test refuses it 20 / 16; the stem is merged into the head as one blob stroke
+12 / 7; none is cut into pieces by staff lines.
+**Lesson.** A side test measured from a box inherits every fault of the box (too narrow an oval, a box over
+an accidental); 43 near-misses of 0.1 sp say the cut is measuring the box, not the note.
+Not built. 12 blind tiles (out/print/2.306-r10) go to Sean first.
