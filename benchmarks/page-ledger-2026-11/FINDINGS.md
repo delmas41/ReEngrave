@@ -461,3 +461,25 @@ Next for whoever takes the lane: `lane_report --flag OMR_PAGE_STEMS --from adjud
 recipe), then confirm tile 10's bar writes /7 /12 as dotted quarters plain. **Process lesson** (Sean: "Are we doing unnecessary long gathers?" -- yes): r8 and
 r9 were narrow changes already proven by a real-tile test; a one- or two-page gather of the affected pages proves them in minutes. The full frozen sample runs
 once per round, before tiles go to Sean or a landing is proposed -- never per small fix.
+
+## 2.306 stems round 9, measured (2026-11-15) -- `lane-2.306-stems-beams-page` 4efc39032; built OFF; the retire blocker is unchanged
+
+STAGED. Replays of the saved r9 gathers (frozen pages, flag ON, pre-retire); the ON arm reproduces the record.
+**Gate, OFF vs ON:** Litolff red bars 162 -> 154 (r8 152), notes +51 -42, flags +20 -21, ties +6 -4, slurs
++18 -14, not written 2187 -> 2161. Brahms red bars 143 -> 123 (r8 124), notes +49 -23, rests +10 -26, ties
++14 -17, slurs +42 -20, not written 3089 -> 3063. Judged right->wrong 0, unwritten->wrong 0 on both. Stem and
+duration tests flag ON 149 passed; check 229. (r9 touched only `page_stems.py` and its tests.)
+**Sean's tiles as the file writes them now:** r8 set 12 of 12 right (tile 10's bar: /12 G3 and /7 E-flat 3,
+dotted quarters, PLAIN, two voices; not red). r4 set 9 right, 0 wrong, 3 unwritten (5 narrowed
+`beams_ambiguous`; 7 dropped by EXPORT's chord check; 12 narrowed `beam_discounted_uncertain`). None wrong.
+`_two_voices_pairs` settles 10 columns (Litolff) / 13 (Brahms); heads still abstaining as two voices 309 / 82.
+**The retire blocker, by reason.** Real heads 4,692 / 4,810; with no page stem 698 / 171; of those the old
+cell join stems 350 / 86; retire takes away **259 / 66** (two-voice heads keep theirs) -- the same as r8:
+- no free vertical at the head's stem side: **214 / 49** -- of which a vertical lies NEAR but not at the
+  engraving side 201 / 35, and a vertical there is already claimed by an accidental, barline, clef, key or
+  word 13 / 14. On three Litolff crops the stem is plainly in the print (two half notes with short up-stems
+  inside the staff; a quarter whose down-stem stands by a barline) -- the lane's look, a lead only;
+- two candidates 19 / 2; one stroke read both ways 14 / 11; stroke fused into the head 8 / 3; stroke held by
+  its head end 4 / 1.
+So the blocker is ONE cause, not "stems fused into heads" as the manager had guessed: a stem that stands in
+the print and that the reader does not accept as standing at the head's side. Next: why.
