@@ -353,3 +353,12 @@ ledgers (detector) are the two upstream sources; `0/0/11/3/12` (tile 8) is an em
 column sees it; on the staff the page fact that would see it is the hollow head-shaped page stroke (`Q.PAGE_STROKE` blob `hole_share`, filed),
 but Litolff hollow heads are shattered by the staff lines (tiles 1 and 3: every piece `hole_share` 0.0), so it is not built -- measure first.
 **Held for Sean (not built):** a short arc whose two ends find the same closest note.
+
+**r7 tiles remade (2026-11-16; Sean could not answer the note-boxed r7 tiles).** out/print/2.305-r7b (sheet.png), key out/print/2.305-r7b-key.json.
+Each box is the arc's OWN ink as the binder had it (a page run's points; a 2.223 curve's pieces, each the union of its own page strokes plus its
+traced/stroke end), ticks under the two notes the file joins. Of the 12 unjudged r6->r7 changes, 6 qualify; 6 came from the OLD box path (no ink of
+ours behind them) and are not tiled. Flag ON (r7), written arcs by source: Litolff 192 = page pass 99, curve binding 28, old box path 65; Brahms
+300 = page pass 203, curve binding 23, joins across systems 4, old box path 70 (baseline ON: Litolff 49 old of 187, Brahms 67 of 296).
+**Scoring vs the reader.** The tile replay (`score_tiles.py`) matches an arc by its two NOTES only; the reader works from ink. So an arc counts
+"right" when the notes match even if the ink it bound was another arc (Sean's arcs-combined r2 tile 9 is exactly that), and a third of the
+written arcs are the old box path's, which no ink-based rule produced. Not fixed here: the replay needs the ink id (page run / curve) Sean's tile showed.
