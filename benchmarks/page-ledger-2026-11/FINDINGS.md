@@ -542,3 +542,26 @@ down; stem fused into the head's blob). A non-note can gain a stem by contact (L
 `glyph/10/0/0/10/11`, accidental-shaped box; not checked whether written). Fast tier flag ON 10,628 passed;
 check 229. Twelve blind tiles on the r9 -> r11 file changes (6 gained, 6 lost, all Litolff; only 14 notes
 change) in `out/print/2.306-r11`, sent to Sean.
+
+## 2.306 round 12 (2026-11-16) -- why r11 lost right notes and gained fakes
+
+STAGED, flag `OMR_PAGE_STEMS` OFF, branch tip 25c244dac. Sean's r11 tiles: 4 real gained, 2 fakes, 6 right
+notes lost (answers-2.306-r11.json).
+**Cause.** Of the 8 lost + 6 gained notes in the touched bars, 3 losses and 1 fake were NOT the reader: the r9
+code and the r11 code write them identically on ONE gather of pages 2/4/9; the two full gathers differed (OCR
+staff identity -> EXPORT `staff_not_identified`; pitch context). The rest: contact tipped a stroke the page
+reads both ways (3 lost, FIXED); contact met a sharp through the sharp's own bar (1 fake, FIXED: a stem meets
+its head at the head; a crossing bar or arc carries no contact); contact stems whose tip the beam readers then
+misread (2 lost, not fixed -- downstream tip reading).
+**Process lesson.** A loss or gain between two full gathers is not a change until re-run on one gather. And a
+number from our own look gets a print check before it is a rule (the lane's "ink must connect the pieces" rule,
+0.44 sp of blank, was withdrawn when a print showed the stem continuous under slanted beams).
+**Tile 12 (piece of an f) is not a stem-reader effect**: both readers write it on one gather. The fact that says
+"not a note" exists at GATHER (`holds_another_marks_ink`: a dynamic box stands on it) and nothing connects it;
+it belongs to the head reader (`notehead_is_not_a_notehead`); connecting it would refuse 3 Litolff + 8 Brahms
+written boxes, all unjudged. Not built. `glyph/10/0/0/10/11` (accidental-shaped) is written by the OFF arm too.
+**Measured.** Red bars OFF -> ON Litolff 172 -> 166, Brahms 143 -> 123; judged right->wrong 0 / 0. The 48 judged
+places: 34 right, 2 wrong (tremolo slash, the f -- both written by both arms), 12 unwritten. Retire blocker
+Litolff 259 -> 129 -> 136, Brahms 66 -> 50 -> 55 (one trade: r11 tiles 7 and 11, real eighths, no longer
+gained -- their chord mate's ink is a horizontal fused with a staff line). Fast tier flag ON 10,636 passed;
+check 229. Six tiles on the r11 -> r12 changes in `out/print/2.306-r12` (4 are places Sean already answered).
