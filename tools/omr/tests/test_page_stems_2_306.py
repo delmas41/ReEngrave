@@ -375,3 +375,47 @@ def test_r9_two_voices_in_one_column_upper_head_takes_the_up_stem():
     alone = [h for h in heads if h["id"] != "glyph/14/1/9/5/12"]
     r1 = PS.read(alone, verts, held, crossers=cross)["heads"]
     assert r1["glyph/14/1/9/5/7"]["state"] == "two_voices"
+
+
+# ── ROADMAP 2.306 r11: Sean's r10 tiles (benchmarks/page-ledger-2026-11/2306/cut_fixture_r11.py, from the r9 gathers) ─────────────────────────────
+
+FX11 = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_r11.json")
+R11_READ = {"t1": "down", "t5": "up", "t6": "down", "t7": "up", "t8": "down", "t10": "up", "t11": "down", "c_10_0_1_11_0": "down", "c_10_0_1_6_0": "down"}
+
+
+def _r11(name, contact):
+    with open(FX11) as f:
+        c = json.load(f)[name]
+    heads, verts, cross, held = _stitch(c)
+    strokes = {int(k): dict(v, box=tuple(v["box"])) for k, v in c["strokes"].items()} if contact else None
+    res = PS.read(heads, verts, held, crossers=cross, strokes=strokes)["heads"]
+    hid = next(h["id"] for h in heads if c["glyph"] in h["members"])
+    return res[hid]
+
+
+def test_r11_seans_r10_stems_refused_by_the_edge_test_read_by_contact():
+    """Sean's r10 tiles (2026-11-15): each a note with a printed stem in the old join's direction, each refused by the box-edge test (no_stroke) -- the
+    control is that refusal, on the same real window. The stem is at the head's side where its column TOUCHES the head's own ink (the page map's
+    contact), reaching the head through touching chord heads (tiles 6, 8 and the r10 chord controls on Litolff p10), side by the column against the
+    head ink's middle (up -> right, down -> left)."""
+    for name, d in R11_READ.items():
+        before = _r11(name, False)
+        assert before["how"] == "no_stroke", (name, before["how"])
+        after = _r11(name, True)
+        assert after["how"] == "contact_with_head_ink" and after["direction"] == d, (name, after["how"], after.get("direction"), after.get("candidates"))
+
+
+def test_r11_seans_non_notes_take_no_stem():
+    """Sean's r10 tiles 4 (a tremolo slash boxed as a head) and 12 (part of a p dynamic): a vertical touches their ink at its MIDDLE, which names no
+    side -- they abstain with the margin kept, never a stem."""
+    for name in ("t4", "t12"):
+        r = _r11(name, True)
+        assert r["state"] != "one" and r["how"] == "contact_at_middle" and r["margin"] is not None, (name, r)
+
+
+def test_r11_unresolved_tiles_stay_abstained():
+    """Not read, and must not be guessed: tile 2 (a second vertical touches the hollow head at its middle), tile 3 (the touching stroke stands right of
+    the head but runs DOWN from it -- the side and the extent disagree), tile 9 (the page map fused the stem into the head's blob: no vertical)."""
+    for name in ("t2", "t3", "t9"):
+        r = _r11(name, True)
+        assert r["state"] != "one", (name, r)

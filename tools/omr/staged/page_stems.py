@@ -140,6 +140,135 @@ def _two_voices_pairs(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[
     return n
 
 
+#: ROADMAP 2.306 r11: a stem column touching a head this close to the middle of the head's ink (local spaces) names no side -- abstain, margin kept
+CONTACT_MID_SP = 0.1
+
+
+def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], runs: Sequence[Dict[str, Any]], strokes: Dict[int, Dict[str, Any]],
+                  held: Dict[int, str]) -> int:
+    """ROADMAP 2.306 r11 (Sean 2026-11-15, his r10 tiles: ten printed stems the edge test refused). For a head that read NO stroke: a stem is at the
+    head's side where the stem's COLUMN TOUCHES THE HEAD'S OWN INK -- measured against the head, locally, by the page map's own contact (`touches`,
+    after the staff lines are erased), never by the box edge with a tolerance. The column is the vertical run and every stroke standing in its column
+    that touches it in turn (an erased line's gap is the run joiner's); so a chord head reaches its stem THROUGH the touching heads of its chord
+    (page-facts: every head on one stem shares it) -- never over blank paper. Side: the column's centre against the head ink's middle (up -> right,
+    down -> left); within CONTACT_MID_SP of the middle it abstains, margin kept. The run must reach REACH_SP past the head the way it points, and its
+    head end must stop at the heads it touches (a stem running on past them is another voice's). A direction another head already read on the run
+    contradicts is left alone (a second's displaced head is the seconds rule's). `strokes`: `{ord: {box, kind, touches}}` of the page. Returns how
+    many heads it read."""
+    sbox = {o: s["box"] for o, s in strokes.items()}
+    tch: Dict[int, set] = {o: {int(j) for j, _c in (s.get("touches") or ())} for o, s in strokes.items()}
+    for o, ts in list(tch.items()):
+        for j in ts:
+            tch.setdefault(j, set()).add(o)
+    # each head's own ink: its claimed strokes, and every non-vertical, unheld stroke centred inside its box or covering half of it (Litolff MERGES a
+    # head with its neighbours or a stem stub into one stroke: the ink AT the head is still the head's). The box is only where to look.
+    ink: Dict[Any, set] = {}
+    for h in heads:
+        x0, y0, x1, y1 = h["box"]
+        area = max(1.0, (x1 - x0) * (y1 - y0))
+        mine = {int(i) for i in (h.get("strokes") or ()) if int(i) in strokes}
+        for o, s in strokes.items():
+            if s.get("kind") in ("vertical", "barline") or o in held:
+                continue
+            b = s["box"]
+            cover = max(0.0, min(x1, b[2]) - max(x0, b[0])) * max(0.0, min(y1, b[3]) - max(y0, b[1])) / area
+            if (x0 <= (b[0] + b[2]) / 2.0 <= x1 and y0 <= (b[1] + b[3]) / 2.0 <= y1) or cover >= 0.5:
+                mine.add(o)
+        ink[h["id"]] = mine
+    owner_of: Dict[int, List[Any]] = {}
+    for hid, s in ink.items():
+        for o in s:
+            owner_of.setdefault(o, []).append(hid)
+    read_dirs: Dict[int, set] = {}
+    for hid, r in readings.items():
+        if r.get("state") in ("one", "second") and r.get("stroke") is not None:
+            read_dirs.setdefault(int(r["stroke"]), set()).add(r["direction"])
+    hby = {h["id"]: h for h in heads}
+    chains: Dict[int, Tuple[set, List[Any]]] = {}
+
+    def chain(run: Dict[str, Any]) -> Tuple[set, List[Any]]:
+        o = int(run["ord"])
+        if o in chains:
+            return chains[o]
+        cx0, cy0, cx1, cy1 = run["box"]
+        sp = float(run.get("sp") or 1.0)
+        colw = max(1.0, cx1 - cx0)
+        seen = set(int(m) for m in run.get("members") or [o])
+        todo = list(seen)
+        while todo:
+            a = todo.pop()
+            for t in tch.get(a, ()):
+                if t in seen or t in held or t not in sbox:
+                    continue
+                b = sbox[t]
+                ov = min(cx1, b[2]) - max(cx0, b[0])
+                if ov < 0.5 * min(colw, max(1.0, b[2] - b[0])) or b[3] < cy0 - 6 * sp or b[1] > cy1 + 6 * sp:
+                    continue
+                seen.add(t)
+                todo.append(t)
+        hs = sorted({hid for t in seen for hid in owner_of.get(t, ())} |
+                    {hid for hid, s in ink.items() if any(t in s for a in seen for t in tch.get(a, ()))}, key=str)
+        chains[o] = (seen, hs)
+        return chains[o]
+
+    n = 0
+    for h in heads:
+        r = readings[h["id"]]
+        if r.get("state") != "none" or r.get("how") != "no_stroke" or r.get("held"):
+            continue
+        mine = ink.get(h["id"]) or set()
+        if not mine:
+            continue
+        # the head ink's extent, each stroke clipped to the head's box (a stroke fused with a neighbour reaches beyond the head)
+        hx0, hx1 = h["box"][0], h["box"][2]
+        ib = [(max(hx0, sbox[i][0]), min(hx1, sbox[i][2])) for i in mine if min(hx1, sbox[i][2]) > max(hx0, sbox[i][0])]
+        if not ib:
+            continue
+        ix0, ix1 = min(b[0] for b in ib), max(b[1] for b in ib)
+        cy = (h["box"][1] + h["box"][3]) / 2.0
+        found = []
+        for run in runs:
+            o = int(run["ord"])
+            if o in held:
+                continue
+            bx0, by0, bx1, by1 = run["box"]
+            sp = float(run.get("sp") or h.get("sp") or 1.0)
+            if bx1 < h["box"][0] - NEAR_SP * sp or bx0 > h["box"][2] + NEAR_SP * sp or by1 < cy - 12 * sp or by0 > cy + 12 * sp:
+                continue
+            seen, hs = chain(run)
+            if h["id"] not in hs:
+                continue
+            margin = ((bx0 + bx1) / 2.0 - (ix0 + ix1) / 2.0) / sp
+            if abs(margin) < CONTACT_MID_SP:
+                found.append(dict(stroke=o, direction=None, margin=round(margin, 3), why="contact_at_middle"))
+                continue
+            d = "up" if margin > 0 else "down"
+            reach = ((cy - by0) if d == "up" else (by1 - cy)) / sp
+            if reach < REACH_SP:
+                continue
+            hb_ = [hby[k]["box"] for k in hs if k in hby]
+            end_ok = (by1 <= max(b[3] for b in hb_) + HEAD_END_SP * sp) if d == "up" else (by0 >= min(b[1] for b in hb_) - HEAD_END_SP * sp)
+            if not end_ok:
+                continue
+            if read_dirs.get(o) and d not in read_dirs[o]:
+                continue
+            found.append(dict(stroke=o, direction=d, side="right" if d == "up" else "left", margin=round(margin, 3), reach=round(reach, 2),
+                              heads_on_column=len(hs), why="contact"))
+        ok = [f for f in found if f["why"] == "contact"]
+        if len(ok) == 1 and not any(f["why"] == "contact_at_middle" for f in found):
+            f = ok[0]
+            r.update(state="one", stroke=f["stroke"], direction=f["direction"], side=f["side"], margin=f["margin"], how="contact_with_head_ink",
+                     candidates=found)
+            n += 1
+        elif found:
+            dirs = {f["direction"] for f in ok}
+            how = ("contact_at_middle" if any(f["why"] == "contact_at_middle" for f in found) else
+                   ("contact_two_voices" if dirs == {"up", "down"} else "contact_two_candidates"))
+            r.update(state="two" if how != "contact_at_middle" else "none", how=how, candidates=found,
+                     margin=min((abs(f["margin"]) for f in found), default=None))
+    return n
+
+
 def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> float:
     """The longest run of rows of [y0, y1] that no span covers (px). Pure."""
     edge, worst = y0, 0.0
@@ -255,7 +384,7 @@ def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any
 
 
 def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], held: Optional[Dict[int, str]] = None,
-         crossers: Optional[Sequence[Dict[str, Any]]] = None) -> Dict[str, Any]:
+         crossers: Optional[Sequence[Dict[str, Any]]] = None, strokes: Optional[Dict[int, Dict[str, Any]]] = None) -> Dict[str, Any]:
     """The page's stems (module doc). Pure. `heads`: `[{id, members, box (x0, y0, x1, y1) page px, sp}]`; `verticals`: `[{ord, box (x0, y0, x1, y1), sp}]`
     (the page map's vertical strokes); `held`: `{ord: owner}` of strokes an earlier claim holds; `crossers` (ROADMAP 2.306 r4): the other page strokes
     -- when given, the vertical pieces are first joined into whole stems (`join_runs`) and a stem's `members` are its pieces. Returns `{"heads": {id:
@@ -315,6 +444,8 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             r.update(state="two", stroke=None, direction=None, side=None, margin=round(cs[0]["fit"] - cs[1]["fit"], 3), how="two_candidates")
         readings[h["id"]] = r
     _two_voices_pairs(heads, readings)
+    if strokes is not None:
+        _contact_pass(heads, readings, [dict(v, members=members_of.get(int(v["ord"]), [int(v["ord"])])) for v in vs], strokes, held)
     # the stems: every stroke one head reads; direction = its heads' (one direction per stroke, else the stroke is two readings and abstains)
     stems: Dict[int, Dict[str, Any]] = {}
     for h in heads:
@@ -415,9 +546,11 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
 def _page_heads_of(one_heads: Any) -> List[Dict[str, Any]]:
     """The 2.290 page heads as the reader's input: one per group of boxes (twins folded), the head's oval where it has one, else its strongest box."""
     oval_of = {}
+    strokes_of: Dict[int, List[int]] = {}
     for h in getattr(one_heads, "heads", None) or ():
         if h.get("oval"):
             oval_of[int(h["group"])] = tuple(float(v) for v in h["oval"])
+        strokes_of[int(h["group"])] = [int(i) for i in (h.get("strokes") or ())]       # ROADMAP 2.306 r11: the head's own ink, for the contact pass
     out = []
     for gi, g in enumerate(getattr(one_heads, "groups", None) or ()):
         if not g:
@@ -425,7 +558,7 @@ def _page_heads_of(one_heads: Any) -> List[Dict[str, Any]]:
         items = [one_heads.items[i] for i in g]
         rep = max(items, key=lambda t: float(t.get("conf") or 0.0))
         box = oval_of.get(gi) or tuple(float(v) for v in rep["box"])
-        out.append(dict(id=gi, members=[t["key"] for t in items], box=box, sp=float(rep.get("sp_head") or 1.0), ink=gi in oval_of))
+        out.append(dict(id=gi, members=[t["key"] for t in items], box=box, sp=float(rep.get("sp_head") or 1.0), ink=gi in oval_of, strokes=strokes_of.get(gi, [])))
     return out
 
 
@@ -507,7 +640,12 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
         x, y, w, h = (float(v) for v in st.box)
         kind = "slash" if held.get(i) == "tremolo" else ("beam" if st.kind == "horizontal" and float(st.thickness_sp) >= 0.4 else str(st.kind))
         crossers.append(dict(ord=i, box=(x, y, x + w, y + h), kind=kind))
-    res = read(heads, verticals, held, crossers=crossers)
+    # ROADMAP 2.306 r11: every page stroke with the page map's own contacts, for the contact pass (a stem touches its head's ink)
+    all_strokes = {}
+    for i, st in enumerate(page_map.strokes):
+        x, y, w, h = (float(v) for v in st.box)
+        all_strokes[i] = dict(box=(x, y, x + w, y + h), kind=str(st.kind), touches=[(int(j), float(c)) for j, c in (getattr(st, "touches", None) or ())])
+    res = read(heads, verticals, held, crossers=crossers, strokes=all_strokes)
     from . import page_owner as PO
     frames = PO.staff_frames(cells, local)
     owners = _page_owner_rows(log, heads, Q.PAGE_MARK_OWNER, Subject)
