@@ -5768,7 +5768,45 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
     if not dets:
         counters["beam_cells_without_a_frame_ruler"] += 1
         return
-    _legacy.annotate_beams(stream, dets)
+    from . import page_stems as _PS
+    if not _PS.enabled():
+        _legacy.annotate_beams(stream, dets)
+        return
+    flagged = [ev for ev in stream if _value_from_its_own_flag(
+        [(rec.verdict(Q.DURATION, h.get("glyph")) or {}).get("detail") for h in (ev.get("noteheads") or ()) if h.get("glyph")])]
+    counters["beam_group_flagged_notes_kept_flagged"] += len(flagged)
+    beam_stream_keeping_flags(stream, dets, flagged)
+
+
+def _value_from_its_own_flag(details: Sequence[Optional[Dict[str, Any]]]) -> bool:
+    """ROADMAP 2.306 r14 (flag `OMR_PAGE_STEMS`): this event's value was read from a FLAG on its own stem -- the duration reader attached a flag and
+    joined no beam to the stem, and no beam level is certain on it (`rhythm` duration detail: `flags_attached`, `beams_by_stem`, `levels_certain`).
+    Every head of the event that the duration reader read must agree (a chord shares one stem: one head with a beam joined means the stem is
+    beamed). Pure."""
+    seen = [d for d in details if isinstance(d, dict) and "flags_attached" in d]
+    if not seen:
+        return False
+    if any(d.get("beams_by_stem") or d.get("levels_certain") for d in seen):
+        return False
+    return any(d.get("flags_attached") for d in seen)
+
+
+def beam_stream_keeping_flags(stream: List[Dict[str, Any]], dets: List[Dict[str, Any]], flagged: Sequence[Dict[str, Any]]) -> None:
+    """ROADMAP 2.306 r14 (flag `OMR_PAGE_STEMS`; Sean 2026-10-22, page-facts "Beam, flag, slash": *"if there is a flag it should be treated as a
+    flag"*). A note whose stem carries a flag is written flagged: it is never put in a beam group, neither under a stroke the cell's beam reader
+    filed across its x (a slur, a neighbour staff's beam, a ledger run -- the grouping reads x only, `annotate_beams`) nor in a run of its
+    flagged neighbours. Every other note is grouped exactly as `annotate_beams` groups it. The flagged events are handed over with no beam level
+    for the call and given their own back afterwards, so a flagged note also breaks a run, as a rest does. In place."""
+    keep = []
+    for ev in flagged:
+        for h in ev.get("noteheads") or ():
+            keep.append((h, h.get("beam_levels")))
+            h["beam_levels"] = 0
+    try:
+        _legacy.annotate_beams(stream, dets)
+    finally:
+        for h, lv in keep:
+            h["beam_levels"] = lv
 
 
 def _measure_xml(rec: Record, run: StaffRun, cell_index: int,

@@ -590,6 +590,25 @@ def _page_heads_of(one_heads: Any) -> List[Dict[str, Any]]:
     return out
 
 
+def sp_of(page_map: Any, i: int) -> float:
+    """The local staff space of page stroke `i` (its own, else the page's)."""
+    st = page_map.strokes[i]
+    return float(getattr(st, "staff_space_local", None) or page_map.sp)
+
+
+def stem_runs_out_of_the_accidental(stroke: Any, acc_box: Sequence[float], sp: float) -> bool:
+    """ROADMAP 2.306 r14: an accidental's strokes end where the accidental ends. A VERTICAL stroke the detector's accidental box only partly
+    holds -- it runs on above or below the box by more than an erased line's thickness (`LINE_GAP_SP`) -- is not the accidental's: it is a
+    stem standing beside it (a down stem at the head's left, on the side the accidental stands; r13 study "an earlier claim holds the stem",
+    r14: of 15 Brahms heads refused only because a detector accidental box held the stroke, 14 were real notes with a printed stem by our look). Never frees a stroke that lies inside the box (a flat's or a sharp's
+    own verticals). Pure. `stroke.box` is (x, y, w, h) page px; `acc_box` (x0, y0, x1, y1) page px."""
+    if getattr(stroke, "kind", None) != "vertical":
+        return False
+    x, y, w, h = (float(v) for v in stroke.box)
+    tol = LINE_GAP_SP * sp
+    return y < float(acc_box[1]) - tol or y + h > float(acc_box[3]) + tol
+
+
 def held_strokes(log: Any, page_sub: Any, page_map: Any, detections: Optional[Dict[str, List[Any]]], cells: Sequence[Any],
                  local: Dict[int, Tuple[int, int]]) -> Dict[int, str]:
     """`{page stroke ordinal: owner}` an earlier claim holds (module doc): page-stroke claims (every owner but the heads' own ovals and this reader),
@@ -634,6 +653,8 @@ def held_strokes(log: Any, page_sub: Any, page_map: Any, detections: Optional[Di
                 if pb is None:
                     continue
                 for i in PCN.strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN):
+                    if stem_runs_out_of_the_accidental(page_map.strokes[int(i)], pb, sp_of(page_map, int(i))):
+                        continue
                     held.setdefault(int(i), "accidental")
     return held
 
