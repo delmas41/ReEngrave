@@ -192,12 +192,12 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
     hby = {h["id"]: h for h in heads}
     run_of = {int(m): int(r["ord"]) for r in runs for m in (r.get("members") or [r["ord"]])}
     head_ink = set(owner_of)
-    chains: Dict[int, Tuple[set, List[Any]]] = {}
+    chains: Dict[Tuple[int, Any], Tuple[set, List[Any]]] = {}
 
-    def chain(run: Dict[str, Any]) -> Tuple[set, List[Any]]:
+    def chain(run: Dict[str, Any], for_head: Any) -> Tuple[set, List[Any]]:
         o = int(run["ord"])
-        if o in chains:
-            return chains[o]
+        if (o, for_head) in chains:
+            return chains[(o, for_head)]
         cx0, cy0, cx1, cy1 = run["box"]
         sp = float(run.get("sp") or 1.0)
         colw = max(1.0, cx1 - cx0)
@@ -211,7 +211,7 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 b = sbox[t]
                 if strokes[t].get("kind") in ("horizontal", "curve") and not any(t in core[k] for k in owner_of.get(t, ())):
                     continue        # ROADMAP 2.306 r12: a beam, bar or arc crosses the column -- it is not the column's ink (a stem runs through
-                    #                 its chord's heads or bare stem, never along a crossing mark)
+                    #                 its chord's heads -- their own ink -- or bare stem, never along a crossing mark)
                 ov = min(cx1, b[2]) - max(cx0, b[0])
                 if ov < 0.5 * min(colw, max(1.0, b[2] - b[0])) or b[3] < cy0 - 6 * sp or b[1] > cy1 + 6 * sp:
                     continue
@@ -219,8 +219,8 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 todo.append(t)
         hs = sorted({hid for t in seen for hid in owner_of.get(t, ())} |
                     {hid for hid, s in ink.items() if any(t in s for a in seen for t in tch.get(a, ()))}, key=str)
-        chains[o] = (seen, hs)
-        return chains[o]
+        chains[(o, for_head)] = (seen, hs)
+        return chains[(o, for_head)]
 
     n = 0
     for h in heads:
@@ -246,7 +246,7 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             sp = float(run.get("sp") or h.get("sp") or 1.0)
             if bx1 < h["box"][0] - NEAR_SP * sp or bx0 > h["box"][2] + NEAR_SP * sp or by1 < cy - 12 * sp or by0 > cy + 12 * sp:
                 continue
-            seen, hs = chain(run)
+            seen, hs = chain(run, h["id"])
             if h["id"] not in hs:
                 continue
             # ROADMAP 2.306 r12 (Sean's r11 tile 6: a sharp sign written as a note): a stem touches its head AT the head. Where the column meets only
