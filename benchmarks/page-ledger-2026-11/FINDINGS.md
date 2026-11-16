@@ -510,3 +510,35 @@ vertical is there and the side test refuses it 20 / 16; the stem is merged into 
 **Lesson.** A side test measured from a box inherits every fault of the box (too narrow an oval, a box over
 an accidental); 43 near-misses of 0.1 sp say the cut is measuring the box, not the note.
 Not built. 12 blind tiles (out/print/2.306-r10) go to Sean first.
+
+## 2.306 round 11 (2026-11-15) -- the stem is read by contact with the head's ink
+
+STAGED, flag `OMR_PAGE_STEMS` OFF, branch `lane-2.306-stems-beams-page` tip 18146253a. 2.310 rule 1.
+**Cause.** The reader judged a stem by distance from the head's BOX edge with a tolerance; the page map had
+already measured which strokes touch which. **Lesson.** Use the contact the page map has measured instead of
+re-measuring it with a tolerance.
+**Built.** (B) A head the edge test left bare reads a stem where the stem's column touches the head's own ink;
+side from the column against the middle of that ink; touching at the middle abstains (`contact_at_middle`,
+margin kept). (A) One chord rule (Sean: "long stems that connect chords"): a head hangs on a stem when the
+column runs to it through a chord head or bare stem, never through another stem's pieces. Controls from real
+cases, each failing on the old reader first: r10 tiles 1,5,6,7,8,10,11 read in Sean's direction; 4 and 12
+abstain; wide chords (Litolff p10, Brahms p4 four heads over 6.3 sp) on one stem; two voices end to end stay
+two stems.
+**Measured (OFF vs ON, one gather per plate).** Red bars Litolff 172 -> 166, Brahms 143 -> 123; judged
+right->wrong 0 / 0. The OFF arm moved between the r9 and r11 gathers (Litolff 162 -> 172: OCR word claims vary
+by gather), so only the within-gather pair is clean; the like-for-like r9 -> r11 file comparison is the
+two-page gathers: +3 notes Litolff, none Brahms. Before retire the file hardly moves because the old cell join
+already stems these heads.
+**Retire blocker (real heads that would lose their stem): Litolff 259 -> 129, Brahms 66 -> 50.** Left, by
+reason (Litolff / Brahms): a vertical near but none at the head's side 53 / 12; stroke held by an accidental,
+barline, word, clef or key claim 17 / 14; two candidates 19 / 2; contact at the middle 14 / 7; stroke read
+both ways 12 / 11; fused into inked heads 9 / 3; head end 4 / 1. Two-voice heads (91 / 20) keep the old join
+and are not counted.
+**Sean's 36 judged places as written now.** r4 9 right, 3 unwritten (5, 7, 12); r8 12 right; r10 9 right,
+2 unwritten (2, 8), 1 wrong (tile 4, the tremolo slash, written as a note in BOTH arms: the detector boxed it
+0.37 and the old join stems it). Tile 12 (part of a p) is no longer written with the flag ON.
+**Open.** r10 tiles 2, 3, 9 still abstain (second vertical at the middle; stroke right of the head running
+down; stem fused into the head's blob). A non-note can gain a stem by contact (Litolff p10
+`glyph/10/0/0/10/11`, accidental-shaped box; not checked whether written). Fast tier flag ON 10,628 passed;
+check 229. Twelve blind tiles on the r9 -> r11 file changes (6 gained, 6 lost, all Litolff; only 14 notes
+change) in `out/print/2.306-r11`, sent to Sean.
