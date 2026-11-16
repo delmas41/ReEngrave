@@ -291,3 +291,65 @@ pins. `check` 216, ok (was 217). The 17 arc test files: 141 / 0 OFF; ON 140 / 1 
 **Open / not verified.** The 12 tiles not yet answered; whole notes nobody boxed are not
 seen by the unread-ink guard (no stem); `END_REACH_SPACES` still used by fix 4 (`staff_ink_vs_owner`); direction ("stops short") not in
 the rule; scripts: scratchpad r6/ (declines.py, score_tiles.py, kind_causes.py, margins.py, tiles.py).
+
+## 2.305 round 7 (2026-11-15) -- the cause of each r6 miss; built OFF, `lane-2.305-arc-binding`; NOT landed
+
+STAGED, `OMR_PAGE_ARC_WRITE` (OFF). Sean's r6 answers: answers/answers-2.305-r6.json. Rule owning the value: page-facts "An arc ends at the
+notes standing where its ink ends" (Sean 2026-11-15).
+
+**Cause (all six misses).** Dropping the reach window let the closest-note rule run on inputs the window had been hiding. In every case the
+note list or the ink end handed to the rule was wrong, never the rule's choice among right inputs:
+- tile 1 (b): the tie's stop note was boxed in part and ADJUDICATE refused it (`13/0/10/11/3`, `too_narrow`); 2.290 had claimed its ink for
+  that box, so the guard counted the ink as read; the end reached the next note 10 spaces on. The window had answered "no head".
+- tile 3 (b): the half-note chord the tie starts at has NO notehead box at all, only ledger boxes (and an `arpeggiato` box); its hollow heads
+  are shattered by the ledgers, so no head-sized blob exists; the start reached an eighth 6 spaces back.
+- tile 5 (b): the left end of a system-start piece "bound" a box on the key signature that ADJUDICATE NARROWED (key claim), not refused;
+  the binder used `not refused` as "a note", so doubt became a note and defeated the system-edge test.
+- tile 8 (a)+(d): the page map carves barlines out of strokes, so the slur's page stroke ended AT the barline; r6 always took the stroke end
+  as the ink end (2.271 took it only when it ran PAST the trace). And the 2.223 window's 2.5-space height limit had been the only "an arc is
+  OVER its notes" guard on detector curves.
+- tile 12 (c): `unread_ink_at_end` -- the "unread" ink was the top of the tied head itself, cut off by its own ledger line (box drawn low).
+  Its twin tile 9 has no ledger cut, so no blob, so it bound.
+- tile 7 (c): the cup's left end stands between two chords' stem tips about equally close (`two_columns_at_end`, 0.28 sp apart); with no
+  binding, the old fallback decided its boxes "tie" and the old box-merge that had produced the slur no longer ran. Not fixed (the rule's
+  abstention is right; the old fallback is what changed).
+**Process lesson.** A guard defined by "a box stands on it" inherits every box fault: refused boxes, narrowed boxes, boxes drawn off their
+head, ledger boxes on staff lines. The guard must be defined on the page's own facts -- the verdicts, the claims, the staff lines -- and every
+"read" in it must be ADJUDICATE's reading, not GATHER's box.
+
+**Built (rule's words, no new number):** (1) a notehead box refused or narrowed reads no note, and 2.290's claim made for refused boxes reads
+none; (2) a narrowed head is never a candidate but is note-like ink at the end ("cannot tell" where as near) -- also Sean's tile 2 stop note
+`14/7`, narrowed `stem_end_ink_only`; (3) page-facts "there is no far note without a ledger": a column of ledger lines (outside the staff
+body, `page_heads`' rung test) with no read note in it is a note nobody read; (4) a blob that, joined with a read head beside it, is still one
+head's size is that head's ink (`page_heads` shape numbers); (5) the ink ends at the OUTERMOST of the traced end and the stroke end;
+(6) the closest note wholly on the arc's far side (a cap's above its end, a cup's below) -> `head_on_the_arcs_far_side`. Controls:
+`tests/test_arc_ends_r7_2_305.py` (real rows, fixture `data/rule_arc_ends_r7_2_305.json`): NEVER tiles 1, 2, 3, 5, 8; YES tiles 4, 9, 12
+and a twin (the head unboxed -> its cut-off ink refuses again). The r6 replay is the failing-first evidence (each pair written wrong / not
+written there); the test file itself cannot run on the r6 tree (new arguments).
+
+**Causes over ALL arcs r6 changed (r6base vs r6new2, 4 pages a plate):** r6 wrote 23 new, removed 7. r7 keeps 13 of the 23 (incl. Sean's
+right 2, 4, 6, 9, 11) and removes 10: (b) a note nobody read -- refused box 1, ledger column 2 (tile 3 and its chord's slur), narrowed box
+1; (a) ink end at a barline cut / end moved to the outermost ink 5 (tile 8; unjudged: Litolff `15/1/3/1/2`, `15/1/9/9/3`, Brahms
+`0/0/11/0/4`->`1/6` now back to the baseline's `1/13`, `20/1/8/4/1`); 1 unexplained (`20/1/8/4/7`->`4/6`, an old-path arc). Of the 7 removed,
+r7 restores 3 (Brahms, incl. tile 12: the head's own ink); 4 stay lost, all (c) `two_columns_at_end` (tile 7; r2 tile 1 at 0.47 sp;
+Litolff `15/1/8/10/0`, `15/1/9/9/3`->`10/2`).
+**Upstream, counted, not patched:** r7 replay, ends refused by the guard: Litolff narrowed heads 9, unread blobs 13, ledger columns 2,
+another staff 7; Brahms narrowed 2, blobs 6, another staff 7. Narrowed real heads (ADJUDICATE's head reader) and unboxed hollow heads on
+ledgers (detector) are the two upstream sources; `0/0/11/3/12` (tile 8) is an empty notehead box beside a stem. The chord column by x (tile
+2's black head of the other voice, one stem touching both) needs the voice / chord reader, not the binder.
+
+**Measures** (re-adjudicated saved 2305 gathers, same stages; baseline = 18ba158f9 merge before r6):
+- lane_report file change, baseline OFF vs ON -> r6 -> r7: Litolff ties +18 / +24 -2 / +22 -2, slurs +7 -39 / +36 -44 / +29 -43; Brahms
+  ties +10 -2 / +10 -2 / +12 -2, slurs +30 -101 / +40 -99 / +33 -98; Brahms p0+p1 ties +18 / +18 -2 / +20 -2, slurs +22 -70 / +29 -77 / +23 -71.
+  Judged answers right->wrong 0 and unwritten->wrong 0 on all three, every arm.
+- Sean's arc tiles (r1, r2, r4, r6; by glyph key; a different arc from the same start counts WRONG): r6 -> r7: 4 wrong -> right (r6 tiles 1, 3,
+  5, 8), 1 unwritten -> right (r6 tile 12), right->wrong 0, right->unwritten 0. Baseline -> r7: right->wrong 0, right->unwritten 2 (r2 tile 1,
+  r6 tile 7), unwritten->right 4, wrong->right 1.
+- Page-pass declines r6 -> r7: Litolff written 175 -> 165 (ties 127 -> 118), `unread_ink_at_end` 5 -> 17; Brahms 275 -> 273.
+- Tiles: out/print/2.305-r7 (12 unjudged r6->r7 changes: 4 arcs r7 writes, 8 it removed; whole arc in the crop, box on the two notes only),
+  key out/print/2.305-r7-key.json. Tile 3's crop is very wide (the old path's arc: every curve over the notes' span is shown).
+
+**Owed from r6.** Fast tier after the KNOWN_GAPS fix and `check`: see the lane report. Whole note nobody boxed: on ledger lines the r7 ledger
+column sees it; on the staff the page fact that would see it is the hollow head-shaped page stroke (`Q.PAGE_STROKE` blob `hole_share`, filed),
+but Litolff hollow heads are shattered by the staff lines (tiles 1 and 3: every piece `hole_share` 0.0), so it is not built -- measure first.
+**Held for Sean (not built):** a short arc whose two ends find the same closest note.
