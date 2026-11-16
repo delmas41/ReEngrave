@@ -3348,6 +3348,8 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
     b.update(start=lk, stop=rk, start_step=sa, stop_step=sb, start_step_source=src_a, stop_step_source=src_b,
              dy_spaces=round(dy, 3), relation=relation, between=len(between), head_ids=[rows[lk].id, rows[rk].id],
              crosses_barline=hl["cell"] != hr["cell"])
+    if _arc_claim.rule_enabled() and between:
+        b["between_heads"] = list(between[:6])          # ROADMAP 2.305 r6 (job 2): which heads stand between, for the cause of `same_pitch_heads_between`
     if contested is not None:
         b.update(why="step_conflict_one_end_contested", contested_end=contested)
     elif relation == "different" and tie_arc_side_enabled() and arc_class == "tie" and b.get("stem_tip_ends"):
@@ -6674,6 +6676,13 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
                     entry.update(edge=side, edge_head=str(other["head"]), x_end=float(e[0]), sp=sp, staff_key=home)
             if b.get("relation") is not None:
                 entry["relation"] = b.get("relation")
+            if b.get("start") and b.get("stop"):
+                # ROADMAP 2.305 r6 (job 2, measurement): both ends bound and the KIND refused -- what each end's step and position read, so the cause of the
+                # refusal can be traced to the reader that left it (a step unread, two readings in conflict, a head between, an accidental)
+                entry["kind_evidence"] = {k: b.get(k) for k in ("start", "stop", "start_step", "stop_step", "start_step_source", "stop_step_source", "dy_spaces",
+                                                                 "local_dy_spaces", "local_positions", "relation_source", "between", "between_heads",
+                                                                 "crosses_barline", "accidental", "contested_end")
+                                          if b.get(k) is not None}
     n_w = sum(1 for e in out if e["status"] == PB.WRITTEN)
     n_a = sum(1 for e in out if e["status"] == PB.ABSTAINED)
     if not any(e["witnesses"] for e in out):

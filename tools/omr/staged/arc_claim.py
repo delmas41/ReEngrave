@@ -704,12 +704,14 @@ def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, 
         return {"unbound": "continues_in_another_curve", "candidates": [hh["key"]], "margin_spaces": None}
     cols = sorted(_columns(cands[:12]), key=lambda c: min(h["d"] for h in c))
     d0 = min(h["d"] for h in cols[0])
+    second = None          # the signed margin by which the closest note beat the next (kept on a binding: both sides of "about equally close")
     if len(cols) > 1:
         d1 = min(h["d"] for h in cols[1])
         same_note = {h["key"] for h in cols[0]} & {h["key"] for h in cols[1]}
         if (d1 - d0) < BIND_COLUMN_MARGIN_SPACES * sp and not same_note:
             return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
                     "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+        second = {"next": [h["key"] for h in cols[1]], "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
     if unread:
         ub = min(unread, key=lambda u: abs(u["cx"] - ex) + abs(u["cy"] - ey))
         du = abs(ub["cx"] - ex) + abs(ub["cy"] - ey)
@@ -726,6 +728,8 @@ def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, 
             if got.get("head") is not None and all(h.get("tip") for h in col):
                 got["via_stem_tip"] = True
             got["by_rule"] = True
+            if second is not None and got.get("head") is not None:
+                got["second"] = second
             return got
     if len(col) == 1:
         pick = col[0]
@@ -736,6 +740,8 @@ def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, 
     else:
         return {"unbound": "chord_end_side_unread", "candidates": [h["key"] for h in col], "margin_spaces": None}
     out = {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3), "by_rule": True}
+    if second is not None:
+        out["second"] = second
     if pick.get("tip"):
         out["via_stem_tip"] = True
     return out
