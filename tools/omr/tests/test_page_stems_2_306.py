@@ -413,6 +413,43 @@ def test_r11_seans_non_notes_take_no_stem():
         assert r["state"] != "one" and r["how"] == "contact_at_middle" and r["margin"] is not None, (name, r)
 
 
+def _r11_all(name, contact):
+    with open(FX11) as f:
+        c = json.load(f)[name]
+    heads, verts, cross, held = _stitch(c)
+    strokes = {int(k): dict(v, box=tuple(v["box"])) for k, v in c["strokes"].items()} if contact else None
+    return c, heads, PS.read(heads, verts, held, crossers=cross, strokes=strokes)
+
+
+def test_r11_wide_chords_hang_every_head_on_the_one_stem():
+    """Sean (2026-11-15): "Does this take into account long stems that connect chords?" -- a head hangs on a stem where the stem's column is inked
+    continuously from the stem to it, through a chord mate OR bare stem. Real spread chords: Sean's r1 tile 7 (Litolff p10 glyph/10/1/0/14/6, "a
+    long stem on a chord") and Brahms p4 glyph/4/1/12/8 (four heads over 6.3 sp on one stem; Sean's r4 tile 9 is its lowest head, an eighth).
+    Every head of the chord stands on the one stem, with the contact pass on as off (the whole run carries the bare-stem case; nothing is counted
+    twice)."""
+    for name, chord in (("wide_lit", ("glyph/10/1/0/14/0", "glyph/10/1/0/14/6")),
+                        ("wide_bra", ("glyph/4/1/12/8/9", "glyph/4/1/12/8/16", "glyph/4/1/12/8/12", "glyph/4/1/12/8/7"))):
+        for contact in (False, True):
+            c, heads, res = _r11_all(name, contact)
+            ids = [next(h["id"] for h in heads if g in h["members"]) for g in chord]
+            strokes = {res["heads"][i]["stroke"] for i in ids}
+            assert len(strokes) == 1 and None not in strokes, (name, contact, [(i, res["heads"][i]["how"], res["heads"][i]["stroke"]) for i in ids])
+            st = res["stems"][strokes.pop()]
+            assert set(ids) <= set(st["heads"]), (name, st)
+
+
+def test_r11_two_voices_end_to_end_are_not_joined_by_contact():
+    """The r4 divisi pair (Brahms p5, two chords of different voices end to end: glyph/5/0/12/3/34-35 on the up stem, 5/0/13/3/7 on the down stem):
+    the contact pass never carries one voice's column into the other's run -- the readings are the same with it on as off, two stems."""
+    c, heads, off = _r11_all("divisi_bra", False)
+    c, heads, on = _r11_all("divisi_bra", True)
+    assert {k: (v["stroke"], v["direction"]) for k, v in on["heads"].items()} == {k: (v["stroke"], v["direction"]) for k, v in off["heads"].items()}
+    up = next(h["id"] for h in heads if "glyph/5/0/12/3/34" in h["members"])
+    dn = next(h["id"] for h in heads if "glyph/5/0/13/3/7" in h["members"])
+    assert on["heads"][up]["stroke"] != on["heads"][dn]["stroke"]
+    assert (on["heads"][up]["direction"], on["heads"][dn]["direction"]) == ("up", "down")
+
+
 def test_r11_unresolved_tiles_stay_abstained():
     """Not read, and must not be guessed: tile 2 (a second vertical touches the hollow head at its middle), tile 3 (the touching stroke stands right of
     the head but runs DOWN from it -- the side and the extent disagree), tile 9 (the page map fused the stem into the head's blob: no vertical)."""

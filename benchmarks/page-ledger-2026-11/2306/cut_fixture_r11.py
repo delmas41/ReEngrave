@@ -8,11 +8,15 @@ import sys, os, json, collections
 TILES = {
     "litolff": [("t1", "glyph/6/1/1/12/0"), ("t2", "glyph/6/1/1/10/7"), ("t6", "glyph/4/1/0/8/1"), ("t7", "glyph/10/1/7/7/2"), ("t8", "glyph/2/0/0/1/1"),
                 ("t9", "glyph/6/1/1/1/3"), ("t11", "glyph/10/0/1/8/1"), ("t12", "glyph/6/0/1/8/9"), ("c_10_0_1_11_0", "glyph/10/0/1/11/0"),
-                ("c_10_0_1_6_0", "glyph/10/0/1/6/0")],
-    "brahms": [("t3", "glyph/25/1/7/3/2"), ("t4", "glyph/12/0/10/7/5"), ("t5", "glyph/14/1/4/3/7"), ("t10", "glyph/12/0/7/0/14")],
+                ("c_10_0_1_6_0", "glyph/10/0/1/6/0"), ("wide_lit", "glyph/10/1/0/14/6")],
+    "brahms": [("t3", "glyph/25/1/7/3/2"), ("t4", "glyph/12/0/10/7/5"), ("t5", "glyph/14/1/4/3/7"), ("t10", "glyph/12/0/7/0/14"), ("wide_bra", "glyph/4/1/12/8/7"),
+               ("divisi_bra", "glyph/5/0/12/3/10")],
 }
 SEAN = {"t1": "down", "t2": "down", "t3": "down", "t4": "not a note (tremolo slash)", "t5": "up", "t6": "down", "t7": "up", "t8": "down", "t9": "up",
-        "t10": "up", "t11": "down", "t12": "not a note (part of a p dynamic)"}
+        "t10": "up", "t11": "down", "t12": "not a note (part of a p dynamic)",
+        "wide_lit": "wide chord on one long stem (Sean's r1 tile 7: 'a long stem on a chord')",
+        "wide_bra": "wide chord on one stem, 4 heads over 6.3 sp (r4 tile 9's chord, Sean: eighth)",
+        "divisi_bra": "two voices end to end (the r4 divisi pair): never one stem"}
 
 
 def parts(rec_path, pages):

@@ -184,6 +184,8 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         if r.get("state") in ("one", "second") and r.get("stroke") is not None:
             read_dirs.setdefault(int(r["stroke"]), set()).add(r["direction"])
     hby = {h["id"]: h for h in heads}
+    run_of = {int(m): int(r["ord"]) for r in runs for m in (r.get("members") or [r["ord"]])}
+    head_ink = set(owner_of)
     chains: Dict[int, Tuple[set, List[Any]]] = {}
 
     def chain(run: Dict[str, Any]) -> Tuple[set, List[Any]]:
@@ -198,8 +200,8 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         while todo:
             a = todo.pop()
             for t in tch.get(a, ()):
-                if t in seen or t in held or t not in sbox:
-                    continue
+                if t in seen or t in held or t not in sbox or (t in run_of and run_of[t] != o):
+                    continue        # another run's piece is another stem (two voices end to end stay apart: r4)
                 b = sbox[t]
                 ov = min(cx1, b[2]) - max(cx0, b[0])
                 if ov < 0.5 * min(colw, max(1.0, b[2] - b[0])) or b[3] < cy0 - 6 * sp or b[1] > cy1 + 6 * sp:
@@ -252,13 +254,17 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 continue
             if read_dirs.get(o) and d not in read_dirs[o]:
                 continue
+            # how the column reaches this head: its ink touches the stem itself (a stem piece, or column ink no head owns -- a spread chord's bare
+            # stem), or only another head of the chord (stacked, touching mates)
+            bare = {t for t in seen if t not in head_ink}
+            via = "stem" if (mine & bare) or any(t in bare for i in mine for t in tch.get(i, ())) else "chord_mate"
             found.append(dict(stroke=o, direction=d, side="right" if d == "up" else "left", margin=round(margin, 3), reach=round(reach, 2),
-                              heads_on_column=len(hs), why="contact"))
+                              heads_on_column=len(hs), via=via, why="contact"))
         ok = [f for f in found if f["why"] == "contact"]
         if len(ok) == 1 and not any(f["why"] == "contact_at_middle" for f in found):
             f = ok[0]
             r.update(state="one", stroke=f["stroke"], direction=f["direction"], side=f["side"], margin=f["margin"], how="contact_with_head_ink",
-                     candidates=found)
+                     candidates=found, via=f["via"])
             n += 1
         elif found:
             dirs = {f["direction"] for f in ok}
