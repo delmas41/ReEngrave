@@ -152,6 +152,16 @@ def test_yes_tile4_a_ledger_box_on_the_staffs_own_line_is_no_unread_note():
     assert _pair(_bind(c)) == (c["sean"]["start"], c["sean"]["stop"])
 
 
+def test_never_r7b_tile4_a_note_held_in_doubt_is_not_the_systems_edge():
+    """Sean's r7b tile 4, Brahms p0: "the box is correct and the notes are correct" (`0/0/9/0/7` -> `1/9`, a slur). The start note is real but ADJUDICATE
+    narrowed it under a word's claim (`claim_narrowed:word`, upstream). r7 then found no usable note behind the left end and called it the SYSTEM'S
+    EDGE -- the wrong reason word, which hands the half to the join across systems. r8: note-like ink nobody could read ahead of the end is a note there:
+    the end says "cannot tell" (it stays unwritten until the head reader reads that note), never "edge"."""
+    b = _bind(FX["r7b_tile4"])
+    assert b["left"].get("edge") is not True
+    assert b["left"].get("unbound") == AC.UNREAD_INK_AT_END and b["left"]["candidates"][1] == "page_stroke:narrowed:glyph/0/0/9/0/7"
+
+
 def test_yes_tile9_the_written_tie_stays():
     c = FX["tile9"]
     assert _pair(_bind(c)) == (c["sean"]["start"], c["sean"]["stop"])

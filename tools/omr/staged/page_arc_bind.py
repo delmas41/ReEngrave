@@ -262,7 +262,10 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
         b = {"left": None, "right": None, "side": side, "by_rule": True}
         for s_, sgn, xk, yk in (("left", -1, "x_left_page", "y_left_page"), ("right", +1, "x_right_page", "y_right_page")):
             ex = float(d[xk])
-            if not any((h["cx"] - ex) * sgn > -HEAD_BEHIND_END_SPACES * sp and (usable is None or usable(h["key"])) for h in heads):
+            if not any((h["cx"] - ex) * sgn > -HEAD_BEHIND_END_SPACES * sp and (usable is None or usable(h["key"])) for h in heads) \
+                    and not any((u["cx"] - ex) * sgn > -HEAD_BEHIND_END_SPACES * sp for u in (unread or ()) if not u.get("other_staff")):
+                # r8 (Sean's r7b tile 4, Brahms p0 `0/0/9/0/7`: a real note ADJUDICATE narrowed under a word's claim): note-like ink nobody could read standing
+                # ahead of the end is a note there, not the system's edge -- the end says "cannot tell", never "edge" (which hands it to the join across systems)
                 b[s_] = {"edge": True}
                 continue
             # ROADMAP 2.305 r6 (`arc_claim._bind_end_by_rule`; Sean 2026-11-15, "An arc ends at the notes standing where its ink ends"): the closest note of the

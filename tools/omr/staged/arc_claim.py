@@ -988,8 +988,9 @@ def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: floa
             if cs.get(side_) is False:
                 ends[side_] = {"unbound": "inside_a_word_or_wedge", "candidates": [], "margin_spaces": None}
                 continue
-            if not any((h["cx"] - xe) * sgn_ > -ANCHOR_IN_SPACES * sp and ok(h["key"]) for h in heads):
-                ends[side_] = {"edge": True}
+            if not any((h["cx"] - xe) * sgn_ > -ANCHOR_IN_SPACES * sp and ok(h["key"]) for h in heads) \
+                    and not any((u["cx"] - xe) * sgn_ > -ANCHOR_IN_SPACES * sp for u in (unread or ()) if not u.get("other_staff")):
+                ends[side_] = {"edge": True}          # (r8: note-like ink nobody read ahead of the end is a note there, not the edge)
                 continue
             got = bind_end(xe, ye, sgn_, heads, sp, side, usable, by_height, others=(other_ends or {}).get(side_), by_rule=True, unread=unread)
             got["end_xy"] = [round(xe, 1), round(ye, 1)]
