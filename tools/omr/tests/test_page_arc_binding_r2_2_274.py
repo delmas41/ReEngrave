@@ -80,7 +80,8 @@ class TestAChordEnd(unittest.TestCase):
         lower = self._bind(heads, _detail(0, 100, 100, 112, sag=-15.0))          # 3 px from b: b is inner for a cap, but the end stands within 1.2 spaces of it
         self.assertEqual(lower["right"]["head"], "b")
         unclear = self._bind(heads, _detail(0, 100, 100, 131, sag=-15.0))          # 16 px from b, 31 from m: no member is read from the height
-        self.assertEqual(unclear["right"].get("unbound"), "chord_member_unclear")
+        # (2.305 r7: the end stands below the whole chord, under a cap -- the chord is on the arc's far side and is refused as that, before any member is read)
+        self.assertIn(unclear["right"].get("unbound"), ("chord_member_unclear", "head_on_the_arcs_far_side"))
 
 
 class TestAnEndFarBeyondItsHead(unittest.TestCase):

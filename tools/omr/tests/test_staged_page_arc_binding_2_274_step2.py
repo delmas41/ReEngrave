@@ -155,7 +155,9 @@ class TestTheDecision(unittest.TestCase):
 
     def test_two_positions_is_a_slur_and_the_detector_class_is_no_input(self):
         for cls in ("tie", "slur"):
-            log, hs, w = _scene([(0, 0, 40.0, 100.0), (0, 1, 140.0, 80.0)], ENDS, PTS, cls=cls)
+            # (2.305 r7: the higher note stands at the cap's end, not wholly above it -- an arc is OVER its notes; at y 80 the head stood 1.5 spaces
+            # above the ink's end, which the r7 rule refuses as the arc's far side)
+            log, hs, w = _scene([(0, 0, 40.0, 100.0), (0, 1, 140.0, 95.0)], ENDS, PTS, cls=cls)
             (r,) = _run(log).detail["runs"]
             self.assertEqual((r["status"], r["kind"]), ("written", "slur"), (cls, r))
         log, hs, w = _scene([(0, 0, 40.0, 100.0), (0, 1, 140.0, 100.0)], ENDS, PTS, cls="slur")

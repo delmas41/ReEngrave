@@ -3029,6 +3029,17 @@ def _page_head_groups(ev: Evidence, heads: List[Dict[str, Any]], rows: Dict[str,
 _UNREAD_MEMO: Dict[str, Any] = {"log": None, "pages": {}}
 
 
+def _head_read(ev: Evidence, key: str) -> bool:
+    """ROADMAP 2.305 r7 (the ends rule only): a notehead box ADJUDICATE READ as a note -- not refused, and not held in doubt (`narrowed`: Sean's r6 tile 5,
+    Litolff p15 `15/0/0/0/5`, a box on the key signature the key's claim narrowed; binding an arc to it turned "cannot tell" into a note, rule 8)."""
+    v = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=R.Subject.from_key(key))
+    if v is None:
+        return True
+    if v.outcome is Outcome.DECIDED:
+        return v.value is not True
+    return v.outcome is not Outcome.NARROWED
+
+
 def _unread_head_ink(ev: Evidence, home: Any, sp: float) -> List[Dict[str, Any]]:
     """ROADMAP 2.305 r6 (`arc_claim.unread_head_ink`): the head-shaped page ink no detector box stands on, on the staff `home` (`Q.PAGE_STROKE` rows are
     GATHER's, filed per page whatever the arc flags; `staff` = [system, staff] each stroke is read against). Read once per page through the page decision's
@@ -3046,12 +3057,24 @@ def _unread_head_ink(ev: Evidence, home: Any, sp: float) -> List[Dict[str, Any]]
         for r in pev.rows(Q.PAGE_STROKE, subject=psub):
             if r.value in ("blob", "vertical"):
                 strokes.append(dict(r.detail or {}, kind=r.value, id=r.id))
-        boxes = []
+        boxes, head_boxes, ledger_boxes = [], [], []
         for r in pev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
             b = (r.detail or {}).get("bbox_page_px")
             cls = r.value[0] if isinstance(r.value, (list, tuple)) and r.value else r.value
-            if b and len(b) == 4 and _arc_claim.reads_ink(cls):
-                boxes.append(tuple(float(v) for v in b))
+            if not b or len(b) != 4:
+                continue
+            bb = tuple(float(v) for v in b)
+            st = [r.subject.system, r.subject.staff]
+            if str(cls or "").lower() == "ledgerline":
+                ledger_boxes.append({"box": bb, "key": r.subject.to_key(), "id": r.id, "staff": st})
+            if (r.detail or {}).get("category") == "notehead":
+                # r7 (Sean's r6 tile 1, Litolff p13 `13/0/10/11/3`: the tie's stop note boxed in part, refused `too_narrow`): a box ADJUDICATE refused as a note
+                # did not read its ink as a note -- that ink stays unread; a box held in doubt (narrowed) is no read note either
+                if not _head_read(pev, r.subject.to_key()):
+                    continue
+                head_boxes.append((bb, st))
+            if _arc_claim.reads_ink(cls):
+                boxes.append(bb)
         claimed = set()
         for r in pev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
             v, dd = r.value, (r.detail or {})
@@ -3060,7 +3083,7 @@ def _unread_head_ink(ev: Evidence, home: Any, sp: float) -> List[Dict[str, Any]]
                 claimed.update(int(o[0] if isinstance(o, (list, tuple)) else o) for o in dd["page_strokes"])
             if dd.get("unit") == "area" and isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v):
                 boxes.append(tuple(float(t) for t in v))
-        _UNREAD_MEMO["pages"][pg] = _arc_claim.unread_head_ink(strokes, boxes, sp, claimed)
+        _UNREAD_MEMO["pages"][pg] = _arc_claim.unread_head_ink(strokes, boxes, sp, claimed, head_boxes, ledger_boxes)
     return [u for u in _UNREAD_MEMO["pages"][pg] if list(u.get("staff") or ()) == [home.system, home.staff]]
 
 
@@ -3140,6 +3163,8 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
             row = rows[key]
             own = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
             memo[key] = not (own is not None and _is_relocated_copy(row.subject, own.value)) and _head_usable(ev, key)
+            if memo[key] and _arc_claim.rule_enabled():
+                memo[key] = _head_read(ev, key)          # r7: a head held in doubt is no note an arc ends at (rule 8)
         return memo[key]
 
     folded: Dict[str, Dict[str, Any]] = {}

@@ -633,7 +633,8 @@ def rule_enabled() -> bool:
 
 
 def unread_head_ink(strokes: Sequence[Dict[str, Any]], boxes: Sequence[Sequence[float]], sp: float,
-                    claimed_strokes: Optional[Any] = None) -> List[Dict[str, Any]]:
+                    claimed_strokes: Optional[Any] = None, head_boxes: Optional[Sequence[Sequence[float]]] = None,
+                    ledger_boxes: Optional[Sequence[Dict[str, Any]]] = None) -> List[Dict[str, Any]]:
     """ROADMAP 2.305 r6: the page strokes that are a notehead's INK by the page-head reader's own shape test (`page_heads`, ROADMAP 2.260e M6a: a blob of at
     least `HEAD_MIN_AREA_SP2`, at most `HEAD_MAX_W_SP` x `HEAD_MAX_H_SP` of its own staff space) that NO reader has read: no detector box of ANY class and no
     claimed area of the page ledger (`Q.CLAIMED_AREA` with a box value: a printed word, a clef, a barline, a key ...) stands on its centre, and no page-ink
@@ -667,7 +668,22 @@ def unread_head_ink(strokes: Sequence[Dict[str, Any]], boxes: Sequence[Sequence[
         cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
         if any(bb[0] <= cx <= bb[2] and bb[1] <= cy <= bb[3] for bb in boxes):
             continue
+        # r7 (Sean's r6 tile 12, Brahms p0 `0/0/5/4/15`: the box is drawn low on its half note and the ledger line cuts the head's top off as its own blob):
+        # a blob that, joined with a read note's box beside it (sharing its x), is still no bigger than ONE head (the same shape numbers) is that note's ink
+        if any(min(x1, hb[2]) > max(x0, hb[0])
+               and max(y1, hb[3]) - min(y0, hb[1]) <= HEAD_MAX_H_SP * spl and max(x1, hb[2]) - min(x0, hb[0]) <= HEAD_MAX_W_SP * spl
+               for hb, _st in (head_boxes or ())):
+            continue
         out.append({"id": s.get("id"), "ordinal": s.get("ordinal"), "cx": cx, "cy": cy, "w": w, "h": h, "staff": list(s.get("staff") or ())})
+    # r7 (Sean's r6 tile 3, Litolff p13 `13/1/0/9`: a half-note chord on ledger lines nobody boxed; its hollow heads are shattered by the ledgers, so no blob of
+    # a head's size is there): page-facts "the ledger lines name the owner ... there is no far note without one" -- a ledger line is drawn only for a note,
+    # so a COLUMN of ledger lines in which no read note stands is a note nobody read. Each such ledger stands for it (its own box: where to look).
+    for lb in (ledger_boxes or ()):
+        lx0, ly0, lx1, ly1 = lb["box"]
+        if any(lx0 <= (hb[0] + hb[2]) / 2.0 <= lx1 and list(st) == list(lb.get("staff") or ()) for hb, st in (head_boxes or ())):
+            continue
+        out.append({"id": lb.get("id"), "ordinal": "ledger:" + str(lb.get("key")), "cx": (lx0 + lx1) / 2.0, "cy": (ly0 + ly1) / 2.0,
+                    "w": lx1 - lx0, "h": max(ly1 - ly0, 1.0), "staff": list(lb.get("staff") or ()), "ledger": True})
     return out
 
 
@@ -746,6 +762,16 @@ def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, 
             # ("never to a note on another staff"; the caller hands in the neighbouring staves' notes for this test only, never as candidates)
             return {"unbound": NEARER_NOTE_ON_ANOTHER_STAFF, "candidates": [[h["key"] for h in cols[0]], ob.get("key")],
                     "margin_spaces": round((do - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    # r7 (Sean's r6 tile 8, Brahms p0: "there's no arc ... there is a slur above it" -- the slur over the staff BELOW was handed this staff's notes, which stand
+    # wholly above its ends): page-facts, an arc is OVER its notes -- a cap's note never stands wholly above its end, a cup's never wholly below. The closest
+    # note on that far side is not this ink's note: refuse, naming it (the 2.223 window's 2.5-space height limit was this guard, unstated). A stem's tip
+    # stands for its head on purpose and is exempt.
+    near = [h for h in cols[0] if not h.get("tip")]
+    if near and side in ("above", "below") and all(
+            ((_ink_xy(h)[1] + h["h"] / 2.0) < ey if side == "above" else (_ink_xy(h)[1] - h["h"] / 2.0) > ey) for h in near) \
+            and len(near) == len(cols[0]):
+        return {"unbound": "head_on_the_arcs_far_side", "candidates": [h["key"] for h in near],
+                "margin_spaces": round(-min(abs(_ink_xy(h)[1] - ey) - h["h"] / 2.0 for h in near) / sp, 3)}
     unread = [u for u in (unread or ()) if not u.get("other_staff")]
     if unread:
         ub = min(unread, key=lambda u: _to_head(u, ex, ey))          # the unread ink measured exactly as a note is
@@ -945,7 +971,9 @@ def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: floa
         ends: Dict[str, Dict[str, Any]] = {}
         for side_, sgn_, xe, ye in (("left", -1, xl, yl), ("right", +1, xr, yr)):
             alt = (alt_ends or {}).get(side_)
-            if alt is not None:
+            if alt is not None and (float(alt[0]) - float(xe)) * sgn_ > 0:
+                # r7 (Sean's r6 tile 8, Brahms p0 `0/0/11/3/15`: the page map carves the barline out of a slur that crosses it, so the curve's page stroke ends AT
+                # the barline while the traced ink runs on before the bar): the ink ends at the OUTERMOST of the traced end and the stroke end
                 xe, ye = alt[0], alt[1]
             xe, ye = float(xe), float(ye)
             if cs.get(side_) is False:
