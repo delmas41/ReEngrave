@@ -1,0 +1,383 @@
+[
+ {
+  "plate": "litolff",
+  "pages": [
+   2,
+   4,
+   6,
+   8,
+   9,
+   10,
+   11,
+   16
+  ],
+  "bins": {
+   "0 within staff": {
+    "bars": 1186,
+    "red": 138
+   },
+   "0 within staff | 1-2 heads": {
+    "bars": 771,
+    "red": 55
+   },
+   "0 within staff | 3-5 heads": {
+    "bars": 361,
+    "red": 64
+   },
+   "0 within staff | 6+ heads": {
+    "bars": 54,
+    "red": 19
+   },
+   "1-2 ledger lines": {
+    "bars": 490,
+    "red": 72
+   },
+   "1-2 ledger lines | 1-2 heads": {
+    "bars": 257,
+    "red": 14
+   },
+   "1-2 ledger lines | 3-5 heads": {
+    "bars": 189,
+    "red": 48
+   },
+   "1-2 ledger lines | 6+ heads": {
+    "bars": 44,
+    "red": 10
+   },
+   "3+ ledger lines": {
+    "bars": 288,
+    "red": 55
+   },
+   "3+ ledger lines | 1-2 heads": {
+    "bars": 119,
+    "red": 11
+   },
+   "3+ ledger lines | 3-5 heads": {
+    "bars": 120,
+    "red": 28
+   },
+   "3+ ledger lines | 6+ heads": {
+    "bars": 49,
+    "red": 16
+   },
+   "ALL": {
+    "bars": 2684,
+    "red": 309
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff": {
+    "bars": 1254,
+    "red": 136
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff | 1-2 heads": {
+    "bars": 891,
+    "red": 52
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff | 3-5 heads": {
+    "bars": 316,
+    "red": 69
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff | 6+ heads": {
+    "bars": 47,
+    "red": 15
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines": {
+    "bars": 502,
+    "red": 74
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines | 1-2 heads": {
+    "bars": 319,
+    "red": 25
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines | 3-5 heads": {
+    "bars": 148,
+    "red": 43
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines | 6+ heads": {
+    "bars": 35,
+    "red": 6
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines": {
+    "bars": 140,
+    "red": 27
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines | 1-2 heads": {
+    "bars": 84,
+    "red": 8
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines | 3-5 heads": {
+    "bars": 39,
+    "red": 17
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines | 6+ heads": {
+    "bars": 17,
+    "red": 2
+   },
+   "by heads | 0 heads": {
+    "bars": 720,
+    "red": 44
+   },
+   "by heads | 1-2 heads": {
+    "bars": 1147,
+    "red": 80
+   },
+   "by heads | 3-5 heads": {
+    "bars": 670,
+    "red": 140
+   },
+   "by heads | 6+ heads": {
+    "bars": 147,
+    "red": 45
+   },
+   "no head": {
+    "bars": 720,
+    "red": 44
+   }
+  },
+  "n_bars": 2684,
+  "n_red_bars": 309,
+  "n_red_in_bars": 309,
+  "refusals": {
+   "not_a_notehead:clipped_fragment": 173,
+   "not_a_notehead:too_narrow": 65
+  },
+  "refusal_edge": {
+   "not_a_notehead:clipped_fragment | cut by cell top/bottom edge": 173,
+   "not_a_notehead:too_narrow | not at an edge": 62,
+   "not_a_notehead:too_narrow | cut by cell top/bottom edge": 3
+  },
+  "refusal_by_distance": {
+   "3+ ledger lines": 176,
+   "0 within staff": 57,
+   "1-2 ledger lines": 5
+  },
+  "red_first_cause_is_frag": {
+   "not_a_notehead:clipped_fragment": 22,
+   "not_a_notehead:too_narrow": 18
+  },
+  "red_bars_holding_a_frag": {
+   "red bars holding one": 51
+  },
+  "pad_above_spaces_counts": {
+   "6": 541,
+   "4": 2143
+  },
+  "pad_below_spaces_counts": {
+   "4": 2143,
+   "6": 541
+  },
+  "twin_heads": {
+   "twin heads attributed to the nearest other staff": 660
+  },
+  "crops": [
+   {
+    "file": "litolff_10-1-0-4-7.png",
+    "glyph": "glyph/10/1/0/4/7",
+    "dist_sp": 3.86,
+    "at_edge": true
+   },
+   {
+    "file": "litolff_9-0-4-14-4.png",
+    "glyph": "glyph/9/0/4/14/4",
+    "dist_sp": 5.77,
+    "at_edge": true
+   },
+   {
+    "file": "litolff_11-0-8-4-1.png",
+    "glyph": "glyph/11/0/8/4/1",
+    "dist_sp": 3.74,
+    "at_edge": true
+   }
+  ]
+ },
+ {
+  "plate": "brahms",
+  "pages": [
+   0,
+   4,
+   5,
+   8,
+   12,
+   14,
+   19,
+   25
+  ],
+  "bins": {
+   "0 within staff": {
+    "bars": 796,
+    "red": 118
+   },
+   "0 within staff | 1-2 heads": {
+    "bars": 380,
+    "red": 48
+   },
+   "0 within staff | 3-5 heads": {
+    "bars": 346,
+    "red": 55
+   },
+   "0 within staff | 6+ heads": {
+    "bars": 70,
+    "red": 15
+   },
+   "1-2 ledger lines": {
+    "bars": 511,
+    "red": 85
+   },
+   "1-2 ledger lines | 1-2 heads": {
+    "bars": 122,
+    "red": 10
+   },
+   "1-2 ledger lines | 3-5 heads": {
+    "bars": 265,
+    "red": 43
+   },
+   "1-2 ledger lines | 6+ heads": {
+    "bars": 124,
+    "red": 32
+   },
+   "3+ ledger lines": {
+    "bars": 354,
+    "red": 48
+   },
+   "3+ ledger lines | 1-2 heads": {
+    "bars": 107,
+    "red": 7
+   },
+   "3+ ledger lines | 3-5 heads": {
+    "bars": 159,
+    "red": 21
+   },
+   "3+ ledger lines | 6+ heads": {
+    "bars": 88,
+    "red": 20
+   },
+   "ALL": {
+    "bars": 2034,
+    "red": 276
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff": {
+    "bars": 828,
+    "red": 124
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff | 1-2 heads": {
+    "bars": 505,
+    "red": 61
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff | 3-5 heads": {
+    "bars": 267,
+    "red": 55
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 0 within staff | 6+ heads": {
+    "bars": 56,
+    "red": 8
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines": {
+    "bars": 541,
+    "red": 93
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines | 1-2 heads": {
+    "bars": 173,
+    "red": 19
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines | 3-5 heads": {
+    "bars": 279,
+    "red": 52
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 1-2 ledger lines | 6+ heads": {
+    "bars": 89,
+    "red": 22
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines": {
+    "bars": 145,
+    "red": 21
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines | 1-2 heads": {
+    "bars": 57,
+    "red": 7
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines | 3-5 heads": {
+    "bars": 70,
+    "red": 11
+   },
+   "REAL-HEADS-ONLY (no refused fragments/duplicates) | 3+ ledger lines | 6+ heads": {
+    "bars": 18,
+    "red": 3
+   },
+   "by heads | 0 heads": {
+    "bars": 373,
+    "red": 25
+   },
+   "by heads | 1-2 heads": {
+    "bars": 609,
+    "red": 65
+   },
+   "by heads | 3-5 heads": {
+    "bars": 770,
+    "red": 119
+   },
+   "by heads | 6+ heads": {
+    "bars": 282,
+    "red": 67
+   },
+   "no head": {
+    "bars": 373,
+    "red": 25
+   }
+  },
+  "n_bars": 2034,
+  "n_red_bars": 276,
+  "n_red_in_bars": 276,
+  "refusals": {
+   "not_a_notehead:clipped_fragment": 148,
+   "not_a_notehead:too_narrow": 183
+  },
+  "refusal_edge": {
+   "not_a_notehead:clipped_fragment | cut by cell top/bottom edge": 148,
+   "not_a_notehead:too_narrow | not at an edge": 153,
+   "not_a_notehead:too_narrow | cut by cell top/bottom edge": 30
+  },
+  "refusal_by_distance": {
+   "3+ ledger lines": 177,
+   "0 within staff": 146,
+   "1-2 ledger lines": 8
+  },
+  "red_first_cause_is_frag": {
+   "not_a_notehead:too_narrow": 23,
+   "not_a_notehead:clipped_fragment": 12
+  },
+  "red_bars_holding_a_frag": {
+   "red bars holding one": 44
+  },
+  "pad_above_spaces_counts": {
+   "6": 432,
+   "4": 1602
+  },
+  "pad_below_spaces_counts": {
+   "6": 419,
+   "4": 1615
+  },
+  "twin_heads": {
+   "twin heads attributed to the nearest other staff": 854,
+   "... of those, farther than the nominal 4-space pad of that staff": 20
+  },
+  "crops": [
+   {
+    "file": "brahms_5-1-8-9-5.png",
+    "glyph": "glyph/5/1/8/9/5",
+    "dist_sp": 3.73,
+    "at_edge": true
+   },
+   {
+    "file": "brahms_14-1-11-2-2.png",
+    "glyph": "glyph/14/1/11/2/2",
+    "dist_sp": 3.73,
+    "at_edge": true
+   },
+   {
+    "file": "brahms_14-0-12-5-5.png",
+    "glyph": "glyph/14/0/12/5/5",
+    "dist_sp": 3.77,
+    "at_edge": true
+   }
+  ]
+ }
+]
