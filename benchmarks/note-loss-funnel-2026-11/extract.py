@@ -22,7 +22,7 @@ from tools.omr.staged.record_io import load_record
 
 VQ = (Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION, Q.GLYPH_OWNER, Q.REST_IS_NOT_A_REST if hasattr(Q, "REST_IS_NOT_A_REST") else "rest_is_not_a_rest",
       Q.NOTEHEAD_IS_AN_EIGHTH_REST if hasattr(Q, "NOTEHEAD_IS_AN_EIGHTH_REST") else "notehead_is_an_eighth_rest",
-      "unboxed_ink_is_a_rest", "pitch", "accidental")
+      "unboxed_ink_is_a_rest", "pitch", "accidental", "head_stem", "stem_direction", "stem_value")
 
 
 def _small(v, n=300):
@@ -88,7 +88,8 @@ def main(rec_path: str, out_path: str) -> None:
                bars=bars, notes_not_written=report.get("notes_not_written"), conservation={
                    k: v for k, v in (report.get("conservation") or {}).items() if k not in ("in_red_bars", "in_partial_gaps", "in_held_bars")},
                claimed_area=claimed, red_xml_marks=xml.count(E.UNREAD_BAR_MARK_COLOR),
-               cells={o["subject"]: o["value"] for o in obs if o.get("quantity") == Q.CELL_BOX})
+               cells={o["subject"]: o["value"] for o in obs if o.get("quantity") == Q.CELL_BOX},
+               xml=xml)
     with open(out_path, "w") as f:
         json.dump(out, f, default=str)
     print("glyphs", len(glyphs), "written", len(sym["hosts"]), "fates", len(fates),
