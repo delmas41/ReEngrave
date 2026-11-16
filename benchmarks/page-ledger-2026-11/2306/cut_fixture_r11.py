@@ -8,7 +8,10 @@ import sys, os, json, collections
 TILES = {
     "litolff": [("t1", "glyph/6/1/1/12/0"), ("t2", "glyph/6/1/1/10/7"), ("t6", "glyph/4/1/0/8/1"), ("t7", "glyph/10/1/7/7/2"), ("t8", "glyph/2/0/0/1/1"),
                 ("t9", "glyph/6/1/1/1/3"), ("t11", "glyph/10/0/1/8/1"), ("t12", "glyph/6/0/1/8/9"), ("c_10_0_1_11_0", "glyph/10/0/1/11/0"),
-                ("c_10_0_1_6_0", "glyph/10/0/1/6/0"), ("wide_lit", "glyph/10/1/0/14/6")],
+                ("c_10_0_1_6_0", "glyph/10/0/1/6/0"), ("wide_lit", "glyph/10/1/0/14/6"),
+                # ROADMAP 2.306 r12: Sean's r11 tiles -- lost eighths 8 (4/1/2/4/0, on r4 tile 5's run) and 5 (9/0/0/0/3, a chord whose stroke the
+                # page reads both ways), the fake 6 (a sharp written as a note), and r8 tile 3 (a second on one stem: the join must hold)
+                ("r11t8", "glyph/4/1/2/4/0"), ("r11t5", "glyph/9/0/0/0/3"), ("r11t6_sharp", "glyph/6/1/2/10/3"), ("r8t3_second", "glyph/4/1/2/5/1")],
     "brahms": [("t3", "glyph/25/1/7/3/2"), ("t4", "glyph/12/0/10/7/5"), ("t5", "glyph/14/1/4/3/7"), ("t10", "glyph/12/0/7/0/14"), ("wide_bra", "glyph/4/1/12/8/7"),
                ("divisi_bra", "glyph/5/0/12/3/10")],
 }
@@ -16,7 +19,9 @@ SEAN = {"t1": "down", "t2": "down", "t3": "down", "t4": "not a note (tremolo sla
         "t10": "up", "t11": "down", "t12": "not a note (part of a p dynamic)",
         "wide_lit": "wide chord on one long stem (Sean's r1 tile 7: 'a long stem on a chord')",
         "wide_bra": "wide chord on one stem, 4 heads over 6.3 sp (r4 tile 9's chord, Sean: eighth)",
-        "divisi_bra": "two voices end to end (the r4 divisi pair): never one stem"}
+        "divisi_bra": "two voices end to end (the r4 divisi pair): never one stem",
+        "r11t8": "eighth (r11 tile 8; r4 tile 5 -- 4/1/2/4/11 -- an eighth on the same run)", "r11t5": "eighth (r11 tile 5; its chord mates 11, 14)",
+        "r11t6_sharp": "a sharp sign (r11 tile 6): never a note", "r8t3_second": "eighth on a stem through its second (r4 tile 3, r8)"}
 
 
 def parts(rec_path, pages):

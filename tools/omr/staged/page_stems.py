@@ -163,18 +163,24 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
     # each head's own ink: its claimed strokes, and every non-vertical, unheld stroke centred inside its box or covering half of it (Litolff MERGES a
     # head with its neighbours or a stem stub into one stroke: the ink AT the head is still the head's). The box is only where to look.
     ink: Dict[Any, set] = {}
+    core: Dict[Any, set] = {}       # ROADMAP 2.306 r12: the ink that is the head's own (claimed, or centred in it); the rest only passes over it
     for h in heads:
         x0, y0, x1, y1 = h["box"]
         area = max(1.0, (x1 - x0) * (y1 - y0))
         mine = {int(i) for i in (h.get("strokes") or ()) if int(i) in strokes}
+        own = set(mine)
         for o, s in strokes.items():
             if s.get("kind") in ("vertical", "barline") or o in held:
                 continue
             b = s["box"]
             cover = max(0.0, min(x1, b[2]) - max(x0, b[0])) * max(0.0, min(y1, b[3]) - max(y0, b[1])) / area
-            if (x0 <= (b[0] + b[2]) / 2.0 <= x1 and y0 <= (b[1] + b[3]) / 2.0 <= y1) or cover >= 0.5:
+            centred = x0 <= (b[0] + b[2]) / 2.0 <= x1 and y0 <= (b[1] + b[3]) / 2.0 <= y1
+            if centred or cover >= 0.5:
                 mine.add(o)
+            if centred:
+                own.add(o)
         ink[h["id"]] = mine
+        core[h["id"]] = own
     owner_of: Dict[int, List[Any]] = {}
     for hid, s in ink.items():
         for o in s:
@@ -203,6 +209,9 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
                 if t in seen or t in held or t not in sbox or (t in run_of and run_of[t] != o):
                     continue        # another run's piece is another stem (two voices end to end stay apart: r4)
                 b = sbox[t]
+                if strokes[t].get("kind") in ("horizontal", "curve") and not any(t in core[k] for k in owner_of.get(t, ())):
+                    continue        # ROADMAP 2.306 r12: a beam, bar or arc crosses the column -- it is not the column's ink (a stem runs through
+                    #                 its chord's heads or bare stem, never along a crossing mark)
                 ov = min(cx1, b[2]) - max(cx0, b[0])
                 if ov < 0.5 * min(colw, max(1.0, b[2] - b[0])) or b[3] < cy0 - 6 * sp or b[1] > cy1 + 6 * sp:
                     continue
@@ -240,6 +249,12 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             seen, hs = chain(run)
             if h["id"] not in hs:
                 continue
+            # ROADMAP 2.306 r12 (Sean's r11 tile 6: a sharp sign written as a note): a stem touches its head AT the head. Where the column meets only
+            # ink that passes over the head and runs on past it (the sharp's bar, a neighbour fused in), the column must stand within the head's own
+            # width; touching the head's own ink anywhere is contact. Never a stem met through a stroke that only crosses the head.
+            touched_core = bool(core[h["id"]] & seen) or any(t in seen for i in core[h["id"]] for t in tch.get(i, ()))
+            if not touched_core and (bx1 < h["box"][0] or bx0 > h["box"][2]):
+                continue
             margin = ((bx0 + bx1) / 2.0 - (ix0 + ix1) / 2.0) / sp
             if abs(margin) < CONTACT_MID_SP:
                 found.append(dict(stroke=o, direction=None, margin=round(margin, 3), why="contact_at_middle"))
@@ -252,8 +267,15 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             end_ok = (by1 <= max(b[3] for b in hb_) + HEAD_END_SP * sp) if d == "up" else (by0 >= min(b[1] for b in hb_) - HEAD_END_SP * sp)
             if not end_ok:
                 continue
-            if read_dirs.get(o) and d not in read_dirs[o]:
+            if read_dirs.get(o) and (d not in read_dirs[o] or len(read_dirs[o]) > 1):
+                # ROADMAP 2.306 r12 (Sean's r11 tile 5, a chord's eighths lost): a stroke other heads already read BOTH ways is "cannot tell" -- the
+                # contact reading never tips it to one side (rule 8); nor does it take a head the stroke's own heads already read the other way
                 continue
+            other = _other_side(h, run)
+            if other is not None and read_dirs.get(o) == {other} and any(
+                    abs(cy - (hby[k]["box"][1] + hby[k]["box"][3]) / 2.0) <= SECOND_DY_SP * sp
+                    for k, rr in readings.items() if rr.get("state") == "one" and rr.get("stroke") == o and k in hby):
+                continue        # a second's displaced head on the stroke's other side: the seconds rule's, not a stem of its own
             # how the column reaches this head: its ink touches the stem itself (a stem piece, or column ink no head owns -- a spread chord's bare
             # stem), or only another head of the chord (stacked, touching mates)
             bare = {t for t in seen if t not in head_ink}
@@ -286,7 +308,8 @@ def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> fl
 
 
 def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any]] = (), crossers: Sequence[Dict[str, Any]] = (),
-              held: Optional[Dict[int, str]] = None, pairs: Optional[List[Tuple[int, int, str]]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+              held: Optional[Dict[int, str]] = None, pairs: Optional[List[Tuple[int, int, str]]] = None,
+              touches: Optional[Dict[int, set]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The collinear runs of the page's vertical pieces (constants above). Pure. `crossers`: `[{ord, box, kind}]` -- the page's other strokes (a
     tremolo-claimed one has kind `slash`, a thick horizontal one `beam`). Returns `(runs, census)`: each run `{ord (its first piece), members, box,
     sp, joins: [kind ...]}`; census = joins by kind of crossing and the refusals (`empty_paper`, `heads_both_sides`, `too_wide`). `pairs`, when given, is
@@ -364,6 +387,13 @@ def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any
             k = gap_kind(up, lo, y0, y1, sp)
             if k is None:
                 continue
+            # ROADMAP 2.306 r12 (Sean's r11 tile 8 and r4 tile 5: two eighths lost on a stem joined over paper): two pieces of a stem join only where
+            # INK connects them -- they touch, or one mark (a head of the chord, a slash, a beam) touches both, by the page map's own contact. A box
+            # covering the gap is only where to look; never over paper. An erased staff line's thickness is the erasure's gap, not paper.
+            if touches is not None and not k.startswith("!") and k != "line_junction":
+                ua, lb = int(up["ord"]), int(lo["ord"])
+                if lb not in touches.get(ua, ()) and not (touches.get(ua, set()) & touches.get(lb, set())):
+                    k = "!no_ink_between"
             if pairs is not None and k != "!too_wide":
                 pairs.append((int(up["ord"]), int(lo["ord"]), k))
             if k.startswith("!"):
@@ -400,7 +430,13 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
     run_census: Dict[str, int] = {}
     members_of: Dict[int, List[int]] = {}
     if crossers is not None:
-        runs, run_census = join_runs(verticals, heads, crossers, held)
+        tj = None
+        if strokes is not None:
+            tj = {int(o): {int(j) for j, _c in (s.get("touches") or ())} for o, s in strokes.items()}
+            for o, ts in list(tj.items()):
+                for j in ts:
+                    tj.setdefault(j, set()).add(o)
+        runs, run_census = join_runs(verticals, heads, crossers, held, touches=tj)
         joined = {m for r in runs for m in r["members"]}
         verticals = [dict(ord=r["ord"], box=r["box"], sp=r["sp"]) for r in runs] + [v for v in verticals if int(v["ord"]) not in joined]
         members_of = {r["ord"]: r["members"] for r in runs}

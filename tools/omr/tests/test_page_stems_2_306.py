@@ -450,6 +450,54 @@ def test_r11_two_voices_end_to_end_are_not_joined_by_contact():
     assert (on["heads"][up]["direction"], on["heads"][dn]["direction"]) == ("up", "down")
 
 
+def _touches11(c):
+    t = {int(o): {int(j) for j, _c in (s.get("touches") or ())} for o, s in c["strokes"].items()}
+    for o, ts in list(t.items()):
+        for j in ts:
+            t.setdefault(j, set()).add(o)
+    return t
+
+
+def test_r12_stem_pieces_join_only_where_ink_connects_them():
+    """Sean's r11 tile 8 (Litolff p4 glyph/4/1/2/4/0, "an eighth", lost under r11) and r4 tile 5 (4/1/2/4/11, an eighth) stand on one run joined
+    over paper: pieces 1424 and 1472 touch nothing in common -- the head's BOX covered the gap, its ink did not. With the page map's contact the
+    pair is refused (the control: without contact it joins). Joins whose pieces ink connects still hold: Sean's r8 tile 3, a stem through its second
+    (pieces 1936 / 1938 through the head blob 1937), and his r1 tile 7, a long stem on a chord (4435 / 4443 through 4436)."""
+    with open(FX11) as f:
+        fx = json.load(f)
+    c = fx["r11t8"]
+    heads, verts, cross, held = _stitch(c)
+    runs0, _ = PS.join_runs(verts, heads, cross, held)
+    assert any({1424, 1472} <= set(r["members"]) for r in runs0)
+    pairs = []
+    runs1, cen = PS.join_runs(verts, heads, cross, held, pairs, touches=_touches11(c))
+    assert not any({1424, 1472} <= set(r["members"]) for r in runs1) and (1424, 1472, "!no_ink_between") in pairs
+    for name, a, b in (("r8t3_second", 1936, 1938), ("wide_lit", 4435, 4443)):
+        c = fx[name]
+        heads, verts, cross, held = _stitch(c)
+        runs, _ = PS.join_runs(verts, heads, cross, held, touches=_touches11(c))
+        assert any({a, b} <= set(r["members"]) for r in runs), name
+
+
+def test_r12_contact_never_tips_a_stroke_read_both_ways():
+    """Sean's r11 tile 5 (Litolff p9 glyph/9/0/0/0/3, "an eighth", lost under r11 with its chord mates 11 and 14): the contact reading put 14 on an UP
+    stroke the page reads both ways (the second of a down-stem chord stands on the stem's other side), tipping it, and the chord's values split. A
+    stroke read both ways is "cannot tell" (rule 8): contact never tips it. 3 and 14 stand on one down stem; 11 stays abstained."""
+    c, heads, res = _r11_all("r11t5", True)
+    hid = {g: next(h["id"] for h in heads if g in h["members"]) for g in ("glyph/9/0/0/0/3", "glyph/9/0/0/0/14", "glyph/9/0/0/0/11")}
+    r3, r14, r11 = (res["heads"][hid[g]] for g in ("glyph/9/0/0/0/3", "glyph/9/0/0/0/14", "glyph/9/0/0/0/11"))
+    assert (r3["stroke"], r3["direction"]) == (r14["stroke"], r14["direction"]) and r3["direction"] == "down", (r3, r14)
+    assert r11["state"] != "one"
+
+
+def test_r12_a_sharp_never_gains_a_stem_by_contact():
+    """Sean's r11 tile 6 (Litolff p6 glyph/6/1/2/10/3): "a sharp sign", written under r11 as an F4 quarter -- the sharp's own right vertical met the
+    head box only through the sharp's bar (3112), a stroke crossing the column. A stem touches its head AT the head: a crossing mark carries no
+    contact, and a column standing beside the head's width meets it only through the head's own ink. NEVER: no stem here."""
+    r = _r11("r11t6_sharp", True)
+    assert r["state"] != "one", r
+
+
 def test_r11_unresolved_tiles_stay_abstained():
     """Not read, and must not be guessed: tile 2 (a second vertical touches the hollow head at its middle), tile 3 (the touching stroke stands right of
     the head but runs DOWN from it -- the side and the extent disagree), tile 9 (the page map fused the stem into the head's blob: no vertical)."""
