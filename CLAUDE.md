@@ -237,7 +237,7 @@ when a run ends (`OMR_SURYA_KEEP_ALIVE=0`); the fast tier at
 ≤ 4 workers or serial; every lane commits and pushes at each milestone;
 test output quiet (pass count + failures only); landings, answer-recording
 and crash recovery go to a fresh small agent with a short brief, never by
-resuming the big lane agent; blind tiles and print checks are kept in full. Machine time is free, context and tokens are not —
+resuming the big lane agent; blind tiles and print checks are kept in full. Machine time is free, context and tokens are not (Sean 2026-11-14, 2.306 r8/r9: a narrow change already proven by a real-tile test gets a gather of only the pages it touches; the full frozen sample runs once per round, before tiles or a landing) —
 long runs are unattended nohup scripts that write a small summary, never
 per-change whole-movement A/Bs. Never `pkill -f llama-server`. Sean runs
 the overnight re-gather; never ask about it.
@@ -255,6 +255,7 @@ answer needs -- both ends of an arc, the staff a far head is counted from
 by what it CAPTURES (Sean's tiles, the hand-labelled pages), not by a full
 re-gather. Each lane brief names the old system's work on its symbol and
 what was tried and dropped (`docs/ink-rules.md`, page-facts §5, benchmarks).
+**Apply a ruling in the stage where its fact exists** (2.306 r7, 2026-11-13): a GATHER reader cannot use an answer filed later on the page or at the run's end (the page owner's ledger answer is deferred on most pages); check when the fact is filed before building on it, and connect the ruling at ADJUDICATE where it is not yet known at GATHER.
 **Name the rule that owns the value** (Sean, 2026-10-31): every lane brief
 names the existing rule (page-facts, DECISIONS) that owns each value the lane
 may change -- pitch, owner, value, kind -- and the lane checks its change

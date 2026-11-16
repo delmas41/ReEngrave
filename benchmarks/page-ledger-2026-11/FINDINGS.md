@@ -391,3 +391,122 @@ beam-join reading (3) reports "not joined" against a certain beam (`beam_certain
 head on the RIGHT, centres 0.5 sp apart; the r4 divisi fixture (two voices end to end, Brahms) has the higher head on the LEFT, 1.5 sp apart. Question to Sean
 before code (rule 3). Fast tier (cloud, 2 workers): flag OFF no new failure (12 environment failures fail on the base commit too); flag ON one real change --
 `test_staged_duration` neighbour-beam test asserted the DECIDED quarter fix (4) removes; now pinned OFF = decided, ON = narrowed quarter/eighth.
+
+## 2.306 stems round 8 (2026-11-13) -- a stem runs through its second (Sean: "in a second the higher note is always right of the stem")
+
+STAGED, flag `OMR_PAGE_STEMS` OFF, lane ce7735cc6 (frozen pre-retire tree + lane diff; re-gather `2306-r8-*`, `--replay-gathered`, scratch `r7/lr8-*`).
+**Cause** (r7): tile 3's stem runs through a second; `join_runs` refused every gap with heads on both sides. **Rule** (Sean 2026-11-13 "Yes, always", DECISIONS +
+page-facts on main e02d32ad): heads on both sides a step apart (centres within `SECOND_STEP_SP` = 0.75 sp) with the HIGHER on the RIGHT are one second -- joined,
+kind `second`; the higher on the LEFT is two voices -- refused. Control from the real tile-3 window (Litolff p4 strokes 1936 + 1938 through heads /9 and /16 to beam
+1873), mirrored left-right it must refuse. **Measured:** Litolff red bars 162 -> 152, notes +48 -40 (r7: -44), right->wrong 0, unwritten->wrong 0, ON reproduces the
+record; tile 3's bar 4/1/2/5 loses nothing now (r7: 4 eighths); 4/1/2/4 still loses one eighth. Brahms unchanged from r7: red bars 143 -> 124, notes +43 -23,
+right->wrong 0. Sean's 12 blind tiles (6 Litolff + 6 Brahms from the lane report's cases, 2 controls): `out/print/2.306-r8/` (key outside), sent 2026-11-13.
+
+## 2.306 stems rounds 7-8, re-measured (2026-11-14) -- built OFF, `lane-2.306-stems-beams-page` 128ec0b7b; NOT landable: stems cannot stand alone yet
+
+STAGED. Rounds 7 and 8 were built on the lane by another session from Sean's two rulings (DECISIONS
+2026-11-13; page-facts): a stem is filed only with its own staff; in a second the higher note stands right
+of the stem. The round-7 write-up is on the lane branch's copy of this file. This section is the independent
+re-measure at the branch tip, pre-retire, fresh flag-ON gathers of the 8 frozen pages per plate.
+**Built (checked in the code):** a crossing head joins two stem pieces only where it covers the gap
+(<= 0.3 sp blank; `head_not_covering`); GATHER files a stem only where the head's owner is known, and
+`rhythm._page_view_only_for_copies` (read by `_not_the_neighbours_beam`) ignores a filed stem whose heads all
+belong to another staff; filed page stems get beam-join and beam-level rows; a head with no stem whose beam
+strokes were discounted stays NARROWED, not a decided quarter (in the rule-8 area); r8: a stem runs through a
+second.
+**Lesson (measurement).** The OFF baseline moves when GATHER changes (Litolff OFF red bars 172 on the r6
+gather, 162 on r8's -- both gathered with the flag ON, and the stem claims change what other readers can
+claim): compare rounds by their OFF->ON pair on ONE gather, never OFF to OFF.
+**Gate, OFF vs ON, same gather:** Litolff red bars 162 -> 152, notes +48 -40, flags +18 -21, ties +6 -2,
+rests +1 -7, slurs +18 -14, not written 2187 -> 2164. Brahms red bars 143 -> 124, notes +43 -23, flags
++31 -16, ties +14 -17, rests +5 -25, slurs +33 -23, not written 3089 -> 3071. Judged right->wrong 0,
+unwritten->wrong 0 on both (Litolff wrong->right 1). The ON arm reproduces the record exactly. Fast tier flag
+ON, real worktree: 10,622 passed, 0 failed. check 229. judged_claims: the same 3 Litolff contradictions as r4
+(two tremolo slashes, "CR" as a rest), Brahms none new (base = 11-12 main gathers, another tree).
+**r6's two causes are gone:** notes lost to a neighbour-cell stem copy 8 -> 0; to a stem stitched across paper
+5 -> 0 (runs bridging > 1 sp blank: 57 -> 1, 64 -> 2; filed page stems 623 -> 475, 748 -> 89).
+**Sean's 12 r4 tile places now:** 3 and 11 recovered (eighths written); 1, 2, 4, 6, 8, 9, 10 right; **5** no
+longer a wrong quarter but nothing is written (narrowed `beams_ambiguous`; its stem is still a stitched run
+with ~0.44 sp of blank -- the head's BOX covers the gap, its ink does not: a lead); **7** still lost (EXPORT
+`chord_value_undecided`); **12** still lost (bar-mates on page stems narrowed by the existing rule-8 guard).
+**Notes written OFF and not ON, real losses:** Litolff 22 -> 18, Brahms 9 -> 15. By first cause (L / B): page
+direction right, chord mate disagrees (EXPORT chord check) 7 / 3; filed page stem, reading changed 6 / 2;
+the r7 no-stem guard 4 / 5 (+2 bar-mates); `beams_ambiguous` on a page stem 1 / 1; bar-mates - / 2.
+**The r7 no-stem guard:** moves 14 (L) / 146 (B) heads decided -> narrowed, of which 7 / 140 are not real
+notes (92 Brahms ones claimed by a barline); it removes 4 / 5 notes OFF wrote -- UNJUDGED (`6/0/1/10/6`,
+`6/0/1/10/7`, `6/0/5/12/7`, `6/1/1/9/7`; `5/0/5/0/15`, `5/0/5/5/18`, `14/0/3/1/5`, `14/1/3/4/10`,
+`14/1/9/7/7`); red bars with it 153 -> 152, 128 -> 124.
+**Retire, re-measured** (old cell join removed for heads the page cannot stem): real heads losing a stem 259
+(L; r1 266) and 66 (B; r1 76); red bars OFF / ON / retire 162 / 152 / 155 and 143 / 124 / 123; notes written
+pre-retire and not with retire 27 (L, 28 gained) and 21 (B, 2 gained); right->wrong 0. **Stems cannot stand
+alone yet**: the page reader still abstains on 259 / 66 real heads.
+**The two owner filters would disagree** if both flags were on: 2.307's `owned_view` hides a copy's rows from
+region queries, and r7's filter finds the heads naming a stem by exactly such a query -- it would find none
+and treat the copy as the neighbour's stem again. One mechanism must replace the other before either lands.
+
+## 2.306 stems round 9 (2026-11-14) -- two voices in one column: the upper head takes the up stem (lane 1dc2b5115; HANDED OVER, NOT MEASURED)
+
+STAGED GATHER, flag `OMR_PAGE_STEMS` OFF. **Sean's r8 tiles** (answers-2.306-r8.json): 11 of 12 right under ON; tile 10 wrong -- Brahms p14 bar 14/1/9/5,
+a correct blue dotted quarter became unread. **Cause** (traced on a page-14 replay of the r8 record): the bar is two voices sharing each chord (Sean "Yes"); the
+second chord's heads /7 and /12 BOTH read `two_voices` on the same pair of strokes (up 3729 at the right, down 3687 at the left -- gaps 0.54 vs 1.75 sp and 0.63
+vs 1.67 sp) and abstained, so the cell join hung both on the down stem, and the one-voice bar sum could not settle them. The per-voice bar sum (ROADMAP 2.308,
+claimed) is NOT the fix: Sean "Wait" -- 2.308 waits for a real bar that needs it. **Rule** (Sean 2026-11-14 "Always when it is 2 voices. Obviously chords are not
+always multiple voices. One of the voices may not have stems if it has rests."; DECISIONS + page-facts on main 15fae22f): `page_stems._two_voices_pairs` settles a
+column only where exactly two heads each read `two_voices` on the same up/down pair -- upper head up, lower head down (`how` = `two_voices_upper_takes_up`);
+anything else stays abstained. **Control** on the real tile-10 window (fixture `two_voices_p14`): /12 -> 3729 up, /7 -> 3687 down; with /12 removed /7 stays
+abstained; the first chord (/0 reads its own stem) untouched. 18 of 18 stem tests pass.
+**Measurement: gathers only.** Re-gather of the frozen pages with the flag on finished (`/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/2306-gather/2306-r9-lit.record.json`, `2306-r9-bra.record.json`;
+slices `/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/2306-slices9`; tree `/private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/2306-tree-r7` = pre-retire + lane 1dc2b5115); the lane report was STOPPED at handover (Sean 2026-11-14) -- no r9 numbers.
+Next for whoever takes the lane: `lane_report --flag OMR_PAGE_STEMS --from adjudicate --replay-gathered --tag <slices9>` per plate (r9.sh in that scratch is the
+recipe), then confirm tile 10's bar writes /7 /12 as dotted quarters plain. **Process lesson** (Sean: "Are we doing unnecessary long gathers?" -- yes): r8 and
+r9 were narrow changes already proven by a real-tile test; a one- or two-page gather of the affected pages proves them in minutes. The full frozen sample runs
+once per round, before tiles go to Sean or a landing is proposed -- never per small fix.
+
+## 2.306 stems round 9, measured (2026-11-15) -- `lane-2.306-stems-beams-page` 4efc39032; built OFF; the retire blocker is unchanged
+
+STAGED. Replays of the saved r9 gathers (frozen pages, flag ON, pre-retire); the ON arm reproduces the record.
+**Gate, OFF vs ON:** Litolff red bars 162 -> 154 (r8 152), notes +51 -42, flags +20 -21, ties +6 -4, slurs
++18 -14, not written 2187 -> 2161. Brahms red bars 143 -> 123 (r8 124), notes +49 -23, rests +10 -26, ties
++14 -17, slurs +42 -20, not written 3089 -> 3063. Judged right->wrong 0, unwritten->wrong 0 on both. Stem and
+duration tests flag ON 149 passed; check 229. (r9 touched only `page_stems.py` and its tests.)
+**Sean's tiles as the file writes them now:** r8 set 12 of 12 right (tile 10's bar: /12 G3 and /7 E-flat 3,
+dotted quarters, PLAIN, two voices; not red). r4 set 9 right, 0 wrong, 3 unwritten (5 narrowed
+`beams_ambiguous`; 7 dropped by EXPORT's chord check; 12 narrowed `beam_discounted_uncertain`). None wrong.
+`_two_voices_pairs` settles 10 columns (Litolff) / 13 (Brahms); heads still abstaining as two voices 309 / 82.
+**The retire blocker, by reason.** Real heads 4,692 / 4,810; with no page stem 698 / 171; of those the old
+cell join stems 350 / 86; retire takes away **259 / 66** (two-voice heads keep theirs) -- the same as r8:
+- no free vertical at the head's stem side: **214 / 49** -- of which a vertical lies NEAR but not at the
+  engraving side 201 / 35, and a vertical there is already claimed by an accidental, barline, clef, key or
+  word 13 / 14. On three Litolff crops the stem is plainly in the print (two half notes with short up-stems
+  inside the staff; a quarter whose down-stem stands by a barline) -- the lane's look, a lead only;
+- two candidates 19 / 2; one stroke read both ways 14 / 11; stroke fused into the head 8 / 3; stroke held by
+  its head end 4 / 1.
+So the blocker is ONE cause, not "stems fused into heads" as the manager had guessed: a stem that stands in
+the print and that the reader does not accept as standing at the head's side. Next: why.
+
+## 2.306 stems round 10 (2026-11-15) -- why "no free vertical at the head's stem side"; measurement only (`lane-2.306-stems-beams-page` 495fefbb6)
+
+STAGED. The page stem reader re-run offline from the r9 gathers; it reproduces the gathered answer for 175 of
+the 201 Litolff heads and all 35 Brahms heads (the other 26 left out). For each head: the nearest page-map
+vertical on the side the old join names, and the FIRST of the reader's three tests it fails.
+**There is no single cause.** First failing test (Litolff 175 / Brahms 35): stem starts more than 2 sp from
+the head centre 70 / 1; vertical more than 0.4 sp INSIDE the head-box edge 66 / 15; more than 0.4 sp OUTSIDE
+it 31 / 17; does not reach 1.5 sp past the head 5 / 2; no vertical near 3 / 0.
+- **A. Chord heads stacked against a mate (Litolff 64 of the 70).** One other head of the chord sits between
+  this head and where the stem starts; in 69 of 70 the stem column is inked all the way through. The stem is
+  printed and continuous; the reader measures the gap from this head's own centre and does not let a touching
+  chord mate carry the stem to it. 61 down stems, 9 up. Past the limit: 30 within 0.25 sp, 23 more within
+  0.5. The reader's own head-end test.
+- **B. Narrow ovals on half notes (Brahms 16 of 17 "outside"; Litolff 13).** The 2.290 head oval is 0.65-0.95
+  sp wide, narrower than the printed head, so the real stem stands 0.45-0.60 sp outside it, just past the 0.4
+  limit. The head reader's oval -- the stem reader's INPUT.
+- **C. Verticals inside the box edge (66 / 15): mixed.** 46 of the 66 use a detector box, not an oval; some
+  boxes span an accidental or a second head; some are cause A again; 43 Litolff heads miss the x limit by
+  0.1 sp or less.
+The "engraving side" is measured from the BOX edge (the 2.290 oval, else the strongest detector box), never
+from the head's ink edge locally -- against page-facts "measure locally". Half notes with short stems: a
+vertical is there and the side test refuses it 20 / 16; the stem is merged into the head as one blob stroke
+12 / 7; none is cut into pieces by staff lines.
+**Lesson.** A side test measured from a box inherits every fault of the box (too narrow an oval, a box over
+an accidental); 43 near-misses of 0.1 sp say the cut is measuring the box, not the note.
+Not built. 12 blind tiles (out/print/2.306-r10) go to Sean first.

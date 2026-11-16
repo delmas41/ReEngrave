@@ -87,7 +87,12 @@ machine-readable form.
   the far side -- **the HIGHER note of a second always on the RIGHT of the
   stem, the lower on the left, stem up or down** (Sean, 2026-11-13: *"Yes,
   always"*; scope: general engraving; ROADMAP 2.306 r8), so two heads on
-  opposite sides with the higher on the LEFT are two voices, not a second; a long stem through stacked heads is a chord stem, never a
+  opposite sides with the higher on the LEFT are two voices, not a second;
+  and **where two voices share a column, one stem up and one down, the UPPER
+  head takes the up stem and the LOWER the down stem** (Sean, 2026-11-14:
+  *"Always when it is 2 voices. Obviously chords are not always multiple
+  voices. One of the voices may not have stems if it has rests."*; scope:
+  general; ROADMAP 2.306 r9); a long stem through stacked heads is a chord stem, never a
   barline (2.204c: all 3 "barline" tiles were chord stems).
 - **A chord's stem can run in both directions past its notes, and a short
   stem is not by itself a grace note** (Sean, 2026-10-26: "In a chord the stem
