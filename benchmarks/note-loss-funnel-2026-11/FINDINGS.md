@@ -65,3 +65,9 @@ tree and flags that made the record), then
 
 12 random written-note tiles (seed 2311, 6 per plate) in `out/print/2.311-written`, with Sean. Smallest extra
 labelling with the largest payoff: one Litolff page swept all-ink; then the 8 unswept Brahms p0 cells.
+
+## Sean's answers on the 12 random written-note tiles (2026-11-16)
+
+All 12 are real notes and all 12 carry the value we wrote (dots included; tile 3 was blue and is right; tile 6 a unison).
+Who says: Sean. Limit: 12 tiles cannot show a fake rate below about one in five; it agrees with the judged page
+(3 wrong / 373 right notes). `answers-2.311-written.json`; DECISIONS 2026-11-16.
