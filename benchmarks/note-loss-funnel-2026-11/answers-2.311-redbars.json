@@ -4,7 +4,7 @@
  "seed": 2311002,
  "date": "2026-11-16",
  "question": "What is printed in the boxed bar on that staff?",
- "note": "Sean numbered tiles 7, 8, 9 as '5, 6, 7' after tile 6 (our reading, by content). 10-12 not yet answered.",
+ "note": "Sean numbered tiles 7, 8, 9 as '5, 6, 7' after tile 6 (our reading, by content); he confirmed 'I've done through 9'.",
  "overall": "many of these are taller than the tiles that you're giving me. And it's very possible that one of the reasons these are showing up as red is because of how spread out the notes are and how far away they are from the staff.",
  "answers": {
   "1": "a chord on an eighth note on beat 1, two notes, the second space above the staff and the third line above the staff, followed by three eighth notes on a beam that are also unison, so the stems going in both directions; all three on the fourth ledger line above the staff",
@@ -15,6 +15,9 @@
   "6": "a chord of two notes, first ledger line below the staff and second space within the staff, followed by a quarter note rest; fermata over the rest; a sharp in front of the note on the first ledger line below; a forte marking",
   "7": "two dotted quarter notes; the first has a tie coming from the measure before, the second a tie going to the measure after",
   "8": "a chord of quarter notes, middle line and the line above (flat in front), then an eighth note rest, then another chord of dotted quarters, ledger line below the staff (sharp) and middle of the staff (flat); 'piu' and a forte underneath",
-  "9": "two voices; top: quarter rest, eighth rest, quarter note slurred to an eighth note; bottom: two dotted quarters, the first with an arc coming from the bar before, and a slur from it to the first note of the next bar; two hairpins (decrescendo on the first dotted quarter, crescendo on the second); 'espr.' over the second half"
+  "9": "two voices; top: quarter rest, eighth rest, quarter note slurred to an eighth note; bottom: two dotted quarters, the first with an arc coming from the bar before, and a slur from it to the first note of the next bar; two hairpins (decrescendo on the first dotted quarter, crescendo on the second); 'espr.' over the second half",
+  "10": "a dotted quarter with an arc coming from the measure before it, followed by a dotted quarter with a flat on it, which is a tie to the next measure; first in the top space of the staff, second on the second-to-top line",
+  "11": "two dotted quarters; the first has a tie from the measure before; the second has a sharp in front of it; both on the top line; both part of a slur that started in the previous measure and goes to the measure past it",
+  "12": "two dotted quarters; the first has a tie from the previous bar, the second a tie to the next bar; first on the space below the staff, second on the first line of the staff"
  }
 }
