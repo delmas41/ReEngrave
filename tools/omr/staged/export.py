@@ -2484,6 +2484,12 @@ def _place_arcs(rec: Record, runs: Dict[str, StaffRun]) -> Dict[str, int]:
             # ROADMAP 2.223: a slur whose CURVE was bound at both ends is written once per curve on those heads
             # (`_page_bound_slur_spans`), never piece by piece by box coverage.
             continue
+        if pa_plan is not None:
+            # ROADMAP 2.305 r9 (Sean 2026-11-13 NO OLD READER BESIDE THE NEW ONE): with the page pass ON, a detector box no reader of ours traced to two notes
+            # writes nothing through the old box path (on Sean's swept Brahms p0 cells that path wrote 4 right slurs and 10 wrong, incl. second arcs on
+            # notes the page pass had already joined). Its ink stays the page pass's to read or to leave unread; counted.
+            dropped["old_box_path_retired"] += 1
+            continue
 
         page_box = _corners_to_wh(_page_box_of(o))
         if page_box is None:
@@ -2831,16 +2837,18 @@ def _record_tie_pairs(rec: Record) -> Optional[Dict[str, Any]]:
     if not standing:
         return None
     pairs: Dict[Tuple[str, str], List[str]] = {}
+    reasons: Dict[Tuple[str, str], set] = {}
     refused: Dict[str, int] = collections.Counter()
     for v in standing:
         if v["outcome"] == "decided" and isinstance(v.get("value"), dict):
             key = (str(v["value"]["start"]), str(v["value"]["stop"]))
             pairs.setdefault(key, []).append(v["subject"])
+            reasons.setdefault(key, set()).add(str(v.get("reason")))
         elif v["outcome"] == "narrowed":
             refused["tie_pair_narrowed"] += 1
         elif v.get("reason") not in _TIE_PAIR_COUNTED_ELSEWHERE:
             refused["tie_pair_" + str(v.get("reason"))] += 1
-    return {"pairs": pairs, "refused": refused, "consumed": set(),
+    return {"pairs": pairs, "reasons": reasons, "refused": refused, "consumed": set(),
             "contradictions": [], "linked": []}
 
 
@@ -3185,6 +3193,11 @@ def _page_bound_slur_spans(measures, bound: Dict[str, Dict[str, Any]], voice_of:
         if (id(first), id(last)) in have:
             counters["slur_bound_same_as_box_span"] += 1
             continue
+        if _page_arc_bind.write_enabled() and any({id(first), id(last)} == {id(s[2]), id(s[3])} for s in out):
+            # ROADMAP 2.305 r9 (north star: all ink accounted for one time; Sean's P162, Brahms p0 staff 1: one printed slur read by two detector curves from
+            # two staves' cells, both bound to the same two notes and written twice): two readings that join the SAME two notes are one printed slur, written once
+            counters["slur_bound_same_two_notes_as_another_reading"] += 1
+            continue
         if (sm, xa) > (tm, xz):
             (sm, xa, first), (tm, xz, last) = (tm, xz, last), (sm, xa, first)
         out.append(((sm, xa), (tm, xz), first, last))
@@ -3427,6 +3440,12 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 if any(a in pa_plan["replaced"] for a in record_ties["pairs"][key]):
                     del record_ties["pairs"][key]
                     counters["page_arc_tie_pairs_replaced"] += 1
+                elif "paired_by_page_binding" not in (record_ties.get("reasons") or {}).get(key, ()):
+                    # ROADMAP 2.305 r9 (Sean 2026-11-13 NO OLD READER BESIDE THE NEW ONE; north star: all ink accounted for one time): with the page pass ON, a
+                    # tie is written only from ink a reader of ours traced to its two notes -- a page-ink run, or a detector curve bound at both ends
+                    # (`paired_by_page_binding`). The old pairing of a box with the heads flanking it writes nothing; counted.
+                    del record_ties["pairs"][key]
+                    counters["old_tie_pairing_retired"] += 1
         for r_ in pa_plan["written"]:
             if r_["kind"] == "slur":
                 bound_slurs["page_arc/%s" % r_["row"]] = {"start": str(r_["start"]), "stop": str(r_["stop"]), "pieces": 1}

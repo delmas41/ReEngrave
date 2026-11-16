@@ -3096,6 +3096,25 @@ def _unread_head_ink(ev: Evidence, home: Any, sp: float) -> List[Dict[str, Any]]
     return [u for u in _UNREAD_MEMO["pages"][pg] if list(u.get("staff") or ()) == [home.system, home.staff]]
 
 
+def _heads_under_the_arc(keys: Sequence[str], by: Dict[str, Dict[str, Any]], d: Dict[str, Any], side: str) -> bool:
+    """ROADMAP 2.305 r9: every head of `keys` stands on the arc's NOTES' side of the straight line joining its two ink ends (a cup, `below`: above that line;
+    a cap, `above`: below it) -- the arc is drawn over those notes. False where any stands on the far side, or the ends are not known. No number."""
+    try:
+        xl, yl, xr, yr = (float(d[k]) for k in ("x_left_page", "y_left_page", "x_right_page", "y_right_page"))
+    except (KeyError, TypeError, ValueError):
+        return False
+    if xr <= xl or not keys:
+        return False
+    for k in keys:
+        h = by.get(k)
+        if h is None:
+            return False
+        line_y = yl + (float(h["cx"]) - xl) / (xr - xl) * (yr - yl)
+        if (side == "below" and not float(h["cy"]) < line_y) or (side == "above" and not float(h["cy"]) > line_y):
+            return False
+    return True
+
+
 def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the CURVE this arc box is a piece of, bound at both ends to notes AFTER the heads are read,
     and the kind Sean's tie rule makes of the two bound heads. None where GATHER traced no curve through this box (the OFF path stands).
@@ -3425,6 +3444,12 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
         b.update(kind="slur", rule="page_binding_different_pitch")
     elif relation != "same":
         b["why"] = "step_" + relation
+    elif between and _arc_claim.rule_enabled() and b.get("side") in ("above", "below") and _heads_under_the_arc(between, by, d, b["side"]):
+        # ROADMAP 2.305 r9 (page-facts, Sean 2026-10-29: "a tie only ever happens between 2 adjacent notes of the same pitch ... spanning multiple notes is
+        # always slur"; his P179 / P254, Brahms p0: one slur under six repeated notes, refused here and left to the old box path): same pitch at both ends
+        # and every head between stands on the arc's NOTES' side (a cup's notes above the line joining its two ends, a cap's below) -- the arc spans those
+        # notes, so it is a slur. A head between on the far side (a notehead box on a dynamic under a cup, r6) is not under the arc: still refused below.
+        b.update(kind="slur", rule="page_binding_same_pitch_notes_between")
     elif between:
         b["why"] = "same_pitch_heads_between"
     else:
@@ -6677,6 +6702,21 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         b = _page_binding(ev, None, page_run=(d, home, "page_arc/%s" % r.id, r.id,
                                               lambda heads_, sp_, usable_, end_pitch_, alt_, unread_=None, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d, unread_)))
         far = [s_ for s_ in ("left", "right") if (b.get(s_) or {}).get("unbound") == "head_on_the_arcs_far_side"]
+        if len(far) < 2 and b.get("side") in ("above", "below"):
+            # ROADMAP 2.305 r9 (page-facts: an arc is OVER its notes -- a cup's notes stand above its ends, a cap's below; Brahms p0 staff 5, Sean's ties
+            # P184/P186/P195: the cups under staff 5's low notes lie nearer staff 6, whose notes stand BELOW them): an end left as "half of another arc" whose
+            # closest note of this staff stands wholly on the arc's far side of the end (a cup: the head's top below the end; a cap: its foot above it) is not
+            # this staff's end either -- it counts with the far-side ends, and where every end is so, the arc's own side names the other staff (below, once).
+            for s_ in ("left", "right"):
+                e_ = b.get(s_) or {}
+                if s_ in far or e_.get("unbound") != "continues_in_another_curve" or not e_.get("candidates"):
+                    continue
+                gb_ = ev.rows(Q.GLYPH_BOX, subject=R.Subject.from_key(str(e_["candidates"][0])))
+                hb_ = (gb_[-1].detail or {}).get("bbox_page_px") if gb_ else None
+                ey_ = d.get("y_%s_page" % s_)
+                if hb_ and len(hb_) == 4 and ey_ is not None and (
+                        (b["side"] == "below" and float(hb_[1]) > float(ey_)) or (b["side"] == "above" and float(hb_[3]) < float(ey_))):
+                    far.append(s_)
         hs_ = R.Subject.from_key(home)
         near = None
         if len(far) == 2 and b.get("side") in ("above", "below") and hs_.staff is not None:
