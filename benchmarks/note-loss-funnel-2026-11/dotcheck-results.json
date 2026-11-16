@@ -1,0 +1,807 @@
+[
+ {
+  "plate": "litolff",
+  "short_exact_halves": {
+   "quarters only": 11,
+   "quarters only | page 16": 3,
+   "quarters only | and every real head written": 11,
+   "quarters only | page 4": 3,
+   "quarters only | page 10": 4,
+   "quarters only | page 6": 1
+  },
+  "short_red_bars_all": {
+   "short bars (all)": 66
+  },
+  "red_bars_total": 309,
+  "dots_by_role": {
+   "None:dot_role_ambiguous": 51,
+   "staccato:centred_and_offset_from_a_head": 26,
+   "None:on_a_stroke": 10,
+   "None:ink_owned_by_another_mark": 9,
+   "augmentation:right_of_and_level_with_a_head": 5,
+   "None:wedge_without_a_head": 2,
+   "None:on_a_barline": 1,
+   "None:wedge_points_away": 1
+  },
+  "dots_by_use": {
+   "NO dot written beside it | role None": 71,
+   "NO dot written beside it | role staccato": 26,
+   "dot written on a head beside it | role augmentation": 4,
+   "NO dot written beside it | role augmentation": 1
+  },
+  "dots_within_1sp_of_an_arc_box": {
+   "NO dot written beside it | role staccato": 12,
+   "NO dot written beside it | role None": 21
+  },
+  "dots_total": 105,
+  "tile_heads": [],
+  "tile_head_crops": [],
+  "random_plain_quarters": [],
+  "dotlike_ink_beside_plain_quarters": {
+   "bars not red | plain quarters": 1146,
+   "bars not red | with a dot-sized unclassified ink piece right of the head, no dot box": 118,
+   "red bar, other | plain quarters": 139,
+   "red bar, other | with a dot-sized unclassified ink piece right of the head, no dot box": 14
+  }
+ },
+ {
+  "plate": "brahms",
+  "short_exact_halves": {
+   "quarters + rests": 5,
+   "quarters + rests | page 12": 3,
+   "quarters + rests | and every real head written": 4,
+   "quarters only": 16,
+   "quarters only | page 8": 11,
+   "quarters only | and every real head written": 16,
+   "quarters only | page 19": 2,
+   "quarters + rests | page 25": 1,
+   "quarters only | page 5": 1,
+   "quarters only | page 14": 2,
+   "quarters + rests | page 19": 1
+  },
+  "short_red_bars_all": {
+   "short bars (all)": 58
+  },
+  "red_bars_total": 276,
+  "dots_by_role": {
+   "augmentation:right_of_and_level_with_a_head": 2103,
+   "None:dot_role_ambiguous": 71,
+   "staccato:centred_and_offset_from_a_head": 63,
+   "augmentation:right_of_a_head_at_its_dot_step": 40,
+   "augmentation:beside_a_head_in_its_dot_space": 19,
+   "None:ink_owned_by_another_mark": 14,
+   "None:on_a_stroke": 7,
+   "staccatissimo:wedge_pointing_at_a_head": 4,
+   "None:wedge_without_a_head": 2,
+   "None:on_a_barline": 1,
+   "None:wedge_points_away": 1
+  },
+  "dots_by_use": {
+   "dot written on a head beside it | role augmentation": 2045,
+   "NO dot written beside it | role None": 75,
+   "NO dot written beside it | role augmentation": 117,
+   "dot written on a head beside it | role None": 21,
+   "NO dot written beside it | role staccato": 62,
+   "NO dot written beside it | role staccatissimo": 4,
+   "dot written on a head beside it | role staccato": 1
+  },
+  "dots_within_1sp_of_an_arc_box": {
+   "dot written on a head beside it | role augmentation": 1315,
+   "NO dot written beside it | role None": 30,
+   "dot written on a head beside it | role None": 11,
+   "NO dot written beside it | role augmentation": 84,
+   "NO dot written beside it | role staccato": 20
+  },
+  "dots_total": 2325,
+  "tile_heads": [
+   {
+    "tile": 7,
+    "page": 8,
+    "system": 0,
+    "staff": 7,
+    "cell": 10,
+    "measure": 56,
+    "counted": [
+     2.5
+    ],
+    "want": 3.0,
+    "heads": [
+     {
+      "glyph": "glyph/8/0/7/10/1",
+      "box": [
+       4721.0,
+       2714.6,
+       4758.3,
+       2747.6
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "stem_tip_reads_no_beam",
+       "value": {
+        "beats": 1.5,
+        "written": 1.5,
+        "dots": 1,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 1,
+       "pitch": "E-14",
+       "measure": "56"
+      },
+      "dot_boxes": [
+       {
+        "glyph": "glyph/8/0/7/10/8",
+        "box": [
+         4768.2,
+         2710.9,
+         4782.3,
+         2724.7
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": [
+         "glyph/8/0/7/10/0",
+         "glyph/8/0/7/10/11"
+        ]
+       }
+      ]
+     },
+     {
+      "glyph": "glyph/8/0/7/10/3",
+      "box": [
+       4571.2,
+       2714.3,
+       4610.0,
+       2747.9
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "stem_tip_reads_no_beam",
+       "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 0,
+       "pitch": "E-14",
+       "measure": "56"
+      },
+      "dot_boxes": []
+     }
+    ]
+   },
+   {
+    "tile": 8,
+    "page": 19,
+    "system": 1,
+    "staff": 2,
+    "cell": 2,
+    "measure": 127,
+    "counted": null,
+    "want": null,
+    "heads": [
+     {
+      "glyph": "glyph/19/1/2/2/1",
+      "box": [
+       1806.1,
+       4587.8,
+       1845.7,
+       4620.8
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "head_and_marks",
+       "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 0,
+       "pitch": "D-15",
+       "measure": "127"
+      },
+      "dot_boxes": []
+     },
+     {
+      "glyph": "glyph/19/1/2/2/4",
+      "box": [
+       2030.0,
+       4699.7,
+       2071.1,
+       4734.1
+      ],
+      "fate": "chord_value_undecided",
+      "duration": {
+       "outcome": "decided",
+       "reason": "head_and_marks",
+       "value": {
+        "beats": 1.75,
+        "written": 1.75,
+        "dots": 2,
+        "beam_levels": 0
+       }
+      },
+      "written": null,
+      "dot_boxes": [
+       {
+        "glyph": "glyph/19/1/2/2/10",
+        "box": [
+         2081.6,
+         4698.3,
+         2093.3,
+         4713.0
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": []
+       },
+       {
+        "glyph": "glyph/19/1/2/2/12",
+        "box": [
+         2087.7,
+         4732.4,
+         2096.3,
+         4742.4
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_a_head_at_its_dot_step"
+        ],
+        "arc_boxes_within_1sp": []
+       }
+      ]
+     },
+     {
+      "glyph": "glyph/19/1/2/2/5",
+      "box": [
+       1806.3,
+       4618.6,
+       1845.7,
+       4650.5
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "head_and_marks",
+       "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 0,
+       "pitch": "B-14",
+       "measure": "127"
+      },
+      "dot_boxes": []
+     },
+     {
+      "glyph": "glyph/19/1/2/2/9",
+      "box": [
+       2031.7,
+       4616.4,
+       2070.5,
+       4651.9
+      ],
+      "fate": "chord_value_undecided",
+      "duration": {
+       "outcome": "decided",
+       "reason": "head_and_marks",
+       "value": {
+        "beats": 1.5,
+        "written": 1.5,
+        "dots": 1,
+        "beam_levels": 0
+       }
+      },
+      "written": null,
+      "dot_boxes": [
+       {
+        "glyph": "glyph/19/1/2/2/11",
+        "box": [
+         2081.1,
+         4611.1,
+         2095.8,
+         4626.9
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": []
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "tile": 9,
+    "page": 8,
+    "system": 0,
+    "staff": 2,
+    "cell": 2,
+    "measure": 48,
+    "counted": null,
+    "want": null,
+    "heads": [
+     {
+      "glyph": "glyph/8/0/2/2/8",
+      "box": [
+       1640.2,
+       1250.6,
+       1680.0,
+       1286.7
+      ],
+      "fate": "duration_narrowed",
+      "duration": {
+       "outcome": "narrowed",
+       "reason": "flag_ink_unread",
+       "value": null
+      },
+      "written": null,
+      "dot_boxes": [
+       {
+        "glyph": "glyph/8/0/2/2/29",
+        "box": [
+         1683.1,
+         1272.3,
+         1698.8,
+         1286.4
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_a_head_at_its_dot_step"
+        ],
+        "arc_boxes_within_1sp": [
+         "glyph/8/0/2/2/21"
+        ]
+       }
+      ]
+     },
+     {
+      "glyph": "glyph/8/0/2/2/10",
+      "box": [
+       1891.0,
+       1192.6,
+       1931.1,
+       1228.1
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "head_and_marks",
+       "value": {
+        "beats": 0.5,
+        "written": 0.5,
+        "dots": 0,
+        "beam_levels": 1
+       }
+      },
+      "written": {
+       "type": "eighth",
+       "dots": 0,
+       "pitch": "F5",
+       "measure": "48"
+      },
+      "dot_boxes": []
+     },
+     {
+      "glyph": "glyph/8/0/2/2/16",
+      "box": [
+       1795.0,
+       1236.9,
+       1834.3,
+       1267.1
+      ],
+      "fate": "duration_narrowed",
+      "duration": {
+       "outcome": "narrowed",
+       "reason": "beam_discounted_uncertain",
+       "value": null
+      },
+      "written": null,
+      "dot_boxes": [
+       {
+        "glyph": "glyph/8/0/2/2/28",
+        "box": [
+         1841.2,
+         1268.5,
+         1858.5,
+         1286.9
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": [
+         "glyph/8/0/2/2/21"
+        ]
+       }
+      ]
+     },
+     {
+      "glyph": "glyph/8/0/2/2/19",
+      "box": [
+       1795.0,
+       1265.5,
+       1833.2,
+       1294.1
+      ],
+      "fate": "duration_narrowed",
+      "duration": {
+       "outcome": "narrowed",
+       "reason": "beam_discounted_uncertain",
+       "value": null
+      },
+      "written": null,
+      "dot_boxes": [
+       {
+        "glyph": "glyph/8/0/2/2/28",
+        "box": [
+         1841.2,
+         1268.5,
+         1858.5,
+         1286.9
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": [
+         "glyph/8/0/2/2/21"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "tile": 10,
+    "page": 8,
+    "system": 0,
+    "staff": 9,
+    "cell": 8,
+    "measure": 54,
+    "counted": [
+     2.0
+    ],
+    "want": 3.0,
+    "heads": [
+     {
+      "glyph": "glyph/8/0/9/8/1",
+      "box": [
+       4015.2,
+       3179.6,
+       4054.1,
+       3216.0
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "stem_tip_reads_no_beam",
+       "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 0,
+       "pitch": "C-14",
+       "measure": "54"
+      },
+      "dot_boxes": []
+     },
+     {
+      "glyph": "glyph/8/0/9/8/4",
+      "box": [
+       3873.7,
+       3172.7,
+       3911.7,
+       3199.3
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "stem_tip_reads_no_beam",
+       "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 0,
+       "pitch": "D-14",
+       "measure": "54"
+      },
+      "dot_boxes": []
+     }
+    ]
+   },
+   {
+    "tile": 11,
+    "page": 14,
+    "system": 1,
+    "staff": 8,
+    "cell": 1,
+    "measure": 106,
+    "counted": [
+     1.5
+    ],
+    "want": 3.0,
+    "heads": [
+     {
+      "glyph": "glyph/14/1/8/1/1",
+      "box": [
+       1535.4,
+       6232.6,
+       1575.2,
+       6266.6
+      ],
+      "fate": "duration_narrowed",
+      "duration": {
+       "outcome": "narrowed",
+       "reason": "dot_seen_beside_a_plain_note",
+       "value": null
+      },
+      "written": null,
+      "dot_boxes": [
+       {
+        "glyph": "glyph/14/1/8/1/5",
+        "box": [
+         1582.3,
+         6224.4,
+         1595.9,
+         6238.6
+        ],
+        "role": [
+         "abstained",
+         null,
+         "dot_role_ambiguous"
+        ],
+        "arc_boxes_within_1sp": [
+         "glyph/14/1/8/1/15"
+        ]
+       }
+      ]
+     },
+     {
+      "glyph": "glyph/14/1/8/1/2",
+      "box": [
+       1736.5,
+       6231.2,
+       1775.2,
+       6265.3
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "head_and_marks",
+       "value": {
+        "beats": 1.5,
+        "written": 1.5,
+        "dots": 1,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 1,
+       "pitch": "F15",
+       "measure": "106"
+      },
+      "dot_boxes": [
+       {
+        "glyph": "glyph/14/1/8/1/6",
+        "box": [
+         1786.1,
+         6227.7,
+         1799.4,
+         6241.6
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": [
+         "glyph/14/1/8/1/15"
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "tile": 12,
+    "page": 8,
+    "system": 0,
+    "staff": 7,
+    "cell": 12,
+    "measure": 58,
+    "counted": [
+     2.5
+    ],
+    "want": 3.0,
+    "heads": [
+     {
+      "glyph": "glyph/8/0/7/12/0",
+      "box": [
+       5294.1,
+       2712.0,
+       5330.5,
+       2744.8
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "stem_tip_reads_no_beam",
+       "value": {
+        "beats": 1.0,
+        "written": 1.0,
+        "dots": 0,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 0,
+       "pitch": "E-14",
+       "measure": "58"
+      },
+      "dot_boxes": []
+     },
+     {
+      "glyph": "glyph/8/0/7/12/2",
+      "box": [
+       5150.0,
+       2726.2,
+       5187.3,
+       2759.8
+      ],
+      "fate": "written",
+      "duration": {
+       "outcome": "decided",
+       "reason": "stem_tip_reads_no_beam",
+       "value": {
+        "beats": 1.5,
+        "written": 1.5,
+        "dots": 1,
+        "beam_levels": 0
+       }
+      },
+      "written": {
+       "type": "quarter",
+       "dots": 1,
+       "pitch": "D4",
+       "measure": "58"
+      },
+      "dot_boxes": [
+       {
+        "glyph": "glyph/8/0/7/12/1",
+        "box": [
+         5197.2,
+         2738.0,
+         5210.4,
+         2749.9
+        ],
+        "role": [
+         "decided",
+         "augmentation",
+         "right_of_and_level_with_a_head"
+        ],
+        "arc_boxes_within_1sp": []
+       }
+      ]
+     }
+    ]
+   }
+  ],
+  "tile_head_crops": [
+   "tile07_8-0-7-10-3.png",
+   "tile08_19-1-2-2-1.png",
+   "tile08_19-1-2-2-4.png",
+   "tile08_19-1-2-2-5.png",
+   "tile08_19-1-2-2-9.png",
+   "tile09_8-0-2-2-8.png",
+   "tile09_8-0-2-2-10.png",
+   "tile09_8-0-2-2-16.png",
+   "tile09_8-0-2-2-19.png",
+   "tile10_8-0-9-8-1.png",
+   "tile10_8-0-9-8-4.png",
+   "tile11_14-1-8-1-1.png",
+   "tile12_8-0-7-12-0.png"
+  ],
+  "crop_pool": 21,
+  "random_plain_quarters": [
+   {
+    "file": "plain_19-0-10-5-8.png",
+    "glyph": "glyph/19/0/10/5/8",
+    "measure": "119",
+    "dot_boxes_beside": [],
+    "dotlike_ink_pieces": []
+   },
+   {
+    "file": "plain_14-1-9-3-1.png",
+    "glyph": "glyph/14/1/9/3/1",
+    "measure": "108",
+    "dot_boxes_beside": [],
+    "dotlike_ink_pieces": []
+   },
+   {
+    "file": "plain_8-0-7-12-0.png",
+    "glyph": "glyph/8/0/7/12/0",
+    "measure": "58",
+    "dot_boxes_beside": [],
+    "dotlike_ink_pieces": [
+     "glyph/8/0/7/12/375010"
+    ]
+   },
+   {
+    "file": "plain_8-0-8-10-4.png",
+    "glyph": "glyph/8/0/8/10/4",
+    "measure": "56",
+    "dot_boxes_beside": [],
+    "dotlike_ink_pieces": []
+   },
+   {
+    "file": "plain_8-1-7-2-2.png",
+    "glyph": "glyph/8/1/7/2/2",
+    "measure": "61",
+    "dot_boxes_beside": [],
+    "dotlike_ink_pieces": [
+     "glyph/8/1/7/2/375006"
+    ]
+   },
+   {
+    "file": "plain_8-0-9-12-3.png",
+    "glyph": "glyph/8/0/9/12/3",
+    "measure": "58",
+    "dot_boxes_beside": [],
+    "dotlike_ink_pieces": [
+     "glyph/8/0/9/12/375015"
+    ]
+   }
+  ],
+  "dotlike_ink_beside_plain_quarters": {
+   "bars not red | plain quarters": 657,
+   "bars not red | with a dot-sized unclassified ink piece right of the head, no dot box": 134,
+   "red bar, other | plain quarters": 156,
+   "red bar, other | with a dot-sized unclassified ink piece right of the head, no dot box": 35,
+   "POOL: plain quarter in a short quarters-only 6/8 red bar | plain quarters": 21,
+   "POOL: plain quarter in a short quarters-only 6/8 red bar | with a dot-sized unclassified ink piece right of the head, no dot box": 12
+  }
+ }
+]
