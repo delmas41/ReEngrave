@@ -3078,11 +3078,20 @@ def _unread_head_ink(ev: Evidence, home: Any, sp: float) -> List[Dict[str, Any]]
         claimed = set()
         for r in pev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
             v, dd = r.value, (r.detail or {})
-            if dd.get("page_strokes"):
+            if dd.get("owner") == "head" and dd.get("members") and not any(_head_read(pev, str(m)) for m in dd["members"]):
+                # r7 (Sean's r6 tile 1): 2.290's claim on a head's ink, made for boxes ADJUDICATE then refused as notes, is no reading of a note
+                pass
+            elif dd.get("page_strokes"):
                 # a page-ink claim (a rest, a head's oval, a tremolo, an accidental) and an arc's or hairpin's traced ink (`page_strokes` on its ink claim)
                 claimed.update(int(o[0] if isinstance(o, (list, tuple)) else o) for o in dd["page_strokes"])
             if dd.get("unit") == "area" and isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v):
                 boxes.append(tuple(float(t) for t in v))
+        lines_of = {}
+        for r in pev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
+            if r.subject.kind is Kind.STAFF and isinstance(r.value, (list, tuple)) and len(r.value) == 5:
+                lines_of[(r.subject.system, r.subject.staff)] = list(r.value)
+        for lb in ledger_boxes:
+            lb["lines"] = lines_of.get(tuple(lb["staff"]))
         _UNREAD_MEMO["pages"][pg] = _arc_claim.unread_head_ink(strokes, boxes, sp, claimed, head_boxes, ledger_boxes)
     return [u for u in _UNREAD_MEMO["pages"][pg] if list(u.get("staff") or ()) == [home.system, home.staff]]
 
@@ -3220,6 +3229,13 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
             if md.get("identity") == "page_head" and ic and len(ic) == 2 and float(md.get("head_ink_px") or 0) > 0:
                 h["ink_cx"], h["ink_cy"] = float(ic[0]), float(ic[1])
         unread = list(_unread_head_ink(ev, staff, sp))
+        # r7: a head ADJUDICATE held in doubt (narrowed) is no candidate, but it is still note-like ink at the end -- "cannot tell" where it stands as near as the
+        # closest read note (Sean's r6 tile 2: his stop note `13/0/3/14/7` narrowed `stem_end_ink_only`; tile 5: a box on the key signature narrowed by its claim)
+        for h in heads:
+            hv = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=rows[h["key"]].subject)
+            if hv is not None and hv.outcome is Outcome.NARROWED:
+                unread.append({"id": hv.id, "ordinal": "narrowed:" + h["key"], "cx": h["cx"], "cy": h["cy"], "w": h["w"], "h": h["h"],
+                               "staff": [staff.system, staff.staff]})
         # "never to a note on another staff": the neighbouring staves' notes of the system, for the guard only (never candidates)
         for nb in (staff.staff - 1, staff.staff + 1) if staff.staff is not None else ():
             if nb < 0:
@@ -6565,7 +6581,7 @@ def _witness_by_ink(ev: Evidence, page: Any, items: Sequence[Tuple[Any, Dict[str
     scope=Kind.PAGE,
     wants=(Q.PAGE_ARC, Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM, Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION, Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER, Q.CELL_STAFF_SPACE,
-           Q.MARK_GROUP, Q.PAGE_STROKE, Q.CLAIMED_AREA),
+           Q.MARK_GROUP, Q.PAGE_STROKE, Q.CLAIMED_AREA, Q.STAFF_LINES),
     subjects_from=Q.PAGE_ARC,
     reasons=("bound", "none_bound", "no_witnessed_run"),
     mode=Mode.ADDITIVE,

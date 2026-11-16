@@ -678,8 +678,17 @@ def unread_head_ink(strokes: Sequence[Dict[str, Any]], boxes: Sequence[Sequence[
     # r7 (Sean's r6 tile 3, Litolff p13 `13/1/0/9`: a half-note chord on ledger lines nobody boxed; its hollow heads are shattered by the ledgers, so no blob of
     # a head's size is there): page-facts "the ledger lines name the owner ... there is no far note without one" -- a ledger line is drawn only for a note,
     # so a COLUMN of ledger lines in which no read note stands is a note nobody read. Each such ledger stands for it (its own box: where to look).
+    from .page_heads import RUNG_OUTSIDE_STEPS
     for lb in (ledger_boxes or ()):
         lx0, ly0, lx1, ly1 = lb["box"]
+        lines = lb.get("lines")
+        if lines and len(lines) == 5:
+            # a ledger stands OUTSIDE the staff body (`page_heads`' own rung test): a "ledger" box on the staff's own lines is a staff line's piece (Litolff p13
+            # `13/1/1/9/8`, r7's first replay: the second line of the staff boxed as a ledger, read as a note nobody read)
+            hs = (float(lines[-1]) - float(lines[0])) / 8.0
+            pos = (((ly0 + ly1) / 2.0) - float(lines[0])) / hs if hs > 0 else 0.0
+            if not (pos <= -RUNG_OUTSIDE_STEPS or pos >= 8 + RUNG_OUTSIDE_STEPS):
+                continue
         if any(lx0 <= (hb[0] + hb[2]) / 2.0 <= lx1 and list(st) == list(lb.get("staff") or ()) for hb, st in (head_boxes or ())):
             continue
         out.append({"id": lb.get("id"), "ordinal": "ledger:" + str(lb.get("key")), "cx": (lx0 + lx1) / 2.0, "cy": (ly0 + ly1) / 2.0,

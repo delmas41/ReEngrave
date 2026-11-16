@@ -70,9 +70,15 @@ def _bind(case, drop_ink=()):
     read = {h["key"]: _read(h) for h in case["heads"]}
     boxes = [b["box"] for b in case["boxes"] if AC.reads_ink(b.get("cls")) and not (b.get("category") == "notehead" and not read[b["key"]])]
     head_boxes = [(h["box"], h["staff"]) for h in case["heads"] if read[h["key"]]]
-    ledgers = [{"box": b["box"], "key": b["key"], "id": b["key"], "staff": b["staff"]} for b in case["boxes"] if str(b.get("cls") or "").lower() == "ledgerline"]
+    ledgers = [{"box": b["box"], "key": b["key"], "id": b["key"], "staff": b["staff"], "lines": case["staff_lines"].get("%d/%d" % tuple(b["staff"]))}
+               for b in case["boxes"] if str(b.get("cls") or "").lower() == "ledgerline"]
     strokes = [s for s in case["strokes"] if s["ordinal"] not in drop_ink]
     unread = [u for u in AC.unread_head_ink(strokes, boxes, sp, case["claimed"], head_boxes, ledgers) if list(u.get("staff") or ()) == home] + others
+    for h in case["heads"]:          # a head held in doubt (narrowed) is note-like ink at the end, never a candidate (`ownership._page_binding`)
+        if h["staff"] == home and (h.get("verdict") or {}).get("outcome") == "narrowed":
+            x0, y0, x1, y1 = h["box"]
+            unread.append({"id": h["key"], "ordinal": "narrowed:" + h["key"], "cx": (x0 + x1) / 2.0, "cy": (y0 + y1) / 2.0, "w": x1 - x0, "h": y1 - y0,
+                           "staff": home})
     usable = (lambda k: read.get(k, True))
     arc = case["arc"]
     if arc["source"] == "system_arc":
@@ -104,7 +110,7 @@ def test_never_tile3_the_tie_never_starts_at_the_eighth_before_the_unboxed_chord
 def test_never_tile5_a_box_held_in_doubt_is_no_note_the_piece_from_the_previous_system_starts_at_the_edge():
     b = _bind(FX["tile5"])
     assert "glyph/15/0/0/0/5" not in _pair(b) and "glyph/15/0/0/0/10" not in _pair(b)
-    assert b["left"].get("edge") is True
+    assert b["left"].get("head") is None          # the system's edge, or "cannot tell" where the doubtful box stands as near (rule 8)
 
 
 def test_never_tile8_the_slur_over_the_staff_below_takes_none_of_this_staffs_notes():
@@ -127,6 +133,23 @@ def test_yes_tile12_twin_the_ink_of_a_note_nobody_read_still_refuses():
     c["boxes"] = [b for b in c["boxes"] if b["key"] != c["sean"]["start"]]
     b = _bind(c)
     assert b["left"].get("unbound") == AC.UNREAD_INK_AT_END
+
+
+def test_never_tile2_two_notes_of_one_column_about_equally_close_we_dont_choose():
+    """Sean's r6 tile 2, Litolff p13: "half notes with a tie" (`13/0/3/13/5` -> `14/7`). The cup's right end stands between the half note `14/7` and the black
+    head `14/6` below it, about equally close to both; the chord-member rule by height (and 2.75's "a cup ends on the bottom member") would take `14/6` and
+    write a slur Sean never saw. The rule: two about equally close, we don't choose -- never the other note."""
+    b = _bind(FX["tile2"])
+    assert b["right"].get("head") != "glyph/13/0/3/14/6"
+    # Sean's stop note `14/7` is held in doubt by ADJUDICATE (narrowed, `stem_end_ink_only`, upstream): not a candidate, but note-like ink about as near
+    assert b["right"].get("unbound") == AC.UNREAD_INK_AT_END and b["right"]["candidates"][1] == "page_stroke:narrowed:glyph/13/0/3/14/7"
+
+
+def test_yes_tile4_a_ledger_box_on_the_staffs_own_line_is_no_unread_note():
+    """Sean's r6 tile 4, Litolff p13: "half note ties". A box the detector called a ledger line lies on the staff's own second line (`13/1/1/9/8`); a ledger
+    stands outside the staff body (`page_heads`' rung test), so it is not a note nobody read, and the tie binds Sean's two notes."""
+    c = FX["tile4"]
+    assert _pair(_bind(c)) == (c["sean"]["start"], c["sean"]["stop"])
 
 
 def test_yes_tile9_the_written_tie_stays():
