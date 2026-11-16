@@ -349,7 +349,7 @@ ledgers (detector) are the two upstream sources; `0/0/11/3/12` (tile 8) is an em
 - Tiles: out/print/2.305-r7 (12 unjudged r6->r7 changes: 4 arcs r7 writes, 8 it removed; whole arc in the crop, box on the two notes only),
   key out/print/2.305-r7-key.json. Tile 3's crop is very wide (the old path's arc: every curve over the notes' span is shown).
 
-**Owed from r6.** Fast tier after the KNOWN_GAPS fix and `check`: see the lane report. Whole note nobody boxed: on ledger lines the r7 ledger
+**Owed from r6.** Fast tier on the r7 tip, flags OFF: 10,709 passed / 0 failed; flags ON: 10,707 / 2 (the two default-off pins). `check` 216, ok. Whole note nobody boxed: on ledger lines the r7 ledger
 column sees it; on the staff the page fact that would see it is the hollow head-shaped page stroke (`Q.PAGE_STROKE` blob `hole_share`, filed),
 but Litolff hollow heads are shattered by the staff lines (tiles 1 and 3: every piece `hole_share` 0.0), so it is not built -- measure first.
 **Held for Sean (not built):** a short arc whose two ends find the same closest note.
