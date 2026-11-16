@@ -1,0 +1,2537 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 10,
+  "system": 1,
+  "staff": 10,
+  "cell": 3,
+  "part": "P11",
+  "measure": 190,
+  "meter_in_force_xml": "2/4",
+  "want_quarters": 2.0,
+  "counted_quarters": [
+   1.0
+  ],
+  "red_kind": "does_not_add_up",
+  "also_in": [],
+  "classifier_row": "lost_refused_head_alone",
+  "classifier_reason": "not_a_notehead:too_narrow",
+  "classifier_detail": {
+   "refused_box": "alone"
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "not_a_notehead:too_narrow",
+  "pool": {
+   "drawn_from": 303
+  },
+  "box_page_px": [
+   892.0,
+   3539.0,
+   1030.0,
+   3635.0
+  ],
+  "crop_origin": [
+   697,
+   3507
+  ],
+  "scale": 2.3674,
+  "crop_h_staff_spaces": 15.0,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   892.0,
+   3491.0,
+   1028.0,
+   3715.0
+  ],
+  "staff_lines": [
+   3555,
+   3571,
+   3587,
+   3603,
+   3619
+  ],
+  "staff_space": 16.0,
+  "marks": [
+   {
+    "glyph": "glyph/10/1/10/3/1",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     929.1,
+     3534.5,
+     946.2,
+     3563.3
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B3",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 0,
+     "pitch": "B-13",
+     "measure": "190"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/10/1/10/3/2",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     921.0,
+     3590.0,
+     935.0,
+     3605.1
+    ],
+    "fate": "not_a_notehead:too_narrow",
+    "duration": {
+     "outcome": "decided",
+     "reason": "hollow_head_bare_stem",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "head_fill": "half"
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "too_narrow"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C3",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:too_narrow"
+   }
+  ],
+  "other_ink_in_cell": {
+   "dynamicF": 1,
+   "null": 16
+  }
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 4,
+  "system": 1,
+  "staff": 1,
+  "cell": 4,
+  "part": "P2",
+  "measure": 68,
+  "meter_in_force_xml": "2/4",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "lost_chord_value",
+  "classifier_reason": "chord_value_undecided: head_and_marks",
+  "classifier_detail": {},
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "chord_value_undecided",
+  "pool": {
+   "drawn_from": 303
+  },
+  "box_page_px": [
+   1038.0,
+   2299.2,
+   1190.5,
+   2393.8
+  ],
+  "crop_origin": [
+   885,
+   2242
+  ],
+  "scale": 2.7293,
+  "crop_h_staff_spaces": 11.6,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1038.0,
+   2252.0,
+   1192.0,
+   2441.0
+  ],
+  "staff_lines": [
+   2315,
+   2330,
+   2346,
+   2362,
+   2378
+  ],
+  "staff_space": 15.75,
+  "marks": [
+   {
+    "glyph": "glyph/4/1/1/4/1",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     1124.0,
+     2403.8,
+     1149.5,
+     2425.6
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C6",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/2",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     1151.6,
+     2412.2,
+     1174.4,
+     2435.0
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B5",
+     "reason": "reowned"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/3",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     1100.2,
+     2411.9,
+     1121.8,
+     2435.8
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "A5",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/4",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     1053.0,
+     2404.1,
+     1080.1,
+     2426.4
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D6",
+     "reason": "position_and_clef_ledger_unread"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/6",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     1050.8,
+     2283.7,
+     1081.6,
+     2304.1
+    ],
+    "fate": "chord_value_undecided",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/1",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B5",
+     "reason": "position_and_clef_ledger_unread"
+    },
+    "status": "not written: chord_value_undecided"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/9",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     1052.6,
+     2404.1,
+     1079.9,
+     2436.4
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B5",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/10",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     1124.3,
+     2429.8,
+     1144.9,
+     2438.3
+    ],
+    "fate": "not_a_notehead:belongs_to_a_nearer_staff",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "belongs_to_a_nearer_staff"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "A5",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: not_a_notehead:belongs_to_a_nearer_staff"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/12",
+    "cls": "noteheadHalfOnLine",
+    "kind": "note head",
+    "box": [
+     1050.9,
+     2283.5,
+     1081.6,
+     2305.6
+    ],
+    "fate": "mark_group_duplicate",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/1",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "A5",
+     "reason": "position_and_clef_ledger_unread"
+    },
+    "status": "not written: mark_group_duplicate"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/14",
+    "cls": "noteheadHalfInSpace",
+    "kind": "note head",
+    "box": [
+     1054.4,
+     2299.6,
+     1081.5,
+     2325.7
+    ],
+    "fate": "chord_value_undecided",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F5",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: chord_value_undecided"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/15",
+    "cls": "noteheadHalfOnLine",
+    "kind": "note head",
+    "box": [
+     1038.3,
+     2252.0,
+     1060.2,
+     2263.3
+    ],
+    "fate": "not_a_notehead:on_a_dynamic_letter",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "not_a_note_mark",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "on_a_dynamic_letter"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/1",
+     "reason": "distance"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F6",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:on_a_dynamic_letter"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/17",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     1040.5,
+     2340.7,
+     1093.0,
+     2377.8
+    ],
+    "fate": "not_a_notehead:stem_end_ink_disagrees",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "stem_end_ink_disagrees"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G4",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:stem_end_ink_disagrees"
+   },
+   {
+    "glyph": "glyph/4/1/1/4/18",
+    "cls": "noteheadHalfOnLine",
+    "kind": "note head",
+    "box": [
+     1089.0,
+     2341.0,
+     1109.0,
+     2357.1
+    ],
+    "fate": "not_a_notehead:stem_end_ink_disagrees",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "stem_end_ink_disagrees"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B4",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:stem_end_ink_disagrees"
+   }
+  ],
+  "other_ink_in_cell": {
+   "slur": 1,
+   "accidentalNatural": 1,
+   "tie": 2,
+   "staff": 1,
+   "dynamicF": 2,
+   "null": 54
+  }
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 16,
+  "system": 0,
+  "staff": 6,
+  "cell": 2,
+  "part": "P7",
+  "measure": 239,
+  "meter_in_force_xml": "2/4",
+  "want_quarters": 2.0,
+  "counted_quarters": [
+   1.5
+  ],
+  "red_kind": "does_not_add_up",
+  "also_in": [],
+  "classifier_row": "sum_unboxed_rest_ink",
+  "classifier_reason": "does not add up, short (want 2.0, counted 1.5)",
+  "classifier_detail": {
+   "unboxed": "shape_cannot_tell",
+   "side": "short"
+  },
+  "old_first_cause": "5 sum",
+  "old_first_cause_reason": "short (want 2.0, counted 1.5)",
+  "pool": {
+   "drawn_from": 303
+  },
+  "box_page_px": [
+   714.5,
+   1222.2,
+   850.0,
+   1316.8
+  ],
+  "crop_origin": [
+   579,
+   1190
+  ],
+  "scale": 3.0788,
+  "crop_h_staff_spaces": 10.0,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   714.0,
+   1175.0,
+   849.0,
+   1364.0
+  ],
+  "staff_lines": [
+   1238,
+   1253,
+   1269,
+   1285,
+   1301
+  ],
+  "staff_space": 15.75,
+  "marks": [
+   {
+    "glyph": "glyph/16/0/6/2/0",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     809.0,
+     1291.7,
+     830.9,
+     1313.3
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G2",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "eighth",
+     "dots": 0,
+     "pitch": "G2",
+     "measure": "239"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/16/0/6/2/1",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     810.1,
+     1192.6,
+     831.7,
+     1216.0
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/16/0/5",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G3",
+     "reason": "reowned"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/16/0/6/2/2",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     758.9,
+     1197.0,
+     779.5,
+     1217.2
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/16/0/5",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G3",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/16/0/6/2/3",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     759.8,
+     1291.9,
+     780.0,
+     1313.0
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G2",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "eighth",
+     "dots": 0,
+     "pitch": "G2",
+     "measure": "239"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/16/0/6/2/5",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     784.6,
+     1195.3,
+     803.9,
+     1216.0
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/16/0/5",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G3",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/16/0/6/2/6",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     783.0,
+     1292.0,
+     803.3,
+     1312.5
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G2",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "eighth",
+     "dots": 0,
+     "pitch": "G2",
+     "measure": "239"
+    },
+    "status": "READ (written plain)"
+   }
+  ],
+  "other_ink_in_cell": {
+   "beam": 2,
+   "arpeggiato": 1,
+   "ledgerLine": 1,
+   "slur": 1,
+   "null": 24
+  }
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 6,
+  "system": 0,
+  "staff": 1,
+  "cell": 3,
+  "part": "P2",
+  "measure": 82,
+  "meter_in_force_xml": "2/4",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "lost_rest_value",
+  "classifier_reason": "rest_duration_narrowed: rest_slot_contradicts_class",
+  "classifier_detail": {
+   "head_class": null
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "rest_duration_narrowed",
+  "pool": {
+   "drawn_from": 303
+  },
+  "box_page_px": [
+   970.5,
+   515.0,
+   1129.5,
+   605.0
+  ],
+  "crop_origin": [
+   811,
+   471
+  ],
+  "scale": 2.6205,
+  "crop_h_staff_spaces": 11.8,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   972.0,
+   470.0,
+   1131.0,
+   650.0
+  ],
+  "staff_lines": [
+   530,
+   546,
+   562,
+   577,
+   590
+  ],
+  "staff_space": 15.0,
+  "marks": [
+   {
+    "glyph": "glyph/6/0/1/3/3",
+    "cls": "restWhole",
+    "kind": "rest",
+    "box": [
+     1025.7,
+     553.7,
+     1051.3,
+     564.2
+    ],
+    "fate": "rest_duration_narrowed",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "rest_slot_contradicts_class",
+     "value": null
+    },
+    "rest_is_not_a_rest": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "rest"
+    },
+    "status": "not written: rest_duration_narrowed"
+   }
+  ],
+  "other_ink_in_cell": {
+   "tie": 1,
+   "staff": 1,
+   "ledgerLine": 1,
+   "beam": 1,
+   "null": 4
+  }
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 16,
+  "system": 0,
+  "staff": 4,
+  "cell": 7,
+  "part": "P5",
+  "measure": 244,
+  "meter_in_force_xml": "2/4",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "lost_refused_head_alone",
+  "classifier_reason": "not_a_notehead:too_narrow",
+  "classifier_detail": {
+   "refused_box": "alone"
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "not_a_notehead:too_narrow",
+  "pool": {
+   "drawn_from": 303
+  },
+  "box_page_px": [
+   1365.0,
+   958.2,
+   1445.5,
+   1052.8
+  ],
+  "crop_origin": [
+   1232,
+   926
+  ],
+  "scale": 3.6127,
+  "crop_h_staff_spaces": 10.0,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1365.0,
+   911.0,
+   1446.0,
+   1100.0
+  ],
+  "staff_lines": [
+   974,
+   990,
+   1006,
+   1022,
+   1037
+  ],
+  "staff_space": 15.75,
+  "marks": [
+   {
+    "glyph": "glyph/16/0/4/7/5",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     1399.0,
+     996.0,
+     1413.0,
+     1011.0
+    ],
+    "fate": "not_a_notehead:too_narrow",
+    "duration": {
+     "outcome": "decided",
+     "reason": "hollow_head_bare_stem",
+     "value": {
+      "beats": 2.0,
+      "written": 2.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "head_fill": "half"
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "too_narrow"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C5",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:too_narrow"
+   }
+  ],
+  "other_ink_in_cell": {
+   "fermataAbove": 1,
+   "flag8thDown": 1,
+   "dynamicF": 2,
+   "augmentationDot": 1,
+   "null": 30
+  }
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "page": 6,
+  "system": 1,
+  "staff": 2,
+  "cell": 10,
+  "part": "P3",
+  "measure": 102,
+  "meter_in_force_xml": "2/4",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "lost_bare_stem",
+  "classifier_reason": "duration_narrowed: beam_discounted_uncertain",
+  "classifier_detail": {
+   "neutral_refusals": 1,
+   "head_class": "noteheadBlackInSpace"
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "duration_narrowed",
+  "pool": {
+   "drawn_from": 303
+  },
+  "box_page_px": [
+   2231.5,
+   2262.2,
+   2402.5,
+   2356.8
+  ],
+  "crop_origin": [
+   2060,
+   2201
+  ],
+  "scale": 2.4366,
+  "crop_h_staff_spaces": 12.1,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   2236.0,
+   2215.0,
+   2408.0,
+   2404.0
+  ],
+  "staff_lines": [
+   2278,
+   2294,
+   2310,
+   2325,
+   2341
+  ],
+  "staff_space": 15.75,
+  "marks": [
+   {
+    "glyph": "glyph/6/1/2/10/3",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     2236.8,
+     2325.1,
+     2258.4,
+     2341.8
+    ],
+    "fate": "duration_narrowed",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F4",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: duration_narrowed"
+   },
+   {
+    "glyph": "glyph/6/1/2/10/4",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     2256.0,
+     2215.0,
+     2274.6,
+     2222.4
+    ],
+    "fate": "not_a_notehead:clipped_fragment",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "clipped_fragment"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/6/1/2",
+     "reason": "distance"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "G6",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:clipped_fragment"
+   },
+   {
+    "glyph": "glyph/6/1/2/10/6",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     2236.9,
+     2310.6,
+     2257.9,
+     2328.6
+    ],
+    "fate": "duration_narrowed",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "A4",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: duration_narrowed"
+   },
+   {
+    "glyph": "glyph/6/1/2/10/9",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     2322.6,
+     2284.3,
+     2386.9,
+     2300.5
+    ],
+    "fate": "unread:wide_box_unread",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "wide_box_unread",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "abstained",
+     "value": null,
+     "reason": "wide_box_unread"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D5",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: unread:wide_box_unread"
+   }
+  ],
+  "other_ink_in_cell": {
+   "dynamicF": 1,
+   "beam": 2,
+   "staff": 1,
+   "arpeggiato": 2,
+   "ledgerLine": 1,
+   "null": 33
+  }
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 12,
+  "system": 1,
+  "staff": 8,
+  "cell": 8,
+  "part": "P9",
+  "measure": 93,
+  "meter_in_force_xml": "6/8",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "twin_owned_elsewhere",
+  "classifier_reason": "owned_by_another_staff",
+  "classifier_detail": {},
+  "old_first_cause": "4 all-twin",
+  "old_first_cause_reason": "owned_by_another_staff",
+  "pool": {
+   "drawn_from": 263
+  },
+  "box_page_px": [
+   4492.0,
+   5720.0,
+   5005.5,
+   5888.0
+  ],
+  "crop_origin": [
+   3978,
+   5518
+  ],
+  "scale": 0.8112,
+  "crop_h_staff_spaces": 20.4,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   4492.0,
+   5636.0,
+   5005.0,
+   6028.0
+  ],
+  "staff_lines": [
+   5748,
+   5777,
+   5802,
+   5832,
+   5860
+  ],
+  "staff_space": 28.0,
+  "marks": [
+   {
+    "glyph": "glyph/12/1/8/8/1",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     4771.7,
+     5964.7,
+     4809.5,
+     5998.6
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/12/1/9",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D6",
+     "reason": "reowned_by_ledger_reading"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/12/1/8/8/2",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     4904.2,
+     5994.7,
+     4942.8,
+     6026.0
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/12/1/9",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B5",
+     "reason": "reowned"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/12/1/8/8/3",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     4835.0,
+     5979.0,
+     4879.2,
+     6013.4
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/12/1/9",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C6",
+     "reason": "reowned"
+    },
+    "status": "not written: owned_by_another_staff"
+   }
+  ],
+  "other_ink_in_cell": {
+   "accidentalFlat": 1,
+   "articStaccatoAbove": 3,
+   "ledgerLine": 4,
+   "beam": 1,
+   "null": 20
+  }
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 25,
+  "system": 1,
+  "staff": 1,
+  "cell": 1,
+  "part": "P2",
+  "measure": 145,
+  "meter_in_force_xml": "6/8",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "nothing_blank",
+  "classifier_reason": "no head or rest box and no head- or rest-sized ink on the staff",
+  "classifier_detail": {
+   "neutral_refusals": 1,
+   "ink_pieces_in_staff_band": 0
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "not_a_notehead:clipped_fragment",
+  "pool": {
+   "drawn_from": 263
+  },
+  "box_page_px": [
+   1441.5,
+   4676.5,
+   1916.0,
+   4841.5
+  ],
+  "crop_origin": [
+   967,
+   4517
+  ],
+  "scale": 0.8784,
+  "crop_h_staff_spaces": 19.2,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1439.0,
+   4594.0,
+   1912.0,
+   4924.0
+  ],
+  "staff_lines": [
+   4704,
+   4732,
+   4759,
+   4787,
+   4814
+  ],
+  "staff_space": 27.5,
+  "marks": [
+   {
+    "glyph": "glyph/25/1/1/1/1",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     1495.4,
+     4913.3,
+     1527.5,
+     4924.0
+    ],
+    "fate": "not_a_notehead:clipped_fragment",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "clipped_fragment"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/25/1/2",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D3",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:clipped_fragment"
+   }
+  ],
+  "other_ink_in_cell": {
+   "slur": 2,
+   "beam": 2,
+   "null": 11
+  }
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 19,
+  "system": 1,
+  "staff": 8,
+  "cell": 3,
+  "part": "P10",
+  "measure": 128,
+  "meter_in_force_xml": "6/8",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "partial",
+  "also_in": [],
+  "classifier_row": "red_only_for_a_refused_tip",
+  "classifier_reason": "partial; only refusals: a neighbour's mark cut by the cell edge / a sliver of a head read (1)",
+  "classifier_detail": {
+   "neutral_refusals": 1
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "not_a_rest:rest_clipped_by_crop",
+  "pool": {
+   "drawn_from": 263
+  },
+  "box_page_px": [
+   2246.5,
+   5950.5,
+   2778.0,
+   6115.5
+  ],
+  "crop_origin": [
+   1715,
+   5759
+  ],
+  "scale": 0.7842,
+  "crop_h_staff_spaces": 21.5,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   2248.0,
+   5868.0,
+   2777.0,
+   6198.0
+  ],
+  "staff_lines": [
+   5978,
+   6006,
+   6033,
+   6060,
+   6088
+  ],
+  "staff_space": 27.5,
+  "marks": [
+   {
+    "glyph": "glyph/19/1/8/3/1",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     2448.2,
+     5989.3,
+     2491.4,
+     6022.6
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "eighth",
+     "dots": 0,
+     "pitch": "D15",
+     "measure": "128"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/19/1/8/3/6",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     2562.6,
+     5977.2,
+     2604.7,
+     6008.5
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "E5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 1,
+     "pitch": "E5",
+     "measure": "128"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/19/1/8/3/7",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     2248.0,
+     6176.6,
+     2254.9,
+     6198.0
+    ],
+    "fate": "not_a_notehead:claimed_by:barline",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "claimed_by:barline"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/19/1/9",
+     "reason": "staff_band_no_box"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F5",
+     "reason": "reowned"
+    },
+    "status": "not written: not_a_notehead:claimed_by:barline"
+   },
+   {
+    "glyph": "glyph/19/1/8/3/9",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     2322.5,
+     5980.5,
+     2361.6,
+     6004.7
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "bar_disagrees_with_decided",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "E5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 0,
+     "pitch": "E-15",
+     "measure": "128"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/19/1/8/3/17",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     2413.8,
+     6011.0,
+     2446.6,
+     6038.2
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "eighth",
+     "dots": 0,
+     "pitch": "C5",
+     "measure": "128"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/19/1/8/3/20",
+    "cls": "restQuarter",
+    "kind": "rest",
+    "box": [
+     2418.2,
+     6151.0,
+     2435.0,
+     6197.7
+    ],
+    "fate": "not_a_rest:rest_clipped_by_crop",
+    "duration": {
+     "outcome": "decided",
+     "reason": "rest_class",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "is_rest": true
+     }
+    },
+    "rest_is_not_a_rest": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "rest_clipped_by_crop"
+    },
+    "status": "not written: not_a_rest:rest_clipped_by_crop"
+   }
+  ],
+  "other_ink_in_cell": {
+   "beam": 6,
+   "accidentalFlat": 1,
+   "articStaccatoAbove": 1,
+   "augmentationDot": 1,
+   "slur": 4,
+   "flag8thDown": 1,
+   "tie": 6,
+   "accidentalSharp": 1,
+   "staff": 1,
+   "arpeggiato": 1,
+   "null": 48
+  }
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 4,
+  "system": 1,
+  "staff": 13,
+  "cell": 8,
+  "part": "P14",
+  "measure": 27,
+  "meter_in_force_xml": "6/8",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "partial",
+  "also_in": [],
+  "classifier_row": "lost_bare_stem",
+  "classifier_reason": "duration_narrowed: beam_discounted_uncertain",
+  "classifier_detail": {
+   "head_class": "noteheadBlackInSpace"
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "duration_narrowed",
+  "pool": {
+   "drawn_from": 263
+  },
+  "box_page_px": [
+   4953.0,
+   6987.2,
+   5478.5,
+   7153.8
+  ],
+  "crop_origin": [
+   4427,
+   6847
+  ],
+  "scale": 0.7926,
+  "crop_h_staff_spaces": 21.0,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   4954.0,
+   6904.0,
+   5491.0,
+   7292.0
+  ],
+  "staff_lines": [
+   7015,
+   7043,
+   7070,
+   7098,
+   7126
+  ],
+  "staff_space": 27.75,
+  "marks": [
+   {
+    "glyph": "glyph/4/1/13/8/1",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     5145.5,
+     7121.6,
+     5184.6,
+     7154.9
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "hooks_counted",
+     "value": {
+      "beats": 0.25,
+      "written": 0.25,
+      "dots": 0,
+      "beam_levels": 2
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F2",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "16th",
+     "dots": 0,
+     "pitch": "F2",
+     "measure": "27"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/4/1/13/8/5",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     5382.5,
+     7025.8,
+     5420.2,
+     7061.6
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 0.5,
+      "written": 0.5,
+      "dots": 0,
+      "beam_levels": 1
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F3",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "eighth",
+     "dots": 0,
+     "pitch": "F3",
+     "measure": "27"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/4/1/13/8/8",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     5002.8,
+     6936.7,
+     5039.2,
+     6968.9
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/12",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C2",
+     "reason": "reowned"
+    },
+    "status": "not written: owned_by_another_staff"
+   },
+   {
+    "glyph": "glyph/4/1/13/8/9",
+    "cls": "restQuarter",
+    "kind": "rest",
+    "box": [
+     5000.3,
+     7025.8,
+     5032.8,
+     7104.6
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "rest_class",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0,
+      "is_rest": true
+     }
+    },
+    "rest_is_not_a_rest": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "rest"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 0,
+     "pitch": null,
+     "measure": "27"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/4/1/13/8/10",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     5229.8,
+     7097.1,
+     5270.1,
+     7126.8
+    ],
+    "fate": "duration_narrowed",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "A2",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: duration_narrowed"
+   },
+   {
+    "glyph": "glyph/4/1/13/8/12",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     5147.4,
+     6904.0,
+     5185.4,
+     6926.5
+    ],
+    "fate": "owned_by_another_staff",
+    "duration": {
+     "outcome": "abstained",
+     "reason": "owned_by_another_staff",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/4/1/12",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F2",
+     "reason": "reowned"
+    },
+    "status": "not written: owned_by_another_staff"
+   }
+  ],
+  "other_ink_in_cell": {
+   "staff": 1,
+   "dynamicF": 2,
+   "beam": 8,
+   "articStaccatoBelow": 1,
+   "flag8thDown": 1,
+   "tie": 2,
+   "articTenutoAbove": 1,
+   "ledgerLine": 1,
+   "null": 55
+  }
+ },
+ {
+  "tile": 11,
+  "plate": "brahms",
+  "page": 19,
+  "system": 1,
+  "staff": 1,
+  "cell": 6,
+  "part": "P2",
+  "measure": 131,
+  "meter_in_force_xml": "6/8",
+  "want_quarters": 3.0,
+  "counted_quarters": [
+   4.0
+  ],
+  "red_kind": "does_not_add_up",
+  "also_in": [],
+  "classifier_row": "lost_refused_head_alone",
+  "classifier_reason": "not_a_notehead:too_narrow",
+  "classifier_detail": {
+   "refused_box": "alone"
+  },
+  "old_first_cause": "2 lost",
+  "old_first_cause_reason": "not_a_notehead:too_narrow",
+  "pool": {
+   "drawn_from": 263
+  },
+  "box_page_px": [
+   3822.0,
+   4321.8,
+   4378.5,
+   4485.2
+  ],
+  "crop_origin": [
+   3265,
+   4094
+  ],
+  "scale": 0.7485,
+  "crop_h_staff_spaces": 22.7,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   3827.0,
+   4240.0,
+   4385.0,
+   4567.0
+  ],
+  "staff_lines": [
+   4349,
+   4376,
+   4403,
+   4431,
+   4458
+  ],
+  "staff_space": 27.25,
+  "marks": [
+   {
+    "glyph": "glyph/19/1/1/6/1",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     3901.9,
+     4288.2,
+     3938.7,
+     4321.2
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/19/1/1",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 1,
+     "pitch": "B5",
+     "measure": "131"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/19/1/1/6/2",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     3899.8,
+     4359.4,
+     3937.9,
+     4395.1
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 1,
+     "pitch": "D15",
+     "measure": "131"
+    },
+    "status": "GUESSED (written blue)"
+   },
+   {
+    "glyph": "glyph/19/1/1/6/4",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     4154.0,
+     4457.5,
+     4190.5,
+     4488.5
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "glyph_owner": {
+     "outcome": "decided",
+     "value": "staff/19/1/1",
+     "reason": "page_owner"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D4",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 1,
+     "pitch": "D4",
+     "measure": "131"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/19/1/1/6/6",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     4151.3,
+     4385.8,
+     4190.5,
+     4420.4
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.5,
+      "written": 1.5,
+      "dots": 1,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "B4",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 1,
+     "pitch": "B4",
+     "measure": "131"
+    },
+    "status": "READ (written plain)"
+   },
+   {
+    "glyph": "glyph/19/1/1/6/14",
+    "cls": "noteheadBlackOnLine",
+    "kind": "note head",
+    "box": [
+     4201.4,
+     4382.2,
+     4216.7,
+     4398.3
+    ],
+    "fate": "not_a_notehead:too_narrow",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "too_narrow"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C5",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:too_narrow"
+   },
+   {
+    "glyph": "glyph/19/1/1/6/16",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     3842.5,
+     4370.5,
+     3875.2,
+     4413.3
+    ],
+    "fate": "written",
+    "duration": {
+     "outcome": "decided",
+     "reason": "head_and_marks",
+     "value": {
+      "beats": 1.0,
+      "written": 1.0,
+      "dots": 0,
+      "beam_levels": 0
+     }
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": false,
+     "reason": "notehead"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C5",
+     "reason": "position_and_clef"
+    },
+    "written": {
+     "type": "quarter",
+     "dots": 0,
+     "pitch": "C5",
+     "measure": "131"
+    },
+    "status": "READ (written plain)"
+   }
+  ],
+  "other_ink_in_cell": {
+   "accidentalFlat": 1,
+   "augmentationDot": 4,
+   "accidentalSharp": 3,
+   "accidentalNatural": 3,
+   "ledgerLine": 1,
+   "null": 27
+  }
+ },
+ {
+  "tile": 12,
+  "plate": "brahms",
+  "page": 8,
+  "system": 0,
+  "staff": 7,
+  "cell": 5,
+  "part": "P11",
+  "measure": 51,
+  "meter_in_force_xml": "6/8",
+  "want_quarters": null,
+  "counted_quarters": null,
+  "red_kind": "unread_empty",
+  "also_in": [],
+  "classifier_row": "twin_claimed_or_twin",
+  "classifier_reason": "not_a_notehead:claimed_by:barline",
+  "classifier_detail": {},
+  "old_first_cause": "4 all-twin",
+  "old_first_cause_reason": "not_a_notehead:claimed_by:barline",
+  "pool": {
+   "drawn_from": 263
+  },
+  "box_page_px": [
+   2785.5,
+   2598.8,
+   3177.0,
+   2768.2
+  ],
+  "crop_origin": [
+   2394,
+   2466
+  ],
+  "scale": 1.0647,
+  "crop_h_staff_spaces": 15.4,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   2786.0,
+   2514.0,
+   3179.0,
+   2853.0
+  ],
+  "staff_lines": [
+   2627,
+   2657,
+   2684,
+   2712,
+   2740
+  ],
+  "staff_space": 28.25,
+  "marks": [
+   {
+    "glyph": "glyph/8/0/7/5/3",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     3170.5,
+     2710.6,
+     3179.0,
+     2733.8
+    ],
+    "fate": "not_a_notehead:claimed_by:barline",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "claimed_by:barline"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "F4",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:claimed_by:barline"
+   },
+   {
+    "glyph": "glyph/8/0/7/5/4",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     3170.8,
+     2657.5,
+     3179.0,
+     2676.2
+    ],
+    "fate": "not_a_notehead:claimed_by:barline",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "claimed_by:barline"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "C5",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:claimed_by:barline"
+   },
+   {
+    "glyph": "glyph/8/0/7/5/6",
+    "cls": "noteheadBlackInSpace",
+    "kind": "note head",
+    "box": [
+     3171.9,
+     2739.2,
+     3179.0,
+     2754.1
+    ],
+    "fate": "not_a_notehead:claimed_by:barline",
+    "duration": {
+     "outcome": "narrowed",
+     "reason": "beam_discounted_uncertain",
+     "value": null
+    },
+    "notehead_is_not_a_notehead": {
+     "outcome": "decided",
+     "value": true,
+     "reason": "claimed_by:barline"
+    },
+    "pitch": {
+     "outcome": "decided",
+     "value": "D4",
+     "reason": "position_and_clef"
+    },
+    "status": "not written: not_a_notehead:claimed_by:barline"
+   }
+  ],
+  "other_ink_in_cell": {
+   "tie": 2,
+   "beam": 2,
+   "null": 3
+  }
+ }
+]
