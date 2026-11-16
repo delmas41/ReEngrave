@@ -3194,7 +3194,24 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
             ic = md.get("ink_centre")
             if md.get("identity") == "page_head" and ic and len(ic) == 2 and float(md.get("head_ink_px") or 0) > 0:
                 h["ink_cx"], h["ink_cy"] = float(ic[0]), float(ic[1])
-        unread = _unread_head_ink(ev, staff, sp)
+        unread = list(_unread_head_ink(ev, staff, sp))
+        # "never to a note on another staff": the neighbouring staves' notes of the system, for the guard only (never candidates)
+        for nb in (staff.staff - 1, staff.staff + 1) if staff.staff is not None else ():
+            if nb < 0:
+                continue
+            nsub = R.Subject(Kind.STAFF, staff.page, staff.system, nb)
+            for row in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=nsub):
+                if (row.detail or {}).get("category") != "notehead":
+                    continue
+                nbx = row.detail.get("bbox_page_px")
+                if not nbx or len(nbx) != 4 or not _head_usable(ev, row.subject.to_key()):
+                    continue
+                nov = ev.verdict(Q.GLYPH_OWNER, subject=row.subject)
+                if nov is not None and nov.value == home:
+                    continue          # a box of the neighbour's cell that ADJUDICATE gave to THIS staff is this staff's note
+                x0, y0, x1, y1 = (float(v) for v in nbx)
+                unread.append({"key": row.subject.to_key(), "cx": (x0 + x1) / 2.0, "cy": (y0 + y1) / 2.0, "w": x1 - x0, "h": y1 - y0,
+                               "other_staff": True})
         b = binder(heads + tips, sp, usable, end_pitch, alt, unread)
         for side_ in ("left", "right"):
             if b[side_].get("unbound") == _arc_claim.UNREAD_INK_AT_END and b[side_].get("unread_row"):

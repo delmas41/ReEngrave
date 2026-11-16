@@ -90,7 +90,8 @@ class TestClosestNote(unittest.TestCase):
         # the closest column wins by more than the margin here ...
         self.assertEqual(b["right"]["head"], "c1")
         # ... and two columns inside the margin do not: 0.3 spaces apart
-        heads2 = [_h("a", -5, 108), _h("c1", 128, 108), _h("c2", 135.5, 100)]          # two columns (7.5 px apart), 36.0 and 35.5 px from the end
+        # two columns (8 px apart): 2.305 r6 measures to each head's EDGE -- 24.0 and 25.6 px from the end
+        heads2 = [_h("a", -5, 108), _h("c1", 130, 100), _h("c2", 122, 125)]
         b2 = PB.closest_binder({"left": [], "right": []})(heads2, SP, None, True, None, d)
         self.assertIn(b2["right"].get("unbound"), ("two_columns_at_end", "chord_end_equidistant"))
 

@@ -612,6 +612,9 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
 
 #: the reason word: head-shaped ink no reader has read stands at the arc's end at least as near as the closest note
 UNREAD_INK_AT_END = "unread_ink_at_end"
+#: the reason word: a note of a neighbouring staff stands at the arc's end at least about as near as this staff's closest note (`unread` items with
+#: `other_staff`, handed in by `ownership._page_binding`): the ink does not sit over this staff's notes there -- never a binding to another staff's note
+NEARER_NOTE_ON_ANOTHER_STAFF = "nearer_note_on_another_staff"
 #: detector classes of LINE and CURVE marks (staff, ledger, beam, stem, tie, slur, brace): such a box is where a thin stroke runs, it reads no blob under it
 #: (a beam's box spans the heads below it: Brahms p11 staff 2 bar 8, box 8/19 over the tied head 8/2). Every other class's box -- a head, a dot, a rest, an
 #: accidental, a flag, a letter, a clef -- reads the ink it stands on.
@@ -673,6 +676,17 @@ def _ink_xy(h: Dict[str, Any]) -> Tuple[float, float]:
     return (float(h.get("ink_cx", h["cx"])), float(h.get("ink_cy", h["cy"])))
 
 
+def _to_head(h: Dict[str, Any], ex: float, ey: float) -> float:
+    """How far the ink's end at `(ex, ey)` stops short of the head `h`: the straight distance to the head's own extent (its box size, standing at its ink
+    centre where the record holds one), 0 inside it. An arc stops short of the head's EDGE, never of its centre: measured to the centre, a cup's end just
+    under a head (1.1 spaces below the centre, at the head's foot) read farther than a second head 2 spaces to the side at the end's own height (Litolff p13
+    `13/1/1/11/8`, Sean's 2.305 r2 tile 1, a tie)."""
+    hx, hy = _ink_xy(h)
+    dx = max(0.0, abs(hx - ex) - float(h["w"]) / 2.0)
+    dy = max(0.0, abs(hy - ey) - float(h["h"]) / 2.0)
+    return (dx * dx + dy * dy) ** 0.5
+
+
 def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str], ok: Any, by_height: bool,
                       others: Optional[Sequence[Tuple[float, float]]], unread: Optional[Sequence[Dict[str, Any]]],
                       meet_back: float) -> Dict[str, Any]:
@@ -684,14 +698,14 @@ def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, 
     cands = []
     for h in heads:
         if ok(h["key"]):
-            hx, hy = _ink_xy(h)
-            cands.append(dict(h, d=abs(hx - ex) + abs(hy - ey)))
+            cands.append(dict(h, d=_to_head(h, ex, ey)))
     cands.sort(key=lambda h: h["d"])
     hh = cands[0]
     # another curve of the staff BEGINS nearer this end than the closest note stands: this curve is half of one arc (2.271's test, no number), unless both stand
     # AT that note (2.281, `OMR_ARC_MEETING_AT_HEAD`): unchanged
     offenders = [(ox, oy) for ox, oy in (others or ())
-                 if abs(ox - ex) + abs(oy - ey) < min(hh["d"], abs(ox - hh["cx"]) + abs(oy - hh["cy"])) and (ox - ex) * sgn > -ANCHOR_IN_SPACES * sp]
+                 if abs(ox - ex) + abs(oy - ey) < min(abs(hh["cx"] - ex) + abs(hh["cy"] - ey), abs(ox - hh["cx"]) + abs(oy - hh["cy"]))
+                 and (ox - ex) * sgn > -ANCHOR_IN_SPACES * sp]          # (2.271's own measure, centre to end, unchanged)
     if offenders and meeting_at_head_enabled():
         from .arcs_system import ANCHOR_DY_SPACES as _DY, ANCHOR_OUT_SPACES as _OUT
 
@@ -712,9 +726,30 @@ def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, 
             return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
                     "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
         second = {"next": [h["key"] for h in cols[1]], "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    # another staff's note counts only on the arc's OWN side of its end (page-facts: an arc is OVER its notes -- a cap's notes stand below it, a cup's above);
+    # one on the far side cannot be this ink's note (two staves close together: Litolff p13 run 31, the cup under staff 8's tie over staff 9's notes)
+    # ... and a box that is one of this staff's own heads boxed again in the other staff's cell (2.290: two boxes on one head are ONE head, `page_heads.FOLD_IOU`)
+    # is this staff's note, not another's
+    from .page_heads import FOLD_IOU, iou
+
+    def _box(h: Dict[str, Any]) -> Tuple[float, float, float, float]:
+        return (h["cx"] - h["w"] / 2.0, h["cy"] - h["h"] / 2.0, h["cx"] + h["w"] / 2.0, h["cy"] + h["h"] / 2.0)
+    own_boxes = [_box(h) for h in heads if not h.get("tip")]
+    other = [u for u in (unread or ()) if u.get("other_staff")
+             and not (side == "above" and u["cy"] < ey) and not (side == "below" and u["cy"] > ey)
+             and not any(iou(_box(u), ob_) >= FOLD_IOU for ob_ in own_boxes)]
+    if other:
+        ob = min(other, key=lambda u: _to_head(u, ex, ey))
+        do = _to_head(ob, ex, ey)
+        if do - d0 < BIND_COLUMN_MARGIN_SPACES * sp:
+            # a note of ANOTHER staff stands at the end at least about as near as this staff's closest note: the ink does not sit over this staff's notes there
+            # ("never to a note on another staff"; the caller hands in the neighbouring staves' notes for this test only, never as candidates)
+            return {"unbound": NEARER_NOTE_ON_ANOTHER_STAFF, "candidates": [[h["key"] for h in cols[0]], ob.get("key")],
+                    "margin_spaces": round((do - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    unread = [u for u in (unread or ()) if not u.get("other_staff")]
     if unread:
-        ub = min(unread, key=lambda u: abs(u["cx"] - ex) + abs(u["cy"] - ey))
-        du = abs(ub["cx"] - ex) + abs(ub["cy"] - ey)
+        ub = min(unread, key=lambda u: _to_head(u, ex, ey))          # the unread ink measured exactly as a note is
+        du = _to_head(ub, ex, ey)
         if du - d0 < BIND_COLUMN_MARGIN_SPACES * sp:
             # head-shaped ink nobody has read stands at the end at least about as near as the closest note: the note the arc ends at may be that ink -- cannot tell
             return {"unbound": UNREAD_INK_AT_END, "candidates": [[h["key"] for h in cols[0]], "page_stroke:%s" % ub.get("ordinal")],

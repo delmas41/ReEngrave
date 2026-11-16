@@ -270,6 +270,17 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
             # both retired here); unread head ink at the end -> cannot tell. The edge test above, the landing, chord and far-side tests below are unchanged.
             b[s_] = AC.bind_end(ex, float(d[yk]), sgn, heads, sp, side, usable, end_pitch, others=others.get(s_), by_rule=True, unread=unread,
                                 behind_spaces=HEAD_BEHIND_END_SPACES)          # (`behind_spaces`: 2.281's meeting test only, never which note)
+            if b[s_].get("unbound") == "two_columns_at_end" and side in ("above", "below"):
+                # two notes about equally near the traced end, and the ink LANDS on one of them (r2's landing rule, Sean's r1 tile 8: the tracker carried the end on
+                # past the note the ink came down onto): the ink's own end is at that note -- the closest of the notes standing where its ink ends (Litolff p5 run 76
+                # piece 1, Sean's r2 tile 7, a tie). Otherwise the abstention stands.
+                cand = {k for c in (b[s_].get("candidates") or ()) for k in (c if isinstance(c, list) else [c])}
+                by_k = {h["key"]: h for h in heads}
+                outer = max((by_k[k] for k in cand if k in by_k), key=lambda h: (h["cx"] - ex) * sgn, default=None)
+                land = lands_on(d.get("trace") or (), heads, outer, sgn, ex, side, sp, usable) if outer is not None else None
+                if land is not None and land["key"] in cand:
+                    b[s_] = {"head": land["key"], "column": 1, "by_rule": True, "lands_on": True, "was_two_columns": sorted(cand),
+                             "distance_spaces": round(AC._to_head(land, ex, float(d[yk])) / sp, 3)}
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
             if hd is not None and side in ("above", "below") and not hd.get("tip") and not b[s_].get("via_stem_tip"):
                 # ROADMAP 2.305 r2 (Sean's r1 tile 8, "it goes one extra note too far"; page-facts: an arc ends AT its note): the traced ink LANDS on a head

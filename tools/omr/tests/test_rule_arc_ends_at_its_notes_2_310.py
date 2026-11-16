@@ -234,6 +234,34 @@ def test_never_another_staff_the_lower_slurs_ink_does_not_take_the_upper_staffs_
     assert up.get("by_rule")
     assert not (up["left"].get("head") and up["right"].get("head"))
     assert "head_on_the_arcs_far_side" in (up["left"].get("unbound"), up["right"].get("unbound"))
+    # 2.305 r6: `_page_binding` also hands in the neighbouring staves' notes as a guard (never candidates): the lower staff's note standing nearer the ink's
+    # right end than any upper-staff note -> `nearer_note_on_another_staff`, naming it
+    guard = [dict(h, other_staff=True) for h in _tile9_heads(["15/1/3"])]
+    g = PB.closest_binder({"left": [], "right": []})(_tile9_heads(["15/1/2"]), sp, None, True, None, d, guard)
+    assert g["right"].get("unbound") == AC.NEARER_NOTE_ON_ANOTHER_STAFF and g["right"]["candidates"][1].startswith("glyph/15/1/3/")
     both = PB.closest_binder({"left": [], "right": []})(_tile9_heads(["15/1/2", "15/1/3"]), sp, None, True, None, d)
-    named = [k for s in ("left", "right") for k in [both[s].get("head")] + list(both[s].get("candidates") or []) if k]
+    def flat(xs):
+        for x in xs:
+            yield from (flat(x) if isinstance(x, list) else [x])
+    named = [k for s in ("left", "right") for k in flat([both[s].get("head")] + list(both[s].get("candidates") or [])) if k]
     assert any(k.startswith("glyph/15/1/3/") for k in named) and any(k.startswith("glyph/15/1/2/") for k in named)
+
+
+def test_never_another_staff_twin_a_neighbours_note_on_the_arcs_far_side_is_no_rival():
+    """Control that can fail the other way (real rows, Litolff p13 run 31, the 2.305 r1 fixture; not a tile of Sean's): staves close together, the cup under
+    staff 8's tie, staff 9's twin tie 3.4 spaces below. Staff 9's notes stand on the cup's FAR side (an arc is over its notes) and are no rival: the tie binds
+    staff 8's two notes; one of staff 8's heads boxed again in staff 9's cell (`13/0/9/0/4`, one head) is staff 8's own note, not a rival either."""
+    case = json.loads((pathlib.Path(__file__).parent / "data_arc_binding_2_305.json").read_text())["litolff_p13_run31_upper_tie"]
+
+    def hs(st, other=False):
+        out = []
+        for h in case["heads"]:
+            if "/".join(h["key"].split("/")[1:4]) == st:
+                x0, y0, x1, y1 = h["box"]
+                out.append(dict({"key": h["key"], "cx": (x0 + x1) / 2.0, "cy": (y0 + y1) / 2.0, "w": x1 - x0, "h": y1 - y0, "cell": h["cell"]},
+                                **({"other_staff": True} if other else {})))
+        return out
+    sp = float(case["run"]["space_page_px"])
+    d = PB.curve_detail(case["run"], sp)
+    b = PB.closest_binder({"left": [], "right": []})(hs("13/0/8"), sp, None, True, None, d, hs("13/0/9", other=True))
+    assert b["left"].get("head") in ("glyph/13/0/8/0/11", "glyph/13/0/8/0/14") and b["right"].get("head") == "glyph/13/0/8/1/6"
