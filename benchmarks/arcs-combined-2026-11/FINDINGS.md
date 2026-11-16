@@ -362,3 +362,46 @@ ours behind them) and are not tiled. Flag ON (r7), written arcs by source: Litol
 **Scoring vs the reader.** The tile replay (`score_tiles.py`) matches an arc by its two NOTES only; the reader works from ink. So an arc counts
 "right" when the notes match even if the ink it bound was another arc (Sean's arcs-combined r2 tile 9 is exactly that), and a third of the
 written arcs are the old box path's, which no ink-based rule produced. Not fixed here: the replay needs the ink id (page run / curve) Sean's tile showed.
+
+## 2.305 round 8 (2026-11-16) -- why an arc's ink is partial; scoring by ink; the new reader alone. `lane-2.305-arc-binding`, NOT landed
+
+STAGED, flags OFF. Sean's r7b answers: answers/answers-2.305-r7b.json (3 of 6 boxes hold only PART of the arc).
+
+**Cause.** The arc's ink reaches the binder through two GATHER steps that each cut it, and nothing joins the cuts back:
+- tile 3 (Litolff p13 `13/0/0/13/7`) and tile 5 (Brahms p0 `0/0/11/0/25`): the tie / slur runs ALONG a staff line where it meets its note.
+  The page stroke map is built from each staff's ERASED band (`page_strokes`, GATHER), so the stretch lying on the line is erased with it;
+  what is left is a stroke that stops where the arc meets the line, plus small `horizontal` pieces on the line that nobody holds (tile 5: stroke
+  1495, unclaimed; tile 3: stroke 4212, unclaimed). The curve's trace follows its stroke (ONE_CURVE) and stops at the gap.
+- tile 2 (Litolff p15): two slurs CROSS; the printed arc is read by THREE detector curves (`15/1/9/9/11`, `15/1/10/10/6`, `15/1/10/9/2`) from
+  boxes in two staves' cells. The 2.166 join joins a staff's own boxes only where a barline cut them, so each curve traces and claims its own
+  stretch (`15/1/10/10/6` claims the stroke past the crossing, 2358); the one Sean saw holds only the crossing.
+- tile 4 (removed by r7): reason word `system_edge` -- WRONG. The start note `0/0/9/0/7` is real; ADJUDICATE narrowed it
+  (`claim_narrowed:word`, a word's claim over it); r7 took narrowed heads out of the candidates and the edge test then found "no note behind
+  the end". Fixed (r8, forced by the cause): note-like ink nobody could read ahead of an end is a note there, never the edge (the end now says
+  `unread_ink_at_end`, naming the narrowed head). Control `test_never_r7b_tile4_...` fails on the r7 tree, passes here. The arc stays
+  unwritten until the head reader reads that note (upstream: real heads narrowed under word claims).
+**Process lesson.** "Read and claimed once" was tested per READER, never per printed mark: a mark can be cut by the eraser before any reader
+sees it, or read by several readers that each claim a part, and every reader passes its own test. A claim check must count, per printed arc,
+how many readings hold its ink and whether any ink of the same line is left.
+
+**Counts (A).** First automatic count ("curve-like ink continues beyond an end at the arc's height"): print-checked 9 hits, 0 true (8 were the
+next mark at a note: head pieces, the next arc meeting at the note, ledger/beam/staff residue) -- withdrawn. Second, restricted to ends that
+stand where no notehead is: Litolff 32 of 428 curves and 19 of 358 runs, Brahms 25 of 565 / 10 of 443; print-checked 9 Litolff hits, 1 true
+(two crossing slurs, tile 2's kind) -- NOT trusted either. Structural count that holds up better: curves that read the SAME ink as another
+curve (traces within a third of a space over at least a space): Litolff 252 of 428 curves (116 the same extent read twice, from two staves'
+padded cells; 6 a shorter curve inside a longer one; 4 pairs overlapping as parts), Brahms 371 of 565 (163 / 21 / 5). Print-check of 2 Brahms
+"part" cases: 1 true (a tie across a barline, the cell after the barline traced alone), 1 false (two slurs meeting at a note). Honest
+size: one printed arc is commonly read 2 or more times (same extent), and a few per page are read in pieces; the erased-staff-line gap (tiles
+3, 5) has no reliable count yet -- it needs the erased band's own pixels, which the record does not keep.
+
+**Scoring by ink (B)** (`score_ink.py`): an answer is right only when one of OUR ink readings (a page-pass run, or a 2.223 curve whose binding
+gave the kind) wrote its two notes with Sean's kind -- and for the r7b tiles, the SAME ink the tile boxed; an old-box-path arc is `old_path`.
+r1/r2/r4/r6 tiles boxed notes, not ink, so their ink is "any ink reading of ours"; arcs-combined r2 tiles come from another gather (glyph keys
+differ) and are not scored. 50 tiles: baseline right 37, old_path:right 1, wrong 3, unwritten 9; r6 right 30, old_path:right 2, wrong 10,
+unwritten 8; r7 right 38, old_path:right 2, wrong 4 (incl. r7b tile 3 partial ink, r7b tile 4 other notes), unwritten 6.
+**The new reader alone (C)** (filtering the written file, no flag): r7 Litolff 192 -> 127 arcs (ties 86, slurs 41; the old path wrote 36 ties,
+29 slurs), Brahms 300 -> 230 (160 / 70; old path 9 ties, 61 slurs). Judged tiles: right 38 (the 2 old-path rights become unwritten), unwritten 9.
+Why the page reader did not write the old path's arcs (r7): Litolff 65 -- no ink reading of ours ends at those notes 19, a run of ours wrote
+those notes' ink to other notes 13, `unread_ink_at_end` 11, `two_columns_at_end` 10, kind refusals 6, other 6; Brahms 70 -- no ink reading
+ends there 40, run wrote other notes 12, `same_pitch_heads_between` 6, `end_far_beyond_head` 4, other 8. The "no ink reading" bucket (59) is
+not crop-checked: either the old path pairs a box with no arc ink there, or the page-ink reader never traced it.
