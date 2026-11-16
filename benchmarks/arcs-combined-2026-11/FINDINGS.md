@@ -214,3 +214,80 @@ the two notes. **Finding:** the arc Sean describes leaving the second note stops
 (page-facts, reworded 2026-11-15) says a short arc belongs to the closest of the notes standing there; the
 reader still has a measured reach window in the rule's place. Not tested: "never to a note on another staff"
 (`_page_binding` keeps other staves' heads out; passed in by hand, `glyph/11/0/12/4/2` bound staff 13's notes).
+
+## 2.305 round 6 (2026-11-15) -- the ends rule replaces the reach window; built OFF, `lane-2.305-arc-binding`; NOT landed
+
+STAGED, `OMR_PAGE_ARC_WRITE` (OFF; the OFF file is unchanged: every OFF arm below reproduces the r6base OFF arm). Rule owning the value (Sean
+2026-11-15, page-facts): "An arc ends at the notes standing where its ink ends, on the staff it sits over ... never past a nearer note ... never
+to a note on another staff. Where two notes are about equally close, we don't choose."
+
+**Cause.** The 1.6 sp window (and the page pass's 1.6 / 2.5 sp look-behinds and 4.0 sp reach) stood in for the rule because the real failure --
+a note nobody boxed, so the arc takes the next note along -- was never tested directly. Removing the numbers exposed what they were silently
+doing: (a) the 1.6 / 0.8 sp window was ALSO the only thing keeping a detector curve off notes 7 sp away on the staff below (`ANCHOR_DY` 2.5 sp
+was the "on the staff it sits over" guard), and (b) its ahead/behind asymmetry chose between two notes the rule calls about equally close.
+**Process lesson:** before dropping a number, list every rule it was quietly enforcing; each must be stated and guarded in its own words, or
+the number's other job silently disappears (here: "never to another staff" and, still open, "stops SHORT of" = direction).
+
+**Built** (`arc_claim._bind_end_by_rule`, used by `bind_curve` (2.223 curves) and `page_arc_bind.closest_binder` (page runs) when the flag is
+ON; the old page-pass reach path, `OWN_BAR_BEHIND_SPACES` and the binder's use of `END_REACH_SPACES` are deleted -- that path only ran with
+the flag ON; the 2.223 window stays as the flag-OFF reader):
+- the end is where the ink ends (the curve's page-stroke end; a run's `core_ends`); every usable note of the arc's staff is a candidate, the
+  closest wins, measured from the ink end to the head's EDGE (head extent at its 2.290 ink centre where the record has one). No reach.
+- two columns within `BIND_COLUMN_MARGIN_SPACES` (0.5 sp, the existing hand-set margin, beside the rule) -> `two_columns_at_end`; where the
+  traced ink LANDS on one of the two (r2's landing rule) that one binds.
+- unread head ink: page strokes of a head's shape (`page_heads` M6a numbers) on a stem, whose centre no reading box (any class but line marks:
+  staff, ledger, beam, stem, tie, slur, brace) and no claimed area covers, and that no claim names in `page_strokes` -> at least about as near
+  as the closest note -> `unread_ink_at_end`. **Where the fact lives:** GATHER files the strokes, boxes and claims (`Q.PAGE_STROKE`,
+  `Q.GLYPH_BOX`, `Q.CLAIMED_AREA`); the "ink-only head" census itself (`page_heads.read`) is GATHER but filed only behind `OMR_PAGE_HEADS`
+  (OFF), so the binder (ADJUDICATE) reads the filed rows with the census's own numbers. Without the stem clause the arcs' own tips, letters
+  of "pp sempre" and an accidental piece read as unread heads (2.310 rows, looked at).
+- another staff: the neighbouring staves' usable heads are handed in as a guard (never candidates); one on the arc's own side (cap: below,
+  cup: above), not a twin of an own head (`FOLD_IOU`), not given to this staff by `GLYPH_OWNER`, at least about as near ->
+  `nearer_note_on_another_staff`. Which code keeps other staves away otherwise: `_page_binding` hands the binder ONE staff's heads (`home`).
+- r6 also records `kind_evidence` on a bound-but-refused run and each bound end's margin over the next column (`second`) -- measurement only.
+
+**Tests.** 2.310 file: the xfail now passes (arc leaving Sean's r1-tile-5 second note, 2.4 sp short, binds it); YES/NEVER pass; twins rebuilt
+from the REAL page rows (staff strokes, boxes, claims added to the fixture): the note never boxed -> `unread_ink_at_end`; with its ink also
+gone the end reaches a farther note (the guard is what refuses). NEVER another staff: Sean's arcs-combined r2 tile 9 (two slurs, two staves)
+-> `nearer_note_on_another_staff`; twin Litolff p13 run 31 (real rows, not a tile): a neighbour's note on the far side is no rival. Tests that
+pin the 2.223 window now pin it to the flag-OFF reader; page-pass window tests rewritten to the rule.
+
+**Measures** (re-adjudicated saved 2305 gathers; baseline = the merge before r6, 18ba158f9, same gathers and stages; flags OFF vs ON):
+- lane_report file change, before -> after: Litolff [5,8,13,15] ties +18 -> +24 -2, slurs +7 -39 -> +36 -44; Brahms [0,11,18,20] ties +10 -2
+  (same), slurs +30 -101 -> +40 -99; Brahms [0,1] ties +18 -> +18 -2, slurs +22 -70 -> +29 -77. Judged answers right->wrong 0 on all three.
+- Sean's arc tiles (r1, r2, r4; written file, by glyph key): 26 right->right, 5 unwritten both, 1 wrong both (r4 tile 5, the shared head),
+  **right->wrong 0, right->unwritten 1**: r2 tile 1 (Litolff p13 tie `13/1/1/11/5`->`12/8`): the cup's left end stands under 11/5 and 0.47 sp
+  nearer it than the second voice's 11/7 -- inside the 0.5 sp margin, so "don't choose". (A first build measured centre to centre, broke
+  r2 tiles 7 and 10 and r4 tile 1; fixed by the landing rule, the head-edge measure and the other-staff guard.)
+- "About equally close" on judged arcs: bound ends that beat the next column by 0.05-0.30 sp more than 0.5 sp were all right (r4 tiles 3, 8, 9;
+  r1 tile 4; r2 tiles 2, 12); the one judged case inside the margin (0.47 sp) was the nearer note. No judged case shows the nearer of two
+  near-equal notes WRONG, so the margin's lower side is unmeasured; it stays 0.5 sp.
+- Page-pass runs, before -> after: Litolff written 177 -> 175, Brahms 280 -> 275. New abstentions: two columns 3 -> 11 / 3 -> 4,
+  `unread_ink_at_end` 10 / 6, `nearer_note_on_another_staff` 6 / 5 (runs where an end gives it), one head at both ends 1 -> 7 / 1 -> 3 (a short arc whose BOTH ends'
+  closest note is the same one: the rule as worded has no direction; "stops short of them" suggests the note at or past the end -- a
+  question for Sean, not built). `end_far_from_head` 12+ -> 0 (retired).
+- Blind tiles: out/print/2.305-r6 (12: 10 arcs r6 writes that the baseline did not, 2 it removed), key out/print/2.305-r6-key.json.
+  Lane's look (lead only): tile 5 looks wrong -- a 40 px arc piece at a system's start bound to a notehead box near the clef 2.8 sp away (the
+  piece is the tail of an arc from the previous page; the false head box defeats the edge test).
+
+**Job 2 -- kind refusals (both ends bound, kind refused), r6 replay, by cause:**
+Litolff 31: 13 the two heads' staff positions (geometry reader, from their boxes) stand 0.17-0.44 sp apart for what is one note (step
+conflict 7, step between 5, plus 1 Brahms) -- box drawn tall/off its head (crops: half-note dyads, a box cut short); 9 far-head ledger reader
+abstained on both ends (8 of them also in the empty interval); 5 a box taller than a head (head + its stem/ledger ink or a fused dyad) whose
+two readings disagree; 5 same pitch with a head between. Brahms 25: 13 same pitch with heads between; 7 accidental printed on the stop
+note; 3 accidental state unknown; 1 two ledger counts differ where positions agree; 1 box centre 0.46 sp off where ledger steps agree.
+Crop looks (10 minutes, leads): heads between = a notehead box on an `sf`/`ff` dynamic kept usable (2 of 5), the displaced head of a second
+in the stop chord (1), a real long slur with same-pitch ends (1: the page-facts rule says slur, the binder refuses because it cannot tell the
+voice of the heads between). Accidental printed (1 looked at): a real pitch change (flat on the stop note) -- a slur the binder cannot call
+because it compares only "printed on the stop" without the start's sounding pitch.
+**Fix at the source:** position from the head's INK (2.290 page head / M6a ink position) instead of the box -- the largest Litolff bucket;
+the far-head ledger reader's abstentions; notehead boxes on dynamics refused at ADJUDICATE (claim order: words/dynamics claim first); chord
+membership by shared stem (a second's displaced head); the accidental comparison done on sounding pitch (EVALUATE has it), not on "printed".
+Not built here.
+
+**Gates.** Fast tier flags OFF 10,698 passed / 2 failed, flags ON 10,696 / 4 -- the 2 common ones were `reach.KNOWN_GAPS` still listing
+`Q.PAGE_STROKE` (now read), fixed and re-run green (`test_staged_reach`, `test_staged_check` 25 / 0); the other 2 ON are the default-off
+pins. `check` 216, ok (was 217). The 17 arc test files: 141 / 0 OFF; ON 140 / 1 (the default-off pin).
+**Open / not verified.** The 12 tiles not yet answered; whole notes nobody boxed are not
+seen by the unread-ink guard (no stem); `END_REACH_SPACES` still used by fix 4 (`staff_ink_vs_owner`); direction ("stops short") not in
+the rule; scripts: scratchpad r6/ (declines.py, score_tiles.py, kind_causes.py, margins.py, tiles.py).

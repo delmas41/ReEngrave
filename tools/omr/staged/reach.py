@@ -73,10 +73,7 @@ KNOWN_GAPS: Dict[str, str] = {
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M1: the tilted barline column (slope, intercept) is a fact; its first reader is M2's carve "
         "(`page_strokes.carve_columns`, which refits the same columns itself until a later step reads the row) and M5. Byte-identical export is the proof. "
         "A reader that appears removes this entry."),
-    Q.PAGE_STROKE: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M2 (docs/plan-2026-11-03-page-ledger.md): the page stroke map is filed and read by NOTHING until M3 "
-        "(`[[cell, ordinal]]` claims -> page stroke ids) and M4 (one beam reader on page strokes) land; the exported file is byte-identical with "
-        "`OMR_PAGE_STROKES` on, which is the proof. A reader that appears removes this entry."),
+    # (Q.PAGE_STROKE left this list in ROADMAP 2.305 r6: the arc binder reads it for the unread head ink at an arc's end, `ownership._unread_head_ink`.)
     Q.PAGE_HEAD: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
         "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
