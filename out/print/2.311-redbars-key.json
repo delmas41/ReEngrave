@@ -9,16 +9,27 @@
   "part": "P1",
   "measure": 76,
   "box_page_px": [
-   2131.0,
-   2138.6,
-   2299.0,
-   2280.4
+   2125.0,
+   2162.2,
+   2295.0,
+   2256.8
   ],
   "crop_origin": [
-   2047,
-   2091
+   1955,
+   2086
   ],
-  "scale": 2.0339,
+  "scale": 2.451,
+  "crop_h_staff_spaces": 14.4,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   2131.0,
+   2084.0,
+   2299.0,
+   2304.0
+  ],
   "staff_lines": [
    2178,
    2194,
@@ -475,16 +486,27 @@
   "part": "P1",
   "measure": 243,
   "box_page_px": [
-   1217.0,
-   353.6,
-   1365.0,
-   495.4
+   1215.5,
+   377.2,
+   1363.0,
+   471.8
   ],
   "crop_origin": [
-   1143,
-   306
+   1001,
+   267
   ],
-  "scale": 2.0339,
+  "scale": 2.1739,
+  "crop_h_staff_spaces": 16.6,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1217.0,
+   299.0,
+   1365.0,
+   519.0
+  ],
   "staff_lines": [
    393,
    409,
@@ -642,16 +664,27 @@
   "part": "P7",
   "measure": 43,
   "box_page_px": [
-   1773.0,
-   2909.6,
-   1935.0,
-   3051.4
+   1773.5,
+   2933.2,
+   1936.5,
+   3027.8
   ],
   "crop_origin": [
-   1692,
-   2862
+   1610,
+   2893
   ],
-  "scale": 2.0339,
+  "scale": 2.5562,
+  "crop_h_staff_spaces": 12.6,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1773.0,
+   2886.0,
+   1935.0,
+   3106.0
+  ],
   "staff_lines": [
    2949,
    2965,
@@ -939,16 +972,27 @@
   "part": "P4",
   "measure": 207,
   "box_page_px": [
-   1037.0,
-   690.6,
+   1037.5,
+   714.2,
    1138.0,
-   832.4
+   808.8
   ],
   "crop_origin": [
-   986,
-   643
+   914,
+   682
   ],
-  "scale": 2.0339,
+  "scale": 3.6023,
+  "crop_h_staff_spaces": 10.0,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1037.0,
+   667.0,
+   1138.0,
+   856.0
+  ],
   "staff_lines": [
    730,
    746,
@@ -1016,16 +1060,27 @@
   "part": "P1",
   "measure": 120,
   "box_page_px": [
-   1874.0,
-   383.6,
-   1973.0,
-   525.4
+   1878.0,
+   407.2,
+   1975.0,
+   501.8
   ],
   "crop_origin": [
-   1824,
-   336
+   1622,
+   297
   ],
-  "scale": 2.0339,
+  "scale": 2.0559,
+  "crop_h_staff_spaces": 17.6,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1874.0,
+   329.0,
+   1973.0,
+   549.0
+  ],
   "staff_lines": [
    423,
    439,
@@ -1283,16 +1338,27 @@
   "part": "P3",
   "measure": 167,
   "box_page_px": [
-   1470.0,
-   2473.6,
-   1800.0,
-   2615.4
+   1469.0,
+   2497.2,
+   1799.0,
+   2591.8
   ],
   "crop_origin": [
-   1305,
-   2426
+   1139,
+   2363
   ],
-  "scale": 2.0339,
+  "scale": 1.2626,
+  "crop_h_staff_spaces": 23.3,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1470.0,
+   2450.0,
+   1800.0,
+   2639.0
+  ],
   "staff_lines": [
    2513,
    2529,
@@ -1496,16 +1562,27 @@
   "part": "P11",
   "measure": 56,
   "box_page_px": [
-   4543.0,
-   2556.4,
-   4865.0,
-   2810.6
+   4540.0,
+   2598.8,
+   4862.5,
+   2768.2
   ],
   "crop_origin": [
-   4382,
-   2471
+   4217,
+   2504
   ],
-  "scale": 1.1321,
+  "scale": 1.2913,
+  "crop_h_staff_spaces": 12.7,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   4543.0,
+   2514.0,
+   4865.0,
+   2853.0
+  ],
   "staff_lines": [
    2627,
    2657,
@@ -1629,16 +1706,27 @@
   "part": "P3",
   "measure": 127,
   "box_page_px": [
-   1755.0,
-   4507.6,
-   2248.0,
-   4757.4
+   1754.5,
+   4549.2,
+   2248.5,
+   4715.8
   ],
   "crop_origin": [
-   1508,
-   4424
+   1260,
+   4335
   ],
-  "scale": 1.1538,
+  "scale": 0.8435,
+  "crop_h_staff_spaces": 19.8,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1755.0,
+   4466.0,
+   2248.0,
+   4799.0
+  ],
   "staff_lines": [
    4577,
    4605,
@@ -1897,16 +1985,27 @@
   "part": "P3",
   "measure": 48,
   "box_page_px": [
-   1586.0,
-   1139.2,
-   1990.0,
-   1386.8
+   1587.5,
+   1180.5,
+   1992.5,
+   1345.5
   ],
   "crop_origin": [
-   1384,
-   1056
+   1182,
+   1038
   ],
-  "scale": 1.1622,
+  "scale": 1.0288,
+  "crop_h_staff_spaces": 16.4,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1586.0,
+   1043.0,
+   1990.0,
+   1483.0
+  ],
   "staff_lines": [
    1208,
    1236,
@@ -2136,16 +2235,27 @@
   "part": "P13",
   "measure": 54,
   "box_page_px": [
-   3829.0,
-   3103.6,
-   4131.0,
-   3353.4
+   3822.5,
+   3145.2,
+   4126.5,
+   3311.8
   ],
   "crop_origin": [
-   3678,
-   3020
+   3518,
+   3059
   ],
-  "scale": 1.1538,
+  "scale": 1.3706,
+  "crop_h_staff_spaces": 12.2,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   3829.0,
+   3007.0,
+   4131.0,
+   3395.0
+  ],
   "staff_lines": [
    3173,
    3201,
@@ -2268,16 +2378,27 @@
   "part": "P11",
   "measure": 106,
   "box_page_px": [
-   1464.0,
-   6178.9,
-   1955.0,
-   6424.1
+   1466.0,
+   6219.8,
+   1957.5,
+   6383.2
   ],
   "crop_origin": [
-   1218,
-   6097
+   974,
+   6050
   ],
-  "scale": 1.1765,
+  "scale": 0.8475,
+  "crop_h_staff_spaces": 20.0,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   1464.0,
+   6138.0,
+   1955.0,
+   6465.0
+  ],
   "staff_lines": [
    6247,
    6274,
@@ -2529,16 +2650,27 @@
   "part": "P11",
   "measure": 58,
   "box_page_px": [
-   5124.0,
-   2556.4,
-   5492.0,
-   2810.6
+   5119.0,
+   2598.8,
+   5478.0,
+   2768.2
   ],
   "crop_origin": [
-   4940,
-   2471
+   4760,
+   2484
   ],
-  "scale": 1.1321,
+  "scale": 1.1606,
+  "crop_h_staff_spaces": 14.1,
+  "barline_snapped": [
+   true,
+   true
+  ],
+  "cell_box_raw": [
+   5124.0,
+   2514.0,
+   5492.0,
+   2853.0
+  ],
   "staff_lines": [
    2627,
    2657,
