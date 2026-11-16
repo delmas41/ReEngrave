@@ -19,5 +19,97 @@
   "10": "a dotted quarter with an arc coming from the measure before it, followed by a dotted quarter with a flat on it, which is a tie to the next measure; first in the top space of the staff, second on the second-to-top line",
   "11": "two dotted quarters; the first has a tie from the measure before; the second has a sharp in front of it; both on the top line; both part of a slur that started in the previous measure and goes to the measure past it",
   "12": "two dotted quarters; the first has a tie from the previous bar, the second a tie to the next bar; first on the space below the staff, second on the first line of the staff"
+ },
+ "classifier_check_2026-11-16": {
+  "note": "Verdict words are OURS (the classifier's row against Sean's reading of the boxed bar), not Sean's. Sean's own words are in `answers`.",
+  "agree": 11,
+  "partial": 1,
+  "disagree": 0,
+  "tiles": {
+   "1": {
+    "old_first_cause": "2 lost: not_a_notehead:clipped_fragment",
+    "classifier_row": "lost_beam_ambiguous",
+    "classifier_reason": "duration_narrowed: beams_ambiguous",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: a chord and three beamed UNISON eighths (stems both ways). Row: a note's beam could not be told (joined or not). The two refusals that used to head this bar are a neighbour staff's head tips at the cell's bottom edge, set aside."
+   },
+   "2": {
+    "old_first_cause": "2 lost: not_a_notehead:clipped_fragment",
+    "classifier_row": "sum_unboxed_mark_ink",
+    "classifier_reason": "does not add up, short (want 2.0, counted 1)",
+    "verdict_ours": "partial",
+    "why_ours": "Sean: two half notes on a chord with a tremolo slash. Row: short with head-sized ink in no box -- that ink is the slash, so the ink is real, but the classifier does not know what it is; the bar is red because half notes were written as a quarter. The refused fragment that used to head this bar is a neighbour's tip at the bottom edge."
+   },
+   "3": {
+    "old_first_cause": "5 sum: two voices disagree (want 2.0, counted 2/1)",
+    "classifier_row": "sum_voice_is_a_copy",
+    "classifier_reason": "does not add up, two voices disagree (want 2.0, counted 2/1)",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: a quarter and a quarter rest, one voice; the SF belongs to the system above. Row: the second voice is a copy of marks already counted in the first (the rest box is written in both voices)."
+   },
+   "4": {
+    "old_first_cause": "2 lost: not_a_notehead:too_narrow",
+    "classifier_row": "lost_refused_head_alone",
+    "classifier_reason": "not_a_notehead:too_narrow",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: one unison half note, tied both sides. Row: a narrow mark refused as 'not a note' alone inside the cell, nothing written -- the half note itself was refused."
+   },
+   "5": {
+    "old_first_cause": "2 lost: duration_narrowed",
+    "classifier_row": "lost_bare_stem",
+    "classifier_reason": "duration_narrowed: beam_discounted_uncertain",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: top voice a half note (natural before it), bottom voice a whole rest. Row: a note on a stem with beam ink judged uncertain, value held. (The head class in the record is black; Sean reads a half.)"
+   },
+   "6": {
+    "old_first_cause": "5 sum: long (want 2.0, counted 2.25)",
+    "classifier_row": "sum_long_a_rest_too_long",
+    "classifier_reason": "does not add up, long (want 2.0, counted 2.25)",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: a two-note chord then a quarter rest, a fermata over the rest. Row: a rest counted here is the exact surplus (a 16th rest at the start of the bar that Sean does not read)."
+   },
+   "7": {
+    "old_first_cause": "5 sum: short (want 3.0, counted 2.5)",
+    "classifier_row": "sum_short_dot_ink_never_boxed",
+    "classifier_reason": "does not add up, short (want 3.0, counted 2.5)",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: two dotted quarters. Row: short by half a note, a dot printed beside a plain written quarter and the detector drew no box on it."
+   },
+   "8": {
+    "old_first_cause": "2 lost: chord_value_undecided",
+    "classifier_row": "lost_chord_value",
+    "classifier_reason": "chord_value_undecided: head_and_marks",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: a chord of quarters, an eighth rest, a chord of dotted quarters. Row: chord on one stem whose members' values the marks do not settle (head_and_marks)."
+   },
+   "9": {
+    "old_first_cause": "2 lost: duration_narrowed",
+    "classifier_row": "lost_flag_unread",
+    "classifier_reason": "duration_narrowed: flag_ink_unread",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: top voice quarter rest, eighth rest, quarter slurred to an eighth; bottom two dotted quarters. Row: flag ink beside a stem seen, flag not read (the eighth)."
+   },
+   "10": {
+    "old_first_cause": "5 sum: short (want 3.0, counted 2)",
+    "classifier_row": "sum_short_dot_ink_never_boxed",
+    "classifier_reason": "does not add up, short (want 3.0, counted 2)",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: two dotted quarters. Row: short by dots printed and never boxed (two plain quarters, shortfall one beat)."
+   },
+   "11": {
+    "old_first_cause": "2 lost: duration_narrowed",
+    "classifier_row": "lost_dot_or_staccato",
+    "classifier_reason": "duration_narrowed: dot_seen_beside_a_plain_note",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: two dotted quarters, both under a slur. Row: a dot beside a plain note, augmentation or staccato not decided: value held."
+   },
+   "12": {
+    "old_first_cause": "5 sum: short (want 3.0, counted 2.5)",
+    "classifier_row": "sum_short_dot_ink_never_boxed",
+    "classifier_reason": "does not add up, short (want 3.0, counted 2.5)",
+    "verdict_ours": "agree",
+    "why_ours": "Sean: two dotted quarters. Row: short by half a note, a dot printed beside a plain written quarter and never boxed."
+   }
+  }
  }
 }
