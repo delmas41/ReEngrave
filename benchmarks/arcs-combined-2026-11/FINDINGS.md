@@ -405,3 +405,16 @@ Why the page reader did not write the old path's arcs (r7): Litolff 65 -- no ink
 those notes' ink to other notes 13, `unread_ink_at_end` 11, `two_columns_at_end` 10, kind refusals 6, other 6; Brahms 70 -- no ink reading
 ends there 40, run wrote other notes 12, `same_pitch_heads_between` 6, `end_far_beyond_head` 4, other 8. The "no ink reading" bucket (59) is
 not crop-checked: either the old path pairs a box with no arc ink there, or the page-ink reader never traced it.
+
+**r8 small test: is partial arc ink the main problem?** (no reader change)
+- Test 1, a random sample for Sean: out/print/2.305-r8-sample (sheet.png; seed 2305008, 6 per plate, from 639 Litolff / 873 Brahms ink readings
+  that reached the binder in the r7 replay, same-extent duplicates dropped), key out/print/2.305-r8-sample-key.json. Unanswered.
+- Test 2, the judged misses under score_ink (r7 wrong 4 + unwritten 6, + r7b tiles 2, 3, 5; 10 distinct arcs): partial ink 3 (r7b 2, 3, 5);
+  complete ink but wrong or missing note 5 (r2 1 two voices about equally close; r2 8 lower chord member never boxed; r4 5 one head boxed on two
+  staves; r6 7 two chords' stem tips about equally close; r7b 4 start note narrowed under a word's claim); complete ink but kind refused 2 (r1 9 = r2 9,
+  r1 11 = r2 5: one end's position misread); other 0.
+- Test 3, 10 of the 59 "no ink reading of ours ends at those notes" old-path arcs (seeded; lane's crop look, a lead): no arc between those notes
+  on the print 3 (the old path invented it); arc there, never boxed 0; boxed, never traced 0; traced but our reading ended at other notes 7 (2 of
+  them unsure). Crops: scratchpad r6/r7/noink/.
+- Erased stretch, direct check (r7b tiles 3, 5; scratchpad r6/r8-erased-tile3.png, -tile5.png: the page-stroke map's kept ink vs the un-erased
+  page): the missing stretch IS on the page, running along the staff line between the traced arc and its note; the stroke map lost it.
