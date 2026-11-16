@@ -1,0 +1,226 @@
+{
+ "lane": "2.311",
+ "set": "out/print/2.311-written",
+ "seed": 2311,
+ "date": "2026-11-16",
+ "question": "Is the boxed mark a note? If yes, what value (and dotted)?",
+ "answers": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 16,
+   "rg": "glyph/16/1/2/0/3",
+   "box": [
+    609.57763671875,
+    2342.94921875,
+    632.22216796875,
+    2362.43017578125
+   ],
+   "written_type": "quarter",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "quarter note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/9/10/1",
+   "box": [
+    2354.5975,
+    3392.24,
+    2376.3325,
+    3417.5975
+   ],
+   "written_type": "eighth",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "eighth note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 4,
+   "rg": "glyph/4/0/8/9/0",
+   "box": [
+    1770.68,
+    1630.48,
+    1792.92,
+    1651.76
+   ],
+   "written_type": "eighth",
+   "written_dots": 0,
+   "blue": true,
+   "sean": "eighth note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "page": 4,
+   "rg": "glyph/4/1/4/2/2",
+   "box": [
+    766.0025,
+    2728.585,
+    789.6275,
+    2747.485
+   ],
+   "written_type": "quarter",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "quarter note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 10,
+   "rg": "glyph/10/0/10/0/1",
+   "box": [
+    566.3275,
+    1867.735,
+    588.22,
+    1888.525
+   ],
+   "written_type": "eighth",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "eighth note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 16,
+   "rg": "glyph/16/1/4/9/1",
+   "box": [
+    2008.515,
+    2648.37,
+    2032.14,
+    2666.955
+   ],
+   "written_type": "quarter",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "quarter note, unison",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 7,
+   "plate": "brahms",
+   "page": 14,
+   "rg": "glyph/14/1/10/5/2",
+   "box": [
+    3747.785,
+    6846.745,
+    3787.2975,
+    6881.625
+   ],
+   "written_type": "quarter",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "quarter note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 8,
+   "plate": "brahms",
+   "page": 25,
+   "rg": "glyph/25/1/7/3/2",
+   "box": [
+    2501.8825,
+    6065.2125,
+    2538.235,
+    6098.5125
+   ],
+   "written_type": "eighth",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "eighth note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "page": 12,
+   "rg": "glyph/12/1/0/9/12",
+   "box": [
+    5050.1,
+    3949.575,
+    5089.425,
+    3983.125
+   ],
+   "written_type": "quarter",
+   "written_dots": 1,
+   "blue": false,
+   "sean": "dotted quarter",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 10,
+   "plate": "brahms",
+   "page": 12,
+   "rg": "glyph/12/1/10/9/5",
+   "box": [
+    5331.1825,
+    6289.53,
+    5371.5125,
+    6322.23
+   ],
+   "written_type": "eighth",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "eighth note",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 11,
+   "plate": "brahms",
+   "page": 25,
+   "rg": "glyph/25/0/6/6/5",
+   "box": [
+    3752.0275,
+    2134.74,
+    3790.3225,
+    2168.8725
+   ],
+   "written_type": "quarter",
+   "written_dots": 1,
+   "blue": false,
+   "sean": "dotted quarter",
+   "is_note": true,
+   "value_right": true
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "page": 19,
+   "rg": "glyph/19/1/10/7/15",
+   "box": [
+    4674.025,
+    6498.075,
+    4713.625,
+    6527.225
+   ],
+   "written_type": "eighth",
+   "written_dots": 0,
+   "blue": false,
+   "sean": "eighth note",
+   "is_note": true,
+   "value_right": true
+  }
+ ],
+ "scored_ours": "12 of 12 a real note; 12 of 12 written value right (dots included); tile 3 was written GUESSED (blue) and is right; tile 6 a unison"
+}

@@ -1,0 +1,241 @@
+{
+ "lane": "2.305 r8 random sample",
+ "date": "2026-11-16",
+ "who": "Sean, by voice",
+ "question": "Is the boxed ink ALL of one arc -- yes, only part of it, or not an arc at all?",
+ "seed": 2305008,
+ "tally": {
+  "litolff": {
+   "complete": 3,
+   "partial": 3
+  },
+  "brahms": {
+   "complete": 6,
+   "partial": 0
+  }
+ },
+ "note": "tiles 2 and 10 have one tick because the reader bound one end only (key: end_unbound); that is the reader's result, not a drawing fault",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 5,
+   "source": "page_run",
+   "ink_id": "page/5 run 20 piece 0",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/5/0/1/5/0"
+   ],
+   "bound": "one end",
+   "status": "abstained",
+   "kind": null,
+   "reason_word": "end_unbound unread_ink_at_end",
+   "drawn_from_pool_of": 639,
+   "sean": "a partial arc. The ending note is correct, but the arc is not in the box",
+   "ink": "partial"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 13,
+   "source": "page_run",
+   "ink_id": "page/13 run 3",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/13/0/8/11/1"
+   ],
+   "bound": "one end",
+   "status": "abstained",
+   "kind": null,
+   "reason_word": "end_unbound unread_ink_at_end",
+   "drawn_from_pool_of": 639,
+   "sean": "the arc is correct. The second half of the tile marker is correct, but I don't see the first one",
+   "ink": "complete"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 15,
+   "source": "page_run",
+   "ink_id": "page/15 run 50",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/15/1/2/14/3"
+   ],
+   "bound": "one end",
+   "status": "abstained",
+   "kind": null,
+   "reason_word": "end_unbound two_columns_at_end",
+   "drawn_from_pool_of": 639,
+   "sean": "most of the arc is in it. It's just missing a tip of it",
+   "ink": "partial (tip missing)"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "page": 13,
+   "source": "curve",
+   "ink_id": "glyph/13/1/1/10/15",
+   "pieces": 2,
+   "bound_notes": [
+    "glyph/13/1/2/10/1",
+    "glyph/13/1/2/11/4"
+   ],
+   "bound": "both ends",
+   "status": "kind tie (arc_kind tie)",
+   "kind": "tie",
+   "reason_word": null,
+   "drawn_from_pool_of": 639,
+   "sean": "correct",
+   "ink": "complete"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 13,
+   "source": "page_run",
+   "ink_id": "page/13 run 20",
+   "pieces": 1,
+   "bound_notes": [],
+   "bound": "none",
+   "status": "abstained",
+   "kind": null,
+   "reason_word": "end_unbound one_head_both_ends",
+   "drawn_from_pool_of": 639,
+   "sean": "just a part of an arc and a note",
+   "ink": "partial"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 13,
+   "source": "curve",
+   "ink_id": "glyph/13/1/3/2/5",
+   "pieces": 3,
+   "bound_notes": [
+    "glyph/13/1/3/2/6",
+    "glyph/13/1/3/3/5"
+   ],
+   "bound": "both ends",
+   "status": "kind none (arc_kind arc_ends_unread)",
+   "kind": null,
+   "reason_word": "tie_box_end_only_at_a_stem_tip",
+   "drawn_from_pool_of": 639,
+   "sean": "a correct arc and correct notes",
+   "ink": "complete"
+  },
+  {
+   "tile": 7,
+   "plate": "brahms",
+   "page": 11,
+   "source": "page_run",
+   "ink_id": "page/11 run 49",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/11/0/9/1/3",
+    "glyph/11/0/9/2/3"
+   ],
+   "bound": "both ends",
+   "status": "written",
+   "kind": "tie",
+   "reason_word": null,
+   "drawn_from_pool_of": 873,
+   "sean": "correct",
+   "ink": "complete"
+  },
+  {
+   "tile": 8,
+   "plate": "brahms",
+   "page": 18,
+   "source": "page_run",
+   "ink_id": "page/18 run 1",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/18/0/1/3/3",
+    "glyph/18/0/1/4/5"
+   ],
+   "bound": "both ends",
+   "status": "written",
+   "kind": "tie",
+   "reason_word": null,
+   "drawn_from_pool_of": 873,
+   "sean": "correct",
+   "ink": "complete"
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "page": 20,
+   "source": "page_run",
+   "ink_id": "page/20 run 29",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/20/1/1/4/9",
+    "glyph/20/1/1/5/1"
+   ],
+   "bound": "both ends",
+   "status": "written",
+   "kind": "tie",
+   "reason_word": null,
+   "drawn_from_pool_of": 873,
+   "sean": "correct",
+   "ink": "complete"
+  },
+  {
+   "tile": 10,
+   "plate": "brahms",
+   "page": 0,
+   "source": "page_run",
+   "ink_id": "page/0 run 76",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/0/0/1/6/2"
+   ],
+   "bound": "one end",
+   "status": "abstained",
+   "kind": null,
+   "reason_word": "end_unbound end_far_beyond_head",
+   "drawn_from_pool_of": 873,
+   "sean": "correct with the arc box and its ending note, but I don't see a starting note mark",
+   "ink": "complete"
+  },
+  {
+   "tile": 11,
+   "plate": "brahms",
+   "page": 18,
+   "source": "curve",
+   "ink_id": "glyph/18/1/12/7/7",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/18/1/12/7/10",
+    "glyph/18/1/12/7/8"
+   ],
+   "bound": "both ends",
+   "status": "kind tie (arc_kind tie)",
+   "kind": "tie",
+   "reason_word": null,
+   "drawn_from_pool_of": 873,
+   "sean": "correct",
+   "ink": "complete"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "page": 0,
+   "source": "page_run",
+   "ink_id": "page/0 run 81",
+   "pieces": 1,
+   "bound_notes": [
+    "glyph/0/0/5/0/9",
+    "glyph/0/0/5/1/2"
+   ],
+   "bound": "both ends",
+   "status": "written",
+   "kind": "tie",
+   "reason_word": null,
+   "drawn_from_pool_of": 873,
+   "sean": "correct, but it does look like it's from the staff above",
+   "ink": "complete; owner staff questioned"
+  }
+ ]
+}
