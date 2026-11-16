@@ -595,10 +595,157 @@ def _chord_member_at_height(col: List[Dict[str, Any]], ey: float, sp: float, hea
     return out
 
 
+# ── ROADMAP 2.305 r6: THE RULE, NOT A REACH WINDOW ────────────────────────────────────────────────────────────────────────────────────────
+#
+# Sean, 2026-11-15 (page-facts "An arc ends at the notes standing where its ink ends"): "An arc ends at the notes standing where its ink ends, on
+# the staff it sits over. It often stops a little short of them; then it belongs to the closest of those notes. It never reaches past a nearer note
+# to a farther one, and never to a note on another staff. Where two notes are about equally close, we don't choose."
+#
+# The reach numbers (`arcs_system.ANCHOR_OUT_SPACES` 1.6 ahead / `ANCHOR_IN_SPACES` 0.8 behind for a detector curve; `page_arc_bind.HEAD_BEHIND_END_SPACES`,
+# `OWN_BAR_BEHIND_SPACES`, `END_REACH_SPACES` for a page-ink run) were never the rule: they guard OUR failure, a note the detector never boxed, where the arc
+# would take the next note along (Sean approved, 2026-11-15: "That is the way"). With the rule ON (`rule_enabled`, which rides `OMR_PAGE_ARC_WRITE`) the
+# end binds the CLOSEST usable note of its own staff, measured from the ink's end to the head's ink, in either direction and at any distance; two columns
+# about equally close abstain (`two_columns_at_end`, the binder's one margin `BIND_COLUMN_MARGIN_SPACES`, beside the rule); and the failure is guarded
+# directly: HEAD-SHAPED INK THAT NO READER HAS READ (`unread_head_ink`: page-ink blobs of a head's size no detector box of any class stands on) standing at
+# least as near the end as that note -> "cannot tell" (`unread_ink_at_end`), the ink and the note both named, with the signed margin. Other staves' notes
+# never reach the binder: the caller hands it the arc's own staff only (`ownership._page_binding`).
+
+#: the reason word: head-shaped ink no reader has read stands at the arc's end at least as near as the closest note
+UNREAD_INK_AT_END = "unread_ink_at_end"
+#: detector classes of LINE and CURVE marks (staff, ledger, beam, stem, tie, slur, brace): such a box is where a thin stroke runs, it reads no blob under it
+#: (a beam's box spans the heads below it: Brahms p11 staff 2 bar 8, box 8/19 over the tied head 8/2). Every other class's box -- a head, a dot, a rest, an
+#: accidental, a flag, a letter, a clef -- reads the ink it stands on.
+LINE_MARK_CLASSES = ("staff", "ledgerline", "beam", "stem", "tie", "slur", "brace", "bracket")
+
+
+def reads_ink(cls: Any) -> bool:
+    """ROADMAP 2.305 r6: whether a detector box of class `cls` reads the blob it stands on (`LINE_MARK_CLASSES` do not)."""
+    return str(cls or "").lower() not in LINE_MARK_CLASSES
+
+
+def rule_enabled() -> bool:
+    """ROADMAP 2.305 r6: the ends rule replaces the reach windows when `OMR_PAGE_ARC_WRITE` is ON (default OFF; the OFF file is unchanged)."""
+    from .page_arc_bind import write_enabled
+    return write_enabled()
+
+
+def unread_head_ink(strokes: Sequence[Dict[str, Any]], boxes: Sequence[Sequence[float]], sp: float,
+                    claimed_strokes: Optional[Any] = None) -> List[Dict[str, Any]]:
+    """ROADMAP 2.305 r6: the page strokes that are a notehead's INK by the page-head reader's own shape test (`page_heads`, ROADMAP 2.260e M6a: a blob of at
+    least `HEAD_MIN_AREA_SP2`, at most `HEAD_MAX_W_SP` x `HEAD_MAX_H_SP` of its own staff space) that NO reader has read: no detector box of ANY class and no
+    claimed area of the page ledger (`Q.CLAIMED_AREA` with a box value: a printed word, a clef, a barline, a key ...) stands on its centre, and no page-ink
+    claim names it (`claimed_strokes`: the `Q.PAGE_STROKE` ordinals a `page_ink` claim holds -- a rest, a head's oval, a tremolo, an accidental). `strokes`:
+    `Q.PAGE_STROKE` details (+ `id`, `kind`), every kind (a blob is a note only on a stem); `boxes`: page boxes. Returns `{id, ordinal, cx, cy, w, h,
+    staff}` per such blob. GATHER's own census (`page_heads.read`, `ink_only`) files the same fact behind `OMR_PAGE_HEADS` (OFF); this reads the same filed
+    rows with the same numbers, no new one, and asks the census's stem clause in its wider form: the blob TOUCHES A STEM (a vertical stroke at least
+    `page_heads.STEM_MIN_LEN_SP` long) -- the census asks for a stem a BOXED head touches; an arc's unboxed note may stand on its own stem. Measured on the
+    2.310 rows (Brahms p11): without the stem clause the tips of the arcs' own ink and an accidental's piece read as unread heads. NOT SEEN: a whole note
+    nobody boxed (no stem) -- the guard then does not stand, and the end binds the closest note it can see."""
+    from .page_heads import HEAD_MAX_H_SP, HEAD_MAX_W_SP, HEAD_MIN_AREA_SP2, STEM_MIN_LEN_SP
+    out: List[Dict[str, Any]] = []
+    taken = set(claimed_strokes or ())
+    stems = {s.get("ordinal") for s in strokes if s.get("kind") == "vertical" and float(s.get("length_spaces") or 0.0) >= STEM_MIN_LEN_SP}
+    for s in strokes:
+        if s.get("kind") != "blob" or s.get("ordinal") in taken:
+            continue
+        if not any(t and t[0] in stems for t in (s.get("touches") or ())):
+            continue
+        b = s.get("bbox_page_px")
+        if not b or len(b) != 4:
+            continue
+        x0, y0, x1, y1 = (float(v) for v in b)
+        w, h = x1 - x0, y1 - y0
+        spl = float(s.get("staff_space_local_px") or sp or 0.0)
+        if spl <= 0 or w <= 0 or h <= 0:
+            continue
+        area = float(s.get("fill") or 0.0) * w * h / (spl * spl)
+        if not (area >= HEAD_MIN_AREA_SP2 and w <= HEAD_MAX_W_SP * spl and h <= HEAD_MAX_H_SP * spl):
+            continue
+        cx, cy = (x0 + x1) / 2.0, (y0 + y1) / 2.0
+        if any(bb[0] <= cx <= bb[2] and bb[1] <= cy <= bb[3] for bb in boxes):
+            continue
+        out.append({"id": s.get("id"), "ordinal": s.get("ordinal"), "cx": cx, "cy": cy, "w": w, "h": h, "staff": list(s.get("staff") or ())})
+    return out
+
+
+def _ink_xy(h: Dict[str, Any]) -> Tuple[float, float]:
+    """the head's INK centre where the record holds one (2.290's page head, `ink_cx`/`ink_cy`), else its box centre (CLAUDE §4: measure the mark)"""
+    return (float(h.get("ink_cx", h["cx"])), float(h.get("ink_cy", h["cy"])))
+
+
+def _bind_end_by_rule(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str], ok: Any, by_height: bool,
+                      others: Optional[Sequence[Tuple[float, float]]], unread: Optional[Sequence[Dict[str, Any]]],
+                      meet_back: float) -> Dict[str, Any]:
+    """ROADMAP 2.305 r6 (the block above): one end by Sean's rule. `heads` are the arc's OWN staff's (the caller's); `unread` the unread head ink of that staff.
+    `meet_back` is the caller's look-behind as 2.281's meeting test used it (`OMR_ARC_MEETING_AT_HEAD`, its own windows, unchanged); it never picks a note."""
+    from .arcs_system import ANCHOR_IN_SPACES
+    if not any(ok(h["key"]) for h in heads):
+        return {"edge": True}          # (the caller tests the system's edge first: `bind_curve`, `page_arc_bind.closest_binder`, each unchanged)
+    cands = []
+    for h in heads:
+        if ok(h["key"]):
+            hx, hy = _ink_xy(h)
+            cands.append(dict(h, d=abs(hx - ex) + abs(hy - ey)))
+    cands.sort(key=lambda h: h["d"])
+    hh = cands[0]
+    # another curve of the staff BEGINS nearer this end than the closest note stands: this curve is half of one arc (2.271's test, no number), unless both stand
+    # AT that note (2.281, `OMR_ARC_MEETING_AT_HEAD`): unchanged
+    offenders = [(ox, oy) for ox, oy in (others or ())
+                 if abs(ox - ex) + abs(oy - ey) < min(hh["d"], abs(ox - hh["cx"]) + abs(oy - hh["cy"])) and (ox - ex) * sgn > -ANCHOR_IN_SPACES * sp]
+    if offenders and meeting_at_head_enabled():
+        from .arcs_system import ANCHOR_DY_SPACES as _DY, ANCHOR_OUT_SPACES as _OUT
+
+        def _at(x: float, y: float, s_: int) -> bool:
+            out = (hh["cx"] - x) * s_
+            return -meet_back * sp < out <= _OUT * sp and abs(hh["cy"] - y) <= _DY * sp
+        if _at(ex, ey, sgn) and all(_at(ox, oy, -sgn) for ox, oy in offenders):
+            offenders = []
+    if offenders:
+        return {"unbound": "continues_in_another_curve", "candidates": [hh["key"]], "margin_spaces": None}
+    cols = sorted(_columns(cands[:12]), key=lambda c: min(h["d"] for h in c))
+    d0 = min(h["d"] for h in cols[0])
+    if len(cols) > 1:
+        d1 = min(h["d"] for h in cols[1])
+        same_note = {h["key"] for h in cols[0]} & {h["key"] for h in cols[1]}
+        if (d1 - d0) < BIND_COLUMN_MARGIN_SPACES * sp and not same_note:
+            return {"unbound": "two_columns_at_end", "candidates": [[h["key"] for h in c] for c in cols[:2]],
+                    "margin_spaces": round((d1 - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3)}
+    if unread:
+        ub = min(unread, key=lambda u: abs(u["cx"] - ex) + abs(u["cy"] - ey))
+        du = abs(ub["cx"] - ex) + abs(ub["cy"] - ey)
+        if du - d0 < BIND_COLUMN_MARGIN_SPACES * sp:
+            # head-shaped ink nobody has read stands at the end at least about as near as the closest note: the note the arc ends at may be that ink -- cannot tell
+            return {"unbound": UNREAD_INK_AT_END, "candidates": [[h["key"] for h in cols[0]], "page_stroke:%s" % ub.get("ordinal")],
+                    "margin_spaces": round((du - d0) / sp - BIND_COLUMN_MARGIN_SPACES, 3), "unread_row": ub.get("id"),
+                    "unread_xy": [round(ub["cx"], 1), round(ub["cy"], 1)]}
+    col = cols[0]
+    out: Dict[str, Any]
+    if by_height:
+        got = _chord_member_at_height(col, ey, sp, heads, ex, ok)
+        if got:
+            if got.get("head") is not None and all(h.get("tip") for h in col):
+                got["via_stem_tip"] = True
+            got["by_rule"] = True
+            return got
+    if len(col) == 1:
+        pick = col[0]
+    elif side == "above":
+        pick = min(col, key=lambda h: h["cy"])
+    elif side == "below":
+        pick = max(col, key=lambda h: h["cy"])
+    else:
+        return {"unbound": "chord_end_side_unread", "candidates": [h["key"] for h in col], "margin_spaces": None}
+    out = {"head": pick["key"], "column": len(col), "distance_spaces": round(pick["d"] / sp, 3), "by_rule": True}
+    if pick.get("tip"):
+        out["via_stem_tip"] = True
+    return out
+
+
 def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp: float, side: Optional[str],
              usable: Any = None, by_height: bool = False, closest_ok: Optional[bool] = None,
              others: Optional[Sequence[Tuple[float, float]]] = None, closest_only: bool = False,
-             behind_spaces: Optional[float] = None) -> Dict[str, Any]:
+             behind_spaces: Optional[float] = None, by_rule: bool = False,
+             unread: Optional[Sequence[Dict[str, Any]]] = None) -> Dict[str, Any]:
     """One end of a curve at page `(ex, ey)`; `sgn` -1 for the left end, +1 for the right. `heads`: `{key, cx, cy, w, h}` of the staff in the
     system (GATHER boxes); `usable(key)` says whether ADJUDICATE left it a notehead of this staff (asked only of heads that could matter).
 
@@ -611,6 +758,10 @@ def bind_end(ex: float, ey: float, sgn: int, heads: Sequence[Dict[str, Any]], sp
     by distance, heads up to `behind_spaces` behind the end included; two columns about equally near still abstain."""
     from .arcs_system import ANCHOR_DY_SPACES, ANCHOR_IN_SPACES, ANCHOR_OUT_SPACES
     ok = usable or (lambda _k: True)
+    if by_rule:
+        # ROADMAP 2.305 r6: Sean's rule, no window (`_bind_end_by_rule`)
+        return _bind_end_by_rule(ex, ey, sgn, heads, sp, side, ok, by_height, others, unread,
+                                 ANCHOR_IN_SPACES if behind_spaces is None else behind_spaces)
     back = ANCHOR_IN_SPACES if behind_spaces is None else behind_spaces
     cands = []
     for h in (() if closest_only else heads):
@@ -733,14 +884,42 @@ def stem_tips(heads: Sequence[Dict[str, Any]], stems: Sequence[Sequence[float]],
 def bind_curve(detail: Dict[str, Any], heads: Sequence[Dict[str, Any]], sp: float, usable: Any = None,
                by_height: bool = False, alt_ends: Optional[Dict[str, Sequence[float]]] = None,
                closest_sides: Optional[Dict[str, bool]] = None,
-               other_ends: Optional[Dict[str, Sequence[Tuple[float, float]]]] = None) -> Dict[str, Any]:
-    """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`."""
+               other_ends: Optional[Dict[str, Sequence[Tuple[float, float]]]] = None,
+               unread: Optional[Sequence[Dict[str, Any]]] = None, by_rule: Optional[bool] = None) -> Dict[str, Any]:
+    """Both ends of one `Q.SYSTEM_ARC` curve (its row's `detail`): `{"left": ..., "right": ..., "side": ...}`; see `bind_end`.
+
+    ROADMAP 2.305 r6 (`by_rule`, default `rule_enabled()`): each end is measured where the INK ends (the curve's own page stroke end, `alt_ends`, where the
+    record holds one; else the traced end) and bound by Sean's rule (`_bind_end_by_rule`): no reach window, the closest note of the staff, `unread` head
+    ink guarding the end. An end with no usable note ahead of it (2.223's edge test) is the system's edge, as before. A curve 2.271 found to lie inside a
+    printed word or a hairpin (`closest_sides` False) is that mark's ink (claim order, CLAUDE s3): its end binds nothing (`inside_a_word_or_wedge`)."""
     side = curve_side(detail.get("trace"), sp)
     xl, yl = detail.get("x_left_page"), detail.get("y_left_page")
     xr, yr = detail.get("x_right_page"), detail.get("y_right_page")
     if None in (xl, yl, xr, yr) or sp <= 0:
         return {"left": {"unbound": "no_traced_end"}, "right": {"unbound": "no_traced_end"}, "side": side}
     cs = closest_sides or {}
+    if rule_enabled() if by_rule is None else by_rule:
+        from .arcs_system import ANCHOR_IN_SPACES
+        ok = usable or (lambda _k: True)
+        ends: Dict[str, Dict[str, Any]] = {}
+        for side_, sgn_, xe, ye in (("left", -1, xl, yl), ("right", +1, xr, yr)):
+            alt = (alt_ends or {}).get(side_)
+            if alt is not None:
+                xe, ye = alt[0], alt[1]
+            xe, ye = float(xe), float(ye)
+            if cs.get(side_) is False:
+                ends[side_] = {"unbound": "inside_a_word_or_wedge", "candidates": [], "margin_spaces": None}
+                continue
+            if not any((h["cx"] - xe) * sgn_ > -ANCHOR_IN_SPACES * sp and ok(h["key"]) for h in heads):
+                ends[side_] = {"edge": True}
+                continue
+            got = bind_end(xe, ye, sgn_, heads, sp, side, usable, by_height, others=(other_ends or {}).get(side_), by_rule=True, unread=unread)
+            got["end_xy"] = [round(xe, 1), round(ye, 1)]
+            ends[side_] = got
+        left, right = ends["left"], ends["right"]
+        if left.get("head") is not None and left.get("head") == right.get("head"):
+            left = right = {"unbound": "one_head_both_ends", "candidates": [left["head"]], "margin_spaces": None}
+        return {"left": left, "right": right, "side": side, "by_rule": True}
     left = bind_end(float(xl), float(yl), -1, heads, sp, side, usable, by_height, False)
     right = bind_end(float(xr), float(yr), +1, heads, sp, side, usable, by_height, False)
     if alt_ends:

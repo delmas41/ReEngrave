@@ -77,11 +77,11 @@ class TestClosestNote(unittest.TestCase):
     def test_an_end_that_stops_short_binds_the_closest_head_and_the_twin_does_not(self):
         d = _detail(0, 100, 100, 100)
         heads = [_h("a", -5, 108), _h("b", 130, 108)]          # b stands 3 spaces past the run's end: outside the 1.6-space window
-        plain = AC.bind_curve(d, heads, SP)
-        self.assertEqual(plain["right"].get("unbound"), "no_head_at_end")          # the twin: 2.223's window alone
+        plain = AC.bind_curve(d, heads, SP, by_rule=False)
+        self.assertEqual(plain["right"].get("unbound"), "no_head_at_end")          # the twin: 2.223's window alone (the reader with OMR_PAGE_ARC_WRITE off)
         b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
         self.assertEqual((b["left"]["head"], b["right"]["head"]), ("a", "b"))
-        self.assertTrue(b["right"].get("via_closest"))
+        self.assertTrue(b["right"].get("by_rule"))          # ROADMAP 2.305 r6: Sean's rule, the closest note, no window
 
     def test_two_heads_about_equally_near_abstain_never_a_pick(self):
         d = _detail(0, 100, 100, 100)

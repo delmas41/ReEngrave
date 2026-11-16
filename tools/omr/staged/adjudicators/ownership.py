@@ -3026,6 +3026,44 @@ def _page_head_groups(ev: Evidence, heads: List[Dict[str, Any]], rows: Dict[str,
     return out
 
 
+_UNREAD_MEMO: Dict[str, Any] = {"log": None, "pages": {}}
+
+
+def _unread_head_ink(ev: Evidence, home: Any, sp: float) -> List[Dict[str, Any]]:
+    """ROADMAP 2.305 r6 (`arc_claim.unread_head_ink`): the head-shaped page ink no detector box stands on, on the staff `home` (`Q.PAGE_STROKE` rows are
+    GATHER's, filed per page whatever the arc flags; `staff` = [system, staff] each stroke is read against). Read once per page through the page decision's
+    own declared reads (`Q.PAGE_ARC_BINDING` wants both) and memoised on the log; the decision that abstains on one names that row in its `considered`."""
+    from ..adjudicate import Evidence as _Ev, REGISTRY
+    log = ev.log
+    if _UNREAD_MEMO["log"] is not log:
+        _UNREAD_MEMO["log"] = log
+        _UNREAD_MEMO["pages"] = {}
+    pg = home.page
+    if pg not in _UNREAD_MEMO["pages"]:
+        psub = R.Subject(Kind.PAGE, pg)
+        pev = _Ev(log, psub, REGISTRY[Q.PAGE_ARC_BINDING])
+        strokes = []
+        for r in pev.rows(Q.PAGE_STROKE, subject=psub):
+            if r.value in ("blob", "vertical"):
+                strokes.append(dict(r.detail or {}, kind=r.value, id=r.id))
+        boxes = []
+        for r in pev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
+            b = (r.detail or {}).get("bbox_page_px")
+            cls = r.value[0] if isinstance(r.value, (list, tuple)) and r.value else r.value
+            if b and len(b) == 4 and _arc_claim.reads_ink(cls):
+                boxes.append(tuple(float(v) for v in b))
+        claimed = set()
+        for r in pev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_DESCENDANTS, subject=psub):
+            v, dd = r.value, (r.detail or {})
+            if dd.get("page_strokes"):
+                # a page-ink claim (a rest, a head's oval, a tremolo, an accidental) and an arc's or hairpin's traced ink (`page_strokes` on its ink claim)
+                claimed.update(int(o[0] if isinstance(o, (list, tuple)) else o) for o in dd["page_strokes"])
+            if dd.get("unit") == "area" and isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v):
+                boxes.append(tuple(float(t) for t in v))
+        _UNREAD_MEMO["pages"][pg] = _arc_claim.unread_head_ink(strokes, boxes, sp, claimed)
+    return [u for u in _UNREAD_MEMO["pages"][pg] if list(u.get("staff") or ()) == [home.system, home.staff]]
+
+
 def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.223 (`OMR_ARC_BIND_PAGEWIDE`): the CURVE this arc box is a piece of, bound at both ends to notes AFTER the heads are read,
     and the kind Sean's tie rule makes of the two bound heads. None where GATHER traced no curve through this box (the OFF path stands).
@@ -3059,9 +3097,11 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
         home = (owner.value if owner is not None and isinstance(owner.value, str) and owner.value
                 else ev.subject.at(Kind.STAFF).to_key())
 
-        def binder(heads_: List[Dict[str, Any]], sp_: float, usable_: Any, end_pitch_: bool, alt_: Any) -> Dict[str, Any]:
-            closest_sides, closest_why, closest_others = (_closest_sides(ev, sysarc, d, sp_, staff_of_arc) if _arc_claim.closest_head_enabled() else (None, {}, None))
-            b_ = _arc_claim.bind_curve(d, heads_, sp_, usable_, by_height=end_pitch_, alt_ends=alt_, closest_sides=closest_sides, other_ends=closest_others)
+        def binder(heads_: List[Dict[str, Any]], sp_: float, usable_: Any, end_pitch_: bool, alt_: Any, unread: Any = None) -> Dict[str, Any]:
+            closest_sides, closest_why, closest_others = (_closest_sides(ev, sysarc, d, sp_, staff_of_arc)
+                                                          if (_arc_claim.closest_head_enabled() or _arc_claim.rule_enabled()) else (None, {}, None))
+            b_ = _arc_claim.bind_curve(d, heads_, sp_, usable_, by_height=end_pitch_, alt_ends=alt_, closest_sides=closest_sides, other_ends=closest_others,
+                                       unread=unread)
             if closest_why:
                 b_["closest_refused"] = closest_why
             return b_
@@ -3145,7 +3185,22 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
     alt = None
     if _arc_claim.page_claims_enabled() and d.get("stroke_left_page") and d.get("stroke_right_page"):
         alt = {"left": d["stroke_left_page"], "right": d["stroke_right_page"]}
-    b = binder(heads + tips, sp, usable, end_pitch, alt)
+    if _arc_claim.rule_enabled():
+        # ROADMAP 2.305 r6 (`arc_claim._bind_end_by_rule`): the ends rule measures each head at its INK (2.290's page head, where it found head ink), and
+        # guards the end with the unread head ink of this staff; the binder then binds the closest note, with no reach window
+        for h in heads:
+            mg = ev.rows(Q.MARK_GROUP, subject=rows[h["key"]].subject)
+            md = (mg[-1].detail or {}) if mg else {}
+            ic = md.get("ink_centre")
+            if md.get("identity") == "page_head" and ic and len(ic) == 2 and float(md.get("head_ink_px") or 0) > 0:
+                h["ink_cx"], h["ink_cy"] = float(ic[0]), float(ic[1])
+        unread = _unread_head_ink(ev, staff, sp)
+        b = binder(heads + tips, sp, usable, end_pitch, alt, unread)
+        for side_ in ("left", "right"):
+            if b[side_].get("unbound") == _arc_claim.UNREAD_INK_AT_END and b[side_].get("unread_row"):
+                ev.considered_from_another_frame([b[side_]["unread_row"]])
+    else:
+        b = binder(heads + tips, sp, usable, end_pitch, alt)
     b.update(curve=curve_key, home=home, kind=None, sysarc_id=curve_id)
     for side_ in ("left", "right"):
         if b[side_].get("via_stem_tip"):
@@ -3355,7 +3410,9 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
            Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION,
            Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER,
-           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC, Q.DIRECTION_WORD, Q.WEDGE_BOX),
+           Q.CELL_STAFF_SPACE, Q.SYSTEM_ARC, Q.DIRECTION_WORD, Q.WEDGE_BOX,
+           # ROADMAP 2.305 r6 (read only with `OMR_PAGE_ARC_WRITE` ON, `arc_claim.rule_enabled`): a head's ink centre (2.290) and the unread head ink
+           Q.MARK_GROUP, Q.PAGE_STROKE),
     subjects_from=Q.ARC_BOX,
     # ⚠️ A DECIDED arc's reason stays `tie` / `slur`; WHICH rule decided it
     # (`two_notes_same_pitch`, `two_notes_different_pitch`,
@@ -6464,7 +6521,7 @@ def _witness_by_ink(ev: Evidence, page: Any, items: Sequence[Tuple[Any, Dict[str
     scope=Kind.PAGE,
     wants=(Q.PAGE_ARC, Q.ARC_BOX, Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_BOX, Q.STEM, Q.ARC_OWNER, Q.ARC_IS_NOT_AN_ARC, Q.GLYPH_OWNER,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.CELL_BOX, Q.NOTEHEAD_POSITION, Q.ACCIDENTAL_STAFF_POSITION, Q.ACCIDENTAL_OWNER, Q.CELL_STAFF_SPACE,
-           Q.MARK_GROUP),
+           Q.MARK_GROUP, Q.PAGE_STROKE, Q.CLAIMED_AREA),
     subjects_from=Q.PAGE_ARC,
     reasons=("bound", "none_bound", "no_witnessed_run"),
     mode=Mode.ADDITIVE,
@@ -6558,7 +6615,7 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
                 cells_[crow.subject.cell or 0] = (float(crow.value[0]), float(crow.value[2]))
         binder = PB.closest_binder(PB.facing_ends(peers, i, st), cells_)
         b = _page_binding(ev, None, page_run=(d, home, "page_arc/%s" % r.id, r.id,
-                                              lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
+                                              lambda heads_, sp_, usable_, end_pitch_, alt_, unread_=None, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d, unread_)))
         far = [s_ for s_ in ("left", "right") if (b.get(s_) or {}).get("unbound") == "head_on_the_arcs_far_side"]
         hs_ = R.Subject.from_key(home)
         near = None
@@ -6577,7 +6634,7 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
             # same binder decides or abstains. Only detector boxes owned by that staff are this run's witnesses (a box of the first staff keeps its own arc).
             binder2 = PB.closest_binder(PB.facing_ends(peers, i, st), cells2)
             b2 = _page_binding(ev, None, page_run=(d, near, "page_arc/%s" % r.id, r.id,
-                                                   lambda heads_, sp_, usable_, end_pitch_, alt_, _b=binder2, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d)))
+                                                   lambda heads_, sp_, usable_, end_pitch_, alt_, unread_=None, _b=binder2, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d, unread_)))
             entry["owner_far_side"] = {"home": home, "ends": far}
             ws_own = []
             for w in ws:

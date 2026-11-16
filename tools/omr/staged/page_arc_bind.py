@@ -67,11 +67,10 @@ MIN_PIECE_SP = 3.0
 #: arcs-r2 fix 2 (an end binds only a head the ink REACHES): an arc's end stands beside its note; a stem is 3.5 spaces (Gould) and `arc_claim.TIP_MAX_SPACES` 4.5. A head farther than this from the end
 #: (measured on the 1552 written ends of the ten pages: 99% stand within 4.02) means the head the ink really ends at was never boxed (Litolff p13 run 80: 6.49; Brahms p11 run 3: 83). The end is
 #: `end_far_from_head` (UNREAD, the old path keeps its arc). A number that only ever DECLINES a binding (CLAUDE 4: a cut-off tuned on two plates may only narrow).
+#: ⚠️ ROADMAP 2.305 r6: RETIRED from the binder (Sean 2026-11-15: no reach number in the arc rule; `arc_claim.unread_head_ink` guards the failure it stood for). Still
+#: read by `ownership.adjudicate_page_arc_binding`'s arcs-r2 fix 4 (`staff_ink_vs_owner`: which STAFF, when the run's own staff and the box owner disagree) -- not this lane's.
 END_REACH_SPACES = 4.0
-#: arcs-r2 fix 1 (an end binds where the ink is): a head in the END'S OWN BAR (the cell its ink end stands in) up to this far behind the end is a candidate beside the closest head outward across a
-#: barline; two columns about equally near then abstain (`two_columns_at_end`, the binder's own margin) instead of the outward head silently winning (Litolff p5 run 104: the chord before the barline
-#: 1.44 sp out, the half note the ink starts over 1.8 behind). It only ever adds a rival, so it can only turn a binding into an abstention or leave it. (2.166's `ANCHOR_OUT_SPACES`, no new number.)
-OWN_BAR_BEHIND_SPACES = 2.5
+#: (arcs-r2 fix 1's `OWN_BAR_BEHIND_SPACES` own-bar window was retired by 2.305 r6: every note of the staff is a candidate, the closest wins, two about equally near abstain.)
 
 
 def pieces_of(detail: Dict[str, Any], sp: float) -> List[Dict[str, Any]]:
@@ -249,40 +248,28 @@ def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], 
 
 
 def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Optional[Dict[Any, Tuple[float, float]]] = None):
-    """The `binder` `ownership._page_binding(page_run=...)` takes. Each end binds to the CLOSEST usable head (`arc_claim.bind_end(closest_only=True)`, 2.271's rule with no window: a run's end
-    can stand a little PAST its note: heads up to 2.166's own `ANCHOR_IN_SPACES` behind the end are candidates too), refusing the half of an arc (`others`: the facing
-    ends of the staff's other runs) and two columns about equally near. An end with NO usable head ahead of it anywhere on the staff (the 2.223 window's own edge test) is the
-    SYSTEM'S EDGE, whatever stands behind it: the arc may run on to the next system, so it is not ended at the last note (`{"edge": True}`; EXPORT may join it)."""
+    """The `binder` `ownership._page_binding(page_run=...)` takes. Each end binds by Sean's rule (2026-11-15; `arc_claim._bind_end_by_rule`, ROADMAP 2.305 r6): the CLOSEST
+    usable note of the staff, measured from where the ink ends, in either direction and with no reach number; two columns about equally near abstain; head-shaped ink no
+    reader has read standing at the end at least about as near -> `unread_ink_at_end`; the half of an arc (`others`: the facing ends of the staff's other runs) stays
+    unbound. An end with NO usable head ahead of it anywhere on the staff is the SYSTEM'S EDGE, whatever stands behind it: the arc may run on to the next system, so it is
+    not ended at the last note (`{"edge": True}`; EXPORT may join it). `cells` is no longer read (r2's own-bar window retired by r6); kept for the caller's signature."""
     from . import arc_claim as AC
     from .arcs_system import ANCHOR_DY_SPACES, ANCHOR_IN_SPACES, ANCHOR_OUT_SPACES
 
-    def binder(heads: List[Dict[str, Any]], sp: float, usable: Any, end_pitch: bool, alt: Any, d: Dict[str, Any]) -> Dict[str, Any]:
+    def binder(heads: List[Dict[str, Any]], sp: float, usable: Any, end_pitch: bool, alt: Any, d: Dict[str, Any],
+               unread: Optional[Sequence[Dict[str, Any]]] = None) -> Dict[str, Any]:
         side = AC.curve_side(d.get("trace"), sp)
-        b = {"left": None, "right": None, "side": side}
+        b = {"left": None, "right": None, "side": side, "by_rule": True}
         for s_, sgn, xk, yk in (("left", -1, "x_left_page", "y_left_page"), ("right", +1, "x_right_page", "y_right_page")):
             ex = float(d[xk])
             if not any((h["cx"] - ex) * sgn > -HEAD_BEHIND_END_SPACES * sp and (usable is None or usable(h["key"])) for h in heads):
                 b[s_] = {"edge": True}
                 continue
-            usable_ = usable
-            behind_ = HEAD_BEHIND_END_SPACES
-            if cells:
-                # arcs-r2 fix 1: heads of the end's own bar join the candidates up to OWN_BAR_BEHIND_SPACES behind it; every other head keeps the 1.6 look-behind
-                # the bar the ink REACHES: the outermost TRACED point (the trace crosses a barline for a tie across it; Brahms p11 runs 33/37: own ink starts 7 px after the barline, the traced ink before it)
-                tx = [float(t[0]) for t in (d.get("trace") or ())]
-                ink_x = (min(tx) if sgn < 0 else max(tx)) if tx else ex
-                own = next((c for c, (cx0, cx1) in cells.items() if cx0 <= ink_x <= cx1), None)
-                if own is not None:
-                    behind_ = max(HEAD_BEHIND_END_SPACES, OWN_BAR_BEHIND_SPACES)
-                    by_key = {h["key"]: h for h in heads}
-
-                    def usable_(k, _u=usable, _own=own, _sgn=sgn, _ex=ex, _by=by_key):
-                        h = _by.get(k)
-                        if h is not None and (h["cx"] - _ex) * _sgn < -HEAD_BEHIND_END_SPACES * sp and h.get("cell") != _own:
-                            return False
-                        return _u is None or _u(k)
-            b[s_] = AC.bind_end(float(d[xk]), float(d[yk]), sgn, heads, sp, side, usable_, end_pitch, True, others.get(s_), closest_only=True,
-                                behind_spaces=behind_)
+            # ROADMAP 2.305 r6 (`arc_claim._bind_end_by_rule`; Sean 2026-11-15, "An arc ends at the notes standing where its ink ends"): the closest note of the
+            # staff in either direction, with no look-behind, own-bar window or reach number (r2's `OWN_BAR_BEHIND_SPACES` window and `END_REACH_SPACES` reach,
+            # both retired here); unread head ink at the end -> cannot tell. The edge test above, the landing, chord and far-side tests below are unchanged.
+            b[s_] = AC.bind_end(ex, float(d[yk]), sgn, heads, sp, side, usable, end_pitch, others=others.get(s_), by_rule=True, unread=unread,
+                                behind_spaces=HEAD_BEHIND_END_SPACES)          # (`behind_spaces`: 2.281's meeting test only, never which note)
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
             if hd is not None and side in ("above", "below") and not hd.get("tip") and not b[s_].get("via_stem_tip"):
                 # ROADMAP 2.305 r2 (Sean's r1 tile 8, "it goes one extra note too far"; page-facts: an arc ends AT its note): the traced ink LANDS on a head
@@ -318,9 +305,6 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
                             b[s_] = {"unbound": "chord_member_unclear", "candidates": [h["key"] for h in col_], "margin_spaces": round(INNER_MEMBER_DY_SPACES - abs(hd["cy"] - ey) / sp, 3)}
                             continue
                 out_by = (hd["cx"] - ex) * sgn
-                if out_by > END_REACH_SPACES * sp:
-                    b[s_] = {"unbound": "end_far_from_head", "candidates": [hd["key"]], "margin_spaces": round(END_REACH_SPACES - out_by / sp, 3)}
-                    continue
                 b[s_]["out_by_spaces"] = round(out_by / sp, 2)          # round 2 (cause d): how far past the ink's own end the bound head stands (negative: behind it)
                 # round 2 (cause d): the end stands far on the arc's own side of the head it bound to: a nearer head was never boxed (or is another member). An arc's end sits beside its note;
                 # a stem's tip (the 2.75 rule) is a candidate in its own right and is exempt.

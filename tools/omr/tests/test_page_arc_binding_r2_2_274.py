@@ -109,18 +109,27 @@ class TestAHeadJustBehindTheEnd(unittest.TestCase):
         self.assertEqual(b["right"]["head"], "b")
         self.assertNotIn("edge", b["right"])
 
-    def test_a_head_three_spaces_behind_is_not_a_candidate(self):
-        d = _detail(0, 100, 130, 100, sag=-15.0)          # 3 spaces past b: b is not the end's note
+    def test_a_head_three_spaces_behind_and_one_three_ahead_are_about_equally_close(self):
+        """ROADMAP 2.305 r6 (Sean 2026-11-15: "Where two notes are about equally close, we don't choose"): the 3-space look-behind that made `far` win is retired;
+        b (3 spaces behind) and far (3 spaces ahead) are equally close -> abstain. Mirror: b moved 2 spaces nearer the end binds."""
+        d = _detail(0, 100, 130, 100, sag=-15.0)
         heads = [_h("a", -2, 108), _h("b", 100, 108), _h("far", 160, 108)]
         b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
-        self.assertEqual(b["right"]["head"], "far")
+        self.assertEqual(b["right"].get("unbound"), "two_columns_at_end")
+        heads[1] = _h("b", 120, 108)
+        b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
+        self.assertEqual(b["right"].get("head"), "b")
 
-    def test_arcs_r2_a_head_beyond_the_reach_is_not_bound(self):
-        """arcs-r2 fix 2: the only head ahead stands 6 spaces from the end (Litolff p13 run 80 shape): UNREAD, never a pick."""
+    def test_r6_a_head_beyond_the_old_reach_binds_unless_unread_ink_stands_nearer(self):
+        """ROADMAP 2.305 r6 (no reach number; the guard is the unread ink): the only head ahead stands 6 spaces from the end (Litolff p13 run 80 shape). With no ink
+        nobody read nearer the end, it is the closest note and binds; with head-shaped unread ink 1 space past the end (the note nobody boxed), the end cannot tell."""
         d = _detail(0, 100, 130, 100, sag=-15.0)
         heads = [_h("a", -2, 108), _h("far", 190, 108)]
         b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d)
-        self.assertEqual(b["right"].get("unbound"), "end_far_from_head")
+        self.assertEqual(b["right"].get("head"), "far")
+        ink = [{"id": "obs:x", "ordinal": 7, "cx": 140.0, "cy": 108.0, "w": 12.0, "h": 10.0, "staff": [0, 0]}]
+        b = PB.closest_binder({"left": [], "right": []})(heads, SP, None, True, None, d, ink)
+        self.assertEqual(b["right"].get("unbound"), "unread_ink_at_end")
 
     def test_arcs_r2_mirror_a_head_inside_the_reach_binds(self):
         d = _detail(0, 100, 130, 100, sag=-15.0)
@@ -130,14 +139,10 @@ class TestAHeadJustBehindTheEnd(unittest.TestCase):
 
     def test_arcs_r2_barline_ambiguity_abstains(self):
         """arcs-r2 fix 1 (Litolff p5 run 104 shape): the ink starts after a barline; the chord before it stands 1.4 sp out, the note the ink starts over 1.8 behind in the end's own bar: two
-        columns about equally near -> abstain. Mirror: with no own-bar note behind, the outward head still binds (a tie across a barline)."""
+        columns about equally near -> abstain. Mirror: with no own-bar note behind, the outward head still binds (a tie across a barline). ROADMAP 2.305 r6: the bar no
+        longer enters (every note of the staff is a candidate); the two are about equally close whichever bar each stands in."""
         d = _detail(100, 100, 160, 100, sag=-15.0)
         heads = [dict(_h("before", 86, 108), cell=0), dict(_h("inside", 118, 108), cell=1), _h("r", 165, 108)]
-        # mirror (Brahms p11 runs 33/37): the TRACED ink crosses the barline (starts at 90, before it): the end's bar is the head's, the head before the barline binds
-        dc = _detail(90, 100, 160, 100, sag=-15.0)
-        dc["x_left_page"] = 100.0
-        bc = PB.closest_binder({"left": [], "right": []}, {0: (0.0, 96.0), 1: (96.0, 200.0)})(heads, SP, None, True, None, dc)
-        self.assertEqual(bc["left"].get("head"), "before")
         cells = {0: (0.0, 96.0), 1: (96.0, 200.0)}
         b = PB.closest_binder({"left": [], "right": []}, cells)(heads, SP, None, True, None, d)
         self.assertEqual(b["left"].get("unbound"), "two_columns_at_end")
