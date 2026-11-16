@@ -1,0 +1,180 @@
+{
+ "lane": "2.305 r7b",
+ "date": "2026-11-16",
+ "who": "Sean, by voice",
+ "question": "Is the boxed ink one arc? Does it start and end at the two ticked notes? Tie or slur?",
+ "drawn": "orange box: the arc's own ink as the reader read it (one box per joined piece); orange tick: under each of the two notes the file says the arc joins; nothing else",
+ "scoring_is": "the manager's reading; Sean's words quoted",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 13,
+   "start": "glyph/13/1/0/8/6",
+   "stop": "glyph/13/1/0/10/9",
+   "written": "slur",
+   "change": "removed in r7 (r6 wrote it)",
+   "source": "page_run",
+   "ink_pieces": 1,
+   "bars_spanned": 3,
+   "crop_px": [
+    426,
+    198
+   ],
+   "sean": "a good example where the box around the arc is correct. And it's around 2 half notes, but the first tick is a couple of 8 notes in front of that where there are no arcs to it",
+   "verdict": "ink right, start note wrong; r7 was right to remove it"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 15,
+   "start": "glyph/15/1/9/9/3",
+   "stop": "glyph/15/1/9/10/1",
+   "written": "slur",
+   "change": "removed in r7 (r6 wrote it)",
+   "source": "curve",
+   "ink_pieces": 1,
+   "bars_spanned": 2,
+   "crop_px": [
+    178,
+    162
+   ],
+   "sean": "a bad box, only a part of an arc against quarter notes that are actually a part of a much larger arc",
+   "verdict": "ink wrong (a part of a larger arc); r7 was right to remove it"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 13,
+   "start": "glyph/13/0/0/13/8",
+   "stop": "glyph/13/0/0/14/3",
+   "written": "slur",
+   "change": "new in r7",
+   "source": "curve",
+   "ink_pieces": 1,
+   "bars_spanned": 2,
+   "crop_px": [
+    187,
+    142
+   ],
+   "sean": "correct notes, half notes, but the box around the arc itself is too small",
+   "verdict": "notes right, ink too small; kind not said"
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "page": 0,
+   "start": "glyph/0/0/9/0/7",
+   "stop": "glyph/0/0/9/1/9",
+   "written": "slur",
+   "change": "removed in r7 (r6 wrote it)",
+   "source": "page_run",
+   "ink_pieces": 1,
+   "bars_spanned": 2,
+   "crop_px": [
+    1185,
+    485
+   ],
+   "sean": "the box is correct and the notes are correct",
+   "verdict": "ink right, notes right; r7 REMOVED a right arc"
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "page": 0,
+   "start": "glyph/0/0/11/0/4",
+   "stop": "glyph/0/0/11/1/6",
+   "written": "slur",
+   "change": "removed in r7 (r6 wrote it)",
+   "source": "curve",
+   "ink_pieces": 2,
+   "bars_spanned": 2,
+   "crop_px": [
+    1063,
+    321
+   ],
+   "sean": "the box is just a little bit short on the end and missing one note on the end",
+   "verdict": "ink a little short, stop one note early; r7 was right to remove it"
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "page": 0,
+   "start": "glyph/0/0/11/0/4",
+   "stop": "glyph/0/0/11/1/13",
+   "written": "slur",
+   "change": "new in r7",
+   "source": "curve",
+   "ink_pieces": 2,
+   "bars_spanned": 2,
+   "crop_px": [
+    1133,
+    321
+   ],
+   "sean": "the box is correct and the notes are correct",
+   "verdict": "ink right, notes right"
+  }
+ ],
+ "census": {
+  "old_path_changes": [
+   [
+    "litolff",
+    "glyph/15/1/3/1/2",
+    "glyph/15/1/3/1/5",
+    "slur",
+    "removed in r7 (r6 wrote it)"
+   ],
+   [
+    "brahms",
+    "glyph/11/1/2/5/3",
+    "glyph/11/1/2/7/3",
+    "slur",
+    "removed in r7 (r6 wrote it)"
+   ],
+   [
+    "brahms",
+    "glyph/20/1/8/4/7",
+    "glyph/20/1/8/4/6",
+    "slur",
+    "removed in r7 (r6 wrote it)"
+   ],
+   [
+    "brahms",
+    "glyph/20/1/8/4/1",
+    "glyph/20/1/8/4/6",
+    "slur",
+    "removed in r7 (r6 wrote it)"
+   ],
+   [
+    "brahms",
+    "glyph/0/0/9/1/1",
+    "glyph/0/0/9/1/9",
+    "slur",
+    "new in r7"
+   ],
+   [
+    "brahms",
+    "glyph/0/0/11/3/10",
+    "glyph/0/0/11/3/4",
+    "slur",
+    "new in r7"
+   ]
+  ],
+  "written_arcs_by_source_flag_on_r7": {
+   "litolff": {
+    "total": 192,
+    "page_pass": 99,
+    "curve_binding": 28,
+    "join_across_systems": 0,
+    "old_box_path": 65
+   },
+   "brahms": {
+    "total": 300,
+    "page_pass": 203,
+    "curve_binding": 23,
+    "join_across_systems": 4,
+    "old_box_path": 70
+   }
+  }
+ }
+}
