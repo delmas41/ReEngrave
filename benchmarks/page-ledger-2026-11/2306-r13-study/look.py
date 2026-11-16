@@ -24,7 +24,8 @@ def page_img(plate, p):
 COL = dict(vertical=(0, 160, 0), blob=(140, 140, 140), horizontal=(60, 140, 255), curve=(255, 105, 180), barline=(120, 60, 0))
 
 
-def panel(plate, D, T, held_of, g, zoom=None, half_w=4.0, half_h=6.0, label=None):
+def panel(plate, D, T, held_of, g, zoom=None, half_w=4.0, half_h=None, label=None):
+    half_h = half_h or float(os.environ.get('HALF_H', '6.0'))
     r = T[g]
     p = r["page"]
     sp = r["sp"]
@@ -33,7 +34,7 @@ def panel(plate, D, T, held_of, g, zoom=None, half_w=4.0, half_h=6.0, label=None
     cx, cy = (hb[0] + hb[2]) / 2, (hb[1] + hb[3]) / 2
     x0, y0, x1, y1 = int(cx - half_w * sp), int(cy - half_h * sp), int(cx + half_w * sp), int(cy + half_h * sp)
     z = zoom or max(2, int(round(60.0 / sp)))
-    cw = 7.5
+    cw = float(os.environ.get('CTX', '7.5'))
     X0, Y0, X1, Y1 = int(cx - cw * sp), int(cy - cw * sp), int(cx + cw * sp), int(cy + cw * sp)
     zc = max(1, int(round(z * 0.62)))
     ctx = im.crop((X0, Y0, X1, Y1)).resize(((X1 - X0) * zc, (Y1 - Y0) * zc), Image.LANCZOS)
@@ -87,13 +88,14 @@ if __name__ == "__main__" and "--sample" in sys.argv:
     plate, outp, key = sys.argv[1], sys.argv[2], sys.argv[sys.argv.index("--sample") + 1]
     gl = json.load(open("%s/r13/%s.samples.json" % (S, plate)))[key]
     T = {r["g"]: r for r in json.load(open("%s/r13/%s.trace.json" % (S, plate)))}
-    for k in range(0, len(gl), 6):
-        part = gl[k:k + 6]
+    PER = int(os.environ.get('PER', '6'))
+    for k in range(0, len(gl), PER):
+        part = gl[k:k + PER]
         part = [g for g in part if g in T]
         if not part:
             continue
-        print(sheet(plate, part, "%s-%s-%d.png" % (outp, key, k // 6), cols=3, labels={g: "%s%d %s" % (key, k + i + 1, g) for i, g in enumerate(gl[k:k + 6])}))
-        for i, g in enumerate(gl[k:k + 6]):
+        print(sheet(plate, part, "%s-%s-%d.png" % (outp, key, k // PER), cols=int(os.environ.get("COLS", "3")), labels={g: "%s%d %s" % (key, k + i + 1, g) for i, g in enumerate(gl[k:k + PER])}))
+        for i, g in enumerate(gl[k:k + PER]):
             r = T.get(g)
             if r is None:
                 print(" %s%d %s (not a real head in the trace)" % (key, k + i + 1, g))
