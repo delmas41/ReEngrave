@@ -201,3 +201,16 @@ tie or its last already ENDS one; a span of the other kind on the same two notes
 said "can't tell for sure" -- a wider crop goes to him before anything is built.
 **Open, not shown by a tile:** the join writes a SLUR when a pitch at either end is unread (page-facts: an
 unread pitch is only doubt); the slur version of the "already used" rule is unmeasured.
+
+## 2.310 rule 3 pair (2026-11-15) -- the ON arc binder still follows the old reach window
+
+STAGED, tests only (`tools/omr/tests/test_rule_arc_ends_at_its_notes_2_310.py`, fixture rows from the saved
+Brahms gather; exercises `arc_claim.bind_curve` as `ownership._page_binding` feeds it, flags at their ON
+defaults). YES: Brahms p11 tie `glyph/11/0/2/8/11` (Sean: "tie, yes"), ends 0.4 sp short, bound to its two
+notes; fails when the start note is removed. NEVER: 2.305 r1 tile 5 (Sean: "no, there's no arc between those
+two notes") -- none of the 9 traced curves on that staff returns the pair; fails when the ends are moved onto
+the two notes. **Finding:** the arc Sean describes leaving the second note stops 2.4 sp short of it, past
+`ANCHOR_OUT_SPACES = 1.6`, so `bind_end` abstains naming that note (margin +2.03 sp): strict xfail. The rule
+(page-facts, reworded 2026-11-15) says a short arc belongs to the closest of the notes standing there; the
+reader still has a measured reach window in the rule's place. Not tested: "never to a note on another staff"
+(`_page_binding` keeps other staves' heads out; passed in by hand, `glyph/11/0/12/4/2` bound staff 13's notes).
