@@ -1,0 +1,224 @@
+{
+ "lane": "2.306 r11",
+ "date": "2026-11-15",
+ "question": "Is the boxed mark a note? If yes, what is its value (and is it dotted)?",
+ "who": "Sean, by voice",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "glyph": "glyph/4/1/0/12/13",
+   "change": "gained",
+   "r9_wrote": [],
+   "r11_wrote": [
+    [
+     "C6",
+     "eighth",
+     0,
+     true
+    ]
+   ],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "right (real note gained)"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "glyph": "glyph/4/1/7/11/4",
+   "change": "lost",
+   "r9_wrote": [
+    [
+     "B-14",
+     "eighth",
+     0,
+     false
+    ]
+   ],
+   "r11_wrote": [],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "LOST a right note"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "glyph": "glyph/2/1/2/12/4",
+   "change": "lost",
+   "r9_wrote": [
+    [
+     "F4",
+     "half",
+     0,
+     false
+    ]
+   ],
+   "r11_wrote": [],
+   "sean": "half",
+   "is_note": true,
+   "verdict": "LOST a right note"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "glyph": "glyph/2/1/6/9/10",
+   "change": "lost",
+   "r9_wrote": [
+    [
+     "C3",
+     "quarter",
+     0,
+     true
+    ]
+   ],
+   "r11_wrote": [],
+   "sean": "quarter",
+   "is_note": true,
+   "verdict": "LOST a right note"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "glyph": "glyph/9/0/0/0/3",
+   "change": "lost",
+   "r9_wrote": [
+    [
+     "A-16",
+     "eighth",
+     0,
+     false
+    ]
+   ],
+   "r11_wrote": [],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "LOST a right note"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "glyph": "glyph/6/1/2/10/3",
+   "change": "gained",
+   "r9_wrote": [],
+   "r11_wrote": [
+    [
+     "F4",
+     "quarter",
+     0,
+     false
+    ]
+   ],
+   "sean": "a sharp sign",
+   "is_note": false,
+   "verdict": "wrong (gained a fake)"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "glyph": "glyph/6/1/3/9/2",
+   "change": "gained",
+   "r9_wrote": [],
+   "r11_wrote": [
+    [
+     "C4",
+     "eighth",
+     0,
+     false
+    ]
+   ],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "right (real note gained)"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "glyph": "glyph/4/1/2/4/0",
+   "change": "lost",
+   "r9_wrote": [
+    [
+     "C6",
+     "eighth",
+     0,
+     false
+    ]
+   ],
+   "r11_wrote": [],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "LOST a right note"
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "glyph": "glyph/2/1/2/12/3",
+   "change": "lost",
+   "r9_wrote": [
+    [
+     "A4",
+     "half",
+     0,
+     false
+    ]
+   ],
+   "r11_wrote": [],
+   "sean": "half",
+   "is_note": true,
+   "verdict": "LOST a right note"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "glyph": "glyph/4/1/0/12/0",
+   "change": "gained",
+   "r9_wrote": [],
+   "r11_wrote": [
+    [
+     "E-16",
+     "eighth",
+     0,
+     false
+    ]
+   ],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "right (real note gained)"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "glyph": "glyph/6/1/3/9/4",
+   "change": "gained",
+   "r9_wrote": [],
+   "r11_wrote": [
+    [
+     "A-13",
+     "eighth",
+     0,
+     true
+    ]
+   ],
+   "sean": "eighth",
+   "is_note": true,
+   "verdict": "right (real note gained)"
+  },
+  {
+   "tile": 12,
+   "plate": "litolff",
+   "glyph": "glyph/4/0/8/11/7",
+   "change": "gained",
+   "r9_wrote": [],
+   "r11_wrote": [
+    [
+     "F3",
+     "eighth",
+     0,
+     true
+    ]
+   ],
+   "sean": "part of an f dynamic",
+   "is_note": false,
+   "verdict": "wrong (gained a fake)"
+  }
+ ]
+}

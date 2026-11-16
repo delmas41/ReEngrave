@@ -169,6 +169,21 @@ step, after the heads are read (ROADMAP 2.223).
 - **Before landing, ask:** what evidence, from which source, what happens
   when the rest of the bar is wrong, and who said it's right.
 
+**How a rule is worded** (Sean, 2026-11-15: *"there is a trick to only being specific when it is
+required"*; `benchmarks/rule-wording-audit-2026-11/FINDINGS.md`):
+
+- **Say the rule as a musician would; the number stands beside it, never in it.** "The stem touches its
+  head", not "within 0.4 sp of the box edge". The same sentence travels unchanged from ROADMAP row to brief,
+  docstring, reason word and control.
+- **Be specific only at a boundary** -- where two readings both fit -- and name both (higher note right of
+  the stem: a second; left: two voices).
+- **Every rule states its never, in the same plain words** ("never over blank paper"). A number that refuses
+  or abstains is a decision too: it needs both sides of its boundary measured on marks Sean has judged.
+- **Measure the mark, not its box**: a box or oval is where to look.
+- **Sean's words are quoted with what they answered; our reading is labelled ours**, goes up one level only
+  (tile -> that symbol's convention) and is put back to him in a musician's words before it is a page fact.
+  The cases that exposed a fault are evidence, never the rule.
+
 ---
 
 ## 5. Page conventions every lane needs
