@@ -308,8 +308,7 @@ def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> fl
 
 
 def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any]] = (), crossers: Sequence[Dict[str, Any]] = (),
-              held: Optional[Dict[int, str]] = None, pairs: Optional[List[Tuple[int, int, str]]] = None,
-              touches: Optional[Dict[int, set]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
+              held: Optional[Dict[int, str]] = None, pairs: Optional[List[Tuple[int, int, str]]] = None) -> Tuple[List[Dict[str, Any]], Dict[str, int]]:
     """The collinear runs of the page's vertical pieces (constants above). Pure. `crossers`: `[{ord, box, kind}]` -- the page's other strokes (a
     tremolo-claimed one has kind `slash`, a thick horizontal one `beam`). Returns `(runs, census)`: each run `{ord (its first piece), members, box,
     sp, joins: [kind ...]}`; census = joins by kind of crossing and the refusals (`empty_paper`, `heads_both_sides`, `too_wide`). `pairs`, when given, is
@@ -387,13 +386,6 @@ def join_runs(verticals: Sequence[Dict[str, Any]], heads: Sequence[Dict[str, Any
             k = gap_kind(up, lo, y0, y1, sp)
             if k is None:
                 continue
-            # ROADMAP 2.306 r12 (Sean's r11 tile 8 and r4 tile 5: two eighths lost on a stem joined over paper): two pieces of a stem join only where
-            # INK connects them -- they touch, or one mark (a head of the chord, a slash, a beam) touches both, by the page map's own contact. A box
-            # covering the gap is only where to look; never over paper. An erased staff line's thickness is the erasure's gap, not paper.
-            if touches is not None and not k.startswith("!") and k != "line_junction":
-                ua, lb = int(up["ord"]), int(lo["ord"])
-                if lb not in touches.get(ua, ()) and not (touches.get(ua, set()) & touches.get(lb, set())):
-                    k = "!no_ink_between"
             if pairs is not None and k != "!too_wide":
                 pairs.append((int(up["ord"]), int(lo["ord"]), k))
             if k.startswith("!"):
@@ -430,13 +422,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
     run_census: Dict[str, int] = {}
     members_of: Dict[int, List[int]] = {}
     if crossers is not None:
-        tj = None
-        if strokes is not None:
-            tj = {int(o): {int(j) for j, _c in (s.get("touches") or ())} for o, s in strokes.items()}
-            for o, ts in list(tj.items()):
-                for j in ts:
-                    tj.setdefault(j, set()).add(o)
-        runs, run_census = join_runs(verticals, heads, crossers, held, touches=tj)
+        runs, run_census = join_runs(verticals, heads, crossers, held)
         joined = {m for r in runs for m in r["members"]}
         verticals = [dict(ord=r["ord"], box=r["box"], sp=r["sp"]) for r in runs] + [v for v in verticals if int(v["ord"]) not in joined]
         members_of = {r["ord"]: r["members"] for r in runs}
