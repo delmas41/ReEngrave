@@ -71,3 +71,33 @@ labelling with the largest payoff: one Litolff page swept all-ink; then the 8 un
 All 12 are real notes and all 12 carry the value we wrote (dots included; tile 3 was blue and is right; tile 6 a unison).
 Who says: Sean. Limit: 12 tiles cannot show a fake rate below about one in five; it agrees with the judged page
 (3 wrong / 373 right notes). `answers-2.311-written.json`; DECISIONS 2026-11-16.
+
+## 12 random red bars read by Sean, and two small tests (2026-11-16)
+
+Tiles `out/print/2.311-redbars` (seed 2311002, 6 per plate, pools 309 Litolff / 269 Brahms without page 0), answers
+`answers-2.311-redbars.json`, key and scripts on branch `lane-2.311-redbars-tiles` (399c98770): `redbars_tiles.py`,
+`farhead.py`, `dotcheck.py` and their results json.
+
+Sean's reading against the record's first cause (our scoring):
+- Brahms 7, 10, 11, 12: "two dotted quarters", tied. Record: one or both written a plain quarter READ (7, 10, 12) or
+  narrowed (11); the bar sums short. A printed augmentation dot is not in the record.
+- Litolff 1, 2: heads up to the 4th ledger line; record refuses a `clipped_fragment`. Litolff 5: note 3 spaces above,
+  `duration_narrowed`, counted 8.
+- Litolff 3 (quarter + rest): another staff's marks make a second voice. 4 (one half note, tied): `too_narrow`.
+  6 (chord + rest): counted 2.25. Brahms 8: `chord_value_undecided`. 9: `flag_ink_unread`.
+
+Test A -- Sean's hypothesis "red because the notes are far from the staff": NOT SUPPORTED as a general cause. Share of
+bars red by farthest kept head: Brahms within staff 14.8%, 1-2 ledger lines 16.6%, 3+ 13.6%; Litolff 11.6 / 14.7 /
+19.1% (19.3% on real heads only, 140 bars). Busy bars track red (6+ heads 24-31% red, 1-2 heads 7-11%). All 321
+`clipped_fragment` refusals sit on a cell's top or bottom edge; 6 random ones are tips of a NEIGHBOUR staff's head,
+rightly refused. Cell pad is 4 staff spaces, 6 where there is room (`measure_extractor.PAD_*`). clipped/too_narrow is the
+first cause of 40 Litolff and 35 Brahms red bars (13% each). NOT MEASURED: whether a head beyond the pad (tiles 1, 2) is
+ever seen whole by its own staff; the records hold no page-wide boxes.
+
+Test B -- manager's hypothesis "a dot is missed because an arc is beside it": REFUTED as worded. The dot is printed and
+clear of the arc; on tiles 7, 10, 12 the detector drew NO box on it (unclassified dot-size ink); on 11 the dot was boxed
+and `dot_role_ambiguous`. Brahms: 21 of 276 red bars are quarters-only bars short by half-beats (11 of 16 on page 8);
+Litolff 11 of 309. 117 decided augmentation dots have no dot written on a head (not checked). Why the detector skips
+these dots: not measured. Note: tiles 7, 10, 12 wrote the undotted quarter PLAIN -- a wrong value, not an unread one.
+
+Who says: the 12 readings are Sean's; the counts are ours from one saved gather per plate.
