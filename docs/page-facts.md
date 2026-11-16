@@ -59,6 +59,11 @@ machine-readable form.
   2.87): *"All stems should be connected to a notehead"* -- a check at a LATER
   stage, never a GATHER refusal; *"When one note has stems going up and down it
   is always 2 voices"* (a unison), so such a head is never collapsed.
+- **A stem belongs to its note's own staff only** (Sean, 2026-11-13: *"Yes"*;
+  scope: general; ROADMAP 2.306 r7): where a head shows in a neighbouring
+  staff's padded crop, its stem is filed with the staff the note belongs to and
+  never as a copy in the neighbour's cell; the neighbour's view of that head
+  carries no stem of its own.
 - **An augmentation dot always stands in a SPACE, never on a line** (Sean, 2026-10-14: *"Always in a space"*; scope: general engraving; ROADMAP 2.128): in its note's own space; after a note on a line, in the space **above** by default, and **below** for the lower (stems-down) voice of two on one staff or the lower note of a second in a chord (Sean, same day, *"Yes"* to the researched rule; PROVISIONAL for 19th-c. German plates -- Brahms p.0 labels: 41 above, 15 apparent "below" are the lower chord partner's above-dot, 4 are a lower voice, 0 contradictions). Registry: `docs/engraving-conventions.md`.
 - **A tremolo slash is never oval: always a thick diagonal line** (Sean, 2026-10-15: *"They are never oval shaped - always thick diagonal lines"*; scope: general engraving; ROADMAP 2.137). **Its ends are square-cut, a head's are round** (Sean, 2026-10-27: *"The slash is octogonal and the notehead is oval. Both at a slant. The slash is a thick line without rounded edges."*; scope: general engraving; ROADMAP 2.214): slant and length do not separate them, the corners do. It crosses one stem and joins no other note (2.49, 2.71), so a box over one is never a notehead, and a slash never changes the written value.
 - **A grace note never counts in the bar sum, and is significantly smaller than a regular note** (Sean, 2026-10-16: *"Grace Notes never take up math in the measure. They are significantly smaller by proportion to the regular note size. Som have a little slash through them but nit always."*; scope: general engraving; ROADMAP 2.156). **CORRECTION 2026-10-16 (Sean):** the slash being optional was his guess, not a confirmed fact (*"I am not sure the slash is optional… I was guessing. I don't know about notes after a trill. Your research would be the most reliable info we have."*) -- what a slash (or its absence) means, and where notes after a trill belong, rest on the 2.156 research (`benchmarks/omr-grace-notes-2026-10/RESEARCH.md`), each rule CONVENTION ASSUMED / NOT CONFIRMED until the sources and the print check it; no rule may yet treat a missing slash as evidence either way.
@@ -79,7 +84,15 @@ machine-readable form.
   it goes up or down"; scope: general). So the side rule above reads only an
   isolated head: in a chord the direction is the stem's tip beyond its OUTER
   head, every head on it shares that stem, and a head of a second stands on
-  the far side; a long stem through stacked heads is a chord stem, never a
+  the far side -- **the HIGHER note of a second always on the RIGHT of the
+  stem, the lower on the left, stem up or down** (Sean, 2026-11-13: *"Yes,
+  always"*; scope: general engraving; ROADMAP 2.306 r8), so two heads on
+  opposite sides with the higher on the LEFT are two voices, not a second;
+  and **where two voices share a column, one stem up and one down, the UPPER
+  head takes the up stem and the LOWER the down stem** (Sean, 2026-11-14:
+  *"Always when it is 2 voices. Obviously chords are not always multiple
+  voices. One of the voices may not have stems if it has rests."*; scope:
+  general; ROADMAP 2.306 r9); a long stem through stacked heads is a chord stem, never a
   barline (2.204c: all 3 "barline" tiles were chord stems).
 - **A chord's stem can run in both directions past its notes, and a short
   stem is not by itself a grace note** (Sean, 2026-10-26: "In a chord the stem
@@ -108,7 +121,11 @@ machine-readable form.
   from the arithmetic, and a bar that would only add up under an unmarked
   tuplet gives no confirmation (Sean, 2026-10-13).
 - **Arcs and hairpins are READ PAGE-WIDE** (Sean, 2026-10-30: *"the actual symbols reach past cell and should be read page wide."*; scope: general): a slur, tie or hairpin runs past its bar and its staff's padded crop, so the page-wide pass reads and claims each one whole; a detector box in a cell is only a witness to it, never the mark (ROADMAP 2.240; plan-2026-10-28-page-claim-order §10).
-- **An arc often stops short of its note; it binds to the CLOSEST note** (Sean, 2026-11-05: *"Often arcs stop short. Closest note works"*; scope: general, both plates): an arc end with no head inside the binder's window binds to the nearest head beyond it when that head is the closest one; two heads about equally near is not a choice (abstain, counted). An arc running off one system joins the piece that picks up on the next (Sean, 2026-11-05: *"Anything that needs to be done to connect arc separated by systems is fine"*; ROADMAP 2.271).
+- **An arc ends at the notes standing where its ink ends** (reworded 2026-11-15, ROADMAP 2.310; scope: general, both plates).
+  - CONVENTION (Sean, 2026-11-15, "Perfect" to this sentence; it joins his 2026-11-05 *"Often arcs stop short. Closest note works"* and his 2026-11-13 *"if there are any notes in a chord at the same point where an arc ends then that is where it should end"*): an arc ends at the notes standing where its ink ends, on the staff it sits over. It often stops a little short of them; then it belongs to the closest of those notes.
+  - NEVER: it never reaches past a nearer note to a farther one, and never to a note on another staff. Where two notes are about equally close, we don't choose (abstain, counted).
+  - EVIDENCE (beside the rule, not in it): our earlier wording "binds to the CLOSEST note ... no fixed reach cut-off" once bound a head 83 staff spaces away (`page_arc_bind.py`); every reach number in the binder is a measurement on Litolff and Brahms, never the rule; 2.305 r1 tile 5 (an arc written between two notes with no arc between them) is the judged "never" case.
+  - An arc running off one system joins the piece that picks up on the next (Sean, 2026-11-05: *"Anything that needs to be done to connect arc separated by systems is fine"*; ROADMAP 2.271; see "An arc across a system break is ONE arc in two pieces" below).
 - An arc is drawn OVER its notes, a hairpin BETWEEN them. A tie's two heads
   are at one staff position (empty interval 0.168 vs 0.435 spaces,
   `benchmarks/omr-arc-grammar-2026-09/FINDINGS.md`). Of two stacked arcs

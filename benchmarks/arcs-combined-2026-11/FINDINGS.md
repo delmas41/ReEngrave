@@ -179,3 +179,38 @@ on every record; judged_claims 0; check 217; fast tier flags OFF 10,687 / 0 (fla
 **Open.** Unwitnessed edge halves are never offered to the join (~3); stacked halves abstain (1); clef change
 at the break untested; the P191/P192 head shared by two staves. Tiles (9: every cross-system arc written):
 out/print-from-worktrees/2.305-r4 -- not yet sent.
+
+## 2.305 round 5 (2026-11-13) -- cross-system tile 4 fixed (our join, not the clef); tile 6 no fault found; `lane-2.305-arc-binding` 219e74350
+
+STAGED, flags OFF. Sean's r4 tiles: 6 of 9 (answers/answers-2.305-r4.json).
+**Tile 4 (a tie written as a slur; Brahms p11 Fag.).** The clef was READ right: a tenor clef change mid-system
+on system 0 (two witnesses), tenor at the start of system 1; both positions measure the space above the top
+line (-1.12 / -1.07 steps); written pitch F#4 at both ends. The manager's two guesses (position-only rule; a
+missed clef) were both WRONG. **Cause:** the cross-system join decided TIE and then refused it because its
+first note already ENDS a tie inside the system (the middle note of a tie chain), and the old box pairing
+(`_legacy._paired_spans`) had merged the two pieces into a SLUR on the same two notes, which reached the file.
+**Lesson.** "Read and claimed once" must hold across a break too: when the join reads one arc, the old path's
+reading of the same two pieces steps aside; and an "already used" rule must say which END of a span it means.
+**Fix** (`export._with_across_system_joins`): a tie join is refused only if its first note already STARTS a
+tie or its last already ENDS one; a span of the other kind on the same two notes as a join is dropped
+(`arc_across_systems_other_kind_span_replaced`). Control from the real rows:
+`test_arc_across_systems_tie_chain_2_305.py`. Only tile 4's two notes change in the file; judged right->wrong
+0; OFF file byte-identical. Fast tier and Litolff not re-run.
+**Tile 6 ("don't look like they go together"; Brahms p11 Vcl.).** No fault found: both staves are labelled
+"Vcl." (READ), one half each side in the part, both pieces real ink, F#2 to B2 = a slur by the rule. Sean
+said "can't tell for sure" -- a wider crop goes to him before anything is built.
+**Open, not shown by a tile:** the join writes a SLUR when a pitch at either end is unread (page-facts: an
+unread pitch is only doubt); the slur version of the "already used" rule is unmeasured.
+
+## 2.310 rule 3 pair (2026-11-15) -- the ON arc binder still follows the old reach window
+
+STAGED, tests only (`tools/omr/tests/test_rule_arc_ends_at_its_notes_2_310.py`, fixture rows from the saved
+Brahms gather; exercises `arc_claim.bind_curve` as `ownership._page_binding` feeds it, flags at their ON
+defaults). YES: Brahms p11 tie `glyph/11/0/2/8/11` (Sean: "tie, yes"), ends 0.4 sp short, bound to its two
+notes; fails when the start note is removed. NEVER: 2.305 r1 tile 5 (Sean: "no, there's no arc between those
+two notes") -- none of the 9 traced curves on that staff returns the pair; fails when the ends are moved onto
+the two notes. **Finding:** the arc Sean describes leaving the second note stops 2.4 sp short of it, past
+`ANCHOR_OUT_SPACES = 1.6`, so `bind_end` abstains naming that note (margin +2.03 sp): strict xfail. The rule
+(page-facts, reworded 2026-11-15) says a short arc belongs to the closest of the notes standing there; the
+reader still has a measured reach window in the rule's place. Not tested: "never to a note on another staff"
+(`_page_binding` keeps other staves' heads out; passed in by hand, `glyph/11/0/12/4/2` bound staff 13's notes).
