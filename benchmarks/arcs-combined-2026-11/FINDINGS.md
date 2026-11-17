@@ -418,3 +418,71 @@ not crop-checked: either the old path pairs a box with no arc ink there, or the 
   them unsure). Crops: scratchpad r6/r7/noink/.
 - Erased stretch, direct check (r7b tiles 3, 5; scratchpad r6/r8-erased-tile3.png, -tile5.png: the page-stroke map's kept ink vs the un-erased
   page): the missing stretch IS on the page, running along the staff line between the traced arc and its note; the stroke map lost it.
+
+## 2.305 round 9 (2026-11-16) -- the page pass stands alone; judged by right / wrong / unread on Sean's swept Brahms p0. `lane-2.305-r9`, NOT landed
+
+STAGED, `OMR_PAGE_ARC_WRITE` + `OMR_ARC_MEETING_AT_HEAD` (both OFF by default; the OFF file is byte-identical before/after on Brahms p0 and Litolff p13).
+Rules owning the values: page-facts "An arc ends at the notes standing where its ink ends" (Sean 2026-11-15); "an arc is OVER its notes"; "a tie only
+ever happens between 2 adjacent notes of the same pitch ... spanning multiple notes is always slur" (Sean 2026-10-29); DECISIONS 2026-11-13 NO OLD
+READER BESIDE THE NEW ONE; north star "all ink is accounted for one time".
+
+**Process.** ONE gather per page on the lane tree (Brahms p0 `g0`, Litolff p13 `l13`; both flags ON so the page-ink rows exist; Surya on, checked in
+the log), every arm re-adjudicated from it (`r9/replay.py`, `r9/arms.sh`, `r9/arm_tree.sh`; the before arm runs the merge-base tree bb913d15c and
+reproduces the lane-tree baseline byte for byte). `r9/replay.py` taps the exporter's own calls to name the PATH that wrote every arc span:
+page_arc (page-ink run), curve (2.223 detector curve bound at both ends), old_box (`_paired_spans` over unreplaced detector boxes), record_tie (the
+old `Q.TIE_PAIR` box pairing). `r9/tally.py` repeats judge.py's own arc matching and keeps the per-arc detail.
+
+**Cause tally, flags ON before this round** (judge.py: slur 14 wrong / 31 right / 8 unread, tie 1 / 37 / 7):
+- slur WRONG 14 = old box path 10 (doubles 4: P179 written twice from two staves' copies of one box, 12/4/4->12/5/0 twice, 9/2/3->9/2/1 a slur on
+  the notes the page pass had tied; wrong ends 6: a long slur the page pass declined, the old path pairing a cell's PIECE of it with the notes under
+  that piece -- P205, P209, P238-area, P226-area, P234-area, 6/1); 2.223 curve 3 (P162 read by two curves from two staves' cells and written twice;
+  9/4/3->9/4/5 bound short of P209's end; P170 = scorer artefact, below); page pass 1 (P166 = scorer artefact).
+- tie WRONG 1 = old tie pairing (13/4/2->13/5/0, no arc of his).
+- Why the page pass declined the ink the old path then wrote (by run reason, crop-looked on staves 5, 9, 12): (a) the run's HOME staff was the staff
+  on the arc's FAR side -- cups under staff 5's low notes lie nearer staff 6, caps over staff 9 nearer staff 8 -- so the closest notes it saw were
+  the wrong staff's and the ends came out `continues_in_another_curve` / `nearer_note_on_another_staff`; the existing retry on the arc's own side ran
+  only when both ends said `head_on_the_arcs_far_side`; (b) `same_pitch_heads_between`: one slur under six repeated notes (P179, P254, P241) is
+  refused although Sean's rule says it is a slur; (c) end reasons upstream (step_conflict on staff 5 head boxes cut by ledgers; end_far_beyond_head
+  at stem-tip ends; unread ink).
+- Scorer artefact (ours): MusicXML puts a chord's slur on the chord's first written note; judge.py measures that note's box against his arc's
+  box, so a slur bound to the right chord's UPPER notes is scored wrong + unread when the lower note sits > 3 sp from his box (P166, P170).
+
+**Process lesson.** The old reader's arcs looked like coverage, but on judged cells it wrote 4 right and 10 wrong slurs; its "rights" hid that the
+page pass declined real arcs for a reason of its own (the wrong staff), so measuring the new reader WITH the old one beside it never showed that
+reason. Measure a new reader alone, by path, against judged truth -- the old path's presence is what kept the cause invisible.
+
+**Built (flag ON only):**
+1. `export._place_arcs`: a detector box no reading of ours bound writes nothing through the old box path (`old_box_path_retired`).
+2. `export._retire_old_tie_pairs`: a tie pair the old box rule made is dropped; a pair a curve binding traced (`paired_by_page_binding`) and the
+   page-ink runs' ties stay (`old_tie_pairing_retired`).
+3. `export._page_bound_slur_spans`: two readings that join the SAME two notes are one printed slur, written once.
+4. `page_arc_bind.far_side_ends` (used by `ownership.adjudicate_page_arc_binding`): an end is a far-side end also when the binder found a nearer
+   note of the neighbouring staff on the arc's own side, or left it "half of another arc" while the note it names stands wholly on the far side
+   (cup: head top below the end; cap: head foot above it); both ends so -> bind once more on the staff of the arc's own side (existing retry). No number.
+5. `ownership._heads_under_the_arc`: same pitch at both ends and every head between on the arc's notes' side of the line joining its two ink ends ->
+   slur (`page_binding_same_pitch_notes_between`); a head on the far side keeps the refusal. No number.
+Controls (`tools/omr/tests/test_arc_page_pass_alone_r9_2_305.py`, 12; rows copied from the r9 gather): YES P195 cup, P205 cap, P179, P162, P180;
+NEVER a cup end under its own note, a head the cup does not span, the wrong side; flag-OFF twins. 10 fail on the merge-base tree, 2 (OFF twins) pass.
+
+**Measure 1 -- judge.py, Brahms p0 swept cells (wrong / right / unread):**
+- slur: OFF 25 / 29 / 10; ON before 14 / 31 / 8; **ON after 2 / 32 / 7**. tie: OFF 3 / 33 / 9; ON before 1 / 37 / 7; **ON after 0 / 37 / 7**.
+  Every other kind identical before/after. The 2 slur wrongs left are the scorer artefact (P166, P170: written on the right chord).
+- Written by path after: page pass 70 spans, curve 6, curve ties 5, old paths 0 (before: page 63, curve 8+5, old 23).
+- Unread after: ties P191, P192, P215, P230, P253 run off the page's last bar to page 1 (not in this one-page gather, unscoreable here); P185, P189
+  step_conflict (head boxes cut by ledger lines, upstream); slurs P243 / P234 end_far_beyond_head at a stem-tip end, P161 unread ink, P160 and
+  P237 bound by the page pass but not in the file (not traced), P166 / P170 scorer artefact.
+- Litolff p13 (no swept cells: no right/wrong/unread exists): ON before -> after written arc spans 81 -> 63; 9 old tie pairs and 3 old box slurs
+  removed. Why the page pass does not read those (by its run): no page-ink run over the box 4, step_unread / step_conflict 2, end_far_beyond_head 1,
+  unread_ink_at_end 1, none found 1 -- the r8 erased-stretch / head-position causes. Their rightness is what the tiles ask.
+
+**Measure 2 -- tiles.** out/print/2.305-r9/sheet.png (12, seed 2305009, 6 per plate from the changes; key out/print/2.305-r9-key.json): 9 removed,
+2 doubles reduced to one, 1 added. Box = the ink the reader held (page run points; a curve's boxes; for a removed old arc the detector boxes it
+paired: tiles 7 and 10 show the old tie pairing holding BOTH the cap and the cup of one note pair). Unanswered.
+
+**Measure 3 -- judged answers right->wrong: 0.** `judged score` (notes) per item identical before/after on Brahms p0 and Litolff p13. Sean's arc
+tiles on these pages (`r9/tiles_replay.py`): Brahms p0 8 right->right, r7b tile 4 wrong->unwritten (its start note is held in doubt, r8);
+Litolff p13 7 right->right, r2 tile 1 wrong->wrong (unchanged). Fast tier: see the lane report.
+
+**Old box path: OFF with the flag ON** (both the slur box path and the old tie pairing). What still stops a landing: the r9 tiles; the Litolff ties
+the old pairing wrote and the page pass does not read (page-ink run missing over the erased stretch; head positions); page-to-page ties need the
+next page in the gather (r4's join exists, not exercised here).

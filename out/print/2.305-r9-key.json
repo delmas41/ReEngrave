@@ -1,0 +1,252 @@
+{
+ "seed": 2305009,
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/0/5/11/4",
+   "b": "glyph/13/0/5/12/1",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink": [
+    2093.525,
+    1179.175,
+    2170.365,
+    1196.8675
+   ],
+   "ink_from": "the tie pair's own boxes"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/1/10/8/1",
+   "b": "glyph/13/1/10/9/2",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink": [
+    1650.6325,
+    3585.22,
+    1670.95,
+    3591.835
+   ],
+   "ink_from": "the tie pair's own boxes"
+  },
+  {
+   "tile": 3,
+   "plate": "brahms",
+   "page": 0,
+   "change": "changed ['slur', 'slur'] -> ['slur']",
+   "a": "glyph/0/0/4/0/6",
+   "b": "glyph/0/0/4/0/8",
+   "before": [
+    "slur",
+    "slur"
+   ],
+   "after": [
+    "slur"
+   ],
+   "src": "page_arc",
+   "ink": [
+    1648.0,
+    3262.0,
+    2038.0,
+    3328.0
+   ],
+   "ink_from": "page run page_arc/obs:029017"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/1/5/10/0",
+   "b": "glyph/13/1/5/11/2",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink": [
+    1930.6925,
+    2830.675,
+    2002.6675,
+    2847.685
+   ],
+   "ink_from": "the tie pair's own boxes"
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/9/0/7",
+   "b": "glyph/0/0/9/0/9",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink": [
+    1679.501953125,
+    5041.736328125,
+    1883.7734375,
+    5073.966796875
+   ],
+   "ink_from": "the tie pair's own boxes"
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/9/3/1",
+   "b": "glyph/0/0/9/3/3",
+   "before": [
+    "slur"
+   ],
+   "after": [],
+   "src": "old_box",
+   "ink": [
+    3372.545,
+    4969.0,
+    3479.615,
+    4990.93
+   ],
+   "ink_from": "detector boxes (old path)"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/0/1/11/6",
+   "b": "glyph/13/0/1/12/4",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink": [
+    2077.6175,
+    491.4075,
+    2165.955,
+    626.52
+   ],
+   "ink_from": "the tie pair's own boxes"
+  },
+  {
+   "tile": 8,
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/9/4/3",
+   "b": "glyph/0/0/9/4/5",
+   "before": [
+    "slur"
+   ],
+   "after": [],
+   "src": "curve",
+   "ink": [
+    3651.7175,
+    4969.0,
+    3702.0275,
+    4985.77
+   ],
+   "ink_from": "curve glyph/0/0/9/4/28"
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/12/0/4",
+   "b": "glyph/0/0/12/1/1",
+   "before": [
+    "slur"
+   ],
+   "after": [],
+   "src": "old_box",
+   "ink": [
+    1669.919921875,
+    6286.23828125,
+    2605.44,
+    6384.236328125
+   ],
+   "ink_from": "detector boxes (old path)"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/0/3/11/3",
+   "b": "glyph/13/0/3/12/1",
+   "before": [
+    "slur",
+    "slur"
+   ],
+   "after": [],
+   "src": "old_box",
+   "ink": [
+    2066.2775,
+    845.06,
+    2173.6725,
+    964.445
+   ],
+   "ink_from": "detector boxes (old path)"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "page": 13,
+   "change": "changed ['tie', 'tie'] -> ['tie']",
+   "a": "glyph/13/0/3/13/5",
+   "b": "glyph/13/0/3/14/6",
+   "before": [
+    "tie",
+    "tie"
+   ],
+   "after": [
+    "tie"
+   ],
+   "src": "record_tie",
+   "ink": [
+    2326.3275,
+    949.325,
+    2361.45,
+    961.4525
+   ],
+   "ink_from": "detector boxes (old path)"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "page": 0,
+   "change": "added",
+   "a": "glyph/0/0/9/4/3",
+   "b": "glyph/0/0/9/5/0",
+   "before": [],
+   "after": [
+    "slur"
+   ],
+   "src": "page_arc",
+   "ink": [
+    3626.0,
+    4943.0,
+    4628.0,
+    5075.0
+   ],
+   "ink_from": "page run page_arc/obs:029099"
+  }
+ ]
+}
