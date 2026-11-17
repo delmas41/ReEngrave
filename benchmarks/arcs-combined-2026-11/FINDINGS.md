@@ -490,3 +490,48 @@ pin "one pitch with a head between is not claimed a slur" (a drawing), which Sea
 **Old box path: OFF with the flag ON** (both the slur box path and the old tie pairing). What still stops a landing: the r9 tiles; the Litolff ties
 the old pairing wrote and the page pass does not read (page-ink run missing over the erased stretch; head positions); page-to-page ties need the
 next page in the gather (r4's join exists, not exercised here).
+
+## 2.305 round 10 (2026-11-16) -- why the page pass dropped real arcs Sean judged on r9; three fixed at the source. `lane-2.305-r10`, NOT landed
+
+STAGED, both arc flags ON (OFF file byte-identical on the same gather). Sean's r9 answers: answers/answers-2.305-r9.json (main). New gathers on the
+r10 tree (Brahms p0 `g0b`, Litolff p13 `l13b`, Surya on); every arm re-adjudicated from them; the before arm is the merge-base tree bb913d15c.
+
+**Cause tally -- the five real arcs r9 removed, Sean's tile 10, and the other unread (by first stage that lost it):**
+- Brahms tile 5 (tie 9/0/7 -> 9/0/9) -- ADJUDICATE, a guard wrong here: both notes are held in doubt only because the word "espr. e legato" claimed
+  first (`claim_narrowed:word`); EXPORT writes them (guessed), but the binder called them unread ink -> `unread_ink_at_end`. FIXED.
+- Brahms tile 9 (slur 12/0/4 -> 12/1/1) -- ADJUDICATE: the run bound its right end `two_columns_at_end` (12/1/1 against the chord 12/1/2), although
+  its traced ink runs onto 12/1/1's head. FIXED.
+- Litolff tile 4 (tie 13/1/5/10/0 -> 11/2) -- GATHER: no run at all; the tie's ink was blanked whole by two FALSE detector boxes, a "timeSig1" and a
+  "clefF", that no page-wide header claim holds (crop: out/print/2.305-r10/crossings/litolff-p13-tile4-x1954-before.png, red = blanked).
+  FIXED in GATHER: the run is now read whole across the barline (…-after.png). Still not written: its left end is refused
+  `continues_in_another_curve` (it meets the previous tie at its note) -- open.
+- Litolff tiles 1 and 10 (upper) -- ADJUDICATE kind refusal `step_unread`: both ends bound, both far heads whose ledgers were not read, their local
+  positions 0.30 / 0.33 sp apart (inside the 0.168-0.435 empty interval) -- upstream head position (head "too_tall" for the ink centre). Not fixed.
+- Litolff tile 7 (upper tie 1/11/4 -> 1/12/2) -- bound and WRITTEN by the page pass, dropped at EXPORT `tie_pitch_contradiction` (C6 vs D6; both far
+  heads ledger unread) -- upstream pitch. The tile's own pair (the lower cup 11/6 -> 12/4) and tile 10's lower cup -- GATHER, no run: the cup lies
+  along the bottom staff line; nothing tracked (not fixed).
+- Litolff p13, the 9 ties r9 removed: none returned this round (4 had no page run, 2 step_unread / conflict, 1 end_far_beyond_head, 1 unread ink, 1
+  no box found; tile 4 now has a run).
+- Brahms P160 -- bound, dropped at EXPORT: its stop note is `duration_narrowed` and not written. P237 -- bound to 11/2/7 -> 11/3/7, both written, but
+  neither is in the note index `_page_bound_slur_spans` builds for any part (not traced further).
+
+**Is the page reader's run cut at a barline? No.** `r9/barline_cut.py` (the record's own runs): Brahms p0, Sean's 51 labelled arcs that cross a
+barline: one run WHOLE across it 47, CUT 2 (P183, P188), none 2. Litolff p13 (no labels; 150 places where two detector arc boxes meet at a barline):
+WHOLE 136, one side only 7, none 7. The barline column is carved, the tracker bridges it (crop: crossings/brahms-p0-P187-tie-x4107-whole.png, green =
+the run, white gap = the carved barline). The "mark through the middle at the bar line" Sean saw on tiles 7 and 10 is the DETECTOR's two boxes cut at
+the cell edge, not the page run; where the arc is lost it is refused later (binding, kind, export) or blanked before (tile 4).
+
+**Process lesson.** Each real arc r9 lost traced to a DIFFERENT stage -- a false header box blanking ink in GATHER, a doubt flag from an unrelated
+claim at ADJUDICATE, a pitch reader at EXPORT -- and the old pairing had been covering all of them. Retiring a reader needs every judged arc of the
+place replayed per stage first; one count over the page hid three causes.
+
+**Built (flags ON only):** `ownership._head_read` reads a note narrowed only by a word's claim; `page_arc_bind.ink_ends_on` (two notes about equally
+near, the traced ink runs into exactly one head -> that note; no number); `page_arcs.unclaimed_header_boxes_dropped` (GATHER: a detector clef / key /
+meter box whose centre no page-wide header claim holds blanks nothing; Litolff p13 20 of 96 header boxes, Brahms p0 10 of 110). Controls
+`tools/omr/tests/test_arc_page_pass_r10_2_305.py` (8, real marks of tiles 4, 5, 9; 6 fail on the r9 tip).
+
+**Measures.** judge.py Brahms p0 (wrong / right / unread), same gather g0b: before (merge-base, ON) slur 14 / 31 / 8, tie 1 / 37 / 7; **r10 ON slur
+2 / 32 / 7, tie 0 / 37 / 7** (as r9; tiles 5 and 9 lie outside his swept cells). Arcs r10 changed against r9: 3, all added, all already judged right by
+Sean (tile 5, tile 9, r7b tile 4); Litolff 0. Sean's 12 r9 tiles replayed: r9 -> r10 right->right 6 (2, 3, 6, 8, 11, 12), unread->right 2 (5, 9),
+unread->unread 4 (Litolff 1, 4, 7, 10). Judged answers right->wrong 0 (`judged score` per item identical, both plates; arc tiles Brahms 8 right->right
++ r7b tile 4 wrong->right, Litolff 7 right->right). No new tiles: every arc this round changed already has Sean's answer. Fast tier on the final tools tip b1395de03 (no edits during the run): 10,732 passed, 0 failed.
