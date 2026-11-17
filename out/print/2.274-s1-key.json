@@ -1,0 +1,192 @@
+[
+ {
+  "tile": 1,
+  "plate_page": "brahms-p14",
+  "run": 48,
+  "kind": "cross",
+  "width_sp": 7.62,
+  "witnesses": [
+   "glyph/14/0/1/4/16",
+   "glyph/14/0/2/4/24",
+   "glyph/14/0/2/4/26"
+  ],
+  "box_page_px": [
+   3102,
+   938,
+   3310,
+   978
+  ]
+ },
+ {
+  "tile": 2,
+  "plate_page": "brahms-p14",
+  "run": 2,
+  "kind": "other",
+  "width_sp": 5.62,
+  "witnesses": [
+   "glyph/14/0/2/0/39",
+   "glyph/14/0/2/0/40"
+  ],
+  "box_page_px": [
+   1265,
+   1082,
+   1418,
+   1115
+  ]
+ },
+ {
+  "tile": 3,
+  "plate_page": "litolff-p10",
+  "run": 29,
+  "kind": "new",
+  "width_sp": 8.63,
+  "witnesses": [],
+  "box_page_px": [
+   1087,
+   3632,
+   1222,
+   3656
+  ]
+ },
+ {
+  "tile": 4,
+  "plate_page": "brahms-p12",
+  "run": 1,
+  "kind": "cross",
+  "width_sp": 2.62,
+  "witnesses": [
+   "glyph/12/0/2/0/22",
+   "glyph/12/0/3/0/4"
+  ],
+  "box_page_px": [
+   906,
+   1165,
+   977,
+   1187
+  ]
+ },
+ {
+  "tile": 5,
+  "plate_page": "brahms-p12",
+  "run": 64,
+  "kind": "new",
+  "width_sp": 14.75,
+  "witnesses": [],
+  "box_page_px": [
+   2809,
+   3195,
+   3215,
+   3302
+  ]
+ },
+ {
+  "tile": 6,
+  "plate_page": "brahms-p12",
+  "run": 37,
+  "kind": "cross",
+  "width_sp": 8.81,
+  "witnesses": [
+   "glyph/12/1/9/2/19",
+   "glyph/12/1/10/2/4"
+  ],
+  "box_page_px": [
+   2179,
+   6199,
+   2421,
+   6244
+  ]
+ },
+ {
+  "tile": 7,
+  "plate_page": "brahms-p14",
+  "run": 93,
+  "kind": "cross",
+  "width_sp": 14.56,
+  "witnesses": [
+   "glyph/14/0/12/8/5",
+   "glyph/14/0/13/8/3"
+  ],
+  "box_page_px": [
+   4907,
+   3554,
+   5306,
+   3614
+  ]
+ },
+ {
+  "tile": 8,
+  "plate_page": "brahms-p14",
+  "run": 30,
+  "kind": "other",
+  "width_sp": 8.25,
+  "witnesses": [
+   "glyph/14/1/7/2/9"
+  ],
+  "box_page_px": [
+   2288,
+   6212,
+   2513,
+   6251
+  ]
+ },
+ {
+  "tile": 9,
+  "plate_page": "litolff-p10",
+  "run": 56,
+  "kind": "new",
+  "width_sp": 8.06,
+  "witnesses": [],
+  "box_page_px": [
+   1767,
+   2002,
+   1893,
+   2036
+  ]
+ },
+ {
+  "tile": 10,
+  "plate_page": "brahms-p12",
+  "run": 70,
+  "kind": "new",
+  "width_sp": 2.81,
+  "witnesses": [],
+  "box_page_px": [
+   3508,
+   1665,
+   3584,
+   1699
+  ]
+ },
+ {
+  "tile": 11,
+  "plate_page": "litolff-p10",
+  "run": 17,
+  "kind": "other",
+  "width_sp": 4.76,
+  "witnesses": [
+   "glyph/10/1/4/2/3"
+  ],
+  "box_page_px": [
+   812,
+   2706,
+   886,
+   2727
+  ]
+ },
+ {
+  "tile": 12,
+  "plate_page": "litolff-p8",
+  "run": 17,
+  "kind": "other",
+  "width_sp": 8.32,
+  "witnesses": [
+   "glyph/8/1/0/14/0"
+  ],
+  "box_page_px": [
+   1877,
+   1834,
+   2007,
+   1866
+  ]
+ }
+]

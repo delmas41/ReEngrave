@@ -18,6 +18,12 @@ from .test_arc_bind_2223 import _curve, _h, SP
 from .test_staged_arc_kind_head_extent_2026_10_09 import _arc, _box, _cells, _decide
 
 
+@pytest.fixture(autouse=True)
+def _the_default_reader(monkeypatch):
+    # the 2.223 window, the reader with `OMR_PAGE_ARC_WRITE` OFF (the default); ROADMAP 2.305 r6's rule under that flag: test_rule_arc_ends_at_its_notes_2_310.py
+    monkeypatch.setenv("OMR_PAGE_ARC_WRITE", "0")
+
+
 @pytest.fixture
 def on(monkeypatch):
     monkeypatch.setenv(AC.ENV_END_PITCH, "1")

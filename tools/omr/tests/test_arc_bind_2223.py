@@ -1,7 +1,18 @@
-"""ROADMAP 2.223: page-wide binding of a claimed curve's two ends (pure parts of `arc_claim`). Each guard has a twin that fails without it."""
+"""ROADMAP 2.223: page-wide binding of a claimed curve's two ends (pure parts of `arc_claim`). Each guard has a twin that fails without it.
+
+These pin the 2.223 window, the reader with `OMR_PAGE_ARC_WRITE` OFF (the default). With that flag ON, ROADMAP 2.305 r6 binds by Sean's rule instead (no reach window;
+`test_rule_arc_ends_at_its_notes_2_310.py`)."""
+import pytest
+
 from tools.omr.staged import arc_claim as AC
+from tools.omr.staged import page_arc_bind as PB
 
 SP = 10.0
+
+
+@pytest.fixture(autouse=True)
+def _the_default_reader(monkeypatch):
+    monkeypatch.setenv(PB.ENV_WRITE, "0")
 
 
 def _h(key, cx, cy, w=12.0, h=10.0):

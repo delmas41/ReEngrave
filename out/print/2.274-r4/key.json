@@ -1,0 +1,206 @@
+[
+ {
+  "tile": 1,
+  "plate_page": "brahms-p11",
+  "run": 30,
+  "why": "witnessed",
+  "width_sp": 11.69,
+  "witnesses": [
+   "glyph/11/0/2/0/18"
+  ],
+  "box_page_px": [
+   969,
+   1144,
+   1289,
+   1217
+  ]
+ },
+ {
+  "tile": 2,
+  "plate_page": "brahms-p20",
+  "run": 27,
+  "why": "long flat",
+  "width_sp": 26.62,
+  "witnesses": [
+   "glyph/20/1/1/5/10"
+  ],
+  "box_page_px": [
+   2956,
+   4698,
+   3687,
+   4777
+  ]
+ },
+ {
+  "tile": 3,
+  "plate_page": "brahms-p11",
+  "run": 62,
+  "why": "meeting pair",
+  "width_sp": 9.06,
+  "witnesses": [
+   "glyph/11/0/1/2/14",
+   "glyph/11/0/2/2/10"
+  ],
+  "box_page_px": [
+   1798,
+   984,
+   2045,
+   1074
+  ]
+ },
+ {
+  "tile": 4,
+  "plate_page": "brahms-p20",
+  "run": 29,
+  "why": "long flat",
+  "width_sp": 25.5,
+  "witnesses": [
+   "glyph/20/1/1/4/5",
+   "glyph/20/1/1/4/13",
+   "glyph/20/1/1/5/11"
+  ],
+  "box_page_px": [
+   2985,
+   4580,
+   3685,
+   4653
+  ]
+ },
+ {
+  "tile": 5,
+  "plate_page": "brahms-p20",
+  "run": 26,
+  "why": "long flat",
+  "width_sp": 23.25,
+  "witnesses": [
+   "glyph/20/1/0/4/5",
+   "glyph/20/1/0/4/7"
+  ],
+  "box_page_px": [
+   2989,
+   4233,
+   3627,
+   4293
+  ]
+ },
+ {
+  "tile": 6,
+  "plate_page": "brahms-p20",
+  "run": 15,
+  "why": "witnessed",
+  "width_sp": 8.69,
+  "witnesses": [
+   "glyph/20/1/5/0/6",
+   "glyph/20/1/5/0/11",
+   "glyph/20/1/5/1/9"
+  ],
+  "box_page_px": [
+   1246,
+   5694,
+   1483,
+   5752
+  ]
+ },
+ {
+  "tile": 7,
+  "plate_page": "litolff-p5",
+  "run": 99,
+  "why": "r3 miss, whole now: straight",
+  "width_sp": 33.46,
+  "witnesses": [
+   "glyph/5/1/0/8/8",
+   "glyph/5/1/1/8/5",
+   "glyph/5/1/1/9/5",
+   "glyph/5/1/1/11/6"
+  ],
+  "box_page_px": [
+   1712,
+   2438,
+   2238,
+   2482
+  ]
+ },
+ {
+  "tile": 8,
+  "plate_page": "brahms-p11",
+  "run": 17,
+  "why": "witnessed",
+  "width_sp": 3.06,
+  "witnesses": [
+   "glyph/11/1/0/0/6"
+  ],
+  "box_page_px": [
+   880,
+   4098,
+   962,
+   4140
+  ]
+ },
+ {
+  "tile": 9,
+  "plate_page": "litolff-p5",
+  "run": 104,
+  "why": "witnessed",
+  "width_sp": 9.52,
+  "witnesses": [
+   "glyph/5/1/4/11/0",
+   "glyph/5/1/4/12/2"
+  ],
+  "box_page_px": [
+   2110,
+   3108,
+   2259,
+   3142
+  ]
+ },
+ {
+  "tile": 10,
+  "plate_page": "litolff-p13",
+  "run": 76,
+  "why": "r3 miss, whole now: no_track",
+  "width_sp": 6.1,
+  "witnesses": [
+   "glyph/13/0/3/9/2",
+   "glyph/13/0/4/9/2"
+  ],
+  "box_page_px": [
+   1836,
+   969,
+   1931,
+   988
+  ]
+ },
+ {
+  "tile": 11,
+  "plate_page": "litolff-p5",
+  "run": 68,
+  "why": "meeting pair",
+  "width_sp": 9.33,
+  "witnesses": [
+   "glyph/5/1/0/1/0",
+   "glyph/5/1/1/1/0"
+  ],
+  "box_page_px": [
+   696,
+   2424,
+   842,
+   2470
+  ]
+ },
+ {
+  "tile": 12,
+  "plate_page": "brahms-p11",
+  "run": 130,
+  "why": "meeting pair",
+  "width_sp": 9.06,
+  "witnesses": [
+   "glyph/11/0/13/10/7"
+  ],
+  "box_page_px": [
+   5228,
+   3725,
+   5476,
+   3784
+  ]
+ }
+]

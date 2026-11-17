@@ -79,8 +79,22 @@ def gathered(source: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
     `line_detection`, and counting that as coverage would report a stub as a
     reader. The distinction is exactly `record`'s READ vs DECLINED.
     """
-    src = source if source is not None else (_HERE / "gather.py").read_text()
-    tree = ast.parse(src)
+    if source is not None:
+        trees = [ast.parse(source)]
+    else:
+        # `gather.py` AND the page-wide readers it calls (`from . import page_arcs`, `page_strokes`, `page_heads`, ...): each files its own
+        # rows from its own module, and an AST of `gather.py` alone reported every one of them "declared, never gathered" (2026-11-10: 12 of
+        # the 25 open findings, the newest `Q.PAGE_ARC`). Derived from gather.py's own imports -- no list.
+        gsrc = (_HERE / "gather.py").read_text()
+        trees = [ast.parse(gsrc)]
+        seen: Set[str] = set()
+        for node in ast.walk(trees[0]):
+            if isinstance(node, ast.ImportFrom) and node.level == 1 and not node.module:
+                for a in node.names:
+                    f = _HERE / (a.name + ".py")
+                    if a.name not in seen and a.name != "gather" and f.exists():
+                        seen.add(a.name)
+                        trees.append(ast.parse(f.read_text()))
 
     out: Dict[str, Dict[str, Any]] = {}
 
@@ -168,7 +182,8 @@ def gathered(source: Optional[str] = None) -> Dict[str, Dict[str, Any]]:
                         rec["reasons"].append(reason)
             self.generic_visit(node)
 
-    Walker().visit(tree)
+    for tree in trees:
+        Walker().visit(tree)
 
     return out
 
