@@ -324,7 +324,7 @@ def run(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mode: str,
     if not reuse and mode == "gather":
         for lab, p in jobs:
             fl, arm = flag_map[lab]
-            gathered[(lab, p)] = L.gather_one(p, lab, {n: (on if arm == "on" else off) for n, off, on in fl}, pages[p], work, env0)
+            gathered[(lab, p)] = L.gather_one(p, lab, {n: (on if arm == "on" else off) for n, off, on in fl}, L.loaded_pages(sample, p), work, env0)   # ROADMAP 2.313: the opening page rides along
     running: List[Tuple[Tuple[str, str], subprocess.Popen]] = []
     queue = [] if reuse else list(jobs)
     while queue or running:

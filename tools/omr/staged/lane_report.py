@@ -1378,7 +1378,10 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
     gather_recs: Dict[Tuple[str, str], pathlib.Path] = {}
     if mode == "gather":
         for p, a in jobs:       # one page gather at a time (CLAUDE.md "lean lanes")
-            gather_recs[(p, a)] = gather_one(p, a, {n: (on if a == "on" else off) for n, off, on in flags}, pages[p], work, env0)
+            # ROADMAP 2.313: the plate's OPENING page rides along (loaded, never counted). Litolff prints its staff names, meter and
+            # key on page 1 only; a gather of the sample pages alone read no names (every staff `staff_not_identified`, 0 red bars)
+            # and no carried meter (more values refused): the 2.311 small test's "162 vs 191 refused notes".
+            gather_recs[(p, a)] = gather_one(p, a, {n: (on if a == "on" else off) for n, off, on in flags}, loaded_pages(sample, p), work, env0)
     running: List[Tuple[Tuple[str, str], subprocess.Popen]] = []
     queue = list(jobs)
     done: Dict[Tuple[str, str], Any] = dict(done0)
