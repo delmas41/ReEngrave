@@ -53,7 +53,7 @@ def main():
         rng = random.Random(seed)
         drawn = []
         for pool in pools:
-            ok = [r for r in pool if r.get("ink")]
+            ok = [r for r in pool if r.get("ink") or "--page-run-box" in sys.argv]
             drawn += rng.sample(ok, min(6, len(ok)))
         rng.shuffle(drawn)
     os.makedirs(out, exist_ok=True)
@@ -65,10 +65,11 @@ def main():
         im = pages[pk].copy()
         dr = ImageDraw.Draw(im)
         boxes = []
-        for bx in (r.get("ink_boxes") or [r["ink"]]):
+        page_rule = "--page-run-box" in sys.argv          # Sean 2026-11-16: the box is ALWAYS the page reader's own run at that place
+        for bx in (([r["page_run_box"]] if r.get("page_run_box") else []) if page_rule else (r.get("ink_boxes") or [r["ink"]])):
             if bx not in boxes:
                 boxes.append(bx)
-        if r.get("src") in ("old_box",):
+        if r.get("src") in ("old_box",) and not page_rule:
             # the old box path's boxes are found by place (changes.py); a box lying wholly under another box's width but clear of it in height is a
             # different, smaller arc there (Brahms p0 12/0: a short slur under the long one), not this arc's ink
             boxes = [bx for bx in boxes if not any(o is not bx and o[0] <= bx[0] and bx[2] <= o[2] and (bx[1] > o[3] or bx[3] < o[1])
@@ -96,6 +97,8 @@ def main():
             dr.line([(cx, nb[3] + 12), (cx, nb[3] + 32)], fill=ORANGE, width=3)
         lines = r.get("staff_lines") or []
         sp = (lines[-1] - lines[0]) / 4.0 if len(lines) == 5 else 30.0
+        if not boxes and r.get("ink"):
+            pass
         xs = [v for bx in boxes for v in (bx[0], bx[2])] + [r["a_box"][0], r["a_box"][2], r["b_box"][0], r["b_box"][2]]
         ys = [v for bx in boxes for v in (bx[1], bx[3])] + [r["a_box"][1], r["b_box"][1]] + [t[2] for t in ticks] + list(lines[:1]) + list(lines[-1:])
         x0, x1 = min(xs) - 2 * sp, max(xs) + 2 * sp
@@ -114,6 +117,8 @@ def main():
         # onto the neighbouring staves
         tile = Image.new("RGB", (W, max(MIN_H, band.height)), "white")
         tile.paste(band, (0, (tile.height - band.height) // 2))
+        if page_rule and not boxes:
+            ImageDraw.Draw(tile).text((W - 110, tile.height - 18), "no ink held", fill=(110, 110, 110))
         tile.save(os.path.join(out, "tile_%02d.png" % i))
         tiles.append(tile)
         key.append(dict(tile=i, file_said=line_of(r),

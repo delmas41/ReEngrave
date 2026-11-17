@@ -85,6 +85,35 @@ def main():
             if abox.get(v["subject"]):
                 tie_boxes.setdefault(k, []).append(abox[v["subject"]])
     del brec
+    # the page reader's OWN ink at each place (Sean 2026-11-16, tile rule: the box is always the page reader's run, never a detector box)
+    arec = load_record(apre + ".record.json")["record"]
+    pruns = {o["id"]: (o.get("detail") or {}).get("points") or [] for o in arec["observations"] if o["quantity"] == "page_arc" and o.get("value") == "run"}
+    pnames = {}
+    for v in arec["verdicts"]:
+        if v["quantity"] == "page_arc_binding":
+            for x in (v.get("detail") or {}).get("runs") or ():
+                nm = {ack(str(n)) for n in (x.get("start"), x.get("stop"), (x.get("left") or {}).get("head"), (x.get("right") or {}).get("head")) if n}
+                pnames.setdefault(x["row"], set()).update(nm)
+    del arec
+
+    def page_run_at(a, b, ga, gb):
+        both = [r for r, nm in pnames.items() if {ack(a), ack(b)} <= nm and pruns.get(r)]
+        if both:
+            pts = pruns[both[0]]
+            return [min(p[0] for p in pts), min(p[1] for p in pts), max(p[0] for p in pts), max(p[1] for p in pts)], both[0]
+        x0, x1 = min(ga[0], gb[0]), max(ga[2], gb[2])
+        ys = [(ga[1] + ga[3]) / 2.0, (gb[1] + gb[3]) / 2.0]
+        sp = 32.0 if a.startswith("glyph/0/") else 15.75
+        best = None
+        for r, pts in pruns.items():
+            inside = [p for p in pts if x0 <= p[0] <= x1 and min(abs(p[1] - y) for y in ys) <= 2.5 * sp]
+            if pts and len(inside) >= 0.6 * len(pts) and (best is None or len(inside) > best[0]):
+                best = (len(inside), r)
+        if best:
+            pts = pruns[best[1]]
+            return [min(p[0] for p in pts), min(p[1] for p in pts), max(p[0] for p in pts), max(p[1] for p in pts)], best[1]
+        return None, None
+
     rows = []
     for key in sorted(set(B) | set(A), key=lambda k: sorted(k)):
         kb, ka = sorted(B.get(key, [])), sorted(A.get(key, []))
@@ -105,7 +134,8 @@ def main():
             ink, why = [min(x[0] for x in bs), min(x[1] for x in bs), max(x[2] for x in bs), max(x[3] for x in bs)], "the tie pair's own boxes"
         if change == "removed" and sp_ and sp_["src"] == "page_arc":
             ink, why = None, "page run (before)"
-        rows.append(dict(plate=plate, change=change, a=a, b=b, before=kb, after=ka, src=(sp_ or {}).get("src"), ink=ink, ink_boxes=[list(x) for x in INK_BOXES] if ink else [], ink_from=why, staff_lines=lines.get("staff/%s" % "/".join(a.split("/")[1:4])),
+        prb, prid = page_run_at(a, b, f["glyphs"][a]["box"], f["glyphs"][b]["box"])
+        rows.append(dict(plate=plate, change=change, page_run_box=prb, page_run=prid, a=a, b=b, before=kb, after=ka, src=(sp_ or {}).get("src"), ink=ink, ink_boxes=[list(x) for x in INK_BOXES] if ink else [], ink_from=why, staff_lines=lines.get("staff/%s" % "/".join(a.split("/")[1:4])),
                          page=int(a.split("/")[1]), a_box=f["glyphs"][a]["box"], b_box=f["glyphs"][b]["box"]))
     json.dump(rows, open(out, "w"), indent=0)
     for r in rows:
