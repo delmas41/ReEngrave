@@ -5438,7 +5438,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # raises a level above the class's (a tip count higher than the box stays today's reading), and a tip that saw no hook, or saw hooks it could
     # not count (`_stem_tip_hook_count` gives no single count), changes nothing -- the class's level, or the disagreement narrowing, stands.
     hooks_over_class: Optional[Tuple[int, int]] = None
-    if flags and flag_levels >= 2 and not levels:
+    # Boxes that DISAGREE (8th and 16th on one stem) are settled by the same count below (ROADMAP 2.74 / 2.69, `flags_disagree`), unchanged.
+    if flags and flag_levels >= 2 and not levels and len(flag_level_votes) == 1:
         _tip_h, _tip_h_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
         if _tip_h:
             _ch, _lo_h, _hi_h = _stem_tip_hook_count(_tip_h_rows)
