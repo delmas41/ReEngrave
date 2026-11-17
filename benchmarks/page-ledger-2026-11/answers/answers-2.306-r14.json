@@ -1,0 +1,23 @@
+{
+ "lane": "2.306 r14",
+ "set": "out/print/2.306-r14",
+ "seed": 2306014,
+ "date": "2026-11-16",
+ "question": "Is the orange box all of that note's stem, and does the note carry a flag, a beam, or neither?",
+ "note": "He said 'Tile 7 ... Tile 9 ... Tile 10 ... Tile 11 ... that was 10. Tile 11 is two half notes': four 'eighth note, has a flag' answers then the half notes; by the pictures those four are tiles 7, 8, 9, 10 (our matching; tile 8 not confirmed by number).",
+ "answers": {
+  "1": "an eighth note, that is the entire stem, and it does have a flag",
+  "2": "quarter note, the entire stem",
+  "3": "an eighth note, it does have a flag, that is the entire stem",
+  "4": "eighth note, entire stem, does have a flag",
+  "5": "eighth note, entire stem, it does have a flag",
+  "6": "an eighth note, it does have a flag",
+  "7": "eighth note, has a flag",
+  "8": "eighth note, has a flag [by our matching]",
+  "9": "eighth note, has a flag",
+  "10": "eighth note, has a flag",
+  "11": "two half notes, and it does have the entire stem in the box",
+  "12": "an eighth note, entire stem is in the box, and it does have a flag"
+ },
+ "scored_ours": "flag right on 1, 3, 4, 5, 6, 7, 12 (were written beamed); stem ink right on all 12 he spoke to; 2 WRONG: a quarter note written a flagged eighth (was written beamed: wrong before and after); 8: he reads an eighth with a flag, we write a 16th -- to confirm with him; 9, 10, 11 stems now read, right"
+}
