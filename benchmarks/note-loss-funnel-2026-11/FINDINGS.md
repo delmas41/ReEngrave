@@ -101,3 +101,32 @@ Litolff 11 of 309. 117 decided augmentation dots have no dot written on a head (
 these dots: not measured. Note: tiles 7, 10, 12 wrote the undotted quarter PLAIN -- a wrong value, not an unread one.
 
 Who says: the 12 readings are Sean's; the counts are ours from one saved gather per plate.
+
+## Every red bar ranked by first cause (2026-11-16)
+
+Branch `lane-2.311-redbar-ranking` (1fe933a53): `redbar-ranking.md` / `.json`, `redbar_classify.py`. All 585 red bars
+(Litolff 309, Brahms 276), rows add up, 32 unexplained (5.5%). Against Sean's 12 readings: 11 agree, 1 partial.
+The record's reasons are ours; rows resting on arithmetic only are labelled so in the file.
+
+By family (the manager's grouping of the 38 rows):
+- a note's value held or wrong because of its beam, flag or stem, or a chord on one stem left undecided: about 180 (31%)
+  -- `chord_value_undecided` 48, `beam_discounted_uncertain` 47, `beams_ambiguous` 41, short with beamed values 23, small rows 22.
+  Owner `rhythm.py::adjudicate_duration`; this is the stems/beams lane's ground (2.306).
+- rests (a stroke read as a rest, a rest refused, shape and place disagree, a whole rest beside notes): about 85 (14%).
+- bookkeeping, not reading (all marks given to another staff 28, a rightly refused neighbour mark filed as a gap 21,
+  the same boxes written in two voices 20, edge note 5, double head 3): about 77 (13%).
+- never boxed by the detector (heads/rests 46, dots 23): about 69 (12%).
+- a narrow mark refused as not a note, or refused as barline/word/dynamic ink: 66 (11%).
+- dots decided wrongly or held: 20 (3%). Meter may be stale: 14. Pitch not placed: 12. Other small rows.
+
+Correction: the manager told Sean stems were a small part of red bars (from 12 tiles). The ranking says the
+beam/stem/chord-value family is the largest.
+
+## Second 12 red bars read by Sean (2026-11-16)
+
+`answers-2.311-redbars-b.json`; DECISIONS same date. Over his 24 bars (our grouping of his readings against the record):
+beam / flag / chord value 7; a neighbouring staff's marks counted here, or far notes 5; a printed dot not in the record 4;
+a rest not read 4 (two bars are nothing but a whole rest); a Litolff half note read black or refused 3; unknown 1.
+The classifier agreed with him on 11 of the first 12 but only about 6 of the second 12: rows "every mark owned by
+another staff" and "refused as barline ink" hid two bars that hold only a whole rest. The ranking's family sizes hold
+roughly; its bookkeeping rows need the question "what is printed here that the record does not hold" before a count.

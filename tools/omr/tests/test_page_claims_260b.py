@@ -1,7 +1,16 @@
-"""ROADMAP 2.260b r2 (OMR_PAGE_CLAIMS): an end extends only along its own page stroke, and never moves an end that bound a head."""
+"""ROADMAP 2.260b r2 (OMR_PAGE_CLAIMS): an end extends only along its own page stroke, and never moves an end that bound a head.
+
+The binder pinned here is the 2.223 window, the reader with `OMR_PAGE_ARC_WRITE` OFF (the default); ROADMAP 2.305 r6's rule under that flag measures every end from its
+stroke end and has no window (test_rule_arc_ends_at_its_notes_2_310.py)."""
 import numpy as np
+import pytest
 
 from tools.omr.staged import arc_claim as AC
+
+
+@pytest.fixture(autouse=True)
+def _the_default_reader(monkeypatch):
+    monkeypatch.setenv("OMR_PAGE_ARC_WRITE", "0")
 
 
 class _PM:

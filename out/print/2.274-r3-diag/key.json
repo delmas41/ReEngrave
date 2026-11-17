@@ -1,0 +1,261 @@
+{
+ "question": "Is the boxed mark one arc, and which two notes does it join?",
+ "seed": 2751,
+ "drawn": "one thin orange box per hand box of the printed arc, nothing else",
+ "tiles": [
+  {
+   "tile": "01.png",
+   "printed_arc": 71,
+   "staff_label": "0/10",
+   "hand_ids": [
+    "q1165"
+   ],
+   "hand_kind": "tie",
+   "bucket_on": "5",
+   "bucket_off": "5",
+   "why_on": "binder abstained: same_pitch_accidental_unknown",
+   "what_it_tests": "5 abstained",
+   "crop_page_px": [
+    2270,
+    5454,
+    2540,
+    5683
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "02.png",
+   "printed_arc": 94,
+   "staff_label": "0/11",
+   "hand_ids": [
+    "q1363",
+    "q1398"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "5",
+   "bucket_off": "5",
+   "why_on": "binder abstained: end_unbound",
+   "what_it_tests": "5 abstained",
+   "crop_page_px": [
+    3512,
+    5930,
+    4676,
+    6306
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "03.png",
+   "printed_arc": 4,
+   "staff_label": "0/0",
+   "hand_ids": [
+    "q122"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "8",
+   "bucket_off": "8",
+   "why_on": "hand notehead at R end not in the file (bar not written)",
+   "what_it_tests": "8 head not written",
+   "crop_page_px": [
+    4084,
+    1320,
+    4702,
+    1682
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "04.png",
+   "printed_arc": 53,
+   "staff_label": "0/9",
+   "hand_ids": [
+    "b4057",
+    "q892"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "3",
+   "bucket_off": "5",
+   "why_on": "run over-merged: it reaches 9.7 sp past a closed end into the next arc",
+   "what_it_tests": "3 merged run",
+   "crop_page_px": [
+    2628,
+    4841,
+    3582,
+    5133
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "05.png",
+   "printed_arc": 88,
+   "staff_label": "0/11",
+   "hand_ids": [
+    "q1327",
+    "q1338"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "5",
+   "bucket_off": "5",
+   "why_on": "binder abstained: same_pitch_heads_between",
+   "what_it_tests": "5 abstained",
+   "crop_page_px": [
+    2654,
+    5779,
+    3565,
+    6129
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "06.png",
+   "printed_arc": 73,
+   "staff_label": "0/10",
+   "hand_ids": [
+    "q1173",
+    "q1186",
+    "q1190",
+    "q1196"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "5",
+   "bucket_off": "5",
+   "why_on": "binder abstained: end_unbound",
+   "what_it_tests": "5 abstained",
+   "crop_page_px": [
+    2652,
+    5341,
+    3572,
+    5634
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "07.png",
+   "printed_arc": 35,
+   "staff_label": "0/5",
+   "hand_ids": [
+    "q794"
+   ],
+   "hand_kind": "tie",
+   "bucket_on": "7",
+   "bucket_off": "7",
+   "why_on": "cross-system arc (binder: system_edge; scorer skips arcs across systems; needs page 1)",
+   "what_it_tests": "7 cross-system",
+   "crop_page_px": [
+    4640,
+    3655,
+    5462,
+    3904
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "08.png",
+   "printed_arc": 27,
+   "staff_label": "0/5",
+   "hand_ids": [
+    "b4061",
+    "q632",
+    "q634",
+    "q639",
+    "q647",
+    "q648",
+    "q660"
+   ],
+   "hand_kind": "tie",
+   "bucket_on": "7",
+   "bucket_off": "7",
+   "why_on": "chain: separate arcs joined by the scorer's grouping (45 sp)",
+   "what_it_tests": "7 chain",
+   "crop_page_px": [
+    1619,
+    3509,
+    3221,
+    3749
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "09.png",
+   "printed_arc": 100,
+   "staff_label": "0/12",
+   "hand_ids": [
+    "q1447",
+    "b4360",
+    "q1477"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "3",
+   "bucket_off": "5",
+   "why_on": "run over-merged: it reaches 12.3 sp past a closed end into the next arc",
+   "what_it_tests": "3 nested/merged run",
+   "crop_page_px": [
+    1589,
+    6206,
+    2726,
+    6523
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "10.png",
+   "printed_arc": 41,
+   "staff_label": "0/8",
+   "hand_ids": [
+    "q882"
+   ],
+   "hand_kind": "tie",
+   "bucket_on": "7",
+   "bucket_off": "7",
+   "why_on": "ghost: hand box over no arc ink (no run, every detector box refused)",
+   "what_it_tests": "7 ghost",
+   "crop_page_px": [
+    2032,
+    4627,
+    2751,
+    4846
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "11.png",
+   "printed_arc": 20,
+   "staff_label": "0/3",
+   "hand_ids": [
+    "b4178"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "7",
+   "bucket_off": "7",
+   "why_on": "half label: the same printed mark is already counted right through P[13]",
+   "what_it_tests": "7 half label",
+   "crop_page_px": [
+    1588,
+    2556,
+    2651,
+    2918
+   ],
+   "scale": 0.7
+  },
+  {
+   "tile": "12.png",
+   "printed_arc": 79,
+   "staff_label": "0/10",
+   "hand_ids": [
+    "q1226"
+   ],
+   "hand_kind": "slur",
+   "bucket_on": "6",
+   "bucket_off": "right",
+   "why_on": "bound right (run 65, 0/11/4/16 -> 0/11/5/7) and NOT in the file (export)",
+   "what_it_tests": "6 bound right, not in file",
+   "crop_page_px": [
+    3578,
+    5750,
+    4694,
+    6077
+   ],
+   "scale": 0.7
+  }
+ ]
+}

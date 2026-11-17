@@ -1,0 +1,451 @@
+{
+ "pages": {
+  "litolff p4": {
+   "witnessed_runs": 101,
+   "status": {
+    "written": 67,
+    "abstained": 34
+   },
+   "abstain_why": {
+    "step_conflict": 9,
+    "same_pitch_heads_between": 7,
+    "system_edge": 7,
+    "end_unbound": 8,
+    "step_unread": 3
+   },
+   "written_by_kind": {
+    "slur": 32,
+    "tie": 35
+   },
+   "written_vs_OFF": {
+    "none": 30,
+    "whole": 32,
+    "same_notes_other_kind": 3,
+    "cut_or_short": 2
+   },
+   "abstained_with_an_OFF_arc_over_it": 16,
+   "abstained_with_no_OFF_arc_over_it": 18,
+   "closest_ends_used": 28,
+   "arcs_OFF": {
+    "tie": 36,
+    "slur": 34
+   },
+   "arcs_ON": {
+    "slur": 43,
+    "tie": 36
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 10
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 19
+   }
+  },
+  "litolff p5": {
+   "witnessed_runs": 80,
+   "status": {
+    "written": 37,
+    "abstained": 43
+   },
+   "abstain_why": {
+    "step_conflict": 9,
+    "step_conflict_one_end_contested": 1,
+    "system_edge": 2,
+    "end_unbound": 25,
+    "same_pitch_heads_between": 3,
+    "step_unread": 3
+   },
+   "written_by_kind": {
+    "slur": 13,
+    "tie": 24
+   },
+   "written_vs_OFF": {
+    "none": 17,
+    "cut_or_short": 5,
+    "whole": 15
+   },
+   "abstained_with_an_OFF_arc_over_it": 10,
+   "abstained_with_no_OFF_arc_over_it": 33,
+   "closest_ends_used": 19,
+   "arcs_OFF": {
+    "tie": 27,
+    "slur": 2
+   },
+   "arcs_ON": {
+    "tie": 23,
+    "slur": 10
+   },
+   "OFF_arcs_not_in_ON": {
+    "tie": 5
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 8,
+    "tie": 1
+   }
+  },
+  "litolff p11": {
+   "witnessed_runs": 65,
+   "status": {
+    "written": 37,
+    "abstained": 28
+   },
+   "abstain_why": {
+    "system_edge": 4,
+    "end_unbound": 16,
+    "same_pitch_heads_between": 2,
+    "step_conflict_one_end_contested": 1,
+    "step_conflict": 4,
+    "far_stem_tip_end": 1
+   },
+   "written_by_kind": {
+    "slur": 31,
+    "tie": 6
+   },
+   "written_vs_OFF": {
+    "none": 21,
+    "cut_or_short": 2,
+    "whole": 14
+   },
+   "abstained_with_an_OFF_arc_over_it": 9,
+   "abstained_with_no_OFF_arc_over_it": 19,
+   "closest_ends_used": 26,
+   "arcs_OFF": {
+    "slur": 18,
+    "tie": 11
+   },
+   "arcs_ON": {
+    "slur": 27,
+    "tie": 12
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 6
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [
+    [
+     "slur",
+     "glyph/11/0/0/10/6",
+     "glyph/11/0/0/10/2"
+    ]
+   ],
+   "ON_arcs_not_in_OFF": {
+    "slur": 15,
+    "tie": 1
+   }
+  },
+  "litolff p13": {
+   "witnessed_runs": 98,
+   "status": {
+    "abstained": 35,
+    "written": 63
+   },
+   "abstain_why": {
+    "step_conflict": 8,
+    "end_unbound": 12,
+    "far_stem_tip_end": 1,
+    "step_unread": 3,
+    "system_edge": 6,
+    "same_pitch_heads_between": 5
+   },
+   "written_by_kind": {
+    "tie": 50,
+    "slur": 13
+   },
+   "written_vs_OFF": {
+    "whole": 38,
+    "cut_or_short": 4,
+    "none": 19,
+    "same_notes_other_kind": 2
+   },
+   "abstained_with_an_OFF_arc_over_it": 13,
+   "abstained_with_no_OFF_arc_over_it": 22,
+   "closest_ends_used": 21,
+   "arcs_OFF": {
+    "tie": 50,
+    "slur": 6
+   },
+   "arcs_ON": {
+    "tie": 49,
+    "slur": 13
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 1,
+    "tie": 3
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 8,
+    "tie": 2
+   }
+  },
+  "brahms p0": {
+   "witnessed_runs": 95,
+   "status": {
+    "abstained": 37,
+    "written": 58
+   },
+   "abstain_why": {
+    "end_unbound": 24,
+    "same_pitch_heads_between": 5,
+    "same_pitch_accidental_unknown": 2,
+    "system_edge": 6
+   },
+   "written_by_kind": {
+    "slur": 32,
+    "tie": 26
+   },
+   "written_vs_OFF": {
+    "cut_or_short": 4,
+    "whole": 47,
+    "none": 7
+   },
+   "abstained_with_an_OFF_arc_over_it": 26,
+   "abstained_with_no_OFF_arc_over_it": 11,
+   "closest_ends_used": 4,
+   "arcs_OFF": {
+    "slur": 64,
+    "tie": 41
+   },
+   "arcs_ON": {
+    "slur": 54,
+    "tie": 43
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 15
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [
+    [
+     "slur",
+     "glyph/0/0/10/5/1",
+     "glyph/0/0/10/5/3"
+    ]
+   ],
+   "ON_arcs_not_in_OFF": {
+    "slur": 5,
+    "tie": 2
+   }
+  },
+  "brahms p5": {
+   "witnessed_runs": 176,
+   "status": {
+    "written": 134,
+    "abstained": 42
+   },
+   "abstain_why": {
+    "end_unbound": 16,
+    "same_pitch_heads_between": 7,
+    "system_edge": 19
+   },
+   "written_by_kind": {
+    "tie": 98,
+    "slur": 36
+   },
+   "written_vs_OFF": {
+    "whole": 91,
+    "cut_or_short": 7,
+    "none": 36
+   },
+   "abstained_with_an_OFF_arc_over_it": 18,
+   "abstained_with_no_OFF_arc_over_it": 24,
+   "closest_ends_used": 20,
+   "arcs_OFF": {
+    "tie": 88,
+    "slur": 52
+   },
+   "arcs_ON": {
+    "slur": 54,
+    "tie": 81
+   },
+   "OFF_arcs_not_in_ON": {
+    "tie": 7,
+    "slur": 9
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 11
+   }
+  },
+  "brahms p8": {
+   "witnessed_runs": 105,
+   "status": {
+    "written": 75,
+    "abstained": 30
+   },
+   "abstain_why": {
+    "end_unbound": 11,
+    "same_pitch_heads_between": 4,
+    "system_edge": 15
+   },
+   "written_by_kind": {
+    "slur": 34,
+    "tie": 41
+   },
+   "written_vs_OFF": {
+    "whole": 44,
+    "cut_or_short": 3,
+    "none": 28
+   },
+   "abstained_with_an_OFF_arc_over_it": 6,
+   "abstained_with_no_OFF_arc_over_it": 24,
+   "closest_ends_used": 9,
+   "arcs_OFF": {
+    "slur": 25,
+    "tie": 33
+   },
+   "arcs_ON": {
+    "slur": 28,
+    "tie": 34
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 9,
+    "tie": 3
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 12,
+    "tie": 4
+   }
+  },
+  "brahms p11": {
+   "witnessed_runs": 115,
+   "status": {
+    "abstained": 48,
+    "written": 67
+   },
+   "abstain_why": {
+    "end_unbound": 26,
+    "same_pitch_heads_between": 3,
+    "system_edge": 18,
+    "same_pitch_accidental_printed": 1
+   },
+   "written_by_kind": {
+    "slur": 18,
+    "tie": 49
+   },
+   "written_vs_OFF": {
+    "cut_or_short": 3,
+    "whole": 54,
+    "none": 10
+   },
+   "abstained_with_an_OFF_arc_over_it": 23,
+   "abstained_with_no_OFF_arc_over_it": 25,
+   "closest_ends_used": 6,
+   "arcs_OFF": {
+    "tie": 63,
+    "slur": 26
+   },
+   "arcs_ON": {
+    "tie": 62,
+    "slur": 27
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 6,
+    "tie": 1
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 7
+   }
+  },
+  "brahms p20": {
+   "witnessed_runs": 52,
+   "status": {
+    "written": 47,
+    "abstained": 5
+   },
+   "abstain_why": {
+    "system_edge": 3,
+    "same_pitch_accidental_unknown": 1,
+    "same_pitch_heads_between": 1
+   },
+   "written_by_kind": {
+    "slur": 29,
+    "tie": 18
+   },
+   "written_vs_OFF": {
+    "whole": 31,
+    "none": 10,
+    "same_notes_other_kind": 1,
+    "cut_or_short": 5
+   },
+   "abstained_with_an_OFF_arc_over_it": 0,
+   "abstained_with_no_OFF_arc_over_it": 5,
+   "closest_ends_used": 10,
+   "arcs_OFF": {
+    "tie": 14,
+    "slur": 30
+   },
+   "arcs_ON": {
+    "slur": 28,
+    "tie": 14
+   },
+   "OFF_arcs_not_in_ON": {
+    "slur": 13
+   },
+   "OFF_arcs_not_in_ON_and_under_no_written_run": [],
+   "ON_arcs_not_in_OFF": {
+    "slur": 11
+   }
+  }
+ },
+ "pooled": {
+  "witnessed_runs": 887,
+  "status": {
+   "written": 585,
+   "abstained": 302
+  },
+  "abstain_why": {
+   "step_conflict": 30,
+   "same_pitch_heads_between": 37,
+   "system_edge": 80,
+   "end_unbound": 138,
+   "step_unread": 9,
+   "step_conflict_one_end_contested": 2,
+   "far_stem_tip_end": 2,
+   "same_pitch_accidental_unknown": 3,
+   "same_pitch_accidental_printed": 1
+  },
+  "written_by_kind": {
+   "slur": 238,
+   "tie": 347
+  },
+  "written_vs_OFF": {
+   "none": 178,
+   "whole": 366,
+   "same_notes_other_kind": 6,
+   "cut_or_short": 35
+  },
+  "abstained_with_an_OFF_arc_over_it": 121,
+  "abstained_with_no_OFF_arc_over_it": 181,
+  "closest_ends_used": 143,
+  "arcs_OFF": {
+   "tie": 363,
+   "slur": 257
+  },
+  "arcs_ON": {
+   "slur": 284,
+   "tie": 354
+  },
+  "OFF_arcs_not_in_ON": {
+   "slur": 69,
+   "tie": 19
+  },
+  "ON_arcs_not_in_OFF": {
+   "slur": 96,
+   "tie": 10
+  },
+  "lost_under_no_written_run": [
+   [
+    "slur",
+    "glyph/11/0/0/10/6",
+    "glyph/11/0/0/10/2"
+   ],
+   [
+    "slur",
+    "glyph/0/0/10/5/1",
+    "glyph/0/0/10/5/3"
+   ]
+  ]
+ }
+}

@@ -73,10 +73,7 @@ KNOWN_GAPS: Dict[str, str] = {
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M1: the tilted barline column (slope, intercept) is a fact; its first reader is M2's carve "
         "(`page_strokes.carve_columns`, which refits the same columns itself until a later step reads the row) and M5. Byte-identical export is the proof. "
         "A reader that appears removes this entry."),
-    Q.PAGE_STROKE: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260a M2 (docs/plan-2026-11-03-page-ledger.md): the page stroke map is filed and read by NOTHING until M3 "
-        "(`[[cell, ordinal]]` claims -> page stroke ids) and M4 (one beam reader on page strokes) land; the exported file is byte-identical with "
-        "`OMR_PAGE_STROKES` on, which is the proof. A reader that appears removes this entry."),
+    # (Q.PAGE_STROKE left this list in ROADMAP 2.305 r6: the arc binder reads it for the unread head ink at an arc's end, `ownership._unread_head_ink`.)
     Q.PAGE_HEAD: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
         "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
@@ -359,6 +356,8 @@ STAGE_OF_FILE = {
     "page_strokes.py": "GATHER",
     # ROADMAP 2.260c M4a: files `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP` from its hook line in `gather.gather()`.
     "page_beams.py": "GATHER",
+    # ROADMAP 2.274 step 1: files `Q.PAGE_ARC` from its hook line in `gather.gather()`.
+    "page_arcs.py": "GATHER",
     # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
     "page_heads.py": "GATHER",
     # ROADMAP 2.276: files the `owner: tremolo` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
@@ -452,6 +451,8 @@ NOT_A_STAGE = frozenset({
     "arc_claim.py",
     # ROADMAP 2.223. Pure helpers for `adjudicate_wedge_anchor`'s page-wide hairpin binding (OMR_HAIRPIN_BIND_PAGEWIDE): files no row.
     "hairpin_bind.py",
+    # ROADMAP 2.274 step 2: pure helpers for `adjudicators/page_arc.adjudicate_page_arc_binding` and the exporter's page-arc plan (the flag, the curve detail, the plan); files no row.
+    "page_arc_bind.py",
     # ROADMAP 2.254. The OMR_HAIRPIN_REACH flag (read by `gather.gather_wedge_boxes` and `ownership._wedge_page_binding`): files no row.
     "hairpin_reach.py",
     # ROADMAP 2.188. The shared lane report: replays a saved record OFF vs ON and counts the exported file; runs no stage of

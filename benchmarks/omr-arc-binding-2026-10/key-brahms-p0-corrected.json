@@ -1,0 +1,4517 @@
+{
+ "lane": "2.281 step 1",
+ "page": "Brahms p0 (imslp317803 pdf page 0)",
+ "hand_labels": "data/hand-truth/pages/imslp317803/0.json (never edited)",
+ "built_by": "benchmarks/omr-arc-binding-2026-10/key_brahms_p0_build.py",
+ "unit": "page px at 600 dpi, sp = 32",
+ "counts": {
+  "hand_boxes": 153,
+  "arcs": 100,
+  "scorable": 95,
+  "cross_system": 5,
+  "kind_conflict": 2,
+  "ghosts_dropped": 5
+ },
+ "pending_sean_tiles": {
+  "tiles_7_to_12": "pending: 07 cross-system, 08 chain, 09 nested/merged run, 10 ghost, 11 half box, 12 bound-but-unwritten; the key does not treat them as answered",
+  "answered_truth": "tiles 2, 5, 6 (a barline-cut arc is one arc); tile 4 (the old labelling is far off); tiles 1, 3 (a tie between two eighths; a basic slur)"
+ },
+ "arcs": [
+  {
+   "id": "K000",
+   "ids": [
+    "q41"
+   ],
+   "hand_x0": 2112,
+   "hand_x1": 2556,
+   "extended": [
+    "L"
+   ],
+   "x0": 1666,
+   "x1": 2556,
+   "y0": 1449,
+   "y1": 1547,
+   "width_sp": 27.8,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     17,
+     1666,
+     2586
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K001",
+   "ids": [
+    "q47"
+   ],
+   "hand_x0": 2722,
+   "hand_x1": 2899,
+   "extended": [],
+   "x0": 2722,
+   "x1": 2899,
+   "y0": 1454,
+   "y1": 1561,
+   "width_sp": 5.5,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     25,
+     2722,
+     2944
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K002",
+   "ids": [
+    "q64"
+   ],
+   "hand_x0": 3156,
+   "hand_x1": 3476,
+   "extended": [],
+   "x0": 3156,
+   "x1": 3476,
+   "y0": 1408,
+   "y1": 1465,
+   "width_sp": 10.0,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     39,
+     3156,
+     3500
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K003",
+   "ids": [
+    "q84"
+   ],
+   "hand_x0": 3634,
+   "hand_x1": 4026,
+   "extended": [],
+   "x0": 3634,
+   "x1": 4026,
+   "y0": 1411,
+   "y1": 1473,
+   "width_sp": 12.3,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     54,
+     3634,
+     4028
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K004",
+   "ids": [
+    "q107"
+   ],
+   "hand_x0": 4186,
+   "hand_x1": 4601,
+   "extended": [],
+   "x0": 4186,
+   "x1": 4601,
+   "y0": 1860,
+   "y1": 1906,
+   "width_sp": 13.0,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     62,
+     4162,
+     4602
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K005",
+   "ids": [
+    "q122"
+   ],
+   "hand_x0": 4164,
+   "hand_x1": 4596,
+   "extended": [],
+   "x0": 4164,
+   "x1": 4596,
+   "y0": 1400,
+   "y1": 1507,
+   "width_sp": 13.5,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     61,
+     4164,
+     4622
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K006",
+   "ids": [
+    "q126"
+   ],
+   "hand_x0": 4731,
+   "hand_x1": 5276,
+   "extended": [],
+   "x0": 4731,
+   "x1": 5276,
+   "y0": 1412,
+   "y1": 1486,
+   "width_sp": 17.0,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     74,
+     4732,
+     5324
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K007",
+   "ids": [
+    "q131"
+   ],
+   "hand_x0": 4730,
+   "hand_x1": 5234,
+   "extended": [],
+   "x0": 4730,
+   "x1": 5234,
+   "y0": 1846,
+   "y1": 1906,
+   "width_sp": 15.7,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     76,
+     4730,
+     5280
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K008",
+   "ids": [
+    "b4108"
+   ],
+   "hand_x0": 2118,
+   "hand_x1": 2567,
+   "extended": [
+    "L"
+   ],
+   "x0": 1666,
+   "x1": 2567,
+   "y0": 1825,
+   "y1": 1927,
+   "width_sp": 28.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     16,
+     1666,
+     2586
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K009",
+   "ids": [
+    "q203"
+   ],
+   "hand_x0": 2731,
+   "hand_x1": 2906,
+   "extended": [],
+   "x0": 2731,
+   "x1": 2906,
+   "y0": 1919,
+   "y1": 1961,
+   "width_sp": 5.5,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     27,
+     2728,
+     2942
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K010",
+   "ids": [
+    "q215"
+   ],
+   "hand_x0": 3151,
+   "hand_x1": 3476,
+   "extended": [],
+   "x0": 3151,
+   "x1": 3476,
+   "y0": 1909,
+   "y1": 1973,
+   "width_sp": 10.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     40,
+     3156,
+     3476
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K011",
+   "ids": [
+    "q229"
+   ],
+   "hand_x0": 3554,
+   "hand_x1": 4026,
+   "extended": [],
+   "x0": 3554,
+   "x1": 4026,
+   "y0": 1907,
+   "y1": 1975,
+   "width_sp": 14.8,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     53,
+     3630,
+     4028
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K012",
+   "ids": [
+    "q287",
+    "b4178"
+   ],
+   "hand_x0": 1674,
+   "hand_x1": 2571,
+   "extended": [],
+   "x0": 1674,
+   "x1": 2571,
+   "y0": 2636,
+   "y1": 2729,
+   "width_sp": 28.0,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     18,
+     1668,
+     2564
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K013",
+   "ids": [
+    "q291",
+    "b4144"
+   ],
+   "hand_x0": 1670,
+   "hand_x1": 2576,
+   "extended": [],
+   "x0": 1670,
+   "x1": 2576,
+   "y0": 2208,
+   "y1": 2297,
+   "width_sp": 28.3,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     19,
+     1670,
+     2566
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K014",
+   "ids": [
+    "q326"
+   ],
+   "hand_x0": 2726,
+   "hand_x1": 2906,
+   "extended": [],
+   "x0": 2726,
+   "x1": 2906,
+   "y0": 2290,
+   "y1": 2333,
+   "width_sp": 5.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     26,
+     2726,
+     2946
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K015",
+   "ids": [
+    "q338"
+   ],
+   "hand_x0": 3160,
+   "hand_x1": 3482,
+   "extended": [],
+   "x0": 3160,
+   "x1": 3482,
+   "y0": 2304,
+   "y1": 2347,
+   "width_sp": 10.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     41,
+     3160,
+     3482
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K016",
+   "ids": [
+    "q353"
+   ],
+   "hand_x0": 3638,
+   "hand_x1": 4029,
+   "extended": [],
+   "x0": 3638,
+   "x1": 4029,
+   "y0": 2519,
+   "y1": 2583,
+   "width_sp": 12.2,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     55,
+     3568,
+     4030
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K017",
+   "ids": [
+    "q373"
+   ],
+   "hand_x0": 4164,
+   "hand_x1": 4609,
+   "extended": [],
+   "x0": 4164,
+   "x1": 4609,
+   "y0": 2469,
+   "y1": 2541,
+   "width_sp": 13.9,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     64,
+     4164,
+     4610
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K018",
+   "ids": [
+    "q381"
+   ],
+   "hand_x0": 4143,
+   "hand_x1": 4608,
+   "extended": [],
+   "x0": 4143,
+   "x1": 4608,
+   "y0": 2648,
+   "y1": 2724,
+   "width_sp": 14.5,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     63,
+     4158,
+     4604
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K019",
+   "ids": [
+    "b4169"
+   ],
+   "hand_x0": 4716,
+   "hand_x1": 5286,
+   "extended": [],
+   "x0": 4716,
+   "x1": 5286,
+   "y0": 2270,
+   "y1": 2349,
+   "width_sp": 17.8,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     77,
+     4734,
+     5318
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K020",
+   "ids": [
+    "q450"
+   ],
+   "hand_x0": 2734,
+   "hand_x1": 2909,
+   "extended": [],
+   "x0": 2734,
+   "x1": 2909,
+   "y0": 2720,
+   "y1": 2762,
+   "width_sp": 5.5,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     28,
+     2738,
+     2946
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K021",
+   "ids": [
+    "q464"
+   ],
+   "hand_x0": 3175,
+   "hand_x1": 3482,
+   "extended": [],
+   "x0": 3175,
+   "x1": 3482,
+   "y0": 2708,
+   "y1": 2764,
+   "width_sp": 9.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     43,
+     3174,
+     3488
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K022",
+   "ids": [
+    "q485"
+   ],
+   "hand_x0": 3649,
+   "hand_x1": 4022,
+   "extended": [],
+   "x0": 3649,
+   "x1": 4022,
+   "y0": 2704,
+   "y1": 2766,
+   "width_sp": 11.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     1,
+     3648,
+     4140
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K023",
+   "ids": [
+    "b4196"
+   ],
+   "hand_x0": 4711,
+   "hand_x1": 5287,
+   "extended": [],
+   "x0": 4711,
+   "x1": 5287,
+   "y0": 2589,
+   "y1": 2679,
+   "width_sp": 18.0,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     78,
+     4734,
+     5316
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K024",
+   "ids": [
+    "q525"
+   ],
+   "hand_x0": 1674,
+   "hand_x1": 2039,
+   "extended": [],
+   "x0": 1674,
+   "x1": 2039,
+   "y0": 3284,
+   "y1": 3332,
+   "width_sp": 11.4,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     7,
+     1648,
+     2038
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K025",
+   "ids": [
+    "b4061",
+    "q634"
+   ],
+   "hand_x0": 1699,
+   "hand_x1": 2232,
+   "extended": [],
+   "x0": 1699,
+   "x1": 2232,
+   "y0": 3590,
+   "y1": 3634,
+   "width_sp": 16.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K026",
+   "ids": [
+    "b4062"
+   ],
+   "hand_x0": 1694,
+   "hand_x1": 1779,
+   "extended": [],
+   "x0": 1694,
+   "x1": 1779,
+   "y0": 3774,
+   "y1": 3803,
+   "width_sp": 2.6,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     81,
+     1642,
+     2300
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K027",
+   "ids": [
+    "q632",
+    "q648"
+   ],
+   "hand_x0": 2141,
+   "hand_x1": 2718,
+   "extended": [],
+   "x0": 2141,
+   "x1": 2718,
+   "y0": 3592,
+   "y1": 3627,
+   "width_sp": 18.0,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K028",
+   "ids": [
+    "q639",
+    "q660",
+    "q647"
+   ],
+   "hand_x0": 2688,
+   "hand_x1": 3141,
+   "extended": [],
+   "x0": 2688,
+   "x1": 3141,
+   "y0": 3594,
+   "y1": 3636,
+   "width_sp": 14.2,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie",
+    "tie"
+   ],
+   "nboxes": 3,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K029",
+   "ids": [
+    "q765",
+    "q777"
+   ],
+   "hand_x0": 2751,
+   "hand_x1": 3160,
+   "extended": [],
+   "x0": 2751,
+   "x1": 3160,
+   "y0": 3782,
+   "y1": 3821,
+   "width_sp": 12.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     83,
+     2720,
+     3218
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K030",
+   "ids": [
+    "q663",
+    "q684"
+   ],
+   "hand_x0": 3162,
+   "hand_x1": 3623,
+   "extended": [],
+   "x0": 3162,
+   "x1": 3623,
+   "y0": 3591,
+   "y1": 3626,
+   "width_sp": 14.4,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K031",
+   "ids": [
+    "q779",
+    "b4028"
+   ],
+   "hand_x0": 3181,
+   "hand_x1": 3634,
+   "extended": [],
+   "x0": 3181,
+   "x1": 3634,
+   "y0": 3781,
+   "y1": 3823,
+   "width_sp": 14.2,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     84,
+     3142,
+     3632
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K032",
+   "ids": [
+    "q678",
+    "b4033"
+   ],
+   "hand_x0": 3651,
+   "hand_x1": 4166,
+   "extended": [],
+   "x0": 3651,
+   "x1": 4166,
+   "y0": 3782,
+   "y1": 3807,
+   "width_sp": 16.1,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     85,
+     3618,
+     4166
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K033",
+   "ids": [
+    "q683",
+    "b4032"
+   ],
+   "hand_x0": 3569,
+   "hand_x1": 4156,
+   "extended": [],
+   "x0": 3569,
+   "x1": 4156,
+   "y0": 3589,
+   "y1": 3625,
+   "width_sp": 18.3,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K034",
+   "ids": [
+    "q698",
+    "q710"
+   ],
+   "hand_x0": 4152,
+   "hand_x1": 4724,
+   "extended": [],
+   "x0": 4152,
+   "x1": 4724,
+   "y0": 3582,
+   "y1": 3627,
+   "width_sp": 17.9,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K035",
+   "ids": [
+    "b4034"
+   ],
+   "hand_x0": 4196,
+   "hand_x1": 4675,
+   "extended": [],
+   "x0": 4196,
+   "x1": 4675,
+   "y0": 3776,
+   "y1": 3805,
+   "width_sp": 15.0,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": false,
+   "open_R": true,
+   "cross_system": false,
+   "runs": [
+    [
+     86,
+     4146,
+     4730
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K036",
+   "ids": [
+    "q707"
+   ],
+   "hand_x0": 4716,
+   "hand_x1": 5374,
+   "extended": [],
+   "x0": 4716,
+   "x1": 5374,
+   "y0": 3599,
+   "y1": 3646,
+   "width_sp": 20.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": true,
+   "open_R": true,
+   "cross_system": true,
+   "runs": [],
+   "scorable": false,
+   "pending_sean": [
+    "cross-system tie (key tile 7 is PENDING): its far end is on the next system, not scorable on this page"
+   ]
+  },
+  {
+   "id": "K037",
+   "ids": [
+    "q794"
+   ],
+   "hand_x0": 4761,
+   "hand_x1": 5378,
+   "extended": [],
+   "x0": 4761,
+   "x1": 5378,
+   "y0": 3778,
+   "y1": 3825,
+   "width_sp": 19.3,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": true,
+   "cross_system": true,
+   "runs": [
+    [
+     87,
+     4720,
+     5382
+    ]
+   ],
+   "scorable": false,
+   "pending_sean": [
+    "cross-system tie (key tile 7 is PENDING): its far end is on the next system, not scorable on this page"
+   ]
+  },
+  {
+   "id": "K038",
+   "ids": [
+    "q719",
+    "q747",
+    "q754",
+    "q780"
+   ],
+   "hand_x0": 1882,
+   "hand_x1": 3180,
+   "extended": [],
+   "x0": 1882,
+   "x1": 3180,
+   "y0": 3855,
+   "y1": 3994,
+   "width_sp": 40.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur",
+    "slur",
+    "slur"
+   ],
+   "nboxes": 4,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     35,
+     1882,
+     3184
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K039",
+   "ids": [
+    "b4010",
+    "q627"
+   ],
+   "hand_x0": 1692,
+   "hand_x1": 2245,
+   "extended": [],
+   "x0": 1692,
+   "x1": 2245,
+   "y0": 3766,
+   "y1": 3843,
+   "width_sp": 17.3,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     81,
+     1642,
+     2300
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K040",
+   "ids": [
+    "b4012",
+    "q641"
+   ],
+   "hand_x0": 2274,
+   "hand_x1": 2727,
+   "extended": [],
+   "x0": 2274,
+   "x1": 2727,
+   "y0": 3777,
+   "y1": 3840,
+   "width_sp": 14.2,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     82,
+     2246,
+     2726
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K041",
+   "ids": [
+    "q817"
+   ],
+   "hand_x0": 1696,
+   "hand_x1": 1877,
+   "extended": [],
+   "x0": 1696,
+   "x1": 1877,
+   "y0": 4301,
+   "y1": 4322,
+   "width_sp": 5.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     6,
+     1688,
+     1918
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K042",
+   "ids": [
+    "q860"
+   ],
+   "hand_x0": 1669,
+   "hand_x1": 1874,
+   "extended": [],
+   "x0": 1669,
+   "x1": 1874,
+   "y0": 4483,
+   "y1": 4517,
+   "width_sp": 6.4,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     3,
+     1652,
+     1906
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K043",
+   "ids": [
+    "q949"
+   ],
+   "hand_x0": 2113,
+   "hand_x1": 2606,
+   "extended": [
+    "L"
+   ],
+   "x0": 1672,
+   "x1": 2606,
+   "y0": 4969,
+   "y1": 5025,
+   "width_sp": 29.2,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     22,
+     1672,
+     2646
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K044",
+   "ids": [
+    "q920"
+   ],
+   "hand_x0": 1680,
+   "hand_x1": 1884,
+   "extended": [],
+   "x0": 1680,
+   "x1": 1884,
+   "y0": 5042,
+   "y1": 5074,
+   "width_sp": 6.4,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     5,
+     1652,
+     1884
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K045",
+   "ids": [
+    "q941"
+   ],
+   "hand_x0": 2112,
+   "hand_x1": 2254,
+   "extended": [
+    "L"
+   ],
+   "x0": 1994,
+   "x1": 2254,
+   "y0": 5040,
+   "y1": 5075,
+   "width_sp": 8.1,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     10,
+     1994,
+     2254
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K046",
+   "ids": [
+    "q951"
+   ],
+   "hand_x0": 2354,
+   "hand_x1": 2433,
+   "extended": [],
+   "x0": 2354,
+   "x1": 2433,
+   "y0": 5035,
+   "y1": 5056,
+   "width_sp": 2.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     13,
+     2350,
+     2502
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K047",
+   "ids": [
+    "q953"
+   ],
+   "hand_x0": 2619,
+   "hand_x1": 2671,
+   "extended": [
+    "R"
+   ],
+   "x0": 2619,
+   "x1": 2742,
+   "y0": 4985,
+   "y1": 5010,
+   "width_sp": 3.8,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     44,
+     2594,
+     2742
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K048",
+   "ids": [
+    "b4055"
+   ],
+   "hand_x0": 2826,
+   "hand_x1": 2923,
+   "extended": [],
+   "x0": 2826,
+   "x1": 2923,
+   "y0": 4971,
+   "y1": 4996,
+   "width_sp": 3.0,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     31,
+     2828,
+     2916
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K049",
+   "ids": [
+    "b4056"
+   ],
+   "hand_x0": 2744,
+   "hand_x1": 2950,
+   "extended": [],
+   "x0": 2744,
+   "x1": 2950,
+   "y0": 4969,
+   "y1": 5005,
+   "width_sp": 6.4,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "drawn"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     31,
+     2828,
+     2916
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K050",
+   "ids": [
+    "b4057",
+    "q892"
+   ],
+   "hand_x0": 3019,
+   "hand_x1": 3469,
+   "extended": [],
+   "x0": 3019,
+   "x1": 3469,
+   "y0": 4922,
+   "y1": 4994,
+   "width_sp": 14.1,
+   "kind": "slur",
+   "kind_conflict": true,
+   "kinds": [
+    "tie",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     37,
+     3270,
+     3356
+    ],
+    [
+     45,
+     2708,
+     3502
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": [
+    "kind: Sean's own boxes name both a tie and a slur over this one mark (page-facts: same pitch = tie, else slur; ask him or read the two notes)"
+   ]
+  },
+  {
+   "id": "K051",
+   "ids": [
+    "q896",
+    "q897",
+    "q1012"
+   ],
+   "hand_x0": 3269,
+   "hand_x1": 3357,
+   "extended": [],
+   "x0": 3269,
+   "x1": 3357,
+   "y0": 4963,
+   "y1": 4981,
+   "width_sp": 2.8,
+   "kind": "tie",
+   "kind_conflict": true,
+   "kinds": [
+    "tie",
+    "slur",
+    "tie"
+   ],
+   "nboxes": 3,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     37,
+     3270,
+     3356
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": [
+    "kind: Sean's own boxes name both a tie and a slur over this one mark (page-facts: same pitch = tie, else slur; ask him or read the two notes)"
+   ]
+  },
+  {
+   "id": "K052",
+   "ids": [
+    "q1019",
+    "q1050",
+    "q902"
+   ],
+   "hand_x0": 3489,
+   "hand_x1": 3634,
+   "extended": [],
+   "x0": 3489,
+   "x1": 3634,
+   "y0": 4951,
+   "y1": 4995,
+   "width_sp": 4.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie",
+    "tie"
+   ],
+   "nboxes": 3,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     46,
+     3430,
+     3758
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K053",
+   "ids": [
+    "q1038"
+   ],
+   "hand_x0": 3373,
+   "hand_x1": 3480,
+   "extended": [],
+   "x0": 3373,
+   "x1": 3480,
+   "y0": 4969,
+   "y1": 4991,
+   "width_sp": 3.3,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K054",
+   "ids": [
+    "q899",
+    "q1073"
+   ],
+   "hand_x0": 3672,
+   "hand_x1": 4603,
+   "extended": [],
+   "x0": 3672,
+   "x1": 4603,
+   "y0": 4938,
+   "y1": 5053,
+   "width_sp": 29.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     58,
+     4040,
+     4204
+    ],
+    [
+     89,
+     3626,
+     4628
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K055",
+   "ids": [
+    "q1052",
+    "q1080"
+   ],
+   "hand_x0": 4041,
+   "hand_x1": 4164,
+   "extended": [],
+   "x0": 4041,
+   "x1": 4164,
+   "y0": 5001,
+   "y1": 5028,
+   "width_sp": 3.9,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     58,
+     4040,
+     4204
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K056",
+   "ids": [
+    "q1071"
+   ],
+   "hand_x0": 3652,
+   "hand_x1": 3702,
+   "extended": [],
+   "x0": 3652,
+   "x1": 3702,
+   "y0": 4969,
+   "y1": 4986,
+   "width_sp": 1.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     89,
+     3626,
+     4628
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K057",
+   "ids": [
+    "q1076",
+    "q1107"
+   ],
+   "hand_x0": 4615,
+   "hand_x1": 4739,
+   "extended": [],
+   "x0": 4615,
+   "x1": 4739,
+   "y0": 5027,
+   "y1": 5052,
+   "width_sp": 3.9,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     90,
+     4604,
+     4738
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K058",
+   "ids": [
+    "q1096"
+   ],
+   "hand_x0": 4755,
+   "hand_x1": 5296,
+   "extended": [],
+   "x0": 4755,
+   "x1": 5296,
+   "y0": 5004,
+   "y1": 5087,
+   "width_sp": 16.9,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     73,
+     4964,
+     5088
+    ],
+    [
+     91,
+     4752,
+     5318
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K059",
+   "ids": [
+    "q1099"
+   ],
+   "hand_x0": 4964,
+   "hand_x1": 5087,
+   "extended": [],
+   "x0": 4964,
+   "x1": 5087,
+   "y0": 5047,
+   "y1": 5072,
+   "width_sp": 3.9,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     73,
+     4964,
+     5088
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K060",
+   "ids": [
+    "q1110"
+   ],
+   "hand_x0": 5304,
+   "hand_x1": 5388,
+   "extended": [],
+   "x0": 5304,
+   "x1": 5388,
+   "y0": 5070,
+   "y1": 5093,
+   "width_sp": 2.6,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": true,
+   "cross_system": true,
+   "runs": [
+    [
+     92,
+     5294,
+     5390
+    ]
+   ],
+   "scorable": false,
+   "pending_sean": [
+    "cross-system tie (key tile 7 is PENDING): its far end is on the next system, not scorable on this page"
+   ]
+  },
+  {
+   "id": "K061",
+   "ids": [
+    "q1130",
+    "q1156"
+   ],
+   "hand_x0": 1672,
+   "hand_x1": 2604,
+   "extended": [],
+   "x0": 1672,
+   "x1": 2604,
+   "y0": 5465,
+   "y1": 5560,
+   "width_sp": 29.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     4,
+     1676,
+     1880
+    ],
+    [
+     11,
+     2014,
+     2254
+    ],
+    [
+     14,
+     2352,
+     2460
+    ],
+    [
+     23,
+     1686,
+     2642
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K062",
+   "ids": [
+    "q1136"
+   ],
+   "hand_x0": 1674,
+   "hand_x1": 1881,
+   "extended": [],
+   "x0": 1674,
+   "x1": 1881,
+   "y0": 5548,
+   "y1": 5565,
+   "width_sp": 6.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     4,
+     1676,
+     1880
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K063",
+   "ids": [
+    "q1145"
+   ],
+   "hand_x0": 2047,
+   "hand_x1": 2112,
+   "extended": [
+    "R"
+   ],
+   "x0": 2047,
+   "x1": 2254,
+   "y0": 5529,
+   "y1": 5562,
+   "width_sp": 6.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     11,
+     2014,
+     2254
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K064",
+   "ids": [
+    "q1162",
+    "q1182"
+   ],
+   "hand_x0": 2616,
+   "hand_x1": 2738,
+   "extended": [],
+   "x0": 2616,
+   "x1": 2738,
+   "y0": 5488,
+   "y1": 5514,
+   "width_sp": 3.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     24,
+     2616,
+     2752
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K065",
+   "ids": [
+    "q1165"
+   ],
+   "hand_x0": 2350,
+   "hand_x1": 2435,
+   "extended": [],
+   "x0": 2350,
+   "x1": 2435,
+   "y0": 5535,
+   "y1": 5556,
+   "width_sp": 2.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     14,
+     2352,
+     2460
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K066",
+   "ids": [
+    "q1173",
+    "q1190"
+   ],
+   "hand_x0": 2748,
+   "hand_x1": 3478,
+   "extended": [],
+   "x0": 2748,
+   "x1": 3478,
+   "y0": 5422,
+   "y1": 5506,
+   "width_sp": 22.8,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     29,
+     2828,
+     2914
+    ],
+    [
+     50,
+     2732,
+     3492
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K067",
+   "ids": [
+    "q1184"
+   ],
+   "hand_x0": 2829,
+   "hand_x1": 2915,
+   "extended": [],
+   "x0": 2829,
+   "x1": 2915,
+   "y0": 5479,
+   "y1": 5496,
+   "width_sp": 2.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     29,
+     2828,
+     2914
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K068",
+   "ids": [
+    "q1186",
+    "q1196"
+   ],
+   "hand_x0": 3018,
+   "hand_x1": 3160,
+   "extended": [],
+   "x0": 3018,
+   "x1": 3160,
+   "y0": 5467,
+   "y1": 5497,
+   "width_sp": 4.4,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K069",
+   "ids": [
+    "q1200"
+   ],
+   "hand_x0": 3269,
+   "hand_x1": 3356,
+   "extended": [],
+   "x0": 3269,
+   "x1": 3356,
+   "y0": 5457,
+   "y1": 5476,
+   "width_sp": 2.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K070",
+   "ids": [
+    "q1202",
+    "q1214"
+   ],
+   "hand_x0": 3487,
+   "hand_x1": 3634,
+   "extended": [],
+   "x0": 3487,
+   "x1": 3634,
+   "y0": 5462,
+   "y1": 5499,
+   "width_sp": 4.6,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     51,
+     3420,
+     3670
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K071",
+   "ids": [
+    "q1044",
+    "q1078"
+   ],
+   "hand_x0": 3655,
+   "hand_x1": 4601,
+   "extended": [],
+   "x0": 3655,
+   "x1": 4601,
+   "y0": 5433,
+   "y1": 5542,
+   "width_sp": 29.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     57,
+     4036,
+     4186
+    ],
+    [
+     69,
+     3624,
+     4598
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K072",
+   "ids": [
+    "q1213",
+    "q1234"
+   ],
+   "hand_x0": 4037,
+   "hand_x1": 4160,
+   "extended": [],
+   "x0": 4037,
+   "x1": 4160,
+   "y0": 5499,
+   "y1": 5525,
+   "width_sp": 3.9,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     57,
+     4036,
+     4186
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K073",
+   "ids": [
+    "q1233",
+    "b4299"
+   ],
+   "hand_x0": 4612,
+   "hand_x1": 4732,
+   "extended": [],
+   "x0": 4612,
+   "x1": 4732,
+   "y0": 5521,
+   "y1": 5553,
+   "width_sp": 3.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     70,
+     4616,
+     4758
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K074",
+   "ids": [
+    "q1249"
+   ],
+   "hand_x0": 4966,
+   "hand_x1": 5080,
+   "extended": [],
+   "x0": 4966,
+   "x1": 5080,
+   "y0": 5615,
+   "y1": 5635,
+   "width_sp": 3.6,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     71,
+     4968,
+     5080
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K075",
+   "ids": [
+    "q1250"
+   ],
+   "hand_x0": 5299,
+   "hand_x1": 5387,
+   "extended": [],
+   "x0": 5299,
+   "x1": 5387,
+   "y0": 5644,
+   "y1": 5661,
+   "width_sp": 2.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": true,
+   "cross_system": true,
+   "runs": [
+    [
+     95,
+     5300,
+     5448
+    ]
+   ],
+   "scorable": false,
+   "pending_sean": [
+    "cross-system tie (key tile 7 is PENDING): its far end is on the next system, not scorable on this page"
+   ]
+  },
+  {
+   "id": "K076",
+   "ids": [
+    "q1256"
+   ],
+   "hand_x0": 4713,
+   "hand_x1": 5381,
+   "extended": [],
+   "x0": 4713,
+   "x1": 5381,
+   "y0": 5671,
+   "y1": 5778,
+   "width_sp": 20.9,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": true,
+   "open_R": true,
+   "cross_system": false,
+   "runs": [
+    [
+     79,
+     4730,
+     5314
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K077",
+   "ids": [
+    "q1405"
+   ],
+   "hand_x0": 4760,
+   "hand_x1": 5303,
+   "extended": [],
+   "x0": 4760,
+   "x1": 5303,
+   "y0": 5805,
+   "y1": 5882,
+   "width_sp": 17.0,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     80,
+     4756,
+     5350
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K078",
+   "ids": [
+    "q1269",
+    "q1297"
+   ],
+   "hand_x0": 1690,
+   "hand_x1": 2575,
+   "extended": [],
+   "x0": 1690,
+   "x1": 2575,
+   "y0": 5840,
+   "y1": 5937,
+   "width_sp": 27.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     20,
+     1674,
+     2622
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K079",
+   "ids": [
+    "q1316",
+    "q1347"
+   ],
+   "hand_x0": 2686,
+   "hand_x1": 3462,
+   "extended": [],
+   "x0": 2686,
+   "x1": 3462,
+   "y0": 6110,
+   "y1": 6224,
+   "width_sp": 24.2,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": true,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     38,
+     2710,
+     3460
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K080",
+   "ids": [
+    "q1321",
+    "q1507"
+   ],
+   "hand_x0": 3021,
+   "hand_x1": 3166,
+   "extended": [],
+   "x0": 3021,
+   "x1": 3166,
+   "y0": 6290,
+   "y1": 6318,
+   "width_sp": 4.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K081",
+   "ids": [
+    "q1324"
+   ],
+   "hand_x0": 2829,
+   "hand_x1": 2918,
+   "extended": [],
+   "x0": 2829,
+   "x1": 2918,
+   "y0": 6301,
+   "y1": 6320,
+   "width_sp": 2.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     30,
+     2828,
+     2914
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K082",
+   "ids": [
+    "q1327",
+    "q1338"
+   ],
+   "hand_x0": 2735,
+   "hand_x1": 3486,
+   "extended": [],
+   "x0": 2735,
+   "x1": 3486,
+   "y0": 5859,
+   "y1": 5923,
+   "width_sp": 23.5,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     42,
+     2734,
+     3484
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K083",
+   "ids": [
+    "q1483",
+    "q1503"
+   ],
+   "hand_x0": 2747,
+   "hand_x1": 3480,
+   "extended": [],
+   "x0": 2747,
+   "x1": 3480,
+   "y0": 6252,
+   "y1": 6328,
+   "width_sp": 22.9,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     30,
+     2828,
+     2914
+    ],
+    [
+     36,
+     3246,
+     3356
+    ],
+    [
+     48,
+     2702,
+     3502
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K084",
+   "ids": [
+    "q1348",
+    "q1513"
+   ],
+   "hand_x0": 3268,
+   "hand_x1": 3358,
+   "extended": [],
+   "x0": 3268,
+   "x1": 3358,
+   "y0": 6287,
+   "y1": 6306,
+   "width_sp": 2.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     36,
+     3246,
+     3356
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K085",
+   "ids": [
+    "q1516",
+    "q1529"
+   ],
+   "hand_x0": 3492,
+   "hand_x1": 3636,
+   "extended": [],
+   "x0": 3492,
+   "x1": 3636,
+   "y0": 6289,
+   "y1": 6320,
+   "width_sp": 4.5,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     49,
+     3430,
+     3678
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K086",
+   "ids": [
+    "q1360",
+    "q1382"
+   ],
+   "hand_x0": 3653,
+   "hand_x1": 4602,
+   "extended": [],
+   "x0": 3653,
+   "x1": 4602,
+   "y0": 6246,
+   "y1": 6317,
+   "width_sp": 29.7,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     67,
+     3624,
+     4630
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K087",
+   "ids": [
+    "q1362",
+    "q1226"
+   ],
+   "hand_x0": 3650,
+   "hand_x1": 4615,
+   "extended": [],
+   "x0": 3650,
+   "x1": 4615,
+   "y0": 5831,
+   "y1": 5984,
+   "width_sp": 30.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     65,
+     3658,
+     4614
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K088",
+   "ids": [
+    "q1363",
+    "q1398"
+   ],
+   "hand_x0": 3632,
+   "hand_x1": 4595,
+   "extended": [],
+   "x0": 3632,
+   "x1": 4595,
+   "y0": 6116,
+   "y1": 6226,
+   "width_sp": 30.1,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     60,
+     3592,
+     4596
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K089",
+   "ids": [
+    "q1415"
+   ],
+   "hand_x0": 4981,
+   "hand_x1": 5063,
+   "extended": [],
+   "x0": 4981,
+   "x1": 5063,
+   "y0": 6310,
+   "y1": 6320,
+   "width_sp": 2.6,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     72,
+     4930,
+     5122
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K090",
+   "ids": [
+    "q1420"
+   ],
+   "hand_x0": 4730,
+   "hand_x1": 5362,
+   "extended": [],
+   "x0": 4730,
+   "x1": 5362,
+   "y0": 6124,
+   "y1": 6205,
+   "width_sp": 19.7,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": true,
+   "cross_system": false,
+   "runs": [
+    [
+     75,
+     4718,
+     5312
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K091",
+   "ids": [
+    "q1564"
+   ],
+   "hand_x0": 4760,
+   "hand_x1": 5292,
+   "extended": [],
+   "x0": 4760,
+   "x1": 5292,
+   "y0": 6264,
+   "y1": 6348,
+   "width_sp": 16.7,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     72,
+     4930,
+     5122
+    ],
+    [
+     93,
+     4760,
+     5294
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K092",
+   "ids": [
+    "q1447",
+    "q1308"
+   ],
+   "hand_x0": 1670,
+   "hand_x1": 2552,
+   "extended": [],
+   "x0": 1670,
+   "x1": 2552,
+   "y0": 6286,
+   "y1": 6384,
+   "width_sp": 27.6,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur",
+    "slur"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     21,
+     1670,
+     2646
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K093",
+   "ids": [
+    "q1455"
+   ],
+   "hand_x0": 1675,
+   "hand_x1": 1874,
+   "extended": [],
+   "x0": 1675,
+   "x1": 1874,
+   "y0": 6366,
+   "y1": 6398,
+   "width_sp": 6.2,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     2,
+     1684,
+     1860
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K094",
+   "ids": [
+    "b4360",
+    "q1477"
+   ],
+   "hand_x0": 2045,
+   "hand_x1": 2251,
+   "extended": [],
+   "x0": 2045,
+   "x1": 2251,
+   "y0": 6357,
+   "y1": 6398,
+   "width_sp": 6.4,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "drawn",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K095",
+   "ids": [
+    "q1474",
+    "q1489"
+   ],
+   "hand_x0": 2619,
+   "hand_x1": 2741,
+   "extended": [],
+   "x0": 2619,
+   "x1": 2741,
+   "y0": 6312,
+   "y1": 6339,
+   "width_sp": 3.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     47,
+     2600,
+     2738
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K096",
+   "ids": [
+    "q1538"
+   ],
+   "hand_x0": 4040,
+   "hand_x1": 4107,
+   "extended": [
+    "R"
+   ],
+   "x0": 4040,
+   "x1": 4224,
+   "y0": 6326,
+   "y1": 6349,
+   "width_sp": 5.7,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     59,
+     4004,
+     4224
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K097",
+   "ids": [
+    "q1555",
+    "q1581"
+   ],
+   "hand_x0": 4615,
+   "hand_x1": 4737,
+   "extended": [],
+   "x0": 4615,
+   "x1": 4737,
+   "y0": 6289,
+   "y1": 6317,
+   "width_sp": 3.8,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     68,
+     4614,
+     4760
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  },
+  {
+   "id": "K098",
+   "ids": [
+    "q1580",
+    "q1587"
+   ],
+   "hand_x0": 5302,
+   "hand_x1": 5385,
+   "extended": [],
+   "x0": 5302,
+   "x1": 5385,
+   "y0": 6329,
+   "y1": 6359,
+   "width_sp": 2.6,
+   "kind": "tie",
+   "kind_conflict": false,
+   "kinds": [
+    "tie",
+    "tie"
+   ],
+   "nboxes": 2,
+   "origins": [
+    "prefill-confirmed",
+    "prefill-fixed"
+   ],
+   "open_L": false,
+   "open_R": true,
+   "cross_system": true,
+   "runs": [
+    [
+     94,
+     5302,
+     5404
+    ]
+   ],
+   "scorable": false,
+   "pending_sean": [
+    "cross-system tie (key tile 7 is PENDING): its far end is on the next system, not scorable on this page"
+   ]
+  },
+  {
+   "id": "K099",
+   "ids": [
+    "q1610"
+   ],
+   "hand_x0": 1682,
+   "hand_x1": 2044,
+   "extended": [],
+   "x0": 1682,
+   "x1": 2044,
+   "y0": 6856,
+   "y1": 6901,
+   "width_sp": 11.3,
+   "kind": "slur",
+   "kind_conflict": false,
+   "kinds": [
+    "slur"
+   ],
+   "nboxes": 1,
+   "origins": [
+    "prefill-confirmed"
+   ],
+   "open_L": false,
+   "open_R": false,
+   "cross_system": false,
+   "runs": [
+    [
+     8,
+     1684,
+     2044
+    ]
+   ],
+   "scorable": true,
+   "pending_sean": []
+  }
+ ],
+ "changes": [
+  {
+   "change": "drop_ghost",
+   "ids": [
+    "q877"
+   ],
+   "rect": [
+    2114,
+    4763,
+    2671,
+    4800
+   ],
+   "reason": "tie box over a dotted half note and bare staff lines: no arc ink on the print (staff 8, bar 1); the detector refused it (`ink_is_a_staff_line`), no page-ink run, no head pair",
+   "evidence": "crop look 2.281 (strip s7_8) + 2.274 r3 census (no run, box_cov_kept 0); Sean's tile 10 on it is PENDING",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "drop_ghost",
+   "ids": [
+    "q878"
+   ],
+   "rect": [
+    2113,
+    4646,
+    2671,
+    4670
+   ],
+   "reason": "tie box over a dotted half note and bare staff lines: no arc ink on the print (staff 8, bar 1); the detector refused it (`ink_is_a_staff_line`), no page-ink run, no head pair",
+   "evidence": "crop look 2.281 (strip s7_8) + 2.274 r3 census (no run, box_cov_kept 0); Sean's tile 10 on it is PENDING",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "drop_ghost",
+   "ids": [
+    "q879"
+   ],
+   "rect": [
+    2112,
+    4677,
+    2669,
+    4727
+   ],
+   "reason": "tie box over a dotted half note and bare staff lines: no arc ink on the print (staff 8, bar 1); the detector refused it (`ink_is_a_staff_line`), no page-ink run, no head pair",
+   "evidence": "crop look 2.281 (strip s7_8) + 2.274 r3 census (no run, box_cov_kept 0); Sean's tile 10 on it is PENDING",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "drop_ghost",
+   "ids": [
+    "q881"
+   ],
+   "rect": [
+    2114,
+    4639,
+    2301,
+    4662
+   ],
+   "reason": "tie box over a dotted half note and bare staff lines: no arc ink on the print (staff 8, bar 1); the detector refused it (`ink_is_a_staff_line`), no page-ink run, no head pair",
+   "evidence": "crop look 2.281 (strip s7_8) + 2.274 r3 census (no run, box_cov_kept 0); Sean's tile 10 on it is PENDING",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "drop_ghost",
+   "ids": [
+    "q882"
+   ],
+   "rect": [
+    2112,
+    4707,
+    2671,
+    4766
+   ],
+   "reason": "tie box over a dotted half note and bare staff lines: no arc ink on the print (staff 8, bar 1); the detector refused it (`ink_is_a_staff_line`), no page-ink run, no head pair",
+   "evidence": "crop look 2.281 (strip s7_8) + 2.274 r3 census (no run, box_cov_kept 0); Sean's tile 10 on it is PENDING",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "dedupe_label",
+   "ids": [
+    "q896",
+    "q897"
+   ],
+   "reason": "two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "kinds": [
+    "slur",
+    "tie"
+   ],
+   "evidence": "2.274 r3 audit (P54/55/56, P91/92, P106/107) + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "dedupe_label",
+   "ids": [
+    "q896",
+    "q897",
+    "q1012"
+   ],
+   "reason": "two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "kinds": [
+    "slur",
+    "tie"
+   ],
+   "evidence": "2.274 r3 audit (P54/55/56, P91/92, P106/107) + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "dedupe_label",
+   "ids": [
+    "q1050",
+    "q902"
+   ],
+   "reason": "two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "kinds": [
+    "tie"
+   ],
+   "evidence": "2.274 r3 audit (P54/55/56, P91/92, P106/107) + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "dedupe_label",
+   "ids": [
+    "q1348",
+    "q1513"
+   ],
+   "reason": "two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "kinds": [
+    "tie"
+   ],
+   "evidence": "2.274 r3 audit (P54/55/56, P91/92, P106/107) + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "dedupe_label",
+   "ids": [
+    "q1580",
+    "q1587"
+   ],
+   "reason": "two hand labels over one mark (both x extents within 40 px, y bands overlap): one arc counted once",
+   "kinds": [
+    "tie"
+   ],
+   "evidence": "2.274 r3 audit (P54/55/56, P91/92, P106/107) + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q719",
+    "q747"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "b4360",
+    "q1477"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1269",
+    "q1297"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "b4061",
+    "q634"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1130",
+    "q1156"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1447",
+    "q1308"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q287",
+    "b4178"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q291",
+    "b4144"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "b4010",
+    "q627"
+   ],
+   "edge": 2112,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2112 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1162",
+    "q1182"
+   ],
+   "edge": 2671,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2671 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1474",
+    "q1489"
+   ],
+   "edge": 2671,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2671 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "b4012",
+    "q641"
+   ],
+   "edge": 2671,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2671 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q632",
+    "q648"
+   ],
+   "edge": 2671,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=2671 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q719",
+    "q747",
+    "q754"
+   ],
+   "edge": 2671,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=2671 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1321",
+    "q1507"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q765",
+    "q777"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q639",
+    "q660"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1186",
+    "q1196"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1483",
+    "q1503"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1327",
+    "q1338"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1173",
+    "q1190"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1316",
+    "q1347"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "b4057",
+    "q892"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "slur",
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": true,
+   "kind_conflict": true
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q719",
+    "q747",
+    "q754",
+    "q780"
+   ],
+   "edge": 3101,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=3101 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1019",
+    "q1050",
+    "q902"
+   ],
+   "edge": 3554,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3554 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1516",
+    "q1529"
+   ],
+   "edge": 3554,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3554 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1202",
+    "q1214"
+   ],
+   "edge": 3554,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3554 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q663",
+    "q684"
+   ],
+   "edge": 3554,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3554 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q779",
+    "b4028"
+   ],
+   "edge": 3554,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=3554 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1213",
+    "q1234"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1052",
+    "q1080"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1363",
+    "q1398"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1360",
+    "q1382"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q678",
+    "b4033"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q683",
+    "b4032"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1044",
+    "q1078"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1362",
+    "q1226"
+   ],
+   "edge": 4107,
+   "kinds": [
+    "slur"
+   ],
+   "reason": "two boxes meet at the barline x=4107 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1076",
+    "q1107"
+   ],
+   "edge": 4684,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4684 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1555",
+    "q1581"
+   ],
+   "edge": 4684,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4684 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q1233",
+    "b4299"
+   ],
+   "edge": 4684,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4684 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "join_halves",
+   "ids": [
+    "q698",
+    "q710"
+   ],
+   "edge": 4684,
+   "kinds": [
+    "tie"
+   ],
+   "reason": "two boxes meet at the barline x=4684 on one y line: halves of ONE arc the page reads whole (Sean, 2.274 r3 tiles 2/5/6: 'those two boxes belong as one long box')",
+   "evidence": "geometry (facing ends within 1.5 sp of the barline, y bands overlap, cheapest one-to-one pair) + crop look 2.281",
+   "assumed_for_sean": false,
+   "kind_conflict": false
+  },
+  {
+   "change": "dedupe_label",
+   "ids": [
+    "q639",
+    "q660",
+    "q647"
+   ],
+   "reason": "two labels of ONE tie (chord 2720 -> chord 3185, staff 5 top): q639 2754-3094 and q647 2688-3095, then joined at 3101 with q660; the old scorer chained it with its neighbours",
+   "evidence": "crop look 2.281 (strips s4_6 / s9_10)",
+   "assumed_for_sean": true,
+   "kind_conflict": false
+  },
+  {
+   "change": "gap_join",
+   "ids": [
+    "q899",
+    "q1073"
+   ],
+   "reason": "one slur boxed in two pieces with the middle (4107-4371) unboxed: q899 3672-4107 and q1073 4371-4603 (staff 9, bar 5)",
+   "evidence": "crop look 2.281 (strips s4_6 / s9_10)",
+   "assumed_for_sean": true,
+   "kind_conflict": false
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "q41"
+   ],
+   "side": "L",
+   "x": 1666,
+   "reason": "slur boxed from the barline only; the arc starts at the first note of bar 1 (x~1666) and crosses the barline at 2112 (Sean's tile 2/5 pattern)",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "b4108"
+   ],
+   "side": "L",
+   "x": 1666,
+   "reason": "same slur one staff lower (staff 1): left half in bar 1 unboxed",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "q949"
+   ],
+   "side": "L",
+   "x": 1672,
+   "reason": "slur boxed from the barline only (staff 8 region); left half in bar 1 unboxed",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "q941"
+   ],
+   "side": "L",
+   "x": 1994,
+   "reason": "tie boxed from the barline only: the left half (1994-2112) unboxed",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "q953"
+   ],
+   "side": "R",
+   "x": 2742,
+   "reason": "slur stub ending at the barline 2671; the arc runs on to 2742 in the next bar",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "q1145"
+   ],
+   "side": "R",
+   "x": 2254,
+   "reason": "tie boxed to the barline only: the right half (2112-2254) unboxed",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  },
+  {
+   "change": "extend_unboxed_half",
+   "ids": [
+    "q1538"
+   ],
+   "side": "R",
+   "x": 4224,
+   "reason": "tie boxed to the barline only: the right half (4107-4224) unboxed",
+   "evidence": "page-ink run (2.274 r3 census) over the same arc + crop look 2.281",
+   "assumed_for_sean": true
+  }
+ ]
+}

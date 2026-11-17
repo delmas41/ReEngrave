@@ -2127,6 +2127,24 @@ def _flag_direction(ev: Evidence, flags) -> Dict[str, Any]:
     return out
 
 
+def flag_levels_by_hooks(class_levels: int, counted: Optional[int]) -> int:
+    """ROADMAP 2.306 r14 (Sean on r14 tile 8: "It was definitely just an 8th note, not a 16th note"): a stem carries as many flags as hooks hang
+    from its tip; the detector's class name never adds one. `counted`: the stem-tip reader's single hook count (`_stem_tip_hook_count`), None where
+    it saw no hook or could not count. Returns the flag level to read. Never raises the class's level, never goes below one flag, and with no
+    count returns the class's level unchanged (today's reading). Pure."""
+    if counted is None or isinstance(counted, bool) or not 1 <= int(counted) < int(class_levels):
+        return int(class_levels)
+    return int(counted)
+
+
+def flag_hangs_right_of(stem, flag) -> bool:
+    """ROADMAP 2.306 r14 (default ON, Sean 2026-11-16 landing the flag fixes alone; Sean's r14 tile 2, Brahms p0 glyph/0/0/9/3/5, "quarter note": the flag of the note before it was
+    read on its stem). A flag hangs from its own stem's tip to the RIGHT, whichever way the stem points. A flag whose ink lies wholly LEFT of a
+    stem's centre line is the flag of the note before -- never this stem's. Never refuses a flag that reaches the stem's right. `stem`, `flag`:
+    (x, y, w, h) in one frame. Pure."""
+    return flag[0] + flag[2] > stem[0] + stem[2] / 2.0
+
+
 def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
     """The flags on THIS notehead's stem: (rows, levels).
 
@@ -2177,8 +2195,9 @@ def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
         # overlap. 13 of 134 detected flags on Breitkopf p1 stood 0.01-0.32
         # spaces off their stem and were never attached, so the note was
         # written a QUARTER with the flag's own box on the record.
-        if any(_box_gap(_xywh(st), box) <= tol for st in attached_stems
-               if _xywh(st)):
+        # ROADMAP 2.306 r14: and on its RIGHT -- a flag wholly left of the stem is the note before's (`flag_hangs_right_of`)
+        if any(_box_gap(_xywh(st), box) <= tol and flag_hangs_right_of(_xywh(st), box)
+               for st in attached_stems if _xywh(st)):
             out.append(f)
     # ⚠️ THE MAX, NOT THE SUM. Two flag detections on one stem are two
     # readings of one glyph, not two glyphs; a 16th flag alone already says
@@ -5413,6 +5432,22 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         lv = _flag_levels_for(f.value)
         if lv:
             flag_level_votes[lv] = flag_level_votes.get(lv, 0) + 1
+    # ROADMAP 2.306 r14 (default ON; Sean 2026-11-16 on r14 tile 8, Litolff p10 glyph/10/0/9/0/2: "It was definitely just an 8th note, not a 16th
+    # note"): A STEM CARRIES AS MANY FLAGS AS HOOKS HANG FROM ITS TIP; the detector's class name never adds one. Where the stem-tip reader
+    # COUNTED fewer hooks at this head's own stem tip than the attached flag box's class names, the count is the level. Never: the count never
+    # raises a level above the class's (a tip count higher than the box stays today's reading), and a tip that saw no hook, or saw hooks it could
+    # not count (`_stem_tip_hook_count` gives no single count), changes nothing -- the class's level, or the disagreement narrowing, stands.
+    hooks_over_class: Optional[Tuple[int, int]] = None
+    # Boxes that DISAGREE (8th and 16th on one stem) are settled by the same count below (ROADMAP 2.74 / 2.69, `flags_disagree`), unchanged.
+    if flags and flag_levels >= 2 and not levels and len(flag_level_votes) == 1:
+        _tip_h, _tip_h_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
+        if _tip_h:
+            _ch, _lo_h, _hi_h = _stem_tip_hook_count(_tip_h_rows)
+            if flag_levels_by_hooks(flag_levels, _ch) != flag_levels:
+                hooks_over_class = (_ch, flag_levels)
+                flag_levels = _ch
+                flag_level_votes = {_ch: len(flags)}
+                used.extend(r.id for r in _tip_h_rows)
     flags_disagree = False
     if flag_levels and not levels:
         # A flag says the same thing a beam does for an unbeamed note.
@@ -5493,6 +5528,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # head carries no flag, so a reader cannot mistake *no flag* for
               # *a flag with no direction*.
               **_flag_direction(ev, flags)}
+    if hooks_over_class is not None:
+        shared["flag_hooks_counted"], shared["flag_class_levels"] = hooks_over_class
 
     # ⚠️⚠️ ROADMAP 2.114: A HEAD ONLY THE SECOND DETECTOR BOXED. Production saw nothing here, so there is no production class to
     # disagree with -- the second detector's hollow class is the only claim, and the head's own ink and marks test it. NEVER DECIDED (see the

@@ -1,0 +1,342 @@
+{
+ "seed": 2305009,
+ "tiles": [
+  {
+   "tile": 1,
+   "file_said": "before: a tie between the ticked notes; now: nothing",
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/0/5/11/4",
+   "b": "glyph/13/0/5/12/1",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink_from": "the tie pair's own boxes",
+   "ink_boxes": [
+    [
+     2093.525,
+     1179.175,
+     2146.76,
+     1196.8675
+    ],
+    [
+     2148.0,
+     1179.8575,
+     2170.365,
+     1196.5525
+    ]
+   ]
+  },
+  {
+   "tile": 2,
+   "file_said": "before: a tie between the ticked notes; now: nothing",
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/1/10/8/1",
+   "b": "glyph/13/1/10/9/2",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink_from": "the tie pair's own boxes",
+   "ink_boxes": [
+    [
+     1650.6325,
+     3585.22,
+     1670.95,
+     3591.835
+    ]
+   ]
+  },
+  {
+   "tile": 3,
+   "file_said": "before: two slurs between the ticked notes; now: a slur",
+   "plate": "brahms",
+   "page": 0,
+   "change": "changed ['slur', 'slur'] -> ['slur']",
+   "a": "glyph/0/0/4/0/6",
+   "b": "glyph/0/0/4/0/8",
+   "before": [
+    "slur",
+    "slur"
+   ],
+   "after": [
+    "slur"
+   ],
+   "src": "page_arc",
+   "ink_from": "page run page_arc/obs:029017",
+   "ink_boxes": [
+    [
+     1648.0,
+     3262.0,
+     2038.0,
+     3328.0
+    ]
+   ]
+  },
+  {
+   "tile": 4,
+   "file_said": "before: a tie between the ticked notes; now: nothing",
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/1/5/10/0",
+   "b": "glyph/13/1/5/11/2",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink_from": "the tie pair's own boxes",
+   "ink_boxes": [
+    [
+     1930.6925,
+     2830.675,
+     1954.0025,
+     2847.37
+    ],
+    [
+     1956.52,
+     2831.4625,
+     2002.6675,
+     2847.685
+    ]
+   ]
+  },
+  {
+   "tile": 5,
+   "file_said": "before: a tie between the ticked notes; now: nothing",
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/9/0/7",
+   "b": "glyph/0/0/9/0/9",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink_from": "the tie pair's own boxes",
+   "ink_boxes": [
+    [
+     1679.501953125,
+     5041.736328125,
+     1883.7734375,
+     5073.966796875
+    ]
+   ]
+  },
+  {
+   "tile": 6,
+   "file_said": "before: a slur between the ticked notes; now: nothing",
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/9/3/1",
+   "b": "glyph/0/0/9/3/3",
+   "before": [
+    "slur"
+   ],
+   "after": [],
+   "src": "old_box",
+   "ink_from": "detector boxes (old path)",
+   "ink_boxes": [
+    [
+     3372.545,
+     4969.0,
+     3479.615,
+     4990.93
+    ]
+   ]
+  },
+  {
+   "tile": 7,
+   "file_said": "before: a tie between the ticked notes; now: nothing",
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/0/1/11/6",
+   "b": "glyph/13/0/1/12/4",
+   "before": [
+    "tie"
+   ],
+   "after": [],
+   "src": "record_tie",
+   "ink_from": "the tie pair's own boxes",
+   "ink_boxes": [
+    [
+     2077.6175,
+     491.4075,
+     2145.3425,
+     515.9775
+    ],
+    [
+     2148.0,
+     491.88,
+     2165.955,
+     515.3475000000001
+    ],
+    [
+     2095.485,
+     615.515,
+     2143.225,
+     626.52
+    ]
+   ]
+  },
+  {
+   "tile": 8,
+   "file_said": "before: a slur between the ticked notes; now: nothing",
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/9/4/3",
+   "b": "glyph/0/0/9/4/5",
+   "before": [
+    "slur"
+   ],
+   "after": [],
+   "src": "curve",
+   "ink_from": "curve glyph/0/0/9/4/28",
+   "ink_boxes": [
+    [
+     3651.7175,
+     4969.0,
+     3702.0275,
+     4985.77
+    ]
+   ]
+  },
+  {
+   "tile": 9,
+   "file_said": "before: a slur between the ticked notes; now: nothing",
+   "plate": "brahms",
+   "page": 0,
+   "change": "removed",
+   "a": "glyph/0/0/12/0/4",
+   "b": "glyph/0/0/12/1/1",
+   "before": [
+    "slur"
+   ],
+   "after": [],
+   "src": "old_box",
+   "ink_from": "detector boxes (old path)",
+   "ink_boxes": [
+    [
+     1884.64453125,
+     6291.94140625,
+     2112.0,
+     6318.9453125
+    ],
+    [
+     2112.3225,
+     6293.91,
+     2551.5675,
+     6319.71
+    ],
+    [
+     1669.919921875,
+     6286.23828125,
+     2112.0,
+     6384.236328125
+    ],
+    [
+     2112.32,
+     6295.36,
+     2605.44,
+     6347.2
+    ]
+   ]
+  },
+  {
+   "tile": 10,
+   "file_said": "before: two slurs between the ticked notes; now: nothing",
+   "plate": "litolff",
+   "page": 13,
+   "change": "removed",
+   "a": "glyph/13/0/3/11/3",
+   "b": "glyph/13/0/3/12/1",
+   "before": [
+    "slur",
+    "slur"
+   ],
+   "after": [],
+   "src": "old_box",
+   "ink_from": "detector boxes (old path)",
+   "ink_boxes": [
+    [
+     2066.2775,
+     845.06,
+     2145.0275,
+     882.0725
+    ],
+    [
+     2148.0,
+     845.6775,
+     2173.6725,
+     882.86
+    ],
+    [
+     2096.8325,
+     948.065,
+     2146.13,
+     964.445
+    ]
+   ]
+  },
+  {
+   "tile": 11,
+   "file_said": "before: two ties between the ticked notes; now: a tie",
+   "plate": "litolff",
+   "page": 13,
+   "change": "changed ['tie', 'tie'] -> ['tie']",
+   "a": "glyph/13/0/3/13/5",
+   "b": "glyph/13/0/3/14/6",
+   "before": [
+    "tie",
+    "tie"
+   ],
+   "after": [
+    "tie"
+   ],
+   "src": "record_tie",
+   "ink_from": "detector boxes (old path)",
+   "ink_boxes": [
+    [
+     2326.3275,
+     949.325,
+     2361.45,
+     961.4525
+    ]
+   ]
+  },
+  {
+   "tile": 12,
+   "file_said": "before: nothing between the ticked notes; now: a slur",
+   "plate": "brahms",
+   "page": 0,
+   "change": "added",
+   "a": "glyph/0/0/9/4/3",
+   "b": "glyph/0/0/9/5/0",
+   "before": [],
+   "after": [
+    "slur"
+   ],
+   "src": "page_arc",
+   "ink_from": "page run page_arc/obs:029099",
+   "ink_boxes": [
+    [
+     3626.0,
+     4943.0,
+     4628.0,
+     5075.0
+    ]
+   ]
+  }
+ ]
+}
