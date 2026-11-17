@@ -130,3 +130,40 @@ a rest not read 4 (two bars are nothing but a whole rest); a Litolff half note r
 The classifier agreed with him on 11 of the first 12 but only about 6 of the second 12: rows "every mark owned by
 another staff" and "refused as barline ink" hid two bars that hold only a whole rest. The ranking's family sizes hold
 roughly; its bookkeeping rows need the question "what is printed here that the record does not hold" before a count.
+
+## 2.311 small test: is "counting beams at the stem tip" the largest group of red bars? (2026-11-17)
+
+STAGED, measurement only. Scripts `beam_tally.py`, `beam_crops.py`. Records: the saved `lit-a` / `bra-a` gathers of the frozen sample (the ones the red-bar ranking used; they carry the
+staff names). The newest saved gathers (`lr/work/*.off`, run after 2.305 and 2.306 r14) were read as a control only: Brahms refuses the same notes for the same reasons (214 = 214); Litolff there
+lost its staff names (330 notes `staff_not_identified`, 0 red bars), so it cannot name red bars, and refuses more notes (191 vs 162, beam_discounted_uncertain 64 vs 38; not explained here).
+
+**Prior work (5 lines).** LEGACY counted beams from the detector's beam boxes and the erased raster (`beam_strokes`, `omr-beam-*`, `omr-beams-shattered-2026-10`); its fate rows in
+`docs/ink-rules.md` (beam box with no beam-shaped stroke; beam present but not tied to this stem) are still open, "B suspected" (the thinned stroke). STAGED 2.202 reads beams from the page
+stroke map (landed ON); 2.306 stems rounds moved the stem reader; page-facts: a beam owns the stems under its width, every beam lies within one bar, an eighth only on evidence
+(a flag or beam read on its stem). Tried and dropped: erasing staff lines before reading (thinned beams), box-overlap beams (2.153); INFER `collapse_bare_stem_by_bar` is the one guess kept.
+
+**Population.** Notes (heads) in red bars on the frozen sample pages whose value was refused: `duration_narrowed` for a beam reason or `chord_value_undecided`. Litolff 127, Brahms 180.
+
+What the record says stopped them (the record's own rows, first match; ours to argue):
+
+| | Litolff | Brahms |
+|--|--|--|
+| chord: members of one stem disagree, a stem is attached | 38 | 31 |
+| chord: no stem attached to any member | 16 | 32 |
+| single note: no stem attached to the head | 15 | 24 |
+| beam seen, joined to a stem, count between two levels | 25 | 28 |
+| beam ink over the note but joined to no stem | 5 | 20 |
+| stroke refused near / at the tip (owned by another mark) | 19 | 34 |
+| beam stroke certain but ink says not joined | 7 | 2 |
+| flag ink unread / head-flag contradiction | 2 | 9 |
+
+By the record, 69 of 127 Litolff and 87 of 180 Brahms notes (about half) are held because a stem or a chord was not settled, not because beams were counted.
+
+**Crop look** (random, seed 2311101, 18 per plate, my look at the page, not Sean's): the page shows NO beam at all for 13 of 18 Litolff and 7 of 18 Brahms notes -- a plain stemmed note or chord
+(filled = quarter, open = half), nearly all on ledger-line stacks, under a slur or dynamic, or beside a second voice. Clean beams are printed for 5 of 18 Litolff and 10 of 18 Brahms; one Brahms
+note is a flagged eighth under a slur. Of the 15 clean-beam notes the failure is mostly "the beam is not joined to this stem" (end note of a group, two voices at one place), not the count of levels.
+
+**Does the diagnosis survive? No.** The largest single cause is a plain stemmed note or chord, not beamed on the page, whose stem or chord members the reader did not settle (20 of 36 in the look, 56%);
+beam counting at the tip applies to about 15 of 36 (42%), and there the join to the stem is the trouble. A musician reads the largest group in one glance: a filled head with a stem and nothing at the tip is a
+quarter, an open head with a stem a half. The fault is upstream (is a stem attached? is the chord one stem?), and the beam reason words are attached to notes that carry no beam.
+Caveat: n=36 and my look; the mechanism column is the record's, the page column is mine. 12 blind tiles (`out/print/2.311-beams`, key `out/print/2.311-beams-key.json`) are for Sean.
