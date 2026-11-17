@@ -593,3 +593,14 @@ by the r13 study), the cell stem rows the tip/beam readers measure on, real stem
 Red-bar reasons with the flag ON (p0 / Litolff p10): chord_value_undecided 2 / 2, beam_discounted_uncertain 7 / 13,
 beams_ambiguous 2 / 3; the page stems settle only 2 of them -- these are tip and BEAM reading questions.
 Litolff flag changes (3) and the accidental result rest on the agent's look. One page per plate.
+
+### 2.306 r14, after Sean's tiles (2026-11-16)
+
+Tiles: flag right on 1, 3, 4, 5, 6, 7, 12; new stems 9, 10, 11 right; tile 2 "quarter note" written a flagged eighth.
+Cause of tile 2: `rhythm._attached_flags` took the flag of the note BEFORE (a flag box wholly left of this stem), over
+the stem tip's own "no flag". Rule built (flag ON only): a flag hangs from its own stem's tip to the right; a flag
+wholly left of a stem is never that stem's. One note changes on p0, none on Litolff p10. judge.py p0 flag ON:
+value 4/371 -> 3/372, flag 5/48 -> 4/48; judged right->wrong 0; fast tier 10,643 passed, 0 failed. Tip 7cc8c1836.
+Tile 8 (Litolff p10): one hook on the print by the agent's crop, detector class says 16th; not built until Sean
+confirms one flag. Like cases 1 Brahms p0, 2 Litolff p10. q975: the agent sees a flag on a note Sean labelled a
+quarter -- a question for Sean, not touched.
