@@ -279,7 +279,14 @@ ink centre; page-facts: a far head is placed by its ledger lines only).
 
 **Landing.** Every lane report is a ledger: check its claims against the
 tree with one command before believing it. Merge main first; an `A/B` on a
-cached run or a dirty record is not a result. A session ends by updating its
+cached run or a dirty record is not a result. **A landing measures nothing
+new** (Sean, 2026-11-04 and 2026-11-16: *"the testing is too much and slowing
+us down"*): once the lane's own gathers, Sean's tiles and judged right->wrong 0
+are in, the gate is the fast tier on the merged tree and nothing else. Gather
+again only where the merge brought in a change to the functions the lane
+changed, and then only the pages that change touches; a default flip is not
+such a change. A landing brief names no gather; a landing past an hour stops
+and the manager decides. A session ends by updating its
 ROADMAP line, adding one entry to `version_memory.md` (and `PROJECT_BRIEF.md`
 where the state it describes moved) and, if it learned something general, a
 rule here or a DECISIONS line — not a handoff.
