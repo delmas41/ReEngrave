@@ -3685,6 +3685,184 @@ def find_note_line(
     return dict(ok=False, reason="line_at_the_box_not_a_ledger_for_this_head")
 
 
+# ---------------------------------------------------------------------------
+# ROADMAP 2.312 r2 -- COUNT THE LEDGER LINES TO THE HEAD'S OWN INK, NOT ITS BOX (Sean 2026-11-17 "Yes, build it"; flag
+# `OMR_LEDGER_COUNT_TO_INK`, default OFF).
+#
+# THE RULE, as a musician says it: count the printed lines outward from the staff until you reach the head; the head sits ON
+# the last line when that line runs through its middle, and in the SPACE just beyond the last line when its ink sits past it
+# (the line then touches its staff-side edge).
+# THE BOUNDARY: a line through the head's middle (ON it) against a line at its staff-side edge (the space beyond). It is
+# read on the head's own ink: a head in a space spans that space, so its bounding lines lie at its edges; a head on a line
+# is centred on it. A line nearer the ink's middle than a quarter of the ink's height is through the middle; one nearer its
+# staff-side edge than a quarter of its height is at the edge. (Both quarters come from that convention, halfway between
+# the two readings; nothing here is tuned on our plates.)
+# THE NEVER: never count a line that is not printed (a line at the edge is a row of ink running wider than the head
+# itself, thin as a ledger); never count another staff's line, an arc, a beam or a stem (the caller's rungs are filtered as
+# today, 2.240); never place the head by its distance from the staff or by its ink centre (2.248): the ink only says which
+# side of a PRINTED line the head is on. Where the head's ink cannot be read as one head, the note stays as today (the box
+# reading); where its ink is read but no line is found at its middle or its staff-side edge, it abstains.
+# Numbers: `HEAD_INK_BAND_SHARE` (0.25, the convention above); a line row is wider than the head's widest middle row by
+# more than `LINE_WIDER_THAN_HEAD_PX` (one pixel either way of a scanned edge, a raster quantum, not a plate measure); and
+# no thicker than `LEDGER_THICKNESS_MAX_SPACES` (existing). The chain fit (`count_ledgers_between`, its 0.7 / 1.5 sp gap
+# limits) is unchanged and can only REFUSE: a "line" found at a head's edge half a pitch past the last printed line does
+# not fit the chain and the head abstains.
+# ---------------------------------------------------------------------------
+LEDGER_COUNT_TO_INK_ENV = "OMR_LEDGER_COUNT_TO_INK"
+HEAD_INK_BAND_SHARE = 0.25
+LINE_WIDER_THAN_HEAD_PX = 2.0
+
+_PAGE_BINARY_CACHE: dict = {}
+
+
+def count_to_ink_enabled() -> bool:
+    import os
+    return os.environ.get(LEDGER_COUNT_TO_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _page_binary(img_gray: "np.ndarray") -> "np.ndarray":
+    """0 = ink, 255 = paper, one Otsu cut of the page (cached for the page in hand)."""
+    key = (id(img_gray), img_gray.shape)
+    got = _PAGE_BINARY_CACHE.get(key)
+    if got is None:
+        import cv2
+        _t, b = cv2.threshold(img_gray, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+        _PAGE_BINARY_CACHE.clear()
+        _PAGE_BINARY_CACHE[key] = got = b
+    return got
+
+
+def head_ink_box(img_gray: "np.ndarray", head_box, spacing: float, exclude_boxes=None, sign: "float | None" = None) -> dict:
+    """The head's own ink extent (`staged.head_extent.ink_extent`, 2.248: grown from the box, ledger rows at its edges and bare line
+    pixels out) as `{ok, box, why, height_sp}`. `ok` False where the ink is not one head (too tall, runs into another head, ...)."""
+    from ..staged import head_extent as HE
+    # no other heads' boxes: a twin or a piece of the same head is boxed again on Litolff (three boxes on one half note,
+    # Sean's 2.311 tile 8) and would read as "another head"; two heads that touch are caught by the ink itself (too tall)
+    got = HE.ink_extent(_page_binary(img_gray), tuple(float(v) for v in head_box), float(spacing), (), ())
+    ext = got.get("extent")
+    why = got.get("why")
+    trimmed_line = None
+    if why == "too_tall" and ext is not None and sign is not None:
+        # a ledger fused to the head (too short to be stripped as a line) makes the ink one line taller than a head: where a
+        # printed line is found at an edge of the ink (the staff side first, then the far side), the head's ink ends at that
+        # line. A line found on the FAR side only trims the head's extent; it is never counted (the count stops at the head).
+        e = list(ext)
+        trimmed_line = []
+        for side in (sign, -sign):
+            if (e[3] - e[1]) <= HE.MAX_INK_HEIGHT_SPACES * float(spacing):
+                break
+            sl = staff_side_line_on_ink(img_gray, tuple(e), side, spacing)
+            if not sl["ok"]:
+                continue
+            a, b = sl["rows"]
+            if side < 0:
+                e[3] = float(a - 1)
+            else:
+                e[1] = float(b + 1)
+            trimmed_line.append(dict(sl, side="staff" if side == sign else "far"))
+        if trimmed_line and 0 < (e[3] - e[1]) <= HE.MAX_INK_HEIGHT_SPACES * float(spacing):
+            ext, why = tuple(e), None
+        else:
+            trimmed_line = None
+    ok = why is None and ext is not None and ext[3] > ext[1] and ext[2] > ext[0]
+    return dict(ok=bool(ok), box=(tuple(float(v) for v in ext) if ext is not None else None), why=why,
+                height_sp=got.get("height_sp"), trimmed_line=trimmed_line)
+
+
+def _run_through(binary: "np.ndarray", y: int, x0: int, x1: int):
+    """(left, right) of the widest ink run on row `y` that holds a column of [x0, x1], or None."""
+    H, W = binary.shape
+    if not (0 <= y < H):
+        return None
+    best = None
+    x = max(0, x0)
+    while x <= min(W - 1, x1):
+        if binary[y, x] != 0:
+            x += 1
+            continue
+        a = x
+        while a > 0 and binary[y, a - 1] == 0:
+            a -= 1
+        b = x
+        while b < W - 1 and binary[y, b + 1] == 0:
+            b += 1
+        if best is None or (b - a) > (best[1] - best[0]):
+            best = (a, b)
+        x = b + 1
+    return best
+
+
+def staff_side_line_on_ink(img_gray: "np.ndarray", ink_box, sign: float, spacing: float) -> dict:
+    """A printed line at the head's STAFF-SIDE ink edge: rows within `HEAD_INK_BAND_SHARE` of the ink's height of that edge (on
+    either side of it) whose ink run reaches past the head's widest middle row by more than `LINE_WIDER_THAN_HEAD_PX`, the band of
+    such rows no thicker than a ledger. `{ok, y, rows, why}`; the band nearest the edge wins."""
+    binary = _page_binary(img_gray)
+    x0, y0, x1, y1 = (float(v) for v in ink_box)
+    h = y1 - y0
+    if h <= 0:
+        return dict(ok=False, why="no_ink_height")
+    cx0, cx1 = int(round(x0)), int(round(x1))
+    q = h * (1.0 - 0.4) / 2.0
+    mids = [_run_through(binary, y, cx0, cx1) for y in range(int(round(y0 + q)), int(round(y1 - q)) + 1)]
+    mids = [m for m in mids if m is not None]
+    if not mids:
+        return dict(ok=False, why="no_head_body")
+    wmax = max(b - a for a, b in mids)
+    edge = y1 if sign < 0 else y0          # above the staff the staff side is the head's bottom
+    band = HEAD_INK_BAND_SHARE * h
+    rows = []
+    for y in range(int(np.floor(edge - band)), int(np.ceil(edge + band)) + 1):
+        r = _run_through(binary, y, cx0, cx1)
+        if r is not None and (r[1] - r[0]) > wmax + LINE_WIDER_THAN_HEAD_PX and r[0] <= cx0 + 1 and r[1] >= cx1 - 1:
+            rows.append(y)
+    if not rows:
+        return dict(ok=False, why="no_line_row_at_the_edge", wmax=wmax)
+    bands, cur = [], [rows[0]]
+    for y in rows[1:]:
+        if y == cur[-1] + 1:
+            cur.append(y)
+        else:
+            bands.append(cur)
+            cur = [y]
+    bands.append(cur)
+    cap = LEDGER_THICKNESS_MAX_SPACES * spacing + 1.0
+    thin = [b for b in bands if len(b) <= cap]
+    if not thin:
+        return dict(ok=False, why="edge_rows_too_thick_for_a_ledger", wmax=wmax)
+    best = min(thin, key=lambda b: abs((b[0] + b[-1]) / 2.0 - edge))
+    return dict(ok=True, y=(best[0] + best[-1]) / 2.0, rows=[best[0], best[-1]], wmax=wmax, why="line_at_the_staff_side_edge")
+
+
+def find_note_line_on_ink(
+    img_gray: "np.ndarray", head_box, ink_box, edge_y: float, sign: float, spacing: float, rungs_y: "list[float]",
+    exclude_boxes=None, far_side_partner_boxes=None,
+) -> dict:
+    """`find_note_line` read on the head's OWN INK (`ink_box`), not its detector box: (1) a line through the ink's middle (a jut out
+    of the head's ink at a row within a quarter of the ink's height of its centre, or a walk rung there) -> ON it; (2) a line at the
+    ink's staff-side edge (a walk rung within a quarter height of the edge, or a row of ink wider than the head there,
+    `staff_side_line_on_ink`) -> the SPACE beyond it; else abstain (a line beyond the head is not its ledger)."""
+    ix0, iy0, ix1, iy1 = (float(v) for v in ink_box)
+    h = iy1 - iy0
+    mid = (iy0 + iy1) / 2.0
+    band = HEAD_INK_BAND_SHARE * h
+    near = iy1 if sign < 0 else iy0
+    jf = _jut_from_head_ink(img_gray, tuple(head_box), spacing, exclude_boxes)
+    if jf["ok"] and jf.get("line_y") is not None and abs(float(jf["line_y"]) - mid) <= band:
+        return dict(ok=True, kind="on", y=float(jf["line_y"]), how="ink:through_the_middle")
+    mids = [r for r in rungs_y if abs(r - mid) <= band]
+    if mids:
+        return dict(ok=True, kind="on", y=float(min(mids, key=lambda r: abs(r - mid))), how="ink:rung_through_the_middle")
+    # a line touching the head's edge has its CENTRE half its own thickness past the edge (at most half a ledger's thickness)
+    edge_rungs = [r for r in rungs_y if abs(r - near) <= band + 0.5 * LEDGER_THICKNESS_MAX_SPACES * spacing]
+    if edge_rungs:
+        return dict(ok=True, kind="space", y=float(min(edge_rungs, key=lambda r: abs(r - near))), how="ink:rung_at_the_staff_side_edge")
+    sl = staff_side_line_on_ink(img_gray, ink_box, sign, spacing)
+    if sl["ok"]:
+        return dict(ok=True, kind="space", y=float(sl["y"]), how="ink:line_at_the_staff_side_edge")
+    # a line BEYOND the head is never this head's ledger (the count stops at the head's ink): no far-side reading here
+    return dict(ok=False, reason="ink:no_line_at_the_head" if rungs_y else "ink:no_rungs")
+
+
 def count_ledgers_between(
     img_gray: "np.ndarray", edge_y: float, sign: float, spacing: float,
     line_y: float, rungs_y: "list[float]", x_center: float,
@@ -3977,8 +4155,12 @@ def derive_note_first_step(
     not_ledger: "Callable[[float], object] | None" = None,
     ledger_read: bool = False,
     gap_max: "float | None" = None,
+    to_ink: bool = False,
 ) -> dict:
     """Sean's 2026-10-05 order (see the block comment).
+
+    `to_ink` (ROADMAP 2.312 r2, flag `OMR_LEDGER_COUNT_TO_INK`; False = bit-identical): the note's own line is found on the head's
+    INK (`head_ink_box`, `find_note_line_on_ink`), not its box; where the ink is not one head the box reading stands as today.
 
     `ledger_read` (ROADMAP 2.255, flag `OMR_LEDGER_READ`; False = bit-identical): passed to `count_ledgers_between`.
 
@@ -4000,11 +4182,19 @@ def derive_note_first_step(
     line is re-measured only on flank rows that TOUCH the head (`require_contact`). Returns `{offset, kind,
     reason, line_y, how, between, k, gaps}`; `offset` (half-steps out from the
     edge) is None where it abstains, `reason` then names why."""
-    ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
-                        exclude_boxes, far_side_partner_boxes,
-                        edge_vs_through=edge_vs_through)
+    ink = head_ink_box(img_gray, head_box, spacing, exclude_boxes, sign) if to_ink else None
+    if ink is not None and ink["ok"]:
+        ln = find_note_line_on_ink(img_gray, head_box, ink["box"], edge_y, sign, spacing, rungs_y, exclude_boxes,
+                                   far_side_partner_boxes)
+        if ln["ok"] and not_ledger is not None and not_ledger(float(ln["y"])):
+            # 2.240 stays: another staff's line or an arc's ink at the head's edge is never its ledger
+            ln = dict(ok=False, reason="ink:line_at_the_head_is_not_a_ledger (%s)" % not_ledger(float(ln["y"])))
+    else:
+        ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
+                            exclude_boxes, far_side_partner_boxes,
+                            edge_vs_through=edge_vs_through)
     looked = None
-    if not ln["ok"] and look_where_it_must_be:
+    if not ln["ok"] and look_where_it_must_be and not (ink is not None and ink["ok"]):
         hid = hidden_ledger_row(head_box, edge_y, sign, spacing, rungs_y)
         if hid is not None:
             looked = ledger_jut_on_row(img_gray, head_box, hid["y"], spacing)
@@ -4015,9 +4205,11 @@ def derive_note_first_step(
                 ln = dict(ok=True, kind="space", y=float(looked["y"]), how="hidden_ledger_jut_looked_for")
     if not ln["ok"]:
         return dict(offset=None, kind=None, reason=ln["reason"], line_y=None,
-                    how=None, between=[], k=None, gaps=[], hidden_ledger_look=looked)
+                    how=None, between=[], k=None, gaps=[], hidden_ledger_look=looked, ink=ink)
     cx = (head_box[0] + head_box[2]) / 2.0
-    if flank_refine_bounded:
+    if str(ln.get("how") or "").startswith("ink:"):
+        ln["seen_on_flanks"] = None       # read on the head's own ink rows: not re-measured on the box's flanks
+    elif flank_refine_bounded:
         if ln["how"] == "through_the_middle" and FLANK_REFINE_SKIP_JUT:
             ln["seen_on_flanks"] = True       # its row IS the median of the jut's own flank columns
         else:
@@ -4042,7 +4234,7 @@ def derive_note_first_step(
             ((lambda y: not rung_is_articulation(img_gray, y, artic_boxes, spacing, head_box))
              if (look_where_it_must_be and artic_boxes) else None), not_ledger),
         ledger_read=ledger_read, gap_max=gap_max)
-    base = dict(hidden_ledger_look=looked, refused_rungs=refused, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
+    base = dict(hidden_ledger_look=looked, refused_rungs=refused, ink=ink, kind=ln["kind"], line_y=ln["y"], how=ln["how"], seen_on_flanks=ln["seen_on_flanks"],
                 edge_vs_through=ln.get("edge_vs_through"),
                 between=ct["between"], k=ct["k"], gaps=ct["gaps"])
     if not ct["fits"]:
