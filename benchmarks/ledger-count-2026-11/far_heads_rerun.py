@@ -28,6 +28,12 @@ def main(plate, out, envs):
     from tools.omr.staged.review import rerun as RR
 
     rec = load_slices(SLICE[plate])
+    pages = os.environ.get("PAGES")      # e.g. PAGES=8,10: only those pages (+ document rows); the loaded machine cannot hold a whole plate
+    if pages:
+        from tools.omr.staged.lane_report import page_of
+        keep_pg = {int(v) for v in pages.split(",")}
+        for k in ("observations", "abstentions", "verdicts"):
+            rec[k] = [r for r in rec[k] if page_of(r.get("subject")) is None or page_of(r.get("subject")) in keep_pg]
     boxes = glyph_boxes(rec["observations"])
     # the 2306 slices were gathered on lane 2.306, whose `page_stem` rows main does not know (flag OMR_PAGE_STEMS, OFF): left out, counted
     unknown = collections.Counter()
