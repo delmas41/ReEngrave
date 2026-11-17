@@ -73,7 +73,9 @@ def main(plate, out, envs):
     result = {"record": log.to_json(), "summary": log.summary()}
     from tools.omr.staged.lane_report import traced_export
     with traced_export():
-        xml, _rep = E.to_musicxml(result)
+        xml, _rep, refusals, _placed = RR.export_with_subjects(result)
+    json.dump(dict(refusals=refusals, notes_not_written=_rep.get("notes_not_written"), notes_not_written_total=_rep.get("notes_not_written_total"),
+                   bars_written_red=_rep.get("bars_written_red"), bars_held_out=_rep.get("bars_held_out_sum")), open(out + ".export.json", "w"), default=str)
     sym = parse_symbols(xml, boxes)
     written = {h["rg"]: h for h in sym["hosts"] if h.get("rg")}
     heads = []
