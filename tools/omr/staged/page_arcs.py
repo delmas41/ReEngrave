@@ -148,6 +148,10 @@ BEAM_TAPER = 0.75
 LINE_WAIT = 0             # r3 experiment: a track waits through a line band
 LINE_PAD_SP = 0.1         # r3: a line's band for the wait-through
 
+HEADER_BOX_NEEDS_CLAIM = 1   # r10 (2.305): a detector clef / key / meter box blanks ink only where a page-wide header claim holds it (blank_mask)
+HEADER_BOX_CLASSES = ("clef", "timeSig", "keyFlat", "keySharp", "keyNatural")
+HEADER_AREA_OWNERS = ("clef", "key_signature", "meter", "leading_column")
+
 NOT_ARC_SKIP = ("staff", "slur", "tie", "brace", "bracket", "barline", "arpeggiato", "systemicBarline")
 CLAIM_OWNERS = ("meter", "clef", "key_signature", "leading_column", "word", "bracket")
 
@@ -880,6 +884,22 @@ def _has_hole(m: np.ndarray, sp: float) -> bool:
     return False
 
 
+def unclaimed_header_boxes_dropped(boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]]
+                                   ) -> List[Tuple[str, Sequence[float]]]:
+    """ROADMAP 2.305 r10 (claim order, CLAUDE s3: clef / key / meter are read ONCE on the page-wide pass and claim there; Sean's r9 tile 4, Litolff p13
+    13/1/5/10/0 -> 11/2: a tie the detector boxed as a "timeSig1" and a "clefF" was blanked whole, its rim then "hugged a claimed mark", and no run was
+    read). A detector box of a header class whose centre no page-wide header claim (clef / key signature / meter / leading column area) holds is not a claim:
+    it neither blanks ink nor counts as a mark an arc may not hug. NEVER drops a header box a page claim holds. A real mid-staff clef left in has no
+    detector arc box to witness it, so no arc is written from it."""
+    if not HEADER_BOX_NEEDS_CLAIM:
+        return list(boxes)
+    held = [b for own, b in areas if own in HEADER_AREA_OWNERS]
+    def _held(b):          # the claim holds the box: the box's centre lies inside the claimed area
+        cx, cy = (b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0
+        return any(h[0] <= cx <= h[2] and h[1] <= cy <= h[3] for h in held)
+    return [(c, b) for c, b in boxes if not (c.startswith(HEADER_BOX_CLASSES) and not _held(b))]
+
+
 def blank_mask(ink: np.ndarray, boxes: Sequence[Tuple[str, Sequence[float]]], areas: Sequence[Tuple[str, Sequence[float]]], sp_page: Optional[float] = None, glyphs: bool = True) -> np.ndarray:
     """What claims first or is not arc ink: the compact detector boxes' rectangles, and the ink COMPONENTS wholly inside a page claim's area (+1 px)."""
     import cv2
@@ -1060,6 +1080,7 @@ def read_runs(canvas: np.ndarray, sp_page: float, line_ys: Sequence[float], boxe
     ~one per 2 reduced px), `box`, `width_sp`, `sagitta_sp`, `thick_sp`, `resid_sp`, `inked`, `chord_deg`, `half` (half its thickness, page px)."""
     import cv2
     ink = canvas == 0
+    boxes = unclaimed_header_boxes_dropped(boxes, areas)
     if blank is None:
         blank = blank_mask(ink, boxes, areas, sp_page)
     ink2 = ink & ~blank
@@ -1337,6 +1358,7 @@ def gather_page_arcs(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, 
     for r in log.rows(Q.CLAIMED_AREA, sub, scope=Scope.SELF_AND_DESCENDANTS):
         rows.append(("claimed_area", "", r.value, r.detail))
     boxes, areas, arc_boxes = inputs_from_rows(rows)
+    boxes = unclaimed_header_boxes_dropped(boxes, areas)
     sp_page = float(page_map.sp)
     line_ys = [float(y) for s in pws.staves for y in s.line_ys]
     res = read_runs(canvas, sp_page, line_ys, boxes, areas, raw=getattr(getattr(pws, "page", None), "binary", None), arc_boxes=arc_boxes)

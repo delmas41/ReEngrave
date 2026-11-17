@@ -3037,6 +3037,11 @@ def _head_read(ev: Evidence, key: str) -> bool:
         return True
     if v.outcome is Outcome.DECIDED:
         return v.value is not True
+    if v.outcome is Outcome.NARROWED and str(v.reason or "") == "claim_narrowed:word":
+        # ROADMAP 2.305 r10 (Sean's r7b tile 4 "the notes are correct" and r9 tile 5 "tie, connected to the right notes", Brahms p0 9/0/7 -> 9/0/9): a
+        # note a WORD's claimed area happens to cover is held in doubt only because the word was read first; its own head reading stands, and EXPORT
+        # writes it (`guessed_by_rule:claim_narrowed:word`). An arc may end at it. A head a KEY's or another mark's claim narrowed stays no note.
+        return True
     return v.outcome is not Outcome.NARROWED
 
 
@@ -3252,7 +3257,7 @@ def _page_binding(ev: Evidence, arc: Any, page_run: Any = None) -> Optional[Dict
         # closest read note (Sean's r6 tile 2: his stop note `13/0/3/14/7` narrowed `stem_end_ink_only`; tile 5: a box on the key signature narrowed by its claim)
         for h in heads:
             hv = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=rows[h["key"]].subject)
-            if hv is not None and hv.outcome is Outcome.NARROWED:
+            if hv is not None and hv.outcome is Outcome.NARROWED and not _head_read(ev, h["key"]):          # (r10: a word's claim leaves the note read)
                 unread.append({"id": hv.id, "ordinal": "narrowed:" + h["key"], "cx": h["cx"], "cy": h["cy"], "w": h["w"], "h": h["h"],
                                "staff": [staff.system, staff.staff]})
         # "never to a note on another staff": the neighbouring staves' notes of the system, for the guard only (never candidates)

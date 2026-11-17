@@ -193,6 +193,7 @@ def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, An
     if not ends or len(ends) != 2 or not pts or sp <= 0:
         return None
     (xl, yl, _tl), (xr, yr, _tr) = ends
+    ext = {"x_left_ext": float(xl), "y_left_ext": float(yl), "x_right_ext": float(xr), "y_right_ext": float(yr)}          # r10: where the traced ink itself stops
     core = run_detail.get("core_ends")
     if core and len(core) == 2:
         # where the arc's OWN ink stops (step-1 `core_ends`), not where the extension carried the run on: the extension runs through marks that claim before an arc, up to 4 spaces,
@@ -201,7 +202,7 @@ def curve_detail(run_detail: Dict[str, Any], sp: float) -> Optional[Dict[str, An
         (xl, yl), (xr, yr) = core
     half = 0.5 * float(run_detail.get("thickness_spaces") or 0.0) * sp
     return {"space_page_px": float(sp), "x_left_page": float(xl), "y_left_page": float(yl), "x_right_page": float(xr), "y_right_page": float(yr),
-            "trace": [[float(x), float(y) - half, float(y) + half] for x, y in pts]}
+            "trace": [[float(x), float(y) - half, float(y) + half] for x, y in pts], **ext}
 
 
 #: ROADMAP 2.305 r2: the gap (spaces) between the traced ink's near side and a head's near edge within which the ink LANDS on that head
@@ -245,6 +246,20 @@ def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], 
                     best = h
                 break
     return best
+
+
+def ink_ends_on(d: Dict[str, Any], side: str, cands: Sequence[Dict[str, Any]]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.305 r10. THE RULE (page-facts, Sean 2026-11-15: "an arc ends at the notes standing where its ink ends"): where two notes are about equally
+    near the arc's own end, but the traced ink itself runs ON INTO one of them -- its last traced point lies inside that note's head, and inside no other
+    candidate's -- the ink ends at that note. NEVER: a point inside two heads, or inside none (then "we don't choose" stands). No number.
+    Evidence: Sean's r9 tile 9, Brahms p0 staff 12: the slur 12/0/4 -> 12/1/1 whose ink runs onto 12/1/1's head (and the next tie starts there) abstained
+    `two_columns_at_end` against the chord 12/1/2 / 12/1/15 to its left."""
+    x, y = d.get("x_%s_ext" % side), d.get("y_%s_ext" % side)
+    if x is None or y is None:
+        return None
+    inside = [h for h in cands if abs(float(h["cx"]) - float(x)) <= float(h["w"]) / 2.0 and abs(float(h["cy"]) - float(y)) <= float(h["h"]) / 2.0]
+    keys = {h.get("head_id") or h["key"] for h in inside}
+    return inside[0] if len(keys) == 1 else None
 
 
 def far_side_ends(b: Dict[str, Any], d: Dict[str, Any], box_of: Any) -> List[str]:
@@ -316,6 +331,11 @@ def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Opti
                 if land is not None and land["key"] in cand:
                     b[s_] = {"head": land["key"], "column": 1, "by_rule": True, "lands_on": True, "was_two_columns": sorted(cand),
                              "distance_spaces": round(AC._to_head(land, ex, float(d[yk])) / sp, 3)}
+                else:
+                    on = ink_ends_on(d, s_, [by_k[k] for k in cand if k in by_k])
+                    if on is not None:
+                        b[s_] = {"head": on["key"], "column": 1, "by_rule": True, "ink_ends_on": True, "was_two_columns": sorted(cand),
+                                 "distance_spaces": round(AC._to_head(on, ex, float(d[yk])) / sp, 3)}
             hd = next((h for h in heads if h["key"] == b[s_].get("head")), None)
             if hd is not None and side in ("above", "below") and not hd.get("tip") and not b[s_].get("via_stem_tip"):
                 # ROADMAP 2.305 r2 (Sean's r1 tile 8, "it goes one extra note too far"; page-facts: an arc ends AT its note): the traced ink LANDS on a head
