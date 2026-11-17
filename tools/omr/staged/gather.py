@@ -9057,6 +9057,49 @@ def _empty_bar_candidate_cells(
     return out
 
 
+#: ROADMAP 2.315 (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default OFF; "1/true/yes/on" turns it on). A bar that prints only a whole rest was red
+#: on the frozen sample because no reader put a box on the rest, and this search -- built for exactly that -- (a) looked only in a cell with NO
+#: head/rest box at all, so a neighbour staff's head, a barline's ink or a refused fragment in the cell switched it off, and (b) asked "is this a
+#: whole rest" with the detector-box numbers (`rhythm._rest_shaped`: 0.84 sp tall, aspect 1.63) where real whole rests on the erased raster
+#: measure 0.82-0.89 sp tall, aspect 1.56-1.62. Turned on: the search looks in EVERY cell (it is a reading of ink; it decides nothing; EXPORT
+#: still writes a rest only where nothing that may be this bar's own mark stands in it), and the shape is Sean's 2.270 INK rule -- at most 0.92 sp
+#: tall, at least 0.9 sp wide -- the one measurement of "is this ink a whole rest" the tree already has.
+WHOLE_REST_SEARCH_OWN_BAR_ENV = "OMR_WHOLE_REST_SEARCH_OWN_BAR"
+
+
+def whole_rest_search_own_bar_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_SEARCH_OWN_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _search_candidate_cells(cells: Sequence[Any], local: Dict[int, Tuple[int, int]],
+                            detections: Dict[str, List[Any]]) -> List[Any]:
+    """The cells `gather_empty_bar_rest_search` looks in: the boxless ones (2.52) and, with `OMR_WHOLE_REST_SEARCH_OWN_BAR`, every cell that has a
+    staff (a cell whose boxes are another staff's or a barline's still prints its own whole rest). `gather_lowconf_rescue` keeps the boxless set."""
+    boxless = _empty_bar_candidate_cells(cells, local, detections)
+    if not whole_rest_search_own_bar_enabled():
+        return boxless
+    have = {id(c) for c in boxless}
+    return [c for c in cells if id(c) in have or local.get(c.staff_index) is not None]
+
+
+#: The narrowest a whole rest's ink is in a bar of its own, measured on the stroke map of Sean's answered rest tiles (2.288 real cases: his 9 whole rests are
+#: 1.33-1.56 sp wide, 0.76-0.89 tall) and on the 98 bars of the 2.315 look (1.33-1.67): the two flag pieces he named "part of a flag" are 1.02 wide. A cut-off is a
+#: measurement: two plates, so a rest found under it is written GUESSED (blue), never READ, where any other box stands in the bar.
+WHOLE_REST_SEARCH_MIN_WIDTH_SP = 1.2
+
+
+def _whole_rest_ink_shaped(height_spaces: float, width_spaces: float) -> bool:
+    """Sean's 2.270 ink rule for one ink piece of the erased raster: a whole rest is at most `WHOLE_REST_INK_MAX_TRIMMED_HEIGHT_SP` tall (never a head:
+    his filled non-rests are 1.02+ sp tall), at least `WHOLE_REST_SEARCH_MIN_WIDTH_SP` wide (never a flag's piece), and never a stroke
+    (`WHOLE_REST_INK_MAX_ASPECT`). The detector-box numbers it replaces (0.84 tall, aspect 1.63) turn down two of Sean's nine real whole rests."""
+    from .adjudicators import rhythm as _rhythm
+    if height_spaces <= 0:
+        return False
+    return (height_spaces <= _rhythm.WHOLE_REST_INK_MAX_TRIMMED_HEIGHT_SP
+            and width_spaces >= WHOLE_REST_SEARCH_MIN_WIDTH_SP
+            and width_spaces / height_spaces <= _rhythm.WHOLE_REST_INK_MAX_ASPECT)
+
+
 def gather_empty_bar_rest_search(log: Log, cells: Sequence[Any],
                                  local: Dict[int, Tuple[int, int]],
                                  detections: Dict[str, List[Any]], *,
@@ -9115,7 +9158,8 @@ def gather_empty_bar_rest_search(log: Log, cells: Sequence[Any],
         return
     from .adjudicators import rhythm as _rhythm
 
-    for c in _empty_bar_candidate_cells(cells, local, detections):
+    by_ink = whole_rest_search_own_bar_enabled()        # ROADMAP 2.315
+    for c in _search_candidate_cells(cells, local, detections):
         key = local[c.staff_index]
         sys_idx, st_idx = key
         sub = R.cell(c.page_index, sys_idx, st_idx, c.measure_index)
@@ -9166,7 +9210,8 @@ def gather_empty_bar_rest_search(log: Log, cells: Sequence[Any],
             y_center = y + h / 2.0
             step = step_of(y_center)
 
-            if not _rhythm._rest_shaped(height_spaces, aspect):
+            if not (_whole_rest_ink_shaped(height_spaces, width_spaces) if by_ink
+                    else _rhythm._rest_shaped(height_spaces, aspect)):
                 continue
             # ⚠️ THE HALF-REST GUARD, BEFORE THE WHOLE-REST POSITION TEST.
             # A half rest sits ON the 3rd line (the middle line) -- closer

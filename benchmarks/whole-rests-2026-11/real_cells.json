@@ -1,0 +1,101 @@
+{
+ "b-tile12": {
+  "plate": "brahms",
+  "bar": "8/0/0/5",
+  "is_whole_rest_bar": true,
+  "says": "sean",
+  "note": "set b tile 12: 'a whole note rest'; the cell holds one head that is another staff's",
+  "shape": [
+   1596,
+   1416
+  ]
+ },
+ "bra-8-1-0-5": {
+  "plate": "brahms",
+  "bar": "8/1/0/5",
+  "is_whole_rest_bar": true,
+  "says": "ours",
+  "note": "a whole rest 0.87 sp tall: the box numbers turn it down",
+  "shape": [
+   1398,
+   1344
+  ]
+ },
+ "bra-8-1-5-10": {
+  "plate": "brahms",
+  "bar": "8/1/5/10",
+  "is_whole_rest_bar": false,
+  "says": "ours",
+  "note": "a hollow half note with a tie: not a rest",
+  "shape": [
+   1400,
+   1843
+  ]
+ },
+ "bra-8-1-10-5": {
+  "plate": "brahms",
+  "bar": "8/1/10/5",
+  "is_whole_rest_bar": false,
+  "says": "ours",
+  "note": "a hollow half note with a tie: not a rest",
+  "shape": [
+   1398,
+   1344
+  ]
+ },
+ "b-tile8": {
+  "plate": "brahms",
+  "bar": "25/0/5/7",
+  "is_whole_rest_bar": true,
+  "says": "sean",
+  "note": "set b tile 8: nothing but a whole rest; the cell holds one barline-ink box",
+  "shape": [
+   1200,
+   1644
+  ]
+ },
+ "lit-6-0-1-5": {
+  "plate": "litolff",
+  "bar": "6/0/1/5",
+  "is_whole_rest_bar": true,
+  "says": "ours",
+  "note": "a whole rest 0.87 sp tall: the box numbers turn it down",
+  "shape": [
+   1200,
+   1026
+  ]
+ },
+ "lit-8-0-1-4": {
+  "plate": "litolff",
+  "bar": "8/0/1/4",
+  "is_whole_rest_bar": true,
+  "says": "ours",
+  "note": "a whole rest 0.89 sp tall, aspect 1.56 on the erased raster: the box numbers turn it down",
+  "shape": [
+   1200,
+   577
+  ]
+ },
+ "lit-10-1-3-4": {
+  "plate": "litolff",
+  "bar": "10/1/3/4",
+  "is_whole_rest_bar": false,
+  "says": "ours",
+  "note": "a half-note chord the detector never boxed: not a rest",
+  "shape": [
+   1200,
+   1041
+  ]
+ },
+ "lit-11-1-3-7": {
+  "plate": "litolff",
+  "bar": "11/1/3/7",
+  "is_whole_rest_bar": false,
+  "says": "ours",
+  "note": "a chord the detector never boxed: not a rest",
+  "shape": [
+   1396,
+   838
+  ]
+ }
+}

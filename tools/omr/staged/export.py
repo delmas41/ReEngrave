@@ -1372,8 +1372,28 @@ def found_whole_rest_enabled() -> bool:
     return os.environ.get(FOUND_WHOLE_REST_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
 
+#: ROADMAP 2.315 (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default OFF; == gather.WHOLE_REST_SEARCH_OWN_BAR_ENV). With it on the 2.52 search also looked in bars
+#: whose cell holds boxes; a found rest is then written only where EVERY head/rest box in the bar is positively not this bar's own mark (owned by another
+#: staff, a barline's / word's / clef's ink, a duplicate: `_NOT_A_GAP_REASONS`), never beside a refusal that may be a real note (rule 8).
+WHOLE_REST_SEARCH_OWN_BAR_ENV = "OMR_WHOLE_REST_SEARCH_OWN_BAR"
+
+
+def whole_rest_search_own_bar_enabled() -> bool:
+    return os.environ.get(WHOLE_REST_SEARCH_OWN_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _bar_head_rest_subjects(rec: "Record", sub: str) -> set:
+    """The subjects of every head- or rest-classed detector box in `sub`'s bar (page, system, staff, cell)."""
+    idx = rec.__dict__.get("_head_rest_boxes_by_bar")
+    if idx is None:
+        _bar_has_other_head_or_rest_box(rec, sub)
+        idx = rec.__dict__["_head_rest_boxes_by_bar"]
+    s = _parse_subject(sub)
+    return set(idx.get((s["page"], s["system"], s["staff"], s["cell"]), set()))
+
+
 def _place_found_whole_rests(rec: "Record", runs: Dict[str, "StaffRun"], held_out: Optional[set],
-                             relocated: Optional[Dict[str, int]]) -> None:
+                             relocated: Optional[Dict[str, int]], fates: Optional[Dict[str, str]] = None) -> None:
     """ROADMAP 2.230 m1 (flag `OMR_FOUND_WHOLE_REST`): a bar the 2.52 search FOUND a whole rest in and ADJUDICATE DECIDED
     (`Q.EMPTY_BAR_WHOLE_REST` `whole_rest_found_by_search`; Sean 2026-10-01 "If it finds it then the bar is complete") is written
     as that rest, GUESSED (blue, both readings carried). A CONNECTION to a decided verdict nothing read (rule 6), not a new guess.
@@ -1399,6 +1419,11 @@ def _place_found_whole_rests(rec: "Record", runs: Dict[str, "StaffRun"], held_ou
         cell = run.cells.get(ci)
         if cell is not None and cell.detections:
             continue
+        if whole_rest_search_own_bar_enabled():
+            # ROADMAP 2.315: a bar whose cell holds boxes keeps a found rest only when none of them may be this bar's own mark
+            # (no fate ledger -> no way to say, so the bar stays unread)
+            if any((fates or {}).get(b) not in _NOT_A_GAP_REASONS for b in _bar_head_rest_subjects(rec, o["subject"])):
+                continue
         d = o.get("detail") or {}
         box = d.get("ink_bbox_canonical")
         if not box or len(box) != 4:
@@ -2093,7 +2118,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             fates[sub] = "written_relocated"
         if relocated is not None:
             relocated["heads"] = relocated.get("heads", 0) + 1
-    _place_found_whole_rests(rec, runs, held_out, relocated)
+    _place_found_whole_rests(rec, runs, held_out, relocated, fates)
     # ⚠️ ROADMAP 2.90, AFTER relocation (a relocated head joins a chord too) and
     # BEFORE 2.89's refusal: which bars keep the heads' decided stem directions.
     _export_unison.expand(runs)           # ROADMAP 2.175: the second voice's note joins its bar
