@@ -247,6 +247,38 @@ def lands_on(trace: Sequence[Sequence[float]], heads: Sequence[Dict[str, Any]], 
     return best
 
 
+def far_side_ends(b: Dict[str, Any], d: Dict[str, Any], box_of: Any) -> List[str]:
+    """ROADMAP 2.305 r9. THE RULE (page-facts, Sean: "an arc is OVER its notes"; a cup's notes stand above its ends, a cap's below): the ends of one bound run
+    (`b`, the binder's result on one staff) that name no note of that staff because its notes stand on the arc's FAR side. An end is such an end when
+      * the binder found the closest note wholly on the far side (`head_on_the_arcs_far_side`), or
+      * the binder found a note of the neighbouring staff on the arc's OWN side nearer than any of this staff's (`nearer_note_on_another_staff`), or
+      * the end was left as "half of another arc" (`continues_in_another_curve`) and the closest note it names stands wholly on the far side of the end
+        (a cup: the head's top below the end; a cap: its foot above it).
+    NEVER: an end whose closest note stands beside or on the notes' side of the end (a cup under its own note) -- that is this staff's end. No number.
+    Where BOTH ends are far-side ends the caller binds the run once more on the neighbouring staff on the arc's own side (`adjudicate_page_arc_binding`).
+    Evidence: Brahms p0 staff 5 cups (Sean's ties P184, P186, P195) lie nearer staff 6, whose notes stand below them; staff 9 caps (his slurs P205, P209)
+    lie nearer staff 8. `box_of(key)` -> the head's page box `[x0, y0, x1, y1]` or None."""
+    side = b.get("side")
+    far = [s_ for s_ in ("left", "right") if (b.get(s_) or {}).get("unbound") == "head_on_the_arcs_far_side"]
+    if len(far) == 2 or side not in ("above", "below"):
+        return far
+    for s_ in ("left", "right"):
+        e_ = b.get(s_) or {}
+        if s_ in far:
+            continue
+        if e_.get("unbound") == "nearer_note_on_another_staff":
+            far.append(s_)
+            continue
+        if e_.get("unbound") != "continues_in_another_curve" or not e_.get("candidates"):
+            continue
+        hb = box_of(e_["candidates"][0])
+        ey = d.get("y_%s_page" % s_)
+        if hb and len(hb) == 4 and ey is not None and (
+                (side == "below" and float(hb[1]) > float(ey)) or (side == "above" and float(hb[3]) < float(ey))):
+            far.append(s_)
+    return far
+
+
 def closest_binder(others: Dict[str, Sequence[Tuple[float, float]]], cells: Optional[Dict[Any, Tuple[float, float]]] = None):
     """The `binder` `ownership._page_binding(page_run=...)` takes. Each end binds by Sean's rule (2026-11-15; `arc_claim._bind_end_by_rule`, ROADMAP 2.305 r6): the CLOSEST
     usable note of the staff, measured from where the ink ends, in either direction and with no reach number; two columns about equally near abstain; head-shaped ink no

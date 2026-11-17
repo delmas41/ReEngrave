@@ -3390,6 +3390,19 @@ def _with_across_system_joins(kind: str, spans: Sequence[tuple], x_slurs: Sequen
     return out
 
 
+def _retire_old_tie_pairs(record_ties: Dict[str, Any]) -> int:
+    """ROADMAP 2.305 r9 (Sean 2026-11-13 NO OLD READER BESIDE THE NEW ONE; north star: all ink accounted for one time). Called with the page pass ON only:
+    a tie is written only from ink a reader of ours traced to its two notes -- a page-ink run (added after this) or a detector curve bound at both ends
+    (`Q.TIE_PAIR` reason `paired_by_page_binding`). A pair the old rule made from a box and the heads flanking it is dropped here. Returns how many."""
+    n = 0
+    reasons = record_ties.get("reasons") or {}
+    for key in list(record_ties["pairs"]):
+        if "paired_by_page_binding" not in reasons.get(key, ()):
+            del record_ties["pairs"][key]
+            n += 1
+    return n
+
+
 def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                counters: Dict[str, int],
                tie_report: Optional[Dict[str, Any]] = None
@@ -3440,12 +3453,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 if any(a in pa_plan["replaced"] for a in record_ties["pairs"][key]):
                     del record_ties["pairs"][key]
                     counters["page_arc_tie_pairs_replaced"] += 1
-                elif "paired_by_page_binding" not in (record_ties.get("reasons") or {}).get(key, ()):
-                    # ROADMAP 2.305 r9 (Sean 2026-11-13 NO OLD READER BESIDE THE NEW ONE; north star: all ink accounted for one time): with the page pass ON, a
-                    # tie is written only from ink a reader of ours traced to its two notes -- a page-ink run, or a detector curve bound at both ends
-                    # (`paired_by_page_binding`). The old pairing of a box with the heads flanking it writes nothing; counted.
-                    del record_ties["pairs"][key]
-                    counters["old_tie_pairing_retired"] += 1
+            counters["old_tie_pairing_retired"] += _retire_old_tie_pairs(record_ties)
         for r_ in pa_plan["written"]:
             if r_["kind"] == "slur":
                 bound_slurs["page_arc/%s" % r_["row"]] = {"start": str(r_["start"]), "stop": str(r_["stop"]), "pieces": 1}

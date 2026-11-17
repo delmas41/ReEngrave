@@ -6701,22 +6701,12 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
         binder = PB.closest_binder(PB.facing_ends(peers, i, st), cells_)
         b = _page_binding(ev, None, page_run=(d, home, "page_arc/%s" % r.id, r.id,
                                               lambda heads_, sp_, usable_, end_pitch_, alt_, unread_=None, _b=binder, _d=d: _b(heads_, sp_, usable_, end_pitch_, alt_, _d, unread_)))
-        far = [s_ for s_ in ("left", "right") if (b.get(s_) or {}).get("unbound") == "head_on_the_arcs_far_side"]
-        if len(far) < 2 and b.get("side") in ("above", "below"):
-            # ROADMAP 2.305 r9 (page-facts: an arc is OVER its notes -- a cup's notes stand above its ends, a cap's below; Brahms p0 staff 5, Sean's ties
-            # P184/P186/P195: the cups under staff 5's low notes lie nearer staff 6, whose notes stand BELOW them): an end left as "half of another arc" whose
-            # closest note of this staff stands wholly on the arc's far side of the end (a cup: the head's top below the end; a cap: its foot above it) is not
-            # this staff's end either -- it counts with the far-side ends, and where every end is so, the arc's own side names the other staff (below, once).
-            for s_ in ("left", "right"):
-                e_ = b.get(s_) or {}
-                if s_ in far or e_.get("unbound") != "continues_in_another_curve" or not e_.get("candidates"):
-                    continue
-                gb_ = ev.rows(Q.GLYPH_BOX, subject=R.Subject.from_key(str(e_["candidates"][0])))
-                hb_ = (gb_[-1].detail or {}).get("bbox_page_px") if gb_ else None
-                ey_ = d.get("y_%s_page" % s_)
-                if hb_ and len(hb_) == 4 and ey_ is not None and (
-                        (b["side"] == "below" and float(hb_[1]) > float(ey_)) or (b["side"] == "above" and float(hb_[3]) < float(ey_))):
-                    far.append(s_)
+        # ROADMAP 2.305 r9 (page-facts: an arc is OVER its notes): which ends name no note of this staff because this staff's notes stand on the arc's far side
+        # (`page_arc_bind.far_side_ends`, the rule in its docstring; Sean's P184/P186/P195 cups under staff 5, P205/P209 caps over staff 9, Brahms p0)
+        def _box_of(key):
+            gb_ = ev.rows(Q.GLYPH_BOX, subject=R.Subject.from_key(str(key)))
+            return (gb_[-1].detail or {}).get("bbox_page_px") if gb_ else None
+        far = PB.far_side_ends(b, d, _box_of)
         hs_ = R.Subject.from_key(home)
         near = None
         if len(far) == 2 and b.get("side") in ("above", "below") and hs_.staff is not None:
