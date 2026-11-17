@@ -83,3 +83,15 @@ def test_r14_a_stem_running_out_of_the_accidental_box_is_not_held():
     # the never: a vertical lying inside the box (a flat's own upright) stays the accidental's; a curve is never freed
     assert not PS.stem_runs_out_of_the_accidental(SimpleNamespace(kind="vertical", box=(2336.0, 6420.0, 6.0, 90.0)), acc, 32.0)
     assert not PS.stem_runs_out_of_the_accidental(SimpleNamespace(kind="curve", box=(2334.0, 6394.0, 30.0, 136.0)), acc, 32.0)
+
+
+def test_r14_tile2_the_flag_of_the_note_before_is_not_this_stems():
+    # Sean's r14 tile 2 (Brahms p0 glyph/0/0/9/3/5, his label q1011): "quarter note, the entire stem". The detector's flag box glyph/0/0/9/3/37
+    # (flag8thDown) hangs right of the stem of the note before (glyph/0/0/9/3/2, his tile 1: "an eighth note ... it does have a flag") and stops
+    # short of this note's stem. Page px from the gather of 2026-11-16 (page stems' stem boxes, the detector's flag box).
+    from tools.omr.staged.adjudicators.rhythm import flag_hangs_right_of
+    flag = (3268.06, 5127.99, 3297.73 - 3268.06, 5220.23 - 5127.99)
+    tile2_stem = (3322.0, 5000.0, 8.0, 234.0)
+    tile1_stem = (3254.0, 5000.0, 6.0, 234.0)
+    assert not flag_hangs_right_of(tile2_stem, flag)      # a flag wholly left of the stem is never this stem's
+    assert flag_hangs_right_of(tile1_stem, flag)          # the never: the note before keeps its own flag

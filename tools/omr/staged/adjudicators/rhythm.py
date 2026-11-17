@@ -2143,6 +2143,14 @@ def _flag_direction(ev: Evidence, flags) -> Dict[str, Any]:
     return out
 
 
+def flag_hangs_right_of(stem, flag) -> bool:
+    """ROADMAP 2.306 r14 (flag `OMR_PAGE_STEMS`; Sean's r14 tile 2, Brahms p0 glyph/0/0/9/3/5, "quarter note": the flag of the note before it was
+    read on its stem). A flag hangs from its own stem's tip to the RIGHT, whichever way the stem points. A flag whose ink lies wholly LEFT of a
+    stem's centre line is the flag of the note before -- never this stem's. Never refuses a flag that reaches the stem's right. `stem`, `flag`:
+    (x, y, w, h) in one frame. Pure."""
+    return flag[0] + flag[2] > stem[0] + stem[2] / 2.0
+
+
 def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
     """The flags on THIS notehead's stem: (rows, levels).
 
@@ -2193,8 +2201,10 @@ def _attached_flags(ev: Evidence, cell, attached_stems, tol: float = 0.0):
         # overlap. 13 of 134 detected flags on Breitkopf p1 stood 0.01-0.32
         # spaces off their stem and were never attached, so the note was
         # written a QUARTER with the flag's own box on the record.
-        if any(_box_gap(_xywh(st), box) <= tol for st in attached_stems
-               if _xywh(st)):
+        from .. import page_stems as _PSF
+        right_only = _PSF.enabled()
+        if any(_box_gap(_xywh(st), box) <= tol and (not right_only or flag_hangs_right_of(_xywh(st), box))
+               for st in attached_stems if _xywh(st)):
             out.append(f)
     # ⚠️ THE MAX, NOT THE SUM. Two flag detections on one stem are two
     # readings of one glyph, not two glyphs; a 16th flag alone already says
