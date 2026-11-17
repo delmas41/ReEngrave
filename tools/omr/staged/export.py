@@ -5772,10 +5772,67 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
     if not _PS.enabled():
         _legacy.annotate_beams(stream, dets)
         return
-    flagged = [ev for ev in stream if _value_from_its_own_flag(
-        [(rec.verdict(Q.DURATION, h.get("glyph")) or {}).get("detail") for h in (ev.get("noteheads") or ()) if h.get("glyph")])]
+    details = [[(rec.verdict(Q.DURATION, h.get("glyph")) or {}).get("detail") for h in (ev.get("noteheads") or ()) if h.get("glyph")]
+               for ev in stream]
+    flagged = flagged_outside_a_joined_beam(stream, dets, details)
     counters["beam_group_flagged_notes_kept_flagged"] += len(flagged)
     beam_stream_keeping_flags(stream, dets, flagged)
+
+
+def _beam_joined(details: Sequence[Optional[Dict[str, Any]]]) -> bool:
+    """The duration reader joined a beam to this event's stem, or holds a beam level certain on it (`rhythm` duration detail). Pure."""
+    return any(isinstance(d, dict) and (d.get("beams_by_stem") or d.get("levels_certain")) for d in details)
+
+
+def flagged_outside_a_joined_beam(stream: Sequence[Dict[str, Any]], dets: Sequence[Dict[str, Any]],
+                                  details: Sequence[Sequence[Optional[Dict[str, Any]]]]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.306 r14: the events of one voice to keep flagged (`beam_stream_keeping_flags`). An event whose value the duration reader read from a
+    flag on its own stem (`_value_from_its_own_flag`) stays flagged -- UNLESS the stroke `annotate_beams` would group it under is a beam another
+    note of this voice is joined to (Sean 2026-10-28: "the beam covers the width of where those notes with stems occur ... they were all 8th
+    notes that belong to that beam even though the ink is broken"): a beam that holds a joined note owns every stemmed note under its width,
+    and a hook read at its end is the beam's end, not a flag (r14 our look, Litolff p10 glyph/10/0/1/6/1 and /4/6/6: the last of three
+    beamed eighths). A stroke no note of the voice is joined to -- a slur, a neighbour staff's beam in the padded cell -- owns nothing.
+    `details[i]`: the duration details of event i's heads. Pure but for `_legacy`'s own box picker."""
+    raw = [d["bbox_page"] for d in dets if d.get("category") == "structural" and d.get("class") == "beam" and len(d.get("bbox_page") or ()) == 4]
+    if not raw:
+        return []
+    widths = sorted(h["bbox_page"][2] for e in stream for h in (e.get("noteheads") or ()) if len(h.get("bbox_page") or ()) == 4)
+    nh = widths[len(widths) // 2] if widths else 0.0
+    suspect_raw = _legacy._suspect_beam_boxes(raw)
+    boxes = list(_legacy._collapse_beam_stacks([b for i, b in enumerate(raw) if i not in suspect_raw]))
+    suspect = set(range(len(boxes), len(boxes) + len(suspect_raw)))
+    boxes += [tuple(raw[i]) for i in sorted(suspect_raw)]
+
+    def pick(ev: Dict[str, Any]) -> Optional[int]:
+        hs = ev.get("noteheads") or []
+        b = hs[0].get("bbox_page") if hs else None
+        if not b or len(b) != 4:
+            return None
+        return _legacy._pick_beam_box((b[0] + b[2] / 2.0, b[1] + b[3] / 2.0), boxes, suspect, nh)
+
+    def stem_under(ev: Dict[str, Any], bi: int) -> bool:
+        """The event's stem stands under the stroke's width (no padding): the stem at the head's side -- up -> right, down -> left."""
+        hs = ev.get("noteheads") or []
+        b = hs[0].get("bbox_page") if hs else None
+        if not b or len(b) != 4:
+            return False
+        d = hs[0].get("stem_direction")
+        if d not in ("up", "down"):
+            return False
+        sx = b[0] + b[2] if d == "up" else b[0]
+        bx, _by, bw, _bh = boxes[bi]
+        return bx <= sx <= bx + bw
+
+    joined_boxes = {pick(ev) for ev, d in zip(stream, details) if ev.get("kind") != "rest" and _beam_joined(d)} - {None}
+    out = []
+    for ev, d in zip(stream, details):
+        if not _value_from_its_own_flag(d):
+            continue
+        bi = pick(ev)
+        if bi is not None and bi in joined_boxes and stem_under(ev, bi):
+            continue            # a joined beam stands over this stem: the beam owns it
+        out.append(ev)
+    return out
 
 
 def _value_from_its_own_flag(details: Sequence[Optional[Dict[str, Any]]]) -> bool:

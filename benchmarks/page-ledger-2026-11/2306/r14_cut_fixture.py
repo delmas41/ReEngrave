@@ -25,7 +25,7 @@ def tap(rec, run, cell_index, stream, counters):
             hs = []
             for h in ev.get("noteheads") or ():
                 d = ((rec.verdict(E.Q.DURATION, h.get("glyph")) or {}).get("detail")) or {}
-                hs.append(dict(glyph=h.get("glyph"), bbox_page=h.get("bbox_page"), beam_levels=h.get("beam_levels"),
+                hs.append(dict(glyph=h.get("glyph"), bbox_page=h.get("bbox_page"), beam_levels=h.get("beam_levels"), stem_direction=h.get("stem_direction"),
                                duration_detail={k: d.get(k) for k in KEEP if k in d}))
             evs.append(dict(kind=ev.get("kind"), noteheads=hs))
         out.setdefault(key, []).append(dict(events=evs, dets=[dict(category=d["category"], **{"class": d["class"]}, bbox_page=d["bbox_page"]) for d in dets]))

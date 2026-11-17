@@ -33,7 +33,8 @@ def _run(key, rule):
     c = copy.deepcopy(_cell(key))
     stream = c["events"]
     if rule:
-        flagged = [ev for ev in stream if E._value_from_its_own_flag([h["duration_detail"] for h in ev["noteheads"]])]
+        details = [[h["duration_detail"] for h in ev["noteheads"]] for ev in stream]
+        flagged = E.flagged_outside_a_joined_beam(stream, c["dets"], details)
         E.beam_stream_keeping_flags(stream, c["dets"], flagged)
     else:
         L.annotate_beams(stream, c["dets"])
