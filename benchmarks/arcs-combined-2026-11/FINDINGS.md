@@ -481,7 +481,9 @@ paired: tiles 7 and 10 show the old tie pairing holding BOTH the cap and the cup
 
 **Measure 3 -- judged answers right->wrong: 0.** `judged score` (notes) per item identical before/after on Brahms p0 and Litolff p13. Sean's arc
 tiles on these pages (`r9/tiles_replay.py`): Brahms p0 8 right->right, r7b tile 4 wrong->unwritten (its start note is held in doubt, r8);
-Litolff p13 7 right->right, r2 tile 1 wrong->wrong (unchanged). Fast tier: see the lane report.
+Litolff p13 7 right->right, r2 tile 1 wrong->wrong (unchanged). Fast tier (flags OFF, tip 61a5f49b6): 10,722 passed / 1 failed -- the 2.274
+pin "one pitch with a head between is not claimed a slur" (a drawing), which Sean's rule reverses; rewritten in d9ef40329 with a far-side twin
+(file 20 / 0). Arc test files with both flags ON: 518 passed / 3 failed = the two default-off pins + that same pin (before the rewrite).
 
 **Old box path: OFF with the flag ON** (both the slur box path and the old tie pairing). What still stops a landing: the r9 tiles; the Litolff ties
 the old pairing wrote and the page pass does not read (page-ink run missing over the erased stretch; head positions); page-to-page ties need the
