@@ -187,8 +187,16 @@ class TestTheDecision(unittest.TestCase):
         self.assertEqual(r["status"], "abstained")
         self.assertEqual((r["why"], r["edge"], r["edge_head"]), ("system_edge", "right", hs[0].to_key()))
 
+    def test_one_pitch_with_a_note_under_the_arc_between_is_a_slur(self):
+        # ROADMAP 2.305 r9 (page-facts, Sean 2026-10-29: "spanning multiple notes is always slur"; real case his P179, test_arc_page_pass_alone_r9_2_305):
+        # this pin used to say "not a tie, not claimed a slur"; the rule says slur where the note between stands under the arc
+        log, hs, w = _scene([(0, 0, 40.0, 100.0), (0, 1, 90.0, 100.0), (0, 2, 140.0, 100.0)], ENDS, PTS)
+        (r,) = _run(log).detail["runs"]
+        self.assertEqual((r["status"], r["kind"], r["rule"]), ("written", "slur", "page_binding_same_pitch_notes_between"))
+
     def test_an_unreadable_pair_abstains_and_says_why(self):
-        log, hs, w = _scene([(0, 0, 40.0, 100.0), (0, 1, 90.0, 100.0), (0, 2, 140.0, 100.0)], ENDS, PTS)          # one pitch with a head between: not a tie, not claimed a slur
+        # the twin: the head between stands on the cap's far side (above the line joining its ends) -- not under the arc: still refused
+        log, hs, w = _scene([(0, 0, 40.0, 100.0), (0, 1, 90.0, 70.0), (0, 2, 140.0, 100.0)], ENDS, PTS)
         (r,) = _run(log).detail["runs"]
         self.assertEqual((r["status"], r["why"]), ("abstained", "same_pitch_heads_between"))
 
