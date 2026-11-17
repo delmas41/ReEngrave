@@ -1,0 +1,242 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "glyph": "glyph/8/0/6/18/2",
+  "page": 8,
+  "box": [
+   2205.1,
+   1419.7,
+   2229.6,
+   1440.5
+  ],
+  "clef": "treble",
+  "position_read": 12,
+  "pitch_read": "A3",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": 13,
+  "geometry_pitch": "G3",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "glyph": "glyph/19/1/4/0/1",
+  "page": 19,
+  "box": [
+   1076.8,
+   5040.4,
+   1124.4,
+   5074.1
+  ],
+  "clef": "bass",
+  "position_read": -4,
+  "pitch_read": "E4",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -4,
+  "geometry_pitch": "E4",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "glyph": "glyph/16/1/1/8/1",
+  "page": 16,
+  "box": [
+   1794.1,
+   2173.4,
+   1819.0,
+   2195.0
+  ],
+  "clef": "treble",
+  "position_read": -4,
+  "pitch_read": "C6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -4,
+  "geometry_pitch": "C6",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "glyph": "glyph/4/1/0/12/1",
+  "page": 4,
+  "box": [
+   2199.7,
+   2097.5,
+   2223.8,
+   2119.3
+  ],
+  "clef": "treble",
+  "position_read": -8,
+  "pitch_read": "G6",
+  "ledger_lines_owed": 4,
+  "decided_by": "ledger count",
+  "geometry_position": -9,
+  "geometry_pitch": "A6",
+  "our_stroke_count": 3
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "glyph": "glyph/8/0/0/15/4",
+  "page": 8,
+  "box": [
+   1917.0,
+   364.9,
+   1941.4,
+   386.6
+  ],
+  "clef": "treble",
+  "position_read": -5,
+  "pitch_read": "D6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -6,
+  "geometry_pitch": "E6",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "glyph": "glyph/16/1/0/5/3",
+  "page": 16,
+  "box": [
+   1336.7,
+   2028.0,
+   1359.7,
+   2046.3
+  ],
+  "clef": "treble",
+  "position_read": -4,
+  "pitch_read": "C6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -4,
+  "geometry_pitch": "C6",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 7,
+  "plate": "litolff",
+  "glyph": "glyph/4/1/4/6/1",
+  "page": 4,
+  "box": [
+   1409.4,
+   2799.6,
+   1430.5,
+   2820.7
+  ],
+  "clef": "treble",
+  "position_read": 13,
+  "pitch_read": "G3",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": 13,
+  "geometry_pitch": "G3",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "glyph": "glyph/10/0/0/9/3",
+  "page": 10,
+  "box": [
+   1891.9,
+   365.9,
+   1914.6,
+   387.5
+  ],
+  "clef": "treble",
+  "position_read": -4,
+  "pitch_read": "C6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -4,
+  "geometry_pitch": "C6",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 9,
+  "plate": "litolff",
+  "glyph": "glyph/16/0/1/2/3",
+  "page": 16,
+  "box": [
+   783.1,
+   484.4,
+   804.1,
+   504.4
+  ],
+  "clef": "treble",
+  "position_read": -5,
+  "pitch_read": "D6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -6,
+  "geometry_pitch": "E6",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "glyph": "glyph/19/0/0/6/11",
+  "page": 19,
+  "box": [
+   3893.1,
+   481.8,
+   3937.6,
+   514.0
+  ],
+  "clef": "treble",
+  "position_read": -4,
+  "pitch_read": "C6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -4,
+  "geometry_pitch": "C6",
+  "our_stroke_count": 2
+ },
+ {
+  "tile": 11,
+  "plate": "brahms",
+  "glyph": "glyph/25/1/0/1/0",
+  "page": 25,
+  "box": [
+   1714.3,
+   4367.4,
+   1753.3,
+   4398.7
+  ],
+  "clef": "treble",
+  "position_read": -7,
+  "pitch_read": "F6",
+  "ledger_lines_owed": 3,
+  "decided_by": "ledger count",
+  "geometry_position": -8,
+  "geometry_pitch": "G6",
+  "our_stroke_count": 3
+ },
+ {
+  "tile": 12,
+  "plate": "brahms",
+  "glyph": "glyph/8/0/1/1/1",
+  "page": 8,
+  "box": [
+   1246.9,
+   851.7,
+   1285.7,
+   885.6
+  ],
+  "clef": "treble",
+  "position_read": -4,
+  "pitch_read": "C6",
+  "ledger_lines_owed": 2,
+  "decided_by": "ledger count",
+  "geometry_position": -4,
+  "geometry_pitch": "C6",
+  "our_stroke_count": 2
+ }
+]

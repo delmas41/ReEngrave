@@ -130,3 +130,35 @@ a rest not read 4 (two bars are nothing but a whole rest); a Litolff half note r
 The classifier agreed with him on 11 of the first 12 but only about 6 of the second 12: rows "every mark owned by
 another staff" and "refused as barline ink" hid two bars that hold only a whole rest. The ranking's family sizes hold
 roughly; its bookkeeping rows need the question "what is printed here that the record does not hold" before a count.
+
+## 2.311 small test: are far-above-the-staff notes read at the wrong height? (2026-11-17, STAGED, saved records, no gather)
+
+**Records used:** `library/_shared-records/claim-readout-slices-2306-smp4-{lit,bra}` (2306 frozen-sample gather, Nov 13; Litolff pages 1 2 4 6 8 9 10 11 16,
+Brahms 0 4 5 8 12 14 19 25). **Litolff p13 is in no saved record**, so the nine unread ties and Sean's tie pairs could NOT be measured. Scripts:
+`ledger_heights.py`, `ledger_ink_count.py`, `ledger_sample40.py`, `ledger_parity_brahms.py`, `ledger_tiles.py`.
+
+**Prior work (5 lines).** 2.56 / 2.44: far heads are counted off their printed ledgers (`gather_far_head_ledger_positions`, `far_head_reader`), decided by
+`adjudicators.position.adjudicate_notehead_position`, read by `consequences.restate_pitch`; where the ledger read refuses, `restate_pitch` rounds the
+GEOMETRY row (`gather_notehead_positions`: box centre against the staff spacing extended outward). 2.216/2.255: ledger lines name the owner / better ledger reads.
+2.248: ink centre of a far head only as a candidate (WRONG as a mover; page-facts: ledger lines only). 2.284: page ledger owns the ink. page-facts: Litolff ledgers sit
+~0.27 sp further out than the staff spacing extends. Dropped: `combine_farhead_position`. Rule owning the value: far head placed by ledger lines only.
+
+**Cause (a musician's words).** On Litolff the staff spacing extended upward does not land on the printed ledger lines (they sit about a quarter space further out),
+so where we extend the spacing instead of counting the lines the note comes out one step wrong; where we count the lines we are mostly right. The loss is where the
+count REFUSES (line count does not fit, no line at the box) and the extrapolation is written. Litolff matter much more than Brahms.
+
+**Numbers (heads the record places outside the staff; geometry = round(box centre), ledger = counted).**
+- Litolff above, ledger-read vs round(geometry): 1 line 192/442 differ by one step (43%), 2 lines 103/172, 3+ 88/132; below 1 line 42/189 (22%), 2 lines 19/96.
+  Brahms: 3%, 9%, 10% above; ~1% below. Fractional residue of the box centre from the grid: Litolff far above mean 0.27-0.29 (inside the staff 0.15); Brahms 0.16-0.21 (0.11).
+- How decided: Litolff far-above 746 by ledger count, 241 by geometry (24%); far-below 286 vs 201 (41% geometry). Brahms above 1000 vs 165 (14%), below 323 vs 152.
+- Our own stroke count (not truth): of ledger-decided Litolff above 589/746 agree with the record's count (geometry would agree 474); of the geometry-decided 63/241 and
+  29/201 -- most disagree by 2 or more, so that set holds many non-notes / far-off boxes, not only height errors (not separated here).
+- Truth, Brahms p0 (Sean's OnLine/InSpace class = position parity; 145 far labelled heads matched): ledger-decided 143, parity wrong 0; geometry-decided 2, both wrong;
+  inside staff 1 of 254. No pitch truth exists for Litolff (no labelled page).
+- Our eye on the seeded 40-per-plate sheets was NOT completed (time): only the automated count above; do not read it as a rate.
+
+**Does the diagnosis survive?** Partly. Not on Brahms (parity right 143/145). On Litolff the extrapolated height is wrong about half the time when it is used (43-70% of far-above heads
+differ by one step from the counted ledger), and it is used for about a quarter of far-above and 40% of far-below heads -- a real cause of unreadable tie pairs (C6 vs D6 is exactly a one-step miss). But
+for the notes the ledger reader DOES count, our stroke count agrees ~79%. Who says it is right: the 12 tiles (`out/print/2.311-ledger`, key `out/print/2.311-ledger-key.json`; pitch we read, clef, and the geometry pitch beside it).
+**Process lesson:** a fallback that rounds an extrapolation is the same rule-8 fault as "cannot tell becomes an answer"; a count by place (not by rate) per decider was missing.
+Limit: tile clef is the staff's first printed clef; heads were filtered to head-shaped boxes over dark ink after the first sheet showed a word and a brace boxed.
