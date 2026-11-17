@@ -1,0 +1,63 @@
+{
+ "set": "out/print/2.311-beams",
+ "key": "out/print/2.311-beams-key.json",
+ "date": "2026-11-17",
+ "who": "Sean (voice)",
+ "question": "what is the boxed note's value?",
+ "answers": {
+  "1": {
+   "sean": "The first orange box in tile 1 covers what looks like most of a sharp and part of a natural sign in front of two half notes on a chord.",
+   "ours": "not a note: accidentals boxed as a black head"
+  },
+  "2": {
+   "sean": "a quarter note in the top voice",
+   "value": "quarter"
+  },
+  "3": {
+   "sean": "an eighth note connected to a beam, but the square goes all the way around the note and the stem and that part of the beam that's connected to it",
+   "value": "eighth",
+   "beamed": true
+  },
+  "4": {
+   "sean": "a half note in the second voice, high up on the ledger lines, looks like one. Fourth ledger line above the staff.",
+   "value": "half"
+  },
+  "5": {
+   "sean": "a half note, second voice, bottom voice",
+   "value": "half",
+   "ours": "head class read black; Sean says half"
+  },
+  "6": {
+   "sean": "a quarter note. The box is also around most of the stem. It's on the third ledger line above the staff.",
+   "value": "quarter"
+  },
+  "7": {
+   "sean": "a chord. Two notes a third apart. They're both dotted quarter notes. They land on the middle line of the staff and the line above the middle line",
+   "value": "dotted quarter"
+  },
+  "8": {
+   "sean": "a chord. Two dotted eighth notes. One note is the middle line of the staff, the other one's the first space above the staff ... the whole stem, and a portion of the beam that's connected to it",
+   "value": "dotted eighth",
+   "beamed": true
+  },
+  "9": {
+   "sean": "a dotted half note. The box stops a little bit short from the whole stem, but there's a little bit of a break in the stem ... the stem extends above that and has a tremolo slash on it",
+   "value": "dotted half",
+   "ours": "stem read stops at a break in the stem; tremolo slash above"
+  },
+  "10": {
+   "sean": "a chord, dotted quarter notes. The lower note is on the first ledger line below the staff, and the upper note is on the middle staff line",
+   "value": "dotted quarter"
+  },
+  "11": {
+   "sean": "a unison dotted quarter on the top space in the staff ... this box is around the note head and the lower stem, but not around the upper stem of the unison",
+   "value": "dotted quarter",
+   "ours": "unison: two stems, we hold one"
+  },
+  "12": {
+   "sean": "a dotted quarter and its stem going down",
+   "value": "dotted quarter"
+  }
+ },
+ "tally_ours": "9 of 12 are plain stemmed notes with no beam (2,4,5,6,7,9,10,11,12); 2 are beamed (3,8); 1 is not a note (1). Two voices or unison at one place: 4,5,11. Ledger lines: 4,6,10."
+}
