@@ -565,3 +565,42 @@ places: 34 right, 2 wrong (tremolo slash, the f -- both written by both arms), 1
 Litolff 259 -> 129 -> 136, Brahms 66 -> 50 -> 55 (one trade: r11 tiles 7 and 11, real eighths, no longer
 gained -- their chord mate's ink is a horizontal fused with a staff line). Fast tier flag ON 10,636 passed;
 check 229. Six tiles on the r11 -> r12 changes in `out/print/2.306-r12` (4 are places Sean already answered).
+
+## 2.306 round 14 (2026-11-16) -- stems, flags, beams judged right / wrong / unread on Sean's swept Brahms p0
+
+STAGED, `OMR_PAGE_STEMS` (still OFF). Branch `lane-2.306-r14` tip 5e4204ba4 (code 643c25248, f6294cb47). Agent's report,
+checked against the tree (export.py +97, page_stems.py +21, tests from real marks).
+
+CAUSE: the 19 wrong flags and 20 fake beams on p0 are the same 20 notes, printed flagged and written beamed. The
+duration reader had already decided "flag attached, no beam joined" on 19 of them; EXPORT `annotate_beams` regrouped
+notes under any filed beam stroke by x alone (a slur, the next staff's beams in the padded cell). Not the stem reader.
+PROCESS LESSON: the value existed and nothing read it -- a wire that re-derives a fact must read the decided one first.
+Second cause: the page stem reader's own rule let a detector accidental box hold a stem (14 of 15 such refusals on
+Brahms were real stems; on p0 the detector boxed an eighth's stem+flag as a flat at 0.35).
+
+BUILT behind the flag: (1) a note whose stem carries a flag is written flagged, never beamed (Sean 2026-10-22), except
+under a beam another note of the same voice is joined to; (2) an accidental's box never holds a vertical that runs out of it.
+
+judge.py, Brahms p0, wrong / right / unread (OFF | base ON | r14 ON; each a re-adjudicated gather):
+stem 5/359/16 | 4/367/9 | 4/367/9; flag 19/32/0 | 19/32/0 | 5/48/0; beam 22/161/2 | 22/163/0 | 4/163/0;
+value 4/369/9 | 4/371/7 | 4/371/7. Judged answers right->wrong: 0 (Brahms 395, Litolff 373). Fast tier flag OFF
+10,642 passed, 0 failed. Tiles `out/print/2.306-r14` (seed 2306014), NOT YET ANSWERED.
+
+The 4 "wrong" stems are the scorer's (judge.py attaches a stem label to the wrong head / infers direction from side):
+agent's crop look, not Sean's; judge.py not fixed yet. Open for Sean: one vertical joining a black head above to a
+hollow dotted half below (3 unread). Still stops the cell join being removed: two-voice heads (301 Litolff / 79 Brahms
+by the r13 study), the cell stem rows the tip/beam readers measure on, real stems the page refuses.
+Red-bar reasons with the flag ON (p0 / Litolff p10): chord_value_undecided 2 / 2, beam_discounted_uncertain 7 / 13,
+beams_ambiguous 2 / 3; the page stems settle only 2 of them -- these are tip and BEAM reading questions.
+Litolff flag changes (3) and the accidental result rest on the agent's look. One page per plate.
+
+### 2.306 r14, after Sean's tiles (2026-11-16)
+
+Tiles: flag right on 1, 3, 4, 5, 6, 7, 12; new stems 9, 10, 11 right; tile 2 "quarter note" written a flagged eighth.
+Cause of tile 2: `rhythm._attached_flags` took the flag of the note BEFORE (a flag box wholly left of this stem), over
+the stem tip's own "no flag". Rule built (flag ON only): a flag hangs from its own stem's tip to the right; a flag
+wholly left of a stem is never that stem's. One note changes on p0, none on Litolff p10. judge.py p0 flag ON:
+value 4/371 -> 3/372, flag 5/48 -> 4/48; judged right->wrong 0; fast tier 10,643 passed, 0 failed. Tip 7cc8c1836.
+Tile 8 (Litolff p10): one hook on the print by the agent's crop, detector class says 16th; not built until Sean
+confirms one flag. Like cases 1 Brahms p0, 2 Litolff p10. q975: the agent sees a flag on a note Sean labelled a
+quarter -- a question for Sean, not touched.

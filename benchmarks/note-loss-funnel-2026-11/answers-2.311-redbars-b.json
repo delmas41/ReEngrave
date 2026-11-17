@@ -1,0 +1,22 @@
+{
+ "lane": "2.311",
+ "set": "out/print/2.311-redbars-b",
+ "seed": 2311005,
+ "date": "2026-11-16",
+ "question": "What is printed in the boxed bar on that staff?",
+ "note": "Sean lost his place by voice; tile numbers below are matched to the pictures by content (our matching, confirmed with him tile by tile). His first 'tile 5' description is tile 7; his 'tile 7' description is tile 9; '4/8 notes', '2/8 notes', '3/16th' are voice-to-text for four eighth notes, two eighth [rests on the page], three sixteenths.",
+ "answers": {
+  "1": "a half note with ties on either side going to the measures on either side",
+  "2": "an eighth note rest followed by three unison eighth notes with stems going in both directions with beams on either ends",
+  "3": "two voices; top: an eighth note rest followed by three eighth notes, the first has a sharp, the second a natural sign; lower voice a whole note rest",
+  "4": "two voices; bottom a whole note rest; top: eighth note rest followed by three eighth notes, the second has a natural sign; a crescendo marking underneath",
+  "5": "the four eighth notes; the first two have the slur, the second two have the staccato markings",
+  "6": "unison half notes: a half note with stems going in both directions with a tremolo slash on either end",
+  "7": "a dotted quarter followed by a dotted eighth and three sixteenth notes; a slur from the previous bar lands on the dotted quarter; the dotted quarter has a tie to the dotted eighth; the three sixteenths have a slur over them into the next bar",
+  "8": "whole note rest",
+  "9": "a G clef with a single flat; three eighth notes beamed together, two notes per stem (thirds), all staccato, accidentals on each (first: lower note sharp; second: lower natural; third: top note sharp); then a dotted quarter chord, the lower note has a flat, both tied into the next bar",
+  "10": "the eighth note chord, followed by 2/8 notes [as transcribed; two eighth rests stand there on the page], followed by a dotted quarter chord",
+  "11": "looks exactly like tile 7 [said 'tile five', his first label for that figure]",
+  "12": "a whole note rest"
+ }
+}

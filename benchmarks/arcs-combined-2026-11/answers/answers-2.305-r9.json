@@ -1,0 +1,36 @@
+{
+ "lane": "2.305 r9",
+ "set": "out/print/2.305-r9",
+ "seed": 2305009,
+ "date": "2026-11-16",
+ "question": "Does the ink in the box join the two ticked notes, and is it a tie or a slur?",
+ "answers": {
+  "1": "a tie, and it's connected to the right notes",
+  "2": "there is no arc",
+  "3": "a slur, and it is connected to the right notes",
+  "4": "tie, connected to the right notes",
+  "5": "tie, connected to the right notes",
+  "6": "the box looks very strange. It looks like there's a slur that it only gets a very small portion of, and the marks that it goes to are not correct",
+  "7": "a tie, both those boxes are ties, the bottom one looks correct, the top one has a mark through the middle of it right where the bar line is. I'm not sure what that means",
+  "8": "the very beginning of a slur. It's a very tiny small box. The slur is very long, and it's only getting a very small portion of it",
+  "9": "a bunch of boxes ... one that is the correct length of the slur, and the notes are right, but there's two extra orange boxes that don't belong there",
+  "10": "two boxes, both ties, again a weird note on the bar line",
+  "11": "part of a tie, but it breaks off at the bar line",
+  "12": "a slur, and it is connected to the correct notes"
+ },
+ "key_before_now": {
+  "1": "tie -> nothing",
+  "2": "tie -> nothing",
+  "3": "two slurs -> a slur",
+  "4": "tie -> nothing",
+  "5": "tie -> nothing",
+  "6": "slur -> nothing",
+  "7": "tie -> nothing",
+  "8": "slur -> nothing",
+  "9": "slur -> nothing",
+  "10": "two slurs -> nothing",
+  "11": "two ties -> a tie",
+  "12": "nothing -> a slur"
+ },
+ "scored_ours": "right changes: 2, 3, 6, 8, 11, 12 (6). Real arcs the round REMOVED (right -> unread): 1, 4, 5, 7 ties, 9 a slur (5). 10: two real ties, written as slurs before, nothing now. The 'mark through the box at the bar line' on 7 and 10 is two detector boxes meeting at the barline (the arc cut in two at the cell edge)."
+}
