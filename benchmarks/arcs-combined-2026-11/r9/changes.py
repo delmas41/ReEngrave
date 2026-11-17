@@ -33,15 +33,20 @@ def arcs(pre):
     return out, spans, f, sp, ck
 
 
+INK_BOXES = []      # the individual boxes behind the last `ink_of` answer (a cap and a cup stay two boxes)
+
+
 def ink_of(span, rec_runs, boxes, f, a, b):
     if span and span["src"] == "page_arc" and span.get("key", "").startswith("page_arc/"):
         pts = rec_runs.get(span["key"].split("/", 1)[1])
         if pts:
-            return [min(p[0] for p in pts), min(p[1] for p in pts), max(p[0] for p in pts), max(p[1] for p in pts)], "page run %s" % span["key"]
+            INK_BOXES[:] = [[min(p[0] for p in pts), min(p[1] for p in pts), max(p[0] for p in pts), max(p[1] for p in pts)]]
+            return INK_BOXES[0], "page run %s" % span["key"]
     if span and span["src"] == "curve" and span.get("key"):
         bs = [bx["box"] for bx in boxes if (bx.get("curve") or {}).get("curve") == span["key"] and bx["box"]]
         if bs:
-            return [min(x[0] for x in bs), min(x[1] for x in bs), max(x[2] for x in bs), max(x[3] for x in bs)], "curve %s" % span["key"]
+            INK_BOXES[:] = [[min(x[0] for x in bs), min(x[1] for x in bs), max(x[2] for x in bs), max(x[3] for x in bs)]]
+            return INK_BOXES[0], "curve %s" % span["key"]
     # old paths / unknown: the detector arc boxes over the stretch between the two notes, on their staff
     ga, gb = f["glyphs"][a]["box"], f["glyphs"][b]["box"]
     x0, x1 = min(ga[0], gb[0]), max(ga[2], gb[2])
@@ -57,6 +62,7 @@ def ink_of(span, rec_runs, boxes, f, a, b):
             if inside and near_y:
                 bs.append(bx["box"])
     if bs:
+        INK_BOXES[:] = [list(x) for x in bs]
         return [min(x[0] for x in bs), min(x[1] for x in bs), max(x[2] for x in bs), max(x[3] for x in bs)], "detector boxes (old path)"
     return None, "no ink found"
 
@@ -67,6 +73,7 @@ def main():
     A, As, af, asp, ack = arcs(apre)
     rec = load_record(apre + ".record.json")["record"]
     runs = {o["id"]: (o.get("detail") or {}).get("points") for o in rec["observations"] if o["quantity"] == "page_arc" and o.get("value") == "run"}
+    lines = {o["subject"]: o.get("value") for o in rec["observations"] if o["quantity"] == "staff_lines"}
     del rec
     # an old tie pair's ink is exactly the detector boxes `Q.TIE_PAIR` named it from (before arm)
     brec = load_record(bpre + ".record.json")["record"]
@@ -90,13 +97,15 @@ def main():
             change, sp_, f, sp = "removed", (Bs.get(key) or [None])[0], bf, bsp
         else:
             change, sp_, f, sp = "changed %s -> %s" % (kb, ka), (As.get(key) or [None])[0], af, asp
+        INK_BOXES[:] = []
         ink, why = ink_of(sp_, runs if change != "removed" else {}, sp["arc_boxes"], f, a, b)
         if (sp_ or {}).get("src") in ("record_tie", "curve_tie") and change == "removed" and tie_boxes.get(key):
             bs = tie_boxes[key]
+            INK_BOXES[:] = [list(x) for x in bs]
             ink, why = [min(x[0] for x in bs), min(x[1] for x in bs), max(x[2] for x in bs), max(x[3] for x in bs)], "the tie pair's own boxes"
         if change == "removed" and sp_ and sp_["src"] == "page_arc":
             ink, why = None, "page run (before)"
-        rows.append(dict(plate=plate, change=change, a=a, b=b, before=kb, after=ka, src=(sp_ or {}).get("src"), ink=ink, ink_from=why,
+        rows.append(dict(plate=plate, change=change, a=a, b=b, before=kb, after=ka, src=(sp_ or {}).get("src"), ink=ink, ink_boxes=[list(x) for x in INK_BOXES] if ink else [], ink_from=why, staff_lines=lines.get("staff/%s" % "/".join(a.split("/")[1:4])),
                          page=int(a.split("/")[1]), a_box=f["glyphs"][a]["box"], b_box=f["glyphs"][b]["box"]))
     json.dump(rows, open(out, "w"), indent=0)
     for r in rows:

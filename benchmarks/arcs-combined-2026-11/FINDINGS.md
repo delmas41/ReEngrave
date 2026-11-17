@@ -477,7 +477,9 @@ NEVER a cup end under its own note, a head the cup does not span, the wrong side
 
 **Measure 2 -- tiles.** out/print/2.305-r9/sheet.png (12, seed 2305009, 6 per plate from the changes; key out/print/2.305-r9-key.json): 9 removed,
 2 doubles reduced to one, 1 added. Box = the ink the reader held (page run points; a curve's boxes; for a removed old arc the detector boxes it
-paired: tiles 7 and 10 show the old tie pairing holding BOTH the cap and the cup of one note pair). Unanswered.
+paired, each drawn as its own box). Remade the same day (coordinator): same 12 places and key, one staff per tile, every tile 1250 px wide and
+>= 450 px tall (a short band set on plain paper, never widened onto the next staff), each piece of ink its own box, and per tile one line in the key
+(`file_said`) saying what the file wrote before and writes now. Unanswered.
 
 **Measure 3 -- judged answers right->wrong: 0.** `judged score` (notes) per item identical before/after on Brahms p0 and Litolff p13. Sean's arc
 tiles on these pages (`r9/tiles_replay.py`): Brahms p0 8 right->right, r7b tile 4 wrong->unwritten (its start note is held in doubt, r8);
