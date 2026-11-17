@@ -1,0 +1,544 @@
+{
+ "bars": {
+  "n_all_incl_p0": 25,
+  "n_pool": 23,
+  "by_row": {
+   "brahms/sum_short_dot_ink_never_boxed": 18,
+   "litolff/sum_short_dot_ink_never_boxed": 3,
+   "brahms/sum_short_dot_boxed_augmentation": 2
+  },
+  "no_candidate_recovered": 0,
+  "look_sample": [
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     1,
+     10,
+     7
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/1/10/7/2"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     1,
+     9,
+     1
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/1/9/1/9"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     9,
+     12
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/9/12/3"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     25,
+     1,
+     10,
+     6
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/25/1/10/6/1"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     1,
+     7,
+     2
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/1/7/2/2"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     7,
+     12
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/7/12/0"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     7,
+     10
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/7/10/3"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     8,
+     1
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/8/1/7"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     19,
+     0,
+     11,
+     8
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/19/0/11/8/0"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     6,
+     11
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/6/11/4"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     25,
+     0,
+     3,
+     3
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/25/0/3/3/10",
+     "glyph/25/0/3/3/6",
+     "glyph/25/0/3/3/7",
+     "glyph/25/0/3/3/2"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     6,
+     12
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/6/12/3",
+     "glyph/8/0/6/12/0"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     9,
+     8
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/9/8/4",
+     "glyph/8/0/9/8/1"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     8,
+     12
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/8/0/8/12/2"
+    ]
+   },
+   {
+    "plate": "litolff",
+    "bar": [
+     10,
+     1,
+     9,
+     0
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/10/1/9/0/4"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     25,
+     0,
+     9,
+     9
+    ],
+    "row": "sum_short_dot_boxed_augmentation",
+    "cand": [
+     "glyph/25/0/9/9/2",
+     "glyph/25/0/9/9/3"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     4,
+     1,
+     2,
+     0
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/4/1/2/0/1"
+    ]
+   },
+   {
+    "plate": "litolff",
+    "bar": [
+     16,
+     0,
+     4,
+     4
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/16/0/4/4/0",
+     "glyph/16/0/4/4/0"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     4,
+     1,
+     0,
+     3
+    ],
+    "row": "sum_short_dot_ink_never_boxed",
+    "cand": [
+     "glyph/4/1/0/3/8",
+     "glyph/4/1/0/3/5"
+    ]
+   },
+   {
+    "plate": "brahms",
+    "bar": [
+     8,
+     0,
+     2,
+     0
+    ],
+    "row": "sum_short_dot_boxed_augmentation",
+    "cand": [
+     "glyph/8/0/2/0/10"
+    ]
+   }
+  ]
+ },
+ "ink": {
+  "n_plain_read_notes_with_unboxed_dot_ink": 1250,
+  "by_plate": {
+   "brahms": 765,
+   "litolff": 485
+  },
+  "of_which_in_a_dot_short_red_bar": 35
+ },
+ "tiles": [
+  {
+   "tile": 1,
+   "set": "bar",
+   "plate": "brahms",
+   "page": 8,
+   "bar": [
+    8,
+    0,
+    6,
+    11
+   ],
+   "glyph": "glyph/8/0/6/11/4",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C-15"
+   },
+   "red_bar_row": "sum_short_dot_ink_never_boxed",
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 2,
+   "set": "ink",
+   "plate": "brahms",
+   "page": 5,
+   "bar": [
+    5,
+    1,
+    5,
+    4
+   ],
+   "glyph": "glyph/5/1/5/4/7",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C5"
+   },
+   "red_bar_row": null,
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 3,
+   "set": "ink",
+   "plate": "brahms",
+   "page": 19,
+   "bar": [
+    19,
+    1,
+    9,
+    4
+   ],
+   "glyph": "glyph/19/1/9/4/8",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "A13"
+   },
+   "red_bar_row": null,
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 4,
+   "set": "bar",
+   "plate": "litolff",
+   "page": 2,
+   "bar": [
+    2,
+    0,
+    4,
+    5
+   ],
+   "glyph": "glyph/2/0/4/5/3",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "F5"
+   },
+   "red_bar_row": "sum_short_dot_ink_never_boxed",
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 5,
+   "set": "ink",
+   "plate": "litolff",
+   "page": 2,
+   "bar": [
+    2,
+    0,
+    6,
+    2
+   ],
+   "glyph": "glyph/2/0/6/2/3",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C3"
+   },
+   "red_bar_row": null,
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 6,
+   "set": "bar",
+   "plate": "brahms",
+   "page": 8,
+   "bar": [
+    8,
+    1,
+    10,
+    7
+   ],
+   "glyph": "glyph/8/1/10/7/2",
+   "written": {
+    "type": "half",
+    "dots": 0,
+    "blue": false,
+    "pitch": "G2"
+   },
+   "red_bar_row": "sum_short_dot_ink_never_boxed",
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 7,
+   "set": "bar",
+   "plate": "brahms",
+   "page": 4,
+   "bar": [
+    4,
+    1,
+    2,
+    0
+   ],
+   "glyph": "glyph/4/1/2/0/1",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "A3"
+   },
+   "red_bar_row": "sum_short_dot_ink_never_boxed",
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 8,
+   "set": "bar",
+   "plate": "brahms",
+   "page": 8,
+   "bar": [
+    8,
+    1,
+    9,
+    1
+   ],
+   "glyph": "glyph/8/1/9/1/9",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "A-12"
+   },
+   "red_bar_row": "sum_short_dot_ink_never_boxed",
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 9,
+   "set": "ink",
+   "plate": "brahms",
+   "page": 5,
+   "bar": [
+    5,
+    1,
+    2,
+    4
+   ],
+   "glyph": "glyph/5/1/2/4/1",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "A5"
+   },
+   "red_bar_row": null,
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 10,
+   "set": "bar",
+   "plate": "litolff",
+   "page": 16,
+   "bar": [
+    16,
+    0,
+    4,
+    4
+   ],
+   "glyph": "glyph/16/0/4/4/0",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "E5"
+   },
+   "red_bar_row": "sum_short_dot_ink_never_boxed",
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 11,
+   "set": "ink",
+   "plate": "litolff",
+   "page": 10,
+   "bar": [
+    10,
+    1,
+    8,
+    14
+   ],
+   "glyph": "glyph/10/1/8/14/0",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "G3"
+   },
+   "red_bar_row": null,
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  },
+  {
+   "tile": 12,
+   "set": "ink",
+   "plate": "brahms",
+   "page": 4,
+   "bar": [
+    4,
+    0,
+    12,
+    0
+   ],
+   "glyph": "glyph/4/0/12/0/5",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "D-13"
+   },
+   "red_bar_row": null,
+   "note": "we wrote this note plain and READ; the question is whether it is dotted"
+  }
+ ]
+}

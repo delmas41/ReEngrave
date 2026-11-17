@@ -130,3 +130,37 @@ a rest not read 4 (two bars are nothing but a whole rest); a Litolff half note r
 The classifier agreed with him on 11 of the first 12 but only about 6 of the second 12: rows "every mark owned by
 another staff" and "refused as barline ink" hid two bars that hold only a whole rest. The ranking's family sizes hold
 roughly; its bookkeeping rows need the question "what is printed here that the record does not hold" before a count.
+
+## 2.311 small test: augmentation dots (2026-11-17, STAGED, measurement only; saved `bra-a` / `lit-a` gather, nothing re-gathered)
+
+Diagnosis tested: "dots are lost because the detector never draws a box on them, so some bars go red and a dotted note is written plain and READ."
+Scripts: `dotcount.py` (Brahms p0 vs Sean's labels), `dotbars.py` (red bars short by one dot, the look sample, the tiles); results `dotcount-results.json`, `dotbars-results.json`.
+They need `redbars.py` / `redbar_classify.py` from `origin/lane-2.311-redbar-ranking` on PYTHONPATH (not on main yet).
+
+**Prior work.** ROADMAP 2.151 landed ON (dot family, `OMR_DOT_BOXED_AS_A_HEAD`; Sean's hand truth 131 dots on Brahms p0), 2.127 aug-dot join and 2.128 dot position (a dot stands in a SPACE right of its head) landed ON;
+2.251 step 3 (a page dot finder) PARKED under 2.223; page-facts: a dot is right of the head, in a space, staccato is centred above/below; ink-rules: `adjudicate_dot_role`, `aug_dot_join.py` kept.
+Dropped: 2.133 (line removal did not separate wedges from dots). Earlier 2.311 check (`dotcheck.py`): the dot was never boxed and a nearby arc did not hide it.
+
+**Cause and lesson.** Where Sean has labelled (Brahms p0) the detector drew a box on 116 of his 117 dots in swept cells (99%) and 114 reach their note: the dot is not lost at the detector there. The "dots never boxed" diagnosis came from red bars on
+other pages, where a dot-sized ink piece beside a plain note plus a bar short by half the note was read as "a dot never boxed". That test is right about half the time and the ink test alone is almost always wrong (below). Lesson: a rule built from
+the bar sum plus an ink blob is a witness pair that shares one source (the sum), so it needs Sean's labels or a crop to price it.
+
+**Counts, Brahms p0 (his 117 dots in fully swept cells; his 131 across the page: claim readout 130 hold dot-kind ink, 1 nothing).**
+(a) detector box on the dot: 116. Of these 114 attached to their note; 2 sit on notes that were not written at all. (b) boxed but note written with fewer dots: 0.
+(c) no box, an unboxed dot-sized ink piece on it: 1. (d) no box, no ink piece: 0.
+Cost on his 102 dotted heads: 99 written dotted right, 2 not written, 1 written plain and READ (the one in (c); it sits in a red bar, so not hidden), written plain GUESSED 0. Hidden wrong (plain, READ, bar not red): 0 of 102.
+Reverse: notes written dotted that he did not dot: 0 (114 dotted on both).
+Ink-only test ("plain READ note, dot-sized piece with no box right of it"): fires on 78 notes of p0, 1 of them dotted by him, 77 not: precision 1 of 78.
+
+**Other frozen pages (no labels).** 585 red bars; short by exactly one dot's worth (a plain note whose half fills the shortfall, with dot evidence): 25 (Brahms 22, Litolff 3), 23 off p0. On p0 the same row fired on 2 bars: one real (the dot above), one wrong (a bar whose
+third note he labelled a quarter and we wrote an eighth: no dot).
+Seeded 20 of the 23 (seed 2311101), my own look at the crop (ours, not Sean's): dot visibly beside the boxed note 13 (12 Brahms, 1 an unattached boxed dot on a half note), unclear 1, no dot 6 (beamed Litolff groups, a note with an accidental and a rest beside it, a lone note with none).
+For the 12 visible unboxed dots no box of any class lies on them (checked): the detector really drew nothing, but the page is not blank for them: each has an unboxed dot-sized piece in the ledger (recall 13 of 13 by construction of the test).
+So about 15 of 560 non-p0 red bars (under 3%) come from a missed dot; a dot-ink finder alone would fire on about 1250 plain READ notes of the frozen pages (35 of them in these bars).
+
+**Verdict.** The diagnosis does NOT survive as stated: (1) the detector boxes about 99% of dots where labelled; (2) the wrong-note-written-READ harm is 1 of 102 and that note sits in a red bar; (3) missed dots exist (p8 holds 12 of the 20 Brahms bars) but are a minor share of the red bars.
+An ink check (c) finds the missed dots (it is the only witness that sees them) but cannot decide: alone 1 in 78 is a dot; with the bar sum 13 of 20. A dot reader from ink would need shape and place (round, in a space, level with the head, a head-width right) and must stay GUESSED
+until measured on Sean's tiles. Not built. Not measured: why p8 misses so many (page-specific detector behaviour); the shape/place test's own precision.
+
+**Tiles for Sean.** `out/print/2.311-dots/` (sheet.png + tile_01..12; key `out/print/2.311-dots-key.json`, outside the folder). Question: "is the boxed note dotted?" 6 notes written plain and READ with an unboxed dot-sized piece right of them (not in a red bar), 6 candidate notes of the bar-short-by-a-dot red bars; mixed in one seeded order (2311104).
+Seeds 2311102 (ink), 2311103 (bars). One staff per tile, thin box on the head plus 2 spaces to its right. A neighbouring staff shows at the edge on a few tiles (tight systems, note on ledger lines).
