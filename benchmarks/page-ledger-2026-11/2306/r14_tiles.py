@@ -53,7 +53,9 @@ for plate, png, bfacts, brec, rfacts, rrec in plates:
     pool = []
     # (a) the written note's flag/beam changed (matched by place)
     for h in rw:
-        m = [b for b in bw if b["page"] == h["page"] and boxes_overlap(b["box"], h["box"])[0]]
+        m = [b for b in bw if b["rg"] == h["rg"]] or sorted(
+            [b for b in bw if b["page"] == h["page"] and boxes_overlap(b["box"], h["box"])[0]],
+            key=lambda b: -boxes_overlap(b["box"], h["box"])[1])
         if m and bf(m[0]) != bf(h) and h["rg"] in rread:
             pool.append(dict(kind="flag_or_beam", rg=h["rg"], box=h["box"], page=h["page"], before=bf(m[0]), after=bf(h), type=h["type"]))
     # (b) a head the page reads now and refused before (matched by place through the glyph boxes)
