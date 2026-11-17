@@ -121,3 +121,12 @@ By family (the manager's grouping of the 38 rows):
 
 Correction: the manager told Sean stems were a small part of red bars (from 12 tiles). The ranking says the
 beam/stem/chord-value family is the largest.
+
+## Second 12 red bars read by Sean (2026-11-16)
+
+`answers-2.311-redbars-b.json`; DECISIONS same date. Over his 24 bars (our grouping of his readings against the record):
+beam / flag / chord value 7; a neighbouring staff's marks counted here, or far notes 5; a printed dot not in the record 4;
+a rest not read 4 (two bars are nothing but a whole rest); a Litolff half note read black or refused 3; unknown 1.
+The classifier agreed with him on 11 of the first 12 but only about 6 of the second 12: rows "every mark owned by
+another staff" and "refused as barline ink" hid two bars that hold only a whole rest. The ranking's family sizes hold
+roughly; its bookkeeping rows need the question "what is printed here that the record does not hold" before a count.
