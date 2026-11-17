@@ -59,6 +59,7 @@ from typing import Any, Dict, List, Optional, Sequence, Tuple
 from .. import export as _legacy
 from . import export_unison as _export_unison
 from ..voicing import group_chords_in_measure, split_events_into_voices
+from . import one_chord
 from . import adjudicate as A
 from . import arc_claim as _arc_claim
 from . import page_arc_bind as _page_arc_bind
@@ -2542,6 +2543,15 @@ def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
             # one onset, opposite decided stems) is numbered by the SAME split
             # `_voice_split` writes, or a slur would be paired across streams
             # the file keeps apart.
+            if one_chord.stems_apart_enabled():
+                evs = _events(cell)
+                streams = _voice_split(rec, run, cell_index, evs) if _stem_pair_streams(evs) else None
+                if streams is not None:
+                    for number, st in enumerate(streams, start=1):
+                        for ev in st:
+                            for det in ev.get("noteheads") or ():
+                                out[id(det)] = number
+                    continue
             if any(d.get("stem_direction") for d in cell.detections):
                 evs = _events(cell)
                 if _divisi_pairs(evs):
@@ -4613,7 +4623,8 @@ def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
     settle see the same events."""
     from . import one_chord
-    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled())
+    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
+                                   keep_stems_apart=one_chord.stems_apart_enabled())
 
 
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
@@ -5922,6 +5933,12 @@ def _voice_split(rec: Record, run: StaffRun, cell_index: int,
     each head or the pair does not exist.
     """
     why = [] if why is None else why
+    if one_chord.stems_apart_enabled():
+        by_stems = _stem_pair_streams(events)
+        if by_stems is not None:
+            del why[:]
+            why.append(DIVISI_FROM_EXPORTER_STEMS)
+            return by_stems
     recorded = _recorded_voice_split(rec, run, cell_index, events, why)
     pairs = _divisi_pairs(events)
     if not pairs:
@@ -5935,6 +5952,48 @@ def _voice_split(rec: Record, run: StaffRun, cell_index: int,
     del why[:]                      # the recorded refusal(s) are superseded
     why.append(DIVISI_FROM_EXPORTER_STEMS)
     return streams
+
+
+def _stem_pair_streams(events: Sequence[Dict[str, Any]]) -> Optional[List[List[Dict[str, Any]]]]:
+    """ROADMAP 2.314 (`OMR_TWO_STEMS_TWO_NOTES`). Two events at ONE column whose heads stand on two different DECIDED stems are two voices:
+    the UPPER event stays in voice 1, the LOWER goes to voice 2 (page-facts, Sean 2026-11-14: where two voices share a column the upper head
+    takes the up stem, the lower the down stem); every other note stays in voice 1 and a rest stands in both, as `split_events_into_voices` does.
+    None where no such pair exists, or where the pair's two stems point opposite ways (the divisi rule decides that bar) -- the caller falls
+    through to what it did before. NEVER invents a pair: both stems are decided ids, the events are the ones `_group_chords` kept apart."""
+    chords = [e for e in events if e.get("kind") == "chord" and e.get("noteheads")]
+    lower: List[Dict[str, Any]] = []
+    for i, a in enumerate(chords):
+        sa = {h.get("stem_id") for h in a["noteheads"]}
+        if None in sa or not sa:
+            continue
+        for b in chords[i + 1:]:
+            sb = {h.get("stem_id") for h in b["noteheads"]}
+            if None in sb or not sb or sa & sb:
+                continue
+            widths = [h["bbox"][2] for h in a["noteheads"] + b["noteheads"] if h.get("bbox")]
+            tol = (sum(widths) / len(widths)) if widths else 30.0
+            if abs(float(a["x_position"]) - float(b["x_position"])) > tol:
+                continue
+            da = {h.get("stem_direction") for h in a["noteheads"]} - {None}
+            db = {h.get("stem_direction") for h in b["noteheads"]} - {None}
+            if "up" in da | db and "down" in da | db and da != db:
+                continue            # opposite decided stems: `_divisi_pairs` owns it
+            ya = sum(_head_y(h) for h in a["noteheads"]) / len(a["noteheads"])
+            yb = sum(_head_y(h) for h in b["noteheads"]) / len(b["noteheads"])
+            low = a if ya > yb else b
+            if not any(low is x for x in lower):
+                lower.append(low)
+    if not lower:
+        return None
+    rests = [e for e in events if e.get("kind") == "rest"]
+    v1 = [e for e in events if not any(e is x for x in lower)]
+    v2 = sorted(lower + rests, key=lambda e: e["x_position"])
+    return [v1, v2]
+
+
+def _head_y(h: Dict[str, Any]) -> float:
+    b = h.get("bbox") or [0, 0, 0, 0]
+    return b[1] + b[3] / 2.0
 
 
 def _recorded_voice_split(rec: Record, run: StaffRun, cell_index: int,
