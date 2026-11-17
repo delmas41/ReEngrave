@@ -43,10 +43,11 @@ class _Flag:
 
 
 class TestMeetingAtAHead(unittest.TestCase):
-    def test_default_off_and_allow_list(self):
+    def test_default_on_and_deny_list(self):
+        # ROADMAP 2.305 landing (Sean 2026-11-16 "Land it"): default ON, off only for an explicit 0 / false / no / off
         old = os.environ.pop(AC.ENV_MEETING_AT_HEAD, None)
         try:
-            self.assertFalse(AC.meeting_at_head_enabled())
+            self.assertTrue(AC.meeting_at_head_enabled())
             os.environ[AC.ENV_MEETING_AT_HEAD] = "0"
             self.assertFalse(AC.meeting_at_head_enabled())
             os.environ[AC.ENV_MEETING_AT_HEAD] = "1"

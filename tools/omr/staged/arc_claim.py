@@ -76,13 +76,14 @@ def closest_head_enabled() -> bool:
     return _on(ENV_CLOSEST_HEAD)
 
 
-#: ROADMAP 2.281 (Sean 2026-11-09 plan; FINDINGS "2.281"), default OFF: a page-ink run's end whose closest head has ANOTHER curve starting at the SAME head (two arcs meeting at a note: A ends
+#: ROADMAP 2.281 (Sean 2026-11-09 plan; FINDINGS "2.281"), default ON since 2.305 landing: a page-ink run's end whose closest head has ANOTHER curve starting at the SAME head (two arcs meeting at a note: A ends
 #: on it, B begins on it) is not "half of one arc" -- both bind to that head. Without the flag `bind_end` refuses with `continues_in_another_curve`.
 ENV_MEETING_AT_HEAD = "OMR_ARC_MEETING_AT_HEAD"
 
 
 def meeting_at_head_enabled() -> bool:
-    return _on(ENV_MEETING_AT_HEAD)
+    """`OMR_ARC_MEETING_AT_HEAD`, default ON since ROADMAP 2.305's landing (deny-list; `=0` opts out)."""
+    return os.environ.get(ENV_MEETING_AT_HEAD, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def across_systems_enabled() -> bool:

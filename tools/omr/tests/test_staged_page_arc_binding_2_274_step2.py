@@ -34,12 +34,13 @@ def _detail(xl, yl, xr, yr, sag=-15.0):
 
 
 class TestTheFlag(unittest.TestCase):
-    def test_default_off_and_allow_list(self):
+    def test_default_on_and_deny_list(self):
+        # ROADMAP 2.305 landing (Sean 2026-11-16 "Land it"): default ON, off only for an explicit 0 / false / no / off
         import os
         old = os.environ.pop(PB.ENV_WRITE, None)
         try:
-            self.assertFalse(PB.write_enabled())
-            for v, want in (("1", True), ("on", True), ("0", False), ("", False), ("typo", False)):
+            self.assertTrue(PB.write_enabled())
+            for v, want in (("1", True), ("on", True), ("0", False), ("off", False), ("false", False), ("", True), ("typo", True)):
                 os.environ[PB.ENV_WRITE] = v
                 self.assertEqual(PB.write_enabled(), want, v)
         finally:
@@ -51,9 +52,10 @@ class TestTheFlag(unittest.TestCase):
         import os
         old = {k: os.environ.pop(k, None) for k in (PB.ENV_WRITE, PA.ENV)}
         try:
+            os.environ[PB.ENV_WRITE] = "0"
             self.assertFalse(PA.enabled())
-            os.environ[PB.ENV_WRITE] = "1"
-            self.assertTrue(PA.enabled())
+            os.environ.pop(PB.ENV_WRITE, None)
+            self.assertTrue(PA.enabled())          # default ON (2.305 landing): the step-1 reader is on with it
         finally:
             for k, v in old.items():
                 os.environ.pop(k, None)
@@ -127,8 +129,7 @@ def _scene(heads, run_ends, run_pts, witnesses=True, cls="tie", staff=(0, 0)):
 def _run(log, monkey_flag=True):
     import os
     old = os.environ.get(PB.ENV_WRITE)
-    if monkey_flag:
-        os.environ[PB.ENV_WRITE] = "1"
+    os.environ[PB.ENV_WRITE] = "1" if monkey_flag else "0"
     try:
         log.freeze()
         adjudicate.run(log, order=(Q.PAGE_ARC_BINDING,))
@@ -259,8 +260,11 @@ class TestTheExportPlan(unittest.TestCase):
 
     def test_off_reads_nothing(self):
         import os
-        os.environ.pop(PB.ENV_WRITE, None)
-        self.assertIsNone(SX._page_arc_plan(self._rec()))
+        os.environ[PB.ENV_WRITE] = "0"
+        try:
+            self.assertIsNone(SX._page_arc_plan(self._rec()))
+        finally:
+            os.environ.pop(PB.ENV_WRITE, None)
 
     def test_on_the_plan_replaces_the_witnessing_box_and_only_that(self):
         import os
@@ -273,7 +277,11 @@ class TestTheExportPlan(unittest.TestCase):
             self.assertNotIn("replaced_by_page_arc", SX._place_arcs.__doc__ or "")
         finally:
             os.environ.pop(PB.ENV_WRITE, None)
-        dropped_off = SX._place_arcs(self._rec(), {})
+        os.environ[PB.ENV_WRITE] = "0"
+        try:
+            dropped_off = SX._place_arcs(self._rec(), {})
+        finally:
+            os.environ.pop(PB.ENV_WRITE, None)
         self.assertNotIn("replaced_by_page_arc", dropped_off)          # the twin: flag off, the box is placed (here: counted for having no owner staff)
 
 

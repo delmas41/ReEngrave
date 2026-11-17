@@ -10,7 +10,7 @@ from tools.omr.staged import arc_claim as AC
 
 @pytest.fixture(autouse=True)
 def _the_default_reader(monkeypatch):
-    monkeypatch.delenv("OMR_PAGE_ARC_WRITE", raising=False)
+    monkeypatch.setenv("OMR_PAGE_ARC_WRITE", "0")
 
 
 class _PM:

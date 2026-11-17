@@ -12,7 +12,7 @@ SP = 10.0
 
 @pytest.fixture(autouse=True)
 def _the_default_reader(monkeypatch):
-    monkeypatch.delenv(PB.ENV_WRITE, raising=False)
+    monkeypatch.setenv(PB.ENV_WRITE, "0")
 
 
 def _h(key, cx, cy, w=12.0, h=10.0):

@@ -100,7 +100,7 @@ def test_the_flags_stand_at_their_defaults():
 def test_with_the_lane_flag_off_the_old_window_stands(monkeypatch):
     """`OMR_PAGE_ARC_WRITE` OFF: the reader is what it was -- the arc leaving the second note stops 2.4 spaces short, past the old 1.6-space window,
     and abstains naming that note (the 2.310 finding). The rule is the lane's, behind its flag."""
-    monkeypatch.delenv(PB.ENV_WRITE, raising=False)
+    monkeypatch.setenv(PB.ENV_WRITE, "0")
     n = FX["never"]
     got = _bind(_leaving(), n["heads"], n["refused"])
     assert got["left"].get("unbound") == "no_head_at_end" and got["left"]["candidates"] == [SECOND_NOTE]

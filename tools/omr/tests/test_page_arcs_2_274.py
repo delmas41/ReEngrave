@@ -63,7 +63,9 @@ def test_a_detector_box_is_only_a_witness():
 
 
 def test_flag_is_off_by_default(monkeypatch):
+    # `OMR_PAGE_ARCS` itself is still OFF by default; since the 2.305 landing `OMR_PAGE_ARC_WRITE` (default ON) turns the reader on, so the twin sets it to 0
     monkeypatch.delenv(PA.ENV, raising=False)
+    monkeypatch.setenv("OMR_PAGE_ARC_WRITE", "0")
     assert not PA.enabled()
     monkeypatch.setenv(PA.ENV, "1")
     assert PA.enabled()

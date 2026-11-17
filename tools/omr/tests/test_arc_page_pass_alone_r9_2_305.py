@@ -132,7 +132,7 @@ class TestTheOldBoxPathIsRetired:
         assert dropped.get("old_box_path_retired") == 1
 
     def test_off_the_old_path_is_unchanged(self, monkeypatch):
-        monkeypatch.delenv(PB.ENV_WRITE, raising=False)
+        monkeypatch.setenv(PB.ENV_WRITE, "0")
         dropped = SX._place_arcs(_p179_record(), {})
         assert "old_box_path_retired" not in dropped
         assert dropped.get("arc_owner_staff_has_no_measures") == 1          # placed by the old path (no staff run in this stub)
@@ -172,6 +172,6 @@ class TestOnePrintedSlurIsWrittenOnce:
         assert counters["slur_bound_same_two_notes_as_another_reading"] == 1
 
     def test_off_unchanged(self, monkeypatch):
-        monkeypatch.delenv(PB.ENV_WRITE, raising=False)
+        monkeypatch.setenv(PB.ENV_WRITE, "0")
         out, _ = self._spans()
         assert len(out) == 2

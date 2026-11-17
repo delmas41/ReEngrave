@@ -43,9 +43,14 @@ def _on(name: str) -> bool:
     return os.environ.get(name, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+def _flag_on(name: str) -> bool:
+    """Default ON, deny-list: off only for an explicit 0 / false / no / off."""
+    return os.environ.get(name, "1").strip().lower() not in ("0", "false", "no", "off")
+
+
 def write_enabled() -> bool:
-    """`OMR_PAGE_ARC_WRITE`, default OFF (allow-list)."""
-    return _on(ENV_WRITE)
+    """`OMR_PAGE_ARC_WRITE`, default ON since ROADMAP 2.305's landing (deny-list; `=0` opts out)."""
+    return _flag_on(ENV_WRITE)
 
 
 #: ROADMAP 2.274 step 2 round 2 (cause b, measured on the develop pages before this was written; FINDINGS "2.274 step 2 round 2"): the tracker BRIDGES stretches of columns where it saw no
