@@ -1,0 +1,95 @@
+{
+ "set": "out/print/2.311-ledger",
+ "key": "out/print/2.311-ledger-key.json",
+ "date": "2026-11-17",
+ "who": "Sean (voice)",
+ "question": "what note is in the box?",
+ "note": "pitch_from_sean is OUR conversion of his line/space words with the tile's clef (space directly above the top line counted as the first space above the staff; consistent with tiles 4, 5, 9 where the ledger count agrees).",
+ "answers": {
+  "1": {
+   "sean": "an eighth note on the second ledger line above the staff",
+   "pitch_from_sean": "C6",
+   "pitch_read": "C6",
+   "decided_by": "ledger count",
+   "verdict": "right"
+  },
+  "2": {
+   "sean": "a quarter note on the second space above the staff",
+   "pitch_from_sean": "B5",
+   "pitch_read": "C6",
+   "decided_by": "fallback",
+   "verdict": "wrong"
+  },
+  "3": {
+   "sean": "an eighth note on the fourth space above the staff",
+   "pitch_from_sean": "F6",
+   "pitch_read": "F6",
+   "decided_by": "fallback",
+   "verdict": "right"
+  },
+  "4": {
+   "sean": "a half note on the fourth space above the staff",
+   "pitch_from_sean": "F6",
+   "pitch_read": "F6",
+   "decided_by": "ledger count",
+   "verdict": "right"
+  },
+  "5": {
+   "sean": "a half note on the third space above the staff",
+   "pitch_from_sean": "D6",
+   "pitch_read": "D6",
+   "decided_by": "ledger count",
+   "verdict": "right"
+  },
+  "6": {
+   "sean": "an eighth note on the fourth space above the staff",
+   "pitch_from_sean": "F6",
+   "pitch_read": "G6",
+   "decided_by": "fallback",
+   "verdict": "wrong"
+  },
+  "7": {
+   "sean": "an eighth note on the fourth line above the ledger line above the staff",
+   "pitch_from_sean": "G6? (taken by us as the fourth ledger line; NOT CONFIRMED)",
+   "pitch_read": "G6",
+   "decided_by": "fallback",
+   "verdict": "right if fourth ledger line"
+  },
+  "8": {
+   "sean": "a half note on the third space above the staff",
+   "pitch_from_sean": "D6",
+   "pitch_read": "E6",
+   "decided_by": "fallback",
+   "verdict": "wrong"
+  },
+  "9": {
+   "sean": "a half note on the third space above the staff",
+   "pitch_from_sean": "D6",
+   "pitch_read": "D6",
+   "decided_by": "ledger count",
+   "verdict": "right"
+  },
+  "10": {
+   "sean": "a quarter note on the second ledger line below the staff",
+   "pitch_from_sean": "A3",
+   "pitch_read": "A3",
+   "decided_by": "ledger count",
+   "verdict": "right"
+  },
+  "11": {
+   "sean": "a half note on the second ledger line below the staff, but the box is very small and it's not around the whole note",
+   "pitch_from_sean": "C2 (bass clef)",
+   "pitch_read": "B1",
+   "decided_by": "fallback",
+   "verdict": "wrong"
+  },
+  "12": {
+   "sean": "an eighth note on the second ledger line above the staff",
+   "pitch_from_sean": "C6",
+   "pitch_read": "C6",
+   "decided_by": "ledger count",
+   "verdict": "right"
+  }
+ },
+ "tally_ours": "ledger count 6 right of 6 (and the rounded-spacing alternative was wrong in all 4 where it differed: tiles 1, 4, 5, 9); fallback 4 wrong (2, 6, 8, 11), 1 right (3), 1 unconfirmed (7)."
+}
