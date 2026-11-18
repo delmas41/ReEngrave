@@ -6613,9 +6613,8 @@ def _rests_to_the_silent_voice(streams: List[List[Dict[str, Any]]], judged: Opti
                                divisions: int, counters) -> List[List[Dict[str, Any]]]:
     """ROADMAP 2.314 r2 (`OMR_TWO_STEMS_TWO_NOTES`). A rest printed ONCE belongs to the voice that is silent there; the two-voice split put it
     in BOTH streams, so a voice whose own notes already filled the bar (a half beside a quarter + a quarter rest) was written a rest it does not have.
-    A rest that stands in both streams stays in the stream(s) that still have room for it (the voice's other events plus the rest do not pass the
-    meter); where both have room it is a rest of both voices (printed once for both, as before); where neither has room, or no meter is in force, nothing
-    moves ("cannot tell" stays as it was). NEVER invents a rest and never writes a rest in a voice that is full. CONVENTION ASSUMED (page-facts, Sean
+    A rest that stands in both streams is written ONCE (Sean 2026-11-17): in voice 1, unless voice 1 is full and voice 2 still has room for it (the
+    voice's other events plus the rest do not pass the meter). No meter in force: nothing moves. NEVER invents a rest, never writes one twice. CONVENTION ASSUMED (page-facts, Sean
     2026-11-14: "One of the voices may not have stems if it has rests"): a printed rest sits in the voice that is silent where it stands. WHAT WOULD
     FALSIFY IT: a bar where both voices are silent at a rest and one voice's notes already fill the bar by themselves. NOT CONFIRMED by Sean."""
     want_q = _bar_quarters(judged)
@@ -6631,11 +6630,10 @@ def _rests_to_the_silent_voice(streams: List[List[Dict[str, Any]]], judged: Opti
     for r in shared:
         u = _event_units(r, divisions)
         room = [base[k] + u <= want for k in (0, 1)]
-        if room[0] and room[1] or not (room[0] or room[1]):
-            for k in (0, 1):
-                base[k] += u
-            continue
-        k = 0 if room[0] else 1
+        # Sean 2026-11-17 (page-facts §1, "one whole rest serves every voice"): a rest printed once is written ONCE. Voice 1 where it has room or where neither has
+        # (as before the split); voice 2 only where voice 1 is full and voice 2 has room. The other voice's time is NOT filled with a rest (rule 8; it needs a
+        # MusicXML <forward>, not written here): its bar stays short and red.
+        k = 1 if (room[1] and not room[0]) else 0
         keep[1 - k] = [e for e in keep[1 - k] if e is not r]
         base[k] += u
         moved += 1

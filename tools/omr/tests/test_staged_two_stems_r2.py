@@ -47,16 +47,22 @@ class RestInTheSilentVoice(unittest.TestCase):
         self.assertEqual([e["kind"] for e in out[0]], ["chord", "rest"])
         self.assertEqual([e["kind"] for e in out[1]], ["chord"])
 
-    def test_a_rest_of_both_voices_stays_in_both(self):
+    def test_a_rest_printed_once_is_written_once(self):
         a, b, r = _chord(100, 1.0), _chord(100, 1.0), _rest(300)
         out = E._rests_to_the_silent_voice([[a, r], [b, r]], {}, 8, {})
+        self.assertEqual(sum(1 for st in out for e in st if e is r), 1)
         self.assertIs(out[0][1], r)
-        self.assertIs(out[1][1], r)
 
-    def test_nothing_fits_nothing_moves(self):
+    def test_nothing_fits_still_written_once(self):
         a, b, r = _chord(100, 2.0), _chord(100, 2.0), _rest(300)
-        streams = [[a, r], [b, r]]
-        self.assertIs(E._rests_to_the_silent_voice(streams, {}, 8, {}), streams)
+        out = E._rests_to_the_silent_voice([[a, r], [b, r]], {}, 8, {})
+        self.assertEqual(sum(1 for st in out for e in st if e is r), 1)
+
+    def test_the_lower_voice_takes_it_when_only_it_has_room(self):
+        a, b, r = _chord(100, 2.0), _chord(100, 1.0), _rest(300)
+        out = E._rests_to_the_silent_voice([[a, r], [b, r]], {}, 8, {})
+        self.assertEqual([e["kind"] for e in out[0]], ["chord"])
+        self.assertIs(out[1][1], r)
 
 
 if __name__ == "__main__":
