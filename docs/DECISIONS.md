@@ -8,6 +8,7 @@ here is ever edited in place — a reversal is a new line.
 Format: `YYYY-MM-DD · who · the decision · because · (pointer)`
 
 ---
+- 2026-11-17 · Sean · ...ONLY A WHOLE REST: "I should clarify whenever there is only a whole note rest in a bar." The rule applies to a bar whose only content is a whole rest; a whole rest beside notes in the same bar is not covered by it (page-facts §1).
 - 2026-11-17 · Sean · A WHOLE REST COVERS EVERY VOICE: "It seems like there is a simple rule that could apply: Whenever there is a whole note rest in a bar, it applies to all voices in the previous bar." page-facts §1 updated. Our reading: a bar holding a whole rest is silent for every voice the staff was carrying; one whole rest is written and no voice is left open. Passed to 2.314 r3 and the 2.315 fix.
 - 2026-11-17 · Sean · LEAVE CENTRING OUT OF THE REST RULE: "I'm a little bit concerned that talking about centering at all is going to add layers of confusion." The centring commentary is removed from the new page fact; no reader uses a whole rest's place in the bar to accept or refuse it (2026-10-29 fact unchanged). The rule is only: two silent voices share one whole rest.
 - 2026-11-17 · Sean · A WHOLE REST IS GENERALLY CENTRED, NEVER EXACTLY: "Generally, it is centered, but when we had that rule before, it was taking it to exactly, and we were dropping rests." The 2026-10-29 fact stands; the centre is where to expect the rest, never a test that refuses one (page-facts §1).
