@@ -12,6 +12,12 @@ measurement; this file is the WHEN and WHAT of each commit.
 ## 2026-11-17 -- ROADMAP 2.315 landed ON: a whole-bar rest is read in every bar (OMR_WHOLE_REST_SEARCH_OWN_BAR, deny-list)
 STAGED GATHER `gather_empty_bar_rest_search` (every cell, the 2.270 ink rule) + EXPORT `_place_found_whole_rests` (written blue only where every box in the bar is positively not its own mark). Litolff p1+sample: rests +15 -1, judged right->wrong 0, red bars 168 -> 168; the one loss (P1 m51) traced to a refused `clipped_fragment` of the next staff's note and fixed (`_clipped_piece_of_the_next_staff`: 3+ sp beyond the staff, no ledger line between; 181 clipped pieces measured, all 3.4-5.7 sp out, 13 with a ledger box) -- re-export of the saved ON record: 20 bars gained, 0 lost. Default pins/OFF twins say `=0`; real-bar control `TestLitolffP1M51`. Brahms measured by the overnight.
 
+## 2026-11-17 -- ROADMAP 2.312 r3 switched ON: `OMR_LEDGER_COUNT_TO_INK` default ON (deny-list)
+
+Flipped by the manager for the overnight whole-movement run on the Litolff sample measure (judged right->wrong 0, red
+bars level, blue marks -16). `ledger_grid.count_to_ink_enabled`: unset = ON, `0`/`false`/`no`/`off` = OFF; the default
+pin test now asserts ON and the OFF control sets `=0`. Brahms and the 4 moved heads are for the overnight readout.
+
 ## 2026-11-17 -- ROADMAP 2.314 r3 landed OFF (flag `OMR_TWO_STEMS_TWO_NOTES`)
 Two heads on two different stems at one place are two notes in two voices, not one refused chord (STAGED export: `one_chord.stems_apart_enabled`, `voicing.group_chords_in_measure(keep_stems_apart=)`, `export._stem_pair_streams`, `export._place_voices_in_time`). Default OFF: red bars ON still above OFF and 3 `f`-curl fakes remain. Landing gate: fast tier on merged tree, 10749 passed, 0 failed. Findings: benchmarks/plain-stemmed-2026-11/FINDINGS.md.
 

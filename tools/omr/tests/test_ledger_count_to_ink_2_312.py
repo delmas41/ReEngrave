@@ -31,14 +31,17 @@ def test_on_reads_as_sean_read(t, monkeypatch):
 
 def test_control_fails_off(monkeypatch):
     """The control can fail: with the flag OFF the box reading refuses tiles 2, 3 and 8."""
-    monkeypatch.delenv(lg.LEDGER_COUNT_TO_INK_ENV, raising=False)
+    monkeypatch.setenv(lg.LEDGER_COUNT_TO_INK_ENV, "0")
     refused = [t for t in TILES if _read(t)[0] is None]
     assert {2, 3, 8} <= set(refused), refused
 
 
-def test_flag_default_off(monkeypatch):
+def test_flag_default_on(monkeypatch):
     monkeypatch.delenv(lg.LEDGER_COUNT_TO_INK_ENV, raising=False)
-    assert not lg.count_to_ink_enabled()
+    assert lg.count_to_ink_enabled()
+    for v in ("0", "false", "no", "off"):
+        monkeypatch.setenv(lg.LEDGER_COUNT_TO_INK_ENV, v)
+        assert not lg.count_to_ink_enabled()
 
 
 # ROADMAP 2.312 r3 -- the Brahms p0 half note hanging under its fourth ledger (glyph/0/0/5/5/6), read right (17) by the box count;
