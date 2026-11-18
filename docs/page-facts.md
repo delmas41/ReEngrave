@@ -30,6 +30,20 @@ machine-readable form.
   nothing**: a rest box and a note box overlapping are two marks *"very close
   together"* (2026-09-29), and a whole rest in a bar refuses no notehead
   (2026-10-01, *"Leave the whole rest alone"*).
+- **One whole rest serves every voice on the staff** (Sean, 2026-11-17, SCOPE: general, standard engraving; given
+  when asked which voice a rest belongs to in a two-voice bar). His words: *"When all voices on a staff are silent
+  for an entire bar, a single whole rest is placed in its normal default position (hanging from the fourth
+  line)."* *"If the staff represents one instrument playing polyphonic music (like piano or guitar), always use a
+  single rest. If the staff represents two distinct players sharing a staff (like Flute 1 & 2 in a band or
+  orchestral score), a single rest is still standard, though you will occasionally see 'a2' written above the
+  entrance when they play again."* Empty bars in a PART may be consolidated into a multi-measure rest (*"a thick
+  horizontal bar with the number of resting measures written above it"*). **Two whole rests in one bar are the
+  exception, and are real when printed**: *"a publisher might stack two whole rests in the first bar of silence
+  to clearly show that both players have stopped"* (two players on one staff), or in dense counterpoint where
+  *"editors occasionally keep individual rests in each voice's vertical lane"*. OUR READING (ours, not his words):
+  a rest printed once is written once -- never copied into a second voice; two stacked whole rests are two
+  printed rests, one per voice, not a doubled detection to be merged without looking. Not yet asked: which voice
+  a single SHORTER rest belongs to in a bar where two voices are otherwise written.
 - **A whole rest need not be centred in its bar** (Sean, 2026-10-29: *"The whole doesn't need to be centered. We just need to be able to read it and claim the ink. If there is nothing else in the bar it should be easy to determine."*; scope: general). Its shape, read against the local lines, decides it; its x position in the bar is not evidence against it.
 - **Reading order** (Sean, 2026-10-16: *"Notehead first, stem second, beam or
   flag third"*, then chords sharing a stem, then a tremolo slash or anything
