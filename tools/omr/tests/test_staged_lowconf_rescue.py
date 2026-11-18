@@ -147,6 +147,12 @@ class _FakeStem:
 
 
 class TestTheGatherRescue(unittest.TestCase):
+    def setUp(self):
+        # ROADMAP 2.315 (default ON since 2026-11-17): these pin the box-number search of 2.52, so their twin runs it OFF explicitly
+        p = mock.patch.dict(os.environ, {gather.WHOLE_REST_SEARCH_OWN_BAR_ENV: "0"})
+        p.start()
+        self.addCleanup(p.stop)
+
     def test_a_stem_end_witness_accepts_a_matching_rescued_head(self):
         """Sean: *"if there are stems then there are notes and the note
         heads will be connected to the stems"*. A stem from x=50..52,

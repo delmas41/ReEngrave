@@ -9057,7 +9057,7 @@ def _empty_bar_candidate_cells(
     return out
 
 
-#: ROADMAP 2.315 (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default OFF; "1/true/yes/on" turns it on). A bar that prints only a whole rest was red
+#: ROADMAP 2.315 (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default ON since the 2026-11-17 landing; deny-list: `=0`/false/no/off turns it off). A bar that prints only a whole rest was red
 #: on the frozen sample because no reader put a box on the rest, and this search -- built for exactly that -- (a) looked only in a cell with NO
 #: head/rest box at all, so a neighbour staff's head, a barline's ink or a refused fragment in the cell switched it off, and (b) asked "is this a
 #: whole rest" with the detector-box numbers (`rhythm._rest_shaped`: 0.84 sp tall, aspect 1.63) where real whole rests on the erased raster
@@ -9068,7 +9068,7 @@ WHOLE_REST_SEARCH_OWN_BAR_ENV = "OMR_WHOLE_REST_SEARCH_OWN_BAR"
 
 
 def whole_rest_search_own_bar_enabled() -> bool:
-    return os.environ.get(WHOLE_REST_SEARCH_OWN_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(WHOLE_REST_SEARCH_OWN_BAR_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _search_candidate_cells(cells: Sequence[Any], local: Dict[int, Tuple[int, int]],

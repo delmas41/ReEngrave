@@ -1372,14 +1372,14 @@ def found_whole_rest_enabled() -> bool:
     return os.environ.get(FOUND_WHOLE_REST_ENV, "1").strip().lower() not in ("0", "false", "no", "off", "")
 
 
-#: ROADMAP 2.315 (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default OFF; == gather.WHOLE_REST_SEARCH_OWN_BAR_ENV). With it on the 2.52 search also looked in bars
+#: ROADMAP 2.315 (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default ON since the 2026-11-17 landing; == gather.WHOLE_REST_SEARCH_OWN_BAR_ENV). With it on the 2.52 search also looked in bars
 #: whose cell holds boxes; a found rest is then written only where EVERY head/rest box in the bar is positively not this bar's own mark (owned by another
 #: staff, a barline's / word's / clef's ink, a duplicate: `_NOT_A_GAP_REASONS`), never beside a refusal that may be a real note (rule 8).
 WHOLE_REST_SEARCH_OWN_BAR_ENV = "OMR_WHOLE_REST_SEARCH_OWN_BAR"
 
 
 def whole_rest_search_own_bar_enabled() -> bool:
-    return os.environ.get(WHOLE_REST_SEARCH_OWN_BAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(WHOLE_REST_SEARCH_OWN_BAR_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _bar_head_rest_subjects(rec: "Record", sub: str) -> set:
@@ -1390,6 +1390,54 @@ def _bar_head_rest_subjects(rec: "Record", sub: str) -> set:
         idx = rec.__dict__["_head_rest_boxes_by_bar"]
     s = _parse_subject(sub)
     return set(idx.get((s["page"], s["system"], s["staff"], s["cell"]), set()))
+
+
+#: ROADMAP 2.315 (Litolff p1 m51). A piece of a head cut off at the edge of the bar's cell, standing three spaces or more beyond this staff
+#: with no ledger line between it and this staff, is the next staff's note (its own ledger line lies on the far side), not a mark of this bar.
+#: Measured on Litolff (the lane's saved ON record): 181 refused `clipped_fragment` boxes in searched bars, every one 3.4 to 5.7 spaces beyond
+#: the staff (none nearer); 168 have no ledger-line box beyond the staff in their bar, 13 have one and stay unread-making. Never within three spaces.
+_CLIPPED_PIECE_OF_NEXT_STAFF_MIN_SP = 3.0
+
+
+def _clipped_piece_of_the_next_staff(rec: "Record", box_sub: str, fate: Optional[str]) -> bool:
+    if fate != "not_a_notehead:clipped_fragment":
+        return False
+    s = _parse_subject(box_sub)
+    rows = rec.obs(Q.GLYPH_BOX, box_sub)
+    pb = _page_box_of(rows[-1]) if rows else None
+    lr = rec.obs(Q.STAFF_LINES, _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0))
+    lines = lr[-1]["value"] if lr else None
+    if not pb or not isinstance(lines, (list, tuple)) or len(lines) < 5:
+        return False
+    try:
+        ys = sorted(float(y) for y in lines)
+    except (TypeError, ValueError):
+        return False
+    sp = (ys[-1] - ys[0]) / 4.0
+    if sp <= 0:
+        return False
+    below = pb[1] > ys[-1]
+    above = pb[3] < ys[0]
+    if not (below or above):
+        return False
+    gap = (pb[1] - ys[-1]) if below else (ys[0] - pb[3])
+    if gap < _CLIPPED_PIECE_OF_NEXT_STAFF_MIN_SP * sp:
+        return False
+    idx = rec.__dict__.get("_ledger_boxes_by_bar")
+    if idx is None:
+        idx = {}
+        for o in rec.obs_of(Q.GLYPH_BOX):
+            val = o.get("value")
+            if str(val[0] if isinstance(val, (list, tuple)) and val else "").lower().startswith("ledger"):
+                p = _parse_subject(o["subject"])
+                b = _page_box_of(o)
+                if b:
+                    idx.setdefault((p["page"], p["system"], p["staff"], p["cell"]), []).append(b)
+        rec.__dict__["_ledger_boxes_by_bar"] = idx
+    for lb in idx.get((s["page"], s["system"], s["staff"], s["cell"]), []):
+        if (lb[1] > ys[-1] + 0.5 * sp) if below else (lb[3] < ys[0] - 0.5 * sp):
+            return False
+    return True
 
 
 def _place_found_whole_rests(rec: "Record", runs: Dict[str, "StaffRun"], held_out: Optional[set],
@@ -1422,7 +1470,8 @@ def _place_found_whole_rests(rec: "Record", runs: Dict[str, "StaffRun"], held_ou
         if whole_rest_search_own_bar_enabled():
             # ROADMAP 2.315: a bar whose cell holds boxes keeps a found rest only when none of them may be this bar's own mark
             # (no fate ledger -> no way to say, so the bar stays unread)
-            if any((fates or {}).get(b) not in _NOT_A_GAP_REASONS for b in _bar_head_rest_subjects(rec, o["subject"])):
+            if any((fates or {}).get(b) not in _NOT_A_GAP_REASONS and not _clipped_piece_of_the_next_staff(rec, b, (fates or {}).get(b))
+                   for b in _bar_head_rest_subjects(rec, o["subject"])):
                 continue
         d = o.get("detail") or {}
         box = d.get("ink_bbox_canonical")

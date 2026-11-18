@@ -1,4 +1,4 @@
-"""ROADMAP 2.315 -- a bar that prints only a whole rest is READ (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default OFF).
+"""ROADMAP 2.315 -- a bar that prints only a whole rest is READ (flag `OMR_WHOLE_REST_SEARCH_OWN_BAR`, default ON since 2026-11-17; the OFF twins below say `=0`).
 
 THE RULE, in a musician's words: a bar that holds nothing of its own but a whole rest -- a block hanging from a line, a little over a space and a
 half wide, well under a space tall -- is a whole-bar rest, written GUESSED (blue) where any other box stands in the bar. NEVER over a note: a head
@@ -49,7 +49,7 @@ class _RealCell:
 def _search(cid, flag, detections=None):
     log = Log()
     c = _RealCell(cid)
-    with mock.patch.dict(os.environ, {FLAG: "1" if flag else ""}):
+    with mock.patch.dict(os.environ, {FLAG: "1" if flag else "0"}):
         gather.gather_empty_bar_rest_search(log, [c], {0: (0, 0)}, detections or {})
     return log.rows(Q.EMPTY_BAR_REST_SEARCH, R_cell(0, 0, 0, 0))
 
@@ -59,16 +59,19 @@ def _one_foreign_box():
 
 
 class TestTheFlag(unittest.TestCase):
-    def test_default_off_and_the_words_that_turn_it_on(self):
-        with mock.patch.dict(os.environ, {FLAG: ""}):
-            self.assertFalse(gather.whole_rest_search_own_bar_enabled())
-            self.assertFalse(SX.whole_rest_search_own_bar_enabled())
+    def test_default_on_and_the_words_that_turn_it_off(self):
+        env = {k: v for k, v in os.environ.items() if k != FLAG}
+        with mock.patch.dict(os.environ, env, clear=True):
+            self.assertTrue(gather.whole_rest_search_own_bar_enabled())
+            self.assertTrue(SX.whole_rest_search_own_bar_enabled())
+        for v in ("0", "false", "no", "off", "OFF"):
+            with mock.patch.dict(os.environ, {FLAG: v}):
+                self.assertFalse(gather.whole_rest_search_own_bar_enabled(), v)
+                self.assertFalse(SX.whole_rest_search_own_bar_enabled(), v)
         for v in ("1", "true", "yes", "on"):
             with mock.patch.dict(os.environ, {FLAG: v}):
                 self.assertTrue(gather.whole_rest_search_own_bar_enabled())
                 self.assertTrue(SX.whole_rest_search_own_bar_enabled())
-        with mock.patch.dict(os.environ, {FLAG: "0"}):
-            self.assertFalse(gather.whole_rest_search_own_bar_enabled())
 
 
 class TestSeansTwoTiles(unittest.TestCase):
@@ -170,16 +173,28 @@ class TestSeansRealMarksAtTheShapeTest(unittest.TestCase):
 class _Rec:
     """The three questions `_place_found_whole_rests` asks of a record."""
 
-    def __init__(self, sub_cell, boxes):
+    def __init__(self, sub_cell, boxes, page_boxes=None, lines=None, staff=None):
         self.sub_cell = sub_cell
         self._boxes = boxes
+        self._page_boxes = page_boxes or {}
+        self._lines = lines
+        self._staff = staff
         self.__dict__["_x"] = 1
 
     def obs_of(self, q):
         if q == Q.EMPTY_BAR_REST_SEARCH:
             return [{"subject": self.sub_cell, "detail": {"ink_bbox_canonical": [10, 20, 40, 32], "bbox_page_px": [100, 200, 130, 212]}}]
         if q == Q.GLYPH_BOX:
-            return [{"subject": s, "value": [cls, 0, 0, 10, 10]} for s, cls in self._boxes.items()]
+            return [dict({"subject": s, "value": [cls, 0, 0, 10, 10]},
+                         **({"detail": {"bbox_page_px": self._page_boxes[s]}} if s in self._page_boxes else {}))
+                    for s, cls in self._boxes.items()]
+        return []
+
+    def obs(self, q, key):
+        if q == Q.GLYPH_BOX:
+            return [o for o in self.obs_of(Q.GLYPH_BOX) if o["subject"] == key]
+        if q == Q.STAFF_LINES and self._lines is not None and key == self._staff:
+            return [{"subject": key, "value": self._lines}]
         return []
 
     def verdict(self, q, subject):
@@ -192,7 +207,7 @@ class TestExportWritesOnlyWhereNothingIsTheBarsOwn(unittest.TestCase):
     def _write(self, flag, boxes, fates):
         rec = _Rec(self.SUB, boxes)
         run = SX.StaffRun(key="staff/8/0/0", page=8, system=0, staff=0, n_measures=8)
-        with mock.patch.dict(os.environ, {FLAG: "1" if flag else ""}):
+        with mock.patch.dict(os.environ, {FLAG: "1" if flag else "0"}):
             SX._place_found_whole_rests(rec, {"staff/8/0/0": run}, None, {}, fates)
         return run.cells.get(5)
 
@@ -217,6 +232,51 @@ class TestExportWritesOnlyWhereNothingIsTheBarsOwn(unittest.TestCase):
     def test_with_the_flag_off_the_old_behaviour_is_unchanged(self):
         boxes = {"glyph/8/0/0/5/0": "noteheadBlackOnLine"}
         self.assertIsNotNone(self._write(False, boxes, {"glyph/8/0/0/5/0": "not_a_notehead:too_narrow"}))
+
+
+class TestLitolffP1M51(unittest.TestCase):
+    """The 2.315 fix, from the REAL bar (Litolff page 4, system 0, staff 0, bar 2 = P1 m51: a real whole rest, blue with the flag off, dropped by the
+    first 2.315 build). Numbers read off the lane's saved record: the staff lines, and the one head-classed box in the bar -- a refused
+    `clipped_fragment` of a note of the NEXT staff, cut off at this bar's cell edge, 3.7 spaces below the staff, its ledger line on the far side."""
+    SUB = "cell/4/0/0/2"
+    HEAD = "glyph/4/0/0/2/3"
+    LINES = [414.0, 429.0, 445.0, 461.0, 476.0]
+    FRAG = [796.705, 533.97, 816.39, 538.0]
+    LEDGERS = {"glyph/4/0/0/2/0": [779.5, 456.005, 817.785, 460.345], "glyph/4/0/0/2/2": [792.675, 471.04, 807.245, 474.45]}   # inside the staff band
+
+    def _write(self, frag=None, extra=None, fixed=True):
+        boxes = {self.HEAD: "noteheadBlackInSpace", **{k: "ledgerLine" for k in self.LEDGERS}}
+        pages = {self.HEAD: frag or self.FRAG, **self.LEDGERS}
+        for k, (cls, b) in (extra or {}).items():
+            boxes[k], pages[k] = cls, b
+        rec = _Rec(self.SUB, boxes, pages, self.LINES, "staff/4/0/0")
+        run = SX.StaffRun(key="staff/4/0/0", page=4, system=0, staff=0, n_measures=15)
+        fates = {self.HEAD: "not_a_notehead:clipped_fragment"}
+        with mock.patch.dict(os.environ, {FLAG: "1"}):
+            if fixed:
+                SX._place_found_whole_rests(rec, {"staff/4/0/0": run}, None, {}, fates)
+            else:    # the build before the fix: every clipped piece may be this bar's own note
+                with mock.patch.object(SX, "_clipped_piece_of_the_next_staff", lambda *a, **k: False):
+                    SX._place_found_whole_rests(rec, {"staff/4/0/0": run}, None, {}, fates)
+        return run.cells.get(2)
+
+    def test_fails_before_the_fix(self):
+        self.assertIsNone(self._write(fixed=False))
+
+    def test_the_rest_is_written_blue_after_it(self):
+        cell = self._write()
+        self.assertIsNotNone(cell)
+        self.assertIsNotNone(cell.detections[0]["guess"])        # another box stands in the bar: GUESSED, never READ
+
+    def test_a_clipped_piece_within_three_spaces_of_the_staff_is_still_possibly_a_note(self):
+        near = [796.705, 476.0 + 2.0 * 15.5, 816.39, 476.0 + 2.0 * 15.5 + 4.0]
+        self.assertIsNone(self._write(frag=near))
+
+    def test_a_ledger_line_between_the_piece_and_the_staff_keeps_the_bar_unread(self):
+        self.assertIsNone(self._write(extra={"glyph/4/0/0/2/9": ("ledgerLine", [790.0, 500.0, 815.0, 503.0])}))
+
+    def test_another_refusal_beside_it_still_keeps_the_bar_unread(self):
+        self.assertIsNone(self._write(extra={"glyph/4/0/0/2/8": ("noteheadBlackInSpace", [790.0, 440.0, 805.0, 452.0])}))
 
 
 if __name__ == "__main__":

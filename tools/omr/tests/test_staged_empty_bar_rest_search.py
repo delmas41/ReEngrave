@@ -21,7 +21,9 @@ and `rest_search.py` existed: every test below fails on `AttributeError`
 """
 from __future__ import annotations
 
+import os
 import unittest
+from unittest import mock
 
 import numpy as np
 
@@ -99,6 +101,12 @@ def _sub():
 
 
 class TestTheGatherSearch(unittest.TestCase):
+    def setUp(self):
+        # ROADMAP 2.315 (default ON since 2026-11-17): these pin the box-number search of 2.52, so their twin runs it OFF explicitly
+        p = mock.patch.dict(os.environ, {gather.WHOLE_REST_SEARCH_OWN_BAR_ENV: "0"})
+        p.start()
+        self.addCleanup(p.stop)
+
     def test_a_whole_rest_in_the_middle_of_the_bar_is_found(self):
         """The population this search exists for: centred in the bar."""
         img = _whole_rest_block(x0=50.0)  # centre 60, inside [40, 80]
