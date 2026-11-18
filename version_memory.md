@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-18 -- ROADMAP 2.316 landed: the counts report notes and arcs, not boxes (tooling only)
+`staged/counted_marks.py` (census of head boxes by what the exporter did; arcs row), `acceptance.py`, `judged.py` (match a judged mark to what the FILE writes at its place), `regather_report.py`, ranking scripts; `reach.py` lists counted_marks.py as NOT_A_STAGE. No reader or export change. Fast tier 10832 passed, 1 failed (pre-existing on main: test_far_head_note_first_2026_10_05 deep_stacks[ledgers1-204]).
+
 ## 2026-11-17 -- ROADMAP 2.314 r5 landed ON: `OMR_TWO_STEMS_TWO_NOTES` default ON (deny-list)
 STAGED EXPORT: every split bar placed on one line of time (`_two_stems_streams`, `_place_columns` carry: a rest or lone mark speaks for
 both players, written once, the other voice `<forward>`), same-way stems never split (`_two_stems_unsafe`, `stem_direction_read`), no

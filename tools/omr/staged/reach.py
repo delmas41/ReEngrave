@@ -470,6 +470,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.286. The note-conservation command: replays saved GATHER rows to EXPORT and prints where every read head/rest went;
     # reads the export's report, files no row, names no quantity, decides nothing.
     "conservation.py",
+    # ROADMAP 2.316. Printed notes and arcs, not boxes: the census over the detector's head boxes by what the exporter did with each, and the arcs row from the
+    # export report; a tapped export that stamps and unstamps each `<note>`; files no row, names no quantity it writes, decides nothing, changes no byte of the file.
+    "counted_marks.py",
     # ROADMAP 2.295. The judged-claims replay: Sean's answers about what a boxed ink IS, replayed over a saved slice's page ledger;
     # reads the ledger canvas, files no row, names no quantity, decides nothing.
     "judged_claims.py",
