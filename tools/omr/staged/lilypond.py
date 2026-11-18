@@ -425,6 +425,8 @@ def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
     reports are directly comparable family by family.
     """
     for ev in events:
+        if ev.get("kind") == SX.FORWARD_KIND:
+            continue
         if ev.get("kind") == "rest":
             SX._count_guess(counters, (ev.get("rest") or {}).get("guess"), True)
             if (ev.get("rest") or {}).get("measure_rest"):
@@ -625,6 +627,13 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             # single- or two-voice alike. `streams` is computed once here
             # and reused below rather than asking `_voice_split` twice.
             streams = SX._voice_split(rec, run, i, events)
+            if (streams is not None and SX.one_chord.stems_apart_enabled()
+                    and SX._stem_pair_streams(events) is not None):
+                # ROADMAP 2.314 r3: the SAME placement `_part_xml` makes (a voice's unprinted stretch is a skip); the round-2 rest-once
+                # step is MusicXML's alone where this declines, as before
+                _timed = SX._place_voices_in_time(streams, judged, divisions, cell.unplaced if cell else (), counters)
+                if _timed is not None:
+                    streams = _timed
             held = SX._bar_holds_out(events, streams, divisions, judged)
             # ⚠️ ROADMAP 2.117, THE LILYPOND TWIN of `_part_xml`'s branch: the
             # SAME planner (`SX._partial_bar_plan`), so the two files cannot
@@ -772,8 +781,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
 
             counters["two_voice_bars"] += 1
             v1, v2 = streams
-            lane0.extend(v1)
-            lane1.extend(v2)
+            lane0.extend(e for e in v1 if e.get("kind") != SX.FORWARD_KIND)
+            lane1.extend(e for e in v2 if e.get("kind") != SX.FORWARD_KIND)
             shared_rests = [e for e in v2 if e.get("kind") == "rest"
                             and any(e is other for other in v1)]
             if not run.condensed_from:      # ROADMAP 2.175: a doubled copy's rests are subtracted as doubled already
@@ -835,6 +844,10 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
     beside a guessed one stays black. A READ event returns the legacy text
     byte for byte.
     """
+    if ev.get("kind") == SX.FORWARD_KIND:
+        # ROADMAP 2.314 r3: this voice prints nothing here -- an invisible skip of the stretch (MusicXML `<forward>`), never a rest
+        frac = Fraction(int(ev["units"]), _forward_divisions(ev)) / 4
+        return "s1*%d/%d" % (frac.numerator, frac.denominator)
     text = _retouch_marks(ev, (dyns or {}).get(id(ev), ""), wedges)
     if counters is not None:
         counters["articulations_written"] += len(_ARTIC_TOKEN.findall(
@@ -993,6 +1006,10 @@ _RED_SPAN = (
     "\\once \\override TextSpanner.bound-details.right.text = "
     "\\markup { \\with-color #red \\draw-line #'(0 . -0.9) } "
     "\\once \\override TextSpanner.bound-details.left-broken.text = ##f ")
+
+
+def _forward_divisions(ev: Dict[str, Any]) -> int:
+    return int(ev.get("divisions") or 1)
 
 
 def _lily_frac(frac: Fraction) -> str:

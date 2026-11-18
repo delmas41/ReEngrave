@@ -188,9 +188,9 @@ FUNCTIONS = [
     ("rhythm", "_rest_duration",
      ('class_name',),
      "staged/adjudicators/rhythm.py:_rest_ruling"),
-    # ROADMAP 2.300: `merge_seconds_on_one_stem` (keyword-only, default False = unchanged; only `export._group_chords` passes it)
+    # ROADMAP 2.300: `merge_seconds_on_one_stem`, ROADMAP 2.314: `keep_stems_apart` (keyword-only, default False = unchanged; only `export._group_chords` passes them)
     ("voicing", "group_chords_in_measure",
-     ('detections', 'chord_x_tolerance', 'merge_seconds_on_one_stem'),
+     ('detections', 'chord_x_tolerance', 'merge_seconds_on_one_stem', 'keep_stems_apart'),
      "staged/export.py:_bar_event_rows, _events, _flatten_part, _group_chords"),
     ("voicing", "split_events_into_voices",
      ('events',),
