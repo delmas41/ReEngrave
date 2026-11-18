@@ -5425,6 +5425,10 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     rec, run, i, events, split[0], judged, counters, divisions)
                 if _own_streams is not split[0]:
                     split = (_own_streams, [] if split[0] is None else split[1])
+                if one_chord.stems_apart_enabled() and split[0] is not None:
+                    _placed = _rests_to_the_silent_voice(split[0], judged, divisions, counters)
+                    if _placed is not split[0]:
+                        split = (_placed, split[1])
             held = (_bar_holds_out(events, split[0], divisions, judged)
                     if events else None)
             # ⚠️⚠️ ROADMAP 2.4c, AND IT IS TESTED ONLY WHERE `held` IS NONE.
@@ -6603,6 +6607,42 @@ def _lone_whole_rest_is_the_bar(events: List[Dict[str, Any]],
     new["rest"] = {**det, "measure_rest": True, "duration_beats": want_q,
                    "sized_by": "file_meter_in_force_2_98"}
     return [new]
+
+
+def _rests_to_the_silent_voice(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]],
+                               divisions: int, counters) -> List[List[Dict[str, Any]]]:
+    """ROADMAP 2.314 r2 (`OMR_TWO_STEMS_TWO_NOTES`). A rest printed ONCE belongs to the voice that is silent there; the two-voice split put it
+    in BOTH streams, so a voice whose own notes already filled the bar (a half beside a quarter + a quarter rest) was written a rest it does not have.
+    A rest that stands in both streams stays in the stream(s) that still have room for it (the voice's other events plus the rest do not pass the
+    meter); where both have room it is a rest of both voices (printed once for both, as before); where neither has room, or no meter is in force, nothing
+    moves ("cannot tell" stays as it was). NEVER invents a rest and never writes a rest in a voice that is full. CONVENTION ASSUMED (page-facts, Sean
+    2026-11-14: "One of the voices may not have stems if it has rests"): a printed rest sits in the voice that is silent where it stands. WHAT WOULD
+    FALSIFY IT: a bar where both voices are silent at a rest and one voice's notes already fill the bar by themselves. NOT CONFIRMED by Sean."""
+    want_q = _bar_quarters(judged)
+    if want_q is None or len(streams) != 2:
+        return streams
+    want = int(round(want_q * divisions))
+    shared = [e for e in streams[0] if e.get("kind") == "rest" and any(e is x for x in streams[1])]
+    if not shared:
+        return streams
+    base = [sum(_event_units(e, divisions) for e in st if not any(e is r for r in shared)) for st in streams]
+    keep = [list(st) for st in streams]
+    moved = 0
+    for r in shared:
+        u = _event_units(r, divisions)
+        room = [base[k] + u <= want for k in (0, 1)]
+        if room[0] and room[1] or not (room[0] or room[1]):
+            for k in (0, 1):
+                base[k] += u
+            continue
+        k = 0 if room[0] else 1
+        keep[1 - k] = [e for e in keep[1 - k] if e is not r]
+        base[k] += u
+        moved += 1
+    if not moved:
+        return streams
+    counters["rests_placed_in_the_silent_voice"] = counters.get("rests_placed_in_the_silent_voice", 0) + moved
+    return keep
 
 
 def _size_rest_alone_in_its_voice(rec: Record, run: StaffRun, cell_index: int,
