@@ -630,8 +630,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             # single- or two-voice alike. `streams` is computed once here
             # and reused below rather than asking `_voice_split` twice.
             streams = SX._voice_split(rec, run, i, events)
-            if (streams is not None and SX.one_chord.stems_apart_enabled()
-                    and SX._stem_pair_streams(events) is not None):
+            if streams is not None and SX.one_chord.stems_apart_enabled():
+                # ROADMAP 2.314 r5 rule A: every split bar is placed in time, as `_part_xml` does (`SX._two_stems_streams`)
                 # ROADMAP 2.314 r3: the SAME placement `_part_xml` makes (a voice's unprinted stretch is a skip); the round-2 rest-once
                 # step is MusicXML's alone where this declines, as before
                 _timed = SX._place_voices_in_time(streams, judged, divisions, cell.unplaced if cell else (), counters)

@@ -1289,6 +1289,9 @@ def _stem_facts_of(rec: Record, sub: str) -> Dict[str, Any]:
     d = rec.verdict(Q.STEM_DIRECTION, sub)
     if d and d.get("outcome") == "decided" and d.get("value") in ("up", "down"):
         out["stem_direction"] = d["value"]
+        # ROADMAP 2.314 r5: the direction as READ, kept apart from `stem_direction` (which 2.90's `_settle_divisi_pairs` may take off a
+        # bar) so the two-stems rule can still tell "both stems point the same way" (never two players) from "cannot tell"
+        out["stem_direction_read"] = d["value"]
     h = rec.verdict(Q.HEAD_STEM, sub)
     if h and h.get("outcome") == "decided" and h.get("value"):
         out["stem_id"] = str(h["value"])
@@ -5549,13 +5552,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     rec, run, i, events, split[0], judged, counters, divisions)
                 if _own_streams is not split[0]:
                     split = (_own_streams, [] if split[0] is None else split[1])
-                _timed = (_place_voices_in_time(split[0], judged, divisions, cell_here.unplaced if cell_here else (), counters)
-                          if (one_chord.stems_apart_enabled() and split[0] is not None
-                              and _stem_pair_streams(events) is not None) else None)
-                if _timed is not None:
-                    split = (_timed, split[1])
-                elif one_chord.stems_apart_enabled() and split[0] is not None:
-                    _placed = _rests_to_the_silent_voice(split[0], judged, divisions, counters)
+                if one_chord.stems_apart_enabled() and split[0] is not None:
+                    _placed = _two_stems_streams(split[0], judged, divisions, cell_here.unplaced if cell_here else (), counters)
                     if _placed is not split[0]:
                         split = (_placed, split[1])
             held = (_bar_holds_out(events, split[0], divisions, judged)
@@ -6115,14 +6113,30 @@ def _stem_pair_streams(events: Sequence[Dict[str, Any]]) -> Optional[List[List[D
             ya = sum(_head_y(h) for h in a["noteheads"]) / len(a["noteheads"])
             yb = sum(_head_y(h) for h in b["noteheads"]) / len(b["noteheads"])
             low = a if ya > yb else b
+            ra = {h.get("stem_direction_read") for h in a["noteheads"]}
+            rb = {h.get("stem_direction_read") for h in b["noteheads"]}
+            if {frozenset(ra), frozenset(rb)} == {frozenset({"up"}), frozenset({"down"})}:
+                low = a if ra == {"down"} else b         # r5 rule B: the down stem is player 2, wherever its head stands
             if not any(low is x for x in lower):
                 lower.append(low)
     if not lower:
         return None
+    # ROADMAP 2.314 r5 (rule B: up = player 1, down = player 2): a note standing alone whose stem was read DOWN is the lower player's,
+    # in voice 2 (placed in time, it speaks for both where nothing stands beside it); an up or unread stem stays in voice 1 as before
+    for e in events:
+        if (e.get("kind") == "chord" and e.get("noteheads") and not any(e is x for x in lower)
+                and {h.get("stem_direction_read") for h in e["noteheads"]} == {"down"}
+                and not any(abs(float(e["x_position"]) - float(x["x_position"])) <= _head_tol(e, x) for x in chords if x is not e)):
+            lower.append(e)
     rests = [e for e in events if e.get("kind") == "rest"]
     v1 = [e for e in events if not any(e is x for x in lower)]
     v2 = sorted(lower + rests, key=lambda e: e["x_position"])
     return [v1, v2]
+
+
+def _head_tol(a: Dict[str, Any], b: Dict[str, Any]) -> float:
+    widths = [h["bbox"][2] for h in list(a.get("noteheads") or ()) + list(b.get("noteheads") or ()) if h.get("bbox")]
+    return (sum(widths) / len(widths)) if widths else 30.0
 
 
 def _head_y(h: Dict[str, Any]) -> float:
@@ -6843,7 +6857,7 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
     cur = [0, 0]
     out: List[List[Dict[str, Any]]] = [[], []]
     gaps: List[List[Tuple[int, int]]] = [[], []]
-    last_t = 0
+    last_t = -1
     for col in cols:
         nv: Dict[int, Dict[str, Any]] = {}
         for e, v in col:
@@ -6868,7 +6882,8 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
             assign.append((v, rs[0]))
             if t is None:
                 t = cur[v]
-        if t < last_t:
+        # r5: a later place is a later moment -- two places at one time would be one column read twice (or a moment we cannot place)
+        if t <= last_t:
             return "places_out_of_time_order"
         for v, e in assign:
             if cur[v] > t:
@@ -6878,6 +6893,15 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
                 gaps[v].append((cur[v], t))
             out[v].append(e)
             cur[v] = t + _event_units(e, divisions)
+        # ROADMAP 2.314 r5 rule A: a mark alone at its moment (a rest, or one stem's note or chord) speaks for BOTH players in time; the
+        # other voice, free there, prints nothing and is carried across it with `<forward>` -- never a rest, never the note copied
+        if len(assign) == 1:
+            v, e = assign[0]
+            o = 1 - v
+            if cur[o] <= t and cur[v] > cur[o]:
+                out[o].append(_forward_event(cur[v] - cur[o], e["x_position"], divisions))
+                gaps[o].append((cur[o], cur[v]))
+                cur[o] = cur[v]
         last_t = t
     if max(cur) != want:
         return "the_fuller_voice_does_not_come_to_the_bar"
@@ -6905,17 +6929,117 @@ def _two_stems_bar_adds_up(rec: Record, run: StaffRun, cell_index: int, cell: Op
     events = _events(cell)
     if not events:
         return True
+    return _two_stems_bar_verdict(rec, run, cell_index, cell, judged, divisions) is None
+
+
+def _two_stems_bar_verdict(rec: Record, run: StaffRun, cell_index: int, cell: Optional[Cell],
+                           judged: Optional[Dict[str, Any]], divisions: int) -> Optional[str]:
+    """`_two_stems_bar_adds_up`'s answer with its reason: None where the flag may write the bar, else the reason word it is written as
+    flag OFF writes it -- `same_direction` (rule B), `head_on_a_dynamic_letter` / `head_on_a_whole_rest_box` (rule C), or
+    `does_not_add_up_*` (rule A's check: the staff's line of time covered barline to barline, no voice over)."""
+    if not one_chord.stems_apart_enabled() or cell is None or not cell.detections:
+        return None
+    events = _events(cell)
+    if not events:
+        return None
+    unsafe = _two_stems_unsafe(rec, events)
+    if unsafe is not None:
+        return unsafe
     scratch: Dict[str, int] = collections.Counter()
     streams = _voice_split(rec, run, cell_index, events, [])
-    if streams is not None and _stem_pair_streams(events) is not None:
-        timed = _place_voices_in_time(streams, judged, divisions, cell.unplaced, scratch)
-        if timed is not None:
-            streams = timed
-        else:
-            streams = _rests_to_the_silent_voice(streams, judged, divisions, scratch)
-    elif streams is not None:
-        streams = _rests_to_the_silent_voice(streams, judged, divisions, scratch)
-    return _bar_holds_out(events, streams, divisions, judged) is None
+    if streams is not None:
+        streams = _two_stems_streams(streams, judged, divisions, cell.unplaced, scratch)
+    if _bar_holds_out(events, streams, divisions, judged) is None:
+        return None
+    if streams is None:
+        return "does_not_add_up_one_voice"
+    why = [k[len("two_voice_bars_not_placed_"):] for k in scratch if k.startswith("two_voice_bars_not_placed_")]
+    return ("does_not_add_up_not_placed_" + why[0]) if why else "does_not_add_up_placed"
+
+
+def _two_stems_streams(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]], divisions: int,
+                       unplaced: Sequence[Any], counters) -> List[List[Dict[str, Any]]]:
+    """ROADMAP 2.314 r5 rule A (`OMR_TWO_STEMS_TWO_NOTES`): a bar split into two voices, as the flag writes it -- placed in time
+    (`_place_voices_in_time`: a rest, or a single-stem mark, alone at its moment speaks for both players and is written ONCE, the other
+    voice carried across it with `<forward>`), else round 2's rest-once streams. ONE copy for the writer and the per-bar check."""
+    timed = _place_voices_in_time(streams, judged, divisions, unplaced, counters)
+    if timed is not None:
+        return timed
+    return _rests_to_the_silent_voice(streams, judged, divisions, counters)
+
+
+def _two_stems_unsafe(rec: Record, events: Sequence[Dict[str, Any]]) -> Optional[str]:
+    """ROADMAP 2.314 r5, rules B and C: a reason the flag must not write this bar (it is written as flag OFF writes it), or None.
+
+    B. Two stems at one place are two players only when one stem goes up and the other down. NEVER split two heads whose stems, as
+    READ (`stem_direction_read`), point the same way: they are neighbours in one voice (a run of beamed eighths) or a chord. A stem
+    whose direction was not read is "cannot tell" and does not block (rounds 1-4).
+    C. No fake notes. NEVER write a head of a bar the flag splits where the head's box touches a read dynamic letter's box (f, p, m,
+    s, z, r -- searched page-wide, any overlap) or is or touches a `restWhole` box. No number is tuned.
+    """
+    chords = [e for e in events if e.get("kind") == "chord" and e.get("noteheads")]
+    widths = [h["bbox"][2] for e in chords for h in e["noteheads"] if h.get("bbox")]
+    tol = (sum(widths) / len(widths)) if widths else 30.0
+    for i, a in enumerate(chords):
+        sa = {h.get("stem_id") for h in a["noteheads"]}
+        da = {h.get("stem_direction_read") for h in a["noteheads"]}
+        for b in chords[i + 1:]:
+            if abs(float(a["x_position"]) - float(b["x_position"])) > tol:
+                continue
+            sb = {h.get("stem_id") for h in b["noteheads"]}
+            if None in sa or None in sb or sa & sb:
+                continue
+            db = {h.get("stem_direction_read") for h in b["noteheads"]}
+            if len(da) == 1 and da == db and None not in da:
+                return "same_direction"
+    if _stem_pair_streams(events) is None and not _divisi_pairs(events):
+        return None
+    for e in chords:
+        for h in e["noteheads"]:
+            hit = _head_touches_a_letter_or_whole_rest(rec, h.get("glyph"))
+            if hit is not None:
+                return hit
+    return None
+
+
+#: rule C's dynamic letters (lower-cased detector classes; == gather `_DYNAMIC_LETTER_CLASSES`)
+_R5_DYNAMIC_LETTERS = frozenset({"dynamicf", "dynamicp", "dynamicm", "dynamics", "dynamicz", "dynamicr"})
+
+
+def _head_touches_a_letter_or_whole_rest(rec: Record, sub: Optional[str]) -> Optional[str]:
+    """Rule C for one head (its `Q.GLYPH_BOX` page box): `head_on_a_whole_rest_box`, `head_on_a_dynamic_letter`, or None."""
+    if not sub or rec is None or not hasattr(rec, "obs_of"):
+        return None
+    idx = rec.__dict__.get("_r5_letter_rest_boxes")
+    if idx is None:
+        idx = {"letters": {}, "rests": {}, "own": {}}
+        for o in rec.obs_of(Q.GLYPH_BOX):
+            val = o.get("value")
+            lc = str(val[0] if isinstance(val, (list, tuple)) and val else "").lower()
+            pb = _page_box_of(o)
+            if not pb:
+                continue
+            page = _parse_subject(o["subject"])["page"]
+            idx["own"].setdefault(o["subject"], (lc, pb))
+            if lc in _R5_DYNAMIC_LETTERS:
+                idx["letters"].setdefault(page, []).append(pb)
+            elif lc == "restwhole":
+                idx["rests"].setdefault(page, []).append((o["subject"], pb))
+        rec.__dict__["_r5_letter_rest_boxes"] = idx
+    own = idx["own"].get(sub)
+    if own is None:
+        return None
+    lc, m = own
+    if lc == "restwhole":
+        return "head_on_a_whole_rest_box"
+    page = _parse_subject(sub)["page"]
+    for b in idx["letters"].get(page, ()):
+        if b[0] <= m[2] and m[0] <= b[2] and b[1] <= m[3] and m[1] <= b[3]:
+            return "head_on_a_dynamic_letter"
+    for rs, b in idx["rests"].get(page, ()):
+        if rs != sub and b[0] <= m[2] and m[0] <= b[2] and b[1] <= m[3] and m[1] <= b[3]:
+            return "head_on_a_whole_rest_box"
+    return None
 
 
 def _event_y(ev: Dict[str, Any]) -> float:
