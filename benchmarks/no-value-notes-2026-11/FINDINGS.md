@@ -107,6 +107,33 @@ all 17 tiles read (12 Litolff, B01/04/06/10/12); 7 Brahms tiles drawn but not re
 stem" test was refuted (disturbed a third of decided notes); M4a page beams OFF (slurs, staff residue,
 word ink filed as beams).
 
+## 2.318 build rounds 1-2 and the pixel test: the rule as built does NOT beat today's readings
+
+Sean 2026-11-18 "Let's try it" (one beam count at the note's own stem). Branch `lane-2.318`
+(`tools/omr/staged/beams_at_stem.py`, flag `OMR_BEAMS_AT_STEM`, OFF, NOT merged).
+
+- Round 1 (count on stroke-map rows at ADJUDICATE): Sean's 24 notes 17 right / 0 wrong / 7 marked; Litolff
+  p2,3,6,13,15 judged right->wrong 3 (four beamed eighths, p2 bar 13: the stem stroke ends INSIDE the beam
+  and the rule looked past it -- not a chord, as first guessed); beams +33 -125; red bars 129 -> 144.
+- Round 2 (tip follows the stem's ink; a bar may cover the tip): right->wrong 0, control 21 / 0 / 7, but
+  86 notes written today become marked and 35 lose their beam (agent's look: 10 of 12 were right before);
+  red bars 129 -> 137. Causes: stem not in the stroke map (~30), a 0.85-1.0 sp "one thick or two fused"
+  band (29), no bar at the tip (52). Brahms not run. Stopped by the manager: stroke rows are whole-stroke
+  summaries again, and the agent's next step was looser cut-offs.
+- Pixel test, no build (`out/print/2.318-pixel-count`, `pc.py`): bars of ink counted in a thin column
+  beside the stem on the page raster, staff-line rows out. Sean's 24: 17 right / 4 wrong / 3 cannot tell
+  after one revision made AFTER seeing the tile failures (optimistic); reading B alone is 18 of 24. All
+  189 judged notes with a beam-relevant answer: quarters 89 right / 1 wrong / 7 cannot tell; ONE-BEAM
+  notes 32 / 35 / 16; two-beam 6 / 1 / 2. Against 300 decided notes per plate it disagrees or cannot tell
+  on 90 of 197 Litolff one-beam notes and 58 of 100 Brahms two-beam notes.
+- THE CAUSE UNDER ALL OF IT: where the count failed, the stem's tip is on or beside a STAFF LINE in 74 of
+  98 Litolff cases and 66 of 106 Brahms cases. A beam lying on or fused into a staff line cannot be told
+  from the line by thickness in one column; that is also fault 2 (A's beam on a quarter) and fault 3 (C's
+  second beam). Every reading we have, old or new, fails at the same place.
+
+Lesson: the rule was right as a musician says it and wrong as we measured it; "at the stem" is where
+the staff line is. Not known: how a reader tells a beam on a line from the line -- asked of Sean.
+
 ## Is ink claimed once? (audit, `out/print/2.317-claim-audit`)
 
 Asked by Sean 2026-11-18. Enforced in ADJUDICATE only, and by box share (a box is refused at >= 50%
