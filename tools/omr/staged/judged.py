@@ -675,6 +675,70 @@ def resolve_place(row: Dict[str, Any], boxes: Dict[Place, List[Tuple[str, List[f
     return best[0], "place"
 
 
+def written_arc_runs(path: pathlib.Path, pages: Iterable[int]) -> Dict[int, List[Dict[str, Any]]]:
+    """ROADMAP 2.316 (c): `{page: [run]}` -- the page-arc runs the record's STANDING `page_arc_binding` verdicts WRITE (status `written`: the exporter writes each as one
+    arc of that kind on its two heads, and a detector box that witnesses it writes nothing of its own). A run: `{row, kind, bbox, ends, space, start, stop, witnesses}`;
+    a run cut into pieces keeps each written piece's own x range. Streamed (the observations then the verdicts), so a Brahms record is safe. `{}` for a record
+    gathered without the page pass (the old box path then wrote the arcs)."""
+    want = {"page/%d" % p for p in pages}
+    rows: Dict[str, Dict[str, Any]] = {}
+    for o in iter_array(path, "observations"):
+        if o.get("quantity") == "page_arc" and o.get("subject") in want and o.get("value") == "run":
+            rows[o["id"]] = o.get("detail") or {}
+    kept: Dict[str, List[Dict[str, Any]]] = defaultdict(list)
+    for v in iter_verdicts(path):
+        if v.get("quantity") == "page_arc_binding" and v.get("subject") in want:
+            kept[v["subject"]].append(v)
+    out: Dict[int, List[Dict[str, Any]]] = {}
+    for subj, vs in kept.items():
+        superseded = {x["supersedes"] for x in vs if x.get("supersedes")}
+        v = ([x for x in vs if x["id"] not in superseded] or vs)[-1]
+        runs = []
+        for e in (v.get("detail") or {}).get("runs") or ():
+            d = rows.get(e.get("row"))
+            if e.get("status") != "written" or not d or not d.get("bbox_page_px"):
+                continue
+            bb = [float(x) for x in d["bbox_page_px"]]
+            ends = [(float(p[0]), float(p[1])) for p in (d.get("ends") or ())]
+            xr = e.get("x_range")
+            if xr:     # a piece of the run: its own stretch, its ends at that stretch's two columns (the row's y through the box middle)
+                bb = [max(bb[0], float(xr[0])), bb[1], min(bb[2], float(xr[1])), bb[3]]
+                ends = [(bb[0], (bb[1] + bb[3]) / 2), (bb[2], (bb[1] + bb[3]) / 2)]
+            runs.append(dict(row=e["row"], kind=e.get("kind"), bbox=bb, ends=ends, space=float(d.get("space_page_px") or 16.0),
+                             start=e.get("start"), stop=e.get("stop"), witnesses=list(e.get("witnesses") or ())))
+        out[int(subj.split("/")[1])] = runs
+    return out
+
+
+def _dist_to_box(p: Tuple[float, float], b: Sequence[float]) -> float:
+    dx = max(b[0] - p[0], 0.0, p[0] - b[2])
+    dy = max(b[1] - p[1], 0.0, p[1] - b[3])
+    return (dx * dx + dy * dy) ** 0.5
+
+
+def arc_written_at(box: Sequence[float], runs: Sequence[Dict[str, Any]]) -> Optional[Tuple[Dict[str, Any], str]]:
+    """ROADMAP 2.316 (c): the written page arc at a judged mark's own place, by its EXTENT -- never any overlap. `(run, how)` or None.
+    A tile that boxes the arc's own ink is the run whose extent fits it best (`boxes_overlap`, the highest IoU). A tile that boxes a NOTE (a tie asked through the
+    head it ends on, 2.250's tiles) is the run that has an END at that head: the nearest end within one staff space of the box. Any run that merely passes over the box
+    (a wide slur above the note) is not at its place."""
+    best, how = None, ""
+    for r in runs:
+        iou = boxes_overlap(r["bbox"], box)[1]
+        if iou >= 0.3:
+            key = (0, -iou)
+            if best is None or key < best[0]:
+                best, how = (key, r), "extent fits (IoU %.2f)" % iou
+    if best is not None:
+        return best[1], how
+    for r in runs:
+        reach = min((_dist_to_box(e, box) for e in r["ends"]), default=None)
+        if reach is not None and reach <= r["space"]:
+            key = (1, reach)
+            if best is None or key < best[0]:
+                best, how = (key, r), "an end of it is %.0f px from the mark" % reach
+    return (best[1], how) if best is not None else None
+
+
 def with_derived_positions(index: Dict[str, Any], max_side: float = 120.0) -> Dict[str, Any]:
     """ANALYSIS ONLY (the control of ROADMAP 2.244): a copy of the index in which every glyph row that has a MARK-sized page
     box (both sides <= `max_side` px at 600 dpi) but no `position` is given the one its own key and box name. Older galleries
@@ -814,6 +878,20 @@ def _arc(sub: str, want: str, S: Dict) -> Tuple[str, str]:
 _NOT_SCORED_QUESTIONS = frozenset({"stem", "owner", "dynamic", "meter"})
 
 
+def _refused_as_not_a_note(sub: str, S: Dict) -> bool:
+    n = S.get((sub, "notehead_is_not_a_notehead"))
+    return bool(n and n["outcome"] == "decided" and n["value"] is True and not S.get(("__tall_split__", sub)))
+
+
+def _written_subjects(subs: Sequence[str], S: Dict) -> List[str]:
+    """ROADMAP 2.316 (c): a tile that names several boxes asks about ONE note, and the file writes the boxes that are NOT refused as ink that is no note. A box the
+    exporter refuses (a second box on the head, a barline's ink, the clef) writes nothing, so it cannot make the note it is not wrong (Litolff "2.78-phase2-review"
+    tile 11: the eighth is still written 0.5 beat, its neighbour box is refused as the barline's ink). With every named box refused the note is not written: they
+    all stay, and score as they always did."""
+    keep = [s for s in subs if not _refused_as_not_a_note(s, S)]
+    return keep or list(subs)
+
+
 def score_row(row: Dict[str, Any], S: Dict) -> Tuple[str, str, Optional[float]]:
     """`(status, note, margin)` for one judged tile against standing verdicts."""
     subs = row.get("subjects") or ([row["subject"]] if row.get("subject") else [])
@@ -824,6 +902,8 @@ def score_row(row: Dict[str, Any], S: Dict) -> Tuple[str, str, Optional[float]]:
     if row["subject_kind"] != "glyph" or not subs:
         return "unscored", "no glyph subject (%s)" % row["subject_kind"], None
     if kind in ("duration", "rest", "not_a_note", "arc") and value is not None:
+        if kind == "duration":
+            subs = _written_subjects(subs, S)
         results = []
         for s in subs:
             if kind == "duration":
@@ -875,6 +955,31 @@ def score(index: Dict[str, Any], record_path: pathlib.Path, doc: str, by: str = 
     if placed:
         pb = place_boxes(record_path, {row_place(r)[0] for r in placed.values()})
         where = {i: resolve_place(r, pb) for i, r in placed.items()}
+    # ROADMAP 2.316 (c): an ARC answer is scored on what the FILE writes at the mark's own place -- the page arc run written there (its kind), found by the mark's
+    # extent -- not on the verdict of whichever detector box overlaps it. A record with no written run there keeps the verdict comparison below.
+    arc_file: Dict[int, Tuple[str, str, str]] = {}
+    arcs_ = [r for r in mine if r["answer_kind"] == "arc" and r["value"] is not None and not r["subjects"]]
+    if arcs_:
+        def _pg(r):
+            pl = row_place(r)
+            if pl is not None:
+                return pl[0]
+            k = key_place(r["subject"])
+            return k[0] if k else None
+        runs_by_page = written_arc_runs(record_path, {p for p in map(_pg, arcs_) if p is not None})
+        if any(runs_by_page.values()):
+            need = {r["subject"] for r in arcs_ if row_box(r) is None and r["subject"]}
+            own = page_boxes(record_path, need) if need else {}
+            for r in arcs_:
+                bx = row_box(r) or own.get(r["subject"])
+                pg = _pg(r)
+                if bx is None or pg is None or not runs_by_page.get(pg):
+                    continue
+                hit = arc_written_at(bx, runs_by_page[pg])
+                if hit is not None:
+                    run, how = hit
+                    arc_file[id(r)] = ("right" if run["kind"] == r["value"] else "wrong",
+                                       "the file writes a page arc here: %s (run %s; %s)" % (run["kind"], run["row"], how), run["row"])
     subjects = {s for r in mine if id(r) not in placed for s in (r["subjects"] or [r["subject"]])}
     subjects |= {w[0] for w in where.values() if w[0]}
     splits = split_children(record_path, subjects)          # ROADMAP 2.252 r6: a split tall box's answer is its children's
@@ -891,7 +996,11 @@ def score(index: Dict[str, Any], record_path: pathlib.Path, doc: str, by: str = 
             per_item[r["item"]]["other_doc" if r["doc"] else "doc_unresolved"] += 1
             continue
         how, sub = None, None
-        if id(r) in placed:
+        if id(r) in arc_file:
+            status, note, _run = arc_file[id(r)]
+            margin, how = None, "file_page_arc"
+            matched["file_page_arc"] += 1
+        elif id(r) in placed:
             sub, how = where[id(r)]
             if sub is None:
                 status, note, margin = (
@@ -935,9 +1044,10 @@ def render(rep: Dict[str, Any]) -> str:
     t = rep["totals"]
     lines.append("%-34s" % "TOTAL" + "".join("%10d" % t.get(k, 0) for k in cols))
     m = rep.get("matched") or {}
-    lines.append("matched: by place %d (%d at another id than the one asked) | by id key, no position %d | position but no mark here %d"
+    lines.append("matched: by place %d (%d at another id than the one asked) | by id key, no position %d | position but no mark here %d | "
+                 "arc answers scored on the page arc the file writes at their place %d"
                  % (m.get("place", 0), m.get("place_moved_id", 0), m.get("key", 0),
-                    m.get("place_no_mark", 0) + m.get("place_no_box", 0)))
+                    m.get("place_no_mark", 0) + m.get("place_no_box", 0), m.get("file_page_arc", 0)))
     return "\n".join(lines)
 
 

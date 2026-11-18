@@ -734,8 +734,27 @@ def load_export_report(path: Path, doc: Optional[str] = None) -> Dict[str, Any]:
     movement). Either way: the exporter's own report dict."""
     d = json.loads(Path(path).read_text())
     if "documents" in d:
-        return d["documents"][doc]["export"]["report"]
+        # ROADMAP 2.316 (d): a night whose acceptance run held one movement has a `current.json` with that movement alone (20261104-night: Litolff only), and
+        # `d["documents"][doc]` died with a bare KeyError naming the document and not the file. Say which file lacks which document, and what it holds.
+        docs = d["documents"]
+        if doc is None or doc not in docs:
+            raise MissingExportReport(path, doc, sorted(docs))
+        block = docs[doc]
+        rep = (block.get("export") or {}).get("report")
+        if not isinstance(rep, dict) or not rep:
+            raise MissingExportReport(path, doc, sorted(docs), "the document is there but its export step holds no report (status %r)" % block.get("status"))
+        return rep
     return d.get("report", d)
+
+
+class MissingExportReport(LookupError):
+    """The exporter's report for one movement is not in the file it was looked for in. Never answered with an empty report: every figure in `export_side` would
+    then read as a real zero."""
+
+    def __init__(self, path: Any, doc: Optional[str], have: List[str], why: str = "") -> None:
+        self.path, self.doc, self.have = str(path), doc, have
+        super().__init__("no export report for %r in %s (%s); that file holds: %s" % (
+            doc, path, why or "the document is not in it", ", ".join(have) or "nothing"))
 
 
 def export_side(cov: Dict[str, Any]) -> Dict[str, Any]:
@@ -1627,7 +1646,12 @@ def cmd_night(a) -> int:
         covp = cdir / f"{doc}.coverage.json"
         if not covp.exists():
             covp = cdir / "current.json"
-        cov = load_export_report(covp, doc)
+        try:
+            cov = load_export_report(covp, doc)
+        except MissingExportReport as e:
+            print("%s: %s -- not reported" % (doc, e), file=sys.stderr)
+            rc = 1
+            continue
         mxp = cdir / f"{doc}.musicxml"
         mx = read_musicxml(mxp) if mxp.exists() else None
         pfacts = pcov = pmx = None
@@ -1637,10 +1661,27 @@ def cmd_night(a) -> int:
                 pp = pdir / f"{doc}.coverage.json"
                 if not pp.exists():
                     pp = pdir / "current.json"
+                pm = pdir / f"{doc}.musicxml"
                 if pp.exists():
-                    pcov = load_export_report(pp, doc)
-                    pm = pdir / f"{doc}.musicxml"
-                    pmx = read_musicxml(pm) if pm.exists() else None
+                    try:
+                        pcov = load_export_report(pp, doc)
+                    except MissingExportReport as e:
+                        # ROADMAP 2.316 (d): the base night's own acceptance run did not hold this movement (20261104-night: Litolff only; its Brahms record
+                        # exists, its Brahms export report does not). The like-with-like base is the one THIS night's compare script re-exported by the
+                        # same tree (`base-rescored.current.json`, compare_20261029.sh); use it where it holds the movement, else say so and report without a previous.
+                        alt = cdir / "base-rescored.current.json"
+                        try:
+                            pcov = load_export_report(alt, doc) if alt.exists() else None
+                        except MissingExportReport:
+                            pcov = None
+                        if pcov is None:
+                            print("%s: no previous report: %s" % (doc, e), file=sys.stderr)
+                        else:
+                            print("%s: the base night's own report lacks it (%s); the base RE-EXPORTED by this night's tree (%s) stands in" % (doc, e, alt),
+                                  file=sys.stderr)
+                            pm = cdir / f"{doc}.base-rescored.musicxml"
+                    if pcov is not None:
+                        pmx = read_musicxml(pm) if pm.exists() else None
         base_commit = (pfacts or {}).get("provenance", {}).get("commit") if pfacts else None
         run = _run_info(a.tag, doc, facts, rdir, cdir, base_commit, repo,
                         a.export_tree or _git(["rev-parse", "--short=8", "HEAD"], cwd=repo))

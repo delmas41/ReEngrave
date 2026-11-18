@@ -34,7 +34,8 @@ def head(cur, doc):
     s = ((cur or {}).get("summary") or {}).get(doc)
     if not s or s.get("status") != "ok":
         return None
-    return dict(notes=s["notes_reaching_file"]["n"], of=s["notes_reaching_file"]["of"], frac=s["notes_reaching_file"]["fraction"],
+    nc = s.get("notes_census") if isinstance(s.get("notes_census"), dict) and "notes" in s.get("notes_census") else None
+    return dict(census=nc, notes=s["notes_reaching_file"]["n"], of=s["notes_reaching_file"]["of"], frac=s["notes_reaching_file"]["fraction"],
                 held=s["bars_held_out_sum"]["n"], red=s["bars_add_up_control"]["written_red"], addup=s["bars_add_up_control"]["exact"],
                 unread=s["unread_bars"]["empty_bars_padded"], parts=s["parts_named"]["n"], partsof=s["parts_named"]["of"])
 
@@ -67,7 +68,14 @@ for doc in DOCS:
         continue
     cmp_ = r or a
     if cmp_:
-        P("  %s notes reaching file %d/%d -> %d/%d (%.3f -> %.3f); held-out bars %d -> %d; red bars %d -> %d; bars add up %d -> %d; unread bars %d -> %d; parts named %d/%d -> %d/%d" % (
+        # ROADMAP 2.316: the headline counts printed NOTES; the box figure stays beside it (labelled), so nights stay comparable
+        cb = (cmp_ or {}).get("census")
+        if b.get("census"):
+            nb = b["census"]["notes"]
+            P("  %s PRINTED NOTES written %s -> %d of %d (candidate lost %s -> %d)  [by-box figure below: notes reaching file]" % (
+                sh, ("%d of %d" % (cb["notes"]["written"], cb["notes"]["printed"])) if cb else "n/a (no census in the base)",
+                nb["written"], nb["printed"], cb["notes"]["candidate_lost"] if cb else "n/a", nb["candidate_lost"]))
+        P("  %s notes reaching file [boxes] %d/%d -> %d/%d (%.3f -> %.3f); held-out bars %d -> %d; red bars %d -> %d; bars add up %d -> %d; unread bars %d -> %d; parts named %d/%d -> %d/%d" % (
             sh, cmp_["notes"], cmp_["of"], b["notes"], b["of"], cmp_["frac"], b["frac"], cmp_["held"], b["held"], cmp_["red"], b["red"],
             cmp_["addup"], b["addup"], cmp_["unread"], b["unread"], cmp_["parts"], cmp_["partsof"], b["parts"], b["partsof"]))
         if a and r and a != r:

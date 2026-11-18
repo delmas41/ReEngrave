@@ -5,6 +5,7 @@ ROADMAP 2.265: COUNTPAGES is the COUNTED sample pages (never the context page; `
 and dot rows out of the report totals). The dots row also reads WORKDIR/PLATE.ARM.specks.json (`counted_view.dot_specks`)."""
 import pathlib as _p, sys as _s; _s.path.insert(0, str(_p.Path(__file__).resolve().parents[4]))  # repo root, so `tools` imports
 import json, sys, collections
+from tools.omr.staged import counted_marks as CM
 work, plate, arm, cp = sys.argv[1], sys.argv[2], sys.argv[3], [int(x) for x in sys.argv[4].split(",")]
 R = json.load(open("%s/%s.%s.report.json" % (work, plate, arm)))
 S = json.load(open("%s/%s.%s.symbols.json" % (work, plate, arm)))
@@ -43,6 +44,7 @@ specks = SP["specks"]
 tot = dict(dot_specks_in_the_dots_row=sum(1 for x in specks if x["outcome"] == "abstained" and x["reason"] == "dot_role_ambiguous"),
            dot_specks_all=len(specks), floor_sp2=SP["floor_sp2"],
            guessed_by_rule=R["guessed"]["by_rule"], accidental_reading=R["accidental_reading"], dot_role_not_placed=R["dot_role_not_placed"],
+           notes_census=S.get("notes_census"), arcs_count=CM.arcs_count(R),      # ROADMAP 2.316: notes and arcs, not boxes (None: an export made before 2.316)
            fermatas_not_written=R["fermatas_not_written"], arcs_not_written=R["arcs_not_written"], tie_contradictions=len(R.get("tie_contradictions") or []),
            inferred_clefs=len(R.get("inferred_clefs") or []), part_join={k: R["part_join"].get(k) for k in ("unidentified_parts", "held_out_staves")},
            bars_held_out=R["bars_held_out_sum"]["bars"], tacet=R["tacet_padding"]["tacet_bar_total"], decided_and_unwritten=R["decided_and_unwritten"])
