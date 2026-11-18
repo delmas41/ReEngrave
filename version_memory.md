@@ -15,6 +15,9 @@ Flipped by the manager for the overnight whole-movement run on the Litolff sampl
 bars level, blue marks -16). `ledger_grid.count_to_ink_enabled`: unset = ON, `0`/`false`/`no`/`off` = OFF; the default
 pin test now asserts ON and the OFF control sets `=0`. Brahms and the 4 moved heads are for the overnight readout.
 
+## 2026-11-17 -- ROADMAP 2.314 r3 landed OFF (flag `OMR_TWO_STEMS_TWO_NOTES`)
+Two heads on two different stems at one place are two notes in two voices, not one refused chord (STAGED export: `one_chord.stems_apart_enabled`, `voicing.group_chords_in_measure(keep_stems_apart=)`, `export._stem_pair_streams`, `export._place_voices_in_time`). Default OFF: red bars ON still above OFF and 3 `f`-curl fakes remain. Landing gate: fast tier on merged tree, 10749 passed, 0 failed. Findings: benchmarks/plain-stemmed-2026-11/FINDINGS.md.
+
 ## 2026-11-17 -- ROADMAP 2.312 r3 landed OFF: a far head is placed against its ledger lines by its own ink
 
 Flag `OMR_LEDGER_COUNT_TO_INK`, default OFF (merge of `lane-2.312-r3`, e248813d2). Built in three rounds the same

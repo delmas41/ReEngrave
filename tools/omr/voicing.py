@@ -145,6 +145,7 @@ def group_chords_in_measure(
     *,
     chord_x_tolerance: float | None = None,
     merge_seconds_on_one_stem: bool = False,
+    keep_stems_apart: bool = False,
 ) -> list[dict[str, Any]]:
     """Turn one measure's flat detection list into an ordered list of
     musical events.
@@ -209,6 +210,17 @@ def group_chords_in_measure(
         group_dirs = {n.get("stem_direction") for n in group if n.get("stem_direction")}
         return bool(group_dirs) and nh_dir not in group_dirs
 
+    def _on_another_stem(nh, group) -> bool:
+        """ROADMAP 2.314 (STAGED export only): `nh` and a member stand on two different DECIDED stems and carry different values --
+        two notes (a second voice, a unison), never one chord. Same value on two stems stays grouped as before; an unknown stem never
+        separates."""
+        sid = nh.get("stem_id")
+        if not sid:
+            return False
+        v = (nh.get("duration_beats"), nh.get("duration_type"), nh.get("dots"))
+        return any(n.get("stem_id") and n.get("stem_id") != sid
+                   and (n.get("duration_beats"), n.get("duration_type"), n.get("dots")) != v for n in group)
+
     chord_groups: list[list[dict[str, Any]]] = []
     for nh in noteheads:
         nh_x = _x_center(nh)
@@ -224,6 +236,8 @@ def group_chords_in_measure(
             if abs(nh_x - group_x) > chord_x_tolerance:
                 break
             if _directions_conflict(nh, group):
+                continue
+            if keep_stems_apart and _on_another_stem(nh, group):
                 continue
             target = group
             break

@@ -2941,6 +2941,24 @@ DYNAMIC_LETTER_BODY_SHARE = 0.4
 #: An `f` box narrower than this is not an `f`.
 DYNAMIC_F_MIN_W_SPACES = 1.7
 
+#: ROADMAP 2.314 r2 (flag `OMR_TWO_STEMS_TWO_NOTES`): a head that lies WITHIN a dynamic letter's box (at least this share of it) and whose widest filled
+#: disc is below `DYNAMIC_LETTER_INSIDE_DISC_SPACES` is the letter's own curl or hook, never a note. Measured on real marks (Litolff 20261029 slices, our look at the
+#: crops): every curl read as a head inside a letter box has a disc of 0.90-0.98 (4 of 4, three of them written plain already); every real head inside a letter box
+#: 1.22-1.35 (7 of 7); Brahms: the one new fake 0.916 (0.60 inside), the one real head 1.23 (0.50 inside, above the cut, kept). A head only partly inside
+#: (under 0.5) keeps the 0.9 cut: curls and real heads overlap there (1.14 / 1.15).
+DYNAMIC_LETTER_INSIDE_MIN = 0.5
+DYNAMIC_LETTER_INSIDE_DISC_SPACES = 1.1
+
+
+def stroke_disc_cut(head_in_letter: float) -> float:
+    """The disc width (staff spaces) under which a head's ink on a letter is a stroke: 0.9, or 1.1 for a head wholly inside the letter's box with the 2.314 r2
+    rule on. NEVER a note on a letter's own curl; NEVER refuses a head that lies mostly outside the letter."""
+    from .. import one_chord as _oc
+    if _oc.stems_apart_enabled() and head_in_letter >= DYNAMIC_LETTER_INSIDE_MIN:
+        return DYNAMIC_LETTER_INSIDE_DISC_SPACES
+    return DYNAMIC_LETTER_STROKE_DISC_SPACES
+
+
 DYNAMIC_LETTER_REASON = "on_a_dynamic_letter"
 
 
@@ -2974,7 +2992,7 @@ def _on_a_dynamic_letter_refusal(ev: Evidence, box_row,
         signal["spared"] = "letter_box_too_narrow_for_an_f"
         detail["dynamic_letter_signal"] = signal
         return None
-    if disc < DYNAMIC_LETTER_STROKE_DISC_SPACES:
+    if disc < stroke_disc_cut(on):
         signal["why"] = "stroke_not_a_filled_head"
     elif share >= DYNAMIC_LETTER_BODY_SHARE:
         signal["why"] = "head_holds_the_letters_body"

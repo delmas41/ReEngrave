@@ -39,6 +39,20 @@ def enabled() -> bool:
     return os.environ.get(ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+STEMS_APART_ENV = "OMR_TWO_STEMS_TWO_NOTES"
+
+
+def stems_apart_enabled() -> bool:
+    """ROADMAP 2.314, `OMR_TWO_STEMS_TWO_NOTES`, default OFF; only 1/true/yes/on enables.
+
+    Heads that stand on two DIFFERENT decided stems and carry different decided values are two notes (a second voice, a unison), never
+    one chord: each keeps its own value. CONVENTION (page-facts: every note on one stem shares one written value; two stems at one place
+    are two voices): a chord is the heads of ONE stem. FALSIFIED IF a chord's one physical stem is read as two stems AND its heads are
+    read with different values (then the pair is written as two notes instead of refused). NOT CONFIRMED by Sean beyond his 2.311 beam
+    tiles 2, 4, 5, 11 (a second voice / a unison beside a head of another value)."""
+    return os.environ.get(STEMS_APART_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 Box = Tuple[float, float, float, float]   # x, y, w, h in the cell's canonical frame
 
 

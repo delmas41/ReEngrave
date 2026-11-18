@@ -258,7 +258,7 @@ def _letter_vetoes(ev: Evidence, cell, heads: Dict[str, SO.Claim], rests: Dict[s
         w_sp = d.get("letter_w_spaces")
         if d.get("letter_class") == "dynamicF" and w_sp is not None and float(w_sp) < NP.DYNAMIC_F_MIN_W_SPACES:
             continue
-        if disc < NP.DYNAMIC_LETTER_STROKE_DISC_SPACES or share >= NP.DYNAMIC_LETTER_BODY_SHARE:
+        if disc < NP.stroke_disc_cut(on) or share >= NP.DYNAMIC_LETTER_BODY_SHARE:
             out[k] = SO.Veto("on_a_dynamic_letter", str(d.get("letter") or r.id), "dynamic", str(d.get("letter_class") or ""), r.id)
     for r in ev.rows(Q.LETTER_LOOK_COVER, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         k = r.subject.to_key()
