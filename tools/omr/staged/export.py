@@ -2176,6 +2176,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     _export_unison.settle(runs, divisi if divisi is not None else {})
     # ⚠️ ROADMAP 2.89, LAST, after relocation, because a relocated head joins
     # a chord too. See `_chords_whose_value_would_be_voted`.
+    _decide_two_stems_bars(rec, runs)     # ROADMAP 2.314 r4: BEFORE 2.89, which must see a declined bar's heads as flag OFF groups them
     for _det in _chords_whose_value_would_be_voted(runs):
         _sub = _det.get("glyph")
         if _sub is None:
@@ -2288,6 +2289,7 @@ def _chords_whose_value_would_be_voted(
             if not cell.detections:
                 continue
             doomed: List[int] = []
+            one_chord.bar_declines(bool(getattr(cell, "two_stems_declined", False)))
             for ev in _group_chords(cell.detections):
                 heads = ev.get("noteheads") or ()
                 if len(heads) < 2:
@@ -2302,7 +2304,37 @@ def _chords_whose_value_would_be_voted(
             kept = [d for d in cell.detections if id(d) not in gone]
             removed.extend(d for d in cell.detections if id(d) in gone)
             cell.detections[:] = kept
+    one_chord.bar_declines(False)
     return removed
+
+
+def _decide_two_stems_bars(rec: Record, runs: Dict[str, "StaffRun"]) -> None:
+    """ROADMAP 2.314 r4: decide ONCE per bar, on the bar's full heads, whether `OMR_TWO_STEMS_TWO_NOTES` may write it
+    (`_two_stems_bar_adds_up`), and keep the answer on the cell (`two_stems_declined`). Decided BEFORE 2.89's value refusal, because that
+    refusal groups the heads too: a declined bar must lose exactly the heads flag OFF loses, or it is not written as OFF writes it. The meter is
+    the run's own, carried bar to bar as the writer carries it. Flag off: nothing is set."""
+    if not one_chord.stems_apart_enabled():
+        return
+    one_chord.bar_declines(False)
+    divs = _divisions([list(runs.values())])
+    for run in runs.values():
+        in_force = None
+        for idx in range(run.n_measures):
+            meter = _meter_dict(meter_at(run.meter, idx))
+            if meter is not None:
+                in_force = meter
+            cell = run.cells.get(idx)
+            if cell is None or not cell.detections:
+                continue
+            cell.two_stems_declined = not _two_stems_bar_adds_up(rec, run, idx, cell, in_force, divs)
+
+
+def _two_stems_declined(rec: Record, run: StaffRun, cell_index: int, cell: Optional[Cell],
+                        judged: Optional[Dict[str, Any]], divisions: int) -> bool:
+    """The bar's decline as `_decide_two_stems_bars` kept it; a cell it never saw (no heads then) is asked now."""
+    if cell is not None and getattr(cell, "two_stems_declined", None) is not None:
+        return bool(cell.two_stems_declined)
+    return not _two_stems_bar_adds_up(rec, run, cell_index, cell, judged, divisions)
 
 
 def marks_census(rec: Record, fates: Dict[str, str]) -> Dict[str, Any]:
@@ -2617,7 +2649,8 @@ def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
             # one onset, opposite decided stems) is numbered by the SAME split
             # `_voice_split` writes, or a slur would be paired across streams
             # the file keeps apart.
-            if one_chord.stems_apart_enabled():
+            if one_chord.stems_apart_enabled() and not _two_stems_declined(
+                    rec, run, cell_index, cell, _meter_dict(meter_at(run.meter, cell_index)), _divisions([part])):
                 evs = _events(cell)
                 streams = _voice_split(rec, run, cell_index, evs) if _stem_pair_streams(evs) else None
                 if streams is not None:
@@ -4707,6 +4740,16 @@ def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     return _group_chords(cell.detections)
 
 
+def _events_flag_on(cell: Optional[Cell]) -> List[Dict[str, Any]]:
+    """`_events` as the flag groups them, whatever this bar's decline (ROADMAP 2.314 r4; a counter's question only)."""
+    was = one_chord._BAR_DECLINES.get()
+    one_chord.bar_declines(False)
+    try:
+        return _events(cell)
+    finally:
+        one_chord.bar_declines(was)
+
+
 def _document_bar_offsets(
         parts: Sequence[Sequence[StaffRun]]
 ) -> Tuple[Optional[Dict[Tuple[int, int], int]], Dict[str, Any]]:
@@ -5454,6 +5497,13 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                              '      </direction>')
                 counters["bars_marked_clef_unread"] += 1
             cell_here = run.cells.get(i)
+            # ROADMAP 2.314 r4: a bar the two-stems split cannot write adding up is written as flag OFF writes it (never broken by the flag)
+            one_chord.bar_declines(False)
+            one_chord.bar_declines(_two_stems_declined(
+                rec, run, i, cell_here, meter if meter is not None else in_force, divisions))
+            if one_chord.stems_apart_enabled() is False and os.environ.get(one_chord.STEMS_APART_ENV, "").strip().lower() in ("1", "true", "yes", "on"):
+                counters["two_voice_bars_written_as_flag_off"] += 1 if _stem_pair_streams(_events_flag_on(cell_here)) is not None else 0
+                counters["two_stems_bars_declined"] += 1
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
             # ⚠️⚠️ ROADMAP 2.98: A LONE WHOLE REST IS THE BAR, sized by the
@@ -5949,6 +5999,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                                               counters, split=split))
             lines.extend(_bl_right)
             lines.append("    </measure>")
+    one_chord.bar_declines(False)
     lines.append("  </part>")
     return "\n".join(lines)
 
@@ -6841,6 +6892,30 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
             if a0 < b1 and b0 < a1:
                 return "neither_voice_prints_anything_somewhere"
     return out
+
+
+def _two_stems_bar_adds_up(rec: Record, run: StaffRun, cell_index: int, cell: Optional[Cell],
+                           judged: Optional[Dict[str, Any]], divisions: int) -> bool:
+    """ROADMAP 2.314 r4 (`OMR_TWO_STEMS_TWO_NOTES`). May the flag write THIS bar? Yes where, with the flag on, the bar adds up (every voice
+    comes to the meter, or no meter judges it); no where the flag's bar would be red or held -- then the bar is written exactly as flag OFF
+    writes it (`one_chord.bar_declines`), so the flag can turn a red bar into a written one and never a written bar into a red one. The
+    same writer declining to change a bar it cannot improve; nothing is guessed, and a bar red OFF stays red. Pure: scratch counters."""
+    if not one_chord.stems_apart_enabled() or cell is None or not cell.detections:
+        return True
+    events = _events(cell)
+    if not events:
+        return True
+    scratch: Dict[str, int] = collections.Counter()
+    streams = _voice_split(rec, run, cell_index, events, [])
+    if streams is not None and _stem_pair_streams(events) is not None:
+        timed = _place_voices_in_time(streams, judged, divisions, cell.unplaced, scratch)
+        if timed is not None:
+            streams = timed
+        else:
+            streams = _rests_to_the_silent_voice(streams, judged, divisions, scratch)
+    elif streams is not None:
+        streams = _rests_to_the_silent_voice(streams, judged, divisions, scratch)
+    return _bar_holds_out(events, streams, divisions, judged) is None
 
 
 def _event_y(ev: Dict[str, Any]) -> float:
