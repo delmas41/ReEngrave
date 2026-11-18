@@ -79,6 +79,34 @@ Sean named the value of 24 boxed notes (his numbers 1-24; OUR reading: 1-12 = B0
   Why A sees a beam on a Litolff quarter and why C sees a second one is not yet found (staff-line ink
   is the suspect, not tested). 24 notes: a control set, not a rate.
 
+## 2.318 Part 0: the cause of each beam fault (`out/print/2.318-part0`; agent's trace on Sean's 24 notes)
+
+All three are STAGED ADJUDICATE judging a STROKE AS A WHOLE where the page asks how many beams stand at
+THIS stem. Lesson: a stroke is not a beam level, and three readers each carried a different ruler.
+
+1. Brahms misses the second beam (B01, B04, B06, B10). The second beam starts at a later stem and its gap
+   fills in on the scan: one stroke, one beam thick over its first stems and two over its last. B
+   (`beam_strokes.py::tip_reading`) calls a stroke double only when its MEDIAN thickness is >= 1.0 sp
+   (`FUSED_DOUBLE_MIN_THICKNESS_SPACES`) and local >= 0.8; at the stem these read 1.42 / 1.28 / 1.06 sp
+   with medians 0.93 / 0.73 / 0.77. A (`rhythm.py::_fused_double_beams :1497`) needs a second stroke to
+   compare. B01's fused wedge is refused `not_straight` (bow 0.48 against 0.40). Same condition:
+   36 + 8 of the 176 Brahms "further level" notes; 65 + 45 DECIDED one-beam notes of 3,145 (at risk or
+   already wrong -- not judged).
+2. Litolff, A counts a beam on a quarter (L02, L05, L07, L09). `gather.py::beam_stroke_ink :12903`
+   measures thickness on the raw raster with NO staff-line exclusion: a staff line with a neighbour's
+   head fused to it reads 0.67 sp. `_stem_joined :547` then joins by BOX overlap. Same condition: 25 of
+   62 Litolff "one possible beam stroke"; 70 of 3,701 decided beamed notes.
+3. Litolff, C counts a second beam (L01, L06, L08, L10, L12). `gather.py::beam_runs_at_stem_end` reaches
+   2.4 sp up the stem and lands on the staff's bottom line, which stays ink wherever a head touches it.
+   C spoke 23 times on Litolff, never decided: removing it costs no written Litolff note. Brahms not
+   counted.
+
+Hand count "bars of beam ink at this stem's tip, staff lines out" (agent's look): agrees with Sean on
+all 17 tiles read (12 Litolff, B01/04/06/10/12); 7 Brahms tiles drawn but not read. Hard: L11, L12
+(beam on a line, fused with `ff` or a wedge), L07, B01, B04. Prior: 2.311's whole-stroke "ink meets
+stem" test was refuted (disturbed a third of decided notes); M4a page beams OFF (slurs, staff residue,
+word ink filed as beams).
+
 ## Is ink claimed once? (audit, `out/print/2.317-claim-audit`)
 
 Asked by Sean 2026-11-18. Enforced in ADJUDICATE only, and by box share (a box is refused at >= 50%
