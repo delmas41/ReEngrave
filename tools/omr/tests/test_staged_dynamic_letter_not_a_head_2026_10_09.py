@@ -200,11 +200,22 @@ def test_the_hook_of_an_f_is_refused_as_a_stroke():
     assert v.detail["why"] == "stroke_not_a_filled_head"
 
 
-def test_the_bowl_of_a_p_is_refused_as_the_letters_body():
-    """Tile 10, `glyph/2/0/2/1/12`: disc 1.09 (as thick as a head), share 0.60."""
+def test_the_bowl_of_a_p_is_refused_as_the_letters_body(monkeypatch):
+    """Tile 10, `glyph/2/0/2/1/12`: disc 1.09 (as thick as a head), share 0.60. OFF twin of ROADMAP 2.314's disc cut
+    (`OMR_TWO_STEMS_TWO_NOTES=0`): the body-share rule names it."""
+    monkeypatch.setenv("OMR_TWO_STEMS_TWO_NOTES", "0")
     v = _decide(1.09, 0.60, cls="dynamicP", w=1.85, h=1.97, on=0.576)
     assert v.value is True and v.reason == "on_a_dynamic_letter"
     assert v.detail["why"] == "head_holds_the_letters_body"
+
+
+def test_the_bowl_of_a_p_is_refused_with_the_2_314_disc_cut_on(monkeypatch):
+    """The same real mark with `OMR_TWO_STEMS_TWO_NOTES` on (default since 2.314 r5): still the letter's, never a note; the
+    disc cut (1.1 for a head at least half inside the box) now names it first."""
+    monkeypatch.delenv("OMR_TWO_STEMS_TWO_NOTES", raising=False)
+    v = _decide(1.09, 0.60, cls="dynamicP", w=1.85, h=1.97, on=0.576)
+    assert v.value is True and v.reason == "on_a_dynamic_letter"
+    assert v.detail["why"] in ("stroke_not_a_filled_head", "head_holds_the_letters_body")
 
 
 def test_the_two_notes_beside_an_sf_are_kept():
@@ -217,11 +228,21 @@ def test_the_two_notes_beside_an_sf_are_kept():
         assert v.detail["dynamic_letter_signal"]["spared"] == "a_filled_head_of_its_own"
 
 
-def test_a_small_filled_head_with_no_stem_is_kept():
+def test_a_small_filled_head_with_no_stem_is_kept(monkeypatch):
     """A cue/grace-size head is a smaller filled blob (0.95) and may have a
-    short stem or none: nothing here reads a stem, so it is kept."""
+    short stem or none: nothing here reads a stem, so it is kept. OFF twin of
+    ROADMAP 2.314's disc cut (`OMR_TWO_STEMS_TWO_NOTES=0`; synthetic, not a judged mark)."""
+    monkeypatch.setenv("OMR_TWO_STEMS_TWO_NOTES", "0")
     v = _decide(0.95, 0.15)
     assert v.value is False and v.reason == "notehead"
+
+
+def test_a_095_disc_wholly_inside_a_letter_is_the_letters_curl_with_2_314_on(monkeypatch):
+    """ROADMAP 2.314 r2 (default ON since r5): a head at least half inside a letter's box with a widest disc under 1.1 spaces is
+    the letter's curl (real curls 0.903-0.975 inside the box; real heads 1.224-1.345; FINDINGS Part 2)."""
+    monkeypatch.delenv("OMR_TWO_STEMS_TWO_NOTES", raising=False)
+    v = _decide(0.95, 0.15)
+    assert v.value is True and v.reason == "on_a_dynamic_letter"
 
 
 def test_a_head_that_only_touches_the_letter_is_kept():
