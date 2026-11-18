@@ -591,7 +591,7 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
             cell = run.cells.get(i)
             # ROADMAP 2.314 r4: the SAME per-bar decline `_part_xml` makes, so the two files cannot disagree
             SX.one_chord.bar_declines(False)
-            SX.one_chord.bar_declines(not SX._two_stems_bar_adds_up(rec, run, i, cell, judged, divisions))
+            SX.one_chord.bar_declines(SX._two_stems_declined(rec, run, i, cell, judged, divisions))
             directions = tuple(cell.directions) if cell else ()
             events = SX._events(cell)
             # ROADMAP 2.98: the same lone-whole-rest-is-the-bar sizing the
