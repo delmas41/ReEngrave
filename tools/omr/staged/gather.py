@@ -9238,7 +9238,7 @@ def gather_empty_bar_rest_search(log: Log, cells: Sequence[Any],
             candidates.append((dev_whole, witness, detail))
 
         middle_hits = [c for c in candidates if c[1] == "middle"]
-        pool = middle_hits or candidates
+        pool = candidates if by_ink else (middle_hits or candidates)       # 2.315: with the flag where a rest stands along the bar never prefers one
         if not pool:
             log.observe(sub, Q.EMPTY_BAR_REST_SEARCH, False,
                         reader=READERS.CV_REST_SEARCH, frame=frame,
