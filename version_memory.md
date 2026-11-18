@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-17 -- ROADMAP 2.314 r5 landed ON: `OMR_TWO_STEMS_TWO_NOTES` default ON (deny-list)
+STAGED EXPORT: every split bar placed on one line of time (`_two_stems_streams`, `_place_columns` carry: a rest or lone mark speaks for
+both players, written once, the other voice `<forward>`), same-way stems never split (`_two_stems_unsafe`, `stem_direction_read`), no
+head of a split on a dynamic letter or whole-rest box; a declined bar is written as OFF (`_two_stems_bar_verdict`). Sample, export only:
+broken 0/0, red 186->177 / 139->137, judged right->wrong 0, 0 fakes in 29 changed notes. CONVENTION ASSUMED, NOT CONFIRMED by Sean.
+
 ## 2026-11-17 -- ROADMAP 2.315 landed ON: a whole-bar rest is read in every bar (OMR_WHOLE_REST_SEARCH_OWN_BAR, deny-list)
 STAGED GATHER `gather_empty_bar_rest_search` (every cell, the 2.270 ink rule) + EXPORT `_place_found_whole_rests` (written blue only where every box in the bar is positively not its own mark). Litolff p1+sample: rests +15 -1, judged right->wrong 0, red bars 168 -> 168; the one loss (P1 m51) traced to a refused `clipped_fragment` of the next staff's note and fixed (`_clipped_piece_of_the_next_staff`: 3+ sp beyond the staff, no ledger line between; 181 clipped pieces measured, all 3.4-5.7 sp out, 13 with a ledger box) -- re-export of the saved ON record: 20 bars gained, 0 lost. Default pins/OFF twins say `=0`; real-bar control `TestLitolffP1M51`. Brahms measured by the overnight.
 

@@ -5504,7 +5504,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             one_chord.bar_declines(False)
             one_chord.bar_declines(_two_stems_declined(
                 rec, run, i, cell_here, meter if meter is not None else in_force, divisions))
-            if one_chord.stems_apart_enabled() is False and os.environ.get(one_chord.STEMS_APART_ENV, "").strip().lower() in ("1", "true", "yes", "on"):
+            if one_chord.stems_apart_enabled() is False and os.environ.get(one_chord.STEMS_APART_ENV, "").strip().lower() not in ("0", "false", "no", "off"):
                 counters["two_voice_bars_written_as_flag_off"] += 1 if _stem_pair_streams(_events_flag_on(cell_here)) is not None else 0
                 counters["two_stems_bars_declined"] += 1
             directions = list(cell_here.directions) if cell_here else []

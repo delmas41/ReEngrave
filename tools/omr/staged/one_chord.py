@@ -44,7 +44,7 @@ STEMS_APART_ENV = "OMR_TWO_STEMS_TWO_NOTES"
 
 
 def stems_apart_enabled() -> bool:
-    """ROADMAP 2.314, `OMR_TWO_STEMS_TWO_NOTES`, default OFF; only 1/true/yes/on enables.
+    """ROADMAP 2.314, `OMR_TWO_STEMS_TWO_NOTES`, default ON since r5 (2026-11-17; deny-list: 0/false/no/off turns it off).
 
     Heads that stand on two DIFFERENT decided stems and carry different decided values are two notes (a second voice, a unison), never
     one chord: each keeps its own value. CONVENTION (page-facts: every note on one stem shares one written value; two stems at one place
@@ -53,10 +53,15 @@ def stems_apart_enabled() -> bool:
     tiles 2, 4, 5, 11 (a second voice / a unison beside a head of another value).
 
     ROADMAP 2.314 r4: EXPORT may decline the flag for ONE bar (`bar_declines`): a bar the split cannot write with every voice adding up
-    is written exactly as flag OFF writes it, so the flag can only turn a red bar into a written one, never the reverse."""
+    is written exactly as flag OFF writes it, so the flag can only turn a red bar into a written one, never the reverse.
+
+    ROADMAP 2.314 r5 (`export._two_stems_bar_verdict`): A, a rest or one stem's mark alone at its moment speaks for both players (written
+    once, the other voice carried with <forward>); B, two stems pointing the same way are never two players; C, no head of a split bar
+    on a read dynamic letter's box or a whole-rest box. CONVENTION ASSUMED (docs/research-2026-11-17-two-parts-on-one-staff.md), NOT
+    CONFIRMED by Sean; publisher practice unknown."""
     if _BAR_DECLINES.get():
         return False
-    return os.environ.get(STEMS_APART_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(STEMS_APART_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 #: ROADMAP 2.314 r4: True while EXPORT writes a bar the flag could not improve (see `stems_apart_enabled`). Set per bar by the writer.

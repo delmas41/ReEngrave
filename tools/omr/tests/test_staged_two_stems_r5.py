@@ -171,6 +171,14 @@ class R5(unittest.TestCase):
         rows = [dict(F_ROWS[0], value=["restWhole"])]
         self.assertEqual(self.verdict(f_curl_bar(), _Rec(rows)), "head_on_a_whole_rest_box")
 
+    def test_default_is_on_and_the_deny_list_turns_it_off(self):
+        env = {k: v for k, v in os.environ.items() if k != one_chord.STEMS_APART_ENV}
+        with mock.patch.dict(os.environ, env, clear=True):
+            self.assertTrue(one_chord.stems_apart_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {one_chord.STEMS_APART_ENV: off}):
+                self.assertFalse(one_chord.stems_apart_enabled())
+
     def test_flag_off_writes_nothing_new(self):
         with mock.patch.dict(os.environ, {one_chord.STEMS_APART_ENV: "0"}):
             self.assertIsNone(self.verdict(tile_2()))
