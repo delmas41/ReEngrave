@@ -9,6 +9,12 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-17 -- ROADMAP 2.312 r3 switched ON: `OMR_LEDGER_COUNT_TO_INK` default ON (deny-list)
+
+Flipped by the manager for the overnight whole-movement run on the Litolff sample measure (judged right->wrong 0, red
+bars level, blue marks -16). `ledger_grid.count_to_ink_enabled`: unset = ON, `0`/`false`/`no`/`off` = OFF; the default
+pin test now asserts ON and the OFF control sets `=0`. Brahms and the 4 moved heads are for the overnight readout.
+
 ## 2026-11-17 -- ROADMAP 2.312 r3 landed OFF: a far head is placed against its ledger lines by its own ink
 
 Flag `OMR_LEDGER_COUNT_TO_INK`, default OFF (merge of `lane-2.312-r3`, e248813d2). Built in three rounds the same

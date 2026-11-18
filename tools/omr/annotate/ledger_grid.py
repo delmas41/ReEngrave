@@ -3687,7 +3687,7 @@ def find_note_line(
 
 # ---------------------------------------------------------------------------
 # ROADMAP 2.312 r2 -- COUNT THE LEDGER LINES TO THE HEAD'S OWN INK, NOT ITS BOX (Sean 2026-11-17 "Yes, build it"; flag
-# `OMR_LEDGER_COUNT_TO_INK`, default OFF).
+# `OMR_LEDGER_COUNT_TO_INK`, default ON since the r3 landing).
 #
 # THE RULE, as a musician says it: count the printed lines outward from the staff until you reach the head; the head sits ON
 # the last line when that line runs through its middle, and in the SPACE just beyond the last line when its ink sits past it
@@ -3717,7 +3717,8 @@ _PAGE_BINARY_CACHE: dict = {}
 
 def count_to_ink_enabled() -> bool:
     import os
-    return os.environ.get(LEDGER_COUNT_TO_INK_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_LEDGER_COUNT_TO_INK`, default ON since ROADMAP 2.312 r3's landing (deny-list; `=0` opts out)."""
+    return os.environ.get(LEDGER_COUNT_TO_INK_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _page_binary(img_gray: "np.ndarray") -> "np.ndarray":

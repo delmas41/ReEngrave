@@ -51,7 +51,9 @@ def test_head_on_the_first_ledger_with_a_dot_beside_it():
     assert pos == 8 + 2, (pos, why)
 
 
-def test_the_control_can_fail_the_unbounded_refine_moves_onto_the_dot():
+def test_the_control_can_fail_the_unbounded_refine_moves_onto_the_dot(monkeypatch):
+    # the old-world arm: 2.312 r3 (ink count) is default ON and finds this synthetic head's line itself; the control is the box count
+    monkeypatch.setenv("OMR_LEDGER_COUNT_TO_INK", "0")
     gray, box = _page(dot=True)
     pos, why = _read(gray, box, False)
     assert pos is None and "line_not_beyond_the_staff_edge" in why, (pos, why)
