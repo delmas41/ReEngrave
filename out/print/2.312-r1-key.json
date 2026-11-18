@@ -1,0 +1,206 @@
+[
+ {
+  "tile": 1,
+  "glyph": "glyph/10/1/8/9/4",
+  "cause_group": "no_line_at_the_note_box",
+  "reason_word": "no_line_at_the_note_box",
+  "owner_staff_as_we_have_it": "staff/10/1/8",
+  "position_half_steps_from_geometry": -1.88,
+  "pitch_verdict": "A5",
+  "pitch_written": "dropped (verdict, not in the exported file)",
+  "finder_line_count_raw_ink": 0,
+  "box": [
+   1975.8,
+   3236.3,
+   1995.4,
+   3247.5
+  ]
+ },
+ {
+  "tile": 2,
+  "glyph": "glyph/4/0/4/0/4",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/4/0/4",
+  "position_half_steps_from_geometry": 9.9,
+  "pitch_verdict": "C4",
+  "pitch_written": "written C4 blue",
+  "finder_line_count_raw_ink": 1,
+  "box": [
+   518.4,
+   1089.5,
+   548.7,
+   1108.5
+  ]
+ },
+ {
+  "tile": 3,
+  "glyph": "glyph/8/1/0/3/4",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/8/1/0",
+  "position_half_steps_from_geometry": -2.28,
+  "pitch_verdict": "A5",
+  "pitch_written": "written A-15 blue",
+  "finder_line_count_raw_ink": 0,
+  "box": [
+   825.5,
+   1904.8,
+   865.8,
+   1929.4
+  ]
+ },
+ {
+  "tile": 4,
+  "glyph": "glyph/10/1/9/7/6",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/10/1/9",
+  "position_half_steps_from_geometry": -7.22,
+  "pitch_verdict": "A3",
+  "pitch_written": "dropped (verdict, not in the exported file)",
+  "finder_line_count_raw_ink": 0,
+  "box": [
+   1610.5,
+   3345.0,
+   1632.5,
+   3357.3
+  ]
+ },
+ {
+  "tile": 5,
+  "glyph": "glyph/8/1/0/2/3",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/8/1/0",
+  "position_half_steps_from_geometry": 14.62,
+  "pitch_verdict": "C6",
+  "pitch_written": "dropped (verdict, not in the exported file)",
+  "finder_line_count_raw_ink": 2,
+  "box": [
+   769.7,
+   2039.8,
+   798.9,
+   2060.7
+  ]
+ },
+ {
+  "tile": 6,
+  "glyph": "glyph/4/1/0/5/9",
+  "cause_group": "no_line_at_the_note_box",
+  "reason_word": "no_line_at_the_note_box",
+  "owner_staff_as_we_have_it": "staff/4/1/0",
+  "position_half_steps_from_geometry": -3.8,
+  "pitch_verdict": "C6",
+  "pitch_written": "written C6 blue",
+  "finder_line_count_raw_ink": 1,
+  "box": [
+   1207.4,
+   2140.1,
+   1240.7,
+   2160.2
+  ]
+ },
+ {
+  "tile": 7,
+  "glyph": "glyph/4/0/3/6/1",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/4/0/3",
+  "position_half_steps_from_geometry": -2.7,
+  "pitch_verdict": "D4",
+  "pitch_written": "written D4 blue",
+  "finder_line_count_raw_ink": 2,
+  "box": [
+   1345.0,
+   814.1,
+   1375.7,
+   838.1
+  ]
+ },
+ {
+  "tile": 8,
+  "glyph": "glyph/4/1/0/8/0",
+  "cause_group": "head touches or sits in the first space of another staff (nearest other staff edge 1.0 sp)",
+  "reason_word": "no_line_at_the_note_box",
+  "owner_staff_as_we_have_it": "staff/4/1/0",
+  "position_half_steps_from_geometry": 15.32,
+  "pitch_verdict": "A5",
+  "pitch_written": "dropped (verdict, not in the exported file)",
+  "finder_line_count_raw_ink": 1,
+  "box": [
+   1661.9,
+   2293.6,
+   1682.1,
+   2303.9
+  ]
+ },
+ {
+  "tile": 9,
+  "glyph": "glyph/8/1/0/15/4",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/8/1/0",
+  "position_half_steps_from_geometry": -2.48,
+  "pitch_verdict": "A5",
+  "pitch_written": "written A-15 blue",
+  "finder_line_count_raw_ink": 0,
+  "box": [
+   2099.7,
+   1904.0,
+   2122.5,
+   1927.0
+  ]
+ },
+ {
+  "tile": 10,
+  "glyph": "glyph/4/1/2/0/1",
+  "cause_group": "head touches or sits in the first space of another staff (nearest other staff edge 0.8 sp)",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/4/1/2",
+  "position_half_steps_from_geometry": 14.58,
+  "pitch_verdict": "C4",
+  "pitch_written": "dropped (verdict, not in the exported file)",
+  "finder_line_count_raw_ink": 0,
+  "box": [
+   514.8,
+   2562.7,
+   536.4,
+   2577.0
+  ]
+ },
+ {
+  "tile": 11,
+  "glyph": "glyph/4/1/5/1/0",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/4/1/5",
+  "position_half_steps_from_geometry": 10.04,
+  "pitch_verdict": "C4",
+  "pitch_written": "written C4 blue",
+  "finder_line_count_raw_ink": 1,
+  "box": [
+   638.6,
+   2919.4,
+   662.5,
+   2941.2
+  ]
+ },
+ {
+  "tile": 12,
+  "glyph": "glyph/10/0/3/6/2",
+  "cause_group": "no_rungs",
+  "reason_word": "no_rungs",
+  "owner_staff_as_we_have_it": "staff/10/0/3",
+  "position_half_steps_from_geometry": -2.12,
+  "pitch_verdict": "G4",
+  "pitch_written": "written G4 blue",
+  "finder_line_count_raw_ink": 1,
+  "box": [
+   1443.6,
+   829.8,
+   1468.5,
+   850.8
+  ]
+ }
+]
