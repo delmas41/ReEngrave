@@ -55,7 +55,13 @@ project. Ask him.
    §0): what changed in the exported file (gained/lost by kind, one line per
    plate, from the one shared command -- no lane-built tables); Sean's 12
    blind tiles on those changes; and how many of his judged answers went
-   right->wrong (must be 0). On the frozen page sample, in minutes; the
+   right->wrong (must be 0). **Tiles go to Sean only for a real question**
+   (Sean, 2026-11-17: *"Only give tiles if you have real questions about
+   things... As we get closer to dialing things in it is becoming less
+   necessary"*): a convention we do not have, a change our own judged marks
+   and labelled pages cannot settle, or a result that surprises us. A lane
+   whose change is settled by his existing answers and the labelled page
+   reports the first and third measure and says no question arose. On the frozen page sample, in minutes; the
    whole movement is the overnight's job.
 5. **Reach before accuracy, and print before default.** No default flips on
    agreement with our own reading. A crop is cheaper than a lane.
