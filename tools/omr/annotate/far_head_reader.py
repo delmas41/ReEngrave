@@ -1020,7 +1020,8 @@ def _read(gray, global_lines, box, subject, page_notehead_boxes,
             edge_vs_through=READER_KEYWORDS.get("edge_vs_through", False),
             flank_refine_bounded=READER_KEYWORDS.get("flank_refine_bounded", False),
             look_where_it_must_be=READER_KEYWORDS.get("look_where_it_must_be", False),
-            artic_boxes=artic_boxes, not_ledger=not_ledger, ledger_read=ledger_read_enabled(), gap_max=gap_max)
+            artic_boxes=artic_boxes, not_ledger=not_ledger, ledger_read=ledger_read_enabled(), gap_max=gap_max,
+            to_ink=lg.count_to_ink_enabled())
         if detail_out is not None:
             detail_out["note_first"] = nf
             detail_out["edge_y"] = edge

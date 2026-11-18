@@ -1,0 +1,242 @@
+[
+ {
+  "i": 1,
+  "key": "glyph/8/1/0/0/6",
+  "reason": "no_line_at_the_note_box",
+  "written": "not written"
+ },
+ {
+  "i": 2,
+  "key": "glyph/8/0/7/10/8",
+  "reason": "not_a_note:on_text",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 3,
+  "key": "glyph/8/1/0/15/4",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 4,
+  "key": "glyph/9/0/2/1/2",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 5,
+  "key": "glyph/4/1/0/14/4",
+  "reason": "no_line_at_the_note_box",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 6,
+  "key": "glyph/1/0/11/2/5",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 7,
+  "key": "glyph/4/1/2/6/3",
+  "reason": "count_does_not_fit",
+  "written": "not written"
+ },
+ {
+  "i": 8,
+  "key": "glyph/8/1/1/1/1",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 9,
+  "key": "glyph/16/1/6/9/2",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 10,
+  "key": "glyph/10/1/7/8/2",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 11,
+  "key": "glyph/2/0/9/14/5",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 12,
+  "key": "glyph/4/0/0/13/4",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 13,
+  "key": "glyph/10/1/8/9/6",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 14,
+  "key": "glyph/8/1/3/1/4",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 15,
+  "key": "glyph/4/1/2/13/2",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 16,
+  "key": "glyph/2/1/6/7/7",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 17,
+  "key": "glyph/4/1/4/4/1",
+  "reason": "not_a_note:too_narrow",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 18,
+  "key": "glyph/6/1/8/11/0",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 19,
+  "key": "glyph/4/1/0/14/12",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 20,
+  "key": "glyph/8/1/0/1/3",
+  "reason": "count_does_not_fit",
+  "written": "not written"
+ },
+ {
+  "i": 21,
+  "key": "glyph/10/0/0/13/7",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 22,
+  "key": "glyph/4/1/1/4/15",
+  "reason": "not_a_note:on_text",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 23,
+  "key": "glyph/6/1/10/10/13",
+  "reason": "not_a_note:on_text",
+  "written": "not written"
+ },
+ {
+  "i": 24,
+  "key": "glyph/10/1/9/3/0",
+  "reason": "not_a_note:on_text",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 25,
+  "key": "glyph/10/0/3/5/0",
+  "reason": "line_at_the_box_not_a_ledger_for_this_head",
+  "written": "not written"
+ },
+ {
+  "i": 26,
+  "key": "glyph/4/1/3/4/8",
+  "reason": "not_a_note:on_text",
+  "written": "not written"
+ },
+ {
+  "i": 27,
+  "key": "glyph/6/1/10/10/10",
+  "reason": "not_a_note:on_text",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 28,
+  "key": "glyph/16/1/0/6/10",
+  "reason": "no_line_at_the_note_box",
+  "written": "not written"
+ },
+ {
+  "i": 29,
+  "key": "glyph/4/0/0/11/10",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 30,
+  "key": "glyph/10/1/9/7/10",
+  "reason": "no_line_at_the_note_box",
+  "written": "not written"
+ },
+ {
+  "i": 31,
+  "key": "glyph/6/1/10/10/7",
+  "reason": "not_a_note:on_text",
+  "written": "not written"
+ },
+ {
+  "i": 32,
+  "key": "glyph/8/0/8/1/0",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 33,
+  "key": "glyph/10/1/8/3/6",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 34,
+  "key": "glyph/4/1/2/0/1",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 35,
+  "key": "glyph/8/0/8/12/0",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 36,
+  "key": "glyph/16/1/8/10/4",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 37,
+  "key": "glyph/16/1/8/11/5",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 38,
+  "key": "glyph/6/1/8/11/1",
+  "reason": "not_a_note:tremolo_slash",
+  "written": "not written (refused as a head)"
+ },
+ {
+  "i": 39,
+  "key": "glyph/16/0/1/0/2",
+  "reason": "no_rungs",
+  "written": "not written"
+ },
+ {
+  "i": 40,
+  "key": "glyph/4/1/0/12/4",
+  "reason": "not_a_note:clipped_fragment",
+  "written": "not written"
+ }
+]
