@@ -12,6 +12,16 @@ measurement; this file is the WHEN and WHAT of each commit.
 ## 2026-11-17 -- ROADMAP 2.315 landed ON: a whole-bar rest is read in every bar (OMR_WHOLE_REST_SEARCH_OWN_BAR, deny-list)
 STAGED GATHER `gather_empty_bar_rest_search` (every cell, the 2.270 ink rule) + EXPORT `_place_found_whole_rests` (written blue only where every box in the bar is positively not its own mark). Litolff p1+sample: rests +15 -1, judged right->wrong 0, red bars 168 -> 168; the one loss (P1 m51) traced to a refused `clipped_fragment` of the next staff's note and fixed (`_clipped_piece_of_the_next_staff`: 3+ sp beyond the staff, no ledger line between; 181 clipped pieces measured, all 3.4-5.7 sp out, 13 with a ledger box) -- re-export of the saved ON record: 20 bars gained, 0 lost. Default pins/OFF twins say `=0`; real-bar control `TestLitolffP1M51`. Brahms measured by the overnight.
 
+## 2026-11-17 -- ROADMAP 2.312 r3 landed OFF: a far head is placed against its ledger lines by its own ink
+
+Flag `OMR_LEDGER_COUNT_TO_INK`, default OFF (merge of `lane-2.312-r3`, e248813d2). Built in three rounds the same
+day from Sean's 12 ledger tiles (ledger count 6 right of 6; the rounded-spacing fallback 4 wrong of 6). Round 1
+found no single cause above a fifth and that the 2.311 figure was inflated by non-heads and neighbour-staff
+copies; round 2 moved the on-line / in-space test from the box edge to the head's ink; round 3 kept the box
+reading wherever the ink is not that one head. Litolff sample: judged right->wrong 0, red bars level. Not ON:
+Brahms unmeasured at file level; 4 moved heads unjudged; 2 heads on Litolff p16 go blue. Landed by the manager:
+the merged `tools/` tree is identical to the lane tip, whose fast tier ran 10,755 passed, 0 failed.
+
 ## 2026-11-17 -- ROADMAP 2.306 r14 flag fixes landed ON (split from the page stem reader, which stays OFF)
 STAGED EXPORT `annotate_beams` and ADJUDICATE `_attached_flags`: a flag hangs right of its own stem; a flag is not a beam unless joined to one; the hook count. No new flag (rules default ON). Lane measures (not re-run at landing): Brahms p0 swept cells flag 19/32/0 -> 4/48/0 (wrong/right/unread), beam 22/161/2 -> 4/161/2, value 4/369/9 -> 3/370/9; judged right->wrong 0 both plates; Sean's r14 tiles 9 of 9 replay. Merged main after 2.305 (arcs) with no conflicts; fast tier 10,738 passed, 0 failed. Gap: no real two-hook sixteenth judged by Sean. Lane 59cda9e86.
 
