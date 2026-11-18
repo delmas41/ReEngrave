@@ -41,8 +41,10 @@ machine-readable form.
   exception, and are real when printed**: *"a publisher might stack two whole rests in the first bar of silence
   to clearly show that both players have stopped"* (two players on one staff), or in dense counterpoint where
   *"editors occasionally keep individual rests in each voice's vertical lane"*. OUR READING (ours, not his words):
-  a rest printed once is written once -- never copied into a second voice; two stacked whole rests are two
-  printed rests, one per voice, not a doubled detection to be merged without looking. Not yet asked: which voice
+  a rest printed once is written once -- never copied into a second voice. **The two-rest exceptions are "very
+  very rare"** (Sean, same day, correcting our first reading): so two whole rests FOUND in one bar are far more
+  likely one printed rest seen twice than two printed rests; write one, unless the ink plainly shows two separate
+  rests one above the other, and then mark the second GUESSED. Not yet asked: which voice
   a single SHORTER rest belongs to in a bar where two voices are otherwise written.
 - **A whole rest need not be centred in its bar** (Sean, 2026-10-29: *"The whole doesn't need to be centered. We just need to be able to read it and claim the ink. If there is nothing else in the bar it should be easy to determine."*; scope: general). Its shape, read against the local lines, decides it; its x position in the bar is not evidence against it.
 - **Reading order** (Sean, 2026-10-16: *"Notehead first, stem second, beam or
