@@ -451,6 +451,11 @@ def _head_ink_ordinals(strokes: Sequence[StrokeView], head_box: Sequence[float])
     out = set()
     for s in strokes:
         if s.kind == "vertical" and s.length <= STEM_MAX_SPACES:
+            sp = s.space_px if s.space_px > 0 else 1.0
+            # a vertical piece wholly inside the head's own extent is the head's outline (a stem leaves the head); it is the head's ink
+            if (s.box[1] >= hy - STEM_MATCH_X_SLACK_SPACES * sp and s.box[1] + s.box[3] <= hy + hh + STEM_MATCH_X_SLACK_SPACES * sp
+                    and hx <= s.box[0] + s.box[2] / 2.0 <= hx + hw):
+                out.add(s.ordinal)
             continue
         cx, cy = s.box[0] + s.box[2] / 2.0, s.box[1] + s.box[3] / 2.0
         # the head's own ink; or ink that holds the head (a Litolff head merged into a beam: the stroke is the head's ink and the beam's at once)
@@ -536,6 +541,25 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
                                ends=(), profile=())
 
 
+#: A stem a scan has parted from its head by a hair of paper (Breitkopf SHATTERS) is still the head's stem: the vertical stands within this many staff
+#: spaces of the head's ink, beside it, level with it. The number is `stem_strokes.BRIDGE_MAX_GAP_SPACES` (2.161: the gap measured 0.13-0.27 sp on one
+#: plate, plus 0.08), so it NARROWS ONLY until another publisher confirms it (CLAUDE section 4).
+ONE_STEM_BRIDGE_MAX_GAP_SPACES = 0.35
+BRIDGE = True
+
+
+def _bridged(v: StrokeView, ink_boxes: Sequence[Sequence[float]], head_h: float) -> bool:
+    sp = v.space_px if v.space_px > 0 else 1.0
+    for b in ink_boxes:
+        dy = min(v.box[1] + v.box[3], b[1] + b[3]) - max(v.box[1], b[1])
+        if dy < 0.4 * min(head_h, b[3]):                       # level with the head's ink (the same share `stem_strokes` asks)
+            continue
+        gap = max(0.0, max(v.box[0], b[0]) - min(v.box[0] + v.box[2], b[0] + b[2]))
+        if gap <= ONE_STEM_BRIDGE_MAX_GAP_SPACES * sp:
+            return True
+    return False
+
+
 def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side: Optional[str] = None) -> Dict[str, object]:
     """The stem(s) of the head at `head_box` (x, y, w, h, canonical px), found by INK: a stem-length vertical stroke that is the head's own ink
     (a Litolff head fused to its stem: the stroke holds the head) or touches a stroke that is (a Breitkopf head and stem apart), whose FAR end lies
@@ -548,13 +572,16 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
     hx, hy, hw, hh = (float(v) for v in head_box[:4])
     hcx, hcy = hx + hw / 2.0, hy + hh / 2.0
     ink = _head_reach(strokes, head_box)
+    ink_boxes = [s.box for s in strokes if s.ordinal in ink]
     found: Dict[str, List[StrokeView]] = {"up": [], "down": []}
     for v in strokes:
         if v.kind != "vertical" or v.length > STEM_MAX_SPACES:
             continue
-        if not (_covers_head(v, head_box) or any(j in ink for j, _c in v.touches)):
-            continue
         sp = v.space_px if v.space_px > 0 else 1.0
+        if v.box[1] >= hy - STEM_MATCH_X_SLACK_SPACES * sp and v.box[1] + v.box[3] <= hy + hh + STEM_MATCH_X_SLACK_SPACES * sp and not _covers_head(v, head_box):
+            continue                    # a vertical piece wholly inside the head's own extent is the head's outline, not a stem that leaves it
+        if not (_covers_head(v, head_box) or any(j in ink for j, _c in v.touches) or (BRIDGE and _bridged(v, ink_boxes, hh))):
+            continue
         dirs = [side] if side in ("up", "down") else ["up", "down"]
         ok = []
         for sd in dirs:
@@ -652,7 +679,23 @@ def unexplained_at_tip(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dic
 CLAIMED_AT_TIP = False
 
 
-def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float], side: Optional[str]) -> Dict[str, object]:
+def beam_over_the_column(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float]) -> List[int]:
+    """Beam-shaped strokes (a beam, a stub, a trough stroke) that run over the head's own column within a stem's reach of it: where a head has no
+    stem at all, these are why the map still cannot say "no beam" (a beam with no stem under it is a stem the scan lost)."""
+    hx, hy, hw, hh = head_box[:4]
+    hcx = hx + hw / 2.0
+    out = []
+    for s in strokes:
+        if role_by_ord.get(s.ordinal, {}).get("role") not in ("beam", "beam_stub", "beam_doubt") or s.kind != "horizontal":
+            continue
+        sp = s.space_px if s.space_px > 0 else 1.0
+        if s.box[0] <= hcx <= s.box[0] + s.box[2] and (s.box[1] <= hy + hh + STEM_MAX_SPACES * sp and s.box[1] + s.box[3] >= hy - STEM_MAX_SPACES * sp):
+            out.append(s.ordinal)
+    return sorted(out)
+
+
+def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float], side: Optional[str],
+               finder_stem: bool = True) -> Dict[str, object]:
     """THE ONE BEAM COUNT of the stem(s) of the head at `head_box`. Pure.
 
     `{"state": "read" | "narrowed" | "silent", "certain", "possible", "why", "stems": [per stem], "side"}`; `silent` has no count (the stem was
@@ -661,6 +704,9 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
     its own; the head's count is the lower to the higher (rule 8: never one voice's value for both)."""
     found = stems_by_ink(strokes, head_box, side)
     if not found["stems"]:
+        if not finder_stem and found["why"] == "no_vertical_touches_the_head" and not beam_over_the_column(strokes, role_by_ord, head_box):
+            # NO stem by either reader (the finder's and the ink's) and no beam over the head's column: a head with no stem carries no beam.
+            return {"state": "read", "certain": 0, "possible": 0, "why": "", "stems": [], "side": side, "stemless": True}
         return {"state": "silent", "certain": None, "possible": None, "why": str(found["why"]), "stems": [], "side": side}
     per: List[Dict[str, object]] = []
     by_o = {s.ordinal: s for s in strokes}

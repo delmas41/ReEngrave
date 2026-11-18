@@ -1,0 +1,35 @@
+LANE REPORT  OMR_ONE_BEAM_COUNT (OFF=0 ON=1)  --from adjudicate
+  OMR_ONE_BEAM_COUNT: read in staged/adjudicators/rhythm.py, staged/beam_strokes.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/sample_tiles.json (a development control)
+
+litolff  pages [2, 3, 6, 13, 15]  (3823 notes+rests OFF, 3617 ON, 3532 paired)
+  file:   notes +85 -298 | rests +4 -6 | accidentals +2 -13 | dots +1 | flags +46 -34 | beams +48 -83 ~30 | ties -6 | slurs +2 -48 | articulations +2 -27 | fermatas +1 | tuplet notes -1 | note values ~18 | pitches ~7 | blue marks +186 -129 | dynamics +2 -1 | words +166 -77
+  red bars 129 -> 115 | notes not written 1585 -> 1789
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 707 of 6159 (e.g. glyph/13/0/0/0/25, glyph/13/0/0/14/4, glyph/13/0/0/2/10)
+  Sean's judged answers (291 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 3 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 1 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 2) | by id key, no position 400 | position but no mark here 15
+  NOT JUDGED: 1076 changed places no tile of Sean's covers (84 are covered; 163 have no page place): accidental 15, articulation 29, beam 143, blue 287, dot 1, dynamic 1, fermata 1, flag 66, note 343, pitch 7, rest 10, slur 50, tie 6, tuplet 1, value 17, words 99 -> unjudged.txt
+      right->narrowed  2.83-fix-review tile tile_02 glyph/13/0/0/8/12
+      right->narrowed  2.83-review tile tile_04 glyph/13/0/2/3/0
+      right->narrowed  2.83-review tile tile_08 glyph/13/0/2/3/15
+      NOT FOUND (no written event at its place; neither right nor wrong)  rhythm-leftovers-3 tile 3 glyph/2/1/5/13/1  was unwritten_wrong
+
+brahms  pages [4, 15, 17]  (2571 notes+rests OFF, 2506 ON, 2447 paired)
+  file:   notes +57 -122 | rests +2 -2 | accidentals +7 -30 | dots +17 -71 | flags +44 -40 ~4 | beams +52 -57 ~10 | ties +2 -24 | slurs +12 -10 | articulations +6 -18 | note values ~15 | pitches ~5 | blue marks +160 -69 | dynamics +1 -1 | wedges +1 -3 | words +72 -37
+  red bars 50 -> 50 | notes not written 1422 -> 1527
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 737 of 4796 (e.g. glyph/15/0/1/1/2, glyph/15/0/1/1/4, glyph/15/0/1/6/0)
+  Sean's judged answers (208 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 10 (at another id than asked 2) | by id key, no position 362 | position but no mark here 24
+  NOT JUDGED: 862 changed places no tile of Sean's covers (6 are covered; 83 have no page place): accidental 37, articulation 24, beam 119, blue 227, dot 88, dynamic 1, flag 87, note 177, pitch 5, rest 4, slur 22, tie 26, value 14, wedge 4, words 27 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.82-review tile tile_02 glyph/0/0/0/3/3  was lost
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.83-fix-review tile control_2 glyph/0/0/11/3/12  was lost
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.83-review tile control_1 glyph/0/0/0/2/2  was lost
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.88-review tile tile_11 glyph/0/0/11/3/12  was lost
+      NOT FOUND (no written event at its place; neither right nor wrong)  rhythm-leftovers-3 tile 7 glyph/0/0/0/6/7  was lost
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 1; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 695 s

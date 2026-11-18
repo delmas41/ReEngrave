@@ -4160,14 +4160,14 @@ def one_beam_count_enabled() -> bool:
     return os.environ.get(ONE_BEAM_COUNT_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
-def _one_beam_count(ev: Evidence, cell, head_box, side) -> Dict[str, Any]:
+def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True) -> Dict[str, Any]:
     """ROADMAP 2.318 r3. The head's beam count from the stroke map alone, as facts for `adjudicate_duration` to act on. Decides nothing.
     `state` is `read` (a count), `narrowed` (a range, `causes` say why) or `silent` (no stem in the map for this head: cannot tell)."""
     views = _stroke_views(ev, cell)
     if not views or head_box is None:
         return {"state": "silent", "certain": None, "possible": None, "why": "no_strokes_in_cell", "stems": [], "rows": []}
     role = _BS.roles(views, face_join=True, trough=True)
-    got = _BS.beam_count(views, role, head_box, side if side in ("up", "down") else None)
+    got = _BS.beam_count(views, role, head_box, side if side in ("up", "down") else None, finder_stem=finder_stem)
     by_o = {v.ordinal: v for v in views}
     rows: List[str] = []
     for st in got["stems"]:
@@ -5414,7 +5414,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # beam on takes its value from it, as an unbeamed stem always did. Nothing here reads a LEGACY flag.
     one_beam = None
     if one_beam_count_enabled() and not hollow and head_box is not None:
-        one_beam = _one_beam_count(ev, cell, head_box, side)
+        one_beam = _one_beam_count(ev, cell, head_box, side, finder_stem=bool(own_stems))
         used.extend(one_beam["rows"])
         if one_beam["state"] == "silent":
             certain, possible = 0, 1                  # cannot tell: the head's value or one beam; the rows say why (`one_beam_count`)
