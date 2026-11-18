@@ -3835,7 +3835,7 @@ def staff_side_line_on_ink(img_gray: "np.ndarray", ink_box, sign: float, spacing
 
 def find_note_line_on_ink(
     img_gray: "np.ndarray", head_box, ink_box, edge_y: float, sign: float, spacing: float, rungs_y: "list[float]",
-    exclude_boxes=None, far_side_partner_boxes=None,
+    exclude_boxes=None, far_side_partner_boxes=None, edge_vs_through: bool = False,
 ) -> dict:
     """`find_note_line` read on the head's OWN INK (`ink_box`), not its detector box: (1) a line through the ink's middle (a jut out
     of the head's ink at a row within a quarter of the ink's height of its centre, or a walk rung there) -> ON it; (2) a line at the
@@ -3850,6 +3850,12 @@ def find_note_line_on_ink(
     if jf["ok"] and jf.get("line_y") is not None and abs(float(jf["line_y"]) - mid) <= band:
         return dict(ok=True, kind="on", y=float(jf["line_y"]), how="ink:through_the_middle")
     mids = [r for r in rungs_y if abs(r - mid) <= band]
+    if mids and edge_vs_through:
+        # page-facts (Sean 2026-10-06, 24 of 24): a visible ledger at the head's staff-side edge beats a "rung" hidden inside the head
+        evt = edge_vs_through_evidence(img_gray, head_box, sign, spacing, rungs_y,
+                                       float(min(mids, key=lambda r: abs(r - mid))), exclude_boxes)
+        if evt["ok"]:
+            return dict(ok=True, kind="space", y=float(evt["y"]), how="ink:staff_side_edge_over_hidden_middle", edge_vs_through=evt)
     if mids:
         return dict(ok=True, kind="on", y=float(min(mids, key=lambda r: abs(r - mid))), how="ink:rung_through_the_middle")
     # a line touching the head's edge has its CENTRE half its own thickness past the edge (at most half a ledger's thickness)
@@ -4185,7 +4191,7 @@ def derive_note_first_step(
     ink = head_ink_box(img_gray, head_box, spacing, exclude_boxes, sign) if to_ink else None
     if ink is not None and ink["ok"]:
         ln = find_note_line_on_ink(img_gray, head_box, ink["box"], edge_y, sign, spacing, rungs_y, exclude_boxes,
-                                   far_side_partner_boxes)
+                                   far_side_partner_boxes, edge_vs_through=edge_vs_through)
         if ln["ok"] and not_ledger is not None and not_ledger(float(ln["y"])):
             # 2.240 stays: another staff's line or an arc's ink at the head's edge is never its ledger
             ln = dict(ok=False, reason="ink:line_at_the_head_is_not_a_ledger (%s)" % not_ledger(float(ln["y"])))

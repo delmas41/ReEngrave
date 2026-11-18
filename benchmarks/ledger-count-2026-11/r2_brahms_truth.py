@@ -45,7 +45,8 @@ def truth_pos(th, ys):
             continue
         ly = (q[1] + q[3]) / 2.0
         d = (edge - ly) if above else (ly - edge)
-        far = (edge - r[1]) if above else (r[3] - edge)
+        # up to the head's centre (+ a quarter space): a ledger at the head's FAR edge belongs to a chord mate beyond it
+        far = abs(cy - edge) + 0.25 * sp
         if 0.3 * sp < d < far:
             n += 1
     if n == 0 and on:
