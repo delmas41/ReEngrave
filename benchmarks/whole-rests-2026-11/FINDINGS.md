@@ -42,3 +42,17 @@ per bar; where it sits along the bar is not used (page-facts, Sean 2026-11-17).
 
 Brahms; the 15 Litolff gains unlooked; Litolff p1 m51 had a blue rest OFF and none ON; the 1.2 sp width;
 `judged_claims` not run; why red bars did not fall.
+
+## Landed ON 2026-11-17 (main 0fd3219e2), with the lost rest fixed
+
+- Litolff P1 m51 (blue OFF, unwritten ON): its only head-classed box was a refused `clipped_fragment` -- a note
+  of the next staff cut off at the cell edge about 3.7 spaces below the staff -- and the new write rule counted
+  it as a possible note of the bar. `export._clipped_piece_of_the_next_staff` now ignores such a piece when it
+  sits 3 or more spaces beyond the staff with no ledger line between (measured: 181 clipped pieces in searched
+  Litolff bars sit 3.4-5.7 spaces out; 168 have no ledger-line box beyond the staff; the 13 that do keep the bar
+  unread). Real-bar control `TestLitolffP1M51` fails before, passes after.
+- Re-export of the saved Litolff ON record: 20 bars gained, 0 lost; the 15 first gains hold; m51 is back (blue);
+  5 new gains, all blue (4 looked at by the landing agent: only a whole rest; P12 m206 not looked at).
+- The manager looked at the first 15 gains and the loss at full size: every bar holds only a whole rest.
+- Brahms NOT measured before landing; the overnight run of 2026-11-17 is its first measure.
+- Combined fast tier on the final tree: 10,783 passed, 0 failed.
