@@ -185,7 +185,7 @@ required"*; `benchmarks/rule-wording-audit-2026-11/FINDINGS.md`):
   the stem: a second; left: two voices).
 - **Every rule states its never, in the same plain words** ("never over blank paper"). A number that refuses
   or abstains is a decision too: it needs both sides of its boundary measured on marks Sean has judged.
-- **Measure the mark, not its box**: a box or oval is where to look.
+- **Measure the mark, not its box**: a box or oval is where to look. **Joining and separating go by ink too** (Sean, 2026-11-18: *"We use the boxes to identify something, but then claim only the ink. And when joining things or separating things, we use the ink to distinguish or connect, not the boxes."*): a stem joins the head whose ink it touches, a beam the stem whose ink it meets; never by box edge, box centre or box overlap.
 - **Sean's words are quoted with what they answered; our reading is labelled ours**, goes up one level only
   (tile -> that symbol's convention) and is put back to him in a musician's words before it is a page fact.
   The cases that exposed a fault are evidence, never the rule.
