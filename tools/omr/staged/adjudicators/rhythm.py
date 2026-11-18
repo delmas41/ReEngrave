@@ -4142,8 +4142,41 @@ def _stroke_views(ev: Evidence, cell) -> list:
             touches=tuple((int(a), float(b)) for a, b in (d.get("touches") or ())),
             space_px=float(d.get("staff_space_local_px") or 0.0), row_id=r.id,
             profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
-            ends=tuple(float(v) for v in (d.get("ends") or ())[:4])))
+            ends=tuple(float(v) for v in (d.get("ends") or ())[:4]),
+            end_steps=tuple(float(v) for v in (d.get("end_steps_from_top") or ())[:2])))
     return out
+
+
+#: ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default OFF; an allow-list, only 1/true/yes/on enable): THE ONE BEAM COUNT. With it ON the beam count of a
+#: stemmed note comes from the stroke map alone (`beam_strokes.beam_count`: the stem found by ink and followed to its far end, the beams read at its
+#: tip on the staff-erased raster). The bar-crop reader (`_beam_levels`) and the stem-tip look (`_stem_tip_strokes`) are NOT consulted for the beam
+#: count and nothing falls back to them (Sean 2026-11-13: no old reader beside the new one); where the map cannot tell, the note NARROWS. Flags are
+#: another mark and stay with the flag reader exactly as today: a stem the map counts no beam on takes its value from the flag reader, as an
+#: unbeamed stem always did. OFF the verdict is byte-identical.
+ONE_BEAM_COUNT_ENV = "OMR_ONE_BEAM_COUNT"
+
+
+def one_beam_count_enabled() -> bool:
+    return os.environ.get(ONE_BEAM_COUNT_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _one_beam_count(ev: Evidence, cell, head_box, side) -> Dict[str, Any]:
+    """ROADMAP 2.318 r3. The head's beam count from the stroke map alone, as facts for `adjudicate_duration` to act on. Decides nothing.
+    `state` is `read` (a count), `narrowed` (a range, `causes` say why) or `silent` (no stem in the map for this head: cannot tell)."""
+    views = _stroke_views(ev, cell)
+    if not views or head_box is None:
+        return {"state": "silent", "certain": None, "possible": None, "why": "no_strokes_in_cell", "stems": [], "rows": []}
+    role = _BS.roles(views, face_join=True, trough=True)
+    got = _BS.beam_count(views, role, head_box, side if side in ("up", "down") else None)
+    by_o = {v.ordinal: v for v in views}
+    rows: List[str] = []
+    for st in got["stems"]:
+        rows.append(st["stem_row"])
+        for o in list(st["beams"]) + list(st["stubs"]) + list(st["doubt"]) + list(st["hooks"]):
+            if o in by_o:
+                rows.append(by_o[o].row_id)
+    got["rows"] = [r for r in dict.fromkeys(rows) if r]
+    return got
 
 
 def _beam_box_strokes(ev: Evidence, cell, detector_rows) -> Dict[str, Tuple[list, str]]:
@@ -5278,7 +5311,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # Both -> one more level DECIDES; the page count alone -> NARROW eighth/sixteenth (a level seen by one witness is never
     # written plain). The box alone does nothing (measured: it fires on ~950 single-beam eighths of Brahms).
     stem_levels = None
-    if beam_stem_levels_enabled() and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None:
+    if (beam_stem_levels_enabled() and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None
+            and not one_beam_count_enabled()):          # 2.318 r3: the stem-tip look is not consulted for the beam count
         _cv_kept = [b for b in kept if b.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
         tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, _cv_kept)
         if tip is not None and tip["count"] > certain:
@@ -5370,6 +5404,28 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             sb_detail = {"settled": sb["settled"], "before": before, "after": [certain, possible], "tip_levels": sb["tip_levels"],
                          "flag_levels": sb["flag_levels"], "tip": sb["tip"],
                          "boxes": [{k: v for k, v in bx.items() if k != "stroke_rows"} for bx in sb["boxes"]]}
+    # ⚠️⚠️ ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default OFF; Sean 2026-11-18 "Yes", after "Why don't we used the erased staff to get beams?"):
+    # THE ONE BEAM COUNT. Whatever the bar-crop reader (A, `_beam_levels`), the stem-tip look (C) and the 2.202 block above counted for the BEAMS is
+    # replaced by the stroke map's count at this head's stem (`_one_beam_count`: the stem found by ink and followed to its far end, the beams
+    # read on the staff-erased raster, every head on one stem sharing the one count). Two readers of one mark side by side turned a readable beam
+    # into an abstention (2.317); nothing falls back. Where the map cannot tell (no stem stroke in it, a stub or a trough stroke at the tip, a
+    # stem that touches a beam it did not count, a beam too thick at the stem to be one) the head NARROWS between what it does and does not rule
+    # out: "cannot tell" is never "no beam" (rule 8). FLAGS are another mark: the flag attachment below is untouched, and a stem the map counts no
+    # beam on takes its value from it, as an unbeamed stem always did. Nothing here reads a LEGACY flag.
+    one_beam = None
+    if one_beam_count_enabled() and not hollow and head_box is not None:
+        one_beam = _one_beam_count(ev, cell, head_box, side)
+        used.extend(one_beam["rows"])
+        if one_beam["state"] == "silent":
+            certain, possible = 0, 1                  # cannot tell: the head's value or one beam; the rows say why (`one_beam_count`)
+        else:
+            certain, possible = int(one_beam["certain"]), int(one_beam["possible"])
+        certain_conflicts = ()
+        kept = []                                    # the bar-crop reader's strokes are not evidence of the beam count (`used`, `cut_kept`)
+        ink_dropped, ink_used, pre_ink = {}, [], []  # so the ink's refusals of THOSE strokes cannot mark or unmark a note either
+        beyond_guarded = discount_removed_all_marks = far_removed_all_marks = False
+        # `joined` / `attached` (the stems the head stands on, which the flag attachment below reads) and `sb` (the hooks the stroke map found
+        # under a detector beam box, which are FLAGS, Sean 2026-10-22) are untouched: flags stay with the flag reader exactly as today.
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
@@ -5408,6 +5464,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         beam_evidence = "read"
     else:
         beam_evidence = "none_over_this_note"
+    if one_beam is not None:
+        # 2.318 r3: the stroke map ran for this head (the CV bar reader's state is not its evidence): a count is `read`; none is the stem it read
+        beam_evidence = "read" if levels else "none_over_this_note"
 
     flags, flag_levels = _attached_flags(ev, cell, attached, tol)
     # ⚠️⚠️ ROADMAP 2.83: A HEAD WHOSE STEM ONLY THE RULER READ carries the flag the detector boxed at THAT stem's tip. The CV
@@ -5505,6 +5564,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.
               "beam_voices": voice_levels,
               "beams_double_thick": double_thick,
+              **({"one_beam_count": {k: v for k, v in one_beam.items() if k != "rows"}} if one_beam is not None else {}),
               **({"beams_from_strokes": sb_detail} if sb_detail else {}),
               **({"stems_from_strokes": stem_info} if stem_info else {}),
               **({"beam_stem_levels": stem_levels} if stem_levels else {}),
@@ -5706,7 +5766,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 # units and must never be normalised.
                 # ⚠️ ROADMAP 2.153: where the range comes from strokes only a box overlap put over the column and nothing is joined,
                 # "the certain level outranks" would be a claim no witness makes: equal support, the bar settles it.
-                support=2.0 if level == certain and not (
+                support=2.0 if level == certain and not (one_beam is not None and one_beam["state"] == "silent") and not (
                     needs_join and certain == 0 and _unjoined_column_strokes(kept, x_center, joined, join_witness)) else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
                              **shared)
