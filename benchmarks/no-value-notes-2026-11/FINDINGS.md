@@ -134,6 +134,30 @@ Sean 2026-11-18 "Let's try it" (one beam count at the note's own stem). Branch `
 Lesson: the rule was right as a musician says it and wrong as we measured it; "at the stem" is where
 the staff line is. Not known: how a reader tells a beam on a line from the line -- asked of Sean.
 
+## 2.318: the erased-staff reading (B) used alone (`out/print/2.318-erased-alone`; read-only, real `tip_reading` called on stored strokes, reproduces the record 5,600/5,600 and 13,658/13,658)
+
+Sean 2026-11-18: "Why don't we used the erased staff to get beams?" B is the one reading built on the
+staff-erased raster.
+
+- BEAMS on Sean's tiles (+ Litolff p2 bar 13): Litolff B 14 right / 1 wrong / 1 silent, today 5 right / 11
+  silent. Brahms B 7 right / 5 wrong / 0 silent, today 6 right / 6 silent -- B alone would WRITE the missed
+  second beam as an eighth (a hidden wrong) where today the note is held.
+- B is not a flag reader: alone it turns 172 Litolff and 2,848 Brahms flagged eighths into quarters (15 of
+  its 22 right->wrong against Sean's 189 judged notes). Flags must stay with the flag reader; "B alone"
+  can only mean the BEAM count.
+- Why B is silent on notes written as beamed today (542 Litolff, 384 Brahms): STEM CHOICE 314 / 307 -- B
+  takes the stem by its midpoint against the head's centre, so the upper head of a chord gets none;
+  choosing by the stem's far end restores 267 / 247 to today's value. TWO VOICES 224 / 76: B is skipped by
+  design. Narrowed 18 / 55 (a one-stem stub; about half are the note's own ledger line). The eraser left
+  every printed beam intact in 18 crops looked at (agent's look).
+- Thickness at the stem: without the median gate 163 Litolff / 61 Brahms decided notes go 1 -> 2; on
+  Litolff 156 of those sit on a staff line (the restored thickness includes the line). With the line's own
+  thickness taken out: Litolff 15 decided / 0 held, Brahms 5 decided / 38 held -- and only B04 of the four
+  Brahms second-beam tiles is fixed. The fused second beam is NOT solved by thickness at the stem.
+- Angle: 668 of 1,547 Litolff and 862 of 1,855 Brahms beam strokes lie on a line for half their length;
+  only 19 and 49 are flat. A flat beam on a line: 35 Litolff and 104 Brahms notes.
+- Of the 347 held notes B gives a count to 71 of 79 Litolff and 249 of 268 Brahms (not judged).
+
 ## Is ink claimed once? (audit, `out/print/2.317-claim-audit`)
 
 Asked by Sean 2026-11-18. Enforced in ADJUDICATE only, and by box share (a box is refused at >= 50%
