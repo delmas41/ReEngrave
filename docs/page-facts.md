@@ -30,6 +30,13 @@ machine-readable form.
   nothing**: a rest box and a note box overlapping are two marks *"very close
   together"* (2026-09-29), and a whole rest in a bar refuses no notehead
   (2026-10-01, *"Leave the whole rest alone"*).
+- **Two silent voices on one staff share ONE whole rest** (Sean, 2026-11-17, SCOPE: general). His words, given
+  to replace our vaguer wording: *"When two voices on the same staff both have a full measure of silence, it is
+  standard to simplify to a single whole rest centered in the measure. Keeping two stacked whole rests in an
+  empty bar creates unnecessary visual clutter and is generally avoided in modern music engraving."* The
+  two-stacked-rests exceptions (two players' first bar of silence; dense counterpoint) are *"very very rare"*.
+  For the reader: an empty bar on a staff is written with one whole rest, once, in one voice -- never one per
+  voice; two whole-rest readings in one bar are one printed rest seen twice. Where the rest sits in the bar is no part of this rule (see the next fact).
 - **A whole rest need not be centred in its bar** (Sean, 2026-10-29: *"The whole doesn't need to be centered. We just need to be able to read it and claim the ink. If there is nothing else in the bar it should be easy to determine."*; scope: general). Its shape, read against the local lines, decides it; its x position in the bar is not evidence against it.
 - **Reading order** (Sean, 2026-10-16: *"Notehead first, stem second, beam or
   flag third"*, then chords sharing a stem, then a tremolo slash or anything
