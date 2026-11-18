@@ -539,6 +539,11 @@ _NAMED_DROP_REASONS = ("duration_narrowed", "no_pitch", "staff_not_identified",
                       "owned_by_another_staff", "ink_is_a_whole_rest")
 
 
+def _counted_marks():
+    from tools.omr.staged import counted_marks
+    return counted_marks
+
+
 def machine_proxies(xml_text: str, report: Dict[str, Any]) -> Dict[str, Any]:
     balance = report.get("balance", {})
     written_notes = report.get("written", {}).get("notes", 0)
@@ -570,6 +575,8 @@ def machine_proxies(xml_text: str, report: Dict[str, Any]) -> Dict[str, Any]:
         "transpose_parts": transpose_parts(xml_text),
         "notes_doubled_to_condensed_slot":
             balance.get("notes_doubled_to_condensed_slot", 0),
+        # ROADMAP 2.316: arcs, not boxes (the ranking's row, from the exporter's own report)
+        "arcs_count": _counted_marks().arcs_count(report),
         "named_drop_reasons": {k: dropped.get(k, 0) for k in _NAMED_DROP_REASONS},
         "all_drop_reasons": dict(dropped),
         "balanced": balance.get("balanced"),
@@ -847,13 +854,24 @@ def process_document(doc: Dict[str, Any], *, step_timeout_s: float
         from tools.omr.staged.record_io import load_record
         result = load_record(record_path)
         provenance = result.get("provenance") or {}
-        xml, report = X.to_musicxml(result)
+        # ROADMAP 2.316: the same export with two read-only taps (each head's fate, which `<note>` the file holds), so the headline can count printed NOTES
+        # and not detector boxes. The returned xml is byte-identical to the untraced one (`counted_marks.tapped_export`; pinned by a test). A trace that
+        # cannot line up is NAMED (`status: not_measured`), never a census from a mis-aligned trace and never an export that fails for it.
+        from tools.omr.staged import counted_marks as CM
+        from tools.omr.staged import lane_report as LR
+        try:
+            xml, report, census = CM.tapped_export(result)
+            census["old_figure_boxes"] = {"n": report.get("written", {}).get("notes", 0),
+                                          "of": report.get("balance", {}).get("noteheads_in_log", 0)}
+        except (CM.CensusError, LR.TraceMismatch) as e:
+            xml, report = X.to_musicxml(result)
+            census = {"status": "not_measured", "reason": "%s: %s" % (type(e).__name__, e)}
         # ⚠️ roadmap 3.1b: `result` travels with the step's own output so the
         # LilyPond step below can call `LY.to_lilypond` on the SAME in-memory
         # record — never a second `load_record`, and never routed back
         # through the MusicXML file this step just wrote.
         return {"xml": xml, "report": report, "provenance": provenance,
-                "result": result}
+                "result": result, "notes_census": census}
 
     step = _run_step("load+export", step_timeout_s, _load_and_export)
     if not step["ok"]:
@@ -896,6 +914,8 @@ def process_document(doc: Dict[str, Any], *, step_timeout_s: float
                                                 else _SKIPPED),
                                      **{k: v for k, v in proxy_step.items()
                                         if k != "value"}})
+    if proxy_step["ok"]:
+        block["machine_proxies"]["notes_census"] = step["value"]["notes_census"]
 
     # ── engraved-only: reading + omr_ned + lilypond ────────────────────
     if doc["kind"] == "engraved":
@@ -964,6 +984,10 @@ def build_summary(documents: Dict[str, Any]) -> Dict[str, Any]:
         row = {"status": "ok"}
         if isinstance(mp, dict) and "notes_reaching_file" in mp:
             row["notes_reaching_file"] = mp["notes_reaching_file"]
+            if "notes_census" in mp:                          # ROADMAP 2.316: printed notes beside the box figure above
+                row["notes_census"] = mp["notes_census"]
+            if "arcs_count" in mp:
+                row["arcs_count"] = mp["arcs_count"]
             # ⚠️ ROADMAP 2.8: `bars_held_out_sum` is the proxy now and
             # `bars_add_up` is the control it made 100% by construction. Both
             # are carried — the second is how a hole in the first would show.
@@ -1004,9 +1028,14 @@ def render_table(current: Dict[str, Any]) -> str:
             pn = mp["parts_named"]
             ho = mp["held_out"]
             ub = mp["unread_bars"]
-            lines.append(f"  notes reaching file   {nrf['n']:>6} / {nrf['of']:<6} "
+            lines.append(f"  notes reaching file [boxes, old figure] {nrf['n']:>6} / {nrf['of']:<6} "
                         f"({nrf['fraction']:.3f})" if nrf["fraction"] is not None
-                        else f"  notes reaching file   {nrf}")
+                        else f"  notes reaching file [boxes] {nrf}")
+            _nc = mp.get("notes_census")
+            if isinstance(_nc, dict) and "notes" in _nc:
+                lines.extend("  " + ln for ln in _counted_marks().format_notes(_nc))
+            elif isinstance(_nc, dict):
+                lines.append(f"  notes written (printed notes): not measured -- {_nc.get('reason')}")
             lines.append(f"  bars HELD OUT (2.8)   {bho['n']:>6} / {bho['of']:<6} "
                         f"({bho['noteheads_and_rests']} noteheads+rests)")
             _red = mp.get("bars_written_red") or {}

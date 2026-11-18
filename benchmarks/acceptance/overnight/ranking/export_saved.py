@@ -16,7 +16,7 @@ import counted_view as CV                                      # noqa: E402
 
 
 def main(argv):
-    from tools.omr.staged import lane_report as L, export as E
+    from tools.omr.staged import lane_report as L, export as E, counted_marks as CM
     from tools.omr.staged.record_io import load_record
     rec, work, plate, pages, tag = argv[0], pathlib.Path(argv[1]), argv[2], {int(x) for x in argv[3].split(",")}, argv[4]
     count_pages = {int(x) for x in argv[5].split(",")} if len(argv) > 5 else set(pages)
@@ -31,12 +31,13 @@ def main(argv):
     boxes = L.glyph_boxes(r["observations"])
     specks = CV.dot_specks(E.Record(res), count_pages)
     left_out = CV.drop_context_marks(r, pages - count_pages)
-    with L.traced_export():
-        xml, report = E.to_musicxml(res)
+    # ROADMAP 2.316: the same traced export (the file keeps its `rg=` stamps here, as before), tapped for the exporter's own per-head fates; the census counts the
+    # COUNTED pages only (the context page's boxes stand as neighbours, never counted)
+    xml, report, census = CM.tapped_export(res, strip=False, only_pages=count_pages)
     sym = L.parse_symbols(xml, boxes)
     hosts, loose, red_n, blue_n, nnw = CV.counted_symbols(sym["hosts"], sym["loose"], report, count_pages)
     red = report.get("bars_written_red") or {}
-    out = dict(plate=plate, arm=tag, mode="saved", hosts=hosts, loose=loose, count_pages=sorted(count_pages), loaded_pages=sorted(pages),
+    out = dict(plate=plate, arm=tag, mode="saved", notes_census=census, hosts=hosts, loose=loose, count_pages=sorted(count_pages), loaded_pages=sorted(pages),
                red_bars=red_n, bars_held_out=L._count(report.get("bars_held_out_sum")), notes_not_written=nnw,
                blue_marks=blue_n, seconds=round(time.time() - t0, 1),
                before_2_265=dict(red_bars=L._count(red.get("bars") if isinstance(red, dict) else red), blue_marks=xml.count('color="%s"' % E.GUESS_COLOR),
