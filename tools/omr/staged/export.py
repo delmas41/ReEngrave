@@ -2543,7 +2543,8 @@ def _voice_of_notehead(rec: Record, part: Sequence[StaffRun]
             # one onset, opposite decided stems) is numbered by the SAME split
             # `_voice_split` writes, or a slur would be paired across streams
             # the file keeps apart.
-            if one_chord.stems_apart_enabled():
+            if one_chord.stems_apart_enabled() and _two_stems_bar_adds_up(
+                    rec, run, cell_index, cell, _meter_dict(meter_at(run.meter, cell_index)), _divisions([part])):
                 evs = _events(cell)
                 streams = _voice_split(rec, run, cell_index, evs) if _stem_pair_streams(evs) else None
                 if streams is not None:
@@ -4633,6 +4634,16 @@ def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
     return _group_chords(cell.detections)
 
 
+def _events_flag_on(cell: Optional[Cell]) -> List[Dict[str, Any]]:
+    """`_events` as the flag groups them, whatever this bar's decline (ROADMAP 2.314 r4; a counter's question only)."""
+    was = one_chord._BAR_DECLINES.get()
+    one_chord.bar_declines(False)
+    try:
+        return _events(cell)
+    finally:
+        one_chord.bar_declines(was)
+
+
 def _document_bar_offsets(
         parts: Sequence[Sequence[StaffRun]]
 ) -> Tuple[Optional[Dict[Tuple[int, int], int]], Dict[str, Any]]:
@@ -5380,6 +5391,13 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                              '      </direction>')
                 counters["bars_marked_clef_unread"] += 1
             cell_here = run.cells.get(i)
+            # ROADMAP 2.314 r4: a bar the two-stems split cannot write adding up is written as flag OFF writes it (never broken by the flag)
+            one_chord.bar_declines(False)
+            one_chord.bar_declines(not _two_stems_bar_adds_up(
+                rec, run, i, cell_here, meter if meter is not None else in_force, divisions))
+            if one_chord.stems_apart_enabled() is False and os.environ.get(one_chord.STEMS_APART_ENV, "").strip().lower() in ("1", "true", "yes", "on"):
+                counters["two_voice_bars_written_as_flag_off"] += 1 if _stem_pair_streams(_events_flag_on(cell_here)) is not None else 0
+                counters["two_stems_bars_declined"] += 1
             directions = list(cell_here.directions) if cell_here else []
             events = _events(cell_here)
             # ⚠️⚠️ ROADMAP 2.98: A LONE WHOLE REST IS THE BAR, sized by the
@@ -5875,6 +5893,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                                               counters, split=split))
             lines.extend(_bl_right)
             lines.append("    </measure>")
+    one_chord.bar_declines(False)
     lines.append("  </part>")
     return "\n".join(lines)
 
@@ -6767,6 +6786,30 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
             if a0 < b1 and b0 < a1:
                 return "neither_voice_prints_anything_somewhere"
     return out
+
+
+def _two_stems_bar_adds_up(rec: Record, run: StaffRun, cell_index: int, cell: Optional[Cell],
+                           judged: Optional[Dict[str, Any]], divisions: int) -> bool:
+    """ROADMAP 2.314 r4 (`OMR_TWO_STEMS_TWO_NOTES`). May the flag write THIS bar? Yes where, with the flag on, the bar adds up (every voice
+    comes to the meter, or no meter judges it); no where the flag's bar would be red or held -- then the bar is written exactly as flag OFF
+    writes it (`one_chord.bar_declines`), so the flag can turn a red bar into a written one and never a written bar into a red one. The
+    same writer declining to change a bar it cannot improve; nothing is guessed, and a bar red OFF stays red. Pure: scratch counters."""
+    if not one_chord.stems_apart_enabled() or cell is None or not cell.detections:
+        return True
+    events = _events(cell)
+    if not events:
+        return True
+    scratch: Dict[str, int] = collections.Counter()
+    streams = _voice_split(rec, run, cell_index, events, [])
+    if streams is not None and _stem_pair_streams(events) is not None:
+        timed = _place_voices_in_time(streams, judged, divisions, cell.unplaced, scratch)
+        if timed is not None:
+            streams = timed
+        else:
+            streams = _rests_to_the_silent_voice(streams, judged, divisions, scratch)
+    elif streams is not None:
+        streams = _rests_to_the_silent_voice(streams, judged, divisions, scratch)
+    return _bar_holds_out(events, streams, divisions, judged) is None
 
 
 def _event_y(ev: Dict[str, Any]) -> float:

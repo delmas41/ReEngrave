@@ -22,6 +22,7 @@ does not merge them (left as two events, counted).
 """
 from __future__ import annotations
 
+import contextvars
 import os
 from typing import Any, List, Sequence, Tuple
 
@@ -49,8 +50,22 @@ def stems_apart_enabled() -> bool:
     one chord: each keeps its own value. CONVENTION (page-facts: every note on one stem shares one written value; two stems at one place
     are two voices): a chord is the heads of ONE stem. FALSIFIED IF a chord's one physical stem is read as two stems AND its heads are
     read with different values (then the pair is written as two notes instead of refused). NOT CONFIRMED by Sean beyond his 2.311 beam
-    tiles 2, 4, 5, 11 (a second voice / a unison beside a head of another value)."""
+    tiles 2, 4, 5, 11 (a second voice / a unison beside a head of another value).
+
+    ROADMAP 2.314 r4: EXPORT may decline the flag for ONE bar (`bar_declines`): a bar the split cannot write with every voice adding up
+    is written exactly as flag OFF writes it, so the flag can only turn a red bar into a written one, never the reverse."""
+    if _BAR_DECLINES.get():
+        return False
     return os.environ.get(STEMS_APART_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+#: ROADMAP 2.314 r4: True while EXPORT writes a bar the flag could not improve (see `stems_apart_enabled`). Set per bar by the writer.
+_BAR_DECLINES: "contextvars.ContextVar[bool]" = contextvars.ContextVar("two_stems_bar_declines", default=False)
+
+
+def bar_declines(value: bool) -> None:
+    """Set (True) or clear (False) the per-bar decline of `OMR_TWO_STEMS_TWO_NOTES`; the writer clears it after every bar loop."""
+    _BAR_DECLINES.set(bool(value))
 
 
 Box = Tuple[float, float, float, float]   # x, y, w, h in the cell's canonical frame
