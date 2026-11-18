@@ -3760,7 +3760,13 @@ def head_ink_box(img_gray: "np.ndarray", head_box, spacing: float, exclude_boxes
             else:
                 e[1] = float(b + 1)
             trimmed_line.append(dict(sl, side="staff" if side == sign else "far"))
-        if trimmed_line and 0 < (e[3] - e[1]) <= HE.MAX_INK_HEIGHT_SPACES * float(spacing):
+        cy = (float(head_box[1]) + float(head_box[3])) / 2.0
+        if trimmed_line and 0 < (e[3] - e[1]) <= HE.MAX_INK_HEIGHT_SPACES * float(spacing) and not (e[1] <= cy <= e[3]):
+            # 2.312 r3 (Litolff p10 glyph/10/1/3/11/5, a head on its second ledger at the top of a chord stack): the ink left
+            # between the two trimmed lines no longer holds the place the box marks -- it is the chord mate's ink, not this
+            # head's. The same test `head_extent.ink_extent` applies to an untrimmed extent; the box reading stands.
+            ext, why, trimmed_line = tuple(e), "box_centre_outside_after_trim", None
+        elif trimmed_line and 0 < (e[3] - e[1]) <= HE.MAX_INK_HEIGHT_SPACES * float(spacing):
             ext, why = tuple(e), None
         else:
             trimmed_line = None
