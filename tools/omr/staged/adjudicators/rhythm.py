@@ -4123,12 +4123,12 @@ def _owner_mask(verdict) -> Dict[int, str]:
     return _SOA.masked(verdict)
 
 
-def _stroke_views(ev: Evidence, cell) -> list:
+def _stroke_views(ev: Evidence, cell, raw: bool = False) -> list:
     """The cell's `Q.STROKE` rows as `beam_strokes.StrokeView`s (ordinal = glyph number - `STROKE_GLYPH_BASE`); `[]` where the cell has none.
     With `OMR_STROKE_OWNER` on, a stroke another mark owns (or two contest) has kind `owned` / `contested` (`_owner_mask`)."""
     from ..record import STROKE_GLYPH_BASE
     out = []
-    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
+    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if (_owner_on() and not raw) else {}
     for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         g = getattr(r.subject, "glyph", None)
         d = r.detail or {}
@@ -4144,6 +4144,51 @@ def _stroke_views(ev: Evidence, cell) -> list:
             profile=tuple(int(v) for v in (d.get("profile_sixteenths") or ())),
             ends=tuple(float(v) for v in (d.get("ends") or ())[:4])))
     return out
+
+
+BEAMS_AT_STEM_ENV = "OMR_BEAMS_AT_STEM"
+
+
+def beams_at_stem_enabled() -> bool:
+    """ROADMAP 2.318, default OFF (a TRIAL of Sean's wording, 2026-11-18). Allow-list: an empty value or a typo must not switch a document onto an
+    unpriced ADJUDICATE change. ON: the beam count of a stemmed head comes from `beams_at_stem` alone (readings A, B and C are not consulted)."""
+    return os.environ.get(BEAMS_AT_STEM_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _beams_at_stem_reading(ev: Evidence, cell, own_stems, head_box, side) -> Dict[str, Any]:
+    """ROADMAP 2.318 (STAGED ADJUDICATE). The beam count at THIS head's own stem, from the cell's stroke map and the staff lines at the stem
+    (`beams_at_stem.py`, which says the rule). Always answers: where the stem, the strokes or the staff geometry are missing the note is MARKED
+    (`count` None, candidates 0..2, reason), never read from another beam reader. Returns the pure function's dict plus `used` row ids."""
+    from .. import beams_at_stem as _BAS
+    views = _stroke_views(ev, cell, raw=True)
+    cant = {"count": None, "candidates": (0, 2), "margin": None, "bars": [], "rows": []}
+    stem_sv = None
+    for st in _voice_stems(own_stems, head_box)[side]:
+        b = _xywh(st)
+        stem_sv = _BS.find_stem_stroke(views, b) if b is not None else None
+        if stem_sv is not None:
+            break
+    if not views or stem_sv is None:
+        return dict(cant, reason="no_stem_stroke_in_the_map")
+    staff = ev.subject.at(Kind.STAFF)
+    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    spacing = ev.rows(Q.STAFF_SPACING, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    extent = ev.rows(Q.STAFF_EXTENT, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    skew = ev.rows(Q.STAFF_SKEW, scope=Scope.SELF_AND_ANCESTORS, subject=staff)
+    cbox = ev.rows(Q.CELL_BOX, subject=cell)
+    if not (lines and spacing and extent and cbox) or stem_sv.space_px <= 0 or float(spacing[-1].value) <= 0:
+        return dict(cant, reason="no_staff_geometry")
+    up = stem_sv.space_px / float(spacing[-1].value)
+    cb = cbox[-1].value
+    ext = extent[-1].value
+    sk = float(skew[-1].value) if skew and isinstance(skew[-1].value, (int, float)) else 0.0
+    xp = cb[0] + (stem_sv.box[0] + stem_sv.box[2] / 2.0) / up
+    span = float(ext[1] - ext[0]) or 1.0
+    line_c = [(float(yy) + sk * (xp - ext[0]) / span - cb[1]) * up for yy in lines[-1].value]
+    owner = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
+    res = _BAS.beams_at_stem(views, stem_sv, side, line_c, stem_sv.space_px, owner)
+    res["used"] = [lines[-1].id, spacing[-1].id, extent[-1].id, cbox[-1].id] + ([skew[-1].id] if skew else []) + list(res.pop("rows", []))
+    return res
 
 
 def _beam_box_strokes(ev: Evidence, cell, detector_rows) -> Dict[str, Tuple[list, str]]:
@@ -4812,6 +4857,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
                    # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the beam boxes are read against the strokes they stand on and the
                    # strokes at the stem tip are counted, so the level, the value and the OUTCOME depend on the stroke map.
                    Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
+                   # ROADMAP 2.318 (flag `OMR_BEAMS_AT_STEM`): the staff's tilt and extent and the cell's page box place the staff lines at the stem.
+                   Q.STAFF_EXTENT, Q.STAFF_SKEW, Q.CELL_BOX,
                    # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the trimmed head's own fill turns an unread black hollow.
                    Q.HEAD_INK),
     scope=Kind.GLYPH,
@@ -4864,6 +4911,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
            # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
+           # ROADMAP 2.318 (flag `OMR_BEAMS_AT_STEM`): where the staff lines stand at the stem.
+           Q.STAFF_EXTENT, Q.STAFF_SKEW, Q.CELL_BOX,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
            Q.HEAD_INK),
     reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
@@ -5278,7 +5327,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # Both -> one more level DECIDES; the page count alone -> NARROW eighth/sixteenth (a level seen by one witness is never
     # written plain). The box alone does nothing (measured: it fires on ~950 single-beam eighths of Brahms).
     stem_levels = None
-    if beam_stem_levels_enabled() and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None:
+    _bas_on = beams_at_stem_enabled() and not hollow and voice_levels is None
+    if beam_stem_levels_enabled() and not _bas_on and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None:
         _cv_kept = [b for b in kept if b.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
         tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, _cv_kept)
         if tip is not None and tip["count"] > certain:
@@ -5320,7 +5370,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # so they narrow; the hook-as-flag decision is Sean's ruling.
     sb = None
     sb_detail = None
-    if (beams_from_strokes_enabled() and not hollow and voice_levels is None and own_stems and head_box is not None
+    if (beams_from_strokes_enabled() and not _bas_on and not hollow and voice_levels is None and own_stems and head_box is not None
             and side in ("up", "down")):
         sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side, detector_pre=_kept_beams(ev, cell)[0])
         if sb is not None:
@@ -5370,6 +5420,24 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             sb_detail = {"settled": sb["settled"], "before": before, "after": [certain, possible], "tip_levels": sb["tip_levels"],
                          "flag_levels": sb["flag_levels"], "tip": sb["tip"],
                          "boxes": [{k: v for k, v in bx.items() if k != "stroke_rows"} for bx in sb["boxes"]]}
+    # ⚠️⚠️ ROADMAP 2.318 (flag `OMR_BEAMS_AT_STEM`, default OFF; Sean 2026-11-18 "Let's try it"): ONE BEAM COUNT, READ AT THE STEM, REPLACING A, B
+    # AND C. With the flag ON the count of a stemmed head is `beams_at_stem` ALONE -- whatever `_beam_levels`, `_stem_tip_strokes` and
+    # `_beams_from_strokes` said is overwritten here and the last two did not run. The reading either counts (certain == possible) or MARKS
+    # the note with its candidates (certain < possible -> `beams_ambiguous`), never falls back. A head with no own stem has no beam to count.
+    # A unison of two voices (`voice_levels`) and a hollow head are left as they were; flags and hooks are untouched (`_attached_flags` below).
+    bas_detail = None
+    if _bas_on:
+        if own_stems and head_box is not None and side in ("up", "down"):
+            _bas = _beams_at_stem_reading(ev, cell, own_stems, head_box, side)
+            used.extend(_bas.pop("used", ()))
+            lo, hi = _bas["candidates"]
+            certain, possible, certain_conflicts = (lo, hi, ()) if _bas["count"] is None else (_bas["count"], _bas["count"], ())
+            bas_detail = {"count": _bas["count"], "candidates": [lo, hi], "margin": _bas["margin"], "reason": _bas["reason"],
+                          "bars": [{k: v for k, v in b.items() if k != "ordinal"} for b in _bas["bars"]]}
+        elif not own_stems:
+            certain = possible = 0
+            certain_conflicts = ()
+            bas_detail = {"count": 0, "candidates": [0, 0], "margin": None, "reason": "no_own_stem", "bars": []}
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0
@@ -5506,6 +5574,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "beam_voices": voice_levels,
               "beams_double_thick": double_thick,
               **({"beams_from_strokes": sb_detail} if sb_detail else {}),
+              **({"beams_at_stem": bas_detail} if bas_detail else {}),
               **({"stems_from_strokes": stem_info} if stem_info else {}),
               **({"beam_stem_levels": stem_levels} if stem_levels else {}),
               "beams_not_by_ink": len(ink_dropped),
