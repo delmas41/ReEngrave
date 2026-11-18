@@ -36,8 +36,9 @@ machine-readable form.
   empty bar creates unnecessary visual clutter and is generally avoided in modern music engraving."* The
   two-stacked-rests exceptions (two players' first bar of silence; dense counterpoint) are *"very very rare"*.
   For the reader: an empty bar on a staff is written with one whole rest, once, in one voice -- never one per
-  voice; two whole-rest readings in one bar are one printed rest seen twice. ("Centered" is how it is engraved;
-  the 2026-10-29 fact below still governs READING: we do not require the rest to sit at the bar's centre on a scan.)
+  voice; two whole-rest readings in one bar are one printed rest seen twice. On centring (Sean, same day, asked whether this changed the 2026-10-29 fact below): *"Generally, it is
+  centered, but when we had that rule before, it was taking it to exactly, and we were dropping rests."* So the
+  centre is where to expect a whole rest, never a test that refuses one.
 - **A whole rest need not be centred in its bar** (Sean, 2026-10-29: *"The whole doesn't need to be centered. We just need to be able to read it and claim the ink. If there is nothing else in the bar it should be easy to determine."*; scope: general). Its shape, read against the local lines, decides it; its x position in the bar is not evidence against it.
 - **Reading order** (Sean, 2026-10-16: *"Notehead first, stem second, beam or
   flag third"*, then chords sharing a stem, then a tremolo slash or anything
