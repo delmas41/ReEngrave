@@ -5425,7 +5425,12 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     rec, run, i, events, split[0], judged, counters, divisions)
                 if _own_streams is not split[0]:
                     split = (_own_streams, [] if split[0] is None else split[1])
-                if one_chord.stems_apart_enabled() and split[0] is not None:
+                _timed = (_place_voices_in_time(split[0], judged, divisions, cell_here.unplaced if cell_here else (), counters)
+                          if (one_chord.stems_apart_enabled() and split[0] is not None
+                              and _stem_pair_streams(events) is not None) else None)
+                if _timed is not None:
+                    split = (_timed, split[1])
+                elif one_chord.stems_apart_enabled() and split[0] is not None:
                     _placed = _rests_to_the_silent_voice(split[0], judged, divisions, counters)
                     if _placed is not split[0]:
                         split = (_placed, split[1])
@@ -6261,7 +6266,7 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # already done here, which is why the call belongs at this seam and not in
     # `_place_notes`.
     for stream in (streams if streams is not None else [events]):
-        _annotate_beams_for(rec, run, cell_index, stream, counters)
+        _annotate_beams_for(rec, run, cell_index, [e for e in stream if e.get("kind") != FORWARD_KIND], counters)
     # ⚠️ ROADMAP 2.1b. Whether this bar's notes are the doubled Contrabass
     # copy of a condensed staff, so the render sites below can count each
     # written note under `notes_doubled_to_condensed_slot` as well as under
@@ -6529,6 +6534,8 @@ def _event_units(ev: Dict[str, Any], divisions: int) -> int:
     `<duration>` of 0 is not legal, and the check must reason about the number
     the file WILL hold, not the one the arithmetic would prefer.
     """
+    if ev.get("kind") == FORWARD_KIND:      # ROADMAP 2.314 r3: a voice's unprinted stretch, counted in its voice's time
+        return int(ev["units"])
     if ev.get("kind") == "rest":
         return max(1, int(round(float(ev["duration_beats"]) * divisions)))
     heads = ev.get("noteheads") or []
@@ -6641,6 +6648,130 @@ def _rests_to_the_silent_voice(streams: List[List[Dict[str, Any]]], judged: Opti
         return streams
     counters["rests_placed_in_the_silent_voice"] = counters.get("rests_placed_in_the_silent_voice", 0) + moved
     return keep
+
+
+#: ROADMAP 2.314 r3: the event kind of a voice's unprinted stretch -- written as MusicXML `<forward>` (LilyPond `s`), never a rest.
+FORWARD_KIND = "forward"
+
+
+def _forward_event(units: int, x: float, divisions: int) -> Dict[str, Any]:
+    return {"kind": FORWARD_KIND, "units": int(units), "divisions": int(divisions), "x_position": float(x), "noteheads": []}
+
+
+def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]], divisions: int,
+                          unplaced: Sequence[Any], counters) -> Optional[List[List[Dict[str, Any]]]]:
+    """ROADMAP 2.314 r3 (`OMR_TWO_STEMS_TWO_NOTES`). A bar the flag split into two voices, each voice written with the notes and rests the page
+    gives IT, and a `<forward>` for any stretch where that voice prints nothing (MusicXML's own "this voice has nothing printed here").
+
+    The rule, as a musician reads it: the two voices share the bar's time; heads standing at one place start together; a voice's next mark starts
+    when its last one ends, unless the other voice shows that time passed first (then this voice was silent, unprinted, in between). A printed
+    rest belongs to ONE voice -- the one with no note at its place that is free there (written once, Sean 2026-11-17); two rests stacked at one
+    place are one per voice (upper to voice 1). NEVER a rest invented for the silent stretch (rule 8), never a rest written twice.
+
+    Returns the placed streams, or None (the bar stays as before: written once and red) where the onsets cannot be placed: no meter; a glyph of
+    this bar refused on the way out (`unplaced` -- a note we did not write may be what fills the gap); a value not read (GUESSED duration); a
+    whole rest beside notes; two events of one voice at one place; a voice whose mark would start before its last one ends; places out of time
+    order; a moment where neither voice prints anything; or a bar whose fuller voice does not come to the meter."""
+    want_q = _bar_quarters(judged)
+    if want_q is None or len(streams) != 2:
+        return None
+    why = None
+    want = int(round(want_q * divisions))
+    seen: List[Dict[str, Any]] = []
+    items: List[Tuple[Dict[str, Any], Optional[int]]] = []
+    for v, st in enumerate(streams):
+        for e in st:
+            if any(e is x for x in seen):
+                continue
+            seen.append(e)
+            items.append((e, None if e.get("kind") == "rest" else v))
+    if unplaced:
+        why = "a_glyph_of_the_bar_was_not_written"
+    elif not all(_event_duration_certain(e) for e, _v in items):
+        why = "a_value_was_not_read"
+    elif any(e.get("kind") == "rest" and ((e.get("rest") or {}).get("class") == "restWhole"
+                                          or (e.get("rest") or {}).get("measure_rest")) for e, _v in items):
+        why = "a_whole_rest_beside_notes"
+    if why is None:
+        placed = _place_columns(items, want, divisions)
+        if isinstance(placed, str):
+            why = placed
+        else:
+            counters["two_voice_bars_placed_in_time"] += 1
+            counters["two_voice_forwards_written"] += sum(1 for st in placed for e in st if e.get("kind") == FORWARD_KIND)
+            return placed
+    counters["two_voice_bars_not_placed_" + why] += 1
+    return None
+
+
+def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int, divisions: int):
+    """`_place_voices_in_time`'s walk: the placed two streams, or the reason word (a str) it could not place them. Pure."""
+    heads = [h for e, _v in items for h in (e.get("noteheads") or ()) if h.get("bbox")]
+    tol = (sum(h["bbox"][2] for h in heads) / len(heads)) if heads else 30.0
+    items = sorted(items, key=lambda it: float(it[0]["x_position"]))
+    cols: List[List[Tuple[Dict[str, Any], Optional[int]]]] = []
+    for it in items:
+        if cols and float(it[0]["x_position"]) - float(cols[-1][-1][0]["x_position"]) <= tol:
+            cols[-1].append(it)
+        else:
+            cols.append([it])
+    cur = [0, 0]
+    out: List[List[Dict[str, Any]]] = [[], []]
+    gaps: List[List[Tuple[int, int]]] = [[], []]
+    last_t = 0
+    for col in cols:
+        nv: Dict[int, Dict[str, Any]] = {}
+        for e, v in col:
+            if v is not None:
+                if v in nv:
+                    return "two_events_of_one_voice_at_one_place"
+                nv[v] = e
+        rs = [e for e, v in col if v is None]
+        assign = list(nv.items())
+        t = max(cur[v] for v in nv) if nv else None
+        if len(rs) > 2 or (len(rs) == 2 and nv):
+            return "rests_at_a_place_with_no_voice_free"
+        if len(rs) == 2:
+            rs.sort(key=lambda e: _event_y(e))
+            assign = [(0, rs[0]), (1, rs[1])]
+            t = max(cur)
+        elif rs:
+            free = [v for v in (0, 1) if v not in nv]
+            if not free:
+                return "rests_at_a_place_with_no_voice_free"
+            v = free[0] if len(free) == 1 else (0 if cur[0] <= cur[1] else 1)
+            assign.append((v, rs[0]))
+            if t is None:
+                t = cur[v]
+        if t < last_t:
+            return "places_out_of_time_order"
+        for v, e in assign:
+            if cur[v] > t:
+                return "a_voice_would_start_before_its_last_mark_ends"
+            if cur[v] < t:
+                out[v].append(_forward_event(t - cur[v], e["x_position"], divisions))
+                gaps[v].append((cur[v], t))
+            out[v].append(e)
+            cur[v] = t + _event_units(e, divisions)
+        last_t = t
+    if max(cur) != want:
+        return "the_fuller_voice_does_not_come_to_the_bar"
+    for v in (0, 1):
+        if cur[v] < want:
+            out[v].append(_forward_event(want - cur[v], (out[v][-1]["x_position"] if out[v] else 0.0), divisions))
+            gaps[v].append((cur[v], want))
+    if not all(any(e.get("kind") == "chord" for e in st) for st in out):
+        return "a_voice_has_no_note"
+    for a0, a1 in gaps[0]:
+        for b0, b1 in gaps[1]:
+            if a0 < b1 and b0 < a1:
+                return "neither_voice_prints_anything_somewhere"
+    return out
+
+
+def _event_y(ev: Dict[str, Any]) -> float:
+    b = (ev.get("rest") or {}).get("bbox") or (ev.get("bbox")) or [0, 0, 0, 0]
+    return float(b[1]) + float(b[3]) / 2.0 if len(b) == 4 else 0.0
 
 
 def _size_rest_alone_in_its_voice(rec: Record, run: StaffRun, cell_index: int,
@@ -7344,6 +7475,14 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
     out: List[str] = []
     units = 0
     for ev in events:
+        if ev.get("kind") == FORWARD_KIND:
+            # ROADMAP 2.314 r3: this voice prints nothing here -- MusicXML's `<forward>`, never a rest (rule 8)
+            out.append("      <forward>\n"
+                       f"        <duration>{int(ev['units'])}</duration>\n"
+                       f"        <voice>{voice}</voice>\n"
+                       "      </forward>")
+            units += int(ev["units"])
+            continue
         if ev.get("kind") == "rest":
             out.extend(_rest_xml(ev, divisions, counters, voice=voice,
                                  doubled=doubled))
