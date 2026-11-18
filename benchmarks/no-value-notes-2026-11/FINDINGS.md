@@ -34,6 +34,32 @@ claiming it is invisible to every read-out.
 Not measured: hairpins directly (5 claimed areas on Litolff). The per-cause split of the other
 two thirds is in `out/print/2.317-no-value/*.cause.json`.
 
+## One beam reading instead of two? (`out/print/2.317-one-beam-reading`) -- NO
+
+There are THREE beam readings in the held verdict, not two: A the bar-crop ink test
+(`rhythm.py::_beam_levels :3233`), B the stroke-map tip (`_beams_from_strokes :4170`), C the stem-tip
+ink look (`_stem_tip_strokes :1596` via `_tips_honouring_claims :4573`, block `:5281-5310`), which is
+the source of "a further level possible". Truth is the AGENT'S look except 1 note Sean judged; the
+agent could read only 40 of 119 Litolff tiles (a beam fused into a staff line cannot be excluded).
+
+| | A right/wrong | B right/wrong/silent | C |
+|---|---|---|---|
+| Litolff held, 20 read | 14 / 6 | 14 / 5 / 1 | said "two" 8 times, wrong 8 of 8 |
+| Brahms held, 49 read | 18 / 31 | 21 / 27 / 1 | spoke 16 times, right 16 of 16 |
+
+Neither A nor B can be retired: B is no better than A. The common miss on Brahms is a SECOND BEAM
+SHORTER THAN THE FIRST (starting at a later stem): A and B both count one. C sees it on Brahms and is
+wrong on Litolff (beam against a thickened staff line; not tested at pixel level).
+
+The control could not fail: a decided note is one where the readings agreed (A equals the decided
+value on 400 of 400). By the agent's look 4 of 31 decided Brahms beamed notes are written with one
+beam where the print shows two -- NOT CONFIRMED (no judged or hand-labelled cover; Sean's judged
+answers cover 4 of the 747 notes here, the hand-labelled page 12).
+
+Lesson: we have no judged truth for beam counts, so three hypotheses were tested against our own
+agreement. Next is truth first (Sean's reading of beamed notes on both plates), then one beam count
+taken where the beams meet the stem's ink that is right on both plates.
+
 ## Is ink claimed once? (audit, `out/print/2.317-claim-audit`)
 
 Asked by Sean 2026-11-18. Enforced in ADJUDICATE only, and by box share (a box is refused at >= 50%
