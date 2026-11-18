@@ -39,3 +39,35 @@ def test_control_fails_off(monkeypatch):
 def test_flag_default_off(monkeypatch):
     monkeypatch.delenv(lg.LEDGER_COUNT_TO_INK_ENV, raising=False)
     assert not lg.count_to_ink_enabled()
+
+
+# ROADMAP 2.312 r3 -- the Brahms p0 half note hanging under its fourth ledger (glyph/0/0/5/5/6), read right (17) by the box count;
+# r2's ink count lost it: the shared trim took the top of the oval, fused to the ledger, as line pixels, so the ink found was the
+# head's lower part and no line touched it. Where the ink finds no line, the box reading stands (fixture: r3_fixture_brahms.py).
+BRA = np.load(Path(__file__).parent / "data_ledger_count_to_ink_2_312_brahms.npz")
+
+
+def _read_bra():
+    return FH.read_absolute_position(BRA["b1_gray"], [float(v) for v in BRA["b1_lines"]],
+                                     tuple(float(v) for v in BRA["b1_box"]), "brahms/p0/b1", [], [])
+
+
+@pytest.mark.parametrize("on", ["0", "1"])
+def test_brahms_hanging_half_note_stays_read(on, monkeypatch):
+    monkeypatch.setenv(lg.LEDGER_COUNT_TO_INK_ENV, on)
+    pos, reason = _read_bra()
+    assert pos == int(BRA["b1_truth"]), (on, pos, reason)
+
+
+def test_brahms_control_ink_alone_finds_no_line():
+    """The control can fail: the ink alone (r2's path, no box fallback) finds only part of the head and no line at it."""
+    gray = BRA["b1_gray"]
+    box = tuple(float(v) for v in BRA["b1_box"])
+    lines = [float(v) for v in BRA["b1_lines"]]
+    sp = (lines[-1] - lines[0]) / 4.0
+    ink = lg.head_ink_box(gray, box, sp, None, 1.0)
+    assert ink["ok"] and (ink["box"][3] - ink["box"][1]) < 0.7 * sp, ink
+    y0 = int(3485.2 - 3 * (3614.8 - 3485.2) / 4.0)      # the crop's top on the page (r3_fixture_brahms.py)
+    rungs = [v - y0 for v in (3645.5, 3677.5, 3706.5, 3737.0)]      # the walk's four ledgers in the real run (r2 re-read)
+    ln = lg.find_note_line_on_ink(gray, box, ink["box"], lines[-1], 1.0, sp, rungs)
+    assert not ln["ok"], ln

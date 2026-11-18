@@ -4195,6 +4195,15 @@ def derive_note_first_step(
         if ln["ok"] and not_ledger is not None and not_ledger(float(ln["y"])):
             # 2.240 stays: another staff's line or an arc's ink at the head's edge is never its ledger
             ln = dict(ok=False, reason="ink:line_at_the_head_is_not_a_ledger (%s)" % not_ledger(float(ln["y"])))
+        elif not ln["ok"]:
+            # 2.312 r3 (Brahms p0 glyph/0/0/5/5/6, a half note hanging under its fourth ledger, read right by the box count): the
+            # ink found was only the lower part of the head -- the shared trim (`head_ink.trim_head`) took the top of the oval,
+            # fused to the ledger, as line pixels. No line at the ink then says nothing about the page: the ink was not the whole
+            # head, so the box reading stands as it does wherever the ink is not one head. Never a loss against the box count.
+            ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
+                                exclude_boxes, far_side_partner_boxes,
+                                edge_vs_through=edge_vs_through)
+            ink = dict(ink, ok=False, why="ink_found_no_line:box_reading_stands")
     else:
         ln = find_note_line(img_gray, head_box, edge_y, sign, spacing, rungs_y,
                             exclude_boxes, far_side_partner_boxes,
