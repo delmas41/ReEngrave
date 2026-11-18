@@ -4163,11 +4163,26 @@ def _beams_at_stem_reading(ev: Evidence, cell, own_stems, head_box, side) -> Dic
     views = _stroke_views(ev, cell, raw=True)
     cant = {"count": None, "candidates": (0, 2), "margin": None, "bars": [], "rows": []}
     stem_sv = None
-    for st in _voice_stems(own_stems, head_box)[side]:
-        b = _xywh(st)
-        stem_sv = _BS.find_stem_stroke(views, b) if b is not None else None
-        if stem_sv is not None:
-            break
+    if own_stems:
+        for st in _voice_stems(own_stems, head_box)[side]:
+            b = _xywh(st)
+            stem_sv = _BS.find_stem_stroke(views, b) if b is not None else None
+            if stem_sv is None and b is not None and views:
+                # the stem is where the finder put it but the map holds no vertical stroke there (the stem fused into a head or a beam): the
+                # finder's box places the stem, the strokes still say what stands at its tip
+                stem_sv = _BS.StrokeView(ordinal=-1, kind="vertical", box=tuple(float(v) for v in b), length=0.0, thickness=0.0, sagitta=None,
+                                         angle=90.0, touches=(), space_px=views[0].space_px, row_id=st.id)
+            if stem_sv is not None:
+                break
+    elif views and head_box is not None:
+        sps = sorted(v.space_px for v in views if v.space_px > 0)
+        sp_px = sps[len(sps) // 2] if sps else 0.0
+        stem_sv, side2, why = _BAS.stem_touching_head(views, head_box, sp_px)
+        if stem_sv is None:
+            if why == "no_stem_ink_touches_the_head" and sp_px > 0 and not _BAS.bar_ink_near_head(views, head_box, sp_px):
+                return dict(cant, count=0, candidates=(0, 0), reason="no_stem_and_no_bar_near")
+            return dict(cant, reason=why or "no_stem_found")
+        side = side2
     if not views or stem_sv is None:
         return dict(cant, reason="no_stem_stroke_in_the_map")
     staff = ev.subject.at(Kind.STAFF)
@@ -5427,17 +5442,15 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # A unison of two voices (`voice_levels`) and a hollow head are left as they were; flags and hooks are untouched (`_attached_flags` below).
     bas_detail = None
     if _bas_on:
-        if own_stems and head_box is not None and side in ("up", "down"):
+        if head_box is not None and ((own_stems and side in ("up", "down")) or not own_stems):
             _bas = _beams_at_stem_reading(ev, cell, own_stems, head_box, side)
-            used.extend(_bas.pop("used", ()))
-            lo, hi = _bas["candidates"]
-            certain, possible, certain_conflicts = (lo, hi, ()) if _bas["count"] is None else (_bas["count"], _bas["count"], ())
-            bas_detail = {"count": _bas["count"], "candidates": [lo, hi], "margin": _bas["margin"], "reason": _bas["reason"],
-                          "bars": [{k: v for k, v in b.items() if k != "ordinal"} for b in _bas["bars"]]}
-        elif not own_stems:
-            certain = possible = 0
-            certain_conflicts = ()
-            bas_detail = {"count": 0, "candidates": [0, 0], "margin": None, "reason": "no_own_stem", "bars": []}
+        else:
+            _bas = {"count": None, "candidates": (0, 2), "margin": None, "bars": [], "reason": "no_head_box_or_stem_direction"}
+        used.extend(_bas.pop("used", ()))
+        lo, hi = _bas["candidates"]
+        certain, possible, certain_conflicts = (lo, hi, ()) if _bas["count"] is None else (_bas["count"], _bas["count"], ())
+        bas_detail = {"count": _bas["count"], "candidates": [lo, hi], "margin": _bas["margin"], "reason": _bas["reason"],
+                      "bars": [{k: v for k, v in b.items() if k != "ordinal"} for b in _bas["bars"]]}
     strokes_before_hollow = (certain, possible, len(certain_conflicts))
     if hollow:
         certain = possible = 0

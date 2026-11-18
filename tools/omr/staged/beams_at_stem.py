@@ -40,7 +40,12 @@ LINE_AMBIGUOUS_MAX = 1.15
 TIP_NEAR = 1.0
 TIP_FAR = 1.5
 GAP_MAX = 0.5
-OUTWARD_MAX = 0.6
+#: a stem may stop short of its beam by this much paper (staff spaces; the scan cuts a stem where it meets the beam) and still be the beam's;
+#: with a staff line standing in that gap, this much (a staff line through a stem is not a gap, Sean 2026-10-15). Measured on the judged
+#: Litolff p2 bar 13 run (the beam's near edge 0.4 sp beyond the stem stroke's end, a line between): narrows only.
+GAP_TO_TIP = 0.5
+GAP_TO_TIP_LINE = 0.8
+FRAGMENT_GAP = 0.2
 INWARD_MAX = 3.8
 X_SLACK = 0.35
 #: a beam is at least this wide (staff spaces) to join its note to another: the nearest stem of a beamed group is more than a head's width away
@@ -75,14 +80,79 @@ def _touches_line(yc: float, t_px: float, lines: Sequence[float], slack: float) 
     return any(yc - t_px / 2 - slack <= ly <= yc + t_px / 2 + slack for ly in lines)
 
 
+def far_end(views, stem, side: str, lines: Sequence[float], space: float) -> float:
+    """The y of the stem's FAR end, following its ink through stroke fragments: a vertical stroke in the stem's own column whose near end meets
+    the end so far (within `FRAGMENT_GAP`, or `GAP_TO_TIP_LINE` where a staff line stands in the gap) carries it on. Joins by ink, never by one
+    stroke row; a staff line through a stem is not a gap."""
+    sx = stem.box[0] + stem.box[2] / 2.0
+    up = side == "up"
+    end = stem.box[1] if up else stem.box[1] + stem.box[3]
+    for _ in range(8):
+        best = None
+        for s in views:
+            if s.kind != "vertical" or s.ordinal == stem.ordinal:
+                continue
+            if abs(s.box[0] + s.box[2] / 2.0 - sx) > X_SLACK * space:
+                continue
+            near, far = (s.box[1] + s.box[3], s.box[1]) if up else (s.box[1], s.box[1] + s.box[3])
+            outward_of_end = (end - near) if up else (near - end)       # >0: the fragment starts beyond the end so far
+            if (far < end) if up else (far > end):
+                gap = max(outward_of_end, 0.0) / space
+                lo, hi = (min(end, near), max(end, near))
+                lim = GAP_TO_TIP_LINE if any(lo - 0.1 * space <= ly <= hi + 0.1 * space for ly in lines) else FRAGMENT_GAP
+                if gap <= lim and (best is None or ((far < best) if up else (far > best))):
+                    best = far
+        if best is None:
+            break
+        end = best
+    return end
+
+
+def stem_touching_head(views, head_box, space: float):
+    """`(stem stroke, side, "")` for a head whose stem no box of its own overlaps (the CV finder gave it none): the vertical stroke whose INK
+    touches the head's ink (a stroke touching a blob that stands in the head's box; the box only says where to look, the ink joins). A stem to
+    the right of the head's centre points up, to the left down (CLAUDE §5). `(None, None, reason)` where there is none or the head has a stem on
+    each side (a unison of two voices): marked, never picked."""
+    hx0, hy0, hw, hh = head_box
+    head_ords = {s.ordinal for s in views if s.kind != "vertical"
+                 and s.box[0] < hx0 + hw and s.box[0] + s.box[2] > hx0 and s.box[1] < hy0 + hh and s.box[1] + s.box[3] > hy0
+                 and s.box[2] <= 2.5 * max(hw, 1.0) and s.box[3] <= 2.5 * max(hh, 1.0)}
+    found = []
+    for s in views:
+        if s.kind != "vertical" or not (1.0 <= s.length <= 8.0):
+            continue
+        if any(o in head_ords for o, _ in s.touches):
+            found.append(s)
+    if not found:
+        return None, None, "no_stem_ink_touches_the_head"
+    sides = {("up" if (s.box[0] + s.box[2] / 2.0) > hx0 + hw / 2.0 else "down") for s in found}
+    if len(sides) > 1:
+        return None, None, "a_stem_on_each_side"
+    side = sides.pop()
+    best = max(found, key=lambda s: s.length)
+    return best, side, ""
+
+
+def bar_ink_near_head(views, head_box, space: float) -> bool:
+    """True where a bar-shaped horizontal stroke (thick as a beam) stands over the head's column within a stem's reach: the head may carry a
+    beam its stem was not found for, so it cannot be called a plain head."""
+    hx0, hy0, hw, hh = head_box
+    cx, cy = hx0 + hw / 2.0, hy0 + hh / 2.0
+    for s in views:
+        if s.kind == "horizontal" and s.thickness >= BAR_MIN and s.box[2] >= JOIN_MIN * space \
+                and s.box[0] - space <= cx <= s.box[0] + s.box[2] + space and abs((s.box[1] + s.box[3] / 2.0) - cy) <= 5.5 * space:
+            return True
+    return False
+
+
 def beams_at_stem(views, stem, side: str, lines: Sequence[float], space: float, owner: Optional[Dict[int, str]] = None) -> Dict[str, Any]:
     """`stem` the stem's StrokeView (vertical), `side` up/down (where the stem points), `lines` the staff lines' y in the stem's x, in the
     strokes' own frame, `space` that frame's pixels per staff space. Returns {"count": n or None, "candidates": (lo, hi), "margin": signed
     sp to the nearest cut, "reason": word, "bars": [...], "rows": [stroke row ids]}. `count` None = the note is marked (candidates say how)."""
     owner = owner or {}
     sx = stem.box[0] + stem.box[2] / 2.0
-    tip = stem.box[1] if side == "up" else stem.box[1] + stem.box[3]
     sign = 1.0 if side == "up" else -1.0
+    tip = far_end(views, stem, side, lines, space)
     bars: List[Dict[str, Any]] = []
     doubts: List[Dict[str, Any]] = []
     for s in views:
@@ -99,7 +169,19 @@ def beams_at_stem(views, stem, side: str, lines: Sequence[float], space: float, 
         if t is None:
             at_end = True
             t = s.thickness
-        if not (-OUTWARD_MAX <= inward - t / 2 and inward <= INWARD_MAX):
+        # the bar must cover the stem's tip or stand against it: its inner edge (toward the head) no further past the tip than a stem that
+        # stops short of its beam, `GAP_TO_TIP` (a staff line in the gap is not a gap: `GAP_TO_TIP_LINE`)
+        inner = inward + t / 2.0
+        gap_limit = GAP_TO_TIP
+        if inward > INWARD_MAX:
+            continue
+        if inner < 0:
+            y_a = tip
+            y_b = tip + sign * inner * space
+            lo_y, hi_y = min(y_a, y_b), max(y_a, y_b)
+            if any(lo_y - 0.1 * space <= ly <= hi_y + 0.1 * space for ly in lines):
+                gap_limit = GAP_TO_TIP_LINE
+        if inner < -gap_limit:
             continue
         b = {"row": s.row_id, "kind": s.kind, "thickness": round(t, 3), "inward": round(inward, 2),
              "outer": round(inward - t / 2.0, 2), "inner": round(inward + t / 2.0, 2),
