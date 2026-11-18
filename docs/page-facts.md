@@ -37,6 +37,10 @@ machine-readable form.
   two-stacked-rests exceptions (two players' first bar of silence; dense counterpoint) are *"very very rare"*.
   For the reader: an empty bar on a staff is written with one whole rest, once, in one voice -- never one per
   voice; two whole-rest readings in one bar are one printed rest seen twice. Where the rest sits in the bar is no part of this rule (see the next fact).
+  **The simple form** (Sean, 2026-11-17, same evening): *"Whenever there is a whole note rest in a bar, it applies
+  to all voices in the previous bar."* OUR READING (ours): a bar that holds a whole rest is silent for every voice
+  that staff was carrying; the writer puts one whole rest and nothing else for that bar -- no second rest, and no
+  voice left open to make the bar red.
 - **A whole rest need not be centred in its bar** (Sean, 2026-10-29: *"The whole doesn't need to be centered. We just need to be able to read it and claim the ink. If there is nothing else in the bar it should be easy to determine."*; scope: general). Its shape, read against the local lines, decides it; its x position in the bar is not evidence against it.
 - **Reading order** (Sean, 2026-10-16: *"Notehead first, stem second, beam or
   flag third"*, then chords sharing a stem, then a tremolo slash or anything
