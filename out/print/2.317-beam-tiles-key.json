@@ -1,0 +1,877 @@
+{
+ "L01": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/6/0/2/10/0",
+  "page": 6,
+  "place": {
+   "system": "0",
+   "staff": "2",
+   "bar": "10",
+   "note": "cell key 6/0/2/10"
+  },
+  "group": "C2",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": 1,
+  "box": [
+   2236.9225,
+   682.2525,
+   2261.8075,
+   703.515
+  ],
+  "cell": [
+   2101.0,
+   615.0,
+   2278.0,
+   804.0
+  ],
+  "crop": [
+   2056,
+   520,
+   2323,
+   898
+  ],
+  "scale": 3.0,
+  "tile_note": "box sits above/left of the head, partly off it (kept as is)"
+ },
+ "L02": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/15/1/4/14/5",
+  "page": 15,
+  "place": {
+   "system": "1",
+   "staff": "4",
+   "bar": "14",
+   "note": "cell key 15/1/4/14"
+  },
+  "group": "unreadable",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 0,
+  "reading_C_page_count": null,
+  "earlier_agent_look": null,
+  "box": [
+   1921.195,
+   2777.625,
+   1944.445,
+   2797.775
+  ],
+  "cell": [
+   1864.0,
+   2704.0,
+   1963.0,
+   2890.0
+  ],
+  "crop": [
+   1819,
+   2611,
+   2008,
+   2983
+  ],
+  "scale": 3.0,
+  "tile_note": "neighbouring staves visible above and below (Litolff staves nearly touch)"
+ },
+ "L03": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/2/0/8/16/0",
+  "page": 2,
+  "place": {
+   "system": "0",
+   "staff": "8",
+   "bar": "16",
+   "note": "cell key 2/0/8/16"
+  },
+  "group": "ctlright",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 1,
+  "box": [
+   2556.52,
+   1623.08,
+   2581.32,
+   1645.0
+  ],
+  "cell": [
+   2477.0,
+   1521.0,
+   2627.0,
+   1713.0
+  ],
+  "crop": [
+   2432,
+   1425,
+   2672,
+   1809
+  ],
+  "scale": 3.0
+ },
+ "L04": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/3/0/5/2/2",
+  "page": 3,
+  "place": {
+   "system": "0",
+   "staff": "5",
+   "bar": "2",
+   "note": "cell key 3/0/5/2"
+  },
+  "group": "ctlright",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 1,
+  "box": [
+   919.9825,
+   1224.56,
+   943.135,
+   1245.665
+  ],
+  "cell": [
+   808.0,
+   1091.0,
+   996.0,
+   1280.0
+  ],
+  "crop": [
+   763,
+   996,
+   1041,
+   1374
+  ],
+  "scale": 3.0
+ },
+ "L05": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/15/1/4/6/6",
+  "page": 15,
+  "place": {
+   "system": "1",
+   "staff": "4",
+   "bar": "6",
+   "note": "cell key 15/1/4/6"
+  },
+  "group": "A!=B",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 0,
+  "reading_C_page_count": null,
+  "earlier_agent_look": null,
+  "box": [
+   1157.46,
+   2767.395,
+   1183.655,
+   2802.27
+  ],
+  "cell": [
+   1106.0,
+   2704.0,
+   1197.0,
+   2890.0
+  ],
+  "crop": [
+   1061,
+   2611,
+   1242,
+   2983
+  ],
+  "scale": 3.0,
+  "tile_note": "neighbouring staves visible"
+ },
+ "L06": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/6/0/6/9/6",
+  "page": 6,
+  "place": {
+   "system": "0",
+   "staff": "6",
+   "bar": "9",
+   "note": "cell key 6/0/6/9"
+  },
+  "group": "C2",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": 1,
+  "box": [
+   2061.7475,
+   1338.2,
+   2084.7425,
+   1358.675
+  ],
+  "cell": [
+   1940.0,
+   1250.0,
+   2101.0,
+   1439.0
+  ],
+  "crop": [
+   1895,
+   1155,
+   2146,
+   1533
+  ],
+  "scale": 3.0
+ },
+ "L07": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/15/1/1/6/1",
+  "page": 15,
+  "place": {
+   "system": "1",
+   "staff": "1",
+   "bar": "6",
+   "note": "cell key 15/1/1/6"
+  },
+  "group": "A!=B",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 0,
+  "reading_C_page_count": null,
+  "earlier_agent_look": null,
+  "box": [
+   1155.77,
+   2326.3375,
+   1181.7575,
+   2347.4425
+  ],
+  "cell": [
+   1106.0,
+   2272.0,
+   1197.0,
+   2492.0
+  ],
+  "crop": [
+   1061,
+   2162,
+   1242,
+   2602
+  ],
+  "scale": 3.0,
+  "tile_note": "neighbouring staves visible; box on upper of two stacked heads"
+ },
+ "L08": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/6/0/2/8/0",
+  "page": 6,
+  "place": {
+   "system": "0",
+   "staff": "2",
+   "bar": "8",
+   "note": "cell key 6/0/2/8"
+  },
+  "group": "C2",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": null,
+  "box": [
+   1897.6100000000001,
+   684.7725,
+   1922.9675,
+   707.61
+  ],
+  "cell": [
+   1742.0,
+   615.0,
+   1940.0,
+   804.0
+  ],
+  "crop": [
+   1697,
+   520,
+   1985,
+   898
+  ],
+  "scale": 3.0
+ },
+ "L09": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/15/1/9/13/3",
+  "page": 15,
+  "place": {
+   "system": "1",
+   "staff": "9",
+   "bar": "13",
+   "note": "cell key 15/1/9/13"
+  },
+  "group": "unreadable",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 0,
+  "reading_C_page_count": null,
+  "earlier_agent_look": null,
+  "box": [
+   1798.625,
+   3462.0125,
+   1821.1475,
+   3480.9125
+  ],
+  "cell": [
+   1775.0,
+   3362.0,
+   1864.0,
+   3551.0
+  ],
+  "crop": [
+   1730,
+   3267,
+   1909,
+   3645
+  ],
+  "scale": 3.0
+ },
+ "L10": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/2/0/10/1/5",
+  "page": 2,
+  "place": {
+   "system": "0",
+   "staff": "10",
+   "bar": "1",
+   "note": "cell key 2/0/10/1"
+  },
+  "group": "C2",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": 1,
+  "box": [
+   673.07,
+   1918.5875,
+   697.7975,
+   1940.9525
+  ],
+  "cell": [
+   617.0,
+   1817.0,
+   774.0,
+   2037.0
+  ],
+  "crop": [
+   572,
+   1707,
+   819,
+   2147
+  ],
+  "scale": 3.0
+ },
+ "L11": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/13/1/8/8/2",
+  "page": 13,
+  "place": {
+   "system": "1",
+   "staff": "8",
+   "bar": "8",
+   "note": "cell key 13/1/8/8"
+  },
+  "group": "unreadable",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 0,
+  "reading_C_page_count": null,
+  "earlier_agent_look": null,
+  "box": [
+   1572.8275,
+   3237.585,
+   1595.5075,
+   3257.9025
+  ],
+  "cell": [
+   1441.0,
+   3219.0,
+   1671.0,
+   3408.0
+  ],
+  "crop": [
+   1396,
+   3124,
+   1716,
+   3502
+  ],
+  "scale": 3.0
+ },
+ "L12": {
+  "plate": "Beethoven 5 Litolff",
+  "glyph": "glyph/6/0/8/0/3",
+  "page": 6,
+  "place": {
+   "system": "0",
+   "staff": "8",
+   "bar": "0",
+   "note": "cell key 6/0/8/0"
+  },
+  "group": "unreadable",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": null,
+  "box": [
+   614.79296875,
+   1576.48046875,
+   635.9638671875,
+   1595.900390625
+  ],
+  "cell": [
+   334.0,
+   1530.0,
+   660.0,
+   1719.0
+  ],
+  "crop": [
+   289,
+   1435,
+   705,
+   1813
+  ],
+  "scale": 3.0
+ },
+ "B01": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/17/0/11/4/3",
+  "page": 17,
+  "place": {
+   "system": "0",
+   "staff": "11",
+   "bar": "4",
+   "note": "cell key 17/0/11/4"
+  },
+  "group": "C2_A1B1",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": 2,
+  "box": [
+   3922.09375,
+   3012.578125,
+   3959.609375,
+   3043.203125
+  ],
+  "cell": [
+   3746.0,
+   2874.0,
+   4530.0,
+   3207.0
+  ],
+  "crop": [
+   3701,
+   2707,
+   4575,
+   3373
+  ],
+  "scale": 1.6018306636155606
+ },
+ "B02": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/15/0/10/6/6",
+  "page": 15,
+  "place": {
+   "system": "0",
+   "staff": "10",
+   "bar": "6",
+   "note": "cell key 15/0/10/6"
+  },
+  "group": "ctlwrong",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 2,
+  "box": [
+   4285.25,
+   3115.525,
+   4322.375,
+   3149.625
+  ],
+  "cell": [
+   4090.0,
+   2909.0,
+   4606.0,
+   3239.0
+  ],
+  "crop": [
+   4045,
+   2744,
+   4651,
+   3404
+  ],
+  "scale": 2.31023102310231
+ },
+ "B03": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/7/0/8/8/1",
+  "page": 7,
+  "place": {
+   "system": "0",
+   "staff": "8",
+   "bar": "8",
+   "note": "cell key 7/0/8/8"
+  },
+  "group": "ctlwrong",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 2,
+  "box": [
+   5387.2,
+   2749.95,
+   5424.6,
+   2781.3
+  ],
+  "cell": [
+   4956.0,
+   2679.0,
+   5491.0,
+   3009.0
+  ],
+  "crop": [
+   4911,
+   2514,
+   5536,
+   3174
+  ],
+  "scale": 2.24,
+  "tile_note": "box slightly high on the head (kept as is)"
+ },
+ "B04": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/17/0/12/0/6",
+  "page": 17,
+  "place": {
+   "system": "0",
+   "staff": "12",
+   "bar": "0",
+   "note": "cell key 17/0/12/0"
+  },
+  "group": "C2_A1B1",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": 2,
+  "box": [
+   1438.59033203125,
+   3215.7841796875,
+   1475.97314453125,
+   3248.96142578125
+  ],
+  "cell": [
+   640.0,
+   3127.0,
+   1597.0,
+   3457.0
+  ],
+  "crop": [
+   595,
+   2962,
+   1642,
+   3622
+  ],
+  "scale": 1.3371537726838587
+ },
+ "B05": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/20/1/9/4/11",
+  "page": 20,
+  "place": {
+   "system": "1",
+   "staff": "9",
+   "bar": "4",
+   "note": "cell key 20/1/9/4"
+  },
+  "group": "ctlwrong",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 2,
+  "box": [
+   3162.20751953125,
+   6861.1396484375,
+   3199.451171875,
+   6892.12109375
+  ],
+  "cell": [
+   2887.0,
+   6668.0,
+   3562.0,
+   6998.0
+  ],
+  "crop": [
+   2842,
+   6503,
+   3607,
+   7163
+  ],
+  "scale": 1.8300653594771241,
+  "tile_note": "box sits left of the head, on the stem and an accidental edge (kept as is)"
+ },
+ "B06": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/4/1/13/5/6",
+  "page": 4,
+  "place": {
+   "system": "1",
+   "staff": "13",
+   "bar": "5",
+   "note": "cell key 4/1/13/5"
+  },
+  "group": "C2_A1B1",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": null,
+  "box": [
+   3835.5775,
+   7014.1675,
+   3873.8725,
+   7045.2475
+  ],
+  "cell": [
+   3358.0,
+   6904.0,
+   3904.0,
+   7292.0
+  ],
+  "crop": [
+   3313,
+   6710,
+   3949,
+   7486
+  ],
+  "scale": 2.20125786163522
+ },
+ "B07": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/1/0/12/4/6",
+  "page": 1,
+  "place": {
+   "system": "0",
+   "staff": "12",
+   "bar": "4",
+   "note": "cell key 1/0/12/4"
+  },
+  "group": "ctlright",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 1,
+  "box": [
+   3852.10546875,
+   3582.7353515625,
+   3888.7822265625,
+   3615.6416015625
+  ],
+  "cell": [
+   3582.0,
+   3435.0,
+   4284.0,
+   3762.0
+  ],
+  "crop": [
+   3537,
+   3271,
+   4329,
+   3925
+  ],
+  "scale": 1.7676767676767677
+ },
+ "B08": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/19/1/9/6/8",
+  "page": 19,
+  "place": {
+   "system": "1",
+   "staff": "9",
+   "bar": "6",
+   "note": "cell key 19/1/9/6"
+  },
+  "group": "ctlwrong",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 2,
+  "box": [
+   4157.5425,
+   6323.25,
+   4195.965,
+   6354.315
+  ],
+  "cell": [
+   3827.0,
+   6078.0,
+   4385.0,
+   6405.0
+  ],
+  "crop": [
+   3782,
+   5914,
+   4430,
+   6568
+  ],
+  "scale": 2.1604938271604937
+ },
+ "B09": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/18/0/12/2/1",
+  "page": 18,
+  "place": {
+   "system": "0",
+   "staff": "12",
+   "bar": "2",
+   "note": "cell key 18/0/12/2"
+  },
+  "group": "A!=B",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 2,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 2,
+  "box": [
+   2537.03271484375,
+   3332.89794921875,
+   2575.47998046875,
+   3367.9345703125
+  ],
+  "cell": [
+   2311.0,
+   3185.0,
+   2946.0,
+   3515.0
+  ],
+  "crop": [
+   2266,
+   3020,
+   2991,
+   3680
+  ],
+  "scale": 1.9310344827586208
+ },
+ "B10": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/4/1/12/5/4",
+  "page": 4,
+  "place": {
+   "system": "1",
+   "staff": "12",
+   "bar": "5",
+   "note": "cell key 4/1/12/5"
+  },
+  "group": "C2_A1B1",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": 2,
+  "earlier_agent_look": 2,
+  "box": [
+   3836.2375,
+   6787.91,
+   3875.205,
+   6819.2475
+  ],
+  "cell": [
+   3358.0,
+   6680.0,
+   3904.0,
+   7007.0
+  ],
+  "crop": [
+   3313,
+   6516,
+   3949,
+   7170
+  ],
+  "scale": 2.20125786163522
+ },
+ "B11": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/16/1/5/7/3",
+  "page": 16,
+  "place": {
+   "system": "1",
+   "staff": "5",
+   "bar": "7",
+   "note": "cell key 16/1/5/7"
+  },
+  "group": "ctlright",
+  "file_writes_now": "beam count 1 (decided)",
+  "reading_A_bar_crop": 1,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 1,
+  "box": [
+   4814.9775,
+   5262.8925,
+   4852.7175,
+   5296.1925
+  ],
+  "cell": [
+   4404.0,
+   4989.0,
+   4943.0,
+   5322.0
+  ],
+  "crop": [
+   4359,
+   4822,
+   4988,
+   5488
+  ],
+  "scale": 2.2257551669316373
+ },
+ "B12": {
+  "plate": "Brahms 1 Breitkopf",
+  "glyph": "glyph/25/0/11/0/1",
+  "page": 25,
+  "place": {
+   "system": "0",
+   "staff": "11",
+   "bar": "0",
+   "note": "cell key 25/0/11/0"
+  },
+  "group": "A!=B",
+  "file_writes_now": "no value (beams_ambiguous)",
+  "reading_A_bar_crop": 2,
+  "reading_B_tip_levels": 1,
+  "reading_C_page_count": null,
+  "earlier_agent_look": 1,
+  "box": [
+   1307.63818359375,
+   3410.6748046875,
+   1347.6796875,
+   3445.7587890625
+  ],
+  "cell": [
+   646.0,
+   3265.0,
+   1427.0,
+   3595.0
+  ],
+  "crop": [
+   601,
+   3100,
+   1472,
+   3760
+  ],
+  "scale": 1.6073478760045925
+ },
+ "_meta": {
+  "seed": 2320,
+  "short_groups": "Litolff group (2) unreadable had 58 candidates after exclusions, none short; none short on either plate. Lit group 3 (A!=B) drawn after group 1 and 2 exclusions.",
+  "tile_rules": "cut at 600 dpi from the page PDF, greyscale; Litolff plate is itself a 1-bit scan. one orange 2px box on the head box."
+ }
+}

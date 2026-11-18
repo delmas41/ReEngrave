@@ -1,0 +1,272 @@
+{
+ "asked": "What is the value of the boxed note?",
+ "date": "2026-11-18",
+ "who": "Sean",
+ "numbering": "Sean said 'Tile 1'..'Tile 24'; the manager's reading: 1-12 = B01-B12, 13-24 = L01-L12 (the order they were sent). NOT confirmed by Sean.",
+ "answers": {
+  "B01": {
+   "sean_tile": 1,
+   "sean": "16th",
+   "beams": 2,
+   "group": "C2_A1B1",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": 2
+  },
+  "B02": {
+   "sean_tile": 2,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlwrong",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 2
+  },
+  "B03": {
+   "sean_tile": 3,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlwrong",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 2
+  },
+  "B04": {
+   "sean_tile": 4,
+   "sean": "16th",
+   "beams": 2,
+   "group": "C2_A1B1",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": 2
+  },
+  "B05": {
+   "sean_tile": 5,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlwrong",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 2
+  },
+  "B06": {
+   "sean_tile": 6,
+   "sean": "16th",
+   "beams": 2,
+   "group": "C2_A1B1",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": null
+  },
+  "B07": {
+   "sean_tile": 7,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlright",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 1
+  },
+  "B08": {
+   "sean_tile": 8,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlwrong",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 2
+  },
+  "B09": {
+   "sean_tile": 9,
+   "sean": "16th",
+   "beams": 2,
+   "group": "A!=B",
+   "file": "no value (beams_ambiguous)",
+   "A": 2,
+   "B": 1,
+   "C": null,
+   "agent_look": 2
+  },
+  "B10": {
+   "sean_tile": 10,
+   "sean": "16th",
+   "beams": 2,
+   "group": "C2_A1B1",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": 2
+  },
+  "B11": {
+   "sean_tile": 11,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlright",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 1
+  },
+  "B12": {
+   "sean_tile": 12,
+   "sean": "8th",
+   "beams": 1,
+   "group": "A!=B",
+   "file": "no value (beams_ambiguous)",
+   "A": 2,
+   "B": 1,
+   "C": null,
+   "agent_look": 1
+  },
+  "L01": {
+   "sean_tile": 13,
+   "sean": "8th",
+   "beams": 1,
+   "group": "C2",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": 1
+  },
+  "L02": {
+   "sean_tile": 14,
+   "sean": "quarter",
+   "beams": 0,
+   "group": "unreadable",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 0,
+   "C": null,
+   "agent_look": null
+  },
+  "L03": {
+   "sean_tile": 15,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlright",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 1
+  },
+  "L04": {
+   "sean_tile": 16,
+   "sean": "8th",
+   "beams": 1,
+   "group": "ctlright",
+   "file": "beam count 1 (decided)",
+   "A": 1,
+   "B": 1,
+   "C": null,
+   "agent_look": 1
+  },
+  "L05": {
+   "sean_tile": 17,
+   "sean": "quarter",
+   "beams": 0,
+   "group": "A!=B",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 0,
+   "C": null,
+   "agent_look": null
+  },
+  "L06": {
+   "sean_tile": 18,
+   "sean": "8th",
+   "beams": 1,
+   "group": "C2",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": 1
+  },
+  "L07": {
+   "sean_tile": 19,
+   "sean": "quarter",
+   "beams": 0,
+   "group": "A!=B",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 0,
+   "C": null,
+   "agent_look": null
+  },
+  "L08": {
+   "sean_tile": 20,
+   "sean": "8th",
+   "beams": 1,
+   "group": "C2",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": null
+  },
+  "L09": {
+   "sean_tile": 21,
+   "sean": "quarter",
+   "beams": 0,
+   "group": "unreadable",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 0,
+   "C": null,
+   "agent_look": null
+  },
+  "L10": {
+   "sean_tile": 22,
+   "sean": "8th",
+   "beams": 1,
+   "group": "C2",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": 1
+  },
+  "L11": {
+   "sean_tile": 23,
+   "sean": "8th",
+   "beams": 1,
+   "group": "unreadable",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 0,
+   "C": null,
+   "agent_look": null
+  },
+  "L12": {
+   "sean_tile": 24,
+   "sean": "8th",
+   "beams": 1,
+   "group": "unreadable",
+   "file": "no value (beams_ambiguous)",
+   "A": 1,
+   "B": 1,
+   "C": 2,
+   "agent_look": null
+  }
+ }
+}

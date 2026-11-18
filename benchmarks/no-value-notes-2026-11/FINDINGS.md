@@ -60,6 +60,25 @@ Lesson: we have no judged truth for beam counts, so three hypotheses were tested
 agreement. Next is truth first (Sean's reading of beamed notes on both plates), then one beam count
 taken where the beams meet the stem's ink that is right on both plates.
 
+## Sean's 24 beam tiles (`out/print/2.317-beam-tiles`, answers.json; key beside the folder)
+
+Sean named the value of 24 boxed notes (his numbers 1-24; OUR reading: 1-12 = B01-B12, 13-24 = L01-L12).
+
+| | A bar-crop | B stroke-map tip | C stem-tip look | agent's look |
+|---|---|---|---|---|
+| Brahms, 12 | 7 right / 5 wrong | 7 / 5 | 4 / 0 | 7 / 4 |
+| Litolff, 12 | 8 / 4 | 11 / 1 | 0 / 5 | 5 / 0 |
+
+- Brahms: the 4 decided eighths the agent thought were sixteenths ARE eighths (no hidden wrong there;
+  the agent's look was wrong 4 of 4). The 4 held notes where C says two beams are sixteenths: A and B
+  both miss a real second beam, C reads it.
+- Litolff: 4 held notes are QUARTERS (pages 15 and 13); A counts a beam that is not printed, B reads
+  none and is right. C says two beams on 5 eighths and is wrong all 5. B is wrong once (an eighth read
+  with no beam).
+- So the two plates fail in opposite directions: Brahms MISSES a printed beam, Litolff INVENTS one.
+  Why A sees a beam on a Litolff quarter and why C sees a second one is not yet found (staff-line ink
+  is the suspect, not tested). 24 notes: a control set, not a rate.
+
 ## Is ink claimed once? (audit, `out/print/2.317-claim-audit`)
 
 Asked by Sean 2026-11-18. Enforced in ADJUDICATE only, and by box share (a box is refused at >= 50%
