@@ -9,10 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
-<<<<<<< HEAD
 ## 2026-11-17 -- ROADMAP 2.314 r3 landed OFF (flag `OMR_TWO_STEMS_TWO_NOTES`)
 Two heads on two different stems at one place are two notes in two voices, not one refused chord (STAGED export: `one_chord.stems_apart_enabled`, `voicing.group_chords_in_measure(keep_stems_apart=)`, `export._stem_pair_streams`, `export._place_voices_in_time`). Default OFF: red bars ON still above OFF and 3 `f`-curl fakes remain. Landing gate: fast tier on merged tree, 10749 passed, 0 failed. Findings: benchmarks/plain-stemmed-2026-11/FINDINGS.md.
-=======
+
 ## 2026-11-17 -- ROADMAP 2.312 r3 landed OFF: a far head is placed against its ledger lines by its own ink
 
 Flag `OMR_LEDGER_COUNT_TO_INK`, default OFF (merge of `lane-2.312-r3`, e248813d2). Built in three rounds the same
@@ -22,7 +21,6 @@ copies; round 2 moved the on-line / in-space test from the box edge to the head'
 reading wherever the ink is not that one head. Litolff sample: judged right->wrong 0, red bars level. Not ON:
 Brahms unmeasured at file level; 4 moved heads unjudged; 2 heads on Litolff p16 go blue. Landed by the manager:
 the merged `tools/` tree is identical to the lane tip, whose fast tier ran 10,755 passed, 0 failed.
->>>>>>> origin/main
 
 ## 2026-11-17 -- ROADMAP 2.306 r14 flag fixes landed ON (split from the page stem reader, which stays OFF)
 STAGED EXPORT `annotate_beams` and ADJUDICATE `_attached_flags`: a flag hangs right of its own stem; a flag is not a beam unless joined to one; the hook count. No new flag (rules default ON). Lane measures (not re-run at landing): Brahms p0 swept cells flag 19/32/0 -> 4/48/0 (wrong/right/unread), beam 22/161/2 -> 4/161/2, value 4/369/9 -> 3/370/9; judged right->wrong 0 both plates; Sean's r14 tiles 9 of 9 replay. Merged main after 2.305 (arcs) with no conflicts; fast tier 10,738 passed, 0 failed. Gap: no real two-hook sixteenth judged by Sean. Lane 59cda9e86.
