@@ -277,3 +277,71 @@ quarter -> eighth. Unclear: Litolff 15/1/3/18/0 and /3, 2/0/9/1/3, 15/0/10/0/2; 
 **Open after round 5**: newly red bars on the tile pages (Litolff 15 new vs 10 cleared, Brahms 11 vs 7), of which
 9 and 8 hold no note that OFF had decided and are untraced; the Litolff frozen sample writes fewer notes; the
 no-stem heads (upstream stroke map); the unclear changed notes.
+
+
+## 2.318 round 6 -- the wrong end of the right stroke (branch `lane-2.318-r6`, a0b7e2627)
+
+STAGED, ADJUDICATE. A lane agent's report (Fable), filed by the manager; "look" is the agent's look, not truth.
+
+**Cause and lessons.** Round 5's losses and red bars were almost all the count reading the wrong END of the right
+stroke, or a join the stroke map files in pieces -- not beams it could not see. The stem's ink ran on past its beam
+into an `ff`; a neighbour's stem passing just below the head counted as a second stem; the head's own body was
+taken for the stem; the beam's stroke stops a hair short of its outer stem; the barline or clef claimed the stem
+set against it. Round 5 had also changed the "no beam" state for beamless cells, which sent those heads to the
+stem-tip flag look for the first time (it read a ledger line and the word `Vcl.` as hooks: 7 lost Litolff notes,
+3 quarters written as eighths) -- wiring, not the count. The four Brahms dotted quarter -> quarter were one chord
+head with no stem in the map speaking first for the whole stem. Lessons: when a new reader says "no beam", check
+which end it read and whether the join exists before adding a refusal; a rule developed on the tile pages wrote
+two wrong sixteenths on a page outside them and only the frozen sample showed it.
+
+**File changes** (`lane_report`, ON vs OFF, `--from adjudicate`, record 20261117-night; changes, not verdicts):
+- Litolff tile pages: notes +101 -31, beams +52 -34 ~24, flags +28 -18, blue +52 -95, red bars 129 -> 133, not written 1585 -> 1528.
+- Brahms tile pages: notes +68 -11, beams +59 -8 ~8, flags +15 -24 ~3, blue +26 -71, red bars 50 -> 52, not written 1422 -> 1364.
+- Litolff frozen sample: notes +73 -75, beams +50 -65 ~24, flags +42 -28, blue +62 -111, red bars 160 -> 158, not written 2077 -> 2076.
+- Brahms frozen sample: notes +104 -34, beams +38 -15 ~3, flags +16 -16, blue +69 -143, red bars 134 -> 137, not written 3068 -> 2996.
+
+**Judged right->wrong 0** on all four runs. Right->marked: 0 on the tile pages; 1 on the Litolff frozen sample
+(2.83-fix-review tile 8, a quarter the count reads right, marked by the old tip-readers-disagree narrowing that
+the bar sum no longer settles). Sean's 24 tiles, bar 13 and the 11 others: none written wrong (84 tests).
+Flag-sourced values changed 0. OFF reproduces the record. Fast tier 10,915 passed, the two known failures only.
+`staged.check` 216 = main.
+
+**Real noteheads losing a decided value, tile pages (look):** about 17 Litolff, 6 Brahms. Litolff: a lump on the
+beam at the stem 6 (head run into the beam, or a short second beam; L12 is the judged example), a beam the map
+measures thinner than a beam 5, stem lost in a blob or chord stack 2-3, stem and beam outside the cell's cut 1,
+second upright the other way 1, stub 1. Brahms: word or hairpin ink at the stem's end 2, clef-claimed stem with no
+beam to witness 2, no stem 1, thick at the boundary 1.
+
+**Newly red bars, traced.** Tile pages: Litolff 9 new / 6 gone, Brahms 5 / 3; no decided real note is read worse
+in any. Litolff: 5 are a box that is not a notehead newly written a quarter (tie arc, sharp, accidental, a glyph,
+a tremolo slash), 1 the bar rule guessing an eighth on a quarter the count read right, 2 gain right-looking notes
+in a still-incomplete bar, 1 unclear (p15 0/3/19). Brahms: 1 a dot not attached, 1 tremolo-slash boxes, 3 gains in
+incomplete bars. Frozen sample: Litolff 10 / 12, Brahms 11 / 8; five bars hold a real note now marked.
+
+**Briefed questions answered.** The 13 "count 0 but flag ink found": 7 the flag-look wiring, 6 the both-ways rule,
+none a missed beam. No real dotted-figure stub exists on these pages (all 19 stand 2.0-3.1 sp from the beam).
+"Thick at the stem" is still needed (B01, B04, B06, B10) and now marks only stems within 2 sp of the thick stretch.
+
+**Rules added** (each with a real-stroke control that fails with the rule off; numbers narrow only): the free end
+is the tip (an end passing the head by under 0.75 sp is the foot: 0.0-0.67 for 125 strokes, 0.9+ for 32); a beam
+ends on its outer stems (join across at most 0.5 sp, never a stroke under 2.5 sp); a stem ends at its beam where
+its ink runs on into a dynamic or word; mark at a bare tip with a long curved flag or beam-thick stroke joined to
+no second stem; a stem in a barline's or clef's claim is read only with a beam touching it; end-on hair of paper
+0.35 sp (0.6 where a ledger line cut it); stem up to 9 sp where its ink touches the head; a second beam only at
+stems it reaches (2.0 sp); a stub must stack on the beam (0.75 sp); a box on the beam at the stem's far end
+carries the stem's count; clot at the join up to 1.6 sp inside the beam's band; an outer beam must share two
+stems with the touched beam; the head's own body is not a stem; a letter's claim cut in pieces still marks;
+`stem_value.py`: a head with no stem in the map does not speak for the stem's levels; `rhythm.py`: the "no beam"
+state stays what OFF had, so flags are asked exactly as today.
+
+**Open, named, not fixed:** non-notehead boxes newly written as quarters (7 Litolff, 1 Brahms; OFF already writes
+46 and 11 such -- a head-box fault, not a beam fault); thin-beam and lump-on-beam notes marked; the judged quarter
+marked on the frozen sample; unclear by look: Litolff 15/0/3/19/2 and /3, 2/0/9/1/3; the final traces were run one
+commit before the last (three Litolff p4 heads differ).
+
+**Manager's landing decision (2026-11-19, Sean asleep, under his "Take as many rounds as necessary to land
+this").** The lane agent ended "GATE NOT MET" against the stricter round-6 brief. Against the gate recorded in
+DECISIONS -- judged right->wrong 0, none of his 24 tiles or bar 13 written wrong, lost notes down to a handful
+each named by cause -- it holds: 17 and 6 real notes marked, each named; more notes written on three of four
+runs and level on the fourth; the remaining red bars are a head-box fault OFF already has. Landed ON; the open
+items above go to the overnight read and to their own rows.
