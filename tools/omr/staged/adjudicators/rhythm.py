@@ -4176,7 +4176,7 @@ def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True
     views = _stroke_views(ev, cell)
     if not views or head_box is None:
         return {"state": "silent", "certain": None, "possible": None, "why": "no_strokes_in_cell", "stems": [], "rows": []}
-    role = _BS.roles(views, face_join=True, trough=True)
+    role = _BS.roles(views, face_join=True, trough=True, one_count=True)
     got = _BS.beam_count(views, role, head_box, side if side in ("up", "down") else None, finder_stem=finder_stem)
     by_o = {v.ordinal: v for v in views}
     rows: List[str] = []

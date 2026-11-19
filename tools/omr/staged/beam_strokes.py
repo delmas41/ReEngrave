@@ -240,7 +240,7 @@ def _end_joined(s: StrokeView, v: StrokeView, end_y: Optional[float] = None) -> 
     return (abs(end_y - v_top) < 1.0 and at_top(end_y)) or (abs(end_y - v_bot) < 1.0 and at_bottom(end_y))
 
 
-def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = False, trough: bool = False) -> Dict[str, object]:
+def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = False, trough: bool = False, one_count: bool = False) -> Dict[str, object]:
     """The role of one stroke and the signed margins that say how close it came. Pure; reads `s` and the kinds of its neighbours.
 
     2.202f, both OFF by default (only the 2.202 path passes them): `face_join` also counts as this stroke's stems the stem-length verticals that
@@ -256,7 +256,7 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = F
         # stem tip touches no stem, and was taken for a broken beam -- FINDINGS 5i)
         gap_stems = sorted(v.ordinal for v in by_ord.values()
                            if v.kind == "vertical" and v.length <= STEM_MAX_SPACES and v.ordinal not in stems and v.ordinal != s.ordinal
-                           and (_face_joined(s, v, by_ord) or _end_joined(s, v)))
+                           and (_face_joined(s, v, by_ord) or (one_count and _end_joined(s, v))))
         stems = sorted(stems + gap_stems)
     nv = len(stems)
     out: Dict[str, object] = {"stems": nv, "stem_ordinals": stems, "stems_by_face": gap_stems, "thickness": s.thickness, "length": s.length,
@@ -283,9 +283,10 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = F
     return out
 
 
-def roles(strokes: Sequence[StrokeView], *, face_join: bool = False, trough: bool = False) -> Dict[int, Dict[str, object]]:
+def roles(strokes: Sequence[StrokeView], *, face_join: bool = False, trough: bool = False, one_count: bool = False) -> Dict[int, Dict[str, object]]:
+    """`one_count` (2.318 r6, only the one beam count passes it): a beam also owns the outer stem a hair past its stroke's end (`_end_joined`)."""
     by_ord = {s.ordinal: s for s in strokes}
-    return {s.ordinal: role_of(s, by_ord, face_join=face_join, trough=trough) for s in strokes}
+    return {s.ordinal: role_of(s, by_ord, face_join=face_join, trough=trough, one_count=one_count) for s in strokes}
 
 
 def box_support(under: Iterable[int], role_by_ord: Dict[int, Dict[str, object]]) -> Dict[str, object]:
@@ -373,7 +374,7 @@ def _covers_head(s: StrokeView, head_box: Sequence[float]) -> bool:
 
 
 def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str, *,
-                head_box: Optional[Sequence[float]] = None, face_join: bool = False) -> Dict[str, object]:
+                head_box: Optional[Sequence[float]] = None, face_join: bool = False, one_count: bool = False) -> Dict[str, object]:
     """What the strokes touching THIS stem say at its tip. `side` is the stem's direction ("up": the tip is the top).
 
     `beams`: ordinals of beam-role strokes touching the stem inside the tip window, one per level (strokes whose centres are closer than
@@ -397,7 +398,7 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
     # the head's end. A box lying at the stem's FAR end, on the beam, is the beam's ink the detector boxed (Litolff p6 1/7/4, p2 0/7/1: a box where the
     # stem meets its beam): it carries the stem's own count like every box on that stem -- round 5 read it "no beam", a quarter among its stem's
     # eighths, and the whole chord left the file. Never at the head's end: there the 2.202f rule stands.
-    box_at_tip = bool(BOX_AT_TIP_SHARES_THE_COUNT and head_box is not None
+    box_at_tip = bool(one_count and BOX_AT_TIP_SHARES_THE_COUNT and head_box is not None
                       and abs(float(head_box[1]) + float(head_box[3]) / 2.0 - tip_y) <= STACK_FIRST_SPACES * sp)
     stem_beamed = any(role_by_ord.get(s.ordinal, {}).get("role") == "beam" for s in touching)
     found: Dict[str, List[StrokeView]] = {"beam": [], "hook": [], "stub": [], "doubt": []}
@@ -438,7 +439,7 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 yc = _centre_y(s, stem)
                 if yc is not None and ((side == "up" and yc < tip_y) or (side == "down" and yc > tip_y)) and _face_joined(s, stem, by_ord):
                     joined.append(s)
-                elif _end_joined(s, stem, tip_y):
+                elif one_count and _end_joined(s, stem, tip_y):
                     joined.append(s)          # 2.318 r6: the beam's outer stem, a hair past the stroke's end
                 continue
             if _box_gap(s.box, stem.box) > JOIN_MAX_GAP_SPACES * sp:
@@ -740,10 +741,13 @@ def _bridged(v: StrokeView, ink_boxes: Sequence[Sequence[float]], head_h: float,
 #: a barline has claimed is read as the head's stem where a beam-thick flat stroke touches it -- a barline carries no beam, a stem does. Structural.
 #: Never without the beam: a barline's own piece beside a head is not a stem, and the head stays "no stem in the map".
 STEM_IN_A_BARLINE = True
+#: ...and THE FIRST NOTE AFTER A CLEF, the same way: the clef claims first and took the stem of the note set hard against it (Litolff p15 1/3/18: the
+#: first of a beamed row of chords had "no stem", and a box beside it lent it a quarter). The same rule, the same never: only with the beam's witness.
+STEM_CLAIMING_FAMILIES = ("barline", "clef")
 
 
 def _stem_in_a_barline(strokes: Sequence[StrokeView], v: StrokeView) -> bool:
-    if not STEM_IN_A_BARLINE or v.kind not in ("owned", "contested") or v.family != "barline" or v.length < SHORT_STEM_SPACES:
+    if not STEM_IN_A_BARLINE or v.kind not in ("owned", "contested") or v.family not in STEM_CLAIMING_FAMILIES or v.length < SHORT_STEM_SPACES:
         return False
     if v.box[3] < 4.0 * v.box[2]:
         return False                    # upright: at least four times as tall as wide
@@ -1091,14 +1095,14 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
     per: List[Dict[str, object]] = []
     by_o = {s.ordinal: s for s in strokes}
     for stem, sd in found["stems"]:
-        tip = tip_reading(strokes, role_by_ord, stem, sd, head_box=head_box, face_join=True)
+        tip = tip_reading(strokes, role_by_ord, stem, sd, head_box=head_box, face_join=True, one_count=True)
         n = len(tip["beams"])
         causes: List[str] = []
         if n == 0 and STEM_ENDS_AT_ITS_BEAM:
             cut = _stem_cut_at_its_beam(strokes, role_by_ord, stem, sd, head_box)
             if cut is not None:
                 stem = cut
-                tip = tip_reading(strokes, role_by_ord, stem, sd, head_box=head_box, face_join=True)
+                tip = tip_reading(strokes, role_by_ord, stem, sd, head_box=head_box, face_join=True, one_count=True)
                 n = len(tip["beams"])
         extra = 0
         # A stub at the tip of a stem that already has a beam is a candidate SECOND level (a partial beam: Sean 2026-10-09, "a beam must not only connect to

@@ -57,7 +57,7 @@ def views(note):
 
 def new_count(note):
     vs = views(note)
-    roles = BS.roles(vs, face_join=True, trough=True)
+    roles = BS.roles(vs, face_join=True, trough=True, one_count=True)
     return BS.beam_count(vs, roles, tuple(float(x) for x in note["head"]), note["side"] if note["side"] in ("up", "down") else None)
 
 
@@ -172,6 +172,22 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         self.assertEqual((c["state"], c["certain"]), ("read", 1))
         with mock.patch.object(BS, "STEM_IN_A_BARLINE", False):
             self.assertEqual(new_count(NOTES["glyph/2/1/9/7/4"])["state"], "silent")
+
+    def test_r6_the_first_note_after_a_clef_reads_its_stem_in_the_clefs_ink(self):
+        c = new_count(NOTES["glyph/15/1/3/18/0"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "STEM_CLAIMING_FAMILIES", ("barline",)):
+            self.assertEqual(new_count(NOTES["glyph/15/1/3/18/0"])["state"], "silent")
+
+    def test_r6_the_flag_OFF_readers_of_the_same_strokes_are_untouched(self):
+        # `tip_reading` / `roles` are shared with the 2.202 path that runs with the flag OFF: the outer-stem join and the box-at-the-tip rule act
+        # only where the one beam count asks (`one_count=True`). OFF must reproduce the record.
+        note = NOTES["glyph/2/0/8/0/3"]
+        vs = views(note)
+        plain = BS.roles(vs, face_join=True, trough=True)
+        stem, sd = BS.stems_by_ink(vs, tuple(float(x) for x in note["head"]), None)["stems"][0]
+        self.assertEqual(BS.tip_reading(vs, plain, stem, sd, head_box=tuple(note["head"]), face_join=True)["beams"], [])
+        self.assertEqual(len(BS.tip_reading(vs, plain, stem, sd, head_box=tuple(note["head"]), face_join=True, one_count=True)["beams"]), 1)
 
     def test_r6_a_stem_a_hair_short_of_its_head_end_on_is_its_stem(self):
         c = new_count(NOTES["glyph/17/0/3/2/3"])
