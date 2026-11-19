@@ -187,6 +187,24 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         c = new_count(NOTES["glyph/13/1/2/5/0"])
         self.assertEqual((c["state"], c["certain"]), ("read", 1))
 
+    def test_r6_the_heads_own_body_filed_upright_is_not_its_stem(self):
+        c = new_count(NOTES["glyph/16/0/0/8/5"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "HEAD_BODY_IS_NOT_A_STEM", False):
+            self.assertEqual(new_count(NOTES["glyph/16/0/0/8/5"])["certain"], 0)            # r5: a quarter
+
+    def test_r6_a_stem_is_not_followed_through_a_head_past_its_own_beam(self):
+        c = new_count(NOTES["glyph/4/1/2/14/7"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "CHAIN_STOPS_AT_A_BEAM", False):
+            self.assertEqual(new_count(NOTES["glyph/4/1/2/14/7"])["certain"], 0)            # r5: a quarter
+
+    def test_r6_a_beam_fused_with_a_letter_cut_in_pieces_by_the_claim_still_marks_the_note(self):
+        c = new_count(NOTES["glyph/8/1/1/0/10"])
+        self.assertEqual((c["state"], c["certain"], c["possible"]), ("narrowed", 0, 1))
+        with mock.patch.object(BS, "CLAIMED_INK_RUNS_ON", False):
+            self.assertEqual(new_count(NOTES["glyph/8/1/1/0/10"])["state"], "read")         # r5: "no beam", a quarter
+
     def test_r6_the_last_note_before_a_barline_reads_its_stem_in_the_barlines_ink(self):
         c = new_count(NOTES["glyph/2/1/9/7/4"])
         self.assertEqual((c["state"], c["certain"]), ("read", 1))

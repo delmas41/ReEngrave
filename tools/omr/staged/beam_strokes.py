@@ -704,6 +704,25 @@ def _head_ink_between(strokes: Sequence[StrokeView], x: float, y0: float, y1: fl
     return False
 
 
+HEAD_BODY_IS_NOT_A_STEM = True
+#: 2.318 r6: the chain's long step through a chord's head (r4) is never taken past the stem's BEAM: where the piece's far end stands in the band
+#: of a beam-thick flat stroke its ink touches, only a hair's cut is followed (r3). Round 5 chained a beamed stem through a clot of ink below its beam to a
+#: sliver at the cell's edge and read the sliver's bare end (Litolff p4 1/2/14: two beamed eighths written quarters).
+CHAIN_STOPS_AT_A_BEAM = True
+
+
+def _ends_at_a_beam(strokes: Sequence[StrokeView], v: StrokeView, end_y: float) -> bool:
+    sp = v.space_px if v.space_px > 0 else 1.0
+    touching = {j for j, _c in v.touches}
+    for s in strokes:
+        # one beam's thickness: a thicker slab across the stems may be a chord's row of heads run together, which a stem does pass (Litolff p9 0/0/1)
+        if (s.ordinal in touching and s.kind == "horizontal" and BEAM_MIN_THICKNESS_SP <= s.thickness <= BEAM_ONE_MAX_THICKNESS_SPACES
+                and s.length >= BEAM_SHAPE_MIN_LENGTH_SPACES
+                and s.box[1] - 0.3 * sp <= end_y <= s.box[1] + s.box[3] + 0.3 * sp):
+            return True
+    return False
+
+
 def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> StrokeView:
     """Follow the stem to its far end across a crossing that cut it: the next vertical piece in the same x-column, starting where this one ends
     or within `ONE_STEM_BREAK_MAX_GAP_SPACES` of it. One piece: the stroke itself. Several: one stem stroke (union box, union of what touches it)."""
@@ -713,6 +732,9 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
     while True:
         cur_x, cur_y = _far_end(members[-1], side)
         best = None
+        # 2.318 r6: a stem ends at its beam. A hair's cut by the beam itself is still followed (r3); the long step "through a head" (r4) is not taken
+        # from a piece that ends in a beam's band: what stands in line beyond is another note's (Litolff p4 1/2/14)
+        at_beam = CHAIN_STOPS_AT_A_BEAM and _ends_at_a_beam(strokes, members[-1], cur_y)
         for w in strokes:
             if w.kind != "vertical" or w.length > STEM_MAX_SPACES or any(w.ordinal == m.ordinal for m in members):
                 continue
@@ -721,7 +743,7 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
                 continue
             near = w.box[1] + w.box[3] if side == "up" else w.box[1]          # the piece's end toward the stem
             gap = (cur_y - near) if side == "up" else (near - cur_y)
-            if gap > ONE_STEM_BREAK_MAX_GAP_SPACES * sp and not (CHAIN_THROUGH_HEAD and gap <= CHAIN_THROUGH_HEAD_MAX_GAP_SPACES * sp
+            if gap > ONE_STEM_BREAK_MAX_GAP_SPACES * sp and not (CHAIN_THROUGH_HEAD and not at_beam and gap <= CHAIN_THROUGH_HEAD_MAX_GAP_SPACES * sp
                                                                   and _head_ink_between(strokes, cur_x, cur_y, near, sp)):
                 continue
             if (wy < cur_y) if side == "up" else (wy > cur_y):                  # it reaches farther than the chain does
@@ -862,7 +884,10 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
             continue                    # past a stem's usual length only the ink's own contact with the head makes it one (never a bridge)
         sp = v.space_px if v.space_px > 0 else 1.0
         osl = _outline_slack(v)
-        if v.box[1] >= hy - osl * sp and v.box[1] + v.box[3] <= hy + hh + osl * sp and not _covers_head(v, head_box):
+        # 2.318 r6: ...and a SHORT upright that holds the head is the head's own body, filed upright (Litolff p16 0/0/8, p9 0/0/3: a 1.6 sp stroke 0.7
+        # thick), never the head fused to its stem -- that stroke is as long as a stem. Round 5 took the body for a stem and read "no beam" at its end.
+        if v.box[1] >= hy - osl * sp and v.box[1] + v.box[3] <= hy + hh + osl * sp and (
+                not _covers_head(v, head_box) or (HEAD_BODY_IS_NOT_A_STEM and v.length < SHORT_STEM_SPACES)):
             continue                    # a vertical piece wholly inside the head's own extent is the head's outline, not a stem that leaves it
         if not (_covers_head(v, head_box) or any(j in ink for j, _c in v.touches)
                 or (BRIDGE and _bridged(v, ink_boxes, hh, cut_by_ledger=any(j in ledger_ords for j, _c in v.touches)))):
@@ -1006,6 +1031,9 @@ def thin_line_at_tip(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[
     return sorted(out)
 
 
+CLAIMED_INK_RUNS_ON = True
+
+
 def claimed_ink_at_tip(strokes: Sequence[StrokeView], stem: StrokeView, side: str) -> List[int]:
     """Ordinals of strokes ANOTHER mark has claimed that the stem's own INK touches at its end (the first-level zone of its tip: from `TIP_OUTWARD_SPACES`
     beyond to `STACK_FIRST_SPACES` inward) and that a beam could be hiding in: at least a beam's thickness (never ink thinner than the trough, `BEAM_DOUBT_MIN_THICKNESS_SP`: a hairpin is thinner than a beam, Sean 2026-10-09), and either a dynamic's or a word's ink (a beam fused to an `ff`) or ink SHAPED like
@@ -1023,8 +1051,17 @@ def claimed_ink_at_tip(strokes: Sequence[StrokeView], stem: StrokeView, side: st
             continue
         if s.ordinal not in touching:                  # joined by INK: the stem's own ink meets it, never a box edge or a gap
             continue
-        if s.box[1] + s.box[3] < lo or s.box[1] > hi or s.thickness < BEAM_DOUBT_MIN_THICKNESS_SP:
+        if s.box[1] + s.box[3] < lo or s.box[1] > hi:
             continue
+        if s.thickness < BEAM_DOUBT_MIN_THICKNESS_SP:
+            # 2.318 r6: the letter's claim may have cut the fused beam in pieces: a thin piece at the stem that runs straight on, in the same band, into
+            # a beam-thick piece of the SAME mark is that mark's ink at the tip all the same (Litolff p8 1/1/0: a beam under three notes fused with
+            # an `ff`; the piece at the first stem is 0.43 thick, the next 0.98 -- three beamed eighths were written quarters).
+            if not (CLAIMED_INK_RUNS_ON and s.family in FUSABLE_FAMILIES and any(
+                    t.ordinal != stem.ordinal and t.kind in ("owned", "contested") and t.family == s.family
+                    and t.thickness >= BEAM_DOUBT_MIN_THICKNESS_SP and not (t.box[1] + t.box[3] < lo or t.box[1] > hi)
+                    and t.ordinal in {j for j, _c in s.touches} for t in strokes)):
+                continue
         shaped = (s.thickness <= BEAM_ONE_MAX_THICKNESS_SPACES and s.length >= BEAM_SHAPE_MIN_LENGTH_SPACES and abs(s.angle) <= BEAM_SHAPE_MAX_ANGLE)
         if s.family in FUSABLE_FAMILIES or shaped:
             out.append(s.ordinal)
