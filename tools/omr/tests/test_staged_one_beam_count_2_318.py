@@ -161,11 +161,31 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         self.assertEqual(new_count(NOTES["glyph/15/0/0/19/2"])["certain"], 0)
 
     def test_r6_a_mark_at_a_bare_tip_that_may_be_a_flag_or_a_broken_beam_marks_the_note(self):
-        for k in ("glyph/13/0/1/8/3", "glyph/17/0/12/3/0"):
+        k = "glyph/13/0/1/8/3"                                                               # (a) a long curved flag
+        c = new_count(NOTES[k])
+        self.assertEqual((c["state"], c["certain"], c["possible"]), ("narrowed", 0, 1), k)
+        with mock.patch.object(BS, "MARK_AT_BARE_TIP", False):
+            self.assertEqual(new_count(NOTES[k])["state"], "read", k)                        # r5: "no beam", a plain quarter
+        k = "glyph/17/0/12/3/0"                                                              # (b) a beam-thick stroke joined to no second stem ...
+        with mock.patch.object(BS, "CLOT_JOIN", False):
             c = new_count(NOTES[k])
             self.assertEqual((c["state"], c["certain"], c["possible"]), ("narrowed", 0, 1), k)
             with mock.patch.object(BS, "MARK_AT_BARE_TIP", False):
-                self.assertEqual(new_count(NOTES[k])["state"], "read", k)                    # r5: "no beam", a plain quarter
+                self.assertEqual(new_count(NOTES[k])["state"], "read", k)
+
+    def test_r6_a_beam_that_reaches_its_stem_through_a_clot_of_ink_is_joined_to_it(self):
+        # ... and with the clot at the join read as the ink it is, that stroke is a beam of two stems and the note reads one beam
+        c = new_count(NOTES["glyph/17/0/12/3/0"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+
+    def test_r6_every_stem_of_a_group_reaches_the_outer_beam(self):
+        c = new_count(NOTES["glyph/17/1/10/1/16"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 2))
+        with mock.patch.object(BS, "OUTER_LEVEL", False):
+            self.assertEqual(new_count(NOTES["glyph/17/1/10/1/16"])["certain"], 1)          # r5: an eighth in a run of sixteenths
+        # never the next staff's beam lying just beyond: it hangs on none of this beam's stems
+        c = new_count(NOTES["glyph/13/1/2/5/0"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
 
     def test_r6_the_last_note_before_a_barline_reads_its_stem_in_the_barlines_ink(self):
         c = new_count(NOTES["glyph/2/1/9/7/4"])

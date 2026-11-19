@@ -240,6 +240,49 @@ def _end_joined(s: StrokeView, v: StrokeView, end_y: Optional[float] = None) -> 
     return (abs(end_y - v_top) < 1.0 and at_top(end_y)) or (abs(end_y - v_bot) < 1.0 and at_bottom(end_y))
 
 
+#: 2.318 r6: A CLOT AT THE JOIN. Where a beam meets a stem the map sometimes files the meeting itself as a separate small piece of ink (a blob, a
+#: short upright bar), so the beam's stroke touches the piece and the piece touches the stem, and neither touches the other (Brahms p17 0/12/3, 0/10/1:
+#: the last note of a beamed three read "no beam" and was written a quarter). Ink that runs unbroken from the beam to the stem, through one or two
+#: unclaimed pieces no bigger than `CLOT_PIECE_MAX_SPACES` lying inside the beam's own band, joins them (joining goes by ink, Sean 2026-11-18).
+#: Never through a claimed stroke (a head, a letter), never through a piece that leaves the beam's band. The size is the hook cut (1.6 sp): the three
+#: pieces seen are 1.0 x 1.4, 0.9 x 1.5 and 0.6 x 1.4 sp; a number from one plate, it decides only together with the unbroken contact.
+CLOT_JOIN = True
+CLOT_PIECE_MAX_SPACES = 1.6
+CLOT_BAND_SLACK_SPACES = 0.5
+#: 2.318 r6: centre line to centre line, the outer beam of a stack lies at most a beam's thickness plus the space between two beams from the next
+#: (0.6 + 0.75; measured 0.85 on Brahms p17 1/10, 0.96 on Sean's B09).
+OUTER_LEVEL = True
+OUTER_LEVEL_MAX_SPACES = 1.35
+
+
+def _clot_stems(s: StrokeView, by_ord: Dict[int, StrokeView]) -> List[int]:
+    """Ordinals of stem-length verticals the horizontal stroke `s` reaches through one or two small unclaimed pieces lying in its own band."""
+    if not CLOT_JOIN or s.kind != "horizontal" or s.thickness < BEAM_MIN_THICKNESS_SP:
+        return []
+    sp = s.space_px if s.space_px > 0 else 1.0
+    y0, y1 = s.box[1] - CLOT_BAND_SLACK_SPACES * sp, s.box[1] + s.box[3] + CLOT_BAND_SLACK_SPACES * sp
+
+    def piece(o: int) -> bool:
+        t = by_ord.get(o)
+        return (t is not None and t.ordinal != s.ordinal and t.kind in ("blob", "horizontal") and max(t.box[2], t.box[3]) <= CLOT_PIECE_MAX_SPACES * sp
+                and t.box[1] >= y0 and t.box[1] + t.box[3] <= y1)
+
+    def stem(o: int) -> bool:
+        t = by_ord.get(o)
+        return t is not None and t.kind == "vertical" and SHORT_STEM_SPACES <= t.length <= STEM_MAX_SPACES
+    direct = {j for j, _c in s.touches}
+    out = set()
+    for j in direct:
+        if not piece(j):
+            continue
+        for k, _c in by_ord[j].touches:
+            if stem(k):
+                out.add(k)
+            elif piece(k) and k not in direct:
+                out.update(m for m, _c2 in by_ord[k].touches if stem(m))
+    return sorted(out - direct)
+
+
 def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = False, trough: bool = False, one_count: bool = False) -> Dict[str, object]:
     """The role of one stroke and the signed margins that say how close it came. Pure; reads `s` and the kinds of its neighbours.
 
@@ -258,6 +301,10 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = F
                            if v.kind == "vertical" and v.length <= STEM_MAX_SPACES and v.ordinal not in stems and v.ordinal != s.ordinal
                            and (_face_joined(s, v, by_ord) or (one_count and _end_joined(s, v))))
         stems = sorted(stems + gap_stems)
+    if one_count and s.kind == "horizontal":
+        clot = [o for o in _clot_stems(s, by_ord) if o not in stems]         # 2.318 r6: stems the beam reaches through a clot at the join
+        gap_stems = sorted(gap_stems + clot)
+        stems = sorted(stems + clot)
     nv = len(stems)
     out: Dict[str, object] = {"stems": nv, "stem_ordinals": stems, "stems_by_face": gap_stems, "thickness": s.thickness, "length": s.length,
                               "thickness_margin": round(s.thickness - BEAM_MIN_THICKNESS_SP, 3),
@@ -449,6 +496,43 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 continue
             joined.append(s)
         found["beam"].extend(joined)
+    if one_count:
+        touched = {s.ordinal for s in touching}
+        if CLOT_JOIN and not found["beam"]:
+            # 2.318 r6: the beam reaches this stem through a clot of ink at the join (`_clot_stems`)
+            for s in strokes:
+                if s.ordinal in touched or s.kind != "horizontal" or role_by_ord.get(s.ordinal, {}).get("role") != "beam":
+                    continue
+                if head_box is not None and not box_at_tip and _covers_head(s, head_box):
+                    continue
+                if s.box[1] + s.box[3] < lo or s.box[1] > hi:
+                    continue
+                if stem.ordinal in _clot_stems(s, by_ord):
+                    found["beam"].append(s)
+                    joined.append(s)
+        if OUTER_LEVEL and found["beam"]:
+            # 2.318 r6: EVERY STEM OF A GROUP REACHES THE OUTER BEAM; the extra beams lie inward of it, toward the heads. A beam running over this
+            # stem's column one beam-spacing OUTWARD of the beam the stem's ink touches is the group's outer beam, and the stem's ink was cut between
+            # the two (Brahms p17 1/10/1, 1/10/2: sixteenths whose stem stroke stops at the inner beam were read one beam). Never a beam farther out
+            # than a beam and the space between two (`OUTER_LEVEL_MAX_SPACES`), never one that does not run over the stem.
+            sx = bx + bw / 2.0
+            base = list(found["beam"])
+            have = {b.ordinal for b in base}
+            for s in strokes:
+                if s.ordinal in touched or s.ordinal in have or s.kind != "horizontal" or role_by_ord.get(s.ordinal, {}).get("role") != "beam":
+                    continue
+                if not (s.box[0] <= sx <= s.box[0] + s.box[2]):
+                    continue
+                cy = s.box[1] + s.box[3] / 2.0
+                if not ((cy < tip_y) if side == "up" else (cy > tip_y)):
+                    continue
+                # ...and never a neighbour's: the two beams of one group hang on the same stems (a stem whose ink touches both). The beam of the
+                # next staff's group lying just beyond shares none (Litolff p13 1/2/5).
+                mine = {j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical"}
+                if any(LEVEL_MIN_SEPARATION_SPACES * sp <= _level_gap(b, s) <= OUTER_LEVEL_MAX_SPACES * sp
+                       and mine & {j for j, _c in b.touches} for b in base):
+                    found["beam"].append(s)
+                    joined.append(s)
 
     # 2.202c: levels are STACKED from the tip. A stroke that does not start where the previous level ends (its outer edge more than
     # STACK_GAP_SPACES past it; the first: more than STACK_FIRST_SPACES past the tip) is ink of something else lying in the window -- a head
