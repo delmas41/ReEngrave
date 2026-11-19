@@ -4157,17 +4157,17 @@ def _stroke_views(ev: Evidence, cell) -> list:
     return out
 
 
-#: ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default OFF; an allow-list, only 1/true/yes/on enable): THE ONE BEAM COUNT. With it ON the beam count of a
+#: ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default ON since 2026-11-19, Sean 2026-11-18 "Take as many rounds as necessary to land this"; a deny-list, only 0/false/no/off disable): THE ONE BEAM COUNT. With it ON the beam count of a
 #: stemmed note comes from the stroke map alone (`beam_strokes.beam_count`: the stem found by ink and followed to its far end, the beams read at its
 #: tip on the staff-erased raster). The bar-crop reader (`_beam_levels`) and the stem-tip look (`_stem_tip_strokes`) are NOT consulted for the beam
 #: count and nothing falls back to them (Sean 2026-11-13: no old reader beside the new one); where the map cannot tell, the note NARROWS. Flags are
 #: another mark and stay with the flag reader exactly as today: a stem the map counts no beam on takes its value from the flag reader, as an
-#: unbeamed stem always did. OFF the verdict is byte-identical.
+#: unbeamed stem always did. OFF (`OMR_ONE_BEAM_COUNT=0`) the verdict is byte-identical to the pre-2.318 readings.
 ONE_BEAM_COUNT_ENV = "OMR_ONE_BEAM_COUNT"
 
 
 def one_beam_count_enabled() -> bool:
-    return os.environ.get(ONE_BEAM_COUNT_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(ONE_BEAM_COUNT_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True) -> Dict[str, Any]:
@@ -5414,7 +5414,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             sb_detail = {"settled": sb["settled"], "before": before, "after": [certain, possible], "tip_levels": sb["tip_levels"],
                          "flag_levels": sb["flag_levels"], "tip": sb["tip"],
                          "boxes": [{k: v for k, v in bx.items() if k != "stroke_rows"} for bx in sb["boxes"]]}
-    # ⚠️⚠️ ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default OFF; Sean 2026-11-18 "Yes", after "Why don't we used the erased staff to get beams?"):
+    # ⚠️⚠️ ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default ON since 2026-11-19; Sean 2026-11-18 "Yes", after "Why don't we used the erased staff to get beams?"):
     # THE ONE BEAM COUNT. Whatever the bar-crop reader (A, `_beam_levels`), the stem-tip look (C) and the 2.202 block above counted for the BEAMS is
     # replaced by the stroke map's count at this head's stem (`_one_beam_count`: the stem found by ink and followed to its far end, the beams
     # read on the staff-erased raster, every head on one stem sharing the one count). Two readers of one mark side by side turned a readable beam

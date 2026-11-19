@@ -604,7 +604,7 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
 
 
 # ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-# ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, OFF): THE ONE BEAM COUNT. How many beams stand at a stemmed note's stem, from the stroke map
+# ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, ON by default since 2026-11-19): THE ONE BEAM COUNT. How many beams stand at a stemmed note's stem, from the stroke map
 # (built on the STAFF-ERASED raster, so a staff line is never taken for a beam) and nothing else. STAGED ADJUDICATE, PURE.
 #
 #   The stem is the vertical stroke whose INK touches the head's ink (Sean 2026-11-18: join by ink, never by box edge, centre or overlap; the
