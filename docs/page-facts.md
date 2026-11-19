@@ -42,6 +42,9 @@ machine-readable form.
   NEVER: never both notes to both wind players; never split a string chord between players on the stem alone.
   OUR READING (not his words): brass goes with the woodwinds (one note at a time); upper note to the upper
   player; where the instrument is not known, neither rule is applied.
+- **Timpani, harp and piano are one player per staff** (Sean, 2026-11-19, SCOPE: general): *Timpani is one player as long as it is on one staff. Harp and piano are only one player per staff.*
+  NEVER: never two players read from one timpani, harp or piano staff. OUR READING: no unison copy and no
+  sharing-out there; two stems at one place are one player's two lines.
 - **Two silent voices on one staff share ONE whole rest** (Sean, 2026-11-17, SCOPE: general). His words, given
   to replace our vaguer wording: *"When two voices on the same staff both have a full measure of silence, it is
   standard to simplify to a single whole rest centered in the measure. Keeping two stacked whole rests in an
