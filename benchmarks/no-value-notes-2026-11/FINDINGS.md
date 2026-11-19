@@ -179,3 +179,49 @@ stem-head `adjudicators/stem_value.py:361`, `geometry.py:196`; beam levels `adju
 `claims.py:296`, `ownership.py:4335`; owning staff `ownership.py:697/:4266`; accidental-head
 `ownership.py:5094`; ledger rungs `family_precision.py:1746`; arc ends `arc_claim.py:716`. The page
 stem reader `stem_strokes.py:175` reads ink and is OFF; the page beam reader (M4b-e) is not built.
+
+
+## 2.318 round 3 -- the erased-staff reading as the one beam count (built OFF, stopped at the gate)
+
+STAGED, ADJUDICATE. Branch `lane-2.318-r3` (ac9b3ee9c), flag `OMR_ONE_BEAM_COUNT`, default OFF, not merged.
+A lane agent's report, filed by the manager; branch, flag, tests and the two strict xfails checked against the tree.
+
+**Cause and lesson.** Reading B was already the best of the three but was silenced by its own stem pick and its
+two-voice skip. Giving it the stem's far end and both voices lets it speak -- and then the lane added three
+"cannot tell" rules of its own (unexplained ink at the stem's end, a stub at the tip, a stem touching a beam it
+did not count), and those take the value from more notes than the three-reader disagreement did. Lesson: a
+refusal rule added to protect a new reader is a change to the file like any other, and must be measured on notes
+that are written right today before it is kept.
+
+**File changes** (`lane_report`, `--from adjudicate`, record 20261117-night; changes, not verdicts):
+- Litolff frozen sample: notes +80 -275, beams +56 -132 ~53, flags +51 -55, blue +230 -140, red bars 160 -> 154,
+  notes not written 2077 -> 2255.
+- Brahms frozen sample: notes +82 -275, beams +26 -42 ~9, flags +19 -38, blue +339 -148, red bars 134 -> 129,
+  notes not written 3068 -> 3268.
+- Tile pages: Litolff red bars 129 -> 129, not written 1585 -> 1732; Brahms red bars 50 -> 53, 1422 -> 1457.
+- Decided notes that lost their value, tile pages: Litolff 255 (unexplained ink at the stem's end 108, no stem
+  stroke in the map 55, stem touches a beam it did not count 31, stub at the tip 25, several stems 15, thick at
+  the stem 6); Brahms 91 (unexplained ink 40, stub 22, no stem 14, thick 11, several stems 3).
+- Decided notes that changed value, Litolff frozen sample: 33; direct reads 0->1 ten, 1->0 nine, 1->2 five,
+  2->1 one. The nine 1->0 are unjudged and could be hidden wrongs. Flag-sourced values changed: 0, both plates.
+- The 347 held notes (offline, on extracted cells, not a pipeline run): 191 now carry a value, 83 marked {1,2},
+  about 72 {0,1}.
+
+**Judged right->wrong: 0** on every run. Right->narrowed: tile pages Litolff 3, Brahms 0; frozen sample 1 and 3.
+
+**Controls** (real stroke rows of Sean's 24 tiles, Litolff p2 bar 13, 11 more judged notes): old B writes the
+five Brahms sixteenths as eighths; the new count marks B01, B04, B06, B10 {1,2}; bar 13 reads four eighths.
+STILL WRITTEN WRONG, `xfail(strict)`: **B09** (0.79 sp thick at the stem, 0.54 with the staff line out; a
+"thick here >= 0.75" rule catches it and narrows 2 of Sean's 47 one-beam notes, but about 360 one-beam stems on
+the whole movement) and **L11** (a beam fused with an `ff`; narrowing on claimed ink at the stem's end marked
+65 notes written right today, so it was turned off).
+
+**Numbers added**: staff-line thickness 0.25 sp (measured, narrows only); stem bridge gap 0.35 sp (from 2.161);
+stem collinear 0.3 sp and break gap 0.6 sp (from `stem_strokes`). Tuned on our two plates: may narrow, not decide.
+
+**Baseline** OFF reproduces the record (0 differing verdicts). Fast tier 10,886 passed, 2 failed (the known
+far-head order test; `test_judged_index_2_106` reads the checkout's `out/print`). `staged.check` open=216, not
+diffed against main.
+
+**Not done**: no clear crops of the lost-value and changed-value notes (the lane's panels are too small, Brahms
+none); no default flip.
