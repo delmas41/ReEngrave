@@ -127,6 +127,22 @@ def _centre_y(beam: StrokeView, v: StrokeView) -> Optional[float]:
     return y0 if x1 == x0 else y0 + (y1 - y0) * (vx - x0) / (x1 - x0)
 
 
+def _level_gap(a: StrokeView, b: StrokeView) -> float:
+    """Vertical distance (canonical px) between two beam-like strokes: their centre lines at the middle of the x-stretch both run along (`ends`); the boxes'
+    centres where either has no line or they share no stretch."""
+    if LEVEL_BY_LINE and len(a.ends) >= 4 and len(b.ends) >= 4:
+        lo = max(min(a.ends[0], a.ends[2]), min(b.ends[0], b.ends[2]))
+        hi = min(max(a.ends[0], a.ends[2]), max(b.ends[0], b.ends[2]))
+        if hi > lo:
+            xm = (lo + hi) / 2.0
+
+            def y_at(s: StrokeView) -> float:
+                x0, y0, x1, y1 = s.ends[:4]
+                return y0 if x1 == x0 else y0 + (y1 - y0) * (xm - x0) / (x1 - x0)
+            return abs(y_at(a) - y_at(b))
+    return abs((a.box[1] + a.box[3] / 2.0) - (b.box[1] + b.box[3] / 2.0))
+
+
 def face_gap(beam: StrokeView, v: StrokeView) -> Optional[float]:
     """2.202f. Staff spaces of paper between the vertical `v`'s near end and the FACE of `beam` at `v`'s own x (the centre line from the
     stroke's `ends`, +/- half its thickness): >= 0 where `v` stops short of the beam (above or below it), negative where they overlap. `None`
@@ -275,6 +291,7 @@ def find_stem_stroke(strokes: Sequence[StrokeView], stem_box: Sequence[float]) -
     return best
 
 
+LEVEL_BY_LINE = True       # 2.318 r5: levels told apart by the strokes' centre lines at the stem, not by their boxes
 STACK_FILTER = True
 STACK_FIRST_SPACES = 1.0      # the first level's outer edge lies within this of the tip (a sloped beam's box edge is off by <= 0.5)
 STACK_GAP_SPACES = 0.75       # the next level starts within this of the previous level's inner edge (pitch 0.75 sp, gap 0.25)
@@ -393,13 +410,15 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
         found["beam"] = kept
 
     def levels(group: List[StrokeView]) -> List[int]:
-        out: List[Tuple[float, int]] = []
+        # Two strokes are one level only where their INK is one band: compare their centre lines along the stretch BOTH run (`_line_gap`), never their
+        # boxes' centres (a sloped stroke's box is far taller than its ink: Brahms B09's two beams, 0.96 sp apart along their common run, had boxes 0.39 sp
+        # apart) and never at a stroke's end (where the stem's own ink bends the fitted line).
+        out: List[StrokeView] = []
         for s in sorted(group, key=lambda t: (t.box[1] + t.box[3] / 2.0, t.ordinal)):
-            c = s.box[1] + s.box[3] / 2.0
-            if out and abs(c - out[-1][0]) < LEVEL_MIN_SEPARATION_SPACES * sp:
+            if out and _level_gap(out[-1], s) < LEVEL_MIN_SEPARATION_SPACES * sp:
                 continue
-            out.append((c, s.ordinal))
-        return [o for _c, o in out]
+            out.append(s)
+        return [t.ordinal for t in out]
 
     fused: List[int] = []
     beams = levels(found["beam"])
@@ -450,6 +469,15 @@ ONE_STEM_BREAK_MAX_GAP_SPACES = 0.6
 STAFF_LINE_THICKNESS_SPACES = 0.25
 
 
+#: 2.318 r5: a vertical piece shorter than a stem (`SHORT_STEM_SPACES`) that stands within this many staff spaces of the head's own extent is the head's
+#: outline (a Litolff head cut in pieces), not a stem: Litolff p2 0/0/9/0/0, a 1.9 sp piece 0.2 sp past the head's foot beside the head's real 4.9 sp stem.
+HEAD_OUTLINE_SLACK_SPACES = 0.7
+
+
+def _outline_slack(s: "StrokeView") -> float:
+    return HEAD_OUTLINE_SLACK_SPACES if s.length < SHORT_STEM_SPACES else STEM_MATCH_X_SLACK_SPACES
+
+
 def _head_ink_ordinals(strokes: Sequence[StrokeView], head_box: Sequence[float]) -> set:
     """Strokes that are THIS head's ink: not a stem-length vertical, with their centre inside the head's box (the box says where to look; the
     ink is what the stem must touch)."""
@@ -459,7 +487,8 @@ def _head_ink_ordinals(strokes: Sequence[StrokeView], head_box: Sequence[float])
         if s.kind == "vertical" and s.length <= STEM_MAX_SPACES:
             sp = s.space_px if s.space_px > 0 else 1.0
             # a vertical piece wholly inside the head's own extent is the head's outline (a stem leaves the head); it is the head's ink
-            if (s.box[1] >= hy - STEM_MATCH_X_SLACK_SPACES * sp and s.box[1] + s.box[3] <= hy + hh + STEM_MATCH_X_SLACK_SPACES * sp
+            osl = _outline_slack(s)
+            if (s.box[1] >= hy - osl * sp and s.box[1] + s.box[3] <= hy + hh + osl * sp
                     and hx <= s.box[0] + s.box[2] / 2.0 <= hx + hw):
                 out.add(s.ordinal)
             continue
@@ -583,6 +612,9 @@ INK_SIDE = False
 INK_SIDE_MIN_SPACES = 1.0
 #: 2.318 r4: where two stems stand on a head's engraving side, the one whose ink touches the head's ink is its stem.
 DIRECT_CONTACT_STEM = True
+SHORT_STEM_SPACES = 2.5
+#: 2.318 r5: with no direction verdict, a vertical that runs past the head both ways has no tip for THIS head on the ink: silent, not the farther end.
+BOTH_WAYS_BOTH = True
 
 
 def _bridged(v: StrokeView, ink_boxes: Sequence[Sequence[float]], head_h: float) -> bool:
@@ -615,7 +647,8 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
         if v.kind != "vertical" or v.length > STEM_MAX_SPACES:
             continue
         sp = v.space_px if v.space_px > 0 else 1.0
-        if v.box[1] >= hy - STEM_MATCH_X_SLACK_SPACES * sp and v.box[1] + v.box[3] <= hy + hh + STEM_MATCH_X_SLACK_SPACES * sp and not _covers_head(v, head_box):
+        osl = _outline_slack(v)
+        if v.box[1] >= hy - osl * sp and v.box[1] + v.box[3] <= hy + hh + osl * sp and not _covers_head(v, head_box):
             continue                    # a vertical piece wholly inside the head's own extent is the head's outline, not a stem that leaves it
         if not (_covers_head(v, head_box) or any(j in ink for j, _c in v.touches) or (BRIDGE and _bridged(v, ink_boxes, hh))):
             continue
@@ -634,8 +667,11 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
             if ((y < hy - INK_SIDE_MIN_SPACES * sp) if other == "up" else (y > hy + hh + INK_SIDE_MIN_SPACES * sp)) \
                     and abs(x - hcx) <= hw / 2.0 + STEM_HEAD_X_SLACK_SPACES * sp:
                 ok.append((other, abs(y - hcy)))
-        if len(ok) == 2:                                    # no verdict and the stroke runs both ways: the farther end is the tip
-            ok = [max(ok, key=lambda t: t[1])] if ok[0][1] != ok[1][1] else []
+        # BOTH_WAYS_BOTH: with no direction verdict and a stroke that runs past the head BOTH ways (a chord's stem through its inner head, or a stem that
+        # serves a neighbour's head too: Litolff p2 0/0/5/1/2, where the farther end is the neighbour's), which end is THIS head's tip is not on the ink:
+        # both ends are read (two stems, one each way) and the head's count is the lower to the higher -- read where they agree, marked where they differ.
+        if len(ok) == 2 and not BOTH_WAYS_BOTH:
+            ok = [max(ok, key=lambda t: t[1])] if ok[0][1] != ok[1][1] else []      # the farther end is the tip (the old rule)
         for sd, _d in ok:
             found[sd].append(v)
     stems: List[Tuple[StrokeView, str]] = []
@@ -649,6 +685,11 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
                 # down -> left); the other is its neighbour's. Neither or both on that side: not told apart (rule 8).
                 own = [p for p in pieces if ((_far_end(p, sd)[0] >= hcx) if sd == "up" else (_far_end(p, sd)[0] <= hcx))]
                 if len({_chain(strokes, p, sd).ordinal for p in own}) != 1 and DIRECT_CONTACT_STEM:
+                    # a stem is at least `SHORT_STEM_SPACES` long (a piece shorter than that, standing in the head's own outline, is not one: Litolff p2
+                    # 0/0/9/0/0, where a 1.9 sp piece of the head beside the real 4.9 sp stem was taken): where a longer one stands on that side, it is the stem
+                    longer = [p for p in own if _chain(strokes, p, sd).length >= SHORT_STEM_SPACES]
+                    if longer and len(longer) < len(own):
+                        own = longer
                     # still two on that side: the head's stem is the one whose ink TOUCHES the head's own ink; one only bridged across a hair of paper
                     # is its neighbour's (a stem joins the head whose ink it touches, Sean 2026-11-18)
                     direct = [p for p in own if _covers_head(p, head_box) or any(j in ink for j, _c in p.touches)]

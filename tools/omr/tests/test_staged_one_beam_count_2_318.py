@@ -34,8 +34,7 @@ FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "one_beam_count_2_318" / 
 NOTES = json.loads(FIXTURE.read_text())["notes"]
 
 #: Sean's judged notes still written wrong with the flag ON (module doc). The key is the glyph the tile boxed.
-OPEN_WRONG = {"glyph/18/0/12/2/1": "B09: a second beam fused to the first on the bottom line; 0.79 sp thick at the stem, 0.54 with the line taken out. "
-                                   "Catchable only by `STEP_NARROW` (thicker here than along the rest of the beam), which marks 45 more Litolff and 16 more Brahms notes on the tile pages"}
+OPEN_WRONG = {}
 
 
 def views(note):
@@ -100,7 +99,7 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         for n in NOTES.values():
             self.assertGreater(len(n["strokes"]), 3)
 
-    def test_no_note_is_written_wrong_except_the_one_reported_open(self):
+    def test_no_note_is_written_wrong(self):
         wrong = {}
         for k in JUDGED:
             note = NOTES[k]
@@ -108,6 +107,29 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
             if v is not None and v != note["truth"]:
                 wrong[k] = (note["tile"], note["truth"], v)
         self.assertEqual(set(wrong), set(OPEN_WRONG), wrong)
+
+    def test_b09_two_beams_that_run_on_stem_to_stem_are_read_two(self):
+        # Sean's B09 (Brahms p18 12/2): the second beam is a SECOND STROKE (5.8 sp, from the second stem to the last) beside the long first one; their
+        # boxes' centres are 0.39 sp apart (a sloped stroke's box is taller than its ink), their centre lines at the stem 0.96 sp apart.
+        k = next(k for k, n in NOTES.items() if n["tile"] == "B09")
+        c = new_count(NOTES[k])
+        self.assertEqual((c["state"], c["certain"]), ("read", 2))
+
+    def test_a_head_cut_in_pieces_does_not_lend_the_count_its_outline_as_a_stem(self):
+        # Litolff p2 0/0/9/0/0 (not judged; today an eighth): a 1.9 sp vertical piece of the head's own outline stands beside the head's real 4.9 sp stem
+        # and was taken for it, reading "no beam" (an eighth turned quarter). With the outline slack it is the head's, and the real stem is read.
+        c = new_count(NOTES["glyph/2/0/9/0/0"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "HEAD_OUTLINE_SLACK_SPACES", BS.STEM_MATCH_X_SLACK_SPACES):
+            self.assertEqual(new_count(NOTES["glyph/2/0/9/0/0"])["certain"], 0)             # the control fails without it
+
+    def test_a_stem_that_runs_past_a_head_both_ways_with_no_verdict_is_read_from_both_ends(self):
+        # Litolff p2 0/0/5/1/2 (not judged; today an eighth): one 7.6 sp vertical beside the head runs past it both ways; the farther end is the NEIGHBOUR's.
+        # Read from both ends the counts differ: marked, never the farther end's quarter.
+        c = new_count(NOTES["glyph/2/0/5/1/2"])
+        self.assertEqual(c["state"], "narrowed")
+        with mock.patch.object(BS, "BOTH_WAYS_BOTH", False):
+            self.assertEqual(new_count(NOTES["glyph/2/0/5/1/2"])["state"], "read")           # the old rule wrote one value
 
     def test_the_four_brahms_second_beam_sixteenths_are_marked_never_an_eighth(self):
         for tile in ("B01", "B04", "B06", "B10"):
@@ -150,7 +172,8 @@ class TestTheControlCanFail(unittest.TestCase):
         for tile in ("B01", "B04", "B06", "B09", "B10"):
             k = next(k for k, n in NOTES.items() if n["tile"] == tile)
             self.assertEqual(NOTES[k]["truth"], 2)
-            self.assertEqual(old_count(NOTES[k]), 1, tile)                                    # one beam where Sean says two: a hidden wrong
+            with mock.patch.object(BS, "LEVEL_BY_LINE", False):                                # B09: levels by box centres merge its two beams
+                self.assertEqual(old_count(NOTES[k]), 1, tile)                                    # one beam where Sean says two: a hidden wrong
 
     def test_the_old_stem_pick_is_silent_on_the_upper_head_of_a_chord_and_the_new_one_reads_it(self):
         k = "glyph/5/0/1/5/12"                                                                # judged a sixteenth (Brahms p5)

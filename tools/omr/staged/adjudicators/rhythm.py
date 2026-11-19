@@ -5423,13 +5423,18 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # out: "cannot tell" is never "no beam" (rule 8). FLAGS are another mark: the flag attachment below is untouched, and a stem the map counts no
     # beam on takes its value from it, as an unbeamed stem always did. Nothing here reads a LEGACY flag.
     one_beam = None
+    one_beam_pending = 0
     if one_beam_count_enabled() and not hollow and head_box is not None:
         one_beam = _one_beam_count(ev, cell, head_box, side, finder_stem=bool(own_stems))
         used.extend(one_beam["rows"])
         if one_beam["state"] == "silent":
-            certain, possible = 0, 1                  # cannot tell: the head's value or one beam; the rows say why (`one_beam_count`)
+            certain, possible, one_beam_pending = 0, 0, 1     # the map has no stem: it says NOTHING about beams (the flag reader still speaks)
         else:
             certain, possible = int(one_beam["certain"]), int(one_beam["possible"])
+            if certain == 0 and possible > 0:
+                # no beam certain, one possible: the flag reader (attached flags, the stem-tip hooks) speaks first; the count never overrules it in
+                # either direction. Only where it has nothing is the note narrowed (head value or the possible levels): the final decision below.
+                one_beam_pending, possible = possible, 0
         certain_conflicts = ()
         kept = []                                    # the bar-crop reader's strokes are not evidence of the beam count (`used`, `cut_kept`)
         ink_dropped, ink_used, pre_ink = {}, [], []  # so the ink's refusals of THOSE strokes cannot mark or unmark a note either
@@ -6208,6 +6213,20 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         if _filled_w or own_stems:
             return Ruling.abstain("whole_class_filled_or_stemmed", used=tuple(used),
                                   filled=bool(_filled_w), own_stems=len(own_stems), **shared)
+
+    if one_beam_pending and not levels and not flag_levels and not open_by_class:
+        # 2.318 r5: the count could not say "no beam" (no stem in the map, or ink at the tip a beam could be hiding in) and nothing else spoke for this
+        # head: never a bare head value (rule 8) -- the head's value or the possible beam levels; equal support where the map has no stem at all.
+        cands = []
+        for level in range(0, one_beam_pending + 1):
+            b = base / (2 ** level) if level else base
+            t, add = b, b
+            for _ in range(n_dots):
+                add /= 2.0
+                t += add
+            cands.append(Candidate(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": level},
+                                   support=2.0 if (level == 0 and one_beam["state"] != "silent") else 1.0))
+        return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used), **shared)
 
     if second_dis is not None:
         # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.
