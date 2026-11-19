@@ -313,10 +313,15 @@ def traced_export() -> Iterator[None]:
         out, units = orig(events, divisions, counters, voice=voice, doubled=doubled)
         glyphs: List[Optional[str]] = []
         for ev in events:
+            take = None
             if ev.get("kind") == E.UNISON_COPY_KIND:      # ROADMAP 2.323: a not-printed copy is stamped with its printed mark's own key(s)
+                take = ev.get("take")
                 ev = ev["of"]
             if ev.get("kind") == "rest":
                 glyphs.append(ev.get("glyph") or (ev.get("rest") or {}).get("glyph"))
+            elif take:      # r2: the copy of ONE head of a two-note chord, in the order `_unison_copy_lines` writes it
+                heads = E._chord_head_order(ev)
+                glyphs.extend(h.get("glyph") for h in (heads[:1] if take == "lower" else heads[-1:]))
             else:
                 glyphs.extend(h.get("glyph") for h in (ev.get("noteheads") or []))
         idx = [i for i, s in enumerate(out) if _NOTE_OPEN.match(s)]

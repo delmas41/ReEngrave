@@ -95,7 +95,7 @@ class TestRealControlBars(unittest.TestCase):
         self.assertEqual(_kinds(on[1]), ["chord", E.UNISON_COPY_KIND, "chord"])
         self.assertNotIn(E.FORWARD_KIND, _kinds(on[0]) + _kinds(on[1]))
         self.assertEqual(c_on["two_voice_unison_copies_kept_rest"], 1)
-        self.assertEqual(c_on["two_voice_unison_copies_kept_chord"], 1)
+        self.assertEqual(c_on["two_voice_unison_copies_kept_chord_upper"], 1)    # r2: one note of the two-note chord, not both
         for st in on:
             self.assertEqual(_units(st, div), 12)               # every voice still adds up to the 6/8 bar
         self.assertIs(on[0][2]["of"], on[1][2])                 # the very mark the page prints, never a new reading
@@ -150,13 +150,14 @@ class TestTheFileCarriesBothPartsAndPrintsOne(unittest.TestCase):
         on, _c, div, _m = _place("bassoon_bar80_two_parts_then_dotted_chord", True)
         m = _xml_voices(on, div)
         hid = _hidden(m)
-        self.assertEqual(sorted(hid), sorted([("1", "A", "3", "quarter", False), ("1", "G", "4", "quarter", False), ("2", None, None, "eighth", True)]))
+        # r2 (Sean 2026-11-19, "One note each"): the printed chord (Ab3 + Gb4, voice 2) stays whole; voice 1's player gets the UPPER note only
+        self.assertEqual(sorted(hid), sorted([("1", "G", "4", "quarter", False), ("2", None, None, "eighth", True)]))
         self.assertEqual(len(m.findall("forward")), 0)
         for n in m.findall("note"):
             if n.get("print-object") == "no":
                 self.assertEqual(n.get("print-spacing"), "no")     # the copy takes no room on the engraved page
         # a printed dot rides with the copy's value
-        self.assertEqual(sum(1 for n in m.findall("note") if n.get("print-object") == "no" and n.find("dot") is not None), 2)
+        self.assertEqual(sum(1 for n in m.findall("note") if n.get("print-object") == "no" and n.find("dot") is not None), 1)
         off, _c2, _d, _m2 = _place("bassoon_bar80_two_parts_then_dotted_chord", False)
         mo = _xml_voices(off, div)
         self.assertEqual(_hidden(mo), [])                           # the control can fail: OFF writes no copy, only a forward

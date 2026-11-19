@@ -6816,8 +6816,26 @@ def unison_kept_for_both_enabled() -> bool:
     return os.environ.get(UNISON_KEPT_FOR_BOTH_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
-def _unison_copy_event(of: Dict[str, Any], units: int, x: float, divisions: int) -> Dict[str, Any]:
-    return {"kind": UNISON_COPY_KIND, "of": of, "units": int(units), "divisions": int(divisions), "x_position": float(x), "noteheads": []}
+def _unison_copy_event(of: Dict[str, Any], units: int, x: float, divisions: int, take: Optional[str] = None) -> Dict[str, Any]:
+    """`take` (ROADMAP 2.323 r2): None = the whole mark (a note or rest); "lower"/"upper" = ONE head of a two-note chord (Sean 2026-11-19: two
+    notes on one stem in a two-voice bar are one note each)."""
+    ev = {"kind": UNISON_COPY_KIND, "of": of, "units": int(units), "divisions": int(divisions), "x_position": float(x), "noteheads": []}
+    if take:
+        ev["take"] = take
+    return ev
+
+
+def _chord_head_order(of: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """A chord's heads LOWEST first: by the head's own box where every head has one (the page's lower head stands lower), else the order the
+    chord was grouped in (`group_chords_in_measure` sorts lowest first)."""
+    heads = list(of.get("noteheads") or ())
+    if heads and all(h.get("bbox") for h in heads):
+        return sorted(heads, key=lambda h: -_head_y(h))
+    return heads
+
+
+def _chord_head_count(e: Dict[str, Any]) -> int:
+    return len(e.get("noteheads") or ()) if e.get("kind") != "rest" else 0
 
 
 def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]], divisions: int,
@@ -6867,7 +6885,10 @@ def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[
                         of = e["of"]
                         counters["two_voice_unison_copies_kept"] += 1
                         counters["two_voice_unison_copies_kept_" + ("rest" if of.get("kind") == "rest" else
-                                                                     "note" if len(of.get("noteheads") or ()) == 1 else "chord")] += 1
+                                                                     "note" if not e.get("take") else
+                                                                     "chord_" + e["take"])] += 1      # r2: one note of a two-note chord, never both
+                    elif e.get("three_plus_chord"):
+                        counters["two_voice_unison_chords_of_three_plus_left_as_forward"] += 1
             return placed
     counters["two_voice_bars_not_placed_" + why] += 1
     return None
@@ -6933,13 +6954,21 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
             v, e = assign[0]
             o = 1 - v
             if cur[o] <= t and cur[v] > cur[o]:
-                if keep_unison:
-                    # ROADMAP 2.323: the lone mark is a unison -- the other voice carries it, not printed; only its silence BEFORE the mark stays a forward
+                n_heads = _chord_head_count(e)
+                if keep_unison and n_heads <= 2:
+                    # ROADMAP 2.323: the lone mark is a unison -- the other voice carries it, not printed; only its silence BEFORE the mark stays a forward.
+                    # r2 (Sean 2026-11-19, "One note each"): a TWO-note chord is not a unison -- the printed chord stays as printed, and the other
+                    # voice carries only the note that is ITS player's: printed in voice 1, the voice-2 player's is the LOWER; printed in voice 2,
+                    # the voice-1 player's is the UPPER. Never both notes to both players.
                     if cur[o] < t:
                         out[o].append(_forward_event(t - cur[o], e["x_position"], divisions))
-                    out[o].append(_unison_copy_event(e, cur[v] - t, e["x_position"], divisions))
+                    out[o].append(_unison_copy_event(e, cur[v] - t, e["x_position"], divisions,
+                                                     take=None if n_heads < 2 else ("lower" if v == 0 else "upper")))
                 else:
+                    # flag off, or (r2) a chord of THREE or more notes, which Sean's rule ("a single note or a single rest") does not cover: <forward>
                     out[o].append(_forward_event(cur[v] - cur[o], e["x_position"], divisions))
+                    if keep_unison:
+                        out[o][-1]["three_plus_chord"] = True       # counted by the caller: a chord of 3+ notes left as flag OFF writes it
                 gaps[o].append((cur[o], cur[v]))
                 cur[o] = cur[v]
         last_t = t
@@ -7785,8 +7814,13 @@ def _unison_copy_lines(ev: Dict[str, Any], divisions: int, voice: int) -> List[s
         stripped = {"kind": "rest", "x_position": of.get("x_position"), "duration_beats": of["duration_beats"],
                     "duration_type": of.get("duration_type"), "dots": of.get("dots"), "rest": {}}
     else:
+        heads = _chord_head_order(of)
+        if ev.get("take") == "lower":          # r2 (Sean 2026-11-19, "One note each"): ONE note of a two-note chord -- the other player's
+            heads = heads[:1]
+        elif ev.get("take") == "upper":
+            heads = heads[-1:]
         stripped = {"kind": of.get("kind", "chord"), "x_position": of.get("x_position"),
-                    "noteheads": [{k: h[k] for k in _UNISON_COPY_HEAD_KEYS if k in h} for h in (of.get("noteheads") or ())]}
+                    "noteheads": [{k: h[k] for k in _UNISON_COPY_HEAD_KEYS if k in h} for h in heads]}
     lines, _units = _measure_events_xml([stripped], divisions, collections.Counter(), voice=voice)
     return [re.sub(r"<note(?=[ >])", '<note print-object="no" print-spacing="no"', ln, count=1) for ln in lines]
 
