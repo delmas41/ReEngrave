@@ -185,6 +185,18 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         with mock.patch.object(BS, "THICK_REACH_SPACES", 99.0):
             self.assertEqual(new_count(NOTES["glyph/17/0/9/4/2"])["state"], "narrowed")     # r5 marked it one or two
 
+    def test_r6_two_voices_stems_in_one_line_through_the_head_are_its_stem(self):
+        c = new_count(NOTES["glyph/13/1/5/8/10"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "ONE_STEM_MAX_SPACES", BS.STEM_MAX_SPACES):
+            self.assertEqual(new_count(NOTES["glyph/13/1/5/8/10"])["state"], "silent")
+
+    def test_r6_a_box_on_the_beam_at_the_stems_far_end_carries_the_stems_count(self):
+        c = new_count(NOTES["glyph/6/1/7/4/7"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "BOX_AT_TIP_SHARES_THE_COUNT", False):
+            self.assertEqual(new_count(NOTES["glyph/6/1/7/4/7"])["certain"], 0)             # r5: a quarter among its stem's eighths
+
     def test_r6_a_ledger_line_far_from_the_beam_is_not_a_second_beam(self):
         c = new_count(NOTES["glyph/4/0/10/6/1"])
         self.assertEqual((c["state"], c["certain"]), ("read", 1))

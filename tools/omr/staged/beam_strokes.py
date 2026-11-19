@@ -338,6 +338,7 @@ def find_stem_stroke(strokes: Sequence[StrokeView], stem_box: Sequence[float]) -
     return best
 
 
+BOX_AT_TIP_SHARES_THE_COUNT = True
 LEVEL_BY_LINE = True       # 2.318 r5: levels told apart by the strokes' centre lines at the stem, not by their boxes
 STACK_FILTER = True
 STACK_FIRST_SPACES = 1.0      # the first level's outer edge lies within this of the tip (a sloped beam's box edge is off by <= 0.5)
@@ -392,6 +393,12 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
         lo, hi = tip_y - TIP_INWARD_SPACES * sp, tip_y + TIP_OUTWARD_SPACES * sp
     by_ord = {s.ordinal: s for s in strokes}
     touching = [by_ord[j] for j, _c in stem.touches if j in by_ord]
+    # 2.318 r6: A HEAD STANDS AT ONE END OF ITS STEM AND THE BEAM AT THE OTHER. "A level that holds the head is the head's own ink" (2.202f) is true at
+    # the head's end. A box lying at the stem's FAR end, on the beam, is the beam's ink the detector boxed (Litolff p6 1/7/4, p2 0/7/1: a box where the
+    # stem meets its beam): it carries the stem's own count like every box on that stem -- round 5 read it "no beam", a quarter among its stem's
+    # eighths, and the whole chord left the file. Never at the head's end: there the 2.202f rule stands.
+    box_at_tip = bool(BOX_AT_TIP_SHARES_THE_COUNT and head_box is not None
+                      and abs(float(head_box[1]) + float(head_box[3]) / 2.0 - tip_y) <= STACK_FIRST_SPACES * sp)
     stem_beamed = any(role_by_ord.get(s.ordinal, {}).get("role") == "beam" for s in touching)
     found: Dict[str, List[StrokeView]] = {"beam": [], "hook": [], "stub": [], "doubt": []}
     own_head: List[int] = []
@@ -401,7 +408,7 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                else "doubt" if r == "beam_doubt" else None)
         if key is None:
             continue
-        if head_box is not None and _covers_head(s, head_box):
+        if head_box is not None and not box_at_tip and _covers_head(s, head_box):
             own_head.append(s.ordinal)
             continue
         y0, y1 = s.box[1], s.box[1] + s.box[3]
@@ -424,7 +431,7 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 continue
             if s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES:
                 continue
-            if head_box is not None and _covers_head(s, head_box):
+            if head_box is not None and not box_at_tip and _covers_head(s, head_box):
                 continue
             if face_join and len(s.ends) >= 4:
                 # the beam's face at THIS stem's x, beyond its tip: the stem stands under the beam (Sean 2026-10-28)
@@ -506,6 +513,11 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
 #   and a beam too thick AT THE STEM (the staff line's own thickness taken out) to be one beam all NARROW.
 #   FLAGS are another mark: the hooks at the tip are filed beside the count (`hooks`) and decide nothing here.
 # ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+#: 2.318 r6: the longest upright that can be THIS head's stem where its ink touches the head's ink. `STEM_MAX_SPACES` (8.0) was measured for strokes
+#: nothing ties to a head ("only 10 of 4,260 stems reach 8-9"; barlines and cell-high strokes pile up at 8 and 12). Two voices' stems drawn in one line
+#: through a shared head or chord are one stroke 8.0-8.25 sp long (Litolff p15 0/3/14, p13 1/5/8: five notes the map had "no stem" for): up to 9 sp a
+#: stroke whose ink touches the head's ink is its stem; a 12 sp stroke (a barline, the cell's height) never is.
+ONE_STEM_MAX_SPACES = 9.0
 #: A vertical stroke wider than this has head ink fused to it (Litolff merges): its stem stands at the far end (`stem_strokes.FUSED_MIN_WIDTH_SPACES`).
 ONE_FUSED_MIN_WIDTH_SPACES = 0.6
 #: Two pieces of one stem cut by a crossing (a beam, a ledger rung): within this of one x-column and this far apart vertically (the numbers
@@ -533,7 +545,7 @@ def _head_ink_ordinals(strokes: Sequence[StrokeView], head_box: Sequence[float])
     hx, hy, hw, hh = head_box[:4]
     out = set()
     for s in strokes:
-        if s.kind == "vertical" and s.length <= STEM_MAX_SPACES:
+        if s.kind == "vertical" and s.length <= ONE_STEM_MAX_SPACES:
             sp = s.space_px if s.space_px > 0 else 1.0
             # a vertical piece wholly inside the head's own extent is the head's outline (a stem leaves the head); it is the head's ink
             osl = _outline_slack(s)
@@ -756,8 +768,10 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
     ledger_ords = {s.ordinal for s in strokes if s.family == "ledger"}
     found: Dict[str, List[StrokeView]] = {"up": [], "down": []}
     for v in strokes:
-        if v.length > STEM_MAX_SPACES or not (v.kind == "vertical" or _stem_in_a_barline(strokes, v)):
+        if v.length > ONE_STEM_MAX_SPACES or not (v.kind == "vertical" or _stem_in_a_barline(strokes, v)):
             continue
+        if v.length > STEM_MAX_SPACES and not any(j in ink for j, _c in v.touches):
+            continue                    # past a stem's usual length only the ink's own contact with the head makes it one (never a bridge)
         sp = v.space_px if v.space_px > 0 else 1.0
         osl = _outline_slack(v)
         if v.box[1] >= hy - osl * sp and v.box[1] + v.box[3] <= hy + hh + osl * sp and not _covers_head(v, head_box):
