@@ -88,3 +88,11 @@ part is in the library; no engraving manual was opened (Gould, Read, Ross, Stone
 a rule. What would settle it: a printed Horn 2 or Bassoon 2 part for those bars, or the same bars in the
 Simrock 1877 first edition (in the library, not examined). New fault found: a single line with a tie and a
 slur and a stem flip is read as two voices (tiles 5-7).
+
+## Correction 2026-11-19: tiles 5-7 ARE two voices (Sean)
+
+Shown tiles 5-7, Sean: "All of those measures look like two voices. And it swapped the stems or goes from double stems down to single stems, I think mostly because of it not wanting to run into the slurs or ties. I think that's just meant to be tidiness for the engraving." So the "new fault" above is WITHDRAWN: the reader's two voices on Brahms
+1st Violins bars 365-367 agree with him; the research agent's "one melodic line" and the reference encoding's
+single voice were wrong for these bars. Lesson: an agent's look and an editor's encoding were both stated as
+a finding before Sean had seen the tiles (rule 7: who says it's right). The day's rule (page-facts §1): in a
+bar with more than one voice, a single note or single rest is unison unless a solo marking is printed.
