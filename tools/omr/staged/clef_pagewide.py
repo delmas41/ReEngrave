@@ -115,6 +115,80 @@ def strong_stop_enabled() -> bool:
     return os.environ.get(ENV_STRONG_STOP, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+ENV_PAGE_ONLY = "OMR_CLEF_PAGE_ONLY"
+#: ROADMAP 2.324: the lines a HEADER G clef may name and be READ (the treble clef); anywhere else it is claimed, kind UNREAD
+G_LINES_READ = (2,)
+#: ROADMAP 2.324: a clef box is THIS staff's only where its middle stands within this many staff spaces of this staff's own lines,
+#: measured at the box (a measure cell is the staff plus four spaces of air, so a neighbour's clef shows in it: FINDINGS 2.324, 7 of 29
+#: clef marks on Brahms p12 were claimed on the wrong staff). A G clef's middle stands inside the staff, an F clef's on its upper half.
+OWN_STAFF_REACH_SPACES = 1.0
+#: ROADMAP 2.324: a header G clef's second witness -- its own ink past the staff on BOTH sides, inside the box's columns: the loop above
+#: the top line and the tail below the bottom line (bands from .. to, staff spaces past the line), each at least this share of the band
+G_BOX_ABOVE_SPACES = (0.4, 1.4)
+G_BOX_BELOW_SPACES = (0.4, 1.4)
+G_BOX_PAST_MIN_FILL = 0.08
+
+
+def page_only_enabled() -> bool:
+    """`OMR_CLEF_PAGE_ONLY` (ROADMAP 2.324, Sean 2026-11-19 "It should only be read once at a page level"), default OFF (allow-list
+    1/true/yes/on). ON: this page-wide pass reads EVERY clef on the page -- the start-of-staff clef too, not only changes -- each owned by
+    the staff whose lines it sits on and claimed once; the per-cell readers (`gather_clef`, `gather_clef_locator`) and the register's
+    clef claims stand down, and `Q.CLEF` takes its page evidence from these rows only."""
+    return os.environ.get(ENV_PAGE_ONLY, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def on_this_staff(box: Sequence[float], lines: Sequence[float], sp: float) -> bool:
+    """Whether a clef box's middle stands on THIS staff (`OWN_STAFF_REACH_SPACES`), against the staff's lines measured at the box."""
+    cy = (float(box[1]) + float(box[3])) / 2.0
+    return float(lines[0]) - OWN_STAFF_REACH_SPACES * sp <= cy <= float(lines[-1]) + OWN_STAFF_REACH_SPACES * sp
+
+
+def g_witness(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> Dict[str, Any]:
+    """A header G clef's second witness (ROADMAP 2.324): the box reaches past the staff on both sides (`G_REACH_SPACES`) AND the ink
+    inside the box's columns does too -- the loop above the top line, the tail below the bottom line (`G_BOX_*`). Measures both fills;
+    {passed, why, above_fill, below_fill}."""
+    H, W = ink.shape
+    top, bot = float(lines[0]), float(lines[-1])
+    x0, x1 = max(0, int(box[0])), min(W, int(round(box[2])))
+    out: Dict[str, Any] = {"above_fill": None, "below_fill": None}
+    if x1 - x0 < 2:
+        return dict(out, passed=False, why="g_box_too_narrow")
+    a = ink[max(0, int(top - G_BOX_ABOVE_SPACES[1] * sp)):max(0, int(top - G_BOX_ABOVE_SPACES[0] * sp)), x0:x1]
+    b = ink[min(H, int(bot + G_BOX_BELOW_SPACES[0] * sp)):min(H, int(bot + G_BOX_BELOW_SPACES[1] * sp)), x0:x1]
+    fa = round(float(a.mean()), 3) if a.size else 0.0
+    fb = round(float(b.mean()), 3) if b.size else 0.0
+    out.update(above_fill=fa, below_fill=fb)
+    if not (float(box[1]) <= top - G_REACH_SPACES * sp and float(box[3]) >= bot + G_REACH_SPACES * sp):
+        return dict(out, passed=False, why="g_not_past_the_staff")
+    if fa < G_BOX_PAST_MIN_FILL or fb < G_BOX_PAST_MIN_FILL:
+        return dict(out, passed=False, why="g_no_ink_past_the_staff")
+    return dict(out, passed=True, why=None)
+
+
+def read_header_g(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float) -> Dict[str, Any]:
+    """`read_box` for a clef-sized `clefG` box in a system's HEADER window (ROADMAP 2.324): the box AND its ink past the staff
+    (`g_witness`). The kind is the plain treble clef where the class names it (`clef_geometry.clef_name_from_class`: the G family's
+    line is not measured by geometry, the same as every header reader today); any other G class (an octave G) is claimed with kind
+    None (UNREAD), never a rare clef."""
+    from ..clef_geometry import clef_name_from_class
+    w = g_witness(ink, box, lines, sp)
+    out: Dict[str, Any] = {"family": "G", "cls": str(name), "kind": None, "line": None, "residual": None,
+                           "g_fill": {"above": w["above_fill"], "below": w["below_fill"]}}
+    if not w["passed"]:
+        return dict(out, passed=False, why=w["why"])
+    nm = clef_name_from_class(str(name))
+    if nm != "treble":
+        return dict(out, passed=True, why=None)
+    return dict(out, passed=True, why=None, kind=nm, line=G_LINES_READ[0])
+
+
+def header_reads(rows: Sequence[Any]) -> List[Any]:
+    """ROADMAP 2.324: the HEADER clef reads of one staff (`Q.CLAIMED_AREA`, source `clef_pagewide`, `change: False`), left to right."""
+    out = [r for r in rows if (getattr(r, "detail", None) or {}).get("source") == SOURCE
+           and (r.detail or {}).get("change") is False and isinstance(r.value, (list, tuple)) and len(r.value) == 4]
+    return sorted(out, key=lambda r: float(r.value[0]))
+
+
 def is_weak_candidate(row: Any) -> bool:
     """A candidate with no shape witness: only the detector's small `clef*` box (`WEAK_CANDIDATE_WHY`), no body score, not strong."""
     d = getattr(row, "detail", None) or {}

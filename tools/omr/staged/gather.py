@@ -16147,7 +16147,11 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
     cells_of: Dict[int, Dict[int, Any]] = {}
     for c in cells:
         cells_of.setdefault(c.staff_index, {})[c.measure_index] = c
-    owned = (CL.OWNER_CLEF, CL.OWNER_KEY, CL.OWNER_METER, CL.OWNER_COLUMN, CL.OWNER_BRACKET)
+    # ROADMAP 2.324 (OMR_CLEF_PAGE_ONLY): this pass is the ONLY clef reader -- it runs before every other header claim, reads the header
+    # clef too, and no other reader's clef claim exists to defer to
+    page_only = CP.page_only_enabled()
+    owned = ((CL.OWNER_KEY, CL.OWNER_METER, CL.OWNER_COLUMN, CL.OWNER_BRACKET) if page_only
+             else (CL.OWNER_CLEF, CL.OWNER_KEY, CL.OWNER_METER, CL.OWNER_COLUMN, CL.OWNER_BRACKET))
     # 2.251 carry (only with OMR_CLEF_CARRY, so step 1 alone is unchanged): the page's own F bodies (every clef-sized `clefF` box whose
     # dots read the F line) -- the template the no-box F reader lays over a dot pair (`clef_pagewide.f_nobox`)
     templates: List[Dict[str, Any]] = []
@@ -16212,10 +16216,19 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 if not CL.is_clef_box(d.smufl_name, pb, sp):
                     continue
                 ll = CP.local_lines(ink, lines, sp, pb[0])
-                got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp)
                 gkey = R.glyph(p, sys_idx, li, k, gi).to_key()
+                in_head = k == order[0] and (pb[0] - c.bbox_page_px[0]) / sp <= CP.HEADER_WINDOW_SPACES
+                if page_only and not CP.on_this_staff(pb, ll, sp):
+                    # 2.324: a neighbour staff's clef showing in this staff's padded cell -- its own staff reads it, never this one
+                    near.append({"x0": pb[0], "family": None, "why": "box_on_another_staff", "box": gkey, "cls": str(d.smufl_name)})
+                    continue
+                if page_only and in_head and str(d.smufl_name).startswith("clefG"):
+                    got = CP.read_header_g(str(d.smufl_name), pb, ink, ll, sp)
+                else:
+                    got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp)
                 if not got["passed"]:
-                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name)})
+                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name),
+                                 **({"g_fill": got["g_fill"]} if got.get("g_fill") else {})})
                     continue
                 if got["family"] == "C" and any(CL.overlaps(f["area"], pb) for f in found):
                     for f in found:
@@ -16227,9 +16240,10 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 area = CP.f_claim_area(got, pb, sp) if got["family"] == "F" else list(pb)
                 if any(CL.overlaps(f["area"], area) and f["family"] == got["family"] for f in found):
                     continue                                   # one clef, two boxes (padded copies): claimed once
+                second = {"F": "f_dots", "G": "g_ink_past_the_staff"}.get(got["family"], "geometry")
                 found.append({"area": area, "family": got["family"], "kind": got["kind"], "line": got["line"],
-                              "residual": got["residual"], "witnesses": ["detector_box", "f_dots" if got["family"] == "F" else "geometry"],
-                              "shape": None, "box": gkey})
+                              "residual": got["residual"], "witnesses": ["detector_box", second],
+                              "shape": ({"g_fill": got["g_fill"]} if got.get("g_fill") else None), "box": gkey})
         if CP.carry_enabled():
             x_head0 = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
             # 2.251 carry (a): an F clef with NO detector box -- its dot pair AND the page's own F body (two witnesses); READ at the
@@ -16281,8 +16295,9 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             for d in detections.get(R.cell(p, sys_idx, li, k).to_key(), ()):
                 pb = _page_box(mycells[k], d)
                 fam = str(d.smufl_name)
-                if CL.is_clef_box(fam, pb, sp) and fam.startswith(("clefG", "clefF")):
-                    other_clefs.append(pb)
+                if CL.is_clef_box(fam, pb, sp) and fam.startswith(("clefG", "clefF")) \
+                        and not (page_only and not CP.on_this_staff(pb, CP.local_lines(ink, lines, sp, pb[0]), sp)):
+                    other_clefs.append(pb)              # 2.324: never a neighbour staff's box
         for f in found:
             area = [round(float(v), 1) for v in f["area"]]
             if any(CL.overlaps(area, h) and _overlap_share(area, h) >= 0.5 for h in held):
@@ -16307,9 +16322,18 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                         space_page_px=round(sp, 3))
         x_head = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
         for n in near:
-            if float(n["x0"]) <= x_head:
+            in_header = float(n["x0"]) <= x_head
+            if in_header and not page_only:
                 continue                               # the header's own clef: read and claimed by the header readers, not a near-miss
             reason = {"f_no_dots": ABSTAIN.F_CLEF_DOTS, "bowls_not_mirrored": ABSTAIN.ASYMMETRIC}.get(n.get("why"), ABSTAIN.NO_CLUSTERS)
+            if in_header:
+                # 2.324: this pass is the header's reader too -- a header candidate that failed its second witness (or a neighbour's box)
+                # says how close it came; it is never a carry stop (the header clef is not carried, it is read)
+                log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
+                            reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
+                            x_page=round(float(n["x0"]), 1), detector_box=n.get("box"), header=True, candidate=False,
+                            cls=n.get("cls"), g_fill=n.get("g_fill"))
+                continue
             # 2.251 carry (b): every near-miss is ink that MAY be a clef -- a carried clef stops there (`clef_pagewide.clef_in_force`),
             # unless it stands on a clef this reader did claim (a padded copy of the same box, the dots of a read F clef)
             # (a padded copy within half a space of a claim of its own family; any candidate standing INSIDE a claimed clef -- a C clef's
