@@ -450,7 +450,8 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                     if el.get("print-object") == "no":
                         # ROADMAP 2.323: a unison's second copy is the SAME mark as the printed one -- not a note or rest of the page, so it is
                         # never gained or lost; counted apart (`unprinted`), its time already advanced above
-                        unprinted.append(dict(kind=("rest" if el.find("rest") is not None else "note"), page=place(rg)[0], part=pid, measure=mnum))
+                        unprinted.append(dict(kind=("rest" if el.find("rest") is not None else "note"), page=place(rg)[0], part=pid, measure=mnum,
+                                              rg=rg, voice=el.findtext("voice"), box=place(rg)[3]))
                         continue
                     onset = str(Fraction(onset_div, divisions))
                     pg, cx, cy, bx = place(rg)
@@ -511,7 +512,8 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                     pending = []
             for d in pending:      # a direction with no note after it in its bar: counted, no place on the page
                 loose.append(d)
-    return dict(hosts=hosts, loose=loose, unprinted=unprinted, forwards=forwards[0])
+    names = {sp.get("id"): sp.findtext("part-name") for sp in root.iter("score-part")}
+    return dict(hosts=hosts, loose=loose, unprinted=unprinted, forwards=forwards[0], part_names=names)
 
 
 # ───────────────────────────── 5. the arm worker ─────────────────────────────
@@ -612,7 +614,9 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
                red_bars=_count(red.get("bars") if isinstance(red, dict) else red), bars_held_out=_count(report.get("bars_held_out_sum")),
                notes_not_written=report.get("notes_not_written_total"), control=control,
                # ROADMAP 2.323: not-printed copies (print-object="no", counted on the sample pages) and `<forward>` elements (the whole file)
+               unprinted=sym["unprinted"], part_names=sym.get("part_names"),
                unprinted_copies=sum(1 for u in sym["unprinted"] if u["page"] is None or u["page"] in cp), forwards=sym["forwards"],
+               unison_counters={k: v for k, v in (report.get("written") or {}).items() if "unison" in k},   # ROADMAP 2.323 r2: whole file, by instrument group
                blue_marks=xml.count('color="%s"' % E.GUESS_COLOR), seconds=round(time.time() - t0, 1),
                seconds_export=round(time.time() - t1, 1))
     from .one_test import arm_fingerprint     # ROADMAP 2.244: what this arm was built from (a combined run refuses a mix)
