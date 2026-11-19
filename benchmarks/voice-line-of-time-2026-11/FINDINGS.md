@@ -57,3 +57,34 @@ The agent's look crops: `out/print/2.321-our-look/`.
 
 No redesign of the voice model. Open: whether Litolff gives a one-stem head two stems (a count to check before
 any lane); the "one moment" width for neighbouring notes; the missing eighth rests.
+
+## Research 2026-11-19: the single-stem note between double stems
+
+Asked for by Sean (DECISIONS 2026-11-19, two lines: he does not know the answer; his fallback, if nothing is
+found, is unison). A research agent's report, filed by the manager. Crops: `out/print/2.321-research/`.
+**Nothing here is a page fact.** Who says it's right: the print for what is printed (the two ties); the
+reference encoding (`library/reference/brahms/symphony-1/brahms--symphony-1--mvt1--gradus.mxl`, a MuseScore
+file whose header names the same Breitkopf scan, IMSLP #317803) is ONE EDITOR'S READING; no printed player-2
+part is in the library; no engraving manual was opened (Gould, Read, Ross, Stone: not reached).
+
+- **No written rule found.** Opened: Wikipedia "A due", the LilyPond part-combining manual, one Steinberg forum
+  thread -- none rules on a single stem with no "a 2". The rest were search summaries only.
+- **Bassoons, Brahms bars 81-82 (tile 2):** two parts, then a dotted-quarter F and a quarter E-flat on a single
+  stem under a slur, then split again; no "a 2", no "1.", no rest. The encoding gives both notes to BOTH
+  bassoons. This is Sean's case.
+- **Horns, bars 91-94 (tile 4 = bar 92):** the dotted quarters in bars 91 and 93 show ONE stem but TWO tie arcs,
+  one above and one below -- two players holding the note (the print). The encoding gives both horns both notes.
+- **Trumpets bars 90-93:** single stems with "a 2" printed at bar 89.
+- **Tiles 1 and 3 (bar 87):** no single-stem unison there; an octave on one stem, then double-stemmed notes.
+  The boxed bars go from single to split, the reverse of the tile question.
+- **Tiles 5-7 (1st Violins, printed bars 365-367): ONE melodic line, not two parts.** A tie below plus a slur
+  above on one note, and a stem that changes direction near the middle line. The "lower part stops with no
+  rest" is OUR READER turning a tie plus a slur and a stem flip into two voices. The encoding writes one voice.
+- **Signs on the page, as the agent puts them (its own knowledge, unsourced):** unison -- two ties or two slurs
+  on the note, split stems resuming with no entry mark, an "a 2" in force; one player -- "1.", "Solo", "2.", or
+  a rest for the other player. Divided strings: a single note is the whole section unless "div." is in force.
+
+**Outcome:** the evidence leans to unison for wind pairs and agrees with Sean's fallback; it is not settled by
+a rule. What would settle it: a printed Horn 2 or Bassoon 2 part for those bars, or the same bars in the
+Simrock 1877 first edition (in the library, not examined). New fault found: a single line with a tie and a
+slur and a stem flip is read as two voices (tiles 5-7).
