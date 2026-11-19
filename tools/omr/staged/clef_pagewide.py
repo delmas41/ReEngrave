@@ -40,6 +40,15 @@ C_AXIS_SHIFT_SPACES = 0.45
 #: the C clef's thick bar: this wide (staff spaces; a barline is ~0.3, a stem ~0.1; Litolff's small C clef bar measures 0.7-0.8)
 C_BAR_MIN_WIDTH_SPACES = 0.45
 C_BAR_MAX_WIDTH_SPACES = 1.3
+#: ROADMAP 2.324 r2 (`OMR_CLEF_PAGE_ONLY` only): a bar under `C_BAR_MIN_WIDTH_SPACES` is still a C clef's thick bar where a thin upright
+#: line stands just right of it (within this gap, staff spaces), the thin line is a printed line (at least `C_THIN_MIN_SPACES` wide, never
+#: a one-pixel sliver) and the bar is at least this many times as wide as that line. Measured on the frozen sample pages (the bars this
+#: test admits, 16 pages): Breitkopf header C clefs 0.434/0.124, 0.438/0.156, 0.436/0.182, 0.44/0.183, 0.436/0.145 (2.4-3.5x); on the
+#: other side a mid-staff G clef beside a barline, Litolff p8 (0.254/0.127, 2.0x, its bowls passed: the ratio is what refuses it), and
+#: stems beside slivers (0.07-0.25 sp beside 0.036-0.07). The bowls still decide (never a C clef from a bar alone).
+C_THIN_GAP_SPACES = 0.6
+C_THIN_MIN_SPACES = 0.1
+C_BAR_THICK_RATIO = 2.2
 #: ... each column holding one unbroken ink run this long (the small C clef spans 3.6-3.7 sp, a full one ~4.3)
 C_BAR_MIN_RUN_SPACES = 3.0
 #: ... that starts and ends within this of the staff's top / bottom line (a barline or a bracket runs on to the next staff)
@@ -182,6 +191,45 @@ def read_header_g(name: str, box: Sequence[float], ink: np.ndarray, lines: Seque
     return dict(out, passed=True, why=None, kind=nm, line=G_LINES_READ[0])
 
 
+#: ROADMAP 2.324 r2: an F clef's dots stand in the two spaces either side of its line (line 4: the second line from the top), just right of
+#: its body. Looked at as INK AT THOSE TWO PLACES, not as two separate components (Litolff merges: the dots touch the key flats beside them).
+#: The dot is looked for in a square this wide (staff spaces) centred half a space above and below the line ...
+F_DOT_SQUARE_SPACES = 0.3
+#: ... at the same x, anywhere from this far left of the box's right edge to this far right of it (staff spaces) ...
+F_DOT_SEARCH_SPACES = (-0.4, 1.3)
+#: ... each square at least this share ink, the staff lines and long upright strokes cleared (`_dot_mask`). Measured (2x2 pages, the
+#: smaller of the two fills): the four Litolff header bass clefs the dot-PAIR test missed 0.80-1.0, every header bass clef 0.74-1.0 but
+#: one (0.38, read by the pair test); on the other side a header C clef's bowls 0.47-0.64, a header G clef 0.0-0.48
+F_DOT_MIN_FILL = 0.7
+
+
+def f_dot_places(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> Dict[str, Any]:
+    """ROADMAP 2.324 r2 (a musician's look at an F clef's dots): dot ink at BOTH places -- half a space above and half a space below the
+    clef's line 4, at one x just right of its body -- whatever that ink touches. {passed, x, upper, lower}: the best x (both fills' smaller
+    one largest) and its two fills. NEVER an F clef with no ink at either place: both fills must reach `F_DOT_MIN_FILL`."""
+    H, W = ink.shape
+    ll = [float(v) for v in lines]
+    line4 = ll[1]
+    half = max(1, int(round(F_DOT_SQUARE_SPACES * sp / 2.0)))
+    xa = max(0, int(float(box[2]) + F_DOT_SEARCH_SPACES[0] * sp) - half)
+    xb = min(W, int(float(box[2]) + F_DOT_SEARCH_SPACES[1] * sp) + half + 1)
+    ya, yb = max(0, int(ll[0] - sp)), min(H, int(ll[2] + sp))
+    out: Dict[str, Any] = {"passed": False, "x": None, "upper": 0.0, "lower": 0.0}
+    if xb - xa < 2 * half + 1 or yb - ya < 3:
+        return out
+    m = _dot_mask(ink, ya, yb, xa, xb, ll, sp).astype(bool)
+    yu, yl = int(round(line4 - 0.5 * sp)) - ya, int(round(line4 + 0.5 * sp)) - ya
+    best = None
+    for cx in range(half, m.shape[1] - half):
+        fu = float(m[max(0, yu - half):yu + half + 1, cx - half:cx + half + 1].mean())
+        fl = float(m[max(0, yl - half):yl + half + 1, cx - half:cx + half + 1].mean())
+        if best is None or min(fu, fl) > min(best[1], best[2]):
+            best = (xa + cx, fu, fl)
+    if best is None:
+        return out
+    return {"passed": min(best[1], best[2]) >= F_DOT_MIN_FILL, "x": float(best[0]), "upper": round(best[1], 3), "lower": round(best[2], 3)}
+
+
 def header_reads(rows: Sequence[Any]) -> List[Any]:
     """ROADMAP 2.324: the HEADER clef reads of one staff (`Q.CLAIMED_AREA`, source `clef_pagewide`, `change: False`), left to right."""
     out = [r for r in rows if (getattr(r, "detail", None) or {}).get("source") == SOURCE
@@ -260,7 +308,21 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
         cand: Dict[str, Any] = {"x0": x0 + j, "x1": x0 + k, "y0": round(y_top, 1), "y1": round(y_bot, 1),
                                 "bar_width_spaces": round(w, 3), "bar_run_spaces": round((y_bot - y_top) / sp, 3)}
         why = None
-        if w < C_BAR_MIN_WIDTH_SPACES:
+        thin_beside = None
+        if w < C_BAR_MIN_WIDTH_SPACES and page_only_enabled():
+            # 2.324 r2: the bar is thick COMPARED WITH THE THIN LINE BESIDE IT (the C clef's own thin bar, just right of it), not with a
+            # figure from one plate -- Breitkopf's C clef bar is 0.43 sp, under Litolff's 0.45 cut, and still ~3x its thin companion
+            m = k
+            while m < len(ok) and not ok[m] and (m - k) <= C_THIN_GAP_SPACES * sp:
+                m += 1
+            if m < len(ok) and ok[m] and (m - k) <= C_THIN_GAP_SPACES * sp:
+                e = m
+                while e < len(ok) and ok[e]:
+                    e += 1
+                thin_beside = (e - m) / sp
+                cand["thin_beside_spaces"] = round(thin_beside, 3)
+        if w < C_BAR_MIN_WIDTH_SPACES and not (thin_beside is not None and thin_beside >= C_THIN_MIN_SPACES
+                                               and w >= C_BAR_THICK_RATIO * thin_beside):
             why = "bar_too_thin"
         elif w > C_BAR_MAX_WIDTH_SPACES:
             why = "bar_too_wide"
@@ -481,8 +543,11 @@ def f_claim_area(got: Dict[str, Any], box: Sequence[float], sp: float) -> List[f
     return [max(float(box[0]), left), float(box[1]), right, float(box[3])]
 
 
-def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float) -> Dict[str, Any]:
-    """The second witness for a clef-sized detector `clef*` box: {passed, why, kind, family, line, residual}."""
+def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float, *,
+             header: bool = False) -> Dict[str, Any]:
+    """The second witness for a clef-sized detector `clef*` box: {passed, why, kind, family, line, residual}. `header` (ROADMAP 2.324
+    r2, passed only with `OMR_CLEF_PAGE_ONLY`): a box in its system's header window, where an F clef whose dot PAIR is not found is read
+    by the ink at its two dot places (`f_dot_places`)."""
     from ..clef_geometry import clef_family, resolve_clef
     fam = clef_family(name)
     top, bot = float(lines[0]), float(lines[4])
@@ -499,6 +564,15 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
         out["dots_right"] = F_LAST_DOTS.get("right")
         out["body"] = f_body(ink, box, lines, sp)
         out["locator_dots"] = bool(dots_ok)
+        if nm is None and header:
+            # 2.324 r2: Litolff merges -- the dots touch the key flats, so no separate pair is seen; a musician sees dot ink at the two
+            # places either side of line 4 just right of the body, whatever it touches
+            fp = f_dot_places(ink, box, lines, sp)
+            out["dot_places"] = {"upper": fp["upper"], "lower": fp["lower"], "x": fp["x"]}
+            if fp["passed"]:
+                if fp["x"] is not None:
+                    out["dots_right"] = float(fp["x"]) + 0.3 * sp
+                return dict(out, passed=True, why=None, kind="bass", line=4, residual=None, witness="f_dot_places")
         if nm is None and not dots_ok and "right" not in F_LAST_DOTS:
             return dict(out, passed=False, why="f_no_dots")
         if nm is None:

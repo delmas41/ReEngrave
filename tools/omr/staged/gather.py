@@ -16251,7 +16251,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 if page_only and in_head and str(d.smufl_name).startswith("clefG"):
                     got = CP.read_header_g(str(d.smufl_name), pb, ink, ll, sp)
                 else:
-                    got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp)
+                    got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=bool(page_only and in_head))
                 if not got["passed"]:
                     near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {})})
@@ -16266,7 +16266,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 area = CP.f_claim_area(got, pb, sp) if got["family"] == "F" else list(pb)
                 if any(CL.overlaps(f["area"], area) and f["family"] == got["family"] for f in found):
                     continue                                   # one clef, two boxes (padded copies): claimed once
-                second = {"F": "f_dots", "G": "g_ink_past_the_staff"}.get(got["family"], "geometry")
+                second = got.get("witness") or {"F": "f_dots", "G": "g_ink_past_the_staff"}.get(got["family"], "geometry")
                 found.append({"area": area, "family": got["family"], "kind": got["kind"], "line": got["line"],
                               "residual": got["residual"], "witnesses": ["detector_box", second],
                               "shape": ({"g_fill": got["g_fill"]} if got.get("g_fill") else None), "box": gkey})
