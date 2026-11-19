@@ -34,8 +34,8 @@ FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "one_beam_count_2_318" / 
 NOTES = json.loads(FIXTURE.read_text())["notes"]
 
 #: Sean's judged notes still written wrong with the flag ON (module doc). The key is the glyph the tile boxed.
-OPEN_WRONG = {"glyph/13/1/8/8/2": "L11: a beam on a staff line fused with an ff; the claimed ink at the stem's end is not read as a possible beam",
-              "glyph/18/0/12/2/1": "B09: a second beam fused to the first on the bottom line; 0.79 sp thick at the stem, 0.54 with the line taken out"}
+OPEN_WRONG = {"glyph/18/0/12/2/1": "B09: a second beam fused to the first on the bottom line; 0.79 sp thick at the stem, 0.54 with the line taken out. "
+                                   "Catchable only by `STEP_NARROW` (thicker here than along the rest of the beam), which marks 45 more Litolff and 16 more Brahms notes on the tile pages"}
 
 
 def views(note):
@@ -52,7 +52,7 @@ def views(note):
             thickness=float(s["th"] or 0), sagitta=s["sag"], angle=float(s["ang"] or 0),
             touches=tuple((int(a), float(c)) for a, c in (s["touches"] or ())), space_px=float(s["sp"] or 0), row_id=s["id"],
             profile=tuple(int(v) for v in (s["prof"] or ())), ends=tuple(float(v) for v in (s["ends"] or ())[:4]),
-            end_steps=tuple(float(v) for v in (s.get("steps") or ())[:2])))
+            end_steps=tuple(float(v) for v in (s.get("steps") or ())[:2]), cut=str(s.get("cut") or ""), family=str(s.get("fam") or "")))
     return out
 
 
@@ -84,8 +84,8 @@ def old_count(note):
 def what_the_file_would_say(note, c):
     """The beam count the duration adjudicator would act on: a count; `None` = the note is marked (narrowed or silent). A stem the map counts no
     beam on goes to the flag reader, which is another mark: a note whose value today comes from a flag keeps it."""
-    if c["state"] in ("read", "narrowed") and c["certain"] == 0 and note["src"] == "flag":
-        return note["today"]
+    if c["state"] in ("read", "narrowed") and c["certain"] == 0 and note["src"] in ("flag", "shared/other") and note["today"] is not None:
+        return note["today"]          # no beam read: the value is what the flag reader (the stem-tip hooks) says, as today -- `hooks_counted` in the real run
     return c["certain"] if c["state"] == "read" else None
 
 
@@ -100,7 +100,7 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         for n in NOTES.values():
             self.assertGreater(len(n["strokes"]), 3)
 
-    def test_no_note_is_written_wrong_except_the_two_reported_open(self):
+    def test_no_note_is_written_wrong_except_the_one_reported_open(self):
         wrong = {}
         for k in JUDGED:
             note = NOTES[k]
@@ -159,11 +159,43 @@ class TestTheControlCanFail(unittest.TestCase):
         c = new_count(NOTES[k])
         self.assertEqual((c["state"], c["certain"]), ("read", 2))
 
-    def test_the_old_count_reads_a_beam_that_is_a_staff_line_on_none_of_the_new_marked_quarters(self):
-        # the Litolff quarter L07 stays a quarter on a stem that touches a beam it did not count: marked, not read as a beam
+    def test_a_beam_the_stem_crosses_but_does_not_end_at_is_another_notes_and_the_quarter_stays_a_quarter(self):
+        # Litolff L07 (Sean: a quarter): its stem touches a beam two spaces INWARD of its tip, another group's beam crossing it. Round 3 marked it
+        # (`beamed_stem_uncounted`); the beam is not at the stem's end, so the stem has no beam and the quarter is read.
         k = next(k for k, n in NOTES.items() if n["tile"] == "L07")
         c = new_count(NOTES[k])
+        self.assertEqual((c["state"], c["certain"], c["possible"]), ("read", 0, 0))
+
+    def test_the_beam_of_a_stem_claimed_as_a_head_is_not_read_as_none(self):
+        # Sean's rhythm-leftovers-3 tile 3 (an eighth, Litolff p2 13/1): the beam at the stem's end is a stroke a head box has claimed (the detector boxed the
+        # beam). A claim says who owns ink, not what shape it has: beam-shaped claimed ink the stem touches at its end is marked, never "no beam".
+        c = new_count(NOTES["glyph/2/1/5/13/1"])
         self.assertEqual((c["state"], c["certain"], c["possible"]), ("narrowed", 0, 1))
+        self.assertIn("claimed_ink_at_tip", [x for s in c["stems"] for x in s["causes"]])
+
+    def test_a_beam_fused_with_an_ff_is_marked_never_none(self):
+        # Sean's L11 (Litolff p13 8/2): the stem's end meets ink a word has claimed. Only a dynamic's or a word's ink, and only a beam's thickness of it.
+        k = next(k for k, n in NOTES.items() if n["tile"] == "L11")
+        c = new_count(NOTES[k])
+        self.assertEqual((c["state"], c["certain"], c["possible"]), ("narrowed", 0, 1))
+
+    def test_claimed_ink_thinner_than_a_beam_does_not_hide_one(self):
+        k = next(k for k, n in NOTES.items() if n["tile"] == "L11")
+        note = NOTES[k]
+        thin = json.loads(json.dumps(note))
+        for s in thin["strokes"]:
+            if s.get("fam") in ("word", "dynamic", "text"):
+                s["th"] = 0.3                                                                  # a hairpin is thinner than a beam (Sean 2026-10-09)
+        c = new_count(thin)
+        self.assertEqual((c["state"], c["certain"]), ("read", 0))
+
+    def test_a_stem_the_verdict_sends_the_wrong_way_is_found_by_its_ink(self):
+        # Litolff p2 0/0/7/1/9: the direction verdict says "down", the only vertical on the head runs UP from it by more than a space.
+        k = "glyph/2/1/5/13/1"
+        note = NOTES[k]
+        wrong = "down" if note["side"] == "up" else "up"
+        found = BS.stems_by_ink(views(note), tuple(float(x) for x in note["head"]), wrong)
+        self.assertEqual([sd for _s, sd in found["stems"]], [note["side"]])
 
     def test_a_stroke_the_stem_does_not_touch_is_never_its_stem(self):
         note = NOTES[next(k for k, n in NOTES.items() if n["tile"] == "B02")]

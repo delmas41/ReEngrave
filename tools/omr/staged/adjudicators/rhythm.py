@@ -4128,7 +4128,15 @@ def _stroke_views(ev: Evidence, cell) -> list:
     With `OMR_STROKE_OWNER` on, a stroke another mark owns (or two contest) has kind `owned` / `contested` (`_owner_mask`)."""
     from ..record import STROKE_GLYPH_BASE
     out = []
-    mask = _owner_mask(ev.verdict(Q.STROKE_OWNER, subject=cell)) if _owner_on() else {}
+    owner_v = ev.verdict(Q.STROKE_OWNER, subject=cell) if _owner_on() else None
+    mask = _owner_mask(owner_v) if _owner_on() else {}
+    fam = {}                       # 2.318 r4: which family owns each claimed stroke (the verdict's detail: {ordinal: [state, family, ...]})
+    for o, rowv in ((getattr(owner_v, "detail", None) or {}).get("strokes") or {}).items():
+        if isinstance(rowv, (list, tuple)) and len(rowv) > 1 and isinstance(rowv[1], str):
+            try:
+                fam[int(o)] = rowv[1]
+            except (TypeError, ValueError):
+                pass
     for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         g = getattr(r.subject, "glyph", None)
         d = r.detail or {}
@@ -4136,6 +4144,8 @@ def _stroke_views(ev: Evidence, cell) -> list:
         if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4:
             continue
         out.append(_BS.StrokeView(
+            cut=(str(d.get("cut") or "") if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("0", "false", "no", "off") else ""),
+            family=(fam.get(g - STROKE_GLYPH_BASE, "") if (g - STROKE_GLYPH_BASE) in mask else ""),
             ordinal=g - STROKE_GLYPH_BASE, kind=mask.get(g - STROKE_GLYPH_BASE, str(r.value)), box=tuple(float(v) for v in box[:4]),
             length=float(d.get("length_spaces") or 0.0), thickness=float(d.get("thickness_spaces") or 0.0),
             sagitta=d.get("sagitta_spaces"), angle=float(d.get("angle_deg") or 0.0),
