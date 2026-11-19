@@ -139,6 +139,26 @@ class TestByTheStaffsInstrument(unittest.TestCase):
             self.assertEqual(c["two_voice_unison_marks_left_" + key], 2)        # the lone rest and the lone chord
             self.assertEqual(c["two_voice_unison_bars_" + key], 1)
 
+    def test_a_real_cello_double_stop_is_kept_whole(self):
+        # REAL: Litolff p16, the Cello staff, printed bar 256 (2/4): a double stop C2+G2 on one stem opens the bar in voice 1; the lower voice's
+        # three G2 eighths follow. Dumped from `_place_voices_in_time`'s own input (20261117-night, this tree). Same events, family set by the test.
+        import json
+        with open(os.path.join(os.path.dirname(__file__), "data_unison_string_chord_2_323_r2.json")) as f:
+            d = json.load(f)["cello_bar256_double_stop_p16"]
+        results = {}
+        for fam in (E.FAMILY_STRING, E.FAMILY_WIND):
+            events = copy.deepcopy(d["events"])
+            streams = [[events[i] for i in s] for s in d["streams"]]
+            counters = collections.Counter()
+            with mock.patch.dict(os.environ, {ENV: "1"}):
+                placed = E._place_voices_in_time(streams, d["meter"], d["divisions"], [], counters, family=fam)
+            self.assertIsNotNone(placed)
+            results[fam] = (_hidden_pitches(placed, d["divisions"]), counters)
+        self.assertEqual(sorted(results[E.FAMILY_STRING][0]), [("2", "C2"), ("2", "G2")])         # the double stop, whole, for both voices
+        self.assertEqual(results[E.FAMILY_STRING][1]["two_voice_unison_copies_kept_chord_whole"], 1)
+        self.assertEqual(results[E.FAMILY_WIND][0], [("2", "C2")])                                # the control can fail: a wind staff gives the lower only
+        self.assertEqual(results[E.FAMILY_WIND][1]["two_voice_unison_copies_kept_chord_lower"], 1)
+
     def test_the_family_comes_from_the_instrument_the_record_holds(self):
         for name, want in (("Bassoon", E.FAMILY_WIND), ("Horn", E.FAMILY_WIND), ("Violin", E.FAMILY_STRING), ("Cello", E.FAMILY_STRING),
                            ("Timpani", E.FAMILY_ONE_PLAYER), ("Harp", E.FAMILY_ONE_PLAYER), ("Piano", E.FAMILY_ONE_PLAYER),
