@@ -784,7 +784,17 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
     in ADJUDICATE, where `Q.CLEF` is ORDER 9 against `slot_index`'s 6 and
     would simply have read `None`.
     """
+    from . import clef_pagewide as _CP
     named: Dict[str, List[str]] = {}
+    if _CP.page_only_enabled():
+        # ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): GATHER's one clef reading is the page-wide pass's header read (a READ kind)
+        for o in _CP.header_reads(log.rows(Q.CLAIMED_AREA, staff)):
+            if (o.detail or {}).get("kind"):
+                named.setdefault(str(o.detail["kind"]), []).append(o.id)
+        if len(named) != 1:
+            return None, ()
+        (name, ids), = named.items()
+        return name, tuple(ids)
     for o in log.rows(Q.CLEF_GLYPH, staff):
         name = _clef_named_by(str(o.value))
         if name is not None:
@@ -806,6 +816,7 @@ def _clef_located_on(log: Log, staff: Subject) -> Optional[str]:
     stands alone or is itself contradicted -- never to choose a slot.
     """
     named = {str(o.value) for o in log.rows(Q.CLEF_LOCATED, staff) if o.value}
+    # ROADMAP 2.324: with OMR_CLEF_PAGE_ONLY the locator does not run -- there is no second reader to overrule the one reading
     return next(iter(named)) if len(named) == 1 else None
 
 
@@ -828,7 +839,8 @@ def _clef_located_on(log: Log, staff: Subject) -> Optional[str]:
     # ink; the verdict is an argument that already weighs the instrument this
     # rule is placing, and consuming it would close exactly the loop
     # `clef_correction.py:566` exists to prevent.
-    reads=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.CLEF_GLYPH),
+    reads=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.CLEF_GLYPH,
+           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide clef read (only with OMR_CLEF_PAGE_ONLY)
     scope=Kind.SYSTEM,
     sideways=True,
     bound=(

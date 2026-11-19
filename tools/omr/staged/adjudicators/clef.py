@@ -624,6 +624,29 @@ def _locator_terms(ev: Evidence) -> Dict[str, List[Term]]:
     return out
 
 
+#: ROADMAP 2.324: a start-of-staff clef the page-wide pass READ -- two witnesses of its own (the C clef's bar and bowls; the F clef's box
+#: and the dots on its line; the G clef's box and its ink past the staff) AND it stands on this staff's own lines: the weight a confident
+#: detector box standing on this staff carries today (`W_DETECTOR_HIGH` + `W_ON_THIS_STAFF`), so a page that spoke decides as it did
+W_PAGEWIDE = W_DETECTOR_HIGH + W_ON_THIS_STAFF
+
+
+def _pagewide_terms(ev: Evidence) -> Tuple[Dict[str, List[Term]], List[Any]]:
+    """ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): the page-wide pass's HEADER reads of this staff (`Q.CLAIMED_AREA`, source `clef_pagewide`,
+    `change: False`) -- the only page evidence `Q.CLEF` takes with the flag ON. Returns (terms by name, the C reads whose line was not
+    read: they support every C clef another source names, and name none themselves, like a `clefC` box)."""
+    from .. import clef_pagewide as CP
+    out: Dict[str, List[Term]] = {}
+    c_unread: List[Any] = []
+    for row in CP.header_reads(ev.rows(Q.CLAIMED_AREA)):
+        d = row.detail or {}
+        kind = d.get("kind")
+        if kind:
+            out.setdefault(str(kind), []).append(Term(f"clef_pagewide:{d.get('family')}", W_PAGEWIDE, (row.id,)))
+        elif d.get("family") == "C":
+            c_unread.append(row)
+    return out, c_unread
+
+
 def _carry_terms(ev: Evidence, *,
                  page_spoke: bool) -> Tuple[Dict[str, List[Term]], int]:
     """This part's own clef on another system, and the SUPPLIED one.
@@ -741,7 +764,8 @@ def _worst_case_margin(candidates: Dict[str, List[Term]],
     composed_from=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED),
     scope=Kind.STAFF,
     wants=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED,
-           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT),
+           Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT,
+           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide pass's header reads (read only with OMR_CLEF_PAGE_ONLY)
     reasons=("scored", "no_candidates", "margin_below_floor",
              "all_candidates_excluded"),
     mode=Mode.COMPETITIVE,
@@ -769,7 +793,16 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # ⚠️ THE GAP TEST IS THE READ EVIDENCE ONLY, and `page_spoke` is computed
     # BEFORE the supplied terms are built so it can never see them. A staff
     # the page said nothing about is the supplied clef's entire domain.
-    read = (detector_terms, _locator_terms(ev))
+    #
+    # ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): ON, the page evidence is the page-wide pass's header read ONLY -- the detector's cell-0
+    # read and the locator do not run (a human's `Q.CLEF_GLYPH` row still reaches `_detector_terms`: it is not a reader of ink).
+    from .. import clef_pagewide as _CP
+    pagewide_c_unread: List[Any] = []
+    if _CP.page_only_enabled():
+        pagewide_terms, pagewide_c_unread = _pagewide_terms(ev)
+        read = (detector_terms, _locator_terms(ev), pagewide_terms)
+    else:
+        read = (detector_terms, _locator_terms(ev))
     page_spoke = any(bool(source) for source in read)
     carried, seeds_withheld = _carry_terms(ev, page_spoke=page_spoke)
     for source in (*read, carried):
@@ -838,6 +871,10 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
                 Term("detector_c_family", W_C_FAMILY, (row.id,)))
         if not named_c:
             ev._declined.add(Q.CLEF_LOCATED)
+    # 2.324: a C clef the page-wide pass claimed with its line UNREAD supports every C clef another source named, and names none
+    for row in pagewide_c_unread:
+        for name in [n for n in candidates if n in C_CLEF_NAMES]:
+            candidates[name].append(Term("clef_pagewide_c_family", W_C_FAMILY, (row.id,)))
 
     if not candidates:
         # ⚠️ A contradiction, or an off-staff discount, still belongs in
