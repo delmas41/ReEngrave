@@ -20,7 +20,7 @@ def verdict(c):
             real.append("judged:" + str(j["value"]))
         elif k in ("not_a_note", "rest"):
             notreal.append("judged:" + str(j["value"]))
-        elif re.search(r"\bnot a (half|quarter|eighth|note)\b", a):
+        elif re.search(r"\bnot a (half|quarter|eighth|note)\b|part of an? ", a):
             notreal.append("judged:" + a[:30])
         elif re.search(r"(half|eighth|quarter|note head|notehead)", a) and "not a" not in a:
             real.append("judged:" + a[:30])

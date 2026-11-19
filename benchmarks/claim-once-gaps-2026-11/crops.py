@@ -31,6 +31,28 @@ if mode == "nonebeam":
         crop(c["page"], c["box"], "none_%02d_p%d_%s.png" % (i, c["page"], c["class"]), pad=30)
     json.dump(keep, open(out / "none_crops.json", "w"), indent=1)
     print(len(big), "components >=150px;", "saved", len(keep))
+elif mode == "beamnone":
+    heads = json.load(open(data / ("%s_heads2.json" % plate)))
+    comps = []
+    for pg in sorted({x["page"] for x in heads}):
+        z = page(pg)
+        m = z["none"] & np.isin(z["rolemap"], [1, 2, 3])
+        hb = np.zeros_like(m)
+        for x in heads:
+            if x["page"] == pg:
+                a, b, c, d = x["box"]
+                hb[b:d, a:c] = True
+        m &= ~hb
+        nlab, lab, stats, _c = cv2.connectedComponentsWithStats(cv2.dilate(m.astype(np.uint8), np.ones((3, 3), np.uint8)), connectivity=8)
+        for j in range(1, nlab):
+            x, y, w_, h_, a_ = stats[j]
+            px = int((m & (lab == j)).sum())
+            if px >= 60:
+                comps.append({"page": pg, "box": [int(x), int(y), int(x + w_), int(y + h_)], "px": px})
+    random.Random(int(sys.argv[6])).shuffle(comps)
+    print(len(comps), "beam-role no-owner components >=60 px outside head boxes, total px", sum(c["px"] for c in comps))
+    for i, c in enumerate(comps[:int(sys.argv[5])], 1):
+        crop(c["page"], c["box"], "beamnone_%02d_p%d.png" % (i, c["page"]), pad=40)
 elif mode == "subj":
     h = {x["subject"]: x for x in json.load(open(data / ("%s_heads2.json" % plate)))}
     for i, s in enumerate(sys.argv[5].split(","), 1):
