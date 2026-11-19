@@ -30,6 +30,12 @@ machine-readable form.
   nothing**: a rest box and a note box overlapping are two marks *"very close
   together"* (2026-09-29), and a whole rest in a bar refuses no notehead
   (2026-10-01, *"Leave the whole rest alone"*).
+- **In a bar with more than one voice, a single note or a single rest is unison** (Sean, 2026-11-19, SCOPE:
+  general). His words, asked whether to limit it to wind pairs: *I think it should be broader than wind pairs. If there's a rule, it should just be that if there is a measure with multiple voices in it, even if it goes down to a single note or a single rest, those are treated as unisons unless there is a solo marking in the score, giving instruction to go down to a single instrument.*
+  NEVER: never read the single note as one player alone, and never write a rest for the other player, unless a
+  solo marking is printed. OUR READING (not his words): "solo marking" covers "1.", "2.", "Solo"; no engraving
+  manual was reached, the Brahms print agrees where it can be checked (horns bars 91/93, one stem and two
+  ties; `benchmarks/voice-line-of-time-2026-11/FINDINGS.md`).
 - **Two silent voices on one staff share ONE whole rest** (Sean, 2026-11-17, SCOPE: general). His words, given
   to replace our vaguer wording: *"When two voices on the same staff both have a full measure of silence, it is
   standard to simplify to a single whole rest centered in the measure. Keeping two stacked whole rests in an
