@@ -912,6 +912,14 @@ def _value(base: float, levels: int, dots: int, scale: float,
             "beam_levels": levels, "head_fill": fill, "stem": stem}
 
 
+def _map_found_no_stem(m: "_Member") -> bool:
+    """ROADMAP 2.318 r6: the one beam count ran for this head and the stroke map held no stem for it (`state: silent`): its narrowing is "cannot
+    tell", not a reading of the stem's tip. False with the flag OFF (no such detail)."""
+    d = getattr(m.verdict, "detail", None) or {}
+    one = d.get("one_beam_count") if isinstance(d, dict) else None
+    return bool(m.narrowed and isinstance(one, dict) and one.get("state") == "silent")
+
+
 def _member_of(ev: Evidence, join: Any) -> Optional[_Member]:
     """The kept notehead a `Q.HEAD_STEM` verdict is about, or None where it is
     refused, another staff's copy, or a whole rest wearing a head's label."""
@@ -1078,6 +1086,14 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
             why["beam_at_tip"] = [m.key for m in beamed]
     else:
         readers = [m for m in tipwards if m.read and m not in hollow]
+        # ROADMAP 2.318 r6 (only with `OMR_ONE_BEAM_COUNT`: the detail exists only then). A head the stroke map found NO stem for said nothing
+        # about beams (its range is "cannot tell", rule 8); where another head of the SAME stem did read the stem's tip, that reading is the
+        # stem's (page fact: every note on one stem shares one written value). Round 5 let the silent head speak first, so one head of a chord
+        # the map could not join took the value from the whole stem (Brahms p15 1/9/6: three dotted quarters written quarters).
+        spoke = [m for m in readers if not _map_found_no_stem(m)]
+        if spoke and len(spoke) < len(readers):
+            why["levels_not_from_map_silent"] = [m.key for m in readers if m not in spoke]
+            readers = spoke
         if readers:
             first = readers[0]
             levels_opts = {o[1] for o in first.options}

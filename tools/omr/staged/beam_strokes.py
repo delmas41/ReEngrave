@@ -193,6 +193,53 @@ def _face_joined(s: StrokeView, v: StrokeView, by_ord: Optional[Dict[int, Stroke
     return (g * sp - piece) / sp <= FACE_JOIN_MAX_SPACES
 
 
+#: 2.318 r6: A BEAM ENDS ON ITS OUTER STEMS (Sean 2026-10-09: a beam connects its note to another note; 2026-10-28: "the beam covers the width of where
+#: those notes with stems occur ... they were all 8th notes that belong to that beam even though the ink is broken"). The map sometimes ends a beam's
+#: stroke a hair short of its FIRST or LAST stem (the corner where they meet goes to neither stroke): Litolff p2 0/8/0, p15 1/8/17, beamed eighths whose
+#: first note read "no beam". A stem that stands just past a beam's end, its own end LEVEL with the beam's outer face there, is that beam's outer stem.
+#: MEASURED on the tile pages (every beam-shaped stroke end against the nearest stem-length vertical beyond it, level within `END_JOIN_LEVEL_SPACES`, not
+#: touching): the paper between is 0.3-0.5 sp for 9 (Litolff 7, Brahms 2: the unjoined outer stems), one at 0.7, 1.0 sp and more for 37 (the next
+#: note's stem). The cut is `JOIN_MAX_GAP_SPACES` (0.5, 2.202b's own). Never a stem whose end is not level with the beam, never across more paper.
+END_JOIN = True
+END_JOIN_LEVEL_SPACES = 0.3
+
+
+def _end_joined(s: StrokeView, v: StrokeView, end_y: Optional[float] = None) -> bool:
+    """The vertical `v` stands just beyond an END of the horizontal stroke `s` (outside its run) with its own end (`end_y`; either end when None)
+    level with the beam's outer face at that end."""
+    if not END_JOIN or len(s.ends) < 4 or s.kind != "horizontal" or s.thickness < BEAM_MIN_THICKNESS_SP:
+        return False
+    if v.length < SHORT_STEM_SPACES:
+        return False        # a stem, not a head's outline piece (Sean's L10, Litolff p2 0/10/1/5: a 1.9 sp sliver beside a head made its stub "a beam")
+    sp = s.space_px if s.space_px > 0 else 1.0
+    x0, y0, x1, y1 = s.ends[:4]
+    if x0 > x1:
+        x0, y0, x1, y1 = x1, y1, x0, y0
+    vx0, vx1 = v.box[0], v.box[0] + v.box[2]
+    if vx1 <= x0 + 0.1 * sp:
+        gap, ey = x0 - vx1, y0
+    elif vx0 >= x1 - 0.1 * sp:
+        gap, ey = vx0 - x1, y1
+    else:
+        return False
+    if gap > JOIN_MAX_GAP_SPACES * sp:
+        return False
+    # `ends` are the stroke's extreme PIXELS, somewhere in its band, not its centre line: the band at this end lies within one thickness of `ey`
+    # either way and inside the stroke's own extent.
+    th = s.thickness * sp
+    lvl = END_JOIN_LEVEL_SPACES * sp
+    v_top, v_bot = v.box[1], v.box[1] + v.box[3]
+
+    def at_top(y: float) -> bool:        # a stem hanging below the beam ends at the band's TOP face
+        return max(ey - th, s.box[1]) - lvl <= y <= ey + lvl
+
+    def at_bottom(y: float) -> bool:     # a stem standing above it ends at the band's BOTTOM face
+        return ey - lvl <= y <= min(ey + th, s.box[1] + s.box[3]) + lvl
+    if end_y is None:
+        return at_top(v_top) or at_bottom(v_bot)
+    return (abs(end_y - v_top) < 1.0 and at_top(end_y)) or (abs(end_y - v_bot) < 1.0 and at_bottom(end_y))
+
+
 def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = False, trough: bool = False) -> Dict[str, object]:
     """The role of one stroke and the signed margins that say how close it came. Pure; reads `s` and the kinds of its neighbours.
 
@@ -209,7 +256,7 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = F
         # stem tip touches no stem, and was taken for a broken beam -- FINDINGS 5i)
         gap_stems = sorted(v.ordinal for v in by_ord.values()
                            if v.kind == "vertical" and v.length <= STEM_MAX_SPACES and v.ordinal not in stems and v.ordinal != s.ordinal
-                           and _face_joined(s, v, by_ord))
+                           and (_face_joined(s, v, by_ord) or _end_joined(s, v)))
         stems = sorted(stems + gap_stems)
     nv = len(stems)
     out: Dict[str, object] = {"stems": nv, "stem_ordinals": stems, "stems_by_face": gap_stems, "thickness": s.thickness, "length": s.length,
@@ -384,6 +431,8 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 yc = _centre_y(s, stem)
                 if yc is not None and ((side == "up" and yc < tip_y) or (side == "down" and yc > tip_y)) and _face_joined(s, stem, by_ord):
                     joined.append(s)
+                elif _end_joined(s, stem, tip_y):
+                    joined.append(s)          # 2.318 r6: the beam's outer stem, a hair past the stroke's end
                 continue
             if _box_gap(s.box, stem.box) > JOIN_MAX_GAP_SPACES * sp:
                 continue
@@ -617,8 +666,52 @@ SHORT_STEM_SPACES = 2.5
 BOTH_WAYS_BOTH = True
 
 
-def _bridged(v: StrokeView, ink_boxes: Sequence[Sequence[float]], head_h: float) -> bool:
+#: 2.318 r6: THE FREE END IS THE TIP (a vertical that passes a head both ways, no direction verdict). A stem is attached at its head's side and leaves it
+#: toward one end; the other end only just passes the head. MEASURED on the tile pages (20261117-night, every vertical touching a head's ink and passing
+#: its box both ways): the SHORTER overshoot is 0.0-0.67 sp for 125 strokes (Litolff 113, Brahms 12: a stem's foot) and 0.9 sp or more for 32 (a chord's
+#: stem running on to its next head: a third is a full space away); nothing between 0.67 and 0.9. Real controls: Sean's rhythm-leftovers-2 tile 10
+#: (Litolff p2 0/3/1/2, an eighth: a neighbour's stem passing 0.22 sp below the head made "several stems") and Litolff p2 0/5/1/2 (a chord's stem whose
+#: far end is the lower head). Never: an end that is the only one, or two ends that both run free, is not chosen by this.
+FREE_END_IS_THE_TIP = True
+FOOT_MAX_PAST_HEAD_SPACES = 0.75
+#: Another head's ink "sits at" a stem's end where it touches the stroke and its extent holds the end, within this (a head is ~1.2 sp tall).
+HEAD_AT_END_SLACK_SPACES = 0.3
+
+
+def _head_ink_at_end(strokes: Sequence[StrokeView], v: StrokeView, side: str, own_ink: set) -> bool:
+    """Ink of ANOTHER notehead (a stroke a head has claimed, not this head's own) touches the vertical `v` and holds its `side` end."""
     sp = v.space_px if v.space_px > 0 else 1.0
+    y = v.box[1] if side == "up" else v.box[1] + v.box[3]
+    touching = {j for j, _c in v.touches}
+    for s in strokes:
+        if s.ordinal not in touching or s.ordinal in own_ink or s.family != "head":
+            continue
+        if s.box[1] - HEAD_AT_END_SLACK_SPACES * sp <= y <= s.box[1] + s.box[3] + HEAD_AT_END_SLACK_SPACES * sp:
+            return True
+    return False
+
+
+#: 2.318 r6: the same hair of paper END-ON: the stem stands over the head's own ink column and stops just short of it (Brahms p17 0/3/2, 0/3/3: a down
+#: stem 0.13 sp below its head). MEASURED on the tile pages, heads with no stem in the map and a stem-length vertical end-on in their column: the paper
+#: between is 0.01-0.24 sp for 9 (Brahms five at 0.13, the gap 2.161 measured side-on), 0.37 for one whose stem the map cut at the head's own ledger
+#: line, then 0.62, 0.62, 1.15. `ONE_STEM_BRIDGE_MAX_GAP_SPACES` (0.35) is the cut; where the stem's ink touches a ledger line's ink (the rung that
+#: cut it: `ONE_STEM_BREAK_MAX_GAP_SPACES`, 0.6, the stem-cut-by-a-crossing number) the cut is that. Never across more paper, never off the column.
+END_ON_BRIDGE = True
+#: ...and only a stroke long enough to be the free part of a stem: the nine bridged stems are 2.4-4.6 sp long; a 1.6 sp upright over a head between
+#: ledger lines was the next chord note's own body (Litolff p15 0/0/5: it made "several stems" of a note written today).
+END_ON_MIN_LENGTH_SPACES = 2.0
+
+
+def _bridged(v: StrokeView, ink_boxes: Sequence[Sequence[float]], head_h: float, cut_by_ledger: bool = False) -> bool:
+    sp = v.space_px if v.space_px > 0 else 1.0
+    if END_ON_BRIDGE and v.length >= END_ON_MIN_LENGTH_SPACES:
+        cx = v.box[0] + v.box[2] / 2.0
+        limit = (ONE_STEM_BREAK_MAX_GAP_SPACES if cut_by_ledger else ONE_STEM_BRIDGE_MAX_GAP_SPACES) * sp
+        for b in ink_boxes:
+            if b[0] <= cx <= b[0] + b[2]:
+                gap = max(b[1] - (v.box[1] + v.box[3]), v.box[1] - (b[1] + b[3]))
+                if 0.0 <= gap <= limit:
+                    return True
     for b in ink_boxes:
         dy = min(v.box[1] + v.box[3], b[1] + b[3]) - max(v.box[1], b[1])
         if dy < 0.4 * min(head_h, b[3]):                       # level with the head's ink (the same share `stem_strokes` asks)
@@ -627,6 +720,24 @@ def _bridged(v: StrokeView, ink_boxes: Sequence[Sequence[float]], head_h: float)
         if gap <= ONE_STEM_BRIDGE_MAX_GAP_SPACES * sp:
             return True
     return False
+
+
+#: 2.318 r6: THE LAST NOTE BEFORE A BARLINE. Litolff sets the last note of a beamed group so close to the barline that its stem and the barline are one
+#: ink; the barline claims first (CLAUDE section 3), so the map files the stem as the barline's and the head had "no stem" (Litolff p2 1/9/7, p3 0/8/0,
+#: p6 1/8/8, 1/9/8: beamed eighths that lost their value). A later reader may READ claimed ink, never take it: an upright stroke of a stem's length that
+#: a barline has claimed is read as the head's stem where a beam-thick flat stroke touches it -- a barline carries no beam, a stem does. Structural.
+#: Never without the beam: a barline's own piece beside a head is not a stem, and the head stays "no stem in the map".
+STEM_IN_A_BARLINE = True
+
+
+def _stem_in_a_barline(strokes: Sequence[StrokeView], v: StrokeView) -> bool:
+    if not STEM_IN_A_BARLINE or v.kind not in ("owned", "contested") or v.family != "barline" or v.length < SHORT_STEM_SPACES:
+        return False
+    if v.box[3] < 4.0 * v.box[2]:
+        return False                    # upright: at least four times as tall as wide
+    touching = {j for j, _c in v.touches}
+    return any(s.ordinal in touching and s.kind == "horizontal" and s.thickness >= BEAM_MIN_THICKNESS_SP and s.length >= BEAM_SHAPE_MIN_LENGTH_SPACES
+               for s in strokes)
 
 
 def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side: Optional[str] = None) -> Dict[str, object]:
@@ -642,15 +753,17 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
     hcx, hcy = hx + hw / 2.0, hy + hh / 2.0
     ink = _head_reach(strokes, head_box)
     ink_boxes = [s.box for s in strokes if s.ordinal in ink]
+    ledger_ords = {s.ordinal for s in strokes if s.family == "ledger"}
     found: Dict[str, List[StrokeView]] = {"up": [], "down": []}
     for v in strokes:
-        if v.kind != "vertical" or v.length > STEM_MAX_SPACES:
+        if v.length > STEM_MAX_SPACES or not (v.kind == "vertical" or _stem_in_a_barline(strokes, v)):
             continue
         sp = v.space_px if v.space_px > 0 else 1.0
         osl = _outline_slack(v)
         if v.box[1] >= hy - osl * sp and v.box[1] + v.box[3] <= hy + hh + osl * sp and not _covers_head(v, head_box):
             continue                    # a vertical piece wholly inside the head's own extent is the head's outline, not a stem that leaves it
-        if not (_covers_head(v, head_box) or any(j in ink for j, _c in v.touches) or (BRIDGE and _bridged(v, ink_boxes, hh))):
+        if not (_covers_head(v, head_box) or any(j in ink for j, _c in v.touches)
+                or (BRIDGE and _bridged(v, ink_boxes, hh, cut_by_ledger=any(j in ledger_ords for j, _c in v.touches)))):
             continue
         dirs = [side] if side in ("up", "down") else ["up", "down"]
         ok = []
@@ -670,6 +783,19 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
         # BOTH_WAYS_BOTH: with no direction verdict and a stroke that runs past the head BOTH ways (a chord's stem through its inner head, or a stem that
         # serves a neighbour's head too: Litolff p2 0/0/5/1/2, where the farther end is the neighbour's), which end is THIS head's tip is not on the ink:
         # both ends are read (two stems, one each way) and the head's count is the lower to the higher -- read where they agree, marked where they differ.
+        if len(ok) == 2 and FREE_END_IS_THE_TIP:
+            # 2.318 r6. A stem leaves its head toward ONE free end. Of a vertical that passes the head both ways:
+            #  (a) the end that barely passes the head is where the stem is ATTACHED (its foot), never a tip (`FOOT_MAX_PAST_HEAD_SPACES`);
+            #  (b) the end where ANOTHER notehead's ink sits on the stroke is that head's place on a chord's stem, never a tip.
+            # One end left: that is the tip. Both or neither: not told apart here, both are read as before.
+            past = {"up": (hy - v.box[1]) / sp, "down": (v.box[1] + v.box[3] - (hy + hh)) / sp}
+            free = [t for t in ok if past[t[0]] >= FOOT_MAX_PAST_HEAD_SPACES]
+            if len(free) == 1:
+                ok = free
+            else:
+                free = [t for t in ok if not _head_ink_at_end(strokes, v, t[0], ink)]
+                if len(free) == 1:
+                    ok = free
         if len(ok) == 2 and not BOTH_WAYS_BOTH:
             ok = [max(ok, key=lambda t: t[1])] if ok[0][1] != ok[1][1] else []      # the farther end is the tip (the old rule)
         for sd, _d in ok:
@@ -841,6 +967,99 @@ THIN_LINE_TIP = True
 CUT_TIP = False
 
 
+STUB_STACKS_ON_THE_BEAM = True
+#: 2.318 r6: how far ALONG the beam (staff spaces) the nearest double-thick stretch may lie from a stem and still leave "one beam or two" open at that
+#: stem. MEASURED on the tile pages, every stem under a stroke that is double over part of its run (Brahms p17, p4: a group whose second beam covers
+#: only some notes; the profile has 12 samples, 0.6-1.1 sp apart): the nearest thick sample is 0.05-0.97 sp away for 40 stems -- Sean's four judged
+#: sixteenths B01, B04, B06, B10 at 0.50, 0.27, 0.22, 0.45 -- and 3.0-5.8 sp away for 14 (the notes under the single part; 8 of them written eighths
+#: today and marked by round 5); nothing between 0.97 and 3.0. The cut stands in the gap, two samples of the coarsest profile from the near side.
+THICK_REACH_SPACES = 2.0
+
+
+def _thick_stretch_distance(s: StrokeView, x: float) -> Optional[float]:
+    """Staff spaces along the stroke from page-x `x` to its nearest profile sample as thick as a double beam; None where no sample is (or no
+    profile was filed: then nothing is known about where the thick part lies)."""
+    n = len(s.profile)
+    sp = s.space_px if s.space_px > 0 else 1.0
+    if n < 3 or s.box[2] <= 0:
+        return None
+    best = None
+    for i, p in enumerate(s.profile):
+        if p / 16.0 >= FUSED_LOCAL_MIN_SPACES:
+            d = abs(s.box[0] + s.box[2] * i / (n - 1) - x) / sp
+            best = d if best is None or d < best else best
+    return best
+
+
+#: 2.318 r6: A MARK AT A BARE TIP THAT MAY BE A FLAG OR A BROKEN BEAM (rule 8). Round 5 read "no beam" and wrote a plain quarter wherever the tip held only
+#: a stroke the map could not call a hook or a beam. Two shapes are not "nothing": (a) a CURVED stroke hanging from the stem, too long for the hook cut
+#: (`hook_or_stub`), that touches no letter's ink -- a flag drawn long (Litolff p13 0/1/8: two flagged notes written quarters); (b) a FLAT stroke as
+#: thick as a beam whose band starts at the tip and that the map joins to no second stem -- a beam whose other stem is lost in a clot (Brahms p17
+#: 0/11/2, 0/12/3: dotted eighths under a beam written dotted quarters). The note is MARKED between its head's value and one level; the flag reader
+#: still speaks first. MEASURED on the tile pages: it marks 5 notes round 5 newly wrote plain (all 5 were marked with the flag OFF too) and none that is
+#: written with the flag OFF. Never a stroke deeper than the first level (`STUB_FIRST_LEVEL_SPACES`: ledger lines 1.3-3.4 sp in from the tip, 21 notes
+#: written quarters today), never one touching a barline (a staff-long remnant, Brahms p15 0/3/6) or -- the curve -- a dynamic's or word's ink.
+MARK_AT_BARE_TIP = True
+STUB_FIRST_LEVEL_SPACES = 0.6
+
+
+def _may_be_flag_or_broken_beam(strokes: Sequence[StrokeView], s: StrokeView, tip_y: float, side: str) -> bool:
+    sp = s.space_px if s.space_px > 0 else 1.0
+    by_o = {t.ordinal: t for t in strokes}
+    fams = {by_o[j].family for j, _c in s.touches if j in by_o and by_o[j].kind in ("owned", "contested")}
+    if s.kind == "curve":
+        return not (fams & set(FUSABLE_FAMILIES))
+    if s.kind != "horizontal" or s.thickness < BEAM_MIN_THICKNESS_SP or abs(s.angle) > BEAM_SHAPE_MAX_ANGLE or "barline" in fams:
+        return False
+    cy = s.box[1] + s.box[3] / 2.0
+    inward = ((cy - tip_y) if side == "up" else (tip_y - cy)) / sp
+    return -TIP_OUTWARD_SPACES <= inward <= STUB_FIRST_LEVEL_SPACES
+
+
+#: 2.318 r6: A STEM ENDS AT ITS BEAM. Litolff prints `ff` hard under a beamed group and the scan merges the stem with the letter's own upright, so the
+#: map's vertical runs on past the beam and its "tip" is inside the letter, where no beam is (Litolff p13 1/1/8, p2 0/2/5: beamed eighths read "no
+#: beam"). Where the stem's ink TOUCHES a beam beyond the head and, past that beam, touches ink a dynamic or a word has claimed, the stem ends at the
+#: beam's outer face and the beams are counted from there. Structural, no number. Never where the ink past the stroke touches no letter: a stem that
+#: runs on through a ledger line or a row of heads (Litolff p15 0/0/19, quarters above the staff) has not been shown to end there.
+STEM_ENDS_AT_ITS_BEAM = True
+
+
+def _stem_cut_at_its_beam(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str,
+                          head_box: Sequence[float]) -> Optional[StrokeView]:
+    """The stem shortened to the outer face of the outermost beam its ink touches beyond the head, where past that face it touches a dynamic's or
+    a word's ink; None where it does not (module comment above)."""
+    import dataclasses
+    sp = stem.space_px if stem.space_px > 0 else 1.0
+    hy, hh = float(head_box[1]), float(head_box[3])
+    bx, by, bw, bh = stem.box
+    by_o = {s.ordinal: s for s in strokes}
+    touching = [by_o[j] for j, _c in stem.touches if j in by_o]
+    best = None
+    for s in touching:
+        if s.kind != "horizontal" or role_by_ord.get(s.ordinal, {}).get("role") != "beam" or _covers_head(s, head_box):
+            continue
+        yc = _centre_y(s, stem)
+        if yc is None:
+            yc = s.box[1] + s.box[3] / 2.0
+        if not ((yc < hy) if side == "up" else (yc > hy + hh)):
+            continue
+        face = (yc - s.thickness * sp / 2.0) if side == "up" else (yc + s.thickness * sp / 2.0)
+        if best is None or ((face < best) if side == "up" else (face > best)):
+            best = face
+    if best is None:
+        return None
+    if not any(s.family in FUSABLE_FAMILIES and s.kind in ("owned", "contested")
+               and ((s.box[1] < best) if side == "up" else (s.box[1] + s.box[3] > best)) for s in touching):
+        return None
+    y0, y1 = (best, by + bh) if side == "up" else (by, best)
+    if y1 - y0 <= 0:
+        return None
+    # what the ink touches wholly past the beam's face is the letter's side of the join, not the stem's
+    keep = tuple((j, c) for j, c in stem.touches
+                 if j in by_o and not ((by_o[j].box[1] + by_o[j].box[3] <= best) if side == "up" else (by_o[j].box[1] >= best)))
+    return dataclasses.replace(stem, box=(bx, y0, bw, y1 - y0), length=(y1 - y0) / sp, touches=keep)
+
+
 def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float], side: Optional[str],
                finder_stem: bool = True) -> Dict[str, object]:
     """THE ONE BEAM COUNT of the stem(s) of the head at `head_box`. Pure.
@@ -861,15 +1080,38 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
         tip = tip_reading(strokes, role_by_ord, stem, sd, head_box=head_box, face_join=True)
         n = len(tip["beams"])
         causes: List[str] = []
+        if n == 0 and STEM_ENDS_AT_ITS_BEAM:
+            cut = _stem_cut_at_its_beam(strokes, role_by_ord, stem, sd, head_box)
+            if cut is not None:
+                stem = cut
+                tip = tip_reading(strokes, role_by_ord, stem, sd, head_box=head_box, face_join=True)
+                n = len(tip["beams"])
         extra = 0
         # A stub at the tip of a stem that already has a beam is a candidate SECOND level (a partial beam: Sean 2026-10-09, "a beam must not only connect to
         # its note but also to another note"). With no beam at all it is a flag-shaped hook, the flag reader's mark, and cannot make the count unreadable.
-        if tip["stubs"] and n >= 1:
+        stubs_here = list(tip["stubs"])
+        if stubs_here and n >= 1 and STUB_STACKS_ON_THE_BEAM:
+            # 2.318 r6: a second beam lies ONE beam-spacing in from the first (`STACK_GAP_SPACES`, the rule the levels themselves are stacked by). A
+            # short bar farther in is not a beam: measured on the tile pages, all 19 stubs beside a counted beam stand 2.0-3.1 sp from it (ledger
+            # lines 0.19-0.31 thick by the head, an accidental's or a dynamic's ink) -- one stands 1.2 -- and 11 of those notes are written today
+            # and were being marked. Never drops a stub that starts where the next level would.
+            sp_ = stem.space_px if stem.space_px > 0 else 1.0
+            tip_y_ = float(tip["tip_y"])
+
+            def _edges(s: StrokeView) -> Tuple[float, float]:        # (outer, inner) edge, staff spaces inward of the tip
+                y0, y1 = s.box[1], s.box[1] + s.box[3]
+                return ((y0 - tip_y_) / sp_, (y1 - tip_y_) / sp_) if sd == "up" else ((tip_y_ - y1) / sp_, (tip_y_ - y0) / sp_)
+            reach = max(_edges(by_o[o])[1] for o in tip["beams"]) + STACK_GAP_SPACES
+            stubs_here = [o for o in stubs_here if _edges(by_o[o])[0] <= reach]
+        if stubs_here and n >= 1:
             causes.append("stub")
-            extra += len(tip["stubs"])
+            extra += len(stubs_here)
         if tip["doubt"]:
             causes.append("doubt")
             extra += len(tip["doubt"])
+        if n == 0 and tip["stubs"] and MARK_AT_BARE_TIP and any(_may_be_flag_or_broken_beam(strokes, by_o[o], tip["tip_y"], sd) for o in tip["stubs"]):
+            causes.append("mark_at_bare_tip")
+            extra += 1
         if n == 0 and not tip["stubs"] and not tip["doubt"] and not tip["hooks"]:
             # Where the tip counts no beam, "none" is only as good as what the map saw at the tip (rule 8): claimed ink the stem's end touches may have a
             # beam in it (`claimed_ink_at_tip`); a stem that runs into the cell crop's edge has its tip out of sight. Neither is "no beam".
@@ -896,7 +1138,12 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
             # over part of its run (`FUSED_DOUBLE_MIN_THICKNESS_SPACES` on its median) and thin here -- a second beam that STARTS at a later stem
             # reads thin over the first stems (Brahms B01, a wedge). The tip reading's own outer-edge test (a slab 3 sp inward is a head cluster)
             # is what it needs to DECIDE a double; a beam it already counted at this tip needs none to be called possibly double.
-            if (FUSED_LOCAL_MIN_SPACES <= corr < FUSED_MAX_THICKNESS_SPACES) or s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES:
+            # 2.318 r6, (b) only: ...but a second beam is counted only at the stems it REACHES. Where the stroke's thick stretch (a profile sample as
+            # thick as a double beam, `FUSED_LOCAL_MIN_SPACES`) lies more than `THICK_REACH_SPACES` along the beam from this stem, the stem stands
+            # under the single part: one beam, read (`_thick_stretch_distance`).
+            far = _thick_stretch_distance(s, sx)
+            double_elsewhere = s.thickness >= FUSED_DOUBLE_MIN_THICKNESS_SPACES and not (far is not None and far > THICK_REACH_SPACES)
+            if (FUSED_LOCAL_MIN_SPACES <= corr < FUSED_MAX_THICKNESS_SPACES) or double_elsewhere:
                 thick.append({"stroke": o, "here": round(here, 3), "corrected": round(corr, 3), "median": round(s.thickness, 3)})
             elif STEP_NARROW and len(s.profile) >= 6 and here - thin_part(s) >= STEP_AT_STEM_SPACES:
                 # (c) THIS stem's stretch of the beam is thicker than the same beam's thin part, as a second beam that starts here is (Brahms B09: a

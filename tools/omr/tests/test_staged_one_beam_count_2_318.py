@@ -123,13 +123,73 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         with mock.patch.object(BS, "HEAD_OUTLINE_SLACK_SPACES", BS.STEM_MATCH_X_SLACK_SPACES):
             self.assertEqual(new_count(NOTES["glyph/2/0/9/0/0"])["certain"], 0)             # the control fails without it
 
-    def test_a_stem_that_runs_past_a_head_both_ways_with_no_verdict_is_read_from_both_ends(self):
-        # Litolff p2 0/0/5/1/2 (not judged; today an eighth): one 7.6 sp vertical beside the head runs past it both ways; the farther end is the NEIGHBOUR's.
-        # Read from both ends the counts differ: marked, never the farther end's quarter.
+    def test_a_stem_that_runs_past_a_head_both_ways_with_no_verdict_is_read_at_its_free_end(self):
+        # Litolff p2 0/0/5/1/2 (not judged; today an eighth): one 7.6 sp vertical beside the head runs past it both ways; the farther end is where the
+        # chord's LOWER head sits. r5 read both ends and marked the note; r6: the end another head sits on is not a tip, the free end is -- one beam.
         c = new_count(NOTES["glyph/2/0/5/1/2"])
-        self.assertEqual(c["state"], "narrowed")
-        with mock.patch.object(BS, "BOTH_WAYS_BOTH", False):
-            self.assertEqual(new_count(NOTES["glyph/2/0/5/1/2"])["state"], "read")           # the old rule wrote one value
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "FREE_END_IS_THE_TIP", False):
+            self.assertEqual(new_count(NOTES["glyph/2/0/5/1/2"])["state"], "narrowed")       # r5: both ends, marked
+            with mock.patch.object(BS, "BOTH_WAYS_BOTH", False):
+                self.assertEqual(new_count(NOTES["glyph/2/0/5/1/2"])["state"], "read")       # r4: the farther end's one value
+
+    # ── round 6: each control is the real stroke rows of the note named; each fails with its rule switched off ──────────────────────────────────
+
+    def test_r6_seans_eighth_beside_a_neighbours_stem_is_read_not_several_stems(self):
+        # Sean's rhythm-leftovers-2 tile 10 (Litolff p2 0/3/1/2, an eighth): the neighbour's stem passes 0.22 sp below this head. An end that barely
+        # passes the head is a stem's foot, not a tip.
+        c = new_count(NOTES["glyph/2/0/3/1/2"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "FREE_END_IS_THE_TIP", False):
+            self.assertEqual(new_count(NOTES["glyph/2/0/3/1/2"])["why"], "several_stems")
+
+    def test_r6_a_beam_ends_on_its_outer_stem(self):
+        c = new_count(NOTES["glyph/2/0/8/0/3"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "END_JOIN", False):
+            self.assertEqual(new_count(NOTES["glyph/2/0/8/0/3"])["certain"], 0)             # r5 wrote a quarter
+        # never Sean's L10: a 1.9 sp sliver of a head beside a stub does not make the stub a beam (the note stays marked one or two)
+        k = next(k for k, n in NOTES.items() if n["tile"] == "L10")
+        self.assertEqual((new_count(NOTES[k])["certain"], new_count(NOTES[k])["possible"]), (1, 2))
+
+    def test_r6_a_stem_ends_at_its_beam_where_its_ink_runs_on_into_a_letter(self):
+        c = new_count(NOTES["glyph/13/1/1/8/0"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "STEM_ENDS_AT_ITS_BEAM", False):
+            self.assertEqual(new_count(NOTES["glyph/13/1/1/8/0"])["certain"], 0)
+        # never: a stem that runs on through a ledger line / a row of heads and touches no letter is not cut there (a quarter stays a quarter)
+        self.assertEqual(new_count(NOTES["glyph/15/0/0/19/2"])["certain"], 0)
+
+    def test_r6_a_mark_at_a_bare_tip_that_may_be_a_flag_or_a_broken_beam_marks_the_note(self):
+        for k in ("glyph/13/0/1/8/3", "glyph/17/0/12/3/0"):
+            c = new_count(NOTES[k])
+            self.assertEqual((c["state"], c["certain"], c["possible"]), ("narrowed", 0, 1), k)
+            with mock.patch.object(BS, "MARK_AT_BARE_TIP", False):
+                self.assertEqual(new_count(NOTES[k])["state"], "read", k)                    # r5: "no beam", a plain quarter
+
+    def test_r6_the_last_note_before_a_barline_reads_its_stem_in_the_barlines_ink(self):
+        c = new_count(NOTES["glyph/2/1/9/7/4"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "STEM_IN_A_BARLINE", False):
+            self.assertEqual(new_count(NOTES["glyph/2/1/9/7/4"])["state"], "silent")
+
+    def test_r6_a_stem_a_hair_short_of_its_head_end_on_is_its_stem(self):
+        c = new_count(NOTES["glyph/17/0/3/2/3"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "END_ON_BRIDGE", False):
+            self.assertEqual(new_count(NOTES["glyph/17/0/3/2/3"])["state"], "silent")
+
+    def test_r6_a_second_beam_is_counted_only_at_the_stems_it_reaches(self):
+        c = new_count(NOTES["glyph/17/0/9/4/2"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "THICK_REACH_SPACES", 99.0):
+            self.assertEqual(new_count(NOTES["glyph/17/0/9/4/2"])["state"], "narrowed")     # r5 marked it one or two
+
+    def test_r6_a_ledger_line_far_from_the_beam_is_not_a_second_beam(self):
+        c = new_count(NOTES["glyph/4/0/10/6/1"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "STUB_STACKS_ON_THE_BEAM", False):
+            self.assertEqual(new_count(NOTES["glyph/4/0/10/6/1"])["state"], "narrowed")
 
     def test_the_four_brahms_second_beam_sixteenths_are_marked_never_an_eighth(self):
         for tile in ("B01", "B04", "B06", "B10"):

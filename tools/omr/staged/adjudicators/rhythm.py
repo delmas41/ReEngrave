@@ -5481,7 +5481,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         beam_evidence = "none_over_this_note"
     if one_beam is not None:
         # 2.318 r3: the stroke map ran for this head (the CV bar reader's state is not its evidence): a count is `read`; none is the stem it read
-        beam_evidence = "read" if levels else "none_over_this_note"
+        # 2.318 r6: ...and where it counts NO beam the state is the one an unbeamed stem always had (`reader_declined` in a cell the bar reader
+        # accepted nothing in, else `none_over_this_note`). Round 5 wrote `none_over_this_note` for every such head, which sent the heads of
+        # beamless cells to the stem-tip flag look for the first time: it read a ledger line and the word `Vcl.` as hooks (Litolff p15 1/1/14,
+        # 0/10/12: quarters written eighths or marked). Flags stay with the flag reader EXACTLY as today -- the count changes the beams, not who is
+        # asked about flags.
+        if levels:
+            beam_evidence = "read"
 
     flags, flag_levels = _attached_flags(ev, cell, attached, tol)
     # ⚠️⚠️ ROADMAP 2.83: A HEAD WHOSE STEM ONLY THE RULER READ carries the flag the detector boxed at THAT stem's tip. The CV
