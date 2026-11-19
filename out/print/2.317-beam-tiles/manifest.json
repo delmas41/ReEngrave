@@ -1,0 +1,413 @@
+{
+ "note": "Built from out/print/2.317-beam-tiles-key.json. The 1-24 -> B01-B12/L01-L12 numbering is OUR reading of Sean's spoken tile numbers, not confirmed by him.",
+ "tiles": [
+  {
+   "id": "L01",
+   "tile": 1,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/6/0/2/10/0",
+   "page": 6,
+   "system": 0,
+   "staff": 2,
+   "bar": "10",
+   "page_box": [
+    2236.9225,
+    682.2525,
+    2261.8075,
+    703.515
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L02",
+   "tile": 2,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/15/1/4/14/5",
+   "page": 15,
+   "system": 1,
+   "staff": 4,
+   "bar": "14",
+   "page_box": [
+    1921.195,
+    2777.625,
+    1944.445,
+    2797.775
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L03",
+   "tile": 3,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/2/0/8/16/0",
+   "page": 2,
+   "system": 0,
+   "staff": 8,
+   "bar": "16",
+   "page_box": [
+    2556.52,
+    1623.08,
+    2581.32,
+    1645.0
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L04",
+   "tile": 4,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/3/0/5/2/2",
+   "page": 3,
+   "system": 0,
+   "staff": 5,
+   "bar": "2",
+   "page_box": [
+    919.9825,
+    1224.56,
+    943.135,
+    1245.665
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L05",
+   "tile": 5,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/15/1/4/6/6",
+   "page": 15,
+   "system": 1,
+   "staff": 4,
+   "bar": "6",
+   "page_box": [
+    1157.46,
+    2767.395,
+    1183.655,
+    2802.27
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L06",
+   "tile": 6,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/6/0/6/9/6",
+   "page": 6,
+   "system": 0,
+   "staff": 6,
+   "bar": "9",
+   "page_box": [
+    2061.7475,
+    1338.2,
+    2084.7425,
+    1358.675
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L07",
+   "tile": 7,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/15/1/1/6/1",
+   "page": 15,
+   "system": 1,
+   "staff": 1,
+   "bar": "6",
+   "page_box": [
+    1155.77,
+    2326.3375,
+    1181.7575,
+    2347.4425
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L08",
+   "tile": 8,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/6/0/2/8/0",
+   "page": 6,
+   "system": 0,
+   "staff": 2,
+   "bar": "8",
+   "page_box": [
+    1897.6100000000001,
+    684.7725,
+    1922.9675,
+    707.61
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L09",
+   "tile": 9,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/15/1/9/13/3",
+   "page": 15,
+   "system": 1,
+   "staff": 9,
+   "bar": "13",
+   "page_box": [
+    1798.625,
+    3462.0125,
+    1821.1475,
+    3480.9125
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L10",
+   "tile": 10,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/2/0/10/1/5",
+   "page": 2,
+   "system": 0,
+   "staff": 10,
+   "bar": "1",
+   "page_box": [
+    673.07,
+    1918.5875,
+    697.7975,
+    1940.9525
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L11",
+   "tile": 11,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/13/1/8/8/2",
+   "page": 13,
+   "system": 1,
+   "staff": 8,
+   "bar": "8",
+   "page_box": [
+    1572.8275,
+    3237.585,
+    1595.5075,
+    3257.9025
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "L12",
+   "tile": 12,
+   "plate": "Beethoven 5 Litolff",
+   "glyph": "glyph/6/0/8/0/3",
+   "page": 6,
+   "system": 0,
+   "staff": 8,
+   "bar": "0",
+   "page_box": [
+    614.79296875,
+    1576.48046875,
+    635.9638671875,
+    1595.900390625
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B01",
+   "tile": 13,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/17/0/11/4/3",
+   "page": 17,
+   "system": 0,
+   "staff": 11,
+   "bar": "4",
+   "page_box": [
+    3922.09375,
+    3012.578125,
+    3959.609375,
+    3043.203125
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B02",
+   "tile": 14,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/15/0/10/6/6",
+   "page": 15,
+   "system": 0,
+   "staff": 10,
+   "bar": "6",
+   "page_box": [
+    4285.25,
+    3115.525,
+    4322.375,
+    3149.625
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B03",
+   "tile": 15,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/7/0/8/8/1",
+   "page": 7,
+   "system": 0,
+   "staff": 8,
+   "bar": "8",
+   "page_box": [
+    5387.2,
+    2749.95,
+    5424.6,
+    2781.3
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B04",
+   "tile": 16,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/17/0/12/0/6",
+   "page": 17,
+   "system": 0,
+   "staff": 12,
+   "bar": "0",
+   "page_box": [
+    1438.59033203125,
+    3215.7841796875,
+    1475.97314453125,
+    3248.96142578125
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B05",
+   "tile": 17,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/20/1/9/4/11",
+   "page": 20,
+   "system": 1,
+   "staff": 9,
+   "bar": "4",
+   "page_box": [
+    3162.20751953125,
+    6861.1396484375,
+    3199.451171875,
+    6892.12109375
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B06",
+   "tile": 18,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/4/1/13/5/6",
+   "page": 4,
+   "system": 1,
+   "staff": 13,
+   "bar": "5",
+   "page_box": [
+    3835.5775,
+    7014.1675,
+    3873.8725,
+    7045.2475
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B07",
+   "tile": 19,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/1/0/12/4/6",
+   "page": 1,
+   "system": 0,
+   "staff": 12,
+   "bar": "4",
+   "page_box": [
+    3852.10546875,
+    3582.7353515625,
+    3888.7822265625,
+    3615.6416015625
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B08",
+   "tile": 20,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/19/1/9/6/8",
+   "page": 19,
+   "system": 1,
+   "staff": 9,
+   "bar": "6",
+   "page_box": [
+    4157.5425,
+    6323.25,
+    4195.965,
+    6354.315
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B09",
+   "tile": 21,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/18/0/12/2/1",
+   "page": 18,
+   "system": 0,
+   "staff": 12,
+   "bar": "2",
+   "page_box": [
+    2537.03271484375,
+    3332.89794921875,
+    2575.47998046875,
+    3367.9345703125
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B10",
+   "tile": 22,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/4/1/12/5/4",
+   "page": 4,
+   "system": 1,
+   "staff": 12,
+   "bar": "5",
+   "page_box": [
+    3836.2375,
+    6787.91,
+    3875.205,
+    6819.2475
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B11",
+   "tile": 23,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/16/1/5/7/3",
+   "page": 16,
+   "system": 1,
+   "staff": 5,
+   "bar": "7",
+   "page_box": [
+    4814.9775,
+    5262.8925,
+    4852.7175,
+    5296.1925
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  },
+  {
+   "id": "B12",
+   "tile": 24,
+   "plate": "Brahms 1 Breitkopf",
+   "glyph": "glyph/25/0/11/0/1",
+   "page": 25,
+   "system": 0,
+   "staff": 11,
+   "bar": "0",
+   "page_box": [
+    1307.63818359375,
+    3410.6748046875,
+    1347.6796875,
+    3445.7587890625
+   ],
+   "question": "What is the printed note value of the boxed note?"
+  }
+ ]
+}
