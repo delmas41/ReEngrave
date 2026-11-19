@@ -527,11 +527,12 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 cy = s.box[1] + s.box[3] / 2.0
                 if not ((cy < tip_y) if side == "up" else (cy > tip_y)):
                     continue
-                # ...and never a neighbour's: the two beams of one group hang on the same stems (a stem whose ink touches both). The beam of the
-                # next staff's group lying just beyond shares none (Litolff p13 1/2/5).
+                # ...and never a neighbour's: the two beams of one group hang on the same stems -- at least TWO whose ink touches both (a beam joins
+                # two stems). The beam of the next staff's group lying just beyond shares none (Litolff p13 1/2/5), or the one stem whose ink
+                # happens to run into it (Litolff p4 1/2/13: 2 more eighths read sixteenths with a single shared stem allowed).
                 mine = {j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical"}
                 if any(LEVEL_MIN_SEPARATION_SPACES * sp <= _level_gap(b, s) <= OUTER_LEVEL_MAX_SPACES * sp
-                       and mine & {j for j, _c in b.touches} for b in base):
+                       and len(mine & {j for j, _c in b.touches}) >= 2 for b in base):
                     found["beam"].append(s)
                     joined.append(s)
 
