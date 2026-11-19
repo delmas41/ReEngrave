@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-19 -- ROADMAP 2.318 landed ON: one beam count, read on the erased staff (main 7a20352a0)
+STAGED, ADJUDICATE. `OMR_ONE_BEAM_COUNT` default ON: the stroke map on the staff-erased raster
+(`beam_strokes.py::beam_count`) is the only beam count; the bar-crop reading and the stem-tip look are no longer
+asked for it; flags stay with the flag reader. Six rounds (lane-2.318, -r3, -r4, -r6). Sean's 24 beam tiles and
+Litolff p2 bar 13 are real-stroke controls. Judged right->wrong 0; tile pages write more notes (Litolff +101 -31,
+Brahms +68 -11). 231 older tests held on the old readings by `tools/omr/tests/pre_2_318_beam_pins.json` (ROADMAP
+2.319). Not yet measured on a whole movement. Measurements: `benchmarks/no-value-notes-2026-11/FINDINGS.md`.
+
 ## 2026-11-18 -- ROADMAP 2.316 landed: the counts report notes and arcs, not boxes (tooling only)
 `staged/counted_marks.py` (census of head boxes by what the exporter did; arcs row), `acceptance.py`, `judged.py` (match a judged mark to what the FILE writes at its place), `regather_report.py`, ranking scripts; `reach.py` lists counted_marks.py as NOT_A_STAGE. No reader or export change. Fast tier 10832 passed, 1 failed (pre-existing on main: test_far_head_note_first_2026_10_05 deep_stacks[ledgers1-204]).
 
