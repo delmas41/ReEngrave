@@ -5999,7 +5999,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
             lines.append("    </measure>")
     one_chord.bar_declines(False)
     lines.append("  </part>")
-    return "\n".join(lines)
+    return "\n".join(_drop_dangling_unison_ties(lines))
 
 
 #: ROADMAP 2.90. `_voice_split` appends this to `why` when it wrote a bar's
@@ -6405,7 +6405,7 @@ def _measure_xml(rec: Record, run: StaffRun, cell_index: int,
     # already done here, which is why the call belongs at this seam and not in
     # `_place_notes`.
     for stream in (streams if streams is not None else [events]):
-        _annotate_beams_for(rec, run, cell_index, [e for e in stream if e.get("kind") != FORWARD_KIND], counters)
+        _annotate_beams_for(rec, run, cell_index, [e for e in stream if e.get("kind") not in _NOT_A_PRINTED_MARK], counters)
     # ⚠️ ROADMAP 2.1b. Whether this bar's notes are the doubled Contrabass
     # copy of a condensed staff, so the render sites below can count each
     # written note under `notes_doubled_to_condensed_slot` as well as under
@@ -6673,7 +6673,7 @@ def _event_units(ev: Dict[str, Any], divisions: int) -> int:
     `<duration>` of 0 is not legal, and the check must reason about the number
     the file WILL hold, not the one the arithmetic would prefer.
     """
-    if ev.get("kind") == FORWARD_KIND:      # ROADMAP 2.314 r3: a voice's unprinted stretch, counted in its voice's time
+    if ev.get("kind") in (FORWARD_KIND, UNISON_COPY_KIND):      # ROADMAP 2.314 r3 / 2.323: a voice's unprinted stretch, counted in its voice's time
         return int(ev["units"])
     if ev.get("kind") == "rest":
         return max(1, int(round(float(ev["duration_beats"]) * divisions)))
@@ -6797,6 +6797,29 @@ def _forward_event(units: int, x: float, divisions: int) -> Dict[str, Any]:
     return {"kind": FORWARD_KIND, "units": int(units), "divisions": int(divisions), "x_position": float(x), "noteheads": []}
 
 
+#: ROADMAP 2.323 (`OMR_UNISON_KEPT_FOR_BOTH`): the event kind of a unison's SECOND copy -- the same mark a lone note, one-stem chord or rest
+#: speaks with for both players, carried in the other voice and written NOT PRINTED (`<note print-object="no">`). With the flag off the other
+#: voice is carried across the stretch with `<forward>` (FORWARD_KIND) instead. `of` is the printed event (the same dict, never a new reading).
+UNISON_COPY_KIND = "unison_copy"
+UNISON_KEPT_FOR_BOTH_ENV = "OMR_UNISON_KEPT_FOR_BOTH"
+_NOT_A_PRINTED_MARK = (FORWARD_KIND, UNISON_COPY_KIND)
+
+
+def unison_kept_for_both_enabled() -> bool:
+    """ROADMAP 2.323, `OMR_UNISON_KEPT_FOR_BOTH`, built OFF (allow-list: only 1/true/yes/on turns it on).
+
+    CONVENTION (Sean 2026-11-19, page-facts §1): in a bar with more than one voice, a single note or a single rest is a unison -- both players
+    play it -- unless a solo marking is printed. His words on the file: "When there are 2 voices it should print 1 but keep track of both parts
+    on that voice". OUR READING (not his words): where a bar is written as two voices and a lone note, one-stem chord or rest stands alone at
+    its moment, the other voice carries the same mark, not printed, instead of `<forward>`. FALSIFIED IF a printed solo marking ("1.", "2.",
+    "Solo") stands in such a bar (nothing reads one yet: counted on the frozen sample before the default flips). NOT CONFIRMED beyond his ruling."""
+    return os.environ.get(UNISON_KEPT_FOR_BOTH_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _unison_copy_event(of: Dict[str, Any], units: int, x: float, divisions: int) -> Dict[str, Any]:
+    return {"kind": UNISON_COPY_KIND, "of": of, "units": int(units), "divisions": int(divisions), "x_position": float(x), "noteheads": []}
+
+
 def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]], divisions: int,
                           unplaced: Sequence[Any], counters) -> Optional[List[List[Dict[str, Any]]]]:
     """ROADMAP 2.314 r3 (`OMR_TWO_STEMS_TWO_NOTES`). A bar the flag split into two voices, each voice written with the notes and rests the page
@@ -6832,19 +6855,30 @@ def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[
                                           or (e.get("rest") or {}).get("measure_rest")) for e, _v in items):
         why = "a_whole_rest_beside_notes"
     if why is None:
-        placed = _place_columns(items, want, divisions)
+        placed = _place_columns(items, want, divisions, keep_unison=unison_kept_for_both_enabled())
         if isinstance(placed, str):
             why = placed
         else:
             counters["two_voice_bars_placed_in_time"] += 1
             counters["two_voice_forwards_written"] += sum(1 for st in placed for e in st if e.get("kind") == FORWARD_KIND)
+            for st in placed:
+                for e in st:
+                    if e.get("kind") == UNISON_COPY_KIND:       # ROADMAP 2.323: counted by what is carried, so a chord can be priced apart from a note
+                        of = e["of"]
+                        counters["two_voice_unison_copies_kept"] += 1
+                        counters["two_voice_unison_copies_kept_" + ("rest" if of.get("kind") == "rest" else
+                                                                     "note" if len(of.get("noteheads") or ()) == 1 else "chord")] += 1
             return placed
     counters["two_voice_bars_not_placed_" + why] += 1
     return None
 
 
-def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int, divisions: int):
-    """`_place_voices_in_time`'s walk: the placed two streams, or the reason word (a str) it could not place them. Pure."""
+def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int, divisions: int, keep_unison: bool = False):
+    """`_place_voices_in_time`'s walk: the placed two streams, or the reason word (a str) it could not place them. Pure.
+
+    ROADMAP 2.323 (`keep_unison`, flag `OMR_UNISON_KEPT_FOR_BOTH`): the walk and every refusal are IDENTICAL either way (the same bars place, the
+    same bars do not); only what stands in the other voice across a lone mark's stretch differs -- a not-printed copy of the mark instead of the
+    `<forward>`. A stretch the other voice was silent BEFORE the mark began stays a `<forward>` (nothing printed there is not a unison)."""
     heads = [h for e, _v in items for h in (e.get("noteheads") or ()) if h.get("bbox")]
     tol = (sum(h["bbox"][2] for h in heads) / len(heads)) if heads else 30.0
     items = sorted(items, key=lambda it: float(it[0]["x_position"]))
@@ -6899,7 +6933,13 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
             v, e = assign[0]
             o = 1 - v
             if cur[o] <= t and cur[v] > cur[o]:
-                out[o].append(_forward_event(cur[v] - cur[o], e["x_position"], divisions))
+                if keep_unison:
+                    # ROADMAP 2.323: the lone mark is a unison -- the other voice carries it, not printed; only its silence BEFORE the mark stays a forward
+                    if cur[o] < t:
+                        out[o].append(_forward_event(t - cur[o], e["x_position"], divisions))
+                    out[o].append(_unison_copy_event(e, cur[v] - t, e["x_position"], divisions))
+                else:
+                    out[o].append(_forward_event(cur[v] - cur[o], e["x_position"], divisions))
                 gaps[o].append((cur[o], cur[v]))
                 cur[o] = cur[v]
         last_t = t
@@ -7729,6 +7769,68 @@ def _partial_measure_xml(rec: Record, run: StaffRun, cell_index: int,
     return lines
 
 
+_NOTE_ELEMENT = re.compile(r"\s*<note[ >]")
+
+#: what a unison's second copy keeps of a head: the pitch, the value, the dots, the tuplet ratio and the ties -- NOT the slur, beam, articulation,
+#: ornament, fermata, printed accidental or blue GUESSED mark (the printed copy carries those; a second set would be written twice)
+_UNISON_COPY_HEAD_KEYS = ("pitch", "duration_beats", "duration_type", "dots", "tuplet", "tied_to_next", "tied_from_prev")
+
+
+def _unison_copy_lines(ev: Dict[str, Any], divisions: int, voice: int) -> List[str]:
+    """ROADMAP 2.323: the `<note>` elements of a unison's second copy -- the printed mark's own pitch(es), value, dots and ties, with
+    `print-object="no" print-spacing="no"` so the engraved page shows one and the copy takes no room. Rendered with scratch counters: it is
+    the SAME mark as the printed one, so the accounting equality (`events_in_log` vs written) must not see a second note."""
+    of = ev["of"]
+    if of.get("kind") == "rest":
+        stripped = {"kind": "rest", "x_position": of.get("x_position"), "duration_beats": of["duration_beats"],
+                    "duration_type": of.get("duration_type"), "dots": of.get("dots"), "rest": {}}
+    else:
+        stripped = {"kind": of.get("kind", "chord"), "x_position": of.get("x_position"),
+                    "noteheads": [{k: h[k] for k in _UNISON_COPY_HEAD_KEYS if k in h} for h in (of.get("noteheads") or ())]}
+    lines, _units = _measure_events_xml([stripped], divisions, collections.Counter(), voice=voice)
+    return [re.sub(r"<note(?=[ >])", '<note print-object="no" print-spacing="no"', ln, count=1) for ln in lines]
+
+
+_EMPTY_NOTATIONS = re.compile(r"[ \t]*<notations>\s*</notations>\n?")
+_PITCH_OF_NOTE = re.compile(r"<step>(\w)</step>(?:\s*<alter>([-\d.]+)</alter>)?\s*<octave>(-?\d+)</octave>")
+
+
+def _drop_dangling_unison_ties(lines: List[str]) -> List[str]:
+    """ROADMAP 2.323: a tie on a NOT-PRINTED unison copy stays only where it is whole IN ITS OWN VOICE -- a tie start whose next note of the same
+    voice and pitch carries the stop, a tie stop that follows such a start. The printed mark's tie pairs the printed notes (`voice_of` refuses a tie
+    between two voices); its copy sits in the other voice, where the partner is a copy only if that bar was a two-voice bar too. A copy's tie with
+    no partner in its voice is dropped from the COPY (never from a printed note): a tie start with no stop in its voice is an unmatched spanner,
+    which a notation program may refuse or draw across the wrong notes. A part with no not-printed note comes back as it came."""
+    if not any('print-object="no"' in ln for ln in lines):
+        return lines
+    notes = []      # (line index, (voice, pitch), hidden, has tie start, has tie stop)
+    for i, ln in enumerate(lines):
+        if not _NOTE_ELEMENT.match(ln) or "<rest" in ln:
+            continue
+        v = re.search(r"<voice>(\d+)</voice>", ln)
+        p = _PITCH_OF_NOTE.search(ln)
+        if v and p:
+            ties = re.findall(r'<tie type="(\w+)"\s*/>', ln)
+            notes.append((i, (v.group(1), p.groups("0")), 'print-object="no"' in ln, "start" in ties, "stop" in ties))
+    drop: set = set()
+    open_start: Dict[Any, int] = {}         # (voice, pitch) -> index in `notes` of its latest tie start
+    for n, (i, key, hidden, starts, stops) in enumerate(notes):
+        prior = open_start.pop(key, None)
+        if stops and prior is None and hidden:
+            drop.add((i, "stop"))           # a copy's stop with no start in its voice
+        if prior is not None and not stops and notes[prior][2]:
+            drop.add((notes[prior][0], "start"))    # the next note of the voice carries no stop: the copy's start is unmatched
+        if starts:
+            open_start[key] = n
+    for prior in open_start.values():       # a copy's start with no later note of its voice and pitch
+        if notes[prior][2]:
+            drop.add((notes[prior][0], "start"))
+    out = list(lines)
+    for i, which in sorted(drop):
+        out[i] = _EMPTY_NOTATIONS.sub("", re.sub(r'[ \t]*<(?:tie|tied) type="%s"\s*/>\n?' % which, "", out[i]))
+    return out
+
+
 def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                         counters: Dict[str, int], voice: int = 1,
                         doubled: bool = False
@@ -7754,6 +7856,14 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                        f"        <duration>{int(ev['units'])}</duration>\n"
                        f"        <voice>{voice}</voice>\n"
                        "      </forward>")
+            units += int(ev["units"])
+            continue
+        if ev.get("kind") == UNISON_COPY_KIND:
+            # ROADMAP 2.323: the other voice carries the unison, NOT PRINTED -- counted apart (`unison_copy_notes_written`), never as a note or rest
+            lines_c = _unison_copy_lines(ev, divisions, voice)
+            out.extend(lines_c)
+            counters["unison_copies_written"] += 1
+            counters["unison_copy_notes_written"] += sum(1 for ln in lines_c if _NOTE_ELEMENT.match(ln))
             units += int(ev["units"])
             continue
         if ev.get("kind") == "rest":
