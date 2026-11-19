@@ -189,13 +189,14 @@ class TestTheControlCanFail(unittest.TestCase):
         c = new_count(thin)
         self.assertEqual((c["state"], c["certain"]), ("read", 0))
 
-    def test_a_stem_the_verdict_sends_the_wrong_way_is_found_by_its_ink(self):
-        # Litolff p2 0/0/7/1/9: the direction verdict says "down", the only vertical on the head runs UP from it by more than a space.
+    def test_a_stem_the_verdict_sends_the_wrong_way_is_not_read_from_the_other_end(self):
+        # A direction verdict the ink contradicts is two readers disagreeing: the count is silent (cannot tell), never the ink's side by guess (`INK_SIDE`
+        # is measured and refused). The same stem, with the verdict right, is found.
         k = "glyph/2/1/5/13/1"
         note = NOTES[k]
         wrong = "down" if note["side"] == "up" else "up"
-        found = BS.stems_by_ink(views(note), tuple(float(x) for x in note["head"]), wrong)
-        self.assertEqual([sd for _s, sd in found["stems"]], [note["side"]])
+        self.assertEqual(BS.stems_by_ink(views(note), tuple(float(x) for x in note["head"]), wrong)["stems"], [])
+        self.assertEqual([sd for _s, sd in BS.stems_by_ink(views(note), tuple(float(x) for x in note["head"]), note["side"])["stems"]], [note["side"]])
 
     def test_a_stroke_the_stem_does_not_touch_is_never_its_stem(self):
         note = NOTES[next(k for k, n in NOTES.items() if n["tile"] == "B02")]

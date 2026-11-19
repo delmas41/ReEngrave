@@ -80,6 +80,8 @@ JOIN_OUTER_EDGE_SPACES = 0.6
 STEM_MATCH_X_SLACK_SPACES = 0.35
 #: How far (staff spaces) beyond the head's half-width a stem's far end may stand and still be the head's stem (the stem finder's own 0.35).
 STEM_HEAD_X_SLACK_SPACES = 0.35
+#: How far (staff spaces) past the head's box edge a stem's far end must stand to be the head's stem in that direction.
+STEM_PAST_HEAD_MIN_SPACES = 0.0
 
 
 @dataclass(frozen=True)
@@ -504,6 +506,29 @@ def _far_end(v: StrokeView, side: str) -> Tuple[float, float]:
     return bx + bw / 2.0, y
 
 
+#: 2.318 r4: a stem runs on past a chord's other head: the piece below the head and the piece above it are one stem though the head's ink lies between
+#: them (the gap is a head high, not a crossing's hair). A stem that stops at another head and counts a tip there reads the chord's inner end.
+CHAIN_THROUGH_HEAD = True
+CHAIN_THROUGH_HEAD_MAX_GAP_SPACES = 2.0
+
+
+def _head_ink_between(strokes: Sequence[StrokeView], x: float, y0: float, y1: float, sp: float) -> bool:
+    """A stroke another mark has claimed as a HEAD (or an unclaimed blob) holds the column `x` (within the collinear slack) across at least half of the
+    vertical gap between `y0` and `y1`."""
+    lo, hi = min(y0, y1), max(y0, y1)
+    if hi - lo <= 0:
+        return False
+    for s in strokes:
+        if s.kind == "vertical" or not (s.kind == "blob" or s.family == "head"):
+            continue
+        if not (s.box[0] - ONE_STEM_COLLINEAR_X_SPACES * sp <= x <= s.box[0] + s.box[2] + ONE_STEM_COLLINEAR_X_SPACES * sp):
+            continue
+        cover = min(hi, s.box[1] + s.box[3]) - max(lo, s.box[1])
+        if cover >= 0.5 * (hi - lo):
+            return True
+    return False
+
+
 def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> StrokeView:
     """Follow the stem to its far end across a crossing that cut it: the next vertical piece in the same x-column, starting where this one ends
     or within `ONE_STEM_BREAK_MAX_GAP_SPACES` of it. One piece: the stroke itself. Several: one stem stroke (union box, union of what touches it)."""
@@ -521,7 +546,8 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
                 continue
             near = w.box[1] + w.box[3] if side == "up" else w.box[1]          # the piece's end toward the stem
             gap = (cur_y - near) if side == "up" else (near - cur_y)
-            if gap > ONE_STEM_BREAK_MAX_GAP_SPACES * sp:
+            if gap > ONE_STEM_BREAK_MAX_GAP_SPACES * sp and not (CHAIN_THROUGH_HEAD and gap <= CHAIN_THROUGH_HEAD_MAX_GAP_SPACES * sp
+                                                                  and _head_ink_between(strokes, cur_x, cur_y, near, sp)):
                 continue
             if (wy < cur_y) if side == "up" else (wy > cur_y):                  # it reaches farther than the chain does
                 if best is None or ((wy < best[1]) if side == "up" else (wy > best[1])):
@@ -551,8 +577,9 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
 ONE_STEM_BRIDGE_MAX_GAP_SPACES = 0.35
 BRIDGE = True
 #: 2.318 r4: where the direction verdict puts no stem on the ink, the stem that runs the other way by at least this many staff spaces past the head is the
-#: head's stem. A stem is at least a space long beyond its head; a stem that stops at the head's own edge is not a stem in that direction.
-INK_SIDE = True
+#: head's stem. MEASURED AND REFUSED (off): on the tile pages it moved 15 heads that read one beam like today to "cannot tell" and gave 7 heads that
+#: today write no beam a beam, 13 more it read from the other end; a verdict and the ink disagreeing is two readers disagreeing, not an answer (rule 8).
+INK_SIDE = False
 INK_SIDE_MIN_SPACES = 1.0
 #: 2.318 r4: where two stems stand on a head's engraving side, the one whose ink touches the head's ink is its stem.
 DIRECT_CONTACT_STEM = True
@@ -596,7 +623,7 @@ def stems_by_ink(strokes: Sequence[StrokeView], head_box: Sequence[float], side:
         ok = []
         for sd in dirs:
             x, y = _far_end(v, sd)
-            if (y < hy) if sd == "up" else (y > hy + hh):
+            if (y < hy - STEM_PAST_HEAD_MIN_SPACES * sp) if sd == "up" else (y > hy + hh + STEM_PAST_HEAD_MIN_SPACES * sp):
                 if abs(x - hcx) <= hw / 2.0 + STEM_HEAD_X_SLACK_SPACES * sp:
                     ok.append((sd, abs(y - hcy)))
         if not ok and side in ("up", "down") and INK_SIDE:
@@ -679,6 +706,37 @@ BEAM_SHAPE_MAX_ANGLE = 25.0
 NO_BEAM_HIDING_FAMILIES = ("tremolo", "barline")
 
 
+#: 2.318 r4: how far inward of the stem's tip a thin line's outer edge may lie and still be where the first beam level would start. A beam's first level
+#: lies at the tip (`STACK_FIRST_SPACES` is the stacking rule's own allowance for a sloped beam's box); a line whose edge starts farther in is not the
+#: stem's beam, so it cannot hide one.
+THIN_LINE_FIRST_LEVEL_SPACES = 0.6
+
+
+def thin_line_at_tip(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str,
+                     head_box: Optional[Sequence[float]]) -> List[int]:
+    """Ordinals of unclaimed FLAT lines, long enough to span two stems, that the stem's ink touches AT its tip (outer edge from `TIP_OUTWARD_SPACES` beyond
+    the tip to `THIN_LINE_FIRST_LEVEL_SPACES` inward) and that are thinner than a beam by the map (`span_thin`: a slur, hairpin or tie line across stems is
+    this thin, and so is a beam the scan or the erasure has thinned: Litolff p6 0/0/8/2, a beam 0.38 thick over three stems). Where the tip counts no beam,
+    a line like this where a beam's first level would start is why the map cannot say there is none (rule 8). Never over blank paper."""
+    sp = stem.space_px if stem.space_px > 0 else 1.0
+    bx, by, bw, bh = stem.box
+    tip_y = by if side == "up" else by + bh
+    touching = {j for j, _c in stem.touches}
+    out = []
+    for s in strokes:
+        if s.ordinal not in touching or s.kind != "horizontal" or role_by_ord.get(s.ordinal, {}).get("role") != "span_thin":
+            continue
+        if head_box is not None and _covers_head(s, head_box):
+            continue
+        if s.length < BEAM_SHAPE_MIN_LENGTH_SPACES or abs(s.angle) > BEAM_SHAPE_MAX_ANGLE:
+            continue
+        outer = s.box[1] if side == "up" else s.box[1] + s.box[3]
+        inward = ((outer - tip_y) if side == "up" else (tip_y - outer)) / sp
+        if -TIP_OUTWARD_SPACES <= inward <= THIN_LINE_FIRST_LEVEL_SPACES:
+            out.append(s.ordinal)
+    return sorted(out)
+
+
 def claimed_ink_at_tip(strokes: Sequence[StrokeView], stem: StrokeView, side: str) -> List[int]:
     """Ordinals of strokes ANOTHER mark has claimed that the stem's own INK touches at its end (the first-level zone of its tip: from `TIP_OUTWARD_SPACES`
     beyond to `STACK_FIRST_SPACES` inward) and that a beam could be hiding in: at least a beam's thickness (never ink thinner than the trough, `BEAM_DOUBT_MIN_THICKNESS_SP`: a hairpin is thinner than a beam, Sean 2026-10-09), and either a dynamic's or a word's ink (a beam fused to an `ff`) or ink SHAPED like
@@ -734,8 +792,12 @@ def thin_part(s: StrokeView) -> float:
     return p[len(p) // 4] / 16.0
 
 
-#: 2.318 r4: a stem whose far end is cut by the cell crop (`Q.STROKE` `cut`) has its tip out of sight. Dev switch, removed once measured.
-CUT_TIP = True
+THIN_LINE_TIP = True
+
+
+#: 2.318 r4: a stem whose far end is cut by the cell crop (`Q.STROKE` `cut`) has its tip out of sight. MEASURED AND REFUSED (off): no judged note needs it
+#: and it marks 21 Litolff and 2 Brahms notes on the tile pages that carry a value today. Kept so the measure can be re-run.
+CUT_TIP = False
 
 
 def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float], side: Optional[str],
@@ -772,6 +834,9 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
             # beam in it (`claimed_ink_at_tip`); a stem that runs into the cell crop's edge has its tip out of sight. Neither is "no beam".
             if claimed_ink_at_tip(strokes, stem, sd):
                 causes.append("claimed_ink_at_tip")
+                extra += 1
+            elif THIN_LINE_TIP and thin_line_at_tip(strokes, role_by_ord, stem, sd, head_box):
+                causes.append("thin_line_at_tip")
                 extra += 1
             elif CUT_TIP and (("t" if sd == "up" else "b") in (stem.cut or "")):
                 causes.append("stem_cut_by_cell")
