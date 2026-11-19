@@ -1,0 +1,26 @@
+{
+ "item": "2.321-twins-litolff",
+ "date": "2026-11-19",
+ "sheet": "out/print/2.321-our-look/twins/twins_litolff.png",
+ "question": "Which boxed notes have a stem going both up and down?",
+ "sean": "For sheet 2 all notes have stems going in both directions",
+ "answers": {
+  "1": "both stems",
+  "2": "both stems",
+  "3": "both stems",
+  "4": "both stems",
+  "5": "both stems",
+  "6": "both stems",
+  "7": "both stems",
+  "8": "both stems",
+  "9": "both stems",
+  "10": "both stems",
+  "11": "both stems",
+  "12": "both stems",
+  "13": "both stems",
+  "14": "both stems",
+  "15": "both stems",
+  "16": "both stems"
+ },
+ "agent_look_refuted": "10 of 16 one stem only"
+}

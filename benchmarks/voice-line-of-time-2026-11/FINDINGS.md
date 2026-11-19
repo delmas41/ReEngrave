@@ -96,3 +96,10 @@ Shown tiles 5-7, Sean: "All of those measures look like two voices. And it swapp
 single voice were wrong for these bars. Lesson: an agent's look and an editor's encoding were both stated as
 a finding before Sean had seen the tiles (rule 7: who says it's right). The day's rule (page-facts §1): in a
 bar with more than one voice, a single note or single rest is unison unless a solo marking is printed.
+
+## Correction 2026-11-19: the Litolff one-head pairs really have two stems (Sean)
+
+Sean on the sixteen heads (`answers-twins.json`): "For sheet 2 all notes have stems going in both directions". The agent's look (10 of 16 with one stem) is
+refuted 16 of 16. The 95 Litolff bars written split are not put in doubt by this; no lane. Second agent's look
+on this test overturned by Sean in one day (with tiles 5-7): on stems and voices, send the sheet before
+writing the count down.
