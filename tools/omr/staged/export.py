@@ -5554,7 +5554,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     split = (_own_streams, [] if split[0] is None else split[1])
                 if one_chord.stems_apart_enabled() and split[0] is not None:
                     _placed = _two_stems_streams(split[0], judged, divisions, cell_here.unplaced if cell_here else (), counters,
-                                               family=staff_unison_family(run.name))
+                                               family=staff_unison_family(
+                                                   next((r.name for r in part if r.name), None)))     # the part's name, as `<part-name>` takes it
                     if _placed is not split[0]:
                         split = (_placed, split[1])
             held = (_bar_holds_out(events, split[0], divisions, judged)
