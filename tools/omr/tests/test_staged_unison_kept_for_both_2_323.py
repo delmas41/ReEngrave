@@ -44,7 +44,7 @@ def _place(name, flag):
     streams, meter, divisions = _bar(name)
     counters = collections.Counter()
     with mock.patch.dict(os.environ, {ENV: "1" if flag else "0"}):
-        placed = E._place_voices_in_time(streams, meter, divisions, [], counters)
+        placed = E._place_voices_in_time(streams, meter, divisions, [], counters, family=E.FAMILY_WIND)
     assert placed is not None, "the real bar must place"
     return placed, counters, divisions, meter
 
@@ -125,7 +125,7 @@ class TestRealControlBars(unittest.TestCase):
         for flag in ("0", "1"):
             counters = collections.Counter()
             with mock.patch.dict(os.environ, {ENV: flag}):
-                self.assertIsNone(E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], counters))
+                self.assertIsNone(E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], counters, family=E.FAMILY_WIND))
             self.assertEqual(counters["two_voice_bars_not_placed_the_fuller_voice_does_not_come_to_the_bar"], 1)
 
     def test_the_same_bars_place_either_way(self):
@@ -135,7 +135,7 @@ class TestRealControlBars(unittest.TestCase):
             res = []
             for flag in ("0", "1"):
                 with mock.patch.dict(os.environ, {ENV: flag}):
-                    res.append(E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], collections.Counter()) is None)
+                    res.append(E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], collections.Counter(), family=E.FAMILY_WIND) is None)
             self.assertEqual(res[0], res[1])
 
 
@@ -180,7 +180,7 @@ class TestTheFileCarriesBothPartsAndPrintsOne(unittest.TestCase):
         d5["noteheads"][0]["articulations"] = ["staccato"]
         d5["noteheads"][0]["guess"] = {"quantity": "accidental", "rule": "x", "stage": "infer", "chosen": 0.5, "candidates": []}
         with mock.patch.dict(os.environ, {ENV: "1"}):
-            placed = E._place_voices_in_time(streams, meter, div, [], collections.Counter())
+            placed = E._place_voices_in_time(streams, meter, div, [], collections.Counter(), family=E.FAMILY_WIND)
         m = _xml_voices(placed, div)
         copy_d5 = [n for n in m.findall("note") if n.get("print-object") == "no" and n.findtext("pitch/step") == "D"][0]
         self.assertIsNone(copy_d5.find("notations"))
@@ -190,7 +190,7 @@ class TestTheFileCarriesBothPartsAndPrintsOne(unittest.TestCase):
     def test_the_copy_is_not_counted_as_a_note_or_rest_of_the_page(self):
         streams, meter, div = _bar("horn_bar92")
         with mock.patch.dict(os.environ, {ENV: "1"}):
-            placed = E._place_voices_in_time(streams, meter, div, [], collections.Counter())
+            placed = E._place_voices_in_time(streams, meter, div, [], collections.Counter(), family=E.FAMILY_WIND)
         counters = collections.Counter()
         E._measure_events_xml(placed[1], div, counters, voice=2)
         self.assertEqual(counters["notes"] + counters["rests"], 1)           # only the held quarter of voice 2 is a note of the page
@@ -252,9 +252,9 @@ class TestTheEngravedPageShowsOne(unittest.TestCase):
     def test_lilypond_writes_the_copy_as_the_skip_a_forward_is(self):
         streams, meter, div = _bar("horn_bar92")
         with mock.patch.dict(os.environ, {ENV: "1"}):
-            on = E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], collections.Counter())
+            on = E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], collections.Counter(), family=E.FAMILY_WIND)
         with mock.patch.dict(os.environ, {ENV: "0"}):
-            off = E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], collections.Counter())
+            off = E._place_voices_in_time(copy.deepcopy(streams), meter, div, [], collections.Counter(), family=E.FAMILY_WIND)
         text_on = [LY._lily_event_marked(e, {}) for e in on[1]]
         text_off = [LY._lily_event_marked(e, {}) for e in off[1]]
         self.assertEqual(text_on[0], text_off[0])

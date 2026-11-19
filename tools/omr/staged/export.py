@@ -5553,7 +5553,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                 if _own_streams is not split[0]:
                     split = (_own_streams, [] if split[0] is None else split[1])
                 if one_chord.stems_apart_enabled() and split[0] is not None:
-                    _placed = _two_stems_streams(split[0], judged, divisions, cell_here.unplaced if cell_here else (), counters)
+                    _placed = _two_stems_streams(split[0], judged, divisions, cell_here.unplaced if cell_here else (), counters,
+                                               family=staff_unison_family(run.name))
                     if _placed is not split[0]:
                         split = (_placed, split[1])
             held = (_bar_holds_out(events, split[0], divisions, judged)
@@ -6838,8 +6839,33 @@ def _chord_head_count(e: Dict[str, Any]) -> int:
     return len(e.get("noteheads") or ()) if e.get("kind") != "rest" else 0
 
 
+FAMILY_WIND = "one_note_at_a_time"      # woodwind, brass
+FAMILY_STRING = "string"                # double / triple / quadruple stops
+FAMILY_ONE_PLAYER = "one_player_staff"  # timpani, harp, piano: one player per staff (Sean 2026-11-19)
+FAMILY_UNKNOWN = "instrument_not_known"
+_ONE_PLAYER_NAMES = ("Timpani", "Harp", "Piano")
+
+
+def staff_unison_family(name: Optional[str]) -> str:
+    """ROADMAP 2.323 r2: which unison rule a staff's instrument takes, from the instrument the record ALREADY holds for the staff -- `Q.PART_NAME`'s
+    value (`name_part`: the canonical `Instrument.name` the staff identity layer settled), looked up in `instruments.instrument_named` for its
+    family. woodwind/brass -> one note at a time; string -> stops; Timpani/Harp/Piano -> one player per staff (Sean 2026-11-19); a name the
+    table does not hold, or no name, or any other family -> not known. NEVER guessed from the staff's position or the plate (rule 8)."""
+    from tools.omr import instruments as _I
+    inst = _I.instrument_named(name) if isinstance(name, str) else None
+    if inst is None:
+        return FAMILY_UNKNOWN
+    if inst.name in _ONE_PLAYER_NAMES:
+        return FAMILY_ONE_PLAYER
+    if inst.family in ("woodwind", "brass"):
+        return FAMILY_WIND
+    if inst.family == "string":
+        return FAMILY_STRING
+    return FAMILY_UNKNOWN
+
+
 def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]], divisions: int,
-                          unplaced: Sequence[Any], counters) -> Optional[List[List[Dict[str, Any]]]]:
+                          unplaced: Sequence[Any], counters, family: Optional[str] = None) -> Optional[List[List[Dict[str, Any]]]]:
     """ROADMAP 2.314 r3 (`OMR_TWO_STEMS_TWO_NOTES`). A bar the flag split into two voices, each voice written with the notes and rests the page
     gives IT, and a `<forward>` for any stretch where that voice prints nothing (MusicXML's own "this voice has nothing printed here").
 
@@ -6873,28 +6899,35 @@ def _place_voices_in_time(streams: List[List[Dict[str, Any]]], judged: Optional[
                                           or (e.get("rest") or {}).get("measure_rest")) for e, _v in items):
         why = "a_whole_rest_beside_notes"
     if why is None:
-        placed = _place_columns(items, want, divisions, keep_unison=unison_kept_for_both_enabled())
+        placed = _place_columns(items, want, divisions, keep_unison=unison_kept_for_both_enabled(), family=family)
         if isinstance(placed, str):
             why = placed
         else:
             counters["two_voice_bars_placed_in_time"] += 1
             counters["two_voice_forwards_written"] += sum(1 for st in placed for e in st if e.get("kind") == FORWARD_KIND)
+            groups = set()
             for st in placed:
                 for e in st:
                     if e.get("kind") == UNISON_COPY_KIND:       # ROADMAP 2.323: counted by what is carried, so a chord can be priced apart from a note
                         of = e["of"]
                         counters["two_voice_unison_copies_kept"] += 1
                         counters["two_voice_unison_copies_kept_" + ("rest" if of.get("kind") == "rest" else
-                                                                     "note" if not e.get("take") else
-                                                                     "chord_" + e["take"])] += 1      # r2: one note of a two-note chord, never both
-                    elif e.get("three_plus_chord"):
-                        counters["two_voice_unison_chords_of_three_plus_left_as_forward"] += 1
+                                                                     "note" if _chord_head_count(of) == 1 else
+                                                                     "chord_" + e["take"] if e.get("take") else
+                                                                     "chord_whole")] += 1      # r2: one note of a wind chord, or a string stop whole
+                        groups.add(family)
+                    elif e.get("unison_left"):                  # r2: a lone mark left as flag OFF writes it, by why
+                        counters["two_voice_unison_marks_left_" + e["unison_left"]] += 1
+                        groups.add(e["unison_left"])
+            for g in groups:                                    # bars, by the staff's instrument group (the copy groups and the left ones)
+                counters["two_voice_unison_bars_" + str(g)] += 1
             return placed
     counters["two_voice_bars_not_placed_" + why] += 1
     return None
 
 
-def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int, divisions: int, keep_unison: bool = False):
+def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int, divisions: int, keep_unison: bool = False,
+                   family: Optional[str] = None):
     """`_place_voices_in_time`'s walk: the placed two streams, or the reason word (a str) it could not place them. Pure.
 
     ROADMAP 2.323 (`keep_unison`, flag `OMR_UNISON_KEPT_FOR_BOTH`): the walk and every refusal are IDENTICAL either way (the same bars place, the
@@ -6955,20 +6988,25 @@ def _place_columns(items: List[Tuple[Dict[str, Any], Optional[int]]], want: int,
             o = 1 - v
             if cur[o] <= t and cur[v] > cur[o]:
                 n_heads = _chord_head_count(e)
-                if keep_unison and n_heads <= 2:
+                left = None         # why the lone mark is left as flag OFF writes it (counted by the caller), flag ON only
+                if keep_unison:
+                    if family not in (FAMILY_WIND, FAMILY_STRING):
+                        left = family or FAMILY_UNKNOWN     # one player per staff (timpani/harp/piano), or the instrument is not known: NEITHER rule
+                    elif family == FAMILY_WIND and n_heads > 2:
+                        left = "three_plus_chord"           # not covered by "a single note": left as flag OFF writes it
+                if keep_unison and left is None:
                     # ROADMAP 2.323: the lone mark is a unison -- the other voice carries it, not printed; only its silence BEFORE the mark stays a forward.
-                    # r2 (Sean 2026-11-19, "One note each"): a TWO-note chord is not a unison -- the printed chord stays as printed, and the other
-                    # voice carries only the note that is ITS player's: printed in voice 1, the voice-2 player's is the LOWER; printed in voice 2,
-                    # the voice-1 player's is the UPPER. Never both notes to both players.
+                    # r2 (Sean 2026-11-19): on a staff whose instrument plays ONE note at a time (wind, brass) a TWO-note chord is one note each -- the
+                    # printed chord stays as printed, the other voice carries only the note that is ITS player's (printed in voice 1: the LOWER;
+                    # printed in voice 2: the UPPER), never both. On a STRING staff the chord is a double/triple/quadruple stop: kept whole, any size.
                     if cur[o] < t:
                         out[o].append(_forward_event(t - cur[o], e["x_position"], divisions))
                     out[o].append(_unison_copy_event(e, cur[v] - t, e["x_position"], divisions,
-                                                     take=None if n_heads < 2 else ("lower" if v == 0 else "upper")))
+                                                     take=("lower" if v == 0 else "upper") if (family == FAMILY_WIND and n_heads == 2) else None))
                 else:
-                    # flag off, or (r2) a chord of THREE or more notes, which Sean's rule ("a single note or a single rest") does not cover: <forward>
                     out[o].append(_forward_event(cur[v] - cur[o], e["x_position"], divisions))
-                    if keep_unison:
-                        out[o][-1]["three_plus_chord"] = True       # counted by the caller: a chord of 3+ notes left as flag OFF writes it
+                    if left:
+                        out[o][-1]["unison_left"] = left
                 gaps[o].append((cur[o], cur[v]))
                 cur[o] = cur[v]
         last_t = t
@@ -7027,11 +7065,11 @@ def _two_stems_bar_verdict(rec: Record, run: StaffRun, cell_index: int, cell: Op
 
 
 def _two_stems_streams(streams: List[List[Dict[str, Any]]], judged: Optional[Dict[str, Any]], divisions: int,
-                       unplaced: Sequence[Any], counters) -> List[List[Dict[str, Any]]]:
+                       unplaced: Sequence[Any], counters, family: Optional[str] = None) -> List[List[Dict[str, Any]]]:
     """ROADMAP 2.314 r5 rule A (`OMR_TWO_STEMS_TWO_NOTES`): a bar split into two voices, as the flag writes it -- placed in time
     (`_place_voices_in_time`: a rest, or a single-stem mark, alone at its moment speaks for both players and is written ONCE, the other
     voice carried across it with `<forward>`), else round 2's rest-once streams. ONE copy for the writer and the per-bar check."""
-    timed = _place_voices_in_time(streams, judged, divisions, unplaced, counters)
+    timed = _place_voices_in_time(streams, judged, divisions, unplaced, counters, family=family)
     if timed is not None:
         return timed
     return _rests_to_the_silent_voice(streams, judged, divisions, counters)
