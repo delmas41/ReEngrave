@@ -252,6 +252,7 @@ CLOT_BAND_SLACK_SPACES = 0.5
 #: 2.318 r6: centre line to centre line, the outer beam of a stack lies at most a beam's thickness plus the space between two beams from the next
 #: (0.6 + 0.75; measured 0.85 on Brahms p17 1/10, 0.96 on Sean's B09).
 OUTER_LEVEL = True
+FOREIGN_LEVEL = True
 OUTER_LEVEL_MAX_SPACES = 1.35
 
 
@@ -549,6 +550,22 @@ def tip_reading(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, 
                 kept.append(s)
                 reach = max(reach, i_ + STACK_GAP_SPACES)
         found["beam"] = kept
+
+    if one_count and FOREIGN_LEVEL and len(found["beam"]) >= 2:
+        # 2.318 r6: A GROUP'S BEAMS HANG ON STEMS THAT COME FROM THE SAME SIDE AS THIS ONE. A beam at this stem's tip whose every other stem stands
+        # on the far side of it -- running AWAY from this stem's head -- is the next group's beam, set so close that the two inks touch (Litolff p4
+        # 1/2/13: four eighths whose stems end on the beam of the group below were read two beams, sixteenths). Structural; only ever takes a level
+        # away where another stands, never the stem's only beam.
+        sx = bx + bw / 2.0
+
+        def hangs_away(s: StrokeView) -> bool:
+            cy = s.box[1] + s.box[3] / 2.0
+            others = [by_ord[j] for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical" and by_ord[j].length <= STEM_MAX_SPACES
+                      and abs(by_ord[j].box[0] + by_ord[j].box[2] / 2.0 - sx) > ONE_STEM_COLLINEAR_X_SPACES * sp]
+            return bool(others) and all(((o.box[1] + o.box[3] / 2.0) < cy) if side == "up" else ((o.box[1] + o.box[3] / 2.0) > cy) for o in others)
+        own = [s for s in found["beam"] if not hangs_away(s)]
+        if own and len(own) < len(found["beam"]):
+            found["beam"] = own
 
     def levels(group: List[StrokeView]) -> List[int]:
         # Two strokes are one level only where their INK is one band: compare their centre lines along the stretch BOTH run (`_line_gap`), never their

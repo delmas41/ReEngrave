@@ -187,6 +187,13 @@ class TestNeverWrongOnSeansNotes(unittest.TestCase):
         c = new_count(NOTES["glyph/13/1/2/5/0"])
         self.assertEqual((c["state"], c["certain"]), ("read", 1))
 
+    def test_r6_the_next_groups_beam_at_the_stems_tip_is_not_a_second_level(self):
+        # Litolff p4 1/2/13: the stem's ink ends on the beam of the group below, whose own stems all hang away from this head
+        c = new_count(NOTES["glyph/4/1/2/13/10"])
+        self.assertEqual((c["state"], c["certain"]), ("read", 1))
+        with mock.patch.object(BS, "FOREIGN_LEVEL", False):
+            self.assertEqual(new_count(NOTES["glyph/4/1/2/13/10"])["certain"], 2)           # r5: a sixteenth
+
     def test_r6_the_heads_own_body_filed_upright_is_not_its_stem(self):
         c = new_count(NOTES["glyph/16/0/0/8/5"])
         self.assertEqual((c["state"], c["certain"]), ("read", 1))
