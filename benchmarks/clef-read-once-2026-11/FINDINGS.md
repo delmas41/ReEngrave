@@ -54,3 +54,34 @@ Small: the settle counts a register row once when its `owner_glyph` is a box it 
 from a box that is not that staff's own clef. Large (Sean's rule): one page-level clef read -- extend
 `clef_pagewide` to the header window, retire the register's detector and locator clef claims and the per-cell
 reads. Tests pinning those paths, by file: page-wide 6, clef slot 2, register 12, locator 2.
+
+## Round 1 (2026-11-19): the page-wide pass reads fewer start-of-staff clefs than today -- STOPPED, not landed
+
+Branch `lane-2.324-clef-pagewide` 1b072fdb0, flag `OMR_CLEF_PAGE_ONLY` built OFF. Filed by the manager from
+the lane agent's report. Proof pages only (Litolff 2, 9; Brahms 0, 12), flag OFF vs ON gathered on the same tree.
+
+**Cause:** the page-wide reader was built for mid-staff changes and never measured on start-of-staff clefs;
+its cut-offs were measured on one publisher. C clef: the thick bar must be 0.45 staff spaces wide, set from
+Litolff (0.7-0.8); Brahms p0's alto and tenor clefs measure 0.434 and 0.438 and are refused. F clef: on
+Litolff the two dots touch the key flats and the dot test fails. **Lesson:** measure reach before moving any
+consumer (it is what stopped the lane); a number tuned on one plate may only narrow (CLAUDE.md §4).
+
+Built (flag ON only): the page-wide pass reads the start-of-staff clef, takes a box only when its middle sits
+on this staff's own lines measured at the box (the neighbour-staff fix), reads a start-of-staff G from its box
+plus its own ink above and below the staff, files the one clef claim; the cell-0 detector read, the two-crop
+locator and the register's clef claims stand down; `Q.CLEF`, the key object and identity read the page-wide
+rows. Seed row and clef-slot claim stay. Nothing retired.
+
+**Reach (code's count):** page-wide read agrees with today's decided clef on 51 of 56 Litolff staves and 39 of
+42 Brahms; 0 disagreements; misses = 4 Litolff bass clefs (dots not found), 3 Brahms C clefs (bar just too
+thin), and 1 Litolff staff (p2 s1 st3) where TODAY's locator reads a false tenor and the page-wide read is
+right (bass; agent's look at the crop).
+
+**A clef is lost with the flag ON:** Brahms p0 staff 12, a printed tenor C clef (labelled by Sean on the
+hand-labelled page), is written bass; about 22 Brahms pitch changes probably follow (not traced). The other 7
+misses are saved only by the carry from other systems. Judged right->wrong 0 on both plates, but no judged
+tile sits on that clef -- only the labelled page catches it.
+
+Not done: frozen sample, `claim_readout` clef ink, the new test file and controls, the fast tier, step 3.
+3 tests in `test_staged_clef_slot_claim_2_208.py` fail with the flag ON (they pin the path it replaces).
+Crops: `out/print/2.324-clef-page-only/reach-misses/`.
