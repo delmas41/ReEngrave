@@ -225,3 +225,55 @@ diffed against main.
 
 **Not done**: no clear crops of the lost-value and changed-value notes (the lane's panels are too small, Brahms
 none); no default flip.
+
+
+## 2.318 rounds 4-5 -- the refusal rules measured, B09 and L11 closed (built OFF, gate not yet met)
+
+STAGED, ADJUDICATE. Branch `lane-2.318-r4` (09563b178), flag `OMR_ONE_BEAM_COUNT` OFF. A lane agent's reports,
+filed by the manager; "look" below is the agent's or the manager's look at crops, not truth.
+
+**Causes and lessons.**
+- Round 3's three added refusal rules protected no judged note; out one at a time, Sean's tiles stayed right.
+  The count's "ink at the tip" window reached 3.3 spaces inward, so on short stems slurs, neighbour heads and
+  another note's beam counted as ink at the tip. A cannot-tell rule is measured on the real pages before it is kept.
+- **B09 was never a thickness problem.** The second beam is a separate stroke from the second stem to the last;
+  the count merged the two as one level because it compared the strokes' BOX centres (0.39 sp apart on a sloped
+  pair) where the ink lines are 0.96 sp apart. Measured by centre lines along the shared stretch: B09 right, 0
+  other notes changed on the tile pages. The round-4 "step in thickness" rule would have marked about 60 good
+  notes to catch it. Measure the mark, not its box; read the real stroke rows before proposing a measurement
+  (the manager proposed thickness twice).
+- L11 (beam run into an `ff`): ink claimed by a dynamic or word, or beam-shaped claimed ink, touching the stem's
+  ink in the first-level zone marks the note; about 20 notes on both plates (round 3's "any claimed ink": 65).
+- Several lost and changed notes were stem-pick faults, not beam faults: a head cut in pieces lent an outline
+  piece as its stem; a vertical running past a head both ways was read at the neighbour's tip.
+
+**Rules now in the count** (each narrows only): stub at the tip only where a full beam is already counted; claimed
+dynamic/word ink at the tip; a flat thin unclaimed line at least 2 sp long at the tip keeps a scan-thinned beam;
+levels told apart by centre lines; an outline piece under 2.5 sp within 0.7 sp of the head is not a stem; a
+vertical past a head both ways with no direction verdict is read from both ends (agree = read, differ = marked);
+where the map has no stem or the count cannot rule out a beam, the flag reader speaks first. Measured and refused
+(switches left OFF): step-in-thickness, cut-by-cell, stem direction from the ink, looser stem x-slack.
+
+**File changes, round 5** (`lane_report`, ON vs OFF, `--from adjudicate`, record 20261117-night; changes, not verdicts):
+- Litolff tile pages: notes +101 -72, beams +46 -62 ~25, flags +41 -29, blue +71 -106, red bars 129 -> 136, not written 1585 -> 1563.
+- Brahms tile pages: notes +70 -35, beams +58 -44 ~9, flags +36 -26, blue +81 -77, red bars 50 -> 54, not written 1422 -> 1394.
+- Litolff frozen sample: notes +75 -123, beams +51 -112 ~37, flags +57 -47, blue +100 -117, red bars 160 -> 161, not written 2077 -> 2119.
+- Brahms frozen sample: notes +98 -70, beams +28 -43 ~10, flags +33 -22, blue +120 -153, red bars 134 -> 126, not written 3068 -> 3037.
+
+**Judged right->wrong 0** on all four runs; one judged Litolff eighth (rhythm-leftovers-2 tile 10) right -> marked
+(the both-ways rule). None of Sean's 24 tiles, bar 13 or the 11 other judged notes is written wrong; no xfails left.
+Flag-sourced values changed 0. Fast tier: only `test_the_committed_index_is_current`. `staged.check` 216 = main.
+
+**Decided notes that lose their value, tile pages** (round 3: 255 / 91): 87 Litolff boxes, 32 Brahms. By look,
+39 Litolff and 3 Brahms are NOT noteheads (clef, key, rest, dynamic letter, beam strip, barline, sliver, "8a.").
+Real noteheads about 48 Litolff: no stem stroke in the map 14 (stem fused into a barline/clef blob), count 0 but
+the flag-ink reader found ink 13 (today's quarter looks wrong in the crops), thin line 7, thick at the stem 7,
+stub 3, several stems 3, claimed ink 1. Brahms 29: thick at the stem 10, no stem 9, stub 8, claimed ink 2.
+
+**Changed value** (Litolff 20, Brahms 17, all sheets looked at): most Litolff eighth -> quarter are boxes on beam
+ends or slivers; real heads where ON looks right: Brahms 4 quarter -> eighth, 6 eighth -> sixteenth, Litolff 3
+quarter -> eighth. Unclear: Litolff 15/1/3/18/0 and /3, 2/0/9/1/3, 15/0/10/0/2; four Brahms dotted quarter -> quarter.
+
+**Open after round 5**: newly red bars on the tile pages (Litolff 15 new vs 10 cleared, Brahms 11 vs 7), of which
+9 and 8 hold no note that OFF had decided and are untraced; the Litolff frozen sample writes fewer notes; the
+no-stem heads (upstream stroke map); the unclear changed notes.
