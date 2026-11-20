@@ -3771,9 +3771,9 @@ SLASH_GUARD_OWN_INK_ENV = "OMR_SLASH_GUARD_OWN_INK"
 
 
 def slash_guard_own_ink_enabled() -> bool:
-    """ROADMAP 2.327, default OFF (built OFF: the shared lane report compares OFF and ON on one tree). ON: the 2.220 branch's slash guard
-    no longer reads the slash test's box-measured "crosses the stem" alone."""
-    return os.environ.get(SLASH_GUARD_OWN_INK_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
+    """ROADMAP 2.327, `OMR_SLASH_GUARD_OWN_INK`, ON by default since 2026-11-20 (Sean: "Yes all half notes"; deny-list: 0/false/no/off turns it
+    off). ON: the 2.220 branch's slash guard no longer reads the slash test's box-measured "crosses the stem" alone."""
+    return os.environ.get(SLASH_GUARD_OWN_INK_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _value_at(value: Dict[str, Any], head_written: float, support: float) -> Dict[str, Any]:
