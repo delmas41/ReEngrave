@@ -325,23 +325,20 @@ class TestRound4MidLineF:
         got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
         assert not got["passed"], (name, got.get("why"), got.get("body_top"), got.get("dots"))
 
-    def test_the_quarter_rest_is_refused_twice_and_the_dot_pair_would_have_read_it(self, on, monkeypatch):
-        # Litolff's quarter rest: on its own bar's lines the dot PAIR test names line 4 (the control can fail); its body runs on to the
-        # bottom line (an F clef's ends at the fourth), and one of its two spaces holds no dot ink -- each never refuses it alone
+    def test_the_quarter_rest_is_refused_by_its_empty_dot_space_and_the_dot_pair_would_have_read_it(self, on):
+        # Litolff's quarter rest: on its own bar's lines the dot PAIR test names line 4 (the control can fail); one of its two spaces
+        # holds no dot ink. (Round 4 also refused it by its body reaching the bottom line; round 5 dropped that never -- header F clefs'
+        # tails reach the bottom line too, it measured where the line clearing cut the tail, not the mark.)
         ink, meta, ll = _r4("never_rest4_litolff_p9_s0_st11")
         assert CP.read_box("clefF", meta["box"], ink, ll, meta["sp"])["passed"]
         got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
-        assert not got["passed"] and got["why"] == "f_body_not_ending_at_the_fourth_line" and not got.get("shape_only")
-        assert not CP.f_dot_places(ink, meta["box"], ll, meta["sp"])["passed"]
-        monkeypatch.setattr(CP, "F_BODY_BOTTOM_SPACES", 9.0)
-        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
         assert not got["passed"] and got["why"] == "f_no_dot_ink_in_both_spaces"
 
-    def test_an_f_body_with_one_dot_not_clear_narrows_never_reads(self, on):
-        # Litolff p10 s0 staff 3: the lower dot sits on a thick line 4 and goes with it -- the body is an F clef's, the dots are not clear
+    def test_an_f_body_with_one_dot_not_clear_is_not_read(self, on):
+        # Litolff p10 s0 staff 3: the lower dot sits on a thick line 4 and goes with it -- not read (its header clef is bass already)
         ink, meta, ll = _r4("mid_f_litolff_p10_s0_st3")
         got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
-        assert not got["passed"] and got.get("shape_only") and got["why"] == "f_no_dot_ink_in_both_spaces"
+        assert not got["passed"] and got["why"] == "f_no_dot_ink_in_both_spaces"
 
     @pytest.mark.parametrize("name", ["never_sf_litolff_p10_s0_st0", "never_half_brahms_p25_s0_st3"])
     def test_the_body_at_the_top_line_is_the_never_that_refuses_it(self, on, monkeypatch, name):
@@ -355,7 +352,7 @@ class TestRound4MidLineF:
         assert len(read) == 1 and read[0].detail.get("kind") == "bass" and read[0].detail.get("change") is True
         assert CP.clef_in_force(meta["box"][2] + 30, CP.changes_of(read), [], header="tenor")[0] == "bass"
 
-    @pytest.mark.parametrize("name", ["never_half_brahms_p25_s0_st3", "never_rest4_litolff_p9_s0_st11"])
+    @pytest.mark.parametrize("name", ["never_half_brahms_p25_s0_st3", "never_sf_litolff_p10_s0_st0"])
     def test_flag_on_a_box_whose_ink_is_not_an_f_clef_is_no_carry_stop(self, monkeypatch, name):
         # the touched-pages run: Brahms p25's half note by the barline (bar 1) was a clef-shaped candidate, so the bass clef read in
         # bar 0 stopped there and bars 1-9 went unread; a box refused by an ink never is not a clef and stops nothing
@@ -413,3 +410,71 @@ class TestRound3CClef:
         monkeypatch.setattr(CP, "barline_left_of", lambda *a, **k: None)
         cands = _header_c(ink, meta, ll)
         assert cands and not any(c["passed"] for c in cands) and cands[0]["why"] == "g_clef_shape"
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------
+# Round 5 (Sean 2026-11-20: "every note on the page is dependent on the clefs being correct"): a clef is recognised by its shape on the
+# staff wherever it stands; the detector's box is one more witness, never a requirement. Real pixels: the 7 start-of-staff clefs the
+# detector drew no box on (carried from other systems before), read in the system's clef column; the mid-line clefG boxes.
+# ----------------------------------------------------------------------------------------------------------------------------------
+DATA_R5 = pathlib.Path(__file__).with_name("data_clef_page_only_2_324_r5.npz")
+NOBOX = ["nobox_bass_litolff_p2_s1_st3", "nobox_bass_litolff_p4_s1_st6", "nobox_bass_litolff_p4_s1_st10", "nobox_treble_litolff_p6_s1_st0",
+         "nobox_bass_litolff_p11_s0_st8", "nobox_bass_litolff_p11_s1_st5", "nobox_bass_brahms_p14_s0_st12"]
+
+
+def _r5(name):
+    ink, meta = _load(DATA_R5, name)
+    key = meta.get("place") or meta["box"]
+    return ink, meta, CP.local_lines(ink, meta["lines_cell"], meta["sp"], key[0])
+
+
+class TestRound5ClefFromInk:
+    @pytest.mark.parametrize("name", NOBOX)
+    def test_a_start_of_staff_clef_with_no_box_is_read_from_its_own_ink(self, on, name):
+        ink, meta, ll = _r5(name)
+        got = CP.read_header_ink(ink, meta["place"], ll, meta["sp"])
+        assert got["passed"] and got.get("plain") and got["kind"] == meta["truth"], got.get("why")
+
+    @pytest.mark.parametrize("name", [n for n in NOBOX if "_bass_" in n])
+    def test_never_a_g_clef_from_a_bass_clefs_ink(self, on, name):
+        ink, meta, ll = _r5(name)
+        assert not CP.read_g(ink, meta["place"], ll, meta["sp"], box_witness=False)["passed"]
+
+    def test_never_an_f_clef_from_the_treble_clefs_ink(self, on):
+        ink, meta, ll = _r5("nobox_treble_litolff_p6_s1_st0")
+        pc = CP.glyph_piece(ink, meta["place"], ll, meta["sp"])
+        assert not CP.read_mid_f("clefF", pc["box"], ink, ll, meta["sp"], dots_beside_core=True)["passed"]
+
+    def test_the_spiral_is_the_second_witness_with_no_box_the_control_can_fail(self, on, monkeypatch):
+        ink, meta, ll = _r5("nobox_treble_litolff_p6_s1_st0")
+        got = CP.read_g(ink, meta["place"], ll, meta["sp"], box_witness=False)
+        assert got["passed"] and got["spiral"] >= CP.G_SPIRAL_MIN_SPACES2
+        monkeypatch.setattr(CP, "spiral_on_line2", lambda *a, **k: 0.0)
+        assert not CP.read_g(ink, meta["place"], ll, meta["sp"], box_witness=False)["passed"]
+
+    def test_the_mid_line_treble_clef_has_its_spiral_and_its_ink_past_the_staff(self, on):
+        ink, meta, ll = _r5("midg_treble_brahms_p14_s1_st9")
+        b = meta["box"]
+        got = CP.read_g(ink, [b[0], ll[0] - 2.5 * meta["sp"], b[2], ll[4] + 2.5 * meta["sp"]], ll, meta["sp"], box_witness=False)
+        assert got["passed"] and got["witness"] == "g_spiral"
+
+    def test_the_arc_over_a_stem_has_no_spiral(self, on):
+        ink, meta, ll = _r5("midg_never_litolff_p10_s1_st4")
+        b = meta["box"]
+        got = CP.read_g(ink, [b[0], ll[0] - 2.5 * meta["sp"], b[2], ll[4] + 2.5 * meta["sp"]], ll, meta["sp"], box_witness=False)
+        assert not got["passed"] and got["why"] == "g_no_spiral_on_line_2"
+
+    def test_one_real_mid_line_g_cannot_carry_a_rule_the_accidental_passes_it_too(self, on):
+        # Litolff p9 s0 staff 3: an accidental, a half note and an arc -- ink past the staff and a flat's bowl on line 2. With one real
+        # mid-line treble on our pages, nothing separates them: a mid-line G box that passes NARROWS (strong candidate), never reads
+        ink, meta, ll = _r5("midg_never_litolff_p9_s0_st3")
+        b = meta["box"]
+        assert CP.read_g(ink, [b[0], ll[0] - 2.5 * meta["sp"], b[2], ll[4] + 2.5 * meta["sp"]], ll, meta["sp"], box_witness=False)["passed"]
+
+    def test_a_strong_g_candidate_stops_a_non_g_clef_and_nothing_else(self):
+        import types
+        row = types.SimpleNamespace(detail={"strong": True, "family": "G", "source": CP.SOURCE, "candidate": True, "x_page": 100.0})
+        cands = CP.candidates_of([row])
+        assert CP.clef_in_force(150.0, [], cands, header="alto")[0] is None
+        assert CP.clef_in_force(150.0, [], cands, header="treble") is None
+        assert CP.clef_in_force(50.0, [], cands, header="alto") is None
