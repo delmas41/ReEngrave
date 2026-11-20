@@ -267,6 +267,13 @@ F_DOT_PLAIN_FILL = 0.8
 F_BODY_TOP_PLAIN_SPACES = 0.45
 
 
+#: the `read_mid_f` refusals that say the ink is NOT an F clef (its body is not an F clef's, or it is a G's or a C's ink): such a box is
+#: no clef-shaped candidate -- a carried clef never stops at it (Brahms p25 s0 staff 3: a half note by the barline under a `clefF` box
+#: stopped the bass clef read just before it, and bars 1-9 went unread)
+MID_F_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_body_not_ending_at_the_fourth_line", "f_box_ink_past_the_staff_like_a_g",
+                    "f_box_on_a_c_bar", "f_no_body_ink")
+
+
 def read_mid_f(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float) -> Dict[str, Any]:
     """ROADMAP 2.324 r4 (Sean 2026-11-20 "Teach it"): an F clef printed INSIDE a line, read on the page-wide pass by its own ink like
     the clef at the start of the staff. `lines`: the staff's lines at the clef, from its own bar's traced grid. The box says where to

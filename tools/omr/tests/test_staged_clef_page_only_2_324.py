@@ -355,6 +355,19 @@ class TestRound4MidLineF:
         assert len(read) == 1 and read[0].detail.get("kind") == "bass" and read[0].detail.get("change") is True
         assert CP.clef_in_force(meta["box"][2] + 30, CP.changes_of(read), [], header="tenor")[0] == "bass"
 
+    @pytest.mark.parametrize("name", ["never_half_brahms_p25_s0_st3", "never_rest4_litolff_p9_s0_st11"])
+    def test_flag_on_a_box_whose_ink_is_not_an_f_clef_is_no_carry_stop(self, monkeypatch, name):
+        # the touched-pages run: Brahms p25's half note by the barline (bar 1) was a clef-shaped candidate, so the bass clef read in
+        # bar 0 stopped there and bars 1-9 went unread; a box refused by an ink never is not a clef and stops nothing
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Q
+        ink, meta = _load(DATA_R4, name)
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])], True)
+        refusals = log.refusals(Q.CLAIMED_AREA, R.staff(0, 0, 0))
+        assert refusals and all(r.detail.get("why") in CP.MID_F_NOT_A_CLEF for r in refusals)
+        assert CP.candidates_of(refusals) == []
+        assert CP.clef_in_force(meta["box"][2] + 30, [(0.0, "bass", None)], CP.candidates_of(refusals), header="tenor")[0] == "bass"
+
     def test_flag_on_a_reading_at_its_cut_is_a_strong_candidate(self, monkeypatch):
         from tools.omr.staged import record as R
         from tools.omr.staged.record import Q

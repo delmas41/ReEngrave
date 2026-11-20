@@ -16430,7 +16430,8 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             # bowls, cut by the lines, pass as an F clef's dot pair: Litolff bars 110 and 114)
             cand = CP.carry_enabled() and not any(
                 (f["family"] == n.get("family") and f["area"][0] - 0.5 * sp <= float(n["x0"]) <= f["area"][2] + 0.5 * sp)
-                or f["area"][0] <= float(n["x0"]) <= f["area"][2] for f in found)
+                or f["area"][0] <= float(n["x0"]) <= f["area"][2] for f in found) \
+                and n.get("why") not in CP.MID_F_NOT_A_CLEF
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
                         reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
                         x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
