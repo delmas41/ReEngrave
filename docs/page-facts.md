@@ -36,6 +36,15 @@ machine-readable form.
   solo marking is printed. OUR READING (not his words): "solo marking" covers "1.", "2.", "Solo"; no engraving
   manual was reached, the Brahms print agrees where it can be checked (horns bars 91/93, one stem and two
   ties; `benchmarks/voice-line-of-time-2026-11/FINDINGS.md`).
+- **Notes on one stem, on a staff shared by two players: one note each -- unless the instrument can play
+  several notes at once** (Sean, 2026-11-19, SCOPE: general). Shown Brahms bassoons bar 80 (two dotted notes
+  on one stem, two ties): *"One note each"*. Then: *The exception to the chords going to different players would be if the instrument is able to play multiple notes at one time. None of the woodwinds can, but the strings obviously can play double stops and triple stops and quadruple stops.*
+  NEVER: never both notes to both wind players; never split a string chord between players on the stem alone.
+  OUR READING (not his words): brass goes with the woodwinds (one note at a time); upper note to the upper
+  player; where the instrument is not known, neither rule is applied.
+- **Timpani, harp and piano are one player per staff** (Sean, 2026-11-19, SCOPE: general): *Timpani is one player as long as it is on one staff. Harp and piano are only one player per staff.*
+  NEVER: never two players read from one timpani, harp or piano staff. OUR READING: no unison copy and no
+  sharing-out there; two stems at one place are one player's two lines.
 - **Two silent voices on one staff share ONE whole rest** (Sean, 2026-11-17, SCOPE: general). His words, given
   to replace our vaguer wording: *"When two voices on the same staff both have a full measure of silence, it is
   standard to simplify to a single whole rest centered in the measure. Keeping two stacked whole rests in an

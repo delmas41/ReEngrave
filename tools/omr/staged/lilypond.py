@@ -425,7 +425,7 @@ def _tally(events: Sequence[Dict[str, Any]], counters: Dict[str, int],
     reports are directly comparable family by family.
     """
     for ev in events:
-        if ev.get("kind") == SX.FORWARD_KIND:
+        if ev.get("kind") in SX._NOT_A_PRINTED_MARK:      # a forward, or (ROADMAP 2.323) a unison's not-printed copy: this file draws one
             continue
         if ev.get("kind") == "rest":
             SX._count_guess(counters, (ev.get("rest") or {}).get("guess"), True)
@@ -784,8 +784,8 @@ def _collect_bars(rec: SX.Record, part: Sequence[SX.StaffRun],
 
             counters["two_voice_bars"] += 1
             v1, v2 = streams
-            lane0.extend(e for e in v1 if e.get("kind") != SX.FORWARD_KIND)
-            lane1.extend(e for e in v2 if e.get("kind") != SX.FORWARD_KIND)
+            lane0.extend(e for e in v1 if e.get("kind") not in SX._NOT_A_PRINTED_MARK)
+            lane1.extend(e for e in v2 if e.get("kind") not in SX._NOT_A_PRINTED_MARK)
             shared_rests = [e for e in v2 if e.get("kind") == "rest"
                             and any(e is other for other in v1)]
             if not run.condensed_from:      # ROADMAP 2.175: a doubled copy's rests are subtracted as doubled already
@@ -848,8 +848,9 @@ def _lily_event_marked(ev: Dict[str, Any], wedges: Dict[int, str],
     beside a guessed one stays black. A READ event returns the legacy text
     byte for byte.
     """
-    if ev.get("kind") == SX.FORWARD_KIND:
+    if ev.get("kind") in SX._NOT_A_PRINTED_MARK:
         # ROADMAP 2.314 r3: this voice prints nothing here -- an invisible skip of the stretch (MusicXML `<forward>`), never a rest
+        # ROADMAP 2.323: a unison's not-printed copy is the same skip -- the engraved page shows the one printed mark, spacing unchanged
         frac = Fraction(int(ev["units"]), _forward_divisions(ev)) / 4
         return "s1*%d/%d" % (frac.numerator, frac.denominator)
     text = _retouch_marks(ev, (dyns or {}).get(id(ev), ""), wedges)
