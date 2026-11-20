@@ -1,0 +1,14 @@
+{
+ "asked": "2026-11-19",
+ "question": "One Litolff mark, thin blue box on it, nothing else drawn: is it a half note, a quarter note, or not a notehead?",
+ "answers": {
+  "tile_01.png": {
+   "doc": "litolff",
+   "subject": "glyph/2/0/7/4/5",
+   "page_box": [978.0, 1476.0, 997.0, 1496.0],
+   "written_today": "half, blue (2.220 head_ink_hollow_over_black)",
+   "sean": "Litolff mark is a sharp sign blending into the barline.",
+   "verdict": "not a notehead: a sharp sign touching the barline"
+  }
+ }
+}
