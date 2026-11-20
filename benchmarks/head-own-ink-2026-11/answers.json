@@ -1,0 +1,58 @@
+{
+ "asked": "2026-11-20",
+ "question": "Three Litolff marks the slash-guard change newly writes as blue half notes, orange box on the mark, nothing else drawn: are all three half notes?",
+ "sean": "Yes all half notes",
+ "answers": {
+  "tile_01.png": {
+   "doc": "litolff",
+   "subject": "glyph/4/1/1/4/6",
+   "page_box": [
+    1050.7575,
+    2283.6575,
+    1081.6275,
+    2304.1325
+   ],
+   "position": {
+    "page": 4,
+    "system": 1,
+    "staff": 1,
+    "cell": 4
+   },
+   "verdict": "half note"
+  },
+  "tile_02.png": {
+   "doc": "litolff",
+   "subject": "glyph/4/1/1/4/14",
+   "page_box": [
+    1054.38,
+    2299.565,
+    1081.47,
+    2325.71
+   ],
+   "position": {
+    "page": 4,
+    "system": 1,
+    "staff": 1,
+    "cell": 4
+   },
+   "verdict": "half note"
+  },
+  "tile_03.png": {
+   "doc": "litolff",
+   "subject": "glyph/2/1/0/11/2",
+   "page_box": [
+    2094.9775,
+    2075.9875,
+    2125.375,
+    2095.2025
+   ],
+   "position": {
+    "page": 2,
+    "system": 1,
+    "staff": 0,
+    "cell": 11
+   },
+   "verdict": "half note"
+  }
+ }
+}

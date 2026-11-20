@@ -27,6 +27,12 @@ flag (a value shorter than a quarter with no beam), beam, tie, slur, articulatio
 GUESSED mark; plus the directions (dynamics, words, wedges) and the clef/key/time in force. Two arms' notes are
 paired by page position (a chord member has its own box), never by list order.
 
+THE SHARED OFF READING (ROADMAP 2.328). `--make-baseline --from gather --cell-map master` reads the OFF arm alone on a clean main commit
+and saves it (library/_shared-records/sample-baselines/<commit>/<plate>/); `--baseline shared --check-page [PLATE:]N` reads only the ON arm
+and compares against it -- but only if the commit is an ancestor of this branch, no later main commit touching tools/omr is merged in, the
+page list / plate / tag / cell map / OMR_* env match exactly, every file is there, and this tree's own flag-off reading of the check page equals
+the shared one. Otherwise REFUSED, loudly in the report, and the OFF arm is read as without it. docs/measuring.md §0 "shared OFF reading".
+
 THE CONTROLS THAT CAN FAIL. `--allow-unknown-flag` is needed for a flag the tree does not mention (so a typo cannot
 report a clean zero). The OFF arm's duration / rest verdicts are compared with the saved record's own; a mismatch is
 printed LOUDLY. The tracing of glyph keys into the XML raises when the note count disagrees (`TraceMismatch`).
@@ -313,8 +319,15 @@ def traced_export() -> Iterator[None]:
         out, units = orig(events, divisions, counters, voice=voice, doubled=doubled)
         glyphs: List[Optional[str]] = []
         for ev in events:
+            take = None
+            if ev.get("kind") == E.UNISON_COPY_KIND:      # ROADMAP 2.323: a not-printed copy is stamped with its printed mark's own key(s)
+                take = ev.get("take")
+                ev = ev["of"]
             if ev.get("kind") == "rest":
                 glyphs.append(ev.get("glyph") or (ev.get("rest") or {}).get("glyph"))
+            elif take:      # r2: the copy of ONE head of a two-note chord, in the order `_unison_copy_lines` writes it
+                heads = E._chord_head_order(ev)
+                glyphs.extend(h.get("glyph") for h in (heads[:1] if take == "lower" else heads[-1:]))
             else:
                 glyphs.extend(h.get("glyph") for h in (ev.get("noteheads") or []))
         idx = [i for i, s in enumerate(out) if _NOTE_OPEN.match(s)]
@@ -384,6 +397,8 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
     root = ET.fromstring(xml)
     hosts: List[dict] = []
     loose: List[dict] = []
+    unprinted: List[dict] = []      # ROADMAP 2.323: notes / rests written print-object="no"
+    forwards = [0]                  # ROADMAP 2.323: `<forward>` elements written
     divisions = 1
 
     def place(rg: Optional[str]) -> Tuple[Optional[int], Optional[float], Optional[float], Optional[list]]:
@@ -405,6 +420,7 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                     pos -= int(el.findtext("duration") or 0)
                 elif tag == "forward":
                     pos += int(el.findtext("duration") or 0)
+                    forwards[0] += 1
                 if tag == "attributes":
                     if el.findtext("divisions"):
                         divisions = int(el.findtext("divisions"))
@@ -437,6 +453,12 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                         onset_div = last_onset = pos
                         if el.find("grace") is None:
                             pos += int(el.findtext("duration") or 0)
+                    if el.get("print-object") == "no":
+                        # ROADMAP 2.323: a unison's second copy is the SAME mark as the printed one -- not a note or rest of the page, so it is
+                        # never gained or lost; counted apart (`unprinted`), its time already advanced above
+                        unprinted.append(dict(kind=("rest" if el.find("rest") is not None else "note"), page=place(rg)[0], part=pid, measure=mnum,
+                                              rg=rg, voice=el.findtext("voice"), box=place(rg)[3]))
+                        continue
                     onset = str(Fraction(onset_div, divisions))
                     pg, cx, cy, bx = place(rg)
                     is_rest = el.find("rest") is not None
@@ -496,7 +518,8 @@ def parse_symbols(xml: str, boxes: Dict[str, dict]) -> Dict[str, Any]:
                     pending = []
             for d in pending:      # a direction with no note after it in its bar: counted, no place on the page
                 loose.append(d)
-    return dict(hosts=hosts, loose=loose)
+    names = {sp.get("id"): sp.findtext("part-name") for sp in root.iter("score-part")}
+    return dict(hosts=hosts, loose=loose, unprinted=unprinted, forwards=forwards[0], part_names=names)
 
 
 # ───────────────────────────── 5. the arm worker ─────────────────────────────
@@ -596,6 +619,10 @@ def run_arm(plate: str, arm: str, flags: Sequence[Tuple[str, str, str]], mode: s
     out = dict(plate=plate, arm=arm, mode=mode, flags=[list(f) for f in flags], hosts=sym["hosts"], loose=sym["loose"],
                red_bars=_count(red.get("bars") if isinstance(red, dict) else red), bars_held_out=_count(report.get("bars_held_out_sum")),
                notes_not_written=report.get("notes_not_written_total"), control=control,
+               # ROADMAP 2.323: not-printed copies (print-object="no", counted on the sample pages) and `<forward>` elements (the whole file)
+               unprinted=sym["unprinted"], part_names=sym.get("part_names"),
+               unprinted_copies=sum(1 for u in sym["unprinted"] if u["page"] is None or u["page"] in cp), forwards=sym["forwards"],
+               unison_counters={k: v for k, v in (report.get("written") or {}).items() if "unison" in k},   # ROADMAP 2.323 r2: whole file, by instrument group
                blue_marks=xml.count('color="%s"' % E.GUESS_COLOR), seconds=round(time.time() - t0, 1),
                seconds_export=round(time.time() - t1, 1))
     from .one_test import arm_fingerprint     # ROADMAP 2.244: what this arm was built from (a combined run refuses a mix)
@@ -1355,24 +1382,292 @@ def gather_one(plate: str, arm: str, flag_env: Dict[str, str], pages: Sequence[i
     return rp
 
 
-def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mode: str, out: pathlib.Path,
-               tag: str, seed: int, workers: int, sample: Dict[str, Any], note_lines: Sequence[str],
-               reuse: bool = False, unjudged_tiles: int = 0) -> Dict[str, Any]:
-    t0 = time.time()
+# ───────────────────── the shared OFF reading (ROADMAP 2.328) ─────────────────────
+#
+# A GATHER lane reads the frozen sample twice (its change off, then on). The OFF reading is the same for every lane whose
+# tree is main plus its own flagged-off change, so it is read ONCE per main commit and saved here, machine-local:
+#     <BASELINE_ROOT>/<main commit>/<plate>/{<plate>.off.symbols.json, .mini-record.json, .musicxml, [.extra.json], manifest.json}
+# `--baseline shared` then reads only the ON arm. CLAUDE.md §6 "compare like with like": the saved reading is used ONLY
+# where every condition below holds, and a one-page control reads the lane's own tree flag-off on one page and must equal
+# the shared reading of that page. Anything else -> REFUSED, loudly, and the lane reads its own off arm as before.
+
+BASELINE_ROOT = RECORDS / "sample-baselines"
+BASELINE_MAIN_REF = "origin/main"
+BASELINE_FILES = ("symbols.json", "mini-record.json", "musicxml")
+BASELINE_OPTIONAL = ("extra.json",)
+#: Env vars `gather_one` sets itself; not part of the comparison.
+_GATHER_OWN_ENV = ("OMR_SURYA_KEEP_ALIVE", "OMR_DETECTOR_CACHE")
+
+
+def _git(args: Sequence[str], repo: pathlib.Path = ROOT) -> subprocess.CompletedProcess:
+    return subprocess.run(["git", "-C", str(repo)] + list(args), capture_output=True, text=True)
+
+
+def git_out(args: Sequence[str], repo: pathlib.Path = ROOT) -> Optional[str]:
+    r = _git(args, repo)
+    return r.stdout.strip() if r.returncode == 0 else None
+
+
+def omr_env(environ: Dict[str, str], skip: Iterable[str] = ()) -> Dict[str, str]:
+    """Every `OMR_*` variable set, but the names in `skip` (a lane's own flags) and the ones the gather sets itself."""
+    drop = set(skip) | set(_GATHER_OWN_ENV)
+    return {k: v for k, v in sorted(environ.items()) if k.startswith("OMR_") and k not in drop}
+
+
+def _sha(path: pathlib.Path) -> str:
+    import hashlib
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def cell_map_label() -> Optional[str]:
+    return None if CELL_MAP is None else ("master" if CELL_MAP == CELL_MAP_ROOT else str(CELL_MAP))
+
+
+def baseline_dir(commit: str, plate: str, root: Optional[pathlib.Path] = None) -> pathlib.Path:
+    return (root or BASELINE_ROOT) / commit / plate
+
+
+def save_baseline(plate: str, work: pathlib.Path, commit: str, pages: Sequence[int], loaded: Sequence[int], tag: str,
+                  cell_map: Optional[str], cell_ver: Optional[str], env: Dict[str, str], flags_off: Dict[str, str],
+                  repo: pathlib.Path = ROOT, root: Optional[pathlib.Path] = None, date: Optional[str] = None) -> pathlib.Path:
+    """Copy the plate's OFF arm files from `work` to the baseline directory and write its manifest (with a hash of every file)."""
+    d = baseline_dir(commit, plate, root)
+    d.mkdir(parents=True, exist_ok=True)
+    import shutil
+    files: Dict[str, str] = {}
+    for ext in BASELINE_FILES + BASELINE_OPTIONAL:
+        src = work / ("%s.off.%s" % (plate, ext))
+        if src.exists():
+            shutil.copyfile(src, d / src.name)
+            files[src.name] = _sha(d / src.name)
+        elif ext in BASELINE_FILES:
+            raise SystemExit("cannot save the baseline: %s is missing" % src)
+    man = dict(main_commit=commit, tools_omr_tree=git_out(["rev-parse", "%s:tools/omr" % commit], repo), plate=plate,
+               pages=list(pages), loaded_pages=list(loaded), tag=tag, cell_map=cell_map, cell_map_version=cell_ver,
+               env=env, flags_off=flags_off, files=files, date=date or time.strftime("%Y-%m-%d %H:%M:%S"))
+    (d / "manifest.json").write_text(json.dumps(man, indent=1) + "\n")
+    return d
+
+
+def baseline_refusals(man: Dict[str, Any], d: pathlib.Path, plate: str, pages: Sequence[int], loaded: Sequence[int], tag: str,
+                      cell_map: Optional[str], cell_ver: Optional[str], env: Dict[str, str], flags: Sequence[Tuple[str, str, str]],
+                      repo: pathlib.Path = ROOT, main_ref: str = BASELINE_MAIN_REF) -> List[str]:
+    """Why the saved reading may NOT stand in for this lane's own OFF arm ([] = it may). Every condition is a separate line."""
+    why: List[str] = []
+    c = man.get("main_commit") or ""
+    if man.get("plate") != plate:
+        why.append("the manifest is for plate %s, not %s" % (man.get("plate"), plate))
+    if _git(["merge-base", "--is-ancestor", c, "HEAD"], repo).returncode != 0:
+        why.append("baseline commit %s is not an ancestor of this lane's HEAD" % c[:9])
+    else:
+        later = git_out(["rev-list", "%s..%s" % (c, main_ref), "--", "tools/omr"], repo)
+        mine = git_out(["rev-list", "%s..HEAD" % c, "--", "tools/omr"], repo)
+        if later is None or mine is None:
+            why.append("cannot tell whether main moved the readers after %s (%s or HEAD unreadable)" % (c[:9], main_ref))
+        else:
+            merged = sorted(set(later.split()) & set(mine.split()))
+            if merged:
+                why.append("this branch has merged %d main commit(s) after the baseline that touch tools/omr (%s)"
+                           % (len(merged), ", ".join(m[:9] for m in merged[:4])))
+    if list(man.get("pages") or ()) != list(pages):
+        why.append("page list differs: baseline %s, this run %s" % (man.get("pages"), list(pages)))
+    if list(man.get("loaded_pages") or ()) != list(loaded):
+        why.append("loaded (context) pages differ: baseline %s, this run %s" % (man.get("loaded_pages"), list(loaded)))
+    if man.get("tag") != tag:
+        why.append("night-record tag differs: baseline %s, this run %s" % (man.get("tag"), tag))
+    if man.get("cell_map") != cell_map or man.get("cell_map_version") != cell_ver:
+        why.append("cell map differs: baseline %s/%s, this run %s/%s" % (man.get("cell_map"), man.get("cell_map_version"), cell_map, cell_ver))
+    names = [f[0] for f in flags]
+    fo = man.get("flags_off") or {}
+    base_env = {k: v for k, v in (man.get("env") or {}).items() if k not in names}
+    if base_env != env:
+        diff = sorted(k for k in set(base_env) | set(env) if base_env.get(k) != env.get(k))
+        why.append("OMR_* environment differs (%s)" % ", ".join(diff))
+    for name, off, _on in flags:
+        if name in fo:
+            if fo[name] != off:
+                why.append("flag %s was read at %s in the baseline, this lane's OFF is %s" % (name, fo[name], off))
+        else:
+            named = git_out(["grep", "-l", "-F", name, c, "--", "tools/omr", ":(exclude)tools/omr/tests"], repo)
+            if named:
+                why.append("flag %s already exists on the baseline tree and was not set at its OFF value there "
+                           "(make the baseline with --flag %s)" % (name, name))
+    for fn, sha in sorted((man.get("files") or {}).items()):
+        if not (d / fn).exists():
+            why.append("saved file missing: %s" % fn)
+        elif _sha(d / fn) != sha:
+            why.append("saved file changed since it was made: %s" % fn)
+    for ext in BASELINE_FILES:
+        if "%s.off.%s" % (plate, ext) not in (man.get("files") or {}):
+            why.append("manifest does not list %s.off.%s" % (plate, ext))
+    return why
+
+
+def find_baseline(plate: str, pages: Sequence[int], loaded: Sequence[int], tag: str, cell_map: Optional[str],
+                  cell_ver: Optional[str], env: Dict[str, str], flags: Sequence[Tuple[str, str, str]],
+                  repo: pathlib.Path = ROOT, root: Optional[pathlib.Path] = None, commit: Optional[str] = None,
+                  main_ref: str = BASELINE_MAIN_REF) -> Tuple[Optional[pathlib.Path], Optional[Dict[str, Any]], List[str]]:
+    """The newest saved reading of `plate` that may be used, else `(None, newest manifest or None, reasons)`."""
+    r = root or BASELINE_ROOT
+    cands: List[Tuple[str, pathlib.Path, Dict[str, Any]]] = []
+    for md in sorted(r.glob("*/%s/manifest.json" % plate)) if r.exists() else []:
+        try:
+            man = json.loads(md.read_text())
+        except (OSError, ValueError):
+            continue
+        if commit is None or man.get("main_commit", "").startswith(commit):
+            cands.append((man.get("date") or "", md.parent, man))
+    if not cands:
+        return None, None, ["no saved reading for %s%s under %s" % (plate, " at commit %s" % commit if commit else "", r)]
+    cands.sort(key=lambda t: t[0], reverse=True)
+    first: List[str] = []
+    for i, (_dt, d, man) in enumerate(cands):
+        why = baseline_refusals(man, d, plate, pages, loaded, tag, cell_map, cell_ver, env, flags, repo, main_ref)
+        if not why:
+            return d, man, []
+        if i == 0:
+            first = why
+    return None, cands[0][2], first
+
+
+def compare_check(base_off: Dict[str, Any], check: Dict[str, Any], page: int, tol: float) -> Dict[str, Any]:
+    """The control that can fail: the shared OFF reading of ONE page against this lane's own flag-off reading of that page.
+    `equal` only when the exported marks are identical (nothing gained, lost or changed, by kind); a page with no written
+    mark proves nothing and is refused too."""
+    def sub(a: Dict[str, Any]) -> Dict[str, Any]:
+        return dict(hosts=[h for h in a["hosts"] if h.get("page") in (None, page)],
+                    loose=[d for d in a["loose"] if d.get("page") in (None, page)])
+    b, c = sub(base_off), sub(check)
+    d = diff_arms(b, c, tol)
+    moved = {k: v for k, v in d["counts"].items() if any(v.values())}
+    n = len(b["hosts"]) + len(b["loose"])
+    return dict(page=page, equal=not moved and len(b["hosts"]) == len(c["hosts"]) and n > 0, differs=moved,
+                marks=n, hosts=[len(b["hosts"]), len(c["hosts"])], empty=(n == 0 and not c["hosts"] and not c["loose"]))
+
+
+def read_check_page(plate: str, page: int, flags: Sequence[Tuple[str, str, str]], sample: Dict[str, Any], tag: str,
+                    work: pathlib.Path) -> Dict[str, Any]:
+    """Read ONE page with every flag OFF on THIS tree (a page gather of that page plus the plate's context page(s), then the
+    same arm worker): the `<plate>.check.symbols.json` it writes. The only function here that touches the detector."""
+    env0 = dict(os.environ)
+    ctx = sorted({page} | set(sample["plates"][plate].get("context_pages") or ()))
+    rp = gather_one(plate, "check", {n: off for n, off, _on in flags}, ctx, work, env0)
+    args = ["arm", "--tag", tag, "--work", str(work), "--from", "gather", "--plate", plate, "--arm", "check",
+            "--pages", str(page), "--gathered", str(rp)]
+    for name, off, on in flags:
+        args += ["--flag", "%s=%s:%s" % (name, off, on)]
+    proc = _spawn(args, dict(env0), work / ("%s.check.log" % plate))
+    if proc.wait() != 0:
+        raise SystemExit("check-page arm failed: see %s" % (work / ("%s.check.log" % plate)))
+    return json.loads((work / ("%s.check.symbols.json" % plate)).read_text())
+
+
+def resolve_check_page(spec: str, plates: Sequence[str], sample: Dict[str, Any]) -> Tuple[str, int]:
+    """`litolff:12` or a bare `12` that only one plate's counted pages hold."""
+    if ":" in spec:
+        p, n = spec.split(":", 1)
+        plate, page = p.strip(), int(n)
+    else:
+        page = int(spec)
+        hit = [p for p in plates if page in sample["plates"][p]["pages"]]
+        if len(hit) != 1:
+            raise SystemExit("--check-page %s: say which plate (litolff:%s) -- %d plates hold it" % (spec, spec, len(hit)))
+        plate = hit[0]
+    if plate not in plates or page not in sample["plates"][plate]["pages"]:
+        raise SystemExit("--check-page %s: not one of %s's counted sample pages %s" % (spec, plate, sample["plates"].get(plate, {}).get("pages")))
+    return plate, page
+
+
+def resolve_shared_off(plate: str, flags: Sequence[Tuple[str, str, str]], sample: Dict[str, Any], tag: str, work: pathlib.Path,
+                       baseline: Dict[str, Any], environ: Dict[str, str]) -> Tuple[Dict[str, Any], Optional[Dict[str, Any]]]:
+    """`(info, off symbols or None)`. Finds a usable saved reading, proves it on the lane's check page, and (only then) copies its
+    files into `work` as the `<plate>.off.*` the compare step reads. `info["refused"]` is non-empty exactly when we read our own."""
+    pages, loaded = sample["plates"][plate]["pages"], loaded_pages(sample, plate)
+    names = [f[0] for f in flags]
+    info: Dict[str, Any] = dict(used=False, refused=[], commit=None, date=None, check=None)
+    d, man, why = find_baseline(plate, pages, loaded, tag, cell_map_label(), cell_map_version(plate), omr_env(environ, names), flags,
+                                repo=baseline.get("repo") or ROOT, root=baseline.get("root"), commit=baseline.get("commit"),
+                                main_ref=baseline.get("main_ref") or BASELINE_MAIN_REF)
+    if man:
+        info.update(commit=man.get("main_commit"), date=man.get("date"))
+    page = baseline.get("check_pages", {}).get(plate)
+    if d is None:
+        info["refused"] = why
+        return info, None
+    if page is None:
+        info["refused"] = ["no --check-page for %s: the control that can fail was not run" % plate]
+        return info, None
+    base = json.loads((d / ("%s.off.symbols.json" % plate)).read_text())
+    chk = (baseline.get("read_check") or read_check_page)(plate, page, flags, sample, tag, work)
+    res = compare_check(base, chk, page, 0.5 * PLATES[plate]["unit"])
+    info["check"] = dict(page=page, equal=res["equal"], differs=res["differs"], marks=res["marks"])
+    if not res["equal"]:
+        info["refused"] = ["check page %d read flag-off on this tree DIFFERS from the shared reading: %s" % (
+            page, ", ".join("%s %s" % (k, "/".join("%s %d" % (s, n) for s, n in v.items() if n)) for k, v in res["differs"].items())
+            or ("it holds no written mark, so it proves nothing -- name another page" if res["marks"] == 0 else "host counts differ"))]
+        return info, None
+    import shutil
+    for fn in man["files"]:
+        shutil.copyfile(d / fn, work / fn)
+    info["used"] = True
+    return info, base
+
+
+def make_baseline(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], out: pathlib.Path, tag: str, workers: int,
+                  sample: Dict[str, Any], repo: pathlib.Path = ROOT, root: Optional[pathlib.Path] = None,
+                  main_ref: str = BASELINE_MAIN_REF) -> List[pathlib.Path]:
+    """`--make-baseline`: read the OFF arm only, on a CLEAN checkout of a main commit, and save it. Refuses a dirty `tools/omr`
+    or a HEAD that is not on main (a baseline from a lane's tree would be the very thing the compare must never trust)."""
+    head = git_out(["rev-parse", "HEAD"], repo)
+    if _git(["status", "--porcelain", "--", "tools/omr"], repo).stdout.strip():
+        raise SystemExit("--make-baseline: tools/omr has uncommitted changes; the baseline must be a clean main commit")
+    if not head or _git(["merge-base", "--is-ancestor", head, main_ref], repo).returncode != 0:
+        raise SystemExit("--make-baseline: HEAD %s is not on %s; check out a main commit" % ((head or "?")[:9], main_ref))
     work = out / "work"
+    read_arms(flags, plates, "gather", work, tag, workers, sample, arms=("off",))
+    saved = []
+    for p in plates:
+        saved.append(save_baseline(p, work, head, sample["plates"][p]["pages"], loaded_pages(sample, p), tag, cell_map_label(),
+                                   cell_map_version(p), omr_env(dict(os.environ), [f[0] for f in flags]),
+                                   {n: off for n, off, _on in flags}, repo=repo, root=root))
+        print("baseline saved: %s" % saved[-1])
+    return saved
+
+
+def baseline_lines(plate: str, info: Dict[str, Any]) -> List[str]:
+    """The control line(s) the report prints for a plate that asked for the shared baseline."""
+    if info["used"]:
+        c = info["check"]
+        return ["  baseline: SHARED OFF reading from main %s (read %s); check page %d read flag-off on THIS tree: IDENTICAL (%d marks)"
+                % ((info["commit"] or "?")[:9], info["date"], c["page"], c["marks"])]
+    out = ["  baseline: SHARED READING REFUSED -- this plate's OFF arm was read on THIS tree (as without --baseline)%s"
+           % (" [baseline main %s, %s]" % ((info["commit"] or "?")[:9], info["date"]) if info["commit"] else "")]
+    out += ["      refused: " + r for r in info["refused"]]
+    if info.get("check"):
+        out.append("      check page %d: marks differ from the shared reading" % info["check"]["page"])
+    return out
+
+
+def read_arms(flags:Sequence[Tuple[str, str, str]], plates: Sequence[str], mode: str, work: pathlib.Path, tag: str,
+              workers: int, sample: Dict[str, Any], reuse: bool = False, arms: Sequence[str] = ("off", "on"),
+              preloaded: Optional[Dict[Tuple[str, str], Any]] = None) -> Dict[Tuple[str, str], Any]:
+    """Read every (plate, arm) in `arms` (one fresh process each, one page gather at a time) -> `{(plate, arm): symbols}`.
+    `preloaded` = arms already read (ROADMAP 2.328: the shared OFF reading); returned as they are, NOT read again."""
     work.mkdir(parents=True, exist_ok=True)
     pages = {p: sample["plates"][p]["pages"] for p in plates}
     env0 = dict(os.environ)
+    pre = dict(preloaded or {})
     if mode == "adjudicate":
         for p in plates:
             ensure_slices(p, loaded_pages(sample, p), tag)
-    jobs = [(p, a) for p in plates for a in ("off", "on")]
+    jobs = [(p, a) for p in plates for a in arms if (p, a) not in pre]
     if reuse:       # development only: the arms' saved files, re-parsed; `mode == adjudicate` slices are on disk
         done0 = {(p, a): reparse_arm(p, a, tag, work, pages[p]) for p, a in jobs}
         jobs = []
     else:
         done0 = {}
-    base = ["arm", "--tag", tag, "--work", str(work), "--from", mode]
+    done0.update(pre)
+    base =["arm", "--tag", tag, "--work", str(work), "--from", mode]
     for name, off, on in flags:
         base += ["--flag", "%s=%s:%s" % (name, off, on)]
     gather_recs: Dict[Tuple[str, str], pathlib.Path] = {}
@@ -1400,7 +1695,31 @@ def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mod
                     raise SystemExit("arm %s %s failed: see %s" % (p, a, work / ("%s.%s.log" % (p, a))))
                 done[(p, a)] = json.loads((work / ("%s.%s.symbols.json" % (p, a))).read_text())
         time.sleep(1)
-    rep: Dict[str, Any] = dict(flags=[list(f) for f in flags], mode=mode, plates={}, notes=list(note_lines))
+    return done
+
+
+def run_report(flags: Sequence[Tuple[str, str, str]], plates: Sequence[str], mode: str, out: pathlib.Path,
+               tag: str, seed: int, workers: int, sample: Dict[str, Any], note_lines: Sequence[str],
+               reuse: bool = False, unjudged_tiles: int = 0, baseline: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    t0 = time.time()
+    work = out / "work"
+    work.mkdir(parents=True, exist_ok=True)
+    pages = {p: sample["plates"][p]["pages"] for p in plates}
+    notes = list(note_lines)
+    bl: Dict[str, Any] = {}
+    pre: Dict[Tuple[str, str], Any] = {}
+    if baseline:        # ROADMAP 2.328: the OFF arm from the shared reading where every condition holds; else our own, loudly
+        for p in plates:
+            info, off_sym = resolve_shared_off(p, flags, sample, tag, work, baseline, dict(os.environ))
+            bl[p] = info
+            if off_sym is not None:
+                pre[(p, "off")] = off_sym
+            else:
+                notes.append("SHARED BASELINE REFUSED for %s -- reading this lane's OWN off arm: %s" % (p, "; ".join(info["refused"])))
+    done = read_arms(flags, plates, mode, work, tag, workers, sample, reuse=reuse, preloaded=pre)
+    rep: Dict[str, Any] = dict(flags=[list(f) for f in flags], mode=mode, plates={}, notes=notes)
+    if bl:
+        rep["baseline"] = bl
     all_changes, all_same, all_unjudged = {}, {}, {}
     for p in plates:
         off, on = done[(p, "off")], done[(p, "on")]
@@ -1469,6 +1788,8 @@ def render_text(rep: Dict[str, Any]) -> str:
             L.append("  control: %s: duration/rest verdicts differing from the record OFF %d / ON %d of %d%s"
                      % (say, o["differ"], n["differ"], o["stored"],
                         "" if c["reproduces"] in ("both",) else " (e.g. %s)" % ", ".join((o if o["differ"] else n)["first_differ"][:3])))
+        if p in (rep.get("baseline") or {}):
+            L.extend(baseline_lines(p, rep["baseline"][p]))
         j = r["judged"]
         L.append("  Sean's judged answers (%d tiles on these pages): right->wrong %s | right->narrowed/abstained/gone %d | wrong->right %s"
                  % (j["scored"], blue_count(j["worse"]), len(j["lost"]), blue_count(j["better"])))
@@ -1590,6 +1911,15 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
                     help="--tag names a record GATHERED with the GATHER-side flags on (2.190); replay ADJUDICATE..EXPORT for both arms")
     ap.add_argument("--unjudged-tiles", type=int, default=0, metavar="N",
                     help="ROADMAP 2.244: also cut up to N (<= 12) blind tiles from the changed places no judged tile covers, into DIR/unjudged/")
+    ap.add_argument("--make-baseline", action="store_true",
+                    help="ROADMAP 2.328: read the OFF arm only, on a clean main commit, and save it under library/_shared-records/sample-baselines/<commit>/ "
+                         "(needs --from gather --cell-map master; --flag NAME sets that flag at its OFF value for the reading)")
+    ap.add_argument("--baseline", default=None, choices=("shared",),
+                    help="ROADMAP 2.328: --from gather: take the OFF arm from the saved shared reading and read only ON, if every condition holds "
+                         "(else REFUSED, loudly, and the OFF arm is read as usual); needs --check-page")
+    ap.add_argument("--baseline-commit", default=None, metavar="SHA", help="--baseline shared: use only the reading made at this main commit")
+    ap.add_argument("--check-page", action="append", default=[], metavar="[PLATE:]N",
+                    help="--baseline shared: the sample page (per plate) that this lane's own flag-off tree re-reads and must equal the shared reading on")
     ap.add_argument("--reuse", action="store_true", help="development: re-parse the arms already in DIR/work")
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--work")
@@ -1668,8 +1998,22 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
         else:
             for p in plates:
                 notes.append("cells LOADED from master %s (%s) for both arms" % (cell_map_version(p), p))
+    if a.make_baseline or a.baseline:
+        if mode != "gather" or CELL_MAP is None:
+            raise SystemExit("--make-baseline / --baseline shared need --from gather and --cell-map (the shared reading is a re-gather from the master cells)")
+    if a.make_baseline:
+        make_baseline(flags, plates, out, tag, min(4, max(1, a.workers)), sample)
+        return 0
+    baseline = None
+    if a.baseline:
+        checks = dict(resolve_check_page(c, plates, sample) for c in a.check_page)
+        if not checks:
+            raise SystemExit("--baseline shared needs --check-page [PLATE:]N: the one page this tree re-reads flag-off to prove the shared reading (rule 7)")
+        baseline = dict(check_pages=checks, commit=a.baseline_commit)
+    elif a.check_page:
+        raise SystemExit("--check-page only goes with --baseline shared")
     rep = run_report(flags, plates, mode, out, tag, a.seed, min(4, max(1, a.workers)), sample, notes, reuse=a.reuse,
-                     unjudged_tiles=min(12, max(0, a.unjudged_tiles)))
+                     unjudged_tiles=min(12, max(0, a.unjudged_tiles)), baseline=baseline)
     print(render_text(rep))
     return 0
 
