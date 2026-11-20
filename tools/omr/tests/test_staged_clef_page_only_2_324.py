@@ -237,83 +237,155 @@ class TestRound3FClef:
         assert CP.read_box("clefF", meta["box"], ink, meta["lines"], meta["sp"], header=True)["passed"]
 
 
-class TestRound3RefusedBoxStillNarrows:
-    """Brahms p5 s1 staff 3 bar 0 (the round-2 trace): a mid-bar bass clef whose dots are fused with the ink beside them is refused by
-    the dot test; its `clefF` box was the register's NARROWED claim, so the head box the detector drew on its dots was narrowed. With the
-    register's clef claims stood down (flag ON) nothing claimed that ink and the dots were written as a C4. The page-wide pass now files
-    the NARROWED claim for a box it could not read."""
+DATA_R4 = pathlib.Path(__file__).with_name("data_clef_page_only_2_324_r4.npz")
+MID_F_READ = ["mid_f_brahms_p25_s0_st3", "mid_f_brahms_p0_s0_st12", "mid_f_brahms_p8_s0_st9", "mid_f_litolff_p4_s1_st3"]
+MID_F_NEVER = ["never_sf_litolff_p10_s0_st0", "never_half_litolff_p11_s0_st7", "never_flag_litolff_p11_s1_st10",
+               "never_rest8_litolff_p16_s1_st9", "never_rest4_litolff_p9_s0_st11", "never_flag_brahms_p0_s0_st9",
+               "never_half_brahms_p25_s0_st3"]
 
-    def _run(self, monkeypatch, flag):
-        import types
-        from tools.omr.staged import gather as G
-        from tools.omr.staged import record as R
-        from tools.omr.staged.record import Log, Q
-        z = np.load(DATA_R3)
-        meta = json.loads(str(z["meta"]))["f_mid_bar_brahms_p5_s1_st3"]
-        ink = np.unpackbits(z["f_mid_bar_brahms_p5_s1_st3"])[: meta["shape"][0] * meta["shape"][1]].reshape(meta["shape"]).astype(bool)
-        if flag:
-            monkeypatch.setenv(CP.ENV_PAGE_ONLY, "1")
-        else:
-            monkeypatch.delenv(CP.ENV_PAGE_ONLY, raising=False)
-        H, W = ink.shape
-        lines = meta["lines_cell"]
 
-        class Det:
-            def __init__(self, name, bb, cx0):
-                self.smufl_name, self.confidence, self.category = name, 0.9, ""
-                self.x_canonical, self.y_canonical = bb[0] - cx0, bb[1]
-                self.width_canonical, self.height_canonical = bb[2] - bb[0], bb[3] - bb[1]
+def _load(data, name):
+    z = np.load(data)
+    meta = json.loads(str(z["meta"]))[name]
+    ink = np.unpackbits(z[name])[: meta["shape"][0] * meta["shape"][1]].reshape(meta["shape"]).astype(bool)
+    return ink, meta
 
-        def cell(k, x0, x1):
-            return types.SimpleNamespace(staff_index=0, measure_index=k, page_index=0, bbox_page_px=(x0, 0, x1, H), upscale_factor=1.0,
-                                         staff_line_ys_canonical=list(lines))
-        cells = [cell(0, -120, 60), cell(1, 60, W)]       # the staff starts left of the crop: the clef stands inside the system
-        pws = types.SimpleNamespace(page=types.SimpleNamespace(page_index=0, binary=np.where(ink, 0, 255).astype(np.uint8)),
-                                    staves=[types.SimpleNamespace(staff_index=0, system_index=0, line_ys=list(lines),
-                                                                  line_spacing_px=meta["sp"])])
-        dets = {R.cell(0, 0, 0, 1).to_key(): [Det("clefF", meta["box"], 60), Det("noteheadBlackOnLine", meta["head_box"], 60)]}
-        monkeypatch.setattr(G, "_spacing", lambda st: meta["sp"])
-        log = Log()
-        if flag:
-            G.gather_clef_pagewide(log, pws, cells, {0: (0, 0)}, dets)
-        else:
-            G.gather_claimed_register(log, pws, cells, {0: (0, 0)}, dets)
-        self.log = log
-        return [r for r in log.rows(Q.CLAIMED_AREA, R.staff(0, 0, 0)) if (r.detail or {}).get("owner") == "clef"
-                and (r.detail or {}).get("unit") == "area"], R.glyph(0, 0, 0, 1, 1).to_key()
 
-    def test_flag_on_it_is_a_strong_candidate_so_the_tenor_clef_stops_there(self, monkeypatch):
+def _r4(name, grid="cell"):
+    ink, meta = _load(DATA_R4, name)
+    base = meta["lines_cell"] if grid == "cell" else meta["lines_staffwide"]
+    return ink, meta, CP.local_lines(ink, base, meta["sp"], meta["box"][0])
+
+
+def _gather_one_staff(monkeypatch, ink, meta, dets_boxes, flag):
+    """`gather_clef_pagewide` (flag ON) or `gather_claimed_register` (OFF) on one real crop: a staff whose first bar starts left of the
+    crop, so the box stands INSIDE the line; the cell carries the bar's own traced lines."""
+    import types
+    from tools.omr.staged import gather as G
+    from tools.omr.staged import record as R
+    from tools.omr.staged.record import Log, Q
+    if flag:
+        monkeypatch.setenv(CP.ENV_PAGE_ONLY, "1")
+    else:
+        monkeypatch.delenv(CP.ENV_PAGE_ONLY, raising=False)
+    H, W = ink.shape
+    lines = meta["lines_cell"]
+
+    class Det:
+        def __init__(self, name, bb, cx0):
+            self.smufl_name, self.confidence, self.category = name, 0.9, ""
+            self.x_canonical, self.y_canonical = bb[0] - cx0, bb[1]
+            self.width_canonical, self.height_canonical = bb[2] - bb[0], bb[3] - bb[1]
+
+    def cell(k, x0, x1):
+        return types.SimpleNamespace(staff_index=0, measure_index=k, page_index=0, bbox_page_px=(x0, 0, x1, H), upscale_factor=1.0,
+                                     staff_line_ys_canonical=list(lines))
+    x_cut = max(1, int(meta["box"][0]) - 40)
+    cells = [cell(0, x_cut - 200, x_cut), cell(1, x_cut, W)]
+    pws = types.SimpleNamespace(page=types.SimpleNamespace(page_index=0, binary=np.where(ink, 0, 255).astype(np.uint8)),
+                                staves=[types.SimpleNamespace(staff_index=0, system_index=0, line_ys=list(meta["lines_staffwide"]),
+                                                              line_spacing_px=meta["sp"])])
+    dets = {R.cell(0, 0, 0, 1).to_key(): [Det(n, bb, x_cut) for n, bb in dets_boxes]}
+    monkeypatch.setattr(G, "_spacing", lambda st: meta["sp"])
+    log = Log()
+    if flag:
+        G.gather_clef_pagewide(log, pws, cells, {0: (0, 0)}, dets)
+    else:
+        G.gather_claimed_register(log, pws, cells, {0: (0, 0)}, dets)
+    rows = [r for r in log.rows(Q.CLAIMED_AREA, R.staff(0, 0, 0)) if (r.detail or {}).get("owner") == "clef"
+            and (r.detail or {}).get("unit") == "area"]
+    return log, rows, [R.glyph(0, 0, 0, 1, j).to_key() for j in range(len(dets_boxes))]
+
+
+class TestRound4MidLineF:
+    """ROADMAP 2.324 r4 (Sean 2026-11-20 "Teach it", shown Brahms p25 s0 staff 3): an F clef printed inside the line is READ by its own
+    ink against its own bar's lines -- body at the top line, dot ink in both spaces round line 4, never a G's or a C's ink. CAUSE: the
+    mid-line reader's witness was the dot PAIR (two separate round dots); on these clefs the dots touch the clef's curve, a stem or the
+    ink beside them, so no separate pair exists. Round 2 gave the dot-place witness to the start of the staff only."""
+
+    @pytest.mark.parametrize("name", ["mid_f_brahms_p25_s0_st3", "mid_f_brahms_p0_s0_st12", "mid_f_brahms_p8_s0_st9", "mid_f_litolff_p4_s1_st3"])
+    def test_read_plain_by_its_ink(self, on, name):
+        ink, meta, ll = _r4(name)
+        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
+        assert got["passed"] and got["plain"] and got["kind"] == "bass"
+
+    def test_a_reading_at_its_cut_narrows_never_plain(self, on):
+        ink, meta, ll = _r4("mid_f_brahms_p4_s1_st3")
+        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
+        assert got["passed"] and not got["plain"] and min(got["dots"]["upper"], got["dots"]["lower"]) < CP.F_DOT_PLAIN_FILL
+
+    @pytest.mark.parametrize("name", ["mid_f_brahms_p25_s0_st3", "mid_f_brahms_p8_s0_st9", "mid_f_brahms_p4_s1_st3"])
+    def test_the_old_mid_line_rule_refused_it_the_control_can_fail(self, on, name):
+        ink, meta, ll = _r4(name, "staffwide")
+        assert not CP.read_box("clefF", meta["box"], ink, ll, meta["sp"])["passed"]
+
+    @pytest.mark.parametrize("name", MID_F_NEVER)
+    def test_never_over_a_note_a_rest_or_a_dynamic(self, on, name):
+        ink, meta, ll = _r4(name)
+        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
+        assert not got["passed"], (name, got.get("why"), got.get("body_top"), got.get("dots"))
+
+    def test_the_quarter_rest_is_refused_twice_and_the_dot_pair_would_have_read_it(self, on, monkeypatch):
+        # Litolff's quarter rest: on its own bar's lines the dot PAIR test names line 4 (the control can fail); its body runs on to the
+        # bottom line (an F clef's ends at the fourth), and one of its two spaces holds no dot ink -- each never refuses it alone
+        ink, meta, ll = _r4("never_rest4_litolff_p9_s0_st11")
+        assert CP.read_box("clefF", meta["box"], ink, ll, meta["sp"])["passed"]
+        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
+        assert not got["passed"] and got["why"] == "f_body_not_ending_at_the_fourth_line" and not got.get("shape_only")
+        assert not CP.f_dot_places(ink, meta["box"], ll, meta["sp"])["passed"]
+        monkeypatch.setattr(CP, "F_BODY_BOTTOM_SPACES", 9.0)
+        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
+        assert not got["passed"] and got["why"] == "f_no_dot_ink_in_both_spaces"
+
+    def test_an_f_body_with_one_dot_not_clear_narrows_never_reads(self, on):
+        # Litolff p10 s0 staff 3: the lower dot sits on a thick line 4 and goes with it -- the body is an F clef's, the dots are not clear
+        ink, meta, ll = _r4("mid_f_litolff_p10_s0_st3")
+        got = CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])
+        assert not got["passed"] and got.get("shape_only") and got["why"] == "f_no_dot_ink_in_both_spaces"
+
+    @pytest.mark.parametrize("name", ["never_sf_litolff_p10_s0_st0", "never_half_brahms_p25_s0_st3"])
+    def test_the_body_at_the_top_line_is_the_never_that_refuses_it(self, on, monkeypatch, name):
+        ink, meta, ll = _r4(name)
+        assert CP.read_mid_f("clefF", meta["box"], ink, ll, meta["sp"])["why"] == "f_body_not_at_the_top_line"
+
+    def test_flag_on_the_p25_clef_is_read_once_as_a_change(self, monkeypatch):
+        ink, meta = _load(DATA_R4, "mid_f_brahms_p25_s0_st3")
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])], True)
+        read = [r for r in rows if r.detail.get("standing") == "READ"]
+        assert len(read) == 1 and read[0].detail.get("kind") == "bass" and read[0].detail.get("change") is True
+        assert CP.clef_in_force(meta["box"][2] + 30, CP.changes_of(read), [], header="tenor")[0] == "bass"
+
+    def test_flag_on_a_reading_at_its_cut_is_a_strong_candidate(self, monkeypatch):
         from tools.omr.staged import record as R
         from tools.omr.staged.record import Q
-        self._run(monkeypatch, True)
-        cands = CP.candidates_of(self.log.refusals(Q.CLAIMED_AREA, R.staff(0, 0, 0)))     # as `consequences` reads them
-        assert len(cands) == 1 and cands[0][2].detail.get("strong") and cands[0][2].detail.get("family") == "F"
-        z = np.load(DATA_R3)
-        meta = json.loads(str(z["meta"]))["f_mid_bar_brahms_p5_s1_st3"]
-        right_of_clef = meta["box"][2] + 20
-        assert CP.clef_in_force(right_of_clef, [], cands, header="tenor")[0] is None          # unread, never pitched as tenor
-        assert CP.clef_in_force(meta["box"][0] - 30, [], cands, header="tenor") is None       # the chord before it: the header's clef
-        assert CP.clef_in_force(right_of_clef, [], cands, header="bass") is None              # a bass clef in force: nothing changes
-        # the control: the same refusal without the dot-place witness (round 2) does not stop the tenor clef -- its notes were pitched
-        import types
-        weak = [(x, k, types.SimpleNamespace(detail=dict(r.detail, strong=False))) for x, k, r in cands]
-        assert CP.clef_in_force(right_of_clef, [], weak, header="tenor") is None
+        ink, meta = _load(DATA_R4, "mid_f_brahms_p4_s1_st3")
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])], True)
+        assert not [r for r in rows if r.detail.get("standing") == "READ"]
+        cands = CP.candidates_of(log.refusals(Q.CLAIMED_AREA, R.staff(0, 0, 0)))
+        assert len(cands) == 1 and cands[0][2].detail.get("strong")
+        assert CP.clef_in_force(meta["box"][2] + 30, [], cands, header="tenor")[0] is None     # unread, never pitched as tenor
 
-    def test_the_box_is_refused_by_the_dot_test(self, on):
-        ink, meta, ll = _r3("f_mid_bar_brahms_p5_s1_st3", "cell")
-        got = CP.read_box("clefF", meta["box"], ink, ll, meta["sp"])
-        assert not got["passed"] and got["why"] == "f_no_dots"
 
-    def test_flag_on_the_page_wide_pass_files_the_narrowed_claim_over_the_head_on_its_dots(self, monkeypatch):
-        rows, head = self._run(monkeypatch, True)
-        nar = [r for r in rows if r.detail.get("standing") == "NARROWED"]
-        assert len(nar) == 1 and nar[0].detail.get("source") == "detector"
-        assert nar[0].detail["boxes_inside"][head]["ink_share_inside"] >= 0.5
-        assert not [r for r in rows if r.detail.get("standing") == "READ"]                    # never read from the box alone
+class TestRound3RefusedBoxStillNarrows:
+    """A clef-sized box the page-wide pass cannot read keeps the NARROWED claim the register filed for it (round 3; Brahms p5's dots were
+    written as a C4 in round 2 when nothing claimed them). Shown on a box that is not a clef (Litolff's quarter rest)."""
 
-    def test_flag_off_the_register_filed_the_same_narrowed_claim(self, monkeypatch):
-        rows, head = self._run(monkeypatch, False)
-        assert [r.detail.get("standing") for r in rows] == ["NARROWED"] and head in rows[0].detail["boxes_inside"]
+    def test_flag_on_the_narrowed_claim_is_filed_and_nothing_is_read(self, monkeypatch):
+        ink, meta = _load(DATA_R4, "never_rest4_litolff_p9_s0_st11")
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])], True)
+        assert [r.detail.get("standing") for r in rows] == ["NARROWED"] and rows[0].detail.get("source") == "detector"
+
+    def test_flag_off_the_register_filed_the_same(self, monkeypatch):
+        ink, meta = _load(DATA_R4, "never_rest4_litolff_p9_s0_st11")
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])], False)
+        assert [r.detail.get("standing") for r in rows] == ["NARROWED"]
+
+    def test_p5_flag_on_the_head_on_its_dots_is_inside_the_read_clef(self, monkeypatch):
+        ink, meta = _load(DATA_R3, "f_mid_bar_brahms_p5_s1_st3")
+        log, rows, keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"]), ("noteheadBlackOnLine", meta["head_box"])], True)
+        read = [r for r in rows if r.detail.get("standing") == "READ"]
+        assert len(read) == 1 and read[0].detail.get("kind") == "bass"
+        assert read[0].detail["boxes_inside"][keys[1]]["ink_share_inside"] >= 0.5
 
 
 class TestRound3CClef:

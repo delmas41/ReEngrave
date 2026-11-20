@@ -251,6 +251,61 @@ def f_dot_places(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], 
     return {"passed": min(best[1], best[2]) >= F_DOT_MIN_FILL, "x": float(best[0]), "upper": round(best[1], 3), "lower": round(best[2], 3)}
 
 
+#: ROADMAP 2.324 r4: an F clef's body (its ball and curve, `f_body`) starts AT the top line -- its ink top within this many staff spaces
+#: of the top line measured at the clef. MEASURED on the frozen sample's clef-sized `clefF` boxes inside a system, against the bar's own
+#: lines: every real F clef 0.09-0.38 (16 Litolff and Brahms changes, Sean's labelled Brahms p0 staff 12 bar 5 among them); every box
+#: that is not a clef (our look: an 'sf', a half note, a flag, two rests, a flag on Brahms, a half note by a barline) 0.72 or more from
+#: it, above or below. A cut on two plates (CLAUDE §4).
+F_BODY_TOP_SPACES = 0.55
+#: ... and it ends at the FOURTH line (the second from the bottom): its ink bottom within this of that line. MEASURED the same way: every
+#: real mid-line F clef -0.04 to -0.14; Litolff's quarter rest (its dot PAIR names line 4 on its own bar's lines) +0.95. A cut on two plates.
+F_BODY_BOTTOM_SPACES = 0.5
+#: ... and a mid-line F clef is READ (written plain) only with room on both of its cuts: the smaller dot fill at least this (the cut is
+#: `F_DOT_MIN_FILL`) and the body top within this of the top line. Between the cut and this margin it NARROWS (a strong candidate:
+#: the clef in force stops there, its notes go unread) -- never written plain on a reading that rests on a number from two plates.
+F_DOT_PLAIN_FILL = 0.8
+F_BODY_TOP_PLAIN_SPACES = 0.45
+
+
+def read_mid_f(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float) -> Dict[str, Any]:
+    """ROADMAP 2.324 r4 (Sean 2026-11-20 "Teach it"): an F clef printed INSIDE a line, read on the page-wide pass by its own ink like
+    the clef at the start of the staff. `lines`: the staff's lines at the clef, from its own bar's traced grid. The box says where to
+    look; the ink says what it is:
+      * its BODY starts at the top line (`F_BODY_TOP_SPACES`) -- never from the box's top edge (round 2's `F_TOP_REACH_SPACES` test);
+      * dot ink at BOTH places, one in each space either side of line 4 (`f_dot_places`, whatever the dots touch: here they touch the
+        clef's own curve, a stem or a barline, so the dot PAIR test of 2.251 found no separate pair -- the round-4 cause);
+      * never a G clef's ink (`g_witness`: past the staff above AND below) and never on a C clef's thick bar (`c_bars`).
+    NEVER over a notehead, an accidental or a rest that merely has ink at the dot places: their body does not start at the top line,
+    or no dot ink stands in one of the two spaces. {passed, plain, why, kind, line, body_top, dots}."""
+    out: Dict[str, Any] = {"family": "F", "cls": str(name), "kind": None, "line": None, "residual": None, "plain": False}
+    body = f_body(ink, box, lines, sp)
+    if body is None:
+        return dict(out, passed=False, why="f_no_body_ink")
+    btop = (float(body[1]) - float(lines[0])) / sp
+    out.update(body=body, body_top=round(btop, 3))
+    if abs(btop) > F_BODY_TOP_SPACES:
+        return dict(out, passed=False, why="f_body_not_at_the_top_line")
+    bbot = (float(body[3]) - float(lines[3])) / sp
+    out["body_bottom"] = round(bbot, 3)
+    if abs(bbot) > F_BODY_BOTTOM_SPACES:
+        return dict(out, passed=False, why="f_body_not_ending_at_the_fourth_line")
+    if g_witness(ink, box, lines, sp)["passed"]:
+        return dict(out, passed=False, why="f_box_ink_past_the_staff_like_a_g")
+    if any(b["why"] not in ("bar_too_thin", "bar_too_wide", "g_clef_shape")
+           for b in c_bars(ink, lines, sp, float(box[0]) - 0.5 * sp, float(box[2]))):
+        return dict(out, passed=False, why="f_box_on_a_c_bar")
+    fp = f_dot_places(ink, box, lines, sp)
+    out["dots"] = {"upper": fp["upper"], "lower": fp["lower"], "x": fp["x"]}
+    if not fp["passed"]:
+        # the body is an F clef's (top line to the fourth line, no G or C ink) but one dot is not clear (Litolff p10 s0 staff 3: the lower
+        # dot sits on a thick line and goes with it): the shape alone NARROWS (`shape_only`, a strong candidate), it never reads
+        return dict(out, passed=False, shape_only=True, why="f_no_dot_ink_in_both_spaces")
+    if fp["x"] is not None:
+        out["dots_right"] = float(fp["x"]) + 0.3 * sp
+    plain = min(fp["upper"], fp["lower"]) >= F_DOT_PLAIN_FILL and abs(btop) <= F_BODY_TOP_PLAIN_SPACES
+    return dict(out, passed=True, plain=bool(plain), why=None, kind="bass", line=4, witness="f_dot_places")
+
+
 def header_reads(rows: Sequence[Any]) -> List[Any]:
     """ROADMAP 2.324: the HEADER clef reads of one staff (`Q.CLAIMED_AREA`, source `clef_pagewide`, `change: False`), left to right."""
     out = [r for r in rows if (getattr(r, "detail", None) or {}).get("source") == SOURCE

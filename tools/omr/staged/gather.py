@@ -16258,19 +16258,21 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                     # 2.324: a neighbour staff's clef showing in this staff's padded cell -- its own staff reads it, never this one
                     near.append({"x0": pb[0], "family": None, "why": "box_on_another_staff", "box": gkey, "cls": str(d.smufl_name)})
                     continue
+                mid_f = page_only and not in_head and str(d.smufl_name).startswith("clefF")
                 if page_only and in_head and str(d.smufl_name).startswith("clefG"):
                     got = CP.read_header_g(str(d.smufl_name), pb, ink, ll, sp)
+                elif mid_f:
+                    # 2.324 r4 (Sean 2026-11-20 "Teach it"): an F clef printed inside the line is READ like the clef at the start of the
+                    # staff -- by its own ink, against its own bar's traced lines (`cell_lines_page`), never the staff-wide ones
+                    ll = CP.local_lines(ink, CP.cell_lines_page(c) or lines, sp, pb[0])
+                    got = CP.read_mid_f(str(d.smufl_name), pb, ink, ll, sp)
                 else:
                     got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=bool(page_only and in_head))
-                if not got["passed"]:
-                    strong = False
-                    if page_only and not in_head and got["family"] == "F" and got["why"] in ("f_no_dots", "f_dots_name_no_line"):
-                        # 2.324 r3 (Brahms p5 s1 staff 3, p4 s1 staff 3, p25 s0 staff 3: printed bass clefs inside a system, dots fused
-                        # with the ink beside them): the box AND dot ink at both places (the header's dot-place witness, with its two
-                        # nevers) make it a STRONG candidate -- the clef in force stops there, its notes go unread, never pitched from
-                        # the clef before it. It NARROWS only: the dot cut is measured on two plates (CLAUDE §4), never a read bass clef
-                        strong = bool(CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=True).get("passed"))
-                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name),
+                if not got["passed"] or (mid_f and not got.get("plain")):
+                    # 2.324 r4: a mid-line F clef read with no room on its cuts (they are measured on two plates) NARROWS -- a STRONG
+                    # candidate: the clef in force stops there and its notes go unread, never written plain on it
+                    strong = bool(mid_f and (got["passed"] or got.get("shape_only")))
+                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"] or "f_mid_line_read_near_its_cut", "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {}), **({"strong": True} if strong else {})})
                     if page_only:
                         refused_boxes.append((k, gi, pb, d))
