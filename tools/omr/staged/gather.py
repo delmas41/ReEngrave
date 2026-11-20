@@ -16263,8 +16263,15 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 else:
                     got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=bool(page_only and in_head))
                 if not got["passed"]:
+                    strong = False
+                    if page_only and not in_head and got["family"] == "F" and got["why"] in ("f_no_dots", "f_dots_name_no_line"):
+                        # 2.324 r3 (Brahms p5 s1 staff 3, p4 s1 staff 3, p25 s0 staff 3: printed bass clefs inside a system, dots fused
+                        # with the ink beside them): the box AND dot ink at both places (the header's dot-place witness, with its two
+                        # nevers) make it a STRONG candidate -- the clef in force stops there, its notes go unread, never pitched from
+                        # the clef before it. It NARROWS only: the dot cut is measured on two plates (CLAUDE §4), never a read bass clef
+                        strong = bool(CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=True).get("passed"))
                     near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name),
-                                 **({"g_fill": got["g_fill"]} if got.get("g_fill") else {})})
+                                 **({"g_fill": got["g_fill"]} if got.get("g_fill") else {}), **({"strong": True} if strong else {})})
                     if page_only:
                         refused_boxes.append((k, gi, pb, d))
                     continue

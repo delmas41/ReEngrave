@@ -267,7 +267,7 @@ class TestRound3RefusedBoxStillNarrows:
         def cell(k, x0, x1):
             return types.SimpleNamespace(staff_index=0, measure_index=k, page_index=0, bbox_page_px=(x0, 0, x1, H), upscale_factor=1.0,
                                          staff_line_ys_canonical=list(lines))
-        cells = [cell(0, 0, 60), cell(1, 60, W)]
+        cells = [cell(0, -120, 60), cell(1, 60, W)]       # the staff starts left of the crop: the clef stands inside the system
         pws = types.SimpleNamespace(page=types.SimpleNamespace(page_index=0, binary=np.where(ink, 0, 255).astype(np.uint8)),
                                     staves=[types.SimpleNamespace(staff_index=0, system_index=0, line_ys=list(lines),
                                                                   line_spacing_px=meta["sp"])])
@@ -278,8 +278,26 @@ class TestRound3RefusedBoxStillNarrows:
             G.gather_clef_pagewide(log, pws, cells, {0: (0, 0)}, dets)
         else:
             G.gather_claimed_register(log, pws, cells, {0: (0, 0)}, dets)
+        self.log = log
         return [r for r in log.rows(Q.CLAIMED_AREA, R.staff(0, 0, 0)) if (r.detail or {}).get("owner") == "clef"
                 and (r.detail or {}).get("unit") == "area"], R.glyph(0, 0, 0, 1, 1).to_key()
+
+    def test_flag_on_it_is_a_strong_candidate_so_the_tenor_clef_stops_there(self, monkeypatch):
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Q
+        self._run(monkeypatch, True)
+        cands = CP.candidates_of(self.log.refusals(Q.CLAIMED_AREA, R.staff(0, 0, 0)))     # as `consequences` reads them
+        assert len(cands) == 1 and cands[0][2].detail.get("strong") and cands[0][2].detail.get("family") == "F"
+        z = np.load(DATA_R3)
+        meta = json.loads(str(z["meta"]))["f_mid_bar_brahms_p5_s1_st3"]
+        right_of_clef = meta["box"][2] + 20
+        assert CP.clef_in_force(right_of_clef, [], cands, header="tenor")[0] is None          # unread, never pitched as tenor
+        assert CP.clef_in_force(meta["box"][0] - 30, [], cands, header="tenor") is None       # the chord before it: the header's clef
+        assert CP.clef_in_force(right_of_clef, [], cands, header="bass") is None              # a bass clef in force: nothing changes
+        # the control: the same refusal without the dot-place witness (round 2) does not stop the tenor clef -- its notes were pitched
+        import types
+        weak = [(x, k, types.SimpleNamespace(detail=dict(r.detail, strong=False))) for x, k, r in cands]
+        assert CP.clef_in_force(right_of_clef, [], weak, header="tenor") is None
 
     def test_the_box_is_refused_by_the_dot_test(self, on):
         ink, meta, ll = _r3("f_mid_bar_brahms_p5_s1_st3", "cell")
