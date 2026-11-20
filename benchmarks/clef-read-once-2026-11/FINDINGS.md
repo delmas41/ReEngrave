@@ -178,3 +178,52 @@ accidental is missed outright). Sean's 2.251 clef tiles not replayed by place (t
 Not run on a whole movement. Retirement list (nothing removed): `gather_clef` rows on cell 0,
 `gather_clef_locator`, the clef sections of `gather_claimed_register`, the OFF-only `KO.clef_of_box` edge;
 `gather_clef_seed` and `gather_clef_slot_claim` stay.
+
+## Round 4 (2026-11-20) -- the F clef inside the line is read (Sean: "Teach it"); flag still OFF, nothing retired
+
+Branch `lane-2.324-r3` 953e53ae5 (STAGED, GATHER; `read_mid_f` in `clef_pagewide.py`). Agent's report; the
+manager checked the branch and function exist, not the counts.
+
+**Cause and process lesson.** The reader inside the line wanted two separate round dots; on these clefs the
+dots touch the clef's curve, a stem, a barline or an accidental. The dot test that reads ink at the two dot
+places whatever it touches was given only to start-of-staff clefs in round 2. Lesson: one mark needs one
+reader -- strengthening the evidence for one position of a mark leaves a weaker second reader for the same
+mark elsewhere. Mid-line F clefs are NOT smaller here (body 2.6-2.8 spaces against 2.5-2.7 at the start).
+Side finding: on the bar's own lines the old two-dot test reads Litolff's quarter rest (p9 s0 staff 11) as a
+bass clef; it was refused only because the staff-wide lines sat off there.
+
+**Rule.** On the clef's own bar's lines: the body starts at the top line and ends at the fourth line; dot ink
+in both spaces either side of the fourth line; never a G clef's ink (past the staff above and below), never on
+a C clef's thick bar. The box says only where to look. A box refused as not an F clef no longer stops the clef
+in force (found on the touched-pages run: a half note beside the barline stopped the new bass clef on p25).
+
+**Every mid-line clef on the frozen sample.** F read plain 14 (9 Litolff as before; Brahms p0 s0 st12 bar 5,
+p25 s0 st3, p5 s1 st3 bars 0 and 9, p8 s0 st9 -- no cut tuned for the last). F narrowed 2 (Brahms p4 s1 st3,
+one dot at the cut; Litolff p10 s0 st3, lower dot cleared with a thick line; file unchanged, header is bass).
+Refused, not clefs, 7 (an "sf", two half notes, a flagged note, a flag, an eighth rest, the quarter rest). C 13
+read, unchanged; two Litolff C clefs (p4 s1 st3 bar 3, p11 s0 st2 bar 15) stay kind-unread. G: one real case,
+Brahms p14 s1 st9 bar 0 (treble after the viola's alto; round 3 called it a false box, wrong) -- NOT read, its
+notes still pitched in alto (a red bar); two Litolff non-clef boxes pass the same ink test, so no two-sided
+rule from one case; left as it was.
+
+**Two-plate cuts (measurements on Litolff and Brahms only).** Dot fill 0.7; body top within 0.55 of the top
+line (real 0.09-0.38, non-clefs >= 0.72); body end within 0.5 of the fourth line (real -0.14 to -0.04, quarter
+rest +0.95). Plain only at dot fill >= 0.8 and body top within 0.45, else narrowed. Three plain reads sit at
+exactly 0.80 (Litolff p11 s0 st2, p16 s0 st3, Brahms p8 s0 st9). Near-cut readings narrow (red) rather than
+GUESSED blue: blue is decided in `consequences.py`/`export.py`, outside the lane's fence.
+
+**Frozen sample, OFF -> ON** (OFF arm reused from round 3: main not merged since, new code runs only ON).
+- Litolff: blue +8 / -67; clefs, keys, meters each +1 / -1; red bars 158 -> 157 (as round 3).
+- Brahms: notes +6 / -1, flags +2, ties +2, slurs +1 / -2, articulations +3, ~59 pitches changed, blue -19,
+  words +1 / -3; clefs, keys, meters each +4 / -4; red bars 137 -> 137; notes not written 2996 -> 2991.
+- The 59 pitches: p25 bars 1-9 (44) tenor -> bass; p8 s0 st9 bars 9-12 (7); p8 s1 st3 (4); p5 s1 st3 bars 0-1
+  (4). p25 bars 1-9 against the crop (agent's look): bass, plain, agree with the printed naturals and flats;
+  none red.
+- Judged right->wrong 0 both plates; `judged score` Litolff 131/13, Brahms 88/3 and `judged_claims` 75/13,
+  51/4, identical to OFF. Sean's 2.292 clefs 12 of 12 ON (OFF 11).
+
+**Gate.** Fast tier flag OFF 11,042 passed, the one known far-head failure. 22 new real-pixel controls
+(`data_clef_page_only_2_324_r4.npz`).
+
+**Open.** Mid-line G clef (one case); the two between-lines C clefs; cuts unseen on a third publisher; not run
+on a whole movement; branch not merged with main since round 3.
