@@ -1,4 +1,4 @@
-"""ROADMAP 2.323 (`OMR_UNISON_KEPT_FOR_BOTH`, built OFF) -- a unison in a two-voice bar is printed once and kept for both parts.
+"""ROADMAP 2.323 (`OMR_UNISON_KEPT_FOR_BOTH`, ON by default) -- a unison in a two-voice bar is printed once and kept for both parts.
 
 Sean 2026-11-19 (page-facts §1; DECISIONS): "if there is a measure with multiple voices in it, even if it goes down to a single note or a single
 rest, those are treated as unisons unless there is a solo marking"; "When there are 2 voices it should print 1 but keep track of both parts on
@@ -76,15 +76,16 @@ def _hidden(m):
             for n in m.findall("note") if n.get("print-object") == "no"]
 
 
-class TestFlagIsBuiltOff(unittest.TestCase):
-    def test_allow_list(self):
-        for v, want in (("", False), ("0", False), ("off", False), ("no", False), ("false", False), ("1", True), ("true", True),
+class TestFlagIsOnByDefault(unittest.TestCase):
+    def test_deny_list(self):
+        """ON by default since 2026-11-19 (Sean: "Land it"); only 0/false/no/off switch it OFF."""
+        for v, want in (("", True), ("0", False), ("off", False), ("no", False), ("false", False), ("OFF", False), ("1", True), ("true", True),
                         ("YES", True), ("on", True)):
             with mock.patch.dict(os.environ, {ENV: v}):
                 self.assertEqual(E.unison_kept_for_both_enabled(), want, v)
         with mock.patch.dict(os.environ):
             os.environ.pop(ENV, None)
-            self.assertFalse(E.unison_kept_for_both_enabled())
+            self.assertTrue(E.unison_kept_for_both_enabled())
 
 
 class TestRealControlBars(unittest.TestCase):

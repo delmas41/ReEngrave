@@ -6808,14 +6808,14 @@ _NOT_A_PRINTED_MARK = (FORWARD_KIND, UNISON_COPY_KIND)
 
 
 def unison_kept_for_both_enabled() -> bool:
-    """ROADMAP 2.323, `OMR_UNISON_KEPT_FOR_BOTH`, built OFF (allow-list: only 1/true/yes/on turns it on).
+    """ROADMAP 2.323, `OMR_UNISON_KEPT_FOR_BOTH`, ON by default since 2026-11-19 (Sean: "Land it"; deny-list: 0/false/no/off turns it off).
 
     CONVENTION (Sean 2026-11-19, page-facts §1): in a bar with more than one voice, a single note or a single rest is a unison -- both players
     play it -- unless a solo marking is printed. His words on the file: "When there are 2 voices it should print 1 but keep track of both parts
     on that voice". OUR READING (not his words): where a bar is written as two voices and a lone note, one-stem chord or rest stands alone at
     its moment, the other voice carries the same mark, not printed, instead of `<forward>`. FALSIFIED IF a printed solo marking ("1.", "2.",
     "Solo") stands in such a bar (nothing reads one yet: counted on the frozen sample before the default flips). NOT CONFIRMED beyond his ruling."""
-    return os.environ.get(UNISON_KEPT_FOR_BOTH_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(UNISON_KEPT_FOR_BOTH_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _unison_copy_event(of: Dict[str, Any], units: int, x: float, divisions: int, take: Optional[str] = None) -> Dict[str, Any]:
