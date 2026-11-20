@@ -307,7 +307,7 @@ class TestRound3RefusedBoxStillNarrows:
     def test_flag_on_the_page_wide_pass_files_the_narrowed_claim_over_the_head_on_its_dots(self, monkeypatch):
         rows, head = self._run(monkeypatch, True)
         nar = [r for r in rows if r.detail.get("standing") == "NARROWED"]
-        assert len(nar) == 1 and nar[0].detail.get("source") == "detector" and nar[0].detail.get("filed_by") == CP.SOURCE
+        assert len(nar) == 1 and nar[0].detail.get("source") == "detector"
         assert nar[0].detail["boxes_inside"][head]["ink_share_inside"] >= 0.5
         assert not [r for r in rows if r.detail.get("standing") == "READ"]                    # never read from the box alone
 

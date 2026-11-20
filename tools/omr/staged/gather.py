@@ -16398,7 +16398,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                                          skip=(gi,))
             log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(k), cell=k,
                         owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None, owner_glyph=gsub.to_key(), unit="area", standing="NARROWED",
-                        source="detector", filed_by=CP.SOURCE, start_spaces=round((area[0] - ck.bbox_page_px[0]) / sp, 3),
+                        source="detector", start_spaces=round((area[0] - ck.bbox_page_px[0]) / sp, 3),
                         cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3),
                         **({"grown_from_box": grown} if grown else {}))
             if stroke_cells:
