@@ -258,3 +258,8 @@ flat, not the body).
 
 **Open.** Claimed area cut to the clef's own ink; mid-line treble narrows on non-clefs; nothing beyond the
 touched pages measured.
+
+**Sean's answers to the round-5 sheet (2026-11-20, `answers.json`).** Tiles 2, 3, 6, 7, 8, 9 bass clef; 4 and 5
+treble clef; 1 "just a stem"; 10 "2 half notes in a chord". All seven no-box kinds agree. Correction to the
+round-5 text above: by the key, tile 1 is Litolff p10 s1 st4 and tile 10 is Litolff p9 s0 st3 (the staff that
+lost ~10 correct notes) -- the agent's report had the two tile numbers swapped.
