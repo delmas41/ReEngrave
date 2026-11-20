@@ -94,7 +94,7 @@ class TestFClef:
         got = CP.read_box("clefF", meta["box"], ink, meta["lines"], meta["sp"], header=True)
         assert got["passed"] and got["kind"] == "bass" and got.get("witness") is None
 
-    @pytest.mark.parametrize("name", ["g_as_f_litolff_p2", "c_alto_brahms_p0", "g_treble_litolff_p2"])
+    @pytest.mark.parametrize("name", ["g_as_f_litolff_p2", "g_treble_litolff_p2"])
     def test_never_an_f_clef_with_no_dot_ink_at_its_places(self, on, name):
         ink, meta = _case(name)
         fp = CP.f_dot_places(ink, meta["box"], meta["lines"], meta["sp"])
@@ -129,3 +129,123 @@ class TestOwnStaff:
         own = CP.local_lines(ink, meta["lines"], sp, box[0])
         other = CP.local_lines(ink, meta["extra_lines"][0], sp, box[0])
         assert CP.on_this_staff(box, own, sp) and not CP.on_this_staff(box, other, sp)
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------
+# Round 3: the 15 Litolff start-of-staff clefs round 2 did not read, cut from the page binary with BOTH line grids the run had: the
+# staff-wide lines gather handed the page-wide pass (`lines_staffwide`) and the header cell's own traced lines (`lines_cell`, what
+# `clef_pagewide.cell_lines_page` returns). Cause: at these headers the staff-wide lines stand 0.25-1.1 spaces off the print, further
+# than `local_lines` reaches -- the clef was measured against lines that were not there.
+# ----------------------------------------------------------------------------------------------------------------------------------
+DATA_R3 = pathlib.Path(__file__).with_name("data_clef_page_only_2_324_r3.npz")
+G_MISSES = ["g_litolff_p4_s0_st0", "g_litolff_p4_s0_st1", "g_litolff_p4_s0_st5", "g_litolff_p4_s0_st6", "g_litolff_p4_s0_st7",
+            "g_litolff_p6_s0_st1", "g_litolff_p6_s0_st2", "g_litolff_p8_s0_st0", "g_litolff_p10_s0_st1", "g_litolff_p16_s0_st0"]
+F_MISSES = ["f_litolff_p4_s0_st3", "f_litolff_p6_s0_st3", "f_litolff_p6_s1_st10", "f_litolff_p8_s0_st8"]
+
+
+def _r3(name, grid="cell"):
+    z = np.load(DATA_R3)
+    meta = json.loads(str(z["meta"]))[name]
+    ink = np.unpackbits(z[name])[: meta["shape"][0] * meta["shape"][1]].reshape(meta["shape"]).astype(bool)
+    base = meta["lines_cell"] if grid == "cell" else meta["lines_staffwide"]
+    x = meta["box"][0] if meta["box"] is not None else meta["cell_x0"]
+    return ink, meta, CP.local_lines(ink, base, meta["sp"], x)
+
+
+def _r2_header_g(ink, box, lines, sp):
+    """Round 2's header G rule, as it stood (a010e9a15): the BOX reaching past the staff, then the ink past it."""
+    if not (box[1] <= lines[0] - CP.G_REACH_SPACES * sp and box[3] >= lines[-1] + CP.G_REACH_SPACES * sp):
+        return False
+    return CP.g_witness(ink, box, lines, sp)["passed"]
+
+
+def _header_c(ink, meta, ll):
+    x0 = int(meta["cell_x0"])
+    return [c for c in CP.c_bars(ink, ll, meta["sp"], x0, x0 + int(CP.HEADER_WINDOW_SPACES * meta["sp"])) if c["why"] != "bar_too_thin"]
+
+
+class TestRound3LinesAtTheHeader:
+    def test_cell_lines_page_is_the_cells_own_grid_in_page_px(self):
+        import types
+        cell = types.SimpleNamespace(staff_line_ys_canonical=[400, 500, 600, 700, 800], bbox_page_px=(10, 300, 200, 520), upscale_factor=4.0)
+        assert CP.cell_lines_page(cell) == [400.0, 425.0, 450.0, 475.0, 500.0]
+        assert CP.cell_lines_page(types.SimpleNamespace(staff_line_ys_canonical=[1, 2], bbox_page_px=(0, 0, 1, 1), upscale_factor=1.0)) is None
+
+    @pytest.mark.parametrize("name", G_MISSES + F_MISSES + ["c_litolff_p8_s0_st7"])
+    def test_the_staff_wide_lines_are_off_the_print_at_the_header(self, name):
+        # the measured cause, per clef: the header cell's own lines sit this far from the staff-wide ones (0.25-1.1 spaces)
+        _ink, meta, _ll = _r3(name)
+        off = abs(meta["lines_cell"][0] - meta["lines_staffwide"][0]) / meta["sp"]
+        assert 0.2 <= off <= 1.2
+
+
+class TestRound3GClef:
+    @pytest.mark.parametrize("name", G_MISSES)
+    def test_read_by_its_ink_against_the_header_cells_own_lines(self, on, name):
+        ink, meta, ll = _r3(name, "cell")
+        got = CP.read_header_g("clefG", meta["box"], ink, ll, meta["sp"])
+        assert got["passed"] and got["kind"] == "treble"
+
+    @pytest.mark.parametrize("name", G_MISSES)
+    def test_round_2s_rule_on_the_staff_wide_lines_refuses_it_the_control_can_fail(self, on, name):
+        ink, meta, ll = _r3(name, "staffwide")
+        assert not _r2_header_g(ink, meta["box"], ll, meta["sp"])
+
+    @pytest.mark.parametrize("name", ["g_litolff_p4_s0_st5", "g_litolff_p4_s0_st6", "g_litolff_p6_s0_st1", "g_litolff_p6_s0_st2"])
+    def test_its_spine_is_still_never_a_c_clef(self, on, name):
+        # these G spines pass the C bar test; their own tail and curl refuse them, with the barline window closing on (round 3)
+        ink, meta, ll = _r3(name, "cell")
+        cands = _header_c(ink, meta, ll)
+        assert cands and all(c["why"] == "g_clef_shape" for c in cands)
+
+
+class TestRound3FClef:
+    @pytest.mark.parametrize("name", F_MISSES)
+    def test_read_against_the_header_cells_own_lines(self, on, name):
+        ink, meta, ll = _r3(name, "cell")
+        got = CP.read_box("clefF", meta["box"], ink, ll, meta["sp"], header=True)
+        assert got["passed"] and got["kind"] == "bass"
+
+    @pytest.mark.parametrize("name", ["f_litolff_p4_s0_st3", "f_litolff_p6_s0_st3", "f_litolff_p6_s1_st10"])
+    def test_on_the_staff_wide_lines_it_is_refused_the_control_can_fail(self, on, name):
+        ink, meta, ll = _r3(name, "staffwide")
+        assert not CP.read_box("clefF", meta["box"], ink, ll, meta["sp"], header=True)["passed"]
+
+    @pytest.mark.parametrize("name", ["f_litolff_p6_s1_st10", "f_litolff_p8_s0_st8"])
+    def test_a_dot_at_one_point_of_its_space_misses_it_the_control_can_fail(self, on, monkeypatch, name):
+        # round 2 looked for each dot at ONE point (half a space from the line); here the dots stand high in their spaces
+        ink, meta, ll = _r3(name, "cell")
+        monkeypatch.setattr(CP, "F_DOT_SPACE_MIDDLE", (0.5, 0.5))
+        assert not CP.read_box("clefF", meta["box"], ink, ll, meta["sp"], header=True)["passed"]
+
+    def test_never_an_f_clef_from_a_g_clefs_ink(self, on, monkeypatch):
+        # a G clef whose ink fills the dot places (0.84), under a box whose top sits on the top line (an `clefF` box on it)
+        ink, meta, ll = _r3("g_litolff_p16_s0_st1", "cell")
+        box = [meta["box"][0], ll[0], meta["box"][2], ll[3]]
+        assert CP.f_dot_places(ink, box, ll, meta["sp"])["passed"]
+        got = CP.read_box("clefF", box, ink, ll, meta["sp"], header=True)
+        assert not got["passed"] and got["why"] == "f_box_ink_past_the_staff_like_a_g"
+        monkeypatch.setattr(CP, "g_witness", lambda *a, **k: {"passed": False})       # the never is what refuses it
+        assert CP.read_box("clefF", box, ink, ll, meta["sp"], header=True)["passed"]
+
+    def test_never_an_f_clef_from_a_c_clefs_bowls(self, on, monkeypatch):
+        ink, meta = _case("c_alto_brahms_p0")
+        assert CP.f_dot_places(ink, meta["box"], meta["lines"], meta["sp"])["passed"]       # the bowls fill the dot places
+        got = CP.read_box("clefF", meta["box"], ink, meta["lines"], meta["sp"], header=True)
+        assert not got["passed"] and got["why"] == "f_box_on_a_c_bar"
+        monkeypatch.setattr(CP, "c_bars", lambda *a, **k: [])                              # the never is what refuses it
+        assert CP.read_box("clefF", meta["box"], ink, meta["lines"], meta["sp"], header=True)["passed"]
+
+
+class TestRound3CClef:
+    def test_alto_beside_the_system_barline_is_read(self, on):
+        ink, meta, ll = _r3("c_litolff_p8_s0_st7", "cell")
+        got = [c for c in _header_c(ink, meta, ll) if c["passed"]]
+        assert [CP.name_c(c["middle_y"], c.get("lines_local") or ll)[0] for c in got] == ["alto"]
+        assert got[0].get("barline_left_x") is not None
+
+    def test_with_the_barlines_ink_counted_as_its_own_it_is_g_shaped_the_control_can_fail(self, on, monkeypatch):
+        ink, meta, ll = _r3("c_litolff_p8_s0_st7", "cell")
+        monkeypatch.setattr(CP, "barline_left_of", lambda *a, **k: None)
+        cands = _header_c(ink, meta, ll)
+        assert cands and not any(c["passed"] for c in cands) and cands[0]["why"] == "g_clef_shape"

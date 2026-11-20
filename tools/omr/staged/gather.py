@@ -16222,8 +16222,17 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
 
         found: List[Dict[str, Any]] = []
         near: List[Dict[str, Any]] = []
+        # 2.324 r3: the HEADER is measured against the header cell's own lines (the bar's own grid, traced where it was cut), never the
+        # staff-wide lines -- on Litolff's first systems those stand up to 1.1 spaces off the print at the header, and `local_lines`
+        # reaches only 0.6 (15 start-of-staff clefs refused). Inside the system nothing changes (the 2.251 reader as it was).
+        head_lines = (CP.cell_lines_page(mycells[order[0]]) if page_only else None) or lines
+        x_head_end = x_lo + CP.HEADER_WINDOW_SPACES * sp
+        if page_only:
+            c_scan = CP.c_bars(ink, head_lines, sp, x_lo, x_head_end) + CP.c_bars(ink, lines, sp, x_head_end, x_hi)
+        else:
+            c_scan = CP.c_bars(ink, lines, sp, x_lo, x_hi)
         # -- C clefs by shape (no box needed)
-        for cand in CP.c_bars(ink, lines, sp, x_lo, x_hi):
+        for cand in c_scan:
             if cand["why"] == "bar_too_thin":
                 continue                                   # every stem and barline: not a near-miss
             if not cand["passed"]:
@@ -16241,9 +16250,9 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 pb = _page_box(c, d)
                 if not CL.is_clef_box(d.smufl_name, pb, sp):
                     continue
-                ll = CP.local_lines(ink, lines, sp, pb[0])
                 gkey = R.glyph(p, sys_idx, li, k, gi).to_key()
                 in_head = k == order[0] and (pb[0] - c.bbox_page_px[0]) / sp <= CP.HEADER_WINDOW_SPACES
+                ll = CP.local_lines(ink, head_lines if in_head else lines, sp, pb[0])
                 if page_only and not CP.on_this_staff(pb, ll, sp):
                     # 2.324: a neighbour staff's clef showing in this staff's padded cell -- its own staff reads it, never this one
                     near.append({"x0": pb[0], "family": None, "why": "box_on_another_staff", "box": gkey, "cls": str(d.smufl_name)})
@@ -16322,7 +16331,8 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 pb = _page_box(mycells[k], d)
                 fam = str(d.smufl_name)
                 if CL.is_clef_box(fam, pb, sp) and fam.startswith(("clefG", "clefF")) \
-                        and not (page_only and not CP.on_this_staff(pb, CP.local_lines(ink, lines, sp, pb[0]), sp)):
+                        and not (page_only and not CP.on_this_staff(pb, CP.local_lines(
+                            ink, head_lines if (k == order[0] and pb[0] <= x_head_end) else lines, sp, pb[0]), sp)):
                     other_clefs.append(pb)              # 2.324: never a neighbour staff's box
         for f in found:
             area = [round(float(v), 1) for v in f["area"]]

@@ -146,6 +146,18 @@ def page_only_enabled() -> bool:
     return os.environ.get(ENV_PAGE_ONLY, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+def cell_lines_page(cell: Any) -> Optional[List[float]]:
+    """ROADMAP 2.324 r3: the five staff lines of ONE measure cell in page px -- the bar's own lines, as the cell was cut with them
+    (`measure_extractor` traces each cell's grid on its own columns: `OMR_CELL_LINE_TRACE` / `OMR_CELL_LINE_FIND`). None where the cell
+    has no five-line grid. CLAUDE §5: measure against the staff locally, at the subject's own bar's lines, never a staff-wide value."""
+    ys = list(getattr(cell, "staff_line_ys_canonical", None) or ())
+    bb = getattr(cell, "bbox_page_px", None)
+    up = getattr(cell, "upscale_factor", None)
+    if len(ys) != 5 or not bb or not up:
+        return None
+    return [float(bb[1]) + float(y) / float(up) for y in ys]
+
+
 def on_this_staff(box: Sequence[float], lines: Sequence[float], sp: float) -> bool:
     """Whether a clef box's middle stands on THIS staff (`OWN_STAFF_REACH_SPACES`), against the staff's lines measured at the box."""
     cy = (float(box[1]) + float(box[3])) / 2.0
@@ -153,9 +165,13 @@ def on_this_staff(box: Sequence[float], lines: Sequence[float], sp: float) -> bo
 
 
 def g_witness(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> Dict[str, Any]:
-    """A header G clef's second witness (ROADMAP 2.324): the box reaches past the staff on both sides (`G_REACH_SPACES`) AND the ink
-    inside the box's columns does too -- the loop above the top line, the tail below the bottom line (`G_BOX_*`). Measures both fills;
-    {passed, why, above_fill, below_fill}."""
+    """A header G clef's second witness (ROADMAP 2.324): the clef's own INK runs past the staff on both sides, in the box's columns --
+    the loop above the top line, the tail below the bottom line (`G_BOX_*`). Measures both fills; {passed, why, above_fill, below_fill}.
+
+    The box says WHERE to look (its columns), never what the mark is: round 3 dropped round 2's test that the BOX itself reaches past
+    the staff (`G_REACH_SPACES`). `lines` must be the staff's lines measured AT the clef (the header cell's own traced lines, then
+    `local_lines`): round 3's cause -- on Litolff's first systems the staff-wide lines stand up to 1.1 spaces above the printed lines
+    at the header, so the band "above the staff" fell on blank paper above the clef and the clef was refused."""
     H, W = ink.shape
     top, bot = float(lines[0]), float(lines[-1])
     x0, x1 = max(0, int(box[0])), min(W, int(round(box[2])))
@@ -167,8 +183,6 @@ def g_witness(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp:
     fa = round(float(a.mean()), 3) if a.size else 0.0
     fb = round(float(b.mean()), 3) if b.size else 0.0
     out.update(above_fill=fa, below_fill=fb)
-    if not (float(box[1]) <= top - G_REACH_SPACES * sp and float(box[3]) >= bot + G_REACH_SPACES * sp):
-        return dict(out, passed=False, why="g_not_past_the_staff")
     if fa < G_BOX_PAST_MIN_FILL or fb < G_BOX_PAST_MIN_FILL:
         return dict(out, passed=False, why="g_no_ink_past_the_staff")
     return dict(out, passed=True, why=None)
@@ -201,6 +215,8 @@ F_DOT_SEARCH_SPACES = (-0.4, 1.3)
 #: smaller of the two fills): the four Litolff header bass clefs the dot-PAIR test missed 0.80-1.0, every header bass clef 0.74-1.0 but
 #: one (0.38, read by the pair test); on the other side a header C clef's bowls 0.47-0.64, a header G clef 0.0-0.48
 F_DOT_MIN_FILL = 0.7
+#: round 3: the dot's square may stand anywhere in this middle part of its space (shares of the gap between the two lines, measured)
+F_DOT_SPACE_MIDDLE = (0.25, 0.75)
 
 
 def f_dot_places(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: float) -> Dict[str, Any]:
@@ -218,11 +234,16 @@ def f_dot_places(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], 
     if xb - xa < 2 * half + 1 or yb - ya < 3:
         return out
     m = _dot_mask(ink, ya, yb, xa, xb, ll, sp).astype(bool)
-    yu, yl = int(round(line4 - 0.5 * sp)) - ya, int(round(line4 + 0.5 * sp)) - ya
+    # round 3 (Litolff p6 s1 staff 10, p8 s0 staff 8: thick lines, a warped scan): the dot stands IN THE SPACE, not at a point half a
+    # space from the line -- each square's centre may sit anywhere in the middle half of its own space, between the lines measured here
+    def _rows(lo: float, hi: float) -> List[int]:
+        g = hi - lo
+        return sorted({int(round(v)) - ya for v in np.arange(lo + F_DOT_SPACE_MIDDLE[0] * g, lo + F_DOT_SPACE_MIDDLE[1] * g + 0.5, 1.0)})
+    yus, yls = _rows(ll[0], ll[1]), _rows(ll[1], ll[2])
     best = None
     for cx in range(half, m.shape[1] - half):
-        fu = float(m[max(0, yu - half):yu + half + 1, cx - half:cx + half + 1].mean())
-        fl = float(m[max(0, yl - half):yl + half + 1, cx - half:cx + half + 1].mean())
+        fu = max(float(m[max(0, y - half):y + half + 1, cx - half:cx + half + 1].mean()) for y in yus)
+        fl = max(float(m[max(0, y - half):y + half + 1, cx - half:cx + half + 1].mean()) for y in yls)
         if best is None or min(fu, fl) > min(best[1], best[2]):
             best = (xa + cx, fu, fl)
     if best is None:
@@ -257,6 +278,25 @@ def _longest_run(col: np.ndarray) -> Tuple[int, int]:
     starts, ends = np.flatnonzero(d == 1), np.flatnonzero(d == -1)
     i = int(np.argmax(ends - starts))
     return int(ends[i] - starts[i]), int(starts[i])
+
+
+#: ROADMAP 2.324 r3: a column whose unbroken ink runs this far past the staff on BOTH sides together (staff spaces, beyond its four)
+#: is a barline or a bracket's line -- longer than any clef's bar may run (`C_BAR_REACH_SPACES` either side) -- never a clef's ink
+BARLINE_PAST_STAFF_SPACES = 2 * C_BAR_REACH_SPACES
+
+
+def barline_left_of(ink: np.ndarray, lines: Sequence[float], sp: float, xa: int, xb: int) -> Optional[int]:
+    """The rightmost column in [xa, xb) holding an unbroken ink run longer than the staff plus `BARLINE_PAST_STAFF_SPACES` within the
+    window three spaces either side of the staff (a barline or bracket line running on to the next staff), or None. Measures."""
+    H, W = ink.shape
+    top, bot = float(lines[0]), float(lines[-1])
+    ya, yb = max(0, int(top - 3 * sp)), min(H, int(bot + 3 * sp) + 1)
+    lim = (bot - top) + BARLINE_PAST_STAFF_SPACES * sp
+    got = None
+    for x in range(max(0, int(xa)), min(W, int(xb))):
+        if _longest_run(ink[ya:yb, x])[0] > lim:
+            got = x
+    return got
 
 
 def _without_lines(sub: np.ndarray, line_rows: Sequence[int], half: int, *, full_rows_only: bool = False) -> np.ndarray:
@@ -342,12 +382,20 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
                         middle_y=round(mid, 1))
             # a G clef's spine passes the bar test too; its curl / tail stand past the staff, where a C clef has no ink
             gx0, gx1 = max(0, x0 + j - int(round(0.5 * sp))), min(W, x0 + k + int(round(0.8 * sp)))
-            g_up = ink[max(0, int(top - G_PAST_SPACES[1] * sp)):max(0, int(top - G_PAST_SPACES[0] * sp)), gx0:gx1]
+            tx0, tx1 = max(0, x0 + j - int(round(1.0 * sp))), min(W, x0 + k + int(round(1.2 * sp)))
+            if page_only_enabled():
+                # round 3 (Litolff p8 s0 staff 7: an alto clef refused as G-shaped): ink at or left of a BARLINE standing just left of the
+                # bar is the barline's, never this clef's curl or tail -- a column there whose unbroken ink runs on past the staff further
+                # than any clef reaches (`barline_left_of`) closes the window on that side
+                bl = barline_left_of(ink, lines, sp, tx0, x0 + j)
+                if bl is not None:
+                    gx0, tx0 = max(gx0, bl + 1), max(tx0, bl + 1)
+                    cand["barline_left_x"] = int(bl)
+            g_up =ink[max(0, int(top - G_PAST_SPACES[1] * sp)):max(0, int(top - G_PAST_SPACES[0] * sp)), gx0:gx1]
             g_lo = ink[min(H, int(bot + G_PAST_SPACES[0] * sp)):min(H, int(bot + G_PAST_SPACES[1] * sp)), gx0:gx1]
             g_shape = bool(g_up.size and g_up.mean() >= G_PAST_MIN_FILL) and bool(g_lo.size and g_lo.mean() >= G_PAST_MIN_FILL)
             # round 2 (Sean's tile 5: a header G clef claimed as a C clef): the spine of a small G clef stays inside the staff and its
             # curl and tail miss the far bands above; its TAIL below the bottom line beside the spine does not
-            tx0, tx1 = max(0, x0 + j - int(round(1.0 * sp))), min(W, x0 + k + int(round(1.2 * sp)))
             tail = ink[min(H, int(ll[4] + G_TAIL_SPACES[0] * sp)):min(H, int(ll[4] + G_TAIL_SPACES[1] * sp)), tx0:tx1]
             cand["g_tail_fill"] = round(float(tail.mean()), 3) if tail.size else 0.0
             g_shape = g_shape or cand["g_tail_fill"] >= G_TAIL_MIN_FILL
@@ -555,6 +603,15 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
     if fam == "F":
         if abs(float(box[1]) - top) > F_TOP_REACH_SPACES * sp:
             return dict(out, passed=False, why="f_top_off_the_top_line")
+        if header and g_witness(ink, box, lines, sp)["passed"]:
+            # 2.324 r3: an F clef stays on the staff; ink running past it both above AND below in the box's columns is a G clef's loop
+            # and tail -- never an F clef, whatever ink stands at the dot places (on the frozen sample a G clef's ink fills them 0.84)
+            return dict(out, passed=False, why="f_box_ink_past_the_staff_like_a_g")
+        if header and any(b["why"] not in ("bar_too_thin", "bar_too_wide", "g_clef_shape")
+                          for b in c_bars(ink, lines, sp, float(box[0]) - 0.5 * sp, float(box[2]))):
+            # 2.324 r3: an F clef has no thick bar; where a C clef's bar (thick beside its thin line, the staff's height) stands in the
+            # box, the ink is a C clef whatever fills the dot places (a C clef's bowls fill them 0.88-1.0 on the frozen sample)
+            return dict(out, passed=False, why="f_box_on_a_c_bar")
         # round 2: the witness is the DOT PAIR that straddles the F line (`f_line`, the header locator's dot sizes and spacing), read on
         # the window with lines AND the strokes the dots touch cleared; the locator's own whole-glyph test (`_has_f_clef_dots`) is
         # kept as the first chance but no longer required -- on Breitkopf's thick lines it fails real clefs (Sean r1 tile 11)
