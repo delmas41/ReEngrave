@@ -16222,6 +16222,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
 
         found: List[Dict[str, Any]] = []
         near: List[Dict[str, Any]] = []
+        refused_boxes: List[Tuple[int, int, Any, Any]] = []   # 2.324 r3: clef-sized boxes of THIS staff the second witness refused
         # 2.324 r3: the HEADER is measured against the header cell's own lines (the bar's own grid, traced where it was cut), never the
         # staff-wide lines -- on Litolff's first systems those stand up to 1.1 spaces off the print at the header, and `local_lines`
         # reaches only 0.6 (15 start-of-staff clefs refused). Inside the system nothing changes (the 2.251 reader as it was).
@@ -16264,6 +16265,8 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 if not got["passed"]:
                     near.append({"x0": pb[0], "family": got["family"], "why": got["why"], "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {})})
+                    if page_only:
+                        refused_boxes.append((k, gi, pb, d))
                     continue
                 if got["family"] == "C" and any(CL.overlaps(f["area"], pb) for f in found):
                     for f in found:
@@ -16372,6 +16375,32 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                     _file_ink_claim(log, ssub, strokes=[(i, sh) for i, sh in SM.strokes_in_box(resk, canon) if sh >= SM.COVER_SHARE_MIN],
                                     why=None, cell=k, owner=CL.OWNER_CLEF, owner_row=None, owner_glyph=None, standing="READ",
                                     source=CP.SOURCE, cover_min=SM.COVER_SHARE_MIN)
+        for k, gi, pb, d in refused_boxes:
+            # 2.324 r3 (Brahms p5 s1 staff 3 bar 0, the round-2 trace): a clef-sized `clef*` box this pass could not read is still the
+            # detector's word that a clef may stand there -- the register filed it as a NARROWED claim (it marks, never takes), so a head
+            # box on its ink is narrowed, never written. With the register's clef claims stood down, that claim is filed HERE, once;
+            # without it the clef's own ink became a written note (rule 8). Never over a clef this pass read (that ink is claimed READ).
+            if any(_overlap_share(list(pb), f["area"]) >= 0.5 for f in found):
+                continue
+            ck = mycells[k]
+            dets_k = detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
+            gsub = R.glyph(p, sys_idx, li, k, gi)
+            g = log.rows(Q.GLYPH_BOX, gsub)
+            area, grown = _clef_area_by_ink(list(pb), SM_clef_family(d.smufl_name), ck, (stroke_cells or {}).get((p, sys_idx, li, k)), sp)
+            inside = _claim_boxes_inside(binary, area, dets_k, ck, lambda j, k=k: R.glyph(p, sys_idx, li, k, j).to_key(), lines, sp,
+                                         skip=(gi,))
+            log.observe(ssub, Q.CLAIMED_AREA, [round(v, 1) for v in area], reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(k), cell=k,
+                        owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None, owner_glyph=gsub.to_key(), unit="area", standing="NARROWED",
+                        source="detector", filed_by=CP.SOURCE, start_spaces=round((area[0] - ck.bbox_page_px[0]) / sp, 3),
+                        cls=str(d.smufl_name), boxes_inside=inside, space_page_px=round(sp, 3),
+                        **({"grown_from_box": grown} if grown else {}))
+            if stroke_cells:
+                gs = log.rows(Q.GLYPH_STROKES, gsub)
+                mine = [(int(i), float(sh)) for i, sh in zip(gs[0].value or (), (gs[0].detail or {}).get("shares") or ())] if gs else None
+                from . import stroke_map as SM
+                _file_ink_claim(log, ssub, strokes=mine, why=None if gs else "no GLYPH_STROKES row (the cell has no stroke map)",
+                                cell=k, owner=CL.OWNER_CLEF, owner_row=g[0].id if g else None, owner_glyph=gsub.to_key(),
+                                standing="NARROWED", source="detector", cls=str(d.smufl_name), cover_min=SM.COVER_SHARE_MIN)
         x_head = mycells[order[0]].bbox_page_px[0] + CP.HEADER_WINDOW_SPACES * sp
         for n in near:
             in_header = float(n["x0"]) <= x_head

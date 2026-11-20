@@ -237,6 +237,67 @@ class TestRound3FClef:
         assert CP.read_box("clefF", meta["box"], ink, meta["lines"], meta["sp"], header=True)["passed"]
 
 
+class TestRound3RefusedBoxStillNarrows:
+    """Brahms p5 s1 staff 3 bar 0 (the round-2 trace): a mid-bar bass clef whose dots are fused with the ink beside them is refused by
+    the dot test; its `clefF` box was the register's NARROWED claim, so the head box the detector drew on its dots was narrowed. With the
+    register's clef claims stood down (flag ON) nothing claimed that ink and the dots were written as a C4. The page-wide pass now files
+    the NARROWED claim for a box it could not read."""
+
+    def _run(self, monkeypatch, flag):
+        import types
+        from tools.omr.staged import gather as G
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Log, Q
+        z = np.load(DATA_R3)
+        meta = json.loads(str(z["meta"]))["f_mid_bar_brahms_p5_s1_st3"]
+        ink = np.unpackbits(z["f_mid_bar_brahms_p5_s1_st3"])[: meta["shape"][0] * meta["shape"][1]].reshape(meta["shape"]).astype(bool)
+        if flag:
+            monkeypatch.setenv(CP.ENV_PAGE_ONLY, "1")
+        else:
+            monkeypatch.delenv(CP.ENV_PAGE_ONLY, raising=False)
+        H, W = ink.shape
+        lines = meta["lines_cell"]
+
+        class Det:
+            def __init__(self, name, bb, cx0):
+                self.smufl_name, self.confidence, self.category = name, 0.9, ""
+                self.x_canonical, self.y_canonical = bb[0] - cx0, bb[1]
+                self.width_canonical, self.height_canonical = bb[2] - bb[0], bb[3] - bb[1]
+
+        def cell(k, x0, x1):
+            return types.SimpleNamespace(staff_index=0, measure_index=k, page_index=0, bbox_page_px=(x0, 0, x1, H), upscale_factor=1.0,
+                                         staff_line_ys_canonical=list(lines))
+        cells = [cell(0, 0, 60), cell(1, 60, W)]
+        pws = types.SimpleNamespace(page=types.SimpleNamespace(page_index=0, binary=np.where(ink, 0, 255).astype(np.uint8)),
+                                    staves=[types.SimpleNamespace(staff_index=0, system_index=0, line_ys=list(lines),
+                                                                  line_spacing_px=meta["sp"])])
+        dets = {R.cell(0, 0, 0, 1).to_key(): [Det("clefF", meta["box"], 60), Det("noteheadBlackOnLine", meta["head_box"], 60)]}
+        monkeypatch.setattr(G, "_spacing", lambda st: meta["sp"])
+        log = Log()
+        if flag:
+            G.gather_clef_pagewide(log, pws, cells, {0: (0, 0)}, dets)
+        else:
+            G.gather_claimed_register(log, pws, cells, {0: (0, 0)}, dets)
+        return [r for r in log.rows(Q.CLAIMED_AREA, R.staff(0, 0, 0)) if (r.detail or {}).get("owner") == "clef"
+                and (r.detail or {}).get("unit") == "area"], R.glyph(0, 0, 0, 1, 1).to_key()
+
+    def test_the_box_is_refused_by_the_dot_test(self, on):
+        ink, meta, ll = _r3("f_mid_bar_brahms_p5_s1_st3", "cell")
+        got = CP.read_box("clefF", meta["box"], ink, ll, meta["sp"])
+        assert not got["passed"] and got["why"] == "f_no_dots"
+
+    def test_flag_on_the_page_wide_pass_files_the_narrowed_claim_over_the_head_on_its_dots(self, monkeypatch):
+        rows, head = self._run(monkeypatch, True)
+        nar = [r for r in rows if r.detail.get("standing") == "NARROWED"]
+        assert len(nar) == 1 and nar[0].detail.get("source") == "detector" and nar[0].detail.get("filed_by") == CP.SOURCE
+        assert nar[0].detail["boxes_inside"][head]["ink_share_inside"] >= 0.5
+        assert not [r for r in rows if r.detail.get("standing") == "READ"]                    # never read from the box alone
+
+    def test_flag_off_the_register_filed_the_same_narrowed_claim(self, monkeypatch):
+        rows, head = self._run(monkeypatch, False)
+        assert [r.detail.get("standing") for r in rows] == ["NARROWED"] and head in rows[0].detail["boxes_inside"]
+
+
 class TestRound3CClef:
     def test_alto_beside_the_system_barline_is_read(self, on):
         ink, meta, ll = _r3("c_litolff_p8_s0_st7", "cell")
