@@ -44,6 +44,8 @@ rule 3). Everything below is the background these three rest on.
 
 **List why every lost note was lost (Sean, 2026-10-26 "Yes"):** before the full sample, the subset's lost notes are grouped by their refusal reason ON vs OFF and the top groups looked at on crops. Judged answers cover only notes Sean has seen; a reader whose cut-off was set on old input can drop unjudged notes with no right->wrong (2.206b: the stem-tip reader read slur starts as hooks on the restored ink; found only by tiles, after a 2-hour full run). A fix to a SHARED input (the image, the stroke map) also lists every downstream reader whose OFF readings sit near its cut-off.
 
+**Shared OFF reading (ROADMAP 2.328, Sean 2026-11-19).** A re-gather lane need not read its OFF arm itself when the manager has saved the OFF reading of the frozen sample for the main commit the lane branched from (`docs/running.md` §2b: `lane_report --make-baseline`, then `--baseline shared --check-page PLATE:N`). It is like-with-like only because the tool refuses, and says so in the report, unless: the baseline commit is in your branch and no later main change to `tools/omr` is merged in; pages, plate, tag, cell map and `OMR_*` env are exactly the same; and your own tree, flag off, re-reads one named sample page and gets the identical exported marks (the control that can fail: it names the kinds that differ). The control line gives the baseline's commit, its date and the check page's result. A lane that merged main after the baseline was read, or whose change moves anything with the flag off, reads its own OFF arm.
+
 ## 1. The acceptance set and the three measures (plan §4)
 
 | document | kind | count page |
