@@ -134,3 +134,47 @@ calls it tenor (wrong), flag ON writes bass from the other systems (right, by th
 **Not done.** Fast tier and `check` not run this round; three tests in `test_staged_clef_slot_claim_2_208.py`
 fail with the flag ON; Sean's 2.251 clef tiles not replayed; the G fix (ink above and below the staff beside
 the box) and the 4 F + 1 C misses not built. Round 3 takes these.
+
+## Round 3 (2026-11-20) -- reach closed on the start of the staff; flag still OFF, nothing retired
+
+Branch `lane-2.324-r3` 7350ba122 (STAGED, GATHER; `clef_pagewide.py`, `gather.py`). Agent's report, checked
+against the tree for the branch and files only; the counts are the lane's own from the shared `lane_report`.
+
+**Cause and process lesson.** Round 2 blamed the G boxes being cut short; that was wrong, the boxes are right.
+The page-wide pass measured each clef against ONE set of staff lines for the whole staff; on Litolff's first
+systems those sit 0.25-1.1 spaces off the print at the start of the staff, so "ink above the staff" fell on
+blank paper. The start-of-staff reads now take the first cell's own traced lines. Lesson: we looked at the
+measurements before the pixels, and a new reader broke "measure against the staff locally" -- a new reader
+takes the lines its own cell already traced. F p6/1/10 and p8/0/8: the dot is looked for anywhere in the
+middle half of its own space. C p8/0/7: ink at or left of a line running past the staff further than any clef
+can (the system barline) is not the clef's.
+
+**Two new nevers for the F reading** (dot ink alone cannot tell F from G or a C clef's bowls): refused where
+the box columns have ink past the staff above AND below (real F <= 0.06, real G >= 0.13), or a C clef's thick
+bar stands in the box (0 of 98 real F, 46 of 46 C). Both cuts are set on our two plates.
+
+**Frozen sample, OFF -> ON.**
+- Litolff: blue +8 / -67 (round 2: +138 / -69); clefs, keys, meters each +1 / -1; red bars 158 -> 157; judged
+  right->wrong 0 of 308.
+- Brahms: notes +2 / -49, rests +8 / -9, accidentals -24, flags -46, articulations +1 / -43, blue +6 / -24,
+  words +23 / -6, pitches changed 4, red bars 137 -> 142, notes not written +48; judged right->wrong 0 of 261.
+- 189 of the 234 changed Brahms places are p25 s0 staff 3: tenor header, a printed bass clef at the end of bar
+  0 (crop `out/print/2.324-r3/question_brahms_p25_s0_st3.png`; the manager looked: plainly a bass clef). Flag
+  OFF wrote bars 1-9 plain with tenor pitches (a fifth off); ON the tenor clef stops at the bass-clef box
+  (narrowed, not read) and those notes are unread (red).
+- Sean's 12 clef/key answers (2.292): OFF 11 of 12 clefs right, ON 12 of 12 (Litolff p2/1/3 wrong -> right).
+- Reach: Litolff 163 -> 178 of 184; Brahms 198 of 199. The 7 not read have no detector box and are carried
+  from their other systems (crops `out/print/2.324-r3/not_read_sheet.png`).
+- Round 2's untraced Brahms changes are traced (p8/1/3 clef corrected; p5/1/3 and p14/1/9 bar 0: OFF placed
+  the key window after a mid-bar detector clef box and the key claim swallowed noteheads; ON writes the bars,
+  both red). Round 2's ON arm also wrote p5's notes after the bass clef as tenor and the clef's dots as a C4;
+  fixed (an unread clef-sized box keeps its narrowing claim).
+
+**Gate.** Fast tier flag OFF: 11,019 passed, the one known far-head failure. `check` 216 open, not compared
+with main. 76 real-pixel controls in `test_staged_clef_page_only_2_324.py`.
+
+**Open.** A mid-staff F clef is only narrowed, never read (Brahms p25/0/3; p8/0/9 dots fused with an
+accidental is missed outright). Sean's 2.251 clef tiles not replayed by place (their files hold no places).
+Not run on a whole movement. Retirement list (nothing removed): `gather_clef` rows on cell 0,
+`gather_clef_locator`, the clef sections of `gather_claimed_register`, the OFF-only `KO.clef_of_box` edge;
+`gather_clef_seed` and `gather_clef_slot_claim` stay.
