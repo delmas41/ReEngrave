@@ -3751,8 +3751,13 @@ def _head_ink_reads_hollow_unread_black(ev: Evidence, hi: Optional[Dict[str, Any
         return False
     if ev.rows(Q.NOTEHEAD_LETTER_INK):
         return False
+    # ROADMAP 2.327: the slash guard asks the head's OWN ink, never its box. 2.159's guard (a head's ink stands to one side of its
+    # stem) took the slash test's "ink crosses the stem on both sides" alone, and that test reads the DETECTOR BOX's ink -- here a box
+    # wider than one head, whose ledger-line stubs cross the stem (Litolff p2 `glyph/2/1/0/11/2`, a half Sean judged, written a quarter).
+    # The head this branch reads is the trimmed one, lines and ledgers out, ONE head and hollow; what stands against it is a slash the
+    # stem's own stroke reader READ (`read_by` stem_slash), or all three slash tests together (`would_fire`) -- never the crossing alone.
     sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
-    return not (sig.get("crossing_ok") or sig.get("read_by") == "stem_slash")
+    return not (sig.get("would_fire") or sig.get("read_by") == "stem_slash")
 
 
 def _value_at(value: Dict[str, Any], head_written: float, support: float) -> Dict[str, Any]:

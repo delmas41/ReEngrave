@@ -249,6 +249,16 @@ def trim_head(page_binary: Any, box: Sequence[float], space_px: float,
         while ey1 - ey0 > 1 and n < cap and core[ey1 - 1]:
             ey1 -= 1
             n += 1
+    # ROADMAP 2.327 (c): the head's own rows end where its rim does. A head's rim crosses its middle at its top and its bottom, so an
+    # END row of the block whose ink does not reach the head's middle columns (the run's core, `CORE_SHARE` across) is paper beside or
+    # below the head held between two other strokes -- its stem and the next mark -- never the inside of the head. NEVER read a hollow from
+    # it (Brahms p0, 11 heads Sean judged solid read "hollow" on the paper between the stem and the next mark below them).
+    m0 = ex0 + int(round((ex1 - ex0) * (1 - CORE_SHARE) / 2.0))
+    m1 = max(m0 + 1, ex1 - int(round((ex1 - ex0) * (1 - CORE_SHARE) / 2.0)))
+    while ey1 - ey0 > 1 and not clean[ey1 - 1, m0:m1].any():
+        ey1 -= 1
+    while ey1 - ey0 > 1 and not clean[ey0, m0:m1].any():
+        ey0 += 1
     cols = np.nonzero(clean[ey0:ey1, ex0:ex1].any(axis=0))[0]
     ex0, ex1 = ex0 + int(cols[0]), ex0 + int(cols[-1]) + 1
     head = np.zeros_like(clean)
