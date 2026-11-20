@@ -9,6 +9,15 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-20 -- ROADMAP 2.327 slash guard landed ON; 2.328 shared off reading tool landed
+
+Main 37fe2e6e7: `OMR_SLASH_GUARD_OWN_INK` ON (Sean: "Yes all half notes") -- a hollow head is no longer dropped
+as a tremolo slash where only ledger lines inside the detector box cross the stem; the result stays blue.
+`OMR_HEAD_OWN_ROWS` (head trim ends at the rim) is on main but OFF: it ripples into unjudged ties and beams.
+The box size gate and the width cap were replayed on Sean's judged marks and kept.
+`benchmarks/head-own-ink-2026-11/FINDINGS.md`. Main d3cf7d0bc: `lane_report --make-baseline` /
+`--baseline shared --check-page` (2.328, tooling only), not yet proven on a real reading.
+
 ## 2026-11-19 -- ROADMAP 2.323 landed ON: a unison in a two-voice bar is printed once and kept for both parts
 
 Main d9e8f51c9, `OMR_UNISON_KEPT_FOR_BOTH` ON by default (Sean: "Land it"). STAGED, EXPORT only: where a lone
