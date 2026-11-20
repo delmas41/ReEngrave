@@ -227,3 +227,34 @@ GUESSED blue: blue is decided in `consequences.py`/`export.py`, outside the lane
 
 **Open.** Mid-line G clef (one case); the two between-lines C clefs; cuts unseen on a third publisher; not run
 on a whole movement; branch not merged with main since round 3.
+
+## Round 5 (2026-11-20) -- bass and treble kind from ink, no box needed; TOUCHED PAGES ONLY (Sean: "Do minimal testing until we know that we're headed the right direction")
+
+Branch `lane-2.324-r3` b99db38aa. Only Litolff 2, 4, 6, 9, 10, 11 and Brahms 4, 14, 25 were read; no frozen
+sample, no replays over it, no fast tier. Agent's report; the manager looked at the sheet
+(`out/print/2.324-r5/sheet.png`).
+
+**Step 0 (the manager's worry, measured).** Clefs with no detector box: 7 of 383 start-of-staff on the frozen
+sample, all already written right by carry from their other systems; mid-line, none found (Sean's labelled
+Brahms p0 has one mid-line clef, boxed -- labels pre-filled from the detector, so not independent; 8 crops of
+bars far off their staff's register held 0 missed changes). The silent-wrong-pitch risk the manager put to
+Sean is small on our pages. No mid-line shape scan was built.
+
+**Cause and process lesson.** A never must measure the mark, not the processing: round 4's "the F body ends at
+the fourth line" measured where staff-line clearing cut the tail (real start-of-staff tails reach the bottom
+line); dropped. One F test and one G test now work from ink, the box a witness.
+
+**Touched pages.** All 7 no-box clefs read from ink, right kind, plain. All 371 boxed start-of-staff clefs
+re-read as if boxless: no wrong kind (treble 214 of 221, bass 82 of 104 + 7 narrowed, C 46 of 46). Brahms p14
+mid-line treble narrows (notes -18, were written in alto). No false clef READ; two Litolff non-clefs pass the
+mid-line treble test and narrow: p9 s0 st3 (accidental + half note + arc) -- ~10 correct bass notes in bars
+11-14 now unread, a real loss; p10 s1 st4 (arc over a stem), no change. Judged right->wrong 0 on these pages.
+Litolff notes -10, blue +9 / -79, red bars 128 -> 126; Brahms notes -18, 44 pitches (p25), red bars 52 -> 50.
+Not traced: Litolff p2 s1 st3 bar 0 lost its whole rest.
+
+**Manager's look at the sheet.** Tiles 1 and 10 are plainly not clefs; tile 5 is a treble clef. The claimed
+area is not the clef's ink on tiles 2, 3, 6 (runs well below the staff) and 9 (sits on the dots and first
+flat, not the body).
+
+**Open.** Claimed area cut to the clef's own ink; mid-line treble narrows on non-clefs; nothing beyond the
+touched pages measured.
