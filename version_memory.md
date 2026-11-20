@@ -9,6 +9,15 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-19 -- ROADMAP 2.323 landed ON: a unison in a two-voice bar is printed once and kept for both parts
+
+Main d9e8f51c9, `OMR_UNISON_KEPT_FOR_BOTH` ON by default (Sean: "Land it"). STAGED, EXPORT only: where a lone
+note, chord or rest stands alone at its moment in a bar written as two voices, the other voice carries a
+not-printed copy instead of `<forward>`. By the staff's instrument: wind and brass one note each, strings the
+whole chord, timpani/harp/piano and unnamed staves as before. Printed page unchanged on the frozen sample;
+judged right->wrong 0; fast tier 1 known failure. Not measured on a whole movement; no solo-marking reader.
+`benchmarks/unison-kept-for-both-2026-11/FINDINGS.md`.
+
 ## 2026-11-19 -- ROADMAP 2.318 landed ON: one beam count, read on the erased staff (main 7a20352a0)
 STAGED, ADJUDICATE. `OMR_ONE_BEAM_COUNT` default ON: the stroke map on the staff-erased raster
 (`beam_strokes.py::beam_count`) is the only beam count; the bar-crop reading and the stem-tip look are no longer
