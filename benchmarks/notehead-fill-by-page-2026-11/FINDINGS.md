@@ -58,3 +58,11 @@ one speck in a black head; never a quarter where heavy ink closes the slit to sp
 One blind tile for Sean: `out/print/2.326-fill/blind/tile_01.png` (`glyph/2/0/7/4/5`, written a blue half).
 Possible third-publisher check, not examined: `benchmarks/omr-labeling-hollow*-2026-09/` holds Sean's
 hollow-head labels on Durand, Universal, Jurgenson, Novello, Peters, Simrock and Eulenburg plates.
+
+## Sean's answer to the blind tile (2026-11-19)
+
+`glyph/2/0/7/4/5` (Litolff page 2), written today as a blue half: "Litolff mark is a sharp sign blending into
+the barline." So it is not a notehead. The hollow reading was honest about the ink (a sharp has paper inside
+it); the fault is upstream of the fill test -- a detector box on a sharp joined to a barline is taken as a
+head. This is the "box that is not a notehead written as a note" cause already open under ROADMAP 2.319, and a
+Litolff MERGE case (page-facts: Litolff merges; an ink component is not a mark). `answers.json` here.
