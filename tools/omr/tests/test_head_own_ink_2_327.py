@@ -54,9 +54,10 @@ def _keys(doc, answer):
 
 class _Trim(unittest.TestCase):
     def setUp(self):
-        self._env = {k: os.environ.get(k) for k in (HI.TRIM_ENV, HI.TRIM_V2_ENV)}
+        self._env = {k: os.environ.get(k) for k in (HI.TRIM_ENV, HI.TRIM_V2_ENV, HI.OWN_ROWS_ENV)}
         os.environ[HI.TRIM_ENV] = "1"
         os.environ[HI.TRIM_V2_ENV] = "1"
+        os.environ[HI.OWN_ROWS_ENV] = "1"
 
     def tearDown(self):
         for k, v in self._env.items():
@@ -99,6 +100,11 @@ class OwnInkOnSeansLitolffMarks(_Trim):
         self.assertEqual(str(FX["10_1_8_8_10_l_answer"]), "eighth")
         self.assertEqual(r["value"], "filled", r)
 
+    def test_CONTROL_flag_off_the_trim_reaches_past_the_rim_and_the_eighth_is_unread(self):
+        os.environ[HI.OWN_ROWS_ENV] = "0"
+        r = _read("10_1_8_8_10_l")
+        self.assertNotEqual(r["value"], "filled", r)
+
 
 def _cross(log, g, **kw):
     stem = log.rows(Q.STEM, CELL)[-1]
@@ -125,7 +131,8 @@ class TheSlashGuardAsksTheHeadsOwnInk(unittest.TestCase):
     def test_the_half_is_written_a_half_GUESSED(self):
         log = Log()
         g = self._half(log)
-        v = _decide(log, g)
+        with mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "1"}):
+            v = _decide(log, g)
         sig = (log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g).detail or {}).get("tremolo_slash_signal") or {}
         self.assertTrue(sig.get("crossing_ok"))
         self.assertFalse(sig.get("would_fire"))
@@ -133,16 +140,11 @@ class TheSlashGuardAsksTheHeadsOwnInk(unittest.TestCase):
         self.assertEqual(_guess(v)["rule"], rhythm.HEAD_INK_RULE_HOLLOW)
         self.assertTrue(_guess(v)["marks_blue"])
 
-    def test_CONTROL_the_old_box_crossing_guard_drops_it(self):
-        """The rule as main had it (crossing alone) fails this half: the control can fail."""
+    def test_CONTROL_flag_off_the_box_crossing_guard_drops_it(self):
+        """The rule as main has it (the box's crossing alone) fails this half: the control can fail."""
         log = Log()
         g = self._half(log)
-        old = rhythm._head_ink_reads_hollow_unread_black
-
-        def box_guard(ev, hi, head_first, refused, refusal=None):
-            sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
-            return False if sig.get("crossing_ok") else old(ev, hi, head_first, refused, refusal)
-        with mock.patch.object(rhythm, "_head_ink_reads_hollow_unread_black", box_guard):
+        with mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "0"}):
             v = _decide(log, g)
         self.assertNotEqual(_w(v), 2.0)
 
@@ -151,7 +153,8 @@ class TheSlashGuardAsksTheHeadsOwnInk(unittest.TestCase):
         g = _part_boxed(log, located_share=None)
         _cross(log, g, left=0.6, right=0.4, left_share=0.6, right_share=0.4, angle_deg=8.7, elongation=1.85, fill=0.6127)
         log.observe(g, Q.HEAD_INK, "filled", reader=READERS.CV_HEAD_INK, frame="cell:0", margin=0.06, slit=0.0, extent_sp=[1.4, 1.1])
-        v = _decide(log, g)
+        with mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "1"}):
+            v = _decide(log, g)
         self.assertNotEqual(_w(v), 2.0)
         self.assertIsNone(_guess(v))
 
@@ -164,7 +167,8 @@ class NeverPlainFromABoxThatIsNotAHead(unittest.TestCase):
         log = Log()
         g = _part_boxed(log, located_share=None)
         _own_ink(log, g, 0.3333, [1.188, 1.25])
-        v = _decide(log, g)
+        with mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "1"}):
+            v = _decide(log, g)
         gs = _guess(v)
         self.assertIsNotNone(gs)
         self.assertTrue(gs["marks_blue"])

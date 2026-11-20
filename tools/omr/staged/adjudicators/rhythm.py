@@ -3757,7 +3757,18 @@ def _head_ink_reads_hollow_unread_black(ev: Evidence, hi: Optional[Dict[str, Any
     # The head this branch reads is the trimmed one, lines and ledgers out, ONE head and hollow; what stands against it is a slash the
     # stem's own stroke reader READ (`read_by` stem_slash), or all three slash tests together (`would_fire`) -- never the crossing alone.
     sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
+    if not slash_guard_own_ink_enabled():
+        return not (sig.get("crossing_ok") or sig.get("read_by") == "stem_slash")
     return not (sig.get("would_fire") or sig.get("read_by") == "stem_slash")
+
+
+SLASH_GUARD_OWN_INK_ENV = "OMR_SLASH_GUARD_OWN_INK"
+
+
+def slash_guard_own_ink_enabled() -> bool:
+    """ROADMAP 2.327, default OFF (built OFF: the shared lane report compares OFF and ON on one tree). ON: the 2.220 branch's slash guard
+    no longer reads the slash test's box-measured "crosses the stem" alone."""
+    return os.environ.get(SLASH_GUARD_OWN_INK_ENV, "0").strip().lower() in ("1", "true", "yes", "on")
 
 
 def _value_at(value: Dict[str, Any], head_written: float, support: float) -> Dict[str, Any]:
