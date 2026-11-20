@@ -16268,7 +16268,11 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 if is_g:
                     # 2.324 r5: the ONE G test wherever the clef stands -- its ink past the staff both sides, and the box as one more
                     # witness beside the spiral round line 2; inside the line it only NARROWS (one real case on our pages)
-                    got = CP.read_g(ink, [pb[0], ll[0] - 2.5 * sp, pb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=True)
+                    # r5b: the detector's notehead boxes in this bar say where a head may stand; a head's own ink on the clef's
+                    # ink refuses it (Sean's r5 tiles 1 and 10)
+                    heads_k = [hb for hb in (_page_box(c, d2) for d2 in detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
+                                             if str(d2.smufl_name).startswith("notehead")) if hb]
+                    got = CP.read_g(ink, [pb[0], ll[0] - 2.5 * sp, pb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=True, heads=heads_k)
                 elif is_f:
                     # 2.324 r4/r5: the ONE F test wherever the clef stands (Sean 2026-11-20 "Teach it"): body at the top line, dot ink
                     # in both spaces round line 4, never a G's or a C's ink
@@ -16281,7 +16285,8 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                     strong = bool((mid_f or mid_g) and got["passed"])
                     near.append({"x0": pb[0], "family": got["family"], "why": got["why"] or ("g_mid_line_narrows" if mid_g else "f_read_near_its_cut"), "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {}), **({"strong": True} if strong else {})})
-                    if page_only:
+                    if page_only and got.get("why") != "g_over_a_notehead":
+                        # r5b: a box whose ink is a note (Sean's r5 tile 10, "2 half notes in a chord") narrows nothing
                         refused_boxes.append((k, gi, pb, d))
                     continue
                 if got["family"] == "C" and any(CL.overlaps(f["area"], pb) for f in found):

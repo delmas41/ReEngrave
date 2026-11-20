@@ -267,7 +267,7 @@ F_BODY_TOP_PLAIN_SPACES = 0.45
 #: the `read_mid_f` refusals that say the ink is NOT an F clef (its body is not an F clef's, or it is a G's or a C's ink): such a box is
 #: no clef-shaped candidate -- a carried clef never stops at it (Brahms p25 s0 staff 3: a half note by the barline under a `clefF` box
 #: stopped the bass clef read just before it, and bars 1-9 went unread)
-MID_F_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_box_ink_past_the_staff_like_a_g",
+MID_F_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_box_ink_past_the_staff_like_a_g", "g_over_a_notehead",
                     "f_box_on_a_c_bar", "f_no_body_ink")
 
 
@@ -356,7 +356,59 @@ def spiral_on_line2(pc: Dict[str, Any], lines: Sequence[float], sp: float) -> fl
     return round(float(best), 3)
 
 
-def read_g(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: float, *, box_witness: bool) -> Dict[str, Any]:
+#: ROADMAP 2.324 r5b: how far a clef's ink reaches past the staff (staff spaces, above the top line / below the bottom line). Ink joined
+#: to a clef beyond this (a barline, a brace, a dynamic) is never the clef's: the claim stops here where no stroke boundary separates it.
+#: MEASURED on the frozen sample's start-of-staff clefs: treble reach above 1.14-2.51, below 1.44-2.51; a bass clef's body and dots stand
+#: on the staff (its tail at most at the bottom line).
+CLEF_REACH_SPACES = {"G": (2.7, 2.7), "F": (0.5, 0.6), "C": (0.6, 0.6)}
+#: ... a notehead's own ink inside a G clef's glyph: at least this share of the head box's ink on the glyph's ink (Sean's r5 tiles 1 and
+#: 10: a stem and a half-note chord, each with the detector's notehead boxes on the ink, under a `clefG` box). MEASURED: no `clefG` box
+#: of the frozen sample's 242 start-of-staff ones holds a notehead box; both of Sean's non-clefs do.
+G_HEAD_INK_SHARE = 0.5
+
+
+def within_reach(box: Sequence[float], family: str, lines: Sequence[float], sp: float) -> List[float]:
+    """ROADMAP 2.324 r5b: a clef's area cut to what a clef of `family` can reach past the staff (`CLEF_REACH_SPACES`)."""
+    up, down = CLEF_REACH_SPACES.get(family, (2.7, 2.7))
+    return [float(box[0]), max(float(box[1]), float(lines[0]) - up * sp), float(box[2]), min(float(box[3]), float(lines[-1]) + down * sp)]
+
+
+def heads_in_glyph(ink: np.ndarray, pc: Dict[str, Any], heads: Sequence[Sequence[float]], lines: Sequence[float],
+                   sp: float) -> List[float]:
+    """For each notehead box (page px) meeting the glyph: the share of the box's ink JOINED to the glyph's ink (one piece of ink, the
+    staff lines cleared and bridged as `glyph_piece` does) -- a head on the clef's own stroke, joined by ink, never by box overlap. Measures."""
+    import cv2
+    gb = pc["box"]
+    out = []
+    H, W = ink.shape
+    for h in heads:
+        if h[2] <= gb[0] or h[0] >= gb[2] or h[3] <= gb[1] or h[1] >= gb[3]:
+            continue
+        x0, y0 = max(0, int(min(gb[0], h[0]))), max(0, int(min(gb[1], h[1])))
+        x1, y1 = min(W, int(round(max(gb[2], h[2])))), min(H, int(round(max(gb[3], h[3]))))
+        half = max(1, int(round(LINE_HALF_SPACES * sp)))
+        sub = _mask_wide_lines(ink, y0, y1, x0, x1, lines, sp, strokes=False)
+        m = cv2.morphologyEx(sub, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 2 * half + 1)))
+        n, lab = cv2.connectedComponents(m, connectivity=8)
+        gy0, gx0 = int(gb[1]) - y0, int(gb[0]) - x0
+        gl = lab[gy0:gy0 + pc["piece"].shape[0], gx0:gx0 + pc["piece"].shape[1]]
+        gl = gl[: pc["piece"].shape[0], : pc["piece"].shape[1]]
+        vals = gl[pc["piece"][: gl.shape[0], : gl.shape[1]] & (gl > 0)]
+        if vals.size == 0:
+            continue
+        g_id = int(np.bincount(vals).argmax())
+        hy0, hx0 = int(h[1]) - y0, int(h[0]) - x0
+        hl = lab[max(0, hy0):int(round(h[3])) - y0, max(0, hx0):int(round(h[2])) - x0]
+        hi = ink[max(0, int(h[1])):int(round(h[3])), max(0, int(h[0])):int(round(h[2]))][: hl.shape[0], : hl.shape[1]]
+        tot = float(hi.sum())
+        if tot <= 0:
+            continue
+        out.append(round(float((hi & (hl == g_id)).sum()) / tot, 3))
+    return out
+
+
+def read_g(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: float, *, box_witness: bool,
+           heads: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
     """ROADMAP 2.324 r5: the ONE G-clef test, wherever the clef stands. A musician: the spiral wraps the second line, the stem runs past
     the staff above and the tail below. The glyph is its own ink in `place` (`glyph_piece`); its ink runs past the staff on BOTH sides
     (`g_witness`, on the glyph's own columns) -- required -- and a second witness: the spiral round line 2 (`spiral_on_line2`), or a
@@ -369,7 +421,11 @@ def read_g(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: 
         return dict(out, passed=False, why="g_no_ink")
     gw = g_witness(ink, pc["box"], lines, sp)
     sp2 = spiral_on_line2(pc, lines, sp)
-    out.update(box=pc["box"], spiral=sp2, g_fill={"above": gw["above_fill"], "below": gw["below_fill"]})
+    hin = heads_in_glyph(ink, pc, heads, lines, sp)
+    out.update(box=pc["box"], spiral=sp2, g_fill={"above": gw["above_fill"], "below": gw["below_fill"]}, heads_on_ink=hin)
+    if any(v >= G_HEAD_INK_SHARE for v in hin):
+        # round 5b: never a G clef over a notehead (Sean's r5 tile 1 "just a stem", tile 10 "2 half notes in a chord")
+        return dict(out, passed=False, why="g_over_a_notehead")
     if not gw["passed"]:
         return dict(out, passed=False, why=gw["why"])
     if sp2 < G_SPIRAL_MIN_SPACES2 and not box_witness:
@@ -382,7 +438,14 @@ def read_header_ink(ink: np.ndarray, place: Sequence[float], lines: Sequence[flo
     """ROADMAP 2.324 r5 (Sean 2026-11-20: "every note on the page is dependent on the clefs being correct"): the clef at the start of a
     staff the detector drew NO box on, read from its own ink in its place -- the system's clef column (only a clef stands before the
     key). C by its thick bar and bowls (`c_bars`), G (`read_g`, no box witness), F (`read_mid_f`, dots beside the body's core); nothing
-    where no shape reads -- the staff's clef is then carried from its other systems and counted. {passed, plain, family, kind, line, box}."""
+    where no shape reads -- the staff's clef is then carried from its other systems and counted. {passed, plain, family, kind, line, box}.
+
+    Round 5b (Sean's r5 tiles 2, 3, 6: the claim ran down the system's barline): the place starts just right of the system's barline
+    standing at its left edge (`barline_left_of`: a stroke running on past the staff further than a clef reaches -- ink at or left of it
+    is never the clef's), and a read clef's area is kept inside what a clef can reach (`CLEF_REACH_SPACES`), never more."""
+    bl = barline_left_of(ink, lines, sp, float(place[0]) - 0.5 * sp, float(place[0]) + 0.8 * sp)
+    if bl is not None and bl + 1 < float(place[2]):
+        place = [float(bl + 1), place[1], place[2], place[3]]
     cs = [c for c in c_bars(ink, lines, sp, place[0], place[2]) if c["passed"]]
     if cs:
         nm, ln, res = name_c(cs[0]["middle_y"], cs[0].get("lines_local") or lines)
@@ -390,13 +453,14 @@ def read_header_ink(ink: np.ndarray, place: Sequence[float], lines: Sequence[flo
                 "box": c_area(cs[0], sp), "witness": "c_bar_and_bowls"}
     g = read_g(ink, place, lines, sp, box_witness=False)
     if g["passed"]:
-        return dict(g, plain=True)
+        return dict(g, plain=True, box=within_reach(g["box"], "G", lines, sp))
     pc = glyph_piece(ink, place, lines, sp)
     if pc is None:
         return {"passed": False, "why": "no_ink_in_the_clef_place", "family": None}
     f = read_mid_f("clefF", pc["box"], ink, lines, sp, dots_beside_core=True)
     if f["passed"]:
-        return dict(f, box=pc["box"])
+        box = within_reach(pc["box"], "F", lines, sp)
+        return dict(f, box=box, body=[f["body"][0], max(f["body"][1], box[1]), f["body"][2], min(f["body"][3], box[3])])
     return {"passed": False, "why": "no_clef_shape:" + str(g.get("why")) + "/" + str(f.get("why")), "family": None}
 
 

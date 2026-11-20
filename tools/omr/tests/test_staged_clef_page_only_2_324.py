@@ -452,24 +452,45 @@ class TestRound5ClefFromInk:
         monkeypatch.setattr(CP, "spiral_on_line2", lambda *a, **k: 0.0)
         assert not CP.read_g(ink, meta["place"], ll, meta["sp"], box_witness=False)["passed"]
 
-    def test_the_mid_line_treble_clef_has_its_spiral_and_its_ink_past_the_staff(self, on):
-        ink, meta, ll = _r5("midg_treble_brahms_p14_s1_st9")
-        b = meta["box"]
-        got = CP.read_g(ink, [b[0], ll[0] - 2.5 * meta["sp"], b[2], ll[4] + 2.5 * meta["sp"]], ll, meta["sp"], box_witness=False)
-        assert got["passed"] and got["witness"] == "g_spiral"
+    @staticmethod
+    def _midg(name, heads=True):
+        ink, meta, ll = _r5(name)
+        bb, sp = meta["box"], meta["sp"]
+        return CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=True,
+                         heads=meta["heads"] if heads else ())
 
-    def test_the_arc_over_a_stem_has_no_spiral(self, on):
-        ink, meta, ll = _r5("midg_never_litolff_p10_s1_st4")
-        b = meta["box"]
-        got = CP.read_g(ink, [b[0], ll[0] - 2.5 * meta["sp"], b[2], ll[4] + 2.5 * meta["sp"]], ll, meta["sp"], box_witness=False)
-        assert not got["passed"] and got["why"] == "g_no_spiral_on_line_2"
+    def test_seans_mid_line_treble_clef_passes_the_one_g_test(self, on):
+        # Sean r5 tile 5, "treble clef" (Brahms p14 s1 staff 9): its ink past the staff, the spiral round line 2, no head on its ink
+        got = self._midg("midg_treble_brahms_p14_s1_st9")
+        assert got["passed"] and got["witness"] == "g_spiral" and not got["heads_on_ink"]
 
-    def test_one_real_mid_line_g_cannot_carry_a_rule_the_accidental_passes_it_too(self, on):
-        # Litolff p9 s0 staff 3: an accidental, a half note and an arc -- ink past the staff and a flat's bowl on line 2. With one real
-        # mid-line treble on our pages, nothing separates them: a mid-line G box that passes NARROWS (strong candidate), never reads
+    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
+    def test_seans_stem_and_half_note_chord_are_refused_outright(self, on, name):
+        # Sean r5 tile 1 "just a stem" (Litolff p10 s1 staff 4), tile 10 "2 half notes in a chord" (Litolff p9 s0 staff 3)
+        got = self._midg(name)
+        assert not got["passed"] and got["why"] == "g_over_a_notehead"
+        assert got["why"] in CP.MID_F_NOT_A_CLEF                                       # no carry stop, nothing narrowed
+
+    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
+    def test_without_the_head_never_the_box_passes_them_the_control_can_fail(self, on, name):
+        assert self._midg(name, heads=False)["passed"]
+
+    def test_the_half_note_chord_sits_inside_the_start_of_staff_treble_range_on_the_shape_alone(self, on):
+        # why tile 5 stays NARROWED inside the line: on the convention's shape (ink past the staff, the spiral round line 2) the chord
+        # passes too -- one real mid-line treble cannot carry a READ; only the head never separates them
         ink, meta, ll = _r5("midg_never_litolff_p9_s0_st3")
-        b = meta["box"]
-        assert CP.read_g(ink, [b[0], ll[0] - 2.5 * meta["sp"], b[2], ll[4] + 2.5 * meta["sp"]], ll, meta["sp"], box_witness=False)["passed"]
+        bb, sp = meta["box"], meta["sp"]
+        got = CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=False)
+        assert got["passed"] and got["spiral"] >= CP.G_SPIRAL_MIN_SPACES2
+
+    @pytest.mark.parametrize("name", NOBOX)
+    def test_the_ink_read_clef_claims_only_what_a_clef_can_reach(self, on, name):
+        # Sean r5 tiles 2, 3, 6: the claim ran down the system's barline -- the place starts right of the barline, the area stays inside
+        # a clef's reach past the staff
+        ink, meta, ll = _r5(name)
+        got = CP.read_header_ink(ink, meta["place"], ll, meta["sp"])
+        up, down = CP.CLEF_REACH_SPACES["G" if meta["truth"] == "treble" else "F"]
+        assert got["box"][1] >= ll[0] - up * meta["sp"] - 1 and got["box"][3] <= ll[4] + down * meta["sp"] + 1
 
     def test_a_strong_g_candidate_stops_a_non_g_clef_and_nothing_else(self):
         import types
