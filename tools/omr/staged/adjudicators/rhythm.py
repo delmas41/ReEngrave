@@ -3754,12 +3754,17 @@ def _head_ink_reads_hollow_unread_black(ev: Evidence, hi: Optional[Dict[str, Any
     # ROADMAP 2.327: the slash guard asks the head's OWN ink, never its box. 2.159's guard (a head's ink stands to one side of its
     # stem) took the slash test's "ink crosses the stem on both sides" alone, and that test reads the DETECTOR BOX's ink -- here a box
     # wider than one head, whose ledger-line stubs cross the stem (Litolff p2 `glyph/2/1/0/11/2`, a half Sean judged, written a quarter).
-    # The head this branch reads is the trimmed one, lines and ledgers out, ONE head and hollow; what stands against it is a slash the
-    # stem's own stroke reader READ (`read_by` stem_slash), or all three slash tests together (`would_fire`) -- never the crossing alone.
+    # The head this branch reads is the trimmed one, lines and ledgers out, ONE head and hollow. But a slash's own ink can read as one
+    # hollow head too (Sean's 2.159 tile 4, Brahms `glyph/16/1/10/0/7` "trem slashes": own ink 1.53 x 1.17 sp, slit 0.21), and its slash
+    # signal is the half's to a degree (8.8 vs 8.7 degrees, both crossing the stem). The boundary, both sides judged: the slash STANDS ON
+    # the stem's shaft, away from both ends (`position_ok`); the half's ledgered box does not. So what stands against the head is a slash
+    # the stem's own stroke reader READ (`read_by` stem_slash), all three slash tests (`would_fire`), or ink that crosses the stem AND
+    # stands on its shaft -- never the crossing alone.
     sig = ((refusal.detail or {}).get("tremolo_slash_signal") or {}) if refusal is not None else {}
     if not slash_guard_own_ink_enabled():
         return not (sig.get("crossing_ok") or sig.get("read_by") == "stem_slash")
-    return not (sig.get("would_fire") or sig.get("read_by") == "stem_slash")
+    return not (sig.get("would_fire") or sig.get("read_by") == "stem_slash"
+                or (sig.get("crossing_ok") and sig.get("position_ok")))
 
 
 SLASH_GUARD_OWN_INK_ENV = "OMR_SLASH_GUARD_OWN_INK"

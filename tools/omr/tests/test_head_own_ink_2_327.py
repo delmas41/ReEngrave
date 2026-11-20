@@ -25,6 +25,7 @@ from unittest import mock
 import numpy as np
 
 from tools.omr.staged import head_ink as HI
+from tools.omr.staged.adjudicators import notehead_precision as NP
 from tools.omr.staged.adjudicators import rhythm
 from tools.omr.staged.gather import head_interior_white, notehead_ink_under
 from tools.omr.staged.record import READERS, Log, Q
@@ -131,10 +132,13 @@ class TheSlashGuardAsksTheHeadsOwnInk(unittest.TestCase):
     def test_the_half_is_written_a_half_GUESSED(self):
         log = Log()
         g = self._half(log)
-        with mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "1"}):
+        # the record's position reading of this box (not on the shaft), replayed
+        with mock.patch.object(NP, "_tremolo_position_ok", lambda *a, **k: False), \
+                mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "1"}):
             v = _decide(log, g)
         sig = (log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g).detail or {}).get("tremolo_slash_signal") or {}
         self.assertTrue(sig.get("crossing_ok"))
+        self.assertFalse(sig.get("position_ok"))
         self.assertFalse(sig.get("would_fire"))
         self.assertEqual(_w(v), 2.0)
         self.assertEqual(_guess(v)["rule"], rhythm.HEAD_INK_RULE_HOLLOW)
@@ -146,6 +150,21 @@ class TheSlashGuardAsksTheHeadsOwnInk(unittest.TestCase):
         g = self._half(log)
         with mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "0"}):
             v = _decide(log, g)
+        self.assertNotEqual(_w(v), 2.0)
+
+    def test_NEVER_the_brahms_slash_whose_own_ink_reads_one_hollow_head(self):
+        """Sean's 2.159 tile 4 "trem slashes" (Brahms `glyph/16/1/10/0/7`): its own ink reads one hollow head (1.53 x 1.17 sp, slit 0.21)
+        and its box crosses the stem, standing on the shaft. The record's readings, replayed on this branch: never a half."""
+        log = Log()
+        g = _part_boxed(log, located_share=None)
+        _cross(log, g, left=0.9416, right=0.7143, left_share=0.3525, right_share=0.6475, angle_deg=8.8, elongation=1.76, fill=0.5767)
+        _own_ink(log, g, 0.2105, [1.53, 1.166])
+        # the record's position reading of this box (on the shaft, away from both ends), replayed
+        with mock.patch.object(NP, "_tremolo_position_ok", lambda *a, **k: True), \
+                mock.patch.dict(os.environ, {rhythm.SLASH_GUARD_OWN_INK_ENV: "1"}):
+            v = _decide(log, g)
+        sig = (log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g).detail or {}).get("tremolo_slash_signal") or {}
+        self.assertTrue(sig.get("crossing_ok") and sig.get("position_ok"), sig)
         self.assertNotEqual(_w(v), 2.0)
 
     def test_control_own_ink_not_hollow_nothing_changes(self):
