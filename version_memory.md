@@ -6876,3 +6876,6 @@ STAGED GATHER (`clef_pagewide.py`, `gather_clef_pagewide`) + consumers. One page
 
 ## 2026-11-21 -- 2.324 follow-up (main a734d5183): dead clef-locator consumers removed
 STAGED ADJUDICATE/INFER. `clef._locator_terms`, `inferences._clef_located_on` (and the 2.93 overrule branch), the `Q.CLEF_LOCATED` reads in `notehead_precision` (`is_a_clef`, fired 0 times) and `gather_clef_slot_claim` removed; the quantity stays declared so pre-2.324 records replay (reach KNOWN_GAPS, check 215 -> 216). No behaviour change on a fresh gather; record detail key `clef_glyph_overruled_by_locator` gone. Fast tier 11,082 passed + the known failure.
+
+## 2026-11-21 -- ROADMAP 2.331: the generated data-flow map (docs/data-flow.md) and a stricter check
+TOOLS + DOCS (`tools/omr/staged/flow_map.py`, `reach.py`, `claim_final.py`, `check.py`; no pipeline behaviour). One page, generated from the code: by mark (found from ink or box, what it claims, what it hands on, who reads it at each stage, what is written, flags, old readers beside it, gaps) and by fact (producers, consumers, status). `python3 -m tools.omr.staged.flow_map --mark X | --quantity Q.X | --consumer F | --gaps | --check`. The check counts only a real filing site live under default flags as a producer: open findings 216 -> 247. Rerun the generator at every landing (a fast test fails when the page is stale).
