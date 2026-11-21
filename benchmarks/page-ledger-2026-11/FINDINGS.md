@@ -645,3 +645,40 @@ line NOT met: the report's arms are not the gathers the change was diagnosed on.
 **Between us and removing the cell join.** Barline and clef claims take only their ink; the head claims
 its ink when fused with a stem stub; the hollow-head outline covers the whole ring; chords whose stem is
 read both ways; the two-voice heads. Not verified: frozen sample, fast tier, the Litolff -33 notes by kind.
+
+## 2.306 round 16 -- one stem-hiding claim fixed, two causes placed in the code (2026-11-21; `lane-2.306-r15` 4f11e244b; `OMR_PAGE_STEMS` OFF; touched pages only)
+
+**Process lesson.** Every stem-hiding claim looked at was placed by a box or a system-wide x, never checked
+against this staff's own ink.
+
+**Owed from r15.** The Litolff -33 notes: 23 traced, 16 looked at -- about 8 not notes or unclear; 2 honest
+(OFF wrote a quarter with no stem; ON joins the stem and its beam doubt marks the value); the rest are real
+notes the page reader stems with the same value in both arms, lost when the file is written, cause NOT
+traced. The control: one ON gather re-judged twice (flag off, flag on) gives Litolff +22 / -33 against
+r15's +25 / -33, so the difference is the flag, not gather variation.
+
+**Cause 1, the head claims none of its ink (NOT fixed).** `stroke_map._split_thin_wide` folds a stem piece
+shorter than half a space back into the head (`STEM_PART_MIN_SPACES`); the head's piece is then taller
+than its outline and the 2.290 claim (half the piece inside the outline, `CLAIM_SHARE_MIN`) takes nothing.
+On the six pages: Litolff 133 head-sized + 128 head-plus-stub pieces unclaimed, Brahms 144 + 23. A stem
+fused to its flag yields no thin upright at all. The cut is shared by every reader.
+
+**Cause 2, hollow-head outline (NOT fixed).** On Sean's p0 half notes the outline is 0.66 space wide, the
+detector box 1.3; guess, unverified: `head_ink.trim_head` keeps head-height columns and the staff-line
+erase removes the ring's arc on the right. 3 of his p0 stems unread. 2.327's code.
+
+**Cause 3, claims by area.** Barline FIXED: the claim sat on the system's x with no tilt per staff
+(Litolff p6: the printed barline runs up to a space off that x); now it moves to this staff's barline ink
+where the old area holds none; 2 stems freed, 1 on p2 remains; real-pixel control from the p6 crop. C clef:
+with the clef lane -- in print the viola's stem TOUCHES the clef's bowl, so joining by ink does not
+separate them. A false accidental box over a stem holds 1.
+
+**Three arms** (Litolff 2, 6, 16; Brahms 0, 4, 5). Main -> fixes with the flag off: identical files. Flag
+off -> on: Litolff notes +25 -33, red bars 77 -> 72; Brahms +25 -4, 47 -> 39; judged right->wrong 0 and
+unwritten->wrong 0. Still refused by the page reader and stemmed by the cell join: Litolff 45 (mostly not
+notes), Brahms 15 (6 not notes; 3 hollow outline, 2 clef claim, 3 chords read both ways, 1 other).
+Two-voice heads 124 / 38: page-facts settles them (a head with a stem each way is a unison); the page
+reader would file both stems and the unison rule read them.
+
+**Not removable yet.** The stroke-map cut, the hollow outline and the clef claim first; the Litolff
+export-time losses need a cause.
