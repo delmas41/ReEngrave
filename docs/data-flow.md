@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 148 LIVE, 7 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 26 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
+Today: 148 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 27 gaps; 207 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -50,7 +50,7 @@ Stroke-owner tiers (`stroke_owner.TIERS`, then the consumers stem/beam/flag) and
 - `dot`: tier 6, layer 13 dot_mark, owns, claimed from a detector box's strokes
 - `text`: tier 6, layer 4 word_dynamic, owns, claimed from a detector box's strokes
 - `rest`: tier 7, layer 12 rest, owns, claimed from a detector box's strokes
-- `stem`: tier 8, layer 10 stem_beam_flag, consumer, claimed from a detector box's strokes
+- `stem`: tier 8, layer 10 stem_beam_flag, consumer, claimed from a detector box's strokes; off by default: `page_stems.py:gather_page_stems`
 - `beam`: tier 8, layer 10 stem_beam_flag, consumer, claimed from a detector box's strokes
 - `flag`: tier 8, layer 10 stem_beam_flag, consumer, claimed from a detector box's strokes
 - `tremolo`: layer 7 tremolo, owns; filed by `page_tremolo.py:gather_page_tremolo`
@@ -170,17 +170,19 @@ The short line above or below the staff that names a far note's pitch.
 The vertical line on a head; up on the right, down on the left.
 
 - **found from**: ink, record
-- **readers** (GATHER): `gather.py:gather_cv_lines` [ink stem,vertical_run] runs; `gather.py:_stub_cv_lines` [record stem] runs; `gather.py:_observe_stem_tip_ink` [ink] runs; `gather.py:_emit_vertical_runs` [ink] runs
-- **claims**: `stem` (stroke-owner tier 8 of 8, claim order 10 of 13 (stem_beam_flag)) a consumer: reads only ink no earlier claim took
-- **hands on** (facts): `head_stem`, `stem`, `stem_direction`, `stem_head_contact`, `stem_tip_ink`, `stem_value`, `vertical_run` (FILED-BUT-NEVER-READ)
+- **readers** (GATHER): `gather.py:gather_cv_lines` [ink stem,vertical_run] runs; `gather.py:_stub_cv_lines` [record stem] runs; `gather.py:_observe_stem_tip_ink` [ink] runs; `gather.py:_emit_vertical_runs` [ink] runs; `page_stems.py:gather_page_stems` [ink] OFF by default; `page_stems.py:_cell_row_for` [ink] OFF by default; `gather.py:beam_stem_levels_for` [ink] runs
+- **claims**: `stem` (stroke-owner tier 8 of 8, claim order 10 of 13 (stem_beam_flag)) a consumer: reads only ink no earlier claim took; off by default: `page_stems.py:gather_page_stems`
+- **hands on** (facts): `beam_stem_levels`, `head_stem`, `page_stem` (ONLY-BEHIND-AN-OFF-FLAG), `stem`, `stem_direction`, `stem_head_contact`, `stem_tip_ink`, `stem_value`, `vertical_run` (FILED-BUT-NEVER-READ)
+- **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `claimed_area`
 - **decided by** (ADJUDICATE): `adjudicate_head_stem` -> `head_stem`; `adjudicate_stem_direction` -> `stem_direction`; `adjudicate_stem_head_contact` -> `stem_head_contact`; `adjudicate_stem_value` -> `stem_value`
 - **read by GATHER** (4): `gather.py:gather_beam_stem_levels`, `gather.py:gather_notehead_ink`, `gather.py:gather_notehead_stem_cross_ink`, `gather.py:gather_stacked_head_fit`
-- **read by ADJUDICATE** (29): `adjudicators/claimed_by.py:_stemmed`, `adjudicators/family_precision.py:_rest_has_a_stem_refusal`, `adjudicators/family_precision.py:_rest_on_a_slashed_stem_refusal`, `adjudicators/family_precision.py:_stems_connected_to_a_head`, `adjudicators/head_on_mark.py:read._stemmed`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/inside_meter.py:read`, `adjudicators/notehead_precision.py:_beam_piece_refusal` +21 more
+- **read by ADJUDICATE** (30): `adjudicators/claimed_by.py:_stemmed`, `adjudicators/family_precision.py:_rest_has_a_stem_refusal`, `adjudicators/family_precision.py:_rest_on_a_slashed_stem_refusal`, `adjudicators/family_precision.py:_stems_connected_to_a_head`, `adjudicators/head_on_mark.py:read._stemmed`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/inside_meter.py:read`, `adjudicators/notehead_precision.py:_beam_piece_refusal` +22 more
 - **read by EVALUATE** (4): `consequences.py:_on_one_stem`, `consequences.py:_voice_count`, `consequences.py:share_stem_value`, `rule share_stem_value`
 - **read by EXPORT** (3): `export.py:_stem_boxes_by_cell`, `export.py:_stem_facts_of`, `export.py:claim_guess_of`
 - **written** (declared): `<stem>` direction; every note on one stem shares one value.
-- **flags on its readers' paths** (as the code resolves them today): `gather.stems_from_strokes_retires_scans()=OFF`
-- **open gaps** (1):
+- **flags on its readers' paths** (as the code resolves them today): `gather.stems_from_strokes_retires_scans()=OFF`, `page_stems.enabled()=OFF`
+- **open gaps** (2):
+  - OFF_FLAG: `page_stem` is filed only by code off by default, and nothing reads it
   - UNREAD: `vertical_run` is filed and read by no stage
 
 ### Beam -- `--mark beam`
@@ -190,10 +192,10 @@ The thick bar joining stems; each beam halves the value.
 - **found from**: box, ink, record
 - **readers** (GATHER): `gather.py:gather_cv_lines` [ink beam_stroke] runs; `gather.py:_stub_cv_lines` [record beam_stroke] runs; `gather.py:gather_detector_beams` [box] runs; `gather.py:gather_beam_stem_levels` [ink] runs; `gather.py:gather_beam_stroke_ink` [ink] runs; `gather.py:_observe_beam_stem_join` [ink] runs; `page_beams.py:gather_page_beams` [ink] OFF by default; `page_beams.py:gather_page_beam_views` [ink] OFF by default
 - **claims**: `beam` (stroke-owner tier 8 of 8, claim order 10 of 13 (stem_beam_flag)) a consumer: reads only ink no earlier claim took
-- **hands on** (facts): `beam_stem_join`, `beam_stem_levels`, `beam_stroke`, `beam_stroke_ink`, `duration`, `page_beam` (ONLY-BEHIND-AN-OFF-FLAG), `page_beam_tip` (ONLY-BEHIND-AN-OFF-FLAG)
+- **hands on** (facts): `beam_stem_join`, `beam_stroke`, `beam_stroke_ink`, `duration`, `page_beam` (ONLY-BEHIND-AN-OFF-FLAG), `page_beam_tip` (ONLY-BEHIND-AN-OFF-FLAG)
 - **decided by** (ADJUDICATE): `adjudicate_duration` -> `duration`
 - **read by GATHER** (2): `gather.py:gather_notehead_stem_cross_ink`, `page_beams.py:views_filed`
-- **read by ADJUDICATE** (17): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/notehead_precision.py:_beam_piece_refusal`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:_beam_ink_rows`, `adjudicators/rhythm.py:_beam_join_witness`, `adjudicators/rhythm.py:_beam_reader_looked`, `adjudicators/rhythm.py:_beam_state`, `adjudicators/rhythm.py:_direction_from_a_beam_mate` +9 more
+- **read by ADJUDICATE** (16): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/notehead_precision.py:_beam_piece_refusal`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:_beam_ink_rows`, `adjudicators/rhythm.py:_beam_join_witness`, `adjudicators/rhythm.py:_beam_reader_looked`, `adjudicators/rhythm.py:_beam_state`, `adjudicators/rhythm.py:_direction_from_a_beam_mate` +8 more
 - **read by EVALUATE** (12): `consequences.py:_bar_total_excluding`, `consequences.py:_chord_duration_also_reads`, `consequences.py:_group_length`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:_stem_value_also_reads`, `consequences.py:reconcile_chord_duration`, `consequences.py:reconcile_duration`, `consequences.py:share_stem_value` +4 more
 - **read by INFER** (11): `infer rule collapse_arc_ink_not_beam`, `infer rule collapse_bare_stem_by_bar`, `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `infer rule collapse_narrowed_by_bar`, `inferences.py:_bare_stem_confirmations`, `inferences.py:_event_beats`, `inferences.py:_walk` +3 more
 - **read by EXPORT** (7): `export.py:_annotate_beams_for`, `export.py:_beam_boxes_by_cell`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
@@ -581,7 +583,7 @@ Which edition and movement this is; scanned or engraved.
 ## PART 2 -- by fact
 
 - **LIVE** (148): `accidental`, `accidental_is_not_an_accidental`, `accidental_owner`, `accidental_staff_position`, `arc_box`, `arc_ink_shape`, `arc_is_not_an_arc`, `arc_kind`, `arc_owner`, `articulation_is_not_an_articulation`, `articulation_mark`, `articulation_owner`, `aug_dot`, `barline_column`, `beam_stem_join`, `beam_stem_levels`, `beam_stroke`, `beam_stroke_ink`, `bracket_block`, `cell_box`, `cell_ink_pieces`, `cell_staff_space`, `claimed_area`, `clef`, `clef_seed`, `direction`, `direction_word`, `dot_role`, `dot_staff_position`, `dot_stroke_ink`, `duration`, `dynamic`, `dynamic_is_not_a_dynamic`, `dynamic_letter`, `dynamic_letter_neighbours`, `empty_bar_rest_search`, `empty_bar_whole_rest`, `endings`, `event`, `far_head_ledger_position`, `far_head_owner_ledger`, `fermata_mark`, `fermata_owner`, `flag`, `flag_is_not_a_flag`, `glyph_band_distance`, `glyph_box`, `glyph_conf`, `glyph_ladder`, `glyph_owner`, `glyph_strokes`, `group_symbol`, `head_ink`, `head_ink_is_a_rest`, `head_line_cut`, `head_oval`, `head_stem`, `head_stem_reach`, `ink`, `input_domain`, `instrument`, `key_signature`, `keysig_clef_fit`, `keysig_marker`, `keysig_marker_is_not_a_marker`, `keysig_run_position`, `keysig_template_fit`, `ledger_ink_under`, `ledger_is_not_a_ledger`, `ledger_owner_density`, `ledger_rung_ink`, `letter_look_cover`, `margin_label`, `mark_group`, `mark_shape`, `marking`, `measure_partition`, `meter`, `meter_glyph`, `meter_ocr`, `meter_template`, `meter_template_at_bar`, `movement_spans`, `narrow_box_shape`, `notehead_class`, `notehead_ink`, `notehead_is_a_whole_rest`, `notehead_is_an_eighth_rest`, `notehead_is_not_a_notehead`, `notehead_letter_ink`, `notehead_position`, `notehead_recentre`, `notehead_staff_position`, `notehead_stem_cross_ink`, `onset_column`, `ornament_mark`, `ornament_owner`, `ottava_owner`, `page_arc`, `page_arc_binding`, `page_mark`, `page_mark_owner`, `page_span`, `page_stroke`, `part_key`, `part_name`, `part_partition`, `pedal_owner`, `pitch`, `printed_bar_number`, `repeat_barline`, `repeat_dots`, `rest`, `rest_ink_contact`, `rest_is_not_a_rest`, `roster_entry`, `slot_index`, `stacked_head_fit`, `staff_extent`, `staff_group`, `staff_lines`, `staff_ordinal`, `staff_skew`, `staff_spacing`, `stem`, `stem_direction`, `stem_head_contact`, `stem_slash`, `stem_tip_ink`, `stem_value`, `stroke`, `stroke_owner`, `system_arc`, `system_key`, `system_staff_count`, `tie_pair`, `tuplet_marker`, `tuplet_marker_is_not_a_marker`, `tuplet_ratio`, `unboxed_ink_is_a_rest`, `unboxed_rest_shape`, `unison_voices`, `unread_mark`, `voices`, `volta_bracket`, `volta_numeral`, `wedge_anchor`, `wedge_box`
-- **ONLY-BEHIND-AN-OFF-FLAG** (7): `dynamic_band_position`, `meter_glyph_position`, `meter_ocr_at_bar`, `page_beam`, `page_beam_tip`, `second_hollow`, `wedge_band_position`
+- **ONLY-BEHIND-AN-OFF-FLAG** (8): `dynamic_band_position`, `meter_glyph_position`, `meter_ocr_at_bar`, `page_beam`, `page_beam_tip`, `page_stem`, `second_hollow`, `wedge_band_position`
 - **FILED-BUT-NEVER-READ** (6): `arpeggiato_is_not_an_arpeggiato`, `barline_column_fit`, `dynamic_anchor`, `gap_bridging`, `system_membership`, `vertical_run`
 - **READ-ONLY-INSIDE-GATHER** (2): `document_identity`, `dossier_fact`
 - **FILED-ONLY-OUTSIDE-THE-PIPELINE** (3): `clef_glyph`, `clef_position`, `human_box_verdict`
@@ -722,11 +724,11 @@ Which edition and movement this is; scanned or engraved.
 
 ### `beam_stem_levels` (Q.BEAM_STEM_LEVELS) -- LIVE
 
-- `beam_stem_levels` filed by: GATHER `gather.py:gather_beam_stem_levels`
-- `beam_stem_levels` abstained by (not a producer): `gather.py:gather_beam_stem_levels`
+- `beam_stem_levels` filed by: GATHER `gather.py:beam_stem_levels_for`
+- `beam_stem_levels` abstained by (not a producer): `gather.py:beam_stem_levels_for`
 - `beam_stem_levels` declared in `wants` (not a read): `adjudicate_duration`
 - `beam_stem_levels` read by ADJUDICATE: `adjudicators/rhythm.py:_stem_tip_strokes`
-- `beam_stem_levels` belongs to: `--mark beam`
+- `beam_stem_levels` belongs to: `--mark stem`
 
 ### `beam_stroke` (Q.BEAM_STROKE) -- LIVE
 
@@ -737,6 +739,7 @@ Which edition and movement this is; scanned or engraved.
 - `beam_stroke` read by GATHER: `gather.py:gather_beam_stroke_ink`, `gather.py:gather_notehead_stem_cross_ink`, `page_beams.py:views_filed`
 - `beam_stroke` read by ADJUDICATE: `adjudicators/notehead_precision.py:_beam_piece_refusal`, `adjudicators/rhythm.py:_beam_reader_looked`, `adjudicators/rhythm.py:_beam_state`, `adjudicators/rhythm.py:_direction_from_a_beam_mate`, `adjudicators/rhythm.py:_kept_beams`, `adjudicators/rhythm.py:_no_beam_at_the_stem_tip`, `adjudicators/rhythm.py:_strokes_on_a_system_arc`
 - `beam_stroke` read by EXPORT: `export.py:_beam_boxes_by_cell`
+- `beam_stroke` read only OFF by default: `page_stems.py:_beam_rows_for_view`
 - `beam_stroke` belongs to: `--mark beam`
 
 ### `beam_stroke_ink` (Q.BEAM_STROKE_INK) -- LIVE
@@ -789,7 +792,7 @@ Which edition and movement this is; scanned or engraved.
 ### `claimed_area` (Q.CLAIMED_AREA) -- LIVE
 
 - `claimed_area` filed by: GATHER `gather.py:gather_barline_claim`, GATHER `gather.py:gather_meter_object`, GATHER `gather.py:_file_ink_claim`, GATHER `gather.py:gather_arc_claim`, GATHER `gather.py:gather_hairpin_claim`, GATHER `gather.py:gather_claimed_register`, GATHER `gather.py:gather_key_signature_claim`, GATHER `gather.py:gather_key_object`, GATHER `gather.py:gather_clef_slot_claim`, GATHER `gather.py:gather_clef_pagewide`, GATHER `gather.py:_gather_clef_header_by_ink`, GATHER `gather.py:gather_page_claims._file`, GATHER `page_accidental_ink.py:gather_page_accidental_ink`, GATHER `page_claim_names.py:gather_page_claim_boxes`, GATHER `page_heads.py:file_one_claims`, GATHER `page_tremolo.py:gather_page_tremolo`
-- `claimed_area` filed OFF by default: `page_claim_names.py:gather_page_claim_names` (after `if not enabled(): return` (True by default))
+- `claimed_area` filed OFF by default: `page_claim_names.py:gather_page_claim_names` (after `if not enabled(): return` (True by default)); `page_stems.py:gather_page_stems` (after `if not enabled() or page_map is None or one_heads is None or (not getattr(page_map, 'strokes': return` (True by default))
 - `claimed_area` abstained by (not a producer): `gather.py:_file_ink_claim`, `gather.py:_gather_clef_header_by_ink`, `gather.py:gather_arc_claim`, `gather.py:gather_barline_claim`, `gather.py:gather_claimed_register`, `gather.py:gather_clef_pagewide`, `gather.py:gather_clef_slot_claim`, `gather.py:gather_hairpin_claim`, `gather.py:gather_key_object`, `gather.py:gather_meter_object`, `gather.py:gather_page_claims`, `page_claim_names.py:gather_page_claim_names`
 - `claimed_area` declared in `wants` (not a read): `adjudicate_arc_is_not_an_arc`, `adjudicate_arpeggiato_is_not_an_arpeggiato`, `adjudicate_clef`, `adjudicate_flag_is_not_a_flag`, `adjudicate_key_signature`, `adjudicate_movement_start`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_page_arc_binding`, `adjudicate_part_key`, `adjudicate_rest_is_not_a_rest`, `adjudicate_slot_index`, `adjudicate_stroke_owner`, `adjudicate_system_key`, `adjudicate_wedge_anchor`
 - `claimed_area` read by GATHER: `gather.py:_gather_clef_header_by_ink`, `gather.py:gather_claimed_register`, `gather.py:gather_clef_pagewide`, `gather.py:gather_clef_slot_claim`, `gather.py:gather_key_object`, `gather.py:gather_key_signature_claim`, `gather.py:gather_page_claims`, `page_accidental_ink.py:earlier_claims`, `page_accidental_ink.py:earlier_owners`, `page_accidental_ink.py:header_claims`, `page_arcs.py:gather_page_arcs`, `page_claim_names.py:gather_page_claim_boxes`, `page_heads.py:file_one_claims`
@@ -797,8 +800,8 @@ Which edition and movement this is; scanned or engraved.
 - `claimed_area` read by EVALUATE: `consequences.py:_clef_candidates`, `consequences.py:_clef_changes`
 - `claimed_area` read by INFER: `infer rule collapse_slot_index_to_family_block`, `inferences.py:_clef_read_on`
 - `claimed_area` read by EXPORT: `export.py:_after_unread_clef`, `export.py:_clef_changes_by_bar`
-- `claimed_area` read only OFF by default: `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `page_beams.py:gather_page_beams`, `page_claim_names.py:gather_page_claim_names`
-- `claimed_area` belongs to: `--mark clef`, `--mark key`, `--mark meter`, `--mark header`, `--mark notehead`, `--mark accidental`, `--mark arc`, `--mark hairpin`, `--mark word`, `--mark tremolo`, `--mark barline`, `--mark bracket`, `--mark ink`
+- `claimed_area` read only OFF by default: `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `page_beams.py:gather_page_beams`, `page_claim_names.py:gather_page_claim_names`, `page_stems.py:held_strokes`
+- `claimed_area` belongs to: `--mark clef`, `--mark key`, `--mark meter`, `--mark header`, `--mark notehead`, `--mark stem`, `--mark accidental`, `--mark arc`, `--mark hairpin`, `--mark word`, `--mark tremolo`, `--mark barline`, `--mark bracket`, `--mark ink`
 
 ### `clef` (Q.CLEF) -- LIVE
 
@@ -1093,12 +1096,12 @@ Which edition and movement this is; scanned or engraved.
 ### `glyph_owner` (Q.GLYPH_OWNER) -- LIVE
 
 - `glyph_owner` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_glyph_owner`
-- `glyph_owner` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_arc_kind`, `adjudicate_arc_owner`, `adjudicate_articulation_is_not_an_articulation`, `adjudicate_articulation_owner`, `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_dynamic`, `adjudicate_dynamic_anchor`, `adjudicate_fermata_owner`, `adjudicate_ornament_owner`, `adjudicate_page_arc_binding`, `adjudicate_stem_value`, `adjudicate_tie_pair`, `adjudicate_wedge_anchor`
+- `glyph_owner` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_arc_kind`, `adjudicate_arc_owner`, `adjudicate_articulation_is_not_an_articulation`, `adjudicate_articulation_owner`, `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_dynamic`, `adjudicate_dynamic_anchor`, `adjudicate_event`, `adjudicate_fermata_owner`, `adjudicate_ornament_owner`, `adjudicate_page_arc_binding`, `adjudicate_stem_value`, `adjudicate_tie_pair`, `adjudicate_wedge_anchor`
 - `glyph_owner` read by ADJUDICATE: `adjudicators/family_precision.py:_candidate_owners`, `adjudicators/ownership.py:_flank_search.usable`, `adjudicators/ownership.py:_other_staff_bar`, `adjudicators/ownership.py:_owned_by_a_different_staff`, `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:_page_binding.usable`, `adjudicators/ownership.py:_wedge_page_binding`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/ownership.py:adjudicate_arc_owner`, `adjudicators/ownership.py:reconcile_articulation_twins.own_staffs`, `adjudicators/ownership.py:reconcile_dot_owners`, `adjudicators/ownership.py:reconcile_group_owners`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/stem_value.py:_member_of`, `adjudicators/text.py:adjudicate_dynamic`, `adjudicators/text.py:adjudicate_dynamic_anchor`
 - `glyph_owner` read by EVALUATE: `consequences.py:_bar_heads_are_clean`, `consequences.py:_left_the_bar`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:apply_printed_accidental`, `rule move_glyph`
 - `glyph_owner` read by INFER: `infer rule collapse_arc_ink_not_beam`, `infer rule collapse_bare_stem_by_bar`, `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `infer rule collapse_narrowed_by_bar`, `inferences.py:_events_with_x`
 - `glyph_owner` read by EXPORT: `export.py:_place_notes`, `export.py:claim_guess_of`
-- `glyph_owner` read only OFF by default: `adjudicators/ownership.py:adjudicate_wedge_anchor`
+- `glyph_owner` read only OFF by default: `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:owned_by_another_staff`
 - `glyph_owner` belongs to: `--mark notehead`
 
 ### `glyph_strokes` (Q.GLYPH_STROKES) -- LIVE
@@ -1578,6 +1581,7 @@ Which edition and movement this is; scanned or engraved.
 - `page_mark_owner` abstained by (not a producer): `page_owner.py:_file_page_owners`
 - `page_mark_owner` declared in `wants` (not a read): `adjudicate_glyph_owner`
 - `page_mark_owner` read by ADJUDICATE: `adjudicators/ownership.py:_page_owner_ruling`
+- `page_mark_owner` read only OFF by default: `page_stems.py:gather_page_stems`
 - `page_mark_owner` belongs to: `--mark box`
 
 ### `page_span` (Q.PAGE_SPAN) -- LIVE
@@ -1587,6 +1591,14 @@ Which edition and movement this is; scanned or engraved.
 - `page_span` declared in `wants` (not a read): `adjudicate_arc_owner`
 - `page_span` read by ADJUDICATE: `adjudicators/ownership.py:_page_span_owner`
 - `page_span` belongs to: `--mark box`
+
+### `page_stem` (Q.PAGE_STEM) -- ONLY-BEHIND-AN-OFF-FLAG
+
+- `page_stem` filed OFF by default: `page_stems.py:gather_page_stems` (after `if not enabled() or page_map is None or one_heads is None or (not getattr(page_map, 'strokes': return` (True by default))
+- `page_stem` abstained by (not a producer): `page_stems.py:gather_page_stems`
+- `page_stem` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_head_stem`, `adjudicate_stem_direction`
+- `page_stem` read only OFF by default: `adjudicators/rhythm.py:_page_view_only_for_copies`, `adjudicators/rhythm.py:adjudicate_stem_direction`, `adjudicators/rhythm.py:page_own_stems`, `adjudicators/stem_value.py:_page_stem_abstained`, `adjudicators/stem_value.py:_page_stem_join`
+- `page_stem` belongs to: `--mark stem`
 
 ### `page_stroke` (Q.PAGE_STROKE) -- LIVE
 
@@ -1770,12 +1782,13 @@ Which edition and movement this is; scanned or engraved.
 ### `stem` (Q.STEM) -- LIVE
 
 - `stem` filed by: GATHER `gather.py:gather_cv_lines`
+- `stem` filed OFF by default: `page_stems.py:_cell_row_for` (called only from page_stems.py:gather_page_stems where after `if not enabled() or page_map is None or one_heads is None or (not getattr(page_map, 'strokes': return` (True by default))
 - `stem` abstained by (not a producer): `gather.py:_stub_cv_lines`, `gather.py:gather_cv_lines`
 - `stem` declared in `wants` (not a read): `adjudicate_arc_kind`, `adjudicate_articulation_owner`, `adjudicate_duration`, `adjudicate_event`, `adjudicate_head_ink_is_a_rest`, `adjudicate_head_stem`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_page_arc_binding`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stem_direction`, `adjudicate_stem_head_contact`, `adjudicate_stroke_owner`, `adjudicate_unison_voices`
 - `stem` read by GATHER: `gather.py:gather_beam_stem_levels`, `gather.py:gather_notehead_ink`, `gather.py:gather_notehead_stem_cross_ink`, `gather.py:gather_stacked_head_fit`
 - `stem` read by ADJUDICATE: `adjudicators/claimed_by.py:_stemmed`, `adjudicators/family_precision.py:_rest_has_a_stem_refusal`, `adjudicators/family_precision.py:_rest_on_a_slashed_stem_refusal`, `adjudicators/head_on_mark.py:read._stemmed`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/inside_meter.py:read`, `adjudicators/notehead_precision.py:_beam_piece_refusal`, `adjudicators/notehead_precision.py:_notehead_same_side_second_refusal`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/notehead_precision.py:_same_side_candidates`, `adjudicators/notehead_precision.py:_tremolo_stem_box`, `adjudicators/ownership.py:_long_chord_stem_tip`, `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:adjudicate_arc_kind`, `adjudicators/rhythm.py:_not_the_neighbours_beam`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_stem_direction`, `adjudicators/stem_value.py:adjudicate_head_stem`, `adjudicators/stem_value.py:adjudicate_stem_head_contact`, `adjudicators/stroke_owner.py:_rest_shape_vetoes`, `adjudicators/unison_two.py:adjudicate_unison_voices`
 - `stem` read by EXPORT: `export.py:_stem_boxes_by_cell`
-- `stem` read only OFF by default: `page_beams.py:gather_page_beam_views`, `page_beams.py:gather_page_beams`
+- `stem` read only OFF by default: `page_beams.py:gather_page_beam_views`, `page_beams.py:gather_page_beams`, `page_stems.py:_cell_row_for`
 - `stem` belongs to: `--mark stem`
 
 ### `stem_direction` (Q.STEM_DIRECTION) -- LIVE
@@ -2042,11 +2055,12 @@ none
 - `system_membership` is filed and read by no stage -- at `ADJUDICATE adjudicators/structure.py:adjudicate_system_membership`
 - `vertical_run` is filed and read by no stage -- at `gather.py:_emit_vertical_runs`
 
-### PRODUCER ONLY BEHIND AN OFF FLAG: a fact filed only by code that does not run by default (4)
+### PRODUCER ONLY BEHIND AN OFF FLAG: a fact filed only by code that does not run by default (5)
 
 - `meter_glyph_position` is filed only by code off by default, and nothing reads it -- at `positions.py:gather_meter_positions (called only from positions.py:gather_family_positions where after `if not positions_enabled(): return` (True by default))`
 - `page_beam` is filed only by code off by default, and nothing reads it -- at `page_beams.py:gather_page_beam_views (called only from page_beams.py:gather_page_beams where after `if not enabled(): return` (True by default))`, `page_beams.py:gather_page_beams (after `if not enabled(): return` (True by default))`
 - `page_beam_tip` is filed only by code off by default, and nothing reads it -- at `page_beams.py:gather_page_beams (after `if not enabled(): return` (True by default))`
+- `page_stem` is filed only by code off by default, and nothing reads it -- at `page_stems.py:gather_page_stems (after `if not enabled() or page_map is None or one_heads is None or (not getattr(page_map, 'strokes': return` (True by default))`
 - `wedge_band_position` is filed only by code off by default, and nothing reads it -- at `positions.py:gather_band_positions (called only from positions.py:gather_family_positions where after `if not positions_enabled(): return` (True by default))`
 
 ### STALE FLAG TEXT: a docstring says a flag's default is the opposite of what the code returns (1)
