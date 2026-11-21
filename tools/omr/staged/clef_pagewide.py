@@ -271,8 +271,11 @@ MID_F_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_box_ink_past_the_staff_like
 #: clef on this staff -- the mark breaks a never of its clef's shape, or stands on another staff. Nothing downstream sees it: no carry
 #: candidate, no NARROWED claim. Every OTHER refusal is a POSSIBLE clef (one witness seen, the other missing or near its cut): the clef in
 #: force stops there (`clef_in_force`) and its ink is claimed NARROWED. The ink evidence that separates them:
-#:   * G: a treble clef always runs past the staff above AND below and curls round line 2 (`read_g`); inside a line no curl is no clef
-#:     (Sean's spiral ruling) -- so every G refusal is "not a clef" (the curl is required; a G without it is a stem, a chord, a barline);
+#:   * G: a treble clef always runs past the staff above AND below and curls round line 2 (`read_g`). No ink past the staff, or a
+#:     notehead's own ink on the glyph (Sean's r5 tiles 1 and 10), is no clef. No curl seen where the INK is the only witness is no clef
+#:     (Sean's spiral ruling); no curl seen where the detector's G box says treble and the ink runs past the staff both sides is two
+#:     witnesses disagreeing -- CANNOT TELL (r8b, rule 8): a possible, STRONG clef (`G_BOX_NO_CURL`); 13 of the sample's 221 printed
+#:     start-of-staff trebles show no curl once their lines are cleared (Litolff p6 s0 staff 1);
 #:   * F: the body starts at the top line and is no G's or C's ink (`read_mid_f`'s nevers: not a clef); body seen but a dot missing,
 #:     or both seen near their cuts, is a possible clef (Litolff p10 s0 staff 3 and p4 s1 staff 3: real bass clefs whose dots fuse);
 #:   * C: a thick bar with bowls both sides; a bar too wide (a beam end, a time signature's figure) or with no bowls is not a clef; bowls
@@ -280,6 +283,8 @@ MID_F_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_box_ink_past_the_staff_like
 #:   * a box whose ink stands on another staff belongs to that staff (`on_this_staff`), never this one.
 NOT_A_CLEF = MID_F_NOT_A_CLEF + ("box_on_another_staff", "g_no_ink", "g_box_too_narrow", "g_no_ink_past_the_staff",
                                  "g_no_curl_round_line_2", "bar_too_wide", "no_bowls")
+#: r8b: the refusal of a mid-line detector `clefG` box whose ink runs past the staff both sides with no curl seen -- a POSSIBLE clef
+G_BOX_NO_CURL = "g_box_says_g_no_curl_seen"
 
 
 def read_mid_f(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float, *,
@@ -1324,13 +1329,14 @@ def clef_in_force(head_x: float, changes: Sequence[Tuple[float, Optional[str], A
                 continue                                   # ROADMAP 2.261 fix 3: counted (its abstention row), never a stop
             if got is not None and got[0] is not None and got[0] != header:
                 got = (None, r)
-            elif _strong_f(r):
+            elif _strong_f(r) or _strong_g(r):
                 # round 2 (Sean's carry tile 11, Vc bar 346: a real F clef at body 0.69, below READ): an F clef seen by BOTH witnesses
                 # but below the read score stops whatever clef is in force -- the header's too -- unless that clef is itself an F clef
-                # (then the candidate changes nothing). It NARROWS (the heads go unread, red), it never decides bass. ROADMAP 2.324 r8:
-                # no G clef is ever a strong candidate -- a G inside a line is read by its curl or is no clef (`NOT_A_CLEF`)
+                # (then the candidate changes nothing). It NARROWS (the heads go unread, red), it never decides bass. ROADMAP 2.324 r8b:
+                # the same for a mid-line G box with ink past the staff and no curl seen (`G_BOX_NO_CURL`), unless a G clef is in force
                 in_force = got[0] if got is not None else header
-                if in_force is None or in_force not in F_KINDS:
+                same = F_KINDS if _strong_f(r) else G_KINDS
+                if in_force is None or in_force not in same:
                     got = (None, r)
             continue
         got = (kind, r)
@@ -1346,6 +1352,15 @@ def _strong_f(row: Any) -> bool:
     return bool(d.get("strong")) and d.get("family") == "F"
 
 
+#: the G-family clef names
+G_KINDS = ("treble", "french", "treble8vb", "treble8va")
+
+
+def _strong_g(row: Any) -> bool:
+    d = getattr(row, "detail", None) or {}
+    return bool(d.get("strong")) and d.get("family") == "G"
+
+
 def any_strong(candidates: Sequence[Tuple[float, None, Any]]) -> bool:
-    """Whether a staff's candidates include a two-witness F clef below READ (`_strong_f`): it may stop the header's clef too."""
-    return any(_strong_f(r) for _x, _k, r in candidates)
+    """Whether a staff's candidates include a possible clef strong enough to stop the header's clef too (`_strong_f`, `_strong_g`)."""
+    return any(_strong_f(r) or _strong_g(r) for _x, _k, r in candidates)

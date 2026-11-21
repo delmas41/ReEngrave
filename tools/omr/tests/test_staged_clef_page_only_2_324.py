@@ -512,17 +512,33 @@ class TestRound8NotAClef:
 
     @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
     def test_seans_stem_and_half_note_chord_stop_nothing_and_claim_nothing(self, monkeypatch, name):
-        # Sean's r5 tiles 1 ("just a stem") and 10 ("2 half notes in a chord"), with NO detector head box on them: refused by the curl
-        # alone (`g_no_curl_round_line_2`), which round 6 still filed as a carry candidate and a NARROWED claim. Refused OUTRIGHT (Sean)
+        # Sean's r5 tiles 1 ("just a stem") and 10 ("2 half notes in a chord"), as the page has them: the detector's G box AND its
+        # notehead boxes on the same ink -- a head's own ink on the glyph is no clef: refused OUTRIGHT (Sean), nothing downstream sees it
         ink, meta = _load(DATA_R5, name)
         meta = dict(meta, lines_staffwide=meta["lines_cell"])
-        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefG", meta["box"])])
+        dets = [("clefG", meta["box"])] + [("noteheadHalfInSpace", h) for h in meta["heads"]]
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, dets)
         ref = _clef_rows(log)
-        assert rows == [] and [r.detail.get("why") for r in ref] == ["g_no_curl_round_line_2"]
-        assert CP.candidates_of(ref) == [] and not any(r.detail.get("strong") for r in ref)
-        monkeypatch.setattr(CP, "NOT_A_CLEF", OLD_NOT_A_CLEF)                                # the control: r7's behaviour
+        assert rows == [] and [r.detail.get("why") for r in ref] == ["g_over_a_notehead"]
+        assert CP.candidates_of(ref) == [] and not CP.any_strong(CP.candidates_of(ref))
+        # the control: without the head boxes the G box and the ink disagree (no curl) -- a possible clef, never silently skipped
         log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefG", meta["box"])])
-        assert len(CP.candidates_of(_clef_rows(log))) == 1 and [r.detail.get("standing") for r in rows] == ["NARROWED"]
+        cands = CP.candidates_of(_clef_rows(log))
+        assert len(cands) == 1 and cands[0][2].detail.get("why") == CP.G_BOX_NO_CURL
+
+    def test_a_real_treble_clef_with_no_curl_seen_inside_a_line_is_a_possible_clef(self, monkeypatch):
+        # Litolff p6 s0 staff 1: a printed treble clef (start of staff, read there by its box) whose curl is not seen once the lines are
+        # cleared -- set inside a line with its G box: two witnesses disagree, so the carry stops (strong) and its ink is claimed NARROWED
+        ink, meta = _load(DATA_R3, "g_litolff_p6_s0_st1")
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefG", meta["box"])])
+        cands = [c for c in CP.candidates_of(_clef_rows(log)) if c[2].detail.get("detector_box")]   # (the C scan also sees its spine)
+        assert len(cands) == 1 and cands[0][2].detail.get("why") == CP.G_BOX_NO_CURL and CP.any_strong(cands)
+        assert [r.detail.get("standing") for r in rows] == ["NARROWED"]
+        assert CP.clef_in_force(meta["box"][2] + 30, [], cands, header="bass")[0] is None          # unread after it, never bass
+        assert CP.clef_in_force(meta["box"][2] + 30, [], cands, header="treble") is None           # a treble in force: unchanged
+        monkeypatch.setattr(CP, "G_BOX_NO_CURL", "g_no_curl_round_line_2")                         # the control: r8's rule skips it
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefG", meta["box"])])
+        assert [c for c in CP.candidates_of(_clef_rows(log)) if c[2].detail.get("detector_box")] == [] and rows == []
 
     def test_a_clef_on_the_staff_above_stops_nothing_on_this_one(self, monkeypatch):
         # Brahms p12: the bass clef of the staff above, its box showing in this staff's cell -- it belongs to the staff it stands on

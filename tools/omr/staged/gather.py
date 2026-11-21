@@ -15881,6 +15881,10 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                     heads_k = [hb for hb in (_page_box(c, d2) for d2 in detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
                                              if str(d2.smufl_name).startswith("notehead")) if hb]
                     got = CP.read_g(ink, [pb[0], ll[0] - 2.5 * sp, pb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=bool(in_head), heads=heads_k)
+                    if not in_head and got.get("why") == "g_no_curl_round_line_2":
+                        # r8b (rule 8, count witnesses by source): the detector's G box says treble, the ink runs past the staff both
+                        # sides, the curl is not seen -- two witnesses disagree: CANNOT TELL, a possible clef (`CP.G_BOX_NO_CURL`)
+                        got = dict(got, why=CP.G_BOX_NO_CURL)
                 elif is_f:
                     # 2.324 r4/r5: the ONE F test wherever the clef stands (Sean 2026-11-20 "Teach it"): body at the top line, dot ink
                     # in both spaces round line 4, never a G's or a C's ink
@@ -15889,9 +15893,9 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                     got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=bool(in_head))
                 if not got["passed"] or (is_f and not got.get("plain")):
                     # 2.324 r4/r5: an F read with no room on its cuts (they are measured on two plates) NARROWS -- inside the line a STRONG
-                    # candidate (the clef in force stops there, its notes go unread); at the start of the staff no read (carried). r8: a G
-                    # is read by its curl or refused, never strong (`CP.NOT_A_CLEF`)
-                    strong = bool(mid_f and got["passed"])
+                    # candidate (the clef in force stops there, its notes go unread); at the start of the staff no read (carried). r8b: a G
+                    # box with ink past the staff and no curl seen is strong too (two witnesses disagree); every other G refusal is no clef
+                    strong = bool(mid_f and got["passed"]) or got.get("why") == CP.G_BOX_NO_CURL
                     near.append({"x0": pb[0], "family": got["family"], "why": got["why"] or "f_read_near_its_cut", "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {}), **({"strong": True} if strong else {})})
                     if got.get("why") not in CP.NOT_A_CLEF:
