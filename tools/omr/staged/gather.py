@@ -15910,7 +15910,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                             f["box"] = gkey
                     continue
                 # an F clef: its own body and dots, never the box (round 2: the box held a quarter rest too)
-                area = CP.f_claim_area(got, pb, sp) if got["family"] == "F" else (list(got["box"]) if is_g and got.get("box") else list(pb))
+                area = CP.f_claim_area(got, pb, sp, ink=ink, lines=ll) if got["family"] == "F" else (list(got["box"]) if is_g and got.get("box") else list(pb))
                 if any(CL.overlaps(f["area"], area) and f["family"] == got["family"] for f in found):
                     continue                                   # one clef, two boxes (padded copies): claimed once
                 second = got.get("witness") or {"F": "f_dots", "G": "g_ink_past_the_staff"}.get(got["family"], "geometry")
@@ -15926,7 +15926,13 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                        or f["area"][0] <= nb["pair"]["x_left"] <= f["area"][2] for f in found):
                     continue                                   # a boxed reading of the same clef stands, or the "dots" are a read clef's ink
                 if nb["read"]:
-                    found.append({"area": nb["area"], "family": "F", "kind": "bass", "line": 4,
+                    # r8: the template is laid where its DOTS put it; the clef's own knob may start left of it (Litolff p2 s1 staff 3
+                    # bar 37: the knob outside the claim was written as a plain F3) -- the claim starts at the knob's own ink
+                    nb_area = list(nb["area"])
+                    knob = CP.f_knob_left(ink, nb_area, nb_area, CP.local_lines(ink, lines, sp, nb_area[0]), sp)
+                    if knob is not None and knob < nb_area[0]:
+                        nb_area[0] = knob
+                    found.append({"area": nb_area, "family": "F", "kind": "bass", "line": 4,
                                   "residual": round(nb["pair"]["residual"], 3), "witnesses": ["f_dots", "f_body_template"],
                                   "shape": {"body_score": nb["match"]["score"], "cover": nb["match"]["cover"],
                                             "extra": nb["match"]["extra"], "scale": nb["match"].get("scale")}, "box": None})

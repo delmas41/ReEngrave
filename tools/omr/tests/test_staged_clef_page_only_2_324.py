@@ -580,6 +580,30 @@ class TestRound8OwnInk:
         monkeypatch.setattr(CP, "_runs_past", lambda *a, **k: False)              # the control: r7's walk runs on into the stem
         assert CP.c_area([c for c in CP.c_bars(ink, ll, sp, 0, ink.shape[1]) if c["passed"]][0], sp)[2] > 125
 
+    def test_the_bass_clef_claim_takes_its_own_knob(self, monkeypatch):
+        # Litolff p2 s1 staff 3 bar 37: a bass clef read with no box (its dot pair + the plate's F body); the template's area began at
+        # page x 972.2, half-way across the knob, and the knob was written as a plain F3 (its head box page x 959-986)
+        ink, meta = _load(DATA_R8, "f_knob_litolff_p2_s1_st3")
+        sp, a = meta["sp"], meta["box"]
+        ll = CP.local_lines(ink, meta["lines"], sp, a[0])
+        k = CP.f_knob_left(ink, a, a, ll, sp)
+        assert k is not None and k <= 41                                          # page x 960: the knob's own left edge
+        monkeypatch.setattr(CP, "F_KNOB_REACH_SPACES", 0.0)                       # the control: the template's edge (r7)
+        assert CP.f_knob_left(ink, a, a, ll, sp) is None
+
+    @pytest.mark.parametrize("name,never_left_of", [("f_rest_brahms_p5_s1_st3", 70), ("f_barline_litolff_p10_s0_st6", 40)])
+    def test_the_knob_never_reaches_a_rest_or_the_barline(self, name, never_left_of):
+        # Brahms p5 s1 staff 3 bar 9: an eighth rest stands left of the clef, its foot at the clef's tail (crop x <= 63); Litolff p10 s0
+        # staff 6: the system barline half a space left of the clef with thick lines between (crop x ~30). Round 8's first try followed
+        # the tail to its tip and swept the rest's foot into the claim, and ran along the lines to the barline; the knob is looked for
+        # in its own rows only, as one unbroken stroke. Both lie within the knob's reach, so only the rule keeps them out
+        ink, meta = _load(DATA_R8, name)
+        sp, bb = meta["sp"], meta["box"]
+        ll = CP.local_lines(ink, meta["lines"], sp, bb[0])
+        got = CP.read_mid_f("clefF", bb, ink, ll, sp)
+        assert got["passed"] and bb[0] - CP.F_KNOB_REACH_SPACES * sp < never_left_of
+        assert CP.f_claim_area(got, bb, sp, ink=ink, lines=ll)[0] >= never_left_of
+
     def test_the_treble_clef_claim_starts_right_of_the_system_barline(self, monkeypatch):
         # Litolff p8 s0 staff 6: the start-of-staff treble clef touches the system's barline; r7's claim began on the barline (page x 360)
         ink, meta = _load(DATA_R8, "g_barline_litolff_p8_s0_st6")
