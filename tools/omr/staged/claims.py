@@ -522,6 +522,70 @@ def letters_of_the_word(letter_boxes: Sequence[Sequence[float]], word_box: Seque
     return "letters_of_a_word"
 
 
+#: ROADMAP 2.331 fix A (flag `OMR_WORD_LETTER_NOT_DYNAMIC`, default OFF): ADJUDICATE's dynamic hears the word. Sean 2026-11-11 (2.301 r1 tile 4): "it boxes MP, but it's actually
+#: a part of the word sempre. So that should be a word"; 2026-10-09: "When p is by itself it is piano; when it is surrounded by other letters the context solves it".
+#: CAUSE (2.331 pricing, the p of `Pizz.`, `pesante`, `poco f`, the `do` of `perdendosi` written as dynamics): the detector boxes one printed letter two to four times; GATHER
+#: asks the run of twins once (ink beside ANY twin counts), but `text.adjudicate_dynamic` asked each twin alone, and a twin boxed tight round the bowl measured no ink beside
+#: it, so that twin was "alone", kept, and the letter written plain. The GATHER rule could not simply be shared: on the same sample it also calls the real `piu p` (OCR `sempre A`)
+#: and the real `p cresc.` (OCR `cresc.`, the p left of the box) the word's.
+ENV_WORD_LETTER_NOT_DYNAMIC = "OMR_WORD_LETTER_NOT_DYNAMIC"
+
+
+def word_letter_not_dynamic_enabled() -> bool:
+    """`OMR_WORD_LETTER_NOT_DYNAMIC` (ROADMAP 2.331 fix A), default OFF ("1"/"true"/"yes"/"on" turns it on)."""
+    return os.environ.get(ENV_WORD_LETTER_NOT_DYNAMIC, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def letter_is_the_words(letter_boxes: Sequence[Sequence[float]], letter: Optional[str], word_box: Sequence[float], word_text: str,
+                        has_neighbour_ink: bool) -> Optional[str]:
+    """Is this ONE printed letter (every box the detector drew on its ink, page px) a letter of the READ word `word_text` printed in `word_box`?  PURE.
+
+    The rule as a musician says it: a dynamic is its own mark, standing apart; a letter that is part of a printed word is the word's ink. So the letter is the word's
+    where the word, as read, holds it -- with the word's own letters on both sides (the `do` of `perdendosi`), or as the word's own first or last letter, the reader
+    having read that very letter there (the p of `poco`, `pesante`, `Pizz.`). Both sides of the boundary: `p cresc.` (the read word starts at its `c`) and `piu p` (read
+    `sempre A`: a letter standing alone in the reading, and not a p) are a dynamic NEXT TO a word -- None, the dynamic stays. Never: a letter where the reading has a space,
+    a lone letter, a dynamic token, or a different letter at its edge; never an edge letter without letter ink measured beside it (`has_neighbour_ink`: `p dolce` with the
+    p clear of the word). Inside the word the reading's letters on both sides are the witness: the CV neighbour reading missed the ink beside three of the four twin boxes
+    on the `do` of `perdendosi`.
+
+    Returns `inside_the_word` / `the_words_edge_letter`, or None (= a dynamic, or cannot tell: nothing changes, CLAUDE rule 8). The text is laid along the box in
+    proportion to its characters (crude; the letter's CENTRE picks the character)."""
+    from ..direction_lexicon import _DYNAMIC_LETTERS, _normalise
+    if not letter_boxes or not letter:
+        return None
+    wx0, wy0, wx1, wy1 = (float(v) for v in word_box)
+    for lb in letter_boxes:
+        ix = max(0.0, min(float(lb[2]), wx1) - max(float(lb[0]), wx0))
+        iy = max(0.0, min(float(lb[3]), wy1) - max(float(lb[1]), wy0))
+        if ix * iy < WORD_LETTER_SHARE * max(1.0, (float(lb[2]) - float(lb[0])) * (float(lb[3]) - float(lb[1]))):
+            return None
+    text = (word_text or "").strip()
+    if not text:
+        return None
+    per = max(1.0, wx1 - wx0) / len(text)
+    cx = (min(float(b[0]) for b in letter_boxes) + max(float(b[2]) for b in letter_boxes)) / 2.0
+    c = int((cx - wx0) // per)
+    if c < 0 or c >= len(text) or text[c].isspace():
+        return None
+    s = c
+    while s > 0 and not text[s - 1].isspace():
+        s -= 1
+    e = c
+    while e + 1 < len(text) and not text[e + 1].isspace():
+        e += 1
+    token = text[s:e + 1]
+    core = token.strip(".,;:!?()'\"")
+    if len(core) < 2 or _normalise(token) in _DYNAMIC_LETTERS:
+        return None
+    cs = s + token.index(core[0])
+    ce = cs + len(core) - 1
+    if cs < c < ce:
+        return "inside_the_word"         # the reading puts the word's own letters on both sides: the second witness (the CV neighbour reading is not asked here)
+    if has_neighbour_ink and c in (cs, ce) and text[c].lower() == str(letter).lower():
+        return "the_words_edge_letter"
+    return None
+
+
 def edge_ink_boxes(binary: Any, box: Sequence[float], spacing: float, avoid: Iterable[Sequence[float]] = (), grow: float = WORD_INK_GROW_SPACES) -> List[List[float]]:
     """The word's OWN letters that stand on or past the edge of its claim `box`: for each ink component that touches `box` (clipped to `grow` staff spaces past a side), overlaps no
     `avoid` box (a note mark's box, an earlier claim, the marking's own dynamic: ink another mark holds is never taken) and is no staff-line-like piece, whose bounding box padded by the
