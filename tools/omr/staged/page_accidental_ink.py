@@ -356,12 +356,15 @@ def earlier_owners(log: Any, page_sub: Any) -> Dict[int, str]:
 
 def header_claims(log: Any, page_sub: Any) -> List[Tuple[float, float, float, float]]:
     """The rectangles of the system-start header claims the page-wide pass filed (`HEADER_OWNERS`, READ, `unit: area`, cell 0): the page ledger's own rows, the one place the
-    system's left edge is claimed. A clef change (cell > 0) is not one."""
+    system's left edge is claimed. A clef change is not one -- wherever it stands: ROADMAP 2.324 r8, a clef the page-wide pass read INSIDE the first bar (`change: True`, cell 0;
+    four on Litolff) is no start-of-staff clef, and ink left of it is the bar's own."""
     from .record import Q, Scope
     out: List[Tuple[float, float, float, float]] = []
     for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=Scope.SELF_AND_DESCENDANTS):
         d = r.detail or {}
         v = r.value
+        if d.get("owner") == "clef" and d.get("change"):
+            continue
         if (str(d.get("owner") or "") in HEADER_OWNERS and d.get("unit") == "area" and d.get("standing", "READ") == "READ" and d.get("cell") == 0
                 and isinstance(v, (list, tuple)) and len(v) == 4 and all(isinstance(t, (int, float)) for t in v)):
             out.append(tuple(float(t) for t in v))
