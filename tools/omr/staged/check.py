@@ -49,6 +49,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import collections
 import datetime as _dt
 import fnmatch
 import json
@@ -151,6 +152,39 @@ def _check_reach() -> CheckResult:
     broken = dead or bool(unaccounted) or bool(stale) or bool(orphan)
     note = f"unregistered modules: {orphan}" if orphan else None
     return CheckResult("staged.reach", open=len(bad), broken=broken, note=note)
+
+
+def _check_reach_live() -> CheckResult:
+    """ROADMAP 2.331 step 3: a quantity a stage READS must have a producer live under the default flags (a `wants` line or an abstention is not
+    one; a producer behind a default-off flag is reported as such). Each finding is named with its consumers (file:function)."""
+    from . import flow_map as FM, reach as R
+    b = FM.build()
+    dead = not b.an.sites or not b.an.predicates()
+    f = R.live_producers()
+    return CheckResult("staged.reach_live", open=len(f), broken=dead or bool(b.problems),
+                       note="; ".join(f"{x['quantity']} ({x['status']}) read at {', '.join(x['consumers'][:3])}" for x in f) or None)
+
+
+def _check_reason_words() -> CheckResult:
+    """ROADMAP 2.331 step 3: every literal reason word a consumer tests must be one a decider can still return under the default flags."""
+    from . import flow_map as FM, reach as R
+    b = FM.build()
+    dead = not b.an.reason_tests or not b.an.reason_makes
+    f = R.reason_words()
+    return CheckResult("staged.reason_words", open=len(f), broken=dead,
+                       note="; ".join(f"{x['word']} ({x['kind']}) tested at {', '.join(x['tested_at'][:2])}" for x in f) or None)
+
+
+def _check_flow_map() -> CheckResult:
+    """ROADMAP 2.331 step 3: the generated data-flow map's gaps (PART 3 of `docs/data-flow.md`) other than the two counted above. BROKEN
+    where the one declared table (`flow_map.MARKS`) disagrees with the code -- the page cannot be built then."""
+    from . import flow_map as FM
+    b = FM.build()
+    counted = ("starved", "dead_reason")
+    g = [x for x in b.gp if x.kind not in counted and x.kind != "unread"]
+    by = collections.Counter(x.kind for x in g)
+    return CheckResult("staged.flow_map", open=len(g), broken=bool(b.problems),
+                       note=("; ".join(b.problems[:3]) if b.problems else ", ".join(f"{k} {n}" for k, n in sorted(by.items()))) or None)
 
 
 def _check_brakes() -> CheckResult:
@@ -343,6 +377,9 @@ CHECKS: List[tuple] = [
     ("staged.gather_coverage", _check_gather_coverage),
     ("staged.capture", _check_capture),
     ("staged.reach", _check_reach),
+    ("staged.reach_live", _check_reach_live),
+    ("staged.reason_words", _check_reason_words),
+    ("staged.flow_map", _check_flow_map),
     ("staged.brakes", _check_brakes),
     ("staged.trace", _check_trace),
     ("conventions", _check_conventions),
