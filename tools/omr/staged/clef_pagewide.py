@@ -55,6 +55,9 @@ C_BAR_MIN_RUN_SPACES = 3.0
 C_BAR_REACH_SPACES = 1.3
 #: the glyph ends at the first gap this wide (staff spaces) right of the bar (between the thick and thin bars stands at most ~0.3)
 C_GLYPH_GAP_SPACES = 0.35
+#: ROADMAP 2.324 r8: ... and before the first column whose unbroken ink runs on more than this past the bar's top or bottom (a stem, a
+#: barline touching the bowls: Brahms p4 s1 staff 3). The clef's own ink stays within its bar's height; the margin is a cut on two plates
+C_OWN_PAST_SPACES = 0.5
 #: the bowls: ink right of the bar within this reach (staff spaces from the bar's right edge) ...
 C_BOWL_REACH_SPACES = 2.2
 #: ... in BOTH halves (above and below the bar's middle) at least this share of the half's area (a repeat sign's dots are far below it)
@@ -264,6 +267,20 @@ F_BODY_TOP_PLAIN_SPACES = 0.45
 MID_F_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_box_ink_past_the_staff_like_a_g", "g_over_a_notehead",
                     "f_box_on_a_c_bar", "f_no_body_ink")
 
+#: ROADMAP 2.324 r8 (CLAUDE rule 8; Sean 2026-11-20, his r5 tiles 1 and 10 "refused OUTRIGHT"): every refusal that says the ink is NOT a
+#: clef on this staff -- the mark breaks a never of its clef's shape, or stands on another staff. Nothing downstream sees it: no carry
+#: candidate, no NARROWED claim. Every OTHER refusal is a POSSIBLE clef (one witness seen, the other missing or near its cut): the clef in
+#: force stops there (`clef_in_force`) and its ink is claimed NARROWED. The ink evidence that separates them:
+#:   * G: a treble clef always runs past the staff above AND below and curls round line 2 (`read_g`); inside a line no curl is no clef
+#:     (Sean's spiral ruling) -- so every G refusal is "not a clef" (the curl is required; a G without it is a stem, a chord, a barline);
+#:   * F: the body starts at the top line and is no G's or C's ink (`read_mid_f`'s nevers: not a clef); body seen but a dot missing,
+#:     or both seen near their cuts, is a possible clef (Litolff p10 s0 staff 3 and p4 s1 staff 3: real bass clefs whose dots fuse);
+#:   * C: a thick bar with bowls both sides; a bar too wide (a beam end, a time signature's figure) or with no bowls is not a clef; bowls
+#:     seen but not mirrored is a possible clef;
+#:   * a box whose ink stands on another staff belongs to that staff (`on_this_staff`), never this one.
+NOT_A_CLEF = MID_F_NOT_A_CLEF + ("box_on_another_staff", "g_no_ink", "g_box_too_narrow", "g_no_ink_past_the_staff",
+                                 "g_no_curl_round_line_2", "bar_too_wide", "no_bowls")
+
 
 def read_mid_f(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float, *,
                dots_beside_core: bool = False) -> Dict[str, Any]:
@@ -371,7 +388,11 @@ def own_ink_box(ink: np.ndarray, pc: Dict[str, Any], lines: Sequence[float], sp:
     of ink, joined across the staff lines only (`_bridge_line_rows`), that lie in the piece and stand on the staff (meet the rows from the
     top line to the bottom line). A word or mark over or under the staff that the measuring close joined to the clef (Brahms p14 s1
     staff 9: "div." over the treble clef) stands off the staff and is never claimed. Falls back to the piece's box where nothing is
-    found. Measures."""
+    found. Measures.
+
+    Round 8 (Litolff p8 s0 staff 6: the start-of-staff treble clef touches the system's barline and claimed it): a barline standing at
+    the glyph's left edge (`barline_left_of`, the same test the no-box header reader cuts its place with) is never the clef's -- the
+    claim starts right of it."""
     import cv2
     gb = pc["box"]
     x0, y0, x1, y1 = int(gb[0]), int(gb[1]), int(round(gb[2])), int(round(gb[3]))
@@ -379,6 +400,9 @@ def own_ink_box(ink: np.ndarray, pc: Dict[str, Any], lines: Sequence[float], sp:
     m = _bridge_line_rows(ink, sub, y0, y1, x0, x1, lines, sp)
     piece = pc["piece"][: m.shape[0], : m.shape[1]]
     m = (m.astype(bool) & piece).astype(np.uint8)
+    bl = barline_left_of(ink, lines, sp, float(gb[0]) - 0.5 * sp, float(gb[0]) + 0.8 * sp)
+    if bl is not None and bl + 1 - x0 < m.shape[1]:
+        m[:, : max(0, bl + 1 - x0)] = 0
     n, lab, st, _c = cv2.connectedComponentsWithStats(m, connectivity=8)
     top, bot = int(round(float(lines[0]))) - y0, int(round(float(lines[-1]))) - y0
     keep = [i for i in range(1, n) if st[i, cv2.CC_STAT_TOP] <= bot and st[i, cv2.CC_STAT_TOP] + st[i, cv2.CC_STAT_HEIGHT] >= top]
@@ -587,6 +611,17 @@ def _without_lines(sub: np.ndarray, line_rows: Sequence[int], half: int, *, full
     return out
 
 
+def _runs_past(col: np.ndarray, top: float, bot: float, margin: float) -> bool:
+    """Whether an unbroken run of ink in `col` that meets the rows [top, bot] starts above `top - margin` or ends below `bot + margin`."""
+    if not col.any():
+        return False
+    d = np.diff(np.concatenate(([0], col.astype(np.int8), [0])))
+    for s, e in zip(np.flatnonzero(d == 1), np.flatnonzero(d == -1)):
+        if e > top and s < bot and (s < top - margin or e > bot + margin):
+            return True
+    return False
+
+
 def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int) -> List[Dict[str, Any]]:
     """Every C-clef thick bar on one staff between page columns x0..x1 (see the module doc), with its bowls measured. Measures;
     decides nothing beyond the shape test each candidate passed or failed (`passed`, `why`)."""
@@ -694,9 +729,19 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
             else:
                 # the glyph's right edge: walk right from the bar through the columns holding bowl ink, stopping at the first gap
                 # wider than `C_GLYPH_GAP_SPACES` (round 2: a claim takes the clef's own ink, never a rest or note beside it)
+                # r8 (Brahms p4 s1 staff 3: the claim ran on into the stem of the note touching the bowls): the clef's ink stays within
+                # its bar's height -- a column whose ink, unbroken from the clef's rows, runs on past the bar's top or bottom
+                # (`C_OWN_PAST_SPACES`) is another mark's stroke (a stem, a barline), and the clef's ink ends before it
                 has = region.any(axis=0)
+                past = np.zeros(region.shape[1], dtype=bool)
+                for c in range(region.shape[1]):
+                    if bx0 - x0 + c < band.shape[1]:
+                        past[c] = _runs_past(band[:, bx0 - x0 + c], y_top - ya, y_bot - ya, C_OWN_PAST_SPACES * sp)
                 gap, last, lim = 0, -1, int(round(C_GLYPH_GAP_SPACES * sp))
                 for c in range(region.shape[1]):
+                    if past[c] and last >= 0:
+                        cand["stroke_right_x"] = int(bx0 + c)     # the other mark's first column: the claim stops short of it
+                        break
                     if has[c]:
                         last, gap = c, 0
                     else:
@@ -715,8 +760,11 @@ def c_area(cand: Dict[str, Any], sp: float) -> List[float]:
     """The page-px area a passing C bar candidate claims: from just left of its thick bar to the glyph's own right edge (`x_right`,
     the contiguous bowl ink), and the clef's height about its named line. ONE formula for the claim and for any tile drawn of it."""
     mid = float(cand.get("middle_y", (cand["y0"] + cand["y1"]) / 2.0))
+    right = float(cand.get("x_right", cand["x1"] + 2.0 * sp)) + 0.1 * sp
+    if cand.get("stroke_right_x") is not None:
+        right = min(right, float(cand["stroke_right_x"]))   # r8: never into the stroke the bowls touch (a stem)
     return [float(cand["x0"]) - 0.15 * sp, min(float(cand["y0"]), mid - 2.0 * sp) - 0.3 * sp,
-            float(cand.get("x_right", cand["x1"] + 2.0 * sp)) + 0.1 * sp, max(float(cand["y1"]), mid + 2.0 * sp) + 0.3 * sp]
+            right, max(float(cand["y1"]), mid + 2.0 * sp) + 0.3 * sp]
 
 
 def local_lines(ink: np.ndarray, lines: Sequence[float], sp: float, x: float) -> List[float]:
@@ -1016,7 +1064,7 @@ def f_dot_pairs(ink: np.ndarray, lines: Sequence[float], sp: float, x0: float, x
     H, W = ink.shape
     out: List[Dict[str, Any]] = []
     step = max(1, int(round((F_SCAN_WINDOW_SPACES - F_SCAN_OVERLAP_SPACES) * sp)))
-    xa = int(x0)
+    xa = max(0, int(x0))                                   # never a negative column (it would read the far right of the page)
     while xa < int(x1):
         xb = min(W, int(xa + F_SCAN_WINDOW_SPACES * sp))
         ll = local_lines(ink, lines, sp, (xa + xb) / 2.0)
@@ -1276,14 +1324,13 @@ def clef_in_force(head_x: float, changes: Sequence[Tuple[float, Optional[str], A
                 continue                                   # ROADMAP 2.261 fix 3: counted (its abstention row), never a stop
             if got is not None and got[0] is not None and got[0] != header:
                 got = (None, r)
-            elif _strong_f(r) or _strong_g(r):
+            elif _strong_f(r):
                 # round 2 (Sean's carry tile 11, Vc bar 346: a real F clef at body 0.69, below READ): an F clef seen by BOTH witnesses
                 # but below the read score stops whatever clef is in force -- the header's too -- unless that clef is itself an F clef
-                # (then the candidate changes nothing). It NARROWS (the heads go unread, red), it never decides bass. ROADMAP 2.324 r5:
-                # the same for a G clef inside the line (one real case on our pages: it narrows, never reads), unless a G clef is in force
+                # (then the candidate changes nothing). It NARROWS (the heads go unread, red), it never decides bass. ROADMAP 2.324 r8:
+                # no G clef is ever a strong candidate -- a G inside a line is read by its curl or is no clef (`NOT_A_CLEF`)
                 in_force = got[0] if got is not None else header
-                same = F_KINDS if _strong_f(r) else G_KINDS
-                if in_force is None or in_force not in same:
+                if in_force is None or in_force not in F_KINDS:
                     got = (None, r)
             continue
         got = (kind, r)
@@ -1299,15 +1346,6 @@ def _strong_f(row: Any) -> bool:
     return bool(d.get("strong")) and d.get("family") == "F"
 
 
-#: the G-family clef names
-G_KINDS = ("treble", "french", "treble8vb", "treble8va")
-
-
-def _strong_g(row: Any) -> bool:
-    d = getattr(row, "detail", None) or {}
-    return bool(d.get("strong")) and d.get("family") == "G"
-
-
 def any_strong(candidates: Sequence[Tuple[float, None, Any]]) -> bool:
-    """Whether a staff's candidates include a two-witness clef below READ (`_strong_f`, `_strong_g`): it may stop the header's clef too."""
-    return any(_strong_f(r) or _strong_g(r) for _x, _k, r in candidates)
+    """Whether a staff's candidates include a two-witness F clef below READ (`_strong_f`): it may stop the header's clef too."""
+    return any(_strong_f(r) for _x, _k, r in candidates)

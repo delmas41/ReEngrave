@@ -481,10 +481,147 @@ class TestRound5ClefFromInk:
         up, down = CP.CLEF_REACH_SPACES["G" if meta["truth"] == "treble" else "F"]
         assert got["box"][1] >= ll[0] - up * meta["sp"] - 1 and got["box"][3] <= ll[4] + down * meta["sp"] + 1
 
-    def test_a_strong_g_candidate_stops_a_non_g_clef_and_nothing_else(self):
+
+
+# ----------------------------------------------------------------------------------------------------------------------------------
+# Round 8 (the downstream audit): a refusal is either NOT A CLEF (nothing downstream sees it: no carry stop, no NARROWED claim) or a
+# POSSIBLE clef (the carry stops, its ink is claimed NARROWED) -- `clef_pagewide.NOT_A_CLEF`. Every control is a mark Sean judged or a
+# crop of the page, run through `gather_clef_pagewide`; each fails with the r8 rule switched off (`NOT_A_CLEF` = the old r5 set).
+# ----------------------------------------------------------------------------------------------------------------------------------
+OLD_NOT_A_CLEF = ("f_body_not_at_the_top_line", "f_box_ink_past_the_staff_like_a_g", "g_over_a_notehead", "f_box_on_a_c_bar",
+                  "f_no_body_ink")
+
+
+def _clef_rows(log):
+    from tools.omr.staged import record as R
+    from tools.omr.staged.record import Q
+    return log.refusals(Q.CLAIMED_AREA, R.staff(0, 0, 0))
+
+
+class TestRound8NotAClef:
+    @pytest.mark.parametrize("name", ["never_half_brahms_p25_s0_st3", "never_sf_litolff_p10_s0_st0"])
+    def test_a_box_whose_ink_is_not_an_f_clef_files_no_narrowed_claim(self, monkeypatch, name):
+        # Brahms p25 s0 staff 3's half note and Litolff p10's "fz" under a `clefF` box: refused by a never of the F clef's shape, yet the
+        # register's NARROWED claim was still filed on them (the half note's head narrowed, written blue)
+        ink, meta = _load(DATA_R4, name)
+        _log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])])
+        assert rows == []
+        monkeypatch.setattr(CP, "NOT_A_CLEF", ("g_over_a_notehead",))         # the control: r7's rule (only a G over a head narrowed nothing)
+        _log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])])
+        assert [r.detail.get("standing") for r in rows] == ["NARROWED"]
+
+    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
+    def test_seans_stem_and_half_note_chord_stop_nothing_and_claim_nothing(self, monkeypatch, name):
+        # Sean's r5 tiles 1 ("just a stem") and 10 ("2 half notes in a chord"), with NO detector head box on them: refused by the curl
+        # alone (`g_no_curl_round_line_2`), which round 6 still filed as a carry candidate and a NARROWED claim. Refused OUTRIGHT (Sean)
+        ink, meta = _load(DATA_R5, name)
+        meta = dict(meta, lines_staffwide=meta["lines_cell"])
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefG", meta["box"])])
+        ref = _clef_rows(log)
+        assert rows == [] and [r.detail.get("why") for r in ref] == ["g_no_curl_round_line_2"]
+        assert CP.candidates_of(ref) == [] and not any(r.detail.get("strong") for r in ref)
+        monkeypatch.setattr(CP, "NOT_A_CLEF", OLD_NOT_A_CLEF)                                # the control: r7's behaviour
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefG", meta["box"])])
+        assert len(CP.candidates_of(_clef_rows(log))) == 1 and [r.detail.get("standing") for r in rows] == ["NARROWED"]
+
+    def test_a_clef_on_the_staff_above_stops_nothing_on_this_one(self, monkeypatch):
+        # Brahms p12: the bass clef of the staff above, its box showing in this staff's cell -- it belongs to the staff it stands on
+        ink, meta = _case("two_staves_brahms_p12")
+        other = list(meta["extra_lines"][0])
+        meta = dict(meta, lines_cell=other, lines_staffwide=other)
+        log, _rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])])
+        mine = [r for r in _clef_rows(log) if r.detail.get("why") == "box_on_another_staff"]
+        assert len(mine) == 1 and not mine[0].detail.get("candidate")
+        monkeypatch.setattr(CP, "NOT_A_CLEF", OLD_NOT_A_CLEF)
+        log, _rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])])
+        assert [r.detail.get("candidate") for r in _clef_rows(log) if r.detail.get("why") == "box_on_another_staff"] == [True]
+
+    def test_a_possible_f_clef_still_stops_the_carry_and_narrows(self, monkeypatch):
+        # Litolff p10 s0 staff 3: a real bass clef whose lower dot goes with a thick line -- one witness missing: a POSSIBLE clef
+        ink, meta = _load(DATA_R4, "mid_f_litolff_p10_s0_st3")
+        log, rows, _keys = _gather_one_staff(monkeypatch, ink, meta, [("clefF", meta["box"])])
+        ref = _clef_rows(log)
+        assert [r.detail.get("why") for r in ref] == ["f_no_dot_ink_in_both_spaces"] and len(CP.candidates_of(ref)) == 1
+        assert rows                                                                  # its ink is claimed (never a written note)
+
+
+DATA_R8 = pathlib.Path(__file__).with_name("data_clef_page_only_2_324_r8.npz")
+
+
+class TestRound8OwnInk:
+    """Every clef claims only its own ink (Sean, r5b/r7b), now the C clef and a G clef touching the system's barline too. Crops of the
+    page binary at the two marks the audit named, with the record's staff lines."""
+
+    def test_the_c_clef_claim_stops_at_the_stem_its_bowls_touch(self, monkeypatch):
+        # Brahms p4 s1 staff 3: the stem of the note above the staff touches the tenor clef's upper bowl; r7's claim ran on to page x 3111
+        # and took the stem (its first column is page x 3101, crop 121)
+        ink, meta = _load(DATA_R8, "c_stem_brahms_p4_s1_st3")
+        sp = meta["sp"]
+        ll = CP.local_lines(ink, meta["lines"], sp, 60)
+        got = [c for c in CP.c_bars(ink, ll, sp, 0, ink.shape[1]) if c["passed"]]
+        assert len(got) == 1 and CP.name_c(got[0]["middle_y"], got[0].get("lines_local") or ll)[0] == "tenor"
+        assert CP.c_area(got[0], sp)[2] <= 121.5
+        monkeypatch.setattr(CP, "_runs_past", lambda *a, **k: False)              # the control: r7's walk runs on into the stem
+        assert CP.c_area([c for c in CP.c_bars(ink, ll, sp, 0, ink.shape[1]) if c["passed"]][0], sp)[2] > 125
+
+    def test_the_treble_clef_claim_starts_right_of_the_system_barline(self, monkeypatch):
+        # Litolff p8 s0 staff 6: the start-of-staff treble clef touches the system's barline; r7's claim began on the barline (page x 360)
+        ink, meta = _load(DATA_R8, "g_barline_litolff_p8_s0_st6")
+        sp, bb = meta["sp"], meta["box"]
+        ll = CP.local_lines(ink, meta["lines"], sp, bb[0])
+        place = [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp]
+        got = CP.read_g(ink, place, ll, sp, box_witness=True)
+        assert got["passed"] and got["box"][0] >= 38.5                            # page x 369: right of the barline
+        monkeypatch.setattr(CP, "barline_left_of", lambda *a, **k: None)          # the control: the claim starts on the barline
+        assert CP.read_g(ink, place, ll, sp, box_witness=True)["box"][0] <= 36
+
+
+class TestRound8ReadClefOnly:
+    def test_header_claims_leave_out_a_clef_change_inside_the_first_bar(self):
+        # Litolff p6 s1 staff 3 (the r7 record's own rows): the start-of-staff clef and a clef change printed inside bar 0 -- accidental
+        # ink left of the change is the bar's, never "left of the clef"
+        from tools.omr.staged import page_accidental_ink as PA
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Log, Q
+        log = Log()
+        for v, chg in (([372.7, 2410.3, 421.6, 2489.7], False), ([599.5, 2432.1, 644.4, 2484.1], True)):
+            log.observe(R.staff(6, 1, 3), Q.CLAIMED_AREA, v, reader="cv_claimed_register", frame="cell:0", cell=0, owner="clef",
+                        unit="area", standing="READ", source=CP.SOURCE, change=chg)
+        assert PA.header_claims(log, R.page(6)) == [(372.7, 2410.3, 421.6, 2489.7)]
+
+    def test_the_key_run_starts_at_a_read_clef_never_at_a_detector_box(self, monkeypatch):
+        # Litolff p6 s1 staff 3 bar 93 (cell 1, the r7 record's own boxes): a small `clefG` box the page-wide pass refused (it stands
+        # on the staff below) drew a key window off the natural beside it, and the real eighth note inside was narrowed
         import types
-        row = types.SimpleNamespace(detail={"strong": True, "family": "G", "source": CP.SOURCE, "candidate": True, "x_page": 100.0})
-        cands = CP.candidates_of([row])
-        assert CP.clef_in_force(150.0, [], cands, header="alto")[0] is None
-        assert CP.clef_in_force(150.0, [], cands, header="treble") is None
-        assert CP.clef_in_force(50.0, [], cands, header="alto") is None
+        from tools.omr.staged import gather as G
+        from tools.omr.staged import record as R
+        from tools.omr.staged.record import Log, Q
+        boxes = [("rest8th", [682.8, 2407.4, 703.7, 2436.1]), ("noteheadBlackOnLine", [760.0, 2424.8, 781.0, 2445.2]),
+                 ("noteheadBlackInSpace", [712.2, 2432.8, 735.3, 2451.4]), ("accidentalNatural", [745.1, 2405.2, 757.0, 2464.3]),
+                 ("clefG", [691.6, 2572.2, 715.8, 2590.0])]
+        cx0, cx1 = 653.0, 828.0
+
+        class Det:
+            def __init__(self, name, bb):
+                self.smufl_name, self.confidence, self.category = name, 0.9, ""
+                self.x_canonical, self.y_canonical = bb[0] - cx0, bb[1]
+                self.width_canonical, self.height_canonical = bb[2] - bb[0], bb[3] - bb[1]
+
+        cell = types.SimpleNamespace(staff_index=0, measure_index=1, page_index=6, bbox_page_px=(cx0, 0.0, cx1, 3000.0), upscale_factor=1.0)
+        pws = types.SimpleNamespace(page=types.SimpleNamespace(page_index=6, binary=np.full((3000, 1000), 255, np.uint8)),
+                                    staves=[types.SimpleNamespace(staff_index=0, line_ys=[2435.0, 2450.0, 2467.0, 2481.0, 2497.0])])
+        dets = {R.cell(6, 1, 3, 1).to_key(): [Det(n, bb) for n, bb in boxes]}
+        monkeypatch.setattr(G, "_spacing", lambda st: 15.5)
+
+        def key_rows(log):
+            return [r for r in log.rows(Q.CLAIMED_AREA, R.staff(6, 1, 3)) if (r.detail or {}).get("owner") == "key_signature"]
+        log = Log()
+        G.gather_key_signature_claim(log, pws, [cell], {0: (1, 3)}, dets)
+        assert key_rows(log) == []
+        # the control: the same box as a clef the page-wide pass READ in this bar -- the window is drawn and the eighth stands in it
+        log = Log()
+        log.observe(R.staff(6, 1, 3), Q.CLAIMED_AREA, [691.6, 2572.2, 715.8, 2590.0], reader="cv_claimed_register", frame="cell:1",
+                    cell=1, owner="clef", unit="area", standing="READ", source=CP.SOURCE, change=True)
+        G.gather_key_signature_claim(log, pws, [cell], {0: (1, 3)}, dets)
+        got = key_rows(log)
+        assert len(got) == 1 and got[0].detail["boxes_inside"][R.glyph(6, 1, 3, 1, 2).to_key()].get("named")

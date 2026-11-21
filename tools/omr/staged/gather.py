@@ -15426,9 +15426,10 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
     """`Q.CLAIMED_AREA` rows of owner `key_signature` -- ROADMAP 2.183 (claimed-area step 3), flag `OMR_KEY_SIGNATURE_CLAIM` (default ON;
     needs `OMR_CLAIMED_REGISTER`, which it files into).
 
-    PATH: STAGED GATHER, PAGE raster. AFTER `gather_claimed_register`. Per staff and cell: the key run (`key_slots.claim_window` -- the
-    existing 2.100 window, plus a run that opens with CANCELLING NATURALS, Sean 2026-10-20) drawn as one area in page px, from the clef's
-    right edge to the run's last slot, level with it. The detector's boxes are the run's members (a window is only ever drawn around
+    PATH: STAGED GATHER, PAGE raster. AFTER `gather_claimed_register` and `gather_clef_pagewide`. Per staff and cell: the key run
+    (`key_slots.claim_window` -- the existing 2.100 window, plus a run that opens with CANCELLING NATURALS, Sean 2026-10-20) drawn as one
+    area in page px, from the right edge of the clef the page-wide pass READ (its claim, never a detector `clef*` box: 2.324 r8) to the
+    run's last slot, level with it. The detector's boxes are the run's members (a window is only ever drawn around
     what the detector boxed as a key accidental); this reader decides nothing about any other box -- it files, for every other box of the
     cell that meets the area, whether it STANDS in the window (the 2.100 centre rule, `named`: Sean 2026-10-12 "only clefs appear before
     key accidentals") and the share of its own ink inside (`meter_object.ink_inside`).
@@ -15463,14 +15464,25 @@ def gather_key_signature_claim(log: Log, pws: Any, cells: Sequence[Any], local: 
             lines = list(st.line_ys)
             if not sp or len(lines) < 5:
                 continue
+            # ROADMAP 2.324 r8: the key run starts right of the clef the page-wide pass READ on this staff (its claim: the clef's own
+            # ink, its right edge), never right of a detector `clef*` box -- a box that pass refused is no clef, and a key window drawn
+            # off it narrowed what stood there (Litolff p6 s1 staff 3 bar 93: a small refused `clefF` box)
+            read_clefs = [r0 for r0 in log.rows(Q.CLAIMED_AREA, R.staff(p, sys_idx, li))
+                          if (r0.detail or {}).get("owner") == CL.OWNER_CLEF and (r0.detail or {}).get("source") == "clef_pagewide"
+                          and (r0.detail or {}).get("standing") == "READ" and (r0.detail or {}).get("unit") == "area"
+                          and isinstance(r0.value, (list, tuple)) and len(r0.value) == 4]
             for k, c in sorted(cells_of.get(st.staff_index, {}).items()):
                 dets = detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
                 boxes = []
                 for gi, d in enumerate(dets):
                     pb = _page_box(c, d)
-                    if pb is not None:
+                    if pb is not None and not str(d.smufl_name).startswith("clef"):
                         boxes.append(KS.KeyBox(R.glyph(p, sys_idx, li, k, gi).to_key(), str(d.smufl_name), pb[0], pb[1],
                                                pb[2] - pb[0], pb[3] - pb[1]))
+                for r0 in read_clefs:
+                    if (r0.detail or {}).get("cell") == k:
+                        a = [float(v) for v in r0.value]
+                        boxes.append(KS.KeyBox(r0.id, "clef", a[0], a[1], a[2] - a[0], a[3] - a[1]))
                 win = KS.claim_window(boxes, sp)
                 if win is not None:
                     drawn.append((li, k, win, boxes, st, sp, lines, c, dets))
@@ -15858,7 +15870,6 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 is_f = str(d.smufl_name).startswith("clefF")
                 is_g = str(d.smufl_name).startswith("clefG")
                 mid_f = is_f and not in_head
-                mid_g = is_g and not in_head
                 if not in_head and (is_f or is_g):
                     # 2.324 r4: inside the line, the clef's own bar's traced lines (`cell_lines_page`), never the staff-wide ones
                     ll = CP.local_lines(ink, CP.cell_lines_page(c) or lines, sp, pb[0])
@@ -15877,13 +15888,15 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                 else:
                     got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=bool(in_head))
                 if not got["passed"] or (is_f and not got.get("plain")):
-                    # 2.324 r4/r5: a read with no room on its cuts (they are measured on two plates) NARROWS -- inside the line a STRONG
-                    # candidate (the clef in force stops there, its notes go unread); at the start of the staff no read (carried)
+                    # 2.324 r4/r5: an F read with no room on its cuts (they are measured on two plates) NARROWS -- inside the line a STRONG
+                    # candidate (the clef in force stops there, its notes go unread); at the start of the staff no read (carried). r8: a G
+                    # is read by its curl or refused, never strong (`CP.NOT_A_CLEF`)
                     strong = bool(mid_f and got["passed"])
-                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"] or ("g_mid_line_narrows" if mid_g else "f_read_near_its_cut"), "box": gkey, "cls": str(d.smufl_name),
+                    near.append({"x0": pb[0], "family": got["family"], "why": got["why"] or "f_read_near_its_cut", "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {}), **({"strong": True} if strong else {})})
-                    if got.get("why") != "g_over_a_notehead":
-                        # r5b: a box whose ink is a note (Sean's r5 tile 10, "2 half notes in a chord") narrows nothing
+                    if got.get("why") not in CP.NOT_A_CLEF:
+                        # r5b/r8: a box whose ink is not a clef (Sean's r5 tile 10, "2 half notes in a chord"; a half note, an "fz",
+                        # a barline under a `clef*` box) narrows nothing -- only a POSSIBLE clef's ink is claimed NARROWED
                         refused_boxes.append((k, gi, pb, d))
                     continue
                 if got["family"] == "C" and any(CL.overlaps(f["area"], pb) for f in found):
@@ -16038,7 +16051,7 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             cand = CP.carry_enabled() and not any(
                 (f["family"] == n.get("family") and f["area"][0] - 0.5 * sp <= float(n["x0"]) <= f["area"][2] + 0.5 * sp)
                 or f["area"][0] <= float(n["x0"]) <= f["area"][2] for f in found) \
-                and n.get("why") not in CP.MID_F_NOT_A_CLEF
+                and n.get("why") not in CP.NOT_A_CLEF                    # r8: not a clef on this staff: never a stop
             log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(cell_at(float(n["x0"]))),
                         reason=reason, owner=CL.OWNER_CLEF, source=CP.SOURCE, why=n.get("why"), family=n.get("family"),
                         x_page=round(float(n["x0"]), 1), detector_box=n.get("box"),
