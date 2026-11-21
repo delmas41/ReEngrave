@@ -297,11 +297,11 @@ def spans_from_boundaries(systems: Sequence[Subject],
     checkable=Checkable.UNCHECKABLE,
     composed_from=(Q.DIRECTION_WORD, Q.METER_GLYPH, Q.MARGIN_LABEL,
                   Q.STAFF_LINES, Q.STAFF_EXTENT, Q.MOVEMENT_SPANS,
-                  Q.GLYPH_BOX, Q.CELL_STAFF_SPACE),
+                  Q.GLYPH_BOX, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     scope=Kind.DOCUMENT,
     wants=(Q.DIRECTION_WORD, Q.METER_GLYPH, Q.MARGIN_LABEL, Q.STAFF_LINES,
           Q.STAFF_EXTENT, Q.MOVEMENT_SPANS, Q.GLYPH_BOX,
-          Q.CELL_STAFF_SPACE),
+          Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA),
     reasons=("human_spans_supplied", "too_few_systems",
              "no_boundary_detected", "detected"),
 )
@@ -335,6 +335,9 @@ def adjudicate_movement_start(ev: Evidence) -> Ruling:
                               scope=Scope.SELF_AND_DESCENDANTS)
              if r.value},
             ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
+                    subject=ev.subject),
+            # ROADMAP 2.324 downstream: the key window starts right of the clef the page read, never a detector `clef*` box
+            ev.rows(Q.CLAIMED_AREA, scope=Scope.SELF_AND_DESCENDANTS,
                     subject=ev.subject))[0])
     label_by_system = _group_by_system(
         ev.rows(Q.MARGIN_LABEL, scope=Scope.SELF_AND_DESCENDANTS))

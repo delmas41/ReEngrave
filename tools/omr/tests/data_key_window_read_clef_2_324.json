@@ -1,0 +1,750 @@
+{
+"source": "out/r3/lr-r7-frozen/work/litolff.on.gathered.record.json (2.324 r7 frozen sample, Litolff ON arm)",
+"rows": [
+{
+"id": "obs:014946",
+"subject": "glyph/2/0/0/0/0",
+"quantity": "glyph_box",
+"value": [
+"staff",
+24,
+622,
+1732,
+434
+],
+"detail": {
+"bbox_page_px": [
+339.84,
+415.52,
+616.96,
+484.96000000000004
+]
+}
+},
+{
+"id": "obs:014948",
+"subject": "glyph/2/0/0/0/1",
+"quantity": "glyph_box",
+"value": [
+"keyFlat",
+571,
+534,
+116,
+380
+],
+"detail": {
+"bbox_page_px": [
+427.36,
+401.44,
+445.92,
+462.24
+]
+}
+},
+{
+"id": "obs:014950",
+"subject": "glyph/2/0/0/0/2",
+"quantity": "glyph_box",
+"value": [
+"clefG",
+140,
+461,
+291,
+762
+],
+"detail": {
+"bbox_page_px": [
+358.4,
+389.76,
+404.96,
+511.68
+]
+}
+},
+{
+"id": "obs:014952",
+"subject": "glyph/2/0/0/0/3",
+"quantity": "glyph_box",
+"value": [
+"restWhole",
+1202,
+735,
+152,
+72
+],
+"detail": {
+"bbox_page_px": [
+528.3199999999999,
+433.6,
+552.64,
+445.12
+]
+}
+},
+{
+"id": "obs:014954",
+"subject": "glyph/2/0/0/0/4",
+"quantity": "glyph_box",
+"value": [
+"clefG",
+139,
+321,
+364,
+913
+],
+"detail": {
+"bbox_page_px": [
+358.24,
+367.36,
+416.48,
+513.44
+]
+}
+},
+{
+"id": "obs:014956",
+"subject": "glyph/2/0/0/0/5",
+"quantity": "glyph_box",
+"value": [
+"keyFlat",
+669,
+681,
+108,
+275
+],
+"detail": {
+"bbox_page_px": [
+443.04,
+424.96,
+460.32,
+468.96000000000004
+]
+}
+},
+{
+"id": "obs:014958",
+"subject": "glyph/2/0/0/0/6",
+"quantity": "glyph_box",
+"value": [
+"arpeggiato",
+1685,
+638,
+65,
+416
+],
+"detail": {
+"bbox_page_px": [
+605.6,
+418.08,
+616.0,
+484.64
+]
+}
+},
+{
+"id": "obs:014960",
+"subject": "glyph/2/0/0/0/7",
+"quantity": "glyph_box",
+"value": [
+"brace",
+0,
+429,
+28,
+971
+],
+"detail": {
+"bbox_page_px": [
+336.0,
+384.64,
+340.48,
+540.0
+]
+}
+},
+{
+"id": "obs:040878",
+"subject": "cell/2/0/0/0",
+"quantity": "cell_staff_space",
+"value": 100.0,
+"detail": {}
+},
+{
+"id": "obs:056321",
+"subject": "staff/2/0/0",
+"quantity": "claimed_area",
+"value": [
+358.0,
+381.0,
+405.0,
+511.0
+],
+"detail": {
+"cell": 0,
+"owner": "clef",
+"unit": "area",
+"standing": "READ",
+"source": "clef_pagewide",
+"change": false,
+"kind": "treble",
+"detector_box": "glyph/2/0/0/0/2"
+}
+},
+{
+"id": "obs:065292",
+"subject": "glyph/4/1/9/0/0",
+"quantity": "glyph_box",
+"value": [
+"beam",
+1043,
+1,
+521,
+186
+],
+"detail": {
+"bbox_page_px": [
+513.2725,
+3332.1575,
+595.33,
+3361.4525
+]
+}
+},
+{
+"id": "obs:065294",
+"subject": "glyph/4/1/9/0/1",
+"quantity": "glyph_box",
+"value": [
+"keyFlat",
+685,
+473,
+107,
+306
+],
+"detail": {
+"bbox_page_px": [
+456.8875,
+3406.4975,
+473.74,
+3454.6925
+]
+}
+},
+{
+"id": "obs:065296",
+"subject": "glyph/4/1/9/0/2",
+"quantity": "glyph_box",
+"value": [
+"restQuarter",
+1384,
+406,
+125,
+322
+],
+"detail": {
+"bbox_page_px": [
+566.98,
+3395.945,
+586.6675,
+3446.66
+]
+}
+},
+{
+"id": "obs:065298",
+"subject": "glyph/4/1/9/0/3",
+"quantity": "glyph_box",
+"value": [
+"staff",
+0,
+390,
+1758,
+440
+],
+"detail": {
+"bbox_page_px": [
+349.0,
+3393.425,
+625.885,
+3462.725
+]
+}
+},
+{
+"id": "obs:065300",
+"subject": "glyph/4/1/9/0/4",
+"quantity": "glyph_box",
+"value": [
+"keyFlat",
+501,
+331,
+118,
+417
+],
+"detail": {
+"bbox_page_px": [
+427.9075,
+3384.1325,
+446.4925,
+3449.81
+]
+}
+},
+{
+"id": "obs:065302",
+"subject": "glyph/4/1/9/0/5",
+"quantity": "glyph_box",
+"value": [
+"keyFlat",
+594,
+310,
+109,
+343
+],
+"detail": {
+"bbox_page_px": [
+442.555,
+3380.825,
+459.7225,
+3434.8475
+]
+}
+},
+{
+"id": "obs:065304",
+"subject": "glyph/4/1/9/0/6",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+1072,
+708,
+143,
+128
+],
+"detail": {
+"bbox_page_px": [
+517.84,
+3443.51,
+540.3625,
+3463.67
+]
+}
+},
+{
+"id": "obs:065307",
+"subject": "glyph/4/1/9/0/7",
+"quantity": "glyph_box",
+"value": [
+"ledgerLine",
+1373,
+700,
+382,
+26
+],
+"detail": {
+"bbox_page_px": [
+565.2475,
+3442.25,
+625.4125,
+3446.345
+]
+}
+},
+{
+"id": "obs:065309",
+"subject": "glyph/4/1/9/0/8",
+"quantity": "glyph_box",
+"value": [
+"keyFlat",
+247,
+387,
+267,
+449
+],
+"detail": {
+"bbox_page_px": [
+387.90250000000003,
+3392.9525,
+429.955,
+3463.67
+]
+}
+},
+{
+"id": "obs:065311",
+"subject": "glyph/4/1/9/0/9",
+"quantity": "glyph_box",
+"value": [
+"keySharp",
+594,
+311,
+110,
+341
+],
+"detail": {
+"bbox_page_px": [
+442.555,
+3380.9825,
+459.88,
+3434.69
+]
+}
+},
+{
+"id": "obs:065313",
+"subject": "glyph/4/1/9/0/10",
+"quantity": "glyph_box",
+"value": [
+"arpeggiato",
+1385,
+409,
+124,
+319
+],
+"detail": {
+"bbox_page_px": [
+567.1375,
+3396.4175,
+586.6675,
+3446.66
+]
+}
+},
+{
+"id": "obs:088355",
+"subject": "cell/4/1/9/0",
+"quantity": "cell_staff_space",
+"value": 100.0,
+"detail": {}
+},
+{
+"id": "obs:107395",
+"subject": "staff/4/1/9",
+"quantity": "claimed_area",
+"value": [
+381.6,
+3390.3,
+431.6,
+3468.7
+],
+"detail": {
+"cell": 0,
+"owner": "clef",
+"unit": "area",
+"standing": "READ",
+"source": "clef_pagewide",
+"change": false,
+"kind": "alto",
+"detector_box": null
+}
+},
+{
+"id": "obs:112888",
+"subject": "glyph/6/1/3/1/0",
+"quantity": "glyph_box",
+"value": [
+"rest8th",
+192,
+222,
+135,
+185
+],
+"detail": {
+"bbox_page_px": [
+682.76,
+2407.41,
+703.685,
+2436.085
+]
+}
+},
+{
+"id": "obs:112890",
+"subject": "glyph/6/1/3/1/1",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackOnLine",
+690,
+334,
+136,
+132
+],
+"detail": {
+"bbox_page_px": [
+759.95,
+2424.77,
+781.03,
+2445.23
+]
+}
+},
+{
+"id": "obs:112893",
+"subject": "glyph/6/1/3/1/2",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+861,
+274,
+142,
+136
+],
+"detail": {
+"bbox_page_px": [
+786.455,
+2415.47,
+808.465,
+2436.55
+]
+}
+},
+{
+"id": "obs:112896",
+"subject": "glyph/6/1/3/1/3",
+"quantity": "glyph_box",
+"value": [
+"beam",
+509,
+81,
+463,
+93
+],
+"detail": {
+"bbox_page_px": [
+731.895,
+2385.555,
+803.66,
+2399.97
+]
+}
+},
+{
+"id": "obs:112898",
+"subject": "glyph/6/1/3/1/4",
+"quantity": "glyph_box",
+"value": [
+"noteheadBlackInSpace",
+382,
+386,
+149,
+120
+],
+"detail": {
+"bbox_page_px": [
+712.21,
+2432.83,
+735.3050000000001,
+2451.43
+]
+}
+},
+{
+"id": "obs:112901",
+"subject": "glyph/6/1/3/1/5",
+"quantity": "glyph_box",
+"value": [
+"staff",
+0,
+359,
+1129,
+461
+],
+"detail": {
+"bbox_page_px": [
+653.0,
+2428.645,
+827.995,
+2500.1
+]
+}
+},
+{
+"id": "obs:112903",
+"subject": "glyph/6/1/3/1/6",
+"quantity": "glyph_box",
+"value": [
+"beam",
+512,
+87,
+458,
+118
+],
+"detail": {
+"bbox_page_px": [
+732.36,
+2386.485,
+803.35,
+2404.775
+]
+}
+},
+{
+"id": "obs:112905",
+"subject": "glyph/6/1/3/1/7",
+"quantity": "glyph_box",
+"value": [
+"accidentalNatural",
+594,
+208,
+77,
+381
+],
+"detail": {
+"bbox_page_px": [
+745.07,
+2405.24,
+757.005,
+2464.295
+]
+}
+},
+{
+"id": "obs:112907",
+"subject": "glyph/6/1/3/1/8",
+"quantity": "glyph_box",
+"value": [
+"clefG",
+249,
+1285,
+156,
+115
+],
+"detail": {
+"bbox_page_px": [
+691.595,
+2572.175,
+715.775,
+2590.0
+]
+}
+},
+{
+"id": "obs:112909",
+"subject": "glyph/6/1/3/1/9",
+"quantity": "glyph_box",
+"value": [
+"restQuarter",
+690,
+0,
+48,
+35
+],
+"detail": {
+"bbox_page_px": [
+759.95,
+2373.0,
+767.39,
+2378.425
+]
+}
+},
+{
+"id": "obs:112911",
+"subject": "glyph/6/1/3/1/10",
+"quantity": "glyph_box",
+"value": [
+"noteheadHalfInSpace",
+178,
+720,
+159,
+142
+],
+"detail": {
+"bbox_page_px": [
+680.59,
+2484.6,
+705.235,
+2506.61
+]
+}
+},
+{
+"id": "obs:112914",
+"subject": "glyph/6/1/3/1/11",
+"quantity": "glyph_box",
+"value": [
+"tie",
+4,
+787,
+1108,
+46
+],
+"detail": {
+"bbox_page_px": [
+653.62,
+2494.985,
+825.36,
+2502.115
+]
+}
+},
+{
+"id": "obs:112916",
+"subject": "glyph/6/1/3/1/12",
+"quantity": "glyph_box",
+"value": [
+"ledgerLine",
+13,
+475,
+544,
+36
+],
+"detail": {
+"bbox_page_px": [
+655.015,
+2446.625,
+739.335,
+2452.205
+]
+}
+},
+{
+"id": "obs:134867",
+"subject": "cell/6/1/3/1",
+"quantity": "cell_staff_space",
+"value": 100.0,
+"detail": {}
+},
+{
+"id": "obs:150087",
+"subject": "staff/6/1/3",
+"quantity": "claimed_area",
+"value": [
+372.7,
+2410.3,
+421.6,
+2489.7
+],
+"detail": {
+"cell": 0,
+"owner": "clef",
+"unit": "area",
+"standing": "READ",
+"source": "clef_pagewide",
+"change": false,
+"kind": "tenor",
+"detector_box": "glyph/6/1/3/0/6"
+}
+},
+{
+"id": "obs:150089",
+"subject": "staff/6/1/3",
+"quantity": "claimed_area",
+"value": [
+599.5,
+2432.1,
+644.4,
+2484.1
+],
+"detail": {
+"cell": 0,
+"owner": "clef",
+"unit": "area",
+"standing": "READ",
+"source": "clef_pagewide",
+"change": true,
+"kind": "bass",
+"detector_box": "glyph/6/1/3/0/0"
+}
+}
+]
+}

@@ -138,6 +138,11 @@ class Rule:
     #: another verdict must say so here or `run_over` will under-fire it.
     reads_beyond_cause: Optional[
         Callable[[Log, Subject, Verdict], Sequence[str]]] = None
+    #: ⚠️ ROADMAP 2.324 downstream (CLAUDE.md §3: EVALUATE writes what FOLLOWS). True for a rule part of whose effect follows from
+    #: OTHER read facts even where its cause did not settle: it still runs on an ABSTAINED or NARROWED cause and must itself write
+    #: nothing that rests on the unsettled value. `restate_pitch` alone: a clef change READ inside the line pitches the notes after it
+    #: whatever the header clef; the notes before the change stay unread. Where such a rule writes nothing, the skip is reported as before.
+    fires_unsettled: bool = False
 
 
 #: The assumed downhill order. A rule may only write an `effect` that sits
@@ -215,7 +220,8 @@ RULES: List[Rule] = []
 def rule(*, consequence: Consequence, cause: str, effect: str, scope: Kind,
          bound: str, stub: bool = False, single_pass: bool = False,
          reads_beyond_cause: Optional[
-             Callable[[Log, Subject, Verdict], Sequence[str]]] = None):
+             Callable[[Log, Subject, Verdict], Sequence[str]]] = None,
+         fires_unsettled: bool = False):
     """Register a consequence rule.
 
     ⚠️ `bound` is REQUIRED and is prose, deliberately. Every propagation in
@@ -231,7 +237,7 @@ def rule(*, consequence: Consequence, cause: str, effect: str, scope: Kind,
 
     def wrap(fn: Callable[[Log, Subject, Verdict], List[Verdict]]) -> Callable:
         RULES.append(Rule(consequence, cause, effect, scope, fn, bound, stub,
-                          single_pass, reads_beyond_cause))
+                          single_pass, reads_beyond_cause, fires_unsettled))
         return fn
 
     return wrap
@@ -366,6 +372,20 @@ def _pass(log: Log, report: Report, *, progress: bool,
             if cause is None:
                 report.skipped.append(
                     (r.consequence.value, subject.to_key(), "cause_absent"))
+                continue
+            unsettled = None
+            if cause.outcome is Outcome.ABSTAINED:
+                unsettled = "cause_abstained"
+            elif cause.outcome is Outcome.NARROWED:
+                unsettled = "cause_narrowed"
+            if unsettled is not None and r.fires_unsettled and only_downstream_of is None:
+                # ROADMAP 2.324 downstream: the rule writes only what follows from other READ facts (`Rule.fires_unsettled`); the
+                # unsettled value itself is never used. Nothing written -> the skip is reported exactly as below.
+                produced = r.fn(log, subject, cause)
+                for v in produced:
+                    report.fired.append((r.consequence.value, subject.to_key(), v.quantity))
+                if not produced:
+                    report.skipped.append((r.consequence.value, subject.to_key(), unsettled))
                 continue
             if cause.outcome is Outcome.ABSTAINED:
                 # ⚠️ An abstention is a RESULT, not a failure. A consequence
