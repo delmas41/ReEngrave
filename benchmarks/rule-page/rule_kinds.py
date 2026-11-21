@@ -47,8 +47,6 @@ RULES = [
     R(HEADS, "notehead_is_not_a_notehead", "human_not_a_symbol,human_other_staff", "A", "a human's box verdict outranks every rule",
       "a box Sean struck out in the stage review, or marked as another staff's, is refused first", HUMAN, "kept"),
     R(HEADS, "notehead_is_not_a_notehead", "notehead", "ok", "kept as a notehead", "the box survived every refusal", "-", "-"),
-    R(HEADS, "notehead_is_not_a_notehead", "is_a_clef", "C", "clef read on this box's ink", "the clef locator read a clef on the very ink this notehead box sits on (one ink, two boxes)",
-      "Sean 2026-09-23 (2.11)", "retires with 2.205 (claims by strokes); the claim register 2.181 covers it meanwhile"),
     R(HEADS, "notehead_is_not_a_notehead", "clipped_fragment", "U", "sliver against the crop edge",
       "a flat sliver flush with the cell's crop edge is a neighbour staff's ink bleeding into the padding, read as a hollow head",
       S_NONE + " (legacy `_drop_clipped_notehead_fragments`)", "open: C if the neighbour's ink is the cause (padded cells), A if it is only a crop edge"),
