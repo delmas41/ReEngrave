@@ -263,3 +263,32 @@ touched pages measured.
 treble clef; 1 "just a stem"; 10 "2 half notes in a chord". All seven no-box kinds agree. Correction to the
 round-5 text above: by the key, tile 1 is Litolff p10 s1 st4 and tile 10 is Litolff p9 s0 st3 (the staff that
 lost ~10 correct notes) -- the agent's report had the two tile numbers swapped.
+
+## Round 5b (2026-11-20) -- the clef claims only its own ink; Sean's two non-clefs refused. NINE PAGES ONLY
+
+Branch `lane-2.324-r3` 4bc7b9e7f. Same nine pages, the lane's own tests file (127 pass); no frozen sample, no
+fast tier, no `judged score` / `judged_claims` replays. Sheet `out/print/2.324-r5b/sheet.png` (manager looked:
+the seven ink-read boxes now sit on the clefs).
+
+**Cause and lesson.** The clef column started 0.3 space left of the leftmost sibling clef, so the system's thin
+barline stood at its edge; bridging ink back across cleared staff lines joined barline and clef, and the claim
+ran 2.5 spaces past the staff both ways. Now the clef's place starts just right of a barline at its edge and
+the area is kept inside a clef's reach. Tile 9 was never wrong (misread from a downscaled sheet) and the
+"lost" whole rest on Litolff p2 s1 st3 was a false eighth-rest box in the key slots now claimed by the key
+(the comparison paired them wrongly). Lesson: look at the pixels at full size before reporting a fault.
+
+**Sean's ruling "require the spiral" could not do the refusing.** Tile 10 (his "2 half notes in a chord") sits
+inside the start-of-staff treble range on every shape measure the lane has (reach above 1.33 / below 1.84;
+hole area 0.31, height 1.08, against start-of-staff trebles' minimum 1.14 / 1.44 and 5th percentiles 0.15 /
+0.94; tile 5: 2.51 / 1.42 / 0.84 / 2.36). What refuses tiles 1 and 10 is a new never: "never a treble clef
+over a notehead" -- 76-84% of each detector head box's ink is joined to the glyph's ink; none of 242
+start-of-staff `clefG` boxes holds a notehead box. That rests on the detector's head boxes and has only Sean's
+two tiles on its refusing side. Tile 5 (his treble clef) stays NARROWED, not read: Brahms p14 s1 st9 bars 1-5
+unread (-18 notes).
+
+**Nine pages, ON vs OFF.** Litolff: rests -1 (the false key-slot rest), blue +9 / -79, clefs/keys/meters each
++1 / -1, red bars 128 -> 126, notes vs round 5 back to 0 lost (p9 s0 st3 bars 11-14 written again). Brahms:
+notes -18, 44 pitches (p25), red bars 52 -> 50. Lane report judged right->wrong 0 (300 Litolff, 221 Brahms).
+
+**Open.** A real spiral test (the hole measures do not tell a spiral from two hollow heads); tile 5 read; the
+barline cut and reach limit seen only on seven clefs; nothing past nine pages.
