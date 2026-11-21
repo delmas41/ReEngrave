@@ -50,6 +50,19 @@ def enabled() -> bool:
     return os.environ.get(ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: ROADMAP 2.306 (hollow heads): A NOTEHEAD IS ITS WHOLE OVAL, THE RING AND THE HOLE TOGETHER -- a hollow head is as wide as a filled one.
+#: Never the stem, an accidental, a dot or the other head of a second in its width; never wider than the head's own trimmed ink.
+#: CAUSE (Sean's swept Brahms p0 half notes, the lane's look at full size): `strip_line_rows` read the head's columns from the ink run
+#: through its centre column, which on a hollow head is the HOLE -- only the rows where the ring crosses the centre counted, so a
+#: half note 2229-2274 next to a staff line was cut to 2234-2255 and its stem stood half a space off the outline (3 stems unread).
+#: Rides the page stem reader's own flag (`OMR_PAGE_STEMS`, default OFF): no new flag, and the stem batch measures it.
+RING_WIDTH_ENV = "OMR_PAGE_STEMS"
+
+
+def ring_width_enabled() -> bool:
+    return os.environ.get(RING_WIDTH_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def ink_extent(page_binary: Any, box: Sequence[float], space_px: float,
                foreign_boxes: Sequence[Sequence[float]] = (),
                other_heads: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
@@ -135,11 +148,36 @@ def strip_line_rows(page_binary: Any, extent: Sequence[float], head_cols: Sequen
             b += 1
         return a, b
 
+    ex0, ex1 = int(round(float(extent[0]))), int(round(float(extent[2])))
+    ring_on = ring_width_enabled()
+
+    def ring_run(y: int):
+        """2.306 (hollow): a notehead is its whole oval, the ring and the hole together. Where the centre column is the HOLE (paper),
+        the row's head ink is the ring's two sides: from the start of the nearest ink run left of the centre to the end of the
+        nearest one right of it, both found inside the head's own trimmed ink columns -- never over blank paper beyond them."""
+        r = run(y)
+        if r is not None or not ring_on or y < 0 or y >= H or not (0 <= cx < W):
+            return r
+        a = cx
+        while a > max(ex0, 0) and page_binary[y, a] != 0:
+            a -= 1
+        b = cx
+        while b < min(ex1, W - 1) and page_binary[y, b] != 0:
+            b += 1
+        if page_binary[y, a] != 0 or page_binary[y, b] != 0:
+            return None                      # ink on one side only (or none): not a ring row
+        while a > 0 and page_binary[y, a - 1] == 0:
+            a -= 1
+        while b < W - 1 and page_binary[y, b + 1] == 0:
+            b += 1
+        return a, b
+
     # the head's own columns: the widest run through its centre column over the extent's middle rows (a ledger stub at an
-    # edge is not there; a ledger THROUGH the middle widens these too, so it is never stripped)
+    # edge is not there; a ledger THROUGH the middle widens these too, so it is never stripped); on a hollow head's middle
+    # rows, both sides of the ring (`ring_run`)
     ey0, ey1 = int(round(extent[1])), int(round(extent[3]))
     q = (ey1 - ey0) * (1.0 - MIDDLE_SHARE) / 2.0
-    mids = [r for r in (run(y) for y in range(int(ey0 + q), int(ey1 - q) + 1)) if r is not None]
+    mids = [r for r in (ring_run(y) for y in range(int(ey0 + q), int(ey1 - q) + 1)) if r is not None]
     if not mids:
         return float(ey0), float(ey1), 0, None
     hx0, hx1 = min(r[0] for r in mids), max(r[1] for r in mids)
