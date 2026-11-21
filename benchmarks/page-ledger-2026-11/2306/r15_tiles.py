@@ -30,7 +30,7 @@ for n, s in enumerate(spec, 1):
     p = os.path.join(outd, 'tiles', 'tile%02d.png' % n)
     im.save(p)
     tiles.append(im)
-    key.append(dict(tile=n, page=D['page'], head=s['head'], members=h['members'], stem_box=s['box'], **{k2: v for k2, v in s.items() if k2 not in ('dump', 'box')}))
+    key.append(dict(tile=n, page=D['page'], head=s['head'], members=h['members'], stem_box=s['box'], **{k2: v for k2, v in s.items() if k2 not in ('dump', 'box', 'head')}))
 cols = 4
 W = max(t.width for t in tiles); H = max(t.height for t in tiles)
 sheet = Image.new('RGB', (cols * (W + 12), ((len(tiles) + cols - 1) // cols) * (H + 40)), 'white')
