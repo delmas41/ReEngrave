@@ -327,50 +327,6 @@ def head_ink(heads: Sequence[Dict[str, Any]], strokes: Dict[int, Dict[str, Any]]
     return out
 
 
-def _chord_mates_by_ink(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
-                        members_of: Dict[int, List[int]], tch: Dict[int, set]) -> int:
-    """ROADMAP 2.306 r15 (Sean 2026-11-18, join by ink; page-facts "every note on one stem shares one written value"; 2.300 left the stacked-mate join
-    unbuilt): a head the reader left with no stem, whose OWN head ink (its 2.290 head claim) touches a stem's ink -- directly, or through the head ink
-    of chord mates touching one another in turn -- is a head of that stem's chord, on either side of it, and takes the stem's direction. NEVER where
-    the touching ink reaches two different stems (two voices, or a neighbour's chord), never through ink that is not a head's own (a beam, a slur, an
-    accidental), never a head with no head ink of its own (a box with no head-shaped ink is not joined by its box). Returns how many heads it joined."""
-    own = {h["id"]: {int(i) for i in (h.get("strokes") or ())} for h in heads}
-    owner_of: Dict[int, Any] = {}
-    for hid, s in own.items():
-        for i in s:
-            owner_of.setdefault(i, hid)
-    stem_of: Dict[int, int] = {}
-    for o, s in stems.items():
-        if len(s.get("directions") or ()) != 1:
-            continue
-        for m in members_of.get(int(o), [int(o)]):
-            stem_of[int(m)] = int(o)
-    n = 0
-    for h in heads:
-        r = readings[h["id"]]
-        if r.get("state") != "none" or r.get("how") not in ("no_stroke", "contact_at_middle") or not own[h["id"]]:
-            continue
-        seen_heads, todo, found = {h["id"]}, [h["id"]], set()
-        while todo:
-            k = todo.pop()
-            for i in own[k]:
-                for t in tch.get(i, ()):
-                    if t in stem_of:
-                        found.add(stem_of[t])
-                    k2 = owner_of.get(t)
-                    if k2 is not None and k2 not in seen_heads:
-                        seen_heads.add(k2)
-                        todo.append(k2)
-        if len(found) != 1:
-            continue
-        o = next(iter(found))
-        d = next(iter(stems[o]["directions"]))
-        r.update(state="one", stroke=o, direction=d, side="chord", margin=None, how="chord_mate_touching_ink", candidates=r.get("candidates") or [])
-        stems[o]["heads"].append(h["id"])
-        n += 1
-    return n
-
-
 def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> float:
     """The longest run of rows of [y0, y1] that no span covers (px). Pure."""
     edge, worst = y0, 0.0
@@ -652,8 +608,6 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             o, d = got[0]
             r.update(state="second", stroke=o, direction=d, side="other", margin=None, how="second_on_partner_stem")
             stems[o]["heads"].append(h["id"])
-    if hink is not None:
-        _chord_mates_by_ink(heads, readings, stems, members_of, tch)
     for o, s in stems.items():
         st = vby[o]
         s["direction"] = next(iter(s["directions"]))

@@ -81,31 +81,3 @@ def test_head_ink_is_never_an_upright_nor_a_held_stroke():
     strokes = {1: dict(box=(5.0, 5.0, 15.0, 15.0), kind="blob"), 2: dict(box=(9.0, 2.0, 11.0, 18.0), kind="vertical"),
                3: dict(box=(4.0, 4.0, 16.0, 16.0), kind="blob"), 4: dict(box=(30.0, 30.0, 40.0, 40.0), kind="blob")}
     assert PS.head_ink([head], strokes, {3: "accidental"})[0] == {1}
-
-
-def test_a_stacked_chord_mate_joins_the_stem_its_head_ink_touches_and_never_two_stems():
-    """Head 0 reads stroke 1 on its engraving side; head 1 (no stroke of its own beside it) touches head 0's ink -> joins stroke 1. If head 1's ink
-    also touches a second stem (stroke 2, read by head 2), it stays unread."""
-    sp = 16.0
-    h0 = dict(id=0, members=["g0"], box=(100.0, 100.0, 120.0, 114.0), sp=sp, ink=True, strokes=[10])
-    h1 = dict(id=1, members=["g1"], box=(84.0, 112.0, 104.0, 126.0), sp=sp, ink=True, strokes=[11])
-    v1 = dict(ord=1, box=(118.0, 40.0, 122.0, 108.0), sp=sp)
-    strokes = {10: dict(box=h0["box"], kind="blob", touches=[[1, 1.0], [11, 1.0]]), 11: dict(box=h1["box"], kind="blob", touches=[]),
-               1: dict(box=v1["box"], kind="vertical", touches=[])}
-    res = PS.read([h0, h1], [v1], {}, crossers=[], strokes=strokes)
-    assert res["heads"][0]["stroke"] == 1 and res["heads"][1]["how"] in ("chord_mate_touching_ink", "contact_with_head_ink") and res["heads"][1]["stroke"] == 1
-
-    # the pass itself: one stem reached through touching head ink joins; two stems reached -> the head stays unread (never two voices joined)
-    readings = {1: dict(state="none", how="no_stroke"), 0: dict(state="one", stroke=1, direction="up")}
-    stems = {1: dict(heads=[0], directions={"up"}), 2: dict(heads=[2], directions={"down"})}
-    tch = PS.touch_map({10: dict(touches=[[1, 1.0], [11, 1.0]]), 11: dict(touches=[])})
-    assert PS._chord_mates_by_ink([h0, h1], readings, stems, {}, tch) == 1 and readings[1]["stroke"] == 1
-    h2 = dict(id=2, members=["g2"], box=(40.0, 140.0, 60.0, 154.0), sp=sp, ink=True, strokes=[12])
-    readings = {1: dict(state="none", how="no_stroke"), 0: dict(state="one"), 2: dict(state="one")}
-    stems = {1: dict(heads=[0], directions={"up"}), 2: dict(heads=[2], directions={"down"})}
-    tch = PS.touch_map({10: dict(touches=[[1, 1.0], [11, 1.0]]), 11: dict(touches=[[12, 1.0]]), 12: dict(touches=[[2, 1.0]])})
-    assert PS._chord_mates_by_ink([h0, h1, h2], readings, stems, {}, tch) == 0 and readings[1]["state"] == "none"
-    # a head with no head ink of its own is never joined by its box
-    h3 = dict(id=3, members=["g3"], box=h1["box"], sp=sp, ink=False, strokes=[])
-    readings = {3: dict(state="none", how="no_stroke"), 0: dict(state="one")}
-    assert PS._chord_mates_by_ink([h0, h3], readings, {1: dict(heads=[0], directions={"up"})}, {}, PS.touch_map({10: dict(touches=[[1, 1.0]])})) == 0
