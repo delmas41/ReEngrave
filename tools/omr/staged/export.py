@@ -2304,8 +2304,18 @@ def _chords_whose_value_would_be_voted(
             if not doomed:
                 continue
             gone = set(doomed)
+            # ROADMAP 2.306 two-voice piece: a unison head and its second voice (`export_unison`'s twin) are ONE printed head. Where either
+            # voice stands in a group whose values disagree, both are held -- never one voice written and the other held -- and the head is
+            # returned once (the twin is no row of the log).
+            pair_of = {}
+            for d in cell.detections:
+                if d.get("unison_head") or d.get("unison_twin"):
+                    pair_of.setdefault(d.get("glyph"), []).append(id(d))
+            for ids in pair_of.values():
+                if gone & set(ids):
+                    gone |= set(ids)
             kept = [d for d in cell.detections if id(d) not in gone]
-            removed.extend(d for d in cell.detections if id(d) in gone)
+            removed.extend(d for d in cell.detections if id(d) in gone and not d.get("unison_twin"))
             cell.detections[:] = kept
     one_chord.bar_declines(False)
     return removed

@@ -303,13 +303,33 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
 UNISON_HOW = "unison_two_stems"
 
 
+def _ends_at_another_head(h: Dict[str, Any], o: int, direction: str, heads: Sequence[Dict[str, Any]], vbox: Optional[Dict[int, Any]]) -> bool:
+    """A stem runs on past every head it touches; a stroke whose FAR end (the top of an up stroke, the bottom of a down one) stops at ANOTHER head
+    -- within HEAD_END_SP of that head's top or bottom, within EDGE_SP of its width -- is that head's outline (Litolff 2/1/3/2 and 2/1/3/12: two half notes a
+    third apart on one down stem; the upper ring's right side read as an up stem of the lower head), never a stem. Pure."""
+    if not vbox or o not in vbox:
+        return False
+    x0, y0, x1, y1 = vbox[o]["box"]
+    sp = float(vbox[o].get("sp") or h.get("sp") or 1.0)
+    end = y0 if direction == "up" else y1
+    for k in heads:
+        if k["id"] == h["id"]:
+            continue
+        b = k["box"]
+        if (x1 >= b[0] - EDGE_SP * sp and x0 <= b[2] + EDGE_SP * sp           # at the head's side (a hollow head's measured outline is narrow: r16)
+                and b[1] - HEAD_END_SP * sp <= end <= b[3] + HEAD_END_SP * sp):
+            return True
+    return False
+
+
 def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
-                  hink: Optional[Dict[Any, set]], touches_ink: Any) -> int:
+                  hink: Optional[Dict[Any, set]], touches_ink: Any, vbox: Optional[Dict[int, Any]] = None) -> int:
     """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
     For a head that read one stroke up at its right and one down at its left (`two_voices`, left after the column rule of r9):
 
     * both strokes' ink touches the head's ink -> TWO VOICES SHARING THE NOTE: state `two_voices`, how `unison_two_stems`, `voices` = {up: stroke,
       down: stroke}; each stroke joins `stems` as that direction's stem of this head (each voice takes its value from its OWN stem, later).
+    * a stroke whose far end stops at another head is that head's outline, not a stem, and counts as not touching (`_ends_at_another_head`).
     * exactly one touches -> the other only stands beside the head (a neighbour's stem, another voice's stem ending near it): never two voices; the
       touching stroke is the head's one stem (`one_of_two_by_ink`), as r15 settles two strokes on one side.
     * a stroke another head already holds the OTHER way -> `two` / `two_voices_stroke_read_other_way` (cannot tell; never forced).
@@ -320,8 +340,8 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         return 0
     n = 0
     for h in heads:
-        r = readings[h["id"]]
-        if r.get("state") != "two_voices":
+        r = readings.get(h["id"])
+        if r is None or r.get("state") != "two_voices":
             continue
         cs = r.get("candidates") or []
         by_dir = {c["direction"]: c for c in cs}
@@ -330,7 +350,8 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         if not (hink or {}).get(h["id"]):
             r["why"] = "head_ink_unread"
             continue
-        touch = {d: bool(touches_ink(h["id"], c["stroke"])) for d, c in by_dir.items()}
+        touch = {d: bool(touches_ink(h["id"], c["stroke"])) and not _ends_at_another_head(h, int(c["stroke"]), d, heads, vbox)
+                 for d, c in by_dir.items()}
         keep = [d for d in ("up", "down") if touch[d]]
         if not keep:
             r["why"] = "neither_touches"
@@ -675,7 +696,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             o, d = got[0]
             r.update(state="second", stroke=o, direction=d, side="other", margin=None, how="second_on_partner_stem")
             stems[o]["heads"].append(h["id"])
-    n_unison = _unison_heads(heads, readings, stems, hink, touches_ink if hink is not None else None)
+    n_unison = _unison_heads(heads, readings, stems, hink, touches_ink if hink is not None else None, vby)
     for o, s in stems.items():
         st = vby[o]
         s["direction"] = next(iter(s["directions"]))

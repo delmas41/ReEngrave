@@ -61,7 +61,7 @@ def test_where_one_stroke_does_not_touch_the_head_it_is_one_stem_never_two_voice
         assert r["state"] == "one" and r["direction"] == w["expect"].split(":")[1], (w["page"], w["head"], r)
         assert r["how"] != PS.UNISON_HOW
         n += 1
-    assert n == 3
+    assert n == 5
 
 
 def test_control_without_the_ink_contacts_no_head_is_filed_as_two_voices():
@@ -101,3 +101,19 @@ def test_the_unison_ruling_names_each_voices_own_stem_and_never_one_stem_twice()
     gone = {"up": voices["up"], "down": _row("ps2", "stem:zz", how=PS.UNISON_HOW, voice="down")}
     assert SV._page_two_voices(head, stems, "box1", gone) is None           # a row the cell no longer holds: the cell join stands
     assert SV.page_voice_stems({"stem": "stem:a"}, [s_up, s_dn]) is None    # a one-stem ruling names no voices
+
+
+def test_a_unison_whose_one_voice_stands_in_a_disagreeing_chord_is_held_whole_and_returned_once(monkeypatch):
+    """EXPORT `_chords_whose_value_would_be_voted` (2.89): the up voice of a unison head and its second voice are ONE printed head. Litolff
+    2/1/3/2/5 on the replayed record: the down voice joined a chord whose values disagree and was held while the up voice was written -- one
+    glyph written AND dropped (the balance raised). Both voices are held; the glyph is returned once. Fails with the pairing removed."""
+    from tools.omr.staged import export as E
+    head = dict(glyph="glyph/2/1/3/2/5", category="notehead", unison_head=True, duration_beats=1.0, duration_type="quarter", dots=0)
+    twin = dict(head, unison_head=None, unison_twin=True, duration_beats=2.0, duration_type="half")
+    other = dict(glyph="glyph/2/1/3/2/7", category="notehead", duration_beats=1.0, duration_type="quarter", dots=0)
+    cell = SimpleNamespace(detections=[head, twin, other])
+    runs = {"P1": SimpleNamespace(cells={0: cell})}
+    monkeypatch.setattr(E, "_group_chords", lambda dets: [dict(kind="chord", noteheads=[d for d in dets if d is not head])])
+    removed = E._chords_whose_value_would_be_voted(runs)
+    assert sorted(d["glyph"] for d in removed) == ["glyph/2/1/3/2/5", "glyph/2/1/3/2/7"]
+    assert cell.detections == []                    # never one voice written and the other held

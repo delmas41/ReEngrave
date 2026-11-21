@@ -65,8 +65,10 @@ def refile(rec, log):
             heads_all = [dict(id=m, box=tuple(d["oval"])) for m, d in claim_of.items() if pg(m) == p and d.get("oval")]
             cross = [dict(ord=o, box=s["box"], kind=s["kind"]) for o, s in S.items() if s["kind"] != "vertical"]
             runs, _ = PS.join_runs(verts, heads_all, cross, held[p])
-            runs_of[p] = ({r["ord"]: r["members"] for r in runs}, PS.touch_map(S))
-        members_of, tch = runs_of[p]
+            vbox = {o: dict(box=s["box"], sp=s["sp"]) for o, s in S.items() if s["kind"] == "vertical"}
+            vbox.update({r["ord"]: dict(box=r["box"], sp=r["sp"]) for r in runs})
+            runs_of[p] = ({r["ord"]: r["members"] for r in runs}, PS.touch_map(S), heads_all, vbox)
+        members_of, tch, heads_all, vbox = runs_of[p]
         g0 = rows[0]["subject"]
         members = sorted({a["subject"] for a in rows})
         hd = next((claim_of[m] for m in members if m in claim_of), None)
@@ -79,7 +81,8 @@ def refile(rec, log):
             return any(t in mine for m in members_of.get(int(o), [int(o)]) for t in tch.get(int(m), ()))
         reading = dict(state="two_voices", candidates=rows[0]["detail"]["candidates"], how="two_voices")
         stems = {o: dict(ord=o, heads=[], directions={d}) for o, d in stem_dirs[p].items() if d in ("up", "down")}
-        PS._unison_heads([head], {hid: reading}, stems, hink, touches_ink)
+        others = [dict(id=("other", k["id"]), box=k["box"]) for k in heads_all if k["id"] not in members]
+        PS._unison_heads([head] + others, {hid: reading}, stems, hink, touches_ink, vbox)
         key = reading["how"] + (("/" + reading["why"]) if isinstance(reading.get("why"), str) else "")
         cen["heads:" + key] += 1
         outcome["%d/%s" % (p, hid)] = dict(members=members, how=key, voices=reading.get("voices"), stroke=reading.get("stroke"))
