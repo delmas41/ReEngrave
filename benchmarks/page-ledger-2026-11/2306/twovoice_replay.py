@@ -43,7 +43,7 @@ def refile(rec, log):
             for m in d.get("members") or ():
                 claim_of[m] = d
         elif d.get("source") == PS.SOURCE and d.get("owner") == PS.OWNER and d.get("page_strokes"):
-            stem_dirs[pg(o["subject"])][int(o["value"])] = d.get("direction")
+            stem_dirs[pg(o["subject"])][int(o["value"])] = (d.get("direction"), list(d.get("heads") or ()))
         elif d.get("page_strokes") and d.get("standing", "READ") == "READ" and d.get("owner") not in ("head", "stem"):
             for i in d["page_strokes"]:
                 held[pg(o["subject"])].setdefault(int(i), d.get("owner"))
@@ -62,7 +62,16 @@ def refile(rec, log):
         S = strokes[p]
         if p not in runs_of:
             verts = [dict(ord=o, box=s["box"], sp=s["sp"]) for o, s in S.items() if s["kind"] == "vertical"]
-            heads_all = [dict(id=m, box=tuple(d["oval"])) for m, d in claim_of.items() if pg(m) == p and d.get("oval")]
+            # every page head (`Q.PAGE_MARK` family head, as the gather's reader sees them): its oval where it has one, else its box
+            heads_all = []
+            for o in obs:
+                d = o.get("detail") or {}
+                if o["quantity"] == "page_mark" and d.get("family") == "head" and pg(o["subject"]) == p:
+                    mem = d.get("members") or [o["subject"]]
+                    b = next((claim_of[m]["oval"] for m in mem if m in claim_of and claim_of[m].get("oval")), None) or next(
+                        (gbox[m] for m in mem if m in gbox), None)
+                    if b:
+                        heads_all.append(dict(id=o["subject"], members=mem, box=tuple(b)))
             cross = [dict(ord=o, box=s["box"], kind=s["kind"]) for o, s in S.items() if s["kind"] != "vertical"]
             runs, _ = PS.join_runs(verts, heads_all, cross, held[p])
             vbox = {o: dict(box=s["box"], sp=s["sp"]) for o, s in S.items() if s["kind"] == "vertical"}
@@ -80,8 +89,8 @@ def refile(rec, log):
             mine = hink.get(h) or set()
             return any(t in mine for m in members_of.get(int(o), [int(o)]) for t in tch.get(int(m), ()))
         reading = dict(state="two_voices", candidates=rows[0]["detail"]["candidates"], how="two_voices")
-        stems = {o: dict(ord=o, heads=[], directions={d}) for o, d in stem_dirs[p].items() if d in ("up", "down")}
-        others = [dict(id=("other", k["id"]), box=k["box"]) for k in heads_all if k["id"] not in members]
+        stems = {o: dict(ord=o, heads=list(hs), directions={d}) for o, (d, hs) in stem_dirs[p].items() if d in ("up", "down")}
+        others = [dict(id=("other", k["id"]), box=k["box"]) for k in heads_all if not set(k["members"]) & set(members)]
         PS._unison_heads([head] + others, {hid: reading}, stems, hink, touches_ink, vbox)
         key = reading["how"] + (("/" + reading["why"]) if isinstance(reading.get("why"), str) else "")
         cen["heads:" + key] += 1

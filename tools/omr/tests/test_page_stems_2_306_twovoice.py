@@ -52,16 +52,20 @@ def test_a_head_with_a_stem_each_way_both_touching_is_two_voices_and_both_stems_
     assert n == 8
 
 
-def test_where_one_stroke_does_not_touch_the_head_it_is_one_stem_never_two_voices():
-    n = 0
+def test_where_a_stroke_does_not_touch_the_head_or_ends_at_another_head_it_is_never_two_voices():
+    """Litolff 6/9, Brahms 0/268: the up stroke is a neighbour's stem (no contact). Litolff 2/99 (2/1/3/2) and 2/468 (2/1/3/12): two half notes a
+    third apart on one down stem, the upper ring's right side read as an up stroke (it ends at the upper head). Brahms 5/772: its own down stem
+    only. None is filed as two voices; the page decides nothing else for them (the old path stays, `why` says why)."""
+    whys = {}
     for w in _windows():
         if not w["expect"].startswith("one:"):
             continue
         r = _read(w)["heads"][w["head"]]
-        assert r["state"] == "one" and r["direction"] == w["expect"].split(":")[1], (w["page"], w["head"], r)
-        assert r["how"] != PS.UNISON_HOW
-        n += 1
-    assert n == 5
+        assert r["how"] != PS.UNISON_HOW and r.get("voices") is None, (w["page"], w["head"], r)
+        whys[(w["page"], w["head"])] = r.get("why") or r["how"]
+    assert whys[(2, 99)] == "ends_at_another_head" and whys[(2, 468)] == "ends_at_another_head", whys
+    assert whys[(6, 9)] == "one_touches" and whys[(0, 268)] == "one_touches", whys
+    assert len(whys) == 5
 
 
 def test_control_without_the_ink_contacts_no_head_is_filed_as_two_voices():
