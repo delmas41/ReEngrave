@@ -200,6 +200,67 @@ def split_joins_enabled() -> bool:
     return os.environ.get(SPLIT_JOINS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
+# -- ROADMAP 2.306 (cut): THE STEM IS CUT FROM ITS HEAD AT THE HEAD, HOWEVER SHORT THE STUB (flag `OMR_STEM_STUB_CUT`, default OFF) --
+#: RULE (as a musician says it): a notehead is the oval; the stem is the upright that touches it AT ITS SIDE, however short the piece of it you
+#: can see; it carries on beyond the head (out of this piece, or into the flag or beam fused to it). Never a stub cut out of an oval's own tip
+#: (the tip is over the oval, not at its side) or its edge column (inside the oval's rows), never a scan's one-row corner, never beside ink
+#: bigger than one head (a stack, a slab: those keep the old fold).
+#: CAUSE (lane's look at full size, Litolff p16 + Brahms p0, not Sean's): `STEM_PART_MIN_SPACES` folds every thin part shorter than half a space
+#: into the wide part beside it. Most such parts are an oval's tip or a slab's corner and the fold is right for them; the few that are a stem's
+#: stub at a head's side make the head piece taller than a head, and the head claim (2.290 `page_heads.CLAIM_MAX_H_SP`) then takes nothing.
+STEM_STUB_ENV = "OMR_STEM_STUB_CUT"
+#: a stub shows at least this many staff spaces of rows (~2 reduced px, the stack notch's scale): one row is the scan's edge, not a stem
+STUB_MIN_SPACES = STACK_NOTCH_SPACES
+#: the stub is flush with the head's left or right edge to within this many reduced px (the stem's place; an oval's tip stands inside it)
+STUB_SIDE_PX = 1
+
+
+def stem_stub_cut_enabled() -> bool:
+    """`OMR_STEM_STUB_CUT` (ROADMAP 2.306 cut), default OFF; 1/true/yes/on enables."""
+    return os.environ.get(STEM_STUB_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _is_stem_stub(part: np.ndarray, wl: np.ndarray, wide: np.ndarray, sp: float) -> bool:
+    """PURE. Is the short thin part `part` (a mask in its piece's frame) a stem's stub at a head's side? `wl` labels the piece's wide parts
+    (0 = none), `wide` their union. True only when (1) it touches exactly ONE head-sized wide part beside it, or one head-sized and one
+    other (the stem runs on into a fused flag or beam), or reaches the piece's top or bottom row (the stem runs on out of the piece);
+    (2) it stands wholly above or below that head's rows (never the oval's own edge column); (3) it is flush with the head's left or right
+    edge (the stem's place; an oval's tip stands over the oval); (4) it is an UPRIGHT: at least `STUB_MIN_SPACES` of rows and no wider than tall
+    (Litolff p16: an oval's bottom rim 7 px wide and 2 rows tall, flush with a head the opening had cut in two, passed (1)-(3))."""
+    ys, xs = np.nonzero(part)
+    if ys.size == 0:
+        return False
+    rows, cols = ys.max() - ys.min() + 1, xs.max() - xs.min() + 1
+    if rows < STUB_MIN_SPACES * sp or rows < cols:
+        return False                                   # a scan's edge row, or lying flat: an oval's rim, never an upright
+    return _beside_one_head(part, wl, wide, sp)
+
+
+def _beside_one_head(part: np.ndarray, wl: np.ndarray, wide: np.ndarray, sp: float) -> bool:
+    """PURE. Conditions (1)-(3) of `_is_stem_stub` (where the part stands against the head), without the upright test (4)."""
+    import cv2
+    ys, xs = np.nonzero(part)
+    if ys.size == 0:
+        return False
+    ring =cv2.dilate(part.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & ~part & wide
+    ids = [int(v) for v in np.unique(wl[ring]) if v > 0]
+    heads = []
+    for j in ids:
+        wy, wx = np.nonzero(wl == j)
+        hh, ww = wy.max() - wy.min() + 1, wx.max() - wx.min() + 1
+        if hh <= HEAD_HEIGHT_CAP_SPACES * sp and HEAD_MIN_WIDTH_SPACES * sp <= ww <= HEAD_WIDTH_CAP_SPACES * sp:
+            heads.append((j, wy.min(), wy.max(), wx.min(), wx.max()))
+    if len(heads) != 1:
+        return False                                   # beside no head, or between two (a stack): the old fold
+    at_edge = ys.min() == 0 or ys.max() == part.shape[0] - 1
+    if not (at_edge or len(ids) == 2):
+        return False                                   # the stem must carry on beyond the head
+    _j, y0, y1, x0, x1 = heads[0]
+    if not (ys.max() < y0 or ys.min() > y1):
+        return False                                   # inside the head's rows: the oval's own edge
+    return (xs.min() - x0) <= STUB_SIDE_PX or (x1 - xs.max()) <= STUB_SIDE_PX
+
+
 # -- ROADMAP 2.242: ONE ACCIDENTAL, ONE PIECE (flag `OMR_ACCIDENTAL_WHOLE`, default ON) --
 #: CAUSE (2.239 r3 capture: 0 of 41 accidentals whole on Sean's Brahms p0 labels): the openings (eraser, vertical / horizontal / remainder)
 #: cut EVERY accidental into 4-6 strokes (stems, bars, bowl) with `OMR_SPLIT_JOINS` off as well -- the same source that cut clefs into ~25
@@ -663,9 +724,13 @@ def _split_thin_wide(m: np.ndarray, thin: np.ndarray, wide: np.ndarray, sp: floa
     lab = np.where(thin, tl, 0) + np.where(wide, wl + (nt - 1), 0)
     keep: Dict[int, bool] = {}
     kind_of: Dict[int, str] = {}
+    stubs = stem_stub_cut_enabled()
     for i in range(1, nt):
         ys = np.nonzero((tl == i).any(axis=1))[0]
         keep[i] = bool(ys.size) and (ys[-1] - ys[0] + 1) >= STEM_PART_MIN_SPACES * sp
+        if not keep[i] and stubs and _is_stem_stub(tl == i, wl, wide, sp):
+            keep[i] = True                             # 2.306 cut: a stem's stub at a head's side stays stem, however short
+            refused["stem_stub_kept"] = refused.get("stem_stub_kept", 0) + 1
         kind_of[i] = "thin"
     for j in range(1, nw):
         i = j + nt - 1
