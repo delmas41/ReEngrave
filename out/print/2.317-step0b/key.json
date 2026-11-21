@@ -1,0 +1,440 @@
+[
+ {
+  "i": 1,
+  "group": "A_no_stem",
+  "plate": "litolff",
+  "page": 6,
+  "head": "glyph/6/1/7/10/10",
+  "fate": [
+   "duration_narrowed"
+  ],
+  "dur_reason": "head_fill_from_ink",
+  "hs_reason": "no_stem",
+  "stems_drawn": 0,
+  "mates": [
+   "glyph/6/1/7/10/2",
+   "glyph/6/1/7/10/4",
+   "glyph/6/1/7/10/5"
+  ],
+  "label": "A lit p6 6/1/7/10/10 | dur narr:head_fill_from | stem abst:no_stem | mates deci:1.0/d0/b0 abst:not_a_note_mar deci:1.0/d0/b0"
+ },
+ {
+  "i": 2,
+  "group": "A_no_stem",
+  "plate": "litolff",
+  "page": 2,
+  "head": "glyph/2/0/7/4/2",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "no_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/2/0/7/4/1",
+   "glyph/2/0/7/4/3",
+   "glyph/2/0/7/4/8"
+  ],
+  "label": "A lit p2 2/0/7/4/2 | dur deci:1.0/d0/b0 | stem abst:no_stem | mates deci:1.0/d0/b0 deci:1.0/d0/b0 deci:2.0/d0/b0"
+ },
+ {
+  "i": 3,
+  "group": "A_no_stem",
+  "plate": "litolff",
+  "page": 16,
+  "head": "glyph/16/1/10/1/1",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "no_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/16/1/10/1/2",
+   "glyph/16/1/10/1/3",
+   "glyph/16/1/10/1/4",
+   "glyph/16/1/10/1/7"
+  ],
+  "label": "A lit p16 16/1/10/1/1 | dur deci:0.5/d0/b1 | stem abst:no_stem | mates deci:1.0/d0/b0 deci:1.0/d0/b0 deci:1.0/d0/b0"
+ },
+ {
+  "i": 4,
+  "group": "A_no_stem",
+  "plate": "litolff",
+  "page": 6,
+  "head": "glyph/6/1/9/11/14",
+  "fate": [
+   "duration_narrowed"
+  ],
+  "dur_reason": "beams_ambiguous",
+  "hs_reason": "no_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/6/1/9/11/0",
+   "glyph/6/1/9/11/1",
+   "glyph/6/1/9/11/2",
+   "glyph/6/1/9/11/7",
+   "glyph/6/1/9/11/10"
+  ],
+  "label": "A lit p6 6/1/9/11/14 | dur narr:beams_ambiguou | stem abst:no_stem | mates abst:not_a_note_mar abst:owned_by_anoth deci:2.0/d0/b0"
+ },
+ {
+  "i": 5,
+  "group": "A_no_stem",
+  "plate": "litolff",
+  "page": 8,
+  "head": "glyph/8/1/0/0/7",
+  "fate": [
+   "duration_narrowed",
+   "owned_by_another_staff"
+  ],
+  "dur_reason": "owned_by_another_staff",
+  "hs_reason": "no_stem",
+  "stems_drawn": 3,
+  "mates": [],
+  "label": "A lit p8 8/1/0/0/7 | dur abst:owned_by_anoth | stem abst:no_stem | mates -"
+ },
+ {
+  "i": 6,
+  "group": "A_no_stem",
+  "plate": "litolff",
+  "page": 2,
+  "head": "glyph/2/1/5/13/1",
+  "fate": [
+   "duration_narrowed",
+   "owned_by_another_staff"
+  ],
+  "dur_reason": "beams_ambiguous",
+  "hs_reason": "no_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/2/1/5/13/2"
+  ],
+  "label": "A lit p2 2/1/5/13/1 | dur narr:beams_ambiguou | stem abst:no_stem | mates narr:beams_ambiguou"
+ },
+ {
+  "i": 7,
+  "group": "B_chord_disagree",
+  "plate": "litolff",
+  "page": 8,
+  "head": "glyph/8/0/0/15/7",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 4,
+  "mates": [
+   "glyph/8/0/0/15/4",
+   "glyph/8/0/0/15/10",
+   "glyph/8/0/0/15/12"
+  ],
+  "label": "B lit p8 8/0/0/15/7 | dur deci:1.0/d0/b0 | stem deci:obs:181422 | mates deci:2.0/d0/b0 deci:1.0/d0/b0 abst:owned_by_anoth"
+ },
+ {
+  "i": 8,
+  "group": "B_chord_disagree",
+  "plate": "litolff",
+  "page": 6,
+  "head": "glyph/6/1/0/9/9",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 4,
+  "mates": [
+   "glyph/6/1/0/9/11"
+  ],
+  "label": "B lit p6 6/1/0/9/9 | dur deci:0.5/d0/b1 | stem deci:obs:141904 | mates deci:1.0/d0/b0"
+ },
+ {
+  "i": 9,
+  "group": "B_chord_disagree",
+  "plate": "litolff",
+  "page": 6,
+  "head": "glyph/6/0/8/0/17",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 5,
+  "mates": [
+   "glyph/6/0/8/0/2"
+  ],
+  "label": "B lit p6 6/0/8/0/17 | dur deci:2.0/d0/b0 | stem deci:obs:141302 | mates deci:0.5/d0/b1"
+ },
+ {
+  "i": 10,
+  "group": "B_chord_disagree",
+  "plate": "litolff",
+  "page": 9,
+  "head": "glyph/9/0/0/5/3",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/9/0/0/5/7",
+   "glyph/9/0/0/5/8",
+   "glyph/9/0/0/5/9"
+  ],
+  "label": "B lit p9 9/0/0/5/3 | dur deci:2.0/d0/b0 | stem deci:obs:215391 | mates deci:1.0/d0/b0 deci:2.0/d0/b0 deci:2.0/d0/b0"
+ },
+ {
+  "i": 11,
+  "group": "B_chord_disagree",
+  "plate": "litolff",
+  "page": 6,
+  "head": "glyph/6/1/8/11/13",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "stem_value_follows",
+  "hs_reason": "one_stem",
+  "stems_drawn": 2,
+  "mates": [
+   "glyph/6/1/8/11/1",
+   "glyph/6/1/8/11/7",
+   "glyph/6/1/8/11/11"
+  ],
+  "label": "B lit p6 6/1/8/11/13 | dur deci:2.0/d0/b0 | stem deci:obs:143150 | mates abst:not_a_note_mar abst:not_a_note_mar deci:0.5/d0/b1"
+ },
+ {
+  "i": 12,
+  "group": "B_chord_disagree",
+  "plate": "litolff",
+  "page": 16,
+  "head": "glyph/16/0/9/4/1",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/16/0/9/4/0"
+  ],
+  "label": "B lit p16 16/0/9/4/1 | dur deci:2.0/d0/b0 | stem deci:obs:324555 | mates deci:1.0/d0/b0"
+ },
+ {
+  "i": 13,
+  "group": "A_no_stem",
+  "plate": "brahms",
+  "page": 5,
+  "head": "glyph/5/1/11/2/6",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "no_stem",
+  "stems_drawn": 2,
+  "mates": [
+   "glyph/5/1/11/2/1",
+   "glyph/5/1/11/2/3",
+   "glyph/5/1/11/2/18"
+  ],
+  "label": "A bra p5 5/1/11/2/6 | dur deci:1.0/d0/b0 | stem abst:no_stem | mates abst:owned_by_anoth abst:not_a_note_mar deci:0.5/d0/b1"
+ },
+ {
+  "i": 14,
+  "group": "A_no_stem",
+  "plate": "brahms",
+  "page": 5,
+  "head": "glyph/5/1/10/7/2",
+  "fate": [
+   "chord_value_undecided",
+   "owned_by_another_staff"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "no_stem",
+  "stems_drawn": 0,
+  "mates": [
+   "glyph/5/1/10/7/4",
+   "glyph/5/1/10/7/8",
+   "glyph/5/1/10/7/10",
+   "glyph/5/1/10/7/18"
+  ],
+  "label": "A bra p5 5/1/10/7/2 | dur deci:1.0/d0/b0 | stem abst:no_stem | mates abst:owned_by_anoth deci:1.5/d1/b0 deci:1.5/d1/b0"
+ },
+ {
+  "i": 15,
+  "group": "A_no_stem",
+  "plate": "brahms",
+  "page": 5,
+  "head": "glyph/5/1/10/2/2",
+  "fate": [
+   "chord_value_undecided",
+   "owned_by_another_staff"
+  ],
+  "dur_reason": "owned_by_another_staff",
+  "hs_reason": "no_stem",
+  "stems_drawn": 0,
+  "mates": [
+   "glyph/5/1/10/2/6",
+   "glyph/5/1/10/2/9"
+  ],
+  "label": "A bra p5 5/1/10/2/2 | dur abst:owned_by_anoth | stem abst:no_stem | mates deci:1.0/d0/b0 deci:1.0/d0/b0"
+ },
+ {
+  "i": 16,
+  "group": "A_no_stem",
+  "plate": "brahms",
+  "page": 4,
+  "head": "glyph/4/1/2/4/1",
+  "fate": [
+   "duration_narrowed",
+   "owned_by_another_staff"
+  ],
+  "dur_reason": "owned_by_another_staff",
+  "hs_reason": "no_stem",
+  "stems_drawn": 1,
+  "mates": [],
+  "label": "A bra p4 4/1/2/4/1 | dur abst:owned_by_anoth | stem abst:no_stem | mates -"
+ },
+ {
+  "i": 17,
+  "group": "A_no_stem",
+  "plate": "brahms",
+  "page": 19,
+  "head": "glyph/19/0/7/6/11",
+  "fate": [
+   "duration_narrowed"
+  ],
+  "dur_reason": "beams_ambiguous",
+  "hs_reason": "no_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/19/0/7/6/4",
+   "glyph/19/0/7/6/10"
+  ],
+  "label": "A bra p19 19/0/7/6/11 | dur narr:beams_ambiguou | stem abst:no_stem | mates abst:owned_by_anoth narr:beams_ambiguou"
+ },
+ {
+  "i": 18,
+  "group": "A_no_stem",
+  "plate": "brahms",
+  "page": 5,
+  "head": "glyph/5/1/9/2/6",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "no_stem",
+  "stems_drawn": 0,
+  "mates": [
+   "glyph/5/1/9/2/3",
+   "glyph/5/1/9/2/14"
+  ],
+  "label": "A bra p5 5/1/9/2/6 | dur deci:1.0/d0/b0 | stem abst:no_stem | mates deci:0.5/d0/b1 deci:1.0/d0/b0"
+ },
+ {
+  "i": 19,
+  "group": "B_chord_disagree",
+  "plate": "brahms",
+  "page": 0,
+  "head": "glyph/0/0/13/1/1",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 2,
+  "mates": [
+   "glyph/0/0/13/1/4"
+  ],
+  "label": "B bra p0 0/0/13/1/1 | dur deci:3.0/d1/b0 | stem deci:obs:022461 | mates deci:1.0/d0/b0"
+ },
+ {
+  "i": 20,
+  "group": "B_chord_disagree",
+  "plate": "brahms",
+  "page": 4,
+  "head": "glyph/4/0/10/9/13",
+  "fate": [
+   "chord_value_undecided",
+   "owned_by_another_staff"
+  ],
+  "dur_reason": "owned_by_another_staff",
+  "hs_reason": "one_stem",
+  "stems_drawn": 6,
+  "mates": [
+   "glyph/4/0/10/9/15"
+  ],
+  "label": "B bra p4 4/0/10/9/13 | dur abst:owned_by_anoth | stem deci:obs:082681 | mates deci:0.5/d0/b1"
+ },
+ {
+  "i": 21,
+  "group": "B_chord_disagree",
+  "plate": "brahms",
+  "page": 12,
+  "head": "glyph/12/1/0/0/6",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/12/1/0/0/14",
+   "glyph/12/1/0/0/15"
+  ],
+  "label": "B bra p12 12/1/0/0/6 | dur deci:1.5/d1/b0 | stem deci:obs:269481 | mates deci:1.0/d0/b0 deci:1.5/d1/b0"
+ },
+ {
+  "i": 22,
+  "group": "B_chord_disagree",
+  "plate": "brahms",
+  "page": 8,
+  "head": "glyph/8/0/1/5/4",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "bar_disagrees_with_decided",
+  "hs_reason": "stem_by_one_per_head",
+  "stems_drawn": 3,
+  "mates": [
+   "glyph/8/0/1/5/3"
+  ],
+  "label": "B bra p8 8/0/1/5/4 | dur deci:1.0/d0/b0 | stem deci:obs:208214 | mates deci:1.5/d1/b0"
+ },
+ {
+  "i": 23,
+  "group": "B_chord_disagree",
+  "plate": "brahms",
+  "page": 8,
+  "head": "glyph/8/0/1/3/3",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "two_stems",
+  "stems_drawn": 3,
+  "mates": [
+   "glyph/8/0/1/3/5"
+  ],
+  "label": "B bra p8 8/0/1/3/3 | dur deci:1.0/d0/b0 | stem narr:two_stems | mates deci:1.5/d1/b0"
+ },
+ {
+  "i": 24,
+  "group": "B_chord_disagree",
+  "plate": "brahms",
+  "page": 5,
+  "head": "glyph/5/1/9/7/12",
+  "fate": [
+   "chord_value_undecided"
+  ],
+  "dur_reason": "head_and_marks",
+  "hs_reason": "one_stem",
+  "stems_drawn": 1,
+  "mates": [
+   "glyph/5/1/9/7/2",
+   "glyph/5/1/9/7/7",
+   "glyph/5/1/9/7/14"
+  ],
+  "label": "B bra p5 5/1/9/7/12 | dur deci:1.0/d0/b0 | stem deci:obs:160768 | mates deci:1.5/d1/b0 deci:1.0/d0/b0 deci:1.0/d0/b0"
+ }
+]

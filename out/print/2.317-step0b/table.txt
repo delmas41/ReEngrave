@@ -1,0 +1,60 @@
+TOP by reason (lit, brahms, total)
+  57  167  224  too_narrow|not_a_notehead:too_narrow
+  48   49   97  VALUE|beams_ambiguous|stem:ok
+  20   25   45  clipped|not_a_notehead:clipped_fragment
+  12   25   37  VALUE|head_and_marks|stem:no_stem
+  22   14   36  no_pitch|no_pitch
+   7   25   32  owned_no_twin|owned_by_another_staff
+  20    9   29  VALUE|head_and_marks|stem:ok
+  10   16   26  dropped_at_render|written
+   5   11   16  VALUE|owned_by_another_staff|stem:no_stem
+  12    3   15  VALUE|beams_ambiguous|stem:no_stem
+  11    1   12  VALUE|owned_by_another_staff|stem:ok
+   9    3   12  other|not_a_notehead:stem_end_ink_disagrees
+   2    8   10  VALUE|flag_ink_unread|stem:ok
+   7    1    8  other|unread:wide_box_unread
+   1    6    7  VALUE|dot_seen_beside_a_plain_note|stem:ok
+   4    2    6  VALUE|head_and_marks|stem:two_stems
+   0    6    6  other|not_a_notehead:on_a_read_meter
+   3    2    5  dropped_at_render|owned_by_another_staff
+   2    2    4  VALUE|beams_ambiguous|stem:two_stems
+   1    3    4  other|not_a_notehead:stem_end_ink_unladdered
+   0    4    4  other|not_a_notehead:taller_than_a_filled_head
+   3    0    3  VALUE|beams_ambiguous|stem:unison_two_voices
+   3    0    3  VALUE|head_fill_from_ink|stem:no_stem
+   3    0    3  VALUE|stem_value_follows|stem:ok
+   2    1    3  other|not_a_notehead:stem_end_ink_claimed
+   0    3    3  other|not_a_notehead:is_a_dot
+   1    1    2  owned_no_twin|not_a_notehead:clipped_fragment
+   2    0    2  VALUE|chord_mate_shares_the_stem|stem:two_stems
+   1    1    2  VALUE|whole_class_filled_on_a_stem|stem:two_stems
+   1    0    1  VALUE|whole_class_filled_or_stemmed|stem:no_stem
+   1    0    1  VALUE|whole_class_filled_on_a_stem|stem:ok
+   1    0    1  VALUE|tip_readers_disagree|stem:ok
+   0    1    1  owned_no_twin|ink_not_head_shaped
+   0    1    1  owned_no_twin|not_a_notehead:too_narrow
+   0    1    1  other|not_a_notehead:on_a_barline
+   0    1    1  other|owner_not_read
+   0    1    1  VALUE|bar_disagrees_with_decided|stem:ok
+   0    1    1  VALUE|bar_corrects_one_note|stem:no_stem
+   0    1    1  dropped_at_render|not_a_notehead:clipped_fragment
+--- by duration reason only (value notes)
+  65   54  beams_ambiguous
+  36   36  head_and_marks
+  16   12  owned_by_another_staff
+   2    8  flag_ink_unread
+   1    6  dot_seen_beside_a_plain_note
+   2    1  whole_class_filled_on_a_stem
+   3    0  head_fill_from_ink
+   3    0  stem_value_follows
+   2    0  chord_mate_shares_the_stem
+   0    1  bar_disagrees_with_decided
+   1    0  whole_class_filled_or_stemmed
+   0    1  bar_corrects_one_note
+   1    0  tip_readers_disagree
+--- by fate (value notes)
+('chord_value_undecided', 'brahms') 44
+('chord_value_undecided', 'litolff') 36
+('duration_abstained', 'litolff') 1
+('duration_narrowed', 'brahms') 75
+('duration_narrowed', 'litolff') 95
