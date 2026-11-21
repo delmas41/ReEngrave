@@ -52,7 +52,8 @@ def test_flag_on_marc_is_the_words_not_a_dynamic(monkeypatch):
     monkeypatch.setenv(FLAG, "1")
     v = _verdict_reason(MARC_LETTERS, MARC, {0: ALONE, 1: ALONE})
     assert v.reason == "no_letters"
-    assert v.detail["letters_of_a_lexicon_word"] == 2
+    # ROADMAP 2.331 fix A (`OMR_WORD_LETTER_NOT_DYNAMIC`, ON): the `m` inside `marc.` is now counted as the word's own ink before this rule is asked
+    assert v.detail["letters_of_a_lexicon_word"] + v.detail.get("letters_of_the_word_ink", 0) == 2
 
 
 def test_CONTROL_flag_on_a_lone_p_in_a_word_box_is_still_piano(monkeypatch):

@@ -522,7 +522,7 @@ def letters_of_the_word(letter_boxes: Sequence[Sequence[float]], word_box: Seque
     return "letters_of_a_word"
 
 
-#: ROADMAP 2.331 fix A (flag `OMR_WORD_LETTER_NOT_DYNAMIC`, default OFF): ADJUDICATE's dynamic hears the word. Sean 2026-11-11 (2.301 r1 tile 4): "it boxes MP, but it's actually
+#: ROADMAP 2.331 fix A (flag `OMR_WORD_LETTER_NOT_DYNAMIC`, default ON; a deny-list): ADJUDICATE's dynamic hears the word. Sean 2026-11-11 (2.301 r1 tile 4): "it boxes MP, but it's actually
 #: a part of the word sempre. So that should be a word"; 2026-10-09: "When p is by itself it is piano; when it is surrounded by other letters the context solves it".
 #: CAUSE (2.331 pricing, the p of `Pizz.`, `pesante`, `poco f`, the `do` of `perdendosi` written as dynamics): the detector boxes one printed letter two to four times; GATHER
 #: asks the run of twins once (ink beside ANY twin counts), but `text.adjudicate_dynamic` asked each twin alone, and a twin boxed tight round the bowl measured no ink beside
@@ -532,8 +532,8 @@ ENV_WORD_LETTER_NOT_DYNAMIC = "OMR_WORD_LETTER_NOT_DYNAMIC"
 
 
 def word_letter_not_dynamic_enabled() -> bool:
-    """`OMR_WORD_LETTER_NOT_DYNAMIC` (ROADMAP 2.331 fix A), default OFF ("1"/"true"/"yes"/"on" turns it on)."""
-    return os.environ.get(ENV_WORD_LETTER_NOT_DYNAMIC, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_WORD_LETTER_NOT_DYNAMIC` (ROADMAP 2.331 fix A), default ON (a deny-list: "0"/"false"/"no"/"off" turns it off)."""
+    return os.environ.get(ENV_WORD_LETTER_NOT_DYNAMIC, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
 def letter_is_the_words(letter_boxes: Sequence[Sequence[float]], letter: Optional[str], word_box: Sequence[float], word_text: str,

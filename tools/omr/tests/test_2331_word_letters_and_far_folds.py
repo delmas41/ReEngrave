@@ -103,7 +103,7 @@ def _written(v):
 @pytest.mark.parametrize("name,place", [("Pizz.", PIZZ), ("pesante", PESANTE), ("perdendosi", PERDENDOSI), ("poco f", POCO_F)])
 def test_A_flag_off_the_letter_of_the_word_is_written_as_a_dynamic(monkeypatch, name, place):
     """THE CONTROL THAT FAILS: with the flag off the word's letter reaches the file as a dynamic (what the 2.331 pricing found)."""
-    monkeypatch.delenv(FLAG_A, raising=False)
+    monkeypatch.setenv(FLAG_A, "0")
     v = _dynamic(place)
     assert v.detail.get("letters_of_the_word_ink", 0) == 0
     letters = "".join(_written(v) or [])
@@ -125,7 +125,7 @@ def test_A_flag_on_the_letter_of_the_word_is_the_words(monkeypatch, name, place)
 @pytest.mark.parametrize("name,place", [("piu p", PIU_P), ("p cresc.", P_CRESC)])
 def test_A_a_dynamic_next_to_a_word_is_never_dropped(monkeypatch, name, place):
     """The other side of the boundary: the space between the word and the dynamic. Same file with the flag on as off."""
-    monkeypatch.delenv(FLAG_A, raising=False)
+    monkeypatch.setenv(FLAG_A, "0")
     off = _written(_dynamic(place))
     monkeypatch.setenv(FLAG_A, "1")
     v = _dynamic(place)
@@ -153,11 +153,12 @@ def test_A_rule_words():
     assert CL.letter_is_the_words([[20, 5, 60, 45]], "p", box, "poco f", True) is None
 
 
-def test_A_flag_default_off(monkeypatch):
+def test_A_flag_default_on(monkeypatch):
     monkeypatch.delenv(FLAG_A, raising=False)
-    assert not CL.word_letter_not_dynamic_enabled()
-    monkeypatch.setenv(FLAG_A, "1")
     assert CL.word_letter_not_dynamic_enabled()
+    for off in ("0", "false", "no", "off"):
+        monkeypatch.setenv(FLAG_A, off)
+        assert not CL.word_letter_not_dynamic_enabled()
 
 
 # ── B: a far head is never placed by its ink position ────────────────────────
