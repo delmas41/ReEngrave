@@ -284,6 +284,13 @@ def _clot_stems(s: StrokeView, by_ord: Dict[int, StrokeView]) -> List[int]:
     return sorted(out - direct)
 
 
+#: 2.319: EVERY BEAM LIES WITHIN ONE BAR (page-facts, Sean 2026-11-04: "Every beam is within a bar"). A stroke whose ink runs out of the bar at BOTH ends
+#: (the cell's crop cuts it left and right) crosses the barlines, so it is a staff line or a rule, never a beam -- the neighbour staff's line in the cell's
+#: padding, which the erase of THIS staff's lines leaves standing, lies under the flagged eighths of Brahms p25 0/2/1 and stem tips that stop short of
+#: it were joined to it by the face rule: four flagged eighths counted as one beam group. Structural. Never a stroke that ends inside the bar at either end.
+BEAM_WITHIN_ONE_BAR = True
+
+
 def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = False, trough: bool = False, one_count: bool = False) -> Dict[str, object]:
     """The role of one stroke and the signed margins that say how close it came. Pure; reads `s` and the kinds of its neighbours.
 
@@ -293,6 +300,8 @@ def role_of(s: StrokeView, by_ord: Dict[int, StrokeView], *, face_join: bool = F
     (`BEAM_DOUBT_MIN_THICKNESS_SP` .. `BEAM_MIN_THICKNESS_SP`) as `beam_doubt` instead of `span_thin`."""
     if s.kind not in ("horizontal", "curve"):
         return {"role": "other", "why": "kind:" + s.kind}
+    if one_count and BEAM_WITHIN_ONE_BAR and "l" in (s.cut or "") and "r" in (s.cut or ""):
+        return {"role": "other", "why": "runs_out_of_the_bar"}
     stems = sorted({j for j, _c in s.touches if j in by_ord and by_ord[j].kind == "vertical" and by_ord[j].length <= STEM_MAX_SPACES})
     gap_stems: List[int] = []
     if face_join and s.kind == "horizontal" and stems:
@@ -741,6 +750,26 @@ def _ends_at_a_beam(strokes: Sequence[StrokeView], v: StrokeView, end_y: float) 
     return False
 
 
+#: 2.319: A LETTER CLAIMS ITS OWN INK, NOT THE STEM ITS BOX COVERS (Sean 2026-11-18: "We use the boxes to identify something, but then claim only the
+#: ink"). Litolff prints `ff` hard under a beamed group; the staff erase cut a stem at the bottom line and the letter's box covered the stem's lower piece,
+#: so the claim filed that piece as the `ff`'s and the stem stopped short of its beam (Litolff p16 1/7/2, the first of three beamed eighth chords, written a
+#: quarter). An upright piece in line with the stem, whose far end runs into a beam and whose ink touches NO ink of the letter that claimed it, is the
+#: stem's piece: the chain follows it (a crossing's cut only). Structural, no number. Never a piece that touches the letter's own ink, never one that does not
+#: reach a beam, never a piece another kind of mark claimed. The claim itself is left as it is (the stroke owner's business): the stem is READ through it.
+STEM_PIECE_A_LETTER_TOOK = True
+
+
+def _stem_piece_a_letter_took(strokes: Sequence[StrokeView], w: StrokeView, side: str) -> bool:
+    if not STEM_PIECE_A_LETTER_TOOK or w.kind not in ("owned", "contested") or w.family not in FUSABLE_FAMILIES:
+        return False
+    if w.box[3] < 3.0 * w.box[2]:
+        return False                    # upright: a stem's piece is several times taller than wide
+    by_o = {s.ordinal: s for s in strokes}
+    if any((by_o.get(j) is not None and by_o[j].family == w.family) for j, _c in w.touches):
+        return False                    # its ink is joined to the letter's: the letter's own ink
+    return _ends_at_a_beam(strokes, w, _far_end(w, side)[1])
+
+
 def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> StrokeView:
     """Follow the stem to its far end across a crossing that cut it: the next vertical piece in the same x-column, starting where this one ends
     or within `ONE_STEM_BREAK_MAX_GAP_SPACES` of it. One piece: the stroke itself. Several: one stem stroke (union box, union of what touches it)."""
@@ -754,9 +783,15 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
         # from a piece that ends in a beam's band: what stands in line beyond is another note's (Litolff p4 1/2/14)
         at_beam = CHAIN_STOPS_AT_A_BEAM and _ends_at_a_beam(strokes, members[-1], cur_y)
         for w in strokes:
-            if w.kind != "vertical" or w.length > STEM_MAX_SPACES or any(w.ordinal == m.ordinal for m in members):
+            if (w.kind != "vertical" and not _stem_piece_a_letter_took(strokes, w, side)) or w.length > STEM_MAX_SPACES \
+                    or any(w.ordinal == m.ordinal for m in members):
                 continue
             wx, wy = _far_end(w, side)
+            if w.kind != "vertical":
+                # a piece a letter's box took is followed only across a crossing's cut, never the long step through a head
+                near_ = w.box[1] + w.box[3] if side == "up" else w.box[1]
+                if ((cur_y - near_) if side == "up" else (near_ - cur_y)) > ONE_STEM_BREAK_MAX_GAP_SPACES * sp:
+                    continue
             if abs(wx - cur_x) > ONE_STEM_COLLINEAR_X_SPACES * sp:
                 continue
             near = w.box[1] + w.box[3] if side == "up" else w.box[1]          # the piece's end toward the stem
@@ -782,8 +817,9 @@ def _chain(strokes: Sequence[StrokeView], first: StrokeView, side: str) -> Strok
         for j, c in m.touches:
             if not any(j == o.ordinal for o in members):
                 touches[j] = max(touches.get(j, 0.0), c)
+    read_as_stem = {"kind": "vertical", "family": ""} if far.kind != "vertical" and far.family in FUSABLE_FAMILIES else {}
     return dataclasses.replace(far, box=(x0, y0, x1 - x0, y1 - y0), length=(y1 - y0) / sp, touches=tuple(sorted(touches.items())),
-                               ends=(), profile=())
+                               ends=(), profile=(), **read_as_stem)
 
 
 #: A stem a scan has parted from its head by a hair of paper (Breitkopf SHATTERS) is still the head's stem: the vertical stands within this many staff
@@ -1179,6 +1215,22 @@ def _may_be_flag_or_broken_beam(strokes: Sequence[StrokeView], s: StrokeView, ti
 #: beam's outer face and the beams are counted from there. Structural, no number. Never where the ink past the stroke touches no letter: a stem that
 #: runs on through a ledger line or a row of heads (Litolff p15 0/0/19, quarters above the staff) has not been shown to end there.
 STEM_ENDS_AT_ITS_BEAM = True
+#: 2.319: ...AND THE LETTER'S INK IS THE LETTER'S WHETHER OR NOT ITS CLAIM HELD. The claim refuses a letter's piece whose ink runs into a note
+#: (`letter_ink_runs_into_a_note`) -- here the very stem that runs on into the `ff` -- so past the beam the stem touched only ink nobody claimed and the
+#: rule above waited on a claim that never comes (Litolff p16 1/7/2: three beamed eighth chords over an `ff`, the middle one written a quarter). Ink
+#: past the beam that runs straight into a dynamic's or a word's claimed ink is that letter's: one step of ink, never more. Never ink that touches no
+#: letter (a ledger line, a row of heads past the beam).
+LETTER_INK_ONE_STEP = True
+
+
+def _letter_ink(s: StrokeView, by_o: Dict[int, StrokeView]) -> bool:
+    """`s` is a dynamic's or a word's ink: claimed by one, or (2.319) unclaimed ink whose own ink touches a stroke one has claimed."""
+    if s.kind in ("owned", "contested"):
+        return s.family in FUSABLE_FAMILIES
+    if not LETTER_INK_ONE_STEP:
+        return False
+    return any(t is not None and t.kind in ("owned", "contested") and t.family in FUSABLE_FAMILIES
+               for t in (by_o.get(j) for j, _c in s.touches))
 
 
 def _stem_cut_at_its_beam(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, side: str,
@@ -1205,8 +1257,7 @@ def _stem_cut_at_its_beam(strokes: Sequence[StrokeView], role_by_ord: Dict[int, 
             best = face
     if best is None:
         return None
-    if not any(s.family in FUSABLE_FAMILIES and s.kind in ("owned", "contested")
-               and ((s.box[1] < best) if side == "up" else (s.box[1] + s.box[3] > best)) for s in touching):
+    if not any(_letter_ink(s, by_o) and ((s.box[1] < best) if side == "up" else (s.box[1] + s.box[3] > best)) for s in touching):
         return None
     y0, y1 = (best, by + bh) if side == "up" else (by, best)
     if y1 - y0 <= 0:
