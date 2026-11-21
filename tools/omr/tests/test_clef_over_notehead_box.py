@@ -22,7 +22,12 @@ held. Each of those tests is still a way for 2.11 to fail, because each one
 is a cluster the override must NOT take.
 
 ⚠️ NO SOURCE-TEXT ASSERTIONS. Every test drives the real `locate_clef` over a
-drawn cell, or the real adjudicator over a real `Log`.
+drawn cell.
+
+ROADMAP 2.324: the STAGED `is_a_clef` refusal (`TestTheRefusal`) went with
+the locator's STAGED gather; the locator itself stays (LEGACY
+`transcribe.py` and `staged/clef_pagewide.py` import it), so its override
+tests stay.
 """
 
 from __future__ import annotations
@@ -33,10 +38,6 @@ import cv2
 import numpy as np
 
 from tools.omr.clef_locator import DEFAULT_LOCATOR_CONFIG, locate_clef
-from tools.omr.staged import adjudicate
-from tools.omr.staged import adjudicators  # noqa: F401  registers them
-from tools.omr.staged import record as R
-from tools.omr.staged.record import Log, Q, READERS
 
 from tools.omr.tests.test_clef_locator import (
     CELL_W,
@@ -282,130 +283,5 @@ class TestTheVetoSurvives(unittest.TestCase):
         self.assertEqual(found.overrode_occupied, ())
 
 
-# ─────────────────────────────────────────────────────────────────────────────
-# The refusal: the boxes the clef overrode are not noteheads.
-# ─────────────────────────────────────────────────────────────────────────────
-
-STAFF = R.staff(0, 0, 0)
-CELL = R.cell(0, 0, 0, 0)
-CANONICAL_SPACING = 100.0
-
-
-def _log_with(overrode, *, clef="alto", n_glyphs=2):
-    log = Log()
-    log.observe(CELL, Q.CELL_STAFF_SPACE, CANONICAL_SPACING,
-                reader=READERS.GEOMETRY, frame="cell:0")
-    log.observe(CELL, Q.CELL_BOX, [500.0, 1000.0, 700.0, 1300.0],
-                reader=READERS.GEOMETRY, frame="cell:0")
-    kw = {}
-    if overrode is not None:
-        kw = {"overrides_notehead_box": True,
-              "overrode_glyph_subjects": list(overrode)}
-    log.observe(STAFF, Q.CLEF_LOCATED, clef, reader=READERS.CV_LOCATOR,
-                frame="header_window", score=0.81, family="C", line=3,
-                line_source="geometry", x_center=60, bbox=[40, 300, 40, 420],
-                **kw)
-    glyphs = []
-    for gi in range(n_glyphs):
-        g = R.glyph(0, 0, 0, 0, gi)
-        # ⚠️ Ordinary, unimpeachable notehead geometry: 1.4 x 1.0 staff
-        # spaces, inside the staff, high confidence, nowhere near the crop
-        # edge. Neither `too_narrow` nor `clipped_fragment` can fire, so a
-        # refusal below can only be `is_a_clef`.
-        log.observe(g, Q.GLYPH_BOX,
-                    ("noteheadBlackOnLine", 200.0 + 300 * gi, 200.0,
-                     140.0, 100.0),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.8,
-                    category="notehead",
-                    bbox_page_px=[560.0 + 30 * gi, 1100.0,
-                                  574.0 + 30 * gi, 1110.0])
-        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine",
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.8)
-        log.observe(g, Q.GLYPH_CONF, 0.8, reader=READERS.DETECTOR,
-                    frame="cell:0", score=0.8)
-        log.observe(g, Q.NOTEHEAD_STAFF_POSITION, 4.0,
-                    reader=READERS.GEOMETRY, frame="cell:0")
-        glyphs.append(g)
-    log.freeze()
-    adjudicate._ensure_decisions()
-    adjudicate.run(log, order=(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,))
-    return log, glyphs
-
-
-class TestTheRefusal(unittest.TestCase):
-
-    def test_the_overridden_box_is_refused_is_a_clef(self):
-        log, glyphs = _log_with(["glyph/0/0/0/0/0"])
-        v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, glyphs[0])
-        self.assertTrue(v.value)
-        self.assertEqual(v.reason, "is_a_clef")
-
-    def test_a_notehead_elsewhere_on_the_staff_is_untouched(self):
-        """⚠️ THE CONTROL THAT MATTERS MOST: the refusal must be keyed on the
-        NAMED box, never on "this staff has an overriding clef"."""
-        log, glyphs = _log_with(["glyph/0/0/0/0/0"])
-        v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, glyphs[1])
-        self.assertFalse(v.value)
-        self.assertEqual(v.reason, "notehead")
-
-    def test_the_refusal_CITES_the_clef_row(self):
-        """A CONNECT, not a guess: the verdict's basis must name the read
-        that caused it, or nothing downstream can trace the refusal back."""
-        log, glyphs = _log_with(["glyph/0/0/0/0/0"])
-        v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, glyphs[0])
-        clef_rows = [r for r in log.rows(Q.CLEF_LOCATED, STAFF)]
-        self.assertTrue(clef_rows)
-        self.assertIn(clef_rows[-1].id, v.basis)
-
-    def test_a_clef_read_that_overrode_NOTHING_refuses_nothing(self):
-        """The positive control for the whole rule: the same staff, the same
-        clef, the same boxes — only the `overrode_glyph_subjects` key gone."""
-        log, glyphs = _log_with(None)
-        for g in glyphs:
-            v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
-            self.assertFalse(v.value)
-            self.assertEqual(v.reason, "notehead")
-
-    def test_a_staff_with_no_clef_row_at_all_refuses_nothing(self):
-        log = Log()
-        log.observe(CELL, Q.CELL_STAFF_SPACE, CANONICAL_SPACING,
-                    reader=READERS.GEOMETRY, frame="cell:0")
-        g = R.glyph(0, 0, 0, 0, 0)
-        log.observe(g, Q.GLYPH_BOX,
-                    ("noteheadBlackOnLine", 200.0, 200.0, 140.0, 100.0),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.8,
-                    category="notehead")
-        log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine",
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.8)
-        log.observe(g, Q.GLYPH_CONF, 0.8, reader=READERS.DETECTOR,
-                    frame="cell:0", score=0.8)
-        log.observe(g, Q.NOTEHEAD_STAFF_POSITION, 4.0,
-                    reader=READERS.GEOMETRY, frame="cell:0")
-        log.freeze()
-        adjudicate._ensure_decisions()
-        adjudicate.run(log, order=(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD,))
-        v = log.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, g)
-        self.assertFalse(v.value)
-        self.assertEqual(v.reason, "notehead")
-
-
 if __name__ == "__main__":
     unittest.main()
-
-
-# ROADMAP 2.181 flipped OMR_CLAIMED_REGISTER ON; this file pins the pre-register path (flag OFF) it was written for.
-import os as _os_2181
-_PREV_2181 = None
-
-
-def setUpModule():
-    global _PREV_2181
-    _PREV_2181 = _os_2181.environ.get("OMR_CLAIMED_REGISTER")
-    _os_2181.environ["OMR_CLAIMED_REGISTER"] = "0"
-
-
-def tearDownModule():
-    if _PREV_2181 is None:
-        _os_2181.environ.pop("OMR_CLAIMED_REGISTER", None)
-    else:
-        _os_2181.environ["OMR_CLAIMED_REGISTER"] = _PREV_2181

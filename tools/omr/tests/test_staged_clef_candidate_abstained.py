@@ -71,15 +71,15 @@ class TestAnUnknownCandidateIsNotEliminated(unittest.TestCase):
     def test_a_fit_that_would_have_been_non_discriminating_does_not_stand(self):
         """treble, alto and tenor fit (3 of 4 discriminates). bass THREW: had
         it fitted, all four would, and the fit would have said nothing -- so
-        treble's fit support (1.5) is not safe to count. Treble also has the
-        locator (2.0): 3.5 beat alto's 1.5 by 2.0 before; without the fit
-        support treble's 2.0 does not clear alto's 1.5 by the floor."""
+        treble's fit support (1.5) is not safe to count. Treble also has a
+        mid-confidence detector box (1.5; until 2.324 this was the CV locator's
+        2.0): 3.0 would beat alto's 1.5 by the floor with the fit; without the
+        fit support treble's 1.5 does not clear alto's 1.5 by the floor."""
         log = _log()
         for c in ("treble", "alto", "tenor"):
             _fit(log, c)
         _threw(log, "bass")
-        log.observe(SUB, Q.CLEF_LOCATED, "treble", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.9)
+        _detector(log, "clefG", score=0.5)
         v = _verdict(log)
         self.assertIsNot(v.outcome, Outcome.DECIDED)
 

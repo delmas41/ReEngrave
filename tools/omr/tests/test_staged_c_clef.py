@@ -31,6 +31,13 @@ from tools.omr.tests._staged_fixtures import fresh_log as _log
 SUB = R.staff(0, 0, 0)
 
 
+def _pagewide_clef(log, sub, kind):
+    """ROADMAP 2.324: the page-wide pass's READ header claim of this staff's clef (the CV locator is retired)."""
+    log.observe(sub, Q.CLAIMED_AREA, [10.0, 0.0, 40.0, 80.0], reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0",
+                cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ",
+                source="clef_pagewide", change=False, kind=kind, family=None, boxes_inside={})
+
+
 class TestTheCategoryTestIsLoadBearing(unittest.TestCase):
     """⚠️⚠️ `clef_family` reads the leading letter of the class name's core,
     so WITHOUT the category test it calls `flag8thUp` a BASS clef and
@@ -83,96 +90,47 @@ class TestAClassNameStillCannotNameWhichCClef(unittest.TestCase):
         self.assertNotIn("clefCAlto", clef_mod._GLYPH_TO_CLEF)
         self.assertNotIn("clefCTenor", clef_mod._GLYPH_TO_CLEF)
 
-    @staticmethod
-    def _brahms_p3s1st11(n_crops):
-        """The evidence shape the record holds on Brahms 1 p3/s1/st11 AFTER
-        this repair -- the detector's `clefCTenor` glyph, its grid position,
-        and the locator's `alto`, measured on `n_crops` crops."""
-        log = _log()
-        log.observe(SUB, Q.CLEF_GLYPH, "clefCTenor", reader=READERS.DETECTOR,
-                    frame="cell:0", score=0.95, y_center=180.0, x_center=50.0)
-        log.observe(SUB, Q.CLEF_POSITION, 4.0, reader=READERS.GEOMETRY,
-                    frame="cell:0", glyph="clefCTenor", y_center=180.0)
-        for frame in ("header_window", "cell:0")[:n_crops]:
-            log.observe(SUB, Q.CLEF_LOCATED, "alto", reader=READERS.CV_LOCATOR,
-                        frame=frame, score=0.912, family="C", line=3)
-        adjudicate.run(log)
-        return log.verdict(Q.CLEF, SUB)
 
-    def test_the_measured_disagreement_stays_with_the_locator(self):
-        """⚠️ THE MEASURED CASE, AS A TEST, AND THE FIRST DRAFT OVERCLAIMED
-        IT -- the mutation battery is what caught that, not review.
-
-        Brahms 1 p3/s1/st11: detector `clefCTenor`, locator `alto` on TWO
-        crops. I wrote that naming the clef from the class would "flip that
-        staff to tenor". It does not: two crops are two signals, so alto
-        carries 2.0 + 2.0 + 1.5 family = 5.5 against tenor's 3.0 + 1.5 = 4.5.
-        What it DOES do is the assertion below."""
-        v = self._brahms_p3s1st11(2)
-        self.assertEqual(v.value, "alto")
-
-    def test_naming_the_clef_would_erode_the_margin_to_the_FLOOR(self):
-        """⚠️ THE REAL COST, MEASURED. Under the shipped rule this staff is
-        uncontested -- one candidate, margin 5.5. Let the class name the clef
-        and a contender appears at 4.5, putting the margin at EXACTLY
-        `MARGIN_FLOOR`: one crop or one confidence tier away from a NARROWED
-        verdict, i.e. from losing its clef. That is the erosion the refusal
-        prevents, and it is a stronger statement than the flip I claimed."""
-        v = self._brahms_p3s1st11(2)
-        self.assertGreater(v.margin, clef_mod.MARGIN_FLOOR)
-
-    def test_with_ONE_crop_naming_the_clef_DOES_flip_the_staff(self):
-        """⚠️ AND THE FLIP IS REAL WHERE THE LOCATOR HAS ONE CROP -- which is
-        the shape of Brahms p1/s1/st10 in the same record. alto 3.5 against
-        a named tenor's 4.5: the staff changes clef, and with it every pitch
-        on it and the slot table its key signature is fitted against."""
-        v = self._brahms_p3s1st11(1)
-        self.assertEqual(v.value, "alto")
-
-
-class TestTheFineCClefsSUPPORTTheClefTheLocatorNamed(unittest.TestCase):
+class TestTheFineCClefsSUPPORTTheClefThePageNamed(unittest.TestCase):
     """The consumer half: `_c_family_support` matched the literal `"clefC"`,
     so the mechanism built for exactly this was keyed on a name that never
     arrives."""
 
-    def test_clefCAlto_supports_the_locators_C_clef(self):
+    def test_clefCAlto_supports_the_pages_C_clef(self):
         log = _log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefCAlto", reader=READERS.DETECTOR,
                     frame="cell:0", score=0.95)
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
         self.assertEqual(v.value, "tenor")
-        # ⚠️ THE SCORE, NOT A SUBSTRING. `tenor` must carry the locator's
-        # W_LOCATOR *plus* W_C_FAMILY -- a name check would pass on a verdict
+        # ⚠️ THE SCORE, NOT A SUBSTRING. `tenor` must carry the page-wide
+        # read's W_PAGEWIDE (2.324; was the locator's W_LOCATOR) *plus* W_C_FAMILY -- a name check would pass on a verdict
         # the support never reached, which is the fault this lane is about.
         self.assertAlmostEqual(v.detail["scores"]["tenor"],
-                               clef_mod.W_LOCATOR + clef_mod.W_C_FAMILY)
+                               clef_mod.W_PAGEWIDE + clef_mod.W_C_FAMILY)
 
-    def test_WITHOUT_the_C_clef_the_same_staff_scores_the_locator_alone(self):
+    def test_WITHOUT_the_C_clef_the_same_staff_scores_the_page_read_alone(self):
         """⚠️ THE CONTROL THAT GIVES THE NUMBER ABOVE ITS MEANING. Identical
         log minus the detector row: if this also read 3.5, the assertion
         above would be measuring nothing."""
         log = _log()
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
-        self.assertAlmostEqual(v.detail["scores"]["tenor"], clef_mod.W_LOCATOR)
+        self.assertAlmostEqual(v.detail["scores"]["tenor"], clef_mod.W_PAGEWIDE)
 
     def test_a_G_clef_is_NOT_C_family_support(self):
         """⚠️ POSITIVE CONTROL: a support rule that returned every row would
         satisfy the test above just as well. A `clefG` beside a located
-        `tenor` must leave tenor on the locator's weight alone."""
+        `tenor` must leave tenor on the page read's weight alone."""
         log = _log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefG", reader=READERS.DETECTOR,
                     frame="cell:0", score=0.95)
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
-        self.assertAlmostEqual(v.detail["scores"]["tenor"], clef_mod.W_LOCATOR)
+        self.assertAlmostEqual(v.detail["scores"]["tenor"], clef_mod.W_PAGEWIDE)
 
 
 class TestTheIncumbentSetAdmittedASpellingThatNeverFires(unittest.TestCase):

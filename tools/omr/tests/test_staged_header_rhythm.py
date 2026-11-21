@@ -17,6 +17,13 @@ from tools.omr.staged.record import (ABSTAIN, Log, Outcome, Q, READERS, Scope,
 SUB = R.staff(0, 0, 0)
 
 
+def _pagewide_clef(log, sub, kind):
+    """ROADMAP 2.324: the page-wide pass's READ header claim of this staff's clef (the CV locator is retired)."""
+    log.observe(sub, Q.CLAIMED_AREA, [10.0, 0.0, 40.0, 80.0], reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0",
+                cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ",
+                source="clef_pagewide", change=False, kind=kind, family=None, boxes_inside={})
+
+
 def _with_clef(log, clef="treble", sub=SUB):
     log.observe(sub, Q.CLEF_GLYPH, {"treble": "clefG", "bass": "clefF"}[clef],
                 reader=READERS.DETECTOR, frame="cell:0", score=0.95)
@@ -72,10 +79,8 @@ class TestTheKeyFitTestsTheClef(unittest.TestCase):
         log = Log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefC", reader=READERS.DETECTOR,
                     frame="cell:0", score=0.9)
-        log.observe(SUB, Q.CLEF_LOCATED, "alto", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.7)
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="cell:0", score=0.7)
+        _pagewide_clef(log, SUB, "alto")
+        _pagewide_clef(log, SUB, "tenor")
         # the run fits tenor only
         log.observe(SUB, Q.KEYSIG_CLEF_FIT, "tenor", reader=READERS.CV_HEADER,
                     frame="header_window", n_accidentals=3, fifths=-3)

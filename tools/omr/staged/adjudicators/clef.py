@@ -423,7 +423,7 @@ def _human_named_c_clef(ev: Evidence, glyph_row: Any
 
       **UNPLACED** (`clefC`) -- he named a C clef and nothing more; geometry
       alone may name the line, exactly as it does for the CV locator. Citing
-      the POSITION row only, exactly as `_locator_terms` cites the locator's
+      the POSITION row only, exactly as the retired CV locator's terms did
       -- citing the glyph row too would put the term in the wrong correlated
       group and risk double-counting against `_c_family_support`'s own
       (glyph-row) citation for a row that falls through instead. Unsnappable
@@ -613,17 +613,6 @@ def _detector_terms(ev: Evidence
     return out, discounted
 
 
-def _locator_terms(ev: Evidence) -> Dict[str, List[Term]]:
-    """Both crops. Two rows on two frames are TWO signals; the correlation
-    check only collapses them if they are really the same reading."""
-    out: Dict[str, List[Term]] = {}
-    for row in ev.rows(Q.CLEF_LOCATED):
-        name = str(row.value)
-        out.setdefault(name, []).append(
-            Term(f"locator@{row.frame}", W_LOCATOR, (row.id,)))
-    return out
-
-
 #: ROADMAP 2.324: a start-of-staff clef the page-wide pass READ -- two witnesses of its own (the C clef's bar and bowls; the F clef's box
 #: and the dots on its line; the G clef's box and its ink past the staff) AND it stands on this staff's own lines: the weight a confident
 #: detector box standing on this staff carries today (`W_DETECTOR_HIGH` + `W_ON_THIS_STAFF`), so a page that spoke decides as it did
@@ -761,9 +750,9 @@ def _worst_case_margin(candidates: Dict[str, List[Term]],
         "continuity: a part's clef is stable across systems unless a change is printed",
     ),
     implicates=(Q.CLEF, Q.INSTRUMENT, Q.NOTEHEAD_STAFF_POSITION, Q.KEY_SIGNATURE),
-    composed_from=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED),
+    composed_from=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_SEED),
     scope=Kind.STAFF,
-    wants=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED,
+    wants=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_SEED,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT,
            Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide pass's header reads
     reasons=("scored", "no_candidates", "margin_below_floor",
@@ -797,7 +786,7 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # ROADMAP 2.324: ON, the page evidence is the page-wide pass's header read ONLY -- the detector's cell-0
     # read and the locator do not run (a human's `Q.CLEF_GLYPH` row still reaches `_detector_terms`: it is not a reader of ink).
     pagewide_terms, pagewide_c_unread = _pagewide_terms(ev)
-    read = (detector_terms, _locator_terms(ev), pagewide_terms)
+    read = (detector_terms, pagewide_terms)
     page_spoke = any(bool(source) for source in read)
     carried, seeds_withheld = _carry_terms(ev, page_spoke=page_spoke)
     for source in (*read, carried):

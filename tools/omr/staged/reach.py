@@ -176,6 +176,12 @@ KNOWN_GAPS: Dict[str, str] = {
         "ABSTAIN-ONLY, and `gather_coverage` section 1b already reports it as "
         "such -- a reader declared it and never observed one."),
     Q.CLEF_REFUSAL_BRANCH: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
+    Q.CLEF_LOCATED: (
+        "RETIRED READER, KEPT DECLARED (ROADMAP 2.324): `gather_clef_locator` was its only producer and is gone, and its "
+        "consumers went with it. The quantity stays because every record gathered before 2.324 carries `clef_located` rows, "
+        "and `review.rerun.rebuild_gather` (lane_report, claim_readout, the review viewer) replays them through "
+        "`Log.observe`, which raises on an unknown quantity. Before 2.324's clean-up a READ in `gather_clef_slot_claim` "
+        "made this look LIVE; it never was after the landing."),
     Q.LEFT_EDGE_INK: "DECLARED, UNGATHERED — reported by `gather_coverage` section 2.",
     Q.TEXT_LAYER: (
         "DECLARED, UNGATHERED — reported by `gather_coverage` section 2. ⚠️ Not "
