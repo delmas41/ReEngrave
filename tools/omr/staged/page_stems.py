@@ -297,6 +297,36 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
     return n
 
 
+def touch_map(strokes: Dict[int, Dict[str, Any]]) -> Dict[int, set]:
+    """ROADMAP 2.306 r15: the page map's contacts, both ways: `{ord: {ords whose ink touches it}}`. Pure."""
+    tch: Dict[int, set] = {}
+    for o, s in strokes.items():
+        for j, _c in (s.get("touches") or ()):
+            tch.setdefault(int(o), set()).add(int(j))
+            tch.setdefault(int(j), set()).add(int(o))
+    return tch
+
+
+def head_ink(heads: Sequence[Dict[str, Any]], strokes: Dict[int, Dict[str, Any]], held: Optional[Dict[int, str]] = None) -> Dict[Any, set]:
+    """ROADMAP 2.306 r15: each head's OWN ink on the page map -- the strokes its head claim holds (2.290), and every stroke no earlier claim holds that
+    is not an upright (a vertical or a barline rule) and is centred inside the head (Litolff merges a head with its stem's stub into one piece a head
+    claim refuses as too tall: that piece is still the head's ink AT the head). The box is only where to look; a stroke merely crossing it (a beam, a
+    slur) is not the head's. Same definition as the contact pass's `core`. Pure."""
+    held = held or {}
+    out: Dict[Any, set] = {}
+    for h in heads:
+        x0, y0, x1, y1 = h["box"]
+        mine = {int(i) for i in (h.get("strokes") or ()) if int(i) in strokes}
+        for o, s in strokes.items():
+            if s.get("kind") in ("vertical", "barline") or o in held:
+                continue
+            b = s["box"]
+            if x0 <= (b[0] + b[2]) / 2.0 <= x1 and y0 <= (b[1] + b[3]) / 2.0 <= y1:
+                mine.add(int(o))
+        out[h["id"]] = mine
+    return out
+
+
 def _uncovered(spans: Sequence[Tuple[float, float]], y0: float, y1: float) -> float:
     """The longest run of rows of [y0, y1] that no span covers (px). Pure."""
     edge, worst = y0, 0.0
@@ -430,6 +460,15 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
     xs = [v["box"][0] for v in vs]
     import bisect
     maxw = max([v["box"][2] - v["box"][0] for v in vs] or [0.0])
+    # ROADMAP 2.306 r15 (Sean 2026-11-18: "when joining things or separating things, we use the ink to distinguish or connect, not the boxes"): where
+    # the head's side names more than one stroke, or one stroke is read up by one head and down by another, the stem is the one whose ink TOUCHES the
+    # head's own ink (the page map's contact). `touches_ink(hid, ord)`; None where the page map's contacts were not handed in.
+    hink = head_ink(heads, strokes, held) if strokes is not None else None
+    tch = touch_map(strokes) if strokes is not None else None
+
+    def touches_ink(hid: Any, o: int) -> bool:
+        mine = hink.get(hid) or set()
+        return any(t in mine for m in members_of.get(int(o), [int(o)]) for t in tch.get(int(m), ()))
 
     def near(h: Dict[str, Any], pad: float) -> List[Dict[str, Any]]:
         x0, x1 = h["box"][0] - pad, h["box"][2] + pad
@@ -461,9 +500,19 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             at = [c for c in cs if c["gap"] <= HEAD_END_SP]
             if at and len(at) < len(cs):
                 cs = at
+        by_ink = False
+        if len(cs) >= 2 and len({c["direction"] for c in cs}) == 1 and hink is not None and hink.get(h["id"]):
+            # ROADMAP 2.306 r15: of two strokes at the head's SAME side, the stem is the one whose ink touches the head's ink; one that only stands
+            # beside the head (an accidental's upright, a neighbour's stem) is not joined. Both or neither touching: still two candidates. One up at
+            # the right and one down at the left is never narrowed here: a head with a stem each way is two voices (page-facts; Sean 2026-11-19,
+            # 16 of 16 Litolff heads read so had both stems).
+            inked = [c for c in cs if touches_ink(h["id"], c["stroke"])]
+            if len(inked) == 1:
+                cs, by_ink = inked, True
         r: Dict[str, Any] = dict(candidates=cs, held=held_c, near=miss[:4])
         if len(cs) == 1:
-            r.update(state="one", stroke=cs[0]["stroke"], direction=cs[0]["direction"], side=cs[0]["side"], margin=cs[0]["fit"], how="engraving_side")
+            r.update(state="one", stroke=cs[0]["stroke"], direction=cs[0]["direction"], side=cs[0]["side"], margin=cs[0]["fit"],
+                     how="engraving_side_by_ink" if by_ink else "engraving_side")
         elif not cs:
             r.update(state="none", stroke=None, direction=None, side=None, margin=None, how="no_stroke")
         elif {c["direction"] for c in cs} == {"up", "down"} and len(cs) == 2:
@@ -490,8 +539,15 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
     n_kept = 0
     vbox = {int(v["ord"]): v for v in vs}
     for o in split:
-        inked = {d for d in stems[o]["directions"] if any(hb0[k].get("ink") and readings[k]["direction"] == d for k in stems[o]["heads"])}
-        keep = next(iter(inked)) if len(inked) == 1 else None
+        keep = None
+        if hink is not None:
+            # ROADMAP 2.306 r15: a stroke read both ways is the stem of the heads whose ink it TOUCHES -- where those all read it one way, that way
+            # holds it; a head that only stands beside it never takes it (Sean 2026-11-18: join by ink, never by the box)
+            touched = {readings[k]["direction"] for k in stems[o]["heads"] if touches_ink(k, o)}
+            keep = next(iter(touched)) if len(touched) == 1 else None
+        if keep is None:
+            inked = {d for d in stems[o]["directions"] if any(hb0[k].get("ink") and readings[k]["direction"] == d for k in stems[o]["heads"])}
+            keep = next(iter(inked)) if len(inked) == 1 else None
         by_end = None
         if keep is None and o in vbox:
             # ROADMAP 2.306 r4 (Sean's r1 tile 6: an up stem through a tremolo slash, the second's displaced head on its other side): a stem has ONE
