@@ -2725,7 +2725,8 @@ def _voices_of_the_one_count(one_beam: Optional[Dict[str, Any]]) -> Optional[Dic
     if one_beam is None or one_beam.get("state") == "silent":
         return None
     per = {st.get("side"): [int(st.get("certain") or 0), int(st.get("possible") or 0)] for st in one_beam.get("stems") or ()}
-    return per if set(per) == {"up", "down"} else None
+    # one stem read: that voice's count; the other voice's stem is "not read" (absent), never "no beam"
+    return {k: v for k, v in per.items() if k in ("up", "down")} or None
 
 
 def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True) -> Dict[str, Any]:
