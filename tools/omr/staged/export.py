@@ -6179,7 +6179,7 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
         hs = ev.get("noteheads") or []
         return int(hs[0].get("beam_levels") or 0) if hs else 0
 
-    for members in groups_sharing_beam_ink([0 if ev.get("kind") == "rest" else levels(ev) for ev in stream], ink):
+    for members in groups_sharing_beam_ink([None if ev.get("kind") == "rest" else levels(ev) for ev in stream], ink):
         counters["beam_groups_from_the_one_count"] += 1
         top = max(levels(stream[i]) for i in members)
         for level in range(1, top + 1):
@@ -6193,14 +6193,17 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
                 run = []
 
 
-def groups_sharing_beam_ink(levels: Sequence[int], ink: Sequence[frozenset]) -> List[List[int]]:
+def groups_sharing_beam_ink(levels: Sequence[Optional[int]], ink: Sequence[frozenset]) -> List[List[int]]:
     """2.319: the beam groups of one voice, as index lists: runs of NEIGHBOURING notes each carrying a beam level whose stems hang on shared beam
-    ink (a beam joins neighbouring stems: each note must share ink with the one before it). A note with no level or no beam ink (a flag, a rest)
-    ends a run; a run of one is no group. Pure."""
+    ink (a beam joins neighbouring stems: each note must share ink with the note before it). A rest (`None`) is never a member and lets the run go
+    on -- a beam over a rest is the same beam ink at the stems either side of it; a note with no level or no beam ink (a flagged note) ends the
+    run; a run of one is no group. Pure."""
     groups: List[List[int]] = []
     cur: List[int] = []
     cur_ink: frozenset = frozenset()
     for i, (lv, k) in enumerate(zip(levels, ink)):
+        if lv is None:
+            continue
         beamed = lv >= 1 and bool(k)
         if beamed and cur and (k & cur_ink):
             cur.append(i)

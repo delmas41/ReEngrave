@@ -128,7 +128,9 @@ def test_sean_beamed_notes_hang_on_beam_ink(glyph):
 def test_groups_never_join_across_a_flag_or_a_rest_and_never_a_lone_note():
     a, b = frozenset({"s1"}), frozenset({"s2"})
     assert E.groups_sharing_beam_ink([1, 1, 1, 1], [a, frozenset(), a, a]) == [[2, 3]]          # a flagged note (no ink) breaks the run
-    assert E.groups_sharing_beam_ink([1, 0, 1], [a, a, a]) == []                                # a rest breaks it; runs of one are no group
+    assert E.groups_sharing_beam_ink([1, 0, 1], [a, a, a]) == []                                # an unbeamed note breaks it; runs of one are no group
+    assert E.groups_sharing_beam_ink([1, None, 1], [a, frozenset(), a]) == [[0, 2]]             # a beam over a rest: the rest is no member
+    assert E.groups_sharing_beam_ink([1, None, 1], [a, frozenset(), b]) == []                   # ...but two beams either side of a rest stay two
     assert E.groups_sharing_beam_ink([1, 1, 1, 1], [a, a, b, b]) == [[0, 1], [2, 3]]            # two beams side by side: two groups
     assert E.groups_sharing_beam_ink([2, 1, 1], [a, a | b, b]) == [[0, 1, 2]]                   # ink shared neighbour to neighbour
 

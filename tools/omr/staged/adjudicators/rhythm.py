@@ -3601,7 +3601,11 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     strokes_before_hollow = (certain, possible, 0)
     # 2.319: "the beam reader LOOKED at this stem" (the hollow-head rules' witness, ROADMAP 2.70) is now the one count's: it read the stem, or None
     # where the map holds no stem for the head ("cannot tell", never "nothing").
-    beam_looked = ("one_count:" + one_beam["state"]) if (one_beam is not None and one_beam["state"] != "silent") else None
+    # Where it found no stem for the head, the map still LOOKED at the cell (it holds strokes): that is the cell-level look the rule always had
+    # (the bar-crop reader's "it ran here"); a cell with no stroke map is "cannot tell". (Measured: requiring a stem read turned a printed
+    # Brahms half chord, p8 0/2/7, into a quarter.)
+    beam_looked = (None if one_beam is None or one_beam.get("why") == "no_strokes_in_cell"
+                   else "one_count:" + str(one_beam["state"]))
     if hollow:
         certain = possible = 0
     levels = certain
