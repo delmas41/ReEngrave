@@ -1,0 +1,36 @@
+{
+ "date": "2026-11-21",
+ "sheet": "out/print/2.306-r18-mixed/sheet.png",
+ "question": "For each tile: are all the notes in the red box the same length in the print, and if not, which differ?",
+ "sean_words": "For the four tiles, the first tile is two dotted quarters, and at the bottom there is a quarter note that's not dotted. For the second tile, it is three quarter notes with a half note on top. For the third tile, it's two half notes with a tremolo slash, but it also has a couple of accidentals, a sharp and a natural sign that are kind of in the square, in the red box. And four is just an eighth note with a P dynamic underneath it, as you thought.",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "brahms",
+   "cell": "glyph/5/1/10/7",
+   "sean": "two dotted quarters, and at the bottom a quarter note that's not dotted",
+   "we_read": "G3 quarter undotted; B-flat4, D5, G4 dotted quarters (four boxes for his three notes)"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "cell": "glyph/2/0/7/4",
+   "sean": "three quarter notes with a half note on top",
+   "we_read": "G3, B-flat4, D4 quarters; G5 half"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "cell": "glyph/6/1/8/11",
+   "sean": "two half notes with a tremolo slash; a sharp and a natural sign also in the box",
+   "we_read": "C4 eighth, F4 eighth, F5 half, F5 quarter (wrong)"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "cell": "glyph/6/0/8/0",
+   "sean": "just an eighth note with a P dynamic underneath it",
+   "we_read": "G4 eighth and a half E-flat3 (the p)"
+  }
+ ]
+}
