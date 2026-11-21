@@ -2874,6 +2874,63 @@ FOLD_PITCH_RULE = "folded_head_pitch_disagrees"
 _FOLD_BOX_MAX_SP, _FOLD_BOX_MIN_SP = 1.6, 0.6
 
 
+#: ROADMAP 2.331 fix B: default OFF ("1"/"true"/"yes"/"on" turns it on)
+FOLD_FAR_ENV = "OMR_FOLD_FAR_BY_LEDGER"
+#: `_fold_far_positions`: a far fold that is NOT decided (marked blue)
+_FAR_HELD = ("far_fold_held",)
+
+
+def fold_far_by_ledger_enabled() -> bool:
+    return os.environ.get(FOLD_FAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _fold_far_positions(rec: "Record", heads: List[Any], rounded: Dict[str, Any]) -> Any:
+    """ROADMAP 2.331 fix B. None when no member of the fold is a far head (outside the staff and its first space either side: position < -1 or > 9).
+    Otherwise the member to write PLAIN -- only where every member stands on one step (a far member by its DECIDED ledger count `Q.NOTEHEAD_POSITION`,
+    a member in the staff by its own position) and exactly one alteration among the boxes is carried by a printed accidental (`Q.ACCIDENTAL_OWNER`
+    decided on that box) -- or `_FAR_HELD` (written GUESSED). PURE over the record."""
+    pos: Dict[str, Optional[int]] = {}
+    far = False
+    for q in heads:
+        r = rounded.get(q[2])
+        r = int(r) if isinstance(r, (int, float)) else None
+        v = rec.verdict(Q.NOTEHEAD_POSITION, q[2])
+        ledger = int(v["value"]) if v is not None and v.get("outcome") == "decided" and isinstance(v.get("value"), (int, float)) else None
+        p = ledger if ledger is not None else r
+        if p is not None and (p < -1 or p > 9):
+            far = True
+            if ledger is None:
+                p = None                                        # a far head with no ledger reading has no position the page gives
+        pos[q[2]] = p
+    if not far:
+        return None
+    steps = set(pos.values())
+    if None in steps or len(steps) != 1:
+        return _FAR_HELD
+    printed = [q for q in heads if _has_printed_accidental(rec, q[2])]
+    if printed and len({q[5]["pitch"] for q in printed}) == 1:
+        return max(printed, key=lambda q: (q[1], q[2]))
+    return _FAR_HELD
+
+
+#: the detection keys that carry a head's pitch (its step and alteration) and nothing else of it
+_PITCH_KEYS = ("pitch", "key_alteration", "printed_accidental")
+
+
+def _take_pitch(det: Dict[str, Any], src: Dict[str, Any], src_sub: str) -> None:
+    """ROADMAP 2.331 fix B r2: `det` (the written box of a fold) takes the pitch of `src` (the fold's box carrying the printed accidental) -- and so does
+    its two-voice unison copy (`_unison_twin`, attached by `export_unison.split` before the settle). Value, voice, stem stay `det`'s own."""
+    for d in (det, det.get("_unison_twin")):
+        if not isinstance(d, dict):
+            continue
+        for k in _PITCH_KEYS:
+            if k in src:
+                d[k] = src[k]
+            else:
+                d.pop(k, None)
+        d["pitch_from_fold_member"] = src_sub
+
+
 def _settle_folded_pitches(rec: "Record", queued: List[Any], best: Dict[str, Tuple[float, str]]) -> None:
     """ROADMAP 2.290 round 4 (the one head identity, `OMR_PAGE_HEAD_ONE`): a head the identity folds from boxes that WRITE DIFFERENT PITCHES is one head with ONE
     position -- measured from the head's own ink, never inherited from whichever box scored higher (Litolff p2 m7: boxes at 7.04 and 8.28 steps, the hole of the
@@ -2921,15 +2978,34 @@ def _settle_folded_pitches(rec: "Record", queued: List[Any], best: Dict[str, Tup
                     wit.append(float(d[k]))
                     break
         pick = None
-        if wit:
+        far = _fold_far_positions(rec, heads, rounded) if fold_far_by_ledger_enabled() else None
+        if far is not None:
+            # ROADMAP 2.331 fix B (flag OMR_FOLD_FAR_BY_LEDGER): a fold with a FAR member is never placed by its ink position (page-facts: a far head is
+            # placed by its ledger lines only; 2.216 option B). Where every member stands on ONE step (ledger lines for the far ones, DECIDED) and the boxes
+            # differ only by the alteration, the member carrying the PRINTED accidental is the head's pitch (the natural printed before an A in A-flat major);
+            # anything else -- ledger readings that disagree or are missing -- is GUESSED (blue, every pitch a candidate). Never plain on ink.
+            pick = far
+            if pick is not _FAR_HELD:
+                # the box that was going to be written STAYS written (its voices, its stem, a two-voice unison's second copy go with it); only the
+                # pitch -- the one step and the printed alteration -- comes from the box that carries the accidental (2.331 r2: Litolff p8 mg/8/0/38
+                # lost its voice-2 copy when the written box was swapped)
+                held = next((q for q in members if q[2] == best[gid][1]), None)
+                if held is not None and held is not pick:
+                    _take_pitch(held[5], pick[5], pick[2])
+                continue
+        elif wit:
             step = int(round(sum(wit) / len(wit)))
             on = [q for q in heads if rounded.get(q[2]) == step]
             if len(on) == 1:
                 pick = on[0]
-        if pick is not None:
+        if pick is not None and pick is not _FAR_HELD:
             best[gid] = (pick[1], pick[2])
             continue
         win = next((q for q in heads if q[2] == best[gid][1]), None)
+        if win is None and pick is _FAR_HELD:
+            # the written box was no head-sized witness (a tall box): it still stands for a far fold whose pitches disagree, so it is the one marked
+            win = next((q for q in members if q[2] == best[gid][1]), None)
+            heads = heads + ([win] if win is not None else [])
         if win is not None and not win[5].get("guess"):
             cands = [{"value": q[5]["pitch"], "support": q[1], "source": q[2]} for q in heads]
             win[5]["guess"] = {"stage": "EXPORT", "rule": FOLD_PITCH_RULE, "quantity": Q.PITCH, "candidates": cands, "chosen": {"value": win[5]["pitch"]}}
