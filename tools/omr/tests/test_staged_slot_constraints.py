@@ -63,13 +63,12 @@ def _document(systems, *, clefs=None, blocks=None, page=0):
             got = (clefs or {}).get((s, i))
             if got is None:
                 continue
-            if got.startswith("clef"):
-                log.observe(sub, Q.CLEF_GLYPH, got,
-                            reader=READERS.DETECTOR, frame="cell", score=0.9)
-            else:
-                log.observe(sub, Q.CLEF_LOCATED, got,
-                            reader=READERS.CV_LOCATOR, frame="header_window",
-                            score=0.85)
+            # ROADMAP 2.324: the clef is the page-wide pass's READ header claim (the per-cell detector read and the locator are
+            # retired); a glyph name stands for the kind the pass reads off it, a located name is the kind itself
+            kind = {"clefG": "treble", "clefF": "bass"}.get(got, got)
+            log.observe(sub, Q.CLAIMED_AREA, [10.0, 0.0, 40.0, 80.0], reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0",
+                        cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ",
+                        source="clef_pagewide", change=False, kind=kind, family=None, boxes_inside={})
     adjudicate.run(log)
     return log
 

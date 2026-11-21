@@ -668,17 +668,6 @@ def _propose(log: Log, system: Subject, span: _Span, *, reason: str,
 # Rule 3 — the unnamed block at the foot of a system
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: The glyph a detected clef names, imported rather than restated.
-#:
-#: ⚠️ THE FIRST DRAFT OF THE PROBE THAT MEASURED THIS RULE SPELLED THEM
-#: `gClef`/`fClef`/`cClef` AND MATCHED NOTHING, so it reported *"0 of 0
-#: spoke"* on a document holding 91 clef rows -- a corroboration that was
-#: silent because of the map rather than because of the page, and which reads
-#: exactly like a plate that prints no clef. `adjudicators.clef` already holds
-#: the one true map; taking a copy is how the two would drift into that
-#: failure a second time.
-from .adjudicators.clef import _clef_of as _clef_named_by  # noqa: E402
-
 #: The two canonical instrument NAMES a condensed low-string staff can be.
 #: ⚠️ NAMES, NOT A WORD LIST OVER MARGIN TEXT. `Q.INSTRUMENT.value["name"]`
 #: is already `instruments.Instrument.name` -- the canonical spelling
@@ -786,19 +775,10 @@ def _clef_read_on(log: Log, staff: Subject) -> Tuple[Optional[str], Tuple[str, .
     """
     from . import clef_pagewide as _CP
     named: Dict[str, List[str]] = {}
-    if _CP.page_only_enabled():
-        # ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): GATHER's one clef reading is the page-wide pass's header read (a READ kind)
-        for o in _CP.header_reads(log.rows(Q.CLAIMED_AREA, staff)):
-            if (o.detail or {}).get("kind"):
-                named.setdefault(str(o.detail["kind"]), []).append(o.id)
-        if len(named) != 1:
-            return None, ()
-        (name, ids), = named.items()
-        return name, tuple(ids)
-    for o in log.rows(Q.CLEF_GLYPH, staff):
-        name = _clef_named_by(str(o.value))
-        if name is not None:
-            named.setdefault(name, []).append(o.id)
+    # ROADMAP 2.324 (landed ON 2026-11-21): GATHER's one clef reading is the page-wide pass's header read (a READ kind)
+    for o in _CP.header_reads(log.rows(Q.CLAIMED_AREA, staff)):
+        if (o.detail or {}).get("kind"):
+            named.setdefault(str(o.detail["kind"]), []).append(o.id)
     if len(named) != 1:
         return None, ()
     (name, ids), = named.items()
@@ -816,7 +796,7 @@ def _clef_located_on(log: Log, staff: Subject) -> Optional[str]:
     stands alone or is itself contradicted -- never to choose a slot.
     """
     named = {str(o.value) for o in log.rows(Q.CLEF_LOCATED, staff) if o.value}
-    # ROADMAP 2.324: with OMR_CLEF_PAGE_ONLY the locator does not run -- there is no second reader to overrule the one reading
+    # ROADMAP 2.324: the locator no longer runs -- there is no second reader to overrule the one reading
     return next(iter(named)) if len(named) == 1 else None
 
 
@@ -840,7 +820,7 @@ def _clef_located_on(log: Log, staff: Subject) -> Optional[str]:
     # rule is placing, and consuming it would close exactly the loop
     # `clef_correction.py:566` exists to prevent.
     reads=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.CLEF_GLYPH,
-           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide clef read (only with OMR_CLEF_PAGE_ONLY)
+           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide clef read
     scope=Kind.SYSTEM,
     sideways=True,
     bound=(

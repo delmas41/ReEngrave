@@ -124,36 +124,6 @@ def header_cells(monkeypatch):
     return _set
 
 
-@pytest.fixture
-def quiet_locator(monkeypatch):
-    from tools.omr import clef_locator
-    monkeypatch.setattr(clef_locator, "locate_clef", lambda *a, **k: None)
-
-
-def test_clef_locator_header_crash_abstains_unavailable(header_cells,
-                                                        quiet_locator):
-    header_cells(_boom)
-    log = Log()
-    G.gather_clef_locator(log, _pws(), [_cell(0, 0)], _LOCAL, {})
-    rows = _refusals(log, Q.CLEF_LOCATED, _STAFF,
-                     frame=G.FRAME_HEADER_WINDOW, reader=READERS.CV_LOCATOR)
-    assert [a.reason for a in rows] == [ABSTAIN.READER_UNAVAILABLE]
-    assert rows[0].detail["error"] == "RuntimeError"
-    # the default still holds: the cell-0 crop is read as before
-    assert _refusals(log, Q.CLEF_LOCATED, _STAFF, frame=G.frame_cell(0))
-
-
-def test_clef_locator_header_control_no_crop_is_still_no_geometry(
-        header_cells, quiet_locator):
-    header_cells(lambda pws: {})
-    log = Log()
-    G.gather_clef_locator(log, _pws(), [_cell(0, 0)], _LOCAL, {})
-    rows = _refusals(log, Q.CLEF_LOCATED, _STAFF,
-                     frame=G.FRAME_HEADER_WINDOW)
-    assert [a.reason for a in rows] == [ABSTAIN.NO_STAFF_GEOMETRY]
-    assert "error" not in rows[0].detail
-
-
 def test_key_signature_header_crash_abstains_unavailable(header_cells):
     header_cells(_boom)
     log = Log()

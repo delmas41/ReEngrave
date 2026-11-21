@@ -117,21 +117,29 @@ class TestGather(unittest.TestCase):
                 R.cell(0, 0, 0, 1).to_key(): [_Det("clefF", 100, 40, 20, 90), _Det("noteheadBlackInSpace", 102, 60, 16, 16)]}
         log = Log()
         with mock.patch.dict(os.environ, ON):
+            # ROADMAP 2.324: the page-wide pass reads and claims the clefs first, as `gather` orders it; the register files the column
+            # from its READ header claim. This synthetic page's G is a plain bar of ink with heads on it (the pass rightly refuses it:
+            # `g_over_a_notehead`), so the READ header claim the column consumes is filed here by hand, in the pass's own shape.
+            G.gather_clef_pagewide(log, _PWS(), cells, {0: (0, 0)}, dets)
+            log.observe(R.staff(0, 0, 0), Q.CLAIMED_AREA, [150.0, 84.0, 176.0, 184.0], reader=READERS.CV_CLAIMED_REGISTER,
+                        frame="cell:0", cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ",
+                        source="clef_pagewide", change=False, kind="treble", boxes_inside={})
             G.gather_claimed_register(log, _PWS(), cells, {0: (0, 0)}, dets)
         return log
 
-    def test_files_clef_and_column_claims(self):
+    def test_the_clefs_are_claimed_by_the_page_wide_pass_and_the_register_files_the_column(self):
         rows = self._run().rows(Q.CLAIMED_AREA, R.staff(0, 0, 0))
-        by = {(r.detail["owner"], r.detail["cell"]): r for r in rows}
-        self.assertEqual(by[("clef", 0)].detail["standing"], "READ")
-        self.assertEqual(by[("clef", 1)].detail["standing"], "NARROWED")    # a later bar's clef box: the detector's word alone
+        by = {(r.detail["owner"], r.detail["cell"]): r for r in rows if r.detail.get("owner") and r.detail.get("cell") is not None}
+        # ROADMAP 2.324: the clef claims are the page-wide pass's (the register's own clef claims are retired): the header G clef is READ
+        # by it, a later bar's clef box it cannot read keeps the NARROWED claim the register used to file (the detector's word alone)
+        self.assertEqual(by[("clef", 0)].detail["source"], "clef_pagewide")
+        self.assertEqual(by[("clef", 1)].detail["standing"], "NARROWED")
         col = by[("leading_column", 0)]
         self.assertTrue(col.detail["prior"])
         self.assertEqual(col.detail["right_edge"], "own_clef")
         inside = col.detail["boxes_inside"]
         self.assertTrue(inside[R.glyph(0, 0, 0, 0, 1).to_key()]["through"]["through"])     # on the barline
         self.assertFalse(inside[R.glyph(0, 0, 0, 0, 2).to_key()]["through"]["through"])    # the blob
-        self.assertGreaterEqual(by[("clef", 0)].detail["boxes_inside"][R.glyph(0, 0, 0, 0, 3).to_key()]["ink_share_inside"], 0.5)
 
     def test_flag_off_files_nothing(self):
         log = Log()

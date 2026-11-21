@@ -371,13 +371,13 @@ def _forced_pairing(system: List[Optional[str]],
     ),
     implicates=(Q.SLOT_INDEX, Q.INSTRUMENT, Q.SYSTEM_STAFF_COUNT),
     composed_from=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
-                   Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL,
+                   Q.STAFF_GROUP, Q.MARGIN_LABEL,
                    Q.ROSTER_ENTRY),
     scope=Kind.STAFF,
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
-           Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL,
+           Q.STAFF_GROUP, Q.MARGIN_LABEL,
            Q.ROSTER_ENTRY,
-           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide clef read (only with OMR_CLEF_PAGE_ONLY)
+           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide clef read
     reasons=("full_lineup", "named", "paired_by_name", "paired_by_crook",
              "paired_by_bare_crook",
              "no_reference", "no_ordinal", "reference_names_nothing",
@@ -1148,33 +1148,14 @@ def _clef_read_at(ev: Evidence, subject) -> Optional[str]:
     contest here is exactly the drift this file imports `work_roster.decide`
     to avoid. So: all the rows agree, or this says nothing.
 
-    ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): ON, GATHER's one clef reading is the page-wide pass's header read of THIS staff (a READ kind;
-    one answer or none, as below) -- the locator and the per-cell detector read do not run.
+    ROADMAP 2.324 (landed ON 2026-11-21): GATHER's one clef reading is the page-wide pass's header read of THIS staff (a READ kind;
+    one answer or none, as below) -- the locator and the per-cell detector read are retired.
     """
-    from .clef import _GLYPH_TO_CLEF
     from .. import clef_pagewide as _CP
 
-    if _CP.page_only_enabled():
-        kinds = {str((r.detail or {}).get("kind")) for r in _CP.header_reads(ev.rows(Q.CLAIMED_AREA, subject=subject))
-                 if (r.detail or {}).get("kind")}
-        return kinds.pop() if len(kinds) == 1 else None
-
-    located = {str(r.value) for r in ev.rows(Q.CLEF_LOCATED, subject=subject)
-               if r.value}
-    if len(located) == 1:
-        return located.pop()
-    if located:
-        return None
-
-    named = set()
-    for row in ev.rows(Q.CLEF_GLYPH, subject=subject):
-        clef = _GLYPH_TO_CLEF.get(str(row.value))
-        if clef is None:
-            # a C-clef class names a FAMILY and not a clef; it cannot speak
-            # here and must not be counted as a disagreement either.
-            continue
-        named.add(clef)
-    return named.pop() if len(named) == 1 else None
+    kinds = {str((r.detail or {}).get("kind")) for r in _CP.header_reads(ev.rows(Q.CLAIMED_AREA, subject=subject))
+             if (r.detail or {}).get("kind")}
+    return kinds.pop() if len(kinds) == 1 else None
 
 
 def _block_map(system_blocks: List[Optional[int]],

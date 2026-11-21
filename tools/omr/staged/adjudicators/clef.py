@@ -631,7 +631,7 @@ W_PAGEWIDE = W_DETECTOR_HIGH + W_ON_THIS_STAFF
 
 
 def _pagewide_terms(ev: Evidence) -> Tuple[Dict[str, List[Term]], List[Any]]:
-    """ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): the page-wide pass's HEADER reads of this staff (`Q.CLAIMED_AREA`, source `clef_pagewide`,
+    """ROADMAP 2.324: the page-wide pass's HEADER reads of this staff (`Q.CLAIMED_AREA`, source `clef_pagewide`,
     `change: False`) -- the only page evidence `Q.CLEF` takes with the flag ON. Returns (terms by name, the C reads whose line was not
     read: they support every C clef another source names, and name none themselves, like a `clefC` box)."""
     from .. import clef_pagewide as CP
@@ -765,7 +765,7 @@ def _worst_case_margin(candidates: Dict[str, List[Term]],
     scope=Kind.STAFF,
     wants=(Q.CLEF_GLYPH, Q.CLEF_POSITION, Q.CLEF_LOCATED, Q.CLEF_SEED,
            Q.NOTEHEAD_STAFF_POSITION, Q.INSTRUMENT, Q.KEYSIG_CLEF_FIT,
-           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide pass's header reads (read only with OMR_CLEF_PAGE_ONLY)
+           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide pass's header reads
     reasons=("scored", "no_candidates", "margin_below_floor",
              "all_candidates_excluded"),
     mode=Mode.COMPETITIVE,
@@ -794,15 +794,10 @@ def adjudicate_clef(ev: Evidence) -> Ruling:
     # BEFORE the supplied terms are built so it can never see them. A staff
     # the page said nothing about is the supplied clef's entire domain.
     #
-    # ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): ON, the page evidence is the page-wide pass's header read ONLY -- the detector's cell-0
+    # ROADMAP 2.324: ON, the page evidence is the page-wide pass's header read ONLY -- the detector's cell-0
     # read and the locator do not run (a human's `Q.CLEF_GLYPH` row still reaches `_detector_terms`: it is not a reader of ink).
-    from .. import clef_pagewide as _CP
-    pagewide_c_unread: List[Any] = []
-    if _CP.page_only_enabled():
-        pagewide_terms, pagewide_c_unread = _pagewide_terms(ev)
-        read = (detector_terms, _locator_terms(ev), pagewide_terms)
-    else:
-        read = (detector_terms, _locator_terms(ev))
+    pagewide_terms, pagewide_c_unread = _pagewide_terms(ev)
+    read = (detector_terms, _locator_terms(ev), pagewide_terms)
     page_spoke = any(bool(source) for source in read)
     carried, seeds_withheld = _carry_terms(ev, page_spoke=page_spoke)
     for source in (*read, carried):

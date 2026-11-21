@@ -113,6 +113,13 @@ def gather(flats, boxes_by_staff, *, env=ON, dossier=None, extra=(), n=3, writte
             gids[(i, gi)] = g
             ds.append(_Det(*box))
         dets[R.cell(1, 0, i, 0).to_key()] = ds
+        # ROADMAP 2.324: the clef edge is the page-wide pass's READ header claim of this staff (the detector box is only where it looked)
+        for box in boxes_by_staff[i]:
+            if box[0] == "clefG":
+                log.observe(R.staff(1, 0, i), Q.CLAIMED_AREA, [float(box[1]), float(box[2]), float(box[1] + box[3]), float(box[2] + box[4])],
+                            reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0", cell=0, owner="clef", owner_row=None, owner_glyph=None,
+                            unit="area", standing="READ", source="clef_pagewide", change=False, kind="treble", family="G",
+                            boxes_inside={})
     with mock.patch.dict(os.environ, env):
         G.gather_key_signature_claim(log, pws, cells, {k: (0, k) for k in range(n)}, dets)
         G.gather_key_object(log, pws, cells, {k: (0, k) for k in range(n)}, dets, dossier=dossier, written_counts=written_counts)

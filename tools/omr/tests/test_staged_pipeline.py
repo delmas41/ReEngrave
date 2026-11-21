@@ -11,6 +11,7 @@ failure. Today a missing weights file fails the run outright.
 from __future__ import annotations
 
 import unittest
+from unittest import mock
 from dataclasses import dataclass, field
 from typing import List, Optional
 
@@ -115,8 +116,9 @@ def build_page():
 class TestStagedEndToEnd(unittest.TestCase):
     def setUp(self):
         self.prepared = build_page()
-        self.result = pipeline.run_staged_on(
-            self.prepared, detector=FakeDetector())
+        with _clef_read_standin():
+            self.result = pipeline.run_staged_on(
+                self.prepared, detector=FakeDetector())
 
     def test_all_three_stages_produce_a_report(self):
         for key in ("record", "summary", "adjudication", "evaluation", "stubs"):
@@ -289,8 +291,27 @@ class TestAnEmptyStageIsNotAnEmptyResult(unittest.TestCase):
                 sys.modules["tools.omr.staged.adjudicators"] = mod
 
 
+def _clef_read_standin():
+    """ROADMAP 2.324: the clef is read by the page-wide pass from INK (the detector box is only where it looks), and this fake page has
+    no ink; the pass itself is tested on real crops (test_staged_clef_page_only_2_324). Here a stand-in files the pass's own READ header
+    claim for each fake clef box, so the chain these tests are about -- clef decided, pitch restated from position + clef -- still runs
+    end to end."""
+    def _standin(log, pws, cells, local, detections, **_kw):
+        for ck, dets in detections.items():
+            sub = R.Subject.from_key(ck)
+            for d in dets:
+                if d.smufl_name == "clefG" and sub.cell == 0:
+                    log.observe(R.staff(sub.page, sub.system, sub.staff), Q.CLAIMED_AREA,
+                                [float(d.x_canonical), float(d.y_canonical), float(d.x_canonical + d.width_canonical),
+                                 float(d.y_canonical + d.height_canonical)], reader=READERS.CV_CLAIMED_REGISTER,
+                                frame="cell:0", cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area",
+                                standing="READ", source="clef_pagewide", change=False, kind="treble", family="G", boxes_inside={})
+    return mock.patch.object(gather, "gather_clef_pagewide", _standin)
+
+
 def _log_from(prepared):
-    return gather.gather(prepared, detector=FakeDetector())
+    with _clef_read_standin():
+        return gather.gather(prepared, detector=FakeDetector())
 
 
 if __name__ == "__main__":

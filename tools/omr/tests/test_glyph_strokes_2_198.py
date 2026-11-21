@@ -179,37 +179,5 @@ class InkBranch(unittest.TestCase):
         self.assertEqual([r.detail["unit"] for r, _ in CL.covering(rows, "a", box_strokes=[1], cell=0)], ["area", "ink"])
 
 
-class RegisterInkRows(unittest.TestCase):
-    def test_a_clef_box_files_an_ink_claim_beside_its_area_claim(self):
-        from tools.omr.tests.test_staged_claims_register_2_181 import _Cell as RC_, _Det as RD, _PWS, _page, ON as REG_ON
-        img = _page()
-        img[84:184, 150:176] = 0                       # the clef's ink
-        _PWS.page.binary = img
-        cell = RC_(0, (100, 50, 400, 250))
-        dets = {G.R.cell(0, 0, 0, 0).to_key(): [RD("clefG", 50, 34, 26, 100)]}
-        # a stroke map for the cell: one blob exactly under the clef box
-        res = SM.CellStrokes([], 0, 1.0, 16.0, True)
-        res.masks = [(np.ones((100, 26), bool), 50, 34)]
-        res.strokes = [None]
-        log = G.Log()
-        gs = G.R.glyph(0, 0, 0, 0, 0)
-        log.observe(gs, Q.GLYPH_BOX, "clefG", reader=READERS.DETECTOR, frame=G.frame_cell(0))
-        log.observe(gs, Q.GLYPH_STROKES, [0], reader=READERS.CV_GLYPH_STROKES, frame=G.frame_cell(0), shares=[1.0])
-        with mock.patch.dict(os.environ, REG_ON):
-            G.gather_claimed_register(log, _PWS(), [cell], {0: (0, 0)}, dets, stroke_cells={(0, 0, 0, 0): res})
-        claims = list(log.rows(Q.CLAIMED_AREA, G.R.staff(0, 0, 0)))
-        units = sorted(r.detail["unit"] for r in claims if r.detail["owner"] == "clef")
-        self.assertEqual(units, ["area", "ink"])
-        ink = [r for r in claims if r.detail["unit"] == "ink"][0]
-        self.assertEqual(ink.value, [0])
-        self.assertEqual(ink.detail["owner_glyph"], gs.to_key())
-        # CONTROL: no stroke map -> no ink row at all (flag off behaves as before)
-        log2 = G.Log()
-        log2.observe(gs, Q.GLYPH_BOX, "clefG", reader=READERS.DETECTOR, frame=G.frame_cell(0))
-        with mock.patch.dict(os.environ, REG_ON):
-            G.gather_claimed_register(log2, _PWS(), [cell], {0: (0, 0)}, dets)
-        self.assertEqual([r.detail["unit"] for r in log2.rows(Q.CLAIMED_AREA, G.R.staff(0, 0, 0)) if r.detail["owner"] == "clef"], ["area"])
-
-
 if __name__ == "__main__":
     unittest.main()

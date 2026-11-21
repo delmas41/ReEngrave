@@ -40,7 +40,7 @@ C_AXIS_SHIFT_SPACES = 0.45
 #: the C clef's thick bar: this wide (staff spaces; a barline is ~0.3, a stem ~0.1; Litolff's small C clef bar measures 0.7-0.8)
 C_BAR_MIN_WIDTH_SPACES = 0.45
 C_BAR_MAX_WIDTH_SPACES = 1.3
-#: ROADMAP 2.324 r2 (`OMR_CLEF_PAGE_ONLY` only): a bar under `C_BAR_MIN_WIDTH_SPACES` is still a C clef's thick bar where a thin upright
+#: ROADMAP 2.324 r2 (page-wide clef reader): a bar under `C_BAR_MIN_WIDTH_SPACES` is still a C clef's thick bar where a thin upright
 #: line stands just right of it (within this gap, staff spaces), the thin line is a printed line (at least `C_THIN_MIN_SPACES` wide, never
 #: a one-pixel sliver) and the bar is at least this many times as wide as that line. Measured on the frozen sample pages (the bars this
 #: test admits, 16 pages): Breitkopf header C clefs 0.434/0.124, 0.438/0.156, 0.436/0.182, 0.44/0.183, 0.436/0.145 (2.4-3.5x); on the
@@ -124,7 +124,9 @@ def strong_stop_enabled() -> bool:
     return os.environ.get(ENV_STRONG_STOP, "").strip().lower() not in ("0", "false", "no", "off")
 
 
-ENV_PAGE_ONLY = "OMR_CLEF_PAGE_ONLY"
+#: ROADMAP 2.324 (landed ON 2026-11-21, Sean 2026-11-19 "It should only be read once at a page level"): this page-wide pass reads EVERY clef
+#: on the page -- the start-of-staff clef too, not only changes -- each owned by the staff whose lines it sits on and claimed once; it is the
+#: only clef reader (no flag: the per-cell readers and the register's clef claims are retired).
 #: ROADMAP 2.324: the lines a HEADER G clef may name and be READ (the treble clef); anywhere else it is claimed, kind UNREAD
 G_LINES_READ = (2,)
 #: ROADMAP 2.324: a clef box is THIS staff's only where its middle stands within this many staff spaces of this staff's own lines,
@@ -136,14 +138,6 @@ OWN_STAFF_REACH_SPACES = 1.0
 G_BOX_ABOVE_SPACES = (0.4, 1.4)
 G_BOX_BELOW_SPACES = (0.4, 1.4)
 G_BOX_PAST_MIN_FILL = 0.08
-
-
-def page_only_enabled() -> bool:
-    """`OMR_CLEF_PAGE_ONLY` (ROADMAP 2.324, Sean 2026-11-19 "It should only be read once at a page level"), default OFF (allow-list
-    1/true/yes/on). ON: this page-wide pass reads EVERY clef on the page -- the start-of-staff clef too, not only changes -- each owned by
-    the staff whose lines it sits on and claimed once; the per-cell readers (`gather_clef`, `gather_clef_locator`) and the register's
-    clef claims stand down, and `Q.CLEF` takes its page evidence from these rows only."""
-    return os.environ.get(ENV_PAGE_ONLY, "").strip().lower() in ("1", "true", "yes", "on")
 
 
 def cell_lines_page(cell: Any) -> Optional[List[float]]:
@@ -629,7 +623,7 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
                                 "bar_width_spaces": round(w, 3), "bar_run_spaces": round((y_bot - y_top) / sp, 3)}
         why = None
         thin_beside = None
-        if w < C_BAR_MIN_WIDTH_SPACES and page_only_enabled():
+        if w < C_BAR_MIN_WIDTH_SPACES:
             # 2.324 r2: the bar is thick COMPARED WITH THE THIN LINE BESIDE IT (the C clef's own thin bar, just right of it), not with a
             # figure from one plate -- Breitkopf's C clef bar is 0.43 sp, under Litolff's 0.45 cut, and still ~3x its thin companion
             m = k
@@ -663,14 +657,13 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
             # a G clef's spine passes the bar test too; its curl / tail stand past the staff, where a C clef has no ink
             gx0, gx1 = max(0, x0 + j - int(round(0.5 * sp))), min(W, x0 + k + int(round(0.8 * sp)))
             tx0, tx1 = max(0, x0 + j - int(round(1.0 * sp))), min(W, x0 + k + int(round(1.2 * sp)))
-            if page_only_enabled():
-                # round 3 (Litolff p8 s0 staff 7: an alto clef refused as G-shaped): ink at or left of a BARLINE standing just left of the
-                # bar is the barline's, never this clef's curl or tail -- a column there whose unbroken ink runs on past the staff further
-                # than any clef reaches (`barline_left_of`) closes the window on that side
-                bl = barline_left_of(ink, lines, sp, tx0, x0 + j)
-                if bl is not None:
-                    gx0, tx0 = max(gx0, bl + 1), max(tx0, bl + 1)
-                    cand["barline_left_x"] = int(bl)
+            # round 3 (Litolff p8 s0 staff 7: an alto clef refused as G-shaped): ink at or left of a BARLINE standing just left of the
+            # bar is the barline's, never this clef's curl or tail -- a column there whose unbroken ink runs on past the staff further
+            # than any clef reaches (`barline_left_of`) closes the window on that side
+            bl = barline_left_of(ink, lines, sp, tx0, x0 + j)
+            if bl is not None:
+                gx0, tx0 = max(gx0, bl + 1), max(tx0, bl + 1)
+                cand["barline_left_x"] = int(bl)
             g_up =ink[max(0, int(top - G_PAST_SPACES[1] * sp)):max(0, int(top - G_PAST_SPACES[0] * sp)), gx0:gx1]
             g_lo = ink[min(H, int(bot + G_PAST_SPACES[0] * sp)):min(H, int(bot + G_PAST_SPACES[1] * sp)), gx0:gx1]
             g_shape = bool(g_up.size and g_up.mean() >= G_PAST_MIN_FILL) and bool(g_lo.size and g_lo.mean() >= G_PAST_MIN_FILL)
@@ -915,7 +908,7 @@ def f_claim_area(got: Dict[str, Any], box: Sequence[float], sp: float) -> List[f
 def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float, *,
              header: bool = False) -> Dict[str, Any]:
     """The second witness for a clef-sized detector `clef*` box: {passed, why, kind, family, line, residual}. `header` (ROADMAP 2.324
-    r2, passed only with `OMR_CLEF_PAGE_ONLY`): a box in its system's header window, where an F clef whose dot PAIR is not found is read
+    r2, the page-wide clef reader, always now): a box in its system's header window, where an F clef whose dot PAIR is not found is read
     by the ink at its two dot places (`f_dot_places`)."""
     from ..clef_geometry import clef_family, resolve_clef
     fam = clef_family(name)

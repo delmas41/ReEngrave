@@ -599,16 +599,6 @@ KNOWN_GAPS: Dict[str, str] = {
         "its size, so a reader can tell *this page prints no rests* from "
         "*this staff has one line and twenty marks nobody could put on a "
         "grid*. Read by nothing, like the ten positions it accounts for."),
-    "DETAIL Q.CLEF_LOCATED.line_source": (
-        "whether the clef's LINE was measured or defaulted — which is the "
-        "distinction `clef_geometry` exists to make. ⚠️ WORTH OPENING: a "
-        "clef whose line was defaulted is weaker evidence than one whose "
-        "line was measured, and nothing downstream can currently tell."),
-    "DETAIL Q.CLEF_LOCATED.locator_branch": (
-        "the CV locator's own rejecting branch — `clef_locator`'s "
-        "eight-branch taxonomy, which `probe_clef_rejection.py` "
-        "cross-tabulates OUTSIDE the pipeline against hand-read clefs. A "
-        "human's field."),
     "DETAIL Q.KEYSIG_RUN_POSITION.clefs_tried": (
         "which slot tables were fitted before the run was refused. ⚠️ It "
         "separates two states the abstention collapses — a run that fits NO "

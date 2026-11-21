@@ -80,15 +80,6 @@ def test_cv_lines_import_failure_is_unavailable(monkeypatch):
         assert rows[0].detail["error"] == "ModuleNotFoundError"
 
 
-def test_clef_locator_import_failure_is_unavailable(monkeypatch):
-    _break_import(monkeypatch, "clef_locator")
-    log = Log()
-    G.gather_clef_locator(log, _pws(), [_cell()], _LOCAL, {})
-    rows = _rows(log, Q.CLEF_LOCATED, _STAFF, READERS.CV_LOCATOR)
-    assert [a.reason for a in rows] == [ABSTAIN.READER_UNAVAILABLE]
-    assert rows[0].detail["error"] == "ModuleNotFoundError"
-
-
 def test_key_signature_import_failure_is_unavailable(monkeypatch):
     _break_import(monkeypatch, "key_signature_locator")
     log = Log()
@@ -111,20 +102,20 @@ def test_any_import_time_exception_names_its_class(monkeypatch):
     """Not only ImportError: a module that raises while IMPORTING is the same
     defect, and the class that was raised is what the row names."""
     import tools.omr as omr
-    monkeypatch.delattr(omr, "clef_locator", raising=False)
-    monkeypatch.delitem(sys.modules, "tools.omr.clef_locator", raising=False)
+    monkeypatch.delattr(omr, "key_signature_locator", raising=False)
+    monkeypatch.delitem(sys.modules, "tools.omr.key_signature_locator", raising=False)
 
     class _Finder:
         @staticmethod
         def find_spec(name, path=None, target=None):
-            if name == "tools.omr.clef_locator":
+            if name == "tools.omr.key_signature_locator":
                 raise ZeroDivisionError("module body blew up")
             return None
 
     monkeypatch.setattr(sys, "meta_path", [_Finder] + list(sys.meta_path))
     log = Log()
-    G.gather_clef_locator(log, _pws(), [_cell()], _LOCAL, {})
-    rows = _rows(log, Q.CLEF_LOCATED, _STAFF, READERS.CV_LOCATOR)
+    G.gather_key_signature(log, _pws(), [_cell()], _LOCAL, {})
+    rows = _rows(log, Q.KEYSIG_RUN_POSITION, _STAFF, READERS.CV_HEADER)
     assert [a.reason for a in rows] == [ABSTAIN.READER_UNAVAILABLE]
     assert rows[0].detail["error"] == "ZeroDivisionError"
 
@@ -152,17 +143,6 @@ def empty_header_cells(monkeypatch):
     from tools.omr import staff_header
     monkeypatch.setattr(staff_header, "header_cells_for_page",
                         lambda pws: {})
-
-
-def test_clef_locator_control_import_ok(empty_header_cells):
-    log = Log()
-    G.gather_clef_locator(log, _pws(), [_cell()], _LOCAL, {})
-    assert _no_not_implemented(log, Q.CLEF_LOCATED, _STAFF,
-                               READERS.CV_LOCATOR)
-    rows = [a for a in _rows(log, Q.CLEF_LOCATED, _STAFF, READERS.CV_LOCATOR)
-            if a.frame == G.FRAME_HEADER_WINDOW]
-    assert [a.reason for a in rows] == [ABSTAIN.NO_STAFF_GEOMETRY]
-    assert "error" not in rows[0].detail
 
 
 def test_key_signature_control_import_ok(empty_header_cells):

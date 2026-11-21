@@ -1222,6 +1222,11 @@ KNOWN_GAPS: Dict[str, str] = {
         "⚠️ CURVATURE IS STILL MISSING and is not claimed here: a bounding "
         "box is identical for an arc opening up and one opening down, so "
         "which end is an END and which the APEX needs the ink."),
+    "UNREAD-POSITION Q.CLEF_POSITION": (
+        "ROADMAP 2.324 (landed 2026-11-21): the per-cell clef reader that filed this row (`gather_clef`) is retired -- the page-wide pass "
+        "(`gather_clef_pagewide`) reads each clef against its own staff's lines and files the area it measured, so the family's "
+        "position is the area's own. Only a human's `Q.CLEF_GLYPH` / `Q.CLEF_POSITION` rows (stage review) still reach the record; "
+        "the clef rule never weighed this row on the page-wide path."),
     "UNREAD-POSITION Q.ARTICULATION_POSITION": (
         "⚠️⚠️ THE CLASS NAME STATES A SIDE AND THAT IS NOT A POSITION — an "
         "earlier draft of this list exempted this family on those grounds and "
@@ -1332,11 +1337,7 @@ KNOWN_GAPS: Dict[str, str] = {
         "raster answered is a RUNTIME fact and no row carries it. On a header "
         "crop the erased variant is present, so in practice it is the erased "
         "one — but `in practice` is not a fact the record states."),
-    "IMAGE CV_LOCATOR": (
-        "`clef_locator._ink_mask:417` is `erased_else_intact` and unrecorded. "
-        "⚠️ The same module's `_staff_left_column:453` is INTACT-ONLY and "
-        "says so in its docstring (*'here the lines ARE the measurement'*), "
-        "so one reader name covers two rasters by design."),
+
 
     # ── IMAGE: raw ink, the newest site, with no variant on the row ─────────
     "IMAGE CV_INK": (

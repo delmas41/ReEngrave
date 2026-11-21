@@ -31,93 +31,6 @@ from tools.omr.tests._staged_fixtures import fresh_log as _log
 SUB = R.staff(0, 0, 0)
 
 
-class _Cell:
-    """The least a cell needs to reach `gather_clef` and `_cell_grid`."""
-
-    def __init__(self, staff_index=0, page_index=0, measure_index=0):
-        self.staff_index = staff_index
-        self.page_index = page_index
-        self.measure_index = measure_index
-        # five lines, 40 canonical px apart -> half_step 20.0
-        self.staff_line_ys_canonical = [100, 140, 180, 220, 260]
-
-
-class _Det:
-    def __init__(self, smufl_name, category="clef", y_center=180.0,
-                 x_center=50.0, confidence=0.9):
-        self.smufl_name = smufl_name
-        self.category = category
-        self.y_center = y_center
-        self.x_center = x_center
-        self.confidence = confidence
-
-
-def _gather(dets):
-    """Drive `gather_clef` over one synthetic staff-head cell."""
-    log = _log()
-    cell = _Cell()
-    cell_key = R.cell(0, 0, 0, 0).to_key()
-    gather_mod.gather_clef(log, [cell], {0: (0, 0)}, {cell_key: list(dets)})
-    return log
-
-
-def _glyph_values(log):
-    return [o.value for o in log.rows(Q.CLEF_GLYPH, SUB)]
-
-
-def _glyph_refusals(log):
-    return list(log.refusals(Q.CLEF_GLYPH, SUB))
-
-
-class TestTheGathererAdmitsTheFineCClefs(unittest.TestCase):
-    """The wiring half: the rows exist at all."""
-
-    def test_clefCAlto_is_GATHERED(self):
-        self.assertEqual(_glyph_values(_gather([_Det("clefCAlto")])),
-                         ["clefCAlto"])
-
-    def test_clefCTenor_is_GATHERED(self):
-        self.assertEqual(_glyph_values(_gather([_Det("clefCTenor")])),
-                         ["clefCTenor"])
-
-    def test_the_incumbent_set_would_have_dropped_BOTH(self):
-        """⚠️ THE CONTROL THAT MAKES THE TWO ABOVE MEAN SOMETHING. Without it
-        they would pass just as happily against a rule that admits every
-        detection on the page."""
-        self.assertNotIn("clefCAlto", gather_mod._CLEF_CLASSES_INCUMBENT)
-        self.assertNotIn("clefCTenor", gather_mod._CLEF_CLASSES_INCUMBENT)
-
-    def test_a_staff_with_only_a_C_clef_no_longer_abstains_NO_DETECTIONS(self):
-        """The measured consequence: 9 staves over two documents held a C
-        clef and recorded that they held nothing."""
-        self.assertEqual(_glyph_refusals(_gather([_Det("clefCAlto")])), [])
-
-    def test_the_grid_row_travels_with_it(self):
-        """`Q.CLEF_POSITION` is the SECOND witness and is what the on-staff
-        term cites; a gathered glyph with no position row is half wired."""
-        log = _gather([_Det("clefCAlto", y_center=180.0)])
-        pos = list(log.rows(Q.CLEF_POSITION, SUB))
-        self.assertEqual(len(pos), 1)
-        # top line 100, half_step 20 -> (180-100)/20 == 4.0 steps down
-        self.assertAlmostEqual(float(pos[0].value), 4.0)
-
-
-class TestAnOctaveMarkIsNotAClef(unittest.TestCase):
-    """⚠️ `clef8` / `clef15` MODIFY a clef, so admitting them would let one
-    compete as a clef in its own right. Excluded deliberately, not by
-    omission -- and they fire 0 times on both shared records, so this is a
-    structural guard rather than a measured saving."""
-
-    def test_clef8_is_NOT_gathered(self):
-        self.assertEqual(_glyph_values(_gather([_Det("clef8")])), [])
-
-    def test_clef15_is_NOT_gathered(self):
-        self.assertEqual(_glyph_values(_gather([_Det("clef15")])), [])
-
-    def test_a_staff_holding_only_an_octave_mark_still_abstains(self):
-        self.assertEqual(len(_glyph_refusals(_gather([_Det("clef8")]))), 1)
-
-
 class TestTheCategoryTestIsLoadBearing(unittest.TestCase):
     """⚠️⚠️ `clef_family` reads the leading letter of the class name's core,
     so WITHOUT the category test it calls `flag8thUp` a BASS clef and
@@ -128,7 +41,6 @@ class TestTheCategoryTestIsLoadBearing(unittest.TestCase):
 
     def test_a_flag_is_not_a_bass_clef(self):
         self.assertFalse(gather_mod._is_clef_class("flag8thUp", "flag"))
-        self.assertEqual(_glyph_values(_gather([_Det("flag8thUp", "flag")])), [])
 
     def test_a_grace_note_is_not_a_treble_clef(self):
         self.assertFalse(

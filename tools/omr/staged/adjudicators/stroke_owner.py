@@ -67,8 +67,6 @@ def _claims(ev: Evidence, cell) -> List[SO.Claim]:
     for r in ev.rows(Q.GLYPH_STROKES, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         if isinstance(r.value, (list, tuple)):
             gs_by[r.subject.to_key()] = r
-    from .. import clef_pagewide as _CP
-    page_only = _CP.page_only_enabled()
     out: List[SO.Claim] = []
     for b in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         v = b.value
@@ -77,8 +75,8 @@ def _claims(ev: Evidence, cell) -> List[SO.Claim]:
         if str(b.reader or "").startswith("yolo_rescue"):
             continue                       # a rescue-only box is never written while RESCUE_SHIPS is off: it owns no ink
         fam = SO.family_of(str(v[0]), (b.detail or {}).get("category"))
-        if page_only and fam == "clef":
-            # ROADMAP 2.324 (OMR_CLEF_PAGE_ONLY): a clef's ink has ONE claimant -- the page-wide pass's claim on its own staff (its area,
+        if fam == "clef":
+            # ROADMAP 2.324 (landed ON 2026-11-21): a clef's ink has ONE claimant -- the page-wide pass's claim on its own staff (its area,
             # read by `_areas`), or the clef slot where that pass could not read it. The detector's clef box is where the pass looked;
             # it is never a second owner (FINDINGS 2.324: one read counted twice), nor an owner on a neighbour staff's cell.
             continue

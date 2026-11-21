@@ -317,21 +317,7 @@ class TestThePreGateIsASupersetOfEveryWrittenKey(unittest.TestCase):
 
 
 class TestTheMeasuredClef(unittest.TestCase):
-    """`clef_of_box`: the clef the detector's box names, GATHER's measurement for the cheap look (no verdict is read for it)."""
-
-    def test_names_and_the_c_clefs_centre_line(self):
-        self.assertEqual(KO.clef_of_box(("gClef", [0, 150, 30, 330]), LINES), "treble")
-        self.assertEqual(KO.clef_of_box(("clefG", [0, 150, 30, 330]), LINES), "treble")      # the detector's real spellings
-        self.assertEqual(KO.clef_of_box(("clefF", [0, 200, 30, 260]), LINES), "bass")
-        self.assertEqual(KO.clef_of_box(("clefC", [0, LINES[2] - 40, 30, LINES[2] + 40]), LINES), "alto")
-        self.assertEqual(KO.clef_of_box(("fClef8vb", [0, 200, 30, 260]), LINES), "bass")
-        self.assertEqual(KO.clef_of_box(("cClef", [0, LINES[2] - 40, 30, LINES[2] + 40]), LINES), "alto")
-        self.assertEqual(KO.clef_of_box(("cClef", [0, LINES[1] - 40, 30, LINES[1] + 40]), LINES), "tenor")
-
-    def test_TWIN_a_c_clef_centred_between_lines_or_an_unknown_name_is_none(self):
-        self.assertIsNone(KO.clef_of_box(("cClef", [0, LINES[2] - 40 + 10, 30, LINES[2] + 40 + 10]), LINES))       # a space, not a line
-        self.assertIsNone(KO.clef_of_box(("clef8va", [0, 150, 30, 330]), LINES))
-        self.assertIsNone(KO.clef_of_box(None, LINES))
+    """The key tail's pre-gate against a measured clef (the clef itself is the page-wide pass's read; `clef_of_box` was retired with 2.324)."""
 
     def test_the_pre_gate_uses_it_to_reject_a_flat_at_the_wrong_clefs_step(self):
         tb = tb_of(paint_flat, 3, pitch_step("treble", "b", 3))
