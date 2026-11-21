@@ -102,5 +102,104 @@ class TestKeyWindowFromTheReadClef(unittest.TestCase):
         self.assertIsNone(new.clef)
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Item 2 -- A CLEF CHANGE READ INSIDE A LINE PITCHES THE NOTES AFTER IT EVEN WHEN THE STAFF'S OPENING CLEF IS UNDECIDED (CLAUDE.md §3:
+# the answer FOLLOWS, so EVALUATE writes it). NO STAFF ON THE FROZEN SAMPLE HAS AN UNDECIDED OPENING CLEF (2.324 r7 records: Litolff
+# 184 of 184 and Brahms 199 of 199 header clefs DECIDED), so the control is the NEAREST REAL CASE, LABELLED: every row of Litolff p6 s1
+# staff 3 as the r7 record filed it (tenor header, a bass clef READ inside bar 0 at x 599.5; 43 heads pitched from the bass clef, 4 from
+# the tenor before it), with ONE constructed change -- the header clef verdict replaced by an ABSTAINED one.
+# ─────────────────────────────────────────────────────────────────────────────
+
+DATA2 = pathlib.Path(__file__).with_name("data_clef_change_unsettled_header_2_324.json")
+STAFF = "staff/6/1/3"
+
+
+def _staff_log(header: str):
+    """The real rows of Litolff p6 s1 staff 3 in a Log; the header clef `decided` (the record's own verdict) or `abstained`
+    (CONSTRUCTED). Returns (log, expected pitch by head as the r7 record wrote it, the real pitch verdicts' reasons)."""
+    from tools.omr.staged.record import Candidate, Log, Outcome, Subject, Verdict
+    raw = json.loads(DATA2.read_text())
+    log = Log()
+    for r in raw["observations"]:
+        log.observe(Subject.from_key(r["subject"]), r["quantity"], r["value"], reader=r["reader"], frame=r["frame"], **r["detail"])
+    for r in raw["abstentions"]:
+        log.abstain(Subject.from_key(r["subject"]), r["quantity"], reader=r["reader"], frame=r["frame"], reason=r["reason"],
+                    **r["detail"])
+    log.freeze()
+    expected, reasons = {}, {}
+    for v in raw["verdicts"]:
+        if v["quantity"] == "pitch":
+            expected[v["subject"]], reasons[v["subject"]] = v["value"], v["reason"]
+            continue
+        if v["quantity"] == "clef":
+            if header == "abstained":
+                log.record(Verdict(id=log._next_id("vrd"), subject=Subject.from_key(STAFF), quantity=v["quantity"],
+                                   outcome=Outcome.ABSTAINED, value=None, decider=v["decider"], reason="no_candidates"))
+                continue
+        log.record(Verdict(id=log._next_id("vrd"), subject=Subject.from_key(v["subject"]), quantity=v["quantity"],
+                           outcome=Outcome(v["outcome"]), value=v["value"], decider=v["decider"], reason=v["reason"],
+                           candidates=tuple(Candidate(c["value"], c["support"]) for c in (v.get("candidates") or ())),
+                           detail=v["detail"]))
+    return log, expected, reasons
+
+
+def _pitches(log):
+    from tools.omr.staged.record import Q, Scope, Subject
+    return {v.subject.to_key(): v.value for v in log.verdicts(Q.PITCH, Subject.from_key(STAFF), scope=Scope.SELF_AND_DESCENDANTS)
+            if v.decider == "restate_pitch"}
+
+
+def _restate_only(log):
+    """EVALUATE's first pass over the `restate_pitch` rule alone (the other rules need facts this staff's rows do not carry)."""
+    from tools.omr.staged import evaluate
+    evaluate._ensure_rules()
+    rules = [r for r in evaluate.RULES if r.consequence is evaluate.Consequence.RESTATE_PITCH]
+    report = evaluate.Report(fired=[], skipped=[], stubs=[])
+    saved = list(evaluate.RULES)
+    try:
+        evaluate.RULES[:] = rules
+        evaluate._pass(log, report, progress=False)
+    finally:
+        evaluate.RULES[:] = saved
+    return report
+
+
+class TestClefChangeWithUnsettledHeader(unittest.TestCase):
+
+    def test_the_real_record_as_filed_pitches_every_head(self):
+        log, expected, reasons = _staff_log("decided")
+        _restate_only(log)
+        got = _pitches(log)
+        mine = {k: v for k, v in expected.items() if reasons[k] in ("position_and_clef_change", "position_and_clef")}
+        self.assertEqual({k: got.get(k) for k in mine}, mine)        # the replay reproduces the r7 record's pitches
+
+    def test_abstained_header_after_the_change_pitched_before_it_unread(self):
+        log, expected, reasons = _staff_log("abstained")
+        report = _restate_only(log)
+        got = _pitches(log)
+        after = {k for k, r in reasons.items() if r == "position_and_clef_change"}
+        before = {k for k, r in reasons.items() if r != "position_and_clef_change"}
+        self.assertEqual(len(after), 43)
+        self.assertEqual(len(before), 4)
+        self.assertEqual({k: got.get(k) for k in after}, {k: expected[k] for k in after})   # from the READ bass clef, unchanged
+        self.assertEqual({k for k in before if k in got}, set())                           # the opening clef is unknown: unread
+        self.assertTrue(any(f[0] == "restate_pitch" for f in report.fired))
+
+    def test_the_control_fails_with_the_change_taken_out(self):
+        from tools.omr.staged import evaluate
+        log, _expected, _reasons = _staff_log("abstained")
+        evaluate._ensure_rules()
+        rule = next(r for r in evaluate.RULES if r.consequence is evaluate.Consequence.RESTATE_PITCH)
+        i = evaluate.RULES.index(rule)
+        import dataclasses
+        evaluate.RULES[i] = dataclasses.replace(rule, fires_unsettled=False)
+        try:
+            report = _restate_only(log)
+        finally:
+            evaluate.RULES[i] = rule
+        self.assertEqual(_pitches(log), {})                                                 # the old guard: nothing until INFER
+        self.assertIn(("restate_pitch", STAFF, "cause_abstained"), report.skipped)
+
+
 if __name__ == "__main__":
     unittest.main()
