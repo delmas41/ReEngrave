@@ -26,7 +26,7 @@ from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .adjudicators.rhythm import ONSET_COLUMN_TOLERANCE_SPACES, _page_x_of
-from .infer import (ALWAYS_ON, ARC_INK_NOT_BEAM_SWITCH, carried_meter_fix_enabled, ledger_owner_heads_enabled, BARE_STEM_BAR_SWITCH, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
+from .infer import (ALWAYS_ON, carried_meter_fix_enabled, ledger_owner_heads_enabled, NARROWED_BAR_SWITCH, DYNAMIC_INK_PICK_SWITCH, Inference, PART_KEY_SWITCH, Proposal, independent_groups, rule)
 # ⚠️ PRIVATE, SAME MODULE FAMILY (matches `log._next_id` elsewhere in this
 # stage, the SLF001 case): `_admit`'s own candidate-membership check for a
 # NARROWED prior is exactly the test roadmap 2.10b's declines need to make
@@ -1581,9 +1581,6 @@ def fill_part_key(log: Log, document: Subject) -> List[Proposal]:
 # Rule 6 -- ROADMAP 2.81 PHASE 2: a bare stem, settled only by the bar's sum
 # ─────────────────────────────────────────────────────────────────────────────
 
-#: The `adjudicate_duration` reason this rule speaks into -- and ONLY this one.
-BARE_STEM_REASON = "beam_discounted_uncertain"
-
 #: How many unknown events one bar may hold before the rule declines. The DP
 #: below is linear in it; the cap is not for speed, it is that a bar with more
 #: than this many undecided events is a bar nobody read.
@@ -1772,8 +1769,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
     # (2.81) keeps its own reading of the word; this widening is the second
     # rule's, and it is what `collapse_narrowed_by_bar` passes.
     def _is_member(v):
-        if v.reason == BARE_STEM_REASON:
-            return True
         return bool(any_reason and v.candidates and not _is_rest(v))
 
     members = [v for v in notes if v.outcome is Outcome.NARROWED
@@ -1959,12 +1954,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
             # standing glyphs (2.80's witness), and ANY lengthening past the
             # reader's own best candidate needs that witness too (a missed
             # rest or note fills the same gap: 2.80).
-            if m.reason == BARE_STEM_REASON \
-                    and (m.detail or {}).get(
-                        "bare_stem_tip_window_clean") is not True:
-                if not any_reason or _ink_witness(cell) != WITNESS_CLEAR:
-                    out.tip_not_clean += 1
-                    continue
             top = next((c for c in m.candidates if isinstance(c.value, dict)
                         and c.value.get("beats") is not None), None)
             if any_reason and top is not None \
@@ -2017,17 +2006,6 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
                             hit[0].value.get("beam_levels") or 0) > 0 else None),
                 }))
     return out
-
-
-def _bare_stem_confirmations(log: Log, props: List[Proposal]) -> List[Proposal]:
-    """ROADMAP 2.154: of a bar's proposals, only those landing a bare stem on its UNBEAMED value (`confirms_bare_stem`)."""
-    from .consequences import confirms_bare_stem
-    keep = []
-    for p in props:
-        prior = log.verdict(Q.DURATION, p.subject)
-        if prior is not None and confirms_bare_stem(prior, p.value):
-            keep.append(p)
-    return keep
 
 
 #: ROADMAP 2.158 (Sean 2026-10-17): the reason a lone event's narrowing is guessed from the bar.
@@ -2108,51 +2086,6 @@ def _lone_event_guesses(log: Log, cell: Subject, props: List[Proposal], kept: Li
 
 
 @rule(
-    inference=Inference.COLLAPSE_BARE_STEM_BY_BAR,
-    target=Q.DURATION,
-    reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
-           Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
-    scope=Kind.CELL,
-    sideways=False,
-    switch=BARE_STEM_BAR_SWITCH,
-    bound=(
-        "It collapses a NARROWED duration whose reason is "
-        "`beam_discounted_uncertain` to one of that reader's OWN candidates "
-        "and nothing else; only inside one staff's bar whose meter is DECIDED "
-        "and was not voted out of these bars, whose events are grouped, whose "
-        "decided notes are held fixed and whose every unknown is a narrowing "
-        "with identical candidate lengths per chord; the bar must land "
-        "EXACTLY on the meter under at least one assignment of the unknowns, "
-        "and a member is collapsed only if EVERY landing gives it the same "
-        "length, and only if that member's stem-tip window was READ clean "
-        "(Sean's condition). Where two landings disagree it declines. It "
-        "never reads `support` and never uses the bare-stem likelihood as a "
-        "reason."),
-    why_witnesses_are_independent=(
-        "It counts no witnesses: the evidence is arithmetic over the bar's "
-        "other durations and the meter, which are NOT independent of the "
-        "ink being summed -- a missed note, a second voice or a mis-read "
-        "meter move the sum and the rule cannot see them. That correlation "
-        "is declared here rather than hidden behind a witness count, which "
-        "is why the verdict is labelled and the rule default OFF."),
-)
-def collapse_bare_stem_by_bar(log: Log, cell: Subject) -> List[Proposal]:
-    """A bare stem's narrowing, settled by the bar's sum alone.
-
-    See `solve_bare_stem_bar`. Roadmap 2.81 phase 2, Sean 2026-10-10: *"if it
-    is lower ... send it on to the other stages with a high likelihood of
-    being a quarter note and make sure the bar math adds up"*.
-    """
-    from .consequences import bar_sum_confirm_only
-    props = solve_bare_stem_bar(log, cell).proposals or []
-    if bar_sum_confirm_only():
-        # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm) -- except that it may CONFIRM a
-        # bare stem's unbeamed value (Sean 2026-10-16, "it can confirm"), never its eighth.
-        props = _bare_stem_confirmations(log, props)
-    return props
-
-
-@rule(
     inference=Inference.COLLAPSE_NARROWED_BY_BAR,
     target=Q.DURATION,
     reads=(Q.METER, Q.EVENT, Q.DURATION, Q.GLYPH_OWNER,
@@ -2197,114 +2130,11 @@ def collapse_narrowed_by_bar(log: Log, cell: Subject) -> List[Proposal]:
     if bar_sum_confirm_only():
         # ROADMAP 2.154: the bar never chooses among a narrowing's candidates (either arm) -- except that it may CONFIRM a
         # bare stem's unbeamed value (Sean 2026-10-16, "it can confirm"), never its eighth.
-        kept = _bare_stem_confirmations(log, props)
+        kept: List[Proposal] = []     # 2.319: the bare-stem confirmation went with the bar-crop beam reader's `beam_discounted_uncertain`
         # ROADMAP 2.158 (`OMR_LONE_EVENT_FILLS_BAR`, default ON, Sean 2026-10-17): and a bar holding ONE event under a known meter may
         # still be guessed to the one candidate that fills it (Sean 2026-10-17).
         props = kept + _lone_event_guesses(log, cell, props, kept)
     return props
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.121 -- a bare stem whose every refused "beam" is a slur's or tie's ink
-# ─────────────────────────────────────────────────────────────────────────────
-
-#: Why a refused stroke counts as POSITIVELY not a beam. `arc`: inside a DECIDED slur/tie glyph (2.25b). `ink:too_thin` /
-#: `ink:bowed`: 2.74's ink test measured it thinner than any beam / bowed (Sean 2026-10-09: *"a beam never has an arc"*, thicker
-#: than a hairpin's line). NOT here, on purpose: `ink:one_stem` (2.82: a real beam whose other stem the stem finder missed is
-#: refused this way), `ink:through_heads`, `neighbour_staff`, `far_side`, `beyond_stem` -- each says the stroke may belong to
-#: something else or to a stem nobody read, which is "cannot tell", not "a slur".
-ARC_INK_NOT_BEAM_POSITIVE = ("arc", "ink:too_thin", "ink:bowed")
-#: ROADMAP 2.254 r2 (flag `OMR_HAIRPIN_REACH` only): a beam box whose every stroke the stroke owner DECIDED to a mark that cannot be a beam
-#: (2.243 `_beams_on_owned_strokes`; with the flag, a claimed hairpin arm the stroke map once left `ink:too_thin`) is as positively not a
-#: beam as the thin-ink refusal it replaces. Without it the hairpin claim turned 1 GUESSED dotted quarter (Brahms p19 1/2/7) unwritten.
-HAIRPIN_CLAIM_NOT_BEAM = "ink:owned_by_another_mark"
-
-
-def arc_ink_not_beam_decline(v: Any) -> Optional[str]:
-    """Why a narrowed duration verdict is NOT settled by this rule, or `None` where it is. One place so the tests and the rule agree."""
-    d = v.detail or {}
-    if v.reason != BARE_STEM_REASON:
-        return "not_beam_discounted_uncertain"
-    if d.get("beam_evidence") != "none_over_this_note":
-        return "a_beam_or_flag_was_read"
-    if int(d.get("stems_attached") or 0) < 1:
-        return "no_own_stem_seen"
-    if d.get("bare_stem_tip_window_clean") is not True:
-        return "tip_not_read_clean"
-    if int(d.get("flags_attached") or 0) or int(d.get("flag_levels") or 0) \
-            or int(d.get("levels_certain") or 0) or int(d.get("levels_possible") or 0):
-        return "a_mark_stands_on_the_stem"
-    strokes = d.get("refused_strokes")
-    if not isinstance(strokes, (list, tuple)) or not strokes:
-        return "no_refused_stroke_facts"
-    from . import hairpin_reach as _hairpin_reach
-    positive = ARC_INK_NOT_BEAM_POSITIVE + ((HAIRPIN_CLAIM_NOT_BEAM,) if _hairpin_reach.enabled() else ())
-    for st in strokes:
-        why = st.get("why")
-        if why not in positive:
-            return "a_refusal_that_is_not_a_slur_reading:%s" % why
-        # a stroke AT the tip is where a refused real beam would stand (2.81); only a decided slur/tie glyph may stand there
-        # (a slur starts at the stem end), never a bare ink-shape refusal.
-        if st.get("at_tip") is not False and why != "arc":
-            return "ink_shape_refusal_at_the_tip"
-    return None
-
-
-@rule(
-    inference=Inference.COLLAPSE_ARC_INK_NOT_BEAM,
-    target=Q.DURATION,
-    reads=(Q.DURATION, Q.GLYPH_OWNER, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.REST_IS_NOT_A_REST),
-    scope=Kind.CELL,
-    sideways=False,
-    switch=ARC_INK_NOT_BEAM_SWITCH,
-    bound=(
-        "It collapses a NARROWED duration whose reason is `beam_discounted_uncertain` to that reader's OWN unbeamed candidate and "
-        "nothing else, only where the head's own stem was seen, nothing was read on it (no beam, no flag, no level), its stem-tip "
-        "window was READ clean, and EVERY stroke the reader refused is on file as a decided slur/tie's own ink or as measured thinner "
-        "or more bowed than any beam (a refusal for one stem, through the heads, another staff's or the far side's is not enough). A "
-        "stroke refused by ink shape alone and standing at the tip declines. It uses no bar arithmetic, never reads `support` and "
-        "never overturns a DECIDED verdict; it never shortens a note (the unbeamed value is the head's own)."),
-    why_witnesses_are_independent=(
-        "ONE witness, declared: the arc reader's decided slur/tie glyph and the CV ink test (thickness, bow) read the SAME ink, so "
-        "they fall together and count once (CLAUDE.md §4); the stem-tip window is a separate reading of a different region but "
-        "answers a different question (no hook). One witness cannot READ, so the verdict is GUESSED (blue, with both candidates) and "
-        "the rule is default OFF until Sean's blind tiles."),
-)
-def collapse_arc_ink_not_beam(log: Log, cell: Subject) -> List[Proposal]:
-    """A bare stem under a slur is a quarter -- GUESSED, not read.
-
-    ROADMAP 2.121. Which stage, and why: 2.119's twins split A (24 pairs) read as "the beam reader missed a beam"; Sean's own boxes
-    (Brahms 317803 pdf 0) say otherwise -- 19 of the 24 stems carry no beam and no flag, the detector's `beam` boxes beside them are
-    his slurs and ties. The ink reader was RIGHT to refuse them; the narrowing stood because 2.74's rule 8 will not turn a refusal
-    into an unmarked note. Whether "every refused stroke is a slur" FOLLOWS is not forced (the ink is one witness), so it is INFER's:
-    best, labelled, bounded to the reader's own candidates.
-    """
-    from .consequences import _left_the_bar, _standing
-    out: List[Proposal] = []
-    for v in _standing(log, cell, Q.DURATION):
-        if v.outcome is not Outcome.NARROWED or not v.candidates:
-            continue
-        if _left_the_bar(log, v.subject) is not None:
-            continue
-        declined = arc_ink_not_beam_decline(v)
-        if declined is not None:
-            continue
-        unbeamed = [c for c in v.candidates if isinstance(c.value, dict)
-                    and int(c.value.get("beam_levels") or 0) == 0]
-        if len(unbeamed) != 1:
-            continue
-        strokes = (v.detail or {}).get("refused_strokes") or []
-        out.append(Proposal(
-            subject=v.subject, value=unbeamed[0].value,
-            reason="refused_strokes_are_slurs_or_too_thin_for_a_beam",
-            basis=(v.id,), witnesses=(),
-            detail={"refused_strokes": [dict(st) for st in strokes],
-                    "n_refused_strokes": len(strokes),
-                    "n_decided_arc": sum(1 for st in strokes if st.get("why") == "arc"),
-                    "tip_window_clean": True,
-                    "margin_axis": "no_margin: a conjunction of readings, not a score",
-                    "witness_count": 1}))
-    return out
 
 
 # ─────────────────────────────────────────────────────────────────────────────

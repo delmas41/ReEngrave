@@ -506,27 +506,6 @@ def bar_disagrees_blue_enabled() -> bool:
 from .bar_length import NARROWED_BAR_LENGTH_UNKNOWN_ENV, bar_length, narrowed_bar_length_unknown  # noqa: E402,F401
 
 
-def bare_stem_confirmable(note: Verdict) -> bool:
-    """ROADMAP 2.154, Sean 2026-10-16 on the bare-stem question: *"it can confirm"*. The ONE narrowing the bar may still settle
-    under `OMR_BAR_SUM_CONFIRM_ONLY` (both arms): a bare stem -- `beam_discounted_uncertain` with no beam read over the note
-    and no flag on the stem -- whose candidates are its own unbeamed value and one beam more. The page shows no mark, so the
-    unbeamed value is what it supports; the bar may CONFIRM that (`confirms_bare_stem`), never land the beamed one."""
-    if note.outcome is not Outcome.NARROWED or note.reason != "beam_discounted_uncertain" or _is_rest(note):
-        return False
-    d = note.detail or {}
-    if d.get("beam_evidence") != "none_over_this_note":
-        return False
-    if int(d.get("flag_levels") or 0) or int(d.get("flags_attached") or 0):
-        return False
-    levels = {int(c.value.get("beam_levels") or 0) for c in note.candidates if isinstance(c.value, dict)}
-    return levels == {0, 1}
-
-
-def confirms_bare_stem(note: Verdict, value: Any) -> bool:
-    """True where landing `value` on `note` is the bar CONFIRMING a bare stem's unbeamed value (never its eighth)."""
-    return bare_stem_confirmable(note) and isinstance(value, dict) and int(value.get("beam_levels") or 0) == 0
-
-
 def _left_the_bar(log: Log, glyph: Subject) -> Optional[Verdict]:
     """The DECIDED verdict that took this glyph out of its bar, else None."""
     reinstated = _reinstated_rest(log, glyph)
@@ -1168,18 +1147,15 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
     # the total below would take that note's best candidate, so any landing (on it or on a decided neighbour) would be the
     # bar choosing its candidate. Refuse; the note stays narrowed. Arm b (`all`): a DECIDED value is never moved either, so
     # a bar with no narrowing has nothing left to land. BOTH arms keep one case (Sean 2026-10-16, "it can confirm"): where
-    # every narrowed note of the bar is a bare stem (`bare_stem_confirmable`), the bar may land one of them on its UNBEAMED
-    # value -- and only that: no decided neighbour moves, no eighth is landed.
-    confirm_bare_only = False
+    # every narrowed note of the bar is a bare stem, the bar may land one of them on its UNBEAMED value. 2.319: that case was the
+    # bar-crop beam reader's `beam_discounted_uncertain`, retired with the reader; no narrowing is a bare stem now, so the bar lands none.
     narrowed_here = [n for n in notes if n.outcome is Outcome.NARROWED]
     if confirm_only:
         if narrowed_here:
-            if not all(bare_stem_confirmable(n) for n in narrowed_here):
-                # ROADMAP 2.162 (Sean 2026-10-17, "Spilt it"): under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` too, a bar holding
-                # a narrowing gets NO move -- its length is only a range (`bar_length`), which may confirm a meter and
-                # never refutes a reading. The range-gated move was built and refused on Sean's tiles (2 of 7 right).
-                return []
-            confirm_bare_only = True
+            # ROADMAP 2.162 (Sean 2026-10-17, "Spilt it"): under `OMR_NARROWED_BAR_LENGTH_UNKNOWN` too, a bar holding
+            # a narrowing gets NO move -- its length is only a range (`bar_length`), which may confirm a meter and
+            # never refutes a reading. The range-gated move was built and refused on Sean's tiles (2 of 7 right).
+            return []
         elif confirm_only == "all":
             return []
     elif narrowed_here and narrowed_bar_length_unknown():
@@ -1258,8 +1234,6 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         now_b = Counter(float(current[m.id].get("beats") or 0.0)
                         for m in ms).most_common(1)[0][0]
         for new_b, opts in _common_options(ms):
-            if confirm_bare_only and not all(confirms_bare_stem(m, o) for m, o in zip(ms, opts)):
-                continue                # 2.154: only a bare stem's unbeamed value is confirmed
             moved = total - now_b + new_b
             if abs(moved - expected) < 1e-6:
                 landings.append((ms, opts, now_b, new_b))
@@ -1281,20 +1255,16 @@ def reconcile_duration(log: Log, subject: Subject, meter: Verdict) -> List[Verdi
         # re-deriving a level would silently drop it.
         if float(now.get("beats") or 0.0) != float(now.get("written") or -1.0):
             continue
-        if confirm_bare_only and note.outcome is not Outcome.NARROWED:
-            continue                    # 2.154: no decided neighbour moves while a narrowing stands
         if narrowed_bar_length_unknown() and note.outcome is Outcome.DECIDED:
             # 2.162 (Sean 2026-10-18 "2. Block"; CLAUDE section 4): the bar never moves a DECIDED note. 2.168: but where the bar
             # holds no narrowed note, ask what the old rule WOULD have moved, so that note can be marked (value unchanged).
             from . import one_note as _one
-            if not ((bar_disagrees_blue_enabled() or _one.enabled()) and not narrowed_here and not confirm_bare_only):
+            if not ((bar_disagrees_blue_enabled() or _one.enabled()) and not narrowed_here):
                 continue
             shadow = True
         else:
             shadow = False
         for option in _admitted(note):
-            if confirm_bare_only and not confirms_bare_stem(note, option):
-                continue                # 2.154: never the bare stem's eighth
             if note.outcome is Outcome.DECIDED \
                     and option.get("beam_levels") == now.get("beam_levels"):
                 continue

@@ -44,7 +44,8 @@ CORRECTS_REASON = "bar_corrects_one_note"
 #: hooks_counted 16/16) -- `benchmarks/omr-bar-sum-holdout-2026-09/FINDINGS.md` "2.165 one-note correction", table "what
 #: solid means". Everything else (above all `head_and_marks`, 75% right, 137 of 182, on his tiles) is NOT solid. The 95% is a declared bar,
 #: not a measured law (CLAUDE section 4), and a cut fitted on two plates may only NARROW.
-SOLID_READINGS = frozenset({"stem_tip_reads_no_beam", "beam_discounted_uncertain", "hooks_counted"})
+#: 2.319: `stem_tip_reads_no_beam` and `beam_discounted_uncertain` went with the bar-crop beam reader; the one beam count reads those notes now.
+SOLID_READINGS = frozenset({"hooks_counted"})
 _UNROOTED = ("infer:", "reconcile_duration")     # a guess, or the bar's own move, is never evidence for another
 
 

@@ -1506,8 +1506,9 @@ MARKS: Tuple[Mark, ...] = (
          {G + "gather_cv_lines": "ink:only=beam_stroke", G + "_stub_cv_lines": "record:only=beam_stroke", G + "gather_detector_beams": "box",
           G + "gather_beam_stem_levels": "ink", G + "gather_beam_stroke_ink": "ink", G + "_observe_beam_stem_join": "ink",
           "page_beams.py:gather_page_beams": "ink", "page_beams.py:gather_page_beam_views": "ink"},
-         ("adjudicate_duration",), ("beam",), ("adjudicators/rhythm.py:_beam_levels", "adjudicators/rhythm.py:_stem_tip_strokes"),
-         "`<beam>` groups and the note values; a note the count cannot settle is narrowed and marked."),
+         ("adjudicate_duration",), ("beam",), (),
+         "`<beam>` groups (2.319: notes whose stems hang on the same beam ink of the one beam count) and the note values; a note the count "
+         "cannot settle is narrowed and marked."),
     Mark("flag", "Flag", "The hook on a lone stem; each hook halves the value.",
          {G + "gather_rhythm_marks": "box:only=flag"}, ("adjudicate_flag_is_not_a_flag", "adjudicate_duration"), ("flag",), (),
          "the note value (an eighth or shorter); a flagged note is never put in a beam group."),

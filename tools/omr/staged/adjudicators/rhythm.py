@@ -50,7 +50,6 @@ from . import notehead_precision as _NP
 # half" -- shared with `adjudicators/text.py` and `adjudicators/ownership.py`
 # rather than re-derived here a third time (same shape as the `_NP` import
 # just above).
-from . import structure as _structure
 # ⚠️ ROADMAP 2.27c: the SAME sibling-import shape, for `_owned_by_a_
 # different_staff` -- `ownership.py` imports neither `rhythm` nor
 # `notehead_precision`, so this is not a new circular-import risk.
@@ -342,17 +341,6 @@ def _ink_reads_decisively_hollow(ink_detail: Dict[str, Any]) -> bool:
     return False
 
 
-#: ROADMAP 2.70. The abstention reasons that say the CV beam reader RAN on
-#: the cell and found no stroke to accept -- a reading ("looked, none"), unlike
-#: `not_implemented`/`reader_unavailable` ("did not look"). The reasons are
-#: `gather_cv_lines`' own: `no_line_accepted` (it ran, accepted nothing of the
-#: kind) and `no_stems_to_join` (fewer than two stems in the cell, so nothing
-#: for a beam to join -- a claim about OUR stem reading, not the print; it is
-#: accepted here only because the caller already requires THIS head's own stem
-#: and a hollow-reading ink).
-_BEAM_READER_RAN_EMPTY = (ABSTAIN.NO_LINE_ACCEPTED, ABSTAIN.NO_STEMS_TO_JOIN)
-
-
 def _live_beam_rows(ev: Evidence, cell, rows):
     """ROADMAP 2.260c M4b (`OMR_PAGE_BEAMS_RETIRE_A`): the `Q.BEAM_STROKE` rows (or refusals) the beam consumers read. With the flag off and a record gathered
     without page views this returns `rows` unchanged (the page views are dropped, cell reader A's stay); with it on, A's are dropped and the page views read."""
@@ -370,67 +358,6 @@ def _beam_state(ev: Evidence, cell):
     if _live_beam_rows(ev, cell, ev.refusals(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)):
         return State.DECLINED
     return ev.state(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-
-
-def _beam_reader_looked(ev: Evidence, cell) -> Optional[str]:
-    """Did the CV beam reader look at this cell? ROADMAP 2.70.
-
-    `"read"` -- it filed strokes; `"ran_empty:<reason>"` -- it ran and every
-    abstention it filed says it accepted none (a cell with no beam at all has
-    NO stroke row, so `Evidence.state` calls it DECLINED, and
-    `adjudicate_duration` spells that `reader_declined`: Litolff p6
-    `glyph/6/1/1/0/10`, a half note, was gated out of 2.23 by exactly that
-    conflation); `None` -- it never ran, or ran and failed, which is "cannot
-    tell" (rule 8) and never "nothing".
-    """
-    state = _beam_state(ev, cell)
-    if state is State.READ:
-        return "read"
-    if state is not State.DECLINED:
-        return None
-    reasons = [r.reason for r in _live_beam_rows(ev, cell, ev.refusals(
-        Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))]
-    if reasons and all(r in _BEAM_READER_RAN_EMPTY for r in reasons):
-        return "ran_empty:" + sorted(set(reasons))[0]
-    return None
-
-
-def _kept_beams(ev: Evidence, cell):
-    """CV strokes, plus the YOLO boxes no CV stroke already explains.
-
-    ⚠️ KEPT, NOT UNIONED AND NOT REPLACED, and both alternatives are measured.
-    A YOLO beam box bounds the STACK: a box over two strokes contributes a
-    centre in the GAP between them, and the run then has no gap wide enough to
-    cluster -- three sixteenths read as three eighths. UNIONING them cost
-    pooled 0.1917 against 0.1861 for this rule. REPLACING outright scores five
-    edits BETTER and is REFUSED: it is the only arm that regresses an authored
-    fixture, and the notes that lose EVERY beam they had go from 4 to 7. Five
-    edits is less than one measure's amplification is worth; the beams are the
-    thing.
-    """
-    rows = _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
-    cv = [r for r in rows if r.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
-    yolo = [r for r in rows if r.reader == READERS.DETECTOR]
-
-    def _overlaps(a, b) -> bool:
-        return (a.detail.get("x0", 0) <= b.detail.get("x1", 0)
-                and a.detail.get("x1", 0) >= b.detail.get("x0", 0))
-
-    kept = list(cv)
-    for box in yolo:
-        if not any(_overlaps(box, stroke) for stroke in cv):
-            kept.append(box)
-    return kept, cv, yolo
-
-
-#: How far past a stroke's end a notehead may sit and still MAYBE be under it,
-#: in notehead widths. (A-DUR-3)
-#:
-#: ⚠️ A beam stroke ends at the last stem it joins, so a note at the end of a
-#: group sits within a notehead's width of the end and the reading is
-#: genuinely *"under it, possibly not"*. That ambiguity is the whole reason
-#: this returns a RANGE.
-BEAM_EDGE_TOLERANCE_WIDTHS = 1.0
 
 
 def _boxes_overlap(a, b) -> bool:
@@ -597,119 +524,6 @@ def _stem_joined(beams, stems, head_box):
     return joined, attached
 
 
-def _beyond_own_stem(beams, stems, attached, side, tol: float):
-    """`(strokes kept, strokes that are not this note's)`. ROADMAP 2.18b.
-
-    ⚠️ A BEAM IS DRAWN AT THE STEM'S END AND RUNS FROM THE FIRST STEM IT JOINS
-    TO THE LAST (CLAUDE.md §10). A stroke that lies past the tip of this
-    head's own read stem by more than the join tolerance, AND that no read
-    stem in the cell reaches within it, joins nothing: it is not this note's
-    beam. On Breitkopf p1 that is the detector's `beam` box on a hairpin or a
-    slur, and the next staff's beam through the cell's pad (FINDINGS §11).
-
-    ⚠️ BOTH HALVES, AND THE SECOND IS THE GUARD. "Past the tip" alone would
-    drop the real beam of a head whose stem the CV read SHORT (a shattered
-    stem), deciding it unbeamed -- `cannot tell` turned into an answer (rule
-    8). A real beam is joined by the other stems of its group; a stroke no
-    read stem reaches at all has nothing tying it to any note. Where this
-    head has no read stem, or no own stem direction, there is no tip and
-    every stroke stays -- and so it does where the cell has no staff-space
-    unit (`tol == 0`): "past the tip by more than the slack" cannot be asked
-    without the unit the slack is measured in.
-    """
-    if side is None or not attached or tol <= 0:
-        return list(beams), []
-    boxes = [_xywh(s) for s in attached if _xywh(s)]
-    if not boxes:
-        return list(beams), []
-    stem_boxes = [_xywh(s) for s in stems if _xywh(s)]
-    kept, beyond = [], []
-    for b in beams:
-        box = _xywh(b)
-        if box is None:
-            kept.append(b)
-            continue
-        if side == "up":
-            tip = min(sy for (_sx, sy, _sw, _sh) in boxes)
-            past = tip - (box[1] + box[3])
-        else:
-            tip = max(sy + sh for (_sx, sy, _sw, sh) in boxes)
-            past = box[1] - tip
-        if past > tol and all(_box_gap(sb, box) > tol for sb in stem_boxes):
-            beyond.append(b)
-        else:
-            kept.append(b)
-    return kept, beyond
-
-
-def _ledger_line_glyph_boxes(ev: Evidence, cell):
-    """Canonical `(x, y, w, h)` of every DETECTOR-boxed `ledgerLine` glyph
-    in THIS cell. ROADMAP 2.25.
-
-    ⚠️ `Q.GLYPH_BOX` ALREADY, so no new `wants` entry: it is the SAME
-    quantity this decision reads for the head's own box, at the SAME
-    canonical-per-cell frame `Q.BEAM_STROKE` uses -- unlike `Q.WEDGE_BOX`'s
-    CV reader, which files page pixels and no canonical box at all
-    (`adjudicate_wedge_anchor`'s own docstring: *"comparing a cell-frame
-    wedge against a page-frame notehead is the frame error that made
-    Q.ONSET_COLUMN report 1,062 columns of nothing"*). Two GLYPH_BOX-family
-    rows in ONE cell need no conversion because they are already the same
-    frame, which is why this connection is built and the wedge one (below,
-    named but not built) is not.
-    """
-    out = []
-    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                     subject=cell):
-        v = r.value
-        if (isinstance(v, (list, tuple)) and len(v) >= 5
-                and v[0] == "ledgerLine"):
-            out.append(_xywh_head(v))
-    return out
-
-
-def _not_a_ledger_line(beams, ledger_boxes, keep=()):
-    """`(kept, dropped)`. ROADMAP 2.25.
-
-    ⚠️ A STROKE THAT OVERLAPS A BOXED `ledgerLine` GLYPH IS THAT LEDGER
-    LINE, NOT THIS NOTE'S BEAM. `benchmarks/omr-bar-sum-holdout-2026-09/
-    FINDINGS.md` SS17c crops (Brahms #1, #4; Litolff #4): a note standing on
-    its own ledger ladder has a short, thick, roughly horizontal run of ink
-    at each rung -- exactly the shape `line_detection`'s beam opening and the
-    detector's own `beam` class both fire on. Two readers naming the SAME
-    ink two different things is not two facts; the ledgerLine reading
-    (`Q.GLYPH_BOX`, a DETECTION) is the more specific claim about what the
-    ink IS, and a beam stroke that stands where a ledger line is boxed
-    inherits that claim rather than contesting it.
-
-    ⚠️ ADDITIVE, NEVER SUBTRACTIVE OF THE RECORD -- same discipline as
-    `_beyond_own_stem`: it can only remove a stroke from THIS note's count,
-    never add one, and a cell with no boxed ledger line drops nothing, so a
-    page the detector never boxed a ledgerLine on behaves exactly as before.
-    No rule-8 guard is added here (unlike `_beyond_own_stem`'s): pricing
-    (FINDINGS SS19) found no case where this step alone left a note with no
-    other mark, and 2.18b's own guard already covers the general fallback
-    where it does.
-    """
-    if not ledger_boxes:
-        return list(beams), []
-    kept, dropped = [], []
-    keep = set(keep)
-    for b in beams:
-        box = _xywh(b)
-        # ⚠️ ROADMAP 2.75: `keep` is the strokes that PASS every beam test the
-        # ink can read (thick, straight, a stem found at BOTH ends). The
-        # detector draws `ledgerLine` boxes over real beams too (Litolff p3
-        # cell 3/0/7/4: a 1.5-space-tall box over a stem-down beam), and a
-        # ledger line has no stem at either end.
-        if b.id not in keep and box is not None \
-                and any(_boxes_overlap(box, lb)
-                        for lb in ledger_boxes if lb is not None):
-            dropped.append(b)
-        else:
-            kept.append(b)
-    return kept, dropped
-
-
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.71 -- a TREMOLO SLASH is not a beam level (Sean, 2026-10-09:
 # *"The trem slash is very different from a beam. Beams have to be connected to
@@ -719,66 +533,6 @@ def _not_a_ledger_line(beams, ledger_boxes, keep=()):
 # joined to no other stem); a beam stroke that IS that ink is dropped from the
 # count here, by the same fact the hook reader blanked it by.
 # ─────────────────────────────────────────────────────────────────────────────
-
-#: A stroke is the slash's own ink where at least this share of its box lies
-#: inside the slash's footprint (padded by `SLASH_FOOTPRINT_PAD_SPACES`) AND it
-#: is no wider than the footprint plus `SLASH_EXTRA_WIDTH_SPACES` -- a long beam
-#: that merely passes the footprint is not the slash.
-SLASH_STROKE_INSIDE_MIN = 0.6
-SLASH_FOOTPRINT_PAD_SPACES = 0.3
-SLASH_EXTRA_WIDTH_SPACES = 0.8
-
-
-def _slash_footprints(ev: Evidence, cell) -> List[Tuple[float, float, float, float]]:
-    """Every PASSING slash's footprint `(x0, y0, x1, y1)` in this cell's
-    canonical frame, read off `Q.STEM_SLASH` (GATHER). Empty where no row says
-    a slash stands here -- a cell the reader never ran on drops nothing."""
-    out: List[Tuple[float, float, float, float]] = []
-    for r in ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_ANCESTORS, subject=cell):
-        for s in (r.detail or {}).get("strokes") or ():
-            b = s.get("box")
-            if s.get("reason") is None and isinstance(b, (list, tuple)) \
-                    and len(b) == 4:
-                out.append(tuple(float(v) for v in b))
-    return out
-
-
-def _not_a_slash(ev: Evidence, cell, beams):
-    """`(kept, dropped, rows)`. ROADMAP 2.71. A beam stroke that is a read
-    tremolo slash's own ink is not this note's beam level; it also does not
-    NARROW the head (it is a mark of another kind, not an absence), so the
-    caller keeps it out of the rule-8 guards."""
-    feet = _slash_footprints(ev, cell)
-    if not feet:
-        return list(beams), [], ()
-    space_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS,
-                         subject=cell)
-    space = float(space_rows[-1].value) if space_rows else 0.0
-    pad = SLASH_FOOTPRINT_PAD_SPACES * space
-    extra = SLASH_EXTRA_WIDTH_SPACES * space
-    kept, dropped = [], []
-    for b in beams:
-        box = _xywh(b)
-        hit = False
-        if box is not None and box[2] > 0 and box[3] > 0:
-            bx0, by0, bx1, by1 = box[0], box[1], box[0] + box[2], box[1] + box[3]
-            for fx0, fy0, fx1, fy1 in feet:
-                ix = min(bx1, fx1 + pad) - max(bx0, fx0 - pad)
-                iy = min(by1, fy1 + pad) - max(by0, fy0 - pad)
-                if ix <= 0 or iy <= 0:
-                    continue
-                if (ix * iy) / (box[2] * box[3]) >= SLASH_STROKE_INSIDE_MIN \
-                        and box[2] <= (fx1 - fx0) + extra:
-                    hit = True
-                    break
-        (dropped if hit else kept).append(b)
-    used = tuple(r for r in ev.rows(Q.STEM_SLASH, scope=Scope.SELF_AND_ANCESTORS,
-                                     subject=cell)
-                 if any(s.get("reason") is None
-                        for s in (r.detail or {}).get("strokes") or ())
-                 ) if dropped else ()
-    return kept, dropped, used
-
 
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.25b -- the three larger classes 2.25 named and did not build:
@@ -834,21 +588,6 @@ def _cell_frame(ev: Evidence, cell) -> Optional[Tuple[float, float, float]]:
     return None
 
 
-def _to_page(box, frame):
-    """Canonical `(x, y, w, h)` -> page pixels, through `_cell_frame`."""
-    ox, oy, up = frame
-    x, y, w, h = box
-    return (ox + x / up, oy + y / up, w / up, h / up)
-
-
-def _to_canonical(box, frame):
-    """Page-pixel `(x, y, w, h)` -> this cell's canonical, through
-    `_cell_frame` -- the exact inverse of `_to_page`."""
-    ox, oy, up = frame
-    x, y, w, h = box
-    return ((x - ox) * up, (y - oy) * up, w * up, h * up)
-
-
 def _stems_connected_to_a_head(ev: Evidence, cell, stems):
     """ROADMAP 2.87 (`OMR_STEM_FINDER=head_contact`), Sean 2026-10-11: *"All stems
     should be connected to a notehead"*. The tests below that count STEMS (a beam
@@ -858,184 +597,6 @@ def _stems_connected_to_a_head(ev: Evidence, cell, stems):
     from .stem_value import stems_connected_to_a_head
     return stems_connected_to_a_head(
         ev.verdict(Q.STEM_HEAD_CONTACT, subject=cell), stems)
-
-
-def _joins_n_stems(box, stems) -> int:
-    """How many DIFFERENT `Q.STEM` boxes this stroke's box overlaps -- the
-    signature of a genuine beamed group (drawn to span several stems), used
-    below as the override that keeps a real beam even where it happens to
-    sit inside a slur's or a hairpin's own box."""
-    return sum(1 for s in stems if _xywh(s) and _boxes_overlap(_xywh(s), box))
-
-
-def _not_the_neighbours_beam(ev: Evidence, cell, beams, stems, own_stems):
-    """`(kept, dropped)`. ROADMAP 2.25b, class 1 (`other_staff_via_pad`,
-    150 Brahms / 7 Litolff heads, FINDINGS SS13).
-
-    ⚠️ THE DECIDED FACT IS A STEM, NOT A DISTANCE. A stroke lying beyond
-    THIS staff's own outer line (`Q.STAFF_LINES`, page frame) -- in the pad
-    the cell's own crop reaches into (CLAUDE.md SS10: "the measure cell is
-    padded 4 spaces... and reaches the next staff's ink") -- that ALSO
-    overlaps, in page pixels, a `Q.STEM` row filed on the NEIGHBOURING
-    staff's own SAME-cell subject ("or cells of the neighbouring staff",
-    the manager's own fallback -- an ownership CONTEST is not asked; the
-    stem merely being filed there is enough) is that staff's beam.
-
-    ⚠️ THE OVERRIDE (rule 6, never discount past a stronger fact): a stroke
-    ALSO reached by one of THIS head's own attached stems stays, whatever
-    else it touches -- a beam spanning a wide group can legitimately pass
-    near a neighbour's stem without being that neighbour's ink.
-
-    ⚠️ DECLINED, NEVER GUESSED, where this cell's or the neighbour cell's
-    own `_cell_frame` cannot be solved (no dual-frame glyph box in either)
-    -- the stroke stays, exactly as `_not_a_ledger_line` leaves every
-    stroke where the cell holds no boxed ledger line.
-
-    ⚠️ ROADMAP 2.27d: A STROKE TOUCHING ONLY THE PART'S OWN OTHER STAFF IS
-    NOT DROPPED. On a DECIDED brace pair (`Q.GROUP_SYMBOL` "brace", the same
-    fact `adjudicators/text.py`'s grand-staff dynamics rule connects to)
-    the OTHER staff of the pair is not "the neighbour" for this rule's
-    purpose -- a beam crossing from one hand's stems to the other's is ONE
-    beam of the PART. If a stroke touches BOTH the partner's stems and some
-    OTHER staff's (a three-staff crowd), it still drops: the exemption is
-    for the decided pair only, never a guess about which neighbour a mixed
-    touch means. Off a decided brace this is exactly the 2.25b rule,
-    unchanged -- inert on every orchestral system (control: a bracket of
-    two ordinary staves, e.g. two horns, never decides "brace" and every
-    touch there still drops, as before this roadmap item).
-    """
-    lines = ev.rows(Q.STAFF_LINES, scope=Scope.SELF_AND_ANCESTORS,
-                    subject=cell.at(Kind.STAFF))
-    frame = _cell_frame(ev, cell)
-    if not lines or not lines[-1].value or frame is None:
-        return list(beams), []
-    ys = [float(y) for y in lines[-1].value]
-    top, bottom = min(ys), max(ys)
-
-    # `(neighbour_staff_index, page_box)` -- kept per-staff, not flattened,
-    # so the brace exemption below can ask WHICH staff a touched stem
-    # belongs to rather than merely whether some neighbour has one there.
-    neighbour_stems_page: List[Tuple[int, Tuple[float, float, float, float]]] = []
-    for delta in (-1, 1):
-        st = cell.staff + delta if cell.staff is not None else None
-        if st is None or st < 0:
-            continue
-        ncell = Subject(Kind.CELL, page=cell.page, system=cell.system,
-                        staff=st, cell=cell.cell)
-        nframe = _cell_frame(ev, ncell)
-        if nframe is None:
-            continue
-        for s in _stems_connected_to_a_head(
-                ev, ncell, ev.rows(Q.STEM, scope=Scope.EXACT, subject=ncell)):
-            box = _xywh(s)
-            if box is not None:
-                neighbour_stems_page.append((st, _to_page(box, nframe)))
-    if not neighbour_stems_page:
-        return list(beams), []
-
-    home_sub = Subject(Kind.STAFF, page=cell.page, system=cell.system,
-                       staff=cell.staff)
-    # ⚠️ ROADMAP 2.27d, THE CHEAP HALF READ DIRECTLY. Every orchestral
-    # system fails one of these two checks (no group ever decides
-    # `Q.GROUP_SYMBOL` "brace"), so confirming them here -- before asking
-    # `structure` to enumerate the system's other staves -- is a real
-    # short-circuit on the common case, and it is what makes `wants`'
-    # declaration of both quantities true of THIS file's own body.
-    partner_staff = None
-    brace = ev.verdict(Q.GROUP_SYMBOL, subject=home_sub.at(Kind.SYSTEM))
-    if brace is not None and brace.value == "brace":
-        own_group = ev.verdict(Q.STAFF_GROUP, subject=home_sub)
-        if own_group is not None and own_group.value is not None:
-            partner_key = _structure.grand_staff_partner_staff(
-                ev, home_sub.to_key())
-            if partner_key is not None:
-                partner_staff = Subject.from_key(partner_key).staff
-
-    kept, dropped = [], []
-    for b in beams:
-        box = _xywh(b)
-        if box is None:
-            kept.append(b)
-            continue
-        # ⚠️ THE OVERRIDE IS A BOX TEST, NOT AN ID TEST -- `own_stems` are
-        # STEM rows and `b` is a BEAM row; the two never share an id. The
-        # question is whether THIS stroke is reached by one of this head's
-        # own attached stems, the same overlap test `_stem_joined` uses.
-        if any(sbox and _boxes_overlap(box, sbox)
-               for sbox in (_xywh(s) for s in own_stems)):
-            kept.append(b)
-            continue
-        page_box = _to_page(box, frame)
-        pyc = page_box[1] + page_box[3] / 2.0
-        beyond_outer = pyc < top or pyc > bottom
-        touching_staffs = {nst for nst, nb in neighbour_stems_page
-                           if _boxes_overlap(page_box, nb)}
-        if beyond_outer and touching_staffs:
-            if partner_staff is not None and touching_staffs <= {partner_staff}:
-                # ⚠️ ROADMAP 2.27d: every staff this stroke touches is the
-                # decided brace partner and none other -- the part's own
-                # cross-staff beam, kept.
-                kept.append(b)
-            else:
-                dropped.append(b)
-        else:
-            kept.append(b)
-    return kept, dropped
-
-
-def _not_a_decided_arc(ev: Evidence, cell, beams, stems):
-    """`(kept, dropped)`. ROADMAP 2.25b, class 2 (`arc_box`, 139 Brahms
-    heads, FINDINGS SS13).
-
-    ⚠️ THE DECIDED FACT IS `Q.ARC_KIND`, NOT MERE OVERLAP WITH A BOX (rule
-    6). `adjudicate_arc_kind` runs before `duration` in `adjudicate.ORDER`,
-    so its verdict is already settled: an `Q.ARC_BOX` glyph this decision
-    reads must have DECIDED (`tie` or `slur`) before a stroke over it is
-    discounted -- an abstained or refused arc box (`Q.ARC_IS_NOT_AN_ARC`)
-    proves nothing about the ink and discounts nothing.
-
-    ⚠️ THE OVERRIDE, THE MANAGER'S OWN POSITIVE CONTROL: *"a real beam
-    overlapping a slur's box still counts when it joins >= 2 of this
-    staff's stems"* -- `_joins_n_stems`, over every `Q.STEM` filed in THIS
-    cell (not just this note's own), because a genuine beam is drawn to
-    span several stems and a slur's bounding box coincidentally covering
-    one is not evidence against that.
-    """
-    # ROADMAP 2.87 (`head_contact`): the "joins >= 2 stems" override counts STEMS,
-    # and a stroke that touches no notehead is not one (Sean 2026-10-11).
-    stems = _stems_connected_to_a_head(ev, cell, stems)
-    arcs = []
-    for r in ev.rows(Q.ARC_BOX, scope=Scope.SELF_AND_DESCENDANTS,
-                     subject=cell):
-        d = r.detail or {}
-        if not all(k in d for k in ("x0", "x1", "y0", "y1")):
-            continue
-        v = ev.verdict(Q.ARC_KIND, subject=r.subject)
-        if v is None:
-            continue
-        if v.outcome is not Outcome.DECIDED:
-            # lane-arcs-claim-1029 (OMR_ARC_KIND_FROM_ENDS): an arc whose KIND abstained because its end heads were unread is still an ARC -- it
-            # discounts a beam as before (the arc stays an arc; only tie-or-slur is withheld)
-            from .. import arc_claim as _AC
-            if not (_AC.kind_enabled() and getattr(v, "reason", None) in _AC.ARC_STILL_AN_ARC):
-                continue
-        arcs.append((float(d["x0"]), float(d["y0"]),
-                    float(d["x1"]) - float(d["x0"]),
-                    float(d["y1"]) - float(d["y0"])))
-    if not arcs:
-        return list(beams), []
-    kept, dropped = [], []
-    for b in beams:
-        box = _xywh(b)
-        if box is None:
-            kept.append(b)
-            continue
-        if any(_boxes_overlap(box, a) for a in arcs) \
-                and _joins_n_stems(box, stems) < 2:
-            dropped.append(b)
-        else:
-            kept.append(b)
-    return kept, dropped
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -1132,71 +693,6 @@ def _core_beam_on_two_stems(detail: Dict[str, Any], heads=(), space: float = 0.0
     return core
 
 
-#: ROADMAP 2.82 (Sean, 2026-10-10: *"The 'doesn't touch more than one stem' is off"*). A stroke
-#: is refused `one_stem` only where the record POSITIVELY says no second note stands at it:
-#: fewer than this many distinct detector-boxed head columns within a stem's reach of it.
-BEAM_ONE_STEM_HEAD_COLUMNS_MIN = 2
-#: Two head boxes closer than this (spaces, centre to centre) are one column (a chord).
-BEAM_HEAD_COLUMN_SEPARATION_SPACES = 0.7
-
-
-def _head_columns_at_stroke(box, heads, space: float) -> int:
-    """How many distinct detector-boxed head COLUMNS stand at a stroke: a head whose box
-    reaches the stroke's x-range (a head-box's slack on each side) and whose box lies
-    within `BEAM_CORE_HEAD_REACH_SPACES` of the stroke's box vertically, on either side.
-    Heads one `BEAM_HEAD_COLUMN_SEPARATION_SPACES` apart are one column (a chord).
-    ROADMAP 2.82. `0` where there is no unit (nothing is claimed)."""
-    if box is None or not space or space <= 0:
-        return 0
-    bx, by, bw, bh = box
-    pad = BEAM_CORE_HEAD_X_SPACES * space
-    reach = BEAM_CORE_HEAD_REACH_SPACES * space
-    xs = []
-    for hx, hy, hw, hh in heads or ():
-        if hx + hw < bx - pad or hx > bx + bw + pad:
-            continue
-        if max(by - (hy + hh), hy - (by + bh), 0.0) > reach:
-            continue
-        xs.append(hx + hw / 2.0)
-    cols, last = 0, None
-    for x in sorted(xs):
-        if last is None or x - last > BEAM_HEAD_COLUMN_SEPARATION_SPACES * space:
-            cols += 1
-            last = x
-    return cols
-
-
-def _core_reads_no_stem_at_either_end(detail: Dict[str, Any]) -> bool:
-    """POSITIVE evidence of no stem: the stroke's thick CORE was read, and the ink READ `found: False` at BOTH
-    of its ends (not `None`: unread is not "absent"). Where the thick ink of a stroke stops at nothing at
-    either end it is a stretch of something else -- a hairpin's thick end (Brahms pdf 18, two 17-space
-    boxes at 1.82 lines whose cores read no stem at either end), a staff-line residue. ROADMAP 2.82."""
-    core = (detail or {}).get("core")
-    if not isinstance(core, dict):
-        return False
-    ends = core.get("end_stems") or []
-    return len(ends) == 2 and all(isinstance(e, dict) and e.get("found") is False for e in ends)
-
-
-def _may_be_a_second_stem(box, heads, space: float, detail: Optional[Dict[str, Any]] = None) -> bool:
-    """`one_stem` needs POSITIVE evidence that no other stem stands at the stroke (rule 8: "cannot
-    tell" is not "only one stem"). The stem finder refuses a stem fused with the stack of heads on
-    it (`too WIDE`, 37 of the 37 undecided heads under Sean's hand-truth beams), so a second stem
-    that was never registered is the COMMON case: where two or more distinct heads stand at the
-    stroke there is something for a second stem to hang from, the count of REGISTERED stems says
-    nothing, and the stroke stays. The 2.74 `one_stem` refusals this keeps (Litolff pdf 10 tile
-    02: four fused columns under an 8-space bar; pdf 13 tile 29: two) were printed eighths.
-
-    ⚠️ THE FIRST VERSION OF THIS (heads alone) KEPT TWO HAIRPIN BOXES and read Brahms pdf 18's
-    heads sixteenth and dotted eighth: a 17-space box has two head columns under it wherever it
-    lies. So heads are NOT enough where the ink itself READ the thick core's two ends and found
-    no stem at either (`_core_reads_no_stem_at_either_end`): that is positive evidence of no
-    stem, and the refusal stands."""
-    if _core_reads_no_stem_at_either_end(detail):
-        return False
-    return _head_columns_at_stroke(box, heads, space) >= BEAM_ONE_STEM_HEAD_COLUMNS_MIN
-
-
 def stroke_thin_by_ink(detail: Dict[str, Any], heads=(), space: float = 0.0) -> bool:
     """`too_thin`: the stroke's median thickness is under `BEAM_THICKNESS_RATIO_MIN`
     staff lines AND no beam-thick core of it stands on a stem at each end. An unread
@@ -1240,27 +736,6 @@ def stroke_end_stems(detail: Dict[str, Any], heads=(), space: float = 0.0):
 #: that work. What this cut refuses is a THICK stroke bowed past it: on both
 #: plates, detector boxes over a whole cluster of ink (0.4-1.4 spaces).
 BEAM_SAGITTA_MAX_SPACES = 0.40
-
-#: How far (staff spaces) a one-stem stroke may lie from a stroke that stands
-#: on two stems and still be that beam group's own secondary level (a
-#: beamlet). A secondary beam sits about 0.3-0.7 spaces from the primary.
-BEAM_BEAMLET_GAP_SPACES = 1.0
-
-
-#: A stroke whose box lies at least this much INSIDE the cell's notehead boxes
-#: is those heads' own ink, not a beam. ROADMAP 2.75 (Sean, 2026-10-09, 2.74
-#: review Litolff 1: printed eighth, read 32nd then 16th).
-#:
-#: ⚠️ MEASURED, `FINDINGS.md` §16. The stroke on that tile (obs:036863, a
-#: second ledger line through a row of three heads, fused with them: 1.08
-#: spaces thick, which is why 2.74's thickness test passed it) lies 0.80
-#: inside the heads' boxes. Of 1,659 CV/detector strokes on Brahms p0-1 and
-#: Litolff p1-3 the ones over 0.5 are rows of heads and ledger lines through
-#: them; a beam stands at the far end of its stems and runs BETWEEN them. The
-#: cut sits in the gap between the beams the crops show (0.0-0.3, a beam
-#: touching one head's edge) and the head rows (0.55 and up).
-BEAM_THROUGH_HEADS_MIN = 0.5
-
 
 #: A detector box wider than this (staff spaces) is not ONE notehead: a head is
 #: ~1.3 spaces wide and a whole note ~1.8 (CLAUDE.md §10). Measured on Brahms p1
@@ -1324,37 +799,6 @@ def _covered_fraction(box, others) -> float:
     return area / float(w * h)
 
 
-def _beam_anchor_ids(ev: Evidence, cell, beams, tol: float, head_boxes):
-    """The ids of strokes that PASS every beam test the ink can READ: thick
-    (`BEAM_THICKNESS_RATIO_MIN`), straight (`BEAM_SAGITTA_MAX_SPACES`), a stem
-    found at BOTH ends, and not lying through the cell's heads. A test the ink
-    did not read fails the stroke here (it is NOT an anchor), so this only ever
-    EXEMPTS a stroke from a refusal that rests on a box -- never admits one.
-    ROADMAP 2.75."""
-    ink = _beam_ink_rows(ev, cell)
-    out = set()
-    space = (tol / STEM_JOIN_TOLERANCE_SPACES) if tol > 0 else 0.0
-    for b in beams:
-        row = ink.get(b.id)
-        if row is None:
-            continue
-        d = row.detail or {}
-        ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
-        ends = stroke_end_stems(d, head_boxes, space)
-        if ratio is None or sag is None or stroke_thin_by_ink(d, head_boxes, space) \
-                or sag > BEAM_SAGITTA_MAX_SPACES:
-            continue
-        if not (len(ends) == 2 and all(isinstance(e, dict) and e.get("found")
-                                       for e in ends)):
-            continue
-        box = _xywh(b)
-        if box is None or (head_boxes and _covered_fraction(box, head_boxes)
-                           >= BEAM_THROUGH_HEADS_MIN):
-            continue
-        out.add(b.id)
-    return out
-
-
 def _voice_stems(own_stems, head_box):
     """`{"up": [stems], "down": [stems]}` -- this head's own stems split by
     which way they run from the head's centre. A head with a stem each way is
@@ -1370,53 +814,6 @@ def _voice_stems(own_stems, head_box):
             continue
         out["up" if (b[1] + b[3] / 2.0) < hyc else "down"].append(s)
     return out
-
-
-def _beam_ink_rows(ev: Evidence, cell) -> Dict[str, Any]:
-    """`{beam row id: Q.BEAM_STROKE_INK row}` for this cell. ROADMAP 2.74."""
-    out: Dict[str, Any] = {}
-    for r in ev.rows(Q.BEAM_STROKE_INK, scope=Scope.SELF_AND_ANCESTORS,
-                     subject=cell):
-        bid = (r.detail or {}).get("beam_row_id")
-        if bid:
-            out[bid] = r
-    return out
-
-
-def _stems_a_stroke_stands_on(row, ink_row, stems, tol: float):
-    """`(distinct stem count, read)`. How many different stems the stroke
-    stands on: every read `Q.STEM` within the join tolerance of its box, plus
-    each end the INK says a vertical run leaves. `read` is False where the
-    ink reader did not say either end (then the count says nothing). ROADMAP
-    2.74.
-
-    ⚠️ PERMISSIVE ON PURPOSE, because the only use of a LOW count is to
-    refuse a stroke: a stem within `tol` of the box counts even though it
-    does not touch it (the join the CV beam reader itself used), so the
-    stroke is refused only where nothing, anywhere near it, is a stem.
-    """
-    box = _xywh(row)
-    ends = (ink_row.detail or {}).get("end_stems") or []
-    ends_read = (len(ends) == 2
-                 and all(isinstance(e, dict) and e.get("found") is not None
-                         for e in ends))
-    if box is None or not ends_read or tol <= 0:
-        return 0, False
-    xs = []
-    for s in stems:
-        sb = _xywh(s)
-        if sb is not None and _box_gap(sb, box) <= tol:
-            xs.append(sb[0] + sb[2] / 2.0)
-    for e in ends:
-        if e.get("found") and e.get("x") is not None:
-            xs.append(float(e["x"]))
-    xs.sort()
-    distinct, last = 0, None
-    for x in xs:
-        if last is None or x - last > 0.75 * tol:
-            distinct += 1
-            last = x
-    return distinct, True
 
 
 #: A stroke stands on stems where at least this many DIFFERENT read stems END
@@ -1469,541 +866,7 @@ def _stems_ending_in(box, stems, separation: float) -> int:
     return distinct
 
 
-BEAM_STROKE_IS_A_BEAM_ENV = "OMR_BEAM_LEVEL_STROKE_IS_A_BEAM"
-
-
-def beam_level_stroke_is_a_beam_enabled() -> bool:
-    """ROADMAP 2.141h fix 1, default ON (Sean 2026-10-15, tiles: 11 wrong values made right, 0 made wrong): a stroke counts as a beam LEVEL of a head only if the head's own stem ENDS at it
-    (within the stack a beam can occupy), so a ledger line merged with the heads is not a level. Only an explicit off-word disables."""
-    import os
-    return os.environ.get(BEAM_STROKE_IS_A_BEAM_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
-
-
-#: ROADMAP 2.141h fix 1. How far (staff spaces) a head's OWN stem may run past a stroke on the stem's side for the stroke to
-#: still be one of its beam levels. Beams stack at the stem's far tip: a level is a beam (~0.6 space) plus a gap (~0.3), so the
-#: 2nd level starts ~0.9 space from the tip, the 3rd ~1.8, the 4th ~2.7. A stroke the stem runs past by more than this is at
-#: the 5th level or deeper, i.e. not a beam of this stem. DERIVED from the stacking geometry (a convention), not fitted; the
-#: one measured case is Litolff p5 tile 6 (the ledger line the heads stand on: its near edge 3.0 spaces from the stem tip).
-#: NOT CONFIRMED on a second publisher; the refusal is only made with a second witness (`_stroke_touches_a_head`).
-BEAM_STEM_RUNS_PAST_MAX_SPACES = 2.5
-
-
-#: ROADMAP 2.141h fix 1. A stroke at least this many times as thick as ANOTHER kept stroke of the same cell (measured at the strokes'
-#: own columns, `Q.BEAM_STROKE_INK` `thickness_px`) may be two beams drawn fused (2.140). "About twice one beam", with room for a
-#: scan's ink gain: 1.8. A convention-free cut, so it only NARROWS (it raises the head's POSSIBLE level count by one).
-BEAM_DOUBLE_THICKNESS_RATIO_MIN = 1.8
-
-
-def _fused_double_beams(ev: Evidence, cell, kept, x_center) -> int:
-    """How many kept strokes over this head's column are ~twice as thick as another kept stroke of the cell: each MAY be two
-    beams read as one (`BEAM_DOUBLE_THICKNESS_RATIO_MIN`). Needs a second stroke to measure one beam against; none -> 0 (cannot
-    tell is not 'one'). Used only to widen `possible`, never `certain`. ROADMAP 2.141h fix 1."""
-    ink = _beam_ink_rows(ev, cell)
-    th = {}
-    for b in kept:
-        r = ink.get(b.id)
-        t = (r.detail or {}).get("thickness_px") if r is not None else None
-        if isinstance(t, (int, float)) and t > 0:
-            th[b.id] = float(t)
-    if len(th) < 2 or x_center is None:
-        return 0
-    n = 0
-    for b in kept:
-        if b.id not in th:
-            continue
-        x0, x1 = b.detail.get("x0", 0), b.detail.get("x1", 0)
-        if not (x0 <= x_center <= x1):
-            continue
-        others = [t for i, t in th.items() if i != b.id]
-        if th[b.id] >= BEAM_DOUBLE_THICKNESS_RATIO_MIN * min(others):
-            n += 1
-    return n
-
-
-BEAM_LEVEL_NEEDS_A_JOINED_STEM_ENV = "OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM"
-
-
-def beam_level_needs_a_joined_stem_enabled() -> bool:
-    """ROADMAP 2.153, default ON (allow-list: only 1/true/yes/on enables). A beam level belongs to a STEM (Sean 2026-10-16: notehead,
-    stem, THEN beam or flag; a later step never overturns an earlier one). A stroke that only COVERS the head's centre column --
-    no stem box reaches it and the ink-join reader did not read it joined -- is POSSIBLE, never CERTAIN: the note narrows over the
-    levels left open instead of deciding one."""
-    import os
-    return os.environ.get(BEAM_LEVEL_NEEDS_A_JOINED_STEM_ENV, "").strip().lower() in ("1", "true", "yes", "on")
-
-
 BEAM_STEM_LEVELS_ENV = "OMR_BEAM_STEM_LEVELS"
-
-
-def beam_stem_levels_enabled() -> bool:
-    """ROADMAP 2.140, default ON since 2026-10-16 (Sean: 14 tiles, 27 right, 5 narrowed, 0 wrong; only an explicit off-word disables; no `Q.BEAM_STEM_LEVELS` rows -> `_stem_tip_strokes` is None -> unchanged from off): a second beam stroke at
-    a stem's tip is counted from the page (`Q.BEAM_STEM_LEVELS`, one witness) and from the detector's stack box (a second, different
-    source). Both -> a level decides; either alone -> the note narrows (eighth/sixteenth), never a plain eighth. The same word turns the GATHER reader on."""
-    import os
-    return os.environ.get(BEAM_STEM_LEVELS_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
-
-
-#: ROADMAP 2.140. How much taller (in one-beam thicknesses, CV stroke `thickness_px`) the detector's `beam` box over a stem is than a
-#: single beam over a box that wide would be: the box bounds the STACK, so two levels stand ~one more beam taller. A single sloped
-#: beam's box grows with its slope; that rise is taken from the CV stroke's own box (its height minus its thickness, scaled to the
-#: detector box's width), so only what is left counts. One measured case (Brahms p18 sys1 staff12 cell7: 0.77; a neighbour
-#: single-beam group 0.1-0.3, see FINDINGS 2.140). NOT CONFIRMED on a second publisher: it only narrows unless the page count agrees.
-BEAM_STACK_BOX_EXCESS_MIN = 0.6
-#: ROADMAP 2.140 round 2 (CLAUDE.md section 4: a cut-off tuned on our plates may only NARROW; a refusal says how close it came). A box
-#: witness within this of its cut is a near-miss and cannot decide: Litolff (6,1,7,0) glyph 5 cleared the cut by 0.016 and Sean read an eighth.
-BEAM_STACK_BOX_NEAR_MISS = 0.05
-
-
-def stack_box_excess_beams(cv_strokes, yolo_boxes, x):
-    """`(excess, how)`: the largest `(box height - the height the CV strokes ALREADY COUNTED over x would give a box that wide) / one
-    beam's thickness` over the detector boxes covering canonical x. `cv_strokes`: `[(x0, x1, (bx, by, bw, bh), thickness_px)]`;
-    `yolo_boxes`: `[(x0, x1, (bx, by, bw, bh))]`. Every CV stroke over `x` with a measured thickness is counted (2.140 tiles 1 and 4:
-    a box over TWO counted beams stands ~1.7 beams tall against one stroke and read as a third level; against both it is ~0.3).
-    Expected height = their summed thickness plus the slope rise of their combined box, scaled to the detector box's width.
-    `(None, None)` where no detector box covers `x` or no CV stroke with a measured thickness does. Pure. ROADMAP 2.140."""
-    best = (None, None)
-    over = [(cx0, cx1, bx, th) for cx0, cx1, bx, th in cv_strokes if cx0 <= x <= cx1 and th and th > 0 and bx[2] > 0]
-    if not over:
-        return best
-    T = sum(t for _a, _b, _bx, t in over)
-    top = min(bx[1] for _a, _b, bx, _t in over)
-    bot = max(bx[1] + bx[3] for _a, _b, bx, _t in over)
-    cw = max(bx[2] for _a, _b, bx, _t in over)
-    mean_th = T / len(over)
-    for ax0, ax1, (_ax, _ay, aw, ah) in yolo_boxes:
-        if not (ax0 <= x <= ax1):
-            continue
-        exp_h = T + max(0.0, (bot - top) - T) * (aw / cw)
-        ex = (ah - exp_h) / mean_th
-        if best[0] is None or ex > best[0]:
-            best = (ex, {"yolo_h": ah, "yolo_w": aw, "cv_h": bot - top, "cv_w": cw, "thickness_px": mean_th, "counted_strokes": len(over),
-                         "expected_h": round(exp_h, 1)})
-    return best
-
-
-#: ROADMAP 2.140. A stroke at least this many times one beam's thickness counts as that many beams fused (the gap between two beams
-#: fills in on a scan). Same cut as the CV-thickness widening above (`BEAM_DOUBLE_THICKNESS_RATIO_MIN`).
-BEAM_STEM_RUN_DOUBLE_RATIO = BEAM_DOUBLE_THICKNESS_RATIO_MIN
-
-
-#: ROADMAP 2.140. A page stroke counts only if it is at least this fraction of ONE beam's thickness (the cell's CV strokes' median
-#: `thickness_spaces`): a clearly thinner run is a staff line plus a sliver of ink, not a level. MEASURED on Brahms p18 + Litolff p4/p6
-#: replay (tiles 1 and 4, Sean: sixteenths): the extra runs read 0.51-0.65 of a beam, every stroke on a cell Sean called right reads
-#: 0.76 or more; 0.7 sits in the empty interval. Only ever REMOVES a count (a safe direction); NOT CONFIRMED on a second publisher.
-BEAM_STEM_RUN_UNIT_RATIO_MIN = 0.7
-
-
-def _stem_tip_strokes(ev: Evidence, cell, own_stems, head_box, side, kept_cv):
-    """ROADMAP 2.140 (flag `OMR_BEAM_STEM_LEVELS`). What the page shows at the TIP of this head's own stem, from the
-    `Q.BEAM_STEM_LEVELS` row(s) of that stem: `{"count": strokes on the better side (a stroke that is >= `BEAM_STEM_RUN_DOUBLE_RATIO`
-    one beam's thickness counts as that many), "side": "left"/"right", "runs": [...], "unit_spaces": one beam's thickness, "row": id}`.
-    `None` where cannot tell (no row for the stem, no tip end named, no beam thickness to count a thick run by -> the plain run
-    count is used only when the cell measured none either way: a thick run then counts once, never twice). Rule 8: unread is not 'one'."""
-    if side not in ("up", "down") or not own_stems or head_box is None:
-        return None
-    stems = _voice_stems(own_stems, head_box)[side]
-    ids = {st.id for st in stems}
-    rows = [r for r in ev.rows(Q.BEAM_STEM_LEVELS, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-            if (r.detail or {}).get("stem_row_id") in ids]
-    if not rows:
-        return None
-    ink = _beam_ink_rows(ev, cell)
-    ths = sorted(float((ink[b.id].detail or {}).get("thickness_spaces")) for b in kept_cv
-                 if b.id in ink and isinstance((ink[b.id].detail or {}).get("thickness_spaces"), (int, float))
-                 and (ink[b.id].detail or {}).get("thickness_spaces") > 0)
-    unit = ths[len(ths) // 2] if ths else None
-    end = "top" if side == "up" else "bottom"
-    best = None
-    for r in rows:
-        e = ((r.detail or {}).get("ends") or {}).get(end) or {}
-        for sd in ("left", "right"):
-            runs = e.get(sd) or []
-            n = 0
-            for run in runs:
-                t = float(run[2])
-                if unit and t < BEAM_STEM_RUN_UNIT_RATIO_MIN * unit:
-                    continue
-                n += max(1, int(round(t / unit))) if (unit and t >= BEAM_STEM_RUN_DOUBLE_RATIO * unit) else 1
-            if best is None or n > best["count"]:
-                best = {"count": n, "side": sd, "runs": runs, "unit_spaces": unit, "row": r.id}
-    return best
-
-
-#: ROADMAP 2.146 (Sean 2026-10-16: *"the connection to the end of stems is the most important factor - more important than
-#: width"*; "the stem tip decides beamed or not"). Default ON since 2026-10-16; an explicit off-word disables.
-STEM_TIP_DECIDES_BEAM_ENV = "OMR_STEM_TIP_DECIDES_BEAM"
-
-
-def stem_tip_decides_beam_enabled() -> bool:
-    """ROADMAP 2.146, default ON since 2026-10-16 (Sean: "Land 2.146 ON. Clean tip means no beam."; 33/33 tiles, 41/41 hand
-    truth; only an explicit off-word disables): where every candidate stroke over a stemmed head was refused (the
-    `beam_discounted_uncertain` population), a CLEAN own stem tip (no beam run, no flag ink) decides no beam."""
-    return os.environ.get(STEM_TIP_DECIDES_BEAM_ENV, "1").strip().lower() not in ("0", "", "false", "no", "off")
-
-
-def _stem_tip_beam_verdict(ev: Evidence, cell, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.146. What THIS head's own stem tip says about a beam, read FROM THE STEM (`Q.BEAM_STEM_LEVELS`, the 2.140
-    tip reader: runs >= `BEAM_STEM_RUN_MIN_SPACES` staff spaces thick reaching >= `BEAM_STEM_RUN_REACH_MIN_SPACES` sideways)
-    and the flag window at the same tip (`Q.STEM_TIP_INK`). `{"levels": n, "rows": [...], ...}` or `None` -- cannot tell:
-    no tip row for the stem, the flag window unread or disputed, or a hook at the tip (a flag is not a beam; 2.69 owns it).
-    Measured on Sean's Brahms 317803 pdf 0 hand truth from TRUTH stems (FINDINGS omr-beam-confirm-2026-10 §9.3): a run
-    leaving the tip separates beamed 127/129 from bare 1/111 and flagged 1/36."""
-    tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
-    if tip is None:
-        return None
-    flag_ink, flag_rows = _stem_tip_flag_ink(ev, cell, own_stems, side)
-    if flag_ink is None or flag_ink:
-        return None
-    return {"levels": int(tip["count"]), "rows": [tip["row"]] + [r.id for r in flag_rows],
-            "side": tip["side"], "runs": tip["runs"]}
-
-
-#: ROADMAP 2.170 (Sean 2026-10-19, "Send an opus agent out to tackle the beam issue"). Default ON (Sean 2026-10-19 "2 yes"); explicit 0/false/no/off disables.
-BEAM_REFUSED_OFF_THE_TIP_ENV = "OMR_BEAM_REFUSED_OFF_THE_TIP"
-
-
-def beam_refused_off_the_tip_enabled() -> bool:
-    """ROADMAP 2.170, default ON: where every stroke over a stemmed head was refused and NO beam stroke of the cell -- either
-    reader's, kept, refused or dropped by `_kept_beams` -- stands at this head's own stem tip, and the tip's own beam-run
-    reader (`Q.BEAM_STEM_LEVELS`) read that tip and found no run, the refused strokes are not this note's beam: the head is
-    decided as if they had never stood over it (the flag window is then asked exactly as for any unmarked head)."""
-    return os.environ.get(BEAM_REFUSED_OFF_THE_TIP_ENV, "").strip().lower() not in ("0", "false", "no", "off")
-
-
-#: ROADMAP 2.170 addition 2 (Sean 2026-10-19 "Yes"; his rule "beams cannot have an arc"). Default ON (Sean 2026-10-19); explicit 0/false/no/off disables.
-BEAM_NOT_ON_SYSTEM_ARC_ENV = "OMR_BEAM_NOT_ON_SYSTEM_ARC"
-
-
-def beam_not_on_system_arc_enabled() -> bool:
-    """ROADMAP 2.170 addition 2, default ON: a beam-candidate stroke whose ink lies on a tie/slur traced once per system
-    (`Q.SYSTEM_ARC`, 2.166) is not a beam."""
-    return os.environ.get(BEAM_NOT_ON_SYSTEM_ARC_ENV, "").strip().lower() not in ("0", "false", "no", "off")
-
-
-def _strokes_on_a_system_arc(ev: Evidence, cell) -> Dict[str, str]:
-    """`{beam stroke row id: system arc row id}` for the cell's beam strokes whose INK lies on a traced system arc.
-
-    The pixel measurement is 2.166's own (`arcs_system.stroke_share`, run in GATHER on the page raster against the traced
-    stroke's points): a detector `beam` box the trace runs through is `stroke_only` when its ink off the traced stroke is under
-    `STROKE_ONLY_RESIDUAL_SPACES2` (0.06 square spaces) AND it overlaps one of the arc's own boxes. Only those boxes, and a CV
-    stroke whose box lies wholly INSIDE one of them (its ink is that box's ink, so the stroke's), are named here. A beam FUSED
-    to a slur's tail (Brahms, a 0.30-space bow) is not `stroke_only` -- its box holds beam ink off the trace -- so it is never
-    named: the measurement has no part-of-a-box granularity, so the part on the arc is not refused either; the stroke stays.
-    Matching a glyph box to its `Q.BEAM_STROKE` row is by the identical canonical box (both filed from the one detection)."""
-    staff = cell.at(Kind.STAFF) if cell is not None else None
-    if staff is None:
-        return {}
-    arc_glyphs: Dict[str, str] = {}
-    for r in ev.rows(Q.SYSTEM_ARC, scope=Scope.SELF_AND_DESCENDANTS, subject=staff):
-        for tb in (r.detail or {}).get("through_boxes") or ():
-            if tb.get("stroke_only") and str(tb.get("class") or "").startswith("beam"):
-                arc_glyphs[str(tb.get("glyph"))] = r.id
-    if not arc_glyphs:
-        return {}
-    arc_boxes = []
-    for g in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
-        k = g.subject.to_key() if hasattr(g.subject, "to_key") else str(g.subject)
-        v = g.value
-        if k in arc_glyphs and isinstance(v, (list, tuple)) and len(v) >= 5:
-            arc_boxes.append((tuple(round(float(t), 1) for t in v[1:5]), arc_glyphs[k]))
-    out: Dict[str, str] = {}
-    for b in _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)):
-        bb = _xywh(b)
-        if bb is None:
-            continue
-        key = tuple(round(t, 1) for t in bb)
-        for ab, arc_id in arc_boxes:
-            if b.reader == READERS.DETECTOR and key == ab:
-                out[b.id] = arc_id
-            elif (b.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS) and bb[0] >= ab[0] and bb[1] >= ab[1]
-                  and bb[0] + bb[2] <= ab[0] + ab[2] and bb[1] + bb[3] <= ab[1] + ab[3]):
-                out[b.id] = arc_id
-    return out
-
-
-def _no_beam_at_the_stem_tip(ev: Evidence, cell, own_stems, head_box, side) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.170. `{"rows": [...], "strokes_in_cell": n}` where THIS head's own stem tip carries no beam by BOTH witnesses,
-    else `None` (cannot tell -> the narrowing stands, rule 8):
-
-    * the tip's own beam-run reader (`_stem_tip_strokes`, the 2.140 `Q.BEAM_STEM_LEVELS` row of this head's own stem on the
-      side it points) READ the tip and found no run leaving it on either side -- an unread tip is not a clean one;
-    * no `Q.BEAM_STROKE` row of the cell, from EITHER reader and whatever any later rule made of it (kept, refused, or a
-      detector box `_kept_beams` dropped for a CV stroke that overlaps it in x -- the shattered-beam case, a Breitkopf beam
-      whose CV piece stops short of the stem while the detector's box reaches it), has a box in the tip zone
-      (`_refused_stroke_at_tip`'s own zone: the stem's x +- `BARE_STEM_ACROSS_SPACES`, the tip +- `BARE_STEM_TIP_SPACES`),
-      at EITHER end of the stem;
-    * the flag window at the tip filed no observation and only `ink_not_flag_shaped` abstentions (a third reader saying no
-      ink runs off the tip either way: `runs_on` / `crosses_both_sides` / `occupied` / `head_at_this_end` keep the narrowing --
-      the first build, without this clause, decided Litolff p2/p6 beamed eighths whose beam no stroke row held).
-
-    CONVENTION ASSUMED: a beam joins every stem it spans AT THE STEM'S END (Gould, *Behind Bars*, "Beams"; FINDINGS
-    omr-beam-confirm-2026-10 §9.2-9.3: beamed truth stems 127/129 carry a run at the tip, bare 1/111), so a stroke that stands
-    nowhere near this stem's end is not this note's beam, whatever it is. The two zone sizes are 2.81's, set before this lane
-    and not refitted here."""
-    if side not in ("up", "down") or not own_stems or head_box is None:
-        return None
-    tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
-    if tip is None or int(tip["count"]) != 0:
-        return None
-    space_rows = ev.rows(Q.CELL_STAFF_SPACE, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-    try:
-        space = float(space_rows[-1].value) if space_rows else 0.0
-    except (TypeError, ValueError):
-        space = 0.0
-    if space <= 0:
-        return None
-    # The flag window at the tip: no observation (a read tip is 2.146's or 2.18c's), and every abstention there says the ink at
-    # the tip is NOT flag-shaped -- the one cannot-tell that also says nothing runs off the tip: a beam leaving to the right
-    # reads `runs_on`, to the left or both ways (a mid-group stem) `crosses_both_sides`, a beam box `occupied`, and a head at
-    # that end (`head_at_this_end`) says the side itself may be wrong. Every other reason keeps the narrowing.
-    end = "top" if side == "up" else "bottom"
-    ids = {s.id for s in own_stems}
-    for r in _tip_obs(ev, cell, own_stems):
-        if r.detail.get("end") == end and r.detail.get("stem_row_id") in ids:
-            return None
-    whys = [a.detail.get("why") for a in _tip_abs(ev, cell, own_stems)
-            if a.detail.get("end") == end and a.detail.get("stem_row_id") in ids]
-    if not whys or any(w != "ink_not_flag_shaped" for w in whys):
-        return None
-    # No stroke of either reader at EITHER end of the stem: the side reading is a reading too (a chord head mid-stem was read
-    # 'up' while its beam stood at the bottom, Litolff p6), so neither end may hold a stroke.
-    strokes = _live_beam_rows(ev, cell, ev.rows(Q.BEAM_STROKE, scope=Scope.SELF_AND_ANCESTORS, subject=cell))
-    # Addition 2's second witness: a stroke whose ink IS a traced system slur/tie is that arc, not a beam at the tip.
-    on_arc = _strokes_on_a_system_arc(ev, cell) if beam_not_on_system_arc_enabled() else {}
-    at_ends = [b for b in strokes if b.id not in on_arc]
-    for sd in ("up", "down"):
-        if _refused_stroke_at_tip(at_ends, own_stems, sd, space) is not False:
-            return None
-    arc_at_tip = [b for b in strokes if b.id in on_arc
-                  and any(_refused_stroke_at_tip([b], own_stems, sd, space) for sd in ("up", "down"))]
-    return {"rows": [tip["row"]] + sorted({on_arc[b.id] for b in arc_at_tip}), "strokes_in_cell": len(strokes),
-            "tip_window": "ink_not_flag_shaped", "arc_strokes_at_the_stem_ends": len(arc_at_tip)}
-
-
-def _stroke_touches_a_head(box, head_boxes) -> bool:
-    """The stroke's box overlaps a detector-boxed head of the cell (the stroke is merged with a head's ink). A DIFFERENT source
-    from the stem tip (the YOLO head box vs the CV stem), which is why the two together refuse a stroke."""
-    bx, by, bw, bh = box
-    for hx, hy, hw, hh in head_boxes:
-        if min(bx + bw, hx + hw) - max(bx, hx) > 0 and min(by + bh, hy + hh) - max(by, hy) > 0:
-            return True
-    return False
-
-
-def _stem_runs_past_the_stroke(b, own_stems, head_box, head_boxes, space: float) -> bool:
-    """ROADMAP 2.141h fix 1 (flag `OMR_BEAM_LEVEL_STROKE_IS_A_BEAM`): is this stroke NOT a beam level of the head whose own
-    stems are `own_stems`? True only when ALL of (rule 8: anything unread keeps the stroke):
-      - the stroke lies on a side of the head where the head has a CV stem whose x-range overlaps the stroke's x-range;
-      - EVERY such stem runs on past the stroke (away from the head) by more than `BEAM_STEM_RUNS_PAST_MAX_SPACES` -- the
-        stem's tip is not at this stroke, so it is not the beam these stems end in, nor one level of that stack -- measured
-        LOCALLY, at the stem, not by the stroke's box alone (CLAUDE.md §5);
-      - the stroke is merged with a detector-boxed head (`_stroke_touches_a_head`): the ledger line the heads stand on.
-    """
-    box = _xywh(b)
-    if box is None or head_box is None or not own_stems or space <= 0:
-        return False
-    hyc = head_box[1] + head_box[3] / 2.0
-    side = "up" if (box[1] + box[3] / 2.0) < hyc else "down"
-    tips = []
-    for st in _voice_stems(own_stems, head_box)[side]:
-        sb = _xywh(st)
-        if sb is None or sb[0] + sb[2] < box[0] or sb[0] > box[0] + box[2]:
-            continue
-        # the tip is the stem's end away from the head
-        tips.append((box[1] - sb[1]) if side == "up" else ((sb[1] + sb[3]) - (box[1] + box[3])))
-    if not tips:
-        return False
-    if not all(t > BEAM_STEM_RUNS_PAST_MAX_SPACES * space for t in tips):
-        return False
-    return bool(head_boxes) and _stroke_touches_a_head(box, head_boxes)
-
-
-def _not_a_beam_by_ink(ev: Evidence, cell, beams, stems, tol: float,
-                       head_x: Optional[float] = None,
-                       own_stems=None, head_box=None):
-    """`(kept, {stroke id: reason}, ink rows read)`. ROADMAP 2.74.
-
-    `head_x` (ROADMAP 2.82): the centre of the head being judged, canonical x. A stroke
-    whose MEDIAN is thin but whose beam-thick CORE stands on a stem at each end
-    (`stroke_thin_by_ink`) is a beam -- OF THE HEADS UNDER THAT CORE. Its box may run far
-    past the core (the detector's does), and a head under only the overshoot is NOT
-    under this beam: for it the stroke is refused `beyond_core`, exactly the refusal
-    2.74 made of the whole stroke, so such a head narrows as it did and is never
-    decided from a beam it does not stand under (rule 8). `None` -> no head to place
-    against the core, and a rescued stroke stays.
-
-    A stroke is NOT a beam where the ink READS it so, by the first that
-    fails: `too_thin` (median thickness under `BEAM_THICKNESS_RATIO_MIN`
-    staff lines -- a hairpin's line, a slur's or tie's tapering arc -- AND no
-    beam-thick core of it standing on a stem at each end that leads to a head,
-    `stroke_thin_by_ink`, ROADMAP 2.82; `beyond_core`: such a core's stroke,
-    for a head that is under only its overshoot),
-    `not_straight` (bowed more than `BEAM_SAGITTA_MAX_SPACES` -- a slur or a
-    tie), `one_stem` (nothing but one stem stands at either end of it -- a
-    stroke that joins its own note and no other; ROADMAP 2.82: only where the
-    record POSITIVELY says no second note stands there, `_may_be_a_second_stem`).
-    A stroke with no
-    `Q.BEAM_STROKE_INK` row, or whose reading left a test unread, is KEPT:
-    the existing rules (`_beyond_own_stem`, the 2.38 ink join) judge it.
-
-    ⚠️ ADDITIVE, NEVER SUBTRACTIVE OF THE RECORD, same discipline as
-    `_not_a_ledger_line`: it only removes a stroke from THIS note's count,
-    and where that leaves a stemmed head with no mark the caller applies the
-    same rule-8 narrowing 2.25b's neighbour/arc discounts do.
-
-    ⚠️ ONE STEM IS DECIDED FROM THE ENDS OF THE STROKE, NOT FROM THIS HEAD'S
-    OWN: "joins this note's stem" is `_stem_joined` and the 2.38 ink join,
-    read where they have always been read. This asks the other half -- is
-    there ANOTHER note's stem -- of the stroke itself, so a beam read for a
-    head whose own stem was never boxed is still judged.
-    """
-    # ROADMAP 2.87 (`head_contact`): "another note's stem stands at its end" counts
-    # STEMS, and a stroke that touches no notehead is not one (Sean 2026-10-11).
-    stems = _stems_connected_to_a_head(ev, cell, stems)
-    ink = _beam_ink_rows(ev, cell)
-    why: Dict[str, str] = {}          # stroke id -> why it is not a beam
-    # ⚠️ ROADMAP 2.170 addition 2 (flag `OMR_BEAM_NOT_ON_SYSTEM_ARC`, default ON; Sean: "beams cannot have an arc"). FIRST:
-    # a stroke whose ink lies on a tie/slur traced across the system (2.166's pixel measurement, `_strokes_on_a_system_arc`)
-    # is that arc's ink, however flat its piece inside this bar reads (`BEAM_SAGITTA_MAX_SPACES` judges one bar's crop only).
-    if beam_not_on_system_arc_enabled():
-        for b_id in _strokes_on_a_system_arc(ev, cell):
-            if any(b.id == b_id for b in beams):
-                why[b_id] = "on_system_arc"
-    # ⚠️ ROADMAP 2.75, FIRST, AND WITHOUT AN INK ROW: a stroke lying through the
-    # cell's own noteheads is those heads' ink (a row of heads fused by the CV
-    # opening, a ledger line through them), and its thickness, straightness and
-    # stems -- all read at the heads' end -- say nothing about a beam. It is
-    # a connection to the heads the detector boxed, never a guess from shape.
-    head_boxes = _notehead_glyph_boxes(
-        ev, cell, tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0)
-    if head_boxes:
-        for b in beams:
-            box = _xywh(b)
-            if box is not None and _covered_fraction(box, head_boxes) \
-                    >= BEAM_THROUGH_HEADS_MIN:
-                why[b.id] = "through_heads"
-    # ⚠️ ROADMAP 2.141h fix 1 (flag, default ON): a stroke merged with a head that this head's OWN stem runs far past is the
-    # ledger line the heads stand on, not a level (Litolff p5 tile 6: counted as a second down-voice level, 8,8,8 read 16,16,4).
-    # ROADMAP 2.243 (`OMR_BEAMS_HONOUR_CLAIMS`, default OFF): a beam row whose strokes the stroke owner DECIDED to a hairpin, an arc, a word,
-    # an accidental or a ledger line is that mark's ink, not a beam level (the CV rows and the detector boxes alike).
-    if beams_honour_claims_enabled():
-        for _bid, _why in _beams_on_owned_strokes(ev, cell, beams).items():
-            why.setdefault(_bid, _why)
-    if own_stems and head_box is not None and head_boxes and beam_level_stroke_is_a_beam_enabled():
-        _sp = tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0
-        for b in beams:
-            if b.id not in why and _stem_runs_past_the_stroke(b, own_stems, head_box, head_boxes, _sp):
-                why[b.id] = "stem_runs_past"
-    if not ink and not why:
-        return list(beams), {}, ()
-    anchors = []                      # strokes that PASS all three, read
-    for b in beams:
-        if b.id in why:
-            continue
-        row = ink.get(b.id)
-        if row is None:
-            continue
-        d = row.detail or {}
-        ratio, sag = d.get("thickness_ratio"), d.get("sagitta_spaces")
-        pad = (tol / STEM_JOIN_TOLERANCE_SPACES) if tol > 0 else 0.0
-        cut = stroke_cut_by_cell(d)       # ROADMAP 2.260a M0: the cell cut this ink, so its thickness is a lower bound -- CANNOT TELL, not "too thin"
-        if not cut and stroke_thin_by_ink(d, head_boxes, pad):
-            why[b.id] = "too_thin"
-        elif sag is not None and sag > BEAM_SAGITTA_MAX_SPACES:
-            why[b.id] = "not_straight"
-        elif ratio is not None and ratio < BEAM_THICKNESS_RATIO_MIN and not cut:
-            # ⚠️ ROADMAP 2.82: a thin MEDIAN kept by its CORE -- the beam-thick ink of
-            # this box stands on a stem at each of its two ends (each leading to a head
-            # the detector boxed), read off the ink. That IS "a beam must also connect
-            # to another note"; the box's own ends (which overshoot the beam) and the
-            # stems near the box say nothing the core's ends do not, so the stem tests
-            # below are not run on it.
-            core = _core_beam_on_two_stems(d, head_boxes, pad)
-            if head_x is not None and pad > 0 and not (
-                    core["x0"] - pad <= head_x <= core["x1"] + pad):
-                # ...but only for the heads UNDER the core (a space of slack: the outer
-                # note's centre is half a head past its beam's end, CLAUDE.md §10).
-                why[b.id] = "beyond_core"
-            else:
-                anchors.append(b)
-        else:
-            n, read = _stems_a_stroke_stands_on(b, row, stems, tol)
-            ends = d.get("end_stems") or []
-            no_stem_at_ends = read and not any(e.get("found") for e in ends) \
-                and _stems_ending_in(
-                    _xywh(b), stems,
-                    BEAM_STEMS_ENDING_SEPARATION_SPACES
-                    * (tol / STEM_JOIN_TOLERANCE_SPACES)
-                    ) < BEAM_STEMS_ENDING_MIN
-            core = _core_beam_on_two_stems(d, head_boxes, pad) \
-                if (no_stem_at_ends or (read and n < 2)) else None
-            if core is not None:
-                # ⚠️ ROADMAP 2.82: THE BOX'S OWN ENDS ARE NOT A BEAM'S ENDS (a detector box
-                # overshoots or undershoots its beam), so a stem not found at them says
-                # nothing; the thick CORE's ends are, and they read a stem each, leading to a
-                # head. The stem tests are answered by the core, for the heads under it.
-                if head_x is not None and pad > 0 and not (
-                        core["x0"] - pad <= head_x <= core["x1"] + pad):
-                    why[b.id] = "beyond_core"
-                else:
-                    anchors.append(b)
-            elif no_stem_at_ends:
-                # ⚠️ ROADMAP 2.75: the ink READ both ends and found a stem at
-                # NEITHER. A beam stands on its stems; a stem merely NEAR the
-                # box (which `_stems_a_stroke_stands_on` counts, permissively)
-                # is not one at its end. A beamlet has one stem at one end.
-                # Litolff p3 tile 9: a 243 x 32 px bar under a real beam (the
-                # foot of an `f`), counted as a third level.
-                # ⚠️ ROADMAP 2.77b (crop 8): ... UNLESS two or more read stems
-                # END inside the stroke's own box -- the ink reader's end
-                # window is a column probe and misses the stem of a SLOPED
-                # beam; the CV stem rows are the second witness (a stem each
-                # side of a beam). Such a stroke falls through to the tests
-                # below like any other.
-                why[b.id] = "no_stem_at_ends"
-            elif read and n < 2:
-                # ⚠️ ROADMAP 2.82 (Sean, 2026-10-10): "cannot tell" is not "only one stem".
-                # `n` counts REGISTERED stems, and the stem finder refuses a stem fused with
-                # its stack of heads, so a second stem that was never registered is the common
-                # case. Refused only where the record says nothing else stands here: fewer than
-                # two distinct heads at the stroke. Otherwise it stays (not an anchor: nothing
-                # vouches for it, so it lends no beamlet its quorum).
-                if not _may_be_a_second_stem(_xywh(b), head_boxes, pad, d):
-                    why[b.id] = "one_stem"
-            elif read:
-                anchors.append(b)
-    # ⚠️ A BEAMLET IS A BEAM. The short secondary stroke of a dotted eighth and
-    # a sixteenth hangs from ONE stem toward its neighbour and stops; Sean's
-    # rule is about the BEAM of a group, and a stub that is part of that beam
-    # stands on its stem and under (or over) the primary stroke that stands on
-    # two. A one-stem stroke that lies within `BEAM_BEAMLET_GAP_SPACES` of a
-    # stroke that PASSED, overlapping it in x, is that group's secondary level
-    # and stays; one that stands alone (a slur's arc, a hairpin's line, the
-    # next voice's) does not. `tol` is `STEM_JOIN_TOLERANCE_SPACES` spaces, so
-    # a space is `tol / STEM_JOIN_TOLERANCE_SPACES`.
-    space = tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0
-    for b in beams:
-        if why.get(b.id) != "one_stem":
-            continue
-        box = _xywh(b)
-        for a in anchors:
-            ab = _xywh(a)
-            if box is None or ab is None:
-                continue
-            x_overlap = min(box[0] + box[2], ab[0] + ab[2]) - max(box[0], ab[0])
-            y_gap = max(box[1], ab[1]) - min(box[1] + box[3], ab[1] + ab[3])
-            if x_overlap > 0 and y_gap <= BEAM_BEAMLET_GAP_SPACES * space:
-                del why[b.id]
-                break
-    kept, dropped, used = [], {}, []
-    for b in beams:
-        if b.id in why:
-            dropped[b.id] = why[b.id]
-            if b.id in ink:
-                used.append(ink[b.id])
-        else:
-            kept.append(b)
-    return kept, dropped, tuple(used)
 
 
 #: `wedge_box` (class 3, the hairpin) is NAMED, NOT BUILT -- ROADMAP 2.25b.
@@ -3230,183 +2093,6 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
     return Ruling.abstain("dot_role_ambiguous", **detail)
 
 
-def _beam_levels(beams, x_center, width, joined=(), join_witness=None,
-                 stem_x=None, unjoined_possible=False):
-    """How many strokes cover this notehead's column: (CERTAIN, POSSIBLE).
-
-    ⚠️ THE LEVEL IS AN INTERPRETATION OVER STROKES, WHICH IS WHY IT IS
-    COMPUTED HERE AND NOT IN GATHER.
-
-    ⚠️⚠️ AND IT RETURNS A RANGE, NOT A NUMBER, BECAUSE THE READING IS A RANGE.
-    The first version returned an int, and that reproduced
-    `pitch_resolver.py:181` ONE LAYER UP: `pos_float` is computed and rounded
-    away there, and a level "two, possibly three" was collapsed at the moment
-    of counting here. **Keeping the measurement is not sufficient** -- the
-    strokes were on the record and intact -- if the INTERPRETATION collapses at
-    the first opportunity.
-
-    ⚠️ ROADMAP 2.38: `join_witness` (`{stroke id: True/False/None}`, from
-    `_beam_join_witness`) is consulted for a stroke this test would
-    otherwise count as merely POSSIBLE (the padded column match). Where the
-    ink-continuity reader says the stem's own ink DOES run into this
-    stroke, it is promoted to CERTAIN; where it says it does NOT, the
-    stroke is dropped from the count entirely (neither certain nor
-    possible -- rule 8's "count the level"/"drop it", never a silent
-    guess); where the reader never reached it (`None`), the stroke stays
-    exactly as box geometry alone would have called it, and the note stays
-    narrowed -- the same "declined never defaults" rule 8 states for every
-    other ink witness in this module.
-
-    ⚠️⚠️ ROADMAP 2.38b: A CERTAIN stroke (exact column overlap, or already
-    stem-joined by box) is NEVER dropped for a NOT-JOINED ink reading --
-    that was measured and refused (Brahms p1 print check: `duration`
-    verdicts DECIDED using only a NOT-JOINED witness read the wrong level
-    ~50 of 165 times, because dropping a CERTAIN stroke silently promoted
-    a WRONG box-only count -- some certain attributions were already wrong
-    before this lane existed, box overlap with a stroke that is not this
-    stem's, and only stayed NARROWED before because an extra, now-correctly
-    -dropped POSSIBLE stroke kept `possible > certain`). A certain stroke
-    the ink reads NOT JOINED is instead returned in `certain_conflicts` --
-    a DISAGREEMENT between two witnesses, which `adjudicate_duration`
-    turns into a NARROW (`beam_certain_not_joined`), never a silent count
-    change here. JOINED or declined (`None`) leaves a certain stroke
-    exactly as before -- unaffected, the positive control this rule must
-    never move.
-
-    ⚠️⚠️ ROADMAP 2.43: `stem_x`, THIS HEAD'S OWN STEM'S PADDED X-SPAN
-    (`_own_stem_x_span`), GATES THE PADDED-COLUMN "POSSIBLE" BRANCH.
-    Before this, the branch asked only *is this stroke within one
-    notehead-width of the HEAD's own centre* -- nothing about the STEM, so
-    a YOLO `beam` box standing nowhere near this note's stem (a hairpin, a
-    slur, a neighbour's mark the earlier discount tiers did not name, or
-    plain noise) still counted as POSSIBLE whenever it happened to fall
-    within that width, `join_witness` or no `join_witness` -- a stroke the
-    ink reader itself could only mark `declined`/never-reached stayed a
-    witness for THIS note regardless. [C12]/2.18's own words: *"a note's
-    beams stand on the side its stem points to"* -- by the same logic they
-    stand at its STEM's column, not merely near its head. DECISIONS
-    2026-09-30 (Sean), on the stage readout: 28 hollow + 21 black Litolff
-    p3 heads narrowed this exact way, every one `cv_beams: 0`,
-    `beams_by_stem: 0`, `beam_evidence: none_over_this_note` -- the stray
-    box was never joined, never even ink-witnessed, and stood over no read
-    stem of this note's, yet still made the length undecided. Where this
-    head has no own stem (`stem_x is None`), the test is unchanged -- 2.18's
-    own "no side -> every stroke stays" rule extended once more: there is
-    no stem column to ask the question of.
-    """
-    joined_ids = {b.id for b in joined}
-    if x_center is None:
-        # ⚠️ No box means no head to attach a stem to either, so `joined` is
-        # empty here by construction -- it is read rather than assumed zero so
-        # the two callers cannot drift apart.
-        return (len(joined_ids), len(joined_ids), ())
-    pad = (width or 0.0) * BEAM_EDGE_TOLERANCE_WIDTHS
-    certain = possible = 0
-    certain_conflicts = []
-    for b in beams:
-        x0 = b.detail.get("x0", 0)
-        x1 = b.detail.get("x1", 0)
-        if b.id in joined_ids or x0 <= x_center <= x1:
-            # ⚠️ ROADMAP 2.153 (flag `OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM`, caller-supplied): a stroke that only COVERS the head's
-            # centre column -- no stem box reaches it, the ink-join reader never read it -- is a box overlap and nothing else.
-            # A beam belongs to a stem (Sean's reading order: stem, then beam), so it is POSSIBLE, not CERTAIN.
-            if (unjoined_possible and b.id not in joined_ids
-                    and (join_witness or {}).get(b.id) is None):
-                possible += 1
-                continue
-            certain += 1
-            possible += 1
-            if (join_witness or {}).get(b.id) is False:
-                certain_conflicts.append(b.id)
-        elif x0 - pad <= x_center <= x1 + pad:
-            # ⚠️ YOLO-SOURCED STROKES ONLY. A CV stroke (`READERS.CV_LINES`)
-            # is real ink continuity the raster itself shows near this
-            # head -- a beamlet ending short of this note's own stem (a
-            # genuine secondary-beam shape, `TestANeighbourStaffsBeamThrough
-            # ThePad`'s and 2.38's own sibling tests) is real evidence this
-            # column test already exists to hold as a genuine MAYBE, and
-            # this gate must not drop it. A YOLO `beam` DETECTION with no CV
-            # counterpart, past `_kept_beams`'s own dedup, is the population
-            # DECISIONS 2026-09-30 actually names -- a box the detector drew
-            # that stands nowhere near this note's stem at all.
-            if (stem_x is not None and b.reader == READERS.DETECTOR
-                    and not (x0 <= stem_x[1] and x1 >= stem_x[0])):
-                # Not over THIS note's own stem column -- not a witness for
-                # this note, whatever else it is.
-                continue
-            witness = (join_witness or {}).get(b.id)
-            if witness is True:
-                certain += 1
-                possible += 1
-            elif witness is False:
-                continue
-            else:
-                possible += 1
-    return (certain, possible, tuple(certain_conflicts))
-
-
-def _unjoined_column_strokes(beams, x_center, joined, join_witness) -> int:
-    """ROADMAP 2.153: how many strokes only COVER the head's centre column (no stem box reaches them, the ink-join reader never
-    read them) -- the ones `_beam_levels(..., unjoined_possible=True)` turns from certain to possible."""
-    if x_center is None:
-        return 0
-    joined_ids = {b.id for b in joined}
-    return sum(1 for b in beams
-               if b.id not in joined_ids and b.detail.get("x0", 0) <= x_center <= b.detail.get("x1", 0)
-               and (join_witness or {}).get(b.id) is None)
-
-
-def _beam_join_witness(ev: Evidence, cell, kept, own_stems, side
-                       ) -> Tuple[Dict[str, Optional[bool]], tuple]:
-    """`({stroke id: True/False/None}, the rows read)`. ROADMAP 2.38.
-
-    For every candidate stroke in `kept`, does THIS head's OWN stem's ink
-    run continuously into it at the tip, per `Q.BEAM_STEM_JOIN`? `None` --
-    no evidence either way -- where this head has no own stem direction, no
-    own stem, or the quantity never reached the matching (stem, stroke,
-    end) triple.
-
-    ⚠️ ONLY THE END THIS HEAD'S OWN STEM POINTS TO, same reason
-    `_stem_tip_flag_ink` (2.18c) gives: GATHER files a row for both a
-    stem's top and its bottom because it does not know the true tip;
-    reading the wrong end asks the question of the wrong physical
-    junction.
-
-    ⚠️ MULTIPLE OWN STEMS (a chord sharing one physical stem should not
-    produce more than one `Q.STEM` row, but nothing enforces that upstream)
-    are folded with `any()`: if ink shows a join from ANY of this head's own
-    stems to a stroke, that stroke counts as joined for this head. A
-    disagreement between two of this head's own stems is not a case this
-    lane's own two documents present, and folding rather than refusing
-    keeps the common one-stem case simple; a future disagreement would be
-    silently resolved in the JOINED direction, which is the more permissive
-    reading, not the more cautious one -- named here rather than hidden.
-    """
-    if side not in ("up", "down") or not own_stems or not kept:
-        return {}, ()
-    end = "top" if side == "up" else "bottom"
-    stem_ids = {s.id for s in own_stems}
-    rows = ev.rows(Q.BEAM_STEM_JOIN, scope=Scope.SELF_AND_ANCESTORS,
-                   subject=cell)
-    by_stroke: Dict[str, list] = {}
-    for r in rows:
-        if r.detail.get("end") != end:
-            continue
-        if r.detail.get("stem_row_id") not in stem_ids:
-            continue
-        by_stroke.setdefault(r.detail.get("beam_row_id"), []).append(r)
-    witness: Dict[str, Optional[bool]] = {}
-    used: list = []
-    for b in kept:
-        matched = by_stroke.get(b.id)
-        if not matched:
-            witness[b.id] = None
-            continue
-        witness[b.id] = any(bool(m.value) for m in matched)
-        used.extend(matched)
-    return witness, tuple(used)
-
-
 #: The shortest run of ink (staff spaces) beside a head the ruler's direction is
 #: believed for. ROADMAP 2.77b. It is the CV stem finder's own floor
 #: (`line_detection.detect_stems`, `min_height_lines=2.0`: nothing shorter is a
@@ -3489,45 +2175,6 @@ def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any
         if isinstance(ext, (int, float)) and ext >= REACH_STEM_MIN_SPACES:
             return str(reach[-1].value), reach[-1]
     return None, None
-
-
-def _on_stem_side(beams, head_box, side):
-    """`(strokes on the stem side of this head, strokes on the far side)`.
-
-    ⚠️⚠️ ROADMAP 2.18: THE COLUMN TEST WAS BLIND IN Y. `_beam_levels` counts
-    a stroke by its x-range alone, so on a two-voice staff the OTHER voice's
-    beam under a stem-up head -- or, through the cell's 4-space pad, the next
-    staff's beam -- counted as this note's: CERTAIN where it covered the
-    column, POSSIBLE where it ended within a notehead's width. [C12]: a beam
-    joins STEM ENDS, so a note's beams stand on the side its stem points to;
-    a stroke whose centre is across the head's own centre from it cannot be
-    one of them. That FOLLOWS (it is forced by the engraving, given a stem
-    read off this head), so it belongs here and not in INFER.
-
-    Measured on Breitkopf 317803 p1 (`benchmarks/omr-missing-notes-2026-09/
-    FINDINGS.md` §10): 39 of the 104 heads EXPORT refuses as
-    `duration_narrowed` are narrowed ONLY by far-side strokes, and 29 carry a
-    far-side stroke among their CERTAIN levels too.
-
-    ⚠️ THE CENTRE OF THE HEAD, NOT ITS EDGE. A stroke lying THROUGH the head
-    (the CV opening fuses a row of heads into one horizontal run) sits within
-    a fraction of a space of the centre and lands on whichever side its own
-    centre happens to fall; this rule is NOT claimed as a fix for that fault,
-    which is a beam reader's false positive and not a question of side.
-    """
-    if side is None or head_box is None:
-        return list(beams), []
-    hyc = head_box[1] + head_box[3] / 2.0
-    sign = -1.0 if side == "up" else 1.0
-    near, far = [], []
-    for b in beams:
-        box = _xywh(b)
-        if box is None:
-            near.append(b)
-            continue
-        (near if ((box[1] + box[3] / 2.0) - hyc) * sign > 0
-         else far).append(b)
-    return near, far
 
 
 def _head_class(ev: Evidence) -> Optional[str]:
@@ -3852,25 +2499,6 @@ def _head_is_open(base: Optional[float], ev: Evidence) -> bool:
     return False
 
 
-def _own_stem_x_span(own_stems, tol: float) -> Optional[Tuple[float, float]]:
-    """The x-span THIS head's own stem(s) occupy, padded by `tol` -- or
-    `None` where this head has no own stem to test a stroke's column
-    against. ROADMAP 2.43.
-
-    ⚠️ REUSES `tol` (`STEM_JOIN_TOLERANCE_SPACES`, already the slack past a
-    stem's TIP) rather than inventing a second, untested number for the
-    slack across its WIDTH -- CONVENTION ASSUMED / WHAT WOULD FALSIFY IT: a
-    real beam whose box, at this tolerance, still does not overlap its own
-    stem's padded x-span / NOT CONFIRMED with Sean.
-    """
-    boxes = [b for b in (_xywh(s) for s in own_stems) if b is not None]
-    if not boxes:
-        return None
-    x0 = min(b[0] for b in boxes) - tol
-    x1 = max(b[0] + b[2] for b in boxes) + tol
-    return (x0, x1)
-
-
 def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
                        ) -> Tuple[Optional[bool], tuple]:
     """Does THIS head's own stem tip carry flag-shaped ink the detector
@@ -3900,93 +2528,6 @@ def _stem_tip_flag_ink(ev: Evidence, cell, own_stems, side: Optional[str]
     if not matched:
         return None, ()
     return any(bool(r.value) for r in matched), matched
-
-
-#: ROADMAP 2.81 phase 2. How close to this head's stem tip a REFUSED stroke
-#: may lie before it is "at the tip" (staff spaces, along the stem), and how
-#: far across the stem it may lie (spaces). Phase 1's PROBE definition
-#: (`benchmarks/omr-missing-notes-2026-09/probe/l281_population.py::
-#: stroke_at_tip`) -- Sean's blind tiles scored it 16/20 -- carried over
-#: unchanged and NOT CONFIRMED by Sean as a geometry.
-BARE_STEM_TIP_SPACES = 0.6
-BARE_STEM_ACROSS_SPACES = 0.3
-
-#: ROADMAP 2.81 phase 2. The RANKING's own flag, default ON (allow-list: a
-#: typo leaves it off). ⚠️ Measured on the small re-gather's page 1 (agent-read
-#: against the print): flipping the order moves the total `reconcile_duration`
-#: (EVALUATE) sums -- it counts a narrowed note at its BEST-SUPPORTED reading --
-#: and five bars changed answer, two for the better, one a narrowed head decided
-#: wrongly and one a DECIDED dotted half re-read as a dotted quarter. That is a
-#: consumer this lane does not own (2.80), so the order ships behind a flag Sean
-#: can turn on once he has seen it; the label `bare_stem_evidence_holds` is
-#: written either way.
-BARE_STEM_RANK_ENV = "OMR_BARE_STEM_RANK"
-
-
-def bare_stem_rank_enabled() -> bool:
-    """Read the ranking flag. Only an explicit on-word is ON."""
-    return os.environ.get(BARE_STEM_RANK_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
-
-
-def _refused_stroke_at_tip(refused, own_stems, side: Optional[str],
-                           space: float) -> Optional[bool]:
-    """Did a stroke this decision REFUSED stand at this head's own stem tip?
-
-    ROADMAP 2.81 phase 2. `None` -- cannot be asked (no own stem, no side, no
-    staff-space unit, no box on a stem): the caller must treat it as "the
-    evidence does not hold", never as "no stroke there" (rule 8).
-
-    ⚠️ The population this serves is a head whose every candidate stroke was
-    refused. The refusals that are NOT at its tip (a neighbour staff's beam, a
-    far-side stroke) say nothing about the stem; the ones AT the tip are the
-    beam 2.74's ink test may have refused wrongly (17 of Phase 1's 22 misses
-    were three such beams). The tip is the stem end the head's side points to.
-    """
-    if side not in ("up", "down") or not own_stems or not space or space <= 0:
-        return None
-    boxes = [b for b in (_xywh(s) for s in own_stems) if b is not None]
-    if not boxes:
-        return None
-    across = BARE_STEM_ACROSS_SPACES * space
-    reach = BARE_STEM_TIP_SPACES * space
-    x0 = min(b[0] for b in boxes) - across
-    x1 = max(b[0] + b[2] for b in boxes) + across
-    if side == "up":
-        tip = min(b[1] for b in boxes)
-    else:
-        tip = max(b[1] + b[3] for b in boxes)
-    zone = (x0, tip - reach, x1 - x0, 2.0 * reach)
-    for r in refused:
-        box = _xywh(r)
-        if box is None:
-            continue
-        if _box_gap(zone, box) <= 0:
-            return True
-    return False
-
-
-def _refused_stroke_facts(pre_ink, ink_dropped, arc_dropped, neighbour_dropped,
-                          far_side, beyond, own_stems, side: Optional[str],
-                          space: float) -> list:
-    """What each stroke this decision REFUSED was refused AS, and whether it stands at the tip.
-
-    ROADMAP 2.121. DIAGNOSTIC ONLY -- it decides nothing here; INFER's `collapse_arc_ink_not_beam` reads it. One entry per stroke:
-    `why` is `arc` (inside a DECIDED slur/tie glyph, 2.25b), `ink:<too_thin|bowed|one_stem|through_heads>` (2.74's ink test),
-    `neighbour_staff`, `far_side` or `beyond_stem`; `at_tip` is `_refused_stroke_at_tip` for THAT stroke alone (`None` where it
-    cannot be asked). The counts already in the verdict detail cannot say whether EVERY refused stroke was a slur -- that is the
-    one fact the rule needs, so it is filed per stroke.
-    """
-    def _row(b, why):
-        return {"id": getattr(b, "id", None), "why": why,
-                "at_tip": _refused_stroke_at_tip([b], own_stems, side, space)}
-    out = [_row(b, "ink:" + str(ink_dropped[b.id])) for b in pre_ink
-           if b.id in ink_dropped]
-    out += [_row(b, "arc") for b in arc_dropped]
-    out += [_row(b, "neighbour_staff") for b in neighbour_dropped]
-    out += [_row(b, "far_side") for b in far_side]
-    out += [_row(b, "beyond_stem") for b in beyond]
-    return out
 
 
 def _stem_tip_disputed(ev: Evidence, cell, own_stems, side: Optional[str]) -> tuple:
@@ -4178,17 +2719,13 @@ def _stroke_views(ev: Evidence, cell) -> list:
     return out
 
 
-#: ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default ON since 2026-11-19, Sean 2026-11-18 "Take as many rounds as necessary to land this"; a deny-list, only 0/false/no/off disable): THE ONE BEAM COUNT. With it ON the beam count of a
-#: stemmed note comes from the stroke map alone (`beam_strokes.beam_count`: the stem found by ink and followed to its far end, the beams read at its
-#: tip on the staff-erased raster). The bar-crop reader (`_beam_levels`) and the stem-tip look (`_stem_tip_strokes`) are NOT consulted for the beam
-#: count and nothing falls back to them (Sean 2026-11-13: no old reader beside the new one); where the map cannot tell, the note NARROWS. Flags are
-#: another mark and stay with the flag reader exactly as today: a stem the map counts no beam on takes its value from the flag reader, as an
-#: unbeamed stem always did. OFF (`OMR_ONE_BEAM_COUNT=0`) the verdict is byte-identical to the pre-2.318 readings.
-ONE_BEAM_COUNT_ENV = "OMR_ONE_BEAM_COUNT"
-
-
-def one_beam_count_enabled() -> bool:
-    return os.environ.get(ONE_BEAM_COUNT_ENV, "1").strip().lower() not in ("0", "false", "no", "off")
+def _voices_of_the_one_count(one_beam: Optional[Dict[str, Any]]) -> Optional[Dict[str, List[int]]]:
+    """2.319: `{"up": [certain, possible], "down": [...]}` where the one beam count read a stem each way at this head (two voices sharing it,
+    ROADMAP 2.75: each stem's beams are its own voice's), else None. Replaces the bar-crop reader's per-voice count (`beam_voices`)."""
+    if one_beam is None or one_beam.get("state") == "silent":
+        return None
+    per = {st.get("side"): [int(st.get("certain") or 0), int(st.get("possible") or 0)] for st in one_beam.get("stems") or ()}
+    return per if set(per) == {"up", "down"} else None
 
 
 def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True) -> Dict[str, Any]:
@@ -4210,88 +2747,6 @@ def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True
     # 2.319: the beam ink each stem hangs on, by its `Q.STROKE` row id (unique in the record): which notes share a beam is read from these (EXPORT)
     got["beam_rows"] = sorted({by_o[o].row_id for st in got["stems"] for o in st.get("beam_ink") or () if o in by_o and by_o[o].row_id})
     return got
-
-
-def _beam_box_strokes(ev: Evidence, cell, detector_rows) -> Dict[str, Tuple[list, str]]:
-    """`{detector beam row id: (stroke ordinals, the Q.GLYPH_STROKES row id)}` for the detector beam rows whose box has a `Q.GLYPH_STROKES`
-    row. The link is the box itself: the cell's `beam`-class `Q.GLYPH_BOX` with the same x, y, w, h is the glyph that row was filed on."""
-    by_box: Dict[Tuple[int, ...], list] = {}
-    for g in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
-        v = g.value
-        if isinstance(v, (list, tuple)) and len(v) >= 5 and v[0] == "beam":
-            by_box.setdefault(tuple(int(round(float(x))) for x in v[1:5]), []).append(g.subject)
-    out: Dict[str, Tuple[list, str]] = {}
-    for b in detector_rows:
-        bb = _xywh(b)
-        if bb is None:
-            continue
-        for sub in by_box.get(tuple(int(round(x)) for x in bb), ()):
-            rows = ev.rows(Q.GLYPH_STROKES, subject=sub)
-            if rows and isinstance(rows[-1].value, (list, tuple)):
-                out[b.id] = ([int(o) for o in rows[-1].value], rows[-1].id)
-                break
-    return out
-
-
-def _beams_from_strokes(ev: Evidence, cell, kept, own_stems, head_box, side, detector_pre=()) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.202. What the stroke map says about THIS head's beams, as facts for `adjudicate_duration` to act on. Decides nothing.
-
-    Returns `None` where the map cannot speak (no strokes in the cell, no stem stroke for this head's stem): the head is read as today.
-    Otherwise `{"removed_ids": detector beam boxes that stand on no beam-shaped stroke of this head, "flag_levels": hooks at this stem's tip
-    (a flag, Sean 2026-10-22), "tip_levels": beam levels the strokes at the tip count, "boxes": per-box support with margins, ...}`."""
-    views = _stroke_views(ev, cell)
-    if not views or side not in ("up", "down") or head_box is None or not own_stems:
-        return None
-    role = _BS.roles(views, face_join=True, trough=True)      # 2.202f: the cover rule (Sean 2026-10-28) and the thickness trough
-    stem_sv = None
-    for st in _voice_stems(own_stems, head_box)[side]:
-        b = _xywh(st)
-        stem_sv = _BS.find_stem_stroke(views, b) if b is not None else None
-        if stem_sv is not None:
-            break
-    if stem_sv is None:
-        return None
-    tip = _BS.tip_reading(views, role, stem_sv, side, head_box=head_box, face_join=True)
-    yolo = [b for b in kept if b.reader == READERS.DETECTOR]
-    # The older filters (the 2.74 ink test: a stroke standing on one stem is not a beam) already take most hook-shaped boxes out of `kept`
-    # before this block runs (milestone: 0 of 418 map-hook boxes were still in `kept`). A box the detector called a beam and the strokes show
-    # to be THIS stem's hook is a flag whether or not an older filter also removed it, so the pre-filter detector boxes are read too; only a
-    # box still in `kept` can be REMOVED from the count (the others are already out).
-    kept_ids = {b.id for b in yolo}
-    yolo = yolo + [b for b in detector_pre if b.id not in kept_ids and b.reader == READERS.DETECTOR]
-    linked = _beam_box_strokes(ev, cell, yolo)
-    boxes, removed, flag_rows = [], [], []
-    for b in yolo:
-        if b.id not in linked:
-            boxes.append({"row": b.id, "support": "unlinked"})        # no Q.GLYPH_STROKES row for this box: cannot tell, left as it was
-            continue
-        under, grow = linked[b.id]
-        sup = _BS.box_support(under, role)
-        sup["row"], sup["glyph_strokes_row"] = b.id, grow
-        if sup["support"] == "hook":
-            mine = [h for h in sup["hooks"] if h in tip["hooks_all"]]
-            if mine and not tip["stem_beamed"]:
-                sup["support"] = "flag"
-                sup["stroke_rows"] = [next(v.row_id for v in views if v.ordinal == h) for h in mine]
-                flag_rows.extend(sup["stroke_rows"])
-                if b.id in kept_ids:
-                    removed.append(b.id)
-            else:
-                sup["support"] = "unsupported"
-                sup["reason"] = "hook_on_a_beamed_stem" if mine else "hook_on_another_stem"
-                if b.id in kept_ids:
-                    removed.append(b.id)
-        elif sup["support"] == "unsupported" and b.id in kept_ids:
-            removed.append(b.id)
-        elif sup["support"] == "beam" and b.id not in kept_ids:
-            continue            # an older filter removed a box the strokes call a beam: not this block's business (nothing is added back)
-        boxes.append(sup)
-    # every stroke that moved the reading is a row this verdict used
-    rows = [stem_sv.row_id] + [v.row_id for v in views if v.ordinal in set(tip["beams"]) | set(tip["hooks"]) | set(tip["stubs"]) | set(tip["doubt"])]
-    rows += [g for g in (bx.get("glyph_strokes_row") for bx in boxes) if g]
-    return {"removed_ids": removed, "flag_levels": len(tip["hooks"]) if flag_rows else 0, "flag_rows": flag_rows,
-            "tip_levels": len(tip["beams"]), "tip_clean": _BS.tip_clean(views, stem_sv, side), "tip": {k: tip[k] for k in ("stem", "beams", "hooks", "stubs", "stem_beamed", "doubt", "own_head", "joined")},
-            "boxes": boxes, "rows": rows, "settled": None}
 
 
 # ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
@@ -4711,15 +3166,8 @@ def _tip_abs(ev: Evidence, cell, own_stems):
 # anything new and neither has a cut-off. A stroke that is CONTESTED, unclaimed, or the reader's own kind's stays as it was (rule 8).
 # ════════════════════════════════════════════════════════════════════════════
 DOTS_HONOUR_CLAIMS_ENV = "OMR_DOTS_HONOUR_CLAIMS"
-BEAMS_HONOUR_CLAIMS_ENV = "OMR_BEAMS_HONOUR_CLAIMS"
 #: owner families whose ink a DOT box may legitimately stand on: a dot's own family and the other small-mark family (a staccato is `mark`).
 DOT_OWN_FAMILIES = ("dot", "mark")
-#: owner families whose ink a BEAM reader still counts: a beam fused to a head on a merging plate (Litolff) is the HEAD's blob stroke -- the
-#: head claims it, and that is no evidence the stroke holds no beam. Every other family (arc, arc_trace, hairpin, word, text, dynamic,
-#: accidental, ledger, mark, dot, clef, key, meter, barline, bracket, rests) is never a beam level.
-BEAM_MAYBE_FAMILIES = ("head",)
-
-
 def dots_honour_claims_enabled() -> bool:
     """`OMR_DOTS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
     return os.environ.get(DOTS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
@@ -4733,21 +3181,6 @@ def dots_honour_claims_enabled() -> bool:
 # straightness, through-heads). It never supplies a value (CLAUDE §4: an eighth only on a flag or beam read on its stem).
 # ════════════════════════════════════════════════════════════════════════════
 STROKE_CUT_FACT_ENV = "OMR_STROKE_CUT_FACT"
-
-
-def stroke_cut_by_cell(detail: Optional[Dict[str, Any]]) -> bool:
-    """The stroke's ink reaches the cell crop's TOP or BOTTOM edge (`cut` contains "t" or "b"): a beam's thickness and the levels beyond it are
-    unreadable there. No `cut` in the row (flag off at GATHER, or no cut) says nothing: not cut, as before. Reads the flag too, so the OFF arm of
-    a replay of rows gathered ON ignores the fact."""
-    if os.environ.get(STROKE_CUT_FACT_ENV, "").strip().lower() not in ("0", "false", "no", "off"):
-        cut = (detail or {}).get("cut")
-        return isinstance(cut, str) and ("t" in cut or "b" in cut)
-    return False
-
-
-def beams_honour_claims_enabled() -> bool:
-    """`OMR_BEAMS_HONOUR_CLAIMS`, default ON (ROADMAP 2.243; Sean 2026-10-30, tiles 12/12); an explicit 0/false/no/off disables."""
-    return os.environ.get(BEAMS_HONOUR_CLAIMS_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _dot_ink_owned_elsewhere(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
@@ -4768,36 +3201,6 @@ def _dot_ink_owned_elsewhere(ev: Evidence, cell) -> Optional[Dict[str, Any]]:
     if any(g is None or g in DOT_OWN_FAMILIES for g in got):
         return None
     return {"strokes": ords, "families": sorted(set(got)), "rows": [rows[-1].id] + ([verdict.id] if verdict is not None else [])}
-
-
-def _beams_on_owned_strokes(ev: Evidence, cell, beams) -> Dict[str, str]:
-    """ROADMAP 2.243. `{beam row id: "owned_by_another_mark"}` for each beam row (CV stroke or detector box) whose box holds at least one
-    horizontal / curved / blob stroke of the stroke map and EVERY such stroke was DECIDED or MERGED by `Q.STROKE_OWNER` to a mark that
-    cannot be a beam level (not `BEAM_MAYBE_FAMILIES`): a hairpin's line, a slur's trace, a word, a sharp's crossbar, a ledger line. A box
-    with an unclaimed or contested stroke in it, a head-owned blob (a beam fused to a head), or no stroke at all keeps its place -- the
-    older tests judge it (rule 8)."""
-    verdict = ev.verdict(Q.STROKE_OWNER, subject=cell)
-    fam = _owner_families(verdict)
-    if not fam:
-        return {}
-    from ..record import STROKE_GLYPH_BASE
-    shapes = []
-    for r in ev.rows(Q.STROKE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
-        g = getattr(r.subject, "glyph", None)
-        d = r.detail or {}
-        box = d.get("stroke_box")
-        if g is None or not (STROKE_GLYPH_BASE <= g < 400_000) or not box or len(box) < 4 or str(r.value) == "vertical":
-            continue
-        shapes.append((g - STROKE_GLYPH_BASE, [float(v) for v in box[:4]]))
-    out: Dict[str, str] = {}
-    for b in beams:
-        bx = _xywh(b)
-        if bx is None:
-            continue
-        inside = [o for o, sb in shapes if bx[0] <= sb[0] + sb[2] / 2.0 <= bx[0] + bx[2] and bx[1] <= sb[1] + sb[3] / 2.0 <= bx[1] + bx[3]]
-        if inside and all(fam.get(o) is not None and fam[o] not in BEAM_MAYBE_FAMILIES for o in inside):
-            out[b.id] = "owned_by_another_mark"
-    return out
 
 
 def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
@@ -4854,7 +3257,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
                    Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
                    Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
-                   Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
+                   Q.STEM_SLASH,
                    # ⚠️ ROADMAP 2.77b: the head's own stem direction where no
                    # CV stem is attached (`_own_stem_side`), so the beams that
                    # can be its own, and with them the value, depend on it;
@@ -4873,10 +3276,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
                    # lengthens now also asks the dot's and the head's staff
                    # positions (`_attached_dots`).
                    Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
-                   # ROADMAP 2.170 addition 2: a stroke on a traced system arc is not a beam.
-                   Q.SYSTEM_ARC,
-                   # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the beam boxes are read against the strokes they stand on and the
-                   # strokes at the stem tip are counted, so the level, the value and the OUTCOME depend on the stroke map.
+                   # ROADMAP 2.318 / 2.319: THE ONE BEAM COUNT reads the stroke map (the stem by ink, the beams at its far end), so the level,
+                   # the value, the OUTCOME and the beam group written depend on it.
                    Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
                    # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the trimmed head's own fill turns an unread black hollow.
                    Q.HEAD_INK),
@@ -4924,25 +3325,24 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
            Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER, Q.BEAM_STEM_JOIN, Q.BEAM_STROKE_INK, Q.STEM_SLASH, Q.BEAM_STEM_LEVELS,
+           Q.GLYPH_OWNER, Q.STEM_SLASH,
            Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
-           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK, Q.SYSTEM_ARC,
-           # ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`): the stroke map, read only with the flag on.
+           Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK,
+           # ROADMAP 2.318 / 2.319: the stroke map, the one beam count's only source.
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
            Q.HEAD_INK),
     reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
-             "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
+             "flag_ink_unread", "hooks_counted",
              "tip_readers_disagree",
-             "beam_certain_not_joined",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs", "rest_hangs_from_own_line",
              "owned_by_another_staff", "not_a_note_mark", "refused_as_a_notehead", "wide_box_unread",
-             "stem_tip_reads_no_beam", "stem_readers_disagree"),
+             "stem_readers_disagree"),
     mode=Mode.ADDITIVE,
     # ⚠️ NOTEHEADS *AND* RESTS. One question -- how long is this event -- for
     # two kinds of ink. A rest reads its value straight off its class and
@@ -5068,16 +3468,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     used = [r.id for r in ev.rows(Q.NOTEHEAD_CLASS)]
 
     box = ev.rows(Q.GLYPH_BOX)
-    x_center = head_width = None
     if box:
-        v = box[-1].value
-        if isinstance(v, (list, tuple)) and len(v) >= 4:
-            x_center = float(v[1]) + float(v[3]) / 2.0
-            head_width = float(v[3])
         used.append(box[-1].id)
 
     cell = ev.subject.at(Kind.CELL)
-    kept, cv, yolo = _kept_beams(ev, cell)
     # ⚠️ `Q.STEM` WAS DECLARED IN `wants` AND `composed_from` AND READ BY
     # NOTHING -- this project's own named anti-pattern, inside the decision
     # whose docstring calls the beam level its fragile input. The stems were
@@ -5167,328 +3561,47 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             # may not turn it hollow afterwards (Sean 2026-10-16: "will you also amend the previous application of the rule?").
             hollow = False
             head_first["settled"] = "black"
-    # ⚠️ ROADMAP 2.25, FIRST: a stroke standing where a `ledgerLine` glyph is
-    # boxed in THIS cell is that ledger line, not a beam -- dropped before
-    # side/tolerance filtering ever sees it, so those steps (which reason
-    # about a NOTE's stem) work on a set that no longer holds ink that is
-    # not even a mark of duration at all. `used` gets nothing for the ones
-    # dropped: a stroke this decision refused to count is not evidence it
-    # composed from.
-    ledger_boxes = _ledger_line_glyph_boxes(ev, cell)
+    # ⚠️⚠️ ROADMAP 2.318 / 2.319 (Sean 2026-11-18 "Yes", after "Why don't we used the erased staff to get beams?"; 2026-11-13: no old reader beside
+    # the new one): THE ONE BEAM COUNT IS THE ONLY BEAM READER. The bar-crop reader (A, `_beam_levels` over `_kept_beams` and its filters: ledger,
+    # slash, neighbour, arc, side, beyond-the-tip, ink), the stem-tip look's beam count (C, 2.140) and the 2.202 box-support block are retired with
+    # their rule-8 guards (2.25b / 2.74 / 2.18b, `beam_discounted_uncertain`, 2.146, 2.170), which only that reader's refusals could reach. The count
+    # comes from the stroke map alone (`_one_beam_count`: the stem found by ink and followed to its far end, the beams read on the staff-erased raster,
+    # every head on one stem sharing the one count). Where the map cannot tell it NARROWS ("cannot tell" is never "no beam", rule 8). FLAGS are another
+    # mark and stay with the flag reader: a stem the map counts no beam on takes its value from it, as an unbeamed stem always did. An OPEN head is read
+    # too (a fact for the hollow-head rules below: whether its stem carries a beam), and its levels are then fixed at zero (2.43).
     tol = _join_tolerance(ev, cell)
-    kept, ledger_dropped = _not_a_ledger_line(
-        kept, ledger_boxes,
-        keep=_beam_anchor_ids(
-            ev, cell, kept, tol,
-            _notehead_glyph_boxes(
-                ev, cell, tol / STEM_JOIN_TOLERANCE_SPACES if tol > 0 else 0.0)))
-    # ⚠️ ROADMAP 2.71 (Sean, 2026-10-09): a stroke that is a read TREMOLO
-    # SLASH's own ink is not a beam level of anything. Same tier as the ledger
-    # line, and BEFORE every guard below on purpose: a slash is a mark of
-    # another kind, not an absence, so removing it never narrows the head
-    # (rule 8 guards a note a refused stroke WOULD have marked).
-    kept, slash_dropped, slash_used = _not_a_slash(ev, cell, kept)
-    used.extend(r.id for r in slash_used)
-    # ⚠️ ROADMAP 2.25b, SAME TIER: a stroke that is the NEIGHBOUR staff's own
-    # beam (through the cell's pad) or a DECIDED slur/tie's own ink -- each a
-    # CONNECTION to a fact already on the record about the OTHER object,
-    # never a guess from mere overlap (rule 6; FINDINGS SS13f/SS13h). Both
-    # are additive-safe and run before 2.18/2.18b for the same reason the
-    # ledger-line drop does. (A third class, the hairpin, was named and NOT
-    # built -- see the comment above `_flag_levels_table`.)
-    before_2_25b = list(kept)
-    kept, neighbour_dropped = _not_the_neighbours_beam(
-        ev, cell, kept, stems, own_stems)
-    kept, arc_dropped = _not_a_decided_arc(ev, cell, kept, stems)
-    # ⚠️⚠️ RULE 8, APPLIED TO 2.25b (manager, before merge): discounting a
-    # stroke as the neighbour's or a decided arc's own ink may not by
-    # itself turn a marked note into an unmarked one. Recorded here, before
-    # 2.18/2.18b touch `kept` further, and read again near the bottom of
-    # this function once flags are known -- a stemmed head that had SOME
-    # candidate stroke before this tier, has NONE after it, and these two
-    # rules (not an empty page) are why, is the population that guard
-    # covers; the SAME test 2.18b's own `beyond_stem_kept_no_other_mark`
-    # runs for a different cause.
-    discount_removed_all_marks = (bool(before_2_25b) and not kept
-                                  and bool(neighbour_dropped or arc_dropped))
-    # ⚠️ ROADMAP 2.18: only strokes on the side this head's OWN stem points
-    # to can be its beams (`_on_stem_side`). No own stem direction -> no side
-    # -> every stroke stays, exactly as before.
     unison = _unison_two_voices(ev, own_stems, head_box) if unison_both_stems_enabled() else None
     side, side_verdict = _own_stem_side(ev, unison)
     if unison is not None:
         used.extend(getattr(unison, "used", ()) or ())
-    # ⚠️ ROADMAP 2.77b: a stem the RULER read where the CV rung attached none.
-    # Such a head HAS a stem whose tip nothing examined (two stacked heads fuse
-    # into one too-wide component and the CV finds no stem at all), so a mark
-    # that is discounted or put on the far side of it is NOT evidence that the
-    # head carries none -- rule 8 applies exactly as it does to a CV stem.
+    # ⚠️ ROADMAP 2.77b: a stem the RULER read where the CV rung attached none (its flag is read through `_flags_on_reach_stem` below).
     reach_stem = (side is not None and not own_stems
                   and getattr(side_verdict, "quantity", None)
                   == Q.HEAD_STEM_REACH)
-    kept, far_side = _on_stem_side(kept, head_box, side)
-    # the side test alone emptied the head's candidate strokes (reach stem only)
-    far_removed_all_marks = reach_stem and bool(far_side) and not kept
     if side_verdict is not None:
         used.append(side_verdict.id)
-    # ⚠️ ROADMAP 2.18b: `STEM_JOIN_TOLERANCE_SPACES` in THIS cell's pixels
-    # (0 where the cell has no unit). It sets the reach past the stem tip
-    # (`_beyond_own_stem`) and the flag attachment; the beam join itself
-    # stays at overlap (`_stem_joined`).
-    tol = _join_tolerance(ev, cell)
-    kept_all = kept
-    kept, beyond = _beyond_own_stem(kept, stems, own_stems, side, tol)
-    # ⚠️ ROADMAP 2.74 (Sean, 2026-10-09): a stroke the INK reads as too thin,
-    # bowed, or standing on one stem is not a beam. Read off
-    # `Q.BEAM_STROKE_INK`; an unread test keeps the stroke (rule 8). AFTER
-    # the side and beyond-the-tip tests on purpose: it judges the strokes
-    # that would otherwise COUNT, so a stroke those tests refuse anyway is
-    # not one the ink "removed".
-    pre_ink = list(kept)
-    kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-        ev, cell, kept, stems, tol, head_x=x_center, own_stems=own_stems, head_box=head_box)
-    joined, attached = _stem_joined(kept, stems, head_box)
-    # ⚠️ ROADMAP 2.43: THIS HEAD'S OWN STEM'S PADDED X-SPAN, gating
-    # `_beam_levels`'s merely-POSSIBLE column match (`None` where this head
-    # has no own stem -- unchanged there).
-    stem_x = _own_stem_x_span(own_stems, tol)
-    # ⚠️ ROADMAP 2.38: the ink-continuity witness for whatever this pass's
-    # OWN `kept` set turns out to be -- recomputed below too, since the
-    # rule-8 guard can restore `kept_all` and change which strokes are
-    # merely POSSIBLE (the only ones the witness is ever consulted for).
-    join_witness, join_used = _beam_join_witness(ev, cell, kept, own_stems,
-                                                 side)
-    used.extend(r.id for r in join_used)
-    needs_join = beam_level_needs_a_joined_stem_enabled()
-    certain, possible, certain_conflicts = _beam_levels(
-        kept, x_center, head_width, joined, join_witness, stem_x=stem_x, unjoined_possible=needs_join)
-    # ⚠️⚠️ RULE 8: DROPPING A STROKE MAY NOT BY ITSELF MAKE A NOTE UNMARKED.
-    # Where the strokes past the tip were the ONLY thing over this head, and
-    # its stem carries no beam and no flag once they go, the note would fall
-    # to its head value -- a decision made from ABSENCE. Priced on Breitkopf
-    # p1 (FINDINGS §11), 3 of the 6 judgeable notes that fell that way print
-    # a flag or a beam no reader read (against 10 of 69 across every stemmed
-    # head the page wrote at its head value), so the strokes stay and the
-    # reading stays what it was.
-    beyond_guarded = False
-    if beyond and not possible and not _attached_flags(
-            ev, cell, attached, tol)[1]:
-        kept, beyond, beyond_guarded = kept_all, [], True
-        pre_ink = list(kept)
-        kept, ink_dropped, ink_used = _not_a_beam_by_ink(
-            ev, cell, kept, stems, tol, head_x=x_center, own_stems=own_stems, head_box=head_box)
-        joined, attached = _stem_joined(kept, stems, head_box)
-        join_witness, join_used = _beam_join_witness(ev, cell, kept,
-                                                      own_stems, side)
-        used.extend(r.id for r in join_used)
-        certain, possible, certain_conflicts = _beam_levels(
-            kept, x_center, head_width, joined, join_witness, stem_x=stem_x, unjoined_possible=needs_join)
-    # ⚠️⚠️ ROADMAP 2.75 (Sean, 2026-10-09: rhythm-leftovers tiles 8 and 9,
-    # printed EIGHTHS read 16th and 32nd): ONE PRINTED HEAD SHARED BY TWO
-    # VOICES carries a stem each way and each stem has its OWN beam -- the
-    # up-stem's beam over the head, the down-stem's under it (Litolff p3: the
-    # unison of two eighth-note voices). `_beam_levels` counted both beams as
-    # levels of ONE stem and read two levels (and a stray third). Each stem's
-    # levels are counted against ITS side only; where the voices agree that is
-    # the head's level, where they differ the head is a RANGE (rule 8: never
-    # one voice's value for both). Only where this head has no single decided
-    # stem direction (`side is None`) and a stem on each side.
-    voice_levels = None
-    if side is None and head_box is not None:
-        vs = _voice_stems(own_stems, head_box)
-        if vs["up"] and vs["down"]:
-            voice_levels = {}
-            v_kept: list = []
-            v_conf: list = []
-            for vside in ("up", "down"):
-                near, _far = _on_stem_side(kept, head_box, vside)
-                near, _beyond_v = _beyond_own_stem(near, stems, vs[vside],
-                                                   vside, tol)
-                v_joined, _v_att = _stem_joined(near, vs[vside], head_box)
-                v_wit, v_used = _beam_join_witness(ev, cell, near, vs[vside],
-                                                   vside)
-                used.extend(r.id for r in v_used)
-                c, pz, cc = _beam_levels(
-                    near, x_center, head_width, v_joined, v_wit,
-                    stem_x=_own_stem_x_span(vs[vside], tol), unjoined_possible=needs_join)
-                voice_levels[vside] = [c, pz]
-                v_kept.extend(b for b in near if b not in v_kept)
-                v_conf.extend(cc)
-            certain = min(v[0] for v in voice_levels.values())
-            possible = max(v[1] for v in voice_levels.values())
-            certain_conflicts = tuple(v_conf)
-            kept = v_kept
-    # ⚠️⚠️ ROADMAP 2.43, DECISIONS 2026-09-30 (Sean): "open noteheads are
-    # never beamed except tremolo" -- a hollow head's beam levels are FIXED
-    # AT ZERO, whatever `_beam_levels` (or a stray YOLO `beam` box in its
-    # cell) would otherwise have counted. Overridden here, AFTER every
-    # geometric filter above has already run (so `yolo_kept`/`beams_far_
-    # side`/etc. below still report what the cell actually held, for
-    # tracing), and BEFORE `levels` and `beam_evidence` are read from it, so
-    # every branch downstream (`beams_ambiguous`, `beam_certain_not_joined`,
-    # `beam_discounted_uncertain`) sees an unambiguous zero and never fires.
-    # ⚠️ ROADMAP 2.70: what the strokes said BEFORE the override just below
-    # zeroed them. A hollow-reading head whose stem a beam is joined to is the
-    # 2.23 false positive (a black head read hollow), so the bare-stem rule
-    # must see the strokes the override hid.
-    # ⚠️ ROADMAP 2.141h fix 1 (flag): a stroke ~twice as thick as another of the cell MAY be two beams fused -- widen the range,
-    # never the certain count (one witness: the ink's thickness).
-    double_thick = 0
-    if beam_level_stroke_is_a_beam_enabled() and kept and certain:
-        double_thick = _fused_double_beams(ev, cell, kept, x_center)
-        possible += double_thick
-    # ⚠️ ROADMAP 2.140 (flag `OMR_BEAM_STEM_LEVELS`, default ON since 2026-10-16), Brahms p18 sys1 staff12 cell7 = 2.136 control tile 4: three
-    # sixteenths under a double beam decided plain eighths (one CV stroke over them; the detector's stack box dropped by
-    # `_kept_beams`). The page, read at each stem's tip, shows two strokes. TWO witnesses from DIFFERENT sources: the page count at
-    # the tip (`Q.BEAM_STEM_LEVELS`) and the detector's box standing a beam taller than one beam would (`stack_box_excess_beams`).
-    # Both -> one more level DECIDES; the page count alone -> NARROW eighth/sixteenth (a level seen by one witness is never
-    # written plain). The box alone does nothing (measured: it fires on ~950 single-beam eighths of Brahms).
-    stem_levels = None
-    if (beam_stem_levels_enabled() and not hollow and kept and certain >= 1 and not certain_conflicts and voice_levels is None
-            and not one_beam_count_enabled()):          # 2.318 r3: the stem-tip look is not consulted for the beam count
-        _cv_kept = [b for b in kept if b.reader in (READERS.CV_LINES, READERS.CV_PAGE_BEAMS)]
-        tip = _stem_tip_strokes(ev, cell, own_stems, head_box, side, _cv_kept)
-        if tip is not None and tip["count"] > certain:
-            used.append(tip["row"])
-            _ink = _beam_ink_rows(ev, cell)
-            _stem_x = None
-            for _st in _voice_stems(own_stems, head_box)[side]:
-                _b = _xywh(_st)
-                if _b is not None:
-                    _stem_x = _b[0] + _b[2] / 2.0
-                    break
-            _cv_all = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b),
-                        (_ink[b.id].detail or {}).get("thickness_px") if b.id in _ink else None)
-                       for b in _kept_beams(ev, cell)[1] if _xywh(b) is not None]
-            _yolo = [(b.detail.get("x0", 0), b.detail.get("x1", 0), _xywh(b))
-                     for b in _kept_beams(ev, cell)[2] if _xywh(b) is not None]
-            _ex, _how = stack_box_excess_beams(_cv_all, _yolo, _stem_x) if _stem_x is not None else (None, None)
-            _box_agrees = _ex is not None and _ex >= BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS
-            stem_levels = {"page_count": tip["count"], "side": tip["side"], "runs": tip["runs"], "unit_spaces": tip["unit_spaces"],
-                           "box_excess_beams": None if _ex is None else round(_ex, 3), "box": _how,
-                           "box_margin": None if _ex is None else round(_ex - BEAM_STACK_BOX_EXCESS_MIN, 3),
-                           "box_near_miss": _ex is not None and BEAM_STACK_BOX_EXCESS_MIN <= _ex < BEAM_STACK_BOX_EXCESS_MIN + BEAM_STACK_BOX_NEAR_MISS,
-                           "settled": None}
-            if _box_agrees and tip["count"] == certain + 1:
-                certain = possible = tip["count"]
-                stem_levels["settled"] = "decided_two_witnesses"
-            else:
-                possible = max(possible, tip["count"])
-                stem_levels["settled"] = "narrowed_one_witness"
-    # ⚠️⚠️ ROADMAP 2.202 (flag `OMR_BEAMS_FROM_STROKES`, default OFF; step 3 of the shared ink map; Sean 2026-10-22: *"if there is a flag it
-    # should be treated as a flag - it is the more distinctive symbol"*). THIS HEAD'S BEAMS FROM THE STROKE MAP, after every old reader above
-    # has spoken and BEFORE anything is decided from them. (1) A detector beam box that stands on NO beam-shaped stroke (empty paper, a stem,
-    # a thin line, a one-stem stub) NARROWS: it leaves the count, its level stays as a candidate (`possible`), it never decides. (2) A box that
-    # stands on a short hook touching THIS head's stem, a stem that carries no spanning beam, is a FLAG: the hook count is filed as the flag
-    # levels (below) instead of a beam level. (3) The beam-shaped strokes touching this stem at its tip are counted: more than the readers
-    # counted -> a CANDIDATE (`possible`), never decided (rule 6: nothing is invented); fewer -> a DISAGREEMENT the strokes cannot settle:
-    # NARROWED between the two, never an argmax (rule 8). Where they agree nothing here changes. With the flag off none of this runs and
-    # the verdict is byte-identical. The cut-offs (`beam_strokes.py`) are measured on the stroke fields (FINDINGS 2.202 §1), one plate only,
-    # so they narrow; the hook-as-flag decision is Sean's ruling.
-    sb = None
-    sb_detail = None
-    if (beams_from_strokes_enabled() and not hollow and voice_levels is None and own_stems and head_box is not None
-            and side in ("up", "down")):
-        sb = _beams_from_strokes(ev, cell, kept, own_stems, head_box, side, detector_pre=_kept_beams(ev, cell)[0])
-        if sb is not None:
-            used.extend(sb["rows"])
-            before = [certain, possible]
-            settled = []
-            if sb["removed_ids"]:
-                gone = set(sb["removed_ids"])
-                used.extend(sb["removed_ids"])
-                kept = [b for b in kept if b.id not in gone]
-                joined, _sb_att = _stem_joined(kept, stems, head_box)
-                join_witness, sb_wit_used = _beam_join_witness(ev, cell, kept, own_stems, side)
-                used.extend(r.id for r in sb_wit_used)
-                c2, p2, cc2 = _beam_levels(kept, x_center, head_width, joined, join_witness, stem_x=stem_x, unjoined_possible=needs_join)
-                possible = max(possible, p2, certain)
-                certain, certain_conflicts = c2, cc2
-                settled.append("box_flag" if sb["flag_levels"] else "box_narrowed")
-                # ROADMAP 2.202d (Sean 2026-10-16 "Clean tip means no beam"; 2.202c tiles 1, 5, 9 all quarters): every beam box the map removed
-                # stands on NO beam- or hook-shaped stroke at all AND this stem's tip was read clean (a stem stroke, no beam, hook or stub, no
-                # flag): the boxes are refuted by the ink, so their level is not a candidate. Without this the head is narrowed [0, 1] and the
-                # bar leaves the note unwritten (`beams_ambiguous`), the false value gone and the true one with it.
-                if (not sb["flag_levels"] and sb["tip_levels"] == 0 and not certain_conflicts and sb["tip"].get("stem") is not None
-                        and sb.get("tip_clean")
-                        and sb["boxes"] and all(bx.get("support") == "unsupported" and bx.get("reason") == "no_beam_or_hook_shaped_stroke"
-                                                for bx in sb["boxes"])):
-                    possible = max(p2, certain)
-                    settled.append("clean_tip")
-            if not certain_conflicts:
-                if sb["tip_levels"] > certain:
-                    possible = max(possible, sb["tip_levels"])
-                    settled.append("stroke_candidate")
-                elif sb["tip_levels"] < certain <= sb["tip_levels"] + len(sb["tip"].get("doubt") or ()):
-                    # 2.202f (Sean's round-3 tile 8): the missing level is a stroke in the thickness trough at this tip -- the map cannot
-                    # tell a beam from a thin span there, so it says nothing against the readers (rule 8: "cannot tell" refutes nothing).
-                    settled.append("trough_abstains")
-                elif (sb["tip_levels"] < certain
-                      and certain - sb["tip_levels"] <= sum(1 for b in kept if b.id in _beam_ink_rows(ev, cell)
-                                                            and stroke_cut_by_cell(_beam_ink_rows(ev, cell)[b.id].detail))):
-                    # ROADMAP 2.260a M0: the level the map did not see is a beam the CELL cut (it reads the same cut raster). A reader that cannot
-                    # see past the cut says nothing against the readers that did (rule 8) -- the same abstention as the thickness trough above.
-                    settled.append("cut_abstains")
-                elif sb["tip_levels"] < certain:
-                    possible = max(possible, certain)
-                    certain = sb["tip_levels"]
-                    settled.append("disagree_narrowed")
-            sb["settled"] = ",".join(settled) if settled else "agrees"
-            sb_detail = {"settled": sb["settled"], "before": before, "after": [certain, possible], "tip_levels": sb["tip_levels"],
-                         "flag_levels": sb["flag_levels"], "tip": sb["tip"],
-                         "boxes": [{k: v for k, v in bx.items() if k != "stroke_rows"} for bx in sb["boxes"]]}
-    # ⚠️⚠️ ROADMAP 2.318 r3 (flag `OMR_ONE_BEAM_COUNT`, default ON since 2026-11-19; Sean 2026-11-18 "Yes", after "Why don't we used the erased staff to get beams?"):
-    # THE ONE BEAM COUNT. Whatever the bar-crop reader (A, `_beam_levels`), the stem-tip look (C) and the 2.202 block above counted for the BEAMS is
-    # replaced by the stroke map's count at this head's stem (`_one_beam_count`: the stem found by ink and followed to its far end, the beams
-    # read on the staff-erased raster, every head on one stem sharing the one count). Two readers of one mark side by side turned a readable beam
-    # into an abstention (2.317); nothing falls back. Where the map cannot tell (no stem stroke in it, a stub or a trough stroke at the tip, a
-    # stem that touches a beam it did not count, a beam too thick at the stem to be one) the head NARROWS between what it does and does not rule
-    # out: "cannot tell" is never "no beam" (rule 8). FLAGS are another mark: the flag attachment below is untouched, and a stem the map counts no
-    # beam on takes its value from it, as an unbeamed stem always did. Nothing here reads a LEGACY flag.
+    _no_beams, attached = _stem_joined([], stems, head_box)     # the stems the head stands on (the flag attachment reads them)
     one_beam = None
     one_beam_pending = 0
-    if one_beam_count_enabled() and not hollow and head_box is not None:
+    certain = possible = 0
+    if head_box is not None:
         one_beam = _one_beam_count(ev, cell, head_box, side, finder_stem=bool(own_stems))
         used.extend(one_beam["rows"])
         if one_beam["state"] == "silent":
-            certain, possible, one_beam_pending = 0, 0, 1     # the map has no stem: it says NOTHING about beams (the flag reader still speaks)
+            one_beam_pending = 0 if hollow else 1         # the map has no stem: it says NOTHING about beams (the flag reader still speaks)
         else:
             certain, possible = int(one_beam["certain"]), int(one_beam["possible"])
-            if certain == 0 and possible > 0:
+            if certain == 0 and possible > 0 and not hollow:
                 # no beam certain, one possible: the flag reader (attached flags, the stem-tip hooks) speaks first; the count never overrules it in
                 # either direction. Only where it has nothing is the note narrowed (head value or the possible levels): the final decision below.
                 one_beam_pending, possible = possible, 0
-        certain_conflicts = ()
-        kept = []                                    # the bar-crop reader's strokes are not evidence of the beam count (`used`, `cut_kept`)
-        ink_dropped, ink_used, pre_ink = {}, [], []  # so the ink's refusals of THOSE strokes cannot mark or unmark a note either
-        beyond_guarded = discount_removed_all_marks = far_removed_all_marks = False
-        # `joined` / `attached` (the stems the head stands on, which the flag attachment below reads) and `sb` (the hooks the stroke map found
-        # under a detector beam box, which are FLAGS, Sean 2026-10-22) are untouched: flags stay with the flag reader exactly as today.
-    strokes_before_hollow = (certain, possible, len(certain_conflicts))
+    strokes_before_hollow = (certain, possible, 0)
+    # 2.319: "the beam reader LOOKED at this stem" (the hollow-head rules' witness, ROADMAP 2.70) is now the one count's: it read the stem, or None
+    # where the map holds no stem for the head ("cannot tell", never "nothing").
+    beam_looked = ("one_count:" + one_beam["state"]) if (one_beam is not None and one_beam["state"] != "silent") else None
     if hollow:
         certain = possible = 0
-        certain_conflicts = ()
     levels = certain
-    used.extend(b.id for b in kept)
-    used.extend(r.id for r in ink_used)
-    # ⚠️ ROADMAP 2.74, RULE 8: the ink's refusals may not by themselves turn a
-    # marked note into an unmarked one -- the same shape as 2.25b's guard,
-    # WITHOUT its `own_stems` condition (a chord head shares a stem no box of
-    # its own overlaps, and Brahms p1 page 0 holds ~45 of them: beamed
-    # eighths whose only 'beam' was a detector box lying on a staff line).
-    # It fires only where the strokes the ink refused WOULD HAVE COUNTED for
-    # this head (a stroke over some other note's column, or one the beyond-the-
-    # tip guard restored for nothing, never marked it): the head had a level
-    # before the ink refused it and has none after.
-    pre_possible = 0
-    if ink_dropped and not possible:
-        pre_joined, _ = _stem_joined(pre_ink, stems, head_box)
-        pre_witness, _ = _beam_join_witness(ev, cell, pre_ink, own_stems, side)
-        _pc, pre_possible, _pk = _beam_levels(
-            pre_ink, x_center, head_width, pre_joined, pre_witness,
-            stem_x=stem_x, unjoined_possible=needs_join)
-    ink_removed_all_marks = bool(ink_dropped) and pre_possible > 0 \
-        and not possible
     used.extend(s.id for s in attached)
 
     # ⚠️ THREE STATES, AND THEY MUST NOT COLLAPSE INTO ONE. A duration that is
@@ -5524,12 +3637,6 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # `glyph/3/0/7/3/5`, both reached through the join tolerance) the max is
     # an argmax over a disagreement. A box an existing verdict refuses never
     # got here (`_attached_flags` skips it), so it does not vote.
-    # ROADMAP 2.202: the hook(s) the stroke map found at this stem's tip under a box the detector called a beam are the FLAG levels (Sean
-    # 2026-10-22), only where no flag box was attached and no beam level stands; the hooks' stroke rows are what the verdict used.
-    sb_flag_rows: tuple = ()
-    if sb is not None and sb["flag_levels"] and not flag_levels and not levels:
-        flag_levels = sb["flag_levels"]
-        sb_flag_rows = tuple(sb["flag_rows"])
     flag_level_votes: Dict[int, int] = {}
     for f in flags:
         lv = _flag_levels_for(f.value)
@@ -5556,7 +3663,6 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         # A flag says the same thing a beam does for an unbeamed note.
         levels = flag_levels
         used.extend(r.id for r in flags)
-        used.extend(sb_flag_rows)
         beam_evidence = "flag"
         flags_disagree = len(flag_level_votes) > 1
     beats = base / (2 ** levels) if levels else base
@@ -5589,36 +3695,14 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             scaled = total * den / num
             used.append(ratio.id)
 
-    _cut_ink = _beam_ink_rows(ev, cell)
-    cut_kept = [b.id for b in kept if b.id in _cut_ink and stroke_cut_by_cell(_cut_ink[b.id].detail)]
-    shared = {"head": str(head), "head_is_open": hollow, **({"beam_cut_kept": cut_kept} if cut_kept else {}), **({"head_fill_first": head_first} if head_first else {}),
+    shared = {"head": str(head), "head_is_open": hollow, **({"head_fill_first": head_first} if head_first else {}),
               **({"head_ink": head_ink_read} if head_ink_read else {}),
               "beam_evidence": beam_evidence,
-              "cv_beams": len(cv), "yolo_beams": len(yolo),
-              "yolo_kept": (len(kept) + len(far_side) + len(beyond)
-                           + len(ledger_dropped) + len(slash_dropped)
-                           + len(neighbour_dropped)
-                           + len(arc_dropped) + len(ink_dropped)
-                           - len(cv)),
-              "beams_ledger_line": len(ledger_dropped),
-              # ⚠️ ROADMAP 2.71: strokes that were a tremolo slash's own ink.
-              "beams_slash": len(slash_dropped),
-              "beams_neighbour_staff": len(neighbour_dropped),
-              "beams_decided_arc": len(arc_dropped),
-              # ⚠️ ROADMAP 2.74: strokes the ink read as not a beam, by why.
-              "beam_voices": voice_levels,
-              "beams_double_thick": double_thick,
               **({"one_beam_count": {k: v for k, v in one_beam.items() if k != "rows"}} if one_beam is not None else {}),
-              **({"beams_from_strokes": sb_detail} if sb_detail else {}),
               **({"stems_from_strokes": stem_info} if stem_info else {}),
-              **({"beam_stem_levels": stem_levels} if stem_levels else {}),
-              "beams_not_by_ink": len(ink_dropped),
-              "beams_not_by_ink_why": {
-                  w: sum(1 for v in ink_dropped.values() if v == w)
-                  for w in sorted(set(ink_dropped.values()))},
-              "beam_side": side, "beams_far_side": len(far_side),
-              "beams_beyond_stem": len(beyond),
-              "beyond_stem_kept_no_other_mark": beyond_guarded,
+              # 2.319: a head with a stem each way (two voices): each stem's own count, the one beam count's (`unison_two` reads it per voice).
+              "beam_voices": _voices_of_the_one_count(one_beam),
+              "beam_side": side,
               "join_tolerance_px": round(tol, 2),
               # 2.319: the beam ink this note's stem hangs on (the one beam count's strokes, `Q.STROKE` row ids): which notes share a beam
               "stems_attached": len(attached), "beam_strokes": list(one_beam.get("beam_rows") or ()) if (one_beam is not None and levels and not hollow) else [],
@@ -5721,33 +3805,6 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             return Ruling.narrow(cands, "open_head_flag_contradiction", used=tuple(used), **shared,
                                  open_on_stem={"settled": "narrowed_flag", "class": str(head), "ink_filled": filled_o})
 
-    # ⚠️⚠️ ROADMAP 2.38b, RULE 8, CHECKED FIRST. A CERTAIN stroke (box
-    # geometry) the ink reads NOT JOINED is a DISAGREEMENT between two
-    # independent witnesses, not a count to silently correct in either
-    # direction -- `_beam_levels`'s own docstring has the measured
-    # argument (Brahms p1: ~50 of 165 NOT-JOINED-only decisions were wrong
-    # beam_levels). NARROW between the level AS BOX GEOMETRY ALONE COUNTS
-    # IT (`certain`, unchanged) and the level WITHOUT the disputed
-    # stroke(s) (`certain` minus however many disagree) -- never straight
-    # to either, and EQUAL support: nothing here says which witness is
-    # right, only that they disagree.
-    if certain_conflicts:
-        disputed = len(certain_conflicts)
-        cands = []
-        for level in sorted({certain, max(certain - disputed, 0)}):
-            b = base / (2 ** level) if level else base
-            t, add = b, b
-            for _ in range(n_dots):
-                add /= 2.0
-                t += add
-            cands.append(Candidate(
-                value={"beats": _scale(t, ratio, ev), "written": t,
-                       "dots": n_dots, "beam_levels": level},
-                support=1.0))
-        return Ruling.narrow(cands, "beam_certain_not_joined",
-                             used=tuple(used), **shared,
-                             certain_conflicts=len(certain_conflicts))
-
     # ⚠️ WHERE THE BEAM READING IS A RANGE, SO IS THE DURATION. Narrowing is
     # not a weaker answer than deciding -- it is the true one, and it is what
     # lets `reconcile_duration` search ADMITTED levels instead of arithmetic
@@ -5811,153 +3868,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                 # units and must never be normalised.
                 # ⚠️ ROADMAP 2.153: where the range comes from strokes only a box overlap put over the column and nothing is joined,
                 # "the certain level outranks" would be a claim no witness makes: equal support, the bar settles it.
-                support=2.0 if level == certain and not (one_beam is not None and one_beam["state"] == "silent") and not (
-                    needs_join and certain == 0 and _unjoined_column_strokes(kept, x_center, joined, join_witness)) else 1.0))
+                support=2.0 if level == certain and not (one_beam is not None and one_beam["state"] == "silent") else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used),
                              **shared)
-
-    # ⚠️⚠️ ROADMAP 2.25b, RULE 8 (manager, before merge). Reached only where
-    # this head has a STEM (a rest or an unstemmed head has no beam to lose)
-    # and `discount_removed_all_marks` fired above: the neighbour-staff or
-    # decided-arc connection discounted every candidate stroke this head
-    # had, and nothing else (no flag) stands over it. Deciding the head
-    # value outright there would convert *the ink we discounted might have
-    # been a real beam* into a silent quarter -- rule 8's own words. NARROW
-    # between the head value and ONE beam level instead, exactly the
-    # `flag_ink_unread` shape below: never straight to a specific count,
-    # because the discount says nothing about HOW MANY levels the ink
-    # would have been.
-    # ⚠️ ROADMAP 2.43: `not hollow` -- an OPEN head is never beamed (Sean,
-    # DECISIONS 2026-09-30), so a discount that removed its candidate
-    # strokes must not narrow it toward one anyway.
-    # ⚠️⚠️ ROADMAP 2.83: A HOOK THE TIP READER SAW OUTRANKS THE DISCOUNT. This branch narrows between the head value and ONE
-    # beam level (ranking the beam level above the head's own) because every candidate stroke was refused; it sat BEFORE the
-    # stem-tip reading below, so a head whose own stem tip carries a flag the tip reader SAW never reached it (3,604 of 24,260
-    # Brahms heads stand in it, FINDINGS 17). The same rows the 2.18c block below reads, asked one block earlier, in this
-    # helper's own name so a neighbouring edit to the narrowing does not collide: where a hook IS read at this head's own
-    # tip the branch stands down and the block below DECIDES the counted level or NARROWS over the flag levels (>= 1).
-    tip_first = False
-    if (discount_removed_all_marks or ink_removed_all_marks or far_removed_all_marks) \
-            and beam_evidence == "none_over_this_note" and not flag_levels and not open_by_class:
-        tip_first = bool(_stem_tip_flag_ink(ev, cell, own_stems, side)[0])
-        # ROADMAP 2.235: what the claims said about THIS head's own stem tip (diagnostic, decides nothing here: the accessors above did).
-        if tips_honour_claims_enabled() and own_stems and side in ("up", "down"):
-            _ctn = [dict(v, stem_row_id=k[0]) for k, v in _tips_honouring_claims(ev, cell, own_stems)[2].items()
-                    if k[1] == ("top" if side == "up" else "bottom")]
-            _fl = _stem_tip_flag_ink(ev, cell, own_stems, side)[0]
-            _bs = _stem_tip_strokes(ev, cell, own_stems, head_box, side, [])
-            _end = "top" if side == "up" else "bottom"
-            _ids = {s.id for s in own_stems}
-            shared["tips_honour_claims"] = {
-                "claims": _ctn, "flag_window": _fl,
-                "beam_runs_at_tip": (None if _bs is None else int(_bs["count"])),
-                "gather_tip": sorted({("obs:%s" % bool(r.value)) for r in _tip_obs(ev, cell, own_stems)
-                                      if r.detail.get("end") == _end and r.detail.get("stem_row_id") in _ids}
-                                     | {("abs:%s" % a.detail.get("why")) for a in _tip_abs(ev, cell, own_stems)
-                                        if a.detail.get("end") == _end and a.detail.get("stem_row_id") in _ids})}
-    # ⚠️ ROADMAP 2.146 (flag `OMR_STEM_TIP_DECIDES_BEAM`, default ON since 2026-10-16; Sean 2026-10-16 "the stem tip decides beamed or not"):
-    # every stroke over this head was refused, so instead of narrowing between the head value and one beam level, ask the
-    # head's OWN stem tip. Clean tip -> no beam (the head's value); n beam runs at the tip -> n levels. Cannot tell -> the
-    # narrowing below, unchanged (rule 8).
-    if (stem_tip_decides_beam_enabled()
-            and ((discount_removed_all_marks and own_stems) or ink_removed_all_marks or far_removed_all_marks)
-            and beam_evidence == "none_over_this_note"
-            and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems):
-        tipv = _stem_tip_beam_verdict(ev, cell, own_stems, head_box, side)
-        # ⚠️ Sean's 2.146 tiles (2026-10-16): the clean-tip half 33/33 right on the beam question (+ 41/41 on his hand-truth
-        # page); the one "a beam at the tip" decision (tile 13, Brahms p1 sys0 st2 c1 g11) WRONG -- "definitely a quarter". So
-        # only a CLEAN tip decides; beam runs at the tip leave the narrowing below as it was.
-        if tipv is not None and tipv["levels"] == 0:
-            used.extend(tipv["rows"])
-            level = tipv["levels"]
-            b = base / (2 ** level) if level else base
-            t, add = b, b
-            for _ in range(n_dots):
-                add /= 2.0
-                t += add
-            return Ruling(value={"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": level},
-                          reason="stem_tip_reads_no_beam", used=tuple(used),
-                          detail={**shared, "stem_tip": {"levels": level, "side": tipv["side"], "runs": tipv["runs"]}})
-    # ⚠️ ROADMAP 2.170 (flag `OMR_BEAM_REFUSED_OFF_THE_TIP`, default ON since 2ca6fc9a): the same population, where the 2.146 rule could not
-    # decide because the FLAG window at the tip was unread. If no beam stroke of the cell (either reader, kept, refused or
-    # dropped) stands at this head's own stem tip and the tip's beam-run reader found no run there, the refused strokes were
-    # never this note's beam (a beam joins its stems at their ends): the narrowing below is skipped and the head is read as
-    # any unmarked head is -- the flag window, the head-fill readers and the head's own value, in their own order below.
-    off_the_tip = None
-    if (beam_refused_off_the_tip_enabled()
-            and ((discount_removed_all_marks and own_stems) or ink_removed_all_marks or far_removed_all_marks)
-            and beam_evidence == "none_over_this_note"
-            and not flag_levels and not hollow and not open_by_class and not tip_first and own_stems
-            # Addition 1 (Sean 2026-10-19 "Yes", after 2.170 tile 2 -- a HALF the rule wrote as a quarter): only where the head's
-            # OWN fill reading DECIDED it filled (2.148's first step settled `black` on a head-sized box), never from the detector
-            # class alone, a narrowed/unread fill, or a box only the low-confidence rescue drew (tile 2's box: score 0.19,
-            # reader `yolo_rescue_lowconf`, its ink read solid on that box).
-            and head_first is not None and head_first.get("settled") == "black" and not head_first.get("not_head_sized")
-            and bool(box) and box[-1].reader == READERS.DETECTOR):
-        off_the_tip = _no_beam_at_the_stem_tip(ev, cell, own_stems, head_box, side)
-        if off_the_tip is not None:
-            used.extend(off_the_tip["rows"])
-            shared["beam_refused_off_the_tip"] = {"strokes_in_cell": off_the_tip["strokes_in_cell"], "side": side,
-                                                  "arc_strokes_at_the_stem_ends": off_the_tip["arc_strokes_at_the_stem_ends"]}
-    if off_the_tip is None and (((discount_removed_all_marks and (own_stems or reach_stem))
-         or ink_removed_all_marks or far_removed_all_marks)
-            and beam_evidence == "none_over_this_note"
-            and not flag_levels and not hollow and not tip_first):
-        # ⚠️⚠️ ROADMAP 2.81 PHASE 2 (Sean, 2026-10-10): THE RANKING. The two
-        # candidates used to be ranked EIGHTH over QUARTER unconditionally
-        # (2.0 vs 1.0) -- the opposite of what the print says for a bare
-        # stem. Phase 1 (FINDINGS `omr-missing-notes-2026-09` §17), Brahms
-        # pdf 0 against Sean's hand truth: level 0 is right for 54 of the 76
-        # judged members, and for the members whose stem is decided and whose
-        # tip window reads clean 0.86 (31/36); his blind tiles scored the
-        # stricter subset 0.80 -- BELOW his 95% bar, so this is a RANKING, a
-        # labelled likelihood, and never a decision. Where the evidence does
-        # NOT hold (no decided stem: 20/36 = 0.56; a refused stroke AT the
-        # stem's tip: the real beams 2.74 refused) nothing is claimed and the
-        # order is the one it always was. `support` is in this function's own
-        # units and is not a probability.
-        refused_here = [b for b in pre_ink if b.id in ink_dropped]
-        refused_here += list(arc_dropped) + list(neighbour_dropped)
-        refused_here += list(far_side) + list(beyond)
-        _space_rows = ev.rows(Q.CELL_STAFF_SPACE,
-                              scope=Scope.SELF_AND_ANCESTORS, subject=cell)
-        tip_zone_space = float(_space_rows[-1].value) if _space_rows else 0.0
-        _bare_tip, _bare_tip_rows = _stem_tip_flag_ink(ev, cell, own_stems,
-                                                       side)
-        _stroke_at_tip = _refused_stroke_at_tip(refused_here, own_stems, side,
-                                                tip_zone_space)
-        evidence_holds = (bool(own_stems) and _bare_tip is False
-                          and _stroke_at_tip is False)
-        quarter_first = evidence_holds and bare_stem_rank_enabled()
-        if quarter_first:
-            used.extend(r.id for r in _bare_tip_rows)
-        cands = []
-        for level in (0, 1):
-            b = base / (2 ** level) if level else base
-            t, add = b, b
-            for _ in range(n_dots):
-                add /= 2.0
-                t += add
-            if quarter_first:
-                sup = 2.0 if level == 0 else 1.0
-            else:
-                sup = 2.0 if level == 1 else 1.0
-            cands.append(Candidate(
-                value={"beats": _scale(t, ratio, ev), "written": t,
-                       "dots": n_dots, "beam_levels": level},
-                support=sup))
-        return Ruling.narrow(cands, "beam_discounted_uncertain",
-                             used=tuple(used), **shared,
-                             refused_strokes=_refused_stroke_facts(
-                                 pre_ink, ink_dropped, arc_dropped,
-                                 neighbour_dropped, far_side, beyond,
-                                 own_stems, side, tip_zone_space),
-                             bare_stem_likelihood=(
-                                 "quarter_first" if quarter_first
-                                 else "not_claimed"),
-                             bare_stem_evidence_holds=evidence_holds,
-                             bare_stem_tip_window_clean=_bare_tip is False,
-                             bare_stem_refused_stroke_at_tip=_stroke_at_tip)
 
     # ⚠️⚠️ ROADMAP 2.18c, RULE 8. Reached only where NOTHING over this head
     # was read as a beam or a flag (`beam_evidence == "none_over_this_note"`,
@@ -6080,7 +3993,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     and head_box[3] / space <= HEAD_BOX_MAX_SPACES)
     if ink_hollow and own_stems and not flags \
             and strokes_before_hollow == (0, 0, 0) and one_head_box:
-        beam_reader = _beam_reader_looked(ev, cell)
+        beam_reader = beam_looked
         tip_looked, tip_rows = tip_ink, (tip_ink_rows or ())
         if tip_looked is None and beam_reader is not None:
             # `tip_ink` is only asked above where the old spelling of "the
@@ -6110,7 +4023,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             and head_box[3] / space >= HEAD_BOX_MIN_SPACES and head_box[2] / space <= HEAD_BOX_MAX_WIDTH_SPACES \
             and _raw_reads_firmly_hollow(fill_row.detail or {}) \
             and _hollow_readings(fill_row.detail or {}) >= HEAD_HOLLOW_MIN_READINGS \
-            and _beam_reader_looked(ev, cell) is not None and not _stem_tip_disputed(ev, cell, own_stems, side) \
+            and beam_looked is not None and not _stem_tip_disputed(ev, cell, own_stems, side) \
             and not (tip_ink_rows and any(bool(r.value) for r in tip_ink_rows)):
         unread = _stem_tip_unread_why(ev, cell, own_stems, side)
         if unread is not None:
@@ -6124,7 +4037,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                        "dots": n_dots, "beam_levels": 0,
                        "head_fill": "half"},
                 reason="hollow_head_bare_stem", used=tuple(used),
-                detail={**shared, "beam_reader": _beam_reader_looked(ev, cell),
+                detail={**shared, "beam_reader": beam_looked,
                         "stem_tip_hook": None, "tip_unread": unread,
                         "hollow_readings": _hollow_readings(fill_row.detail or {}),
                         "notehead_ink": fill_row.detail or {}}),
@@ -6139,7 +4052,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # black, half, whole; Sean's answer inside) now also covers the beamless-and-looked cell -- only on a box that holds ONE head
     # (`HEAD_BOX_MAX_SPACES`): a cluster box's ink windows say nothing about a head, and it keeps the detector's black as it did.
     beamless_looked = (beam_evidence == "reader_declined" and one_head_box
-                       and _beam_reader_looked(ev, cell) is not None)
+                       and beam_looked is not None)
     # ⚠️⚠️ ROADMAP 2.114: production boxed a BLACK head and the second detector a HOLLOW one on it. The head's own ink decides (see the block
     # comment above `_second_hollow_row`). Reached only where nothing above spoke for this head (no flag, no read hook, no 2.70 / 2.88 half).
     second_dis = None
@@ -6159,7 +4072,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
             used.extend(r.id for r in ink_rows2[-1:])
             tip_clear = not (tip_ink_rows and any(bool(r.value) for r in tip_ink_rows))
             if reading2 == "firm" and own_stems and not flags and one_head_box and tip_clear \
-                    and not _stem_tip_disputed(ev, cell, own_stems, side) and _beam_reader_looked(ev, cell) is not None:
+                    and not _stem_tip_disputed(ev, cell, own_stems, side) and beam_looked is not None:
                 second_dis["settled"] = "hollow_read"
                 t, add = 2.0, 2.0
                 for _ in range(n_dots):

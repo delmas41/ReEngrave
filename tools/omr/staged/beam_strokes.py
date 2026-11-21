@@ -346,32 +346,6 @@ def roles(strokes: Sequence[StrokeView], *, face_join: bool = False, trough: boo
     return {s.ordinal: role_of(s, by_ord, face_join=face_join, trough=trough, one_count=one_count) for s in strokes}
 
 
-def box_support(under: Iterable[int], role_by_ord: Dict[int, Dict[str, object]]) -> Dict[str, object]:
-    """What a detector BEAM box stands on, from the roles of the strokes `Q.GLYPH_STROKES` lists for it.
-
-    `support`: `beam` (some stroke under it is beam-shaped), `hook` (no beam, at least one hook), `unsupported` (nothing beam- or
-    hook-shaped: empty paper, a stem alone, a thin line, a one-stem stub, an ambiguous hook). `reason` names why, for the record."""
-    under = [o for o in under if o in role_by_ord]
-    rs = [str(role_by_ord[o]["role"]) for o in under]
-    if "beam" in rs:
-        return {"support": "beam", "strokes": under}
-    if "hook" in rs:
-        return {"support": "hook", "strokes": under, "hooks": [o for o in under if role_by_ord[o]["role"] == "hook"]}
-    if not under:
-        why = "box_on_paper"
-    elif all(str(role_by_ord[o].get("why", "")) == "kind:vertical" for o in under):
-        why = "box_on_a_stem"
-    elif "hook_or_stub" in rs:
-        why = "hook_or_stub"
-    elif "beam_stub" in rs:
-        why = "one_stem_stub"
-    elif "span_thin" in rs:
-        why = "thin_or_curved_span"
-    else:
-        why = "no_beam_or_hook_shaped_stroke"
-    return {"support": "unsupported", "strokes": under, "reason": why}
-
-
 def _box_gap(a: Sequence[float], b: Sequence[float]) -> float:
     """Distance between two (x, y, w, h) boxes in their own units; 0 when they overlap or touch."""
     dx = max(0.0, max(a[0], b[0]) - min(a[0] + a[2], b[0] + b[2]))
