@@ -349,6 +349,9 @@ def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple
     if not _PS.enabled():
         return None
     rows = ev.rows(Q.PAGE_STEM)
+    voices = _PS.voice_rows(rows)
+    if voices is not None:
+        return _page_two_voices(head, stems, box_id, voices)
     pr = rows[-1] if rows else None
     if pr is None or pr.value is None:
         return None
@@ -365,6 +368,53 @@ def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple
     if d.get("how") == "second_on_partner_stem":
         return Ruling(value=row.id, reason="page_stem_of_a_second", used=(box_id, pr.id) + tuple(same), detail=detail)
     return Ruling(value=row.id, reason="page_stem", used=(box_id, pr.id) + tuple(same), detail=detail)
+
+
+def _page_two_voices(head: Tuple[float, ...], stems: Sequence[Tuple[Any, Tuple[float, ...]]], box_id: str,
+                     voices: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.306 two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices"): the page
+    filed BOTH strokes of this head -- a stem up and a stem down, each touching the head's ink -- so the head is two voices sharing the note. The
+    ruling is the unison rule's own (`unison_two_voices`, NARROWED over the two stems, never collapsed), read from the page's rows instead of the
+    cell join's box overlap; `detail.page_voices` = {up: stem row id, down: stem row id}. None where a named row is not in the cell (the cell join
+    then stands, as for a one-stem page row the cell no longer holds)."""
+    det: Dict[str, Dict[str, Any]] = {}
+    pv: Dict[str, str] = {}
+    used = [box_id]
+    for d in ("up", "down"):
+        pr = voices[d]
+        mine = [(r, b) for r, b in stems if r.id == pr.value]
+        if not mine:
+            return None
+        row, b = mine[0]
+        same = sorted({r2.id for r2, b2 in stems if r2 is row or _same_stem_row(b, b2)})
+        frac = _x_frac(b, head)
+        det[row.id] = {"stem": row.id, "stem_rows": same, "stem_box": [round(v, 2) for v in b],
+                       "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
+                       "page_stroke": (pr.detail or {}).get("page_stroke"), "direction": d}
+        pv[d] = row.id
+        used += [pr.id] + same
+    if pv["up"] == pv["down"]:
+        return None                     # never two voices from one stem
+    cands = (Candidate(value=pv["up"], support=1.0), Candidate(value=pv["down"], support=1.0))
+    return Ruling.narrow(cands, "unison_two_voices", used=tuple(dict.fromkeys(used)), stems=det, voices={pv["up"]: "up", pv["down"]: "down"},
+                         page_voices=pv, page_how="unison_two_stems")
+
+
+def page_voice_stems(detail: Any, stems: Sequence[Any]) -> Optional[Dict[str, List[Any]]]:
+    """ROADMAP 2.306 two-voice piece: `{"up": [Q.STEM rows], "down": [...]}` of a head the page filed as two voices -- each voice's own stem row and
+    every row of the cell that is the same physical stem -- from a `Q.HEAD_STEM` ruling's / verdict's `detail.page_voices`; None otherwise (the
+    cell join's own split by the head's centre then stands). `stems`: the cell's `Q.STEM` rows."""
+    pv = (detail or {}).get("page_voices") if isinstance(detail, dict) else None
+    if not pv:
+        return None
+    out: Dict[str, List[Any]] = {}
+    for d in ("up", "down"):
+        named = [s for s in stems if s.id == pv.get(d)]
+        if not named:
+            return None
+        b = _xywh(named[0].value)
+        out[d] = [s for s in stems if s is named[0] or (b is not None and _xywh(s.value) is not None and _same_stem_row(b, _xywh(s.value)))]
+    return out
 
 
 def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:

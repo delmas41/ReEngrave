@@ -19,8 +19,10 @@ own predicate, as 2.288 rests use it) and the detector's boxed accidentals (`str
 (`held`, with its owner), never taken.
 
 ABSTAIN, NEVER GUESS. No free stroke: `no_stroke` (the nearest held / near-miss strokes are recorded). Two free strokes of the same side: `two_candidates`
-with both and the signed margin (`fit` = EDGE_SP - |dx| in spaces; margin = best - second). One up at the right and one down at the left: `two_voices`
-(a unison of two voices, page-facts; the old join's own rule then decides). Each head's reading is filed on each of its glyph keys (`Q.PAGE_STEM`).
+with both and the signed margin (`fit` = EDGE_SP - |dx| in spaces; margin = best - second). One up at the right and one down at the left: where BOTH
+strokes' ink touches the head's ink it is two voices sharing the note (page-facts) and BOTH are filed, one `Q.PAGE_STEM` row per voice (`voice` up /
+down, how `unison_two_stems`; `_unison_heads`); where one touches, that one is the head's stem; where neither does or the head has no ink of its own,
+`two_voices` stays abstained and the old join's unison rule decides. Each head's reading is filed on each of its glyph keys (`Q.PAGE_STEM`).
 
 THE CUT-OFFS ARE MEASUREMENTS, so they only NARROW (CLAUDE §4): measured on the 2306 step-0 gathers (Brahms p0+p5, Litolff p6+p16) against the
 cell reader A's joined stems: the stem centre stands -0.22..+0.05 sp past a head's right edge (5-95%, Brahms), +0.03..+0.20 past its left; the page
@@ -295,6 +297,71 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             r.update(state="two" if how != "contact_at_middle" else "none", how=how, candidates=found,
                      margin=min((abs(f["margin"]) for f in found), default=None))
     return n
+
+
+#: ROADMAP 2.306 two-voice piece: the reading a head gets when a stem up AND a stem down both touch its ink -- two voices sharing the note
+UNISON_HOW = "unison_two_stems"
+
+
+def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
+                  hink: Optional[Dict[Any, set]], touches_ink: Any) -> int:
+    """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
+    For a head that read one stroke up at its right and one down at its left (`two_voices`, left after the column rule of r9):
+
+    * both strokes' ink touches the head's ink -> TWO VOICES SHARING THE NOTE: state `two_voices`, how `unison_two_stems`, `voices` = {up: stroke,
+      down: stroke}; each stroke joins `stems` as that direction's stem of this head (each voice takes its value from its OWN stem, later).
+    * exactly one touches -> the other only stands beside the head (a neighbour's stem, another voice's stem ending near it): never two voices; the
+      touching stroke is the head's one stem (`one_of_two_by_ink`), as r15 settles two strokes on one side.
+    * a stroke another head already holds the OTHER way -> `two` / `two_voices_stroke_read_other_way` (cannot tell; never forced).
+    * neither touches, or the head has no ink of its own on the map -> unchanged (`two_voices`, the old cell join's unison rule still answers),
+      with `why` saying which. Never two voices from one stem, and never from a stroke that does not touch the head's ink.
+    Mutates `readings` and `stems`. Returns how many heads were filed as two voices. Pure apart from that."""
+    if touches_ink is None:
+        return 0
+    n = 0
+    for h in heads:
+        r = readings[h["id"]]
+        if r.get("state") != "two_voices":
+            continue
+        cs = r.get("candidates") or []
+        by_dir = {c["direction"]: c for c in cs}
+        if set(by_dir) != {"up", "down"} or len(cs) != 2:
+            continue
+        if not (hink or {}).get(h["id"]):
+            r["why"] = "head_ink_unread"
+            continue
+        touch = {d: bool(touches_ink(h["id"], c["stroke"])) for d, c in by_dir.items()}
+        keep = [d for d in ("up", "down") if touch[d]]
+        if not keep:
+            r["why"] = "neither_touches"
+            continue
+        clash = [d for d in keep if int(by_dir[d]["stroke"]) in stems and stems[int(by_dir[d]["stroke"])]["directions"] != {d}]
+        if clash:
+            r.update(state="two", how="two_voices_stroke_read_other_way", why=clash)
+            continue
+        for d in keep:
+            o = int(by_dir[d]["stroke"])
+            s = stems.setdefault(o, dict(ord=o, heads=[], directions={d}))
+            s["heads"].append(h["id"])
+        if len(keep) == 2:
+            r.update(state="two_voices", stroke=None, direction=None, side=None, how=UNISON_HOW,
+                     voices={d: dict(stroke=int(by_dir[d]["stroke"]), side=by_dir[d]["side"], fit=by_dir[d]["fit"]) for d in keep})
+            n += 1
+        else:
+            c = by_dir[keep[0]]
+            r.update(state="one", stroke=int(c["stroke"]), direction=keep[0], side=c["side"], margin=c["fit"], how="one_of_two_by_ink")
+    return n
+
+
+def voice_rows(rows: Sequence[Any]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.306 two-voice piece, for ADJUDICATE: `{"up": row, "down": row}` -- a head's `Q.PAGE_STEM` rows when the page filed it as two voices
+    (`unison_two_stems`, one row per voice, the last of each), else None. Pure."""
+    out: Dict[str, Any] = {}
+    for r in rows or ():
+        d = getattr(r, "detail", None) or {}
+        if d.get("how") == UNISON_HOW and d.get("voice") in ("up", "down") and getattr(r, "value", None) is not None:
+            out[d["voice"]] = r
+    return out if set(out) == {"up", "down"} else None
 
 
 def touch_map(strokes: Dict[int, Dict[str, Any]]) -> Dict[int, set]:
@@ -608,6 +675,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             o, d = got[0]
             r.update(state="second", stroke=o, direction=d, side="other", margin=None, how="second_on_partner_stem")
             stems[o]["heads"].append(h["id"])
+    n_unison = _unison_heads(heads, readings, stems, hink, touches_ink if hink is not None else None)
     for o, s in stems.items():
         st = vby[o]
         s["direction"] = next(iter(s["directions"]))
@@ -616,7 +684,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
         s["tip_y"] = round(float(st["box"][1] if s["direction"] == "up" else st["box"][3]), 1)
         s["directions"] = sorted(s["directions"])
     census: Dict[str, Any] = dict(heads=len(heads), verticals=len(verticals), held=len(held), stems=len(stems), split_both_ways=len(split),
-                                  split_kept_by_head_ink=n_kept)
+                                  split_kept_by_head_ink=n_kept, unison_heads=n_unison)
     for r in readings.values():
         census[r["how"]] = census.get(r["how"], 0) + 1
     for k, n in run_census.items():
@@ -780,7 +848,19 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
             csub = R.cell(g.page, g.system, g.staff, g.cell)
             gsub = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
             common = dict(reader=READERS.CV_PAGE_STEMS, frame=G.frame_cell(g.cell), head=hid, how=r["how"], candidates=r["candidates"],
-                          held=r["held"], near=r["near"], margin=r["margin"])
+                          held=r["held"], near=r["near"], margin=r["margin"], **({"why": r["why"]} if r.get("why") else {}))
+            if r.get("how") == UNISON_HOW and c is not None:
+                # ROADMAP 2.306 two-voice piece: one row per voice, each naming its OWN stroke (the cell row that is that stroke)
+                for d in ("up", "down"):
+                    o = int(r["voices"][d]["stroke"])
+                    ck = (csub.to_key(), o)
+                    if ck not in views:
+                        views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][o]["box"])
+                        n_a += int(from_a)
+                        n_view += int(not from_a)
+                    log.observe(gsub, Q.PAGE_STEM, views[ck], page_stroke=o, direction=d, side=r["voices"][d]["side"], voice=d,
+                                tip_y=res["stems"][o]["tip_y"], stem_box=res["stems"][o]["box"], **common)
+                continue
             if r["stroke"] is None or c is None:
                 log.abstain(gsub, Q.PAGE_STEM, reason=(ABSTAIN.NO_LINE_ACCEPTED if r["stroke"] is None and r["state"] == "none" else ABSTAIN.AMBIGUOUS),
                             note=r["how"] if c is not None else "no_cell", **common)
