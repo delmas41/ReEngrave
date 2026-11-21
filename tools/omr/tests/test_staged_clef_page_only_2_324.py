@@ -466,6 +466,17 @@ class TestRound5ClefFromInk:
         got = CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=False)
         assert got["passed"] and got["witness"] == "g_curl" and got["curl"] >= CP.G_CURL_MIN_REGIONS
 
+    def test_the_treble_clef_claims_its_own_ink_not_the_word_over_it(self, on, monkeypatch):
+        # round 7b (Sean: the clef claims only its own ink): Brahms p14 s1 staff 9 -- "div." stands over the treble clef, 1.4-2.5 spaces
+        # above the top line; the measuring piece joins it, the claim must not take it
+        ink, meta, ll = _r5("midg_treble_brahms_p14_s1_st9")
+        bb, sp = meta["box"], meta["sp"]
+        place = [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp]
+        got = CP.read_g(ink, place, ll, sp, box_witness=False)
+        assert got["passed"] and got["box"][1] >= ll[0] - 1.0 * sp
+        monkeypatch.setattr(CP, "own_ink_box", lambda ink_, pc, *a, **k: list(pc["box"]))     # the control: the piece's box (round 7)
+        assert CP.read_g(ink, place, ll, sp, box_witness=False)["box"][1] < ll[0] - 2.0 * sp
+
     @pytest.mark.parametrize("name,curl", [("midg_never_litolff_p10_s1_st4", 0), ("midg_never_litolff_p9_s0_st3", 1)])
     def test_seans_stem_and_half_note_chord_are_refused_by_the_curl_alone(self, on, name, curl):
         # Sean r5 tile 1 "just a stem" (no curl), tile 10 "2 half notes in a chord" (one ring, not a curl cut by a stroke): refused with

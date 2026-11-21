@@ -328,10 +328,34 @@ G_CURL_MIN_SPACES2 = 0.05
 G_CURL_MIN_REGIONS = 2
 
 
+def _bridge_line_rows(ink: np.ndarray, sub: np.ndarray, y0: int, y1: int, x0: int, x1: int, lines: Sequence[float], sp: float) -> np.ndarray:
+    """ROADMAP 2.324 r7b: put back, in each band of cleared staff-line rows, the page's ink in the columns where the mark's own (line-
+    cleared) ink touches the band from just above or just below -- a stroke crossing the line is one stroke again; a line by itself
+    and two marks that only come near each other stay apart."""
+    out = sub.copy()
+    rows = sorted(set(y for y in line_rows(ink, lines, sp, x0, x1) if y0 <= y < y1))
+    bands, cur = [], []
+    for y in rows:
+        if cur and y != cur[-1] + 1:
+            bands.append(cur)
+            cur = []
+        cur.append(y)
+    if cur:
+        bands.append(cur)
+    for band in bands:
+        a, b = band[0] - y0, band[-1] - y0
+        above = sub[a - 1] if a - 1 >= 0 else np.zeros(sub.shape[1], dtype=sub.dtype)
+        below = sub[b + 1] if b + 1 < sub.shape[0] else np.zeros(sub.shape[1], dtype=sub.dtype)
+        cols = (above > 0) | (below > 0)
+        for r in range(a, b + 1):
+            out[r, cols] = ink[y0 + r, x0:x1][cols].astype(out.dtype)
+    return out
+
+
 def glyph_piece(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: float) -> Optional[Dict[str, Any]]:
     """ROADMAP 2.324 r5: the largest piece of ink in `place` (page px), the staff lines cleared where they run (`line_rows`, judged on
     a wide strip) and bridged back across them (a vertical close one cleared band tall) -- the glyph as its own ink, joined by ink,
-    never by a box. {box, piece} or None."""
+    never by a box. {box, piece} or None. The SHAPE is measured on this piece; what the clef CLAIMS is `own_ink_box` (round 7b)."""
     import cv2
     H, W = ink.shape
     x0, y0, x1, y1 = max(0, int(round(place[0]))), max(0, int(round(place[1]))), min(W, int(round(place[2]))), min(H, int(round(place[3])))
@@ -346,6 +370,28 @@ def glyph_piece(ink: np.ndarray, place: Sequence[float], lines: Sequence[float],
     i = 1 + int(np.argmax(st[1:, cv2.CC_STAT_AREA]))
     x, y, w, h = (int(v) for v in st[i, :4])
     return {"box": [float(x0 + x), float(y0 + y), float(x0 + x + w), float(y0 + y + h)], "piece": lab[y:y + h, x:x + w] == i}
+
+
+def own_ink_box(ink: np.ndarray, pc: Dict[str, Any], lines: Sequence[float], sp: float) -> List[float]:
+    """ROADMAP 2.324 r7b (Sean: the clef claims only its own ink): the box of the clef's OWN ink inside its measured piece -- the pieces
+    of ink, joined across the staff lines only (`_bridge_line_rows`), that lie in the piece and stand on the staff (meet the rows from the
+    top line to the bottom line). A word or mark over or under the staff that the measuring close joined to the clef (Brahms p14 s1
+    staff 9: "div." over the treble clef) stands off the staff and is never claimed. Falls back to the piece's box where nothing is
+    found. Measures."""
+    import cv2
+    gb = pc["box"]
+    x0, y0, x1, y1 = int(gb[0]), int(gb[1]), int(round(gb[2])), int(round(gb[3]))
+    sub = _mask_wide_lines(ink, y0, y1, x0, x1, lines, sp, strokes=False)
+    m = _bridge_line_rows(ink, sub, y0, y1, x0, x1, lines, sp)
+    piece = pc["piece"][: m.shape[0], : m.shape[1]]
+    m = (m.astype(bool) & piece).astype(np.uint8)
+    n, lab, st, _c = cv2.connectedComponentsWithStats(m, connectivity=8)
+    top, bot = int(round(float(lines[0]))) - y0, int(round(float(lines[-1]))) - y0
+    keep = [i for i in range(1, n) if st[i, cv2.CC_STAT_TOP] <= bot and st[i, cv2.CC_STAT_TOP] + st[i, cv2.CC_STAT_HEIGHT] >= top]
+    if not keep:
+        return [float(v) for v in gb]
+    return [float(x0 + min(st[i, 0] for i in keep)), float(y0 + min(st[i, 1] for i in keep)),
+            float(x0 + max(st[i, 0] + st[i, 2] for i in keep)), float(y0 + max(st[i, 1] + st[i, 3] for i in keep))]
 
 
 def curl_round_line2(pc: Dict[str, Any], lines: Sequence[float], sp: float) -> int:
@@ -450,7 +496,8 @@ def read_g(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: 
         return dict(out, passed=False, why=gw["why"])
     if curl < G_CURL_MIN_REGIONS and not box_witness:
         return dict(out, passed=False, why="g_no_curl_round_line_2")
-    return dict(out, passed=True, why=None, kind="treble", line=G_LINES_READ[0],
+    # r7b: what the clef claims is its own ink on the staff, never a word the measuring close joined to it
+    return dict(out, passed=True, why=None, kind="treble", line=G_LINES_READ[0], box=within_reach(own_ink_box(ink, pc, lines, sp), "G", lines, sp),
                 witness="g_curl" if curl >= G_CURL_MIN_REGIONS else "detector_box")
 
 
