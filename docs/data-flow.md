@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 148 LIVE, 7 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 26 gaps; 202 flag predicates; 28 record calls this map cannot resolve.
+Today: 148 LIVE, 7 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 26 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -326,7 +326,7 @@ The letters p, f, sf ... under a staff.
 - **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `glyph_box`, `glyph_conf`
 - **decided by** (ADJUDICATE): `adjudicate_dynamic_anchor` -> `dynamic_anchor`; `adjudicate_dynamic_is_not_a_dynamic` -> `dynamic_is_not_a_dynamic`; `adjudicate_dynamic` -> `dynamic`
 - **read by GATHER** (1): `gather.py:gather_page_claims`
-- **read by ADJUDICATE** (5): `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `adjudicators/stroke_owner.py:_letter_vetoes`, `adjudicators/text.py:unread_text_lines`, `adjudicators/unread_mark.py:_text_and_dynamic_boxes`
+- **read by ADJUDICATE** (6): `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `adjudicators/stroke_owner.py:_letter_vetoes`, `adjudicators/text.py:_ink_is_the_words`, `adjudicators/text.py:unread_text_lines`, `adjudicators/unread_mark.py:_text_and_dynamic_boxes`
 - **read by EVALUATE** (2): `consequences.py:_pair_also_reads`, `consequences.py:pair_word_and_dynamic`
 - **read by INFER** (1): `inferences.py:collapse_dynamic_by_ink`
 - **read by EXPORT** (1): `export.py:_place_directions`
@@ -957,7 +957,7 @@ Which edition and movement this is; scanned or engraved.
 - `dynamic_letter_neighbours` abstained by (not a producer): `gather.py:gather_dynamic_letters`
 - `dynamic_letter_neighbours` declared in `wants` (not a read): `adjudicate_direction`, `adjudicate_dynamic`
 - `dynamic_letter_neighbours` read by GATHER: `gather.py:gather_page_claims`
-- `dynamic_letter_neighbours` read by ADJUDICATE: `adjudicators/text.py:adjudicate_dynamic`, `adjudicators/text.py:unread_text_lines`
+- `dynamic_letter_neighbours` read by ADJUDICATE: `adjudicators/text.py:_ink_is_the_words`, `adjudicators/text.py:adjudicate_dynamic`, `adjudicators/text.py:unread_text_lines`
 - `dynamic_letter_neighbours` belongs to: `--mark dynamic`
 
 ### `empty_bar_rest_search` (Q.EMPTY_BAR_REST_SEARCH) -- LIVE
@@ -1470,6 +1470,7 @@ Which edition and movement this is; scanned or engraved.
 - `notehead_position` read by ADJUDICATE: `adjudicators/ownership.py:_head_step`
 - `notehead_position` read by EVALUATE: `consequences.py:restate_pitch`
 - `notehead_position` read by EXPORT: `export.py:_tie_end_unsure`
+- `notehead_position` read only OFF by default: `export.py:_fold_far_positions`
 - `notehead_position` belongs to: `--mark notehead`
 
 ### `notehead_recentre` (Q.NOTEHEAD_RECENTRE) -- LIVE
