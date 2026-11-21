@@ -1,0 +1,112 @@
+{
+ "1": {
+  "plate": "litolff",
+  "staff": "staff/10/1/4",
+  "box": [
+   898,
+   2664,
+   914,
+   2744
+  ],
+  "ours": "refused outright (head on its ink)"
+ },
+ "2": {
+  "plate": "litolff",
+  "staff": "staff/4/1/6",
+  "box": [
+   371,
+   2973,
+   434,
+   3035
+  ],
+  "ours": "read bass from ink (no box); claimed area"
+ },
+ "3": {
+  "plate": "litolff",
+  "staff": "staff/11/0/8",
+  "box": [
+   373,
+   1581,
+   429,
+   1652
+  ],
+  "ours": "read bass from ink (no box); claimed area"
+ },
+ "4": {
+  "plate": "litolff",
+  "staff": "staff/6/1/0",
+  "box": [
+   358,
+   1976,
+   427,
+   2097
+  ],
+  "ours": "read treble from ink (no box); claimed area"
+ },
+ "5": {
+  "plate": "brahms",
+  "staff": "staff/14/1/9",
+  "box": [
+   1143,
+   6496,
+   1206,
+   6650
+  ],
+  "ours": "narrows (notes after it unread)"
+ },
+ "6": {
+  "plate": "litolff",
+  "staff": "staff/4/1/10",
+  "box": [
+   369,
+   3521,
+   426,
+   3603
+  ],
+  "ours": "read bass from ink (no box); claimed area"
+ },
+ "7": {
+  "plate": "litolff",
+  "staff": "staff/2/1/3",
+  "box": [
+   355,
+   2551,
+   418,
+   2616
+  ],
+  "ours": "read bass from ink (no box); claimed area"
+ },
+ "8": {
+  "plate": "litolff",
+  "staff": "staff/11/1/5",
+  "box": [
+   362,
+   2682,
+   427,
+   2730
+  ],
+  "ours": "read bass from ink (no box); claimed area"
+ },
+ "9": {
+  "plate": "brahms",
+  "staff": "staff/14/0/12",
+  "box": [
+   698,
+   3420,
+   785,
+   3530
+  ],
+  "ours": "read bass from ink (no box); claimed area"
+ },
+ "10": {
+  "plate": "litolff",
+  "staff": "staff/9/0/3",
+  "box": [
+   1961,
+   820,
+   2005,
+   935
+  ],
+  "ours": "refused outright (head on its ink)"
+ }
+}
