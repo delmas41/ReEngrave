@@ -956,6 +956,22 @@ class TestANeighbourStaffsBeamThroughThePadIsNotThisNotes(unittest.TestCase):
         return gA
 
     def test_a_stroke_reaching_the_neighbours_stem_does_not_count(self):
+        # flag OFF: the 2.25b answer (a DECIDED quarter); flag ON, ROADMAP 2.306 r7: see the test below
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"OMR_PAGE_STEMS": "0"}):
+            self._a_stroke_reaching_the_neighbours_stem(expect_decided=True)
+
+    def test_2306_r7_with_no_stem_of_its_own_the_discounted_stroke_leaves_it_narrowed(self):
+        """ROADMAP 2.306 r7 (Sean's r4 tile 5, "an eighth", written a quarter): with OMR_PAGE_STEMS on, a head with NO stem of its own whose only
+        beam stroke is discounted as the neighbour's is not a DECIDED quarter -- the discounted ink is still unexplained at this head, so the
+        value stays narrowed quarter/eighth (CLAUDE rule 8: a fallback never converts "cannot tell" into an answer)."""
+        import os
+        from unittest import mock
+        with mock.patch.dict(os.environ, {"OMR_PAGE_STEMS": "1"}):
+            self._a_stroke_reaching_the_neighbours_stem(expect_decided=False)
+
+    def _a_stroke_reaching_the_neighbours_stem(self, expect_decided):
         log = Log()
         g = self._two_staff_setup(log)
         # this note's own head, and a stroke sitting far below the staff
@@ -976,6 +992,10 @@ class TestANeighbourStaffsBeamThroughThePadIsNotThisNotes(unittest.TestCase):
                     image="no_staff", staff_lines_erased=True)
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
+        if not expect_decided:
+            self.assertEqual(v.outcome, Outcome.NARROWED)
+            self.assertEqual(sorted(c.value["beam_levels"] for c in v.candidates), [0, 1])
+            return
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value["beats"], 1.0)     # the stroke discounted
         self.assertEqual(v.detail["beams_neighbour_staff"], 1)

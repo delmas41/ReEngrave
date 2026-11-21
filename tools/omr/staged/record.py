@@ -981,6 +981,11 @@ class Q(_Vocab):
     #: (`beam_strokes.tip_reading`); `detail`: `stem` (page stroke ordinal), `stem_rows`, `end` ("top" / "bottom"), `beams`, `fused`, `joined`, `joined_gap`,
     #: `hooks`, `stubs`, `doubt`, `stem_beamed`, `tip_clean`. Decides nothing and NOTHING READS IT.
     PAGE_BEAM_TIP = "page_beam_tip"
+    #: ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF; `page_stems.gather_page_stems`): ONE ROW PER GLYPH KEY of a page head -- the stem the head hangs on,
+    #: read ONCE on the page (the page map's vertical stroke at the head's engraving side): `value` = the `Q.STEM` row id of the key's own cell that IS that
+    #: stroke (the cell reader's row on it, else a view filed by the page reader); `detail`: `page_stroke`, `direction`, `side`, `tip_y`, `stem_box`, `how`,
+    #: `candidates`, `held`, `margin`. An abstention (`no_stroke`, `two_candidates`, `two_voices`) carries the candidates and margin. Read by `adjudicate_head_stem`.
+    PAGE_STEM = "page_stem"
 
     #: ROADMAP 2.274 step 1 (flag `OMR_PAGE_ARCS`, default OFF; `page_arcs.gather_page_arcs`): ONE ROW PER ARC RUN read from the PAGE ink, whole across barlines /
     #: stems / heads, the detector's arc boxes only its witnesses. `value` = `run` (ink alone) | `seeded` (a detector arc box no run answered, a bounded local
@@ -2410,6 +2415,8 @@ CLAIMS: "dict[str, str]" = {
     "PAGE_BEAM_TIP": CLAIM.MEASUREMENT,
     "PAGE_ARC": CLAIM.MEASUREMENT,
     "PAGE_ARC_BINDING": CLAIM.INTERPRETATION,
+    #: ROADMAP 2.306: which page stroke a head's stem is (engraving side) -- a reading of geometry; the value is decided later.
+    "PAGE_STEM": CLAIM.MEASUREMENT,
     "PAGE_HEAD": CLAIM.MEASUREMENT,
     #: ROADMAP 2.240 step 2: which staff a page mark belongs to, read off its ledger lines / stem / the staff's own lines -- a reading of meaning.
     "PAGE_MARK_OWNER": CLAIM.INTERPRETATION,
@@ -3033,6 +3040,9 @@ class READERS(_Vocab):
     #: `page_beams.gather_page_beams` -- ROADMAP 2.260c M4a. No raster: the page map's strokes and the cell `Q.STEM` rows.
     CV_PAGE_BEAMS = "cv_page_beams"
     CV_PAGE_ARCS = "cv_page_arcs"
+    #: `page_stems.gather_page_stems` -- ROADMAP 2.306. The page map's vertical strokes and the 2.290 page heads (no raster; a view's tip ink is read
+    #: off the cell raster by `_observe_stem_tip_ink`, as the cell reader's stems are).
+    CV_PAGE_STEMS = "cv_page_stems"
     #: `page_heads.gather_page_heads` -- ROADMAP 2.260e M6a. The page map's strokes, the detector's notehead boxes and the page render (`head_extent.ink_extent`).
     CV_PAGE_HEADS = "cv_page_heads"
     #: `page_tremolo.gather_page_tremolo` -- ROADMAP 2.276. The page map's vertical strokes and the page canvas (the stem-crossing slash finder, once per page).
