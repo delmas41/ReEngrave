@@ -65,7 +65,18 @@ def test_where_a_stroke_does_not_touch_the_head_or_ends_at_another_head_it_is_ne
         whys[(w["page"], w["head"])] = r.get("why") or r["how"]
     assert whys[(2, 99)] == "ends_at_another_head" and whys[(2, 468)] == "ends_at_another_head", whys
     assert whys[(6, 9)] == "one_touches" and whys[(0, 268)] == "one_touches", whys
-    assert len(whys) == 5
+    assert whys[(6, 155)] == "one_stem_passes_the_head", whys
+    assert len(whys) == 6
+
+
+def test_control_litolff_6_0_3_3_one_stem_through_the_head_was_two_voices_without_the_rule(monkeypatch):
+    """Litolff 6/0/3/3 (our sheet's tile 5, the coordinator's catch): a third on one down stem, the upper head unboxed. The down stroke starts at
+    the upper head and passes the lower one; the 'up stem' is the upper ring's right side. With the pass-through rule off the head is filed as
+    two voices (the file then wrote D4 twice) -- the control fails as it must."""
+    w = next(w for w in _windows() if w["page"] == 6 and w["head"] == 155)
+    assert _read(w)["heads"][155]["how"] != PS.UNISON_HOW
+    monkeypatch.setattr(PS, "_passes_beside_the_other", lambda *a, **k: False)
+    assert _read(w)["heads"][155]["how"] == PS.UNISON_HOW
 
 
 def test_control_without_the_ink_contacts_no_head_is_filed_as_two_voices():

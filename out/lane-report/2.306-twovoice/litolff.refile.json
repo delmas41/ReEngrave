@@ -1,13 +1,13 @@
 {
 "census": {
-"heads:unison_two_stems": 89,
-"rows:cell_reader": 195,
-"keys:filed_unison_two_stems": 99,
+"heads:unison_two_stems": 88,
+"rows:cell_reader": 191,
+"keys:filed_unison_two_stems": 97,
 "heads:two_voices/ends_at_another_head": 29,
 "heads:two_voices/one_touches": 11,
 "heads:two_voices/head_ink_unread": 3,
 "rows:view": 3,
-"heads:two_voices/stroke_holds_another_head": 1,
+"heads:two_voices/one_stem_passes_the_head": 2,
 "heads:two_voices/a_stroke_shorter_than_a_stem": 3
 },
 "heads": {
@@ -923,7 +923,7 @@
 "members": [
 "glyph/2/1/2/12/3"
 ],
-"how": "two_voices/stroke_holds_another_head",
+"how": "two_voices/one_stem_passes_the_head",
 "voices": null,
 "stroke": null
 },
@@ -1129,19 +1129,8 @@
 "glyph/6/0/3/3/6",
 "glyph/6/0/3/3/7"
 ],
-"how": "unison_two_stems",
-"voices": {
-"up": {
-"stroke": 1201,
-"side": "right",
-"fit": 0.274
-},
-"down": {
-"stroke": 1153,
-"side": "left",
-"fit": 0.147
-}
-},
+"how": "two_voices/one_stem_passes_the_head",
+"voices": null,
 "stroke": null
 },
 "6/188": {

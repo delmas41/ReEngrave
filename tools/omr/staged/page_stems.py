@@ -305,6 +305,8 @@ UNISON_HOW = "unison_two_stems"
 #: keeps the old path): on the r15 gathers' 160 page unison heads the shortest stroke stands 2.17-6 sp for the ones our look calls real, and
 #: 1.5-1.75 for a hollow ring's side or a stub read as a stroke (Litolff 16/545, 2/530, 6/638); 2/128 (2.0) is unclear
 UNISON_REACH_SP = 2.0
+#: `_passes_beside_the_other`: a stroke running beside at least this share of the other stem's length past the head is one column (narrows only)
+PASS_SHARE = 0.5
 
 
 def _ends_at_another_head(h: Dict[str, Any], o: int, direction: str, heads: Sequence[Dict[str, Any]], vbox: Optional[Dict[int, Any]]) -> bool:
@@ -326,6 +328,22 @@ def _ends_at_another_head(h: Dict[str, Any], o: int, direction: str, heads: Sequ
     return False
 
 
+def _passes_beside_the_other(h: Dict[str, Any], up: int, dn: int, vbox: Optional[Dict[int, Any]]) -> bool:
+    """A stem of two voices leaves the head: the up stem from its right side going up, the down stem from its left side going down (page-facts:
+    up -> right, down -> left). Where one stroke runs on past the head ALONGSIDE the other's whole length -- the down stroke reaching up beside at
+    least half of the up stem's length above the head, or the up stroke reaching down beside half of the down stem's below it -- it is one stem
+    passing THROUGH the head to another head, with that head's outline beside it: never two voices (Litolff 6/0/3/3: the down stem of a third
+    starts at the unboxed upper head and passes the lower one; the 'up stem' is the upper ring's right side). A stroke that only overruns the head
+    a little (a ledger line or the other voice's flag fused to it) is not caught. Pure."""
+    if not vbox or up not in vbox or dn not in vbox:
+        return False
+    top, bot = float(h["box"][1]), float(h["box"][3])
+    u, d = vbox[up]["box"], vbox[dn]["box"]
+    up_len, dn_over = max(0.0, top - u[1]), max(0.0, top - d[1])          # above the head: the up stem, and the down stroke running up beside it
+    dn_len, up_over = max(0.0, d[3] - bot), max(0.0, u[3] - bot)          # below the head: the down stem, and the up stroke running down beside it
+    return (up_len > 0 and dn_over >= PASS_SHARE * up_len) or (dn_len > 0 and up_over >= PASS_SHARE * dn_len)
+
+
 def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
                   hink: Optional[Dict[Any, set]], touches_ink: Any, vbox: Optional[Dict[int, Any]] = None) -> int:
     """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
@@ -334,6 +352,7 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
     * both strokes' ink touches the head's ink -> TWO VOICES SHARING THE NOTE: state `two_voices`, how `unison_two_stems`, `voices` = {up: stroke,
       down: stroke}; each stroke joins `stems` as that direction's stem of this head (each voice takes its value from its OWN stem, later).
     * a stroke whose far end stops at another head is that head's outline (`_ends_at_another_head`), never a stem of this head.
+    * each stroke leaves the head, not one stem passing through it beside the other (`_passes_beside_the_other`).
     * each stroke a stem's length (`UNISON_REACH_SP`), and no other head already standing on either stroke (that is a column of two voices or a
       chord, r9).
     * anything less -- one stroke or neither touching, an outline, a stroke another head holds, no head ink of its own on the map ->
@@ -357,6 +376,9 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         touch = {d: bool(touches_ink(h["id"], c["stroke"])) for d, c in by_dir.items()}
         outline = [d for d in ("up", "down") if touch[d] and _ends_at_another_head(h, int(by_dir[d]["stroke"]), d, heads, vbox)]
         keep = [d for d in ("up", "down") if touch[d] and d not in outline]
+        if len(keep) == 2 and _passes_beside_the_other(h, int(by_dir["up"]["stroke"]), int(by_dir["down"]["stroke"]), vbox):
+            r["why"] = "one_stem_passes_the_head"
+            continue
         if len(keep) < 2:
             # not two voices on the ink; which stroke is the head's one stem is NOT decided here (our look at 20 such heads: about half are a
             # fused third on one stem, the rest real second voices whose stem's contact the map missed) -- the old path stays, counted

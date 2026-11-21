@@ -251,18 +251,6 @@
      "pitch": "D4",
      "blue": false,
      "chord": false
-    },
-    {
-     "rg": "glyph/6/0/3/3/6",
-     "part": "P4",
-     "bar": "52",
-     "voice": "2",
-     "onset": "0",
-     "type": "half",
-     "dots": 0,
-     "pitch": "D4",
-     "blue": false,
-     "chord": false
     }
    ],
    "same_onset_others": []
