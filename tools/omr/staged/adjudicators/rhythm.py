@@ -4947,7 +4947,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
            Q.HEAD_INK),
-    reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
+    reasons=("no_stem_joined", "whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted", "beam_discounted_uncertain",
@@ -6279,6 +6279,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                    support=2.0 if (level == 0 and one_beam["state"] != "silent") else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used), **shared)
 
+    if _page_own == [] and base < 4.0 and not flag_levels and not levels:
+        # ROADMAP 2.306 r18 (CLAUDE §4, rule 8): with the page stem reader on, a head the page read and could join to NO stem has no value of its
+        # own -- a quarter (or a half) is a STEMMED head; a box with no stem and no whole-note value is held and marked, never a quarter by default.
+        return Ruling.abstain("no_stem_joined", used=tuple(used), **shared)
     if second_dis is not None:
         # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.
         return Ruling(value={"beats": scaled, "written": total,

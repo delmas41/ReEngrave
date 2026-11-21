@@ -4737,8 +4737,35 @@ def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
     settle see the same events."""
     from . import one_chord
-    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
-                                   keep_stems_apart=one_chord.stems_apart_enabled())
+    from . import page_stems as _PS
+    events = group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
+                                     keep_stems_apart=one_chord.stems_apart_enabled())
+    if _PS.enabled():
+        events = _split_by_stem(events, one_chord)
+    return events
+
+
+def _split_by_stem(events: List[Dict[str, Any]], one_chord: Any) -> List[Dict[str, Any]]:
+    """ROADMAP 2.306 r18 (flag `OMR_PAGE_STEMS`; Sean 2026-11-18: joining and separating go by ink, not boxes; page-facts: every note on one
+    stem shares one written value): heads are ONE chord only where they stand on ONE stem -- the same `stem_id`, the stem stroke the page joined
+    by ink. A chord the x grouping made of heads on different stems, or of a stemmed head and a head with none, is split into one event per
+    stem (heads with no stem together), each built by the same grouping. Whole notes (no stem by nature) keep the x rule: a group whose
+    non-whole heads all share one stem is left as it is. Rests are untouched. Pure over the events."""
+    out: List[Dict[str, Any]] = []
+    for ev in events:
+        heads = ev.get("noteheads") or ()
+        sids = {h.get("stem_id") for h in heads if h.get("duration_type") != "whole"}
+        if len(heads) < 2 or len(sids) <= 1:
+            out.append(ev)
+            continue
+        parts: Dict[Any, List[Dict[str, Any]]] = {}
+        for h in heads:
+            parts.setdefault(h.get("stem_id") if h.get("duration_type") != "whole" else next(iter(sorted(sids, key=str))), []).append(h)
+        for part in parts.values():
+            out.extend(group_chords_in_measure(part, chord_x_tolerance=float("inf"), merge_seconds_on_one_stem=one_chord.enabled(),
+                                               keep_stems_apart=False))
+    out.sort(key=lambda e: e.get("x_position", 0))
+    return out
 
 
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
