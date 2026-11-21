@@ -6279,7 +6279,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                    support=2.0 if (level == 0 and one_beam["state"] != "silent") else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used), **shared)
 
-    if _page_own == [] and base < 4.0 and not flag_levels and not levels:
+    if no_value_without_a_stem(_page_own, base, flag_levels, levels):
         # ROADMAP 2.306 r18 (CLAUDE §4, rule 8): with the page stem reader on, a head the page read and could join to NO stem has no value of its
         # own -- a quarter (or a half) is a STEMMED head; a box with no stem and no whole-note value is held and marked, never a quarter by default.
         return Ruling.abstain("no_stem_joined", used=tuple(used), **shared)
@@ -9909,6 +9909,13 @@ def owned_by_another_staff(ev: Evidence, sub) -> bool:
     if v is None or v.outcome != "decided":
         return False
     return bool(is_relocated_copy(sub, v.value))
+
+
+def no_value_without_a_stem(page_own: Any, base: float, flag_levels: int, levels: int) -> bool:
+    """ROADMAP 2.306 r18 (flag `OMR_PAGE_STEMS`; CLAUDE §4, rule 8): True where a head has NO value of its own -- the page read it and joined it
+    to no stem (`page_own_stems` returned []), it is not a whole note (base < 4), and no flag or beam was read on it. Flag off (`page_own` None)
+    or a page join: False (unchanged). Pure."""
+    return page_own == [] and float(base) < 4.0 and not flag_levels and not levels
 
 
 def page_own_stems(ev: Evidence, stems):

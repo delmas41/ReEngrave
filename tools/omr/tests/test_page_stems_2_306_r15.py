@@ -110,3 +110,20 @@ def test_no_upright_running_the_staff_moves_nothing():
     page = np.full((400, 400), 255, np.uint8)
     page[100:160, 200:204] = 0          # an upright that stops half way down the staff (a stem), no barline anywhere
     assert barline_x_on_staff(page, 202.0, 100.0, 220.0, 15.0) is None
+
+
+# ROADMAP 2.306 r18 -- a box the page reader joined to NO stem has no value of its own (never a quarter by default; CLAUDE §4, rule 8).
+# Real-record cases (2.306 r16 Litolff gather, re-adjudicated flag OFF/ON from ONE gather, `r16_readjudicate.py`): glyph/16/0/8/2/4 (black box below
+# the staff, page `page_no_stem`; flag OFF it took a quarter and vetoed its stemmed mate 16/0/8/2/3, a half, so the chord was not written),
+# glyph/6/1/3/6/2 (beside 6/1/3/6/4), glyph/6/1/7/6/15 (beside 6/1/7/6/2). With the rule, the three named heads are written again (export fate
+# `written`, was `chord_value_undecided`). The control: with the flag off (`page_own` None) the rule never fires, which is exactly the old quarter.
+def test_a_box_on_no_stem_has_no_value_and_the_flag_off_keeps_todays_reading():
+    from tools.omr.staged.adjudicators.rhythm import no_value_without_a_stem
+    # 16/0/8/2/4, 6/1/3/6/2, 6/1/7/6/15: black (base 1 beat), page read, no stem joined, no flag, no beam read
+    for _case in ("16/0/8/2/4", "6/1/3/6/2", "6/1/7/6/15"):
+        assert no_value_without_a_stem([], 1.0, 0, 0)
+    assert not no_value_without_a_stem(None, 1.0, 0, 0)          # control: flag off -> today's quarter stands
+    assert not no_value_without_a_stem([object()], 1.0, 0, 0)    # a head the page joined keeps its reading
+    assert not no_value_without_a_stem([], 4.0, 0, 0)            # a whole note has no stem by nature
+    assert not no_value_without_a_stem([], 1.0, 1, 0)            # a flag read on it speaks for it
+    assert not no_value_without_a_stem([], 1.0, 0, 1)            # so does a beam
