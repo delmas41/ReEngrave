@@ -1,4 +1,4 @@
-"""A lone rest the detector boxed as a notehead -- ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default OFF).
+"""A lone rest the detector boxed as a notehead -- ROADMAP 2.145 (flag `OMR_HEAD_INK_IS_A_REST`, default ON; an off-word opts out).
 
 PATH: STAGED, ADJUDICATE (the gate and the reading), on rows GATHER already files
 (`Q.UNBOXED_REST_SHAPE` covers a cluster even where a detector box stands on it).

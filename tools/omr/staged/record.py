@@ -996,6 +996,7 @@ class Q(_Vocab):
     #: arc per `written` run and drops the detector arcs of its witnesses (one mark, one arc).
     PAGE_ARC_BINDING = "page_arc_binding"
 
+    #: ⚠️ RETIRED READER, KEPT DECLARED (ROADMAP 2.332: no code files or reads it; a record gathered with the old flag on still reloads).
     #: ROADMAP 2.260e M6a (flag `OMR_PAGE_HEADS`, default OFF; `page_heads.file_page_heads`): ONE ROW PER HEAD of the PAGE, notehead boxes of every cell folded to one
     #: (IoU), its ink the page strokes the box stands on: `value` = `box` | `ink_only` (head-shaped ink no detector box stands on, census only: no Glyph, no note)
     #: | `census` (one per page). `detail`: `members` (the folded glyph keys), `strokes`, `stroke_extent` / `trim_extent` (page px), `box_position_float` /
@@ -3033,7 +3034,8 @@ class READERS(_Vocab):
     #: `page_beams.gather_page_beams` -- ROADMAP 2.260c M4a. No raster: the page map's strokes and the cell `Q.STEM` rows.
     CV_PAGE_BEAMS = "cv_page_beams"
     CV_PAGE_ARCS = "cv_page_arcs"
-    #: `page_heads.gather_page_heads` -- ROADMAP 2.260e M6a. The page map's strokes, the detector's notehead boxes and the page render (`head_extent.ink_extent`).
+    #: `page_heads.gather_one_heads` / `file_one_claims` -- ROADMAP 2.290 (2.260e M6a's reader, retired 2.332, used the same name). The page map's strokes, the
+    #: detector's notehead boxes and the page render (`head_extent.ink_extent`).
     CV_PAGE_HEADS = "cv_page_heads"
     #: `page_tremolo.gather_page_tremolo` -- ROADMAP 2.276. The page map's vertical strokes and the page canvas (the stem-crossing slash finder, once per page).
     CV_PAGE_TREMOLO = "cv_page_tremolo"

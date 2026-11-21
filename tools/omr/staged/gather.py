@@ -1096,7 +1096,7 @@ def gather_detector_views(log: Log, cells: Sequence[Any],
                           local: Dict[int, Tuple[int, int]],
                           detections: Dict[str, List[Any]], *,
                           detector: Any = None, progress: bool = False) -> None:
-    """ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default OFF; the caller gates). The SAME detector on the SAME cell image at other staff-space
+    """ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default ON; the caller gates). The SAME detector on the SAME cell image at other staff-space
     sizes (`detector_views.VIEWS`), anti-aliased, read at a few sub-pixel phases with the median kept, only the families each view is for,
     merged family-aware into the cell's production boxes (`detector_views.merge_into_production`): a production box is never changed or
     dropped, a view box is appended only where no production box of its family stands and no production box of another family stands there
@@ -1915,8 +1915,7 @@ def _file_far_head_reading(log: Log, job: Dict[str, Any], page_ctx: Any) -> bool
                 reader=READERS.LEDGER_FARHEAD, frame=frame,
                 ledger_reason=res["reason"], box_source=res["box_source"],
                 shape_source=res.get("shape_source"),
-                geometry_position=job["geometry_position"],
-                **({"page_head": job["page_head"]} if job.get("page_head") is not None else {}))
+                geometry_position=job["geometry_position"])
     _file_owner_ledger_readings(log, job, page_ctx, res)
     return True
 
@@ -1955,8 +1954,6 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
         # reading stays on the row (`unfiltered_pos`) so the change is countable.
         th = float(getattr(page_ctx, "thickness", 4.0) or 4.0)
         for i, (key, rd0) in enumerate(list(cands)):
-            if key == own and job.get("page_head") is not None and job.get("page_triggered"):
-                continue        # 2.260e M6b: the head was asked because its INK stands outside the first space while its box does not; the re-read from the box centre would answer "no ledger needed" against the ledger count just made
             lines =job["global_lines"] if key == own else FO.lines_at(next(s for s in staves if s["key"] == key), cx)
             rd = FO.read_toward(page_ctx, g.to_key(), job["box"], job["cls"], lines, not_ledger=mk(cx, key, th))
             rd["unfiltered_pos"] = rd0["pos"]
@@ -2005,8 +2002,7 @@ def _file_owner_ledger_readings(log: Log, job: Dict[str, Any],
 def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
                                      local: Dict[int, Tuple[int, int]],
                                      detections: Dict[str, List[Any]],
-                                     state: Optional[FarHeadState] = None,
-                                     page_heads: Any = None
+                                     state: Optional[FarHeadState] = None
                                      ) -> Dict[str, int]:
     """`Q.FAR_HEAD_LEDGER_POSITION` for every notehead OUTSIDE its staff's
     first space -- the position counted off the head's own printed ledgers.
@@ -2027,10 +2023,8 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
     Pass the run's `FarHeadState` to share the size pool across pages; with
     none, this page stands alone and finishes itself.
 
-    ROADMAP 2.260e M6b (`page_heads` + flag `OMR_PAGE_HEAD_VIEWS`, default OFF): the job list is driven from the PAGE head list. A head is one job for
-    every notehead box folded into it (the read is made from the head's representative box, so twin boxes read alike), and it is asked about its ledger
-    lines when the box OR the page ink says it is outside the staff, or a ledger stub touches it in the first space (`page_heads.far_trigger`) -- the box's
-    rounded position alone no longer decides whether the ledger lines are asked. The reader and the rows are unchanged.
+    ROADMAP 2.260e M6b (`OMR_PAGE_HEAD_VIEWS`, default OFF, a job list driven from M6a's page head list) was retired by 2.332 with M6a; one job per
+    page head with the ink trigger is 2.290 plan step 3, still open, to be built on `page_heads.read_one`'s heads.
     """
     census = {"far": 0, "observed": 0, "abstained": 0, "held": 0}
     if not _farhead_ledger_enabled():
@@ -2093,33 +2087,6 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
     page_boxes: List[Tuple[str, str, tuple]] = []
     jobs: List[Dict[str, Any]] = []
     used_staves: Dict[str, List[float]] = {}
-    from . import page_heads as _PH
-    views = page_heads if (page_heads is not None and _PH.views_enabled()) else None
-    group_of: Dict[str, int] = {}
-    rep_box: Dict[int, tuple] = {}
-    group_far: Dict[int, bool] = {}
-    if views is not None:
-        group_of = views.by_member
-        for h in views.heads:
-            rep_box[h["ordinal"]] = tuple(float(v) for v in h["box"])
-            group_far[h["ordinal"]] = h.get("far_trigger") in ("ink", "rung_first_space")
-        for cell_key, dets in detections.items():
-            sub = Subject.from_key(cell_key)
-            c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
-            if c is None:
-                continue
-            for gi, d in enumerate(dets):
-                gk = R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi).to_key()
-                o = group_of.get(gk)
-                if o is None or not d.smufl_name.startswith(_NOTEHEAD_PREFIX):
-                    continue
-                rows0 = log.rows(Q.NOTEHEAD_STAFF_POSITION, R.glyph(sub.page, sub.system, sub.staff, sub.cell, gi))
-                try:
-                    p0 = int(round(float(rows0[-1].value))) if rows0 else None
-                except (TypeError, ValueError):
-                    p0 = None
-                if p0 is not None and FH.lg.far_head_needs_ledger_read(p0):
-                    group_far[o] = True
     for cell_key, dets in detections.items():
         sub = Subject.from_key(cell_key)
         c = cell_by_key.get((sub.page, sub.system, sub.staff, sub.cell))
@@ -2147,15 +2114,9 @@ def gather_far_head_ledger_positions(log: Log, pws: Any, cells: Sequence[Any],
             heads.append(dict(subject=g.to_key(), box=box, pos=pos,
                               cls=d.smufl_name, score=float(d.confidence),
                               global_lines=head_lines))
-            ph_ord = group_of.get(g.to_key()) if views is not None else None
-            asked = FH.lg.far_head_needs_ledger_read(pos) if ph_ord is None else bool(group_far.get(ph_ord))
-            if asked:
-                if ph_ord is not None and len(views.heads[ph_ord]["members"]) > 1:
-                    box = rep_box[ph_ord]       # twins are read from the head's ONE box, so they read alike
+            if FH.lg.far_head_needs_ledger_read(pos):
                 jobs.append(dict(page=sub.page, system=sub.system,
                                  staff=sub.staff, cell=sub.cell, glyph=gi,
-                                 page_head=ph_ord,
-                                 page_triggered=bool(ph_ord is not None and not FH.lg.far_head_needs_ledger_read(pos)),
                                  box=box, cls=d.smufl_name,
                                  global_lines=head_lines, geometry_position=pos,
                                  frame=frame_cell(sub.cell), own_key=own,
@@ -8101,7 +8062,7 @@ def stems_from_strokes_retires_scans() -> bool:
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
                       detections: Optional[Dict[str, List[Any]]] = None,
                       page_shape: Optional[Sequence[int]] = None, page_map: Any = None) -> Dict[Tuple[int, int, int, int], Any]:
-    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. ROADMAP 2.284 (flag `OMR_PAGE_LEDGER_OWNS`, default OFF): with `page_map`
+    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. ROADMAP 2.284 (flag `OMR_PAGE_LEDGER_OWNS`, default ON): with `page_map`
     (the page stroke map built before the arcs), each row also carries `page_stroke: [page stroke ordinal, share]` (`page_ledger.link_cell_strokes`). Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).
@@ -17928,7 +17889,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         if detector is not None and _DHR.enabled():
             gather_dyad_head_rescue(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
-        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON since 2026-11-02). After the rescue, BEFORE every reader that walks `detections`.
+        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF, allow-list; landed OFF 2026-10-14). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
         # reach it one way.
         from . import second_hollow as _SH
@@ -18015,10 +17976,6 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # by index) and BEFORE `gather_notehead_positions` and
         # `gather_notehead_ink`, which both read its row.
         gather_head_line_cut(log, cells, local, detections)
-        # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS, default OFF): every head read ONCE on the page map (twin boxes folded, ink = the page strokes the box stands on,
-        # position from the ink against the head's own bar). AFTER the final box set and the page map, BEFORE the cell position / far-head reads (M6b drives the
-        # far-head job list from it). Reads only; `file_page_heads` files it after the page-wide claim names.
-        _page_head_list = _page_heads.gather_page_heads(log, pws, cells, local, detections, page_map_pre, progress=progress)
         gather_notehead_positions(log, cells, local, detections, pws=pws)
         # ⚠️ BESIDE THE NOTEHEAD'S POSITION AND NOT WITH THE OTHER GLYPH
         # FAMILIES, because it is the SAME measurement off the SAME cell grid
@@ -18112,7 +18069,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # evidence, because the gate reads `Q.NOTEHEAD_STEM_CROSS_INK` (2.49's
         # tremolo-slash rows) and `Q.STEM`-era evidence that did not exist yet.
         _far_census = gather_far_head_ledger_positions(log, pws, cells, local, detections,
-                                                       far_head_state, page_heads=_page_head_list)
+                                                       far_head_state)
         # ⚠️ ROADMAP 2.58d, AFTER `gather_ownership_evidence` (it files only
         # for a contested head, read off that evidence's own rows).
         if not stems_from_strokes_retires_scans():      # ROADMAP 2.204: the head's stem is the stroke its blob touches (ADJUDICATE)
@@ -18186,9 +18143,6 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # (owner `accidental_ink`, layer before the heads), AFTER every earlier page-wide claim it must not take and BEFORE the page heads claim.
         from . import page_accidental_ink as _page_accidental_ink
         _page_accidental_ink.gather_page_accidental_ink(log, pws, cells, local, detections, page_map_pre, progress=progress)
-        # ROADMAP 2.260e M6a (flag OMR_PAGE_HEADS): `Q.PAGE_HEAD` rows and the head / ledger-stub claims on the page strokes, AFTER the page-wide claim names (an
-        # earlier owner's stroke is marked contested, never taken) and after the cell position rows (they ride on the head). Nothing reads them in M6a.
-        _page_heads.file_page_heads(log, pws, _page_head_list, page_map_pre, progress=progress)
         # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default ON since the landing flip): one claim per head on the page strokes of its oval, layer `head` of
         # `claim_order.LAYERS` -- AFTER every earlier page-wide claim (accidental ink last), BEFORE the page beams; ADJUDICATE's ledger settles it at the head tier.
         _page_heads.file_one_claims(log, pws, _one_heads, progress=progress)

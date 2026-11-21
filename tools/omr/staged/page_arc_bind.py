@@ -5,8 +5,8 @@ nothing decided by itself. The callers are `adjudicators/ownership.adjudicate_pa
 Sean 2026-11-08 ("Try 1"): take ONLY the page-ink runs a detector arc box agrees with (WITNESSED: 0 fakes of 20 seeded on the round-4 hold-out), bind each run's two ends to
 notes, and write each as ONE arc. A run no detector box witnesses (about 4.8 fakes a page, step 1) is NOT written in this step.
 
-`OMR_PAGE_ARC_WRITE` (default OFF, allow-list). It also turns the step-1 reader on in GATHER (`page_arcs.enabled`): the flag needs the `Q.PAGE_ARC` rows. OFF, every
-stage is what it was: the decision files nothing, EXPORT reads nothing, and the exported file is byte-identical to main's (tests + the gates in FINDINGS).
+`OMR_PAGE_ARC_WRITE` (default ON since 2.305's landing, deny-list; `=0` opts out). It also turns the step-1 reader on in GATHER (`page_arcs.enabled`): the flag needs the
+`Q.PAGE_ARC` rows. Opted out, the decision files nothing and EXPORT reads nothing (the pre-2.274 file; tests + the gates in FINDINGS).
 
 THE RULE THAT OWNS EACH VALUE (CLAUDE §6, "name the rule that owns the value"):
   * the arc and its extent: page-facts "Arcs and hairpins are READ PAGE-WIDE ... a detector box is only a witness" (2026-10-30) -- the run, never the box;
