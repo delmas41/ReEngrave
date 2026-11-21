@@ -47,8 +47,6 @@ RULES = [
     R(HEADS, "notehead_is_not_a_notehead", "human_not_a_symbol,human_other_staff", "A", "a human's box verdict outranks every rule",
       "a box Sean struck out in the stage review, or marked as another staff's, is refused first", HUMAN, "kept"),
     R(HEADS, "notehead_is_not_a_notehead", "notehead", "ok", "kept as a notehead", "the box survived every refusal", "-", "-"),
-    R(HEADS, "notehead_is_not_a_notehead", "is_a_clef", "C", "clef read on this box's ink", "the clef locator read a clef on the very ink this notehead box sits on (one ink, two boxes)",
-      "Sean 2026-09-23 (2.11)", "retires with 2.205 (claims by strokes); the claim register 2.181 covers it meanwhile"),
     R(HEADS, "notehead_is_not_a_notehead", "clipped_fragment", "U", "sliver against the crop edge",
       "a flat sliver flush with the cell's crop edge is a neighbour staff's ink bleeding into the padding, read as a hollow head",
       S_NONE + " (legacy `_drop_clipped_notehead_fragments`)", "open: C if the neighbour's ink is the cause (padded cells), A if it is only a crop edge"),
@@ -483,7 +481,7 @@ MODULES = {
 
 # Files that are pipeline plumbing, derived checks, reports or the exporter -- they hold no ink rule.
 INFRA = {
-    "__init__.py", "__main__.py", "adjudicate.py", "brakes.py", "budget.py", "capture.py", "cell_map.py", "check.py", "claim_readout.py", "check_helpers.py",
+    "__init__.py", "__main__.py", "adjudicate.py", "brakes.py", "budget.py", "capture.py", "cell_map.py", "check.py", "flow_map.py", "claim_readout.py", "check_helpers.py",
     "consequences.py", "counted_marks.py", "evaluate.py", "export.py", "gather.py", "gather_coverage.py", "health.py", "infer.py", "inferences.py",
     "inventory.py", "judged.py", "judged_claims.py", "lane_report.py", "one_test.py", "legacy.py", "letter_look_report.py", "lilypond.py", "meaning.py",
     "pipeline.py", "positions.py", "producers.py", "reach.py", "readout.py", "record.py", "record_coverage.py", "record_io.py",

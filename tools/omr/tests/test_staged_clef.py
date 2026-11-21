@@ -11,10 +11,17 @@ from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import record as R
 from tools.omr.staged.adjudicators import clef as clef_mod
-from tools.omr.staged.record import (ABSTAIN, Log, Outcome, Q, READERS, State)
+from tools.omr.staged.record import Log, Outcome, Q, READERS
 from tools.omr.tests._staged_fixtures import fresh_log as _log
 
 SUB = R.staff(0, 0, 0)
+
+
+def _pagewide_clef(log, sub, kind):
+    """ROADMAP 2.324: the page-wide pass's READ header claim of this staff's clef (the CV locator is retired)."""
+    log.observe(sub, Q.CLAIMED_AREA, [10.0, 0.0, 40.0, 80.0], reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0",
+                cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ",
+                source="clef_pagewide", change=False, kind=kind, family=None, boxes_inside={})
 
 
 class TestAClassNameCannotNameACClef(unittest.TestCase):
@@ -34,13 +41,12 @@ class TestAClassNameCannotNameACClef(unittest.TestCase):
         self.assertIs(v.outcome, Outcome.ABSTAINED)
         self.assertEqual(v.reason, "no_candidates")
 
-    def test_clefC_SUPPORTS_the_clef_the_locator_named(self):
+    def test_clefC_SUPPORTS_the_clef_the_page_named(self):
         """It is evidence, just not evidence about WHICH."""
         log = _log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefC", reader=READERS.DETECTOR,
                     frame="cell:0", score=0.95)
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
         self.assertEqual(v.value, "tenor")
@@ -53,33 +59,6 @@ class TestAClassNameCannotNameACClef(unittest.TestCase):
         placeholder rather than the mechanism."""
         self.assertGreater(clef_mod.W_DETECTOR_HIGH, clef_mod.W_LOCATOR)
         self.assertNotIn("clefC", clef_mod._GLYPH_TO_CLEF)
-
-
-class TestBothCropsAreEvidence(unittest.TestCase):
-    def test_two_crops_agreeing_are_two_signals(self):
-        """⚠️ Deliberately unlike the two DETECTOR rungs, which are the same
-        call on the same list object -- measured divergent on 0 of 396 staves.
-        Two crops are genuinely two looks."""
-        log = _log()
-        for frame in ("header_window", "cell:0"):
-            log.observe(SUB, Q.CLEF_LOCATED, "alto", reader=READERS.CV_LOCATOR,
-                        frame=frame, score=0.8)
-        adjudicate.run(log)
-        v = log.verdict(Q.CLEF, SUB)
-        self.assertEqual(v.value, "alto")
-        self.assertEqual(v.correlated, ())
-
-    def test_a_crop_that_refused_carries_the_readers_own_word(self):
-        """`locate_clef(trace=)` has always been able to say which branch
-        ended it, and NEITHER pipeline call site passes a trace -- so today
-        every refusal is an indistinguishable None."""
-        log = _log()
-        log.abstain(SUB, Q.CLEF_LOCATED, reader=READERS.CV_LOCATOR,
-                    frame="cell:0", reason=ABSTAIN.OCCUPIED,
-                    locator_branch="occupied")
-        self.assertIs(log.state(Q.CLEF_LOCATED, SUB), State.DECLINED)
-        (row,) = log.refusals(Q.CLEF_LOCATED, SUB)
-        self.assertEqual(row.detail["locator_branch"], "occupied")
 
 
 class TestTheFloor(unittest.TestCase):
@@ -164,8 +143,7 @@ class TestWeakEvidenceIsKept(unittest.TestCase):
         log = _log()
         log.observe(SUB, Q.CLEF_GLYPH, "clefG", reader=READERS.DETECTOR,
                     frame="cell:0", score=0.05)
-        log.observe(SUB, Q.CLEF_LOCATED, "treble", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.7)
+        _pagewide_clef(log, SUB, "treble")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
         self.assertEqual(v.value, "treble")
@@ -323,13 +301,11 @@ class TestASuppliedClefSpeaksOnlyWhereThePageDidNot(unittest.TestCase):
         self.assertEqual(v.value, "treble",
                          "the supplied clef outvoted a read one")
 
-    def test_it_does_NOT_overturn_a_clef_the_LOCATOR_read(self):
-        """⚠️ The locator weighs 2.0, BELOW the seed's 4.0 -- so a weight
-        tweak alone would not have covered this staff. The gap test is on
-        whether the page spoke, not on how loudly."""
+    def test_it_does_NOT_overturn_a_clef_the_PAGE_WIDE_pass_read(self):
+        """The gap test is on whether the page spoke, not on how loudly
+        (2.324: the page-wide READ claim replaced the CV locator here)."""
         log = _log()
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         self._seed(log, "alto")
         adjudicate.run(log)
         self.assertEqual(log.verdict(Q.CLEF, SUB).value, "tenor")

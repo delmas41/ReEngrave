@@ -593,36 +593,6 @@ def _clipped_fragment(ev: Evidence, box_row, spacing_canonical: float,
     return touching
 
 
-def _is_a_clef(ev: Evidence):
-    """ROADMAP 2.11 — this box is part of a clef the locator READ over it.
-
-    ⚠️ A CONNECT, NOT A GUESS, AND THE DISTINCTION IS THE WHOLE POINT. This
-    rule measures nothing and decides nothing on its own. It asks whether a
-    `Q.CLEF_LOCATED` row on this glyph's own STAFF NAMES this glyph as a box
-    it overrode — `gather._occupied_notehead_rows` put the subject key there,
-    from the detector ordinal the glyph subject is built from. If the clef was
-    not read, or was read without overriding anything, this returns None and
-    the glyph is judged on shape as before.
-
-    ⚠️ SCOPE IS `SELF_AND_ANCESTORS` BECAUSE THE ROW IS FILED ON THE STAFF.
-    At `EXACT` — the default — a GLYPH subject's query returns nothing and the
-    rule would fail SILENTLY, which is the failure mode CLAUDE.md §4b names
-    and `wiring --check` exists to catch.
-
-    ⚠️ IT DOES NOT ASK WHETHER THE STAFF'S `clef` VERDICT AGREES. That verdict
-    is an ADJUDICATE product of this same stage; reading it here would make
-    the refusal depend on decision order, and a located clef that loses the
-    clef contest still tells us what this ink is. The evidence is the READ,
-    not the winner.
-    """
-    me = ev.subject.to_key()
-    for r in ev.rows(Q.CLEF_LOCATED, scope=Scope.SELF_AND_ANCESTORS):
-        d = r.detail or {}
-        if me in (d.get("overrode_glyph_subjects") or ()):
-            return r
-    return None
-
-
 def _claim_refusal(claim, box_row) -> Ruling:
     """ROADMAP 2.181: `Ruling(True, "claimed_by:<owner>")`, the reason a LITERAL per owner (the vocabulary check reads it)."""
     detail = {"class": box_row.value[0], **claim.detail}
@@ -3626,7 +3596,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
     # reads it over the whole CELL (`Scope.SELF_AND_DESCENDANTS`), a wider
     # read than `subjects_from` covers.
     composed_from=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
-                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
+                  Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF,
                   Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
                   Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
                   Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS,
@@ -3694,7 +3664,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
                   Q.HEAD_INK),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.CELL_BOX, Q.CELL_STAFF_SPACE,
-          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF, Q.CLEF_LOCATED,
+          Q.NOTEHEAD_STAFF_POSITION, Q.GLYPH_CONF,
           Q.HUMAN_BOX_VERDICT, Q.LEDGER_IS_NOT_A_LEDGER,
           Q.GLYPH_BAND_DISTANCE, Q.STAFF_LINES, Q.STAFF_SPACING,
           Q.LEDGER_RUNG_INK, Q.NOTEHEAD_CLASS, Q.SYSTEM_STAFF_COUNT,
@@ -3706,7 +3676,7 @@ def _stem_end_box_ink_disagrees(ev: Evidence, box_row) -> Optional[Ruling]:
           Q.METER_TEMPLATE, Q.METER_OCR, Q.METER_TEMPLATE_AT_BAR, Q.METER_OCR_AT_BAR,
           Q.CLEF, Q.SLOT_INDEX, Q.PART_KEY, Q.MARGIN_LABEL, Q.STROKE_OWNER, Q.GLYPH_STROKES, Q.HEAD_INK),
     subjects_from=Q.NOTEHEAD_CLASS,
-    reasons=HUMAN_REFUSAL_REASONS + ("is_a_clef", "clipped_fragment",
+    reasons=HUMAN_REFUSAL_REASONS + ("clipped_fragment",
                                      "too_narrow", "is_a_dot", "on_a_barline",
                                      "wider_than_a_head", "wide_box_unread", "taller_than_a_filled_head", "taller_than_a_head",
                                      TREMOLO_SLASH_REASON,
@@ -3752,13 +3722,9 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
        reading `not_a_symbol`, filed by `review/human_evidence.py` from a
        review pass. Tested FIRST and OUTSIDE the geometry gate; see
        `_human_not_a_symbol`.
-    0. `is_a_clef` (ROADMAP 2.11) — the CV clef locator READ a clef on this
-       very box's ink, having found the box too small to be what the ink is
-       (Sean, 2026-09-23). This rule MEASURES NOTHING: it reads the
-       `overrode_glyph_subjects` the read itself named, so the refusal and the
-       read can never disagree. It runs before the measured rules because it
-       is backed by a positive identification rather than by a shape that
-       looks wrong, and after the human because a human looked at the print.
+    0. (`is_a_clef`, ROADMAP 2.11, read the CV clef locator's
+       `overrode_glyph_subjects`; it went with the locator in 2.324 -- a clef's
+       ink is claimed on the page-wide pass and consulted in the register.)
 
     1. `clipped_fragment` — a sliver of ink flush against the cell's own crop
        boundary: a neighbouring staff's ink bleeding into this cell's
@@ -3943,16 +3909,6 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     seh_split = _stem_end_box_ink_disagrees(ev, box_row)
     if seh_split is not None:
         return seh_split
-    clef_row = None if _claimed_by.enabled() else _is_a_clef(ev)
-    if clef_row is not None:
-        return Ruling(
-            value=True, reason="is_a_clef",
-            used=(clef_row.id, box_row.id),
-            detail={"class": box_row.value[0],
-                    "clef_read": clef_row.value,
-                    "clef_frame": clef_row.frame,
-                    "clef_symmetry": clef_row.score})
-
     # ROADMAP 2.100: nothing but a clef stands before a key signature's
     # accidentals (Sean, 2026-10-12). A notehead-named box in the signature's
     # slots is a flat's bowl boxed under a second name. It needs no unit of

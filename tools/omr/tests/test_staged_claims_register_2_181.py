@@ -260,21 +260,6 @@ class TestConsult(unittest.TestCase):
         self.assertEqual(v.reason, "claimed_by:clef")
         self.assertEqual(len(v.used), 3)                                    # the box and BOTH claims
 
-    def test_FLAG_OFF_the_old_is_a_clef_rule_still_runs(self):
-        log = Log()
-        _staff_space(log, 100)
-        g = _box(log, 0, (300, 120, 130, 100), "noteheadBlackInSpace")
-        log.observe(R.staff(0, 0, 0), Q.CLEF_LOCATED, "alto", reader=READERS.CV_LOCATOR, frame="cell:0", score=0.9,
-                    overrode_glyph_subjects=[g.to_key()])
-        self.assertEqual(_v(log, g, OFF).reason, "is_a_clef")
-        log2 = Log()
-        _staff_space(log2, 100)
-        g2 = _box(log2, 0, (300, 120, 130, 100), "noteheadBlackInSpace")
-        log2.observe(R.staff(0, 0, 0), Q.CLEF_LOCATED, "alto", reader=READERS.CV_LOCATOR, frame="cell:0", score=0.9,
-                     overrode_glyph_subjects=[g2.to_key()])
-        # flag ON with no register row filed: the old rule is retired, so the box is judged on shape (the gather files the claim)
-        self.assertEqual(_v(log2, g2, ON).value, False)
-
 
 class TestRest(unittest.TestCase):
     def test_a_rest_in_a_read_clef_is_refused_and_one_in_the_column_narrowed(self):

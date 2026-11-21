@@ -186,11 +186,19 @@ def static_wiring(staged_dir: Optional[Any] = None) -> List[Dict[str, str]]:
     cb = (root / "adjudicators" / "claimed_by.py").read_text()
     mo = re.search(r"_ORDER\s*=\s*\(([^)]*)\)", cb)
     consulted = {_OWNER_TOKENS[t.strip().split(".")[-1]] for t in (mo.group(1) if mo else "").split(",") if t.strip().split(".")[-1] in _OWNER_TOKENS}
-    mark_only: set = set()
+    mo_set: set = set()
     cf = root / "claim_final.py"
-    if cf.exists():
+    if staged_dir is None:
+        # ROADMAP 2.331: THIS tree's mark-only set is what `mark_only()` RETURNS with every flag at its default (`OMR_PAGE_LEDGER_OWNS` ON:
+        # nothing is mark-only), never the `MARK_ONLY` constant read by regex -- that is the flag-OFF arm, and it made this check report four
+        # "mark only" findings for a state not in force.
+        from .flow_map import default_env
+        with default_env():
+            mo_set = set(mark_only())
+    elif cf.exists():
+        # another tree (a `git archive` of main) cannot be imported here: its constant is read as text, and the result describes its flag-OFF arm
         mm = re.search(r"MARK_ONLY\s*=\s*frozenset\(\{([^}]*)\}\)", cf.read_text())
-        mark_only = {x.strip().strip("\"'") for x in (mm.group(1) if mm else "").split(",") if x.strip()}
+        mo_set = {x.strip().strip("\"'") for x in (mm.group(1) if mm else "").split(",") if x.strip()}
     generic = {rd: "_claim_final.finding(" in (root / rel).read_text() for rd, rel in CONSUMER_DECIDERS.items()}
     out: List[Dict[str, str]] = []
     # a claim LAYER in `claim_order.LAYERS` (before the heads) whose rows no consumer reads: the stroke owner has no generic path and the family is neither a tier-0
@@ -217,7 +225,7 @@ def static_wiring(staged_dir: Optional[Any] = None) -> List[Dict[str, str]]:
         for rd in CONSUMER_DECIDERS:
             if not generic[rd]:
                 out.append({"claim": fam, "reader": rd, "why": "filed and owned, no reader consults it (marks only)"})
-            elif fam in mark_only:
+            elif fam in mo_set:
                 out.append({"claim": fam, "reader": rd, "why": "consulted generically but MARK_ONLY by decision (the claim over-reaches onto head ink)"})
     return out
 

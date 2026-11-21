@@ -1,0 +1,234 @@
+2.331 step 2, part (a): heads, head ink / slash guard, own-ink accidentals, far-head ledger count, unisons, one chord. STAGED only. Read from the tree at origin/main 0fdb1d71a.
+Format: mark -> found from -> claims -> files -> read by -> written. Verdict per consumer.
+
+FLAGS (predicate code, default today)
+  OMR_PAGE_HEAD_ONE ON (deny-list, page_heads.one_enabled)      OMR_PAGE_HEAD_LEDGER ON (deny-list)
+  OMR_PAGE_HEADS OFF (allow-list, page_heads.enabled; M6a)      OMR_PAGE_HEAD_VIEWS OFF (needs OMR_PAGE_HEADS; M6b)
+  OMR_PAGE_HEAD_CLAIM / _head_claims: DELETED (2ada124ba)       OMR_PAGE_LEDGER_OWNS ON
+  OMR_PAGE_MARKS ON (docstring of gather_page_marks still says "default OFF")
+  OMR_HEAD_INK ON (head_ink.enabled default "1"; rhythm.head_ink_consumer_enabled docstring still says "default OFF")
+  OMR_HEAD_OWN_ROWS OFF (allow-list)                            OMR_SLASH_GUARD_OWN_INK ON (deny-list)
+  OMR_ACCIDENTAL_OWN_INK ON (deny-list, and needs page rest claims)
+  OMR_LEDGER_COUNT_TO_INK ON (annotate/ledger_grid)             OMR_LEDGER_READ (2.255) see ledger_grid
+  OMR_UNISON_KEPT_FOR_BOTH ON                                   OMR_UNISON_TIE_VOICE OFF
+  OMR_ONE_CHORD_ONE_EVENT ON                                    OMR_TWO_STEMS_TWO_NOTES ON
+
+1. NOTEHEAD, ONE IDENTITY (2.290 steps 1-2)
+  found from: detector notehead boxes, partitioned by their page-map ink (page_heads.read_one / core / partition; boxes sharing half the smaller one's head ink with ink centres in one oval are one head; a box on no head ink joins at the old twin IoU or stands alone).
+  claims: nothing at this step.
+  files: Q.MARK_GROUP rows for noteheads (gather.gather_mark_groups -> _file_mark_groups, extra detail from page_heads.mark_group_detail: identity "page_head", head_how, head_ink_px, ink_centre, apart); the head boxes' Q.PAGE_MARK ids replaced (page_heads.apply_to_page_marks; why = "page_head" / "page_head_alone").
+  old reader: gather.cluster_marks for noteheads -- STILL RUNS, its notehead groups are computed then thrown away (gather.py ~2702: `groups = [g for g in groups if items[g[0]]["key"] not in head_group]`). page_marks.link -- STILL RUNS for every box, then the head marks are replaced. Both are the =0 opt-out paths; cost is time, not output.
+  read by:
+    export._place_notes / best-per-gid drop ("mark_group_duplicate") -- FED
+    export._settle_folded_pitches (2.290 r4) -- FED DIFFERENTLY (see gap A)
+    export._record_tie_spans alias (_one_id) / export_unison.written_member -- FED
+    adjudicators/ownership.py arc ends (~3013, ~3253: identity == "page_head", ink_centre, head_ink_px) -- FED
+    glyph_owner / page_owner via Q.PAGE_MARK -- FED
+    rhythm twin rule via Q.MARK_GROUP -- FED (not traced line by line)
+    judged.score_row -- FED DIFFERENTLY (see gap C)
+    counted_marks identity bucket -- FED
+  written: one note per page head; other member boxes dropped and counted mark_group_duplicate.
+
+2. NOTEHEAD, ONE CLAIM (2.290 step 4, on the 2.284 page ledger)
+  found from: the page head's oval over page strokes (head_ink pieces, not beams/arcs/stems).
+  claims: the page strokes of its oval, head tier; fused strokes not claimed; strokes an earlier READ page claim holds are MARKED on the row, not claimed.
+  files: Q.CLAIMED_AREA on the page (page_heads.file_one_claims): value = head ordinal (int), owner "head", unit "page_ink", source "page_head_one", standing READ, how "page_head_oval", page_strokes, members, rep, oval, staff, marked. Plus one census row (owner "page_head_one", unit "page_ink_census", value "census").
+  old reader: stroke_owner per-cell head-box tier ("a box covers half a cell stroke") -- still computed per cell, then the page settle overwrites (2.284 note in ROADMAP). M6c _head_claims removed.
+  read by:
+    adjudicators/stroke_owner._page_head_claims (filters source=="page_head_one" and owner=="head") -- FED
+    adjudicators/stroke_owner._layer_claims -- skips owner "head" (in _OWN_PATH_OWNERS) -- FED (correctly not double-read)
+    adjudicators/ink_consult.consult (PAGE_HEAD_OWNER "page_head" final for accidental/dot/dynamic/articulation) -- FED
+    claim_readout.page_stroke_claims (any row with page_strokes) -- FED
+    judged_claims.replay (unit page_ink or page_strokes) -- FED
+    page_accidental_ink / page_heads "held" readers (unit page_ink, source != own) -- FED
+  written: a later box mostly on a head's claimed ink owning none of its own is refused claimed_by:earlier_mark.
+
+3. PAGE HEAD LIST M6a / M6b (2.260e) -- PRESENT, OFF, UNREACHABLE BY DEFAULT
+  files (only with OMR_PAGE_HEADS=1): Q.PAGE_HEAD rows and a census (page_heads.file_page_heads), and Q.CLAIMED_AREA rows source "page_heads", owner "head" AND owner "ledger", unit page_ink, with page_strokes and stroke_boxes.
+  read by:
+    gather far-head ledger job list (gather.py ~2097 `views = page_heads if (page_heads is not None and _PH.views_enabled()) else None`) -- STARVED by default (M6b off), so twin boxes of one page head are each read for ledger lines separately (gap A).
+    Q.PAGE_HEAD: nothing reads it (reach KNOWN_GAPS entry says its readers are M6b and "M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`)" -- M6c no longer exists: stale text).
+    owner "ledger" claims: stroke_owner._layer_claims skips "ledger" as an own-path owner (`_OWN_PATH_OWNERS = frozenset(SO.AREA_OWNERS) | {"arc", "hairpin", "head", "ledger"}`), but the own path for "ledger" was the deleted _head_claims -- STARVED (dead) if ever switched on. owner "head" rows of source "page_heads" are also skipped by _page_head_claims (source filter). claim_readout / judged_claims would still count both kinds (they read any page_strokes row): DOUBLE-FED in the tools only, and only with the flag on.
+  written: nothing by default.
+
+4. HEAD INK / FILL, SLASH GUARD (2.326, 2.327)
+  found from: the head box's raster trimmed to one head (head_ink.trim_head; own_rows trim OFF).
+  files: Q.HEAD_INK on the glyph: value hollow/solid (or abstention with reason; detail margin, slit, extent_sp, not_one_head).
+  read by: rhythm._head_ink / _head_ink_reads_hollow_unread_black / _with_head_ink_guess, head_rest_shape, notehead_precision, consequences, export -- FED.
+  slash guard: rhythm._head_ink_reads_hollow_unread_black reads refusal.detail.tremolo_slash_signal keys would_fire, read_by, crossing_ok, position_ok -- all four are filed by notehead_precision (~1909, ~1929-1936) -- FED.
+  old branch: `if not slash_guard_own_ink_enabled(): return not (sig.get("crossing_ok") or ...)` -- reachable only with =0.
+  OMR_HEAD_OWN_ROWS branch in head_ink.trim_head -- unreachable by default (built OFF, not landed).
+  written: a hollow own-ink head under a black class goes to half (decided or GUESSED per 2.220).
+
+5. ACCIDENTAL FROM ITS OWN INK (2.285)
+  found from: page-map strokes with no detector accidental box (page_accidental_ink.read_page, family reader on unboxed ink), after rests' READ claims (2.288 replaced the private rest list).
+  claims: Q.CLAIMED_AREA, value = rectangle, owner "accidental_ink", unit page_ink, source "page_accidental_ink", page_strokes, area, kind, candidates, owner_glyph.
+  files also: Q.ACCIDENTAL_STAFF_POSITION on a synthetic glyph subject (ordinal 360_000+) via gather.file_accidental_position -- the same row a boxed accidental gets.
+  read by:
+    stroke_owner._layer_claims (any owner not own-path, by rectangle, tier 0) -- FED
+    claim_order "accidental_ink" layer; claim_readout ("accidental_ink" -> "accidental") -- FED
+    adjudicate_accidental_owner -> EVALUATE respell -> EXPORT -- FED (row shape identical to the boxed path)
+    page_heads.file_one_claims "held" (head marks, not claims, those strokes) -- FED
+  old reader still running beside it: accidental_owner one_ink_absorbed (ROADMAP 2.285 (d): 23 L / 155 B fires) -- on other ink, not this reader's.
+  written: accidental READ/GUESSED from the family row.
+
+6. FAR HEAD, LEDGER COUNT (2.255, 2.312)
+  found from: annotate.far_head_reader per notehead BOX on the original raster (count_ledgers_between with to_ink ON, ledger_read).
+  files: far-head ledger rows per glyph (gather far-head ledger pass); ADJUDICATE adjudicate_notehead_position decides Q.NOTEHEAD_POSITION; consequences.restate_pitch prefers it; an abstained far head gets a GUESSED pitch (OMR_FARHEAD_UNREAD_GUESSED, far_unread_guess_of).
+  old: the box-centre fallback for far heads -- replaced by the GUESSED far-unread path (blue), not a plain step.
+  read by: restate_pitch, export far_unread_guess_of -- FED; export._settle_folded_pitches -- FED DIFFERENTLY (gap A).
+  written: far head plain where the count decided; blue where it abstained.
+
+7. UNISON KEPT FOR BOTH (2.323) -- EXPORT only
+  files nothing in the record; events of kind "unison_copy" (export._unison_copy_event), written print-object="no" with the printed mark's ties (_UNISON_COPY_HEAD_KEYS includes tied_to_next/tied_from_prev).
+  read by: export._unison_copy_lines (counted unison_copy_notes_written), lilypond (_NOT_A_PRINTED_MARK skipped, lines 428/787/851), lane_report (print-object="no" counted apart) -- FED. judged does not read the file -- n/a.
+
+8. ONE CHORD ONE EVENT (2.300)
+  files: stem_value join of a second's partner head (GUESSED), Q.EVENT grouping (rhythm adjudicate_event: second_ok via one_chord), EXPORT voicing merge_seconds_on_one_stem -- both read one_chord's geometry -- FED (ADJUDICATE and EXPORT agree; bar_length reads Q.EVENT).
+
+GAPS (ranked by cost in the written file)
+ A. export._settle_folded_pitches picks a folded head's written member by its INK position (`for k in ("hole_ink_position", "ink_centre_position_float")`), for far heads too, and writes it DECIDED plain. Page-facts: a far head is placed by its ledger lines only. Because M6b is off, twin boxes of one head are ledger-read separately and can disagree; the settle then overrules the ledger count with the ink centre. Cost: wrong pitch written plain (rare: 8 pitch-disagreeing folds on five pages). Check: on the frozen-sample export, list folds where the settle fired and any member's position is outside -1..9.
+ C. judged.score_row / _written_subjects drops only boxes refused not-a-note; a page-head twin the exporter drops (mark_group_duplicate) is still scored, and mixed results fall to the last non-wrong status, so a written member that is narrowed can score "right" through its unwritten twin. Cost: a right->unread on the file can be hidden from the judged right->wrong gate. Check: re-score judged with each multi-box tile restricted to export's written member.
+ D (dead/stale). M6a/M6b code and Q.PAGE_HEAD: filed by nothing by default; reach KNOWN_GAPS text names the deleted _head_claims; owner "ledger" claims have no reader in stroke_owner if switched on. Stale "default OFF" docstrings: page_marks.gather_page_marks, rhythm.head_ink_consumer_enabled.
+
+
+2.331 step 2, part (b): arcs, ties, hairpins, words and dynamics. STAGED path, main 0fdb1d71a, read-only.
+Format: MARK -> found from -> claims -> files -> read by -> written as. Verdicts: FED / FED DIFFERENTLY / STARVED / DOUBLE-FED.
+
+Flags (default, from predicate code and docs/flags-2026-09.md):
+  OMR_PAGE_ARC_WRITE ON (page_arc_bind.write_enabled, deny-list); it also turns on OMR_PAGE_ARCS (page_arcs.enabled: allow-list OFF, "return _pab.write_enabled()").
+  OMR_ARC_MEETING_AT_HEAD ON; OMR_ARC_BIND_PAGEWIDE ON; OMR_SYSTEM_ARCS ON; OMR_ARC_CLAIM ON; OMR_HAIRPIN_REACH ON; OMR_HAIRPIN_BIND_PAGEWIDE ON;
+  OMR_PAGE_LEDGER_OWNS ON (page_ledger.enabled, "1"); OMR_CLAIM_FINAL ON; OMR_DYNAMIC_OWN_CLAIM, OMR_WORD_OWNS_ITS_INK, OMR_LETTERS_ARE_THE_WORD,
+  OMR_UNREAD_WORD_SIBLING all ON. 2.304 (text crop excludes claimed ink) was built OFF and is NOT on main (3f557db7c is not an ancestor).
+
+=== ARCS (slurs and ties) ===
+NEW READER: page-ink arc runs.
+  found from: the page stroke canvas (ink), after the page claims; detector arc boxes are only witnesses (page_arcs.gather_page_arcs).
+  claims: NOTHING. page_arcs.py doc: "Files `Q.PAGE_ARC` rows only; claims nothing". gather.py:18176 comment repeats it.
+  files: Q.PAGE_ARC on the PAGE subject, value run | seeded | box_without_run | census; detail bbox_page_px, points, ends, witnesses (glyph keys), staff.
+  bound by: ownership.adjudicate_page_arc_binding -> Q.PAGE_ARC_BINDING (one verdict per page; detail.runs[] with status written/abstained/kind_unread,
+           kind, start/stop = HEAD-written box keys, witnesses). Also reads Q.ARC_OWNER of witness boxes (ownership.py:6684, 6736).
+  read by:
+    export._page_arc_plan -> page_arc_bind.plan_of -> _place_arcs ("replaced_by_page_arc"), _page_bound_slurs (skips replaced boxes),
+      _pair_arcs (written slurs into bound_slurs "page_arc/<row>", ties into record_ties pairs; edges into across-system joins)   FED
+    export._record_tie_spans tie carry of an accidental (2.252 r4): runs after the retired pairs are deleted; "the carry exists only through a written tie"   FED
+    lilypond: the same build()/_pair_arcs                                                                                       FED
+    judged.written_arc_runs / arc_written_at (2.316 c): scores an arc answer on the run the file writes at the mark's place     FED
+    counted_marks.arcs_count: from the export report counters                                                                    FED
+    lane_report: reads <slur>/<tied> from the written file                                                                       FED
+  written as: <slur>/<tied> on the two written heads.
+
+OLD READER 1: detector arc boxes + Q.SYSTEM_ARC traces (arcs_system.gather_system_arcs, 2.166), still RUNNING.
+  found from: detector slur/tie boxes, traced through ink per system.
+  claims: YES -- this is the ONLY arc claim. gather.gather_arc_claim (OMR_ARC_CLAIM ON) files Q.CLAIMED_AREA owner "arc", unit "ink" from the
+          SYSTEM_ARC traces ("reads the curves `gather_system_arcs` traced"); adjudicators/stroke_owner._arc_claims turns it into an "arc_trace" claim at tier 0.
+  files: Q.ARC_BOX, Q.SYSTEM_ARC; ADJUDICATE still decides per box Q.ARC_OWNER, Q.ARC_KIND (with detail.page_binding, 2.223), Q.TIE_PAIR.
+  read by:
+    export._place_arcs: box path "old_box_path_retired" when pa_plan exists                                       FED (writes nothing; counted)
+    export._page_bound_slurs: a box curve bound at both ends (2.223) and NOT a witness of a written run is still WRITTEN   FED (second writer, by design)
+    export._pair_arcs/_retire_old_tie_pairs: old tie pairs dropped unless reason "paired_by_page_binding"           FED (second writer for ties, by design)
+    export._edge_curves (ARC_KIND page_binding why=system_edge) -> across-system joins                              FED
+    rhythm._not_a_decided_arc (decided box ARC_KIND discounts beam strokes): its result is overwritten when OMR_ONE_BEAM_COUNT is ON ("kept = []")   STARVED in effect (beams lane)
+    judged._arc fallback: where no written run is at the tile's place it scores the BOX's arc_kind verdict
+        ("A record with no written run there keeps the verdict comparison below") -- but that box writes nothing now     FED DIFFERENTLY (a lost arc can score "right")
+    regather_report.FUNNELS ("slurs"/"ties" -> arc_kind) and export status census FAMILIES ("slur": (Q.ARC_KIND ...)): count box verdicts as "decided"
+        beside the file's written counters                                                                           FED DIFFERENTLY (measurement only)
+    claim_readout / judged_claims / claim_final: the arc ink attributed is the SYSTEM_ARC trace, not the written run     FED DIFFERENTLY
+  -> GAP: the reader that claims arc ink (box traces) is not the reader that writes arcs (page runs). A written page run no box traced claims nothing (heads,
+     stems, beams, dots may take its ink); a box trace whose arc is never written still holds ink, and with OMR_PAGE_LEDGER_OWNS ON
+     claim_final.mark_only() is EMPTY ("return MARK_ONLY_LEDGER if _PL.enabled() else MARK_ONLY"; MARK_ONLY_LEDGER = frozenset()), so an arc_trace
+     holding >= 0.5 of a head or rest box's ink REFUSES it (adjudicators/claim_final.py:55, ink_consult.py:196).
+
+DUPLICATE SLURS SEEN IN A WRITTEN FILE (cause not found): the 2026-11-18 08:52/08:55 acceptance exports in this worktree
+  (benchmarks/acceptance/out/*/…musicxml, dirty, tree and record not verified) hold slur spans with the SAME start and stop note twice:
+  Litolff 17 of 217, Brahms 55 of 759 (e.g. Litolff P3 m453 one note starts slurs 1,2,3). Writers that meet in _pair_arcs: _paired_spans (box pieces,
+  empty under the page pass), _anchored_slur_spans, _page_bound_slur_spans (dedups on "the SAME two notes" only inside its own call,
+  `any({id(first), id(last)} == {id(s[2]), id(s[3])} for s in out)`), _with_across_system_joins (refuses only by held start/end).
+
+=== HAIRPINS ===
+READER: CV hairpins (gather.gather_wedge_boxes reader 2, hairpin_detection reach=True, 2.254); detector wedge boxes (reader 1) filed cell-frame.
+  claims: hairpin_reach files owner hairpin_trace claims (hairpin_reach.FAMILY = "hairpin_trace"); refuses heads/rests at >= 0.5 (mark_only empty).
+  files: Q.WEDGE_BOX (CV: bbox_page_px; detector: cell frame, no page box).
+  ADJUDICATE: ownership.adjudicate_wedge_anchor -> _wedge_page_binding (2.223 bind ON) -> Q.WEDGE_ANCHOR [start, stop] + detail kind/start_x_page.
+    The detector's rows abstain "no_page_frame", so only the CV reader writes.                                         FED (one writer)
+  read by: export._place_wedges (decided only), lilypond via the same pass, export census, regather_report "hairpins" -> wedge_anchor   FED
+  written as: <wedge> crescendo/diminuendo on the two written notes.
+
+=== WORDS AND DYNAMICS ===
+2.296 / 2.301: a split marking (`f legato`) -- GATHER gather_page_claims files Q.CLAIMED_AREA owner dynamic for the dynamic, owner word for the
+  word incl. edge letters. Read by stroke_owner (claims), claim_readout, EVALUATE pair_word_and_dynamic -> Q.MARKING, export.   FED
+2.303 part 2 (letters inside a READ word): GATHER only -- gather.py:16471 `letters_of_word_on`, claims.letters_of_the_word decides by the RUN's centre
+  vs the text's dynamic tokens and files the letters' box as the WORD's claim (source direction_word, letters_of_word=True).
+  read by: stroke_owner/claim_final/ink_consult (the ink)                                                             FED
+  NOT read by: text.adjudicate_dynamic, which decides the same question again with its own older rule (_letter_of_a_known_word /
+    _token_is_a_word, per LETTER box, INSIDE_READ_WORD_SHARE) and writes or withholds the dynamic from that.                FED DIFFERENTLY (two rules, two stages)
+  -> can disagree at the boundary: ink claimed as the word while the dynamic is written plain, or the reverse.
+2.303 part 1 (unread line written as the sibling staff's word): text.unread_text_lines / letter_in_unread_line (ADJUDICATE) withholds letters;
+  adjudicate_direction writes GUESSED or UNREAD; export.py:4547 and lilypond.py:350 write them.                               FED
+Q.DYNAMIC_ANCHOR (text.adjudicate_dynamic_anchor): produced, read by NO stage; export places dynamics by bar/x from Q.DYNAMIC.  STARVED consumer side
+  (reach.KNOWN_GAPS "The entry LEAVES this list the day `export.py` reads it").
+
+=== THE CHECK ===
+claim_final static reports 4 open findings "consulted generically but MARK_ONLY by decision" for arc_trace and hairpin_trace x notehead and rest.
+  It reads the constant by regex (claim_final.py:192 `re.search(r"MARK_ONLY\s*=\s*frozenset\(\{([^}]*)\}\)", ...)`), i.e. the OFF arm.
+  With OMR_PAGE_LEDGER_OWNS ON (the default) mark_only() is empty: those claims REFUSE heads and rests today. The finding describes a state that is not in force.
+Stale comments: page_arcs.py doc and gather.py:18176 say OMR_PAGE_ARCS "default OFF ... NOTHING READS THE ROWS" (it is on, and the binder reads them);
+  export._page_arc_plan docstring "(`OMR_PAGE_ARC_WRITE`, default OFF)"; arc_claim.rule_enabled "(default OFF ...)".
+
+
+2.331 step 2, part (c): beams, flags, whole-bar rests, key flats, voices, the check. STAGED only, origin/main 0fdb1d71a. Read from code; nothing run on real output.
+Format: mark -> found from -> claims -> files -> read by -> written.
+
+FLAGS (predicate code, default today)
+  OMR_ONE_BEAM_COUNT ON (deny-list, rhythm.one_beam_count_enabled)   OMR_PAGE_BEAMS_RETIRE_A OFF (allow-list, page_beams.retire_a_enabled)
+  2.306 r14 flag rules ON (no env; rhythm.flag_levels_by_hooks / flag_hangs_right_of, export.beam_stream_keeping_flags)
+  OMR_WHOLE_REST_SEARCH_OWN_BAR ON (gather + export, deny-list)  OMR_FOUND_WHOLE_REST ON  OMR_WHOLE_REST_PLAIN ON
+  OMR_KEY_OBJECT_COUNTS_FLATS ON (deny-list)   OMR_TWO_STEMS_TWO_NOTES ON   OMR_BAR_SUM_CONFIRM_ONLY "narrowed" (default arm a)
+
+1. BEAM (2.318 one count)
+  found from: the stroke map on the staff-erased raster (Q.STROKE), the stem found by touching ink and followed to its far end.
+  claims: nothing (2.322: boxed beams claim through the box tiers; the count itself files no claim).
+  files: nothing new. It is computed inside ADJUDICATE rhythm.adjudicate_duration -> _one_beam_count -> beam_strokes.beam_count; result goes into the Q.DURATION verdict: value.beam_levels, reason ("beams_ambiguous" when it cannot tell), detail levels_certain / levels_possible / one_beam_count.
+  old readers: A rhythm._beam_levels (bar crop, Q.BEAM_STROKE reader cv_lines) and C rhythm._stem_tip_strokes -- STILL RUN on every head; their result is overwritten for the count (rhythm.py ~5448-5462) but NOT for:
+    - detail "beams_by_stem": len(joined) (rhythm.py:5621) -- `joined` is A's stem join, computed before the one-count block and left "untouched".
+    - beam_evidence from `_beam_state(ev, cell)` (the CV bar reader's state) where the count finds no beam.
+    - C still feeds the flag hook count (2.306 r14) and the diagnostic tips_honour_claims.
+  read by:
+    export._annotate_beams_for -> _legacy.annotate_beams (LEGACY grouping, x only) over _beam_boxes_by_cell = Q.BEAM_STROKE rows of reader cv_lines (reader A's strokes) -- FED DIFFERENTLY: the count sets each note's beam_levels, reader A's strokes (else plain adjacency) decide which notes share one beam in the file.
+    export.flagged_outside_a_joined_beam / _value_from_its_own_flag / _beam_joined (2.306 r14) -- FED DIFFERENTLY: "if any(d.get("beams_by_stem") or d.get("levels_certain") for d in seen): return False" -- half old reader (beams_by_stem), half new count (levels_certain).
+    consequences._eighth_evidence ("beam_joined_to_stem" from beams_by_stem) -> _shortens_without_evidence -> reconcile_duration and inferences.solve_bare_stem_bar -- FED BY THE OLD READER, dormant under OMR_BAR_SUM_CONFIRM_ONLY=narrowed.
+    consequences.bare_stem_confirmable, inferences rule 6 BARE_STEM_REASON = "beam_discounted_uncertain", inferences.arc_ink_not_beam_decline, one_note.SOLID_READINGS ("stem_tip_reads_no_beam", "beam_discounted_uncertain"), rhythm 2.146 stem-tip-decides and 2.170 off-the-tip -- STARVED: all need discount/ink/far_removed_all_marks, which the ON block sets False ("beyond_guarded = discount_removed_all_marks = far_removed_all_marks = False"; ink_dropped = {}). Reachable only where head_box is None.
+    judged / lane_report -- read the written file: FED.
+  written: beam levels from the count; grouping from reader A's strokes; a narrowing marked.
+
+2. FLAG (2.306 r14)
+  found from: detector flag boxes attached to the stem (rhythm._attached_flags, now "a flag hangs right of its own stem"), hook count at the stem tip from reader C (_stem_tip_hook_count).
+  claims: nothing new.
+  files: Q.DURATION detail flags_attached, flag_levels, flag_hooks_counted, flag_class_levels; reason hooks_counted / flags_disagree.
+  old reader: class-name level -- replaced by the hook count only where the count is lower ("never raises").
+  read by: export._value_from_its_own_flag (flags_attached) -- FED; consequences._eighth_evidence -- FED; inferences arc_ink_not_beam_decline -- FED (but its BARE_STEM_REASON gate is starved, see 1).
+  written: a flagged note written flagged, never put in a beam group unless a joined beam (see 1: beams_by_stem from reader A) stands over its stem.
+
+3. WHOLE-BAR REST (2.315)
+  found from: ink in the bar (gather.gather_empty_bar_rest_search), every bar now, measured by the rest's ink.
+  claims: none (a found rest claims no ink; 2.322 lists rests as unclaimed).
+  files: Q.EMPTY_BAR_REST_SEARCH (True/False, detail ink_bbox_canonical, bbox_page_px) or an abstention no_mask / no_staff_geometry; ADJUDICATE rest_search.adjudicate_empty_bar_whole_rest -> Q.EMPTY_BAR_WHOLE_REST decided "whole_rest_found_by_search" or abstains.
+  old reader: the same function limited to boxless bars -- same code, the flag widens it; OFF branch reachable only by override.
+  read by: export._place_found_whole_rests -- FED (plain where the bar holds no other head/rest box, else blue); gather 2.55 lowconf rescue -- FED; stroke_owner._found_whole_rests -- FED. EVALUATE size_measure_rest / bar_length / meter-from-bars do NOT see it (it is injected at EXPORT) -- unchanged from before 2.315, not a new gap.
+  written: a whole-bar rest, plain or blue.
+
+4. KEY FLATS (2.302)
+  found from: the raster's flat stems (key_object.flat_stems_v2) beside the pieces (staff_run).
+  files: the same res dict {"pieces", "reason", "from_stems", "pieces_before"} plus a new "extra_pieces" key; the key object's claim Q.CLAIMED_AREA (gather.py:15647, owner key).
+  read by: key_object.find_object counts len(pieces) -- FED; extra_pieces read by nothing (record only).
+  written: the key from the count.
+
+5. VOICES (2.314 r5)
+  found from: two decided stems with different values at one place (export only).
+  files: nothing on the record; export streams with <forward>.
+  read by: lilypond._render_bar kind "two_voice" (skips) -- FED; judged / counted_marks read the written file -- FED.
+
+THE CHECK
+  reach.survey: "if not p and not d: state = GHOST ... elif not r: UNREAD ... else LIVE" -- `d` is a `wants` declaration or an abstention, so a quantity read by a consumer and declared by one, with no observe() anywhere, is LIVE (Q.CLEF_LOCATED until 02b22a04c). Quantity-level only: never sees a detail key (beams_by_stem), a reason word (beam_discounted_uncertain), or a reader name a consumer filters on. A producer behind a default-OFF flag (Q.PAGE_HEAD) counts as a producer. 70 NOT_A_STAGE modules are not walked (today this only hides reads: bar_length Q.EVENT, one_note Q.VOICES, head_extent, hairpin_reach Q.WEDGE_BOX).
+  claim_final static: reads MARK_ONLY with a regex on the source (claim_final.py:192) instead of calling mark_only(); with OMR_PAGE_LEDGER_OWNS ON mark_only() is empty, so its 4 "mark only" findings describe the OFF tree.
+  Mechanical Q map (scratch qmap.py over every staged file): no quantity with a real read and no producer once loop-variable producers (Q.STEM, Q.DYNAMIC_BAND_POSITION via a variable) and review/human_evidence rows (CLEF_GLYPH, CLEF_POSITION, HUMAN_BOX_VERDICT) are counted; producer with no consumer: arpeggiato_is_not_an_arpeggiato, barline_column_fit, cell_position_basis, dynamic_anchor, meter_glyph_position, page_beam_tip, page_head, system_membership, systemic_column, vertical_run -- all already reach KNOWN_GAPS or listed by reach.

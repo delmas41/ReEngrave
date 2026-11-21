@@ -15809,10 +15809,9 @@ def gather_clef_slot_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict
                 log.abstain(ssub, Q.CLAIMED_AREA, reader=READERS.CV_CLEF_SLOT_CLAIM, frame=frame_cell(0), reason=ABSTAIN.NO_INK,
                             cell=0, owner=CL.OWNER_CLEF, unit="area", why="slot_narrower_than_a_space", source="clef_slot")
                 continue
-            located = list(log.rows(Q.CLEF_LOCATED, ssub))
             dets0 = detections.get(R.cell(p, sys_idx, li, 0).to_key(), ())
             inside = _claim_boxes_inside(binary, area, dets0, c0, lambda gi: R.glyph(p, sys_idx, li, 0, gi).to_key(), lines, sp)
-            owner_row = located[0].id if located else None
+            owner_row = None                               # 2.324: no clef read on cell 0 precedes this (the locator is retired)
             log.observe(ssub, Q.CLAIMED_AREA, area, reader=READERS.CV_CLEF_SLOT_CLAIM, frame=frame_cell(0), cell=0,
                         owner=CL.OWNER_CLEF, owner_row=owner_row, owner_glyph=None, unit="area", standing="READ", source="clef_slot",
                         boxes_inside=inside, space_page_px=round(sp, 3))

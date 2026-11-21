@@ -54,6 +54,13 @@ from tools.omr.tests._staged_fixtures import fresh_log as _log
 SUB = R.staff(0, 0, 0)
 
 
+def _pagewide_clef(log, sub, kind):
+    """ROADMAP 2.324: the page-wide pass's READ header claim of this staff's clef (the CV locator is retired)."""
+    log.observe(sub, Q.CLAIMED_AREA, [10.0, 0.0, 40.0, 80.0], reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0",
+                cell=0, owner="clef", owner_row=None, owner_glyph=None, unit="area", standing="READ",
+                source="clef_pagewide", change=False, kind=kind, family=None, boxes_inside={})
+
+
 def _file_clef_box(log: Log, *, reader: str, glyph: str, position: float,
                     y_center: float = 180.0) -> None:
     """The two rows `review/human_evidence.py` files for ONE clef-class box
@@ -185,7 +192,7 @@ class TestUnplacedClefCLeavesGeometryToDecide(unittest.TestCase):
         self.assertIs(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value, "tenor")
         # Geometry alone names it -- the POSITION row, not the glyph row
-        # (`_locator_terms`'s own idiom), because the class claimed nothing.
+        # (the retired locator terms' own idiom), because the class claimed nothing.
         pos_row = log.rows(Q.CLEF_POSITION, SUB)[0]
         glyph_row = log.rows(Q.CLEF_GLYPH, SUB)[0]
         self.assertIn(pos_row.id, v.used)
@@ -230,21 +237,20 @@ class TestAContradictionNamesNothing(unittest.TestCase):
 
     def test_a_contradicting_row_STILL_supports_a_name_someone_else_gave(self):
         """Falling through means falling through to the SAME support-only
-        path a detector's row takes -- not disappearing. The locator names
-        `tenor` independently; the human's contradicting row still adds
+        path a detector's row takes -- not disappearing. The page-wide pass
+        names `tenor` independently (2.324; was the CV locator); the human's contradicting row still adds
         `W_C_FAMILY` to it, exactly as an ordinary detector `clefC*` row
         would."""
         log = _log()
         _file_clef_box(log, reader=READERS.SEAN, glyph="clefCAlto",
                         position=2.0)
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
         self.assertEqual(v.value, "tenor")
         self.assertAlmostEqual(
             v.detail["scores"]["tenor"],
-            clef_mod.W_LOCATOR + clef_mod.W_C_FAMILY)
+            clef_mod.W_PAGEWIDE + clef_mod.W_C_FAMILY)
 
 
 class TestASpecificClassNamesAloneWhenUnconfirmable(unittest.TestCase):
@@ -312,14 +318,13 @@ class TestAnUnplacedAmbiguousPositionStillNamesNothingItself(unittest.TestCase):
         itself."""
         log = _log()
         _file_clef_box(log, reader=READERS.SEAN, glyph="clefC", position=3.0)
-        log.observe(SUB, Q.CLEF_LOCATED, "tenor", reader=READERS.CV_LOCATOR,
-                    frame="header_window", score=0.88, family="C", line=4)
+        _pagewide_clef(log, SUB, "tenor")
         adjudicate.run(log)
         v = log.verdict(Q.CLEF, SUB)
         self.assertEqual(v.value, "tenor")
         self.assertAlmostEqual(
             v.detail["scores"]["tenor"],
-            clef_mod.W_LOCATOR + clef_mod.W_C_FAMILY)
+            clef_mod.W_PAGEWIDE + clef_mod.W_C_FAMILY)
 
 
 class TestOnlyTheClosedHumanReadersQualify(unittest.TestCase):
