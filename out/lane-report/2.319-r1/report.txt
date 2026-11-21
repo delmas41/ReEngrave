@@ -1,0 +1,26 @@
+LANE REPORT  OMR_LANE_2_319 (OFF=0 ON=1)  --from adjudicate
+  OMR_LANE_2_319: named nowhere in the tree (--allow-unknown-flag)
+
+litolff  pages [2, 4, 6, 8, 9, 10, 11, 16]  (5696 notes+rests OFF, 5695 ON, 5693 paired)
+  file:   notes +2 -3 | flags +25 -13 ~1 | beams +14 -23 ~28 | note values ~5 | blue marks +1 -1 | words +1 -2
+  red bars 155 -> 154 | notes not written 2076 -> 2076
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 6 of 9107 (e.g. glyph/11/0/1/9/2, glyph/16/1/7/2/10, glyph/16/1/7/2/3)
+  Sean's judged answers (308 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 21 (at another id than asked 2) | by id key, no position 402 | position but no mark here 5
+  NOT JUDGED: 115 changed places no tile of Sean's covers (1 are covered; 3 have no page place): beam 65, blue 1, flag 39, note 5, value 5 -> unjudged.txt
+
+brahms  pages [0, 4, 5, 8, 12, 14, 19, 25]  (6752 notes+rests OFF, 6758 ON, 6752 paired)
+  file:   notes +6 | accidentals +4 | dots +6 | flags +19 -9 | beams +8 -20 ~23 | note values ~2 | blue marks +1 -2 | words +3 -3
+  red bars 137 -> 139 | notes not written 2991 -> 2985
+  control: OFF reproduces the record (ON is the arm that moves): duration/rest verdicts differing from the record OFF 0 / ON 12 of 12350 (e.g. glyph/12/0/1/2/14, glyph/12/0/1/2/6, glyph/14/1/9/1/0)
+  Sean's judged answers (261 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 21 (at another id than asked 4) | by id key, no position 382 | position but no mark here 13
+  NOT JUDGED: 97 changed places no tile of Sean's covers (4 are covered; 5 have no page place): accidental 4, beam 49, blue 3, dot 6, flag 26, note 6, value 2, words 1 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.78-phase2-review tile 5 ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15']  was unwritten_wrong
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 121 s

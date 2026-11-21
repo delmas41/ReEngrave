@@ -1,0 +1,509 @@
+{
+ "flags": [
+  [
+   "OMR_LANE_2_319",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "adjudicate",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    4,
+    6,
+    8,
+    9,
+    10,
+    11,
+    16
+   ],
+   "counts": {
+    "note": {
+     "gained": 2,
+     "lost": 3,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 14,
+     "lost": 23,
+     "changed": 28
+    },
+    "flag": {
+     "gained": 25,
+     "lost": 13,
+     "changed": 1
+    },
+    "blue": {
+     "gained": 1,
+     "lost": 1,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 5
+    },
+    "words": {
+     "gained": 1,
+     "lost": 2,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    5696,
+    5695
+   ],
+   "paired": 5693,
+   "red_bars": [
+    155,
+    154
+   ],
+   "notes_not_written": [
+    2076,
+    2076
+   ],
+   "control": {
+    "reproduces": "off",
+    "off": {
+     "stored": 9107,
+     "same": 9107,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 9107,
+     "same": 9101,
+     "differ": 6,
+     "first_differ": [
+      "glyph/11/0/1/9/2",
+      "glyph/16/1/7/2/10",
+      "glyph/16/1/7/2/3",
+      "glyph/16/1/7/2/5",
+      "glyph/16/1/7/2/7",
+      "glyph/2/0/5/15/5"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 308,
+    "matched": {
+     "off": {
+      "key": 402,
+      "place": 21,
+      "place_moved_id": 2,
+      "place_no_mark": 5
+     },
+     "on": {
+      "key": 402,
+      "place": 21,
+      "place_moved_id": 2,
+      "place_no_mark": 5
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    600.7,
+    524.8
+   ],
+   "unjudged": {
+    "n": 115,
+    "judged": 1,
+    "no_place": 3,
+    "by_kind": {
+     "note": 5,
+     "beam": 65,
+     "flag": 39,
+     "value": 5,
+     "blue": 1
+    },
+    "places": [
+     "litolff p2 2/0/4/5  beam lost end",
+     "litolff p2 2/0/4/5  beam changed end (was continue)",
+     "litolff p2 2/0/4/5  blue gained guessed",
+     "litolff p2 2/0/4/5  note lost eighth",
+     "litolff p2 2/0/7/1  beam gained begin",
+     "litolff p2 2/0/7/1  beam changed continue (was begin)",
+     "litolff p2 2/0/7/1  flag lost eighth",
+     "litolff p2 2/0/10/15  beam lost begin",
+     "litolff p2 2/0/10/15  beam changed begin (was continue)",
+     "litolff p2 2/0/10/15  flag gained eighth",
+     "litolff p2 2/1/9/3  beam gained begin",
+     "litolff p2 2/1/9/3  beam changed continue (was begin)",
+     "litolff p2 2/1/9/3  flag lost eighth",
+     "litolff p4 4/1/2/4  beam changed continue (was end)",
+     "litolff p4 4/1/2/4  beam gained end",
+     "litolff p4 4/1/2/4  flag lost eighth",
+     "litolff p4 4/1/7/0  beam changed continue (was end)",
+     "litolff p4 4/1/7/0  beam gained end",
+     "litolff p4 4/1/7/0  flag lost eighth",
+     "litolff p4 4/1/7/1  beam changed end (was continue)",
+     "litolff p4 4/1/7/1  beam lost end",
+     "litolff p4 4/1/7/1  flag gained eighth",
+     "litolff p4 4/1/8/4  beam lost begin",
+     "litolff p4 4/1/8/4  beam changed begin (was continue)",
+     "litolff p4 4/1/8/4  flag gained eighth",
+     "litolff p4 4/1/8/5  beam lost continue",
+     "litolff p4 4/1/8/5  beam changed end (was continue)",
+     "litolff p4 4/1/8/5  beam lost end",
+     "litolff p4 4/1/8/5  flag gained eighth",
+     "litolff p4 4/1/8/5  flag gained eighth",
+     "litolff p6 6/1/0/1  beam gained begin",
+     "litolff p6 6/1/0/1  beam changed continue (was begin)",
+     "litolff p6 6/1/0/1  flag lost eighth",
+     "litolff p6 6/1/3/9  beam lost begin",
+     "litolff p6 6/1/3/9  beam lost end",
+     "litolff p6 6/1/3/9  flag gained eighth",
+     "litolff p6 6/1/3/9  flag gained eighth",
+     "litolff p6 6/1/8/10  beam gained begin",
+     "litolff p6 6/1/8/10  beam changed continue (was begin)",
+     "litolff p6 6/1/8/10  flag lost eighth",
+     "litolff p8 8/1/2/0  flag changed eighth (was 16th)",
+     "litolff p8 8/1/2/0  value changed eighth (was 16th)",
+     "litolff p8 8/1/7/17  beam lost begin",
+     "litolff p8 8/1/7/17  beam changed begin (was continue)",
+     "litolff p8 8/1/7/17  flag gained eighth",
+     "litolff p8 8/1/8/15  beam lost begin",
+     "litolff p8 8/1/8/15  beam changed begin (was continue)",
+     "litolff p8 8/1/8/15  flag gained eighth",
+     "litolff p8 8/1/8/17  beam lost begin",
+     "litolff p8 8/1/8/17  beam changed begin (was continue)",
+     "litolff p8 8/1/8/17  flag gained eighth",
+     "litolff p8 8/1/9/14  beam lost begin",
+     "litolff p8 8/1/9/14  beam changed begin (was continue)",
+     "litolff p8 8/1/9/14  flag gained eighth",
+     "litolff p8 8/1/9/16  beam lost begin",
+     "litolff p8 8/1/9/16  beam changed begin (was continue)",
+     "litolff p8 8/1/9/16  flag gained eighth",
+     "litolff p8 8/1/9/17  beam lost begin",
+     "litolff p8 8/1/9/17  beam changed begin (was continue)",
+     "litolff p8 8/1/9/17  flag gained eighth",
+     "litolff p9 9/0/3/0  beam lost begin",
+     "litolff p9 9/0/3/0  beam changed begin (was continue)",
+     "litolff p9 9/0/3/0  flag gained eighth",
+     "litolff p9 9/0/10/1  beam lost begin",
+     "litolff p9 9/0/10/1  beam changed begin (was continue)",
+     "litolff p9 9/0/10/1  flag gained eighth",
+     "litolff p10 10/0/7/1  beam lost begin",
+     "litolff p10 10/0/7/1  beam changed begin (was continue)",
+     "litolff p10 10/0/7/1  flag gained eighth",
+     "litolff p10 10/0/9/10  beam gained begin",
+     "litolff p10 10/0/9/10  beam gained continue",
+     "litolff p10 10/0/9/10  beam gained continue",
+     "litolff p10 10/0/9/10  beam gained end",
+     "litolff p10 10/0/9/10  flag lost eighth",
+     "litolff p10 10/0/9/10  flag lost eighth",
+     "litolff p10 10/0/9/10  flag lost eighth",
+     "litolff p10 10/0/9/10  flag lost eighth",
+     "litolff p10 10/1/9/9  beam lost begin",
+     "litolff p10 10/1/9/9  beam changed begin (was continue)",
+     "litolff p10 10/1/9/9  flag gained eighth",
+     "litolff p10 10/1/9/10  beam lost begin",
+     "litolff p10 10/1/9/10  beam changed begin (was end)",
+     "litolff p10 10/1/9/10  beam changed continue (was begin)",
+     "litolff p10 10/1/9/10  flag gained eighth",
+     "litolff p10 10/1/9/11  beam lost begin",
+     "litolff p10 10/1/9/11  beam changed begin (was continue)",
+     "litolff p10 10/1/9/11  flag gained eighth",
+     "litolff p10 10/1/10/9  beam lost begin",
+     "litolff p10 10/1/10/9  beam changed begin (was continue)",
+     "litolff p10 10/1/10/9  beam changed continue (was end)",
+     "litolff p10 10/1/10/9  beam gained end",
+     "litolff p10 10/1/10/9  flag gained eighth",
+     "litolff p10 10/1/10/9  flag lost eighth",
+     "litolff p11 11/1/10/11  beam lost begin",
+     "litolff p11 11/1/10/11  beam changed begin (was continue)",
+     "litolff p11 11/1/10/11  flag gained eighth",
+     "litolff p16 16/0/8/15  beam lost begin",
+     "litolff p16 16/0/8/15  beam changed begin (was continue)",
+     "litolff p16 16/0/8/15  flag gained eighth",
+     "litolff p16 16/1/7/2  beam gained begin",
+     "litolff p16 16/1/7/2  beam gained continue",
+     "litolff p16 16/1/7/2  beam gained end",
+     "litolff p16 16/1/7/2  flag lost eighth",
+     "litolff p16 16/1/7/2  flag lost eighth",
+     "litolff p16 16/1/7/2  flag gained eighth",
+     "litolff p16 16/1/7/2  flag gained eighth",
+     "litolff p16 16/1/7/2  flag gained eighth",
+     "litolff p16 16/1/7/2  note lost eighth",
+     "litolff p16 16/1/7/2  note lost eighth",
+     "litolff p16 16/1/7/2  note gained eighth",
+     "litolff p16 16/1/7/2  note gained eighth",
+     "litolff p16 16/1/7/2  value changed eighth (was quarter)",
+     "litolff p16 16/1/7/2  value changed eighth (was quarter)",
+     "litolff p16 16/1/7/2  value changed eighth (was quarter)",
+     "litolff p16 16/1/7/2  value changed eighth (was quarter)"
+    ]
+   }
+  },
+  "brahms": {
+   "pages": [
+    0,
+    4,
+    5,
+    8,
+    12,
+    14,
+    19,
+    25
+   ],
+   "counts": {
+    "note": {
+     "gained": 6,
+     "lost": 0,
+     "changed": 0
+    },
+    "dot": {
+     "gained": 6,
+     "lost": 0,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 4,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 1,
+     "lost": 2,
+     "changed": 0
+    },
+    "beam": {
+     "gained": 8,
+     "lost": 20,
+     "changed": 23
+    },
+    "flag": {
+     "gained": 19,
+     "lost": 9,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 2
+    },
+    "words": {
+     "gained": 3,
+     "lost": 3,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    6752,
+    6758
+   ],
+   "paired": 6752,
+   "red_bars": [
+    137,
+    139
+   ],
+   "notes_not_written": [
+    2991,
+    2985
+   ],
+   "control": {
+    "reproduces": "off",
+    "off": {
+     "stored": 12350,
+     "same": 12350,
+     "differ": 0,
+     "first_differ": []
+    },
+    "on": {
+     "stored": 12350,
+     "same": 12338,
+     "differ": 12,
+     "first_differ": [
+      "glyph/12/0/1/2/14",
+      "glyph/12/0/1/2/6",
+      "glyph/14/1/9/1/0",
+      "glyph/14/1/9/1/1",
+      "glyph/14/1/9/1/5",
+      "glyph/14/1/9/1/9",
+      "glyph/25/0/11/3/1",
+      "glyph/25/0/3/1/3",
+      "glyph/5/0/4/5/13",
+      "glyph/5/0/4/7/11"
+     ]
+    }
+   },
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 261,
+    "matched": {
+     "off": {
+      "key": 382,
+      "place": 21,
+      "place_moved_id": 4,
+      "place_no_mark": 13
+     },
+     "on": {
+      "key": 382,
+      "place": 21,
+      "place_moved_id": 4,
+      "place_no_mark": 13
+     }
+    },
+    "same_music": [],
+    "not_found": [
+     {
+      "item": "2.78-phase2-review",
+      "tile": "5",
+      "subject": [
+       "glyph/0/0/12/1/1",
+       "glyph/0/0/12/1/15"
+      ],
+      "answer": "16th",
+      "off": "wrong",
+      "now": "narrowed [0.25, 0.5], answer in set (beams_ambiguous); narrowed [0.5, 1.0], answer NOT in set (beams_ambiguous)",
+      "was": "unwritten_wrong",
+      "why": "ON file writes no event at that box"
+     }
+    ],
+    "invented_removed": []
+   },
+   "seconds": [
+    1527.7,
+    814.6
+   ],
+   "unjudged": {
+    "n": 97,
+    "judged": 4,
+    "no_place": 5,
+    "by_kind": {
+     "note": 6,
+     "dot": 6,
+     "accidental": 4,
+     "blue": 3,
+     "beam": 49,
+     "flag": 26,
+     "value": 2,
+     "words": 1
+    },
+    "places": [
+     "brahms p0 0/0/9/1  beam lost begin",
+     "brahms p0 0/0/9/1  beam changed begin (was continue)",
+     "brahms p0 0/0/9/1  flag gained eighth",
+     "brahms p0 0/0/9/4  beam changed continue/continue (was end/end)",
+     "brahms p0 0/0/10/5  beam lost end",
+     "brahms p0 0/0/10/5  beam changed end/end (was continue/end)",
+     "brahms p0 0/0/10/5  flag gained eighth",
+     "brahms p0 0/0/12/5  beam changed continue/continue (was end/end)",
+     "brahms p0 0/0/12/5  beam gained end/end",
+     "brahms p0 0/0/12/5  flag lost 16th",
+     "brahms p4 4/0/10/8  beam gained begin",
+     "brahms p4 4/0/10/8  beam changed continue (was begin)",
+     "brahms p4 4/0/10/8  flag lost eighth",
+     "brahms p4 4/1/3/3  beam lost begin",
+     "brahms p4 4/1/3/3  beam lost end",
+     "brahms p4 4/1/3/3  flag gained eighth",
+     "brahms p4 4/1/3/3  flag gained eighth",
+     "brahms p5 5/0/0/7  beam changed continue/continue (was end/end)",
+     "brahms p5 5/0/0/7  beam gained end/end",
+     "brahms p5 5/0/0/7  flag lost 16th",
+     "brahms p5 5/0/5/2  beam lost continue",
+     "brahms p5 5/0/5/2  beam changed end (was continue)",
+     "brahms p5 5/0/5/2  beam lost end",
+     "brahms p5 5/0/5/2  flag gained eighth",
+     "brahms p5 5/0/5/2  flag gained eighth",
+     "brahms p5 5/0/5/3  beam lost continue",
+     "brahms p5 5/0/5/3  beam changed end (was continue)",
+     "brahms p5 5/0/5/3  beam lost end",
+     "brahms p5 5/0/5/3  flag gained eighth",
+     "brahms p5 5/0/5/3  flag gained eighth",
+     "brahms p5 5/0/5/4  beam lost continue",
+     "brahms p5 5/0/5/4  beam changed end (was continue)",
+     "brahms p5 5/0/5/4  beam lost end",
+     "brahms p5 5/0/5/4  flag gained eighth",
+     "brahms p5 5/0/5/4  flag gained eighth",
+     "brahms p8 8/0/1/7  accidental gained flat",
+     "brahms p8 8/0/1/7  blue lost guessed",
+     "brahms p8 8/0/1/7  blue lost guessed",
+     "brahms p8 8/0/1/7  dot gained .",
+     "brahms p8 8/0/1/7  dot gained .",
+     "brahms p8 8/0/1/7  note gained quarter",
+     "brahms p8 8/0/1/7  note gained quarter",
+     "brahms p8 8/0/1/7  words lost unread",
+     "brahms p8 8/1/8/11  beam lost begin",
+     "brahms p8 8/1/8/11  beam changed begin (was continue)",
+     "brahms p8 8/1/8/11  flag gained eighth",
+     "brahms p8 8/1/9/11  beam lost begin",
+     "brahms p8 8/1/9/11  beam changed begin (was continue)",
+     "brahms p8 8/1/9/11  flag gained eighth",
+     "brahms p14 14/0/10/4  beam lost begin",
+     "brahms p14 14/0/10/4  beam changed begin (was continue)",
+     "brahms p14 14/0/10/4  flag gained eighth",
+     "brahms p14 14/0/11/1  beam changed begin (was continue)",
+     "brahms p14 14/0/11/1  beam changed end (was continue)",
+     "brahms p14 14/0/11/4  beam lost begin",
+     "brahms p14 14/0/11/4  beam changed begin (was continue)",
+     "brahms p14 14/0/11/4  flag gained eighth",
+     "brahms p14 14/0/11/7  beam changed begin (was continue)",
+     "brahms p14 14/0/11/7  beam changed end (was continue)",
+     "brahms p14 14/1/9/1  accidental gained flat",
+     "brahms p14 14/1/9/1  accidental gained flat",
+     "brahms p14 14/1/9/1  accidental gained flat",
+     "brahms p14 14/1/9/1  blue gained guessed",
+     "brahms p14 14/1/9/1  dot gained .",
+     "brahms p14 14/1/9/1  dot gained .",
+     "brahms p14 14/1/9/1  dot gained .",
+     "brahms p14 14/1/9/1  dot gained .",
+     "brahms p14 14/1/9/1  note gained quarter",
+     "brahms p14 14/1/9/1  note gained quarter",
+     "brahms p14 14/1/9/1  note gained quarter",
+     "brahms p14 14/1/9/1  note gained quarter",
+     "brahms p19 19/1/9/4  beam gained begin",
+     "brahms p19 19/1/9/4  beam changed continue (was begin)",
+     "brahms p19 19/1/9/4  flag lost eighth",
+     "brahms p19 19/1/9/6  beam changed continue (was begin)",
+     "brahms p25 25/0/2/1  beam lost begin",
+     "brahms p25 25/0/2/1  beam lost continue",
+     "brahms p25 25/0/2/1  beam lost continue",
+     "brahms p25 25/0/2/1  beam lost end",
+     "brahms p25 25/0/2/1  flag gained eighth",
+     "brahms p25 25/0/2/1  flag gained eighth",
+     "brahms p25 25/0/2/1  flag gained eighth",
+     "brahms p25 25/0/2/1  flag gained eighth",
+     "brahms p25 25/0/3/1  flag lost eighth",
+     "brahms p25 25/0/3/1  value changed quarter (was eighth)",
+     "brahms p25 25/0/6/0  beam changed begin (was continue)",
+     "brahms p25 25/0/6/0  beam changed end (was continue)",
+     "brahms p25 25/0/6/1  beam changed begin (was continue)",
+     "brahms p25 25/0/6/1  beam changed end (was continue)",
+     "brahms p25 25/0/10/1  beam gained begin",
+     "brahms p25 25/0/10/1  beam gained end",
+     "brahms p25 25/0/10/1  flag lost eighth",
+     "brahms p25 25/0/10/1  flag lost eighth",
+     "brahms p25 25/0/11/3  beam lost begin",
+     "brahms p25 25/0/11/3  beam lost end",
+     "brahms p25 25/0/11/3  flag gained eighth",
+     "brahms p25 25/0/11/3  value changed quarter (was eighth)"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_LANE_2_319: named nowhere in the tree (--allow-unknown-flag)"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 120.6
+}
