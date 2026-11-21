@@ -16266,23 +16266,23 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                     # 2.324 r4: inside the line, the clef's own bar's traced lines (`cell_lines_page`), never the staff-wide ones
                     ll = CP.local_lines(ink, CP.cell_lines_page(c) or lines, sp, pb[0])
                 if is_g:
-                    # 2.324 r5: the ONE G test wherever the clef stands -- its ink past the staff both sides, and the box as one more
-                    # witness beside the spiral round line 2; inside the line it only NARROWS (one real case on our pages)
+                    # 2.324 r5/r6: the ONE G test wherever the clef stands -- its ink past the staff both sides and its curl round line 2;
+                    # inside the line it is READ only where the curl is seen, else refused (Sean r6 "Do what ever it takes")
                     # r5b: the detector's notehead boxes in this bar say where a head may stand; a head's own ink on the clef's
                     # ink refuses it (Sean's r5 tiles 1 and 10)
                     heads_k = [hb for hb in (_page_box(c, d2) for d2 in detections.get(R.cell(p, sys_idx, li, k).to_key(), ())
                                              if str(d2.smufl_name).startswith("notehead")) if hb]
-                    got = CP.read_g(ink, [pb[0], ll[0] - 2.5 * sp, pb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=True, heads=heads_k)
+                    got = CP.read_g(ink, [pb[0], ll[0] - 2.5 * sp, pb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=bool(in_head), heads=heads_k)
                 elif is_f:
                     # 2.324 r4/r5: the ONE F test wherever the clef stands (Sean 2026-11-20 "Teach it"): body at the top line, dot ink
                     # in both spaces round line 4, never a G's or a C's ink
                     got = CP.read_mid_f(str(d.smufl_name), pb, ink, ll, sp)
                 else:
                     got = CP.read_box(str(d.smufl_name), pb, ink, ll, sp, header=bool(page_only and in_head))
-                if not got["passed"] or (is_f and not got.get("plain")) or mid_g:
+                if not got["passed"] or (is_f and not got.get("plain")):
                     # 2.324 r4/r5: a read with no room on its cuts (they are measured on two plates) NARROWS -- inside the line a STRONG
                     # candidate (the clef in force stops there, its notes go unread); at the start of the staff no read (carried)
-                    strong = bool((mid_f or mid_g) and got["passed"])
+                    strong = bool(mid_f and got["passed"])
                     near.append({"x0": pb[0], "family": got["family"], "why": got["why"] or ("g_mid_line_narrows" if mid_g else "f_read_near_its_cut"), "box": gkey, "cls": str(d.smufl_name),
                                  **({"g_fill": got["g_fill"]} if got.get("g_fill") else {}), **({"strong": True} if strong else {})})
                     if page_only and got.get("why") != "g_over_a_notehead":
@@ -16463,7 +16463,7 @@ def _gather_clef_header_by_ink(log: Log, pws: Any, cells_of: Dict[int, Dict[int,
     is dependent on the clefs being correct"): a staff whose start-of-staff clef the page-wide pass did not read from a box -- the
     detector drew none, or it was refused -- has its clef read from its OWN INK in its place: the system's clef column (the other staves'
     header clef reads, left to right edge; only a clef stands before the key), on the header cell's own lines (`clef_pagewide.read_header_ink`:
-    C by bar and bowls, G by its ink past the staff and the spiral round line 2, F by its body at the top line and dot ink round line 4).
+    C by bar and bowls, G by its ink past the staff and its curl round line 2, F by its body at the top line and dot ink round line 4).
     A plain read files the one READ claim (`witnesses` name `clef_column`, never a box); a read near its cuts or no shape files an abstention
     and the staff's clef is carried from its other systems and counted, as before. Measured on the frozen sample's 371 start-of-staff clefs
     read as if no box were drawn: 0 of another kind; treble 214/221, bass 82/104 plain, C 46/46."""
@@ -16505,7 +16505,7 @@ def _gather_clef_header_by_ink(log: Log, pws: Any, cells_of: Dict[int, Dict[int,
                         owner=CL.OWNER_CLEF, owner_row=None, owner_glyph=None, unit="area", standing="READ", source=CP.SOURCE,
                         change=False, kind=got["kind"], family=got["family"], line=got.get("line"), residual=got.get("residual"),
                         witnesses=["clef_column", got.get("witness") or "shape"], detector_box=None,
-                        shape=({"spiral": got.get("spiral")} if got["family"] == "G" else None), boxes_inside=inside,
+                        shape=({"curl": got.get("curl")} if got["family"] == "G" else None), boxes_inside=inside,
                         space_page_px=round(sp, 3))
             if stroke_cells:
                 from . import stroke_map as SM

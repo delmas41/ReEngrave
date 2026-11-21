@@ -445,11 +445,11 @@ class TestRound5ClefFromInk:
         pc = CP.glyph_piece(ink, meta["place"], ll, meta["sp"])
         assert not CP.read_mid_f("clefF", pc["box"], ink, ll, meta["sp"], dots_beside_core=True)["passed"]
 
-    def test_the_spiral_is_the_second_witness_with_no_box_the_control_can_fail(self, on, monkeypatch):
+    def test_the_curl_is_the_second_witness_with_no_box_the_control_can_fail(self, on, monkeypatch):
         ink, meta, ll = _r5("nobox_treble_litolff_p6_s1_st0")
         got = CP.read_g(ink, meta["place"], ll, meta["sp"], box_witness=False)
-        assert got["passed"] and got["spiral"] >= CP.G_SPIRAL_MIN_SPACES2
-        monkeypatch.setattr(CP, "spiral_on_line2", lambda *a, **k: 0.0)
+        assert got["passed"] and got["curl"] >= CP.G_CURL_MIN_REGIONS
+        monkeypatch.setattr(CP, "curl_round_line2", lambda *a, **k: 0)
         assert not CP.read_g(ink, meta["place"], ll, meta["sp"], box_witness=False)["passed"]
 
     @staticmethod
@@ -459,29 +459,35 @@ class TestRound5ClefFromInk:
         return CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=True,
                          heads=meta["heads"] if heads else ())
 
-    def test_seans_mid_line_treble_clef_passes_the_one_g_test(self, on):
-        # Sean r5 tile 5, "treble clef" (Brahms p14 s1 staff 9): its ink past the staff, the spiral round line 2, no head on its ink
-        got = self._midg("midg_treble_brahms_p14_s1_st9")
-        assert got["passed"] and got["witness"] == "g_spiral" and not got["heads_on_ink"]
-
-    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
-    def test_seans_stem_and_half_note_chord_are_refused_outright(self, on, name):
-        # Sean r5 tile 1 "just a stem" (Litolff p10 s1 staff 4), tile 10 "2 half notes in a chord" (Litolff p9 s0 staff 3)
-        got = self._midg(name)
-        assert not got["passed"] and got["why"] == "g_over_a_notehead"
-        assert got["why"] in CP.MID_F_NOT_A_CLEF                                       # no carry stop, nothing narrowed
-
-    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
-    def test_without_the_head_never_the_box_passes_them_the_control_can_fail(self, on, name):
-        assert self._midg(name, heads=False)["passed"]
-
-    def test_the_half_note_chord_sits_inside_the_start_of_staff_treble_range_on_the_shape_alone(self, on):
-        # why tile 5 stays NARROWED inside the line: on the convention's shape (ink past the staff, the spiral round line 2) the chord
-        # passes too -- one real mid-line treble cannot carry a READ; only the head never separates them
-        ink, meta, ll = _r5("midg_never_litolff_p9_s0_st3")
+    def test_seans_mid_line_treble_clef_is_read_by_its_curl(self, on):
+        # Sean r5 tile 5, "treble clef" (Brahms p14 s1 staff 9): ink past the staff and the curl round line 2 (3 regions), no box needed
+        ink, meta, ll = _r5("midg_treble_brahms_p14_s1_st9")
         bb, sp = meta["box"], meta["sp"]
         got = CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=False)
-        assert got["passed"] and got["spiral"] >= CP.G_SPIRAL_MIN_SPACES2
+        assert got["passed"] and got["witness"] == "g_curl" and got["curl"] >= CP.G_CURL_MIN_REGIONS
+
+    @pytest.mark.parametrize("name,curl", [("midg_never_litolff_p10_s1_st4", 0), ("midg_never_litolff_p9_s0_st3", 1)])
+    def test_seans_stem_and_half_note_chord_are_refused_by_the_curl_alone(self, on, name, curl):
+        # Sean r5 tile 1 "just a stem" (no curl), tile 10 "2 half notes in a chord" (one ring, not a curl cut by a stroke): refused with
+        # no detector head box and no box witness -- the curl does the refusing by itself
+        ink, meta, ll = _r5(name)
+        bb, sp = meta["box"], meta["sp"]
+        got = CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=False)
+        assert not got["passed"] and got["why"] == "g_no_curl_round_line_2" and got["curl"] == curl
+
+    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
+    def test_with_the_curl_test_switched_off_they_pass_the_control_can_fail(self, on, monkeypatch, name):
+        ink, meta, ll = _r5(name)
+        bb, sp = meta["box"], meta["sp"]
+        monkeypatch.setattr(CP, "G_CURL_MIN_REGIONS", 0)
+        assert CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=False)["passed"]
+
+    @pytest.mark.parametrize("name", ["midg_never_litolff_p10_s1_st4", "midg_never_litolff_p9_s0_st3"])
+    def test_the_head_on_their_ink_is_a_second_witness(self, on, name):
+        ink, meta, ll = _r5(name)
+        bb, sp = meta["box"], meta["sp"]
+        got = CP.read_g(ink, [bb[0], ll[0] - 2.5 * sp, bb[2], ll[4] + 2.5 * sp], ll, sp, box_witness=True, heads=meta["heads"])
+        assert not got["passed"] and got["why"] == "g_over_a_notehead" and got["why"] in CP.MID_F_NOT_A_CLEF
 
     @pytest.mark.parametrize("name", NOBOX)
     def test_the_ink_read_clef_claims_only_what_a_clef_can_reach(self, on, name):

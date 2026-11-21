@@ -313,11 +313,19 @@ def read_mid_f(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence
     return dict(out, passed=True, plain=bool(plain), why=None, kind="bass", line=4, witness="f_dot_places")
 
 
-#: ROADMAP 2.324 r5: a G clef's spiral wraps the second line: a hole (paper enclosed by the clef's own ink) that line 2 from the bottom
-#: crosses, at least this big (square staff spaces). MEASURED on the frozen sample's start-of-staff clefs found by ink alone: 214 of 221
-#: treble clefs hold one (the rest 0.0-0.097); among clefs of the other kinds whose ink also runs past the staff both sides (1 bass, 1
-#: alto) the alto's bowl holds one (1.04) -- the C clef's own bar is read first. A cut on two plates.
-G_SPIRAL_MIN_SPACES2 = 0.1
+#: ROADMAP 2.324 r6 (Sean "Do what ever it takes"): a treble clef is one stroke that curls round the second line, and its own upright
+#: stroke runs down through the curl -- so the paper inside the curl is cut in two: paper the glyph's own ink encloses, on BOTH sides of
+#: that stroke, each across line 2. Round 5 counted a hole's SIZE, and the hollow heads of a half-note chord enclose holes too (Sean's r5
+#: tile 10): a hole is not a curl. The curl is counted as the enclosed paper regions that cross line 2's neighbourhood (within
+#: `G_CURL_BAND_SPACES` of it) side by side, separated by ink, each at least `G_CURL_MIN_SPACES2`; a curl needs `G_CURL_MIN_REGIONS`.
+#: MEASURED (the bridged glyph of each place, the cell's own lines): start-of-staff treble clefs of the frozen sample 208 of 221 have 2
+#: or more (13 have 0-1: read there by their box), bass 0 of 98; Sean's judged mid-line tiles: treble (tile 5) 3, half-note chord
+#: (tile 10) 1, stem (tile 1) 0; the 788 hollow heads of the nine touched pages looked at as a clef's place: 2 reach 2 with ink past
+#: the staff (one is the treble clef of Litolff p6 s1 staff 0 itself, one an 'ff' under a ledger note). C clefs' bowls reach 2 too --
+#: the C clef's own bar is read first. The band and the area are cuts on two plates; the count of 2 is the shape.
+G_CURL_BAND_SPACES = 0.3
+G_CURL_MIN_SPACES2 = 0.05
+G_CURL_MIN_REGIONS = 2
 
 
 def glyph_piece(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: float) -> Optional[Dict[str, Any]]:
@@ -340,20 +348,29 @@ def glyph_piece(ink: np.ndarray, place: Sequence[float], lines: Sequence[float],
     return {"box": [float(x0 + x), float(y0 + y), float(x0 + x + w), float(y0 + y + h)], "piece": lab[y:y + h, x:x + w] == i}
 
 
-def spiral_on_line2(pc: Dict[str, Any], lines: Sequence[float], sp: float) -> float:
-    """The largest hole of the glyph's own ink that line 2 from the bottom crosses (square staff spaces); 0.0 if none. Measures."""
+def curl_round_line2(pc: Dict[str, Any], lines: Sequence[float], sp: float) -> int:
+    """ROADMAP 2.324 r6: how many separate paper regions enclosed by the glyph's own ink lie across line 2 (from the bottom), side by
+    side -- the treble clef's curl cut by its own upright stroke (`G_CURL_*`). Measures."""
     import cv2
-    cs, hier = cv2.findContours(pc["piece"].astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_SIMPLE)
+    cs, hier = cv2.findContours(pc["piece"].astype(np.uint8), cv2.RETR_CCOMP, cv2.CHAIN_APPROX_NONE)
     if hier is None:
-        return 0.0
-    best, y0 = 0.0, pc["box"][1]
+        return 0
+    y0, l2 = pc["box"][1], float(lines[3])
+    cross = []
     for c, hh in zip(cs, hier[0]):
         if hh[3] < 0:
             continue
-        _x, y, _w, h = cv2.boundingRect(c)
-        if y0 + y <= float(lines[3]) <= y0 + y + h:
-            best = max(best, cv2.contourArea(c) / (sp * sp))
-    return round(float(best), 3)
+        x, y, w, h = cv2.boundingRect(c)
+        if cv2.contourArea(c) / (sp * sp) < G_CURL_MIN_SPACES2:
+            continue
+        if y0 + y <= l2 + G_CURL_BAND_SPACES * sp and y0 + y + h >= l2 - G_CURL_BAND_SPACES * sp:
+            cross.append((x, x + w))
+    n, right = 0, -1e9
+    for x, x1 in sorted(cross):
+        if x >= right:
+            n += 1
+            right = x1
+    return n
 
 
 #: ROADMAP 2.324 r5b: how far a clef's ink reaches past the staff (staff spaces, above the top line / below the bottom line). Ink joined
@@ -409,29 +426,32 @@ def heads_in_glyph(ink: np.ndarray, pc: Dict[str, Any], heads: Sequence[Sequence
 
 def read_g(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: float, *, box_witness: bool,
            heads: Sequence[Sequence[float]] = ()) -> Dict[str, Any]:
-    """ROADMAP 2.324 r5: the ONE G-clef test, wherever the clef stands. A musician: the spiral wraps the second line, the stem runs past
-    the staff above and the tail below. The glyph is its own ink in `place` (`glyph_piece`); its ink runs past the staff on BOTH sides
-    (`g_witness`, on the glyph's own columns) -- required -- and a second witness: the spiral round line 2 (`spiral_on_line2`), or a
-    detector `clefG` box on it (`box_witness`; the box is one more witness, never a requirement). NEVER from a brace or a barline (they
-    stand outside a clef's place), nor plain from an accidental beside notes and an arc (Litolff p9 s0 staff 3: ink past the staff and a
-    flat's bowl on line 2 -- a box-witnessed read INSIDE a line only narrows). {passed, why, kind, line, box, spiral}."""
+    """ROADMAP 2.324 r5/r6: the ONE G-clef test, wherever the clef stands. A musician: a treble clef is one stroke that curls round
+    the second line; the curl is its spiral; the stroke runs past the staff above and below. The glyph is its own ink in `place`
+    (`glyph_piece`); its ink runs past the staff on BOTH sides (`g_witness`, on the glyph's own columns) -- required -- and the CURL round
+    line 2 (`curl_round_line2`: the curl's paper on both sides of the stroke through it). NEVER over blank paper (no ink, no read), never
+    over a stem (no curl: Sean's r5 tile 1), never over a notehead (a half-note chord's hollow heads are one ring each, not a curl cut by
+    a stroke: tile 10) -- the curl refuses those by itself; a notehead's ink joined to the glyph (`heads`, the detector's head boxes as
+    where to look) is kept as a second witness. Where no curl is seen, a detector `clefG` box (`box_witness`) still reads at the START of
+    a staff (13 of the sample's 221 printed treble clefs show no curl once their lines are cleared) and only NARROWS inside a line.
+    {passed, why, kind, line, box, curl, witness}."""
     out: Dict[str, Any] = {"family": "G", "cls": "clefG", "kind": None, "line": None, "residual": None}
     pc = glyph_piece(ink, place, lines, sp)
     if pc is None:
         return dict(out, passed=False, why="g_no_ink")
     gw = g_witness(ink, pc["box"], lines, sp)
-    sp2 = spiral_on_line2(pc, lines, sp)
+    curl = curl_round_line2(pc, lines, sp)
     hin = heads_in_glyph(ink, pc, heads, lines, sp)
-    out.update(box=pc["box"], spiral=sp2, g_fill={"above": gw["above_fill"], "below": gw["below_fill"]}, heads_on_ink=hin)
+    out.update(box=pc["box"], curl=curl, g_fill={"above": gw["above_fill"], "below": gw["below_fill"]}, heads_on_ink=hin)
     if any(v >= G_HEAD_INK_SHARE for v in hin):
         # round 5b: never a G clef over a notehead (Sean's r5 tile 1 "just a stem", tile 10 "2 half notes in a chord")
-        return dict(out, passed=False, why="g_over_a_notehead")
+        return dict(out, passed=False, why="g_over_a_notehead")         # a second witness (r5b); the curl refuses Sean's tiles alone
     if not gw["passed"]:
         return dict(out, passed=False, why=gw["why"])
-    if sp2 < G_SPIRAL_MIN_SPACES2 and not box_witness:
-        return dict(out, passed=False, why="g_no_spiral_on_line_2")
+    if curl < G_CURL_MIN_REGIONS and not box_witness:
+        return dict(out, passed=False, why="g_no_curl_round_line_2")
     return dict(out, passed=True, why=None, kind="treble", line=G_LINES_READ[0],
-                witness="g_spiral" if sp2 >= G_SPIRAL_MIN_SPACES2 else "detector_box")
+                witness="g_curl" if curl >= G_CURL_MIN_REGIONS else "detector_box")
 
 
 def read_header_ink(ink: np.ndarray, place: Sequence[float], lines: Sequence[float], sp: float) -> Dict[str, Any]:
