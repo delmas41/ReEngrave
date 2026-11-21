@@ -10,6 +10,9 @@ B -- `OMR_FOLD_FAR_BY_LEDGER` (EXPORT, `export._settle_folded_pitches`): a far h
 """
 from __future__ import annotations
 
+import json
+from types import SimpleNamespace
+
 import pytest
 
 from tools.omr.staged import adjudicate
@@ -155,3 +158,79 @@ def test_A_flag_default_off(monkeypatch):
     assert not CL.word_letter_not_dynamic_enabled()
     monkeypatch.setenv(FLAG_A, "1")
     assert CL.word_letter_not_dynamic_enabled()
+
+
+# ── B: a far head is never placed by its ink position ────────────────────────
+
+FLAG_B = "OMR_FOLD_FAR_BY_LEDGER"
+#: the real rows (frozen-sample Litolff ON gather, re-adjudicated on this lane's tree): mg/10/1/40 = p10 the F5/Ab5 dyad a third apart folded into one head (the
+#: Ab5 box's ledger count `ledger_not_read`); mg/8/0/162 = p8 two boxes of the A5 with its printed natural (ledger -2 decided on both, the natural owned by /4)
+ROWS = json.loads(r'''{"glyph/10/1/1/0/10": {"glyph_box":{"detail": {"bbox_page_px": [525.0475, 2233.4075, 549.775, 2256.56]}}, "notehead_staff_position": {"value": -0.4, "detail": {"rounded": 0, "hole_ink_position": -0.207}}, "mark_group": {"value": "mg/10/1/40", "detail": {"identity": "page_head"}}, "glyph_conf": 0.34388890862464905, "notehead_position": null, "accidental_owner": []}, "glyph/10/1/1/0/11": {"glyph_box": {"detail": {"bbox_page_px": [524.89, 2234.9825, 549.775, 2266.325]}}, "notehead_staff_position": {"value": 0.32, "detail": {"rounded": 0, "hole_ink_position": null}}, "mark_group": {"value": "mg/10/1/40", "detail": {"identity": "page_head"}}, "glyph_conf": 0.33606868982315063, "notehead_position": null, "accidental_owner": []}, "glyph/10/1/1/0/12": {"glyph_box": {"detail": {"bbox_page_px": [525.6775, 2227.7375, 548.2, 2244.7475]}}, "notehead_staff_position": {"value": -1.5, "detail": {"rounded": -2}}, "mark_group": {"value": "mg/10/1/40", "detail": {"identity": "page_head"}}, "glyph_conf": 0.25975123047828674, "notehead_position": {"outcome": "abstained", "value": null, "reason": "ledger_not_read"}, "accidental_owner": []}, "glyph/8/0/1/11/2": {"glyph_box": {"detail": {"bbox_page_px": [1527.6125, 547.8625, 1553.7575, 571.4875]}}, "notehead_staff_position": {"value": -2.46, "detail": {"rounded": -2}}, "mark_group": {"value": "mg/8/0/162", "detail": {"identity": "page_head"}}, "glyph_conf": 0.6505852937698364, "notehead_position": {"outcome": "decided", "value": -2, "reason": "ledger_position"}, "accidental_owner": []}, "glyph/8/0/1/11/4": {"glyph_box": {"detail": {"bbox_page_px": [1527.77, 547.705, 1554.545, 572.1175]}}, "notehead_staff_position": {"value": -2.44, "detail": {"rounded": -2}}, "mark_group": {"value": "mg/8/0/162", "detail": {"identity": "page_head"}}, "glyph_conf": 0.571317732334137, "notehead_position": {"outcome": "decided", "value": -2, "reason": "ledger_position"}, "accidental_owner": [{"outcome": "decided", "value": "glyph/8/0/1/11/4", "subject": "glyph/8/0/1/11/0"}]}}''')
+PITCH = {"glyph/10/1/1/0/10": "F5", "glyph/10/1/1/0/11": "F5", "glyph/10/1/1/0/12": "Ab5", "glyph/8/0/1/11/2": "Ab5", "glyph/8/0/1/11/4": "A5"}
+
+
+class _Rec:
+    """The export `Record` lookups the settle reads, over the real rows."""
+
+    def obs(self, quantity, sub):
+        from tools.omr.staged import export as E
+        r = ROWS.get(sub) or {}
+        key = {E.Q.GLYPH_BOX: "glyph_box", E.Q.NOTEHEAD_STAFF_POSITION: "notehead_staff_position", E.Q.MARK_GROUP: "mark_group"}.get(quantity)
+        return [r[key]] if key and r.get(key) else []
+
+    def verdict(self, quantity, sub):
+        from tools.omr.staged import export as E
+        if quantity == E.Q.NOTEHEAD_POSITION:
+            return (ROWS.get(sub) or {}).get("notehead_position")
+        if quantity == E.Q.ACCIDENTAL_OWNER:
+            return next((a for r in ROWS.values() for a in r["accidental_owner"] if a["subject"] == sub), None)
+        return None
+
+    def verdicts_of(self, quantity):
+        from tools.omr.staged import export as E
+        return [a for r in ROWS.values() for a in r["accidental_owner"]] if quantity == E.Q.ACCIDENTAL_OWNER else []
+
+
+def _settle(gid):
+    from tools.omr.staged import export as E
+    run = SimpleNamespace(spacing=15.75)
+    queued = [(gid, float(r["glyph_conf"]), s, run, 0, {"category": "notehead", "pitch": PITCH[s]}, {})
+              for s, r in ROWS.items() if r["mark_group"]["value"] == gid]
+    best = {}
+    for g, conf, sub, *_r in queued:
+        cur = best.get(g)
+        if cur is None or (-conf, sub) < (-cur[0], cur[1]):
+            best[g] = (conf, sub)
+    E._settle_folded_pitches(_Rec(), queued, best)
+    written = next(q for q in queued if q[2] == best[gid][1])
+    return written[5]["pitch"], bool(written[5].get("guess"))
+
+
+def test_B_flag_off_the_p10_dyad_is_written_F5_plain_by_its_ink(monkeypatch):
+    """THE CONTROL THAT FAILS: the ink witness (the hole at -0.21) picks the F5 box and writes it plain; the Ab5 above it has no ledger reading."""
+    monkeypatch.delenv(FLAG_B, raising=False)
+    assert _settle("mg/10/1/40") == ("F5", False)
+
+
+def test_B_flag_on_the_p10_dyad_is_guessed_never_plain(monkeypatch):
+    monkeypatch.setenv(FLAG_B, "1")
+    pitch, blue = _settle("mg/10/1/40")
+    assert blue, "a fold with a far member whose ledger reading is missing is GUESSED"
+
+
+def test_B_flag_off_the_p8_A_natural_is_written_A_flat(monkeypatch):
+    """THE CONTROL THAT FAILS: the more confident box (no accidental of its own) is written: A-flat, where the page prints a natural."""
+    monkeypatch.delenv(FLAG_B, raising=False)
+    assert _settle("mg/8/0/162") == ("Ab5", True)
+
+
+def test_B_flag_on_the_printed_natural_decides_the_A(monkeypatch):
+    """Both boxes stand on the first ledger line above (ledger -2, decided); only the alteration differs, and the natural is printed on the head."""
+    monkeypatch.setenv(FLAG_B, "1")
+    assert _settle("mg/8/0/162") == ("A5", False)
+
+
+def test_B_flag_default_off(monkeypatch):
+    from tools.omr.staged import export as E
+    monkeypatch.delenv(FLAG_B, raising=False)
+    assert not E.fold_far_by_ledger_enabled()
