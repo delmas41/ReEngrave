@@ -230,6 +230,78 @@ def test_B_flag_on_the_printed_natural_decides_the_A(monkeypatch):
     assert _settle("mg/8/0/162") == ("A5", False)
 
 
+#: Litolff p8 mg/8/0/38 (the frozen-sample ON gather re-adjudicated on this lane's tree, export probe `folds_lit.json`): three boxes on ONE head on the first
+#: ledger line above (ledger -2 DECIDED on all three), a printed natural owned by /5, a stem each way (a two-voice unison: `export_unison.split` attached the
+#: down voice's copy to the written box /2 before the settle). Boxes: /2's real page box; /4 and /5 are given the same box (not extracted -- the head filter only
+#: asks that a box be head-sized). The OFF file wrote A-flat twice (voice 1 and voice 2); r1 of fix B swapped the written box to /5 and lost the voice-2 copy.
+UNISON_FOLD = {"glyph/8/0/0/2/2": dict(conf=0.497, pitch="Ab5", acc=False), "glyph/8/0/0/2/4": dict(conf=0.298, pitch="Ab5", acc=False),
+               "glyph/8/0/0/2/5": dict(conf=0.281, pitch="A5", acc=True)}
+UNISON_BOX = [692.5075, 403.1825, 718.6525, 423.185]
+
+
+class _UnisonRec:
+    def obs(self, quantity, sub):
+        from tools.omr.staged import export as E
+        if sub not in UNISON_FOLD:
+            return []
+        if quantity == E.Q.GLYPH_BOX:
+            return [{"detail": {"bbox_page_px": UNISON_BOX}}]
+        if quantity == E.Q.NOTEHEAD_STAFF_POSITION:
+            return [{"value": -2.0, "detail": {"rounded": -2}}]
+        if quantity == E.Q.MARK_GROUP:
+            return [{"value": "mg/8/0/38", "detail": {"identity": "page_head"}}]
+        return []
+
+    def verdict(self, quantity, sub):
+        from tools.omr.staged import export as E
+        if quantity == E.Q.NOTEHEAD_POSITION and sub in UNISON_FOLD:
+            return {"outcome": "decided", "value": -2, "reason": "ledger_position"}
+        if quantity == E.Q.ACCIDENTAL_OWNER and sub == "acc/8/0/0/2/natural":
+            return self.verdicts_of(quantity)[0]
+        return None
+
+    _acc = [{"outcome": "decided", "value": "glyph/8/0/0/2/5", "subject": "acc/8/0/0/2/natural"}]
+
+    def verdicts_of(self, quantity):
+        from tools.omr.staged import export as E
+        return self._acc if quantity == E.Q.ACCIDENTAL_OWNER else []
+
+
+def _settle_unison():
+    from tools.omr.staged import export as E
+    run = SimpleNamespace(spacing=15.75)
+    queued = []
+    for s, m in UNISON_FOLD.items():
+        det = {"category": "notehead", "pitch": m["pitch"], "printed_accidental": "natural" if m["acc"] else None,
+               "key_alteration": None if m["acc"] else -1, "stem_direction": "up"}
+        if s == "glyph/8/0/0/2/2":
+            det["unison_head"] = True
+            det["_unison_twin"] = dict(det, stem_direction="down", unison_twin=True)
+        queued.append(("mg/8/0/38", m["conf"], s, run, 0, det, {}))
+    best = {"mg/8/0/38": (0.497, "glyph/8/0/0/2/2")}
+    E._settle_folded_pitches(_UnisonRec(), queued, best)
+    written = next(q for q in queued if q[2] == best["mg/8/0/38"][1])
+    return best["mg/8/0/38"][1], written[5], written[5].get("_unison_twin")
+
+
+def test_B_flag_off_the_unison_fold_writes_A_flat_in_both_voices(monkeypatch):
+    """THE CONTROL THAT FAILS: both voice copies of the head are A-flat where the page prints a natural."""
+    monkeypatch.delenv(FLAG_B, raising=False)
+    sub, det, twin = _settle_unison()
+    assert sub == "glyph/8/0/0/2/2" and det["pitch"] == "Ab5" and twin["pitch"] == "Ab5"
+
+
+def test_B_flag_on_the_unison_fold_keeps_both_voices_now_A_natural(monkeypatch):
+    """The written box stays /2 (so its voice-2 copy is still written); the pitch -- step and printed natural -- comes from /5."""
+    monkeypatch.setenv(FLAG_B, "1")
+    sub, det, twin = _settle_unison()
+    assert sub == "glyph/8/0/0/2/2", "the written box (and with it the unison's second voice) is never swapped"
+    for d in (det, twin):
+        assert d["pitch"] == "A5" and d["printed_accidental"] == "natural" and d["key_alteration"] is None
+        assert not d.get("guess")
+    assert det["stem_direction"] == "up" and twin["stem_direction"] == "down" and twin["unison_twin"]
+
+
 def test_B_flag_default_off(monkeypatch):
     from tools.omr.staged import export as E
     monkeypatch.delenv(FLAG_B, raising=False)

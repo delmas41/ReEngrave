@@ -2913,6 +2913,24 @@ def _fold_far_positions(rec: "Record", heads: List[Any], rounded: Dict[str, Any]
     return _FAR_HELD
 
 
+#: the detection keys that carry a head's pitch (its step and alteration) and nothing else of it
+_PITCH_KEYS = ("pitch", "key_alteration", "printed_accidental")
+
+
+def _take_pitch(det: Dict[str, Any], src: Dict[str, Any], src_sub: str) -> None:
+    """ROADMAP 2.331 fix B r2: `det` (the written box of a fold) takes the pitch of `src` (the fold's box carrying the printed accidental) -- and so does
+    its two-voice unison copy (`_unison_twin`, attached by `export_unison.split` before the settle). Value, voice, stem stay `det`'s own."""
+    for d in (det, det.get("_unison_twin")):
+        if not isinstance(d, dict):
+            continue
+        for k in _PITCH_KEYS:
+            if k in src:
+                d[k] = src[k]
+            else:
+                d.pop(k, None)
+        d["pitch_from_fold_member"] = src_sub
+
+
 def _settle_folded_pitches(rec: "Record", queued: List[Any], best: Dict[str, Tuple[float, str]]) -> None:
     """ROADMAP 2.290 round 4 (the one head identity, `OMR_PAGE_HEAD_ONE`): a head the identity folds from boxes that WRITE DIFFERENT PITCHES is one head with ONE
     position -- measured from the head's own ink, never inherited from whichever box scored higher (Litolff p2 m7: boxes at 7.04 and 8.28 steps, the hole of the
@@ -2967,6 +2985,14 @@ def _settle_folded_pitches(rec: "Record", queued: List[Any], best: Dict[str, Tup
             # differ only by the alteration, the member carrying the PRINTED accidental is the head's pitch (the natural printed before an A in A-flat major);
             # anything else -- ledger readings that disagree or are missing -- is GUESSED (blue, every pitch a candidate). Never plain on ink.
             pick = far
+            if pick is not _FAR_HELD:
+                # the box that was going to be written STAYS written (its voices, its stem, a two-voice unison's second copy go with it); only the
+                # pitch -- the one step and the printed alteration -- comes from the box that carries the accidental (2.331 r2: Litolff p8 mg/8/0/38
+                # lost its voice-2 copy when the written box was swapped)
+                held = next((q for q in members if q[2] == best[gid][1]), None)
+                if held is not None and held is not pick:
+                    _take_pitch(held[5], pick[5], pick[2])
+                continue
         elif wit:
             step = int(round(sum(wit) / len(wit)))
             on = [q for q in heads if rounded.get(q[2]) == step]
