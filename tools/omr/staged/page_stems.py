@@ -19,8 +19,10 @@ own predicate, as 2.288 rests use it) and the detector's boxed accidentals (`str
 (`held`, with its owner), never taken.
 
 ABSTAIN, NEVER GUESS. No free stroke: `no_stroke` (the nearest held / near-miss strokes are recorded). Two free strokes of the same side: `two_candidates`
-with both and the signed margin (`fit` = EDGE_SP - |dx| in spaces; margin = best - second). One up at the right and one down at the left: `two_voices`
-(a unison of two voices, page-facts; the old join's own rule then decides). Each head's reading is filed on each of its glyph keys (`Q.PAGE_STEM`).
+with both and the signed margin (`fit` = EDGE_SP - |dx| in spaces; margin = best - second). One up at the right and one down at the left: where BOTH
+strokes' ink touches the head's ink it is two voices sharing the note (page-facts) and BOTH are filed, one `Q.PAGE_STEM` row per voice (`voice` up /
+down, how `unison_two_stems`; `_unison_heads`); anything less (one or neither touching, a stroke ending at another head, no head ink of its own)
+leaves `two_voices` abstained, `why` recorded, and the old join's unison rule decides as before. Each head's reading is filed on each of its glyph keys (`Q.PAGE_STEM`).
 
 THE CUT-OFFS ARE MEASUREMENTS, so they only NARROW (CLAUDE §4): measured on the 2306 step-0 gathers (Brahms p0+p5, Litolff p6+p16) against the
 cell reader A's joined stems: the stem centre stands -0.22..+0.05 sp past a head's right edge (5-95%, Brahms), +0.03..+0.20 past its left; the page
@@ -295,6 +297,124 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             r.update(state="two" if how != "contact_at_middle" else "none", how=how, candidates=found,
                      margin=min((abs(f["margin"]) for f in found), default=None))
     return n
+
+
+#: ROADMAP 2.306 two-voice piece: the reading a head gets when a stem up AND a stem down both touch its ink -- two voices sharing the note
+UNISON_HOW = "unison_two_stems"
+#: each stem of a head shared by two voices runs at least this far past the head's middle (spaces). MEASURED, so it only narrows (a head below it
+#: keeps the old path): on the r15 gathers' 160 page unison heads the shortest stroke stands 2.17-6 sp for the ones our look calls real, and
+#: 1.5-1.75 for a hollow ring's side or a stub read as a stroke (Litolff 16/545, 2/530, 6/638); 2/128 (2.0) is unclear
+UNISON_REACH_SP = 2.0
+#: `_passes_beside_the_other`: a stroke running beside at least this share of the other stem's length past the head is one column (narrows only)
+PASS_SHARE = 0.5
+
+
+def _ends_at_another_head(h: Dict[str, Any], o: int, direction: str, heads: Sequence[Dict[str, Any]], vbox: Optional[Dict[int, Any]]) -> bool:
+    """A stem runs on past every head it touches; a stroke whose FAR end (the top of an up stroke, the bottom of a down one) stops at ANOTHER head
+    -- within HEAD_END_SP of that head's top or bottom, within EDGE_SP of its width -- is that head's outline (Litolff 2/1/3/2 and 2/1/3/12: two half notes a
+    third apart on one down stem; the upper ring's right side read as an up stem of the lower head), never a stem. Pure."""
+    if not vbox or o not in vbox:
+        return False
+    x0, y0, x1, y1 = vbox[o]["box"]
+    sp = float(vbox[o].get("sp") or h.get("sp") or 1.0)
+    end = y0 if direction == "up" else y1
+    for k in heads:
+        if k["id"] == h["id"]:
+            continue
+        b = k["box"]
+        if (x1 >= b[0] - EDGE_SP * sp and x0 <= b[2] + EDGE_SP * sp           # at the head's side (a hollow head's measured outline is narrow: r16)
+                and b[1] - HEAD_END_SP * sp <= end <= b[3] + HEAD_END_SP * sp):
+            return True
+    return False
+
+
+def _passes_beside_the_other(h: Dict[str, Any], up: int, dn: int, vbox: Optional[Dict[int, Any]]) -> bool:
+    """A stem of two voices leaves the head: the up stem from its right side going up, the down stem from its left side going down (page-facts:
+    up -> right, down -> left). Where one stroke runs on past the head ALONGSIDE the other's whole length -- the down stroke reaching up beside at
+    least half of the up stem's length above the head, or the up stroke reaching down beside half of the down stem's below it -- it is one stem
+    passing THROUGH the head to another head, with that head's outline beside it: never two voices (Litolff 6/0/3/3: the down stem of a third
+    starts at the unboxed upper head and passes the lower one; the 'up stem' is the upper ring's right side). A stroke that only overruns the head
+    a little (a ledger line or the other voice's flag fused to it) is not caught. Pure."""
+    if not vbox or up not in vbox or dn not in vbox:
+        return False
+    top, bot = float(h["box"][1]), float(h["box"][3])
+    u, d = vbox[up]["box"], vbox[dn]["box"]
+    up_len, dn_over = max(0.0, top - u[1]), max(0.0, top - d[1])          # above the head: the up stem, and the down stroke running up beside it
+    dn_len, up_over = max(0.0, d[3] - bot), max(0.0, u[3] - bot)          # below the head: the down stem, and the up stroke running down beside it
+    return (up_len > 0 and dn_over >= PASS_SHARE * up_len) or (dn_len > 0 and up_over >= PASS_SHARE * dn_len)
+
+
+def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
+                  hink: Optional[Dict[Any, set]], touches_ink: Any, vbox: Optional[Dict[int, Any]] = None) -> int:
+    """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
+    For a head that read one stroke up at its right and one down at its left (`two_voices`, left after the column rule of r9):
+
+    * both strokes' ink touches the head's ink -> TWO VOICES SHARING THE NOTE: state `two_voices`, how `unison_two_stems`, `voices` = {up: stroke,
+      down: stroke}; each stroke joins `stems` as that direction's stem of this head (each voice takes its value from its OWN stem, later).
+    * a stroke whose far end stops at another head is that head's outline (`_ends_at_another_head`), never a stem of this head.
+    * each stroke leaves the head, not one stem passing through it beside the other (`_passes_beside_the_other`).
+    * each stroke a stem's length (`UNISON_REACH_SP`), and no other head already standing on either stroke (that is a column of two voices or a
+      chord, r9).
+    * anything less -- one stroke or neither touching, an outline, a stroke another head holds, no head ink of its own on the map ->
+      NOT two voices from the page, and nothing else is decided here either: the reading stays `two_voices` (the old cell join's unison rule still
+      answers, as before this piece) with `why` saying which. Never two voices from one stem, never from a stroke that does not touch the head.
+    Mutates `readings` and `stems`. Returns how many heads were filed as two voices. Pure apart from that."""
+    if touches_ink is None:
+        return 0
+    n = 0
+    for h in heads:
+        r = readings.get(h["id"])
+        if r is None or r.get("state") != "two_voices":
+            continue
+        cs = r.get("candidates") or []
+        by_dir = {c["direction"]: c for c in cs}
+        if set(by_dir) != {"up", "down"} or len(cs) != 2:
+            continue
+        if not (hink or {}).get(h["id"]):
+            r["why"] = "head_ink_unread"
+            continue
+        touch = {d: bool(touches_ink(h["id"], c["stroke"])) for d, c in by_dir.items()}
+        outline = [d for d in ("up", "down") if touch[d] and _ends_at_another_head(h, int(by_dir[d]["stroke"]), d, heads, vbox)]
+        keep = [d for d in ("up", "down") if touch[d] and d not in outline]
+        if len(keep) == 2 and _passes_beside_the_other(h, int(by_dir["up"]["stroke"]), int(by_dir["down"]["stroke"]), vbox):
+            r["why"] = "one_stem_passes_the_head"
+            continue
+        if len(keep) < 2:
+            # not two voices on the ink; which stroke is the head's one stem is NOT decided here (our look at 20 such heads: about half are a
+            # fused third on one stem, the rest real second voices whose stem's contact the map missed) -- the old path stays, counted
+            r["why"] = ("ends_at_another_head" if outline else "one_touches" if keep else "neither_touches")
+            continue
+        clash = [d for d in keep if int(by_dir[d]["stroke"]) in stems and stems[int(by_dir[d]["stroke"])]["directions"] != {d}]
+        if clash:
+            r["why"] = "stroke_read_other_way"
+            continue
+        if any(float(by_dir[d].get("reach") or 0.0) < UNISON_REACH_SP for d in keep):
+            r["why"] = "a_stroke_shorter_than_a_stem"
+            continue
+        if any(int(by_dir[d]["stroke"]) in stems and stems[int(by_dir[d]["stroke"])]["heads"] for d in keep):
+            # another head already stands on one of the strokes: two voices in one column (Sean 2026-11-14: the upper head takes the up stem, the
+            # lower the down stem) or a chord -- not one head shared by two voices (Litolff 2/1/2/12: F4 and A4, a stem each way)
+            r["why"] = "stroke_holds_another_head"
+            continue
+        for d in keep:
+            o = int(by_dir[d]["stroke"])
+            s = stems.setdefault(o, dict(ord=o, heads=[], directions={d}))
+            s["heads"].append(h["id"])
+        r.update(state="two_voices", stroke=None, direction=None, side=None, how=UNISON_HOW,
+                 voices={d: dict(stroke=int(by_dir[d]["stroke"]), side=by_dir[d]["side"], fit=by_dir[d]["fit"]) for d in keep})
+        n += 1
+    return n
+
+
+def voice_rows(rows: Sequence[Any]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.306 two-voice piece, for ADJUDICATE: `{"up": row, "down": row}` -- a head's `Q.PAGE_STEM` rows when the page filed it as two voices
+    (`unison_two_stems`, one row per voice, the last of each), else None. Pure."""
+    out: Dict[str, Any] = {}
+    for r in rows or ():
+        d = getattr(r, "detail", None) or {}
+        if d.get("how") == UNISON_HOW and d.get("voice") in ("up", "down") and getattr(r, "value", None) is not None:
+            out[d["voice"]] = r
+    return out if set(out) == {"up", "down"} else None
 
 
 def touch_map(strokes: Dict[int, Dict[str, Any]]) -> Dict[int, set]:
@@ -608,6 +728,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             o, d = got[0]
             r.update(state="second", stroke=o, direction=d, side="other", margin=None, how="second_on_partner_stem")
             stems[o]["heads"].append(h["id"])
+    n_unison = _unison_heads(heads, readings, stems, hink, touches_ink if hink is not None else None, vby)
     for o, s in stems.items():
         st = vby[o]
         s["direction"] = next(iter(s["directions"]))
@@ -616,7 +737,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
         s["tip_y"] = round(float(st["box"][1] if s["direction"] == "up" else st["box"][3]), 1)
         s["directions"] = sorted(s["directions"])
     census: Dict[str, Any] = dict(heads=len(heads), verticals=len(verticals), held=len(held), stems=len(stems), split_both_ways=len(split),
-                                  split_kept_by_head_ink=n_kept)
+                                  split_kept_by_head_ink=n_kept, unison_heads=n_unison)
     for r in readings.values():
         census[r["how"]] = census.get(r["how"], 0) + 1
     for k, n in run_census.items():
@@ -780,7 +901,19 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
             csub = R.cell(g.page, g.system, g.staff, g.cell)
             gsub = R.glyph(g.page, g.system, g.staff, g.cell, g.glyph)
             common = dict(reader=READERS.CV_PAGE_STEMS, frame=G.frame_cell(g.cell), head=hid, how=r["how"], candidates=r["candidates"],
-                          held=r["held"], near=r["near"], margin=r["margin"])
+                          held=r["held"], near=r["near"], margin=r["margin"], **({"why": r["why"]} if r.get("why") else {}))
+            if r.get("how") == UNISON_HOW and c is not None:
+                # ROADMAP 2.306 two-voice piece: one row per voice, each naming its OWN stroke (the cell row that is that stroke)
+                for d in ("up", "down"):
+                    o = int(r["voices"][d]["stroke"])
+                    ck = (csub.to_key(), o)
+                    if ck not in views:
+                        views[ck], from_a = _cell_row_for(log, c, csub, res["stems"][o]["box"])
+                        n_a += int(from_a)
+                        n_view += int(not from_a)
+                    log.observe(gsub, Q.PAGE_STEM, views[ck], page_stroke=o, direction=d, side=r["voices"][d]["side"], voice=d,
+                                tip_y=res["stems"][o]["tip_y"], stem_box=res["stems"][o]["box"], **common)
+                continue
             if r["stroke"] is None or c is None:
                 log.abstain(gsub, Q.PAGE_STEM, reason=(ABSTAIN.NO_LINE_ACCEPTED if r["stroke"] is None and r["state"] == "none" else ABSTAIN.AMBIGUOUS),
                             note=r["how"] if c is not None else "no_cell", **common)

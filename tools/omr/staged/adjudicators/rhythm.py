@@ -3463,8 +3463,16 @@ def _unison_two_voices(ev: Evidence, own_stems, head_box):
         return None
     if getattr(ruling, "reason", None) != "unison_two_voices":
         return None
-    vs = _voice_stems(own_stems, head_box)
+    vs = _unison_voice_stems(ruling, own_stems, head_box)
     return ruling if (vs["up"] and vs["down"]) else None
+
+
+def _unison_voice_stems(unison: Any, own_stems, head_box):
+    """Each voice's own stems of a unison head: the page's two filed stems by the direction the page read them (ROADMAP 2.306 two-voice piece,
+    `stem_value.page_voice_stems`), else the old split by the head's centre (`_voice_stems`)."""
+    from .stem_value import page_voice_stems
+    vs = page_voice_stems(getattr(unison, "detail", None), own_stems) if unison is not None else None
+    return vs if vs is not None else _voice_stems(own_stems, head_box)
 
 
 def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any]:
@@ -5314,7 +5322,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # stem direction (`side is None`) and a stem on each side.
     voice_levels = None
     if side is None and head_box is not None:
-        vs = _voice_stems(own_stems, head_box)
+        vs = _unison_voice_stems(unison, own_stems, head_box)
         if vs["up"] and vs["down"]:
             voice_levels = {}
             v_kept: list = []
@@ -9927,6 +9935,13 @@ def page_own_stems(ev: Evidence, stems):
     if not _PS.enabled():
         return None
     rows = ev.rows(Q.PAGE_STEM)
+    pv = _PS.voice_rows(rows)
+    if pv is not None:
+        # ROADMAP 2.306 two-voice piece: the page filed both stems of a head shared by two voices -- both are its own stems (each voice is
+        # counted on its own, `page_voice_stems`)
+        from .stem_value import page_voice_stems
+        vs = page_voice_stems({"page_voices": {d: r.value for d, r in pv.items()}}, stems)
+        return None if vs is None else vs["up"] + [s for s in vs["down"] if s not in vs["up"]]
     if not rows or rows[-1].value is None:
         # ROADMAP 2.306 RETIRE: where the page read this head and named no stem, the cell's box-overlap join no longer answers -- the head has no
         # stem it can stand on (a unison of two voices, and a head the page could not hand to a cell, keep the cell join)
@@ -10013,7 +10028,8 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
     from .. import page_stems as _PS
     if _PS.enabled():
         _pr = ev.rows(Q.PAGE_STEM)
-        if _pr and _pr[-1].value is not None and (_pr[-1].detail or {}).get("direction") in ("up", "down"):
+        if (_pr and _pr[-1].value is not None and (_pr[-1].detail or {}).get("direction") in ("up", "down")
+                and _PS.voice_rows(_pr) is None):         # a head of two voices has no one direction: its two stems go on below, as before
             return Ruling(value=str(_pr[-1].detail["direction"]), reason="page_stem", used=(box[-1].id, _pr[-1].id),
                           detail={"page_stroke": _pr[-1].detail.get("page_stroke"), "page_how": _pr[-1].detail.get("how")})
 

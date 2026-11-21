@@ -91,8 +91,13 @@ def adjudicate_unison_voices(ev: Evidence) -> Ruling:
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
     if head_box is None:
         return Ruling.abstain("stems_not_read")
-    own = R._stems_on(head_box, stems)
-    vs = R._voice_stems(own, head_box)
+    # ROADMAP 2.306 two-voice piece (flag `OMR_PAGE_STEMS`): where the page filed both stems (each touching the head's ink), each voice's stem is
+    # the one the page named for it; else the old cell join (box overlap, split by the head's centre)
+    from .stem_value import page_voice_stems
+    vs = page_voice_stems(hs.detail, stems)
+    if vs is None:
+        own = R._stems_on(head_box, stems)
+        vs = R._voice_stems(own, head_box)
     if not vs["up"] or not vs["down"]:
         return Ruling.abstain("stems_not_read", up=len(vs["up"]), down=len(vs["down"]))
     dur = ev.verdict(Q.DURATION)
