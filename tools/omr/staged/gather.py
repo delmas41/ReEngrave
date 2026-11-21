@@ -292,6 +292,72 @@ def gather_measures(log: Log, pws: Any, cells: Sequence[Any],
                         reader=READERS.GEOMETRY, frame=FRAME_SYSTEM)
 
 
+#: ROADMAP 2.306 r16: how far (staff spaces) from the system column a staff's own barline ink is looked for, and the share of the staff's rows
+#: (top line to bottom line) a column's ink must cover to be the barline -- a barline runs the staff's whole height; a stem stops at its head
+BARLINE_SEEK_SP = 1.2
+BARLINE_RUN_SHARE = 0.97
+BARLINE_MAX_W_SP = 0.6
+BARLINE_HEAD_ROWS = 3
+
+
+def barline_x_on_staff(binary: Any, x: float, top: float, bottom: float, sp: float) -> Optional[float]:
+    """ROADMAP 2.306 r16: the x (page px) of THIS staff's barline ink near the system column `x`: the run of adjacent columns, within
+    `BARLINE_SEEK_SP` of `x`, whose ink covers `BARLINE_RUN_SHARE` of the staff's rows top line to bottom line; the run nearest `x`, its middle.
+    None where no column runs the staff's height (then nothing is moved). `binary`: the page raster, ink dark (0) or ink 1 -- read either way. Pure."""
+    import numpy as np
+    if binary is None or sp <= 0:
+        return None
+    b = np.asarray(binary)
+    y0, y1 = max(0, int(round(top))), min(b.shape[0], int(round(bottom)) + 1)
+    x0, x1 = max(0, int(round(x - BARLINE_SEEK_SP * sp))), min(b.shape[1], int(round(x + BARLINE_SEEK_SP * sp)) + 1)
+    if y1 - y0 < 2 or x1 <= x0:
+        return None
+    win = b[y0:y1, x0:x1]
+    ink = (win > 0) if b.max() <= 1 else (win < 128)
+    if ink.mean() > 0.5 and b.max() <= 1:
+        ink = ~ink
+    full = ink.mean(axis=0) >= BARLINE_RUN_SHARE
+    runs, start = [], None
+    for i, f in enumerate(list(full) + [False]):
+        if f and start is None:
+            start = i
+        elif not f and start is not None:
+            runs.append((start, i - 1))
+            start = None
+    # a barline is the same thin upright all the way down; a stem that happens to span the staff widens at its notehead. Away from the staff
+    # lines' rows, the run's ink does not spread like a notehead.
+    line_rows = ink.mean(axis=1) >= 0.6
+    keep = []
+    for a, c in runs:
+        mid = (a + c) // 2
+        widths = []
+        for r in range(ink.shape[0]):
+            if line_rows[r]:
+                widths.append(0)
+                continue
+            row = ink[r]
+            lo = mid
+            while lo > 0 and row[lo - 1]:
+                lo -= 1
+            hi = mid
+            while hi < row.size - 1 and row[hi + 1]:
+                hi += 1
+            widths.append(hi - lo + 1)
+        # a notehead on the upright: several rows running (`BARLINE_HEAD_ROWS`) where the ink spreads wider than `BARLINE_MAX_W_SP`; the rows
+        # beside a staff line carry the line's blur one row at a time
+        run_w, worst = 0, 0
+        for w in widths:
+            run_w = run_w + 1 if w > BARLINE_MAX_W_SP * sp else 0
+            worst = max(worst, run_w)
+        if worst < BARLINE_HEAD_ROWS:
+            keep.append((a, c))
+    runs = keep
+    if not runs:
+        return None
+    mids = [x0 + (a + c) / 2.0 for a, c in runs]
+    return min(mids, key=lambda m: abs(m - x))
+
+
 def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]]) -> None:
     """`Q.CLAIMED_AREA` rows of owner `barline` -- ROADMAP 2.221 m2, flag `OMR_BARLINE_SYSTEM_COLUMNS` (default ON).
 
@@ -330,8 +396,14 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                             reason=ABSTAIN.OUT_OF_SCOPE, cell=c.measure_index, owner="barline", unit="area", why="bracket_ink",
                             barline_x=int(bl.x))
                 continue
+            # ROADMAP 2.306 r16 (Sean 2026-11-18: "claim only the ink"): the area stands on THIS staff's barline ink -- the column of ink that
+            # runs this staff's whole height nearest the system column -- never on the system's x alone (Litolff p6 staves 8-9: the column x
+            # stood a space left of the printed barline and the area held the bar's last stem). No such column: the system's x, as before.
+            bx = barline_x_on_staff(getattr(getattr(pws, "page", None), "binary", None), float(bl.x), float(st.top_y), float(st.bottom_y), sp)
+            if bx is None:
+                bx = float(bl.x)
             log.observe(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA,
-                        [round(bl.x - 0.45 * sp, 1), float(st.top_y), round(bl.x + 0.45 * sp, 1), float(st.bottom_y)],
+                        [round(bx - 0.45 * sp, 1), float(st.top_y), round(bx + 0.45 * sp, 1), float(st.bottom_y)],
                         reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(c.measure_index), cell=c.measure_index,
                         owner="barline", owner_row=None, owner_glyph=None, unit="area", standing="READ",
                         source="system_column", barline_x=int(bl.x), space_page_px=round(sp, 3))
