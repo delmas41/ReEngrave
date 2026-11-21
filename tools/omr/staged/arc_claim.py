@@ -628,7 +628,7 @@ def reads_ink(cls: Any) -> bool:
 
 
 def rule_enabled() -> bool:
-    """ROADMAP 2.305 r6: the ends rule replaces the reach windows when `OMR_PAGE_ARC_WRITE` is ON (default OFF; the OFF file is unchanged)."""
+    """ROADMAP 2.305 r6: the ends rule replaces the reach windows when `OMR_PAGE_ARC_WRITE` is ON (default ON since 2.305's landing; `=0` opts out)."""
     from .page_arc_bind import write_enabled
     return write_enabled()
 
@@ -641,7 +641,7 @@ def unread_head_ink(strokes: Sequence[Dict[str, Any]], boxes: Sequence[Sequence[
     claimed area of the page ledger (`Q.CLAIMED_AREA` with a box value: a printed word, a clef, a barline, a key ...) stands on its centre, and no page-ink
     claim names it (`claimed_strokes`: the `Q.PAGE_STROKE` ordinals a `page_ink` claim holds -- a rest, a head's oval, a tremolo, an accidental). `strokes`:
     `Q.PAGE_STROKE` details (+ `id`, `kind`), every kind (a blob is a note only on a stem); `boxes`: page boxes. Returns `{id, ordinal, cx, cy, w, h,
-    staff}` per such blob. GATHER's own census (`page_heads.read`, `ink_only`) files the same fact behind `OMR_PAGE_HEADS` (OFF); this reads the same filed
+    staff}` per such blob. GATHER's old census (`page_heads.read`, `ink_only`, retired 2.332) filed the same fact behind `OMR_PAGE_HEADS` (OFF); this reads the same filed
     rows with the same numbers, no new one, and asks the census's stem clause in its wider form: the blob TOUCHES A STEM (a vertical stroke at least
     `page_heads.STEM_MIN_LEN_SP` long) -- the census asks for a stem a BOXED head touches; an arc's unboxed note may stand on its own stem. Measured on the
     2.310 rows (Brahms p11): without the stem clause the tips of the arcs' own ink and an accidental's piece read as unread heads. NOT SEEN: a whole note

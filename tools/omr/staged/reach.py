@@ -86,9 +86,10 @@ KNOWN_GAPS: Dict[str, str] = {
         "A reader that appears removes this entry."),
     # (Q.PAGE_STROKE left this list in ROADMAP 2.305 r6: the arc binder reads it for the unread head ink at an arc's end, `ownership._unread_head_ink`.)
     Q.PAGE_HEAD: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed (only with `OMR_PAGE_HEADS` on, default OFF) "
-        "and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: the far-head ledger read is driven from it); M6c (`_head_claims`) was deleted (2ada124ba). The exported "
-        "file is byte-identical with `OMR_PAGE_HEADS` on, which is the proof. A reader that appears removes this entry."),
+        "RETIRED READER, KEPT DECLARED (ROADMAP 2.332): M6a's page head fold (`page_heads.gather_page_heads` / `file_page_heads`, flag `OMR_PAGE_HEADS`, "
+        "default OFF) was its only producer and M6b (`OMR_PAGE_HEAD_VIEWS`) its only consumer; 2.290's `read_one` replaced the fold and both are gone. "
+        "The quantity stays because a record gathered with `OMR_PAGE_HEADS` on carries `page_head` rows, and `review.rerun.rebuild_gather` replays them "
+        "through `Log.observe`, which raises on an unknown quantity."),
     Q.PAGE_BEAM_TIP: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
         "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),

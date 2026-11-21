@@ -693,6 +693,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
                   if (w.detail or {}).get("bbox_page_px")]
     grand_staff_shared = 0
     placed_below_n = 0
+    from .. import claims as _claims
+    word_letter_on = _claims.word_letter_not_dynamic_enabled()
+    letters_of_the_word = 0
     for row in rows:
         if row.subject.cell != ev.subject.cell:
             continue
@@ -796,6 +799,11 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             if row.id in letter_in_unread_line(row, unread_lines)["withhold_ids"]:
                 inside_unread_line += 1
                 continue
+        if word_letter_on and _ink_is_the_words(ev, row, ink_groups.get(row.id) or [row], word_boxes):
+            # ROADMAP 2.331 fix A (flag OMR_WORD_LETTER_NOT_DYNAMIC): the letter's INK (every twin box of it at once, as GATHER asks it) is a letter of a read
+            # word -- inside it, or its own first/last letter read as that letter -- never a dynamic. A dynamic next to a word (`p cresc.`, `piu p`) is not touched.
+            letters_of_the_word += 1
+            continue
         if _letter_of_a_known_word(row, word_boxes):
             sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=row.subject)
             if not sides:
@@ -882,6 +890,8 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
             empty_detail["letters_of_a_lexicon_word"] = of_lexicon_word
         if inside_unread_line:
             empty_detail["letters_inside_an_unread_line"] = inside_unread_line
+        if letters_of_the_word:
+            empty_detail["letters_of_the_word_ink"] = letters_of_the_word
         return Ruling(value=[], reason="no_letters", detail=empty_detail)
 
     kept.sort()
@@ -951,6 +961,9 @@ def adjudicate_dynamic(ev: Evidence) -> Ruling:
     if inside_unread_line:
         # ROADMAP 2.303 PART 1 (flag OMR_UNREAD_WORD_SIBLING): letters inside a text line the lexicon refused, with letter ink beside them: withheld, never a dynamic.
         detail["letters_inside_an_unread_line"] = inside_unread_line
+    if letters_of_the_word:
+        # ROADMAP 2.331 fix A: letters whose ink is a read word's own letter (every twin asked at once)
+        detail["letters_of_the_word_ink"] = letters_of_the_word
     if unspellable and not any(w["spelled"] for w in words):
         # ⚠️ Only the whole-cell case narrows. A cell holding one good `ff` and
         # one unspellable `s` has DECIDED something, and reporting it as
@@ -1303,6 +1316,32 @@ def _words_around(row, word_boxes):
         if ix * iy >= INSIDE_READ_WORD_SHARE * area:
             out.append((w, text))
     return out
+
+
+def _ink_is_the_words(ev: Evidence, row: Any, group: Sequence[Any], word_boxes) -> bool:
+    """ROADMAP 2.331 fix A: is the printed letter `row` stands on -- ALL its twin boxes (`group`, the same ink) taken together, as GATHER's run is -- a letter
+    of a read word (`claims.letter_is_the_words`)? Letter ink beside ANY twin counts (two boxes on one ink are one witness, read twice). Every read word
+    holding the letter must say so; a word with no text, or none at all, says nothing (False: the letter stays what the detector said)."""
+    from .. import claims as _claims
+    boxes = [tuple(float(v) for v in (r.detail or {})["bbox_page_px"]) for r in group
+             if (r.detail or {}).get("bbox_page_px") and len((r.detail or {})["bbox_page_px"]) == 4]
+    if not boxes:
+        return False
+    holding = {}
+    for r in group:
+        for w, text in _words_around(r, word_boxes):
+            holding[tuple(w)] = text
+    if not holding:
+        return False
+    near = False
+    for r in group:
+        sides = ev.rows(Q.DYNAMIC_LETTER_NEIGHBOURS, subject=r.subject)
+        if sides and _is_a_letter_of_a_known_word(sides[-1].value):
+            near = True
+            break
+    letter = _letter_of(row)
+    return all(text is not None and _claims.letter_is_the_words(boxes, letter, w, text, near) is not None
+               for w, text in holding.items())
 
 
 def _letter_of_a_known_word(row, word_boxes) -> bool:

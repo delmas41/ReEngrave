@@ -128,12 +128,21 @@ class TestGather(unittest.TestCase):
         return log
 
     def test_the_clefs_are_claimed_by_the_page_wide_pass_and_the_register_files_the_column(self):
-        rows = self._run().rows(Q.CLAIMED_AREA, R.staff(0, 0, 0))
+        self._log = self._run()
+        rows = self._log.rows(Q.CLAIMED_AREA, R.staff(0, 0, 0))
         by = {(r.detail["owner"], r.detail["cell"]): r for r in rows if r.detail.get("owner") and r.detail.get("cell") is not None}
         # ROADMAP 2.324: the clef claims are the page-wide pass's (the register's own clef claims are retired): the header G clef is READ
-        # by it, a later bar's clef box it cannot read keeps the NARROWED claim the register used to file (the detector's word alone)
+        # by it. ROADMAP 2.324 r8: the later bar's `clefF` box here is a drawn bar with a head on it -- its ink breaks a never of the F
+        # clef's shape (`f_no_body_ink`), so it is NOT A CLEF (`clef_pagewide.NOT_A_CLEF`): no NARROWED claim, no carry stop. This
+        # synthetic page is the wiring check only; the rule itself is shown on real pixels in `test_staged_clef_page_only_2_324.py`
+        # (`TestRound8NotAClef`: Brahms p25's half note and Litolff p10's "fz" claim nothing; Litolff p10 s0 staff 3's bass clef with
+        # one dot fused, a POSSIBLE clef, still stops the carry and is claimed NARROWED)
         self.assertEqual(by[("clef", 0)].detail["source"], "clef_pagewide")
-        self.assertEqual(by[("clef", 1)].detail["standing"], "NARROWED")
+        self.assertNotIn(("clef", 1), by)
+        refused = [r for r in self._log.refusals(Q.CLAIMED_AREA, R.staff(0, 0, 0)) if r.detail.get("x_page") == 500.0
+                   and r.detail.get("family") == "F"]
+        self.assertEqual([r.detail.get("why") for r in refused], ["f_no_body_ink"])
+        self.assertFalse(refused[0].detail.get("candidate"))
         col = by[("leading_column", 0)]
         self.assertTrue(col.detail["prior"])
         self.assertEqual(col.detail["right_edge"], "own_clef")

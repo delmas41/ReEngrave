@@ -52,7 +52,10 @@ def _verdict(log: Log, subject: Subject, quantity: str, value: Any,
       bound="One pitch per notehead that already has a POSITION row and does "
             "NOT already carry a pitch. Adds no notehead, deletes none, and "
             "re-reads no geometry. A staff whose clef ABSTAINED produces no "
-            "pitches at all -- it does not fall back to treble.")
+            "pitches from it -- it does not fall back to treble; only a head "
+            "after a clef change READ inside the line is pitched, from that "
+            "change.",
+      fires_unsettled=True)
 def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     """position + clef -> pitch. The interpretation, made explicit.
 
@@ -64,11 +67,17 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     row that survives, the CLEF is an adjudicated verdict, and the PITCH is
     a consequence with both in its basis.
 
-    ⚠️ A staff whose clef abstained gets NO PITCHES, deliberately. The
+    ⚠️ A staff whose clef abstained gets NO PITCHES FROM IT, deliberately. The
     existing behaviour is a positional default that is right about half the
     time and indistinguishable from a reading. Producing nothing is worse for
     a naive metric and better for a reader who needs to know what we do not
     know.
+
+    ROADMAP 2.324 downstream (CLAUDE.md §3, EVALUATE writes what FOLLOWS): a clef printed INSIDE the line and READ by the page-wide
+    pass governs the heads after it whatever the staff's opening clef, so those heads are pitched here even where the header clef
+    ABSTAINED or NARROWED (`evaluate.Rule.fires_unsettled`) -- before, they waited for INFER to fill the header. The heads BEFORE the
+    change stay unread (their clef is unknown); a change the pass could not read, or a candidate after the change, still stops them
+    (`clef_pagewide.clef_in_force`, header None). The unsettled header value is never read.
 
     ⚠️⚠️ ROADMAP 2.42 (Sean, scope change): NO STACKED-HEAD CONNECTION HERE,
     AND THERE WILL NOT BE ONE FROM THIS ITEM. The ink-fit position
@@ -94,6 +103,11 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
     changes = _clef_changes(log, subject)
     from . import clef_pagewide as _CPc
     candidates = _clef_candidates(log, subject) if _CPc.carry_enabled() else []
+    # ROADMAP 2.324 downstream: the header clef is used only where it was DECIDED; unsettled, only a read change inside the line pitches
+    settled = clef.outcome is Outcome.DECIDED and clef.value is not None
+    header = str(clef.value) if settled else None
+    if not settled and not changes:
+        return out
     for row in rows:
         if log.verdict(Q.PITCH, row.subject) is not None:
             # ⚠️⚠️ IT NEVER OVERTURNS A PITCH THAT ALREADY STANDS, and the
@@ -126,7 +140,9 @@ def restate_pitch(log: Log, subject: Subject, clef: Verdict) -> List[Verdict]:
                 and far.value is not None:
             pos = int(far.value)
             pos_basis = far.id
-        in_force = _clef_change_at(log, row.subject, changes, candidates, str(clef.value) if clef.value is not None else None)
+        in_force = _clef_change_at(log, row.subject, changes, candidates, header)
+        if in_force is None and not settled:
+            continue                                        # before any change, on a staff whose opening clef is unknown: unread
         if in_force is not None:
             kind, crow = in_force
             if kind is None:

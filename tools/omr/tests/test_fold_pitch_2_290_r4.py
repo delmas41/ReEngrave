@@ -23,6 +23,13 @@ class _Rec:
         r = self.rows.get(sub, {}).get(key)
         return [r] if r else []
 
+    # ROADMAP 2.331 fix B (`OMR_FOLD_FAR_BY_LEDGER`) asks the ledger count and the printed accidentals: these real rows carry neither (none filed)
+    def verdict(self, quantity, sub):
+        return None
+
+    def verdicts_of(self, quantity):
+        return []
+
 
 def _run(fold_id, tall_ok=True):
     fold = FOLDS[fold_id]

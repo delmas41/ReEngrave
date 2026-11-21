@@ -8,7 +8,7 @@ But the cell also became the unit of OWNERSHIP: 17-19% of stroke ink is seen by 
 system, and one head in the gap is boxed once per staff (1,653 Litolff / 3,541 Brahms same-class pairs from two staves' crops). Sean's
 crops (2026-10-30): a head boxed from two staves is ONE note. CLAUDE §4: two readings of one raster count once.
 
-WHAT IT FILES (flag `OMR_PAGE_MARKS`, default OFF). One `Q.PAGE_MARK` row per detector box of every pass (the box's glyph subject):
+WHAT IT FILES (flag `OMR_PAGE_MARKS`, default ON; `=0` opts out). One `Q.PAGE_MARK` row per detector box of every pass (the box's glyph subject):
 `value` = the page-mark ordinal (per page; boxes with the same ordinal are ONE mark); `detail` = `family`, `members` (glyph keys of the
 mark), `cells` ([system, staff, cell] of each member), `ink_px` (this box's ink), `why` (`shared_ink` merged | `alone` no candidate |
 `refused` every candidate refused | `no_ink` | `not_a_mark`), `pairs` (each same-family box of ANOTHER cell whose page box overlaps this one:
@@ -276,7 +276,7 @@ def link(boxes: Sequence[BoxInk], share_min: float = SHARE_MIN, guard: bool = Tr
 
 def gather_page_marks(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]],
                       stroke_cells: Dict[Tuple[int, int, int, int], Any], *, progress: bool = False, page_heads: Any = None) -> Optional[Marks]:
-    """ROADMAP 2.240 step 1 (flag `OMR_PAGE_MARKS`, default OFF), STAGED GATHER: `Q.PAGE_MARK` per detector box (module doc). Reads the
+    """ROADMAP 2.240 step 1 (flag `OMR_PAGE_MARKS`, default ON), STAGED GATHER: `Q.PAGE_MARK` per detector box (module doc). Reads the
     page render, the cells' stroke maps and the final box set; files rows only and decides nothing. Returns the page's `Marks` (probes)."""
     if not enabled() or not stroke_cells:
         return None

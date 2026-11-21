@@ -1,0 +1,182 @@
+[
+ {
+  "fix": "A",
+  "place": "cell/9/0/10/7, the P of Pizz.",
+  "file_before": "dynamic p (twice: this ink and the real p above)",
+  "file_now": "no dynamic from this ink; the real p above stays",
+  "rule": "the_words_edge_letter",
+  "tile": 1,
+  "plate": "litolff",
+  "page": 9,
+  "box": [
+   1389.0,
+   1901.7,
+   1421.8,
+   1931.0
+  ],
+  "crop_origin": [
+   1295,
+   1821
+  ]
+ },
+ {
+  "fix": "A",
+  "place": "cell/4/0/8/0, the p of pesante (P9 m8)",
+  "file_before": "dynamic p",
+  "file_now": "no dynamic; the word pesante",
+  "rule": "the_words_edge_letter",
+  "tile": 2,
+  "plate": "brahms",
+  "page": 4,
+  "box": [
+   1138.7,
+   2539.4,
+   1182.7,
+   2584.5
+  ],
+  "crop_origin": [
+   872,
+   2369
+  ]
+ },
+ {
+  "fix": "A",
+  "place": "cell/8/1/8/4, the do of perdendosi boxed as f (P12 m63)",
+  "file_before": "dynamic f",
+  "file_now": "no dynamic; the word perdendosi",
+  "rule": "inside_the_word",
+  "tile": 3,
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   2615.8,
+   6500.5,
+   2690.0,
+   6554.2
+  ],
+  "crop_origin": [
+   2364,
+   6335
+  ]
+ },
+ {
+  "fix": "B",
+  "fold": "mg/8/0/38",
+  "file_before": "Ab5 plain",
+  "file_now": "A5 plain",
+  "why": "all boxes on the first ledger line above (ledger -2 decided); the natural printed on the head is owned by one box",
+  "tile": 4,
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   692.5,
+   403.2,
+   718.7,
+   423.2
+  ],
+  "crop_origin": [
+   595,
+   287
+  ]
+ },
+ {
+  "fix": "B",
+  "fold": "mg/8/0/162",
+  "file_before": "Ab5 blue",
+  "file_now": "A5 plain",
+  "why": "ledger -2 decided on both boxes; printed natural",
+  "tile": 5,
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   1527.6,
+   547.9,
+   1553.8,
+   571.5
+  ],
+  "crop_origin": [
+   1430,
+   433
+  ]
+ },
+ {
+  "fix": "B",
+  "fold": "mg/8/0/306",
+  "file_before": "Ab5 blue",
+  "file_now": "A5 plain",
+  "why": "ledger -2 decided on both boxes; printed natural",
+  "tile": 6,
+  "plate": "litolff",
+  "page": 8,
+  "box": [
+   2553.2,
+   545.0,
+   2578.1,
+   569.4
+  ],
+  "crop_origin": [
+   2455,
+   431
+  ]
+ },
+ {
+  "fix": "B",
+  "fold": "mg/10/1/40",
+  "file_before": "F5 plain (ink witness)",
+  "file_now": "F5 blue, candidates F5 / Ab5",
+  "why": "a far member (Ab5 box, ledger not read) -- never placed by ink; two heads a third apart folded as one",
+  "tile": 7,
+  "plate": "litolff",
+  "page": 10,
+  "box": [
+   525.0,
+   2233.4,
+   549.8,
+   2256.6
+  ],
+  "crop_origin": [
+   427,
+   2119
+  ]
+ },
+ {
+  "fix": "B",
+  "fold": "mg/11/0/242",
+  "file_before": "B5 blue",
+  "file_now": "B5 plain",
+  "why": "ledger -3 decided on both boxes; the natural printed on the head is owned by the B5 box",
+  "tile": 8,
+  "plate": "litolff",
+  "page": 11,
+  "box": [
+   2529.2,
+   413.0,
+   2551.2,
+   433.8
+  ],
+  "crop_origin": [
+   2429,
+   297
+  ]
+ },
+ {
+  "fix": "B",
+  "fold": "mg/8/1/362",
+  "file_before": "G6 blue",
+  "file_now": "Gb6 plain",
+  "why": "ledger -8 decided on both boxes; the flat printed on the head is owned by the Gb6 box",
+  "tile": 9,
+  "plate": "brahms",
+  "page": 8,
+  "box": [
+   4996.3,
+   3961.8,
+   5044.6,
+   3984.8
+  ],
+  "crop_origin": [
+   4796,
+   3717
+  ]
+ }
+]

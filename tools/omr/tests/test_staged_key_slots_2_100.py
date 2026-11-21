@@ -49,9 +49,14 @@ def _cell0(log, boxes, *, staff=0):
     out = []
     for gi, box in enumerate(boxes):
         g = R.glyph(1, 0, staff, 0, gi)
+        page = [float(box[1]), float(box[2]), float(box[1] + box[3]), float(box[2] + box[4])]
         log.observe(g, Q.GLYPH_BOX, tuple(box), reader=READERS.DETECTOR,
-                    frame="cell:0", score=0.5, category="x")
+                    frame="cell:0", score=0.5, category="x", bbox_page_px=page)
         cls = box[0]
+        if cls.startswith("clef"):
+            # ROADMAP 2.324 downstream: the clef bounding the key run is the one the page-wide pass READ (its claim), as GATHER files it
+            log.observe(R.staff(1, 0, staff), Q.CLAIMED_AREA, page, reader=READERS.CV_CLAIMED_REGISTER, frame="cell:0", cell=0,
+                        owner="clef", unit="area", standing="READ", source="clef_pagewide", change=False)
         if cls.startswith("rest"):
             log.observe(g, Q.REST, cls, reader=READERS.DETECTOR,
                         frame="cell:0", score=0.5, category="rest")

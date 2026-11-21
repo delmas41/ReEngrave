@@ -208,7 +208,8 @@ def _with_hollow_margin(ruling: Ruling, ink_detail, head_box=None, space=None, *
                            band=_HOLLOW_BAND if raw_gate else None, would_choose=("half",))
 
 
-# ⚠️⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON; `second_hollow.py`). A second detector's hollow-head box is a WITNESS
+# ⚠️⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF, allow-list -- landed OFF, Sean 2026-10-14; `second_hollow.py`). With it off
+# no `Q.SECOND_HOLLOW` row exists, `_second_hollow_row` is None and both blocks below are skipped: no witness, no default. A second detector's hollow-head box is a WITNESS
 # (`Q.SECOND_HOLLOW`), never a verdict. Where it and production's box DISAGREE (production a black head, the second a hollow one) or production
 # boxed NOTHING (`second_only`), the head's OWN ink decides, on Sean's rule (2026-10-13): *"It can't be as simple as a clear middle because many
 # hollow noteheads have lines through the middle of them. It needs to be a certain amount of white on the inside of the notehead."* -- the
