@@ -294,10 +294,12 @@ def gather_measures(log: Log, pws: Any, cells: Sequence[Any],
 
 #: ROADMAP 2.306 r16: how far (staff spaces) from the system column a staff's own barline ink is looked for, and the share of the staff's rows
 #: (top line to bottom line) a column's ink must cover to be the barline -- a barline runs the staff's whole height; a stem stops at its head
-BARLINE_SEEK_SP = 1.2
+BARLINE_SEEK_SP = 0.8
 BARLINE_RUN_SHARE = 0.97
 BARLINE_MAX_W_SP = 0.6
 BARLINE_HEAD_ROWS = 3
+#: the barline area's half width (staff spaces), as filed below
+BARLINE_AREA_HALF_SP = 0.45
 
 
 def barline_x_on_staff(binary: Any, x: float, top: float, bottom: float, sp: float) -> Optional[float]:
@@ -326,14 +328,15 @@ def barline_x_on_staff(binary: Any, x: float, top: float, bottom: float, sp: flo
             start = None
     # a barline is the same thin upright all the way down; a stem that happens to span the staff widens at its notehead. Away from the staff
     # lines' rows, the run's ink does not spread like a notehead.
-    line_rows = ink.mean(axis=1) >= 0.6
+    line_rows = ink.mean(axis=1) >= 0.9         # a row the ink crosses wall to wall: a staff line (where the scan tilts it off the even spacing)
+    line_rows = line_rows | np.r_[False, line_rows[:-1]] | np.r_[line_rows[1:], False]      # and the line's blurred edge rows
     keep = []
     for a, c in runs:
         mid = (a + c) // 2
         widths = []
         for r in range(ink.shape[0]):
             if line_rows[r]:
-                widths.append(0)
+                widths.append(None)         # a staff line's row says nothing either way (a head ON a line spans it)
                 continue
             row = ink[r]
             lo = mid
@@ -347,6 +350,8 @@ def barline_x_on_staff(binary: Any, x: float, top: float, bottom: float, sp: flo
         # beside a staff line carry the line's blur one row at a time
         run_w, worst = 0, 0
         for w in widths:
+            if w is None:
+                continue
             run_w = run_w + 1 if w > BARLINE_MAX_W_SP * sp else 0
             worst = max(worst, run_w)
         if worst < BARLINE_HEAD_ROWS:
@@ -355,6 +360,8 @@ def barline_x_on_staff(binary: Any, x: float, top: float, bottom: float, sp: flo
     if not runs:
         return None
     mids = [x0 + (a + c) / 2.0 for a, c in runs]
+    if any(abs(m - x) <= BARLINE_AREA_HALF_SP * sp for m in mids):
+        return float(x)         # the system's area already stands on this staff's barline ink: nothing moves
     return min(mids, key=lambda m: abs(m - x))
 
 
