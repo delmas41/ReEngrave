@@ -215,6 +215,61 @@ STUB_MIN_SPACES = STACK_NOTCH_SPACES
 STUB_SIDE_PX = 1
 
 
+# -- ROADMAP 2.306 (waist): TWO HEADS FUSED INTO ONE PIECE OF INK ARE TWO HEADS (flag `OMR_STACK_TWO_HEADS`, default OFF) --
+#: RULE (as a musician says it): each notehead is its own oval, one staff space tall, on its own line or space; two heads a third apart on one
+#: stem touch at the line or space between them, and each owns the ink on its own side of it. Where the print has filled the two ovals into one
+#: solid block with no neck between them, the block is still two heads on their stem: it is cut halfway, where the two ovals meet. Never one
+#: head with something fused to it (a stem's foot, a tie end, a ledger stub: shorter than two heads), never three or more stacked heads
+#: (taller), never a hollow ring or a slashed half note (not solid), never a block wider than one head (an accidental or a dot beside it),
+#: never a block with no stem running on beyond it (an accidental's body, a letter's bar).
+#: CAUSE (lane's look at full size, Litolff p2/6/16 + Brahms p0/4/5, not Sean's): Litolff's 1-bit scan (2897 px wide, the raster we read at
+#: native size, sp 15.75 px) fills the space between two heads a third apart: the pair is a rounded block ~1.3 x 2.35 sp whose every row is
+#: as wide as the next -- the waist `_cut_stack` looks for is not under a threshold, it is ABSENT in the ink (on every `stack_no_waist` part of
+#: the six pages the part's own ink and its edge profile both show a step of under 2 px). The head claim (2.290 `page_heads.CLAIM_MAX_H_SP`)
+#: then refuses the block as taller than one head and NEITHER head claims any ink.
+STACK_TWO_HEADS_ENV = "OMR_STACK_TWO_HEADS"
+#: two heads a third apart: at least this tall (sp). Below: one head with ink fused to it -- tallest such part measured on the six pages
+#: 2.03 sp (Litolff p6, a head with a stem foot); the shortest fused pair 2.18 sp (Brahms p4, B3/D4). Heads 1.0-1.3 sp tall a third apart: 2.0-2.3
+PAIR_MIN_H_SP = 2.1
+#: ... and at most this tall: a pair with a ledger stub at each end measured to 2.98 sp; three heads a third apart are >= 3.2 sp
+PAIR_MAX_H_SP = 3.0
+#: ... and at least a filled head wide in its OWN ink (a black head is >= 1.0 sp wide; fused pairs 1.14-1.84 sp on the six pages). Narrower:
+#: a clef's or a brace's stroke the openings cut (Litolff p16 F-clef bodies 0.7 x 2.6-2.8 sp, solid, no neck), never two heads
+PAIR_MIN_W_SP = 1.0
+#: ... and SOLID: at least this share of the part's box is ink (fused pairs 0.79-1.0 on the six pages; a hollow ring or a slash through a
+#: half note leaves white inside its box)
+PAIR_FILL_MIN = 0.75
+#: ... and ON A STEM: two heads a third apart on one stem have the stem running on beyond them -- a stem part at least this long (sp) in the
+#: same piece. Fused pairs' stems 2.29-3.17 sp on the six pages; the solid blocks that are NOT heads stand beside a short upright: a sharp's
+#: body (Litolff p6, Sean's tile 3 cell glyph/6/1/8/11: 0.63 and 0.83 sp), a bold letter's bar (Brahms p5: 1.12 and 1.50 sp). A stack with
+#: no stem in it (`_stack_or_whole`) is never cut this way.
+PAIR_STEM_MIN_SP = 2.0
+#: the cut row: the narrowest row of the profile within this far (sp) of the part's middle (the middle itself when every row is as wide)
+PAIR_CUT_SLACK_SP = 0.15
+#: the census key (`CellStrokes.split_refused`) counting the stacks cut this way: a cut, not a refusal
+STACK_HALVED = "stack_two_heads_halved"
+
+
+def stack_two_heads_enabled() -> bool:
+    """`OMR_STACK_TWO_HEADS` (ROADMAP 2.306 waist), default OFF; 1/true/yes/on enables."""
+    return os.environ.get(STACK_TWO_HEADS_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _two_heads_row(m: np.ndarray, prof: np.ndarray, sp: float) -> Optional[int]:
+    """PURE. The row where two heads a third apart meet in a stack with no neck (`m` the part, `prof` its edge profile, same rows), or None
+    when the part is not two filled heads a third apart (module constants `PAIR_*`). The rows above the returned row are the upper head."""
+    h, w = m.shape
+    if not (PAIR_MIN_H_SP * sp <= h <= PAIR_MAX_H_SP * sp) or w < PAIR_MIN_W_SP * sp:
+        return None
+    if float(m.sum()) < PAIR_FILL_MIN * h * w:
+        return None
+    mid = (h - 1) / 2.0
+    slack = PAIR_CUT_SLACK_SP * sp
+    rows = [r for r in range(h) if abs(r - mid) <= slack]
+    wd = prof.sum(axis=1)
+    return int(min(rows, key=lambda r: (int(wd[r]), abs(r - mid), r)))
+
+
 def stem_stub_cut_enabled() -> bool:
     """`OMR_STEM_STUB_CUT` (ROADMAP 2.306 cut), default OFF; 1/true/yes/on enables."""
     return os.environ.get(STEM_STUB_ENV, "").strip().lower() in ("1", "true", "yes", "on")
@@ -619,10 +674,11 @@ def _merge_small(lab: np.ndarray, keep: Dict[int, bool]) -> np.ndarray:
     return lab
 
 
-def _cut_stack(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None) -> Tuple[List[np.ndarray], Optional[str]]:
+def _cut_stack(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None, on_stem: bool = False) -> Tuple[List[np.ndarray], Optional[str]]:
     """A wide part taller than one head: cut at the waist between two ovals (head|head). Returns (row-bands as masks of `m`'s frame, why-not).
     `prof` (same rows as `m`, any columns) is the ink the edges are read on: the part's own ink plus the oval edges the vertical opening left
-    to the remainder (a column broken by a notch is not in the opening), rungs left out; None = `m` itself."""
+    to the remainder (a column broken by a notch is not in the opening), rungs left out; None = `m` itself. `on_stem` (2.306 waist): the part
+    stands beside a stem at least `PAIR_STEM_MIN_SP` long, so a stack with no neck may be two filled heads (`_two_heads_row`)."""
     h, w = m.shape
     prof = m if prof is None else prof
     if h <= HEAD_HEIGHT_CAP_SPACES * sp:
@@ -652,7 +708,13 @@ def _cut_stack(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None) -> T
         if depth > best[0]:
             best = (float(depth), r)
     if best[1] < 0 or best[0] < STACK_NOTCH_SPACES * sp:
-        return [m], "stack_no_waist"
+        r2 = _two_heads_row(m, prof, sp) if (on_stem and stack_two_heads_enabled()) else None
+        if r2 is None:
+            return [m], "stack_no_waist"
+        top, bot = m.copy(), m.copy()                  # 2.306 waist: two filled heads with no neck, cut where the ovals meet
+        top[r2 + 1:] = False
+        bot[:r2 + 1] = False
+        return [p for p in (top, bot) if p.any()], STACK_HALVED
     r = best[1]
     top, bot = m.copy(), m.copy()
     top[r + 1:] = False
@@ -663,7 +725,7 @@ def _cut_stack(m: np.ndarray, sp: float, prof: Optional[np.ndarray] = None) -> T
         ys = np.nonzero(part.any(axis=1))[0]
         if ys.size == 0:
             continue
-        sub, w2 = _cut_stack(part[ys[0]:ys[-1] + 1], sp, prof[ys[0]:ys[-1] + 1])
+        sub, w2 = _cut_stack(part[ys[0]:ys[-1] + 1], sp, prof[ys[0]:ys[-1] + 1], on_stem)
         for s_ in sub:
             full = np.zeros_like(m)
             full[ys[0]:ys[-1] + 1] = s_
@@ -725,8 +787,10 @@ def _split_thin_wide(m: np.ndarray, thin: np.ndarray, wide: np.ndarray, sp: floa
     keep: Dict[int, bool] = {}
     kind_of: Dict[int, str] = {}
     stubs = stem_stub_cut_enabled()
+    on_stem = False
     for i in range(1, nt):
         ys = np.nonzero((tl == i).any(axis=1))[0]
+        on_stem = on_stem or (bool(ys.size) and (ys[-1] - ys[0] + 1) >= PAIR_STEM_MIN_SP * sp)
         keep[i] = bool(ys.size) and (ys[-1] - ys[0] + 1) >= STEM_PART_MIN_SPACES * sp
         if not keep[i] and stubs and _is_stem_stub(tl == i, wl, wide, sp):
             keep[i] = True                             # 2.306 cut: a stem's stub at a head's side stays stem, however short
@@ -753,7 +817,7 @@ def _split_thin_wide(m: np.ndarray, thin: np.ndarray, wide: np.ndarray, sp: floa
             continue
         pc, oy, ox = _crop(part)
         prof = _profile(pc, oy, ox, context, sp)
-        bands, why = (_cut_stack(pc, sp, prof) if _looks_like_heads(pc, sp, prof) else ([pc], None))
+        bands, why = (_cut_stack(pc, sp, prof, on_stem) if _looks_like_heads(pc, sp, prof) else ([pc], None))
         if why:
             refused[why] = refused.get(why, 0) + 1
         for b in bands:
