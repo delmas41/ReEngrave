@@ -74,6 +74,11 @@ def _gather(env, key_lo=None):
     _PWS.page.binary = img
     log = Log()
     with mock.patch.dict(os.environ, env):
+        from tools.omr.staged import clef_pagewide as CP
+        if CP.page_only_enabled():
+            # ROADMAP 2.324 (OMR_CLEF_PAGE_ONLY): the page-wide pass is the clef reader and runs first, as `gather` orders it; staff 0's
+            # clef is read and claimed there (the register files no clef claim), so it is the sibling clef the slot is measured from
+            G.gather_clef_pagewide(log, _PWS(), CELLS, {0: (0, 0), 1: (0, 1)}, _dets())
         G.gather_claimed_register(log, _PWS(), CELLS, {0: (0, 0), 1: (0, 1)}, _dets())
         if key_lo is not None:                      # the key claim of staff 1 (gather_key_signature_claim files this shape)
             log.observe(R.staff(0, 0, 1), Q.CLAIMED_AREA, [key_lo, 270.0, key_lo + 40.0, 400.0], reader=READERS.CV_KEY_SIGNATURE_CLAIM,

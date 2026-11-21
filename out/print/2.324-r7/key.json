@@ -1,0 +1,257 @@
+{
+ "reach": {
+  "litolff": {
+   "staves": 172,
+   "start read OFF": 169,
+   "start read ON": 172,
+   "mid-line read OFF": 19,
+   "mid-line read ON": 19,
+   "diffs": [
+    {
+     "staff": "staff/2/1/3",
+     "where": "start",
+     "OFF": [
+      "tenor",
+      "scored"
+     ],
+     "ON": [
+      "bass",
+      "scored"
+     ],
+     "box": [
+      355.0,
+      2551.2,
+      417.8,
+      2616.0
+     ]
+    },
+    {
+     "staff": "staff/2/1/9",
+     "where": "start",
+     "OFF": [
+      "alto",
+      "clef_from_other_systems"
+     ],
+     "ON": [
+      "alto",
+      "scored"
+     ],
+     "box": [
+      363.6,
+      3391.2,
+      412.6,
+      3469.8
+     ]
+    },
+    {
+     "staff": "staff/4/0/8",
+     "where": "start",
+     "OFF": [
+      "alto",
+      "clef_from_other_systems"
+     ],
+     "ON": [
+      "alto",
+      "scored"
+     ],
+     "box": [
+      382.6,
+      1612.2,
+      433.6,
+      1691.8
+     ]
+    },
+    {
+     "staff": "staff/4/1/10",
+     "where": "start",
+     "OFF": [
+      "bass",
+      "clef_from_other_systems"
+     ],
+     "ON": [
+      "bass",
+      "scored"
+     ],
+     "box": [
+      369.0,
+      3521.0,
+      425.8,
+      3602.6
+     ]
+    }
+   ]
+  },
+  "brahms": {
+   "staves": 199,
+   "start read OFF": 198,
+   "start read ON": 199,
+   "mid-line read OFF": 7,
+   "mid-line read ON": 11,
+   "diffs": [
+    {
+     "staff": "staff/8/1/3",
+     "where": "start",
+     "OFF": [
+      "bass",
+      "clef_from_other_systems"
+     ],
+     "ON": [
+      "tenor",
+      "scored"
+     ],
+     "box": [
+      685.0,
+      4817.1,
+      763.6,
+      4948.9
+     ]
+    },
+    {
+     "staff": "staff/14/1/9",
+     "where": "mid",
+     "ON only": "treble",
+     "box": [
+      1144.0,
+      6434.0,
+      1206.0,
+      6652.0
+     ]
+    },
+    {
+     "staff": "staff/25/0/3",
+     "where": "mid",
+     "ON only": "bass",
+     "box": [
+      1354.5,
+      1373.9,
+      1423.4,
+      1458.6
+     ]
+    },
+    {
+     "staff": "staff/5/1/3",
+     "where": "mid",
+     "ON only": "bass",
+     "box": [
+      1004.7,
+      4726.6,
+      1079.4,
+      4813.7
+     ]
+    },
+    {
+     "staff": "staff/8/0/9",
+     "where": "mid",
+     "ON only": "bass",
+     "box": [
+      4279.7,
+      3170.4,
+      4353.7,
+      3257.0
+     ]
+    }
+   ]
+  }
+ },
+ "tiles": {
+  "1": {
+   "plate": "litolff",
+   "staff": "staff/2/1/3",
+   "box": [
+    355.0,
+    2551.2,
+    417.8,
+    2616.0
+   ],
+   "what": "start OFF tenor/scored ON bass/scored"
+  },
+  "2": {
+   "plate": "litolff",
+   "staff": "staff/2/1/9",
+   "box": [
+    363.6,
+    3391.2,
+    412.6,
+    3469.8
+   ],
+   "what": "start OFF alto/clef_from_other_systems ON alto/scored"
+  },
+  "3": {
+   "plate": "litolff",
+   "staff": "staff/4/0/8",
+   "box": [
+    382.6,
+    1612.2,
+    433.6,
+    1691.8
+   ],
+   "what": "start OFF alto/clef_from_other_systems ON alto/scored"
+  },
+  "4": {
+   "plate": "litolff",
+   "staff": "staff/4/1/10",
+   "box": [
+    369.0,
+    3521.0,
+    425.8,
+    3602.6
+   ],
+   "what": "start OFF bass/clef_from_other_systems ON bass/scored"
+  },
+  "5": {
+   "plate": "brahms",
+   "staff": "staff/8/1/3",
+   "box": [
+    685.0,
+    4817.1,
+    763.6,
+    4948.9
+   ],
+   "what": "start OFF bass/clef_from_other_systems ON tenor/scored"
+  },
+  "6": {
+   "plate": "brahms",
+   "staff": "staff/14/1/9",
+   "box": [
+    1144.0,
+    6434.0,
+    1206.0,
+    6652.0
+   ],
+   "what": "mid ON only treble"
+  },
+  "7": {
+   "plate": "brahms",
+   "staff": "staff/25/0/3",
+   "box": [
+    1354.5,
+    1373.9,
+    1423.4,
+    1458.6
+   ],
+   "what": "mid ON only bass"
+  },
+  "8": {
+   "plate": "brahms",
+   "staff": "staff/5/1/3",
+   "box": [
+    1004.7,
+    4726.6,
+    1079.4,
+    4813.7
+   ],
+   "what": "mid ON only bass"
+  },
+  "9": {
+   "plate": "brahms",
+   "staff": "staff/8/0/9",
+   "box": [
+    4279.7,
+    3170.4,
+    4353.7,
+    3257.0
+   ],
+   "what": "mid ON only bass"
+  }
+ }
+}

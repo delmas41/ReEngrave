@@ -376,7 +376,8 @@ def _forced_pairing(system: List[Optional[str]],
     scope=Kind.STAFF,
     wants=(Q.INSTRUMENT, Q.STAFF_ORDINAL, Q.SYSTEM_STAFF_COUNT,
            Q.STAFF_GROUP, Q.CLEF_GLYPH, Q.CLEF_LOCATED, Q.MARGIN_LABEL,
-           Q.ROSTER_ENTRY),
+           Q.ROSTER_ENTRY,
+           Q.CLAIMED_AREA),       # ROADMAP 2.324: the page-wide clef read (only with OMR_CLEF_PAGE_ONLY)
     reasons=("full_lineup", "named", "paired_by_name", "paired_by_crook",
              "paired_by_bare_crook",
              "no_reference", "no_ordinal", "reference_names_nothing",
@@ -1146,8 +1147,17 @@ def _clef_read_at(ev: Evidence, subject) -> Optional[str]:
     weights and its own right to abstain; a second, cheaper copy of that
     contest here is exactly the drift this file imports `work_roster.decide`
     to avoid. So: all the rows agree, or this says nothing.
+
+    ROADMAP 2.324 (`OMR_CLEF_PAGE_ONLY`): ON, GATHER's one clef reading is the page-wide pass's header read of THIS staff (a READ kind;
+    one answer or none, as below) -- the locator and the per-cell detector read do not run.
     """
     from .clef import _GLYPH_TO_CLEF
+    from .. import clef_pagewide as _CP
+
+    if _CP.page_only_enabled():
+        kinds = {str((r.detail or {}).get("kind")) for r in _CP.header_reads(ev.rows(Q.CLAIMED_AREA, subject=subject))
+                 if (r.detail or {}).get("kind")}
+        return kinds.pop() if len(kinds) == 1 else None
 
     located = {str(r.value) for r in ev.rows(Q.CLEF_LOCATED, subject=subject)
                if r.value}
