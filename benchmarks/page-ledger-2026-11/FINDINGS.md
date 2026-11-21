@@ -682,3 +682,42 @@ reader would file both stems and the unison rule read them.
 
 **Not removable yet.** The stroke-map cut, the hollow outline and the clef claim first; the Litolff
 export-time losses need a cause.
+
+## 2.306 rounds 17-18 -- the chord is where the stem join is undone (2026-11-21/22; `lane-2.306-r15` 7f115715a; `OMR_PAGE_STEMS` OFF; six touched pages, re-adjudicated from one gather per plate)
+
+**Cause (r17).** The notes lost with the flag ON were not wrong stems. EXPORT groups heads into a chord by
+box-centre x, and a box with no stem defaulted to a quarter: a real stemmed head in line with a box the
+page reader refused (a beam junction, a rest, a smudge) made a chord whose values disagree, and the whole
+chord went unwritten (15 heads on Litolff 2, 6, 16). With the flag off the cell join stemmed those boxes
+too and wrote them. Lesson: a join decided by box geometry in one stage undoes the ink join made earlier.
+
+**Built and kept (r18).** A box the page reader joins to no stem gets NO value (`no_stem_joined`,
+`no_value_without_a_stem`; record controls 16/0/8/2/4, 6/1/3/6/2, 6/1/7/6/15, failing with the rule off).
+Flag off -> on: red bars Litolff 77 -> 55, Brahms 47 -> 31; judged right->wrong, lost and
+unwritten->wrong all 0 (of 248 / 225). The named chords 16/0/8/2/3, 6/1/3/6/4, 6/1/7/6/2 and Brahms
+5/1/9/7 are written again. Of a seeded 12 among 51 newly held Litolff heads: 8 not notes, 4 real (2 head
+outline set off from its ink, 1 stem read both ways, 1 unclear). With the flag OFF, 76 Litolff / 16
+Brahms notes are written on boxes that stand on no stem; of 12 looked at, 10 not notes.
+
+**Built and WITHDRAWN (r18).** Splitting an x-grouped chord by stem id: heads on two stems at one x were
+set one after another in one voice -- Brahms 5/1/10/7's G3 written a beat before its chord-mates, a
+rhythm error written plain. Judged right->wrong was 0 only because no judged mark sits there. LESSON: a
+change that regroups or reorders notes needs a look at the written bar against the print; the judged
+gate cannot see where no judged mark stands. Two stems at one x are two voices sounding together.
+
+**The four mixed-value groups** (`out/print/2.306-r18-mixed/sheet.png`, with Sean 2026-11-21, unanswered):
+Brahms 5/1/10/7 (a dot read on three heads, not on the low G); Litolff 2/0/7/4 (hollow top head under a
+fermata, three black heads filled in as quarters by `chord_mate_shares_the_stem`); 6/1/8/11 (beam read
+differently head to head, one black head decided a half, two tremolo-slash boxes in the group); 6/0/8/0
+(three beamed eighths and a box below the staff that looks like the p). All held and marked, none shared.
+Research the same day (`one stem, one value`, second-hand sources): mixed values on one stem occur on
+string staves and in keyboard music, and dotted beside undotted in chords; hollow beside filled or
+different flag counts on a wind staff is almost certainly a misread. Sean's recorded words (2026-10-09
+"yes, one stem one value, no exceptions", on mostly wind tiles) were generalised by us to every stem.
+
+**Causes placed, not built (handed to fresh lanes).** Hollow-head outline: `head_extent.ink_extent`,
+`x0, x1 = max(x0, cols[0]), min(x1, cols[1] + 1.0)` -- `cols` is the widest ink run through the head's
+centre column, which on a hollow head stops at the hole (Sean's p0 heads 85, 148, 328: 2230-2274 cut to
+2234-2254). Stroke-map cut: `stroke_map._split_thin_wide` folds a thin part under half a space
+(`STEM_PART_MIN_SPACES`) into the head. Two-voice heads: the page reader files both strokes, the unison
+rule reads them, the writer places them at the same onset in two voices.
