@@ -1,0 +1,1069 @@
+{
+ "seed": 329001,
+ "note": "our_look is the agent's own look, not truth; Sean's answers to the 2.311-dots tiles are not on file",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 6,
+   "glyph": "glyph/6/0/3/8/22",
+   "bar": [
+    6,
+    0,
+    3,
+    8
+   ],
+   "measure": "87",
+   "part": "P4",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "A-13",
+    "part": "P4",
+    "measure": "87",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     1799,
+     850,
+     1806,
+     857
+    ],
+    "cx": 1802.2272727272727,
+    "cy": 853.469696969697,
+    "w": 0.44,
+    "h": 0.44,
+    "gap": 0.37,
+    "line_off": 0.47,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 10,
+   "glyph": "glyph/10/0/10/1/1",
+   "bar": [
+    10,
+    0,
+    10,
+    1
+   ],
+   "measure": "174",
+   "part": "P11",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "B-12",
+    "part": "P11",
+    "measure": "174",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     714,
+     1881,
+     720,
+     1885
+    ],
+    "cx": 716.5555555555555,
+    "cy": 1882.7222222222222,
+    "w": 0.38,
+    "h": 0.25,
+    "gap": 0.49,
+    "line_off": 0.44,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 16,
+   "glyph": "glyph/16/0/9/3/0",
+   "bar": [
+    16,
+    0,
+    9,
+    3
+   ],
+   "measure": "240",
+   "part": "P10",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C4",
+    "part": "P10",
+    "measure": "240",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     897,
+     1654,
+     904,
+     1663
+    ],
+    "cx": 900.6025641025641,
+    "cy": 1658.525641025641,
+    "w": 0.44,
+    "h": 0.57,
+    "gap": 0.68,
+    "line_off": 0.43,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/1/9/11/0",
+   "bar": [
+    8,
+    1,
+    9,
+    11
+   ],
+   "measure": "70",
+   "part": "P13",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "E-12",
+    "part": "P13",
+    "measure": "70",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     5046,
+     6749,
+     5056,
+     6763
+    ],
+    "cx": 5050.16037735849,
+    "cy": 6755.377358490566,
+    "w": 0.36,
+    "h": 0.51,
+    "gap": 0.67,
+    "line_off": 0.45,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "part of another mark (flag tail)"
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/1/5/4/9",
+   "bar": [
+    5,
+    1,
+    5,
+    4
+   ],
+   "measure": "40",
+   "part": "P6",
+   "file_writes": "quarter plain READ, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "B-14",
+    "part": "P6",
+    "measure": "40",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     3062,
+     5147,
+     3081,
+     5163
+    ],
+    "cx": 3072.530303030303,
+    "cy": 5153.782828282829,
+    "w": 0.7,
+    "h": 0.59,
+    "gap": 0.22,
+    "line_off": 0.5,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot; plain READ, bar red"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 16,
+   "glyph": "glyph/16/1/7/0/2",
+   "bar": [
+    16,
+    1,
+    7,
+    0
+   ],
+   "measure": "254",
+   "part": "P8",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "G4",
+    "part": "P8",
+    "measure": "254",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     565,
+     3126,
+     573,
+     3134
+    ],
+    "cx": 568.8846153846154,
+    "cy": 3130.141025641026,
+    "w": 0.51,
+    "h": 0.51,
+    "gap": 0.65,
+    "line_off": 0.41,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 7,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/1/9/1/9",
+   "bar": [
+    8,
+    1,
+    9,
+    1
+   ],
+   "measure": "60",
+   "part": "P13",
+   "file_writes": "quarter plain READ, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "A-12",
+    "part": "P13",
+    "measure": "60",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     1354,
+     6736,
+     1370,
+     6750
+    ],
+    "cx": 1362.035135135135,
+    "cy": 6743.175675675676,
+    "w": 0.58,
+    "h": 0.51,
+    "gap": 0.34,
+    "line_off": 0.39,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot; plain READ, bar red"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "page": 10,
+   "glyph": "glyph/10/1/8/0/4",
+   "bar": [
+    10,
+    1,
+    8,
+    0
+   ],
+   "measure": "187",
+   "part": "P9",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "G4",
+    "part": "P9",
+    "measure": "187",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     556,
+     3289,
+     563,
+     3298
+    ],
+    "cx": 559.9772727272727,
+    "cy": 3293.568181818182,
+    "w": 0.44,
+    "h": 0.56,
+    "gap": 0.64,
+    "line_off": 0.41,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 9,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/0/10/4/1",
+   "bar": [
+    19,
+    0,
+    10,
+    4
+   ],
+   "measure": "118",
+   "part": "P11",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "G-14",
+    "part": "P11",
+    "measure": "118",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     2937,
+     2919,
+     2949,
+     2936
+    ],
+    "cx": 2941.420353982301,
+    "cy": 2927.1814159292035,
+    "w": 0.44,
+    "h": 0.62,
+    "gap": 0.63,
+    "line_off": 0.5,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "part of another mark (flag tail)"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "page": 10,
+   "glyph": "glyph/10/0/10/2/1",
+   "bar": [
+    10,
+    0,
+    10,
+    2
+   ],
+   "measure": "175",
+   "part": "P11",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "G2",
+    "part": "P11",
+    "measure": "175",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     858,
+     1897,
+     865,
+     1905
+    ],
+    "cx": 862.1216216216217,
+    "cy": 1901.2027027027027,
+    "w": 0.44,
+    "h": 0.51,
+    "gap": 0.4,
+    "line_off": 0.43,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 11,
+   "plate": "brahms",
+   "page": 4,
+   "glyph": "glyph/4/1/12/0/10",
+   "bar": [
+    4,
+    1,
+    12,
+    0
+   ],
+   "measure": "19",
+   "part": "P13",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C3",
+    "part": "P13",
+    "measure": "19",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     1004,
+     6843,
+     1014,
+     6852
+    ],
+    "cx": 1008.2966101694915,
+    "cy": 6846.838983050848,
+    "w": 0.37,
+    "h": 0.33,
+    "gap": 0.59,
+    "line_off": 0.27,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "part of another mark (flag tail)"
+  },
+  {
+   "tile": 12,
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/1/11/6/14",
+   "bar": [
+    5,
+    1,
+    11,
+    6
+   ],
+   "measure": "42",
+   "part": "P12",
+   "file_writes": "quarter dotted plain READ, bar not red",
+   "written": {
+    "type": "quarter",
+    "dots": 1,
+    "blue": false,
+    "pitch": "F14",
+    "part": "P12",
+    "measure": "42",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     3991,
+     6595,
+     4007,
+     6609
+    ],
+    "cx": 3998.8166666666666,
+    "cy": 6602.555555555556,
+    "w": 0.58,
+    "h": 0.51,
+    "gap": 0.22,
+    "line_off": 0.37,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot (note already written dotted)"
+  },
+  {
+   "tile": 13,
+   "plate": "brahms",
+   "page": 19,
+   "glyph": "glyph/19/0/11/4/6",
+   "bar": [
+    19,
+    0,
+    11,
+    4
+   ],
+   "measure": "118",
+   "part": "P12",
+   "file_writes": "quarter plain READ, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "D4",
+    "part": "P12",
+    "measure": "118",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     3029,
+     3117,
+     3042,
+     3128
+    ],
+    "cx": 3035.515503875969,
+    "cy": 3122.8565891472867,
+    "w": 0.48,
+    "h": 0.4,
+    "gap": 0.34,
+    "line_off": 0.36,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot; plain READ, bar red"
+  },
+  {
+   "tile": 14,
+   "plate": "litolff",
+   "page": 4,
+   "glyph": "glyph/4/1/4/14/28",
+   "bar": [
+    4,
+    1,
+    4,
+    14
+   ],
+   "measure": "78",
+   "part": "P5",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "E5",
+    "part": "P5",
+    "measure": "78",
+    "red": false,
+    "chord": true,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     2524,
+     2715,
+     2531,
+     2724
+    ],
+    "cx": 2528.15,
+    "cy": 2719.725,
+    "w": 0.44,
+    "h": 0.57,
+    "gap": 0.58,
+    "line_off": 0.39,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 15,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/0/6/12/0",
+   "bar": [
+    8,
+    0,
+    6,
+    12
+   ],
+   "measure": "58",
+   "part": "P10",
+   "file_writes": "quarter plain READ, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "B-14",
+    "part": "P10",
+    "measure": "58",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     5343,
+     2401,
+     5356,
+     2414
+    ],
+    "cx": 5349.484126984127,
+    "cy": 2407.2380952380954,
+    "w": 0.46,
+    "h": 0.46,
+    "gap": 0.34,
+    "line_off": 0.49,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot; plain READ, bar red"
+  },
+  {
+   "tile": 16,
+   "plate": "litolff",
+   "page": 9,
+   "glyph": "glyph/9/1/9/11/8",
+   "bar": [
+    9,
+    1,
+    9,
+    11
+   ],
+   "measure": "172",
+   "part": "P11",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C3",
+    "part": "P11",
+    "measure": "172",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     2512,
+     3567,
+     2518,
+     3572
+    ],
+    "cx": 2514.7631578947367,
+    "cy": 3569.2894736842104,
+    "w": 0.38,
+    "h": 0.31,
+    "gap": 0.62,
+    "line_off": 0.48,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 17,
+   "plate": "litolff",
+   "page": 8,
+   "glyph": "glyph/8/1/6/0/4",
+   "bar": [
+    8,
+    1,
+    6,
+    0
+   ],
+   "measure": "127",
+   "part": "P8",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "D4",
+    "part": "P8",
+    "measure": "127",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     564,
+     2972,
+     570,
+     2977
+    ],
+    "cx": 566.7,
+    "cy": 2974.2,
+    "w": 0.38,
+    "h": 0.31,
+    "gap": 0.6,
+    "line_off": 0.44,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 18,
+   "plate": "litolff",
+   "page": 8,
+   "glyph": "glyph/8/1/10/12/4",
+   "bar": [
+    8,
+    1,
+    10,
+    12
+   ],
+   "measure": "139",
+   "part": "P12",
+   "file_writes": "quarter BLUE, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": true,
+    "pitch": "B2",
+    "part": "P12",
+    "measure": "139",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     1600,
+     3557,
+     1611,
+     3566
+    ],
+    "cx": 1605.4384615384615,
+    "cy": 3561.2846153846153,
+    "w": 0.69,
+    "h": 0.56,
+    "gap": 0.59,
+    "line_off": 0.44,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 19,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/1/6/3/0",
+   "bar": [
+    8,
+    1,
+    6,
+    3
+   ],
+   "measure": "62",
+   "part": "P10",
+   "file_writes": "quarter plain READ, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "B-14",
+    "part": "P10",
+    "measure": "62",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     2240,
+     5774,
+     2256,
+     5791
+    ],
+    "cx": 2247.967032967033,
+    "cy": 5782.324175824176,
+    "w": 0.58,
+    "h": 0.62,
+    "gap": 0.4,
+    "line_off": 0.46,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot; plain READ, bar red"
+  },
+  {
+   "tile": 20,
+   "plate": "brahms",
+   "page": 12,
+   "glyph": "glyph/12/0/2/3/10",
+   "bar": [
+    12,
+    0,
+    2,
+    3
+   ],
+   "measure": "74",
+   "part": "P3",
+   "file_writes": "half dotted plain READ, bar not red",
+   "written": {
+    "type": "half",
+    "dots": 1,
+    "blue": false,
+    "pitch": "C5",
+    "part": "P3",
+    "measure": "74",
+    "red": false,
+    "chord": true,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     1968,
+     987,
+     1984,
+     1004
+    ],
+    "cx": 1976.1137566137565,
+    "cy": 995.8492063492064,
+    "w": 0.59,
+    "h": 0.63,
+    "gap": 0.12,
+    "line_off": 0.43,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot (note already written dotted)"
+  },
+  {
+   "tile": 21,
+   "plate": "brahms",
+   "page": 5,
+   "glyph": "glyph/5/1/5/2/9",
+   "bar": [
+    5,
+    1,
+    5,
+    2
+   ],
+   "measure": "38",
+   "part": "P6",
+   "file_writes": "quarter dotted plain READ, bar not red",
+   "written": {
+    "type": "quarter",
+    "dots": 1,
+    "blue": false,
+    "pitch": "G4",
+    "part": "P6",
+    "measure": "38",
+    "red": false,
+    "chord": true,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     2143,
+     5175,
+     2158,
+     5190
+    ],
+    "cx": 2150.7603550295858,
+    "cy": 5182.34023668639,
+    "w": 0.55,
+    "h": 0.55,
+    "gap": 0.39,
+    "line_off": 0.47,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot (note already written dotted)"
+  },
+  {
+   "tile": 22,
+   "plate": "litolff",
+   "page": 8,
+   "glyph": "glyph/8/1/3/17/2",
+   "bar": [
+    8,
+    1,
+    3,
+    17
+   ],
+   "measure": "144",
+   "part": "P4",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "F3",
+    "part": "P4",
+    "measure": "144",
+    "red": false,
+    "chord": true,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     2347,
+     2391,
+     2352,
+     2398
+    ],
+    "cx": 2349.25,
+    "cy": 2394.2083333333335,
+    "w": 0.31,
+    "h": 0.44,
+    "gap": 0.46,
+    "line_off": 0.44,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  },
+  {
+   "tile": 23,
+   "plate": "brahms",
+   "page": 8,
+   "glyph": "glyph/8/0/7/10/3",
+   "bar": [
+    8,
+    0,
+    7,
+    10
+   ],
+   "measure": "56",
+   "part": "P11",
+   "file_writes": "quarter plain READ, bar RED",
+   "written": {
+    "type": "quarter",
+    "dots": 0,
+    "blue": false,
+    "pitch": "E-14",
+    "part": "P11",
+    "measure": "56",
+    "red": true,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     4620,
+     2709,
+     4636,
+     2722
+    ],
+    "cx": 4628.145833333333,
+    "cy": 2716.152777777778,
+    "w": 0.57,
+    "h": 0.46,
+    "gap": 0.36,
+    "line_off": 0.5,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 72,
+   "our_look": "dot; plain READ, bar red"
+  },
+  {
+   "tile": 24,
+   "plate": "litolff",
+   "page": 10,
+   "glyph": "glyph/10/1/7/8/4",
+   "bar": [
+    10,
+    1,
+    7,
+    8
+   ],
+   "measure": "195",
+   "part": "P8",
+   "file_writes": "eighth plain READ, bar not red",
+   "written": {
+    "type": "eighth",
+    "dots": 0,
+    "blue": false,
+    "pitch": "C4",
+    "part": "P8",
+    "measure": "195",
+    "red": false,
+    "chord": false,
+    "voice": "1"
+   },
+   "blob": {
+    "box": [
+     1777,
+     3172,
+     1784,
+     3180
+    ],
+    "cx": 1780.1216216216217,
+    "cy": 3175.445945945946,
+    "w": 0.44,
+    "h": 0.51,
+    "gap": 0.34,
+    "line_off": 0.49,
+    "basis": "local",
+    "in_box": null
+   },
+   "pool_size": 31,
+   "our_look": "part of another mark (flag tail / stem end cut by a staff line)"
+  }
+ ],
+ "tally": {
+  "litolff": "0 dots, 12 flag/stem fragments",
+  "brahms": "9 dots (6 plain READ in a red bar, 3 already written dotted), 3 flag fragments",
+  "speck": 0,
+  "staccato": 0,
+  "cannot_tell": 0
+ }
+}

@@ -1,0 +1,488 @@
+[
+ {
+  "plate": "litolff",
+  "bar": [
+   2,
+   0,
+   4,
+   5
+  ],
+  "measure": 22,
+  "need": 0.5,
+  "n_heads_in_bar": 3,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "litolff",
+  "bar": [
+   16,
+   0,
+   4,
+   4
+  ],
+  "measure": 241,
+  "need": 0.5,
+  "n_heads_in_bar": 3,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "litolff",
+  "bar": [
+   10,
+   1,
+   9,
+   0
+  ],
+  "measure": 187,
+  "need": 0.25,
+  "n_heads_in_bar": 7,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   4,
+   1,
+   0,
+   3
+  ],
+  "measure": 22,
+  "need": 0.5,
+  "n_heads_in_bar": 3,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   4,
+   1,
+   2,
+   0
+  ],
+  "measure": 19,
+  "need": 0.5,
+  "n_heads_in_bar": 5,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   12,
+   0,
+   3,
+   4
+  ],
+  "measure": 75,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   25,
+   0,
+   3,
+   3
+  ],
+  "measure": 137,
+  "need": 1.0,
+  "n_heads_in_bar": 6,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   5,
+   1,
+   7,
+   0
+  ],
+  "measure": 36,
+  "need": 0.5,
+  "n_heads_in_bar": 5,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   0,
+   0,
+   8,
+   3
+  ],
+  "measure": 4,
+  "need": 1.0,
+  "n_heads_in_bar": 1,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/0/0/8/3/2",
+    "half"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/0/0/8/3/2",
+    "half"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   0,
+   0,
+   9,
+   3
+  ],
+  "measure": 4,
+  "need": 0.5,
+  "n_heads_in_bar": 4,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   6,
+   11
+  ],
+  "measure": 57,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/6/11/4",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/0/6/11/4",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   6,
+   12
+  ],
+  "measure": 58,
+  "need": 1.0,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/6/12/0",
+    "quarter"
+   ],
+   [
+    "glyph/8/0/6/12/3",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [],
+  "found_any": true,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   7,
+   10
+  ],
+  "measure": 56,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/7/10/3",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/0/7/10/3",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   7,
+   12
+  ],
+  "measure": 58,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/7/12/0",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/0/7/12/0",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   1,
+   7,
+   2
+  ],
+  "measure": 61,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/1/7/2/2",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/1/7/2/2",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   8,
+   1
+  ],
+  "measure": 47,
+  "need": 1.0,
+  "n_heads_in_bar": 1,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/8/1/7",
+    "half"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/0/8/1/7",
+    "half"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   8,
+   12
+  ],
+  "measure": 58,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/8/12/2",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/0/8/12/2",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   19,
+   0,
+   11,
+   8
+  ],
+  "measure": 122,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   9,
+   8
+  ],
+  "measure": 54,
+  "need": 1.0,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/9/8/1",
+    "quarter"
+   ],
+   [
+    "glyph/8/0/9/8/4",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [],
+  "found_any": true,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   0,
+   9,
+   12
+  ],
+  "measure": 58,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/0/9/12/3",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/0/9/12/3",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   1,
+   9,
+   1
+  ],
+  "measure": 60,
+  "need": 0.5,
+  "n_heads_in_bar": 2,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/1/9/1/9",
+    "quarter"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/1/9/1/9",
+    "quarter"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   25,
+   1,
+   10,
+   6
+  ],
+  "measure": 150,
+  "need": 0.25,
+  "n_heads_in_bar": 4,
+  "plain_with_unboxed_ink": [],
+  "of_which_half_value_fills": [],
+  "found_any": false,
+  "found_and_fills": false
+ },
+ {
+  "plate": "brahms",
+  "bar": [
+   8,
+   1,
+   10,
+   7
+  ],
+  "measure": 66,
+  "need": 1.0,
+  "n_heads_in_bar": 1,
+  "plain_with_unboxed_ink": [
+   [
+    "glyph/8/1/10/7/2",
+    "half"
+   ]
+  ],
+  "of_which_half_value_fills": [
+   [
+    "glyph/8/1/10/7/2",
+    "half"
+   ]
+  ],
+  "found_any": true,
+  "found_and_fills": true
+ }
+]
