@@ -369,3 +369,27 @@ applied only to clefs found without a box. Fixed in round 7b before landing.
 
 **Not verified.** The changed places no judged tile covers (114 Brahms, 90 Litolff) beyond the clef crops;
 Brahms p4 s1 st3, a mid-line bass clef that narrows, not checked against the print; no whole movement.
+
+## Rounds 7b/7c and the landing (2026-11-21; main bef49d18a)
+
+**7b, every clef claims only its own ink (fc6989837).** Cause: a treble clef's claim was the box of the
+piece its shape is measured on, bridged across the cleared staff lines by a vertical join applied
+everywhere, so a word above ("div.", Brahms p14 s1 st9) or the next staff's clef was joined in; round 5b's
+limit ran only on clefs found without a box. Now the claim is the clef's ink standing on the staff, joined
+across the staff lines only, within a clef's reach. Start-of-staff box-found trebles had the same gap
+(Brahms p4 s1 st7, p5 s0 st6, p12 s0 st6; Litolff p2 s0 st4, p16 s0 st5: 2.5 -> 1.3-1.9 spaces). Readings
+unchanged. "div." is written by no arm (the word reader does not produce it). STILL LARGE: Litolff p8 s0
+st6 claims 2.48 spaces -- the detector's box starts on the system's thin barline the clef touches, and the
+barline cut runs only for clefs found without a box.
+
+**7c, the pages whose claims shrank.** Litolff 2, 16: all 1,619 heads match round 7's ON. Brahms 5, 12
+against the same two pages on round 7's code (9e9f5a734): all 1,927 heads match, so the claim change moves
+nothing. Two differences against the full-sample reading are which pages are loaded: Brahms p12 s0 st5 bar
+11 prints a tied B-flat (full sample writes B4, wrong; two-page load writes B-flat4); p5 s0 st2 bar 7 a
+real A5 is dropped when page 4 is not loaded. Process note: a touched-pages check must load the same
+neighbour pages as its baseline, or it is not like with like.
+
+**Landing.** Flag removed, old clef readers retired in the same commit; fast tier 11,096 passed + the known
+failure; `staged.check` 216 -> 215. Left for a follow-up: the now-dead `Q.CLEF_LOCATED` consumers
+(`adjudicators/clef._locator_terms`, `inferences._clef_located_on`, `notehead_precision`) and their tests.
+

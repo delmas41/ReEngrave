@@ -6870,3 +6870,6 @@ STAGED GATHER + ADJUDICATE + EXPORT. The page arc pass (page-ink runs bound to t
 
 ## 2026-11-17 -- ROADMAP 2.313 landing (branch land-2.313): tool fix, sample gathers load page 1
 TOOLS ONLY (`lane_report.py`, `one_test.py`; no pipeline code). Both now pass `loaded_pages` to `gather_one`, so a frozen-sample gather carries the pages that hold staff names, meter and key (Litolff page 1). The 2.311 "Litolff refuses more" figure was this artifact (a sample gather without page 1), not a pipeline change. Test: `test_staged_lane_report_2_313.py`. Nothing measured at landing.
+
+## 2026-11-21 -- ROADMAP 2.324 landing (main bef49d18a): the clef is read once, on the page; flag removed, old clef readers retired
+STAGED GATHER (`clef_pagewide.py`, `gather_clef_pagewide`) + consumers. One page-wide clef reader: C, F and G clefs found from their own ink, the detector box a witness; a clef claims only its own ink; a mid-line treble needs its curl. `OMR_CLEF_PAGE_ONLY` is gone (no switch back); `gather_clef`, `gather_clef_locator`, the register's clef claims and `key_object.clef_of_box` removed (21 files, -870 lines). Frozen sample judged right->wrong 0; fast tier 11,096 + the known failure. Not measured on a whole movement. `benchmarks/clef-read-once-2026-11/FINDINGS.md`.
