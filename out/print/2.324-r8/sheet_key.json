@@ -1,0 +1,92 @@
+[
+ {
+  "tile": 1,
+  "plate": "litolff",
+  "page": 2,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/2/1/3/3/3",
+  "change": "F3 quarter no longer written (r7 wrote it)"
+ },
+ {
+  "tile": 2,
+  "plate": "litolff",
+  "page": 4,
+  "system": 0,
+  "staff": 9,
+  "glyph": "glyph/4/0/9/10/5",
+  "change": "quarter pitch C4 (r7) -> F3"
+ },
+ {
+  "tile": 3,
+  "plate": "litolff",
+  "page": 4,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/4/1/3/8/6",
+  "change": "quarter rest blue (r7) -> plain"
+ },
+ {
+  "tile": 4,
+  "plate": "litolff",
+  "page": 6,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/6/1/3/1/4",
+  "change": "eighth G3 blue (r7) -> plain"
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "page": 16,
+  "system": 1,
+  "staff": 9,
+  "glyph": "glyph/16/1/9/4/7",
+  "change": "eighth rest blue (r7) -> plain"
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 4,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/4/1/3/4/13",
+  "change": "quarter F4 newly written"
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 4,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/4/1/3/4/4",
+  "change": "quarter A-flat 4 newly written"
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 4,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/4/1/3/4/3",
+  "change": "quarter G4 blue (r7) -> plain"
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "page": 4,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/4/1/3/4/12",
+  "change": "quarter G3 blue (r7) -> plain"
+ },
+ {
+  "tile": 10,
+  "plate": "brahms",
+  "page": 4,
+  "system": 1,
+  "staff": 3,
+  "glyph": "glyph/4/1/3/4/2",
+  "change": "eighth rest blue (r7) -> plain"
+ }
+]
