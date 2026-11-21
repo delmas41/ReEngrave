@@ -1,0 +1,128 @@
+{
+ "date": "2026-11-20",
+ "sheet": "out/print/2.324-r5/sheet.png",
+ "shown": "ten tiles, one staff each, a thin red box on what the page-wide clef reader took as a clef (2,3,4,6,7,8,9: read from ink, no detector box) or as a possible mid-line clef (1,5,10)",
+ "sean_verbatim": "It looks like those tiles are great. The first tile is just a stem, but tile 2 is a bass clef, tile 3 is a bass clef, tile 4 is a treble clef, tile 5 is a treble clef, tile 6 is a bass clef, tile 7 is a bass clef, tile 8 is a bass clef, tile 9 is a bass clef, tile 10 is 2 half notes in a chord.",
+ "tiles": {
+  "1": {
+   "plate": "litolff",
+   "staff": "staff/10/1/4",
+   "box": [
+    898,
+    2664,
+    914,
+    2744
+   ],
+   "ours": "mid-line G box: narrows (notes after it unread)",
+   "sean": "just a stem"
+  },
+  "2": {
+   "plate": "litolff",
+   "staff": "staff/4/1/6",
+   "box": [
+    370,
+    2942,
+    434,
+    3083
+   ],
+   "ours": "read bass from ink (no box)",
+   "sean": "bass clef"
+  },
+  "3": {
+   "plate": "litolff",
+   "staff": "staff/11/0/8",
+   "box": [
+    371,
+    1540,
+    429,
+    1672
+   ],
+   "ours": "read bass from ink (no box)",
+   "sean": "bass clef"
+  },
+  "4": {
+   "plate": "litolff",
+   "staff": "staff/6/1/0",
+   "box": [
+    363,
+    1976,
+    422,
+    2085
+   ],
+   "ours": "read treble from ink (no box)",
+   "sean": "treble clef"
+  },
+  "5": {
+   "plate": "brahms",
+   "staff": "staff/14/1/9",
+   "box": [
+    1143,
+    6496,
+    1206,
+    6650
+   ],
+   "ours": "mid-line G box: narrows (notes after it unread)",
+   "sean": "treble clef"
+  },
+  "6": {
+   "plate": "litolff",
+   "staff": "staff/4/1/10",
+   "box": [
+    370,
+    3532,
+    426,
+    3621
+   ],
+   "ours": "read bass from ink (no box)",
+   "sean": "bass clef"
+  },
+  "7": {
+   "plate": "litolff",
+   "staff": "staff/2/1/3",
+   "box": [
+    357,
+    2560,
+    418,
+    2616
+   ],
+   "ours": "read bass from ink (no box)",
+   "sean": "bass clef"
+  },
+  "8": {
+   "plate": "litolff",
+   "staff": "staff/11/1/5",
+   "box": [
+    367,
+    2682,
+    427,
+    2730
+   ],
+   "ours": "read bass from ink (no box)",
+   "sean": "bass clef"
+  },
+  "9": {
+   "plate": "brahms",
+   "staff": "staff/14/0/12",
+   "box": [
+    698,
+    3420,
+    785,
+    3530
+   ],
+   "ours": "read bass from ink (no box)",
+   "sean": "bass clef"
+  },
+  "10": {
+   "plate": "litolff",
+   "staff": "staff/9/0/3",
+   "box": [
+    1961,
+    820,
+    2005,
+    935
+   ],
+   "ours": "mid-line G box: narrows (notes after it unread)",
+   "sean": "2 half notes in a chord"
+  }
+ }
+}
