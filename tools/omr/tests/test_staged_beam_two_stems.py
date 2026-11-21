@@ -215,78 +215,6 @@ def _group(log, *, x0=65, x1=180, y=40):
     return g1, g2, stroke
 
 
-class TestARealBeamStays(unittest.TestCase):
-    """The controls: nothing a real beam has is refused."""
-
-    def test_a_real_two_note_beam_stays_and_both_notes_are_eighths(self):
-        log = Log()
-        g1, g2, stroke = _group(log)
-        _ink(log, stroke)
-        adjudicate.run(log)
-        for g in (g1, g2):
-            v = log.verdict(Q.DURATION, g)
-            self.assertEqual(v.outcome, Outcome.DECIDED)
-            self.assertEqual(v.value["beats"], 0.5)
-            self.assertEqual(v.detail["beams_not_by_ink"], 0)
-
-    def test_a_beam_on_a_long_DOWN_stem_under_the_staff_stays(self):
-        """Where hairpins live (CLAUDE.md §10: a hairpin sits UNDER its
-        staff, the territory a down-stem's beam occupies): the beam is thick,
-        straight and stands on two stems, so it stays -- and the thin hairpin
-        line beside it, boxed as a beam too, is the one that goes."""
-        log = Log()
-        _staff_space(log)
-        gs = []
-        for gi, x in enumerate((65, 180)):
-            g = R.glyph(0, 0, 0, 0, gi)
-            log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack",
-                        reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-            log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", x, 20, 20, 16),
-                        reader=READERS.DETECTOR, frame="cell:0", score=0.9)
-            _stem(log, x=x, y=30, h=170)          # hangs from the head to y=200
-            gs.append(g)
-        beam = _beam(log, y=196, x0=60, x1=200)
-        hairpin = _beam(log, y=205, x0=40, x1=220)     # within the tip's reach
-        _ink(log, beam)
-        _ink(log, hairpin, ratio=1.1, sag=0.02, ends=(False, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, gs[0])
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_not_by_ink"], 1)
-        self.assertEqual(v.detail["beams_not_by_ink_why"], {"too_thin": 1})
-
-    def test_the_secondary_levels_of_a_sixteenth_group_keep_their_count(self):
-        log = Log()
-        g1, g2, _ = _group(log)
-        # `_group` filed one stroke; two more levels below it
-        second = _beam(log, y=54, x0=60, x1=200)
-        _ink(log, log.rows(Q.BEAM_STROKE, CELL)[0])
-        _ink(log, second)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g1)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.25)
-        self.assertEqual(v.detail["levels_certain"], 2)
-
-    def test_a_short_secondary_beamlet_that_stands_on_ONE_stem_is_still_a_beam(
-            self):
-        """⚠️ A beamlet is drawn from ONE stem toward its neighbour (a dotted
-        eighth + sixteenth): it has a stem at ONE end only. Refusing it for
-        that would turn every sixteenth of a dotted rhythm into an eighth.
-        It stays because the neighbouring note's stem is within reach of its
-        box (`Q.STEM`), even though the ink reads no stem at its short end."""
-        log = Log()
-        g1, g2, main = _group(log)
-        beamlet = _beam(log, y=54, x0=60, x1=140)       # toward the other stem
-        _ink(log, main)
-        _ink(log, beamlet, ends=(True, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g1)
-        self.assertEqual(v.value["beats"], 0.25)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-
-
 class TestASlurTieOrHairpinStrokeIsNotThisNotesBeam(unittest.TestCase):
     """2.65 tile 21: an eighth under a real beam with a slur over it read a
     SIXTEENTH -- the slur's tapering arc, boxed as `beam`, overlapped the
@@ -296,61 +224,6 @@ class TestASlurTieOrHairpinStrokeIsNotThisNotesBeam(unittest.TestCase):
         g1, g2, beam = _group(log)
         slur = _beam(log, y=34, x0=40, x1=220)       # touches both stems' tips
         return g1, g2, beam, slur
-
-    def test_the_CONTROL_without_ink_the_tree_reads_what_it_read_on_tile_21(
-            self):
-        """⚠️ It must be able to FAIL: with no `Q.BEAM_STROKE_INK` at all the
-        slur's stroke is judged by the old rules alone. Here its box reaches
-        the head's own stem (the join the old rules accept), so it counts as
-        a second level -- the SIXTEENTH Sean saw."""
-        log = Log()
-        g1, _g2, beam, slur = self._tile_21(log)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g1)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-        self.assertEqual(v.value["beam_levels"], 2)
-        self.assertEqual(v.value["beats"], 0.25)
-
-    def test_a_THIN_stroke_is_not_a_beam_and_the_eighth_reads_eighth(self):
-        log = Log()
-        g1, g2, beam, slur = self._tile_21(log)
-        _ink(log, beam)
-        _ink(log, slur, ratio=1.5, sag=0.2, ends=(False, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g1)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_not_by_ink_why"], {"too_thin": 1})
-
-    def test_a_THICK_bowed_stroke_is_not_a_beam_either(self):
-        log = Log()
-        g1, g2, beam, arc = self._tile_21(log)
-        _ink(log, beam)
-        _ink(log, arc, ratio=3.0, sag=0.7, ends=(True, True))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g1)
-        self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_not_by_ink_why"],
-                         {"not_straight": 1})
-
-    def test_a_stroke_with_a_stem_at_ONE_end_only_is_not_a_beam(self):
-        """Sean's first rule: a beam joins its note AND another note. Here
-        the second stem is neither read as a `Q.STEM` near the stroke nor
-        seen by the ink at its far end."""
-        log = Log()
-        _staff_space(log)
-        g, _s = _head_with_stem(log, 0, 65)
-        lone = _beam(log, y=40, x0=60, x1=140, reader=READERS.DETECTOR)
-        _ink(log, lone, ratio=3.0, sag=0.01, ends=(True, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink_why"], {"one_stem": 1})
-        # ⚠️ RULE 8: the discount may not turn a stemmed, marked note into an
-        # unmarked one -- it NARROWS, it does not decide the head value.
-        self.assertEqual(v.outcome, Outcome.NARROWED)
-        self.assertEqual(v.reason, "beam_discounted_uncertain")
-        self.assertEqual({c.value["beats"] for c in v.candidates}, {1.0, 0.5})
-
 
 class TestTheInksRefusalsNeverDecideTheHeadValueFromAbsence(unittest.TestCase):
     """Rule 8. Brahms p1 page 0 holds ~45 beamed eighths whose only 'beam' was
@@ -372,60 +245,6 @@ class TestTheInksRefusalsNeverDecideTheHeadValueFromAbsence(unittest.TestCase):
             _ink(log, stroke, ratio=1.0, sag=0.0, ends=(False, False))
         return g
 
-    def test_a_head_left_with_nothing_by_the_ink_is_NARROWED_not_a_quarter(
-            self):
-        log = Log()
-        g = self._chord_head(log, with_ink=True)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.NARROWED)
-        self.assertEqual(v.reason, "beam_discounted_uncertain")
-        self.assertEqual({c.value["beats"] for c in v.candidates}, {1.0, 0.5})
-        self.assertEqual(v.detail["beams_not_by_ink"], 1)
-
-    def test_control_the_same_head_with_NO_ink_reading_counts_the_stroke(self):
-        """⚠️ It must be able to FAIL: without the ink row the stroke is
-        judged as it always was and the head reads an eighth."""
-        log = Log()
-        g = self._chord_head(log, with_ink=False)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
-
-    def test_a_stroke_that_never_covered_this_heads_column_is_not_the_inks_removal(
-            self):
-        """2.65 tile 2: a tied quarter under a thin detector box that lies
-        beside it. The ink refuses the box, but the box never marked THIS
-        head, so nothing was removed from it and the quarter stands."""
-        log = Log()
-        _staff_space(log)
-        g, _s = _head_with_stem(log, 0, 135)
-        beside = _beam(log, y=40, x0=300, x1=500, reader=READERS.DETECTOR)
-        _ink(log, beside, ratio=1.2, sag=0.0, ends=(False, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 1.0)
-
-    def test_a_stroke_the_SIDE_test_refuses_anyway_is_not_the_inks_removal(
-            self):
-        """The stroke lies across the head from its stem: the existing side
-        rule refuses it whatever the ink says, so the ink removed nothing and
-        the head reads what it always read."""
-        log = Log()
-        _staff_space(log)
-        g, _s = _head_with_stem(log, 0, 135)               # stem rises: up
-        far = _beam(log, y=150, x0=100, x1=200)            # below the head
-        _ink(log, far, ratio=1.0, sag=0.0, ends=(False, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_far_side"], 1)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 1.0)
-
-
 class TestATestThatCannotBeReadAbstains(unittest.TestCase):
     """Rule 8: each test is READ or it does not judge. Every one of these
     strokes would be refused if the ink read thin, bowed or one-stemmed (the
@@ -437,71 +256,6 @@ class TestATestThatCannotBeReadAbstains(unittest.TestCase):
         stroke = _beam(log, y=40, x0=60, x1=140, reader=READERS.DETECTOR)
         _ink(log, stroke, **ink)
         return g, stroke
-
-    def test_an_UNREAD_thickness_does_not_refuse(self):
-        """No staff line was measurable at the stroke's columns: the ratio is
-        `None`, not a default, and the stroke is judged by what it was
-        judged by before."""
-        log = Log()
-        g, _ = self._lone(log, ratio=None, ends=(True, True))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-        self.assertEqual(v.value["beats"], 0.5)
-
-    def test_control_the_SAME_stroke_is_refused_once_the_ratio_reads_thin(
-            self):
-        log = Log()
-        g, _ = self._lone(log, ratio=1.2, ends=(True, True))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink_why"], {"too_thin": 1})
-
-    def test_UNREAD_ends_do_not_refuse_a_stroke_that_the_stems_cannot_vouch_for(
-            self):
-        log = Log()
-        g, _ = self._lone(log, ends=(None, None))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-
-    def test_control_the_SAME_stroke_is_refused_once_the_ink_reads_one_stem(
-            self):
-        log = Log()
-        g, _ = self._lone(log, ends=(True, False))
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink"], 1)
-
-    def test_a_stroke_with_NO_ink_row_is_judged_as_it_always_was(self):
-        log = Log()
-        _staff_space(log)
-        g, _ = _head_with_stem(log, 0, 65)
-        _beam(log, y=40, x0=60, x1=140, reader=READERS.DETECTOR)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-        self.assertEqual(v.value["beats"], 0.5)
-
-
-class TestACrossStaffBeamIsKeptByItsInk(unittest.TestCase):
-    """A beam that runs from this staff's stem to a stem on the NEIGHBOUR
-    staff (a piano hand-to-hand beam): the other stem is not in THIS cell's
-    `Q.STEM` rows, but the ink at the stroke's far end sees it -- so the
-    stroke stays. Reported as HANDLED (not abstained) because the end-stem
-    ruler reads the raster, not the stem set."""
-
-    def test_the_other_stem_is_seen_by_the_ink_not_the_stem_set(self):
-        log = Log()
-        _staff_space(log)
-        g, _ = _head_with_stem(log, 0, 65)                  # only ONE Q.STEM
-        stroke = _beam(log, y=40, x0=60, x1=300)
-        _ink(log, stroke, ends=(True, True), x0=62, x1=298)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-        self.assertEqual(v.value["beats"], 0.5)
-
 
 class TestACountedHookSettlesTwoFlagBoxes(unittest.TestCase):
     """2.65 tile 15 (Brahms p1 `glyph/1/1/9/0/13`): ONE flag, boxed by the

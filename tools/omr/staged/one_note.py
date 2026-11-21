@@ -80,9 +80,9 @@ def _is_rest(v: Verdict) -> bool:
 
 
 def two_source_beam(origin: Verdict) -> bool:
-    d = origin.detail or {}
-    return (d.get("beam_evidence") == "read" and (d.get("yolo_beams") or 0) > 0 and (d.get("cv_beams") or 0) > 0
-            and not d.get("beams_not_by_ink"))
+    # 2.319: the two sources were the detector's box and the bar-crop reader's stroke; that reader is retired, so no beam is read by two sources
+    # here any more (`relaxed` mode only; the default mode does not ask).
+    return False
 
 
 def solid_refusal(log, v: Verdict, m: Optional[str] = None) -> Optional[str]:
@@ -128,7 +128,8 @@ def alternative_refusal(log, note: Verdict, option: dict, subject: Subject) -> O
     now_levels = int(note.value.get("beam_levels") or 0)
     new_levels = int(option.get("beam_levels") or 0)
     if new_levels > now_levels:                 # a SHORTENING needs beam ink in the cell
-        if not ((d.get("yolo_beams") or 0) > 0 or (d.get("cv_beams") or 0) > 0 or (d.get("beams_not_by_ink") or 0) > 0):
+        # 2.319: beam ink in the cell = a beam in the cell's stroke map (the one beam count's roles; was the bar-crop reader's stroke counts)
+        if not int(((d.get("one_beam_count") or {}).get("cell_beams")) or 0) > 0:
             return "shortening_without_a_beam_seen_in_the_cell"
         if (d.get("flag_levels") or 0) > 0 or d.get("beam_evidence") == "flag":
             return "flag_read_cleanly"

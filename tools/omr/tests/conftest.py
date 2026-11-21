@@ -89,25 +89,25 @@ def _do_not_require_an_optional_local_install(monkeypatch):
 
 
 @pytest.fixture(autouse=True)
-def _pins_the_pre_2_318_beam_readings(request, monkeypatch):
-    """ROADMAP 2.318 landed `OMR_ONE_BEAM_COUNT` ON (2026-11-19). The tests listed in
-    `pre_2_318_beam_pins.json` pin the readings that decided the beam count before it (A `_beam_levels`,
-    C `_stem_tip_strokes`), so each runs with the flag OFF; the list is exactly the tests that failed
-    with it ON and passed with it OFF. Nothing else is pinned, and
-    `test_staged_one_beam_count_2_318.py` sets its own flag."""
+def _pins_the_retired_beam_reader(request):
+    """ROADMAP 2.319 retired the bar-crop beam reader (A) and the flag `OMR_ONE_BEAM_COUNT` that kept it switchable, so a test can no
+    longer be pinned to it by an environment variable. The tests listed in `retired_beam_reader_pins_2_319.json` build their beams
+    from that reader's rows (`Q.BEAM_STROKE` boxes with no stroke map) or assert a value only it produced: each is SKIPPED, named, until
+    it is re-pinned on stroke-map rows from a judged mark or deleted with the reading it tested (ROADMAP 2.319: the list must end empty).
+    Nothing else is touched."""
     import json as _j
     import pathlib as _p
-    global _PINNED_2_318
-    if _PINNED_2_318 is None:
+    global _PINNED_2_319
+    if _PINNED_2_319 is None:
         try:
-            _PINNED_2_318 = set(_j.loads((_p.Path(__file__).parent / "pre_2_318_beam_pins.json").read_text()))
+            _PINNED_2_319 = set(_j.loads((_p.Path(__file__).parent / "retired_beam_reader_pins_2_319.json").read_text()))
         except (OSError, ValueError):
-            _PINNED_2_318 = set()
-    if request.node.nodeid in _PINNED_2_318:
-        monkeypatch.setenv("OMR_ONE_BEAM_COUNT", "0")
+            _PINNED_2_319 = set()
+    if request.node.nodeid in _PINNED_2_319:
+        pytest.skip("2.319: built on the retired bar-crop beam reader; re-pin on stroke-map rows or delete")
 
 
-_PINNED_2_318 = None
+_PINNED_2_319 = None
 
 
 # ---------------------------------------------------------------------------

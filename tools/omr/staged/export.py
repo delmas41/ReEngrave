@@ -874,6 +874,8 @@ def _condensed_double(source: StaffRun) -> StaffRun:
         dets = []
         for det in cell.detections:
             copied = copy.deepcopy(det)
+            if det.get("glyph"):
+                copied["beam_ink_of"] = det["glyph"]    # 2.319: the copy hangs on the same beam ink (read by `_beam_ink_of_event` only)
             for k in _CONDENSED_STRIP_KEYS:
                 copied.pop(k, None)
             dets.append(copied)
@@ -6217,7 +6219,7 @@ def _beam_ink_of_event(rec: Record, ev: Dict[str, Any]) -> frozenset:
     the duration reader filed. The ADJUDICATE verdict carries it; a later EVALUATE / INFER verdict that superseded it is followed back to it."""
     out: set = set()
     for h in ev.get("noteheads") or ():
-        g = h.get("glyph")
+        g = h.get("glyph") or h.get("beam_ink_of")      # a condensed staff's doubled copy carries its source head's key apart
         v = rec.verdict(Q.DURATION, g) if g else None
         seen = set()
         while v is not None and v.get("id") not in seen:

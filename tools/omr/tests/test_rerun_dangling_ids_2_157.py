@@ -5,24 +5,33 @@ and it re-pointed only `basis`. `detail.stem_row_id` / `beam_row_id` then named 
 readers (`rhythm._stem_tip_flag_ink`, the 2.146 tip decision) read nothing, and a slice replay showed 16 judged tiles
 "broken" that the record's own commit reproduced. Tooling only: no pipeline output changes.
 
-The end-to-end case is the 2.146 fixture (an up-stem head whose own clean tip decides `stem_tip_reads_no_beam` through
-`Q.STEM_TIP_INK.stem_row_id` and `Q.BEAM_STEM_LEVELS.stem_row_id`), sliced the way a slice is cut: an earlier row of
-another system dropped. Fails on origin/main d9353217 (the slice replay narrows), passes with the fix."""
+The end-to-end case is the 2.146 fixture (an up-stem head whose stem-tip rows carry `stem_row_id` in `Q.STEM_TIP_INK` and
+`Q.BEAM_STEM_LEVELS`), sliced the way a slice is cut: an earlier row of another system dropped. 2.319: the 2.146 tip decision went
+with the bar-crop beam reader, so the end-to-end check is now that the slice decides exactly what the whole fixture decides."""
 from __future__ import annotations
 
-import os
 import unittest
-from unittest import mock
 
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged import record as R
-from tools.omr.staged.adjudicators import rhythm
-from tools.omr.staged.record import READERS, Log, Outcome, Q, Subject, is_row_id, ROW_ID_PREFIXES
+from tools.omr.staged.record import READERS, Log, Q, Subject, is_row_id, ROW_ID_PREFIXES
 from tools.omr.staged.review import rerun as RR
-from tools.omr.tests.test_staged_stem_tip_decides_beam_2_146 import _discounted
+from tools.omr.tests.test_staged_bare_stem_2_81 import CELL, _stem, _tip, _two_staff
 
-FLAG = rhythm.STEM_TIP_DECIDES_BEAM_ENV
+
+def _discounted(log, *, tip_found=False, runs=()):
+    """The 2.146 fixture (kept here when 2.319 retired that rule): an up-stem head, the neighbour staff's stroke, the stem's tip rows."""
+    g = _two_staff(log)
+    log.observe(CELL, Q.BEAM_STROKE, (90, 150, 40, 4), reader=READERS.CV_LINES, frame="cell:0", x0=90, x1=130,
+                y_center=152, image="no_staff", staff_lines_erased=True)
+    s = _stem(log, x=105, y=80)
+    log.observe(R.cell(0, 0, 1, 0), Q.STEM, (90, -10, 4, 50), reader=READERS.CV_LINES, frame="cell:0", x0=90, x1=94,
+                y_center=15, image="no_staff", staff_lines_erased=True)
+    _tip(log, s, found=tip_found, end="top")
+    ends = {"top": {"left": [list(r) for r in runs], "right": []}, "bottom": {"left": [], "right": []}}
+    log.observe(CELL, Q.BEAM_STEM_LEVELS, len(runs), reader=READERS.CV_BEAM_LEVELS, frame="cell:0", stem_row_id=s.id, ends=ends)
+    return g
 
 
 def _sliced_record():
@@ -36,17 +45,14 @@ def _sliced_record():
 
 
 def _decide(log):
-    with mock.patch.dict(os.environ, {FLAG: "1"}):
-        adjudicate.run(log)
+    adjudicate.run(log)
+
+
+def _shape(v):
+    return (v.outcome, v.reason, v.value, tuple(sorted(str(c.value) for c in (v.candidates or ()))))
 
 
 class TestTheSliceReplaysFaithfully(unittest.TestCase):
-
-    def test_control_the_whole_fixture_decides_from_the_tip(self):
-        log = Log()
-        g = _discounted(log, tip_found=False, runs=())
-        _decide(log)
-        self.assertEqual(log.verdict(Q.DURATION, g).reason, "stem_tip_reads_no_beam")
 
     def test_the_slice_is_sparse(self):
         """The fixture must actually renumber, or the next test proves nothing."""
@@ -59,9 +65,10 @@ class TestTheSliceReplaysFaithfully(unittest.TestCase):
         rec, g = _sliced_record()
         log, _ = RR.rebuild_gather(rec)
         _decide(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.reason, "stem_tip_reads_no_beam")
+        whole = Log()
+        gw = _discounted(whole, tip_found=False, runs=())
+        _decide(whole)
+        self.assertEqual(_shape(log.verdict(Q.DURATION, g)), _shape(whole.verdict(Q.DURATION, gw)))
 
     def test_every_carried_id_names_the_same_row_after_the_rebuild(self):
         """Not a key list: every id-shaped string in a rebuilt row's detail names the row the old id named."""

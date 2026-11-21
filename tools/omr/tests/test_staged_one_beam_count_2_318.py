@@ -29,7 +29,6 @@ from tools.omr.staged.record import Log, Outcome, Q, READERS, STROKE_GLYPH_BASE
 from tools.omr.tests.test_staged_duration import _staff_space
 from tools.omr.tests.test_staged_rhythm_leftovers import _head, _real_stem
 
-FLAG = rhythm.ONE_BEAM_COUNT_ENV
 FIXTURE = pathlib.Path(__file__).parent / "fixtures" / "one_beam_count_2_318" / "controls.json"
 NOTES = json.loads(FIXTURE.read_text())["notes"]
 
@@ -446,10 +445,9 @@ def _pair_cell(strokes, heads=(0, 1)):
     return log, gs[0]
 
 
-def _dur(strokes, on, heads=(0, 1)):
+def _dur(strokes, heads=(0, 1)):
     log, g = _pair_cell(strokes, heads)
-    with mock.patch.dict(os.environ, {FLAG: "1" if on else "0"}):
-        adjudicate.run(log)
+    adjudicate.run(log)
     return log.verdict(Q.DURATION, g)
 
 
@@ -465,32 +463,28 @@ FLAGGED = [BLOB0, ("vertical", (244, 383, 31, 437), 4.37, 0.3, [0, 2]), ("horizo
 
 class TestThroughTheDurationAdjudicator(unittest.TestCase):
 
-    def test_flag_OFF_nothing_the_flag_adds_is_in_the_verdict(self):
-        v = _dur(PAIR, False)
-        self.assertNotIn("one_beam_count", v.detail)
-
-    def test_flag_ON_a_beamed_pair_is_an_eighth_from_the_stroke_map_alone(self):
-        v = _dur(PAIR, True)
+    def test_a_beamed_pair_is_an_eighth_from_the_stroke_map_alone(self):
+        v = _dur(PAIR)
         self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 1))
         self.assertEqual(v.detail["one_beam_count"]["state"], "read")
         self.assertEqual(v.detail["beam_evidence"], "read")
 
-    def test_flag_ON_a_bare_stem_with_a_clean_tip_is_a_quarter_read_not_assumed(self):
-        v = _dur(QUARTER, True, heads=(0,))
+    def test_a_bare_stem_with_a_clean_tip_is_a_quarter_read_not_assumed(self):
+        v = _dur(QUARTER, heads=(0,))
         self.assertEqual((v.outcome, v.value["beam_levels"]), (Outcome.DECIDED, 0))
         self.assertEqual(v.detail["one_beam_count"]["state"], "read")
 
-    def test_flag_ON_a_head_the_map_holds_no_stem_for_is_NARROWED_never_a_quarter(self):
-        v = _dur([BLOB0], True, heads=(0,))
+    def test_a_head_the_map_holds_no_stem_for_is_NARROWED_never_a_quarter(self):
+        v = _dur([BLOB0], heads=(0,))
         self.assertEqual(v.outcome, Outcome.NARROWED)
         self.assertEqual(sorted(c.value["beam_levels"] for c in v.candidates), [0, 1])
         self.assertEqual(v.detail["one_beam_count"]["state"], "silent")
 
-    def test_flag_ON_a_flag_stays_with_the_flag_reader(self):
+    def test_a_flag_stays_with_the_flag_reader(self):
         # one hook at a stem's tip with no detector box: the count is zero beams, and the verdict is what it is for any unbeamed stem
-        on = _dur(FLAGGED, True, heads=(0,))
-        off = _dur(FLAGGED, False, heads=(0,))
-        self.assertEqual((on.outcome, on.value, on.reason), (off.outcome, off.value, off.reason))
+        on = _dur(FLAGGED, heads=(0,))
+        self.assertEqual(on.detail["one_beam_count"]["certain"], 0)
+        self.assertEqual(on.detail["beam_strokes"], [])          # 2.319: a flag hangs on its own stem: no beam ink, never in a group
 
 
 if __name__ == "__main__":

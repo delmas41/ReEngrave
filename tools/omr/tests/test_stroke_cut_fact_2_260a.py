@@ -46,38 +46,5 @@ class CutFact(unittest.TestCase):
         self.assertEqual(SM.drop_page_border("tb", (100, 50, 900, 400), (3000, 2000)), "tb")   # interior cell: both kept
         self.assertEqual(SM.drop_page_border("tb", (100, 50, 900, 3000), None), "tb")          # page shape unknown: a cut is said, not assumed away
 
-    def test_flag_default_on_deny_list(self):
-        old = os.environ.get(SM.STROKE_CUT_FACT_ENV)
-        try:
-            os.environ.pop(SM.STROKE_CUT_FACT_ENV, None)
-            self.assertTrue(SM.stroke_cut_fact_enabled())
-            self.assertTrue(RH.stroke_cut_by_cell({"cut": "t"}))        # unset env: the reader reads the fact too
-            for off in ("0", "false", "no", "off"):
-                os.environ[SM.STROKE_CUT_FACT_ENV] = off
-                self.assertFalse(SM.stroke_cut_fact_enabled())
-                self.assertFalse(RH.stroke_cut_by_cell({"cut": "t"}))
-        finally:
-            if old is None:
-                os.environ.pop(SM.STROKE_CUT_FACT_ENV, None)
-            else:
-                os.environ[SM.STROKE_CUT_FACT_ENV] = old
-
-    def test_reader_says_cannot_tell_only_with_flag_and_fact(self):
-        old = os.environ.get(RH.STROKE_CUT_FACT_ENV)
-        try:
-            os.environ[RH.STROKE_CUT_FACT_ENV] = "1"
-            self.assertTrue(RH.stroke_cut_by_cell({"cut": "t"}))
-            self.assertTrue(RH.stroke_cut_by_cell({"cut": "b"}))
-            self.assertFalse(RH.stroke_cut_by_cell({"cut": "lr"}))      # a side cut says nothing about a beam's thickness
-            self.assertFalse(RH.stroke_cut_by_cell({}))                 # no fact: as before
-            os.environ[RH.STROKE_CUT_FACT_ENV] = "0"
-            self.assertFalse(RH.stroke_cut_by_cell({"cut": "t"}))       # OFF arm of a replay ignores the fact
-        finally:
-            if old is None:
-                os.environ.pop(RH.STROKE_CUT_FACT_ENV, None)
-            else:
-                os.environ[RH.STROKE_CUT_FACT_ENV] = old
-
-
 if __name__ == "__main__":
     unittest.main()

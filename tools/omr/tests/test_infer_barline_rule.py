@@ -443,13 +443,6 @@ class TestNeitherRuleReadsTheMeter(unittest.TestCase):
             self.assertEqual(infer.scoring_conflict(r, (Q.METER,)), (),
                              f"{r.inference.value} reads Q.METER")
 
-    def test_with_the_bare_stem_flag_OFF_no_enabled_rule_declares_the_meter(
-            self):
-        with mock.patch.dict(os.environ, {infer.BARE_STEM_BAR_ENV: "0", infer.NARROWED_BAR_ENV: "0"}):
-            for r in infer.enabled_rules():
-                self.assertEqual(infer.scoring_conflict(r, (Q.METER,)), (),
-                                 f"{r.inference.value} reads Q.METER")
-
     def test_the_barline_rule_is_registered(self):
         names = {r.inference for r in infer.RULES}
         self.assertIn(infer.Inference.COLLAPSE_DURATION_TO_BARLINE, names)

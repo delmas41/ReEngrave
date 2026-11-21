@@ -97,6 +97,16 @@ def test_flagged_eighths_over_the_next_staffs_line_make_no_group():
     assert E.groups_sharing_beam_ink([1] * len(order), [ink(NOTES[g]) for g in order]) == []
 
 
+def test_sean_r14_labels_flags_stay_flagged_and_his_beamed_bar_is_one_group():
+    """Re-pinned from 2.306 r14 (its EXPORT exception retired here): Sean's Brahms p0 hand labels put a FLAG on glyph/0/0/1/6/2, /4, /12 (a slur
+    over them was the bar-crop reader's 'beam') and on 0/0/10/2/5, /7 (a neighbour's beam box), and BEAMS on cell 0/0/0/3. His r14 tiles read
+    the flagged notes as flagged eighths. The one count: no beam ink on any flagged note; the beamed bar's three stems share theirs."""
+    for g in ("glyph/0/0/1/6/2", "glyph/0/0/1/6/4", "glyph/0/0/1/6/12", "glyph/0/0/10/2/5", "glyph/0/0/10/2/7"):
+        assert not ink(NOTES[g]), g
+    order = _in_order("glyph/0/0/0/3/")
+    assert E.groups_sharing_beam_ink([1] * len(order), [ink(NOTES[g]) for g in order]) == [[0, 1, 2]]
+
+
 def test_sean_bar_13_four_eighths_are_one_group():
     order = sorted((g for g in SEAN if g.startswith("glyph/2/1/7/13/")), key=lambda g: SEAN[g]["head"][0])
     assert len(order) == 4

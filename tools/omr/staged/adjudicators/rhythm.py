@@ -2733,7 +2733,7 @@ def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True
     `state` is `read` (a count), `narrowed` (a range, `causes` say why) or `silent` (no stem in the map for this head: cannot tell)."""
     views = _stroke_views(ev, cell)
     if not views or head_box is None:
-        return {"state": "silent", "certain": None, "possible": None, "why": "no_strokes_in_cell", "stems": [], "rows": []}
+        return {"state": "silent", "certain": None, "possible": None, "why": "no_strokes_in_cell", "stems": [], "rows": [], "cell_beams": 0}
     role = _BS.roles(views, face_join=True, trough=True, one_count=True)
     got = _BS.beam_count(views, role, head_box, side if side in ("up", "down") else None, finder_stem=finder_stem)
     by_o = {v.ordinal: v for v in views}
@@ -2746,6 +2746,9 @@ def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True
     got["rows"] = [r for r in dict.fromkeys(rows) if r]
     # 2.319: the beam ink each stem hangs on, by its `Q.STROKE` row id (unique in the record): which notes share a beam is read from these (EXPORT)
     got["beam_rows"] = sorted({by_o[o].row_id for st in got["stems"] for o in st.get("beam_ink") or () if o in by_o and by_o[o].row_id})
+    # 2.319: how many strokes of the cell's map are beams (join two stems, thick as a beam): "beam ink seen in the cell" for the bar's one-note
+    # correction (2.165), which read the bar-crop reader's stroke counts before
+    got["cell_beams"] = sum(1 for r in role.values() if r.get("role") == "beam")
     return got
 
 

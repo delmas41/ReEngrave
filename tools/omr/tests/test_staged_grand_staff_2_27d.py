@@ -37,7 +37,6 @@ import unittest
 from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401  registers them
 from tools.omr.staged.adjudicators import structure as _structure
-from tools.omr.staged.adjudicators.rhythm import _not_the_neighbours_beam
 from tools.omr.staged import record as R
 from tools.omr.staged.record import Kind, Log, Outcome, Q, READERS, Scope, Verdict
 
@@ -223,89 +222,6 @@ class TestDynamicsSharedOnceOnly(unittest.TestCase):
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 2.27d.3 -- cross-staff beaming
-# ─────────────────────────────────────────────────────────────────────────────
-
-
-class _Row:
-    """A minimal stand-in for a gathered `Observation` -- `_xywh` reads only
-    `.value`, so this is every `_not_the_neighbours_beam` needs from one."""
-
-    def __init__(self, value):
-        self.value = value
-
-
-class TestCrossStaffBeamIsThePartsOwn(unittest.TestCase):
-    """DECISIONS 2026-09-29 / ROADMAP 2.27d item 1: *"a beam joining stems
-    on BOTH staves of one brace is one beam of the part; it must not be
-    discounted as the neighbour's beam."*
-
-    ⚠️ `_not_the_neighbours_beam` IS CALLED DIRECTLY, not through the whole
-    of `adjudicate_duration` -- the function under test needs `ev`, `cell`,
-    `beams`, `stems`, `own_stems`, and it is a pure `(kept, dropped)`
-    partition over `beams`, so testing it directly is the SAME class of
-    move `test_staged_dynamics.py` makes calling `adjudicate_dynamic`'s
-    own decision function rather than driving the whole pipeline.
-    """
-
-    def _cell_anchor(self, log, cell_sub, *, page_x0, page_y0):
-        """One dual-frame `Q.GLYPH_BOX` row, `up=1.0`, so canonical and page
-        coordinates differ only by this cell's own fixed origin -- the
-        minimum `_cell_frame` needs to solve the affine map."""
-        g = R.glyph(cell_sub.page, cell_sub.system, cell_sub.staff,
-                    cell_sub.cell, 99)
-        log.observe(g, Q.GLYPH_BOX, ("noteheadBlackOnLine", 10.0, 10.0, 20.0, 20.0),
-                    reader=READERS.DETECTOR, frame="cell:0", score=0.9,
-                    category="notehead",
-                    bbox_page_px=[page_x0 + 10.0, page_y0 + 10.0,
-                                 page_x0 + 30.0, page_y0 + 30.0])
-
-    def _fixture(self, *, family="keyboard"):
-        log = Log()
-        _brace_pair(log, family=family)
-        home = R.cell(0, 0, 0, 0)          # UPPER's own cell
-        neighbour = R.cell(0, 0, 1, 0)     # LOWER's own cell, the pair partner
-        self._cell_anchor(log, home, page_x0=100.0, page_y0=400.0)
-        self._cell_anchor(log, neighbour, page_x0=100.0, page_y0=500.0)
-        # UPPER's own staff lines: page y 430..470 (top=430, bottom=470).
-        log.observe(UPPER, Q.STAFF_LINES, [430.0, 440.0, 450.0, 460.0, 470.0],
-                    reader=READERS.GEOMETRY, frame="page")
-        # LOWER's own stem, filed on the neighbour CELL (`Q.STEM` rows are
-        # cell-scoped, `READERS.CV_LINES` -- the same shape
-        # `test_staged_duration.py`'s own STEM fixtures use): canonical
-        # (10, -15, 2, 25) -> page (110, 485, 2, 25), reaching well past
-        # UPPER's bottom line (470) toward the beam stroke below.
-        log.observe(neighbour, Q.STEM, (10.0, -15.0, 2.0, 25.0),
-                    reader=READERS.CV_LINES, frame="cell:0", score=0.9)
-        log.freeze()
-        ev = adjudicate.Evidence(log, home, adjudicate.REGISTRY[Q.DURATION])
-        # ⚠️ A CANONICAL BEAM STROKE, in UPPER's own cell frame (origin
-        # 100, 400): canonical (5, 90, 30, 4) -> page (105, 490, 30, 4),
-        # whose page y-centre (492) sits BEYOND UPPER's bottom line (470)
-        # and whose page box overlaps LOWER's stem box above -- exactly
-        # the shape `_not_the_neighbours_beam` was built to discount.
-        beam = _Row((5.0, 90.0, 30.0, 4.0))
-        stems = tuple(ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS,
-                              subject=home))
-        return ev, home, beam, stems
-
-    def test_RED_across_a_bracket_the_stroke_is_still_the_neighbours(self):
-        """⚠️ THE CONTROL (rule 7). The identical geometry, `family="brass"`
-        -- `Q.GROUP_SYMBOL` decides "bracket" and 2.25b's shipped rule
-        fires unchanged: the stroke is dropped."""
-        ev, home, beam, stems = self._fixture(family="brass")
-        kept, dropped = _not_the_neighbours_beam(ev, home, [beam], stems, [])
-        self.assertEqual(kept, [])
-        self.assertEqual(dropped, [beam])
-
-    def test_GREEN_on_a_decided_brace_the_stroke_is_kept(self):
-        ev, home, beam, stems = self._fixture(family="keyboard")
-        kept, dropped = _not_the_neighbours_beam(ev, home, [beam], stems, [])
-        self.assertEqual(kept, [beam])
-        self.assertEqual(dropped, [])
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# 2.27d.2 -- pedal marks
 # ─────────────────────────────────────────────────────────────────────────────
 
 

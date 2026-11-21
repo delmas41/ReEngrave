@@ -175,7 +175,7 @@ EIGHTH = {"beats": 0.5, "written": 0.5, "dots": 0, "beam_levels": 1}
 
 
 def _beamed_page(n_notes=4, beam_levels=1, beam_box=True, page_boxes=True):
-    """`n_notes` eighths in one cell, optionally under one beam stroke."""
+    """`n_notes` eighths in one cell, optionally all hanging on one beam (2.319: the shared beam ink filed on each duration)."""
     from .test_staged_export import _log_json, _obs, _vrd
     obs, vrd = [], []
     i = 0
@@ -198,13 +198,11 @@ def _beamed_page(n_notes=4, beam_levels=1, beam_box=True, page_boxes=True):
         vrd.append(_vrd(i, sub, Q.PITCH, "C5"))
         i += 1
         dur = dict(EIGHTH, beam_levels=beam_levels)
-        vrd.append(_vrd(i, sub, Q.DURATION, dur))
+        v = _vrd(i, sub, Q.DURATION, dur)
+        # 2.319: the beam ink each stem hangs on (the one beam count's `beam_strokes`); one beam under every head = one shared stroke row
+        v["detail"] = {"beam_strokes": ["obs:000500"] if beam_box else []}
+        vrd.append(v)
         i += 1
-    if beam_box:
-        # one stroke spanning every head, in the CELL's canonical frame
-        span = 100.0 * (n_notes - 1) + _CANON_W
-        obs.append(_obs(500, "cell/0/0/0/0", Q.BEAM_STROKE,
-                        [100.0, 20.0, span, 10.0]))
     vrd.append(_vrd(900, "staff/0/0/0", Q.MEASURE_PARTITION, 1))
     vrd.append(_vrd(901, "staff/0/0/0", Q.CLEF, "treble"))
     vrd.append(_vrd(902, "system/0/0", Q.SYSTEM_STAFF_COUNT, 1))
@@ -248,21 +246,12 @@ class TestTheBeamReachesTheFile(unittest.TestCase):
         xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_levels=2))
         self.assertIn('<beam number="2">', xml)
 
-    def test_NO_beam_box_leaves_every_note_flagged(self):
+    def test_NO_beam_ink_leaves_every_note_flagged(self):
         """⚠️ THE ADDITIVE PROPERTY, and it is why this needs no flag: where
         the CV read no stroke the file does not move. A lone eighth IS
         flagged, so writing a beam here would be the invention."""
         xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_box=False))
         self.assertNotIn("<beam", xml)
-
-    def test_a_cell_with_no_frame_RULER_refuses_and_is_counted(self):
-        """⚠️ A WIRING PASS MAY CONNECT A DECISION; IT MAY NOT LET ONE GUESS.
-        Without a head carrying both frames there is no scale, so the strokes
-        cannot be placed — and the refusal is COUNTED rather than silent."""
-        xml, report = E.to_musicxml(_beamed_page(n_notes=4, page_boxes=False))
-        self.assertNotIn("<beam", xml)
-        self.assertGreaterEqual(
-            report["written"].get("beam_cells_without_a_frame_ruler", 0), 1)
 
     def test_the_counter_reports_what_the_file_HOLDS(self):
         xml, report = E.to_musicxml(_beamed_page(n_notes=4))
@@ -294,47 +283,6 @@ class TestTheBeamReachesTheFile(unittest.TestCase):
         ink. Level 3 in, level 3 out."""
         xml, _ = E.to_musicxml(_beamed_page(n_notes=4, beam_levels=3))
         self.assertIn('<beam number="3">', xml)
-
-
-class TestTheFrameConversion(unittest.TestCase):
-    """⚠️⚠️ THE FRAME IS THE WHOLE RISK, and a wrong one does not raise — it
-    writes a beam over the wrong notes. `Q.BEAM_STROKE` is filed in the CELL's
-    CANONICAL frame while `annotate_beams` compares against `bbox_page`."""
-
-    @staticmethod
-    def _cell(page_boxes=True):
-        doc = _beamed_page(n_notes=4, page_boxes=page_boxes)
-        parts, *_ = E.build(E.Record(doc))
-        return E.Record(doc), parts[0][0].cells[0]
-
-    def test_the_stroke_is_converted_into_the_HEADS_frame(self):
-        """⚠️⚠️ ASSERTED AS EXACT GEOMETRY, NOT AS "it covers the heads".
-        The mutation battery caught the weaker form: with the SCALE dropped
-        to 1.0 the stroke is twice as wide and still covers every head, so a
-        containment test goes green on a conversion that is wrong by a factor
-        of two. On a real page that over-wide box swallows the NEXT group —
-        which is the `box containing two disjoint boxes` failure
-        `annotate_beams` already documents paying for.
-        """
-        rec, cell = self._cell()
-        boxes = E._beam_boxes_by_cell(rec)["cell/0/0/0/0"]
-        dets = E._beam_detections_page(cell, boxes)
-        self.assertEqual(len(dets), 1)
-        x, y, w, h = dets[0]["bbox_page"]
-        # canonical stroke is (100, 20, 340, 10); head 0 is canonical
-        # (100, 50, 40, 40) and page (1050, 500, 20, 20), so scale = 0.5.
-        self.assertAlmostEqual(x, 1050.0, places=6)
-        self.assertAlmostEqual(y, 500.0 + (20.0 - 50.0) * _SCALE, places=6)
-        self.assertAlmostEqual(w, 340.0 * _SCALE, places=6)
-        self.assertAlmostEqual(h, 10.0 * _SCALE, places=6)
-        # ⚠️ and it must be in the PAGE frame, not the canonical one — the
-        # canonical stroke starts at 100, the page one at 1050.
-        self.assertGreater(x, 900.0)
-
-    def test_it_REFUSES_where_no_head_carries_both_frames(self):
-        rec, cell = self._cell(page_boxes=False)
-        boxes = E._beam_boxes_by_cell(rec)["cell/0/0/0/0"]
-        self.assertEqual(E._beam_detections_page(cell, boxes), [])
 
 
 class TestTheDocumentationClaim(unittest.TestCase):
