@@ -76,3 +76,30 @@ and every literal reason word a consumer tests must be one its decider can still
 
 Not verified anywhere above: nothing was re-adjudicated or re-exported; the review viewer and
 `regather_report` were not traced in depth.
+
+## D. Section B priced on real output (2026-11-21; origin/main 2df6d9552; branch `pricing-2.331` 415e3c8f2)
+
+Both frozen-sample ON records of 2026-11-21 re-adjudicated and re-exported on that tree (a second export
+gave the identical file). Counts are computations; "wrong" is the agent's look at crops
+(`out/print/2.331-pricing/item_N.png` with keys), not Sean's.
+
+- **Item 4, letters inside a word written as a dynamic -- REAL, hidden.** 2 Litolff / 4 Brahms written
+  dynamics (of 343 / 273) are letters of a word by the word-letters rule; 4 of the 6 are wrong and plain
+  (the p of "Pizz.", of "pesante", of "poco f"; one made from "perdendosi"); 2 are real ("piu p",
+  "p cresc."). On Litolff GATHER filed no letters-of-a-word claim at all (recomputed after the fact).
+- **Item 5, the old bar-crop beam reader still deciding -- REAL, mostly grouping.** The two readers
+  disagree on 40 Litolff / 39 Brahms written notes; the file's beaming disagrees with the one beam count
+  on 70 / 32 events. Of 11 crops 3 are wrong and plain: a flagged eighth written inside a beam group
+  (Brahms, 2), and a beamed chord written as a quarter where the ONE BEAM COUNT misses a printed beam the
+  old reader caught (Litolff). Belongs to 2.319.
+- **Litolff 2/1/3 measure 37 -- REAL, hidden.** The F3 is a mid-bar bass clef's ink written as a plain
+  note (the clef's knob lies left of the detector box the F claim is cut to). With `lane-2.324-r8`.
+- **Item 1, far-head pitch from ink position -- small.** Twins with different pitches settled 25 Litolff /
+  5 Brahms times; 14 / 4 have a far member, 16 of those 18 written blue. One far fold decided by ink and
+  written plain (Litolff p10, F5: two heads a third apart, the averaged ink lands between them). Three
+  Litolff folds write A-flat where a natural is printed, one plain.
+- **Item 2, slurs twice -- NOTHING.** 6 / 2 in the file, each two printed arcs on a two-voice chord.
+- **Item 3, arc claims refusing notes -- NOTHING.** 0 heads, 0 rests; 10 Litolff flags and 1 ledger line,
+  the 6 cropped are arc ink rightly refused.
+- **Item 6, the judged scorer -- NOTHING LOST.** 12 Litolff tiles score right through a dropped twin; the
+  written twin has the same value each time (duration tiles only).
