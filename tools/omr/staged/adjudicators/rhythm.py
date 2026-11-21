@@ -4207,6 +4207,8 @@ def _one_beam_count(ev: Evidence, cell, head_box, side, finder_stem: bool = True
             if o in by_o:
                 rows.append(by_o[o].row_id)
     got["rows"] = [r for r in dict.fromkeys(rows) if r]
+    # 2.319: the beam ink each stem hangs on, by its `Q.STROKE` row id (unique in the record): which notes share a beam is read from these (EXPORT)
+    got["beam_rows"] = sorted({by_o[o].row_id for st in got["stems"] for o in st.get("beam_ink") or () if o in by_o and by_o[o].row_id})
     return got
 
 
@@ -5618,7 +5620,8 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               "beams_beyond_stem": len(beyond),
               "beyond_stem_kept_no_other_mark": beyond_guarded,
               "join_tolerance_px": round(tol, 2),
-              "stems_attached": len(attached), "beams_by_stem": len(joined),
+              # 2.319: the beam ink this note's stem hangs on (the one beam count's strokes, `Q.STROKE` row ids): which notes share a beam
+              "stems_attached": len(attached), "beam_strokes": list(one_beam.get("beam_rows") or ()) if (one_beam is not None and levels and not hollow) else [],
               "flags_attached": len(flags), "flag_levels": flag_levels,
               "dots_attached": n_dots,
               "staff_space": space,
@@ -5646,7 +5649,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         facts = {"relation": "second_only", "second_class": str(head), "second_score": (sh.detail or {}).get("second_score") if sh else None,
                  "interior": reading, "margin_axis": axis, "margin": margin, "settled": None}
         # `levels` is zeroed for a hollow CLASS (2.43 discounts its beams), so the strokes the stem joined are read from `shared`.
-        if levels or flags or shared.get("beams_by_stem"):
+        if levels or flags or shared.get("beam_strokes") or strokes_before_hollow[0]:
             facts["settled"] = "refused_marks"
             return Ruling.abstain("second_hollow_contradicted_by_marks", **shared, second_hollow=facts)
         if reading == "filled":

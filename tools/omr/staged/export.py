@@ -2710,85 +2710,6 @@ def _stem_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
     return dict(out)
 
 
-def _beam_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
-    """`cell subject -> [(x, y, w, h)]`, in the CELL's own canonical frame.
-
-    ⚠️ `Q.BEAM_STROKE` is filed on the CELL by `gather_cv_lines`, which reads
-    an ERASED cell image and never converts -- exactly as `Q.STEM` is, and
-    for the same reason. The conversion is `_beam_detections_page`'s job.
-    """
-    out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
-    # ROADMAP 2.260c M4b (`OMR_PAGE_BEAMS_RETIRE_A`): on a page whose record holds the page beam views, the flag decides which reader's rows are the beams
-    # (A's cell strokes OFF, the page views ON); a record without views reads A's, as ever.
-    from . import page_beams as _PB
-    retire = _PB.retire_a_enabled()
-    pages_with_views = set()
-    if retire:
-        for o in rec.obs_of(Q.PAGE_BEAM):
-            if (o.get("detail") or {}).get("views_filed"):
-                pages_with_views.add(str(o["subject"]).split("/")[1] if "/" in str(o["subject"]) else str(o["subject"]))
-    for o in rec.obs_of(Q.BEAM_STROKE):
-        v = o["value"]
-        if isinstance(v, (list, tuple)) and len(v) >= 4:
-            on_view_page = retire and str(o["subject"]).split("/")[1] in pages_with_views
-            if o.get("reader") == "cv_page_beams" and not on_view_page:
-                continue
-            if o.get("reader") == "cv_lines" and on_view_page:
-                continue
-            out[o["subject"]].append(tuple(float(x) for x in v[:4]))
-    return dict(out)
-
-
-def _beam_detections_page(cell: "Cell", boxes: Sequence[Tuple[float, ...]]
-                          ) -> List[Dict[str, Any]]:
-    """Beam strokes as the `structural`/`beam` detections `annotate_beams` reads.
-
-    ⚠️⚠️ THE FRAME IS THE WHOLE RISK HERE, AND IT IS THE ONE THIS REPO KEEPS
-    PAYING FOR. `annotate_beams` compares a beam box against a notehead's
-    CENTRE, and it reads both out of `bbox_page`. The strokes arrive in the
-    cell's CANONICAL frame -- measured inside one cell and rescaled so the
-    staff span is constant -- so handing them over unconverted would compare
-    two different rulers and group notes by coincidence. That is
-    `Q.ONSET_COLUMN`'s recorded fault, and a wrong grouping does not raise:
-    it writes a beam over the wrong notes.
-
-    ⚠️ THE CONVERSION USES THE HEAD AS ITS OWN RULER, the method `_stem_probes`
-    already established and measured (a per-cell affine fit gives the identical
-    answer at residual 0.00 px). A notehead carries BOTH boxes -- canonical
-    (`bbox`) and page (`bbox_page`) -- so one head fixes the scale and the
-    origin for every stroke in its cell.
-
-    ⚠️ IT REFUSES RATHER THAN GUESSES. A cell with no head carrying both boxes
-    has no ruler, so it yields NOTHING and its notes stay flagged -- which is
-    what they were before this rung existed. Inventing a scale from the cell's
-    nominal width would be a guess about geometry, and a wiring pass may
-    connect a decision and may not let one guess.
-    """
-    ruler = None
-    for det in cell.detections:
-        if det.get("category") != "notehead":
-            continue
-        page, canon = det.get("bbox_page"), det.get("bbox")
-        if (page and canon and len(page) == 4 and len(canon) == 4
-                and float(canon[2]) > 0):
-            ruler = (tuple(float(v) for v in canon),
-                     tuple(float(v) for v in page))
-            break
-    if ruler is None:
-        return []
-    canon, page = ruler
-    scale = page[2] / canon[2]
-    out: List[Dict[str, Any]] = []
-    for (bx, by, bw, bh) in boxes:
-        out.append({
-            "category": "structural", "class": "beam",
-            "bbox_page": [page[0] + (bx - canon[0]) * scale,
-                          page[1] + (by - canon[1]) * scale,
-                          bw * scale, bh * scale],
-        })
-    return out
-
-
 def _stem_probes(rec: Record, part: Sequence[StaffRun],
                  stems: Dict[str, List[Tuple[float, ...]]]
                  ) -> Dict[int, List[float]]:
@@ -6237,138 +6158,69 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
                         counters: Dict[str, int]) -> None:
     """Give one voice's events their `beam_states`, in place.
 
-    ⚠️⚠️ WHY THIS IS A WIRE AND NOT A RULE. `_legacy.annotate_beams` is
-    IMPORTED AND CALLED, never ported: its docstring records FOUR grouping
-    rules, each paid for by a measured failure (the notehead-width pad, the
-    same-stack collapse that took Mozart 41 from 7 to 145 beam edits, the
-    box-containing-two-disjoint-boxes guard, the divisi two-row case).
-    Restating any of them here would give this project two copies of numbers
-    it paid to measure once -- the drift `LETTER_METERS` and the arc constants
-    are both imported to prevent.
+    ROADMAP 2.319 (Sean 2026-11-13: no old reader beside the new one; 2026-11-18: join and separate by INK, never by box). WHICH NOTES SHARE A
+    BEAM IS READ FROM THE ONE BEAM COUNT'S STROKES, END TO END: a beam joins the stems whose ink it meets. Each note's duration verdict carries the
+    beam ink its stem hangs on (`beam_strokes`, `Q.STROKE` row ids, `rhythm._one_beam_count`); two neighbouring notes of one voice are in one beam
+    group exactly where their stems hang on the same beam ink. Both sides of the boundary: a note whose stem carries no counted beam -- a flagged
+    note, an unstemmed head, a note the count could not read -- is never put in a group, and breaks a run as a rest does (Sean 2026-10-22: "if
+    there is a flag it should be treated as a flag"); two beamed notes side by side whose stems hang on different beam ink (two groups in one bar,
+    a neighbour staff's beam) are two groups. Replaces the bar-crop reader's strokes (`Q.BEAM_STROKE`, reader `cv_lines`) and its box picker,
+    and the flagged-note exception built on its join (2.306 r14), which the shared ink now says structurally.
 
-    ⚠️ ADDITIVE BY CONSTRUCTION. A cell with no beam stroke, or with no
-    notehead carrying both frames, produces no boxes -- so `annotate_beams`
-    sets nothing and every note stays exactly as it was. That is why this
-    needs no flag: where the CV read no beam, the file does not move.
-    """
-    cell = run.cells.get(cell_index)
-    if cell is None or not stream:
+    The level structure inside a group (begin/continue/end, hooks) is written per level as `_legacy._mark_run` writes it, from each note's own
+    written value (`beam_levels`). A group of one note writes no beam: the note keeps its value and is engraved flagged."""
+    if not stream:
         return
-    # ⚠️ `R_cell_key`, not a third copy of the f-string. It is defined
-    # directly above this function and `_stem_probes` already restates it --
-    # the "imported rather than restated" rule this file applies to
-    # `LETTER_METERS` and the arc constants, applied to a key format.
-    key = R_cell_key(run, cell_index)
-    # ⚠️ The per-record map is built ONCE and cached on the Record, not
-    # rebuilt per bar: `obs_of` walks every observation, and doing that inside
-    # a loop over 1,183 bars is quadratic in the record.
-    # ⚠️ `is None`, NOT falsiness: an empty map is a legitimate answer for a
-    # record with no beam strokes, and `if not cache` would rebuild it on
-    # every bar of exactly that document. The `{}` is falsy but is not None
-    # hazard this repo records for `_carry_meter`.
-    cache = getattr(rec, "_beam_box_cache", None)
-    if cache is None:
-        cache = _beam_boxes_by_cell(rec)
-        setattr(rec, "_beam_box_cache", cache)
-    boxes = cache.get(key)
-    if not boxes:
-        return
-    dets = _beam_detections_page(cell, boxes)
-    if not dets:
-        counters["beam_cells_without_a_frame_ruler"] += 1
-        return
-    details =[[(rec.verdict(Q.DURATION, h.get("glyph")) or {}).get("detail") for h in (ev.get("noteheads") or ()) if h.get("glyph")]
-               for ev in stream]
-    flagged = flagged_outside_a_joined_beam(stream, dets, details)
-    counters["beam_group_flagged_notes_kept_flagged"] += len(flagged)
-    beam_stream_keeping_flags(stream, dets, flagged)
+    ink = [_beam_ink_of_event(rec, ev) if ev.get("kind") != "rest" else frozenset() for ev in stream]
 
-
-def _beam_joined(details: Sequence[Optional[Dict[str, Any]]]) -> bool:
-    """The duration reader joined a beam to this event's stem, or holds a beam level certain on it (`rhythm` duration detail). Pure."""
-    return any(isinstance(d, dict) and (d.get("beams_by_stem") or d.get("levels_certain")) for d in details)
-
-
-def flagged_outside_a_joined_beam(stream: Sequence[Dict[str, Any]], dets: Sequence[Dict[str, Any]],
-                                  details: Sequence[Sequence[Optional[Dict[str, Any]]]]) -> List[Dict[str, Any]]:
-    """ROADMAP 2.306 r14: the events of one voice to keep flagged (`beam_stream_keeping_flags`). An event whose value the duration reader read from a
-    flag on its own stem (`_value_from_its_own_flag`) stays flagged -- UNLESS the stroke `annotate_beams` would group it under is a beam another
-    note of this voice is joined to (Sean 2026-10-28: "the beam covers the width of where those notes with stems occur ... they were all 8th
-    notes that belong to that beam even though the ink is broken"): a beam that holds a joined note owns every stemmed note under its width,
-    and a hook read at its end is the beam's end, not a flag (r14 our look, Litolff p10 glyph/10/0/1/6/1 and /4/6/6: the last of three
-    beamed eighths). A stroke no note of the voice is joined to -- a slur, a neighbour staff's beam in the padded cell -- owns nothing.
-    `details[i]`: the duration details of event i's heads. Pure but for `_legacy`'s own box picker."""
-    raw = [d["bbox_page"] for d in dets if d.get("category") == "structural" and d.get("class") == "beam" and len(d.get("bbox_page") or ()) == 4]
-    if not raw:
-        return []
-    widths = sorted(h["bbox_page"][2] for e in stream for h in (e.get("noteheads") or ()) if len(h.get("bbox_page") or ()) == 4)
-    nh = widths[len(widths) // 2] if widths else 0.0
-    suspect_raw = _legacy._suspect_beam_boxes(raw)
-    boxes = list(_legacy._collapse_beam_stacks([b for i, b in enumerate(raw) if i not in suspect_raw]))
-    suspect = set(range(len(boxes), len(boxes) + len(suspect_raw)))
-    boxes += [tuple(raw[i]) for i in sorted(suspect_raw)]
-
-    def pick(ev: Dict[str, Any]) -> Optional[int]:
+    def levels(ev: Dict[str, Any]) -> int:
         hs = ev.get("noteheads") or []
-        b = hs[0].get("bbox_page") if hs else None
-        if not b or len(b) != 4:
-            return None
-        return _legacy._pick_beam_box((b[0] + b[2] / 2.0, b[1] + b[3] / 2.0), boxes, suspect, nh)
+        return int(hs[0].get("beam_levels") or 0) if hs else 0
 
-    def stem_under(ev: Dict[str, Any], bi: int) -> bool:
-        """The event's stem stands under the stroke's width (no padding): the stem at the head's side -- up -> right, down -> left."""
-        hs = ev.get("noteheads") or []
-        b = hs[0].get("bbox_page") if hs else None
-        if not b or len(b) != 4:
-            return False
-        d = hs[0].get("stem_direction")
-        if d not in ("up", "down"):
-            return False
-        sx = b[0] + b[2] if d == "up" else b[0]
-        bx, _by, bw, _bh = boxes[bi]
-        return bx <= sx <= bx + bw
-
-    joined_boxes = {pick(ev) for ev, d in zip(stream, details) if ev.get("kind") != "rest" and _beam_joined(d)} - {None}
-    out = []
-    for ev, d in zip(stream, details):
-        if not _value_from_its_own_flag(d):
+    groups: List[List[int]] = []
+    cur: List[int] = []
+    cur_ink: set = set()
+    for i, ev in enumerate(stream):
+        beamed = ev.get("kind") != "rest" and levels(ev) >= 1 and bool(ink[i])
+        if beamed and cur and (ink[i] & cur_ink):
+            cur.append(i)
+            cur_ink = set(ink[i])          # a beam joins NEIGHBOURING stems: the next note must share ink with this one
             continue
-        bi = pick(ev)
-        if bi is not None and bi in joined_boxes and stem_under(ev, bi):
-            continue            # a joined beam stands over this stem: the beam owns it
-        out.append(ev)
-    return out
+        if len(cur) >= 2:
+            groups.append(cur)
+        cur, cur_ink = ([i], set(ink[i])) if beamed else ([], set())
+    if len(cur) >= 2:
+        groups.append(cur)
+    for members in groups:
+        counters["beam_groups_from_the_one_count"] += 1
+        top = max(levels(stream[i]) for i in members)
+        for level in range(1, top + 1):
+            run: List[int] = []
+            for i in members + [None]:
+                if i is not None and levels(stream[i]) >= level:
+                    run.append(i)
+                    continue
+                if run:
+                    _legacy._mark_run(stream, run, level, members)
+                run = []
 
 
-def _value_from_its_own_flag(details: Sequence[Optional[Dict[str, Any]]]) -> bool:
-    """ROADMAP 2.306 r14 (default ON): this event's value was read from a FLAG on its own stem -- the duration reader attached a flag and
-    joined no beam to the stem, and no beam level is certain on it (`rhythm` duration detail: `flags_attached`, `beams_by_stem`, `levels_certain`).
-    Every head of the event that the duration reader read must agree (a chord shares one stem: one head with a beam joined means the stem is
-    beamed). Pure."""
-    seen = [d for d in details if isinstance(d, dict) and "flags_attached" in d]
-    if not seen:
-        return False
-    if any(d.get("beams_by_stem") or d.get("levels_certain") for d in seen):
-        return False
-    return any(d.get("flags_attached") for d in seen)
-
-
-def beam_stream_keeping_flags(stream: List[Dict[str, Any]], dets: List[Dict[str, Any]], flagged: Sequence[Dict[str, Any]]) -> None:
-    """ROADMAP 2.306 r14 (default ON, Sean 2026-11-16 landing the flag fixes alone; Sean 2026-10-22, page-facts "Beam, flag, slash": *"if there is a flag it should be treated as a
-    flag"*). A note whose stem carries a flag is written flagged: it is never put in a beam group, neither under a stroke the cell's beam reader
-    filed across its x (a slur, a neighbour staff's beam, a ledger run -- the grouping reads x only, `annotate_beams`) nor in a run of its
-    flagged neighbours. Every other note is grouped exactly as `annotate_beams` groups it. The flagged events are handed over with no beam level
-    for the call and given their own back afterwards, so a flagged note also breaks a run, as a rest does. In place."""
-    keep = []
-    for ev in flagged:
-        for h in ev.get("noteheads") or ():
-            keep.append((h, h.get("beam_levels")))
-            h["beam_levels"] = 0
-    try:
-        _legacy.annotate_beams(stream, dets)
-    finally:
-        for h, lv in keep:
-            h["beam_levels"] = lv
+def _beam_ink_of_event(rec: Record, ev: Dict[str, Any]) -> frozenset:
+    """2.319: the beam ink (`Q.STROKE` row ids) the event's stem hangs on: the union over its heads (a chord shares one stem) of the `beam_strokes`
+    the duration reader filed. The ADJUDICATE verdict carries it; a later EVALUATE / INFER verdict that superseded it is followed back to it."""
+    out: set = set()
+    for h in ev.get("noteheads") or ():
+        g = h.get("glyph")
+        v = rec.verdict(Q.DURATION, g) if g else None
+        seen = set()
+        while v is not None and v.get("id") not in seen:
+            seen.add(v.get("id"))
+            d = v.get("detail") or {}
+            if "beam_strokes" in d:
+                out.update(d.get("beam_strokes") or ())
+                break
+            v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
+    return frozenset(out)
 
 
 def _measure_xml(rec: Record, run: StaffRun, cell_index: int,

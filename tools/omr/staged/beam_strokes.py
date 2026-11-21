@@ -1268,6 +1268,25 @@ def _stem_cut_at_its_beam(strokes: Sequence[StrokeView], role_by_ord: Dict[int, 
     return dataclasses.replace(stem, box=(bx, y0, bw, y1 - y0), length=(y1 - y0) / sp, touches=keep)
 
 
+def beam_ink_at_stem(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], stem: StrokeView, tip: Dict[str, object]) -> List[int]:
+    """2.319: THE BEAM INK THIS STEM HANGS ON -- the strokes that say which notes share its beams (a beam joins the stems whose ink it meets). The beams the
+    tip reading counted, and every other beam-role stroke the stem's ink touches lying in the band of a counted beam (the map cuts one printed beam in
+    pieces where it crosses a stem: the piece to the left and the piece to the right are both this stem's beam). Empty where no beam is counted. Pure."""
+    counted = [o for o in dict.fromkeys(tip["beams"])]
+    if not counted:
+        return []
+    by_o = {s.ordinal: s for s in strokes}
+    sp = stem.space_px if stem.space_px > 0 else 1.0
+    out = set(counted)
+    for j, _c in stem.touches:
+        s = by_o.get(j)
+        if s is None or j in out or s.kind != "horizontal" or role_by_ord.get(j, {}).get("role") != "beam":
+            continue
+        if any(_level_gap(by_o[o], s) < LEVEL_MIN_SEPARATION_SPACES * sp for o in counted if o in by_o):
+            out.add(j)
+    return sorted(out)
+
+
 def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, object]], head_box: Sequence[float], side: Optional[str],
                finder_stem: bool = True) -> Dict[str, object]:
     """THE ONE BEAM COUNT of the stem(s) of the head at `head_box`. Pure.
@@ -1363,6 +1382,7 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
             causes.append("thick_at_stem")
             extra += len(thick)
         per.append({"stem": stem.ordinal, "stem_row": stem.row_id, "side": sd, "certain": n, "possible": n + extra, "causes": causes,
+                    "beam_ink": beam_ink_at_stem(strokes, role_by_ord, stem, tip),
                     "beams": list(tip["beams"]), "hooks": list(tip["hooks"]), "stubs": list(tip["stubs"]), "doubt": list(tip["doubt"]),
                     "stem_beamed": bool(tip["stem_beamed"]), "own_head": list(tip["own_head"]), "thick_at_stem": thick, "tip_y": tip["tip_y"]})
     certain = min(int(p["certain"]) for p in per)

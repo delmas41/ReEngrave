@@ -1558,7 +1558,7 @@ def _eighth_evidence(note: Verdict) -> Tuple[str, ...]:
     if (d.get("flag_levels") or 0) > 0 or (d.get("flags_attached") or 0) > 0             or note.reason in ("flags_disagree", "hooks_counted",
                                        "flag_ink_unread"):
         out.append("flag_read_on_stem")
-    if (d.get("beams_by_stem") or 0) > 0:
+    if d.get("beam_strokes"):          # 2.319: the one beam count's beam ink at the stem (was the bar-crop reader's join)
         out.append("beam_joined_to_stem")
     if (d.get("levels_certain") or 0) > 0:
         out.append("beam_levels_certain")
