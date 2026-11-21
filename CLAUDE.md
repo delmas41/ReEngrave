@@ -204,8 +204,9 @@ registry is `tools/omr/conventions.py`. The ones that cost lanes weekly:
   enough); a change HOLDS until the printed
   return — where the bars overturn a carry, a return was MISSED: label and
   mark, never switch silently.
-- Stems: up → right, down → left. Every note on one stem shares one written
-  value; a whole note has no stem. An arc is OVER its notes, a hairpin
+- Stems: up → right, down → left. On a woodwind or brass staff every note on
+  one stem shares one written value; on a string staff notes printed together may differ in length
+  (Sean 2026-11-21); a whole note has no stem. An arc is OVER its notes, a hairpin
   BETWEEN; of stacked arcs the nearer is the tie.
 - **The ledger lines name the owner**; where the stem disagrees the ledger
   lines decide, written plain (Sean 2026-10-28, ROADMAP 2.216 option B;

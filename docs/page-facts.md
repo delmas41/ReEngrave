@@ -79,7 +79,7 @@ machine-readable form.
   that they were all 8th notes that belong to that beam even though the ink
   is broken"*; ROADMAP 2.202f).
 - **Heads sharing one stem** (Sean, 2026-10-17: two heads that disagree "can't
-  be decided"; scope: general; ROADMAP 2.165): two that disagree leave the
+  be decided"; scope: woodwinds and brass since 2026-11-21 -- on strings different lengths together are real print, see the stem line below; ROADMAP 2.165): two that disagree leave the
   value UNDECIDED; with three or more, one dissenter makes the value GUESSED
   (blue) to the majority.
 - **Stems and voices** (Sean, 2026-10-10/11; scope: general; ROADMAP 2.12m,
@@ -129,8 +129,9 @@ machine-readable form.
   heads at both ends may still be a chord stem; and a short stem means a grace
   note only with a small head, otherwise it is a full-size note whose beam
   passes close to it in a beamed group (stems shorten toward the beam).
-- Every note on one stem shares one written value, and a whole note never
-  has a stem (ROADMAP 2.78).
+- **On a WOODWIND or BRASS staff every note on one stem shares one written value; on a STRING staff it need not** (Sean, 2026-11-21, SCOPE: woodwinds and brass for the rule, strings for the exception; ROADMAP 2.78, 2.306). Shown two chords in context -- Brahms second violins about bar 94 (*"two dotted quarters, and at the bottom there is a quarter note that's not dotted"*) and Beethoven 5 first violins bar 21 (*"three quarter notes with a half note on top"*): *Both of those examples are string section parts, which allow for a lot more flexibility because the section can be divided up or individual players can play double stops or triple stops and then keep certain notes going. So whereas the rule is definitely true before for brass and woodwinds, it doesn't work for strings.*
+  OUR READING (not his words): on a string staff, notes printed together with different lengths are written sounding together, each with its own length -- never forced to one value, never one after another; on a woodwind or brass staff a disagreement among the notes of one stem is a misread (held and marked; his 2026-10-09 "yes, one stem one value, no exceptions" answered mostly wind tiles and stands there). The reader must KNOW the staff is strings (staff identity) before it writes mixed lengths; where the instrument is unknown the chord is held and marked. Timpani, harp and keyboard were not asked.
+  NEVER: never share one value across a string chord whose notes are printed with different lengths; never write mixed lengths on one stem for a wind or brass staff. A whole note never has a stem (2.78).
 - **A note is an eighth (or shorter) ONLY on positive evidence on the page**
   -- a flag or a beam read on its stem, or a value shared from its stem
   (Sean, 2026-10-12: *"only when we see evidence of an eigth should it be
