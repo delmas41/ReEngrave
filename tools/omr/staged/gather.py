@@ -17866,7 +17866,7 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         if detector is not None and _DHR.enabled():
             gather_dyad_head_rescue(log, cells, local, detections, detector=detector, imgsz=imgsz, progress=progress, pws=pws)
 
-        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default ON since 2026-11-02). After the rescue, BEFORE every reader that walks `detections`.
+        # ⚠️ ROADMAP 2.114 (flag `OMR_SECOND_HOLLOW_DETECTOR`, default OFF, allow-list; landed OFF 2026-10-14). After the rescue, BEFORE every reader that walks `detections`.
         # No parameter: the flag alone builds the detector (`second_hollow.default_detector`), so the CLI, the web app and the tests
         # reach it one way.
         from . import second_hollow as _SH
