@@ -1,0 +1,535 @@
+{
+"census": {
+"heads:two_voices/stroke_holds_another_head": 1,
+"heads:two_voices/one_touches": 8,
+"heads:unison_two_stems": 22,
+"rows:cell_reader": 44,
+"keys:filed_unison_two_stems": 22,
+"heads:two_voices/ends_at_another_head": 3,
+"heads:two_voices/neither_touches": 1
+},
+"heads": {
+"0/130": {
+"members": [
+"glyph/0/0/11/1/13"
+],
+"how": "two_voices/stroke_holds_another_head",
+"voices": null,
+"stroke": null
+},
+"0/152": {
+"members": [
+"glyph/0/0/11/2/4"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/196": {
+"members": [
+"glyph/0/0/11/3/10"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/255": {
+"members": [
+"glyph/0/0/11/4/16"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/268": {
+"members": [
+"glyph/0/0/12/4/0"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/275": {
+"members": [
+"glyph/0/0/11/4/12"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/334": {
+"members": [
+"glyph/0/0/12/5/6"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/335": {
+"members": [
+"glyph/0/0/9/5/9"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"0/437": {
+"members": [
+"glyph/0/0/12/6/8"
+],
+"how": "two_voices/one_touches",
+"voices": null,
+"stroke": null
+},
+"4/467": {
+"members": [
+"glyph/4/1/1/5/12"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 3819,
+"side": "right",
+"fit": 0.317
+},
+"down": {
+"stroke": 3780,
+"side": "left",
+"fit": 0.325
+}
+},
+"stroke": null
+},
+"4/655": {
+"members": [
+"glyph/4/0/3/8/1"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 4619,
+"side": "right",
+"fit": 0.274
+},
+"down": {
+"stroke": 4598,
+"side": "left",
+"fit": 0.274
+}
+},
+"stroke": null
+},
+"4/710": {
+"members": [
+"glyph/4/0/3/9/0"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 4963,
+"side": "right",
+"fit": 0.345
+},
+"down": {
+"stroke": 4912,
+"side": "left",
+"fit": 0.273
+}
+},
+"stroke": null
+},
+"4/759": {
+"members": [
+"glyph/4/0/3/9/4"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 5258,
+"side": "right",
+"fit": 0.32
+},
+"down": {
+"stroke": 5169,
+"side": "left",
+"fit": 0.331
+}
+},
+"stroke": null
+},
+"5/102": {
+"members": [
+"glyph/5/1/7/0/8"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1298,
+"side": "right",
+"fit": 0.367
+},
+"down": {
+"stroke": 1252,
+"side": "left",
+"fit": 0.232
+}
+},
+"stroke": null
+},
+"5/106": {
+"members": [
+"glyph/5/1/5/0/5"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1305,
+"side": "right",
+"fit": 0.389
+},
+"down": {
+"stroke": 1251,
+"side": "left",
+"fit": 0.338
+}
+},
+"stroke": null
+},
+"5/167": {
+"members": [
+"glyph/5/0/3/1/4"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1613,
+"side": "right",
+"fit": 0.272
+},
+"down": {
+"stroke": 1575,
+"side": "left",
+"fit": 0.235
+}
+},
+"stroke": null
+},
+"5/173": {
+"members": [
+"glyph/5/0/0/1/15"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1612,
+"side": "right",
+"fit": 0.234
+},
+"down": {
+"stroke": 1578,
+"side": "left",
+"fit": 0.179
+}
+},
+"stroke": null
+},
+"5/181": {
+"members": [
+"glyph/5/1/12/1/7"
+],
+"how": "two_voices/ends_at_another_head",
+"voices": null,
+"stroke": null
+},
+"5/352": {
+"members": [
+"glyph/5/0/3/2/3"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 2666,
+"side": "right",
+"fit": 0.273
+},
+"down": {
+"stroke": 2622,
+"side": "left",
+"fit": 0.237
+}
+},
+"stroke": null
+},
+"5/353": {
+"members": [
+"glyph/5/0/0/2/2"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 2668,
+"side": "right",
+"fit": 0.272
+},
+"down": {
+"stroke": 2620,
+"side": "left",
+"fit": 0.253
+}
+},
+"stroke": null
+},
+"5/367": {
+"members": [
+"glyph/5/1/12/3/3"
+],
+"how": "two_voices/ends_at_another_head",
+"voices": null,
+"stroke": null
+},
+"5/410": {
+"members": [
+"glyph/5/0/0/3/3"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 3037,
+"side": "right",
+"fit": 0.235
+},
+"down": {
+"stroke": 2966,
+"side": "left",
+"fit": 0.217
+}
+},
+"stroke": null
+},
+"5/413": {
+"members": [
+"glyph/5/0/3/3/4"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 3036,
+"side": "right",
+"fit": 0.272
+},
+"down": {
+"stroke": 2953,
+"side": "left",
+"fit": 0.272
+}
+},
+"stroke": null
+},
+"5/493": {
+"members": [
+"glyph/5/1/5/4/9"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 3687,
+"side": "right",
+"fit": 0.334
+},
+"down": {
+"stroke": 3598,
+"side": "left",
+"fit": 0.305
+}
+},
+"stroke": null
+},
+"5/50": {
+"members": [
+"glyph/5/1/7/0/9"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1073,
+"side": "right",
+"fit": 0.338
+},
+"down": {
+"stroke": 1015,
+"side": "left",
+"fit": 0.199
+}
+},
+"stroke": null
+},
+"5/557": {
+"members": [
+"glyph/5/1/5/5/1"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 3976,
+"side": "right",
+"fit": 0.382
+},
+"down": {
+"stroke": 3934,
+"side": "left",
+"fit": 0.293
+}
+},
+"stroke": null
+},
+"5/587": {
+"members": [
+"glyph/5/1/5/5/4"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 4273,
+"side": "right",
+"fit": 0.385
+},
+"down": {
+"stroke": 4219,
+"side": "left",
+"fit": 0.291
+}
+},
+"stroke": null
+},
+"5/61": {
+"members": [
+"glyph/5/1/5/0/7"
+],
+"how": "two_voices/ends_at_another_head",
+"voices": null,
+"stroke": null
+},
+"5/630": {
+"members": [
+"glyph/5/1/10/6/12"
+],
+"how": "two_voices/neither_touches",
+"voices": null,
+"stroke": null
+},
+"5/68": {
+"members": [
+"glyph/5/1/7/0/2"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1204,
+"side": "right",
+"fit": 0.274
+},
+"down": {
+"stroke": 1138,
+"side": "left",
+"fit": 0.272
+}
+},
+"stroke": null
+},
+"5/694": {
+"members": [
+"glyph/5/1/5/6/3"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 4978,
+"side": "right",
+"fit": 0.345
+},
+"down": {
+"stroke": 4907,
+"side": "left",
+"fit": 0.364
+}
+},
+"stroke": null
+},
+"5/736": {
+"members": [
+"glyph/5/1/5/7/1"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 5377,
+"side": "right",
+"fit": 0.272
+},
+"down": {
+"stroke": 5321,
+"side": "left",
+"fit": 0.272
+}
+},
+"stroke": null
+},
+"5/80": {
+"members": [
+"glyph/5/1/5/0/1"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1207,
+"side": "right",
+"fit": 0.309
+},
+"down": {
+"stroke": 1153,
+"side": "left",
+"fit": 0.236
+}
+},
+"stroke": null
+},
+"5/88": {
+"members": [
+"glyph/5/0/3/0/8"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1221,
+"side": "right",
+"fit": 0.256
+},
+"down": {
+"stroke": 1190,
+"side": "left",
+"fit": 0.235
+}
+},
+"stroke": null
+},
+"5/90": {
+"members": [
+"glyph/5/0/0/0/2"
+],
+"how": "unison_two_stems",
+"voices": {
+"up": {
+"stroke": 1222,
+"side": "right",
+"fit": 0.235
+},
+"down": {
+"stroke": 1189,
+"side": "left",
+"fit": 0.272
+}
+},
+"stroke": null
+}
+}
+}
