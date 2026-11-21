@@ -628,7 +628,7 @@ def reads_ink(cls: Any) -> bool:
 
 
 def rule_enabled() -> bool:
-    """ROADMAP 2.305 r6: the ends rule replaces the reach windows when `OMR_PAGE_ARC_WRITE` is ON (default OFF; the OFF file is unchanged)."""
+    """ROADMAP 2.305 r6: the ends rule replaces the reach windows when `OMR_PAGE_ARC_WRITE` is ON (default ON since 2.305's landing; `=0` opts out)."""
     from .page_arc_bind import write_enabled
     return write_enabled()
 

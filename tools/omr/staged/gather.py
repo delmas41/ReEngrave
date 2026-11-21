@@ -1096,7 +1096,7 @@ def gather_detector_views(log: Log, cells: Sequence[Any],
                           local: Dict[int, Tuple[int, int]],
                           detections: Dict[str, List[Any]], *,
                           detector: Any = None, progress: bool = False) -> None:
-    """ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default OFF; the caller gates). The SAME detector on the SAME cell image at other staff-space
+    """ROADMAP 2.172 (flag `OMR_DETECTOR_VIEWS`, default ON; the caller gates). The SAME detector on the SAME cell image at other staff-space
     sizes (`detector_views.VIEWS`), anti-aliased, read at a few sub-pixel phases with the median kept, only the families each view is for,
     merged family-aware into the cell's production boxes (`detector_views.merge_into_production`): a production box is never changed or
     dropped, a view box is appended only where no production box of its family stands and no production box of another family stands there
@@ -8101,7 +8101,7 @@ def stems_from_strokes_retires_scans() -> bool:
 def gather_stroke_map(log: Log, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], *, progress: bool = False,
                       detections: Optional[Dict[str, List[Any]]] = None,
                       page_shape: Optional[Sequence[int]] = None, page_map: Any = None) -> Dict[Tuple[int, int, int, int], Any]:
-    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. ROADMAP 2.284 (flag `OMR_PAGE_LEDGER_OWNS`, default OFF): with `page_map`
+    """ROADMAP 2.195 step 1: every stroke of every cell, one `Q.STROKE` row each. ROADMAP 2.284 (flag `OMR_PAGE_LEDGER_OWNS`, default ON): with `page_map`
     (the page stroke map built before the arcs), each row also carries `page_stroke: [page stroke ordinal, share]` (`page_ledger.link_cell_strokes`). Reads the erased raster (`READERS.CV_STROKE`) and the cell's
     raw raster for the local staff; reads no row and no detection, decides nothing. A cell that cannot be reduced (no erased variant, no
     staff spacing) ABSTAINS by name; a cell that holds ink but no stroke above the 0.05 sp^2 floor (it ABSTAINS `only_debris`).

@@ -1167,7 +1167,7 @@ def _ledger_finding(ev: Evidence, family: str, box_row: Any = None):
 
 
 def _ink_consult_refusal(ev: Evidence, family: str, detail: Dict[str, Any], box_row: Any = None) -> Optional[Ruling]:
-    """ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`, default OFF: None, nothing read): the ONE consult for a family that consulted no claim before
+    """ROADMAP 2.284 r5 (`OMR_PAGE_LEDGER_OWNS`, default ON; with it off: None, nothing read): the ONE consult for a family that consulted no claim before
     (dynamic, articulation, flag, key marker, tuplet marker): a box whose own ink the page ledger gave mostly to an EARLIER claim (2.205 tiers), and
     which owns none of its own, is refused BY THAT CLAIM (CLAUDE section 3: a later reader may mark claimed ink, never take it). The reason is a
     LITERAL per kind (the vocabulary check reads them). A box the consult only records (a spanner) is left to the rules below."""

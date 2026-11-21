@@ -6617,7 +6617,7 @@ def _witness_by_ink(ev: Evidence, page: Any, items: Sequence[Tuple[Any, Dict[str
     mode=Mode.ADDITIVE,
 )
 def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
-    """ROADMAP 2.274 step 2 (flag `OMR_PAGE_ARC_WRITE`, default OFF; the rule is `page_arc_bind`'s docstring): ONE page-wide pass, AFTER the heads are read, over the page's
+    """ROADMAP 2.274 step 2 (flag `OMR_PAGE_ARC_WRITE`, default ON; the rule is `page_arc_bind`'s docstring): ONE page-wide pass, AFTER the heads are read, over the page's
     `Q.PAGE_ARC` runs that a detector arc box WITNESSES. Each run's two ends are bound to notes by the SAME code as a detector curve (`_page_binding`, 2.223's, with `page_run`), with the
     closest-note rule (`page_arc_bind.closest_binder`), measured from the ink's own end, and the kind follows by Sean's tie rule on the two bound heads. The detector's class is not
     an input. A run that binds both ends to two different heads and reads a kind is `written`; any other is `abstained` with the reason (an end unbound, two columns about equally

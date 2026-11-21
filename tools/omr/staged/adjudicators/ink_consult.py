@@ -1,5 +1,5 @@
 """ROADMAP 2.284 r5 -- THE ONE CONSULT: every box family asks the page ledger's one owner per page stroke, through this module, once
-(flag `OMR_PAGE_LEDGER_OWNS`, default OFF; with it OFF nothing here is called and the three old mechanisms run unchanged). STAGED ADJUDICATE.
+(flag `OMR_PAGE_LEDGER_OWNS`, default ON; `=0` opts out, and with it off nothing here is called and the three old mechanisms run unchanged). STAGED ADJUDICATE.
 
     Sean 2026-11-09 ("Fix 2"): "the page ledger owns the ink, one owner per page stroke, one consult for every box family". Sean 2026-11-10: "The
     issue is not what is built but what still needs to be built." CLAUDE section 3 (claim order): a later reader may MARK claimed ink, never TAKE it.

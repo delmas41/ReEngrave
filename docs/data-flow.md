@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 148 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 14 NOT-IN-USE; 41 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
+Today: 148 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 14 NOT-IN-USE; 27 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -2052,23 +2052,9 @@ none
 - `page_head` is filed only by code off by default, and nothing reads it -- at `page_heads.py:file_page_heads (after `if ph is None: return` (True by default))`
 - `wedge_band_position` is filed only by code off by default, and nothing reads it -- at `positions.py:gather_band_positions (called only from positions.py:gather_family_positions where after `if not positions_enabled(): return` (True by default))`
 
-### STALE FLAG TEXT: a docstring says a flag's default is the opposite of what the code returns (15)
+### STALE FLAG TEXT: a docstring says a flag's default is the opposite of what the code returns (1)
 
-- `adjudicators/family_precision.py:_ink_consult_refusal` says `OMR_PAGE_LEDGER_OWNS` is default OFF; the code returns ON
-- `adjudicators/head_rest_shape.py:<module>` says `OMR_HEAD_INK_IS_A_REST` is default OFF; the code returns ON
-- `adjudicators/ink_consult.py:<module>` says `OMR_PAGE_LEDGER_OWNS` is default OFF; the code returns ON
-- `adjudicators/inside_meter.py:<module>` says `OMR_METER_OBJECT` is default OFF; the code returns ON
-- `adjudicators/ownership.py:adjudicate_page_arc_binding` says `OMR_PAGE_ARC_WRITE` is default OFF; the code returns ON
-- `arc_claim.py:rule_enabled` says `OMR_PAGE_ARC_WRITE` is default OFF; the code returns ON
 - `clef_pagewide.py:<module>` says `OMR_CLEF_CARRY` is default OFF; the code returns ON
-- `export.py:_clef_changes_by_bar` says `OMR_CLEF_CARRY` is default OFF; the code returns ON
-- `export.py:_page_arc_plan` says `OMR_PAGE_ARC_WRITE` is default OFF; the code returns ON
-- `export.py:_place_notes` says `OMR_RELOCATE_AT_EXPORT` is default ON; the code returns OFF
-- `gather.py:gather_detector_views` says `OMR_DETECTOR_VIEWS` is default OFF; the code returns ON
-- `gather.py:gather_stroke_map` says `OMR_PAGE_LEDGER_OWNS` is default OFF; the code returns ON
-- `page_arc_bind.py:<module>` says `OMR_PAGE_ARC_WRITE` is default OFF; the code returns ON
-- `page_marks.py:<module>` says `OMR_PAGE_MARKS` is default OFF; the code returns ON
-- `page_marks.py:gather_page_marks` says `OMR_PAGE_MARKS` is default OFF; the code returns ON
 
 ## Record calls this map cannot resolve
 
