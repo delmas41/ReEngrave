@@ -1,4 +1,4 @@
-"""A box whose ink lies inside the printed meter's claimed area -- ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default OFF).
+"""A box whose ink lies inside the printed meter's claimed area -- ROADMAP 2.177 (flag `OMR_METER_OBJECT`, default ON; `=0` opts out).
 
 PATH: STAGED, ADJUDICATE (notehead precision, rest precision). It reads ONE GATHER fact, `Q.CLAIMED_AREA` (owner `meter`, unit `area`),
 filed on the staff by `gather.gather_meter_object` off the page raster, and nothing else is measured here.

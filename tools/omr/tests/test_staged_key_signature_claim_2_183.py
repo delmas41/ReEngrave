@@ -151,6 +151,11 @@ def _fx(boxes, *, env=ON):
         if cls.startswith("flag"):
             log.observe(g, Q.FLAG, cls, reader=READERS.DETECTOR, frame="cell:0", score=0.5, category="flag")
         log.observe(g, Q.GLYPH_CONF, 0.9, reader=READERS.DETECTOR, frame="cell:0")
+        if cls.startswith("clef"):
+            # ROADMAP 2.324 r8: the key run starts right of the clef the page-wide pass READ (its claim), never a detector box -- the
+            # fixture files that claim as `gather_clef_pagewide` does before the key claim runs
+            log.observe(R.staff(1, 0, 0), Q.CLAIMED_AREA, [box[1], box[2], box[1] + box[3], box[2] + box[4]], reader=READERS.CV_CLAIMED_REGISTER,
+                        frame="cell:0", cell=0, owner="clef", unit="area", standing="READ", source="clef_pagewide", change=False)
         gids.append(g)
         dets.append(_Det(*box))
     pws = _PWS()
@@ -190,11 +195,11 @@ class TestGather(unittest.TestCase):
 
     def test_register_off_files_nothing(self):
         log, _ = _fx([CLEF, *FLATS], env={"OMR_KEY_SIGNATURE_CLAIM": "1", "OMR_CLAIMED_REGISTER": "0"})
-        self.assertEqual(list(log.rows(Q.CLAIMED_AREA, R.staff(1, 0, 0))), [])
+        self.assertEqual(_key_rows(log), [])               # (the fixture files the page-wide clef claim: 2.324 r8)
 
     def test_a_c_major_header_files_no_claim(self):
         log, _ = _fx([CLEF, ("rest8th", 520, 585, 102, 239)])
-        self.assertEqual(list(log.rows(Q.CLAIMED_AREA, R.staff(1, 0, 0))), [])
+        self.assertEqual(_key_rows(log), [])               # (the fixture files the page-wide clef claim: 2.324 r8)
 
     def test_a_key_change_in_a_later_cell_is_never_read_even_with_a_witness_staff(self):
         log = Log()

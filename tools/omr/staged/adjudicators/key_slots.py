@@ -99,6 +99,8 @@ class KeyBox:
     y: float
     w: float
     h: float
+    #: for a clef box from the page-wide reader's claim (`read_clef_boxes`): READ, or NARROWED (a possible clef); None otherwise
+    standing: Optional[str] = None
 
     @property
     def cx(self) -> float:
@@ -124,11 +126,22 @@ class KeySlotWindow:
     #: otherwise. Used only for a rest-class box (`stands_in_the_window`).
     next_x: Optional[float] = None
     next_tol: float = 0.0
+    #: ROADMAP 2.324 downstream: how the clef that bounds the window was read -- READ, or NARROWED (a possible clef: the window is
+    #: marked uncertain, `uncertain`); None where no clef bounds it or the bound is a bare box (a caller that passes detector boxes)
+    clef_standing: Optional[str] = None
+
+    @property
+    def uncertain(self) -> bool:
+        """The window starts right of a POSSIBLE clef (one the page-wide reader narrowed), not one it read."""
+        return self.clef_standing == "NARROWED"
 
     def detail(self) -> Dict[str, Any]:
-        return {"key_slot_window": [round(self.lo, 1), round(self.hi, 1)],
-                "key_slot_members": list(self.members),
-                "key_slot_clef": self.clef, "key_slot_slots": self.slots}
+        d = {"key_slot_window": [round(self.lo, 1), round(self.hi, 1)],
+             "key_slot_members": list(self.members),
+             "key_slot_clef": self.clef, "key_slot_slots": self.slots}
+        if self.clef_standing is not None:
+            d["key_slot_clef_standing"] = self.clef_standing
+        return d
 
 
 def boxes_of(rows: Sequence[Any]) -> List[KeyBox]:
@@ -220,7 +233,8 @@ def key_slot_window(boxes: Sequence[KeyBox], space: float
         y_hi=max(b.y + b.h for b in chain) + LEVEL_MARGIN_SPACES * space,
         members=tuple(b.row_id for b in chain),
         clef=None if clef is None else clef.row_id, slots=slots,
-        next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space)
+        next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space,
+        clef_standing=None if clef is None else clef.standing)
 
 
 #: ROADMAP 2.183: a cancelling run may hold up to this many slots (seven naturals, then up to seven sharps / flats)
@@ -235,7 +249,7 @@ def _window_of(chain: Sequence[KeyBox], clef: Optional[KeyBox], space: float, sl
         y_lo=min(b.y for b in chain) - LEVEL_MARGIN_SPACES * space,
         y_hi=max(b.y + b.h for b in chain) + LEVEL_MARGIN_SPACES * space,
         members=tuple(b.row_id for b in chain), clef=None if clef is None else clef.row_id, slots=slots,
-        next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space)
+        next_x=next_x, next_tol=NEXT_SLOT_TOL_SPACES * space, clef_standing=None if clef is None else clef.standing)
 
 
 def window_with_cancels(boxes: Sequence[KeyBox], space: float) -> Optional[KeySlotWindow]:
@@ -290,6 +304,83 @@ def window_with_cancels(boxes: Sequence[KeyBox], space: float) -> Optional[KeySl
 def claim_window(boxes: Sequence[KeyBox], space: float) -> Optional[KeySlotWindow]:
     """The window the key-signature CLAIM (ROADMAP 2.183) draws: the standard window, else the one that opens with cancelling naturals."""
     return key_slot_window(boxes, space) or window_with_cancels(boxes, space)
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.324 downstream (CLAUDE.md §3 claim order, §4 "Only a clef stands before the key accidentals"): the clef that bounds the
+# key run at ADJUDICATE is the one the PAGE-WIDE pass read -- its claim, the clef's own ink -- never a detector `clef*` box. The page-wide
+# reader is the only clef reader (2.324, landed 2026-11-21); a detector box it refused as not a clef is no clef (r8 files nothing for
+# it), a box it narrowed is a POSSIBLE clef and the window it bounds is marked uncertain. A key-shaped box whose centre lies inside a
+# read clef's claim is the clef's own ink boxed a second time (Litolff p4 s1 staff 9: a `keyFlat` box over the alto clef), never the
+# run's first slot. The same rule as `gather.gather_key_signature_claim` at GATHER (2.324 r8).
+# ─────────────────────────────────────────────────────────────────────────────
+
+#: `clef_pagewide.SOURCE`, restated (this package must not import the page-wide reader); a test asserts they are equal
+CLEF_PAGEWIDE_SOURCE = "clef_pagewide"
+
+
+def _cell_frame(glyph_rows: Sequence[Any]) -> Optional[Tuple[float, float, float]]:
+    """(page x of the cell's canonical origin, page y of it, canonical px per page px) from the cell's own `Q.GLYPH_BOX` rows (canonical
+    `[class, x, y, w, h]` beside `bbox_page_px`; `gather._page_box` is page = origin + canonical / upscale). Median over the rows; None
+    where no row carries both."""
+    xs, ys, ups = [], [], []
+    for r in glyph_rows:
+        v, pb = r.value, (r.detail or {}).get("bbox_page_px")
+        try:
+            if not (isinstance(v, (list, tuple)) and len(v) == 5 and isinstance(pb, (list, tuple)) and len(pb) == 4):
+                continue
+            pw = float(pb[2]) - float(pb[0])
+            if pw <= 0 or float(v[3]) <= 0:
+                continue
+            up = float(v[3]) / pw
+            ups.append(up)
+            xs.append(float(pb[0]) - float(v[1]) / up)
+            ys.append(float(pb[1]) - float(v[2]) / up)
+        except (TypeError, ValueError):
+            continue
+    if not ups:
+        return None
+    med = lambda a: sorted(a)[len(a) // 2]  # noqa: E731
+    return med(xs), med(ys), med(ups)
+
+
+def read_clef_boxes(claim_rows: Sequence[Any], glyph_rows: Sequence[Any], cell: int) -> List[KeyBox]:
+    """The clefs the page-wide pass claimed in bar `cell` of one staff (`Q.CLAIMED_AREA` rows, owner `clef`, unit `area`): READ claims
+    (source `clef_pagewide`) and NARROWED ones (a possible clef), as boxes of class `clef` in the cell's canonical frame
+    (`_cell_frame`), each carrying its `standing`. Measures nothing; [] where the cell has no frame or no claim."""
+    frame = _cell_frame(glyph_rows)
+    if frame is None:
+        return []
+    ox, oy, up = frame
+    out: List[KeyBox] = []
+    for r in claim_rows:
+        d = r.detail or {}
+        if d.get("owner") != "clef" or d.get("unit") != "area" or d.get("cell") != cell:
+            continue
+        st = d.get("standing")
+        if not ((st == "READ" and d.get("source") == CLEF_PAGEWIDE_SOURCE) or st == "NARROWED"):
+            continue
+        a = r.value
+        if not (isinstance(a, (list, tuple)) and len(a) == 4):
+            continue
+        a = [float(v) for v in a]
+        out.append(KeyBox(r.id, "clef", (a[0] - ox) * up, (a[1] - oy) * up, (a[2] - a[0]) * up, (a[3] - a[1]) * up, standing=st))
+    return out
+
+
+def header_boxes(glyph_rows: Sequence[Any], claim_rows: Sequence[Any], cell: int) -> List[KeyBox]:
+    """The boxes a key window of bar `cell` is drawn from: the detector's boxes WITHOUT its `clef*` boxes, plus the clefs the page read
+    (`read_clef_boxes`); a key-shaped box whose centre lies inside a READ clef's claim is that clef's ink and is left out."""
+    clefs = read_clef_boxes(claim_rows, glyph_rows, cell)
+    read = [c for c in clefs if c.standing == "READ"]
+    out: List[KeyBox] = []
+    for b in boxes_of(glyph_rows):
+        if b.cls.startswith("clef"):
+            continue
+        if _shape(b.cls) is not None and any(c.x <= b.cx <= c.x + c.w and c.y <= b.cy <= c.y + c.h for c in read):
+            continue
+        out.append(b)
+    return out + clefs
 
 
 def is_music_class(cls: str) -> bool:
@@ -356,7 +447,9 @@ def key_slot_occupant(ev: Any, box_row: Any, space: float = 0.0
     if space <= 0:
         return None
     rows = ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell)
-    window = key_slot_window(boxes_of(rows), space)
+    # ROADMAP 2.324 downstream: bounded by the clef the page read (its claim on the staff), never a detector `clef*` box
+    claims = ev.rows(Q.CLAIMED_AREA, subject=cell.at(Kind.STAFF))
+    window = key_slot_window(header_boxes(rows, claims, 0), space)
     if window is None or not stands_in_the_window(window, me[0]):
         return None
     detail = window.detail()
@@ -411,7 +504,9 @@ def meter_column(ev: Any, system: Any, skip_staff: Optional[int]
         cell = rows[0].subject.at(Kind.CELL)
         space = cell_space(ev, cell)
         boxes = boxes_of(rows)
-        win = key_slot_window(boxes, space) if space > 0 else None
+        # ROADMAP 2.324 downstream: the key window is bounded by the clef the page read, never a detector `clef*` box
+        win = key_slot_window(header_boxes(rows, ev.rows(Q.CLAIMED_AREA, subject=cell.at(Kind.STAFF)), 0), space) \
+            if space > 0 else None
         by_id = {b.row_id: b for b in boxes}
         for r in digits:
             b = by_id.get(r.id)
@@ -464,12 +559,16 @@ def _cell0(staff: Any) -> Any:
 
 def meter_rows_outside_key_slots(ev: Any, rows: Sequence[Any],
                                  spaces: Optional[Dict[str, float]] = None,
-                                 glyph_rows: Optional[Sequence[Any]] = None
+                                 glyph_rows: Optional[Sequence[Any]] = None,
+                                 claim_rows: Optional[Sequence[Any]] = None
                                  ) -> Tuple[List[Any], int]:
     """`Q.METER_GLYPH` rows minus those whose box stands in their staff's key
     slots (header cell 0 only), and how many were dropped. A meter glyph row is
     filed on the STAFF with the detection's class, `x` and `cell`; its box is
-    the cell-0 `Q.GLYPH_BOX` of the same class and left x."""
+    the cell-0 `Q.GLYPH_BOX` of the same class and left x.
+
+    ROADMAP 2.324 downstream: the window is bounded by the clef the page read (`claim_rows`, the staves' `Q.CLAIMED_AREA` rows, or read
+    here per staff when None), never a detector `clef*` box."""
     kept: List[Any] = []
     dropped = 0
     windows: Dict[Any, Tuple[Optional[KeySlotWindow], List[KeyBox]]] = {}
@@ -477,6 +576,10 @@ def meter_rows_outside_key_slots(ev: Any, rows: Sequence[Any],
     for g in glyph_rows or ():
         if g.subject.cell == 0:
             by_cell.setdefault(g.subject.at(Kind.CELL).to_key(), []).append(g)
+    claims_by_staff: Dict[str, List[Any]] = {}
+    for c in claim_rows or ():
+        if c.subject.kind is Kind.STAFF and (c.detail or {}).get("owner") == "clef":
+            claims_by_staff.setdefault(c.subject.to_key(), []).append(c)
     for r in rows:
         d = r.detail or {}
         if r.frame != "cell:0":
@@ -487,11 +590,12 @@ def meter_rows_outside_key_slots(ev: Any, rows: Sequence[Any],
         if key not in windows:
             cell = _cell0(staff)
             space = (spaces or {}).get(cell.to_key()) or cell_space(ev, cell)
-            boxes = boxes_of(by_cell.get(cell.to_key(), []) if glyph_rows is not None
-                             else ev.rows(Q.GLYPH_BOX,
-                                          scope=Scope.SELF_AND_DESCENDANTS,
-                                          subject=cell))
-            windows[key] = (key_slot_window(boxes, space), boxes)
+            grows = (by_cell.get(cell.to_key(), []) if glyph_rows is not None
+                     else ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell))
+            claims = (claims_by_staff.get(key, []) if claim_rows is not None
+                      else ev.rows(Q.CLAIMED_AREA, subject=staff))
+            boxes = boxes_of(grows)
+            windows[key] = (key_slot_window(header_boxes(grows, claims, 0), space), boxes)
         win, boxes = windows[key]
         hit = None
         if win is not None:

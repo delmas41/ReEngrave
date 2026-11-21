@@ -1484,7 +1484,7 @@ MARKS: Tuple[Mark, ...] = (
           G + "gather_notehead_ink": "box+ink", G + "gather_head_ink": "box+ink", G + "gather_head_oval": "box+ink",
           G + "gather_stacked_head_fit": "box+ink", G + "gather_narrow_box_shape": "box+ink", G + "gather_notehead_letter_ink": "box+ink",
           G + "gather_notehead_stem_cross_ink": "box+ink", G + "gather_head_stem_reach": "box+ink", G + "_file_mark_groups": "record",
-          "page_heads.py:file_one_claims": "ink", "page_heads.py:file_page_heads": "ink", G + "gather_lowconf_rescue": "box",
+          "page_heads.py:file_one_claims": "ink", G + "gather_lowconf_rescue": "box",
           G + "_lowconf_rescue_witnesses": "record", G + "gather_detector_views": "box", G + "gather_dyad_head_rescue": "box",
           G + "gather_stem_end_heads": "box", G + "_stem_end_head_ink": "ink", G + "gather_second_hollow": "box",
           G + "gather_ownership_evidence": "box+ink", G + "_gather_owner_candidates": "box+ink"},

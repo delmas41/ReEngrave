@@ -700,7 +700,7 @@ class Cell:
 
 
 def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
-    """ROADMAP 2.251 step 2 (flag `OMR_CLEF_CARRY`, default OFF): the clefs printed INSIDE this staff whose kind was READ (step 1's
+    """ROADMAP 2.251 step 2 (flag `OMR_CLEF_CARRY`, default ON): the clefs printed INSIDE this staff whose kind was READ (step 1's
     `Q.CLAIMED_AREA` rows, source `clef_pagewide`, `change`), keyed by the bar from which the file writes them. A change governs from
     its OWN bar where a head of that bar was pitched from it (a `Q.PITCH` verdict citing the change row: `restate_pitch`), else from the
     next bar (it stands at the bar's end, before the barline). A change whose kind is unread writes no clef (its notes carry no pitch).
@@ -1520,7 +1520,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     a LATER reason then dropped (counted in `dropped` under that reason, so
     never lost twice and never counted as placed).
 
-    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default ON): the one exception to
+    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF, allow-list): the one exception to
     the paragraph below. Sean, 2026-10-06 -- *"All note heads should be found
     and written on their staff"* -- ruled that a head whose decided owner is
     another staff, and which that staff holds NO copy of, is RELOCATED rather
@@ -2532,7 +2532,7 @@ def _corners_to_wh(box: Optional[Sequence[float]]) -> Optional[List[float]]:
 
 
 def _page_arc_plan(rec: Record) -> Optional[Dict[str, Any]]:
-    """ROADMAP 2.274 step 2 (`OMR_PAGE_ARC_WRITE`, default OFF): the witnessed page-ink runs the record's `Q.PAGE_ARC_BINDING` verdicts bound (`page_arc_bind.plan_of`), or
+    """ROADMAP 2.274 step 2 (`OMR_PAGE_ARC_WRITE`, default ON): the witnessed page-ink runs the record's `Q.PAGE_ARC_BINDING` verdicts bound (`page_arc_bind.plan_of`), or
     None with the flag OFF or a record that holds none. Reads the record only."""
     if not _page_arc_bind.write_enabled():
         return None
