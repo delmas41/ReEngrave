@@ -320,6 +320,7 @@ tested `--through adjudicate` against a copy of production.
 |---|---|
 | `docs/running.md` | setup, worktree symlinks, every CLI, the small/full re-gathers, the web app, deployment |
 | `docs/staged-internals.md` | the record model, scopes, adjudicators, EVALUATE/INFER/EXPORT, the derived checks and their blind spots |
+| `docs/data-flow.md` | where every mark is read and where it goes, by mark and by fact, with its gaps (generated; ask it: `python3 -m tools.omr.staged.flow_map --mark X` / `--quantity Q.X` / `--consumer F` / `--gaps`). Read a mark's block before changing its reader; rerun the generator at every landing |
 | `docs/page-facts.md` | every engraving/plate convention with Sean's quotes and dates |
 | `docs/measuring.md` | the acceptance set, A/B rules, test tiers, flags |
 | `docs/ink-rules.md` | every old rule sorted convention / erasure workaround / double-count workaround / other, with fires and fate (generated; ROADMAP 2.207) |

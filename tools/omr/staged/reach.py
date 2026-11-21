@@ -45,6 +45,17 @@ subject as the quantity and reports every gather site as unresolved.
 ⚠️ UNREAD is not automatically a bug: a quantity may be gathered so a HUMAN
 can read the record. What it must never be is UNREAD *and unremarked*, which
 is how `Q.STEM` stayed unread through three separate discoveries.
+
+## The stricter question (ROADMAP 2.331 step 3): `live_producers()`, `reason_words()`
+
+`survey()` counts a `wants` line or an abstention as a producer and a producer
+behind a default-off flag as live, which is how `Q.CLEF_LOCATED` read as LIVE
+after its only producer was retired. `live_producers()` asks it again with
+`flow_map`'s derivation: a READ quantity needs an `observe` site reached with
+every `OMR_*` flag at its default (or a decision, an EVALUATE effect, an INFER
+collapse). `reason_words()` asks it of the literal reason words consumers test.
+Both are open findings in `check` (`staged.reach_live`, `staged.reason_words`);
+`python3 -m tools.omr.staged.reach --live` prints them.
 """
 from __future__ import annotations
 
@@ -75,9 +86,9 @@ KNOWN_GAPS: Dict[str, str] = {
         "A reader that appears removes this entry."),
     # (Q.PAGE_STROKE left this list in ROADMAP 2.305 r6: the arc binder reads it for the unread head ink at an arc's end, `ownership._unread_head_ink`.)
     Q.PAGE_HEAD: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
-        "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
-        "the proof. A reader that appears removes this entry."),
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed (only with `OMR_PAGE_HEADS` on, default OFF) "
+        "and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: the far-head ledger read is driven from it); M6c (`_head_claims`) was deleted (2ada124ba). The exported "
+        "file is byte-identical with `OMR_PAGE_HEADS` on, which is the proof. A reader that appears removes this entry."),
     Q.PAGE_BEAM_TIP: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
         "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),
@@ -492,6 +503,9 @@ NOT_A_STAGE = frozenset({
     # settle per page stroke `adjudicators/stroke_owner` reads; files no row, names no quantity, decides nothing of its own.
     "page_ledger.py",
     "record_coverage.py", "reach.py", "__init__.py", "__main__.py",
+    # ROADMAP 2.331 step 3. The generated data-flow map (`docs/data-flow.md`): reads the SOURCE of every stage, calls the flag predicates under
+    # the defaults, files no row and decides nothing (`DERIVED_CHECK = True`). `reach.live_producers` / `reason_words` use its derivation.
+    "flow_map.py",
     # ⚠️ ROADMAP 3.4. `review/server.py` is the STAGE REVIEW viewer: it
     # SHOWS a saved record to a human and writes his corrections to a
     # sidecar. It runs no stage and decides nothing — its export figures are
@@ -850,6 +864,40 @@ def survey() -> dict:
     }
 
 
+def live_producers(analysis=None) -> list:
+    """ROADMAP 2.331 step 3: every quantity a STAGE reads that has no producer LIVE UNDER THE DEFAULT FLAGS.
+
+    `survey()` above counts a `wants` line or an abstention as a producer (`declared`), and a producer behind a default-off flag as live -- which
+    is how `Q.CLEF_LOCATED` read as LIVE after its only producer was retired. This asks the stricter question with `flow_map`'s derivation:
+    a producer is a real `observe` site reached with every `OMR_*` flag at its default, a registered decision, an EVALUATE effect or an INFER
+    collapse. Returns `[{quantity, status, consumers, producers_off, why}]`; `status` is `READ-BUT-NEVER-FILED` or `ONLY-BEHIND-AN-OFF-FLAG`.
+    A quantity filed only by a human reader outside the pipeline (`producers.OUT_OF_PIPELINE`) is a design, not a finding, and is left out.
+    `analysis` is a `flow_map.Analysis` (a throwaway tree in the control); default: this tree."""
+    from . import flow_map as FM
+    if analysis is None:
+        b = FM.build()
+        an, fs = b.an, b.fs
+    else:
+        an, fs = analysis, FM.facts(analysis)
+    out = []
+    for f in fs.values():
+        if not FM.is_starved(f):
+            continue
+        out.append({"quantity": f.q, "status": f.status,
+                    "consumers": sorted({s.where for s in f.reads_live if s.stage in FM._PIPE}) + [f"infer:{r}" for r in f.infer_reads],
+                    "producers_off": sorted({s.where for s in f.observe_dead}),
+                    "why": sorted({an.site_why(s) for s in f.observe_dead})})
+    return out
+
+
+def reason_words(analysis=None) -> list:
+    """ROADMAP 2.331 step 3: every literal reason word a live consumer tests that no stage can still return under the default flags (a literal,
+    or a module constant holding it, reached by default; an f-string reason counts by its fixed prefix). `[{word, kind, tested_at, made_at}]`."""
+    from . import flow_map as FM
+    an = analysis if analysis is not None else FM.build().an
+    return [{"word": g.word, "kind": g.kind, "tested_at": g.tested_at, "made_at": g.made_at} for g in FM.reason_gaps(an)]
+
+
 def _report(s: dict, check: bool) -> int:
     rows = s["rows"]
     print("═══ DOES EVERY QUANTITY REACH A CONSUMER? ═══════════════════════")
@@ -914,7 +962,19 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--json", action="store_true")
     ap.add_argument("--check", action="store_true")
+    ap.add_argument("--live", action="store_true",
+                    help="ROADMAP 2.331: quantities read with no producer live under the default flags, and dead reason words")
     args = ap.parse_args(argv)
+    if args.live:
+        lp, rw = live_producers(), reason_words()
+        print(f"═══ READ, WITH NO PRODUCER LIVE UNDER THE DEFAULT FLAGS ({len(lp)}) ═══")
+        for r in lp:
+            print(f"  {r['quantity']:28} {r['status']:26} read at {', '.join(r['consumers'][:4])}"
+                  + (f"  | filed only at {', '.join(r['producers_off'][:3])}" if r["producers_off"] else ""))
+        print(f"═══ REASON WORDS TESTED THAT NO DECIDER CAN RETURN ({len(rw)}) ═══")
+        for r in rw:
+            print(f"  {r['word']:36} {r['kind']:34} tested at {', '.join(r['tested_at'][:3])}")
+        return 1 if (lp or rw) else 0
     s = survey()
     if args.json:
         print(json.dumps(s, indent=2))

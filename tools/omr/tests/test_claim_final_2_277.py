@@ -162,10 +162,14 @@ class TestConsult(unittest.TestCase):
 class TestStaticCheck(unittest.TestCase):
     STAGED = pathlib.Path(CF.__file__).resolve().parent
 
-    def test_this_tree_closes_barline_and_keeps_arc_and_hairpin_as_marks(self):
+    def test_this_tree_closes_barline_and_with_the_default_flags_nothing_is_mark_only(self):
+        # ROADMAP 2.331: the check reads `mark_only()` as the code resolves it with every flag at its default (`OMR_PAGE_LEDGER_OWNS` ON ->
+        # empty), not the `MARK_ONLY` constant by regex, which is the flag-OFF arm and reported arc_trace / hairpin_trace for a state not in force
         f = CF.static_wiring()
         self.assertFalse([x for x in f if x["claim"] == "barline"], f)
-        self.assertEqual({x["claim"] for x in f}, {"arc_trace", "hairpin_trace"})
+        self.assertEqual({x["claim"] for x in f}, set())
+        with mock.patch.dict(os.environ, {"OMR_PAGE_LEDGER_OWNS": "0"}):
+            self.assertEqual({x["claim"] for x in CF.static_wiring()}, set())      # the defaults, whatever the caller's environment
 
     def test_CONTROL_the_check_can_fail_a_tree_whose_readers_never_consult(self):
         import shutil
