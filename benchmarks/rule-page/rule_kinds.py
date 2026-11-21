@@ -182,12 +182,15 @@ RULES = [
     R(STEMS, "head_stem", "unison_two_voices,two_stems", "A", "a head with a stem each way is two notes", "a head carrying one stem up and one down is two voices on one head", "Sean 2026-10-19 (2.175), convention assumed", "kept"),
     R(STEMS, "head_stem", "stem_of_a_second", "A", "the other head of a second stands on the same stem", "a head no stem touches, beside a head that does, a step off and one head width over, with the stem between them, is on that stem (flag OMR_ONE_CHORD_ONE_EVENT, default OFF)", "page-facts: every note on one stem shares one written value; Sean 2026-11-10 (2.291 tile 7: two half notes a second apart), convention assumed", "new: OFF"),
     R(STEMS, "head_stem", "no_evidence", "D:honesty", "no evidence", "-", RULE8, "kept"),
+    R(STEMS, "head_stem", "page_stem,page_stem_of_a_second", "ok", "the head's stem read once on the page", "the page map's vertical stroke at the head's engraving side (up: right edge, reaching up; down: left edge, reaching down), or a second's partner stem (flag OMR_PAGE_STEMS, ROADMAP 2.306, default OFF)", "page-facts stems (up -> right, down -> left); Sean 2026-11-12 'Start the stem work'", "-"),
+    R(STEMS, "head_stem", "page_no_stem,page_stem_ambiguous", "D:honesty", "the page names no stem", "the page read the head and found no free vertical at its engraving side, or two, or a stroke read both ways: abstain with the candidates and margin (flag OMR_PAGE_STEMS, ROADMAP 2.306 retire, default OFF)", RULE8, "new: OFF"),
 
     R(STEMS, "stem_head_contact", "all_touch_a_head,some_touch_no_head", "ok", "does every stem touch a head", "a stem that touches no head is listed", "Sean 2026-10-11 (\"All stems should be connected to a notehead\", 2.87)", "-"),
     R(STEMS, "stem_head_contact", "no_stem,no_heads_read", "D:honesty", "no stem / no heads read", "the cell has strokes and no head box, or no stem: says nothing", RULE8, "kept"),
 
     R(STEMS, "stem_direction", "stem_projection,beam_mate", "ok", "stem up or down", "direction from the stem's tip beyond the outer head, or from the beam mate; up -> right, down -> left", S_STEMTILES, "-"),
     R(STEMS, "stem_direction", "no_stem", "D:passthrough", "no stem found", "passes on the head_stem refusal", "-", "follows head_stem"),
+    R(STEMS, "stem_direction", "page_stem", "ok", "the stem's direction read once on the page", "the engraving side the page stem stands at (up: right, down: left), not worked out again from the cell rows (flag OMR_PAGE_STEMS, ROADMAP 2.306 r5, default OFF)", "page-facts stems (up -> right, down -> left)", "-"),
     R(STEMS, "stem_direction", "stems_disagree", "U", "readers disagree on direction", "the stem finders disagree; the stroke stem reader (2.204) is built to settle it", "Sean 2026-10-26 tiles: today's finder was right on chords", "open (2.204 after 2.205)"),
     R(STEMS, "stem_direction", "no_evidence", "D:honesty", "no evidence", "-", RULE8, "kept"),
 

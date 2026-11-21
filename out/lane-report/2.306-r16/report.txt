@@ -1,0 +1,29 @@
+LANE REPORT  OMR_PAGE_STEMS (OFF=0 ON=1)  --from gather
+  OMR_PAGE_STEMS: read in staged/adjudicate.py, staged/adjudicators/rhythm.py, staged/adjudicators/stem_value.py, staged/gather.py ... -> GATHER
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/r15/sample_r15.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+litolff  pages [2, 6, 16]  (2419 notes+rests OFF, 2404 ON, 2382 paired)
+  file:   notes +25 -33 | rests -4 | accidentals +1 -2 | flags +10 -6 | beams +11 -18 ~4 | ties +4 | slurs +4 | articulations +1 -1 | fermatas +1 | note values ~10 | blue marks +17 -18 | dynamics +1 | words +17 -22
+  red bars 77 -> 72 | notes not written 928 -> 931
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (248 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 9 (at another id than asked 2) | by id key, no position 401 | position but no mark here 17
+  NOT JUDGED: 164 changed places no tile of Sean's covers (10 are covered; 36 have no page place): accidental 3, articulation 2, beam 33, blue 33, fermata 1, flag 16, note 50, rest 4, slur 4, tie 4, value 7, words 7 -> unjudged.txt
+
+brahms  pages [0, 4, 5]  (2600 notes+rests OFF, 2614 ON, 2589 paired)
+  file:   notes +25 -4 | rests +3 -10 | accidentals +1 | dots +9 -1 | flags +23 -3 | beams +6 -2 ~1 | ties +17 -4 | slurs +10 -1 | articulations +3 -1 | note values ~9 | pitches ~3 | blue marks +13 -26 | words +9 -21
+  red bars 47 -> 39 | notes not written 1166 -> 1145
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (225 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 4) | by id key, no position 378 | position but no mark here 23
+  NOT JUDGED: 176 changed places no tile of Sean's covers (4 are covered; 25 have no page place): accidental 1, articulation 4, beam 8, blue 37, dot 10, flag 26, note 29, pitch 3, rest 13, slur 11, tie 21, value 8, words 5 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.78-phase2-review tile 5 ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15']  was unwritten_wrong
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 5587 s
