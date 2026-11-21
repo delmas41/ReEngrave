@@ -949,61 +949,13 @@ def f_body(ink: np.ndarray, box: Sequence[float], lines: Sequence[float], sp: fl
             float(y0 + max(st[j, cv2.CC_STAT_TOP] + st[j, cv2.CC_STAT_HEIGHT] for j in keep))]
 
 
-#: ROADMAP 2.324 r8: an F clef begins with its KNOB, a filled ball on its line (line 4) at the left of its curve. The clef's own ink
-#: is followed left of the detector's box, in the knob's rows only (from just above the top line to half a space under line 4), at most
-#: this far (staff spaces) ...
-F_KNOB_REACH_SPACES = 0.8
-#: ... the knob's rows end this far under line 4 (staff spaces); below them stands the tail, which a mark left of the clef may touch
-F_KNOB_BELOW_LINE4_SPACES = 0.5
-#: ... column by column while the knob's ink in the column is ONE unbroken run at least this tall (a staff line is 0.2-0.35 sp thick on both plates)
-F_KNOB_MIN_HEIGHT_SPACES = 0.5
-
-
-def f_knob_left(ink: np.ndarray, body: Sequence[float], box: Sequence[float], lines: Sequence[float], sp: float) -> Optional[float]:
-    """ROADMAP 2.324 r8 (Litolff p2 s1 staff 3 bar 37: the detector's `clefF` box began half-way across the clef's knob; the claim
-    stopped at the box and the knob was written as a plain F3): the left edge of the F clef's OWN ink, or None where it starts inside
-    the box. A musician: the clef starts at its knob on line 4, joined to the curve that rises from it.
-
-    Looked for ONLY in the knob's rows (the top line to half a space under line 4): the clef's TAIL runs down-left under its body to
-    the bottom lines, and a mark standing left of the clef can touch the tail there -- round 8's first try followed the tail into an
-    eighth rest's foot (Brahms p5 s1 staff 3 bar 9, joined across line 2 from the bottom) and claimed the rest. Never past a barline
-    (`barline_left_of`; Brahms' header F clefs stand half a space from it), never further than `F_KNOB_REACH_SPACES`, and only through
-    columns holding a stroke `F_KNOB_MIN_HEIGHT_SPACES` tall (a line scrap the clearing leaves is thinner). Measures."""
-    x_lo = float(box[0]) - F_KNOB_REACH_SPACES * sp
-    bl = barline_left_of(ink, lines, sp, x_lo - 0.2 * sp, float(body[0]))
-    if bl is not None:
-        x_lo = max(x_lo, float(bl + 1))
-    band = [x_lo, float(lines[0]) - 0.3 * sp, float(body[0]) + 0.5 * (float(body[2]) - float(body[0])),
-            float(lines[1]) + F_KNOB_BELOW_LINE4_SPACES * sp]
-    pc = glyph_piece(ink, band, lines, sp)
-    if pc is None or pc["box"][2] < float(body[0]) + 0.25 * (float(body[2]) - float(body[0])):
-        return None                                        # the band's largest piece is not the clef's (it never reaches its body)
-    px0 = int(pc["box"][0])
-    heights = [_longest_run(pc["piece"][:, j])[0] for j in range(pc["piece"].shape[1])]   # one unbroken stroke, never two line scraps
-    left = max(float(box[0]), float(body[0]) - 0.1 * sp)
-    c = min(int(left) - px0, len(heights))
-    if c <= 0:
-        return None
-    start = c
-    while c - 1 >= 0 and heights[c - 1] >= F_KNOB_MIN_HEIGHT_SPACES * sp:
-        c -= 1
-    return float(px0 + c) if c < start else None
-
-
-def f_claim_area(got: Dict[str, Any], box: Sequence[float], sp: float, *, ink: Optional[np.ndarray] = None,
-                 lines: Optional[Sequence[float]] = None) -> List[float]:
+def f_claim_area(got: Dict[str, Any], box: Sequence[float], sp: float) -> List[float]:
     """The page-px area a passing F clef claims: its body's left edge (else the box's) to its dots' right edge, the box's height.
-    ONE formula for the claim and for any tile drawn of it. With `ink` and `lines` (r8), the left edge is the clef's own knob where
-    it starts left of the box (`f_knob_left`), never the box's edge."""
+    ONE formula for the claim and for any tile drawn of it."""
     body = got.get("body")
     left = float(body[0]) - 0.1 * sp if body else float(box[0])
     right = max(float(body[2]) if body else float(box[2]), float(got.get("dots_right") or 0.0)) + 0.05 * sp
-    left = max(float(box[0]), left)
-    if ink is not None and lines is not None and body:
-        k = f_knob_left(ink, body, box, lines, sp)
-        if k is not None and k < left:
-            left = k
-    return [left, float(box[1]), right, float(box[3])]
+    return [max(float(box[0]), left), float(box[1]), right, float(box[3])]
 
 
 def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[float], sp: float, *,
