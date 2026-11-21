@@ -292,3 +292,49 @@ notes -18, 44 pitches (p25), red bars 52 -> 50. Lane report judged right->wrong 
 
 **Open.** A real spiral test (the hole measures do not tell a spiral from two hollow heads); tile 5 read; the
 barline cut and reach limit seen only on seven clefs; nothing past nine pages.
+
+## Round 6 -- the treble clef's curl, traced (2026-11-20; nine touched pages only; branch `lane-2.324-r3` bacb099c0; STAGED, flag OFF)
+
+**Cause and process lesson.** Round 5/5b measured the "spiral" as the size of enclosed paper; a hollow
+notehead encloses paper too, so Sean's half-note chord (tile 10) passed and the refusal fell to the
+detector's notehead boxes. Looking at the full-size pixels first showed what the curl is: the clef's own
+upright stroke runs down THROUGH its curl and cuts the curl's paper in two. A hollow head is one ring with
+nothing through it. Lesson (third time on this lane): look at the mark's shape before choosing a measure.
+
+**The rule.** A treble clef is one stroke that curls round the second line. Inside a line it is read only
+where that curl is seen; otherwise it is refused outright (not narrowed). Never over a notehead, a stem or
+blank paper. Beside the rule: enclosed paper on BOTH sides of the clef's own stroke across line 2 (count
+>= 2 is the shape; band 0.3 space and area 0.05 sq space are cuts from our two plates), and ink past the
+staff above and below (fill >= 0.08 each, unchanged). The C test is read first (C bowls can reach 2).
+
+**Both sides of the boundary (lane's count).** Reading side: start-of-staff trebles on the frozen sample
+208 of 221 count >= 2 (the other 13 still read where the detector drew a box); tile 4 >= 2; tile 5 = 3.
+Refusing side: bass clefs 0 of 98; tile 10 = 1; tile 1 = 0; of 788 hollow heads on the nine pages 2 reach 2
+with ink past the staff -- one is a detector head box sitting on a real treble clef (Litolff p6 s1 st0),
+one an "ff" under a note with a ledger line. "Never over a notehead" is kept as a second witness only;
+real-pixel controls for tiles 1, 5 and 10 fail with the curl test switched off.
+
+**Sean's three tiles.** Tile 5 (treble): READ by its curl; Brahms p14 s1 st9 bars 1-5 written in treble
+(B4+G4, Bb4+G4, E4+G4, A4+F4, D4+F#4, G4+Eb4, D4+F4, F4+Db4 -- lane's check against the print, sheet tile
+11). Tile 1 (stem) and tile 10 (chord): refused outright, Litolff p9 s0 st3 bars 11-14 written.
+Not a clef matter and not fixed: the fourth chord prints F# and A-natural, file writes Ab4+F4; the chord
+right after the clef and two chords in the next bar are unwritten in both arms; one head there is written
+blue as G3 (a position error).
+
+**Nine pages OFF -> ON** (shared `lane_report --from gather --cell-map master`). Start-of-staff trebles all
+read: Litolff 79/79 (71 by curl, 8 by box), Brahms 46/46 (all curl). Litolff: rests -1, values changed 1,
+blue +9 -79, words -1, red bars 128 -> 126, notes not written 1579 -> 1581, judged right->wrong 0 of 300.
+Brahms: notes -1, pitches changed 61 (p25 bars 1-9 bass, p14 bars 1-5 treble), blue -2, red bars 52 -> 52,
+notes not written 1280 -> 1281, judged right->wrong 0 of 221. The -18 notes of round 5 are gone.
+
+**Other publishers (crops only, the curl test alone; `out/print/2.324-r6/other_publishers.png`).** Simrock
+1896 (Dvorak Cello Concerto), Eulenburg 1926 (Bruckner 7), Muzgiz 1947 (Manfred), Jurgenson (Mazeppa),
+picked by eye from page views. Treble clefs read 28 of 28 (curl 2-5; Simrock 9, Eulenburg 6, Muzgiz 7,
+Jurgenson 6), including ONE small mid-line treble (Simrock p10 staff 7, curl 3). Non-clefs refused 24 of
+24, but only ~17 landed on a note or chord (~6 hollow); the rest on beams, rests, a slur, blank staff.
+Thinnest margin: a Jurgenson clef's ink above the staff 0.084 against the 0.08 cut -- not retuned.
+
+**Not verified.** Frozen sample, fast tier, `judged score` / `judged_claims` replays since round 4. One
+mid-line treble from another publisher; the other-publisher refusing side is thin on hollow chords. The
+0.08 fill cut has a clef 0.004 from it. Crops: `out/print/2.324-r6/sheet.png`, key
+`out/print/2.324-r6-key.json`.
