@@ -338,3 +338,34 @@ Thinnest margin: a Jurgenson clef's ink above the staff 0.084 against the 0.08 c
 mid-line treble from another publisher; the other-publisher refusing side is thin on hollow chords. The
 0.08 fill cut has a clef 0.004 from it. Crops: `out/print/2.324-r6/sheet.png`, key
 `out/print/2.324-r6-key.json`.
+
+## Round 7 -- the full frozen sample, once, on the merged tree (2026-11-21; branch `lane-2.324-r3` 9e9f5a734; STAGED, flag OFF; no reader code changed)
+
+**Control line.** Both arms re-read on the merged tree. Brahms OFF reproduces round 4's baseline exactly
+(6747 notes and rests, red bars 137, notes not written 2996). Litolff OFF differs slightly (5697 vs 5695,
+red bars 157 vs 158, not written 2074 vs 2076) -- main's other landings that came with the merge.
+
+**OFF -> ON** (shared `lane_report --from gather --cell-map master`). Litolff: rests -1, values changed 1,
+blue +8 -84, words -1, clefs/keys/meters +1 -1 each, red bars 157 -> 155, notes not written 2074 -> 2076,
+judged right->wrong 0 of 308. Brahms: notes +6 -1, flags +2, ties +2, slurs +1 -2, articulations +3,
+pitches changed 76, blue -20, words +1 -3, clefs/keys/meters +6 -4 each, red bars 137 -> 137, not written
+2996 -> 2991, judged right->wrong 0 of 261. Unwritten->wrong 0 on both.
+
+**Replays.** `judged score`: Litolff 132 right / 12 wrong, Brahms 88 / 3, identical OFF and ON.
+`judged_claims`: Litolff 75 agree / 13 contradict, Brahms 51 / 4, identical OFF and ON.
+
+**Clef reach (read from the page / printed).** Litolff start of staff 169/172 -> 172/172, mid-line 19 -> 19.
+Brahms start of staff 198/199 -> 199/199, mid-line 7 -> 11. Every difference is on
+`out/print/2.324-r7/sheet.png`, nine real clefs of the right kind (manager's look at the sheet): Litolff p2
+s1 st3 tenor -> bass (Sean's 2.292 answer: F clef); Litolff p2 s1 st9, p4 s0 st8, p4 s1 st10 and Brahms p8
+s1 st3 read from the page where OFF carried; Brahms mid-line ON only p14 s1 st9 treble, p25 s0 st3, p5 s1
+st3, p8 s0 st9 bass. No clef read OFF is lost ON.
+
+**Fast tier on the merged tree.** 11,112 passed; only the known `test_far_head_note_first_2026_10_05
+[ledgers1-204]` fails.
+
+**Found.** The claim of the Brahms p14 mid-line treble runs up over "div.": round 5b's reach limit was
+applied only to clefs found without a box. Fixed in round 7b before landing.
+
+**Not verified.** The changed places no judged tile covers (114 Brahms, 90 Litolff) beyond the clef crops;
+Brahms p4 s1 st3, a mid-line bass clef that narrows, not checked against the print; no whole movement.
