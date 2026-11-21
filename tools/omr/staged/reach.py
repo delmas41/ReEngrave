@@ -45,6 +45,17 @@ subject as the quantity and reports every gather site as unresolved.
 ⚠️ UNREAD is not automatically a bug: a quantity may be gathered so a HUMAN
 can read the record. What it must never be is UNREAD *and unremarked*, which
 is how `Q.STEM` stayed unread through three separate discoveries.
+
+## The stricter question (ROADMAP 2.331 step 3): `live_producers()`, `reason_words()`
+
+`survey()` counts a `wants` line or an abstention as a producer and a producer
+behind a default-off flag as live, which is how `Q.CLEF_LOCATED` read as LIVE
+after its only producer was retired. `live_producers()` asks it again with
+`flow_map`'s derivation: a READ quantity needs an `observe` site reached with
+every `OMR_*` flag at its default (or a decision, an EVALUATE effect, an INFER
+collapse). `reason_words()` asks it of the literal reason words consumers test.
+Both are open findings in `check` (`staged.reach_live`, `staged.reason_words`);
+`python3 -m tools.omr.staged.reach --live` prints them.
 """
 from __future__ import annotations
 
@@ -75,9 +86,9 @@ KNOWN_GAPS: Dict[str, str] = {
         "A reader that appears removes this entry."),
     # (Q.PAGE_STROKE left this list in ROADMAP 2.305 r6: the arc binder reads it for the unread head ink at an arc's end, `ownership._unread_head_ink`.)
     Q.PAGE_HEAD: (
-        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: "
-        "the far-head ledger read is driven from it) and M6c (`OMR_PAGE_HEAD_CLAIM`: `_head_claims`); the exported file is byte-identical with `OMR_PAGE_HEADS` on, which is "
-        "the proof. A reader that appears removes this entry."),
+        "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260e M6a (docs/plan-2026-11-04-page-heads-m6.md): the page head list is filed (only with `OMR_PAGE_HEADS` on, default OFF) "
+        "and read by NOTHING until M6b (`OMR_PAGE_HEAD_VIEWS`: the far-head ledger read is driven from it); M6c (`_head_claims`) was deleted (2ada124ba). The exported "
+        "file is byte-identical with `OMR_PAGE_HEADS` on, which is the proof. A reader that appears removes this entry."),
     Q.PAGE_BEAM_TIP: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
         "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),
