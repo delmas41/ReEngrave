@@ -604,3 +604,44 @@ value 4/371 -> 3/372, flag 5/48 -> 4/48; judged right->wrong 0; fast tier 10,643
 Tile 8 (Litolff p10): one hook on the print by the agent's crop, detector class says 16th; not built until Sean
 confirms one flag. Like cases 1 Brahms p0, 2 Litolff p10. q975: the agent sees a flag on a note Sean labelled a
 quarter -- a question for Sean, not touched.
+
+## 2.306 round 15 -- a stem joins the head whose ink it touches (2026-11-21; branch `lane-2.306-r15` c1c91cb36; STAGED GATHER, `OMR_PAGE_STEMS` OFF; touched pages only)
+
+**Why this round** (2.317 step 0b, `out/print/2.317-step0b/`, a count from the 2026-11-21 frozen-sample
+records plus an agent's crops the manager looked at): of 9,555 printed notes 251 are held for want of a
+value; about 73 have no stem joined; 68 more are held because chord members disagree, and 56 of those are
+mates never joined to a stem (2.330, withdrawn at the cause). Every join on the STAGED path decides by box
+overlap or box position. The 224 "too narrow" boxes are mostly dots, rest pieces and barline slivers.
+
+**Cause (lane's look at full-size pixels, not Sean's).** The page stem reader loses printed stems to what
+other steps hand it: (1) claims made by area, not ink -- the Litolff p6 barline claim sits about a space
+left of the real barline and covers the bar's last stem (3 stems); the Brahms p4 C-clef claim is a
+rectangle reaching the next note's stem (2 heads); a boxed accidental holds one stem; (2) the head's ink is
+not claimed -- about 500 of 1,700 kept Litolff heads claim none of their own ink (head plus stem stub is
+too tall for the head claim; a stem fused with its flag gives no upright stroke); (3) hollow heads measured
+too narrow -- on Brahms half notes the outline covers the left two-thirds of the ring, so the stem stands
+half a space off the head (3 of Sean's p0 stems unread); (4) ties settled by box, not contact -- fixed here.
+Process lesson: before blaming a reader, check whether an earlier claim or the head's own measurement left
+its ink available.
+
+**Built.** Two strokes on one side of a head: the one whose ink touches the head's ink is its stem; both or
+neither stays undecided; one up and one down is two voices, never narrowed. A stroke read up by one box and
+down by another goes to the heads whose ink it touches. "Touch" is the page map's own contact; no new
+numbers. A stacked-chord pass (any head whose ink touches the stem joins it) was built and WITHDRAWN: the
+reader already stems the 2.317 dotted chords, and the pass's only new joins were a slur end, an accent, an
+f and Litolff rests. Controls from Sean's swept Brahms p0 staff 4 (heads 199, 249) fail with the page
+map's contacts removed.
+
+**Touched pages ON vs OFF** (Litolff 2, 6, 16; Brahms 0, 4, 5; shared lane_report, same tree and pages).
+Litolff: notes +25 -33, red bars 77 -> 72, not written 928 -> 931, judged right->wrong 0. Brahms: notes
++25 -4, red bars 47 -> 39, not written 1166 -> 1145, judged right->wrong 0. Heads the page reader stems
+and the cell join does not: 54 / 63. Heads the cell join stems and the page reader refuses: 50 -> 45 /
+19 -> 15 (Litolff mostly not notes by the lane's look), plus 107 / 38 two-voice heads still at the unison
+rule. Sean's swept p0: 359 -> 361 right, 0 wrong, unread 13 -> 11 (3 hollow-head, 8 two-voice). Control
+line NOT met: the report's arms are not the gathers the change was diagnosed on.
+
+**Sheet** `out/print/2.306-r15/sheet.png` (manager's look: the boxed strokes are stems, tile 7 unclear).
+
+**Between us and removing the cell join.** Barline and clef claims take only their ink; the head claims
+its ink when fused with a stem stub; the hollow-head outline covers the whole ring; chords whose stem is
+read both ways; the two-voice heads. Not verified: frozen sample, fast tier, the Litolff -33 notes by kind.
