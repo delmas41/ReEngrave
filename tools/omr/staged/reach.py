@@ -452,6 +452,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.300. Pure geometry for the second's stem join (`stem_value._stem_of_a_second`) and the one-stem grouping
     # (`rhythm.adjudicate_event`, `voicing.group_chords_in_measure`): files no row, names no quantity, decides nothing.
     "one_chord.py",
+    # ROADMAP 2.306 / 2.78. Pure helper: a staff's family from verdicts already filed (`Q.INSTRUMENT`, `Q.SLOT_INDEX`, `Q.CLEF`), read by
+    # `stem_value._staff_family` and `export`; files no row, decides nothing of its own.
+    "staff_family.py",
     # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
     "stroke_map.py",
     # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes

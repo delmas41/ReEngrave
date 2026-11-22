@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 148 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 14 NOT-IN-USE; 41 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
+Today: 148 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 6 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 14 NOT-IN-USE; 41 gaps; 205 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -75,6 +75,7 @@ The sign at a staff's start (and where it changes) that says which line is which
 - **read by EVALUATE** (4): `consequences.py:_apply_printed_also_reads`, `consequences.py:_move_glyph_also_reads`, `consequences.py:move_glyph`, `rule restate_pitch`
 - **read by INFER** (3): `infer rule fill_clef_gap`, `inferences.py:_clef_reads_by_slot`, `inferences.py:clef_gap_census`
 - **read by EXPORT** (3): `export.py:_after_unread_clef`, `export.py:_inferred_clefs`, `export.py:build`
+- **read by tools** (1): `staff_family.py:families_of_record`
 - **written** (declared): `<clef>` at the start and at each change; a clef it cannot read leaves its bars red and their heads unwritten.
 - **open gaps**: none derived
 
@@ -487,6 +488,7 @@ The name in the left margin that says which part a staff is.
 - **read by EVALUATE** (2): `consequences.py:name_part`, `rule name_part`
 - **read by INFER** (10): `infer rule collapse_slot_index_to_family_block`, `infer rule fill_clef_gap`, `infer rule fill_part_key`, `inferences.py:_block_members`, `inferences.py:_clef_reads_by_slot`, `inferences.py:_key_witnesses`, `inferences.py:_part_of`, `inferences.py:_reference_instrument_names` +2 more
 - **read by EXPORT** (1): `export.py:build`
+- **read by tools** (1): `staff_family.py:families_of_record`
 - **written** (declared): `<part-name>`; a staff that cannot be named is held out of the file and counted.
 - **open gaps**: none derived
 
@@ -805,11 +807,13 @@ Which edition and movement this is; scanned or engraved.
 
 - `clef` decided by: ADJUDICATE `adjudicators/clef.py:adjudicate_clef`
 - `clef` collapsed by: INFER `fill_clef_gap`
-- `clef` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_glyph_owner`, `adjudicate_key_signature`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_part_key`, `adjudicate_rest_is_not_a_rest`, `adjudicate_system_key`
+- `clef` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_glyph_owner`, `adjudicate_key_signature`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_part_key`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stem_value`, `adjudicate_system_key`
 - `clef` read by ADJUDICATE: `adjudicators/family_precision.py:_key_tail_reads`, `adjudicators/header.py:_staff_reading`, `adjudicators/header.py:key_tail_reads`, `adjudicators/notehead_precision.py:_key_tail_reads`, `adjudicators/ownership.py:_keysig_marker_row`, `adjudicators/ownership.py:_range_veto`
 - `clef` read by EVALUATE: `consequences.py:_apply_printed_also_reads`, `consequences.py:_move_glyph_also_reads`, `consequences.py:move_glyph`, `rule restate_pitch`
 - `clef` read by INFER: `infer rule fill_clef_gap`, `inferences.py:_clef_reads_by_slot`, `inferences.py:clef_gap_census`
 - `clef` read by EXPORT: `export.py:_after_unread_clef`, `export.py:_inferred_clefs`, `export.py:build`
+- `clef` read by tools: `staff_family.py:families_of_record`
+- `clef` read only OFF by default: `adjudicators/stem_value.py:_staff_family`
 - `clef` belongs to: `--mark clef`
 
 ### `clef_glyph` (Q.CLEF_GLYPH) -- FILED-ONLY-OUTSIDE-THE-PIPELINE
@@ -1197,10 +1201,12 @@ Which edition and movement this is; scanned or engraved.
 ### `instrument` (Q.INSTRUMENT) -- LIVE
 
 - `instrument` decided by: ADJUDICATE `adjudicators/identity.py:adjudicate_instrument`
-- `instrument` declared in `wants` (not a read): `adjudicate_clef`, `adjudicate_direction`, `adjudicate_glyph_owner`, `adjudicate_group_symbol`, `adjudicate_key_signature`, `adjudicate_part_key`, `adjudicate_part_partition`, `adjudicate_slot_index`
+- `instrument` declared in `wants` (not a read): `adjudicate_clef`, `adjudicate_direction`, `adjudicate_glyph_owner`, `adjudicate_group_symbol`, `adjudicate_key_signature`, `adjudicate_part_key`, `adjudicate_part_partition`, `adjudicate_slot_index`, `adjudicate_stem_value`
 - `instrument` read by ADJUDICATE: `adjudicators/clef.py:adjudicate_clef`, `adjudicators/header.py:_slot_of`, `adjudicators/identity.py:_apply_constraints`, `adjudicators/identity.py:_document_crook_owners`, `adjudicators/identity.py:_instrument_consistency`, `adjudicators/identity.py:_names_by_system`, `adjudicators/identity.py:_reference_instruments`, `adjudicators/identity.py:adjudicate_slot_index`, `adjudicators/ownership.py:_range_veto`, `adjudicators/structure.py:adjudicate_group_symbol`, `adjudicators/text.py:_staff_family`
 - `instrument` read by EVALUATE: `rule name_part`
 - `instrument` read by INFER: `infer rule collapse_slot_index_to_family_block`, `infer rule fill_clef_gap`, `inferences.py:_part_of`, `inferences.py:_reference_instrument_names`
+- `instrument` read by tools: `staff_family.py:families_of_record`
+- `instrument` read only OFF by default: `adjudicators/stem_value.py:_staff_family`
 - `instrument` belongs to: `--mark instrument`
 
 ### `key_signature` (Q.KEY_SIGNATURE) -- LIVE
@@ -1706,11 +1712,13 @@ Which edition and movement this is; scanned or engraved.
 
 - `slot_index` decided by: ADJUDICATE `adjudicators/identity.py:adjudicate_slot_index`
 - `slot_index` collapsed by: INFER `collapse_slot_index_to_family_block`
-- `slot_index` declared in `wants` (not a read): `adjudicate_key_signature`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_part_key`, `adjudicate_part_partition`, `adjudicate_rest_is_not_a_rest`
+- `slot_index` declared in `wants` (not a read): `adjudicate_key_signature`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_part_key`, `adjudicate_part_partition`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stem_value`
 - `slot_index` read by ADJUDICATE: `adjudicators/family_precision.py:_key_tail_reads`, `adjudicators/header.py:_slot_candidates`, `adjudicators/header.py:_slot_of`, `adjudicators/header.py:key_tail_reads`, `adjudicators/identity.py:_instrument_consistency`, `adjudicators/identity.py:adjudicate_part_partition`, `adjudicators/notehead_precision.py:_key_tail_reads`, `groups.py:_slot_fact`
 - `slot_index` read by EVALUATE: `consequences.py:name_part`
 - `slot_index` read by INFER: `infer rule collapse_slot_index_to_family_block`, `infer rule fill_clef_gap`, `infer rule fill_part_key`, `inferences.py:_block_members`, `inferences.py:_clef_reads_by_slot`, `inferences.py:_key_witnesses`, `inferences.py:_part_of`, `inferences.py:part_key_census`
 - `slot_index` read by EXPORT: `export.py:build`
+- `slot_index` read by tools: `staff_family.py:families_of_record`
+- `slot_index` read only OFF by default: `adjudicators/stem_value.py:_staff_family`
 - `slot_index` belongs to: `--mark instrument`
 
 ### `stacked_head_fit` (Q.STACKED_HEAD_FIT) -- LIVE
@@ -1817,6 +1825,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `stem_value` decided by: ADJUDICATE `adjudicators/stem_value.py:adjudicate_stem_value`
 - `stem_value` read by EVALUATE: `consequences.py:share_stem_value`, `rule share_stem_value`
+- `stem_value` read by EXPORT: `export.py:_stem_facts_of`
 - `stem_value` belongs to: `--mark stem`
 
 ### `stroke` (Q.STROKE) -- LIVE
