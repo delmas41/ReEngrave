@@ -220,6 +220,71 @@ def dot_position_over_wedge_enabled() -> bool:
         "0", "false", "no", "off")
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# lane-dot-by-ink -- a dot stands beside its head's OWN oval, not the box
+# ─────────────────────────────────────────────────────────────────────────────
+# THE RULE (as a musician says it): a dot of length stands just right of its
+# notehead, in the head's space or -- for a head on a line -- the space just
+# above (sometimes below); where it stands is judged from the head's own oval of
+# ink. The detector box is where to look (CLAUDE.md §4, Sean 2026-11-18).
+# NEVER: a dot judged against a box that holds only part of its head (Brahms p0
+# `glyph/0/0/4/2/5`, a hollow half on the second ledger line boxed over its
+# lower two-thirds: the dot read 0.80 sp above the box centre, outside the
+# window, the bar went red); and NEVER the filed ink trim where it is not one
+# head's oval -- on Brahms that trim runs on into ledger lines and tails
+# (2.327's open fault) and, used for every head, it moved 95 real decided dots
+# out of their window on the frozen sample.
+# The two numbers stand beside the rule, each measured both sides on Sean's
+# labelled Brahms p0 heads (his boxes are the heads' ovals): the head's own ink
+# reaches at least `HEAD_INK_PAST_BOX_MIN_SPACES` past the box on one side (his
+# re-drawn part-boxed halves reach 0.40-0.46; heads whose box he confirmed and
+# whose trim ran into a tail or ledger reached up to 0.38), and that ink is one
+# head no taller than `HEAD_INK_MAX_HEIGHT_SPACES` (his heads 0.79-1.51, trims
+# that ran on 1.25-1.6). 5 heads move, all nearer his centre; 0 move away.
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: one plate's
+# labels; falsified by a dot this rule joins that Sean reads as not that head's.
+DOT_BY_HEAD_INK_ENV = "OMR_DOT_BY_HEAD_INK"
+HEAD_INK_PAST_BOX_MIN_SPACES = 0.4
+HEAD_INK_MAX_HEIGHT_SPACES = 1.25
+
+
+def dot_by_head_ink_enabled() -> bool:
+    """`OMR_DOT_BY_HEAD_INK`, default OFF (allow-list: 1/true/yes/on)."""
+    return os.environ.get(DOT_BY_HEAD_INK_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def head_oval_from_ink(box: Tuple[float, float, float, float],
+                       page_box: Optional[List[float]],
+                       head_ink_row: Optional[R.Observation],
+                       space: float) -> Optional[Tuple[float, float, float, float]]:
+    """The head's own oval (cell frame x, y, w, h) where its detector `box`
+    holds only part of it, else None (the box stands for the oval).
+
+    `head_ink_row` is the head's `Q.HEAD_INK` OBSERVATION (filed at GATHER,
+    2.220: the head trimmed to its own ink on the page raster; an observation
+    means the ink read as ONE head), `page_box` the box's own page pixels,
+    `space` the cell's staff space in the cell frame.
+    """
+    if head_ink_row is None or not page_box or len(page_box) != 4 or not space:
+        return None
+    t = (head_ink_row.detail or {}).get("trimmed")
+    if not t or len(t) != 4:
+        return None
+    pw, ph = float(page_box[2]) - float(page_box[0]), float(page_box[3]) - float(page_box[1])
+    if pw <= 0 or ph <= 0 or not box[2] or not box[3]:
+        return None
+    kx, ky = box[2] / pw, box[3] / ph                 # cell px per page px
+    up = (float(page_box[1]) - float(t[1])) * ky / space
+    down = (float(t[3]) - float(page_box[3])) * ky / space
+    tall = (float(t[3]) - float(t[1])) * ky / space
+    if tall > HEAD_INK_MAX_HEIGHT_SPACES or max(up, down) < HEAD_INK_PAST_BOX_MIN_SPACES:
+        return None
+    return (box[0] + (float(t[0]) - float(page_box[0])) * kx,
+            box[1] + (float(t[1]) - float(page_box[1])) * ky,
+            (float(t[2]) - float(t[0])) * kx, (float(t[3]) - float(t[1])) * ky)
+
+
 def dot_boxed_as_a_head_enabled() -> bool:
     """`OMR_DOT_BOXED_AS_A_HEAD`, default ON since 2026-10-16 (ROADMAP 2.151;
     Sean: "Land 2.151 ON."); only an explicit off-word disables."""

@@ -1282,6 +1282,21 @@ def _pos_verdicts(ev: Evidence, cell, home: str, head_keys):
     return pos_of
 
 
+def _head_oval(ev: Evidence, subject, box_row, b, space):
+    """lane-dot-by-ink (`OMR_DOT_BY_HEAD_INK`, default OFF): the box a dot is
+    measured against for the notehead `subject` -- its own oval of ink where
+    the detector box `b` holds only part of the head (`aug_dot_join.
+    head_oval_from_ink`, read off the head's `Q.HEAD_INK` filed at GATHER),
+    else `b` itself. Flag off, or nothing filed: `b`, unchanged."""
+    if b is None or box_row is None or not _aug_join.dot_by_head_ink_enabled():
+        return b
+    ink = ev.rows(Q.HEAD_INK, subject=subject)
+    oval = _aug_join.head_oval_from_ink(
+        b, (box_row.detail or {}).get("bbox_page_px"), ink[-1] if ink else None,
+        space)
+    return oval if oval is not None else b
+
+
 def _in_augmentation_window(dot_box, head_box, max_above, max_below):
     """Does `dot_box` sit in `head_box`'s augmentation-dot window?
 
@@ -1590,6 +1605,8 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
                         b[2], b[3], space):
                     marks.append((r.subject.to_key(), b, box_row))
                 continue
+            if q == Q.NOTEHEAD_CLASS:       # lane-dot-by-ink: the head's own oval
+                b = _head_oval(ev, r.subject, box_row, b, space)
             if b is not None:
                 heads.append((r.subject.to_key(), b))
                 if foreign:
@@ -1791,13 +1808,16 @@ def _wedge_reading(shape_row):
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
                    Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
-                   Q.MARK_SHAPE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
+                   Q.MARK_SHAPE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
+                   # lane-dot-by-ink (`OMR_DOT_BY_HEAD_INK`): where a dot
+                   # stands is judged from the head's own oval of ink
+                   Q.HEAD_INK),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
            Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.MARK_SHAPE,
-           Q.GLYPH_STROKES, Q.STROKE_OWNER),
+           Q.GLYPH_STROKES, Q.STROKE_OWNER, Q.HEAD_INK),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
              "right_of_a_head_at_its_dot_step", "wedge_pointing_at_a_head",
              "no_glyph_box", "no_cell_staff_space",
@@ -1911,6 +1931,8 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                     refused_targets.append((r.subject.to_key(), rb_))
                 continue
             b = _xywh_head(box_row.value) if box_row else None
+            if q == Q.NOTEHEAD_CLASS:       # lane-dot-by-ink: the head's own oval
+                b = _head_oval(ev, r.subject, box_row, b, space)
             if _own._owned_by_a_different_staff(ev, r, home):
                 n_excluded += 1
                 if b is not None:
