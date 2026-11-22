@@ -1,0 +1,632 @@
+{
+ "tile01.png": {
+  "plate": "litolff",
+  "place": "2/0/3/5",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P4"
+  ],
+  "on": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "off": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v1 @3/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile02.png": {
+  "plate": "litolff",
+  "place": "2/1/0/13",
+  "measure": [
+   "47"
+  ],
+  "part": [
+   "P1"
+  ],
+  "on": "v1 @0 C6 half; v1 @0 E-16 half",
+  "off": "v1 @0 C6 half; v1 @0 E-16 half",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right (fault 4 fixed: C6 and E-flat6 halves on one stem)"
+ },
+ "tile03.png": {
+  "plate": "litolff",
+  "place": "2/1/3/14",
+  "measure": [
+   "48"
+  ],
+  "part": [
+   "P4"
+  ],
+  "on": "v1 @0 C3 half",
+  "off": "v1 @0 C3 half; v2 @0 C3 half",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON wrong, OFF right: unison half, one voice (hollow outline measured narrow; the down stem stands 0.67 sp off it -- not fixed)"
+ },
+ "tile04.png": {
+  "plate": "litolff",
+  "place": "6/0/0/10",
+  "measure": [
+   "59"
+  ],
+  "part": [
+   "P1"
+  ],
+  "on": "v1 @0 A5 quarter; v1 @1 C6 quarter",
+  "off": "v1 @0 A5 quarter; v1 @1 D6 quarter; v1 @2 C6 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong"
+ },
+ "tile05.png": {
+  "plate": "litolff",
+  "place": "6/0/2/10",
+  "measure": [
+   "59"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 B-14 eighth; v1 @0 G4 eighth; v1 @1 E5 eighth; v1 @1 G4 eighth; v1 @1/2 E5 eighth; v1 @1/2 G4 eighth; v1 @3/2 B-14 eighth; v1 @3/2 D5 eighth",
+  "off": "v1 @0 A4 quarter; v1 @0 F4 quarter; v1 @1 B-14 eighth; v1 @1 G4 eighth; v1 @2 E5 eighth; v1 @2 G4 eighth; v1 @3/2 E5 eighth; v1 @3/2 G4 eighth; v1 @5/2 B-14 eighth; v1 @5/2 D5 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "cannot tell pitches"
+ },
+ "tile06.png": {
+  "plate": "litolff",
+  "place": "6/1/1/12",
+  "measure": [
+   "74"
+  ],
+  "part": [
+   "P2"
+  ],
+  "on": "v1 @0 A-15 quarter BLUE; v1 @0 F5 quarter; v1 @1 rest quarter",
+  "off": "v1 @0 E-15 quarter; v1 @1 A-15 quarter BLUE; v1 @1 F5 quarter; v1 @2 rest quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile07.png": {
+  "plate": "litolff",
+  "place": "6/1/6/4",
+  "measure": [
+   "66"
+  ],
+  "part": [
+   "P7"
+  ],
+  "on": "v1 @0 C3 quarter; v1 @1 rest quarter",
+  "off": "v1 @0 C3 quarter; v1 @1 rest quarter; v2 @0 rest quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile08.png": {
+  "plate": "litolff",
+  "place": "6/1/8/12",
+  "measure": [
+   "74"
+  ],
+  "part": [
+   "P9"
+  ],
+  "on": "v1 @0 F5 quarter; v1 @0 G4 quarter BLUE; v1 @1 rest quarter",
+  "off": "v1 @0 F5 quarter; v1 @1 F5 quarter; v1 @1 G4 quarter BLUE; v1 @2 rest quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile09.png": {
+  "plate": "litolff",
+  "place": "6/1/9/11",
+  "measure": [
+   "73"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 C3 half",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong"
+ },
+ "tile10.png": {
+  "plate": "litolff",
+  "place": "16/0/0/5",
+  "measure": [
+   "80"
+  ],
+  "part": [
+   "P1"
+  ],
+  "on": "v1 @0 G5 half; v1 @0 G6 half",
+  "off": "(nothing written)",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON wrong, OFF held: upper tremolo slash read as a G5 head (the slash is not claimed by the tremolo reader; not fixed)"
+ },
+ "tile11.png": {
+  "plate": "litolff",
+  "place": "16/0/9/6",
+  "measure": [
+   "81"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 G3 half BLUE; v1 @2 E-14 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON held, OFF wrong"
+ },
+ "tile12.png": {
+  "plate": "litolff",
+  "place": "16/1/10/1",
+  "measure": [
+   "93"
+  ],
+  "part": [
+   "P11"
+  ],
+  "on": "v1 @0 C2 quarter BLUE; v1 @0 G2 quarter",
+  "off": "(nothing written)",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON wrong, OFF held: slashed octave halves written as quarters (fill readers split; not fixed)"
+ },
+ "tile13.png": {
+  "plate": "litolff",
+  "place": "2/0/7/4",
+  "measure": [
+   "21"
+  ],
+  "part": [
+   "P8"
+  ],
+  "on": "v1 @0 A-14 half BLUE; v1 @2 B-14 quarter; v1 @2 D4 quarter; v1 @2 G3 quarter BLUE; v1 @2 G5 half",
+  "off": "v1 @0 A-14 half BLUE; v1 @0 C5 half",
+  "sean_string_chord": true,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong: values now right (G5 half over three quarters, one chord), but a box on the sharp at the barline is written as an A-flat4 half first, pushing the chord to beat 2"
+ },
+ "tile14.png": {
+  "plate": "litolff",
+  "place": "2/0/1/4",
+  "measure": [
+   "21"
+  ],
+  "part": [
+   "P2"
+  ],
+  "on": "v1 @0 B-14 half; v1 @0 E-15 half; v1 @0 G5 half; v1 @2 rest quarter",
+  "off": "v1 @0 B-14 half; v1 @0 E-15 half; v1 @0 F4 half; v1 @0 G5 half; v1 @2 rest quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong: quarter chord + quarter rest printed; a box on the natural read as B-flat4 and the heads written as halves"
+ },
+ "tile15.png": {
+  "plate": "litolff",
+  "place": "6/0/6/12",
+  "measure": [
+   "61"
+  ],
+  "part": [
+   "P9"
+  ],
+  "on": "v1 @0 F5 quarter; v1 @1 D5 quarter",
+  "off": "v1 @0 F5 quarter; v1 @1 F5 quarter; v1 @2 D5 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong: the F-sharp5 is written F5 in both arms; ON removed OFF extra F5"
+ },
+ "tile16.png": {
+  "plate": "litolff",
+  "place": "6/0/8/8",
+  "measure": [
+   "57"
+  ],
+  "part": [
+   "P11"
+  ],
+  "on": "v1 @1 F3 quarter BLUE",
+  "off": "v1 @0 E-13 quarter; v1 @1 F3 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong: the quarter is written at beat 1 (OFF wrote the sharp as a note)"
+ },
+ "tile17.png": {
+  "plate": "litolff",
+  "place": "6/1/7/6",
+  "measure": [
+   "68"
+  ],
+  "part": [
+   "P8"
+  ],
+  "on": "v1 @0 rest eighth; v1 @1 B-15 eighth; v1 @1/2 G5 eighth; v1 @3/2 C6 eighth",
+  "off": "v1 @0 rest eighth; v1 @1 B-15 eighth; v1 @1/2 A-14 eighth; v1 @1/2 G5 eighth; v1 @3/2 C6 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON right (OFF wrote the eighth rest pattern with an extra A-flat4)"
+ },
+ "tile18.png": {
+  "plate": "litolff",
+  "place": "6/1/7/10",
+  "measure": [
+   "72"
+  ],
+  "part": [
+   "P8"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 A-14 quarter BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON held, OFF wrong: slashed half written as an A-flat4 quarter by OFF"
+ },
+ "tile19.png": {
+  "plate": "litolff",
+  "place": "6/1/11/3",
+  "measure": [
+   "65"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 A-12 half BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "cannot tell (slashed half: OFF A-flat2 half, ON held)"
+ },
+ "tile20.png": {
+  "plate": "litolff",
+  "place": "6/1/11/11",
+  "measure": [
+   "73"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 F3 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON held, OFF wrong (slashed half written as an F3 quarter by OFF)"
+ },
+ "tile21.png": {
+  "plate": "litolff",
+  "place": "16/0/1/6",
+  "measure": [
+   "81"
+  ],
+  "part": [
+   "P2"
+  ],
+  "on": "v1 @0 C5 half; v1 @0 G5 half",
+  "off": "v1 @0 G5 half",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON wrong, OFF right: the tremolo slash under the G5 half written as a C5 half"
+ },
+ "tile22.png": {
+  "plate": "litolff",
+  "place": "16/0/9/4",
+  "measure": [
+   "79"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 G3 half BLUE",
+  "off": "(nothing written)",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "cannot tell pitch (ON writes a G3 half where OFF wrote nothing; value fits the print)"
+ },
+ "tile23.png": {
+  "plate": "brahms",
+  "place": "0/0/11/1",
+  "measure": [
+   "2"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "v1 @0 A4 quarter.; v1 @3/2 A-14 quarter; v1 @5/2 G4 eighth; v2 @0 F14 quarter.; v2 @3/2 F4 quarter; v2 @5/2 E-14 eighth",
+  "off": "v1 @0 A4 quarter.; v1 @0 F14 quarter.; v1 @3/2 A-14 quarter; v1 @3/2 F4 quarter; v1 @5/2 E-14 eighth; v1 @5/2 G4 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile24.png": {
+  "plate": "brahms",
+  "place": "4/0/9/5",
+  "measure": [
+   "13"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 E5 quarter; v1 @1 D15 eighth; v1 @3/2 E5 quarter.",
+  "off": "v1 @0 E5 quarter; v1 @1 D15 quarter; v1 @2 E5 quarter.",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile25.png": {
+  "plate": "brahms",
+  "place": "4/1/2/0",
+  "measure": [
+   "19"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 D5 eighth; v1 @0 D6 eighth; v1 @1 F3 eighth; v1 @1/2 rest eighth; v1 @3/2 A3 quarter; v1 @5/2 F4 eighth",
+  "off": "v1 @1 F3 eighth; v1 @1/2 rest eighth; v1 @3/2 A3 quarter; v1 @5/2 F4 eighth; v2 @0 D5 eighth; v2 @0 D6 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile26.png": {
+  "plate": "brahms",
+  "place": "4/1/2/3",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 A4 quarter; v1 @1 F14 eighth; v1 @1 F15 eighth; v1 @3/2 A3 quarter; v1 @3/2 A4 quarter; v1 @5/2 F14 eighth; v1 @5/2 F15 eighth",
+  "off": "v1 @0 A4 quarter BLUE; v1 @1 A3 quarter BLUE; v1 @1 A4 quarter BLUE; v2 @0 F14 eighth BLUE; v2 @0 F15 eighth BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile27.png": {
+  "plate": "brahms",
+  "place": "4/1/3/3",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P4"
+  ],
+  "on": "v1 @5/2 G2 eighth BLUE; v1 @5/2 G3 eighth BLUE; v2 @0 G3 quarter BLUE; v2 @0 G4 quarter BLUE; v2 @5/2 E3 eighth BLUE; v2 @5/2 E4 eighth BLUE",
+  "off": "v1 @0 G3 quarter BLUE; v1 @0 G4 quarter BLUE; v1 @2 G2 eighth BLUE; v1 @2 G3 eighth BLUE; v1 @5/2 E3 eighth BLUE; v1 @5/2 E4 eighth BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong"
+ },
+ "tile28.png": {
+  "plate": "brahms",
+  "place": "4/1/12/5",
+  "measure": [
+   "24"
+  ],
+  "part": [
+   "P13"
+  ],
+  "on": "v1 @0 D3 quarter. BLUE; v1 @3/2 D3 eighth BLUE",
+  "off": "v1 @0 D3 quarter.; v1 @2 G2 half BLUE; v1 @3/2 D3 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong"
+ },
+ "tile29.png": {
+  "plate": "brahms",
+  "place": "4/1/12/8",
+  "measure": [
+   "27"
+  ],
+  "part": [
+   "P13"
+  ],
+  "on": "v1 @0 C2 eighth BLUE; v1 @0 C4 eighth BLUE; v1 @0 E3 eighth BLUE; v1 @0 G2 eighth BLUE; v1 @1/2 rest eighth BLUE; v1 @3/2 A-12 quarter BLUE; v1 @5/2 F3 eighth BLUE",
+  "off": "v1 @0 C2 quarter; v1 @0 C4 quarter; v1 @0 E3 quarter; v1 @0 G2 quarter; v1 @1 rest eighth; v1 @3/2 A-12 quarter; v1 @5/2 F3 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong"
+ },
+ "tile30.png": {
+  "plate": "brahms",
+  "place": "5/0/5/0",
+  "measure": [
+   "28"
+  ],
+  "part": [
+   "P6"
+  ],
+  "on": "v1 @0 rest quarter; v1 @1 C4 eighth; v1 @1 C5 eighth; v1 @2 C4 eighth; v1 @2 C5 eighth; v1 @3/2 C4 eighth; v1 @3/2 C5 eighth; v1 @5/2 C4 eighth; v1 @5/2 C5 eighth",
+  "off": "v1 @0 rest quarter; v1 @1 C4 quarter; v1 @2 C4 eighth; v1 @2 C5 eighth; v1 @3 C4 eighth; v1 @3 C5 eighth; v1 @5/2 C4 eighth; v1 @5/2 C5 eighth; v1 @7/2 C4 eighth; v1 @7/2 C5 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile31.png": {
+  "plate": "brahms",
+  "place": "5/0/11/3",
+  "measure": [
+   "31"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "v1 @0 E-14 quarter BLUE; v1 @1 G-14 eighth BLUE",
+  "off": "v1 @0 E-14 quarter; v1 @1 G-14 eighth; v1 @3/2 G-14 quarter; v1 @5/2 F4 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "both wrong: the last eighth now has its stem but its flag was boxed as a flat, value narrowed (held)"
+ },
+ "tile32.png": {
+  "plate": "brahms",
+  "place": "5/1/9/2",
+  "measure": [
+   "38"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 C5 eighth; v1 @0 E-14 eighth; v1 @0 G3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 B3 quarter BLUE; v1 @3/2 D5 quarter.; v1 @3/2 G4 quarter.",
+  "off": "v1 @0 rest eighth; v1 @1 B3 quarter.; v1 @1 D5 quarter.; v1 @1 G4 quarter.; v1 @1/2 rest eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile33.png": {
+  "plate": "brahms",
+  "place": "5/1/9/6",
+  "measure": [
+   "42"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 B-14 eighth; v1 @0 E-14 eighth; v1 @0 G5 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 A5 quarter.; v1 @3/2 D4 quarter BLUE; v1 @3/2 D5 quarter.",
+  "off": "v1 @0 B-14 eighth BLUE; v1 @0 E-14 eighth BLUE; v1 @0 G5 eighth BLUE; v1 @1 rest eighth BLUE; v1 @1/2 rest eighth BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right"
+ },
+ "tile34.png": {
+  "plate": "brahms",
+  "place": "5/1/10/7",
+  "measure": [
+   "43"
+  ],
+  "part": [
+   "P11"
+  ],
+  "on": "v1 @0 A4 quarter BLUE; v1 @0 F15 quarter BLUE",
+  "off": "v1 @0 A-14 quarter BLUE; v1 @0 F5 quarter BLUE",
+  "sean_string_chord": true,
+  "from_batch_sheet": true,
+  "read_against_print": "ON right (tied in from bar 42: the sharp and natural carry through the tie; coordinator correction)"
+ },
+ "tile35.png": {
+  "plate": "brahms",
+  "place": "0/0/4/3",
+  "measure": [
+   "4"
+  ],
+  "part": [
+   "P5"
+  ],
+  "on": "v1 @0 C2 half.",
+  "off": "v1 @0 C2 half.; v1 @3 C3 half.",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON right (OFF wrote the tremolo slash as a C3 half)"
+ },
+ "tile36.png": {
+  "plate": "brahms",
+  "place": "4/0/9/8",
+  "measure": [
+   "16"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 F15 quarter.; v1 @3/2 B4 quarter.; v1 @3/2 D4 quarter BLUE; v1 @3/2 G5 quarter.",
+  "off": "v1 @0 F15 quarter.; v1 @3/2 B4 quarter.; v1 @3/2 D4 quarter.; v1 @3/2 G5 quarter.",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON right (two dotted quarters over a plain D4 quarter, blue)"
+ },
+ "tile37.png": {
+  "plate": "brahms",
+  "place": "5/0/2/7",
+  "measure": [
+   "35"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 F5 quarter. BLUE",
+  "off": "v1 @0 F5 quarter.; v1 @11/4 B-15 quarter; v1 @3/2 G5 16th; v1 @7/4 A5 quarter",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "ON held, OFF wrong"
+ },
+ "tile38.png": {
+  "plate": "brahms",
+  "place": "5/0/12/7",
+  "measure": [
+   "35"
+  ],
+  "part": [
+   "P13"
+  ],
+  "on": "v1 @0 E-13 eighth; v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "off": "v1 @0 E-13 quarter; v1 @1 F13 eighth BLUE; v1 @2 G3 eighth; v1 @3/2 rest eighth; v1 @5/2 C4 quarter; v1 @7/2 E-14 eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong (a box on the sharp written as an E-flat3 eighth in the chord)"
+ },
+ "tile39.png": {
+  "plate": "brahms",
+  "place": "5/0/13/7",
+  "measure": [
+   "35"
+  ],
+  "part": [
+   "P14"
+  ],
+  "on": "v1 @0 F3 eighth; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3 E-14 eighth; v1 @3/2 C4 quarter.",
+  "off": "v1 @0 E-13 quarter BLUE; v1 @1 F3 eighth; v1 @2 G3 eighth; v1 @3/2 rest eighth; v1 @4 E-14 eighth; v1 @5/2 C4 quarter.",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong (the staccato read as a dot on C4; F3 sharp unwritten)"
+ },
+ "tile40.png": {
+  "plate": "brahms",
+  "place": "5/1/9/7",
+  "measure": [
+   "43"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 A5 quarter; v1 @0 D5 quarter; v1 @1 rest eighth; v1 @3/2 B-15 quarter.; v1 @3/2 D4 quarter.; v1 @3/2 D5 quarter.",
+  "off": "v1 @0 A-15 quarter BLUE; v1 @0 D5 quarter BLUE; v1 @1 rest eighth BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong (the first chord is a flagged eighth; ON wrote quarters)"
+ },
+ "tile41.png": {
+  "plate": "brahms",
+  "place": "5/1/10/4",
+  "measure": [
+   "40"
+  ],
+  "part": [
+   "P11"
+  ],
+  "on": "v1 @0 C5 eighth; v1 @0 E-14 eighth; v1 @0 G3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 B-13 quarter.; v1 @3/2 D5 quarter.; v1 @3/2 F4 quarter.",
+  "off": "v1 @0 rest eighth; v1 @1 B-13 quarter.; v1 @1 D5 quarter.; v1 @1 F4 quarter.; v1 @1/2 rest eighth",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "both wrong (ON: bottom B-flat3 dotted where the print has a plain quarter)"
+ },
+ "tile42.png": {
+  "plate": "brahms",
+  "place": "5/1/11/2",
+  "measure": [
+   "38"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "v1 @0 E-14 eighth; v1 @0 G3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 B4 quarter.; v1 @3/2 D4 quarter BLUE; v1 @3/2 G3 quarter BLUE",
+  "off": "v1 @1 rest eighth BLUE; v1 @1/2 rest eighth BLUE; v1 @3/2 B4 quarter. BLUE; v1 @3/2 D4 quarter. BLUE; v1 @3/2 G3 quarter. BLUE",
+  "sean_string_chord": false,
+  "from_batch_sheet": false,
+  "read_against_print": "cannot tell"
+ }
+}
