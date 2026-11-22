@@ -802,7 +802,7 @@ Which edition and movement this is; scanned or engraved.
 - `claimed_area` read by EVALUATE: `consequences.py:_clef_candidates`, `consequences.py:_clef_changes`
 - `claimed_area` read by INFER: `infer rule collapse_slot_index_to_family_block`, `inferences.py:_clef_read_on`
 - `claimed_area` read by EXPORT: `export.py:_after_unread_clef`, `export.py:_clef_changes_by_bar`
-- `claimed_area` read only OFF by default: `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `page_beams.py:gather_page_beams`, `page_claim_names.py:gather_page_claim_names`, `page_stems.py:held_strokes`
+- `claimed_area` read only OFF by default: `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `page_beams.py:gather_page_beams`, `page_claim_names.py:gather_page_claim_names`, `page_stems.py:head_claimed_boxes`, `page_stems.py:held_strokes`
 - `claimed_area` belongs to: `--mark clef`, `--mark key`, `--mark meter`, `--mark header`, `--mark notehead`, `--mark stem`, `--mark accidental`, `--mark arc`, `--mark hairpin`, `--mark word`, `--mark tremolo`, `--mark barline`, `--mark bracket`, `--mark ink`
 
 ### `clef` (Q.CLEF) -- LIVE
