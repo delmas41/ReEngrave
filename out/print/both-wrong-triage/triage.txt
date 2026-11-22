@@ -1,0 +1,22 @@
+Both-wrong triage, 2026-11-21. 14 "both wrong" + 4 "cannot tell" bars from batch-2-r2 (Litolff p2/6/16, Brahms p0/4/5), re-read at 600 dpi.
+OFF file = main's behaviour (batch-2-r2/work/*.off.musicxml + symbols.json). SMALL, BIASED SAMPLE: picked because the stem reader changed them.
+
+Wrong on main: 14 of 14. Wrong under BOTH arms: 13 (tile40: ON is right; the reader missed the tie carrying the natural, and the
+first chord is a quarter, not an eighth).
+
+Differences in the OFF file, by cause (hidden = plain in an unmarked bar / marked = blue note or red bar):
+  boxed head(s) not written ............ 8  (hidden 3: b09 b13 b29; marked 5: b04 b27 b28 b40 b41)
+  accidental boxed as a notehead ........ 7  (hidden 2: b13 C5, b16; marked 5: b13 Ab4 blue, b14, b15, b38, b39)
+  accidental not applied to its note .... 5  (hidden 1: b16; marked 4: b14 b15 b39 b40-tie)
+  flag/beam not joined -> wrong value ... 3  (hidden 1: b29; marked 2: b04 b31)
+  dot wrong (missed / speck / spread) ... 3  (marked: b28 b39 b41)
+  other wrong value ..................... 2  (marked: b14 halves, b27)
+  rest missed ........................... 1  (hidden: b16)
+  head invented from non-note ink ....... 1  (marked blue: b28)
+Accidental ink (as head or not applied) touches 7 of the 14 bars.
+
+Cannot-tell bars settled: b05 OFF wrong (sharp boxed as a two-head chord, bar shifted; red); b19 OFF wrong (A-flat2 for A-natural2,
+natural never boxed and also carried by the tie; blue); b22 OFF red/unread, ON G3 half right; b42 OFF red/unread with first chord
+missing (pitch of its top head not settled).
+
+Sheet: sheet.png (13 bars of the top three causes; b31 left out), key.json per bar.

@@ -721,3 +721,42 @@ centre column, which on a hollow head stops at the hole (Sean's p0 heads 85, 148
 2234-2254). Stroke-map cut: `stroke_map._split_thin_wide` folds a thin part under half a space
 (`STEM_PART_MIN_SPACES`) into the head. Two-voice heads: the page reader files both strokes, the unison
 rule reads them, the writer places them at the same onset in two voices.
+
+## Batch 2 measured twice, and what is wrong in bars both stem readers write (2026-11-22; `batch-2` 258cf8fce, `batch-2-r2` 86d0e6f3b; flags OFF on main; six touched pages)
+
+**Batch 2** = `lane-2.306-r15` + hollow ring + fused heads (`OMR_STACK_TWO_HEADS`) + two-voice filing, later
++ `lane-strings-mixed` (`OMR_STRING_STOPS_OWN_VALUE`). OFF -> ON, r2: Litolff notes +22 -62, red bars
+77 -> 55, not written 928 -> 966; Brahms +23 -16, 47 -> 31, 1164 -> 1157. Judged right->wrong, lost and
+unwritten->wrong 0 on both. `judged_claims`: 2 new Litolff contradictions on Sean's slash tiles (2.276 r2
+#8, 2.290 r1 #3). Sean's swept Brahms p0 stems wrong/right/unread 5/359/16 -> 4/370/6. NOT safe to turn
+on: the print reading of 42 changed bars (an agent's reading) found ON wrong where OFF was right or
+silent in 4 (tremolo slashes read as heads or stem; a slash written as a C5 head).
+
+**Fixed in r2.** A note with two stem candidates: a stroke whose far end stops at another head is that
+head's ring, not a stem (`page_stems.drop_outlines`; Litolff 2/1/0/13 flute C6 written). A detector
+accidental box that holds a head's own oval no longer holds its stem (`page_stems.box_holds_a_head`;
+Brahms 5/0/11/3; the flag is still under the flat box). Sean's Beethoven chord: lengths right with the
+strings rule (half over three quarters, one chord), but a sharp fused with the barline is boxed as two
+heads and written as an A-flat4 half ahead of it.
+
+**Three readings were wrong and were corrected by a closer look** (all agents' looks, none Sean's):
+Brahms 5/1/10/7 written F#5/A4 is RIGHT (the chord is tied over the barline; a tie carries its
+accidental -- the first reader read the key signature and missed the ties); Litolff 2/1/3/14 is not a
+unison but two hollow halves a third apart on one stem with a natural, so ON's one voice is right (OFF
+took the natural's vertical for a stem) and both arms write ONE note for two (fused hollow rings); tile
+40's "both wrong" was ON right. LESSON: a print reading by an agent is a place to look, not a verdict;
+read ties into the bar.
+
+**The both-wrong bars sorted by cause** (`out/print/both-wrong-triage/`: sheet, key, triage.txt; 14
+bars from six pages chosen because the stem reader changed them -- small and biased, a pointer not a
+rate). Differences in main's file, hidden = plain in an unmarked bar: heads boxed but never written 8
+(3 hidden; e.g. Brahms cello tile 29, an unwritten F2 eighth and an unjoined flag cancel in the bar
+sum); an accidental boxed as a notehead 7 (2 hidden; e.g. Litolff cello tile 16, a sharp written as a
+plain E-flat3 quarter and the real F#3 pushed to beat 2 without its sharp); an accidental not applied
+to its note 5 (1 hidden) -- often the same mark doing both; flag or beam not joined 3; dot wrong 3; a
+rest missed under a clef change 1; a head invented from non-note ink 1. Worst: Sean's string chord
+(tile 13), dropped from an unmarked bar with two invented notes.
+
+**Also found.** Sean's third hollow half note on Brahms p0 (staff 4 bar 3, x ~2712): head and stem read;
+the bar is red because `rhythm.adjudicate_dot_role` places the dot against the detector's box (0.80
+space above its centre, limit 0.75) -- against the head's ink it is 0.56. Lane `lane-dot-by-ink`.

@@ -1,0 +1,173 @@
+{
+ "tile01.png": {
+  "plate": "litolff",
+  "place": "6/0/0/10",
+  "measure": "59",
+  "part": "P1",
+  "batch_tile": "tile04.png",
+  "print_reading": "flute: A-natural5 D6 D6 C6, four beamed eighths",
+  "off_file_writes": "A5 quarter, D6 quarter, C6 quarter; bar red-bracketed (does not add up)",
+  "causes": [
+   "boxed head not written (one D6)",
+   "beam not joined: eighths written quarters"
+  ]
+ },
+ "tile02.png": {
+  "plate": "litolff",
+  "place": "6/1/9/11",
+  "measure": "73",
+  "part": "P10",
+  "batch_tile": "tile09.png",
+  "print_reading": "viola: half-note double stop, C3 plus an upper head, one stem",
+  "off_file_writes": "C3 half only, plain, bar unmarked",
+  "causes": [
+   "boxed head not written (upper hollow head boxed as filled)"
+  ]
+ },
+ "tile03.png": {
+  "plate": "litolff",
+  "place": "2/0/7/4",
+  "measure": "21",
+  "part": "P8",
+  "batch_tile": "tile13.png",
+  "print_reading": "violin I: one chord, G5 half over G3 D4 B4 quarters, fermata; a sign at the barline",
+  "off_file_writes": "A-flat4 half (blue) + C5 half (plain) from the sign at the barline; the chord itself not written; bar unmarked",
+  "causes": [
+   "accidental boxed as noteheads",
+   "boxed heads not written (mixed-value string chord)"
+  ]
+ },
+ "tile04.png": {
+  "plate": "litolff",
+  "place": "2/0/1/4",
+  "measure": "21",
+  "part": "P2",
+  "batch_tile": "tile14.png",
+  "print_reading": "oboe: G5 + B-natural4 quarter chord, quarter rest with fermata",
+  "off_file_writes": "F4 E-flat5 B-flat4 G5 halves + quarter rest; bar red-bracketed",
+  "causes": [
+   "accidental (natural) boxed as noteheads",
+   "accidental not applied (B-flat for B-natural)",
+   "chord value spoiled to half"
+  ]
+ },
+ "tile05.png": {
+  "plate": "litolff",
+  "place": "6/0/6/12",
+  "measure": "61",
+  "part": "P9",
+  "batch_tile": "tile15.png",
+  "print_reading": "violin II: F-sharp5 quarter, D5 quarter (tied on)",
+  "off_file_writes": "F5 quarter, F5 quarter, D5 quarter; bar red-bracketed",
+  "causes": [
+   "accidental (sharp) boxed as a notehead",
+   "accidental not applied"
+  ]
+ },
+ "tile06.png": {
+  "plate": "litolff",
+  "place": "6/0/8/8",
+  "measure": "57",
+  "part": "P11",
+  "batch_tile": "tile16.png",
+  "print_reading": "cello: F-sharp3 quarter, quarter rest (under a mid-bar bass-clef change)",
+  "off_file_writes": "E-flat3 quarter, F3 quarter, no rest; plain, bar unmarked",
+  "causes": [
+   "accidental (sharp) boxed as a notehead",
+   "accidental not applied",
+   "rest missed (boxed as arpeggio)"
+  ]
+ },
+ "tile07.png": {
+  "plate": "brahms",
+  "place": "4/1/3/3",
+  "measure": "22",
+  "part": "P4",
+  "batch_tile": "tile27.png",
+  "print_reading": "bassoon 6/8: G3/G4 quarter (tied in), E-natural3/E4 eighth, G2/G3 quarter, E3/E4 eighth",
+  "off_file_writes": "G3/G4 quarter, G2/G3 eighth at beat 2, E3/E4 eighth; all blue, bar red (unread)",
+  "causes": [
+   "boxed heads not written (first E chord)",
+   "value wrong (G2/G3 eighth for quarter)"
+  ]
+ },
+ "tile08.png": {
+  "plate": "brahms",
+  "place": "4/1/12/5",
+  "measure": "24",
+  "part": "P13",
+  "batch_tile": "tile28.png",
+  "print_reading": "cello 6/8: D3 dotted quarter, D3 dotted eighth, E-natural3 F3 G3 sixteenths",
+  "off_file_writes": "D3 dotted quarter, D3 eighth, G2 half (blue); bar red-bracketed",
+  "causes": [
+   "boxed heads not written (three sixteenths)",
+   "dot not read",
+   "head invented from non-note ink (G2 half, blue)"
+  ]
+ },
+ "tile09.png": {
+  "plate": "brahms",
+  "place": "4/1/12/8",
+  "measure": "27",
+  "part": "P13",
+  "batch_tile": "tile29.png",
+  "print_reading": "cello 6/8: C2 G2 E-natural3 C4 eighth chord, eighth rest, F2 eighth, A-flat2 quarter, F3 eighth",
+  "off_file_writes": "chord as quarters, eighth rest, A-flat2 quarter, F3 eighth; plain, bar unmarked (the two errors cancel in the bar sum)",
+  "causes": [
+   "flag not joined: chord eighth written quarter",
+   "boxed head not written (F2 eighth)"
+  ]
+ },
+ "tile10.png": {
+  "plate": "brahms",
+  "place": "5/0/12/7",
+  "measure": "35",
+  "part": "P13",
+  "batch_tile": "tile38.png",
+  "print_reading": "cello 6/8: F-sharp3 eighth, eighth rest, G3 eighth, C4 quarter, E-flat4 eighth",
+  "off_file_writes": "E-flat3 quarter + the same notes one quarter late; bar red-bracketed",
+  "causes": [
+   "accidental (sharp) boxed as a notehead"
+  ]
+ },
+ "tile11.png": {
+  "plate": "brahms",
+  "place": "5/0/13/7",
+  "measure": "35",
+  "part": "P14",
+  "batch_tile": "tile39.png",
+  "print_reading": "bass 6/8: same as cello, F-sharp3 eighth, rest, G3, C4 quarter, E-flat4 eighth",
+  "off_file_writes": "E-flat3 quarter (blue), F3 eighth, rest, G3, C4 DOTTED quarter, E-flat4; bar red-bracketed",
+  "causes": [
+   "accidental (sharp) boxed as a notehead",
+   "accidental not applied",
+   "speck read as augmentation dot"
+  ]
+ },
+ "tile12.png": {
+  "plate": "brahms",
+  "place": "5/1/9/7",
+  "measure": "43",
+  "part": "P10",
+  "batch_tile": "tile40.png",
+  "print_reading": "violin I 6/8: A-natural5/D5 quarter tied in from bar 42, eighth rest, B-flat5 D5 D4 dotted-quarter chord",
+  "off_file_writes": "A-flat5/D5 quarter, eighth rest (all blue); dotted chord not written; bar red (unread)",
+  "causes": [
+   "accidental not carried across the tie",
+   "boxed heads not written (one head read as a whole note)"
+  ]
+ },
+ "tile13.png": {
+  "plate": "brahms",
+  "place": "5/1/10/4",
+  "measure": "40",
+  "part": "P11",
+  "batch_tile": "tile41.png",
+  "print_reading": "violin II 6/8: C5 E-flat4 G3 eighth chord, two eighth rests, D5 F4 dotted + B-flat3 plain quarter",
+  "off_file_writes": "two eighth rests from beat 0, then the three-head chord all dotted; bar red-bracketed",
+  "causes": [
+   "boxed heads not written (first chord)",
+   "dot spread to a plain chord note"
+  ]
+ }
+}
