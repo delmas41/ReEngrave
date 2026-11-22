@@ -1295,6 +1295,13 @@ def _stem_facts_of(rec: Record, sub: str) -> Dict[str, Any]:
     h = rec.verdict(Q.HEAD_STEM, sub)
     if h and h.get("outcome") == "decided" and h.get("value"):
         out["stem_id"] = str(h["value"])
+    # ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`): ADJUDICATE found this head on a STRING staff's stem whose heads each READ their own
+    # length; "read" or "dot_not_seen" (written GUESSED), read by `_chords_whose_value_would_be_voted` and `_order_string_stops`
+    sv = rec.verdict(Q.STEM_VALUE, sub)
+    if sv and sv.get("outcome") == "decided" and sv.get("reason") == "string_stop_own_value":
+        d = sv.get("detail") or {}
+        out["string_stop"] = {"status": (d.get("status") or {}).get(sub), "candidates": d.get("candidates"),
+                              "family_source": (d.get("family") or {}).get("source")}
     return out
 
 
@@ -2299,6 +2306,11 @@ def _chords_whose_value_would_be_voted(
                     continue
                 values = {(h.get("duration_beats"), h.get("duration_type"),
                            h.get("dots")) for h in heads}
+                if len(values) > 1 and _is_string_stop(heads):
+                    # ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`, Sean 2026-11-21): a string staff's stem whose heads each READ their
+                    # own length -- written sounding together, each with its own length (`_order_string_stops`), never held, never voted
+                    _mark_string_stop_guesses(heads)
+                    continue
                 if len(values) > 1:
                     doomed.extend(id(h) for h in heads)
             if not doomed:
@@ -4823,8 +4835,57 @@ def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
     settle see the same events."""
     from . import one_chord
-    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
-                                   keep_stems_apart=one_chord.stems_apart_enabled())
+    return _order_string_stops(group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
+                                                       keep_stems_apart=one_chord.stems_apart_enabled()))
+
+
+#: ROADMAP 2.306 / 2.78: the GUESSED rule word of a string-stop head whose dot was not seen while a stem-mate's was.
+STRING_STOP_DOT_RULE = "string_stop_dot_not_seen"
+
+
+def _is_string_stop(heads: Sequence[Dict[str, Any]]) -> bool:
+    """ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`): every head of this group stands on ONE stem that ADJUDICATE found on a STRING
+    staff with each head's own length READ (`stem_value.STRING_STOP_REASON`, carried as `string_stop` by `_stem_facts_of`). Anything less --
+    one head without it, two stems, the flag off -- is not: the group is held as 2.89 holds it."""
+    from . import staff_family
+    if not staff_family.enabled() or len(heads) < 2:
+        return False
+    stems = {h.get("stem_id") for h in heads}
+    return len(stems) == 1 and None not in stems and all(isinstance(h.get("string_stop"), dict) for h in heads)
+
+
+def _mark_string_stop_guesses(heads: Sequence[Dict[str, Any]]) -> None:
+    """A string-stop head whose dot was not seen while a stem-mate's was is written GUESSED (blue), carrying its own (undotted) value and the
+    dotted one as candidates (CLAUDE.md section 4; 2.78 tile 13: the dot reader can miss one of a stem's dots). Every other head is READ."""
+    for h in heads:
+        ss = h.get("string_stop") or {}
+        if ss.get("status") != "dot_not_seen" or h.get("guess"):
+            continue
+        cands = [dict(c, support=2.0 if i == 0 else 1.0) for i, c in enumerate(ss.get("candidates") or ()) if isinstance(c, dict)]
+        h["guess"] = {"stage": "ADJUDICATE", "rule": STRING_STOP_DOT_RULE, "quantity": Q.DURATION, "candidates": cands,
+                      "chosen": {"beats": h.get("duration_beats"), "dots": h.get("dots")}}
+
+
+def _order_string_stops(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`). A string-stop chord whose heads carry different lengths is ONE `<chord>` whose
+    notes each carry their own `<type>`, `<dot/>` and `<duration>` (`_measure_events_xml` already writes every head's own value). MusicXML
+    advances the voice by the chord's FIRST note, so the LONGEST heads go first (lowest first among them, then the rest lowest first) and the
+    event's own length (`_event_units`, the bar sum, LilyPond) is the longest: the chord holds until its longest note ends, the shorter notes
+    stop early inside it (Sean's two chords: Beethoven 5 first violins bar 21, the half note fills the 2/4 bar; Brahms second violins about bar
+    94, the dotted quarters end the 6/8 bar). Nothing is moved where the heads agree or the group is not a string stop."""
+    for ev in events:
+        heads = ev.get("noteheads") or []
+        if ev.get("kind") != "chord" or not _is_string_stop(heads):
+            continue
+        if len({(h.get("duration_beats"), h.get("duration_type"), h.get("dots")) for h in heads}) < 2:
+            continue
+        top = max(float(h["duration_beats"]) for h in heads)
+        longest = [h for h in heads if float(h["duration_beats"]) == top]
+        ev["noteheads"] = longest + [h for h in heads if float(h["duration_beats"]) != top]
+        lead = longest[0]
+        ev["duration_beats"], ev["duration_type"], ev["dots"] = lead["duration_beats"], lead["duration_type"], lead.get("dots", 0)
+        ev["string_stop_mixed"] = True
+    return events
 
 
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
@@ -7647,6 +7708,10 @@ def _event_duration_certain(ev: Dict[str, Any]) -> bool:
     for h in ev.get("noteheads") or ():
         g = h.get("guess")
         if g and g.get("quantity") == Q.DURATION:
+            # ROADMAP 2.306 / 2.78: a string stop ends when its LONGEST note ends; a shorter note's unseen dot leaves that end read
+            if (ev.get("string_stop_mixed") and g.get("rule") == STRING_STOP_DOT_RULE
+                    and float(h.get("duration_beats") or 0) < float(ev.get("duration_beats") or 0)):
+                continue
             return False
     return True
 

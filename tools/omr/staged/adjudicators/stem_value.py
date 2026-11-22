@@ -1067,18 +1067,148 @@ def _tip_order(members: Sequence[_Member], stem_box: Sequence[float],
     return ranked
 
 
+#: ROADMAP 2.306 / 2.78 (flag `OMR_STRING_STOPS_OWN_VALUE`, default OFF): the reason word of a head on a STRING staff whose stem carries
+#: notes of different lengths, each READ on its own head -- the stem's value for THIS head is the head's own (Sean 2026-11-21, page-facts).
+STRING_STOP_REASON = "string_stop_own_value"
+#: per-head status in that ruling's detail: the head's length is READ, or its dot was not seen while a stem-mate's was (tile 13 of 2.78: the
+#: dot reader missed one of a stem's dots, Sean "2 dotted half notes") -- written GUESSED (blue) with the dotted value as its other candidate.
+STRING_STOP_READ = "read"
+STRING_STOP_DOT_NOT_SEEN = "dot_not_seen"
+
+
+def _staff_family(ev: Evidence, cell: Subject) -> Dict[str, Any]:
+    """The family of the staff `cell` stands on (`staff_family.decide`): the staff's own `Q.INSTRUMENT`, else the part it continues (the
+    same decided `Q.SLOT_INDEX`, named elsewhere, same clef). The document-wide rows are read only for a staff with no name of its own."""
+    from .. import staff_family as SF
+    staff = cell.at(Kind.STAFF)
+    inst = ev.verdict(Q.INSTRUMENT, subject=staff)
+    name = SF._name_of(inst)
+    if name:
+        return SF.decide(name, None, None, ())
+    slot = SF._int_value(ev.verdict(Q.SLOT_INDEX, subject=staff))
+    clef = SF._str_value(ev.verdict(Q.CLEF, subject=staff))
+    if slot is None:
+        return SF.decide(None, clef, None, ())
+    doc = cell.at(Kind.DOCUMENT)
+    mates = []
+    for sv in ev.verdicts(Q.SLOT_INDEX, scope=Scope.SELF_AND_DESCENDANTS, subject=doc):
+        if sv.subject == staff or SF._int_value(sv) != slot:
+            continue
+        n = SF._name_of(ev.verdict(Q.INSTRUMENT, subject=sv.subject))
+        if n:
+            mates.append((sv.subject.to_key(), n, SF._str_value(ev.verdict(Q.CLEF, subject=sv.subject))))
+    return SF.decide(None, clef, slot, mates)
+
+
+def _fill_seen_on_its_own_ink(m: "_Member") -> bool:
+    """The head's fill as its duration reads it (hollow for a half or longer, filled below) is the fill its OWN ink shows (`head_ink`, the
+    duration verdict's detail), and that reading was not itself a blue guess. A head whose ink did not say (`readers_split`, `not_one_head`)
+    or says the other fill (Litolff 8/1/8/4: two half notes an octave apart, the lower read black with a staff line through it, its ink
+    hollow) is no evidence of a different length."""
+    d = getattr(m.verdict, "detail", None) or {}
+    hi = d.get("head_ink") if isinstance(d, dict) else None
+    if not isinstance(hi, dict) or hi.get("value") not in ("hollow", "filled"):
+        return False
+    if isinstance(d.get("head_ink_guess"), dict) and d["head_ink_guess"].get("marks_blue"):
+        return False
+    bases = {o[0] for o in m.options}
+    if len(bases) != 1:
+        return False
+    return (next(iter(bases)) >= HOLLOW_BASE_MIN) == (hi["value"] == "hollow")
+
+
+def _string_stop_ruling(ev: Evidence, members: Sequence["_Member"], flush: Dict[str, str], me: "_Member", stem_id: str,
+                        scale: float, used: Tuple[str, ...]) -> Optional[Ruling]:
+    """ROADMAP 2.306 / 2.78 (flag `OMR_STRING_STOPS_OWN_VALUE`). On a STRING staff notes printed together on one stem may have different
+    lengths (Sean 2026-11-21: "the section can be divided up or individual players can play double stops or triple stops and then keep
+    certain notes going"), so each head keeps the length its OWN ink gave it.
+
+    Only where EVERY head's own length was READ and the difference is one a head's own ink can show:
+      * every head's fill and dots are READ on that head (DECIDED; or narrowed ONLY in its beam count, which then is the stem's, read from
+        the decided heads -- the beams hang at the tip and a stem with an open head carries none); a head whose fill or dots were not read is
+        no evidence of a different length, and the stem is held as before;
+      * the stem touches every head at its side, never through its middle (a box with the stem through it is a slash's or a duplicate's:
+        2.78 tiles 3, 4, 6-8, 10, 11, all tremolo slashes), and no other box stands on the stem (a refused slash box: r18 tile 3);
+      * each head's fill is the fill its own ink shows (`_fill_seen_on_its_own_ink`);
+      * no two heads stand at one place on the staff (one head boxed twice: Litolff 4/0/6/0, 8/0/5/14, a filled and a hollow box on one
+        F5 / C4);
+      * the heads agree on the beams and flags (they hang at the stem's tip, so they are the stem's), and a stem that carries a hollow head
+        carries none (an open head is never beamed, 2.43 -- r18 tile 3, "two half notes with a tremolo slash" read as eighths, a quarter and
+        a half, stays held);
+      * no head is a whole-class box ("whole notes never have stems").
+    The heads then differ only in fill (hollow seen on one, filled on another) and in dots. A head that shows no dot where a stem-mate's dot
+    was read is GUESSED (2.78 tile 13: the dot reader missed one). NEVER on a woodwind, brass, other or unknown staff: those keep one value."""
+    from .. import staff_family as SF
+    if not SF.enabled() or len(members) < 2:
+        return None
+    if len(flush) != len(members):
+        return None             # another box stands on this stem (a tremolo slash, a refused box, a beam end): held as before
+    if any(m.whole_class or not m.read for m in members):
+        return None
+    if any(flush.get(m.key) not in ("left", "right") for m in members):
+        return None
+    if any(not _fill_seen_on_its_own_ink(m) for m in members):
+        return None
+    for i, a in enumerate(members):
+        for b in members[i + 1:]:
+            if a.cy is None or b.cy is None or not a.box or not b.box:
+                return None
+            if abs(a.cy - b.cy) < ONE_STEM_PER_HEAD_MIN_APART_HEADS * min(a.box[3], b.box[3]):
+                return None     # two boxes at one place on the staff are one head read twice, never two notes of a stop
+    decided = [m for m in members if m.decided]
+    if not decided:
+        return None
+    levels = {m.options[0][1] for m in decided}
+    if len(levels) != 1:
+        return None
+    if any(m.options[0][0] >= HOLLOW_BASE_MIN for m in decided) and levels != {0}:
+        return None
+    (stem_levels,) = tuple(levels)
+    vals: Dict[str, Tuple[float, int, int]] = {}
+    for m in members:
+        if m.decided:
+            vals[m.key] = m.options[0]
+            continue
+        # A head narrowed ONLY in its beam count (its fill and its dots read, one each) takes the stem's count: the beams and flags hang at
+        # the stem's tip, and a stem carrying an open head carries none (2.43). Any other narrowing (fill or dots unread) is not own evidence.
+        if len({(o[0], o[2]) for o in m.options}) != 1:
+            return None
+        b, _lv, d = m.options[0]
+        if (b, stem_levels, d) not in m.options:
+            return None
+        vals[m.key] = (b, stem_levels, d)
+    if len(set(vals.values())) < 2:
+        return None
+    fam = _staff_family(ev, ev.subject.at(Kind.CELL))
+    if fam["family"] != SF.STRINGS:
+        return None
+    own = vals[me.key]
+    any_dot = any(v[2] > 0 for v in vals.values())
+    status = {k: (STRING_STOP_DOT_NOT_SEEN if any_dot and v[2] == 0 else STRING_STOP_READ) for k, v in vals.items()}
+    detail = {"stem": stem_id, "members": [m.key for m in members],
+              "own_values": {k: list(v) for k, v in vals.items()}, "status": status,
+              "family": fam}
+    if status[me.key] == STRING_STOP_DOT_NOT_SEEN:
+        dotted = sorted({v[2] for v in vals.values() if v[2] > 0})
+        detail["candidates"] = [{k: v for k, v in _value(own[0], own[1], d, scale, stem_id).items() if k in ("beats", "written", "dots", "beam_levels")}
+                                for d in [own[2]] + dotted]
+    return Ruling(value=_value(own[0], own[1], own[2], scale, stem_id), reason="string_stop_own_value", used=used, detail=detail)
+
+
 @decision(
     quantity=Q.STEM_VALUE,
     scope=Kind.GLYPH,
     wants=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.NOTEHEAD_IS_A_WHOLE_REST,
            Q.GLYPH_OWNER, Q.GLYPH_STROKES, Q.STROKE, Q.STROKE_OWNER,
-           Q.CELL_STAFF_SPACE),
+           Q.CELL_STAFF_SPACE,
+           Q.INSTRUMENT, Q.SLOT_INDEX, Q.CLEF),     # ROADMAP 2.306 / 2.78: the staff's family (`_staff_family`), flag on only
     subjects_from=Q.HEAD_STEM,
     reasons=("stem_agrees", "stem_value_from_evidence",
              "hollow_head_on_a_beamed_stem", "stem_levels_unread",
              "stem_dots_disagree", "stem_values_open", "stem_unread",
-             "lone_head", "not_a_member", "ambiguous_stem", "no_stem"),
+             "lone_head", "not_a_member", "ambiguous_stem", "no_stem",
+             "string_stop_own_value"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX),
 )
@@ -1136,6 +1266,9 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
     directions = {m.direction for m in members if m.direction}
     direction = next(iter(directions)) if len(directions) == 1 else None
     used = tuple(m.verdict.id for m in members if m.verdict is not None)
+    stop = _string_stop_ruling(ev, members, {j.subject.to_key(): (j.detail or {}).get("flush") for j in joins}, me, stem_id, scale, used)
+    if stop is not None:
+        return stop
 
     strong = [m for m in members if m.counts_for_base]
     hollow = [m for m in strong if m.decided and m.options[0][0] >= HOLLOW_BASE_MIN]
