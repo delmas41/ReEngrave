@@ -7618,6 +7618,10 @@ def _event_duration_certain(ev: Dict[str, Any]) -> bool:
     for h in ev.get("noteheads") or ():
         g = h.get("guess")
         if g and g.get("quantity") == Q.DURATION:
+            # ROADMAP 2.306 / 2.78: a string stop ends when its LONGEST note ends; a shorter note's unseen dot leaves that end read
+            if (ev.get("string_stop_mixed") and g.get("rule") == STRING_STOP_DOT_RULE
+                    and float(h.get("duration_beats") or 0) < float(ev.get("duration_beats") or 0)):
+                continue
             return False
     return True
 
