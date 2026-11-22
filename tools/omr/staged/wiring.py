@@ -228,6 +228,13 @@ KNOWN_GAPS: Dict[str, str] = {
     # checked at landing time: written in `staged/gather.py`, named by NOTHING
     # outside it and outside tests. They are inventoried with a reason, never
     # suppressed -- `KNOWN_GAPS` is an inventory and anything not on it fails.
+    "DETAIL Q.PAGE_BEAM.views_filed": (
+        "ORPHANED BY ROADMAP 2.319 (the bar-crop beam reader retired): EXPORT's `_beam_boxes_by_cell` read this marker to choose the page beam "
+        "views over the cell reader's strokes (`OMR_PAGE_BEAMS_RETIRE_A`); the one beam count groups beams from the stroke map and reads neither. "
+        "Its producer `page_beams.gather_page_beam_views` (flag `OMR_PAGE_BEAMS`, default OFF) is a GATHER change to remove, left to the "
+        "page-beam reader's own row (M4b-e) rather than taken out by a landing with no re-gather."),
+    "DETAIL Q.PAGE_BEAM_TIP.tip_clean": (
+        "same as `Q.PAGE_BEAM.views_filed` above: the page beam reader's tip reading (M4a, `OMR_PAGE_BEAMS` OFF), read by nothing since 2.319."),
     "DETAIL Q.EMPTY_BAR_REST_SEARCH.bar_width_px": (
         "⚠️ RECORDED-ONLY BY DESIGN -- ROADMAP 2.52. The bar's own canonical "
         "width, so a crop pass can draw the bar's extent without re-deriving "

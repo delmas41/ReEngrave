@@ -90,6 +90,19 @@ KNOWN_GAPS: Dict[str, str] = {
         "default OFF) was its only producer and M6b (`OMR_PAGE_HEAD_VIEWS`) its only consumer; 2.290's `read_one` replaced the fold and both are gone. "
         "The quantity stays because a record gathered with `OMR_PAGE_HEADS` on carries `page_head` rows, and `review.rerun.rebuild_gather` replays them "
         "through `Log.observe`, which raises on an unknown quantity."),
+    # ROADMAP 2.319 r2: three GATHER facts whose only reader was the bar-crop beam reader (A, retired). Named, not removed: taking a GATHER producer
+    # out needs a re-gather, and the records carry the rows (`review.rerun.rebuild_gather` replays them, so the quantities stay declared).
+    Q.BEAM_STEM_JOIN: (
+        "ORPHANED BY ROADMAP 2.319: `gather.gather_beam_stem_join` files which `Q.STEM` row meets which `Q.BEAM_STROKE` row; its reader was the bar-crop "
+        "beam reader's join (`rhythm._stem_joined` over `Q.BEAM_STROKE`), retired. The one beam count joins stems and beams by the stroke map's ink. "
+        "The producer goes when GATHER is next re-gathered for another reason (a GATHER change measured with a gather, not at a landing)."),
+    Q.BEAM_STEM_LEVELS: (
+        "ORPHANED BY ROADMAP 2.319: the per-stem level ruler (`OMR_BEAM_STEM_LEVELS`) read only by the retired bar-crop reader's level count. Same as "
+        "`Q.BEAM_STEM_JOIN`: named here until a re-gather removes the producer."),
+    Q.PAGE_BEAM: (
+        "ORPHANED BY ROADMAP 2.319: the page beam reader's rows (M4a, `OMR_PAGE_BEAMS` default OFF) were read by EXPORT's retired `_beam_boxes_by_cell` "
+        "(the `views_filed` marker, `OMR_PAGE_BEAMS_RETIRE_A`) and the cell-reader retirement switch; the one beam count reads neither. Leaves this list "
+        "with the page beam reader's own row (M4b-e) or when its producer is removed."),
     Q.PAGE_BEAM_TIP: (
         "PRODUCER ONLY BY DESIGN -- ROADMAP 2.260c M4a: the beam levels at each stem tip on the page map; read by NOTHING until M4c (levels and join retire the "
         "cell reads). Byte-identical export with `OMR_PAGE_BEAMS` on is the proof. A reader that appears removes this entry."),

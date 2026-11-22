@@ -249,24 +249,6 @@ def _staff(i):
     return Subject(Kind.STAFF, page=0, system=0, staff=i)
 
 
-def _run(log, *, flag="1"):
-    # the 2.97 columns rule (default ON) is a different rule: isolate this one
-    env = {infer.NARROWED_BAR_ENV: "0"}
-    if flag is not None:
-        env[infer.BARE_STEM_BAR_ENV] = flag
-    with mock.patch.dict(os.environ, env, clear=False):
-        if flag is None:
-            os.environ.pop(infer.BARE_STEM_BAR_ENV, None)
-        return infer.run(log, evaluate.Report([], [], []))
-
-
-def _fired(report):
-    return [i for i in report.inferred
-            if i[0] == infer.Inference.COLLAPSE_BARE_STEM_BY_BAR.value]
-
-
-
-
 class TestTheFlagAndTheLabel(unittest.TestCase):
 
     def _bar(self):

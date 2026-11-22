@@ -3317,18 +3317,15 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
     composed_from=(Q.BEAM_STROKE, Q.FLAG, Q.AUG_DOT, Q.DOT_ROLE,
                    Q.NOTEHEAD_CLASS, Q.STEM, Q.REST, Q.STAFF_LINES,
                    Q.STAFF_SPACING, Q.FLAG_IS_NOT_A_FLAG, Q.STEM_DIRECTION,
-                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.ARC_BOX, Q.ARC_KIND,
-                   Q.GROUP_SYMBOL, Q.STAFF_GROUP, Q.GLYPH_OWNER,
-                   Q.STEM_SLASH,
+                   Q.STEM_TIP_INK, Q.NOTEHEAD_INK, Q.GLYPH_OWNER,
+                   # 2.319 r2: Q.ARC_BOX / Q.ARC_KIND / Q.GROUP_SYMBOL / Q.STAFF_GROUP / Q.STEM_SLASH / Q.STEM_HEAD_CONTACT left with the bar-crop
+                   # beam reader's filters that read them (arc, neighbour staff, slash, head-contact); the one beam count reads none of them.
                    # ⚠️ ROADMAP 2.77b: the head's own stem direction where no
                    # CV stem is attached (`_own_stem_side`), so the beams that
                    # can be its own, and with them the value, depend on it;
                    # and the physical-mark group that says the owner holds a
                    # twin of a contest's losing copy.
                    Q.HEAD_STEM_REACH, Q.MARK_GROUP,
-                   # ROADMAP 2.87 (`head_contact`): which strokes count as STEMS
-                   # in the beam-joins-N-stems tests.
-                   Q.STEM_HEAD_CONTACT,
                    # ROADMAP 2.102: a head already REFUSED as a notehead is
                    # never read as a hollow half, and one refused as a mark
                    # that is not a note (a tremolo slash, a meter sign) has no
@@ -3386,9 +3383,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.STEM, Q.TUPLET_RATIO, Q.GLYPH_BOX, Q.REST, Q.CELL_STAFF_SPACE,
            Q.STAFF_LINES, Q.STAFF_SPACING, Q.STEM_DIRECTION,
            Q.FLAG_IS_NOT_A_FLAG, Q.STEM_TIP_INK, Q.NOTEHEAD_INK,
-           Q.ARC_BOX, Q.ARC_KIND, Q.GROUP_SYMBOL, Q.STAFF_GROUP,
-           Q.GLYPH_OWNER, Q.STEM_SLASH,
-           Q.HEAD_STEM_REACH, Q.MARK_GROUP, Q.STEM_HEAD_CONTACT,
+           Q.GLYPH_OWNER,
+           Q.HEAD_STEM_REACH, Q.MARK_GROUP,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK,
            # ROADMAP 2.318 / 2.319: the stroke map, the one beam count's only source.

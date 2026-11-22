@@ -28,16 +28,20 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import (READERS, Kind, Log, Outcome, Q, Subject,
                                      Verdict)
 
-from tools.omr.tests.test_staged_bare_stem_2_81 import (_Bar, _cell, _run,
-                                                         _fired, _sub)
+# 2.319 r2: the 2.81 bare-stem bar rule went with the bar-crop beam reader (its population, `beam_discounted_uncertain`, is gone); its
+# guards live on in the SAME solver run for every narrowing (2.97, `any_reason`), so section (a) runs there: 2.97's bar (cell ink read
+# clear) and runner.
+from tools.omr.tests.test_staged_bare_stem_2_81 import _cell, _sub
+from tools.omr.tests.test_staged_narrowed_bar_2_97 import _InferBar as _Bar, _run, _fired
 from tools.omr.tests.test_staged_hollow_tip_unread_2_88 import (
     CELL, _staff_space, _two_raster_ink, _unread_tip)
 from tools.omr.tests.test_staged_duration import _beam, _stem
+from tools.omr.tests.stroke_map_fixture import file_note_ink
 
 
 def _solve(bar):
     log = bar.finish()
-    return log, inferences.solve_bare_stem_bar(log, _cell(0, 0))
+    return log, inferences.solve_bare_stem_bar(log, _cell(0, 0), any_reason=True)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -132,7 +136,8 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         3:2 reading is assumed to supply quarters -- nothing is settled."""
         log, out = _solve(_half_and_four_bares())
         self.assertEqual(out.proposals, [])
-        self.assertEqual(out.shortened_refused, 4)
+        # 2.319 r2: the live (2.97) rule admits no eighth without evidence of its own, so the plain sum cannot land at all
+        self.assertEqual(out.decline, "bar_does_not_add_up")
 
     def test_a_marker_with_a_DECIDED_ratio_does_not_decline_the_bar(self):
         """A SEEN tuplet whose ratio was decided has its members' lengths
@@ -162,7 +167,8 @@ class TestABarThatPrintsATupletIsNotSettled(unittest.TestCase):
         b.bare()
         b.bare()
         log, out = _solve(b)
-        self.assertEqual(out.landings, 1)   # reached the arithmetic: no guard fired
+        # 2.319 r2: reached the arithmetic (the live rule refuses the unevidenced eighths there: nothing lands) -- no tuplet guard fired
+        self.assertEqual(out.decline, "bar_does_not_add_up")
 
     def test_CONTROL_three_decided_quarters_and_one_bare_still_settle(self):
         """3 decided quarters... + 1 bare: no 3:2 window can land it differently."""
@@ -189,7 +195,7 @@ class TestAnEighthNeedsItsOwnEvidence(unittest.TestCase):
     def test_a_bare_stem_forced_to_an_eighth_is_refused(self):
         log, out = self._bar_7_8(0)
         self.assertEqual(out.proposals, [])
-        self.assertEqual(out.shortened_refused, 1)
+        self.assertEqual(out.decline, "bar_does_not_add_up")       # 2.319 r2: the live rule never admits the unevidenced eighth
 
     def test_CONTROL_the_same_bar_with_a_stroke_read_on_the_stem_settles_eighth(
             self):
@@ -227,8 +233,8 @@ class TestTwoHeadsInOneColumnAreNotSuccessiveInTime(unittest.TestCase):
         """A head apart (offset >= the head's width) is a sequence: the same
         four events settle, so the guard is not a refusal of everything."""
         log, out = _solve(_two_columns(offset=60))
-        self.assertIsNone(out.decline)
-        self.assertEqual(out.landings, 1)   # no guard fired (eighths are refused by Sean's rule)
+        # 2.319 r2: no column guard fired; the arithmetic ran (the live rule refuses the unevidenced eighths there: nothing lands)
+        self.assertEqual(out.decline, "bar_does_not_add_up")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -252,6 +258,7 @@ def _hollow_head(log, *, with_page_box=False):
     log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, 16),
                 reader=READERS.DETECTOR, frame="cell:0", score=0.9, **extra)
     s = _stem(log, x=135, y=38, h=60)
+    file_note_ink(log, (135, 90, 20, 16), sp=16, side="up")     # 2.319 r2: the bare stem the one beam count reads
     _two_raster_ink(log, g)
     _unread_tip(log, s.id, "crosses_both_sides")
     return g, s

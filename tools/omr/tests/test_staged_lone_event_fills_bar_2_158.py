@@ -51,7 +51,7 @@ class _LoneBar(_InferBar):
 
 
 def _run(log, *, lone=True, arm="narrowed"):
-    env = {infer.NARROWED_BAR_ENV: "1", infer.BARE_STEM_BAR_ENV: "1", ARM: arm, LONE: "1" if lone else "0"}
+    env = {infer.NARROWED_BAR_ENV: "1", ARM: arm, LONE: "1" if lone else "0"}     # 2.319: `OMR_BARE_STEM_BAR` retired with its rule
     with mock.patch.dict(os.environ, env, clear=False):
         return infer.run(log, evaluate.Report([], [], []))
 

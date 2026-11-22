@@ -619,7 +619,7 @@ Which edition and movement this is; scanned or engraved.
 ### `arc_box` (Q.ARC_BOX) -- LIVE
 
 - `arc_box` filed by: GATHER `gather.py:gather_glyph_families`, tools `record_coverage.py:ruling_gaps`
-- `arc_box` declared in `wants` (not a read): `adjudicate_arc_is_not_an_arc`, `adjudicate_arc_kind`, `adjudicate_arc_owner`, `adjudicate_duration`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_page_arc_binding`, `adjudicate_tie_pair`
+- `arc_box` declared in `wants` (not a read): `adjudicate_arc_is_not_an_arc`, `adjudicate_arc_kind`, `adjudicate_arc_owner`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_page_arc_binding`, `adjudicate_tie_pair`
 - `arc_box` read by ADJUDICATE: `adjudicators/family_precision.py:adjudicate_arc_is_not_an_arc`, `adjudicators/notehead_precision.py:_arc_tail_refusal`, `adjudicators/ownership.py:_joins_not_at_a_barline`, `adjudicators/ownership.py:_stack_reading`, `adjudicators/ownership.py:_witness_by_ink`, `adjudicators/ownership.py:adjudicate_arc_kind`, `adjudicators/ownership.py:adjudicate_arc_owner`, `adjudicators/ownership.py:adjudicate_tie_pair`
 - `arc_box` read by EXPORT: `export.py:_page_bound_slurs`, `export.py:_place_arcs`
 - `arc_box` read only OFF by default: `export.py:_anchored_slur_spans`, `export.py:_edge_curves`
@@ -645,7 +645,7 @@ Which edition and movement this is; scanned or engraved.
 ### `arc_kind` (Q.ARC_KIND) -- LIVE
 
 - `arc_kind` decided by: ADJUDICATE `adjudicators/ownership.py:adjudicate_arc_kind`
-- `arc_kind` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_tie_pair`
+- `arc_kind` declared in `wants` (not a read): `adjudicate_tie_pair`
 - `arc_kind` read by ADJUDICATE: `adjudicators/ownership.py:adjudicate_tie_pair`
 - `arc_kind` read by EXPORT: `export.py:_page_bound_slurs`, `export.py:_place_arcs`
 - `arc_kind` read only OFF by default: `export.py:_edge_curves`
@@ -1107,7 +1107,7 @@ Which edition and movement this is; scanned or engraved.
 ### `group_symbol` (Q.GROUP_SYMBOL) -- LIVE
 
 - `group_symbol` decided by: ADJUDICATE `adjudicators/structure.py:adjudicate_group_symbol`
-- `group_symbol` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_dynamic`, `adjudicate_pedal_owner`
+- `group_symbol` declared in `wants` (not a read): `adjudicate_dynamic`, `adjudicate_pedal_owner`
 - `group_symbol` read by ADJUDICATE: `adjudicators/ownership.py:adjudicate_pedal_owner`, `adjudicators/structure.py:grand_staff_partner_staff`, `adjudicators/text.py:_canonical_grand_staff_owner`
 - `group_symbol` belongs to: `--mark bracket`
 
@@ -1722,7 +1722,7 @@ Which edition and movement this is; scanned or engraved.
 ### `staff_group` (Q.STAFF_GROUP) -- LIVE
 
 - `staff_group` decided by: ADJUDICATE `adjudicators/structure.py:adjudicate_staff_group`
-- `staff_group` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_dynamic`, `adjudicate_group_symbol`, `adjudicate_instrument`, `adjudicate_pedal_owner`, `adjudicate_slot_index`
+- `staff_group` declared in `wants` (not a read): `adjudicate_dynamic`, `adjudicate_group_symbol`, `adjudicate_instrument`, `adjudicate_pedal_owner`, `adjudicate_slot_index`
 - `staff_group` read by ADJUDICATE: `adjudicators/identity.py:_constrained_slots`, `adjudicators/ownership.py:adjudicate_pedal_owner`, `adjudicators/structure.py:adjudicate_group_symbol`, `adjudicators/structure.py:grand_staff_partner_staff`, `adjudicators/text.py:_canonical_grand_staff_owner`
 - `staff_group` belongs to: `--mark bracket`
 
@@ -1783,7 +1783,7 @@ Which edition and movement this is; scanned or engraved.
 ### `stem_head_contact` (Q.STEM_HEAD_CONTACT) -- LIVE
 
 - `stem_head_contact` decided by: ADJUDICATE `adjudicators/stem_value.py:adjudicate_stem_head_contact`
-- `stem_head_contact` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_rest_is_not_a_rest`
+- `stem_head_contact` declared in `wants` (not a read): `adjudicate_rest_is_not_a_rest`
 - `stem_head_contact` read by ADJUDICATE: `adjudicators/family_precision.py:_stems_connected_to_a_head`, `adjudicators/rhythm.py:_stems_connected_to_a_head`
 - `stem_head_contact` belongs to: `--mark stem`
 
@@ -1791,7 +1791,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `stem_slash` filed by: GATHER `gather.py:_observe_stem_slashes`
 - `stem_slash` abstained by (not a producer): `gather.py:_observe_stem_slashes`
-- `stem_slash` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_rest_is_not_a_rest`
+- `stem_slash` declared in `wants` (not a read): `adjudicate_notehead_is_not_a_notehead`, `adjudicate_rest_is_not_a_rest`
 - `stem_slash` read by ADJUDICATE: `adjudicators/family_precision.py:_rest_on_a_slashed_stem_refusal`, `adjudicators/notehead_precision.py:_slash_read_under_box`
 - `stem_slash` belongs to: `--mark tremolo`
 
