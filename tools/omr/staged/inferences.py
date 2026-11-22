@@ -1842,10 +1842,15 @@ def solve_bare_stem_bar(log: Log, cell: Subject, *,
             log, cell, notes, ledger_owner_aware=ledger_owner_heads_enabled()):
         out.decline = "heads_not_this_staffs_own"
         return out
-    if any_reason and (_bar_has_tuplet(log, cell, notes)
-                       or bar_has_tuplet(log, cell)):
-        out.decline = "bar_holds_tuplet_evidence"
-        return out
+    # ROADMAP 2.319 r2 (manager, keeping what a tuplet marker means when the 2.81 bare-stem rule retired): the bar may not sum an UNREAD tuplet,
+    # and only that. A marker a HUMAN struck out is no tuplet (human evidence outranks ours: `bar_has_tuplet` skips it); a marker whose ratio
+    # was DECIDED is a tuplet seen and read (CLAUDE s4), its members' lengths already scaled, so the sum is the bar's -- the retired rule's
+    # guard (`tuplet_marker` without `tuplet_ratio`, above). Declines here: a note carrying a tuplet/ratio on a bar with no decided ratio.
+    if any_reason:
+        seen = bar_has_tuplet(log, cell)
+        if "tuplet_ratio" not in seen and ("tuplet_marker" in seen or _bar_has_tuplet(log, cell, notes, markers=False)):
+            out.decline = "bar_holds_tuplet_evidence"
+            return out
     by_glyph = {v.subject.glyph: v for v in notes}
     fixed = _frac(0)
     unknown_events: List[Tuple[List[Verdict], List[Any]]] = []

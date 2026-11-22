@@ -1407,7 +1407,7 @@ def _box_iou(a, b) -> float:
     return i / u if u else 0.0
 
 
-def _bar_has_tuplet(log: Log, subject: Subject, notes=()) -> bool:
+def _bar_has_tuplet(log: Log, subject: Subject, notes=(), markers: bool = True) -> bool:
     """Does this bar carry TUPLET evidence -- a gathered `Q.TUPLET_MARKER` (digit
     or bracket) anywhere in the cell, or a duration that already carries a
     ratio? ROADMAP 2.97 / 2.101: in a 3-quarter triplet the bar's arithmetic
@@ -1415,7 +1415,8 @@ def _bar_has_tuplet(log: Log, subject: Subject, notes=()) -> bool:
     ratio), so every bar-sum settlement of a narrowed note abstains here.
     TODO: replace by 2.102's shared `bar_has_tuplet` when it lands."""
     cell = subject.at(Kind.CELL)
-    if log.rows(Q.TUPLET_MARKER, cell, scope=Scope.SELF_AND_DESCENDANTS):
+    # `markers=False` (2.319 r2, the 2.97 bar rule): the notes only; that rule reads the markers through `inferences.bar_has_tuplet`
+    if markers and log.rows(Q.TUPLET_MARKER, cell, scope=Scope.SELF_AND_DESCENDANTS):
         return True
     for v in notes:
         vals = [v.value] if isinstance(v.value, dict) else \
