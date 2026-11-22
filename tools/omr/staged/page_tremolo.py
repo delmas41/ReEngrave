@@ -140,13 +140,15 @@ def read_page(ink: Any, stems: Sequence[Tuple[int, Tuple[float, float, float, fl
     """The finder over every stem of the page. `ink` is the page raster as a bool array (True = ink); `heads` are `(x, y, w, h)` page px boxes of the detector's noteheads
     (empty = order A: the finder knows no head). Returns the passing slashes (each with its stem's ordinal) and the refusal-reason counts. Pure."""
     from .gather import stem_slashes
+    from .stroke_map import slash_cut_enabled
+    own_rows = slash_cut_enabled()
     slashes: List[Dict[str, Any]] = []
     reasons: Dict[str, int] = {}
     reach = NEIGHBOUR_SPACES * sp
     for k, (ordn, box) in enumerate(stems):
         near = [b for j, (_o, b) in enumerate(stems)
                 if j != k and abs((b[0] + b[2] / 2.0) - (box[0] + box[2] / 2.0)) <= reach and b[1] <= box[1] + box[3] + sp and b[1] + b[3] >= box[1] - sp]
-        got = stem_slashes(ink, box, sp, line_px, near, heads)
+        got = stem_slashes(ink, box, sp, line_px, near, heads, own_rows=own_rows)
         for s in got:
             r = s.get("reason")
             reasons[str(r)] = reasons.get(str(r), 0) + 1
