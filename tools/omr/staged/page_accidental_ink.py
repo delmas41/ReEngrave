@@ -442,18 +442,25 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
         out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count))
         reasons["fused_natural_pair"] = len(pairs)
         reasons["fused_sharp_stack"] = sum(1 for c in out if c.get("how") == "sharp_stack")
-    out = fold_twins(out)
+    out = fold_twins(out, merge=fused)
     reasons["claimed"] = len(out)
     return out, reasons
 
 
-def fold_twins(found: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]:
+def fold_twins(found: Sequence[Dict[str, Any]], merge: bool = False) -> List[Dict[str, Any]]:
     """One mark, one claim: two clusters whose ink boxes overlap by at least `OWN_BOX_SHARE` of either are ONE accidental seen from two seeds (the growth stops at a different
-    piece depending on which stem it starts from; 2.285 first gather: one Litolff sharp claimed twice). The cluster with more strokes stays (ties: the first). Pure."""
+    piece depending on which stem it starts from; 2.285 first gather: one Litolff sharp claimed twice). The cluster with more strokes stays (ties: the first). Pure.
+    `merge` (accidental-not-head lane, `OMR_ACCIDENTAL_FUSED_INK`): the kept claim also takes the folded twin's strokes -- ALL the mark's ink is claimed, seen from
+    either upright. Without it a sharp's bar ends right of its right upright stayed free (Brahms 5/0/12/7: the head box on the sharp owned them, so the
+    claim holding 92% of its ink did not refuse it, and an E-flat3 was written on the sharp)."""
     keep: List[Dict[str, Any]] = []
     for c in sorted(found, key=lambda c: (-len(c["members"]), c["box"])):
-        if not any(share_inside(c["box"], k["box"]) >= OWN_BOX_SHARE or share_inside(k["box"], c["box"]) >= OWN_BOX_SHARE for k in keep):
-            keep.append(c)
+        twin = next((k for k in keep if share_inside(c["box"], k["box"]) >= OWN_BOX_SHARE or share_inside(k["box"], c["box"]) >= OWN_BOX_SHARE), None)
+        if twin is None:
+            keep.append(dict(c) if merge else c)
+        elif merge and twin["type"] == c["type"]:
+            twin["members"] = sorted(set(twin["members"]) | set(c["members"]))
+            twin["box"] = [round(v, 1) for v in _union_box([twin["box"], c["box"]])]
     return sorted(keep, key=lambda c: (c["box"][0], c["box"][1]))
 
 
