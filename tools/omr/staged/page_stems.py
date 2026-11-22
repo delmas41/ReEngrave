@@ -172,8 +172,8 @@ def _contact_pass(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         mine = {int(i) for i in (h.get("strokes") or ()) if int(i) in strokes}
         own = set(mine)
         for o, s in strokes.items():
-            if s.get("kind") in ("vertical", "barline") or o in held:
-                continue
+            if s.get("kind") in ("vertical", "barline") or o in held or stem_thin(s, h):
+                continue        # batch-2 r2: a sliver one stem wide is stem ink, never the head's own (`stem_thin`)
             b = s["box"]
             cover = max(0.0, min(x1, b[2]) - max(x0, b[0])) * max(0.0, min(y1, b[3]) - max(y0, b[1])) / area
             centred = x0 <= (b[0] + b[2]) / 2.0 <= x1 and y0 <= (b[1] + b[3]) / 2.0 <= y1
@@ -328,6 +328,15 @@ def _ends_at_another_head(h: Dict[str, Any], o: int, direction: str, heads: Sequ
     return False
 
 
+def drop_outlines(h: Dict[str, Any], cs: List[Dict[str, Any]], heads: Sequence[Dict[str, Any]], vbox: Dict[int, Any]) -> List[Dict[str, Any]]:
+    """batch-2 r2 (fault 4, Litolff 2/1/0/13: the flute's C6 under an E6, two half notes on one down stem, read `two_candidates` and left with no
+    value). Of three or more stroke candidates at a head, a stroke whose FAR end stops at ANOTHER head is that head's outline (the upper ring's
+    right side), never a stem of this head -- the rule the two-voice reading already uses (`_ends_at_another_head`). Only narrows: where every
+    candidate ends at a head, all stay. Two candidates (one up, one down) are the two-voice reading's (`_unison_heads`) and never reach here. Pure."""
+    keep = [c for c in cs if not _ends_at_another_head(h, int(c["stroke"]), c["direction"], heads, vbox)]
+    return keep if keep and len(keep) < len(cs) else cs
+
+
 def _passes_beside_the_other(h: Dict[str, Any], up: int, dn: int, vbox: Optional[Dict[int, Any]]) -> bool:
     """A stem of two voices leaves the head: the up stem from its right side going up, the down stem from its left side going down (page-facts:
     up -> right, down -> left). Where one stroke runs on past the head ALONGSIDE the other's whole length -- the down stroke reaching up beside at
@@ -415,6 +424,15 @@ def voice_rows(rows: Sequence[Any]) -> Optional[Dict[str, Any]]:
         if d.get("how") == UNISON_HOW and d.get("voice") in ("up", "down") and getattr(r, "value", None) is not None:
             out[d["voice"]] = r
     return out if set(out) == {"up", "down"} else None
+
+
+def stem_thin(s: Dict[str, Any], h: Dict[str, Any]) -> bool:
+    """ROADMAP 2.306 batch-2 r2 (fault 1, Brahms 5/1/10/7): a piece of ink no wider than a stem (`stroke_map.STEM_THIN_SPACES`, in the head's own
+    space) is STEM ink -- a notehead is an oval about a space wide, never a sliver one stem wide. Such a piece inside a head's box (a stem's short
+    piece between two heads of its chord, which a detector box was drawn over) is never that box's own head ink. Pure."""
+    from .stroke_map import STEM_THIN_SPACES
+    b = s["box"]
+    return (b[2] - b[0]) <= STEM_THIN_SPACES * float(h.get("sp") or 1.0)
 
 
 def touch_map(strokes: Dict[int, Dict[str, Any]]) -> Dict[int, set]:
@@ -597,6 +615,7 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
         return [v for v in vs[i:j] if v["box"][2] >= x0 and v["box"][0] <= x1]
 
     readings: Dict[Any, Dict[str, Any]] = {}
+    vby_all = {int(v["ord"]): v for v in vs}
     for h in heads:
         sp = float(h.get("sp") or 1.0)
         cands, held_c, miss = [], [], []
@@ -620,6 +639,8 @@ def read(heads: Sequence[Dict[str, Any]], verticals: Sequence[Dict[str, Any]], h
             at = [c for c in cs if c["gap"] <= HEAD_END_SP]
             if at and len(at) < len(cs):
                 cs = at
+        if len(cs) >= 3:
+            cs = drop_outlines(h, cs, heads, vby_all)
         by_ink = False
         if len(cs) >= 2 and len({c["direction"] for c in cs}) == 1 and hink is not None and hink.get(h["id"]):
             # ROADMAP 2.306 r15: of two strokes at the head's SAME side, the stem is the one whose ink touches the head's ink; one that only stands
