@@ -3203,7 +3203,11 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
         for f_det, l_det in ends:
             # ⚠️ The one-voice rule `_paired_spans` states for every span: the two
             # ends of a tie split across `<voice>` streams are each unpaired.
-            if voice_of.get(id(f_det), 0) != voice_of.get(id(l_det), 0):
+            # A note `voice_of` does not map (0: its bar was not split) is WRITTEN as `<voice>1`, so it is stream 1 here:
+            # Brahms p5 Vl.II bars 42-43 (`5/1/10/6/3` F#5 -> `5/1/10/7/0`), a tie from the upper stream of a split bar into a
+            # one-voice bar, was refused as two voices though both ends are written `<voice>1` -- and with it the tie's carried
+            # accidental (page-facts, Sean 2026-10-30), writing F5/Ab4 under a printed tie from F#5/A4.
+            if (voice_of.get(id(f_det), 0) or 1) != (voice_of.get(id(l_det), 0) or 1):
                 dropped["tie_ends_in_two_voices"] += 1
                 continue
             if voice_on:
