@@ -6255,7 +6255,11 @@ def _annotate_beams_for(rec: Record, run: StaffRun, cell_index: int,
         hs = ev.get("noteheads") or []
         return int(hs[0].get("beam_levels") or 0) if hs else 0
 
-    for members in groups_sharing_beam_ink([None if ev.get("kind") == "rest" else levels(ev) for ev in stream], ink):
+    # 2.319 r2: a note whose stem the one beam count could not find in the ink (`state` silent) cannot say whether a beam meets it ("cannot tell" is
+    # never "no beam", rule 8), so it neither joins a group nor breaks one: it is passed over as a rest is. Litolff p4 1/8/5: a box on the end of a
+    # five-note beam, read as a head with no stem, cut the beam's last note off into a flagged eighth. Never passes over a note whose stem was read.
+    passed = [ev.get("kind") == "rest" or _beam_count_silent(rec, ev) for ev in stream]
+    for members in groups_sharing_beam_ink([None if p else levels(ev) for ev, p in zip(stream, passed)], ink):
         counters["beam_groups_from_the_one_count"] += 1
         top = max(levels(stream[i]) for i in members)
         for level in range(1, top + 1):
@@ -6293,21 +6297,40 @@ def groups_sharing_beam_ink(levels: Sequence[Optional[int]], ink: Sequence[froze
     return groups
 
 
+def _adjudicated_duration_detail(rec: Record, glyph: Optional[str]) -> Optional[Dict[str, Any]]:
+    """The detail of the duration verdict that carries the beam reading (`beam_strokes`) for a head: the live verdict, followed back through what
+    superseded it to the ADJUDICATE verdict. None where the head has no such verdict."""
+    v = rec.verdict(Q.DURATION, glyph) if glyph else None
+    seen = set()
+    while v is not None and v.get("id") not in seen:
+        seen.add(v.get("id"))
+        d = v.get("detail") or {}
+        if "beam_strokes" in d:
+            return d
+        v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
+    return None
+
+
+def _beam_count_silent(rec: Record, ev: Dict[str, Any]) -> bool:
+    """2.319 r2: every head of the event was read by the one beam count and NONE of them had a stem it could find in the ink (`one_beam_count`
+    state `silent`): the count cannot tell whether a beam meets this note. False where any head's stem was read, or where no head was read."""
+    states = []
+    for h in ev.get("noteheads") or ():
+        d = _adjudicated_duration_detail(rec, h.get("glyph") or h.get("beam_ink_of"))
+        if d is None or "one_beam_count" not in d or d.get("beam_evidence") == "flag" or d.get("flags_attached"):
+            return False                # not read, or a flag was read on its stem: a flagged note breaks a beam as ever
+        states.append((d.get("one_beam_count") or {}).get("state"))
+    return bool(states) and all(s == "silent" for s in states)
+
+
 def _beam_ink_of_event(rec: Record, ev: Dict[str, Any]) -> frozenset:
     """2.319: the beam ink (`Q.STROKE` row ids) the event's stem hangs on: the union over its heads (a chord shares one stem) of the `beam_strokes`
     the duration reader filed. The ADJUDICATE verdict carries it; a later EVALUATE / INFER verdict that superseded it is followed back to it."""
     out: set = set()
     for h in ev.get("noteheads") or ():
-        g = h.get("glyph") or h.get("beam_ink_of")      # a condensed staff's doubled copy carries its source head's key apart
-        v = rec.verdict(Q.DURATION, g) if g else None
-        seen = set()
-        while v is not None and v.get("id") not in seen:
-            seen.add(v.get("id"))
-            d = v.get("detail") or {}
-            if "beam_strokes" in d:
-                out.update(d.get("beam_strokes") or ())
-                break
-            v = rec.verdict_by_id(v["supersedes"]) if v.get("supersedes") else None
+        d = _adjudicated_duration_detail(rec, h.get("glyph") or h.get("beam_ink_of"))   # a condensed copy carries its source head's key apart
+        if d is not None:
+            out.update(d.get("beam_strokes") or ())
     return frozenset(out)
 
 

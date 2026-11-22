@@ -1136,6 +1136,63 @@ def _flags_on_reach_stem(ev: Evidence, cell, head_box, side: str, reach_row, tol
     return out, levels
 
 
+#: ROADMAP 2.319 r2: A FLAG HANGS ON THE STEM ITS INK MEETS (Sean 2026-11-18: "We use the boxes to identify something, but then claim only the
+#: ink. And when joining things or separating things, we use the ink to distinguish or connect, not the boxes"). `_attached_flags` joins a flag box
+#: to the stem FINDER's stems; where the finder joined no stem to the head (Brahms p25 0/3/1/3: a false `clefF` box over the note, the finder's stem
+#: refused under it) the flag the detector boxed was never asked, and with the bar-crop beam reader retired nothing else gave the note its value: a
+#: printed flagged eighth written a quarter. The one beam count HAS the stem, found by its ink (`beam_strokes.beam_count`, `stem_touches`). A flag
+#: box identifies the flag; its ink (`Q.GLYPH_STROKES`, the strokes it covers) is joined to that stem where one of those strokes touches the stem's
+#: ink, on the stem's right (`flag_hangs_right_of`), pointing the stem's way where its class names a way. Structural, no number. Never through ink
+#: another mark claimed (the head's own body touches its stem), never a box whose ink does not touch the stem, never where the count found no stem.
+FLAG_ON_THE_INK_STEM = True
+
+
+def flag_ink_meets_stem(way: Optional[str], flag_box: Sequence[float], covered: Sequence[int], views_by_ord: Dict[int, Any],
+                        stems: Sequence[Dict[str, Any]]) -> bool:
+    """2.319 r2 (`FLAG_ON_THE_INK_STEM`): the flag box `flag_box` (class direction `way`, None if it names none), whose ink is the strokes `covered`
+    (`Q.GLYPH_STROKES`), hangs on one of the one beam count's `stems` (`stem_box`, `stem_touches`, `side`): a stroke of its ink that no other mark
+    claimed touches the stem's ink, the flag reaches right of the stem, and it points the stem's way. Pure."""
+    ink = {int(o) for o in covered if int(o) in views_by_ord and views_by_ord[int(o)].kind not in ("owned", "contested")}
+    for st in stems:
+        if not st.get("stem_box") or st.get("side") not in ("up", "down"):
+            continue
+        if way is not None and way != st["side"]:
+            continue
+        if ink & set(st.get("stem_touches") or ()) and flag_hangs_right_of(tuple(st["stem_box"]), tuple(flag_box)):
+            return True
+    return False
+
+
+def _flags_on_ink_stem(ev: Evidence, cell, one_beam: Optional[Dict[str, Any]]):
+    """The detector's flags whose INK touches the stem the one beam count found by ink: (rows, levels, glyph-stroke rows). ROADMAP 2.319 r2."""
+    if not FLAG_ON_THE_INK_STEM or one_beam is None or one_beam.get("state") == "silent":
+        return [], 0, []
+    stems = [st for st in one_beam.get("stems") or () if st.get("stem_box") and st.get("side") in ("up", "down")]
+    if not stems:
+        return [], 0, []
+    views = {v.ordinal: v for v in _stroke_views(ev, cell)}
+    boxes = _cell_boxes(ev, cell)
+    out, used = [], []
+    for f in ev.rows(Q.FLAG, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        refusal = ev.verdict(Q.FLAG_IS_NOT_A_FLAG, subject=f.subject)
+        if refusal is not None and refusal.outcome is Outcome.DECIDED and refusal.value is True:
+            continue
+        box_row = boxes.get(f.subject.to_key())
+        box = _xywh_head(box_row.value) if box_row else None
+        gs = ev.rows(Q.GLYPH_STROKES, subject=f.subject)
+        if box is None or not gs or not isinstance(gs[-1].value, (list, tuple)):
+            continue
+        if flag_ink_meets_stem(_flag_class_direction(f.value), box, gs[-1].value, views, stems):
+            out.append(f)
+            used.append(gs[-1])
+    levels = 0
+    for f in out:
+        lv = _flag_levels_for(f.value)
+        if lv:
+            levels = max(levels, lv)
+    return out, levels, used
+
+
 def _right_of_within_reach(dot_box, head_box):
     """The horizontal half of `_in_augmentation_window` alone: the head lies
     wholly LEFT of the dot and no more than five dot-widths away. A staccato
@@ -3639,6 +3696,13 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # path above joins a flag through a CV stem; with none, `_flags_on_reach_stem` stands the ruler's own stem in for it.
     if not flags and reach_stem and head_box is not None:
         flags, flag_levels = _flags_on_reach_stem(ev, cell, head_box, side, side_verdict, tol)
+    # 2.319 r2: a head the stem finder joined no stem to carries the flag whose INK touches the stem the one beam count found by ink
+    flag_on_ink_stem = False
+    if not flags and not attached and not levels and not hollow:
+        flags, flag_levels, _gs_rows = _flags_on_ink_stem(ev, cell, one_beam)
+        if flags:
+            flag_on_ink_stem = True
+            used.extend(r.id for r in _gs_rows)
     # ⚠️⚠️ ROADMAP 2.18b, RULE 8: FLAGS THAT DISAGREE NARROW. `_attached_flags`
     # returns the MAX of its flags' levels, which is right while they agree
     # (two boxes, one glyph). Where one mark is boxed as `flag8th*` AND
@@ -3716,6 +3780,7 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
               # 2.319: the beam ink this note's stem hangs on (the one beam count's strokes, `Q.STROKE` row ids): which notes share a beam
               "stems_attached": len(attached), "beam_strokes": list(one_beam.get("beam_rows") or ()) if (one_beam is not None and levels and not hollow) else [],
               "flags_attached": len(flags), "flag_levels": flag_levels,
+              **({"flag_on_ink_stem": True} if flag_on_ink_stem else {}),
               "dots_attached": n_dots,
               "staff_space": space,
               "levels_certain": certain, "levels_possible": possible,

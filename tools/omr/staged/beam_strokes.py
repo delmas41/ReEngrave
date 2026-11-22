@@ -1357,6 +1357,9 @@ def beam_count(strokes: Sequence[StrokeView], role_by_ord: Dict[int, Dict[str, o
             extra += len(thick)
         per.append({"stem": stem.ordinal, "stem_row": stem.row_id, "side": sd, "certain": n, "possible": n + extra, "causes": causes,
                     "beam_ink": beam_ink_at_stem(strokes, role_by_ord, stem, tip),
+                    # 2.319 r2: the stem's own ink as the count followed it (crossings joined), and what that ink touches -- the flag reader joins a
+                    # flag to the stem by these where the stem finder found none (`rhythm._flags_on_ink_stem`)
+                    "stem_box": [round(float(v), 1) for v in stem.box], "stem_touches": sorted({j for j, _c in stem.touches}),
                     "beams": list(tip["beams"]), "hooks": list(tip["hooks"]), "stubs": list(tip["stubs"]), "doubt": list(tip["doubt"]),
                     "stem_beamed": bool(tip["stem_beamed"]), "own_head": list(tip["own_head"]), "thick_at_stem": thick, "tip_y": tip["tip_y"]})
     certain = min(int(p["certain"]) for p in per)

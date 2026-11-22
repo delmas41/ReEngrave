@@ -196,7 +196,7 @@ The thick bar joining stems; each beam halves the value.
 - **read by ADJUDICATE** (10): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/notehead_precision.py:_beam_piece_refusal`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:_beam_state`, `adjudicators/rhythm.py:_direction_from_a_beam_mate`, `adjudicators/rhythm.py:_rest_own_voice_split`, `adjudicators/rhythm.py:_sum_beats`, `adjudicators/stem_value.py:_member_of` +2 more
 - **read by EVALUATE** (12): `consequences.py:_bar_total_excluding`, `consequences.py:_chord_duration_also_reads`, `consequences.py:_group_length`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:_stem_value_also_reads`, `consequences.py:reconcile_chord_duration`, `consequences.py:reconcile_duration`, `consequences.py:share_stem_value` +4 more
 - **read by INFER** (7): `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `infer rule collapse_narrowed_by_bar`, `inferences.py:_event_beats`, `inferences.py:_walk`, `inferences.py:lone_event_decline`, `inferences.py:solve_bare_stem_bar`
-- **read by EXPORT** (6): `export.py:_beam_ink_of_event`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
+- **read by EXPORT** (6): `export.py:_adjudicated_duration_detail`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
 - **written** (declared): `<beam>` groups (2.319: notes whose stems hang on the same beam ink of the one beam count) and the note values; a note the count cannot settle is narrowed and marked.
 - **flags on its readers' paths** (as the code resolves them today): `page_beams.enabled()=OFF`
 - **open gaps** (4):
@@ -214,10 +214,10 @@ The hook on a lone stem; each hook halves the value.
 - **claims**: `flag` (stroke-owner tier 8 of 8, claim order 10 of 13 (stem_beam_flag)) a consumer: reads only ink no earlier claim took
 - **hands on** (facts): `duration`, `flag`, `flag_is_not_a_flag`
 - **decided by** (ADJUDICATE): `adjudicate_duration` -> `duration`; `adjudicate_flag_is_not_a_flag` -> `flag_is_not_a_flag`
-- **read by ADJUDICATE** (9): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/rhythm.py:_attached_flags`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:_flags_on_reach_stem`, `adjudicators/rhythm.py:_rest_own_voice_split`, `adjudicators/rhythm.py:_sum_beats`, `adjudicators/stem_value.py:_member_of`, `adjudicators/stem_value.py:_stem_of_a_second` +1 more
+- **read by ADJUDICATE** (10): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/rhythm.py:_attached_flags`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:_flags_on_ink_stem`, `adjudicators/rhythm.py:_flags_on_reach_stem`, `adjudicators/rhythm.py:_rest_own_voice_split`, `adjudicators/rhythm.py:_sum_beats`, `adjudicators/stem_value.py:_member_of` +2 more
 - **read by EVALUATE** (12): `consequences.py:_bar_total_excluding`, `consequences.py:_chord_duration_also_reads`, `consequences.py:_group_length`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:_stem_value_also_reads`, `consequences.py:reconcile_chord_duration`, `consequences.py:reconcile_duration`, `consequences.py:share_stem_value` +4 more
 - **read by INFER** (7): `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `infer rule collapse_narrowed_by_bar`, `inferences.py:_event_beats`, `inferences.py:_walk`, `inferences.py:lone_event_decline`, `inferences.py:solve_bare_stem_bar`
-- **read by EXPORT** (6): `export.py:_beam_ink_of_event`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
+- **read by EXPORT** (6): `export.py:_adjudicated_duration_detail`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
 - **written** (declared): the note value (an eighth or shorter); a flagged note is never put in a beam group.
 - **open gaps**: none derived
 
@@ -541,7 +541,7 @@ Every stroke on the page, before it is any mark; who owns each stroke.
 - **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `claimed_area`
 - **decided by** (ADJUDICATE): `adjudicate_stroke_owner` -> `stroke_owner`
 - **read by GATHER** (1): `gather.py:gather_clef_pagewide`
-- **read by ADJUDICATE** (21): `adjudicators/claim_final.py:entry`, `adjudicators/family_precision.py:_cell_owner_verdict`, `adjudicators/family_precision.py:_whole_rest_ink_not_a_block_refusal`, `adjudicators/ink_consult.py:owner_verdict`, `adjudicators/notehead_precision.py:_claimed_by_a_whole_rest`, `adjudicators/notehead_precision.py:_stem_end_ink_claimed`, `adjudicators/ownership.py:_unread_head_ink`, `adjudicators/ownership.py:adjudicate_accidental_owner` +13 more
+- **read by ADJUDICATE** (22): `adjudicators/claim_final.py:entry`, `adjudicators/family_precision.py:_cell_owner_verdict`, `adjudicators/family_precision.py:_whole_rest_ink_not_a_block_refusal`, `adjudicators/ink_consult.py:owner_verdict`, `adjudicators/notehead_precision.py:_claimed_by_a_whole_rest`, `adjudicators/notehead_precision.py:_stem_end_ink_claimed`, `adjudicators/ownership.py:_unread_head_ink`, `adjudicators/ownership.py:adjudicate_accidental_owner` +14 more
 - **read by EVALUATE** (1): `consequences.py:_missed_rest_witness`
 - **read by EXPORT** (1): `export.py:_stroke_owner_census`
 - **read by tools** (2): `trace.py:empty_claims`, `trace.py:funnel`
@@ -902,7 +902,7 @@ Which edition and movement this is; scanned or engraved.
 - `duration` read by ADJUDICATE: `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:_rest_own_voice_split`, `adjudicators/rhythm.py:_sum_beats`, `adjudicators/stem_value.py:_member_of`, `adjudicators/stem_value.py:_stem_of_a_second`, `adjudicators/unison_two.py:adjudicate_unison_voices`
 - `duration` read by EVALUATE: `consequences.py:_bar_total_excluding`, `consequences.py:_chord_duration_also_reads`, `consequences.py:_group_length`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:_stem_value_also_reads`, `consequences.py:reconcile_chord_duration`, `consequences.py:reconcile_duration`, `consequences.py:share_stem_value`, `consequences.py:size_head_ink_rest`, `consequences.py:size_measure_rest`, `consequences.py:size_reinstated_rest`, `consequences.py:size_unboxed_rest`
 - `duration` read by INFER: `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `infer rule collapse_narrowed_by_bar`, `inferences.py:_event_beats`, `inferences.py:_walk`, `inferences.py:lone_event_decline`, `inferences.py:solve_bare_stem_bar`
-- `duration` read by EXPORT: `export.py:_beam_ink_of_event`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
+- `duration` read by EXPORT: `export.py:_adjudicated_duration_detail`, `export.py:_own_voice_from_written_events`, `export.py:_place_dot_role_marks`, `export.py:_place_notes`, `export.py:guess_of`, `export.py:head_ink_guess_of`
 - `duration` read only OFF by default: `consequences.py:_left_the_bar`
 - `duration` belongs to: `--mark beam`, `--mark flag`
 
@@ -1026,14 +1026,14 @@ Which edition and movement this is; scanned or engraved.
 
 - `flag` filed by: GATHER `gather.py:gather_rhythm_marks`
 - `flag` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_flag_is_not_a_flag`, `adjudicate_unison_voices`
-- `flag` read by ADJUDICATE: `adjudicators/family_precision.py:adjudicate_flag_is_not_a_flag`, `adjudicators/rhythm.py:_attached_flags`, `adjudicators/rhythm.py:_flags_on_reach_stem`
+- `flag` read by ADJUDICATE: `adjudicators/family_precision.py:adjudicate_flag_is_not_a_flag`, `adjudicators/rhythm.py:_attached_flags`, `adjudicators/rhythm.py:_flags_on_ink_stem`, `adjudicators/rhythm.py:_flags_on_reach_stem`
 - `flag` belongs to: `--mark flag`
 
 ### `flag_is_not_a_flag` (Q.FLAG_IS_NOT_A_FLAG) -- LIVE
 
 - `flag_is_not_a_flag` decided by: ADJUDICATE `adjudicators/family_precision.py:adjudicate_flag_is_not_a_flag`
 - `flag_is_not_a_flag` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_unison_voices`
-- `flag_is_not_a_flag` read by ADJUDICATE: `adjudicators/rhythm.py:_attached_flags`, `adjudicators/rhythm.py:_flags_on_reach_stem`
+- `flag_is_not_a_flag` read by ADJUDICATE: `adjudicators/rhythm.py:_attached_flags`, `adjudicators/rhythm.py:_flags_on_ink_stem`, `adjudicators/rhythm.py:_flags_on_reach_stem`
 - `flag_is_not_a_flag` belongs to: `--mark flag`
 
 ### `gap_bridging` (Q.GAP_BRIDGING) -- FILED-BUT-NEVER-READ
@@ -1101,7 +1101,7 @@ Which edition and movement this is; scanned or engraved.
 - `glyph_strokes` abstained by (not a producer): `gather.py:gather_glyph_strokes`
 - `glyph_strokes` declared in `wants` (not a read): `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_stem_value`, `adjudicate_stroke_owner`
 - `glyph_strokes` read by GATHER: `gather.py:gather_clef_pagewide`
-- `glyph_strokes` read by ADJUDICATE: `adjudicators/notehead_precision.py:_stem_end_ink_claimed`, `adjudicators/rhythm.py:_dot_ink_owned_elsewhere`, `adjudicators/stem_value.py:_on_beam_ink`, `adjudicators/stroke_owner.py:_box_shares`, `adjudicators/stroke_owner.py:_claims`
+- `glyph_strokes` read by ADJUDICATE: `adjudicators/notehead_precision.py:_stem_end_ink_claimed`, `adjudicators/rhythm.py:_dot_ink_owned_elsewhere`, `adjudicators/rhythm.py:_flags_on_ink_stem`, `adjudicators/stem_value.py:_on_beam_ink`, `adjudicators/stroke_owner.py:_box_shares`, `adjudicators/stroke_owner.py:_claims`
 - `glyph_strokes` belongs to: `--mark ink`
 
 ### `group_symbol` (Q.GROUP_SYMBOL) -- LIVE
