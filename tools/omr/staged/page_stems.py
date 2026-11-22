@@ -807,6 +807,35 @@ def stem_runs_out_of_the_accidental(stroke: Any, acc_box: Sequence[float], sp: f
     return y < float(acc_box[1]) - tol or y + h > float(acc_box[3]) + tol
 
 
+def head_claimed_boxes(log: Any, page_sub: Any, page_map: Any) -> List[Tuple[float, float, float, float]]:
+    """The page boxes `(x0, y0, x1, y1)` of every page stroke a READ head claim holds (2.290 `page_head_one`: the head's own oval ink)."""
+    from .record import Q, Scope
+    out = []
+    for r in log.rows(Q.CLAIMED_AREA, page_sub, scope=Scope.SELF_AND_DESCENDANTS):
+        d = r.detail or {}
+        if d.get("owner") == "head" and d.get("standing", "READ") == "READ" and d.get("page_strokes"):
+            for i in d["page_strokes"]:
+                if 0 <= int(i) < len(page_map.strokes):
+                    x, y, w, h = (float(v) for v in page_map.strokes[int(i)].box)
+                    out.append((x, y, x + w, y + h))
+    return out
+
+
+def box_holds_a_head(acc_box: Sequence[float], head_pieces: Sequence[Sequence[float]]) -> bool:
+    """batch-2 r2 (fault 5, Brahms 5/0/11/3: an eighth with its stem down and its flag -- a "b" to the detector -- boxed `accidentalFlat`; the box
+    held the note's own stem, so the eighth and the note before it went unwritten). An accidental stands BESIDE its head and never holds the head's
+    oval: a detector accidental box that holds at least half of a piece of ink the head claim took as a head's own oval is over a note, not an
+    accidental, and holds no stroke (Sean 2026-11-18: the box says where to look, the ink is claimed; heads claim before stems). Pure."""
+    from .claims import INSIDE_SHARE_MIN
+    ax0, ay0, ax1, ay1 = (float(v) for v in acc_box)
+    for x0, y0, x1, y1 in head_pieces:
+        area = max(1.0, (x1 - x0) * (y1 - y0))
+        ix, iy = min(ax1, x1) - max(ax0, x0), min(ay1, y1) - max(ay0, y0)
+        if ix > 0 and iy > 0 and ix * iy / area >= INSIDE_SHARE_MIN:      # the register's own cut
+            return True
+    return False
+
+
 def held_strokes(log: Any, page_sub: Any, page_map: Any, detections: Optional[Dict[str, List[Any]]], cells: Sequence[Any],
                  local: Dict[int, Tuple[int, int]]) -> Dict[int, str]:
     """`{page stroke ordinal: owner}` an earlier claim holds (module doc): page-stroke claims (every owner but the heads' own ovals and this reader),
@@ -834,6 +863,7 @@ def held_strokes(log: Any, page_sub: Any, page_map: Any, detections: Optional[Di
     if detections:
         from .gather import _page_box
         from .record import Subject
+        head_pieces = head_claimed_boxes(log, page_sub, page_map)
         cell_by_key = {}
         for c in cells:
             key = local.get(c.staff_index)
@@ -850,6 +880,8 @@ def held_strokes(log: Any, page_sub: Any, page_map: Any, detections: Optional[Di
                 pb = _page_box(c, d)
                 if pb is None:
                     continue
+                if box_holds_a_head(pb, head_pieces):
+                    continue        # batch-2 r2 fault 5: a detector accidental box over a head's own oval is a misread note, holds nothing
                 for i in PCN.strokes_by_share(page_map, pb, index, SM.COVER_SHARE_MIN):
                     if stem_runs_out_of_the_accidental(page_map.strokes[int(i)], pb, sp_of(page_map, int(i))):
                         continue

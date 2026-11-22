@@ -76,3 +76,22 @@ def test_the_chords_own_heads_still_stand_on_the_stem():
     assert _by_member(heads, res, "glyph/5/1/10/7/8")["state"] == "one"
     assert _by_member(heads, res, "glyph/5/1/10/7/10")["state"] == "one"
     assert _by_member(heads, res, "glyph/5/1/10/7/18")["state"] == "none"
+
+
+# ── fault 5: Brahms 5/0/11/3 (second violins?), the bar's last eighth: stem down at the left, flag at its foot -- the detector boxed the note
+#    `accidentalFlat` (glyph/5/0/11/3/29), the box held the note's own stem (page stroke 3648), the eighth joined no stem and the bar lost its
+#    last two notes. Page px from the batch-2 ON gather of Brahms p5 (glyph boxes and the 2.290 head claims as filed).
+EIGHTH_AS_FLAT_BOX = (3036.0, 3084.0, 3072.0, 3192.0)          # glyph/5/0/11/3/29, accidentalFlat
+EIGHTH_HEAD_OVAL_PIECE = (3047.0, 3079.0, 3067.0, 3113.0)      # page stroke 3667, claimed by the head claim of glyph/5/0/11/3/13
+REAL_FLAT_BOX = (2742.0, 3030.0, 2772.0, 3105.0)               # glyph/5/0/11/3/0, the flat before the bar's G-flat
+QUARTER_HEAD_PIECE = (2623.0, 3091.0, 2654.0, 3128.0)          # page stroke 2975, the bar's first head (E-flat4)
+
+
+def test_an_accidental_box_over_a_heads_own_oval_holds_nothing():
+    heads = [EIGHTH_HEAD_OVAL_PIECE, QUARTER_HEAD_PIECE]
+    assert PS.box_holds_a_head(EIGHTH_AS_FLAT_BOX, heads)
+
+
+def test_control_a_real_flat_beside_its_head_still_holds_its_strokes():
+    assert not PS.box_holds_a_head(REAL_FLAT_BOX, [EIGHTH_HEAD_OVAL_PIECE, QUARTER_HEAD_PIECE])
+    assert not PS.box_holds_a_head(EIGHTH_AS_FLAT_BOX, [])      # the control can fail: without the head claim the box holds as before
