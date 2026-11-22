@@ -26,10 +26,13 @@ def file_strokes(log, strokes: Sequence[Stroke], *, sp: float, cell=(0, 0, 0, 0)
 
 
 def note_ink(head_box: Sequence[float], *, sp: float, side: str = "down", beams: int = 0, first: int = 0, stem_spaces: float = 3.5,
-             hook: bool = False) -> List[Stroke]:
+             hook: bool = False, beam_thick: float = 0.55, stub: bool = False) -> List[Stroke]:
     """The strokes of one note: the head's blob, its stem on the engraving side (up -> right, down -> left) running `stem_spaces` past the
     head, and `beams` beams at the stem's tip, each joining it to a second stem three spaces to the right (a beamed pair). `hook`: a short
-    curve at a bare tip (a flag's ink), touching only this stem. Ordinals start at `first`: blob, stem, beams..., second stem / hook."""
+    curve at a bare tip (a flag's ink), touching only this stem. `beam_thick`: the beams' thickness in spaces (0.4375-0.5 is the band where a
+    stroke joining two stems is only POSSIBLY a beam, `beam_strokes.BEAM_DOUBT_MIN_THICKNESS_SP`). Ordinals start at `first`: blob, stem, beams...,
+    second stem / hook. `stub`: with `beams`, a short beam-thick bar one level further in touching only this stem (a possible further level: the
+    count reads `beams` certain, one more possible)."""
     hx, hy, hw, hh = (float(v) for v in head_box)
     w = 0.25 * sp
     blob, stem = first, first + 1
@@ -41,19 +44,23 @@ def note_ink(head_box: Sequence[float], *, sp: float, side: str = "down", beams:
         tip = y0
     beam_ords = [first + 2 + k for k in range(beams)]
     other = first + 2 + beams
+    stub_ord = [other + 1] if (stub and beams) else []
     out: List[Stroke] = [("blob", (hx, hy, hw, hh), max(hw, hh) / sp, 0.9, [stem]),
-                         ("vertical", (sx, y0, w, y1 - y0), (y1 - y0) / sp, 0.25, [blob] + beam_ords + ([other] if hook else []))]
+                         ("vertical", (sx, y0, w, y1 - y0), (y1 - y0) / sp, 0.25, [blob] + beam_ords + ([other] if hook else []) + stub_ord)]
     span = 3.0 * sp
     for k in range(beams):
         if side == "down":
             by = tip - 0.5 * sp - k * 0.75 * sp
         else:
             by = tip + k * 0.75 * sp
-        out.append(("horizontal", (sx, by, span, 0.5 * sp), span / sp, 0.55, [stem, other]))
+        out.append(("horizontal", (sx, by, span, 0.5 * sp), span / sp, beam_thick, [stem, other]))
     if beams:
         ox = sx + span - w
         oy0, oy1 = (tip - stem_spaces * sp, tip) if side == "down" else (tip, tip + stem_spaces * sp)
         out.append(("vertical", (ox, oy0, w, oy1 - oy0), stem_spaces, 0.25, beam_ords))
+        if stub_ord:
+            by = tip - 0.5 * sp - beams * 0.75 * sp if side == "down" else tip + beams * 0.75 * sp
+            out.append(("horizontal", (sx, by, 1.0 * sp, 0.5 * sp), 1.0, 0.55, [stem]))
     elif hook:
         hy0 = tip - 1.2 * sp if side == "down" else tip
         out.append(("curve", (sx + w, hy0, 0.8 * sp, 1.2 * sp), 1.2, 0.3, [stem]))

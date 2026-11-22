@@ -22,12 +22,14 @@ ENV = {consequences.NARROWED_BAR_LENGTH_UNKNOWN_ENV: "1", consequences.BAR_SUM_C
 class _Bar:
     """2/4: a disputed quarter A (head_and_marks, beams in the cell) and three solid eighths = 2.5 beats; only A -> eighth lands."""
 
-    def __init__(self, meter_reason="voted", voices=1, companion_reason="stem_tip_reads_no_beam", a_detail=None,
+    # 2.319 r2: the solid companion reading is `hooks_counted` (the bar-crop reader's `stem_tip_reads_no_beam` was retired with it), and "beam
+    # ink seen in the cell" is the one beam count's `cell_beams` (was the bar-crop reader's `yolo_beams` / `cv_beams`)
+    def __init__(self, meter_reason="voted", voices=1, companion_reason="hooks_counted", a_detail=None,
                  companion_detail=None, a_levels=0, a_beats=1.0, a_reason="head_and_marks"):
         self.log = R.Log()
         self.events = []
         self.sub = []
-        a = self._note(a_beats, a_levels, a_reason, a_detail if a_detail is not None else {"yolo_beams": 1,
+        a = self._note(a_beats, a_levels, a_reason, a_detail if a_detail is not None else {"one_beam_count": {"cell_beams": 1},
                                                                                                  "beam_evidence": "none_over_this_note"})
         self.a = a
         for _ in range(3):
@@ -79,14 +81,6 @@ class TestCorrection(unittest.TestCase):
         self.assertEqual(v.value["beats"], 1.0)
         self.assertTrue(v.detail["one_note_refusal"].startswith("other_note_not_solid"))
 
-    def test_relaxed_accepts_a_two_source_beamed_eighth(self):
-        two = {"beam_evidence": "read", "yolo_beams": 1, "cv_beams": 1}
-        b = _Bar(companion_reason="head_and_marks", companion_detail=two)
-        b.fire("relaxed")
-        self.assertEqual(b.log.verdict(Q.DURATION, b.a).reason, one_note.CORRECTS_REASON)
-        b2 = _Bar(companion_reason="head_and_marks", companion_detail=two)
-        b2.fire("strict")                                                     # the same bar, strict: refused
-        self.assertEqual(b2.log.verdict(Q.DURATION, b2.a).reason, consequences.BAR_DISAGREES_REASON)
 
     def test_a_meter_the_bars_derived_is_refused(self):
         b = _Bar(meter_reason="derived_from_bars")
@@ -107,7 +101,7 @@ class TestCorrection(unittest.TestCase):
                          "shortening_without_a_beam_seen_in_the_cell")
 
     def test_a_disputed_note_that_is_itself_solid_is_never_changed(self):
-        b = _Bar(a_reason="stem_tip_reads_no_beam")
+        b = _Bar(a_reason="hooks_counted")
         b.fire("strict")
         v = b.log.verdict(Q.DURATION, b.a)
         self.assertEqual(v.value["beats"], 1.0)

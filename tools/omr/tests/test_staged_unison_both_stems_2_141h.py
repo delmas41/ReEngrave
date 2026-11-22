@@ -18,6 +18,7 @@ from tools.omr.staged.adjudicators import rhythm
 from tools.omr.staged.record import Log, Outcome, Q, READERS
 from tools.omr.tests.test_staged_duration import _staff_space
 from tools.omr.tests.test_staged_rhythm_leftovers import (_head, _ink_row, _real_stem, _stroke)
+from tools.omr.tests.stroke_map_fixture import file_strokes, strokes_from_boxes
 
 FLAG = rhythm.UNISON_BOTH_STEMS_ENV
 
@@ -43,6 +44,10 @@ def _unison(log, down_beams=2, up_beams=1, with_up_stem=True):
     downs = [(154, 895, 628, 70), (154, 840, 628, 40)][:down_beams]
     for b in ups + downs:
         _ink_row(log, _stroke(log, b), 2.3, 0.01, (True, True))
+    # 2.319 r2: the same marks in the stroke map, which the one beam count reads (each beam 0.55 sp thick, joining its voice's two stems)
+    stems = ([(261, 351, 19, 311)] if with_up_stem else []) + [(146, 560, 26, 413), (400, 351, 26, 311), (565, 566, 25, 394)]
+    file_strokes(log, strokes_from_boxes(heads=[(143, 523, 139, 124)], stems=stems, lines=[tuple(b) + (0.55,) for b in ups + downs], sp=100),
+                 sp=100)
     _reach(log, g, "down")
     return g
 

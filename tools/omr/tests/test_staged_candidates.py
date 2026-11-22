@@ -15,6 +15,14 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import (Candidate, Log, Outcome, Q, READERS,
                                      Scope, Subject, Verdict)
 from tools.omr.tests.test_staged_duration import CELL, X, _beam, _note
+from tools.omr.tests.stroke_map_fixture import file_note_ink
+from tools.omr.tests.test_staged_duration import SPACE
+
+
+def _possible_beam(log):
+    """2.319 r2: the note at X's stem, joined to a second stem by a stroke in the thickness band where it is only POSSIBLY a beam: the one
+    beam count reads 0 certain, 1 possible (the bar-crop reader's "stroke ending at the note", retired, was this fixture's ambiguity)."""
+    file_note_ink(log, (X - 10, 0, 20, 16), sp=SPACE, beams=1, beam_thick=0.45)
 
 
 import pytest as _pytest_2_162
@@ -85,6 +93,7 @@ class TestABeamReadingIsNativelyASet(unittest.TestCase):
         log = Log()
         g = _note(log, 0)
         _beam(log, y=40, x0=X - 60, x1=X - 5)      # stops just short
+        _possible_beam(log)                          # 2.319 r2: the one beam count reads a stroke only POSSIBLY a beam
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertIs(v.outcome, Outcome.NARROWED)
@@ -96,6 +105,7 @@ class TestABeamReadingIsNativelyASet(unittest.TestCase):
         log = Log()
         g = _note(log, 0)
         _beam(log, y=40, x0=X - 60, x1=X - 5)
+        _possible_beam(log)                          # 2.319 r2: the one beam count reads a stroke only POSSIBLY a beam
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertGreater(v.candidates[0].support, v.candidates[1].support)
@@ -110,6 +120,7 @@ class TestAConsumerNeedNotCollapseEarly(unittest.TestCase):
         log = Log()
         g = _note(log, 0)
         _beam(log, y=40, x0=X - 60, x1=X - 5)
+        _possible_beam(log)                          # 2.319 r2: the one beam count reads a stroke only POSSIBLY a beam
         adjudicate.run(log)
         # ⚠️ METER's spec, because it DECLARES Q.DURATION in `wants` --
         # the declaration is enforced, so a probe cannot read what it did
@@ -131,9 +142,13 @@ class TestTheMeterResolvesWhatTheBeamsCouldNot(unittest.TestCase):
     rather than arithmetic +/-1, so the meter chooses among readings the beams
     actually support."""
 
-    def _bar(self, meter, raw):
+    def _bar(self, meter, raw, further=False):
         """A half note in its own column (2.0, unambiguous) plus a quarter
         under a stroke that stops just short of it (1.0 **or** 0.5).
+
+        2.319 r2: `further`: instead an eighth with a possible second level (0.5 **or** 0.25): the one beam count reads one beam and a stub
+        one level in. A bar may only CONFIRM a level the page shows (`consequences._shortens_without_evidence`, Sean 2026-10-12), and a
+        stroke only POSSIBLY a beam is no such evidence, so the bar's choice is tested on the narrowing whose shorter readings the beam carries.
 
         ⚠️ The half note sits at a DIFFERENT x on purpose: beams are
         cell-scoped, so two notes in one column see the same strokes and BOTH
@@ -144,13 +159,17 @@ class TestTheMeterResolvesWhatTheBeamsCouldNot(unittest.TestCase):
         _note(log, 0, "noteheadHalf", x=400)        # 2.0, its own column
         g = _note(log, 1)                           # 1.0 or 0.5
         _beam(log, y=40, x0=X - 60, x1=X - 5)
+        if further:
+            file_note_ink(log, (X - 10, 0, 20, 16), sp=SPACE, beams=1, stub=True)
+        else:
+            _possible_beam(log)                      # 2.319 r2: the one beam count reads a stroke only POSSIBLY a beam
         log.observe(R.staff(0, 0, 0), Q.METER_TEMPLATE, meter,
                     reader=READERS.TEMPLATE, frame="header_window",
                     score=0.9, raw=raw)
         return log, g
 
     def test_the_meter_settles_a_narrowed_note(self):
-        log, g = self._bar(meter=(5, 8), raw="5/8")   # 2.5 beats
+        log, g = self._bar(meter=(5, 8), raw="5/8", further=True)   # 2.5 beats
         adjudicate.run(log)
         self.assertIs(log.verdict(Q.DURATION, g).outcome, Outcome.NARROWED)
         report = evaluate.run(log)
@@ -191,7 +210,7 @@ class TestTheMeterResolvesWhatTheBeamsCouldNot(unittest.TestCase):
                           if f[0] == "reconcile_duration"], [])
 
     def test_the_superseded_reading_stays_on_the_record(self):
-        log, g = self._bar(meter=(5, 8), raw="5/8")
+        log, g = self._bar(meter=(5, 8), raw="5/8", further=True)
         adjudicate.run(log)
         before = log.verdict(Q.DURATION, g)
         evaluate.run(log)

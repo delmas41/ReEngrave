@@ -16,12 +16,15 @@ from tools.omr.staged import consequences                        # noqa: F401
 from tools.omr.staged.record import Kind, Outcome, Q
 from tools.omr.staged.adjudicators import rhythm
 from tools.omr.tests.test_staged_rest_twin_2_142 import _fixture
+from tools.omr.tests.stroke_map_fixture import file_strokes
 
 ON = {"OMR_REFUSED_HEAD_NO_DURATION": "1", "OMR_HEAD_IS_A_REST_TWIN": "1"}
 
 
 def _decide(env, **kw):
     log, h = _fixture(**kw)
+    # 2.319 r2: the head's ink in the stroke map (no stem in this fixture): the one beam count reads a stemless head as carrying no beam
+    file_strokes(log, [("blob", (300, 200, 130, 100), 1.3, 0.9, [])], sp=100.0)
     with mock.patch.dict(os.environ, env):
         adjudicate.run(log)
     return log, h

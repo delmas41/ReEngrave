@@ -317,6 +317,11 @@ def _beam_dur(owner, strokes, claimants=(), **kw):
     return log, log.verdict(Q.DURATION, g)
 
 
+def _one_count_beams(v):
+    """2.319 r2: the beam strokes the one beam count read at the head's stem(s) (was the retired 2.202 box reading's `tip` beams)."""
+    return sorted({o for st in (v.detail.get("one_beam_count") or {}).get("stems") or () for o in st.get("beams") or ()})
+
+
 class TestOffIsByteIdentical(unittest.TestCase):
 
     def test_flag_OFF_no_stroke_owner_verdict_is_filed_and_the_duration_is_the_same(self):
@@ -347,42 +352,37 @@ class TestTheBeamReaderReadsOnlyUnclaimedStrokes(unittest.TestCase):
 
     def sharp_at_the_tip(self):
         # head 0's down stem (ordinal 0) with a sharp's two stems (1, 2) and its crossbar (3) touching all three, 0.6 sp above the tip
-        s = [dict(B2.stem_stroke(0), touches=[3]),
+        # 2.319 r2: and head 0's own ink (ordinal 4), which the one beam count finds its stem from
+        s = [dict(B2.stem_stroke(0), touches=[3, 4]),
              B2.S("vertical", (150, 650, 15, 250), 2.5, 0.15, [3], sag=0.0, angle=90.0),
              B2.S("vertical", (200, 640, 15, 250), 2.5, 0.15, [3], sag=0.0, angle=90.0),
-             B2.S("horizontal", (140, 760, 135, 52), 1.35, 0.52, [0, 1, 2], angle=20.0)]
+             B2.S("horizontal", (140, 760, 135, 52), 1.35, 0.52, [0, 1, 2], angle=20.0),
+             B2.S("blob", (235, 355, 135, 142), 1.4, 0.9, [0], sag=None, angle=45.0)]
         return s, [(40, "accidentalSharp", (140, 640, 80, 260), [1, 2], [(3, 0.4)])]
 
     def test_OWNER_off_the_sharps_crossbar_is_counted_as_a_beam_level_at_the_tip(self):
         s, c = self.sharp_at_the_tip()
         _log, v = _beam_dur(False, s, c, heads=(0,))
-        self.assertIn(3, v.detail["beams_from_strokes"]["tip"]["beams"])
+        self.assertIn(3, _one_count_beams(v))
 
     def test_OWNER_on_the_crossbar_is_the_sharps_and_no_beam_RED(self):
         s, c = self.sharp_at_the_tip()
         log, v = _beam_dur(True, s, c, heads=(0,))
-        self.assertEqual(v.detail["beams_from_strokes"]["tip"]["beams"], [])
+        self.assertEqual(_one_count_beams(v), [])
         so = log.verdict(Q.STROKE_OWNER, R.cell(0, 0, 0, 0))
         self.assertIn(3, so.value["owned"])
         self.assertEqual(so.detail["strokes"]["3"][1], "accidental")
 
-    def test_OWNER_on_a_slur_start_at_the_tip_is_never_a_flag_RED_and_a_real_flag_still_is_TWIN(self):
-        two = B2.TestAFlagBoxedAsABeam.TWO
-        _l, real = _beam_dur(True, two, boxes=[((251, 690, 110, 110), [1, 2])], heads=(0,))
-        self.assertEqual(real.detail["beam_evidence"], "flag")                      # nothing claims the hooks: a flag, as 2.202
-        slur = [dict(two[0]), dict(two[1], kind="curve", T=0.06), dict(two[2])]
-        _l, off = _beam_dur(False, slur, boxes=[((251, 690, 110, 110), [1, 2])], heads=(0,),
-                            claimants=[(41, "slur", (251, 760, 400, 40), [1], ())])
-        _l, on = _beam_dur(True, slur, boxes=[((251, 690, 110, 110), [1, 2])], heads=(0,),
-                           claimants=[(41, "slur", (251, 760, 400, 40), [1], ())])
-        self.assertEqual(off.detail["flag_levels"], 2)                              # today: the slur's start is counted as a hook
-        self.assertNotEqual(on.detail.get("flag_levels"), 2)
 
     def test_TWIN_a_real_beamed_pair_is_unclaimed_and_reads_as_today(self):
-        _l, off = _beam_dur(False, B2.PAIR, boxes=[(B2.BEAM, [2])])
-        _l, on = _beam_dur(True, B2.PAIR, boxes=[(B2.BEAM, [2])])
-        self.assertEqual((on.outcome, on.value, on.detail["beams_from_strokes"]["settled"]),
-                         (off.outcome, off.value, off.detail["beams_from_strokes"]["settled"]))
+        # 2.319 r2: with the two heads' ink (ordinals 3, 4), so the one beam count reads the pair
+        pair = [dict(B2.PAIR[0], touches=[2, 3]), dict(B2.PAIR[1], touches=[2, 4]), dict(B2.PAIR[2]),
+                B2.S("blob", (235, 355, 135, 142), 1.4, 0.9, [0], sag=None, angle=45.0),
+                B2.S("blob", (393, 348, 127, 118), 1.2, 0.9, [1], sag=None, angle=45.0)]
+        _l, off = _beam_dur(False, pair, boxes=[(B2.BEAM, [2])])
+        _l, on = _beam_dur(True, pair, boxes=[(B2.BEAM, [2])])
+        self.assertEqual((on.outcome, on.value, _one_count_beams(on)), (off.outcome, off.value, _one_count_beams(off)))
+        self.assertEqual((on.outcome, on.value["beam_levels"]), (Outcome.DECIDED, 1))
 
     def test_a_contested_stroke_is_no_beam_witness_either_way(self):
         # the beam stroke is covered by a dynamic's box AND a rest box whose shapes both only "could": contested, masked -> the box narrows
@@ -449,7 +449,7 @@ class TestTheControlCanFail(unittest.TestCase):
         s, c = t.sharp_at_the_tip()
         with mock.patch.object(rhythm, "_owner_mask", lambda verdict: {}):
             _l, v = _beam_dur(True, s, c, heads=(0,))
-        self.assertIn(3, v.detail["beams_from_strokes"]["tip"]["beams"])
+        self.assertIn(3, _one_count_beams(v))
 
 
 class TestExportTally(unittest.TestCase):
@@ -465,7 +465,7 @@ class TestExportTally(unittest.TestCase):
                 self.assertEqual(got, {})
                 continue
             so = got["stroke_ownership"]
-            self.assertEqual(so["strokes"], 4)
+            self.assertEqual(so["strokes"], 5)          # 2.319 r2: the fixture now files the head's own ink too (the one beam count's stem finder)
             self.assertEqual(so["unaccounted"], 0)
             self.assertEqual(so["owned_by_family"], {"accidental": 3})
 

@@ -251,7 +251,9 @@ class TestOffIsByteIdentical(unittest.TestCase):
         for fin in ((), (UP,)):
             bare, gb = run(False, [], finder=fin)
             mapped, gm = run(False, [V(0, UP)], finder=fin)
-            for q in (Q.STEM_DIRECTION, Q.DURATION):
+            # 2.319 r2: STEM_DIRECTION only -- the duration reads the stroke map through the one beam count whatever this flag says
+            # (with no map it cannot tell, rule 8), so the map is no longer inert for it
+            for q in (Q.STEM_DIRECTION,):
                 a, b = bare.verdict(q, gb[0]), mapped.verdict(q, gm[0])
                 for f in ("outcome", "value", "reason", "detail", "candidates"):
                     self.assertEqual(getattr(a, f), getattr(b, f), (q, f, fin))

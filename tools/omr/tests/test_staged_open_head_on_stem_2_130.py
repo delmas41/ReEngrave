@@ -19,6 +19,7 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Outcome, Q, READERS
 
 from tools.omr.tests.test_staged_duration import CELL, SPACE, _flag, _staff_space, _stem, _beam
+from tools.omr.tests.stroke_map_fixture import file_note_ink
 
 
 # ROADMAP 2.173 (`OMR_WHOLE_NEEDS_HOLLOW_NO_STEM` default ON, Sean 2026-10-19/20): this file tests the
@@ -141,6 +142,7 @@ class TestAWholeClassHeadWithAStemIsAHalf(unittest.TestCase):
     def test_CONTROL_a_black_quarter_with_a_stem_stays_a_quarter(self):
         log = Log()
         g = _head(log, "noteheadBlackOnLine")
+        file_note_ink(log, (135, 90, 26, 14), sp=SPACE, side="up")      # 2.319 r2: the bare stem the one beam count reads
         _ink(log, g, filled=True)
         _beam(log, y=300, x0=0, x1=10)
         v = _verdict(log, g)

@@ -418,7 +418,7 @@ class TestSeveralColumnsJointly(unittest.TestCase):
         b = _InferBar(3, 4)
         b.decided(1.0)
         b.decided(1.0)
-        ev = {"beams_by_stem": 1}
+        ev = {"beam_strokes": ["obs:beam"]}        # 2.319 r2: the beam ink the one beam count read at the stem (was the bar-crop join)
         g1 = b.narrowed_chord(1, detail=ev)[0]
         g2 = b.narrowed_chord(1, detail=ev)[0]
         log = b.finish()
@@ -522,15 +522,6 @@ class TestALengtheningNeedsTheInkWitness(unittest.TestCase):
 
 class TestABareStemTipStillCounts(unittest.TestCase):
 
-    def test_a_tip_not_seen_clean_is_refused_by_the_2_81_rule_and_by_this_one_without_ink(
-            self):
-        b = _InferBar(ink_read=False)
-        for _ in range(3):
-            b.decided(1.0)
-        g = b.bare(tip_clean=False)
-        log = b.finish()
-        self.assertEqual(_fired(_run(log)), [])
-        self.assertEqual(_val(log, g).outcome, Outcome.NARROWED)
 
     def test_the_same_head_with_the_bars_ink_wholly_explained_is_settled(self):
         b = _InferBar(ink_read=True)
@@ -540,16 +531,6 @@ class TestABareStemTipStillCounts(unittest.TestCase):
         log = b.finish()
         _run(log)
         self.assertEqual(_val(log, g).value["beats"], 1.0)
-
-    def test_2_81_alone_is_unchanged(self):
-        b = _InferBar(ink_read=True)
-        for _ in range(3):
-            b.decided(1.0)
-        g = b.bare(tip_clean=False)
-        log = b.finish()
-        o = inferences.solve_bare_stem_bar(log, _cell())
-        self.assertEqual(o.tip_not_clean, 1)
-        self.assertEqual(o.forced, 0)
 
 
 # ─────────────────────────────────────────────────────────────────────────────

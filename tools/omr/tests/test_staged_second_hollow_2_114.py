@@ -22,7 +22,8 @@ from tools.omr.staged import record as R
 from tools.omr.staged import second_hollow as SH
 from tools.omr.staged.record import ABSTAIN, Log, Outcome, Q, READERS
 
-from tools.omr.tests.test_staged_duration import CELL, _beam, _dot, _note, _staff_space, _stem
+from tools.omr.tests.test_staged_duration import CELL, SPACE, _beam, _dot, _note, _staff_space, _stem
+from tools.omr.tests.stroke_map_fixture import file_note_ink, file_strokes
 from tools.omr.tests.test_staged_pipeline import FakeDet, FakeDetector, build_page
 
 
@@ -208,11 +209,12 @@ class _Heads(unittest.TestCase):
         log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, box_w, box_h), reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         _stem(log, x=135, y=38, h=60)
+        file_note_ink(log, (135, 90, box_w, box_h), sp=SPACE, side="up")     # 2.319 r2: the bare stem the one beam count reads
         if second:
             _second_row(log, g)
         return g
 
-    def _second_only(self, log, *, cls="noteheadHalfInSpace", stem=True):
+    def _second_only(self, log, *, cls="noteheadHalfInSpace", stem=True, beams=0):
         _staff_space(log)
         log.abstain(CELL, Q.BEAM_STROKE, reader=READERS.CV_LINES, frame="cell:0", reason=ABSTAIN.NO_LINE_ACCEPTED)
         g = R.glyph(0, 0, 0, 0, 5)
@@ -220,6 +222,9 @@ class _Heads(unittest.TestCase):
         log.observe(g, Q.GLYPH_BOX, (cls, 135, 90, 20, 16), reader=READERS.SECOND_DETECTOR, frame="cell:0", score=0.8)
         if stem:
             _stem(log, x=135, y=38, h=60)
+            file_note_ink(log, (135, 90, 20, 16), sp=SPACE, side="up", beams=beams)   # 2.319 r2: the stem (and beams) in the stroke map
+        else:
+            file_strokes(log, [("blob", (135, 90, 20, 16), 1.25, 0.9, [])], sp=SPACE)
         _second_row(log, g, relation="second_only", cls=cls)
         return g
 
@@ -359,7 +364,7 @@ class TestAHeadOnlyTheSecondDetectorBoxed(_Heads):
 
     def test_a_beam_over_it_contradicts_a_hollow_head_RED(self):
         log = Log()
-        g = self._second_only(log)
+        g = self._second_only(log, beams=1)          # 2.319 r2: a beam the one beam count reads on its stem
         _beam(log, y=40, x0=100, x1=180)
         _ink(log, g, center=0.45, ring=0.85)
         v = self._duration(log, g)

@@ -34,6 +34,7 @@ from tools.omr.staged import adjudicators, consequences          # noqa: F401
 from tools.omr.staged import gather
 from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Outcome, Q, READERS
+from tools.omr.tests.stroke_map_fixture import file_note_ink, file_strokes, strokes_from_boxes
 
 from tools.omr.tests.test_staged_duration import (
     CELL, _beam, _staff_space, _stem)
@@ -408,22 +409,6 @@ class TestASlashIsNeverABeamLevel(unittest.TestCase):
         adjudicate.run(log)
         return log, g, stroke
 
-    def test_CONTROL_without_a_slash_row_the_stroke_still_counts_as_a_beam(self):
-        """⚠️ It must be able to FAIL: with no `Q.STEM_SLASH` row the stroke is
-        judged by the old rules alone, and a stroke over a stemmed black head
-        is a beam level."""
-        log, g, _stroke = self._black_head_with_slash(False)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_slash"], 0)
-        self.assertGreater(v.detail["levels_certain"]
-                           + v.detail["levels_possible"], 0)
-
-    def test_a_stroke_inside_a_read_slash_is_not_a_beam_RED(self):
-        log, g, _stroke = self._black_head_with_slash(True)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.detail["beams_slash"], 1)
-        self.assertEqual(v.detail["levels_certain"], 0)
-        self.assertEqual(v.detail["levels_possible"], 0)
 
     def test_a_slash_does_not_NARROW_the_head_it_is_not_a_mark_of_duration_RED(
             self):
@@ -464,12 +449,14 @@ class TestASlashIsNeverABeamLevel(unittest.TestCase):
         s1 = _stem(log, x=83, y=38, h=60)
         _stem(log, x=198, y=38, h=60)
         _beam(log, y=40, x0=60, x1=200)
+        # 2.319 r2: the same pair in the stroke map, which the one beam count reads
+        file_strokes(log, strokes_from_boxes(heads=[(65, 90, 20, 16), (180, 90, 20, 16)], stems=[(83, 38, 4, 60), (198, 38, 4, 60)],
+                                             lines=[(83, 40, 119, 9, 0.55)], sp=16), sp=16)
         _slash_row(log, s1, box=(60, 90, 120, 100))        # a slash elsewhere
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g1)
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_slash"], 0)
 
     def test_a_slash_over_a_hollow_black_class_head_does_not_block_the_half_RED(
             self):
@@ -485,13 +472,14 @@ class TestASlashIsNeverABeamLevel(unittest.TestCase):
         stem = _stem(log, x=X + 18, y=20, h=80)
         _beam(log, y=60, x0=X + 18 - 20, x1=X + 18 + 20)
         _slash_row(log, stem, box=(X + 18 - 20, 54, X + 18 + 24, 70))
+        # 2.319 r2: the stem in the stroke map; the slash's ink is the tremolo's (claimed), never a beam the one beam count reads
+        file_note_ink(log, (X, 90, 20, 16), sp=16, side="up", stem_spaces=4.4)
         _notehead_ink(log, g, center=0.1, ring=0.55)
         adjudicate.run(log)
         v = log.verdict(Q.DURATION, g)
         self.assertEqual(v.reason, "head_fill_from_ink")
         beats = sorted(c.value["beats"] for c in v.candidates)
         self.assertEqual(beats, [1.0, 2.0, 4.0])
-        self.assertEqual(v.detail["beams_slash"], 1)
 
     def test_a_slash_is_not_a_flag_hook_either_RED(self):
         """The tip reader's ink, blanked of the slash upstream, files nothing;

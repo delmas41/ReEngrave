@@ -88,28 +88,6 @@ def _do_not_require_an_optional_local_install(monkeypatch):
     monkeypatch.setenv("OMR_SURYA_PYTHON", sys.executable)
 
 
-@pytest.fixture(autouse=True)
-def _pins_the_retired_beam_reader(request):
-    """ROADMAP 2.319 retired the bar-crop beam reader (A) and the flag `OMR_ONE_BEAM_COUNT` that kept it switchable, so a test can no
-    longer be pinned to it by an environment variable. The tests listed in `retired_beam_reader_pins_2_319.json` build their beams
-    from that reader's rows (`Q.BEAM_STROKE` boxes with no stroke map) or assert a value only it produced: each is SKIPPED, named, until
-    it is re-pinned on stroke-map rows from a judged mark or deleted with the reading it tested (ROADMAP 2.319: the list must end empty).
-    Nothing else is touched."""
-    import json as _j
-    import pathlib as _p
-    global _PINNED_2_319
-    if _PINNED_2_319 is None:
-        try:
-            _PINNED_2_319 = set(_j.loads((_p.Path(__file__).parent / "retired_beam_reader_pins_2_319.json").read_text()))
-        except (OSError, ValueError):
-            _PINNED_2_319 = set()
-    if request.node.nodeid in _PINNED_2_319:
-        pytest.skip("2.319: built on the retired bar-crop beam reader; re-pin on stroke-map rows or delete")
-
-
-_PINNED_2_319 = None
-
-
 # ---------------------------------------------------------------------------
 # Fast/slow test tiers, DERIVED from measured durations rather than hand-listed
 # ---------------------------------------------------------------------------

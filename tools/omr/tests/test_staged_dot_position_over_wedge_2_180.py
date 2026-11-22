@@ -18,7 +18,17 @@ from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged.adjudicators import aug_dot_join as AJ
 from tools.omr.staged.record import Outcome, Q, READERS
-from tools.omr.tests.test_staged_dot_position_2_128 import _dot, _head, _jlog, _role
+from tools.omr.tests.test_staged_dot_position_2_128 import JOIN_SPACE, _dot, _jlog, _role
+from tools.omr.tests.test_staged_dot_position_2_128 import _head as _head_box
+from tools.omr.tests.stroke_map_fixture import file_strokes
+
+
+def _head(log, gi, pos, x=100, cls="noteheadHalf"):
+    """2.128's head, and its ink in the stroke map (no stem in this fixture): the one beam count reads a stemless head as carrying no beam
+    (2.319 r2; with no map it cannot tell and a black head is narrowed, rule 8)."""
+    g = _head_box(log, gi, pos, x=x, cls=cls)
+    file_strokes(log, [("blob", (x - 10, 0, 20, 16), 1.25, 0.9, [])], sp=float(JOIN_SPACE), first=10 * gi)
+    return g
 
 ON = {"OMR_DOT_POSITION_OVER_WEDGE": "1", "OMR_STACCATISSIMO_SHAPE": "1",
       "OMR_DOT_POSITION_JOIN": "1"}
