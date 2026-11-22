@@ -31,6 +31,7 @@ from tools.omr.staged.record import ABSTAIN, Log, Outcome, Q, READERS
 
 from tools.omr.tests.test_staged_duration import (CELL, SPACE, _beam, _flag, _notehead_ink,
                                                   _staff_space, _stem, _stem_tip_ink)
+from tools.omr.tests.stroke_map_fixture import file_note_ink
 
 PAGE_DX, PAGE_DY = 1000.0, 900.0        # the synthetic cell's page offset (scale 1)
 
@@ -70,23 +71,6 @@ def _discounted_head(log, *, with_tip=None, hooks=None):
 
 class TestAFlagReadAtTheTipOutranksTheDiscount(unittest.TestCase):
 
-    def test_CONTROL_without_a_tip_row_the_head_stays_beam_discounted_uncertain(self):
-        log = Log()
-        g = _discounted_head(log)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.NARROWED)
-        self.assertEqual(v.reason, "beam_discounted_uncertain")
-
-    def test_CONTROL_a_tip_read_clean_does_not_change_the_discount_narrowing(self):
-        """Nothing hangs from the tip: the discount narrowing stands exactly as it was (2.81's quarter rule is a separate
-        item); the tip reader's False must not decide a quarter here."""
-        log = Log()
-        g = _discounted_head(log, with_tip=False)
-        adjudicate.run(log)
-        v = log.verdict(Q.DURATION, g)
-        self.assertEqual(v.outcome, Outcome.NARROWED)
-        self.assertEqual(v.reason, "beam_discounted_uncertain")
 
     def test_a_counted_hook_at_the_tip_DECIDES_an_eighth_RED(self):
         log = Log()
@@ -134,6 +118,8 @@ def _reach_head(log, *, side="down", ext=3.2, with_flag=None, flag_x=98, reach_r
         detail[side + "_ext"] = ext
         detail[side + "_tip_y"] = tip_canon + PAGE_DY
         log.observe(g, Q.HEAD_STEM_REACH, side, reader=READERS.CV_HEAD_STEM_REACH, frame="page", **detail)
+        # 2.319 r2: the same stem in the stroke map, bare (the one beam count reads no beam on it)
+        file_note_ink(log, (100, 90, 20, 16), sp=SPACE, side=side, stem_spaces=ext)
     if with_flag:
         tip = 106 + ext * SPACE if side == "down" else 90 - ext * SPACE
         # a down-stem's flag box hangs UP from its bottom tip; an up-stem's hangs DOWN from its top tip
@@ -222,6 +208,7 @@ class TestADisputedTipNarrowsAndNeverDecidesZero(unittest.TestCase):
         log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, 20, box_h), reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         s = _stem(log, x=135, y=38, h=60)
+        file_note_ink(log, (135, 90, 20, box_h), sp=SPACE, side="up")      # 2.319 r2: the bare stem the one beam count reads
         if hollow:
             _notehead_ink(log, g, center=0.1, ring=0.6)
         return g, s

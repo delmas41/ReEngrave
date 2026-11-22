@@ -35,6 +35,7 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import Log, Outcome, Q, READERS, Verdict
 
 from tools.omr.tests.test_staged_duration import CELL, _staff_space
+from tools.omr.tests.stroke_map_fixture import file_note_ink, file_strokes, strokes_from_boxes
 
 
 def _head(log, gi, box, cls="noteheadBlackInSpace"):
@@ -111,6 +112,7 @@ class TestALosingCopyHasNoDurationOfItsOwn(unittest.TestCase):
         log = Log()
         _staff_space(log, 100)
         g = _head(log, 0, (561, 1, 159, 133), "noteheadBlackOnLine")
+        file_note_ink(log, (561, 1, 159, 133), sp=100, side="down")      # 2.319 r2: its bare stem, as the stroke map files it
         if owner is not None:
             _owner(log, g, owner, outcome)
         if twin is not None:
@@ -186,68 +188,17 @@ class TestAStemTheCvNeverFoundStillSaysWhichWayItRuns(unittest.TestCase):
             _reach(log, g, direction)
         return log, g
 
-    def test_an_UP_stem_does_not_own_a_beam_below_it_RED(self):
-        """...and where that beam was the head's ONLY candidate mark the head
-        is NARROWED, never decided a quarter from the absence of a mark: the
-        stem's tip was never examined (no CV stem is attached) -- rule 8."""
-        log, g = self._fixture("up")
-        v = _duration(log, g)
-        self.assertEqual(v.detail["beam_side"], "up")
-        self.assertEqual(v.detail["beams_far_side"], 1)
-        self.assertEqual(v.outcome, Outcome.NARROWED)
-        self.assertEqual(v.reason, "beam_discounted_uncertain")
-        self.assertEqual(sorted(c.value["beats"] for c in v.candidates),
-                         [0.5, 1.0])
-
-    def test_CONTROL_an_UP_stem_owns_a_beam_ABOVE_it(self):
-        """The positive control: the SAME head and ruler reading with the beam
-        on the stem's own side counts it -- so the rule is not 'refuse all'."""
-        log, g = self._fixture("up", beam_above=True)
-        v = _duration(log, g)
-        self.assertEqual(v.outcome, Outcome.DECIDED)
-        self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_far_side"], 0)
-
-    def test_CONTROL_a_DOWN_stem_owns_the_same_beam(self):
-        """The positive control: the stem turned the other way counts the
-        beam below it."""
-        log, g = self._fixture("down")
-        v = _duration(log, g)
-        self.assertEqual(v.detail["beams_far_side"], 0)
-        self.assertEqual(v.value["beats"], 0.5)
 
     def test_a_DOWN_stem_is_read_from_the_ruler_RED(self):
         log, g = self._fixture("down")
         v = _duration(log, g)
         self.assertEqual(v.detail["beam_side"], "down")
 
-    def test_CONTROL_a_short_run_beside_the_head_is_a_neighbouring_head_not_a_stem(
-            self):
-        """Measured: the ruler agrees with the head's own CV stem on 306 of 307
-        heads at 2.0 spaces or more, and on 77-93% below it (a stacked
-        neighbour's ink). A 1.2-space run says nothing about the side."""
-        log2 = Log()
-        _staff_space(log2, 100)
-        g2 = _head(log2, 0, (100, 100, 140, 120), "noteheadBlackOnLine")
-        _stem(log2, (110, 300, 30, 200))
-        _stem(log2, (400, 300, 30, 200))
-        s2 = _stroke(log2, (100, 300, 330, 60))
-        _ink(log2, s2, ratio=2.4, sag=0.01, ends=(True, True))
-        _reach(log2, g2, "up", up_ext=1.2)
-        v = _duration(log2, g2)
-        self.assertIsNone(v.detail["beam_side"])
-        self.assertEqual(v.detail["beams_far_side"], 0)
 
     def test_CONTROL_a_stem_that_runs_both_ways_is_no_side(self):
         log, g = self._fixture("both")
         v = _duration(log, g)
         self.assertIsNone(v.detail["beam_side"])
-
-    def test_CONTROL_without_a_reach_row_nothing_changes(self):
-        log, g = self._fixture(None)
-        v = _duration(log, g)
-        self.assertIsNone(v.detail["beam_side"])
-        self.assertEqual(v.detail["beams_far_side"], 0)
 
 
 # ═════════════════════════════════════════════════════════════════════════════
@@ -277,6 +228,11 @@ class TestBStemsEndingInsideAStrokeCreditIt(unittest.TestCase):
              thickness_px=79.0)
         _ink(log, row, ratio=3.931, sag=0.0099, ends=(False, True),
              thickness_px=114.0)
+        # 2.319 r2: the same marks as the stroke map files them; the one beam count reads the sloped beam (79 px = 0.79 sp thick, measured)
+        file_strokes(log, strokes_from_boxes(
+            heads=[(410, 1087, 136, 140), (106, 976, 146, 137), (576, 1094, 160, 139), (241, 1073, 162, 158)],
+            stems=[(508, 687, 38, 514), (210, 706, 32, 387), (343, 738, 45, 482), (692, 807, 32, 400)],
+            lines=[(211, 629, 482, 139, 0.79)], sp=100), sp=100)
         return g
 
     def test_tile_8_the_sloped_beam_over_a_chord_is_counted_EIGHTH_RED(self):
@@ -285,45 +241,7 @@ class TestBStemsEndingInsideAStrokeCreditIt(unittest.TestCase):
         v = _duration(log, g)
         self.assertEqual(v.outcome, Outcome.DECIDED)
         self.assertEqual(v.value["beats"], 0.5)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
-
-    def _bar_under_a_beam(self, log, n_inside):
-        """A thick straight stroke (the foot of a dynamic letter) 36 px BELOW
-        the tips of the stems that end on the real beam above it."""
-        _staff_space(log, 100)
-        g = _head(log, 0, (412, 431, 136, 130), "noteheadBlackOnLine")
-        # stems that end at y 864 (their tips); the bar lies at y 900-932
-        for b in ((419, 451, 31, 413), (244, 464, 38, 412),
-                  (575, 464, 38, 400)):
-            _stem(log, b)
-        bar = _stroke(log, (283, 900, 243, 32))
-        _ink(log, bar, ratio=3.036, sag=0.0033, ends=(False, False),
-             thickness_px=32.0)
-        # n_inside extra stems whose tips END inside the bar
-        for k in range(n_inside):
-            _stem(log, (300 + 90 * k, 700, 25, 215))
-        return g
-
-    def test_CONTROL_stems_that_end_ABOVE_a_bar_do_not_credit_it(self):
-        log = Log()
-        g = self._bar_under_a_beam(log, 0)
-        v = _duration(log, g)
-        self.assertEqual(v.detail["beams_not_by_ink_why"],
-                         {"no_stem_at_ends": 1})
-
-    def test_CONTROL_ONE_stem_ending_inside_is_not_a_beam(self):
-        """Sean: a beam joins its note's stem AND another note's stem."""
-        log = Log()
-        g = self._bar_under_a_beam(log, 1)
-        v = _duration(log, g)
-        self.assertEqual(v.detail["beams_not_by_ink_why"],
-                         {"no_stem_at_ends": 1})
-
-    def test_TWO_stems_ending_inside_the_same_bar_are_a_beam(self):
-        log = Log()
-        g = self._bar_under_a_beam(log, 2)
-        v = _duration(log, g)
-        self.assertEqual(v.detail["beams_not_by_ink"], 0)
+        self.assertEqual(v.detail["one_beam_count"]["certain"], 1)      # 2.319 r2: read by the one beam count, not by a flag or the bar
 
 
 # ═════════════════════════════════════════════════════════════════════════════

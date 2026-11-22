@@ -45,6 +45,7 @@ from tools.omr.staged.record import Log, Q, READERS
 from tools.omr.staged.review import feedback as FB
 from tools.omr.staged.review import human_evidence as HE
 from tools.omr.staged.review import rerun as RR
+from tools.omr.tests.stroke_map_fixture import file_strokes
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -99,6 +100,10 @@ def build_log() -> Log:
         log.observe(g, Q.NOTEHEAD_STAFF_POSITION, pos,
                     reader=READERS.GEOMETRY, frame="cell:0",
                     residual=0.0, rounded=int(pos))
+    # ROADMAP 2.319 r2: the cell's stroke map -- each head's ink, no stem (the one beam count reads a stemless head as carrying no beam;
+    # with no map it cannot tell and the head is narrowed, rule 8)
+    file_strokes(log, [("blob", _head_boxes(x_c, pos)[0], 1.4, 0.9, []) for x_c, pos in [(200.0, 4.0), (400.0, 2.0), (600.0, 6.0)]],
+                 sp=SPACING)
     log.observe(staff, Q.STAFF_LINES, [1050.0, 1075.0, 1100.0, 1125.0, 1150.0],
                 reader=READERS.GEOMETRY, frame="page", page_staff_index=0)
     log.observe(staff, Q.CLEF_GLYPH, "gClef", reader=READERS.DETECTOR,

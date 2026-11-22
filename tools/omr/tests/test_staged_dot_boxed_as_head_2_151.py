@@ -22,6 +22,7 @@ from tools.omr.staged import record as R
 from tools.omr.staged.adjudicators import aug_dot_join as J
 from tools.omr.staged.adjudicators import notehead_precision as NP
 from tools.omr.staged.record import Log, Outcome, Q, READERS
+from tools.omr.tests.stroke_map_fixture import file_strokes
 
 ON = {"OMR_DOT_BOXED_AS_A_HEAD": "1"}
 OFF = {"OMR_DOT_BOXED_AS_A_HEAD": "0"}
@@ -77,6 +78,8 @@ def _tile23(mark_pos=2.8304, mark=MARK, mark_cls="noteheadBlackOnLine"):
     log = _log()
     head = _box(log, 15, "noteheadBlackOnLine", HEAD, 4.0)
     m = _box(log, 7, mark_cls, mark, mark_pos)
+    # 2.319 r2: the head's ink in the stroke map, no stem in the fixture (the one beam count reads a stemless head: no beam)
+    file_strokes(log, [("blob", HEAD, 1.4, 0.9, [])], sp=SPACE, cell=(1, 0, 2, 1))
     return log, head, m
 
 
@@ -261,6 +264,9 @@ class TestOneInkCountsOnce(unittest.TestCase):
                         frame="cell:1", step=1, on="space", residual=0.33,
                         margin=0.17, basis="local_ink",
                         staff=R.staff(0, 0, 6).to_key(), home=True)
+        # 2.319 r2: the two heads' ink in the stroke map, no stems in the fixture (the one beam count reads a stemless head: no beam)
+        file_strokes(log, [("blob", (368, 543, 130, 116), 1.3, 0.9, []), ("blob", (253, 606, 121, 103), 1.2, 0.9, [])], sp=100.0,
+                     cell=(0, 0, 6, 1))
         return log, line, space
 
     def test_the_twin_of_a_dot_box_adds_no_dot(self):

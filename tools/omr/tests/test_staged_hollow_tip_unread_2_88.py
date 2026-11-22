@@ -20,6 +20,7 @@ from tools.omr.staged import record as R
 from tools.omr.staged.record import ABSTAIN, Log, Outcome, Q, READERS
 
 from tools.omr.tests.test_staged_duration import (CELL, SPACE, _beam, _staff_space, _stem, _stem_tip_ink)
+from tools.omr.tests.stroke_map_fixture import file_note_ink
 
 
 def _unread_tip(log, stem_row_id, why, end="top"):
@@ -47,6 +48,7 @@ class TestAHollowHeadWithAnUnreadTipIsStillAHalf(unittest.TestCase):
         log.observe(g, Q.NOTEHEAD_CLASS, "noteheadBlack", reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         log.observe(g, Q.GLYPH_BOX, ("noteheadBlack", 135, 90, box_w, box_h), reader=READERS.DETECTOR, frame="cell:0", score=0.9)
         s = _stem(log, x=135, y=38, h=60)
+        file_note_ink(log, (135, 90, box_w, box_h), sp=SPACE, side="up")     # 2.319 r2: the bare stem the one beam count reads
         return g, s
 
     def _verdict(self, log, g):
