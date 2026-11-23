@@ -4093,11 +4093,20 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         tip_in_beamless_cell = bool(tip_ink)
     if tip_ink and tip_in_beamless_cell:
         used.extend(r.id for r in tip_ink_rows)
+        # HELD, written GUESSED (blue) at the flag's level with the quarter beside it -- a narrowing would be left red in a busy bar
+        # (2.154: the bar never chooses). The flag's level is written because a hook seen rules out a quarter (Sean 2026-10-09);
+        # the quarter stays a candidate because in these cells the look has read a ledger line and a word as hooks (2.318 r5).
         _c, lo_b, hi_b = _stem_tip_hook_count(tip_ink_rows)
         top = _c if _c is not None else lo_b
-        cands = [Candidate(value={"beats": _scale(_at_level_value(base, lv, n_dots), ratio, ev), "written": _at_level_value(base, lv, n_dots),
-                                  "dots": n_dots, "beam_levels": lv}, support=1.0) for lv in (0, top)]
-        return Ruling.narrow(cands, "flag_ink_in_beamless_cell", used=tuple(used), **shared, hooks_counted=_c, hooks_min=lo_b, hooks_max=hi_b)
+
+        def _plain(lv):
+            t = _at_level_value(base, lv, n_dots)
+            return {"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": lv}
+        chosen = _plain(top)
+        guess = {"rule": "flag_ink_in_beamless_cell", "chosen": chosen, "marks_blue": True, "files_under": str(Q.DURATION),
+                 "candidates": [dict(chosen, support=1.0), dict(_plain(0), support=1.0)]}
+        return Ruling(value=chosen, reason="flag_ink_in_beamless_cell", used=tuple(used),
+                      detail={**shared, "hooks_counted": _c, "hooks_min": lo_b, "hooks_max": hi_b, HEAD_INK_GUESS_KEY: guess})
     if tip_ink:
         used.extend(r.id for r in tip_ink_rows)
 
