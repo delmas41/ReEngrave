@@ -6756,6 +6756,9 @@ def _slash_runs_into_a_stem(ink: Any, runs: Sequence[Tuple[int, int, int]], dire
     reach = max(1, int(round(STEM_SLASH_JOIN_REACH_SPACES * space)))
     for sx0, sy0, sw, sh in other_stems:
         s0, s1 = int(round(sx0)), int(round(sx0 + sw))
+        # the tracked ink itself runs on into the stem's columns on the stem's own rows (a beam tracked straight through its next stem)
+        if any(s0 <= rx < s1 and min(ry1, sy0 + sh) > max(ry0, sy0) for rx, ry0, ry1 in runs):
+            return True
         gap = (s0 - ex) if direction > 0 else (ex - s1)
         if gap < 0 or gap > reach + 1:
             continue

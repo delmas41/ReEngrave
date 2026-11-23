@@ -104,6 +104,17 @@ class TestJoinByInk(unittest.TestCase):
         self.assertIn(None, on)
         self.assertNotIn(None, old)
 
+    def test_a_beam_tracked_through_the_next_stem_joins_it(self):
+        """Litolff p1: a beam crossing two stems. With the flag on it must never pass as a slash; with the join test blinded it passes -- the control
+        can fail (the first 2.335 ON gather, before the run-through test, claimed it as a slash)."""
+        self.assertEqual(_read("beam_p1", True)[0], [])
+        orig = G._slash_runs_into_a_stem
+
+        def gap_only(ink, runs, direction, others, space):
+            return orig(ink, runs[:-3] if len(runs) > 3 else runs, direction, (), space)
+        with mock.patch.object(G, "_slash_runs_into_a_stem", gap_only):
+            self.assertEqual(len(_read("beam_p1", True)[0]), 1)
+
     def test_ink_running_into_a_stem_joins_it(self):
         """The same real slash, with the neighbouring stem moved onto its right-hand end (the stroke's last rows): joined."""
         ink, m = _case("ledger_6_1_8_11")
