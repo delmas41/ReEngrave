@@ -342,6 +342,102 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
 # ─────────────────────────────────────────────────────────────────────────────
 
 
+def _page_stem_join(ev: Evidence, head: Tuple[float, ...], stems: Sequence[Tuple[Any, Tuple[float, ...]]], box_id: str) -> Optional[Ruling]:
+    """ROADMAP 2.306: `Q.HEAD_STEM` from the page stem reading (`page_stems.reading`), or None (flag off, no reading, an abstention, or a row the cell
+    no longer holds). The value is the cell row the page reader named; every row of the cell that is the same physical stem rides in `stem_rows`."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return None
+    rows = ev.rows(Q.PAGE_STEM)
+    voices = _PS.voice_rows(rows)
+    if voices is not None:
+        return _page_two_voices(head, stems, box_id, voices)
+    pr = rows[-1] if rows else None
+    if pr is None or pr.value is None:
+        return None
+    mine = [(r, b) for r, b in stems if r.id == pr.value]
+    if not mine:
+        return None
+    row, b = mine[0]
+    same = sorted({r2.id for r2, b2 in stems if r2 is row or _same_stem_row(b, b2)})
+    d = pr.detail or {}
+    frac = _x_frac(b, head)
+    detail = {"stem": row.id, "stem_rows": same, "stem_box": [round(v, 2) for v in b],
+              "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
+              "page_stroke": d.get("page_stroke"), "direction": d.get("direction"), "page_how": d.get("how"), "margin": d.get("margin")}
+    if d.get("how") == "second_on_partner_stem":
+        return Ruling(value=row.id, reason="page_stem_of_a_second", used=(box_id, pr.id) + tuple(same), detail=detail)
+    return Ruling(value=row.id, reason="page_stem", used=(box_id, pr.id) + tuple(same), detail=detail)
+
+
+def _page_two_voices(head: Tuple[float, ...], stems: Sequence[Tuple[Any, Tuple[float, ...]]], box_id: str,
+                     voices: Dict[str, Any]) -> Optional[Ruling]:
+    """ROADMAP 2.306 two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices"): the page
+    filed BOTH strokes of this head -- a stem up and a stem down, each touching the head's ink -- so the head is two voices sharing the note. The
+    ruling is the unison rule's own (`unison_two_voices`, NARROWED over the two stems, never collapsed), read from the page's rows instead of the
+    cell join's box overlap; `detail.page_voices` = {up: stem row id, down: stem row id}. None where a named row is not in the cell (the cell join
+    then stands, as for a one-stem page row the cell no longer holds)."""
+    det: Dict[str, Dict[str, Any]] = {}
+    pv: Dict[str, str] = {}
+    used = [box_id]
+    for d in ("up", "down"):
+        pr = voices[d]
+        mine = [(r, b) for r, b in stems if r.id == pr.value]
+        if not mine:
+            return None
+        row, b = mine[0]
+        same = sorted({r2.id for r2, b2 in stems if r2 is row or _same_stem_row(b, b2)})
+        frac = _x_frac(b, head)
+        det[row.id] = {"stem": row.id, "stem_rows": same, "stem_box": [round(v, 2) for v in b],
+                       "x_frac": None if frac is None else round(frac, 3), "flush": _flush_word(frac),
+                       "page_stroke": (pr.detail or {}).get("page_stroke"), "direction": d}
+        pv[d] = row.id
+        used += [pr.id] + same
+    if pv["up"] == pv["down"]:
+        return None                     # never two voices from one stem
+    cands = (Candidate(value=pv["up"], support=1.0), Candidate(value=pv["down"], support=1.0))
+    return Ruling.narrow(cands, "unison_two_voices", used=tuple(dict.fromkeys(used)), stems=det, voices={pv["up"]: "up", pv["down"]: "down"},
+                         page_voices=pv, page_how="unison_two_stems")
+
+
+def page_voice_stems(detail: Any, stems: Sequence[Any]) -> Optional[Dict[str, List[Any]]]:
+    """ROADMAP 2.306 two-voice piece: `{"up": [Q.STEM rows], "down": [...]}` of a head the page filed as two voices -- each voice's own stem row and
+    every row of the cell that is the same physical stem -- from a `Q.HEAD_STEM` ruling's / verdict's `detail.page_voices`; None otherwise (the
+    cell join's own split by the head's centre then stands). `stems`: the cell's `Q.STEM` rows."""
+    pv = (detail or {}).get("page_voices") if isinstance(detail, dict) else None
+    if not pv:
+        return None
+    out: Dict[str, List[Any]] = {}
+    for d in ("up", "down"):
+        named = [s for s in stems if s.id == pv.get(d)]
+        if not named:
+            return None
+        b = _xywh(named[0].value)
+        out[d] = [s for s in stems if s is named[0] or (b is not None and _xywh(s.value) is not None and _same_stem_row(b, _xywh(s.value)))]
+    return out
+
+
+def _page_stem_abstained(ev: Evidence, box_id: str) -> Optional[Ruling]:
+    """ROADMAP 2.306 RETIRE: with `OMR_PAGE_STEMS` on, where the page read this head and could not name one stem, the cell join no longer answers in
+    its place -- the head's stem is the page's question, asked once. `no_stroke` -> abstain `page_no_stem`; two candidates / a stroke read both ways
+    -> abstain `page_stem_ambiguous` with the candidates and margin. A unison of two voices (`two_voices`, page-facts: a head with a stem each way is two
+    notes) is left to the unison rule below. None: flag off, no page reading (no page map / no page head), or a page join."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return None
+    ab = ev.refusals(Q.PAGE_STEM)
+    if not ab:
+        return None
+    d = ab[-1].detail or {}
+    how = str(d.get("how") or "")
+    if how == "two_voices" or d.get("note") == "no_cell":
+        return None
+    detail = {"page_how": how, "candidates": d.get("candidates"), "held": d.get("held"), "margin": d.get("margin")}
+    if how == "no_stroke" or how == "stroke_held_by_inked_heads":
+        return Ruling.abstain("page_no_stem", used=(box_id,), **detail)
+    return Ruling.abstain("page_stem_ambiguous", used=(box_id,), **detail)
+
+
 @decision(
     quantity=Q.HEAD_STEM,
     scope=Kind.GLYPH,
@@ -349,11 +445,12 @@ def stems_connected_to_a_head(verdict: Any, stems: Sequence[Any]):
     # evidence; no other decision's verdict is read, so this can stand
     # anywhere in ORDER -- it stands beside its one consumer.
     wants=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
-           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION, Q.MARK_GROUP),
+           Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DURATION, Q.MARK_GROUP, Q.PAGE_STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("one_stem", "stem_by_reach", "stem_by_side", "stem_by_flush",
              "stem_by_one_per_head", "unison_two_voices", "stem_of_a_second",
-             "two_stems", "no_stem", "no_evidence"),
+             "two_stems", "no_stem", "no_evidence", "page_stem", "page_stem_of_a_second",
+             "page_no_stem", "page_stem_ambiguous"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.GLYPH_BOX, Q.STEM, Q.CELL_STAFF_SPACE, Q.STEM_DIRECTION,
                    Q.NOTEHEAD_CLASS, Q.NOTEHEAD_IS_NOT_A_NOTEHEAD),
@@ -382,6 +479,15 @@ def adjudicate_head_stem(ev: Evidence) -> Ruling:
         b = _xywh(row.value)
         if b is not None:
             stems.append((row, b))
+    # ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF): the page's ONE reading of this head's stem (the page map's vertical at the head's engraving
+    # side, `page_stems`) names the cell row; where the page read one, it is the join. Where the page abstained (no free stroke / two candidates / two
+    # voices) the cell join below still answers until the cell stems retire (the abstention stays on the record, counted).
+    page = _page_stem_join(ev, head, stems, boxes[-1].id)
+    if page is not None:
+        return page
+    retired = _page_stem_abstained(ev, boxes[-1].id)
+    if retired is not None:
+        return retired
     from ..geometry import stem_touches_head
     touching = [(r, b) for r, b in stems if stem_touches_head(b, head)]
     if not touching:
@@ -961,18 +1067,148 @@ def _tip_order(members: Sequence[_Member], stem_box: Sequence[float],
     return ranked
 
 
+#: ROADMAP 2.306 / 2.78 (flag `OMR_STRING_STOPS_OWN_VALUE`, default OFF): the reason word of a head on a STRING staff whose stem carries
+#: notes of different lengths, each READ on its own head -- the stem's value for THIS head is the head's own (Sean 2026-11-21, page-facts).
+STRING_STOP_REASON = "string_stop_own_value"
+#: per-head status in that ruling's detail: the head's length is READ, or its dot was not seen while a stem-mate's was (tile 13 of 2.78: the
+#: dot reader missed one of a stem's dots, Sean "2 dotted half notes") -- written GUESSED (blue) with the dotted value as its other candidate.
+STRING_STOP_READ = "read"
+STRING_STOP_DOT_NOT_SEEN = "dot_not_seen"
+
+
+def _staff_family(ev: Evidence, cell: Subject) -> Dict[str, Any]:
+    """The family of the staff `cell` stands on (`staff_family.decide`): the staff's own `Q.INSTRUMENT`, else the part it continues (the
+    same decided `Q.SLOT_INDEX`, named elsewhere, same clef). The document-wide rows are read only for a staff with no name of its own."""
+    from .. import staff_family as SF
+    staff = cell.at(Kind.STAFF)
+    inst = ev.verdict(Q.INSTRUMENT, subject=staff)
+    name = SF._name_of(inst)
+    if name:
+        return SF.decide(name, None, None, ())
+    slot = SF._int_value(ev.verdict(Q.SLOT_INDEX, subject=staff))
+    clef = SF._str_value(ev.verdict(Q.CLEF, subject=staff))
+    if slot is None:
+        return SF.decide(None, clef, None, ())
+    doc = cell.at(Kind.DOCUMENT)
+    mates = []
+    for sv in ev.verdicts(Q.SLOT_INDEX, scope=Scope.SELF_AND_DESCENDANTS, subject=doc):
+        if sv.subject == staff or SF._int_value(sv) != slot:
+            continue
+        n = SF._name_of(ev.verdict(Q.INSTRUMENT, subject=sv.subject))
+        if n:
+            mates.append((sv.subject.to_key(), n, SF._str_value(ev.verdict(Q.CLEF, subject=sv.subject))))
+    return SF.decide(None, clef, slot, mates)
+
+
+def _fill_seen_on_its_own_ink(m: "_Member") -> bool:
+    """The head's fill as its duration reads it (hollow for a half or longer, filled below) is the fill its OWN ink shows (`head_ink`, the
+    duration verdict's detail), and that reading was not itself a blue guess. A head whose ink did not say (`readers_split`, `not_one_head`)
+    or says the other fill (Litolff 8/1/8/4: two half notes an octave apart, the lower read black with a staff line through it, its ink
+    hollow) is no evidence of a different length."""
+    d = getattr(m.verdict, "detail", None) or {}
+    hi = d.get("head_ink") if isinstance(d, dict) else None
+    if not isinstance(hi, dict) or hi.get("value") not in ("hollow", "filled"):
+        return False
+    if isinstance(d.get("head_ink_guess"), dict) and d["head_ink_guess"].get("marks_blue"):
+        return False
+    bases = {o[0] for o in m.options}
+    if len(bases) != 1:
+        return False
+    return (next(iter(bases)) >= HOLLOW_BASE_MIN) == (hi["value"] == "hollow")
+
+
+def _string_stop_ruling(ev: Evidence, members: Sequence["_Member"], flush: Dict[str, str], me: "_Member", stem_id: str,
+                        scale: float, used: Tuple[str, ...]) -> Optional[Ruling]:
+    """ROADMAP 2.306 / 2.78 (flag `OMR_STRING_STOPS_OWN_VALUE`). On a STRING staff notes printed together on one stem may have different
+    lengths (Sean 2026-11-21: "the section can be divided up or individual players can play double stops or triple stops and then keep
+    certain notes going"), so each head keeps the length its OWN ink gave it.
+
+    Only where EVERY head's own length was READ and the difference is one a head's own ink can show:
+      * every head's fill and dots are READ on that head (DECIDED; or narrowed ONLY in its beam count, which then is the stem's, read from
+        the decided heads -- the beams hang at the tip and a stem with an open head carries none); a head whose fill or dots were not read is
+        no evidence of a different length, and the stem is held as before;
+      * the stem touches every head at its side, never through its middle (a box with the stem through it is a slash's or a duplicate's:
+        2.78 tiles 3, 4, 6-8, 10, 11, all tremolo slashes), and no other box stands on the stem (a refused slash box: r18 tile 3);
+      * each head's fill is the fill its own ink shows (`_fill_seen_on_its_own_ink`);
+      * no two heads stand at one place on the staff (one head boxed twice: Litolff 4/0/6/0, 8/0/5/14, a filled and a hollow box on one
+        F5 / C4);
+      * the heads agree on the beams and flags (they hang at the stem's tip, so they are the stem's), and a stem that carries a hollow head
+        carries none (an open head is never beamed, 2.43 -- r18 tile 3, "two half notes with a tremolo slash" read as eighths, a quarter and
+        a half, stays held);
+      * no head is a whole-class box ("whole notes never have stems").
+    The heads then differ only in fill (hollow seen on one, filled on another) and in dots. A head that shows no dot where a stem-mate's dot
+    was read is GUESSED (2.78 tile 13: the dot reader missed one). NEVER on a woodwind, brass, other or unknown staff: those keep one value."""
+    from .. import staff_family as SF
+    if not SF.enabled() or len(members) < 2:
+        return None
+    if len(flush) != len(members):
+        return None             # another box stands on this stem (a tremolo slash, a refused box, a beam end): held as before
+    if any(m.whole_class or not m.read for m in members):
+        return None
+    if any(flush.get(m.key) not in ("left", "right") for m in members):
+        return None
+    if any(not _fill_seen_on_its_own_ink(m) for m in members):
+        return None
+    for i, a in enumerate(members):
+        for b in members[i + 1:]:
+            if a.cy is None or b.cy is None or not a.box or not b.box:
+                return None
+            if abs(a.cy - b.cy) < ONE_STEM_PER_HEAD_MIN_APART_HEADS * min(a.box[3], b.box[3]):
+                return None     # two boxes at one place on the staff are one head read twice, never two notes of a stop
+    decided = [m for m in members if m.decided]
+    if not decided:
+        return None
+    levels = {m.options[0][1] for m in decided}
+    if len(levels) != 1:
+        return None
+    if any(m.options[0][0] >= HOLLOW_BASE_MIN for m in decided) and levels != {0}:
+        return None
+    (stem_levels,) = tuple(levels)
+    vals: Dict[str, Tuple[float, int, int]] = {}
+    for m in members:
+        if m.decided:
+            vals[m.key] = m.options[0]
+            continue
+        # A head narrowed ONLY in its beam count (its fill and its dots read, one each) takes the stem's count: the beams and flags hang at
+        # the stem's tip, and a stem carrying an open head carries none (2.43). Any other narrowing (fill or dots unread) is not own evidence.
+        if len({(o[0], o[2]) for o in m.options}) != 1:
+            return None
+        b, _lv, d = m.options[0]
+        if (b, stem_levels, d) not in m.options:
+            return None
+        vals[m.key] = (b, stem_levels, d)
+    if len(set(vals.values())) < 2:
+        return None
+    fam = _staff_family(ev, ev.subject.at(Kind.CELL))
+    if fam["family"] != SF.STRINGS:
+        return None
+    own = vals[me.key]
+    any_dot = any(v[2] > 0 for v in vals.values())
+    status = {k: (STRING_STOP_DOT_NOT_SEEN if any_dot and v[2] == 0 else STRING_STOP_READ) for k, v in vals.items()}
+    detail = {"stem": stem_id, "members": [m.key for m in members],
+              "own_values": {k: list(v) for k, v in vals.items()}, "status": status,
+              "family": fam}
+    if status[me.key] == STRING_STOP_DOT_NOT_SEEN:
+        dotted = sorted({v[2] for v in vals.values() if v[2] > 0})
+        detail["candidates"] = [{k: v for k, v in _value(own[0], own[1], d, scale, stem_id).items() if k in ("beats", "written", "dots", "beam_levels")}
+                                for d in [own[2]] + dotted]
+    return Ruling(value=_value(own[0], own[1], own[2], scale, stem_id), reason="string_stop_own_value", used=used, detail=detail)
+
+
 @decision(
     quantity=Q.STEM_VALUE,
     scope=Kind.GLYPH,
     wants=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.NOTEHEAD_IS_A_WHOLE_REST,
            Q.GLYPH_OWNER, Q.GLYPH_STROKES, Q.STROKE, Q.STROKE_OWNER,
-           Q.CELL_STAFF_SPACE),
+           Q.CELL_STAFF_SPACE,
+           Q.INSTRUMENT, Q.SLOT_INDEX, Q.CLEF),     # ROADMAP 2.306 / 2.78: the staff's family (`_staff_family`), flag on only
     subjects_from=Q.HEAD_STEM,
     reasons=("stem_agrees", "stem_value_from_evidence",
              "hollow_head_on_a_beamed_stem", "stem_levels_unread",
              "stem_dots_disagree", "stem_values_open", "stem_unread",
-             "lone_head", "not_a_member", "ambiguous_stem", "no_stem"),
+             "lone_head", "not_a_member", "ambiguous_stem", "no_stem",
+             "string_stop_own_value"),
     mode=Mode.ADDITIVE,
     composed_from=(Q.HEAD_STEM, Q.DURATION, Q.STEM_DIRECTION, Q.GLYPH_BOX),
 )
@@ -1030,6 +1266,9 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
     directions = {m.direction for m in members if m.direction}
     direction = next(iter(directions)) if len(directions) == 1 else None
     used = tuple(m.verdict.id for m in members if m.verdict is not None)
+    stop = _string_stop_ruling(ev, members, {j.subject.to_key(): (j.detail or {}).get("flush") for j in joins}, me, stem_id, scale, used)
+    if stop is not None:
+        return stop
 
     strong = [m for m in members if m.counts_for_base]
     hollow = [m for m in strong if m.decided and m.options[0][0] >= HOLLOW_BASE_MIN]

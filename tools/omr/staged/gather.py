@@ -292,6 +292,79 @@ def gather_measures(log: Log, pws: Any, cells: Sequence[Any],
                         reader=READERS.GEOMETRY, frame=FRAME_SYSTEM)
 
 
+#: ROADMAP 2.306 r16: how far (staff spaces) from the system column a staff's own barline ink is looked for, and the share of the staff's rows
+#: (top line to bottom line) a column's ink must cover to be the barline -- a barline runs the staff's whole height; a stem stops at its head
+BARLINE_SEEK_SP = 0.8
+BARLINE_RUN_SHARE = 0.97
+BARLINE_MAX_W_SP = 0.6
+BARLINE_HEAD_ROWS = 3
+#: the barline area's half width (staff spaces), as filed below
+BARLINE_AREA_HALF_SP = 0.45
+
+
+def barline_x_on_staff(binary: Any, x: float, top: float, bottom: float, sp: float) -> Optional[float]:
+    """ROADMAP 2.306 r16: the x (page px) of THIS staff's barline ink near the system column `x`: the run of adjacent columns, within
+    `BARLINE_SEEK_SP` of `x`, whose ink covers `BARLINE_RUN_SHARE` of the staff's rows top line to bottom line; the run nearest `x`, its middle.
+    None where no column runs the staff's height (then nothing is moved). `binary`: the page raster, ink dark (0) or ink 1 -- read either way. Pure."""
+    import numpy as np
+    if binary is None or sp <= 0:
+        return None
+    b = np.asarray(binary)
+    y0, y1 = max(0, int(round(top))), min(b.shape[0], int(round(bottom)) + 1)
+    x0, x1 = max(0, int(round(x - BARLINE_SEEK_SP * sp))), min(b.shape[1], int(round(x + BARLINE_SEEK_SP * sp)) + 1)
+    if y1 - y0 < 2 or x1 <= x0:
+        return None
+    win = b[y0:y1, x0:x1]
+    ink = (win > 0) if b.max() <= 1 else (win < 128)
+    if ink.mean() > 0.5 and b.max() <= 1:
+        ink = ~ink
+    full = ink.mean(axis=0) >= BARLINE_RUN_SHARE
+    runs, start = [], None
+    for i, f in enumerate(list(full) + [False]):
+        if f and start is None:
+            start = i
+        elif not f and start is not None:
+            runs.append((start, i - 1))
+            start = None
+    # a barline is the same thin upright all the way down; a stem that happens to span the staff widens at its notehead. Away from the staff
+    # lines' rows, the run's ink does not spread like a notehead.
+    line_rows = ink.mean(axis=1) >= 0.9         # a row the ink crosses wall to wall: a staff line (where the scan tilts it off the even spacing)
+    line_rows = line_rows | np.r_[False, line_rows[:-1]] | np.r_[line_rows[1:], False]      # and the line's blurred edge rows
+    keep = []
+    for a, c in runs:
+        mid = (a + c) // 2
+        widths = []
+        for r in range(ink.shape[0]):
+            if line_rows[r]:
+                widths.append(None)         # a staff line's row says nothing either way (a head ON a line spans it)
+                continue
+            row = ink[r]
+            lo = mid
+            while lo > 0 and row[lo - 1]:
+                lo -= 1
+            hi = mid
+            while hi < row.size - 1 and row[hi + 1]:
+                hi += 1
+            widths.append(hi - lo + 1)
+        # a notehead on the upright: several rows running (`BARLINE_HEAD_ROWS`) where the ink spreads wider than `BARLINE_MAX_W_SP`; the rows
+        # beside a staff line carry the line's blur one row at a time
+        run_w, worst = 0, 0
+        for w in widths:
+            if w is None:
+                continue
+            run_w = run_w + 1 if w > BARLINE_MAX_W_SP * sp else 0
+            worst = max(worst, run_w)
+        if worst < BARLINE_HEAD_ROWS:
+            keep.append((a, c))
+    runs = keep
+    if not runs:
+        return None
+    mids = [x0 + (a + c) / 2.0 for a, c in runs]
+    if any(abs(m - x) <= BARLINE_AREA_HALF_SP * sp for m in mids):
+        return float(x)         # the system's area already stands on this staff's barline ink: nothing moves
+    return min(mids, key=lambda m: abs(m - x))
+
+
 def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]]) -> None:
     """`Q.CLAIMED_AREA` rows of owner `barline` -- ROADMAP 2.221 m2, flag `OMR_BARLINE_SYSTEM_COLUMNS` (default ON).
 
@@ -330,8 +403,14 @@ def gather_barline_claim(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
                             reason=ABSTAIN.OUT_OF_SCOPE, cell=c.measure_index, owner="barline", unit="area", why="bracket_ink",
                             barline_x=int(bl.x))
                 continue
+            # ROADMAP 2.306 r16 (Sean 2026-11-18: "claim only the ink"): the area stands on THIS staff's barline ink -- the column of ink that
+            # runs this staff's whole height nearest the system column -- never on the system's x alone (Litolff p6 staves 8-9: the column x
+            # stood a space left of the printed barline and the area held the bar's last stem). No such column: the system's x, as before.
+            bx = barline_x_on_staff(getattr(getattr(pws, "page", None), "binary", None), float(bl.x), float(st.top_y), float(st.bottom_y), sp)
+            if bx is None:
+                bx = float(bl.x)
             log.observe(R.staff(p, key[0], key[1]), Q.CLAIMED_AREA,
-                        [round(bl.x - 0.45 * sp, 1), float(st.top_y), round(bl.x + 0.45 * sp, 1), float(st.bottom_y)],
+                        [round(bx - 0.45 * sp, 1), float(st.top_y), round(bx + 0.45 * sp, 1), float(st.bottom_y)],
                         reader=READERS.CV_CLAIMED_REGISTER, frame=frame_cell(c.measure_index), cell=c.measure_index,
                         owner="barline", owner_row=None, owner_glyph=None, unit="area", standing="READ",
                         source="system_column", barline_x=int(bl.x), space_page_px=round(sp, 3))
@@ -13144,44 +13223,52 @@ def gather_beam_stem_levels(log: Log, cells: Sequence[Any], local: Dict[int, Tup
         if sub.to_key() in seen:
             continue
         seen.add(sub.to_key())
-        stems = [r for r in log.rows(Q.STEM, sub) if r.reader == READERS.CV_LINES]
+        stems = [(r.id, r.value) for r in log.rows(Q.STEM, sub) if r.reader == READERS.CV_LINES]
         if not stems:
             continue
-        frame = frame_cell(c.measure_index)
-        img = getattr(c, "image", None)
-        gray = None
-        if img is not None and getattr(img, "ndim", 0) >= 2:
-            if img.ndim == 3:
-                import cv2
-                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-            else:
-                gray = img
-        grid = _cell_grid(c)
-        space = grid[1] * 2.0 if grid is not None else None
-        line_ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
-        if gray is None or not space or space <= 0:
-            for r in stems:
-                log.abstain(sub, Q.BEAM_STEM_LEVELS, reader=READERS.CV_BEAM_LEVELS, frame=frame,
-                            reason=ABSTAIN.NO_MASK if gray is None else ABSTAIN.NO_STAFF_GEOMETRY,
-                            stem_row_id=r.id, note="no cell raster" if gray is None else "no cell staff-space unit")
-            continue
-        ink = np.asarray(gray < BEAM_INK_THRESHOLD)
+        beam_stem_levels_for(log, sub, c, stems, _gated=False)
+
+
+def beam_stem_levels_for(log: Log, sub: Subject, c: Any, stems: Sequence[Tuple[str, Any]], _gated: bool = True) -> None:
+    """`Q.BEAM_STEM_LEVELS` for the given `(stem row id, value)` of ONE cell (`gather_beam_stem_levels`' body; ROADMAP 2.306 r7 calls it for
+    a page stem view filed in a cell). Off unless `OMR_BEAM_STEM_LEVELS`."""
+    if _gated and not beam_stem_levels_gather_enabled():
+        return
+    import numpy as np
+    frame = frame_cell(c.measure_index)
+    img = getattr(c, "image", None)
+    gray = None
+    if img is not None and getattr(img, "ndim", 0) >= 2:
+        if img.ndim == 3:
+            import cv2
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        else:
+            gray = img
+    grid = _cell_grid(c)
+    space = grid[1] * 2.0 if grid is not None else None
+    line_ys = list(getattr(c, "staff_line_ys_canonical", None) or [])
+    if gray is None or not space or space <= 0:
+        for rid, _v in stems:
+            log.abstain(sub, Q.BEAM_STEM_LEVELS, reader=READERS.CV_BEAM_LEVELS, frame=frame,
+                        reason=ABSTAIN.NO_MASK if gray is None else ABSTAIN.NO_STAFF_GEOMETRY,
+                        stem_row_id=rid, note="no cell raster" if gray is None else "no cell staff-space unit")
+        return
+    ink = np.asarray(gray < BEAM_INK_THRESHOLD)
+    line_px = None
+    try:
+        line_px = local_line_thickness(ink, line_ys, 0, ink.shape[1], space)
+    except Exception:
         line_px = None
-        try:
-            line_px = local_line_thickness(ink, line_ys, 0, ink.shape[1], space)
-        except Exception:
-            line_px = None
-        for r in stems:
-            v = r.value
-            if not isinstance(v, (list, tuple)) or len(v) < 4:
-                continue
-            x, y, w, h = [float(t) for t in v[:4]]
-            ends = {}
-            for end, tip in (("top", y), ("bottom", y + h)):
-                ends[end] = beam_runs_at_stem_end(ink, x + w / 2.0, tip, end, space, line_ys, line_px or 0.0)
-            best = max(len(e[side]) for e in ends.values() for side in ("left", "right"))
-            log.observe(sub, Q.BEAM_STEM_LEVELS, best, reader=READERS.CV_BEAM_LEVELS, frame=frame,
-                        stem_row_id=r.id, ends=ends)
+    for rid, v in stems:
+        if not isinstance(v, (list, tuple)) or len(v) < 4:
+            continue
+        x, y, w, h = [float(t) for t in v[:4]]
+        ends = {}
+        for end, tip in (("top", y), ("bottom", y + h)):
+            ends[end] = beam_runs_at_stem_end(ink, x + w / 2.0, tip, end, space, line_ys, line_px or 0.0)
+        best = max(len(e[side]) for e in ends.values() for side in ("left", "right"))
+        log.observe(sub, Q.BEAM_STEM_LEVELS, best, reader=READERS.CV_BEAM_LEVELS, frame=frame,
+                    stem_row_id=rid, ends=ends)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -18142,6 +18229,11 @@ def gather(pws_and_cells: Sequence[Tuple[Any, Sequence[Any]]], *,
         # ROADMAP 2.290 step 4 (flag OMR_PAGE_HEAD_LEDGER, needs OMR_PAGE_HEAD_ONE; default ON since the landing flip): one claim per head on the page strokes of its oval, layer `head` of
         # `claim_order.LAYERS` -- AFTER every earlier page-wide claim (accidental ink last), BEFORE the page beams; ADJUDICATE's ledger settles it at the head tier.
         _page_heads.file_one_claims(log, pws, _one_heads, progress=progress)
+        # ROADMAP 2.306 (flag OMR_PAGE_STEMS, default OFF): every head's stem read ONCE on the page map (the vertical stroke at its engraving side), claimed
+        # once (owner `stem`), each glyph key handed the cell `Q.STEM` row that IS that stroke (a view where the cell reader has none). AFTER every earlier
+        # page-wide claim and the head claims (CLAUDE §3: heads -> stems -> beams), AFTER `gather_cv_lines` (its rows), BEFORE the page beams.
+        from . import page_stems as _page_stems
+        _page_stems.gather_page_stems(log, pws, cells, local, page_map_pre, _one_heads, detections, progress=progress)
         # ROADMAP 2.260c M4a (flag OMR_PAGE_BEAMS, default OFF), MOVED here by 2.269: the page map's strokes read for beams (roles, joined stems, tip levels),
         # filed as `Q.PAGE_BEAM` / `Q.PAGE_BEAM_TIP`. AFTER `gather_cv_lines` (its `Q.STEM` rows), the page map and the claim names (a stroke another claim
         # owns is no beam); reads no raster; NOTHING READS THE ROWS.

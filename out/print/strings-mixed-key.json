@@ -1,0 +1,42 @@
+[
+ {
+  "tile": 1,
+  "label": "Brahms p5 sys1 staff9 bar 5/1/9/2 (second violins), main",
+  "written": "ON: G4 dotted quarter + D5 dotted quarter (READ) + B3 quarter (GUESSED blue, dot not seen), one chord at one onset; OFF: all three dotted quarters"
+ },
+ {
+  "tile": 2,
+  "label": "Brahms p4 sys0 staff9 bar 4/0/9/8 (strings), main",
+  "written": "ON: G5 dotted quarter + B4 dotted quarter (READ) + D4 quarter (GUESSED blue); OFF: all three dotted quarters"
+ },
+ {
+  "tile": 3,
+  "label": "Brahms p5 sys1 staff10 bar 5/1/10/7 (Sean's chord), page-stem tree",
+  "written": "both arms HELD (the bar after its first event is not written): the stop on the up stem (D5., B4., G4) would be written as one chord, but the G3 below stands on its own down stem and the group is two stems"
+ },
+ {
+  "tile": 4,
+  "label": "Brahms p14 sys0 staff10 bar 14/0/10/0, main",
+  "written": "ON: B4 dotted eighth (its dot is our dot reader's) + G5 eighth (GUESSED blue); OFF: both dotted eighths"
+ },
+ {
+  "tile": 5,
+  "label": "Litolff p2 sys0 staff7 bar 2/0/7/4 (Sean's Beethoven chord)",
+  "written": "both arms: held (main: the heads join no stem; page-stem tree: the quarters and the half stand on two stems; two boxes on the sharp are not notes)"
+ },
+ {
+  "tile": 6,
+  "label": "Litolff p6 sys1 staff8 bar 6/1/8/11 (r18 tile 3)",
+  "written": "both arms: two half notes written as before (OFF/ON same), the slash boxes refused; never mixed"
+ },
+ {
+  "tile": 7,
+  "label": "Litolff p8 sys1 staff8 bar 8/1/8/4",
+  "written": "both arms: two half notes (the lower read black but its ink is hollow: held from the string rule, the stem's one value stands)"
+ },
+ {
+  "tile": 8,
+  "label": "Brahms p19 sys1 staff2 bar 19/1/2/2 (woodwind)",
+  "written": "both arms: held (a woodwind stem whose dots differ keeps one value: narrowed, refused by 2.89)"
+ }
+]

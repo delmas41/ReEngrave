@@ -1,0 +1,352 @@
+{
+ "tile01.png": {
+  "plate": "litolff",
+  "place": "2/0/3/5",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P4"
+  ],
+  "on": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "off": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v1 @3/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "ON right (both right; only which unison copy is printed changed)"
+ },
+ "tile02.png": {
+  "plate": "litolff",
+  "place": "2/1/0/13",
+  "measure": [
+   "47"
+  ],
+  "part": [
+   "P1"
+  ],
+  "on": "v1 @0 E-16 half",
+  "off": "v1 @0 C6 half; v1 @0 E-16 half",
+  "sean_string_chord": false,
+  "read_against_print": "ON wrong, OFF right: C6 of the flute's two-head half chord dropped (page reader: two candidate strokes, stem undecided, value narrowed, not written)"
+ },
+ "tile03.png": {
+  "plate": "litolff",
+  "place": "2/1/3/14",
+  "measure": [
+   "48"
+  ],
+  "part": [
+   "P4"
+  ],
+  "on": "v1 @0 C3 half",
+  "off": "v1 @0 C3 half; v2 @0 C3 half",
+  "sean_string_chord": false,
+  "read_against_print": "ON wrong, OFF right: unison half with a stem each way written as one voice (second head a duplicate box, both stems taken as one page stem)"
+ },
+ "tile04.png": {
+  "plate": "litolff",
+  "place": "6/0/0/10",
+  "measure": [
+   "59"
+  ],
+  "part": [
+   "P1"
+  ],
+  "on": "v1 @0 A5 quarter; v1 @1 C6 quarter",
+  "off": "v1 @0 A5 quarter; v1 @1 D6 quarter; v1 @2 C6 quarter",
+  "sean_string_chord": false,
+  "read_against_print": "both wrong (four beamed eighths A5 C6 C6 C6: OFF three quarters, ON two quarters)"
+ },
+ "tile05.png": {
+  "plate": "litolff",
+  "place": "6/0/2/10",
+  "measure": [
+   "59"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 B-14 eighth; v1 @0 G4 eighth; v1 @1 E5 eighth; v1 @1 G4 eighth; v1 @1/2 E5 eighth; v1 @1/2 G4 eighth; v1 @3/2 B-14 eighth; v1 @3/2 D5 eighth",
+  "off": "v1 @0 A4 quarter; v1 @0 F4 quarter; v1 @1 B-14 eighth; v1 @1 G4 eighth; v1 @2 E5 eighth; v1 @2 G4 eighth; v1 @3/2 E5 eighth; v1 @3/2 G4 eighth; v1 @5/2 B-14 eighth; v1 @5/2 D5 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "cannot tell pitches; ON rhythm (four eighth dyads) fits the print, OFF wrote three beats"
+ },
+ "tile06.png": {
+  "plate": "litolff",
+  "place": "6/1/1/12",
+  "measure": [
+   "74"
+  ],
+  "part": [
+   "P2"
+  ],
+  "on": "v1 @0 A-15 quarter BLUE; v1 @0 F5 quarter; v1 @1 rest quarter",
+  "off": "v1 @0 E-15 quarter; v1 @1 A-15 quarter BLUE; v1 @1 F5 quarter; v1 @2 rest quarter",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile07.png": {
+  "plate": "litolff",
+  "place": "6/1/6/4",
+  "measure": [
+   "66"
+  ],
+  "part": [
+   "P7"
+  ],
+  "on": "v1 @0 C3 quarter; v1 @1 rest quarter",
+  "off": "v1 @0 C3 quarter; v1 @1 rest quarter; v2 @0 rest quarter",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile08.png": {
+  "plate": "litolff",
+  "place": "6/1/8/12",
+  "measure": [
+   "74"
+  ],
+  "part": [
+   "P9"
+  ],
+  "on": "v1 @0 F5 quarter; v1 @0 G4 quarter BLUE; v1 @1 rest quarter",
+  "off": "v1 @0 F5 quarter; v1 @1 F5 quarter; v1 @1 G4 quarter BLUE; v1 @2 rest quarter",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile09.png": {
+  "plate": "litolff",
+  "place": "6/1/9/11",
+  "measure": [
+   "73"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 C3 half",
+  "sean_string_chord": false,
+  "read_against_print": "both wrong (ON writes nothing; OFF wrote only the low half note)"
+ },
+ "tile10.png": {
+  "plate": "litolff",
+  "place": "16/0/0/5",
+  "measure": [
+   "80"
+  ],
+  "part": [
+   "P1"
+  ],
+  "on": "v1 @0 G5 half; v1 @0 G6 half",
+  "off": "(nothing written)",
+  "sean_string_chord": false,
+  "read_against_print": "ON wrong, OFF held: tremolo slash read as a second head (G5) on the G6 half"
+ },
+ "tile11.png": {
+  "plate": "litolff",
+  "place": "16/0/9/6",
+  "measure": [
+   "81"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "(nothing written)",
+  "off": "v1 @0 G3 half BLUE; v1 @2 E-14 quarter",
+  "sean_string_chord": false,
+  "read_against_print": "ON held, OFF wrong (OFF wrote the tremolo slash as an Eb4 quarter)"
+ },
+ "tile12.png": {
+  "plate": "litolff",
+  "place": "16/1/10/1",
+  "measure": [
+   "93"
+  ],
+  "part": [
+   "P11"
+  ],
+  "on": "v1 @0 C2 quarter BLUE; v1 @0 G2 quarter",
+  "off": "(nothing written)",
+  "sean_string_chord": false,
+  "read_against_print": "ON wrong, OFF held: octave tremolo half notes written as quarters, low G read as C2"
+ },
+ "tile13.png": {
+  "plate": "litolff",
+  "place": "2/0/7/4",
+  "measure": [
+   "21"
+  ],
+  "part": [
+   "P8"
+  ],
+  "on": "v1 @0 A-14 half BLUE; v1 @2 B-14 half; v1 @2 D4 half; v1 @2 G3 half BLUE; v1 @2 G5 half",
+  "off": "v1 @0 A-14 half BLUE; v1 @0 C5 half",
+  "sean_string_chord": true,
+  "read_against_print": "SEAN STRING CHORD -- FAILS: written in sequence, not held: Ab4 half at beat 0 then a G3 D4 Bb4 G5 half chord at beat 2 (filled heads written as halves); hollow G5 and the three filled heads joined to one page stem"
+ },
+ "tile14.png": {
+  "plate": "brahms",
+  "place": "0/0/11/1",
+  "measure": [
+   "2"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "v1 @0 A4 quarter.; v1 @3/2 A-14 quarter; v1 @5/2 G4 eighth; v2 @0 F14 quarter.; v2 @3/2 F4 quarter; v2 @5/2 E-14 eighth",
+  "off": "v1 @0 A4 quarter.; v1 @0 F14 quarter.; v1 @3/2 A-14 quarter; v1 @3/2 F4 quarter; v1 @5/2 E-14 eighth; v1 @5/2 G4 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "ON right (two voices of the div. viola)"
+ },
+ "tile15.png": {
+  "plate": "brahms",
+  "place": "4/0/9/5",
+  "measure": [
+   "13"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 E5 quarter; v1 @1 D15 eighth; v1 @3/2 E5 quarter.",
+  "off": "v1 @0 E5 quarter; v1 @1 D15 quarter; v1 @2 E5 quarter.",
+  "sean_string_chord": false,
+  "read_against_print": "ON right (OFF wrote the flagged D#5 a quarter)"
+ },
+ "tile16.png": {
+  "plate": "brahms",
+  "place": "4/1/2/0",
+  "measure": [
+   "19"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 D5 eighth; v1 @0 D6 eighth; v1 @1 F3 eighth; v1 @1/2 rest eighth; v1 @3/2 A3 quarter; v1 @5/2 F4 eighth",
+  "off": "v1 @1 F3 eighth; v1 @1/2 rest eighth; v1 @3/2 A3 quarter; v1 @5/2 F4 eighth; v2 @0 D5 eighth; v2 @0 D6 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile17.png": {
+  "plate": "brahms",
+  "place": "4/1/2/3",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P3"
+  ],
+  "on": "v1 @0 A4 quarter; v1 @1 F14 eighth; v1 @1 F15 eighth; v1 @3/2 A3 quarter; v1 @3/2 A4 quarter; v1 @5/2 F14 eighth; v1 @5/2 F15 eighth",
+  "off": "v1 @0 A4 quarter BLUE; v1 @1 A3 quarter BLUE; v1 @1 A4 quarter BLUE; v2 @0 F14 eighth BLUE; v2 @0 F15 eighth BLUE",
+  "sean_string_chord": false,
+  "read_against_print": "ON right (rhythm; pitches the same in both arms)"
+ },
+ "tile18.png": {
+  "plate": "brahms",
+  "place": "4/1/3/3",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P4"
+  ],
+  "on": "v1 @5/2 G2 eighth BLUE; v1 @5/2 G3 eighth BLUE; v2 @0 G3 quarter BLUE; v2 @0 G4 quarter BLUE; v2 @5/2 E3 eighth BLUE; v2 @5/2 E4 eighth BLUE",
+  "off": "v1 @0 G3 quarter BLUE; v1 @0 G4 quarter BLUE; v1 @2 G2 eighth BLUE; v1 @2 G3 eighth BLUE; v1 @5/2 E3 eighth BLUE; v1 @5/2 E4 eighth BLUE",
+  "sean_string_chord": false,
+  "read_against_print": "both wrong (bassoon octaves: events missing in both)"
+ },
+ "tile19.png": {
+  "plate": "brahms",
+  "place": "4/1/12/5",
+  "measure": [
+   "24"
+  ],
+  "part": [
+   "P13"
+  ],
+  "on": "v1 @0 D3 quarter. BLUE; v1 @3/2 D3 eighth BLUE",
+  "off": "v1 @0 D3 quarter.; v1 @2 G2 half BLUE; v1 @3/2 D3 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "both wrong (ON lacks the three short notes; OFF invented a G2 half)"
+ },
+ "tile20.png": {
+  "plate": "brahms",
+  "place": "4/1/12/8",
+  "measure": [
+   "27"
+  ],
+  "part": [
+   "P13"
+  ],
+  "on": "v1 @0 C2 eighth BLUE; v1 @0 C4 eighth BLUE; v1 @0 E3 eighth BLUE; v1 @0 G2 eighth BLUE; v1 @1/2 rest eighth BLUE; v1 @3/2 A-12 quarter BLUE; v1 @5/2 F3 eighth BLUE",
+  "off": "v1 @0 C2 quarter; v1 @0 C4 quarter; v1 @0 E3 quarter; v1 @0 G2 quarter; v1 @1 rest eighth; v1 @3/2 A-12 quarter; v1 @5/2 F3 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "both wrong (ON lacks the eighth at beat 1; OFF wrote the chord as quarters)"
+ },
+ "tile21.png": {
+  "plate": "brahms",
+  "place": "5/0/5/0",
+  "measure": [
+   "28"
+  ],
+  "part": [
+   "P6"
+  ],
+  "on": "v1 @0 rest quarter; v1 @1 C4 eighth; v1 @1 C5 eighth; v1 @2 C4 eighth; v1 @2 C5 eighth; v1 @3/2 C4 eighth; v1 @3/2 C5 eighth; v1 @5/2 C4 eighth; v1 @5/2 C5 eighth",
+  "off": "v1 @0 rest quarter; v1 @1 C4 quarter; v1 @2 C4 eighth; v1 @2 C5 eighth; v1 @3 C4 eighth; v1 @3 C5 eighth; v1 @5/2 C4 eighth; v1 @5/2 C5 eighth; v1 @7/2 C4 eighth; v1 @7/2 C5 eighth",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile22.png": {
+  "plate": "brahms",
+  "place": "5/0/11/3",
+  "measure": [
+   "31"
+  ],
+  "part": [
+   "P12"
+  ],
+  "on": "v1 @0 E-14 quarter BLUE; v1 @1 G-14 eighth BLUE",
+  "off": "v1 @0 E-14 quarter; v1 @1 G-14 eighth; v1 @3/2 G-14 quarter; v1 @5/2 F4 quarter",
+  "sean_string_chord": false,
+  "read_against_print": "both wrong; ON lost the last two notes OFF wrote (page reader finds no stem for the last eighth: no_stroke -> no value)"
+ },
+ "tile23.png": {
+  "plate": "brahms",
+  "place": "5/1/9/2",
+  "measure": [
+   "38"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 C5 eighth; v1 @0 E-14 eighth; v1 @0 G3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 B3 quarter.; v1 @3/2 D5 quarter.; v1 @3/2 G4 quarter.",
+  "off": "v1 @0 rest eighth; v1 @1 B3 quarter.; v1 @1 D5 quarter.; v1 @1 G4 quarter.; v1 @1/2 rest eighth",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile24.png": {
+  "plate": "brahms",
+  "place": "5/1/9/6",
+  "measure": [
+   "42"
+  ],
+  "part": [
+   "P10"
+  ],
+  "on": "v1 @0 B-14 eighth; v1 @0 E-14 eighth; v1 @0 G5 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 A5 quarter.; v1 @3/2 D4 quarter.; v1 @3/2 D5 quarter.",
+  "off": "v1 @0 B-14 eighth BLUE; v1 @0 E-14 eighth BLUE; v1 @0 G5 eighth BLUE; v1 @1 rest eighth BLUE; v1 @1/2 rest eighth BLUE",
+  "sean_string_chord": false,
+  "read_against_print": "ON right"
+ },
+ "tile25.png": {
+  "plate": "brahms",
+  "place": "5/1/10/7",
+  "measure": [
+   "43"
+  ],
+  "part": [
+   "P11"
+  ],
+  "on": "v1 @0 A4 quarter BLUE; v1 @0 F15 quarter BLUE",
+  "off": "v1 @0 A-14 quarter BLUE; v1 @0 F5 quarter BLUE",
+  "sean_string_chord": true,
+  "read_against_print": "SEAN STRING CHORD held (not written) as required; but the dyad before it is written F#5/A4 -- bar 42's sharp and natural carried across the barline at EXPORT (ADJUDICATE says F5/Ab4 in both arms): ON wrong, OFF right"
+ }
+}

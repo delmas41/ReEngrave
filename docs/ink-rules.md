@@ -89,6 +89,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_notehead_i
 | a head with a stem each way is two notes | A | a head carrying one stem up and one down is two voices on one head | `adjudicate_head_stem` (stem_value): `unison_two_voices`, `two_stems` | 684 / 299 | 282 / 72 | Sean 2026-10-19 (2.175), convention assumed | kept |
 | the other head of a second stands on the same stem | A | a head no stem touches, beside a head that does, a step off and one head width over, with the stem between them, is on that stem (flag OMR_ONE_CHORD_ONE_EVENT, default OFF) | `adjudicate_head_stem` (stem_value): `stem_of_a_second` | 0 / 0 | 0 / 0 | page-facts: every note on one stem shares one written value; Sean 2026-11-10 (2.291 tile 7: two half notes a second apart), convention assumed | new: OFF |
 | no evidence | D:honesty | - | `adjudicate_head_stem` (stem_value): `no_evidence` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | kept |
+| the page names no stem | D:honesty | the page read the head and found no free vertical at its engraving side, or two, or a stroke read both ways: abstain with the candidates and margin (flag OMR_PAGE_STEMS, ROADMAP 2.306 retire, default OFF) | `adjudicate_head_stem` (stem_value): `page_no_stem`, `page_stem_ambiguous` | 0 / 0 | 0 / 0 | CLAUDE rule 8 | new: OFF |
 | no stem / no heads read | D:honesty | the cell has strokes and no head box, or no stem: says nothing | `adjudicate_stem_head_contact` (stem_value): `no_heads_read`, `no_stem` | 1,606 / 1,551 | 802 / 434 | CLAUDE rule 8 | kept |
 | no stem found | D:passthrough | passes on the head_stem refusal | `adjudicate_stem_direction` (rhythm): `no_stem` | 1,843 / 5,520 | 862 / 1,519 | - | follows head_stem |
 | readers disagree on direction | U | the stem finders disagree; the stroke stem reader (2.204) is built to settle it | `adjudicate_stem_direction` (rhythm): `stems_disagree` | 796 / 350 | 347 / 93 | Sean 2026-10-26 tiles: today's finder was right on chords | open (2.204 after 2.205) |
@@ -106,7 +107,7 @@ Positive exits (the rule answered; not counted as rules): `adjudicate_notehead_i
 | nothing to group | D:bookkeeping | - | `adjudicate_event` (rhythm): `nothing_to_group` | 0 / 0 | 0 / 0 | - | kept |
 | nothing to align | D:bookkeeping | - | `adjudicate_onset_column` (rhythm): `single_staff`, `no_page_frame`, `nothing_to_align` | 0 / 0 | 0 / 0 | - | kept |
 
-Positive exits (the rule answered; not counted as rules): `adjudicate_head_stem`: `one_stem`, `stem_by_reach`, `stem_by_side`, `stem_by_flush`, `stem_by_one_per_head` (8,806 / 16,867); `adjudicate_stem_head_contact`: `all_touch_a_head`, `some_touch_no_head` (3,771 / 5,134); `adjudicate_stem_direction`: `stem_projection`, `beam_mate` (9,158 / 18,505); `adjudicate_stem_value`: `stem_agrees`, `stem_value_from_evidence` (3,175 / 6,562); `adjudicate_unison_voices`: `two_notes` (440 / 114); `adjudicate_onset_column`: `columns_read` (31 / 53).
+Positive exits (the rule answered; not counted as rules): `adjudicate_head_stem`: `one_stem`, `stem_by_reach`, `stem_by_side`, `stem_by_flush`, `stem_by_one_per_head` (8,806 / 16,867); `adjudicate_head_stem`: `page_stem`, `page_stem_of_a_second` (0 / 0); `adjudicate_stem_head_contact`: `all_touch_a_head`, `some_touch_no_head` (3,771 / 5,134); `adjudicate_stem_direction`: `stem_projection`, `beam_mate` (9,158 / 18,505); `adjudicate_stem_direction`: `page_stem` (0 / 0); `adjudicate_stem_value`: `stem_agrees`, `stem_value_from_evidence` (3,175 / 6,562); `adjudicate_unison_voices`: `two_notes` (440 / 114); `adjudicate_onset_column`: `columns_read` (31 / 53).
 
 ## Beams and flags
 
@@ -367,6 +368,7 @@ Files under `tools/omr/staged/` and `tools/omr/staged/adjudicators/` that hold a
 | `page_ledger.py` | U | NOT YET CLASSIFIED | - | open |
 | `page_marks.py` | C | cells are views, the page is the ledger: boxes of one family from two padded cells on the same page ink are ONE page mark (records ids, decides nothing yet) | Sean 2026-10-30 (2.240 crops 2, 3) | open: step 2 (one owner per page mark) reads it |
 | `page_owner.py` | A | one owner staff per page mark: the staff's own lines, then the ledger lines, the stem a second witness, never nearness; arcs and hairpins read page-wide once (records, decides nothing yet) | Sean 2026-10-28/30 (2.216 option B; 2.240 step-1 tiles) | open: step 3 retires the cell-copy rules where it agrees, on tiles |
+| `page_stems.py` | U | NOT YET CLASSIFIED | - | open |
 | `page_strokes.py` | C | the PAGE stroke map: the cell finders on one raster assembled from each staff's erased band + the page, barline columns carved out first; records, decides nothing | Sean 2026-11-03 (2.260a M2) | open: M3 / M4 read it |
 | `page_tremolo.py` | U | NOT YET CLASSIFIED | - | open |
 | `rest_ink.py` | C | does a rest box's own ink run on into a notehead? (measure for the rest/head pair rule) | Sean 2026-10-16 (2.150b) | retires with 2.205 |
@@ -431,6 +433,7 @@ I could not tell the kind of these from the code and the docs, and did not guess
 - **`page_arcs.py`**: not classified.
 - **`page_heads.py`**: not classified.
 - **`page_ledger.py`**: not classified.
+- **`page_stems.py`**: not classified.
 - **`page_tremolo.py`**: not classified.
 - **`second_hollow.py`**: a SECOND detector at GATHER for hollow heads only.
 - **`stem_strokes.py`**: not classified.
