@@ -1602,6 +1602,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                                     Dict[str, Any], Optional[str], str,
                                     float]] = []
     twin_index = _notehead_page_boxes(rec) if relocate else {}
+    other_marks = _other_mark_boxes(rec) if relocate else {}
     # ⚠️ ROADMAP 2.58b. EMPTY unless the record was gathered with
     # `OMR_MARK_GROUPS`, and then every placement below is QUEUED and replayed
     # in record order so one group is written once.
@@ -1850,6 +1851,14 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                     and dur_v.get("reason") == "owned_by_another_staff"):
                 _drop("owned_by_another_staff", s)
                 continue
+            if (relocate and not is_rest
+                    and A.is_relocated_copy(sub, rec.value(Q.GLYPH_OWNER, sub))):
+                # 2026-11-22: a box another staff owns that is not a head by its own ink, or is another mark's ink, is
+                # named as such -- never counted as an unread duration (which would mark the bar that merely saw it)
+                _why = _not_a_head_owned_elsewhere(rec, sub, _page_box_of(o), s["page"] or 0, other_marks)
+                if _why is not None:
+                    _drop(_why, s)
+                    continue
             _drop(("rest_" if is_rest else "") + "duration_"
                   + (dur_v["outcome"] if dur_v else "absent"), s)
             continue
@@ -1858,7 +1867,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         plan = None
         if (relocate and not is_rest
                 and A.is_relocated_copy(sub, owner)):
-            plan = _plan_relocation(rec, runs, o, s, sub, owner, twin_index)
+            plan = _plan_relocation(rec, runs, o, s, sub, owner, twin_index,
+                                    other_marks)
             if isinstance(plan, str):
                 _drop(plan, s)       # a NAMED refusal, never a silent one
                 continue
@@ -2166,6 +2176,12 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if _near_existing_head(cell, det, run.spacing):
             _drop("relocation_collides", _again(sub))
             continue
+        if _relocated_value_disagrees(cell, det):
+            # 2026-11-22 (lane-owner-writes): every note on one stem shares one written value. A head that would join a chord on
+            # the owner staff whose notes were read with another value is HELD (and its bar marked, on the staff that saw it):
+            # writing it would make 2.89 refuse the whole chord -- the owner's own, rightly read notes with it.
+            _drop("relocation_value_disagrees_with_its_chord", _again(sub))
+            continue
         cell.detections.append(det)
         if gid is not None:
             won[gid] = sub
@@ -2436,10 +2452,80 @@ def _key_alteration_for(pitch: Optional[str], fifths: Any) -> Optional[str]:
     return ("#" if fifths > 0 else "b") if pitch[0] in altered else None
 
 
+#: Detector classes whose box, holding a relocation candidate's centre, says the ink is THAT mark, not a head owned elsewhere.
+_OTHER_MARK_PREFIXES = ("clef", "key", "accidental", "flag", "tremolo", "dynamic")
+
+
+def _other_mark_boxes(rec: Record) -> Dict[int, List[List[float]]]:
+    """Per page, the page boxes of marks that are not heads (`_OTHER_MARK_PREFIXES`) and of every printed word
+    (`Q.DIRECTION_WORD`). Read once per export, only with `OMR_RELOCATE_AT_EXPORT` on."""
+    out: Dict[int, List[List[float]]] = {}
+    for o in rec.obs_of(Q.GLYPH_BOX):
+        v = o.get("value")
+        name = str(v[0] if isinstance(v, (list, tuple)) and v else v or "")
+        if not name.startswith(_OTHER_MARK_PREFIXES):
+            continue
+        box = _page_box_of(o)
+        if box is not None:
+            out.setdefault(_parse_subject(o["subject"])["page"] or 0, []).append(box)
+    for o in rec.obs_of(Q.DIRECTION_WORD):
+        box = _page_box_of(o)
+        m = re.match(r"^[a-z_]+/(\d+)", str(o.get("subject") or ""))
+        if box is not None and m:
+            out.setdefault(int(m.group(1)), []).append(box)
+    return out
+
+
+def _inside_another_mark(box: Sequence[float], page: int,
+                         other_marks: Dict[int, List[List[float]]]) -> bool:
+    cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+    return any(b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for b in other_marks.get(page, ()))
+
+
+def _not_a_head_owned_elsewhere(rec: Record, sub: str, box: Optional[Sequence[float]], page: int,
+                                other_marks: Dict[int, List[List[float]]]) -> Optional[str]:
+    """Why a box another staff owns is not a note at all, or None. (2) A notehead by its OWN ink: `Q.HEAD_INK` read hollow or
+    filled (one head-sized oval), never a box that only looks like one -- on the frozen sample the boxes owned elsewhere
+    include clef parts, slashes, flags, key flats and letters. (3) Its ink is not a mark another reader has named: its centre
+    inside a clef, key-signature, accidental, flag, tremolo or dynamic box, or a printed word (Brahms p5 the bass clef's dot,
+    p12 a Fag. key flat, p14 the e of "sempre")."""
+    hi = rec.obs(Q.HEAD_INK, sub)
+    if not hi or hi[-1].get("value") not in ("hollow", "filled"):
+        return "relocation_not_a_head_by_ink"
+    if box is not None and _inside_another_mark(box, page, other_marks):
+        return "relocation_on_another_mark"
+    return None
+
+
+def _owner_in_mark_group(rec: Record, sub: str, owner: str) -> bool:
+    """Does this mark's own group (`Q.MARK_GROUP`, the same ink seen from two cells) hold a member filed on `owner`?"""
+    for g in rec.obs(Q.MARK_GROUP, sub):
+        for m in (g.get("detail") or {}).get("members") or ():
+            if m != sub and isinstance(m, str) and m.startswith("glyph/") \
+                    and "staff/" + "/".join(m.split("/")[1:4]) == owner:
+                return True
+    return False
+
+
+def _relocated_value_disagrees(cell: "Cell", det: Dict[str, Any]) -> bool:
+    """Would `det`, put in `cell`, join a chord whose other heads were written with a different (beats, type, dots)?
+    The same grouping and the same triple 2.89 uses (`_group_chords`), asked BEFORE the head is added."""
+    trial = list(cell.detections) + [det]
+    for ev in _group_chords(trial):
+        heads = ev.get("noteheads") or ()
+        if not any(h is det for h in heads):
+            continue
+        mine = (det.get("duration_beats"), det.get("duration_type"), det.get("dots"))
+        return any(h is not det and (h.get("duration_beats"), h.get("duration_type"), h.get("dots")) != mine
+                   for h in heads)
+    return False
+
+
 def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
                      o: Dict[str, Any], s: Dict[str, Optional[int]],
                      sub: str, owner: str,
-                     twin_index: Dict[Tuple[int, int, int], List[List[float]]]
+                     twin_index: Dict[Tuple[int, int, int], List[List[float]]],
+                     other_marks: Optional[Dict[int, List[List[float]]]] = None
                      ) -> Any:
     """Where a head owned by another staff would be written.
 
@@ -2465,12 +2551,27 @@ def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
     for twin in twin_index.get(okey, ()):
         if _box_iou(box, twin) > SAME_INK_IOU:
             return None                      # the owner holds it: classic drop
+    # 2026-11-22 (lane-owner-writes). THE RULE, as a musician says it: a note belongs to the staff its ledger lines climb from,
+    # and it is written there once, with the chord on its stem. Four tests, in this order:
+    # (1) the owner holds this ink already when the mark's own group (`Q.MARK_GROUP`, the same ink seen by two cells) has a
+    #     member filed on the owner -- a box that overlaps too little for the IoU test above is still the same mark;
+    if _owner_in_mark_group(rec, sub, owner):
+        return None
+    # (2) it is a notehead by its OWN ink, and (3) its ink is not a mark another reader has named (`_not_a_head_owned_elsewhere`)
+    why = _not_a_head_owned_elsewhere(rec, sub, box, s.get("page") or 0, other_marks or {})
+    if why is not None:
+        return why
     run = runs.get(owner)
     if run is None or not run.cell_boxes:
         return "owner_staff_has_no_measures"
     pv = rec.verdict(Q.PITCH, sub)
     if pv is None or pv.get("decider") != "move_glyph":
         return "relocation_not_repitched"
+    # (4) the ledger lines name the owner and place the head (page-facts: a far head's position is its ledger lines only,
+    #     "there is no far note without one"): `move_glyph` pitched it from the ledger reading toward the owner. A head the
+    #     ledger lines do not place is HELD and its bar marked on the staff that saw it -- never written from a geometry step.
+    if pv.get("reason") != "reowned_by_ledger_reading":
+        return "relocation_owner_not_by_ledgers"
     cx = (box[0] + box[2]) / 2.0
     hits = [(abs((cb[0] + cb[2]) / 2.0 - cx), ci, cb)
             for ci, cb in run.cell_boxes.items() if cb[0] <= cx <= cb[2]]
@@ -7419,6 +7520,9 @@ UNREAD_BAR_MARK_WORDS[_GAP_REFUSAL] = "unread"
 _NOT_A_GAP_REASONS = frozenset({
     "owned_by_another_staff", "mark_group_duplicate",
     "not_a_notehead:belongs_to_a_nearer_staff",
+    # 2026-11-22 (`OMR_RELOCATE_AT_EXPORT`): a box owned elsewhere whose own ink is not one head, or whose ink is another
+    # named mark, is not a note of any staff
+    "relocation_not_a_head_by_ink", "relocation_on_another_mark",
     "not_a_notehead:stacked_head_duplicate",
     "not_a_notehead:notehead_is_a_duplicate_box",
     "not_a_rest:rest_is_a_duplicate_box",

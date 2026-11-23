@@ -146,7 +146,8 @@ class TestARelocatedHeadLandingPastTheOwnersLastBar(unittest.TestCase):
         rec = _staves()
         sub = "glyph/0/0/1/0/0"
         _head(rec, 100, sub, (moved_x, 210, moved_x + 20, 230),
-              pitch="G4", decider="move_glyph", owner="staff/0/0/0")
+              pitch="G4", decider="move_glyph", owner="staff/0/0/0",
+              pitch_reason="reowned_by_ledger_reading")
         return rec, sub
 
     def test_it_is_counted_not_lost_with_the_flag_on_and_off(self):
