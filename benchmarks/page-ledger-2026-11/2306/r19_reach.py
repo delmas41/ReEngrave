@@ -29,6 +29,12 @@ for p, D in dumps.items():
     for h in D["heads"]:
         for m in h["members"]:
             member_of[m] = h
+if not dumps:       # no dump: the page head groups as the record files them (the 2.290 head `Q.PAGE_MARK` rows)
+    for o in rec["observations"]:
+        d = o.get("detail") or {}
+        if o["quantity"] == "page_mark" and d.get("family") == "head":
+            for m in d.get("members") or ():
+                member_of[m] = d
 ps = collections.defaultdict(list)
 for o in rec["observations"]:
     if o["quantity"] == "page_stem":
@@ -67,3 +73,11 @@ for k, c in why.most_common():
     print("%5d  %s" % (c, k))
     for e in ex[k][:n]:
         print("         ", e)
+# copies: does the box's own owner verdict keep it on this staff (then the cell join's stem reaches the file)?
+own = {v["subject"]: v.get("value") for v in rec["verdicts"] if v["quantity"] == "glyph_owner" and v.get("outcome") == "decided"}
+cop = [e.split()[0] for k, es in ex.items() if k.startswith("copy_on_other_staff") for e in es]
+stay = [s for s in cop if own.get(s) == "staff/" + "/".join(s.split("/")[1:4])]
+print("copies %d: owner verdict keeps on this staff %d, another staff %d, no owner verdict %d" % (
+    len(cop), len(stay), sum(1 for s in cop if s in own and s not in stay), sum(1 for s in cop if s not in own)))
+for s in stay[:n]:
+    print("    stays", s)
