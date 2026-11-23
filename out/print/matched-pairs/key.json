@@ -1,0 +1,126 @@
+{
+ "question": "Left: a printed note the file does not write. Right: a look-alike on the same page that the file writes. Thin red box on each head; nothing else drawn.",
+ "built_from": "frozen-sample gathers 2026-11-21 (lr-r7-frozen, ON arm) re-adjudicated + re-exported on lane-2.333 tree (main bdc7c0259 tools + the OFF safeguard), OMR_DROPPED_HEAD_MARKS=bar",
+ "rows": [
+  {
+   "pair": 1,
+   "kind": "no box on the owning staff",
+   "plate": "brahms",
+   "drop": "glyph/12/0/6/6/1",
+   "drop_staff": "staff/12/0/5",
+   "twin": "glyph/12/0/5/6/3",
+   "twin_staff": "staff/12/0/5",
+   "why": "same chord, same stem: the head 3 spaces higher is written"
+  },
+  {
+   "pair": 2,
+   "kind": "no box on the owning staff",
+   "plate": "brahms",
+   "drop": "glyph/12/0/6/9/0",
+   "drop_staff": "staff/12/0/5",
+   "twin": "glyph/12/0/5/9/0",
+   "twin_staff": "staff/12/0/5",
+   "why": "same chord, same stem, two bars later"
+  },
+  {
+   "pair": 3,
+   "kind": "no box on the owning staff",
+   "plate": "brahms",
+   "drop": "glyph/19/0/8/0/2",
+   "drop_staff": "staff/19/0/9",
+   "twin": "glyph/19/0/9/0/5",
+   "twin_staff": "staff/19/0/9",
+   "why": "same staff, same bar, same ledger-line figure one step lower"
+  },
+  {
+   "pair": 4,
+   "kind": "no box on the owning staff",
+   "plate": "brahms",
+   "drop": "glyph/4/1/6/8/1",
+   "drop_staff": "staff/4/1/5",
+   "twin": "glyph/4/1/5/8/7",
+   "twin_staff": "staff/4/1/5",
+   "why": "same chord, same stem: the head 3 spaces higher is written"
+  },
+  {
+   "pair": 5,
+   "kind": "beam count not settled",
+   "plate": "litolff",
+   "drop": "glyph/6/0/1/10/3",
+   "drop_staff": null,
+   "twin": "glyph/6/0/2/10/8",
+   "twin_staff": null,
+   "why": "same bar, same beamed eighths on the staff below"
+  },
+  {
+   "pair": 6,
+   "kind": "beam count not settled",
+   "plate": "litolff",
+   "drop": "glyph/6/0/1/8/1",
+   "drop_staff": null,
+   "twin": "glyph/6/0/2/8/15",
+   "twin_staff": null,
+   "why": "same bar, same beamed eighths on the staff below"
+  },
+  {
+   "pair": 7,
+   "kind": "beam count not settled",
+   "plate": "litolff",
+   "drop": "glyph/16/1/3/2/16",
+   "drop_staff": "staff/16/1/3",
+   "twin": "glyph/16/1/3/2/8",
+   "twin_staff": "staff/16/1/3",
+   "why": "same beam group, same staff"
+  },
+  {
+   "pair": 8,
+   "kind": "beam count not settled",
+   "plate": "litolff",
+   "drop": "glyph/2/0/10/1/5",
+   "drop_staff": "staff/2/0/10",
+   "twin": "glyph/2/0/10/1/9",
+   "twin_staff": "staff/2/0/10",
+   "why": "same beam group, same staff"
+  },
+  {
+   "pair": 9,
+   "kind": "no pitch after a false clef change",
+   "plate": "litolff",
+   "drop": "glyph/4/1/3/6/1",
+   "drop_staff": "staff/4/1/3",
+   "twin": "glyph/4/1/3/1/0",
+   "twin_staff": "staff/4/1/3",
+   "why": "same staff, same height (first ledger line above), 5 bars earlier, before the false clef"
+  },
+  {
+   "pair": 10,
+   "kind": "no pitch after a false clef change",
+   "plate": "litolff",
+   "drop": "glyph/4/1/3/5/0",
+   "drop_staff": "staff/4/1/3",
+   "twin": "glyph/4/1/3/2/0",
+   "twin_staff": "staff/4/1/3",
+   "why": "same staff, same height (space above the top line), 3 bars earlier"
+  },
+  {
+   "pair": 11,
+   "kind": "no pitch after a false clef change",
+   "plate": "litolff",
+   "drop": "glyph/4/1/3/6/0",
+   "drop_staff": "staff/4/1/3",
+   "twin": "glyph/4/1/3/1/0",
+   "twin_staff": "staff/4/1/3",
+   "why": "same staff, same height (first ledger line above), 5 bars earlier"
+  },
+  {
+   "pair": 12,
+   "kind": "no pitch after a false clef change",
+   "plate": "litolff",
+   "drop": "glyph/4/1/3/5/3",
+   "drop_staff": "staff/4/1/3",
+   "twin": "glyph/4/1/3/1/0",
+   "twin_staff": "staff/4/1/3",
+   "why": "same staff, above the staff on ledger lines, before the false clef"
+  }
+ ]
+}

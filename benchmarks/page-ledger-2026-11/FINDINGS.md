@@ -789,3 +789,35 @@ heads (mostly Brahms tremolo halves near a neighbouring staff), 5 with no writte
 written plain": applied to every candidate it adds 56 + 22 bars on Litolff (red today 153) and 170 + 21
 on Brahms (130); leaving out bars whose only candidates are too-narrow or clipped boxes, 23 + 12 and
 50 + 4. `owned_by_another_staff` must come off the "not a gap" list.
+
+## Matched pairs: a dropped real note beside a look-alike we write (2026-11-22; main + `lane-2.333` in bar mode; frozen-sample gathers of 2026-11-21; `out/print/matched-pairs/`)
+
+Sean, on 28 tiles of boxed, unwritten marks: "it just looks very similar to other places where we're
+getting the readings correct." So each dropped real note was paired with a written twin and the first
+differing fact named. The 66 marked boxes are a computation; the piles, owners and twins are an agent's
+look at full size.
+
+**Two piles.** Litolff 27 real notes / 9 not (4 letters, 3 beams, a written neighbour, 1 unclear).
+Brahms 11 real / 19 not (6 clef parts, 6 tremolo slashes, 2 key flats, 2 flags, a beam, a letter, a
+slur). By reason, real/not: owned by another staff 10/2 and 9/16; value not read 12/3 and 2/1; chord
+value not read 5/1.
+
+**First difference from the twin.** (1) NO BOX ON THE STAFF THAT OWNS THE NOTE, 11 (Brahms 8, Litolff
+3): e.g. Brahms p12, the low dotted head of a horn chord 4.5 spaces below its staff; the twin is the
+head 3 spaces higher on the same stem. Where staves stand 5.3-6.3 spaces apart (under the 6.5 that
+lets a bar's crop reach 6 spaces) each bar is cropped 4 spaces past its staff, so the head falls
+outside the owner's crop and only the neighbour saw it. The ink is identical. (2) BEAM COUNT NOT
+SETTLED, 8 (Litolff): e.g. p6 bars 87 and 89, four beamed eighths with a sharp before and a natural
+inside, the sharps themselves written as quarter notes; a head touching a beam on a staff line; a beam
+stub at the stem. (3) NO PITCH AFTER A FALSE CLEF CHANGE, 6: Litolff p4 system 1 staff 3 -- the
+page-wide clef reader (2.324) read a cluster of heads and naturals at bar 3 as a C clef with no line
+read; about 20 heads after it on that line have no pitch. (4) Sean's Beethoven string chord, 4. (5) The
+box swallows the stem or no head ink is read, 5. (6) The owner's own copy refused, 2.
+
+**The owner is right.** All 19 real "owned by another staff" notes went to the right staff; each was
+unwritten because the owner had no box (11), its copy was refused (7 after the false clef, a stacked
+duplicate, a slash) or clipped at the crop's edge (1). Sean ruled this on 2026-10-06 ("All note heads
+should be found and written on their staff"; "Let's do them both": relocate-at-export, a head owned by
+a staff holding no twin is written there, pitch via `move_glyph`) -- `OMR_RELOCATE_AT_EXPORT` exists and
+is OFF. 16 of the 25 Brahms owned boxes are NOT notes, so a relocation needs a passed head test and a
+ledger reading.
