@@ -1,0 +1,10 @@
+5/0/1/0 P2 m8  OFF: F5 quarter. v1 tie; F-15 quarter. v1
+            ON: F5 quarter. v1; F-15 quarter. v1
+5/1/7/7 P8 m23  OFF (red): D5 quarter v1; G4 quarter. v1 tie; +D5 quarter. v1 tie
+            ON: D5 quarter v1; rest eighth v1; G4 quarter. v1 tie; +D5 quarter. v1 tie
+5/0/9/5 P10 m13  OFF: C6 quarter v1; rest eighth v1; A-16 quarter. v1 tie
+            ON: C6 quarter v1; rest eighth v1; A6 quarter. v1 tie
+5/0/9/6 P10 m14  OFF: A-16 quarter. v1 tie; A-16 quarter. v1
+            ON: A6 quarter. v1 tie; A-16 quarter. v1
+5/0/11/6 P12 m14  OFF: F3 eighth v1; rest eighth v1; rest eighth v1; F3 quarter. v1 tie
+            ON: F3 eighth v1; rest eighth v1; rest eighth v1; F3 quarter. v1
