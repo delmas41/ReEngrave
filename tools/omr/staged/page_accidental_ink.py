@@ -307,7 +307,16 @@ def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], b
             if h is None:
                 count("fused_pair:no_note_beside")
                 continue
-            out.append(_cluster([a, b], ub, ty, t, h, spl, ty + "_pair"))
+            # the accidental's bars are its ink too: every free piece that touches one of the two uprights and lies inside the pair's rows, never a
+            # stem-long upright, never a real head's blob (`taken` holds those) -- Brahms 5/0/13/7: the sharp's bar ends left free kept the head box on
+            # the sharp from being refused
+            bars = [j for u in (a, b) for j, _c in (strokes[u].touches or ()) if 0 <= int(j) < len(strokes) and int(j) not in taken and int(j) not in (a, b)
+                    and not (strokes[int(j)].kind == "vertical" and float(strokes[int(j)].length_sp) >= PAIR_SHARP_STEM_MIN_SP)
+                    and _box(strokes[int(j)])[1] >= ub[1] - 0.1 * spl and _box(strokes[int(j)])[3] <= ub[3] + 0.1 * spl
+                    and _box(strokes[int(j)])[2] <= ub[2] + 0.6 * spl and _box(strokes[int(j)])[0] >= ub[0] - 0.6 * spl]
+            mem = sorted({a, b} | {int(j) for j in bars})
+            out.append(_cluster(mem, _union_box([_box(strokes[m]) for m in mem]), ty, t, h, spl, ty + "_pair"))
+            used |= set(mem)
             used |= {a, b}
             break
     return out
@@ -455,7 +464,7 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
     if fused:
         # accidental-not-head lane: the two thick-ink shapes the stroke reading above cannot see; never ink it or an earlier claim already took
         taken = set(held_set) | {m for c in out for m in c["members"]}
-        pairs = accidental_pairs(strokes, sp, heads, boxed, taken, header, count)
+        pairs = accidental_pairs(strokes, sp, heads, boxed, taken | blocked, header, count)       # a real head's blob is never a bar
         out.extend(pairs)
         taken |= {m for c in pairs for m in c["members"]}
         out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count))
