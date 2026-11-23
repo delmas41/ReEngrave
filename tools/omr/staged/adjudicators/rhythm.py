@@ -2560,6 +2560,7 @@ def _head_reads_disagree(ev: Evidence, hi: Optional[Dict[str, Any]], head_first:
 
 
 HOLLOW_HEAD_WINS_ENV = "OMR_HOLLOW_HEAD_WINS"
+HEAD_READS_DISAGREE_RULE = "head_reads_disagree"
 
 
 def hollow_head_wins_enabled() -> bool:
@@ -4295,14 +4296,24 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # ROADMAP 2.341 (`OMR_HOLLOW_HEAD_WINS`): "A head whose middle is open paper is a half note (with a stem) -- never a quarter. NEVER
     # call hollow a head whose opening is a staff-line gap, a ledger-line gap, or the gap between two fused heads." The two readings of
     # this head disagree (the box read black / between, the head's own ink hollow: `_head_reads_disagree`) and neither is sure, so the
-    # note is HELD, never written plain: quarter or half, equal support, the bar settles it and INFER labels it (blue). Only on a head
-    # with its own stem and NOTHING read on that stem (a beam or flag on the stem says the head is black: 2.43); never a whole (a stem).
+    # note is HELD -- written GUESSED (blue) with both values as candidates, never plain. (A NARROWING here would be left red in a busy
+    # bar: the bar never chooses among candidates, 2.154.) Which value is written: where the box read NOTHING (between its two
+    # populations) the half (the 2.220 rule for a box 2.148 could not read); where the box read BLACK the quarter stays (Sean
+    # 2026-10-28: a black head 2.148 READ is never overturned -- although on these heads it read paper above the slit; asked, not
+    # assumed). Only on a head with its own stem and NOTHING read on that stem (a beam or flag on the stem says the head is black:
+    # 2.43); never a whole (a stem).
     if head_reads_disagree is not None and head_reads_disagree.get("has_stem") and base == _HEAD_BEATS["noteheadBlack"] \
             and not flags and not flag_levels and not tip_ink and not levels and not one_beam_pending \
             and strokes_before_hollow == (0, 0, 0) and not _stem_tip_disputed(ev, cell, own_stems, side):
         used.append(head_reads_disagree["head_ink_row"])
-        return Ruling.narrow(_fill_candidates(("black", "half"), n_dots, ratio, ev, {"black": 1.0, "half": 1.0}),
-                             "head_reads_disagree", used=tuple(used), **shared, head_reads_disagree=head_reads_disagree)
+        half, black = (_fill_candidates(("half", "black"), n_dots, ratio, ev, {"half": 1.0, "black": 1.0}))
+        chosen, other = (half, black) if head_reads_disagree.get("box_fill") is None else (black, half)
+        plain = {k: chosen.value[k] for k in ("beats", "written", "dots", "beam_levels")}
+        guess = {"rule": HEAD_READS_DISAGREE_RULE, "chosen": plain, "marks_blue": True, "files_under": str(Q.DURATION),
+                 "candidates": [dict(plain, support=1.0), dict({k: other.value[k] for k in plain}, support=1.0)],
+                 "head_ink": head_ink_read}
+        return Ruling(value=plain, reason="head_reads_disagree", used=tuple(used),
+                      detail={**shared, "head_reads_disagree": head_reads_disagree, HEAD_INK_GUESS_KEY: guess})
     if (beam_evidence == "none_over_this_note" or beamless_looked) and ink_hollow:
         ink_detail = fill_row.detail or {}
         used.append(fill_row.id)

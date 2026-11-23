@@ -23,6 +23,7 @@ from tools.omr.staged import adjudicate
 from tools.omr.staged import adjudicators  # noqa: F401
 from tools.omr.staged.adjudicators import rhythm
 from tools.omr.staged.record import READERS, Log, Outcome, Q
+from tools.omr.tests.stroke_map_fixture import file_note_ink
 from tools.omr.tests.test_staged_head_fill_first_2_148 import _head
 
 FIX = json.loads((pathlib.Path(__file__).parent / "fixtures" / "hollow_head_wins_2_341.json").read_text())["cases"]
@@ -47,7 +48,8 @@ def _reads(c):
 def _replay(c, on, beam=False):
     """A head-sized black head on its own stem carrying the record's two reads, through ADJUDICATE."""
     log = Log()
-    g = _head(log, share=c["box_read"]["rows_share"], beam=beam)
+    g = _head(log, share=c["box_read"]["rows_share"])
+    file_note_ink(log, (100, 90, 20, 16), sp=16, side="up", beams=1 if beam else 0)     # the stem the one beam count reads (2.319)
     oi = c["own_ink"]
     if oi["value"] is not None:
         log.observe(g, Q.HEAD_INK, oi["value"], reader=READERS.CV_HEAD_INK, frame="cell:0", margin=oi["margin"], slit=oi["slit"],
@@ -64,6 +66,10 @@ def _values(v):
     if v.outcome is Outcome.DECIDED:
         return {v.value["written"]}
     return {c.value["written"] for c in v.candidates}
+
+
+def _guess(v):
+    return (v.detail or {}).get(rhythm.HEAD_INK_GUESS_KEY)
 
 
 class TheTwoReadsDisagree(unittest.TestCase):
@@ -83,18 +89,22 @@ class TheTwoReadsDisagree(unittest.TestCase):
             v = _replay(c, on=False)
             self.assertEqual((v.outcome, _values(v)), (Outcome.DECIDED, {1.0}), k)
 
-    def test_on_each_half_is_held_quarter_or_half_never_plain(self):
+    def test_on_each_half_is_held_blue_with_quarter_and_half_never_plain(self):
         for k, c in _group("half_by_look").items():
             v = _replay(c, on=True)
-            self.assertEqual(v.outcome, Outcome.NARROWED, k)
-            self.assertEqual(v.reason, "head_reads_disagree", k)
-            self.assertEqual(_values(v), {1.0, 2.0}, k)
+            self.assertEqual((v.outcome, v.reason), (Outcome.DECIDED, "head_reads_disagree"), k)
+            g = _guess(v)
+            self.assertTrue(g and g["marks_blue"], k)
+            self.assertEqual(sorted(x["written"] for x in g["candidates"]), [1.0, 2.0], k)
+            # the box read NOTHING -> the half; the box read BLACK -> the quarter stays (Sean 2026-10-28: a black read is never overturned)
+            self.assertEqual(v.value["written"], 2.0 if c["box_read"]["fill"] is None else 1.0, k)
 
     def test_NEVER_a_black_head_looked_at_is_written_a_plain_half(self):
-        """The own-ink read's false openings (a black head's paper against a line or a fused head): held, never a plain half."""
+        """The own-ink read's false openings (a black head's paper against a line or a fused head): never a PLAIN half (blue at most)."""
         for k, c in _group("black_by_look").items():
             v = _replay(c, on=True)
-            self.assertNotEqual((v.outcome, _values(v)), (Outcome.DECIDED, {2.0}), k)
+            if v.outcome is Outcome.DECIDED and v.value["written"] == 2.0:
+                self.assertTrue((_guess(v) or {}).get("marks_blue"), k)
 
     def test_NEVER_a_head_with_a_beam_read_on_its_stem(self):
         """An open head is never beamed (2.43): a beam on the stem says the head is black, the own-ink opening is the beam's paper."""
