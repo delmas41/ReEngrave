@@ -3500,6 +3500,8 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted",
              "tip_readers_disagree",
+             # ROADMAP 2.341 (OFF by default): the two head reads disagree; a hook seen at the tip in a beamless cell.
+             "head_reads_disagree", "flag_ink_in_beamless_cell",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
              "unknown_head", "rest_class", "unreadable_rest",
              "rest_slot_contradicts_class", "rest_stands_where_no_rest_hangs", "rest_hangs_from_own_line",
