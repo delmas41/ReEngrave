@@ -31,7 +31,11 @@ def bars(path):
                 notes.append("%s%s %s%s v%s%s" % ("+" if n.find("chord") is not None else "", pitch, n.findtext("type") or "?",
                                                    "." * len(n.findall("dot")), n.findtext("voice"), " tie" if n.find("tie") is not None else ""))
             rgs = [n.get("rg") for n in m.iter("note") if n.get("rg")]
-            out[(pid, m.get("number"))] = dict(notes=notes, red="#D00000" in xml, blue="#1F6FEB" in xml, rgs=rgs)
+            # keyed by the bar's own place on the page (page/system/staff/cell of its marks), never by part id or bar number: two files that
+            # load different pages number their parts and bars differently (compare like with like, by place)
+            cells = sorted({"/".join(r.split("/")[1:5]) for r in rgs})
+            key = cells[0] if len(cells) == 1 else (pid, m.get("number"))
+            out[key] = dict(notes=notes, red="#D00000" in xml, blue="#1F6FEB" in xml, rgs=rgs, part=pid, number=m.get("number"))
     return out
 
 
@@ -58,7 +62,7 @@ for k, b in on.items():
     if cell in skip:
         continue
     bx = [box_of[r][1] for r in rg if box_of[r][0] == page]
-    rows.append(dict(cell=cell, part=k[0], measure=k[1], page=page, off=a["notes"], on=b["notes"], off_red=a["red"], off_blue=a["blue"],
+    rows.append(dict(cell=cell, part=b["part"], measure=b["number"], page=page, off=a["notes"], on=b["notes"], off_red=a["red"], off_blue=a["blue"],
                      box=[min(v[0] for v in bx), min(v[1] for v in bx), max(v[2] for v in bx), max(v[3] for v in bx)]))
 with open(out + ".txt", "w") as f:
     for r in rows:
