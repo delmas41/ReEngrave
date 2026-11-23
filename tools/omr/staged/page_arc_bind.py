@@ -58,7 +58,7 @@ def write_enabled() -> bool:
 # THE RULE (our wording, put to Sean as the lane's brief; it joins page-facts "An arc ends at the notes standing where its ink ends", Sean 2026-11-15, and
 # CLAUDE §4 "joining and separating go by ink", Sean 2026-11-18): a slur or tie starts and stops at a note -- its end points at that note's head or, on the
 # stem side, at that note's stem. The end belongs to the note whose HEAD INK or STEM INK it reaches. Where two notes are both reached, or neither, we do not
-# choose. A tie sits beside the ONE head it ties; an end that reaches only a stem, or a chord member nobody read, is no tie's end (the kind is then unread,
+# choose. A tie sits beside the ONE head it ties; an end that reaches a chord member nobody read is no tie's end and reads no kind off another member (unread,
 # marked, never a tie). NEVER: an end over blank paper (no head or stem ink at it) binds nothing; another staff's note is never a candidate (the caller's).
 #
 # THE CAUSE it answers (2026-11-23 small test, FINDINGS): the binder measured how far an end stands from its note's BOX CENTRE (`END_BEYOND_HEAD_SPACES`,

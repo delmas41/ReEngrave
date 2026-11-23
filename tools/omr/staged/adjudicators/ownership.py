@@ -6751,13 +6751,16 @@ def adjudicate_page_arc_binding(ev: Evidence) -> Ruling:
             entry["by_ink"] = by_ink          # ROADMAP 2.338: which ends the ink rule bound, and what ink each reached
         if b.get("kind") in ("tie", "slur") and b.get("start") and b.get("stop") and by_ink and PB.end_by_ink_enabled():
             # ROADMAP 2.338 (the rule's boundary, named both ways: a tie sits beside the ONE head it ties, level with it; a slur covers the chord):
-            #  * an end the ink rule bound by a STEM, or by a chord member no reader read, is no tie's end -- the bound heads may read "same" while the arc
-            #    is a slur over the chord;
+            #  * an end the ink rule bound by a chord member no reader read is no tie's end -- the tie's ONE head is the unread one, and the read member
+            #    it is written on may read "same" while the arc is a slur over the chord;
             #  * an end that reached a chord member nobody read is written on a READ member of that chord, so its kind was read from the wrong member: a
             #    slur stands only where the member the ink reached and the other end's note stand at clearly different positions (the binder's own
             #    `BIND_DIFFERENT_POSITION_SPACES`, measured from the two boxes); else the two members could be one pitch (a tie) -- unread.
             # Either way the kind is UNREAD, marked; never a tie, never a guessed slur (rule 8).
-            hold = b.get("kind") == "tie" and any(v in ("stem", "unread_member") for v in by_ink.values())
+            # MEASURED, NOT ASSUMED: a tie whose ink ends at the STEM of its chord's outer member is a real tie (Brahms p5 run 174: two up-stem dyads tied
+            # over their top heads, the ink ending at the stems; the OFF path wrote it and the crop agrees) -- the binder's side rule already names the outer
+            # member, so a stem end is held only where the member it names was not read
+            hold = b.get("kind") == "tie" and any(v == "unread_member" for v in by_ink.values())
             if not hold and b.get("kind") == "slur":
                 for s_, v in by_ink.items():
                     if v != "unread_member":
