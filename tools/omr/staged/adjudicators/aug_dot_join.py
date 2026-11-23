@@ -31,7 +31,7 @@ from __future__ import annotations
 
 import os
 from collections import Counter, defaultdict
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from .. import record as R
 from ..record import Kind, Outcome, Q, Scope
@@ -235,12 +235,14 @@ def dot_position_over_wedge_enabled() -> bool:
 # (2.327's open fault) and, used for every head, it moved 95 real decided dots
 # out of their window on the frozen sample.
 # The two numbers stand beside the rule, each measured both sides on Sean's
-# labelled Brahms p0 heads (his boxes are the heads' ovals): the head's own ink
-# reaches at least `HEAD_INK_PAST_BOX_MIN_SPACES` past the box on one side (his
-# re-drawn part-boxed halves reach 0.40-0.46; heads whose box he confirmed and
-# whose trim ran into a tail or ledger reached up to 0.38), and that ink is one
-# head no taller than `HEAD_INK_MAX_HEIGHT_SPACES` (his heads 0.79-1.51, trims
-# that ran on 1.25-1.6). 5 heads move, all nearer his centre; 0 move away.
+# labelled Brahms p0 heads (409 matched; he confirmed the detector box on all but
+# the few he re-drew, so his box is the oval): the head's own ink reaches at
+# least `HEAD_INK_PAST_BOX_MIN_SPACES` past the box on one side (his re-drawn
+# part-boxed halves: 0.41-0.46; a confirmed box whose trim stays under the
+# height cap reaches under 0.40), and that ink is one head no taller than
+# `HEAD_INK_MAX_HEIGHT_SPACES` (re-drawn halves 1.11-1.20; confirmed boxes whose
+# trim reached as far ran on to 1.27-1.6). 5 heads move, all to within 0.10 sp
+# of his centre; none moves away.
 # CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: one plate's
 # labels; falsified by a dot this rule joins that Sean reads as not that head's.
 DOT_BY_HEAD_INK_ENV = "OMR_DOT_BY_HEAD_INK"
@@ -257,7 +259,9 @@ def dot_by_head_ink_enabled() -> bool:
 def head_oval_from_ink(box: Tuple[float, float, float, float],
                        page_box: Optional[List[float]],
                        head_ink_row: Optional[R.Observation],
-                       space: float) -> Optional[Tuple[float, float, float, float]]:
+                       space: float,
+                       other_heads: Sequence[Tuple[float, float, float, float]] = ()
+                       ) -> Optional[Tuple[float, float, float, float]]:
     """The head's own oval (cell frame x, y, w, h) where its detector `box`
     holds only part of it, else None (the box stands for the oval).
 
@@ -265,6 +269,14 @@ def head_oval_from_ink(box: Tuple[float, float, float, float],
     2.220: the head trimmed to its own ink on the page raster; an observation
     means the ink read as ONE head), `page_box` the box's own page pixels,
     `space` the cell's staff space in the cell frame.
+
+    NEVER the head next door: where the ink reaching past the box lies in
+    ANOTHER notehead box of the cell (`other_heads`, refused ones included) by
+    more than `head_extent.MATE_OVERLAP_SPACES`, that ink is the chord-mate's
+    (Brahms p25 `glyph/25/1/0/8`, two heads a third apart, each with its own
+    dot) or the same head boxed twice (Brahms p8 `glyph/8/0/2/0`, a dotted
+    half on a line with a whole box and a part box) -- the other box stands
+    for it, and the box is kept.
     """
     if head_ink_row is None or not page_box or len(page_box) != 4 or not space:
         return None
@@ -280,9 +292,22 @@ def head_oval_from_ink(box: Tuple[float, float, float, float],
     tall = (float(t[3]) - float(t[1])) * ky / space
     if tall > HEAD_INK_MAX_HEIGHT_SPACES or max(up, down) < HEAD_INK_PAST_BOX_MIN_SPACES:
         return None
-    return (box[0] + (float(t[0]) - float(page_box[0])) * kx,
+    oval = (box[0] + (float(t[0]) - float(page_box[0])) * kx,
             box[1] + (float(t[1]) - float(page_box[1])) * ky,
             (float(t[2]) - float(t[0])) * kx, (float(t[3]) - float(t[1])) * ky)
+    from ..head_extent import MATE_OVERLAP_SPACES
+    grown = []                                  # (y0, y1) of the ink outside the box
+    if oval[1] < box[1]:
+        grown.append((oval[1], box[1]))
+    if oval[1] + oval[3] > box[1] + box[3]:
+        grown.append((box[1] + box[3], oval[1] + oval[3]))
+    for ob in other_heads:
+        if ob is None or ob[0] >= oval[0] + oval[2] or ob[0] + ob[2] <= oval[0]:
+            continue
+        for y0, y1 in grown:
+            if min(y1, ob[1] + ob[3]) - max(y0, ob[1]) > MATE_OVERLAP_SPACES * space:
+                return None
+    return oval
 
 
 def dot_boxed_as_a_head_enabled() -> bool:
