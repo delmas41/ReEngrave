@@ -1,0 +1,23 @@
+  gather brahms off pages [0, 4, 5] ...
+  gather brahms on pages [0, 4, 5] ...
+LANE REPORT  OMR_PAGE_STEMS (OFF=0 ON=1), OMR_STACK_TWO_HEADS (OFF=0 ON=1), OMR_STRING_STOPS_OWN_VALUE (OFF=0 ON=1)  --from gather
+  OMR_PAGE_STEMS: read in staged/adjudicate.py, staged/adjudicators/rhythm.py, staged/adjudicators/stem_value.py, staged/adjudicators/unison_two.py ... -> GATHER
+  OMR_STACK_TWO_HEADS: read in staged/stroke_map.py -> ADJUDICATE..EXPORT
+  OMR_STRING_STOPS_OWN_VALUE: read in staged/adjudicators/stem_value.py, staged/export.py, staged/staff_family.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/r19-sample6.json (a development control)
+  cells LOADED from master cm-3ccd049d7c3c (brahms) for both arms
+
+brahms  pages [0, 4, 5]  (2614 notes+rests OFF, 2592 ON, 2583 paired)
+  file:   notes +9 -22 | rests -9 | accidentals +3 -2 | dots +3 -15 | flags +10 -4 | beams +3 -2 ~2 | ties +4 -13 | slurs +8 -3 | articulations +2 -3 | note values ~7 | pitches ~4 | blue marks +33 -17 | words +16 -18
+  red bars 41 -> 32 | notes not written 1152 -> 1167
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (225 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 4) | by id key, no position 378 | position but no mark here 23
+  NOT JUDGED: 185 changed places no tile of Sean's covers (4 are covered; 23 have no page place): accidental 5, articulation 5, beam 6, blue 48, dot 18, flag 14, note 31, pitch 4, rest 9, slur 11, tie 17, value 6, words 11 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 5056 s
+EXIT 0
