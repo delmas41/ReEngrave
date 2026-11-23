@@ -9,6 +9,11 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- overnight 20261122-night (main 5634884a4), both movements done
+- STAGED, default flags, through INFER; Litolff 79 min, Brahms 272 min, both exit 0. Compare vs 20261117-night re-exported by this tree: `benchmarks/acceptance/overnight/20261122-night/README.txt`. These are CHANGES, not verdicts, except the judged tiles.
+- Judged tiles (the only verdict): Litolff 199/16/15 -> 208/14/8, Brahms 184/16/8 -> 187/16/5; right->wrong 0 on both; one right->narrowed each (Litolff 2.83-fix-review tile_08, Brahms 2.74-review brahms_05).
+- File changes: printed notes written Litolff 8216 -> 8387 of 8843, Brahms 15433 -> 15813 of 17180; red bars 341 -> 339 / 492 -> 492; unread bars 169 -> 115 / 86 -> 69; blue marks 1486 -> 1222 / 1822 -> 1468; beams now written as beams (flags -2789 +beams 2783 Litolff; -3292 / +3367 Brahms); `beam_discounted_uncertain` 316 and 1417 -> 0. Unjudged and to look at: pitches changed on 55 (Litolff) and 269 (Brahms) notes; Litolff `beams_ambiguous` 179 -> 335.
+
 ## 2026-11-20 -- ROADMAP 2.327 slash guard landed ON; 2.328 shared off reading tool landed
 
 Main 37fe2e6e7: `OMR_SLASH_GUARD_OWN_INK` ON (Sean: "Yes all half notes") -- a hollow head is no longer dropped

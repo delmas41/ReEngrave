@@ -1,0 +1,11 @@
+brahms ranking, fix-actions per page over 8 loaded pages, biggest first by TAG (BASE=base TAG=tag)
+kind                             BASE/pg    TAG/pg    delta   10-29 rank   (totals BASE -> TAG)
+ties and slurs not written          92.8     390.8   +298.0        160.0   742 -> 3126
+pitched heads not written           30.9      27.1     -3.8         46.3   247 -> 217
+red bars                            17.6      16.8     -0.9         20.5   141 -> 134
+dots abstained (dot_role_ambiguous, specks out; mostly non-dot ink, 2.234)      11.0      10.1     -0.9            -   88 -> 81
+unread empty bars                    5.1       1.6     -3.5         14.5   41 -> 13
+blue notes (check load)             51.6      51.4     -0.2        107.0   413 -> 411
+blue rests (check load)             13.8      13.8     +0.0         13.2   110 -> 110
+BASE dots row: 119 abstained dot_role_ambiguous, 31 of them dot-class boxes under the stroke floor (specks) -> 88 counted
+TAG dots row: 110 abstained dot_role_ambiguous, 29 of them dot-class boxes under the stroke floor (specks) -> 81 counted

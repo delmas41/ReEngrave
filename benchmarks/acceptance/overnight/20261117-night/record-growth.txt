@@ -1,0 +1,40 @@
+== beethoven5-litolff
+file size MB: BASE 593  TAG 696   (x1.18)
+  observations  rows   574421 ->   596704   ~MB    244 ->    258
+  abstentions   rows    77977 ->    78480   ~MB     26 ->     27
+  verdicts      rows   197441 ->   206860   ~MB    338 ->    436
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  verdicts      arc_kind                           rows     2641 ->     3512   ~MB   17.1 ->   53.9
+  verdicts      stroke_owner                       rows     5343 ->     5343   ~MB   32.8 ->   62.8
+  verdicts      arc_owner                          rows     2641 ->     3512   ~MB   32.2 ->   37.6
+  verdicts      notehead_is_not_a_notehead         rows    12039 ->    12039   ~MB   44.3 ->   49.6
+  observations  claimed_area                       rows    14562 ->    23553   ~MB    6.8 ->   11.2
+  verdicts      direction                          rows     5343 ->     5343   ~MB    2.3 ->    6.6
+  verdicts      arc_is_not_an_arc                  rows     2641 ->     3512   ~MB    6.4 ->   10.0
+  verdicts      page_arc_binding                   rows        0 ->       16   ~MB    0.0 ->    3.4
+  observations  stroke                             rows    87524 ->    87524   ~MB   52.4 ->   55.4
+  verdicts      glyph_owner                        rows     9549 ->    10145   ~MB   24.1 ->   26.7
+  verdicts      empty_bar_whole_rest               rows      338 ->     5343   ~MB    0.2 ->    2.6
+  observations  empty_bar_rest_search              rows      338 ->     5343   ~MB    0.1 ->    1.8
+  observations  page_arc                           rows        0 ->     2117   ~MB    0.0 ->    1.6
+  observations  mark_group                         rows    17058 ->    17058   ~MB    4.4 ->    5.8
+== brahms1-breitkopf
+file size MB: BASE 1986  TAG 2254   (x1.13)
+  observations  rows  1405039 ->  1460803   ~MB    608 ->    647
+  abstentions   rows   165035 ->   166654   ~MB     57 ->     58
+  verdicts      rows   463989 ->   480348   ~MB   1388 ->   1637
+biggest growth by ~bytes (array / quantity: rows, ~MB):
+  verdicts      arc_kind                           rows    14821 ->    16697   ~MB   82.4 ->  194.5
+  verdicts      stroke_owner                       rows     6699 ->     6699   ~MB   67.0 ->  127.3
+  verdicts      arc_owner                          rows    14821 ->    16697   ~MB  352.3 ->  372.2
+  observations  claimed_area                       rows    24310 ->    47177   ~MB   12.5 ->   24.5
+  verdicts      glyph_owner                        rows    35014 ->    36309   ~MB  178.8 ->  190.3
+  verdicts      page_arc_binding                   rows        0 ->       27   ~MB    0.0 ->    9.3
+  verdicts      notehead_is_not_a_notehead         rows    24454 ->    24454   ~MB  101.8 ->  110.6
+  verdicts      arc_is_not_an_arc                  rows    14821 ->    16697   ~MB   39.0 ->   46.6
+  observations  stroke                             rows   202445 ->   202445   ~MB  121.0 ->  128.0
+  observations  page_arc                           rows        0 ->    12040   ~MB    0.0 ->    6.5
+  verdicts      direction                          rows     6699 ->     6699   ~MB    2.9 ->    7.6
+  verdicts      empty_bar_whole_rest               rows      171 ->     6699   ~MB    0.1 ->    3.2
+  observations  system_arc                         rows     4528 ->     4666   ~MB   25.1 ->   28.0
+  observations  mark_group                         rows    41191 ->    41191   ~MB   10.8 ->   13.4

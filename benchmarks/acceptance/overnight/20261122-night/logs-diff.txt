@@ -1,0 +1,101 @@
+wall (summary.txt)   BASE ref origin/main commit d98c042c375c90a0d19503e2cab6495a24242d88 through infer start 2026-11-18T07:08:05Z  | done 2026-11-18T13:35:50Z
+                     TAG  ref origin/main commit 5634884a49d00a46366e097ffeb5f529217c6502 through infer start 2026-11-23T06:57:30Z  | done 2026-11-23T12:49:54Z
+
+== beethoven5-litolff
+  wall min  BASE 83  TAG 79   (exit codes 0 / 0)
+  ── EVALUATE: 21402 fired, 229673 skipped
+     -> ── EVALUATE: 22002 fired, 229520 skipped
+  ── INFER: 140 inferred, 66 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+     -> ── INFER: 92 inferred, 60 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+  DECIDED verdicts that moved (quantity: base -> tag): accidental_owner 575 -> 574; clef 323 -> 331; duration 12378 -> 12556; glyph_owner 10049 -> 10043; head_stem 9065 -> 9068; key_signature 249 -> 266; notehead_is_not_a_notehead 11849 -> 11856; rest_is_not_a_rest 2874 -> 2875; slot_index 309 -> 311; stem_value 3733 -> 3856; unison_voices 468 -> 471; voices 5073 -> 5063
+  ABSTENTIONS 47928 -> 47601; 32 reasons moved, 83 unchanged
+    quantity                         reason                                     base      tag    delta
+    duration                         beam_discounted_uncertain                   316        0     -316
+    duration                         beams_ambiguous                             179      335     +156
+    stem_value                       stem_levels_unread                          171       48     -123
+    duration                         beam_certain_not_joined                      16        0      -16
+    voices                           no_voice_convention_fits                    130      140      +10
+    key_signature                    needs_clef                                    8        0       -8
+    key_signature                    disagrees_with_document                      18       10       -8
+    glyph_owner                      tied                                         93       99       +6
+    clef                             margin_below_floor                            6        0       -6
+    unison_voices                    one_voice_unmarked                           23       19       -4
+    stem_value                       not_a_member                               1108     1112       +4
+    notehead_is_not_a_notehead       claim_narrowed:clef                           6        2       -4
+    stem_value                       no_stem                                    2249     2246       -3
+    notehead_is_not_a_notehead       claim_narrowed:key_signature                  5        2       -3
+    head_stem                        no_stem                                    2249     2246       -3
+    duration                         not_a_note_mark                             210      207       -3
+    slot_index                       family_block_not_forced                      22       20       -2
+    clef                             no_candidates                                 2        0       -2
+    unison_voices                    voice_beams_range                             0        1       +1
+    system_key                       one_staff_only                                0        1       +1
+    system_key                       no_staff_read_a_key                           1        0       -1
+    stem_value                       lone_head                                  4051     4050       -1
+    rest_is_not_a_rest               claim_narrowed:clef                           1        0       -1
+    notehead_is_an_eighth_rest       not_refused_as_too_narrow                   100       99       -1
+    notehead_is_an_eighth_rest       no_ink_under_box                            182      183       +1
+    key_signature                    natural_markers                               5        4       -1
+    key_signature                    mixed_marker_kinds                            6        7       +1
+    key_signature                    disagrees_with_system                         9        8       -1
+    duration                         tip_readers_disagree                          0        1       +1
+    duration                         head_fill_from_ink                           84       83       -1
+    duration                         flag_ink_unread                               8        9       +1
+    accidental_owner                 no_candidate                                435      434       -1
+  LOG warnings/errors (lines matching warn|error|traceback|exception|failed|warning sign): BASE 3, TAG 5
+    TAG: surya: session job failed (worker silent for 20.0s); falling back to a one-shot spawn and closing the session
+    TAG: surya failed on one crop: crop wall-time guard
+    TAG: ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['instrument_across_systems', 'key_signature_across_systems', 'measure_count_across_staves']
+    TAG: ⚠️ DISAGREEMENTS: 4 (each implicates its WHOLE group, not its dissenter)
+    TAG: ── INFER: 92 inferred, 60 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+
+== brahms1-breitkopf
+  wall min  BASE 304  TAG 272   (exit codes 0 / 0)
+  ── EVALUATE: 55811 fired, 616644 skipped
+     -> ── EVALUATE: 55614 fired, 617978 skipped
+  ── INFER: 176 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+     -> ── INFER: 93 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing
+  DECIDED verdicts that moved (quantity: base -> tag): accidental_owner 3628 -> 3629; arc_kind 16674 -> 16673; clef 689 -> 690; dot_role 9551 -> 9552; duration 26250 -> 27713; dynamic 6635 -> 6636; glyph_owner 35553 -> 35505; head_stem 16951 -> 16966; key_signature 591 -> 600; meter 53 -> 52; notehead_is_not_a_notehead 24386 -> 24392; rest_is_not_a_rest 8740 -> 8742; stem_value 6915 -> 7494; voices 5967 -> 5982
+  ABSTENTIONS 110380 -> 108337; 37 reasons moved, 76 unchanged
+    quantity                         reason                                     base      tag    delta
+    duration                         beam_discounted_uncertain                  1417        0    -1417
+    stem_value                       stem_levels_unread                          632       61     -571
+    glyph_owner                      tied                                        398      446      +48
+    duration                         beams_ambiguous                             359      330      -29
+    duration                         beam_certain_not_joined                      18        0      -18
+    voices                           no_voice_convention_fits                    583      568      -15
+    stem_value                       no_stem                                    7198     7183      -15
+    head_stem                        no_stem                                    7198     7183      -15
+    stem_value                       not_a_member                               1242     1251       +9
+    notehead_is_not_a_notehead       claim_narrowed:clef                           6        0       -6
+    stem_value                       lone_head                                  8160     8156       -4
+    key_signature                    disagrees_with_system                        16       12       -4
+    dot_role                         dot_role_ambiguous                          433      430       -3
+    accidental_owner                 is_a_key_signature_marker                  1495     1492       -3
+    unison_voices                    not_a_unison                              24219    24221       +2
+    unison_voices                    head_refused                                  4        2       -2
+    stem_value                       hollow_head_on_a_beamed_stem                  0        2       +2
+    rest_is_not_a_rest               claim_narrowed:clef                           2        0       -2
+    key_signature                    mixed_marker_kinds                            3        1       -2
+    key_signature                    disagrees_with_document                       2        0       -2
+    head_stem                        unison_two_voices                           235      233       -2
+    head_stem                        two_stems                                    70       72       +2
+    duration                         flags_disagree                               10       12       +2
+    dot_role                         ink_owned_by_another_mark                    55       57       +2
+    accidental_owner                 no_candidate                                575      577       +2
+    tie_pair                         not_a_tie                                  3025     3026       +1
+    tie_pair                         no_pair_at_one_position                     178      177       -1
+    notehead_is_an_eighth_rest       not_refused_as_too_narrow                   464      465       +1
+    notehead_is_an_eighth_rest       claimed_by_another_class                    183      182       -1
+    meter                            carry_outweighed_by_the_bars                  0        1       +1
+    key_signature                    no_evidence                                  47       46       -1
+    key_signature                    needs_clef                                    2        1       -1
+    key_signature                    disagrees_with_part                          24       25       +1
+    dynamic                          unspellable                                  64       63       -1
+    duration                         head_fill_from_ink                          220      219       -1
+    clef                             margin_below_floor                            2        1       -1
+    arc_kind                         arc_ends_unread                              14       15       +1
+  LOG warnings/errors (lines matching warn|error|traceback|exception|failed|warning sign): BASE 3, TAG 3
+    TAG: ⚠️ checked_nothing (never two independent signals -- corroborated NOTHING, however busy it looks): ['clef_across_systems', 'instrument_across_systems', 'key_signature_across_systems', 'measure_count_a
+    TAG: ⚠️ DISAGREEMENTS: 19 (each implicates its WHOLE group, not its dissenter)
+    TAG: ── INFER: 93 inferred, 0 skipped  ⚠️ every one is LABELLED and supersedes a recorded narrowing

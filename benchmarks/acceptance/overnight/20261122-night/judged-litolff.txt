@@ -1,0 +1,17 @@
+judged tiles, litolff, today's scorer on BOTH records (index 2265 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            199         16         15          2         45        166
+  TAG             208         14          8          2         45        166
+  right/wrong/narrowed  BASE 199/16/15  ->  TAG 208/14/8
+  moves: right->wrong 0 (must be 0) | right->gone 1 | wrong->right 2 | unwritten->wrong 0 | unwritten->right 8 | tiles scored on both 398
+  status transitions that are not 'same' (BASE -> TAG: n):
+    narrowed   -> right      8
+    wrong      -> right      2
+    right      -> narrowed   1
+  RIGHT -> WRONG (0)
+  RIGHT -> GONE (1):
+    2.83-fix-review            tile tile_08 glyph/11/1/8/16/3 narrowed
+  WRONG -> RIGHT (2):
+    2.162-review               tile 16   glyph/4/1/2/12/0 
+    2.220-plan                 tile 1    glyph/2/1/0/11/2 
+  UNWRITTEN -> WRONG (0)

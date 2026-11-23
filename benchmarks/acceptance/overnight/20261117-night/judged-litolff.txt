@@ -1,0 +1,16 @@
+judged tiles, litolff, today's scorer on BOTH records (index 2241 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            188         18          6          2         51        166
+  TAG             189         18          5          2         51        166
+  right/wrong/narrowed  BASE 188/18/6  ->  TAG 189/18/5
+  moves: right->wrong 1 (must be 0) | right->gone 0 | wrong->right 1 | unwritten->wrong 0 | unwritten->right 1 | tiles scored on both 380
+  status transitions that are not 'same' (BASE -> TAG: n):
+    wrong      -> right      1
+    right      -> wrong      1
+    narrowed   -> right      1
+  RIGHT -> WRONG (1):
+    2.78-phase2-review         tile 11   ['glyph/6/1/10/9/5', 'glyph/6/1/10/9/9'] decided 0.5 beats (head_and_marks); refused as not a note (claimed_by:barline)
+  RIGHT -> GONE (0)
+  WRONG -> RIGHT (1):
+    2.220-m2                   tile 3    glyph/6/1/7/11/12 
+  UNWRITTEN -> WRONG (0)

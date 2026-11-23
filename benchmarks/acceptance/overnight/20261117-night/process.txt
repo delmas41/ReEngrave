@@ -1,0 +1,122 @@
+== commits
+BASE 636ec4742a2277a1d63978d783ec8400c5b9ef71  TAG d98c042c375c90a0d19503e2cab6495a24242d88
+git log --oneline 636ec4742..d98c042c3: 672 commits (100 merges, 572 non-merge)
+changed under tools/omr: 141 files changed, 23874 insertions(+), 297 deletions(-)
+files changed by area: tests 88, staged 48, tools/omr/annotate 2, tools/omr/detector_cache.py 1, tools/omr/voicing.py 1, tools/omr/yolo_detector.py 1
+
+== ROADMAP items named in commit subjects (oldest first; a subject names it, the tree decides whether it is ON)
+  0.25    23bdbc415 2.288 r4: real-case fixtures (36 tiles), side threshold 0.25 sp, replay + tests
+  0.75    2db447c70 2.290 build r3: one oval along the staff is under a third (0.75 sp; nothing is printed a step apart at one x); diagnosis scripts
+  0.85    356064a30 2.284b r2: the arc-ink rule narrowed to LINE-class boxes (ledger) at 0.85 -- the first cut (any class, 0.5) dropped heads, dots, fermatas, a flat and 
+  2.89    d48e54433 2.314 r4: decide each bar's two-stems decline once, before 2.89's value refusal, so a declined bar loses exactly the heads flag OFF loses (0 bars red 
+  2.204   e0934dabf 2.270: flag docs rows, ink-rules page, HEAD_STEM_REACH read in the 2.204 gated form
+  2.256b  ea7fa6335 2.302: flags doc row; pin the new flag off in the 2.256b test
+  2.257   b39ed64f0 2.270: converted whole rest may be the other voice (2.257 r2 bar-sum evidence)
+  2.260c  0b5da5bec 2.260c M4b (OMR_PAGE_BEAMS_RETIRE_A, OFF): page beam views as Q.BEAM_STROKE rows, consumers read live rows
+  2.260e  b059a9c97 ROADMAP: 2.260e M6a-c in flight beside M4 (Sean 11-05), lane fence
+  2.269   8dbee4a09 ROADMAP: 2.269 step 3 + M4b in flight (20261104-night census)
+  2.270   89687bcd1 2.270: Sean's whole-rest tile answers (17 crops, 16 marks), FINDINGS, ROADMAP row, DECISIONS; reader fix in flight
+  2.271   8f724a79c ROADMAP: 2.271 arcs broken up again at export (Sean 11-05), in flight
+  2.272   f4c721550 ROADMAP: 2.272 arcs traced along their own ink end to end (Sean 11-05), in flight
+  2.273   33e6eb5a1 ROADMAP: 2.273 gated staff-row arc read (Sean 11-06 'Yes build'), in flight
+  2.274   f88a6c509 2.274: Sean 8/8 on ink-first arc crops; ROADMAP row, DECISIONS
+  2.275   242289863 ROADMAP: claim 2.275 (re-census of unwritten noteheads)
+  2.276   4020041e7 ROADMAP: claim 2.276 (tremolo slashes read once on the page)
+  2.277   ede3692d8 ROADMAP: claim 2.277 (claimed ink is final)
+  2.278   29af25a4d ROADMAP: claim 2.278 (beams and flags diagnosis)
+  2.279   ec3d2a524 DECISIONS: Sean 2026-11-08 red only for unreadable; read heads written blue with most likely option (direction, lane 2.279)
+  2.280   4e7a3a75a ROADMAP: claim 2.280 (why read heads have no stem row)
+  2.281   d813690db 2.281 claim: ARCS, one arc that continues into another curve, against a corrected key
+  2.282   4b8cbca34 2.282 claim: CLAIM ORDER accidentals vs stems, micro test
+  2.283   03d6503f0 ROADMAP: claim 2.283 audit lane
+  2.284   ba886532d ROADMAP: claim 2.284 page ledger owns the ink
+  2.284b  ee4521b29 2.284b (OFF): arcs claim only their own pixels (page-wide mark boxes skipped, crossings marked not taken); dynamic letters and in-staff words claim pa
+  2.285   fd4ee871b ROADMAP 2.285 held until 2.284 lands (Sean); 2.282 + 2.283 rows done
+  2.286   58ed351e5 ROADMAP: claim 2.285 (in flight) and 2.286 note conservation test
+  2.287   620744d92 DECISIONS + ROADMAP 2.287: hand labelling in two passes, page then cell (Sean 2026-11-10)
+  2.288   694d478d6 2.285 landed ON: OMR_ACCIDENTAL_OWN_INK default ON (opt-out =0); docs, 2.288 row, ink-rules regenerated, default test updated
+  2.289   54286a89d ROADMAP: claim 2.289 (note-loss look) and 2.290 (page heads on today's main); 2.280/2.281 re-open (Sean: open all 4)
+  2.290   54286a89d ROADMAP: claim 2.289 (note-loss look) and 2.290 (page heads on today's main); 2.280/2.281 re-open (Sean: open all 4)
+  2.291   621246bd5 ROADMAP: claim 2.291 (why bars are red) and 2.292 (why key/clef are inferred)
+  2.292   621246bd5 ROADMAP: claim 2.291 (why bars are red) and 2.292 (why key/clef are inferred)
+  2.293   1db977c39 ROADMAP: claim 2.293 (one number for ink claimed once)
+  2.294   e2cfc1bd6 ROADMAP: claim 2.294 (micro test: one owner or shared ink at crossings)
+  2.295   2c22a8cf8 CLAUDE rule 7 + DECISIONS: controls from real judged cases, two gathers at once (Sean); ROADMAP 2.295 claimed, 2.294 closed
+  2.295b  a421ed262 2.295b WIP: claim_readout + judged_claims read page-stroke claims (shared reader page_stroke_claims, ST_PAGE_NOT_CONSULTED, sources named)
+  2.296   cfc0edf8d Overnight brief (Sean 2026-11-11); 2.290 plan doc onto main; ROADMAP 2.290 build + 2.296 claimed
+  2.298   2309e1834 ROADMAP 2.298 + DECISIONS: arc stack fails its hold-out (25/30); binder fixes claimed
+  2.299   cd91ff56e ROADMAP: 2.290 build r1 done (OFF, waiting on tiles); claim 2.299 key kind from slots, 2.300 one chord one event
+  2.300   cd91ff56e ROADMAP: 2.290 build r1 done (OFF, waiting on tiles); claim 2.299 key kind from slots, 2.300 one chord one event
+  2.301   624c05f50 ROADMAP: claim 2.301 dynamics hold their own ink only (in flight), 2.302 key object counts every flat (queued)
+  2.302   624c05f50 ROADMAP: claim 2.301 dynamics hold their own ink only (in flight), 2.302 key object counts every flat (queued)
+  2.303   ee6fb7c66 ROADMAP: claim 2.303 letters inside a printed word are the word's (queued behind 2.301 landing)
+  2.304   0d78dc3ab ROADMAP: claim 2.304 (a reader is not shown ink another reader owns: text reader crop)
+  2.305   f7ce47a87 ROADMAP 2.305 claimed: arc binding, job 2 only (Sean: Start arc binding)
+  2.306   2c81c079f ROADMAP 2.306 claimed: stems and beams read once on the page (Sean 2026-11-12)
+  2.307   077fd0281 2.307 claimed: plan -- the page holds the facts, a zoom is only a way of looking; DECISIONS: no old reader beside the new one
+  2.308   b14f715ca ROADMAP 2.308 claimed: the bar sum counts each voice on its own (Sean 2026-11-14 "Yes", 2.306 r8 tile 10)
+  2.309   63f5236de ROADMAP 2.309 claimed: rule wording audit (Sean 2026-11-15)
+  2.310   fe6f37a42 ROADMAP 2.310 claimed: reword the ten rules, each with a yes-and-never pair (Sean: Good); DECISIONS
+  2.311   803c90513 ROADMAP 2.311 claimed: diagnosis -- where a printed note is lost, a funnel against truth (Sean: correctly diagnosing the problem is my main concern)
+  2.312   2e6c071e5 ROADMAP 2.312 claimed: a far note is placed by its ledger lines only (Sean 2026-11-17)
+  2.313   18964ab5b ROADMAP 2.313-2.315 claimed; DECISIONS: four lanes (Sean 2026-11-17)
+  2.314   f3dc79f4c 2.314 Part 0: tally of refused notes with no flag and no beam; largest cause two stems at one place (31%)
+  2.315   18964ab5b ROADMAP 2.313-2.315 claimed; DECISIONS: four lanes (Sean 2026-11-17)
+  (57 items)
+
+== 'Land' commits (the ones that flip a default)
+
+== flag DEFAULTS that differ (same AST scanner on both trees; ON = the default state)
+flag                               BASE     TAG      GATHER? read in (TAG tree)
+OMR_ACCIDENTAL_OWN_INK             absent   ON       YES     gather.py, page_accidental_ink.py
+OMR_ARC_MEETING_AT_HEAD            absent   ON       no      arc_claim.py
+OMR_ARC_STRIP                      absent   ON       YES     arc_strip.py, gather.py
+OMR_CLAIM_FINAL                    absent   ON       no      adjudicators/claim_final.py, adjudicators/family_precision.py, adjudicators/notehead_precision.py
+OMR_DYNAMIC_OWN_CLAIM              absent   ON       YES     claims.py, gather.py
+OMR_KEY_KIND_FROM_SLOTS            absent   ON       no      adjudicators/header.py, key_kind_slots.py
+OMR_KEY_OBJECT_COUNTS_FLATS        absent   ON       no      key_object.py
+OMR_LEDGER_COUNT_TO_INK            absent   ON       no      annotate/ledger_grid.py
+OMR_LETTERS_ARE_THE_WORD           absent   ON       YES     claims.py, gather.py
+OMR_ONE_CHORD_ONE_EVENT            absent   ON       no      adjudicators/rhythm.py, adjudicators/stem_value.py, export.py
+OMR_PAGE_ARCS                      absent   OFF      YES     gather.py, page_arcs.py, record.py
+OMR_PAGE_BEAMS_RETIRE_A            absent   OFF      no      adjudicators/rhythm.py, export.py, page_beams.py
+OMR_PAGE_CLAIM_BOXES               absent   OFF      YES     gather.py, page_claim_names.py
+OMR_PAGE_CLAIM_RESTS               absent   ON       YES     page_accidental_ink.py, page_claim_names.py
+OMR_PAGE_HEADS                     absent   OFF      YES     arc_claim.py, gather.py, page_heads.py
+OMR_PAGE_LEDGER_OWNS               absent   ON       YES     adjudicators/family_precision.py, adjudicators/ink_consult.py, adjudicators/notehead_precision.py
+OMR_PAGE_TREMOLO                   absent   ON       YES     claims.py, gather.py, page_accidental_ink.py
+OMR_TWO_STEMS_TWO_NOTES            absent   ON       no      adjudicators/notehead_precision.py, export.py, one_chord.py
+OMR_UNREAD_WORD_SIBLING            absent   ON       no      adjudicators/text.py, export.py, lilypond.py
+OMR_WHOLE_REST_FROM_INK            absent   ON       no      adjudicators/rhythm.py, export.py
+OMR_WHOLE_REST_SEARCH_OWN_BAR      absent   ON       YES     export.py, gather.py
+OMR_WHOLE_REST_STEM_RULE           absent   OFF      no      adjudicators/rhythm.py, export.py
+OMR_WORD_OWNS_ITS_INK              absent   ON       YES     claims.py, gather.py
+(23 flags changed default; 155 flags seen by the scan at BASE, 178 at TAG)
+
+== every OMR_* NAME in non-test source: added since BASE (31) / gone (0)  [catches value flags the scan misses]
+  + OMR_ARC_ACROSS_SYSTEMS             staged/arc_claim.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **default OFF** (allow-list)
+  + OMR_ARC_CLOSEST_HEAD               staged/adjudicators/ownership.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **default OFF** (allow-list)
+  + OMR_PAGE_ARC_WRITE                 staged/adjudicate.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **ON** (roadmap 2.305, flipped at the landing, 2026-11-16 per Sean "Land it"; deny-list: off only for 0/false/no/off; GATHER + ADJUDICATE + EXPORT; al
+  + OMR_PAGE_HEAD_CASES_DUMP           GATHER staged/page_heads.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: unset (benchmark tooling)
+  + OMR_PAGE_HEAD_CLAIM                GATHER staged/page_heads.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: no row in docs/flags-2026-09.md
+  + OMR_PAGE_HEAD_LEDGER               GATHER staged/adjudicators/ink_consult.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **ON** (roadmap 2.290 step 4, flipped at the landing gate; deny-list; needs `OMR_PAGE_HEAD_ONE`; GATHER + ADJUDICATE)
+  + OMR_PAGE_HEAD_ONE                  GATHER staged/adjudicators/stem_value.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **ON** (roadmap 2.290 steps 1-2, flipped at the landing gate; deny-list: off only for 0/false/no/off; GATHER flag; Sean's r1-r3 tiles: gains and losse
+  + OMR_PAGE_HEAD_VIEWS                GATHER staged/gather.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **OFF** (roadmap 2.260e M6b; needs `OMR_PAGE_HEADS`)
+
+blind spot: a flag read through a path the scan cannot parse and already present at BASE is NOT listed even if its default moved.

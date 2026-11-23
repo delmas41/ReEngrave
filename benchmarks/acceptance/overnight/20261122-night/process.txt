@@ -1,0 +1,72 @@
+== commits
+BASE d98c042c375c90a0d19503e2cab6495a24242d88  TAG 5634884a49d00a46366e097ffeb5f529217c6502
+git log --oneline d98c042c3..5634884a4: 224 commits (25 merges, 199 non-merge)
+changed under tools/omr: 140 files changed, 67046 insertions(+), 9247 deletions(-)
+files changed by area: tests 95, staged 44, tools/omr/acceptance.py 1
+
+== ROADMAP items named in commit subjects (oldest first; a subject names it, the tree decides whether it is ON)
+  2.81    1747c3046 2.319 r2: the 2.97 bar rule declines only an unread tuplet -- a human-struck marker is no tuplet, a decided ratio lets the sum run (the retired 2.81 r
+  2.97    1747c3046 2.319 r2: the 2.97 bar rule declines only an unread tuplet -- a human-struck marker is no tuplet, a decided ratio lets the sum run (the retired 2.81 r
+  2.102   1747c3046 2.319 r2: the 2.97 bar rule declines only an unread tuplet -- a human-struck marker is no tuplet, a decided ratio lets the sum run (the retired 2.81 r
+  2.139   437bdb395 2.331 fix A: OMR_WORD_LETTER_NOT_DYNAMIC default ON (deny-list), own commit to take or leave at landing; 2.139 marc test counts the m under either rul
+  2.159   ead0fe421 2.327 r2: slash guard stops a hollow own-ink head only on a slash read, all three tests, or crossing AND on the shaft (Sean's 2.159 Brahms slash repla
+  2.181   8c46efde4 2.181 test: a cell-1 clefF box whose ink breaks the F clef's never (f_no_body_ink) is not a clef -- no NARROWED claim, no carry stop (2.324 r8)
+  2.208   2e05adf2b 2.324 r3: the 2.208 clef-slot test runs the page-wide pass first when OMR_CLEF_PAGE_ONLY is on (as gather orders it); 11/11 both ways
+  2.290   08b2c1902 2.331 fix B r2: keep the fold's written box (a unison's second voice goes with it); take only the pitch step and printed alteration from the accidenta
+  2.306   5aeef3cae ROADMAP: 2.306 r15 (stems join by ink, next big project) and 2.330 (one stem, one value) claimed; 2.317 step 0b sheets
+  2.316   bad3e7684 DECISIONS + ROADMAP 2.316/2.317: count notes and arcs not boxes; why ~860 notes have no value (Sean 2026-11-18)
+  2.317   bad3e7684 DECISIONS + ROADMAP 2.316/2.317: count notes and arcs not boxes; why ~860 notes have no value (Sean 2026-11-18)
+  2.318   f2fc94f51 ROADMAP 2.318 claimed: one beam count read where beam ink meets stem ink (Sean 2026-11-18)
+  2.319   9f4f2b457 ROADMAP 2.318 landed ON, 2.317 done, 2.319 opened; version_memory
+  2.320   567368c9f ROADMAP 2.320: small test -- notes written where no notehead is printed
+  2.321   ca3e972b6 ROADMAP 2.321 (voice model small test) and 2.322 (claim-once gaps small test) claimed
+  2.322   ca3e972b6 ROADMAP 2.321 (voice model small test) and 2.322 (claim-once gaps small test) claimed
+  2.323   5a6a06e9e ROADMAP 2.323 claimed: a unison in a two-voice bar is printed once and kept for both parts
+  2.324   8cf0001ce ROADMAP 2.324 claimed: the clef is read once on the page and claimed once (Sean)
+  2.325   9932a136b DECISIONS + ROADMAP 2.325: audit readers tuned to one publisher (Sean)
+  2.326   76d5d6514 DECISIONS + ROADMAP 2.326: fix publisher-tuned readers starting from notehead fill (Sean)
+  2.327   52ca17573 DECISIONS + ROADMAP 2.327: land the unison change ON; claim the notehead box-gates lane (Sean)
+  2.328   5e32ef72b DECISIONS + ROADMAP 2.328: one shared OFF reading of the frozen sample per main (Sean)
+  2.329   9f401350b ROADMAP: claim 2.329, augmentation dots from their own ink; step 0 small test
+  2.330   5aeef3cae ROADMAP: 2.306 r15 (stems join by ink, next big project) and 2.330 (one stem, one value) claimed; 2.317 step 0b sheets
+  2.331   0fdb1d71a ROADMAP: claim 2.331, audit what later steps receive after two weeks of replaced readers (Sean)
+  2.332   f164e48e0 DECISIONS + ROADMAP: build more, test less, more lanes on the audit's fixes (Sean); claim 2.332
+  2.333   9ad6aae0e DECISIONS + ROADMAP: 2.333, a dropped head must not hide -- build OFF and test whether it helps (Sean)
+  (27 items)
+
+== 'Land' commits (the ones that flip a default)
+  a644cfe78 land-batch-1: regenerate docs/data-flow.md; split the merged OMR_KEY_KIND_FROM_SLOTS flag row onto its own line
+
+== flag DEFAULTS that differ (same AST scanner on both trees; ON = the default state)
+flag                               BASE     TAG      GATHER? read in (TAG tree)
+OMR_ARC_INK_NOT_BEAM               ON       removed  no      infer.py
+OMR_BARE_STEM_BAR                  ON       removed  no      infer.py
+OMR_BARE_STEM_RANK                 OFF      removed  no      adjudicators/rhythm.py
+OMR_BEAMS_HONOUR_CLAIMS            ON       removed  no      adjudicators/rhythm.py
+OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM OFF      removed  no      adjudicators/rhythm.py
+OMR_BEAM_LEVEL_STROKE_IS_A_BEAM    ON       removed  no      adjudicators/rhythm.py
+OMR_BEAM_NOT_ON_SYSTEM_ARC         ON       removed  no      adjudicators/rhythm.py
+OMR_BEAM_REFUSED_OFF_THE_TIP       ON       removed  no      adjudicators/rhythm.py
+OMR_FOLD_FAR_BY_LEDGER             absent   OFF      no      export.py
+OMR_HEAD_OWN_ROWS                  absent   OFF      YES     head_ink.py
+OMR_PAGE_HEADS                     OFF      removed  YES     arc_claim.py, gather.py, page_heads.py
+OMR_SLASH_GUARD_OWN_INK            absent   ON       no      adjudicators/rhythm.py
+OMR_STEM_TIP_DECIDES_BEAM          ON       removed  no      adjudicators/rhythm.py
+OMR_UNISON_KEPT_FOR_BOTH           absent   ON       no      export.py
+OMR_WORD_LETTER_NOT_DYNAMIC        absent   ON       no      adjudicators/text.py, claims.py
+(15 flags changed default; 178 flags seen by the scan at BASE, 173 at TAG)
+
+== every OMR_* NAME in non-test source: added since BASE (6) / gone (8)  [catches value flags the scan misses]
+  + OMR_ONE_BEAM_COUNT                 staged/adjudicators/stem_value.py
+      not seen by the default scan; read as: (no environ line; named only)
+      docs/flags-2026-09.md default column: **`1` (on)** (ROADMAP 2.318, built 2026-11-18 on Sean's "Yes", landed 2026-11-19 on "Take as many rounds as necessary to land this"; deny-list: 0/fals
+  - OMR_ARC_INK_NOT_BEAM (was tools/omr/staged/infer.py)
+  - OMR_BARE_STEM_BAR (was tools/omr/staged/infer.py)
+  - OMR_BARE_STEM_RANK (was tools/omr/staged/adjudicators/rhythm.py)
+  - OMR_BEAM_LEVEL_NEEDS_A_JOINED_STEM (was tools/omr/staged/adjudicators/rhythm.py)
+  - OMR_BEAM_LEVEL_STROKE_IS_A_BEAM (was tools/omr/staged/adjudicators/rhythm.py)
+  - OMR_BEAM_NOT_ON_SYSTEM_ARC (was tools/omr/staged/adjudicators/rhythm.py)
+  - OMR_BEAM_REFUSED_OFF_THE_TIP (was tools/omr/staged/adjudicators/rhythm.py)
+  - OMR_STEM_TIP_DECIDES_BEAM (was tools/omr/staged/adjudicators/rhythm.py)
+
+blind spot: a flag read through a path the scan cannot parse and already present at BASE is NOT listed even if its default moved.

@@ -1,0 +1,9 @@
+compare_20261029 20261122-night vs 20261117-night docs [beethoven5-litolff brahms1-breitkopf] tree 5634884a49d00a46366e097ffeb5f529217c6502 start 2026-11-23T12:52:00Z
+comparing: beethoven5-litolff brahms1-breitkopf
+tree under test: tools/ identical to the TAG commit 5634884a49d00a46366e097ffeb5f529217c6502
+compare 20261122-night vs 20261117-night, tree 5634884a49d00a46366e097ffeb5f529217c6502 start 2026-11-23T12:52:00Z
+beethoven5-litolff: readout diff exit 1 = the records differ (expected)
+brahms1-breitkopf: readout diff exit 1 = the records differ (expected)
+done 2026-11-23T13:17:04Z
+wrote /Users/seanjohnson/Desktop/ReEngrave/.claude/worktrees/project-mgmt-pipeline-review-e6581e/benchmarks/acceptance/overnight/20261122-night/README.txt 180 lines; 2 candidate(s) under Surprising / worse
+done 2026-11-23T13:35:20Z

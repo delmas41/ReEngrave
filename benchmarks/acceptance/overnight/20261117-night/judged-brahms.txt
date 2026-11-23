@@ -1,0 +1,18 @@
+judged tiles, brahms, today's scorer on BOTH records (index 2241 tiles)
+                right      wrong   narrowed  abstained  not_found   unscored
+  BASE            165         17          3          0         53        196
+  TAG             166         18          2          0         52        196
+  right/wrong/narrowed  BASE 165/17/3  ->  TAG 166/18/2
+  moves: right->wrong 1 (must be 0) | right->gone 0 | wrong->right 1 | unwritten->wrong 1 | unwritten->right 1 | tiles scored on both 382
+  status transitions that are not 'same' (BASE -> TAG: n):
+    wrong      -> right      1
+    right      -> wrong      1
+    narrowed   -> right      1
+    not_found  -> wrong      1
+  RIGHT -> WRONG (1):
+    2.166-review               tile 14   glyph/1/0/2/2/25 read as slur (slur)
+  RIGHT -> GONE (0)
+  WRONG -> RIGHT (1):
+    2.154-review               tile 3    glyph/5/0/11/5/0 
+  UNWRITTEN -> WRONG (1):
+    2.250-tiles                tile 2    glyph/0/0/10/5/9 read as slur (slur)
