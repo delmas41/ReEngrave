@@ -1,0 +1,138 @@
+"""ROADMAP 2.324 r10 -- a C clef names the staff line through the middle of the clef, measured from its top and bottom edges, STAGED
+GATHER (`clef_pagewide.c_outside_edges` / `name_c_bar`).
+
+Sean 2026-11-22, shown the two small Litolff C clefs printed off their line (page 4 system 1 staff 3 bar 3; page 11 system 0 staff 2
+bar 15; tiles `out/print/2.324-r9/`): "They all look like tenor clefs"; "Needs to be read - never assumed"; "The best bet at
+determining what clef it is is measuring the middle of the clef and aligning it with a staff line"; "Mesure from the outside to get
+the midddle". So the line is read from the clef's own outer edges -- never from where its ink balances, the instrument, or another
+clef on the staff.
+
+`data_clef_c_middle_2_324_r10.npz`: every C clef that passes the bar-and-bowls test on the 16 frozen-sample pages (Litolff and
+Breitkopf, 61), cut from the pipeline's own page binary with the lines the page-wide pass hands it; `read_before` is the balance
+reading (main before r10), `read_after` r10's first build (the middle snapped to any line, 14c331811: bar 3 unread there). Each cut reproduced its page's two readings when it was made.
+"""
+from __future__ import annotations
+
+import json
+import pathlib
+
+import numpy as np
+import pytest
+
+from tools.omr.staged import clef_pagewide as CP
+
+DATA = pathlib.Path(__file__).with_name("data_clef_c_middle_2_324_r10.npz")
+_Z = np.load(DATA)
+META = json.loads(str(_Z["meta"]))
+B15 = "c_litolff_p11_s0_st2_b15_body"     # Sean: tenor
+B3 = "c_litolff_p4_s1_st3_b3_body"        # Sean: tenor
+READ_BEFORE = sorted(k for k, m in META.items() if m["read_before"] is not None)
+
+
+def _cand(name):
+    m = META[name]
+    ink = np.unpackbits(_Z[name])[: m["shape"][0] * m["shape"][1]].reshape(m["shape"]).astype(bool)
+    got = [c for c in CP.c_bars(ink, m["lines"], m["sp"], m["scan"][0], m["scan"][1]) if c["passed"]]
+    assert got, name
+    return got[0], m
+
+
+def _name(name):
+    cand, m = _cand(name)
+    return CP.name_c_bar(cand, m["lines"])
+
+
+def test_the_cut_holds_every_c_clef_of_the_frozen_sample():
+    assert len(META) == 61 and len(READ_BEFORE) == 59
+    assert all(m["reproduces"] for m in META.values())
+
+
+def test_sean_s_bar_15_clef_is_read_tenor_from_its_outside_middle():
+    nm, ln, res = _name(B15)
+    assert (nm, ln) == ("tenor", 4) and res < 0.3
+
+
+def test_control_where_its_ink_balances_cannot_read_it():
+    """The reading before r10 (the glyph's balance, snapped) fails on the same mark: it balances half a space off the line."""
+    cand, m = _cand(B15)
+    nm, _, res = CP.name_c(cand["middle_y"], cand.get("lines_local") or m["lines"])
+    assert nm is None and res > 0.35
+
+
+def test_sean_s_bar_3_clef_is_read_tenor_printed_a_bit_off():
+    """Sean: "To me this one looks like a tenor clef that was just printed a bit off". Its middle stands 0.41 space ABOVE the tenor
+    line (0.60 below the top line): no other C line on that side, so the nearer -- tenor."""
+    nm, ln, res = _name(B3)
+    assert (nm, ln) == ("tenor", 4) and 0.35 < res < 0.5
+
+
+def test_control_the_plain_snap_on_the_middle_cannot_read_bar_3():
+    """The same middle named with the header readers' snap alone (r10's first build) leaves it unread -- the change can fail."""
+    cand, m = _cand(B3)
+    nm, _, res = CP.name_c(cand["outside_middle"], cand.get("lines_local") or m["lines"])
+    assert nm is None and res > 0.35
+
+
+def test_never_named_between_alto_and_tenor_when_clearly_nearer_neither():
+    """NO REAL CASE on the sample (the 61 middles between the two lines stand at most 0.32 from the nearer). Built from a REAL clef,
+    labelled as such: Litolff p4 s1 st3 bar 12 (read tenor), its rows moved down by 0.6 space so its middle lands half-way between
+    the tenor and alto lines -- unread, never alto or tenor."""
+    name = "c_litolff_p4_s1_st3_b12_body"
+    cand, m = _cand(name)
+    ink = np.unpackbits(_Z[name])[: m["shape"][0] * m["shape"][1]].reshape(m["shape"]).astype(bool)
+    sp = m["sp"]
+    shift = int(round(0.6 * sp))    # its middle (0.25 above the tenor line) lands ~0.48 below it: where the moved bowls now run into
+                                    # a staff line the edge moves a little further, so 0.75 overshoots to 0.29 from the alto line
+    # a column of the crop holding only staff lines: the bare staff the clef is moved over
+    near_line = np.zeros(ink.shape[0], dtype=bool)
+    for L in m["lines"]:
+        near_line[max(0, int(L - 0.3 * sp)):int(L + 0.3 * sp) + 1] = True
+    bare = next(x for x in range(ink.shape[1]) if ink[:, x].any() and not (ink[:, x] & ~near_line).any())
+    xa, xb = int(cand["x0"]) - 1, int(cand["x_right"]) + 1
+    moved = ink.copy()
+    moved[:, xa:xb] = ink[:, [bare]]
+    moved[shift:, xa:xb] |= ink[:-shift, xa:xb]
+    got = [c for c in CP.c_bars(moved, m["lines"], sp, m["scan"][0], m["scan"][1]) if c["passed"]]
+    assert got
+    nm, _, res = CP.name_c_bar(got[0], m["lines"])
+    assert nm is None and res > 0.35
+
+
+def test_never_past_half_a_space_outside_the_two_lines():
+    cand, m = _cand(B3)
+    ll = cand.get("lines_local") or m["lines"]
+    sp = (ll[4] - ll[0]) / 4.0
+    assert CP.name_c_bar(dict(cand, outside_middle=ll[1] - 0.55 * sp), m["lines"])[0] is None
+    assert CP.name_c_bar(dict(cand, outside_middle=ll[2] + 0.55 * sp), m["lines"])[0] is None
+    assert CP.name_c_bar(dict(cand, outside_middle=ll[2] + 0.45 * sp), m["lines"])[0] == "alto"
+
+
+@pytest.mark.parametrize("name", READ_BEFORE)
+def test_every_c_clef_read_before_keeps_its_kind(name):
+    assert _name(name)[0] == META[name]["read_before"]
+
+
+def test_control_reaching_past_the_bar_takes_in_other_marks(monkeypatch):
+    """Let the clef's piece reach a full space past its bar and a stem, slur or line below joins in: clefs are named wrong or lost --
+    the reach can fail."""
+    monkeypatch.setattr(CP, "C_OUTSIDE_REACH_SPACES", 1.0)
+    changed = [n for n in READ_BEFORE if _name(n)[0] != META[n]["read_before"]]
+    assert len(changed) >= 3
+
+
+@pytest.mark.parametrize("attr,value,moved", [
+    ("C_STROKE_PAST_SPACES", 99.0, ["c_litolff_p4_s1_st3_b12_body", "c_litolff_p11_s0_st2_b0_body"]),
+    ("C_STROKE_TRIM_SPACES", 0.0, ["c_litolff_p11_s0_st2_b0_body"]),
+])
+def test_control_a_stroke_touching_the_clef_is_not_the_clef(monkeypatch, attr, value, moved):
+    """A stem or barline touching the bowls (Litolff p4 bar 12, p11 bar 0, both read tenor): counted as the clef's ink -- or measured
+    from its ragged edge -- it pulls the clef's top edge up (the kind still reads tenor on these: the measure moves, not the name)."""
+    before = {n: _cand(n)[0]["outside_top"] for n in moved}
+    monkeypatch.setattr(CP, attr, value)
+    for n in moved:
+        assert _cand(n)[0]["outside_top"] < before[n] - 1
+
+
+def test_no_outside_edges_is_unread_never_the_balance():
+    cand, m = _cand(B15)
+    assert CP.name_c_bar(dict(cand, outside_middle=None), m["lines"])[0] is None

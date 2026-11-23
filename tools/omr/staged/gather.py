@@ -15809,11 +15809,13 @@ def gather_clef_pagewide(log: Log, pws: Any, cells: Sequence[Any], local: Dict[i
             if not cand["passed"]:
                 near.append(dict(cand, family="C"))
                 continue
-            nm, ln, res = CP.name_c(cand["middle_y"], cand.get("lines_local") or lines)
+            nm, ln, res = CP.name_c_bar(cand, lines)
             area = CP.c_area(cand, sp)
             found.append({"area": area, "family": "C", "kind": nm, "line": ln, "residual": res, "witnesses": ["c_bar", "c_bowls"],
                           "shape": {k: cand.get(k) for k in ("bar_width_spaces", "bar_run_spaces", "bowl_fill_upper", "bowl_fill_lower",
-                                                              "bowl_asymmetry", "symmetry")}, "box": None})
+                                                              "bowl_asymmetry", "symmetry", "outside_top", "outside_bottom",
+                                                              "outside_middle")},
+                          "box": None})
         # -- clef-sized detector boxes, each with its second witness
         for k in order:
             c = mycells[k]
