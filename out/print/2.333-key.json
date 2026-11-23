@@ -1,0 +1,575 @@
+{
+ "seed": 23332,
+ "who": "the print reading is an agent's, not Sean's",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "place": "2/0/7/4",
+   "part": "P8",
+   "measure": "21",
+   "dropped_heads": [
+    {
+     "sub": "glyph/2/0/7/4/1",
+     "reason": "chord_value_undecided"
+    },
+    {
+     "sub": "glyph/2/0/7/4/2",
+     "reason": "chord_value_undecided"
+    },
+    {
+     "sub": "glyph/2/0/7/4/3",
+     "reason": "chord_value_undecided"
+    },
+    {
+     "sub": "glyph/2/0/7/4/8",
+     "reason": "chord_value_undecided"
+    }
+   ],
+   "file_writes_off": [
+    "Ab4 half [GUESSED blue]",
+    "C5 half +chord"
+   ],
+   "print_shows_agent_reading": "print is a 4-head half-note chord on one stem with fermata (about G3, D4, Bb4 on the middle line, G5 above the staff); file writes only Ab4+C5, which match none of the printed heads",
+   "box_is_agent_reading": "a real notehead (all four boxes are the four heads of the chord)",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong and the box is a real note"
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "place": "2/0/10/1",
+   "part": "P11",
+   "measure": "18",
+   "dropped_heads": [
+    {
+     "sub": "glyph/2/0/10/1/5",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "B3 eighth",
+    "B3 eighth",
+    "Bb2 eighth [GUESSED blue]",
+    "B3 eighth +chord",
+    "Bb2 eighth [GUESSED blue]",
+    "B3 eighth +chord"
+   ],
+   "print_shows_agent_reading": "a printed Bb2 eighth (lower voice, 2nd eighth, the box) missing; lower voice is eighth rest + three Bb2 eighths, file has only two Bb2",
+   "box_is_agent_reading": "a real notehead",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong and the box is a real note"
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "place": "2/1/1/5",
+   "part": "P2",
+   "measure": "39",
+   "dropped_heads": [
+    {
+     "sub": "glyph/2/1/1/5/7",
+     "reason": "duration_abstained"
+    }
+   ],
+   "file_writes_off": [
+    "E5 quarter",
+    "G5 quarter +chord",
+    "rest quarter"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "text (the top hook of the 'f' of the sf dynamic under the staff)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "place": "2/1/4/13",
+   "part": "P5",
+   "measure": "47",
+   "dropped_heads": [
+    {
+     "sub": "glyph/2/1/4/13/4",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "C5 half >tie",
+    "E5 half +chord >tie"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "beam (top of the beam joining two stems of the staff below)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "place": "4/1/2/3",
+   "part": "P3",
+   "measure": "67",
+   "dropped_heads": [
+    {
+     "sub": "glyph/4/1/2/3/11",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "G4 eighth",
+    "C5 eighth +chord",
+    "Bb4 eighth",
+    "B5 eighth +chord",
+    "C5 eighth",
+    "C6 eighth +chord",
+    "Bb4 eighth",
+    "B5 eighth +chord"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "a head of another staff (head above the top line of the staff below)",
+   "verdict_agent_reading": "cannot tell",
+   "outcome": "cannot tell"
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "place": "4/1/2/5",
+   "part": "P3",
+   "measure": "69",
+   "dropped_heads": [
+    {
+     "sub": "glyph/4/1/2/5/0",
+     "reason": "owned_by_another_staff"
+    },
+    {
+     "sub": "glyph/4/1/2/5/5",
+     "reason": "owned_by_another_staff"
+    },
+    {
+     "sub": "glyph/4/1/2/5/6",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "C5 eighth",
+    "C6 eighth +chord",
+    "D5 eighth",
+    "D6 eighth +chord",
+    "C5 eighth",
+    "C6 eighth +chord",
+    "Bb4 eighth",
+    "Bb5 eighth +chord"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "a head of another staff (three boxes on heads above the staff below)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "place": "4/1/2/6",
+   "part": "P3",
+   "measure": "70",
+   "dropped_heads": [
+    {
+     "sub": "glyph/4/1/2/6/2",
+     "reason": "owned_by_another_staff"
+    },
+    {
+     "sub": "glyph/4/1/2/6/3",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "A4 quarter",
+    "A5 quarter +chord",
+    "A4 quarter",
+    "A5 quarter +chord"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "a head of another staff (two heads above the staff below)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "place": "6/0/1/8",
+   "part": "P2",
+   "measure": "87",
+   "dropped_heads": [
+    {
+     "sub": "glyph/6/0/1/8/1",
+     "reason": "duration_narrowed"
+    },
+    {
+     "sub": "glyph/6/0/1/8/3",
+     "reason": "duration_narrowed"
+    },
+    {
+     "sub": "glyph/6/0/1/8/9",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "rest eighth",
+    "Eb5 quarter",
+    "G5 quarter +chord",
+    "Ab5 eighth"
+   ],
+   "print_shows_agent_reading": "after the eighth rest the print has three beamed eighths (two separate eighths on the top line F5 with an accidental before, then a natural + head above the staff about A5/B5); file writes an Eb5+G5 quarter chord and an Ab5 eighth",
+   "box_is_agent_reading": "a real notehead (boxes 1-2: two beamed eighth heads on the top line; box 3: unclear small ink below them, possibly a lower-voice head or accidental)",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong and the box is a real note"
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "place": "10/0/0/10",
+   "part": "P1",
+   "measure": "183",
+   "dropped_heads": [
+    {
+     "sub": "glyph/10/0/0/10/11",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "Bb5 quarter",
+    "rest quarter"
+   ],
+   "print_shows_agent_reading": "quarter written Bb5 where the print has C6 (head on the second ledger line)",
+   "box_is_agent_reading": "text (the 'sf' dynamic inside the staff)",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong but the box is not its missing note"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "place": "10/1/1/11",
+   "part": "P2",
+   "measure": "198",
+   "dropped_heads": [
+    {
+     "sub": "glyph/10/1/1/11/2",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "Ab5 half >tie"
+   ],
+   "print_shows_agent_reading": "a second half head (about F5, below the written Ab5, tied in) missing",
+   "box_is_agent_reading": "a head of another staff (half-note head above the staff below)",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong but the box is not its missing note"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "place": "10/1/2/9",
+   "part": "P3",
+   "measure": "196",
+   "dropped_heads": [
+    {
+     "sub": "glyph/10/1/2/9/7",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "G4 half",
+    "F5 half +chord tie>"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "a head of another staff (head between the staves, belonging to the staff below)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 12,
+   "plate": "litolff",
+   "place": "11/0/2/8",
+   "part": "P4",
+   "measure": "210",
+   "dropped_heads": [
+    {
+     "sub": "glyph/11/0/2/8/3",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "Eb4 half [GUESSED blue]"
+   ],
+   "print_shows_agent_reading": "the upper head (about G4 on its ledger line, half, tied over) missing; the lower head carries a natural so it is E4, written Eb4; ties not written",
+   "box_is_agent_reading": "a real notehead",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong and the box is a real note"
+  },
+  {
+   "tile": 13,
+   "plate": "brahms",
+   "place": "4/1/4/6",
+   "part": "P5",
+   "measure": "25",
+   "dropped_heads": [
+    {
+     "sub": "glyph/4/1/4/6/4",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "rest ?"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "flag",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 14,
+   "plate": "brahms",
+   "place": "4/1/6/8",
+   "part": "P7",
+   "measure": "27",
+   "dropped_heads": [
+    {
+     "sub": "glyph/4/1/6/8/1",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "rest ?"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "a real notehead",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 15,
+   "plate": "brahms",
+   "place": "4/1/12/8",
+   "part": "P13",
+   "measure": "27",
+   "dropped_heads": [
+    {
+     "sub": "glyph/4/1/12/8/1",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "C2 quarter",
+    "G2 quarter +chord",
+    "E3 quarter +chord",
+    "C4 quarter +chord",
+    "rest eighth",
+    "Ab2 quarter",
+    "F3 eighth"
+   ],
+   "print_shows_agent_reading": "missing F2 eighth (the red box); first chord C2-G2-E3-C4 is a flagged eighth but written as a quarter",
+   "box_is_agent_reading": "a real notehead",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong and the box is a real note"
+  },
+  {
+   "tile": 16,
+   "plate": "brahms",
+   "place": "12/0/5/0",
+   "part": "P6",
+   "measure": "71",
+   "dropped_heads": [
+    {
+     "sub": "glyph/12/0/5/0/5",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "G4 half. tie>"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "clef (tail of the bass clef on the staff above)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 17,
+   "plate": "brahms",
+   "place": "12/0/10/0",
+   "part": "P11",
+   "measure": "71",
+   "dropped_heads": [
+    {
+     "sub": "glyph/12/0/10/0/10",
+     "reason": "owned_by_another_staff"
+    },
+    {
+     "sub": "glyph/12/0/10/0/8",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "Eb4 quarter.",
+    "C5 quarter. +chord",
+    "C4 quarter."
+   ],
+   "print_shows_agent_reading": "extra C5 written in the first chord; this staff prints only Eb4 then C4 (both dotted quarters, tremolo)",
+   "box_is_agent_reading": "tremolo slash",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong but the box is not its missing note"
+  },
+  {
+   "tile": 18,
+   "plate": "brahms",
+   "place": "12/0/10/2",
+   "part": "P11",
+   "measure": "73",
+   "dropped_heads": [
+    {
+     "sub": "glyph/12/0/10/2/5",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "D4 half.",
+    "Bb4 half. +chord"
+   ],
+   "print_shows_agent_reading": "extra Bb4 written; this staff prints only D4 dotted half (tremolo)",
+   "box_is_agent_reading": "tremolo slash",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong but the box is not its missing note"
+  },
+  {
+   "tile": 19,
+   "plate": "brahms",
+   "place": "12/0/10/5",
+   "part": "P11",
+   "measure": "76",
+   "dropped_heads": [
+    {
+     "sub": "glyph/12/0/10/5/4",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "C4 quarter.",
+    "Ab4 quarter. +chord",
+    "C5 quarter. +chord",
+    "Eb4 quarter."
+   ],
+   "print_shows_agent_reading": "extra Ab4 and C5 in the first chord; this staff prints only C4 then Eb4 (both dotted quarters, tremolo)",
+   "box_is_agent_reading": "tremolo slash",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong but the box is not its missing note"
+  },
+  {
+   "tile": 20,
+   "plate": "brahms",
+   "place": "12/1/5/0",
+   "part": null,
+   "measure": null,
+   "dropped_heads": [
+    {
+     "sub": "glyph/12/1/5/0/1",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": null,
+   "print_shows_agent_reading": "nothing written: the file has no part, measure or writes for this staff, but the printed bar is a whole rest",
+   "box_is_agent_reading": "clef (tail of the bass clef on the staff above)",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong but the box is not its missing note"
+  },
+  {
+   "tile": 21,
+   "plate": "brahms",
+   "place": "19/0/12/0",
+   "part": "P13",
+   "measure": "114",
+   "dropped_heads": [
+    {
+     "sub": "glyph/19/0/12/0/21",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "D4 quarter.",
+    "C4 quarter",
+    "B3 16th",
+    "A3 16th"
+   ],
+   "print_shows_agent_reading": "missing D4 dotted eighth (the red box, tied from the first D4); C4 is a sixteenth but written as a quarter",
+   "box_is_agent_reading": "a real notehead",
+   "verdict_agent_reading": "wrong",
+   "outcome": "hit: the bar is wrong and the box is a real note"
+  },
+  {
+   "tile": 22,
+   "plate": "brahms",
+   "place": "25/0/6/1",
+   "part": "P7",
+   "measure": "135",
+   "dropped_heads": [
+    {
+     "sub": "glyph/25/0/6/1/14",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "rest eighth",
+    "A4 eighth",
+    "A4 eighth",
+    "rest eighth",
+    "A4 eighth",
+    "A4 eighth"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "tremolo slash (top of the stem of the staff below)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 23,
+   "plate": "brahms",
+   "place": "25/0/7/1",
+   "part": "P8",
+   "measure": "135",
+   "dropped_heads": [
+    {
+     "sub": "glyph/25/0/7/1/13",
+     "reason": "owned_by_another_staff"
+    }
+   ],
+   "file_writes_off": [
+    "C4 half. [GUESSED blue]",
+    "C5 half. +chord"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "tremolo slash (top of the timpani stem on the staff below)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  },
+  {
+   "tile": 24,
+   "plate": "brahms",
+   "place": "25/1/3/7",
+   "part": "P4",
+   "measure": "151",
+   "dropped_heads": [
+    {
+     "sub": "glyph/25/1/3/7/11",
+     "reason": "duration_narrowed"
+    }
+   ],
+   "file_writes_off": [
+    "C4 quarter. >tie",
+    "E4 quarter. +chord",
+    "F3 quarter.",
+    "F4 quarter. +chord"
+   ],
+   "print_shows_agent_reading": "bar written right",
+   "box_is_agent_reading": "clef (dot of the bass-clef change at the end of the bar)",
+   "verdict_agent_reading": "right",
+   "outcome": "false alarm: the bar is right"
+  }
+ ]
+}
