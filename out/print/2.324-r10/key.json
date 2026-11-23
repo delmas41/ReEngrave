@@ -1,0 +1,30 @@
+{
+ "what": "ROADMAP 2.324 r10: the two small Litolff C clefs, each on its own staff, thin red box on the clef (sheet.png, tile_A_*, tile_B_*). edges_*.png: the clef at 8x, the staff lines as measured beside it drawn blue LEFT of the clef, the clef's measured top edge, bottom edge and their middle (thick) drawn red RIGHT of it. c_clef_middles.json: every C clef on the 16 frozen-sample pages, top, bottom, middle, nearest and next staff line (the bar's middle and the balance point beside, for comparison).",
+ "rule": "A C clef names the staff line through the middle of the clef, measured from its top and bottom edges (Sean 2026-11-22). Never from the instrument, another clef on the staff, or where its ink balances.",
+ "A": {
+  "place": "litolff page 4, system 1, staff 3 (Fag.), bar 3",
+  "sean": "tenor",
+  "edges_px": {"top": 2563, "bottom": 2620, "middle": 2591.5},
+  "lines_px_at_clef": [2582, 2598, 2613, 2629, 2645],
+  "middle": "0.41 space above the tenor line, 0.60 below the top line",
+  "file_after_r10": "UNCHANGED: kind unread (past the 0.35 snap); bars after it still marked clef?, notes after it unwritten",
+  "open": "a question for Sean: by the outside measure this clef's middle stands in the top space, nearer the tenor line"
+ },
+ "B": {
+  "place": "litolff page 11, system 0, staff 2 (Fag.), bar 15 (cell 15 = measure 62 in the file, part P4)",
+  "sean": "tenor",
+  "edges_px": {"top": 721, "bottom": 780, "middle": 750.5},
+  "lines_px_at_clef": [730, 746, 762, 777, 793],
+  "middle": "0.29 space below the tenor line, 0.73 above the alto line",
+  "file_after_r10": "tenor clef written at measure 62; 'clef?' marks gone from measures 63-64; key in force 3 flats",
+  "written_after_clef": {
+   "measure 63 (bar 16)": ["D4 half", "F4 half (blue)", "A-flat4 half"],
+   "measure 64 (bar 17)": ["G4 half"]
+  },
+  "print_reading_ours_not_sean": {
+   "bar 16": "a natural sign, then two hollow heads on the D4 space and the F4 space above the staff; a dark mark above at the A4 place that may be a third head (if so the natural sign probably makes it A-natural, and A-flat4 is wrong)",
+   "bar 17": "two hollow heads, F4 and D4 (tied/slurred from bar 16); the file writes one G4 -- wrong pitch and a missing D4 (head placement, not the clef: the head centre 718 px sits midway between G4 714 and F4 722)"
+  },
+  "notes_after_clef_on_this_system": 2
+ }
+}

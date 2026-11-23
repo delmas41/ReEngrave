@@ -14,8 +14,9 @@ NOT CONFIRMED by Sean beyond "Build both" (DECISIONS 2026-11-01); benchmarks/cle
 Two witnesses, never the detector's word alone (2.144 / 2.181: false `clef*` boxes stood over real eighths and rests):
 * a C clef: the THICK BAR -- a run of columns >= `C_BAR_MIN_WIDTH_SPACES` wide, each holding one unbroken vertical ink run of at least
   `C_BAR_MIN_RUN_SPACES` that stops within `C_BAR_REACH_SPACES` of the staff (a barline runs on to the next staff, a stem is one or two px
-  wide), and the BOWLS -- ink right of the bar in both its upper and lower half, roughly mirror images about the bar's middle. The middle
-  names the line (`clef_geometry.resolve_clef`, the header readers' own snap). Litolff's C clefs inside a system are never boxed as clefs,
+  wide), and the BOWLS -- ink right of the bar in both its upper and lower half, roughly mirror images about the bar's middle. The
+  middle of the clef measured from its top and bottom edges names the line (ROADMAP 2.324 r10, `c_outside_edges` / `name_c_bar`;
+  `clef_geometry.resolve_clef`, the header readers' own snap). Litolff's C clefs inside a system are never boxed as clefs,
   so this test needs no box; a `clefC*` box is one more witness.
 * an F clef: a clef-sized `clefF` box (the detector) AND its two dots straddling the line it names (`clef_locator._has_f_clef_dots`, the
   header locator's own veto), the box's top near the top line. The line comes from the dot pair; a pair that names no allowed line
@@ -64,6 +65,21 @@ C_BOWL_REACH_SPACES = 2.2
 C_BOWL_MIN_FILL = 0.3
 #: ... and the two halves mirror images: |upper - lower| / max at most this
 C_BOWL_MAX_ASYMMETRY = 0.5
+#: ROADMAP 2.324 r10 (Sean 2026-11-22, two small Litolff C clefs: "They all look like tenor clefs"; "Needs to be read - never assumed"):
+#: "The best bet at determining what clef it is is measuring the middle of the clef and aligning it with a staff line"; "Mesure from
+#: the outside to get the midddle"): A C CLEF NAMES THE STAFF LINE THROUGH THE MIDDLE OF THE CLEF, MEASURED FROM ITS TOP AND BOTTOM
+#: EDGES (`c_outside_edges`) -- never from the instrument or another clef on the staff, never where its ink balances. The clef's own
+#: piece is the thick bar and the ink joined to it in the clef's columns, staff lines passing through it set aside; it reaches at most
+#: `C_OUTSIDE_REACH_SPACES` past the bar's own top and bottom (on the 61 C clefs of the frozen sample, Litolff and Breitkopf: at 0.3
+#: every middle lands nearest the line the clef is read on, within 0.32 of it and 0.70 or more from the next; at 1.0 a stem, slur or
+#: line below joins in and 4 are named wrong). The middle is named with the header readers' own snap (`name_c`); no new cut.
+C_OUTSIDE_REACH_SPACES = 0.3
+#: the clef's columns end this far (staff spaces) short of another mark's stroke standing within `C_STROKE_REACH_SPACES` right of the
+#: glyph (a barline's ragged edge touches the bowls: Litolff p11 s0 staff 2 bar 15), a stroke being a column whose unbroken ink runs on
+#: more than `C_STROKE_PAST_SPACES` past the bar's top or bottom
+C_STROKE_TRIM_SPACES = 0.15
+C_STROKE_REACH_SPACES = 0.3
+C_STROKE_PAST_SPACES = 0.3
 #: a G clef box reaches past the staff by this much above and below
 G_REACH_SPACES = 0.6
 #: a bar candidate is a G clef's spine where ink stands in BOTH bands this far past the staff (staff spaces, from .. to) beside it
@@ -538,7 +554,7 @@ def read_header_ink(ink: np.ndarray, place: Sequence[float], lines: Sequence[flo
         place = [float(bl + 1), place[1], place[2], place[3]]
     cs = [c for c in c_bars(ink, lines, sp, place[0], place[2]) if c["passed"]]
     if cs:
-        nm, ln, res = name_c(cs[0]["middle_y"], cs[0].get("lines_local") or lines)
+        nm, ln, res = name_c_bar(cs[0], lines)
         return {"passed": True, "plain": nm is not None, "family": "C", "kind": nm, "line": ln, "residual": res,
                 "box": c_area(cs[0], sp), "witness": "c_bar_and_bowls"}
     g = read_g(ink, place, lines, sp, box_witness=False)
@@ -754,11 +770,77 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
                         if gap > lim:
                             break
                 cand["x_right"] = int(bx0 + last + 1)
+                # r10: the clef's outer edges (Sean: "Mesure from the outside to get the midddle"), on the lines at the clef
+                top_e, bot_e = c_outside_edges(ink, cand, ll, sp)
+                if top_e is not None:
+                    cand.update(outside_top=int(top_e), outside_bottom=int(bot_e), outside_middle=round((top_e + bot_e) / 2.0, 1))
         cand["passed"] = why is None
         cand["why"] = why
         out.append(cand)
         j = k
     return out
+
+
+def c_outside_edges(ink: np.ndarray, cand: Dict[str, Any], lines: Sequence[float], sp: float) -> Tuple[Optional[int], Optional[int]]:
+    """ROADMAP 2.324 r10: the top and bottom rows (both inclusive, page px) of the C clef's own ink -- its outer edges (Sean: "Mesure
+    from the outside to get the midddle"); (None, None) where no ink joins the bar. The clef's own piece: in the clef's columns (the
+    thick bar's left edge to the glyph's right edge, stopped short of another mark's stroke, `C_STROKE_TRIM_SPACES`), every unbroken
+    column run of ink within `C_OUTSIDE_REACH_SPACES` of the bar's top and bottom except a run that is only a staff line passing (as
+    thick as the lines measured beside the clef, centred on one of `lines`), joined (8-neighbour) to the thick bar or the thin bar
+    beside it. A rest or note left of the bar is outside the columns; a stem or barline touching the bowls ends the columns; a line
+    the clef's own stroke runs into is part of that stroke. Measures; decides nothing."""
+    from scipy import ndimage as ndi
+    H, W = ink.shape
+    x0, x1 = int(cand["x0"]), int(cand["x1"])
+    xr = int(cand.get("x_right", cand["x1"] + 2.0 * sp))
+    ya, yb = int(cand["y0"]), int(cand["y1"])
+    for x in range(x0 + int(0.5 * sp), min(W, xr + int(round(C_STROKE_REACH_SPACES * sp)))):
+        if _runs_past(ink[:, x], ya, yb, C_STROKE_PAST_SPACES * sp):
+            xr = min(xr, x - int(np.ceil(C_STROKE_TRIM_SPACES * sp)))     # another mark's stroke: the clef ends before its edge
+            break
+    if xr - x0 < 2:
+        return None, None
+    ll = [float(v) for v in lines]
+    th: List[int] = []
+    for x in list(range(max(0, x0 - int(sp)), x0)) + list(range(min(W, xr + 2), min(W, xr + 2 + int(sp)))):
+        for s, e in _ink_runs(ink[:, x]):
+            if e - s <= 0.5 * sp and any(abs((s + e - 1) / 2.0 - L) <= 0.25 * sp for L in ll):
+                th.append(e - s)
+    thick = float(np.median(th)) if th else max(2.0, 0.25 * sp)
+    Y0 = max(0, int(cand["y0"] - C_OUTSIDE_REACH_SPACES * sp))
+    Y1 = min(H, int(cand["y1"] + C_OUTSIDE_REACH_SPACES * sp) + 1)
+    if Y1 - Y0 < 2:
+        return None, None
+    own = np.zeros((Y1 - Y0, xr - x0), dtype=bool)
+    for j, x in enumerate(range(x0, xr)):
+        for s, e in _ink_runs(ink[Y0:Y1, x]):
+            mid = (s + e - 1) / 2.0 + Y0
+            if (e - s) <= thick + 1 and any(abs(mid - L) <= 0.5 * thick + 1 for L in ll):
+                continue                                                    # only a staff line passing through
+            own[s:e, j] = True
+    lab, _n = ndi.label(own, structure=np.ones((3, 3), dtype=int))
+    ids = set(np.unique(lab[:, : max(1, min(own.shape[1], x1 - x0 + int(round(C_THIN_GAP_SPACES * sp))))]).tolist()) - {0}
+    if not ids:
+        return None, None
+    rows = np.flatnonzero(np.isin(lab, list(ids)).any(axis=1))
+    return int(Y0 + rows[0]), int(Y0 + rows[-1])
+
+
+def _ink_runs(col: np.ndarray) -> List[Tuple[int, int]]:
+    """The unbroken ink runs of one column: [(start, end_exclusive)]."""
+    d = np.diff(np.concatenate(([0], col.astype(np.int8), [0])))
+    return list(zip(np.flatnonzero(d == 1).tolist(), np.flatnonzero(d == -1).tolist()))
+
+
+def name_c_bar(cand: Dict[str, Any], lines: Sequence[float]) -> Tuple[Optional[str], Optional[int], Optional[float]]:
+    """ROADMAP 2.324 r10: a passing C bar candidate's name -- the staff line through the middle of the clef measured from its top and
+    bottom edges (`c_outside_edges`), named with the header readers' own snap (`name_c`): (name, line, residual) or (None, None,
+    residual) where the middle lands on no line a read C clef uses within the snap (the kind UNREAD, its residual says how close).
+    A candidate with no outside edges (no ink joined to its bar) is UNREAD; it never falls back to where its ink balances."""
+    ll = cand.get("lines_local") or [float(v) for v in lines]
+    if cand.get("outside_middle") is None:
+        return None, None, None
+    return name_c(float(cand["outside_middle"]), ll)
 
 
 def c_area(cand: Dict[str, Any], sp: float) -> List[float]:
@@ -1014,7 +1096,7 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
         bars = [b for b in c_bars(ink, lines, sp, box[0] - 0.5 * sp, box[2]) if b["passed"]]
         if not bars:
             return dict(out, passed=False, why="c_no_bar_and_bowls")
-        nm, ln, res = name_c(bars[0]["middle_y"], lines)
+        nm, ln, res = name_c_bar(dict(bars[0], lines_local=None), lines)
         return dict(out, passed=True, why=None, kind=nm, line=ln, residual=res)
     else:
         return dict(out, passed=False, why="not_a_pitched_clef")
