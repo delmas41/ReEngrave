@@ -50,6 +50,26 @@ C_BAR_MAX_WIDTH_SPACES = 1.3
 C_THIN_GAP_SPACES = 0.6
 C_THIN_MIN_SPACES = 0.1
 C_BAR_THICK_RATIO = 2.2
+#: ROADMAP 2.324 r11 (Sean 2026-11-23 on Brahms p3 s1 staff 11: "The first tile is all alto clef"; p17 s1 staff 3: "The second tile
+#: starts in tenor"): A C CLEF'S TWO BARS STAND SIDE BY SIDE AND RUN THE SAME HEIGHT -- the clef's own height, the thick one on the left.
+#: Never a pair whose two strokes run different heights (a clef's spine beside a barline), never a thick bar as thin as a barline.
+#: Where the thin bar beside it runs the same height, the thick bar needs only be clearly the thicker (`C_PAIR_THICK_RATIO`) and thicker
+#: than any barline (`C_PAIR_MIN_WIDTH_SPACES`); a scan nick in the thick bar's edge column shortens its measured width and the
+#: 2.2x ratio above alone refused three real Breitkopf C clefs. MEASURED (lane-2.324-r11, page binaries, the bars' own columns):
+#: reading side -- Brahms p3 s1 st11 alto 0.396 beside 0.216 (1.83x), p10 s1 st11 alto 0.404/0.183 (2.2x, on the cut), p17 s1 st3
+#: tenor 0.436/0.218 (2.0x), the two bars' tops and bottoms within 0.06 space; refusing side -- Litolff p8's mid-staff G clef beside a
+#: barline (0.254/0.127, its two strokes 3.24 and 4.29 spaces tall: not one height, and under the width), barlines 0.06-0.25, stems
+#: 0.04-0.25. Both cuts are numbers from two plates; the bowls still decide (never a C clef from its bars alone).
+C_PAIR_THICK_RATIO = 1.5
+C_PAIR_MIN_WIDTH_SPACES = 0.35
+#: ... "the same height": the two bars' tops, and their bottoms, within this (staff spaces)
+C_PAIR_EDGE_SPACES = 0.25
+#: lane switch for the A/B of r11 only (default ON; `0` = main before r11). Removed at landing.
+ENV_C_PAIR = "OMR_CLEF_C_PAIR"
+
+
+def c_pair_enabled() -> bool:
+    return os.environ.get(ENV_C_PAIR, "1") != "0"
 #: ... each column holding one unbroken ink run this long (the small C clef spans 3.6-3.7 sp, a full one ~4.3)
 C_BAR_MIN_RUN_SPACES = 3.0
 #: ... that starts and ends within this of the staff's top / bottom line (a barline or a bracket runs on to the next staff)
@@ -648,6 +668,35 @@ def _runs_past(col: np.ndarray, top: float, bot: float, margin: float) -> bool:
     return False
 
 
+#: r11: the staff lines are cut, outside the bar's own columns, this far either side of each line (staff spaces) before the ink past the
+#: staff is traced back to the bar -- a line joins every mark it passes, so it never makes another mark's ink this clef's
+G_OWN_LINE_HALF_SPACES = 0.15
+
+
+def _own_past_ink(ink: np.ndarray, lines: Sequence[float], sp: float, ya: int, yb: int, xa: int, xb: int,
+                  bar_x0: int, bar_x1: int) -> np.ndarray:
+    """ROADMAP 2.324 r11 (Litolff p13 s0 staff 9: an alto clef refused as a treble clef's spine because the treble clef of the staff
+    ABOVE hung its tail into the band above, and the system's thin barline line ran through the band below): A TREBLE CLEF'S CURL AND
+    TAIL ARE ITS OWN STROKE, running on from its spine past the staff. The ink of rows ya..yb, columns xa..xb that is joined
+    (8-neighbour) to the bar's columns `bar_x0..bar_x1` -- the staff lines cut outside those columns (`G_OWN_LINE_HALF_SPACES`), so a
+    line passing joins nothing. NEVER another staff's clef or a barline standing apart from the bar. Measures; decides nothing."""
+    from scipy import ndimage as ndi
+    win = ink[ya:yb, xa:xb].copy()
+    if win.size == 0:
+        return win
+    half = max(1, int(round(G_OWN_LINE_HALF_SPACES * sp)))
+    keep = np.zeros(win.shape[1], dtype=bool)
+    keep[max(0, bar_x0 - xa):max(0, bar_x1 - xa)] = True
+    for L in lines:
+        r = int(round(float(L))) - ya
+        for yy in range(max(0, r - half), min(win.shape[0], r + half + 1)):
+            win[yy, ~keep] = False
+    lab, _ = ndi.label(win, structure=np.ones((3, 3), dtype=bool))
+    ids = np.unique(lab[:, keep])
+    ids = ids[ids > 0]
+    return np.isin(lab, ids) if ids.size else np.zeros_like(win)
+
+
 def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int) -> List[Dict[str, Any]]:
     """Every C-clef thick bar on one staff between page columns x0..x1 (see the module doc), with its bowls measured. Measures;
     decides nothing beyond the shape test each candidate passed or failed (`passed`, `why`)."""
@@ -696,8 +745,18 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
                     e += 1
                 thin_beside = (e - m) / sp
                 cand["thin_beside_spaces"] = round(thin_beside, 3)
-        if w < C_BAR_MIN_WIDTH_SPACES and not (thin_beside is not None and thin_beside >= C_THIN_MIN_SPACES
-                                               and w >= C_BAR_THICK_RATIO * thin_beside):
+                # r11: does the thin bar run the same height as this one (the C clef's bar pair)?
+                t_top = float(np.median([ya + runs[c][1] for c in range(m, e)]))
+                t_bot = float(np.median([ya + runs[c][1] + runs[c][0] for c in range(m, e)]))
+                cand["thin_beside_edges_spaces"] = [round((t_top - y_top) / sp, 3), round((t_bot - y_bot) / sp, 3)]
+        same_height = (c_pair_enabled() and thin_beside is not None and "thin_beside_edges_spaces" in cand
+                       and max(abs(v) for v in cand["thin_beside_edges_spaces"]) <= C_PAIR_EDGE_SPACES)
+        pair = (same_height and thin_beside >= C_THIN_MIN_SPACES and w >= C_PAIR_MIN_WIDTH_SPACES
+                and w >= C_PAIR_THICK_RATIO * thin_beside)
+        if pair and w < C_BAR_MIN_WIDTH_SPACES:
+            cand["bar_pair"] = True
+        if w < C_BAR_MIN_WIDTH_SPACES and not pair and not (thin_beside is not None and thin_beside >= C_THIN_MIN_SPACES
+                                                            and w >= C_BAR_THICK_RATIO * thin_beside):
             why = "bar_too_thin"
         elif w > C_BAR_MAX_WIDTH_SPACES:
             why = "bar_too_wide"
@@ -725,8 +784,13 @@ def c_bars(ink: np.ndarray, lines: Sequence[float], sp: float, x0: int, x1: int)
             if bl is not None:
                 gx0, tx0 = max(gx0, bl + 1), max(tx0, bl + 1)
                 cand["barline_left_x"] = int(bl)
-            g_up =ink[max(0, int(top - G_PAST_SPACES[1] * sp)):max(0, int(top - G_PAST_SPACES[0] * sp)), gx0:gx1]
-            g_lo = ink[min(H, int(bot + G_PAST_SPACES[0] * sp)):min(H, int(bot + G_PAST_SPACES[1] * sp)), gx0:gx1]
+            ua, ub = max(0, int(top - G_PAST_SPACES[1] * sp)), max(0, int(top - G_PAST_SPACES[0] * sp))
+            la, lb = min(H, int(bot + G_PAST_SPACES[0] * sp)), min(H, int(bot + G_PAST_SPACES[1] * sp))
+            if c_pair_enabled() and gx1 > gx0 and lb > ua:
+                own = _own_past_ink(ink, ll, sp, ua, lb, gx0, gx1, x0 + j, x0 + k)
+                g_up, g_lo = own[ua - ua:ub - ua], own[la - ua:lb - ua]
+            else:
+                g_up, g_lo = ink[ua:ub, gx0:gx1], ink[la:lb, gx0:gx1]
             g_shape = bool(g_up.size and g_up.mean() >= G_PAST_MIN_FILL) and bool(g_lo.size and g_lo.mean() >= G_PAST_MIN_FILL)
             # round 2 (Sean's tile 5: a header G clef claimed as a C clef): the spine of a small G clef stays inside the staff and its
             # curl and tail miss the far bands above; its TAIL below the bottom line beside the spine does not

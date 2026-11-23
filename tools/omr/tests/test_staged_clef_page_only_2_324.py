@@ -378,8 +378,13 @@ class TestRound3CClef:
         assert got[0].get("barline_left_x") is not None
 
     def test_with_the_barlines_ink_counted_as_its_own_it_is_g_shaped_the_control_can_fail(self, monkeypatch):
+        """r11: two things now keep the barline's ink out -- the barline cut (r3) and the trace of the ink past the staff back to the
+        bar (`_own_past_ink`, r11). With BOTH off the barline's ink is the clef's and it is G-shaped; with either one on it reads."""
         ink, meta, ll = _r3("c_litolff_p8_s0_st7", "cell")
         monkeypatch.setattr(CP, "barline_left_of", lambda *a, **k: None)
+        got = [c for c in _header_c(ink, meta, ll) if c["passed"]]
+        assert [CP.name_c(c["middle_y"], c.get("lines_local") or ll)[0] for c in got] == ["alto"]
+        monkeypatch.setenv(CP.ENV_C_PAIR, "0")
         cands = _header_c(ink, meta, ll)
         assert cands and not any(c["passed"] for c in cands) and cands[0]["why"] == "g_clef_shape"
 
