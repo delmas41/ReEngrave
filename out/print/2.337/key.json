@@ -1,0 +1,375 @@
+{
+ "what": "2.337 contact sheets: flag OFF vs ON, re-adjudicated from the 20261122-night records (lane_report --from adjudicate), pages where each flag acts. Tiles: print only; orange carets sit in the margin at the note x/y.",
+ "relocate": {
+  "seed": 2337,
+  "n_changed_notes": 13,
+  "tiles": [
+   {
+    "tile": 1,
+    "plate": "brahms",
+    "page": 12,
+    "glyph": "glyph/12/0/6/6/1",
+    "off": "not written",
+    "on": "note C3 quarter on P6 bar 39 {\"dot\": [\".\"]}",
+    "crop_page_px": [
+     2539,
+     1491,
+     3307,
+     2067
+    ],
+    "staff_seen": "staff/12/0/6"
+   },
+   {
+    "tile": 2,
+    "plate": "brahms",
+    "page": 12,
+    "glyph": "glyph/12/0/6/7/0",
+    "off": "not written",
+    "on": "note C3 quarter on P6 bar 40 {\"dot\": [\".\"]}",
+    "crop_page_px": [
+     2803,
+     1491,
+     3571,
+     2067
+    ],
+    "staff_seen": "staff/12/0/6"
+   },
+   {
+    "tile": 3,
+    "plate": "brahms",
+    "page": 12,
+    "glyph": "glyph/12/0/6/7/2",
+    "off": "not written",
+    "on": "note C3 quarter on P6 bar 40 {\"dot\": [\".\"]}",
+    "crop_page_px": [
+     2685,
+     1491,
+     3453,
+     2067
+    ],
+    "staff_seen": "staff/12/0/6"
+   },
+   {
+    "tile": 4,
+    "plate": "brahms",
+    "page": 12,
+    "glyph": "glyph/12/0/6/8/4",
+    "off": "not written",
+    "on": "note C3 half on P6 bar 41 {\"dot\": [\".\"]}",
+    "crop_page_px": [
+     2966,
+     1491,
+     3734,
+     2067
+    ],
+    "staff_seen": "staff/12/0/6"
+   },
+   {
+    "tile": 5,
+    "plate": "brahms",
+    "page": 12,
+    "glyph": "glyph/12/0/6/9/0",
+    "off": "not written",
+    "on": "note C3 quarter on P6 bar 42 {\"dot\": [\".\"]}",
+    "crop_page_px": [
+     3273,
+     1491,
+     4041,
+     2067
+    ],
+    "staff_seen": "staff/12/0/6"
+   },
+   {
+    "tile": 6,
+    "plate": "brahms",
+    "page": 14,
+    "glyph": "glyph/14/0/5/8/0",
+    "off": "note G3 quarter on P6 bar 65 BLUE {\"dot\": []}",
+    "on": "note G3 quarter on P6 bar 65 {\"dot\": []}",
+    "crop_page_px": [
+     4333,
+     1601,
+     5101,
+     2166
+    ],
+    "staff_seen": "staff/14/0/5"
+   },
+   {
+    "tile": 7,
+    "plate": "brahms",
+    "page": 14,
+    "glyph": "glyph/14/0/5/8/1",
+    "off": "note G4 quarter on P6 bar 65 BLUE {\"dot\": []}",
+    "on": "note G4 quarter on P6 bar 65 {\"dot\": []}",
+    "crop_page_px": [
+     4331,
+     1601,
+     5099,
+     2166
+    ],
+    "staff_seen": "staff/14/0/5"
+   },
+   {
+    "tile": 8,
+    "plate": "brahms",
+    "page": 14,
+    "glyph": "glyph/14/0/6/8/1",
+    "off": "not written",
+    "on": "note C3 quarter on P6 bar 65 {\"dot\": []}",
+    "crop_page_px": [
+     4515,
+     1601,
+     5283,
+     2166
+    ],
+    "staff_seen": "staff/14/0/6"
+   },
+   {
+    "tile": 9,
+    "plate": "brahms",
+    "page": 19,
+    "glyph": "glyph/19/0/8/1/0",
+    "off": "not written",
+    "on": "note A-16 quarter on P10 bar 98 BLUE {\"dot\": [\".\"]}",
+    "crop_page_px": [
+     1452,
+     2252,
+     2220,
+     2836
+    ],
+    "staff_seen": "staff/19/0/8"
+   },
+   {
+    "tile": 10,
+    "plate": "brahms",
+    "page": 19,
+    "glyph": "glyph/19/0/9/0/5",
+    "off": "note F16 quarter on P10 bar 97 BLUE {\"accidental\": [\"sharp\"], \"dot\": [\".\"]}",
+    "on": "note F16 quarter on P10 bar 97 {\"accidental\": [\"sharp\"], \"dot\": [\".\"]}",
+    "crop_page_px": [
+     842,
+     2252,
+     1610,
+     2836
+    ],
+    "staff_seen": "staff/19/0/9"
+   },
+   {
+    "tile": 11,
+    "plate": "litolff",
+    "page": 7,
+    "glyph": "glyph/7/0/9/6/0",
+    "off": "note E4 eighth on P10 bar 55 BLUE {\"dot\": [], \"flag\": [\"eighth\"]}",
+    "on": "note E4 eighth on P10 bar 55 {\"dot\": [], \"beam\": [\"end\"]}",
+    "crop_page_px": [
+     1140,
+     1523,
+     1518,
+     1805
+    ],
+    "staff_seen": "staff/7/0/9"
+   },
+   {
+    "tile": 12,
+    "plate": "litolff",
+    "page": 7,
+    "glyph": "glyph/7/0/9/6/1",
+    "off": "not written",
+    "on": "note E4 eighth on P10 bar 55 {\"accidental\": [\"natural\"], \"dot\": [], \"beam\": [\"begin\"]}",
+    "crop_page_px": [
+     1113,
+     1523,
+     1491,
+     1805
+    ],
+    "staff_seen": "staff/7/0/9"
+   }
+  ]
+ },
+ "fold": {
+  "seed": 2337,
+  "n_changed_notes": 13,
+  "tiles": [
+   {
+    "tile": 1,
+    "plate": "brahms",
+    "page": 15,
+    "glyph": "glyph/15/1/9/4/8",
+    "off": "note B3 quarter on P11 bar 89 BLUE {\"accidental\": [\"natural\"], \"dot\": [\".\"]}",
+    "on": "note B3 quarter on P11 bar 89 {\"accidental\": [\"natural\"], \"dot\": [\".\"]}",
+    "crop_page_px": [
+     1964,
+     6017,
+     2732,
+     6583
+    ],
+    "staff_seen": "staff/15/1/9"
+   },
+   {
+    "tile": 2,
+    "plate": "brahms",
+    "page": 23,
+    "glyph": "glyph/23/0/8/3/4",
+    "off": "note B3 eighth on P11 bar 120 BLUE {\"accidental\": [\"natural\"], \"dot\": [], \"beam\": [\"begin\"], \"articulation\": [\"staccato\"]}",
+    "on": "note B3 eighth on P11 bar 120 {\"accidental\": [\"natural\"], \"dot\": [], \"beam\": [\"begin\"], \"articulation\": [\"staccato\"]}",
+    "crop_page_px": [
+     2194,
+     2460,
+     2962,
+     3049
+    ],
+    "staff_seen": "staff/23/0/8"
+   },
+   {
+    "tile": 3,
+    "plate": "brahms",
+    "page": 23,
+    "glyph": "glyph/23/1/0/9/7",
+    "off": "note B5 quarter on P1 bar 136 BLUE {\"accidental\": [\"natural\"], \"dot\": []}",
+    "on": "note B5 quarter on P1 bar 136 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     4965,
+     3795,
+     5733,
+     4373
+    ],
+    "staff_seen": "staff/23/1/0"
+   },
+   {
+    "tile": 4,
+    "plate": "brahms",
+    "page": 8,
+    "glyph": "glyph/8/1/0/11/10",
+    "off": "note G6 half on P1 bar 32 BLUE {\"dot\": [\".\"]}",
+    "on": "note G-16 half on P1 bar 32 {\"accidental\": [\"flat\"], \"dot\": [\".\"]}",
+    "crop_page_px": [
+     4636,
+     3877,
+     5404,
+     4552
+    ],
+    "staff_seen": "staff/8/1/0"
+   },
+   {
+    "tile": 5,
+    "plate": "litolff",
+    "page": 10,
+    "glyph": "glyph/10/1/1/0/10",
+    "off": "note F5 half on P2 bar 139 {\"dot\": []}",
+    "on": "note F5 half on P2 bar 139 BLUE {\"dot\": []}",
+    "crop_page_px": [
+     348,
+     2059,
+     726,
+     2359
+    ],
+    "staff_seen": "staff/10/1/1"
+   },
+   {
+    "tile": 6,
+    "plate": "litolff",
+    "page": 11,
+    "glyph": "glyph/11/0/0/17/3",
+    "off": "note B5 quarter on P1 bar 171 BLUE {\"accidental\": [\"natural\"], \"dot\": []}",
+    "on": "note B5 quarter on P1 bar 171 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     2351,
+     376,
+     2729,
+     693
+    ],
+    "staff_seen": "staff/11/0/0"
+   },
+   {
+    "tile": 7,
+    "plate": "litolff",
+    "page": 12,
+    "glyph": "glyph/12/0/1/10/5",
+    "off": "note G5 quarter on P2 bar 199 {\"dot\": []}",
+    "on": "note G5 quarter on P2 bar 199 BLUE {\"dot\": []}",
+    "crop_page_px": [
+     1621,
+     392,
+     1999,
+     678
+    ],
+    "staff_seen": "staff/12/0/1"
+   },
+   {
+    "tile": 8,
+    "plate": "litolff",
+    "page": 14,
+    "glyph": "glyph/14/1/0/7/5",
+    "off": "note B-15 quarter on P1 bar 239 BLUE {\"dot\": []}",
+    "on": "note B5 quarter on P1 bar 239 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     1376,
+     2109,
+     1754,
+     2440
+    ],
+    "staff_seen": "staff/14/1/0"
+   },
+   {
+    "tile": 9,
+    "plate": "litolff",
+    "page": 5,
+    "glyph": "glyph/5/1/1/9/6",
+    "off": "note E4 half on P4 bar 43 BLUE {\"accidental\": [\"natural\"], \"dot\": []}",
+    "on": "note E4 half on P4 bar 43 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     1675,
+     2280,
+     2053,
+     2626
+    ],
+    "staff_seen": "staff/5/1/1"
+   },
+   {
+    "tile": 10,
+    "plate": "litolff",
+    "page": 8,
+    "glyph": "glyph/8/0/0/2/2",
+    "off": "note A-15 half on P1 bar 86 BLUE {\"dot\": []}",
+    "on": "note A5 half on P1 bar 86 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     516,
+     365,
+     894,
+     687
+    ],
+    "staff_seen": "staff/8/0/0"
+   },
+   {
+    "tile": 11,
+    "plate": "litolff",
+    "page": 8,
+    "glyph": "glyph/8/0/0/2/2",
+    "off": "note A-15 half on P1 bar 86 {\"dot\": []}",
+    "on": "note A5 half on P1 bar 86 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     516,
+     365,
+     894,
+     687
+    ],
+    "staff_seen": "staff/8/0/0"
+   },
+   {
+    "tile": 12,
+    "plate": "litolff",
+    "page": 8,
+    "glyph": "glyph/8/0/1/11/2",
+    "off": "note A-15 half on P2 bar 95 BLUE {\"dot\": []}",
+    "on": "note A5 half on P2 bar 95 {\"accidental\": [\"natural\"], \"dot\": []}",
+    "crop_page_px": [
+     1351,
+     375,
+     1729,
+     687
+    ],
+    "staff_seen": "staff/8/0/1"
+   }
+  ]
+ }
+}

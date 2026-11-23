@@ -1297,7 +1297,7 @@ def _pos_verdicts(ev: Evidence, cell, home: str, head_keys):
 
 
 def _head_oval(ev: Evidence, subject, box_row, b, space, cell_heads=None):
-    """lane-dot-by-ink (`OMR_DOT_BY_HEAD_INK`, default OFF): the box a dot is
+    """lane-dot-by-ink (`OMR_DOT_BY_HEAD_INK`, default ON): the box a dot is
     measured against for the notehead `subject` -- its own oval of ink where
     the detector box `b` holds only part of the head (`aug_dot_join.
     head_oval_from_ink`, read off the head's `Q.HEAD_INK` filed at GATHER),

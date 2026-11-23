@@ -697,7 +697,7 @@ class Cell:
     #: ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): glyphs of THIS bar refused BY a barline's / a layer's claimed ink (`_CLAIM_GAP_REASONS`): not a gap (the ink is
     #: another mark's), but a bar that stops adding up when the false gap goes keeps what the gap gave it -- its notes stay GUESSED (`_mark_claimed_gap_events`).
     claimed_slivers: List[Dict[str, Any]] = field(default_factory=list)
-    #: ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, OFF): heads of THIS bar refused on the way out that may be real notes
+    #: ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, default `spot`): heads of THIS bar refused on the way out that may be real notes
     #: (`_file_dropped_heads`), `{"sub", "reason", "x", "w"}`. EMPTY unless the flag is `bar` or `spot`.
     dropped_heads: List[Dict[str, Any]] = field(default_factory=list)
 
@@ -6249,7 +6249,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     lines.extend(_body)
                     lines.append(_unread_bracket_xml("stop", 1))
                 else:
-                    # ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, OFF): a bar that adds up, holding a head that may be a real note and was not
+                    # ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, default `spot`): a bar that adds up, holding a head that may be a real note and was not
                     # written, is never written plain -- `bar` marks the bar (every note as read), `spot` marks the head's place. OFF: no change.
                     _dh = (cell_here.dropped_heads if (cell_here is not None and run.condensed_from is None and _dh_mode != "off") else [])
                     if _dh and dropped_head_bars is not None:
@@ -7795,7 +7795,7 @@ def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
 
 
 # ─────────────────────────────────────────────────────────────────────────────
-# ROADMAP 2.333 -- a dropped head must not hide (flag OMR_DROPPED_HEAD_MARKS, OFF)
+# ROADMAP 2.333 -- a dropped head must not hide (flag OMR_DROPPED_HEAD_MARKS, default spot)
 # ─────────────────────────────────────────────────────────────────────────────
 #
 # STAGE: EXPORT, STAGED path only. Fenced functions: `dropped_head_marks_mode`, `_file_dropped_heads`, `_dropped_head_words`,
@@ -7840,8 +7840,8 @@ _DROPPED_HEAD_SCRAPS = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:c
 
 
 def dropped_head_marks_mode() -> str:
-    """`OMR_DROPPED_HEAD_MARKS`: `bar` or `spot`; anything else (DEFAULT, unset) is `off` -- an allow-list."""
-    v = os.environ.get(DROPPED_HEAD_MARKS_ENV, "").strip().lower()
+    """`OMR_DROPPED_HEAD_MARKS`: `spot` (DEFAULT, unset; Sean 2026-11-23) or `bar`; `off`/`0`/anything else is `off`."""
+    v = os.environ.get(DROPPED_HEAD_MARKS_ENV, "spot").strip().lower()
     return v if v in ("bar", "spot") else "off"
 
 

@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 27 gaps; 202 flag predicates; 28 record calls this map cannot resolve.
+Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 202 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -138,10 +138,10 @@ The oval of a note; the line or space it sits on is the pitch.
 - **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `claimed_area`, `glyph_box`, `glyph_conf`
 - **decided by** (ADJUDICATE): `adjudicate_event` -> `event`; `adjudicate_glyph_owner` -> `glyph_owner`; `adjudicate_notehead_is_not_a_notehead` -> `notehead_is_not_a_notehead`; `adjudicate_notehead_position` -> `notehead_position`; `adjudicate_onset_column` -> `onset_column`
 - **read by GATHER** (8): `gather.py:_far_head_not_a_note_evidence`, `gather.py:_gather_keysig_markers`, `gather.py:_is_second_only_head`, `gather.py:_notehead_boxes_for_cell`, `gather.py:_observe_ledger_owner_density`, `gather.py:_observe_ledger_rung_ink`, `gather.py:gather_far_head_ledger_positions`, `page_owner.py:stem_reading`
-- **read by ADJUDICATE** (98): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/family_precision.py:_candidate_owners`, `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/family_precision.py:_cell_staff_space`, `adjudicators/family_precision.py:_human_refusal`, `adjudicators/family_precision.py:_ledger_reading`, `adjudicators/family_precision.py:_rest_on_a_slashed_stem_refusal`, `adjudicators/family_precision.py:_rest_overlaps_notehead_refusal` +90 more
+- **read by ADJUDICATE** (100): `adjudicators/aug_dot_join.py:reconcile_unjoined_dots`, `adjudicators/family_precision.py:_candidate_owners`, `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/family_precision.py:_cell_staff_space`, `adjudicators/family_precision.py:_human_refusal`, `adjudicators/family_precision.py:_ledger_reading`, `adjudicators/family_precision.py:_rest_on_a_slashed_stem_refusal`, `adjudicators/family_precision.py:_rest_overlaps_notehead_refusal` +92 more
 - **read by EVALUATE** (10): `consequences.py:_bar_heads_are_clean`, `consequences.py:_contest_group`, `consequences.py:_left_the_bar`, `consequences.py:_narrowed_chords`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:apply_printed_accidental`, `consequences.py:move_glyph`, `consequences.py:reinstate_rest_between_staves` +2 more
 - **read by INFER** (7): `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `infer rule collapse_narrowed_by_bar`, `inferences.py:_events_with_x`, `inferences.py:_walk`, `inferences.py:lone_event_decline`, `inferences.py:solve_bare_stem_bar`
-- **read by EXPORT** (9): `export.py:_fold_has_printed_accidental`, `export.py:_place_notes`, `export.py:_settle_folded_pitches`, `export.py:_tie_end_unsure`, `export.py:claim_guess_of`, `export.py:marks_census`, `export.py:to_musicxml`, `export_unison.py:written_member` +1 more
+- **read by EXPORT** (10): `export.py:_file_dropped_heads`, `export.py:_fold_has_printed_accidental`, `export.py:_place_notes`, `export.py:_settle_folded_pitches`, `export.py:_tie_end_unsure`, `export.py:claim_guess_of`, `export.py:marks_census`, `export.py:to_musicxml` +2 more
 - **read by tools** (2): `bar_length.py:bar_length`, `head_extent.py:refused_as_head`
 - **written** (declared): one `<note>` per head: plain when READ, blue when GUESSED; a bar it cannot read is marked red and nothing is invented.
 - **flags on its readers' paths** (as the code resolves them today): `gather.stems_from_strokes_retires_scans()=OFF`, `second_hollow.enabled()=OFF`, `stem_end_heads.ink_enabled()=ON`
@@ -237,7 +237,7 @@ A silence of a written length; a whole rest means the whole bar.
 - **read by ADJUDICATE** (18): `adjudicators/family_precision.py:_cell_rest_boxes`, `adjudicators/family_precision.py:_rest_stroke_into_head_refusal`, `adjudicators/family_precision.py:_whole_rest_hangs_narrowing`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/rhythm.py:_attached_dots` +10 more
 - **read by EVALUATE** (10): `consequences.py:_contest_group`, `consequences.py:_left_the_bar`, `consequences.py:_missed_rest_witness`, `consequences.py:_reinstated_rest`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:_whole_rest_ink_twin`, `consequences.py:reinstate_rest_between_staves`, `rule size_head_ink_rest` +2 more
 - **read by INFER** (1): `infer rule collapse_narrowed_by_bar`
-- **read by EXPORT** (7): `export.py:_place_found_whole_rests`, `export.py:_place_notes`, `export.py:_whole_rest_ink_was_read`, `export.py:claim_guess_of`, `export.py:one_ink_guess_of`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
+- **read by EXPORT** (8): `export.py:_file_dropped_heads`, `export.py:_place_found_whole_rests`, `export.py:_place_notes`, `export.py:_whole_rest_ink_was_read`, `export.py:claim_guess_of`, `export.py:one_ink_guess_of`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
 - **written** (declared): `<rest>`; a whole rest fills the bar, plain or blue.
 - **flags on its readers' paths** (as the code resolves them today): `gather.whole_rest_search_own_bar_enabled()=ON`
 - **open gaps**: none derived
@@ -563,8 +563,8 @@ The boxes the detector draws for every kind of mark; a box is where to look.
 - **hands on** (facts): `cell_box`, `cell_position_basis` (NOT-IN-USE), `notehead_class`, `page_mark`, `page_mark_owner`, `page_span`, `unread_mark`
 - **also files the shared facts** (every mark's rows in one fact; readers in `--quantity`): `glyph_box`, `glyph_conf`
 - **decided by** (ADJUDICATE): `adjudicate_unread_mark` -> `unread_mark`
-- **read by ADJUDICATE** (25): `adjudicators/family_precision.py:_cell_box_page_px`, `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/notehead_precision.py:_arc_tail_refusal`, `adjudicators/notehead_precision.py:_cell_box_page`, `adjudicators/notehead_precision.py:_cell_notehead_boxes`, `adjudicators/ownership.py:_flank_search.cell_box`, `adjudicators/ownership.py:_joins_not_at_a_barline`, `adjudicators/ownership.py:_page_owner_ruling` +17 more
-- **read by EXPORT** (5): `export.py:_part_xml`, `export.py:_place_notes`, `export.py:build`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
+- **read by ADJUDICATE** (26): `adjudicators/family_precision.py:_cell_box_page_px`, `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/notehead_precision.py:_arc_tail_refusal`, `adjudicators/notehead_precision.py:_cell_box_page`, `adjudicators/notehead_precision.py:_cell_notehead_boxes`, `adjudicators/ownership.py:_flank_search.cell_box`, `adjudicators/ownership.py:_joins_not_at_a_barline`, `adjudicators/ownership.py:_page_owner_ruling` +18 more
+- **read by EXPORT** (6): `export.py:_file_dropped_heads`, `export.py:_part_xml`, `export.py:_place_notes`, `export.py:build`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
 - **written** (declared): an unread box is counted, never written as a mark.
 - **flags on its readers' paths** (as the code resolves them today): `positions.positions_enabled()=OFF`
 - **open gaps**: none derived
@@ -1072,9 +1072,9 @@ Which edition and movement this is; scanned or engraved.
 - `glyph_box` read by ADJUDICATE: `adjudicate.py:_is_rescue_only_glyph`, `adjudicators/aug_dot_join.py:_box`, `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/family_precision.py:_cell_rest_boxes`, `adjudicators/family_precision.py:_glyph_box_row`, `adjudicators/family_precision.py:_heads_on_the_rung`, `adjudicators/family_precision.py:_ledger_reading`, `adjudicators/head_on_mark.py:read`, `adjudicators/head_rest_shape.py:adjudicate_head_ink_is_a_rest`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/header.py:_keysig_marker_glyph_refused`, `adjudicators/key_slots.py:meter_rows_outside_key_slots`, `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/narrow_rest.py:adjudicate_narrow_box_is_an_eighth_rest`, `adjudicators/notehead_precision.py:_cell_notehead_boxes`, `adjudicators/notehead_precision.py:_cell_timesig_boxes`, `adjudicators/notehead_precision.py:_glyph_box_row`, `adjudicators/notehead_precision.py:_is_tremolo_slash`, `adjudicators/notehead_precision.py:_ledger_rungs_in_cell`, `adjudicators/notehead_precision.py:_meter_column_witness`, `adjudicators/notehead_precision.py:_meter_digit_cross_staff_count`, `adjudicators/notehead_precision.py:_meter_digit_pair_partner`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/notehead_precision.py:_whole_class_refusal`, `adjudicators/ownership.py:_accidental_state`, `adjudicators/ownership.py:_contest_ledger_reading`, `adjudicators/ownership.py:_flank_search`, `adjudicators/ownership.py:_head_extent`, `adjudicators/ownership.py:_head_page_box`, `adjudicators/ownership.py:_keysig_marker_row`, `adjudicators/ownership.py:_other_staff_bar`, `adjudicators/ownership.py:_own_glyph_box`, `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:_tall_end_step`, `adjudicators/ownership.py:_twin_on`, `adjudicators/ownership.py:_unread_head_ink`, `adjudicators/ownership.py:_wedge_page_binding`, `adjudicators/ownership.py:_witness_by_ink`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/ownership.py:adjudicate_arc_kind`, `adjudicators/ownership.py:adjudicate_arc_owner`, `adjudicators/ownership.py:adjudicate_articulation_owner`, `adjudicators/ownership.py:adjudicate_fermata_owner`, `adjudicators/ownership.py:adjudicate_ornament_owner`, `adjudicators/ownership.py:adjudicate_ottava_owner`, `adjudicators/ownership.py:adjudicate_page_arc_binding`, `adjudicators/ownership.py:adjudicate_page_arc_binding._box_of`, `adjudicators/ownership.py:cell_rungs`, `adjudicators/ownership.py:reconcile_articulation_twins`, `adjudicators/ownership.py:reconcile_dot_owners`, `adjudicators/rhythm.py:_cell_boxes`, `adjudicators/rhythm.py:_cell_frame`, `adjudicators/rhythm.py:_event_page_x`, `adjudicators/rhythm.py:_heads_in`, `adjudicators/rhythm.py:_meter_digit_witness_cells`, `adjudicators/rhythm.py:_not_a_note_mark`, `adjudicators/rhythm.py:_notehead_glyph_boxes`, `adjudicators/rhythm.py:_rest_own_voice_split`, `adjudicators/rhythm.py:_rest_ruling`, `adjudicators/rhythm.py:_rest_voice_side`, `adjudicators/rhythm.py:_second_evidence`, `adjudicators/rhythm.py:adjudicate_dot_role`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_notehead_is_a_whole_rest`, `adjudicators/rhythm.py:adjudicate_onset_column`, `adjudicators/rhythm.py:adjudicate_stem_direction`, `adjudicators/stem_value.py:_cell_heads`, `adjudicators/stem_value.py:_member_of`, `adjudicators/stem_value.py:_one_stem_per_head`, `adjudicators/stem_value.py:_stem_of_a_second`, `adjudicators/stem_value.py:adjudicate_head_stem`, `adjudicators/stroke_owner.py:_claim_final`, `adjudicators/stroke_owner.py:_claims`, `adjudicators/stroke_owner.py:_rest_shape_vetoes`, `adjudicators/stroke_owner.py:shape_vetoes`, `adjudicators/structure.py:_trailing_cell_signature_vote`, `adjudicators/text.py:adjudicate_dynamic_anchor`, `adjudicators/unison_two.py:adjudicate_unison_voices`
 - `glyph_box` read by EVALUATE: `consequences.py:_bar_heads_are_clean`, `consequences.py:_clef_change_at`, `consequences.py:_missed_rest_witness`, `consequences.py:_page_box`, `consequences.py:apply_printed_accidental`
 - `glyph_box` read by INFER: `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `inferences.py:_events_with_x`, `inferences.py:_simultaneous_heads`
-- `glyph_box` read by EXPORT: `export.py:_attach_unplaced`, `export.py:_bar_has_other_head_or_rest_box`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:_detector_view_census`, `export.py:_head_touches_a_letter_or_whole_rest`, `export.py:_place_notes`, `export.py:_rest_twin_in_bar`, `export.py:_settle_folded_pitches`, `export.py:coverage`
+- `glyph_box` read by EXPORT: `export.py:_attach_unplaced`, `export.py:_bar_has_other_head_or_rest_box`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:_detector_view_census`, `export.py:_file_dropped_heads`, `export.py:_head_touches_a_letter_or_whole_rest`, `export.py:_place_notes`, `export.py:_rest_twin_in_bar`, `export.py:_settle_folded_pitches`, `export.py:coverage`
 - `glyph_box` read by tools: `trace.py:empty_claims`, `trace.py:population_of`
-- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export.py:_file_dropped_heads`, `export.py:_notehead_page_boxes`, `export.py:_other_mark_boxes`, `export_unison.py:arc_side`
+- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export.py:_notehead_page_boxes`, `export.py:_other_mark_boxes`, `export_unison.py:arc_side`
 - `glyph_box` belongs to: `--mark notehead`, `--mark arc`, `--mark hairpin`, `--mark dynamic`, `--mark box`
 
 ### `glyph_conf` (Q.GLYPH_CONF) -- LIVE
@@ -1124,8 +1124,8 @@ Which edition and movement this is; scanned or engraved.
 - `head_ink` filed by: GATHER `gather.py:gather_head_ink`
 - `head_ink` abstained by (not a producer): `gather.py:gather_head_ink`
 - `head_ink` declared in `wants` (not a read): `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_notehead_is_a_whole_rest`, `adjudicate_notehead_is_not_a_notehead`
-- `head_ink` read by ADJUDICATE: `adjudicators/notehead_precision.py:_stem_end_box_ink_disagrees`, `adjudicators/rhythm.py:_head_ink`
-- `head_ink` read only OFF by default: `adjudicators/rhythm.py:_head_oval`, `export.py:_not_a_head_owned_elsewhere`
+- `head_ink` read by ADJUDICATE: `adjudicators/notehead_precision.py:_stem_end_box_ink_disagrees`, `adjudicators/rhythm.py:_head_ink`, `adjudicators/rhythm.py:_head_oval`
+- `head_ink` read only OFF by default: `export.py:_not_a_head_owned_elsewhere`
 - `head_ink` belongs to: `--mark notehead`
 
 ### `head_ink_is_a_rest` (Q.HEAD_INK_IS_A_REST) -- LIVE
@@ -1421,9 +1421,9 @@ Which edition and movement this is; scanned or engraved.
 - `notehead_class` filed OFF by default: `gather.py:gather_second_hollow` (called only from gather.py:gather where if detector is not None and _SH.enabled() is False by default)
 - `notehead_class` filed outside the pipeline by `review/human_evidence.py` (a human's review)
 - `notehead_class` declared in `wants` (not a read): `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_event`, `adjudicate_head_stem`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stem_head_contact`, `adjudicate_tuplet`, `adjudicate_unison_voices`
-- `notehead_class` read by ADJUDICATE: `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/notehead_precision.py:_cell_notehead_boxes`, `adjudicators/rhythm.py:_attached_dots`, `adjudicators/rhythm.py:_dot_page_context`, `adjudicators/rhythm.py:_head_class`, `adjudicators/rhythm.py:_is_second_only`, `adjudicators/rhythm.py:adjudicate_dot_role`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_tuplet`, `adjudicators/stem_value.py:_cell_heads`, `adjudicators/stem_value.py:_one_stem_per_head`, `adjudicators/stem_value.py:_stem_of_a_second`
-- `notehead_class` read by EXPORT: `export.py:_place_notes`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
-- `notehead_class` read only OFF by default: `adjudicators/rhythm.py:_cell_head_boxes`, `export.py:_file_dropped_heads`, `export.py:_notehead_page_boxes`
+- `notehead_class` read by ADJUDICATE: `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/notehead_precision.py:_cell_notehead_boxes`, `adjudicators/rhythm.py:_attached_dots`, `adjudicators/rhythm.py:_cell_head_boxes`, `adjudicators/rhythm.py:_dot_page_context`, `adjudicators/rhythm.py:_head_class`, `adjudicators/rhythm.py:_is_second_only`, `adjudicators/rhythm.py:adjudicate_dot_role`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_tuplet`, `adjudicators/stem_value.py:_cell_heads`, `adjudicators/stem_value.py:_one_stem_per_head`, `adjudicators/stem_value.py:_stem_of_a_second`
+- `notehead_class` read by EXPORT: `export.py:_file_dropped_heads`, `export.py:_place_notes`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
+- `notehead_class` read only OFF by default: `export.py:_notehead_page_boxes`
 - `notehead_class` belongs to: `--mark notehead`, `--mark box`
 
 ### `notehead_ink` (Q.NOTEHEAD_INK) -- LIVE
@@ -1671,8 +1671,7 @@ Which edition and movement this is; scanned or engraved.
 - `rest` filed by: GATHER `gather.py:gather_glyph_families`
 - `rest` declared in `wants` (not a read): `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_event`, `adjudicate_head_ink_is_a_rest`, `adjudicate_meter`, `adjudicate_notehead_is_a_whole_rest`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stroke_owner`
 - `rest` read by ADJUDICATE: `adjudicators/family_precision.py:_cell_rest_boxes`, `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/rhythm.py:_attached_dots`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:adjudicate_dot_role`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_notehead_is_a_whole_rest`, `adjudicators/stroke_owner.py:_rest_shape_vetoes`
-- `rest` read by EXPORT: `export.py:_place_notes`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
-- `rest` read only OFF by default: `export.py:_file_dropped_heads`
+- `rest` read by EXPORT: `export.py:_file_dropped_heads`, `export.py:_place_notes`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
 - `rest` belongs to: `--mark rest`
 
 ### `rest_ink_contact` (Q.REST_INK_CONTACT) -- LIVE
@@ -2047,9 +2046,9 @@ Every line is derived from the code. What the code cannot show (a rule that read
 
 none
 
-### DETAIL KEY READ, NEVER FILED: a stage reads a detail key no code files (0)
+### DETAIL KEY READ, NEVER FILED: a stage reads a detail key no code files (1)
 
-none
+- detail key `trimmed` is read and filed by nothing -- at `adjudicators/aug_dot_join.py:head_oval_from_ink`
 
 ### FILED, NEVER READ BY A STAGE: a live producer whose fact no stage reads (a human or a tool may) (8)
 
