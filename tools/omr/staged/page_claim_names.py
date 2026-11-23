@@ -408,6 +408,31 @@ def accidental_on_rest_ink(page_map: Any, ids: Sequence[int], accidentals: Seque
     return best
 
 
+#: ROADMAP 2.340: the reason words the rest-claim step files for a rest box on an accidental's ink, and the ADJUDICATE refusal that connects them
+ACC_WEAK_WHY = tuple("a_%s_before_its_note" % k for k in ACC_KINDS)
+ACC_REST_REFUSAL = "rest_is_an_accidentals_ink"
+
+
+def accidental_rest_finding(census_rows: Sequence[Any], cell_key: str, pb: Sequence[float], tol_px: float = 2.0) -> Optional[Tuple[Any, str]]:
+    """ROADMAP 2.340, STAGED ADJUDICATE, pure (connect, never guess): `(census row, why)` where the GATHER rest-claim step found THIS rest box (same cell, same page
+    box within `tol_px`) to stand on an accidental's ink (`ACC_WEAK_WHY`), else None. The fact is GATHER's; ADJUDICATE only reads it, so the box is refused as
+    what its ink is, and the accidental reader's claim (filed at GATHER) carries the mark. `census_rows`: the page's `Q.CLAIMED_AREA` census rows."""
+    if not accidental_boxed_as_other_enabled():
+        return None
+    for r in census_rows:
+        d = getattr(r, "detail", None) or {}
+        if getattr(r, "value", None) != "census" or d.get("owner") != "page_boxes":
+            continue
+        for ent in d.get("rest_weak_boxes") or ():
+            try:
+                _cls, box, why, ck = ent
+            except (TypeError, ValueError):
+                continue
+            if why in ACC_WEAK_WHY and ck == cell_key and all(abs(float(a) - float(b)) <= tol_px for a, b in zip(box, pb)):
+                return r, why
+    return None
+
+
 def box_owner(cls: str, category: Optional[str] = None, rests: bool = False) -> Optional[str]:
     """The claim-order owner a detector class names strokes as (module doc above); None = not step 3's. `rests`: the REST families are step 3's too
     (`OMR_PAGE_CLAIM_RESTS`, 2.288), and then ONLY they are, unless `OMR_PAGE_CLAIM_BOXES` is on as well (the caller passes `rests` and filters by `boxes_enabled()`)."""

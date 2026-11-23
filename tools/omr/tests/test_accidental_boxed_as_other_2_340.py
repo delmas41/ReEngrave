@@ -107,3 +107,40 @@ def test_never_a_rest_whose_note_is_not_just_right_of_it():
 
 def test_never_a_flat():
     assert "flat" not in PCN.ACC_KINDS
+
+
+# ── the ADJUDICATE half: GATHER's finding connected, never re-measured (`page_claim_names.accidental_rest_finding`) ──
+CENSUS = json.load(open(pathlib.Path(__file__).with_name("data_accidental_boxed_as_other_census.json")))
+
+
+def _rows():
+    return [SimpleNamespace(value=c["value"], detail=c["detail"]) for c in CENSUS["census"]]
+
+
+def _box(subject):
+    return next(b for b in CENSUS["boxes"] if b["subject"] == subject)
+
+
+@pytest.mark.parametrize("subject", ["glyph/2/0/1/3/4", "glyph/9/1/2/6/10"])
+def test_the_rest_box_gather_found_on_a_sharp_is_refused_as_the_sharps_ink(subject):
+    # the real census rows the Litolff p2 / p9 gather filed (flag ON); without the flag nothing is connected (the control fails)
+    cell = "cell/" + "/".join(subject.split("/")[1:5])
+    b = _box(subject)
+    os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
+    assert PCN.accidental_rest_finding(_rows(), cell, b["bbox_page_px"]) is None
+    os.environ[PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER] = "1"
+    try:
+        hit = PCN.accidental_rest_finding(_rows(), cell, b["bbox_page_px"])
+        assert hit is not None and hit[1] == "a_sharp_before_its_note"
+    finally:
+        os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
+
+
+def test_never_the_real_rest_in_the_same_bar():
+    # Litolff 2/0/1/3/1: the bar's real quarter rest, beside the sharp boxed as a 16th rest
+    b = _box("glyph/2/0/1/3/1")
+    os.environ[PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER] = "1"
+    try:
+        assert PCN.accidental_rest_finding(_rows(), "cell/2/0/1/3", b["bbox_page_px"]) is None
+    finally:
+        os.environ.pop(PCN.ENV_ACCIDENTAL_BOXED_AS_OTHER, None)
