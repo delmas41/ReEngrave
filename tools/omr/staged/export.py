@@ -2176,7 +2176,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if _near_existing_head(cell, det, run.spacing):
             _drop("relocation_collides", _again(sub))
             continue
-        if _relocated_value_disagrees(cell, det):
+        if _relocated_value_disagrees(cell, det, run.spacing):
             # 2026-11-22 (lane-owner-writes): every note on one stem shares one written value. A head that would join a chord on
             # the owner staff whose notes were read with another value is HELD (and its bar marked, on the staff that saw it):
             # writing it would make 2.89 refuse the whole chord -- the owner's own, rightly read notes with it.
@@ -2456,34 +2456,54 @@ def _key_alteration_for(pitch: Optional[str], fifths: Any) -> Optional[str]:
 _OTHER_MARK_PREFIXES = ("clef", "key", "accidental", "flag", "tremolo", "dynamic")
 
 
-def _other_mark_boxes(rec: Record) -> Dict[int, List[List[float]]]:
+def _other_mark_boxes(rec: Record) -> Dict[int, List[Tuple[str, List[float]]]]:
     """Per page, the page boxes of marks that are not heads (`_OTHER_MARK_PREFIXES`) and of every printed word
     (`Q.DIRECTION_WORD`). Read once per export, only with `OMR_RELOCATE_AT_EXPORT` on."""
-    out: Dict[int, List[List[float]]] = {}
+    out: Dict[int, List[Tuple[str, List[float]]]] = {}
     for o in rec.obs_of(Q.GLYPH_BOX):
         v = o.get("value")
         name = str(v[0] if isinstance(v, (list, tuple)) and v else v or "")
-        if not name.startswith(_OTHER_MARK_PREFIXES):
+        kind = ("mark" if name.startswith(_OTHER_MARK_PREFIXES)
+                else "ledger" if name.startswith("ledgerLine") else None)
+        if kind is None:
             continue
         box = _page_box_of(o)
         if box is not None:
-            out.setdefault(_parse_subject(o["subject"])["page"] or 0, []).append(box)
+            out.setdefault(_parse_subject(o["subject"])["page"] or 0, []).append((kind, box))
+    # a READ word is printed text. A word BLOCK the text reader found but could not read (an abstention) is loose -- on
+    # Litolff p8 one holds a real far head and its ledger lines beside "sempre" -- so it names the ink text only where no
+    # ledger line touches the head (Brahms p14: the "se" of an unread "sempre" boxed as a head, no ledger line near it).
     for o in rec.obs_of(Q.DIRECTION_WORD):
         box = _page_box_of(o)
         m = re.match(r"^[a-z_]+/(\d+)", str(o.get("subject") or ""))
         if box is not None and m:
-            out.setdefault(int(m.group(1)), []).append(box)
+            out.setdefault(int(m.group(1)), []).append(("mark", box))
+    for o in (rec.abstentions or ()):
+        if o.get("quantity") != Q.DIRECTION_WORD:
+            continue
+        box = _page_box_of(o)
+        m = re.match(r"^[a-z_]+/(\d+)", str(o.get("subject") or ""))
+        if box is not None and m:
+            out.setdefault(int(m.group(1)), []).append(("unread_word", box))
     return out
 
 
 def _inside_another_mark(box: Sequence[float], page: int,
-                         other_marks: Dict[int, List[List[float]]]) -> bool:
+                         other_marks: Dict[int, List[Tuple[str, List[float]]]]) -> bool:
+    """Is the head's centre inside another named mark (or a READ word), or inside an unread word block with no ledger line
+    touching the head?"""
     cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
-    return any(b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for b in other_marks.get(page, ()))
+    marks = other_marks.get(page, ())
+    if any(k == "mark" and b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for k, b in marks):
+        return True
+    if not any(k == "unread_word" and b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for k, b in marks):
+        return False
+    return not any(k == "ledger" and b[0] <= box[2] + 2 and b[2] >= box[0] - 2 and b[1] <= box[3] + 2 and b[3] >= box[1] - 2
+                   for k, b in marks)
 
 
 def _not_a_head_owned_elsewhere(rec: Record, sub: str, box: Optional[Sequence[float]], page: int,
-                                other_marks: Dict[int, List[List[float]]]) -> Optional[str]:
+                                other_marks: Dict[int, List[Tuple[str, List[float]]]]) -> Optional[str]:
     """Why a box another staff owns is not a note at all, or None. (2) A notehead by its OWN ink: `Q.HEAD_INK` read hollow or
     filled (one head-sized oval), never a box that only looks like one -- on the frozen sample the boxes owned elsewhere
     include clef parts, slashes, flags, key flats and letters. (3) Its ink is not a mark another reader has named: its centre
@@ -2497,6 +2517,33 @@ def _not_a_head_owned_elsewhere(rec: Record, sub: str, box: Optional[Sequence[fl
     return None
 
 
+def _beyond_owner_view(rec: Record, owner: str, seen_on: str, box: Sequence[float],
+                       spacing: Optional[float]) -> Optional[bool]:
+    """Does the head's centre lie past the reach of the owner's own bar view? The reach is `measure_extractor`'s own rule
+    (`_build_measure_cell.grown`): `PAD_*_STAFF_LINES` (4) spaces past the outer line, `PAD_MAX_STAFF_LINES` (6) where the
+    gap to the staff that saw the head, less `CELL_NEIGHBOUR_CLEARANCE_SPACES`, leaves room for 6. None where a staff's lines
+    or spacing are not on the record."""
+    from .. import measure_extractor as ME
+
+    def lines(key):
+        rows = rec.obs(Q.STAFF_LINES, key)
+        v = rows[-1]["value"] if rows else None
+        try:
+            return (min(float(y) for y in v), max(float(y) for y in v)) if v else None
+        except (TypeError, ValueError):
+            return None
+    own, nb = lines(owner), lines(seen_on)
+    if own is None or nb is None or not spacing:
+        return None
+    cy = (box[1] + box[3]) / 2.0
+    below = cy > own[1]
+    gap = ((nb[0] - own[1]) if below else (own[0] - nb[1])) / spacing
+    reach = (ME.PAD_MAX_STAFF_LINES if gap - ME.CELL_NEIGHBOUR_CLEARANCE_SPACES >= ME.PAD_MAX_STAFF_LINES
+             else (ME.PAD_BELOW_STAFF_LINES if below else ME.PAD_ABOVE_STAFF_LINES))
+    out = ((cy - own[1]) if below else (own[0] - cy)) / spacing
+    return out > reach
+
+
 def _owner_in_mark_group(rec: Record, sub: str, owner: str) -> bool:
     """Does this mark's own group (`Q.MARK_GROUP`, the same ink seen from two cells) hold a member filed on `owner`?"""
     for g in rec.obs(Q.MARK_GROUP, sub):
@@ -2507,15 +2554,27 @@ def _owner_in_mark_group(rec: Record, sub: str, owner: str) -> bool:
     return False
 
 
-def _relocated_value_disagrees(cell: "Cell", det: Dict[str, Any]) -> bool:
+def _relocated_value_disagrees(cell: "Cell", det: Dict[str, Any], spacing: Optional[float] = None) -> bool:
     """Would `det`, put in `cell`, join a chord whose other heads were written with a different (beats, type, dots)?
-    The same grouping and the same triple 2.89 uses (`_group_chords`), asked BEFORE the head is added."""
+    The same grouping and the same triple 2.89 uses (`_group_chords`), asked BEFORE the head is added. And, because the
+    grouping keeps two stem directions apart: does a head of the owner's stand in the same column (page x within
+    `RELOCATE_COLLISION_SPACES`) with another value? (Brahms p4 m27: the far head of a horn chord read a quarter from the
+    neighbour's view, its stem mate an eighth from its flag; written, the two were split into two voices.)"""
+    mine = (det.get("duration_beats"), det.get("duration_type"), det.get("dots"))
+    b = det.get("bbox_page")
+    if b is not None and spacing:
+        cx = b[0] + b[2] / 2.0
+        for d in cell.detections:
+            e = d.get("bbox_page")
+            if (d.get("category") == "notehead" and e is not None
+                    and abs(e[0] + e[2] / 2.0 - cx) < RELOCATE_COLLISION_SPACES * spacing
+                    and (d.get("duration_beats"), d.get("duration_type"), d.get("dots")) != mine):
+                return True
     trial = list(cell.detections) + [det]
     for ev in _group_chords(trial):
         heads = ev.get("noteheads") or ()
         if not any(h is det for h in heads):
             continue
-        mine = (det.get("duration_beats"), det.get("duration_type"), det.get("dots"))
         return any(h is not det and (h.get("duration_beats"), h.get("duration_type"), h.get("dots")) != mine
                    for h in heads)
     return False
@@ -2525,7 +2584,7 @@ def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
                      o: Dict[str, Any], s: Dict[str, Optional[int]],
                      sub: str, owner: str,
                      twin_index: Dict[Tuple[int, int, int], List[List[float]]],
-                     other_marks: Optional[Dict[int, List[List[float]]]] = None
+                     other_marks: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None
                      ) -> Any:
     """Where a head owned by another staff would be written.
 
@@ -2564,6 +2623,16 @@ def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
     run = runs.get(owner)
     if run is None or not run.cell_boxes:
         return "owner_staff_has_no_measures"
+    # (3b) THE CAUSE: each bar is read from a view that reaches a fixed distance past its own staff
+    #     (`measure_extractor._build_measure_cell`: 4 spaces, 6 where the gap to the neighbour leaves room), so a head farther
+    #     out was never shown to its owner and only the neighbour's view saw it. A head INSIDE the owner's own view that the
+    #     owner drew no box for is a different case (on the frozen sample all six such Litolff boxes were a ledger stroke or a
+    #     tie end beside a head the owner wrote, or a head read a step off) -- it stays dropped, counted under its own name.
+    reach = _beyond_owner_view(rec, owner, _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0), box, run.spacing)
+    if reach is None:
+        return "relocation_no_frame"
+    if not reach:
+        return "relocation_inside_owner_view"
     pv = rec.verdict(Q.PITCH, sub)
     if pv is None or pv.get("decider") != "move_glyph":
         return "relocation_not_repitched"
@@ -7523,6 +7592,9 @@ _NOT_A_GAP_REASONS = frozenset({
     # 2026-11-22 (`OMR_RELOCATE_AT_EXPORT`): a box owned elsewhere whose own ink is not one head, or whose ink is another
     # named mark, is not a note of any staff
     "relocation_not_a_head_by_ink", "relocation_on_another_mark",
+    # and a head inside the owner's own bar view that the owner drew no box for is not this lane's case: counted under
+    # its own name, left as the pre-relocation export left it (not a gap); see `_beyond_owner_view`
+    "relocation_inside_owner_view",
     "not_a_notehead:stacked_head_duplicate",
     "not_a_notehead:notehead_is_a_duplicate_box",
     "not_a_rest:rest_is_a_duplicate_box",

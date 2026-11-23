@@ -62,7 +62,8 @@ def _two_staves(*, cell_x=(0.0, 400.0), moved_box=(100, 210, 120, 230),
                 owner_pitch="G4", owner_decider="move_glyph",
                 owner_head_box=None, owner_twin_box=None,
                 moved_reason="reowned_by_ledger_reading", moved_ink="filled",
-                moved_duration=QUARTER, owner_head_duration=QUARTER):
+                moved_duration=QUARTER, owner_head_duration=QUARTER,
+                lines_y=(100.0, 300.0)):
     """Staff 1 detected a head that staff 0 owns. Staff 0 holds NO copy unless
     `owner_head_box` (a near-but-not-twin head) or `owner_twin_box` is given."""
     rec = {"observations": [], "verdicts": [], "abstentions": [],
@@ -73,6 +74,10 @@ def _two_staves(*, cell_x=(0.0, 400.0), moved_box=(100, 210, 120, 230),
                             _vrd(910 + st, sk, Q.CLEF, "treble")]
         rec["observations"] += [
             _obs(920 + st, sk, Q.STAFF_SPACING, SPACING),
+            # the staves' own lines (page px): staff 0 at 100-140, staff 1 at
+            # 300-340, a 16-space gap, so each bar view reaches 6 spaces
+            _obs(960 + st, sk, Q.STAFF_LINES,
+                 [lines_y[st] + SPACING * i for i in range(5)]),
             _obs(930 + st, f"cell/0/0/{st}/0", Q.CELL_BOX,
                  [cell_x[0], 100.0 * st, cell_x[1], 100.0 * st + 200.0]),
             _obs(940 + st, f"cell/0/0/{st}/0", Q.CELL_STAFF_SPACE,
@@ -212,6 +217,33 @@ class TestOnlyAHeadTheLedgerLinesPlaceIsWritten(unittest.TestCase):
         xml, rep = _export(page, flag=True)
         self.assertEqual(rep["notes_not_written"],
                          {"relocation_on_another_mark": 1})
+
+    def test_ink_inside_a_word_block_the_text_reader_could_not_read(self):
+        page = _two_staves()
+        page["record"]["abstentions"].append(
+            {"id": "abs:000001", "subject": "glyph/0/0/1/0/90001",
+             "quantity": Q.DIRECTION_WORD, "reason": "no_reading",
+             "reader": "ocr", "frame": "page",
+             "detail": {"bbox_page_px": [60, 205, 200, 240]}})
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_on_another_mark": 1})
+        # positive control (Litolff p8): the same unread block, but a ledger
+        # line touches the head -- a far note beside a word, written
+        page["record"]["observations"].append(
+            _obs(993, "glyph/0/0/1/0/5", Q.GLYPH_BOX, ["ledgerLine", 0, 0, 1, 1],
+                 bbox_page_px=[96, 219, 124, 221]))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": ["G4"], "P2": []})
+
+    def test_a_head_inside_the_owners_own_bar_view_is_not_moved(self):
+        """The cause this lane connects: a head past the reach of the owner's
+        bar view (4 spaces, 6 where the gap leaves room) was never shown to
+        its owner. One 3 spaces below the owner's staff was shown to it."""
+        xml, rep = _export(_two_staves(lines_y=(150.0, 300.0)), flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": [], "P2": []})
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_inside_owner_view": 1})
 
     def test_a_head_the_ledger_lines_do_not_place_is_held(self):
         xml, rep = _export(_two_staves(moved_reason="reowned"), flag=True)

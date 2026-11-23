@@ -44,6 +44,9 @@ def _staves(*, n_bars=(1, 1), n_staves=2):
             rec["verdicts"].append(_vrd(900 + st, sk, Q.MEASURE_PARTITION, nb))
         rec["verdicts"].append(_vrd(910 + st, sk, Q.CLEF, "treble"))
         rec["observations"].append(_obs(920 + st, sk, Q.STAFF_SPACING, SPACING))
+        # staff lines 200 px apart: a moved head at y 220 is past its owner's bar view
+        rec["observations"].append(_obs(960 + st, sk, Q.STAFF_LINES,
+                                        [100.0 + 200.0 * st + SPACING * i for i in range(5)]))
         # the detector cut THREE cells whatever the partition decided
         for c in range(3):
             rec["observations"] += [
