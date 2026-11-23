@@ -6885,3 +6885,6 @@ STAGED GATHER + ADJUDICATE + EVALUATE + EXPORT. Clef refusals split into not-a-c
 
 ## 2026-11-22 -- batch 3 (main 129bd3e40): 2.319 one beam reader end to end; ties into an unsplit bar
 STAGED ADJUDICATE + INFER + EXPORT. The one beam count now also decides beam grouping and flag membership (`beam_strokes` per note); the bar-crop beam reader, `OMR_ONE_BEAM_COUNT` and the `beam_discounted_uncertain` rules are removed; a flag hangs on the stem its ink touches (`rhythm.flag_ink_meets_stem`); `export._record_tie_spans` writes a tie whose far bar was not split into voices (and its carried accidental). Frozen sample re-adjudicated: judged right->wrong 0; fast tier 10,919 passed + the known failure. `beam_stem_join`, `beam_stem_levels`, `page_beam` are filed by GATHER and read by nothing (known gaps).
+
+## 2026-11-22 -- ROADMAP 2.324 round 10: a C clef is named by its outside middle
+STAGED GATHER (`clef_pagewide` C naming; no flag). The line a C clef names is the staff line through the middle of the clef measured from its top and bottom edges, the nearer of alto (line 3) and tenor (line 4); unread between them beyond 0.35 from both or half a space outside. Replaces the bowls' balance point. 59 clefs unchanged; the two off-line Litolff tenor clefs now read. Litolff pages 4 and 11 re-read, judged right->wrong 0; fast tier 10,989 passed.
