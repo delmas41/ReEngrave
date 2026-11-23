@@ -1,0 +1,133 @@
+{
+ "c_brahms_5_1_9_7": {
+  "cell": "5/1/9/7",
+  "stem": "obs:163087",
+  "heads": [
+   {
+    "key": "glyph/5/1/9/7/2",
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     781,
+     178,
+     150,
+     118
+    ],
+    "outcome": "decided",
+    "options": [
+     [
+      1.0,
+      0,
+      1
+     ]
+    ],
+    "whole_class": false
+   },
+   {
+    "key": "glyph/5/1/9/7/7",
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     780,
+     784,
+     145,
+     126
+    ],
+    "outcome": "decided",
+    "options": [
+     [
+      1.0,
+      0,
+      0
+     ]
+    ],
+    "whole_class": false
+   },
+   {
+    "key": "glyph/5/1/9/7/12",
+    "cls": "noteheadBlackOnLine",
+    "box": [
+     781,
+     425,
+     154,
+     127
+    ],
+    "outcome": "decided",
+    "options": [
+     [
+      1.0,
+      0,
+      0
+     ]
+    ],
+    "whole_class": false
+   },
+   {
+    "key": "glyph/5/1/9/7/14",
+    "cls": "noteheadWholeOnLine",
+    "box": [
+     780,
+     424,
+     155,
+     128
+    ],
+    "outcome": "narrowed",
+    "options": [
+     [
+      1.0,
+      0,
+      0
+     ],
+     [
+      2.0,
+      0,
+      0
+     ]
+    ],
+    "whole_class": true
+   }
+  ]
+ },
+ "d_brahms_5_1_11_6": {
+  "cell": "5/1/11/6",
+  "stem": "obs:163370",
+  "heads": [
+   {
+    "key": "glyph/5/1/11/6/2",
+    "cls": "noteheadBlackOnLine",
+    "box": [
+     997,
+     128,
+     148,
+     123
+    ],
+    "outcome": "decided",
+    "options": [
+     [
+      1.0,
+      0,
+      1
+     ]
+    ],
+    "whole_class": false
+   },
+   {
+    "key": "glyph/5/1/11/6/14",
+    "cls": "noteheadBlackInSpace",
+    "box": [
+     1004,
+     399,
+     141,
+     106
+    ],
+    "outcome": "decided",
+    "options": [
+     [
+      1.0,
+      0,
+      0
+     ]
+    ],
+    "whole_class": false
+   }
+  ]
+ }
+}

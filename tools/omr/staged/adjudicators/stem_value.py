@@ -1117,6 +1117,37 @@ def _fill_seen_on_its_own_ink(m: "_Member") -> bool:
     return (next(iter(bases)) >= HOLLOW_BASE_MIN) == (hi["value"] == "hollow")
 
 
+def _string_dot_stays_its_own(ev: Evidence, members: Sequence["_Member"], dot_voters: Sequence["_Member"]) -> bool:
+    """ROADMAP 2.306 r19 (flag `OMR_STRING_STOPS_OWN_VALUE`). On a STRING staff a dot belongs to the head it is printed beside (Sean 2026-11-21:
+    notes printed together on a string stem may differ in length; his r18 tile 1, "two dotted quarters, and at the bottom there is a quarter
+    note that's not dotted"). So where the string-stop reading itself stood aside (a box read twice, a whole-class box, a head whose own length
+    was not read) and the one-value rule would hand one head's dot to the others: if a FILLED head, its own length read with no dot, stands at
+    another place on the staff than every dotted head, the stem's dot is not forced on it. Returns True there. NEVER on a woodwind, brass,
+    other or unknown staff (one stem, one value: a missed dot is shared there as before); never for a box at a dotted head's own place (one
+    head read twice)."""
+    from .. import staff_family as SF
+    if not SF.enabled() or len(members) < 2:
+        return False
+    dotted = [m for m in dot_voters if m.decided and m.options[0][2] > 0 and m.options[0][0] < HOLLOW_BASE_MIN]
+    if not dotted:
+        return False
+    bare = []
+    for m in members:
+        # its fill and its dots read on its own head (decided, or narrowed only in its beams, which hang at the stem's tip)
+        own = {(o[0], o[2]) for o in m.options}
+        if not m.read or m.whole_class or len(own) != 1 or m.cy is None or not m.box:
+            continue
+        b, d = next(iter(own))
+        if d != 0 or b >= HOLLOW_BASE_MIN:
+            continue
+        if any(d.cy is None or not d.box or abs(d.cy - m.cy) < ONE_STEM_PER_HEAD_MIN_APART_HEADS * min(d.box[3], m.box[3]) for d in dotted):
+            continue
+        bare.append(m)
+    if not bare:
+        return False
+    return _staff_family(ev, ev.subject.at(Kind.CELL))["family"] == SF.STRINGS
+
+
 def _string_stop_ruling(ev: Evidence, members: Sequence["_Member"], flush: Dict[str, str], me: "_Member", stem_id: str,
                         scale: float, used: Tuple[str, ...]) -> Optional[Ruling]:
     """ROADMAP 2.306 / 2.78 (flag `OMR_STRING_STOPS_OWN_VALUE`). On a STRING staff notes printed together on one stem may have different
@@ -1358,6 +1389,12 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
             if m.narrowed and all(o[2] > 0 for o in m.options):
                 positive |= {o[2] for o in m.options}
     dots_opts = sorted(positive) if positive else [0]
+    if positive and _string_dot_stays_its_own(ev, members, dot_voters):
+        # ROADMAP 2.306 r19 (batch 4, Brahms 5/1/9/7: a low D4 with no dot beside it written dotted, plain, from a stem-mate's dot): on a string
+        # staff a dot belongs to the head it is printed beside, so where a head shows none the stem's dot is not a necessary fact -- the stem
+        # admits both and is held (rule 8), never shared plain.
+        dots_opts = sorted({0} | positive)
+        why["string_dot_not_shared"] = True
     why["dots"] = dots_opts
 
     # ── the stem's value, or what it still admits ───────────────────────────
