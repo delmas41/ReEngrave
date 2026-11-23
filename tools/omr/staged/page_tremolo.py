@@ -91,6 +91,42 @@ def stem_core_enabled() -> bool:
     return os.environ.get(STEM_CORE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
 
 
+#: ROADMAP 2.335 (under `OMR_SLASH_STEM_CORE`): A LEDGER LINE A SLASH TOUCHES IS A LINE, NOT PART OF THE SLASH. The page canvas has the staff
+#: lines erased but not the ledger lines; where a slash below (or above) the staff touches a ledger line the finder followed the line out to the
+#: next stem and refused the slash (`not_at_an_angle` / `joins_another_stem`), so no claim was filed and a detector head box on the slash's ink
+#: was written as a note (Litolff p6 `cell/6/1/8/11`, its right-hand piece written a C4 half; 2.336's trace). The finder reads the slash with
+#: the page's thin level lines set aside, as it already reads it without the staff lines (page-facts 2026-11-10: a line crossing a mark is the
+#: mark's crossing, never part of the mark's shape). A line is ink no taller than `LINE_THIN_FACTOR` staff-line thicknesses that runs level for
+#: at least `LINE_MIN_LEN_SP`; NEVER ink taller than that (a slash is 0.7-0.8 sp thick, three times a line), so no slash, stem or head is
+#: thinned by it. Only the finder sees this copy; the head-end test and the claim read the page as it is.
+LINE_THIN_FACTOR = 2.0
+LINE_MIN_LEN_SP = 0.8
+
+
+def _run_lengths(a: Any) -> Any:
+    """Per True pixel, the length of the vertical run of True it stands in (axis 0). Pure."""
+    import numpy as np
+    H = a.shape[0]
+    up = np.zeros(a.shape, np.int32)
+    dn = np.zeros(a.shape, np.int32)
+    prev = np.zeros(a.shape[1:], np.int32)
+    for y in range(H):
+        prev = (prev + 1) * a[y]
+        up[y] = prev
+    prev = np.zeros(a.shape[1:], np.int32)
+    for y in range(H - 1, -1, -1):
+        prev = (prev + 1) * a[y]
+        dn[y] = prev
+    return np.where(a, up + dn - 1, 0)
+
+
+def lines_aside(ink: Any, line_px: float, sp: float) -> Any:
+    """`ink` without its thin level lines (module constants above: the ledger lines). Pure; returns a new array."""
+    thin = ink & (_run_lengths(ink) <= max(2, int(round(LINE_THIN_FACTOR * float(line_px or 0)))))
+    line = thin & (_run_lengths(thin.T).T >= LINE_MIN_LEN_SP * sp)
+    return ink & ~line
+
+
 def stems_of(strokes: Sequence[Any]) -> List[Tuple[int, Tuple[float, float, float, float]]]:
     """`(ordinal, (x, y, w, h))` of every vertical page stroke at least `STEM_MIN_LEN_SP` long, page px."""
     out = []
@@ -157,13 +193,14 @@ def read_page(ink: Any, stems: Sequence[Tuple[int, Tuple[float, float, float, fl
     (empty = order A: the finder knows no head). Returns the passing slashes (each with its stem's ordinal) and the refusal-reason counts. Pure."""
     from .gather import stem_slashes
     own_rows = stem_core_enabled()
+    read_ink = lines_aside(ink, line_px, sp) if own_rows and getattr(ink, "ndim", 0) == 2 else ink
     slashes: List[Dict[str, Any]] = []
     reasons: Dict[str, int] = {}
     reach = NEIGHBOUR_SPACES * sp
     for k, (ordn, box) in enumerate(stems):
         near = [b for j, (_o, b) in enumerate(stems)
                 if j != k and abs((b[0] + b[2] / 2.0) - (box[0] + box[2] / 2.0)) <= reach and b[1] <= box[1] + box[3] + sp and b[1] + b[3] >= box[1] - sp]
-        got = stem_slashes(ink, box, sp, line_px, near, heads, own_rows=own_rows)
+        got = stem_slashes(read_ink, box, sp, line_px, near, heads, own_rows=own_rows)
         for s in got:
             r = s.get("reason")
             reasons[str(r)] = reasons.get(str(r), 0) + 1

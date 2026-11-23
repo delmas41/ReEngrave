@@ -6739,6 +6739,36 @@ def _track_stroke_from(ink: Any, start_x: int, direction: int,
     return out
 
 
+#: ROADMAP 2.335: a stroke "runs into" another stem where, in the column just past the stroke's last tracked column (or this many spaces
+#: further out), ink stands on the stroke's own rows inside that stem's columns.
+STEM_SLASH_JOIN_REACH_SPACES = 0.25
+
+
+def _slash_runs_into_a_stem(ink: Any, runs: Sequence[Tuple[int, int, int]], direction: int,
+                            other_stems: Sequence[Tuple[float, float, float, float]], space: float) -> bool:
+    """ROADMAP 2.335 (`OMR_SLASH_STEM_CORE`): True where the tracked stroke `runs` (`[(x, y0, y1), ...]` outward, `direction` -1 left / +1
+    right) ends AGAINST another stem's ink: the stem's columns begin within `STEM_SLASH_JOIN_REACH_SPACES` past the stroke's last column, and
+    the ink there, on the stroke's last rows, is the stem's (the stem's own rows hold them). Measured on the ink, never on box nearness. Pure."""
+    if not runs or not other_stems:
+        return False
+    H, W = ink.shape
+    ex, ey0, ey1 = runs[-1]
+    reach = max(1, int(round(STEM_SLASH_JOIN_REACH_SPACES * space)))
+    for sx0, sy0, sw, sh in other_stems:
+        s0, s1 = int(round(sx0)), int(round(sx0 + sw))
+        gap = (s0 - ex) if direction > 0 else (ex - s1)
+        if gap < 0 or gap > reach + 1:
+            continue
+        r0, r1 = max(ey0, int(round(sy0))), min(ey1, int(round(sy0 + sh)))
+        if r1 <= r0:
+            continue
+        # every column from the stroke's end to the stem's first column holds ink on those rows: no paper between them
+        cols = range(ex + 1, s0 + 1) if direction > 0 else range(s1 - 1, ex)
+        if all(0 <= c < W and ink[max(0, r0):min(H, r1), c].any() for c in cols):
+            return True
+    return False
+
+
 def stem_slashes(ink: Any, box: Tuple[float, float, float, float],
                  space: float, line_px: float,
                  other_stems: Sequence[Tuple[float, float, float, float]] = (),
@@ -6855,7 +6885,13 @@ def stem_slashes(ink: Any, box: Tuple[float, float, float, float],
             elif ratio is not None and ratio < STEM_SLASH_MIN_THICKNESS_RATIO:
                 reason = "too_thin"
             else:
-                for sx0, sy0, sw, sh in other_stems:
+                # ROADMAP 2.335 (the page reader under `OMR_SLASH_STEM_CORE`): the stroke joins another stem only where its INK runs into that
+                # stem's ink (Sean 2026-11-18: join and separate by ink, never by the box) -- never because the other stem's box ends within half
+                # a space of the stroke's height (Litolff p6 `cell/6/1/8/11`: the slash below the staff stops short of the neighbouring stem's tail).
+                if own_rows and (_slash_runs_into_a_stem(ink, ltr, -1, other_stems, space)
+                                 or _slash_runs_into_a_stem(ink, rtr, 1, other_stems, space)):
+                    reason = "joins_another_stem"
+                for sx0, sy0, sw, sh in (() if own_rows else other_stems):
                     if not (sy0 - 0.5 * space <= cy <= sy0 + sh + 0.5 * space):
                         continue
                     if (sx0 + sw <= c0 - 0.2 * space
