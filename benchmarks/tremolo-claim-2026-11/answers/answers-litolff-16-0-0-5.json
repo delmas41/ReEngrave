@@ -1,0 +1,15 @@
+{
+ "date": "2026-11-22",
+ "tile": "out/print/tremolo-claim/question_litolff_16-0-0-5_AB.png",
+ "place": "litolff 16/0/0/5 (measure 80, top staff)",
+ "question": "Inside the red box two marks sit on the stem below the high note: A just above the top staff line, B lower on the staff. What is A -- a second notehead (a half note) or a tremolo slash? Is B a tremolo slash?",
+ "sean_words": "A is a half note sitting right above the staff, and B is a tremolo slash.",
+ "marks": {
+  "A": "half note (notehead), just above the top staff line",
+  "B": "tremolo slash"
+ },
+ "we_wrote": {
+  "stem flags ON (batch-2 r2)": "G5 half + G6 half on one stem (matches A)",
+  "default": "nothing written"
+ }
+}
