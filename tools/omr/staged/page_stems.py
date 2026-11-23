@@ -407,12 +407,14 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             r["why"] = "one_stem_passes_the_head"
             continue
         if (len(keep) == 1 and outline and float(by_dir[keep[0]].get("reach") or 0.0) >= UNISON_REACH_SP
+                and _ends_at_another_head(h, int(by_dir[outline[0]]["stroke"]), outline[0], [k for k in heads if readings.get(k["id"], {}).get("state") != "none"], vbox)
                 and _outline_leaves_one_stem(h, int(by_dir[keep[0]]["stroke"]), keep[0], stems)):
             # ROADMAP 2.306 r19 (reach: 20 of the 33 Litolff 2/16 heads the cell join still answered for after the page abstained): of a stroke up
             # and a stroke down at a head, one ends at ANOTHER head -- that head's outline (`_ends_at_another_head`, the rule `drop_outlines`
             # already applies to three strokes) -- so the other, touching this head's ink and a stem's length (`UNISON_REACH_SP`), is its one
             # stem. Never where the kept stroke is read the other way by another head, never a stub (Litolff 2/1/9/14: a 1.6-space stroke
-            # beside a quarter whose long up stem runs to a chord-mate).
+            # beside a quarter whose long up stem runs to a chord-mate), never where the "other head" stands on no stem of its own (Brahms
+            # 5/1/5/0: a box on a staccato dot at the tip of the upper voice's stem -- not a note; this head is two voices, both stems its own).
             d = keep[0]
             c = by_dir[d]
             o = int(c["stroke"])

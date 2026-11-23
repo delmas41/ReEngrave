@@ -107,14 +107,30 @@ def test_a_the_third_unison_eighth_keeps_both_its_stems():
     assert got["how"] == PS.UNISON_HOW and set(got["voices"]) == {"up", "down"}, got
 
 
-@pytest.mark.parametrize("name", ["outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_5"])
+@pytest.mark.parametrize("name", ["outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_9"])
 def test_reach_the_stroke_that_ends_at_another_head_is_its_outline_so_the_other_is_the_stem(name):
     """REACH (the page abstained `two_voices` / `ends_at_another_head` and the old cell join answered in its place). Real heads, the lane's
-    look at full size: two half notes a third apart on one stem (2/1/4/0 down, 2/1/2/11 up), and a half note under another voice's flagged
-    note whose stem ends on it (16/0/1/5). The stroke ending at the other head is that head's ring or stem, never this head's."""
+    look at full size: two half notes a third apart on one stem (2/1/4/0 down, 2/1/2/11 up, 16/0/1/9 down). The stroke ending at the other
+    head is that head's ring, never this head's."""
     w, r = _read(name)
     got = r[w["head"]]
     assert got["state"] == "one" and got["how"] == "other_stroke_is_an_outline" and got["direction"] == w["expect"], got
+
+
+def test_reach_never_when_the_other_head_is_no_note():
+    """Brahms 5/1/5/0 (our look at full size): a C4 with an up eighth and a down eighth (two voices); a box drawn on the staccato dot at
+    the up stem's tip reads no stem of its own. The up stem is not an outline: the head stays two voices (the first build read it a lone
+    down eighth and the bar lost the upper voice's note). The control can fail: counting every box as a head, it is read the old wrong way."""
+    w, r = _read("staccato_brahms_5_1_5_0")
+    assert r[w["head"]]["state"] == "two_voices" and r[w["head"]]["how"] != "other_stroke_is_an_outline", r[w["head"]]
+    every = [dict(h, box=tuple(h["box"])) for h in w["heads"]]
+    old = PS._ends_at_another_head
+    try:
+        PS._ends_at_another_head = lambda h, o, d, heads, vbox: old(h, o, d, every, vbox)       # the first build: any box is a head
+        w, r = _read("staccato_brahms_5_1_5_0")
+        assert r[w["head"]]["how"] == "other_stroke_is_an_outline", r[w["head"]]
+    finally:
+        PS._ends_at_another_head = old
 
 
 def test_reach_never_a_stub_left_beside_a_long_stem():
@@ -128,7 +144,7 @@ def test_reach_control_without_the_outline_rule_the_same_heads_stay_abstained():
     old = PS._outline_leaves_one_stem
     try:
         PS._outline_leaves_one_stem = lambda *a: False
-        for name in ("outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_5"):
+        for name in ("outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_9"):
             w, r = _read(name)
             assert r[w["head"]]["state"] == "two_voices", (name, r[w["head"]])
     finally:
