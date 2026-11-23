@@ -84,7 +84,7 @@ GLYPH_H_MAX_FRAC = 1.3
 SOLID_HEAD_AREA_SP2 = 0.9
 SOLID_HEAD_FILL = 0.8
 
-# ── accidental-not-head lane (flag `OMR_ACCIDENTAL_FUSED_INK`, default OFF): an accidental whose ink the scan has thickened ──────────────────────
+# ── accidental-not-head lane (flag `OMR_ACCIDENTAL_FUSED_INK`, default ON): an accidental whose ink the scan has thickened ──────────────────────
 #: THE RULE, as a musician says it: an accidental stands just left of the note it alters, about three spaces tall, and has no oval head of its own;
 #: ink that is an accidental's is never also a notehead. Two shapes the reader above cannot see on a thick-inked plate (Litolff), both read here:
 #:   * A NATURAL WHOSE BARS ARE LOST: its two uprights stand closer together than a notehead is wide, the left one higher and the right one lower
@@ -122,8 +122,8 @@ STACK_END_MAX_SP = 0.35
 
 
 def fused_enabled() -> bool:
-    """`OMR_ACCIDENTAL_FUSED_INK` (accidental-not-head lane), default OFF; "1"/"true"/"yes"/"on" turns it on. Needs the 2.285 reader on."""
-    return os.environ.get(FUSED_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_ACCIDENTAL_FUSED_INK` (accidental-not-head lane), default ON (Sean 2026-11-23); "0"/"false"/"no"/"off" turns it off. Needs the 2.285 reader on."""
+    return os.environ.get(FUSED_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def enabled() -> bool:

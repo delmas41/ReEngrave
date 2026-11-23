@@ -209,7 +209,7 @@ def _settle(gid):
 
 def test_B_flag_off_the_p10_dyad_is_written_F5_plain_by_its_ink(monkeypatch):
     """THE CONTROL THAT FAILS: the ink witness (the hole at -0.21) picks the F5 box and writes it plain; the Ab5 above it has no ledger reading."""
-    monkeypatch.delenv(FLAG_B, raising=False)
+    monkeypatch.setenv(FLAG_B, "0")
     assert _settle("mg/10/1/40") == ("F5", False)
 
 
@@ -221,7 +221,7 @@ def test_B_flag_on_the_p10_dyad_is_guessed_never_plain(monkeypatch):
 
 def test_B_flag_off_the_p8_A_natural_is_written_A_flat(monkeypatch):
     """THE CONTROL THAT FAILS: the more confident box (no accidental of its own) is written: A-flat, where the page prints a natural."""
-    monkeypatch.delenv(FLAG_B, raising=False)
+    monkeypatch.setenv(FLAG_B, "0")
     assert _settle("mg/8/0/162") == ("Ab5", True)
 
 
@@ -287,7 +287,7 @@ def _settle_unison():
 
 def test_B_flag_off_the_unison_fold_writes_A_flat_in_both_voices(monkeypatch):
     """THE CONTROL THAT FAILS: both voice copies of the head are A-flat where the page prints a natural."""
-    monkeypatch.delenv(FLAG_B, raising=False)
+    monkeypatch.setenv(FLAG_B, "0")
     sub, det, twin = _settle_unison()
     assert sub == "glyph/8/0/0/2/2" and det["pitch"] == "Ab5" and twin["pitch"] == "Ab5"
 
@@ -303,7 +303,10 @@ def test_B_flag_on_the_unison_fold_keeps_both_voices_now_A_natural(monkeypatch):
     assert det["stem_direction"] == "up" and twin["stem_direction"] == "down" and twin["unison_twin"]
 
 
-def test_B_flag_default_off(monkeypatch):
+def test_B_flag_default_on(monkeypatch):
     from tools.omr.staged import export as E
     monkeypatch.delenv(FLAG_B, raising=False)
-    assert not E.fold_far_by_ledger_enabled()
+    assert E.fold_far_by_ledger_enabled()                  # Sean 2026-11-23, after ROADMAP 2.337
+    for off in ("0", "false", "no", "off"):
+        monkeypatch.setenv(FLAG_B, off)
+        assert not E.fold_far_by_ledger_enabled()

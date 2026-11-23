@@ -83,10 +83,9 @@ FLAGS = list(itertools.product((False, True), repeat=2))   # (groups, relocate)
 
 
 def _export(rec, *, relocate):
-    env = {"OMR_RELOCATE_AT_EXPORT": "1"} if relocate else {}
+    # default ON since 2026-11-23; relocate=False pins the old path explicitly
+    env = {"OMR_RELOCATE_AT_EXPORT": "1" if relocate else "0"}
     with mock.patch.dict(os.environ, env, clear=False):
-        if not relocate:
-            os.environ.pop("OMR_RELOCATE_AT_EXPORT", None)
         return SX.to_musicxml({"record": rec, "summary": {}})
 
 

@@ -1,0 +1,210 @@
+{
+ "1": {
+  "plate": "beethoven5-litolff",
+  "page": 2,
+  "system": 0,
+  "staff": 1,
+  "cell": 3,
+  "part": "P2",
+  "measure": 20,
+  "our_file_wrote": [
+   "rest 0.25 q (READ)",
+   "C5 1.0 q (READ)",
+   "F5 1.0 q (READ)",
+   "rest 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 2.25 (quarters)",
+  "agent_reading_place_to_look": "sharp boxed as a 16th rest"
+ },
+ "2": {
+  "plate": "beethoven5-litolff",
+  "page": 14,
+  "system": 0,
+  "staff": 2,
+  "cell": 7,
+  "part": "P3",
+  "measure": 405,
+  "our_file_wrote": [
+   "Bb5 2.0 q (GUESSED)",
+   "rest 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "hairpin/arc ink read as 8th rest"
+ },
+ "3": {
+  "plate": "beethoven5-litolff",
+  "page": 5,
+  "system": 1,
+  "staff": 1,
+  "cell": 0,
+  "part": "P4",
+  "measure": 130,
+  "our_file_wrote": [
+   "rest 0.5 q (READ)",
+   "F4 2.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "key-change flat boxed as 8th rest"
+ },
+ "4": {
+  "plate": "beethoven5-litolff",
+  "page": 7,
+  "system": 0,
+  "staff": 7,
+  "cell": 5,
+  "part": "P8",
+  "measure": 176,
+  "our_file_wrote": [
+   "C4 1.0 q (GUESSED)",
+   "D5 1.0 q (READ)",
+   "D6 1.0 q (READ)",
+   "rest 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 3 (quarters)",
+  "agent_reading_place_to_look": "rest real; extra head below"
+ },
+ "5": {
+  "plate": "beethoven5-litolff",
+  "page": 2,
+  "system": 1,
+  "staff": 9,
+  "cell": 11,
+  "part": "P10",
+  "measure": 45,
+  "our_file_wrote": [
+   "rest 0.5 q (READ)",
+   "D3 2.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "rest box and head box on one ink"
+ },
+ "6": {
+  "plate": "beethoven5-litolff",
+  "page": 7,
+  "system": 0,
+  "staff": 9,
+  "cell": 15,
+  "part": "P10",
+  "measure": 186,
+  "our_file_wrote": [
+   "rest 0.125 q (READ)",
+   "F3 1.0 q (READ)",
+   "D3 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 2.125 (quarters)",
+  "agent_reading_place_to_look": "sharp boxed as a 32nd rest"
+ },
+ "7": {
+  "plate": "brahms1-breitkopf",
+  "page": 3,
+  "system": 0,
+  "staff": 1,
+  "cell": 5,
+  "part": "P2",
+  "measure": 43,
+  "our_file_wrote": [
+   "rest 1.0 q (READ)",
+   "C5 0.5 q (READ)",
+   "C6 0.5 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 1.0 q (READ)",
+   "rest 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 4 (quarters)",
+  "agent_reading_place_to_look": "stem+flag boxed as quarter rest"
+ },
+ "8": {
+  "plate": "brahms1-breitkopf",
+  "page": 18,
+  "system": 1,
+  "staff": 3,
+  "cell": 1,
+  "part": "P4",
+  "measure": 346,
+  "our_file_wrote": [
+   "C4 1.5 q (READ)",
+   "rest 1.0 q (READ)",
+   "C#4 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 4 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "9": {
+  "plate": "brahms1-breitkopf",
+  "page": 3,
+  "system": 0,
+  "staff": 7,
+  "cell": 4,
+  "part": "P8",
+  "measure": 42,
+  "our_file_wrote": [
+   "rest 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "G3 0.5 q (READ)",
+   "G4 0.5 q (READ)",
+   "rest 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 4 (quarters)",
+  "agent_reading_place_to_look": "stem+flag boxed as quarter rest"
+ },
+ "10": {
+  "plate": "brahms1-breitkopf",
+  "page": 2,
+  "system": 1,
+  "staff": 10,
+  "cell": 0,
+  "part": "P11",
+  "measure": 29,
+  "our_file_wrote": [
+   "Ab3 1.0 q (READ)",
+   "D4 1.0 q (READ)",
+   "B4 1.0 q (READ)",
+   "G5 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 1.0 q (READ)",
+   "rest 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "11": {
+  "plate": "brahms1-breitkopf",
+  "page": 3,
+  "system": 0,
+  "staff": 11,
+  "cell": 3,
+  "part": "P12",
+  "measure": 41,
+  "our_file_wrote": [
+   "rest 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "D3 0.5 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "12": {
+  "plate": "brahms1-breitkopf",
+  "page": 4,
+  "system": 1,
+  "staff": 13,
+  "cell": 7,
+  "part": "P14",
+  "measure": 78,
+  "our_file_wrote": [
+   "G3 1.0 q (GUESSED)",
+   "rest 0.5 q (READ)",
+   "rest 0.5 q (READ)",
+   "rest 1.0 q (READ)",
+   "rest 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+  "agent_reading_place_to_look": "rest real; flagged eighth written quarter"
+ }
+}
