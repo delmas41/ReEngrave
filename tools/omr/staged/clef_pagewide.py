@@ -70,6 +70,17 @@ ENV_C_PAIR = "OMR_CLEF_C_PAIR"
 
 def c_pair_enabled() -> bool:
     return os.environ.get(ENV_C_PAIR, "1") != "0"
+
+
+#: r11: the F clef's never "no F clef on a C clef's bars" looks for the bars this far left of the F place (staff spaces). Brahms p3 s1
+#: staff 11: the ink piece the F test was handed began at the C clef's THIN bar, and half a space left of it held only part of the thick
+#: bar (0.32 space): the pair went unseen and the C clef's upper bowl passed as the two dots. A whole C clef's bars and gap are under one
+#: space wide (0.4 + 0.3 + 0.22 measured); before r11 this was half a space.
+F_NEVER_C_REACH_SPACES = 1.0
+
+
+def f_never_c_reach() -> float:
+    return F_NEVER_C_REACH_SPACES if c_pair_enabled() else 0.5
 #: ... each column holding one unbroken ink run this long (the small C clef spans 3.6-3.7 sp, a full one ~4.3)
 C_BAR_MIN_RUN_SPACES = 3.0
 #: ... that starts and ends within this of the staff's top / bottom line (a barline or a bracket runs on to the next staff)
@@ -350,7 +361,7 @@ def read_mid_f(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence
     if g_witness(ink, box, lines, sp)["passed"]:
         return dict(out, passed=False, why="f_box_ink_past_the_staff_like_a_g")
     if any(b["why"] not in ("bar_too_thin", "bar_too_wide", "g_clef_shape")
-           for b in c_bars(ink, lines, sp, float(box[0]) - 0.5 * sp, float(box[2]))):
+           for b in c_bars(ink, lines, sp, float(box[0]) - f_never_c_reach() * sp, float(box[2]))):
         return dict(out, passed=False, why="f_box_on_a_c_bar")
     right = float(box[2])
     if dots_beside_core:
@@ -1142,7 +1153,7 @@ def read_box(name: str, box: Sequence[float], ink: np.ndarray, lines: Sequence[f
             # and tail -- never an F clef, whatever ink stands at the dot places (on the frozen sample a G clef's ink fills them 0.84)
             return dict(out, passed=False, why="f_box_ink_past_the_staff_like_a_g")
         if header and any(b["why"] not in ("bar_too_thin", "bar_too_wide", "g_clef_shape")
-                          for b in c_bars(ink, lines, sp, float(box[0]) - 0.5 * sp, float(box[2]))):
+                          for b in c_bars(ink, lines, sp, float(box[0]) - f_never_c_reach() * sp, float(box[2]))):
             # 2.324 r3: an F clef has no thick bar; where a C clef's bar (thick beside its thin line, the staff's height) stands in the
             # box, the ink is a C clef whatever fills the dot places (a C clef's bowls fill them 0.88-1.0 on the frozen sample)
             return dict(out, passed=False, why="f_box_on_a_c_bar")
