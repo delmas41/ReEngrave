@@ -1,0 +1,477 @@
+"""ROADMAP 2.306 -- stems read once on the page (`page_stems`, flag `OMR_PAGE_STEMS`, default OFF).
+
+Controls are REAL judged cases (CLAUDE rule 7): Brahms 317803 p0, the page heads and the page map's vertical strokes of eight bars, cut from a gather
+(`fixtures/page_stems_2_306_brahms_p0.json`), against Sean's own stem labels in those bars (data/hand-truth/pages/imslp317803/0.json) and 2.300 tile 2
+(staff 6 bar 1: Sean "dotted quarter chord (a second)" -- one stem). Each control is shown failing first: the same page MIRRORED left-right (an up stem
+then stands at its head's LEFT) must lose Sean's stems, so a rule that ignored the engraving side would pass where it should fail.
+"""
+import json
+import os
+
+from tools.omr.staged import page_stems as PS
+
+FX = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_brahms_p0.json")
+
+
+def _load():
+    with open(FX) as f:
+        fx = json.load(f)
+    heads = [dict(h, box=tuple(h["box"])) for h in fx["heads"]]
+    verts = [dict(v, box=tuple(v["box"])) for v in fx["verticals"]]
+    return fx, heads, verts, {int(k): v for k, v in fx["held"].items()}
+
+
+def _hit(t, b):
+    tx, bx = (t[0] + t[2]) / 2.0, (b[0] + b[2]) / 2.0
+    ov = min(t[3], b[3]) - max(t[1], b[1])
+    return abs(tx - bx) <= 8 and ov >= 0.5 * min(t[3] - t[1], b[3] - b[1])
+
+
+def _found(fx, res, verts):
+    vby = {v["ord"]: v["box"] for v in verts}
+    mine = [vby[o] for o in res["stems"]]
+    return sum(1 for t in fx["sean_stems"] if any(_hit(t, b) for b in mine)), mine
+
+
+def _mirror(fx, heads, verts):
+    W = 6000.0
+    m = lambda b: (W - b[2], b[1], W - b[0], b[3])
+    return (dict(fx, sean_stems=[list(m(t)) for t in fx["sean_stems"]]), [dict(h, box=m(h["box"])) for h in heads], [dict(v, box=m(v["box"])) for v in verts])
+
+
+def test_flag_default_off(monkeypatch):
+    monkeypatch.delenv(PS.ENV, raising=False)
+    assert PS.enabled() is False
+    monkeypatch.setenv(PS.ENV, "1")
+    assert PS.enabled() is True
+
+
+def test_seans_p0_stems_found_and_the_mirror_fails():
+    fx, heads, verts, held = _load()
+    res = PS.read(heads, verts, held)
+    found, mine = _found(fx, res, verts)
+    n = len(fx["sean_stems"])
+    assert n >= 15
+    # measured 14 of 17 (main 718c83964): the three misses abstain -- two strokes read as an up stem at one end and a down stem at the other with
+    # head ink at both (`stroke_read_both_ways`), one head whose two candidate strokes both end at a neighbour (`two_voices`, gaps 0.70 / 0.74 sp)
+    assert found >= 14, (found, n)
+    # (precision is not asserted here: Sean's labels in these bars are not every stem -- 2.300 tile 2's three stems carry none)
+    # control: mirrored, the engraving side is wrong everywhere -- the up / down rule must lose (nearly) all of them
+    fxm, hm, vm = _mirror(fx, heads, verts)
+    found_m, _ = _found(fxm, PS.read(hm, vm, held), vm)
+    assert found_m <= n // 4, found_m
+
+
+def _tile2(heads, verts, held):
+    res = PS.read(heads, verts, held)
+    return {o: sorted(s["heads"]) for o, s in res["stems"].items() if any(k.startswith("glyph/0/0/6/1/") for k in s["heads"])}, res
+
+
+def test_2300_tile_2_three_chords_three_stems(monkeypatch):
+    """Sean (2.300 tile 2): "dotted quarter chord (a second); quarter chord; eighth chord" -- three stems, two heads each; the dot boxed as a head reads
+    no stroke. The second's displaced head (`/11`) stands on its partner's stem."""
+    fx, heads, verts, held = _load()
+    stems, res = _tile2(heads, verts, held)
+    assert sorted(stems.values()) == [["glyph/0/0/6/1/11", "glyph/0/0/6/1/2"], ["glyph/0/0/6/1/17", "glyph/0/0/6/1/7"],
+                                      ["glyph/0/0/6/1/4", "glyph/0/0/6/1/5"]], stems
+    assert res["heads"]["glyph/0/0/6/1/18"]["state"] == "none"
+    # control: without the second's rule the displaced head reads no stroke and the chord falls apart
+    monkeypatch.setattr(PS, "SECOND_DY_SP", 0.0)
+    stems0, res0 = _tile2(heads, verts, held)
+    assert res0["heads"]["glyph/0/0/6/1/11"]["state"] == "none"
+    assert ["glyph/0/0/6/1/11", "glyph/0/0/6/1/2"] not in sorted(stems0.values())
+
+
+def test_held_stroke_is_never_a_stem():
+    fx, heads, verts, held = _load()
+    res = PS.read(heads, verts, held)
+    o = next(iter(res["stems"]))
+    h2 = dict(held)
+    h2[o] = "accidental"
+    res2 = PS.read(heads, verts, h2)
+    assert o not in res2["stems"]
+    marked = [r for r in res2["heads"].values() if any(c["stroke"] == o for c in r["held"])]
+    assert marked and all(c["owner"] == "accidental" for r in marked for c in r["held"] if c["stroke"] == o)
+
+
+def test_abstain_with_candidates_and_margin():
+    # a head with an up stem at its right AND a down stem at its left, both ending at it: two voices on one head (page-facts), never a pick
+    h = dict(id="h", members=["glyph/0/0/0/0/0"], box=(100.0, 100.0, 130.0, 120.0), sp=20.0, ink=True)
+    up = dict(ord=1, box=(129.0, 30.0, 132.0, 110.0), sp=20.0)
+    dn = dict(ord=2, box=(99.0, 110.0, 102.0, 190.0), sp=20.0)
+    r = PS.read([h], [up, dn])["heads"]["h"]
+    assert r["state"] == "two_voices" and r["stroke"] is None and len(r["candidates"]) == 2 and r["margin"] is not None
+    r0 = PS.read([h], [])["heads"]["h"]
+    assert r0["state"] == "none" and r0["how"] == "no_stroke"
+
+
+class _OwnerEv:
+    def __init__(self, v):
+        self.v = v
+
+    def verdict(self, q, subject=None):
+        return self.v
+
+
+def test_r3_a_copy_owned_by_another_staff_takes_no_part_in_this_staffs_split(monkeypatch):
+    """ROADMAP 2.306 r3 (the cause of r1's new red bars: 533 Brahms / 454 Litolff padded-cell copies gained a stem direction and split this staff's chords).
+    The owner test is EXPORT's own (`is_relocated_copy` on the decided `Q.GLYPH_OWNER`); with the flag off nothing changes."""
+    from types import SimpleNamespace as NS
+    from tools.omr.staged.adjudicators import rhythm as R
+    from tools.omr.staged.record import Subject
+    sub = Subject.from_key("glyph/4/0/11/1/4")                     # Brahms p4 staff 11 bar 1: a staff-12 head's copy (r2's first new red bar)
+    elsewhere = NS(outcome="decided", value="staff/4/0/12")
+    home = NS(outcome="decided", value="staff/4/0/11")
+    monkeypatch.setenv(PS.ENV, "1")
+    assert R.owned_by_another_staff(_OwnerEv(elsewhere), sub) is True
+    assert R.owned_by_another_staff(_OwnerEv(home), sub) is False
+    assert R.owned_by_another_staff(_OwnerEv(None), sub) is False
+    assert R.owned_by_another_staff(_OwnerEv(NS(outcome="abstained", value=None)), sub) is False
+    monkeypatch.setenv(PS.ENV, "0")
+    assert R.owned_by_another_staff(_OwnerEv(elsewhere), sub) is False
+
+
+class _Ev:
+    """The two calls `page_own_stems` makes, on a hand-built reading (no record)."""
+
+    def __init__(self, rows=(), refusals=()):
+        self._rows, self._ref = tuple(rows), tuple(refusals)
+
+    def rows(self, q, **kw):
+        return self._rows
+
+    def refusals(self, q, **kw):
+        return self._ref
+
+
+def test_retire_page_abstention_is_no_stem_and_flag_off_keeps_the_cell_join(monkeypatch):
+    from types import SimpleNamespace as NS
+    from tools.omr.staged.adjudicators import rhythm as R
+    a = NS(id="obs:1", value=[10.0, 0.0, 3.0, 80.0])
+    b = NS(id="obs:2", value=[40.0, 0.0, 3.0, 80.0])
+    monkeypatch.setenv(PS.ENV, "1")
+    assert R.page_own_stems(_Ev(rows=[NS(value="obs:2", detail={})]), [a, b]) == [b]
+    assert R.page_own_stems(_Ev(refusals=[NS(detail={"how": "no_stroke"})]), [a, b]) == []          # retired: the cell join no longer answers
+    assert R.page_own_stems(_Ev(refusals=[NS(detail={"how": "two_voices"})]), [a, b]) is None      # the unison rule keeps the cell join
+    assert R.page_own_stems(_Ev(), [a, b]) is None                                                  # no page reading: the cell join stands
+    monkeypatch.setenv(PS.ENV, "0")
+    assert R.page_own_stems(_Ev(rows=[NS(value="obs:2", detail={})]), [a, b]) is None
+
+
+# ───────────── ROADMAP 2.306 r4: a stem is the whole collinear run (Sean's r1 tiles 6 and 7 "stop a bit short") ─────────────
+
+FX4 = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_r4_extent.json")
+
+
+def _case(name):
+    with open(FX4) as f:
+        c = json.load(f)[name]
+    t = lambda xs: [dict(x, box=tuple(x["box"])) for x in xs]
+    return c, t(c["heads"]), t(c["verticals"]), t(c["crossers"]), {int(k): v for k, v in c["held"].items()}
+
+
+def _stem_of(res, heads, glyph):
+    hid = next(h["id"] for h in heads if glyph in h["members"])
+    r = res["heads"][hid]
+    return r, (res["stems"].get(r["stroke"]) if r["stroke"] is not None else None)
+
+
+def test_r4_tile7_chord_stem_is_one_stroke_through_its_heads():
+    """Sean (r1 tile 7): "a long stem on a chord, the box only gets part of it". The page map cuts the stem at the chord's inner head."""
+    c, heads, verts, cross, held = _case("tile7")
+    r1 = PS.read(heads, verts, held)                                   # r1: no join -- the control fails here
+    _r, st1 = _stem_of(r1, heads, c["glyph"])
+    assert st1 is not None and len(st1["heads"]) == 1                 # the chord's heads stand on two different pieces
+    r4 = PS.read(heads, verts, held, crossers=cross)
+    _r, st = _stem_of(r4, heads, c["glyph"])
+    assert st is not None and len(st["members"]) == 2 and len(st["heads"]) == 2, st
+    assert st["box"][3] - st["box"][1] > (st1["box"][3] - st1["box"][1]) * 2
+
+
+def test_r4_tile6_stem_runs_through_the_tremolo_slash():
+    """Sean (r1 tile 6): "interrupted by a trem slash". r1 read only the piece above the junction; the whole run reaches the half note's head.
+    (The slash itself is boxed and claimed as a head there -- a head on the other side of the run -- so the head's reading abstains rather than pick.)"""
+    c, heads, verts, cross, held = _case("tile6")
+    r1 = PS.read(heads, verts, held)
+    _r, st1 = _stem_of(r1, heads, c["glyph"])
+    runs, cen = PS.join_runs(verts, heads, cross, held)
+    whole = max(runs, key=lambda r: len(r["members"]))
+    assert len(whole["members"]) == 2
+    assert st1 is not None and whole["box"][3] > st1["box"][3] + 20      # r1's stem stopped short of the head; the run reaches it
+
+
+def test_r4_two_voices_end_to_end_are_not_joined():
+    """A real Brahms pair: two collinear stems whose gap holds heads on both sides of the column -- two voices end to end, never one stem."""
+    c, heads, verts, cross, held = _case("divisi")
+    a, b = c["pair"]
+    pairs = []
+    runs, cen = PS.join_runs(verts, heads, cross, held, pairs)
+    assert (a, b, "!heads_both_sides") in pairs
+    run_of = {m: r["ord"] for r in runs for m in r["members"]}
+    assert run_of[a] != run_of[b]
+
+
+def test_r4_empty_paper_is_never_bridged():
+    v1 = dict(ord=1, box=(100.0, 0.0, 103.0, 60.0), sp=20.0)
+    v2 = dict(ord=2, box=(100.0, 75.0, 103.0, 140.0), sp=20.0)       # 15 px = 0.75 sp of empty paper
+    runs, cen = PS.join_runs([v1, v2], [], [])
+    assert len(runs) == 2 and cen.get("refused:empty_paper") == 1
+    runs, cen = PS.join_runs([v1, v2], [], [dict(ord=3, box=(90.0, 58.0, 120.0, 78.0), kind="slash")])
+    assert len(runs) == 1 and cen.get("joined:slash") == 1
+
+
+# ── ROADMAP 2.306 r7: real cases from the r6 gathers (benchmarks/page-ledger-2026-11/2306/cut_fixture_r7.py, trimmed) ──────────────────
+
+FX7 = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_r7.json")
+
+
+def _fx7():
+    with open(FX7) as f:
+        return json.load(f)
+
+
+def _frames7(c):
+    from tools.omr.staged import page_owner as PO
+    return {k: [PO.StaffBar(b["x0"], b["x1"], tuple(b["ys"]), b["sp"]) for b in v] for k, v in c["frames"].items()}
+
+
+def _stitch(c):
+    heads = [dict(h, box=tuple(h["box"])) for h in c["heads"]]
+    verts = [dict(v, box=tuple(v["box"])) for v in c["verticals"]]
+    cross = [dict(x, box=tuple(x["box"])) for x in c["crossers"]]
+    return heads, verts, cross, {int(k): v for k, v in c["held"].items()}
+
+
+def test_r7_stems_r6_stitched_over_blank_paper_are_not_joined():
+    """r6 cause 2, on the real runs behind lost notes (Litolff p9 glyph/9/0/2/1/0 -- 1.06 sp of empty column; p10 glyph/10/1/6/7/3): r4 joined
+    the two pieces because a head's box merely TOUCHED the gap. The pair is now refused `head_not_covering` -- the control is the refusal itself:
+    a head is there (the old rule's reason to join), it does not cover the gap."""
+    fx = _fx7()
+    for name in ("stitch_p9", "stitch_p10"):
+        c = fx[name]
+        heads, verts, cross, held = _stitch(c)
+        pairs = []
+        runs, cen = PS.join_runs(verts, heads, cross, held, pairs)
+        assert cen.get("refused:head_not_covering", 0) >= 1, (name, cen)
+        sb = c["stem_box"]                                              # the r6 stitched stem
+        assert not any(r["box"][1] <= sb[1] + 2 and r["box"][3] >= sb[3] - 2 and abs((r["box"][0] + r["box"][2]) / 2 - (sb[0] + sb[2]) / 2) < 6
+                       for r in runs), (name, [r["box"] for r in runs])
+
+
+def test_r7_a_covering_head_still_joins():
+    """The same rule keeps a real join: a head covering the whole gap (tile 7's chord, `test_r4_tile7...`) and, here, a gap a head covers
+    but for a sliver within LINE_GAP_SP."""
+    v1 = dict(ord=1, box=(100.0, 0.0, 103.0, 60.0), sp=20.0)
+    v2 = dict(ord=2, box=(100.0, 80.0, 103.0, 140.0), sp=20.0)
+    head = dict(id=0, members=[], box=(103.0, 62.0, 125.0, 80.0), sp=20.0)        # covers 62..80 of the gap 60..80: 2 px blank <= 6 px
+    runs, cen = PS.join_runs([v1, v2], [head], [])
+    assert len(runs) == 1 and cen.get("joined:head") == 1
+    short = dict(head, box=(103.0, 70.0, 125.0, 80.0))                             # 10 px blank > 6 px: touches, does not cover
+    runs, cen = PS.join_runs([v1, v2], [short], [])
+    assert len(runs) == 2 and cen.get("refused:head_not_covering") == 1
+
+
+def test_r7_tile3_head_in_the_gap_belongs_to_the_staff_the_page_owner_names():
+    """Sean's r4 tile 3 (Litolff p4, glyph/4/1/2/5/1, "an eighth", LOST with the page stems on): the head stands 2.2 spaces above staff 2 on its
+    ledger lines -- in the gap, so 'inside a staff' names nobody -- and r6 filed its stem in BOTH staves' cells. The page owner decided staff 2
+    (`ledger_and_stem`). Control: the same head without the page owner's row falls back to inside-the-staff and names nobody (filed on every
+    view, as before); with the owner row pointing the other way, the answer follows it -- the rule reads the owner, never nearness."""
+    c = _fx7()["copies"]["tile3"]
+    frames = _frames7(c)
+    h = next(h for h in c["heads"] if c["glyph"] in h["members"])
+    h = dict(h, box=tuple(h["box"]))
+    assert PS.own_staff(h, frames, c["owners"]) == "staff/4/1/2"
+    assert PS.own_staff(h, frames, {}) is None
+    flipped = {m: ["decided", "staff/4/1/1", "test"] for m in h["members"]}
+    assert PS.own_staff(h, frames, flipped) == "staff/4/1/1"
+    guessed = {m: ["guessed", "staff/4/1/2", "test"] for m in h["members"]}
+    assert PS.own_staff(h, frames, guessed) is None                    # a guess files on every view: GATHER never converts "cannot tell"
+
+
+def test_r7_the_copies_r6_filed_beside_seans_lost_tiles_are_not_filed():
+    """Around r4 tiles 3, 5 and 11 (Litolff; 5 = an eighth made a quarter, 3 and 11 lost): every head seen from two staves whose page stem r6
+    filed on a staff the page owner says is not its own -- the copies the neighbour-beam rule read as that staff's stem. Under r7 none of them
+    is filed; and the owner is always a staff the head was seen from."""
+    fx = _fx7()
+    dropped = 0
+    for name in ("tile3", "tile5", "tile11"):
+        c = fx["copies"][name]
+        frames = _frames7(c)
+        for h in c["heads"]:
+            hh = dict(h, box=tuple(h["box"]))
+            own = PS.own_staff(hh, frames, c["owners"])
+            seen = {PS._staff_key(m) for m in h["members"]}
+            assert own is None or own in seen
+            if own is not None:
+                dropped += sum(1 for m in h["filed_on"] if PS._staff_key(m) != own)
+    assert dropped >= 10, dropped
+
+
+def test_r7_a_view_filed_only_for_another_staffs_head_is_not_the_neighbours_stem(monkeypatch):
+    """Sean 2026-11-13 ("Yes"): a stem is filed only with its note's own staff. On most pages GATHER cannot know the owner when it files (the page
+    owner's ledger reading is deferred), so the neighbour-beam rule must not read a page view as the neighbour staff's stem when every head it was
+    filed for is owned elsewhere -- tile 3's head (glyph/4/1/1/5/2 seen from staff 1, owned by staff 2 per the page owner) is the real case.
+    Controls: the same view named by a head owned HERE is that staff's stem; a cell reader's row is never touched; flag off, nothing changes."""
+    from types import SimpleNamespace as NS
+    from tools.omr.staged.adjudicators import rhythm as R
+    from tools.omr.staged.record import Subject, READERS
+    ncell = Subject.from_key("cell/4/1/1/5")
+    copy = Subject.from_key("glyph/4/1/1/5/2")
+    view = NS(id="obs:7", reader=READERS.CV_PAGE_STEMS)
+
+    class Ev:
+        def __init__(self, owner):
+            self.owner = owner
+
+        def rows(self, q, scope=None, subject=None):
+            return (NS(value="obs:7", subject=copy),)
+
+        def verdict(self, q, subject=None):
+            return NS(outcome="decided", value=self.owner)
+
+    monkeypatch.setenv(PS.ENV, "1")
+    assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, view) is True
+    assert R._page_view_only_for_copies(Ev("staff/4/1/1"), ncell, view) is False
+    assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, NS(id="obs:7", reader=READERS.CV_LINES)) is False
+    monkeypatch.setenv(PS.ENV, "0")
+    assert R._page_view_only_for_copies(Ev("staff/4/1/2"), ncell, view) is False
+
+
+def test_r8_tile3_stem_runs_through_its_second_and_reaches_the_beam():
+    """Sean's r4 tile 3 (Litolff p4, "an eighth", LOST with the page stems on) -- the cause behind r7: the stem (strokes 1936 and 1938) runs through a
+    SECOND whose heads stand on both sides of it (the higher, glyph/4/1/2/5/9, on the RIGHT; the lower, /16, on the LEFT, 0.3 sp apart) and on to its beam
+    (1873). r4..r7 refused every gap with heads on both sides, so the stem stopped at 2460 and never met its beam. Sean 2026-11-13 ("Yes, always"): in a
+    second the higher note stands right of the stem. Control: the same page mirrored left-right puts the higher head on the LEFT -- two voices end to end --
+    and the join must be refused there."""
+    c = _fx7()["second_p4"]
+    heads, verts, cross, held = _stitch(c)
+    pairs = []
+    runs, cen = PS.join_runs(verts, heads, cross, held, pairs)
+    assert (1936, 1938, "second") in pairs, [p for p in pairs if 1936 in p[:2]]
+    run = next(r for r in runs if 1936 in r["members"])
+    assert 1938 in run["members"] and run["box"][3] >= 2513              # the stem now reaches the beam's rows
+    W = 3000.0
+    m = lambda b: (W - b[2], b[1], W - b[0], b[3])
+    hm = [dict(h, box=m(h["box"])) for h in heads]
+    vm = [dict(v, box=m(v["box"])) for v in verts]
+    xm = [dict(x, box=m(x["box"])) for x in cross]
+    pairs_m = []
+    runs_m, _ = PS.join_runs(vm, hm, xm, held, pairs_m)
+    assert (1936, 1938, "!heads_both_sides") in pairs_m, [p for p in pairs_m if 1936 in p[:2]]
+
+
+def test_r9_two_voices_in_one_column_upper_head_takes_the_up_stem():
+    """Sean's r8 tile 10 (Brahms p14 bar 14/1/9/5, "Dot 4", unread under r8): the second chord carries a stem up at the right (3729) and a stem down
+    at the left (3687), and both its heads read `two_voices` on that same pair. Sean 2026-11-14 ("Always when it is 2 voices"): the UPPER head takes
+    the up stem, the LOWER the down stem. Controls on the same real window: with only one head on the pair (a chord is not always two voices) it
+    stays abstained; the first chord, whose lower head already reads its own stem, is untouched."""
+    c = _fx7()["two_voices_p14"]
+    heads, verts, cross, held = _stitch(c)
+    r = PS.read(heads, verts, held, crossers=cross)["heads"]
+    assert (r["glyph/14/1/9/5/12"]["stroke"], r["glyph/14/1/9/5/12"]["direction"]) == (3729, "up")
+    assert (r["glyph/14/1/9/5/7"]["stroke"], r["glyph/14/1/9/5/7"]["direction"]) == (3687, "down")
+    assert r["glyph/14/1/9/5/7"]["how"] == "two_voices_upper_takes_up"
+    assert r["glyph/14/1/9/5/0"]["how"] == "engraving_side" and r["glyph/14/1/9/5/2"]["state"] == "two_voices"
+    alone = [h for h in heads if h["id"] != "glyph/14/1/9/5/12"]
+    r1 = PS.read(alone, verts, held, crossers=cross)["heads"]
+    assert r1["glyph/14/1/9/5/7"]["state"] == "two_voices"
+
+
+# ── ROADMAP 2.306 r11: Sean's r10 tiles (benchmarks/page-ledger-2026-11/2306/cut_fixture_r11.py, from the r9 gathers) ─────────────────────────────
+
+FX11 = os.path.join(os.path.dirname(__file__), "fixtures", "page_stems_2_306_r11.json")
+R11_READ = {"t1": "down", "t5": "up", "t6": "down", "t7": "up", "t8": "down", "t10": "up", "t11": "down", "c_10_0_1_11_0": "down", "c_10_0_1_6_0": "down"}
+
+
+def _r11(name, contact):
+    with open(FX11) as f:
+        c = json.load(f)[name]
+    heads, verts, cross, held = _stitch(c)
+    strokes = {int(k): dict(v, box=tuple(v["box"])) for k, v in c["strokes"].items()} if contact else None
+    res = PS.read(heads, verts, held, crossers=cross, strokes=strokes)["heads"]
+    hid = next(h["id"] for h in heads if c["glyph"] in h["members"])
+    return res[hid]
+
+
+def test_r11_seans_r10_stems_refused_by_the_edge_test_read_by_contact():
+    """Sean's r10 tiles (2026-11-15): each a note with a printed stem in the old join's direction, each refused by the box-edge test (no_stroke) -- the
+    control is that refusal, on the same real window. The stem is at the head's side where its column TOUCHES the head's own ink (the page map's
+    contact), reaching the head through touching chord heads (tiles 6, 8 and the r10 chord controls on Litolff p10), side by the column against the
+    head ink's middle (up -> right, down -> left)."""
+    for name, d in R11_READ.items():
+        before = _r11(name, False)
+        assert before["how"] == "no_stroke", (name, before["how"])
+        after = _r11(name, True)
+        assert after["how"] == "contact_with_head_ink" and after["direction"] == d, (name, after["how"], after.get("direction"), after.get("candidates"))
+
+
+def test_r11_seans_non_notes_take_no_stem():
+    """Sean's r10 tiles 4 (a tremolo slash boxed as a head) and 12 (part of a p dynamic): a vertical touches their ink at its MIDDLE, which names no
+    side -- they abstain with the margin kept, never a stem."""
+    for name in ("t4", "t12"):
+        r = _r11(name, True)
+        assert r["state"] != "one" and r["how"] == "contact_at_middle" and r["margin"] is not None, (name, r)
+
+
+def _r11_all(name, contact):
+    with open(FX11) as f:
+        c = json.load(f)[name]
+    heads, verts, cross, held = _stitch(c)
+    strokes = {int(k): dict(v, box=tuple(v["box"])) for k, v in c["strokes"].items()} if contact else None
+    return c, heads, PS.read(heads, verts, held, crossers=cross, strokes=strokes)
+
+
+def test_r11_wide_chords_hang_every_head_on_the_one_stem():
+    """Sean (2026-11-15): "Does this take into account long stems that connect chords?" -- a head hangs on a stem where the stem's column is inked
+    continuously from the stem to it, through a chord mate OR bare stem. Real spread chords: Sean's r1 tile 7 (Litolff p10 glyph/10/1/0/14/6, "a
+    long stem on a chord") and Brahms p4 glyph/4/1/12/8 (four heads over 6.3 sp on one stem; Sean's r4 tile 9 is its lowest head, an eighth).
+    Every head of the chord stands on the one stem, with the contact pass on as off (the whole run carries the bare-stem case; nothing is counted
+    twice)."""
+    for name, chord in (("wide_lit", ("glyph/10/1/0/14/0", "glyph/10/1/0/14/6")),
+                        ("wide_bra", ("glyph/4/1/12/8/9", "glyph/4/1/12/8/16", "glyph/4/1/12/8/12", "glyph/4/1/12/8/7"))):
+        for contact in (False, True):
+            c, heads, res = _r11_all(name, contact)
+            ids = [next(h["id"] for h in heads if g in h["members"]) for g in chord]
+            strokes = {res["heads"][i]["stroke"] for i in ids}
+            assert len(strokes) == 1 and None not in strokes, (name, contact, [(i, res["heads"][i]["how"], res["heads"][i]["stroke"]) for i in ids])
+            st = res["stems"][strokes.pop()]
+            assert set(ids) <= set(st["heads"]), (name, st)
+
+
+def test_r11_two_voices_end_to_end_are_not_joined_by_contact():
+    """The r4 divisi pair (Brahms p5, two chords of different voices end to end: glyph/5/0/12/3/34-35 on the up stem, 5/0/13/3/7 on the down stem):
+    the contact pass never carries one voice's column into the other's run -- the readings are the same with it on as off, two stems."""
+    c, heads, off = _r11_all("divisi_bra", False)
+    c, heads, on = _r11_all("divisi_bra", True)
+    assert {k: (v["stroke"], v["direction"]) for k, v in on["heads"].items()} == {k: (v["stroke"], v["direction"]) for k, v in off["heads"].items()}
+    up = next(h["id"] for h in heads if "glyph/5/0/12/3/34" in h["members"])
+    dn = next(h["id"] for h in heads if "glyph/5/0/13/3/7" in h["members"])
+    assert on["heads"][up]["stroke"] != on["heads"][dn]["stroke"]
+    assert (on["heads"][up]["direction"], on["heads"][dn]["direction"]) == ("up", "down")
+
+
+def test_r12_contact_never_tips_a_stroke_read_both_ways():
+    """Sean's r11 tile 5 (Litolff p9 glyph/9/0/0/0/3, "an eighth", lost under r11 with its chord mates 11 and 14): the contact reading put 14 on an UP
+    stroke the page reads both ways (the second of a down-stem chord stands on the stem's other side), tipping it, and the chord's values split. A
+    stroke read both ways is "cannot tell" (rule 8): contact never tips it. 3 and 14 stand on one down stem; 11 stays abstained."""
+    c, heads, res = _r11_all("r11t5", True)
+    hid = {g: next(h["id"] for h in heads if g in h["members"]) for g in ("glyph/9/0/0/0/3", "glyph/9/0/0/0/14", "glyph/9/0/0/0/11")}
+    r3, r14, r11 = (res["heads"][hid[g]] for g in ("glyph/9/0/0/0/3", "glyph/9/0/0/0/14", "glyph/9/0/0/0/11"))
+    assert (r3["stroke"], r3["direction"]) == (r14["stroke"], r14["direction"]) and r3["direction"] == "down", (r3, r14)
+    assert r11["state"] != "one"
+
+
+def test_r12_a_sharp_never_gains_a_stem_by_contact():
+    """Sean's r11 tile 6 (Litolff p6 glyph/6/1/2/10/3): "a sharp sign", written under r11 as an F4 quarter -- the sharp's own right vertical met the
+    head box only through the sharp's bar (3112), a stroke crossing the column. A stem touches its head AT the head: a crossing mark carries no
+    contact, and a column standing beside the head's width meets it only through the head's own ink. NEVER: no stem here."""
+    r = _r11("r11t6_sharp", True)
+    assert r["state"] != "one", r
+
+
+def test_r11_unresolved_tiles_stay_abstained():
+    """Not read, and must not be guessed: tile 2 (a second vertical touches the hollow head at its middle), tile 3 (the touching stroke stands right of
+    the head but runs DOWN from it -- the side and the extent disagree), tile 9 (the page map fused the stem into the head's blob: no vertical)."""
+    for name in ("t2", "t3", "t9"):
+        r = _r11(name, True)
+        assert r["state"] != "one", (name, r)

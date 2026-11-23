@@ -1,0 +1,51 @@
+{
+ "what": "2.337: the pages where OMR_RELOCATE_AT_EXPORT / OMR_FOLD_FAR_BY_LEDGER change the export (export-only locate over the whole 20261122-night records). NOT THE FROZEN SAMPLE.",
+ "seed": 2337,
+ "record_tag": "20261122-night",
+ "plates": {
+  "litolff": {
+   "candidates": [
+    5,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "pages": [
+    5,
+    7,
+    8,
+    10,
+    11,
+    12,
+    14
+   ],
+   "context_pages": [
+    1
+   ]
+  },
+  "brahms": {
+   "candidates": [
+    8,
+    12,
+    14,
+    15,
+    19,
+    23
+   ],
+   "pages": [
+    8,
+    12,
+    14,
+    15,
+    19,
+    23
+   ],
+   "context_pages": [
+    0
+   ]
+  }
+ }
+}

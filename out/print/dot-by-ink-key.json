@@ -1,0 +1,74 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "page": 0,
+  "dot": "glyph/0/0/4/2/2",
+  "owner_on": "glyph/0/0/4/2/5",
+  "change": "dot of length now joined to its half (dotted half)",
+  "sp_page": 32.49999999999976
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "page": 4,
+  "dot": "glyph/4/0/7/1/12",
+  "owner_on": "glyph/4/0/6/1/0",
+  "change": "staccato now written on its note",
+  "sp_page": 27.75000000000003
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "page": 4,
+  "dot": "glyph/4/0/7/3/1",
+  "owner_on": "glyph/4/0/6/3/1",
+  "change": "staccato now written on its note",
+  "sp_page": 27.749999999999396
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "page": 4,
+  "dot": "glyph/4/0/11/1/18",
+  "owner_on": "glyph/4/0/12/1/5",
+  "change": "staccato now written on its note",
+  "sp_page": 27.999999999999705
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "page": 4,
+  "dot": "glyph/4/0/11/4/8",
+  "owner_on": "glyph/4/0/12/4/5",
+  "change": "staccato now written on its note",
+  "sp_page": 28.000000000000114
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "page": 5,
+  "dot": "glyph/5/0/8/0/12",
+  "owner_on": "glyph/5/0/7/0/2",
+  "change": "staccato now written on its note",
+  "sp_page": 27.4757080078125
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "page": 19,
+  "dot": "glyph/19/0/6/6/13",
+  "owner_on": "glyph/19/0/5/6/3",
+  "change": "staccatissimo now written on its note",
+  "sp_page": 27.5000000000002
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "page": 25,
+  "dot": "glyph/25/1/9/0/13",
+  "owner_on": "glyph/25/1/10/0/10",
+  "change": "staccato now written on its note",
+  "sp_page": 27.250244140625
+ }
+]

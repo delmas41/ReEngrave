@@ -1,0 +1,31 @@
+Cells Sean swept completely: 104 measure cells, 1456 boxes; staff space 32.0 px
+kind         WRONG  RIGHT UNREAD   (WRONG first; per head for note/value/stem/beam/flag/dot/accidental; per arc; per staff header)
+note             3    375      7
+note value       3    372      7
+rest             1     15      1
+accidental       4     31      2
+dot              0    114      5
+stem             5    359     16
+beam             0    165      0
+flag             2     50      0
+tie              0     37      7
+slur             2     33      6
+clef             0     11      0
+key              0      6      0
+meter            0     10      0
+  note WRONG: fake: under it he labelled ledgerLine x2; fake: under it he labelled tremolo# x1
+  note UNREAD: M: one box written for two printed heads x3; C: not_a_notehead:tremolo_slash_crosses_stem x1; C: not_a_notehead:clipped_fragment x1; D: duration_narrowed x1; C: not_a_notehead:too_narrow x1
+  note value WRONG: his quarter, written eighth x2; his half., written half x1
+  note value UNREAD: M: one box written for two printed heads x3; C: not_a_notehead:tremolo_slash_crosses_stem x1; C: not_a_notehead:clipped_fragment x1; D: duration_narrowed x1; C: not_a_notehead:too_narrow x1
+  rest WRONG: fake rest: under it he labelled nothing x1
+  rest UNREAD: fates: not_a_rest:claimed_by:barline x1
+  accidental WRONG: fake: written flat, no accidental labelled before the head x2; his flat, written natural x1; his flat, written sharp x1
+  accidental UNREAD: head not written x2
+  dot UNREAD: head not written x4; note written undotted x1
+  stem WRONG: his up, record down x3; fake: record decided a stem down, none labelled at the head x2
+  stem UNREAD: stem direction abstained x11; head not written x5
+  flag WRONG: fake: written flagged eighth, no flag labelled on its stem x2
+  tie UNREAD: no written tie or slur with these ends x7
+  slur WRONG: no arc of his joins these two notes (wrong ends, or a fake) x2
+  slur UNREAD: no written tie or slur with these ends x6
+NOT SCORED (in his cells, but the file cannot express them by place): ledger_line 248 -- a ledger line is not written; it only places a far head (scored inside 'note' as its owner staff); barline 30 -- the file's bars carry no page place; a barline is not a written mark of its own; text 7 -- words are written at the bar head with no page place of their own; dynamic_letter 10 -- dynamics are written at the bar head, with the host note's box (no place of their own); brace 8 -- a brace is the part grouping, not a mark the file places; tremolo 16 -- the staged file writes no tremolo element

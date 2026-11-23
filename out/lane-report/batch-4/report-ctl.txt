@@ -1,0 +1,26 @@
+LANE REPORT  (no flag)  --from gather
+  CONTROL: OFF = batch-2 OFF gather (a3814 batch-2/work); ON = batch-4 arm A (default flags)
+
+litolff  pages [2, 6, 16]  (2419 notes+rests OFF, 2418 ON, 2416 paired)
+  file:   notes +2 -3 | flags +5 -6 | beams +7 -3 ~7 | ties +8 | note values ~4 | blue marks +1 | words +1 -2
+  red bars 77 -> 76 | notes not written 928 -> 928
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (248 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 9 (at another id than asked 2) | by id key, no position 401 | position but no mark here 17
+  NOT JUDGED: 46 changed places no tile of Sean's covers (0 are covered; 3 have no page place): beam 17, blue 1, flag 11, note 5, tie 8, value 4 -> unjudged.txt
+
+brahms  pages [0, 4, 5]  (2602 notes+rests OFF, 2613 ON, 2602 paired)
+  file:   notes +11 | rests +3 -3 | flags +24 -4 | beams +4 -10 ~9 | ties +12 | articulations +1 | note values ~3 | pitches ~2 | blue marks +1 -5 | words -7
+  red bars 47 -> 41 | notes not written 1164 -> 1153
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (225 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 4) | by id key, no position 378 | position but no mark here 23
+  NOT JUDGED: 91 changed places no tile of Sean's covers (2 are covered; 6 have no page place): articulation 1, beam 22, blue 6, flag 27, note 11, pitch 2, rest 6, tie 12, value 3, words 1 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.78-phase2-review tile 5 ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15']  was unwritten_wrong
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 31 s

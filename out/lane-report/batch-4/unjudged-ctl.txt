@@ -1,0 +1,137 @@
+litolff p2 2/0/4/5  beam lost end
+litolff p2 2/0/4/5  beam changed end (was continue)
+litolff p2 2/0/4/5  blue gained guessed
+litolff p2 2/0/4/5  note lost eighth
+litolff p2 2/0/7/1  beam gained begin
+litolff p2 2/0/7/1  beam changed continue (was begin)
+litolff p2 2/0/7/1  flag lost eighth
+litolff p2 2/0/10/15  beam lost begin
+litolff p2 2/0/10/15  beam changed begin (was continue)
+litolff p2 2/0/10/15  flag gained eighth
+litolff p2 2/1/9/3  beam gained begin
+litolff p2 2/1/9/3  beam changed continue (was begin)
+litolff p2 2/1/9/3  flag lost eighth
+litolff p6 6/1/0/1  beam gained begin
+litolff p6 6/1/0/1  beam changed continue (was begin)
+litolff p6 6/1/0/1  flag lost eighth
+litolff p6 6/1/1/0  tie gained start
+litolff p6 6/1/1/1  tie gained stop
+litolff p6 6/1/8/10  beam gained begin
+litolff p6 6/1/8/10  beam changed continue (was begin)
+litolff p6 6/1/8/10  flag lost eighth
+litolff p16 16/0/2/14  tie gained start
+litolff p16 16/0/2/15  tie gained stop
+litolff p16 16/0/8/15  beam lost begin
+litolff p16 16/0/8/15  beam changed begin (was continue)
+litolff p16 16/0/8/15  flag gained eighth
+litolff p16 16/1/2/1  tie gained start
+litolff p16 16/1/2/2  tie gained stop
+litolff p16 16/1/3/1  tie gained start
+litolff p16 16/1/3/2  tie gained stop
+litolff p16 16/1/7/2  beam gained begin
+litolff p16 16/1/7/2  beam gained continue
+litolff p16 16/1/7/2  beam gained end
+litolff p16 16/1/7/2  flag lost eighth
+litolff p16 16/1/7/2  flag lost eighth
+litolff p16 16/1/7/2  flag gained eighth
+litolff p16 16/1/7/2  flag gained eighth
+litolff p16 16/1/7/2  flag gained eighth
+litolff p16 16/1/7/2  note lost eighth
+litolff p16 16/1/7/2  note lost eighth
+litolff p16 16/1/7/2  note gained eighth
+litolff p16 16/1/7/2  note gained eighth
+litolff p16 16/1/7/2  value changed eighth (was quarter)
+litolff p16 16/1/7/2  value changed eighth (was quarter)
+litolff p16 16/1/7/2  value changed eighth (was quarter)
+litolff p16 16/1/7/2  value changed eighth (was quarter)
+brahms p0 0/0/9/1  beam lost begin
+brahms p0 0/0/9/1  beam changed begin (was continue)
+brahms p0 0/0/9/1  flag gained eighth
+brahms p0 0/0/9/4  beam changed continue/continue (was end/end)
+brahms p0 0/0/10/5  beam lost end
+brahms p0 0/0/10/5  beam changed end/end (was continue/end)
+brahms p0 0/0/10/5  flag gained eighth
+brahms p0 0/0/12/5  beam changed continue/continue (was end/end)
+brahms p0 0/0/12/5  beam gained end/end
+brahms p0 0/0/12/5  flag lost 16th
+brahms p4 4/0/6/8  tie gained start
+brahms p4 4/0/6/9  tie gained stop
+brahms p4 4/0/9/5  flag gained eighth
+brahms p4 4/0/9/5  value changed eighth (was quarter)
+brahms p4 4/0/10/8  beam gained begin
+brahms p4 4/0/10/8  beam changed continue (was begin)
+brahms p4 4/0/10/8  flag lost eighth
+brahms p4 4/1/1/2  flag gained eighth
+brahms p4 4/1/1/2  value changed eighth (was quarter)
+brahms p4 4/1/2/2  tie gained start
+brahms p4 4/1/2/3  tie gained stop
+brahms p4 4/1/3/3  beam lost begin
+brahms p4 4/1/3/3  beam lost end
+brahms p4 4/1/3/3  flag gained eighth
+brahms p4 4/1/3/3  flag gained eighth
+brahms p5 5/0/0/7  beam changed continue/continue (was end/end)
+brahms p5 5/0/0/7  beam gained end/end
+brahms p5 5/0/0/7  flag lost 16th
+brahms p5 5/0/5/2  beam lost continue
+brahms p5 5/0/5/2  beam changed end (was continue)
+brahms p5 5/0/5/2  beam lost end
+brahms p5 5/0/5/2  flag gained eighth
+brahms p5 5/0/5/2  flag gained eighth
+brahms p5 5/0/5/3  beam lost continue
+brahms p5 5/0/5/3  beam changed end (was continue)
+brahms p5 5/0/5/3  beam lost end
+brahms p5 5/0/5/3  flag gained eighth
+brahms p5 5/0/5/3  flag gained eighth
+brahms p5 5/0/5/4  beam lost continue
+brahms p5 5/0/5/4  beam changed end (was continue)
+brahms p5 5/0/5/4  beam lost end
+brahms p5 5/0/5/4  flag gained eighth
+brahms p5 5/0/5/4  flag gained eighth
+brahms p5 5/0/12/7  blue gained guessed
+brahms p5 5/0/12/7  flag gained eighth
+brahms p5 5/0/12/7  value changed eighth (was quarter)
+brahms p5 5/1/5/6  tie gained start
+brahms p5 5/1/5/7  tie gained stop
+brahms p5 5/1/9/2  flag gained eighth
+brahms p5 5/1/9/2  flag gained eighth
+brahms p5 5/1/9/2  flag gained eighth
+brahms p5 5/1/9/2  note gained eighth
+brahms p5 5/1/9/2  note gained eighth
+brahms p5 5/1/9/2  note gained eighth
+brahms p5 5/1/9/2  rest gained eighth
+brahms p5 5/1/9/2  rest lost eighth
+brahms p5 5/1/10/2  flag gained eighth
+brahms p5 5/1/10/2  flag gained eighth
+brahms p5 5/1/10/2  flag gained eighth
+brahms p5 5/1/10/2  note gained eighth
+brahms p5 5/1/10/2  note gained eighth
+brahms p5 5/1/10/2  note gained eighth
+brahms p5 5/1/10/2  rest gained eighth
+brahms p5 5/1/10/2  rest lost eighth
+brahms p5 5/1/10/4  flag gained eighth
+brahms p5 5/1/10/4  flag gained eighth
+brahms p5 5/1/10/4  flag gained eighth
+brahms p5 5/1/10/4  note gained eighth
+brahms p5 5/1/10/4  note gained eighth
+brahms p5 5/1/10/4  note gained eighth
+brahms p5 5/1/10/4  rest gained eighth
+brahms p5 5/1/10/4  rest lost eighth
+brahms p5 5/1/10/6  tie gained start
+brahms p5 5/1/10/6  tie gained start
+brahms p5 5/1/10/7  pitch changed A4 (was A-14)
+brahms p5 5/1/10/7  pitch changed F15 (was F5)
+brahms p5 5/1/10/7  tie gained stop
+brahms p5 5/1/10/7  tie gained stop
+brahms p5 5/1/11/2  articulation gained strong-accent
+brahms p5 5/1/11/2  blue lost guessed
+brahms p5 5/1/11/2  blue lost guessed
+brahms p5 5/1/11/2  blue lost guessed
+brahms p5 5/1/11/2  blue lost guessed
+brahms p5 5/1/11/2  blue lost guessed
+brahms p5 5/1/11/2  flag gained eighth
+brahms p5 5/1/11/2  flag gained eighth
+brahms p5 5/1/11/2  note gained eighth
+brahms p5 5/1/11/2  note gained eighth
+brahms p5 5/1/11/2  words lost unread
+brahms p5 5/1/12/2  tie gained start
+brahms p5 5/1/12/3  tie gained stop

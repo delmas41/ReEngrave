@@ -1,0 +1,17 @@
+LANE REPORT  OMR_SLASH_STEM_CORE (OFF=0 ON=1)  --from gather
+  OMR_SLASH_STEM_CORE: read in staged/gather.py, staged/page_tremolo.py -> GATHER
+  NOT THE FROZEN SAMPLE: out/lane-report/tremolo-claim/sample.json (a development control)
+
+litolff  pages [2, 6, 16]  (2335 notes+rests OFF, 2337 ON, 2335 paired)
+  file:   notes +2 | ties +2 | pitches ~1 | blue marks +1 | words -2
+  red bars 55 -> 55 | notes not written 966 -> 965
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (248 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 9 (at another id than asked 2) | by id key, no position 401 | position but no mark here 17
+  NOT JUDGED: 6 changed places no tile of Sean's covers (0 are covered; 2 have no page place): blue 1, note 2, pitch 1, tie 2 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 7 (4 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 21 s

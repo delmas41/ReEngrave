@@ -107,6 +107,156 @@ _SHAPE_BAND = {"width_spaces/eighth": EIGHTH_WIDTH_SPACES,
                "staff_step/quarter": QUARTER_STEP}
 
 
+# ── ROADMAP 2.334: an eighth rest the detector boxed as something else ───────
+#
+# "A box says where to look; the ink says the kind." A mark with an eighth
+# rest's shape (a bulb at the top left and a stroke down to the right, the
+# windows above) standing alone in the staff is an eighth rest whatever the
+# detector called it. NEVER where the ink is an accidental or a clef: a
+# sharp, natural or flat carries a full-height stroke on its left (refused
+# above as `stem_stroke_not_a_rest`, and outside the eighth's left-bin window),
+# a real double sharp is a small x about one space tall (below the eighth's
+# height window), and a clef is taller or wider than the window. Measured
+# (lane 2.334, whole-movement records 20261122-night): of the clusters an
+# accidental box covers by half or more, 0 of 59 Litolff and 0 of 1,045
+# Brahms flat/sharp/natural-boxed inks pass the eighth window except 6 Brahms
+# whose crops are eighth rests; 42 Litolff and 205 Brahms double-sharp-boxed
+# inks and 14 / 3 clefF-boxed inks pass. No real double sharp is known on
+# either plate, so its side rests on the SMuFL size convention.
+REST_BOXED_AS_OTHER_ENV = "OMR_REST_BOXED_AS_OTHER"
+#: The detector classes whose box gives way to an eighth rest's shape.
+#: Accidentals lose their reading at ADJUDICATE (`accidental_is_not_an_accidental`,
+#: reason `eighth_rest_shaped_ink`); a clef-class detector box is no reader at
+#: all (clefs are read page-wide from ink, ROADMAP 2.324), so it stops counting
+#: as an account of rest-shaped ink here.
+WRONG_KIND_PREFIXES = ("accidental", "clef")
+#: Share of the cluster a box must cover to be the box standing on that ink.
+WRONG_KIND_BOX_SHARE = 0.5
+
+
+def rest_boxed_as_other_enabled() -> bool:
+    """`OMR_REST_BOXED_AS_OTHER`, default ON (ROADMAP 2.334; Sean 2026-11-23 "Land the rest switch on"); "0"/"false"/"no"/"off" turns it off."""
+    import os
+    return os.environ.get(REST_BOXED_AS_OTHER_ENV, "").strip().lower() not in ("0", "false", "no", "off")
+
+
+def eighth_rest_shaped(d: Dict[str, Any]) -> bool:
+    """Does this `Q.UNBOXED_REST_SHAPE` row (coverage aside) read as an eighth
+    rest on its own shape and place? The same windows and refusals the 2.99
+    decision applies, in the same order; any missing measure is False."""
+    w, h, step = d.get("width_spaces"), d.get("height_spaces"), d.get("staff_step")
+    col, prof, mass_y = d.get("max_column_share"), d.get("column_profile"), d.get("mass_y")
+    if None in (w, h, step, col, mass_y) or not prof or len(prof) < 6 or not d.get("n_pieces"):
+        return False
+    if col < THIN_STROKE_MAX_COLUMN_SHARE:
+        return False
+    if (prof[0] >= 0.6 and prof[1] >= STROKE_SHARE and max(prof[2:]) < STROKE_SHARE
+            and prof[1] >= max(prof[2:])):
+        return False
+    if d.get("left_of_header") or (d.get("first_cell") and not d.get("header_known")):
+        return False
+    if d.get("touches_cell_edge") or (d.get("n_pieces") or 0) > REST_MAX_PIECES:
+        return False
+    return all(v >= 0 for _k, v in _eighth_slacks(w, h, step, mass_y, col, prof))
+
+
+def _box_share(cluster_bb, box_bb) -> float:
+    ix = min(cluster_bb[2], box_bb[2]) - max(cluster_bb[0], box_bb[0])
+    iy = min(cluster_bb[3], box_bb[3]) - max(cluster_bb[1], box_bb[1])
+    a = (cluster_bb[2] - cluster_bb[0]) * (cluster_bb[3] - cluster_bb[1])
+    return max(0.0, ix) * max(0.0, iy) / a if ix > 0 and iy > 0 and a > 0 else 0.0
+
+
+_HEADER_PREFIXES = ("gclef", "fclef", "cclef", "clef", "keysig", "timesig")   # = gather.UNBOXED_REST_HEADER_PREFIXES
+
+
+def header_not_from_this_ink(ev: Evidence, d: Dict[str, Any]) -> Dict[str, Any]:
+    """GATHER's `left_of_header` is measured from every clef/key/meter-class BOX in the cell -- including a clef-class box standing on
+    this very ink (the motif rest boxed `clefF`: the box makes the rest its own header). Re-measured from the header boxes that are NOT
+    on this ink (`WRONG_KIND_BOX_SHARE`); every other measure is GATHER's as filed. Only the header fields change."""
+    from ..adjudicate import Scope
+    bb = d.get("bbox_page_px")
+    if not bb or not d.get("left_of_header"):
+        return d
+    right, on_ink = 0.0, False
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=ev.subject.at(Kind.CELL)):
+        if not isinstance(r.value, (list, tuple)) or not r.value:
+            continue
+        b = (r.detail or {}).get("bbox_page_px")
+        if not b or not str(r.value[0]).lower().startswith(_HEADER_PREFIXES):
+            continue
+        if str(r.value[0]).lower().startswith("clef") and _box_share(bb, b) >= WRONG_KIND_BOX_SHARE:
+            on_ink = True
+            continue
+        right = max(right, float(b[2]))
+    if not on_ink:
+        return d
+    return {**d, "left_of_header": bool(right and bb[0] < right), "header_known": bool(right) or not d.get("first_cell")}
+
+
+def eighth_rest_under_box(ev: Evidence, box_bb) -> Any:
+    """The rest-shaped `Q.UNBOXED_REST_SHAPE` row in this glyph's own cell
+    that this box stands on (covers by `WRONG_KIND_BOX_SHARE`), or None."""
+    from ..adjudicate import Scope
+    cell = ev.subject.at(Kind.CELL)
+    for r in ev.rows(Q.UNBOXED_REST_SHAPE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        d = r.detail or {}
+        bb = d.get("bbox_page_px")
+        if bb and _box_share(bb, box_bb) >= WRONG_KIND_BOX_SHARE and eighth_rest_shaped(header_not_from_this_ink(ev, d)):
+            return r
+    return None
+
+
+def _cover_left(ev: Evidence, d: Dict[str, Any]):
+    """ROADMAP 2.334: the cluster's cover once every wrong-kind box on it has
+    given way -- an accidental box refused as `eighth_rest_shaped_ink`, a
+    clef-class detector box (no clef reader), a ledger box refused as not a
+    ledger. `(cover, gave_way)`; None where the boxes cannot be measured."""
+    from ..adjudicate import Scope
+    from ..record import Outcome
+    bb = d.get("bbox_page_px")
+    names = set(d.get("covered_by") or ())
+    if not bb or not names:
+        return None
+    cell = ev.subject.at(Kind.CELL)
+    stand, gave = [], []
+    for r in ev.rows(Q.GLYPH_BOX, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        if r.subject == ev.subject or not isinstance(r.value, (list, tuple)) or not r.value:
+            continue
+        cls = str(r.value[0])
+        b = (r.detail or {}).get("bbox_page_px")
+        if cls not in names or not b or _box_share(bb, b) <= 0.0:
+            continue
+        low = cls.lower()
+        if low.startswith("rest"):
+            # a rest box on this ink already reads the rest (or was refused by its own family): never a second rest here
+            return None
+        if low.startswith("clef"):
+            gave.append(r.subject.to_key())
+            continue
+        q = (Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL if low.startswith("accidental")
+             else Q.LEDGER_IS_NOT_A_LEDGER if low.startswith("ledger") else None)
+        if q is not None:
+            v = ev.verdict(q, subject=r.subject)
+            if (v is not None and v.outcome is Outcome.DECIDED and v.value is True
+                    and (q != Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL or v.reason == "eighth_rest_shaped_ink")):
+                gave.append(r.subject.to_key())
+                continue
+        stand.append(b)
+    if not gave:
+        return None
+    import numpy as np
+    x0, y0, x1, y1 = bb
+    W, H = max(1, int(round(x1 - x0))), max(1, int(round(y1 - y0)))
+    mask = np.zeros((H, W), dtype=bool)
+    for b in stand:
+        ix0, iy0 = int(max(0, b[0] - x0)), int(max(0, b[1] - y0))
+        ix1, iy1 = int(min(W, b[2] - x0)), int(min(H, b[3] - y0))
+        if ix1 > ix0 and iy1 > iy0:
+            mask[iy0:iy1, ix0:ix1] = True
+    return float(mask.sum()) / float(W * H), gave
+
+
 def _eighth_slacks(w, h, step, mass_y, col, prof):
     return (("width_spaces", M.slack(w, *EIGHTH_WIDTH_SPACES)),
             ("height_spaces", M.slack(h, *EIGHTH_HEIGHT_SPACES)),
@@ -151,7 +301,10 @@ def _shape_refusal(ruling: Ruling, w, h, step, mass_y, col, prof,
     quantity=Q.UNBOXED_INK_IS_A_REST,
     composed_from=(Q.UNBOXED_REST_SHAPE,),
     scope=Kind.GLYPH,
-    wants=(Q.UNBOXED_REST_SHAPE,),
+    # ROADMAP 2.334 (OMR_REST_BOXED_AS_OTHER, read only while it is ON): the
+    # boxes on the ink and the refusals that say a box was the wrong kind.
+    wants=(Q.UNBOXED_REST_SHAPE, Q.GLYPH_BOX, Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
+           Q.LEDGER_IS_NOT_A_LEDGER),
     subjects_from=Q.UNBOXED_REST_SHAPE,
     reasons=("rest8th_shape", "restQuarter_shape", "already_read_as_a_glyph",
              "stem_stroke_not_a_rest", "thin_stroke_not_a_rest",
@@ -181,6 +334,15 @@ def adjudicate_unboxed_ink_is_a_rest(ev: Evidence) -> Ruling:
     used = (row.id,)
 
     cover = d.get("coverage") or 0.0
+    if cover >= TOUCHED_SHARE and rest_boxed_as_other_enabled():
+        d2 = header_not_from_this_ink(ev, d)
+        left = _cover_left(ev, d2) if eighth_rest_shaped(d2) else None
+        if left is not None:
+            detail = {**detail, "boxed_as_other": {"gave_way": left[1],
+                                                   "coverage_was": cover,
+                                                   "coverage_left": round(left[0], 3),
+                                                   "header_was_this_ink": d2 is not d}}
+            cover, d = left[0], d2
     if cover >= COVERED_SHARE:
         return _margin(
             Ruling(value=False, reason="already_read_as_a_glyph",

@@ -1,0 +1,429 @@
+[
+ {
+  "plate": "litolff",
+  "page": 10,
+  "bbox": [
+   2079.0,
+   2331.5,
+   2217.0,
+   2373.0
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "left": "one_head_both_ends",
+   "right": "one_head_both_ends"
+  },
+  "row": "obs:382232",
+  "witnesses": [
+   "glyph/10/1/2/10/1",
+   "glyph/10/1/2/11/3"
+  ],
+  "kinds": [
+   "slur",
+   "slur"
+  ],
+  "n": 1
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "bbox": [
+   533.0,
+   643.0,
+   784.0,
+   671.5
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "left": "two_columns_at_end"
+  },
+  "row": "obs:662625",
+  "witnesses": [
+   "glyph/16/0/1/1/4",
+   "glyph/16/0/2/1/2",
+   "glyph/16/0/1/2/14",
+   "glyph/16/0/1/0/18",
+   "glyph/16/0/2/2/10",
+   "glyph/16/0/2/0/21"
+  ],
+  "kinds": [
+   "tie",
+   "tie",
+   "slur",
+   "slur",
+   "slur",
+   "slur"
+  ],
+  "n": 2
+ },
+ {
+  "plate": "litolff",
+  "page": 2,
+  "bbox": [
+   2008.0,
+   3566.5,
+   2123.0,
+   3623.0
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "left": "end_far_beyond_head"
+  },
+  "row": "obs:057596",
+  "witnesses": [
+   "glyph/2/1/10/10/6",
+   "glyph/2/1/10/10/10"
+  ],
+  "kinds": [
+   "tie",
+   "tie"
+  ],
+  "n": 3
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "bbox": [
+   2353.0,
+   1791.0,
+   2520.0,
+   1844.5
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "right": "end_far_beyond_head"
+  },
+  "row": "obs:662661",
+  "witnesses": [
+   "glyph/16/0/10/15/5"
+  ],
+  "kinds": [
+   "tie"
+  ],
+  "n": 4
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "bbox": [
+   2324.0,
+   1377.5,
+   2568.0,
+   1461.0
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "right": "two_columns_at_end"
+  },
+  "row": "obs:336115",
+  "witnesses": [
+   "glyph/9/0/7/13/0",
+   "glyph/9/0/7/14/8"
+  ],
+  "kinds": [
+   "tie",
+   "tie"
+  ],
+  "n": 5
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "bbox": [
+   2234.0,
+   1367.0,
+   2260.0,
+   1388.5
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "right": "two_columns_at_end"
+  },
+  "row": "obs:382123",
+  "witnesses": [
+   "glyph/10/0/6/11/2",
+   "glyph/10/0/7/11/6"
+  ],
+  "kinds": [
+   "slur",
+   "slur"
+  ],
+  "n": 6
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "bbox": [
+   536.0,
+   473.5,
+   804.0,
+   495.0
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "left": "two_columns_at_end"
+  },
+  "row": "obs:662624",
+  "witnesses": [
+   "glyph/16/0/0/0/9",
+   "glyph/16/0/1/0/12",
+   "glyph/16/0/0/1/16",
+   "glyph/16/0/0/2/15",
+   "glyph/16/0/1/1/11",
+   "glyph/16/0/1/2/12"
+  ],
+  "kinds": [
+   "tie",
+   "tie",
+   "tie",
+   "tie",
+   "slur",
+   "slur"
+  ],
+  "n": 7
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "bbox": [
+   1671.0,
+   358.5,
+   1785.0,
+   408.0
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "left": "end_far_beyond_head"
+  },
+  "row": "obs:662642",
+  "witnesses": [
+   "glyph/16/0/0/10/4"
+  ],
+  "kinds": [
+   "tie"
+  ],
+  "n": 8
+ },
+ {
+  "plate": "litolff",
+  "page": 16,
+  "bbox": [
+   594.0,
+   1555.0,
+   742.0,
+   1592.0
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "left": "unread_ink_at_end"
+  },
+  "row": "obs:662594",
+  "witnesses": [
+   "glyph/16/0/8/1/0",
+   "glyph/16/0/9/1/1",
+   "glyph/16/0/8/2/5",
+   "glyph/16/0/9/2/6"
+  ],
+  "kinds": [
+   "tie",
+   "tie",
+   "tie",
+   "tie"
+  ],
+  "n": 9
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "bbox": [
+   1372.0,
+   3215.5,
+   1429.0,
+   3264.5
+  ],
+  "sp": 15.75,
+  "cause": "page run end_unbound",
+  "sub": {
+   "right": "two_columns_at_end"
+  },
+  "row": "obs:138347",
+  "witnesses": [
+   "glyph/4/1/7/6/5",
+   "glyph/4/1/8/6/3"
+  ],
+  "kinds": [
+   "slur",
+   "slur"
+  ],
+  "n": 10
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "bbox": [
+   2123.0225,
+   1515.0,
+   2237.3675,
+   1524.45
+  ],
+  "sp": null,
+  "cause": "old tie box no_head_near_the_arc",
+  "sub": "no_run",
+  "row": "glyph/11/0/8/14/4",
+  "kind": "tie",
+  "n": 11
+ },
+ {
+  "plate": "litolff",
+  "page": 4,
+  "bbox": [
+   1089.8725,
+   636.985,
+   1108.4575,
+   640.9225
+  ],
+  "sp": null,
+  "cause": "old tie box no_head_near_the_arc",
+  "sub": "no_run",
+  "row": "glyph/4/0/1/4/6",
+  "kind": "tie",
+  "n": 12
+ },
+ {
+  "plate": "litolff",
+  "page": 8,
+  "bbox": [
+   863.925,
+   752.9575,
+   874.635,
+   757.0525
+  ],
+  "sp": null,
+  "cause": "old tie box no_stop_head",
+  "sub": "no_run",
+  "row": "glyph/8/0/2/4/1",
+  "kind": "tie",
+  "n": 13
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "bbox": [
+   1037.0,
+   1126.3175,
+   1137.17,
+   1134.8225
+  ],
+  "sp": null,
+  "cause": "old tie box no_start_head",
+  "sub": "abstained_run",
+  "row": "glyph/11/0/5/5/3",
+  "kind": "tie",
+  "n": 14
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "bbox": [
+   1767.4175,
+   2529.065,
+   1885.8575,
+   2541.98
+  ],
+  "sp": null,
+  "cause": "old tie box no_start_head",
+  "sub": "abstained_run",
+  "row": "glyph/10/1/3/8/6",
+  "kind": "tie",
+  "n": 15
+ },
+ {
+  "plate": "litolff",
+  "page": 10,
+  "bbox": [
+   2099.3625,
+   2896.57,
+   2181.2625,
+   2911.06
+  ],
+  "sp": null,
+  "cause": "old tie box no_start_head",
+  "sub": "no_run",
+  "row": "glyph/10/1/6/10/1",
+  "kind": "tie",
+  "n": 16
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "bbox": [
+   2159.95,
+   914.0,
+   2299.3,
+   925.1
+  ],
+  "sp": null,
+  "cause": "old tie box no_start_head",
+  "sub": "abstained_run",
+  "row": "glyph/9/0/4/12/1",
+  "kind": "tie",
+  "n": 17
+ },
+ {
+  "plate": "litolff",
+  "page": 9,
+  "bbox": [
+   1821.3025,
+   2007.5825,
+   1833.5875,
+   2012.465
+  ],
+  "sp": null,
+  "cause": "old tie box no_head_near_the_arc",
+  "sub": "no_run",
+  "row": "glyph/9/0/11/10/2",
+  "kind": "tie",
+  "n": 18
+ },
+ {
+  "plate": "litolff",
+  "page": 6,
+  "bbox": [
+   537.2724609375,
+   1562.7138671875,
+   567.1982421875,
+   1571.9462890625
+  ],
+  "sp": null,
+  "cause": "old tie box no_head_near_the_arc",
+  "sub": "no_run",
+  "row": "glyph/6/0/7/0/10",
+  "kind": "tie",
+  "n": 19
+ },
+ {
+  "plate": "litolff",
+  "page": 11,
+  "bbox": [
+   2430.55,
+   3300.235,
+   2527.0975,
+   3310.7875
+  ],
+  "sp": null,
+  "cause": "old tie box no_head_near_the_arc",
+  "sub": "replaced",
+  "row": "glyph/11/1/8/15/0",
+  "kind": "tie",
+  "n": 20
+ }
+]
