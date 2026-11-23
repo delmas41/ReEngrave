@@ -6635,14 +6635,11 @@ def _col_runs(col: Any) -> List[Tuple[int, int]]:
     return list(zip(np.where(d == 1)[0].tolist(), np.where(d == -1)[0].tolist()))
 
 
-#: ROADMAP 2.306 batch 2 (`OMR_SLASH_STEM_CORE`): where a slash has taken the median of a stem's middle rows, the stem still shows plainly (its own
-#: width) in at least this share of them. MEASURED (page reader, the record's page maps): the 18 slashed stems the own-row read gains on
-#: Litolff 2/6/16 show 0.25-0.48 of their middle rows at their own width; the letter "B" spine it would take on Brahms p4 shows 0.04.
-STEM_OWN_ROWS_MIN_SHARE = 0.2
-#: ... and only where what widens the middle CROSSES the stem: in at least this share of the wide rows the ink runs on past the stem's own
-#: column on both sides (a slash crosses; chord heads stand on one side). Sean's chord glyph/2/0/7/4 ("three quarter notes with a half note
-#: on top", Litolff p2): its heads stacked on the stem's left widen most of the middle; read on its plain rows, one of its quarter heads
-#: was taken as a slash. Its wide rows run past the stem on one side only, so it is read on every row, as before.
+#: ROADMAP 2.306 batch 2 (`OMR_SLASH_STEM_CORE`): the stem is read on its plain rows only where what widens its middle CROSSES it -- in at
+#: least this share of the wide rows the ink runs on past the stem's own column on BOTH sides (a slash crosses; chord heads, a letter's
+#: bowls stand on one side). Both sides measured: the 13 slashed stems it gains on Litolff 2/6/16 (16/0/1/6 among them); refused (each
+#: comes back with this at 0): Sean's chord glyph/2/0/7/4 ("three quarter notes with a half note on top", Litolff p2: a quarter head was
+#: taken as a slash) and a printed letter "B" on Brahms p4 (its spine read as a stem, both bowls as slashes).
 STEM_CROSSED_ROWS_MIN_SHARE = 0.5
 
 
@@ -6678,14 +6675,13 @@ def _stem_core(ink: Any, box: Tuple[float, float, float, float],
         return None
     if max_w is not None and float(np.median(ws)) > max_w:
         own = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ <= max_w]
-        if len(own) < STEM_OWN_ROWS_MIN_SHARE * len(ws):
-            return None             # a stem shows plainly for at least a fifth of its middle; less is not a stem (a letter's spine)
-        ow, oc = float(np.median([w_ for w_, _c in own])), float(np.median([c_ for _w, c_ in own]))
-        o0, o1 = oc - ow / 2.0, oc + ow / 2.0
-        wide = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ > max_w]
-        crossed = sum(1 for w_, c_ in wide if c_ - w_ / 2.0 < o0 - 1 and c_ + w_ / 2.0 > o1 + 1)
-        if crossed >= STEM_CROSSED_ROWS_MIN_SHARE * len(wide):
-            ws, cs = [w_ for w_, _c in own], [c_ for _w, c_ in own]     # a slash crosses the stem's middle: read the stem where it shows
+        if own:
+            ow, oc = float(np.median([w_ for w_, _c in own])), float(np.median([c_ for _w, c_ in own]))
+            o0, o1 = oc - ow / 2.0, oc + ow / 2.0
+            wide = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ > max_w]
+            crossed = sum(1 for w_, c_ in wide if c_ - w_ / 2.0 < o0 - 1 and c_ + w_ / 2.0 > o1 + 1)
+            if crossed >= STEM_CROSSED_ROWS_MIN_SHARE * len(wide):
+                ws, cs = [w_ for w_, _c in own], [c_ for _w, c_ in own]     # a slash crosses the stem's middle: read the stem where it shows
     wc, cc = float(np.median(ws)), float(np.median(cs))
     return int(round(cc - wc / 2.0)), int(round(cc + wc / 2.0))
 
