@@ -107,10 +107,10 @@ def test_a_the_third_unison_eighth_keeps_both_its_stems():
     assert got["how"] == PS.UNISON_HOW and set(got["voices"]) == {"up", "down"}, got
 
 
-@pytest.mark.parametrize("name", ["outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_9"])
+@pytest.mark.parametrize("name", ["outline_litolff_2_1_4_0", "outline_litolff_2_1_2_10", "outline_litolff_16_0_1_9"])
 def test_reach_the_stroke_that_ends_at_another_head_is_its_outline_so_the_other_is_the_stem(name):
     """REACH (the page abstained `two_voices` / `ends_at_another_head` and the old cell join answered in its place). Real heads, the lane's
-    look at full size: two half notes a third apart on one stem (2/1/4/0 down, 2/1/2/11 up, 16/0/1/9 down). The stroke ending at the other
+    look at full size: two half notes a third apart on one stem (2/1/4/0 down, 2/1/2/10 up, 16/0/1/9 down). The stroke ending at the other
     head is that head's ring, never this head's."""
     w, r = _read(name)
     got = r[w["head"]]
@@ -127,10 +127,28 @@ def test_reach_never_when_the_other_head_is_no_note():
     old = PS._ends_at_another_head
     try:
         PS._ends_at_another_head = lambda h, o, d, heads, vbox: old(h, o, d, every, vbox)       # the first build: any box is a head
+        PS.OUTLINE_REACH_SP = 10.0                                                                # ... and no length cut
         w, r = _read("staccato_brahms_5_1_5_0")
         assert r[w["head"]]["how"] == "other_stroke_is_an_outline", r[w["head"]]
     finally:
         PS._ends_at_another_head = old
+        PS.OUTLINE_REACH_SP = PS.UNISON_REACH_SP
+
+
+def test_reach_never_when_the_outline_is_a_stems_length():
+    """Round 3, Litolff 6/0/3/7 (bassoons; our look: four eighths, beamed above on up stems and below on down stems -- two voices on one set
+    of heads). Each down stem runs 3.4-3.9 spaces to its beam and ends by a box there, so the first build read it as another head's outline and
+    wrote one voice, plain. A ring's side is shorter than a stem: the head is never narrowed to its up stem. The control can fail: with the
+    length cut lifted it is read as one up stem again."""
+    w, r = _read("unison_litolff_6_0_3_7")
+    assert r[w["head"]]["how"] != "other_stroke_is_an_outline", r[w["head"]]
+    old = PS.OUTLINE_REACH_SP
+    try:
+        PS.OUTLINE_REACH_SP = 10.0
+        w, r = _read("unison_litolff_6_0_3_7")
+        assert r[w["head"]]["how"] == "other_stroke_is_an_outline" and r[w["head"]]["direction"] == "up", r[w["head"]]
+    finally:
+        PS.OUTLINE_REACH_SP = old
 
 
 def test_reach_never_a_stub_left_beside_a_long_stem():
@@ -144,7 +162,7 @@ def test_reach_control_without_the_outline_rule_the_same_heads_stay_abstained():
     old = PS._outline_leaves_one_stem
     try:
         PS._outline_leaves_one_stem = lambda *a: False
-        for name in ("outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_9"):
+        for name in ("outline_litolff_2_1_4_0", "outline_litolff_2_1_2_10", "outline_litolff_16_0_1_9"):
             w, r = _read(name)
             assert r[w["head"]]["state"] == "two_voices", (name, r[w["head"]])
     finally:

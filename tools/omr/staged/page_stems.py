@@ -316,6 +316,9 @@ UNISON_HOW = "unison_two_stems"
 #: keeps the old path): on the r15 gathers' 160 page unison heads the shortest stroke stands 2.17-6 sp for the ones our look calls real, and
 #: 1.5-1.75 for a hollow ring's side or a stub read as a stroke (Litolff 16/545, 2/530, 6/638); 2/128 (2.0) is unclear
 UNISON_REACH_SP = 2.0
+#: ROADMAP 2.306 r19 round 3: a ring's side reaches less than a stem past the head (1.5-2.0 spaces on the Litolff p2/p6/p16 dyads; the stems
+#: it was confused with 2.8-3.9) -- the two-voice rule's own measured cut, so it only narrows
+OUTLINE_REACH_SP = UNISON_REACH_SP
 #: `_passes_beside_the_other`: a stroke running beside at least this share of the other stem's length past the head is one column (narrows only)
 PASS_SHARE = 0.5
 
@@ -407,6 +410,7 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             r["why"] = "one_stem_passes_the_head"
             continue
         if (len(keep) == 1 and outline and float(by_dir[keep[0]].get("reach") or 0.0) >= UNISON_REACH_SP
+                and float(by_dir[outline[0]].get("reach") or 0.0) < OUTLINE_REACH_SP
                 and _ends_at_another_head(h, int(by_dir[outline[0]]["stroke"]), outline[0], [k for k in heads if readings.get(k["id"], {}).get("state") != "none"], vbox)
                 and _outline_leaves_one_stem(h, int(by_dir[keep[0]]["stroke"]), keep[0], stems)):
             # ROADMAP 2.306 r19 (reach: 20 of the 33 Litolff 2/16 heads the cell join still answered for after the page abstained): of a stroke up
@@ -414,7 +418,9 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
             # already applies to three strokes) -- so the other, touching this head's ink and a stem's length (`UNISON_REACH_SP`), is its one
             # stem. Never where the kept stroke is read the other way by another head, never a stub (Litolff 2/1/9/14: a 1.6-space stroke
             # beside a quarter whose long up stem runs to a chord-mate), never where the "other head" stands on no stem of its own (Brahms
-            # 5/1/5/0: a box on a staccato dot at the tip of the upper voice's stem -- not a note; this head is two voices, both stems its own).
+            # 5/1/5/0: a box on a staccato dot at the tip of the upper voice's stem -- not a note; this head is two voices, both stems its own),
+            # and never where the "outline" is itself a stem's length (round 3, Litolff 6/0/3/7: unison eighths whose down stems run 3.4-3.9
+            # spaces to their beam and end by a box there; a ring's side reaches 1.5-2.0 spaces, `UNISON_REACH_SP`, the two-voice rule's cut).
             d = keep[0]
             c = by_dir[d]
             o = int(c["stroke"])

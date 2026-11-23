@@ -1117,6 +1117,19 @@ def _fill_seen_on_its_own_ink(m: "_Member") -> bool:
     return (next(iter(bases)) >= HOLLOW_BASE_MIN) == (hi["value"] == "hollow")
 
 
+#: the refusal word of a box narrower than any notehead (`notehead_is_not_a_notehead`): dots, barline slivers, rest pieces
+TOO_NARROW_REASON = "too_narrow"
+
+
+def _refused_too_narrow(ev: Evidence, sub: Subject) -> bool:
+    """ROADMAP 2.306 r19 round 3 (Brahms 5/1/10/2, 5/1/10/4: each triple stop's augmentation dot was also boxed as a notehead, refused as too
+    narrow, and still joined to the stem). Only a box that is still a head stands on a stem as a note: a box refused because it is narrower
+    than any notehead is never a head of the stop, so it never makes the string-stop reading stand aside. Never says more than that: a box
+    refused for any other reason (a tremolo slash crossing the stem, r18 tile 3) still holds the stem as before."""
+    r = ev.verdict(Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, subject=sub)
+    return r is not None and r.outcome is Outcome.DECIDED and r.value is True and r.reason == TOO_NARROW_REASON
+
+
 def _string_dot_stays_its_own(ev: Evidence, members: Sequence["_Member"], dot_voters: Sequence["_Member"]) -> bool:
     """ROADMAP 2.306 r19 (flag `OMR_STRING_STOPS_OWN_VALUE`). On a STRING staff a dot belongs to the head it is printed beside (Sean 2026-11-21:
     notes printed together on a string stem may differ in length; his r18 tile 1, "two dotted quarters, and at the bottom there is a quarter
@@ -1297,7 +1310,8 @@ def adjudicate_stem_value(ev: Evidence) -> Ruling:
     directions = {m.direction for m in members if m.direction}
     direction = next(iter(directions)) if len(directions) == 1 else None
     used = tuple(m.verdict.id for m in members if m.verdict is not None)
-    stop = _string_stop_ruling(ev, members, {j.subject.to_key(): (j.detail or {}).get("flush") for j in joins}, me, stem_id, scale, used)
+    stop = _string_stop_ruling(ev, members, {j.subject.to_key(): (j.detail or {}).get("flush") for j in joins if not _refused_too_narrow(ev, j.subject)},
+                               me, stem_id, scale, used)
     if stop is not None:
         return stop
 
