@@ -1,0 +1,146 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "glyph": "glyph/12/0/6/6/1",
+  "seen_on": "staff/12/0/6",
+  "written_on": "staff/12/0/5",
+  "part": "P6",
+  "measure": "77",
+  "onset": "3/2",
+  "pitch": "C3",
+  "type": "quarter",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   17,
+   "in the space beyond ledger 4 (ink:staff_side_edge_over_hidden_middle; 3 between it and the staff, 3.89 sp out)"
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "glyph": "glyph/12/0/6/7/0",
+  "seen_on": "staff/12/0/6",
+  "written_on": "staff/12/0/5",
+  "part": "P6",
+  "measure": "78",
+  "onset": "3/2",
+  "pitch": "C3",
+  "type": "quarter",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   17,
+   "in the space beyond ledger 4 (ink:rung_at_the_staff_side_edge; 3 between it and the staff, 3.83 sp out)"
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "glyph": "glyph/12/0/6/7/2",
+  "seen_on": "staff/12/0/6",
+  "written_on": "staff/12/0/5",
+  "part": "P6",
+  "measure": "78",
+  "onset": "0",
+  "pitch": "C3",
+  "type": "quarter",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   17,
+   "in the space beyond ledger 4 (ink:staff_side_edge_over_hidden_middle; 3 between it and the staff, 3.79 sp out)"
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "glyph": "glyph/12/0/6/8/4",
+  "seen_on": "staff/12/0/6",
+  "written_on": "staff/12/0/5",
+  "part": "P6",
+  "measure": "79",
+  "onset": "0",
+  "pitch": "C3",
+  "type": "half",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   17,
+   "in the space beyond ledger 4 (ink:rung_at_the_staff_side_edge; 3 between it and the staff, 3.95 sp out)"
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "brahms",
+  "glyph": "glyph/12/0/6/9/0",
+  "seen_on": "staff/12/0/6",
+  "written_on": "staff/12/0/5",
+  "part": "P6",
+  "measure": "80",
+  "onset": "0",
+  "pitch": "C3",
+  "type": "quarter",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   17,
+   "in the space beyond ledger 4 (ink:rung_at_the_staff_side_edge; 3 between it and the staff, 3.95 sp out)"
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "brahms",
+  "glyph": "glyph/14/0/6/8/1",
+  "seen_on": "staff/14/0/6",
+  "written_on": "staff/14/0/5",
+  "part": "P6",
+  "measure": "103",
+  "onset": "3/2",
+  "pitch": "C3",
+  "type": "quarter",
+  "dots": 0,
+  "chord": false,
+  "ledger_reading": [
+   17,
+   "in the space beyond ledger 4 (ink:rung_at_the_staff_side_edge; 3 between it and the staff, 3.97 sp out)"
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "glyph": "glyph/19/0/8/0/2",
+  "seen_on": "staff/19/0/8",
+  "written_on": "staff/19/0/9",
+  "part": "P10",
+  "measure": "114",
+  "onset": "0",
+  "pitch": "A-16",
+  "type": "quarter",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   -9,
+   "in the space beyond ledger 4 (ink:rung_at_the_staff_side_edge; 3 between it and the staff, 3.94 sp out)"
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "brahms",
+  "glyph": "glyph/19/0/8/1/0",
+  "seen_on": "staff/19/0/8",
+  "written_on": "staff/19/0/9",
+  "part": "P10",
+  "measure": "115",
+  "onset": "3/2",
+  "pitch": "A-16",
+  "type": "quarter",
+  "dots": 1,
+  "chord": false,
+  "ledger_reading": [
+   -9,
+   "in the space beyond ledger 4 (ink:rung_at_the_staff_side_edge; 3 between it and the staff, 4.05 sp out)"
+  ]
+ }
+]

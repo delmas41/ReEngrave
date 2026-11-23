@@ -39,15 +39,20 @@ def _vrd(i, subject, quantity, value, outcome="decided", reason="x",
             "supersedes": None, "detail": {}}
 
 
-def _head(rec, n, sub, page_box, *, pitch, decider="t", owner=None):
+def _head(rec, n, sub, page_box, *, pitch, decider="t", owner=None,
+          pitch_reason="x", head_ink="filled", duration=QUARTER, canon=None):
     x0, y0, x1, y1 = page_box
     rec["observations"] += [
         _obs(n, sub, Q.GLYPH_BOX,
-             ["noteheadBlackOnLine", 10, 10, 20, 20], category="notehead",
+             ["noteheadBlackOnLine"] + list(canon or (10, 10, 20, 20)),
+             category="notehead",
              bbox_page_px=list(page_box)),
         _obs(n + 1, sub, Q.NOTEHEAD_CLASS, "noteheadBlackOnLine")]
-    rec["verdicts"] += [_vrd(n + 2, sub, Q.PITCH, pitch, decider=decider),
-                        _vrd(n + 3, sub, Q.DURATION, QUARTER)]
+    if head_ink is not None:
+        rec["observations"].append(_obs(n + 5, sub, Q.HEAD_INK, head_ink))
+    rec["verdicts"] += [_vrd(n + 2, sub, Q.PITCH, pitch, decider=decider,
+                             reason=pitch_reason),
+                        _vrd(n + 3, sub, Q.DURATION, duration)]
     if owner:
         rec["verdicts"].append(
             _vrd(n + 4, sub, Q.GLYPH_OWNER, owner, reason="ledger_note_first"))
@@ -55,7 +60,10 @@ def _head(rec, n, sub, page_box, *, pitch, decider="t", owner=None):
 
 def _two_staves(*, cell_x=(0.0, 400.0), moved_box=(100, 210, 120, 230),
                 owner_pitch="G4", owner_decider="move_glyph",
-                owner_head_box=None, owner_twin_box=None):
+                owner_head_box=None, owner_twin_box=None,
+                moved_reason="reowned_by_ledger_reading", moved_ink="filled",
+                moved_duration=QUARTER, owner_head_duration=QUARTER,
+                lines_y=(100.0, 300.0)):
     """Staff 1 detected a head that staff 0 owns. Staff 0 holds NO copy unless
     `owner_head_box` (a near-but-not-twin head) or `owner_twin_box` is given."""
     rec = {"observations": [], "verdicts": [], "abstentions": [],
@@ -66,6 +74,10 @@ def _two_staves(*, cell_x=(0.0, 400.0), moved_box=(100, 210, 120, 230),
                             _vrd(910 + st, sk, Q.CLEF, "treble")]
         rec["observations"] += [
             _obs(920 + st, sk, Q.STAFF_SPACING, SPACING),
+            # the staves' own lines (page px): staff 0 at 100-140, staff 1 at
+            # 300-340, a 16-space gap, so each bar view reaches 6 spaces
+            _obs(960 + st, sk, Q.STAFF_LINES,
+                 [lines_y[st] + SPACING * i for i in range(5)]),
             _obs(930 + st, f"cell/0/0/{st}/0", Q.CELL_BOX,
                  [cell_x[0], 100.0 * st, cell_x[1], 100.0 * st + 200.0]),
             _obs(940 + st, f"cell/0/0/{st}/0", Q.CELL_STAFF_SPACE,
@@ -75,9 +87,17 @@ def _two_staves(*, cell_x=(0.0, 400.0), moved_box=(100, 210, 120, 230),
         _vrd(951, "document", Q.PART_PARTITION,
              {"join": "ordinal", "staves_per_system": 2}, reason="ordinal")]
     _head(rec, 100, "glyph/0/0/1/0/0", moved_box, pitch=owner_pitch,
-          decider=owner_decider, owner="staff/0/0/0")
+          decider=owner_decider, owner="staff/0/0/0",
+          pitch_reason=moved_reason, head_ink=moved_ink,
+          duration=moved_duration)
     if owner_head_box is not None:
-        _head(rec, 200, "glyph/0/0/0/0/0", owner_head_box, pitch="C4")
+        # the owner's own head in its cell's canonical frame (cell at x 0,
+        # y 0, UP canonical px per page px), as `_plan_relocation` expresses
+        # the moved head, so a head at one x is one chord
+        hx0, hy0, hx1, hy1 = owner_head_box
+        _head(rec, 200, "glyph/0/0/0/0/0", owner_head_box, pitch="C4",
+              duration=owner_head_duration,
+              canon=(hx0 * UP, hy0 * UP, (hx1 - hx0) * UP, (hy1 - hy0) * UP))
     if owner_twin_box is not None:
         _head(rec, 300, "glyph/0/0/0/0/1", owner_twin_box, pitch="C4",
               owner="staff/0/0/0")
@@ -164,6 +184,98 @@ class TestEveryRefusalIsNamed(unittest.TestCase):
         self.assertEqual(rep["notes_not_written"],
                          {"relocation_no_cell_at_x": 1})
         self.assertTrue(rep["balance"]["balanced"])
+
+
+class TestOnlyAHeadTheLedgerLinesPlaceIsWritten(unittest.TestCase):
+    """2026-11-22 (lane-owner-writes): a note belongs to the staff its ledger
+    lines climb from and is written there once, with the chord on its stem;
+    never a box that is not a head by its own ink, never another mark's ink,
+    never a head the ledger lines do not place. Positive control: the first
+    test of `TestAHeadIsWrittenOnItsOwner`."""
+
+    def test_a_box_whose_own_ink_is_not_one_head_is_not_a_note(self):
+        xml, rep = _export(_two_staves(moved_ink="not_one_head"), flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": [], "P2": []})
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_not_a_head_by_ink": 1})
+
+    def test_ink_inside_a_clef_box_is_the_clef_not_a_note(self):
+        page = _two_staves()
+        page["record"]["observations"].append(
+            _obs(990, "glyph/0/0/0/0/9", Q.GLYPH_BOX, ["clefF", 0, 0, 1, 1],
+                 bbox_page_px=[95, 180, 140, 240]))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": [], "P2": []})
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_on_another_mark": 1})
+
+    def test_ink_inside_a_printed_word_is_not_a_note(self):
+        page = _two_staves()
+        page["record"]["observations"].append(
+            _obs(991, "system/0/0", Q.DIRECTION_WORD, "sempre",
+                 bbox_page_px=[60, 205, 200, 240]))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_on_another_mark": 1})
+
+    def test_ink_inside_a_word_block_the_text_reader_could_not_read(self):
+        page = _two_staves()
+        page["record"]["abstentions"].append(
+            {"id": "abs:000001", "subject": "glyph/0/0/1/0/90001",
+             "quantity": Q.DIRECTION_WORD, "reason": "no_reading",
+             "reader": "ocr", "frame": "page",
+             "detail": {"bbox_page_px": [60, 205, 200, 240]}})
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_on_another_mark": 1})
+        # positive control (Litolff p8): the same unread block, but a ledger
+        # line touches the head -- a far note beside a word, written
+        page["record"]["observations"].append(
+            _obs(993, "glyph/0/0/1/0/5", Q.GLYPH_BOX, ["ledgerLine", 0, 0, 1, 1],
+                 bbox_page_px=[96, 219, 124, 221]))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": ["G4"], "P2": []})
+
+    def test_a_head_inside_the_owners_own_bar_view_is_not_moved(self):
+        """The cause this lane connects: a head past the reach of the owner's
+        bar view (4 spaces, 6 where the gap leaves room) was never shown to
+        its owner. One 3 spaces below the owner's staff was shown to it."""
+        xml, rep = _export(_two_staves(lines_y=(150.0, 300.0)), flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": [], "P2": []})
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_inside_owner_view": 1})
+
+    def test_a_head_the_ledger_lines_do_not_place_is_held(self):
+        xml, rep = _export(_two_staves(moved_reason="reowned"), flag=True)
+        self.assertEqual(_notes_by_part(xml), {"P1": [], "P2": []})
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_owner_not_by_ledgers": 1})
+
+    def test_the_same_mark_filed_on_the_owner_by_its_group_is_not_moved(self):
+        page = _two_staves()
+        page["record"]["observations"].append(
+            _obs(992, "glyph/0/0/1/0/0", Q.MARK_GROUP, "grp:1",
+                 members=["glyph/0/0/1/0/0", "glyph/0/0/0/0/7"]))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(rep["notes_not_written"],
+                         {"owned_by_another_staff": 1})
+
+    def test_a_head_whose_value_disagrees_with_its_chord_is_held(self):
+        """The owner's own chord head is written; the moved head is held,
+        never voted on (which would refuse the owner's head as well)."""
+        page = _two_staves(owner_head_box=(100, 190, 120, 210),
+                           moved_duration={"beats": 2.0, "written": 2.0,
+                                           "dots": 0})
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(_notes_by_part(xml)["P1"], ["C4"])
+        self.assertEqual(rep["notes_not_written"],
+                         {"relocation_value_disagrees_with_its_chord": 1})
+
+    def test_positive_control_a_head_that_agrees_joins_the_chord(self):
+        page = _two_staves(owner_head_box=(100, 190, 120, 210))
+        xml, rep = _export(page, flag=True)
+        self.assertEqual(sorted(_notes_by_part(xml)["P1"]), ["C4", "G4"])
+        self.assertEqual(rep["notes_not_written_total"], 0)
 
 
 class TestNearerStaffClaimIsRelocatedToo(unittest.TestCase):
