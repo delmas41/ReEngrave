@@ -1,0 +1,1010 @@
+[
+ {
+  "tile": "c1_01.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 8,
+  "place": "8/1/7/0",
+  "heads": [
+   "glyph/8/1/7/0/14"
+  ],
+  "file_measure": [
+   [
+    "P11",
+    "59"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   988.482421875,
+   6123.9755859375,
+   1004.783203125,
+   6139.3359375
+  ],
+  "crop_origin": [
+   633,
+   5925
+  ],
+  "agent_look_not_sean": "augmentation dot"
+ },
+ {
+  "tile": "c1_02.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "litolff",
+  "page": 6,
+  "place": "6/1/10/1",
+  "heads": [
+   "glyph/6/1/10/1/14"
+  ],
+  "file_measure": [
+   [
+    "P11",
+    "93"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   709.385,
+   3468.2875,
+   720.8825,
+   3483.7225
+  ],
+  "crop_origin": [
+   337,
+   3373
+  ],
+  "agent_look_not_sean": "stem/beam junction under a head, not a head"
+ },
+ {
+  "tile": "c1_03.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 8,
+  "place": "8/1/7/9",
+  "heads": [
+   "glyph/8/1/7/9/8"
+  ],
+  "file_measure": [
+   [
+    "P11",
+    "68"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4430.4825,
+   6112.98,
+   4437.84,
+   6139.4125
+  ],
+  "crop_origin": [
+   3614,
+   5925
+  ],
+  "agent_look_not_sean": "sliver beside a flat at the barline"
+ },
+ {
+  "tile": "c1_04.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 5,
+  "place": "5/0/0/2",
+  "heads": [
+   "glyph/5/0/0/2/16"
+  ],
+  "file_measure": [
+   [
+    "P1",
+    "30"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2118.38,
+   728.79,
+   2133.095,
+   744.3225
+  ],
+  "crop_origin": [
+   1442,
+   422
+  ],
+  "agent_look_not_sean": "augmentation dot"
+ },
+ {
+  "tile": "c1_05.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 14,
+  "place": "14/1/1/6",
+  "heads": [
+   "glyph/14/1/1/6/0"
+  ],
+  "file_measure": [
+   [
+    "P2",
+    "111"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4297.18,
+   4658.925,
+   4310.26,
+   4673.095
+  ],
+  "crop_origin": [
+   3490,
+   4351
+  ],
+  "agent_look_not_sean": "augmentation dot (neighbour staff)"
+ },
+ {
+  "tile": "c1_06.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "litolff",
+  "page": 4,
+  "place": "4/0/7/14",
+  "heads": [
+   "glyph/4/0/7/14/6"
+  ],
+  "file_measure": [
+   [
+    "P9",
+    "63"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2546.5225,
+   1463.0625,
+   2557.39,
+   1473.615
+  ],
+  "crop_origin": [
+   2315,
+   1404
+  ],
+  "agent_look_not_sean": "possibly a real filled head (dense passage) -- unsure"
+ },
+ {
+  "tile": "c1_07.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 14,
+  "place": "14/0/5/0",
+  "heads": [
+   "glyph/14/0/5/0/6"
+  ],
+  "file_measure": [
+   [
+    "P6",
+    "95"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1353.6259765625,
+   1732.91015625,
+   1373.19921875,
+   1752.4833984375
+  ],
+  "crop_origin": [
+   644,
+   1584
+  ],
+  "agent_look_not_sean": "eighth-rest blob"
+ },
+ {
+  "tile": "c1_08.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 8,
+  "place": "8/1/8/9",
+  "heads": [
+   "glyph/8/1/8/9/11"
+  ],
+  "file_measure": [
+   [
+    "P12",
+    "68"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4430.325,
+   6368.8,
+   4437.75,
+   6397.125
+  ],
+  "crop_origin": [
+   3614,
+   6206
+  ],
+  "agent_look_not_sean": "barline sliver"
+ },
+ {
+  "tile": "c1_09.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 12,
+  "place": "12/0/1/7",
+  "heads": [
+   "glyph/12/0/1/7/3"
+  ],
+  "file_measure": [
+   [
+    "P2",
+    "78"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   3216.135,
+   775.525,
+   3230.01,
+   791.3425
+  ],
+  "crop_origin": [
+   2723,
+   634
+  ],
+  "agent_look_not_sean": "augmentation dot"
+ },
+ {
+  "tile": "c1_10.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 14,
+  "place": "14/0/1/5",
+  "heads": [
+   "glyph/14/0/1/5/21"
+  ],
+  "file_measure": [
+   [
+    "P2",
+    "100"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   3555.075,
+   979.8,
+   3570.2,
+   995.75
+  ],
+  "crop_origin": [
+   2747,
+   674
+  ],
+  "agent_look_not_sean": "augmentation dot"
+ },
+ {
+  "tile": "c1_11.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "brahms",
+  "page": 25,
+  "place": "25/0/11/8",
+  "heads": [
+   "glyph/25/0/11/8/15"
+  ],
+  "file_measure": [
+   [
+    "P12",
+    "142"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4659.75,
+   3370.05,
+   4684.775,
+   3401.95
+  ],
+  "crop_origin": [
+   4165,
+   3265
+  ],
+  "agent_look_not_sean": "possibly a real head (lower chord head on a line) -- unsure"
+ },
+ {
+  "tile": "c1_12.png",
+  "cause": "not_a_notehead:too_narrow",
+  "plate": "litolff",
+  "page": 16,
+  "place": "16/0/8/4",
+  "heads": [
+   "glyph/16/0/8/4/1"
+  ],
+  "file_measure": [
+   [
+    "P9",
+    "241"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1035.9425,
+   1507.0475,
+   1051.535,
+   1521.065
+  ],
+  "crop_origin": [
+   849,
+   1442
+  ],
+  "agent_look_not_sean": "top of a half note's stem/slash -- unsure, probably not a head"
+ },
+ {
+  "tile": "c2_01.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "litolff",
+  "page": 16,
+  "place": "16/0/4/6",
+  "heads": [
+   "glyph/16/0/4/6/1"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "243"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1276.85,
+   1091.9675,
+   1342.2125,
+   1100.0
+  ],
+  "crop_origin": [
+   1134,
+   911
+  ],
+  "agent_look_not_sean": "beam piece"
+ },
+ {
+  "tile": "c2_02.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 4,
+  "place": "4/1/7/1",
+  "heads": [
+   "glyph/4/1/7/1/3"
+  ],
+  "file_measure": [
+   [
+    "P8",
+    "20"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1794.85,
+   5876.3,
+   1811.35,
+   5884.0
+  ],
+  "crop_origin": [
+   646,
+   5554
+  ],
+  "agent_look_not_sean": "speck"
+ },
+ {
+  "tile": "c2_03.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "litolff",
+  "page": 16,
+  "place": "16/0/6/9",
+  "heads": [
+   "glyph/16/0/6/9/8"
+  ],
+  "file_measure": [
+   [
+    "P7",
+    "246"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1671.09,
+   1175.0,
+   1704.48,
+   1179.725
+  ],
+  "crop_origin": [
+   1446,
+   1159
+  ],
+  "agent_look_not_sean": "tremolo slash"
+ },
+ {
+  "tile": "c2_04.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 25,
+  "place": "25/0/4/5",
+  "heads": [
+   "glyph/25/0/4/5/4"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "139"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   3657.235,
+   1512.0,
+   3665.8375,
+   1520.6025
+  ],
+  "crop_origin": [
+   2767,
+   1484
+  ],
+  "agent_look_not_sean": "speck by a rest"
+ },
+ {
+  "tile": "c2_05.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 25,
+  "place": "25/1/4/2",
+  "heads": [
+   "glyph/25/1/4/2/9"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "146"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2216.4175,
+   5272.0,
+   2227.795,
+   5282.545
+  ],
+  "crop_origin": [
+   1439,
+   5244
+  ],
+  "agent_look_not_sean": "speck by a rest"
+ },
+ {
+  "tile": "c2_06.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "litolff",
+  "page": 4,
+  "place": "4/1/5/6",
+  "heads": [
+   "glyph/4/1/5/6/6"
+  ],
+  "file_measure": [
+   [
+    "P6",
+    "70"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1401.08,
+   2782.0,
+   1432.6,
+   2788.08
+  ],
+  "crop_origin": [
+   1192,
+   2766
+  ],
+  "agent_look_not_sean": "tremolo slash"
+ },
+ {
+  "tile": "c2_07.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "litolff",
+  "page": 4,
+  "place": "4/0/10/11",
+  "heads": [
+   "glyph/4/0/10/11/2"
+  ],
+  "file_measure": [
+   [
+    "P12",
+    "60"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2076.785,
+   1831.0,
+   2092.3775,
+   1836.355
+  ],
+  "crop_origin": [
+   1872,
+   1815
+  ],
+  "agent_look_not_sean": "bottom of the staff above's head (cut piece)"
+ },
+ {
+  "tile": "c2_08.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "litolff",
+  "page": 4,
+  "place": "4/1/9/12",
+  "heads": [
+   "glyph/4/1/9/12/2"
+  ],
+  "file_measure": [
+   [
+    "P10",
+    "76"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2154.7825,
+   3332.0,
+   2175.5725,
+   3336.41
+  ],
+  "crop_origin": [
+   1982,
+   3316
+  ],
+  "agent_look_not_sean": "bottom of the staff above's head (cut piece)"
+ },
+ {
+  "tile": "c2_09.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 5,
+  "place": "5/0/4/7",
+  "heads": [
+   "glyph/5/0/4/7/13"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "35"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   5250.3525390625,
+   1692.00146484375,
+   5261.75927734375,
+   1706.91796875
+  ],
+  "crop_origin": [
+   4342,
+   1377
+  ],
+  "agent_look_not_sean": "piece at a stem"
+ },
+ {
+  "tile": "c2_10.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 5,
+  "place": "5/0/4/7",
+  "heads": [
+   "glyph/5/0/4/7/12"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "35"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   5421.1611328125,
+   1377.0,
+   5430.81298828125,
+   1389.869140625
+  ],
+  "crop_origin": [
+   4342,
+   1349
+  ],
+  "agent_look_not_sean": "beam piece"
+ },
+ {
+  "tile": "c2_11.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 5,
+  "place": "5/0/2/2",
+  "heads": [
+   "glyph/5/0/2/2/13"
+  ],
+  "file_measure": [
+   [
+    "P3",
+    "30"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2115.3825,
+   1224.095,
+   2132.2775,
+   1229.0
+  ],
+  "crop_origin": [
+   1442,
+   902
+  ],
+  "agent_look_not_sean": "augmentation dot"
+ },
+ {
+  "tile": "c2_12.png",
+  "cause": "not_a_notehead:clipped_fragment",
+  "plate": "brahms",
+  "page": 12,
+  "place": "12/0/4/9",
+  "heads": [
+   "glyph/12/0/4/9/5"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "80"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   3873.6625,
+   1615.68,
+   3902.245,
+   1629.0
+  ],
+  "crop_origin": [
+   3281,
+   1296
+  ],
+  "agent_look_not_sean": "piece of the staff below's rest/head"
+ },
+ {
+  "tile": "c3_01.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 19,
+  "place": "19/0/11/5",
+  "heads": [
+   "glyph/19/0/11/5/8"
+  ],
+  "file_measure": [
+   [
+    "P12",
+    "119"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   3098.815,
+   2971.18,
+   3158.765,
+   2999.52
+  ],
+  "crop_origin": [
+   2701,
+   2943
+  ],
+  "agent_look_not_sean": "on a slur near the barline, no head"
+ },
+ {
+  "tile": "c3_02.png",
+  "cause": "owned_by_another_staff",
+  "plate": "litolff",
+  "page": 10,
+  "place": "10/1/2/9",
+  "heads": [
+   "glyph/10/1/2/9/7"
+  ],
+  "file_measure": [
+   [
+    "P3",
+    "196"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   1906.79,
+   2461.5775,
+   1926.32,
+   2474.65
+  ],
+  "crop_origin": [
+   1703,
+   2314
+  ],
+  "agent_look_not_sean": "real half head (tremolo) below the staff -- a head stands near it on the owner staff, probably written there"
+ },
+ {
+  "tile": "c3_03.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 12,
+  "place": "12/0/6/8",
+  "heads": [
+   "glyph/12/0/6/8/4"
+  ],
+  "file_measure": [
+   [
+    "P7",
+    "79"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   3329.5625,
+   1804.7775,
+   3371.465,
+   1836.69
+  ],
+  "crop_origin": [
+   3018,
+   1749
+  ],
+  "agent_look_not_sean": "real hollow head above the staff, not written on either staff"
+ },
+ {
+  "tile": "c3_04.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 12,
+  "place": "12/0/10/5",
+  "heads": [
+   "glyph/12/0/10/5/4"
+  ],
+  "file_measure": [
+   [
+    "P11",
+    "76"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2438.5975,
+   2651.7075,
+   2478.5575,
+   2681.955
+  ],
+  "crop_origin": [
+   2124,
+   2623
+  ],
+  "agent_look_not_sean": "real head with tremolo -- a head near it is written on the owner staff, probably written there"
+ },
+ {
+  "tile": "c3_05.png",
+  "cause": "owned_by_another_staff",
+  "plate": "litolff",
+  "page": 10,
+  "place": "10/1/2/10",
+  "heads": [
+   "glyph/10/1/2/10/6"
+  ],
+  "file_measure": [
+   [
+    "P3",
+    "197"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2060.6175,
+   2465.83,
+   2088.9675,
+   2483.155
+  ],
+  "crop_origin": [
+   1886,
+   2314
+  ],
+  "agent_look_not_sean": "real half head (tremolo) below the staff, not written"
+ },
+ {
+  "tile": "c3_06.png",
+  "cause": "owned_by_another_staff",
+  "plate": "litolff",
+  "page": 10,
+  "place": "10/1/1/11",
+  "heads": [
+   "glyph/10/1/1/11/2"
+  ],
+  "file_measure": [
+   [
+    "P2",
+    "198"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   2192.08,
+   2365.0775,
+   2213.9725,
+   2375.0
+  ],
+  "crop_origin": [
+   2034,
+   2186
+  ],
+  "agent_look_not_sean": "real hollow head, not written"
+ },
+ {
+  "tile": "c3_07.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 12,
+  "place": "12/0/10/0",
+  "heads": [
+   "glyph/12/0/10/0/10"
+  ],
+  "file_measure": [
+   [
+    "P11",
+    "71"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   940.583984375,
+   2637.0,
+   982.501953125,
+   2659.39453125
+  ],
+  "crop_origin": [
+   644,
+   2609
+  ],
+  "agent_look_not_sean": "tremolo slash on a stem"
+ },
+ {
+  "tile": "c3_08.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 4,
+  "place": "4/1/4/6",
+  "heads": [
+   "glyph/4/1/4/6/4"
+  ],
+  "file_measure": [
+   [
+    "P5",
+    "25"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4107.0125,
+   4924.0,
+   4138.895,
+   4965.1475
+  ],
+  "crop_origin": [
+   3358,
+   4896
+  ],
+  "agent_look_not_sean": "flag of an eighth"
+ },
+ {
+  "tile": "c3_09.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 12,
+  "place": "12/0/5/0",
+  "heads": [
+   "glyph/12/0/5/0/5"
+  ],
+  "file_measure": [
+   [
+    "P6",
+    "71"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   693.095703125,
+   1476.0,
+   751.953125,
+   1507.294921875
+  ],
+  "crop_origin": [
+   582,
+   1448
+  ],
+  "agent_look_not_sean": "clef/letter ink"
+ },
+ {
+  "tile": "c3_10.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 0,
+  "place": "0/0/0/6",
+  "heads": [
+   "glyph/0/0/0/6/20"
+  ],
+  "file_measure": [
+   [
+    "P1",
+    "7"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4708.0625,
+   1883.59375,
+   4757.21875,
+   1904.21875
+  ],
+  "crop_origin": [
+   4107,
+   1455
+  ],
+  "agent_look_not_sean": "real head below the staff, not written"
+ },
+ {
+  "tile": "c3_11.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 14,
+  "place": "14/0/6/8",
+  "heads": [
+   "glyph/14/0/6/8/1"
+  ],
+  "file_measure": [
+   [
+    "P7",
+    "103"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   4880.1,
+   1913.525,
+   4918.05,
+   1944.6
+  ],
+  "crop_origin": [
+   4192,
+   1850
+  ],
+  "agent_look_not_sean": "real head with tremolo above the staff, not written"
+ },
+ {
+  "tile": "c3_12.png",
+  "cause": "owned_by_another_staff",
+  "plate": "brahms",
+  "page": 19,
+  "place": "19/0/5/0",
+  "heads": [
+   "glyph/19/0/5/0/18"
+  ],
+  "file_measure": [
+   [
+    "P6",
+    "114"
+   ]
+  ],
+  "bar_state_in_file": "plain",
+  "box": [
+   787.8818359375,
+   1620.0,
+   814.65869140625,
+   1637.55859375
+  ],
+  "crop_origin": [
+   636,
+   1592
+  ],
+  "agent_look_not_sean": "key-signature flat"
+ }
+]

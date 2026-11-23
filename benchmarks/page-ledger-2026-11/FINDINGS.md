@@ -760,3 +760,32 @@ rest missed under a clef change 1; a head invented from non-note ink 1. Worst: S
 **Also found.** Sean's third hollow half note on Brahms p0 (staff 4 bar 3, x ~2712): head and stem read;
 the bar is red because `rhythm.adjudicate_dot_role` places the dot against the detector's box (0.80
 space above its centre, limit 0.75) -- against the head's ink it is 0.56. Lane `lane-dot-by-ink`.
+
+## A dropped head can hide: the bar sum is the only check (2026-11-22; main de589b6c4; frozen-sample gathers of 2026-11-21 re-adjudicated and re-exported; STAGED EXPORT)
+
+**Cause.** EXPORT decides whether a bar adds up from the notes it WROTE (`export._part_xml` ->
+`_bar_holds_out`). The list of refused heads that may be real notes (`cell.unplaced`, filed by
+`_attach_unplaced`) is read only after a bar has already failed, and heads refused
+`owned_by_another_staff` are never on it. So a bar that still adds up without the dropped head -- or
+whose second error cancels the first -- is written plain. The bar sum can only confirm (CLAUDE.md
+section 4); here it is the only witness.
+
+**The 8 triage cases, by the step that drops the head** (record trace): `duration_narrowed` from
+`beams_ambiguous` (Litolff flute, marked; Brahms cello sixteenths, marked), from no stem joined
+(Litolff viola, HIDDEN: the half alone fills the bar), from `flag_ink_unread` (Brahms cello F2, HIDDEN:
+the chord written a quarter cancels it); `chord_value_undecided` (Sean's Beethoven chord, effectively
+hidden: the note invented from the sharp makes the sum pass; Brahms violin I, marked);
+`unread_gap_in_partial_bar` (marked); one no longer reproduces.
+
+**Whole sample, notes not boxes (a computation; hidden = plain in an unmarked bar).** All candidate
+lost notes: Litolff 66 hidden of 265, Brahms 207 of 376. By reason, hidden/total: too narrow 25/57 and
+127/167; clipped fragment 10/19 and 18/23; owned by another staff 4/7 and 13/25; duration narrowed
+9/64 and 2/58; chord value undecided 2/30 and 0/26. An agent's look at 12 crops each
+(`out/print/boxed-not-written/`): too narrow -- 1 to 3 of 12 may be real heads (the rest dots, barline
+slivers, a rest); clipped fragment -- 0 of 12 real; owned by another staff -- 7 of 12 real printed
+heads (mostly Brahms tremolo halves near a neighbouring staff), 5 with no written head anywhere near.
+
+**The safeguard, priced.** "A bar holding a boxed, unwritten head that may be a real note is never
+written plain": applied to every candidate it adds 56 + 22 bars on Litolff (red today 153) and 170 + 21
+on Brahms (130); leaving out bars whose only candidates are too-narrow or clipped boxes, 23 + 12 and
+50 + 4. `owned_by_another_staff` must come off the "not a gap" list.
