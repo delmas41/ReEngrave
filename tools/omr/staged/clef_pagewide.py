@@ -72,8 +72,13 @@ C_BOWL_MAX_ASYMMETRY = 0.5
 #: piece is the thick bar and the ink joined to it in the clef's columns, staff lines passing through it set aside; it reaches at most
 #: `C_OUTSIDE_REACH_SPACES` past the bar's own top and bottom (on the 61 C clefs of the frozen sample, Litolff and Breitkopf: at 0.3
 #: every middle lands nearest the line the clef is read on, within 0.32 of it and 0.70 or more from the next; at 1.0 a stem, slur or
-#: line below joins in and 4 are named wrong). The middle is named with the header readers' own snap (`name_c`); no new cut.
+#: line below joins in and 4 are named wrong). The middle names alto or tenor (`name_c_bar`).
 C_OUTSIDE_REACH_SPACES = 0.3
+#: a middle ABOVE the tenor line or BELOW the alto line has no second C line on that side, so the nearer one names it -- while it is
+#: nearer that line than the next staff line out (under half a space; at half a space it sits as near the fifth or second line, not a
+#: C clef read on an instrumental staff). Measured on the 61: up to 0.41 above the tenor line (Litolff p4 s1 st3 bar 3, Sean: tenor),
+#: 0.20 below the alto line
+C_OUTER_REACH_SPACES = 0.5
 #: the clef's columns end this far (staff spaces) short of another mark's stroke standing within `C_STROKE_REACH_SPACES` right of the
 #: glyph (a barline's ragged edge touches the bowls: Litolff p11 s0 staff 2 bar 15), a stroke being a column whose unbroken ink runs on
 #: more than `C_STROKE_PAST_SPACES` past the bar's top or bottom
@@ -833,14 +838,30 @@ def _ink_runs(col: np.ndarray) -> List[Tuple[int, int]]:
 
 
 def name_c_bar(cand: Dict[str, Any], lines: Sequence[float]) -> Tuple[Optional[str], Optional[int], Optional[float]]:
-    """ROADMAP 2.324 r10: a passing C bar candidate's name -- the staff line through the middle of the clef measured from its top and
-    bottom edges (`c_outside_edges`), named with the header readers' own snap (`name_c`): (name, line, residual) or (None, None,
-    residual) where the middle lands on no line a read C clef uses within the snap (the kind UNREAD, its residual says how close).
-    A candidate with no outside edges (no ink joined to its bar) is UNREAD; it never falls back to where its ink balances."""
-    ll = cand.get("lines_local") or [float(v) for v in lines]
-    if cand.get("outside_middle") is None:
+    """ROADMAP 2.324 r10 (Sean 2026-11-22: "As far as I know the c clefs are only alto and tenor ... we just need to figure out which
+    it is closest to. To me this one looks like a tenor clef that was just printed a bit off"): A C CLEF ON AN INSTRUMENTAL STAFF IS
+    ALTO OR TENOR -- WHICHEVER OF THE THIRD AND FOURTH LINES ITS MIDDLE (MEASURED FROM ITS TOP AND BOTTOM EDGES, `c_outside_edges`) IS
+    NEARER. Never named where its middle sits between those two lines and is not clearly nearer one (more than the header readers'
+    snap, 0.35 space, from both: a possible clef, UNREAD); never past `C_OUTER_REACH_SPACES` outside them; never from the instrument or
+    another clef; never from where its ink balances (a candidate with no outside edges is UNREAD). (name, line, residual)."""
+    ll = [float(v) for v in (cand.get("lines_local") or lines)]
+    if cand.get("outside_middle") is None or len(ll) < 5:
         return None, None, None
-    return name_c(float(cand["outside_middle"]), ll)
+    m = float(cand["outside_middle"])
+    sp = (ll[4] - ll[0]) / 4.0
+    if sp <= 0:
+        return None, None, None
+    tenor_y, alto_y = ll[1], ll[2]                      # the fourth and third lines (lines run top to bottom)
+    dt, da = abs(m - tenor_y) / sp, abs(m - alto_y) / sp
+    if tenor_y <= m <= alto_y:
+        # between the two lines a C clef uses: the nearer only where it is clearly nearer (the header readers' own snap)
+        from ..clef_geometry import DEFAULT_CONFIG
+        if min(dt, da) > DEFAULT_CONFIG.max_residual:
+            return None, None, round(min(dt, da), 3)
+        return ("tenor", 4, round(dt, 3)) if dt <= da else ("alto", 3, round(da, 3))
+    if m < tenor_y:                                     # above the tenor line: no second C line on that side
+        return ("tenor", 4, round(dt, 3)) if dt < C_OUTER_REACH_SPACES else (None, None, round(dt, 3))
+    return ("alto", 3, round(da, 3)) if da < C_OUTER_REACH_SPACES else (None, None, round(da, 3))
 
 
 def c_area(cand: Dict[str, Any], sp: float) -> List[float]:
