@@ -697,6 +697,9 @@ class Cell:
     #: ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): glyphs of THIS bar refused BY a barline's / a layer's claimed ink (`_CLAIM_GAP_REASONS`): not a gap (the ink is
     #: another mark's), but a bar that stops adding up when the false gap goes keeps what the gap gave it -- its notes stay GUESSED (`_mark_claimed_gap_events`).
     claimed_slivers: List[Dict[str, Any]] = field(default_factory=list)
+    #: ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, OFF): heads of THIS bar refused on the way out that may be real notes
+    #: (`_file_dropped_heads`), `{"sub", "reason", "x", "w"}`. EMPTY unless the flag is `bar` or `spot`.
+    dropped_heads: List[Dict[str, Any]] = field(default_factory=list)
 
 
 def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
@@ -1042,6 +1045,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                            reinstated=reinstated_out)
     if partial_bars_mode() != "off":
         _attach_unplaced(rec, runs, fates)
+    rec.__dict__["_dropped_heads_filed"] = _file_dropped_heads(rec, runs, fates)     # ROADMAP 2.333: files nothing while the flag is off
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -5555,7 +5559,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               partial_bars: Optional[List[Dict[str, Any]]] = None,
               unread_bars: Optional[List[Dict[str, Any]]] = None,
               doubled_held_bars: Optional[List[Dict[str, Any]]] = None,
-              red_bars: Optional[List[Dict[str, Any]]] = None
+              red_bars: Optional[List[Dict[str, Any]]] = None,
+              dropped_head_bars: Optional[List[Dict[str, Any]]] = None
               ) -> str:
     """One `<part>`: every measure of every system this part appears on.
 
@@ -5636,6 +5641,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     """
     lines = [f'  <part id="{pid}">']
     partial_mode = partial_bars_mode()
+    _dh_mode = dropped_head_marks_mode()          # ROADMAP 2.333, read once per part
     plan = plan or _EndingPlan()
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
@@ -6243,8 +6249,30 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     lines.extend(_body)
                     lines.append(_unread_bracket_xml("stop", 1))
                 else:
-                    lines.extend(_measure_xml(rec, run, i, events, divisions,
-                                              counters, split=split))
+                    # ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, OFF): a bar that adds up, holding a head that may be a real note and was not
+                    # written, is never written plain -- `bar` marks the bar (every note as read), `spot` marks the head's place. OFF: no change.
+                    _dh = (cell_here.dropped_heads if (cell_here is not None and run.condensed_from is None and _dh_mode != "off") else [])
+                    if _dh and dropped_head_bars is not None:
+                        dropped_head_bars.append({
+                            **_bar_ids(run, i, emitted), "page": run.page, "system": run.system, "staff": run.staff, "cell": i,
+                            "measure": (number if base is None else plan.number(_here, i, base)), "part": pid, "mode": _dh_mode,
+                            "noteheads_and_rests": _bar_event_rows(events), "words": _dropped_head_words(_dh),
+                            "dropped": [dict(d) for d in _dh]})
+                    if _dh and _dh_mode == "bar":
+                        counters["bars_marked_for_a_dropped_head"] += 1
+                        counters["notes_written_in_dropped_head_bars"] += _bar_event_rows(events)
+                        lines.append(_unread_bracket_xml("start", 1))
+                        lines.append(_red_bar_word_xml(_dropped_head_words(_dh)))
+                        lines.extend(_measure_xml(rec, run, i, events, divisions, counters, split=split))
+                        lines.append(_unread_bracket_xml("stop", 1))
+                    else:
+                        if _dh:
+                            _streams = split[0] if split[0] is not None else [events]
+                            for _d in _dh:
+                                lines.append(_dropped_head_spot_xml(_dropped_head_onset(_d, _streams, divisions)))
+                                counters["dropped_head_spots_marked"] += 1
+                        lines.extend(_measure_xml(rec, run, i, events, divisions,
+                                                  counters, split=split))
             lines.extend(_bl_right)
             lines.append("    </measure>")
     one_chord.bar_declines(False)
@@ -7766,6 +7794,159 @@ def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
                               "w": float(w)})
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.333 -- a dropped head must not hide (flag OMR_DROPPED_HEAD_MARKS, OFF)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# STAGE: EXPORT, STAGED path only. Fenced functions: `dropped_head_marks_mode`, `_file_dropped_heads`, `_dropped_head_words`,
+# `_dropped_head_spot_xml`, `_dropped_head_onset`, and the plain-bar branch of `_part_xml` that calls them.
+#
+# THE CAUSE (Sean 2026-11-22, "I don't want things hiding"): a bar is judged by the notes EXPORT WROTE (`_bar_holds_out`). A head
+# refused on the way out that may be a real note is read only after a bar fails (`Cell.unplaced`, 2.117), and a head refused
+# `owned_by_another_staff` never at all -- so a bar that still adds up without it, or whose second error cancels the first, is
+# written plain. The bar sum is the weakest witness and can only confirm (CLAUDE.md section 4); here it was the only one.
+#
+# THE RULE, as a musician would say it: a head the detector boxed and we did not write MAY BE A REAL NOTE when it is a whole
+# head-sized mark the reader took for a head (it passed the notehead checks and was refused only for its value, pitch, owner
+# or chord), and no written note -- on this staff or the neighbouring one -- stands on the same ink.
+# Its nevers, in the same words: never a box too narrow to be a head (dots, barline slivers, rest pieces: at most 3 of 12 real,
+# `benchmarks/page-ledger-2026-11/FINDINGS.md` "A dropped head can hide"); never a clipped fragment (0 of 12 real); never a box
+# the reader named as other ink (`_NOT_A_GAP_REASONS`, any `not_a_notehead:*`); never a second box on a head that IS written,
+# nor a neighbouring staff's copy that is written there (the same ink: `judged.boxes_overlap`). A head refused
+# `owned_by_another_staff` counts only when no written head stands on its ink (7 of 12 were real printed heads; 5 had
+# nothing written near) and is marked on the staff it was filed on (the owner staff wrote nothing there either).
+#
+# TWO MODES (the test chooses): `bar` -- the bar is marked as the file marks a bar it could not fully read (a red bracket and
+# red words naming the dropped head), every note written as read; `spot` -- the bar's notes stay as written and the place of
+# the unwritten head carries its own red `unread note` words, at its onset, nothing invented (no note, no rest, no time).
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: that a refused head-sized box with no written twin is worth a
+# musician's look (falsified by a seeded sample of marked bars that are right as written); the words are ours, not Sean's.
+# NOT CONFIRMED: the LilyPond twin (`lilypond._collect_bars`) does not draw either mark -- outside this lane's fence.
+DROPPED_HEAD_MARKS_ENV = "OMR_DROPPED_HEAD_MARKS"
+DROPPED_HEAD_WORD_PREFIX = "a note not written"
+DROPPED_HEAD_SPOT_WORD = "unread note"
+
+#: what a dropped head's refusal says, in a musician's words (the bar mark names it)
+_DROPPED_HEAD_REASON_WORDS = {
+    "duration_narrowed": "value not read", "duration_abstained": "value not read", "duration_absent": "value not read",
+    "chord_value_undecided": "chord value not read", "no_pitch": "pitch not read",
+    "owned_by_another_staff": "staff not decided", "unread:wide_box_unread": "head not read",
+}
+#: refusals that say the box is not a whole head (the two measured scrap classes) -- never a dropped note
+_DROPPED_HEAD_SCRAPS = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:clipped_fragment",
+                                  # 2.270: ink narrower than a head (a piece of a sign) / ink across a stem on both sides (a slash)
+                                  "ink_not_head_shaped", "ink_straddles_a_stem"})
+
+
+def dropped_head_marks_mode() -> str:
+    """`OMR_DROPPED_HEAD_MARKS`: `bar` or `spot`; anything else (DEFAULT, unset) is `off` -- an allow-list."""
+    v = os.environ.get(DROPPED_HEAD_MARKS_ENV, "").strip().lower()
+    return v if v in ("bar", "spot") else "off"
+
+
+def _dropped_head_may_be_a_note(reason: Optional[str]) -> bool:
+    """The refusal half of the rule: refused for its value, pitch, owner or chord -- not as a scrap, not as other ink."""
+    if not reason or reason in ("written", "written_relocated") or reason in _DROPPED_HEAD_SCRAPS:
+        return False
+    if reason == "owned_by_another_staff":
+        return True
+    if reason in _NOT_A_GAP_REASONS or reason in _CLAIM_GAP_REASONS:
+        return False
+    if reason.startswith(("not_a_notehead:", "not_a_rest:", "rest_")) or reason in ("ink_is_a_whole_rest", _GAP_REFUSAL):
+        return False
+    return True
+
+
+def _file_dropped_heads(rec: Record, runs: Dict[str, StaffRun], fates: Dict[str, str]) -> Dict[str, int]:
+    """ROADMAP 2.333. File every refused head that may be a real note (the rule above) onto its bar's `Cell.dropped_heads`:
+    `{"sub", "reason", "x", "w"}`, `x` in the canonical frame of an event's `x_position`. Reads `fates`, the boxes and the
+    head class; decides nothing. Boxes on one ink are ONE dropped head (a box of its own staff before an `owned_by_another_staff` copy). Returns counts by outcome."""
+    if dropped_head_marks_mode() == "off":
+        return {}
+    from .judged import boxes_overlap
+    out: Dict[str, int] = collections.Counter()
+    page_box: Dict[str, Tuple[int, List[float]]] = {}
+    canon: Dict[str, Any] = {}
+    for o in rec.obs_of(Q.GLYPH_BOX):
+        sub = o["subject"]
+        b = (o.get("detail") or {}).get("bbox_page_px")
+        if isinstance(b, (list, tuple)) and len(b) == 4:
+            page_box.setdefault(sub, (_parse_subject(sub)["page"] or 0, [float(t) for t in b]))
+        canon.setdefault(sub, o.get("value"))
+    written: Dict[int, List[List[float]]] = collections.defaultdict(list)
+    for sub, reason in fates.items():
+        if reason in ("written", "written_relocated") and sub in page_box:
+            pg, b = page_box[sub]
+            written[pg].append(b)
+    kept: Dict[int, List[List[float]]] = collections.defaultdict(list)
+    # a box refused `owned_by_another_staff` comes LAST: where the owner staff's own box of that ink is also dropped, the note is
+    # marked in the owner's bar (its own box), and the copy is the second box on it
+    for sub in sorted(fates, key=lambda k: (fates[k] == "owned_by_another_staff", k)):
+        reason = fates[sub]
+        if not _dropped_head_may_be_a_note(reason):
+            continue
+        if not rec.obs(Q.NOTEHEAD_CLASS, sub) or rec.obs(Q.REST, sub):
+            continue
+        if sub not in page_box:
+            out["no_page_box"] += 1
+            continue
+        pg, b = page_box[sub]
+        if any(boxes_overlap(b, w)[0] for w in written[pg]):
+            out["a_written_note_on_its_ink"] += 1
+            continue
+        if any(boxes_overlap(b, k)[0] for k in kept[pg]):
+            out["second_box_on_a_dropped_head"] += 1
+            continue
+        v = canon.get(sub)
+        s = _parse_subject(sub)
+        run = runs.get(_staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0))
+        cell = run.cells.get(s["cell"] or 0) if run is not None else None
+        if cell is None or not v or len(v) != 5:
+            out["no_bar"] += 1
+            continue
+        kept[pg].append(b)
+        cell.dropped_heads.append({"sub": sub, "reason": reason, "x": float(v[1]) + float(v[3]) / 2.0, "w": float(v[3])})
+        out["filed"] += 1
+    return dict(out)
+
+
+def _dropped_head_words(dropped: Sequence[Dict[str, Any]]) -> str:
+    """The bar mark's words: `a note not written: value not read` (each reason once, in a musician's words)."""
+    seen: List[str] = []
+    for d in dropped:
+        w = _DROPPED_HEAD_REASON_WORDS.get(d["reason"], d["reason"].replace("_", " "))
+        if w not in seen:
+            seen.append(w)
+    return "%s: %s" % (DROPPED_HEAD_WORD_PREFIX, ", ".join(seen))
+
+
+def _dropped_head_onset(head: Dict[str, Any], streams: Sequence[Sequence[Dict[str, Any]]], divisions: int) -> int:
+    """Where in the bar the unwritten head stands, in `<duration>` units: the time of the voice's written events that stand
+    LEFT of it (the voice holding the event nearest in x). A place to look, not a beat claimed for a note."""
+    best, best_d = None, None
+    for st in streams:
+        for e in st:
+            d = abs(float(e.get("x_position") or 0) - head["x"])
+            if best_d is None or d < best_d:
+                best, best_d = st, d
+    if not best:
+        return 0
+    tol = 0.5 * max(head.get("w") or 0.0, 1.0)
+    return sum(_event_units(e, divisions) for e in sorted(best, key=lambda e: float(e.get("x_position") or 0))
+               if float(e.get("x_position") or 0) < head["x"] - tol)
+
+
+def _dropped_head_spot_xml(units: int, indent: str = "      ") -> str:
+    """The spot mark: red `unread note` words at the head's onset (`<offset>` from the bar's start). No note, rest or time."""
+    return (f'{indent}<direction placement="above">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">{DROPPED_HEAD_SPOT_WORD}</words>\n'
+            f"{indent}  </direction-type>\n"
+            + (f"{indent}  <offset>{int(units)}</offset>\n" if units else "")
+            + f"{indent}</direction>")
+
+
 def _event_duration_certain(ev: Dict[str, Any]) -> bool:
     """True where the event's DURATION was read (not an INFER collapse). A
     guessed duration leaves its own end -- and so every later onset -- unsure."""
@@ -8499,6 +8680,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     doubled_held_bars: List[Dict[str, Any]] = []
     #: ROADMAP 2.173: every bar written red (flag `OMR_RED_BARS`).
     red_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`): every bar that adds up and holds a head that may be a real note, not written.
+    dropped_head_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
@@ -8599,7 +8782,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    partial_bars=partial_bars,
                                    unread_bars=unread_bars,
                                    doubled_held_bars=doubled_held_bars,
-                                   red_bars=red_bars))
+                                   red_bars=red_bars,
+                                   dropped_head_bars=dropped_head_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -8713,6 +8897,16 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "stay_held_by_reason": dict(_still),
         "bars": partial_bars,
     }
+    # ROADMAP 2.333: only present when the flag is on, so OFF writes the report it always wrote.
+    if dropped_head_marks_mode() != "off":
+        report["dropped_head_marks"] = {
+            "flag": DROPPED_HEAD_MARKS_ENV, "mode": dropped_head_marks_mode(),
+            "filed": rec.__dict__.get("_dropped_heads_filed") or {},
+            "bars": len(dropped_head_bars),
+            "bars_marked": int(counters.get("bars_marked_for_a_dropped_head", 0)),
+            "spots_marked": int(counters.get("dropped_head_spots_marked", 0)),
+            "list": dropped_head_bars,
+        }
     # ⚠️⚠️ ROADMAP 2.173. REPORTED APART from "bars add up" AND from the held
     # bars: a red bar does NOT add up -- that is why it is red. Only present
     # when the flag is on, so OFF writes the report it always wrote.
