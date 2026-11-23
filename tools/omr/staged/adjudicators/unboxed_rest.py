@@ -135,9 +135,9 @@ WRONG_KIND_BOX_SHARE = 0.5
 
 
 def rest_boxed_as_other_enabled() -> bool:
-    """`OMR_REST_BOXED_AS_OTHER`, default OFF (ROADMAP 2.334)."""
+    """`OMR_REST_BOXED_AS_OTHER`, default ON (ROADMAP 2.334; Sean 2026-11-23 "Land the rest switch on"); "0"/"false"/"no"/"off" turns it off."""
     import os
-    return os.environ.get(REST_BOXED_AS_OTHER_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(REST_BOXED_AS_OTHER_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def eighth_rest_shaped(d: Dict[str, Any]) -> bool:

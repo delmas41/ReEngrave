@@ -646,7 +646,7 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
 
 
 def _on_an_accidentals_ink(ic, box_row) -> Optional[Ruling]:
-    """accidental-not-head lane (flag `OMR_ACCIDENTAL_FUSED_INK`, default OFF). THE RULE: ink that is an accidental's is never also a notehead. A head
+    """accidental-not-head lane (flag `OMR_ACCIDENTAL_FUSED_INK`, default ON). THE RULE: ink that is an accidental's is never also a notehead. A head
     box that owns no ink of its own and stands mostly on ink earlier marks claimed, an ACCIDENTAL's claim among them, is refused BY THE CLAIM
     (`claimed_by:page_claim`). The one-claim rule (2.277: one claim holds `CUT` of the box) missed the natural fused into the barline at Litolff
     bar 21: the barline held 38% of each head box on it, the natural the rest, so neither alone refused them and an A-flat4 half was written on

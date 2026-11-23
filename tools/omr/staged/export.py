@@ -110,11 +110,11 @@ RELOCATE_COLLISION_SPACES = 0.75
 
 
 def relocate_at_export_enabled() -> bool:
-    """`OMR_RELOCATE_AT_EXPORT` -- DEFAULT OFF, so an allow-list: a typo or an
-    empty value leaves the pre-2.58 exporter (which DROPS the head) in force.
+    """`OMR_RELOCATE_AT_EXPORT` -- DEFAULT ON (Sean 2026-11-23, after ROADMAP 2.337);
+    "0"/"false"/"no"/"off" restores the pre-2.58 exporter (which DROPS the head).
     Read ONCE per export, never per notehead."""
-    return os.environ.get(RELOCATE_AT_EXPORT_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    return os.environ.get(RELOCATE_AT_EXPORT_ENV, "").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 #: ROADMAP 2.117 (Sean, 2026-10-14: *"I want to make sure that the measure
@@ -1533,7 +1533,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
     a LATER reason then dropped (counted in `dropped` under that reason, so
     never lost twice and never counted as placed).
 
-    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default OFF, allow-list): the one exception to
+    ROADMAP 2.58 (`OMR_RELOCATE_AT_EXPORT`, default ON, 0/false/no/off disables): the one exception to
     the paragraph below. Sean, 2026-10-06 -- *"All note heads should be found
     and written on their staff"* -- ruled that a head whose decided owner is
     another staff, and which that staff holds NO copy of, is RELOCATED rather
@@ -2997,14 +2997,14 @@ FOLD_PITCH_RULE = "folded_head_pitch_disagrees"
 _FOLD_BOX_MAX_SP, _FOLD_BOX_MIN_SP = 1.6, 0.6
 
 
-#: ROADMAP 2.331 fix B: default OFF ("1"/"true"/"yes"/"on" turns it on)
+#: ROADMAP 2.331 fix B: default ON (Sean 2026-11-23, after ROADMAP 2.337; "0"/"false"/"no"/"off" turns it off)
 FOLD_FAR_ENV = "OMR_FOLD_FAR_BY_LEDGER"
 #: `_fold_far_positions`: a far fold that is NOT decided (marked blue)
 _FAR_HELD = ("far_fold_held",)
 
 
 def fold_far_by_ledger_enabled() -> bool:
-    return os.environ.get(FOLD_FAR_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    return os.environ.get(FOLD_FAR_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _fold_far_positions(rec: "Record", heads: List[Any], rounded: Dict[str, Any]) -> Any:

@@ -1983,7 +1983,7 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     cf_row = _ledger_finding(ev, "accidental")          # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
-    # ROADMAP 2.334 (OMR_REST_BOXED_AS_OTHER, default OFF): a box says where to look, the ink says the kind. An accidental box standing on ink
+    # ROADMAP 2.334 (OMR_REST_BOXED_AS_OTHER, default ON): a box says where to look, the ink says the kind. An accidental box standing on ink
     # with an eighth rest's shape (bulb top left, stroke down to the right, alone in the staff) is not an accidental. NEVER a real accidental:
     # a sharp, natural or flat has a full-height stroke on its left, a double sharp is an x about one space tall -- both outside the eighth's
     # windows (`unboxed_rest.eighth_rest_shaped`). The rest itself is read by the 2.99 ink reader, which this refusal lets see the ink.
