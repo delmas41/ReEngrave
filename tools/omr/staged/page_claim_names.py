@@ -295,6 +295,119 @@ def rests_enabled() -> bool:
     return os.environ.get(ENV_RESTS, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
+ENV_ACCIDENTAL_BOXED_AS_OTHER = "OMR_ACCIDENTAL_BOXED_AS_OTHER"
+#: ROADMAP 2.340 (flag `OMR_ACCIDENTAL_BOXED_AS_OTHER`, default OFF). THE RULE, as a musician says it: a sharp or a natural stands just left of the note it
+#: alters, on that note's line or space; whatever the detector called it, that ink is the note's accidental and never a rest. A rest stands alone in the staff.
+#: The boundary (a 16th rest before a note vs a filled-in sharp before a note): the accidental reader (2.285 / 2.336) names the ink a sharp or natural -- two
+#: uprights, or a block with an upright sticking out at an end -- AND a notehead stands just right of it with its centre on the accidental's own line or space
+#: (`ACC_HEAD_DY_MAX_SP`); a rest's one slanted body is never read as two uprights, and a rest before a note is not at that note's height. A FLAT is never
+#: read this way (its stroke and bowl are a quarter rest's shape: 2.285 r1 read quarter rests as flats -- the reason rests claim first).
+#: THE NEVER: never a rest that stands alone; never a rest whose ink the reader does not name a sharp or natural; never a flat.
+#: A rest box refused here files NO claim, so the existing accidental reader, which runs next, reads and claims the ink (no second reader).
+#: the farthest a head's centre stands from the accidental's own anchor height (spaces): "on that head's line or space" (half a space each way, plus a
+#: scanned staff's tilt). A measurement on our plates, so it only NARROWS (the reader's own `head_beside` allows 3.1).
+ACC_HEAD_DY_MAX_SP = 0.75
+#: the widest gap between the accidental's right edge and its note's left edge (spaces): "just left of" its note (the sharps boxed as rests touch their
+#: heads, 0.0-0.1 sp; a quarter rest 3.5 sp before a barline sliver boxed as a head was read as a filled sharp, Litolff 9/1/0/0). Narrows only.
+ACC_HEAD_GAP_MAX_SP = 1.0
+#: the share of a rest box's own ink (its named strokes, by mask pixels) the accidental reading must hold to be that rest's ink
+ACC_INK_SHARE_MIN = 0.5
+#: the accidental kinds that may take a rest box's ink (never a flat, rule above)
+ACC_KINDS = ("sharp", "natural")
+
+
+def accidental_boxed_as_other_enabled() -> bool:
+    """`OMR_ACCIDENTAL_BOXED_AS_OTHER` (ROADMAP 2.340), default OFF; only "1"/"true"/"yes"/"on" enables."""
+    return os.environ.get(ENV_ACCIDENTAL_BOXED_AS_OTHER, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def _ink_inside(page_map: Any, ink: Dict[int, float], box: Sequence[float]) -> float:
+    """The mask pixels of the strokes `ink` names that lie inside `box` (page px)."""
+    sc = float(getattr(page_map, "scale", 1.0) or 1.0)
+    bx0, by0, bx1, by1 = (float(v) * sc for v in box)
+    n = 0.0
+    for i in ink:
+        m, x0, y0 = page_map.masks[i]
+        h, w = m.shape
+        lx0, ly0 = max(0, int(round(bx0)) - x0), max(0, int(round(by0)) - y0)
+        lx1, ly1 = min(w, int(round(bx1)) - x0), min(h, int(round(by1)) - y0)
+        if lx1 > lx0 and ly1 > ly0:
+            n += float(m[ly0:ly1, lx0:lx1].sum())
+    return n
+
+
+def boxed_accidentals(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.340: the detector-boxed accidentals whose own family reading (`d.accidental_family`, gather 2.201) names a sharp or natural AND finds the
+    note directly right of it at its step (`head_right`): `{boxed, type, cls, box (page px, grown), head_right}`."""
+    from . import record as R
+    out = []
+    for c in cells:
+        key = local.get(c.staff_index)
+        rect, up = getattr(c, "bbox_page_px", None), getattr(c, "upscale_factor", None)
+        if key is None or not rect or not up:
+            continue
+        for d in detections.get(R.cell(c.page_index, key[0], key[1], c.measure_index).to_key()) or ():
+            fam = getattr(d, "accidental_family", None)
+            if not fam or fam.get("type") not in ACC_KINDS or not fam.get("head_right"):
+                continue
+            gb = fam.get("box") or [d.x_canonical, d.y_canonical, d.x_canonical + d.width_canonical, d.y_canonical + d.height_canonical]
+            pb = [rect[0] + float(gb[0]) / up, rect[1] + float(gb[1]) / up, rect[0] + float(gb[2]) / up, rect[1] + float(gb[3]) / up]
+            out.append(dict(boxed=True, type=fam["type"], cls=str(getattr(d, "smufl_name", "")), box=pb, head_right=dict(fam["head_right"])))
+    return out
+
+
+def accidental_on_rest_ink(page_map: Any, ids: Sequence[int], accidentals: Sequence[Dict[str, Any]], heads: Sequence[Any] = ()) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.340, pure: the accidental reading (a cluster of `page_accidental_ink.read_page`, read with no rest claim on the ledger) that holds at least
+    `ACC_INK_SHARE_MIN` of the rest box's own ink (`ids`, by mask pixels), is a sharp or natural, and has a notehead JUST right of it (`ACC_HEAD_GAP_MAX_SP`)
+    with its centre at the accidental's own height (`ACC_HEAD_DY_MAX_SP`); else None. `heads`: the detector's head boxes (`page_accidental_ink.Head`); the
+    reading's own `head` is the nearest by gap only, so every head is asked. Returns `{type, box, head, share, gap_sp, dy_sp, how}`."""
+    if not ids or not accidentals:
+        return None
+    from . import accidental_family as AF
+    from . import page_accidental_ink as PAI
+    ink = {}
+    for i in ids:
+        if 0 <= int(i) < len(page_map.masks):
+            ink[int(i)] = float(page_map.masks[int(i)][0].sum())
+    total = sum(ink.values())
+    if total <= 0:
+        return None
+    best = None
+    for c in accidentals:
+        if c.get("type") not in ACC_KINDS:
+            continue
+        if c.get("boxed"):
+            # a detector-BOXED accidental (`gather.gather_accidental_family`): its own reader read the type from the ink and the note right of it at its
+            # step (`head_right`, the role evidence); the rest box takes the accidental's ink when its strokes' pixels lie in the accidental's grown box
+            share = _ink_inside(page_map, ink, c["box"]) / total
+            if share >= ACC_INK_SHARE_MIN and (best is None or share > best["share"]):
+                best = dict(type=c["type"], box=list(c["box"]), head=None, share=round(share, 3), gap_sp=c["head_right"].get("gap_spaces"),
+                            dy_sp=round(float(c["head_right"].get("dy_steps") or 0.0) / 2.0, 2), how="boxed_" + str(c.get("cls")))
+            continue
+        mem = set(int(m) for m in c.get("members") or ())
+        share = sum(v for i, v in ink.items() if i in mem) / total
+        if share < ACC_INK_SHARE_MIN:
+            continue
+        b = c["box"]
+        sp = float(getattr(page_map, "sp", 0.0) or 0.0) or 1.0
+        ms = sorted(m for m in mem if 0 <= m < len(page_map.strokes))
+        if ms:
+            sp = float(getattr(page_map.strokes[ms[0]], "staff_space_local", None) or sp)
+        anchor = b[1] + (b[3] - b[1]) * (AF.anchor_fraction(c["type"]) or 0.5)
+        cands = [tuple(h.box) for h in heads] if heads else ([tuple(c["head"])] if c.get("head") else [])
+        for h in cands:
+            if PAI.share_inside(h, b) >= PAI.OWN_BOX_SHARE or PAI.share_inside(b, h) >= PAI.OWN_BOX_SHARE:
+                continue            # a head box ON the accidental's own ink is not the note it is by
+            gap = (h[0] - b[2]) / sp
+            dy = abs((h[1] + h[3]) / 2.0 - anchor) / sp
+            if not (-0.3 <= gap <= ACC_HEAD_GAP_MAX_SP) or dy > ACC_HEAD_DY_MAX_SP:
+                continue
+            if best is None or (share, -dy) > (best["share"], -best["dy_sp"]):
+                best = dict(type=c["type"], box=list(b), head=list(h), share=round(share, 3), gap_sp=round(gap, 2), dy_sp=round(dy, 2),
+                            how=c.get("how") or "stroke_reading")
+    return best
+
+
 def box_owner(cls: str, category: Optional[str] = None, rests: bool = False) -> Optional[str]:
     """The claim-order owner a detector class names strokes as (module doc above); None = not step 3's. `rests`: the REST families are step 3's too
     (`OMR_PAGE_CLAIM_RESTS`, 2.288), and then ONLY they are, unless `OMR_PAGE_CLAIM_BOXES` is on as well (the caller passes `rests` and filters by `boxes_enabled()`)."""
@@ -330,7 +443,8 @@ _neighbours = IA.neighbours
 rest_attachment = IA.attachment
 
 
-def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None, sides: Optional[Dict[str, Any]] = None, pairs: Optional[Sequence[Any]] = None) -> Tuple[str, str]:
+def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[str, Any]] = None, sides: Optional[Dict[str, Any]] = None, pairs: Optional[Sequence[Any]] = None,
+                  accidental: Optional[Dict[str, Any]] = None) -> Tuple[str, str]:
     """`("READ" | "weak", why)`: does a detector rest box STAND as a rest (ROADMAP 2.288)? Round 2: the question is attachment, not a stroke length. With the page
     strokes read (`attachment` from `rest_attachment`): a box whose ink hangs from a stem carrying a head, touches a head, or is a bare vertical is `weak`
     (a flag, a stem, a flat's vertical); otherwise it stands free and is READ -- unless the cell raster's own ink contact (`Q.REST_INK_CONTACT`, 2.150b, a second
@@ -347,6 +461,8 @@ def rest_standing(detail: Optional[Dict[str, Any]], attachment: Optional[Dict[st
         return "weak", "touches_a_head"
     if attachment.get("bare_stroke"):
         return "weak", "bare_vertical_stroke"
+    if accidental:
+        return "weak", "a_" + str(accidental.get("type")) + "_before_its_note"   # ROADMAP 2.340: the note's accidental, whatever the box says (rule above)
     if pairs:
         return "weak", "two_parallel_verticals"           # a sharp / natural's pair, not one rest's one body (`ink_attachment.parallel_verticals`, 2.288 r4)
     if sides and sides.get("two_lines"):
@@ -455,7 +571,8 @@ def _rest_stroke_fits(page_map: Any, i: int, owner: str, cls: str, raw: Any = No
     return SO.shape_fit(owner, ink, cls)[0] != "no"
 
 
-def rest_box_verdict(page_map: Any, index: StrokeIndex, raw: Any, pb: Sequence[float], cls: str, owner: str, detail: Optional[Dict[str, Any]]) -> Dict[str, Any]:
+def rest_box_verdict(page_map: Any, index: StrokeIndex, raw: Any, pb: Sequence[float], cls: str, owner: str, detail: Optional[Dict[str, Any]],
+                     accidentals: Sequence[Dict[str, Any]] = (), heads: Sequence[Any] = ()) -> Dict[str, Any]:
     """ROADMAP 2.288, STAGED GATHER, pure: does ONE detector rest box (page px `pb`, class `cls`, family `owner`) STAND as a rest, and which page strokes are its ink?
     The per-box half of `gather_page_claim_boxes`, a function of its own so that a real page case (Sean's answered tiles, `benchmarks/rests-claim-first-2026-11/real_cases.json`)
     can be replayed through exactly the code the gather runs. Returns `standing` ("READ" | "weak"), `why`, `ids` (READ: only the strokes the printed rest's shape allows; weak: the
@@ -478,8 +595,9 @@ def rest_box_verdict(page_map: Any, index: StrokeIndex, raw: Any, pb: Sequence[f
         if per:
             sides = dict(both_sides=any(s_["both_sides"] for s_ in per), two_lines=any(s_["two_lines"] for s_ in per), strokes=per)
     pairs = IA.parallel_verticals(page_map, fit)                 # every rest family: one rest holds at most one long vertical
-    standing, why = rest_standing(detail, att, sides, pairs)
-    return dict(standing=standing, why=why, ids=fit if standing == "READ" else ids, block_extra=block_extra, attachment=att, sides=sides, pairs=pairs)
+    acc = accidental_on_rest_ink(page_map, ids, accidentals, heads) if accidentals else None       # ROADMAP 2.340 (the caller passes them only with the flag on)
+    standing, why = rest_standing(detail, att, sides, pairs, acc)
+    return dict(standing=standing, why=why, ids=fit if standing == "READ" else ids, block_extra=block_extra, attachment=att, sides=sides, pairs=pairs, accidental=acc)
 
 
 def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Optional[Dict[str, List[Any]]],
@@ -530,6 +648,18 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
         census.update(rest_boxes=0, rest_read=0, rest_weak={}, rest_weak_boxes=[], rest_read_boxes=[], rest_changed={}, rest_changed_boxes=[], rest_block_named=0,
                       rest_block_named_boxes=[])
     raw = getattr(getattr(pws, "page", None), "binary", None)
+    accidentals: List[Dict[str, Any]] = []
+    acc_heads: List[Any] = []
+    if rests and accidental_boxed_as_other_enabled():
+        # ROADMAP 2.340: what the accidental reader (2.285 / 2.336), which runs next, reads on this page with no rest claim yet on the ledger -- the SAME reader,
+        # read-only (`file=False`); a rest box whose ink it names a sharp or natural beside its note files no claim, and that reader then claims the ink
+        from . import page_accidental_ink as _PAI
+        pre = _PAI.gather_page_accidental_ink(log, pws, cells, local, detections, page_map, file=False)
+        accidentals = [c for c in (pre[0] if pre else ()) if c.get("type") in ACC_KINDS]
+        acc_heads = _PAI._detector_reads(cells, local, detections)[0] if accidentals else []
+        boxed = boxed_accidentals(cells, local, detections)
+        census["accidental_reading"] = dict(unboxed=len(accidentals), boxed=len(boxed))
+        accidentals = accidentals + boxed
     seen = set()
     for c in cells:
         key = local.get(c.staff_index)
@@ -556,7 +686,7 @@ def gather_page_claim_boxes(log: Any, pws: Any, cells: Sequence[Any], local: Dic
                 # 2.288: only a rest that STANDS as one (READ) claims; a weak box files nothing and blocks nobody (counted, with where it stands)
                 rr = log.rows(Q.REST_INK_CONTACT, R.glyph(c.page_index, key[0], key[1], c.measure_index, gi))
                 detail = rr[-1].detail if rr else None
-                v = rest_box_verdict(page_map, index, raw, pb, cls, owner, detail)
+                v = rest_box_verdict(page_map, index, raw, pb, cls, owner, detail, accidentals, acc_heads)
                 standing, why, ids, block_extra = v["standing"], v["why"], v["ids"], v["block_extra"]
                 was, _ = _contact_standing(detail)                       # round 1's answer, for the census (what attachment freed / refused)
                 census["rest_boxes"] += 1
