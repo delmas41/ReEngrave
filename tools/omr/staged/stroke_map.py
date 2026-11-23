@@ -270,113 +270,6 @@ def _two_heads_row(m: np.ndarray, prof: np.ndarray, sp: float) -> Optional[int]:
     return int(min(rows, key=lambda r: (int(wd[r]), abs(r - mid), r)))
 
 
-# -- ROADMAP 2.306 batch 2 (slash cut): WHERE A SLASH CROSSES A STEM, THE STEM KEEPS ITS OWN COLUMN (flag `OMR_SLASH_CUT`, default OFF) --
-#: RULE (as a musician says it): a stem is one thin upright, the same column where a tremolo slash crosses it as just above and below the
-#: slash; the thick diagonal on both sides of it is the slash's. Never a stem wider (or shifted) because a slash crosses it; never a stem cut
-#: short (its own column runs on through the slash); never a cut where nothing the slash finder reads as a slash crosses (a head the stem
-#: ends in, a ledger line, a beam, a flag: a slash is thick, at an angle, straight and reaches out on both sides -- `gather.stem_slashes`,
-#: ROADMAP 2.71, its numbers measured there and not re-tuned here); never an upright wider than a stem (a thick barline, a bracket, a block).
-#: CAUSE (lane's look at full size, Litolff p6, Sean's slash tiles 2.276 r2 #2 and #8): the vertical opening keeps every column whose ink runs
-#: 1.5 spaces down the page. A thick slash at 25-30 degrees runs that far in the column right beside the stem (its own height there plus the
-#: stem's), so the opening hands the stem a column of the slash over the slash's rows (#8: columns 2475-2480 in the slash's rows, 2476-2480
-#: just below; #2: 6 columns in the slash's rows, 5 above).
-SLASH_CUT_ENV = "OMR_SLASH_CUT"
-#: "on both sides": a row where the ink runs on at least this many reduced px past the upright on each side is where the slash finder is
-#: asked at all (a cheap gate: one px is the scan's edge wobble); the finder decides
-CROSS_SIDE_PX = 2
-
-
-def slash_cut_enabled() -> bool:
-    """`OMR_SLASH_CUT` (ROADMAP 2.306 batch 2), default OFF; 1/true/yes/on enables."""
-    return os.environ.get(SLASH_CUT_ENV, "").strip().lower() in ("1", "true", "yes", "on")
-
-
-def _ink_both_sides(row: np.ndarray, c0: int, c1: int) -> bool:
-    """PURE. In one ink row, the run through the columns `[c0, c1)` carries on at least `CROSS_SIDE_PX` past them on BOTH sides."""
-    W = row.shape[0]
-    if not row[c0:c1].any():
-        return False
-    a = c0
-    while a > 0 and row[a - 1]:
-        a -= 1
-    b = c1
-    while b < W and row[b]:
-        b += 1
-    return c0 - a >= CROSS_SIDE_PX and b - c1 >= CROSS_SIDE_PX
-
-
-def _slash_rows(ink: np.ndarray, box: Tuple[int, int, int, int], sp: float, others: Sequence[Tuple[float, float, float, float]] = ()
-                ) -> List[Tuple[int, int]]:
-    """The rows `[top, bottom)` of every stroke the tremolo slash finder passes across the upright `box` (x, y, w, h; same frame as `ink`) as
-    the page reader asks it (`page_tremolo.read_page`): `gather.stem_slashes` (ROADMAP 2.71: thick, at an angle, straight, reaching out on
-    both sides, never joining another stem `others`), the stem's own columns read on its own rows, then the stem END test (`page_tremolo.
-    head_end_verdict`, Sean 2026-11-09: never at or past the head end). Not asked here: the detector's heads and earlier reads (the page reader
-    has them; this cut gives ink back to what crosses, it claims nothing) and the staff line's thickness."""
-    from .gather import stem_slashes
-    from .page_tremolo import head_end_verdict
-    out = []
-    for s in stem_slashes(ink, tuple(float(v) for v in box), sp, 0.0, others, (), own_rows=True):
-        if s.get("reason") is None and s.get("box") and head_end_verdict(ink, tuple(float(v) for v in box), float(s.get("y", 0.0)), sp) != "refuse":
-            out.append((int(s["box"][1]), int(s["box"][3])))
-    return out
-
-
-def own_width_cut(V: np.ndarray, sp: float, ink: np.ndarray, census: Optional[Dict[str, int]] = None,
-                  keep_whole: Sequence[Sequence[float]] = ()) -> np.ndarray:
-    """PURE. The vertical opening `V` (uint8 / bool, reduced frame) with every stem cut back to its OWN column where a slash crosses it (module
-    constants above, flag `OMR_SLASH_CUT`). For an upright no wider than a stem (`STEM_THIN_SPACES`, its median row width) with at least one row
-    where the ink (`ink`, same frame) runs on past it on both sides, the slash finder is asked; in the rows of each slash it passes, the
-    upright keeps only the columns it holds in the nearest rows just above and just below the slash (tilt and all). A slash covering the
-    whole upright, or an upright with no row outside the slash, is left whole; so is an upright inside a `keep_whole` box (a clef / key /
-    meter, reduced (x0, y0, x1, y1)). `census` (optional) counts `uprights_cut`, `px_given_back`. Returns a new array of V's dtype."""
-    from .page_tremolo import NEIGHBOUR_SPACES
-    out = V.copy()
-    n, lab, st = _components(V.astype(bool))
-    thin_cap = STEM_THIN_SPACES * sp
-    uprights = [tuple(float(v) for v in st[i][:4]) for i in range(n)]
-    for i in range(1, n):
-        x, y, w, h, _a = (int(v) for v in st[i])
-        if w <= 1 or h < 2:
-            continue
-        if any(k[0] <= x + w / 2.0 <= k[2] and k[1] <= y + h / 2.0 <= k[3] for k in keep_whole):
-            continue
-        m = lab[y:y + h, x:x + w] == i
-        widths = m.sum(axis=1)
-        if float(np.median(widths[widths > 0])) > thin_cap:
-            continue
-        gate = False
-        for r in range(h):
-            cs = np.nonzero(m[r])[0]
-            if cs.size and _ink_both_sides(ink[y + r], x + int(cs[0]), x + int(cs[-1]) + 1):
-                gate = True
-                break
-        if not gate:
-            continue
-        cut = 0
-        reach = NEIGHBOUR_SPACES * sp
-        others = [b for j, b in enumerate(uprights) if j not in (0, i) and b[3] >= V_MIN_SPACES * sp
-                  and abs((b[0] + b[2] / 2.0) - (x + w / 2.0)) <= reach and b[1] <= y + h + sp and b[1] + b[3] >= y - sp]
-        for top, bot in _slash_rows(ink, (x, y, w, h), sp, others):
-            r0, r1 = max(0, top - y), min(h, bot - y)
-            if r1 <= r0:
-                continue
-            near = [r for r in (r0 - 1, r1) if 0 <= r < h and m[r].any()]
-            if not near:
-                continue                                # the slash covers the whole upright: no column of its own to keep
-            cols = np.zeros(w, bool)
-            for r in near:
-                cols |= m[r]
-            for r in range(r0, r1):
-                drop = m[r] & ~cols
-                if drop.any():
-                    out[y + r, x:x + w][drop] = 0
-                    cut += int(drop.sum())
-        if cut and census is not None:
-            census["uprights_cut"] = census.get("uprights_cut", 0) + 1
-            census["px_given_back"] = census.get("px_given_back", 0) + cut
-    return out
-
-
 def stem_stub_cut_enabled() -> bool:
     """`OMR_STEM_STUB_CUT` (ROADMAP 2.306 cut), default OFF; 1/true/yes/on enables."""
     return os.environ.get(STEM_STUB_ENV, "").strip().lower() in ("1", "true", "yes", "on")
@@ -1600,8 +1493,6 @@ def map_strokes(erased: np.ndarray, sp_canonical: float, nominal_lines_canonical
     u8 = ink.astype(np.uint8)
     kh, kw = max(3, int(round(V_MIN_SPACES * sp))), max(3, int(round(H_MIN_SPACES * sp)))
     V = cv2.morphologyEx(u8, cv2.MORPH_OPEN, np.ones((kh, 1), np.uint8))
-    if slash_cut_enabled():
-        V = own_width_cut(V, sp, ink, keep_whole=[tuple(float(v) * scale for v in r[:4]) for r in keep_whole])   # 2.306 batch 2 (OMR_SLASH_CUT): a stem keeps its own width where a slash crosses it
     H0 = cv2.morphologyEx(u8, cv2.MORPH_OPEN, np.ones((1, kw), np.uint8))
     claimed = V.astype(bool)
     _n, ink_lab, _ = _components(ink)

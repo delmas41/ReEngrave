@@ -75,6 +75,22 @@ def enabled() -> bool:
     return os.environ.get(ENV, "1").strip().lower() not in ("0", "false", "no", "off")
 
 
+#: ROADMAP 2.306 batch 2 (tremolo claim): THE STEM A SLASH CROSSES IS READ ON ITS OWN ROWS (flag `OMR_SLASH_STEM_CORE`, default OFF; it changes
+#: what the default-ON page reader claims, so it waits behind its own flag). RULE (as a musician says it): a tremolo slash is a short thick
+#: diagonal across a stem; the stem is the thin upright through it, and where the stem runs is read where the stem shows plainly, above and
+#: below the slash -- never on the slash's own rows. Never a stem where the upright shows plainly for less than a fifth of its middle
+#: (`gather.STEM_OWN_ROWS_MIN_SHARE`: a letter's spine). CAUSE (Litolff p16 `cell/16/0/1/6`, the slash under the G5 half written as a C5 half
+#: by the page stem reader): the finder placed the stem at the median of its middle rows; on a short stem the slash covers most of them
+#: (21 of 39 rows), so the "stem" was the slash's own width and centre, the contact bands fell inside the slash, the stroke read `one_sided`,
+#: no claim was filed, and a detector head box on the slash's ink stood unrefused.
+STEM_CORE_ENV = "OMR_SLASH_STEM_CORE"
+
+
+def stem_core_enabled() -> bool:
+    """`OMR_SLASH_STEM_CORE` (ROADMAP 2.306 batch 2), default OFF; 1/true/yes/on enables."""
+    return os.environ.get(STEM_CORE_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
 def stems_of(strokes: Sequence[Any]) -> List[Tuple[int, Tuple[float, float, float, float]]]:
     """`(ordinal, (x, y, w, h))` of every vertical page stroke at least `STEM_MIN_LEN_SP` long, page px."""
     out = []
@@ -140,8 +156,7 @@ def read_page(ink: Any, stems: Sequence[Tuple[int, Tuple[float, float, float, fl
     """The finder over every stem of the page. `ink` is the page raster as a bool array (True = ink); `heads` are `(x, y, w, h)` page px boxes of the detector's noteheads
     (empty = order A: the finder knows no head). Returns the passing slashes (each with its stem's ordinal) and the refusal-reason counts. Pure."""
     from .gather import stem_slashes
-    from .stroke_map import slash_cut_enabled
-    own_rows = slash_cut_enabled()
+    own_rows = stem_core_enabled()
     slashes: List[Dict[str, Any]] = []
     reasons: Dict[str, int] = {}
     reach = NEIGHBOUR_SPACES * sp

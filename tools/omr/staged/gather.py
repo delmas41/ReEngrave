@@ -6635,16 +6635,29 @@ def _col_runs(col: Any) -> List[Tuple[int, int]]:
     return list(zip(np.where(d == 1)[0].tolist(), np.where(d == -1)[0].tolist()))
 
 
+#: ROADMAP 2.306 batch 2 (`OMR_SLASH_STEM_CORE`): where a slash has taken the median of a stem's middle rows, the stem still shows plainly (its own
+#: width) in at least this share of them. MEASURED (page reader, the record's page maps): the 18 slashed stems the own-row read gains on
+#: Litolff 2/6/16 show 0.25-0.48 of their middle rows at their own width; the letter "B" spine it would take on Brahms p4 shows 0.04.
+STEM_OWN_ROWS_MIN_SHARE = 0.2
+#: ... and only where what widens the middle CROSSES the stem: in at least this share of the wide rows the ink runs on past the stem's own
+#: column on both sides (a slash crosses; chord heads stand on one side). Sean's chord glyph/2/0/7/4 ("three quarter notes with a half note
+#: on top", Litolff p2): its heads stacked on the stem's left widen most of the middle; read on its plain rows, one of its quarter heads
+#: was taken as a slash. Its wide rows run past the stem on one side only, so it is read on every row, as before.
+STEM_CROSSED_ROWS_MIN_SHARE = 0.5
+
+
 def _stem_core(ink: Any, box: Tuple[float, float, float, float],
                max_w: Optional[float] = None) -> Optional[Tuple[int, int]]:
     """The stem's OWN columns `(c0, c1)`: the median width and centre of the
     ink run through the stem box's middle three fifths. A CV stem box can be
     wider than the stem (it may swallow a slash's root); the median is not.
-    `max_w` (ROADMAP 2.306 batch 2, `OMR_SLASH_CUT`): the median is read on
+    `max_w` (ROADMAP 2.306 batch 2, `OMR_SLASH_STEM_CORE`): the median is read on
     the rows whose run is no wider than this (the stem's own rows) -- on a
     short stem a slash can cover most of the middle three fifths (Litolff
     p16 `cell/16/0/1/6`: 21 of 39 rows) and then the median is the slash's
-    width and centre, not the stem's; with no such row, every row as before."""
+    width and centre, not the stem's. Only where that happened (the median
+    of every row is wider than `max_w`); otherwise, and with no such row,
+    every row as before."""
     import numpy as np
     H, W = ink.shape
     x, y, w, h = [int(round(v)) for v in box]
@@ -6663,10 +6676,16 @@ def _stem_core(ink: Any, box: Tuple[float, float, float, float],
             cs.append((best[0] + best[1]) / 2.0)
     if not ws:
         return None
-    if max_w is not None:
+    if max_w is not None and float(np.median(ws)) > max_w:
         own = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ <= max_w]
-        if own:
-            ws, cs = [w_ for w_, _c in own], [c_ for _w, c_ in own]
+        if len(own) < STEM_OWN_ROWS_MIN_SHARE * len(ws):
+            return None             # a stem shows plainly for at least a fifth of its middle; less is not a stem (a letter's spine)
+        ow, oc = float(np.median([w_ for w_, _c in own])), float(np.median([c_ for _w, c_ in own]))
+        o0, o1 = oc - ow / 2.0, oc + ow / 2.0
+        wide = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ > max_w]
+        crossed = sum(1 for w_, c_ in wide if c_ - w_ / 2.0 < o0 - 1 and c_ + w_ / 2.0 > o1 + 1)
+        if crossed >= STEM_CROSSED_ROWS_MIN_SHARE * len(wide):
+            ws, cs = [w_ for w_, _c in own], [c_ for _w, c_ in own]     # a slash crosses the stem's middle: read the stem where it shows
     wc, cc = float(np.median(ws)), float(np.median(cs))
     return int(round(cc - wc / 2.0)), int(round(cc + wc / 2.0))
 
@@ -6732,7 +6751,7 @@ def stem_slashes(ink: Any, box: Tuple[float, float, float, float],
                  ) -> List[Dict[str, Any]]:
     """Every stroke that crosses ONE stem, each with a `reason` (`None` = a
     tremolo slash; else one of `SLASH_REASONS`). ROADMAP 2.71. `own_rows`
-    (ROADMAP 2.306 batch 2, the page reader under `OMR_SLASH_CUT`): the stem's
+    (ROADMAP 2.306 batch 2, the page reader under `OMR_SLASH_STEM_CORE`): the stem's
     own columns are read on its own rows (`_stem_core` `max_w`: no wider than
     the stroke map's thin cut, `stroke_map.STEM_THIN_SPACES`).
 
