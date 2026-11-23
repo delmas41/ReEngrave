@@ -148,5 +148,26 @@
    }
   },
   "not_answered": "whether a C clef on a bassoon staff is always tenor"
+ },
+ "overnight_1122_clef_regression": {
+  "date": "2026-11-23",
+  "tiles": [
+   "out/print/overnight-1122-pitches/B-brahms-p3-sys2-staff12-viola-bars49-59.png",
+   "out/print/overnight-1122-pitches/C-brahms-p17-sys2-staff4-bassoon-bars332-337.png"
+  ],
+  "question": "Is the clef in B an alto clef, and is C a tenor clef followed by a bass clef partway along?",
+  "sean_words": "The first tile is all alto clef - The second tile starts in tenor. And in the third bar, switches to bass clef.",
+  "marks": {
+   "B": {
+    "place": "brahms page 3, system 1, staff 11 (viola), bars 49-59",
+    "sean": "alto, whole line",
+    "we_read": "bass (overnight 20261122-night); alto on 20261117-night"
+   },
+   "C": {
+    "place": "brahms page 17, system 1, staff 3 (bassoon), bars 332-337",
+    "sean": "tenor at the start; bass clef in the third bar",
+    "we_read": "bass from the start (overnight 20261122-night)"
+   }
+  }
  }
 }
