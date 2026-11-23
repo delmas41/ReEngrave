@@ -1,0 +1,224 @@
+{
+ "1": {
+  "plate": "beethoven5-litolff",
+  "page": 7,
+  "system": 0,
+  "staff": 0,
+  "cell": 7,
+  "part": "P1",
+  "measure": 178,
+  "our_file_wrote": [
+   "C6 1.0 q (GUESSED)",
+   "C5 1.0 q (READ)",
+   "C6 1.0 q (READ)",
+   "D5 0.5 q (READ)",
+   "D6 0.5 q (READ)",
+   "D5 0.5 q (READ)",
+   "D6 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 3 (quarters)",
+  "agent_reading_place_to_look": "head on a sharp"
+ },
+ "2": {
+  "plate": "beethoven5-litolff",
+  "page": 14,
+  "system": 0,
+  "staff": 1,
+  "cell": 7,
+  "part": "P2",
+  "measure": 405,
+  "our_file_wrote": [
+   "Eb5 2.0 q (READ)",
+   "B5 2.0 q (READ)",
+   "Ab4 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 3 (quarters)",
+  "agent_reading_place_to_look": "head on arc/hairpin ink"
+ },
+ "3": {
+  "plate": "beethoven5-litolff",
+  "page": 6,
+  "system": 1,
+  "staff": 3,
+  "cell": 1,
+  "part": "P4",
+  "measure": 159,
+  "our_file_wrote": [
+   "G2 2.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "G3 0.5 q (READ)",
+   "A3 0.5 q (READ)",
+   "Bb3 0.5 q (GUESSED)"
+  ],
+  "words": "does not add up: should hold 2, counted 4 (quarters)",
+  "agent_reading_place_to_look": "two voices written as one"
+ },
+ "4": {
+  "plate": "beethoven5-litolff",
+  "page": 6,
+  "system": 0,
+  "staff": 5,
+  "cell": 12,
+  "part": "P8",
+  "measure": 157,
+  "our_file_wrote": [
+   "Eb5 2.0 q (READ)",
+   "Eb6 2.0 q (READ)",
+   "F4 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 3 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "5": {
+  "plate": "beethoven5-litolff",
+  "page": 6,
+  "system": 1,
+  "staff": 7,
+  "cell": 2,
+  "part": "P8",
+  "measure": 160,
+  "our_file_wrote": [
+   "rest 0.5 q (READ)",
+   "F5 1.0 q (READ)",
+   "F5 0.5 q (READ)",
+   "A5 0.5 q (READ)",
+   "Bb5 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 3 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "6": {
+  "plate": "beethoven5-litolff",
+  "page": 3,
+  "system": 0,
+  "staff": 10,
+  "cell": 5,
+  "part": "P11",
+  "measure": 54,
+  "our_file_wrote": [
+   "C3 2.0 q (GUESSED)",
+   "Bb3 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 3 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "7": {
+  "plate": "brahms1-breitkopf",
+  "page": 23,
+  "system": 1,
+  "staff": 0,
+  "cell": 5,
+  "part": "P1",
+  "measure": 451,
+  "our_file_wrote": [
+   "B5 1.0 q (READ)",
+   "D6 1.0 q (READ)",
+   "rest 1.0 q (READ)",
+   "rest 1.0 q (READ)",
+   "B5 0.5 q (READ)",
+   "Ab6 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+  "agent_reading_place_to_look": "8th rest boxed as quarter rest"
+ },
+ "8": {
+  "plate": "brahms1-breitkopf",
+  "page": 7,
+  "system": 0,
+  "staff": 3,
+  "cell": 6,
+  "part": "P4",
+  "measure": 122,
+  "our_file_wrote": [
+   "Eb3 1.0 q (READ)",
+   "Bb3 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "Bb3 1.0 q (READ)",
+   "G3 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 4 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "9": {
+  "plate": "brahms1-breitkopf",
+  "page": 18,
+  "system": 0,
+  "staff": 3,
+  "cell": 0,
+  "part": "P4",
+  "measure": 338,
+  "our_file_wrote": [
+   "D3 0.75 q (READ)",
+   "D4 0.75 q (READ)",
+   "C#3 0.5 q (GUESSED)",
+   "C#4 0.5 q (GUESSED)",
+   "B2 0.5 q (READ)",
+   "B3 0.5 q (READ)",
+   "A#2 0.5 q (READ)",
+   "Ab3 0.5 q (READ)",
+   "B2 1.5 q (READ)",
+   "B3 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 3.75 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "10": {
+  "plate": "brahms1-breitkopf",
+  "page": 7,
+  "system": 0,
+  "staff": 5,
+  "cell": 8,
+  "part": "P7",
+  "measure": 124,
+  "our_file_wrote": [
+   "B4 1.0 q (READ)",
+   "D5 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "D5 1.5 q (READ)",
+   "G4 1.5 q (READ)",
+   "D5 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 4.5 (quarters)",
+  "agent_reading_place_to_look": "head on a sharp"
+ },
+ "11": {
+  "plate": "brahms1-breitkopf",
+  "page": 10,
+  "system": 0,
+  "staff": 8,
+  "cell": 2,
+  "part": "P10",
+  "measure": 182,
+  "our_file_wrote": [
+   "Eb5 1.0 q (READ)",
+   "Eb6 1.0 q (READ)",
+   "Eb5 1.0 q (READ)",
+   "Eb6 1.0 q (READ)",
+   "Eb5 1.0 q (READ)",
+   "Eb6 1.0 q (READ)",
+   "Eb5 0.5 q (READ)",
+   "Eb6 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 3.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "12": {
+  "plate": "brahms1-breitkopf",
+  "page": 21,
+  "system": 1,
+  "staff": 6,
+  "cell": 0,
+  "part": "P10",
+  "measure": 400,
+  "our_file_wrote": [
+   "D4 1.0 q (READ)",
+   "G4 1.0 q (READ)",
+   "Eb5 1.0 q (READ)",
+   "B4 0.5 q (GUESSED)",
+   "D5 1.0 q (READ)",
+   "B5 0.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 4 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ }
+}

@@ -1,0 +1,175 @@
+{
+ "1": {
+  "plate": "beethoven5-litolff",
+  "page": 16,
+  "system": 0,
+  "staff": 0,
+  "cell": 6,
+  "part": "P1",
+  "measure": 478,
+  "our_file_wrote": [
+   "G5 1.0 q (READ)",
+   "G6 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "hollow head (half) written quarter"
+ },
+ "2": {
+  "plate": "beethoven5-litolff",
+  "page": 15,
+  "system": 0,
+  "staff": 1,
+  "cell": 5,
+  "part": "P2",
+  "measure": 435,
+  "our_file_wrote": [
+   "Ab5 1.0 q (GUESSED)",
+   "C6 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "3": {
+  "plate": "beethoven5-litolff",
+  "page": 15,
+  "system": 1,
+  "staff": 2,
+  "cell": 7,
+  "part": "P3",
+  "measure": 459,
+  "our_file_wrote": [
+   "D5 1.0 q (READ)",
+   "F5 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "4": {
+  "plate": "beethoven5-litolff",
+  "page": 12,
+  "system": 1,
+  "staff": 3,
+  "cell": 5,
+  "part": "P4",
+  "measure": 358,
+  "our_file_wrote": [
+   "E3 1.0 q (READ)",
+   "G3 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "5": {
+  "plate": "beethoven5-litolff",
+  "page": 14,
+  "system": 1,
+  "staff": 3,
+  "cell": 16,
+  "part": "P4",
+  "measure": 429,
+  "our_file_wrote": [
+   "Eb3 1.0 q (GUESSED)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "6": {
+  "plate": "beethoven5-litolff",
+  "page": 15,
+  "system": 0,
+  "staff": 5,
+  "cell": 5,
+  "part": "P6",
+  "measure": 435,
+  "our_file_wrote": [
+   "C4 1.0 q (READ)",
+   "C5 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "7": {
+  "plate": "beethoven5-litolff",
+  "page": 15,
+  "system": 0,
+  "staff": 6,
+  "cell": 17,
+  "part": "P7",
+  "measure": 447,
+  "our_file_wrote": [
+   "G2 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "8": {
+  "plate": "beethoven5-litolff",
+  "page": 13,
+  "system": 0,
+  "staff": 8,
+  "cell": 14,
+  "part": "P9",
+  "measure": 380,
+  "our_file_wrote": [
+   "Bb5 1.0 q (GUESSED)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "9": {
+  "plate": "beethoven5-litolff",
+  "page": 2,
+  "system": 0,
+  "staff": 9,
+  "cell": 3,
+  "part": "P10",
+  "measure": 20,
+  "our_file_wrote": [
+   "Ab3 1.0 q (GUESSED)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "10": {
+  "plate": "beethoven5-litolff",
+  "page": 4,
+  "system": 0,
+  "staff": 8,
+  "cell": 6,
+  "part": "P10",
+  "measure": 89,
+  "our_file_wrote": [
+   "Cb4 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "11": {
+  "plate": "beethoven5-litolff",
+  "page": 7,
+  "system": 0,
+  "staff": 9,
+  "cell": 11,
+  "part": "P10",
+  "measure": 182,
+  "our_file_wrote": [
+   "C5 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ },
+ "12": {
+  "plate": "beethoven5-litolff",
+  "page": 6,
+  "system": 1,
+  "staff": 11,
+  "cell": 11,
+  "part": "P12",
+  "measure": 169,
+  "our_file_wrote": [
+   "F3 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 2, counted 1 (quarters)",
+  "agent_reading_place_to_look": "quarter rest printed, not written (most boxed arpeggiato or under ledger boxes; agent look on ~25)"
+ }
+}

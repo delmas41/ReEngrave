@@ -1,0 +1,199 @@
+{
+ "1": {
+  "plate": "brahms1-breitkopf",
+  "page": 23,
+  "system": 0,
+  "staff": 1,
+  "cell": 6,
+  "part": "P2",
+  "measure": 442,
+  "our_file_wrote": [
+   "D5 1.0 q (READ)",
+   "F5 1.0 q (READ)",
+   "Ab4 1.5 q (READ)",
+   "B5 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "8th rest boxed as double sharp"
+ },
+ "2": {
+  "plate": "brahms1-breitkopf",
+  "page": 3,
+  "system": 0,
+  "staff": 3,
+  "cell": 0,
+  "part": "P4",
+  "measure": 38,
+  "our_file_wrote": [
+   "C2 1.0 q (READ)",
+   "C3 1.0 q (READ)",
+   "F#4 1.5 q (READ)",
+   "B4 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "3": {
+  "plate": "brahms1-breitkopf",
+  "page": 3,
+  "system": 1,
+  "staff": 4,
+  "cell": 1,
+  "part": "P5",
+  "measure": 50,
+  "our_file_wrote": [
+   "F3 1.5 q (READ)",
+   "F3 0.5 q (READ)",
+   "Eb3 0.25 q (READ)",
+   "D3 0.25 q (READ)",
+   "C3 0.25 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.75 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "4": {
+  "plate": "brahms1-breitkopf",
+  "page": 22,
+  "system": 1,
+  "staff": 4,
+  "cell": 4,
+  "part": "P6",
+  "measure": 427,
+  "our_file_wrote": [
+   "G5 1.0 q (GUESSED)",
+   "G4 1.0 q (GUESSED)",
+   "rest 0.5 q (GUESSED)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "5": {
+  "plate": "brahms1-breitkopf",
+  "page": 8,
+  "system": 0,
+  "staff": 6,
+  "cell": 11,
+  "part": "P10",
+  "measure": 148,
+  "our_file_wrote": [
+   "Bb4 1.5 q (READ)",
+   "Cb5 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "6": {
+  "plate": "brahms1-breitkopf",
+  "page": 25,
+  "system": 0,
+  "staff": 9,
+  "cell": 4,
+  "part": "P10",
+  "measure": 478,
+  "our_file_wrote": [
+   "Bb3 0.5 q (GUESSED)",
+   "rest 0.5 q (GUESSED)",
+   "Db5 0.5 q (GUESSED)",
+   "Bb4 0.5 q (GUESSED)",
+   "rest 0.5 q (GUESSED)",
+   "Db4 0.25 q (GUESSED)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.75 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "7": {
+  "plate": "brahms1-breitkopf",
+  "page": 8,
+  "system": 0,
+  "staff": 7,
+  "cell": 10,
+  "part": "P11",
+  "measure": 147,
+  "our_file_wrote": [
+   "Eb4 1.0 q (READ)",
+   "Eb4 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "dot unboxed"
+ },
+ "8": {
+  "plate": "brahms1-breitkopf",
+  "page": 8,
+  "system": 0,
+  "staff": 8,
+  "cell": 10,
+  "part": "P12",
+  "measure": 147,
+  "our_file_wrote": [
+   "G3 1.0 q (READ)",
+   "Gb3 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "9": {
+  "plate": "brahms1-breitkopf",
+  "page": 14,
+  "system": 1,
+  "staff": 9,
+  "cell": 2,
+  "part": "P12",
+  "measure": 277,
+  "our_file_wrote": [
+   "G4 1.0 q (READ)",
+   "B4 1.0 q (READ)",
+   "G4 1.5 q (READ)",
+   "Bb4 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "10": {
+  "plate": "brahms1-breitkopf",
+  "page": 14,
+  "system": 1,
+  "staff": 9,
+  "cell": 3,
+  "part": "P12",
+  "measure": 278,
+  "our_file_wrote": [
+   "E4 1.0 q (READ)",
+   "G4 1.0 q (READ)",
+   "F4 1.5 q (READ)",
+   "Ab4 1.5 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ },
+ "11": {
+  "plate": "brahms1-breitkopf",
+  "page": 19,
+  "system": 0,
+  "staff": 11,
+  "cell": 4,
+  "part": "P12",
+  "measure": 357,
+  "our_file_wrote": [
+   "Db3 1.5 q (READ)",
+   "D4 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "dot unboxed"
+ },
+ "12": {
+  "plate": "brahms1-breitkopf",
+  "page": 16,
+  "system": 0,
+  "staff": 13,
+  "cell": 6,
+  "part": "P14",
+  "measure": 311,
+  "our_file_wrote": [
+   "C4 1.0 q (READ)",
+   "rest 0.5 q (READ)",
+   "C3 1.0 q (READ)"
+  ],
+  "words": "does not add up: should hold 3, counted 2.5 (quarters)",
+  "agent_reading_place_to_look": "not looked at"
+ }
+}
