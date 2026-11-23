@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- batch 4 LANDED, every flag OFF (STAGED)
+- Merged `batch-4` (e112101b2): batch-2-r2 stem reader by ink + strings (`OMR_PAGE_STEMS`, `OMR_STACK_TWO_HEADS`, `OMR_STRING_STOPS_OWN_VALUE`), `OMR_SLASH_STEM_CORE`, `OMR_ACCIDENTAL_FUSED_INK`, `OMR_DOT_BY_HEAD_INK`, `OMR_RELOCATE_AT_EXPORT` repair, `OMR_DROPPED_HEAD_MARKS` (bar|spot). Default behaviour unchanged. Fast tier on the merged tree 11,175 passed; check 237 (+1: the page-stem fact behind its off flag); data-flow map current.
+- Measured once, Litolff 2,6,16 / Brahms 0,4,5, arms A default / B all ON / C all but the stem reader: `out/lane-report/batch-4/`, crops `out/print/batch-4/`; FINDINGS `benchmarks/page-ledger-2026-11/FINDINGS.md`. No flag is switched on; the proposal is with Sean.
+
 ## 2026-11-23 -- overnight 20261122-night (main 5634884a4), both movements done
 - STAGED, default flags, through INFER; Litolff 79 min, Brahms 272 min, both exit 0. Compare vs 20261117-night re-exported by this tree: `benchmarks/acceptance/overnight/20261122-night/README.txt`. These are CHANGES, not verdicts, except the judged tiles.
 - Judged tiles (the only verdict): Litolff 199/16/15 -> 208/14/8, Brahms 184/16/8 -> 187/16/5; right->wrong 0 on both; one right->narrowed each (Litolff 2.83-fix-review tile_08, Brahms 2.74-review brahms_05).

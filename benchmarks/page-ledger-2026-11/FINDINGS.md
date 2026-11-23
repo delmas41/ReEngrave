@@ -821,3 +821,11 @@ should be found and written on their staff"; "Let's do them both": relocate-at-e
 a staff holding no twin is written there, pitch via `move_glyph`) -- `OMR_RELOCATE_AT_EXPORT` exists and
 is OFF. 16 of the 25 Brahms owned boxes are NOT notes, so a relocation needs a passed head test and a
 ledger reading.
+
+## 2026-11-23 -- batch 4: every built-OFF flag merged and measured once (STAGED; bar readings are the agent's, not Sean's)
+
+Pages Litolff 2,6,16 / Brahms 0,4,5. A = default, B = all ON, C = all but the stem reader (`OMR_PAGE_STEMS`, `OMR_STACK_TWO_HEADS`, `OMR_STRING_STOPS_OWN_VALUE`).
+- B vs A: red bars Litolff 76 -> 53, Brahms 41 -> 31; notes Litolff +20 -58, Brahms +13 -17; accidentals Litolff +34. Judged right->wrong 0. `judged_claims`: 2 NEW contradictions on Litolff, a stem standing on Sean's slash tiles (2.290 r1 #3, 2.276 r2 #8). Brahms p0 hand labels (wrong/right/unread): stems 5/359/16 -> 4/371/5. Agent print reading of 32 random bars: 16 right, 12 wrong in both, 3 wrong where A was right or silent (Litolff 2/0/3/5 an eighth dropped in a plain bar; Brahms 5/1/9/7 a low D4 written dotted in a plain bar; Brahms 5/1/11/6 a printed dot missed, blue); Litolff 16/0/1/14 drops a real note in a plain bar.
+- C vs A: red bars Litolff 76 -> 71, Brahms 41 -> 41; accidentals Litolff +33; judged losses 0; new claim contradictions 0. Agent reading of 22 bars: 10 right, 9 both wrong, 1 wrong where A was silent (Litolff 6/1/8/11 the slash written as a C4 half); Beethoven bar 21 shrinks to one quarter. Which C flag causes these: not traced.
+- With everything ON the old cell join still decides 297 of 2,533 Litolff heads and 423 of 2,781 Brahms heads, mostly heads the page stem reader never read (145 / 391).
+- Per flag (agent's reading): `OMR_DOT_BY_HEAD_INK` gains a dot on Brahms p0 and loses no judged mark; `OMR_DROPPED_HEAD_MARKS=spot` adds 33 / 9 marks and changes no note; stem flags, `OMR_SLASH_STEM_CORE`, `OMR_ACCIDENTAL_FUSED_INK` not ready; `OMR_RELOCATE_AT_EXPORT` and `OMR_FOLD_FAR_BY_LEDGER` show no isolated effect on these pages. Flags were NOT measured one at a time.
