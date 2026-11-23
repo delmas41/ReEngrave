@@ -64,12 +64,23 @@ def enabled() -> bool:
 
 # ───────────────────────────── the read (pure) ─────────────────────────────
 
+def _head_space(h: Dict[str, Any], st: Dict[str, Any]) -> float:
+    """ROADMAP 2.306 r19: the staff space a stem is measured in at its head is the HEAD's own bar's (page-facts: measure against the subject's own
+    bar's lines), the stroke's own only where the head has none. Batch 4, Litolff 2/0/3/5: on that page 66 vertical strokes carry a space of 11.8 px
+    from the stroke map's line fit where the bar's lines stand 15.8 apart, so a printed up stem 0.32 space from its head's edge measured 0.42 and
+    the unison head lost its upper voice. Never a stroke's space where the head's own bar gives one (`sp_own`: the head's space was measured on its
+    bar, `_page_heads_of`). Pure."""
+    if h.get("sp_own") and h.get("sp"):
+        return float(h["sp"])
+    return float(st.get("sp") or h.get("sp") or 1.0)
+
+
 def _fits(h: Dict[str, Any], st: Dict[str, Any]) -> List[Dict[str, Any]]:
     """The ways stroke `st` can be head `h`'s stem: `[{side, direction, dx, reach, gap, fit}]` (spaces), engraving side only."""
     x0, y0, x1, y1 = h["box"]
     cy = (y0 + y1) / 2.0
     sx0, sy0, sx1, sy1 = st["box"]
-    sp = float(st.get("sp") or h.get("sp") or 1.0)
+    sp = _head_space(h, st)
     sxc = (sx0 + sx1) / 2.0
     out = []
     # stem up: at the RIGHT edge, reaching up; its bottom end no further than GAP above the centre
@@ -90,7 +101,7 @@ def _other_side(h: Dict[str, Any], st: Dict[str, Any]) -> Optional[str]:
     x0, y0, x1, y1 = h["box"]
     cy = (y0 + y1) / 2.0
     sx0, sy0, sx1, sy1 = st["box"]
-    sp = float(st.get("sp") or h.get("sp") or 1.0)
+    sp = _head_space(h, st)
     sxc = (sx0 + sx1) / 2.0
     if not (sy0 - GAP_SP * sp <= cy <= sy1 + GAP_SP * sp):
         return None
@@ -784,7 +795,8 @@ def _page_heads_of(one_heads: Any) -> List[Dict[str, Any]]:
         items = [one_heads.items[i] for i in g]
         rep = max(items, key=lambda t: float(t.get("conf") or 0.0))
         box = oval_of.get(gi) or tuple(float(v) for v in rep["box"])
-        out.append(dict(id=gi, members=[t["key"] for t in items], box=box, sp=float(rep.get("sp_head") or 1.0), ink=gi in oval_of, strokes=strokes_of.get(gi, [])))
+        out.append(dict(id=gi, members=[t["key"] for t in items], box=box, sp=float(rep.get("sp_head") or 1.0), sp_own=bool(rep.get("sp_head")),
+                        ink=gi in oval_of, strokes=strokes_of.get(gi, [])))
     return out
 
 

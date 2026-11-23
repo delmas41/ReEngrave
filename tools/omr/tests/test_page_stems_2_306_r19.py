@@ -14,6 +14,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from tools.omr.staged import page_stems as PS
 from tools.omr.staged import staff_family as SF
 from tools.omr.staged.adjudicators import stem_value as SV
 
@@ -74,3 +75,39 @@ def test_never_for_a_box_at_a_dotted_heads_own_place(strings_on, monkeypatch):
     assert not _stays(keep, SF.STRINGS, monkeypatch)
     low = next(h for h in heads if h["key"].endswith("/7"))
     assert _stays([dotted, low], SF.STRINGS, monkeypatch)
+
+
+# ── (a) a stem is measured in its head's own bar's staff space ─────────────────────────────────────────────────────────────────────────────────
+
+WIN = os.path.join(HERE, "fixtures", "page_stems_2_306_r19_windows.json")
+
+
+def _read(name, space=None):
+    w = json.load(open(WIN))[name]
+    heads = [dict(h, box=tuple(h["box"])) for h in w["heads"]]
+    verts = [dict(v, box=tuple(v["box"])) for v in w["verticals"]]
+    cross = [dict(c, box=tuple(c["box"])) for c in w["crossers"]]
+    strokes = {int(k): dict(v, box=tuple(v["box"])) for k, v in w["strokes"].items()}
+    held = {int(k): v for k, v in w["held"].items()}
+    old = PS._head_space
+    try:
+        if space is not None:
+            PS._head_space = space
+        return w, PS.read(heads, verts, held, crossers=cross, strokes=strokes)["heads"]
+    finally:
+        PS._head_space = old
+
+
+def test_a_the_third_unison_eighth_keeps_both_its_stems():
+    """Batch 4, Litolff 2/0/3/5 (bassoons, bar 22): three heads each with a stem up to the upper beam and down to the lower (two voices). On
+    that page the stroke map gave 66 verticals a space of 11.8 px where the bar's lines stand 15.8 apart; measured in it the third head's up
+    stem stood 0.42 space off the head's edge, so the head read only its down stem and the upper voice lost its third eighth (bar plain)."""
+    w, r = _read("a_litolff_2_0_3_5")
+    got = r[w["head"]]
+    assert got["how"] == PS.UNISON_HOW and set(got["voices"]) == {"up", "down"}, got
+
+
+def test_a_control_measured_in_the_strokes_own_space_the_upper_voice_is_lost():
+    """The control can fail: the old measure (the stroke's own space) loses the up stem again."""
+    w, r = _read("a_litolff_2_0_3_5", space=lambda h, st: float(st.get("sp") or h.get("sp") or 1.0))
+    assert r[w["head"]]["state"] == "one" and r[w["head"]]["direction"] == "down"
