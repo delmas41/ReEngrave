@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 203 flag predicates; 28 record calls this map cannot resolve.
+Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 205 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -1465,7 +1465,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `notehead_letter_ink` filed by: GATHER `gather.py:gather_notehead_letter_ink`
 - `notehead_letter_ink` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_stroke_owner`
-- `notehead_letter_ink` read by ADJUDICATE: `adjudicators/notehead_precision.py:_on_a_dynamic_letter_refusal`, `adjudicators/rhythm.py:_head_ink_reads_hollow_unread_black`, `adjudicators/rhythm.py:_head_reads_hollow_on_bridged_box`, `adjudicators/rhythm.py:_head_reads_hollow_on_located_box`, `adjudicators/stroke_owner.py:_letter_vetoes`
+- `notehead_letter_ink` read by ADJUDICATE: `adjudicators/notehead_precision.py:_on_a_dynamic_letter_refusal`, `adjudicators/rhythm.py:_head_reads_hollow_on_bridged_box`, `adjudicators/rhythm.py:_head_reads_hollow_on_located_box`, `adjudicators/rhythm.py:_own_ink_hollow_guards_hold`, `adjudicators/stroke_owner.py:_letter_vetoes`
 - `notehead_letter_ink` belongs to: `--mark notehead`
 
 ### `notehead_position` (Q.NOTEHEAD_POSITION) -- LIVE
