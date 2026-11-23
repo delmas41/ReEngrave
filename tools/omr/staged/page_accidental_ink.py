@@ -90,7 +90,9 @@ SOLID_HEAD_FILL = 0.8
 #:   * A NATURAL WHOSE BARS ARE LOST: its two uprights stand closer together than a notehead is wide, the left one higher and the right one lower
 #:     (`accidental_family.read_type` names that stagger). Two stems of notes never stand that close -- a head stands between or beside them. Where
 #:     the bars fused into the barline or the staff lines, the two uprights alone name the natural (the never: never two uprights a head's width
-#:     apart; never a pair that does not stagger the natural's way -- level or mirrored pairs on these plates were stems, a beam's ends, a flag).
+#:     apart; never a mirrored pair -- those on these plates were stems, a beam's ends, a flag).
+#:   * A SHARP WHOSE BARS ARE BROKEN: two LEVEL uprights, each nearly the sharp's full height, as close as a natural's (Brahms 5/0/13/7: the thin
+#:     bars left no stroke joining them). The never: short level pairs (1.6-1.8 sp, 0.2-0.25 apart on Litolff) were a beam's or a head's pieces.
 #:   * A SHARP FILLED IN TO ONE BLOCK: the stroke map cuts it into a stack of blobs (as two stacked heads); ink in both its lower-left and its upper-
 #:     right corner (its two uprights sticking out, `accidental_shape`), about three spaces tall, no stem in it. A notehead is one space tall; two
 #:     heads stacked a third apart are two spaces tall and hang on a stem. Only a SHARP is read this way: the same corner reading names a quarter
@@ -102,6 +104,9 @@ FUSED_ENV = "OMR_ACCIDENTAL_FUSED_INK"
 PAIR_GAP_MAX_SP = 0.7
 #: the tallest the two uprights stand together (spaces): the naturals measured 3.59-4.34 (thick ink stretches the font's 2.7).
 PAIR_H_MAX_SP = 4.5
+#: a level pair is a sharp only where BOTH uprights are at least this long (spaces): the 8 level pairs read by look on Litolff p2/6 + Brahms p5, all
+#: sharps, measured 2.73-3.43; the short level pairs that were not accidentals, 1.59-1.84.
+PAIR_SHARP_STEM_MIN_SP = 2.2
 #: a fused stack's height, as a share of the sharp glyph's (2.79 sp): at least `STACK_H_MIN_FRAC` (a third of two stacked heads is ~2.0 sp; the
 #: filled sharps measured 2.65-4.02 sp), at most `STACK_H_MAX_FRAC`; and its width at most `STACK_W_MAX_SP` (the sharps: 1.0-1.94 sp).
 STACK_H_MIN_FRAC = 0.85
@@ -109,6 +114,10 @@ STACK_H_MAX_FRAC = 1.5
 STACK_W_MAX_SP = 2.0
 #: a stroke in a fused stack longer than this (spaces) is a stem: a stack hanging on a stem is a chord, never a sharp
 STACK_STEM_MIN_SP = 1.5
+#: a sharp's uprights stick out past its bars, so at least one END of the filled block is no wider than an upright; two stacked heads end round
+#: and wide. The narrower end's width (mean of its two end rows), spaces: the 18 filled Litolff sharps measured 0.13-0.29, the one stacked
+#: chord they were confused with (Litolff 6/1/3/9, B-flat3 + E-flat4 beside a natural: the check's only real notes lost) 0.44.
+STACK_END_MAX_SP = 0.35
 
 
 def fused_enabled() -> bool:
@@ -256,11 +265,11 @@ def _free_of(box: Sequence[float], boxed: Sequence[Sequence[float]], header: Seq
     return None
 
 
-def natural_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
+def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
                   count: Any) -> List[Dict[str, Any]]:
-    """A NATURAL WHOSE BARS ARE LOST (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): two free uprights of an accidental stem's length, centres at most
-    `PAIR_GAP_MAX_SP` apart, staggered the natural's way (`read_type` names them a natural on the two uprights alone), together at most `PAIR_H_MAX_SP`
-    tall, a note just right of them. `taken`: stroke ordinals no mark here may use (held, already claimed). Pure."""
+    """A NATURAL OR SHARP WHOSE BARS ARE LOST (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): two free uprights of an accidental stem's length, centres at
+    most `PAIR_GAP_MAX_SP` apart, staggered the natural's way or level (a sharp; then both at least `PAIR_SHARP_STEM_MIN_SP` long) -- `read_type` names
+    them on the two uprights alone --, together at most `PAIR_H_MAX_SP` tall, a note just right of them. `taken`: stroke ordinals no mark here may use (held, already claimed). Pure."""
     from . import accidental_family as AF
     ups = sorted([i for i, s in enumerate(strokes) if s.kind == "vertical" and AF.STEM_MIN_SP <= float(s.length_sp) <= AF.STEM_MAX_SP and i not in taken],
                  key=lambda i: _box(strokes[i])[0])
@@ -281,7 +290,10 @@ def natural_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxe
             if dx > PAIR_GAP_MAX_SP or min(A[3], B[3]) <= max(A[1], B[1]):
                 continue
             t = AF.read_type([strokes[a], strokes[b]], [0, 1], spl, [])
-            if t["type"] != "natural":
+            ty = t["type"]
+            if ty == "sharp" and min(float(strokes[a].length_sp), float(strokes[b].length_sp)) < PAIR_SHARP_STEM_MIN_SP:
+                continue
+            if ty not in ("natural", "sharp"):
                 continue
             ub = _union_box([A, B])
             if (ub[3] - ub[1]) / spl > PAIR_H_MAX_SP:
@@ -291,11 +303,11 @@ def natural_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxe
             if why:
                 count("fused_pair:" + why)
                 continue
-            h = head_beside(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction("natural") or 0.5), heads, spl)
+            h = head_beside(ub, ub[1] + (ub[3] - ub[1]) * (AF.anchor_fraction(ty) or 0.5), heads, spl)
             if h is None:
                 count("fused_pair:no_note_beside")
                 continue
-            out.append(_cluster([a, b], ub, "natural", t, h, spl, "natural_pair"))
+            out.append(_cluster([a, b], ub, ty, t, h, spl, ty + "_pair"))
             used |= {a, b}
             break
     return out
@@ -319,7 +331,11 @@ def stack_corners(masks: Sequence[Any], members: Sequence[int], scale: float) ->
         u[int(y) - y0:int(y) - y0 + m.shape[0], int(x) - x0:int(x) - x0 + m.shape[1]] |= np.asarray(m).astype(bool)
     img = np.where(u, 0, 255).astype(np.uint8)
     meas = AS.measure(img, (0, 0, u.shape[1], u.shape[0]))
-    return {**AS.classify(meas), "measure": meas}
+    rows = [int(v) for v in u.sum(axis=1) if v > 0]
+    k = min(2, len(rows))
+    ends = [sum(rows[:k]) / float(k), sum(rows[-k:]) / float(k)] if rows else [0.0, 0.0]
+    # the narrower end of the mark, in page px: an upright sticking out of a sharp, or a notehead's rounded end
+    return {**AS.classify(meas), "measure": meas, "end_px": round(min(ends) / max(1e-9, float(scale or 1.0)), 2)}
 
 
 def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
@@ -366,6 +382,9 @@ def sharp_stacks(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed
         shape = (c or {}).get("shape") or "unread"
         if shape != "sharp":
             count("fused_stack:" + shape)
+            continue
+        if float(c.get("end_px") or 0.0) / spl > STACK_END_MAX_SP:
+            count("fused_stack:rounded_ends")          # no upright sticks out at either end: stacked heads, not a sharp
             continue
         t = {"why": "filled_sharp_corners", "margin": c.get("margin"), "bl": (c.get("measure") or {}).get("bl"), "tr": (c.get("measure") or {}).get("tr")}
         out.append(_cluster(mem, ub, "sharp", t, h, spl, "sharp_stack"))
@@ -436,11 +455,12 @@ def read_page(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: S
     if fused:
         # accidental-not-head lane: the two thick-ink shapes the stroke reading above cannot see; never ink it or an earlier claim already took
         taken = set(held_set) | {m for c in out for m in c["members"]}
-        pairs = natural_pairs(strokes, sp, heads, boxed, taken, header, count)
+        pairs = accidental_pairs(strokes, sp, heads, boxed, taken, header, count)
         out.extend(pairs)
         taken |= {m for c in pairs for m in c["members"]}
         out.extend(sharp_stacks(strokes, sp, heads, boxed, taken, header, masks, scale, count))
-        reasons["fused_natural_pair"] = len(pairs)
+        reasons["fused_natural_pair"] = sum(1 for c in pairs if c["how"] == "natural_pair")
+        reasons["fused_sharp_pair"] = sum(1 for c in pairs if c["how"] == "sharp_pair")
         reasons["fused_sharp_stack"] = sum(1 for c in out if c.get("how") == "sharp_stack")
     out = fold_twins(out, merge=fused)
     reasons["claimed"] = len(out)
@@ -642,7 +662,7 @@ def gather_page_accidental_ink(log: Any, pws: Any, cells: Sequence[Any], local: 
     reasons["row_filed"] = sum(1 for g in glyphs if g)
     for c, g in zip(found, glyphs):
         x0, y0, x1, y1 = c["box"]
-        extra = {"fused": c["how"]} if c.get("how") in ("natural_pair", "sharp_stack") else {}      # accidental-not-head lane: which thick-ink shape
+        extra = {"fused": c["how"]} if c.get("how") in ("natural_pair", "sharp_pair", "sharp_stack") else {}      # accidental-not-head lane: which thick-ink shape
         log.observe(sub, Q.CLAIMED_AREA, [x0, y0, x1, y1], reader=READERS.CV_PAGE_ACCIDENTAL_INK, frame=FRAME_PAGE, owner=OWNER, unit=UNIT, standing="READ", source=SOURCE,
                     how="family_reader_on_unboxed_ink", kind=c["type"], candidates=c["candidates"], page_strokes=list(c["members"]), contested=[], area=[x0, y0, x1, y1],
                     owner_row=None, owner_glyph=g, w_sp=c["w_sp"], h_sp=c["h_sp"], **extra)

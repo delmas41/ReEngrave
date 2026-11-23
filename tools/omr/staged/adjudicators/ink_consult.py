@@ -116,7 +116,10 @@ def held_by_earlier(boxes: Iterable[Tuple[str, str, Iterable[Tuple[int, float, f
         if share < near_min:
             continue
         out[key] = {"by": f, "share": round(share, 3), "ink": round(total, 1), "strokes": sorted(by[f][1]), "owns": owns, "tier": t_own,
-                    "by_tier": tier_of(f, tiers, areas), "area": f in areas, "also": sorted(x for x in by if x != f)}
+                    "by_tier": tier_of(f, tiers, areas), "area": f in areas, "also": sorted(x for x in by if x != f),
+                    # accidental-not-head lane: the share ALL earlier claims hold together, and each family's (a head box on an accidental fused into a barline
+                    # is held part by the barline, part by the accidental -- neither alone reaches the cut). Recorded; read only by the notehead refusal.
+                    "held_all": round(sum(v[0] for v in by.values()) / total, 3), "shares": {x: round(by[x][0] / total, 3) for x in sorted(by)}}
     return out
 
 
