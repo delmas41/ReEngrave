@@ -112,10 +112,9 @@ def _notes_by_part(xml):
 
 
 def _export(page, flag):
-    env = {"OMR_RELOCATE_AT_EXPORT": "1"} if flag else {}
+    # default ON since 2026-11-23; flag=False pins the old (dropping) path explicitly
+    env = {"OMR_RELOCATE_AT_EXPORT": "1" if flag else "0"}
     with mock.patch.dict(os.environ, env, clear=False):
-        if not flag:
-            os.environ.pop("OMR_RELOCATE_AT_EXPORT", None)
         return SX.to_musicxml(page)
 
 

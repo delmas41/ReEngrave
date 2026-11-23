@@ -9,6 +9,14 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- 2.334 eighth-rest rule LANDED ON, and three more switches ON (main 7943ff2e7)
+- STAGED ADJUDICATE: `OMR_REST_BOXED_AS_OTHER` default ON (Sean "Land the rest switch on"): an eighth rest the detector boxes as a double sharp or a clef is refused as that kind (`eighth_rest_shaped_ink`) and read once by the 2.99 ink rest reader. Frozen sample: Litolff rests +16, red 153 -> 139; Brahms rests +9, red 130 -> 126; judged right->wrong 0.
+- STAGED EXPORT: `OMR_RELOCATE_AT_EXPORT` and `OMR_FOLD_FAR_BY_LEDGER` default ON (2.337; Sean "let's do what we need to to get the last 2 turned on"). STAGED GATHER+ADJUDICATE: `OMR_ACCIDENTAL_FUSED_INK` default ON (2.336; Sean's 12 tiles 12/12; "Turn it on whenever you can"). Known with it on: Litolff 6/1/8/11 a slash piece written as a C4 half until 2.335 lands.
+- One fast tier for all four: 11,170 passed; 13 failures were old-default assertions and doc rows, re-pinned. Check 238. Not measured on a whole movement: tonight's overnight is the first run with all six of today's switches.
+
+## 2026-11-23 -- two switches ON by default (Sean "Switch on the, open the 8th rest lane"), main eb5c3bbbd
+- STAGED: `OMR_DOT_BY_HEAD_INK` default ON (`aug_dot_join.dot_by_head_ink_enabled`); `OMR_DROPPED_HEAD_MARKS` default `spot` (`export.dropped_head_marks_mode`; `bar` selectable, `off`/`0` off). Fast tier 11,169 passed after 5 old-default assertions were re-pinned. Check 238 (+1: a `trimmed` detail key the map analyzer cannot see filed by `gather_head_ink`; to fix in the analyzer, not a reader gap). Spot mode still marks `owned_by_another_staff` heads (`_dropped_head_may_be_a_note`); with `OMR_RELOCATE_AT_EXPORT` going ON those heads are written on their staff, so re-look after the next overnight. Not measured on a whole movement.
+
 ## 2026-11-23 -- batch 4 LANDED, every flag OFF (STAGED)
 - Merged `batch-4` (e112101b2): batch-2-r2 stem reader by ink + strings (`OMR_PAGE_STEMS`, `OMR_STACK_TWO_HEADS`, `OMR_STRING_STOPS_OWN_VALUE`), `OMR_SLASH_STEM_CORE`, `OMR_ACCIDENTAL_FUSED_INK`, `OMR_DOT_BY_HEAD_INK`, `OMR_RELOCATE_AT_EXPORT` repair, `OMR_DROPPED_HEAD_MARKS` (bar|spot). Default behaviour unchanged. Fast tier on the merged tree 11,175 passed; check 237 (+1: the page-stem fact behind its off flag); data-flow map current.
 - Measured once, Litolff 2,6,16 / Brahms 0,4,5, arms A default / B all ON / C all but the stem reader: `out/lane-report/batch-4/`, crops `out/print/batch-4/`; FINDINGS `benchmarks/page-ledger-2026-11/FINDINGS.md`. No flag is switched on; the proposal is with Sean.

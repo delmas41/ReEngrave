@@ -1,0 +1,28 @@
+LANE REPORT  OMR_RELOCATE_AT_EXPORT (OFF=0 ON=1)  --from adjudicate
+  OMR_RELOCATE_AT_EXPORT: read in staged/adjudicators/rhythm.py, staged/export.py -> ADJUDICATE..EXPORT
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/s2337/sample.json (a development control)
+
+litolff  pages [5, 7, 8, 10, 11, 12, 14]  (4865 notes+rests OFF, 4866 ON, 4865 paired)
+  file:   notes +1 | accidentals +1 | flags -1 | beams +2 | blue marks -1 | words +1 -1
+  red bars 168 -> 169 | notes not written 1909 -> 1908
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 7819
+  Sean's judged answers (223 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 0) | by id key, no position 382 | position but no mark here 15
+  NOT JUDGED: 7 changed places no tile of Sean's covers (0 are covered; 1 have no page place): accidental 1, beam 2, blue 1, flag 1, note 1, words 1 -> unjudged.txt
+
+brahms  pages [8, 12, 14, 15, 19, 23]  (4959 notes+rests OFF, 4967 ON, 4959 paired)
+  file:   notes +8 | dots +7 | blue marks +1 -5 | words -2
+  red bars 128 -> 128 | notes not written 2303 -> 2295
+  control: OFF and ON both reproduce the record: duration/rest verdicts differing from the record OFF 0 / ON 0 of 8983
+  Sean's judged answers (245 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 13 (at another id than asked 2) | by id key, no position 379 | position but no mark here 21
+  NOT JUDGED: 22 changed places no tile of Sean's covers (0 are covered; 1 have no page place): blue 6, dot 7, note 8, words 1 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.78-phase2-review tile 5 ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15']  was unwritten_wrong
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 11 (8 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 11, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 1092 s

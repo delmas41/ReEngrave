@@ -51,12 +51,13 @@ def covers(found, box, share=0.5):
     return [c for c in found if PAI.share_inside(box, c["box"]) >= share]
 
 
-def test_flag_default_off():
+def test_flag_default_on():
     os.environ.pop(PAI.FUSED_ENV, None)
-    assert PAI.fused_enabled() is False
-    os.environ[PAI.FUSED_ENV] = "1"
+    assert PAI.fused_enabled() is True                     # Sean 2026-11-23: "Turn it on whenever you can"
     try:
-        assert PAI.fused_enabled() is True
+        for off in ("0", "false", "no", "off"):
+            os.environ[PAI.FUSED_ENV] = off
+            assert PAI.fused_enabled() is False
     finally:
         os.environ.pop(PAI.FUSED_ENV, None)
 
@@ -196,7 +197,7 @@ def test_head_box_on_a_natural_fused_into_the_barline_is_refused_by_the_claims_t
     box = SimpleNamespace(id="obs:box", value=["noteheadBlackOnLine", 0, 0, 10, 10])
     entry = {"by": "barline", "share": 0.381, "owns": False, "held_all": 0.95, "shares": {"barline": 0.381, PAI.OWNER: 0.569}}
     ic = SimpleNamespace(entry=entry, verdict_id="vrd:so")
-    os.environ.pop(PAI.FUSED_ENV, None)
+    os.environ[PAI.FUSED_ENV] = "0"
     assert NP._on_an_accidentals_ink(ic, box) is None                               # rule off: the box stays (the control fails)
     os.environ[PAI.FUSED_ENV] = "1"
     try:

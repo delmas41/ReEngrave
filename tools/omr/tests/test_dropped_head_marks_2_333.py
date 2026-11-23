@@ -81,8 +81,18 @@ def test_a_dropped_head_that_may_be_a_note_is_filed_on_its_bar(name, monkeypatch
 
 @pytest.mark.parametrize("name", MARKED)
 def test_flag_off_files_nothing(name, monkeypatch):
-    got, counts = _file(name, monkeypatch, None)
+    got, counts = _file(name, monkeypatch, "off")      # default is `spot` since Sean 2026-11-23; `off` still switches it off
     assert got == [] and counts == {}
+
+
+def test_default_is_spot(monkeypatch):
+    monkeypatch.delenv(E.DROPPED_HEAD_MARKS_ENV, raising=False)
+    assert E.dropped_head_marks_mode() == "spot"
+    for off in ("off", "0"):
+        monkeypatch.setenv(E.DROPPED_HEAD_MARKS_ENV, off)
+        assert E.dropped_head_marks_mode() == "off"
+    monkeypatch.setenv(E.DROPPED_HEAD_MARKS_ENV, "bar")
+    assert E.dropped_head_marks_mode() == "bar"
 
 
 def test_never_a_bar_whose_only_unwritten_boxes_are_slivers(monkeypatch):

@@ -1,0 +1,189 @@
+{
+ "date": "2026-11-23",
+ "sheet": "out/print/2.336/sheet.png",
+ "flag": "OMR_ACCIDENTAL_FUSED_INK alone, Litolff pages 2 and 6, gained accidentals (12 random)",
+ "question": "Which of the twelve do not have the accidental we wrote? (orange box on the note; we wrote natural on 1,2,7,8,9,10 and sharp on 3,4,5,6,11,12)",
+ "sean_words": "Tile 1 has a natural sign, tile 2 has a natural sign, tile 3 has a sharp, tile 4 has a sharp, tile 5 has a sharp, tile 6 has a sharp, tile 7 has a natural, tile 8 has a natural, tile 9 has a natural, tile 10 has a natural, tile 11 has a sharp, tile 12 has a sharp.",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/9/0/5",
+   "box": [
+    611.5225,
+    3334.28,
+    634.2025000000001,
+    3355.385
+   ],
+   "we_wrote": "natural",
+   "sean": "natural",
+   "agrees": true
+  },
+  {
+   "tile": 2,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/0/12/4",
+   "box": [
+    2514.76,
+    1959.48,
+    2542.44,
+    1982.68
+   ],
+   "we_wrote": "natural",
+   "sean": "natural",
+   "agrees": true
+  },
+  {
+   "tile": 3,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/0/2/8/2",
+   "box": [
+    1825.475,
+    717.8475,
+    1849.415,
+    739.11
+   ],
+   "we_wrote": "sharp",
+   "sean": "sharp",
+   "agrees": true
+  },
+  {
+   "tile": 4,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/0/3/4",
+   "box": [
+    1101.64,
+    1982.52,
+    1124.68,
+    2003.48
+   ],
+   "we_wrote": "sharp",
+   "sean": "sharp",
+   "agrees": true
+  },
+  {
+   "tile": 5,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/2/4/1",
+   "box": [
+    1255.185,
+    2315.3275,
+    1278.18,
+    2337.22
+   ],
+   "we_wrote": "sharp",
+   "sean": "sharp",
+   "agrees": true
+  },
+  {
+   "tile": 6,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/0/2/2/7",
+   "box": [
+    838.24,
+    700.8375,
+    861.55,
+    721.3125
+   ],
+   "we_wrote": "sharp",
+   "sean": "sharp",
+   "agrees": true
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/0/9/7/1",
+   "box": [
+    1631.9725,
+    1771.14,
+    1653.55,
+    1784.2125
+   ],
+   "we_wrote": "natural",
+   "sean": "natural",
+   "agrees": true
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/0/6/9/6",
+   "box": [
+    2061.7475,
+    1338.2,
+    2084.7425,
+    1358.675
+   ],
+   "we_wrote": "natural",
+   "sean": "natural",
+   "agrees": true
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "page": 2,
+   "rg": "glyph/2/1/3/14/6",
+   "box": [
+    2475.8375,
+    2579.475,
+    2507.0225,
+    2626.725
+   ],
+   "we_wrote": "natural",
+   "sean": "natural",
+   "agrees": true
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/2/9/1",
+   "box": [
+    2165.965,
+    2300.365,
+    2189.275,
+    2321.47
+   ],
+   "we_wrote": "natural",
+   "sean": "natural",
+   "agrees": true
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/0/8/8/2",
+   "box": [
+    1777.28,
+    1629.855,
+    1799.96,
+    1650.1725000000001
+   ],
+   "we_wrote": "sharp",
+   "sean": "sharp",
+   "agrees": true
+  },
+  {
+   "tile": 12,
+   "plate": "litolff",
+   "page": 6,
+   "rg": "glyph/6/1/7/2/1",
+   "box": [
+    914.625,
+    3042.0775,
+    936.8325,
+    3062.395
+   ],
+   "we_wrote": "sharp",
+   "sean": "sharp",
+   "agrees": true
+  }
+ ]
+}
