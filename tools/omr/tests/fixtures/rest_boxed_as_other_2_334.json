@@ -1,0 +1,2222 @@
+{
+ "about": "ROADMAP 2.334 controls: GATHER rows as filed on the 20261122-night records (real pixels measured by gather_unboxed_rest_ink; the detector boxes on that ink). Cut by the lane script, never edited.",
+ "cases": {
+  "litolff:glyph/7/0/2/4/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/7/0/2/4/350000",
+   "shape": {
+    "value": 2.28,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.34,
+     "height_spaces": 2.28,
+     "staff_step": 3.92,
+     "fill": 0.469,
+     "max_column_share": 0.75,
+     "mass_y": 0.44,
+     "column_profile": [
+      0.39,
+      0.56,
+      0.56,
+      0.72,
+      0.75,
+      0.44
+     ],
+     "coverage": 0.895,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.19,
+      "dy_spaces": -0.335
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      127,
+      496,
+      261,
+      724
+     ],
+     "bbox_page_px": [
+      1025.0,
+      713.1,
+      1046.1,
+      749.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/7/0/2/4/16",
+     "value": [
+      "accidentalDoubleSharp",
+      108,
+      517,
+      156,
+      204
+     ],
+     "score": 0.2912593185901642,
+     "detail": {
+      "bbox_page_px": [
+       1022.01,
+       716.4275,
+       1046.58,
+       748.5575
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/5/0/2/6/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/5/0/2/6/350000",
+   "shape": {
+    "value": 2.34,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.4,
+     "height_spaces": 2.34,
+     "staff_step": 3.86,
+     "fill": 0.481,
+     "max_column_share": 0.731,
+     "mass_y": 0.445,
+     "column_profile": [
+      0.38,
+      0.54,
+      0.57,
+      0.73,
+      0.73,
+      0.43
+     ],
+     "coverage": 0.784,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.15,
+      "dy_spaces": 7.31
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      70,
+      680,
+      210,
+      914
+     ],
+     "bbox_page_px": [
+      1347.0,
+      832.1,
+      1369.1,
+      869.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/5/0/2/6/7",
+     "value": [
+      "accidentalDoubleSharp",
+      72,
+      727,
+      147,
+      186
+     ],
+     "score": 0.4076386094093323,
+     "detail": {
+      "bbox_page_px": [
+       1347.34,
+       839.5025,
+       1370.4925,
+       868.7975
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/13/0/0/7/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/13/0/0/7/350000",
+   "shape": {
+    "value": 2.29,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.4,
+     "height_spaces": 2.29,
+     "staff_step": 3.93,
+     "fill": 0.568,
+     "max_column_share": 0.751,
+     "mass_y": 0.417,
+     "column_profile": [
+      0.58,
+      0.58,
+      0.55,
+      0.75,
+      0.75,
+      0.61
+     ],
+     "coverage": 0.848,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 1.62,
+      "dy_spaces": -1.075
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      83,
+      692,
+      223,
+      921
+     ],
+     "bbox_page_px": [
+      1498.1,
+      427.0,
+      1520.1,
+      463.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/13/0/0/7/7",
+     "value": [
+      "staff",
+      0,
+      591,
+      1001,
+      438
+     ],
+     "score": 0.6878098845481873,
+     "detail": {
+      "bbox_page_px": [
+       1485.0,
+       411.0825,
+       1642.6575,
+       480.0675
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/13/0/0/7/12",
+     "value": [
+      "accidentalDoubleSharp",
+      77,
+      704,
+      142,
+      200
+     ],
+     "score": 0.2852225601673126,
+     "detail": {
+      "bbox_page_px": [
+       1497.1275,
+       428.88,
+       1519.4925,
+       460.38
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/10/0/4/6/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/10/0/4/6/350000",
+   "shape": {
+    "value": 2.35,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.4,
+     "height_spaces": 2.35,
+     "staff_step": 3.87,
+     "fill": 0.521,
+     "max_column_share": 0.753,
+     "mass_y": 0.447,
+     "column_profile": [
+      0.57,
+      0.57,
+      0.57,
+      0.75,
+      0.73,
+      0.43
+     ],
+     "coverage": 0.799,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.37,
+      "dy_spaces": -0.44
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      121,
+      508,
+      261,
+      743
+     ],
+     "bbox_page_px": [
+      1419.1,
+      1026.0,
+      1441.1,
+      1063.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/10/0/4/6/0",
+     "value": [
+      "accidentalDoubleSharp",
+      117,
+      550,
+      143,
+      189
+     ],
+     "score": 0.7062134146690369,
+     "detail": {
+      "bbox_page_px": [
+       1418.4275,
+       1032.625,
+       1440.95,
+       1062.3925
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/10/0/4/6/1",
+     "value": [
+      "staff",
+      0,
+      411,
+      914,
+      436
+     ],
+     "score": 0.6981889605522156,
+     "detail": {
+      "bbox_page_px": [
+       1400.0,
+       1010.7325,
+       1543.955,
+       1079.4025
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/13/0/8/7/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/13/0/8/7/350000",
+   "shape": {
+    "value": 2.25,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.32,
+     "height_spaces": 2.25,
+     "staff_step": 3.87,
+     "fill": 0.504,
+     "max_column_share": 0.751,
+     "mass_y": 0.437,
+     "column_profile": [
+      0.56,
+      0.56,
+      0.56,
+      0.72,
+      0.75,
+      0.44
+     ],
+     "coverage": 0.858,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 1.57,
+      "dy_spaces": -2.47
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      125,
+      494,
+      257,
+      719
+     ],
+     "bbox_page_px": [
+      1505.0,
+      1613.0,
+      1526.1,
+      1649.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/13/0/8/7/7",
+     "value": [
+      "staff",
+      0,
+      366,
+      987,
+      487
+     ],
+     "score": 0.4411340653896332,
+     "detail": {
+      "bbox_page_px": [
+       1485.0,
+       1592.56,
+       1642.92,
+       1670.48
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/13/0/8/7/8",
+     "value": [
+      "accidentalDoubleSharp",
+      131,
+      504,
+      122,
+      196
+     ],
+     "score": 0.428792268037796,
+     "detail": {
+      "bbox_page_px": [
+       1505.96,
+       1614.64,
+       1525.48,
+       1646.0
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/13/0/8/7/12",
+     "value": [
+      "accidentalDoubleSharp",
+      177,
+      493,
+      80,
+      202
+     ],
+     "score": 0.29441142082214355,
+     "detail": {
+      "bbox_page_px": [
+       1513.32,
+       1612.88,
+       1526.12,
+       1645.2
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/2/1/10/2/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/2/1/10/2/350000",
+   "shape": {
+    "value": 2.21,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.3,
+     "height_spaces": 2.21,
+     "staff_step": 3.95,
+     "fill": 0.44,
+     "max_column_share": 0.719,
+     "mass_y": 0.441,
+     "column_profile": [
+      0.36,
+      0.56,
+      0.56,
+      0.72,
+      0.72,
+      0.39
+     ],
+     "coverage": 0.797,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.1,
+      "dy_spaces": 0.54
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      160,
+      474,
+      290,
+      695
+     ],
+     "bbox_page_px": [
+      784.0,
+      3547.0,
+      805.1,
+      3582.9
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/2/1/10/2/3",
+     "value": [
+      "accidentalDoubleSharp",
+      196,
+      510,
+      94,
+      176
+     ],
+     "score": 0.5776196718215942,
+     "detail": {
+      "bbox_page_px": [
+       789.85,
+       3552.875,
+       805.125,
+       3581.475
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/2/1/10/2/4",
+     "value": [
+      "staff",
+      0,
+      375,
+      800,
+      428
+     ],
+     "score": 0.5774536728858948,
+     "detail": {
+      "bbox_page_px": [
+       758.0,
+       3530.9375,
+       888.0,
+       3600.4875
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/2/1/10/2/6",
+     "value": [
+      "accidentalDoubleSharp",
+      153,
+      513,
+      136,
+      174
+     ],
+     "score": 0.3919692635536194,
+     "detail": {
+      "bbox_page_px": [
+       782.8625,
+       3553.3625,
+       804.9625,
+       3581.6375
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/9/1/8/2/350000": {
+   "group": "missed_dsharp",
+   "plate": "litolff",
+   "subject": "glyph/9/1/8/2/350000",
+   "shape": {
+    "value": 2.28,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.39,
+     "height_spaces": 2.28,
+     "staff_step": 3.92,
+     "fill": 0.51,
+     "max_column_share": 0.776,
+     "mass_y": 0.45,
+     "column_profile": [
+      0.42,
+      0.58,
+      0.56,
+      0.75,
+      0.78,
+      0.58
+     ],
+     "coverage": 0.864,
+     "covered_by": [
+      "accidentalDoubleSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.65,
+      "dy_spaces": 2.56
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      153,
+      515,
+      292,
+      743
+     ],
+     "bbox_page_px": [
+      872.1,
+      3422.1,
+      894.0,
+      3458.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/9/1/8/2/3",
+     "value": [
+      "accidentalDoubleSharp",
+      153,
+      531,
+      143,
+      197
+     ],
+     "score": 0.7975298762321472,
+     "detail": {
+      "bbox_page_px": [
+       872.0975,
+       3424.6325,
+       894.62,
+       3455.66
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/9/1/8/2/5",
+     "value": [
+      "staff",
+      1,
+      406,
+      994,
+      444
+     ],
+     "score": 0.7068890333175659,
+     "detail": {
+      "bbox_page_px": [
+       848.1575,
+       3404.945,
+       1004.7125,
+       3474.875
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/13/0/3/7/350000": {
+   "group": "missed_clef",
+   "plate": "litolff",
+   "subject": "glyph/13/0/3/7/350000",
+   "shape": {
+    "value": 2.28,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.33,
+     "height_spaces": 2.28,
+     "staff_step": 3.8,
+     "fill": 0.497,
+     "max_column_share": 0.724,
+     "mass_y": 0.455,
+     "column_profile": [
+      0.36,
+      0.56,
+      0.56,
+      0.72,
+      0.72,
+      0.44
+     ],
+     "coverage": 0.842,
+     "covered_by": [
+      "clefF"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 1.22,
+      "dy_spaces": -3.8
+     },
+     "first_cell": false,
+     "left_of_header": true,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      121,
+      699,
+      254,
+      927
+     ],
+     "bbox_page_px": [
+      1504.1,
+      916.1,
+      1525.0,
+      952.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/13/0/3/7/3",
+     "value": [
+      "staff",
+      0,
+      557,
+      999,
+      462
+     ],
+     "score": 0.7242487668991089,
+     "detail": {
+      "bbox_page_px": [
+       1485.0,
+       893.7275,
+       1642.3425,
+       966.4925000000001
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/13/0/3/7/6",
+     "value": [
+      "clefF",
+      110,
+      728,
+      147,
+      192
+     ],
+     "score": 0.5563750267028809,
+     "detail": {
+      "bbox_page_px": [
+       1502.325,
+       920.66,
+       1525.4775,
+       950.9
+      ],
+      "category": "clef"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/11/1/10/13/350000": {
+   "group": "missed_clef",
+   "plate": "litolff",
+   "subject": "glyph/11/1/10/13/350000",
+   "shape": {
+    "value": 2.28,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.4,
+     "height_spaces": 2.28,
+     "staff_step": 4.06,
+     "fill": 0.452,
+     "max_column_share": 0.75,
+     "mass_y": 0.463,
+     "column_profile": [
+      0.39,
+      0.58,
+      0.39,
+      0.72,
+      0.75,
+      0.44
+     ],
+     "coverage": 0.784,
+     "covered_by": [
+      "clefF"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 1.2,
+      "dy_spaces": -2.555
+     },
+     "first_cell": false,
+     "left_of_header": true,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      140,
+      680,
+      280,
+      908
+     ],
+     "bbox_page_px": [
+      2148.1,
+      3548.1,
+      2170.1,
+      3584.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/11/1/10/13/4",
+     "value": [
+      "staff",
+      0,
+      579,
+      952,
+      415
+     ],
+     "score": 0.5830409526824951,
+     "detail": {
+      "bbox_page_px": [
+       2126.0,
+       3532.1925,
+       2275.94,
+       3597.555
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/11/1/10/13/5",
+     "value": [
+      "clefF",
+      137,
+      719,
+      139,
+      184
+     ],
+     "score": 0.49336591362953186,
+     "detail": {
+      "bbox_page_px": [
+       2147.5775,
+       3554.2425,
+       2169.47,
+       3583.2225
+      ],
+      "category": "clef"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/6/1/4/4/350000": {
+   "group": "missed_clef",
+   "plate": "litolff",
+   "subject": "glyph/6/1/4/4/350000",
+   "shape": {
+    "value": 1.96,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.34,
+     "height_spaces": 1.96,
+     "staff_step": 3.48,
+     "fill": 0.535,
+     "max_column_share": 0.908,
+     "mass_y": 0.374,
+     "column_profile": [
+      0.42,
+      0.48,
+      0.48,
+      0.65,
+      0.91,
+      0.91
+     ],
+     "coverage": 0.974,
+     "covered_by": [
+      "clefF"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 1.84,
+      "dy_spaces": 2.87
+     },
+     "first_cell": false,
+     "left_of_header": true,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      197,
+      718,
+      331,
+      914
+     ],
+     "bbox_page_px": [
+      1255.0,
+      2632.1,
+      1276.1,
+      2663.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/6/1/4/4/3",
+     "value": [
+      "staff",
+      0,
+      572,
+      1276,
+      435
+     ],
+     "score": 0.814746081829071,
+     "detail": {
+      "bbox_page_px": [
+       1224.0,
+       2609.09,
+       1424.97,
+       2677.6025
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/6/1/4/4/15",
+     "value": [
+      "clefF",
+      127,
+      720,
+      207,
+      191
+     ],
+     "score": 0.25284889340400696,
+     "detail": {
+      "bbox_page_px": [
+       1244.0025,
+       2632.4,
+       1276.605,
+       2662.4825
+      ],
+      "category": "clef"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/1/0/8/2/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/1/0/8/2/350000",
+   "shape": {
+    "value": 2.28,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.39,
+     "height_spaces": 2.28,
+     "staff_step": 3.82,
+     "fill": 0.478,
+     "max_column_share": 0.724,
+     "mass_y": 0.436,
+     "column_profile": [
+      0.56,
+      0.56,
+      0.56,
+      0.72,
+      0.72,
+      0.39
+     ],
+     "coverage": 0.873,
+     "covered_by": [
+      "rest8th"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.38,
+      "dy_spaces": 1.65
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      96,
+      705,
+      235,
+      933
+     ],
+     "bbox_page_px": [
+      1085.1,
+      2580.0,
+      1107.0,
+      2615.9
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/1/0/8/2/1",
+     "value": [
+      "rest8th",
+      80,
+      724,
+      151,
+      205
+     ],
+     "score": 0.6907749176025391,
+     "detail": {
+      "bbox_page_px": [
+       1082.6,
+       2583.03,
+       1106.3825,
+       2615.3175
+      ],
+      "category": "rest"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/1/0/10/2/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/1/0/10/2/350000",
+   "shape": {
+    "value": 2.29,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.4,
+     "height_spaces": 2.29,
+     "staff_step": 3.81,
+     "fill": 0.46,
+     "max_column_share": 0.751,
+     "mass_y": 0.447,
+     "column_profile": [
+      0.36,
+      0.55,
+      0.41,
+      0.69,
+      0.75,
+      0.55
+     ],
+     "coverage": 0.856,
+     "covered_by": [
+      "clefF",
+      "rest8th"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.43,
+      "dy_spaces": 2.545
+     },
+     "first_cell": false,
+     "left_of_header": true,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      83,
+      692,
+      223,
+      921
+     ],
+     "bbox_page_px": [
+      1083.1,
+      2930.0,
+      1105.1,
+      2966.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/1/0/10/2/3",
+     "value": [
+      "clefF",
+      78,
+      719,
+      148,
+      196
+     ],
+     "score": 0.5129302144050598,
+     "detail": {
+      "bbox_page_px": [
+       1082.285,
+       2934.2425,
+       1105.595,
+       2965.1125
+      ],
+      "category": "clef"
+     }
+    },
+    {
+     "subject": "glyph/1/0/10/2/6",
+     "value": [
+      "rest8th",
+      84,
+      719,
+      144,
+      192
+     ],
+     "score": 0.5175681710243225,
+     "detail": {
+      "bbox_page_px": [
+       1083.23,
+       2934.2425,
+       1105.91,
+       2964.4825
+      ],
+      "category": "rest"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/2/0/7/8/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/2/0/7/8/350000",
+   "shape": {
+    "value": 2.31,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.38,
+     "height_spaces": 2.31,
+     "staff_step": 3.93,
+     "fill": 0.473,
+     "max_column_share": 0.784,
+     "mass_y": 0.436,
+     "column_profile": [
+      0.54,
+      0.54,
+      0.38,
+      0.73,
+      0.78,
+      0.6
+     ],
+     "coverage": 0.0,
+     "covered_by": [],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.22,
+      "dy_spaces": 0.5
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      144,
+      494,
+      282,
+      725
+     ],
+     "bbox_page_px": [
+      1388.0,
+      1454.0,
+      1410.1,
+      1491.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/2/0/7/8/4",
+     "value": [
+      "staff",
+      0,
+      402,
+      900,
+      469
+     ],
+     "score": 0.5421617031097412,
+     "detail": {
+      "bbox_page_px": [
+       1365.0,
+       1439.32,
+       1509.0,
+       1514.3600000000001
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/16/1/4/4/350000": {
+   "group": "read",
+   "plate": "litolff",
+   "subject": "glyph/16/1/4/4/350000",
+   "shape": {
+    "value": 2.29,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.39,
+     "height_spaces": 2.29,
+     "staff_step": 4.05,
+     "fill": 0.448,
+     "max_column_share": 0.721,
+     "mass_y": 0.461,
+     "column_profile": [
+      0.33,
+      0.58,
+      0.58,
+      0.69,
+      0.72,
+      0.41
+     ],
+     "coverage": 0.825,
+     "covered_by": [
+      "clefF",
+      "rest8th"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 1.58,
+      "dy_spaces": -1.49
+     },
+     "first_cell": false,
+     "left_of_header": true,
+     "header_known": true,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      134,
+      483,
+      273,
+      712
+     ],
+     "bbox_page_px": [
+      1155.1,
+      2662.1,
+      1177.0,
+      2698.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/16/1/4/4/1",
+     "value": [
+      "staff",
+      0,
+      386,
+      1148,
+      419
+     ],
+     "score": 0.6401048898696899,
+     "detail": {
+      "bbox_page_px": [
+       1134.0,
+       2646.795,
+       1314.81,
+       2712.7875
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/16/1/4/4/3",
+     "value": [
+      "rest8th",
+      129,
+      524,
+      147,
+      186
+     ],
+     "score": 0.5772271752357483,
+     "detail": {
+      "bbox_page_px": [
+       1154.3175,
+       2668.53,
+       1177.47,
+       2697.825
+      ],
+      "category": "rest"
+     }
+    },
+    {
+     "subject": "glyph/16/1/4/4/6",
+     "value": [
+      "clefF",
+      127,
+      521,
+      147,
+      188
+     ],
+     "score": 0.4137706756591797,
+     "detail": {
+      "bbox_page_px": [
+       1154.0025,
+       2668.0575,
+       1177.155,
+       2697.6675
+      ],
+      "category": "clef"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/8/0/7/6/350000": {
+   "group": "real_accidental",
+   "plate": "litolff",
+   "subject": "glyph/8/0/7/6/350000",
+   "shape": {
+    "value": 2.66,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.02,
+     "height_spaces": 2.66,
+     "staff_step": 1.9,
+     "fill": 0.506,
+     "max_column_share": 1.0,
+     "mass_y": 0.561,
+     "column_profile": [
+      1.0,
+      1.0,
+      0.24,
+      0.48,
+      0.48,
+      0.48
+     ],
+     "coverage": 0.128,
+     "covered_by": [
+      "ledgerLine"
+     ],
+     "right_head": {
+      "class": "noteheadHalfInSpace",
+      "dx_spaces": 0.26,
+      "dy_spaces": -6.885
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      70,
+      585,
+      172,
+      851
+     ],
+     "bbox_page_px": [
+      1022.0,
+      1511.1,
+      1038.1,
+      1553.0
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/8/0/7/6/7",
+     "value": [
+      "ledgerLine",
+      13,
+      603,
+      517,
+      22
+     ],
+     "score": 0.29077187180519104,
+     "detail": {
+      "bbox_page_px": [
+       1013.0475,
+       1513.9725,
+       1094.475,
+       1517.4375
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/8/0/7/6/10",
+     "value": [
+      "ledgerLine",
+      3,
+      594,
+      347,
+      34
+     ],
+     "score": 0.25633835792541504,
+     "detail": {
+      "bbox_page_px": [
+       1011.4725,
+       1512.555,
+       1066.125,
+       1517.91
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "litolff:glyph/2/1/9/5/350000": {
+   "group": "real_accidental",
+   "plate": "litolff",
+   "subject": "glyph/2/1/9/5/350000",
+   "shape": {
+    "value": 2.57,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.94,
+     "height_spaces": 2.57,
+     "staff_step": 3.81,
+     "fill": 0.503,
+     "max_column_share": 1.0,
+     "mass_y": 0.569,
+     "column_profile": [
+      1.0,
+      1.0,
+      0.22,
+      0.41,
+      0.49,
+      0.49
+     ],
+     "coverage": 0.012,
+     "covered_by": [
+      "ledgerLine"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.3,
+      "dy_spaces": 0.405
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      825,
+      500,
+      919,
+      757
+     ],
+     "bbox_page_px": [
+      1311.0,
+      3417.0,
+      1326.0,
+      3458.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/2/1/9/5/6",
+     "value": [
+      "staff",
+      0,
+      414,
+      1143,
+      433
+     ],
+     "score": 0.7392231822013855,
+     "detail": {
+      "bbox_page_px": [
+       1179.0,
+       3403.24,
+       1361.88,
+       3472.52
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/2/1/9/5/10",
+     "value": [
+      "ledgerLine",
+      429,
+      510,
+      616,
+      27
+     ],
+     "score": 0.3275291323661804,
+     "detail": {
+      "bbox_page_px": [
+       1247.64,
+       3418.6,
+       1346.2,
+       3422.92
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/2/1/9/5/11",
+     "value": [
+      "ledgerLine",
+      155,
+      511,
+      822,
+      25
+     ],
+     "score": 0.3149382770061493,
+     "detail": {
+      "bbox_page_px": [
+       1203.8,
+       3418.76,
+       1335.32,
+       3422.76
+      ],
+      "category": "structural"
+     }
+    },
+    {
+     "subject": "glyph/2/1/9/5/12",
+     "value": [
+      "ledgerLine",
+      907,
+      709,
+      231,
+      25
+     ],
+     "score": 0.2881888449192047,
+     "detail": {
+      "bbox_page_px": [
+       1324.12,
+       3450.44,
+       1361.08,
+       3454.44
+      ],
+      "category": "structural"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/14/0/3/5/350000": {
+   "group": "real_accidental",
+   "plate": "brahms",
+   "subject": "glyph/14/0/3/5/350000",
+   "shape": {
+    "value": 3.13,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.24,
+     "height_spaces": 3.13,
+     "staff_step": 6.03,
+     "fill": 0.645,
+     "max_column_share": 0.942,
+     "mass_y": 0.506,
+     "column_profile": [
+      0.54,
+      0.93,
+      0.92,
+      0.94,
+      0.94,
+      0.67
+     ],
+     "coverage": 0.415,
+     "covered_by": [
+      "noteheadBlackInSpace"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.24,
+      "dy_spaces": 0.01
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      691,
+      342,
+      815,
+      655
+     ],
+     "bbox_page_px": [
+      3461.0,
+      1240.0,
+      3495.1,
+      1326.1
+     ]
+    }
+   },
+   "boxes": []
+  },
+  "brahms:glyph/19/0/3/9/350000": {
+   "group": "real_accidental",
+   "plate": "brahms",
+   "subject": "glyph/19/0/3/9/350000",
+   "shape": {
+    "value": 2.98,
+    "detail": {
+     "n_pieces": 2,
+     "width_spaces": 1.73,
+     "height_spaces": 2.98,
+     "staff_step": 5.24,
+     "fill": 0.453,
+     "max_column_share": 1.0,
+     "mass_y": 0.551,
+     "column_profile": [
+      1.0,
+      0.46,
+      0.46,
+      0.26,
+      0.59,
+      0.63
+     ],
+     "coverage": 0.625,
+     "covered_by": [
+      "noteheadBlackOnLine",
+      "slur"
+     ],
+     "right_head": null,
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      48,
+      378,
+      221,
+      676
+     ],
+     "bbox_page_px": [
+      4743.1,
+      1279.0,
+      4790.2,
+      1360.2
+     ]
+    }
+   },
+   "boxes": []
+  },
+  "brahms:glyph/14/0/2/1/350000": {
+   "group": "real_accidental",
+   "plate": "brahms",
+   "subject": "glyph/14/0/2/1/350000",
+   "shape": {
+    "value": 3.19,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.99,
+     "height_spaces": 3.19,
+     "staff_step": 3.91,
+     "fill": 0.529,
+     "max_column_share": 0.84,
+     "mass_y": 0.527,
+     "column_profile": [
+      0.84,
+      0.84,
+      0.34,
+      0.56,
+      0.75,
+      0.72
+     ],
+     "coverage": 0.739,
+     "covered_by": [
+      "arpeggiato"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.34,
+      "dy_spaces": -2.01
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      742,
+      452,
+      841,
+      771
+     ],
+     "bbox_page_px": [
+      1632.2,
+      1020.2,
+      1659.2,
+      1107.1
+     ]
+    }
+   },
+   "boxes": []
+  },
+  "brahms:glyph/19/1/5/3/350000": {
+   "group": "real_accidental",
+   "plate": "brahms",
+   "subject": "glyph/19/1/5/3/350000",
+   "shape": {
+    "value": 2.87,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.24,
+     "height_spaces": 2.87,
+     "staff_step": 5.69,
+     "fill": 0.676,
+     "max_column_share": 0.99,
+     "mass_y": 0.459,
+     "column_profile": [
+      0.54,
+      0.99,
+      0.98,
+      0.93,
+      0.95,
+      0.54
+     ],
+     "coverage": 0.388,
+     "covered_by": [
+      "noteheadBlackInSpace"
+     ],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.09,
+      "dy_spaces": -0.175
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      611,
+      379,
+      735,
+      666
+     ],
+     "bbox_page_px": [
+      2416.0,
+      5321.2,
+      2450.1,
+      5400.1
+     ]
+    }
+   },
+   "boxes": []
+  },
+  "brahms:glyph/14/1/1/8/350001": {
+   "group": "real_accidental",
+   "plate": "brahms",
+   "subject": "glyph/14/1/1/8/350001",
+   "shape": {
+    "value": 3.23,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.06,
+     "height_spaces": 3.23,
+     "staff_step": 3.95,
+     "fill": 0.481,
+     "max_column_share": 0.771,
+     "mass_y": 0.507,
+     "column_profile": [
+      0.38,
+      0.77,
+      0.76,
+      0.27,
+      0.75,
+      0.73
+     ],
+     "coverage": 0.0,
+     "covered_by": [],
+     "right_head": {
+      "class": "noteheadBlackOnLine",
+      "dx_spaces": 0.28,
+      "dy_spaces": -0.01
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      903,
+      430,
+      1009,
+      753
+     ],
+     "bbox_page_px": [
+      5240.1,
+      4468.2,
+      5269.0,
+      4556.2
+     ]
+    }
+   },
+   "boxes": []
+  },
+  "brahms:glyph/19/0/10/8/350000": {
+   "group": "boxed_accidental",
+   "plate": "brahms",
+   "subject": "glyph/19/0/10/8/350000",
+   "shape": {
+    "value": 3.23,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.88,
+     "height_spaces": 3.23,
+     "staff_step": 6.89,
+     "fill": 0.515,
+     "max_column_share": 0.762,
+     "mass_y": 0.486,
+     "column_profile": [
+      0.75,
+      0.75,
+      0.43,
+      0.29,
+      0.75,
+      0.76
+     ],
+     "coverage": 1.0,
+     "covered_by": [
+      "accidentalFlat",
+      "beam"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.27,
+      "dy_spaces": -0.065
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      85,
+      287,
+      173,
+      610
+     ],
+     "bbox_page_px": [
+      4443.2,
+      2827.2,
+      4467.1,
+      2915.2
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/19/0/10/8/16",
+     "value": [
+      "accidentalFlat",
+      74,
+      306,
+      278,
+      308
+     ],
+     "score": 0.3360423147678375,
+     "detail": {
+      "bbox_page_px": [
+       4440.165,
+       2832.385,
+       4515.92,
+       2916.315
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/6/0/1/7/350000": {
+   "group": "boxed_accidental",
+   "plate": "brahms",
+   "subject": "glyph/6/0/1/7/350000",
+   "shape": {
+    "value": 3.34,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.98,
+     "height_spaces": 3.34,
+     "staff_step": 3.04,
+     "fill": 0.594,
+     "max_column_share": 0.772,
+     "mass_y": 0.512,
+     "column_profile": [
+      0.77,
+      0.77,
+      0.73,
+      0.65,
+      0.76,
+      0.75
+     ],
+     "coverage": 1.0,
+     "covered_by": [
+      "accidentalFlat",
+      "accidentalSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.2,
+      "dy_spaces": -0.035
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      55,
+      499,
+      153,
+      833
+     ],
+     "bbox_page_px": [
+      4555.1,
+      889.2,
+      4582.1,
+      981.1
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/6/0/1/7/6",
+     "value": [
+      "accidentalFlat",
+      49,
+      497,
+      105,
+      338
+     ],
+     "score": 0.7258771061897278,
+     "detail": {
+      "bbox_page_px": [
+       4553.475,
+       888.675,
+       4582.35,
+       981.625
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/6/0/1/7/11",
+     "value": [
+      "accidentalSharp",
+      50,
+      493,
+      105,
+      341
+     ],
+     "score": 0.5568094253540039,
+     "detail": {
+      "bbox_page_px": [
+       4553.75,
+       887.575,
+       4582.625,
+       981.35
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/18/1/3/6/350000": {
+   "group": "boxed_accidental",
+   "plate": "brahms",
+   "subject": "glyph/18/1/3/6/350000",
+   "shape": {
+    "value": 3.235,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.986,
+     "height_spaces": 3.235,
+     "staff_step": 3.967,
+     "fill": 0.694,
+     "max_column_share": 0.856,
+     "mass_y": 0.512,
+     "column_profile": [
+      0.85,
+      0.86,
+      0.78,
+      0.73,
+      0.86,
+      0.86
+     ],
+     "coverage": 0.91,
+     "covered_by": [
+      "accidentalNatural"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.343,
+      "dy_spaces": -3.623
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      73,
+      398,
+      162,
+      690
+     ],
+     "bbox_page_px": [
+      4244.2,
+      4688.1,
+      4271.3,
+      4776.9
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/18/1/3/6/30",
+     "value": [
+      "accidentalNatural",
+      73,
+      392,
+      81,
+      301
+     ],
+     "score": 0.4263748526573181,
+     "detail": {
+      "bbox_page_px": [
+       4244.20654296875,
+       4686.24609375,
+       4268.8466796875,
+       4777.81005859375
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/5/1/10/3/350000": {
+   "group": "boxed_accidental",
+   "plate": "brahms",
+   "subject": "glyph/5/1/10/3/350000",
+   "shape": {
+    "value": 3.2,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 1.02,
+     "height_spaces": 3.2,
+     "staff_step": 3.84,
+     "fill": 0.546,
+     "max_column_share": 0.85,
+     "mass_y": 0.518,
+     "column_profile": [
+      0.83,
+      0.85,
+      0.58,
+      0.74,
+      0.74,
+      0.72
+     ],
+     "coverage": 0.912,
+     "covered_by": [
+      "accidentalNatural"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.27,
+      "dy_spaces": 4.485
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      869,
+      448,
+      971,
+      768
+     ],
+     "bbox_page_px": [
+      2510.0,
+      6328.2,
+      2538.0,
+      6416.2
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/5/1/10/3/6",
+     "value": [
+      "accidentalNatural",
+      872,
+      439,
+      93,
+      341
+     ],
+     "score": 0.7086480259895325,
+     "detail": {
+      "bbox_page_px": [
+       2510.8,
+       6325.725,
+       2536.375,
+       6419.5
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/22/1/9/11/350002": {
+   "group": "boxed_accidental",
+   "plate": "brahms",
+   "subject": "glyph/22/1/9/11/350002",
+   "shape": {
+    "value": 2.56,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.52,
+     "height_spaces": 2.56,
+     "staff_step": 1.68,
+     "fill": 0.692,
+     "max_column_share": 0.988,
+     "mass_y": 0.513,
+     "column_profile": [
+      0.52,
+      0.99,
+      0.99,
+      0.98,
+      0.8,
+      0.4
+     ],
+     "coverage": 0.992,
+     "covered_by": [
+      "accidentalFlat",
+      "accidentalSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.75,
+      "dy_spaces": 2.455
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      4,
+      786,
+      56,
+      1042
+     ],
+     "bbox_page_px": [
+      4636.1,
+      6747.2,
+      4650.3,
+      6816.9
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/22/1/9/11/12",
+     "value": [
+      "accidentalSharp",
+      0,
+      788,
+      103,
+      327
+     ],
+     "score": 0.4692450761795044,
+     "detail": {
+      "bbox_page_px": [
+       4635.0,
+       6747.73,
+       4663.0675,
+       6836.8375
+      ],
+      "category": "accidental"
+     }
+    },
+    {
+     "subject": "glyph/22/1/9/11/19",
+     "value": [
+      "accidentalFlat",
+      0,
+      796,
+      102,
+      319
+     ],
+     "score": 0.30003732442855835,
+     "detail": {
+      "bbox_page_px": [
+       4635.0,
+       6749.91,
+       4662.795,
+       6836.8375
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  },
+  "brahms:glyph/4/0/11/7/350000": {
+   "group": "boxed_accidental",
+   "plate": "brahms",
+   "subject": "glyph/4/0/11/7/350000",
+   "shape": {
+    "value": 3.22,
+    "detail": {
+     "n_pieces": 1,
+     "width_spaces": 0.97,
+     "height_spaces": 3.22,
+     "staff_step": 5.06,
+     "fill": 0.508,
+     "max_column_share": 0.988,
+     "mass_y": 0.517,
+     "column_profile": [
+      0.27,
+      0.91,
+      0.91,
+      0.34,
+      0.99,
+      0.99
+     ],
+     "coverage": 0.972,
+     "covered_by": [
+      "accidentalSharp"
+     ],
+     "right_head": {
+      "class": "noteheadBlackInSpace",
+      "dx_spaces": 0.43,
+      "dy_spaces": -0.02
+     },
+     "first_cell": false,
+     "left_of_header": false,
+     "header_known": false,
+     "touches_cell_edge": false,
+     "bbox_canonical": [
+      525,
+      393,
+      622,
+      715
+     ],
+     "bbox_page_px": [
+      3798.0,
+      3145.0,
+      3825.2,
+      3235.2
+     ]
+    }
+   },
+   "boxes": [
+    {
+     "subject": "glyph/4/0/11/7/4",
+     "value": [
+      "accidentalSharp",
+      525,
+      391,
+      111,
+      315
+     ],
+     "score": 0.7504681348800659,
+     "detail": {
+      "bbox_page_px": [
+       3798.0,
+       3144.48,
+       3829.08,
+       3232.68
+      ],
+      "category": "accidental"
+     }
+    }
+   ]
+  }
+ }
+}

@@ -1960,10 +1960,11 @@ def _ink_under_the_rung(ev: Evidence) -> Optional[Dict[str, Any]]:
                    Q.GLYPH_BAND_DISTANCE, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.STROKE_OWNER),
+           Q.GLYPH_BAND_DISTANCE, Q.STROKE_OWNER, Q.UNBOXED_REST_SHAPE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("accidental",),
-    reasons=_human_only_reasons(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL) + ("claimed_by:barline", "claimed_by:page_claim"),
+    reasons=_human_only_reasons(Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL) + ("claimed_by:barline", "claimed_by:page_claim",
+                                                                      "eighth_rest_shaped_ink"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
@@ -1982,6 +1983,22 @@ def adjudicate_accidental_is_not_an_accidental(ev: Evidence) -> Ruling:
     cf_row = _ledger_finding(ev, "accidental")          # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
+    # ROADMAP 2.334 (OMR_REST_BOXED_AS_OTHER, default OFF): a box says where to look, the ink says the kind. An accidental box standing on ink
+    # with an eighth rest's shape (bulb top left, stroke down to the right, alone in the staff) is not an accidental. NEVER a real accidental:
+    # a sharp, natural or flat has a full-height stroke on its left, a double sharp is an x about one space tall -- both outside the eighth's
+    # windows (`unboxed_rest.eighth_rest_shaped`). The rest itself is read by the 2.99 ink reader, which this refusal lets see the ink.
+    from . import unboxed_rest as _ur
+    if _ur.rest_boxed_as_other_enabled():
+        mine = ev.rows(Q.GLYPH_BOX)
+        bb = (mine[-1].detail or {}).get("bbox_page_px") if mine else None
+        if bb:
+            rest_row = _ur.eighth_rest_under_box(ev, bb)
+            if rest_row is not None:
+                rd = rest_row.detail or {}
+                return Ruling(value=True, reason="eighth_rest_shaped_ink", used=tuple(used) + (rest_row.id,),
+                              detail={**detail, "rest_ink": rest_row.subject.to_key(),
+                                      **{k: rd.get(k) for k in ("width_spaces", "height_spaces", "staff_step",
+                                                                "max_column_share", "column_profile")}})
     return Ruling(value=False, reason="accidental", used=used, detail=detail)
 
 
