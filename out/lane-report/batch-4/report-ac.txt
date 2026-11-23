@@ -1,0 +1,26 @@
+LANE REPORT  OMR_SLASH_STEM_CORE (OFF=0 ON=1), OMR_ACCIDENTAL_FUSED_INK (OFF=0 ON=1), OMR_DOT_BY_HEAD_INK (OFF=0 ON=1), OMR_RELOCATE_AT_EXPORT (OFF=0 ON=1), OMR_FOLD_FAR_BY_LEDGER (OFF=0 ON=1)  --from gather
+  C vs A
+
+litolff  pages [2, 6, 16]  (2418 notes+rests OFF, 2409 ON, 2404 paired)
+  file:   notes +5 -14 | accidentals +33 | flags +1 | ties -2 | articulations -2 | note values ~3 | pitches ~35 | blue marks +39 -2 | words +4 -10
+  red bars 76 -> 71 | notes not written 928 -> 938
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (248 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 9 (at another id than asked 2) | by id key, no position 401 | position but no mark here 17
+  NOT JUDGED: 132 changed places no tile of Sean's covers (5 are covered; 13 have no page place): accidental 33, articulation 2, blue 38, flag 1, note 18, pitch 35, tie 2, value 2, words 1 -> unjudged.txt
+
+brahms  pages [0, 4, 5]  (2613 notes+rests OFF, 2609 ON, 2608 paired)
+  file:   notes +1 -3 | rests -2 | accidentals +4 | dots +1 | flags -1 | ties -2 | articulations +5 | pitches ~6 | blue marks +7 -2 | words +2 -3
+  red bars 41 -> 41 | notes not written 1153 -> 1155
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (225 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 4) | by id key, no position 378 | position but no mark here 23
+  NOT JUDGED: 34 changed places no tile of Sean's covers (0 are covered; 5 have no page place): accidental 4, articulation 5, blue 9, dot 1, flag 1, note 4, pitch 6, rest 2, tie 2 -> unjudged.txt
+      NOT FOUND (no written event at its place; neither right nor wrong)  2.78-phase2-review tile 5 ['glyph/0/0/12/1/1', 'glyph/0/0/12/1/15']  was unwritten_wrong
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 20 s

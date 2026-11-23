@@ -645,6 +645,29 @@ def _claim_narrowing(claim, used, detail) -> Ruling:
     return Ruling.narrow(cands, "claim_narrowed:leading_column", used=u, **detail)
 
 
+def _on_an_accidentals_ink(ic, box_row) -> Optional[Ruling]:
+    """accidental-not-head lane (flag `OMR_ACCIDENTAL_FUSED_INK`, default OFF). THE RULE: ink that is an accidental's is never also a notehead. A head
+    box that owns no ink of its own and stands mostly on ink earlier marks claimed, an ACCIDENTAL's claim among them, is refused BY THE CLAIM
+    (`claimed_by:page_claim`). The one-claim rule (2.277: one claim holds `CUT` of the box) missed the natural fused into the barline at Litolff
+    bar 21: the barline held 38% of each head box on it, the natural the rest, so neither alone refused them and an A-flat4 half was written on
+    the natural, pushing Sean's chord to beat 2. Never a box that owns head ink (a real head touching its accidental keeps its own oval), never
+    without an accidental's claim (two other claims sharing a box are the 2.277 rule's, unchanged). `CUT` is the register's one cut."""
+    from .. import page_accidental_ink as _PAI
+    if ic is None or not _PAI.fused_enabled():
+        return None
+    e = getattr(ic, "entry", None) or {}
+    shares = e.get("shares") or {}
+    held_all = e.get("held_all")
+    if e.get("owns") or held_all is None or _PAI.OWNER not in shares or float(held_all) < _claim_final.CF.CUT:
+        return None
+    detail = {"class": box_row.value[0], "ink_consult": {"by": _PAI.OWNER, "held_all": held_all, "shares": shares, "cut": _claim_final.CF.CUT,
+                                                         "verdict": getattr(ic, "verdict_id", ""), "via": "accidental_with_earlier_claims"}}
+    used = tuple(x for x in (box_row.id, getattr(ic, "verdict_id", "")) if x)
+    r = Ruling(value=True, reason="claimed_by:page_claim", used=used, detail=detail)
+    return _margins.attach(r, margin=float(held_all) - _claim_final.CF.CUT, axis="ink_share_held", unit="fraction of the box's own ink earlier claims hold",
+                           band=None, would_choose=(True,))
+
+
 def _too_narrow(box_row, spacing_canonical: float,
                 detail: Dict[str, Any]) -> bool:
     """A `noteheadBlack*` box under the measured width floor."""
@@ -3896,6 +3919,9 @@ def adjudicate_notehead_is_not_a_notehead(ev: Evidence) -> Ruling:
     cf_row = ic.ledger if ic is not None else _claim_final.finding(ev, box_row)
     if cf_row is not None:
         return _claim_final_refusal(cf_row, box_row)
+    acc = _on_an_accidentals_ink(ic, box_row)
+    if acc is not None:
+        return acc
     # lane-stem-end-head round 2: a head the ink ALONE read at a stem end, its one witness; any claim on its ink refuses it.
     from .. import stem_end_heads as _SEH
     from .. import dyad_head_rescue as _DHR

@@ -1,0 +1,290 @@
+[
+ {
+  "tile": 1,
+  "plate": "brahms",
+  "cell": "glyph/5/1/9/2",
+  "written": [
+   {
+    "rg": "glyph/5/1/9/2/3",
+    "type": "eighth",
+    "pitch": "G3",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/9/2/6",
+    "type": "eighth",
+    "pitch": "E-14",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/9/2/14",
+    "type": "eighth",
+    "pitch": "C5",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 2,
+  "plate": "brahms",
+  "cell": "glyph/5/1/10/4",
+  "written": [
+   {
+    "rg": "glyph/5/1/10/4/1",
+    "type": "eighth",
+    "pitch": "G3",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/10/4/3",
+    "type": "eighth",
+    "pitch": "E-14",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/10/4/7",
+    "type": "eighth",
+    "pitch": "C5",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 3,
+  "plate": "brahms",
+  "cell": "glyph/5/1/9/6",
+  "written": [
+   {
+    "rg": "glyph/5/1/9/6/1",
+    "type": "quarter",
+    "pitch": "D4",
+    "dots": 1
+   },
+   {
+    "rg": "glyph/5/1/9/6/8",
+    "type": "quarter",
+    "pitch": "A5",
+    "dots": 1
+   },
+   {
+    "rg": "glyph/5/1/9/6/14",
+    "type": "quarter",
+    "pitch": "D5",
+    "dots": 1
+   }
+  ]
+ },
+ {
+  "tile": 4,
+  "plate": "brahms",
+  "cell": "glyph/5/1/10/7",
+  "written": [
+   {
+    "rg": "glyph/5/1/10/7/2",
+    "type": "quarter",
+    "pitch": "G3",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/10/7/8",
+    "type": "quarter",
+    "pitch": "B-14",
+    "dots": 1
+   },
+   {
+    "rg": "glyph/5/1/10/7/10",
+    "type": "quarter",
+    "pitch": "D5",
+    "dots": 1
+   },
+   {
+    "rg": "glyph/5/1/10/7/18",
+    "type": "quarter",
+    "pitch": "G4",
+    "dots": 1
+   }
+  ]
+ },
+ {
+  "tile": 5,
+  "plate": "litolff",
+  "cell": "glyph/2/0/7/4",
+  "written": [
+   {
+    "rg": "glyph/2/0/7/4/1",
+    "type": "quarter",
+    "pitch": "G3",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/2/0/7/4/2",
+    "type": "quarter",
+    "pitch": "B-14",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/2/0/7/4/3",
+    "type": "quarter",
+    "pitch": "D4",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/2/0/7/4/8",
+    "type": "half",
+    "pitch": "G5",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 6,
+  "plate": "litolff",
+  "cell": "glyph/6/1/8/11",
+  "written": [
+   {
+    "rg": "glyph/6/1/8/11/0",
+    "type": "eighth",
+    "pitch": "C4",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/6/1/8/11/10",
+    "type": "half",
+    "pitch": "F5",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/6/1/8/11/11",
+    "type": "eighth",
+    "pitch": "F4",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/6/1/8/11/13",
+    "type": "quarter",
+    "pitch": "F5",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 7,
+  "plate": "brahms",
+  "cell": "glyph/5/1/9/7",
+  "written": [
+   {
+    "rg": "glyph/5/1/9/7/2",
+    "type": "quarter",
+    "pitch": "B-15",
+    "dots": 1
+   },
+   {
+    "rg": "glyph/5/1/9/7/7",
+    "type": "quarter",
+    "pitch": "D4",
+    "dots": 1
+   },
+   {
+    "rg": "glyph/5/1/9/7/12",
+    "type": "quarter",
+    "pitch": "D5",
+    "dots": 1
+   }
+  ]
+ },
+ {
+  "tile": 8,
+  "plate": "litolff",
+  "cell": "glyph/6/1/0/9",
+  "written": [
+   {
+    "rg": "glyph/6/1/0/9/9",
+    "type": "eighth",
+    "pitch": "B-15",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 9,
+  "plate": "brahms",
+  "cell": "glyph/5/1/10/2",
+  "written": [
+   {
+    "rg": "glyph/5/1/10/2/3",
+    "type": "eighth",
+    "pitch": "G3",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/10/2/6",
+    "type": "eighth",
+    "pitch": "E-14",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/10/2/9",
+    "type": "eighth",
+    "pitch": "C5",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 10,
+  "plate": "litolff",
+  "cell": "glyph/16/1/10/1",
+  "written": [
+   {
+    "rg": "glyph/16/1/10/1/1",
+    "type": "quarter",
+    "pitch": "G2",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/16/1/10/1/3",
+    "type": "quarter",
+    "pitch": "C2",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 11,
+  "plate": "brahms",
+  "cell": "glyph/5/1/11/2",
+  "written": [
+   {
+    "rg": "glyph/5/1/11/2/6",
+    "type": "eighth",
+    "pitch": "E-14",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/5/1/11/2/18",
+    "type": "eighth",
+    "pitch": "G3",
+    "dots": 0
+   }
+  ]
+ },
+ {
+  "tile": 12,
+  "plate": "litolff",
+  "cell": "glyph/6/0/8/0",
+  "written": [
+   {
+    "rg": "glyph/6/0/8/0/2",
+    "type": "eighth",
+    "pitch": "G4",
+    "dots": 0
+   },
+   {
+    "rg": "glyph/6/0/8/0/17",
+    "type": "half",
+    "pitch": "E-13",
+    "dots": 0
+   }
+  ]
+ }
+]

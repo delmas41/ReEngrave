@@ -1,0 +1,26 @@
+LANE REPORT  OMR_PAGE_STEMS (OFF=0 ON=1), OMR_STACK_TWO_HEADS (OFF=0 ON=1), OMR_STRING_STOPS_OWN_VALUE (OFF=0 ON=1)  --from gather
+  OFF arm: the batch-2 OFF gather (main + batch-2 tree, flags off) re-used as saved; ON arm: this tree (batch-2-r2) re-gathered with all three flags ON
+  NOT THE FROZEN SAMPLE: batch-2 development pages (Litolff 2, 6, 16; Brahms 0, 4, 5)
+
+litolff  pages [2, 6, 16]  (2419 notes+rests OFF, 2376 ON, 2356 paired)
+  file:   notes +22 -62 | rests +1 -3 | accidentals -2 | flags +6 -8 | beams +20 -15 ~9 | ties +4 -2 | articulations +1 -3 | fermatas +1 | note values ~17 | pitches ~4 | blue marks +15 -28 | dynamics +1 | words +24 -39
+  red bars 77 -> 55 | notes not written 928 -> 966
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (248 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 9 (at another id than asked 2) | by id key, no position 401 | position but no mark here 17
+  NOT JUDGED: 209 changed places no tile of Sean's covers (19 are covered; 59 have no page place): accidental 2, articulation 4, beam 44, blue 35, fermata 1, flag 13, note 69, pitch 4, rest 4, tie 6, value 17, words 10 -> unjudged.txt
+
+brahms  pages [0, 4, 5]  (2602 notes+rests OFF, 2602 ON, 2579 paired)
+  file:   notes +23 -16 | rests +3 -10 | accidentals +1 | dots +6 -9 | flags +26 -4 | beams +3 -4 ~2 | ties +12 -5 | slurs +10 -3 | articulations +3 | note values ~10 | pitches ~3 | blue marks +28 -22 | words +9 -25
+  red bars 47 -> 31 | notes not written 1164 -> 1157
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (225 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 11 (at another id than asked 4) | by id key, no position 378 | position but no mark here 23
+  NOT JUDGED: 205 changed places no tile of Sean's covers (4 are covered; 28 have no page place): accidental 1, articulation 3, beam 8, blue 48, dot 15, flag 30, note 39, pitch 3, rest 13, slur 13, tie 17, value 9, words 6 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+wall time 22 s

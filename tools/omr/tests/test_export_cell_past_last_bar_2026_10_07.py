@@ -44,6 +44,9 @@ def _staves(*, n_bars=(1, 1), n_staves=2):
             rec["verdicts"].append(_vrd(900 + st, sk, Q.MEASURE_PARTITION, nb))
         rec["verdicts"].append(_vrd(910 + st, sk, Q.CLEF, "treble"))
         rec["observations"].append(_obs(920 + st, sk, Q.STAFF_SPACING, SPACING))
+        # staff lines 200 px apart: a moved head at y 220 is past its owner's bar view
+        rec["observations"].append(_obs(960 + st, sk, Q.STAFF_LINES,
+                                        [100.0 + 200.0 * st + SPACING * i for i in range(5)]))
         # the detector cut THREE cells whatever the partition decided
         for c in range(3):
             rec["observations"] += [
@@ -146,7 +149,8 @@ class TestARelocatedHeadLandingPastTheOwnersLastBar(unittest.TestCase):
         rec = _staves()
         sub = "glyph/0/0/1/0/0"
         _head(rec, 100, sub, (moved_x, 210, moved_x + 20, 230),
-              pitch="G4", decider="move_glyph", owner="staff/0/0/0")
+              pitch="G4", decider="move_glyph", owner="staff/0/0/0",
+              pitch_reason="reowned_by_ledger_reading")
         return rec, sub
 
     def test_it_is_counted_not_lost_with_the_flag_on_and_off(self):

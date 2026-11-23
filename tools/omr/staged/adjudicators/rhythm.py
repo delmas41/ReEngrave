@@ -600,6 +600,20 @@ def _stems_connected_to_a_head(ev: Evidence, cell, stems):
         ev.verdict(Q.STEM_HEAD_CONTACT, subject=cell), stems)
 
 
+def _page_view_only_for_copies(ev: Evidence, ncell, row) -> bool:
+    """ROADMAP 2.306 r7 (Sean 2026-11-13, "Yes": a stem is filed only with the staff its note belongs to; flag `OMR_PAGE_STEMS`, default OFF):
+    a page stem view (reader CV_PAGE_STEMS) filed in this cell ONLY for heads whose decided owner is another staff -- copies in the padded crop
+    -- is not this cell's staff's stem. GATHER files the view on every staff the head was seen from where the owner is not yet known there (the
+    page owner's ledger reading is deferred on most pages); here the owner IS known (`Q.GLYPH_OWNER`, the verdict EXPORT drops the copy by), so
+    the ruling is applied where the fact lives. r6: such views were 519 of 623 (Litolff) / 669 of 748 (Brahms), and this rule then threw the
+    home staff's own beam away (his r4 tiles 3, 5, 11). With the flag off, or a view no head reading names, or any naming head owned here: False."""
+    from .. import page_stems as _PS
+    if not _PS.enabled() or getattr(row, "reader", None) != READERS.CV_PAGE_STEMS:
+        return False
+    naming = [r for r in ev.rows(Q.PAGE_STEM, scope=Scope.SELF_AND_DESCENDANTS, subject=ncell) if r.value == row.id]
+    return bool(naming) and all(owned_by_another_staff(ev, r.subject) for r in naming)
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # ROADMAP 2.74 -- a BEAM is thick, straight, and stands on two stems.
 #
@@ -1282,6 +1296,37 @@ def _pos_verdicts(ev: Evidence, cell, home: str, head_keys):
     return pos_of
 
 
+def _head_oval(ev: Evidence, subject, box_row, b, space, cell_heads=None):
+    """lane-dot-by-ink (`OMR_DOT_BY_HEAD_INK`, default OFF): the box a dot is
+    measured against for the notehead `subject` -- its own oval of ink where
+    the detector box `b` holds only part of the head (`aug_dot_join.
+    head_oval_from_ink`, read off the head's `Q.HEAD_INK` filed at GATHER),
+    else `b` itself. `cell_heads` = `{key: box}` of every notehead box of the
+    cell (refused ones too): ink grown into another of them is not this
+    head's. Flag off, or nothing filed: `b`, unchanged."""
+    if b is None or box_row is None or not _aug_join.dot_by_head_ink_enabled():
+        return b
+    ink = ev.rows(Q.HEAD_INK, subject=subject)
+    me = subject.to_key()
+    oval = _aug_join.head_oval_from_ink(
+        b, (box_row.detail or {}).get("bbox_page_px"), ink[-1] if ink else None,
+        space, [ob for k, ob in (cell_heads or {}).items() if k != me])
+    return oval if oval is not None else b
+
+
+def _cell_head_boxes(ev: Evidence, cell, boxes):
+    """`{key: cell-frame box}` of every notehead-classed box of `cell`, refused or not (lane-dot-by-ink); `{}` with the flag off."""
+    if not _aug_join.dot_by_head_ink_enabled():
+        return {}
+    out = {}
+    for r in ev.rows(Q.NOTEHEAD_CLASS, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
+        row_ = boxes.get(r.subject.to_key())
+        b = _xywh_head(row_.value) if row_ else None
+        if b is not None:
+            out[r.subject.to_key()] = b
+    return out
+
+
 def _in_augmentation_window(dot_box, head_box, max_above, max_below):
     """Does `dot_box` sit in `head_box`'s augmentation-dot window?
 
@@ -1568,6 +1613,7 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
     # never turn a staccato into an augmentation.
     keep_foreign = _own.dot_follows_note_enabled()
     foreign_keys = set()
+    cell_heads = _cell_head_boxes(ev, cell, boxes)      # lane-dot-by-ink
     # ⚠️ ROADMAP 2.151 (`OMR_DOT_BOXED_AS_A_HEAD`, default ON since 2026-10-16): a box the
     # notehead gate REFUSED is not a head -- it never owns a dot (a refused
     # `head_cut_piece` twin took Brahms p0 `0/0/4/3/0` from the real half) --
@@ -1590,6 +1636,8 @@ def _attached_dots(ev: Evidence, cell, head_box, space):
                         b[2], b[3], space):
                     marks.append((r.subject.to_key(), b, box_row))
                 continue
+            if q == Q.NOTEHEAD_CLASS:       # lane-dot-by-ink: the head's own oval
+                b = _head_oval(ev, r.subject, box_row, b, space, cell_heads)
             if b is not None:
                 heads.append((r.subject.to_key(), b))
                 if foreign:
@@ -1791,13 +1839,16 @@ def _wedge_reading(shape_row):
                    Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
                    Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
                    Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION,
-                   Q.MARK_SHAPE, Q.GLYPH_STROKES, Q.STROKE_OWNER),
+                   Q.MARK_SHAPE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
+                   # lane-dot-by-ink (`OMR_DOT_BY_HEAD_INK`): where a dot
+                   # stands is judged from the head's own oval of ink
+                   Q.HEAD_INK),
     scope=Kind.GLYPH,
     wants=(Q.AUG_DOT, Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST,
            Q.CELL_STAFF_SPACE, Q.GLYPH_OWNER, Q.CELL_BOX,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.DOT_STROKE_INK,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.MARK_SHAPE,
-           Q.GLYPH_STROKES, Q.STROKE_OWNER),
+           Q.GLYPH_STROKES, Q.STROKE_OWNER, Q.HEAD_INK),
     reasons=("right_of_and_level_with_a_head", "centred_and_offset_from_a_head",
              "right_of_a_head_at_its_dot_step", "wedge_pointing_at_a_head",
              "no_glyph_box", "no_cell_staff_space",
@@ -1885,6 +1936,7 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
         if ctx is not None and ctx["on_a_barline"]:
             return Ruling.abstain("on_a_barline", **{
                 "detector_class": (row.detail or {}).get("detector_class")})
+    cell_heads = _cell_head_boxes(ev, cell, boxes)      # lane-dot-by-ink
     # ⚠️ ROADMAP 2.27c: the dot itself has no staff of its own to defend (it
     # is `ev.subject`, not a candidate), so unlike `_attached_dots` above
     # there is no self-reference to protect -- every candidate that
@@ -1911,6 +1963,8 @@ def adjudicate_dot_role(ev: Evidence) -> Ruling:
                     refused_targets.append((r.subject.to_key(), rb_))
                 continue
             b = _xywh_head(box_row.value) if box_row else None
+            if q == Q.NOTEHEAD_CLASS:       # lane-dot-by-ink: the head's own oval
+                b = _head_oval(ev, r.subject, box_row, b, space, cell_heads)
             if _own._owned_by_a_different_staff(ev, r, home):
                 n_excluded += 1
                 if b is not None:
@@ -2190,8 +2244,16 @@ def _unison_two_voices(ev: Evidence, own_stems, head_box):
         return None
     if getattr(ruling, "reason", None) != "unison_two_voices":
         return None
-    vs = _voice_stems(own_stems, head_box)
+    vs = _unison_voice_stems(ruling, own_stems, head_box)
     return ruling if (vs["up"] and vs["down"]) else None
+
+
+def _unison_voice_stems(unison: Any, own_stems, head_box):
+    """Each voice's own stems of a unison head: the page's two filed stems by the direction the page read them (ROADMAP 2.306 two-voice piece,
+    `stem_value.page_voice_stems`), else the old split by the head's centre (`_voice_stems`)."""
+    from .stem_value import page_voice_stems
+    vs = page_voice_stems(getattr(unison, "detail", None), own_stems) if unison is not None else None
+    return vs if vs is not None else _voice_stems(own_stems, head_box)
 
 
 def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any]:
@@ -2206,7 +2268,7 @@ def _own_stem_side(ev: Evidence, unison: Any = None) -> Tuple[Optional[str], Any
     """
     v = ev.verdict(Q.STEM_DIRECTION)
     if (v is not None and v.outcome is Outcome.DECIDED
-            and v.reason == "stem_projection" and v.value in ("up", "down")):
+            and v.reason in ("stem_projection", "page_stem") and v.value in ("up", "down")):
         return str(v.value), v
     # ⚠️ ROADMAP 2.77b (Sean, 2026-10-09, rhythm-leftovers-2 crop 9): WHERE NO
     # CV STEM IS ATTACHED THE HEAD'S OWN INK STILL SAYS WHICH WAY ITS STEM
@@ -3387,11 +3449,12 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.HEAD_STEM_REACH, Q.MARK_GROUP,
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK,
+           Q.PAGE_STEM,          # ROADMAP 2.306 (flag `OMR_PAGE_STEMS`): the head's stem read once on the page
            # ROADMAP 2.318 / 2.319: the stroke map, the one beam count's only source.
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
            Q.HEAD_INK),
-    reasons=("whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
+    reasons=("no_stem_joined", "whole_class_filled_or_stemmed", "whole_class_on_a_stem", "whole_class_filled_on_a_stem", "open_head_flag_contradiction", "second_hollow_confirmed", "second_hollow_unclear", "second_only_hollow", "second_hollow_refuted_by_ink",
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted",
@@ -3545,6 +3608,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
     # it touches) needs this head's attached stems before any filtering,
     # not only after 2.18's side test. Reused below where 2.18/2.18b read it.
     own_stems = _stems_on(head_box, stems) if head_box is not None else []
+    _page_own = page_own_stems(ev, stems)        # ROADMAP 2.306: the page's one reading of this head's stem, where it read one
+    if _page_own is not None:
+        own_stems = _page_own
     # ROADMAP 2.204 (flag `OMR_STEMS_FROM_STROKES`): the head's stem from the stroke map, set against the finder's. OFF: `_stems_on`, as above.
     stem_info = None
     if stems_from_strokes_enabled():
@@ -4241,6 +4307,10 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                                    support=2.0 if (level == 0 and one_beam["state"] != "silent") else 1.0))
         return Ruling.narrow(cands, "beams_ambiguous", used=tuple(used), **shared)
 
+    if no_value_without_a_stem(_page_own, base, flag_levels, levels):
+        # ROADMAP 2.306 r18 (CLAUDE §4, rule 8): with the page stem reader on, a head the page read and could join to NO stem has no value of its
+        # own -- a quarter (or a half) is a STEMMED head; a box with no stem and no whole-note value is held and marked, never a quarter by default.
+        return Ruling.abstain("no_stem_joined", used=tuple(used), **shared)
     if second_dis is not None:
         # ROADMAP 2.114: black stands -- the interior reads filled / unread, or a mark is on the head. Recorded with its margin.
         return Ruling(value={"beats": scaled, "written": total,
@@ -4852,7 +4922,7 @@ def _second_group_of(g, groups, second_ok):
     # (`stem_evidence`); the second is what the guard actually runs on. A bar
     # whose stems were read and whose directions all abstained is a real state
     # and the two fields are how it is told from a bar with no stems at all.
-    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES, Q.HEAD_STEM),
+    wants=(Q.GLYPH_BOX, Q.NOTEHEAD_CLASS, Q.REST, Q.STEM, Q.STEM_DIRECTION, Q.UNISON_VOICES, Q.HEAD_STEM, Q.GLYPH_OWNER),
     reasons=("x_clustered", "nothing_to_group"),
     mode=Mode.ADDITIVE,
     subjects_from=(Q.NOTEHEAD_CLASS, Q.REST),
@@ -4919,10 +4989,14 @@ def adjudicate_event(ev: Evidence) -> Ruling:
     # there. A head whose stem the CV rung missed must behave as it did before
     # this quantity existed; only an explicit CONFLICT separates.
     directions = {}
+    owned_elsewhere = []
     for g in head_ids:
         sub = Subject(Kind.GLYPH, page=ev.subject.page,
                       system=ev.subject.system, staff=ev.subject.staff,
                       cell=ev.subject.cell, glyph=g)
+        if owned_by_another_staff(ev, sub):
+            owned_elsewhere.append(g)        # ROADMAP 2.306 r3: another staff's head takes no part in this staff's split
+            continue
         d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
         if d is not None and d.outcome == "decided":
             directions[g] = d.value
@@ -5008,6 +5082,7 @@ def adjudicate_event(ev: Evidence) -> Ruling:
                 "n_glyphs": len(head_ids) + len(rest_ids),
                 "n_chords": chorded,
                 "tolerance_px": round(tol, 2),
+                **({"owned_by_another_staff": sorted(owned_elsewhere)} if owned_elsewhere else {}),
                 # ⚠️ IT SAID `not_implemented` UNTIL `Q.STEM_DIRECTION`
                 # EXISTED, and the field was written that way on purpose: an
                 # earlier draft wrote `divisi_guard: "ran"` wherever stem rows
@@ -7850,6 +7925,57 @@ def _direction_from_a_beam_mate(ev, cell, head_box, stems):
              "unanimous": True})
 
 
+def owned_by_another_staff(ev: Evidence, sub) -> bool:
+    """ROADMAP 2.306 r3 (flag `OMR_PAGE_STEMS`, default OFF): this head is a copy whose owner is ANOTHER staff -- the `Q.GLYPH_OWNER` verdict EXPORT already
+    honours (`is_relocated_copy`, the same test that drops the copy from the file). One owner per head; the ledger lines name the owner (2.216 B). Such a
+    head takes no part in THIS staff's chord or voice split: its stem direction is not read by the divisi guard (`adjudicate_event`) or the voice
+    streams (`adjudicate_voices`). With the flag off: False (today's behaviour)."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return False
+    v = ev.verdict(Q.GLYPH_OWNER, subject=sub)
+    if v is None or v.outcome != "decided":
+        return False
+    return bool(is_relocated_copy(sub, v.value))
+
+
+def no_value_without_a_stem(page_own: Any, base: float, flag_levels: int, levels: int) -> bool:
+    """ROADMAP 2.306 r18 (flag `OMR_PAGE_STEMS`; CLAUDE §4, rule 8): True where a head has NO value of its own -- the page read it and joined it
+    to no stem (`page_own_stems` returned []), it is not a whole note (base < 4), and no flag or beam was read on it. Flag off (`page_own` None)
+    or a page join: False (unchanged). Pure."""
+    return page_own == [] and float(base) < 4.0 and not flag_levels and not levels
+
+
+def page_own_stems(ev: Evidence, stems):
+    """ROADMAP 2.306 (flag `OMR_PAGE_STEMS`, default OFF): this head's own stem rows as the page read them -- the `Q.STEM` row the head's `Q.PAGE_STEM`
+    names (the page map's vertical at its engraving side) and every row of the cell that is the same physical stem; `[]` where the page abstained (the
+    cell join is retired: no stem the page cannot name); None (flag off, no page reading: the cell's own box-overlap join then stands)."""
+    from .. import page_stems as _PS
+    if not _PS.enabled():
+        return None
+    rows = ev.rows(Q.PAGE_STEM)
+    pv = _PS.voice_rows(rows)
+    if pv is not None:
+        # ROADMAP 2.306 two-voice piece: the page filed both stems of a head shared by two voices -- both are its own stems (each voice is
+        # counted on its own, `page_voice_stems`)
+        from .stem_value import page_voice_stems
+        vs = page_voice_stems({"page_voices": {d: r.value for d, r in pv.items()}}, stems)
+        return None if vs is None else vs["up"] + [s for s in vs["down"] if s not in vs["up"]]
+    if not rows or rows[-1].value is None:
+        # ROADMAP 2.306 RETIRE: where the page read this head and named no stem, the cell's box-overlap join no longer answers -- the head has no
+        # stem it can stand on (a unison of two voices, and a head the page could not hand to a cell, keep the cell join)
+        ab = ev.refusals(Q.PAGE_STEM)
+        if ab and str((ab[-1].detail or {}).get("how") or "") != "two_voices" and (ab[-1].detail or {}).get("note") != "no_cell":
+            return []
+        return None
+    named = [s for s in stems if s.id == rows[-1].value]
+    if not named:
+        return None
+    from .stem_value import _same_stem_row, _xywh as _sv_xywh
+    b = _sv_xywh(named[0].value)
+    return [s for s in stems if s is named[0] or (b is not None and _sv_xywh(s.value) is not None and _same_stem_row(b, _sv_xywh(s.value)))]
+
+
 def _stems_on(head_box, stems):
     """Every stem whose box overlaps this notehead's.
 
@@ -7871,10 +7997,10 @@ def _stems_on(head_box, stems):
     # body never reads records nothing -- `Evidence` fills `missing`/`declined`
     # only for quantities actually queried -- so it cannot be told from one
     # that is read and always present. `inventory --check` fails on it.
-    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER),
+    wants=(Q.STEM, Q.GLYPH_BOX, Q.BEAM_STROKE, Q.STROKE, Q.STROKE_OWNER, Q.PAGE_STEM),
     subjects_from=Q.NOTEHEAD_CLASS,
     reasons=("stem_projection", "beam_mate", "no_stem", "stems_disagree",
-             "no_evidence", "stem_readers_disagree"),
+             "no_evidence", "stem_readers_disagree", "page_stem"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_stem_direction(ev: Evidence) -> Ruling:
@@ -7915,7 +8041,21 @@ def adjudicate_stem_direction(ev: Evidence) -> Ruling:
     cell = ev.subject.at(Kind.CELL)
     stems = ev.rows(Q.STEM, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
 
+    # ROADMAP 2.306 r5 (flag `OMR_PAGE_STEMS`): where the page read this head's stem, its direction IS the page's answer (the engraving side the
+    # stroke stands at: up at the right, down at the left) -- one answer, read once; it is not worked out again from the cell's rows (r4: three
+    # Litolff heads, `6/1/9/10/2`, `6/1/9/10/7`, `10/1/7/3/2`, came out the opposite way from the cell rows' projection).
+    from .. import page_stems as _PS
+    if _PS.enabled():
+        _pr = ev.rows(Q.PAGE_STEM)
+        if (_pr and _pr[-1].value is not None and (_pr[-1].detail or {}).get("direction") in ("up", "down")
+                and _PS.voice_rows(_pr) is None):         # a head of two voices has no one direction: its two stems go on below, as before
+            return Ruling(value=str(_pr[-1].detail["direction"]), reason="page_stem", used=(box[-1].id, _pr[-1].id),
+                          detail={"page_stroke": _pr[-1].detail.get("page_stroke"), "page_how": _pr[-1].detail.get("how")})
+
     mine = _stems_on(head_box, stems)
+    _page_own = page_own_stems(ev, stems)        # ROADMAP 2.306: the page's one reading of this head's stem, where it read one
+    if _page_own is not None:
+        mine = _page_own
     stem_info = None
     if stems_from_strokes_enabled():
         # ROADMAP 2.204: the head's stem from the stroke map set against the finder's; a disagreement the strokes cannot settle abstains.
@@ -8794,6 +8934,7 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                               event_outcome=(grouping.outcome if grouping
                                              else None))
     raw = (grouping.value or {}).get("events") or []
+    owned_elsewhere = set((grouping.detail or {}).get("owned_by_another_staff") or ()) if grouping is not None else set()
     if not raw:
         return Ruling.abstain("nothing_to_split", n_events=0)
 
@@ -8834,6 +8975,8 @@ def adjudicate_voices(ev: Evidence) -> Ruling:
                                   system=ev.subject.system,
                                   staff=ev.subject.staff, cell=ev.subject.cell,
                                   glyph=g)
+                    if g in owned_elsewhere:
+                        continue        # ROADMAP 2.306 r3: named by the event verdict (voices never reads the ownership contest itself)
                     d = ev.verdict(Q.STEM_DIRECTION, subject=sub)
                     if d is not None and d.outcome == "decided":
                         votes[d.value] += 1

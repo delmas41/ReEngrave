@@ -1,0 +1,9930 @@
+{
+"chords": {
+"brahms_5_1_10_7": {
+"cell": "5/1/10/7",
+"stem": "obs:180904",
+"family": "strings",
+"family_source": "own_name",
+"heads": [
+{
+"key": "glyph/5/1/10/7/8",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+1
+]
+],
+"flush": "right",
+"box": [
+782,
+542,
+145,
+117
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:169688",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.418,
+1.455
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+1
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/5/1/10/7/8",
+"pitch": "B4",
+"bbox": [
+4371.05,
+6354.05,
+4410.925,
+6386.225
+],
+"duration_beats": 1.5,
+"duration_type": "quarter",
+"dots": 1,
+"stem_id": "obs:180904",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/5/1/10/7/10",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+1
+]
+],
+"flush": "right",
+"box": [
+784,
+435,
+139,
+121
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:169689",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.418,
+1.491
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+1
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/5/1/10/7/10",
+"pitch": "D5",
+"bbox": [
+4371.6,
+6324.625,
+4409.825,
+6357.9
+],
+"duration_beats": 1.5,
+"duration_type": "quarter",
+"dots": 1,
+"stem_id": "obs:180904",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/5/1/10/7/18",
+"outcome": "narrowed",
+"options": [
+[
+1.0,
+0,
+0
+],
+[
+1.0,
+1,
+0
+]
+],
+"flush": "right",
+"box": [
+831,
+650,
+103,
+89
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:169692",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+0.909,
+1.018
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "dot_not_seen",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": [
+{
+"beats": 1.0,
+"written": 1.0,
+"dots": 0,
+"beam_levels": 0
+},
+{
+"beats": 1.5,
+"written": 1.5,
+"dots": 1,
+"beam_levels": 0
+}
+],
+"det": {
+"glyph": "glyph/5/1/10/7/18",
+"pitch": "G4",
+"bbox": [
+4384.525,
+6383.75,
+4412.85,
+6408.225
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:180904",
+"stem_direction": null
+}
+}
+]
+},
+"brahms_5_1_9_2": {
+"cell": "5/1/9/2",
+"stem": "obs:160717",
+"family": "strings",
+"family_source": "own_name",
+"heads": [
+{
+"key": "glyph/5/1/9/2/0",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+0
+]
+],
+"flush": "right",
+"box": [
+1057,
+884,
+140,
+126
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:167282",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.431,
+1.248
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "dot_not_seen",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": [
+{
+"beats": 1.0,
+"written": 1.0,
+"dots": 0,
+"beam_levels": 0
+},
+{
+"beats": 1.5,
+"written": 1.5,
+"dots": 1,
+"beam_levels": 0
+}
+],
+"det": {
+"glyph": "glyph/5/1/9/2/0",
+"pitch": "B3",
+"bbox": [
+2092.0325,
+6204.89,
+2130.1825,
+6239.225
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:160717",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/5/1/9/2/1",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+1
+]
+],
+"flush": "right",
+"box": [
+1056,
+643,
+139,
+122
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:167283",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.431,
+1.211
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+1
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/5/1/9/2/1",
+"pitch": "G4",
+"bbox": [
+2091.76,
+6139.2175,
+2129.6375,
+6172.4625
+],
+"duration_beats": 1.5,
+"duration_type": "quarter",
+"dots": 1,
+"stem_id": "obs:160717",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/5/1/9/2/2",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+1
+]
+],
+"flush": "right",
+"box": [
+1059,
+438,
+136,
+124
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:167284",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.394,
+1.248
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+1
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/5/1/9/2/2",
+"pitch": "D5",
+"bbox": [
+2092.5775,
+6083.355,
+2129.6375,
+6117.145
+],
+"duration_beats": 1.5,
+"duration_type": "quarter",
+"dots": 1,
+"stem_id": "obs:160717",
+"stem_direction": null
+}
+}
+]
+},
+"beethoven_2_0_7_4_quarters": {
+"cell": "2/0/7/4",
+"stem": "obs:058160",
+"family": "strings",
+"family_source": "same_part_named_elsewhere",
+"heads": [
+{
+"key": "glyph/2/0/7/4/1",
+"outcome": "narrowed",
+"options": [
+[
+1.0,
+0,
+0
+],
+[
+1.0,
+1,
+0
+]
+],
+"flush": "right",
+"box": [
+160,
+1003,
+135,
+137
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:054431",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.375,
+1.375
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "stem_levels_unread",
+"expect_status": null,
+"expect_value": null,
+"candidates": null,
+"det": {
+"glyph": "glyph/2/0/7/4/1",
+"pitch": "G3",
+"bbox": [
+1004.6,
+1535.48,
+1026.2,
+1557.4
+],
+"duration_beats": 0.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:058160",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/2/0/7/4/2",
+"outcome": "narrowed",
+"options": [
+[
+1.0,
+0,
+0
+],
+[
+1.0,
+1,
+0
+]
+],
+"flush": "right",
+"box": [
+162,
+563,
+138,
+128
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:054432",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.25,
+1.25
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "stem_levels_unread",
+"expect_status": null,
+"expect_value": null,
+"candidates": null,
+"det": {
+"glyph": "glyph/2/0/7/4/2",
+"pitch": "B4",
+"bbox": [
+1004.92,
+1465.08,
+1027.0,
+1485.56
+],
+"duration_beats": 0.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:058160",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/2/0/7/4/3",
+"outcome": "narrowed",
+"options": [
+[
+1.0,
+0,
+0
+],
+[
+1.0,
+1,
+0
+]
+],
+"flush": "right",
+"box": [
+147,
+826,
+178,
+120
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:054433",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.5,
+1.125
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "stem_levels_unread",
+"expect_status": null,
+"expect_value": null,
+"candidates": null,
+"det": {
+"glyph": "glyph/2/0/7/4/3",
+"pitch": "D4",
+"bbox": [
+1002.52,
+1507.16,
+1031.0,
+1526.3600000000001
+],
+"duration_beats": 0.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:058160",
+"stem_direction": null
+}
+}
+]
+},
+"litolff_2_0_7_4_sharp": {
+"cell": "2/0/7/4",
+"stem": "obs:048092",
+"family": "strings",
+"family_source": "same_part_named_elsewhere",
+"heads": [
+{
+"key": "glyph/2/0/7/4/5",
+"outcome": "decided",
+"options": [
+[
+2.0,
+0,
+0
+]
+],
+"flush": "right",
+"box": [
+1,
+645,
+106,
+97
+],
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:054135",
+"margin": 0.1533,
+"slit": 0.3333,
+"extent_sp": [
+1.188,
+1.25
+],
+"not_one_head": null
+},
+"head_ink_guess": {
+"rule": "head_ink_hollow_over_black",
+"candidates": [
+{
+"beats": 2.0,
+"written": 2.0,
+"dots": 0,
+"beam_levels": 0,
+"support": 2.0
+},
+{
+"beats": 1.0,
+"written": 1.0,
+"dots": 0,
+"beam_levels": 0,
+"support": 1.0
+}
+],
+"chosen": {
+"beats": 2.0,
+"written": 2.0,
+"dots": 0,
+"beam_levels": 0
+},
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:054135",
+"margin": 0.1533,
+"slit": 0.3333,
+"extent_sp": [
+1.188,
+1.25
+],
+"not_one_head": null
+},
+"files_under": "duration",
+"marks_blue": true
+},
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+2.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/2/0/7/4/5",
+"pitch": "A4",
+"bbox": [
+979.16,
+1478.2,
+996.12,
+1493.72
+],
+"duration_beats": 2.0,
+"duration_type": "half",
+"dots": 0,
+"stem_id": "obs:048092",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/2/0/7/4/12",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+0
+]
+],
+"flush": "right",
+"box": [
+0,
+543,
+109,
+80
+],
+"head_ink": {
+"value": null,
+"why": "readers_split",
+"row": "abs:054137",
+"margin": null,
+"slit": 0.1,
+"extent_sp": [
+1.188,
+1.062
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/2/0/7/4/12",
+"pitch": "C5",
+"bbox": [
+979.0,
+1461.88,
+996.44,
+1474.68
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:048092",
+"stem_direction": null
+}
+}
+]
+},
+"litolff_6_1_8_11": {
+"cell": "6/1/8/11",
+"stem": "obs:143150",
+"family": "strings",
+"family_source": "same_part_named_elsewhere",
+"heads": [
+{
+"key": "glyph/6/1/8/11/0",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+0
+]
+],
+"flush": "left",
+"box": [
+310,
+899,
+126,
+118
+],
+"head_ink": {
+"value": null,
+"why": "readers_split",
+"row": "abs:147983",
+"margin": null,
+"slit": 0.125,
+"extent_sp": [
+1.705,
+0.852
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/6/1/8/11/0",
+"pitch": "C4",
+"bbox": [
+2455.275,
+3253.0975,
+2474.49,
+3271.0925
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:143150",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/6/1/8/11/1",
+"outcome": "abstained",
+"options": [],
+"flush": "through",
+"box": [
+224,
+896,
+212,
+116
+],
+"head_ink": null,
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "not_a_member",
+"expect_status": null,
+"expect_value": null,
+"candidates": null,
+"det": {
+"glyph": "glyph/6/1/8/11/1",
+"pitch": "C4",
+"bbox": [
+2442.16,
+3252.64,
+2474.49,
+3270.33
+],
+"duration_beats": 0.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:143150",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/6/1/8/11/7",
+"outcome": "abstained",
+"options": [],
+"flush": "through",
+"box": [
+229,
+881,
+215,
+161
+],
+"head_ink": null,
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "not_a_member",
+"expect_status": null,
+"expect_value": null,
+"candidates": null,
+"det": {
+"glyph": "glyph/6/1/8/11/7",
+"pitch": "C4",
+"bbox": [
+2442.9225,
+3250.3525,
+2475.71,
+3274.905
+],
+"duration_beats": 0.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:143150",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/6/1/8/11/10",
+"outcome": "decided",
+"options": [
+[
+2.0,
+0,
+0
+]
+],
+"flush": "left",
+"box": [
+305,
+376,
+187,
+136
+],
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:147986",
+"margin": 0.1771,
+"slit": 0.3571,
+"extent_sp": [
+1.705,
+1.508
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+2.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/6/1/8/11/10",
+"pitch": "F5",
+"bbox": [
+2454.5125,
+3173.34,
+2483.03,
+3194.08
+],
+"duration_beats": 2.0,
+"duration_type": "half",
+"dots": 0,
+"stem_id": "obs:143150",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/6/1/8/11/13",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+0
+]
+],
+"flush": "right",
+"box": [
+166,
+332,
+142,
+259
+],
+"head_ink": {
+"value": null,
+"why": "not_one_head",
+"row": "abs:147988",
+"margin": null,
+"slit": 0.0,
+"extent_sp": [
+1.705,
+2.426
+],
+"not_one_head": "too_tall"
+},
+"head_ink_guess": {
+"rule": "head_ink_not_one_head",
+"candidates": [
+{
+"beats": 1.0,
+"written": 1.0,
+"dots": 0,
+"beam_levels": 0,
+"support": 1.0
+},
+{
+"value": "not_one_head",
+"support": 1.0
+}
+],
+"chosen": {
+"beats": 1.0,
+"written": 1.0,
+"dots": 0,
+"beam_levels": 0
+},
+"head_ink": {
+"value": null,
+"why": "not_one_head",
+"row": "abs:147988",
+"margin": null,
+"slit": 0.0,
+"extent_sp": [
+1.705,
+2.426
+],
+"not_one_head": "too_tall"
+},
+"files_under": "notehead_is_not_a_notehead",
+"marks_blue": false
+},
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/6/1/8/11/13",
+"pitch": "F5",
+"bbox": [
+2433.315,
+3166.63,
+2454.97,
+3206.1275
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:143150",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/6/1/8/11/14",
+"outcome": "decided",
+"options": [
+[
+2.0,
+0,
+0
+]
+],
+"flush": "left",
+"box": [
+313,
+377,
+175,
+165
+],
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:147989",
+"margin": 0.1771,
+"slit": 0.3571,
+"extent_sp": [
+1.705,
+1.508
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+2.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/6/1/8/11/14",
+"pitch": "F5",
+"bbox": [
+2455.7325,
+3173.4925,
+2482.42,
+3198.655
+],
+"duration_beats": 2.0,
+"duration_type": "half",
+"dots": 0,
+"stem_id": "obs:143150",
+"stem_direction": null
+}
+}
+]
+},
+"litolff_8_1_8_4": {
+"cell": "8/1/8/4",
+"stem": "obs:184628",
+"family": "strings",
+"family_source": "same_part_named_elsewhere",
+"heads": [
+{
+"key": "glyph/8/1/8/4/0",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+0
+]
+],
+"flush": "right",
+"box": [
+160,
+814,
+160,
+121
+],
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:188949",
+"margin": 0.32,
+"slit": 0.5,
+"extent_sp": [
+1.5,
+1.188
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/8/1/8/4/0",
+"pitch": "D3",
+"bbox": [
+918.6,
+3273.24,
+944.2,
+3292.6
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:184628",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/8/1/8/4/2",
+"outcome": "decided",
+"options": [
+[
+2.0,
+0,
+0
+]
+],
+"flush": "right",
+"box": [
+163,
+478,
+160,
+132
+],
+"head_ink": {
+"value": "hollow",
+"why": null,
+"row": "obs:188950",
+"margin": 0.4867,
+"slit": 0.6667,
+"extent_sp": [
+1.5,
+1.188
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+2.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/8/1/8/4/2",
+"pitch": "D4",
+"bbox": [
+919.08,
+3219.48,
+944.68,
+3240.6
+],
+"duration_beats": 2.0,
+"duration_type": "half",
+"dots": 0,
+"stem_id": "obs:184628",
+"stem_direction": null
+}
+}
+]
+},
+"litolff_4_0_6_0": {
+"cell": "4/0/6/0",
+"stem": "obs:095810",
+"family": "strings",
+"family_source": "same_part_named_elsewhere",
+"heads": [
+{
+"key": "glyph/4/0/6/0/1",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+0
+]
+],
+"flush": "left",
+"box": [
+1303,
+604,
+151,
+141
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:104425",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.397,
+1.333
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+1.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/4/0/6/0/1",
+"pitch": "F5",
+"bbox": [
+553.2225000000001,
+1324.13,
+577.005,
+1346.3375
+],
+"duration_beats": 1.0,
+"duration_type": "quarter",
+"dots": 0,
+"stem_id": "obs:095810",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/4/0/6/0/5",
+"outcome": "decided",
+"options": [
+[
+2.0,
+0,
+0
+]
+],
+"flush": "left",
+"box": [
+1306,
+604,
+149,
+143
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:104426",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.397,
+1.333
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "string_stop_own_value",
+"expect_status": "read",
+"expect_value": [
+2.0,
+0,
+0
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/4/0/6/0/5",
+"pitch": "F5",
+"bbox": [
+553.695,
+1324.13,
+577.1625,
+1346.6525
+],
+"duration_beats": 2.0,
+"duration_type": "half",
+"dots": 0,
+"stem_id": "obs:095810",
+"stem_direction": null
+}
+}
+]
+},
+"wind_brahms_19_1_2_2": {
+"cell": "19/1/2/2",
+"stem": "obs:397571",
+"family": "woodwind",
+"family_source": "own_name",
+"heads": [
+{
+"key": "glyph/19/1/2/2/4",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+2
+]
+],
+"flush": "right",
+"box": [
+991,
+842,
+148,
+124
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:404336",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.405,
+1.153
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "stem_dots_disagree",
+"expect_status": null,
+"expect_value": [
+1.0,
+0,
+2
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/19/1/2/2/4",
+"pitch": "C4",
+"bbox": [
+2030.0025,
+4699.655,
+2071.0725,
+4734.065
+],
+"duration_beats": 1.75,
+"duration_type": "quarter",
+"dots": 2,
+"stem_id": "obs:397571",
+"stem_direction": null
+}
+},
+{
+"key": "glyph/19/1/2/2/9",
+"outcome": "decided",
+"options": [
+[
+1.0,
+0,
+1
+]
+],
+"flush": "right",
+"box": [
+997,
+542,
+140,
+128
+],
+"head_ink": {
+"value": "filled",
+"why": null,
+"row": "obs:404338",
+"margin": 0.06,
+"slit": 0.0,
+"extent_sp": [
+1.369,
+1.261
+],
+"not_one_head": null
+},
+"head_ink_guess": null,
+"whole_class": false,
+"on_reason": "stem_dots_disagree",
+"expect_status": null,
+"expect_value": [
+1.0,
+0,
+1
+],
+"candidates": null,
+"det": {
+"glyph": "glyph/19/1/2/2/9",
+"pitch": "B4",
+"bbox": [
+2031.6675,
+4616.405,
+2070.5175,
+4651.925
+],
+"duration_beats": 1.5,
+"duration_type": "quarter",
+"dots": 1,
+"stem_id": "obs:397571",
+"stem_direction": null
+}
+}
+]
+}
+},
+"staves": {
+"litolff": {
+"staff/1/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/1/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/1/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/1/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/1/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/1/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/1/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/1/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/1/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/1/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/1/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/1/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/10/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/10/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/10/0/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/10/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/10/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/10/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/10/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/10/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/10/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/10/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/10/0/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/10/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/10/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/10/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/10/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/10/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/10/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/10/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/10/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/10/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/10/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/10/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/11/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/11/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/11/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/11/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/11/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/11/0/5": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/11/0/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/11/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/11/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/11/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/11/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/11/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/11/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/11/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/11/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/11/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/11/1/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/11/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/11/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/11/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/16/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/16/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/16/0/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/16/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/16/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/16/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/16/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/16/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/16/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/16/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/16/0/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/16/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/16/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/16/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/16/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/16/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/16/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/16/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/16/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/16/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/16/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/16/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/2/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/2/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/2/0/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/2/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/2/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/2/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/2/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/2/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/2/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/2/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/2/0/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/2/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/2/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/2/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/2/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/2/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/2/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/2/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/2/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/2/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/2/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/2/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/4/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/4/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/0/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/4/0/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "unknown"
+},
+"staff/4/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/4/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/4/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/6/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/6/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/6/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/6/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/6/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/6/0/5": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/6/0/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/6/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/6/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "unknown"
+},
+"staff/6/0/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/6/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/6/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/6/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/6/1/11": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/6/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/6/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/6/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/6/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/6/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/6/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/6/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/6/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/8/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/0/5": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/0/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/8/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/8/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/8/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/1/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/8/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/9/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/9/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/9/0/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/9/0/11": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/9/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/9/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/9/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/9/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/9/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/9/0/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/9/0/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/9/0/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/9/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/9/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/9/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/9/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/9/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/9/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/9/1/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/9/1/7": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/9/1/8": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/9/1/9": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+}
+},
+"brahms": {
+"staff/0/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/0/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/0/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/0/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/0/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "strings"
+},
+"staff/0/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/0/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/0/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/0/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/0/0/5": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/0/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/0/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/0/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/0/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/12/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/12/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/12/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/12/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/12/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/12/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/12/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/12/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/12/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/12/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/12/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/12/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/12/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/12/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/12/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/12/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/12/1/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/12/1/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/12/1/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/12/1/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/12/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/12/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/12/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/12/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/12/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/12/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/12/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/12/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/14/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/14/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/14/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/14/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/14/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/14/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/14/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/14/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/14/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/14/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/14/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/14/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/14/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/14/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/14/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/14/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/14/1/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/14/1/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/14/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/14/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/14/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/14/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/14/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/14/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/14/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/14/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/19/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/19/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/19/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/19/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/19/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "strings"
+},
+"staff/19/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/19/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/19/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/19/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/19/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/19/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/19/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/19/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/19/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/19/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/19/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/19/1/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/19/1/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/19/1/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/19/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/19/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/19/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/19/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/19/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/19/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/19/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/19/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/25/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/25/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/25/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/25/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/25/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/25/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/25/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/25/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/25/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/25/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/25/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/25/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/25/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/25/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/25/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/25/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/25/1/10": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "unknown"
+},
+"staff/25/1/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/25/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/25/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/25/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/25/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/25/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/25/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/25/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/25/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/4/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/4/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/4/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/4/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/4/0/5": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/0/6": {
+"instrument": {
+"outcome": "abstained",
+"value": null
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/4/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/4/1/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/4/1/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/4/1/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/4/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/4/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/4/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/4/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/5/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/5/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/5/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/5/0/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/5/0/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/5/0/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/5/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/5/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/5/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/5/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/5/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/5/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/5/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/5/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/5/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/5/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/5/1/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/5/1/11": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/5/1/12": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/5/1/13": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/5/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/5/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/5/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+22,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 4
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "woodwind"
+},
+"staff/5/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/5/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/5/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Trumpet",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+52,
+84
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 7
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/5/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Timpani",
+"family": "percussion",
+"expected_clef": "bass",
+"written_range": [
+36,
+60
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 8
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "percussion"
+},
+"staff/5/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/0/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/8/0/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/8/0/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/0/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/0/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/0/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/0/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/8/0/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "strings"
+},
+"staff/8/1/0": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Flute",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+59,
+96
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 0
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/1": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Oboe",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+58,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 1
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/10": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Contrabass",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+28,
+67
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 13
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+},
+"staff/8/1/2": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Clarinet",
+"family": "woodwind",
+"expected_clef": "treble",
+"written_range": [
+50,
+91
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 2
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/3": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Bassoon",
+"family": "woodwind",
+"expected_clef": "bass",
+"written_range": [
+34,
+72
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 3
+},
+"clef": {
+"outcome": "decided",
+"value": "tenor"
+},
+"expect_family": "woodwind"
+},
+"staff/8/1/4": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 5
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/1/5": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Horn",
+"family": "brass",
+"expected_clef": "treble",
+"written_range": [
+41,
+77
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 6
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "brass"
+},
+"staff/8/1/6": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 9
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/1/7": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Violin",
+"family": "string",
+"expected_clef": "treble",
+"written_range": [
+55,
+100
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 10
+},
+"clef": {
+"outcome": "decided",
+"value": "treble"
+},
+"expect_family": "strings"
+},
+"staff/8/1/8": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Viola",
+"family": "string",
+"expected_clef": "alto",
+"written_range": [
+48,
+88
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 11
+},
+"clef": {
+"outcome": "decided",
+"value": "alto"
+},
+"expect_family": "strings"
+},
+"staff/8/1/9": {
+"instrument": {
+"outcome": "decided",
+"value": {
+"name": "Cello",
+"family": "string",
+"expected_clef": "bass",
+"written_range": [
+36,
+81
+],
+"unpitched": false
+}
+},
+"slot_index": {
+"outcome": "decided",
+"value": 12
+},
+"clef": {
+"outcome": "decided",
+"value": "bass"
+},
+"expect_family": "strings"
+}
+}
+}
+}

@@ -1,0 +1,1006 @@
+{
+ "lit_tile01.png": {
+  "plate": "litolff",
+  "place": "2/0/1/5",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P2"
+  ],
+  "A": "v1 @0 A-15 eighth; v1 @1 A-15 eighth; v1 @1/2 A-15 eighth BLUE; v2 @0 A-15 eighth; v2 @1/2 A-15 eighth",
+  "B": "v1 @0 A-15 eighth; v1 @1 A-15 eighth; v1 @1/2 A-15 eighth; v2 @0 A-15 eighth; v2 @1/2 A-15 eighth",
+  "C": "v1 @0 A-15 eighth; v1 @1 A-15 eighth; v1 @1/2 A-15 eighth BLUE; v2 @0 A-15 eighth; v2 @1/2 A-15 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "rest, then three eighths in two voices (unison); both arms start the notes on beat 0 with no rest and v2 one short",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B dropped A's one blue mark; bar red in both)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile02.png": {
+  "plate": "litolff",
+  "place": "2/0/3/5",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v1 @3/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "B": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "C": "v1 @0 rest eighth; v1 @1 A-12 eighth; v1 @1/2 A-12 eighth; v1 @3/2 A-12 eighth; v2 @1 A-12 eighth; v2 @1/2 A-12 eighth; v2 @3/2 A-12 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "rest, then three eighths with a stem each way (two voices, three each)",
+  "second_look": "4x: three up stems to the upper beam, three down stems to the lower beam -- agrees",
+  "tally": null,
+  "tally_B_vs_A": "B wrong where A right (B drops v1's third eighth; bar plain = hidden)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile03.png": {
+  "plate": "litolff",
+  "place": "2/0/4/5",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P5"
+  ],
+  "A": "v1 @0 F5 eighth BLUE; v1 @1 F5 eighth; v1 @1/2 F5 eighth; v2 @0 F5 eighth; v2 @1/2 F5 eighth",
+  "B": "v1 @0 F5 eighth; v1 @1 F5 eighth; v1 @1/2 F5 eighth; v2 @0 F5 eighth; v2 @1/2 F5 eighth",
+  "C": "v1 @0 F5 eighth BLUE; v1 @1 F5 eighth; v1 @1/2 F5 eighth; v2 @0 F5 eighth; v2 @1/2 F5 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "rest, then three eighths, two voices; both arms put notes on beat 0 with no rest",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B removed A's blue mark; red in both)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile04.png": {
+  "plate": "litolff",
+  "place": "2/1/8/14",
+  "measure": [
+   "48"
+  ],
+  "part": [
+   "P9"
+  ],
+  "A": "v1 @0 B-14 eighth; v1 @0 D4 eighth; v1 @1 D5 eighth; v1 @1/2 F5 eighth; v1 @3/2 D5 eighth",
+  "B": "v1 @0 B4 eighth BLUE; v1 @0 D4 eighth; v1 @1 D5 eighth; v1 @1/2 F5 eighth; v1 @3/2 D5 eighth",
+  "C": "v1 @0 B4 eighth BLUE; v1 @0 D4 eighth; v1 @1 D5 eighth; v1 @1/2 F5 eighth; v1 @3/2 D5 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "natural before the B of the flagged eighth chord: B natural, D4; then three beamed eighths",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (B natural, blue)",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "lit_tile05.png": {
+  "plate": "litolff",
+  "place": "6/0/2/10",
+  "measure": [
+   "59"
+  ],
+  "part": [
+   "P3"
+  ],
+  "A": "v1 @0 A4 quarter; v1 @0 F4 quarter; v1 @1 B-14 eighth; v1 @1 G4 eighth; v1 @2 E5 eighth; v1 @2 G4 eighth; v1 @3/2 E5 eighth; v1 @3/2 G4 eighth; v1 @5/2 B-14 eighth; v1 @5/2 D5 eighth",
+  "B": "v1 @0 B-14 eighth; v1 @0 G4 eighth; v1 @1 E5 eighth; v1 @1 G4 eighth; v1 @1/2 E5 eighth; v1 @1/2 G4 eighth; v1 @3/2 B-14 eighth; v1 @3/2 D5 eighth",
+  "C": "v1 @0 A4 quarter; v1 @0 F4 quarter; v1 @1 B-14 eighth; v1 @1 G4 eighth; v1 @2 E5 eighth; v1 @2 G4 eighth; v1 @3/2 E5 eighth; v1 @3/2 G4 eighth; v1 @5/2 B-14 eighth; v1 @5/2 D5 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "accidental, then four eighth dyads (2/4)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A read the accidental as a quarter chord); pitches not checked",
+  "tally_C_vs_A": null
+ },
+ "lit_tile06.png": {
+  "plate": "litolff",
+  "place": "6/0/3/7",
+  "measure": [
+   "56"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 C4 eighth; v1 @1 C4 eighth BLUE; v1 @1/2 C4 eighth; v1 @3/2 B-13 eighth; v2 @0 C4 eighth; v2 @1/2 C4 eighth",
+  "B": "v1 @0 C4 eighth; v1 @1 C4 eighth BLUE; v1 @1/2 C4 eighth; v1 @3/2 B-13 eighth; v2 @1/2 C4 eighth",
+  "C": "v1 @0 C4 eighth; v1 @1 C4 eighth BLUE; v1 @1/2 C4 eighth; v1 @3/2 B-13 eighth; v2 @0 C4 eighth; v2 @1/2 C4 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "two voices: upper four eighths (C C C B-flat), lower three or four; A writes v2 two, B one",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong",
+  "tally_C_vs_A": null
+ },
+ "lit_tile07.png": {
+  "plate": "litolff",
+  "place": "6/1/0/3",
+  "measure": [
+   "65"
+  ],
+  "part": [
+   "P1"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1/2 F5 quarter; v1 @13/2 B-15 eighth; v1 @2 rest whole BLUE; v1 @3/2 F5 eighth; v1 @6 A5 eighth",
+  "B": "v1 @0 rest eighth; v1 @1 A5 eighth; v1 @1/2 F15 eighth BLUE; v1 @3/2 B-15 eighth; v2 @0 rest ? BLUE",
+  "C": "v1 @0 rest eighth; v1 @1 A5 eighth; v1 @1/2 F15 eighth BLUE; v1 @3/2 B-15 eighth; v2 @0 rest ? BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "eighth rest, F#5, A-natural5, B-flat5 eighths; whole rest in the lower voice",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "lit_tile08.png": {
+  "plate": "litolff",
+  "place": "6/1/1/4",
+  "measure": [
+   "66"
+  ],
+  "part": [
+   "P2"
+  ],
+  "A": "v1 @0 C5 quarter; v1 @0 F5 quarter; v1 @1 rest quarter",
+  "B": "v1 @0 C5 quarter; v1 @0 F15 quarter BLUE; v1 @1 rest quarter",
+  "C": "v1 @0 C5 quarter; v1 @0 F15 quarter BLUE; v1 @1 rest quarter",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "sharp + C5/F#5 quarter, quarter rest",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (F#5 blue)",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "lit_tile09.png": {
+  "plate": "litolff",
+  "place": "6/1/3/3",
+  "measure": [
+   "65"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1 A3 eighth; v1 @1/2 F3 eighth; v1 @3/2 B-13 eighth BLUE",
+  "B": "v1 @0 rest eighth; v1 @1 A3 eighth; v1 @1/2 F13 eighth BLUE; v1 @3/2 B-13 eighth BLUE",
+  "C": "v1 @0 rest eighth; v1 @1 A3 eighth; v1 @1/2 F13 eighth BLUE; v1 @3/2 B-13 eighth BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "upper voice rest + F#, A-natural, B-flat eighths; lower voice a half note with a natural that neither arm writes",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B applies the sharp)",
+  "tally_C_vs_A": "both wrong"
+ },
+ "lit_tile10.png": {
+  "plate": "litolff",
+  "place": "6/1/7/2",
+  "measure": [
+   "64"
+  ],
+  "part": [
+   "P8"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1/2 F5 quarter; v1 @2 A5 eighth; v1 @3/2 F5 eighth; v1 @5/2 B-15 eighth",
+  "B": "v1 @0 rest eighth; v1 @1 A5 eighth; v1 @1/2 F15 eighth BLUE; v1 @3/2 B-15 eighth",
+  "C": "v1 @0 rest eighth; v1 @1 A5 eighth; v1 @1/2 F15 eighth BLUE; v1 @3/2 B-15 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "eighth rest, F#5, A-natural5, B-flat5",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "lit_tile11.png": {
+  "plate": "litolff",
+  "place": "6/1/7/4",
+  "measure": [
+   "66"
+  ],
+  "part": [
+   "P8"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1/2 rest 16th; v1 @3/4 F5 eighth; v1 @5/4 A-14 eighth; v1 @5/4 A5 eighth; v1 @7/4 B-15 eighth",
+  "B": "v1 @0 rest eighth; v1 @1/2 rest 16th; v1 @3/4 F5 eighth; v1 @5/4 A5 eighth; v1 @7/4 B-15 eighth",
+  "C": "v1 @0 rest eighth; v1 @1/2 rest 16th; v1 @3/4 F5 eighth; v1 @5/4 A-14 eighth; v1 @5/4 A5 eighth; v1 @7/4 B-15 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "eighth rest, F#5, A-natural5, B-flat5; both arms add a 16th rest and miss the sharp",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B drops A's invented A-flat4)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile12.png": {
+  "plate": "litolff",
+  "place": "6/1/10/11",
+  "measure": [
+   "73"
+  ],
+  "part": [
+   "P11"
+  ],
+  "A": "v1 @0 D2 half",
+  "B": "(nothing written)",
+  "C": "v1 @0 D2 half",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "cello: D2 half below the staff with two tremolo slashes on the stem",
+  "second_look": "4x: the mark in the staff reads as a hollow ring (a second half note, D3) with one slash above -- differs",
+  "tally": null,
+  "tally_B_vs_A": "cannot tell (first look: B wrong where A right; second look: both wrong, B red)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile13.png": {
+  "plate": "litolff",
+  "place": "16/0/0/7",
+  "measure": [
+   "82"
+  ],
+  "part": [
+   "P1"
+  ],
+  "A": "v1 @0 A-14 half; v1 @0 E-16 half BLUE; v1 @0 F4 half; v1 @0 G6 half BLUE",
+  "B": "v1 @0 E-16 half BLUE; v1 @0 G6 half BLUE",
+  "C": "v1 @0 A-14 half; v1 @0 E-16 half BLUE; v1 @0 F4 half; v1 @0 G6 half BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "flute: two half notes high above the staff (E-flat6, G6) with fermata; 'ff' in the staff",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A wrote two heads from the ff)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile14.png": {
+  "plate": "litolff",
+  "place": "16/0/1/14",
+  "measure": [
+   "89"
+  ],
+  "part": [
+   "P2"
+  ],
+  "A": "v1 @0 rest whole; v1 @4 A-15 quarter",
+  "B": "v1 @0 rest ?",
+  "C": "v1 @0 rest whole; v1 @4 A-15 quarter",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "a quarter note above the staff + lower-voice whole rest",
+  "second_look": "4x: agrees -- a filled head with its stem, the whole rest hangs below",
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B drops the real note and writes the bar plain; A red; bspot marks it)",
+  "tally_C_vs_A": null
+ },
+ "lit_tile15.png": {
+  "plate": "litolff",
+  "place": "16/1/3/9",
+  "measure": [
+   "101"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 C4 quarter; v1 @0 E-14 quarter; v1 @1 C4 quarter",
+  "B": "v1 @0 C4 quarter; v1 @0 E-14 quarter; v1 @1 C4 quarter BLUE",
+  "C": "v1 @0 C4 quarter; v1 @0 E-14 quarter; v1 @1 C4 quarter BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "alto clef: dyad quarter, then natural + two fused heads (quarter); both arms write one head on beat 2",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B adds blue)",
+  "tally_C_vs_A": "both wrong"
+ },
+ "lit_tile16.png": {
+  "plate": "litolff",
+  "place": "16/1/8/10",
+  "measure": [
+   "102"
+  ],
+  "part": [
+   "P9"
+  ],
+  "A": "v1 @0 C5 quarter; v1 @0 E-14 quarter; v1 @0 G5 quarter; v1 @1 B-14 quarter; v1 @1 D4 quarter",
+  "B": "v1 @0 C5 quarter; v1 @0 E-14 quarter; v1 @0 G5 quarter; v1 @1 B4 quarter BLUE; v1 @1 D4 quarter",
+  "C": "v1 @0 C5 quarter; v1 @0 E-14 quarter; v1 @0 G5 quarter; v1 @1 B4 quarter BLUE; v1 @1 D4 quarter",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "three-note chord, then natural + three-note chord; both arms write two notes on beat 2",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B applies the natural)",
+  "tally_C_vs_A": "both wrong"
+ },
+ "lit_tile17.png": {
+  "plate": "litolff",
+  "place": "2/0/7/4",
+  "measure": [
+   "21"
+  ],
+  "part": [
+   "P8"
+  ],
+  "A": "v1 @0 A-14 half BLUE; v1 @0 C5 half",
+  "B": "v1 @0 B4 quarter BLUE; v1 @0 D4 quarter; v1 @0 G3 quarter BLUE; v1 @0 G5 half",
+  "C": "v1 @0 C5 quarter BLUE",
+  "named": true,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "Sean's Beethoven chord: G3 D4 B4 G5 on one onset (sharp = B natural), half on top",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (no A-flat; two notes blue)",
+  "tally_C_vs_A": "both wrong (C writes one C5 quarter)"
+ },
+ "lit_tile18.png": {
+  "plate": "litolff",
+  "place": "16/0/0/5",
+  "measure": [
+   "80"
+  ],
+  "part": [
+   "P1"
+  ],
+  "A": "(nothing written)",
+  "B": "v1 @0 G5 half; v1 @0 G6 half",
+  "C": "(nothing written)",
+  "named": true,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "Sean's slash bar: G5 half + G6 half on one stem, the thick stroke a slash",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrote nothing",
+  "tally_C_vs_A": null
+ },
+ "lit_tile19.png": {
+  "plate": "litolff",
+  "place": "6/1/8/11",
+  "measure": [],
+  "part": [],
+  "A": "(nothing written)",
+  "B": "(nothing written)",
+  "C": "v1 @0 C4 half BLUE; v1 @0 F5 half; v2 @0 F4 eighth",
+  "named": true,
+  "changed_ab": false,
+  "changed_ac": true,
+  "reading": "two half notes with sharp+natural and a tremolo slash below the staff",
+  "second_look": "4x: agrees -- C writes the slash as a C4 half and the lower half as an F4 eighth",
+  "tally": null,
+  "tally_B_vs_A": "neither A nor B writes the bar",
+  "tally_C_vs_A": "C wrong where A wrote nothing"
+ },
+ "lit_tile20.png": {
+  "plate": "litolff",
+  "place": "2/0/8/10",
+  "measure": [
+   "27"
+  ],
+  "part": [
+   "P9"
+  ],
+  "A": "v1 @0 B-13 half tie",
+  "B": "v1 @0 B3 half tie BLUE",
+  "C": "v1 @0 B3 half tie BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "natural + half note below the staff, tied",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "cannot tell (natural applied; staff position not settled by eye)",
+  "tally_C_vs_A": "cannot tell"
+ },
+ "lit_tile21.png": {
+  "plate": "litolff",
+  "place": "2/0/8/11",
+  "measure": [
+   "28"
+  ],
+  "part": [
+   "P9"
+  ],
+  "A": "v1 @0 B-13 half tie",
+  "B": "v1 @0 B3 half tie",
+  "C": "v1 @0 B3 half tie",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "the tied continuation of tile 20",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "cannot tell",
+  "tally_C_vs_A": "cannot tell"
+ },
+ "lit_tile22.png": {
+  "plate": "litolff",
+  "place": "2/1/3/7",
+  "measure": [
+   "41"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 C3 quarter; v1 @0 E-13 quarter; v1 @1 rest quarter",
+  "B": "v1 @0 C3 quarter; v1 @0 E3 quarter BLUE; v1 @1 rest quarter",
+  "C": "v1 @0 C3 quarter; v1 @0 E3 quarter BLUE; v1 @1 rest quarter",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "natural + fused dyad quarter, quarter rest: E natural",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "lit_tile23.png": {
+  "plate": "litolff",
+  "place": "2/1/3/14",
+  "measure": [
+   "48"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 C3 half; v2 @0 C3 half",
+  "B": "v1 @0 C3 half BLUE",
+  "C": "v1 @0 C3 half BLUE; v2 @0 C3 half BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "natural + two hollow halves a third apart on one stem (Sean's 2/1/3/14 kind)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (one note for two)",
+  "tally_C_vs_A": "both wrong"
+ },
+ "lit_tile24.png": {
+  "plate": "litolff",
+  "place": "6/0/1/8",
+  "measure": [
+   "57"
+  ],
+  "part": [
+   "P2"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1/2 E-15 quarter; v1 @1/2 G5 quarter; v1 @3/2 A-15 eighth",
+  "B": "v1 @0 rest eighth BLUE; v1 @1/2 C5 eighth BLUE; v1 @1/2 F15 eighth BLUE; v1 @3/2 A-15 eighth BLUE",
+  "C": "v1 @0 rest eighth BLUE; v1 @3/2 A-15 eighth BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "rest, then F#5 and two more eighths (natural on the last), lower-voice whole rest",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B invents C5 from the 'p')",
+  "tally_C_vs_A": "both wrong (C drops two notes)"
+ },
+ "lit_tile25.png": {
+  "plate": "litolff",
+  "place": "6/0/1/10",
+  "measure": [
+   "59"
+  ],
+  "part": [
+   "P2"
+  ],
+  "A": "v1 @0 E-15 quarter; v1 @1 D4 quarter",
+  "B": "(nothing written)",
+  "C": "v1 @0 D4 quarter",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "sharp + four eighths (F#5 x3, A-natural5), lower-voice whole rest",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B held where A was wrong (B writes nothing, bar red)",
+  "tally_C_vs_A": "both wrong"
+ },
+ "lit_tile26.png": {
+  "plate": "litolff",
+  "place": "6/0/1/12",
+  "measure": [
+   "61"
+  ],
+  "part": [
+   "P2"
+  ],
+  "A": "v1 @0 E-15 quarter; v1 @0 G5 quarter; v1 @1 F5 half; v1 @3 rest whole",
+  "B": "v1 @0 F5 half; v2 @0 rest ?",
+  "C": "v1 @0 F5 half; v2 @0 rest ?",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "sharp + F5 half, lower-voice whole rest",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (B misses the sharp, bar plain; A invented a chord, red)",
+  "tally_C_vs_A": "both wrong"
+ },
+ "lit_tile27.png": {
+  "plate": "litolff",
+  "place": "6/0/2/2",
+  "measure": [
+   "51"
+  ],
+  "part": [
+   "P3"
+  ],
+  "A": "v1 @0 C5 half; v1 @0 E5 half",
+  "B": "v1 @0 C15 half BLUE; v1 @0 E5 half",
+  "C": "v1 @0 C15 half BLUE; v1 @0 E5 half",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "sharp + two hollow halves C#5/E5",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "bra_tile01.png": {
+  "plate": "brahms",
+  "place": "0/0/4/2",
+  "measure": [
+   "3"
+  ],
+  "part": [
+   "P5"
+  ],
+  "A": "(nothing written)",
+  "B": "v1 @0 C2 half.",
+  "C": "v1 @0 C2 half.",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "C2 dotted half with a tremolo slash",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrote nothing",
+  "tally_C_vs_A": "C right where A wrote nothing"
+ },
+ "bra_tile02.png": {
+  "plate": "brahms",
+  "place": "0/0/10/1",
+  "measure": [
+   "2"
+  ],
+  "part": [
+   "P11"
+  ],
+  "A": "v1 @0 C15 quarter tie; v1 @1 D5 eighth; v1 @3/2 D5 eighth.; v1 @5/2 F5 quarter; v1 @9/4 E-15 16th",
+  "B": "v1 @0 C15 quarter tie BLUE; v1 @1 D5 eighth BLUE; v1 @3/2 D5 eighth. BLUE; v1 @5/2 F5 16th BLUE; v1 @9/4 E-15 16th BLUE",
+  "C": "v1 @0 C15 quarter tie; v1 @1 D5 eighth; v1 @3/2 D5 eighth.; v1 @5/2 F5 quarter; v1 @9/4 E-15 16th",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "tied quarter, eighth, dotted eighth, three 16ths; both arms write two 16ths",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong",
+  "tally_C_vs_A": null
+ },
+ "bra_tile03.png": {
+  "plate": "brahms",
+  "place": "0/0/11/1",
+  "measure": [
+   "2"
+  ],
+  "part": [
+   "P12"
+  ],
+  "A": "v1 @0 A4 quarter.; v1 @0 F14 quarter.; v1 @3/2 A-14 quarter; v1 @3/2 F4 quarter; v1 @5/2 E-14 eighth; v1 @5/2 G4 eighth",
+  "B": "v1 @0 A4 quarter.; v1 @3/2 A-14 quarter; v1 @5/2 G4 eighth; v2 @0 F14 quarter.; v2 @3/2 F4 quarter; v2 @5/2 E-14 eighth",
+  "C": "v1 @0 A4 quarter.; v1 @0 F14 quarter.; v1 @3/2 A-14 quarter; v1 @3/2 F4 quarter; v1 @5/2 E-14 eighth; v1 @5/2 G4 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "div. string dyads with stems both ways (two voices)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right (A has the same notes in one voice)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile04.png": {
+  "plate": "brahms",
+  "place": "0/0/13/1",
+  "measure": [
+   "2"
+  ],
+  "part": [
+   "P14"
+  ],
+  "A": "(nothing written)",
+  "B": "v1 @0 C3 half.",
+  "C": "(nothing written)",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "C3 dotted half with a tremolo slash",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrote nothing",
+  "tally_C_vs_A": null
+ },
+ "bra_tile05.png": {
+  "plate": "brahms",
+  "place": "4/0/9/8",
+  "measure": [
+   "16"
+  ],
+  "part": [
+   "P10"
+  ],
+  "A": "v1 @0 F15 quarter. tie; v1 @3/2 B4 quarter. tie; v1 @3/2 D4 quarter.; v1 @3/2 G5 quarter. tie",
+  "B": "v1 @0 F15 quarter. tie; v1 @3/2 B4 quarter. tie; v1 @3/2 D4 quarter BLUE; v1 @3/2 G5 quarter. tie",
+  "C": "v1 @0 F15 quarter. tie; v1 @3/2 B4 quarter. tie; v1 @3/2 D4 quarter.; v1 @3/2 G5 quarter. tie",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "tied F#5; then G5 and B-natural4 dotted, D4 below undotted (string chord)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A dotted the D4)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile06.png": {
+  "plate": "brahms",
+  "place": "4/1/3/3",
+  "measure": [
+   "22"
+  ],
+  "part": [
+   "P4"
+  ],
+  "A": "v1 @0 G3 quarter tie BLUE; v1 @0 G4 quarter tie BLUE; v1 @2 G2 eighth BLUE; v1 @2 G3 eighth BLUE; v1 @5/2 E3 eighth BLUE; v1 @5/2 E4 eighth BLUE",
+  "B": "v1 @5/2 G2 eighth BLUE; v1 @5/2 G3 eighth BLUE; v2 @0 G3 quarter BLUE; v2 @0 G4 quarter BLUE; v2 @5/2 E3 eighth BLUE; v2 @5/2 E4 eighth BLUE",
+  "C": "v1 @0 G3 quarter tie BLUE; v1 @0 G4 quarter tie BLUE; v1 @2 G2 eighth BLUE; v1 @2 G3 eighth BLUE; v1 @5/2 E3 eighth BLUE; v1 @5/2 E4 eighth BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "quarter dyad, eighth dyad with naturals, quarter on two heads, eighth dyad; both arms leave gaps",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong",
+  "tally_C_vs_A": null
+ },
+ "bra_tile07.png": {
+  "plate": "brahms",
+  "place": "4/1/8/7",
+  "measure": [
+   "26"
+  ],
+  "part": [
+   "P9"
+  ],
+  "A": "v1 @1 rest eighth BLUE; v1 @2 G2 eighth BLUE; v1 @3/2 rest eighth BLUE; v1 @5/2 rest eighth BLUE; v2 @2 rest eighth BLUE; v2 @3/2 rest eighth BLUE; v2 @5/2 rest eighth BLUE",
+  "B": "v1 @1 rest eighth BLUE; v1 @2 G2 eighth BLUE; v1 @3/2 rest eighth BLUE; v1 @5/2 rest eighth BLUE",
+  "C": "v1 @1 rest eighth BLUE; v1 @2 G2 eighth BLUE; v1 @3/2 rest eighth BLUE; v1 @5/2 rest eighth BLUE; v2 @2 rest eighth BLUE; v2 @3/2 rest eighth BLUE; v2 @5/2 rest eighth BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "timpani G2 eighth, two rests, G2 eighth, two rests; both arms miss the first G2",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong",
+  "tally_C_vs_A": null
+ },
+ "bra_tile08.png": {
+  "plate": "brahms",
+  "place": "4/1/11/8",
+  "measure": [
+   "27"
+  ],
+  "part": [
+   "P12"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1/2 rest eighth; v2 @0 E5 eighth; v2 @0 G4 eighth; v2 @1 rest eighth; v2 @1/2 rest eighth; v2 @3/2 F4 quarter.",
+  "B": "v1 @0 E5 eighth; v1 @0 G4 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 F4 quarter.",
+  "C": "v1 @0 rest eighth; v1 @1/2 rest eighth; v2 @0 E5 eighth; v2 @0 G4 eighth; v2 @1 rest eighth; v2 @1/2 rest eighth; v2 @3/2 F4 quarter.",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "natural + E5/G4 eighth, two rests, dotted quarter",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A's voices)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile09.png": {
+  "plate": "brahms",
+  "place": "5/0/5/5",
+  "measure": [
+   "33"
+  ],
+  "part": [
+   "P6"
+  ],
+  "A": "v1 @0 C4 eighth; v1 @0 C5 eighth; v1 @1 C5 quarter BLUE; v1 @1/2 rest eighth; v1 @2 C4 quarter. tie; v1 @2 C5 quarter. tie",
+  "B": "v1 @0 C4 eighth BLUE; v1 @0 C5 eighth BLUE; v1 @1/2 rest eighth BLUE; v1 @3/2 C4 quarter. tie BLUE; v1 @3/2 C5 quarter. tie BLUE",
+  "C": "v1 @0 C4 eighth; v1 @0 C5 eighth; v1 @1 C5 quarter BLUE; v1 @1/2 rest eighth; v1 @2 C4 quarter. tie; v1 @2 C5 quarter. tie",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "octave eighth, two rests, octave dotted quarter tied",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (B misses one eighth rest)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile10.png": {
+  "plate": "brahms",
+  "place": "5/0/10/5",
+  "measure": [
+   "33"
+  ],
+  "part": [
+   "P11"
+  ],
+  "A": "v1 @0 C5 quarter; v1 @1 rest eighth; v1 @3/2 A5 quarter. tie; v1 @3/2 C5 quarter. tie; v1 @3/2 E4 quarter. BLUE",
+  "B": "v1 @0 C5 quarter; v1 @1 rest eighth; v1 @3/2 A5 quarter. tie; v1 @3/2 C5 quarter. tie; v1 @3/2 E4 quarter BLUE",
+  "C": "v1 @0 C5 quarter; v1 @1 rest eighth; v1 @3/2 A5 quarter. tie; v1 @3/2 C5 quarter. tie; v1 @3/2 E4 quarter. BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "C5 quarter, rest, A-natural5 and C5 dotted, E-natural4 undotted (strings)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A dotted the E4)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile11.png": {
+  "plate": "brahms",
+  "place": "5/0/11/6",
+  "measure": [
+   "34"
+  ],
+  "part": [
+   "P12"
+  ],
+  "A": "v1 @0 F3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 F3 quarter. tie",
+  "B": "v1 @0 F3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 F3 quarter.",
+  "C": "v1 @0 F3 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 F3 quarter.",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "F3 eighth, rests, F3 dotted quarter slurred to the next bar's F#3 (a slur, not a tie)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A wrote a tie)",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "bra_tile12.png": {
+  "plate": "brahms",
+  "place": "5/0/11/7",
+  "measure": [
+   "35"
+  ],
+  "part": [
+   "P12"
+  ],
+  "A": "v1 @0 F3 eighth tie; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "B": "v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "C": "v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "sharp + F#3 eighth at the bar start",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "bra_tile13.png": {
+  "plate": "brahms",
+  "place": "5/1/9/7",
+  "measure": [
+   "43"
+  ],
+  "part": [
+   "P10"
+  ],
+  "A": "v1 @0 A-15 quarter BLUE; v1 @0 D5 quarter BLUE; v1 @1 rest eighth BLUE",
+  "B": "v1 @0 A5 quarter tie; v1 @0 D5 quarter tie; v1 @1 rest eighth; v1 @3/2 B-15 quarter. tie; v1 @3/2 D4 quarter.; v1 @3/2 D5 quarter.",
+  "C": "v1 @0 A-15 quarter BLUE; v1 @0 D5 quarter BLUE; v1 @1 rest eighth BLUE",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "tied-in A-natural5/D5; rest; B-flat5 and D5 dotted, D4 below UNDOTTED",
+  "second_look": "4x: two dots (top and middle heads), none by D4 -- agrees",
+  "tally": null,
+  "tally_B_vs_A": "B wrong where A wrote nothing (D4 written dotted, bar plain; A had no second chord, red)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile14.png": {
+  "plate": "brahms",
+  "place": "5/1/9/8",
+  "measure": [
+   "44"
+  ],
+  "part": [
+   "P10"
+  ],
+  "A": "v1 @0 B-15 quarter; v1 @0 D5 quarter; v1 @1 rest eighth; v1 @3/2 E-15 quarter.; v1 @3/2 E-16 quarter. tie",
+  "B": "v1 @0 B-15 quarter tie; v1 @0 D5 quarter; v1 @1 rest eighth; v1 @3/2 E-15 quarter.; v1 @3/2 E-16 quarter. tie",
+  "C": "v1 @0 B-15 quarter; v1 @0 D5 quarter; v1 @1 rest eighth; v1 @3/2 E-15 quarter.; v1 @3/2 E-16 quarter. tie",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "tied-in B-flat5/D5 (both tied), rest, E-flat6/E-flat5 dotted tied",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (D5 tie-in missing in both)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile15.png": {
+  "plate": "brahms",
+  "place": "5/1/10/6",
+  "measure": [
+   "42"
+  ],
+  "part": [
+   "P11"
+  ],
+  "A": "v1 @0 rest eighth; v1 @1 E-15 quarter; v1 @1/2 rest eighth; v1 @2 A4 quarter. tie; v1 @2 D4 quarter.; v1 @2 F15 quarter. tie BLUE; v2 @0 G4 eighth; v2 @0 G5 eighth; v2 @1 rest eighth; v2 @1/2 rest eighth",
+  "B": "v1 @0 G4 eighth; v1 @0 G5 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 A4 quarter. tie; v1 @3/2 D4 quarter BLUE; v1 @3/2 F15 quarter. tie BLUE",
+  "C": "v1 @0 rest eighth; v1 @1 A4 quarter. tie; v1 @1 D4 quarter.; v1 @1 F15 quarter. tie BLUE; v1 @1/2 rest eighth; v2 @0 G4 eighth; v2 @0 G5 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "Sean's Brahms chord: G4/G5 eighth, two rests, F#5 and A-natural4 dotted, D4 undotted, tied over",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "both wrong"
+ },
+ "bra_tile16.png": {
+  "plate": "brahms",
+  "place": "5/1/11/6",
+  "measure": [
+   "42"
+  ],
+  "part": [
+   "P12"
+  ],
+  "A": "v1 @0 B-14 eighth; v1 @0 G4 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 D5 quarter. tie; v1 @3/2 F14 quarter. tie",
+  "B": "v1 @0 B-14 eighth; v1 @0 G4 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 D5 quarter. tie; v1 @3/2 F14 quarter tie BLUE",
+  "C": "v1 @0 B-14 eighth; v1 @0 G4 eighth; v1 @1 rest eighth; v1 @1/2 rest eighth; v1 @3/2 D5 quarter. tie; v1 @3/2 F14 quarter. tie",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": false,
+  "reading": "viola: dyad eighth, rests, D5 and F#4 BOTH dotted",
+  "second_look": "4x: a clear dot beside the F#4 head -- agrees",
+  "tally": null,
+  "tally_B_vs_A": "B wrong where A right (F#4 written undotted, blue)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile17.png": {
+  "plate": "brahms",
+  "place": "5/1/10/7",
+  "measure": [
+   "43"
+  ],
+  "part": [
+   "P11"
+  ],
+  "A": "v1 @0 A4 quarter tie BLUE; v1 @0 F15 quarter tie BLUE",
+  "B": "v1 @0 A4 quarter tie BLUE; v1 @0 F15 quarter tie BLUE",
+  "C": "v1 @0 A4 quarter tie BLUE; v1 @0 F15 quarter tie BLUE",
+  "named": true,
+  "changed_ab": false,
+  "changed_ac": false,
+  "reading": "Sean's 5/1/10/7: tied-in F#5/A-natural4 (ties carry them) right in both; the second string chord at 3/2 missing in both",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong (A = B; bar red in both)",
+  "tally_C_vs_A": null
+ },
+ "bra_tile18.png": {
+  "plate": "brahms",
+  "place": "4/0/12/7",
+  "measure": [
+   "15"
+  ],
+  "part": [
+   "P13"
+  ],
+  "A": "v1 @0 C3 quarter.; v1 @3/2 B3 quarter.",
+  "B": "v1 @0 C3 quarter. BLUE; v1 @3/2 B3 quarter.",
+  "C": "v1 @0 C3 quarter. BLUE; v1 @3/2 B3 quarter.",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "C3 dotted quarter, B3 dotted quarter (only a blue mark changed)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right (blue added)",
+  "tally_C_vs_A": "C right (blue added)"
+ },
+ "bra_tile19.png": {
+  "plate": "brahms",
+  "place": "4/1/11/6",
+  "measure": [
+   "25"
+  ],
+  "part": [
+   "P12"
+  ],
+  "A": "v1 @0 A-14 eighth; v1 @0 B-13 eighth; v1 @1 A-14 eighth; v1 @1 B-13 eighth; v1 @1/2 A-14 eighth; v1 @1/2 B-13 eighth; v1 @2 rest eighth; v1 @3/2 A-14 eighth; v1 @3/2 B-13 eighth; v1 @5/2 A4 eighth; v1 @5/2 E-14 eighth",
+  "B": "v1 @0 A-14 eighth; v1 @0 B3 eighth BLUE; v1 @1 A-14 eighth; v1 @1 B3 eighth BLUE; v1 @1/2 A-14 eighth; v1 @1/2 B3 eighth BLUE; v1 @2 rest eighth; v1 @3/2 A-14 eighth; v1 @3/2 B3 eighth BLUE; v1 @5/2 A4 eighth; v1 @5/2 E-14 eighth",
+  "C": "v1 @0 A-14 eighth; v1 @0 B3 eighth BLUE; v1 @1 A-14 eighth; v1 @1 B3 eighth BLUE; v1 @1/2 A-14 eighth; v1 @1/2 B3 eighth BLUE; v1 @2 rest eighth; v1 @3/2 A-14 eighth; v1 @3/2 B3 eighth BLUE; v1 @5/2 A4 eighth; v1 @5/2 E-14 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "viola: natural on the lower B of the first dyad holds for the bar (B natural x4)",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "bra_tile20.png": {
+  "plate": "brahms",
+  "place": "5/0/12/7",
+  "measure": [
+   "35"
+  ],
+  "part": [
+   "P13"
+  ],
+  "A": "v1 @0 E-13 eighth BLUE; v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "B": "v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "C": "v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3/2 C4 quarter; v1 @5/2 E-14 eighth",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "cello: sharp + F#3 eighth, rest, G3, C4 quarter, E-flat4",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "B right where A wrong (A read the sharp as E-flat3)",
+  "tally_C_vs_A": "C right where A wrong"
+ },
+ "bra_tile21.png": {
+  "plate": "brahms",
+  "place": "5/0/13/7",
+  "measure": [
+   "35"
+  ],
+  "part": [
+   "P14"
+  ],
+  "A": "v1 @0 E-13 quarter BLUE; v1 @1 F3 eighth; v1 @2 G3 eighth; v1 @3/2 rest eighth; v1 @4 E-14 eighth; v1 @5/2 C4 quarter.",
+  "B": "v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3 E-14 eighth; v1 @3/2 C4 quarter.",
+  "C": "v1 @0 F13 eighth BLUE; v1 @1 G3 eighth; v1 @1/2 rest eighth; v1 @3 E-14 eighth; v1 @3/2 C4 quarter.",
+  "named": false,
+  "changed_ab": true,
+  "changed_ac": true,
+  "reading": "bass: same figure, C4 quarter undotted; both arms dot it",
+  "second_look": null,
+  "tally": null,
+  "tally_B_vs_A": "both wrong",
+  "tally_C_vs_A": "both wrong"
+ }
+}

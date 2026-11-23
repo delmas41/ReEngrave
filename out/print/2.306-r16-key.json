@@ -1,0 +1,215 @@
+[
+ {
+  "tile": 1,
+  "page": 5,
+  "head": 779,
+  "members": [
+   "glyph/5/1/10/7/2",
+   "glyph/5/1/11/7/2"
+  ],
+  "stem_box": [
+   4397.0,
+   6388.0,
+   4409.0,
+   6502.0
+  ],
+  "kind": "gained",
+  "plate": "brahms",
+  "how": "engraving_side",
+  "direction": "up"
+ },
+ {
+  "tile": 2,
+  "page": 4,
+  "head": 375,
+  "members": [
+   "glyph/4/1/3/4/13"
+  ],
+  "stem_box": [
+   3099.0,
+   4855.0,
+   3108.0,
+   4939.0
+  ],
+  "kind": "refused",
+  "plate": "brahms",
+  "how": "no_stroke"
+ },
+ {
+  "tile": 3,
+  "page": 2,
+  "head": 534,
+  "members": [
+   "glyph/2/1/1/14/3"
+  ],
+  "stem_box": [
+   2483.0,
+   2260.0,
+   2489.0,
+   2334.0
+  ],
+  "kind": "gained",
+  "plate": "litolff",
+  "how": "second_on_partner_stem",
+  "direction": "down"
+ },
+ {
+  "tile": 4,
+  "page": 0,
+  "head": 205,
+  "members": [
+   "glyph/0/0/4/3/5"
+  ],
+  "stem_box": [
+   3180.0,
+   3136.0,
+   3188.0,
+   3280.0
+  ],
+  "kind": "refused",
+  "plate": "brahms",
+  "how": "stroke_held_by_inked_heads"
+ },
+ {
+  "tile": 5,
+  "page": 6,
+  "head": 70,
+  "members": [
+   "glyph/6/1/2/1/10"
+  ],
+  "stem_box": [
+   700.0,
+   2247.0,
+   705.0,
+   2290.0
+  ],
+  "kind": "gained",
+  "plate": "litolff",
+  "how": "engraving_side",
+  "direction": "up"
+ },
+ {
+  "tile": 6,
+  "page": 6,
+  "head": 568,
+  "members": [
+   "glyph/6/1/6/10/7"
+  ],
+  "stem_box": [
+   2296.0,
+   2878.0,
+   2303.0,
+   2947.0
+  ],
+  "kind": "refused",
+  "plate": "litolff",
+  "how": "stroke_read_both_ways"
+ },
+ {
+  "tile": 7,
+  "page": 2,
+  "head": 325,
+  "members": [
+   "glyph/2/1/6/7/0",
+   "glyph/2/1/7/7/2"
+  ],
+  "stem_box": [
+   1605.0,
+   3116.0,
+   1609.0,
+   3169.0
+  ],
+  "kind": "gained",
+  "plate": "litolff",
+  "how": "engraving_side",
+  "direction": "down"
+ },
+ {
+  "tile": 8,
+  "page": 4,
+  "head": 758,
+  "members": [
+   "glyph/4/0/9/9/8"
+  ],
+  "stem_box": [
+   4885.0,
+   2576.0,
+   4892.0,
+   2837.0
+  ],
+  "kind": "gained",
+  "plate": "brahms",
+  "how": "engraving_side",
+  "direction": "up"
+ },
+ {
+  "tile": 9,
+  "page": 2,
+  "head": 326,
+  "members": [
+   "glyph/2/1/9/7/4"
+  ],
+  "stem_box": [
+   1623.0,
+   3395.0,
+   1628.0,
+   3475.0
+  ],
+  "kind": "refused",
+  "plate": "litolff",
+  "how": "no_stroke"
+ },
+ {
+  "tile": 10,
+  "page": 4,
+  "head": 374,
+  "members": [
+   "glyph/4/1/2/4/1",
+   "glyph/4/1/3/4/4"
+  ],
+  "stem_box": [
+   3099.0,
+   4855.0,
+   3108.0,
+   4939.0
+  ],
+  "kind": "refused",
+  "plate": "brahms",
+  "how": "no_stroke"
+ },
+ {
+  "tile": 11,
+  "page": 0,
+  "head": 384,
+  "members": [
+   "glyph/0/0/2/6/2"
+  ],
+  "stem_box": [
+   4714.0,
+   2440.0,
+   4720.0,
+   2520.0
+  ],
+  "kind": "gained",
+  "plate": "brahms",
+  "how": "engraving_side",
+  "direction": "down"
+ },
+ {
+  "tile": 12,
+  "page": 6,
+  "head": 675,
+  "members": [
+   "glyph/6/0/8/12/12"
+  ],
+  "stem_box": [
+   2568.0,
+   1564.0,
+   2573.0,
+   1631.0
+  ],
+  "kind": "refused",
+  "plate": "litolff",
+  "how": "stroke_read_both_ways"
+ }
+]

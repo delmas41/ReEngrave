@@ -1,0 +1,219 @@
+{
+ "seed": 2306014,
+ "question": "The orange tick marks a note. Is the orange box all of that note's stem (yes / only part / not its stem)? And does the note carry a flag or a beam, or neither?",
+ "tiles": [
+  {
+   "tile": 1,
+   "plate": "brahms",
+   "kind": "flag_or_beam",
+   "rg": "glyph/0/0/9/3/2",
+   "box": [
+    3255.4775,
+    4985.77,
+    3296.7575,
+    5022.2125
+   ],
+   "page": 0,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 2,
+   "plate": "brahms",
+   "kind": "flag_or_beam",
+   "rg": "glyph/0/0/9/3/5",
+   "box": [
+    3323.525,
+    4986.0925,
+    3365.45,
+    5022.535
+   ],
+   "page": 0,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 3,
+   "plate": "brahms",
+   "kind": "flag_or_beam",
+   "rg": "glyph/0/0/12/2/4",
+   "box": [
+    3000.2799999999997,
+    6324.48,
+    3042.2,
+    6364.16
+   ],
+   "page": 0,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 4,
+   "plate": "brahms",
+   "kind": "flag_or_beam",
+   "rg": "glyph/0/0/10/2/7",
+   "box": [
+    2812.44,
+    5502.96,
+    2857.88,
+    5539.76
+   ],
+   "page": 0,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 5,
+   "plate": "brahms",
+   "kind": "flag_or_beam",
+   "rg": "glyph/0/0/9/3/3",
+   "box": [
+    3461.8775,
+    4997.7025,
+    3502.19,
+    5032.855
+   ],
+   "page": 0,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 6,
+   "plate": "brahms",
+   "kind": "flag_or_beam",
+   "rg": "glyph/0/0/11/6/5",
+   "box": [
+    4941.125,
+    5910.875,
+    4982.71875,
+    5949.375
+   ],
+   "page": 0,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "up"
+  },
+  {
+   "tile": 7,
+   "plate": "litolff",
+   "kind": "flag_or_beam",
+   "rg": "glyph/10/1/7/9/4",
+   "box": [
+    1904.1125,
+    3060.9825,
+    1932.305,
+    3082.4025
+   ],
+   "page": 10,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 8,
+   "plate": "litolff",
+   "kind": "flag_or_beam",
+   "rg": "glyph/10/0/9/0/2",
+   "box": [
+    528.2125,
+    1755.0225,
+    551.6800000000001,
+    1777.0725
+   ],
+   "page": 10,
+   "before": "beam",
+   "after": "flag",
+   "type": "16th",
+   "stem_how": "engraving_side",
+   "stem_direction": "up"
+  },
+  {
+   "tile": 9,
+   "plate": "litolff",
+   "kind": "stem_now_read",
+   "rg": "glyph/10/1/9/9/0",
+   "box": [
+    1905.0575,
+    3373.98,
+    1928.0525,
+    3395.2425
+   ],
+   "page": 10,
+   "before": "no_stroke",
+   "after": "engraving_side",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 10,
+   "plate": "litolff",
+   "kind": "stem_now_read",
+   "rg": "glyph/10/1/8/9/6",
+   "box": [
+    1904.56,
+    3373.88,
+    1926.96,
+    3383.0
+   ],
+   "page": 10,
+   "before": "no_stroke",
+   "after": "engraving_side",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 11,
+   "plate": "litolff",
+   "kind": "stem_now_read",
+   "rg": "glyph/10/1/1/11/6",
+   "box": [
+    2189.7175,
+    2215.7675,
+    2219.17,
+    2232.1475
+   ],
+   "page": 10,
+   "before": "no_stroke",
+   "after": "engraving_side",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  },
+  {
+   "tile": 12,
+   "plate": "litolff",
+   "kind": "flag_or_beam",
+   "rg": "glyph/10/1/10/10/0",
+   "box": [
+    2064.56,
+    3564.76,
+    2086.16,
+    3584.92
+   ],
+   "page": 10,
+   "before": "beam",
+   "after": "flag",
+   "type": "eighth",
+   "stem_how": "engraving_side",
+   "stem_direction": "down"
+  }
+ ]
+}

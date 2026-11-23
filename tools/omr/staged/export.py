@@ -697,6 +697,9 @@ class Cell:
     #: ROADMAP 2.277 (flag `OMR_CLAIM_FINAL`): glyphs of THIS bar refused BY a barline's / a layer's claimed ink (`_CLAIM_GAP_REASONS`): not a gap (the ink is
     #: another mark's), but a bar that stops adding up when the false gap goes keeps what the gap gave it -- its notes stay GUESSED (`_mark_claimed_gap_events`).
     claimed_slivers: List[Dict[str, Any]] = field(default_factory=list)
+    #: ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, OFF): heads of THIS bar refused on the way out that may be real notes
+    #: (`_file_dropped_heads`), `{"sub", "reason", "x", "w"}`. EMPTY unless the flag is `bar` or `spot`.
+    dropped_heads: List[Dict[str, Any]] = field(default_factory=list)
 
 
 def _clef_changes_by_bar(rec: Any, staff_key: str) -> Dict[int, str]:
@@ -1042,6 +1045,7 @@ def build(rec: Record) -> Tuple[List[List[StaffRun]], Dict[str, Any],
                            reinstated=reinstated_out)
     if partial_bars_mode() != "off":
         _attach_unplaced(rec, runs, fates)
+    rec.__dict__["_dropped_heads_filed"] = _file_dropped_heads(rec, runs, fates)     # ROADMAP 2.333: files nothing while the flag is off
     # ⚠️ AN EQUALITY, and it is not decoration: it is the only thing that
     # catches a refusal added later at one call site and not the other, which
     # is precisely how the arm's copy went stale in the first place.
@@ -1297,6 +1301,13 @@ def _stem_facts_of(rec: Record, sub: str) -> Dict[str, Any]:
     h = rec.verdict(Q.HEAD_STEM, sub)
     if h and h.get("outcome") == "decided" and h.get("value"):
         out["stem_id"] = str(h["value"])
+    # ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`): ADJUDICATE found this head on a STRING staff's stem whose heads each READ their own
+    # length; "read" or "dot_not_seen" (written GUESSED), read by `_chords_whose_value_would_be_voted` and `_order_string_stops`
+    sv = rec.verdict(Q.STEM_VALUE, sub)
+    if sv and sv.get("outcome") == "decided" and sv.get("reason") == "string_stop_own_value":
+        d = sv.get("detail") or {}
+        out["string_stop"] = {"status": (d.get("status") or {}).get(sub), "candidates": d.get("candidates"),
+                              "family_source": (d.get("family") or {}).get("source")}
     return out
 
 
@@ -1602,6 +1613,7 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                                     Dict[str, Any], Optional[str], str,
                                     float]] = []
     twin_index = _notehead_page_boxes(rec) if relocate else {}
+    other_marks = _other_mark_boxes(rec) if relocate else {}
     # ⚠️ ROADMAP 2.58b. EMPTY unless the record was gathered with
     # `OMR_MARK_GROUPS`, and then every placement below is QUEUED and replayed
     # in record order so one group is written once.
@@ -1850,6 +1862,14 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
                     and dur_v.get("reason") == "owned_by_another_staff"):
                 _drop("owned_by_another_staff", s)
                 continue
+            if (relocate and not is_rest
+                    and A.is_relocated_copy(sub, rec.value(Q.GLYPH_OWNER, sub))):
+                # 2026-11-22: a box another staff owns that is not a head by its own ink, or is another mark's ink, is
+                # named as such -- never counted as an unread duration (which would mark the bar that merely saw it)
+                _why = _not_a_head_owned_elsewhere(rec, sub, _page_box_of(o), s["page"] or 0, other_marks)
+                if _why is not None:
+                    _drop(_why, s)
+                    continue
             _drop(("rest_" if is_rest else "") + "duration_"
                   + (dur_v["outcome"] if dur_v else "absent"), s)
             continue
@@ -1858,7 +1878,8 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         plan = None
         if (relocate and not is_rest
                 and A.is_relocated_copy(sub, owner)):
-            plan = _plan_relocation(rec, runs, o, s, sub, owner, twin_index)
+            plan = _plan_relocation(rec, runs, o, s, sub, owner, twin_index,
+                                    other_marks)
             if isinstance(plan, str):
                 _drop(plan, s)       # a NAMED refusal, never a silent one
                 continue
@@ -2166,6 +2187,12 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
         if _near_existing_head(cell, det, run.spacing):
             _drop("relocation_collides", _again(sub))
             continue
+        if _relocated_value_disagrees(cell, det, run.spacing):
+            # 2026-11-22 (lane-owner-writes): every note on one stem shares one written value. A head that would join a chord on
+            # the owner staff whose notes were read with another value is HELD (and its bar marked, on the staff that saw it):
+            # writing it would make 2.89 refuse the whole chord -- the owner's own, rightly read notes with it.
+            _drop("relocation_value_disagrees_with_its_chord", _again(sub))
+            continue
         cell.detections.append(det)
         if gid is not None:
             won[gid] = sub
@@ -2301,13 +2328,28 @@ def _chords_whose_value_would_be_voted(
                     continue
                 values = {(h.get("duration_beats"), h.get("duration_type"),
                            h.get("dots")) for h in heads}
+                if len(values) > 1 and _is_string_stop(heads):
+                    # ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`, Sean 2026-11-21): a string staff's stem whose heads each READ their
+                    # own length -- written sounding together, each with its own length (`_order_string_stops`), never held, never voted
+                    _mark_string_stop_guesses(heads)
+                    continue
                 if len(values) > 1:
                     doomed.extend(id(h) for h in heads)
             if not doomed:
                 continue
             gone = set(doomed)
+            # ROADMAP 2.306 two-voice piece: a unison head and its second voice (`export_unison`'s twin) are ONE printed head. Where either
+            # voice stands in a group whose values disagree, both are held -- never one voice written and the other held -- and the head is
+            # returned once (the twin is no row of the log).
+            pair_of = {}
+            for d in cell.detections:
+                if d.get("unison_head") or d.get("unison_twin"):
+                    pair_of.setdefault(d.get("glyph"), []).append(id(d))
+            for ids in pair_of.values():
+                if gone & set(ids):
+                    gone |= set(ids)
             kept = [d for d in cell.detections if id(d) not in gone]
-            removed.extend(d for d in cell.detections if id(d) in gone)
+            removed.extend(d for d in cell.detections if id(d) in gone and not d.get("unison_twin"))
             cell.detections[:] = kept
     one_chord.bar_declines(False)
     return removed
@@ -2436,10 +2478,139 @@ def _key_alteration_for(pitch: Optional[str], fifths: Any) -> Optional[str]:
     return ("#" if fifths > 0 else "b") if pitch[0] in altered else None
 
 
+#: Detector classes whose box, holding a relocation candidate's centre, says the ink is THAT mark, not a head owned elsewhere.
+_OTHER_MARK_PREFIXES = ("clef", "key", "accidental", "flag", "tremolo", "dynamic")
+
+
+def _other_mark_boxes(rec: Record) -> Dict[int, List[Tuple[str, List[float]]]]:
+    """Per page, the page boxes of marks that are not heads (`_OTHER_MARK_PREFIXES`) and of every printed word
+    (`Q.DIRECTION_WORD`). Read once per export, only with `OMR_RELOCATE_AT_EXPORT` on."""
+    out: Dict[int, List[Tuple[str, List[float]]]] = {}
+    for o in rec.obs_of(Q.GLYPH_BOX):
+        v = o.get("value")
+        name = str(v[0] if isinstance(v, (list, tuple)) and v else v or "")
+        kind = ("mark" if name.startswith(_OTHER_MARK_PREFIXES)
+                else "ledger" if name.startswith("ledgerLine") else None)
+        if kind is None:
+            continue
+        box = _page_box_of(o)
+        if box is not None:
+            out.setdefault(_parse_subject(o["subject"])["page"] or 0, []).append((kind, box))
+    # a READ word is printed text. A word BLOCK the text reader found but could not read (an abstention) is loose -- on
+    # Litolff p8 one holds a real far head and its ledger lines beside "sempre" -- so it names the ink text only where no
+    # ledger line touches the head (Brahms p14: the "se" of an unread "sempre" boxed as a head, no ledger line near it).
+    for o in rec.obs_of(Q.DIRECTION_WORD):
+        box = _page_box_of(o)
+        m = re.match(r"^[a-z_]+/(\d+)", str(o.get("subject") or ""))
+        if box is not None and m:
+            out.setdefault(int(m.group(1)), []).append(("mark", box))
+    for o in (rec.abstentions or ()):
+        if o.get("quantity") != Q.DIRECTION_WORD:
+            continue
+        box = _page_box_of(o)
+        m = re.match(r"^[a-z_]+/(\d+)", str(o.get("subject") or ""))
+        if box is not None and m:
+            out.setdefault(int(m.group(1)), []).append(("unread_word", box))
+    return out
+
+
+def _inside_another_mark(box: Sequence[float], page: int,
+                         other_marks: Dict[int, List[Tuple[str, List[float]]]]) -> bool:
+    """Is the head's centre inside another named mark (or a READ word), or inside an unread word block with no ledger line
+    touching the head?"""
+    cx, cy = (box[0] + box[2]) / 2.0, (box[1] + box[3]) / 2.0
+    marks = other_marks.get(page, ())
+    if any(k == "mark" and b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for k, b in marks):
+        return True
+    if not any(k == "unread_word" and b[0] <= cx <= b[2] and b[1] <= cy <= b[3] for k, b in marks):
+        return False
+    return not any(k == "ledger" and b[0] <= box[2] + 2 and b[2] >= box[0] - 2 and b[1] <= box[3] + 2 and b[3] >= box[1] - 2
+                   for k, b in marks)
+
+
+def _not_a_head_owned_elsewhere(rec: Record, sub: str, box: Optional[Sequence[float]], page: int,
+                                other_marks: Dict[int, List[Tuple[str, List[float]]]]) -> Optional[str]:
+    """Why a box another staff owns is not a note at all, or None. (2) A notehead by its OWN ink: `Q.HEAD_INK` read hollow or
+    filled (one head-sized oval), never a box that only looks like one -- on the frozen sample the boxes owned elsewhere
+    include clef parts, slashes, flags, key flats and letters. (3) Its ink is not a mark another reader has named: its centre
+    inside a clef, key-signature, accidental, flag, tremolo or dynamic box, or a printed word (Brahms p5 the bass clef's dot,
+    p12 a Fag. key flat, p14 the e of "sempre")."""
+    hi = rec.obs(Q.HEAD_INK, sub)
+    if not hi or hi[-1].get("value") not in ("hollow", "filled"):
+        return "relocation_not_a_head_by_ink"
+    if box is not None and _inside_another_mark(box, page, other_marks):
+        return "relocation_on_another_mark"
+    return None
+
+
+def _beyond_owner_view(rec: Record, owner: str, seen_on: str, box: Sequence[float],
+                       spacing: Optional[float]) -> Optional[bool]:
+    """Does the head's centre lie past the reach of the owner's own bar view? The reach is `measure_extractor`'s own rule
+    (`_build_measure_cell.grown`): `PAD_*_STAFF_LINES` (4) spaces past the outer line, `PAD_MAX_STAFF_LINES` (6) where the
+    gap to the staff that saw the head, less `CELL_NEIGHBOUR_CLEARANCE_SPACES`, leaves room for 6. None where a staff's lines
+    or spacing are not on the record."""
+    from .. import measure_extractor as ME
+
+    def lines(key):
+        rows = rec.obs(Q.STAFF_LINES, key)
+        v = rows[-1]["value"] if rows else None
+        try:
+            return (min(float(y) for y in v), max(float(y) for y in v)) if v else None
+        except (TypeError, ValueError):
+            return None
+    own, nb = lines(owner), lines(seen_on)
+    if own is None or nb is None or not spacing:
+        return None
+    cy = (box[1] + box[3]) / 2.0
+    below = cy > own[1]
+    gap = ((nb[0] - own[1]) if below else (own[0] - nb[1])) / spacing
+    reach = (ME.PAD_MAX_STAFF_LINES if gap - ME.CELL_NEIGHBOUR_CLEARANCE_SPACES >= ME.PAD_MAX_STAFF_LINES
+             else (ME.PAD_BELOW_STAFF_LINES if below else ME.PAD_ABOVE_STAFF_LINES))
+    out = ((cy - own[1]) if below else (own[0] - cy)) / spacing
+    return out > reach
+
+
+def _owner_in_mark_group(rec: Record, sub: str, owner: str) -> bool:
+    """Does this mark's own group (`Q.MARK_GROUP`, the same ink seen from two cells) hold a member filed on `owner`?"""
+    for g in rec.obs(Q.MARK_GROUP, sub):
+        for m in (g.get("detail") or {}).get("members") or ():
+            if m != sub and isinstance(m, str) and m.startswith("glyph/") \
+                    and "staff/" + "/".join(m.split("/")[1:4]) == owner:
+                return True
+    return False
+
+
+def _relocated_value_disagrees(cell: "Cell", det: Dict[str, Any], spacing: Optional[float] = None) -> bool:
+    """Would `det`, put in `cell`, join a chord whose other heads were written with a different (beats, type, dots)?
+    The same grouping and the same triple 2.89 uses (`_group_chords`), asked BEFORE the head is added. And, because the
+    grouping keeps two stem directions apart: does a head of the owner's stand in the same column (page x within
+    `RELOCATE_COLLISION_SPACES`) with another value? (Brahms p4 m27: the far head of a horn chord read a quarter from the
+    neighbour's view, its stem mate an eighth from its flag; written, the two were split into two voices.)"""
+    mine = (det.get("duration_beats"), det.get("duration_type"), det.get("dots"))
+    b = det.get("bbox_page")
+    if b is not None and spacing:
+        cx = b[0] + b[2] / 2.0
+        for d in cell.detections:
+            e = d.get("bbox_page")
+            if (d.get("category") == "notehead" and e is not None
+                    and abs(e[0] + e[2] / 2.0 - cx) < RELOCATE_COLLISION_SPACES * spacing
+                    and (d.get("duration_beats"), d.get("duration_type"), d.get("dots")) != mine):
+                return True
+    trial = list(cell.detections) + [det]
+    for ev in _group_chords(trial):
+        heads = ev.get("noteheads") or ()
+        if not any(h is det for h in heads):
+            continue
+        return any(h is not det and (h.get("duration_beats"), h.get("duration_type"), h.get("dots")) != mine
+                   for h in heads)
+    return False
+
+
 def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
                      o: Dict[str, Any], s: Dict[str, Optional[int]],
                      sub: str, owner: str,
-                     twin_index: Dict[Tuple[int, int, int], List[List[float]]]
+                     twin_index: Dict[Tuple[int, int, int], List[List[float]]],
+                     other_marks: Optional[Dict[int, List[Tuple[str, List[float]]]]] = None
                      ) -> Any:
     """Where a head owned by another staff would be written.
 
@@ -2465,12 +2636,37 @@ def _plan_relocation(rec: Record, runs: Dict[str, StaffRun],
     for twin in twin_index.get(okey, ()):
         if _box_iou(box, twin) > SAME_INK_IOU:
             return None                      # the owner holds it: classic drop
+    # 2026-11-22 (lane-owner-writes). THE RULE, as a musician says it: a note belongs to the staff its ledger lines climb from,
+    # and it is written there once, with the chord on its stem. Four tests, in this order:
+    # (1) the owner holds this ink already when the mark's own group (`Q.MARK_GROUP`, the same ink seen by two cells) has a
+    #     member filed on the owner -- a box that overlaps too little for the IoU test above is still the same mark;
+    if _owner_in_mark_group(rec, sub, owner):
+        return None
+    # (2) it is a notehead by its OWN ink, and (3) its ink is not a mark another reader has named (`_not_a_head_owned_elsewhere`)
+    why = _not_a_head_owned_elsewhere(rec, sub, box, s.get("page") or 0, other_marks or {})
+    if why is not None:
+        return why
     run = runs.get(owner)
     if run is None or not run.cell_boxes:
         return "owner_staff_has_no_measures"
+    # (3b) THE CAUSE: each bar is read from a view that reaches a fixed distance past its own staff
+    #     (`measure_extractor._build_measure_cell`: 4 spaces, 6 where the gap to the neighbour leaves room), so a head farther
+    #     out was never shown to its owner and only the neighbour's view saw it. A head INSIDE the owner's own view that the
+    #     owner drew no box for is a different case (on the frozen sample all six such Litolff boxes were a ledger stroke or a
+    #     tie end beside a head the owner wrote, or a head read a step off) -- it stays dropped, counted under its own name.
+    reach = _beyond_owner_view(rec, owner, _staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0), box, run.spacing)
+    if reach is None:
+        return "relocation_no_frame"
+    if not reach:
+        return "relocation_inside_owner_view"
     pv = rec.verdict(Q.PITCH, sub)
     if pv is None or pv.get("decider") != "move_glyph":
         return "relocation_not_repitched"
+    # (4) the ledger lines name the owner and place the head (page-facts: a far head's position is its ledger lines only,
+    #     "there is no far note without one"): `move_glyph` pitched it from the ledger reading toward the owner. A head the
+    #     ledger lines do not place is HELD and its bar marked on the staff that saw it -- never written from a geometry step.
+    if pv.get("reason") != "reowned_by_ledger_reading":
+        return "relocation_owner_not_by_ledgers"
     cx = (box[0] + box[2]) / 2.0
     hits = [(abs((cb[0] + cb[2]) / 2.0 - cx), ci, cb)
             for ci, cb in run.cell_boxes.items() if cb[0] <= cx <= cb[2]]
@@ -2705,8 +2901,12 @@ def _stem_boxes_by_cell(rec: Record) -> Dict[str, List[Tuple[float, ...]]]:
     that is not there.
     """
     out: Dict[str, List[Tuple[float, ...]]] = collections.defaultdict(list)
+    from . import page_stems as _PS
+    views_on = _PS.enabled()
     for o in rec.obs_of(Q.STEM):
         v = o["value"]
+        if o.get("reader") == "cv_page_stems" and not views_on:      # ROADMAP 2.306: a page stem view counts only with its flag on
+            continue
         if isinstance(v, (list, tuple)) and len(v) >= 4:
             out[o["subject"]].append(tuple(float(x) for x in v[:4]))
     return dict(out)
@@ -4736,8 +4936,57 @@ def _group_chords(detections: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     two heads of a second on one stem are one chord. ONE place, so `_events`, the 2.89 value refusal and the 2.90 divisi
     settle see the same events."""
     from . import one_chord
-    return group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
-                                   keep_stems_apart=one_chord.stems_apart_enabled())
+    return _order_string_stops(group_chords_in_measure(detections, merge_seconds_on_one_stem=one_chord.enabled(),
+                                                       keep_stems_apart=one_chord.stems_apart_enabled()))
+
+
+#: ROADMAP 2.306 / 2.78: the GUESSED rule word of a string-stop head whose dot was not seen while a stem-mate's was.
+STRING_STOP_DOT_RULE = "string_stop_dot_not_seen"
+
+
+def _is_string_stop(heads: Sequence[Dict[str, Any]]) -> bool:
+    """ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`): every head of this group stands on ONE stem that ADJUDICATE found on a STRING
+    staff with each head's own length READ (`stem_value.STRING_STOP_REASON`, carried as `string_stop` by `_stem_facts_of`). Anything less --
+    one head without it, two stems, the flag off -- is not: the group is held as 2.89 holds it."""
+    from . import staff_family
+    if not staff_family.enabled() or len(heads) < 2:
+        return False
+    stems = {h.get("stem_id") for h in heads}
+    return len(stems) == 1 and None not in stems and all(isinstance(h.get("string_stop"), dict) for h in heads)
+
+
+def _mark_string_stop_guesses(heads: Sequence[Dict[str, Any]]) -> None:
+    """A string-stop head whose dot was not seen while a stem-mate's was is written GUESSED (blue), carrying its own (undotted) value and the
+    dotted one as candidates (CLAUDE.md section 4; 2.78 tile 13: the dot reader can miss one of a stem's dots). Every other head is READ."""
+    for h in heads:
+        ss = h.get("string_stop") or {}
+        if ss.get("status") != "dot_not_seen" or h.get("guess"):
+            continue
+        cands = [dict(c, support=2.0 if i == 0 else 1.0) for i, c in enumerate(ss.get("candidates") or ()) if isinstance(c, dict)]
+        h["guess"] = {"stage": "ADJUDICATE", "rule": STRING_STOP_DOT_RULE, "quantity": Q.DURATION, "candidates": cands,
+                      "chosen": {"beats": h.get("duration_beats"), "dots": h.get("dots")}}
+
+
+def _order_string_stops(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+    """ROADMAP 2.306 / 2.78 (`OMR_STRING_STOPS_OWN_VALUE`). A string-stop chord whose heads carry different lengths is ONE `<chord>` whose
+    notes each carry their own `<type>`, `<dot/>` and `<duration>` (`_measure_events_xml` already writes every head's own value). MusicXML
+    advances the voice by the chord's FIRST note, so the LONGEST heads go first (lowest first among them, then the rest lowest first) and the
+    event's own length (`_event_units`, the bar sum, LilyPond) is the longest: the chord holds until its longest note ends, the shorter notes
+    stop early inside it (Sean's two chords: Beethoven 5 first violins bar 21, the half note fills the 2/4 bar; Brahms second violins about bar
+    94, the dotted quarters end the 6/8 bar). Nothing is moved where the heads agree or the group is not a string stop."""
+    for ev in events:
+        heads = ev.get("noteheads") or []
+        if ev.get("kind") != "chord" or not _is_string_stop(heads):
+            continue
+        if len({(h.get("duration_beats"), h.get("duration_type"), h.get("dots")) for h in heads}) < 2:
+            continue
+        top = max(float(h["duration_beats"]) for h in heads)
+        longest = [h for h in heads if float(h["duration_beats"]) == top]
+        ev["noteheads"] = longest + [h for h in heads if float(h["duration_beats"]) != top]
+        lead = longest[0]
+        ev["duration_beats"], ev["duration_type"], ev["dots"] = lead["duration_beats"], lead["duration_type"], lead.get("dots", 0)
+        ev["string_stop_mixed"] = True
+    return events
 
 
 def _events(cell: Optional[Cell]) -> List[Dict[str, Any]]:
@@ -5310,7 +5559,8 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
               partial_bars: Optional[List[Dict[str, Any]]] = None,
               unread_bars: Optional[List[Dict[str, Any]]] = None,
               doubled_held_bars: Optional[List[Dict[str, Any]]] = None,
-              red_bars: Optional[List[Dict[str, Any]]] = None
+              red_bars: Optional[List[Dict[str, Any]]] = None,
+              dropped_head_bars: Optional[List[Dict[str, Any]]] = None
               ) -> str:
     """One `<part>`: every measure of every system this part appears on.
 
@@ -5391,6 +5641,7 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
     """
     lines = [f'  <part id="{pid}">']
     partial_mode = partial_bars_mode()
+    _dh_mode = dropped_head_marks_mode()          # ROADMAP 2.333, read once per part
     plan = plan or _EndingPlan()
     number = 0
     prev = {"clef": object(), "key": object(), "time": object()}
@@ -5998,8 +6249,30 @@ def _part_xml(rec: Record, part: Sequence[StaffRun], pid: str,
                     lines.extend(_body)
                     lines.append(_unread_bracket_xml("stop", 1))
                 else:
-                    lines.extend(_measure_xml(rec, run, i, events, divisions,
-                                              counters, split=split))
+                    # ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`, OFF): a bar that adds up, holding a head that may be a real note and was not
+                    # written, is never written plain -- `bar` marks the bar (every note as read), `spot` marks the head's place. OFF: no change.
+                    _dh = (cell_here.dropped_heads if (cell_here is not None and run.condensed_from is None and _dh_mode != "off") else [])
+                    if _dh and dropped_head_bars is not None:
+                        dropped_head_bars.append({
+                            **_bar_ids(run, i, emitted), "page": run.page, "system": run.system, "staff": run.staff, "cell": i,
+                            "measure": (number if base is None else plan.number(_here, i, base)), "part": pid, "mode": _dh_mode,
+                            "noteheads_and_rests": _bar_event_rows(events), "words": _dropped_head_words(_dh),
+                            "dropped": [dict(d) for d in _dh]})
+                    if _dh and _dh_mode == "bar":
+                        counters["bars_marked_for_a_dropped_head"] += 1
+                        counters["notes_written_in_dropped_head_bars"] += _bar_event_rows(events)
+                        lines.append(_unread_bracket_xml("start", 1))
+                        lines.append(_red_bar_word_xml(_dropped_head_words(_dh)))
+                        lines.extend(_measure_xml(rec, run, i, events, divisions, counters, split=split))
+                        lines.append(_unread_bracket_xml("stop", 1))
+                    else:
+                        if _dh:
+                            _streams = split[0] if split[0] is not None else [events]
+                            for _d in _dh:
+                                lines.append(_dropped_head_spot_xml(_dropped_head_onset(_d, _streams, divisions)))
+                                counters["dropped_head_spots_marked"] += 1
+                        lines.extend(_measure_xml(rec, run, i, events, divisions,
+                                                  counters, split=split))
             lines.extend(_bl_right)
             lines.append("    </measure>")
     one_chord.bar_declines(False)
@@ -7419,6 +7692,12 @@ UNREAD_BAR_MARK_WORDS[_GAP_REFUSAL] = "unread"
 _NOT_A_GAP_REASONS = frozenset({
     "owned_by_another_staff", "mark_group_duplicate",
     "not_a_notehead:belongs_to_a_nearer_staff",
+    # 2026-11-22 (`OMR_RELOCATE_AT_EXPORT`): a box owned elsewhere whose own ink is not one head, or whose ink is another
+    # named mark, is not a note of any staff
+    "relocation_not_a_head_by_ink", "relocation_on_another_mark",
+    # and a head inside the owner's own bar view that the owner drew no box for is not this lane's case: counted under
+    # its own name, left as the pre-relocation export left it (not a gap); see `_beyond_owner_view`
+    "relocation_inside_owner_view",
     "not_a_notehead:stacked_head_duplicate",
     "not_a_notehead:notehead_is_a_duplicate_box",
     "not_a_rest:rest_is_a_duplicate_box",
@@ -7515,6 +7794,159 @@ def _attach_unplaced(rec: Record, runs: Dict[str, StaffRun],
                               "w": float(w)})
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# ROADMAP 2.333 -- a dropped head must not hide (flag OMR_DROPPED_HEAD_MARKS, OFF)
+# ─────────────────────────────────────────────────────────────────────────────
+#
+# STAGE: EXPORT, STAGED path only. Fenced functions: `dropped_head_marks_mode`, `_file_dropped_heads`, `_dropped_head_words`,
+# `_dropped_head_spot_xml`, `_dropped_head_onset`, and the plain-bar branch of `_part_xml` that calls them.
+#
+# THE CAUSE (Sean 2026-11-22, "I don't want things hiding"): a bar is judged by the notes EXPORT WROTE (`_bar_holds_out`). A head
+# refused on the way out that may be a real note is read only after a bar fails (`Cell.unplaced`, 2.117), and a head refused
+# `owned_by_another_staff` never at all -- so a bar that still adds up without it, or whose second error cancels the first, is
+# written plain. The bar sum is the weakest witness and can only confirm (CLAUDE.md section 4); here it was the only one.
+#
+# THE RULE, as a musician would say it: a head the detector boxed and we did not write MAY BE A REAL NOTE when it is a whole
+# head-sized mark the reader took for a head (it passed the notehead checks and was refused only for its value, pitch, owner
+# or chord), and no written note -- on this staff or the neighbouring one -- stands on the same ink.
+# Its nevers, in the same words: never a box too narrow to be a head (dots, barline slivers, rest pieces: at most 3 of 12 real,
+# `benchmarks/page-ledger-2026-11/FINDINGS.md` "A dropped head can hide"); never a clipped fragment (0 of 12 real); never a box
+# the reader named as other ink (`_NOT_A_GAP_REASONS`, any `not_a_notehead:*`); never a second box on a head that IS written,
+# nor a neighbouring staff's copy that is written there (the same ink: `judged.boxes_overlap`). A head refused
+# `owned_by_another_staff` counts only when no written head stands on its ink (7 of 12 were real printed heads; 5 had
+# nothing written near) and is marked on the staff it was filed on (the owner staff wrote nothing there either).
+#
+# TWO MODES (the test chooses): `bar` -- the bar is marked as the file marks a bar it could not fully read (a red bracket and
+# red words naming the dropped head), every note written as read; `spot` -- the bar's notes stay as written and the place of
+# the unwritten head carries its own red `unread note` words, at its onset, nothing invented (no note, no rest, no time).
+#
+# CONVENTION ASSUMED / WHAT WOULD FALSIFY IT / NOT CONFIRMED: that a refused head-sized box with no written twin is worth a
+# musician's look (falsified by a seeded sample of marked bars that are right as written); the words are ours, not Sean's.
+# NOT CONFIRMED: the LilyPond twin (`lilypond._collect_bars`) does not draw either mark -- outside this lane's fence.
+DROPPED_HEAD_MARKS_ENV = "OMR_DROPPED_HEAD_MARKS"
+DROPPED_HEAD_WORD_PREFIX = "a note not written"
+DROPPED_HEAD_SPOT_WORD = "unread note"
+
+#: what a dropped head's refusal says, in a musician's words (the bar mark names it)
+_DROPPED_HEAD_REASON_WORDS = {
+    "duration_narrowed": "value not read", "duration_abstained": "value not read", "duration_absent": "value not read",
+    "chord_value_undecided": "chord value not read", "no_pitch": "pitch not read",
+    "owned_by_another_staff": "staff not decided", "unread:wide_box_unread": "head not read",
+}
+#: refusals that say the box is not a whole head (the two measured scrap classes) -- never a dropped note
+_DROPPED_HEAD_SCRAPS = frozenset({"not_a_notehead:too_narrow", "not_a_notehead:clipped_fragment",
+                                  # 2.270: ink narrower than a head (a piece of a sign) / ink across a stem on both sides (a slash)
+                                  "ink_not_head_shaped", "ink_straddles_a_stem"})
+
+
+def dropped_head_marks_mode() -> str:
+    """`OMR_DROPPED_HEAD_MARKS`: `bar` or `spot`; anything else (DEFAULT, unset) is `off` -- an allow-list."""
+    v = os.environ.get(DROPPED_HEAD_MARKS_ENV, "").strip().lower()
+    return v if v in ("bar", "spot") else "off"
+
+
+def _dropped_head_may_be_a_note(reason: Optional[str]) -> bool:
+    """The refusal half of the rule: refused for its value, pitch, owner or chord -- not as a scrap, not as other ink."""
+    if not reason or reason in ("written", "written_relocated") or reason in _DROPPED_HEAD_SCRAPS:
+        return False
+    if reason == "owned_by_another_staff":
+        return True
+    if reason in _NOT_A_GAP_REASONS or reason in _CLAIM_GAP_REASONS:
+        return False
+    if reason.startswith(("not_a_notehead:", "not_a_rest:", "rest_")) or reason in ("ink_is_a_whole_rest", _GAP_REFUSAL):
+        return False
+    return True
+
+
+def _file_dropped_heads(rec: Record, runs: Dict[str, StaffRun], fates: Dict[str, str]) -> Dict[str, int]:
+    """ROADMAP 2.333. File every refused head that may be a real note (the rule above) onto its bar's `Cell.dropped_heads`:
+    `{"sub", "reason", "x", "w"}`, `x` in the canonical frame of an event's `x_position`. Reads `fates`, the boxes and the
+    head class; decides nothing. Boxes on one ink are ONE dropped head (a box of its own staff before an `owned_by_another_staff` copy). Returns counts by outcome."""
+    if dropped_head_marks_mode() == "off":
+        return {}
+    from .judged import boxes_overlap
+    out: Dict[str, int] = collections.Counter()
+    page_box: Dict[str, Tuple[int, List[float]]] = {}
+    canon: Dict[str, Any] = {}
+    for o in rec.obs_of(Q.GLYPH_BOX):
+        sub = o["subject"]
+        b = (o.get("detail") or {}).get("bbox_page_px")
+        if isinstance(b, (list, tuple)) and len(b) == 4:
+            page_box.setdefault(sub, (_parse_subject(sub)["page"] or 0, [float(t) for t in b]))
+        canon.setdefault(sub, o.get("value"))
+    written: Dict[int, List[List[float]]] = collections.defaultdict(list)
+    for sub, reason in fates.items():
+        if reason in ("written", "written_relocated") and sub in page_box:
+            pg, b = page_box[sub]
+            written[pg].append(b)
+    kept: Dict[int, List[List[float]]] = collections.defaultdict(list)
+    # a box refused `owned_by_another_staff` comes LAST: where the owner staff's own box of that ink is also dropped, the note is
+    # marked in the owner's bar (its own box), and the copy is the second box on it
+    for sub in sorted(fates, key=lambda k: (fates[k] == "owned_by_another_staff", k)):
+        reason = fates[sub]
+        if not _dropped_head_may_be_a_note(reason):
+            continue
+        if not rec.obs(Q.NOTEHEAD_CLASS, sub) or rec.obs(Q.REST, sub):
+            continue
+        if sub not in page_box:
+            out["no_page_box"] += 1
+            continue
+        pg, b = page_box[sub]
+        if any(boxes_overlap(b, w)[0] for w in written[pg]):
+            out["a_written_note_on_its_ink"] += 1
+            continue
+        if any(boxes_overlap(b, k)[0] for k in kept[pg]):
+            out["second_box_on_a_dropped_head"] += 1
+            continue
+        v = canon.get(sub)
+        s = _parse_subject(sub)
+        run = runs.get(_staff_key(s["page"] or 0, s["system"] or 0, s["staff"] or 0))
+        cell = run.cells.get(s["cell"] or 0) if run is not None else None
+        if cell is None or not v or len(v) != 5:
+            out["no_bar"] += 1
+            continue
+        kept[pg].append(b)
+        cell.dropped_heads.append({"sub": sub, "reason": reason, "x": float(v[1]) + float(v[3]) / 2.0, "w": float(v[3])})
+        out["filed"] += 1
+    return dict(out)
+
+
+def _dropped_head_words(dropped: Sequence[Dict[str, Any]]) -> str:
+    """The bar mark's words: `a note not written: value not read` (each reason once, in a musician's words)."""
+    seen: List[str] = []
+    for d in dropped:
+        w = _DROPPED_HEAD_REASON_WORDS.get(d["reason"], d["reason"].replace("_", " "))
+        if w not in seen:
+            seen.append(w)
+    return "%s: %s" % (DROPPED_HEAD_WORD_PREFIX, ", ".join(seen))
+
+
+def _dropped_head_onset(head: Dict[str, Any], streams: Sequence[Sequence[Dict[str, Any]]], divisions: int) -> int:
+    """Where in the bar the unwritten head stands, in `<duration>` units: the time of the voice's written events that stand
+    LEFT of it (the voice holding the event nearest in x). A place to look, not a beat claimed for a note."""
+    best, best_d = None, None
+    for st in streams:
+        for e in st:
+            d = abs(float(e.get("x_position") or 0) - head["x"])
+            if best_d is None or d < best_d:
+                best, best_d = st, d
+    if not best:
+        return 0
+    tol = 0.5 * max(head.get("w") or 0.0, 1.0)
+    return sum(_event_units(e, divisions) for e in sorted(best, key=lambda e: float(e.get("x_position") or 0))
+               if float(e.get("x_position") or 0) < head["x"] - tol)
+
+
+def _dropped_head_spot_xml(units: int, indent: str = "      ") -> str:
+    """The spot mark: red `unread note` words at the head's onset (`<offset>` from the bar's start). No note, rest or time."""
+    return (f'{indent}<direction placement="above">\n'
+            f"{indent}  <direction-type>\n"
+            f'{indent}    <words color="{UNREAD_BAR_MARK_COLOR}">{DROPPED_HEAD_SPOT_WORD}</words>\n'
+            f"{indent}  </direction-type>\n"
+            + (f"{indent}  <offset>{int(units)}</offset>\n" if units else "")
+            + f"{indent}</direction>")
+
+
 def _event_duration_certain(ev: Dict[str, Any]) -> bool:
     """True where the event's DURATION was read (not an INFER collapse). A
     guessed duration leaves its own end -- and so every later onset -- unsure."""
@@ -7524,6 +7956,10 @@ def _event_duration_certain(ev: Dict[str, Any]) -> bool:
     for h in ev.get("noteheads") or ():
         g = h.get("guess")
         if g and g.get("quantity") == Q.DURATION:
+            # ROADMAP 2.306 / 2.78: a string stop ends when its LONGEST note ends; a shorter note's unseen dot leaves that end read
+            if (ev.get("string_stop_mixed") and g.get("rule") == STRING_STOP_DOT_RULE
+                    and float(h.get("duration_beats") or 0) < float(ev.get("duration_beats") or 0)):
+                continue
             return False
     return True
 
@@ -8244,6 +8680,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
     doubled_held_bars: List[Dict[str, Any]] = []
     #: ROADMAP 2.173: every bar written red (flag `OMR_RED_BARS`).
     red_bars: List[Dict[str, Any]] = []
+    #: ROADMAP 2.333 (flag `OMR_DROPPED_HEAD_MARKS`): every bar that adds up and holds a head that may be a real note, not written.
+    dropped_head_bars: List[Dict[str, Any]] = []
     #: The MARKS a held-out bar would have written, by family. See
     #: `_held_bar_marks`: every one of them has to reach its family's own
     #: not-written bucket or that family's balance control goes False for
@@ -8344,7 +8782,8 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
                                    partial_bars=partial_bars,
                                    unread_bars=unread_bars,
                                    doubled_held_bars=doubled_held_bars,
-                                   red_bars=red_bars))
+                                   red_bars=red_bars,
+                                   dropped_head_bars=dropped_head_bars))
 
     # ⚠️ WRITTEN EVEN WHEN ZERO, the `empty_bars_padded_without_meter` lesson
     # again: on a document where every bar adds up, *"we held out none"* must
@@ -8458,6 +8897,16 @@ def to_musicxml(result: Dict[str, Any]) -> Tuple[str, Dict[str, Any]]:
         "stay_held_by_reason": dict(_still),
         "bars": partial_bars,
     }
+    # ROADMAP 2.333: only present when the flag is on, so OFF writes the report it always wrote.
+    if dropped_head_marks_mode() != "off":
+        report["dropped_head_marks"] = {
+            "flag": DROPPED_HEAD_MARKS_ENV, "mode": dropped_head_marks_mode(),
+            "filed": rec.__dict__.get("_dropped_heads_filed") or {},
+            "bars": len(dropped_head_bars),
+            "bars_marked": int(counters.get("bars_marked_for_a_dropped_head", 0)),
+            "spots_marked": int(counters.get("dropped_head_spots_marked", 0)),
+            "list": dropped_head_bars,
+        }
     # ⚠️⚠️ ROADMAP 2.173. REPORTED APART from "bars add up" AND from the held
     # bars: a red bar does NOT add up -- that is why it is red. Only present
     # when the flag is on, so OFF writes the report it always wrote.

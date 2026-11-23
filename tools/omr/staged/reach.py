@@ -389,6 +389,8 @@ STAGE_OF_FILE = {
     "page_beams.py": "GATHER",
     # ROADMAP 2.274 step 1: files `Q.PAGE_ARC` from its hook line in `gather.gather()`.
     "page_arcs.py": "GATHER",
+    # ROADMAP 2.306: files `Q.PAGE_STEM`, the `owner: stem` `Q.CLAIMED_AREA` rows and the stem views from its hook line in `gather.gather()`; `Q.PAGE_STEM` is read by `adjudicate_head_stem` (ADJUDICATE).
+    "page_stems.py": "GATHER",
     # ROADMAP 2.260e M6a: files `Q.PAGE_HEAD` and the head / ledger `Q.CLAIMED_AREA` rows from its hook lines in `gather.gather()`.
     "page_heads.py": "GATHER",
     # ROADMAP 2.276: files the `owner: tremolo` `Q.CLAIMED_AREA` rows from its hook line in `gather.gather()`.
@@ -466,6 +468,9 @@ NOT_A_STAGE = frozenset({
     # ROADMAP 2.300. Pure geometry for the second's stem join (`stem_value._stem_of_a_second`) and the one-stem grouping
     # (`rhythm.adjudicate_event`, `voicing.group_chords_in_measure`): files no row, names no quantity, decides nothing.
     "one_chord.py",
+    # ROADMAP 2.306 / 2.78. Pure helper: a staff's family from verdicts already filed (`Q.INSTRUMENT`, `Q.SLOT_INDEX`, `Q.CLEF`), read by
+    # `stem_value._staff_family` and `export`; files no row, decides nothing of its own.
+    "staff_family.py",
     # ROADMAP 2.195. Pure numpy/cv2 helpers for `gather.gather_stroke_map` (the run analysis, the local staff): files no row, names no quantity.
     "stroke_map.py",
     # ROADMAP 2.202. Pure helpers for `rhythm._beams_from_strokes` (a stroke's role by its measured fields, what a beam box stands on, the strokes
