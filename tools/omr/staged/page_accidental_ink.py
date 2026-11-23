@@ -104,9 +104,10 @@ FUSED_ENV = "OMR_ACCIDENTAL_FUSED_INK"
 PAIR_GAP_MAX_SP = 0.7
 #: the tallest the two uprights stand together (spaces): the naturals measured 3.59-4.34 (thick ink stretches the font's 2.7).
 PAIR_H_MAX_SP = 4.5
-#: a level pair is a sharp only where BOTH uprights are at least this long (spaces): the 8 level pairs read by look on Litolff p2/6 + Brahms p5, all
-#: sharps, measured 2.73-3.43; the short level pairs that were not accidentals, 1.59-1.84.
-PAIR_SHARP_STEM_MIN_SP = 2.2
+#: a pair is an accidental only where BOTH uprights are at least this long (spaces): the 8 level pairs read by look on Litolff p2/6 + Brahms p5, all
+#: sharps, measured 2.73-3.43, the 23 naturals 2.6-3.43; the short pairs that were not accidentals 1.59-1.84 (level: a beam's or a head's pieces;
+#: Litolff 6/1/8/10 m72: a 1.84-sp upright beside a 2.8 one was the A4 eighth's own down stem beside a flat, and the stems check lost that note).
+PAIR_STEM_MIN_SP = 2.2
 #: a fused stack's height, as a share of the sharp glyph's (2.79 sp): at least `STACK_H_MIN_FRAC` (a third of two stacked heads is ~2.0 sp; the
 #: filled sharps measured 2.65-4.02 sp), at most `STACK_H_MAX_FRAC`; and its width at most `STACK_W_MAX_SP` (the sharps: 1.0-1.94 sp).
 STACK_H_MIN_FRAC = 0.85
@@ -268,7 +269,7 @@ def _free_of(box: Sequence[float], boxed: Sequence[Sequence[float]], header: Seq
 def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], boxed: Sequence[Sequence[float]], taken: set, header: Sequence[Sequence[float]],
                   count: Any) -> List[Dict[str, Any]]:
     """A NATURAL OR SHARP WHOSE BARS ARE LOST (module rule above, `OMR_ACCIDENTAL_FUSED_INK`): two free uprights of an accidental stem's length, centres at
-    most `PAIR_GAP_MAX_SP` apart, staggered the natural's way or level (a sharp; then both at least `PAIR_SHARP_STEM_MIN_SP` long) -- `read_type` names
+    most `PAIR_GAP_MAX_SP` apart, staggered the natural's way or level (a sharp), both at least `PAIR_STEM_MIN_SP` long -- `read_type` names
     them on the two uprights alone --, together at most `PAIR_H_MAX_SP` tall, a note just right of them. `taken`: stroke ordinals no mark here may use (held, already claimed). Pure."""
     from . import accidental_family as AF
     ups = sorted([i for i, s in enumerate(strokes) if s.kind == "vertical" and AF.STEM_MIN_SP <= float(s.length_sp) <= AF.STEM_MAX_SP and i not in taken],
@@ -291,8 +292,8 @@ def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], b
                 continue
             t = AF.read_type([strokes[a], strokes[b]], [0, 1], spl, [])
             ty = t["type"]
-            if ty == "sharp" and min(float(strokes[a].length_sp), float(strokes[b].length_sp)) < PAIR_SHARP_STEM_MIN_SP:
-                continue
+            if min(float(strokes[a].length_sp), float(strokes[b].length_sp)) < PAIR_STEM_MIN_SP:
+                continue        # an accidental's uprights are nearly its full height; a short one beside a long one is a note's stem or a flat's bowl side
             if ty not in ("natural", "sharp"):
                 continue
             ub = _union_box([A, B])
@@ -311,7 +312,7 @@ def accidental_pairs(strokes: Sequence[Any], sp: float, heads: Sequence[Head], b
             # stem-long upright, never a real head's blob (`taken` holds those) -- Brahms 5/0/13/7: the sharp's bar ends left free kept the head box on
             # the sharp from being refused
             bars = [j for u in (a, b) for j, _c in (strokes[u].touches or ()) if 0 <= int(j) < len(strokes) and int(j) not in taken and int(j) not in (a, b)
-                    and not (strokes[int(j)].kind == "vertical" and float(strokes[int(j)].length_sp) >= PAIR_SHARP_STEM_MIN_SP)
+                    and not (strokes[int(j)].kind == "vertical" and float(strokes[int(j)].length_sp) >= PAIR_STEM_MIN_SP)
                     and _box(strokes[int(j)])[1] >= ub[1] - 0.1 * spl and _box(strokes[int(j)])[3] <= ub[3] + 0.1 * spl
                     and _box(strokes[int(j)])[2] <= ub[2] + 0.6 * spl and _box(strokes[int(j)])[0] >= ub[0] - 0.6 * spl]
             mem = sorted({a, b} | {int(j) for j in bars})

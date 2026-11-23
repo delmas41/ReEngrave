@@ -208,3 +208,19 @@ def test_head_box_on_a_natural_fused_into_the_barline_is_refused_by_the_claims_t
         assert NP._on_an_accidentals_ink(SimpleNamespace(entry={**entry, "held_all": 0.45}, verdict_id=""), box) is None
     finally:
         os.environ.pop(PAI.FUSED_ENV, None)
+
+
+def test_never_a_notes_own_stem_as_a_naturals_upright():
+    # Litolff 6/1/8/10 (m72): the A4 eighth's down stem (page stroke 3212, 1.84 sp) beside a 2.8-sp upright with a bowl (a flat); paired, they read
+    # as a natural and the stems check lost the eighth. An accidental's uprights are nearly its full height, so a short one never pairs
+    head = (2279, 3215, 2303, 3234)
+    meta, strokes, heads, on, _ = read("litolff_p6_6_1_8_10_eighth_stem_beside_flat", True)
+    assert not [c for c in on if 3212 in page_ords(strokes, c["members"])]
+    assert not covers(on, head)
+    saved = PAI.PAIR_STEM_MIN_SP
+    try:
+        PAI.PAIR_STEM_MIN_SP = 1.0                                 # the control can fail: without the never the stem is taken
+        *_, on2, _ = read("litolff_p6_6_1_8_10_eighth_stem_beside_flat", True)
+        assert [c for c in on2 if 3212 in page_ords(strokes, c["members"])]
+    finally:
+        PAI.PAIR_STEM_MIN_SP = saved
