@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 146 LIVE, 7 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 26 gaps; 194 flag predicates; 28 record calls this map cannot resolve.
+Today: 146 LIVE, 7 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 26 gaps; 195 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -1066,7 +1066,7 @@ Which edition and movement this is; scanned or engraved.
 - `glyph_box` read by INFER: `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `inferences.py:_events_with_x`, `inferences.py:_simultaneous_heads`
 - `glyph_box` read by EXPORT: `export.py:_attach_unplaced`, `export.py:_bar_has_other_head_or_rest_box`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:_detector_view_census`, `export.py:_head_touches_a_letter_or_whole_rest`, `export.py:_place_notes`, `export.py:_rest_twin_in_bar`, `export.py:_settle_folded_pitches`, `export.py:coverage`
 - `glyph_box` read by tools: `trace.py:empty_claims`, `trace.py:population_of`
-- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export.py:_notehead_page_boxes`, `export_unison.py:arc_side`
+- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export.py:_file_dropped_heads`, `export.py:_notehead_page_boxes`, `export_unison.py:arc_side`
 - `glyph_box` belongs to: `--mark notehead`, `--mark arc`, `--mark hairpin`, `--mark dynamic`, `--mark box`
 
 ### `glyph_conf` (Q.GLYPH_CONF) -- LIVE
@@ -1411,7 +1411,7 @@ Which edition and movement this is; scanned or engraved.
 - `notehead_class` declared in `wants` (not a read): `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_event`, `adjudicate_head_stem`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stem_head_contact`, `adjudicate_tuplet`, `adjudicate_unison_voices`
 - `notehead_class` read by ADJUDICATE: `adjudicators/family_precision.py:_cell_notehead_boxes`, `adjudicators/notehead_precision.py:_cell_notehead_boxes`, `adjudicators/rhythm.py:_attached_dots`, `adjudicators/rhythm.py:_dot_page_context`, `adjudicators/rhythm.py:_head_class`, `adjudicators/rhythm.py:_is_second_only`, `adjudicators/rhythm.py:adjudicate_dot_role`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_tuplet`, `adjudicators/stem_value.py:_cell_heads`, `adjudicators/stem_value.py:_one_stem_per_head`, `adjudicators/stem_value.py:_stem_of_a_second`
 - `notehead_class` read by EXPORT: `export.py:_place_notes`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
-- `notehead_class` read only OFF by default: `export.py:_notehead_page_boxes`
+- `notehead_class` read only OFF by default: `export.py:_file_dropped_heads`, `export.py:_notehead_page_boxes`
 - `notehead_class` belongs to: `--mark notehead`, `--mark box`
 
 ### `notehead_ink` (Q.NOTEHEAD_INK) -- LIVE
@@ -1651,6 +1651,7 @@ Which edition and movement this is; scanned or engraved.
 - `rest` declared in `wants` (not a read): `adjudicate_dot_role`, `adjudicate_duration`, `adjudicate_event`, `adjudicate_head_ink_is_a_rest`, `adjudicate_meter`, `adjudicate_notehead_is_a_whole_rest`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_rest_is_not_a_rest`, `adjudicate_stroke_owner`
 - `rest` read by ADJUDICATE: `adjudicators/family_precision.py:_cell_rest_boxes`, `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/rhythm.py:_attached_dots`, `adjudicators/rhythm.py:_bar_lengths_for`, `adjudicators/rhythm.py:adjudicate_dot_role`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/rhythm.py:adjudicate_event`, `adjudicators/rhythm.py:adjudicate_notehead_is_a_whole_rest`, `adjudicators/stroke_owner.py:_rest_shape_vetoes`
 - `rest` read by EXPORT: `export.py:_place_notes`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
+- `rest` read only OFF by default: `export.py:_file_dropped_heads`
 - `rest` belongs to: `--mark rest`
 
 ### `rest_ink_contact` (Q.REST_INK_CONTACT) -- LIVE
