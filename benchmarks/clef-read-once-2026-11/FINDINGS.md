@@ -393,3 +393,7 @@ neighbour pages as its baseline, or it is not like with like.
 failure; `staged.check` 216 -> 215. Left for a follow-up: the now-dead `Q.CLEF_LOCATED` consumers
 (`adjudicators/clef._locator_terms`, `inferences._clef_located_on`, `notehead_precision`) and their tests.
 
+
+## 2026-11-23 -- overnight 20261122-night: pitch changes traced to the clef (agent read, STAGED; direction is our look at crops, not judged)
+
+Changed pitches vs 20261117-night: Litolff 55, Brahms 269 (`lane_report.diff_arms`). Nearly all follow the clef in force from the page-wide reader (`clef_pagewide`, GATHER). Mid-line clef changes now READ and acted on: Brahms ~154 notes (p25 s0 st3 bassoon 43, p26 s0 st5 horn 48, others), Litolff p13 s0 st6 timpani alto -> bass 25. REGRESSIONS, right on the 17th: an alto clef opening a viola line read as bass (`_gather_clef_header_by_ink`, the two-dots test `f_dot_places` firing on C-clef ink; `adjudicate_clef` decides bass) on Brahms p3 s1 st11 (36 notes), p10 s1 st11 (23), Litolff p13 s0 st9 (24; EXPORT then names that staff Cello and the basses Contrabass); Brahms p17 s1 st3 opening tenor clef narrowed and the staff decided bass (12). No judged tile sits on these staves, so judged right->wrong 0 did not see it. Not determined: why the two-dots test fires on a C clef, why the p17 clef was narrowed, ~21 unsorted notes. Crops `out/print/overnight-1122-pitches/`; question put to Sean on B and C.

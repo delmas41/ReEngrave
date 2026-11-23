@@ -30,3 +30,12 @@ red bars before building.
 
 ## Not verified
 Saved slices predate this week's landings; Brahms p4 system 0 is judged against a meter `derived_from_bars` (circular).
+
+## 2026-11-23 -- overnight 20261122-night vs 20261117-night: why the red-bar count stood still (agent read, STAGED; not judged)
+
+Sean: "why after all that our red bars number didn't move at all. I am guessing that is because of something later than the reader." Cause: red is decided at EXPORT (`export._bar_holds_out`, `_partial_bar_plan`/`_plan_one_stream`, `_red_bar_applies`) by plain addition against the meter, and the meter is right (Litolff 2/4 in all 339; Brahms 6/8 in 488). A held value makes a bar partial, never red, so red counts only bars where every mark was handed over as READ and one is missing, extra or wrong. Process lesson: reader work that turns unread bars into written ones feeds the red count unless the other marks in the bar are right too; red falls only by finding marks delivered confident and wrong.
+- Churn (matched by page/system/staff/cell/part): Litolff red both 307, red->not 34, not->red 32; Brahms 435 / 57 / 57.
+- Every mark READ with a pitch and still red: Litolff 238 of 311 (131 short, 107 long); Brahms 337 of 492 (146 short, 191 long). Two voices in only 21 / 19 of those.
+- Refused or guessed upstream: Litolff 73 (`duration_narrowed` 10, `too_narrow` 9, `rest_stroke_into_a_head` 8, guessed 33); Brahms 155 (`too_narrow` 60, `duration_narrowed` 32, `one_ink_merged` rests 20).
+- Arithmetic groups (which mark is at fault NOT established): Litolff motif bars, three eighths with the opening eighth rest missing, 52 bars, in 49 the detector drew no rest box; Brahms 54 bars short by half a plain note (missed dot?); Litolff 52 single-quarter bars, 16 heads measure hollow; long by one rest 25 / 63; long by one note 30 / 55.
+- Brahms was classed from the exported file, not its record. Crops `out/print/overnight-1122-redbars/`; data in the session scratchpad `redbars/cls3.json` (not kept).
