@@ -160,6 +160,58 @@ def eighth_rest_shaped(d: Dict[str, Any]) -> bool:
     return all(v >= 0 for _k, v in _eighth_slacks(w, h, step, mass_y, col, prof))
 
 
+# ── ROADMAP 2.339: a quarter rest hidden under another box ──────────────────
+#
+# The same rule for the quarter rest's shape (a zigzag hanging in the middle
+# of the staff: the quarter windows above). NEVER a real arpeggio (a wavy line
+# standing immediately left of a chord: `head_beside_it`, the 2.99 guard), a
+# stem or a stem with its flag (a full-height stroke on the left: the flat's
+# `stem_stroke` test; a flag box is never stepped aside), or ledger lines (a
+# ledger box steps aside only where its own decision refused it). Boxes that
+# step aside for a quarter: an `arpeggiato` box refused `quarter_rest_shaped_ink`,
+# a clef-class box, a refused ledger box, and two rest boxes of DIFFERENT
+# classes refused against each other (`rest_is_a_duplicate_box`, 2.15: the
+# boxes could not tell the value; the ink can).
+QUARTER_REST_BOXED_AS_OTHER_ENV = "OMR_QUARTER_REST_BOXED_AS_OTHER"
+
+
+def quarter_rest_boxed_as_other_enabled() -> bool:
+    """`OMR_QUARTER_REST_BOXED_AS_OTHER`, default OFF (ROADMAP 2.339); acts only with `OMR_REST_BOXED_AS_OTHER` on."""
+    import os
+    return rest_boxed_as_other_enabled() and os.environ.get(QUARTER_REST_BOXED_AS_OTHER_ENV, "").strip().lower() in (
+        "1", "true", "yes", "on")
+
+
+def quarter_rest_shaped(d: Dict[str, Any]) -> bool:
+    """Does this `Q.UNBOXED_REST_SHAPE` row (coverage aside) read as a quarter rest on its own shape and place? The 2.99 decision's
+    refusals in its order, its quarter windows, and its arpeggio guard (no head immediately right at its height)."""
+    w, h, step = d.get("width_spaces"), d.get("height_spaces"), d.get("staff_step")
+    col, prof, mass_y = d.get("max_column_share"), d.get("column_profile"), d.get("mass_y")
+    if None in (w, h, step, col, mass_y) or not prof or len(prof) < 6 or not d.get("n_pieces"):
+        return False
+    if col < THIN_STROKE_MAX_COLUMN_SHARE:
+        return False
+    if (prof[0] >= 0.6 and prof[1] >= STROKE_SHARE and max(prof[2:]) < STROKE_SHARE
+            and prof[1] >= max(prof[2:])):
+        return False
+    if d.get("left_of_header") or (d.get("first_cell") and not d.get("header_known")):
+        return False
+    if d.get("touches_cell_edge") or (d.get("n_pieces") or 0) > REST_MAX_PIECES:
+        return False
+    if not all(v >= 0 for _k, v in _quarter_slacks(w, h, step, prof)):
+        return False
+    head = d.get("right_head")
+    if head and head.get("dx_spaces") is not None and head["dx_spaces"] <= QUARTER_HEAD_BESIDE_SPACES \
+            and abs(head.get("dy_spaces") or 0.0) <= QUARTER_HEAD_BESIDE_DY_SPACES:
+        return False
+    return True
+
+
+def rest_shaped(d: Dict[str, Any], quarter: bool = False) -> bool:
+    """Eighth-rest shaped, or (with `quarter`) quarter-rest shaped."""
+    return eighth_rest_shaped(d) or (quarter and quarter_rest_shaped(d))
+
+
 def _box_share(cluster_bb, box_bb) -> float:
     ix = min(cluster_bb[2], box_bb[2]) - max(cluster_bb[0], box_bb[0])
     iy = min(cluster_bb[3], box_bb[3]) - max(cluster_bb[1], box_bb[1])
@@ -194,24 +246,28 @@ def header_not_from_this_ink(ev: Evidence, d: Dict[str, Any]) -> Dict[str, Any]:
     return {**d, "left_of_header": bool(right and bb[0] < right), "header_known": bool(right) or not d.get("first_cell")}
 
 
-def eighth_rest_under_box(ev: Evidence, box_bb) -> Any:
+def eighth_rest_under_box(ev: Evidence, box_bb, shaped=eighth_rest_shaped) -> Any:
     """The rest-shaped `Q.UNBOXED_REST_SHAPE` row in this glyph's own cell
-    that this box stands on (covers by `WRONG_KIND_BOX_SHARE`), or None."""
+    that this box stands on (covers by `WRONG_KIND_BOX_SHARE`), or None.
+    `shaped` is the shape test (2.334 eighth; 2.339 `quarter_rest_shaped`)."""
     from ..adjudicate import Scope
     cell = ev.subject.at(Kind.CELL)
     for r in ev.rows(Q.UNBOXED_REST_SHAPE, scope=Scope.SELF_AND_DESCENDANTS, subject=cell):
         d = r.detail or {}
         bb = d.get("bbox_page_px")
-        if bb and _box_share(bb, box_bb) >= WRONG_KIND_BOX_SHARE and eighth_rest_shaped(header_not_from_this_ink(ev, d)):
+        if bb and _box_share(bb, box_bb) >= WRONG_KIND_BOX_SHARE and shaped(header_not_from_this_ink(ev, d)):
             return r
     return None
 
 
-def _cover_left(ev: Evidence, d: Dict[str, Any]):
+def _cover_left(ev: Evidence, d: Dict[str, Any], quarter: bool = False):
     """ROADMAP 2.334: the cluster's cover once every wrong-kind box on it has
     given way -- an accidental box refused as `eighth_rest_shaped_ink`, a
     clef-class detector box (no clef reader), a ledger box refused as not a
-    ledger. `(cover, gave_way)`; None where the boxes cannot be measured."""
+    ledger. `(cover, gave_way)`; None where the boxes cannot be measured.
+    ROADMAP 2.339 (`quarter`): also an arpeggiato box refused as
+    `quarter_rest_shaped_ink`, and rest boxes of different classes refused
+    against each other (`rest_is_a_duplicate_box` with `duplicate_disagrees_with`)."""
     from ..adjudicate import Scope
     from ..record import Outcome
     bb = d.get("bbox_page_px")
@@ -229,8 +285,19 @@ def _cover_left(ev: Evidence, d: Dict[str, Any]):
             continue
         low = cls.lower()
         if low.startswith("rest"):
-            # a rest box on this ink already reads the rest (or was refused by its own family): never a second rest here
+            # a rest box on this ink already reads the rest (or was refused by its own family): never a second rest here --
+            # except (2.339) twins of two classes refused against each other: the boxes could not tell the value, the ink can
+            v = ev.verdict(Q.REST_IS_NOT_A_REST, subject=r.subject) if quarter else None
+            if (v is not None and v.outcome is Outcome.DECIDED and v.value is True
+                    and v.reason == "rest_is_a_duplicate_box" and (v.detail or {}).get("duplicate_disagrees_with")):
+                gave.append(r.subject.to_key())
+                continue
             return None
+        if quarter and low.startswith("arpeggi"):
+            v = ev.verdict(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO, subject=r.subject)
+            if v is not None and v.outcome is Outcome.DECIDED and v.value is True and v.reason == "quarter_rest_shaped_ink":
+                gave.append(r.subject.to_key())
+                continue
         if low.startswith("clef"):
             gave.append(r.subject.to_key())
             continue
@@ -304,7 +371,7 @@ def _shape_refusal(ruling: Ruling, w, h, step, mass_y, col, prof,
     # ROADMAP 2.334 (OMR_REST_BOXED_AS_OTHER, read only while it is ON): the
     # boxes on the ink and the refusals that say a box was the wrong kind.
     wants=(Q.UNBOXED_REST_SHAPE, Q.GLYPH_BOX, Q.ACCIDENTAL_IS_NOT_AN_ACCIDENTAL,
-           Q.LEDGER_IS_NOT_A_LEDGER),
+           Q.LEDGER_IS_NOT_A_LEDGER, Q.REST_IS_NOT_A_REST, Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO),
     subjects_from=Q.UNBOXED_REST_SHAPE,
     reasons=("rest8th_shape", "restQuarter_shape", "already_read_as_a_glyph",
              "stem_stroke_not_a_rest", "thin_stroke_not_a_rest",
@@ -336,12 +403,17 @@ def adjudicate_unboxed_ink_is_a_rest(ev: Evidence) -> Ruling:
     cover = d.get("coverage") or 0.0
     if cover >= TOUCHED_SHARE and rest_boxed_as_other_enabled():
         d2 = header_not_from_this_ink(ev, d)
-        left = _cover_left(ev, d2) if eighth_rest_shaped(d2) else None
+        eighth = eighth_rest_shaped(d2)
+        # ROADMAP 2.339: the quarter shape too, behind its own switch. Written GUESSED (blue): on our plates one real
+        # sharp's ink passes the quarter windows (Brahms p19, boxed as a flag), so the shape alone does not settle it.
+        quarter = (not eighth) and quarter_rest_boxed_as_other_enabled() and quarter_rest_shaped(d2)
+        left = _cover_left(ev, d2, quarter=quarter) if (eighth or quarter) else None
         if left is not None:
             detail = {**detail, "boxed_as_other": {"gave_way": left[1],
                                                    "coverage_was": cover,
                                                    "coverage_left": round(left[0], 3),
-                                                   "header_was_this_ink": d2 is not d}}
+                                                   "header_was_this_ink": d2 is not d,
+                                                   "guessed": bool(quarter)}}
             cover, d = left[0], d2
     if cover >= COVERED_SHARE:
         return _margin(
