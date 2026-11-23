@@ -235,6 +235,17 @@ def own_strokes(slash: Dict[str, Any], boxes: Sequence[Sequence[float]], kinds: 
     return out
 
 
+def claim_area(box: Sequence[float], won: Sequence[Sequence[float]]) -> List[float]:
+    """ROADMAP 2.335 (under `OMR_SLASH_STEM_CORE`): the claim's rectangle `(x0, y0, x1, y1)` reaches every page stroke the slash owns. The cell settle
+    gives a cell stroke to a layer claim only where the stroke lies wholly inside the rectangle, and the tracked box can stop a pixel short of the
+    slash's own stroke (Litolff p6 6/1/8/11: the slash's cell stroke ends at 2476.6, the box at 2475, so the slash stayed unowned in its cell and
+    a detector head box on it was written a C4 half). Never wider than the slash's own box and its own strokes. Pure."""
+    a = [float(v) for v in box]
+    for b in won:
+        a = [min(a[0], float(b[0])), min(a[1], float(b[1])), max(a[2], float(b[2])), max(a[3], float(b[3]))]
+    return a
+
+
 def _detector_boxes(cells: Sequence[Any], local: Dict[int, Tuple[int, int]], detections: Dict[str, List[Any]], keep: Any) -> List[Tuple[float, float, float, float]]:
     """Every detector box of the page whose class `keep(smufl_name)` accepts, `(x, y, w, h)` page px (twins from two cells stay twins: the finder asks only where a box lies)."""
     from .record import Subject
@@ -299,8 +310,9 @@ def gather_page_tremolo(log: Any, pws: Any, cells: Sequence[Any], local: Dict[in
     slashes, reasons = res
     for s in slashes:
         won = own_strokes(s, boxes, kinds, s["stem"])
+        area = claim_area(s["box"], [boxes[i] for i in won]) if stem_core_enabled() else [float(v) for v in s["box"]]
         log.observe(sub, Q.CLAIMED_AREA, won, reader=READERS.CV_PAGE_TREMOLO, frame=FRAME_PAGE, owner=OWNER, unit=UNIT, standing="READ", source=SOURCE,
-                    how="stem_slash", page_strokes=won, contested=[], area=[round(float(v), 1) for v in s["box"]], centreline=s.get("centreline"), stem=s["stem"],
+                    how="stem_slash", page_strokes=won, contested=[], area=[round(float(v), 1) for v in area], centreline=s.get("centreline"), stem=s["stem"],
                     stem_box=s["stem_box"], angle_deg=s.get("angle_deg"), thickness_px=s.get("thickness_px"), thickness_ratio=s.get("thickness_ratio"))
     if progress:
         ends = {"told": 0, "both": 0, "neither": 0}

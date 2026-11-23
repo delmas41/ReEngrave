@@ -77,6 +77,22 @@ class TestLedgerLineAside(unittest.TestCase):
             self.assertTrue(any(_inside(m["slash_below"], s["box"]) >= 0.9 for s in got), (flag, got))
 
 
+class TestClaimReachesItsStrokes(unittest.TestCase):
+    def test_the_slash_cell_stroke_lies_inside_the_claim(self):
+        """Real numbers from the 2.335 ON gather of Litolff p6: the finder's box for the 6/1/8/11 slash, its owned page stroke 3564, and the cell's
+        stroke 375010 linked to 3564. The cell settle (`stroke_owner._layer_claims`) takes a cell stroke only wholly inside the rectangle (+1 px):
+        on the finder's box alone it does not (the control can fail), on the claim area it does."""
+        finder_box = [2443.0, 3248.0, 2475.0, 3275.0]
+        page_stroke_3564 = [2444.0, 3256.0, 2476.0, 3274.0]
+        cell_stroke = [2444.3, 3256.1, 2476.6, 3274.3]
+
+        def inside(r):
+            return r[0] - 1 <= cell_stroke[0] and cell_stroke[2] <= r[2] + 1 and r[1] - 1 <= cell_stroke[1] and cell_stroke[3] <= r[3] + 1
+        self.assertFalse(inside(finder_box))
+        self.assertTrue(inside(PT.claim_area(finder_box, [page_stroke_3564])))
+        self.assertEqual(PT.claim_area(finder_box, []), finder_box)
+
+
 class TestJoinByInk(unittest.TestCase):
     def test_a_stem_box_ending_near_the_slash_does_not_join_it(self):
         """6/1/8/11: the neighbouring stem's box ends within half a space of the slash's height but its ink never meets the slash."""
