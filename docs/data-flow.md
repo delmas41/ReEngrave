@@ -852,6 +852,7 @@ Which edition and movement this is; scanned or engraved.
 - `direction_word` read by GATHER: `gather.py:gather_page_claims`
 - `direction_word` read by ADJUDICATE: `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/ownership.py:_closest_sides`, `adjudicators/ownership.py:_wedge_page_binding`, `adjudicators/text.py:adjudicate_direction`, `adjudicators/text.py:adjudicate_dynamic`, `adjudicators/text.py:unread_text_lines`, `adjudicators/unread_mark.py:_text_and_dynamic_boxes`
 - `direction_word` read by EVALUATE: `consequences.py:_marking_words`, `consequences.py:_missed_rest_witness`
+- `direction_word` read only OFF by default: `export.py:_other_mark_boxes`
 - `direction_word` belongs to: `--mark word`
 
 ### `document_identity` (Q.DOCUMENT_IDENTITY) -- READ-ONLY-INSIDE-GATHER
@@ -1066,7 +1067,7 @@ Which edition and movement this is; scanned or engraved.
 - `glyph_box` read by INFER: `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `inferences.py:_events_with_x`, `inferences.py:_simultaneous_heads`
 - `glyph_box` read by EXPORT: `export.py:_attach_unplaced`, `export.py:_bar_has_other_head_or_rest_box`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:_detector_view_census`, `export.py:_head_touches_a_letter_or_whole_rest`, `export.py:_place_notes`, `export.py:_rest_twin_in_bar`, `export.py:_settle_folded_pitches`, `export.py:coverage`
 - `glyph_box` read by tools: `trace.py:empty_claims`, `trace.py:population_of`
-- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export.py:_notehead_page_boxes`, `export_unison.py:arc_side`
+- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export.py:_notehead_page_boxes`, `export.py:_other_mark_boxes`, `export_unison.py:arc_side`
 - `glyph_box` belongs to: `--mark notehead`, `--mark arc`, `--mark hairpin`, `--mark dynamic`, `--mark box`
 
 ### `glyph_conf` (Q.GLYPH_CONF) -- LIVE
@@ -1117,6 +1118,7 @@ Which edition and movement this is; scanned or engraved.
 - `head_ink` abstained by (not a producer): `gather.py:gather_head_ink`
 - `head_ink` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_notehead_is_a_whole_rest`, `adjudicate_notehead_is_not_a_notehead`
 - `head_ink` read by ADJUDICATE: `adjudicators/notehead_precision.py:_stem_end_box_ink_disagrees`, `adjudicators/rhythm.py:_head_ink`
+- `head_ink` read only OFF by default: `export.py:_not_a_head_owned_elsewhere`
 - `head_ink` belongs to: `--mark notehead`
 
 ### `head_ink_is_a_rest` (Q.HEAD_INK_IS_A_REST) -- LIVE
@@ -1301,6 +1303,7 @@ Which edition and movement this is; scanned or engraved.
 - `mark_group` declared in `wants` (not a read): `adjudicate_arc_kind`, `adjudicate_duration`, `adjudicate_head_stem`, `adjudicate_page_arc_binding`
 - `mark_group` read by ADJUDICATE: `adjudicators/ownership.py:_page_binding`, `adjudicators/ownership.py:_page_head_groups`, `adjudicators/ownership.py:reconcile_group_owners`, `adjudicators/rhythm.py:adjudicate_duration`, `adjudicators/stem_value.py:_same_page_head`
 - `mark_group` read by EXPORT: `export.py:_fold_has_printed_accidental`, `export.py:_place_notes`, `export.py:_settle_folded_pitches`, `export.py:marks_census`, `export_unison.py:written_member`
+- `mark_group` read only OFF by default: `export.py:_owner_in_mark_group`
 - `mark_group` belongs to: `--mark notehead`
 
 ### `mark_shape` (Q.MARK_SHAPE) -- LIVE
@@ -1733,6 +1736,7 @@ Which edition and movement this is; scanned or engraved.
 - `staff_lines` read by ADJUDICATE: `adjudicators/family_precision.py:_ledger_geometry`, `adjudicators/family_precision.py:_rest_line_shape`, `adjudicators/family_precision.py:_staff_page_geometry`, `adjudicators/movement.py:adjudicate_movement_start`, `adjudicators/notehead_precision.py:_staff_geometry`, `adjudicators/ownership.py:_hairpin_separates`, `adjudicators/ownership.py:_unread_head_ink`, `adjudicators/ownership.py:_wedge_page_binding.lines`, `adjudicators/ownership.py:adjudicate_ottava_owner`, `adjudicators/ownership.py:staff_geometry`, `adjudicators/rhythm.py:_rest_hangs_from_own_line`, `adjudicators/rhythm.py:_rest_slot`, `adjudicators/rhythm.py:adjudicate_notehead_is_a_whole_rest`, `adjudicators/unread_mark.py:_staff_lines_page`
 - `staff_lines` read by EVALUATE: `consequences.py:_bar_heads_are_clean`
 - `staff_lines` read by EXPORT: `export.py:_clipped_piece_of_the_next_staff`, `export.py:build`
+- `staff_lines` read only OFF by default: `export.py:_beyond_owner_view.lines`
 - `staff_lines` belongs to: `--mark staff`
 
 ### `staff_ordinal` (Q.STAFF_ORDINAL) -- LIVE
