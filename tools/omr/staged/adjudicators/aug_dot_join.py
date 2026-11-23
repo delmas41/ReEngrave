@@ -251,9 +251,9 @@ HEAD_INK_MAX_HEIGHT_SPACES = 1.25
 
 
 def dot_by_head_ink_enabled() -> bool:
-    """`OMR_DOT_BY_HEAD_INK`, default OFF (allow-list: 1/true/yes/on)."""
-    return os.environ.get(DOT_BY_HEAD_INK_ENV, "").strip().lower() in (
-        "1", "true", "yes", "on")
+    """`OMR_DOT_BY_HEAD_INK`, default ON (Sean 2026-11-23); `0`/false/no/off switches it off."""
+    return os.environ.get(DOT_BY_HEAD_INK_ENV, "").strip().lower() not in (
+        "0", "false", "no", "off")
 
 
 def head_oval_from_ink(box: Tuple[float, float, float, float],

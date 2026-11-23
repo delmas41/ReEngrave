@@ -138,10 +138,14 @@ class TestHeadOvalFromInk(unittest.TestCase):
     def test_no_filed_ink_keeps_the_box(self):
         self.assertIsNone(AJ.head_oval_from_ink(self.BOX, self.PAGE, None, self.SPACE))
 
-    def test_default_is_off(self):
+    def test_default_is_on(self):
+        # Sean 2026-11-23: default ON; `0`/false still switches it off
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(AJ.DOT_BY_HEAD_INK_ENV, None)
-            self.assertFalse(AJ.dot_by_head_ink_enabled())
+            self.assertTrue(AJ.dot_by_head_ink_enabled())
+            for off in ("0", "false"):
+                os.environ[AJ.DOT_BY_HEAD_INK_ENV] = off
+                self.assertFalse(AJ.dot_by_head_ink_enabled())
 
 
 if __name__ == "__main__":
