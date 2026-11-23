@@ -124,5 +124,29 @@
    "ours": "mid-line G box: narrows (notes after it unread)",
    "sean": "2 half notes in a chord"
   }
+ },
+ "round_9_small_tenor_clefs": {
+  "date": "2026-11-22",
+  "tiles": [
+   "out/print/2.324-r9/clef_A_litolff_p4.png",
+   "out/print/2.324-r9/clef_A_close.png",
+   "out/print/2.324-r9/clef_B_litolff_p11.png",
+   "out/print/2.324-r9/clef_B_close.png"
+  ],
+  "question": "Which clef is each one: tenor, alto, or can't tell? (two small C clefs printed mid-line on Litolff bassoon staves)",
+  "sean_words": "They all look like tenor clefs",
+  "marks": {
+   "A": {
+    "place": "litolff page 4, system 1, staff 3 (bassoon), bar 3",
+    "sean": "tenor",
+    "we_read": "C clef, line unread (bowls 0.51 space off the tenor line; snap limit 0.35)"
+   },
+   "B": {
+    "place": "litolff page 11, system 0, staff 2 (Fag.), bar 15",
+    "sean": "tenor",
+    "we_read": "C clef, line unread (+0.51)"
+   }
+  },
+  "not_answered": "whether a C clef on a bassoon staff is always tenor"
  }
 }
