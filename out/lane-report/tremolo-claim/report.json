@@ -1,0 +1,119 @@
+{
+ "flags": [
+  [
+   "OMR_SLASH_STEM_CORE",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    6,
+    16
+   ],
+   "counts": {
+    "note": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "tie": {
+     "gained": 2,
+     "lost": 0,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 1
+    },
+    "words": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    2335,
+    2337
+   ],
+   "paired": 2335,
+   "red_bars": [
+    55,
+    55
+   ],
+   "notes_not_written": [
+    966,
+    965
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 248,
+    "matched": {
+     "off": {
+      "key": 401,
+      "place": 9,
+      "place_moved_id": 2,
+      "place_no_mark": 17
+     },
+     "on": {
+      "key": 401,
+      "place": 9,
+      "place_moved_id": 2,
+      "place_no_mark": 17
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    5.3,
+    10.4
+   ],
+   "unjudged": {
+    "n": 6,
+    "judged": 0,
+    "no_place": 2,
+    "by_kind": {
+     "note": 2,
+     "tie": 2,
+     "blue": 1,
+     "pitch": 1
+    },
+    "places": [
+     "litolff p6 6/1/11/2  tie gained start",
+     "litolff p6 6/1/11/3  blue gained guessed",
+     "litolff p6 6/1/11/3  note gained half",
+     "litolff p6 6/1/11/3  tie gained stop",
+     "litolff p16 16/0/1/6  pitch changed G5 (was C5)",
+     "litolff p16 16/0/9/6  note gained half"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_SLASH_STEM_CORE: read in staged/gather.py, staged/page_tremolo.py -> GATHER",
+  "NOT THE FROZEN SAMPLE: out/lane-report/tremolo-claim/sample.json (a development control)"
+ ],
+ "tiles": {
+  "n": 7,
+  "cases": 4,
+  "controls": 3
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 21.2
+}

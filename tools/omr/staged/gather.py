@@ -6635,11 +6635,26 @@ def _col_runs(col: Any) -> List[Tuple[int, int]]:
     return list(zip(np.where(d == 1)[0].tolist(), np.where(d == -1)[0].tolist()))
 
 
-def _stem_core(ink: Any, box: Tuple[float, float, float, float]
-               ) -> Optional[Tuple[int, int]]:
+#: ROADMAP 2.306 batch 2 (`OMR_SLASH_STEM_CORE`): the stem is read on its plain rows only where what widens its middle CROSSES it -- in at
+#: least this share of the wide rows the ink runs on past the stem's own column on BOTH sides (a slash crosses; chord heads, a letter's
+#: bowls stand on one side). Both sides measured: the 13 slashed stems it gains on Litolff 2/6/16 (16/0/1/6 among them); refused (each
+#: comes back with this at 0): Sean's chord glyph/2/0/7/4 ("three quarter notes with a half note on top", Litolff p2: a quarter head was
+#: taken as a slash) and a printed letter "B" on Brahms p4 (its spine read as a stem, both bowls as slashes).
+STEM_CROSSED_ROWS_MIN_SHARE = 0.5
+
+
+def _stem_core(ink: Any, box: Tuple[float, float, float, float],
+               max_w: Optional[float] = None) -> Optional[Tuple[int, int]]:
     """The stem's OWN columns `(c0, c1)`: the median width and centre of the
     ink run through the stem box's middle three fifths. A CV stem box can be
-    wider than the stem (it may swallow a slash's root); the median is not."""
+    wider than the stem (it may swallow a slash's root); the median is not.
+    `max_w` (ROADMAP 2.306 batch 2, `OMR_SLASH_STEM_CORE`): the median is read on
+    the rows whose run is no wider than this (the stem's own rows) -- on a
+    short stem a slash can cover most of the middle three fifths (Litolff
+    p16 `cell/16/0/1/6`: 21 of 39 rows) and then the median is the slash's
+    width and centre, not the stem's. Only where that happened (the median
+    of every row is wider than `max_w`); otherwise, and with no such row,
+    every row as before."""
     import numpy as np
     H, W = ink.shape
     x, y, w, h = [int(round(v)) for v in box]
@@ -6658,6 +6673,15 @@ def _stem_core(ink: Any, box: Tuple[float, float, float, float]
             cs.append((best[0] + best[1]) / 2.0)
     if not ws:
         return None
+    if max_w is not None and float(np.median(ws)) > max_w:
+        own = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ <= max_w]
+        if own:
+            ow, oc = float(np.median([w_ for w_, _c in own])), float(np.median([c_ for _w, c_ in own]))
+            o0, o1 = oc - ow / 2.0, oc + ow / 2.0
+            wide = [(w_, c_) for w_, c_ in zip(ws, cs) if w_ > max_w]
+            crossed = sum(1 for w_, c_ in wide if c_ - w_ / 2.0 < o0 - 1 and c_ + w_ / 2.0 > o1 + 1)
+            if crossed >= STEM_CROSSED_ROWS_MIN_SHARE * len(wide):
+                ws, cs = [w_ for w_, _c in own], [c_ for _w, c_ in own]     # a slash crosses the stem's middle: read the stem where it shows
     wc, cc = float(np.median(ws)), float(np.median(cs))
     return int(round(cc - wc / 2.0)), int(round(cc + wc / 2.0))
 
@@ -6718,10 +6742,14 @@ def _track_stroke_from(ink: Any, start_x: int, direction: int,
 def stem_slashes(ink: Any, box: Tuple[float, float, float, float],
                  space: float, line_px: float,
                  other_stems: Sequence[Tuple[float, float, float, float]] = (),
-                 heads: Sequence[Tuple[float, float, float, float]] = ()
+                 heads: Sequence[Tuple[float, float, float, float]] = (),
+                 own_rows: bool = False
                  ) -> List[Dict[str, Any]]:
     """Every stroke that crosses ONE stem, each with a `reason` (`None` = a
-    tremolo slash; else one of `SLASH_REASONS`). ROADMAP 2.71.
+    tremolo slash; else one of `SLASH_REASONS`). ROADMAP 2.71. `own_rows`
+    (ROADMAP 2.306 batch 2, the page reader under `OMR_SLASH_STEM_CORE`): the stem's
+    own columns are read on its own rows (`_stem_core` `max_w`: no wider than
+    the stroke map's thin cut, `stroke_map.STEM_THIN_SPACES`).
 
     `ink` is the staff-ERASED raster as a bool array (True = ink), `box` the
     stem's `(x, y, w, h)`, all in the SAME canonical cell pixels; `space` the
@@ -6735,7 +6763,11 @@ def stem_slashes(ink: Any, box: Tuple[float, float, float, float],
     if ink is None or getattr(ink, "ndim", 0) != 2 or not space or space <= 0:
         return []
     H, W = ink.shape
-    core = _stem_core(ink, box)
+    if own_rows:
+        from . import stroke_map as _SM
+        core = _stem_core(ink, box, max_w=_SM.STEM_THIN_SPACES * space)
+    else:
+        core = _stem_core(ink, box)
     if core is None:
         return []
     c0, c1 = core

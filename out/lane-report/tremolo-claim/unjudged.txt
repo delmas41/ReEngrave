@@ -1,0 +1,6 @@
+litolff p6 6/1/11/2  tie gained start
+litolff p6 6/1/11/3  blue gained guessed
+litolff p6 6/1/11/3  note gained half
+litolff p6 6/1/11/3  tie gained stop
+litolff p16 16/0/1/6  pitch changed G5 (was C5)
+litolff p16 16/0/9/6  note gained half
