@@ -173,3 +173,26 @@ def test_a_control_measured_in_the_strokes_own_space_the_upper_voice_is_lost():
     """The control can fail: the old measure (the stroke's own space) loses the up stem again."""
     w, r = _read("a_litolff_2_0_3_5", space=lambda h, st: float(st.get("sp") or h.get("sp") or 1.0))
     assert r[w["head"]]["state"] == "one" and r[w["head"]]["direction"] == "down"
+
+
+# ── round 3: a dot boxed as a notehead never holds a string stop ───────────────────────────────────────────────────────────────────────────────
+
+REF = os.path.join(HERE, "fixtures", "page_stems_2_306_r19_refusals.json")
+
+
+def _ev_of(rows):
+    from tools.omr.staged.record import Outcome
+    by = {r["subject"]: SimpleNamespace(outcome=Outcome(r["outcome"]), value=r["value"], reason=r["reason"]) for r in rows}
+    return SimpleNamespace(verdict=lambda q, subject=None: by.get(subject))
+
+
+def test_round3_the_triple_stops_dot_boxes_are_not_heads_on_the_stem():
+    """Brahms 5/1/10/2 and 5/1/10/4 (second violins; our look: two dotted heads above an undotted one, each dot also boxed as a notehead and
+    refused too narrow, still joined to the stem, so the string-stop reading stood aside and the chord was held). Recorded refusal rows: each
+    dot box is set aside; a kept head and the slash kind of refusal (`tremolo_slash_crosses_stem`, 2.78 r18 tile 3) still stand on the stem --
+    the control that can fail."""
+    fx = json.load(open(REF))
+    ev = _ev_of(fx["dot_boxes"] + fx["slash_boxes"])
+    got = {r["subject"]: SV._refused_too_narrow(ev, r["subject"]) for r in fx["dot_boxes"]}
+    assert sum(got.values()) == 3 and got["glyph/5/1/10/2/4"] is False, got
+    assert not any(SV._refused_too_narrow(ev, r["subject"]) for r in fx["slash_boxes"])

@@ -1,0 +1,48 @@
+{
+ "dot_boxes": [
+  {
+   "subject": "glyph/5/1/10/2/4",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": false,
+   "reason": "notehead"
+  },
+  {
+   "subject": "glyph/5/1/10/2/20",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "too_narrow"
+  },
+  {
+   "subject": "glyph/5/1/10/4/18",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "too_narrow"
+  },
+  {
+   "subject": "glyph/5/1/10/4/24",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "too_narrow"
+  }
+ ],
+ "slash_boxes": [
+  {
+   "subject": "glyph/0/0/0/6/4",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "tremolo_slash_crosses_stem"
+  },
+  {
+   "subject": "glyph/0/0/1/6/1",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "tremolo_slash_crosses_stem"
+  }
+ ]
+}
