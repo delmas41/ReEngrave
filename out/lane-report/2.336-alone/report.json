@@ -1,0 +1,242 @@
+{
+ "flags": [
+  [
+   "OMR_ACCIDENTAL_FUSED_INK",
+   "0",
+   "1"
+  ]
+ ],
+ "mode": "gather",
+ "plates": {
+  "litolff": {
+   "pages": [
+    2,
+    6
+   ],
+   "counts": {
+    "note": {
+     "gained": 3,
+     "lost": 13,
+     "changed": 0
+    },
+    "articulation": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "blue": {
+     "gained": 25,
+     "lost": 1,
+     "changed": 0
+    },
+    "flag": {
+     "gained": 1,
+     "lost": 0,
+     "changed": 0
+    },
+    "accidental": {
+     "gained": 27,
+     "lost": 0,
+     "changed": 0
+    },
+    "value": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 3
+    },
+    "pitch": {
+     "gained": 0,
+     "lost": 0,
+     "changed": 26
+    },
+    "tie": {
+     "gained": 0,
+     "lost": 2,
+     "changed": 0
+    },
+    "words": {
+     "gained": 4,
+     "lost": 7,
+     "changed": 0
+    }
+   },
+   "hosts": [
+    1478,
+    1468
+   ],
+   "paired": 1465,
+   "red_bars": [
+    62,
+    58
+   ],
+   "notes_not_written": [
+    642,
+    652
+   ],
+   "control": null,
+   "judged": {
+    "worse": [],
+    "lost": [],
+    "better": [],
+    "unwritten_wrong": [],
+    "unwritten_right": [],
+    "scored": 241,
+    "matched": {
+     "off": {
+      "key": 401,
+      "place": 8,
+      "place_moved_id": 2,
+      "place_no_mark": 18
+     },
+     "on": {
+      "key": 401,
+      "place": 8,
+      "place_moved_id": 2,
+      "place_no_mark": 18
+     }
+    },
+    "same_music": [],
+    "not_found": [],
+    "invented_removed": []
+   },
+   "seconds": [
+    6.4,
+    6.4
+   ],
+   "unjudged": {
+    "n": 99,
+    "judged": 5,
+    "no_place": 10,
+    "by_kind": {
+     "note": 15,
+     "articulation": 2,
+     "blue": 23,
+     "flag": 1,
+     "accidental": 27,
+     "pitch": 26,
+     "value": 2,
+     "tie": 2,
+     "words": 1
+    },
+    "places": [
+     "litolff p2 2/0/8/10  accidental gained natural",
+     "litolff p2 2/0/8/10  pitch changed B3 (was B-13)",
+     "litolff p2 2/0/8/11  pitch changed B3 (was B-13)",
+     "litolff p2 2/1/3/7  accidental gained natural",
+     "litolff p2 2/1/3/7  blue gained guessed",
+     "litolff p2 2/1/3/7  pitch changed E3 (was E-13)",
+     "litolff p2 2/1/3/14  accidental gained natural",
+     "litolff p2 2/1/3/14  accidental gained natural",
+     "litolff p2 2/1/3/14  blue gained guessed",
+     "litolff p2 2/1/3/14  blue gained guessed",
+     "litolff p2 2/1/8/14  accidental gained natural",
+     "litolff p2 2/1/8/14  blue gained guessed",
+     "litolff p2 2/1/8/14  pitch changed B4 (was B-14)",
+     "litolff p6 6/0/1/8  blue gained guessed",
+     "litolff p6 6/0/1/8  note lost quarter",
+     "litolff p6 6/0/1/8  note lost quarter",
+     "litolff p6 6/0/1/8  words gained unread",
+     "litolff p6 6/0/1/10  articulation lost staccato",
+     "litolff p6 6/0/1/10  note lost quarter",
+     "litolff p6 6/0/1/12  note lost quarter",
+     "litolff p6 6/0/1/12  note lost quarter",
+     "litolff p6 6/0/1/12  value changed ? (was whole)",
+     "litolff p6 6/0/2/2  accidental gained sharp",
+     "litolff p6 6/0/2/2  blue gained guessed",
+     "litolff p6 6/0/2/2  pitch changed C15 (was C5)",
+     "litolff p6 6/0/2/8  accidental gained sharp",
+     "litolff p6 6/0/2/8  blue gained guessed",
+     "litolff p6 6/0/2/8  blue gained guessed",
+     "litolff p6 6/0/2/8  pitch changed G14 (was G4)",
+     "litolff p6 6/0/2/8  pitch changed G14 (was G4)",
+     "litolff p6 6/0/6/6  accidental gained natural",
+     "litolff p6 6/0/6/6  blue gained guessed",
+     "litolff p6 6/0/6/6  pitch changed A4 (was A-14)",
+     "litolff p6 6/0/6/7  accidental gained sharp",
+     "litolff p6 6/0/6/7  blue gained guessed",
+     "litolff p6 6/0/6/7  pitch changed C15 (was C5)",
+     "litolff p6 6/0/6/9  accidental gained natural",
+     "litolff p6 6/0/6/9  pitch changed A4 (was A-14)",
+     "litolff p6 6/0/7/8  accidental gained sharp",
+     "litolff p6 6/0/7/8  blue gained guessed",
+     "litolff p6 6/0/7/8  pitch changed F13 (was F3)",
+     "litolff p6 6/0/8/8  accidental gained sharp",
+     "litolff p6 6/0/8/8  blue gained guessed",
+     "litolff p6 6/0/8/8  note lost quarter",
+     "litolff p6 6/0/8/8  pitch changed F13 (was F3)",
+     "litolff p6 6/0/9/7  accidental gained natural",
+     "litolff p6 6/0/9/7  blue gained guessed",
+     "litolff p6 6/0/9/7  pitch changed A2 (was A-12)",
+     "litolff p6 6/1/0/3  accidental gained sharp",
+     "litolff p6 6/1/0/3  blue gained guessed",
+     "litolff p6 6/1/0/3  note lost quarter",
+     "litolff p6 6/1/0/3  pitch changed F15 (was F5)",
+     "litolff p6 6/1/0/3  value changed ? (was whole)",
+     "litolff p6 6/1/0/12  accidental gained natural",
+     "litolff p6 6/1/0/12  pitch changed A5 (was A-15)",
+     "litolff p6 6/1/1/4  accidental gained sharp",
+     "litolff p6 6/1/1/4  blue gained guessed",
+     "litolff p6 6/1/1/4  pitch changed F15 (was F5)",
+     "litolff p6 6/1/1/12  accidental gained sharp",
+     "litolff p6 6/1/1/12  blue gained guessed",
+     "litolff p6 6/1/1/12  note lost quarter",
+     "litolff p6 6/1/1/12  pitch changed F15 (was F5)",
+     "litolff p6 6/1/2/3  accidental gained sharp",
+     "litolff p6 6/1/2/3  blue gained guessed",
+     "litolff p6 6/1/2/3  pitch changed G14 (was G4)",
+     "litolff p6 6/1/2/4  accidental gained sharp",
+     "litolff p6 6/1/2/4  articulation lost staccato",
+     "litolff p6 6/1/2/4  blue gained guessed",
+     "litolff p6 6/1/2/4  note lost quarter",
+     "litolff p6 6/1/2/4  note lost quarter",
+     "litolff p6 6/1/2/4  pitch changed G14 (was G4)",
+     "litolff p6 6/1/2/9  accidental gained natural",
+     "litolff p6 6/1/2/9  blue gained guessed",
+     "litolff p6 6/1/2/9  pitch changed B4 (was B-14)",
+     "litolff p6 6/1/3/3  accidental gained sharp",
+     "litolff p6 6/1/3/3  blue gained guessed",
+     "litolff p6 6/1/3/3  pitch changed F13 (was F3)",
+     "litolff p6 6/1/7/2  accidental gained sharp",
+     "litolff p6 6/1/7/2  blue gained guessed",
+     "litolff p6 6/1/7/2  note lost quarter",
+     "litolff p6 6/1/7/2  pitch changed F15 (was F5)",
+     "litolff p6 6/1/8/11  blue gained guessed",
+     "litolff p6 6/1/8/11  flag gained eighth",
+     "litolff p6 6/1/8/11  note gained eighth",
+     "litolff p6 6/1/8/11  note gained half",
+     "litolff p6 6/1/8/11  note gained half",
+     "litolff p6 6/1/8/12  accidental gained natural",
+     "litolff p6 6/1/8/12  note lost quarter",
+     "litolff p6 6/1/9/0  accidental gained natural",
+     "litolff p6 6/1/9/0  blue gained guessed",
+     "litolff p6 6/1/9/0  pitch changed A3 (was A-13)",
+     "litolff p6 6/1/11/2  accidental gained natural",
+     "litolff p6 6/1/11/2  pitch changed A2 (was A-12)",
+     "litolff p6 6/1/11/2  tie lost start",
+     "litolff p6 6/1/11/3  accidental gained natural",
+     "litolff p6 6/1/11/3  pitch changed A2 (was A-12)",
+     "litolff p6 6/1/11/3  tie lost stop",
+     "litolff p6 6/1/11/4  accidental gained natural",
+     "litolff p6 6/1/11/4  pitch changed A2 (was A-12)"
+    ]
+   }
+  }
+ },
+ "notes": [
+  "OMR_ACCIDENTAL_FUSED_INK: read in staged/adjudicators/notehead_precision.py, staged/page_accidental_ink.py -> GATHER",
+  "NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/l2336/sample.json (a development control)",
+  "cells LOADED from master cm-54ccb4729528 (litolff) for both arms"
+ ],
+ "tiles": {
+  "n": 12,
+  "cases": 9,
+  "controls": 3
+ },
+ "unjudged_tiles": {
+  "n": 12,
+  "cases": 12,
+  "controls": 0
+ },
+ "tile_seed": 2188,
+ "wall_seconds": 961.9
+}

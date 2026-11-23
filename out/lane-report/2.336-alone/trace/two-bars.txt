@@ -1,0 +1,6 @@
+6/1/8/11 
+ OFF: [] 
+ ON:  ['v1 @0 C4 half BLUE [0]', 'v1 @0 F5 half [10]', 'v2 @0 F4 eighth [11]']
+2/0/7/4 
+ OFF: ['v1 @0 A-14 half BLUE [5]', 'v1 @0 C5 half [12]'] 
+ ON:  ['v1 @0 C5 quarter BLUE [12]']

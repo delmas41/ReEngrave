@@ -1,0 +1,19 @@
+LANE REPORT  OMR_ACCIDENTAL_FUSED_INK (OFF=0 ON=1)  --from gather
+  OMR_ACCIDENTAL_FUSED_INK: read in staged/adjudicators/notehead_precision.py, staged/page_accidental_ink.py -> GATHER
+  NOT THE FROZEN SAMPLE: /private/tmp/claude-501/-Users-seanjohnson-Desktop-ReEngrave--claude-worktrees-project-mgmt-pipeline-review-e6581e/77ea0805-f478-4ed7-b4b6-89b2b63b5322/scratchpad/l2336/sample.json (a development control)
+  cells LOADED from master cm-54ccb4729528 (litolff) for both arms
+
+litolff  pages [2, 6]  (1478 notes+rests OFF, 1468 ON, 1465 paired)
+  file:   notes +3 -13 | accidentals +27 | flags +1 | ties -2 | articulations -2 | note values ~3 | pitches ~26 | blue marks +25 -1 | words +4 -7
+  red bars 62 -> 58 | notes not written 642 -> 652
+  control: no saved verdicts to compare (re-gather mode) -- OFF==record NOT CHECKED
+  Sean's judged answers (241 tiles on these pages): right->wrong 0 | right->narrowed/abstained/gone 0 | wrong->right 0
+  Sean's judged answers, OFF wrote nothing there: unwritten->wrong 0 (of which invented from non-note ink 0; must be 0) | unwritten->right 0 | invented->removed 0 (good)
+  judged tiles found by place 8 (at another id than asked 2) | by id key, no position 401 | position but no mark here 18
+  NOT JUDGED: 99 changed places no tile of Sean's covers (5 are covered; 10 have no page place): accidental 27, articulation 2, blue 23, flag 1, note 15, pitch 26, tie 2, value 2, words 1 -> unjudged.txt
+
+LANDING CHECK: judged right->wrong 0, unwritten->wrong 0 (unwritten->right 0; wrong->right 0)
+
+tiles: 12 (9 from the changes, 3 controls), seed 2188 -> tiles/ (sheet.png), key.json outside the folder
+unjudged tiles: 12, from the changed places Sean has not judged -> unjudged/ (tiles/, key.json outside)
+wall time 962 s
