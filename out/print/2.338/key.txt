@@ -1,0 +1,15 @@
+2.338 -- 12 arcs the ink rule newly writes (seed 2338, drawn from the gained runs present in the ON written file).
+Orange box: the arc's own ink. Nothing else drawn.
+
+1. brahms p0 run 15: slur from glyph/0/0/11/0/4 to glyph/0/0/11/1/13 (ink reached: {'right': 'stem'})
+2. brahms p0 run 38: slur from glyph/0/0/11/2/4 to glyph/0/0/11/3/6 (ink reached: {'right': 'stem'})
+3. brahms p0 run 60: slur from glyph/0/0/11/4/7 to glyph/0/0/11/5/11 (ink reached: {'right': 'stem'})
+4. brahms p0 run 75: slur from glyph/0/0/11/6/4 to glyph/0/0/11/6/13 (ink reached: {'right': 'stem'})
+5. brahms p8 run 71: slur from glyph/8/1/2/4/1 to glyph/8/1/2/4/8 (ink reached: {'left': 'stem'})
+6. brahms p12 run 55: slur from glyph/12/0/13/2/5 to glyph/12/0/13/3/1 (ink reached: {'right': 'stem'})
+7. brahms p12 run 77: slur from glyph/12/0/12/4/6 to glyph/12/0/12/5/1 (ink reached: {'right': 'stem'})
+8. brahms p12 run 92: slur from glyph/12/0/13/6/0 to glyph/12/0/13/7/1 (ink reached: {'right': 'stem'})
+9. litolff p6 run 30: slur from glyph/6/0/3/1/10 to glyph/6/0/3/5/1 (ink reached: {'left': 'stem', 'right': 'stem'})
+10. litolff p8 run 13: slur from glyph/8/1/3/3/5 to glyph/8/1/3/4/2 (ink reached: {'left': 'stem'})
+11. litolff p9 run 8 piece 0: slur from glyph/9/0/7/13/1 to glyph/9/0/7/14/0 (ink reached: {'right': 'stem'})
+12. litolff p11 run 65: slur from glyph/11/0/0/11/0 to glyph/11/0/0/11/2 (ink reached: {'left': 'stem', 'right': 'stem'})
