@@ -122,6 +122,15 @@ def test_control_with_half_a_space_the_f_never_misses_the_bars(monkeypatch):
     assert f["passed"] and f["kind"] == "bass" and min(f["dots"]["upper"], f["dots"]["lower"]) >= 0.96
 
 
+@pytest.mark.parametrize("name", ["midf_bass_brahms_p25_s0_st3", "midf_bass_brahms_p26_s0_st5"])
+def test_the_mid_line_bass_clefs_stay_read(name):
+    """Brahms p25 s0 staff 3 (bassoon, bars 475-483) and p26 s0 staff 5 (horn, 497-502): mid-line bass clefs newly read on
+    20261122-night, read on their `clefF` box (`place` is the box). The F never now looks a whole space left: they stay plain bass."""
+    ink, m = _case(name)
+    f = CP.read_mid_f("clefF", m["place"], ink, m["lines"], m["sp"])
+    assert f["passed"] and f["plain"] and f["kind"] == "bass", f.get("why")
+
+
 def test_the_timpani_bass_clef_read_by_its_ink_stays_bass():
     """Litolff p13 s0 staff 6 (Tp.): a header bass clef with no box, read by its own ink -- newly right on 20261122-night; r11 keeps it."""
     got = _read("bass_litolff_p13_s0_st6_timpani")
