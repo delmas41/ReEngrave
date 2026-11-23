@@ -143,5 +143,52 @@ class _Ev:
         return []
 
 
+# ─────────────────────────────── B: a flag at the stem's tip in a cell with no beam ───────────────────────────────
+# `OMR_STEM_TIP_FLAG_WHEN_DECLINED`. "A flag is a curved stroke hanging from the free tip of the stem, on the side away from the head
+# ... NEVER a beam end, a ledger line, a slur end, a word or a neighbour's stem; a flag makes an eighth only where its ink meets this
+# stem's ink." `reader_declined` = the CELL holds no beam the page beam reader accepted (a bar of flagged eighths and quarters): the 2.18c
+# tip look never ran there, so an unboxed flag was written a plain quarter (Brahms: 9 of 9 such heads on the frozen sample looked at are
+# flagged eighths, e.g. p4 `glyph/4/1/13/7/5`, the 1122 overnight sheet's tile 12). The stroke map stands in for the cell; the real
+# heads are the lane report's (`benchmarks/why-red-bars-2026-11/FINDINGS.md`).
+
+B_FLAG = rhythm.STEM_TIP_FLAG_WHEN_DECLINED_ENV
+
+
+def _b(*, tip, hook=True, beams=0, on=True):
+    from tools.omr.tests.test_staged_bare_stem_2_81 import CELL, _tip
+    log = Log()
+    g = _head(log, share=0.0)
+    file_note_ink(log, (100, 90, 20, 16), sp=16, side="up", hook=hook, beams=beams)
+    if tip is not None:
+        _tip(log, log.rows(Q.STEM, CELL)[-1], found=tip)
+    with mock.patch.dict(os.environ, {B_FLAG: "1" if on else "0"}):
+        adjudicate.run(log)
+    return log.verdict(Q.DURATION, g)
+
+
+class AFlagInABeamlessCell(unittest.TestCase):
+
+    def test_RED_flag_off_the_hook_is_never_asked_and_the_note_is_a_plain_quarter(self):
+        v = _b(tip=True, on=False)
+        self.assertEqual((v.outcome, v.reason, v.value["written"]), (Outcome.DECIDED, "head_and_marks", 1.0))
+        self.assertEqual(v.detail["beam_evidence"], "reader_declined")
+
+    def test_on_a_hook_seen_is_held_blue_an_eighth_with_the_quarter_beside_it(self):
+        v = _b(tip=True)
+        self.assertEqual((v.outcome, v.reason, v.value["written"]), (Outcome.DECIDED, "flag_ink_in_beamless_cell", 0.5))
+        g = _guess(v)
+        self.assertTrue(g["marks_blue"])
+        self.assertEqual(sorted(c["written"] for c in g["candidates"]), [0.5, 1.0])
+
+    def test_NEVER_a_tip_read_clean_or_unread_becomes_an_eighth(self):
+        for tip in (False, None):
+            v_on, v_off = _b(tip=tip), _b(tip=tip, on=False)
+            self.assertEqual((v_on.outcome, v_on.reason, v_on.value), (v_off.outcome, v_off.reason, v_off.value), tip)
+
+    def test_NEVER_on_a_stem_the_one_count_read_a_beam_on(self):
+        v_on, v_off = _b(tip=True, hook=False, beams=1), _b(tip=True, hook=False, beams=1, on=False)
+        self.assertEqual((v_on.outcome, v_on.reason, v_on.value), (v_off.outcome, v_off.reason, v_off.value))
+
+
 if __name__ == "__main__":
     unittest.main()
