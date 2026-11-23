@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 203 flag predicates; 28 record calls this map cannot resolve.
+Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -270,6 +270,7 @@ A sharp, flat or natural in front of a head.
 - **read by EVALUATE** (2): `consequences.py:apply_printed_accidental`, `rule apply_printed_accidental`
 - **read by EXPORT** (2): `export.py:_accidental_census`, `export.py:_has_printed_accidental`
 - **written** (declared): `<accidental>` and the sounding `<alter>`, READ or GUESSED.
+- **flags on its readers' paths** (as the code resolves them today): `page_claim_names.accidental_boxed_as_other_enabled()=OFF`, `page_claim_names.rests_enabled()=ON`
 - **open gaps**: none derived
 
 ### Tie and slur -- `--mark arc`
