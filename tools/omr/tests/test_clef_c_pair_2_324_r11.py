@@ -44,6 +44,17 @@ def _case(name):
     return ink, m
 
 
+def _raw_past_ink(ink, lines, sp, ya, yb, xa, xb, b0, b1):
+    return ink[ya:yb, xa:xb]
+
+
+def _before_r11(monkeypatch):
+    """Main before r11: no bar pair, ink past the staff counted whoever owns it, the F never half a space left."""
+    monkeypatch.setattr(CP, "C_PAIR_MIN_WIDTH_SPACES", 99.0)
+    monkeypatch.setattr(CP, "_own_past_ink", _raw_past_ink)
+    monkeypatch.setattr(CP, "F_NEVER_C_REACH_SPACES", 0.5)
+
+
 def _read(name):
     ink, m = _case(name)
     return CP.read_header_ink(ink, m["place"], m["lines"], m["sp"])
@@ -57,8 +68,8 @@ def test_the_opening_c_clef_is_read_c_of_its_kind(name):
 
 @pytest.mark.parametrize("name", OPENING_C)
 def test_control_main_before_r11_misreads_it(name, monkeypatch):
-    """The control can fail: with r11 switched off the same pixels read what main read on the overnight (bass, or unread for C)."""
-    monkeypatch.setenv(CP.ENV_C_PAIR, "0")
+    """The control can fail: with r11's three rules undone the same pixels read what main read on the overnight (bass, or unread)."""
+    _before_r11(monkeypatch)
     got = _read(name)
     was = META[name]["read_main_5634884a4"]
     assert (bool(got["passed"]), got.get("family"), got.get("kind")) == (bool(was["passed"]), was.get("family"), was.get("kind"))
@@ -96,7 +107,7 @@ def test_litolff_neighbours_ink_past_the_staff_is_not_this_clefs(monkeypatch):
     """D: the treble clef of the staff above hangs its tail into the band above the viola staff, the system's thin barline runs through
     the band below. Counted as the clef's own (no trace back to the bar), the alto clef's bar is refused as a treble clef's spine."""
     ink, m = _case("alto_litolff_p13_s0_st9")
-    monkeypatch.setattr(CP, "_own_past_ink", lambda ink, lines, sp, ya, yb, xa, xb, b0, b1: ink[ya:yb, xa:xb])
+    monkeypatch.setattr(CP, "_own_past_ink", _raw_past_ink)
     cands = CP.c_bars(ink, m["lines"], m["sp"], m["place"][0], m["place"][2])
     assert not any(c["passed"] for c in cands) and any(c["why"] == "g_clef_shape" for c in cands)
 
@@ -115,7 +126,7 @@ def test_never_a_bass_clef_from_a_c_clefs_bowls(name):
 def test_control_with_half_a_space_the_f_never_misses_the_bars(monkeypatch):
     """Before r11 the F never looked half a space left of the piece it was handed (which began at the thin bar): Sean's p3 alto clef's
     upper bowl then passes as an F clef's two dots."""
-    monkeypatch.setenv(CP.ENV_C_PAIR, "0")
+    monkeypatch.setattr(CP, "F_NEVER_C_REACH_SPACES", 0.5)
     ink, m = _case("alto_brahms_p3_s1_st11")
     pc = CP.glyph_piece(ink, m["place"], m["lines"], m["sp"])
     f = CP.read_mid_f("clefF", pc["box"], ink, m["lines"], m["sp"], dots_beside_core=True)

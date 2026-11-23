@@ -384,7 +384,7 @@ class TestRound3CClef:
         monkeypatch.setattr(CP, "barline_left_of", lambda *a, **k: None)
         got = [c for c in _header_c(ink, meta, ll) if c["passed"]]
         assert [CP.name_c(c["middle_y"], c.get("lines_local") or ll)[0] for c in got] == ["alto"]
-        monkeypatch.setenv(CP.ENV_C_PAIR, "0")
+        monkeypatch.setattr(CP, "_own_past_ink", lambda ink, lines, sp, ya, yb, xa, xb, b0, b1: ink[ya:yb, xa:xb])
         cands = _header_c(ink, meta, ll)
         assert cands and not any(c["passed"] for c in cands) and cands[0]["why"] == "g_clef_shape"
 

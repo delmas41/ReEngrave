@@ -1472,6 +1472,29 @@ def _slots_are_ordinals(slots) -> bool:
                for vals in by_system.values())
 
 
+#: ROADMAP 2.324 r11b: the `Q.SLOT_INDEX` reasons that PAIR a staff of a short system with a slot of the reference lineup on evidence
+#: read on the page -- its name read in the margin (or a crook), its family block fitting the reference's family run exactly, or the
+#: one slot every order-preserving assignment of the named staves, the brace blocks and the clefs read agrees on. NOT `named` /
+#: `full_lineup`: those are the staff's position on a system as wide as the lineup (position IS the answer there by the convention
+#: "a system can omit a tacet part, never invent one"), and a short system never gets them.
+_SLOT_EVIDENCE_REASONS = frozenset(("paired_by_name", "paired_by_crook", "paired_by_bare_crook", "family_block",
+                                    "forced_by_constraints"))
+
+
+def _short_slots_rest_on_evidence(slots, counts) -> bool:
+    """ROADMAP 2.324 r11b (Litolff p12-14 with the viola's alto clef read: every slot came out at its staff's position and the join
+    was refused): DO THE SLOTS OF THE SHORT SYSTEMS REST ON EVIDENCE? True when at least one system prints fewer staves than the
+    widest, it has decided slots, and EVERY decided slot on every such system was paired on evidence (`_SLOT_EVIDENCE_REASONS`).
+    NEVER a short system's staff joined to a part on its position alone: one positional slot there and the answer is False. The
+    widest systems' slots are positions by the lineup convention and are not asked."""
+    sizes = {(v.subject.page, v.subject.system): v.value for v in counts if v.value is not None}
+    if not sizes:
+        return False
+    widest = max(sizes.values())
+    short = [v for v in slots if sizes.get((v.subject.page, v.subject.system), widest) < widest]
+    return bool(short) and all(getattr(v, "reason", None) in _SLOT_EVIDENCE_REASONS for v in short)
+
+
 #: The two join shapes `adjudicate_part_partition` can return. A part key is
 #: whatever the chosen join says a `<part>` IS, so the check has to be asked
 #: in the join's own terms or it measures a different partition than the one
@@ -1664,7 +1687,12 @@ def adjudicate_part_partition(ev: Evidence) -> Ruling:
     # touches, and it is where the slot join was measured wrong.
     slots = ev.verdicts(Q.SLOT_INDEX, scope=Scope.SELF_AND_DESCENDANTS)
     usable = [v for v in slots if v.value is not None]
-    if usable and _slots_are_ordinals(usable):
+    # ⚠️ ROADMAP 2.324 r11b: THE QUESTION IS WHETHER THE SLOTS REST ON EVIDENCE, NOT WHETHER THEIR NUMBERS DIFFER FROM POSITIONS.
+    # Asked by the numbers alone, a fully correct reading looks exactly like no reading: Litolff p12-14, every short (11-staff)
+    # system's slots paired on names, constraints and clefs, came out 0..9 at their positions and were refused -- the join had only
+    # ever held because a viola misread as bass pushed two staves off their positions. A contiguous table whose short systems are
+    # paired on evidence joins; one where any short-system slot is a bare position still refuses (the 2026-09-11 case below).
+    if usable and _slots_are_ordinals(usable) and not _short_slots_rest_on_evidence(usable, counts):
         # ⚠️⚠️ A SLOT TABLE THAT IS THE ORDINAL *IS* THE ORDINAL, AND JOINING
         # ON IT IS THE JOIN THIS BRANCH HAS JUST REFUSED.
         #
