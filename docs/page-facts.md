@@ -348,6 +348,14 @@ machine-readable form.
   half note's hole is a thin slanted sliver, so a centre window reads mostly
   ink (ROADMAP 2.70).
 
+- **Where a tremolo slash crosses its stem, the crossing belongs to BOTH** (Sean, 2026-11-23:
+  *"The point where a stem and a slash cross each other belongs to both."*; asked: "where a tremolo
+  slash crosses its stem, is the small patch where they overlap part of the stem, part of the slash,
+  or both?"; SCOPE: a tremolo slash and the stem it crosses -- ours to extend to nothing else). The
+  stem runs on through the slash; the slash is the whole slanted bar. That patch claimed by stem and
+  tremolo is not ink counted twice, and a check must not call it a contradiction; NEVER more than the
+  crossing itself: the stem above and below is the stem's alone, the bar either side the slash's alone.
+
 - **Where a mark crosses a staff line, the crossing ink is the MARK's** (Sean, 2026-11-10:
   *"In reality, those cross sections function as a member of both. But because the staff lines
   are so consistent, it doesn't really matter that they claim it. It does matter that it's
