@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- two switches ON by default (Sean "Switch on the, open the 8th rest lane"), main eb5c3bbbd
+- STAGED: `OMR_DOT_BY_HEAD_INK` default ON (`aug_dot_join.dot_by_head_ink_enabled`); `OMR_DROPPED_HEAD_MARKS` default `spot` (`export.dropped_head_marks_mode`; `bar` selectable, `off`/`0` off). Fast tier 11,169 passed after 5 old-default assertions were re-pinned. Check 238 (+1: a `trimmed` detail key the map analyzer cannot see filed by `gather_head_ink`; to fix in the analyzer, not a reader gap). Spot mode still marks `owned_by_another_staff` heads (`_dropped_head_may_be_a_note`); with `OMR_RELOCATE_AT_EXPORT` going ON those heads are written on their staff, so re-look after the next overnight. Not measured on a whole movement.
+
 ## 2026-11-23 -- batch 4 LANDED, every flag OFF (STAGED)
 - Merged `batch-4` (e112101b2): batch-2-r2 stem reader by ink + strings (`OMR_PAGE_STEMS`, `OMR_STACK_TWO_HEADS`, `OMR_STRING_STOPS_OWN_VALUE`), `OMR_SLASH_STEM_CORE`, `OMR_ACCIDENTAL_FUSED_INK`, `OMR_DOT_BY_HEAD_INK`, `OMR_RELOCATE_AT_EXPORT` repair, `OMR_DROPPED_HEAD_MARKS` (bar|spot). Default behaviour unchanged. Fast tier on the merged tree 11,175 passed; check 237 (+1: the page-stem fact behind its off flag); data-flow map current.
 - Measured once, Litolff 2,6,16 / Brahms 0,4,5, arms A default / B all ON / C all but the stem reader: `out/lane-report/batch-4/`, crops `out/print/batch-4/`; FINDINGS `benchmarks/page-ledger-2026-11/FINDINGS.md`. No flag is switched on; the proposal is with Sean.
