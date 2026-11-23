@@ -7,7 +7,8 @@ reproducing the overnight's page-arc verdicts exactly), copied unchanged into `d
        the chord (its read member).
   YES  six slurs ending at a STEM (Brahms p0 runs 15, 38, 41, 43, 60, 75; crop-looked: each ends at the stem of the note it is bound to) -> OFF refuses
        `end_far_beyond_head`, ON binds the same note.
-  YES  chord-member / two-notes cases settled by ink (`CHORD_TIES`): exactly one note's ink reached -> that note.
+  YES  two notes about equally near by box, exactly one reached by ink (crop-looked): Litolff p2 run 37 (a tie; its ink runs onto the start head),
+       p4 run 79 (head), p9 run 8 piece 0 (stem) -> that note. Only one TIE on the sample is settled this way (FINDINGS 2.338).
   SAME every end the OFF binder bound (written runs of Brahms p0) is bound exactly as before with the flag ON.
   NEVER ends at a barline the tracker stopped at (Litolff p2 runs 6, 10; p10 run 23) and an end at another staff's stem (Litolff p16 run 61) stay
        unbound ON.

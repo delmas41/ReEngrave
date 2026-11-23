@@ -144,7 +144,9 @@ def settle_by_ink(e: Dict[str, Any], heads: Sequence[Dict[str, Any]], d: Dict[st
         cols = [c if isinstance(c, list) else [c] for c in (e.get("candidates") or ())]
         rs = [min((ink_reach(k, heads, pts, sp, usable) for k in c), key=lambda t: t[0]) if c else (float("inf"), None, None) for c in cols]
         hit = [i for i, r in enumerate(rs) if r[0] <= INK_REACH_SPACES]
-        if len(hit) == 1:
+        # ... and the other note's ink stands clearly farther (the binder's own "about equally near" margin, `BIND_COLUMN_MARGIN_SPACES`, no new number):
+        # a reach just inside the cut against one just outside it is still two notes about equally near (Litolff p11 run 26: 0.79 against 1.0)
+        if len(hit) == 1 and all(r[0] - rs[hit[0]][0] >= AC.BIND_COLUMN_MARGIN_SPACES for i, r in enumerate(rs) if i != hit[0]):
             got = pick(cols[hit[0]], rs[hit[0]])
             if got is not None:
                 got["was_two_columns"] = cols
@@ -161,7 +163,7 @@ def settle_by_ink(e: Dict[str, Any], heads: Sequence[Dict[str, Any]], d: Dict[st
         if xy:
             ub = min((u for u in (unread or ()) if not u.get("other_staff")), key=lambda u: abs(u["cx"] - xy[0]) + abs(u["cy"] - xy[1]), default=None)
         ru = min(AC._to_head(ub, x, y) for x, y in pts) / sp if ub is not None else 0.0
-        if r[0] <= INK_REACH_SPACES and ru > INK_REACH_SPACES:
+        if r[0] <= INK_REACH_SPACES and ru > INK_REACH_SPACES and ru - r[0] >= AC.BIND_COLUMN_MARGIN_SPACES:
             return pick(col, r)
         return None
     return None
