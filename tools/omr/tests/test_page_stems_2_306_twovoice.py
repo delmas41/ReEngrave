@@ -63,7 +63,11 @@ def test_where_a_stroke_does_not_touch_the_head_or_ends_at_another_head_it_is_ne
         r = _read(w)["heads"][w["head"]]
         assert r["how"] != PS.UNISON_HOW and r.get("voices") is None, (w["page"], w["head"], r)
         whys[(w["page"], w["head"])] = r.get("why") or r["how"]
-    assert whys[(2, 99)] == "ends_at_another_head" and whys[(2, 468)] == "ends_at_another_head", whys
+    # ROADMAP 2.306 r19: the upper ring's side is that head's outline, so the page now reads the one down stem itself (the window's own
+    # expectation, `one:down`) instead of leaving the head to the old path
+    for k in ((2, 99), (2, 468)):
+        r = _read(next(w for w in _windows() if (w["page"], w["head"]) == k))["heads"][k[1]]
+        assert whys[k] == "other_stroke_is_an_outline" and r["state"] == "one" and r["direction"] == "down", (k, r)
     assert whys[(6, 9)] == "one_touches" and whys[(0, 268)] == "one_touches", whys
     assert whys[(6, 155)] == "one_stem_passes_the_head", whys
     assert len(whys) == 6

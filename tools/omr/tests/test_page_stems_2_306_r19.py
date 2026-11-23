@@ -107,6 +107,34 @@ def test_a_the_third_unison_eighth_keeps_both_its_stems():
     assert got["how"] == PS.UNISON_HOW and set(got["voices"]) == {"up", "down"}, got
 
 
+@pytest.mark.parametrize("name", ["outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_5"])
+def test_reach_the_stroke_that_ends_at_another_head_is_its_outline_so_the_other_is_the_stem(name):
+    """REACH (the page abstained `two_voices` / `ends_at_another_head` and the old cell join answered in its place). Real heads, the lane's
+    look at full size: two half notes a third apart on one stem (2/1/4/0 down, 2/1/2/11 up), and a half note under another voice's flagged
+    note whose stem ends on it (16/0/1/5). The stroke ending at the other head is that head's ring or stem, never this head's."""
+    w, r = _read(name)
+    got = r[w["head"]]
+    assert got["state"] == "one" and got["how"] == "other_stroke_is_an_outline" and got["direction"] == w["expect"], got
+
+
+def test_reach_never_a_stub_left_beside_a_long_stem():
+    """Litolff 2/1/9/14: the stroke left is a 1.6-space stub at the head's left; the long up stroke runs to a chord-mate. Stays abstained."""
+    w, r = _read("stub_litolff_2_1_9_14")
+    assert r[w["head"]]["state"] != "one", r[w["head"]]
+
+
+def test_reach_control_without_the_outline_rule_the_same_heads_stay_abstained():
+    """The control can fail: with the outline rule's guard refusing everything, the three heads are abstained as before."""
+    old = PS._outline_leaves_one_stem
+    try:
+        PS._outline_leaves_one_stem = lambda *a: False
+        for name in ("outline_litolff_2_1_4_0", "outline_litolff_2_1_2_11", "outline_litolff_16_0_1_5"):
+            w, r = _read(name)
+            assert r[w["head"]]["state"] == "two_voices", (name, r[w["head"]])
+    finally:
+        PS._outline_leaves_one_stem = old
+
+
 def test_a_control_measured_in_the_strokes_own_space_the_upper_voice_is_lost():
     """The control can fail: the old measure (the stroke's own space) loses the up stem again."""
     w, r = _read("a_litolff_2_0_3_5", space=lambda h, st: float(st.get("sp") or h.get("sp") or 1.0))

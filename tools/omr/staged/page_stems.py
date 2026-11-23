@@ -364,6 +364,13 @@ def _passes_beside_the_other(h: Dict[str, Any], up: int, dn: int, vbox: Optional
     return (up_len > 0 and dn_over >= PASS_SHARE * up_len) or (dn_len > 0 and up_over >= PASS_SHARE * dn_len)
 
 
+def _outline_leaves_one_stem(h: Dict[str, Any], o: int, d: str, stems: Dict[int, Dict[str, Any]]) -> bool:
+    """ROADMAP 2.306 r19: the stroke left at head `h` once the other is known to be another head's outline may be its stem only where no other
+    head already reads stroke `o` the other way (a stem has one head end). Pure."""
+    s = stems.get(int(o))
+    return s is None or s["directions"] == {d}
+
+
 def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str, Any]], stems: Dict[int, Dict[str, Any]],
                   hink: Optional[Dict[Any, set]], touches_ink: Any, vbox: Optional[Dict[int, Any]] = None) -> int:
     """ROADMAP 2.306, the two-voice piece (page-facts, Sean 2026-10-10: "When one note has stems going up and down it is always 2 voices").
@@ -398,6 +405,20 @@ def _unison_heads(heads: Sequence[Dict[str, Any]], readings: Dict[Any, Dict[str,
         keep = [d for d in ("up", "down") if touch[d] and d not in outline]
         if len(keep) == 2 and _passes_beside_the_other(h, int(by_dir["up"]["stroke"]), int(by_dir["down"]["stroke"]), vbox):
             r["why"] = "one_stem_passes_the_head"
+            continue
+        if (len(keep) == 1 and outline and float(by_dir[keep[0]].get("reach") or 0.0) >= UNISON_REACH_SP
+                and _outline_leaves_one_stem(h, int(by_dir[keep[0]]["stroke"]), keep[0], stems)):
+            # ROADMAP 2.306 r19 (reach: 20 of the 33 Litolff 2/16 heads the cell join still answered for after the page abstained): of a stroke up
+            # and a stroke down at a head, one ends at ANOTHER head -- that head's outline (`_ends_at_another_head`, the rule `drop_outlines`
+            # already applies to three strokes) -- so the other, touching this head's ink and a stem's length (`UNISON_REACH_SP`), is its one
+            # stem. Never where the kept stroke is read the other way by another head, never a stub (Litolff 2/1/9/14: a 1.6-space stroke
+            # beside a quarter whose long up stem runs to a chord-mate).
+            d = keep[0]
+            c = by_dir[d]
+            o = int(c["stroke"])
+            s = stems.setdefault(o, dict(ord=o, heads=[], directions={d}))
+            s["heads"].append(h["id"])
+            r.update(state="one", stroke=o, direction=d, side=c["side"], margin=c.get("fit"), how="other_stroke_is_an_outline")
             continue
         if len(keep) < 2:
             # not two voices on the ink; which stroke is the head's one stem is NOT decided here (our look at 20 such heads: about half are a

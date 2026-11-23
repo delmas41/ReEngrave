@@ -35,7 +35,7 @@ for o in rec["observations"]:
         ps[o["subject"]].append(("row", None))
 for a in rec.get("abstentions") or []:
     if a.get("quantity") == "page_stem":
-        ps[a["subject"]].append(("abst", (a.get("detail") or {}).get("how") or (a.get("detail") or {}).get("note") or a.get("reason")))
+        ps[a["subject"]].append(("abst", "%s/%s" % ((a.get("detail") or {}).get("how") or (a.get("detail") or {}).get("note") or a.get("reason"), (a.get("detail") or {}).get("why"))))
 notn = {v["subject"] for v in rec["verdicts"] if v["quantity"] == "notehead_is_not_a_notehead" and v.get("outcome") == "decided" and v.get("value")}
 cls = {o["subject"]: o["value"][0] for o in rec["observations"] if o["quantity"] == "glyph_box" and isinstance(o.get("value"), list)}
 reader = {o["subject"]: o.get("reader") for o in rec["observations"] if o["quantity"] == "glyph_box"}
