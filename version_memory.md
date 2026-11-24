@@ -9,6 +9,10 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- 2.341 flag rule LANDED ON (main bc04836f9; Sean "Yes")
+- STAGED ADJUDICATE `rhythm.py`: `OMR_STEM_TIP_FLAG_WHEN_DECLINED` default ON -- in a bar with no accepted beam the stem tip is now looked at; a counted, shaped hook at a free tip makes an eighth; doubtful hooks keep the quarter, blue. Frozen sample: Brahms flags +14, red 126 -> 116; Litolff three right quarters turn blue; Sean's 12 tiles agree on all 12 values. `OMR_HOLLOW_HEAD_WINS` landed OFF (not ready: the gap between fused heads reads as an opening). Fast tier 11,295 passed; four doc-page failures fixed.
+- END OF DAY 2026-11-23: ten switches on today (dots by head ink, dropped-head spot, eighth rest boxed as other, relocate at export, far fold by ledger, fused accidentals, quarter rest boxed as other, accidental boxed as other, slash stem core, stem-tip flag) plus the clef + part-join repair. NONE measured on a whole movement; the next overnight is the first.
+
 ## 2026-11-23 -- 2.324 r11 LANDED (main aa9038505): opening C clefs read right; the part join counts evidence
 - STAGED GATHER `clef_pagewide.py`: a C clef is two upright bars side by side, the same height, thick on the left (repairs the regression of bef49d18a: Brahms p3/p10 viola and Litolff p13 viola read bass, Brahms p17 bassoon tenor lost; Sean's two crops are hard controls). No flag.
 - STAGED ADJUDICATE `adjudicators/identity.py` `_short_slots_rest_on_evidence`: staves join their parts when every slot on a short system was paired on evidence, never on position alone (the old `_slots_are_ordinals` check refused a fully correct reading; the join had held only while a viola was misread). No flag.
