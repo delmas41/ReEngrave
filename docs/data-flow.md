@@ -1639,7 +1639,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `pitch` revised by: EVALUATE `restate_pitch`, EVALUATE `move_glyph`
 - `pitch` read by EVALUATE: `consequences.py:apply_printed_accidental`, `consequences.py:move_glyph`, `consequences.py:respell_accidental`, `consequences.py:restate_pitch`
-- `pitch` read by EXPORT: `export.py:_clef_changes_by_bar`, `export.py:_inferred_clefs`, `export.py:_place_notes`, `export.py:_plan_relocation`, `export.py:far_unread_guess_of`, `export.py:guess_of`
+- `pitch` read by EXPORT: `export.py:_clef_changes_by_bar`, `export.py:_inferred_clefs`, `export.py:_place_notes`, `export.py:_plan_relocation`, `export.py:_unwritten_end_read`, `export.py:far_unread_guess_of`, `export.py:guess_of`
 
 ### `printed_bar_number` (Q.PRINTED_BAR_NUMBER) -- LIVE
 
