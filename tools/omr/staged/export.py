@@ -3231,6 +3231,41 @@ def _tie_end_unsure(rec: Record, start: str, stop: str) -> List[Dict[str, Any]]:
     return out
 
 
+TIE_UNREAD_WORD_FROM = "tie not written: the note it came from is unread"
+TIE_UNREAD_WORD_TO = "tie not written: the note it goes to is unread"
+
+
+def _mark_half_written_ties(record_ties: Dict[str, Any], lost: set, counters: Dict[str, int]) -> None:
+    """ROADMAP 2.343 (STAGED EXPORT; no flag: it only adds a red mark where the file was silent -- CLAUDE.md section 4, "nothing uncertain is
+    ever written unmarked"; rule 8).
+
+    THE CAUSE: a tie the record DECIDED, with one end a note EXPORT did not write (its value, owner or pitch unread), was skipped by
+    `_record_tie_spans` -- counted in the total `tie_end_not_in_file`, but nothing in the FILE said so: the surviving note was written
+    plain, as if nothing had been printed over it (Litolff p2 staff 7, bars 9-11, a half-note F4 tied through a half note whose box was
+    `wide_box_unread`).
+
+    THE RULE, as a musician would say it: where the page prints a tie and only one of its two notes is in the file, the note that IS
+    there says so, in red, and names which side is missing -- the tie is never written, because there is nothing to tie it to.
+    Never on a note that already carries a tie on that side (another pair wrote it); never a note, a rest or a time invented.
+    A pair with BOTH ends unwritten leaves no note to mark; it is only counted (`tie_both_ends_unwritten`).
+
+    `lost` is the pairs no part wrote; `record_ties["half_written"]` holds `(pair, which end was written, its head)` from every part."""
+    marked = set()
+    for pair, which, det in record_ties.get("half_written", ()):
+        if pair not in lost:
+            continue
+        flag, held = (("tie_unread_from_prev", "tied_from_prev") if which == "stop" else ("tie_unread_to_next", "tied_to_next"))
+        if det.get(held) or (id(det), flag) in marked:
+            continue
+        det[flag] = True
+        marked.add((id(det), flag))
+        key = "tie_first_note_unwritten_marked" if which == "stop" else "tie_last_note_unwritten_marked"
+        counters[key] = counters.get(key, 0) + 1
+    seen_pairs = {p for p, _w, _d in record_ties.get("half_written", ())}
+    counters["tie_both_ends_unwritten"] = counters.get("tie_both_ends_unwritten", 0) + len(lost - seen_pairs)
+    counters["tie_one_end_unwritten_pairs"] = counters.get("tie_one_end_unwritten_pairs", 0) + len(lost & seen_pairs)
+
+
 def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                       ties: Dict[str, Any], voice_of: Dict[int, int],
                       dropped: Dict[str, int], rec: Optional[Record] = None,
@@ -3282,6 +3317,12 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
                 alias = {k: v for k, v in alias.items() if str(k).split("/")[1:4] == str(v).split("/")[1:4]}
             start, stop = alias.get(start, start), alias.get(stop, stop)
         if start not in index or stop not in index:
+            # ROADMAP 2.343: a tie with ONE end written is not dropped silently -- the written end is remembered here and, if no part holds
+            # both ends of the pair (`_mark_half_written_ties`, once every part has run), it is MARKED. Nothing is invented: no tie is
+            # written onto a note that is not there.
+            if (start in index) != (stop in index):
+                ties.setdefault("half_written", []).append(
+                    (orig, "start" if start in index else "stop", index[start if start in index else stop][1]))
             continue
         ties["consumed"].add(orig)
         (sm, first), (tm, last) = index[start], index[stop]
@@ -3960,6 +4001,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 if k not in record_ties["consumed"]]
         if lost:
             dropped["tie_end_not_in_file"] += len(lost)
+            _mark_half_written_ties(record_ties, set(lost), counters)
         # ⚠️ Both halves of a tie a barline cut name the SAME pair; the file
         # writes it once. Counted as written information, not as a drop.
         counters["tie_arcs_naming_an_already_named_pair"] += sum(
@@ -8386,6 +8428,12 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 # SET on a notehead that `voicing` then drops is attached and
                 # not written; only this site can tell.
                 counters["wedges"] += 1
+        # ROADMAP 2.343: a tie the page prints whose other note is not in the file -- red words just before the written note that stands
+        # beside it. No note, rest or time; the tie itself is not written (there is nothing to tie it to).
+        for _flag, _word in (("tie_unread_from_prev", TIE_UNREAD_WORD_FROM), ("tie_unread_to_next", TIE_UNREAD_WORD_TO)):
+            if any(h.get(_flag) for h in heads):
+                out.append(_red_bar_word_xml(_word))
+                counters["ties_marked_for_an_unwritten_note"] += 1
         for n, head in enumerate(heads):
             # ⚠️ LOWEST NOTE FIRST — `group_chords_in_measure` already sorts
             # the group that way and the order is load-bearing: MusicXML takes
