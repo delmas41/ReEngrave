@@ -9,6 +9,9 @@ blocks, and every commit from 2026-10-07 on gets its own entry again. The
 ROADMAP line and the benchmark `FINDINGS.md` stay the record of status and
 measurement; this file is the WHEN and WHAT of each commit.
 
+## 2026-11-23 -- 2.335 slash fix LANDED ON (main 3ac19ca5d; Sean "Yes")
+- STAGED GATHER: `OMR_SLASH_STEM_CORE` default ON (`page_tremolo.stem_core_enabled`): the page tremolo finder reads with ledger lines set aside, joins a slash to another stem only where their ink meets, and its claim covers the page strokes it owns. `judged_claims` follows the page fact "where a tremolo slash crosses its stem the crossing belongs to both". Litolff 2, 6, 16: 15 new slashes, all 15 judged slashes by Sean; the slash piece no longer written as a half at 6/1/8/11; 16/0/1/6 written in two voices (Sean: "2 voices"). Fast tier 11,255 passed. Seen on three Litolff pages only; no Brahms page.
+
 ## 2026-11-23 -- batch 6 landed (main 1135948e6): two more rules ON, two built OFF
 - ON (Sean "Yes, both on"): `OMR_QUARTER_REST_BOXED_AS_OTHER` (2.339, STAGED ADJUDICATE: a quarter-rest-shaped mark standing alone is a quarter rest whatever it was boxed as, written blue) and `OMR_ACCIDENTAL_BOXED_AS_OTHER` (2.340, STAGED GATHER `rest_standing` + ADJUDICATE: a rest box on ink the accidental reader reads as a sharp or natural beside its note gives up its claim).
 - OFF: `OMR_STROKE_SPACE_OWN_STAFF` (2.342, `stroke_map.LocalStaff` accepts five lines only at the staff's own spacing) and `OMR_ARC_END_BY_INK` (2.338); the arc ranking row now counts each arc once.
