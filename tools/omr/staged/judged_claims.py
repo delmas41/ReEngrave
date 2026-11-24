@@ -28,7 +28,10 @@ detector box refused on it is reported apart; nothing is "no owner".
   OVERLAP RULE (by page place and ink, never by box or stroke id: twins, ids restart per system): with R = share of the box's ink owned by a READ claim
   of a kind Sean's word accepts (`ACCEPT`), Wo = share owned ONLY by READ claims of other kinds, Wa = share on which a READ claim of another kind STANDS
   (whether or not his kind also stands there); staff lines, ledger lines and dots crossing a mark are the mark's -- page-facts 2026-11-10 -- and never count
-  against it:
+  against it; and where a tremolo slash crosses its stem the crossing belongs to BOTH (Sean 2026-11-23: "The point where a stem and a slash cross each
+  other belongs to both"; page-facts, ROADMAP 2.335): on a slash he named, the stem that runs through it is the stem's and never counts against the slash,
+  and on a stem he named, the slash across it never counts against the stem (`CROSSING_PARTNER`). NEVER any other kind: an accidental, beam, head or
+  dynamic standing on his slash still counts, and a stem claim still counts against every tile that is not a slash:
     AGREES        R >= 0.5 and Wa < 0.3
     CONTRADICTS   R >= 0.5 and Wa >= 0.3    CLAIMED TWICE (changed 2026-11-11, 2.295b): his kind owns the ink AND a READ claim of another kind stands on
                                             >= 30% of it: a wrong READ claim is a wrong claim even where the cell settle agrees with him
@@ -81,6 +84,9 @@ ACCEPT: Dict[str, Tuple[str, ...]] = {
 SOURCES_NAMED = (("src_cell", "cell settle"), ("src_area", "register area"), ("src_page", "page-stroke claim"))
 # a mark crosses a staff line, a ledger line, an augmentation dot: that crossing ink is the mark's (page-facts / DECISIONS 2026-11-10)
 NEUTRAL = ("staff_line", "ledger_line", "dot")
+# a tremolo slash and the stem it crosses: each one's ink never counts against the other (Sean 2026-11-23, page-facts: the crossing belongs to both). Only
+# this pair, only for a tile of one of the two kinds.
+CROSSING_PARTNER: Dict[str, Tuple[str, ...]] = {"tremolo": ("stem",), "stem": ("tremolo",)}
 
 
 # ───────────────────────────── 1. the normaliser ─────────────────────────────
@@ -313,7 +319,7 @@ def judge_tile(c: Any, tile: Dict[str, Any], *, dx: float = 0.0, dy: float = 0.0
         return cannot("box_on_no_ink")
     mm = m[sel]
     A = np.uint32(sum(int(CR.FINE_BIT[x]) for x in accept))
-    N = np.uint32(sum(int(CR.FINE_BIT[x]) for x in NEUTRAL if x not in accept))
+    N = np.uint32(sum(int(CR.FINE_BIT[x]) for x in NEUTRAL + CROSSING_PARTNER.get(base, ()) if x not in accept))
     right = (mm & A) != 0
     OTHER = np.uint32(CR.FINE_BIT["other"])
     unnamed = ((mm & OTHER) != 0) & ~right            # a claim the readout files under `other`: its kind is not known here
