@@ -1,5 +1,5 @@
 """ROADMAP 2.335 -- THE SLASH CORE MUST NOT LEAVE A STEM STANDING ON A SLASH, NOR A SLASH UNCLAIMED (STAGED GATHER, `page_tremolo`, flag
-`OMR_SLASH_STEM_CORE`, default OFF).
+`OMR_SLASH_STEM_CORE`, default ON).
 
 Rules (as a musician says them):
   * a ledger line a slash touches is a line, not part of the slash: the slash is read without it, as it is read without the staff lines --

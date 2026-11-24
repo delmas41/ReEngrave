@@ -1,5 +1,5 @@
 """ROADMAP 2.306 batch 2 -- THE STEM A TREMOLO SLASH CROSSES IS READ WHERE IT SHOWS PLAINLY (STAGED GATHER, `page_tremolo`, flag
-`OMR_SLASH_STEM_CORE`, default OFF).
+`OMR_SLASH_STEM_CORE`, default ON).
 
 Rule (as a musician says it): a tremolo slash is a short thick diagonal across a stem; the stem is the thin upright through it, and where
 the stem runs is read where it shows plainly above and below the slash -- never on the slash's own rows. Never a slash out of chord heads
@@ -41,12 +41,13 @@ def _passed(name, own_rows):
 
 
 class TestStemCore(unittest.TestCase):
-    def test_flag_default_off(self):
+    def test_flag_default_on(self):
         with mock.patch.dict(os.environ, {}, clear=False):
             os.environ.pop(PT.STEM_CORE_ENV, None)
-            self.assertFalse(PT.stem_core_enabled())
-        with mock.patch.dict(os.environ, {PT.STEM_CORE_ENV: "1"}):
             self.assertTrue(PT.stem_core_enabled())
+        for off in ("0", "false", "no", "off"):
+            with mock.patch.dict(os.environ, {PT.STEM_CORE_ENV: off}):
+                self.assertFalse(PT.stem_core_enabled())
 
     def test_slash_on_a_short_stem_is_read(self):
         """16/0/1/6: read on its plain rows the slash passes; the old read (every row) refuses it -- the control fails with the rule off."""
