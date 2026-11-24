@@ -29,7 +29,7 @@ def _staff(name, on, monkeypatch):
     if on:
         monkeypatch.setenv(SM.STROKE_SPACE_OWN_STAFF_ENV, "1")
     else:
-        monkeypatch.delenv(SM.STROKE_SPACE_OWN_STAFF_ENV, raising=False)
+        monkeypatch.setenv(SM.STROKE_SPACE_OWN_STAFF_ENV, "0")
     ink, lines = _strip(name)
     return SM.LocalStaff(ink, lines, 15.75), ink, lines
 

@@ -412,8 +412,8 @@ class Stroke:
 
 
 def stroke_space_own_staff_enabled() -> bool:
-    """`OMR_STROKE_SPACE_OWN_STAFF` (ROADMAP 2.342), default OFF; 1/true/yes/on enables."""
-    return os.environ.get(STROKE_SPACE_OWN_STAFF_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+    """`OMR_STROKE_SPACE_OWN_STAFF` (ROADMAP 2.342), default ON (Sean 2026-11-23); 0/false/no/off turns it off."""
+    return os.environ.get(STROKE_SPACE_OWN_STAFF_ENV, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def _five_lines(prof: np.ndarray, seeds: Sequence[float], search: int) -> Optional[List[float]]:
@@ -467,7 +467,7 @@ def _comb_seed(prof: np.ndarray, nominal: Sequence[float], reach: int) -> Option
 class LocalStaff:
     """The five staff lines at any x of one cell, measured on the RAW reduced raster (reduced-frame rows).
 
-    ROADMAP 2.342 (`OMR_STROKE_SPACE_OWN_STAFF`, default OFF), CLAUDE §5 "measure against the staff LOCALLY". Every stroke is measured in the
+    ROADMAP 2.342 (`OMR_STROKE_SPACE_OWN_STAFF`, default ON), CLAUDE §5 "measure against the staff LOCALLY". Every stroke is measured in the
     spacing of the five lines of the staff it stands on, at its own x. The walk across the staff takes a column's five lines only where they
     stand at that staff's OWN spacing (`_at_own_spacing`); a column that does not is never taken and never seeds the next one. Where the walk
     from the last column finds no such five, the staff's recorded lines are moved together as one comb to where the ink is (`_comb_seed`, within
