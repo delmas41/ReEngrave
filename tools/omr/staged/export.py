@@ -3231,39 +3231,93 @@ def _tie_end_unsure(rec: Record, start: str, stop: str) -> List[Dict[str, Any]]:
     return out
 
 
-TIE_UNREAD_WORD_FROM = "tie not written: the note it came from is unread"
-TIE_UNREAD_WORD_TO = "tie not written: the note it goes to is unread"
+#: ROADMAP 2.343 r2 (Sean 2026-11-24: "Yes, change the wording"; `unread note` is the 2.333 spot mark's own term, `DROPPED_HEAD_SPOT_WORD`, spelled the same).
+#: The mark says only what we know: `tie` / `slur` where the arc's kind is DECIDED and the unwritten end's own position and pitch were read, else `arc`.
+TIE_FROM_UNREAD_NOTE_WORD = "tie from unread note"
+TIE_TO_UNREAD_NOTE_WORD = "tie to unread note"
+SLUR_FROM_UNREAD_NOTE_WORD = "slur from unread note"
+SLUR_TO_UNREAD_NOTE_WORD = "slur to unread note"
+ARC_FROM_UNREAD_NOTE_WORD = "arc from unread note"
+ARC_TO_UNREAD_NOTE_WORD = "arc to unread note"
+#: both notes written, the arc between them read but its kind not (`page_arc_bind` `kind_unread`): nothing is written for it, so its first note says so
+ARC_KIND_UNREAD_WORD = "arc: tie or slur unread"
+_ARC_WORDS = {("tie", "from"): TIE_FROM_UNREAD_NOTE_WORD, ("tie", "to"): TIE_TO_UNREAD_NOTE_WORD,
+              ("slur", "from"): SLUR_FROM_UNREAD_NOTE_WORD, ("slur", "to"): SLUR_TO_UNREAD_NOTE_WORD,
+              ("arc", "from"): ARC_FROM_UNREAD_NOTE_WORD, ("arc", "to"): ARC_TO_UNREAD_NOTE_WORD}
 
 
-def _mark_half_written_ties(record_ties: Dict[str, Any], lost: set, counters: Dict[str, int]) -> None:
+def _unwritten_end_read(rec: Optional[Record], glyph: str) -> bool:
+    """ROADMAP 2.343 r2: were the unwritten end's POSITION and PITCH actually read? A tie or slur kind is decided from the two heads' staff positions
+    (`adjudicate_tie_pair`, the page binder) whether or not the note is then written; a head whose pitch was not decided, or whose far-head ledger
+    count / own hole position is unsure, gave the kind nothing read to stand on -- the mark then says `arc`. Reads the record only."""
+    if rec is None:
+        return False
+    v = rec.verdict(Q.PITCH, glyph)
+    if v is None or v.get("outcome") != "decided" or v.get("value") is None:
+        return False
+    return not _tie_end_unsure(rec, glyph, glyph)
+
+
+def _mark_half_written_arcs(halves: Sequence[Dict[str, Any]], unwritten: set, rec: Optional[Record], counters: Dict[str, int]) -> None:
     """ROADMAP 2.343 (STAGED EXPORT; no flag: it only adds a red mark where the file was silent -- CLAUDE.md section 4, "nothing uncertain is
     ever written unmarked"; rule 8).
 
-    THE CAUSE: a tie the record DECIDED, with one end a note EXPORT did not write (its value, owner or pitch unread), was skipped by
-    `_record_tie_spans` -- counted in the total `tie_end_not_in_file`, but nothing in the FILE said so: the surviving note was written
-    plain, as if nothing had been printed over it (Litolff p2 staff 7, bars 9-11, a half-note F4 tied through a half note whose box was
-    `wide_box_unread`).
+    THE CAUSE: a tie or slur the record DECIDED, with one end a note EXPORT did not write (its value, owner or pitch unread), was skipped --
+    counted in a total (`tie_end_not_in_file`, `slur_bound_end_not_in_file`) but nothing in the FILE said so: the surviving note was written plain
+    (Litolff p2 staff 7, bars 9-11, a half-note F4 tied through a half note whose box was `wide_box_unread`). The same for an arc the page
+    pass bound at both ends whose kind it could not read: written as nothing, counted only.
 
-    THE RULE, as a musician would say it: where the page prints a tie and only one of its two notes is in the file, the note that IS
-    there says so, in red, and names which side is missing -- the tie is never written, because there is nothing to tie it to.
-    Never on a note that already carries a tie on that side (another pair wrote it); never a note, a rest or a time invented.
-    A pair with BOTH ends unwritten leaves no note to mark; it is only counted (`tie_both_ends_unwritten`).
+    THE RULE, as a musician would say it: where the page prints an arc and only one of its notes is in the file, the note that IS there says so,
+    in red -- `tie from unread note` on the second note, `tie to unread note` on the first (`slur ...` likewise) -- and says `arc` where the kind is
+    not known. The arc is never written, because there is nothing to write it on. Never on a note that already carries a tie on that side; never
+    a note, a rest or a time invented. A pair with BOTH ends unwritten leaves no note to mark; it is only counted (`<kind>_both_ends_unwritten`).
 
-    `lost` is the pairs no part wrote; `record_ties["half_written"]` holds `(pair, which end was written, its head)` from every part."""
+    `halves`: `{key, kind, which, det, missing}` from every part (`which` is the written end, `start`/`stop`, or `both` for a kind-unread arc whose
+    two notes are written); `unwritten`: the keys no part wrote."""
     marked = set()
-    for pair, which, det in record_ties.get("half_written", ()):
-        if pair not in lost:
+    seen_keys = set()
+    for h in halves:
+        if h["key"] not in unwritten:
             continue
-        flag, held = (("tie_unread_from_prev", "tied_from_prev") if which == "stop" else ("tie_unread_to_next", "tied_to_next"))
-        if det.get(held) or (id(det), flag) in marked:
+        seen_keys.add(h["key"])
+        det, which, kind = h["det"], h["which"], h["kind"]
+        if which == "both":
+            word, tag = ARC_KIND_UNREAD_WORD, "arc_kind_unread"
+        else:
+            side = "from" if which == "stop" else "to"
+            if kind in ("tie", "slur") and not _unwritten_end_read(rec, str(h.get("missing"))):
+                kind = "arc"
+            if kind == "tie" and det.get("tied_from_prev" if which == "stop" else "tied_to_next"):
+                continue
+            word, tag = _ARC_WORDS[(kind, side)], "%s_%s_unread_note" % (kind, side)
+        if (id(det), word) in marked:
             continue
-        det[flag] = True
-        marked.add((id(det), flag))
-        key = "tie_first_note_unwritten_marked" if which == "stop" else "tie_last_note_unwritten_marked"
-        counters[key] = counters.get(key, 0) + 1
-    seen_pairs = {p for p, _w, _d in record_ties.get("half_written", ())}
-    counters["tie_both_ends_unwritten"] = counters.get("tie_both_ends_unwritten", 0) + len(lost - seen_pairs)
-    counters["tie_one_end_unwritten_pairs"] = counters.get("tie_one_end_unwritten_pairs", 0) + len(lost & seen_pairs)
+        marked.add((id(det), word))
+        det.setdefault("unread_arc_words", []).append(word)
+        counters[tag + "_marked"] = counters.get(tag + "_marked", 0) + 1
+    for k in unwritten:
+        if k not in seen_keys and k[0] in ("tie", "slur"):
+            counters[k[0] + "_both_ends_unwritten"] = counters.get(k[0] + "_both_ends_unwritten", 0) + 1
+
+
+def _register_unread_kind_runs(measures: Sequence[Dict[str, Any]], runs: Sequence[Dict[str, Any]], halves: List[Dict[str, Any]]) -> None:
+    """ROADMAP 2.343 r2: per part, the written ends of each page run whose kind was not read (`page_arc_bind` `kind_unread`: both ends bound, tie or
+    slur not told). Both notes here: `which="both"`, marked on the START note; one here: `start`/`stop` like a tie, kind `arc`."""
+    if not runs:
+        return
+    index: Dict[str, Dict[str, Any]] = {}
+    for m in measures:
+        for det in m["detections"] or ():
+            key = det.get("glyph")
+            if key and det.get("category") == "notehead" and not det.get("unison_twin"):
+                index.setdefault(str(key), det)
+    for r_ in runs:
+        s_, t_ = str(r_["start"]), str(r_["stop"])
+        if s_ in index and t_ in index:
+            halves.append({"key": ("run", r_["row"]), "kind": "arc", "which": "both", "det": index[s_], "missing": None})
+        elif (s_ in index) != (t_ in index):
+            halves.append({"key": ("run", r_["row"]), "kind": "arc", "which": "start" if s_ in index else "stop",
+                           "det": index[s_ if s_ in index else t_], "missing": t_ if s_ in index else s_})
 
 
 def _record_tie_spans(measures: Sequence[Dict[str, Any]],
@@ -3318,11 +3372,12 @@ def _record_tie_spans(measures: Sequence[Dict[str, Any]],
             start, stop = alias.get(start, start), alias.get(stop, stop)
         if start not in index or stop not in index:
             # ROADMAP 2.343: a tie with ONE end written is not dropped silently -- the written end is remembered here and, if no part holds
-            # both ends of the pair (`_mark_half_written_ties`, once every part has run), it is MARKED. Nothing is invented: no tie is
+            # both ends of the pair (`_mark_half_written_arcs`, once every part has run), it is MARKED. Nothing is invented: no tie is
             # written onto a note that is not there.
             if (start in index) != (stop in index):
-                ties.setdefault("half_written", []).append(
-                    (orig, "start" if start in index else "stop", index[start if start in index else stop][1]))
+                ties.setdefault("half_written", []).append({
+                    "key": ("tie", orig), "kind": "tie", "which": "start" if start in index else "stop",
+                    "det": index[start if start in index else stop][1], "missing": stop if start in index else start})
             continue
         ties["consumed"].add(orig)
         (sm, first), (tm, last) = index[start], index[stop]
@@ -3526,7 +3581,7 @@ def _page_bound_slurs(rec: Record) -> Dict[str, Dict[str, Any]]:
 
 
 def _page_bound_slur_spans(measures, bound: Dict[str, Dict[str, Any]], voice_of: Dict[int, int], have: set, written: set,
-                           counters: Dict[str, int], rec: Optional[Record] = None) -> List[tuple]:
+                           counters: Dict[str, int], rec: Optional[Record] = None, halves: Optional[List[Dict[str, Any]]] = None) -> List[tuple]:
     """This part's slur spans for the page-bound curves whose two heads are both in the part (`_paired_spans`' shape, keyed by page x like
     `_anchored_slur_spans`). A curve is written ONCE (`written` holds its key across parts); two heads in two voices are counted, never
     written (MusicXML pairs a slur within a voice)."""
@@ -3551,6 +3606,10 @@ def _page_bound_slur_spans(measures, bound: Dict[str, Dict[str, Any]], voice_of:
                 if end not in index and end in alias:
                     counters["slur_end_moved_to_its_heads_written_box"] += 1
             start, stop = alias.get(start, start), alias.get(stop, stop)
+        if curve not in written and halves is not None and (start in index) != (stop in index):
+            # ROADMAP 2.343 r2: one end written -- remembered, and MARKED after every part ran if no part wrote the curve (`_mark_half_written_arcs`)
+            halves.append({"key": ("slur", curve), "kind": "slur", "which": "start" if start in index else "stop",
+                           "det": index[start if start in index else stop][1], "missing": stop if start in index else start})
         if curve in written or start not in index or stop not in index:
             continue
         written.add(curve)
@@ -3838,6 +3897,10 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
         for r_ in pa_plan["edges"]:
             across_edges.append({"curve": "page_arc/%s" % r_["row"], "side": r_["edge"], "head": r_["edge_head"], "x_end": r_["x_end"], "sp": r_["sp"],
                                  "home": r_.get("staff_key")})
+    halves: List[Dict[str, Any]] = []              # ROADMAP 2.343: an arc with one written end, per part
+    # ROADMAP 2.343 r2: a page run bound at both ends whose KIND was not read is written as nothing (counted above); its written note says so
+    unread_runs = [r_ for r_ in (pa_plan["runs"] if pa_plan is not None else ())
+                   if r_.get("kind_unread") and r_.get("start") and r_.get("stop") and r_.get("row") is not None]
     across_positions: Dict[str, Any] = {}
     if across_edges:
         for o in rec.obs_of(Q.NOTEHEAD_STAFF_POSITION):
@@ -3847,8 +3910,9 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
     for part in parts:
         measures, per_measure_arcs, kinds, spacings, tops, breaks = \
             _flatten_part(part)
-        if not measures or not (any(per_measure_arcs) or bound_slurs or across_edges or pa_ties):
+        if not measures or not (any(per_measure_arcs) or bound_slurs or across_edges or pa_ties or unread_runs):
             continue
+        _register_unread_kind_runs(measures, unread_runs, halves)
         voice_of = _voice_of_notehead(rec, part)
         # ⚠️ An arc is drawn to a note's STEM, not to its head. See
         # `_stem_probes`: this is the `_beam_levels` fault one family over,
@@ -3918,7 +3982,7 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 if kind == "slur" and bound_slurs:
                     # ROADMAP 2.223: the page-bound curves, AFTER `n_spans` (they are not groups of the box merge above)
                     spans = list(spans) + _page_bound_slur_spans(
-                        measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters, rec=rec)
+                        measures, bound_slurs, voice_of, {(id(s[2]), id(s[3])) for s in spans}, bound_written, counters, rec=rec, halves=halves)
             if x_slurs or x_ties:
                 spans = _with_across_system_joins(kind, spans, x_slurs, x_ties, counters)
             if kind == "slur":
@@ -4001,11 +4065,17 @@ def _pair_arcs(rec: Record, parts: Sequence[Sequence[StaffRun]],
                 if k not in record_ties["consumed"]]
         if lost:
             dropped["tie_end_not_in_file"] += len(lost)
-            _mark_half_written_ties(record_ties, set(lost), counters)
         # ⚠️ Both halves of a tie a barline cut name the SAME pair; the file
         # writes it once. Counted as written information, not as a drop.
         counters["tie_arcs_naming_an_already_named_pair"] += sum(
             len(arcs) - 1 for arcs in record_ties["pairs"].values())
+    # ROADMAP 2.343 (r2: slurs, the word `arc` where the kind is unread): every arc the file did not write that has a written note to stand on is marked there
+    _halves = list(halves) + list((record_ties or {}).get("half_written", ()))
+    _unwritten = {("slur", c) for c in bound_slurs if c not in bound_written}
+    if record_ties is not None:
+        _unwritten |= {("tie", k) for k in record_ties["pairs"] if k not in record_ties["consumed"]}
+    _unwritten |= {("run", r_["row"]) for r_ in unread_runs}
+    _mark_half_written_arcs(_halves, _unwritten, rec, counters)
     if tie_report is not None:
         tie_report["tie_pairing"] = ("record" if record_ties is not None
                                      else "exporter")
@@ -8430,10 +8500,9 @@ def _measure_events_xml(events: List[Dict[str, Any]], divisions: int,
                 counters["wedges"] += 1
         # ROADMAP 2.343: a tie the page prints whose other note is not in the file -- red words just before the written note that stands
         # beside it. No note, rest or time; the tie itself is not written (there is nothing to tie it to).
-        for _flag, _word in (("tie_unread_from_prev", TIE_UNREAD_WORD_FROM), ("tie_unread_to_next", TIE_UNREAD_WORD_TO)):
-            if any(h.get(_flag) for h in heads):
-                out.append(_red_bar_word_xml(_word))
-                counters["ties_marked_for_an_unwritten_note"] += 1
+        for _word in dict.fromkeys(w for h in heads for w in (h.get("unread_arc_words") or ())):
+            out.append(_red_bar_word_xml(_word))
+            counters["arcs_marked_for_an_unread_note"] += 1
         for n, head in enumerate(heads):
             # ⚠️ LOWEST NOTE FIRST — `group_chords_in_measure` already sorts
             # the group that way and the order is load-bearing: MusicXML takes
