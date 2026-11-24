@@ -4093,20 +4093,29 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
         tip_in_beamless_cell = bool(tip_ink)
     if tip_ink and tip_in_beamless_cell:
         used.extend(r.id for r in tip_ink_rows)
-        # HELD, written GUESSED (blue) at the flag's level with the quarter beside it -- a narrowing would be left red in a busy bar
-        # (2.154: the bar never chooses). The flag's level is written because a hook seen rules out a quarter (Sean 2026-10-09);
-        # the quarter stays a candidate because in these cells the look has read a ledger line and a word as hooks (2.318 r5).
+        # SURE only where every row that saw it says a FLAG: the hook was COUNTED, its shape read (`why` shaped, `witness` shape) at a
+        # FREE tip. Never where the stroke crosses both sides of the stem (a ledger line or a slash: a flag hangs from one side), where
+        # the stem runs on past the tip (`runs_on`: into ledger lines, a word), or where the shape reader was not blocked-checked
+        # (`shape_unblocked`) -- the Litolff p15 quarters 2.318 r5 wrote as eighths are all of these. Sure: the counted level, written.
+        # Seen but not sure: HELD -- the quarter written GUESSED (blue) with the flagged value beside it, never a plain quarter (a
+        # narrowing would be left red in a busy bar: 2.154, the bar never chooses).
         _c, lo_b, hi_b = _stem_tip_hook_count(tip_ink_rows)
-        top = _c if _c is not None else lo_b
+        seen = [r for r in tip_ink_rows if r.value]
+        sure = _c is not None and all((r.detail or {}).get("why") == "shaped" and (r.detail or {}).get("witness") == "shape"
+                                      and isinstance((r.detail or {}).get("hooks"), int) for r in seen)
 
         def _plain(lv):
             t = _at_level_value(base, lv, n_dots)
             return {"beats": _scale(t, ratio, ev), "written": t, "dots": n_dots, "beam_levels": lv}
-        chosen = _plain(top)
+        if sure:
+            return Ruling(value=_plain(_c), reason="flag_ink_in_beamless_cell", used=tuple(used),
+                          detail={**shared, "hooks_counted": _c, "flag_sure": True})
+        chosen = _plain(0)
         guess = {"rule": "flag_ink_in_beamless_cell", "chosen": chosen, "marks_blue": True, "files_under": str(Q.DURATION),
-                 "candidates": [dict(chosen, support=1.0), dict(_plain(0), support=1.0)]}
+                 "candidates": [dict(chosen, support=1.0), dict(_plain(_c if _c is not None else lo_b), support=1.0)]}
         return Ruling(value=chosen, reason="flag_ink_in_beamless_cell", used=tuple(used),
-                      detail={**shared, "hooks_counted": _c, "hooks_min": lo_b, "hooks_max": hi_b, HEAD_INK_GUESS_KEY: guess})
+                      detail={**shared, "hooks_counted": _c, "hooks_min": lo_b, "hooks_max": hi_b, "flag_sure": False,
+                              HEAD_INK_GUESS_KEY: guess})
     if tip_ink:
         used.extend(r.id for r in tip_ink_rows)
 

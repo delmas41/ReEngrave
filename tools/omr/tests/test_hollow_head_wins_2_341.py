@@ -154,13 +154,22 @@ class _Ev:
 B_FLAG = rhythm.STEM_TIP_FLAG_WHEN_DECLINED_ENV
 
 
-def _b(*, tip, hook=True, beams=0, on=True):
-    from tools.omr.tests.test_staged_bare_stem_2_81 import CELL, _tip
+#: The tip reader's own detail on two real Litolff p15 quarters 2.318 r5 wrote as eighths (record 20261122-night): p15 1/1/14 the stem
+#: runs on into ledger lines (`runs_on`), p15 0/10/12 the stroke crosses both sides of the stem (the word `Vcl.` below it); and on a real
+#: Brahms eighth's flag (p4 `glyph/4/1/13/7/5`: counted, shaped).
+TIP_RUNS_ON = {"why": "runs_on", "witness": "window", "hooks": 1, "hooks_min": 1, "hooks_max": 1, "hooks_reason": None}
+TIP_CROSSES = {"why": "shaped", "witness": "shape", "hooks": None, "hooks_min": 1, "hooks_max": 2, "hooks_reason": "crosses_both_sides"}
+TIP_FLAG = {"why": "shaped", "witness": "shape", "hooks": 1, "hooks_min": 1, "hooks_max": 1, "hooks_reason": None}
+
+
+def _b(*, tip, hook=True, beams=0, on=True, detail=None):
+    from tools.omr.tests.test_staged_bare_stem_2_81 import CELL
     log = Log()
     g = _head(log, share=0.0)
     file_note_ink(log, (100, 90, 20, 16), sp=16, side="up", hook=hook, beams=beams)
     if tip is not None:
-        _tip(log, log.rows(Q.STEM, CELL)[-1], found=tip)
+        log.observe(CELL, Q.STEM_TIP_INK, bool(tip), reader=READERS.CV_STEM_TIP, frame="cell:0",
+                    stem_row_id=log.rows(Q.STEM, CELL)[-1].id, end="top", **(detail or {}))
     with mock.patch.dict(os.environ, {B_FLAG: "1" if on else "0"}):
         adjudicate.run(log)
     return log.verdict(Q.DURATION, g)
@@ -169,16 +178,23 @@ def _b(*, tip, hook=True, beams=0, on=True):
 class AFlagInABeamlessCell(unittest.TestCase):
 
     def test_RED_flag_off_the_hook_is_never_asked_and_the_note_is_a_plain_quarter(self):
-        v = _b(tip=True, on=False)
+        v = _b(tip=True, on=False, detail=TIP_FLAG)
         self.assertEqual((v.outcome, v.reason, v.value["written"]), (Outcome.DECIDED, "head_and_marks", 1.0))
         self.assertEqual(v.detail["beam_evidence"], "reader_declined")
 
-    def test_on_a_hook_seen_is_held_blue_an_eighth_with_the_quarter_beside_it(self):
-        v = _b(tip=True)
+    def test_on_a_counted_shaped_flag_at_a_free_tip_is_an_eighth(self):
+        v = _b(tip=True, detail=TIP_FLAG)
         self.assertEqual((v.outcome, v.reason, v.value["written"]), (Outcome.DECIDED, "flag_ink_in_beamless_cell", 0.5))
-        g = _guess(v)
-        self.assertTrue(g["marks_blue"])
-        self.assertEqual(sorted(c["written"] for c in g["candidates"]), [0.5, 1.0])
+        self.assertIsNone(_guess(v))
+
+    def test_NEVER_a_ledger_run_on_or_a_stroke_across_both_sides_makes_an_eighth_it_is_held_blue(self):
+        """The r5 cases: the quarter is written, GUESSED, with the eighth beside it -- never a plain eighth, never a plain quarter."""
+        for d in (TIP_RUNS_ON, TIP_CROSSES, None):
+            v = _b(tip=True, detail=d)
+            self.assertEqual((v.reason, v.value["written"]), ("flag_ink_in_beamless_cell", 1.0), d)
+            g = _guess(v)
+            self.assertTrue(g["marks_blue"], d)
+            self.assertEqual(sorted(c["written"] for c in g["candidates"]), [0.5, 1.0], d)
 
     def test_NEVER_a_tip_read_clean_or_unread_becomes_an_eighth(self):
         for tip in (False, None):
@@ -186,7 +202,7 @@ class AFlagInABeamlessCell(unittest.TestCase):
             self.assertEqual((v_on.outcome, v_on.reason, v_on.value), (v_off.outcome, v_off.reason, v_off.value), tip)
 
     def test_NEVER_on_a_stem_the_one_count_read_a_beam_on(self):
-        v_on, v_off = _b(tip=True, hook=False, beams=1), _b(tip=True, hook=False, beams=1, on=False)
+        v_on, v_off = _b(tip=True, hook=False, beams=1, detail=TIP_FLAG), _b(tip=True, hook=False, beams=1, on=False, detail=TIP_FLAG)
         self.assertEqual((v_on.outcome, v_on.reason, v_on.value), (v_off.outcome, v_off.reason, v_off.value))
 
 
