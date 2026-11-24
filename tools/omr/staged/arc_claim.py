@@ -403,6 +403,10 @@ def kind_from_ends(two_note: Optional[Dict[str, Any]], stack: Optional[Dict[str,
             acc = tn.get("accidental")
             if acc == "unchanged":
                 pos, rule = "tie", "two_notes_same_pitch"
+            elif acc == "restated":
+                pos, rule = "tie", "two_notes_same_pitch_restated"          # ROADMAP 2.344: the stop's printed accidental says what the start already is
+            elif acc == "changed":
+                pos, rule = "slur", "two_notes_pitch_changed_by_accidental"   # ROADMAP 2.344: never a tie between notes of different pitch
             else:
                 return None, "same_pitch_accidental_unread", None
     if pos is None and system_shape in SHAPE_KIND:
@@ -491,6 +495,15 @@ BIND_COLUMN_MARGIN_SPACES = 0.5
 BIND_CHORD_MIN_SPACES = 1.0
 #: a curve whose middle third sits this far (spaces) above / below the line through its two ends is ABOVE / BELOW its notes
 BIND_SIDE_MIN_SPACES = 0.1
+
+
+#: ROADMAP 2.344 (Sean 2026-11-24, DECISIONS "AN ARC BETWEEN THE SAME NOTES IS A TIE"; default ON, deny-list -- the flag exists so a lane report can A/B it):
+#: a printed accidental on the tied-to note that says what the start note already is (a courtesy) is no reason to call the arc a slur; one that CHANGES it still is.
+ENV_TIE_SAME_NOTES = "OMR_ARC_TIE_SAME_NOTES"
+
+
+def tie_same_notes_enabled() -> bool:
+    return os.environ.get(ENV_TIE_SAME_NOTES, "").strip().lower() not in ("0", "false", "no", "off")
 
 
 def bind_enabled() -> bool:
