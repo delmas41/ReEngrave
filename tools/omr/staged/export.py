@@ -2129,6 +2129,14 @@ def _place_notes(rec: Record, runs: Dict[str, StaffRun],
             "bbox_page": _corners_to_wh(_page_box_of(o)),
             "unboxed_rest": True,
         })
+        # ROADMAP 2.339: a quarter rest read from ink another box stood on is written GUESSED (blue) -- one real sharp's ink passes
+        # the quarter windows on our plates, so the shape alone does not settle it (CLAUDE §4).
+        bao = (v.get("detail") or {}).get("boxed_as_other") or {}
+        if bao.get("guessed"):
+            cell.detections[-1]["guess"] = {
+                "stage": "ADJUDICATE", "rule": "quarter_rest_boxed_as_other", "quantity": Q.UNBOXED_INK_IS_A_REST,
+                "candidates": [{"value": v["value"], "support": 1.0}, {"value": "not_a_rest", "support": 0.0}],
+                "chosen": {"value": v["value"]}}
         if relocated is not None:
             relocated["unboxed_rests"] = relocated.get("unboxed_rests", 0) + 1
         if fates is not None:

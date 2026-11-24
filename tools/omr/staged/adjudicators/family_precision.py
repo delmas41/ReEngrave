@@ -2261,11 +2261,12 @@ def adjudicate_rest_is_not_a_rest(ev: Evidence) -> Ruling:
                    Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.STROKE_OWNER),
     scope=Kind.GLYPH,
     wants=(Q.GLYPH_BOX, Q.HUMAN_BOX_VERDICT,
-           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.STROKE_OWNER),
+           Q.GLYPH_BAND_DISTANCE, Q.CELL_STAFF_SPACE, Q.CLAIMED_AREA, Q.STROKE_OWNER, Q.UNBOXED_REST_SHAPE),
     subjects_from=Q.GLYPH_BOX,
     subjects_classed=("arpeggiato",),
     reasons=_human_only_reasons(Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO)
-    + ("in_a_key_signature_slot", "claimed_by:key_signature", "claimed_by:barline", "claimed_by:page_claim"),
+    + ("in_a_key_signature_slot", "claimed_by:key_signature", "claimed_by:barline", "claimed_by:page_claim",
+       "quarter_rest_shaped_ink"),
     mode=Mode.ADDITIVE,
 )
 def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
@@ -2285,6 +2286,21 @@ def adjudicate_arpeggiato_is_not_an_arpeggiato(ev: Evidence) -> Ruling:
     cf_row = _ledger_finding(ev, "arpeggiato")          # ROADMAP 2.277 / 2.284 r5 (the ONE consult under OMR_PAGE_LEDGER_OWNS): claimed ink is final
     if cf_row is not None:
         return _rest_claim_final_refusal(cf_row, None, detail)
+    # ROADMAP 2.339 (OMR_QUARTER_REST_BOXED_AS_OTHER, default OFF): an arpeggiato box standing on ink with a quarter rest's shape, alone in
+    # the staff, is not an arpeggio. NEVER a real arpeggio: a wavy line standing immediately left of a chord (`quarter_rest_shaped` keeps
+    # the 2.99 head-beside guard). The 2.99 ink reader then reads the rest.
+    from . import unboxed_rest as _ur
+    if _ur.quarter_rest_boxed_as_other_enabled():
+        mine = ev.rows(Q.GLYPH_BOX)
+        bb = (mine[-1].detail or {}).get("bbox_page_px") if mine else None
+        if bb:
+            rest_row = _ur.eighth_rest_under_box(ev, bb, shaped=_ur.quarter_rest_shaped)
+            if rest_row is not None:
+                rd = rest_row.detail or {}
+                return Ruling(value=True, reason="quarter_rest_shaped_ink", used=tuple(used) + (rest_row.id,),
+                              detail={**detail, "rest_ink": rest_row.subject.to_key(),
+                                      **{k: rd.get(k) for k in ("width_spaces", "height_spaces", "staff_step",
+                                                                "column_profile", "right_head")}})
     return Ruling(value=False, reason="arpeggiato", used=used, detail=detail)
 
 

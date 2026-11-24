@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 146 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 8 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 28 gaps; 203 flag predicates; 28 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 27 gaps; 204 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -234,7 +234,7 @@ A silence of a written length; a whole rest means the whole bar.
 - **hands on** (facts): `empty_bar_rest_search`, `empty_bar_whole_rest`, `head_ink_is_a_rest`, `notehead_is_a_whole_rest`, `notehead_is_an_eighth_rest`, `rest`, `rest_ink_contact`, `rest_is_not_a_rest`, `unboxed_ink_is_a_rest`, `unboxed_rest_shape`
 - **decided by** (ADJUDICATE): `adjudicate_empty_bar_whole_rest` -> `empty_bar_whole_rest`; `adjudicate_head_ink_is_a_rest` -> `head_ink_is_a_rest`; `adjudicate_narrow_box_is_an_eighth_rest` -> `notehead_is_an_eighth_rest`; `adjudicate_notehead_is_a_whole_rest` -> `notehead_is_a_whole_rest`; `adjudicate_rest_is_not_a_rest` -> `rest_is_not_a_rest`; `adjudicate_unboxed_ink_is_a_rest` -> `unboxed_ink_is_a_rest`
 - **read by GATHER** (2): `gather.py:gather_lowconf_rescue`, `page_claim_names.py:gather_page_claim_boxes`
-- **read by ADJUDICATE** (19): `adjudicators/family_precision.py:_cell_rest_boxes`, `adjudicators/family_precision.py:_rest_stroke_into_head_refusal`, `adjudicators/family_precision.py:_whole_rest_hangs_narrowing`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/rhythm.py:_attached_dots` +11 more
+- **read by ADJUDICATE** (20): `adjudicators/family_precision.py:_cell_rest_boxes`, `adjudicators/family_precision.py:_rest_stroke_into_head_refusal`, `adjudicators/family_precision.py:_whole_rest_hangs_narrowing`, `adjudicators/head_rest_shape.py:read_head_ink`, `adjudicators/notehead_precision.py:_rest_twin_refusal`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/rhythm.py:_attached_dots` +12 more
 - **read by EVALUATE** (10): `consequences.py:_contest_group`, `consequences.py:_left_the_bar`, `consequences.py:_missed_rest_witness`, `consequences.py:_reinstated_rest`, `consequences.py:_size_measure_rest_also_reads`, `consequences.py:_whole_rest_ink_twin`, `consequences.py:reinstate_rest_between_staves`, `rule size_head_ink_rest` +2 more
 - **read by INFER** (1): `infer rule collapse_narrowed_by_bar`
 - **read by EXPORT** (8): `export.py:_file_dropped_heads`, `export.py:_place_found_whole_rests`, `export.py:_place_notes`, `export.py:_whole_rest_ink_was_read`, `export.py:claim_guess_of`, `export.py:one_ink_guess_of`, `export.py:to_musicxml`, `lilypond.py:to_lilypond`
@@ -528,11 +528,11 @@ Marks the file does not yet write in full.
 
 - **found from**: (no reader of its own)
 - **claims**: nothing
-- **hands on** (facts): `arpeggiato_is_not_an_arpeggiato` (FILED-BUT-NEVER-READ), `ottava_owner`, `pedal_owner`
+- **hands on** (facts): `arpeggiato_is_not_an_arpeggiato`, `ottava_owner`, `pedal_owner`
 - **decided by** (ADJUDICATE): `adjudicate_arpeggiato_is_not_an_arpeggiato` -> `arpeggiato_is_not_an_arpeggiato`; `adjudicate_ottava_owner` -> `ottava_owner`; `adjudicate_pedal_owner` -> `pedal_owner`
+- **read by ADJUDICATE** (1): `adjudicators/unboxed_rest.py:_cover_left`
 - **read by EXPORT** (1): `export.py:_grand_staff_family_gap`
-- **open gaps** (1):
-  - UNREAD: `arpeggiato_is_not_an_arpeggiato` is filed and read by no stage
+- **open gaps**: none derived
 
 ### Page ink (every stroke) -- `--mark ink`
 
@@ -583,9 +583,9 @@ Which edition and movement this is; scanned or engraved.
 
 ## PART 2 -- by fact
 
-- **LIVE** (146): `accidental`, `accidental_is_not_an_accidental`, `accidental_owner`, `accidental_staff_position`, `arc_box`, `arc_ink_shape`, `arc_is_not_an_arc`, `arc_kind`, `arc_owner`, `articulation_is_not_an_articulation`, `articulation_mark`, `articulation_owner`, `aug_dot`, `barline_column`, `beam_stroke`, `beam_stroke_ink`, `bracket_block`, `cell_box`, `cell_ink_pieces`, `cell_staff_space`, `claimed_area`, `clef`, `clef_seed`, `direction`, `direction_word`, `dot_role`, `dot_staff_position`, `dot_stroke_ink`, `duration`, `dynamic`, `dynamic_is_not_a_dynamic`, `dynamic_letter`, `dynamic_letter_neighbours`, `empty_bar_rest_search`, `empty_bar_whole_rest`, `endings`, `event`, `far_head_ledger_position`, `far_head_owner_ledger`, `fermata_mark`, `fermata_owner`, `flag`, `flag_is_not_a_flag`, `glyph_band_distance`, `glyph_box`, `glyph_conf`, `glyph_ladder`, `glyph_owner`, `glyph_strokes`, `group_symbol`, `head_ink`, `head_ink_is_a_rest`, `head_line_cut`, `head_oval`, `head_stem`, `head_stem_reach`, `ink`, `input_domain`, `instrument`, `key_signature`, `keysig_clef_fit`, `keysig_marker`, `keysig_marker_is_not_a_marker`, `keysig_run_position`, `keysig_template_fit`, `ledger_ink_under`, `ledger_is_not_a_ledger`, `ledger_owner_density`, `ledger_rung_ink`, `letter_look_cover`, `margin_label`, `mark_group`, `mark_shape`, `marking`, `measure_partition`, `meter`, `meter_glyph`, `meter_ocr`, `meter_template`, `meter_template_at_bar`, `movement_spans`, `narrow_box_shape`, `notehead_class`, `notehead_ink`, `notehead_is_a_whole_rest`, `notehead_is_an_eighth_rest`, `notehead_is_not_a_notehead`, `notehead_letter_ink`, `notehead_position`, `notehead_recentre`, `notehead_staff_position`, `notehead_stem_cross_ink`, `onset_column`, `ornament_mark`, `ornament_owner`, `ottava_owner`, `page_arc`, `page_arc_binding`, `page_mark`, `page_mark_owner`, `page_span`, `page_stroke`, `part_key`, `part_name`, `part_partition`, `pedal_owner`, `pitch`, `printed_bar_number`, `repeat_barline`, `repeat_dots`, `rest`, `rest_ink_contact`, `rest_is_not_a_rest`, `roster_entry`, `slot_index`, `stacked_head_fit`, `staff_extent`, `staff_group`, `staff_lines`, `staff_ordinal`, `staff_skew`, `staff_spacing`, `stem`, `stem_direction`, `stem_head_contact`, `stem_slash`, `stem_tip_ink`, `stem_value`, `stroke`, `stroke_owner`, `system_arc`, `system_key`, `system_staff_count`, `tie_pair`, `tuplet_marker`, `tuplet_marker_is_not_a_marker`, `tuplet_ratio`, `unboxed_ink_is_a_rest`, `unboxed_rest_shape`, `unison_voices`, `unread_mark`, `voices`, `volta_bracket`, `volta_numeral`, `wedge_anchor`, `wedge_box`
+- **LIVE** (147): `accidental`, `accidental_is_not_an_accidental`, `accidental_owner`, `accidental_staff_position`, `arc_box`, `arc_ink_shape`, `arc_is_not_an_arc`, `arc_kind`, `arc_owner`, `arpeggiato_is_not_an_arpeggiato`, `articulation_is_not_an_articulation`, `articulation_mark`, `articulation_owner`, `aug_dot`, `barline_column`, `beam_stroke`, `beam_stroke_ink`, `bracket_block`, `cell_box`, `cell_ink_pieces`, `cell_staff_space`, `claimed_area`, `clef`, `clef_seed`, `direction`, `direction_word`, `dot_role`, `dot_staff_position`, `dot_stroke_ink`, `duration`, `dynamic`, `dynamic_is_not_a_dynamic`, `dynamic_letter`, `dynamic_letter_neighbours`, `empty_bar_rest_search`, `empty_bar_whole_rest`, `endings`, `event`, `far_head_ledger_position`, `far_head_owner_ledger`, `fermata_mark`, `fermata_owner`, `flag`, `flag_is_not_a_flag`, `glyph_band_distance`, `glyph_box`, `glyph_conf`, `glyph_ladder`, `glyph_owner`, `glyph_strokes`, `group_symbol`, `head_ink`, `head_ink_is_a_rest`, `head_line_cut`, `head_oval`, `head_stem`, `head_stem_reach`, `ink`, `input_domain`, `instrument`, `key_signature`, `keysig_clef_fit`, `keysig_marker`, `keysig_marker_is_not_a_marker`, `keysig_run_position`, `keysig_template_fit`, `ledger_ink_under`, `ledger_is_not_a_ledger`, `ledger_owner_density`, `ledger_rung_ink`, `letter_look_cover`, `margin_label`, `mark_group`, `mark_shape`, `marking`, `measure_partition`, `meter`, `meter_glyph`, `meter_ocr`, `meter_template`, `meter_template_at_bar`, `movement_spans`, `narrow_box_shape`, `notehead_class`, `notehead_ink`, `notehead_is_a_whole_rest`, `notehead_is_an_eighth_rest`, `notehead_is_not_a_notehead`, `notehead_letter_ink`, `notehead_position`, `notehead_recentre`, `notehead_staff_position`, `notehead_stem_cross_ink`, `onset_column`, `ornament_mark`, `ornament_owner`, `ottava_owner`, `page_arc`, `page_arc_binding`, `page_mark`, `page_mark_owner`, `page_span`, `page_stroke`, `part_key`, `part_name`, `part_partition`, `pedal_owner`, `pitch`, `printed_bar_number`, `repeat_barline`, `repeat_dots`, `rest`, `rest_ink_contact`, `rest_is_not_a_rest`, `roster_entry`, `slot_index`, `stacked_head_fit`, `staff_extent`, `staff_group`, `staff_lines`, `staff_ordinal`, `staff_skew`, `staff_spacing`, `stem`, `stem_direction`, `stem_head_contact`, `stem_slash`, `stem_tip_ink`, `stem_value`, `stroke`, `stroke_owner`, `system_arc`, `system_key`, `system_staff_count`, `tie_pair`, `tuplet_marker`, `tuplet_marker_is_not_a_marker`, `tuplet_ratio`, `unboxed_ink_is_a_rest`, `unboxed_rest_shape`, `unison_voices`, `unread_mark`, `voices`, `volta_bracket`, `volta_numeral`, `wedge_anchor`, `wedge_box`
 - **ONLY-BEHIND-AN-OFF-FLAG** (8): `dynamic_band_position`, `meter_glyph_position`, `meter_ocr_at_bar`, `page_beam`, `page_beam_tip`, `page_stem`, `second_hollow`, `wedge_band_position`
-- **FILED-BUT-NEVER-READ** (8): `arpeggiato_is_not_an_arpeggiato`, `barline_column_fit`, `beam_stem_join`, `beam_stem_levels`, `dynamic_anchor`, `gap_bridging`, `system_membership`, `vertical_run`
+- **FILED-BUT-NEVER-READ** (7): `barline_column_fit`, `beam_stem_join`, `beam_stem_levels`, `dynamic_anchor`, `gap_bridging`, `system_membership`, `vertical_run`
 - **READ-ONLY-INSIDE-GATHER** (2): `document_identity`, `dossier_fact`
 - **FILED-ONLY-OUTSIDE-THE-PIPELINE** (3): `clef_glyph`, `clef_position`, `human_box_verdict`
 - **NOT-IN-USE** (15): `arc_position`, `articulation_position`, `cell_position_basis`, `clef_located`, `clef_refusal_branch`, `direction_band_position`, `fermata_position`, `human_verdict_stance`, `left_edge_ink`, `ornament_position`, `page_head`, `rest_position`, `systemic_column`, `text_layer`, `tuplet_marker_position`
@@ -666,9 +666,11 @@ Which edition and movement this is; scanned or engraved.
 ### `arc_position` (Q.ARC_POSITION) -- NOT-IN-USE
 
 
-### `arpeggiato_is_not_an_arpeggiato` (Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO) -- FILED-BUT-NEVER-READ
+### `arpeggiato_is_not_an_arpeggiato` (Q.ARPEGGIATO_IS_NOT_AN_ARPEGGIATO) -- LIVE
 
 - `arpeggiato_is_not_an_arpeggiato` decided by: ADJUDICATE `adjudicators/family_precision.py:adjudicate_arpeggiato_is_not_an_arpeggiato`
+- `arpeggiato_is_not_an_arpeggiato` declared in `wants` (not a read): `adjudicate_unboxed_ink_is_a_rest`
+- `arpeggiato_is_not_an_arpeggiato` read by ADJUDICATE: `adjudicators/unboxed_rest.py:_cover_left`
 - `arpeggiato_is_not_an_arpeggiato` belongs to: `--mark other`
 
 ### `articulation_is_not_an_articulation` (Q.ARTICULATION_IS_NOT_AN_ARTICULATION) -- LIVE
@@ -1075,7 +1077,7 @@ Which edition and movement this is; scanned or engraved.
 - `glyph_box` read by INFER: `infer rule collapse_duration_by_column`, `infer rule collapse_duration_to_barline`, `inferences.py:_events_with_x`, `inferences.py:_simultaneous_heads`
 - `glyph_box` read by EXPORT: `export.py:_attach_unplaced`, `export.py:_bar_has_other_head_or_rest_box`, `export.py:_clipped_piece_of_the_next_staff`, `export.py:_detector_view_census`, `export.py:_file_dropped_heads`, `export.py:_head_touches_a_letter_or_whole_rest`, `export.py:_notehead_page_boxes`, `export.py:_other_mark_boxes`, `export.py:_place_notes`, `export.py:_rest_twin_in_bar`, `export.py:_settle_folded_pitches`, `export.py:coverage`
 - `glyph_box` read by tools: `trace.py:empty_claims`, `trace.py:population_of`
-- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export_unison.py:arc_side`
+- `glyph_box` read only OFF by default: `adjudicators/family_precision.py:_rest_off_center_refusal`, `adjudicators/family_precision.py:adjudicate_arpeggiato_is_not_an_arpeggiato`, `adjudicators/key_slots.py:key_slot_occupant`, `adjudicators/key_slots.py:meter_column`, `adjudicators/ownership.py:adjudicate_wedge_anchor`, `adjudicators/rhythm.py:_whole_head`, `adjudicators/rhythm.py:stem_reach_equivalent`, `export_unison.py:arc_side`
 - `glyph_box` belongs to: `--mark notehead`, `--mark arc`, `--mark hairpin`, `--mark dynamic`, `--mark box`
 
 ### `glyph_conf` (Q.GLYPH_CONF) -- LIVE
@@ -1684,8 +1686,8 @@ Which edition and movement this is; scanned or engraved.
 
 - `rest_is_not_a_rest` decided by: ADJUDICATE `adjudicators/family_precision.py:adjudicate_rest_is_not_a_rest`
 - `rest_is_not_a_rest` revised by: EVALUATE `reinstate_rest_between_staves`
-- `rest_is_not_a_rest` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_dynamic_anchor`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_voices`
-- `rest_is_not_a_rest` read by ADJUDICATE: `adjudicators/narrow_rest.py:adjudicate_narrow_box_is_an_eighth_rest`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/rhythm.py:_glyph_left_the_bar`, `adjudicators/text.py:adjudicate_dynamic_anchor`
+- `rest_is_not_a_rest` declared in `wants` (not a read): `adjudicate_accidental_owner`, `adjudicate_dynamic_anchor`, `adjudicate_narrow_box_is_an_eighth_rest`, `adjudicate_unboxed_ink_is_a_rest`, `adjudicate_voices`
+- `rest_is_not_a_rest` read by ADJUDICATE: `adjudicators/narrow_rest.py:adjudicate_narrow_box_is_an_eighth_rest`, `adjudicators/ownership.py:adjudicate_accidental_owner`, `adjudicators/rhythm.py:_glyph_left_the_bar`, `adjudicators/text.py:adjudicate_dynamic_anchor`, `adjudicators/unboxed_rest.py:_cover_left`
 - `rest_is_not_a_rest` read by EVALUATE: `consequences.py:_contest_group`, `consequences.py:_left_the_bar`, `consequences.py:reinstate_rest_between_staves`
 - `rest_is_not_a_rest` read by INFER: `infer rule collapse_narrowed_by_bar`
 - `rest_is_not_a_rest` read by EXPORT: `export.py:_place_notes`, `export.py:claim_guess_of`, `export.py:one_ink_guess_of`
@@ -1935,7 +1937,7 @@ Which edition and movement this is; scanned or engraved.
 
 - `unboxed_rest_shape` filed by: GATHER `gather.py:gather_unboxed_rest_ink`
 - `unboxed_rest_shape` abstained by (not a producer): `gather.py:gather_unboxed_rest_ink`
-- `unboxed_rest_shape` declared in `wants` (not a read): `adjudicate_accidental_is_not_an_accidental`, `adjudicate_head_ink_is_a_rest`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_stroke_owner`, `adjudicate_unboxed_ink_is_a_rest`
+- `unboxed_rest_shape` declared in `wants` (not a read): `adjudicate_accidental_is_not_an_accidental`, `adjudicate_arpeggiato_is_not_an_arpeggiato`, `adjudicate_head_ink_is_a_rest`, `adjudicate_notehead_is_not_a_notehead`, `adjudicate_stroke_owner`, `adjudicate_unboxed_ink_is_a_rest`
 - `unboxed_rest_shape` read by ADJUDICATE: `adjudicators/head_rest_shape.py:adjudicate_head_ink_is_a_rest`, `adjudicators/notehead_precision.py:adjudicate_notehead_is_not_a_notehead`, `adjudicators/stroke_owner.py:_rest_shape_vetoes`, `adjudicators/unboxed_rest.py:adjudicate_unboxed_ink_is_a_rest`, `adjudicators/unboxed_rest.py:eighth_rest_under_box`
 - `unboxed_rest_shape` read by EXPORT: `export.py:_place_notes`
 - `unboxed_rest_shape` belongs to: `--mark rest`
@@ -2046,9 +2048,8 @@ none
 
 - detail key `trimmed` is read and filed by nothing -- at `adjudicators/aug_dot_join.py:head_oval_from_ink`
 
-### FILED, NEVER READ BY A STAGE: a live producer whose fact no stage reads (a human or a tool may) (8)
+### FILED, NEVER READ BY A STAGE: a live producer whose fact no stage reads (a human or a tool may) (7)
 
-- `arpeggiato_is_not_an_arpeggiato` is filed and read by no stage -- at `ADJUDICATE adjudicators/family_precision.py:adjudicate_arpeggiato_is_not_an_arpeggiato`
 - `barline_column_fit` is filed and read by no stage -- at `barline_columns.py:gather_barline_columns`
 - `beam_stem_join` is filed and read by no stage -- at `gather.py:_observe_beam_stem_join`
 - `beam_stem_levels` is filed and read by no stage -- at `gather.py:beam_stem_levels_for`
