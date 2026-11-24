@@ -3304,14 +3304,91 @@ def _tips_honouring_claims(ev: Evidence, cell, own_stems):
 
 def _tip_obs(ev: Evidence, cell, own_stems):
     """The tip rows of the head's own stems: the stroke map's when the flag is on and the cell has a map, else `Q.STEM_TIP_INK` as today
-    (2.235, `OMR_TIPS_HONOUR_CLAIMS`: with the `occupied` abstentions the claims explain read as clean)."""
+    (2.235, `OMR_TIPS_HONOUR_CLAIMS`: with the `occupied` abstentions the claims explain read as clean). ROADMAP 2.306 r21
+    (`OMR_HOOK_NOT_ON_AN_ARC`): a hook whose ink is a page arc's is a disputed tip (`_hooks_on_arcs`)."""
     if stems_from_strokes_enabled():
         got = _tips_from_strokes(ev, cell, own_stems)
         if got is not None:
             return got[0]
     if tips_honour_claims_enabled():
-        return _tips_honouring_claims(ev, cell, own_stems)[0]
-    return ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+        rows = _tips_honouring_claims(ev, cell, own_stems)[0]
+    else:
+        rows = ev.rows(Q.STEM_TIP_INK, scope=Scope.SELF_AND_ANCESTORS, subject=cell)
+    if hook_not_on_an_arc_enabled():
+        rows = _hooks_on_arcs(ev, cell, rows)
+    return rows
+
+
+#: ROADMAP 2.306 r21 (Brahms 8/0/1/8: a slur leaving the Cb5's down stem near its tip was counted as a hook; the Cb5 was written a dotted
+#: eighth, plain). Default OFF (allow-list 1/true/yes/on).
+HOOK_NOT_ON_AN_ARC_ENV = "OMR_HOOK_NOT_ON_AN_ARC"
+#: the reason word of a duration whose only hook is an arc's ink (narrowed, equal support, like `tip_readers_disagree`)
+HOOK_IS_AN_ARC_REASON = "tip_hook_is_an_arc"
+#: a flag ends inside the hook reader's own window beside its stem (`gather.stem_tip_ink`); a curve whose ink passes through that window
+#: and runs on at least this many staff spaces past it (either side) reaches where no flag does
+ARC_RUNS_ON_SP = 1.0
+
+
+def hook_not_on_an_arc_enabled() -> bool:
+    """`OMR_HOOK_NOT_ON_AN_ARC` (ROADMAP 2.306 r21), default OFF: allow-list, so an empty value or a typo cannot switch a document onto it."""
+    return os.environ.get(HOOK_NOT_ON_AN_ARC_ENV, "").strip().lower() in ("1", "true", "yes", "on")
+
+
+def arc_through_hook_window(window_page: Sequence[float], arcs: Sequence[Tuple[str, Dict[str, Any]]]) -> Optional[Dict[str, Any]]:
+    """ROADMAP 2.306 r21. A FLAG HANGS FROM THE STEM'S FREE TIP, ON THE RIGHT, AND ENDS BESIDE IT; A SLUR THAT STARTS AT THE STEM LEAVES IT ON
+    THE SAME SIDE BUT RUNS ON. The first page arc (`Q.PAGE_ARC`, read from the page ink: `(row id, detail)` with `points` and `space_page_px`)
+    whose START -- its left end -- lies in the window the hook was read in (`window_page` x0, y0, x1, y1 page px; the window stands on the
+    stem's right, where a flag hangs) and which runs on to the right at least `ARC_RUNS_ON_SP` spaces past that window: the hook the reader
+    counted there is the first stretch of that slur (Brahms 8/0/1/8). None where no arc does: the hook stands. NEVER for an arc that comes in
+    from the stem's other side and stops at it, or only passes by (Brahms 25/1/8/3: a slur from the left ends at a printed eighth's stem and
+    the arc reader ran on down its flag -- the flag stands). Never by a box: the arc's own traced points. Pure."""
+    x0, y0, x1, y1 = (float(v) for v in window_page)
+    for rid, d in arcs:
+        pts = [(float(p[0]), float(p[1])) for p in (d.get("points") or ()) if len(p) >= 2]
+        sp = float(d.get("space_page_px") or 0.0)
+        if len(pts) < 2 or sp <= 0:
+            continue
+        start = min(pts, key=lambda p: p[0])
+        past = (max(p[0] for p in pts) - x1) / sp
+        if past < ARC_RUNS_ON_SP or not (x0 <= start[0] <= x1 and y0 <= start[1] <= y1):
+            continue
+        return {"arc_row": rid, "ordinal": d.get("ordinal"), "start": [round(start[0], 1), round(start[1], 1)], "runs_on_sp": round(past, 2)}
+    return None
+
+
+def _hooks_on_arcs(ev: Evidence, cell, rows):
+    """ROADMAP 2.306 r21 (`OMR_HOOK_NOT_ON_AN_ARC`). The arcs are read on the PAGE (`Q.PAGE_ARC`, 2.274) AFTER the stem tips were read at GATHER,
+    so the tip reader could not leave an arc's ink out (2.306 r7: a reader cannot use a fact filed later) -- the two are CONNECTED here, at
+    ADJUDICATE. A tip row that SAW a hook (value True, with its `window_canonical`) whose window an arc runs through and on past
+    (`arc_through_hook_window`) is not a flag: it becomes a DISPUTED tip (`tip_disagree`, `hook_on_arc` naming the arc), so the duration
+    NARROWS between the head's own value and the flagged one (equal support; the bar settles, INFER labels: written blue, never plain).
+    Never the reverse: a tip that read no hook is untouched, and a hook with no arc through its window stands."""
+    if not any(getattr(r, "value", None) is True and (r.detail or {}).get("window_canonical") for r in rows):
+        return rows
+    frame = _cell_frame(ev, cell)
+    if frame is None:
+        return rows
+    ox, oy, up = frame
+    try:
+        psub = ev.subject.at(Kind.PAGE)
+    except Exception:          # noqa: BLE001 -- a subject with no page (a test stub) reads no arcs
+        return rows
+    arcs = [(a.id, a.detail or {}) for a in ev.rows(Q.PAGE_ARC, subject=psub)]
+    if not arcs:
+        return rows
+    import types
+    out = []
+    for r in rows:
+        d = r.detail or {}
+        w = d.get("window_canonical")
+        if getattr(r, "value", None) is True and w and len(w) == 4 and not d.get("tip_disagree"):
+            wp = (ox + float(w[0]) / up, oy + float(w[1]) / up, ox + float(w[2]) / up, oy + float(w[3]) / up)
+            hit = arc_through_hook_window(wp, arcs)
+            if hit is not None:
+                out.append(types.SimpleNamespace(id=r.id, value=True, detail={**d, "tip_disagree": True, "hook_on_arc": hit}))
+                continue
+        out.append(r)
+    return tuple(out)
 
 
 def _tip_abs(ev: Evidence, cell, own_stems):
@@ -3443,7 +3520,9 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
                    # the value, the OUTCOME and the beam group written depend on it.
                    Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
                    # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the trimmed head's own fill turns an unread black hollow.
-                   Q.HEAD_INK),
+                   Q.HEAD_INK,
+                   # ROADMAP 2.306 r21 (flag `OMR_HOOK_NOT_ON_AN_ARC`): a hook an arc's ink explains narrows the value instead of deciding it.
+                   Q.PAGE_ARC),
     scope=Kind.GLYPH,
     # ⚠️ `Q.STEM_SLASH` JOINS AT ROADMAP 2.71: a beam stroke that is a read
     # tremolo slash's own ink is not counted (`_not_a_slash`), so the level,
@@ -3492,6 +3571,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
            Q.NOTEHEAD_IS_NOT_A_NOTEHEAD, Q.SECOND_HOLLOW,
            Q.DOT_STAFF_POSITION, Q.NOTEHEAD_STAFF_POSITION, Q.NOTEHEAD_LETTER_INK,
            Q.PAGE_STEM,          # ROADMAP 2.306 (flag `OMR_PAGE_STEMS`): the head's stem read once on the page
+           Q.PAGE_ARC,           # ROADMAP 2.306 r21 (flag `OMR_HOOK_NOT_ON_AN_ARC`): a hook whose ink a page arc runs through is not a flag
            # ROADMAP 2.318 / 2.319: the stroke map, the one beam count's only source.
            Q.STROKE, Q.GLYPH_STROKES, Q.STROKE_OWNER,
            # ROADMAP 2.220 m2 (flag `OMR_FILL_FROM_STROKES`): the head's one trimmed-ink reading.
@@ -3500,7 +3580,7 @@ def stem_reach_equivalent(ev: Evidence, stroke_rows=None, mask=None):
              "second_hollow_contradicted_by_marks", "second_only_no_independent_evidence",
              "head_and_marks", "beams_ambiguous", "flags_disagree",
              "flag_ink_unread", "hooks_counted",
-             "tip_readers_disagree",
+             "tip_readers_disagree", "tip_hook_is_an_arc",
              # ROADMAP 2.341 (OFF by default): the two head reads disagree; a hook seen at the tip in a beamless cell.
              "head_reads_disagree", "flag_ink_in_beamless_cell",
              "head_fill_from_ink", "hollow_head_bare_stem", "no_notehead",
@@ -4385,6 +4465,9 @@ def adjudicate_duration(ev: Evidence) -> Ruling:
                     value={"beats": _scale(t, ratio, ev), "written": t,
                            "dots": n_dots, "beam_levels": lv},
                     support=1.0))
+            on_arc = [(r.detail or {}).get("hook_on_arc") for r in disputed if (r.detail or {}).get("hook_on_arc")]
+            if on_arc:      # ROADMAP 2.306 r21: the hook is an arc's ink (`_hooks_on_arcs`), named so it is never mistaken for a reader dispute
+                return Ruling.narrow(cands, HOOK_IS_AN_ARC_REASON, used=tuple(used), **shared, hooks_counted=counted, hook_on_arc=on_arc)
             return Ruling.narrow(cands, "tip_readers_disagree", used=tuple(used), **shared,
                                  hooks_counted=counted)
 

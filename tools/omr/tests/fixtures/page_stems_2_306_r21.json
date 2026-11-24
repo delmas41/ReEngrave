@@ -1,0 +1,820 @@
+{
+ "source": "lane-2.306-r20 full frozen sample, Brahms ON arm gathered record (OMR_PAGE_STEMS + 3 stem flags), 2026-11-24; rows copied verbatim",
+ "barline": {
+  "rows": [
+   {
+    "id": "obs:432605",
+    "subject": "glyph/25/1/7/1/0",
+    "quantity": "glyph_box",
+    "value": [
+     "noteheadBlackInSpace",
+     975,
+     286,
+     134,
+     126
+    ],
+    "detail": {
+     "category": "notehead",
+     "bbox_page_px": [
+      1709.5625,
+      6079.365,
+      1746.7475,
+      6114.33
+     ],
+     "x_center_page": 1728.155,
+     "y_center_page": 6096.8475
+    }
+   },
+   {
+    "id": "obs:432627",
+    "subject": "glyph/25/1/7/1/10",
+    "quantity": "glyph_box",
+    "value": [
+     "noteheadBlackInSpace",
+     1676,
+     500,
+     28,
+     62
+    ],
+    "detail": {
+     "category": "notehead",
+     "bbox_page_px": [
+      1904.09,
+      6138.75,
+      1911.8600000000001,
+      6155.955
+     ],
+     "x_center_page": 1907.975,
+     "y_center_page": 6147.3525
+    }
+   },
+   {
+    "id": "obs:461228",
+    "subject": "glyph/25/1/7/1/0",
+    "quantity": "mark_group",
+    "value": "mg/25/1/130",
+    "detail": {
+     "family": "notehead",
+     "size": 1,
+     "rep": "glyph/25/1/7/1/0",
+     "identity": "page_head",
+     "head_how": "alone",
+     "head_ink_px": 373,
+     "ink_centre": [
+      1728.8,
+      6098.8
+     ]
+    }
+   },
+   {
+    "id": "obs:461291",
+    "subject": "glyph/25/1/7/1/10",
+    "quantity": "mark_group",
+    "value": "mg/25/1/145",
+    "detail": {
+     "family": "notehead",
+     "size": 1,
+     "rep": "glyph/25/1/7/1/10",
+     "identity": "page_head",
+     "head_how": "no_head_ink",
+     "head_ink_px": 0,
+     "ink_centre": [
+      1908.0,
+      6147.4
+     ]
+    }
+   },
+   {
+    "id": "obs:488914",
+    "subject": "glyph/25/1/7/1/0",
+    "quantity": "page_stem",
+    "value": "obs:474954",
+    "detail": {
+     "page_stroke": 1822,
+     "direction": "down",
+     "side": "left",
+     "tip_y": 6201.0,
+     "stem_box": [
+      1710.0,
+      6126.0,
+      1717.0,
+      6201.0
+     ],
+     "head": 165,
+     "how": "engraving_side",
+     "candidates": [
+      {
+       "side": "left",
+       "direction": "down",
+       "dx": 0.09,
+       "reach": 3.8,
+       "gap": 1.1,
+       "fit": 0.31,
+       "stroke": 1822
+      }
+     ],
+     "held": [],
+     "near": [
+      1789,
+      1790,
+      1792,
+      1800
+     ],
+     "margin": 0.31
+    }
+   },
+   {
+    "id": "obs:488970",
+    "subject": "glyph/25/1/7/1/10",
+    "quantity": "page_stem",
+    "value": "obs:488958",
+    "detail": {
+     "page_stroke": 2093,
+     "direction": "up",
+     "side": "right",
+     "tip_y": 6044.0,
+     "stem_box": [
+      1916.0,
+      6044.0,
+      1921.0,
+      6117.0
+     ],
+     "head": 201,
+     "how": "engraving_side",
+     "candidates": [
+      {
+       "side": "right",
+       "direction": "up",
+       "dx": 0.239,
+       "reach": 3.72,
+       "gap": 1.09,
+       "fit": 0.161,
+       "stroke": 2093
+      }
+     ],
+     "held": [],
+     "near": [
+      2058,
+      2063,
+      2065,
+      2066
+     ],
+     "margin": 0.161
+    }
+   }
+  ],
+  "page_strokes": {
+   "1822": {
+    "kind": "vertical",
+    "bbox_page_px": [
+     1710.0,
+     6126.0,
+     1717.0,
+     6201.0
+    ],
+    "staff_space_local_px": 28.18,
+    "slope": null,
+    "intercept": null,
+    "width_px": null,
+    "rows": null,
+    "system": null
+   },
+   "2093": {
+    "kind": "vertical",
+    "bbox_page_px": [
+     1916.0,
+     6044.0,
+     1921.0,
+     6117.0
+    ],
+    "staff_space_local_px": 27.78,
+    "slope": null,
+    "intercept": null,
+    "width_px": null,
+    "rows": null,
+    "system": null
+   },
+   "6715": {
+    "kind": "barline",
+    "bbox_page_px": [
+     1899.0,
+     4487.0,
+     1924.0,
+     7191.0
+    ],
+    "staff_space_local_px": null,
+    "slope": -0.004359,
+    "intercept": 1936.68,
+    "width_px": 10,
+    "rows": 2545,
+    "system": 1
+   }
+  },
+  "refusal": {
+   "subject": "glyph/25/1/7/1/10",
+   "quantity": "notehead_is_not_a_notehead",
+   "outcome": "decided",
+   "value": true,
+   "reason": "claimed_by:barline"
+  }
+ },
+ "hook": {
+  "glyph_boxes": {
+   "glyph/8/0/1/8/4": {
+    "value": [
+     "noteheadBlackInSpace",
+     665,
+     696,
+     131,
+     104
+    ],
+    "bbox_page_px": [
+     4018.525,
+     940.36,
+     4055.86,
+     970.0
+    ]
+   },
+   "glyph/25/1/8/3/3": {
+    "value": [
+     "noteheadBlackInSpace",
+     615,
+     591,
+     126,
+     117
+    ],
+    "bbox_page_px": [
+     2499.6625,
+     6382.0025,
+     2534.6275,
+     6414.47
+    ]
+   }
+  },
+  "cb5_tip": {
+   "id": "obs:223645",
+   "subject": "cell/8/0/1/8",
+   "quantity": "stem_tip_ink",
+   "value": true,
+   "detail": {
+    "stem_row_id": "obs:223643",
+    "end": "bottom",
+    "why": "shaped",
+    "window_canonical": [
+     698.25,
+     700,
+     788.25,
+     1090
+    ],
+    "line_rows_left_out": 0,
+    "right": 0.3816,
+    "left": 0.1583,
+    "area": 1.303,
+    "left_area": 0.0,
+    "out": 1.02,
+    "arm": 2.04,
+    "t_first": 1.47,
+    "window_found": false,
+    "window_right": 0.2551,
+    "window_left": 0.0187,
+    "witness": "shape",
+    "hooks": 1,
+    "hooks_min": 1,
+    "hooks_max": 1,
+    "hooks_reason": null,
+    "hooks_support": [
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "arcs_p8": [
+   {
+    "id": "obs:224227",
+    "detail": {
+     "ordinal": 116,
+     "bbox_page_px": [
+      3817.4,
+      1010.3,
+      4027.2,
+      1068.4
+     ],
+     "points": [
+      [
+       3817.4,
+       1058.0
+      ],
+      [
+       3826.0,
+       1059.7
+      ],
+      [
+       3841.6,
+       1060.6
+      ],
+      [
+       3848.6,
+       1059.7
+      ],
+      [
+       3857.2,
+       1058.8
+      ],
+      [
+       3864.2,
+       1058.8
+      ],
+      [
+       3872.9,
+       1058.0
+      ],
+      [
+       3885.0,
+       1056.2
+      ],
+      [
+       3893.7,
+       1056.2
+      ],
+      [
+       3902.3,
+       1054.5
+      ],
+      [
+       3909.3,
+       1054.5
+      ],
+      [
+       3918.0,
+       1052.8
+      ],
+      [
+       3926.6,
+       1051.0
+      ],
+      [
+       3933.6,
+       1049.3
+      ],
+      [
+       3942.2,
+       1046.7
+      ],
+      [
+       3949.2,
+       1045.8
+      ],
+      [
+       3957.8,
+       1042.4
+      ],
+      [
+       3964.8,
+       1040.6
+      ],
+      [
+       3973.5,
+       1037.2
+      ],
+      [
+       3982.1,
+       1033.7
+      ],
+      [
+       3989.1,
+       1030.2
+      ],
+      [
+       4013.3,
+       1021.5
+      ],
+      [
+       4025.5,
+       1021.5
+      ],
+      [
+       4027.2,
+       1023.3
+      ]
+     ],
+     "width_spaces": 7.62,
+     "sagitta_spaces": 0.471,
+     "thickness_spaces": 0.312,
+     "ends": [
+      [
+       3817.4,
+       1058.0,
+       3.6
+      ],
+      [
+       4027.2,
+       1023.3,
+       10.0
+      ]
+     ],
+     "witnesses": [],
+     "staff": [
+      0,
+      1
+     ],
+     "space_page_px": 27.75,
+     "core_ends": [
+      [
+       3817.4,
+       1058.0
+      ],
+      [
+       4027.2,
+       1023.3
+      ]
+     ]
+    }
+   },
+   {
+    "id": "obs:224235",
+    "detail": {
+     "ordinal": 124,
+     "bbox_page_px": [
+      4032.4,
+      972.1,
+      4190.2,
+      1015.5
+     ],
+     "points": [
+      [
+       4032.4,
+       980.8
+      ],
+      [
+       4039.4,
+       983.4
+      ],
+      [
+       4048.0,
+       990.3
+      ],
+      [
+       4055.0,
+       992.1
+      ],
+      [
+       4075.8,
+       1000.7
+      ],
+      [
+       4084.5,
+       1002.5
+      ],
+      [
+       4093.1,
+       1004.2
+      ],
+      [
+       4100.1,
+       1005.9
+      ],
+      [
+       4108.7,
+       1005.9
+      ],
+      [
+       4115.7,
+       1006.8
+      ],
+      [
+       4124.3,
+       1001.6
+      ],
+      [
+       4141.7,
+       999.9
+      ],
+      [
+       4150.4,
+       1002.5
+      ],
+      [
+       4172.9,
+       992.1
+      ],
+      [
+       4190.2,
+       993.8
+      ],
+      [
+       4190.2,
+       993.8
+      ]
+     ],
+     "width_spaces": 5.75,
+     "sagitta_spaces": 0.78,
+     "thickness_spaces": 0.312,
+     "ends": [
+      [
+       4032.4,
+       980.8,
+       30.5
+      ],
+      [
+       4190.2,
+       993.8,
+       7.1
+      ]
+     ],
+     "witnesses": [],
+     "staff": [
+      0,
+      1
+     ],
+     "space_page_px": 27.75,
+     "core_ends": [
+      [
+       4032.4,
+       980.8
+      ],
+      [
+       4190.2,
+       993.8
+      ]
+     ]
+    }
+   }
+  ],
+  "eighth_tip": {
+   "id": "obs:475113",
+   "subject": "cell/25/1/8/3",
+   "quantity": "stem_tip_ink",
+   "value": true,
+   "detail": {
+    "stem_row_id": "obs:475106",
+    "end": "top",
+    "why": "shaped",
+    "window_canonical": [
+     743.0,
+     292,
+     833.0,
+     584
+    ],
+    "line_rows_left_out": 0,
+    "right": 0.2309,
+    "left": 0.0521,
+    "area": 0.539,
+    "left_area": 0.0,
+    "out": 0.97,
+    "arm": 1.86,
+    "t_first": 0.72,
+    "window_found": true,
+    "window_right": 0.3316,
+    "window_left": 0.0764,
+    "window_stem_edges": [
+     725.0,
+     743.8
+    ],
+    "witness": "shape",
+    "hooks": 1,
+    "hooks_min": 1,
+    "hooks_max": 1,
+    "hooks_reason": null,
+    "hooks_support": [
+     1.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   }
+  },
+  "arcs_p25": [
+   {
+    "id": "obs:490056",
+    "detail": {
+     "ordinal": 45,
+     "bbox_page_px": [
+      2159.3,
+      6300.1,
+      2556.5,
+      6367.8
+     ],
+     "points": [
+      [
+       2159.3,
+       6340.0
+      ],
+      [
+       2168.0,
+       6335.7
+      ],
+      [
+       2187.0,
+       6328.7
+      ],
+      [
+       2194.0,
+       6327.0
+      ],
+      [
+       2202.7,
+       6325.3
+      ],
+      [
+       2211.3,
+       6321.8
+      ],
+      [
+       2218.3,
+       6320.1
+      ],
+      [
+       2226.9,
+       6316.6
+      ],
+      [
+       2233.9,
+       6315.7
+      ],
+      [
+       2242.5,
+       6314.9
+      ],
+      [
+       2249.5,
+       6314.9
+      ],
+      [
+       2258.2,
+       6312.3
+      ],
+      [
+       2266.8,
+       6313.1
+      ],
+      [
+       2273.8,
+       6311.4
+      ],
+      [
+       2282.4,
+       6310.5
+      ],
+      [
+       2289.4,
+       6310.5
+      ],
+      [
+       2298.0,
+       6309.7
+      ],
+      [
+       2305.0,
+       6308.8
+      ],
+      [
+       2313.7,
+       6309.7
+      ],
+      [
+       2332.7,
+       6310.5
+      ],
+      [
+       2339.7,
+       6311.4
+      ],
+      [
+       2348.3,
+       6311.4
+      ],
+      [
+       2355.3,
+       6313.1
+      ],
+      [
+       2364.0,
+       6310.5
+      ],
+      [
+       2372.6,
+       6314.0
+      ],
+      [
+       2379.6,
+       6314.9
+      ],
+      [
+       2388.2,
+       6314.9
+      ],
+      [
+       2395.2,
+       6316.6
+      ],
+      [
+       2403.8,
+       6316.6
+      ],
+      [
+       2410.8,
+       6319.2
+      ],
+      [
+       2419.5,
+       6320.9
+      ],
+      [
+       2428.1,
+       6322.7
+      ],
+      [
+       2435.1,
+       6325.3
+      ],
+      [
+       2443.7,
+       6327.0
+      ],
+      [
+       2455.9,
+       6328.7
+      ],
+      [
+       2464.5,
+       6332.2
+      ],
+      [
+       2471.5,
+       6333.9
+      ],
+      [
+       2480.2,
+       6338.3
+      ],
+      [
+       2488.8,
+       6342.6
+      ],
+      [
+       2495.8,
+       6346.1
+      ],
+      [
+       2504.4,
+       6351.3
+      ],
+      [
+       2511.4,
+       6354.8
+      ],
+      [
+       2528.7,
+       6351.3
+      ],
+      [
+       2535.7,
+       6356.5
+      ],
+      [
+       2556.5,
+       6359.1
+      ],
+      [
+       2556.5,
+       6359.1
+      ]
+     ],
+     "width_spaces": 14.38,
+     "sagitta_spaces": -1.493,
+     "thickness_spaces": 0.312,
+     "ends": [
+      [
+       2159.3,
+       6340.0,
+       -21.7
+      ],
+      [
+       2556.5,
+       6359.1,
+       7.1
+      ]
+     ],
+     "witnesses": [],
+     "staff": [
+      1,
+      8
+     ],
+     "space_page_px": 27.75,
+     "core_ends": [
+      [
+       2159.3,
+       6340.0
+      ],
+      [
+       2556.5,
+       6359.1
+      ]
+     ]
+    }
+   }
+  ]
+ }
+}

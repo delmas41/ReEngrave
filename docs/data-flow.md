@@ -24,7 +24,7 @@ python3 -m tools.omr.staged.flow_map --gaps                 # PART 3
 python3 -m tools.omr.staged.flow_map --check                # exit 1 if this page is stale
 ```
 
-Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 27 gaps; 210 flag predicates; 28 record calls this map cannot resolve.
+Today: 147 LIVE, 8 ONLY-BEHIND-AN-OFF-FLAG, 7 FILED-BUT-NEVER-READ, 2 READ-ONLY-INSIDE-GATHER, 3 FILED-ONLY-OUTSIDE-THE-PIPELINE, 15 NOT-IN-USE; 27 gaps; 211 flag predicates; 28 record calls this map cannot resolve.
 
 ## The claim order (who owns which ink, earliest first)
 
@@ -1546,9 +1546,10 @@ Which edition and movement this is; scanned or engraved.
 
 - `page_arc` filed by: GATHER `page_arcs.py:gather_page_arcs`
 - `page_arc` abstained by (not a producer): `page_arcs.py:gather_page_arcs`
-- `page_arc` declared in `wants` (not a read): `adjudicate_page_arc_binding`
+- `page_arc` declared in `wants` (not a read): `adjudicate_duration`, `adjudicate_page_arc_binding`
 - `page_arc` read by GATHER: `page_arcs.py:rows_of`
 - `page_arc` read by ADJUDICATE: `adjudicators/ownership.py:adjudicate_page_arc_binding`
+- `page_arc` read only OFF by default: `adjudicators/rhythm.py:_hooks_on_arcs`
 - `page_arc` belongs to: `--mark arc`
 
 ### `page_arc_binding` (Q.PAGE_ARC_BINDING) -- LIVE

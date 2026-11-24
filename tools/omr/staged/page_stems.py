@@ -848,6 +848,39 @@ def stem_runs_out_of_the_accidental(stroke: Any, acc_box: Sequence[float], sp: f
     return y < float(acc_box[1]) - tol or y + h > float(acc_box[3]) + tol
 
 
+#: ROADMAP 2.306 r21: the reading word of a box on a barline with no head ink of its own (it takes no stem)
+BARLINE_HOW = "barline_not_a_head"
+
+
+def stands_on_a_barline(box: Sequence[float], barlines: Sequence[Dict[str, Any]]) -> bool:
+    """ROADMAP 2.306 r21 (Brahms 25/1/7/1: a 7x17 px "head" box on the barline got the next bar's natural's upright as an up stem; the bar
+    became two voices and the printed G5 tie was lost). A barline is read and claimed on the page-wide pass before any head or stem (CLAUDE §3
+    claim order); a box the detector drew ON the barline rule -- the rule's own carved ink (`page_strokes` barline column: its tilted centre
+    line and measured width) covers at least half the box's width at the box's own rows -- is looking at the barline. Pure; `box` (x0, y0,
+    x1, y1) page px; `barlines` = `PageMap.barlines`."""
+    from .claims import INSIDE_SHARE_MIN
+    x0, y0, x1, y1 = (float(v) for v in box)
+    if x1 <= x0 or y1 <= y0:
+        return False
+    for b in barlines or ():
+        bx0, by0, bx1, by1 = (float(v) for v in b["box"])
+        if min(y1, by1) - max(y0, by0) < INSIDE_SHARE_MIN * (y1 - y0):
+            continue
+        xc = float(b["slope"]) * (y0 + y1) / 2.0 + float(b["intercept"])
+        half = float(b["width_px"]) / 2.0
+        if min(x1, xc + half) - max(x0, xc - half) >= INSIDE_SHARE_MIN * (x1 - x0):
+            return True
+    return False
+
+
+def barline_boxes(heads: Sequence[Dict[str, Any]], barlines: Sequence[Dict[str, Any]]) -> set:
+    """ROADMAP 2.306 r21. A STEM JOINS A HEAD WHOSE INK IT TOUCHES (Sean 2026-11-18): a box with no head ink of its own (the 2.290 identity
+    found no oval in it, `ink` False) that stands on a barline (`stands_on_a_barline`) is the barline's ink, not a head -- it takes no stem
+    and takes no part in the page's stem reading. Never a stem for a box on a barline that holds no head of its own; a head WITH its own ink
+    beside or on a barline is read as before. Pure: the ids of such heads."""
+    return {h["id"] for h in heads if not h.get("ink") and stands_on_a_barline(h["box"], barlines)}
+
+
 def head_claimed_boxes(log: Any, page_sub: Any, page_map: Any) -> List[Tuple[float, float, float, float]]:
     """The page boxes `(x0, y0, x1, y1)` of every page stroke a READ head claim holds (2.290 `page_head_one`: the head's own oval ink)."""
     from .record import Q, Scope
@@ -965,7 +998,12 @@ def gather_page_stems(log: Any, pws: Any, cells: Sequence[Any], local: Dict[int,
     for i, st in enumerate(page_map.strokes):
         x, y, w, h = (float(v) for v in st.box)
         all_strokes[i] = dict(box=(x, y, x + w, y + h), kind=str(st.kind), touches=[(int(j), float(c)) for j, c in (getattr(st, "touches", None) or ())])
-    res = read(heads, verticals, held, crossers=crossers, strokes=all_strokes)
+    # ROADMAP 2.306 r21: a box on a barline with no head ink of its own is the barline's: no stem, no part in the reading (`barline_boxes`)
+    on_bar = barline_boxes(heads, getattr(page_map, "barlines", None) or ())
+    res = read([h for h in heads if h["id"] not in on_bar], verticals, held, crossers=crossers, strokes=all_strokes)
+    for hid in on_bar:
+        res["heads"][hid] = dict(state="none", stroke=None, direction=None, side=None, candidates=[], held=[], near=[], margin=None, how=BARLINE_HOW)
+    res["census"][BARLINE_HOW] = len(on_bar)
     from . import page_owner as PO
     frames = PO.staff_frames(cells, local)
     owners = _page_owner_rows(log, heads, Q.PAGE_MARK_OWNER, Subject)
